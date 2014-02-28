@@ -26,11 +26,11 @@
     
   </groupId>
   <artifactId>
-    ${project.groupId}.tiny
+    org.tinygroup.tiny
     
   </artifactId>
   <version>
-    0.1.1-SNAPSHOT
+    0.1.1
     
   </version>
   <packaging>
@@ -164,10 +164,10 @@
     -->
     <!--defined maven snapshots and staging repository id and url
     -->
-    <!--<property name="maven-snapshots-repository-id" value="sonatype-nexus-snapshots"/>
-        <property name="maven-snapshots-repository-url" value="https://oss.sonatype.org/content/repositories/snapshots/"/>
-        <property name="maven-staging-repository-id" value="sonatype-nexus-staging"/>
-        <property name="maven-staging-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2/"/>
+    <!--<property name="maven-snapshots-repository-id" value="sonatype-nexus-snapshots" />
+        <property name="maven-snapshots-repository-url" value="https://oss.sonatype.org/content/repositories/snapshots/" />
+        <property name="maven-staging-repository-id" value="sonatype-nexus-staging" />
+        <property name="maven-staging-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2/" />
     -->
   </properties>
   <dependencyManagement>
@@ -892,36 +892,7 @@
       </plugins>
     </pluginManagement>
   </build>
-  <distributionManagement>
-    <repository>
-      <id>
-        sonatype-nexus-staging
-        
-      </id>
-      <name>
-        Nexus Staging Repository
-        
-      </name>
-      <url>
-        https://oss.sonatype.org/service/local/staging/deploy/maven2/
-        
-      </url>
-    </repository>
-    <snapshotRepository>
-      <id>
-        sonatype-nexus-snapshots
-        
-      </id>
-      <name>
-        sonatype snapshots Repository
-        
-      </name>
-      <url>
-        https://oss.sonatype.org/content/repositories/snapshots/
-        
-      </url>
-    </snapshotRepository>
-  </distributionManagement>
+ 
   <developers>
     <developer>
       <id>
