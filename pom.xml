@@ -26,7 +26,7 @@
     
   </groupId>
   <artifactId>
-    ${project.groupId}.tiny
+    org.tinygroup.tiny
     
   </artifactId>
   <version>
@@ -892,36 +892,7 @@
       </plugins>
     </pluginManagement>
   </build>
-  <distributionManagement>
-    <repository>
-      <id>
-        sonatype-nexus-staging
-        
-      </id>
-      <name>
-        Nexus Staging Repository
-        
-      </name>
-      <url>
-        https://oss.sonatype.org/service/local/staging/deploy/maven2/
-        
-      </url>
-    </repository>
-    <snapshotRepository>
-      <id>
-        sonatype-nexus-snapshots
-        
-      </id>
-      <name>
-        sonatype snapshots Repository
-        
-      </name>
-      <url>
-        https://oss.sonatype.org/content/repositories/snapshots/
-        
-      </url>
-    </snapshotRepository>
-  </distributionManagement>
+ 
   <developers>
     <developer>
       <id>
