@@ -30,7 +30,7 @@
     
   </artifactId>
   <version>
-    0.1.1-SNAPSHOT
+    0.1.2-SNAPSHOT
     
   </version>
   <packaging>
@@ -92,6 +92,7 @@
     </license>
   </licenses>
   <scm>
+
     <connection>scm:git:git@http://git.oschina.net/tinyframework/tiny.git</connection>
     <developerConnection>scm:git:http://git.oschina.net/tinyframework/tiny.git</developerConnection>
     <url>http://git.oschina.net/tinyframework/tiny.git</url>
@@ -163,10 +164,10 @@
     -->
     <!--defined maven snapshots and staging repository id and url
     -->
-    <!--<property name="maven-snapshots-repository-id" value="sonatype-nexus-snapshots"/>
-        <property name="maven-snapshots-repository-url" value="https://oss.sonatype.org/content/repositories/snapshots/"/>
-        <property name="maven-staging-repository-id" value="sonatype-nexus-staging"/>
-        <property name="maven-staging-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2/"/>
+    <!--<property name="maven-snapshots-repository-id" value="sonatype-nexus-snapshots" />
+        <property name="maven-snapshots-repository-url" value="https://oss.sonatype.org/content/repositories/snapshots/" />
+        <property name="maven-staging-repository-id" value="sonatype-nexus-staging" />
+        <property name="maven-staging-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2/" />
     -->
   </properties>
   <dependencyManagement>
@@ -1028,13 +1029,5 @@
     </dependency>
   </dependencies>
   <modules>
-    <module>
-      framework
-      
-    </module>
-    <module>
-      extension
-      
-    </module>
   </modules>
 </project>
