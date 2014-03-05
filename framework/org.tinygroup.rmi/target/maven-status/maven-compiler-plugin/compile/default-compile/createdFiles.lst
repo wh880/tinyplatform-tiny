@@ -1,8 +1,0 @@
-org\tinygroup\tinyrmi\impl\RmiServerLocal.class
-org\tinygroup\tinyrmi\impl\RmiServerRemote.class
-org\tinygroup\tinyrmi\impl\AbstractRmiServer.class
-org\tinygroup\tinyrmi\RmiServer.class
-org\tinygroup\tinyrmi\RemoteObject.class
-org\tinygroup\tinyrmi\impl\RmiServerRemote$HeartThread.class
-org\tinygroup\tinyrmi\impl\RmiServerLocal$CheckThread.class
-org\tinygroup\tinyrmi\CheckAble.class
