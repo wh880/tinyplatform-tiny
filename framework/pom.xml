@@ -19,5 +19,10 @@
     <module>org.tinygroup.commons</module>
     <module>org.tinygroup.base</module>
     <module>org.tinygroup.vfs</module>
+    <module>org.tinygroup.logger</module>
+    <module>org.tinygroup.pc</module>
+    <module>org.tinygroup.ioc</module>
+    <module>org.tinygroup.rmi</module>
+    <module>org.tinygroup.threadgroup</module>
  </modules>
 </project>

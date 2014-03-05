@@ -1,0 +1,82 @@
+/**
+ *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *
+ *  Licensed under the GPL, Version 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.gnu.org/licenses/gpl.html
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ * --------------------------------------------------------------------------
+ *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *
+ *  本开源软件遵循 GPL 3.0 协议;
+ *  如果您不遵循此协议，则不被允许使用此文件。
+ *  你可以从下面的地址获取完整的协议文本
+ *
+ *       http://www.gnu.org/licenses/gpl.html
+ */
+package org.tinygroup.tinyioc;
+
+import org.tinygroup.tinyioc.impl.BeanContainerImpl;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.jar.JarFile;
+
+/**
+ * Created by luoguo on 13-12-31.
+ */
+public class BeanContainerFactory {
+    static Map<String, BeanContainer> beanContainerMap = new HashMap<String, BeanContainer>();
+
+    private BeanContainerFactory() {
+
+    }
+
+    static BeanContainer beanContainer = new BeanContainerImpl();
+
+    public static BeanContainer getBeanContainer() {
+        return beanContainer;
+    }
+
+    public static synchronized BeanContainer getBeanContainer(String name) {
+        BeanContainer beanContainer = beanContainerMap.get(name);
+        if (beanContainer == null) {
+            beanContainer = new BeanContainerImpl();
+            beanContainerMap.put(name, beanContainer);
+        }
+        return beanContainer;
+    }
+
+    public static synchronized BeanContainer getBeanContainer(String name,
+                                                              ClassLoader classLoader) {
+        BeanContainer beanContainer = beanContainerMap.get(name);
+        if (beanContainer == null) {
+            beanContainer = new BeanContainerImpl(classLoader);
+            beanContainerMap.put(name, beanContainer);
+        }
+        return beanContainer;
+    }
+
+    public static void main(String[] args) throws Exception {
+        File file = new File("c:\\org.tinygroup.helloproject-0.0.12-SNAPSHOT.jar");
+        System.out.println(file.exists());
+        URL xUrl = file.toURL();
+        URLClassLoader classLoader = new URLClassLoader(new URL[]{xUrl});
+        Class xClass = classLoader.loadClass("hello.Hello");
+        URLClassLoader classLoader1 = new URLClassLoader(new URL[]{xUrl});
+        Class xClass1 = classLoader.loadClass("hello.HelloImpl");
+        Object object = xClass1.newInstance();
+        System.out.println(xClass.isInstance(object));
+    }
+}
