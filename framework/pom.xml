@@ -8,11 +8,10 @@
   <artifactId>framework</artifactId>
   <packaging>pom</packaging>
   <modules>
-<!--
-    <module>org.tinygroup.tinycore</module>
-    <module>org.tinygroup.vfs</module>
-    <module>org.tinygroup.context</module>
-    -->
+    <module>org.tinygroup.binarytree</module>
+    <module>org.tinygroup.parser</module>
+    <module>org.tinygroup.xmlparser</module>
+    <module>org.tinygroup.htmlparser</module>
     <module>org.tinygroup.i18n</module>
     <module>org.tinygroup.exception</module>
     <module>org.tinygroup.context</module>

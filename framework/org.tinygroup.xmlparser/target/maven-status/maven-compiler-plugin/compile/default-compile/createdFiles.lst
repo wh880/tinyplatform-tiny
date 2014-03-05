@@ -1,0 +1,7 @@
+org\tinygroup\xmlparser\document\XmlDocumentImpl.class
+org\tinygroup\xmlparser\parser\XmlStringParser.class
+org\tinygroup\xmlparser\XmlDocument.class
+org\tinygroup\xmlparser\XmlNodeType.class
+org\tinygroup\xmlparser\parser\XmlParser.class
+org\tinygroup\xmlparser\formatter\XmlFormater.class
+org\tinygroup\xmlparser\node\XmlNode.class

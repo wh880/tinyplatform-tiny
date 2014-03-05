@@ -1,0 +1,17 @@
+org\tinygroup\xmlparser\INodeFilterTest.class
+org\tinygroup\xmlparser\FilterTest.class
+org\tinygroup\xmlparser\SpecialNoteTest.class
+org\tinygroup\xmlparser\IParserTest.class
+org\tinygroup\xmlparser\PathFilterTest.class
+org\tinygroup\xmlparser\NameFilterTest.class
+org\tinygroup\xmlparser\INoteTest2.class
+org\tinygroup\xmlparser\TestEncodingOrder.class
+org\tinygroup\xmlparser\INodeTest.class
+org\tinygroup\xmlparser\document\DocumentTest.class
+org\tinygroup\xmlparser\node\XmlNodeTest.class
+org\tinygroup\xmlparser\MaoHaoTest.class
+org\tinygroup\xmlparser\ProcessPom.class
+org\tinygroup\xmlparser\MetadataGeneratePDM.class
+org\tinygroup\xmlparser\MetadataGenerateEA.class
+org\tinygroup\xmlparser\node\ChangePom.class
+org\tinygroup\xmlparser\formatter\XmlFormatterTest.class

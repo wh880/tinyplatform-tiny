@@ -1,0 +1,7 @@
+org\tinygroup\htmlparser\formatter\HtmlFormater.class
+org\tinygroup\htmlparser\HtmlDocument.class
+org\tinygroup\htmlparser\document\HtmlDocumentImpl.class
+org\tinygroup\htmlparser\parser\HtmlStringParser.class
+org\tinygroup\htmlparser\node\HtmlNode.class
+org\tinygroup\htmlparser\parser\HtmlParser.class
+org\tinygroup\htmlparser\HtmlNodeType.class
