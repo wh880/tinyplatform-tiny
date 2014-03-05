@@ -1,1004 +1,313 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <groupId>
-      org.sonatype.oss
-      
-    </groupId>
-    <artifactId>
-      oss-parent
-      
-    </artifactId>
-    <version>
-      7
-      
-    </version>
-  </parent>
-  <modelVersion>
-    4.0.0
-    
-  </modelVersion>
-  <inceptionYear>
-    2006
-    
-  </inceptionYear>
-  <groupId>
-    org.tinygroup
-    
-  </groupId>
-  <artifactId>
-    org.tinygroup.tiny
-    
-  </artifactId>
-  <version>
-    0.1.2-SNAPSHOT
-    
-  </version>
-  <packaging>
-    pom
-    
-  </packaging>
-  <name>
-    tiny
-    
-  </name>
-  <url>
-    https://sourceforge.net/projects/tinyorg/
-    
-  </url>
-  <reports>
-    <report>
-      maven-faq-plugin
-      
-    </report>
-  </reports>
-  <description>
-    Tiny开源组织，主要目标为开发Tiny开发框架，我们的口号是: Think big, start small, scale fast.。
-    
-  </description>
-  <organization>
-    <name>
-      开源组织
-      
-    </name>
-    <url>
-      https://sourceforge.net/projects/tinyorg/
-      
-    </url>
-  </organization>
-  <issueManagement>
-    <system>
-      JIRA
-      
-    </system>
-    <url>
-      http://${serverIp}:${serverPort}/jira/browse/TP
-      
-    </url>
-  </issueManagement>
-  <licenses>
-    <license>
-      <name>
-        GNU GPL 3.0
-        
-      </name>
-      <url>
-        http://www.gnu.org/licenses/gpl.html
-        
-      </url>
-      <distribution>
-      </distribution>
-      <comments>
-      </comments>
-    </license>
-  </licenses>
-  <scm>
-
-    <connection>scm:git:git@http://git.oschina.net/tinyframework/tiny.git</connection>
-    <developerConnection>scm:git:http://git.oschina.net/tinyframework/tiny.git</developerConnection>
-    <url>http://git.oschina.net/tinyframework/tiny.git</url>
-  </scm>
-  <!--
-  <scm>
-    <connection>
-      scm:svn:https://svn.code.sf.net/p/tinyorg/code/trunk/Sources
-      
-    </connection>
-    <developerConnection>
-      scm:svn:https://svn.code.sf.net/p/tinyorg/code/trunk/Sources
-      
-    </developerConnection>
-    <url>
-      https://svn.code.sf.net/p/tinyorg/code/trunk/Sources
-      
-    </url>
-  </scm>
-  -->
-  <contributors>
-    <contributor>
-      <name>
-        罗果
-        
-      </name>
-      <email>
-        luo_guo@live.cn
-        
-      </email>
-      <organization>
-        Tiny Group
-        
-      </organization>
-      <organizationUrl>
-        https://sourceforge.net/p/tinyorg
-        
-      </organizationUrl>
-      <timezone>
-        +8
-        
-      </timezone>
-    </contributor>
-  </contributors>
-  <properties>
-    <!--可以自定义标签对,可以在其它地方用{标签名引用}
-    -->
-    <groupId.default>
-      org.tinygroup
-      
-    </groupId.default>
-    <org.springframework.version>
-      2.5.6
-      
-    </org.springframework.version>
-    <svnroot>
-      https://svn.code.sf.net/p/tinyorg/code
-      
-    </svnroot>
-    <project.build.sourceEncoding>
-      UTF-8
-      
-    </project.build.sourceEncoding>
-    <project.reporting.outputEncoding>
-      UTF-8
-      
-    </project.reporting.outputEncoding>
-    <!--define artifacts' name, which follows the convention of Maven
-    -->
-    <!--defined maven snapshots and staging repository id and url
-    -->
-    <!--<property name="maven-snapshots-repository-id" value="sonatype-nexus-snapshots" />
-        <property name="maven-snapshots-repository-url" value="https://oss.sonatype.org/content/repositories/snapshots/" />
-        <property name="maven-staging-repository-id" value="sonatype-nexus-staging" />
-        <property name="maven-staging-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2/" />
-    -->
-  </properties>
-  <dependencyManagement>
-    <dependencies>
-    </dependencies>
-  </dependencyManagement>
-  <profiles>
-    <profile>
-      <id>
-        tiny-release
-        
-      </id>
-      <build>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <inceptionYear>2006</inceptionYear>
+    <groupId>org.tinygroup</groupId>
+    <artifactId>tiny</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>tiny</name>
+    <url>https://sourceforge.net/projects/tinyorg/</url>
+    <description></description>
+    <organization>
+        <name>TinyGroup</name>
+        <url>http://my.oschina.net/tinyframework/</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>GNU GPL 3.0</name>
+            <url>http://www.gnu.org/licenses/gpl.html</url>
+            <distribution>
+            </distribution>
+            <comments>
+            </comments>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git:git@http://git.oschina.net/tinyframework/tiny.git</connection>
+        <developerConnection>scm:git:http://git.oschina.net/tinyframework/tiny.git</developerConnection>
+        <url>http://git.oschina.net/tinyframework/tiny.git</url>
+    </scm>
+    <contributors>
+        <contributor>
+            <name>LuoGuo</name>
+            <email>luo_guo@live.cn</email>
+            <organization>Tiny Group</organization>
+            <organizationUrl>http://my.oschina.net/tinyframework/</organizationUrl>
+            <timezone>+8</timezone>
+        </contributor>
+    </contributors>
+    <profiles>
+        <profile>
+            <id>tiny-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.1.2</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    <build>
         <plugins>
-          <plugin>
-            <groupId>
-              org.apache.maven.plugins
-              
-            </groupId>
-            <artifactId>
-              maven-source-plugin
-              
-            </artifactId>
-            <version>
-              2.1.2
-              
-            </version>
-            <executions>
-              <execution>
-                <id>
-                  attach-sources
-                  
-                </id>
-                <goals>
-                  <goal>
-                    jar-no-fork
-                    
-                  </goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>
-              org.apache.maven.plugins
-              
-            </groupId>
-            <artifactId>
-              maven-javadoc-plugin
-              
-            </artifactId>
-            <version>
-              2.9.1
-              
-            </version>
-            <executions>
-              <execution>
-                <id>
-                  attach-javadocs
-                  
-                </id>
-                <goals>
-                  <goal>
-                    jar
-                    
-                  </goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>
-              org.apache.maven.plugins
-              
-            </groupId>
-            <artifactId>
-              maven-gpg-plugin
-              
-            </artifactId>
-            <version>
-              1.1
-              
-            </version>
-            <executions>
-              <execution>
-                <id>
-                  sign-artifacts
-                  
-                </id>
-                <phase>
-                  verify
-                  
-                </phase>
-                <goals>
-                  <goal>
-                    sign
-                    
-                  </goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <fork>true</fork>
+                    <executable>${JAVA_1_5_JAVAC}</executable>
+                    <compilerVersion>1.5</compilerVersion>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>2.2</version>
+            </plugin>
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.10.b1</version>
+                <configuration>
+                    <header>d:\SVN\tinyorg-code\license.txt</header>
+                    <strictCheck>true</strictCheck>
+                    <encoding>UTF-8</encoding>
+                    <excludes>
+                        <exclude>target/**</exclude>
+                        <exclude>**/*.xml</exclude>
+                        <exclude>**/*.properties</exclude>
+                        <exclude>**/*.xsd</exclude>
+                        <exclude>**/*.js</exclude>
+                        <exclude>**/*.css</exclude>
+                        <exclude>**/*.html</exclude>
+                        <exclude>**/*.htm</exclude>
+                        <exclude>**/*.txt</exclude>
+                        <exclude>**/*.php</exclude>
+                        <exclude>**/*.jsp</exclude>
+                        <exclude>src/main/resources/archetype-resources/*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <tagBase>https://svn.code.sf.net/p/tinyorg/code/tags/</tagBase>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
-      </build>
-    </profile>
-  </profiles>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>
-          org.apache.maven.plugins
-          
-        </groupId>
-        <artifactId>
-          maven-compiler-plugin
-          
-        </artifactId>
-        <version>
-          3.1
-          
-        </version>
-        <configuration>
-          <verbose>
-            true
-            
-          </verbose>
-          <fork>
-            true
-            
-          </fork>
-          <executable>
-            ${JAVA_1_5_JAVAC}
-            
-          </executable>
-          <compilerVersion>
-            1.5
-            
-          </compilerVersion>
-          <encoding>
-            UTF-8
-            
-          </encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>
-          org.codehaus.mojo
-          
-        </groupId>
-        <artifactId>
-          sonar-maven-plugin
-          
-        </artifactId>
-        <version>
-          2.2
-          
-        </version>
-      </plugin>
-      <plugin>
-        <groupId>
-          com.mycila.maven-license-plugin
-          
-        </groupId>
-        <artifactId>
-          maven-license-plugin
-          
-        </artifactId>
-        <version>
-          1.10.b1
-          
-        </version>
-        <configuration>
-          <header>
-            d:\SVN\tinyorg-code\license.txt
-            
-          </header>
-          <strictCheck>
-            true
-            
-          </strictCheck>
-          <encoding>
-            UTF-8
-            
-          </encoding>
-          <excludes>
-            <exclude>
-              target/**
-              
-            </exclude>
-            <exclude>
-              **/*.xml
-              
-            </exclude>
-            <exclude>
-              **/*.properties
-              
-            </exclude>
-            <exclude>
-              **/*.xsd
-              
-            </exclude>
-            <exclude>
-              **/*.js
-              
-            </exclude>
-            <exclude>
-              **/*.css
-              
-            </exclude>
-            <exclude>
-              **/*.html
-              
-            </exclude>
-            <exclude>
-              **/*.htm
-              
-            </exclude>
-            <exclude>
-              **/*.txt
-              
-            </exclude>
-            <exclude>
-              **/*.php
-              
-            </exclude>
-            <exclude>
-              **/*.jsp
-              
-            </exclude>
-            <exclude>
-              src/main/resources/archetype-resources/*
-              
-            </exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>
-          org.apache.maven.plugins
-          
-        </groupId>
-        <artifactId>
-          maven-resources-plugin
-          
-        </artifactId>
-        <version>
-          2.5
-          
-        </version>
-        <configuration>
-          <encoding>
-            UTF-8
-            
-          </encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>
-          org.codehaus.mojo
-          
-        </groupId>
-        <artifactId>
-          license-maven-plugin
-          
-        </artifactId>
-        <version>
-          1.1
-          
-        </version>
-        <configuration>
-          <descriptionTemplate>
-            ${basedir}/src/license/descriptionTemplate.ftl
-            
-          </descriptionTemplate>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>
-          org.codehaus.mojo
-          
-        </groupId>
-        <artifactId>
-          cobertura-maven-plugin
-          
-        </artifactId>
-        <version>
-          2.5.1
-          
-        </version>
-        <configuration>
-          <instrumentation>
-            <ignores>
-              <ignore>
-                com.example.boringcode.*
-                
-              </ignore>
-            </ignores>
-            <excludes>
-              <exclude>
-                com/example/dullcode/**/*.class
-                
-              </exclude>
-              <exclude>
-                com/example/**/*Test.class
-                
-              </exclude>
-            </excludes>
-          </instrumentation>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>
-                clean
-                
-              </goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>
-          org.apache.maven.plugins
-          
-        </groupId>
-        <artifactId>
-          maven-scm-plugin
-          
-        </artifactId>
-        <version>
-          1.0
-          
-        </version>
-      </plugin>
-      <plugin>
-        <groupId>
-          org.apache.maven.plugins
-          
-        </groupId>
-        <artifactId>
-          maven-release-plugin
-          
-        </artifactId>
-        <version>
-          2.0
-          
-        </version>
-        <configuration>
-          <tagBase>
-            https://svn.code.sf.net/p/tinyorg/code/tags/
-            
-          </tagBase>
-        </configuration>
-      </plugin>
-      <!--<plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-site-plugin</artifactId>
-                <version>3.1</version> <configuration> <locales>zh_CN</locales> </configuration>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                    <configuration>
+                        <fork>true</fork>
+                        <executable>${JAVA_1_5_JAVAC}/bin/javac</executable>
+                        <verbose>true</verbose>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
                 </plugin>
-      -->
-      <plugin>
-        <groupId>
-          org.apache.maven.plugins
-          
-        </groupId>
-        <artifactId>
-          maven-source-plugin
-          
-        </artifactId>
-        <version>
-          2.1.2
-          
-        </version>
-        <executions>
-          <execution>
-            <id>
-              attach-sources
-              
-            </id>
-            <goals>
-              <goal>
-                jar-no-fork
-                
-              </goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>
-            org.apache.maven.plugins
-            
-          </groupId>
-          <artifactId>
-            maven-compiler-plugin
-            
-          </artifactId>
-          <version>
-            3.1
-            
-          </version>
-          <configuration>
-            <fork>
-              true
-              
-            </fork>
-            <executable>
-              ${JAVA_1_5_JAVAC}/bin/javac
-              
-            </executable>
-            <verbose>
-              true
-              
-            </verbose>
-            <encoding>
-              UTF-8
-              
-            </encoding>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>
-            org.apache.maven.plugins
-            
-          </groupId>
-          <artifactId>
-            maven-release-plugin
-            
-          </artifactId>
-          <version>
-            2.1
-            
-          </version>
-          <configuration>
-            <mavenExecutorId>
-              forked-path
-              
-            </mavenExecutorId>
-            <useReleaseProfile>
-              false
-              
-            </useReleaseProfile>
-            <arguments>
-              -Ptiny-release
-              
-            </arguments>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>
-            org.codehaus.mojo
-            
-          </groupId>
-          <artifactId>
-            jboss-maven-plugin
-            
-          </artifactId>
-          <version>
-            1.5.0
-            
-          </version>
-          <configuration>
-            <jbossHome>
-              /usr/jboss-4.2.3.GA
-              
-            </jbossHome>
-            <serverName>
-              all
-              
-            </serverName>
-            <fileName>
-              target/my-project.war
-              
-            </fileName>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>
-            org.codehaus.mojo
-            
-          </groupId>
-          <artifactId>
-            exec-maven-plugin
-            
-          </artifactId>
-          <version>
-            1.2.1
-            
-          </version>
-        </plugin>
-        <plugin>
-          <groupId>
-            org.apache.tomcat.maven
-            
-          </groupId>
-          <artifactId>
-            tomcat6-maven-plugin
-            
-          </artifactId>
-          <version>
-            2.0-beta-1
-            
-          </version>
-        </plugin>
-        <plugin>
-          <groupId>
-            org.apache.tomcat.maven
-            
-          </groupId>
-          <artifactId>
-            tomcat7-maven-plugin
-            
-          </artifactId>
-          <version>
-            2.0-beta-1
-            
-          </version>
-        </plugin>
-        <plugin>
-          <groupId>
-            org.codehaus.cargo
-            
-          </groupId>
-          <artifactId>
-            cargo-maven2-plugin
-            
-          </artifactId>
-          <version>
-            1.0.6
-            
-          </version>
-          <!--可选
-          -->
-          <executions>
-            <execution>
-              <id>
-                verify-deploy
-                
-              </id>
-              <phase>
-                pre-integration-test
-                
-              </phase>
-              <goals>
-                <goal>
-                  deployer-redeploy
-                  
-                </goal>
-              </goals>
-            </execution>
-          </executions>
-          <configuration>
-            <container>
-              <containerId>
-                tomcat6x
-                
-              </containerId>
-              <home>
-                D:\snowrain\apache-tomcat-6.0.35
-                
-              </home>
-            </container>
-            <configuration>
-              <type>
-                standalone
-                
-              </type>
-              <home>
-                D:\snowrain\apache-tomcat-6.0.35
-                
-              </home>
-            </configuration>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>
-            org.mortbay.jetty
-            
-          </groupId>
-          <artifactId>
-            maven-jetty-plugin
-            
-          </artifactId>
-          <version>
-            6.1.26
-            
-          </version>
-          <dependencies>
-            <dependency>
-              <groupId>
-                org.mortbay.jetty
-                
-              </groupId>
-              <artifactId>
-                servlet-api-2.5
-                
-              </artifactId>
-              <version>
-                6.1.14
-                
-              </version>
-            </dependency>
-          </dependencies>
-          <configuration>
-            <!--<webApp>${basedir}/target/${project.artifactId}</webApp>
-            -->
-            <contextPath>
-              /${project.artifactId}
-              
-            </contextPath>
-            <scanIntervalSeconds>
-              10
-              
-            </scanIntervalSeconds>
-            <stopKey>
-              foo
-              
-            </stopKey>
-            <stopPort>
-              9999
-              
-            </stopPort>
-          </configuration>
-          <executions>
-            <execution>
-              <id>
-                start-jetty
-                
-              </id>
-              <phase>
-                pre-integration-test
-                
-              </phase>
-              <goals>
-                <goal>
-                  run
-                  
-                </goal>
-              </goals>
-              <configuration>
-                <scanIntervalSeconds>
-                  0
-                  
-                </scanIntervalSeconds>
-                <daemon>
-                  true
-                  
-                </daemon>
-              </configuration>
-            </execution>
-            <execution>
-              <id>
-                stop-jetty
-                
-              </id>
-              <phase>
-                post-integration-test
-                
-              </phase>
-              <goals>
-                <goal>
-                  stop
-                  
-                </goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>
-            org.apache.maven.plugins
-            
-          </groupId>
-          <artifactId>
-            maven-jar-plugin
-            
-          </artifactId>
-          <version>
-            2.2
-            
-          </version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>
-                  test-jar
-                  
-                </goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>
-            org.apache.maven.plugins
-            
-          </groupId>
-          <artifactId>
-            maven-shade-plugin
-            
-          </artifactId>
-          <version>
-            1.7
-            
-          </version>
-          <executions>
-            <execution>
-              <phase>
-                package
-                
-              </phase>
-              <goals>
-                <goal>
-                  shade
-                  
-                </goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
- 
-  <developers>
-    <developer>
-      <id>
-        luoguo
-        
-      </id>
-      <name>
-        罗果
-        
-      </name>
-      <organization>
-        研发中心
-        
-      </organization>
-      <email>
-        luo_guo@live.cn
-        
-      </email>
-      <timezone>
-        +8
-        
-      </timezone>
-    </developer>
-  </developers>
-  <mailingLists>
-    <mailingList>
-      <name>
-        罗果
-        
-      </name>
-      <post>
-        luo_guo@live.cn
-        
-      </post>
-      <subscribe>
-        luo_guo@live.cn
-        
-      </subscribe>
-      <unsubscribe>
-        luo_guo@live.cn
-        
-      </unsubscribe>
-    </mailingList>
-  </mailingLists>
-  <dependencies>
-    <dependency>
-      <groupId>
-        org.slf4j
-        
-      </groupId>
-      <artifactId>
-        slf4j-api
-        
-      </artifactId>
-      <version>
-        1.6.6
-        
-      </version>
-    </dependency>
-    <dependency>
-      <groupId>
-        org.slf4j
-        
-      </groupId>
-      <artifactId>
-        slf4j-log4j12
-        
-      </artifactId>
-      <version>
-        1.7.0
-        
-      </version>
-    </dependency>
-    <dependency>
-      <groupId>
-        log4j
-        
-      </groupId>
-      <artifactId>
-        log4j
-        
-      </artifactId>
-      <version>
-        1.2.17
-        
-      </version>
-    </dependency>
-    <dependency>
-      <groupId>
-        junit
-        
-      </groupId>
-      <artifactId>
-        junit
-        
-      </artifactId>
-      <version>
-        3.8.1
-        
-      </version>
-      <scope>
-        test
-        
-      </scope>
-    </dependency>
-  </dependencies>
-  <modules>
-  </modules>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.1</version>
+                    <configuration>
+                        <mavenExecutorId>forked-path</mavenExecutorId>
+                        <useReleaseProfile>false</useReleaseProfile>
+                        <arguments>-Ptiny-release</arguments>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>jboss-maven-plugin</artifactId>
+                    <version>1.5.0</version>
+                    <configuration>
+                        <jbossHome>/usr/jboss-4.2.3.GA</jbossHome>
+                        <serverName>all</serverName>
+                        <fileName>target/my-project.war</fileName>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.2.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat6-maven-plugin</artifactId>
+                    <version>2.0-beta-1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat7-maven-plugin</artifactId>
+                    <version>2.0-beta-1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>maven-jetty-plugin</artifactId>
+                    <version>6.1.26</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.mortbay.jetty</groupId>
+                            <artifactId>servlet-api-2.5</artifactId>
+                            <version>6.1.14</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <contextPath>/${project.artifactId}</contextPath>
+                        <scanIntervalSeconds>10</scanIntervalSeconds>
+                        <stopKey>foo</stopKey>
+                        <stopPort>9999</stopPort>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>start-jetty</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <scanIntervalSeconds>0</scanIntervalSeconds>
+                                <daemon>true</daemon>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>stop-jetty</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>stop</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.2</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>test-jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>1.7</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <developers>
+        <developer>
+            <id>luoguo</id>
+            <name>LuoGuo</name>
+            <organization>tinygroup</organization>
+            <email>luo_guo@live.cn</email>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+    <mailingLists>
+        <mailingList>
+            <name>LuoGuo</name>
+            <post>luo_guo@live.cn</post>
+            <subscribe>luo_guo@live.cn</subscribe>
+            <unsubscribe>luo_guo@live.cn</unsubscribe>
+        </mailingList>
+    </mailingLists>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <modules>
+        <module>framework</module>
+    </modules>
 </project>

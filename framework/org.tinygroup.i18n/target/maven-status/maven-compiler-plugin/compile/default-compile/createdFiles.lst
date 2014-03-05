@@ -1,0 +1,11 @@
+org\tinygroup\i18n\I18nMessage.class
+org\tinygroup\i18n\config\I18nMessage.class
+org\tinygroup\i18n\I18nMessageStandard.class
+org\tinygroup\i18n\config\I18nConfiguration.class
+org\tinygroup\i18n\I18nMessageFactory.class
+org\tinygroup\i18n\exception\I18nException.class
+org\tinygroup\i18n\I18nMessages.class
+org\tinygroup\i18n\I18nMessageContext.class
+org\tinygroup\i18n\I18nMessageBase.class
+org\tinygroup\i18n\impl\I18nMessageImpl.class
+org\tinygroup\i18n\impl\I18nMessageContextImpl.class

@@ -1,0 +1,4 @@
+org\tinygroup\format\ConstFormatProvider.class
+org\tinygroup\format\FormatProviderTest.class
+org\tinygroup\format\User.class
+org\tinygroup\format\DateFormatProvider.class

@@ -1,0 +1,6 @@
+org\tinygroup\vfs\FileUtils.class
+org\tinygroup\vfs\TestJarFileObject.class
+org\tinygroup\vfs\TestURLFileObject.class
+org\tinygroup\vfs\Demo.class
+org\tinygroup\vfs\TestFileObjectImpl.class
+org\tinygroup\vfs\impl\ftp\FtpFileObjectTest.class
