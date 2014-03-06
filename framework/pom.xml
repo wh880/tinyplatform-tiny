@@ -35,5 +35,7 @@
     <module>org.tinygroup.order</module>
     <module>org.tinygroup.cache</module>
     <module>org.tinygroup.annotation</module>
+    <module>org.tinygroup.context2object</module>
+    <module>org.tinygroup.event</module>
  </modules>
 </project>
