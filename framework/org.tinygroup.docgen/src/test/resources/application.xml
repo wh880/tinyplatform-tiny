@@ -9,41 +9,6 @@
 			<!-- <class-path path="{TINY_WEBROOT}\WEB-INF\lib" /> 
 			 -->
 		</class-paths>
-		<!--忽略正则表达式列表，一般第三方包都应该添加到忽略列表，以便提升加载速度 -->
-		<skip-patterns>
-			<skip-pattern pattern="(.)*/geronimo-annotation_1.0_spec-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/jcs-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/spring-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/juel-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/mvel-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/jettison-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/ehcache-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/derby.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/aspectjweaver-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/commons-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/hibernate-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/persistence-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/jta-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/slf4j-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/concurrent-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/log4j-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/xstream-1\.4\.3\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/xmlpull-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/asm-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/cglib-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/ejb3-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/stax-api-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/javassist-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/antlr-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/velocity-1\.7\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/avalon-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/logkit-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/c3p0-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/dom4j-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/aopalliance-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/xpp3-.*\.jar"></skip-pattern>
-			<skip-pattern pattern="(.)*/xml-apis-.*\.jar"></skip-pattern>
-		</skip-patterns>
 		<full-context-file-finder>
 			<file ext-name="docpage" content-type="application/text" />
 			<file ext-name="xlspage" content-type="application/text" />

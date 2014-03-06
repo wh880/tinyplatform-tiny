@@ -31,4 +31,5 @@ public interface CustomSqlProcessor {
 
 	List<String> getCustomSqls(String type,String language);
 	void addCustomSqls(CustomSqls customsqls);
+	void removeCustomSqls(CustomSqls customsqls);
 }

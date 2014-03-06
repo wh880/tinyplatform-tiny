@@ -47,12 +47,28 @@ public class CustomSqlFileResolver extends AbstractFileProcessor {
 				.getBean(DataBaseUtil.CUSTOMESQL_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.DATABASE_XSTREAM);
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除customsql文件[{0}]",
+					fileObject.getAbsolutePath());
+			CustomSqls customsqls = (CustomSqls)caches.get(fileObject.getAbsolutePath());
+			if(customsqls!=null){
+				customSqlProcessor.removeCustomSqls(customsqls);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除customsql文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在加载customsql文件[{0}]",
 					fileObject.getAbsolutePath());
 			CustomSqls customsqls = (CustomSqls) stream.fromXML(fileObject
 					.getInputStream());
+			CustomSqls oldCustomsqls = (CustomSqls)caches.get(fileObject.getAbsolutePath());
+			if(oldCustomsqls!=null){
+				customSqlProcessor.removeCustomSqls(oldCustomsqls);
+			}
 			customSqlProcessor.addCustomSqls(customsqls);
+			caches.put(fileObject.getAbsolutePath(), customsqls);
 			logger.logMessage(LogLevel.INFO, "加载customsql文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}

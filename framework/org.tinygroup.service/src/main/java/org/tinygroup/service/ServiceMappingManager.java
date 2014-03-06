@@ -32,6 +32,8 @@ public interface ServiceMappingManager {
 
 	void addServiceMappings(ServiceViewMappings mappings);
 	
+	void removeServiceMappings(ServiceViewMappings mappings);
+	
 	void addServiceMapping(ServiceViewMapping mapping);
 
 	String getUrl(String serviceId);

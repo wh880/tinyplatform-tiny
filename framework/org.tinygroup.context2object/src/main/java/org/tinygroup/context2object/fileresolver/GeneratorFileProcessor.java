@@ -53,16 +53,52 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 		ClassNameObjectGenerator generator = SpringUtil
 				.getBean(CLASSNAME_OBJECT_GENERATOR_BEAN);
 		XStream stream = XStreamFactory.getXStream(CONTEXT2OBJECT_XSTREAM);
-		for (FileObject file : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "开始移除generator配置文件:{0}",
+					fileObject.getFileName());
+			GeneratorConfig config = (GeneratorConfig)caches.get(fileObject.getAbsolutePath());
+			if(config!=null){
+				removeConfig(config, generator);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除generator配置文件:{0}完成",
+					fileObject.getFileName());
+
+		}
+		for (FileObject file : changeList) {
 			logger.logMessage(LogLevel.INFO, "开始读取generator配置文件:{0}",
 					file.getFileName());
+			GeneratorConfig oldConfig=(GeneratorConfig)caches.get(file.getAbsolutePath());
+			if (oldConfig!=null) {
+				removeConfig(oldConfig, generator);
+			}
 			GeneratorConfig config = (GeneratorConfig) stream.fromXML(file
 					.getInputStream());
 			deal(config, generator);
+			caches.put(file.getAbsolutePath(), config);
 			logger.logMessage(LogLevel.INFO, "读取generator配置文件:{0}完成",
 					file.getFileName());
 
 		}
+	}
+
+	private void removeConfig(GeneratorConfig config,
+			ClassNameObjectGenerator generator) {
+		for (GeneratorConfigItem item : config.getTypeConverters()) {
+			logger.logMessage(LogLevel.INFO,
+					"处理TypeConverter,beanName:{0},className:{1}",
+					item.getBeanName(), item.getClassName());
+			TypeConverter o = (TypeConverter) deal(item);
+			generator.removeTypeConverter(o);
+		}
+		for (GeneratorConfigItem item : config.getTypeCreators()) {
+			logger.logMessage(LogLevel.INFO,
+					"处理TypeCreator,beanName:{0},className:{1}",
+					item.getBeanName(), item.getClassName());
+			TypeCreator o = (TypeCreator) deal(item);
+			generator.removeTypeCreator(o);
+		}
+		
 	}
 
 	private void deal(GeneratorConfig config, ClassNameObjectGenerator generator) {

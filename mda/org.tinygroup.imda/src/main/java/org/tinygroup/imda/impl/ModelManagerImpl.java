@@ -65,6 +65,10 @@ public class ModelManagerImpl implements ModelManager {
     public void addModelDefine(ModelDefine modelDefine) {
         container.addModelDefine(modelDefine);
     }
+    
+    public void removeModelDefine(ModelDefine modelDefine) {
+        container.removeModelDefine(modelDefine);
+    }
 
     public <T> T getModel(String modelId) {
         return (T) container.getModel(modelId);

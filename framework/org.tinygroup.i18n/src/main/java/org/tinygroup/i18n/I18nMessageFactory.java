@@ -33,6 +33,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tinygroup.commons.i18n.LocaleUtil;
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.format.FormatProvider;
 import org.tinygroup.format.Formater;
 import org.tinygroup.format.PatternDefine;
@@ -142,6 +143,13 @@ public final class I18nMessageFactory {
 			resourceMap.put(locale, propertiesList);
 		}
 		propertiesList.add(properties);
+	}
+	
+	public static void removeResource(Locale locale, Properties properties) {
+		List<Properties> propertiesList = resourceMap.get(locale);
+		if(!CollectionUtil.isEmpty(propertiesList)){
+			propertiesList.remove(properties);
+		}
 	}
 
 	public static String getMessage(String key) {

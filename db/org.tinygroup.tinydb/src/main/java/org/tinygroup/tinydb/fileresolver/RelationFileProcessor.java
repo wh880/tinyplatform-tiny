@@ -53,12 +53,28 @@ public class RelationFileProcessor  extends AbstractFileProcessor{
 		BeanOperatorManager manager=SpringUtil.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(BeanOperatorManager.XSTEAM_PACKAGE_NAME);
-		for (FileObject fileObject : fileObjects) {
-			logger.logMessage(LogLevel.DEBUG, "正在加载数据库关联配置文件[{0}]",
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除数据库关联配置文件[{0}]",
 					fileObject.getAbsolutePath());
+			Relations relations=(Relations)caches.get(fileObject.getAbsolutePath());
+			if(relations!=null){
+				manager.removeRelationConfigs(relations);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除数据库关联配置文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
+			logger.logMessage(LogLevel.INFO, "正在加载数据库关联配置文件[{0}]",
+					fileObject.getAbsolutePath());
+			Relations oldRelations=(Relations)caches.get(fileObject.getAbsolutePath());
+			if(oldRelations!=null){
+				manager.removeRelationConfigs(oldRelations);
+			}	
 			Relations relations=(Relations) stream.fromXML(fileObject.getInputStream());
 			manager.addRelationConfigs(relations);
-			logger.logMessage(LogLevel.DEBUG, "加载数据库关联配置文件[{0}]结束",
+			caches.put(fileObject.getAbsolutePath(), relations);
+			logger.logMessage(LogLevel.INFO, "加载数据库关联配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		

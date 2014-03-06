@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.initdata.InitData;
 import org.tinygroup.database.config.initdata.InitDatas;
@@ -104,6 +105,43 @@ public class InitDataProcessorImpl implements InitDataProcessor {
 			addInitData(initData);
 		}
 		logger.logMessage(LogLevel.DEBUG, "表格初始数据添加完毕");
+	}
+	
+	public void removeInitDatas(InitDatas initDatas) {
+		logger.logMessage(LogLevel.DEBUG, "开始添加表格初始数据");
+		if (initDatas == null || initDatas.getInitDataList() == null) {
+			logger.logMessage(LogLevel.DEBUG, "传入的初始数据为空，数据添加结束。");
+			return;
+		}
+		for (InitData initData : initDatas.getInitDataList()) {
+			removeInitData(initData);
+		}
+		logger.logMessage(LogLevel.DEBUG, "表格初始数据添加完毕");
+	}
+	
+	/**
+	 * 添加初始化sql
+	 * 
+	 * @param initData
+	 */
+	private void removeInitData(InitData initData) {
+		String packageName = MetadataUtil.passNull(initData.getPackageName());
+		String tableId = MetadataUtil.passNull(initData.getTableId());
+		String tableName = DataBaseUtil.getTableById(tableId).getName();
+		logger.logMessage(LogLevel.DEBUG, "开始移除表格[包:{0},表名:{1},表ID:{2}]的初始化数据",
+				packageName, tableName, tableId);
+
+		Map<String, InitData> packageInitDataMap = initDatasNameMap
+				.get(packageName);
+		if(!CollectionUtil.isEmpty(packageInitDataMap)){
+			InitData tableInitData = packageInitDataMap.get(tableName);
+			if(tableInitData!=null){
+				tableInitData.getRecordList().removeAll(initData.getRecordList());
+			}
+		}
+		initDatasIdMap.remove(tableId);
+		logger.logMessage(LogLevel.DEBUG, "移除表格[包:{0},表名:{1},表ID:{2}]的初始化数据完毕",
+				packageName, tableName, tableId);
 	}
 
 	/**

@@ -154,6 +154,14 @@ public interface BeanOperatorManager {
 	 * @param relations
 	 */
 	void addRelationConfigs(Relations relations);
+	
+	/**
+	 * 
+	 * 移除数据库表关联关系
+	 * @param relations
+	 */
+	void removeRelationConfigs(Relations relations);
+	
 	/**
 	 * 
 	 * 获取关联描述信息

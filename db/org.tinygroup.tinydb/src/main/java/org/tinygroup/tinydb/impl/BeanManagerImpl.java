@@ -370,6 +370,13 @@ public class BeanManagerImpl implements BeanOperatorManager {
 		}
 	}
 	
+	public void removeRelationConfigs(Relations relations) {
+		for (Relation relation : relations.getRelations()) {
+			relationIdMap.remove(relation.getId());
+			relationTypeMap.remove(relation.getType());
+		}
+	}
+	
 	public Relation getRelationById(String id) {
 		return relationIdMap.get(id);
 	}

@@ -31,6 +31,7 @@ import org.tinygroup.database.config.view.Views;
 public interface ViewProcessor {
 
 	void addViews(Views views);
+	void removeViews(Views views);
 	View getView(String name);
 	List<View> getViews();
 	String getCreateSql(String name, String language);

@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.Tables;
@@ -52,6 +53,16 @@ public class TableProcessorImpl implements TableProcessor {
 		}
 	}
 	
+	public void removeTables(Tables tables) {
+		String packageName = MetadataUtil.passNull(tables.getPackageName());
+		Map<String, Table> nameMap = tableMap.get(packageName);
+		if(!CollectionUtil.isEmpty(nameMap)){
+			for (Table table : tables.getTableList()) {
+				nameMap.remove(table.getName());
+			}
+		}
+	}
+	
 	public void addTable(Table table) {
 		String packageName = MetadataUtil.passNull(table.getPackageName());
 		if(!tableMap.containsKey(packageName)){
@@ -59,6 +70,14 @@ public class TableProcessorImpl implements TableProcessor {
 		}
 		Map<String, Table> nameMap = tableMap.get(packageName);
 	    nameMap.put(table.getName(), table);
+	}
+	
+	public void removeTable(Table table) {
+		String packageName = MetadataUtil.passNull(table.getPackageName());
+		Map<String, Table> nameMap = tableMap.get(packageName);
+		if(!CollectionUtil.isEmpty(nameMap)){
+			nameMap.remove(table.getName());
+		}
 	}
 
 	public Table getTable(String packageName, String name) {

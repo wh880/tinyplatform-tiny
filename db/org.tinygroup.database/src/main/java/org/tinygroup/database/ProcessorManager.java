@@ -30,4 +30,6 @@ public interface ProcessorManager {
 	Object getProcessor(String language,String name);
 	
 	void addPocessors(Processors processors);
+	
+	void removePocessors(Processors processors);
 }

@@ -36,6 +36,8 @@ public interface ExpressionManager {
 	
 	public void addExpressions(ExpressionConfigs expressions);
 	
+	public void removeExpressions(ExpressionConfigs expressions);
+	
 	public SqlExpression getExpression(String expressionId);
 
 }

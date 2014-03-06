@@ -494,7 +494,7 @@ public class ShardModeSameSchemaTest extends TestCase {
 		st.executeUpdate("insert into student(id,tId,name,age) values(6,3,'s6',16)");
 	}
 
-	private void close(Connection conn, Statement st, ResultSet rs) {
+	public void close(Connection conn, Statement st, ResultSet rs) {
 		if (conn != null) {
 			try {
 				conn.close();

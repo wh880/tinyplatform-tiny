@@ -66,6 +66,24 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 	private void process(FileObject fileObject) {
 		logger.logMessage(LogLevel.INFO, "找到国际化资源配置文件[{0}]，并开始加载...",
 				fileObject.getAbsolutePath());
+		Locale locale = getLocale(fileObject);
+		Properties oldpProperties=(Properties) caches.get(fileObject.getAbsolutePath());
+		if(oldpProperties!=null){
+			I18nMessageFactory.removeResource(locale, oldpProperties);
+		}
+		try {
+			Properties properties = new Properties();
+			properties.load(fileObject.getInputStream());
+			I18nMessageFactory.addResource(locale, properties);
+			caches.put(fileObject.getAbsolutePath(), properties);
+			logger.logMessage(LogLevel.INFO, "国际化资源配置文件[{0}]，加载完毕。",
+					fileObject.getAbsolutePath());
+		} catch (Exception e) {
+			logger.errorMessage("载入资源文件[{}]出错！", e, fileObject.getAbsolutePath());
+		}
+	}
+
+	private Locale getLocale(FileObject fileObject) {
 		String baseName = fileObject.getFileName();
 		int start = baseName.indexOf("_") + 1;
 		int end = baseName.length() - PROPERTIES_FILE_EXTENSION.length() ;
@@ -82,20 +100,24 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 				locale = new Locale(loc[0]);
 			}
 		}
-		Properties properties = new Properties();
-		try {
-			properties.load(fileObject.getInputStream());
-			I18nMessageFactory.addResource(locale, properties);
-			logger.logMessage(LogLevel.INFO, "国际化资源配置文件[{0}]，加载完毕。",
-					fileObject.getAbsolutePath());
-		} catch (Exception e) {
-			logger.errorMessage("载入资源文件[{}]出错！", e, fileObject.getAbsolutePath());
-		}
+		return locale;
 	}
 
 	public void process() {
-		I18nMessageFactory.cleanResource();
-		for (FileObject fileObject : fileObjects) {
+		
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "开始移除国际化资源配置文件[{0}]",
+					fileObject.getAbsolutePath());
+			Locale locale = getLocale(fileObject);
+			Properties properties =(Properties) caches.get(fileObject.getAbsolutePath());
+			if(properties!=null){
+				I18nMessageFactory.removeResource(locale, properties);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除国际化资源配置文件[{0}],完成",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			process(fileObject);
 		}
 	}

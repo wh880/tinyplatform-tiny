@@ -28,7 +28,8 @@ import org.tinygroup.metadata.config.stdfield.StandardFields;
 
 public interface StandardFieldProcessor {
 	void addStandardFields(StandardFields standardFields);
-
+	
+	void removeStandardFields(StandardFields standardFields);
 
 	String getType(String id, String language);
 

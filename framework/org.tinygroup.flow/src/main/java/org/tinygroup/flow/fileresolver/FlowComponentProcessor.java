@@ -51,22 +51,33 @@ public class FlowComponentProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(FLOW_COMPONENT_EXT_FILENAME);
 	}
 
-
 	public void process() {
 		FlowExecutor flowExecutor = SpringUtil.getBean(FlowExecutor.FLOW_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(FlowExecutor.FLOW_XSTREAM_PACKAGENAME);
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在删除逻辑组件fc文件[{0}]",
+					fileObject.getAbsolutePath());
+			ComponentDefines components = (ComponentDefines) caches
+					.get(fileObject.getAbsolutePath());
+			if (components != null) {
+				flowExecutor.removeComponents(components);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "删除逻辑组件fc文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在读取逻辑组件fc文件[{0}]",
 					fileObject.getAbsolutePath());
-			try {
-				ComponentDefines components = (ComponentDefines) stream
-						.fromXML(fileObject.getInputStream());
-				flowExecutor.addComponents(components);
-			} catch (Exception e) {
-				logger.errorMessage("读取逻辑组件fc文件[{0}]出错", e,fileObject.getAbsolutePath());
+			ComponentDefines oldDefines=(ComponentDefines)caches.get(fileObject.getAbsolutePath());
+			if(oldDefines!=null){
+				flowExecutor.removeComponents(oldDefines);
 			}
-
+			ComponentDefines components = (ComponentDefines) stream
+					.fromXML(fileObject.getInputStream());
+			flowExecutor.addComponents(components);
+			caches.put(fileObject.getAbsolutePath(), components);
 			logger.logMessage(LogLevel.INFO, "读取逻辑组件fc文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}

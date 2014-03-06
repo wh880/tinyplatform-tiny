@@ -55,13 +55,29 @@ public class ModelDefineFileProcessor extends AbstractFileProcessor {
 
 	public void process() {
 		XStream xStream = XStreamFactory.getXStream(IMDA_DOMAIN);
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除ModelDefine描述文件：[{}]",
+					fileObject.getAbsolutePath());
+			ModelDefine modelDefine = (ModelDefine)caches.get(fileObject.getAbsolutePath());
+			if(modelDefine!=null){
+				manager.removeModelDefine(modelDefine);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "ModelDefine描述文件：[{}]移除成功。",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			try {
 				logger.logMessage(LogLevel.INFO, "正在加载ModelDefine描述文件：[{}]",
 						fileObject.getAbsolutePath());
+				ModelDefine oldModelDefine = (ModelDefine)caches.get(fileObject.getAbsolutePath());
+				if(oldModelDefine!=null){
+					manager.removeModelDefine(oldModelDefine);
+				}
 				ModelDefine modelDefine = (ModelDefine) xStream
 						.fromXML(fileObject.getInputStream());
 				manager.addModelDefine(modelDefine);
+				caches.put(fileObject.getAbsolutePath(), modelDefine);
 				logger.logMessage(LogLevel.INFO, "ModelDefine描述文件：[{}]加载成功。",
 						fileObject.getAbsolutePath());
 			} catch (Exception e) {

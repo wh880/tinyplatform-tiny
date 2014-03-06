@@ -182,19 +182,4 @@ public class UIComponent {
         this.jsCodelet = jsCodelet;
     }
 
-
-
-    public int hashCode() {
-        return name.hashCode();
-    }
-
-
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        return name.equals(obj.toString());
-    }
-
-
 }

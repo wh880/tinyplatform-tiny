@@ -39,6 +39,12 @@ public class ServiceMappingManagerImpl implements ServiceMappingManager {
 			urlMapping.put(mapping.getServiceId(), mapping.getPath());
 		}
 	}
+	
+	public void removeServiceMappings(ServiceViewMappings mappings) {
+		for (ServiceViewMapping mapping : mappings.getServiceViewMappings()) {
+			urlMapping.remove(mapping.getServiceId());
+		}
+	}
 
 	public String getUrl(String serviceId) {
 		return urlMapping.get(serviceId);

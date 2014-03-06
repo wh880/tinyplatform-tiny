@@ -38,8 +38,8 @@ public class ModelTest extends TestCase {
 	}
 
 	public void testModel(){
-//		FastModelDealer dealer=FastModelDealer.getInstance();
-//		dealer.find("C://out",null);
+		FastModelDealer dealer=FastModelDealer.getInstance();
+		dealer.find("C://out",null);
 	}
 	
 	

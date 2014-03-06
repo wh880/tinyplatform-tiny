@@ -47,18 +47,30 @@ public class ConstantFileResolver extends AbstractFileProcessor {
 				.getBean(MetadataUtil.CONSTANTPROCESSOR_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除const文件[{0}]",
+					fileObject.getAbsolutePath());
+			Constants constants = (Constants) caches.get(fileObject
+					.getAbsolutePath());
+			if (constants != null) {
+				constantProcessor.removeConstants(constants);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除const文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在加载const文件[{0}]",
 					fileObject.getAbsolutePath());
-			try {
-				Constants constants = (Constants) stream.fromXML(fileObject
-						.getInputStream());
-				constantProcessor.addConstants(constants);
-			} catch (Exception e) {
-				logger.errorMessage("加载const文件[{0}]出错", e,
-						fileObject.getAbsolutePath());
+			Constants oldConstants = (Constants) caches.get(fileObject
+					.getAbsolutePath());
+			if (oldConstants != null) {
+				constantProcessor.removeConstants(oldConstants);
 			}
-
+			Constants constants = (Constants) stream.fromXML(fileObject
+					.getInputStream());
+			constantProcessor.addConstants(constants);
+			caches.put(fileObject.getAbsolutePath(), constants);
 			logger.logMessage(LogLevel.INFO, "加载const文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}

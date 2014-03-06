@@ -26,7 +26,9 @@ package org.tinygroup.weblayer.configmanager;
 import static org.tinygroup.logger.LogLevel.INFO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.tinygroup.commons.tools.FileUtil;
 import org.tinygroup.config.Configuration;
@@ -47,7 +49,8 @@ public class TinyFiterConfigManager implements Configuration {
     public static final String TINY_FILTER_CONFIGMANAGER = "tinyFilterConfigManager";
     private static final String TINY_FILTER_NODE_PATH = "/application/tiny-filters";
 
-    private List<XmlNode> configs = new ArrayList<XmlNode>();
+    
+    private Map<String, XmlNode> configMap=new HashMap<String, XmlNode>();
 
     private XmlNode applicationConfig;
     private XmlNode componentConfig;
@@ -62,20 +65,28 @@ public class TinyFiterConfigManager implements Configuration {
             String content = FileUtil.readStreamContent(fileObject.getInputStream(), "UTF-8");
             logger.logMessage(INFO, "tiny-filter处理器配置文件<{0}>加载完成。.", filePath);
             XmlNode root = new XmlStringParser().parse(content).getRoot();
-            configs.add(root);
+            configMap.put(filePath, root);
+            
         } catch (Exception e) {
             logger.errorMessage("载入tiny-filter配置文件<{}>时发生异常", e, filePath);
             throw new RuntimeException(e);
         }
 
     }
-
+    
+    public void removeConfig(FileObject fileObject) {
+        String filePath = fileObject.getPath();
+        configMap.remove(filePath);
+    }
+    
     public XmlNode getApplicationConfig() {
         return applicationConfig;
     }
 
     public List<XmlNode> getConfigs() {
-        return configs;
+    	List<XmlNode> xmlNodes=new ArrayList<XmlNode>();
+    	xmlNodes.addAll(configMap.values());
+        return	xmlNodes;
     }
 
     public String getApplicationNodePath() {

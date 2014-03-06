@@ -89,6 +89,13 @@ public class ConstantsProcessorImpl implements ConstantProcessor {
 			}
 		}
 	}
+	public void removeConstants(Constants constants) {
+		if (constants != null && constants.getConstantList() != null) {
+			for (Constant c : constants.getConstantList()) {
+				constantsMap.remove(c.getId());
+			}
+		}
+	}
 
 	private String getValue(String id) {
 		if (constantsMap.containsKey(id))
@@ -212,5 +219,6 @@ public class ConstantsProcessorImpl implements ConstantProcessor {
 	// public String getStringValue(String name) {
 	// return getValue(null, name);
 	// }
+
 
 }

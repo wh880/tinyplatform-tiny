@@ -53,11 +53,27 @@ public class ExpressionFileProcesor extends AbstractFileProcessor {
 	
 		XStream stream = XStreamFactory.getXStream("entities");
 		ExpressionManager manager=SpringUtil.getBean(ExpressionManager.MANAGER_BEAN_NAME);
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.DEBUG, "正在移除表达式配置文件[{0}]",
+					fileObject.getAbsolutePath());
+			ExpressionConfigs expressions=(ExpressionConfigs)caches.get(fileObject.getAbsolutePath());
+			if(expressions!=null){
+				manager.removeExpressions(expressions);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.DEBUG, "移除表达式配置文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.DEBUG, "正在加载表达式配置文件[{0}]",
 					fileObject.getAbsolutePath());
+			ExpressionConfigs oldExpressionConfigs=(ExpressionConfigs)caches.get(fileObject.getAbsolutePath());
+			if(oldExpressionConfigs!=null){
+				manager.removeExpressions(oldExpressionConfigs);
+			}
 			ExpressionConfigs expressions=(ExpressionConfigs) stream.fromXML(fileObject.getInputStream());
 			manager.addExpressions(expressions);
+			caches.put(fileObject.getAbsolutePath(), expressions);
 			logger.logMessage(LogLevel.DEBUG, "加载表达式配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}

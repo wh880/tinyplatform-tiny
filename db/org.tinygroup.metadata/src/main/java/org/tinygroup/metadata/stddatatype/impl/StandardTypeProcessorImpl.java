@@ -71,6 +71,16 @@ public class StandardTypeProcessorImpl implements StandardTypeProcessor {
 			}
 		}
 	}
+	
+	public void removeStandardTypes(StandardTypes standardTypes) {
+		if (standardTypes != null
+				&& standardTypes.getStandardTypeList() != null) {
+			for (StandardType standardType : standardTypes
+					.getStandardTypeList()) {
+				standardMap.remove(standardType.getId());
+			}
+		}
+	}
 
 	public StandardType getStandardType(String id) {
 		if(standardMap.containsKey(id))

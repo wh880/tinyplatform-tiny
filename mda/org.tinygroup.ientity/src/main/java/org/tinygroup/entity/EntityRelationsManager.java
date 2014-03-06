@@ -45,6 +45,13 @@ public interface EntityRelationsManager {
 	 */
 	void addEntityRelations(EntityRelations relations);
 	
+	/**
+	 * 
+	 * 移除实体关联配置信息
+	 * @param relations
+	 */
+	void removeEntityRelations(EntityRelations relations);
+	
     /**
      * 
      * 根据实体关联id获取关联实体对象

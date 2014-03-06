@@ -50,6 +50,13 @@ public class ValidatorMapStorageImpl implements ValidatorMapStorage {
 							.getValidatorClassName()));
 		}
 	}
+	
+	public void removeValidators(Validators validators) {
+		for (org.tinygroup.validate.config.Validator validator : validators
+				.getValidatorList()) {
+			validateMap.remove(validator.getAnnotaionClassName());
+		}
+	}
 
 	public Validator getValidator(String mapName) {
 		return validateMap.get(mapName);

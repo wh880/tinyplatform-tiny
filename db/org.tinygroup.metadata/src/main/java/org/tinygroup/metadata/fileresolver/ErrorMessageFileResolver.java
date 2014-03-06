@@ -47,18 +47,29 @@ public class ErrorMessageFileResolver extends AbstractFileProcessor {
 				.getBean(MetadataUtil.ERRORMESSAGEPROCESSOR_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除error文件[{0}]",
+					fileObject.getAbsolutePath());
+			ErrorMessages errorMessages = (ErrorMessages) caches.get(fileObject
+					.getAbsolutePath());
+			if (errorMessages != null) {
+				errorMessageProcessor.removeErrorMessages(errorMessages);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除error文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在加载error文件[{0}]",
 					fileObject.getAbsolutePath());
-			try {
-				ErrorMessages errorMessages = (ErrorMessages) stream
-						.fromXML(fileObject.getInputStream());
-				errorMessageProcessor.addErrorMessages(errorMessages);
-			} catch (Exception e) {
-				logger.errorMessage("加载error文件[{0}]出错", e,
-						fileObject.getAbsolutePath());
+			ErrorMessages oldErrorMessages=(ErrorMessages)caches.get(fileObject.getAbsolutePath());
+			if(oldErrorMessages!=null){
+				errorMessageProcessor.removeErrorMessages(oldErrorMessages);
 			}
-
+			ErrorMessages errorMessages = (ErrorMessages) stream
+					.fromXML(fileObject.getInputStream());
+			errorMessageProcessor.addErrorMessages(errorMessages);
+			caches.put(fileObject.getAbsolutePath(), errorMessages);
 			logger.logMessage(LogLevel.INFO, "加载error文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}

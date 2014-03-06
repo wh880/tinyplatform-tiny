@@ -23,8 +23,8 @@
  */
 package org.tinygroup.docgen.fileresolver;
 
-import org.tinygroup.docgen.DocumentGeneraterManager;
 import org.tinygroup.docgen.DocumentGenerater;
+import org.tinygroup.docgen.DocumentGeneraterManager;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.springutil.SpringUtil;
@@ -45,6 +45,8 @@ public class TemplateFileProcessor extends AbstractFileProcessor {
 	 * 文档类型，由bean注入
 	 */
 	private String documentType;
+	
+	private DocumentGenerater generate;
 
 	public String getFileExtName() {
 		return fileExtName;
@@ -61,19 +63,38 @@ public class TemplateFileProcessor extends AbstractFileProcessor {
 	public void setDocumentType(String docType) {
 		this.documentType = docType;
 	}
+	
+	public DocumentGenerater getGenerate() {
+		return generate;
+	}
+
+	public void setGenerate(DocumentGenerater generate) {
+		this.generate = generate;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(fileExtName);
 	}
 
 	public void process() {
-		DocumentGenerater generate = SpringUtil
-				.getBean(DocumentGenerater.DOCUMENT_GENERATE_BEAN_NAME);// 多实例
-		for (FileObject fileObject : fileObjects) {
-			logger.logMessage(LogLevel.DEBUG, "正在加载文档模板宏配置文件[{0}]",
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除文档模板宏配置文件[{0}]",
 					fileObject.getAbsolutePath());
+			generate.removeMacroFile(fileObject);
+			caches.remove(fileObject.getAbsolutePath());
+			logger.logMessage(LogLevel.INFO, "移除文档模板宏配置文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
+			logger.logMessage(LogLevel.INFO, "正在加载文档模板宏配置文件[{0}]",
+					fileObject.getAbsolutePath());
+			FileObject oldFileObject=(FileObject) caches.get(fileObject.getAbsolutePath());
+			if(oldFileObject!=null){
+				generate.removeMacroFile(oldFileObject);
+			}
 			generate.addMacroFile(fileObject);
-			logger.logMessage(LogLevel.DEBUG, "加载文档模板宏配置文件[{0}]结束",
+			caches.put(fileObject.getAbsolutePath(), fileObject);
+			logger.logMessage(LogLevel.INFO, "加载文档模板宏配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		DocumentGeneraterManager manager = SpringUtil

@@ -77,10 +77,16 @@
 	<!--fiter\servlet manager -->
 	<bean id="tinyProcessorManager" scope="singleton"
 		class="org.tinygroup.weblayer.impl.TinyProcessorManagerImpl">
+		<property name="configManager">
+		  <ref bean="tinyProcessorConfigManager"/>
+		</property>
 	</bean>
 
 	<bean id="tinyFilterManager" scope="singleton"
 		class="org.tinygroup.weblayer.impl.TinyFilterManagerImpl">
+		<property name="configManager">
+		  <ref bean="tinyFilterConfigManager"/>
+		</property>
 	</bean>
 	<!--tiny filter -->
 	<bean id="basicTinyFilter" scope="singleton"

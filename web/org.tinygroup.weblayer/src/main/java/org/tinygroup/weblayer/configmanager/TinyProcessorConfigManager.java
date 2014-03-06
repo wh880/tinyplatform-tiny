@@ -26,7 +26,9 @@ package org.tinygroup.weblayer.configmanager;
 import static org.tinygroup.logger.LogLevel.INFO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.tinygroup.commons.tools.FileUtil;
 import org.tinygroup.config.Configuration;
@@ -36,56 +38,57 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
-
 /**
  * tiny processor处理器配置管理对象
+ * 
  * @author renhui
- *
+ * 
  */
 public class TinyProcessorConfigManager implements Configuration {
-	
-    public static final String TINY_PROCESSOR_CONFIGMANAGER = "tinyProcessorConfigManager";
-    
-    private static final String TINY_PROCESSOR_NODE_PATH="/application/tiny-processors";
 
+	public static final String TINY_PROCESSOR_CONFIGMANAGER = "tinyProcessorConfigManager";
 
-	private List<XmlNode> configs=new ArrayList<XmlNode>();
-	
+	private static final String TINY_PROCESSOR_NODE_PATH = "/application/tiny-processors";
+
+	private Map<String, XmlNode> configMap = new HashMap<String, XmlNode>();
+
 	private XmlNode applicationConfig;
-	
+
 	private XmlNode componentConfig;
-	 
+
 	private static Logger logger = LoggerFactory
-		.getLogger(TinyProcessorConfigManager.class);
+			.getLogger(TinyProcessorConfigManager.class);
+
+	public void addConfig(FileObject fileObject) {
+		String filePath = fileObject.getPath();
+		logger.logMessage(INFO, "正在加载tiny-processor处理器配置文件[{0}] ....", filePath);
+		try {
+
+			String content = FileUtil.readStreamContent(
+					fileObject.getInputStream(), "UTF-8");
+			logger.logMessage(INFO, "tiny-processor处理器配置文件<{0}>加载完成。.",
+					filePath);
+			XmlNode root = new XmlStringParser().parse(content).getRoot();
+			configMap.put(filePath, root);
+		} catch (Exception e) {
+			logger.errorMessage("载入tiny-processor配置文件<{}>时发生异常", e, filePath);
+			throw new RuntimeException(e);
+		}
+	}
 	
-	 
-	 public void  addConfig(FileObject fileObject){
-		 String filePath=fileObject.getPath();
-		 logger.logMessage(INFO, "正在加载tiny-processor处理器配置文件[{0}] ....",filePath
-					);
-			try {
+	public void removeConfig(FileObject fileObject) {
+        String filePath = fileObject.getPath();
+        configMap.remove(filePath);
+    }
 
-				String content = FileUtil.readStreamContent(fileObject.getInputStream(),"UTF-8");
-				logger.logMessage(INFO, "tiny-processor处理器配置文件<{0}>加载完成。.",
-						filePath);
-				XmlNode root = new XmlStringParser().parse(content)
-						.getRoot();
-				configs.add(root);
-			} catch (Exception e) {
-				logger.errorMessage("载入tiny-processor配置文件<{}>时发生异常", e,
-						filePath);
-				throw new RuntimeException(e);
-			}
-		 
-	 }
-	 
-
-	public XmlNode getApplicationConfig(){
+	public XmlNode getApplicationConfig() {
 		return applicationConfig;
 	}
 
 	public List<XmlNode> getConfigs() {
-		return configs;
+		List<XmlNode> xmlNodes=new ArrayList<XmlNode>();
+    	xmlNodes.addAll(configMap.values());
+        return	xmlNodes;
 	}
 
 	public String getApplicationNodePath() {
@@ -104,8 +107,5 @@ public class TinyProcessorConfigManager implements Configuration {
 	public XmlNode getComponentConfig() {
 		return componentConfig;
 	}
-   
-	
-	
-	
+
 }

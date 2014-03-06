@@ -54,13 +54,29 @@ public class EntityRelationsFileProcessor extends AbstractFileProcessor {
 		
 		XStream xStream = XStreamFactory.getXStream("entities");
 		EntityRelationsManager manager=SpringUtil.getBean(EntityRelationsManager.MANAGER_BEAN_NAME);
-		for (FileObject fileObject : fileObjects) {
-				logger.logMessage(LogLevel.INFO, "正在加载EntityRelation描述文件：[{}]",
-						fileObject.getAbsolutePath());
-				EntityRelations entityRelations = (EntityRelations) xStream
-						.fromXML(fileObject.getInputStream());
-				manager.addEntityRelations(entityRelations);
-				logger.logMessage(LogLevel.INFO, "EntityRelation描述文件：[{}]加载成功。",
+		for (FileObject fileObject  : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除EntityRelation描述文件：[{}]",
+					fileObject.getAbsolutePath());
+			EntityRelations entityRelations = (EntityRelations)caches.get(fileObject.getAbsolutePath());
+			if(entityRelations!=null){
+				manager.removeEntityRelations(entityRelations);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "EntityRelation描述文件：[{}]移除成功。",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
+			logger.logMessage(LogLevel.INFO, "正在加载EntityRelation描述文件：[{}]",
+					fileObject.getAbsolutePath());
+			EntityRelations oldRelations=(EntityRelations)caches.get(fileObject.getAbsolutePath());
+			if(oldRelations!=null){
+				manager.removeEntityRelations(oldRelations);
+			}
+			EntityRelations entityRelations = (EntityRelations) xStream
+					.fromXML(fileObject.getInputStream());
+			manager.addEntityRelations(entityRelations);
+			caches.put(fileObject.getAbsolutePath(), entityRelations);
+			logger.logMessage(LogLevel.INFO, "EntityRelation描述文件：[{}]加载成功。",
 						fileObject.getAbsolutePath());
 			
 		}

@@ -51,6 +51,13 @@ public interface ObjectGenerator<ReturnType, ParaType> {
 	 * @param typeConverter
 	 */
 	void addTypeConverter(TypeConverter<?, ?> typeConverter);
+	
+	/**
+	 * 移除类型转换器
+	 * 
+	 * @param typeConverter
+	 */
+	void removeTypeConverter(TypeConverter<?, ?> typeConverter);
 
 	/**
 	 * 添加类型创建器
@@ -58,5 +65,12 @@ public interface ObjectGenerator<ReturnType, ParaType> {
 	 * @param typeCreator
 	 */
 	void addTypeCreator(TypeCreator<?> typeCreator);
+	
+	/**
+	 * 移除类型创建器
+	 * 
+	 * @param typeCreator
+	 */
+	void removeTypeCreator(TypeCreator<?> typeCreator);
 
 }

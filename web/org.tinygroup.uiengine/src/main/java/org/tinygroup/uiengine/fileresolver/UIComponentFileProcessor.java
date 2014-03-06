@@ -60,6 +60,7 @@ public class UIComponentFileProcessor extends AbstractFileProcessor {
 			UIComponents uiComponents = (UIComponents) caches.get(fileObject.getAbsolutePath());
 			if(uiComponents!=null){
 				manager.removeUIComponents(uiComponents);
+				caches.remove(fileObject.getAbsolutePath());
 			}
 			logger.logMessage(LogLevel.INFO, "移除uicomponent文件[{0}]结束",
 					fileObject.getAbsolutePath());
@@ -67,6 +68,10 @@ public class UIComponentFileProcessor extends AbstractFileProcessor {
 		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在加载uicomponent文件[{0}]",
 					fileObject.getAbsolutePath());
+			UIComponents oldUiComponents = (UIComponents) caches.get(fileObject.getAbsolutePath());
+			if(oldUiComponents!=null){
+				manager.removeUIComponents(oldUiComponents);
+			}	
 			UIComponents uiComponents = (UIComponents) stream
 					.fromXML(fileObject.getInputStream());
 			manager.addUIComponents(uiComponents);

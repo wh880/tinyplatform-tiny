@@ -39,5 +39,7 @@ public interface StandardTypeProcessor {
 
 	void addStandardTypes(StandardTypes standardTypes);
 	
+	void removeStandardTypes(StandardTypes standardTypes);
+	
 	StandardType getStandardType(String id);
 }

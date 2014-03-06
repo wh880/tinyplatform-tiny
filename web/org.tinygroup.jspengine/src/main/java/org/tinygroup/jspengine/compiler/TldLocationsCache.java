@@ -615,7 +615,7 @@ public class TldLocationsCache {
 
 	private void scanFileObjects() throws Exception {
 		List<FileObject> fileObjects = TldFileManager.getInstance()
-				.getFileObjects();
+				.getTldFiles();
 
 		for (FileObject fileObject : fileObjects) {
 			InputStream stream=fileObject.getInputStream();

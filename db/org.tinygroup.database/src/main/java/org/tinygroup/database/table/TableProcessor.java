@@ -40,7 +40,11 @@ public interface TableProcessor {
 
 	void addTables(Tables tables);
 	
+	void removeTables(Tables tables);
+	
 	void addTable(Table table);
+	
+	void removeTable(Table table);
 
 	Table getTable(String packageName, String name);
 

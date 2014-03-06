@@ -46,18 +46,29 @@ public class BusinessTypeFileResolver extends AbstractFileProcessor {
 				.getBean(MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除bizdatatype文件[{0}]",
+					fileObject.getAbsolutePath());
+			BusinessTypes businessTypes = (BusinessTypes) caches.get(fileObject
+					.getAbsolutePath());
+			if (businessTypes != null) {
+				businessTypeProcessor.removeBusinessTypes(businessTypes);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除bizdatatype文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在加载bizdatatype文件[{0}]",
 					fileObject.getAbsolutePath());
-			try {
-				BusinessTypes businessTypes = (BusinessTypes) stream
-						.fromXML(fileObject.getInputStream());
-				businessTypeProcessor.addBusinessTypes(businessTypes);
-			} catch (Exception e) {
-				logger.errorMessage("加载bizdatatype文件[{0}]出错", e,
-						fileObject.getAbsolutePath());
+			BusinessTypes oldBusinessTypes=(BusinessTypes) caches.get(fileObject.getAbsolutePath());
+			if(oldBusinessTypes!=null){
+				businessTypeProcessor.removeBusinessTypes(oldBusinessTypes);
 			}
-
+			BusinessTypes businessTypes = (BusinessTypes) stream
+					.fromXML(fileObject.getInputStream());
+			businessTypeProcessor.addBusinessTypes(businessTypes);
+			caches.put(fileObject.getAbsolutePath(), businessTypes);
 			logger.logMessage(LogLevel.INFO, "加载bizdatatype文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}

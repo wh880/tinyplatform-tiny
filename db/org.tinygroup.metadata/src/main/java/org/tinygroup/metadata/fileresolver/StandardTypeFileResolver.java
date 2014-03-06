@@ -47,18 +47,28 @@ public class StandardTypeFileResolver extends AbstractFileProcessor {
 				.getBean(MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除datatype文件[{0}]",
+					fileObject.getAbsolutePath());
+			StandardTypes standardTypes = (StandardTypes)caches.get(fileObject.getAbsolutePath());
+			if (standardTypes!=null) {
+				standardDataTypeProcessor.removeStandardTypes(standardTypes);
+			    caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除datatype文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在加载datatype文件[{0}]",
 					fileObject.getAbsolutePath());
-			try {
-				StandardTypes standardTypes = (StandardTypes) stream
-						.fromXML(fileObject.getInputStream());
-				standardDataTypeProcessor.addStandardTypes(standardTypes);
-			} catch (Exception e) {
-				logger.errorMessage("加载datatype文件[{0}]出错", e,
-						fileObject.getAbsolutePath());
+			StandardTypes oldStandardTypes = (StandardTypes)caches.get(fileObject.getAbsolutePath());
+			if (oldStandardTypes!=null) {
+				standardDataTypeProcessor.removeStandardTypes(oldStandardTypes);
 			}
-
+			StandardTypes standardTypes = (StandardTypes) stream
+					.fromXML(fileObject.getInputStream());
+			standardDataTypeProcessor.addStandardTypes(standardTypes);
+			caches.put(fileObject.getAbsolutePath(), standardTypes);
 			logger.logMessage(LogLevel.INFO, "加载datatype文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}

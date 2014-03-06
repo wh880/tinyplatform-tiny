@@ -52,6 +52,16 @@ public class ExpressionManagerImpl implements ExpressionManager {
 		
 		
 	}
+	
+	public void removeExpressions(ExpressionConfigs expressions) {
+
+		List<SqlExpression> expressionList=expressions.getExpressions();
+		for (SqlExpression expression : expressionList) {
+			expressionMap.remove(expression.getExpressionId());
+		}
+		
+		
+	}
 
 	public SqlExpression getExpression(String expressionId) {
 		return expressionMap.get(expressionId);

@@ -39,6 +39,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang.ArrayUtils;
 
 /**
  * 方便创建容器对象的工具。
@@ -304,7 +305,7 @@ public final class CollectionUtil {
 
 	public static String[] toNoNullStringArray(Collection collection) {
         if (collection == null) {
-            return new String[0];
+            return ArrayUtils.EMPTY_STRING_ARRAY;
         }
         return toNoNullStringArray(collection.toArray());
     }
@@ -317,7 +318,7 @@ public final class CollectionUtil {
                 list.add(e.toString());
             }
         }
-        return (String[]) list.toArray(new String[0]);
+        return (String[]) list.toArray(ArrayUtils.EMPTY_STRING_ARRAY);
     }
 	
 }

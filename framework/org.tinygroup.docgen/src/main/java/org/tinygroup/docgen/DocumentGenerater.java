@@ -75,4 +75,13 @@ public interface DocumentGenerater {
 	 *            宏模板文件
 	 */
 	void addMacroFile(FileObject fileObject);
+	
+	/**
+	 * 
+	 * 移除宏文件模板
+	 * 
+	 * @param fileObject
+	 *            宏模板文件
+	 */
+	void removeMacroFile(FileObject fileObject);
 }

@@ -64,6 +64,11 @@ public class DocumentGeneraterImpl implements DocumentGenerater {
 	public void addMacroFile(FileObject fileObject) {
 		documentGeneraterVelocityHelper.addMacroFile(fileObject);
 	}
+	
+	public void removeMacroFile(FileObject fileObject) {
+		documentGeneraterVelocityHelper.removeMacroFile(fileObject);
+	}
+	
 
 	public void generate(String path, Context context, File outputFile) {
 		try {

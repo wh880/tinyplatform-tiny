@@ -127,6 +127,14 @@ public interface InitDataProcessor {
 	 * @param initDatas
 	 */
 	void addInitDatas(InitDatas initDatas);
+	
+	/**
+	 * 移除表格初始化数据信息
+	 * 
+	 * @param initDatas
+	 */
+	void removeInitDatas(InitDatas initDatas);
+	
 	/**
 	 * 
 	 * 获取所有初始化记录

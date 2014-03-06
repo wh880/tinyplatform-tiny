@@ -43,6 +43,14 @@ public interface DialectFunctionProcessor {
 	 * @param functions
 	 */
 	void addDialectFunctions(DialectFunctions functions);
+	
+	/**
+	 * 
+	 * 删除方言函数配置信息
+	 * @param functions
+	 */
+	void removeDialectFunctions(DialectFunctions functions);
+	
 	/**
 	 * 
 	 * 根据方言函数名获取方言函数配置

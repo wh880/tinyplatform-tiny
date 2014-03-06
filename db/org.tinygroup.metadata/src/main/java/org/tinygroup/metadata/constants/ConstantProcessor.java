@@ -73,4 +73,9 @@ public interface ConstantProcessor {
 	 * @param constants
 	 */
 	void addConstants(Constants constants);
+	/**
+	 * 移除常量 
+	 * @param constants
+	 */
+	void removeConstants(Constants constants);
 }

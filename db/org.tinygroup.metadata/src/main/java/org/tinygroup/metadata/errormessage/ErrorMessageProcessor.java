@@ -38,4 +38,6 @@ public interface ErrorMessageProcessor {
 	ErrorMessage getErrorMessage(String name);
 
 	void addErrorMessages(ErrorMessages errorMessages);
+	
+	void removeErrorMessages(ErrorMessages errorMessages);
 }

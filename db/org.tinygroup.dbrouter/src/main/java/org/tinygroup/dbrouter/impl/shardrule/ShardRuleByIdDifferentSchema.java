@@ -23,20 +23,6 @@
  */
 package org.tinygroup.dbrouter.impl.shardrule;
 
-import java.util.List;
-
-import org.tinygroup.dbrouter.config.Partition;
-import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
-import org.tinygroup.jsqlparser.expression.DoubleValue;
-import org.tinygroup.jsqlparser.expression.Expression;
-import org.tinygroup.jsqlparser.expression.JdbcParameter;
-import org.tinygroup.jsqlparser.expression.LongValue;
-import org.tinygroup.jsqlparser.expression.StringValue;
-import org.tinygroup.jsqlparser.expression.operators.relational.ExpressionList;
-import org.tinygroup.jsqlparser.expression.operators.relational.ItemsList;
-import org.tinygroup.jsqlparser.schema.Column;
-import org.tinygroup.jsqlparser.statement.Statement;
-import org.tinygroup.jsqlparser.statement.insert.Insert;
 
 /**
  * 通过ID进行分片 Created by luoguo on 13-12-15.
@@ -52,41 +38,8 @@ public class ShardRuleByIdDifferentSchema extends ShardRuleByIdAbstract {
 		super(tableName, primaryKeyFieldName, remainder);
 	}
 
-	public boolean isMatch(Partition partition, String sql,
-			Object... preparedParams) {
-		Statement statement = RouterManagerBeanFactory.getManager()
-				.getSqlStatement(sql);
-		if (statement instanceof Insert) {
-			Insert insert = (Insert) statement;
-			if (tableName.equals(insert.getTable().getName())) {
-				ItemsList itemsList= insert.getItemsList();
-				if(itemsList instanceof ExpressionList){
-					List<Expression> expressions = ((ExpressionList)itemsList).getExpressions();
-					int paramIndex=0;
-					for (int i = 0; i < insert.getColumns().size(); i++) {
-						Column column = insert.getColumns().get(i);
-						Expression expression=expressions.get(i);
-						if (column.getColumnName().equals(primaryKeyFieldName)) {
-							  if(expression instanceof LongValue){
-								  LongValue longValue=(LongValue)expression;
-								  if(longValue.getValue()% partition.getShards()
-											.size() == remainder){
-									  return true;
-								  }
-							  }else if(expression instanceof JdbcParameter){
-								   Long value = (Long) preparedParams[paramIndex];
-									if ((value % partition.getShards().size()) == remainder) {
-										return true;
-									}
-								  paramIndex++;
-							  }
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
+	
+	
 
 	public String getReplacedSql(String sql) {
 		return sql;

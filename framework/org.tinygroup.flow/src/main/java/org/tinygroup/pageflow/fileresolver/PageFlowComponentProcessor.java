@@ -57,18 +57,30 @@ public class PageFlowComponentProcessor extends AbstractFileProcessor {
 				.getBean(FlowExecutor.PAGE_FLOW_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(FlowExecutor.FLOW_XSTREAM_PACKAGENAME);
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在删除页面组件fc文件[{0}]",
+					fileObject.getAbsolutePath());
+			ComponentDefines components = (ComponentDefines) caches
+					.get(fileObject.getAbsolutePath());
+			if (components != null) {
+				flowExecutor.removeComponents(components);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "删除页面组件fc文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在读取页面组件pagefc文件[{0}]",
 					fileObject.getAbsolutePath());
-			try {
-				ComponentDefines components = (ComponentDefines) stream
-						.fromXML(fileObject.getInputStream());
-				flowExecutor.addComponents(components);
-			} catch (Exception e) {
-				logger.errorMessage("读取页面组件pagefc文件[{0}]出错", e,
-						fileObject.getAbsolutePath());
+			ComponentDefines oldComponents = (ComponentDefines) caches
+					.get(fileObject.getAbsolutePath());
+			if (oldComponents != null) {
+				flowExecutor.removeComponents(oldComponents);
 			}
-
+			ComponentDefines components = (ComponentDefines) stream
+					.fromXML(fileObject.getInputStream());
+			flowExecutor.addComponents(components);
+			caches.put(fileObject.getAbsolutePath(), components);
 			logger.logMessage(LogLevel.INFO, "读取页面组件pagefc文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}

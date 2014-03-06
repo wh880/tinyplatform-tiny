@@ -70,4 +70,9 @@ public class ErrorMessageProcessorImpl implements ErrorMessageProcessor {
 			}
 		}
 	}
+	
+	public void removeErrorMessages(ErrorMessages errorMessages) {
+		errorMessageMap.remove(
+				MetadataUtil.passNull(errorMessages.getPackageName()));
+	}
 }

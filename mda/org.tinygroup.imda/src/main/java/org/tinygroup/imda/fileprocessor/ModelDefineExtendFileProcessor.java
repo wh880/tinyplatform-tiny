@@ -63,25 +63,37 @@ public class ModelDefineExtendFileProcessor extends AbstractFileProcessor {
 
 	public void process() {
 		XStream xStream = XStreamFactory.getXStream(IMDA_DOMAIN);
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除ModelDefineExtend描述文件：[{}]",
+					fileObject.getAbsolutePath());
+			removeDefineExtend(fileObject);
+			caches.remove(fileObject.getAbsolutePath());
+			logger.logMessage(LogLevel.INFO, "ModelDefineExtend描述文件：[{}]移除完毕。",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			try {
 				logger.logMessage(LogLevel.INFO,
 						"正在加载ModelDefineExtend描述文件：[{}]",
 						fileObject.getAbsolutePath());
+				removeDefineExtend(fileObject);
 				ModelDefineExtend modelDefineExtend = (ModelDefineExtend) xStream
 						.fromXML(fileObject.getInputStream());
 				ModelDefine modelDefine = manager
 						.getModelDefine(modelDefineExtend.getId());
-				for (ModelProcessorDefine define : modelDefineExtend
-						.getModelProcessorDefines()) {
-					ModelProcessorDefine old = manager.getModelProcessorDefine(
-							modelDefine, define.getName());
-					if (old != null) {
-						modelDefine.getModelProcessorDefines().remove(old);
+				if (modelDefine != null) {
+					for (ModelProcessorDefine define : modelDefineExtend
+							.getModelProcessorDefines()) {
+						ModelProcessorDefine old = manager
+								.getModelProcessorDefine(modelDefine,
+										define.getName());
+						if (old != null) {
+							modelDefine.getModelProcessorDefines().remove(old);
+						}
+						modelDefine.getModelProcessorDefines().add(define);
 					}
-					modelDefine.getModelProcessorDefines().add(define);
-
 				}
+				caches.put(fileObject.getAbsolutePath(), modelDefineExtend);
 				logger.logMessage(LogLevel.INFO,
 						"ModelDefineExtend描述文件：[{}]加载成功。",
 						fileObject.getAbsolutePath());
@@ -91,5 +103,21 @@ public class ModelDefineExtendFileProcessor extends AbstractFileProcessor {
 			}
 		}
 
+	}
+
+	private void removeDefineExtend(FileObject fileObject) {
+		ModelDefineExtend modelDefineExtend = (ModelDefineExtend) caches
+				.get(fileObject.getAbsolutePath());
+		if (modelDefineExtend != null) {
+			ModelDefine modelDefine = manager
+					.getModelDefine(modelDefineExtend.getId());
+			if (modelDefine != null) {
+				for (ModelProcessorDefine define : modelDefineExtend
+						.getModelProcessorDefines()) {
+					modelDefine.getModelProcessorDefines().remove(
+							define);
+				}
+			}
+		}
 	}
 }

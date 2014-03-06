@@ -39,6 +39,12 @@ public interface ValidatorMapStorage {
 	 * @param validators
 	 */
 	void addValidators(Validators validators);
+	
+	/**
+	 * 移除验证器
+	 * @param validators
+	 */
+	void removeValidators(Validators validators);
 
 	/**
 	 * 根据映射名称找到该名称对应的校验器

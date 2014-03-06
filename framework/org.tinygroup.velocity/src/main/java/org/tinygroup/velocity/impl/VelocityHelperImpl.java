@@ -128,6 +128,7 @@ public final class VelocityHelperImpl implements VelocityHelper {
 	 */
 	public void addMacroFile(FileObject macroFile) {
 		macroList.add(macroFile.getPath());
+		fullContextFileRepository.addFileObject(macroFile.getPath(), macroFile);
 	}
 
 	/*
@@ -138,6 +139,7 @@ public final class VelocityHelperImpl implements VelocityHelper {
 	 */
 	public void removeMacroFile(FileObject macroFile) {
 		macroList.remove(macroFile.getPath());
+		fullContextFileRepository.removeFileObject(macroFile.getPath());
 	}
 
 	/*

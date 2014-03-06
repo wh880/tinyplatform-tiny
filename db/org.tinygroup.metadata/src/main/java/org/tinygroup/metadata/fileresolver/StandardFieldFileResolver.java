@@ -47,18 +47,28 @@ public class StandardFieldFileResolver extends AbstractFileProcessor {
 				.getBean(MetadataUtil.STDFIELDPROCESSOR_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除stdfield文件[{0}]",
+					fileObject.getAbsolutePath());
+			StandardFields standardFields = (StandardFields)caches.get(fileObject.getAbsolutePath());
+			if(standardFields!=null){
+				standardFieldProcessor.removeStandardFields(standardFields);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除stdfield文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在加载stdfield文件[{0}]",
 					fileObject.getAbsolutePath());
-			try {
-				StandardFields standardFields = (StandardFields) stream
-						.fromXML(fileObject.getInputStream());
-				standardFieldProcessor.addStandardFields(standardFields);
-			} catch (Exception e) {
-				logger.errorMessage("加载stdfield文件[{0}]出错", e,
-						fileObject.getAbsolutePath());
+			StandardFields oldStandardFields = (StandardFields)caches.get(fileObject.getAbsolutePath());
+			if(oldStandardFields!=null){
+				standardFieldProcessor.removeStandardFields(oldStandardFields);
 			}
-
+			StandardFields standardFields = (StandardFields) stream
+					.fromXML(fileObject.getInputStream());
+			standardFieldProcessor.addStandardFields(standardFields);
+			caches.put(fileObject.getAbsolutePath(), standardFields);
 			logger.logMessage(LogLevel.INFO, "加载stdfield文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}

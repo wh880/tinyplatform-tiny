@@ -81,10 +81,10 @@ public abstract class AbstractTestUtil {
 				logger.errorMessage("载入应用配置信息时出错，错误原因：{}！", e, e.getMessage());
 			}
 		}
+		application = new ApplicationDefault(applicationConfig);
 		initSpring(applicationConfig);
 		FileResolver fileResolver=SpringUtil.getBean(FileResolver.BEAN_NAME);
 		fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
-		application = new ApplicationDefault(applicationConfig);
 		application.start();
 	}
 

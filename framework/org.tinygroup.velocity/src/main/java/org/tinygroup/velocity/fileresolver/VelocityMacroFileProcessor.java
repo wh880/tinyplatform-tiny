@@ -24,6 +24,7 @@
 package org.tinygroup.velocity.fileresolver;
 
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
+import org.tinygroup.logger.LogLevel;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.velocity.VelocityHelper;
 import org.tinygroup.vfs.FileObject;
@@ -39,8 +40,25 @@ public class VelocityMacroFileProcessor extends AbstractFileProcessor {
 
 	public void process() {
 		VelocityHelper velocityHelper = SpringUtil.getBean("velocityHelper");
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除ui宏模板组件文件[{0}]",
+					fileObject.getAbsolutePath());
+			velocityHelper.removeMacroFile(fileObject);
+			logger.logMessage(LogLevel.INFO, "正在移除ui宏模板组件文件[{0}]",
+					fileObject.getAbsolutePath());
+		}
+		
+		for (FileObject fileObject : changeList) {
+			logger.logMessage(LogLevel.INFO, "正在加载ui宏模板配置文件[{0}]",
+					fileObject.getAbsolutePath());
+			FileObject oldFileObject=(FileObject) caches.get(fileObject.getAbsolutePath());
+			if(oldFileObject!=null){
+				velocityHelper.removeMacroFile(oldFileObject);
+			}
 			velocityHelper.addMacroFile(fileObject);
+			caches.put(fileObject.getAbsolutePath(), fileObject);
+			logger.logMessage(LogLevel.INFO, "正在加载ui宏模板配置文件[{0}]",
+					fileObject.getAbsolutePath());
 		}
 
 	}

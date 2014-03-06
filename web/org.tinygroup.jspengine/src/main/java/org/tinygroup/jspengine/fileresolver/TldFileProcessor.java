@@ -24,6 +24,7 @@
 package org.tinygroup.jspengine.fileresolver;
 
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
+import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
 
 public class TldFileProcessor extends AbstractFileProcessor {
@@ -36,7 +37,21 @@ public class TldFileProcessor extends AbstractFileProcessor {
 
 	public void process() {
 		//设置符合的tld文件列表对象
-		TldFileManager.getInstance().setFileObjects(fileObjects);
+		TldFileManager manager=TldFileManager.getInstance();
+		for (FileObject fileObject : deleteList) {
+			logger.log(LogLevel.INFO, "正在移除tld文件：<{}>",
+					fileObject.getAbsolutePath());
+			manager.removeTldFile(fileObject);
+			logger.log(LogLevel.INFO, "移除tld文件：<{}>结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
+			logger.log(LogLevel.INFO, "正在加载tld文件：<{}>",
+					fileObject.getAbsolutePath());
+			manager.addTldFile(fileObject);
+			logger.log(LogLevel.INFO, "加载tld文件：<{}>结束",
+					fileObject.getAbsolutePath());
+		}
 	}
 
 }

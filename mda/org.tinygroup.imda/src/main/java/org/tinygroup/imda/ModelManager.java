@@ -69,12 +69,20 @@ public interface ModelManager {
 	void removeModel(Object model);
 
 	/**
-	 * 增加模型处理器
+	 * 增加模型定义
 	 * 
 	 * @param modelType
 	 * @param modelProcessor
 	 */
 	void addModelDefine(ModelDefine modelDefine);
+	
+	/**
+	 * 移除模型定义
+	 * 
+	 * @param modelType
+	 * @param modelProcessor
+	 */
+	void removeModelDefine(ModelDefine modelDefine);
 
 	/**
 	 * 获取模型

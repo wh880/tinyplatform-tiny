@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.config.SqlBody;
 import org.tinygroup.database.config.customsql.CustomSql;
 import org.tinygroup.database.config.customsql.CustomSqls;
@@ -71,4 +72,28 @@ public class CustomSqlProcessorImpl implements CustomSqlProcessor {
 		sqlList.add(sql);
 	}
 
+	public void removeCustomSqls(CustomSqls customsqls) {
+		if(customsqls==null)
+			return ;
+		if(customsqls.getCustomSqlList()==null)
+			return ; 
+		for(CustomSql sql:customsqls.getCustomSqlList()){
+			String type = sql.getType();
+			for(SqlBody body:sql.getSqlBodyList()){
+				String language = body.getDialectTypeName();
+				String sqlStr = body.getContent();
+				removeSql(language, sqlStr, type);
+			}
+		}
+	}
+
+	private void removeSql(String language,String sql,String type){
+		Map<String,List<String>> map = sqlsMap.get(language);
+		if(!CollectionUtil.isEmpty(map)){
+			List<String> sqlList=map.get(type);
+			if(!CollectionUtil.isEmpty(sqlList)){
+				sqlList.remove(sql);
+			}
+		}
+	}
 }

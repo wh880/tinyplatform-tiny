@@ -48,6 +48,14 @@ public class EntityRelationsManagerImpl implements EntityRelationsManager {
 			relationMap.put(relation.getRelationId(), relation);
 		}
 	}
+	
+	public void removeEntityRelations(EntityRelations relations) {
+
+		for (EntityRelation relation : relations.getEntityRelations()) {
+			relationMap.remove(relation.getRelationId());
+		}
+	}
+
 
 	public EntityRelation getEntityRelation(String relationId) {
 		return relationMap.get(relationId);

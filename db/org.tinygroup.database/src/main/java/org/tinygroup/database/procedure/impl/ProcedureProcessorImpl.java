@@ -71,6 +71,12 @@ public class ProcedureProcessorImpl implements ProcedureProcessor {
 			procedureMap.put(procedure.getName(), procedure);
 		}
 	}
+	
+	public void removeProcedures(Procedures procedures) {
+		for(Procedure procedure:procedures.getProcedureList()){
+			procedureMap.remove(procedure.getName());
+		}
+	}
 
 	public String getDropSql(String procedureName, String language) {
 		Procedure procedure = getProcedure(procedureName);

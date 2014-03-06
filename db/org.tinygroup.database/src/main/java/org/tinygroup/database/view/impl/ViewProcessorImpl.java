@@ -45,6 +45,13 @@ public class ViewProcessorImpl implements ViewProcessor {
 		}
 
 	}
+	
+	public void removeViews(Views views) {
+		for (View view : views.getViewTableList()) {
+			viewMap.remove(view.getName());
+		}
+
+	}
 
 	public View getView(String name) {
 		if (!viewMap.containsKey(name)) {

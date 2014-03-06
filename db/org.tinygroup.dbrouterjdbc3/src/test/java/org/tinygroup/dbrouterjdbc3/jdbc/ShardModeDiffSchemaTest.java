@@ -369,12 +369,12 @@ public class ShardModeDiffSchemaTest extends TestCase {
 		assertEquals(ResultSet.FETCH_FORWARD, rs.getFetchDirection());
 		assertEquals(0, rs.getFetchSize());
 
-		ResultSetMetaData metaDate = rs.getMetaData();
-		assertEquals(2, metaDate.getColumnCount());
-		assertEquals("ID", metaDate.getColumnName(1));
-		assertEquals("INT", metaDate.getColumnTypeName(1));
-		assertEquals(8, metaDate.getColumnDisplaySize(1));
-		assertEquals(true, metaDate.isAutoIncrement(1));
+		// ResultSetMetaData metaDate = rs.getMetaData();
+		// assertEquals(2, metaDate.getColumnCount());
+		// assertEquals("ID", metaDate.getColumnName(1));
+		// assertEquals("INT", metaDate.getColumnTypeName(1));
+		// assertEquals(8, metaDate.getColumnDisplaySize(1));
+		// assertEquals(true, metaDate.isAutoIncrement(1));
 
 		// delete相关操作不能用
 		// rs.first();

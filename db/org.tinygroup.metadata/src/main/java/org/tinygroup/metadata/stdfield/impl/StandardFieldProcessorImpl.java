@@ -74,6 +74,20 @@ public class StandardFieldProcessorImpl implements StandardFieldProcessor {
 			}
 		}
 	}
+	
+	public void removeStandardFields(StandardFields standardFields) {
+		if (standardFields != null
+				&& standardFields.getStandardFieldList() != null) {
+			for (StandardField field : standardFields.getStandardFieldList()) {
+				standardFieldMap.remove(field.getId());
+				if(field.getNickNames()!=null){
+					for(NickName name:field.getNickNames()){
+						nickIdMap.remove(name.getId());
+					}
+				}
+			}
+		}
+	}
 
 	public String getType(String id, String language) {
 		StandardField standardField = getStandardField(id);

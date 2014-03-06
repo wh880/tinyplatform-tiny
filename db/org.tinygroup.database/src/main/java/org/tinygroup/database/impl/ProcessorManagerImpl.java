@@ -26,6 +26,7 @@ package org.tinygroup.database.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.processor.Processor;
 import org.tinygroup.database.config.processor.Processors;
@@ -46,6 +47,18 @@ public class ProcessorManagerImpl implements ProcessorManager {
 			String bean = processor.getBean();
 			map.put(processorName,SpringUtil.getBean(bean));
 		}
+	}
+	
+	public void removePocessors(Processors processors) {
+		String language = processors.getLanguage();
+		Map<String,Object> map = processorsMap.get(language);
+		if(!CollectionUtil.isEmpty(map)){
+			for(Processor processor: processors.getList()){
+				String processorName = processor.getName();
+				map.remove(processorName);
+			}
+		}
+		
 	}
 
 	public Object getProcessor(String language, String name) {

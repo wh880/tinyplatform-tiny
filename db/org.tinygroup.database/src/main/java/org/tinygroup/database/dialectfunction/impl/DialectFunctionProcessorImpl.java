@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.database.config.dialectfunction.Dialect;
@@ -61,21 +62,35 @@ public class DialectFunctionProcessorImpl implements DialectFunctionProcessor {
 	
 
 	public void addDialectFunctions(DialectFunctions functions) {
+		 List<DialectFunction> dialectFunctions=functions.getFunctions();
+	        for (DialectFunction dialectFunction : dialectFunctions) {
+	        	List<Dialect> dialects=dialectFunction.getDialects();
+	        	for (Dialect dialect : dialects) {
+					List<Dialect> dialectList=database2Dialects.get(dialect.getName());
+					if(dialectList==null){
+						dialectList=new ArrayList<Dialect>();
+						database2Dialects.put(dialect.getName(), dialectList);
+					}
+					dialectList.add(dialect);
+				}
+				dialectMap.put(dialectFunction.getName(), dialectFunction);
+			}
+	}
+	
+	public void removeDialectFunctions(DialectFunctions functions) {
         List<DialectFunction> dialectFunctions=functions.getFunctions();
         for (DialectFunction dialectFunction : dialectFunctions) {
         	List<Dialect> dialects=dialectFunction.getDialects();
         	for (Dialect dialect : dialects) {
 				List<Dialect> dialectList=database2Dialects.get(dialect.getName());
-				if(dialectList==null){
-					dialectList=new ArrayList<Dialect>();
-					database2Dialects.put(dialect.getName(), dialectList);
+				if(!CollectionUtil.isEmpty(dialectList)){
+					dialectList.remove(dialect);
 				}
-				dialectList.add(dialect);
 			}
-			dialectMap.put(dialectFunction.getName(), dialectFunction);
+			dialectMap.remove(dialectFunction.getName());
 		}
-		
 	}
+	
 
 	public DialectFunction getDialectFunction(String functionName) {
 		return dialectMap.get(functionName);

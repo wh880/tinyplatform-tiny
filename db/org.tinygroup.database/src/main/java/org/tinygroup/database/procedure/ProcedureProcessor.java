@@ -36,4 +36,5 @@ public interface ProcedureProcessor {
 	String getDropSql(String procedureName,String language);
 	List<String> getDropSql(String language);
 	void addProcedures(Procedures procedures);
+	void removeProcedures(Procedures procedures);
 }

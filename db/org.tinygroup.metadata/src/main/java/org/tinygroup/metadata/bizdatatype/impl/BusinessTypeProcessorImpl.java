@@ -76,6 +76,14 @@ public class BusinessTypeProcessorImpl implements BusinessTypeProcessor {
 		String.format("找不到ID:[%s]对应的业务数据类型。", id));
 	}
 
+	public void removeBusinessTypes(BusinessTypes businessTypes) {
+		if(businessTypes!=null&&businessTypes.getBusinessTypeList()!=null){
+			for(BusinessType type:businessTypes.getBusinessTypeList()){
+				businessTypeMap.remove(type.getId());
+			}
+		}
+	}
+
 //	public String getType(String packageName, String name, String language) {
 //		if (packageName != null && businessTypeMap.containsKey(packageName)) {
 //			BusinessType businessType = businessTypeMap.get(packageName).get(

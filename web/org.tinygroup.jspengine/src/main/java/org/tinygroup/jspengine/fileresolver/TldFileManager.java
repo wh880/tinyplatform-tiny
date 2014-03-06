@@ -50,12 +50,15 @@ public class TldFileManager {
 		 return manager;
 	 }
 
-	public List<FileObject> getFileObjects() {
+	public List<FileObject> getTldFiles() {
 		return fileObjects;
 	}
 
-	public void setFileObjects(List<FileObject> fileObjects) {
-		this.fileObjects = fileObjects;
+	public void addTldFile(FileObject fileObject){
+		fileObjects.add(fileObject);
 	}
 	 
+	public void removeTldFile(FileObject fileObject){
+		fileObjects.remove(fileObject);
+	}
 }

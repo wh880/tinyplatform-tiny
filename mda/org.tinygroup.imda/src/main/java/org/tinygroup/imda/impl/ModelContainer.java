@@ -68,6 +68,20 @@ public class ModelContainer {
 		ModelLoader loader = SpringUtil.getBean(loaderBean);
 		modelLoaders.add(loader);
 	}
+	
+	public void removeModelDefine(ModelDefine modelDefine) {
+		modelDefines.remove(modelDefine.getId());
+		String className = modelDefine.getModelClass();
+		try {
+			modelDefineMap.remove(Class.forName(className));
+		} catch (ClassNotFoundException e) {
+			throw new IMdaRuntimeException("imda.modelClassNotFound",
+					modelDefine.getId(), modelDefine.getModelClass());
+		}
+		String loaderBean = modelDefine.getModelLoaderBean();
+		ModelLoader loader = SpringUtil.getBean(loaderBean);
+		modelLoaders.remove(loader);
+	}
 
 	public Map<String, Object> getModelInstances() {
 		return models;

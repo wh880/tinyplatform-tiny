@@ -60,6 +60,7 @@ public class AnnotationFileProcessor extends AbstractFileProcessor {
 			AnnotationClassMatchers annotationClassMatchers = (AnnotationClassMatchers) caches.get(fileObject.getAbsolutePath());
 			if(annotationClassMatchers!=null){
 				manager.removeAnnotationClassMatchers(annotationClassMatchers);
+				caches.remove(fileObject.getAbsolutePath());
 			}
 			logger.logMessage(LogLevel.INFO, "移除注解配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
@@ -67,6 +68,10 @@ public class AnnotationFileProcessor extends AbstractFileProcessor {
 		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在加载注解配置文件[{0}]",
 					fileObject.getAbsolutePath());
+			AnnotationClassMatchers oldMatchers = (AnnotationClassMatchers)caches.get(fileObject.getAbsolutePath());
+			if(oldMatchers!=null){
+				manager.removeAnnotationClassMatchers(oldMatchers);
+			}
 			AnnotationClassMatchers matchers = (AnnotationClassMatchers) stream
 					.fromXML(fileObject.getInputStream());
 			manager.addAnnotationClassMatchers(matchers);

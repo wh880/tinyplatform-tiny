@@ -51,12 +51,28 @@ public class PluginFileProcessor extends AbstractFileProcessor {
 
 	public void process() {
 		XStream stream = XStreamFactory.getXStream(PLUGIN_XSTREAM);
-		for (FileObject file : fileObjects) {
+		for (FileObject file : deleteList) {
+			logger.logMessage(LogLevel.INFO, "移除plugin配置文件:{0}",
+					file.getFileName());
+			PluginConfigs configs = (PluginConfigs) caches.get(file.getAbsolutePath());
+			if(configs!=null){
+				manager.removePlugin(configs);
+				caches.remove(file.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除plugin配置文件:{0}完成",
+					file.getFileName());
+		}
+		for (FileObject file : changeList) {
 			logger.logMessage(LogLevel.INFO, "开始读取plugin配置文件:{0}",
 					file.getFileName());
+			PluginConfigs oldConfigs = (PluginConfigs) caches.get(file.getAbsolutePath());
+			if(oldConfigs!=null){
+				manager.removePlugin(oldConfigs);
+			}
 			PluginConfigs configs = (PluginConfigs) stream.fromXML(file
 					.getInputStream());
 			manager.addPlugin(configs);
+			caches.put(file.getAbsolutePath(), configs);
 			logger.logMessage(LogLevel.INFO, "读取plugin配置文件:{0}完成",
 					file.getFileName());
 		}

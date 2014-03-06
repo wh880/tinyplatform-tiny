@@ -42,21 +42,37 @@ public class InitDataFileResolver extends AbstractFileProcessor {
 	}
 
 	public void process() {
-		logger.logMessage(LogLevel.DEBUG, "开始读取表格初始化数据init文件");
+		logger.logMessage(LogLevel.INFO, "开始处理表格初始化数据init文件");
 		InitDataProcessor initDataProcessor = SpringUtil
 				.getBean(DataBaseUtil.INITDATA_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.INITDATA_XSTREAM);
-		for (FileObject fileObject : fileObjects) {
-			logger.logMessage(LogLevel.DEBUG, "开始读取表格初始化数据init文件{0}",
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "开始读取表格初始化数据init文件{0}",
 					fileObject.getAbsolutePath().toString());
+			InitDatas initDatas = (InitDatas)caches.get(fileObject.getAbsolutePath());
+			if(initDatas!=null){
+				initDataProcessor.removeInitDatas(initDatas);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "读取表格初始化数据init文件{0}完毕",
+					fileObject.getAbsolutePath().toString());
+		}
+		for (FileObject fileObject : changeList) {
+			logger.logMessage(LogLevel.INFO, "开始读取表格初始化数据init文件{0}",
+					fileObject.getAbsolutePath().toString());
+			InitDatas oldInitDatas=(InitDatas)caches.get(fileObject.getAbsolutePath());
+			if(oldInitDatas!=null){
+				initDataProcessor.removeInitDatas(oldInitDatas);
+			}
 			InitDatas initDatas = (InitDatas) stream.fromXML(fileObject
 					.getInputStream());
 			initDataProcessor.addInitDatas(initDatas);
-			logger.logMessage(LogLevel.DEBUG, "读取表格初始化数据init文件{0}完毕",
+			caches.put(fileObject.getAbsolutePath(), initDatas);
+			logger.logMessage(LogLevel.INFO, "读取表格初始化数据init文件{0}完毕",
 					fileObject.getAbsolutePath().toString());
 		}
-		logger.logMessage(LogLevel.DEBUG, "表格初始化数据init文件读取完毕");
+		logger.logMessage(LogLevel.INFO, "处理表格初始化数据init文件读取完毕");
 
 	}
 

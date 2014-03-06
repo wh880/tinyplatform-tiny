@@ -108,10 +108,16 @@ public class PrimarySlaveTest extends TestCase {
 		assertEquals(2, rs.getInt(3));
 		assertEquals(2, rs.getInt(4));
 
-		statement.executeUpdate("delete from teacher where id=1");
-		rs = statement.executeQuery("select count(*) from teacher");
-		rs.first();
-		assertEquals(4, rs.getInt(1));
+		conn.setAutoCommit(false);
+		try {
+			statement = conn.createStatement();
+			statement.executeUpdate("delete from teacher where id=1");
+			rs = statement.executeQuery("select count(*) from teacher");
+			rs.first();
+			assertEquals(4, rs.getInt(1));
+		} catch (Exception e) {
+			conn.rollback();
+		}
 
 		System.out.println("test1执行结束！");
 	}

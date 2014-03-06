@@ -65,7 +65,7 @@ public class RouterTransactionTest extends TestCase {
 	}
 
 	protected void tearDown() throws Exception {
-		super.tearDown();
+		conn.close();
 	}
 
 	public void testTransactionSuccess() throws Exception {

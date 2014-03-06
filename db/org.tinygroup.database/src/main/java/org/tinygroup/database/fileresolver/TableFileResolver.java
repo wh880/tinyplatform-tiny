@@ -47,12 +47,28 @@ public class TableFileResolver extends AbstractFileProcessor {
 				.getBean(DataBaseUtil.TABLEPROCESSOR_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.DATABASE_XSTREAM);
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除table文件[{0}]",
+					fileObject.getAbsolutePath());
+			Tables tables = (Tables)caches.get(fileObject.getAbsolutePath());
+			if(tables!=null){
+				tableProcessor.removeTables(tables);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除table文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在加载table文件[{0}]",
 					fileObject.getAbsolutePath());
+			Tables oldTables = (Tables)caches.get(fileObject.getAbsolutePath());
+			if(oldTables!=null){
+				tableProcessor.removeTables(oldTables);
+			}	
 			Tables tables = (Tables) stream
 					.fromXML(fileObject.getInputStream());
 			tableProcessor.addTables(tables);
+			caches.put(fileObject.getAbsolutePath(), tables);
 			logger.logMessage(LogLevel.INFO, "加载table文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}

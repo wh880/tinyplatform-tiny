@@ -540,9 +540,18 @@ public class ClassNameObjectGenerator implements
 	public void addTypeConverter(TypeConverter<?, ?> typeConverter) {
 		typeConverterList.add(typeConverter);
 	}
+	
+	public void removeTypeConverter(TypeConverter<?, ?> typeConverter) {
+		typeConverterList.remove(typeConverter);
+	}
 
 	public void addTypeCreator(TypeCreator<?> typeCreator) {
 		typeCreatorList.add(typeCreator);
+
+	}
+	
+	public void removeTypeCreator(TypeCreator<?> typeCreator) {
+		typeCreatorList.remove(typeCreator);
 
 	}
 

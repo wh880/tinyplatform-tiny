@@ -30,6 +30,7 @@ import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.imda.ModelLoader;
 import org.tinygroup.imda.ModelManager;
+import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
 
 /**
@@ -75,23 +76,57 @@ public class ModelFileProcessor extends AbstractFileProcessor {
 	}
 
 	public void process() {
-		for (FileObject fileObject : fileObjects) {
+		for (FileObject fileObject : deleteList) {
 			for (ModelLoader modelLoader : manager.getModelLoaders()) {
 				if (fileObject.getFileName().endsWith(
 						modelLoader.getExtFileName())) {
+					logger.logMessage(LogLevel.INFO, "正在移除模型文件[{0}]",
+							fileObject.getAbsolutePath());
 					try {
-						Object model = modelLoader.loadModel(fileObject);
+						Object model = caches.get(fileObject.getAbsolutePath());
 						if (model != null) {
-							manager.addModel(model);
+							manager.removeModel(model);
+							caches.remove(fileObject.getAbsolutePath());
 						}
 					} catch (Throwable e) {
-						logger.errorMessage("在加载模型文件{}时，发生异常：{}！", e,
+						logger.errorMessage("在移除模型文件[{0}]时，发生异常：[{1}]！", e,
 								fileObject.getAbsolutePath(), e.getMessage());
 					}
+					logger.logMessage(LogLevel.INFO, "移除模型文件[{0}]完毕",
+							fileObject.getAbsolutePath());
+
 				}
 			}
 
 		}
+		for (FileObject fileObject : changeList) {
+			for (ModelLoader modelLoader : manager.getModelLoaders()) {
+				if (fileObject.getFileName().endsWith(
+						modelLoader.getExtFileName())) {
+					logger.logMessage(LogLevel.INFO, "正在加载模型文件[{0}]",
+							fileObject.getAbsolutePath());
+					try {
+						Object oldModel = caches.get(fileObject
+								.getAbsolutePath());
+						if (oldModel != null) {
+							manager.removeModel(oldModel);
+						}
+						Object model = modelLoader.loadModel(fileObject);
+						caches.put(fileObject.getAbsolutePath(), model);
+						if (model != null) {
+							manager.addModel(model);
+						}
+					} catch (Throwable e) {
+						logger.errorMessage("在加载模型文件[{0}]时，发生异常：[{1}]！", e,
+								fileObject.getAbsolutePath(), e.getMessage());
+					}
+					logger.logMessage(LogLevel.INFO, "加载模型文件[{0}]完毕",
+							fileObject.getAbsolutePath());
+				}
+			}
+
+		}
+
 	}
 
 }

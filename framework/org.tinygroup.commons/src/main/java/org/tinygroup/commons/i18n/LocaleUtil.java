@@ -139,8 +139,8 @@ public class LocaleUtil {
      *
      * @param charset 字符集名称
      * @return 正规的字符集名称
-     * @throws IllegalCharsetNameException 如果指定字符集名称非法
-     * @throws UnsupportedCharsetException 如果指定字符集不存在
+     * @throws java.nio.charset.IllegalCharsetNameException 如果指定字符集名称非法
+     * @throws java.nio.charset.UnsupportedCharsetException 如果指定字符集不存在
      */
     public static String getCanonicalCharset(String charset) {
         return Charset.forName(charset).name();

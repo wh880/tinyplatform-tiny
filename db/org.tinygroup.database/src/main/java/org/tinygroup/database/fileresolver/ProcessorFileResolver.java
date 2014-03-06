@@ -42,21 +42,37 @@ public class ProcessorFileResolver extends AbstractFileProcessor {
 	}
 
 	public void process() {
-		logger.logMessage(LogLevel.DEBUG, "开始读取database.processor文件");
+		logger.logMessage(LogLevel.INFO, "开始读取database.processor文件");
 		ProcessorManager processorManager = SpringUtil
 				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.PROCESSOR_XSTREAM);
-		for (FileObject fileObject : fileObjects) {
-			logger.logMessage(LogLevel.DEBUG, "开始读取database.processor文件{0}",
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "开始移除database.processor文件{0}",
 					fileObject.getAbsolutePath());
+			Processors processors = (Processors)caches.get(fileObject.getAbsolutePath());
+			if(processors!=null){
+				processorManager.removePocessors(processors);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除database.processor文件{0}完毕",
+					fileObject.getAbsolutePath());
+		}
+		for (FileObject fileObject : changeList) {
+			logger.logMessage(LogLevel.INFO, "开始读取database.processor文件{0}",
+					fileObject.getAbsolutePath());
+			Processors oldProcessors = (Processors)caches.get(fileObject.getAbsolutePath());
+			if(oldProcessors!=null){
+				processorManager.removePocessors(oldProcessors);
+			}	
 			Processors processors = (Processors) stream.fromXML(fileObject
 					.getInputStream());
 			processorManager.addPocessors(processors);
-			logger.logMessage(LogLevel.DEBUG, "读取database.processor文件{0}完毕",
+			caches.put(fileObject.getAbsolutePath(), processors);
+			logger.logMessage(LogLevel.INFO, "读取database.processor文件{0}完毕",
 					fileObject.getAbsolutePath());
 		}
-		logger.logMessage(LogLevel.DEBUG, "database.processor文件读取完毕");
+		logger.logMessage(LogLevel.INFO, "database.processor文件读取完毕");
 
 	}
 
