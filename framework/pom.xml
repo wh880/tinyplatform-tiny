@@ -24,5 +24,7 @@
     <module>org.tinygroup.ioc</module>
     <module>org.tinygroup.rmi</module>
     <module>org.tinygroup.threadgroup</module>
+    <module>org.tinygroup.convert</module>
+    <module>org.tinygroup.xstream</module>
  </modules>
 </project>
