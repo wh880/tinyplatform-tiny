@@ -317,5 +317,6 @@
         <module>mgt</module>
         <module>web</module>
         <module>ext</module>
+        <module>mvntemplate</module>
     </modules>
 </project>
