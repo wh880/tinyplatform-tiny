@@ -43,7 +43,7 @@
         org.tinygroup
       </groupId>
 			<artifactId>
-         org.tinygroup.tinytestutil
+         org.tinygroup.testutil
       </artifactId>
 			<version>
         ${project.version}

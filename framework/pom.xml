@@ -33,5 +33,7 @@
     <module>org.tinygroup.config</module>
     <module>org.tinygroup.testutil</module>
     <module>org.tinygroup.order</module>
+    <module>org.tinygroup.cache</module>
+    <module>org.tinygroup.annotation</module>
  </modules>
 </project>
