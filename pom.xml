@@ -309,5 +309,6 @@
     </dependencies>
     <modules>
         <module>framework</module>
+        <module>db</module>
     </modules>
 </project>

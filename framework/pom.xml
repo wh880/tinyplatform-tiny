@@ -26,5 +26,12 @@
     <module>org.tinygroup.threadgroup</module>
     <module>org.tinygroup.convert</module>
     <module>org.tinygroup.xstream</module>
+    <module>org.tinygroup.factory</module>
+    <module>org.tinygroup.fileresolver</module>
+    <module>org.tinygroup.springutil</module>
+    <module>org.tinygroup.application</module>
+    <module>org.tinygroup.config</module>
+    <module>org.tinygroup.testutil</module>
+    <module>org.tinygroup.order</module>
  </modules>
 </project>
