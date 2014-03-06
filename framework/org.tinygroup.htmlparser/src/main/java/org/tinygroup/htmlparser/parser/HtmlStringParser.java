@@ -254,6 +254,13 @@ public class HtmlStringParser extends HtmlParser<String> {
                 }
             }
         }
+        HtmlNode root = document.getRoot();
+        if (root.getNodeName() == null && root.getNodeType() == HtmlNodeType.ELEMENT) {
+            if (root.getSubNodes().size() == 1) {
+                document.setRoot(root.getSubNodes().get(0));
+            }
+        }
+
         return document;
     }
 

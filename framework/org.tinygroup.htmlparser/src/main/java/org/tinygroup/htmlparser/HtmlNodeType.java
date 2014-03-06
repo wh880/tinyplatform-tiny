@@ -92,11 +92,13 @@ public enum HtmlNodeType implements NodeType {
         if (getHead() == null) {
             sb.append(str);
         } else {
-            if (getHead().getStart() != null && str.length() > 0) {
+            if (getHead().getStart() != null) {
                 sb.append(getHead().getStart());
             }
-            sb.append(str);
-            if (getHead().getEnd() != null && str.length() > 0) {
+            if (str != null) {
+                sb.append(str);
+            }
+            if (getHead().getEnd() != null) {
                 sb.append(getHead().getEnd());
             }
         }
@@ -112,11 +114,14 @@ public enum HtmlNodeType implements NodeType {
         if (getTail() == null) {
             sb.append(str);
         } else {
-            if (getTail().getStart() != null && str.length() > 0) {
+            if (getTail().getStart() != null) {
                 sb.append(getTail().getStart());
             }
-            sb.append(str);
-            if (getTail().getEnd() != null && str.length() > 0) {
+            if (str != null) {
+                sb.append(str);
+            }
+            ;
+            if (getTail().getEnd() != null) {
                 sb.append(getTail().getEnd());
             }
         }

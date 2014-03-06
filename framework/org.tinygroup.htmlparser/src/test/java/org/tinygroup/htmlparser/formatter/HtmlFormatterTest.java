@@ -23,43 +23,39 @@
  */
 package org.tinygroup.htmlparser.formatter;
 
-import java.io.FileInputStream;
-import java.nio.charset.Charset;
-
 import junit.framework.TestCase;
-
-import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.htmlparser.HtmlDocument;
 import org.tinygroup.htmlparser.parser.HtmlStringParser;
 
+import java.nio.charset.Charset;
+
 public class HtmlFormatterTest extends TestCase {
 
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
 
-	public void testFormatDocumentSelfHtmlDocument() {
-		HtmlDocument doc;
-		try {
-			doc = new HtmlStringParser()
-					.parse("<html 中='文'><HEAD><title>aaa</title></head></html>");
-			doc.write(System.out);
-			System.out.println("\n================================\n");
-			HtmlFormater f = new HtmlFormater();
-			System.out.println(f.format(doc));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    public void testFormatDocumentSelfHtmlDocument() {
+        HtmlDocument doc;
+        try {
+            doc = new HtmlStringParser().parse("<html 中='文'><HEAD><title>aaa</title></head></html>");
+            doc.write(System.out);
+            System.out.println("\n================================\n");
+            HtmlFormater f = new HtmlFormater();
+            System.out.println(f.format(doc));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void testDOCTYPE() {
         HtmlDocument doc;
         try {
-            doc = new HtmlStringParser()
-                    .parse("<html></html><a></a>");
+            doc = new HtmlStringParser().parse("<html></html><a></a>");
             doc.write(System.out);
             System.out.println("\n================================");
             HtmlFormater f = new HtmlFormater();
@@ -68,29 +64,17 @@ public class HtmlFormatterTest extends TestCase {
             e.printStackTrace();
         }
     }
-    public void testFormatFile() {
-        HtmlDocument doc;
+
+    public void testFormatDocumentSelfHtmlDocumentOutputStream() {
         try {
-            doc = new HtmlStringParser()
-                    .parse(IOUtils.readFromInputStream(new FileInputStream("c:/a.html"),"GBK"));
+            HtmlDocument doc = new HtmlStringParser().parse("<html 中='文'><head><title>aaa</title><中>中信</中></head></html>");
+            doc.write(System.out);
+            System.out.println("\n================================\n");
             HtmlFormater f = new HtmlFormater();
-            System.out.println(f.format(doc));
+            f.setEncode(Charset.defaultCharset().displayName());
+            f.format(doc, System.out);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-	public void testFormatDocumentSelfHtmlDocumentOutputStream() {
-		try {
-			HtmlDocument doc = new HtmlStringParser()
-					.parse("<html 中='文'><head><title>aaa</title><中>中信</中></head></html>");
-			doc.write(System.out);
-			System.out.println("\n================================\n");
-			HtmlFormater f = new HtmlFormater();
-			f.setEncode(Charset.defaultCharset().displayName());
-			f.format(doc, System.out);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }
