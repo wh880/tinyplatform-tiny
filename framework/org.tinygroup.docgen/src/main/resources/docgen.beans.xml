@@ -1,0 +1,34 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName" default-lazy-init="true">
+
+	<bean id="docTemplateFileProcessor" scope="singleton"
+		class="org.tinygroup.docgen.fileresolver.TemplateFileProcessor">
+		<property name="fileExtName" value=".doctemplate"></property>
+		<property name="documentType" value="doc"></property>
+	</bean>
+	<bean id="xlsTemplateFileProcessor" scope="singleton"
+		class="org.tinygroup.docgen.fileresolver.TemplateFileProcessor">
+		<property name="fileExtName" value=".xlstemplate"></property>
+		<property name="documentType" value="xls"></property>
+	</bean>
+	<bean id="documentGenerater" scope="prototype"
+		class="org.tinygroup.docgen.impl.DocumentGeneraterImpl">
+		<property name="documentGeneraterVelocityHelper">
+			<ref bean="documentGeneraterVelocityHelper" />
+		</property>
+	</bean>
+	<bean id="documentGeneraterManager" scope="singleton"
+		class="org.tinygroup.docgen.impl.DocumentGeneraterManagerImpl">
+	</bean>
+	<bean id="documentGeneraterVelocityHelper" scope="prototype"
+		class="org.tinygroup.velocity.impl.VelocityHelperImpl">
+		<property name="fullContextFileRepository">
+			<ref bean="fullContextFileRepository" />
+		</property>
+	</bean>
+</beans>
