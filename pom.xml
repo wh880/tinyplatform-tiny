@@ -310,5 +310,11 @@
     <modules>
         <module>framework</module>
         <module>db</module>
+        <module>mda</module>
+        <module>fc</module>
+        <module>pfc</module>
+        <module>mgt</module>
+        <module>web</module>
+        <module>ext</module>
     </modules>
 </project>

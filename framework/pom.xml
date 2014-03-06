@@ -13,12 +13,21 @@
         <module>org.tinygroup.xmlparser</module>
         <module>org.tinygroup.htmlparser</module>
         <module>org.tinygroup.i18n</module>
+        <module>org.tinygroup.queue</module>
+        <module>org.tinygroup.command</module>
+        <module>org.tinygroup.plugin</module>
+        <module>org.tinygroup.simplechannel</module>
         <module>org.tinygroup.exception</module>
+        <module>org.tinygroup.exceptionhandler</module>
         <module>org.tinygroup.context</module>
+        <module>org.tinygroup.monitor</module>
         <module>org.tinygroup.formater</module>
+        <module>org.tinygroup.netty</module>
         <module>org.tinygroup.commons</module>
         <module>org.tinygroup.base</module>
+        <module>org.tinygroup.el</module>
         <module>org.tinygroup.vfs</module>
+        <module>org.tinygroup.cepcore</module>
         <module>org.tinygroup.logger</module>
         <module>org.tinygroup.pc</module>
         <module>org.tinygroup.ioc</module>
@@ -39,8 +48,9 @@
         <module>org.tinygroup.event</module>
         <module>org.tinygroup.dict</module>
         <module>org.tinygroup.docgen</module>
-        <module>org.tinygroup.ehcache</module>
-        <module>org.tinygroup.jcscache</module>
         <module>org.tinygroup.velocity</module>
+        <module>org.tinygroup.service</module>
+        <module>org.tinygroup.validate</module>
+        <module>org.tinygroup.flow</module>
     </modules>
 </project>

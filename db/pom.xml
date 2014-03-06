@@ -15,5 +15,6 @@
     <module>org.tinygroup.jsqlparser</module>
     <module>org.tinygroup.database</module>
     <module>org.tinygroup.metadata</module>
+    <module>org.tinygroup.databasebuinstaller</module>
   </modules>
 </project>
