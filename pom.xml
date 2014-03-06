@@ -311,6 +311,7 @@
         <module>framework</module>
         <module>db</module>
         <module>mda</module>
+        <module>plugins</module>
         <module>fc</module>
         <module>pfc</module>
         <module>mgt</module>

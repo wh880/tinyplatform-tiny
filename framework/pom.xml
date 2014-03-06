@@ -17,6 +17,7 @@
         <module>org.tinygroup.command</module>
         <module>org.tinygroup.plugin</module>
         <module>org.tinygroup.simplechannel</module>
+        <module>org.tinygroup.channel</module>
         <module>org.tinygroup.exception</module>
         <module>org.tinygroup.exceptionhandler</module>
         <module>org.tinygroup.context</module>
