@@ -5,11 +5,11 @@
         <artifactId>framework</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>org.tinygroup.rmi</artifactId>
+    <artifactId>org.tinygroup.tinyrmi</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.cepcore</artifactId>
+            <artifactId>org.tinygroup.logger</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

@@ -41,7 +41,7 @@
 			<!-- <class-path path="{TINY_WEBROOT}\WEB-INF\lib" /> -->
 		</class-paths>
 		<include-patterns>
-            <include-pattern pattern="(.)*-0\.0\.13-SNAPSHOT\.jar"/>
+            <include-pattern pattern="org\.tinygroup\.(.)*\.jar"/>
         </include-patterns>
 		<full-context-file-finder>
 			<file ext-name="gif" content-type="image/gif" />

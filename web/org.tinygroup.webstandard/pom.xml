@@ -7,7 +7,6 @@
   </parent>
   <artifactId>org.tinygroup.webstandard</artifactId>
   <packaging>war</packaging>
-  <name>org.tinygroup.webstandard</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>

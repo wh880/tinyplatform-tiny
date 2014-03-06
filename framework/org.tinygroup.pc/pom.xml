@@ -24,7 +24,7 @@
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.rmi</artifactId>
+      <artifactId>org.tinygroup.tinyrmi</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
