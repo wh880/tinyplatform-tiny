@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.tinygroup.commons.cpu.CpuMonitorUtil;
+import org.tinygroup.commons.cpu.MonitorUtil;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.StatementProcessor;
@@ -45,7 +45,6 @@ import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
 import org.tinygroup.dbrouterjdbc4.thread.ExecuteQueryCallBack;
-import org.tinygroup.dbrouterjdbc4.thread.ExecuteUpdateCallBack;
 import org.tinygroup.dbrouterjdbc4.thread.MultiThreadStatementProcessor;
 import org.tinygroup.dbrouterjdbc4.thread.StatementProcessorCallBack;
 import org.tinygroup.jsqlparser.statement.select.Select;
@@ -109,45 +108,37 @@ public class TinyStatement implements Statement {
 			return new TinyResultSetWrapper(sql, resultSet, this,
 					tinyConnection);
 		} else if (statements.size() > 1) {
-//			double cpuRatio = 0;
-//			try {
-//				long startTime = System.currentTimeMillis();
-//				cpuRatio = CpuMonitorUtil.getCpuRatio();
-//				long endTime = System.currentTimeMillis();
-//				logger.logMessage(LogLevel.INFO, "获取当前cpu使用率时间：{}",endTime-startTime);
-//			} catch (Exception e) {
-//				logger.errorMessage("获取cpu使用率出错", e);
-//			}
+			double cpuRatio = MonitorUtil.getCpuUsage();
 			List<ResultSet> resultSetList = new ArrayList<ResultSet>();
 			List<ResultSetExecutor> resultSetExecutors = new ArrayList<ResultSetExecutor>();
-//			if (cpuRatio < router.getCpuRatio()) {
-//				MultiThreadProcessor processors = new MultiThreadProcessor(
-//						"executeQuery-threads");
-//				int threadSize = statements.size();
-//				List<MultiThreadStatementProcessor<ResultSetExecutor>> threadProcessors = new ArrayList<MultiThreadStatementProcessor<ResultSetExecutor>>();
-//				for (int j = 0; j < threadSize; j++) {
-//					RealStatementExecutor realStatementExecutor = statements
-//							.get(j);
-//					MultiThreadStatementProcessor<ResultSetExecutor> processor = new MultiThreadStatementProcessor<ResultSetExecutor>(
-//							String.format("statement-processor-thread-%d", j),
-//							realStatementExecutor);
-//					StatementProcessorCallBack<ResultSetExecutor> callBack = new ExecuteQueryCallBack();
-//					processor.setCallBack(callBack);
-//					processors.addProcessor(processor);
-//					threadProcessors.add(processor);
-//				}
-//				long startTime = System.currentTimeMillis();
-//				processors.start();
-//				long endTime = System.currentTimeMillis();
-//				logger.logMessage(LogLevel.INFO, "线程组:<{}>执行时间：{}",
-//						"executeQuery-threads", endTime - startTime);
-//				for (MultiThreadStatementProcessor<ResultSetExecutor> threadProcessor : threadProcessors) {
-//					ResultSetExecutor resultSetExecutor = threadProcessor
-//							.getResult();
-//					resultSetExecutors.add(resultSetExecutor);
-//					resultSetList.add(resultSetExecutor.getResultSet());
-//				}
-//			} else {
+			if (cpuRatio < router.getCpuRatio()) {
+				MultiThreadProcessor processors = new MultiThreadProcessor(
+						"executeQuery-threads");
+				int threadSize = statements.size();
+				List<MultiThreadStatementProcessor<ResultSetExecutor>> threadProcessors = new ArrayList<MultiThreadStatementProcessor<ResultSetExecutor>>();
+				for (int j = 0; j < threadSize; j++) {
+					RealStatementExecutor realStatementExecutor = statements
+							.get(j);
+					MultiThreadStatementProcessor<ResultSetExecutor> processor = new MultiThreadStatementProcessor<ResultSetExecutor>(
+							String.format("statement-processor-thread-%d", j),
+							realStatementExecutor);
+					StatementProcessorCallBack<ResultSetExecutor> callBack = new ExecuteQueryCallBack();
+					processor.setCallBack(callBack);
+					processors.addProcessor(processor);
+					threadProcessors.add(processor);
+				}
+				long startTime = System.currentTimeMillis();
+				processors.start();
+				long endTime = System.currentTimeMillis();
+				logger.logMessage(LogLevel.INFO, "线程组:<{}>执行时间：{}",
+						"executeQuery-threads", endTime - startTime);
+				for (MultiThreadStatementProcessor<ResultSetExecutor> threadProcessor : threadProcessors) {
+					ResultSetExecutor resultSetExecutor = threadProcessor
+							.getResult();
+					resultSetExecutors.add(resultSetExecutor);
+					resultSetList.add(resultSetExecutor.getResultSet());
+				}
+			} else {
 				for (RealStatementExecutor statement : statements) {
 					ResultSet realResultSet = statement.executeQuery();
 					resultSetExecutors.add(new ResultSetExecutor(realResultSet,
@@ -155,7 +146,7 @@ public class TinyStatement implements Statement {
 									.getOriginalSql(), statement.getShard()));
 					resultSetList.add(realResultSet);
 				}
-//			}
+			}
 			if (statementProcessor != null) {
 				return statementProcessor.combineResult(statements.get(0)
 						.getExecuteSql(), resultSetList);
