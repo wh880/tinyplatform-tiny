@@ -50,7 +50,6 @@ import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.util.OrderByProcessor.OrderByValues;
 import org.tinygroup.dbrouter.util.ParamObjectBuilder;
 import org.tinygroup.dbrouter.util.SortOrder;
-import org.tinygroup.dbrouterjdbc3.jdbc.TinyStatement.ResultSetExecutor;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 

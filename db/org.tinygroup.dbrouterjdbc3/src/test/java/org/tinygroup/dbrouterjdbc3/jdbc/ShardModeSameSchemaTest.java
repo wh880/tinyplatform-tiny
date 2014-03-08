@@ -39,34 +39,42 @@ import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 
 public class ShardModeSameSchemaTest extends TestCase {
 
-	private String driver = "org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver";
-	private String routerpath = "/shardModeSameSchema.xml";
-	private RouterManager routerManager;
+	private static String driver = "org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver";
+	private static String routerpath = "/shardModeSameSchema.xml";
+	private static RouterManager routerManager;
 
-	private String url = "jdbc:dbrouter://shardModeSameSchema";
-	private String user = "luog";
-	private String password = "123456";
+	private static String url = "jdbc:dbrouter://shardModeSameSchema";
+	private static String user = "luog";
+	private static String password = "123456";
 
-	private Connection conn = null;
-	private Statement st = null;
-	private ResultSet rs = null;
-	String sql = null;
-
-	protected void setUp() throws Exception {
-		super.setUp();
+	static {
 		routerManager = RouterManagerBeanFactory.getManager();
 		routerManager.addRouters(routerpath);
-		Class.forName(driver);
+		try {
+			Class.forName(driver);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void test0() throws Exception {
-		conn = DriverManager.getConnection(url, user, password);
-		st = conn.createStatement();
+	public void _test0() throws Exception {
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
+		String sql = null;
+
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+			st = conn.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
 
 		List<String> _sList = new ArrayList<String>();
 		List<Integer> _iList = new ArrayList<Integer>();
 
-		st.executeUpdate("delete from teacher");
+		st.addBatch("delete from teacher");
 		st.addBatch("insert into teacher(id,name) values(1,'zhang')");
 		st.addBatch("insert into teacher(id,name) values(2,'qian')");
 		st.addBatch("insert into teacher(id,name) values(3,'sun')");
@@ -160,11 +168,13 @@ public class ShardModeSameSchemaTest extends TestCase {
 		System.out.println("test0执行结束!");
 	}
 
-	public void test1() throws Exception {
-		conn = DriverManager.getConnection(url, user, password);
-		st = conn.createStatement();
+	public void _test1() throws Exception {
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
 
 		try {
+			conn = DriverManager.getConnection(url, user, password);
 			conn.setAutoCommit(false);
 			st = conn.createStatement();
 			st.executeUpdate("delete from teacher");
@@ -172,6 +182,7 @@ public class ShardModeSameSchemaTest extends TestCase {
 			conn.commit();
 		} catch (Exception e) {
 			conn.rollback();
+			return;
 		}
 
 		// getGeneratedKeys功能不可用
@@ -212,18 +223,35 @@ public class ShardModeSameSchemaTest extends TestCase {
 		System.out.println("test1 执行结束");
 	}
 
-	public void test2() throws Exception {
-		conn = DriverManager.getConnection(url, user, password);
-		st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,
-				ResultSet.CONCUR_UPDATABLE, 102);
+	public void _test2() throws Exception {
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
 
-		st.executeUpdate("delete from teacher");
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+			st = conn.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+			st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,
+					ResultSet.CONCUR_UPDATABLE, 102);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		st.addBatch("delete from teacher");
 		st.addBatch("insert into teacher(id,name) values(1,'zhang')");
 		st.addBatch("insert into teacher(id,name) values(2,'qian')");
 		st.clearBatch();
 		st.executeBatch();
-		ResultSet rs = st.executeQuery("select * from teacher");
-		assertEquals(false, rs.next());
+		rs = st.executeQuery("select * from teacher");
+		// assertEquals(false, rs.next());
 		// assertEquals(false, rs.first()); //first有问题
 
 		st.cancel();
@@ -232,7 +260,8 @@ public class ShardModeSameSchemaTest extends TestCase {
 
 		st.setFetchDirection(ResultSet.FETCH_REVERSE);
 		st.setFetchSize(30);
-		// assertEquals(ResultSet.FETCH_REVERSE, statement.getFetchDirection());
+		// assertEquals(ResultSet.FETCH_REVERSE,
+		// statement.getFetchDirection());
 		assertEquals(30, st.getFetchSize());
 
 		// statement.getGeneratedKeys();
@@ -253,18 +282,26 @@ public class ShardModeSameSchemaTest extends TestCase {
 		assertEquals(ResultSet.TYPE_FORWARD_ONLY, st.getResultSetType());
 		// assertEquals(30, st.getUpdateCount());
 		st.getWarnings();
-
 		close(conn, st, rs);
 		System.out.println("test2 执行结束");
 	}
 
-	public void test3() throws Exception {
-		conn = DriverManager.getConnection(url, user, password);
-		st = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-				ResultSet.CONCUR_UPDATABLE);
+	public void _test3() throws Exception {
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+			st = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+					ResultSet.CONCUR_UPDATABLE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
 
 		// 准备数据
-		st.executeUpdate("delete from teacher");
+		st.addBatch("delete from teacher");
 		st.addBatch("insert into teacher(id,name) values(1,'zhang')");
 		st.addBatch("insert into teacher(id,name) values(2,'qian')");
 		st.addBatch("insert into teacher(id,name) values(3,'sun')");
@@ -387,62 +424,106 @@ public class ShardModeSameSchemaTest extends TestCase {
 		// rs.rowDeleted();
 		// rs.rowInserted();
 		// rs.rowUpdated();
-
 		close(conn, st, rs);
 		System.out.println("test3 执行结束");
 	}
 
-	public void test4() throws Exception {
-		conn = DriverManager.getConnection(url, user, password);
-		st = conn.createStatement();
+	public void _test4() throws Exception {
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
+		String sql = null;
+		List<String> _sList = new ArrayList<String>();
+
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+			st = conn.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
 
 		prepareRecord(st);
-		String sql = "select * from student where id in (select id from student where id<3)";
-		ResultSet rs = st.executeQuery(sql);
+		sql = "select * from student where id in (select id from student where id<3)";
+		rs = st.executeQuery(sql);
+		_sList.clear();
 		while (rs.next()) {
-			System.out.println(rs.getString("name"));
+			_sList.add(rs.getString("name"));
 		}
+		assertEquals(2, _sList.size());
+		assertEquals("s1", _sList.get(0));
+		assertEquals("s2", _sList.get(1));
 
 		sql = "select * from student where tId=(select id from teacher where name='qian')";
 		rs = st.executeQuery(sql);
+		_sList.clear();
 		while (rs.next()) {
-			System.out.println(rs.getString("name"));
+			_sList.add(rs.getString("name"));
 		}
-
+		assertEquals(2, _sList.size());
+		assertEquals("s3", _sList.get(0));
+		assertEquals("s4", _sList.get(1));
 		sql = "select s.id, s.name, s.age, t.id, t.name from student s, teacher t where t.id=s.tId";
 		rs = st.executeQuery(sql);
+		_sList.clear();
 		while (rs.next()) {
-			System.out.println(rs.getString("name"));
+			_sList.add(rs.getString("name"));
 		}
+		assertEquals(6, _sList.size());
+		assertEquals("s3", _sList.get(0));
+		assertEquals("s6", _sList.get(1));
+		assertEquals("s1", _sList.get(2));
+		assertEquals("s4", _sList.get(3));
+		assertEquals("s2", _sList.get(4));
+		assertEquals("s5", _sList.get(5));
 
 		sql = "select u.id, u.name, u.age, t.id, t.name from student u join teacher t on t.id=u.tId";
 		rs = st.executeQuery(sql);
+		_sList.clear();
 		while (rs.next()) {
-			System.out.println(rs.getString("name"));
+			_sList.add(rs.getString("name"));
 		}
+		assertEquals(6, _sList.size());
+		assertEquals("s3", _sList.get(0));
+		assertEquals("s6", _sList.get(1));
+		assertEquals("s1", _sList.get(2));
+		assertEquals("s4", _sList.get(3));
+		assertEquals("s2", _sList.get(4));
+		assertEquals("s5", _sList.get(5));
 
 		sql = "select u.id, u.name, u.age, t.id, t.name from student u left join teacher t on t.id=u.tId";
 		rs = st.executeQuery(sql);
+		_sList.clear();
 		while (rs.next()) {
-			System.out.println(rs.getString("name"));
+			_sList.add(rs.getString("name"));
 		}
-
-		sql = "select u.id, u.name, u.age, t.id, t.name from student u right join teacher t on t.id=u.tId";
-		rs = st.executeQuery(sql);
-		while (rs.next()) {
-			System.out.println(rs.getString("name"));
-		}
+		assertEquals(6, _sList.size());
+		assertEquals("s3", _sList.get(0));
+		assertEquals("s6", _sList.get(1));
+		assertEquals("s1", _sList.get(2));
+		assertEquals("s4", _sList.get(3));
+		assertEquals("s2", _sList.get(4));
+		assertEquals("s5", _sList.get(5));
 
 		close(conn, st, rs);
 		System.out.println("test4 执行结束");
 	}
 
-	public void test5() throws Exception {
-		conn = DriverManager.getConnection(url, user, password);
-		st = conn.createStatement();
+	public void _test5() throws Exception {
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+			st = conn.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
 
 		// 准备数据
-		st.executeUpdate("delete from student");
+		st.addBatch("delete from student");
 		st.addBatch("insert into student(id,name,age,sex) values(1,'zhang',11,1)");
 		st.addBatch("insert into student(id,name,age,sex) values(2,'qian',12,1)");
 		st.addBatch("insert into student(id,name,age,sex) values(3,'sun',13,2)");
@@ -453,9 +534,11 @@ public class ShardModeSameSchemaTest extends TestCase {
 		if (rs.next()) {
 			assertEquals(2, rs.getInt(1));
 		}
-
 		close(conn, st, rs);
-		System.out.println("test54 执行结束");
+		System.out.println("test5 执行结束");
+	}
+
+	public void test6() throws Exception {
 	}
 
 	private void prepareRecord(Statement st) throws SQLException,
@@ -464,14 +547,12 @@ public class ShardModeSameSchemaTest extends TestCase {
 		Connection connection = DriverManager.getConnection(
 				"jdbc:mysql://192.168.51.29:3306/testA", "root", "123456");
 		Statement stmt = connection.createStatement();
-		stmt.executeUpdate("delete from student");
-		stmt.executeUpdate("delete from teacher");
+		stmt.addBatch("delete from student");
+		stmt.addBatch("delete from teacher");
 		stmt.addBatch("insert into teacher(id,name) values(1,'zhang')");
 		stmt.addBatch("insert into teacher(id,name) values(2,'qian')");
 		stmt.addBatch("insert into teacher(id,name) values(3,'sun')");
 		stmt.addBatch("insert into teacher(id,name) values(4,'wang')");
-		stmt.executeBatch();
-		stmt.clearBatch();
 		stmt.addBatch("insert into student(id,tId,name,age) values(1,1,'s1',11)");
 		stmt.addBatch("insert into student(id,tId,name,age) values(2,1,'s2',12)");
 		stmt.addBatch("insert into student(id,tId,name,age) values(3,2,'s3',13)");
@@ -480,21 +561,22 @@ public class ShardModeSameSchemaTest extends TestCase {
 		stmt.addBatch("insert into student(id,tId,name,age) values(6,3,'s6',16)");
 		stmt.executeBatch();
 
-		st.executeUpdate("delete from student");
-		st.executeUpdate("delete from teacher");
-		st.executeUpdate("insert into teacher(id,name) values(1,'zhang')");
-		st.executeUpdate("insert into teacher(id,name) values(2,'qian')");
-		st.executeUpdate("insert into teacher(id,name) values(3,'sun')");
-		st.executeUpdate("insert into teacher(id,name) values(4,'wang')");
-		st.executeUpdate("insert into student(id,tId,name,age) values(1,1,'s1',11)");
-		st.executeUpdate("insert into student(id,tId,name,age) values(2,1,'s2',12)");
-		st.executeUpdate("insert into student(id,tId,name,age) values(3,2,'s3',13)");
-		st.executeUpdate("insert into student(id,tId,name,age) values(4,2,'s4',14)");
-		st.executeUpdate("insert into student(id,tId,name,age) values(5,3,'s5',15)");
-		st.executeUpdate("insert into student(id,tId,name,age) values(6,3,'s6',16)");
+		st.addBatch("delete from student");
+		st.addBatch("delete from teacher");
+		st.addBatch("insert into teacher(id,name) values(1,'zhang')");
+		st.addBatch("insert into teacher(id,name) values(2,'qian')");
+		st.addBatch("insert into teacher(id,name) values(3,'sun')");
+		st.addBatch("insert into teacher(id,name) values(4,'wang')");
+		st.addBatch("insert into student(id,tId,name,age) values(1,1,'s1',11)");
+		st.addBatch("insert into student(id,tId,name,age) values(2,1,'s2',12)");
+		st.addBatch("insert into student(id,tId,name,age) values(3,2,'s3',13)");
+		st.addBatch("insert into student(id,tId,name,age) values(4,2,'s4',14)");
+		st.addBatch("insert into student(id,tId,name,age) values(5,3,'s5',15)");
+		st.addBatch("insert into student(id,tId,name,age) values(6,3,'s6',16)");
+		st.executeBatch();
 	}
 
-	public void close(Connection conn, Statement st, ResultSet rs) {
+	private void close(Connection conn, Statement st, ResultSet rs) {
 		if (conn != null) {
 			try {
 				conn.close();
@@ -518,4 +600,6 @@ public class ShardModeSameSchemaTest extends TestCase {
 		}
 	}
 
+	public static void main(String[] args) {
+	}
 }

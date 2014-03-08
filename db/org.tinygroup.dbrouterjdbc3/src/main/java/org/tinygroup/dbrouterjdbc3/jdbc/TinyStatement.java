@@ -24,7 +24,6 @@
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
@@ -36,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.tinygroup.commons.cpu.CpuMonitorUtil;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.StatementProcessor;
@@ -44,15 +44,15 @@ import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
-import org.tinygroup.dbrouter.util.OrderByProcessor;
-import org.tinygroup.dbrouter.util.OrderByProcessor.OrderByValues;
-import org.tinygroup.dbrouter.util.SortOrder;
-import org.tinygroup.jsqlparser.statement.select.PlainSelect;
+import org.tinygroup.dbrouterjdbc3.thread.ExecuteQueryCallBack;
+import org.tinygroup.dbrouterjdbc3.thread.ExecuteUpdateCallBack;
+import org.tinygroup.dbrouterjdbc3.thread.MultiThreadStatementProcessor;
+import org.tinygroup.dbrouterjdbc3.thread.StatementProcessorCallBack;
 import org.tinygroup.jsqlparser.statement.select.Select;
-import org.tinygroup.jsqlparser.statement.select.SelectBody;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.threadgroup.MultiThreadProcessor;
 
 /**
  * 
@@ -109,15 +109,53 @@ public class TinyStatement implements Statement {
 			return new TinyResultSetWrapper(sql, resultSet, this,
 					tinyConnection);
 		} else if (statements.size() > 1) {
+//			double cpuRatio = 0;
+//			try {
+//				long startTime = System.currentTimeMillis();
+//				cpuRatio = CpuMonitorUtil.getCpuRatio();
+//				long endTime = System.currentTimeMillis();
+//				logger.logMessage(LogLevel.INFO, "获取当前cpu使用率时间：{}",endTime-startTime);
+//			} catch (Exception e) {
+//				logger.errorMessage("获取cpu使用率出错", e);
+//			}
 			List<ResultSet> resultSetList = new ArrayList<ResultSet>();
 			List<ResultSetExecutor> resultSetExecutors = new ArrayList<ResultSetExecutor>();
-			for (RealStatementExecutor statement : statements) {
-				ResultSet realResultSet = statement.executeQuery();
-				resultSetExecutors.add(new ResultSetExecutor(realResultSet,
-						statement.getExecuteSql(), statement.getOriginalSql(),
-						statement.getShard()));
-				resultSetList.add(realResultSet);
-			}
+//			if (cpuRatio < router.getCpuRatio()) {
+//				MultiThreadProcessor processors = new MultiThreadProcessor(
+//						"executeQuery-threads");
+//				int threadSize = statements.size();
+//				List<MultiThreadStatementProcessor<ResultSetExecutor>> threadProcessors = new ArrayList<MultiThreadStatementProcessor<ResultSetExecutor>>();
+//				for (int j = 0; j < threadSize; j++) {
+//					RealStatementExecutor realStatementExecutor = statements
+//							.get(j);
+//					MultiThreadStatementProcessor<ResultSetExecutor> processor = new MultiThreadStatementProcessor<ResultSetExecutor>(
+//							String.format("statement-processor-thread-%d", j),
+//							realStatementExecutor);
+//					StatementProcessorCallBack<ResultSetExecutor> callBack = new ExecuteQueryCallBack();
+//					processor.setCallBack(callBack);
+//					processors.addProcessor(processor);
+//					threadProcessors.add(processor);
+//				}
+//				long startTime = System.currentTimeMillis();
+//				processors.start();
+//				long endTime = System.currentTimeMillis();
+//				logger.logMessage(LogLevel.INFO, "线程组:<{}>执行时间：{}",
+//						"executeQuery-threads", endTime - startTime);
+//				for (MultiThreadStatementProcessor<ResultSetExecutor> threadProcessor : threadProcessors) {
+//					ResultSetExecutor resultSetExecutor = threadProcessor
+//							.getResult();
+//					resultSetExecutors.add(resultSetExecutor);
+//					resultSetList.add(resultSetExecutor.getResultSet());
+//				}
+//			} else {
+				for (RealStatementExecutor statement : statements) {
+					ResultSet realResultSet = statement.executeQuery();
+					resultSetExecutors.add(new ResultSetExecutor(realResultSet,
+							statement.getExecuteSql(), statement
+									.getOriginalSql(), statement.getShard()));
+					resultSetList.add(realResultSet);
+				}
+//			}
 			if (statementProcessor != null) {
 				return statementProcessor.combineResult(statements.get(0)
 						.getExecuteSql(), resultSetList);
@@ -145,9 +183,45 @@ public class TinyStatement implements Statement {
 				throw new RuntimeException(
 						"primary slave mode exist one more write database,the connection autocommit must set false");
 			}
-			for (RealStatementExecutor statement : statements) {
-				updateCount += statement.executeUpdate();
-			}
+//			double cpuRatio = 0;
+//			try {
+//				long startTime = System.currentTimeMillis();
+//				cpuRatio = CpuMonitorUtil.getCpuRatio();
+//				long endTime = System.currentTimeMillis();
+//				logger.logMessage(LogLevel.INFO, "获取cpu使用率时间：{}",endTime-startTime);
+//			} catch (Exception e) {
+//				logger.errorMessage("获取cpu使用率出错", e);
+//			}
+//			if (cpuRatio < router.getCpuRatio()) {
+//				MultiThreadProcessor processors = new MultiThreadProcessor(
+//						"executeUpdate-threads");
+//				int threadSize = statements.size();
+//				List<MultiThreadStatementProcessor<Integer>> threadProcessors = new ArrayList<MultiThreadStatementProcessor<Integer>>();
+//				for (int j = 0; j < threadSize; j++) {
+//					RealStatementExecutor realStatementExecutor = statements
+//							.get(j);
+//					MultiThreadStatementProcessor<Integer> processor = new MultiThreadStatementProcessor<Integer>(
+//							String.format("statement-processor-thread-%d", j),
+//							realStatementExecutor);
+//					StatementProcessorCallBack<Integer> callBack = new ExecuteUpdateCallBack();
+//					processor.setCallBack(callBack);
+//					processors.addProcessor(processor);
+//					threadProcessors.add(processor);
+//				}
+//				long startTime = System.currentTimeMillis();
+//				processors.start();
+//				long endTime = System.currentTimeMillis();
+//				logger.logMessage(LogLevel.INFO, "线程组:<{}>执行时间：{}",
+//						"executeUpdate-threads", endTime - startTime);
+//				for (MultiThreadStatementProcessor<Integer> threadProcessor : threadProcessors) {
+//					updateCount+=threadProcessor.getResult();
+//				}
+//			} else {
+				for (RealStatementExecutor statement : statements) {
+					updateCount += statement.executeUpdate();
+				}
+//			}
+
 			return updateCount;
 		}
 		return 0;
@@ -338,9 +412,10 @@ public class TinyStatement implements Statement {
 					partition));
 		} else {
 			if (!tinyConnection.getAutoCommit()) {// 从写的列表中随机选择一个进行读取
-				Shard shard = routerManager.getShardBalance().getReadShardWithTransaction(partition);
+				Shard shard = routerManager.getShardBalance()
+						.getReadShardWithTransaction(partition);
 				shards.add(shard);
-			}else{
+			} else {
 				Shard shard = routerManager.getShardBalance().getReadableShard(
 						partition);
 				shards.add(shard);
@@ -348,7 +423,6 @@ public class TinyStatement implements Statement {
 		}
 		return shards;
 	}
-
 
 	public ResultSet getResultSet() throws SQLException {
 		checkClosed();
@@ -548,224 +622,6 @@ public class TinyStatement implements Statement {
 	public int getResultSetHoldability() throws SQLException {
 		checkClosed();
 		return ResultSet.HOLD_CURSORS_OVER_COMMIT;
-	}
-
-	class RealStatementExecutor {
-		private Statement realStatement;
-		private String executeSql;
-		private String originalSql;
-		private Shard shard;
-		private Partition partition;
-
-		public RealStatementExecutor(Statement realStatement,
-				String executeSql, String originalSql, Shard shard,
-				Partition partition) {
-			super();
-			this.realStatement = realStatement;
-			this.executeSql = executeSql;
-			this.originalSql = originalSql;
-			this.partition = partition;
-			this.shard = shard;
-		}
-
-		public void addBatch() throws SQLException {
-			realStatement.addBatch(executeSql);
-		}
-
-		public Statement getRealStatement() {
-			return realStatement;
-		}
-
-		public String getExecuteSql() {
-			return executeSql;
-		}
-
-		public String getOriginalSql() {
-			return originalSql;
-		}
-
-		public Shard getShard() {
-			return shard;
-		}
-
-		public Partition getPartition() {
-			return partition;
-		}
-
-		public ResultSet executeQuery() throws SQLException {
-			logger.logMessage(LogLevel.DEBUG, "{0}:{1}", shard.getId(),
-					originalSql);
-			if (realStatement instanceof PreparedStatement) {
-				PreparedStatement prepared = (PreparedStatement) realStatement;
-				return prepared.executeQuery();
-			}
-			logger.logMessage(LogLevel.DEBUG, "{0}:{1}", shard.getId(),
-					executeSql);
-			return realStatement.executeQuery(executeSql);
-
-		}
-
-		public int executeUpdate() throws SQLException {
-			logger.logMessage(LogLevel.DEBUG, "{0}:{1}", shard.getId(),
-					originalSql);
-			if (realStatement instanceof PreparedStatement) {
-				PreparedStatement prepared = (PreparedStatement) realStatement;
-				return prepared.executeUpdate();
-			}
-			logger.logMessage(LogLevel.DEBUG, "{0}:{1}", shard.getId(),
-					executeSql);
-			return realStatement.executeUpdate(executeSql);
-		}
-	}
-
-	class ResultSetExecutor {
-
-		private ResultSet resultSet;
-
-		private String executeSql;
-
-		private String originalSql;
-
-		private boolean isAfterLast;
-
-		private boolean isBeforeFirst;
-
-		private OrderByProcessor orderByProcessor;
-
-		private Shard shard;
-
-		public ResultSetExecutor(ResultSet resultSet, String executeSql,
-				String originalSql, Shard shard) throws SQLException {
-			super();
-			this.resultSet = resultSet;
-			this.executeSql = executeSql;
-			this.originalSql = originalSql;
-			this.shard = shard;
-			org.tinygroup.jsqlparser.statement.Statement sqlStatement = routerManager
-					.getSqlStatement(executeSql);
-			if (sqlStatement instanceof Select) {
-				Select select = (Select) sqlStatement;
-				SelectBody body = select.getSelectBody();
-				if (body instanceof PlainSelect) {
-					PlainSelect plainSelect = (PlainSelect) body;
-					orderByProcessor = new OrderByProcessor(plainSelect,
-							resultSet);
-				}
-			} else {
-				throw new RuntimeException("must be a query sql");
-			}
-		}
-
-		public SortOrder getSortOrder() {
-			if (orderByProcessor == null) {
-				return null;
-			}
-			return orderByProcessor.getSortOrder();
-		}
-
-		public ResultSet getResultSet() {
-			return resultSet;
-		}
-
-		public String getExecuteSql() {
-			return executeSql;
-		}
-
-		public boolean[] getOrderTypes() {
-			if (orderByProcessor != null) {
-				return orderByProcessor.getOrderTypes();
-			}
-			return null;
-		}
-
-		public int[] getOrderByIndexs() {
-			if (orderByProcessor != null) {
-				return orderByProcessor.getOrderByIndexs();
-			}
-			return null;
-		}
-
-		public boolean next() throws SQLException {
-			if (!isAfterLast) {
-				return resultSet.next();
-			}
-			return false;
-
-		}
-
-		public boolean previous() throws SQLException {
-			if (!isBeforeFirst) {
-				return resultSet.previous();
-			}
-			return false;
-		}
-
-		public OrderByValues getOrderByValuesFromResultSet()
-				throws SQLException {
-			orderByProcessor.setValues(resultSet);
-			return orderByProcessor.getValueCache();
-		}
-
-		public OrderByValues getValueCache() {
-			return orderByProcessor.getValueCache();
-		}
-
-		public void setValueCache(OrderByValues valueCache) {
-			orderByProcessor.setValueCache(valueCache);
-		}
-
-		public boolean isAfterLast() {
-			return isAfterLast;
-		}
-
-		public void setAfterLast(boolean isAfterLast) {
-			this.isAfterLast = isAfterLast;
-		}
-
-		public boolean isBeforeFirst() {
-			return isBeforeFirst;
-		}
-
-		public void setBeforeFirst(boolean isBeforeFirst) {
-			this.isBeforeFirst = isBeforeFirst;
-		}
-
-		public void beforeFirst() throws SQLException {
-			resultSet.beforeFirst();
-			orderByProcessor.clearValueCache();
-			isBeforeFirst = true;
-			isAfterLast = false;
-		}
-
-		public void afterLast() throws SQLException {
-			resultSet.afterLast();
-			orderByProcessor.clearValueCache();
-			isAfterLast = true;
-			isBeforeFirst = false;
-		}
-
-		public void first() throws SQLException {
-			resultSet.first();
-			orderByProcessor.clearValueCache();
-			isAfterLast = false;
-			isBeforeFirst = false;
-		}
-
-		public void last() throws SQLException {
-			resultSet.last();
-			orderByProcessor.clearValueCache();
-			isAfterLast = false;
-			isBeforeFirst = false;
-		}
-
-		public Shard getShard() {
-			return shard;
-		}
-
-		public String getOriginalSql() {
-			return originalSql;
-		}
-
 	}
 
 }

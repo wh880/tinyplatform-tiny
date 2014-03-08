@@ -76,7 +76,7 @@
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.el</artifactId>
+      <artifactId>org.tinygroup.elmvel</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

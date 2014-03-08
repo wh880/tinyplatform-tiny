@@ -7,7 +7,7 @@
 
    <requiredProperties>  
         <requiredProperty key="tinyVersion">  
-            <defaultValue>0.0.13-SNAPSHOT</defaultValue>  
+            <defaultValue>0.1.0-SNAPSHOT</defaultValue>
         </requiredProperty>  
     </requiredProperties>  
 

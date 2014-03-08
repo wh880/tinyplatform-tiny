@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.fileresolver.FileProcessor;
-import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -49,48 +48,44 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
 	private static Logger logger = LoggerFactory
 			.getLogger(XmlServiceFileProcessor.class);
 	private static final String SERVICE_EXT_FILENAME = ".service.xml";
-	private List<FileObject> serviceFiles = new ArrayList<FileObject>();
 
 	private List<ServiceComponents> list = new ArrayList<ServiceComponents>();
-
-	public List<FileObject> getServiceFiles() {
-		return serviceFiles;
-	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(SERVICE_EXT_FILENAME);
 	}
 
-	public void add(FileObject fileObject) {
-		serviceFiles.add(fileObject);
-	}
-
-	public void noChange(FileObject fileObject) {
-
-	}
-
-	public void modify(FileObject fileObject) {
-		serviceFiles.add(fileObject);
-	}
-
-	public void delete(FileObject fileObject) {
-		serviceFiles.remove(fileObject);
-	}
 
 	public void process() {
 		ServiceProviderInterface provider = SpringUtil.getBean("service");
 		ServiceRegistry reg = SpringUtil.getBean(ServiceRegistry.BEAN_NAME);
 		provider.setServiceRegistory(reg);
-
 		XStream stream = XStreamFactory
 				.getXStream(Service.SERVICE_XSTREAM_PACKAGENAME);
-		for (FileObject fileObject : serviceFiles) {
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除Service文件[{0}]",
+					fileObject.getAbsolutePath());
+			ServiceComponents components = (ServiceComponents)caches.get(fileObject.getAbsolutePath());
+			if(components!=null){
+				list.remove(components);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除Service文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		
+		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在读取Service文件[{0}]",
 					fileObject.getAbsolutePath());
 			try {
+				ServiceComponents oldComponents = (ServiceComponents)caches.get(fileObject.getAbsolutePath());
+				if(oldComponents!=null){
+					list.remove(oldComponents);
+				}	
 				ServiceComponents components = (ServiceComponents) stream
 						.fromXML(fileObject.getInputStream());
 				list.add(components);
+				caches.put(fileObject.getAbsolutePath(), components);
 			} catch (Exception e) {
 				logger.errorMessage("读取Service文件[{0}]出错", e,fileObject.getAbsolutePath());
 			}
@@ -105,13 +100,10 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
 		} catch (ServiceLoadException e) {
 			logger.errorMessage("注册Service时出错", e);
 		}
+		list.clear();//扫描结束后清空服务列表
 
 	}
 
-	public void clean() {
-		serviceFiles.clear();
-		list.clear();
-	}
 
 	public void setConfigPath(String path) {
 
@@ -129,18 +121,6 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
 			return SpringUtil.getBean(clazz);
 		}
 		return SpringUtil.getBean(component.getBean());
-	}
-
-	public void setFileResolver(FileResolver fileResolver) {
-
-	}
-
-	public boolean supportRefresh() {
-		return true;
-	}
-
-	public int getOrder() {
-		return DEFAULT_PRECEDENCE;
 	}
 
 

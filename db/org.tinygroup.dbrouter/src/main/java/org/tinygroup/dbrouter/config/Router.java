@@ -23,11 +23,12 @@
  */
 package org.tinygroup.dbrouter.config;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.List;
+
 import org.tinygroup.commons.tools.CollectionUtil;
 
-import java.util.List;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 集群<br>
@@ -73,6 +74,9 @@ public class Router {
      */
     @XStreamAlias("partitions")
     List<Partition> partitions;
+    @XStreamAsAttribute
+    @XStreamAlias("cpu-ratio")
+    private double cpuRatio;
 
     public Router(String id, String userName, String password) {
         this.id = id;
@@ -151,4 +155,19 @@ public class Router {
     public void setKeyGeneratorClass(String keyGeneratorClass) {
         this.keyGeneratorClass = keyGeneratorClass;
     }
+
+	public double getCpuRatio() {
+		if(cpuRatio<0){
+			cpuRatio=0;
+		}
+		if(cpuRatio>100){
+			cpuRatio=100;
+		}
+		return cpuRatio;
+	}
+
+	public void setCpuRatio(double cpuRatio) {
+		this.cpuRatio = cpuRatio;
+	}
+    
 }

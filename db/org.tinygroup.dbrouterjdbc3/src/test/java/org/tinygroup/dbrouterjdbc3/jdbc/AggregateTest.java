@@ -54,27 +54,25 @@ public class AggregateTest extends TestCase {
 		}
 	}
 
-
 	private static void prepareRecord() throws Exception {
 		// 删除数据
-			RouterManager routerManager = RouterManagerBeanFactory.getManager();
-			routerManager.addRouters("/differentSchemaAggregate.xml");
-			Class.forName("org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver");
-			conn = DriverManager.getConnection("jdbc:dbrouter://aggregate",
-					"luog", "123456");
-			stmt = conn.createStatement();
-			stmt.execute("delete from score");
-			stmt.executeUpdate("insert into score(id,name,score,course) values(1,'xiaohuihui',99,'shuxue')");
-			stmt.executeUpdate("insert into score(id,name,score,course) values(2,'xiaohuihui',97,'yuwen')");
-			stmt.executeUpdate("insert into score(id,name,score,course) values(3,'xiaom',95,'shuxue')");
-			stmt.executeUpdate("insert into score(id,name,score,course) values(4,'xiaof',97,'yingyu')");
-			stmt.executeUpdate("insert into score(id,name,score,course) values(5,'xiaom',100,'yuwen')");
-			stmt.executeUpdate("insert into score(id,name,score,course) values(6,'xiaof',95,'yuwen')");
-			stmt.executeUpdate("insert into score(id,name,score,course) values(7,'xiaohuihui',95,'yingyu')");
-			stmt.executeUpdate("insert into score(id,name,score,course) values(8,'xiaom',96,'yingyu')");
-			stmt.executeUpdate("insert into score(id,name,score,course) values(9,'xiaof',96,'shuxue')");
+		RouterManager routerManager = RouterManagerBeanFactory.getManager();
+		routerManager.addRouters("/differentSchemaAggregate.xml");
+		Class.forName("org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver");
+		conn = DriverManager.getConnection("jdbc:dbrouter://aggregate", "luog",
+				"123456");
+		stmt = conn.createStatement();
+		stmt.execute("delete from score");
+		stmt.executeUpdate("insert into score(id,name,score,course) values(1,'xiaohuihui',99,'shuxue')");
+		stmt.executeUpdate("insert into score(id,name,score,course) values(2,'xiaohuihui',97,'yuwen')");
+		stmt.executeUpdate("insert into score(id,name,score,course) values(3,'xiaom',95,'shuxue')");
+		stmt.executeUpdate("insert into score(id,name,score,course) values(4,'xiaof',97,'yingyu')");
+		stmt.executeUpdate("insert into score(id,name,score,course) values(5,'xiaom',100,'yuwen')");
+		stmt.executeUpdate("insert into score(id,name,score,course) values(6,'xiaof',95,'yuwen')");
+		stmt.executeUpdate("insert into score(id,name,score,course) values(7,'xiaohuihui',95,'yingyu')");
+		stmt.executeUpdate("insert into score(id,name,score,course) values(8,'xiaom',96,'yingyu')");
+		stmt.executeUpdate("insert into score(id,name,score,course) values(9,'xiaof',96,'shuxue')");
 	}
-
 
 	public void testCount() throws SQLException {
 		String sql = "select count(*),name from score group by name";

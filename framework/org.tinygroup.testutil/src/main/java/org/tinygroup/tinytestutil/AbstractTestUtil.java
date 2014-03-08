@@ -47,12 +47,12 @@ public abstract class AbstractTestUtil {
 	// private static VelocityHelperImpl helper;
 	// private static final String DEFAULT_FILERESOLVER_BEAN_XML =
 	// "/Application.preloadbeans.xml";
-	// private static boolean init = false;
+	private static boolean init = false;
 	private static Application application;
 	private static String DEFAULT_CONFIG = "application.xml";
 	private static Logger logger = LoggerFactory
 			.getLogger(AbstractTestUtil.class);
-	private static final String TINY_JAR_PATTERN="(.)*-0\\.0\\.13-SNAPSHOT\\.jar";
+	private static final String TINY_JAR_PATTERN="org\\.tinygroup\\.(.)*\\.jar";
 
 
 	/**
@@ -62,6 +62,9 @@ public abstract class AbstractTestUtil {
 	 *            是否对classPath进行处理
 	 */
 	public static void init(String xmlFile, boolean classPathResolve) {
+		if(init){
+			return;
+		}
 		// init(xmlFile, classPathResolve, null, null);
 		String configXml = xmlFile;
 		if (null == configXml || "".equals(configXml)) {
@@ -86,6 +89,7 @@ public abstract class AbstractTestUtil {
 		FileResolver fileResolver=SpringUtil.getBean(FileResolver.BEAN_NAME);
 		fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
 		application.start();
+		init=true;
 	}
 
 	public static void initWidthString(String config, boolean classPathResolve) {

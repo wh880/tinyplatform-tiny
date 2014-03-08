@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.tinygroup.config.Configuration;
 import org.tinygroup.event.Parameter;
+import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.service.ServiceProxy;
@@ -37,9 +38,10 @@ import org.tinygroup.service.exception.ServiceLoadException;
 import org.tinygroup.service.loader.ServiceLoader;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
+import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 
-public abstract class XmlConfigServiceLoader implements ServiceLoader,
+public abstract class XmlConfigServiceLoader extends AbstractFileProcessor implements ServiceLoader,
 		Configuration {
 	private Logger logger = LoggerFactory
 			.getLogger(XmlConfigServiceLoader.class);
@@ -253,5 +255,13 @@ public abstract class XmlConfigServiceLoader implements ServiceLoader,
 
 	public XmlNode getApplicationConfig() {
 		return applicationConfig;
+	}
+	
+	public boolean isMatch(FileObject fileObject) {
+		return false;
+	}
+
+	public void process() {
+		
 	}
 }

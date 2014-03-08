@@ -1,7 +1,6 @@
 package org.tinygroup.dbrouterjdbc3.jdbc.performance;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,7 +16,9 @@ import org.tinygroup.threadgroup.Processor;
 
 import junit.framework.TestCase;
 
-public class CommonJDBC extends TestCase {
+public class CommonJDBC 
+    //extends TestCase 
+{
 
 	private static Logger logger = LoggerFactory.getLogger(CommonJDBC.class);
 
@@ -53,35 +54,6 @@ public class CommonJDBC extends TestCase {
 		return Math.abs(rand.nextInt());
 	}
 
-	public void testCommonJDBC() throws SQLException, ClassNotFoundException {
-		Class.forName(driverName);
-		Connection connection = DriverManager
-				.getConnection(url, user, password);
-		Statement statement = connection.createStatement(
-				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE,
-				102);
-		ResultSet rs = null;
-
-		statement.executeUpdate("delete from teacher");
-		statement
-				.executeUpdate("insert into teacher(id,name) values(1,'zhang')");
-		statement
-				.executeUpdate("insert into teacher(id,name) values(2,'qian')");
-		statement.executeUpdate("insert into teacher(id,name) values(3,'sun')");
-		statement
-				.executeUpdate("insert into teacher(id,name) values(4,'wang')");
-		statement
-				.executeUpdate("insert into teacher(id,name) values(5,'chen')");
-
-		rs = statement
-				.executeQuery("select avg(id),sum(id),max(id),min(id) from teacher");
-		rs.first();
-		assertEquals(3, rs.getInt(1));
-		assertEquals(15, rs.getInt(2));
-		assertEquals(5, rs.getInt(3));
-		assertEquals(1, rs.getInt(4));
-	}
-
 	public static void close(Connection conn, Statement st, ResultSet rs) {
 		if (conn != null) {
 			try {
@@ -109,10 +81,22 @@ public class CommonJDBC extends TestCase {
 	public static void main(String[] args) {
 		MultiThreadProcessor processors = new MultiThreadProcessor(
 				"thread-group1");
-		for (int i = 0; i < THREAD_COUNT; i++) {
+
+		// for (int i = 0; i < THREAD_COUNT; i++) {
+		// Processor processor = new QueryThread("thread" + i); // 添加线程
+		// processors.addProcessor(processor);
+		// }
+
+		for (int i = 0; i < 5; i++) {
+			Processor processor = new InsertThread("thread" + i); // 添加线程
+			processors.addProcessor(processor);
+		}
+
+		for (int i = 0; i < 5; i++) {
 			Processor processor = new QueryThread("thread" + i); // 添加线程
 			processors.addProcessor(processor);
 		}
+
 		processors.start(); // 启动线程组
 	}
 
@@ -126,11 +110,14 @@ public class CommonJDBC extends TestCase {
 			Connection conn = connect();
 			Statement st = conn.createStatement();
 			int id = 0;
+			long start = 0;
 			for (; COUNT < SUM;) {
 				id = COUNT++;
+				id = rand.nextInt(SUM);
 				st.executeUpdate("insert into student(id,name) values(" + id
 						+ ",'zhang')");
-				logger.logMessage(LogLevel.INFO, "插入数据，id=" + id);
+				logger.logMessage(LogLevel.INFO, "插入数据，id=" + id + "，花费时间="
+						+ (System.currentTimeMillis() - start));
 			}
 			close(conn, st, null);
 		}

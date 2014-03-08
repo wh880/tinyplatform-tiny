@@ -54,9 +54,10 @@ import org.enhydra.jdbc.standard.StandardXADataSource;
 import org.objectweb.jotm.Jotm;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.dbrouter.RouterManager;
-import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
+import org.tinygroup.dbrouter.config.DataSourceConfigBean;
 import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.logger.Logger;
@@ -80,6 +81,7 @@ public class TinyConnection implements Connection {
 	RouterManager manager = RouterManagerBeanFactory.getManager();
 	Router router;
 	List<Connection> connections = new ArrayList<Connection>();
+	Map<DataSourceConfigBean,StandardXADataSource> configDataSources=new HashMap<DataSourceConfigBean,StandardXADataSource>();
 	Map<Shard, Connection> dataSourceConnections = new HashMap<Shard, Connection>();// 一个数据源配置对应存储一个连接
 	int transactionIsolationLevel;
 	private UserTransaction userTransaction;
@@ -166,12 +168,16 @@ public class TinyConnection implements Connection {
 
 	private Connection getConnection(Shard shard, DataSourceConfig config)
 			throws SQLException {
-		StandardXADataSource dataSource = new StandardXADataSource();
-		dataSource.setUrl(config.getUrl());
-		dataSource.setDriverName(config.getDriver());
-		dataSource.setUser(config.getUserName());
-		dataSource.setPassword(config.getPassword());
-		dataSource.setTransactionManager(transactionManager);
+		DataSourceConfigBean bean=config.getDataSourceConfigBean();
+		StandardXADataSource dataSource=configDataSources.get(bean);
+		if(dataSource==null){
+			dataSource = new StandardXADataSource();
+			dataSource.setUrl(config.getUrl());
+			dataSource.setDriverName(config.getDriver());
+			dataSource.setUser(config.getUserName());
+			dataSource.setPassword(config.getPassword());
+			dataSource.setTransactionManager(transactionManager);
+		}
 		Connection connection = dataSource.getXAConnection().getConnection();
 		Statement statement = connection.createStatement();
 		String sql = config.getTestSql();
@@ -187,6 +193,7 @@ public class TinyConnection implements Connection {
 				statement.close();
 			}
 		}
+		configDataSources.put(bean, dataSource);
 		return connection;
 	}
 
@@ -288,6 +295,10 @@ public class TinyConnection implements Connection {
 				noError = false;
 				logger.errorMessage("connection close error", e);
 			}
+		}
+		//是否真正要关闭连接池中的空闲连接
+		for (StandardXADataSource dataSource : configDataSources.values()) {
+			dataSource.closeFreeConnection();
 		}
 		jotm.stop();
 		isClosed = true;
@@ -432,10 +443,12 @@ public class TinyConnection implements Connection {
 	}
 
 	public void rollback(Savepoint savepoint) throws SQLException {
+		checkClosed();
 		throw new SQLException("not support method");
 	}
 
 	public void releaseSavepoint(Savepoint savepoint) throws SQLException {
+		checkClosed();
 		throw new SQLException("not support method");
 	}
 
@@ -458,6 +471,7 @@ public class TinyConnection implements Connection {
 	public CallableStatement prepareCall(String sql, int resultSetType,
 			int resultSetConcurrency, int resultSetHoldability)
 			throws SQLException {
+		checkClosed();
 		throw new SQLException("not support method");
 	}
 

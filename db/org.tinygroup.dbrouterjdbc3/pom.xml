@@ -41,7 +41,6 @@
             <groupId>org.tinygroup</groupId>
             <artifactId>org.tinygroup.threadgroup</artifactId>
             <version>0.1.0-SNAPSHOT</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

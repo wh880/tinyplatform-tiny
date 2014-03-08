@@ -30,8 +30,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
 
-import junit.framework.TestCase;
-
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.logger.LogLevel;
@@ -41,7 +39,7 @@ import org.tinygroup.threadgroup.AbstractProcessor;
 import org.tinygroup.threadgroup.MultiThreadProcessor;
 import org.tinygroup.threadgroup.Processor;
 
-public class ShardModeDiffSchemaPerformance extends TestCase {
+public class ShardModeDiffSchemaPerformance {
 
 	private static Logger logger = LoggerFactory
 			.getLogger(ShardModeDiffSchemaPerformance.class);
@@ -54,12 +52,15 @@ public class ShardModeDiffSchemaPerformance extends TestCase {
 	private static String user = "luog";
 	private static String password = "123456";
 
-	public static int QUERY_SUM = 1; // 查询总次数
-	public static int QUERY_COUNT = 0; // 已查询次数
 	public static Random rand = new Random();
-	public static int THREAD_COUNT = 10;
-	public static int COUNT = 0;
-	public static int SUM = 100000;
+
+	public static int QUERY_SUM = 100000; // 查询总次数
+	public static int QUERY_COUNT = 0; // 已查询次数
+
+	public static int INSERT_COUNT = 0; // 已插入次数
+	public static int INSERT_SUM = 100000; // 插入总次数
+
+	public static int THREAD_COUNT = 10; // 执行操作的线程数
 
 	static {
 		routerManager = RouterManagerBeanFactory.getManager();
@@ -115,8 +116,8 @@ public class ShardModeDiffSchemaPerformance extends TestCase {
 			Connection conn = DriverManager.getConnection(url, user, password);
 			Statement st = conn.createStatement();
 			int id = 0;
-			for (; COUNT < SUM;) {
-				id = COUNT++;
+			for (; INSERT_COUNT < INSERT_SUM;) {
+				id = INSERT_COUNT++;
 				st.executeUpdate("insert into student(id,name) values(" + id
 						+ ",'zhang')");
 				logger.logMessage(LogLevel.INFO, "插入数据，id=" + id);

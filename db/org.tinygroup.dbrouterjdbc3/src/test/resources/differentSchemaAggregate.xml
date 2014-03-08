@@ -1,6 +1,6 @@
 <routers>
     <router id="aggregate" user-name="luog" password="123456"
-             key-generator-class="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong">
+             key-generator-class="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong" cpu-ratio="0">
         <key-generator-config increment="1" data-source-id="ds0"/>
         <data-source-configs>
             <data-source-config id="ds0" driver="com.mysql.jdbc.Driver"

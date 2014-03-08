@@ -52,7 +52,7 @@ public class ShardModeSameSchemaPerformance {
 	private static String user = "luog";
 	private static String password = "123456";
 
-	public static int QUERY_SUM = 100000; // 查询总次数
+	public static int QUERY_SUM = 10000; // 查询总次数
 	public static int QUERY_COUNT = 0; // 已查询次数
 	public static Random rand = new Random();
 	public static int THREAD_COUNT = 10;

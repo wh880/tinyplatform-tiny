@@ -126,4 +126,12 @@ public class DataSourceConfig {
         this.testSql = testSql;
     }
 
+    public DataSourceConfigBean getDataSourceConfigBean(){
+    	DataSourceConfigBean bean=new DataSourceConfigBean();
+    	bean.setUrl(url);
+    	bean.setPassword(password);
+    	bean.setDriver(driver);
+    	bean.setUserName(userName);
+    	return bean;
+    }
 }

@@ -27,6 +27,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import junit.framework.TestCase;
@@ -36,18 +37,30 @@ import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 
 public class PrimarySlaveTest extends TestCase {
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	private static String driver = "org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver";
+	private static String routerpath = "/primarySlave.xml";
+	private static RouterManager routerManager;
+
+	private static String url = "jdbc:dbrouter://primarySlave";
+	private static String user = "luog";
+	private static String password = "123456";
+
+	static {
+		routerManager = RouterManagerBeanFactory.getManager();
+		routerManager.addRouters(routerpath);
+		try {
+			Class.forName(driver);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void test1() throws Exception {
-		RouterManager routerManager = RouterManagerBeanFactory.getManager();
-		routerManager.addRouters("/primarySlave.xml");
-		Class.forName("org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver");
-		Connection conn = DriverManager.getConnection(
-				"jdbc:dbrouter://primarySlave", "luog", "123456");
-		Statement statement = conn.createStatement();
-		PreparedStatement ps = null;
+		Connection conn = null;
+		Statement st = null;
+
+		conn = DriverManager.getConnection(url, user, password);
+		st = conn.createStatement();
 
 		// 准备数据
 		try {
@@ -60,35 +73,29 @@ public class PrimarySlaveTest extends TestCase {
 			// statement.addBatch("insert into teacher(id,name) values(4,'wang')");
 			// statement.addBatch("insert into teacher(id,name) values(5,'chen')");
 			// statement.executeBatch();
-			statement.executeUpdate("delete from teacher");
-			statement
-					.executeUpdate("insert into teacher(id,name) values(1,'zhang')");
-			statement
-					.executeUpdate("insert into teacher(id,name) values(2,'qian')");
-			statement
-					.executeUpdate("insert into teacher(id,name) values(3,'sun')");
-			statement
-					.executeUpdate("insert into teacher(id,name) values(4,'wang')");
-			statement
-					.executeUpdate("insert into teacher(id,name) values(5,'chen')");
+			st.executeUpdate("delete from teacher");
+			st.executeUpdate("insert into teacher(id,name) values(1,'zhang')");
+			st.executeUpdate("insert into teacher(id,name) values(2,'qian')");
+			st.executeUpdate("insert into teacher(id,name) values(3,'sun')");
+			st.executeUpdate("insert into teacher(id,name) values(4,'wang')");
+			st.executeUpdate("insert into teacher(id,name) values(5,'chen')");
 			conn.commit();
 		} catch (Exception e) {
 			conn.rollback();
 		}
 
-		ResultSet rs = statement.executeQuery("select count(*) from teacher");
+		ResultSet rs = st.executeQuery("select count(*) from teacher");
 		rs.first();
 		assertEquals(5, rs.getInt(1));
 
-		rs = statement
-				.executeQuery("select avg(id),sum(id),max(id),min(id) from teacher");
+		rs = st.executeQuery("select avg(id),sum(id),max(id),min(id) from teacher");
 		rs.first();
 		assertEquals(3, rs.getInt(1));
 		assertEquals(15, rs.getInt(2));
 		assertEquals(5, rs.getInt(3));
 		assertEquals(1, rs.getInt(4));
 
-		ps = conn
+		PreparedStatement ps = conn
 				.prepareStatement("select avg(id),sum(id),max(id),min(id) from teacher where id in(?,?,?)");
 		ps.setInt(1, 1);
 		ps.setInt(2, 2);
@@ -100,8 +107,7 @@ public class PrimarySlaveTest extends TestCase {
 		// assertEquals(3, rs.getInt(3));
 		// assertEquals(1, rs.getInt(4));
 
-		rs = statement
-				.executeQuery("select avg(id),sum(id),max(id),min(id) from teacher where id>1 group by id having id<3");
+		rs = st.executeQuery("select avg(id),sum(id),max(id),min(id) from teacher where id>1 group by id having id<3");
 		rs.first();
 		assertEquals(2, rs.getInt(1));
 		assertEquals(2, rs.getInt(2));
@@ -110,16 +116,44 @@ public class PrimarySlaveTest extends TestCase {
 
 		conn.setAutoCommit(false);
 		try {
-			statement = conn.createStatement();
-			statement.executeUpdate("delete from teacher where id=1");
-			rs = statement.executeQuery("select count(*) from teacher");
+			st = conn.createStatement();
+			st.executeUpdate("delete from teacher where id=1");
+			rs = st.executeQuery("select count(*) from teacher");
 			rs.first();
 			assertEquals(4, rs.getInt(1));
 		} catch (Exception e) {
 			conn.rollback();
 		}
 
+		close(conn, st, rs);
+		close(null, ps, null);
 		System.out.println("test1执行结束！");
 	}
 
+	public void test6() throws Exception {
+	}
+
+	private void close(Connection conn, Statement st, ResultSet rs) {
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (st != null) {
+			try {
+				st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

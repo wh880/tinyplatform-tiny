@@ -32,7 +32,8 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 
-public class FileMonitorProcessor extends AbstractConfiguration implements ApplicationProcessor {
+public class FileMonitorProcessor extends AbstractConfiguration implements
+		ApplicationProcessor {
 
 	private static final String FILE_MONITOR_NODE_PATH = "/application/file-monitor";
 	private static final int DEFAULT_INTERVAL = 5;
@@ -40,7 +41,8 @@ public class FileMonitorProcessor extends AbstractConfiguration implements Appli
 	private int interval = DEFAULT_INTERVAL;
 	private boolean enable = false;
 	private FileResolver resolver;
-	
+	private byte[] synObject = new byte[0];
+
 	public FileResolver getResolver() {
 		return resolver;
 	}
@@ -58,7 +60,8 @@ public class FileMonitorProcessor extends AbstractConfiguration implements Appli
 	}
 
 	public void start() {
-		XmlNode combineNode=ConfigurationUtil.combineXmlNode(applicationConfig, componentConfig);
+		XmlNode combineNode = ConfigurationUtil.combineXmlNode(
+				applicationConfig, componentConfig);
 		if (combineNode != null) {
 			String strInterrupt = combineNode.getAttribute("interval");
 			if (strInterrupt != null && strInterrupt.length() > 0) {
@@ -69,7 +72,7 @@ public class FileMonitorProcessor extends AbstractConfiguration implements Appli
 				enable = Boolean.valueOf(enableString);
 			}
 		}
-		
+
 		if (enable) {
 			if (thread != null) {
 				thread.stop = true;
@@ -82,11 +85,14 @@ public class FileMonitorProcessor extends AbstractConfiguration implements Appli
 	}
 
 	public void stop() {
-		if (enable && thread != null && thread.isAlive()) {
-			thread.stop = true;
+		synchronized (synObject) {
+			if (enable && thread != null && thread.isAlive()) {
+				thread.stop = true;
+				synObject.notify();//唤醒其他等待的线程
+			}
 		}
 	}
-	
+
 	private class FileMonitorThread extends Thread {
 		private static final int MILLISECOND_PER_SECOND = 1000;
 		private volatile boolean stop = false;
@@ -94,11 +100,15 @@ public class FileMonitorProcessor extends AbstractConfiguration implements Appli
 		public void run() {
 			while (!stop) {
 				try {
-					sleep(interval * MILLISECOND_PER_SECOND);
-					logger.logMessage(LogLevel.INFO, "定时扫描文件变化......");
-					resolver = SpringUtil.getBean("fileResolver");
-					resolver.refresh();
-					logger.logMessage(LogLevel.INFO, "定时扫描文件结束.");
+					synchronized (synObject) {
+						synObject.wait(interval * MILLISECOND_PER_SECOND);//没有线程唤醒，那么等待这么多时间
+						if(!stop){//唤醒时，或者等待时间后，发现stop=false时去执行重新搜索。
+							logger.logMessage(LogLevel.INFO, "定时扫描文件变化......");
+							resolver = SpringUtil.getBean("fileResolver");
+							resolver.refresh();
+							logger.logMessage(LogLevel.INFO, "定时扫描文件结束.");
+						}
+					}
 				} catch (InterruptedException e) {
 					logger.errorMessage(e.getMessage(), e);
 				}
@@ -107,7 +117,7 @@ public class FileMonitorProcessor extends AbstractConfiguration implements Appli
 	}
 
 	public void setApplication(Application application) {
-		
+
 	}
 
 	public int getOrder() {
