@@ -9,7 +9,7 @@
     <dependencies>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.cepcore</artifactId>
+            <artifactId>org.tinygroup.logger</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

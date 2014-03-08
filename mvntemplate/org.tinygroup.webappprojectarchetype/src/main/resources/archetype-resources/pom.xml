@@ -44,7 +44,7 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.rmi</artifactId>
+            <artifactId>org.tinygroup.rpc</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

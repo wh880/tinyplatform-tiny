@@ -45,4 +45,14 @@ public final class MonitorUtil {
         }
         return cpuUage;
     }
+
+    public static void main(String[] args) {
+        while (true) {
+            long sum = 0;
+            for (long s = 0; s < 999999; s++) {
+                sum += s * s;
+            }
+            System.out.println(MonitorUtil.getCpuUsage());
+        }
+    }
 }
