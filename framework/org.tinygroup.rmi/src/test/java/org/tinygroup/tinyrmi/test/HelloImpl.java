@@ -14,7 +14,7 @@ public class HelloImpl implements Hello {
         return "Hello," + name;
     }
 
-	public void check() throws RemoteException {
+	public void verify() throws RemoteException {
 		// TODO Auto-generated method stub
 		
 	}

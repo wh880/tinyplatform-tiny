@@ -23,35 +23,35 @@
  */
 package org.tinygroup.tinyrmi.impl;
 
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 /**
  * 远程RMI服务器
  * Created by luoguo on 14-1-10.
  */
 public class RmiServerRemote extends AbstractRmiServer {
-	private final static Logger logger = LoggerFactory
-	.getLogger(RmiServerRemote.class);
-	HeartThread heart = new HeartThread();
+    private final static Logger logger = LoggerFactory.getLogger(RmiServerRemote.class);
+    HeartThread heartThread = new HeartThread();
+
     public RmiServerRemote() {
         super();
-        heart.start();
+        heartThread.start();
     }
 
     public RmiServerRemote(int port) {
         super(port);
-        heart.start();
+        heartThread.start();
     }
 
     public RmiServerRemote(String hostName, int port) {
         super(hostName, port);
-        heart.start();
+        heartThread.start();
     }
 
     public Registry getRegistry() {
@@ -64,37 +64,36 @@ public class RmiServerRemote extends AbstractRmiServer {
         }
         return registry;
     }
-    
-	class HeartThread extends Thread {
-		private static final int MILLISECOND_PER_SECOND = 1000;
-		private boolean stop = false;
-		private int breathInterval = 5;
-		private boolean isDown = false;
-		
-		public void run() {
-			while (!stop) {
-				try {
-					sleep(breathInterval * MILLISECOND_PER_SECOND);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					stop = true;
-				}
-				try {
-					logger.logMessage(LogLevel.INFO,"开始向远端服务器{0}:{1}发起心跳检测",hostName,port);
-					registry.list();
-					if (isDown) {
-						isDown = false;
-						logger.logMessage(LogLevel.INFO,"开始重新向远端服务器{0}:{1}注册对象",hostName,port);
-						registerAllRemoteObject();
-						logger.logMessage(LogLevel.INFO,"重新向远端服务器{0}:{1}注册对象结束",hostName,port);
-					}
-					logger.logMessage(LogLevel.INFO,"向远端服务器{0}:{1}心跳检测结束",hostName,port);
-				} catch (RemoteException e) {
-					logger.errorMessage("向远端服务器{0}:{1}心跳检测失败",e,hostName,port);
-					isDown = true;
-				}
-			}
 
-		}
-	}
+    class HeartThread extends Thread {
+        private static final int MILLISECOND_PER_SECOND = 1000;
+        private boolean stop = false;
+        private int breathInterval = 5;
+        private boolean isDown = false;
+
+        public void run() {
+            while (!stop) {
+                try {
+                    sleep(breathInterval * MILLISECOND_PER_SECOND);
+                } catch (InterruptedException e) {
+                    continue;
+                }
+                try {
+                    logger.logMessage(LogLevel.INFO, "开始向远端服务器{0}:{1}发起心跳检测", hostName, port);
+                    registry.list();
+                    if (isDown) {
+                        logger.logMessage(LogLevel.INFO, "开始重新向远端服务器{0}:{1}注册对象", hostName, port);
+                        registerAllRemoteObject();
+                        logger.logMessage(LogLevel.INFO, "重新向远端服务器{0}:{1}注册对象结束", hostName, port);
+                        isDown = false;
+                    }
+                    logger.logMessage(LogLevel.INFO, "向远端服务器{0}:{1}心跳检测结束", hostName, port);
+                } catch (RemoteException e) {
+                    logger.errorMessage("向远端服务器{0}:{1}心跳检测失败", e, hostName, port);
+                    isDown = true;
+                }
+            }
+
+        }
+    }
 }

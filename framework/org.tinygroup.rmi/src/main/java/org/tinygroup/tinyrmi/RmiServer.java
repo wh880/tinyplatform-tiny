@@ -34,8 +34,10 @@ import java.util.List;
  * Created by luoguo on 14-1-10.
  */
 public interface RmiServer {
+    int DEFAULT_RMI_PORT = 8828;
+
     /**
-     * 返回注册表
+     * 返回远程对象注册表
      *
      * @return
      */
@@ -45,7 +47,7 @@ public interface RmiServer {
      * 注册并行对象，类型及ID
      *
      * @param type   注册的对象类型，可以重复
-     * @param id     注册的对象的ID，不可以重复
+     * @param id     注册的对象的ID，相同类型不可以重复，不同类型可以重复
      * @param object
      */
     void registerRemoteObject(Remote object, Class type, String id);
@@ -54,7 +56,7 @@ public interface RmiServer {
      * 注册并行对象
      *
      * @param type   注册的对象类型，可以重复
-     * @param id     注册的对象的ID，不可以重复
+     * @param id     注册的对象的ID，相同类型不可以重复，不同类型可以重复
      * @param object
      */
     void registerRemoteObject(Remote object, String type, String id);
@@ -62,7 +64,7 @@ public interface RmiServer {
     /**
      * 注册远程对象
      *
-     * @param name   名字如果重复，已经存在的对象将被替换
+     * @param name   名字如果重复，已经存在的对象将被替换，全局唯一
      * @param object
      */
     void registerRemoteObject(Remote object, String name);
@@ -77,18 +79,40 @@ public interface RmiServer {
 
 
     /**
-     * 注销远程对象
+     * 根据名称注销远程对象
      *
-     * @param name
+     * @param name 要注销的对象名
      */
     void unregisterRemoteObject(String name);
 
+    /**
+     * 根据类型注销远程对象
+     *
+     * @param type 要注销的对象类型，所有匹配的对象都会被注销
+     */
     void unregisterRemoteObjectByType(Class type);
 
+    /**
+     * 根据类型注销远程对象
+     *
+     * @param type
+     */
     void unregisterRemoteObjectByType(String type);
 
+    /**
+     * 根据类型注销远程对象
+     *
+     * @param type 要注销的类型
+     * @param id   要注销的ID
+     */
     void unregisterRemoteObject(String type, String id);
 
+    /**
+     * 根据类型注销远程对象
+     *
+     * @param type 要注销的类型
+     * @param id   要注销的ID
+     */
     void unregisterRemoteObject(Class type, String id);
 
 
@@ -121,6 +145,13 @@ public interface RmiServer {
      */
     <T> List<T> getRemoteObjectList(Class<T> type);
 
+    /**
+     * 返回某种类型的子类对象列表
+     *
+     * @param type
+     * @param <T>
+     * @return
+     */
     <T> List<T> getRemoteObjectListInstanceOf(Class<T> type);
 
     /**
@@ -133,11 +164,17 @@ public interface RmiServer {
     <T> List<T> getRemoteObjectList(String typeName);
 
     /**
-     * 停止所有提供远程访问的对象
+     * 停止所有提供远程访问的对象，会把注册在此远程服务中心的远程对象全部停止
      *
      * @throws RemoteException
      */
     void unexportObjects() throws RemoteException;
 
+    /**
+     * 停止具体的注册在此远程服务中心的本地对象
+     *
+     * @param object
+     * @throws RemoteException
+     */
     void unregisterRemoteObject(Remote object) throws RemoteException;
 }
