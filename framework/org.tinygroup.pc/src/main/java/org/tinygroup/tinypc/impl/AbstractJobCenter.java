@@ -27,7 +27,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinypc.*;
-import org.tinygroup.tinyrmi.RmiServer;
+import org.tinygroup.rmi.RmiServer;
 
 import java.io.IOException;
 import java.rmi.RemoteException;

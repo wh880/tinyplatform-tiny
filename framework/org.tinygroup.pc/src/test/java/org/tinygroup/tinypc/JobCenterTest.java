@@ -2,9 +2,9 @@ package org.tinygroup.tinypc;
 
 import junit.framework.TestCase;
 
-import org.tinygroup.tinyrmi.RmiServer;
-import org.tinygroup.tinyrmi.impl.RmiServerLocal;
-import org.tinygroup.tinyrmi.impl.RmiServerRemote;
+import org.tinygroup.rmi.RmiServer;
+import org.tinygroup.rmi.impl.RmiServerLocal;
+import org.tinygroup.rmi.impl.RmiServerRemote;
 
 /**
  * Created by luoguo on 14-1-24.

@@ -23,7 +23,7 @@
  */
 package org.tinygroup.tinypc;
 
-import org.tinygroup.tinyrmi.RemoteObject;
+import org.tinygroup.rmi.RemoteObject;
 
 import java.rmi.RemoteException;
 import java.util.List;

@@ -1,9 +1,9 @@
-package org.tinygroup.tinyrmi.test;
+package org.tinygroup.rmi.test;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-import org.tinygroup.tinyrmi.Verifiable;
+import org.tinygroup.rmi.Verifiable;
 
 /**
  * Created by luoguo on 14-1-24.

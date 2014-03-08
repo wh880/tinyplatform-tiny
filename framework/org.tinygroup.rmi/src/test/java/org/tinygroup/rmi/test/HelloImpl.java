@@ -1,4 +1,4 @@
-package org.tinygroup.tinyrmi.test;
+package org.tinygroup.rmi.test;
 
 import java.rmi.RemoteException;
 

@@ -1,7 +1,7 @@
 package org.tinygroup.tinypc.impl;
 
 import org.tinygroup.tinypc.WorkQueue;
-import org.tinygroup.tinyrmi.impl.RmiServerRemote;
+import org.tinygroup.rmi.impl.RmiServerRemote;
 
 import java.io.IOException;
 

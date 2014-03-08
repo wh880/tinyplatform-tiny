@@ -20,4 +20,8 @@ public class LongRangeSpliter implements RangeSpliter<Long> {
         }
         return pairList;
     }
+
+    public List<Range<Long>> split(Range<Long> range, int pieces) {
+        return split(range.getStart(), range.getEnd(), pieces);
+    }
 }

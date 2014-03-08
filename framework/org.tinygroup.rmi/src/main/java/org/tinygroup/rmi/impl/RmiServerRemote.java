@@ -21,7 +21,7 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.tinyrmi.impl;
+package org.tinygroup.rmi.impl;
 
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;

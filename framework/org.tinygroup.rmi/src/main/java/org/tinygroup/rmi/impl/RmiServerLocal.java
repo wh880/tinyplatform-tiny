@@ -21,12 +21,12 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.tinyrmi.impl;
+package org.tinygroup.rmi.impl;
 
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.tinyrmi.Verifiable;
+import org.tinygroup.rmi.Verifiable;
 
 import java.rmi.NotBoundException;
 import java.rmi.Remote;

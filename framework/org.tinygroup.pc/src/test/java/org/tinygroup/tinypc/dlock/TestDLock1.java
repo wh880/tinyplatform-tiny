@@ -25,9 +25,9 @@ package org.tinygroup.tinypc.dlock;
 
 import org.tinygroup.threadgroup.AbstractProcessor;
 import org.tinygroup.threadgroup.MultiThreadProcessor;
-import org.tinygroup.tinyrmi.RmiServer;
-import org.tinygroup.tinyrmi.impl.RmiServerLocal;
-import org.tinygroup.tinyrmi.impl.RmiServerRemote;
+import org.tinygroup.rmi.RmiServer;
+import org.tinygroup.rmi.impl.RmiServerLocal;
+import org.tinygroup.rmi.impl.RmiServerRemote;
 
 import java.rmi.RemoteException;
 

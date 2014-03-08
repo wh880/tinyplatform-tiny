@@ -1,9 +1,9 @@
-package org.tinygroup.tinyrmi.test;
+package org.tinygroup.rmi.test;
 
 import java.rmi.RemoteException;
 
-import org.tinygroup.tinyrmi.RmiServer;
-import org.tinygroup.tinyrmi.impl.RmiServerLocal;
+import org.tinygroup.rmi.RmiServer;
+import org.tinygroup.rmi.impl.RmiServerLocal;
 
 public class RmiRunServer {
 	

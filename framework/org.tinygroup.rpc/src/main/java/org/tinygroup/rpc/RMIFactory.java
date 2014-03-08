@@ -21,40 +21,39 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.rmi.util;
+package org.tinygroup.rpc;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
+import java.rmi.Naming;
 
-import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.event.Event;
+import org.apache.commons.pool.BasePoolableObjectFactory;
+import org.tinygroup.cepcore.exception.CEPConnectException;
+import org.tinygroup.event.central.Node;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.rmi.CEPCoreRMI;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.rpc.util.RMIRemoteUtil;
 
-public class CEPCoreRMIServer extends UnicastRemoteObject implements CEPCoreRMI {
+public class RMIFactory extends BasePoolableObjectFactory {
+	private static Logger logger = LoggerFactory.getLogger(RMIFactory.class);
+	private Node node;
 
-	private static final long serialVersionUID = -8595995795665087127L;
-	private static Logger logger = LoggerFactory
-			.getLogger(CEPCoreRMIServer.class);
-
-	public CEPCoreRMIServer() throws RemoteException {
-		super();
+	public RMIFactory(Node node) {
+		this.node = node;
 	}
 
-	public Event processFromRemote(Event event) throws RemoteException {
-		logger.logMessage(LogLevel.DEBUG,
-				"接收到远程请求,serivceId:{0}", event
-						.getServiceRequest().getServiceId());
-		CEPCore cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-		cep.process(event);
-		
-		logger.logMessage(LogLevel.DEBUG,
-				"处理远程请求完毕,serivceId:{0}", event
-						.getServiceRequest().getServiceId());
-		return event;
+	
+	public Object makeObject() throws Exception {
+		String url = RMIRemoteUtil.getURL(node);
+		CEPCoreRMI rmi = null;
+		try {
+			rmi = (CEPCoreRMI) Naming.lookup(url);
+		} catch (Exception e) {
+			logger.logMessage(LogLevel.ERROR, "获取连接失败,目标节点{0}:{1}:{2},{3}",
+					node.getIp(), node.getPort(), node.getNodeName(),
+					e.getMessage());
+			throw new CEPConnectException(e, node);
+		}
+		return rmi;
 	}
 
 }

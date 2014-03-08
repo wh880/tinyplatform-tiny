@@ -21,39 +21,13 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.rmi;
+package org.tinygroup.rpc.util;
 
-import java.rmi.Naming;
-
-import org.apache.commons.pool.BasePoolableObjectFactory;
-import org.tinygroup.cepcore.exception.CEPConnectException;
 import org.tinygroup.event.central.Node;
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.rmi.util.RMIRemoteUtil;
 
-public class RMIFactory extends BasePoolableObjectFactory {
-	private static Logger logger = LoggerFactory.getLogger(RMIFactory.class);
-	private Node node;
-
-	public RMIFactory(Node node) {
-		this.node = node;
+public class RMIRemoteUtil {
+	public static String getURL(Node node){
+		return String.format("//%s:%s/%s", node.getIp(),
+				node.getPort(), node.getNodeName());
 	}
-
-	
-	public Object makeObject() throws Exception {
-		String url = RMIRemoteUtil.getURL(node);
-		CEPCoreRMI rmi = null;
-		try {
-			rmi = (CEPCoreRMI) Naming.lookup(url);
-		} catch (Exception e) {
-			logger.logMessage(LogLevel.ERROR, "获取连接失败,目标节点{0}:{1}:{2},{3}",
-					node.getIp(), node.getPort(), node.getNodeName(),
-					e.getMessage());
-			throw new CEPConnectException(e, node);
-		}
-		return rmi;
-	}
-
 }

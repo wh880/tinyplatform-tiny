@@ -21,7 +21,7 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.rmi;
+package org.tinygroup.rpc;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -39,8 +39,8 @@ import org.tinygroup.event.central.Node;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.rmi.util.CEPCoreRMIServer;
-import org.tinygroup.rmi.util.RMIRemoteUtil;
+import org.tinygroup.rpc.util.CEPCoreRMIServer;
+import org.tinygroup.rpc.util.RMIRemoteUtil;
 
 public class CEPCoreRMIRemoteImpl implements CEPCoreRemoteInterface {
 	private static Logger logger = LoggerFactory

@@ -1,9 +1,9 @@
-package org.tinygroup.tinyrmi.test;
+package org.tinygroup.rmi.test;
 
 import java.rmi.RemoteException;
 
-import org.tinygroup.tinyrmi.RmiServer;
-import org.tinygroup.tinyrmi.impl.RmiServerRemote;
+import org.tinygroup.rmi.RmiServer;
+import org.tinygroup.rmi.impl.RmiServerRemote;
 
 public class RmiRunClient {
 	private static String SERVERIP = "192.168.84.52";

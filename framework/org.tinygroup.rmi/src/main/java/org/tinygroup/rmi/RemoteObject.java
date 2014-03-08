@@ -23,18 +23,12 @@
  */
 package org.tinygroup.rmi;
 
+import java.io.Serializable;
 import java.rmi.Remote;
-import java.rmi.RemoteException;
 
-import org.tinygroup.event.Event;
-
-public interface CEPCoreRMI extends Remote{
-	
-	/**
-	 * 远程调用接口
-	 * 由远端发起调用,将远端Event发送此处进行处理
-	 * @param event
-	 * @throws RemoteException
-	 */
-	Event processFromRemote(Event event) throws RemoteException;
+/**
+ * 远程服务对象接口
+ * Created by luoguo on 14-1-13.
+ */
+public interface RemoteObject extends Serializable, Remote {
 }

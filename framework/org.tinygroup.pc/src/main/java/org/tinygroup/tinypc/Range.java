@@ -1,10 +1,19 @@
 package org.tinygroup.tinypc;
 
 /**
- * 数的范围
+ * 数的范围，用于记录整数和长整数的范围
  * Created by luoguo on 14-3-3.
  */
 public class Range<T> {
+    /**
+     * 起始数
+     */
+    private T start;
+    /**
+     * 结束数
+     */
+    private T end;
+
     public Range() {
 
     }
@@ -13,9 +22,6 @@ public class Range<T> {
         this.start = start;
         this.end = end;
     }
-
-    T start;
-    T end;
 
     public void setStart(T start) {
         this.start = start;

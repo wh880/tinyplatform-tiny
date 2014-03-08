@@ -20,4 +20,8 @@ public class IntegerRangeSpliter implements RangeSpliter<Integer> {
         }
         return pairList;
     }
+
+    public List<Range<Integer>> split(Range<Integer> range, int pieces) {
+        return split(range.getStart(), range.getEnd(), pieces);
+    }
 }

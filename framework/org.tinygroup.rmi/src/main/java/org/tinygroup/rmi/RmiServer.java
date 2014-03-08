@@ -21,7 +21,7 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.tinyrmi;
+package org.tinygroup.rmi;
 
 
 import java.rmi.Remote;
