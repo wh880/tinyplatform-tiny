@@ -38,9 +38,19 @@ public interface Work extends Serializable {
      * @return
      */
     String getType();
-    
+
+    /**
+     * 返回对应的包工头类型，如果没有包工头类型，则使用默认类型
+     *
+     * @return
+     */
     String getForemanType();
 
+    /**
+     * 返回唯一ID
+     *
+     * @return
+     */
     String getId();
 
     /**

@@ -23,10 +23,6 @@
  */
 package org.tinygroup.tinypc.impl;
 
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -35,75 +31,75 @@ import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.Worker;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by luoguo on 14-1-8.
  */
 public class WorkExecutor extends AbstractProcessor {
 
-	private final Worker worker;
-	private final Work work;
-	private final List<Warehouse> warehouseList;
-	private final List<Worker> workers;
-	private static Logger logger = LoggerFactory.getLogger(WorkExecutor.class);
+    private final Worker worker;
+    private final Work work;
+    private final List<Warehouse> warehouseList;
+    private final List<Worker> workers;
+    private static Logger logger = LoggerFactory.getLogger(WorkExecutor.class);
 
-	public WorkExecutor(Work work, Worker worker,
-			List<Warehouse> warehouseList, List<Worker> workers)
-			throws RemoteException {
-		super(worker.getId());
-		this.worker = worker;
-		this.work = work;
-		this.warehouseList = warehouseList;
-		this.workers = cloneWorkers(workers);
-	}
+    public WorkExecutor(Work work, Worker worker, List<Warehouse> warehouseList, List<Worker> workers)
+            throws RemoteException {
+        super(worker.getId());
+        this.worker = worker;
+        this.work = work;
+        this.warehouseList = warehouseList;
+        this.workers = cloneWorkers(workers);
+    }
 
-	public List<Worker> cloneWorkers(List<Worker> acceptWorkers) {
-		List<Worker> workers = new ArrayList<Worker>();
-		for (Worker woker : acceptWorkers) {
-			workers.add(woker);
-		}
-		return workers;
-	}
+    public List<Worker> cloneWorkers(List<Worker> acceptWorkers) {
+        List<Worker> workers = new ArrayList<Worker>();
+        for (Worker woker : acceptWorkers) {
+            workers.add(woker);
+        }
+        return workers;
+    }
 
 
-	protected void action() throws Exception {
-		List<Worker> workersActived = new ArrayList<Worker>();
-		workersActived.add(worker);
-		workers.remove(worker);
-		doWork(worker, workersActived);
-	}
+    protected void action() throws Exception {
+        List<Worker> workersActived = new ArrayList<Worker>();
+        workersActived.add(worker);
+        workers.remove(worker);
+        doWork(worker, workersActived);
+    }
 
-	private void doWork(Worker w, List<Worker> workersActived)
-			throws RemoteException {
-		Warehouse warehouse = null;
-		try {
-			logger.logMessage(LogLevel.DEBUG, "worker:{0}开始执行", w.getId());
-			warehouse = w.work(work);
-			logger.logMessage(LogLevel.DEBUG, "worker:{0}执行完成", w.getId());
-		} catch (Exception e) {
-			logger.errorMessage("worker:{0}工作时发生异常", e, w.getId());
-			reAction(workersActived);
-		}
-		synchronized (warehouseList) {
-			warehouseList.add(warehouse);
-		}
-	}
+    private void doWork(Worker w, List<Worker> workersActived) throws RemoteException {
+        Warehouse warehouse = null;
+        try {
+            logger.logMessage(LogLevel.DEBUG, "worker:{0}开始执行", w.getId());
+            warehouse = w.work(work);
+            logger.logMessage(LogLevel.DEBUG, "worker:{0}执行完成", w.getId());
+        } catch (Exception e) {
+            logger.errorMessage("worker:{0}工作时发生异常", e, w.getId());
+            redoWork(workersActived);
+        }
+        synchronized (warehouseList) {
+            warehouseList.add(warehouse);
+        }
+    }
 
-	private void reAction(List<Worker> workersActived) throws RemoteException {
-		logger.logMessage(LogLevel.DEBUG, "开始重新查找worker");
-		Worker redoWorker = null;
-		for (Worker worker : workers) {
-			if (worker.acceptWork(work)) {
-				logger.logMessage(LogLevel.DEBUG, "查找到worker:{0}",
-						worker.getId());
-				redoWorker = worker;
-				workersActived.add(worker);
-			}
-		}
-		if (redoWorker == null) {
-			throw new RuntimeException(String.format("没有对应于work:%s的工人",
-					work.getType()));
-		}
-		workers.remove(redoWorker);
-		doWork(redoWorker, workersActived);
-	}
+    private void redoWork(List<Worker> workersActived) throws RemoteException {
+        logger.logMessage(LogLevel.DEBUG, "开始重新查找worker");
+        Worker redoWorker = null;
+        for (Worker worker : workers) {
+            if (worker.acceptWork(work)) {
+                logger.logMessage(LogLevel.DEBUG, "查找到worker:{0}", worker.getId());
+                redoWorker = worker;
+                workersActived.add(worker);
+            }
+        }
+        if (redoWorker == null) {
+            throw new RuntimeException(String.format("没有对应于work:%s的工人", work.getType()));
+        }
+        workers.remove(redoWorker);
+        doWork(redoWorker, workersActived);
+    }
 }
