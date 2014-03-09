@@ -24,61 +24,63 @@
 package org.tinygroup.queue;
 
 /**
- * Created by IntelliJ IDEA. User: luoguo Date: 11-3-30 Time: 下午1:30 To change
- * this template use File | Settings | File Templates.
+ * 队列接口
+ * Created by IntelliJ IDEA. User: luoguo
  */
 public interface Queue<E> extends QueueMonitor {
-	int DEFAULT_QUEUE_SIZE = 500;
+    /**
+     * 默认优先队列大小
+     */
+    int DEFAULT_QUEUE_SIZE = 500;
 
-	/**
-	 * 添加元素到队列中.
-	 * 
-	 * @param e
-	 *            要增加的元素
-	 */
-	void offer(E e);
+    /**
+     * 添加元素到队列中.
+     *
+     * @param e 要增加的元素
+     */
+    void offer(E e);
 
-	/**
-	 * 从队列头部取一个数据并且把它删除掉，如果队列为空，则返回NULL
-	 * 
-	 * @return 元素
-	 */
-	E poll();
+    /**
+     * 从队列头部取一个数据并且把它删除掉，如果队列为空，则返回NULL
+     *
+     * @return 元素
+     */
+    E poll();
 
-	/**
-	 * 从队列头部取一个元素并且把它删除掉，如果队列为空，则抛出异常
-	 * 
-	 * @return
-	 */
-	E remove();
+    /**
+     * 从队列头部取一个元素并且把它删除掉，如果队列为空，则抛出异常
+     *
+     * @return
+     */
+    E remove();
 
-	/**
-	 * 从队列头部取一个元素，但是不删除。如果队列为空，则返回NULL
-	 * 
-	 * @return
-	 */
-	E peek();
+    /**
+     * 从队列头部取一个元素，但是不删除。如果队列为空，则返回NULL
+     *
+     * @return
+     */
+    E peek();
 
-	int size();
+    int size();
 
-	/**
-	 * 从队列头部取一个元素，但是不删除。如果队列为空，则抛出异常
-	 * 
-	 * @return
-	 */
-	E element();
+    /**
+     * 从队列头部取一个元素，但是不删除。如果队列为空，则抛出异常
+     *
+     * @return
+     */
+    E element();
 
-	/**
-	 * 返回队列是否为空
-	 * 
-	 * @return
-	 */
-	boolean isEmpty();
+    /**
+     * 返回队列是否为空
+     *
+     * @return
+     */
+    boolean isEmpty();
 
-	/**
-	 * 返回是否满
-	 * 
-	 * @return
-	 */
-	boolean isFull();
+    /**
+     * 返回是否满
+     *
+     * @return
+     */
+    boolean isFull();
 }

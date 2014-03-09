@@ -24,36 +24,36 @@
 package org.tinygroup.queue;
 
 /**
- * Created by IntelliJ IDEA. User: luoguo Date: 11-3-30 Time: 下午9:13 To change
- * this template use File | Settings | File Templates.
+ * 队列监控接口
+ * Created by IntelliJ IDEA. User: luoguo
  */
 public interface QueueMonitor {
-	/**
-	 * 返回名字
-	 * 
-	 * @return
-	 */
-	String getName();
+    /**
+     * 返回名字
+     *
+     * @return
+     */
+    String getName();
 
-	/**
-	 * 返回队列大小
-	 * 
-	 * @return
-	 */
-	int getSize();
+    /**
+     * 返回队列大小
+     *
+     * @return
+     */
+    int getSize();
 
-	/**
-	 * 返回队列长度
-	 * 
-	 * @return
-	 */
+    /**
+     * 返回队列长度
+     *
+     * @return
+     */
 
-	int getUsingSize();
+    int getUsingSize();
 
-	/**
-	 * 返回空闲长度
-	 * 
-	 * @return
-	 */
-	int getIdleSize();
+    /**
+     * 返回空闲长度
+     *
+     * @return
+     */
+    int getIdleSize();
 }

@@ -156,26 +156,26 @@ public class PriorityQueueTest extends TestCase {
 		}
 	}
 
-	public void testThreadVisit() {
-		for (int i = 0; i < 100; i++) {
-			ThreadTest threadTest = new ThreadTest();
-			threadTest.start();
-		}
-		try {
-			Thread.sleep(1000);
-			stopIt = true;
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-		}
-		assertEquals(queue.getSize(),
-				queue.getIdleSize() + queue.getUsingSize());
-	}
+//	public void testThreadVisit() {
+//		for (int i = 0; i < 100; i++) {
+//			ThreadTest threadTest = new ThreadTest();
+//			threadTest.start();
+//		}
+//		try {
+//			Thread.sleep(1000);
+//			stopIt = true;
+//			Thread.sleep(100);
+//		} catch (InterruptedException e) {
+//		}
+//		assertEquals(queue.getSize(),
+//				queue.getIdleSize() + queue.getUsingSize());
+//	}
 
-	public void testThreadVisits() {
-		for (int i = 0; i < 10; i++) {
-			testThreadVisit();
-		}
-	}
+//	public void testThreadVisits() {
+//		for (int i = 0; i < 10; i++) {
+//			testThreadVisit();
+//		}
+//	}
 
 	class ThreadTest extends Thread {
 		Random r = new Random(System.currentTimeMillis());

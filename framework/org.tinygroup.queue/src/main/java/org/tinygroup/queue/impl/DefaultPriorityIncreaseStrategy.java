@@ -27,22 +27,19 @@ import org.tinygroup.queue.PriorityIncreaseStrategy;
 import org.tinygroup.queue.PriorityQueue;
 
 /**
- * Created by IntelliJ IDEA. User: luoguo Date: 11-3-31 Time: 上午8:54 To change
- * this template use File | Settings | File Templates.
+ * 默认的优先级提升策略
  */
-public class DefaultPriorityIncreaseStrategy<E> implements
-		PriorityIncreaseStrategy<E> {
-	// 什么时候进行优先级提升，默认设定调用次数是阶列大小的时候，如果要调整提升策略，就可以修改此段代码
-	public void increasePriority(PriorityQueue<E> queue) {
-		PriorityQueueImpl<E> priorityQueue = (PriorityQueueImpl<E>) queue;
-		if (priorityQueue.getCallTimes() == priorityQueue.getSize()) {
-			synchronized (priorityQueue.dateQueueListArray) {
-				for (int i = priorityQueue.getReverseLevel(); i < priorityQueue.dateQueueListArray.length - 1; i++) {
-					priorityQueue.dateQueueListArray[i]
-							.addAll(priorityQueue.dateQueueListArray[i + 1]);
-				}
-			}
-		}
-	}
+public class DefaultPriorityIncreaseStrategy<E> implements PriorityIncreaseStrategy<E> {
+    public void increasePriority(PriorityQueue<E> queue) {
+        PriorityQueueImpl<E> priorityQueue = (PriorityQueueImpl<E>) queue;
+        // 默认设定调用次数是队列大小的时候触发优先提升
+        if (priorityQueue.getCallTimes() == priorityQueue.getSize()) {
+            synchronized (priorityQueue.dateQueueListArray) {
+                for (int i = priorityQueue.getReverseLevel(); i < priorityQueue.dateQueueListArray.length - 1; i++) {
+                    priorityQueue.dateQueueListArray[i].addAll(priorityQueue.dateQueueListArray[i + 1]);
+                }
+            }
+        }
+    }
 
 }

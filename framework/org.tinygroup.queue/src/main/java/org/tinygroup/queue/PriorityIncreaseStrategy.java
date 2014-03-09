@@ -24,9 +24,17 @@
 package org.tinygroup.queue;
 
 /**
- * Created by IntelliJ IDEA. User: luoguo Date: 11-3-31 Time: 上午8:53 To change
+ * 优先队列优先级提升策略
+ * Created by IntelliJ IDEA. User: luoguo
+ * Date: 11-3-31 Time: 上午8:53 To change
  * this template use File | Settings | File Templates.
  */
+
 public interface PriorityIncreaseStrategy<E> {
-	void increasePriority(PriorityQueue<E> queue);
+    /**
+     * 对优级队列中的优先级别进行提升
+     *
+     * @param queue
+     */
+    void increasePriority(PriorityQueue<E> queue);
 }
