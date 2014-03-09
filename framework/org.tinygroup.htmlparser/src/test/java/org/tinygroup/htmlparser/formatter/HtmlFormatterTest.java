@@ -42,7 +42,7 @@ public class HtmlFormatterTest extends TestCase {
     public void testFormatDocumentSelfHtmlDocument() {
         HtmlDocument doc;
         try {
-            doc = new HtmlStringParser().parse("<html 中='文'><HEAD><title>aaa</title></head></html>");
+            doc = new HtmlStringParser().parse("<html 中='文'><!--abc--><HEAD><title>aaa</title></head></html>");
             doc.write(System.out);
             System.out.println("\n================================\n");
             HtmlFormater f = new HtmlFormater();

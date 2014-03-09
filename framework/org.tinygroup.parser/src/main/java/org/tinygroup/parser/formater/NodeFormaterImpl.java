@@ -104,7 +104,7 @@ public abstract class NodeFormaterImpl<T extends Document<N>, N extends Node<N>>
             }
         }
         node.getFooter(sb);
-        if (node.getNodeName() != null) {
+        if (node.getNodeName() != null || node.getNodeType().getHead().getStart() != null) {
             sb.append(NEWLINE);
         }
     }

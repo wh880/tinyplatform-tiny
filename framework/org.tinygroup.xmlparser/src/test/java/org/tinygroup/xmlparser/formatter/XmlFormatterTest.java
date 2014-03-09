@@ -42,8 +42,7 @@ public class XmlFormatterTest extends TestCase {
     public void testFormatDocumentSelfHtmlDocument() {
         try {
             XmlDocument doc;
-            doc = new XmlStringParser().parse("<html 中='文'><head><title>aaa</title></head></html>");
-            doc.write(System.out);
+            doc = new XmlStringParser().parse("<html 中='文'><!--abc--><head><title>aaa</title></head></html>");
             XmlFormater f = new XmlFormater();
             System.out.println(f.format(doc));
         } catch (Exception e) {
