@@ -5,8 +5,7 @@
     <artifactId>framework</artifactId>
     <version>0.1.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.tinygroup</groupId>
-  <artifactId>org.tinygroup.spider</artifactId>
+  <artifactId>org.tinygroup.httpvisit</artifactId>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,13 +18,13 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.httpvisit</artifactId>
-      <version>${project.version}</version>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.1</version>
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.htmlparser</artifactId>
+      <artifactId>org.tinygroup.logger</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

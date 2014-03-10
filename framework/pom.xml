@@ -8,6 +8,7 @@
     <artifactId>framework</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>org.tinygroup.httpvisit</module>
         <module>org.tinygroup.spider</module>
         <module>org.tinygroup.binarytree</module>
         <module>org.tinygroup.parser</module>
