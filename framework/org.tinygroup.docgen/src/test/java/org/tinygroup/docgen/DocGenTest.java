@@ -74,7 +74,7 @@ public class DocGenTest extends TestCase {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
         manager.getFileGenerater("doc").generate("/common.docpage", new ContextImpl(), writer);
         outputStream.close();
-        file.delete();
+        //file.delete();
     }
 
     /**
@@ -89,7 +89,7 @@ public class DocGenTest extends TestCase {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
         manager.getFileGenerater("doc").generate("/paragraph.docpage", new ContextImpl(), writer);
         outputStream.close();
-        file.delete();
+        //file.delete();
     }
 
     /**
@@ -104,7 +104,7 @@ public class DocGenTest extends TestCase {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
         manager.getFileGenerater("doc").generate("/catalogue.docpage", new ContextImpl(), writer);
         outputStream.close();
-        file.delete();
+        //file.delete();
     }
 
     /**
@@ -121,7 +121,7 @@ public class DocGenTest extends TestCase {
         context.put("imageUtil", ImageUtil.class);
         manager.getFileGenerater("doc").generate("/picture.docpage", context, writer);
         outputStream.close();
-        file.delete();
+        //file.delete();
     }
 
     /**
@@ -136,7 +136,7 @@ public class DocGenTest extends TestCase {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
         manager.getFileGenerater("doc").generate("/table.docpage", new ContextImpl(), writer);
         outputStream.close();
-        file.delete();
+        //file.delete();
     }
 
     /**
@@ -151,7 +151,7 @@ public class DocGenTest extends TestCase {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
         manager.getFileGenerater("doc").generate("/bullets.docpage", new ContextImpl(), writer);
         outputStream.close();
-        file.delete();
+        //file.delete();
     }
 
     /**
@@ -166,7 +166,7 @@ public class DocGenTest extends TestCase {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
         manager.getFileGenerater("doc").generate("/pageHeaderTail.docpage", new ContextImpl(), writer);
         outputStream.close();
-        file.delete();
+        //file.delete();
     }
 
 }

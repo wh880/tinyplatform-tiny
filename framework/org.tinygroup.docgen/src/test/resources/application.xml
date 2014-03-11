@@ -12,8 +12,6 @@
 		<full-context-file-finder>
 			<file ext-name="docpage" content-type="application/text" />
 			<file ext-name="xlspage" content-type="application/text" />
-			<file ext-name="doctemplate" content-type="application/text" />
-			<file ext-name="xlstemplate" content-type="application/text" />
 		</full-context-file-finder>
 	</file-resolver-configuration>
 	<application-processors>
