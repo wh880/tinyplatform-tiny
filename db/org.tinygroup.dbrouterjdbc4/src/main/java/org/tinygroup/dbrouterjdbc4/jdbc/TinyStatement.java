@@ -45,6 +45,7 @@ import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
 import org.tinygroup.dbrouterjdbc4.thread.ExecuteQueryCallBack;
+import org.tinygroup.dbrouterjdbc4.thread.ExecuteUpdateCallBack;
 import org.tinygroup.dbrouterjdbc4.thread.MultiThreadStatementProcessor;
 import org.tinygroup.dbrouterjdbc4.thread.StatementProcessorCallBack;
 import org.tinygroup.jsqlparser.statement.select.Select;
@@ -174,44 +175,36 @@ public class TinyStatement implements Statement {
 				throw new RuntimeException(
 						"primary slave mode exist one more write database,the connection autocommit must set false");
 			}
-//			double cpuRatio = 0;
-//			try {
-//				long startTime = System.currentTimeMillis();
-//				cpuRatio = CpuMonitorUtil.getCpuRatio();
-//				long endTime = System.currentTimeMillis();
-//				logger.logMessage(LogLevel.INFO, "获取cpu使用率时间：{}",endTime-startTime);
-//			} catch (Exception e) {
-//				logger.errorMessage("获取cpu使用率出错", e);
-//			}
-//			if (cpuRatio < router.getCpuRatio()) {
-//				MultiThreadProcessor processors = new MultiThreadProcessor(
-//						"executeUpdate-threads");
-//				int threadSize = statements.size();
-//				List<MultiThreadStatementProcessor<Integer>> threadProcessors = new ArrayList<MultiThreadStatementProcessor<Integer>>();
-//				for (int j = 0; j < threadSize; j++) {
-//					RealStatementExecutor realStatementExecutor = statements
-//							.get(j);
-//					MultiThreadStatementProcessor<Integer> processor = new MultiThreadStatementProcessor<Integer>(
-//							String.format("statement-processor-thread-%d", j),
-//							realStatementExecutor);
-//					StatementProcessorCallBack<Integer> callBack = new ExecuteUpdateCallBack();
-//					processor.setCallBack(callBack);
-//					processors.addProcessor(processor);
-//					threadProcessors.add(processor);
-//				}
-//				long startTime = System.currentTimeMillis();
-//				processors.start();
-//				long endTime = System.currentTimeMillis();
-//				logger.logMessage(LogLevel.INFO, "线程组:<{}>执行时间：{}",
-//						"executeUpdate-threads", endTime - startTime);
-//				for (MultiThreadStatementProcessor<Integer> threadProcessor : threadProcessors) {
-//					updateCount+=threadProcessor.getResult();
-//				}
-//			} else {
+			double cpuRatio = MonitorUtil.getCpuUsage();
+			if (cpuRatio < router.getCpuRatio()) {
+				MultiThreadProcessor processors = new MultiThreadProcessor(
+						"executeUpdate-threads");
+				int threadSize = statements.size();
+				List<MultiThreadStatementProcessor<Integer>> threadProcessors = new ArrayList<MultiThreadStatementProcessor<Integer>>();
+				for (int j = 0; j < threadSize; j++) {
+					RealStatementExecutor realStatementExecutor = statements
+							.get(j);
+					MultiThreadStatementProcessor<Integer> processor = new MultiThreadStatementProcessor<Integer>(
+							String.format("statement-processor-thread-%d", j),
+							realStatementExecutor);
+					StatementProcessorCallBack<Integer> callBack = new ExecuteUpdateCallBack();
+					processor.setCallBack(callBack);
+					processors.addProcessor(processor);
+					threadProcessors.add(processor);
+				}
+				long startTime = System.currentTimeMillis();
+				processors.start();
+				long endTime = System.currentTimeMillis();
+				logger.logMessage(LogLevel.INFO, "线程组:<{}>执行时间：{}",
+						"executeUpdate-threads", endTime - startTime);
+				for (MultiThreadStatementProcessor<Integer> threadProcessor : threadProcessors) {
+					updateCount += threadProcessor.getResult();
+				}
+			} else {
 				for (RealStatementExecutor statement : statements) {
 					updateCount += statement.executeUpdate();
 				}
-//			}
+			}
 
 			return updateCount;
 		}
