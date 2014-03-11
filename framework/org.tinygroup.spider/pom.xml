@@ -3,11 +3,10 @@
   <parent>
     <groupId>org.tinygroup</groupId>
     <artifactId>framework</artifactId>
-    <version>0.0.13-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
   </parent>
   <groupId>org.tinygroup</groupId>
   <artifactId>org.tinygroup.spider</artifactId>
-  <version>0.0.13-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,12 +20,12 @@
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>httpvisit</artifactId>
+      <artifactId>org.tinygroup.httpvisit</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>htmlparser</artifactId>
+      <artifactId>org.tinygroup.htmlparser</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
