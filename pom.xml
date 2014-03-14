@@ -228,7 +228,7 @@
                         </dependency>
                     </dependencies>
                     <configuration>
-                        <contextPath>/${project.artifactId}</contextPath>
+                        <contextPath>/${project.name}</contextPath>
                         <scanIntervalSeconds>10</scanIntervalSeconds>
                         <stopKey>foo</stopKey>
                         <stopPort>9999</stopPort>

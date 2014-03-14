@@ -184,4 +184,9 @@ public interface BeanOperatorManager {
 	 * @return
 	 */
 	boolean existsTable(String beanType,String schema);
+	/**
+	 * 添加表信息
+	 * @param configuration
+	 */
+	void addTableConfiguration(TableConfiguration configuration);
 }

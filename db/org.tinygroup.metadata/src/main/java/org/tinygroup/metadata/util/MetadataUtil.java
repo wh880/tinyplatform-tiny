@@ -25,9 +25,11 @@ package org.tinygroup.metadata.util;
 
 import java.util.List;
 
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.metadata.bizdatatype.BusinessTypeProcessor;
 import org.tinygroup.metadata.config.PlaceholderValue;
 import org.tinygroup.metadata.config.bizdatatype.BusinessType;
+import org.tinygroup.metadata.config.stddatatype.DialectType;
 import org.tinygroup.metadata.config.stddatatype.StandardType;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.stddatatype.StandardTypeProcessor;
@@ -75,6 +77,39 @@ public final class MetadataUtil {
 		String datatype = standardFieldProcessor.getType(stdFieldId, type);
 		return datatype;
 	}
+	
+	public static DialectType getDialectType(String stdFieldId, String type) {
+		StandardType standardType=getStandardType(stdFieldId);
+		List<DialectType> dialectTypes=standardType.getDialectTypeList();
+		if(!CollectionUtil.isEmpty(dialectTypes)){
+			for (DialectType dialectType : dialectTypes) {
+				if (dialectType.getLanguage().equals(type)) {
+					return dialectType;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String getPlaceholderValue(String stdFieldId,String holderName){
+		return getPlaceholderValue(stdFieldId, holderName,null);
+	}
+	
+	public static String getPlaceholderValue(String stdFieldId,String holderName,String defaultValue){
+		BusinessType businessType=getBusinessType(stdFieldId);
+		List<PlaceholderValue> values=businessType.getPlaceholderValueList();
+		if(!CollectionUtil.isEmpty(values)){
+			String[] names=holderName.split(",");
+			for (String name : names) {
+				for (PlaceholderValue value : values) {
+					if(value.getName().equals(name)){
+						return value.getValue();
+					}
+				}
+			}
+		}
+		return defaultValue;
+	}
 
 	public static StandardType getStandardType(String fieldId) {
 		StandardField field = getStandardField(fieldId);
@@ -85,6 +120,15 @@ public final class MetadataUtil {
 		StandardTypeProcessor standardTypeProcessor = SpringUtil
 				.getBean(MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
 		return standardTypeProcessor.getStandardType(businessType.getTypeId());
+	}
+	
+	public static BusinessType getBusinessType(String fieldId) {
+		StandardField field = getStandardField(fieldId);
+		BusinessTypeProcessor businessTypeProcessor = SpringUtil
+				.getBean(MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
+		BusinessType businessType = businessTypeProcessor
+				.getBusinessTypes(field.getTypeId());
+		return businessType;
 	}
 	
 	public static StandardType getStandardType(StandardField field) {

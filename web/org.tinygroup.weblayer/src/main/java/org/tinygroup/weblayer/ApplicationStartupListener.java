@@ -119,10 +119,10 @@ public class ApplicationStartupListener implements ServletContextListener {
 				application = new ApplicationDefault(applicationConfig);
 				SpringUtil.init();
 				loadSpringBeans(applicationConfig);
-				application.start();
 			} catch (Exception e) {
 				logger.errorMessage("载入应用配置信息时出错，错误原因：{}！", e, e.getMessage());
 			}
+			application.start();
 		}
 
 		logger.logMessage(LogLevel.INFO, "WEB 应用启动完成。");
