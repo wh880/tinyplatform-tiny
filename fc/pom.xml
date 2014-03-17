@@ -10,5 +10,6 @@
   <modules>
     <module>org.tinygroup.flowbasiccomponent</module>
     <module>org.tinygroup.flowservicecomponent</module>
+    <module>org.tinygroup.tinydbflowcomponent</module>
   </modules>
 </project>
