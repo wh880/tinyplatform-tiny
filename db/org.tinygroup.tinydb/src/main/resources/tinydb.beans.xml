@@ -28,4 +28,8 @@
 		<property name="manager" ref="beanOperatorManager" />
 	</bean>
 	
+	<bean id="tableConvertBeanProcessor" scope="singleton"
+		class="org.tinygroup.tinydb.applicationprocessor.TableConvertBeanProcessor">
+	</bean>
+	
 </beans>

@@ -213,11 +213,8 @@ public class BeanManagerImpl implements BeanOperatorManager {
 			while (rset.next()) {
 				table.setPrimaryKey(rset.getString(PK_NAME));
 			}
-			if (!tableMap.containsKey(schema)) {
-				tableMap.put(schema, new HashMap<String, TableConfiguration>());
-			}
-			tableMap.get(schema).put(tableName, table);
-
+			table.setSchema(schema);
+			addTableConfiguration(table);
 			logger.logMessage(LogLevel.INFO, "获取表格:{0}信息完成", tableName);
 		} else {
 			logger.logMessage(LogLevel.ERROR, "未能获取表格:{0}信息", tableName);
@@ -394,5 +391,14 @@ public class BeanManagerImpl implements BeanOperatorManager {
 					ischema + "." + tableName);
 		}
 		return true;
+	}
+
+	public void addTableConfiguration(TableConfiguration configuration) {
+		String schema=configuration.getSchema();
+		if (!tableMap.containsKey(schema)) {
+			tableMap.put(schema, new HashMap<String, TableConfiguration>());
+		}
+		tableMap.get(schema).put(configuration.getName(), configuration);
+		
 	}
 }

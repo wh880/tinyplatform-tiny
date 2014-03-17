@@ -44,6 +44,8 @@ public class TableConfiguration implements Serializable {
 	 * 表名
 	 */
 	private String name;
+	
+	private String schema;
 	/**
 	 * 字段信息列表
 	 */
@@ -63,6 +65,15 @@ public class TableConfiguration implements Serializable {
 
 	public void setColumns(List<ColumnConfiguration> columns) {
 		this.columns = columns;
+	}
+	
+
+	public String getSchema() {
+		return schema;
+	}
+
+	public void setSchema(String schema) {
+		this.schema = schema;
 	}
 
 	public void setPrimaryKey(String columnName) {
@@ -86,6 +97,14 @@ public class TableConfiguration implements Serializable {
 			}
 		}
 		throw new RuntimeException("找不到主键字段！");
+	}
+	
+	public void addColumn(ColumnConfiguration column){
+		columns.add(column);
+	}
+	
+	public void removeColumn(ColumnConfiguration column){
+		columns.remove(column);
 	}
 
 }

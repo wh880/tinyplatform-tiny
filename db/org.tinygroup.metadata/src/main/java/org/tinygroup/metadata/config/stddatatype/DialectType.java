@@ -41,7 +41,13 @@ public class DialectType {
 	@XStreamAsAttribute
 	private String language;// 语言
 	@XStreamAsAttribute
-	private String type;// 类型
+	private String type;// 类型 带长度或者精度的，例如varchar20
+	@XStreamAsAttribute
+	@XStreamAlias("type-name")
+	private String typeName;//不带长度与精度的，例如varchar，用于指定数据源依赖的类型名称
+	@XStreamAlias("data-type")
+	@XStreamAsAttribute
+	private int dataType;//用于指定java.sql.Types 的 SQL 类型 
 	@XStreamAsAttribute
 	@XStreamAlias("default-value")
 	private String defaultValue;// 默认值
@@ -80,5 +86,24 @@ public class DialectType {
 			List<PlaceholderValue> placeholderValueList) {
 		this.placeholderValueList = placeholderValueList;
 	}
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public int getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(int dataType) {
+		this.dataType = dataType;
+	}
+
+	
+	
 
 }
