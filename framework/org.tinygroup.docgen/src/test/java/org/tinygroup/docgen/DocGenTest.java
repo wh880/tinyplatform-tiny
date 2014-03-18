@@ -51,114 +51,7 @@ public class DocGenTest extends TestCase {
 		super.tearDown();
 	}
 
-<<<<<<< HEAD
-    /**
-     * 书签，链接
-     *
-     * @throws Exception
-     */
-    public void testCommon() throws Exception {
-        DocumentGeneraterManager manager = SpringUtil.getBean(DocumentGeneraterManager.MANAGER_BEAN_NAME);
-        File file = new File("常用.xml");
-        FileOutputStream outputStream = new FileOutputStream(file);
-        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-        manager.getFileGenerater("doc").generate("/common.docpage", new ContextImpl(), writer);
-        outputStream.close();
-        //file.delete();
-    }
 
-    /**
-     * 段落
-     *
-     * @throws Exception
-     */
-    public void testParagraph() throws Exception {
-        DocumentGeneraterManager manager = SpringUtil.getBean(DocumentGeneraterManager.MANAGER_BEAN_NAME);
-        File file = new File("段落.xml");
-        FileOutputStream outputStream = new FileOutputStream(file);
-        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-        manager.getFileGenerater("doc").generate("/paragraph.docpage", new ContextImpl(), writer);
-        outputStream.close();
-        //file.delete();
-    }
-
-    /**
-     * 目录
-     *
-     * @throws Exception
-     */
-    public void testCatalogue() throws Exception {
-        DocumentGeneraterManager manager = SpringUtil.getBean(DocumentGeneraterManager.MANAGER_BEAN_NAME);
-        File file = new File("目录.xml");
-        FileOutputStream outputStream = new FileOutputStream(file);
-        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-        manager.getFileGenerater("doc").generate("/catalogue.docpage", new ContextImpl(), writer);
-        outputStream.close();
-        //file.delete();
-    }
-
-    /**
-     * 图片
-     *
-     * @throws Exception
-     */
-    public void testPicture() throws Exception {
-        DocumentGeneraterManager manager = SpringUtil.getBean(DocumentGeneraterManager.MANAGER_BEAN_NAME);
-        File file = new File("图片.xml");
-        FileOutputStream outputStream = new FileOutputStream(file);
-        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-        Context context = new ContextImpl();
-        context.put("imageUtil", ImageUtil.class);
-        manager.getFileGenerater("doc").generate("/picture.docpage", context, writer);
-        outputStream.close();
-        //file.delete();
-    }
-
-    /**
-     * 表格
-     *
-     * @throws Exception
-     */
-    public void testTable() throws Exception {
-        DocumentGeneraterManager manager = SpringUtil.getBean(DocumentGeneraterManager.MANAGER_BEAN_NAME);
-        File file = new File("表格.xml");
-        FileOutputStream outputStream = new FileOutputStream(file);
-        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-        manager.getFileGenerater("doc").generate("/table.docpage", new ContextImpl(), writer);
-        outputStream.close();
-        //file.delete();
-    }
-
-    /**
-     * 项目标号
-     *
-     * @throws Exception
-     */
-    public void testBullets() throws Exception {
-        DocumentGeneraterManager manager = SpringUtil.getBean(DocumentGeneraterManager.MANAGER_BEAN_NAME);
-        File file = new File("项目标号.xml");
-        FileOutputStream outputStream = new FileOutputStream(file);
-        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-        manager.getFileGenerater("doc").generate("/bullets.docpage", new ContextImpl(), writer);
-        outputStream.close();
-        //file.delete();
-    }
-
-    /**
-     * 页眉，页脚，页码
-     *
-     * @throws Exception
-     */
-    public void testPageHeader() throws Exception {
-        DocumentGeneraterManager manager = SpringUtil.getBean(DocumentGeneraterManager.MANAGER_BEAN_NAME);
-        File file = new File("页眉页脚.xml");
-        FileOutputStream outputStream = new FileOutputStream(file);
-        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-        manager.getFileGenerater("doc").generate("/pageHeaderTail.docpage", new ContextImpl(), writer);
-        outputStream.close();
-        //file.delete();
-    }
-=======
 	/**
 	 * 整体测试
 	 * 
@@ -282,6 +175,5 @@ public class DocGenTest extends TestCase {
 		outputStream.close();
 		file.delete();
 	}
->>>>>>> 0ede6eb1cbba622066e1aac669fadd2ce8f08125
 
 }
