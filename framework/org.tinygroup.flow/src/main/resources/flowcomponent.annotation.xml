@@ -20,13 +20,6 @@
 					</processor-bean>
 				</processor-beans>
 			</annotation-property-matcher>
-			<annotation-property-matcher
-				property-name=".*" annotation-type="org\.tinygroup\.flow\.annotation\.config\.ComponentDefineParameter">
-				<processor-beans>
-					<processor-bean enable="true" name="flowComponentAnnotationAction">
-					</processor-bean>
-				</processor-beans>
-			</annotation-property-matcher>
 		</annotation-property-matchers>
 	</annotation-class-matcher>
 	<annotation-class-matcher class-name="(.)*Component" annotation-id="pageflow"
@@ -45,13 +38,6 @@
 			</annotation-property-matcher>
 			<annotation-property-matcher
 				property-name=".*" annotation-type="org\.tinygroup\.flow\.annotation\.config\.ComponentResult">
-				<processor-beans>
-					<processor-bean enable="true" name="pageFlowComponentAnnotationAction">
-					</processor-bean>
-				</processor-beans>
-			</annotation-property-matcher>
-			<annotation-property-matcher
-				property-name=".*" annotation-type="org\.tinygroup\.flow\.annotation\.config\.ComponentDefineParameter">
 				<processor-beans>
 					<processor-bean enable="true" name="pageFlowComponentAnnotationAction">
 					</processor-bean>

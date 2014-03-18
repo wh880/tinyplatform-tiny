@@ -9,7 +9,6 @@ import org.tinygroup.commons.tools.AnnotationUtils;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.flow.annotation.config.ComponentDefine;
-import org.tinygroup.flow.annotation.config.ComponentDefineParameter;
 import org.tinygroup.flow.annotation.config.ComponentParameter;
 import org.tinygroup.flow.annotation.config.ComponentResult;
 import org.tinygroup.flow.config.Result;
@@ -74,25 +73,10 @@ public class FlowComponentAnnotationAction implements AnnotationClassAction,Anno
 				ComponentResult componentResult=(ComponentResult)annotation;
 				Result result=createResult(componentResult);
 				componentDefine.addResult(result);
-			}else if(annotation.annotationType().isAssignableFrom(ComponentDefineParameter.class)){
-				ComponentDefineParameter defineParameter=(ComponentDefineParameter)annotation;
-				org.tinygroup.flow.config.ComponentDefineParameter parameter=createDefineParamter(defineParameter);
-				componentDefine.addDefineParamter(parameter);
-			}
-			
+			}			
 		}else{
 			logger.logMessage(LogLevel.WARN, "不存在组件名称为：[{0}]的组件信息",componentName);
 		}
-	}
-
-	private org.tinygroup.flow.config.ComponentDefineParameter createDefineParamter(
-			ComponentDefineParameter defineParameter) {
-		org.tinygroup.flow.config.ComponentDefineParameter parameter=new org.tinygroup.flow.config.ComponentDefineParameter();
-		parameter.setDescription(defineParameter.description());
-		parameter.setName(defineParameter.name());
-		parameter.setTitle(defineParameter.title());
-		parameter.setType(defineParameter.type());
-		return parameter;
 	}
 
 	private Result createResult(ComponentResult componentResult) {

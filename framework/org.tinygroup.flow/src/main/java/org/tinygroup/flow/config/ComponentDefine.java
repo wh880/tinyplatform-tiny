@@ -61,30 +61,12 @@ public class ComponentDefine {
 	private List<Parameter> parameters;
 	@XStreamImplicit
 	private List<Result> results;
-	ComponentDefineParameters componentDefineParameters;
 	
 	public ComponentDefine(){
 		parameters=new ArrayList<Parameter>();
 		results=new ArrayList<Result>();
-		componentDefineParameters=new ComponentDefineParameters();
 	}
 
-	public ComponentDefineParameters getComponentDefineParameters() {
-		return componentDefineParameters;
-	}
-
-	public void setComponentDefineParameters(
-			ComponentDefineParameters componentDefineParameters) {
-		this.componentDefineParameters = componentDefineParameters;
-	}
-
-	public void addDefineParamter(ComponentDefineParameter defineParameter){
-		componentDefineParameters.addDefineParamter(defineParameter);
-	}
-	
-	public void removeDefineParamter(ComponentDefineParameter defineParameter){
-		componentDefineParameters.removeDefineParamter(defineParameter);
-	}
 	
 	public List<Parameter> getParameters() {
 		return parameters;
