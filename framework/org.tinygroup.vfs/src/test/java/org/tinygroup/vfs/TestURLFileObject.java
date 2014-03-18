@@ -32,7 +32,7 @@ public class TestURLFileObject extends TestCase {
 
 	public void testHttpFileObject(){
 		
-		FileObject fileObject=VFS.resolveFile("http://home.hundsun.com/WebSite.aspx");
+		FileObject fileObject=VFS.resolveFile("http://home.hundsun.com//Utility/jquery/jquery-1.2.6.pack.js");
 		assertTrue(fileObject instanceof HttpFileObject);
 		FileUtils.printFileObject(fileObject);
 		

@@ -120,6 +120,7 @@ public class FileUtils {
 		System.out.println("inPackage:" + fileObject.isInPackage());
 		System.out.println("exist:" + fileObject.isExist());
 		System.out.println("size:" + fileObject.getSize());
+		System.out.println("inputstream:" + fileObject.getInputStream());
 		System.out.println("lastModifiedTime:"
 				+ fileObject.getLastModifiedTime());
 
