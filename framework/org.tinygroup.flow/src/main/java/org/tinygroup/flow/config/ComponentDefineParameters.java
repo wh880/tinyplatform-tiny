@@ -40,5 +40,13 @@ public class ComponentDefineParameters {
 	public void setParameterList(List<ComponentDefineParameter> parameterList) {
 		this.parameterList = parameterList;
 	}
+	
+	public void addDefineParamter(ComponentDefineParameter defineParameter){
+		parameterList.add(defineParameter);
+	}
+	
+	public void removeDefineParamter(ComponentDefineParameter defineParameter){
+		parameterList.remove(defineParameter);
+	}
 
 }

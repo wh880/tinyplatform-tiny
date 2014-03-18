@@ -36,6 +36,7 @@ import org.tinygroup.event.Parameter;
 import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.flow.config.Component;
+import org.tinygroup.flow.config.ComponentDefine;
 import org.tinygroup.flow.config.ComponentDefines;
 import org.tinygroup.flow.config.Flow;
 import org.tinygroup.flow.config.FlowProperty;
@@ -606,6 +607,18 @@ public class FlowExecutorImpl implements FlowExecutor {
 
 	public Context getOutputContext(Flow flow, Context context) {
 		return getContext(flow.getOutputParameters(), context);
+	}
+
+	public void addComponent(ComponentDefine component) {
+		 containers.addComponent(component);
+	}
+
+	public void removeComponent(ComponentDefine component) {
+		containers.removeComponent(component);
+	}
+
+	public ComponentDefine getComponentDefine(String componentName) {
+		return containers.getComponentDefine(componentName);
 	}
 
 }

@@ -23,6 +23,7 @@
  */
 package org.tinygroup.flow.config;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.event.Parameter;
@@ -61,6 +62,12 @@ public class ComponentDefine {
 	@XStreamImplicit
 	private List<Result> results;
 	ComponentDefineParameters componentDefineParameters;
+	
+	public ComponentDefine(){
+		parameters=new ArrayList<Parameter>();
+		results=new ArrayList<Result>();
+		componentDefineParameters=new ComponentDefineParameters();
+	}
 
 	public ComponentDefineParameters getComponentDefineParameters() {
 		return componentDefineParameters;
@@ -71,12 +78,28 @@ public class ComponentDefine {
 		this.componentDefineParameters = componentDefineParameters;
 	}
 
+	public void addDefineParamter(ComponentDefineParameter defineParameter){
+		componentDefineParameters.addDefineParamter(defineParameter);
+	}
+	
+	public void removeDefineParamter(ComponentDefineParameter defineParameter){
+		componentDefineParameters.removeDefineParamter(defineParameter);
+	}
+	
 	public List<Parameter> getParameters() {
 		return parameters;
 	}
 
 	public void setParameters(List<Parameter> parameters) {
 		this.parameters = parameters;
+	}
+	
+	public void addParamter(Parameter parameter){
+		parameters.add(parameter);
+	}
+	
+	public void removeParamter(Parameter parameter){
+		parameters.remove(parameter);
 	}
 
 	public List<Result> getResults() {
@@ -87,6 +110,15 @@ public class ComponentDefine {
 		this.results = results;
 	}
 
+	public void addResult(Result result){
+		results.add(result);
+	}
+	
+	public void removeResult(Result result){
+		results.remove(result);
+	}
+	
+	
 	public String getCategory() {
 		return category;
 	}

@@ -79,5 +79,10 @@
       <artifactId>org.tinygroup.elmvel</artifactId>
       <version>${project.version}</version>
     </dependency>
+     <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.annotation</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>

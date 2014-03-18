@@ -37,4 +37,7 @@
 	<bean id="flowUser" name="flowUser" scope="prototype"
 		 class="org.tinygroup.flow.bean.FlowUser">
 	</bean>
+	<bean id="helloWorldAnnoComponent" name="helloWorldAnnoComponent" scope="prototype"
+		class="org.tinygroup.flow.annotation.HelloWorldAnnoComponent">
+	</bean>
 </beans>
