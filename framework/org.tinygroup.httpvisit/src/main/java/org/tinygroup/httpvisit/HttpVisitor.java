@@ -34,6 +34,7 @@ import java.util.Map;
  * HTTP访问接口，访问不同的网站，请构建不同的实例
  *
  * @author luoguo
+ *
  */
 public interface HttpVisitor {
 	/**
@@ -44,10 +45,14 @@ public interface HttpVisitor {
 	/**
 	 * 设置代理
 	 *
-	 * @param proxyHost 代理服务器主机域名或IP
-	 * @param proxyPort 代理端口
-	 * @param userName  用户名
-	 * @param passwrod  密码
+	 * @param proxyHost
+	 *            代理服务器主机域名或IP
+	 * @param proxyPort
+	 *            代理端口
+	 * @param userName
+	 *            用户名
+	 * @param passwrod
+	 *            密码
 	 */
 	void setProxy(String proxyHost, int proxyPort, String userName,
 	              String passwrod);
@@ -55,12 +60,18 @@ public interface HttpVisitor {
 	/**
 	 * 设置基本安全校验
 	 *
-	 * @param host     服务器主机域名或IP
-	 * @param port     端口
-	 * @param realm    领域，可以为空，表示任何realm，由被访问端提供
-	 * @param schema   校验模式，可以为空，表示任何schema，可选值有：Basic,Digest,NTLM，当然也可以自行扩展
-	 * @param username 用户名
-	 * @param password 密码
+	 * @param host
+	 *            服务器主机域名或IP
+	 * @param port
+	 *            端口
+	 * @param realm
+	 *            领域，可以为空，表示任何realm，由被访问端提供
+	 * @param schema
+	 *            校验模式，可以为空，表示任何schema，可选值有：Basic,Digest,NTLM，当然也可以自行扩展
+	 * @param username
+	 *            用户名
+	 * @param password
+	 *            密码
 	 */
 	void setBasicAuth(String host, int port, String realm, String schema,
 	                  String username, String password);
@@ -69,10 +80,14 @@ public interface HttpVisitor {
 	 * 设置基本安全校验,realm和schema全部适应全部<br>
 	 * 比设定了realm和schema的性能差一些
 	 *
-	 * @param host     服务器主机域名或IP
-	 * @param port     端口
-	 * @param username 用户名
-	 * @param password 密码
+	 * @param host
+	 *            服务器主机域名或IP
+	 * @param port
+	 *            端口
+	 * @param username
+	 *            用户名
+	 * @param password
+	 *            密码
 	 */
 	void setBasicAuth(String host, int port, String username, String password);
 
@@ -83,7 +98,8 @@ public interface HttpVisitor {
 	 * @param port
 	 * @param username
 	 * @param password
-	 * @param schemaList 支持的Schame列表
+	 * @param schemaList
+	 *            支持的Schame列表
 	 */
 	void setAlternateAuth(String host, int port, String username,
 	                      String password, List<String> schemaList);
@@ -144,8 +160,10 @@ public interface HttpVisitor {
 	/**
 	 * 用get方式访问URL
 	 *
-	 * @param url       要访问的URL
-	 * @param parameter 要访问的参数
+	 * @param url
+	 *            要访问的URL
+	 * @param parameter
+	 *            要访问的参数
 	 * @return 请求结果
 	 */
 	String getUrl(String url, Map<String, ?> parameter);
@@ -153,8 +171,10 @@ public interface HttpVisitor {
 	/**
 	 * 用post方式访问URL
 	 *
-	 * @param url       要访问的URL
-	 * @param parameter 要访问的参数
+	 * @param url
+	 *            要访问的URL
+	 * @param parameter
+	 *            要访问的参数
 	 * @return 请求结果
 	 */
 	String postUrl(String url, Map<String, ?> parameter);
@@ -194,5 +214,9 @@ public interface HttpVisitor {
 	 */
 	String postXml(String url, String xmlEntiry);
 
+	/**
+	 * 设置头部
+	 * @param header
+	 */
 	void setHeader(Map<String, String> header);
 }

@@ -45,6 +45,7 @@ public class Test {
 		header.put("Origin", "http://lover.zhenyao.net");
 		header.put("Referer", "http://lover.zhenyao.net/lover.swf");
 		visitor.setHeader(header);
+
 		System.out.println(visitor.getUrl(
 				"http://lover.zhenyao.net/", null));
 		System.out.println(visitor.postUrl(

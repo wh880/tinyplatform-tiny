@@ -23,7 +23,19 @@
  */
 package org.tinygroup.httpvisit.impl;
 
-import org.apache.commons.httpclient.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.httpclient.Cookie;
+import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.HttpState;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthPolicy;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
@@ -35,11 +47,6 @@ import org.tinygroup.httpvisit.HttpVisitor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.List;
-import java.util.Map;
 
 public class HttpVisitorImpl implements HttpVisitor {
 	private static final Logger logger = LoggerFactory
@@ -57,6 +64,7 @@ public class HttpVisitorImpl implements HttpVisitor {
 	private Map<String, String> header;
 
 
+
 	public void setProxy(String proxyHost, int proxyPort, String userName,
 	                     String passwrod) {
 		this.proxyHost = proxyHost;
@@ -68,6 +76,7 @@ public class HttpVisitorImpl implements HttpVisitor {
 	}
 
 	/**
+	 *
 	 * @param host
 	 * @param port
 	 * @param realm
@@ -153,11 +162,8 @@ public class HttpVisitorImpl implements HttpVisitor {
 					}
 				}
 			}
-
 			GetMethod get = new GetMethod(sb.toString());
-
 			addHeader(get, header);
-
 			return execute(get);
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
@@ -188,14 +194,13 @@ public class HttpVisitorImpl implements HttpVisitor {
 				}
 			}
 		}
-
 		addHeader(post, header);
 		return execute(post);
 	}
 
 	String execute(HttpMethodBase method) {
 		try {
-			if (client == null) {
+			if(client==null){
 				init();
 			}
 			logger.logMessage(LogLevel.DEBUG, "正在访问地址:{}", method.getURI()
@@ -282,7 +287,7 @@ public class HttpVisitorImpl implements HttpVisitor {
 		this.header = header;
 	}
 
-	public void addHeader(HttpMethod method, Map<String, String> header) {
+	private void addHeader(HttpMethodBase method, Map<String, String> header) {
 		if (header != null) {
 			for (String key : header.keySet()) {
 				Header h = new Header(key, header.get(key));
