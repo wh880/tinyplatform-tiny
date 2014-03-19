@@ -23,10 +23,10 @@ public class BundleDefineCompareImpl implements BundleDefineCompare{
 		if (isSameServiceId) {
 			return source.getVersion().compareTo(dest.getVersion());
 		}
-		logger.log(LogLevel.ERROR,"plugin.compareExeception",
+		logger.log(LogLevel.ERROR,"bundle.compareExeception",
 				source.getId(),source.getVersion(),dest.getId(),dest.getVersion());
 		throw new NotComparableException(
-				i18nMessages.getMessage("plugin.compareExeception", 
+				i18nMessages.getMessage("bundle.compareExeception",
 				source.getId(),source.getVersion(),dest.getId(),dest.getVersion())
 		);
 	}

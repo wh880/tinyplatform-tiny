@@ -1,4 +1,4 @@
-package org.tinygroup.bundle.plugin;
+package org.tinygroup.bundle.bundle;
 
 import java.lang.reflect.Method;
 import java.net.URL;

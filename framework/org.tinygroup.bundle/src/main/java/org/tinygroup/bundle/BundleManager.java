@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface BundleManager extends SingleBundleManager, BundleBatchManager, BundleLevelManager {
-    String PLUGIN_XSTREAM = "bundle";
+    String BUNDLE_XSTREAM = "bundle";
     int STATUS_UNINITIALIZED = 0;// 未初始化的
     int STATUS_INITING = 1;// 正在初始化
     int STATUS_INITED = 2;// 已初始化

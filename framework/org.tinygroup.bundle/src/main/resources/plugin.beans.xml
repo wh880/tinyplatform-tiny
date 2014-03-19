@@ -8,7 +8,7 @@
 	
 	<!-- plugin相关 -->
 	<bean id="pluginFileProcessor" scope="singleton"
-		class="org.tinygroup.bundle.fileresolve.PluginFileProcessor">
+		class="org.tinygroup.bundle.fileresolve.BundleFileProcessor">
 		<property name="bundleManager">
 			<ref bean="bundleManager" />
 		</property>

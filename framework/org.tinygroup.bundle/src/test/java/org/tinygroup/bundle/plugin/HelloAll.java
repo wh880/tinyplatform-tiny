@@ -1,4 +1,4 @@
-package org.tinygroup.bundle.plugin;
+package org.tinygroup.bundle.bundle;
 
 public class HelloAll {
 	Hello hello;

@@ -34,8 +34,8 @@ public class BundleManagerImpl implements BundleManager {
      * 比较器
      */
     private BundleDefineCompare bundleDefineCompare = new BundleDefineCompareImpl();
-    private final Map<BundleDefine, Bundle> pluginMap = new HashMap<BundleDefine, Bundle>();
-    private final Map<BundleDefine, Integer> pluginStatus = new HashMap<BundleDefine, Integer>();
+    private final Map<BundleDefine, Bundle> bundleMap = new HashMap<BundleDefine, Bundle>();
+    private final Map<BundleDefine, Integer> bundleStatus = new HashMap<BundleDefine, Integer>();
     private final List<BundleDefine> bundleDefineList = new ArrayList<BundleDefine>();
     private BundleLoader bundleLoader;
 
@@ -73,14 +73,14 @@ public class BundleManagerImpl implements BundleManager {
 
             bundle.setBundleManager(this);
             bundle.setBundleDefine(bundleDefine);
-            pluginMap.put(bundleDefine, bundle);
+            bundleMap.put(bundleDefine, bundle);
             if (info == null) {
                 idMap.put(bundleDefine.getId(), bundleDefine);
             } else if (bundleDefineCompare.compare(bundleDefine, info) > 0) {
                 idMap.put(bundleDefine.getId(), bundleDefine);
 
             }
-            logger.log(INFO, "plugin.add", bundleDefine.getId(), bundleDefine.getVersion());
+            logger.log(INFO, "bundle.add", bundleDefine.getId(), bundleDefine.getVersion());
         } catch (Exception e) {
             logger.errorMessage("加载插件[id:{0}, version:{1}, type:{2}]时出错", e, bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType());
         }
@@ -109,8 +109,8 @@ public class BundleManagerImpl implements BundleManager {
 
     public int status(BundleDefine bundleDefine) {
         int status = BundleManager.STATUS_UNINITIALIZED;
-        synchronized (pluginStatus) {
-            Integer s = pluginStatus.get(bundleDefine);
+        synchronized (bundleStatus) {
+            Integer s = bundleStatus.get(bundleDefine);
             if (s != null) {
                 status = s;
             }
@@ -132,19 +132,19 @@ public class BundleManagerImpl implements BundleManager {
         // 初始化插件实例
         try {
             setStatus(bundleDefine, BundleManager.STATUS_INITING);
-            pluginMap.get(bundleDefine).init(bundleContext);
+            bundleMap.get(bundleDefine).init(bundleContext);
             setStatus(bundleDefine, BundleManager.STATUS_INITED);
         } catch (BundleException e) {
             setStatus(bundleDefine, status);
             logger.error("插件[id:{0}, version:{1}, type:{2}]初始化时出错,恢复状态为[{3}]", e, bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), getStatusDescription(status));
             throw e;
         }
-        logger.log(INFO, "plugin.init", bundleDefine.getId(), bundleDefine.getVersion());
+        logger.log(INFO, "bundle.init", bundleDefine.getId(), bundleDefine.getVersion());
     }
 
     private void setStatus(BundleDefine bundleDefine, int status) {
-        synchronized (pluginStatus) {
-            pluginStatus.put(bundleDefine, status);
+        synchronized (bundleStatus) {
+            bundleStatus.put(bundleDefine, status);
         }
     }
 
@@ -177,7 +177,7 @@ public class BundleManagerImpl implements BundleManager {
 
                 logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]状态为[{3}]", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), getStatusDescription(status));
 
-                Bundle bundle = pluginMap.get(bundleDefine);
+                Bundle bundle = bundleMap.get(bundleDefine);
                 setStatus(bundleDefine, BundleManager.STATUS_STARTING);
                 // 先启动依赖的项
                 startDependency(bundleDefine);
@@ -189,20 +189,20 @@ public class BundleManagerImpl implements BundleManager {
                 throw e;
             }
         }
-        logger.log(INFO, "plugin.start", bundleDefine.getId(), bundleDefine.getVersion());
+        logger.log(INFO, "bundle.start", bundleDefine.getId(), bundleDefine.getVersion());
     }
 
     private void startDependency(BundleDefine bundleDefine) {
         logger.logMessage(LogLevel.INFO, "启动插件[id:{0}, version:{1}, type:{2}]依赖的项", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType());
         if (bundleDefine.getBundleDependencies() != null) {
-            for (BundleDependency pluginDependency : bundleDefine.getBundleDependencies()) {
+            for (BundleDependency bundleDependency : bundleDefine.getBundleDependencies()) {
 
-                logger.logMessage(LogLevel.INFO, "启动依赖的项[plugin-id:{0},plugin-version:{1}]", pluginDependency.getBundleId(), pluginDependency.getBundleVersion());
+                logger.logMessage(LogLevel.INFO, "启动依赖的项[bundle-id:{0},bundle-version:{1}]", bundleDependency.getBundleId(), bundleDependency.getBundleVersion());
 
-                BundleDefine dependBundle = getDependencyBundleDefine(pluginDependency);
+                BundleDefine dependBundle = getDependencyBundleDefine(bundleDependency);
                 start(dependBundle);
 
-                logger.logMessage(LogLevel.INFO, "依赖的项[plugin-id:{0},plugin-version:{1}]启动完成", pluginDependency.getBundleId(), pluginDependency.getBundleVersion());
+                logger.logMessage(LogLevel.INFO, "依赖的项[bundle-id:{0},bundle-version:{1}]启动完成", bundleDependency.getBundleId(), bundleDependency.getBundleVersion());
             }
         }
         logger.logMessage(LogLevel.INFO, "启动插件[id:{0}, version:{1}, type:{2}]依赖的项完成", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType());
@@ -224,7 +224,7 @@ public class BundleManagerImpl implements BundleManager {
             try {
                 logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]状态为[{3}]", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), getStatusDescription(status));
 
-                Bundle bundle = pluginMap.get(bundleDefine);
+                Bundle bundle = bundleMap.get(bundleDefine);
                 setStatus(bundleDefine, BundleManager.STATUS_STOPING);
                 // 先要停止依赖当前插件的项
                 stopDependencyBy(bundleDefine);
@@ -236,7 +236,7 @@ public class BundleManagerImpl implements BundleManager {
                 throw e;
             }
         }
-        logger.log(INFO, "plugin.stop", bundleDefine.getId(), bundleDefine.getVersion());
+        logger.log(INFO, "bundle.stop", bundleDefine.getId(), bundleDefine.getVersion());
     }
 
     private void stopDependencyBy(BundleDefine bundleDefine) {
@@ -244,8 +244,8 @@ public class BundleManagerImpl implements BundleManager {
         logger.logMessage(LogLevel.INFO, "开始停止依赖插件[id:{0}, version:{1}, type:{2}]的项", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType());
         for (BundleDefine define : bundleDefineList) {
             if (define.getBundleDependencies() != null) {
-                for (BundleDependency pluginDependency : define.getBundleDependencies()) {
-                    BundleDefine dependency = getDependencyBundleDefine(pluginDependency);
+                for (BundleDependency bundleDependency : define.getBundleDependencies()) {
+                    BundleDefine dependency = getDependencyBundleDefine(bundleDependency);
                     if (dependency.equals(bundleDefine)) {
                         logger.logMessage(LogLevel.INFO, "开始停止依赖项[id:{0},version:{1}]", dependency.getId(), dependency.getVersion());
                         stop(define);
@@ -257,15 +257,15 @@ public class BundleManagerImpl implements BundleManager {
         logger.logMessage(LogLevel.INFO, "停止依赖插件[id:{0}, version:{1}, type:{2}]的项完成", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType());
     }
 
-    private BundleDefine getDependencyBundleDefine(BundleDependency pluginDependency) {
+    private BundleDefine getDependencyBundleDefine(BundleDependency bundleDependency) {
         BundleDefine dependency = null;
-        if (pluginDependency.getBundleVersion() == null) {
-            dependency = getBundleDefine(pluginDependency.getBundleId());
+        if (bundleDependency.getBundleVersion() == null) {
+            dependency = getBundleDefine(bundleDependency.getBundleId());
         } else {
-            dependency = getBundleDefine(pluginDependency.getBundleId(), pluginDependency.getBundleVersion());
+            dependency = getBundleDefine(bundleDependency.getBundleId(), bundleDependency.getBundleVersion());
         }
         if (dependency == null) {
-            throw new BundleException(String.format("插件[plugin-id:%s,plugin-version:%s]不存在", pluginDependency.getBundleId(), pluginDependency.getBundleVersion()));
+            throw new BundleException(String.format("插件[bundle-id:%s,bundle-version:%s]不存在", bundleDependency.getBundleId(), bundleDependency.getBundleVersion()));
         }
         return dependency;
     }
@@ -280,7 +280,7 @@ public class BundleManagerImpl implements BundleManager {
             try {
                 logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]状态为[{3}]", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), getStatusDescription(status));
 
-                Bundle bundle = pluginMap.get(bundleDefine);
+                Bundle bundle = bundleMap.get(bundleDefine);
                 setStatus(bundleDefine, BundleManager.STATUS_PAUSING);
                 // 先要暂停依赖的项
                 pauseDependencyBy(bundleDefine);
@@ -295,15 +295,15 @@ public class BundleManagerImpl implements BundleManager {
             logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]状态为[{3}]，退出暂停", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), getStatusDescription(status));
             return;
         }
-        logger.log(INFO, "plugin.pause", bundleDefine.getId(), bundleDefine.getVersion());
+        logger.log(INFO, "bundle.pause", bundleDefine.getId(), bundleDefine.getVersion());
     }
 
     private void pauseDependencyBy(BundleDefine bundleDefine) {
         logger.logMessage(LogLevel.INFO, "暂停依赖插件[id:{0}, version:{1}, type:{2}]的项", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType());
         for (BundleDefine define : bundleDefineList) {
             if (define.getBundleDependencies() != null) {
-                for (BundleDependency pluginDependency : define.getBundleDependencies()) {
-                    BundleDefine dependency = getDependencyBundleDefine(pluginDependency);
+                for (BundleDependency bundleDependency : define.getBundleDependencies()) {
+                    BundleDefine dependency = getDependencyBundleDefine(bundleDependency);
                     if (dependency.equals(bundleDefine)) {
                         logger.logMessage(LogLevel.INFO, "暂停依赖项[id:{0},version{1}]", dependency.getId(), dependency.getVersion());
                         pause(define);
@@ -342,11 +342,11 @@ public class BundleManagerImpl implements BundleManager {
 
         if (status == BundleManager.STATUS_INITED) {
             try {
-                Bundle bundle = pluginMap.get(bundleDefine);
+                Bundle bundle = bundleMap.get(bundleDefine);
                 setStatus(bundleDefine, BundleManager.STATUS_DESTORYING);
                 disassembleDependencyBy(bundleContext, bundleDefine);
                 bundle.destroy(bundleContext);
-                // pluginMap.remove(bundleDefine); 20120831不应该remover，否则插件无法再次被初始化
+                // bundleMap.remove(bundleDefine); 20120831不应该remover，否则插件无法再次被初始化
                 setStatus(bundleDefine, BundleManager.STATUS_UNINITIALIZED);
             } catch (BundleException e) {
                 setStatus(bundleDefine, status);
@@ -355,7 +355,7 @@ public class BundleManagerImpl implements BundleManager {
             }
         }
 
-        logger.log(INFO, "plugin.destroy", bundleDefine.getId(), bundleDefine.getVersion());
+        logger.log(INFO, "bundle.destroy", bundleDefine.getId(), bundleDefine.getVersion());
     }
 
     private void disassembleDependencyBy(BundleContext bundleContext, BundleDefine bundleDefine) {
@@ -364,13 +364,13 @@ public class BundleManagerImpl implements BundleManager {
 
         for (BundleDefine define : bundleDefineList) {
             if (!define.equals(bundleDefine) && define.getBundleDependencies() != null) {
-                for (BundleDependency pluginDependency : define.getBundleDependencies()) {
-                    BundleDefine dependency = getDependencyBundleDefine(pluginDependency);
+                for (BundleDependency bundleDependency : define.getBundleDependencies()) {
+                    BundleDefine dependency = getDependencyBundleDefine(bundleDependency);
                     if (dependency.equals(bundleDefine)) {
                         logger.logMessage(LogLevel.INFO, "卸载依赖项[id:{0}, version:{1}]", dependency.getId(), dependency.getVersion());
                         disassemble(define);
                         logger.logMessage(LogLevel.INFO, "卸载依赖项[id:{0}, version:{1}]完成", dependency.getId(), dependency.getVersion());
-                        cleanDependencyService(define, bundleDefine, pluginDependency);
+                        cleanDependencyService(define, bundleDefine, bundleDependency);
                     }
                 }
             }
@@ -385,42 +385,42 @@ public class BundleManagerImpl implements BundleManager {
      *
      * @param bundleDefine       依赖者
      * @param dependBundleDefine 被依赖者
-     * @param pluginDependency   依赖描述
+     * @param bundleDependency   依赖描述
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
     private void cleanDependencyService(BundleDefine bundleDefine, BundleDefine dependBundleDefine,
-                                        BundleDependency pluginDependency) {
+                                        BundleDependency bundleDependency) {
 
-        logger.logMessage(LogLevel.INFO, "清空插件[id:{0}, version:{1}, type:{2}]依赖的服务[plugin-id:{3},plugin-version:{4},service-id={5},service-version={6}]", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), pluginDependency.getBundleId(), pluginDependency.getBundleVersion(), pluginDependency.getServiceId(), pluginDependency.getServiceVersion());
+        logger.logMessage(LogLevel.INFO, "清空插件[id:{0}, version:{1}, type:{2}]依赖的服务[bundle-id:{3},bundle-version:{4},service-id={5},service-version={6}]", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), bundleDependency.getBundleId(), bundleDependency.getBundleVersion(), bundleDependency.getServiceId(), bundleDependency.getServiceVersion());
 
-        String serviceVersion = pluginDependency.getServiceVersion();
-        String serviceId = pluginDependency.getServiceId();
-        String serviceType = pluginDependency.getServiceType();
+        String serviceVersion = bundleDependency.getServiceVersion();
+        String serviceId = bundleDependency.getServiceId();
+        String serviceType = bundleDependency.getServiceType();
         try {
             if (serviceVersion == null) {
                 if (serviceId == null) {
                     Class clazz = Class.forName(serviceType);
-                    pluginMap.get(bundleDefine).setService(null, clazz);
+                    bundleMap.get(bundleDefine).setService(null, clazz);
 
                 } else {
-                    Object object = pluginMap.get(dependBundleDefine).getService(serviceId);
+                    Object object = bundleMap.get(dependBundleDefine).getService(serviceId);
                     Class clazz = object.getClass();
-                    pluginMap.get(bundleDefine).setService(null, clazz);
+                    bundleMap.get(bundleDefine).setService(null, clazz);
                 }
             } else {
                 if (serviceId == null) {
                     Class clazz = Class.forName(serviceType);
-                    pluginMap.get(bundleDefine).setService(null, clazz);
+                    bundleMap.get(bundleDefine).setService(null, clazz);
 
                 } else {
-                    Object object = pluginMap.get(dependBundleDefine).getService(serviceId, serviceVersion);
+                    Object object = bundleMap.get(dependBundleDefine).getService(serviceId, serviceVersion);
                     Class clazz = object.getClass();
-                    pluginMap.get(bundleDefine).setService(null, clazz);
+                    bundleMap.get(bundleDefine).setService(null, clazz);
                 }
             }
-            logger.logMessage(LogLevel.INFO, "清空插件[id:{0}, version:{1}, type:{2}]依赖的服务[plugin-id:{3},plugin-version:{4},service-id={5},service-version={6}]完成", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), pluginDependency.getBundleId(), pluginDependency.getBundleVersion(), pluginDependency.getServiceId(), pluginDependency.getServiceVersion());
+            logger.logMessage(LogLevel.INFO, "清空插件[id:{0}, version:{1}, type:{2}]依赖的服务[bundle-id:{3},bundle-version:{4},service-id={5},service-version={6}]完成", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), bundleDependency.getBundleId(), bundleDependency.getBundleVersion(), bundleDependency.getServiceId(), bundleDependency.getServiceVersion());
         } catch (Exception e) {
-            logger.logMessage(LogLevel.INFO, "清空插件[id:{0}, version:{1}, type:{2}]依赖的服务[plugin-id:{3},plugin-version:{4},service-id={5},service-version={6}]时出错", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), pluginDependency.getBundleId(), pluginDependency.getBundleVersion(), pluginDependency.getServiceId(), pluginDependency.getServiceVersion());
+            logger.logMessage(LogLevel.INFO, "清空插件[id:{0}, version:{1}, type:{2}]依赖的服务[bundle-id:{3},bundle-version:{4},service-id={5},service-version={6}]时出错", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), bundleDependency.getBundleId(), bundleDependency.getBundleVersion(), bundleDependency.getServiceId(), bundleDependency.getServiceVersion());
             throw new BundleException(e.getMessage(), e);
         }
     }
@@ -495,7 +495,7 @@ public class BundleManagerImpl implements BundleManager {
     public <T> T getService(BundleDefine bundleDefine, Class<T> clazz) {
         int status = status(bundleDefine);
         if (status == BundleManager.STATUS_READY) {
-            return pluginMap.get(bundleDefine).getService(clazz);
+            return bundleMap.get(bundleDefine).getService(clazz);
         }
         throw getNotReadyException();
     }
@@ -508,7 +508,7 @@ public class BundleManagerImpl implements BundleManager {
     public <T> T getService(BundleDefine bundleDefine, Class<T> clazz, String version) {
         int status = status(bundleDefine);
         if (status == BundleManager.STATUS_READY) {
-            return pluginMap.get(bundleDefine).getService(clazz, version);
+            return bundleMap.get(bundleDefine).getService(clazz, version);
         }
         throw getNotReadyException();
 
@@ -525,7 +525,7 @@ public class BundleManagerImpl implements BundleManager {
     public <T> T getService(BundleDefine bundleDefine, String id) {
         int status = status(bundleDefine);
         if (status == BundleManager.STATUS_READY) {
-            return (T) pluginMap.get(bundleDefine).getService(id);
+            return (T) bundleMap.get(bundleDefine).getService(id);
         }
         throw getNotReadyException();
     }
@@ -533,7 +533,7 @@ public class BundleManagerImpl implements BundleManager {
     public <T> T getService(BundleDefine bundleDefine, String id, String version) {
         int status = status(bundleDefine);
         if (status == BundleManager.STATUS_READY) {
-            return (T) pluginMap.get(bundleDefine).getService(id, version);
+            return (T) bundleMap.get(bundleDefine).getService(id, version);
         }
         throw getNotReadyException();
     }
@@ -568,15 +568,15 @@ public class BundleManagerImpl implements BundleManager {
         logger.logMessage(LogLevel.INFO, "装载插件[id:{0}, version:{1}, type:{2}]依赖的项", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType());
 
         if (bundleDefine.getBundleDependencies() != null) {
-            for (BundleDependency pluginDependency : bundleDefine.getBundleDependencies()) {
+            for (BundleDependency bundleDependency : bundleDefine.getBundleDependencies()) {
 
-                logger.logMessage(LogLevel.INFO, "装载依赖的项[plugin-id:{0},plugin-version:{1}]", pluginDependency.getBundleId(), pluginDependency.getBundleVersion());
+                logger.logMessage(LogLevel.INFO, "装载依赖的项[bundle-id:{0},bundle-version:{1}]", bundleDependency.getBundleId(), bundleDependency.getBundleVersion());
 
-                BundleDefine dependBundleDefine = getDependencyBundleDefine(pluginDependency);
+                BundleDefine dependBundleDefine = getDependencyBundleDefine(bundleDependency);
                 assemble(dependBundleDefine);
-                setDependencyService(bundleDefine, dependBundleDefine, pluginDependency);
+                setDependencyService(bundleDefine, dependBundleDefine, bundleDependency);
 
-                logger.logMessage(LogLevel.INFO, "装载依赖的项[plugin-id:{0},plugin-version:{1}]完成", pluginDependency.getBundleId(), pluginDependency.getBundleVersion());
+                logger.logMessage(LogLevel.INFO, "装载依赖的项[bundle-id:{0},bundle-version:{1}]完成", bundleDependency.getBundleId(), bundleDependency.getBundleVersion());
             }
         }
         logger.logMessage(LogLevel.INFO, "装载插件[id:{0}, version:{1}, type:{2}]依赖的项完成", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType());
@@ -584,39 +584,39 @@ public class BundleManagerImpl implements BundleManager {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void setDependencyService(BundleDefine bundleDefine, BundleDefine dependBundleDefine,
-                                      BundleDependency pluginDependency) {
-        String serviceVersion = pluginDependency.getServiceVersion();
-        String serviceId = pluginDependency.getServiceId();
-        String serviceType = pluginDependency.getServiceType();
+                                      BundleDependency bundleDependency) {
+        String serviceVersion = bundleDependency.getServiceVersion();
+        String serviceId = bundleDependency.getServiceId();
+        String serviceType = bundleDependency.getServiceType();
 
-        logger.logMessage(LogLevel.INFO, "设置插件[id:{0}, version:{1}, type:{2}]依赖的服务[plugin-id:{3},plugin-version:{4},service-id={5},service-version={6}]", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), pluginDependency.getBundleId(), pluginDependency.getBundleVersion(), pluginDependency.getServiceId(), pluginDependency.getServiceVersion());
+        logger.logMessage(LogLevel.INFO, "设置插件[id:{0}, version:{1}, type:{2}]依赖的服务[bundle-id:{3},bundle-version:{4},service-id={5},service-version={6}]", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), bundleDependency.getBundleId(), bundleDependency.getBundleVersion(), bundleDependency.getServiceId(), bundleDependency.getServiceVersion());
 
         try {
             if (serviceVersion == null) {
                 if (serviceId == null) {
                     Class clazz = Class.forName(serviceType);
-                    pluginMap.get(bundleDefine).setService(pluginMap.get(dependBundleDefine).getService(clazz), clazz);
+                    bundleMap.get(bundleDefine).setService(bundleMap.get(dependBundleDefine).getService(clazz), clazz);
 
                 } else {
-                    Object object = pluginMap.get(dependBundleDefine).getService(serviceId);
+                    Object object = bundleMap.get(dependBundleDefine).getService(serviceId);
                     Class clazz = object.getClass();
-                    pluginMap.get(bundleDefine).setService(object, clazz);
+                    bundleMap.get(bundleDefine).setService(object, clazz);
                 }
             } else {
                 if (serviceId == null) {
                     Class clazz = Class.forName(serviceType);
-                    pluginMap.get(bundleDefine).setService(pluginMap.get(dependBundleDefine).getService(clazz, serviceVersion), clazz);
+                    bundleMap.get(bundleDefine).setService(bundleMap.get(dependBundleDefine).getService(clazz, serviceVersion), clazz);
 
                 } else {
-                    Object object = pluginMap.get(dependBundleDefine).getService(serviceId, serviceVersion);
+                    Object object = bundleMap.get(dependBundleDefine).getService(serviceId, serviceVersion);
                     Class clazz = object.getClass();
-                    pluginMap.get(bundleDefine).setService(object, clazz);
+                    bundleMap.get(bundleDefine).setService(object, clazz);
                 }
             }
 
-            logger.logMessage(LogLevel.INFO, "设置插件[id:{0}, version:{1}, type:{2}]依赖的服务[plugin-id:{3},plugin-version:{4},service-id={5},service-version={6}]完成", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), pluginDependency.getBundleId(), pluginDependency.getBundleVersion(), pluginDependency.getServiceId(), pluginDependency.getServiceVersion());
+            logger.logMessage(LogLevel.INFO, "设置插件[id:{0}, version:{1}, type:{2}]依赖的服务[bundle-id:{3},bundle-version:{4},service-id={5},service-version={6}]完成", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), bundleDependency.getBundleId(), bundleDependency.getBundleVersion(), bundleDependency.getServiceId(), bundleDependency.getServiceVersion());
         } catch (Exception e) {
-            logger.logMessage(LogLevel.INFO, "设置插件[id:{0}, version:{1}, type:{2}]依赖的服务[plugin-id:{3},plugin-version:{4},service-id={5},service-version={6}]出错", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), pluginDependency.getBundleId(), pluginDependency.getBundleVersion(), pluginDependency.getServiceId(), pluginDependency.getServiceVersion());
+            logger.logMessage(LogLevel.INFO, "设置插件[id:{0}, version:{1}, type:{2}]依赖的服务[bundle-id:{3},bundle-version:{4},service-id={5},service-version={6}]出错", bundleDefine.getId(), bundleDefine.getVersion(), bundleDefine.getType(), bundleDependency.getBundleId(), bundleDependency.getBundleVersion(), bundleDependency.getServiceId(), bundleDependency.getServiceVersion());
             throw new BundleException(e.getMessage(), e);
         }
     }
@@ -680,45 +680,45 @@ public class BundleManagerImpl implements BundleManager {
     }
 
 
-    public void remove(BundleDefine plugin) {
+    public void remove(BundleDefine bundle) {
 
-        logger.logMessage(LogLevel.INFO, "开始移除插件[id:{0}, version:{1}, type:{2}]", plugin.getId(), plugin.getVersion(), plugin.getType());
-        // 删除指定的plugin
-        destroy(plugin);
-        bundleDefineList.remove(plugin);
-        idVersionMap.remove(getKey(plugin));
-        pluginMap.remove(plugin);
-        pluginStatus.remove(plugin);
-        bundleLoader.remove(plugin);
+        logger.logMessage(LogLevel.INFO, "开始移除插件[id:{0}, version:{1}, type:{2}]", bundle.getId(), bundle.getVersion(), bundle.getType());
+        // 删除指定的bundle
+        destroy(bundle);
+        bundleDefineList.remove(bundle);
+        idVersionMap.remove(getKey(bundle));
+        bundleMap.remove(bundle);
+        bundleStatus.remove(bundle);
+        bundleLoader.remove(bundle);
 
-        // 如果当前plugin是同类中最高版本(即被存放与idMap)，则将其中map中删除
-        if (!idMap.get(plugin.getId()).getVersion().equals(plugin.getVersion())) {
+        // 如果当前bundle是同类中最高版本(即被存放与idMap)，则将其中map中删除
+        if (!idMap.get(bundle.getId()).getVersion().equals(bundle.getVersion())) {
 
-            logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]已移除", plugin.getId(), plugin.getVersion(), plugin.getType());
+            logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]已移除", bundle.getId(), bundle.getVersion(), bundle.getType());
 
             return;
         }
-        logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]是当前插件最高版本", plugin.getId(), plugin.getVersion(), plugin.getType());
+        logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]是当前插件最高版本", bundle.getId(), bundle.getVersion(), bundle.getType());
 
-        idMap.remove(plugin.getId());
+        idMap.remove(bundle.getId());
 
-        logger.logMessage(LogLevel.INFO, "开始为插件[id:{0}]计算新的最高版本", plugin.getId());
+        logger.logMessage(LogLevel.INFO, "开始为插件[id:{0}]计算新的最高版本", bundle.getId());
 
         List<BundleDefine> list = new ArrayList<BundleDefine>();
-        for (BundleDefine p : bundleDefineList) { // 查询是否有与plugin同id但不同版本的
-            if (p.getId().equals(plugin.getId())) {
+        for (BundleDefine p : bundleDefineList) { // 查询是否有与bundle同id但不同版本的
+            if (p.getId().equals(bundle.getId())) {
                 list.add(p);
             }
         }
         if (list.size() <= 0) {
-            logger.logMessage(LogLevel.INFO, "插件[id:{0}]已无其他版本", plugin.getId());
-            logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]已移除", plugin.getId(), plugin.getVersion(), plugin.getType());
+            logger.logMessage(LogLevel.INFO, "插件[id:{0}]已无其他版本", bundle.getId());
+            logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]已移除", bundle.getId(), bundle.getVersion(), bundle.getType());
             return;
         }
         if (list.size() == 1) { // 有且只有一个，则直接将该版本设置为最高版本，放入idMap
             idMap.put(list.get(0).getId(), list.get(0));
-            logger.logMessage(LogLevel.INFO, "插件[id:{0}]最新版本为[version:{1}]", plugin.getId(), list.get(0).getVersion());
-            logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]已移除", plugin.getId(), plugin.getVersion(), plugin.getType());
+            logger.logMessage(LogLevel.INFO, "插件[id:{0}]最新版本为[version:{1}]", bundle.getId(), list.get(0).getVersion());
+            logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]已移除", bundle.getId(), bundle.getVersion(), bundle.getType());
             return;
         }
         BundleDefine newBundle = list.get(0);
@@ -729,8 +729,8 @@ public class BundleManagerImpl implements BundleManager {
             }
         }
         idMap.put(newBundle.getId(), newBundle);
-        logger.logMessage(LogLevel.INFO, "插件[id:{0}]最新版本为[version:{1}]", plugin.getId(), newBundle.getVersion());
-        logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]已移除", plugin.getId(), plugin.getVersion(), plugin.getType());
+        logger.logMessage(LogLevel.INFO, "插件[id:{0}]最新版本为[version:{1}]", bundle.getId(), newBundle.getVersion());
+        logger.logMessage(LogLevel.INFO, "插件[id:{0}, version:{1}, type:{2}]已移除", bundle.getId(), bundle.getVersion(), bundle.getType());
     }
 
     public void remove(Collection<BundleDefine> bundleDefineCollection) {

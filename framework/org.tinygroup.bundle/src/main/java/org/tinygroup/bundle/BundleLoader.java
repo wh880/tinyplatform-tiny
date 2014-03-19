@@ -15,10 +15,10 @@ public interface BundleLoader {
     /**
      * 获取指定插件的ClassLoader
      *
-     * @param plugin
+     * @param bundleDefine
      * @return
      */
-    ClassLoader getLoader(BundleDefine plugin);
+    ClassLoader getLoader(BundleDefine bundleDefine);
 
     /**
      * 获取插件外部包所在的ClassLoader，该Loader也是所有插件的ClassLoader的父Loader
@@ -30,27 +30,27 @@ public interface BundleLoader {
     /**
      * 获取指定插件的资源扫描FileProcessor
      *
-     * @param plugin
+     * @param bundleDefine
      * @return
      */
-    List<FileProcessor> getResourceProcessors(BundleDefine plugin);
+    List<FileProcessor> getResourceProcessors(BundleDefine bundleDefine);
 
     /**
      * 获取指定插件的资源移除FileProcessor
      *
-     * @param plugin
+     * @param bundleDefine
      * @return
      */
-    List<FileProcessor> getRemoveResourceProcessors(BundleDefine plugin);
+    List<FileProcessor> getRemoveResourceProcessors(BundleDefine bundleDefine);
 
     /**
      * 删除指定插件的ClassLoader及相关Jar信息
      *
-     * @param plugin
+     * @param bundleDefine
      */
-    void remove(BundleDefine plugin);
+    void remove(BundleDefine bundleDefine);
 
-    void add(BundleDefine plugin);
+    void add(BundleDefine bundleDefine);
 
     List<BundleDefine> listJar(String path);
 

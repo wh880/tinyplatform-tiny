@@ -14,7 +14,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.xmlparser.node.XmlNode;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -24,9 +23,9 @@ import java.util.Map.Entry;
  *
  * @author luoguo
  */
-public abstract class BasePlugin implements Bundle {
+public abstract class BaseBundle implements Bundle {
     private BundleManager bundleManager;
-    private BundleDefine pluginInfo;
+    private BundleDefine bundleDefine;
     private I18nMessages i18nMessages = I18nMessageFactory.getI18nMessages();
     // 存放服务和服务对应的最高版本信息
     private Map<String, BundleService> idInfoMap = new HashMap<String, BundleService>();
@@ -35,16 +34,15 @@ public abstract class BasePlugin implements Bundle {
     // 存放服务实例
     private Map<BundleService, Object> serviceInstanceMap = new HashMap<BundleService, Object>();
     /**
-     * application.xml中的配置信息，每条记录对应一个pluginService
+     * application.xml中的配置信息，每条记录对应一个bundleService
      */
-    private List<XmlNode> configNodeList;
-    private Logger logger = LoggerFactory.getLogger(BasePlugin.class);
+    private Logger logger = LoggerFactory.getLogger(BaseBundle.class);
 
     public void init() {
 
-        logger.logMessage(LogLevel.DEBUG, "初始化插件[id:{0},version:{1}]的服务", pluginInfo.getId(), pluginInfo.getVersion());
+        logger.logMessage(LogLevel.DEBUG, "初始化插件[id:{0},version:{1}]的服务", bundleDefine.getId(), bundleDefine.getVersion());
 
-        List<BundleService> list = this.pluginInfo.getBundleServices();
+        List<BundleService> list = this.bundleDefine.getBundleServices();
         for (BundleService service : list) {
             logger.logMessage(LogLevel.DEBUG, "初始化插件服务[id:{0},version:{1}]", service.getId(), service.getVersion());
             String id = service.getId();
@@ -67,7 +65,7 @@ public abstract class BasePlugin implements Bundle {
             bundleManager = SpringUtil.getBean("bundleManager");
         }
 
-        logger.logMessage(LogLevel.DEBUG, "初始化插件[id:{0},version:{1}]的服务完成", pluginInfo.getId(), pluginInfo.getVersion());
+        logger.logMessage(LogLevel.DEBUG, "初始化插件[id:{0},version:{1}]的服务完成", bundleDefine.getId(), bundleDefine.getVersion());
 
     }
 
@@ -75,27 +73,6 @@ public abstract class BasePlugin implements Bundle {
         return serviceInstanceMap;
     }
 
-    /**
-     * 根据插件服务id和版本，获取对应的配置信息
-     *
-     * @param serviceId      插件服务Id
-     * @param serviceVersion 插件服务版本
-     * @return
-     */
-    protected XmlNode findServiceConfig(String serviceId, String serviceVersion) {
-        if (configNodeList != null) {
-            if (serviceId == null || "".equals(serviceId) || serviceVersion == null || "".equals(serviceVersion)) {
-                return null;
-            }
-            for (XmlNode node : configNodeList) {
-                if (serviceId.equals(node.getAttribute(PluginXmlConfigNode.SERVICE_ID))
-                        && serviceVersion.equals(node.getAttribute(PluginXmlConfigNode.SERVICE_VERSION))) {
-                    return node;
-                }
-            }
-        }
-        return null;
-    }
 
     protected abstract ClassLoader getThisClassLoader();
 
@@ -122,7 +99,7 @@ public abstract class BasePlugin implements Bundle {
             }
         } catch (Exception e) {
             logger.errorMessage("初始化插件服务[id:{0},version:{1}]出错,", e, service.getId(), service.getVersion());
-            throw new BundleException(i18nMessages.getMessage("plugin.serviceClassNotFound", service.getId(), service.getVersion()), e);
+            throw new BundleException(i18nMessages.getMessage("bundle.serviceClassNotFound", service.getId(), service.getVersion()), e);
         }
     }
 
@@ -138,14 +115,11 @@ public abstract class BasePlugin implements Bundle {
         idInfoMap.clear();
         idVersionInfoMap.clear();
         serviceInstanceMap.clear();
-        if (configNodeList != null) {
-            configNodeList.clear();
-        }
     }
 
     public <T> T getService(String id, String version) {
         if (id == null || "".equals(id)) {
-            throw new BundleException(i18nMessages.getMessage("plugin.serviceIdIsNull"));
+            throw new BundleException(i18nMessages.getMessage("bundle.serviceIdIsNull"));
         }
         if (version == null) {
             return (T) getService(id);
@@ -179,8 +153,8 @@ public abstract class BasePlugin implements Bundle {
         return bundleManager;
     }
 
-    public <T> void setBundleDefine(BundleDefine pluginInfo) {
-        this.pluginInfo = pluginInfo;
+    public void setBundleDefine(BundleDefine bundleDefine) {
+        this.bundleDefine = bundleDefine;
     }
 
     public void start() {
@@ -261,7 +235,7 @@ public abstract class BasePlugin implements Bundle {
     }
 
     public BundleDefine getBundleDefine() {
-        return pluginInfo;
+        return bundleDefine;
     }
 
 }

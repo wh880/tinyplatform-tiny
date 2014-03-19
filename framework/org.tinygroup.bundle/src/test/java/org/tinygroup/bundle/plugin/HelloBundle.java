@@ -1,29 +1,30 @@
-package org.tinygroup.bundle.plugin;
+package org.tinygroup.bundle.bundle;
 
 import org.tinygroup.bundle.Bundle;
+import org.tinygroup.bundle.BundleContext;
 import org.tinygroup.bundle.BundleManager;
-import org.tinygroup.bundle.config.PluginInfo;
+import org.tinygroup.bundle.config.BundleDefine;
 import org.tinygroup.bundle.exception.BundleException;
 
 public class HelloBundle implements Bundle {
 
-    public void init() throws BundleException {
+    public void init(BundleContext bundleContext) throws BundleException {
 
     }
 
-    public void start() throws BundleException {
+    public void start(BundleContext bundleContext) throws BundleException {
 
     }
 
-    public void pause() throws BundleException {
+    public void pause(BundleContext bundleContext) throws BundleException {
 
     }
 
-    public void stop() throws BundleException {
+    public void stop(BundleContext bundleContext) throws BundleException {
 
     }
 
-    public void destroy() throws BundleException {
+    public void destroy(BundleContext bundleContext) throws BundleException {
 
     }
 
@@ -54,18 +55,15 @@ public class HelloBundle implements Bundle {
 
     }
 
-    public <T> void setConfig(PluginConfiguration pluginConfiguration) {
-
-
-    }
 
     public void setBundleManager(BundleManager bundleManager) {
 
 
     }
 
-    public <T> void setPluginInfo(PluginInfo pluginInfo) {
+    public void setBundleDefine(BundleDefine bundleDefine) {
 
     }
+
 
 }

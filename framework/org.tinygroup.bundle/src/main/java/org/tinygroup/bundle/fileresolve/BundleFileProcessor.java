@@ -13,7 +13,7 @@ import org.tinygroup.xstream.XStreamFactory;
  *
  * @author luoguo
  */
-public class PluginFileProcessor extends AbstractFileProcessor {
+public class BundleFileProcessor extends AbstractFileProcessor {
     private BundleManager bundleManager;
 
     public BundleManager getBundleManager() {
@@ -38,7 +38,7 @@ public class PluginFileProcessor extends AbstractFileProcessor {
     }
 
     public void process(ClassLoader loader) {
-        XStream stream = XStreamFactory.getXStream(BundleManager.PLUGIN_XSTREAM);
+        XStream stream = XStreamFactory.getXStream(BundleManager.BUNDLE_XSTREAM);
         for (FileObject fileObject : fileObjects) {
             BundleDefine bundleDefine = (BundleDefine) stream.fromXML(fileObject.getInputStream());
             bundleManager.add(bundleDefine);
