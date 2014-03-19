@@ -23,18 +23,7 @@
  */
 package org.tinygroup.httpvisit.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.httpclient.Cookie;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethodBase;
-import org.apache.commons.httpclient.HttpState;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.auth.AuthPolicy;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
@@ -46,6 +35,11 @@ import org.tinygroup.httpvisit.HttpVisitor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.List;
+import java.util.Map;
 
 public class HttpVisitorImpl implements HttpVisitor {
 	private static final Logger logger = LoggerFactory
@@ -60,11 +54,11 @@ public class HttpVisitorImpl implements HttpVisitor {
 	private String proxyHost;
 	private int proxyPort;
 	private UsernamePasswordCredentials proxyUserPassword;
-
+	private Map<String, String> header;
 
 
 	public void setProxy(String proxyHost, int proxyPort, String userName,
-			String passwrod) {
+	                     String passwrod) {
 		this.proxyHost = proxyHost;
 		this.proxyPort = proxyPort;
 		if (userName != null) {
@@ -74,7 +68,6 @@ public class HttpVisitorImpl implements HttpVisitor {
 	}
 
 	/**
-	 * 
 	 * @param host
 	 * @param port
 	 * @param realm
@@ -83,7 +76,7 @@ public class HttpVisitorImpl implements HttpVisitor {
 	 * @param password
 	 */
 	public void setBasicAuth(String host, int port, String realm,
-			String schema, String username, String password) {
+	                         String schema, String username, String password) {
 		httpState.setCredentials(new AuthScope("www.verisign.com", 443, realm,
 				schema),
 				new UsernamePasswordCredentials("username", "password"));
@@ -91,12 +84,12 @@ public class HttpVisitorImpl implements HttpVisitor {
 	}
 
 	public void setBasicAuth(String host, int port, String username,
-			String password) {
+	                         String password) {
 		setBasicAuth(host, port, username, password);
 	}
 
 	public void setAlternateAuth(String host, int port, String username,
-			String password, List<String> schemaList) {
+	                             String password, List<String> schemaList) {
 		httpState.setCredentials(new AuthScope("www.verisign.com", 443),
 				new UsernamePasswordCredentials("username", "password"));
 		authEnabled = true;
@@ -160,7 +153,11 @@ public class HttpVisitorImpl implements HttpVisitor {
 					}
 				}
 			}
+
 			GetMethod get = new GetMethod(sb.toString());
+
+			addHeader(get, header);
+
 			return execute(get);
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
@@ -191,12 +188,14 @@ public class HttpVisitorImpl implements HttpVisitor {
 				}
 			}
 		}
+
+		addHeader(post, header);
 		return execute(post);
 	}
 
 	String execute(HttpMethodBase method) {
 		try {
-			if(client==null){
+			if (client == null) {
 				init();
 			}
 			logger.logMessage(LogLevel.DEBUG, "正在访问地址:{}", method.getURI()
@@ -249,6 +248,7 @@ public class HttpVisitorImpl implements HttpVisitor {
 			if (soapAction != null) {
 				post.setRequestHeader("SOAPAction", soapAction);
 			}
+			addHeader(post, header);
 			return execute(post);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -268,11 +268,26 @@ public class HttpVisitorImpl implements HttpVisitor {
 			RequestEntity entity = new StringRequestEntity(xmlEntiry, null,
 					null);
 			post.setRequestEntity(entity);
+			addHeader(post, header);
 			return execute(post);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
 			post.releaseConnection();
+		}
+	}
+
+	@Override
+	public void setHeader(Map<String, String> header) {
+		this.header = header;
+	}
+
+	public void addHeader(HttpMethod method, Map<String, String> header) {
+		if (header != null) {
+			for (String key : header.keySet()) {
+				Header h = new Header(key, header.get(key));
+				method.addRequestHeader(h);
+			}
 		}
 	}
 
