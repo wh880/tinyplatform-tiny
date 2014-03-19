@@ -1,32 +1,35 @@
-package org.tinygroup.bundle.bundle;
+package org.tinygroup.bundle;
 
 import junit.framework.TestCase;
 import org.tinygroup.bundle.Bundle;
 
-public class HelloBundleTest extends TestCase {
+public class HelloAllBundleTest extends TestCase {
 	Bundle helloBundle = new HelloBundle();
+	Bundle helloAllBundle = new HelloAllBundle();
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		Hello hello = helloBundle.getService("hello");
+		helloAllBundle.setService(hello, Hello.class);
 	}
 
 	public void testGetServiceStringString() {
-		Hello hello = helloBundle.getService("hello", "1.0");
+		HelloAll hello = helloAllBundle.getService("helloAll", "1.0");
 		assertEquals("1.0: hello, yes", hello.sayHello("yes"));
 	}
 
 	public void testGetServiceString() {
-		Hello hello = helloBundle.getService("hello");
+		HelloAll hello = helloAllBundle.getService("helloAll");
 		assertEquals("1.0: hello, yes", hello.sayHello("yes"));
 	}
 
 	public void testGetServiceClassOfTString() {
-		Hello hello = helloBundle.getService(Hello.class, "1.0");
+		HelloAll hello = helloAllBundle.getService(HelloAll.class, "1.0");
 		assertEquals("1.0: hello, yes", hello.sayHello("yes"));
 	}
 
 	public void testGetServiceClassOfT() {
-		Hello hello = helloBundle.getService(Hello.class);
+		HelloAll hello = helloAllBundle.getService(HelloAll.class);
 		assertEquals("1.0: hello, yes", hello.sayHello("yes"));
 	}
 

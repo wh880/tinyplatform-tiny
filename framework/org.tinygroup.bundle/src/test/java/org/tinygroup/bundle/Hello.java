@@ -1,4 +1,4 @@
-package org.tinygroup.bundle.bundle;
+package org.tinygroup.bundle;
 
 public class Hello {
 	String version;

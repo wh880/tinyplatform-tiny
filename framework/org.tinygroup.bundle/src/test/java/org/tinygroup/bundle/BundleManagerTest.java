@@ -1,10 +1,9 @@
-package org.tinygroup.bundle.bundle;
+package org.tinygroup.bundle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.bundle.BundleManager;
-import org.tinygroup.bundle.config.BundleDefine;
 import org.tinygroup.bundle.config.BundleDefine;
 import org.tinygroup.bundle.config.BundleService;
 import org.tinygroup.bundle.impl.BundleManagerImpl;

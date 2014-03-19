@@ -1,4 +1,4 @@
-package org.tinygroup.bundle.bundle;
+package org.tinygroup.bundle;
 
 import org.tinygroup.bundle.Bundle;
 import org.tinygroup.bundle.BundleContext;

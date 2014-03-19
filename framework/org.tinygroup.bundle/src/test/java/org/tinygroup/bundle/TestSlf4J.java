@@ -1,4 +1,4 @@
-package org.tinygroup.bundle.bundle;
+package org.tinygroup.bundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -6,8 +6,8 @@
                     http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	default-autowire="byName" default-lazy-init="true">
 	
-	<!-- plugin相关 -->
-	<bean id="pluginFileProcessor" scope="singleton"
+	<!-- bundle相关 -->
+	<bean id="bundleFileProcessor" scope="singleton"
 		class="org.tinygroup.bundle.fileresolve.BundleFileProcessor">
 		<property name="bundleManager">
 			<ref bean="bundleManager" />
