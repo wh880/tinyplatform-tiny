@@ -44,7 +44,7 @@ public class Test {
 		Map<String, String> header = new HashMap<String, String>();
 		header.put("Origin", "http://lover.zhenyao.net");
 		header.put("Referer", "http://lover.zhenyao.net/lover.swf");
-		visitor.setHeader(header);
+		visitor.setHeaderMap(header);
 
 		System.out.println(visitor.getUrl(
 				"http://lover.zhenyao.net/", null));
