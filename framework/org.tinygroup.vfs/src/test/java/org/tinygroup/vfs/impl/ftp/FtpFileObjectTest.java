@@ -42,10 +42,10 @@ import org.tinygroup.vfs.VFS;
 public class FtpFileObjectTest {
 
 	public static void main(String[] args) throws Exception {
-		new FtpFileObjectTest().testFtpFileObject();
+		new FtpFileObjectTest().ftpFileObjectTest();
 	}
 
-	public void testFtpFileObject() throws Exception {
+	public void ftpFileObjectTest() throws Exception {
 		// 创建ftp服务器根路径对应的绝对路径
 		String ftpRootPath = System.getProperty("user.dir");
 		if (ftpRootPath.endsWith("/") || ftpRootPath.endsWith("\\")) {
