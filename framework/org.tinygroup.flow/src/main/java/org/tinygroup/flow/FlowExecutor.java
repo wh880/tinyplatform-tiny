@@ -26,6 +26,7 @@ package org.tinygroup.flow;
 import java.util.Map;
 
 import org.tinygroup.context.Context;
+import org.tinygroup.flow.config.ComponentDefine;
 import org.tinygroup.flow.config.ComponentDefines;
 import org.tinygroup.flow.config.Flow;
 import org.tinygroup.flow.config.Node;
@@ -109,8 +110,22 @@ public interface FlowExecutor {
 	 * @param components
 	 */
 	void addComponents(ComponentDefines components);
+	
+	/**
+	 * 增加组件定义信息
+	 * 
+	 * @param components
+	 */
+	void addComponent(ComponentDefine component);
 
 	void removeComponents(ComponentDefines components);
+	
+	/**
+	 * 移除组件定义信息
+	 * 
+	 * @param components
+	 */
+	void removeComponent(ComponentDefine component);
 
 	/**
 	 * 根据组件名称获取组件实例
@@ -127,4 +142,6 @@ public interface FlowExecutor {
 	void removeFlow(String flowId, String version);
 
 	void removeFlow(String flowId);
+	
+	ComponentDefine getComponentDefine(String componentName);
 }

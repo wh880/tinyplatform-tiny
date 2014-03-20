@@ -23,18 +23,18 @@
  */
 package org.tinygroup.httpvisit;
 
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpState;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * HTTP访问接口，访问不同的网站，请构建不同的实例
- * 
+ *
  * @author luoguo
- * 
+ *
  */
 public interface HttpVisitor {
 	/**
@@ -44,7 +44,7 @@ public interface HttpVisitor {
 
 	/**
 	 * 设置代理
-	 * 
+	 *
 	 * @param proxyHost
 	 *            代理服务器主机域名或IP
 	 * @param proxyPort
@@ -55,11 +55,11 @@ public interface HttpVisitor {
 	 *            密码
 	 */
 	void setProxy(String proxyHost, int proxyPort, String userName,
-			String passwrod);
+	              String passwrod);
 
 	/**
 	 * 设置基本安全校验
-	 * 
+	 *
 	 * @param host
 	 *            服务器主机域名或IP
 	 * @param port
@@ -74,12 +74,12 @@ public interface HttpVisitor {
 	 *            密码
 	 */
 	void setBasicAuth(String host, int port, String realm, String schema,
-			String username, String password);
+	                  String username, String password);
 
 	/**
 	 * 设置基本安全校验,realm和schema全部适应全部<br>
 	 * 比设定了realm和schema的性能差一些
-	 * 
+	 *
 	 * @param host
 	 *            服务器主机域名或IP
 	 * @param port
@@ -93,7 +93,7 @@ public interface HttpVisitor {
 
 	/**
 	 * 设置自动检测安全校验<br>
-	 * 
+	 *
 	 * @param host
 	 * @param port
 	 * @param username
@@ -102,18 +102,18 @@ public interface HttpVisitor {
 	 *            支持的Schame列表
 	 */
 	void setAlternateAuth(String host, int port, String username,
-			String password, List<String> schemaList);
+	                      String password, List<String> schemaList);
 
 	/**
 	 * 获取Http状态
-	 * 
+	 *
 	 * @return Http状态
 	 */
 	HttpState getHttpState();
 
 	/**
 	 * 设置响应编码，如果不设置，则默认是UTF-8
-	 * 
+	 *
 	 * @param charset
 	 */
 	void setResponseCharset(String charset);
@@ -122,14 +122,14 @@ public interface HttpVisitor {
 	 * 需要在请求之前设置<br>
 	 * 设置请求编码，如果不设置，则默认是ISO-8859-1<br>
 	 * <b>注意：修改此参数要慎重，确认服务器的解码格式是修改的编码，否则会导致乱码出现</b>
-	 * 
+	 *
 	 * @param requestCharset
 	 */
 	void setRequestCharset(String requestCharset);
 
 	/**
 	 * 设置超时时间，必须在init之前调用
-	 * 
+	 *
 	 * @param timeout
 	 */
 
@@ -138,28 +138,28 @@ public interface HttpVisitor {
 
 	/**
 	 * 添加Cookie
-	 * 
+	 *
 	 * @param cookie
 	 */
 	void addCookie(Cookie cookie);
 
 	/**
 	 * 添加一组Cookie
-	 * 
+	 *
 	 * @param cookies
 	 */
 	void addCookie(Cookie[] cookies);
 
 	/**
 	 * 返回Cookie，在请求完成之后获取，得到是的从浏览器从传入的
-	 * 
+	 *
 	 * @return 返回所有Cookie
 	 */
 	Cookie[] getCookies();
 
 	/**
 	 * 用get方式访问URL
-	 * 
+	 *
 	 * @param url
 	 *            要访问的URL
 	 * @param parameter
@@ -170,7 +170,7 @@ public interface HttpVisitor {
 
 	/**
 	 * 用post方式访问URL
-	 * 
+	 *
 	 * @param url
 	 *            要访问的URL
 	 * @param parameter
@@ -181,14 +181,14 @@ public interface HttpVisitor {
 
 	/**
 	 * 获取HttpClient对象
-	 * 
+	 *
 	 * @return 返回HttpClient对象
 	 */
 	HttpClient getHttpClient();
 
 	/**
 	 * Post SOAP内容
-	 * 
+	 *
 	 * @param url
 	 * @param soapAction
 	 * @param xmlEntiry
@@ -198,7 +198,7 @@ public interface HttpVisitor {
 
 	/**
 	 * Post SOAP内容
-	 * 
+	 *
 	 * @param url
 	 * @param xmlEntiry
 	 * @return 请求结果
@@ -207,10 +207,16 @@ public interface HttpVisitor {
 
 	/**
 	 * Post Xml内容
-	 * 
+	 *
 	 * @param url
 	 * @param xmlEntiry
 	 * @return 请求结果
 	 */
 	String postXml(String url, String xmlEntiry);
+
+	/**
+	 * 设置头部
+	 * @param header
+	 */
+	void setHeader(Map<String, String> header);
 }

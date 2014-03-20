@@ -1,25 +1,26 @@
 package org.tinygroup.bundle;
 
 public class Hello {
-	String version;
+    String version;
 
-	public Hello(String version) {
-		this.version = version;
-	}
+    public Hello(String version) {
+        this.version = version;
+    }
 
-	public String getVersion() {
-		return version;
-	}
+    public String getVersion() {
+        return version;
+    }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-	public String sayHello(String name) {
+    public String sayHello(String name) {
 
-		if (name == null) {
-			name = "world.";
-		}
-		return version + ": hello, " + name;
-	}
+        if (name == null) {
+            name = "world.";
+        }
+        return version + ": hello, " + name;
+    }
+
 }

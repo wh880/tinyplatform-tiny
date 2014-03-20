@@ -3,7 +3,7 @@ package org.tinygroup.bundle;
 import org.tinygroup.bundle.config.BundleDefine;
 
 /**
- * 插件接口，所有的插件都必须实现此接口
+ * Bundle接口，所有的Bundle都必须实现此接口
  *
  * @author luoguo
  */
@@ -94,6 +94,11 @@ public interface Bundle {
      */
     void setBundleManager(BundleManager bundleManager);
 
+    /**
+     * 设置Bundle定义
+     *
+     * @param bundleDefine
+     */
     void setBundleDefine(BundleDefine bundleDefine);
 
     /**

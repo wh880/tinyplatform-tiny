@@ -51,7 +51,6 @@ public class DocGenTest extends TestCase {
 		super.tearDown();
 	}
 
-
 	/**
 	 * 整体测试
 	 * 

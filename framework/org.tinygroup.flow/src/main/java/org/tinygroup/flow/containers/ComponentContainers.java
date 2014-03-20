@@ -74,7 +74,7 @@ public class ComponentContainers {
 		}
 		
 	}	
-	private void removeComponent(ComponentDefine component) {
+	public void removeComponent(ComponentDefine component) {
 		if(component==null)
 			return;
 		logger.logMessage(LogLevel.INFO, "移除组件Component[name:{0},bean:{1}]",component.getName(),component.getBean());
@@ -95,7 +95,7 @@ public class ComponentContainers {
 		throw new FlowRuntimeException("flow.componentNotExist",componentName);
 		
 	}
-	private void addComponent(ComponentDefine component) {
+	public void addComponent(ComponentDefine component) {
 		if(component==null)
 			return;
 		logger.logMessage(LogLevel.INFO, "添加组件Component[name:{0},bean:{1}]",component.getName(),component.getBean());
@@ -103,4 +103,7 @@ public class ComponentContainers {
 		nameMap.put(component.getName(), component);
 	}
 	
+	public ComponentDefine getComponentDefine(String componentName){
+		return nameMap.get(componentName);
+	}
 }

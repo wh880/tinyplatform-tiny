@@ -62,4 +62,10 @@ public class HttpsFileObject extends URLFileObject {
 		
 	}
 
+	/**
+	 * http资源，都是文件，不会有路径存在
+	 */
+	public boolean isFolder() {
+		return false;
+	}
 }

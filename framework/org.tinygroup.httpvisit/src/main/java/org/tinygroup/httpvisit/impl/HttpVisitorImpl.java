@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.httpclient.Cookie;
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.HttpState;
@@ -60,11 +61,12 @@ public class HttpVisitorImpl implements HttpVisitor {
 	private String proxyHost;
 	private int proxyPort;
 	private UsernamePasswordCredentials proxyUserPassword;
+	private Map<String, String> header;
 
 
 
 	public void setProxy(String proxyHost, int proxyPort, String userName,
-			String passwrod) {
+	                     String passwrod) {
 		this.proxyHost = proxyHost;
 		this.proxyPort = proxyPort;
 		if (userName != null) {
@@ -74,7 +76,7 @@ public class HttpVisitorImpl implements HttpVisitor {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param host
 	 * @param port
 	 * @param realm
@@ -83,7 +85,7 @@ public class HttpVisitorImpl implements HttpVisitor {
 	 * @param password
 	 */
 	public void setBasicAuth(String host, int port, String realm,
-			String schema, String username, String password) {
+	                         String schema, String username, String password) {
 		httpState.setCredentials(new AuthScope("www.verisign.com", 443, realm,
 				schema),
 				new UsernamePasswordCredentials("username", "password"));
@@ -91,12 +93,12 @@ public class HttpVisitorImpl implements HttpVisitor {
 	}
 
 	public void setBasicAuth(String host, int port, String username,
-			String password) {
+	                         String password) {
 		setBasicAuth(host, port, username, password);
 	}
 
 	public void setAlternateAuth(String host, int port, String username,
-			String password, List<String> schemaList) {
+	                             String password, List<String> schemaList) {
 		httpState.setCredentials(new AuthScope("www.verisign.com", 443),
 				new UsernamePasswordCredentials("username", "password"));
 		authEnabled = true;
@@ -161,6 +163,7 @@ public class HttpVisitorImpl implements HttpVisitor {
 				}
 			}
 			GetMethod get = new GetMethod(sb.toString());
+			addHeader(get, header);
 			return execute(get);
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
@@ -191,6 +194,7 @@ public class HttpVisitorImpl implements HttpVisitor {
 				}
 			}
 		}
+		addHeader(post, header);
 		return execute(post);
 	}
 
@@ -249,6 +253,7 @@ public class HttpVisitorImpl implements HttpVisitor {
 			if (soapAction != null) {
 				post.setRequestHeader("SOAPAction", soapAction);
 			}
+			addHeader(post, header);
 			return execute(post);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -268,11 +273,25 @@ public class HttpVisitorImpl implements HttpVisitor {
 			RequestEntity entity = new StringRequestEntity(xmlEntiry, null,
 					null);
 			post.setRequestEntity(entity);
+			addHeader(post, header);
 			return execute(post);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
 			post.releaseConnection();
+		}
+	}
+
+	public void setHeader(Map<String, String> header) {
+		this.header = header;
+	}
+
+	private void addHeader(HttpMethodBase method, Map<String, String> header) {
+		if (header != null) {
+			for (String key : header.keySet()) {
+				Header h = new Header(key, header.get(key));
+				method.addRequestHeader(h);
+			}
 		}
 	}
 
