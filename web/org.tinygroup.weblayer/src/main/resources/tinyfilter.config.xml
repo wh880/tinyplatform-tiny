@@ -1,4 +1,5 @@
 <!--tiny-filters配置 -->
+<!-- 
 <tiny-filters>
 	<tiny-wrapper-filter id="tinyFilterWrapper" bean-name="tinyFilterWrapper">
 		<init-param name="filter_beans" value="gZIPFilter"></init-param>
@@ -41,8 +42,8 @@
 	<tiny-filter id="sessionTinyFilter" bean-name="sessionTinyFilter">
 		<filter-mapping url-pattern=".*"></filter-mapping>
 	</tiny-filter>
-	<!--<tiny-wrapper-filter id="tinyFilterWrapper" bean-name="tinyFilterWrapper"> 
+	<tiny-wrapper-filter id="tinyFilterWrapper" bean-name="tinyFilterWrapper"> 
 		value值可以是多个实现http filter接口的bean名称，多个以","分隔开 <init-param name="filter_beans" 
 		value="encondingHttpFilter"></init-param> <filter-mapping url-pattern=".*"></filter-mapping> 
-		</tiny-wrapper-filter> -->
-</tiny-filters>
+		</tiny-wrapper-filter>
+</tiny-filters> -->

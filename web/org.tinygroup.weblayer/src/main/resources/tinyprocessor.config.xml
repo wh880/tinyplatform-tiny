@@ -1,5 +1,5 @@
 <!--tiny-processor实现 -->
-<tiny-processors>
+<!-- <tiny-processors>
 	<tiny-processor id="uiEngineTinyProcessor" bean-name="uiEngineTinyProcessor">
 		<servlet-mapping url-pattern=".*/uiengine\.uijs"></servlet-mapping>
 		<servlet-mapping url-pattern=".*/uiengine\.uicss"></servlet-mapping>
@@ -27,8 +27,8 @@
 		<servlet-mapping url-pattern=".*\.page"></servlet-mapping>
 		<servlet-mapping url-pattern=".*\.pagelet"></servlet-mapping>
 	</tiny-processor>
-	<!-- <tiny-processor id="jspProcessor" bean-name="tinyProcessorWapper"> <init-param 
+	<tiny-processor id="jspProcessor" bean-name="tinyProcessorWapper"> <init-param 
 		name="servlet_bean" value="jspServlet"></init-param> <servlet-mapping url-pattern=".*\.jsp"></servlet-mapping> 
 		<init-param name="fork" value="false"></init-param> <init-param name="xpoweredBy" 
-		value="false"></init-param> </tiny-processor> -->
-</tiny-processors>
+		value="false"></init-param> </tiny-processor> 
+</tiny-processors> -->

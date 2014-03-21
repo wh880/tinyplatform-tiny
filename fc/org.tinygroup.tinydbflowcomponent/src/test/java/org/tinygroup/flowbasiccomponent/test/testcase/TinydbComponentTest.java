@@ -50,8 +50,8 @@ public class TinydbComponentTest extends BaseTest {
 		context.put(ANIMAL, bean);
 		context.put("beanType", ANIMAL);
 		flowExecutor.execute("updateService", context);
-        int record=context.get("result");
-        assertEquals(1, record);
+        Integer record=context.get("result");
+        assertEquals(1, record.intValue());
 	}
 
 	public void testDelete() {
@@ -61,8 +61,8 @@ public class TinydbComponentTest extends BaseTest {
 		context.put(ANIMAL, bean);
 		context.put("beanType", ANIMAL);
 		flowExecutor.execute("deleteService", context);
-        int record=context.get("result");
-        assertEquals(1, record);
+		Integer record=context.get("result");
+        assertEquals(1, record.intValue());
 	}
 
 	public void testQuery() {
