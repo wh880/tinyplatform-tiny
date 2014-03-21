@@ -200,7 +200,7 @@ $style)
 			<w:u />
 			#end
 			#if($style.headingSize)
-			#header($style.headingSize)
+			#headerMap($style.headingSize)
 			#end
 		</w:rPr>
 		<w:t>$content</w:t>
@@ -272,6 +272,6 @@ firstLine:表示首行缩进
 	if ( indentInfo.firstLine ) w:first-line="$indentInfo.firstLine" # end />
 #end
 
-#macro(header $size)
+#macro(headerMap $size)
 <w:pStyle w:val="$$size" />
 #end

@@ -1,209 +1,209 @@
-2014-03-09 15:01:08,977 -0    [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在进行全路径扫描....
-2014-03-09 15:01:08,996 -19   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.context2object\target\test-classes>由于匹配了包含正则表达式<[\/]test-classes\b>而被扫描。
-2014-03-09 15:01:08,996 -19   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.context2object\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,000 -23   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.context\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,001 -24   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,002 -25   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.xstream\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,005 -28   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.application\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,006 -29   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.config\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,007 -30   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,008 -31   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.parser\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,009 -32   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.binarytree\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,010 -33   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.commons\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,013 -36   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.i18n\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,014 -37   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.formater\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,017 -40   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.order\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,018 -41   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,019 -42   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.vfs\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,021 -44   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.event\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,022 -45   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.exception\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,023 -46   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.springutil\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,025 -48   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.logger\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,032 -55   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.testutil\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,033 -56   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找WEB-INF/classes路径开始...
-2014-03-09 15:01:09,033 -56   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - WEB-INF/classes路径是:file:/D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/
-2014-03-09 15:01:09,034 -57   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - WEB-INF/lib路径是:file:/D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/
-2014-03-09 15:01:09,034 -57   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找WEB-INF/classes路径完成。
-2014-03-09 15:01:09,034 -57   [main] WARN  org.tinygroup.fileresolver.impl.FileResolverImpl  - WEBROOT变量找不到
-2014-03-09 15:01:09,035 -58   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找Web工程中的jar文件列表开始...
-2014-03-09 15:01:09,036 -59   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<file:D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter8109224725248878417.jar>由于匹配了包含正则表达式<org\.tinygroup\.(.)*\.jar>而被扫描。
-2014-03-09 15:01:09,036 -59   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 扫描到jar文件<jar:file:/D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter8109224725248878417.jar>。
-2014-03-09 15:01:09,052 -75   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找Web工程中的jar文件列表完成。
-2014-03-09 15:01:09,059 -82   [main] INFO  org.tinygroup.threadgroup.MultiThreadProcessor  - 线程组<file-resolver-threads>运行开始,线程数1...
-2014-03-09 15:01:09,060 -83   [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.threadgroup.AbstractProcessor  - 线程<file-resolver-threads-file-processor-thread-0>运行开始...
-2014-03-09 15:01:09,060 -83   [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.springutil\target\classes]...
-2014-03-09 15:01:09,062 -85   [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.springutil\target\classes]扫描完成。
-2014-03-09 15:01:09,063 -86   [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.order\target\classes]...
-2014-03-09 15:01:09,064 -87   [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.order\target\classes]扫描完成。
-2014-03-09 15:01:09,065 -88   [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.parser\target\classes]...
-2014-03-09 15:01:09,067 -90   [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.parser\target\classes]扫描完成。
-2014-03-09 15:01:09,067 -90   [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.logger\target\classes]...
-2014-03-09 15:01:09,068 -91   [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.logger\target\classes]扫描完成。
-2014-03-09 15:01:09,068 -91   [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.binarytree\target\classes]...
-2014-03-09 15:01:09,069 -92   [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.binarytree\target\classes]扫描完成。
-2014-03-09 15:01:09,070 -93   [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.commons\target\classes]...
-2014-03-09 15:01:09,078 -101  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.commons\target\classes]扫描完成。
-2014-03-09 15:01:09,078 -101  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes]...
-2014-03-09 15:01:09,079 -102  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes]扫描完成。
-2014-03-09 15:01:09,079 -102  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.event\target\classes]...
-2014-03-09 15:01:09,081 -104  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.event\target\classes]扫描完成。
-2014-03-09 15:01:09,081 -104  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.context2object\target\test-classes]...
-2014-03-09 15:01:09,084 -107  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.context2object\target\test-classes]扫描完成。
-2014-03-09 15:01:09,085 -108  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter8109224725248878417.jar]...
-2014-03-09 15:01:09,085 -108  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<file:D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter8109224725248878417.jar>由于匹配了包含正则表达式<org\.tinygroup\.(.)*\.jar>而被扫描。
-2014-03-09 15:01:09,086 -109  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter8109224725248878417.jar]扫描完成。
-2014-03-09 15:01:09,086 -109  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes]...
-2014-03-09 15:01:09,088 -111  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes]扫描完成。
-2014-03-09 15:01:09,088 -111  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.xstream\target\classes]...
-2014-03-09 15:01:09,090 -113  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.xstream\target\classes]扫描完成。
-2014-03-09 15:01:09,090 -113  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.formater\target\classes]...
-2014-03-09 15:01:09,092 -115  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.formater\target\classes]扫描完成。
-2014-03-09 15:01:09,092 -115  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes]...
-2014-03-09 15:01:09,095 -118  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes]扫描完成。
-2014-03-09 15:01:09,095 -118  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.context2object\target\classes]...
-2014-03-09 15:01:09,097 -120  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.context2object\target\classes]扫描完成。
-2014-03-09 15:01:09,098 -121  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.application\target\classes]...
-2014-03-09 15:01:09,099 -122  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.application\target\classes]扫描完成。
-2014-03-09 15:01:09,099 -122  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.config\target\classes]...
-2014-03-09 15:01:09,101 -124  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.config\target\classes]扫描完成。
-2014-03-09 15:01:09,101 -124  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.exception\target\classes]...
-2014-03-09 15:01:09,102 -125  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.exception\target\classes]扫描完成。
-2014-03-09 15:01:09,102 -125  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.i18n\target\classes]...
-2014-03-09 15:01:09,104 -127  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.i18n\target\classes]扫描完成。
-2014-03-09 15:01:09,104 -127  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.vfs\target\classes]...
-2014-03-09 15:01:09,107 -130  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.vfs\target\classes]扫描完成。
-2014-03-09 15:01:09,108 -131  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.context\target\classes]...
-2014-03-09 15:01:09,110 -133  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.context\target\classes]扫描完成。
-2014-03-09 15:01:09,111 -134  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.testutil\target\classes]...
-2014-03-09 15:01:09,112 -135  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.testutil\target\classes]扫描完成。
-2014-03-09 15:01:09,112 -135  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.threadgroup.AbstractProcessor  - 线程<file-resolver-threads-file-processor-thread-0>运行结束
-2014-03-09 15:01:09,113 -136  [main] INFO  org.tinygroup.threadgroup.MultiThreadProcessor  - 线程组<file-resolver-threads>运行结束, 用时:52ms
-2014-03-09 15:01:09,114 -137  [main] INFO  org.tinygroup.fileresolver.impl.MultiThreadFileProcessor  - 线程组:<file-resolver-threads>执行时间：54
-2014-03-09 15:01:09,246 -269  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.order/target/classes/order.beans.xml
-2014-03-09 15:01:09,246 -269  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.binarytree/target/classes/binarytree.beans.xml
-2014-03-09 15:01:09,246 -269  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/Application.springbeans.xml
-2014-03-09 15:01:09,246 -269  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/test.springbeans.xml
-2014-03-09 15:01:09,247 -270  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.xstream/target/classes/xstream.beans.xml
-2014-03-09 15:01:09,247 -270  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.fileresolver/target/classes/fileresolver.beans.xml
-2014-03-09 15:01:09,247 -270  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.context2object/target/classes/context2object.beans.xml
-2014-03-09 15:01:09,247 -270  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.exception/target/classes/exception.beans.xml
-2014-03-09 15:01:09,250 -273  [main] INFO  org.springframework.context.support.FileSystemXmlApplicationContext  - Refreshing org.springframework.context.support.FileSystemXmlApplicationContext@3de8b615: display name [org.springframework.context.support.FileSystemXmlApplicationContext@3de8b615]; startup date [Sun Mar 09 15:01:09 CST 2014]; root of context hierarchy
-2014-03-09 15:01:09,340 -363  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.order/target/classes/order.beans.xml]
-2014-03-09 15:01:09,501 -524  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.binarytree/target/classes/binarytree.beans.xml]
-2014-03-09 15:01:09,527 -550  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/Application.springbeans.xml]
-2014-03-09 15:01:09,564 -587  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/test.springbeans.xml]
-2014-03-09 15:01:09,604 -627  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.xstream/target/classes/xstream.beans.xml]
-2014-03-09 15:01:09,625 -648  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.fileresolver/target/classes/fileresolver.beans.xml]
-2014-03-09 15:01:09,656 -679  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.context2object/target/classes/context2object.beans.xml]
-2014-03-09 15:01:09,690 -713  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.exception/target/classes/exception.beans.xml]
-2014-03-09 15:01:09,715 -738  [main] INFO  org.springframework.context.support.FileSystemXmlApplicationContext  - Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext@3de8b615]: org.springframework.beans.factory.support.DefaultListableBeanFactory@534041ec
-2014-03-09 15:01:09,866 -889  [main] INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory  - Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@534041ec: defining beans [orderProcessor,avlTreeImpl,fileResolver,fileResolverProcessor,people2,people,cat,part,part2,cat2,cat1,user,newcat,newuser,fullContextFileRepository,fullContextFileFinder,i18nFileProcessor,xStreamFileProcessor,orderFileProcessor,springBeansFileProcessor,configurationFileProcessor,fileMonitorProcessor,classNameObjectGenerator,generatorFileProcessor]; root of factory hierarchy
-2014-03-09 15:01:09,927 -950  [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 开始读取组件配置文件:filefind.config.xml
-2014-03-09 15:01:09,944 -967  [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 读取组件配置文件:filefind.config.xml完成
-2014-03-09 15:01:09,944 -967  [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 开始读取组件配置文件:filemonitor.config.xml
-2014-03-09 15:01:09,945 -968  [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 读取组件配置文件:filemonitor.config.xml完成
-2014-03-09 15:01:09,945 -968  [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 开始读取组件配置文件:fileresolver.config.xml
-2014-03-09 15:01:09,946 -969  [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 读取组件配置文件:fileresolver.config.xml完成
-2014-03-09 15:01:09,991 -1014 [main] INFO  org.tinygroup.config.impl.ConfigurationManagerImpl  - 正在分发应用配置信息...
-2014-03-09 15:01:09,993 -1016 [main] INFO  org.tinygroup.config.impl.ConfigurationManagerImpl  - 应用配置信息分发完毕
-2014-03-09 15:01:09,994 -1017 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 全路径扫描完成。
-2014-03-09 15:01:09,994 -1017 [main] INFO  org.tinygroup.application.impl.ApplicationDefault  - 启动应用开始...
-2014-03-09 15:01:09,994 -1017 [main] INFO  org.tinygroup.application.impl.ApplicationDefault  - 应用处理器class org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor正在启动...
-2014-03-09 15:01:09,995 -1018 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在进行全路径扫描....
-2014-03-09 15:01:09,995 -1018 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.context2object\target\test-classes>由于匹配了包含正则表达式<[\/]test-classes\b>而被扫描。
-2014-03-09 15:01:09,996 -1019 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.context2object\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,997 -1020 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.context\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,997 -1020 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,998 -1021 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.xstream\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,999 -1022 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.application\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:09,999 -1022 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.config\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,000 -1023 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,000 -1023 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.parser\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,000 -1023 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.binarytree\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,001 -1024 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.commons\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,002 -1025 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.i18n\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,002 -1025 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.formater\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,003 -1026 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.order\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,003 -1026 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,004 -1027 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.vfs\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,004 -1027 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.event\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,005 -1028 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.exception\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,005 -1028 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.springutil\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,005 -1028 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.logger\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,009 -1032 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.testutil\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
-2014-03-09 15:01:10,009 -1032 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找WEB-INF/classes路径开始...
-2014-03-09 15:01:10,009 -1032 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - WEB-INF/classes路径是:file:/D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/
-2014-03-09 15:01:10,010 -1033 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - WEB-INF/lib路径是:file:/D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/
-2014-03-09 15:01:10,010 -1033 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找WEB-INF/classes路径完成。
-2014-03-09 15:01:10,010 -1033 [main] WARN  org.tinygroup.fileresolver.impl.FileResolverImpl  - WEBROOT变量找不到
-2014-03-09 15:01:10,010 -1033 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找Web工程中的jar文件列表开始...
-2014-03-09 15:01:10,011 -1034 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<file:D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter8109224725248878417.jar>由于匹配了包含正则表达式<org\.tinygroup\.(.)*\.jar>而被扫描。
-2014-03-09 15:01:10,011 -1034 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 扫描到jar文件<jar:file:/D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter8109224725248878417.jar>。
-2014-03-09 15:01:10,019 -1042 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找Web工程中的jar文件列表完成。
-2014-03-09 15:01:10,020 -1043 [main] INFO  org.tinygroup.threadgroup.MultiThreadProcessor  - 线程组<file-resolver-threads>运行开始,线程数1...
-2014-03-09 15:01:10,021 -1044 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.threadgroup.AbstractProcessor  - 线程<file-resolver-threads-file-processor-thread-0>运行开始...
-2014-03-09 15:01:10,021 -1044 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.springutil\target\classes]...
-2014-03-09 15:01:10,022 -1045 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.springutil\target\classes]扫描完成。
-2014-03-09 15:01:10,023 -1046 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.order\target\classes]...
-2014-03-09 15:01:10,024 -1047 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.order\target\classes]扫描完成。
-2014-03-09 15:01:10,024 -1047 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.parser\target\classes]...
-2014-03-09 15:01:10,027 -1050 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.parser\target\classes]扫描完成。
-2014-03-09 15:01:10,027 -1050 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.logger\target\classes]...
-2014-03-09 15:01:10,028 -1051 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.logger\target\classes]扫描完成。
-2014-03-09 15:01:10,029 -1052 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.binarytree\target\classes]...
-2014-03-09 15:01:10,030 -1053 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.binarytree\target\classes]扫描完成。
-2014-03-09 15:01:10,030 -1053 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.commons\target\classes]...
-2014-03-09 15:01:10,039 -1062 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.commons\target\classes]扫描完成。
-2014-03-09 15:01:10,040 -1063 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes]...
-2014-03-09 15:01:10,040 -1063 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes]扫描完成。
-2014-03-09 15:01:10,041 -1064 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.event\target\classes]...
-2014-03-09 15:01:10,043 -1066 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.event\target\classes]扫描完成。
-2014-03-09 15:01:10,043 -1066 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.context2object\target\test-classes]...
-2014-03-09 15:01:10,046 -1069 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.context2object\target\test-classes]扫描完成。
-2014-03-09 15:01:10,046 -1069 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter8109224725248878417.jar]...
-2014-03-09 15:01:10,046 -1069 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<file:D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter8109224725248878417.jar>由于匹配了包含正则表达式<org\.tinygroup\.(.)*\.jar>而被扫描。
-2014-03-09 15:01:10,047 -1070 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter8109224725248878417.jar]扫描完成。
-2014-03-09 15:01:10,047 -1070 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes]...
-2014-03-09 15:01:10,048 -1071 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes]扫描完成。
-2014-03-09 15:01:10,048 -1071 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.xstream\target\classes]...
-2014-03-09 15:01:10,050 -1073 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.xstream\target\classes]扫描完成。
-2014-03-09 15:01:10,050 -1073 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.formater\target\classes]...
-2014-03-09 15:01:10,051 -1074 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.formater\target\classes]扫描完成。
-2014-03-09 15:01:10,051 -1074 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes]...
-2014-03-09 15:01:10,054 -1077 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes]扫描完成。
-2014-03-09 15:01:10,054 -1077 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.context2object\target\classes]...
-2014-03-09 15:01:10,056 -1079 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.context2object\target\classes]扫描完成。
-2014-03-09 15:01:10,057 -1080 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.application\target\classes]...
-2014-03-09 15:01:10,058 -1081 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.application\target\classes]扫描完成。
-2014-03-09 15:01:10,058 -1081 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.config\target\classes]...
-2014-03-09 15:01:10,059 -1082 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.config\target\classes]扫描完成。
-2014-03-09 15:01:10,059 -1082 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.exception\target\classes]...
-2014-03-09 15:01:10,060 -1083 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.exception\target\classes]扫描完成。
-2014-03-09 15:01:10,060 -1083 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.i18n\target\classes]...
-2014-03-09 15:01:10,061 -1084 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.i18n\target\classes]扫描完成。
-2014-03-09 15:01:10,062 -1085 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.vfs\target\classes]...
-2014-03-09 15:01:10,064 -1087 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.vfs\target\classes]扫描完成。
-2014-03-09 15:01:10,065 -1088 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.context\target\classes]...
-2014-03-09 15:01:10,066 -1089 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.context\target\classes]扫描完成。
-2014-03-09 15:01:10,066 -1089 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.testutil\target\classes]...
-2014-03-09 15:01:10,067 -1090 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.testutil\target\classes]扫描完成。
-2014-03-09 15:01:10,067 -1090 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.threadgroup.AbstractProcessor  - 线程<file-resolver-threads-file-processor-thread-0>运行结束
-2014-03-09 15:01:10,067 -1090 [main] INFO  org.tinygroup.threadgroup.MultiThreadProcessor  - 线程组<file-resolver-threads>运行结束, 用时:47ms
-2014-03-09 15:01:10,067 -1090 [main] INFO  org.tinygroup.fileresolver.impl.MultiThreadFileProcessor  - 线程组:<file-resolver-threads>执行时间：47
-2014-03-09 15:01:10,067 -1090 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 找到国际化资源配置文件[D:\git\tiny\framework\org.tinygroup.event\target\classes\i18n\cepcore_en_US.properties]，并开始加载...
-2014-03-09 15:01:10,068 -1091 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 国际化资源配置文件[D:\git\tiny\framework\org.tinygroup.event\target\classes\i18n\cepcore_en_US.properties]，加载完毕。
-2014-03-09 15:01:10,068 -1091 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 找到国际化资源配置文件[D:\git\tiny\framework\org.tinygroup.event\target\classes\i18n\cepcore_zh_CN.properties]，并开始加载...
-2014-03-09 15:01:10,069 -1092 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 国际化资源配置文件[D:\git\tiny\framework\org.tinygroup.event\target\classes\i18n\cepcore_zh_CN.properties]，加载完毕。
-2014-03-09 15:01:10,070 -1093 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 找到国际化资源配置文件[D:\git\tiny\framework\org.tinygroup.vfs\target\classes\i18n\vfs_en_US.properties]，并开始加载...
-2014-03-09 15:01:10,070 -1093 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 国际化资源配置文件[D:\git\tiny\framework\org.tinygroup.vfs\target\classes\i18n\vfs_en_US.properties]，加载完毕。
-2014-03-09 15:01:10,071 -1094 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 找到XStream配置文件[D:\git\tiny\framework\org.tinygroup.event\target\classes\event.xstream.xml]，并开始加载...
-2014-03-09 15:01:10,135 -1158 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - XStream配置文件[D:\git\tiny\framework\org.tinygroup.event\target\classes\event.xstream.xml]，加载完毕。
-2014-03-09 15:01:10,135 -1158 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 找到XStream配置文件[D:\git\tiny\framework\org.tinygroup.context2object\target\classes\context2object.xstream.xml]，并开始加载...
-2014-03-09 15:01:10,157 -1180 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - XStream配置文件[D:\git\tiny\framework\org.tinygroup.context2object\target\classes\context2object.xstream.xml]，加载完毕。
-2014-03-09 15:01:10,157 -1180 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 全路径扫描完成。
-2014-03-09 15:01:10,157 -1180 [main] INFO  org.tinygroup.application.impl.ApplicationDefault  - 应用处理器class org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor启动完毕。
-2014-03-09 15:01:10,205 -1228 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [java.sql.Date] is defined: expected single bean but found 0: 
-2014-03-09 15:01:10,205 -1228 [main] ERROR org.tinygroup.context2object.impl.ClassNameObjectGenerator  - 为属性birthday赋值时出错
+2014-03-20 09:54:50,936 -0    [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在进行全路径扫描....
+2014-03-20 09:54:50,964 -28   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.context2object\target\test-classes>由于匹配了包含正则表达式<[\/]test-classes\b>而被扫描。
+2014-03-20 09:54:50,965 -29   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.context2object\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,970 -34   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.context\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,972 -36   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,973 -37   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.xstream\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,978 -42   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.application\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,979 -43   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.config\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,980 -44   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,982 -46   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.parser\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,983 -47   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.binarytree\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,985 -49   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.commons\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,988 -52   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.i18n\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,990 -54   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.formater\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,994 -58   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.order\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,996 -60   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:50,998 -62   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.vfs\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:51,000 -64   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.event\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:51,001 -65   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.exception\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:51,003 -67   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.springutil\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:51,004 -68   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.logger\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:51,014 -78   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.testutil\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:51,015 -79   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找WEB-INF/classes路径开始...
+2014-03-20 09:54:51,015 -79   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - WEB-INF/classes路径是:file:/D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/
+2014-03-20 09:54:51,017 -81   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - WEB-INF/lib路径是:file:/D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/
+2014-03-20 09:54:51,017 -81   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找WEB-INF/classes路径完成。
+2014-03-20 09:54:51,018 -82   [main] WARN  org.tinygroup.fileresolver.impl.FileResolverImpl  - WEBROOT变量找不到
+2014-03-20 09:54:51,018 -82   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找Web工程中的jar文件列表开始...
+2014-03-20 09:54:51,034 -98   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<file:D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter7139290369867381767.jar>由于匹配了包含正则表达式<org\.tinygroup\.(.)*\.jar>而被扫描。
+2014-03-20 09:54:51,035 -99   [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 扫描到jar文件<jar:file:/D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter7139290369867381767.jar>。
+2014-03-20 09:54:51,054 -118  [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找Web工程中的jar文件列表完成。
+2014-03-20 09:54:51,064 -128  [main] INFO  org.tinygroup.threadgroup.MultiThreadProcessor  - 线程组<file-resolver-threads>运行开始,线程数1...
+2014-03-20 09:54:51,065 -129  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.threadgroup.AbstractProcessor  - 线程<file-resolver-threads-file-processor-thread-0>运行开始...
+2014-03-20 09:54:51,065 -129  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.springutil\target\classes]...
+2014-03-20 09:54:51,067 -131  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.springutil\target\classes]扫描完成。
+2014-03-20 09:54:51,068 -132  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.testutil\target\classes]...
+2014-03-20 09:54:51,069 -133  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.testutil\target\classes]扫描完成。
+2014-03-20 09:54:51,070 -134  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter7139290369867381767.jar]...
+2014-03-20 09:54:51,071 -135  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<file:D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter7139290369867381767.jar>由于匹配了包含正则表达式<org\.tinygroup\.(.)*\.jar>而被扫描。
+2014-03-20 09:54:51,072 -136  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter7139290369867381767.jar]扫描完成。
+2014-03-20 09:54:51,072 -136  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.vfs\target\classes]...
+2014-03-20 09:54:51,077 -141  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.vfs\target\classes]扫描完成。
+2014-03-20 09:54:51,078 -142  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.order\target\classes]...
+2014-03-20 09:54:51,080 -144  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.order\target\classes]扫描完成。
+2014-03-20 09:54:51,080 -144  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.context\target\classes]...
+2014-03-20 09:54:51,083 -147  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.context\target\classes]扫描完成。
+2014-03-20 09:54:51,084 -148  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.context2object\target\test-classes]...
+2014-03-20 09:54:51,088 -152  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.context2object\target\test-classes]扫描完成。
+2014-03-20 09:54:51,088 -152  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.commons\target\classes]...
+2014-03-20 09:54:51,101 -165  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.commons\target\classes]扫描完成。
+2014-03-20 09:54:51,102 -166  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes]...
+2014-03-20 09:54:51,105 -169  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes]扫描完成。
+2014-03-20 09:54:51,106 -170  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.logger\target\classes]...
+2014-03-20 09:54:51,108 -172  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.logger\target\classes]扫描完成。
+2014-03-20 09:54:51,108 -172  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.config\target\classes]...
+2014-03-20 09:54:51,110 -174  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.config\target\classes]扫描完成。
+2014-03-20 09:54:51,111 -175  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.exception\target\classes]...
+2014-03-20 09:54:51,112 -176  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.exception\target\classes]扫描完成。
+2014-03-20 09:54:51,113 -177  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.i18n\target\classes]...
+2014-03-20 09:54:51,115 -179  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.i18n\target\classes]扫描完成。
+2014-03-20 09:54:51,115 -179  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.context2object\target\classes]...
+2014-03-20 09:54:51,118 -182  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.context2object\target\classes]扫描完成。
+2014-03-20 09:54:51,119 -183  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.binarytree\target\classes]...
+2014-03-20 09:54:51,121 -185  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.binarytree\target\classes]扫描完成。
+2014-03-20 09:54:51,122 -186  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.formater\target\classes]...
+2014-03-20 09:54:51,126 -190  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.formater\target\classes]扫描完成。
+2014-03-20 09:54:51,127 -191  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes]...
+2014-03-20 09:54:51,128 -192  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes]扫描完成。
+2014-03-20 09:54:51,129 -193  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.event\target\classes]...
+2014-03-20 09:54:51,132 -196  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.event\target\classes]扫描完成。
+2014-03-20 09:54:51,133 -197  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.application\target\classes]...
+2014-03-20 09:54:51,134 -198  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.application\target\classes]扫描完成。
+2014-03-20 09:54:51,135 -199  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes]...
+2014-03-20 09:54:51,137 -201  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes]扫描完成。
+2014-03-20 09:54:51,138 -202  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.parser\target\classes]...
+2014-03-20 09:54:51,141 -205  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.parser\target\classes]扫描完成。
+2014-03-20 09:54:51,142 -206  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.xstream\target\classes]...
+2014-03-20 09:54:51,144 -208  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.xstream\target\classes]扫描完成。
+2014-03-20 09:54:51,145 -209  [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.threadgroup.AbstractProcessor  - 线程<file-resolver-threads-file-processor-thread-0>运行结束
+2014-03-20 09:54:51,146 -210  [main] INFO  org.tinygroup.threadgroup.MultiThreadProcessor  - 线程组<file-resolver-threads>运行结束, 用时:81ms
+2014-03-20 09:54:51,147 -211  [main] INFO  org.tinygroup.fileresolver.impl.MultiThreadFileProcessor  - 线程组:<file-resolver-threads>执行时间：84
+2014-03-20 09:54:51,284 -348  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.order/target/classes/order.beans.xml
+2014-03-20 09:54:51,284 -348  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/Application.springbeans.xml
+2014-03-20 09:54:51,285 -349  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/test.springbeans.xml
+2014-03-20 09:54:51,285 -349  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.fileresolver/target/classes/fileresolver.beans.xml
+2014-03-20 09:54:51,285 -349  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.exception/target/classes/exception.beans.xml
+2014-03-20 09:54:51,285 -349  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.context2object/target/classes/context2object.beans.xml
+2014-03-20 09:54:51,285 -349  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.binarytree/target/classes/binarytree.beans.xml
+2014-03-20 09:54:51,286 -350  [main] INFO  org.tinygroup.springutil.SpringUtil  - 添加Spring配置文件:file:D:/git/tiny/framework/org.tinygroup.xstream/target/classes/xstream.beans.xml
+2014-03-20 09:54:51,293 -357  [main] INFO  org.springframework.context.support.FileSystemXmlApplicationContext  - Refreshing org.springframework.context.support.FileSystemXmlApplicationContext@739e8329: display name [org.springframework.context.support.FileSystemXmlApplicationContext@739e8329]; startup date [Thu Mar 20 09:54:51 CST 2014]; root of context hierarchy
+2014-03-20 09:54:51,419 -483  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.order/target/classes/order.beans.xml]
+2014-03-20 09:54:51,622 -686  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/Application.springbeans.xml]
+2014-03-20 09:54:51,690 -754  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/test.springbeans.xml]
+2014-03-20 09:54:51,743 -807  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.fileresolver/target/classes/fileresolver.beans.xml]
+2014-03-20 09:54:51,810 -874  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.exception/target/classes/exception.beans.xml]
+2014-03-20 09:54:51,851 -915  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.context2object/target/classes/context2object.beans.xml]
+2014-03-20 09:54:51,913 -977  [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.binarytree/target/classes/binarytree.beans.xml]
+2014-03-20 09:54:51,959 -1023 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from URL [file:D:/git/tiny/framework/org.tinygroup.xstream/target/classes/xstream.beans.xml]
+2014-03-20 09:54:52,007 -1071 [main] INFO  org.springframework.context.support.FileSystemXmlApplicationContext  - Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext@739e8329]: org.springframework.beans.factory.support.DefaultListableBeanFactory@f855562
+2014-03-20 09:54:52,100 -1164 [main] INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory  - Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@f855562: defining beans [orderProcessor,fileResolver,fileResolverProcessor,people2,people,cat,part,part2,cat2,cat1,user,newcat,newuser,fullContextFileRepository,fullContextFileFinder,i18nFileProcessor,xStreamFileProcessor,orderFileProcessor,springBeansFileProcessor,configurationFileProcessor,fileMonitorProcessor,classNameObjectGenerator,generatorFileProcessor,avlTreeImpl]; root of factory hierarchy
+2014-03-20 09:54:52,225 -1289 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 开始读取组件配置文件:filefind.config.xml
+2014-03-20 09:54:52,228 -1292 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 读取组件配置文件:filefind.config.xml完成
+2014-03-20 09:54:52,229 -1293 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 开始读取组件配置文件:filemonitor.config.xml
+2014-03-20 09:54:52,230 -1294 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 读取组件配置文件:filemonitor.config.xml完成
+2014-03-20 09:54:52,231 -1295 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 开始读取组件配置文件:fileresolver.config.xml
+2014-03-20 09:54:52,233 -1297 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 读取组件配置文件:fileresolver.config.xml完成
+2014-03-20 09:54:52,308 -1372 [main] INFO  org.tinygroup.config.impl.ConfigurationManagerImpl  - 正在分发应用配置信息...
+2014-03-20 09:54:52,310 -1374 [main] INFO  org.tinygroup.config.impl.ConfigurationManagerImpl  - 应用配置信息分发完毕
+2014-03-20 09:54:52,310 -1374 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 全路径扫描完成。
+2014-03-20 09:54:52,311 -1375 [main] INFO  org.tinygroup.application.impl.ApplicationDefault  - 启动应用开始...
+2014-03-20 09:54:52,311 -1375 [main] INFO  org.tinygroup.application.impl.ApplicationDefault  - 应用处理器class org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor正在启动...
+2014-03-20 09:54:52,311 -1375 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在进行全路径扫描....
+2014-03-20 09:54:52,312 -1376 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.context2object\target\test-classes>由于匹配了包含正则表达式<[\/]test-classes\b>而被扫描。
+2014-03-20 09:54:52,313 -1377 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.context2object\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,314 -1378 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.context\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,315 -1379 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,316 -1380 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.xstream\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,317 -1381 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.application\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,318 -1382 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.config\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,319 -1383 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,320 -1384 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.parser\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,320 -1384 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.binarytree\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,321 -1385 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.commons\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,326 -1390 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.i18n\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,326 -1390 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.formater\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,328 -1392 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.order\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,328 -1392 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,329 -1393 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.vfs\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,330 -1394 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.event\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,330 -1394 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.exception\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,331 -1395 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.springutil\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,332 -1396 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.logger\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,336 -1400 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<D:\git\tiny\framework\org.tinygroup.testutil\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。
+2014-03-20 09:54:52,336 -1400 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找WEB-INF/classes路径开始...
+2014-03-20 09:54:52,337 -1401 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - WEB-INF/classes路径是:file:/D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/
+2014-03-20 09:54:52,338 -1402 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - WEB-INF/lib路径是:file:/D:/git/tiny/framework/org.tinygroup.context2object/target/test-classes/
+2014-03-20 09:54:52,338 -1402 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找WEB-INF/classes路径完成。
+2014-03-20 09:54:52,338 -1402 [main] WARN  org.tinygroup.fileresolver.impl.FileResolverImpl  - WEBROOT变量找不到
+2014-03-20 09:54:52,339 -1403 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找Web工程中的jar文件列表开始...
+2014-03-20 09:54:52,344 -1408 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<file:D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter7139290369867381767.jar>由于匹配了包含正则表达式<org\.tinygroup\.(.)*\.jar>而被扫描。
+2014-03-20 09:54:52,345 -1409 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 扫描到jar文件<jar:file:/D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter7139290369867381767.jar>。
+2014-03-20 09:54:52,358 -1422 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 查找Web工程中的jar文件列表完成。
+2014-03-20 09:54:52,360 -1424 [main] INFO  org.tinygroup.threadgroup.MultiThreadProcessor  - 线程组<file-resolver-threads>运行开始,线程数1...
+2014-03-20 09:54:52,361 -1425 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.threadgroup.AbstractProcessor  - 线程<file-resolver-threads-file-processor-thread-0>运行开始...
+2014-03-20 09:54:52,361 -1425 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.springutil\target\classes]...
+2014-03-20 09:54:52,364 -1428 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.springutil\target\classes]扫描完成。
+2014-03-20 09:54:52,365 -1429 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.testutil\target\classes]...
+2014-03-20 09:54:52,366 -1430 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.testutil\target\classes]扫描完成。
+2014-03-20 09:54:52,366 -1430 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter7139290369867381767.jar]...
+2014-03-20 09:54:52,367 -1431 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 文件<file:D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter7139290369867381767.jar>由于匹配了包含正则表达式<org\.tinygroup\.(.)*\.jar>而被扫描。
+2014-03-20 09:54:52,368 -1432 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:/git/tiny/framework/org.tinygroup.context2object/target/surefire/surefirebooter7139290369867381767.jar]扫描完成。
+2014-03-20 09:54:52,368 -1432 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.vfs\target\classes]...
+2014-03-20 09:54:52,372 -1436 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.vfs\target\classes]扫描完成。
+2014-03-20 09:54:52,372 -1436 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.order\target\classes]...
+2014-03-20 09:54:52,374 -1438 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.order\target\classes]扫描完成。
+2014-03-20 09:54:52,374 -1438 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.context\target\classes]...
+2014-03-20 09:54:52,376 -1440 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.context\target\classes]扫描完成。
+2014-03-20 09:54:52,377 -1441 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.context2object\target\test-classes]...
+2014-03-20 09:54:52,381 -1445 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.context2object\target\test-classes]扫描完成。
+2014-03-20 09:54:52,381 -1445 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.commons\target\classes]...
+2014-03-20 09:54:52,393 -1457 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.commons\target\classes]扫描完成。
+2014-03-20 09:54:52,394 -1458 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes]...
+2014-03-20 09:54:52,396 -1460 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes]扫描完成。
+2014-03-20 09:54:52,397 -1461 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.logger\target\classes]...
+2014-03-20 09:54:52,400 -1464 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.logger\target\classes]扫描完成。
+2014-03-20 09:54:52,401 -1465 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.config\target\classes]...
+2014-03-20 09:54:52,402 -1466 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.config\target\classes]扫描完成。
+2014-03-20 09:54:52,403 -1467 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.exception\target\classes]...
+2014-03-20 09:54:52,404 -1468 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.exception\target\classes]扫描完成。
+2014-03-20 09:54:52,404 -1468 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.i18n\target\classes]...
+2014-03-20 09:54:52,407 -1471 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.i18n\target\classes]扫描完成。
+2014-03-20 09:54:52,407 -1471 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.context2object\target\classes]...
+2014-03-20 09:54:52,410 -1474 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.context2object\target\classes]扫描完成。
+2014-03-20 09:54:52,410 -1474 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.binarytree\target\classes]...
+2014-03-20 09:54:52,412 -1476 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.binarytree\target\classes]扫描完成。
+2014-03-20 09:54:52,412 -1476 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.formater\target\classes]...
+2014-03-20 09:54:52,414 -1478 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.formater\target\classes]扫描完成。
+2014-03-20 09:54:52,414 -1478 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes]...
+2014-03-20 09:54:52,416 -1480 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes]扫描完成。
+2014-03-20 09:54:52,416 -1480 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.event\target\classes]...
+2014-03-20 09:54:52,419 -1483 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.event\target\classes]扫描完成。
+2014-03-20 09:54:52,419 -1483 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.application\target\classes]...
+2014-03-20 09:54:52,420 -1484 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.application\target\classes]扫描完成。
+2014-03-20 09:54:52,420 -1484 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes]...
+2014-03-20 09:54:52,422 -1486 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes]扫描完成。
+2014-03-20 09:54:52,423 -1487 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.parser\target\classes]...
+2014-03-20 09:54:52,426 -1490 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.parser\target\classes]扫描完成。
+2014-03-20 09:54:52,426 -1490 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 正在扫描路径[D:\git\tiny\framework\org.tinygroup.xstream\target\classes]...
+2014-03-20 09:54:52,428 -1492 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 路径[D:\git\tiny\framework\org.tinygroup.xstream\target\classes]扫描完成。
+2014-03-20 09:54:52,428 -1492 [file-resolver-threads-file-processor-thread-0] INFO  org.tinygroup.threadgroup.AbstractProcessor  - 线程<file-resolver-threads-file-processor-thread-0>运行结束
+2014-03-20 09:54:52,428 -1492 [main] INFO  org.tinygroup.threadgroup.MultiThreadProcessor  - 线程组<file-resolver-threads>运行结束, 用时:68ms
+2014-03-20 09:54:52,429 -1493 [main] INFO  org.tinygroup.fileresolver.impl.MultiThreadFileProcessor  - 线程组:<file-resolver-threads>执行时间：68
+2014-03-20 09:54:52,429 -1493 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 找到国际化资源配置文件[D:\git\tiny\framework\org.tinygroup.vfs\target\classes\i18n\vfs_en_US.properties]，并开始加载...
+2014-03-20 09:54:52,430 -1494 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 国际化资源配置文件[D:\git\tiny\framework\org.tinygroup.vfs\target\classes\i18n\vfs_en_US.properties]，加载完毕。
+2014-03-20 09:54:52,430 -1494 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 找到国际化资源配置文件[D:\git\tiny\framework\org.tinygroup.event\target\classes\i18n\cepcore_en_US.properties]，并开始加载...
+2014-03-20 09:54:52,431 -1495 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 国际化资源配置文件[D:\git\tiny\framework\org.tinygroup.event\target\classes\i18n\cepcore_en_US.properties]，加载完毕。
+2014-03-20 09:54:52,432 -1496 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 找到国际化资源配置文件[D:\git\tiny\framework\org.tinygroup.event\target\classes\i18n\cepcore_zh_CN.properties]，并开始加载...
+2014-03-20 09:54:52,433 -1497 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 国际化资源配置文件[D:\git\tiny\framework\org.tinygroup.event\target\classes\i18n\cepcore_zh_CN.properties]，加载完毕。
+2014-03-20 09:54:52,433 -1497 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 找到XStream配置文件[D:\git\tiny\framework\org.tinygroup.context2object\target\classes\context2object.xstream.xml]，并开始加载...
+2014-03-20 09:54:52,472 -1536 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - XStream配置文件[D:\git\tiny\framework\org.tinygroup.context2object\target\classes\context2object.xstream.xml]，加载完毕。
+2014-03-20 09:54:52,472 -1536 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - 找到XStream配置文件[D:\git\tiny\framework\org.tinygroup.event\target\classes\event.xstream.xml]，并开始加载...
+2014-03-20 09:54:52,505 -1569 [main] INFO  org.tinygroup.fileresolver.impl.AbstractFileProcessor  - XStream配置文件[D:\git\tiny\framework\org.tinygroup.event\target\classes\event.xstream.xml]，加载完毕。
+2014-03-20 09:54:52,505 -1569 [main] INFO  org.tinygroup.fileresolver.impl.FileResolverImpl  - 全路径扫描完成。
+2014-03-20 09:54:52,506 -1570 [main] INFO  org.tinygroup.application.impl.ApplicationDefault  - 应用处理器class org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor启动完毕。
+2014-03-20 09:54:52,591 -1655 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [java.sql.Date] is defined: expected single bean but found 0: 
+2014-03-20 09:54:52,592 -1656 [main] ERROR org.tinygroup.context2object.impl.ClassNameObjectGenerator  - 为属性birthday赋值时出错
 java.lang.RuntimeException: java.lang.InstantiationException: java.sql.Date
 	at org.tinygroup.context2object.impl.ClassNameObjectGenerator.getInstanceBySpringBean(ClassNameObjectGenerator.java:509)
 	at org.tinygroup.context2object.impl.ClassNameObjectGenerator.getObjectInstance(ClassNameObjectGenerator.java:482)
@@ -213,9 +213,9 @@ java.lang.RuntimeException: java.lang.InstantiationException: java.sql.Date
 	at org.tinygroup.context2object.impl.ClassNameObjectGenerator.getObject(ClassNameObjectGenerator.java:63)
 	at org.tinygroup.context2object.impl.ClassNameObjectGeneratorTest.testGetObject(ClassNameObjectGeneratorTest.java:45)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
 	at junit.framework.TestCase.runTest(TestCase.java:154)
 	at junit.framework.TestCase.runBare(TestCase.java:127)
 	at junit.framework.TestResult$1.protect(TestResult.java:106)
@@ -225,29 +225,29 @@ java.lang.RuntimeException: java.lang.InstantiationException: java.sql.Date
 	at junit.framework.TestSuite.runTest(TestSuite.java:208)
 	at junit.framework.TestSuite.run(TestSuite.java:203)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
 	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:95)
 	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:121)
 	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:98)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
 	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
 	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 Caused by: java.lang.InstantiationException: java.sql.Date
-	at java.lang.Class.newInstance0(Class.java:357)
-	at java.lang.Class.newInstance(Class.java:325)
+	at java.lang.Class.newInstance0(Class.java:335)
+	at java.lang.Class.newInstance(Class.java:303)
 	at org.tinygroup.context2object.impl.ClassNameObjectGenerator.getInstanceBySpringBean(ClassNameObjectGenerator.java:507)
 	... 34 more
-2014-03-09 15:01:10,209 -1232 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
-2014-03-09 15:01:10,214 -1237 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [java.sql.Date] is defined: expected single bean but found 0: 
-2014-03-09 15:01:10,214 -1237 [main] ERROR org.tinygroup.context2object.impl.ClassNameObjectGenerator  - 为属性birthday赋值时出错
+2014-03-20 09:54:52,598 -1662 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
+2014-03-20 09:54:52,617 -1681 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [java.sql.Date] is defined: expected single bean but found 0: 
+2014-03-20 09:54:52,617 -1681 [main] ERROR org.tinygroup.context2object.impl.ClassNameObjectGenerator  - 为属性birthday赋值时出错
 java.lang.RuntimeException: java.lang.InstantiationException: java.sql.Date
 	at org.tinygroup.context2object.impl.ClassNameObjectGenerator.getInstanceBySpringBean(ClassNameObjectGenerator.java:509)
 	at org.tinygroup.context2object.impl.ClassNameObjectGenerator.getObjectInstance(ClassNameObjectGenerator.java:482)
@@ -257,9 +257,9 @@ java.lang.RuntimeException: java.lang.InstantiationException: java.sql.Date
 	at org.tinygroup.context2object.impl.ClassNameObjectGenerator.getObject(ClassNameObjectGenerator.java:63)
 	at org.tinygroup.context2object.impl.ClassNameObjectGeneratorTest.testGetObjectWithSubObject(ClassNameObjectGeneratorTest.java:63)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
 	at junit.framework.TestCase.runTest(TestCase.java:154)
 	at junit.framework.TestCase.runBare(TestCase.java:127)
 	at junit.framework.TestResult$1.protect(TestResult.java:106)
@@ -269,31 +269,31 @@ java.lang.RuntimeException: java.lang.InstantiationException: java.sql.Date
 	at junit.framework.TestSuite.runTest(TestSuite.java:208)
 	at junit.framework.TestSuite.run(TestSuite.java:203)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
 	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:95)
 	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:121)
 	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:98)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
 	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
 	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 Caused by: java.lang.InstantiationException: java.sql.Date
-	at java.lang.Class.newInstance0(Class.java:357)
-	at java.lang.Class.newInstance(Class.java:325)
+	at java.lang.Class.newInstance0(Class.java:335)
+	at java.lang.Class.newInstance(Class.java:303)
 	at org.tinygroup.context2object.impl.ClassNameObjectGenerator.getInstanceBySpringBean(ClassNameObjectGenerator.java:507)
 	... 34 more
-2014-03-09 15:01:10,216 -1239 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
-2014-03-09 15:01:10,217 -1240 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
-2014-03-09 15:01:10,217 -1240 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
-2014-03-09 15:01:10,222 -1245 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [java.sql.Date] is defined: expected single bean but found 0: 
-2014-03-09 15:01:10,222 -1245 [main] ERROR org.tinygroup.context2object.impl.ClassNameObjectGenerator  - 为属性birthday赋值时出错
+2014-03-20 09:54:52,620 -1684 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
+2014-03-20 09:54:52,621 -1685 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
+2014-03-20 09:54:52,622 -1686 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
+2014-03-20 09:54:52,627 -1691 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [java.sql.Date] is defined: expected single bean but found 0: 
+2014-03-20 09:54:52,627 -1691 [main] ERROR org.tinygroup.context2object.impl.ClassNameObjectGenerator  - 为属性birthday赋值时出错
 java.lang.RuntimeException: java.lang.InstantiationException: java.sql.Date
 	at org.tinygroup.context2object.impl.ClassNameObjectGenerator.getInstanceBySpringBean(ClassNameObjectGenerator.java:509)
 	at org.tinygroup.context2object.impl.ClassNameObjectGenerator.getObjectInstance(ClassNameObjectGenerator.java:482)
@@ -303,9 +303,9 @@ java.lang.RuntimeException: java.lang.InstantiationException: java.sql.Date
 	at org.tinygroup.context2object.impl.ClassNameObjectGenerator.getObject(ClassNameObjectGenerator.java:63)
 	at org.tinygroup.context2object.impl.ClassNameObjectGeneratorTest.testGetObjectWithSubObjectArray(ClassNameObjectGeneratorTest.java:85)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
 	at junit.framework.TestCase.runTest(TestCase.java:154)
 	at junit.framework.TestCase.runBare(TestCase.java:127)
 	at junit.framework.TestResult$1.protect(TestResult.java:106)
@@ -315,28 +315,28 @@ java.lang.RuntimeException: java.lang.InstantiationException: java.sql.Date
 	at junit.framework.TestSuite.runTest(TestSuite.java:208)
 	at junit.framework.TestSuite.run(TestSuite.java:203)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
 	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:95)
 	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:121)
 	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:98)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
 	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
 	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 Caused by: java.lang.InstantiationException: java.sql.Date
-	at java.lang.Class.newInstance0(Class.java:357)
-	at java.lang.Class.newInstance(Class.java:325)
+	at java.lang.Class.newInstance0(Class.java:335)
+	at java.lang.Class.newInstance(Class.java:303)
 	at org.tinygroup.context2object.impl.ClassNameObjectGenerator.getInstanceBySpringBean(ClassNameObjectGenerator.java:507)
 	... 34 more
-2014-03-09 15:01:10,223 -1246 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
-2014-03-09 15:01:10,224 -1247 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - 参数cat.nickName赋值失败,期望类型class java.lang.String,实际类型class [Ljava.lang.String;
-2014-03-09 15:01:10,226 -1249 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
-2014-03-09 15:01:10,227 -1250 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
-2014-03-09 15:01:10,227 -1250 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
+2014-03-20 09:54:52,629 -1693 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
+2014-03-20 09:54:52,630 -1694 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - 参数cat.nickName赋值失败,期望类型class java.lang.String,实际类型class [Ljava.lang.String;
+2014-03-20 09:54:52,631 -1695 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
+2014-03-20 09:54:52,633 -1697 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1
+2014-03-20 09:54:52,633 -1697 [main] WARN  org.tinygroup.context2object.impl.ClassNameObjectGenerator  - No unique bean of type [org.tinygroup.context2object.Cat] is defined: expected single bean but found 2: cat2,cat1

@@ -1,0 +1,544 @@
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450863" level="INFO" thread="main">
+<log4j:message><![CDATA[正在进行全路径扫描....]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450880" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.fileresolver\target\test-classes>由于匹配了包含正则表达式<[\/]test-classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450881" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450885" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.xstream\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450888" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.logger\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450890" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.application\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450891" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.exception\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450893" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.springutil\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450907" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.config\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450909" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450910" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.parser\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450914" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.binarytree\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450915" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.commons\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450918" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.i18n\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450919" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.context\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450921" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.formater\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450923" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.order\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450924" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450925" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.vfs\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450927" level="INFO" thread="main">
+<log4j:message><![CDATA[查找WEB-INF/classes路径开始...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450927" level="INFO" thread="main">
+<log4j:message><![CDATA[WEB-INF/classes路径是:file:/D:/git/tiny/framework/org.tinygroup.fileresolver/target/test-classes/]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450928" level="INFO" thread="main">
+<log4j:message><![CDATA[WEB-INF/lib路径是:file:/D:/git/tiny/framework/org.tinygroup.fileresolver/target/test-classes/]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450929" level="INFO" thread="main">
+<log4j:message><![CDATA[查找WEB-INF/classes路径完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450931" level="WARN" thread="main">
+<log4j:message><![CDATA[WEBROOT变量找不到]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450931" level="INFO" thread="main">
+<log4j:message><![CDATA[查找Web工程中的jar文件列表开始...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450956" level="INFO" thread="main">
+<log4j:message><![CDATA[查找Web工程中的jar文件列表完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.threadgroup.MultiThreadProcessor" timestamp="1395280450983" level="INFO" thread="main">
+<log4j:message><![CDATA[线程组<file-resolver-threads>运行开始,线程数1...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.threadgroup.AbstractProcessor" timestamp="1395280450983" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[线程<file-resolver-threads-file-processor-thread-0>运行开始...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450984" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.springutil\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450985" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.springutil\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450986" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.vfs\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450989" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.vfs\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450989" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.order\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450991" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.order\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450991" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.context\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450993" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.context\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280450994" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.commons\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451007" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.commons\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451007" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451010" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451011" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.logger\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451013" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.logger\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451014" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.config\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451015" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.config\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451015" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\test-classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451016" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\test-classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451017" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.exception\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451018" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.exception\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451018" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.i18n\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451019" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.i18n\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451020" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.binarytree\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451021" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.binarytree\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451021" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.formater\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451023" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.formater\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451023" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451025" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451025" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.application\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451026" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.application\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451026" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451029" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451029" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.parser\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451031" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.parser\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451032" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.xstream\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451033" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.xstream\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.threadgroup.AbstractProcessor" timestamp="1395280451034" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[线程<file-resolver-threads-file-processor-thread-0>运行结束]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.threadgroup.MultiThreadProcessor" timestamp="1395280451035" level="INFO" thread="main">
+<log4j:message><![CDATA[线程组<file-resolver-threads>运行结束, 用时:51ms]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.MultiThreadFileProcessor" timestamp="1395280451035" level="INFO" thread="main">
+<log4j:message><![CDATA[线程组:<file-resolver-threads>执行时间：53]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451035" level="INFO" thread="main">
+<log4j:message><![CDATA[全路径扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451072" level="INFO" thread="main">
+<log4j:message><![CDATA[正在进行全路径扫描....]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451073" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.fileresolver\target\test-classes>由于匹配了包含正则表达式<[\/]test-classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451080" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451095" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.xstream\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451097" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.logger\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451098" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.application\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451099" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.exception\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451099" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.springutil\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451103" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.config\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451104" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451105" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.parser\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451105" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.binarytree\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451106" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.commons\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451107" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.i18n\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451107" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.context\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451108" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.formater\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451109" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.order\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451110" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451110" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<D:\git\tiny\framework\org.tinygroup.vfs\target\classes>由于匹配了包含正则表达式<[\/]classes\b>而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451111" level="INFO" thread="main">
+<log4j:message><![CDATA[查找WEB-INF/classes路径开始...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451111" level="INFO" thread="main">
+<log4j:message><![CDATA[WEB-INF/classes路径是:file:/D:/git/tiny/framework/org.tinygroup.fileresolver/target/test-classes/]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451111" level="INFO" thread="main">
+<log4j:message><![CDATA[WEB-INF/lib路径是:file:/D:/git/tiny/framework/org.tinygroup.fileresolver/target/test-classes/]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451112" level="INFO" thread="main">
+<log4j:message><![CDATA[查找WEB-INF/classes路径完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451112" level="WARN" thread="main">
+<log4j:message><![CDATA[WEBROOT变量找不到]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451112" level="INFO" thread="main">
+<log4j:message><![CDATA[查找Web工程中的jar文件列表开始...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451125" level="INFO" thread="main">
+<log4j:message><![CDATA[查找Web工程中的jar文件列表完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.threadgroup.MultiThreadProcessor" timestamp="1395280451127" level="INFO" thread="main">
+<log4j:message><![CDATA[线程组<file-resolver-threads>运行开始,线程数1...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.threadgroup.AbstractProcessor" timestamp="1395280451131" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[线程<file-resolver-threads-file-processor-thread-0>运行开始...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451131" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.springutil\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451133" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.springutil\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451135" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.vfs\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451142" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.vfs\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451143" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.order\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451145" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.order\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451146" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.context\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451148" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.context\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451148" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.commons\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451170" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.commons\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451170" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451173" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451173" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.logger\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451175" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.logger\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451176" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.config\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451185" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.config\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451186" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\test-classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451188" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.fileresolver\target\test-classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451198" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.exception\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451204" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.exception\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451205" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.i18n\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451208" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.i18n\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451209" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.binarytree\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451216" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.binarytree\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451216" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.formater\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451220" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.formater\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451220" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451222" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.threadgroup\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451222" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.application\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451224" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.application\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451224" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451228" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.xmlparser\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451228" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.parser\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451233" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.parser\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451234" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[D:\git\tiny\framework\org.tinygroup.xstream\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451236" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[D:\git\tiny\framework\org.tinygroup.xstream\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.threadgroup.AbstractProcessor" timestamp="1395280451236" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[线程<file-resolver-threads-file-processor-thread-0>运行结束]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.threadgroup.MultiThreadProcessor" timestamp="1395280451236" level="INFO" thread="main">
+<log4j:message><![CDATA[线程组<file-resolver-threads>运行结束, 用时:109ms]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.MultiThreadFileProcessor" timestamp="1395280451236" level="INFO" thread="main">
+<log4j:message><![CDATA[线程组:<file-resolver-threads>执行时间：109]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1395280451239" level="INFO" thread="main">
+<log4j:message><![CDATA[全路径扫描完成。]]></log4j:message>
+</log4j:event>
+

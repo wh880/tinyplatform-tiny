@@ -1103,7 +1103,7 @@
 <w:lsdException w:name="heading 7"/>
 <w:lsdException w:name="heading 8"/>
 <w:lsdException w:name="heading 9"/>
-<w:lsdException w:name="header"/>
+<w:lsdException w:name="headerMap"/>
 <w:lsdException w:name="caption"/>
 <w:lsdException w:name="Title"/>
 <w:lsdException w:name="Subtitle"/>
@@ -1369,7 +1369,7 @@
 <wx:uiName wx:val="无列表"/>
 </w:style>
 <w:style w:type="paragraph" w:styleId="a3">
-<w:name w:val="header"/>
+<w:name w:val="headerMap"/>
 <wx:uiName wx:val="页眉"/>
 <w:basedOn w:val="a"/>
 <w:link w:val="Char"/>

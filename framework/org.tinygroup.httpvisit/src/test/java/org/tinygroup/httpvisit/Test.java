@@ -23,10 +23,10 @@
  */
 package org.tinygroup.httpvisit;
 
+import org.tinygroup.httpvisit.impl.HttpVisitorImpl;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.tinygroup.httpvisit.impl.HttpVisitorImpl;
 
 public class Test {
 
@@ -37,12 +37,19 @@ public class Test {
 		HttpVisitor visitor = new HttpVisitorImpl();
 		visitor.init();
 		Map<String, Object> para = new HashMap<String, Object>();
-		para.put("aaa", "124");
-		para.put("bbb", 234);
+		para.put("type", "3");
+		para.put("botid", 728);
+		para.put("msg", "1111");
+
+		Map<String, String> header = new HashMap<String, String>();
+		header.put("Origin", "http://lover.zhenyao.net");
+		header.put("Referer", "http://lover.zhenyao.net/lover.swf");
+		visitor.setHeaderMap(header);
+
 		System.out.println(visitor.getUrl(
-				"http://home.hundsun.com/WebSite.aspx", para));
+				"http://lover.zhenyao.net/", null));
 		System.out.println(visitor.postUrl(
-				"http://home.hundsun.com/WebSite.aspx", para));
+				"http://lover.zhenyao.net/chat-g.json", para));
 	}
 
 }

@@ -45,7 +45,7 @@ public interface NodeFilter<T extends Node<T>> {
 	 * 
 	 * @param includeAttributes
 	 */
-	void setIncludeAttribute(Map<String, String> includeAttributes);
+    NodeFilter setIncludeAttribute(Map<String, String> includeAttributes);
 
 	/**
 	 * 设置必须包含的属性及对应的属性的值，必须存在
@@ -53,49 +53,49 @@ public interface NodeFilter<T extends Node<T>> {
 	 * @param key
 	 * @param value
 	 */
-	void setIncludeAttribute(String key, String value);
+    NodeFilter setIncludeAttribute(String key, String value);
 
 	/**
 	 * 设置必须包含的属性
 	 * 
 	 * @param includeAttribute
 	 */
-	void setIncludeAttributes(String... includeAttribute);
+    NodeFilter setIncludeAttributes(String... includeAttribute);
 
 	/**
 	 * 设置必须排除的属性及对应属性值 如果包含属性，但属性的值与Map中不相同，允许存在该属性 若包含属性且属性的值与Map中相同，则不允许存在该属性
 	 * 
 	 * @param excludeAttribute
 	 */
-	void setExcludeAttribute(Map<String, String> excludeAttribute);
+    NodeFilter setExcludeAttribute(Map<String, String> excludeAttribute);
 
 	/**
 	 * 设置必须排除的属性，指定的属性不能存在
 	 * 
 	 * @param excludeAttribute
 	 */
-	void setExcludeAttribute(String... excludeAttribute);
+    NodeFilter setExcludeAttribute(String... excludeAttribute);
 
 	/**
 	 * 设置必须包含的内容，只需要context中包include该值就行
 	 * 
 	 * @param includeText
 	 */
-	void setIncludeText(String... includeText);
+    NodeFilter setIncludeText(String... includeText);
 
 	/**
 	 * 设置必须排除的内容
 	 * 
 	 * @param excludeText
 	 */
-	void setExcludeText(String... excludeText);
+    NodeFilter setExcludeText(String... excludeText);
 
 	/**
 	 * 设置必须包含的子节点
 	 * 
 	 * @param includeNode
 	 */
-	void setIncludeNode(String... includeNode);
+    NodeFilter setIncludeNode(String... includeNode);
 
 	/**
 	 * 设置父节点不允许的节点名称
@@ -103,14 +103,14 @@ public interface NodeFilter<T extends Node<T>> {
 	 * @param excludeByNode
 	 */
 
-	void setExcludeByNode(String... excludeByNode);
+    NodeFilter setExcludeByNode(String... excludeByNode);
 
 	/**
 	 * 设置父节点必须包含的节点名称
 	 * 
 	 * @param includeByNode
 	 */
-	void setIncludeByNode(String... includeByNode);
+    NodeFilter setIncludeByNode(String... includeByNode);
 
 	/**
 	 * 设置必须排除的子节点
@@ -118,31 +118,31 @@ public interface NodeFilter<T extends Node<T>> {
 	 * @param excludeNode
 	 */
 
-	void setExcludeNode(String... excludeNode);
+    NodeFilter setExcludeNode(String... excludeNode);
 
 	/**
 	 * 设置至少包含一个指定名称的节点
 	 * 
 	 * @param xorSubNode
 	 */
-	void setXorSubNode(String... xorSubNode);
+    NodeFilter setXorSubNode(String... xorSubNode);
 
 	/**
 	 * 设置至少包含一个指定名称属性
 	 * 
 	 * @param xorProperties
 	 */
-	void setXorProperties(String... xorProperties);
+    NodeFilter setXorProperties(String... xorProperties);
 
 	/**
 	 * 清除过滤条件
 	 */
-	void clearCondition();
+    NodeFilter clearCondition();
 
 	/**
 	 * 设置要搜索的节点名称
 	 */
-	void setNodeName(String nodeName);
+    NodeFilter setNodeName(String nodeName);
 
 	/**
 	 * 查找指定节点名称及满足其他条件的节点列表

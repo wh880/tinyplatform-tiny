@@ -8,6 +8,7 @@
     <artifactId>framework</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>org.tinygroup.bundle</module>
         <module>org.tinygroup.bizframe</module>
         <module>org.tinygroup.bizframeimpl</module>
         <module>org.tinygroup.container</module>
