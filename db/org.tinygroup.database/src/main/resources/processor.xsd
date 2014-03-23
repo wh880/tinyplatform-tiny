@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="service-components">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="list" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="processor" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="processor-name" type="xs:string" />
+									<xs:attribute name="bean" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="language" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
