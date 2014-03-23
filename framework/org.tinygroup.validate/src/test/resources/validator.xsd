@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="object-validators">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="object-validator" type="objectValidatorType"
+					minOccurs="0" maxOccurs="unbounded" />
+				<xs:element name="basic-validator" type="basicValidatorType"
+					minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="basicValidatorType">
+		<xs:sequence>
+			<xs:element name="validator" minOccurs="0" maxOccurs="unbounded"
+				type="validatorConfigType" />
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="objectValidatorType">
+		<xs:sequence>
+			<xs:element name="property-validator" minOccurs="0"
+				maxOccurs="unbounded" type="propertyValidatorType" />
+		</xs:sequence>
+		<xs:attribute name="bean-name" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="validatorConfigType">
+		<xs:sequence>
+			<xs:element name="validator" minOccurs="0" maxOccurs="unbounded"
+				type="validatorConfigType" />
+		</xs:sequence>
+		<xs:attribute name="bean-name" type="xs:string" />
+		<xs:attribute name="class-name" type="xs:string" />
+		<xs:attribute name="scene" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="propertyValidatorType">
+		<xs:all>
+			<xs:element name="properties" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="validator" minOccurs="0" maxOccurs="unbounded"
+							type="validatorConfigType" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="name" type="xs:string" />
+		<xs:attribute name="title" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="propertyType">
+		<xs:attribute name="name" type="xs:string" />
+		<xs:attribute name="value" type="xs:string" />
+	</xs:complexType>
+
+</xs:schema>
