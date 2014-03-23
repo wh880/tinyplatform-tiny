@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="procedures">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="use-packages" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="use-package" minOccurs="0"
+								maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="package-name" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="procedure-parameters" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="procedure-parameter" minOccurs="0"
+								maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="procedure-parameter" type="xs:string" />
+									<xs:attribute name="standard-field-id" type="xs:string" />
+									<xs:attribute name="defaultValue" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="sqls" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="sql" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="dialectTypeName" type="xs:string" />
+									<xs:attribute name="content" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+			<xs:attribute name="schema" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
