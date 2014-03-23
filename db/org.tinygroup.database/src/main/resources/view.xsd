@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="views">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="view-fields" minOccurs="0" type="viewFieldsType" />
+			</xs:all>
+			<xs:attribute name="schema" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="viewFieldsType">
+		<xs:sequence>
+			<xs:element name="view-field" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="view-table-id" type="xs:string" />
+					<xs:attribute name="alias" type="xs:string" />
+					<xs:attribute name="tableFieldId" type="xs:string" />
+					<xs:attribute name="id" type="xs:string" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+
+
+</xs:schema>
