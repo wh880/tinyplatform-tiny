@@ -33,6 +33,6 @@ import java.lang.annotation.Target;
 public @interface ServiceResult {
 	boolean required() default true;
 
-	String name() default "result";
+	String name() default "";
 
 }

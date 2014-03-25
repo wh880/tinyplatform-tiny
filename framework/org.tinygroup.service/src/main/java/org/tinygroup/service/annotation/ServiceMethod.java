@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
 public @interface ServiceMethod {
 	boolean cachable() default false;
 
-	String serviceId();
+	String serviceId() default "";
 
 	String localName() default "";
 
