@@ -55,6 +55,16 @@ public class OrderByTest extends TestCase {
 		}
 	}
 
+	
+	protected void setUp() throws Exception {
+		stmt.executeUpdate("delete from aaa");
+		for (int i = 1; i <= 20; i++) {
+			stmt.executeUpdate("insert into aaa(id,aaa) values(" + i
+					+ ",'aaa')");
+		}
+	}
+
+
 	private static void prepareRecord() throws Exception {
 		RouterManager routerManager = RouterManagerBeanFactory.getManager();
 		routerManager.addRouters("/differentSchemaShard.xml");
@@ -62,11 +72,6 @@ public class OrderByTest extends TestCase {
 		conn = DriverManager.getConnection(
 				"jdbc:dbrouter://diffSchemaShard", "luog", "123456");
 		stmt = conn.createStatement();
-		stmt.executeUpdate("delete from aaa");
-		for (int i = 1; i <= 20; i++) {
-			stmt.executeUpdate("insert into aaa(id,aaa) values(" + i
-					+ ",'aaa')");
-		}
 	}
 
 

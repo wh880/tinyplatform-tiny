@@ -31,6 +31,7 @@ import java.sql.Array;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.Ref;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -46,7 +47,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.commons.tools.Assert;
+import org.tinygroup.dbrouter.RouterManager;
+import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Router;
+import org.tinygroup.dbrouter.config.Shard;
+import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.dbrouter.util.OrderByProcessor.OrderByValues;
 import org.tinygroup.dbrouter.util.ParamObjectBuilder;
 import org.tinygroup.dbrouter.util.SortOrder;
@@ -69,7 +74,7 @@ public class TinyResultSetMultiple implements ResultSet {
 	 * 所属的集群
 	 */
 	private final Router router;
-	
+
 	private final String sql;
 	/**
 	 * 当前的记录集
@@ -88,7 +93,8 @@ public class TinyResultSetMultiple implements ResultSet {
 
 	private boolean isClosed;
 
-	private Logger logger = LoggerFactory.getLogger(TinyResultSetMultiple.class);
+	private Logger logger = LoggerFactory
+			.getLogger(TinyResultSetMultiple.class);
 
 	private TinyStatement statement;
 
@@ -105,14 +111,17 @@ public class TinyResultSetMultiple implements ResultSet {
 	private int columnCount;
 
 	private ResultSetMetaData resultSetMetaData;
-	
-	private boolean isNext=true;
 
-	public TinyResultSetMultiple(String sql,Router router,
+	private boolean isNext = true;
+	
+	protected RouterManager routerManager = RouterManagerBeanFactory
+	.getManager();
+
+	public TinyResultSetMultiple(String sql, Router router,
 			List<ResultSetExecutor> resultSetExecutors,
 			TinyStatement statement, TinyConnection tinyConnection) {
 		this.router = router;
-		this.sql=sql;
+		this.sql = sql;
 		this.statement = statement;
 		this.tinyConnection = tinyConnection;
 		boolean scrollable = statement.resultSetType != ResultSet.TYPE_FORWARD_ONLY;
@@ -128,10 +137,25 @@ public class TinyResultSetMultiple implements ResultSet {
 				columnCount = resultSetMetaData.getColumnCount();
 				for (int i = 0; i < resultSetExecutors.size(); i++) {
 					ResultSetExecutor executor = resultSetExecutors.get(i);
+					String countSql = "select count(0) from ( " + sql+" ) as tinycounttemp";
+					Shard shard=executor.getShard();
+					Partition partition=executor.getPartition();
+					Object[] params=statement.getPreparedParams();
+					String realSql = routerManager.getSql(partition, shard, countSql,params);
+					Statement countStatement=statement.getNewStatement(realSql,shard);
+					if(countStatement instanceof PreparedStatement){
+						PreparedStatement preparedStatement=(PreparedStatement)countStatement;
+						ResultSet countSet = preparedStatement.executeQuery();
+						if (countSet.next()) {
+							totalRows += countSet.getInt(1);
+						}
+					}else{
+						ResultSet countSet = countStatement.executeQuery(realSql);
+						if (countSet.next()) {
+							totalRows += countSet.getInt(1);
+						}
+					}
 					ResultSet resultSet = executor.getResultSet();
-					resultSet.last();
-					totalRows += resultSet.getRow();
-					resultSet.beforeFirst();
 					resultSets.add(resultSet);
 					if (sortOrder == null) {
 						sortOrder = executor.getSortOrder();
@@ -201,34 +225,37 @@ public class TinyResultSetMultiple implements ResultSet {
 
 	/**
 	 * 
-	 * 检测next方法的状态，如果之前没有调用previous方法，那么清楚currentResultSet对应的OrderByValues对象的排序值。
-	 * 反之，清除其他OrderByValues对象的排序值
+	 * 检测next方法的状态，如果之前没有调用previous方法，那么清楚currentResultSet对应的OrderByValues对象的排序值
+	 * 。 反之，清除其他OrderByValues对象的排序值
+	 * 
 	 * @throws SQLException
 	 */
 	private void detectNextStatus() throws SQLException {
-		if(currentResultSet!=null){
-			if(isNext){
+		if (currentResultSet != null) {
+			if (isNext) {
 				for (ResultSetExecutor resultSetExecutor : resultSetExecutors) {
 					OrderByValues value = resultSetExecutor.getValueCache();
-					if(value!=null&&value.isCurrentResult(currentResultSet)){
+					if (value != null
+							&& value.isCurrentResult(currentResultSet)) {
 						value.clearValueCache();
 					}
 				}
-			}else{
+			} else {
 				for (ResultSetExecutor resultSetExecutor : resultSetExecutors) {
 					OrderByValues value = resultSetExecutor.getValueCache();
-					if(value!=null&&!value.isCurrentResult(currentResultSet)){
+					if (value != null
+							&& !value.isCurrentResult(currentResultSet)) {
 						value.clearValueCache();
 					}
 				}
 			}
 		}
-		isNext=true;
+		isNext = true;
 	}
-	
-	private ResultSetExecutor getCurrentExecutor(ResultSet currentResultSet){
+
+	private ResultSetExecutor getCurrentExecutor(ResultSet currentResultSet) {
 		for (ResultSetExecutor executor : resultSetExecutors) {
-			if(executor.getResultSet()==currentResultSet){
+			if (executor.getResultSet() == currentResultSet) {
 				return executor;
 			}
 		}
@@ -474,11 +501,12 @@ public class TinyResultSetMultiple implements ResultSet {
 
 	public ResultSetMetaData getMetaData() throws SQLException {
 		checkClosed();
-		if(currentResultSet!=null){
-			return new TinyResultSetMetaData(sql,currentResultSet.getMetaData());
+		if (currentResultSet != null) {
+			return new TinyResultSetMetaData(sql,
+					currentResultSet.getMetaData());
 		}
-		if(resultSetMetaData!=null){
-			return new TinyResultSetMetaData(sql,resultSetMetaData);
+		if (resultSetMetaData != null) {
+			return new TinyResultSetMetaData(sql, resultSetMetaData);
 		}
 		return null;
 	}
@@ -543,7 +571,7 @@ public class TinyResultSetMultiple implements ResultSet {
 		for (ResultSetExecutor resultSetExecutor : resultSetExecutors) {
 			resultSetExecutor.beforeFirst();
 		}
-		currentResultSet=null;
+		currentResultSet = null;
 		row = 0;
 	}
 
@@ -552,7 +580,7 @@ public class TinyResultSetMultiple implements ResultSet {
 		for (ResultSetExecutor resultSetExecutor : resultSetExecutors) {
 			resultSetExecutor.afterLast();
 		}
-		currentResultSet=null;
+		currentResultSet = null;
 		row = totalRows + 1;
 	}
 
@@ -561,7 +589,7 @@ public class TinyResultSetMultiple implements ResultSet {
 		for (ResultSetExecutor resultSetExecutor : resultSetExecutors) {
 			resultSetExecutor.beforeFirst();
 		}
-		currentResultSet=null;
+		currentResultSet = null;
 		next();// 获取下一个真正执行的resultset
 		row = 1;// 重设row为1
 		return true;
@@ -572,7 +600,7 @@ public class TinyResultSetMultiple implements ResultSet {
 		for (ResultSetExecutor resultSetExecutor : resultSetExecutors) {
 			resultSetExecutor.afterLast();
 		}
-		currentResultSet=null;
+		currentResultSet = null;
 		previous();// 获取下一个真正执行的resultset
 		row = totalRows;
 		return true;
@@ -675,24 +703,26 @@ public class TinyResultSetMultiple implements ResultSet {
 	}
 
 	private void detectPreviousStatus() throws SQLException {
-		if(currentResultSet!=null){
-			if(!isNext){
+		if (currentResultSet != null) {
+			if (!isNext) {
 				for (ResultSetExecutor resultSetExecutor : resultSetExecutors) {
 					OrderByValues value = resultSetExecutor.getValueCache();
-					if(value!=null&&value.isCurrentResult(currentResultSet)){
+					if (value != null
+							&& value.isCurrentResult(currentResultSet)) {
 						value.clearValueCache();
 					}
 				}
-			}else{
+			} else {
 				for (ResultSetExecutor resultSetExecutor : resultSetExecutors) {
 					OrderByValues value = resultSetExecutor.getValueCache();
-					if(value!=null&&!value.isCurrentResult(currentResultSet)){
+					if (value != null
+							&& !value.isCurrentResult(currentResultSet)) {
 						value.clearValueCache();
 					}
 				}
 			}
 		}
-		isNext=false;
+		isNext = false;
 	}
 
 	private boolean reacquireValue(OrderByValues value) {
@@ -988,69 +1018,73 @@ public class TinyResultSetMultiple implements ResultSet {
 		updateValue(columnName, x);
 	}
 
-	private UpdateableRow getUpdateableRow(ResultSetExecutor executor) throws SQLException {
-		return new UpdateableRow(tinyConnection, executor.getShard(),executor.getResultSet());
+	private UpdateableRow getUpdateableRow(ResultSetExecutor executor)
+			throws SQLException {
+		return new UpdateableRow(tinyConnection, executor.getShard(),
+				executor.getResultSet());
 	}
 
 	public void insertRow() throws SQLException {
 		checkUpdatable();
-		getUpdateableRow(firstExecutor).insertRow(insertRow.getPreparedParams());
+		getUpdateableRow(firstExecutor)
+				.insertRow(insertRow.getPreparedParams());
 		insertRow = null;
 	}
 
 	public void updateRow() throws SQLException {
-            checkUpdatable();
-            if (insertRow != null) {
-                throw new SQLException("not on update row");
-            }
-            if(currentResultSet==null){
-           	 throw new SQLException("not locate row");
-            }
-            if (updateRow != null) {
-            	ResultSetExecutor executor= getCurrentExecutor(currentResultSet);
-            	UpdateableRow row = getUpdateableRow(executor);
-                Object[] current = new Object[columnCount];
-                Object[] updateValues=updateRow.getPreparedParams();
-                for (int i = 0; i < updateValues.length; i++) {
-                      current[i] = currentResultSet.getObject(i+1);
-                }
-                row.updateRow(current, updateValues);
-                //内部查询一次赋值给currentResultSet
-                currentResultSet=row.readRow(current);
-                updateRow = null;
-            }
+		checkUpdatable();
+		if (insertRow != null) {
+			throw new SQLException("not on update row");
+		}
+		if (currentResultSet == null) {
+			throw new SQLException("not locate row");
+		}
+		if (updateRow != null) {
+			ResultSetExecutor executor = getCurrentExecutor(currentResultSet);
+			UpdateableRow row = getUpdateableRow(executor);
+			Object[] current = new Object[columnCount];
+			Object[] updateValues = updateRow.getPreparedParams();
+			for (int i = 0; i < updateValues.length; i++) {
+				current[i] = currentResultSet.getObject(i + 1);
+			}
+			row.updateRow(current, updateValues);
+			// 内部查询一次赋值给currentResultSet
+			currentResultSet = row.readRow(current);
+			updateRow = null;
+		}
 	}
 
 	public void deleteRow() throws SQLException {
-		 checkUpdatable();
-         if (insertRow != null) {
-        	 throw new SQLException("not on update row");
-         }
-         if(currentResultSet==null){
-        	 throw new SQLException("not locate row");
-         }
-         Object[] current = new Object[columnCount];
-         for (int i = 0; i < columnCount; i++) {
-        		 current[i] = currentResultSet.getObject(i+1);
-		 }
-         getUpdateableRow(getCurrentExecutor(currentResultSet)).deleteRow(current);
-         updateRow = null;
+		checkUpdatable();
+		if (insertRow != null) {
+			throw new SQLException("not on update row");
+		}
+		if (currentResultSet == null) {
+			throw new SQLException("not locate row");
+		}
+		Object[] current = new Object[columnCount];
+		for (int i = 0; i < columnCount; i++) {
+			current[i] = currentResultSet.getObject(i + 1);
+		}
+		getUpdateableRow(getCurrentExecutor(currentResultSet)).deleteRow(
+				current);
+		updateRow = null;
 	}
 
 	public void refreshRow() throws SQLException {
 		checkClosed();
-        if (insertRow != null) {
-        	throw new SQLException("not on update row");
-        }
-        updateRow = null;
+		if (insertRow != null) {
+			throw new SQLException("not on update row");
+		}
+		updateRow = null;
 	}
 
 	public void cancelRowUpdates() throws SQLException {
-		 checkClosed();
-         if (insertRow != null) {
-        	 throw new SQLException("not on update row");
-         }
-         updateRow = null;
+		checkClosed();
+		if (insertRow != null) {
+			throw new SQLException("not on update row");
+		}
+		updateRow = null;
 	}
 
 	public void moveToInsertRow() throws SQLException {
@@ -1060,7 +1094,7 @@ public class TinyResultSetMultiple implements ResultSet {
 
 	public void moveToCurrentRow() throws SQLException {
 		checkUpdatable();
-        insertRow = null;
+		insertRow = null;
 	}
 
 	public Statement getStatement() throws SQLException {

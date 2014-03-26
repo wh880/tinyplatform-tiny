@@ -135,7 +135,7 @@ public class TinyStatement implements Statement {
 					ResultSet realResultSet = statement.executeQuery();
 					resultSetExecutors.add(new ResultSetExecutor(realResultSet,
 							statement.getExecuteSql(), statement
-									.getOriginalSql(), statement.getShard()));
+									.getOriginalSql(), statement.getShard(),statement.getPartition()));
 					resultSetList.add(realResultSet);
 				}
 			}
@@ -223,6 +223,15 @@ public class TinyStatement implements Statement {
 				statementMap.put(shard, statement);
 			}
 		}
+
+		return statement;
+	}
+
+	protected Statement getNewStatement(String sql,Shard shard) throws SQLException {
+		Statement statement = shard.getConnection(tinyConnection)
+				.createStatement(resultSetType, resultSetConcurrency,
+						getResultSetHoldability());
+		setStatementProperties(statement);
 
 		return statement;
 	}

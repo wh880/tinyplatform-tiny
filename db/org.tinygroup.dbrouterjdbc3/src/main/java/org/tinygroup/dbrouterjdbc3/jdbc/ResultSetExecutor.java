@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.tinygroup.dbrouter.RouterManager;
+import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.dbrouter.util.OrderByProcessor;
@@ -28,16 +29,19 @@ public class ResultSetExecutor {
 	private OrderByProcessor orderByProcessor;
 
 	private Shard shard;
+	
+	private Partition partition;
 
 	private RouterManager routerManager = RouterManagerBeanFactory.getManager();
 
 	public ResultSetExecutor(ResultSet resultSet, String executeSql,
-			String originalSql, Shard shard) throws SQLException {
+			String originalSql, Shard shard,Partition partition) throws SQLException {
 		super();
 		this.resultSet = resultSet;
 		this.executeSql = executeSql;
 		this.originalSql = originalSql;
 		this.shard = shard;
+		this.partition=partition;
 		org.tinygroup.jsqlparser.statement.Statement sqlStatement = routerManager
 				.getSqlStatement(executeSql);
 		if (sqlStatement instanceof Select) {
@@ -155,6 +159,11 @@ public class ResultSetExecutor {
 
 	public Shard getShard() {
 		return shard;
+	}
+	
+
+	public Partition getPartition() {
+		return partition;
 	}
 
 	public String getOriginalSql() {

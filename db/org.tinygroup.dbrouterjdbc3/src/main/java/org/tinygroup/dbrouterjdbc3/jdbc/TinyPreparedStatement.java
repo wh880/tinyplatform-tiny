@@ -105,7 +105,6 @@ public class TinyPreparedStatement extends TinyStatement implements
 					resultSetType, resultSetConcurrency,
 					getResultSetHoldability());
 			setStatementProperties(statement);
-			setParamters((PreparedStatement) statement);
 			statementMap.put(shard, statement);
 		}else{
 			if (statement == null) {
@@ -119,6 +118,15 @@ public class TinyPreparedStatement extends TinyStatement implements
 		setParamters((PreparedStatement) statement);//设置参数
 		return statement;
 	}	
+	
+	protected Statement getNewStatement(String sql,Shard shard) throws SQLException {
+		Statement statement = shard.getConnection(tinyConnection).prepareStatement(sql,
+				resultSetType, resultSetConcurrency,
+				getResultSetHoldability());
+		setStatementProperties(statement);
+		setParamters((PreparedStatement) statement);//设置参数
+		return statement;
+	}
 
 
 	protected Object[] getPreparedParams() {
@@ -390,5 +398,9 @@ public class TinyPreparedStatement extends TinyStatement implements
 			metaData=new TinyParameterMetaData(parameterMetaData);
 		}
 		return metaData;
+	}
+	
+	public ParamObjectBuilder getParamBuilder(){
+		return builder;
 	}
 }
