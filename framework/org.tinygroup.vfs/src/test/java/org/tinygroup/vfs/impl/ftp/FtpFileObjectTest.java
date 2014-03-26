@@ -46,15 +46,16 @@ public class FtpFileObjectTest {
 	}
 
 	public void ftpFileObjectTest() throws Exception {
-		// 创建ftp服务器根路径对应的绝对路径
-		String ftpRootPath = System.getProperty("user.dir");
-		if (ftpRootPath.endsWith("/") || ftpRootPath.endsWith("\\")) {
-			ftpRootPath = ftpRootPath + "ftpServer/";
-		} else {
-			ftpRootPath = ftpRootPath + "/ftpServer/";
+		// 创建ftp服务器根路径
+		File file = new File("ftpServer");
+		if (!file.exists()) {
+			file.mkdirs();
 		}
-		ftpRootPath = ftpRootPath.replace("\\", "/");
-		mkdirs(ftpRootPath);
+		String ftpRootPath = file.getAbsolutePath();
+		if (!ftpRootPath.endsWith("/") && !ftpRootPath.endsWith("\\")) {
+			ftpRootPath = ftpRootPath + "/";
+		}
+		ftpRootPath = ftpRootPath.replaceAll("\\\\", "/");
 
 		// 获取ftp服务器对象，并启动服务器
 		FtpServer server = null;
