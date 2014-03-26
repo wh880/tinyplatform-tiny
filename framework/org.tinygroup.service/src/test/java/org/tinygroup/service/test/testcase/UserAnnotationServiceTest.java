@@ -49,7 +49,7 @@ public class UserAnnotationServiceTest extends TestCase {
 		Object user2 = context.get("user2");
 		assertEquals(user, user2);
 	}
-
+	
 	
 	public void testUserListAdd() {
 		Context context = new ContextImpl();
@@ -96,6 +96,22 @@ public class UserAnnotationServiceTest extends TestCase {
 		ServiceUser user2 = context.get("user2");
 		assertEquals(name, user2.getName());
 	}
+	
+	
+	/**
+	 * 测试默认serviceId和默认result name
+	 */
+	public void testUserAddNoResultName() {
+		Context context = new ContextImpl();
+		String name = "testUser";
+		context.put("name", name);
+		ServiceTestUtil.execute("userManagerAnnotationService.addServiceUserNoResultName", context);
+
+		ServiceUser user2 = context.get("userManagerAnnotationService_addServiceUserNoResultName_result");
+		assertEquals(name, user2.getName());
+	}
+	
+	
 
 	/**
 	 * 测试int简单类型的包装类型 以及简单类型的从String中转换

@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.tinygroup.commons.beanutil.BeanUtil;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -49,9 +50,9 @@ public abstract class AbstractAnnotationServiceLoader implements
 		AnnotationServiceLoader {
 	private Logger logger = LoggerFactory
 			.getLogger(AbstractAnnotationServiceLoader.class);
-	
+
 	private ServiceMappingManager serviceMappingManager;
-	
+
 	public ServiceMappingManager getServiceMappingManager() {
 		return serviceMappingManager;
 	}
@@ -189,6 +190,9 @@ public abstract class AbstractAnnotationServiceLoader implements
 				// serviceId
 				String serviceId = getAnnotationStringValue(annotation,
 						ServiceMethod.class, "serviceId");
+				if (StringUtil.isBlank(serviceId)) {
+					serviceId = StringUtil.toCamelCase(clazz.getSimpleName()) + "." + StringUtil.toCamelCase(method.getName());
+				}
 				item.setServiceId(serviceId);
 				// localName
 				String localName = getAnnotationStringValue(annotation,
@@ -211,7 +215,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 				// 跳转信息servicemapping
 				ServiceViewMapping serviceViewMapping = method
 						.getAnnotation(ServiceViewMapping.class);
-				if(serviceViewMapping!=null){
+				if (serviceViewMapping != null) {
 					org.tinygroup.service.config.ServiceViewMapping mapping = new org.tinygroup.service.config.ServiceViewMapping();
 					mapping.setServiceId(serviceId);
 					mapping.setPath(serviceViewMapping.value());
@@ -242,7 +246,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 		serviceProxy.setObjectInstance(getServiceInstance(clazz));
 		serviceProxy.setMethod(method);
 		getInputParameterNames(item, method, serviceProxy);
-		getOutputParameterNames(item, method, serviceProxy);
+		getOutputParameterNames(item, clazz, method, serviceProxy);
 
 		item.setService(serviceProxy);
 		serviceRegistry.registeService(item);
@@ -254,7 +258,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 	}
 
 	private void getOutputParameterNames(ServiceRegistryItem item,
-			Method method, ServiceProxy serviceProxy)
+			Class<?> clazz, Method method, ServiceProxy serviceProxy)
 			throws IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException {
 		logger.logMessage(LogLevel.INFO, "开始加载方法对应的服务出参,方法{0},服务:{1}",
@@ -273,6 +277,11 @@ public abstract class AbstractAnnotationServiceLoader implements
 			descriptor.setRequired(required);
 			String name = getAnnotationStringValue(annotation,
 					ServiceResult.class, "name");
+			if (StringUtil.isBlank(name)) {
+				name = StringUtil.toCamelCase(clazz.getSimpleName()) + "_"
+						+ StringUtil.toCamelCase(method.getName()) + "_"
+						+ "result";
+			}
 			descriptor.setName(name);
 			logger.logMessage(LogLevel.INFO, "服务出参name:{name}", name);
 		} else {

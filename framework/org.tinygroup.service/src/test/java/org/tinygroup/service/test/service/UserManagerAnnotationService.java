@@ -76,6 +76,18 @@ public class UserManagerAnnotationService {
 		return user2;
 	}
 	
+	@ServiceMethod()
+	@ServiceResult()
+	public ServiceUser addServiceUserNoResultName(
+			@ServiceParameter(name = "name") String name) {
+		String info = String.format("添加了一名新用户%s(名称添加)", name);
+		logger.logMessage(LogLevel.INFO, "", info);
+		ServiceUser user2 = new ServiceUser();
+		user2.setName(name);
+		return user2;
+	}
+	
+	
 	public int getServiceUserAge(String name) {
 		String info = String.format("查询用户%s的年龄", name);
 		logger.logMessage(LogLevel.INFO, info);

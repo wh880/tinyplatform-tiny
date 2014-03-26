@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -136,11 +137,8 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
                     logger.logMessage(LogLevel.INFO, "正在处理js文件:<{}>", path);
                     FileObject fileObject = fullContextFileRepository.getFileObject(path);
                     InputStream stream = new BufferedInputStream(fileObject.getInputStream());
-                    byte[] buffer = new byte[stream.available()];
-                    stream.read(buffer);
-                    stream.close();
-                    stream.close();
-                    outputStream.write(buffer);
+                    StreamUtil.io(stream, outputStream, true, false);
+                    outputStream.flush();
                     logger.logMessage(LogLevel.INFO, "js文件:<{}>处理完毕", path);
                 }
             }
