@@ -6,14 +6,18 @@
 				<xs:element name="type-converters" minOccurs="0">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="generator-config" type="generatorConfigItemType"
-								minOccurs="0" maxOccurs="unbounded" />
-							<xs:element name="type-creators" type="generatorConfigItemType"
+							<xs:element name="generator-config-item" type="generatorConfigItemType"
 								minOccurs="0" maxOccurs="unbounded" />
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="type-creators" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="generator-config-item" type="generatorConfigItemType"
+								minOccurs="0" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
 				</xs:element>
 			</xs:all>
 		</xs:complexType>

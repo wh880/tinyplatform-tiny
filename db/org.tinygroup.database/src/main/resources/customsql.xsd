@@ -3,9 +3,16 @@
 	<xs:element name="custom-sqls">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="use-package" minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="usePackages" minOccurs="0">
 					<xs:complexType>
-						<xs:attribute name="package-name" type="xs:string" />
+						<xs:sequence>
+							<xs:element name="use-package" minOccurs="0"
+								maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="package-name" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="custom-sql" minOccurs="0" maxOccurs="unbounded">

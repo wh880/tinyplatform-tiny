@@ -26,7 +26,7 @@
 
 	<xs:complexType name="processorBeansType">
 		<xs:sequence>
-			<xs:element name="processor-bean" maxOccurs="unbounded">
+			<xs:element name="processor-bean" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:attribute name="enable" type="xs:boolean" />
 					<xs:attribute name="name" type="xs:string" />
@@ -37,7 +37,8 @@
 
 	<xs:complexType name="annotationPropertyMatchersType">
 		<xs:sequence>
-			<xs:element name="annotation-property-matcher" maxOccurs="unbounded">
+			<xs:element name="annotation-property-matcher" minOccurs="0"
+				maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:all>
 						<xs:element name="processor-beans" type="processorBeansType"
@@ -53,7 +54,8 @@
 	<xs:complexType name="annotationMethodMatchersType">
 
 		<xs:sequence>
-			<xs:element name="annotation-method-matcher" maxOccurs="unbounded">
+			<xs:element name="annotation-method-matcher" minOccurs="0"
+				maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:all>
 						<xs:element name="processor-beans" type="processorBeansType"

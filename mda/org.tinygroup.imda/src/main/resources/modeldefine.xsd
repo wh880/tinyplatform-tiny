@@ -7,19 +7,8 @@
 				<xs:element name="model-processor-defines" minOccurs="0">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="model-processor-define" minOccurs="0">
-								<xs:complexType>
-									<xs:all>
-										<xs:element name="page-config" minOccurs="0"
-											type="pageConfigType" />
-										<xs:element name="processorStages" minOccurs="0"
-											type="processorStagesType" />
-									</xs:all>
-									<xs:attribute name="record-mode" type="xs:string" />
-									<xs:attribute name="name" type="xs:string" />
-									<xs:attribute name="title" type="xs:string" />
-								</xs:complexType>
-							</xs:element>
+							<xs:element name="model-processor-define" type="modelProcessorDefineType"
+								minOccurs="0" maxOccurs="unbounded" />
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
@@ -36,25 +25,30 @@
 		</xs:complexType>
 	</xs:element>
 
+	<xs:complexType name="modelProcessorDefineType">
+		<xs:sequence>
+			<xs:element name="page-config" minOccurs="0" type="pageConfigType" />
+			<xs:element name="model-processor-stage" type="processorStageType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="record-mode" type="xs:string" />
+		<xs:attribute name="name" type="xs:string" />
+		<xs:attribute name="title" type="xs:string" />
+	</xs:complexType>
+
 	<xs:complexType name="pageConfigType">
-		<xs:attribute name="confirm" type="xs:string" />
+		<xs:attribute name="confirm" type="xs:boolean" />
 		<xs:attribute name="message" type="xs:string" />
-		<xs:attribute name="stage-name" type="xs:boolean" />
+		<xs:attribute name="stage-name" type="xs:string" />
 	</xs:complexType>
 
 
-	<xs:complexType name="processorStagesType">
-		<xs:sequence>
-			<xs:element name="model-processor-stage" minOccurs="0"
-				maxOccurs="unbounded">
-				<xs:complexType>
-					<xs:attribute name="name" type="xs:string" />
-					<xs:attribute name="title" type="xs:boolean" />
-					<xs:attribute name="service-processor" type="xs:boolean" />
-					<xs:attribute name="view-processor" type="xs:string" />
-					<xs:attribute name="need-validate" type="xs:string" />
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
+	<xs:complexType name="processorStageType">
+		<xs:attribute name="name" type="xs:string" />
+		<xs:attribute name="title" type="xs:string" />
+		<xs:attribute name="service-processor" type="xs:string" />
+		<xs:attribute name="parameter-builder" type="xs:string" />
+		<xs:attribute name="view-processor" type="xs:string" />
+		<xs:attribute name="need-validate" type="xs:boolean" />
 	</xs:complexType>
 </xs:schema>

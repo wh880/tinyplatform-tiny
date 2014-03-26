@@ -72,7 +72,6 @@
 		</xs:all>
 		<xs:attribute name="alias-name" type="xs:string" />
 		<xs:attribute name="type" type="xs:string" />
-		<xs:attribute name="proper-aliases" type="xs:string" />
 	</xs:complexType>
 
 </xs:schema>
