@@ -177,4 +177,9 @@ public interface RmiServer {
      * @throws RemoteException
      */
     void unregisterRemoteObject(Remote object) throws RemoteException;
+
+    /**
+     * 停止RMIServer
+     */
+    void stop();
 }

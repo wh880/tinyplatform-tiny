@@ -40,7 +40,7 @@ import java.io.IOException;
 public class Test {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         JobCenter jobCenter = new JobCenterLocal();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             jobCenter.registerWorker(new PiWorker());
         }
         Foreman helloForeman = new ForemanSelectAllWorker("pi", new PiSplitterCombiner());

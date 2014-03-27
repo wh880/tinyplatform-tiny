@@ -54,10 +54,9 @@ public abstract class AbstractProcessor implements Processor {
 
     public void run() {
         try {
-            logger.logMessage(LogLevel.INFO, "线程<{}-{}>运行开始...", multiThreadProcess.getName(), name);
-
+            logger.logMessage(LogLevel.DEBUG, "线程<{}-{}>运行开始...", multiThreadProcess.getName(), name);
             action();
-            logger.logMessage(LogLevel.INFO, "线程<{}-{}>运行结束", multiThreadProcess.getName(), name);
+            logger.logMessage(LogLevel.DEBUG, "线程<{}-{}>运行结束", multiThreadProcess.getName(), name);
         } catch (Throwable e) {
             logger.errorMessage(e.getMessage(), e);
             if (exceptionCallBack != null) {

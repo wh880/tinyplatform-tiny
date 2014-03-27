@@ -65,11 +65,21 @@ public class RmiServerRemote extends AbstractRmiServer {
         return registry;
     }
 
+    public void stop() {
+        heartThread.setStop(true);
+        super.stop();
+
+    }
+
     class HeartThread extends Thread {
         private static final int MILLISECOND_PER_SECOND = 1000;
         private boolean stop = false;
         private int breathInterval = 5;
         private boolean isDown = false;
+
+        public void setStop(boolean stop) {
+            this.stop = stop;
+        }
 
         public void run() {
             while (!stop) {
@@ -79,7 +89,7 @@ public class RmiServerRemote extends AbstractRmiServer {
                     continue;
                 }
                 try {
-                    logger.logMessage(LogLevel.INFO, "开始向远端服务器{0}:{1}发起心跳检测", hostName, port);
+                    logger.logMessage(LogLevel.DEBUG, "开始向远端服务器{0}:{1}发起心跳检测", hostName, port);
                     registry.list();
                     if (isDown) {
                         logger.logMessage(LogLevel.INFO, "开始重新向远端服务器{0}:{1}注册对象", hostName, port);
@@ -87,7 +97,7 @@ public class RmiServerRemote extends AbstractRmiServer {
                         logger.logMessage(LogLevel.INFO, "重新向远端服务器{0}:{1}注册对象结束", hostName, port);
                         isDown = false;
                     }
-                    logger.logMessage(LogLevel.INFO, "向远端服务器{0}:{1}心跳检测结束", hostName, port);
+                    logger.logMessage(LogLevel.DEBUG, "向远端服务器{0}:{1}心跳检测结束", hostName, port);
                 } catch (RemoteException e) {
                     logger.errorMessage("向远端服务器{0}:{1}心跳检测失败", e, hostName, port);
                     isDown = true;

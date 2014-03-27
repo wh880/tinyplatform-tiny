@@ -72,14 +72,23 @@ public final class RmiServerLocal extends AbstractRmiServer {
         return registry;
     }
 
+    public void stop() {
+        validateThread.setStop(true);
+        super.stop();
+    }
+
     class ValidateThread extends Thread {
         private static final int MILLISECOND_PER_SECOND = 1000;
         private volatile boolean stop = false;
         private int breathInterval = 5;//单位秒
 
+        public void setStop(boolean stop) {
+            this.stop = stop;
+        }
+
         public void run() {
             while (!stop) {
-                logger.logMessage(LogLevel.INFO, "开始检测已注册对象的可用性");
+                logger.logMessage(LogLevel.DEBUG, "开始检测已注册对象的可用性");
                 try {
                     sleep(breathInterval * MILLISECOND_PER_SECOND);
                 } catch (InterruptedException e) {
@@ -115,7 +124,7 @@ public final class RmiServerLocal extends AbstractRmiServer {
                         logger.errorMessage("对象{0}未邦定", e2, name);
                     }
                 }
-                logger.logMessage(LogLevel.INFO, "检测已注册对象的可用性完成");
+                logger.logMessage(LogLevel.DEBUG, "检测已注册对象的可用性完成");
             }
 
         }

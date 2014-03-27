@@ -23,77 +23,73 @@
  */
 package org.tinygroup.threadgroup;
 
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-
 /**
  * 多线程处理器
- * 
+ *
  * @author luoguo
- * 
  */
 public final class MultiThreadProcessor {
-	private static Logger logger = LoggerFactory
-			.getLogger(MultiThreadProcessor.class);
-	private CountDownLatch downLatch = null;
-	private List<Processor> processors = new ArrayList<Processor>();
-	private String name;
+    private static Logger logger = LoggerFactory.getLogger(MultiThreadProcessor.class);
+    private CountDownLatch downLatch = null;
+    private List<Processor> processors = new ArrayList<Processor>();
+    private String name;
 
-	public MultiThreadProcessor(String name) {
-		this.name = name;
-	}
+    public MultiThreadProcessor(String name) {
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void addProcessor(Processor[] processors) {
-		for (Processor processor : processors) {
-			addProcessor(processor);
-		}
-	}
+    public void addProcessor(Processor[] processors) {
+        for (Processor processor : processors) {
+            addProcessor(processor);
+        }
+    }
 
-	public void addProcessor(Processor processor) {
-		processors.add(processor);
-		processor.setMultiThreadProcess(this);
-	}
+    public void addProcessor(Processor processor) {
+        processors.add(processor);
+        processor.setMultiThreadProcess(this);
+    }
 
-	public void addProcessor(Collection<Processor> processorCollection) {
-		for (Processor processor : processorCollection) {
-			addProcessor(processor);
-		}
-	}
+    public void addProcessor(Collection<Processor> processorCollection) {
+        for (Processor processor : processorCollection) {
+            addProcessor(processor);
+        }
+    }
 
-	public void threadDone() {
-		downLatch.countDown();
-	}
+    public void threadDone() {
+        downLatch.countDown();
+    }
 
-	public void start() {
-		this.downLatch = new CountDownLatch(processors.size());
-		logger.logMessage(LogLevel.INFO, "线程组<{}>运行开始,线程数{}...", name,
-				processors.size());
-		long start = System.currentTimeMillis();
+    public void start() {
+        this.downLatch = new CountDownLatch(processors.size());
+        logger.logMessage(LogLevel.DEBUG, "线程组<{}>运行开始,线程数{}...", name, processors.size());
+        long start = System.currentTimeMillis();
 
-		for (Processor processor : processors) {
-			Thread thread = new Thread(processor);
-			thread.setName(name + "-" + processor.getName());
-			thread.start();
-		}
+        for (Processor processor : processors) {
+            Thread thread = new Thread(processor);
+            thread.setName(name + "-" + processor.getName());
+            thread.start();
+        }
 
-		try {
-			downLatch.await(); // 等待所有工作线程完成.
-		} catch (InterruptedException e) {
-			logger.errorMessage("缓程组<{}运行出现问题：{}>", e, name, e.getMessage());
-		}
-		long end = System.currentTimeMillis();
-		logger.logMessage(LogLevel.INFO, "线程组<{}>运行结束, 用时:{}ms", name,
-				(end - start));
-	}
+        try {
+            downLatch.await(); // 等待所有工作线程完成.
+        } catch (InterruptedException e) {
+            logger.errorMessage("缓程组<{}运行出现问题：{}>", e, name, e.getMessage());
+        }
+        long end = System.currentTimeMillis();
+        logger.logMessage(LogLevel.DEBUG, "线程组<{}>运行结束, 用时:{}ms", name, (end - start));
+    }
 
 }

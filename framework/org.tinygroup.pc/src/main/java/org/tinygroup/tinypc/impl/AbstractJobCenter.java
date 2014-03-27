@@ -211,7 +211,7 @@ public class AbstractJobCenter implements JobCenter {
 	}
 
 	public void stop() throws RemoteException {
-		getRmiServer().unexportObjects();
+        getRmiServer().stop();
 	}
 
 	private void matchWork(Work work) throws IOException {

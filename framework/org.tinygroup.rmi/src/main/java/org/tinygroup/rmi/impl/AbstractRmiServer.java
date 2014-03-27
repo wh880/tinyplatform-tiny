@@ -50,6 +50,13 @@ public abstract class AbstractRmiServer implements RmiServer {
     Registry registry = null;
     Map<String, Remote> registeredObjectMap = new HashMap<String, Remote>();
 
+    public void stop() {
+        try {
+            unexportObjects();
+        } catch (RemoteException e) {
+            logger.error(e);
+        }
+    }
 
     public AbstractRmiServer() {
         this(DEFAULT_RMI_PORT);
