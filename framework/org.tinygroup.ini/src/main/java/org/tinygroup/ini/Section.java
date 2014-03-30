@@ -31,6 +31,7 @@ import java.util.List;
  */
 public class Section {
     String name;
+    String comment;
     List<ValuePair> valuePairList;
 
     public Section() {
@@ -39,6 +40,19 @@ public class Section {
 
     public Section(String name) {
         setName(name);
+    }
+
+    public Section(String name, String comment) {
+        setName(name);
+        setComment(comment);
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public String getName() {

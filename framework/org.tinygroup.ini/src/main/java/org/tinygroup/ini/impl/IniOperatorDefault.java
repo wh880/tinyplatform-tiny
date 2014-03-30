@@ -53,7 +53,7 @@ public class IniOperatorDefault implements IniOperator {
             if (string.length() == 0 || string.startsWith(commentChar)) {
                 addComment(sectionName, string);
             } else if (string.startsWith("[")) { //如果是Section
-                sectionName = addSection(string, sectionName);
+                sectionName = addSection(string);
             } else {
                 addValuePair(string, sectionName);
             }
@@ -76,11 +76,22 @@ public class IniOperatorDefault implements IniOperator {
         }
     }
 
-    private String addSection(String string, String sectionName) {
+    private String addSection(String string) {
         Matcher matcher = SECTION_PATTERN.matcher(string);
+        String sectionName = null;
         if (matcher.find()) {
             sectionName = Utils.decode(matcher.group(2).trim());
-            addSameLineComment(sectionName, string.substring(matcher.end()).trim());
+            String comment = string.substring(matcher.end()).trim();
+
+            Section section;
+            if (comment.startsWith(";")) {//如果有备注
+                section = new Section(sectionName, comment.substring(1));
+            } else if (comment.length() == 0) {//如果没有备注
+                section = new Section(sectionName);
+            } else {
+                throw new RuntimeException("不符全规范的内容：" + string);
+            }
+            sections.addSection(section);
         }
         return sectionName;
     }
@@ -103,7 +114,11 @@ public class IniOperatorDefault implements IniOperator {
         if (sections != null) {
             for (Section section : sections.getSectionList()) {
                 if (section.getName() != null) {
-                    outputStream.write(String.format("[%s]\n", Utils.encode(section.getName())).getBytes(charset));
+                    if (section.getComment() != null) {
+                        outputStream.write(String.format("[%s];%s\n", Utils.encode(section.getName()), Utils.encode(section.getComment())).getBytes(charset));
+                    } else {
+                        outputStream.write(String.format("[%s]\n", Utils.encode(section.getName())).getBytes(charset));
+                    }
                 }
                 for (ValuePair valuePair : section.getValuePairList()) {
                     if (valuePair.getKey() != null) {
