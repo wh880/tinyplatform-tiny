@@ -19,15 +19,7 @@ public class IniOperatorDefault implements IniOperator {
     private Sections sections = null;
     private String commentChar = ";";
     private static final Pattern SECTION_PATTERN = Pattern.compile("([\\[])(.*)([\\]])");
-    private static final Pattern VALUE_PAIR_PATTERN = Pattern.compile("(.*)=([^;]*)");
-
-    public static void main(String[] args) {
-        Matcher matcher = VALUE_PAIR_PATTERN.matcher("aa=bb\\;aa");
-        if (matcher.find()) {
-            System.out.println(matcher.group(1));
-            System.out.println(matcher.group(2));
-        }
-    }
+    private static final Pattern VALUE_PAIR_PATTERN = Pattern.compile("(.*)=((([^\\\\;](\\\\;)?)*))");
 
     public IniOperatorDefault() {
     }
@@ -59,12 +51,12 @@ public class IniOperatorDefault implements IniOperator {
                 //如果是Section
                 Matcher matcher = SECTION_PATTERN.matcher(string);
                 if (matcher.find()) {
-                    sectionName = matcher.group(2);
+                    sectionName = decode(matcher.group(2).trim());
                 }
             } else {
                 Matcher matcher = VALUE_PAIR_PATTERN.matcher(string);
                 if (matcher.find()) {
-                    add(sectionName, matcher.group(1).trim(), matcher.group(2).trim());
+                    add(sectionName, matcher.group(1).trim(), decode(matcher.group(2).trim()));
                 } else {
                     System.out.println("不符全规范的内容：" + string);
                 }
@@ -79,10 +71,10 @@ public class IniOperatorDefault implements IniOperator {
         if (sections != null) {
             for (Section section : sections.getSectionList()) {
                 if (section.getName() != null) {
-                    outputStream.write(String.format("[%s]\r\n", section.getName()).getBytes(charset));
+                    outputStream.write(String.format("[%s]\r\n", encode(section.getName())).getBytes(charset));
                 }
                 for (ValuePair valuePair : section.getValuePairList()) {
-                    outputStream.write(String.format("%s=%s\n", valuePair.getKey(), valuePair.getValue()).getBytes(charset));
+                    outputStream.write(String.format("%s=%s\n", valuePair.getKey(), encode(valuePair.getValue())).getBytes(charset));
                 }
             }
         }
@@ -193,5 +185,27 @@ public class IniOperatorDefault implements IniOperator {
             return section.getValuePair(key);
         }
         return null;
+    }
+
+    String encode(String string) {
+        String str = string;
+        str.replaceAll("\t", "\\t");
+        str.replaceAll("\r", "\\r");
+        str.replaceAll("\n", "\\n");
+        str.replaceAll(";", "\\;");
+        str.replaceAll("=", "\\=");
+        str.replaceAll(":", "\\:");
+        return str;
+    }
+
+    String decode(String string) {
+        String str = string;
+        str.replaceAll("\\t", "\t");
+        str.replaceAll("\\r", "\r");
+        str.replaceAll("\\n", "\n");
+        str.replaceAll("\\;", ";");
+        str.replaceAll("\\=", "=");
+        str.replaceAll("\\:", ":");
+        return str;
     }
 }
