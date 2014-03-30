@@ -27,7 +27,7 @@ public class IniOperatorDefaultTest extends TestCase {
     }
 
     public void testRead() throws Exception {
-        String string = "aa=bb\r\n[ccc]aa=bb;ccdd\r\nccc=ddd;aa;bb;cc";
+        String string = ";abc\naa=bb;ccc\r\n[ccc]\naa=bb;ccdd\r\nccc=ddd;aa;bb;cc";
         operator.read(new StringBufferInputStream(string), "UTF-8");
         operator.write(System.out, "UTF-8");
     }

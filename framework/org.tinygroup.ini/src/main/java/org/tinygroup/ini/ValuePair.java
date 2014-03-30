@@ -30,10 +30,31 @@ package org.tinygroup.ini;
 public class ValuePair {
     String key;
     String value;
+    String comment;
+
+    public String getComment() {
+        if (comment == null) {
+            return "";
+        }
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public ValuePair(String comment) {
+        this.setComment(comment);
+    }
 
     public ValuePair(String key, String value) {
-        this.key = key;
-        this.value = value;
+        this.setKey(key);
+        this.setValue(value);
+    }
+
+    public ValuePair(String key, String value, String comment) {
+        this(key, value);
+        this.setComment(comment);
     }
 
     public ValuePair() {

@@ -1,9 +1,6 @@
 package org.tinygroup.ini.impl;
 
-import org.tinygroup.ini.IniOperator;
-import org.tinygroup.ini.Section;
-import org.tinygroup.ini.Sections;
-import org.tinygroup.ini.ValuePair;
+import org.tinygroup.ini.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 目前不支持转义符;
+ * 默认实现
  * Created by luoguo on 14-3-29.
  */
 public class IniOperatorDefault implements IniOperator {
@@ -20,6 +17,14 @@ public class IniOperatorDefault implements IniOperator {
     private String commentChar = ";";
     private static final Pattern SECTION_PATTERN = Pattern.compile("([\\[])(.*)([\\]])");
     private static final Pattern VALUE_PAIR_PATTERN = Pattern.compile("(.*)=((([^\\\\;](\\\\;)?)*))");
+
+    public static void main(String[] args) {
+        String input = "a=bb;def";
+        Matcher matcher = VALUE_PAIR_PATTERN.matcher(input);
+        if (matcher.find()) {
+            System.out.println(input.substring(matcher.end()));
+        }
+    }
 
     public IniOperatorDefault() {
     }
@@ -46,24 +51,51 @@ public class IniOperatorDefault implements IniOperator {
         while (string != null) {
             string = string.trim();
             if (string.length() == 0 || string.startsWith(commentChar)) {
-                //如果是注释
-            } else if (string.startsWith("[")) {
-                //如果是Section
-                Matcher matcher = SECTION_PATTERN.matcher(string);
-                if (matcher.find()) {
-                    sectionName = decode(matcher.group(2).trim());
-                }
+                addComment(sectionName, string);
+            } else if (string.startsWith("[")) { //如果是Section
+                sectionName = addSection(string, sectionName);
             } else {
-                Matcher matcher = VALUE_PAIR_PATTERN.matcher(string);
-                if (matcher.find()) {
-                    add(sectionName, matcher.group(1).trim(), decode(matcher.group(2).trim()));
-                } else {
-                    System.out.println("不符全规范的内容：" + string);
-                }
+                addValuePair(string, sectionName);
             }
             string = bufferedReader.readLine();
         }
         reader.close();
+    }
+
+    private void addValuePair(String string, String sectionName) {
+        Matcher matcher = VALUE_PAIR_PATTERN.matcher(string);
+        if (matcher.find()) {
+            String comment = string.substring(matcher.end()).trim();
+            if (comment.length() > 0) {
+                add(sectionName, new ValuePair(matcher.group(1).trim(), Utils.decode(matcher.group(2).trim()), comment.substring(1)));
+            } else {
+                add(sectionName, new ValuePair(matcher.group(1).trim(), Utils.decode(matcher.group(2).trim())));
+            }
+        } else {
+            throw new RuntimeException("不符全规范的内容：" + string);
+        }
+    }
+
+    private String addSection(String string, String sectionName) {
+        Matcher matcher = SECTION_PATTERN.matcher(string);
+        if (matcher.find()) {
+            sectionName = Utils.decode(matcher.group(2).trim());
+            addSameLineComment(sectionName, string.substring(matcher.end()).trim());
+        }
+        return sectionName;
+    }
+
+    private void addSameLineComment(String sectionName, String str) {
+        if (str.startsWith(";")) {
+            addComment(sectionName, str.substring(1));
+        } else if (str.length() > 0) {
+            throw new RuntimeException("不符全规范的内容：" + str);
+        }
+    }
+
+    private void addComment(String sectionName, String string) {
+        ValuePair valuePair = new ValuePair(string.substring(1));
+        add(sectionName, valuePair);
     }
 
 
@@ -71,10 +103,18 @@ public class IniOperatorDefault implements IniOperator {
         if (sections != null) {
             for (Section section : sections.getSectionList()) {
                 if (section.getName() != null) {
-                    outputStream.write(String.format("[%s]\r\n", encode(section.getName())).getBytes(charset));
+                    outputStream.write(String.format("[%s]\n", Utils.encode(section.getName())).getBytes(charset));
                 }
                 for (ValuePair valuePair : section.getValuePairList()) {
-                    outputStream.write(String.format("%s=%s\n", valuePair.getKey(), encode(valuePair.getValue())).getBytes(charset));
+                    if (valuePair.getKey() != null) {
+                        if (valuePair.getComment() != null && valuePair.getComment().length() > 0) {
+                            outputStream.write(String.format("%s=%s;%s\n", valuePair.getKey(), Utils.encode(valuePair.getValue()), valuePair.getComment()).getBytes(charset));
+                        } else {
+                            outputStream.write(String.format("%s=%s\n", valuePair.getKey(), Utils.encode(valuePair.getValue())).getBytes(charset));
+                        }
+                    } else {
+                        outputStream.write(String.format(";%s\n", valuePair.getComment()).getBytes(charset));
+                    }
                 }
             }
         }
@@ -185,27 +225,5 @@ public class IniOperatorDefault implements IniOperator {
             return section.getValuePair(key);
         }
         return null;
-    }
-
-    String encode(String string) {
-        String str = string;
-        str.replaceAll("\t", "\\t");
-        str.replaceAll("\r", "\\r");
-        str.replaceAll("\n", "\\n");
-        str.replaceAll(";", "\\;");
-        str.replaceAll("=", "\\=");
-        str.replaceAll(":", "\\:");
-        return str;
-    }
-
-    String decode(String string) {
-        String str = string;
-        str.replaceAll("\\t", "\t");
-        str.replaceAll("\\r", "\r");
-        str.replaceAll("\\n", "\n");
-        str.replaceAll("\\;", ";");
-        str.replaceAll("\\=", "=");
-        str.replaceAll("\\:", ":");
-        return str;
     }
 }
