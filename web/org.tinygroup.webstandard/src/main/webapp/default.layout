@@ -24,20 +24,6 @@
     <link rel="shortcut icon" href="${TINY_CONTEXT_PATH}/icon/logo.png">
     <script src="${TINY_CONTEXT_PATH}/uiengine.uijs"></script>
     <link href="${TINY_CONTEXT_PATH}/uiengine.uicss" rel="stylesheet" />
-    #foreach($component in $uiengine.getHealthUiComponents())
-        <!--UI component $component.name start -->
-        #if($component.jsCodelet)
-            <script>
-#evaluate($!component.jsCodelet)
-</script>
-        #end
-        #if($component.cssCodelet)
-            <style>
-#evaluate($!component.cssCodelet)
-</style>
-        #end
-        <!--UI component $component.name end -->
-    #end
 
     <style>
         body {
