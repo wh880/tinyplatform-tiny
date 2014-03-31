@@ -24,7 +24,6 @@
 package org.tinygroup.vfs;
 
 import org.tinygroup.vfs.impl.*;
-import org.tinygroup.vfs.impl.ftp.FtpSchemaProvider;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -50,7 +49,6 @@ public class VFS {
         addSchemaProvider(new FileSchemaProvider());
         addSchemaProvider(new HttpSchemaProvider());
         addSchemaProvider(new HttpsSchemaProvider());
-        addSchemaProvider(new FtpSchemaProvider());
         addSchemaProvider(new JBossVfsSchemaProvider());
     }
 
