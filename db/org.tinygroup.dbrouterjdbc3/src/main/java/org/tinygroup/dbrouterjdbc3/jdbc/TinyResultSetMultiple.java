@@ -137,12 +137,12 @@ public class TinyResultSetMultiple implements ResultSet {
 				columnCount = resultSetMetaData.getColumnCount();
 				for (int i = 0; i < resultSetExecutors.size(); i++) {
 					ResultSetExecutor executor = resultSetExecutors.get(i);
-					String countSql = "select count(0) from ( " + sql+" ) as tinycounttemp";
 					Shard shard=executor.getShard();
 					Partition partition=executor.getPartition();
 					Object[] params=statement.getPreparedParams();
-					String realSql = routerManager.getSql(partition, shard, countSql,params);
-					Statement countStatement=statement.getNewStatement(realSql,shard);
+					String realSql = routerManager.getSql(partition, shard, sql,params);
+					String countSql = "select count(0) from ( " + realSql+" ) as tinycounttemp";
+					Statement countStatement=statement.getNewStatement(countSql,shard);
 					if(countStatement instanceof PreparedStatement){
 						PreparedStatement preparedStatement=(PreparedStatement)countStatement;
 						ResultSet countSet = preparedStatement.executeQuery();
@@ -150,7 +150,7 @@ public class TinyResultSetMultiple implements ResultSet {
 							totalRows += countSet.getInt(1);
 						}
 					}else{
-						ResultSet countSet = countStatement.executeQuery(realSql);
+						ResultSet countSet = countStatement.executeQuery(countSql);
 						if (countSet.next()) {
 							totalRows += countSet.getInt(1);
 						}
