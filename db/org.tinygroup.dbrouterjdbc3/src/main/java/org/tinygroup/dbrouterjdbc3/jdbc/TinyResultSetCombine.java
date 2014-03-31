@@ -89,7 +89,6 @@ public class TinyResultSetCombine implements ResultSet {
 			ResultSet resultSet = resultSets.get(i);
 			try {
 				ResultSetData resultSetData = new ResultSetData(i, resultSet);
-				int rowCount = resultSetData.getRowCount();
 				resultSetDataList.add(resultSetData);
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
