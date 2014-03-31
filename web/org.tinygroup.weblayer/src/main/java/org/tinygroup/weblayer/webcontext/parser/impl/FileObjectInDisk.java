@@ -104,13 +104,7 @@ public class FileObjectInDisk extends AbstractFileObject implements ItemFileObje
 		return false;
 	}
 
-	public FileObject getParent() {
-		return null;
-	}
 
-	public void setParent(FileObject fileObject) {
-
-	}
 
 	public List<FileObject> getChildren() {
 		return null;
@@ -124,9 +118,7 @@ public class FileObjectInDisk extends AbstractFileObject implements ItemFileObje
 		return 0;
 	}
 
-	public SchemaProvider getSchemaProvider() {
-		return null;
-	}
+
 
 	public boolean isInPackage() {
 		return false;

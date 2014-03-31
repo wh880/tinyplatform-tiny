@@ -23,105 +23,94 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
+import org.apache.commons.fileupload.FileItem;
+import org.tinygroup.commons.tools.FileUtil;
+import org.tinygroup.vfs.FileObject;
+import org.tinygroup.vfs.impl.AbstractFileObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.List;
 
-import org.apache.commons.fileupload.FileItem;
-import org.tinygroup.commons.tools.FileUtil;
-import org.tinygroup.vfs.FileObject;
-import org.tinygroup.vfs.SchemaProvider;
-import org.tinygroup.vfs.impl.AbstractFileObject;
-
 public class FileObjectInMemory extends AbstractFileObject implements ItemFileObject {
 
-	private InMemoryFormFieldItem fileItem;
+    private InMemoryFormFieldItem fileItem;
 
-	public FileObjectInMemory(InMemoryFormFieldItem fileItem) {
+    public FileObjectInMemory(InMemoryFormFieldItem fileItem) {
         super(null);
         this.fileItem = fileItem;
-	}
+    }
 
-	public String getFileName() {
-		return fileItem.getName();
-	}
+    public String getFileName() {
+        return fileItem.getName();
+    }
 
-	public String getPath() {
-		return null;
-	}
+    public String getPath() {
+        return null;
+    }
 
-	public String getAbsolutePath() {
-		return null;
-	}
+    public String getAbsolutePath() {
+        return null;
+    }
 
-	public String getExtName() {
-		return FileUtil.getExtension(getFileName());
-	}
+    public String getExtName() {
+        return FileUtil.getExtension(getFileName());
+    }
 
-	public boolean isExist() {
-		return true;
-	}
+    public boolean isExist() {
+        return true;
+    }
 
-	public long getSize() {
-		return fileItem.getSize();
-	}
+    public long getSize() {
+        return fileItem.getSize();
+    }
 
-	public InputStream getInputStream() {
-		try {
-			return fileItem.getInputStream();
-		} catch (IOException e) {
-			throw new RuntimeException("获取上传文件输入流出错" ,e);
-		}
-	}
+    public InputStream getInputStream() {
+        try {
+            return fileItem.getInputStream();
+        } catch (IOException e) {
+            throw new RuntimeException("获取上传文件输入流出错", e);
+        }
+    }
 
-	public boolean isFolder() {
-		return false;
-	}
+    public boolean isFolder() {
+        return false;
+    }
 
-	public FileObject getParent() {
-		return null;
-	}
 
-	public void setParent(FileObject fileObject) {
+    public List<FileObject> getChildren() {
+        return null;
+    }
 
-	}
+    public FileObject getChild(String fileName) {
+        return null;
+    }
 
-	public List<FileObject> getChildren() {
-		return null;
-	}
+    public long getLastModifiedTime() {
+        return 0;
+    }
 
-	public FileObject getChild(String fileName) {
-		return null;
-	}
 
-	public long getLastModifiedTime() {
-		return 0;
-	}
+    public boolean isInPackage() {
+        return false;
+    }
 
-	public SchemaProvider getSchemaProvider() {
-		return null;
-	}
+    public URL getURL() {
+        return null;
+    }
 
-	public boolean isInPackage() {
-		return false;
-	}
+    public OutputStream getOutputStream() {
+        try {
+            return fileItem.getOutputStream();
+        } catch (IOException e) {
+            throw new RuntimeException("获取上传文件输出流出错", e);
+        }
+    }
 
-	public URL getURL() {
-		return null;
-	}
-
-	public OutputStream getOutputStream() {
-		try {
-			return fileItem.getOutputStream();
-		} catch (IOException e) {
-			throw new RuntimeException("获取上传文件输出流出错" ,e);
-		}
-	}
-
-	public FileItem getFileItem() {
-		return fileItem;
-	}
+    public FileItem getFileItem() {
+        return fileItem;
+    }
 
 }

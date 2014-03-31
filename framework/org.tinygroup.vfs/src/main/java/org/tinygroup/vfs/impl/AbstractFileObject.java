@@ -30,26 +30,38 @@ import org.tinygroup.vfs.SchemaProvider;
 
 public abstract class AbstractFileObject implements FileObject {
 
-	protected SchemaProvider schemaProvider;
+    protected SchemaProvider schemaProvider;
+    FileObject parent;
 
-	public AbstractFileObject(SchemaProvider schemaProvider) {
-		this.schemaProvider = schemaProvider;
-	}
+    public FileObject getParent() {
+        return parent;
+    }
 
-	
-	public int hashCode() {
-		return this.getAbsolutePath().hashCode();
-	}
+    public void setParent(FileObject parent) {
+        this.parent = parent;
+    }
 
-	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		FileObject fileObject = (FileObject) obj;
-		return this.getAbsolutePath().equalsIgnoreCase(
-				fileObject.getAbsolutePath());
-	}
+    public AbstractFileObject(SchemaProvider schemaProvider) {
+        this.schemaProvider = schemaProvider;
+    }
+
+    public SchemaProvider getSchemaProvider() {
+        return schemaProvider;
+    }
+
+    public int hashCode() {
+        return this.getAbsolutePath().hashCode();
+    }
+
+
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        FileObject fileObject = (FileObject) obj;
+        return this.getAbsolutePath().equalsIgnoreCase(fileObject.getAbsolutePath());
+    }
+
     /**
      * 对文件对象及其所有子对象都通过文件对象过滤器进行过滤，如果匹配，则执行文件对外处理器
      *
@@ -57,8 +69,8 @@ public abstract class AbstractFileObject implements FileObject {
      * @param fileObjectProcessor
      * @param parentFirst         true:如果父亲和儿子都命中，则先处理父亲；false:如果父亲和儿子都命中，则先处理儿子
      */
-    public void foreach( FileObjectFilter fileObjectFilter,
-                               FileObjectProcessor fileObjectProcessor, boolean parentFirst) {
+    public void foreach(FileObjectFilter fileObjectFilter, FileObjectProcessor fileObjectProcessor,
+                        boolean parentFirst) {
         if (parentFirst) {
             if (fileObjectFilter.accept(this)) {
                 fileObjectProcessor.process(this);
@@ -66,7 +78,7 @@ public abstract class AbstractFileObject implements FileObject {
         }
         if (isFolder()) {
             for (FileObject subFileObject : getChildren()) {
-                subFileObject.foreach( fileObjectFilter, fileObjectProcessor, parentFirst);
+                subFileObject.foreach(fileObjectFilter, fileObjectProcessor, parentFirst);
             }
         }
         if (!parentFirst) {
@@ -82,8 +94,7 @@ public abstract class AbstractFileObject implements FileObject {
      * @param fileObjectFilter
      * @param fileObjectProcessor
      */
-    public void foreach( FileObjectFilter fileObjectFilter,
-                               FileObjectProcessor fileObjectProcessor) {
-        foreach( fileObjectFilter, fileObjectProcessor, true);
+    public void foreach(FileObjectFilter fileObjectFilter, FileObjectProcessor fileObjectProcessor) {
+        foreach(fileObjectFilter, fileObjectProcessor, true);
     }
 }

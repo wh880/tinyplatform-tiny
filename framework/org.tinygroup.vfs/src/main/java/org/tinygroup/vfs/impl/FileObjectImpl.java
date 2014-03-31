@@ -42,7 +42,6 @@ import org.tinygroup.vfs.VFS;
 public class FileObjectImpl extends AbstractFileObject {
 
 	private String path;
-	private FileObject parent;
 	private List<FileObject> children;
 	private File file = null;
 
@@ -126,9 +125,6 @@ public class FileObjectImpl extends AbstractFileObject {
 		return false;
 	}
 
-	public FileObject getParent() {
-		return parent;
-	}
 
 	public List<FileObject> getChildren() {
 		if (children != null) {
@@ -155,9 +151,6 @@ public class FileObjectImpl extends AbstractFileObject {
 		return file.lastModified();
 	}
 
-	public SchemaProvider getSchemaProvider() {
-		return schemaProvider;
-	}
 
 	public boolean isExist() {
 		return file.exists();
@@ -194,8 +187,5 @@ public class FileObjectImpl extends AbstractFileObject {
 		}
 	}
 
-	public void setParent(FileObject fileObject) {
-		this.parent = fileObject;
-	}
 
 }

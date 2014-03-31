@@ -50,6 +50,7 @@ public class VFS {
         addSchemaProvider(new HttpSchemaProvider());
         addSchemaProvider(new HttpsSchemaProvider());
         addSchemaProvider(new JBossVfsSchemaProvider());
+        addSchemaProvider(new FtpSchemaProvider());
     }
 
     /**
