@@ -61,6 +61,9 @@ public class UIComponentManagerImpl implements UIComponentManager {
 
     public boolean isHealth(String name) {
         UIComponent component = getUIComponent(name);
+        if (component == null) {
+            throw new RuntimeException("找不到UI组件包：" + name);
+        }
         if (component.isComputed()) {// 如果已经计算好，则直接返回
             return component.isHealth();
         } else {
@@ -108,11 +111,11 @@ public class UIComponentManagerImpl implements UIComponentManager {
         return null;
     }
 
-	public void removeUIComponents(UIComponents uiComponents) {
-		uiComponentList.removeAll(uiComponents.getComponents());
-		for (UIComponent component : uiComponents.getComponents()) {
-			uiMap.remove(component.getName());
-			healthyComponentList.remove(component);
-		}
-	}
+    public void removeUIComponents(UIComponents uiComponents) {
+        uiComponentList.removeAll(uiComponents.getComponents());
+        for (UIComponent component : uiComponents.getComponents()) {
+            uiMap.remove(component.getName());
+            healthyComponentList.remove(component);
+        }
+    }
 }
