@@ -27,7 +27,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -110,43 +109,22 @@ public class FileUtils {
 	}
 
 	public static void printInfo(FileObject fileObject) {
-		System.out.println("provider:" + fileObject.getSchemaProvider());
+		System.out.println("schemaProvider:" + fileObject.getSchemaProvider());
 		System.out.println("url:" + fileObject.getURL());
 		System.out.println("absolutePath:" + fileObject.getAbsolutePath());
 		System.out.println("path:" + fileObject.getPath());
 		System.out.println("fileName:" + fileObject.getFileName());
 		System.out.println("extName:" + fileObject.getExtName());
-		System.out.println("folder:" + fileObject.isFolder());
-		System.out.println("inPackage:" + fileObject.isInPackage());
-		System.out.println("exist:" + fileObject.isExist());
+		System.out.println("isFolder:" + fileObject.isFolder());
+		System.out.println("isInPackage:" + fileObject.isInPackage());
+		System.out.println("isExist:" + fileObject.isExist());
 		System.out.println("size:" + fileObject.getSize());
-		System.out.println("inputstream:" + fileObject.getInputStream());
 		System.out.println("lastModifiedTime:"
 				+ fileObject.getLastModifiedTime());
-
-		// InputStream is = fileObject.getInputStream();
-		// System.out.println("inputsteam:" + is);
-		// if (is != null) {
-		// try {
-		// is.close();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		// }
-
-		OutputStream os = fileObject.getOutputStream();
-		System.out.println("outputsteam:" + os);
-		// if (is != null) {
-		// try {
-		// os.close();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		// }
-
-		System.out.println("children:" + fileObject.getChildren());
 		System.out.println("parent:" + fileObject.getParent());
-		System.out.println("------------------");
+		System.out.println("inputStream:" + fileObject.getInputStream());
+		System.out.println("outputStream:" + fileObject.getOutputStream());
+		System.out.println("---------------------------------------------");
 	}
 
 	public static void printFileObject(FileObject fileObject) {
