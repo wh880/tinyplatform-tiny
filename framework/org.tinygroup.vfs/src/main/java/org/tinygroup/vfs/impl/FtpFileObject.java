@@ -271,5 +271,4 @@ public class FtpFileObject extends URLFileObject {
 			return str;
 		}
 	}
-
 }

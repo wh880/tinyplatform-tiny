@@ -127,7 +127,8 @@ public class FileUtils {
 		System.out.println("---------------------------------------------");
 	}
 
-	public static void printFileObject(FileObject fileObject) {
+	public static void printFileObject(FileObject fileObject)
+			throws IOException {
 		printInfo(fileObject);
 		if (fileObject.isFolder() && fileObject.getChildren() != null) {
 			List<FileObject> children = fileObject.getChildren();
