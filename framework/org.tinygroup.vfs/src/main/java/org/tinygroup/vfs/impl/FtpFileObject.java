@@ -149,20 +149,12 @@ public class FtpFileObject extends AbstractFileObject {
         return ftpFile.getSize();
     }
 
-    public InputStream getInputStream() {
-        try {
-            return ftpClient.retrieveFileStream(ftpFile.getName());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public InputStream getInputStream() throws IOException {
+        return ftpClient.retrieveFileStream(ftpFile.getName());
     }
 
-    public OutputStream getOutputStream() {
-        try {
-            return ftpClient.storeFileStream(ftpFile.getName());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public OutputStream getOutputStream() throws IOException {
+        return ftpClient.storeFileStream(ftpFile.getName());
     }
 
 

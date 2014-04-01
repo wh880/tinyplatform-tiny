@@ -119,25 +119,15 @@ public abstract class URLFileObject extends AbstractFileObject {
         return true;
     }
 
-    public InputStream getInputStream() {
-        InputStream stream = null;
-        try {
-            stream = url.openStream();
-        } catch (IOException e) {
-            stream = null;
-        }
-        return stream;
+    public InputStream getInputStream() throws IOException {
+        return url.openStream();
     }
 
-    public OutputStream getOutputStream() {
-        try {
-            URLConnection connection = url.openConnection();
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-            return connection.getOutputStream();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public OutputStream getOutputStream() throws IOException {
+        URLConnection connection = url.openConnection();
+        connection.setDoOutput(true);
+        connection.setDoInput(true);
+        return connection.getOutputStream();
     }
 
 

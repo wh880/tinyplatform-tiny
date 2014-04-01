@@ -23,6 +23,7 @@
  */
 package org.tinygroup.vfs;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -52,9 +53,9 @@ public interface FileObject {
 
     long getSize();// 返回文件大小
 
-    InputStream getInputStream();// 返回输入流
+    InputStream getInputStream() throws IOException;// 返回输入流
 
-    OutputStream getOutputStream();// 返回输出流
+    OutputStream getOutputStream() throws IOException;// 返回输出流
 
     FileObject getParent();// 返回上级文件
 

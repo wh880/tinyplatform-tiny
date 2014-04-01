@@ -23,6 +23,17 @@
  */
 package org.tinygroup.weblayer.listener;
 
+import org.tinygroup.commons.tools.Assert;
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.commons.tools.Enumerator;
+import org.tinygroup.fileresolver.FullContextFileRepository;
+import org.tinygroup.vfs.FileObject;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.Servlet;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,177 +41,168 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
-import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.commons.tools.Enumerator;
-import org.tinygroup.fileresolver.FullContextFileRepository;
-import org.tinygroup.vfs.FileObject;
-
 /**
  * tiny框架 ServletContext实现
- * @author renhui
  *
+ * @author renhui
  */
 public class TinyServletContext implements ServletContext {
-	
+
     private ServletContext originalContext;
-    
+
     private FullContextFileRepository fullContextFileRepository;
 
-    private Map<String,String> parameters=CollectionUtil.createHashMap();
-    
-	public TinyServletContext(ServletContext servletContext){
-		Assert.assertNotNull(servletContext, "servletContext must not null");
-		this.originalContext=servletContext;
-	}
-	
-	public String getContextPath() {
-		return originalContext.getContextPath();
-	}
+    private Map<String, String> parameters = CollectionUtil.createHashMap();
 
-	public ServletContext getContext(String uripath) {
-		return originalContext.getContext(uripath);
-	}
+    public TinyServletContext(ServletContext servletContext) {
+        Assert.assertNotNull(servletContext, "servletContext must not null");
+        this.originalContext = servletContext;
+    }
 
-	public int getMajorVersion() {
-		return originalContext.getMajorVersion();
-	}
+    public String getContextPath() {
+        return originalContext.getContextPath();
+    }
 
-	public int getMinorVersion() {
-		return originalContext.getMinorVersion();
-	}
+    public ServletContext getContext(String uripath) {
+        return originalContext.getContext(uripath);
+    }
 
-	public String getMimeType(String file) {
-		return originalContext.getMimeType(file);
-	}
+    public int getMajorVersion() {
+        return originalContext.getMajorVersion();
+    }
 
-	public Set getResourcePaths(String path) {
-		return originalContext.getResourcePaths(path);
-	}
+    public int getMinorVersion() {
+        return originalContext.getMinorVersion();
+    }
 
-	public URL getResource(String path) throws MalformedURLException {
-		
-		if(fullContextFileRepository!=null){
-			FileObject fileObject = fullContextFileRepository
-					.getFileObject(path);
-			if(fileObject != null && fileObject.isExist()){
-				return fileObject.getURL();
-			}
-		}
-		return originalContext.getResource(path);
-	}
+    public String getMimeType(String file) {
+        return originalContext.getMimeType(file);
+    }
 
-	public InputStream getResourceAsStream(String path) {
-		if(fullContextFileRepository!=null){
-			FileObject fileObject = fullContextFileRepository
-					.getFileObject(path);
-			if(fileObject != null && fileObject.isExist()){
-				return fileObject.getInputStream();
-			}
-		}
-		return originalContext.getResourceAsStream(path);
-	}
+    public Set getResourcePaths(String path) {
+        return originalContext.getResourcePaths(path);
+    }
 
-	public RequestDispatcher getRequestDispatcher(String path) {
-		return originalContext.getRequestDispatcher(path);
-	}
+    public URL getResource(String path) throws MalformedURLException {
 
-	public RequestDispatcher getNamedDispatcher(String name) {
-		return originalContext.getNamedDispatcher(name);
-	}
+        if (fullContextFileRepository != null) {
+            FileObject fileObject = fullContextFileRepository.getFileObject(path);
+            if (fileObject != null && fileObject.isExist()) {
+                return fileObject.getURL();
+            }
+        }
+        return originalContext.getResource(path);
+    }
+
+    public InputStream getResourceAsStream(String path) {
+        if (fullContextFileRepository != null) {
+            FileObject fileObject = fullContextFileRepository.getFileObject(path);
+            if (fileObject != null && fileObject.isExist()) {
+                try {
+                    return fileObject.getInputStream();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return originalContext.getResourceAsStream(path);
+    }
+
+    public RequestDispatcher getRequestDispatcher(String path) {
+        return originalContext.getRequestDispatcher(path);
+    }
+
+    public RequestDispatcher getNamedDispatcher(String name) {
+        return originalContext.getNamedDispatcher(name);
+    }
+
     @Deprecated
-	public Servlet getServlet(String name) throws ServletException {
-		return originalContext.getServlet(name);
-	}
+    public Servlet getServlet(String name) throws ServletException {
+        return originalContext.getServlet(name);
+    }
 
-	@Deprecated
-	public Enumeration getServlets() {
-		return originalContext.getServlets();
-	}
-
-	public Enumeration getServletNames() {
-		return originalContext.getServletNames();
-	}
-
-	public void log(String msg) {
-         originalContext.log(msg);
-	}
     @Deprecated
-	public void log(Exception exception, String msg) {
-		originalContext.log(exception, msg);
+    public Enumeration getServlets() {
+        return originalContext.getServlets();
+    }
 
-	}
+    public Enumeration getServletNames() {
+        return originalContext.getServletNames();
+    }
 
-	public void log(String message, Throwable throwable) {
-		originalContext.log(message, throwable);
+    public void log(String msg) {
+        originalContext.log(msg);
+    }
 
-	}
+    @Deprecated
+    public void log(Exception exception, String msg) {
+        originalContext.log(exception, msg);
 
-	public String getRealPath(String path) {
-		if(fullContextFileRepository!=null){
-			FileObject fileObject = fullContextFileRepository
-					.getFileObject(path);
-			if(fileObject != null && fileObject.isExist()){
-				return fileObject.getAbsolutePath();
-			}
-		}
-	    return originalContext.getRealPath(path);
-	}
+    }
 
-	public String getServerInfo() {
-		return originalContext.getServerInfo();
-	}
+    public void log(String message, Throwable throwable) {
+        originalContext.log(message, throwable);
 
-	public String getInitParameter(String name) {
-		String value= parameters.get(name);
-		if(value==null){
-			value= originalContext.getInitParameter(name);
-		}
-		return value;
-	}
+    }
 
-	public Enumeration getInitParameterNames() {
-		Enumeration enumeration=originalContext.getInitParameterNames();
-		Set<String> parameterSet=parameters.keySet();
-		while (enumeration.hasMoreElements()) {
-			String name = (String) enumeration.nextElement();
-			parameterSet.add(name);
-		}
-		return new Enumerator(parameterSet);
-	}
+    public String getRealPath(String path) {
+        if (fullContextFileRepository != null) {
+            FileObject fileObject = fullContextFileRepository.getFileObject(path);
+            if (fileObject != null && fileObject.isExist()) {
+                return fileObject.getAbsolutePath();
+            }
+        }
+        return originalContext.getRealPath(path);
+    }
 
-	public Object getAttribute(String name) {
-		return originalContext.getAttribute(name);
-	}
+    public String getServerInfo() {
+        return originalContext.getServerInfo();
+    }
 
-	public Enumeration getAttributeNames() {
-		return originalContext.getAttributeNames();
-	}
+    public String getInitParameter(String name) {
+        String value = parameters.get(name);
+        if (value == null) {
+            value = originalContext.getInitParameter(name);
+        }
+        return value;
+    }
 
-	public void setAttribute(String name, Object object) {
-		originalContext.setAttribute(name, object);
-	}
+    public Enumeration getInitParameterNames() {
+        Enumeration enumeration = originalContext.getInitParameterNames();
+        Set<String> parameterSet = parameters.keySet();
+        while (enumeration.hasMoreElements()) {
+            String name = (String) enumeration.nextElement();
+            parameterSet.add(name);
+        }
+        return new Enumerator(parameterSet);
+    }
 
-	public void removeAttribute(String name) {
-		originalContext.removeAttribute(name);
-	}
+    public Object getAttribute(String name) {
+        return originalContext.getAttribute(name);
+    }
 
-	public String getServletContextName() {
-		return originalContext.getServletContextName();
-	}
+    public Enumeration getAttributeNames() {
+        return originalContext.getAttributeNames();
+    }
 
-	public void setInitParameter(String name,String value){
-		parameters.put(name, value);
-	}
+    public void setAttribute(String name, Object object) {
+        originalContext.setAttribute(name, object);
+    }
 
-	public void setFullContextFileRepository(
-			FullContextFileRepository fullContextFileRepository) {
-		this.fullContextFileRepository = fullContextFileRepository;
-	}
-	
+    public void removeAttribute(String name) {
+        originalContext.removeAttribute(name);
+    }
+
+    public String getServletContextName() {
+        return originalContext.getServletContextName();
+    }
+
+    public void setInitParameter(String name, String value) {
+        parameters.put(name, value);
+    }
+
+    public void setFullContextFileRepository(FullContextFileRepository fullContextFileRepository) {
+        this.fullContextFileRepository = fullContextFileRepository;
+    }
+
 }

@@ -129,7 +129,7 @@ public class ZipFileObject extends AbstractFileObject {
         return 0;
     }
 
-    public InputStream getInputStream() {
+    public InputStream getInputStream() throws IOException {
         try {
             if (zipEntry != null) {
                 if (cacheFile == null || !cacheFile.exists() || cacheFile.length() != this.getSize()) {
@@ -157,11 +157,10 @@ public class ZipFileObject extends AbstractFileObject {
             if (file.exists() && file.isFile()) {
                 return new BufferedInputStream(new ZipInputStream(new FileInputStream(file)));
             } else {
-                throw new RuntimeException(file.getAbsolutePath() + "不存在，或不是文件。");
+                throw new IOException(file.getAbsolutePath() + "不存在，或不是文件。");
             }
         } catch (Exception e) {
-            throw new RuntimeException(file.getAbsolutePath() + "获取FileInputStream出错，原因" + e);
-        } finally {
+            throw new IOException(file.getAbsolutePath() + "获取FileInputStream出错，原因" + e);
         }
     }
 
@@ -260,13 +259,8 @@ public class ZipFileObject extends AbstractFileObject {
         }
     }
 
-    public OutputStream getOutputStream() {
-        try {
-            return new BufferedOutputStream(new ZipOutputStream(new FileOutputStream(file)));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    public OutputStream getOutputStream() throws FileNotFoundException {
+        return new BufferedOutputStream(new ZipOutputStream(new FileOutputStream(file)));
     }
-
-
 }
+

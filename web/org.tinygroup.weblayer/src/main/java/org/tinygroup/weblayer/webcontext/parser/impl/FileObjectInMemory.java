@@ -67,12 +67,8 @@ public class FileObjectInMemory extends AbstractFileObject implements ItemFileOb
         return fileItem.getSize();
     }
 
-    public InputStream getInputStream() {
-        try {
-            return fileItem.getInputStream();
-        } catch (IOException e) {
-            throw new RuntimeException("获取上传文件输入流出错", e);
-        }
+    public InputStream getInputStream() throws IOException {
+        return fileItem.getInputStream();
     }
 
     public boolean isFolder() {
@@ -101,12 +97,8 @@ public class FileObjectInMemory extends AbstractFileObject implements ItemFileOb
         return null;
     }
 
-    public OutputStream getOutputStream() {
-        try {
-            return fileItem.getOutputStream();
-        } catch (IOException e) {
-            throw new RuntimeException("获取上传文件输出流出错", e);
-        }
+    public OutputStream getOutputStream() throws IOException {
+        return fileItem.getOutputStream();
     }
 
     public FileItem getFileItem() {
