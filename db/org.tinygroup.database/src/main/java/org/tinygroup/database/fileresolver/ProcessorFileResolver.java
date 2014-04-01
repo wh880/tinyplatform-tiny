@@ -23,6 +23,7 @@
  */
 package org.tinygroup.database.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.processor.Processors;
 import org.tinygroup.database.util.DataBaseUtil;
@@ -32,48 +33,46 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
 
 public class ProcessorFileResolver extends AbstractFileProcessor {
-	private static final String PROCESSOR_EXTFILENAME = ".database.processor.xml";
+    private static final String PROCESSOR_EXTFILENAME = ".database.processor.xml";
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(PROCESSOR_EXTFILENAME);
-	}
+    public boolean isMatch(FileObject fileObject) {
+        return fileObject.getFileName().endsWith(PROCESSOR_EXTFILENAME);
+    }
 
-	public void process() {
-		logger.logMessage(LogLevel.INFO, "开始读取database.processor文件");
-		ProcessorManager processorManager = SpringUtil
-				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
-		XStream stream = XStreamFactory
-				.getXStream(DataBaseUtil.PROCESSOR_XSTREAM);
-		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "开始移除database.processor文件{0}",
-					fileObject.getAbsolutePath());
-			Processors processors = (Processors)caches.get(fileObject.getAbsolutePath());
-			if(processors!=null){
-				processorManager.removePocessors(processors);
-				caches.remove(fileObject.getAbsolutePath());
-			}
-			logger.logMessage(LogLevel.INFO, "移除database.processor文件{0}完毕",
-					fileObject.getAbsolutePath());
-		}
-		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "开始读取database.processor文件{0}",
-					fileObject.getAbsolutePath());
-			Processors oldProcessors = (Processors)caches.get(fileObject.getAbsolutePath());
-			if(oldProcessors!=null){
-				processorManager.removePocessors(oldProcessors);
-			}	
-			Processors processors = (Processors) stream.fromXML(fileObject
-					.getInputStream());
-			processorManager.addPocessors(processors);
-			caches.put(fileObject.getAbsolutePath(), processors);
-			logger.logMessage(LogLevel.INFO, "读取database.processor文件{0}完毕",
-					fileObject.getAbsolutePath());
-		}
-		logger.logMessage(LogLevel.INFO, "database.processor文件读取完毕");
+    public void process() {
+        logger.logMessage(LogLevel.INFO, "开始读取database.processor文件");
+        ProcessorManager processorManager = SpringUtil.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+        XStream stream = XStreamFactory.getXStream(DataBaseUtil.PROCESSOR_XSTREAM);
+        for (FileObject fileObject : deleteList) {
+            logger.logMessage(LogLevel.INFO, "开始移除database.processor文件{0}", fileObject.getAbsolutePath());
+            Processors processors = (Processors) caches.get(fileObject.getAbsolutePath());
+            if (processors != null) {
+                processorManager.removePocessors(processors);
+                caches.remove(fileObject.getAbsolutePath());
+            }
+            logger.logMessage(LogLevel.INFO, "移除database.processor文件{0}完毕", fileObject.getAbsolutePath());
+        }
+        for (FileObject fileObject : changeList) {
+            logger.logMessage(LogLevel.INFO, "开始读取database.processor文件{0}", fileObject.getAbsolutePath());
+            Processors oldProcessors = (Processors) caches.get(fileObject.getAbsolutePath());
+            if (oldProcessors != null) {
+                processorManager.removePocessors(oldProcessors);
+            }
+            Processors processors = null;
+            try {
+                processors = (Processors) stream.fromXML(fileObject.getInputStream());
+                processorManager.addPocessors(processors);
+                caches.put(fileObject.getAbsolutePath(), processors);
+                logger.logMessage(LogLevel.INFO, "读取database.processor文件{0}完毕", fileObject.getAbsolutePath());
+            } catch (IOException e) {
+                logger.errorMessage("读取database.processor文件{0}错误", e, fileObject.getAbsolutePath());
+            }
+        }
+        logger.logMessage(LogLevel.INFO, "database.processor文件读取完毕");
 
-	}
+    }
 
 }

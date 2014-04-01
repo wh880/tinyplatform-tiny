@@ -23,9 +23,7 @@
  */
 package org.tinygroup.service.config.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -38,72 +36,73 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DefaultXmlConfigServiceLoader extends XmlConfigServiceLoader {
-	private static final String SERVICE_FILE_EXTENSION = ".service.xml";
-	private static Logger logger = LoggerFactory
-			.getLogger(DefaultXmlConfigServiceLoader.class);
-	private String path;
-	private List<ServiceComponents> list = new ArrayList<ServiceComponents>();
+    private static final String SERVICE_FILE_EXTENSION = ".service.xml";
+    private static Logger logger = LoggerFactory.getLogger(DefaultXmlConfigServiceLoader.class);
+    private String path;
+    private List<ServiceComponents> list = new ArrayList<ServiceComponents>();
 
-	
-	protected List<ServiceComponents> getServiceComponents() {
-		load();
-		return list;
-	}
 
-	public void setConfigPath(String path) {
-		this.path = path;
-	}
+    protected List<ServiceComponents> getServiceComponents() {
+        load();
+        return list;
+    }
 
-	private void load() {
-		logger.logMessage(LogLevel.DEBUG, "开始扫描Serivce文件");
-		FileObject file = VFS.resolveFile(path);
-		load(file);
+    public void setConfigPath(String path) {
+        this.path = path;
+    }
 
-		logger.logMessage(LogLevel.DEBUG, "Serivce文件扫描结束");
-	}
+    private void load() {
+        logger.logMessage(LogLevel.DEBUG, "开始扫描Serivce文件");
+        FileObject file = VFS.resolveFile(path);
+        load(file);
 
-	private void load(FileObject file) {
-		if (file.isFolder()) {
-			loadDir(file);
-		} else {
-			loadFile(file);
-		}
-	}
+        logger.logMessage(LogLevel.DEBUG, "Serivce文件扫描结束");
+    }
 
-	private void loadFile(FileObject file) {
-		logger.logMessage(LogLevel.DEBUG, "开始扫描文件{0}", file.getAbsolutePath());
-		if (file.getFileName().endsWith(SERVICE_FILE_EXTENSION)) {
-			XStream xStream = XStreamFactory
-					.getXStream(Service.SERVICE_XSTREAM_PACKAGENAME);
-			ServiceComponents components = null;
-			components = (ServiceComponents) xStream.fromXML(file
-					.getInputStream());
-			list.add(components);
-			logger.logMessage(LogLevel.DEBUG, "添加ServiceComponents");
-		}
+    private void load(FileObject file) {
+        if (file.isFolder()) {
+            loadDir(file);
+        } else {
+            loadFile(file);
+        }
+    }
 
-		logger.logMessage(LogLevel.DEBUG, "扫描文件{0}结束", file.getAbsolutePath());
-	}
+    private void loadFile(FileObject file) {
+        logger.logMessage(LogLevel.DEBUG, "开始扫描文件{0}", file.getAbsolutePath());
+        if (file.getFileName().endsWith(SERVICE_FILE_EXTENSION)) {
+            XStream xStream = XStreamFactory.getXStream(Service.SERVICE_XSTREAM_PACKAGENAME);
+            ServiceComponents components = null;
+            try {
+                components = (ServiceComponents) xStream.fromXML(file.getInputStream());
+                list.add(components);
+                logger.logMessage(LogLevel.DEBUG, "扫描文件{0}成功", file.getAbsolutePath());
+            } catch (IOException e) {
+                logger.errorMessage("扫描文件{0}失败", e, file.getAbsolutePath());
+            }
+        }
 
-	private void loadDir(FileObject file) {
-		logger.logMessage(LogLevel.DEBUG, "开始扫描目录{0}", file.getAbsolutePath());
-		for (FileObject o : file.getChildren()) {
-			load(o);
-		}
-		logger.logMessage(LogLevel.DEBUG, "扫描目录{0}结束", file.getAbsolutePath());
-	}
+        logger.logMessage(LogLevel.DEBUG, "扫描文件{0}结束", file.getAbsolutePath());
+    }
 
-	protected Object getServiceInstance(ServiceComponent component)
-			throws Exception {
-		if (component.getBean() == null
-				|| "".equals(component.getBean().trim())) {
-			Class<?> clazz = Class.forName(component.getType());
-			return SpringUtil.getBean(clazz);
-		}
-		return SpringUtil.getBean(component.getBean());
-	}
+    private void loadDir(FileObject file) {
+        logger.logMessage(LogLevel.DEBUG, "开始扫描目录{0}", file.getAbsolutePath());
+        for (FileObject o : file.getChildren()) {
+            load(o);
+        }
+        logger.logMessage(LogLevel.DEBUG, "扫描目录{0}结束", file.getAbsolutePath());
+    }
+
+    protected Object getServiceInstance(ServiceComponent component) throws Exception {
+        if (component.getBean() == null || "".equals(component.getBean().trim())) {
+            Class<?> clazz = Class.forName(component.getType());
+            return SpringUtil.getBean(clazz);
+        }
+        return SpringUtil.getBean(component.getBean());
+    }
 
 }

@@ -23,6 +23,7 @@
  */
 package org.tinygroup.annotation.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.annotation.AnnotationExcuteManager;
 import org.tinygroup.annotation.config.AnnotationClassMatchers;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
@@ -31,55 +32,52 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
 
 /**
  * 注解文件搜索器
- * 
+ *
  * @author renhui
- * 
  */
 public class AnnotationFileProcessor extends AbstractFileProcessor {
 
-	private static final String ANNOTATION_EXT_FILENAME = ".annotation.xml";
+    private static final String ANNOTATION_EXT_FILENAME = ".annotation.xml";
 
-	public boolean isMatch(FileObject fileObject) {
+    public boolean isMatch(FileObject fileObject) {
 
-		return fileObject.getFileName().endsWith(ANNOTATION_EXT_FILENAME);
-	}
+        return fileObject.getFileName().endsWith(ANNOTATION_EXT_FILENAME);
+    }
 
-	public void process() {
+    public void process() {
 
-		AnnotationExcuteManager manager = SpringUtil
-				.getBean(AnnotationExcuteManager.ANNOTATION_MANAGER_BEAN_NAME);
-		XStream stream = XStreamFactory
-				.getXStream(AnnotationExcuteManager.XSTEAM_PACKAGE_NAME);
-		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除注解配置文件[{0}]",
-					fileObject.getAbsolutePath());
-			AnnotationClassMatchers annotationClassMatchers = (AnnotationClassMatchers) caches.get(fileObject.getAbsolutePath());
-			if(annotationClassMatchers!=null){
-				manager.removeAnnotationClassMatchers(annotationClassMatchers);
-				caches.remove(fileObject.getAbsolutePath());
-			}
-			logger.logMessage(LogLevel.INFO, "移除注解配置文件[{0}]结束",
-					fileObject.getAbsolutePath());
-		}
-		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在加载注解配置文件[{0}]",
-					fileObject.getAbsolutePath());
-			AnnotationClassMatchers oldMatchers = (AnnotationClassMatchers)caches.get(fileObject.getAbsolutePath());
-			if(oldMatchers!=null){
-				manager.removeAnnotationClassMatchers(oldMatchers);
-			}
-			AnnotationClassMatchers matchers = (AnnotationClassMatchers) stream
-					.fromXML(fileObject.getInputStream());
-			manager.addAnnotationClassMatchers(matchers);
-			caches.put(fileObject.getAbsolutePath(), matchers);
-			logger.logMessage(LogLevel.INFO, "加载注解配置文件[{0}]结束",
-					fileObject.getAbsolutePath());
-		}
+        AnnotationExcuteManager manager = SpringUtil.getBean(AnnotationExcuteManager.ANNOTATION_MANAGER_BEAN_NAME);
+        XStream stream = XStreamFactory.getXStream(AnnotationExcuteManager.XSTEAM_PACKAGE_NAME);
+        for (FileObject fileObject : deleteList) {
+            logger.logMessage(LogLevel.INFO, "正在移除注解配置文件[{0}]", fileObject.getAbsolutePath());
+            AnnotationClassMatchers annotationClassMatchers = (AnnotationClassMatchers) caches.get(fileObject.getAbsolutePath());
+            if (annotationClassMatchers != null) {
+                manager.removeAnnotationClassMatchers(annotationClassMatchers);
+                caches.remove(fileObject.getAbsolutePath());
+            }
+            logger.logMessage(LogLevel.INFO, "移除注解配置文件[{0}]结束", fileObject.getAbsolutePath());
+        }
+        for (FileObject fileObject : changeList) {
+            logger.logMessage(LogLevel.INFO, "正在加载注解配置文件[{0}]", fileObject.getAbsolutePath());
+            AnnotationClassMatchers oldMatchers = (AnnotationClassMatchers) caches.get(fileObject.getAbsolutePath());
+            if (oldMatchers != null) {
+                manager.removeAnnotationClassMatchers(oldMatchers);
+            }
+            AnnotationClassMatchers matchers = null;
+            try {
+                matchers = (AnnotationClassMatchers) stream.fromXML(fileObject.getInputStream());
+                manager.addAnnotationClassMatchers(matchers);
+                caches.put(fileObject.getAbsolutePath(), matchers);
+                logger.logMessage(LogLevel.INFO, "加载注解配置文件[{0}]结束", fileObject.getAbsolutePath());
+            } catch (IOException e) {
+                logger.errorMessage("加载注解配置文件[{0}]错误", e, fileObject.getAbsolutePath());
+            }
+        }
 
-	}
+    }
 
 }

@@ -8,6 +8,8 @@ import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
+import java.io.IOException;
+
 /**
  * 放在工程目录中的插件加载器
  *
@@ -40,8 +42,13 @@ public class BundleFileProcessor extends AbstractFileProcessor {
     public void process(ClassLoader loader) {
         XStream stream = XStreamFactory.getXStream(BundleManager.BUNDLE_XSTREAM);
         for (FileObject fileObject : fileObjects) {
-            BundleDefine bundleDefine = (BundleDefine) stream.fromXML(fileObject.getInputStream());
-            bundleManager.add(bundleDefine);
+            BundleDefine bundleDefine = null;
+            try {
+                bundleDefine = (BundleDefine) stream.fromXML(fileObject.getInputStream());
+                bundleManager.add(bundleDefine);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

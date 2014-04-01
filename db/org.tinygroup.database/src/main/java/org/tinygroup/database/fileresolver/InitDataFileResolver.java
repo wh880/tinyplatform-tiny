@@ -23,6 +23,7 @@
  */
 package org.tinygroup.database.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.database.config.initdata.InitDatas;
 import org.tinygroup.database.initdata.InitDataProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
@@ -32,48 +33,46 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
 
 public class InitDataFileResolver extends AbstractFileProcessor {
-	private static final String INITDATA_EXTFILENAME = ".init.xml";
+    private static final String INITDATA_EXTFILENAME = ".init.xml";
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(INITDATA_EXTFILENAME);
-	}
+    public boolean isMatch(FileObject fileObject) {
+        return fileObject.getFileName().endsWith(INITDATA_EXTFILENAME);
+    }
 
-	public void process() {
-		logger.logMessage(LogLevel.INFO, "开始处理表格初始化数据init文件");
-		InitDataProcessor initDataProcessor = SpringUtil
-				.getBean(DataBaseUtil.INITDATA_BEAN);
-		XStream stream = XStreamFactory
-				.getXStream(DataBaseUtil.INITDATA_XSTREAM);
-		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "开始读取表格初始化数据init文件{0}",
-					fileObject.getAbsolutePath().toString());
-			InitDatas initDatas = (InitDatas)caches.get(fileObject.getAbsolutePath());
-			if(initDatas!=null){
-				initDataProcessor.removeInitDatas(initDatas);
-				caches.remove(fileObject.getAbsolutePath());
-			}
-			logger.logMessage(LogLevel.INFO, "读取表格初始化数据init文件{0}完毕",
-					fileObject.getAbsolutePath().toString());
-		}
-		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "开始读取表格初始化数据init文件{0}",
-					fileObject.getAbsolutePath().toString());
-			InitDatas oldInitDatas=(InitDatas)caches.get(fileObject.getAbsolutePath());
-			if(oldInitDatas!=null){
-				initDataProcessor.removeInitDatas(oldInitDatas);
-			}
-			InitDatas initDatas = (InitDatas) stream.fromXML(fileObject
-					.getInputStream());
-			initDataProcessor.addInitDatas(initDatas);
-			caches.put(fileObject.getAbsolutePath(), initDatas);
-			logger.logMessage(LogLevel.INFO, "读取表格初始化数据init文件{0}完毕",
-					fileObject.getAbsolutePath().toString());
-		}
-		logger.logMessage(LogLevel.INFO, "处理表格初始化数据init文件读取完毕");
+    public void process() {
+        logger.logMessage(LogLevel.INFO, "开始处理表格初始化数据init文件");
+        InitDataProcessor initDataProcessor = SpringUtil.getBean(DataBaseUtil.INITDATA_BEAN);
+        XStream stream = XStreamFactory.getXStream(DataBaseUtil.INITDATA_XSTREAM);
+        for (FileObject fileObject : deleteList) {
+            logger.logMessage(LogLevel.INFO, "开始读取表格初始化数据init文件{0}", fileObject.getAbsolutePath().toString());
+            InitDatas initDatas = (InitDatas) caches.get(fileObject.getAbsolutePath());
+            if (initDatas != null) {
+                initDataProcessor.removeInitDatas(initDatas);
+                caches.remove(fileObject.getAbsolutePath());
+            }
+            logger.logMessage(LogLevel.INFO, "读取表格初始化数据init文件{0}完毕", fileObject.getAbsolutePath().toString());
+        }
+        for (FileObject fileObject : changeList) {
+            logger.logMessage(LogLevel.INFO, "开始读取表格初始化数据init文件{0}", fileObject.getAbsolutePath().toString());
+            InitDatas oldInitDatas = (InitDatas) caches.get(fileObject.getAbsolutePath());
+            if (oldInitDatas != null) {
+                initDataProcessor.removeInitDatas(oldInitDatas);
+            }
+            InitDatas initDatas = null;
+            try {
+                initDatas = (InitDatas) stream.fromXML(fileObject.getInputStream());
+                initDataProcessor.addInitDatas(initDatas);
+                caches.put(fileObject.getAbsolutePath(), initDatas);
+                logger.logMessage(LogLevel.INFO, "读取表格初始化数据init文件{0}完毕", fileObject.getAbsolutePath().toString());
+            } catch (IOException e) {
+                logger.errorMessage("读取表格初始化数据init文件{0}错误", e, fileObject.getAbsolutePath().toString());
+            }
+        }
+        logger.logMessage(LogLevel.INFO, "处理表格初始化数据init文件读取完毕");
 
-	}
+    }
 
 }

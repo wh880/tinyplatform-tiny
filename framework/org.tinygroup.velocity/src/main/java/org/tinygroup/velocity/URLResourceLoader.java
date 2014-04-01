@@ -23,10 +23,6 @@
  */
 package org.tinygroup.velocity;
 
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.Resource;
@@ -36,48 +32,53 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 原来的Velocity的资源加载器是用得相对路径，而Tiny用得是完整路径，所以自己实现之
- * 
+ *
  * @author luoguo
- * 
  */
 public class URLResourceLoader extends ResourceLoader {
-	private Map<String, Long> resourceModifiedTimeMap = new HashMap<String, Long>();
-	private FullContextFileRepository fullContextFileRepository;
+    private Map<String, Long> resourceModifiedTimeMap = new HashMap<String, Long>();
+    private FullContextFileRepository fullContextFileRepository;
 
-	
-	public void init(ExtendedProperties configuration) {
-		fullContextFileRepository = SpringUtil
-				.getBean("fullContextFileRepository");
-	}
 
-	
-	public InputStream getResourceStream(String source) {
-		FileObject fileObject = fullContextFileRepository.getFileObject(source);
-		if (fileObject == null || !fileObject.isExist()) {
-			throw new ResourceNotFoundException(source);
-		}
-		return fileObject.getInputStream();
-	}
+    public void init(ExtendedProperties configuration) {
+        fullContextFileRepository = SpringUtil.getBean("fullContextFileRepository");
+    }
 
-	
-	public boolean isSourceModified(Resource resource) {
-		Long oldTime = resourceModifiedTimeMap.get(resource.getName());
-		if (oldTime == null || oldTime != getLastModified(resource)) {
-			return true;
-		}
-		long lastModifiedTime = VFS.resolveFile(resource.getName())
-				.getLastModifiedTime();
-		return oldTime == lastModifiedTime;
-	}
 
-	
-	public long getLastModified(Resource resource) {
-		long lastModifiedTime = VFS.resolveFile(resource.getName())
-				.getLastModifiedTime();
-		resourceModifiedTimeMap.put(resource.getName(), lastModifiedTime);
-		return lastModifiedTime;
-	}
+    public InputStream getResourceStream(String source) {
+        FileObject fileObject = fullContextFileRepository.getFileObject(source);
+        if (fileObject == null || !fileObject.isExist()) {
+            throw new ResourceNotFoundException(source);
+        }
+        try {
+            return fileObject.getInputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public boolean isSourceModified(Resource resource) {
+        Long oldTime = resourceModifiedTimeMap.get(resource.getName());
+        if (oldTime == null || oldTime != getLastModified(resource)) {
+            return true;
+        }
+        long lastModifiedTime = VFS.resolveFile(resource.getName()).getLastModifiedTime();
+        return oldTime == lastModifiedTime;
+    }
+
+
+    public long getLastModified(Resource resource) {
+        long lastModifiedTime = VFS.resolveFile(resource.getName()).getLastModifiedTime();
+        resourceModifiedTimeMap.put(resource.getName(), lastModifiedTime);
+        return lastModifiedTime;
+    }
 
 }

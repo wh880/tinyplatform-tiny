@@ -23,6 +23,7 @@
  */
 package org.tinygroup.database.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.database.config.customsql.CustomSqls;
 import org.tinygroup.database.customesql.CustomSqlProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
@@ -32,46 +33,44 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
 
 public class CustomSqlFileResolver extends AbstractFileProcessor {
 
-	private static final String CUSTOMSQL_EXTFILENAME = ".customsql.xml";
+    private static final String CUSTOMSQL_EXTFILENAME = ".customsql.xml";
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(CUSTOMSQL_EXTFILENAME);
-	}
+    public boolean isMatch(FileObject fileObject) {
+        return fileObject.getFileName().endsWith(CUSTOMSQL_EXTFILENAME);
+    }
 
-	public void process() {
-		CustomSqlProcessor customSqlProcessor = SpringUtil
-				.getBean(DataBaseUtil.CUSTOMESQL_BEAN);
-		XStream stream = XStreamFactory
-				.getXStream(DataBaseUtil.DATABASE_XSTREAM);
-		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除customsql文件[{0}]",
-					fileObject.getAbsolutePath());
-			CustomSqls customsqls = (CustomSqls)caches.get(fileObject.getAbsolutePath());
-			if(customsqls!=null){
-				customSqlProcessor.removeCustomSqls(customsqls);
-				caches.remove(fileObject.getAbsolutePath());
-			}
-			logger.logMessage(LogLevel.INFO, "移除customsql文件[{0}]结束",
-					fileObject.getAbsolutePath());
-		}
-		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在加载customsql文件[{0}]",
-					fileObject.getAbsolutePath());
-			CustomSqls customsqls = (CustomSqls) stream.fromXML(fileObject
-					.getInputStream());
-			CustomSqls oldCustomsqls = (CustomSqls)caches.get(fileObject.getAbsolutePath());
-			if(oldCustomsqls!=null){
-				customSqlProcessor.removeCustomSqls(oldCustomsqls);
-			}
-			customSqlProcessor.addCustomSqls(customsqls);
-			caches.put(fileObject.getAbsolutePath(), customsqls);
-			logger.logMessage(LogLevel.INFO, "加载customsql文件[{0}]结束",
-					fileObject.getAbsolutePath());
-		}
-	}
+    public void process() {
+        CustomSqlProcessor customSqlProcessor = SpringUtil.getBean(DataBaseUtil.CUSTOMESQL_BEAN);
+        XStream stream = XStreamFactory.getXStream(DataBaseUtil.DATABASE_XSTREAM);
+        for (FileObject fileObject : deleteList) {
+            logger.logMessage(LogLevel.INFO, "正在移除customsql文件[{0}]", fileObject.getAbsolutePath());
+            CustomSqls customsqls = (CustomSqls) caches.get(fileObject.getAbsolutePath());
+            if (customsqls != null) {
+                customSqlProcessor.removeCustomSqls(customsqls);
+                caches.remove(fileObject.getAbsolutePath());
+            }
+            logger.logMessage(LogLevel.INFO, "移除customsql文件[{0}]结束", fileObject.getAbsolutePath());
+        }
+        for (FileObject fileObject : changeList) {
+            logger.logMessage(LogLevel.INFO, "正在加载customsql文件[{0}]", fileObject.getAbsolutePath());
+            CustomSqls customsqls = null;
+            try {
+                customsqls = (CustomSqls) stream.fromXML(fileObject.getInputStream());
+                CustomSqls oldCustomsqls = (CustomSqls) caches.get(fileObject.getAbsolutePath());
+                if (oldCustomsqls != null) {
+                    customSqlProcessor.removeCustomSqls(oldCustomsqls);
+                }
+                customSqlProcessor.addCustomSqls(customsqls);
+                caches.put(fileObject.getAbsolutePath(), customsqls);
+                logger.logMessage(LogLevel.INFO, "加载customsql文件[{0}]结束", fileObject.getAbsolutePath());
+            } catch (IOException e) {
+                logger.errorMessage("加载customsql文件[{0}]错误", e, fileObject.getAbsolutePath());
+            }
+        }
+    }
 
 }

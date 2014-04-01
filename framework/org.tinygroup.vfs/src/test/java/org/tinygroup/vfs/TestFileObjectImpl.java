@@ -25,6 +25,8 @@ package org.tinygroup.vfs;
 
 import junit.framework.TestCase;
 
+import java.io.IOException;
+
 /**
  * fileObject的测试用例
  * @author renhui
@@ -32,7 +34,7 @@ import junit.framework.TestCase;
  */
 public class TestFileObjectImpl extends TestCase {
 	
-	public void testFileObject() {
+	public void testFileObject() throws IOException {
 		String path=getClass().getResource("/test/0.html").getFile();
 		FileObject fileObject= VFS.resolveFile(path);
 		FileUtils.printFileObject(fileObject);

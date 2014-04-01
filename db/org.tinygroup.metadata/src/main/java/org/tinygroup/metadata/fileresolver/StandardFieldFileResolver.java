@@ -23,6 +23,7 @@
  */
 package org.tinygroup.metadata.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.metadata.config.stdfield.StandardFields;
@@ -32,46 +33,44 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
 
 public class StandardFieldFileResolver extends AbstractFileProcessor {
 
-	private static final String STANDARDFIELD_EXTFILENAME = ".stdfield.xml";
+    private static final String STANDARDFIELD_EXTFILENAME = ".stdfield.xml";
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(STANDARDFIELD_EXTFILENAME);
-	}
+    public boolean isMatch(FileObject fileObject) {
+        return fileObject.getFileName().endsWith(STANDARDFIELD_EXTFILENAME);
+    }
 
-	public void process() {
-		StandardFieldProcessor standardFieldProcessor = SpringUtil
-				.getBean(MetadataUtil.STDFIELDPROCESSOR_BEAN);
-		XStream stream = XStreamFactory
-				.getXStream(MetadataUtil.METADATA_XSTREAM);
-		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除stdfield文件[{0}]",
-					fileObject.getAbsolutePath());
-			StandardFields standardFields = (StandardFields)caches.get(fileObject.getAbsolutePath());
-			if(standardFields!=null){
-				standardFieldProcessor.removeStandardFields(standardFields);
-				caches.remove(fileObject.getAbsolutePath());
-			}
-			logger.logMessage(LogLevel.INFO, "移除stdfield文件[{0}]结束",
-					fileObject.getAbsolutePath());
-		}
-		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在加载stdfield文件[{0}]",
-					fileObject.getAbsolutePath());
-			StandardFields oldStandardFields = (StandardFields)caches.get(fileObject.getAbsolutePath());
-			if(oldStandardFields!=null){
-				standardFieldProcessor.removeStandardFields(oldStandardFields);
-			}
-			StandardFields standardFields = (StandardFields) stream
-					.fromXML(fileObject.getInputStream());
-			standardFieldProcessor.addStandardFields(standardFields);
-			caches.put(fileObject.getAbsolutePath(), standardFields);
-			logger.logMessage(LogLevel.INFO, "加载stdfield文件[{0}]结束",
-					fileObject.getAbsolutePath());
-		}
-	}
+    public void process() {
+        StandardFieldProcessor standardFieldProcessor = SpringUtil.getBean(MetadataUtil.STDFIELDPROCESSOR_BEAN);
+        XStream stream = XStreamFactory.getXStream(MetadataUtil.METADATA_XSTREAM);
+        for (FileObject fileObject : deleteList) {
+            logger.logMessage(LogLevel.INFO, "正在移除stdfield文件[{0}]", fileObject.getAbsolutePath());
+            StandardFields standardFields = (StandardFields) caches.get(fileObject.getAbsolutePath());
+            if (standardFields != null) {
+                standardFieldProcessor.removeStandardFields(standardFields);
+                caches.remove(fileObject.getAbsolutePath());
+            }
+            logger.logMessage(LogLevel.INFO, "移除stdfield文件[{0}]结束", fileObject.getAbsolutePath());
+        }
+        for (FileObject fileObject : changeList) {
+            logger.logMessage(LogLevel.INFO, "正在加载stdfield文件[{0}]", fileObject.getAbsolutePath());
+            StandardFields oldStandardFields = (StandardFields) caches.get(fileObject.getAbsolutePath());
+            if (oldStandardFields != null) {
+                standardFieldProcessor.removeStandardFields(oldStandardFields);
+            }
+            StandardFields standardFields = null;
+            try {
+                standardFields = (StandardFields) stream.fromXML(fileObject.getInputStream());
+                standardFieldProcessor.addStandardFields(standardFields);
+                caches.put(fileObject.getAbsolutePath(), standardFields);
+                logger.logMessage(LogLevel.INFO, "加载stdfield文件[{0}]结束", fileObject.getAbsolutePath());
+            } catch (IOException e) {
+                logger.errorMessage("加载stdfield文件[{0}]错误", e, fileObject.getAbsolutePath());
+            }
+        }
+    }
 
 }

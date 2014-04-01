@@ -23,6 +23,7 @@
  */
 package org.tinygroup.database.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.database.config.procedure.Procedures;
 import org.tinygroup.database.procedure.ProcedureProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
@@ -32,45 +33,43 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
 
 public class ProcedureFileResolver extends AbstractFileProcessor {
-	private static final String PROCEDURE_EXTFILENAME = ".procedure.xml";
+    private static final String PROCEDURE_EXTFILENAME = ".procedure.xml";
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(PROCEDURE_EXTFILENAME);
-	}
+    public boolean isMatch(FileObject fileObject) {
+        return fileObject.getFileName().endsWith(PROCEDURE_EXTFILENAME);
+    }
 
-	public void process() {
-		ProcedureProcessor procedureProcessor = SpringUtil
-				.getBean(DataBaseUtil.PROCEDURE_BEAN);
-		XStream stream = XStreamFactory
-				.getXStream(DataBaseUtil.DATABASE_XSTREAM);
-		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除procedure文件[{0}]",
-					fileObject.getAbsolutePath());
-			Procedures procedures = (Procedures)caches.get(fileObject.getAbsolutePath());
-			if(procedures!=null){
-				procedureProcessor.removeProcedures(procedures);
-				caches.remove(fileObject.getAbsolutePath());
-			}
-			logger.logMessage(LogLevel.INFO, "移除procedure文件[{0}]结束",
-					fileObject.getAbsolutePath());
-		}
-		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在加载procedure文件[{0}]",
-					fileObject.getAbsolutePath());
-			Procedures oldProcedures = (Procedures)caches.get(fileObject.getAbsolutePath());
-			if(oldProcedures!=null){
-				procedureProcessor.removeProcedures(oldProcedures);
-			}	
-			Procedures procedures = (Procedures) stream.fromXML(fileObject
-					.getInputStream());
-			procedureProcessor.addProcedures(procedures);
-			caches.put(fileObject.getAbsolutePath(), procedures);
-			logger.logMessage(LogLevel.INFO, "加载procedure文件[{0}]结束",
-					fileObject.getAbsolutePath());
-		}
-	}
+    public void process() {
+        ProcedureProcessor procedureProcessor = SpringUtil.getBean(DataBaseUtil.PROCEDURE_BEAN);
+        XStream stream = XStreamFactory.getXStream(DataBaseUtil.DATABASE_XSTREAM);
+        for (FileObject fileObject : deleteList) {
+            logger.logMessage(LogLevel.INFO, "正在移除procedure文件[{0}]", fileObject.getAbsolutePath());
+            Procedures procedures = (Procedures) caches.get(fileObject.getAbsolutePath());
+            if (procedures != null) {
+                procedureProcessor.removeProcedures(procedures);
+                caches.remove(fileObject.getAbsolutePath());
+            }
+            logger.logMessage(LogLevel.INFO, "移除procedure文件[{0}]结束", fileObject.getAbsolutePath());
+        }
+        for (FileObject fileObject : changeList) {
+            logger.logMessage(LogLevel.INFO, "正在加载procedure文件[{0}]", fileObject.getAbsolutePath());
+            Procedures oldProcedures = (Procedures) caches.get(fileObject.getAbsolutePath());
+            if (oldProcedures != null) {
+                procedureProcessor.removeProcedures(oldProcedures);
+            }
+            Procedures procedures = null;
+            try {
+                procedures = (Procedures) stream.fromXML(fileObject.getInputStream());
+                procedureProcessor.addProcedures(procedures);
+                caches.put(fileObject.getAbsolutePath(), procedures);
+                logger.logMessage(LogLevel.INFO, "加载procedure文件[{0}]结束", fileObject.getAbsolutePath());
+            } catch (IOException e) {
+                logger.errorMessage("加载procedure文件[{0}]错误", e, fileObject.getAbsolutePath());
+            }
+        }
+    }
 
 }

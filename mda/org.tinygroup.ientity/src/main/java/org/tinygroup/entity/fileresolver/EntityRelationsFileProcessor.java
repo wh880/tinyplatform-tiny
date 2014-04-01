@@ -23,6 +23,7 @@
  */
 package org.tinygroup.entity.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.entity.EntityRelationsManager;
 import org.tinygroup.entity.relation.EntityRelations;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
@@ -31,56 +32,55 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
 
 /**
- * 
- * 功能说明:模型引用关系文件处理器 
-
+ * 功能说明:模型引用关系文件处理器
+ * <p/>
  * 开发人员: renhui <br>
  * 开发时间: 2013-10-25 <br>
  * <br>
  */
 public class EntityRelationsFileProcessor extends AbstractFileProcessor {
-	
-	private static final String ENTITY_RELATIONS_FILE_EXT_NAME=".entityrelations.xml";
 
-	
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(ENTITY_RELATIONS_FILE_EXT_NAME);
-	}
+    private static final String ENTITY_RELATIONS_FILE_EXT_NAME = ".entityrelations.xml";
 
-	public void process() {
-		
-		XStream xStream = XStreamFactory.getXStream("entities");
-		EntityRelationsManager manager=SpringUtil.getBean(EntityRelationsManager.MANAGER_BEAN_NAME);
-		for (FileObject fileObject  : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除EntityRelation描述文件：[{}]",
-					fileObject.getAbsolutePath());
-			EntityRelations entityRelations = (EntityRelations)caches.get(fileObject.getAbsolutePath());
-			if(entityRelations!=null){
-				manager.removeEntityRelations(entityRelations);
-				caches.remove(fileObject.getAbsolutePath());
-			}
-			logger.logMessage(LogLevel.INFO, "EntityRelation描述文件：[{}]移除成功。",
-					fileObject.getAbsolutePath());
-		}
-		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在加载EntityRelation描述文件：[{}]",
-					fileObject.getAbsolutePath());
-			EntityRelations oldRelations=(EntityRelations)caches.get(fileObject.getAbsolutePath());
-			if(oldRelations!=null){
-				manager.removeEntityRelations(oldRelations);
-			}
-			EntityRelations entityRelations = (EntityRelations) xStream
-					.fromXML(fileObject.getInputStream());
-			manager.addEntityRelations(entityRelations);
-			caches.put(fileObject.getAbsolutePath(), entityRelations);
-			logger.logMessage(LogLevel.INFO, "EntityRelation描述文件：[{}]加载成功。",
-						fileObject.getAbsolutePath());
-			
-		}
 
-	}
+    public boolean isMatch(FileObject fileObject) {
+        return fileObject.getFileName().endsWith(ENTITY_RELATIONS_FILE_EXT_NAME);
+    }
+
+    public void process() {
+
+        XStream xStream = XStreamFactory.getXStream("entities");
+        EntityRelationsManager manager = SpringUtil.getBean(EntityRelationsManager.MANAGER_BEAN_NAME);
+        for (FileObject fileObject : deleteList) {
+            logger.logMessage(LogLevel.INFO, "正在移除EntityRelation描述文件：[{}]", fileObject.getAbsolutePath());
+            EntityRelations entityRelations = (EntityRelations) caches.get(fileObject.getAbsolutePath());
+            if (entityRelations != null) {
+                manager.removeEntityRelations(entityRelations);
+                caches.remove(fileObject.getAbsolutePath());
+            }
+            logger.logMessage(LogLevel.INFO, "EntityRelation描述文件：[{}]移除成功。", fileObject.getAbsolutePath());
+        }
+        for (FileObject fileObject : changeList) {
+            logger.logMessage(LogLevel.INFO, "正在加载EntityRelation描述文件：[{}]", fileObject.getAbsolutePath());
+            EntityRelations oldRelations = (EntityRelations) caches.get(fileObject.getAbsolutePath());
+            if (oldRelations != null) {
+                manager.removeEntityRelations(oldRelations);
+            }
+            EntityRelations entityRelations = null;
+            try {
+                entityRelations = (EntityRelations) xStream.fromXML(fileObject.getInputStream());
+                manager.addEntityRelations(entityRelations);
+                caches.put(fileObject.getAbsolutePath(), entityRelations);
+                logger.logMessage(LogLevel.INFO, "EntityRelation描述文件：[{}]加载成功。", fileObject.getAbsolutePath());
+            } catch (IOException e) {
+                logger.errorMessage("EntityRelation描述文件：[{}]加载失败。", e, fileObject.getAbsolutePath());
+            }
+
+        }
+
+    }
 
 }

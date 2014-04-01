@@ -109,7 +109,7 @@ public class FileUtils {
 		}
 	}
 
-	public static void printInfo(FileObject fileObject) {
+	public static void printInfo(FileObject fileObject) throws IOException {
 		System.out.println("provider:" + fileObject.getSchemaProvider());
 		System.out.println("url:" + fileObject.getURL());
 		System.out.println("absolutePath:" + fileObject.getAbsolutePath());
@@ -149,7 +149,7 @@ public class FileUtils {
 		System.out.println("------------------");
 	}
 
-	public static void printFileObject(FileObject fileObject) {
+	public static void printFileObject(FileObject fileObject) throws IOException {
 		printInfo(fileObject);
 		if (fileObject.isFolder() && fileObject.getChildren() != null) {
 			List<FileObject> children = fileObject.getChildren();

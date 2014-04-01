@@ -23,6 +23,7 @@
  */
 package org.tinygroup.entity.engine.entity;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.table.TableProcessor;
 import org.tinygroup.entity.entitymodel.EntityModel;
@@ -34,45 +35,44 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
 
 public class EntityModelLoader implements ModelLoader {
-	private static Logger logger = LoggerFactory
-			.getLogger(EntityModelLoader.class);
-	public static int LoaderValue = 5;
-	private EntityModelToTable entityModelToTable;
+    private static Logger logger = LoggerFactory.getLogger(EntityModelLoader.class);
+    public static int LoaderValue = 5;
+    private EntityModelToTable entityModelToTable;
 
-	private TableProcessor tableProcessor;
+    private TableProcessor tableProcessor;
 
-	public String getExtFileName() {
-		return ".entity.xml";
-	}
+    public String getExtFileName() {
+        return ".entity.xml";
+    }
 
-	public Object loadModel(FileObject fileObject) {
-		logger.logMessage(LogLevel.INFO, "正在加载实体模型文件<{}>",
-				fileObject.getAbsolutePath());
-		XStream xstream = XStreamFactory.getXStream("entities");
-		EntityModel entityModel = (EntityModel) xstream.fromXML(fileObject
-				.getInputStream());
-		addTableWithModel(entityModel);
-		logger.logMessage(LogLevel.INFO, "实体模型文件<{}>加载完毕。",
-				fileObject.getAbsolutePath());
-		return entityModel;
-	}
+    public Object loadModel(FileObject fileObject) {
+        logger.logMessage(LogLevel.INFO, "正在加载实体模型文件<{}>", fileObject.getAbsolutePath());
+        XStream xstream = XStreamFactory.getXStream("entities");
+        EntityModel entityModel = null;
+        try {
+            entityModel = (EntityModel) xstream.fromXML(fileObject.getInputStream());
+            addTableWithModel(entityModel);
+            logger.logMessage(LogLevel.INFO, "实体模型文件<{}>加载完毕。", fileObject.getAbsolutePath());
+            return entityModel;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public void addTableWithModel(EntityModel model) {
-		if (tableProcessor == null) {
-			tableProcessor = SpringUtil
-					.getBean(TableProcessor.BEAN_NAME);
-		}
-		if (entityModelToTable == null) {
-			entityModelToTable = SpringUtil
-					.getBean(EntityModelToTable.MODEL_TO_TABLE_BEAN_NAME);
-		}
-		Table table = entityModelToTable.model2Table(model);
-		if (table != null) {
-			tableProcessor.addTable(table);
-		}
+    public void addTableWithModel(EntityModel model) {
+        if (tableProcessor == null) {
+            tableProcessor = SpringUtil.getBean(TableProcessor.BEAN_NAME);
+        }
+        if (entityModelToTable == null) {
+            entityModelToTable = SpringUtil.getBean(EntityModelToTable.MODEL_TO_TABLE_BEAN_NAME);
+        }
+        Table table = entityModelToTable.model2Table(model);
+        if (table != null) {
+            tableProcessor.addTable(table);
+        }
 
-	}
+    }
 }

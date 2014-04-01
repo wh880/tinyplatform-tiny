@@ -23,6 +23,7 @@
  */
 package org.tinygroup.dict.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.dict.DictLoader;
 import org.tinygroup.dict.DictManager;
 import org.tinygroup.dict.config.DictLoaderConfig;
@@ -34,47 +35,45 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
 
 /**
  * 字典加载器配置的文件搜索处理器
- * 
+ *
  * @author renhui
- * 
  */
 public class DictLoadFileProcessor extends AbstractFileProcessor {
 
-	private static final String DICT_LOAND_EXT_NAME = ".dictloader.xml";
+    private static final String DICT_LOAND_EXT_NAME = ".dictloader.xml";
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(DICT_LOAND_EXT_NAME);
-	}
+    public boolean isMatch(FileObject fileObject) {
+        return fileObject.getFileName().endsWith(DICT_LOAND_EXT_NAME);
+    }
 
-	public void process() {
-		DictManager manager = SpringUtil
-				.getBean(DictManager.DICT_MANAGER_BEAN_NAME);
-		XStream stream = XStreamFactory
-				.getXStream(DictManager.XSTEAM_PACKAGE_NAME);
-		logger.logMessage(LogLevel.INFO, "字典加载器配置文件处理开始");
-		for (FileObject fileObject : fileObjects) {
-			logger.logMessage(LogLevel.INFO, "找到字典加载配置文件:[{}]",
-					fileObject.getAbsolutePath());
-			DictLoaderConfigs configs = (DictLoaderConfigs) stream
-					.fromXML(fileObject.getInputStream());
-			for (DictLoaderConfig config : configs.getConfigs()) {
-				DictLoader dictLoader = SpringUtil
-						.getBean(config.getBeanName());
-				dictLoader.setGroupName(config.getGroupName());
-				dictLoader.setLanguage(config.getLanguage());
-				manager.addDictLoader(dictLoader);
-			}
-		}
-//		manager.load();
-		logger.logMessage(LogLevel.INFO, "字典加载器配置文件处理结束");
-	}
+    public void process() {
+        DictManager manager = SpringUtil.getBean(DictManager.DICT_MANAGER_BEAN_NAME);
+        XStream stream = XStreamFactory.getXStream(DictManager.XSTEAM_PACKAGE_NAME);
+        logger.logMessage(LogLevel.INFO, "字典加载器配置文件处理开始");
+        for (FileObject fileObject : fileObjects) {
+            logger.logMessage(LogLevel.INFO, "找到字典加载配置文件:[{}]", fileObject.getAbsolutePath());
+            DictLoaderConfigs configs = null;
+            try {
+                configs = (DictLoaderConfigs) stream.fromXML(fileObject.getInputStream());
+                for (DictLoaderConfig config : configs.getConfigs()) {
+                    DictLoader dictLoader = SpringUtil.getBean(config.getBeanName());
+                    dictLoader.setGroupName(config.getGroupName());
+                    dictLoader.setLanguage(config.getLanguage());
+                    manager.addDictLoader(dictLoader);
+                }
+                logger.logMessage(LogLevel.INFO, "字典加载器配置文件处理结束");
+            } catch (IOException e) {
+                logger.errorMessage("字典加载器配置文件处理错误", e);
+            }
+        }
+    }
 
-	public void setFileResolver(FileResolver fileResolver) {
+    public void setFileResolver(FileResolver fileResolver) {
 
-	}
+    }
 
 }

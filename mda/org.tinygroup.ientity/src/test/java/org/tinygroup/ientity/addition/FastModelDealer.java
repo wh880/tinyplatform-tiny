@@ -23,9 +23,7 @@
  */
 package org.tinygroup.ientity.addition;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.commons.file.FileDealUtil;
 import org.tinygroup.entity.entitymodel.EntityModel;
 import org.tinygroup.logger.LogLevel;
@@ -35,114 +33,114 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.File;
+import java.io.IOException;
 
 public final class FastModelDealer {
-	private static Logger logger = LoggerFactory
-			.getLogger(FastModelDealer.class);
-	private String modelName;
-	private boolean findFlag = true;
+    private static Logger logger = LoggerFactory.getLogger(FastModelDealer.class);
+    private String modelName;
+    private boolean findFlag = true;
 
-	public static FastModelDealer getInstance() {
-		return new FastModelDealer();
-	}
+    public static FastModelDealer getInstance() {
+        return new FastModelDealer();
+    }
 
-	private FastModelDealer() {
-	}
+    private FastModelDealer() {
+    }
 
-	/**
-	 * 为指定路径的模型文件或指定目录下的模型文件进行处理 为其中需要快速生成默认操作和视图的模型进行处理
-	 * 
-	 * @param path
-	 */
-	public void find(String findPath, String findModelName) {
-		this.modelName = findModelName;
-		FileObject file = VFS.resolveFile(findPath);
-		resolve(file);
-	}
+    /**
+     * 为指定路径的模型文件或指定目录下的模型文件进行处理 为其中需要快速生成默认操作和视图的模型进行处理
+     *
+     * @param findModelName
+     */
+    public void find(String findPath, String findModelName) {
+        this.modelName = findModelName;
+        FileObject file = VFS.resolveFile(findPath);
+        resolve(file);
+    }
 
-	/**
-	 * 对文件进行处理 判断是否是目录 并分别进行处理
-	 * 
-	 * @param file
-	 */
-	private void resolve(FileObject file) {
-		if (file.isFolder()) {
-			resolveFolder(file);
-		} else {
-			resolveFile(file);
-		}
-	}
+    /**
+     * 对文件进行处理 判断是否是目录 并分别进行处理
+     *
+     * @param file
+     */
+    private void resolve(FileObject file) {
+        if (file.isFolder()) {
+            resolveFolder(file);
+        } else {
+            resolveFile(file);
+        }
+    }
 
-	/**
-	 * 对单个文件进行处理，判断是否是实体模型文件
-	 * 
-	 * @param file
-	 */
-	private void resolveFile(FileObject file) {
-		String extendName = file.getFileName();
-		if (extendName.endsWith(".entity.xml")) {
-			try {
-				dealModel(file);
-			} catch (Exception e) {
-				logger.errorMessage("为模型生成默认操作和视图时发生异常,文件:{0}", e,
-						file.getAbsolutePath());
-			}
+    /**
+     * 对单个文件进行处理，判断是否是实体模型文件
+     *
+     * @param file
+     */
+    private void resolveFile(FileObject file) {
+        String extendName = file.getFileName();
+        if (extendName.endsWith(".entity.xml")) {
+            try {
+                dealModel(file);
+            } catch (Exception e) {
+                logger.errorMessage("为模型生成默认操作和视图时发生异常,文件:{0}", e, file.getAbsolutePath());
+            }
 
-		}
-	}
+        }
+    }
 
-	/**
-	 * 对目录处理，遍历其子文件
-	 * 
-	 * @param folder
-	 */
-	private void resolveFolder(FileObject folder) {
-		for (FileObject file : folder.getChildren()) {
-			resolve(file);
-			if (!findFlag) {
-				return;
-			}
-		}
-	}
+    /**
+     * 对目录处理，遍历其子文件
+     *
+     * @param folder
+     */
+    private void resolveFolder(FileObject folder) {
+        for (FileObject file : folder.getChildren()) {
+            resolve(file);
+            if (!findFlag) {
+                return;
+            }
+        }
+    }
 
-	/**
-	 * 对于模型文件进行处理，读取文件，并为模型生成默认操作和视图
-	 * 
-	 * @param file
-	 */
-	private void dealModel(FileObject file) {
-		XStream stream = XStreamFactory.getXStream("entities");
-		EntityModel model = null;
-		model = (EntityModel) stream.fromXML(file.getInputStream());
-		// 为模型生成默认操作和视图
-		if (modelName == null || "".equals(modelName)) {
-			dealModel(stream, file, model);
-		} else if (modelName.equals(model.getName())) {
-			dealModel(stream, file, model);
-			findFlag = false;
-		}
-	}
+    /**
+     * 对于模型文件进行处理，读取文件，并为模型生成默认操作和视图
+     *
+     * @param file
+     */
+    private void dealModel(FileObject file) {
+        XStream stream = XStreamFactory.getXStream("entities");
+        EntityModel model = null;
+        try {
+            model = (EntityModel) stream.fromXML(file.getInputStream());
+            // 为模型生成默认操作和视图
+            if (modelName == null || "".equals(modelName)) {
+                dealModel(stream, file, model);
+            } else if (modelName.equals(model.getName())) {
+                dealModel(stream, file, model);
+                findFlag = false;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	/**
-	 * 为模型生成默认操作和视图，并写入模型文件
-	 * 
-	 * @param stream
-	 * @param file
-	 * @param model
-	 */
-	private void dealModel(XStream stream, FileObject file, EntityModel model) {
-		ModelAddition.createDefaultInfo(model);
-		try {
-			if (!file.isInPackage()) {
-				logger.logMessage(LogLevel.INFO, "写模型{0},文件{1}",
-						model.getName(), file.getAbsolutePath());
-				FileDealUtil.write(
-						new File(file.getAbsolutePath().replace("file:", "")),
-						stream.toXML(model));
-			}
-		} catch (IOException e) {
-			logger.errorMessage("写文件时发生错误，文件名:{0}", e, file.getAbsolutePath());
-		}
-	}
+    /**
+     * 为模型生成默认操作和视图，并写入模型文件
+     *
+     * @param stream
+     * @param file
+     * @param model
+     */
+    private void dealModel(XStream stream, FileObject file, EntityModel model) {
+        ModelAddition.createDefaultInfo(model);
+        try {
+            if (!file.isInPackage()) {
+                logger.logMessage(LogLevel.INFO, "写模型{0},文件{1}", model.getName(), file.getAbsolutePath());
+                FileDealUtil.write(new File(file.getAbsolutePath().replace("file:", "")), stream.toXML(model));
+            }
+        } catch (IOException e) {
+            logger.errorMessage("写文件时发生错误，文件名:{0}", e, file.getAbsolutePath());
+        }
+    }
 }
