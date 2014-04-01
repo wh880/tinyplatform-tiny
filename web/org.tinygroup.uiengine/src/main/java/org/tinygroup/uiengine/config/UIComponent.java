@@ -55,8 +55,17 @@ public class UIComponent {
     @XStreamAlias("js-codelet")
     private String jsCodelet;
     private Macros macros;
+    private String homepage;
     private transient boolean health;
     private transient boolean computed = false;
+
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage(String homepage) {
+        this.homepage = homepage;
+    }
 
     public Macros getMacros() {
         return macros;
