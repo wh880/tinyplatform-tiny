@@ -13,86 +13,131 @@ import java.util.List;
  * Created by luoguo on 14-3-29.
  */
 public class IniOperatorDefaultTest extends TestCase {
-    IniOperator operator;
+	IniOperator operator;
 
-    public void setUp() throws Exception {
-        super.setUp();
-        operator = new IniOperatorDefault();
-        Sections sections = new Sections();
-        operator.setSections(sections);
-    }
+	public void setUp() throws Exception {
+		super.setUp();
+		operator = new IniOperatorDefault();
+		Sections sections = new Sections();
+		operator.setSections(sections);
+	}
 
-    public void testGetSections() throws Exception {
-        assertNotNull(operator.getSections());
-    }
+	public void testGetSections() throws Exception {
+		assertNotNull(operator.getSections());
+	}
 
-    public void testRead() throws Exception {
-        String string = ";abc\naa=bb;ccc\r\n[ccc];ddd\naa=bb;ccdd\r\nccc=ddd;aa;bb;cc";
-        operator.read(new StringBufferInputStream(string), "UTF-8");
-        operator.write(System.out, "UTF-8");
-    }
+	public void testPut() throws Exception {
+		operator.put("aa", "abc", 123);
+		operator.put("aa", "abc", 456);
 
-    public void testWrite() throws Exception {
-        operator.put("aa", "abc", 123);
-        operator.put("aa", "abc", 123);
-        operator.put("aa", "abc1", 123);
-        operator.put("aa", "abc2", 123);
-        operator.write(System.out, "UTF-8");
-    }
+		assertEquals(1, operator.getSection("aa").getValuePairList().size());
+		Integer value = operator.get(Integer.class, "aa", "abc");
+		assertEquals(value.intValue(), 456);
+	}
 
-    public void testPut() throws Exception {
-        operator.put("aa", "abc", 123);
-        operator.put("aa", "abc", 123);
-        assertEquals(operator.getSection("aa").getValuePairList().size(), 1);
-        Integer value = operator.get(Integer.class, "aa", "abc");
-        assertEquals(value.intValue(), 123);
-    }
+	public void testAddValuePair() throws Exception {
+		operator.add("aa", new ValuePair("bb", "cc", "dd"));
+		operator.add("aa", new ValuePair("bb", "cc", "dd"));
+		operator.add("bb", new ValuePair("bb", "cc", "dd"));
 
-    public void testAdd() throws Exception {
-        operator.add("aa", "abc", 123);
-        operator.add("aa", "abc", 123);
-        assertEquals(operator.getSections().getSection("aa").getValuePairList().size(), 2);
-    }
+		assertEquals(2, operator.getSection("aa").getValuePairList().size());
+		assertEquals(1, operator.getSection("bb").getValuePairList().size());
+	}
 
-    public void testGet() throws Exception {
-        operator.put("aa", "abc", 123);
-        assertEquals(operator.getSection("aa").getValuePairList().size(), 1);
-        assertEquals(operator.get("aa", "abc"), "123");
-    }
+	public void testAddValuePairList() throws Exception {
+		List<ValuePair> valuePairs = new ArrayList<ValuePair>();
+		valuePairs.add(new ValuePair("abc", "1"));
+		valuePairs.add(new ValuePair("abc", "2"));
+		operator.add("aa", valuePairs);
+		operator.add("bb", new ArrayList<ValuePair>());
+		assertEquals(2, operator.getSection("aa").getValuePairList().size());
+		assertEquals(0, operator.getSection("bb").getValuePairList().size());
+	}
 
-    public void testGetList() throws Exception {
-        operator.add("aa", "abc", 123);
-        operator.add("aa", "abc", 123);
-        List<Integer> valueList = operator.getList(Integer.class, "aa", "abc");
-        assertEquals(valueList.size(), 2);
+	public void testAdd() throws Exception {
+		operator.add("aa", "abc", 123);
+		operator.add("aa", "abc", 123);
+		operator.add("bb", "abc", 123);
+		assertEquals(2, operator.getSections().getSection("aa")
+				.getValuePairList().size());
+		assertEquals(1, operator.getSections().getSection("bb")
+				.getValuePairList().size());
+	}
 
-    }
+	public void testGetValuePairList() throws Exception {
+		operator.add("aa", new ValuePair("aa", "cc", "dd"));
+		operator.add("aa", new ValuePair("bb", "cc", "dd"));
+		operator.add("aa", new ValuePair("bb", "cc", "dd"));
+		List<ValuePair> list = operator.getValuePairList("aa", "aa");
+		assertEquals(1, list.size());
+		list = operator.getValuePairList("aa", "bb");
+		assertEquals(2, list.size());
+	}
 
-    public void testGet1() throws Exception {
-        operator.add("aa", "abc", 123);
-        assertEquals("456", operator.get("aa", "def", "456"));
-        assertEquals("123", operator.get("aa", "abc", "456"));
-    }
+	public void testGetValuePair() throws Exception {
+		operator.add("aa", new ValuePair("abc", "123"));
+		operator.add("aa", new ValuePair("bbb", "bbb"));
+		assertEquals("123", operator.getValuePair("aa", "abc").getValue());
+		assertEquals("bbb", operator.getValuePair("aa", "bbb").getValue());
+	}
 
-    public void testAdd1() throws Exception {
-        List<ValuePair> valuePairs = new ArrayList<ValuePair>();
-        valuePairs.add(new ValuePair("abc", "1"));
-        valuePairs.add(new ValuePair("abc", "2"));
-        operator.add("aa", valuePairs);
-        assertEquals(operator.getSection("aa").getValuePairList().size(), 2);
-    }
+	public void testGetValue() throws Exception {
+		operator.put("aa", "abc", 123);
+		operator.put("aa", "abc", 456);
 
+		assertEquals("456", operator.get("aa", "abc"));
+	}
 
-    public void testAdd2() throws Exception {
-        operator.add("aa", "abc", "123");
-        operator.add("aa", new ValuePair("abc", "123"));
-        assertEquals(operator.getSection("aa").getValuePairList().size(), 2);
-    }
+	public void testGetValue1() throws Exception {
+		operator.put("aa", "abc", 123);
+		operator.put("aa", "bbb", 123);
 
+		assertEquals("ccc", operator.get("aa", "ccc", "ccc"));
+		assertEquals("dd", operator.get("dd", "dd", "dd"));
+	}
 
-    public void testGetValuePair() throws Exception {
-        operator.add("aa", "abc", "123");
-        operator.add("aa", new ValuePair("cde", "123"));
-        assertEquals(operator.getValuePair("aa", "abc").getValue(), "123");
-    }
+	public void testGetValue2() throws Exception {
+		operator.put("aa", "abc", 123);
+		operator.put("bb", "abc", 123.11F);
+		operator.put("cc", "abc", 123L);
+		operator.put("dd", "abc", true);
+
+		assertEquals(123, operator.get(int.class, "aa", "abc").intValue());
+		assertEquals(123.11F, operator.get(float.class, "bb", "abc")
+				.floatValue());
+		assertEquals(123L, operator.get(long.class, "cc", "abc").longValue());
+		assertTrue(operator.get(boolean.class, "dd", "abc").booleanValue());
+		assertEquals("123.11", operator.get(String.class, "bb", "abc"));
+	}
+
+	public void testGetValue3() throws Exception {
+		// assertEquals(111, operator.get(int.class, "aa", "ddd",
+		// 111).intValue());
+	}
+
+	public void testGetValueList() throws Exception {
+		operator.add("aa", "abc", 123);
+		operator.add("aa", "abc", 345);
+		operator.add("aa", "bbb", 345);
+
+		List<Integer> list = operator.getList(int.class, "aa", "abc");
+		assertEquals(2, list.size());
+	}
+
+	public void testSet() throws Exception {
+	}
+
+	public void testRead() throws Exception {
+		String string = ";abc\naa=bb;ccc\r\n[ccc];ddd\naa=bb;ccdd\r\nccc=ddd;aa;bb;cc";
+		operator.read(new StringBufferInputStream(string), "UTF-8");
+		operator.write(System.out, "UTF-8");
+	}
+
+	public void testWrite() throws Exception {
+		operator.put("aa", "abc", 123);
+		operator.put("aa", "abc", 123);
+		operator.put("aa", "abc1", 123);
+		operator.put("aa", "abc2", 123);
+		operator.write(System.out, "UTF-8");
+	}
 }
