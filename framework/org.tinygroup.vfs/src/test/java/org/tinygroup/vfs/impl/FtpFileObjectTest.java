@@ -27,7 +27,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.List;
+
+import junit.framework.TestCase;
 
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
@@ -35,64 +40,226 @@ import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.tinygroup.vfs.FileObject;
-import org.tinygroup.vfs.FileUtils;
 import org.tinygroup.vfs.VFS;
 
-public class FtpFileObjectTest {
+public class FtpFileObjectTest extends TestCase {
 
-	private static String rootDir;
+	private static final String ROOT_DIR; // ftp服务器根路径
+	private static FtpServer ftpServer; // ftp服务器
 
 	static {
 		File file = new File("ftpServer");
 		if (!file.exists()) {
 			file.mkdirs();
 		}
-		rootDir = file.getAbsolutePath(); // ftp服务器根路径
-		if (!rootDir.endsWith("/") && !rootDir.endsWith("\\")) {
-			rootDir = rootDir + "/";
+		String temp = file.getAbsolutePath();
+		if (!temp.endsWith("/") && !temp.endsWith("\\")) {
+			temp = temp + "/";
 		}
-		rootDir = rootDir.replaceAll("\\\\", "/");
+		temp = temp.replaceAll("\\\\", "/");
+		ROOT_DIR = temp;
 	}
 
-	public static void main(String[] args) throws Exception {
-		// 获取ftp服务器对象，并启动服务器
-		FtpServer server = null;
+	protected void setUp() throws Exception {
+		super.setUp();
 		try {
-			server = getFTPServer(rootDir);
-			server.start();
-			System.out.println("ftp服务器启动成功,服务器根路径：" + rootDir);
+			ftpServer = getFTPServer(ROOT_DIR);
+			ftpServer.start();
+			System.out.println("ftp服务器启动成功,服务器根路径：" + ROOT_DIR);
 		} catch (FtpException e) {
-			deletefile(rootDir); // 清理文件，文件夹
+			deletefile(ROOT_DIR); // 清理文件，文件夹
 			throw new RuntimeException("ftp服务器启动失败", e);
 		}
-
-		mkdirs(rootDir + "aaa 111 文件夹"); // 新建文件夹
-		createNewFile(rootDir + "aaa 111 文件夹/bbb 222 文件.txt"); // 新建文件
-
-		// 文件夹操作
-		String resource = "ftp://anonymous:anonymous@127.0.0.1:21/aaa 111 文件夹";
-		FileObject fileObject = VFS.resolveFile(resource);
-		FileUtils.printFileObject(fileObject);
-
-		// 文件操作
-		resource = "ftp://anonymous:anonymous@127.0.0.1:21/aaa 111 文件夹/bbb 222 文件.txt";
-		fileObject = VFS.resolveFile(resource);
-		FileUtils.printFileObject(fileObject);
-
-		server.stop(); // 关闭ftp服务器
-		deletefile(rootDir); // 清理文件，文件夹
 	}
 
-	/*********************************************************************************************/
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		ftpServer.stop();
+		deletefile(ROOT_DIR);
+	}
 
-	private static void mkdirs(String absolutePath) {
+	public void test() throws Exception {
+		fileTest();
+		folderTest();
+		folderTest2();
+		folderTest3();
+	}
+
+	private void fileTest() throws Exception {
+		String fileName = "文件  11 aa.txt";
+		createNewFile(ROOT_DIR + fileName); // 新建文件
+		String resource = "ftp://anonymous:@127.0.0.1:21/" + fileName;
+		FileObject fileObject = VFS.resolveFile(resource);
+
+		assertNotNull(fileObject.getSchemaProvider());
+		assertEquals(resource, fileObject.getURL().toString());
+		assertEquals("/文件  11 aa.txt", fileObject.getAbsolutePath());
+		assertEquals("/文件  11 aa.txt", fileObject.getPath());
+		assertEquals("文件  11 aa.txt", fileObject.getFileName());
+		assertEquals("txt", fileObject.getExtName());
+		assertTrue(fileObject.isExist());
+		assertTrue(!fileObject.isFolder());
+		assertTrue(!fileObject.isInPackage());
+		assertTrue(fileObject.getLastModifiedTime() > 0);
+		assertTrue(fileObject.getSize() > 0);
+		InputStream is = fileObject.getInputStream();
+		OutputStream os = fileObject.getOutputStream();
+		assertTrue(is != null || os != null);
+		if (is != null) {
+			is.close();
+		}
+		if (os != null) {
+			os.close();
+		}
+		assertNull(fileObject.getParent());
+		assertNull(fileObject.getChildren());
+
+		deletefile(ROOT_DIR + fileName);
+	}
+
+	public void folderTest() throws Exception {
+		String dirName = "目录 11 aaa";
+		mkdirs(ROOT_DIR + dirName); // 新建文件夹
+		String resource = "ftp://anonymous:@127.0.0.1:21/" + dirName;
+		FileObject fileObject = VFS.resolveFile(resource);
+
+		assertNotNull(fileObject.getSchemaProvider());
+		assertEquals(resource, fileObject.getURL().toString());
+		assertEquals("/目录 11 aaa", fileObject.getAbsolutePath());
+		assertEquals("", fileObject.getPath());
+		assertEquals("目录 11 aaa", fileObject.getFileName());
+		assertEquals("", fileObject.getExtName());
+		assertTrue(fileObject.isExist());
+		assertTrue(fileObject.isFolder());
+		assertTrue(!fileObject.isInPackage());
+		assertTrue(fileObject.getLastModifiedTime() > 0);
+		assertTrue(fileObject.getSize() == 0);
+		assertNull(fileObject.getInputStream());
+		assertNull(fileObject.getOutputStream());
+		assertNull(fileObject.getParent());
+		assertNotNull(fileObject.getChildren());
+		assertEquals(0, fileObject.getChildren().size());
+		assertNull(fileObject.getChild(""));
+
+		deletefile(ROOT_DIR + dirName);
+	}
+
+	public void folderTest2() throws Exception {
+		String dirName = "目录 22 aaa/目录 12 bbb/目录 123 ccc";
+		mkdirs(ROOT_DIR + dirName); // 新建文件夹
+		String resource = "ftp://anonymous:@127.0.0.1:21/" + dirName;
+		FileObject fileObject = VFS.resolveFile(resource);
+
+		assertNotNull(fileObject.getSchemaProvider());
+		assertEquals(resource, fileObject.getURL().toString());
+		assertEquals("/目录 22 aaa/目录 12 bbb/目录 123 ccc",
+				fileObject.getAbsolutePath());
+		assertEquals("", fileObject.getPath());
+		assertEquals("目录 123 ccc", fileObject.getFileName());
+		assertEquals("", fileObject.getExtName());
+		assertTrue(fileObject.isExist());
+		assertTrue(fileObject.isFolder());
+		assertTrue(!fileObject.isInPackage());
+		assertTrue(fileObject.getLastModifiedTime() > 0);
+		assertTrue(fileObject.getSize() == 0);
+		assertNull(fileObject.getInputStream());
+		assertNull(fileObject.getOutputStream());
+		assertNull(fileObject.getParent());
+		assertNotNull(fileObject.getChildren());
+		assertEquals(0, fileObject.getChildren().size());
+		assertNull(fileObject.getChild(""));
+
+		deletefile(ROOT_DIR + dirName);
+	}
+
+	public void folderTest3() throws Exception {
+		String dirName = "目录 33 aaa/目录 erw 123/目录 wer1 2sd";
+		mkdirs(ROOT_DIR + dirName); // 新建文件夹
+		mkdirs(ROOT_DIR + dirName + "/目录 123 abc"); // 新建子文件夹
+		createNewFile(ROOT_DIR + dirName + "/子文件 sd 12sdf.txt"); // 新建子文件
+		String resource = "ftp://anonymous:@127.0.0.1:21/" + dirName;
+		FileObject fileObject = VFS.resolveFile(resource);
+
+		assertNotNull(fileObject.getSchemaProvider());
+		assertEquals(resource, fileObject.getURL().toString());
+		assertEquals("/目录 33 aaa/目录 erw 123/目录 wer1 2sd",
+				fileObject.getAbsolutePath());
+		assertEquals("", fileObject.getPath());
+		assertEquals("目录 wer1 2sd", fileObject.getFileName());
+		assertEquals("", fileObject.getExtName());
+		assertTrue(fileObject.isExist());
+		assertTrue(fileObject.isFolder());
+		assertTrue(!fileObject.isInPackage());
+		assertTrue(fileObject.getLastModifiedTime() > 0);
+		assertTrue(fileObject.getSize() == 0);
+		assertNull(fileObject.getInputStream());
+		assertNull(fileObject.getOutputStream());
+		assertNull(fileObject.getParent());
+		assertNotNull(fileObject.getChildren());
+		assertEquals(2, fileObject.getChildren().size());
+		assertNotNull(fileObject.getChild("目录 123 abc"));
+		assertNotNull(fileObject.getChild("子文件 sd 12sdf.txt"));
+
+		List<FileObject> childen = fileObject.getChildren();
+		for (FileObject fileObject2 : childen) {
+			if (fileObject2.isFolder()) {
+				assertNotNull(fileObject2.getSchemaProvider());
+				assertNull(fileObject2.getURL());
+				assertEquals("/目录 33 aaa/目录 erw 123/目录 wer1 2sd/目录 123 abc",
+						fileObject2.getAbsolutePath());
+				assertEquals("/目录 123 abc", fileObject2.getPath());
+				assertEquals("目录 123 abc", fileObject2.getFileName());
+				assertEquals("", fileObject2.getExtName());
+				assertTrue(fileObject2.isExist());
+				assertTrue(fileObject2.isFolder());
+				assertTrue(!fileObject2.isInPackage());
+				assertTrue(fileObject2.getLastModifiedTime() > 0);
+				assertTrue(fileObject2.getSize() == 0);
+				assertNull(fileObject2.getInputStream());
+				assertNull(fileObject2.getOutputStream());
+				assertNotNull(fileObject2.getParent());
+				assertNotNull(fileObject2.getChildren());
+				assertEquals(0, fileObject2.getChildren().size());
+				assertNull(fileObject2.getChild(""));
+			} else {
+				assertNull(fileObject2.getURL());
+				assertNotNull(fileObject2.getSchemaProvider());
+				assertEquals(
+						"/目录 33 aaa/目录 erw 123/目录 wer1 2sd/子文件 sd 12sdf.txt",
+						fileObject2.getAbsolutePath());
+				assertEquals("/子文件 sd 12sdf.txt", fileObject2.getPath());
+				assertEquals("子文件 sd 12sdf.txt", fileObject2.getFileName());
+				assertEquals("txt", fileObject2.getExtName());
+				assertTrue(fileObject2.isExist());
+				assertTrue(!fileObject2.isFolder());
+				assertTrue(!fileObject2.isInPackage());
+				assertTrue(fileObject2.getLastModifiedTime() > 0);
+				assertTrue(fileObject2.getSize() > 0);
+				InputStream is = fileObject2.getInputStream();
+				OutputStream os = fileObject2.getOutputStream();
+				assertTrue(is != null || os != null);
+				if (is != null) {
+					is.close();
+				}
+				if (os != null) {
+					os.close();
+				}
+				assertNotNull(fileObject2.getParent());
+				assertNull(fileObject2.getChildren());
+			}
+		}
+
+		deletefile(ROOT_DIR + dirName);
+	}
+
+	private void mkdirs(String absolutePath) {
 		File file = new File(absolutePath);
 		if (!file.exists()) {
 			file.mkdirs();
 		}
 	}
 
-	private static void createNewFile(String absolutePath) {
+	private void createNewFile(String absolutePath) {
 		File file = null;
 		FileOutputStream fos = null;
 		PrintWriter pw = null;
@@ -125,8 +292,7 @@ public class FtpFileObjectTest {
 		}
 	}
 
-	private static FtpServer getFTPServer(String ftpRootPath)
-			throws FtpException {
+	private FtpServer getFTPServer(String ftpRootPath) throws FtpException {
 		File file = null;
 		FileOutputStream fos = null;
 		PrintWriter pw = null;
@@ -144,7 +310,7 @@ public class FtpFileObjectTest {
 			StringBuilder content = new StringBuilder();
 			content.append("ftpserver.user.anonymous.homedirectory=")
 					.append(ftpRootPath).append("\n");
-			// content.append("ftpserver.user.anonymous.userpassword=\n");
+			content.append("ftpserver.user.anonymous.userpassword=\n");
 			// content.append("ftpserver.user.anonymous.enableflag=true\n");
 			content.append("ftpserver.user.anonymous.writepermission=true\n");
 			// content.append("ftpserver.user.anonymous.maxloginnumber=20\n");
@@ -206,7 +372,7 @@ public class FtpFileObjectTest {
 	 * @throws IOException
 	 * @return boolean
 	 */
-	private static void deletefile(String delpath) {
+	private void deletefile(String delpath) {
 		File file = new File(delpath);
 		// 当且仅当此抽象路径名表示的文件存在且 是一个目录时，返回 true
 		if (!file.isDirectory()) {
