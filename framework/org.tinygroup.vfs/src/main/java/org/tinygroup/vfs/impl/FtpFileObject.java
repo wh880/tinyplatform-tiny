@@ -23,70 +23,22 @@ import org.tinygroup.vfs.impl.URLFileObject;
  */
 public class FtpFileObject extends URLFileObject {
 
-	private String resource;
 	private FTPFile ftpFile;
 	private FTPClient ftpClient;
 
-	/*************************************************************************************/
+	private FtpFileObject(SchemaProvider schemaProvider) {
+		super(schemaProvider);
+	}
+
 	public FtpFileObject(SchemaProvider schemaProvider, String resource) {
 		super(schemaProvider, resource);
-		this.resource = resource;
 		connectFtpServer();
 		initFTPFile();
 	}
 
-	public FtpFileObject(FtpFileObject parent, String resource)
-			throws IOException {
-		this(parent.getSchemaProvider(), resource);
-		setParent(parent);
-	}
-
 	private void connectFtpServer() {
-		ftpClient = newFtpClient();
-	}
-
-	private void initFTPFile() throws TinySysRuntimeException {
-		FTPFile[] ftpFiles = null;
-		String pathname = url.getPath();
-
 		try {
-			ftpFiles = ftpClient.listFiles(recode(pathname));
-		} catch (IOException e) {
-			throw new TinySysRuntimeException("获取文件失败！");
-		}
-
-		// 路径为文件
-		if (ftpFiles != null && ftpFiles.length == 1) {
-			ftpFile = ftpFiles[0];
-			if (ftpFile.isFile() && pathname.endsWith(ftpFile.getName())) {
-				return;
-			}
-		}
-
-		// 获取上级路径
-		int index = pathname.lastIndexOf("/");
-		if (index == pathname.length() - 1) {
-			pathname = pathname.substring(0, index);
-			index = pathname.lastIndexOf("/");
-		}
-		String parentPathname = pathname.substring(0, index + 1);
-		String subFilename = pathname.substring(index + 1);
-		FTPFileFilterByName filter = new FTPFileFilterByName(subFilename); // 过滤器
-		try {
-			ftpClient.enterLocalPassiveMode();
-			ftpFiles = ftpClient.listFiles(recode(parentPathname), filter);
-			if (ftpFiles == null || ftpFiles.length == 0) {
-				throw new TinySysRuntimeException("没有找到对应的文件或文件夹！");
-			}
-		} catch (IOException e) {
-			throw new TinySysRuntimeException("获取文件失败！");
-		}
-		ftpFile = ftpFiles[0];
-	}
-
-	private FTPClient newFtpClient() {
-		try {
-			FTPClient ftpClient = new FTPClient();
+			ftpClient = new FTPClient();
 			FTPClientConfig ftpClientConfig = new FTPClientConfig();
 			ftpClientConfig.setServerTimeZoneId(TimeZone.getDefault().getID());
 			ftpClient.configure(ftpClientConfig);
@@ -117,15 +69,39 @@ public class FtpFileObject extends URLFileObject {
 				ftpClient.setBufferSize(100000);
 				ftpClient.setControlEncoding("utf-8");
 			}
-			return ftpClient;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	/*************************************************************************************/
+	private void initFTPFile() {
+		try {
+			String path = url.getPath();
+			if (path.endsWith("/")) { // 如果且以"/"结尾，去掉"/"
+				path = path.substring(0, path.lastIndexOf("/"));
+			}
+			String checkPath = path.substring(0, path.lastIndexOf("/")); // 资源在服务器中所属目录
+			if (checkPath.length() == 0) { // 如果所属目录为根目录
+				checkPath = "/";
+			}
+
+			String fileName = path.substring(path.lastIndexOf("/"));
+			fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+			ftpClient.enterLocalPassiveMode();
+			FTPFile[] files = ftpClient.listFiles(recode(checkPath),
+					new FtpFileFilterByName(fileName)); // 从上级目录的子目录中过滤出当前资源
+			if (files != null && files.length == 1) {
+				ftpFile = files[0];
+			} else {
+				throw new TinySysRuntimeException("查找资源失败，url=" + url);
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public String getAbsolutePath() {
-		if (url != null) {// 如果是根结点
+		if (url != null) { // 如果是根结点
 			return url.getPath();
 		}
 		String parentAbsolutePath = parent.getAbsolutePath();
@@ -136,13 +112,16 @@ public class FtpFileObject extends URLFileObject {
 	}
 
 	public String getPath() {
-		if (path == null) {
-			// if (uriFileName != null) {
-			// path = uriFileName.getPath();
-			// } else {
-			// path = super.getPath();
-			// }
-			path = url.getPath();
+		if (path == null) {// 如果没有计算过
+			if (parent != null) {// 如果有父亲
+				path = parent.getPath() + "/" + getFileName();
+			} else {
+				if (ftpFile.isDirectory()) {
+					return "";
+				} else {
+					return "/" + ftpFile.getName();
+				}
+			}
 		}
 		return path;
 	}
@@ -165,16 +144,8 @@ public class FtpFileObject extends URLFileObject {
 		return isFolder;
 	}
 
-	@SuppressWarnings({ "restriction" })
 	public long getLastModifiedTime() {
-		try {
-			sun.net.www.protocol.ftp.FtpURLConnection con = (sun.net.www.protocol.ftp.FtpURLConnection) url
-					.openConnection();
-			lastModified = con.getLastModified();
-			return lastModified;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		return ftpFile.getTimestamp().getTimeInMillis();
 	}
 
 	public long getSize() {
@@ -195,14 +166,11 @@ public class FtpFileObject extends URLFileObject {
 
 		InputStream is = null;
 		try {
-			String remote = getPath();
-			FTPClient client = newFtpClient();
-			is = client.retrieveFileStream(new String(remote.getBytes("UTF-8"),
-					"iso-8859-1"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			String remote = getAbsolutePath();
+			remote = recode(remote);
+			is = ftpClient.retrieveFileStream(remote);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException("获取输入流异常");
 		}
 
 		return is;
@@ -215,14 +183,12 @@ public class FtpFileObject extends URLFileObject {
 
 		OutputStream os = null;
 		try {
-			String remote = getPath();
-			FTPClient client = newFtpClient();
-			os = client.appendFileStream(new String(remote.getBytes("UTF-8"),
-					"iso-8859-1"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			String remote = getAbsolutePath();
+			remote = recode(remote);
+			// os = ftpClient.storeUniqueFileStream(remote);
+			os = ftpClient.storeFileStream(remote);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 
 		return os;
@@ -232,43 +198,36 @@ public class FtpFileObject extends URLFileObject {
 		if (!isFolder()) {
 			return null;
 		}
+
 		if (children == null) {
 			try {
-				String relPath = getPath();
-				// FTPFile[] files = listFilesInDirectory(relPath);
-				FTPFile[] files = ftpClient.listFiles(recode(relPath));
-				if (files == null || files.length == 0) {
-					return null;
+				// String pathname = ftpFile.getName();
+				String pathname = getAbsolutePath();
+				FTPFile[] files = ftpClient.listFiles(recode(pathname));
+				List<FileObject> fileObjects = new ArrayList<FileObject>();
+				for (FTPFile file : files) {
+					FtpFileObject fileObject = new FtpFileObject(schemaProvider);
+					fileObject.setParent(this);
+					fileObject.ftpFile = file;
+					fileObject.ftpClient = this.ftpClient;
+					fileObjects.add(fileObject);
 				}
-				children = new ArrayList<FileObject>();
-				String childResource = null;
-				for (int i = 0; i < files.length; i++) {
-					FTPFile ftpFile = files[i];
-					String filename = ftpFile.getName();
-					if (filename == null || filename.startsWith(".")) {
-						continue;
-					}
-					if (resource.endsWith("/")) {
-						childResource = resource + filename;
-					} else {
-						childResource = resource + "/" + filename;
-					}
-					FtpFileObject fileObject = new FtpFileObject(this,
-							childResource);
-					children.add(fileObject);
-				}
+				return fileObjects;
 			} catch (IOException e) {
-				throw new TinySysRuntimeException(e);
+				throw new RuntimeException(e);
 			}
 		}
+
 		return children;
 	}
 
 	private String recode(String str) {
+		String recode = str;
 		try {
-			return new String(str.getBytes("UTF-8"), "iso-8859-1");
-		} catch (UnsupportedEncodingException e) {
-			return str;
+			recode = new String(str.getBytes("UTF-8"), "iso-8859-1");
+		} catch (UnsupportedEncodingException e) { // 转码失败,忽略之
 		}
+		return recode;
 	}
+
 }
