@@ -43,10 +43,13 @@ public class ShardModeSameSchemaTest extends TestCase {
 	private static final String TINY_DRIVER = "org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver";
 	private static final String DERBY_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
 	private static final String ROUTER_PATH = "/shardModeSameSchema.xml";
-	private static final String commDBName = "derbydb/dbComm"; // 普通数据库名称，该数据库数据用以对比
 	private static final String URL = "jdbc:dbrouter://shardModeSameSchema";
 	private static final String USER = "luog";
 	private static final String PASSWORD = "123456";
+	private static final String DERBY_DB = "derbydb/dbShard";
+	private static final String[] DERBY_TEACHER_TABLES = { "teacher" };
+	private static final String[] DERBY_STUDENT_TABLES = { "student",
+			"student0", "student1", "student2" };
 
 	private static RouterManager routerManager;
 
@@ -73,46 +76,6 @@ public class ShardModeSameSchemaTest extends TestCase {
 		destroy();
 	}
 
-	static {
-		try {
-			Class.forName(TINY_DRIVER); // 加载tiny数据库驱动
-			Class.forName(DERBY_DRIVER); // 加载derby数据库驱动
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("数据库驱动加载失败!");
-		}
-
-		// 初始化routerManager
-		routerManager = RouterManagerBeanFactory.getManager();
-		routerManager.addRouters(ROUTER_PATH);
-
-		try {
-			// 在普通数据库中新建"teacher"表和"student"表
-			initTeacherTable("derbydb/dbComm", "teacher"); // 在数据库"derbydb/dbComm"中初始化表"teacher"
-			initStudentTable("derbydb/dbComm", "student"); // 在数据库"derbydb/dbComm"中初始化表"student"
-
-			// 在分区数据库中新建一张"teacher"
-			initTeacherTable("derbydb/dbShard", "teacher"); // 在数据库"derbydb/dbShard"中初始化表"teacher"
-
-			// 在分区数据库中新建三张"student"表，表名分别为student0，student0，student2
-			initStudentTable("derbydb/dbShard", "student0"); // 在数据库"derbydb/dbShard"中初始化表"student0"
-			initStudentTable("derbydb/dbShard", "student1"); // 在数据库"derbydb/dbShard"中初始化表"student1"
-			initStudentTable("derbydb/dbShard", "student2"); // 在数据库"derbydb/dbShard"中初始化表"student2"
-
-			// 创建视图
-			// initView("derbydb/dbShard", "view_students_boys0",
-			// "CREATE VIEW 'view_students_boys0' AS (SELECT * FROM student0 where sex='男')");
-			// initView("derbydb/dbShard", "view_students_boys1",
-			// "CREATE VIEW 'view_students_boys1' AS (SELECT * FROM student1 where sex='男')");
-			// initView("derbydb/dbShard", "view_students_boys2",
-			// "CREATE VIEW 'view_students_boys2' AS (SELECT * FROM student2 where sex='男')");
-
-			// 初始化测试数据
-			prepareRecord();
-		} catch (SQLException e) {
-			throw new RuntimeException("初始化表失败!");
-		}
-	}
-
 	public void test() throws Exception {
 		Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
 		relatedQueryTest(conn);
@@ -131,19 +94,27 @@ public class ShardModeSameSchemaTest extends TestCase {
 	public void relatedQueryTest(Connection conn) throws Exception {
 		Statement st = null;
 		ResultSet rs = null;
-		String sql = null;
+
 		st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				ResultSet.CONCUR_UPDATABLE);
+				ResultSet.CONCUR_READ_ONLY);
 
 		List<String> _sList = new ArrayList<String>();
 		List<Integer> _iList = new ArrayList<Integer>();
 
+		// addBatch操作
+		st.executeUpdate("delete from teacher");
+		st.executeUpdate("insert into teacher(id,name) values(1,'zhang')");
+		st.executeUpdate("insert into teacher(id,name) values(2,'qian')");
+		st.executeUpdate("insert into teacher(id,name) values(3,'sun')");
+		st.executeUpdate("insert into teacher(id,name) values(4,'wang')");
 		rs = st.executeQuery("select count(*) from teacher");
 		if (rs.next()) {
 			assertEquals(4, rs.getInt(1));
 		}
 
-		sql = "select * from student where name in (select name from student where id<5 and id>2) order by id desc";
+		// 准备数据
+		prepareRecord(st);
+		String sql = "select * from student where name in (select name from student where id<5 and id>2) order by id desc";
 		rs = st.executeQuery(sql);
 		_sList.clear();
 		while (rs.next()) {
@@ -153,7 +124,7 @@ public class ShardModeSameSchemaTest extends TestCase {
 		assertEquals("s4", _sList.get(0));
 		assertEquals("s3", _sList.get(1));
 
-		sql = "select sum(age) from student where tId in (select id from teacher where id<3) group by tId ";
+		sql = "select sum(age) from student where tId in (select id from teacher where id<3) group by tId";
 		rs = st.executeQuery(sql);
 		_iList.clear();
 		while (rs.next()) {
@@ -203,7 +174,6 @@ public class ShardModeSameSchemaTest extends TestCase {
 			assertEquals(0, rs.getInt(1));
 		}
 
-		// 结果不准确,derby中不支持union
 		// sql =
 		// "select s.name from student s where s.id>5 union select t.name from teacher t where t.id>3";
 		// rs = st.executeQuery(sql);
@@ -214,6 +184,14 @@ public class ShardModeSameSchemaTest extends TestCase {
 		// assertEquals(2, _sList.size());
 		// assertEquals("s6", _sList.get(0));
 		// assertEquals("wang", _sList.get(1));
+
+		// sql =
+		// "SELECT * FROM (SELECT s.name FROM student s,teacher t WHERE s.tId=t.id) sName WHERE SUBSTR(sName.name,2,1)=1";
+		// rs = st.executeQuery(sql);
+		// _sList = new ArrayList<String>();
+		// if (rs.next()) {
+		// assertEquals("s1", rs.getString("name"));
+		// }
 
 		close(null, st, rs);
 		System.out.println("relatedQueryTest执行结束!");
@@ -489,89 +467,20 @@ public class ShardModeSameSchemaTest extends TestCase {
 		System.out.println("relatedQueryTest2 执行结束");
 	}
 
-	/**************************************************************************************/
-	private static void initTeacherTable(String dbName, String tableName)
-			throws SQLException {
-		StringBuffer sql = new StringBuffer();
-		sql.append("CREATE TABLE ");
-		sql.append(tableName).append("(");
-		sql.append("ID int not null,");
-		sql.append("NAME varchar(20))");
-		String createTableSql = sql.toString();
-
-		initTable(dbName, tableName, createTableSql);
-	}
-
-	private static void initStudentTable(String dbName, String tableName)
-			throws SQLException {
-		StringBuffer sql = new StringBuffer();
-		sql.append("CREATE TABLE ");
-		sql.append(tableName);
-		sql.append("(");
-		sql.append("ID int not null,");
-		sql.append("TID int,");
-		sql.append("NAME varchar(20),");
-		sql.append("SEX varchar(20),");
-		sql.append("AGE int not null");
-		sql.append(")");
-		String createTableSql = sql.toString();
-
-		initTable(dbName, tableName, createTableSql);
-	}
-
-	private static void initTable(String dbName, String tableName,
-			String createTableSql) throws SQLException {
-		Connection conn = DriverManager.getConnection("jdbc:derby:" + dbName
-				+ ";create=true");
-		Statement st = conn.createStatement();
-		ResultSet rs = null;
-
-		try {
-			// st.execute("DROP TABLE IF EXISTS " + tableName); // 删除表
-			st.execute("DROP TABLE " + tableName); // 删除表
-		} catch (SQLException e) {
-		}
-
-		st.execute(createTableSql); // 创建表
-
-		close(conn, st, rs);
-	}
-
-	private static void initView(String dbName, String viewName,
-			String createSql) throws SQLException {
-		Connection conn = DriverManager.getConnection("jdbc:derby:" + dbName
-				+ ";create=true");
-		Statement st = conn.createStatement();
-		ResultSet rs = null;
-
-		try {
-			// st.execute("DROP TABLE IF EXISTS " + tableName); // 删除表
-			st.execute("DROP VIEW " + viewName); // 删除表
-		} catch (SQLException e) {
-		}
-
-		st.execute(createSql); // 创建表
-
-		close(conn, st, rs);
-	}
-
-	private static boolean prepareRecord() throws SQLException {
-		// 在普通数据库中初始化测试数据
-		Connection conn = null;
-		Statement st = null;
-		conn = DriverManager.getConnection("jdbc:derby:" + commDBName
-				+ ";create=true");
-		st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				ResultSet.CONCUR_UPDATABLE);
-
+	/**
+	 * 准备测试数据
+	 * 
+	 * @param st
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
+	private void prepareRecord(Statement st) throws SQLException {
 		st.addBatch("delete from student");
 		st.addBatch("delete from teacher");
-
 		st.addBatch("insert into teacher(id,name) values(1,'zhang')");
 		st.addBatch("insert into teacher(id,name) values(2,'qian')");
 		st.addBatch("insert into teacher(id,name) values(3,'sun')");
 		st.addBatch("insert into teacher(id,name) values(4,'wang')");
-
 		st.addBatch("insert into student(id,tId,name,age) values(1,1,'s1',11)");
 		st.addBatch("insert into student(id,tId,name,age) values(2,1,'s2',12)");
 		st.addBatch("insert into student(id,tId,name,age) values(3,2,'s3',13)");
@@ -579,35 +488,6 @@ public class ShardModeSameSchemaTest extends TestCase {
 		st.addBatch("insert into student(id,tId,name,age) values(5,3,'s5',15)");
 		st.addBatch("insert into student(id,tId,name,age) values(6,3,'s6',16)");
 		st.executeBatch();
-
-		try {
-			// 在tiny数据库中初始化测试数据，并保证和普通数据库中的数据相同
-			conn = DriverManager.getConnection(URL, USER, PASSWORD);
-			st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
-
-			st.addBatch("delete from student");
-			st.addBatch("delete from teacher");
-
-			st.addBatch("insert into teacher(id,name) values(1,'zhang')");
-			st.addBatch("insert into teacher(id,name) values(2,'qian')");
-			st.addBatch("insert into teacher(id,name) values(3,'sun')");
-			st.addBatch("insert into teacher(id,name) values(4,'wang')");
-
-			st.addBatch("insert into student(id,tId,name,age) values(1,1,'s1',11)");
-			st.addBatch("insert into student(id,tId,name,age) values(2,1,'s2',12)");
-			st.addBatch("insert into student(id,tId,name,age) values(3,2,'s3',13)");
-			st.addBatch("insert into student(id,tId,name,age) values(4,2,'s4',14)");
-			st.addBatch("insert into student(id,tId,name,age) values(5,3,'s5',15)");
-			st.addBatch("insert into student(id,tId,name,age) values(6,3,'s6',16)");
-			st.executeBatch();
-		} catch (SQLException e) {
-			return false;
-		} finally {
-			close(conn, st, null);
-		}
-
-		return true;
 	}
 
 	/**
@@ -617,7 +497,7 @@ public class ShardModeSameSchemaTest extends TestCase {
 	 * @param st
 	 * @param rs
 	 */
-	private static void close(Connection conn, Statement st, ResultSet rs) {
+	private void close(Connection conn, Statement st, ResultSet rs) {
 		if (conn != null) {
 			try {
 				conn.close();
@@ -656,64 +536,43 @@ public class ShardModeSameSchemaTest extends TestCase {
 
 	/**
 	 * 初始化derby数据库和表
+	 * 
+	 * @throws SQLException
 	 */
-	private void init() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("CREATE TABLE ");
-		sb.append("teacher").append("(");
-		sb.append("ID int not null,");
-		sb.append("NAME varchar(20))");
-		String t_sql = sb.toString();
-
-		sb = new StringBuffer();
-		sb.append("CREATE TABLE student(");
-		sb.append("ID int not null,");
-		sb.append("TID int,");
-		sb.append("AGE int,");
-		sb.append("NAME varchar(20))");
-		String s_sql = sb.toString();
-
-		Connection conn = null;
-		Statement st = null;
-
-		// 在数据库"derbydb/db01"中新建表"teacher"和表"student"
-		try {
-			conn = DriverManager
-					.getConnection("jdbc:derby:derbydb/db01;create=true");
-			st = conn.createStatement();
-			st.execute(t_sql);
-			st.execute(s_sql);
-		} catch (SQLException e) {
-			throw new RuntimeException("初始化表失败!");
-		} finally {
-			close(conn, st, null);
+	private void init() throws SQLException {
+		StringBuffer url = new StringBuffer("jdbc:derby:");
+		url.append(DERBY_DB);
+		url.append(";create=true");
+		Connection conn = DriverManager.getConnection(url.toString());
+		Statement st = conn.createStatement();
+		for (String teacher : DERBY_TEACHER_TABLES) {
+			StringBuffer sb = new StringBuffer();
+			sb.append("CREATE TABLE ");
+			sb.append(teacher).append("(");
+			sb.append("ID int not null,");
+			sb.append("NAME varchar(20))");
+			st.execute(sb.toString());
 		}
 
-		// 在数据库"derbydb/db02"中新建表"teacher"和表"student"
-		try {
-			conn = DriverManager
-					.getConnection("jdbc:derby:derbydb/db02;create=true");
-			st = conn.createStatement();
-			st.execute(t_sql);
-			st.execute(s_sql);
-		} catch (SQLException e) {
-			throw new RuntimeException("初始化表失败!");
-		} finally {
-			close(conn, st, null);
+		for (String student : DERBY_STUDENT_TABLES) {
+			StringBuffer sb = new StringBuffer();
+			sb.append("CREATE TABLE ");
+			sb.append(student);
+			sb.append("(");
+			sb.append("ID int not null,");
+			sb.append("TID int,");
+			sb.append("AGE int,");
+			sb.append("NAME varchar(20))");
+			st.execute(sb.toString());
 		}
 
-		// 在数据库"derbydb/db03"中新建表"teacher"和表"student"
-		try {
-			conn = DriverManager
-					.getConnection("jdbc:derby:derbydb/db03;create=true");
-			st = conn.createStatement();
-			st.execute(t_sql);
-			st.execute(s_sql);
-		} catch (SQLException e) {
-			throw new RuntimeException("初始化表失败!");
-		} finally {
-			close(conn, st, null);
-		}
+		// 创建视图
+		// initView("derbydb/dbShard", "view_students_boys0",
+		// "CREATE VIEW 'view_students_boys0' AS (SELECT * FROM student0 where sex='男')");
+		// initView("derbydb/dbShard", "view_students_boys1",
+		// "CREATE VIEW 'view_students_boys1' AS (SELECT * FROM student1 where sex='男')");
+		// initView("derbydb/dbShard", "view_students_boys2",
+		// "CREATE VIEW 'view_students_boys2' AS (SELECT * FROM student2 where sex='男')");
 	}
 
 }

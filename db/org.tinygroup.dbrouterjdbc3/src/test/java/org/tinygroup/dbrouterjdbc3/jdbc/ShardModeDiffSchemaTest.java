@@ -494,7 +494,7 @@ public class ShardModeDiffSchemaTest extends TestCase {
 	 * @param st
 	 * @param rs
 	 */
-	private static void close(Connection conn, Statement st, ResultSet rs) {
+	private void close(Connection conn, Statement st, ResultSet rs) {
 		if (conn != null) {
 			try {
 				conn.close();
@@ -535,12 +535,6 @@ public class ShardModeDiffSchemaTest extends TestCase {
 	 * 初始化derby数据库和表
 	 */
 	private void init() {
-		try {
-			Class.forName(DERBY_DRIVER); // 加载derby数据库驱动
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("数据库驱动加载失败!");
-		}
-
 		StringBuffer sb = new StringBuffer();
 		sb.append("CREATE TABLE ");
 		sb.append("teacher").append("(");
