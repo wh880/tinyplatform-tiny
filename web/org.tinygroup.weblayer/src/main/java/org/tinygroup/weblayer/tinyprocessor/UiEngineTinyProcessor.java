@@ -23,17 +23,6 @@
  */
 package org.tinygroup.weblayer.tinyprocessor;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
@@ -44,6 +33,16 @@ import org.tinygroup.uiengine.manager.UIComponentManager;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * UI引擎处理css及js文件的合并并输出
@@ -149,8 +148,8 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
         outputStream.close();
     }
 
-    private void writeCss(String contextPath, HttpServletResponse response, String servletPath,
-                          boolean isDebug) throws IOException {
+    private void writeCss(String contextPath, HttpServletResponse response, String servletPath, boolean isDebug)
+            throws IOException {
         OutputStream outputStream = response.getOutputStream();
         outputStream.write("@charset \"utf-8\";\n".getBytes());
         for (UIComponent component : uiComponentManager.getHealthUiComponents()) {
@@ -175,8 +174,8 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
         outputStream.close();
     }
 
-    private void writeCss(OutputStream outputStream, String contextPath, String string,
-                          String servletPath) throws IOException {
+    private void writeCss(OutputStream outputStream, String contextPath, String string, String servletPath)
+            throws IOException {
         Matcher matcher = urlPattern.matcher(string);
         int curpos = 0;
         while (matcher.find()) {
@@ -221,7 +220,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
             if (paths != null) {
                 for (String path : paths) {
                     FileObject fileObject = fullContextFileRepository.getFileObject(path);
-                    if (fileObject.isExist()) {
+                    if (fileObject != null && fileObject.isExist()) {
                         time += fileObject.getLastModifiedTime();
                         time += path.hashCode();
                     } else {
@@ -240,7 +239,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
             if (paths != null) {
                 for (String path : paths) {
                     FileObject fileObject = fullContextFileRepository.getFileObject(path);
-                    if (fileObject.isExist()) {
+                    if (fileObject != null && fileObject.isExist()) {
                         time += fileObject.getLastModifiedTime();
                         time += path.hashCode();
                     } else {
