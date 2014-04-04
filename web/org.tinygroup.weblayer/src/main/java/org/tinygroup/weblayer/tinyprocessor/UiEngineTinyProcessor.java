@@ -137,7 +137,9 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
                     FileObject fileObject = fullContextFileRepository.getFileObject(path);
                     InputStream stream = new BufferedInputStream(fileObject.getInputStream());
                     StreamUtil.io(stream, outputStream, true, false);
+                    stream.close();
                     outputStream.flush();
+                    outputStream.write('\n');
                     logger.logMessage(LogLevel.INFO, "js文件:<{}>处理完毕", path);
                 }
             }
@@ -180,9 +182,13 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
         int curpos = 0;
         while (matcher.find()) {
             outputStream.write(string.substring(curpos, matcher.start()).getBytes("UTF-8"));
-            outputStream.write(matcher.group(1).getBytes("UTF-8"));
-            outputStream.write(convertUrl(contextPath, matcher.group(2), servletPath).getBytes("UTF-8"));
-            outputStream.write(matcher.group(3).getBytes("UTF-8"));
+            if (matcher.group(2).trim().startsWith("data:")) {
+                outputStream.write(matcher.group().getBytes("UTF-8"));
+            } else {
+                outputStream.write(matcher.group(1).getBytes("UTF-8"));
+                outputStream.write(convertUrl(contextPath, matcher.group(2), servletPath).getBytes("UTF-8"));
+                outputStream.write(matcher.group(3).getBytes("UTF-8"));
+            }
             curpos = matcher.end();
             continue;
         }
