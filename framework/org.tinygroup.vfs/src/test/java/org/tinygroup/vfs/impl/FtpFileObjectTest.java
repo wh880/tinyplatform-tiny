@@ -24,7 +24,6 @@
 package org.tinygroup.vfs.impl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,30 +51,32 @@ public class FtpFileObjectTest extends TestCase {
 		if (!file.exists()) {
 			file.mkdirs();
 		}
-		String temp = file.getAbsolutePath();
-		if (!temp.endsWith("/") && !temp.endsWith("\\")) {
-			temp = temp + "/";
+
+		String absolutePath = file.getAbsolutePath();
+		absolutePath = absolutePath.replaceAll("\\\\", "/");
+		if (!absolutePath.endsWith("/")) {
+			absolutePath = absolutePath + "/";
 		}
-		temp = temp.replaceAll("\\\\", "/");
-		ROOT_DIR = temp;
+
+		ROOT_DIR = absolutePath;
 	}
 
 	protected void setUp() throws Exception {
 		super.setUp();
 		try {
 			ftpServer = getFTPServer(ROOT_DIR);
-			ftpServer.start();
+			ftpServer.start(); // 启动服务器
 			System.out.println("ftp服务器启动成功,服务器根路径：" + ROOT_DIR);
 		} catch (FtpException e) {
-			deletefile(ROOT_DIR); // 清理文件，文件夹
+			deleteFile(ROOT_DIR); // 清理文件，文件夹
 			throw new RuntimeException("ftp服务器启动失败", e);
 		}
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		ftpServer.stop();
-		deletefile(ROOT_DIR);
+		ftpServer.stop(); // 停止服务器
+		deleteFile(ROOT_DIR); // 清理文件，文件夹
 	}
 
 	public void test() throws Exception {
@@ -87,7 +88,9 @@ public class FtpFileObjectTest extends TestCase {
 
 	private void fileTest() throws Exception {
 		String fileName = "文件  11 aa.txt";
-		createNewFile(ROOT_DIR + fileName); // 新建文件
+		String pathname = ROOT_DIR + fileName;
+		createNewFile(pathname); // 新建文件
+		write(pathname, "内容测试 中文 空格 英文      sdfsfd   数字   1231 "); // 写入内容
 		String resource = "ftp://anonymous:@127.0.0.1:21/" + fileName;
 		FileObject fileObject = VFS.resolveFile(resource);
 
@@ -114,7 +117,7 @@ public class FtpFileObjectTest extends TestCase {
 		assertNull(fileObject.getParent());
 		assertNull(fileObject.getChildren());
 
-		deletefile(ROOT_DIR + fileName);
+		deleteFile(ROOT_DIR + fileName);
 	}
 
 	public void folderTest() throws Exception {
@@ -141,7 +144,7 @@ public class FtpFileObjectTest extends TestCase {
 		assertEquals(0, fileObject.getChildren().size());
 		assertNull(fileObject.getChild(""));
 
-		deletefile(ROOT_DIR + dirName);
+		deleteFile(ROOT_DIR + dirName);
 	}
 
 	public void folderTest2() throws Exception {
@@ -169,14 +172,16 @@ public class FtpFileObjectTest extends TestCase {
 		assertEquals(0, fileObject.getChildren().size());
 		assertNull(fileObject.getChild(""));
 
-		deletefile(ROOT_DIR + dirName);
+		deleteFile(ROOT_DIR + dirName);
 	}
 
 	public void folderTest3() throws Exception {
 		String dirName = "目录 33 aaa/目录 erw 123/目录 wer1 2sd";
-		mkdirs(ROOT_DIR + dirName); // 新建文件夹
-		mkdirs(ROOT_DIR + dirName + "/目录 123 abc"); // 新建子文件夹
-		createNewFile(ROOT_DIR + dirName + "/子文件 sd 12sdf.txt"); // 新建子文件
+		mkdirs(ROOT_DIR + dirName + "/目录 123 abc"); // 文件夹
+		String pathname = ROOT_DIR + dirName + "/子文件 sd 12sdf.txt";
+		createNewFile(pathname); // 新建子文件
+		write(pathname, "内容测试 中文 空格 英文      sdfsfd   数字   1231 "); // 写入内容
+
 		String resource = "ftp://anonymous:@127.0.0.1:21/" + dirName;
 		FileObject fileObject = VFS.resolveFile(resource);
 
@@ -249,7 +254,7 @@ public class FtpFileObjectTest extends TestCase {
 			}
 		}
 
-		deletefile(ROOT_DIR + dirName);
+		deleteFile(ROOT_DIR + dirName);
 	}
 
 	private void mkdirs(String absolutePath) {
@@ -259,138 +264,79 @@ public class FtpFileObjectTest extends TestCase {
 		}
 	}
 
-	private void createNewFile(String absolutePath) {
-		File file = null;
-		FileOutputStream fos = null;
-		PrintWriter pw = null;
-		try {
-			file = new File(absolutePath);
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-			fos = new FileOutputStream(file);
-			pw = new PrintWriter(fos);
-			StringBuilder content = new StringBuilder();
-			content.append("测  试sd _999 s收到.txt");
-			pw.write(content.toString().toCharArray());
-			pw.flush();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (fos != null) {
-				try {
-					fos.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (pw != null) {
-				pw.close();
-			}
+	private void createNewFile(String pathname) throws IOException {
+		File file = new File(pathname);
+		if (!file.exists()) {
+			file.createNewFile();
 		}
 	}
 
-	private FtpServer getFTPServer(String ftpRootPath) throws FtpException {
-		File file = null;
-		FileOutputStream fos = null;
-		PrintWriter pw = null;
-
-		// 新建users.properties文件
-		String usersProperties = ftpRootPath + "users.properties";
-		try {
-			file = new File(usersProperties);
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-			fos = new FileOutputStream(file);
-			pw = new PrintWriter(fos);
-			// 配置users.properties文件
-			StringBuilder content = new StringBuilder();
-			content.append("ftpserver.user.anonymous.homedirectory=")
-					.append(ftpRootPath).append("\n");
-			content.append("ftpserver.user.anonymous.userpassword=\n");
-			// content.append("ftpserver.user.anonymous.enableflag=true\n");
-			content.append("ftpserver.user.anonymous.writepermission=true\n");
-			// content.append("ftpserver.user.anonymous.maxloginnumber=20\n");
-			// content.append("ftpserver.user.anonymous.maxloginperip=2\n");
-			// content.append("ftpserver.user.anonymous.idletime=300\n");
-			// content.append("ftpserver.user.anonymous.uploadrate=4800\n");
-			// content.append("ftpserver.user.anonymous.downloadrate=4800\n");
-			pw.write(content.toString().toCharArray());
-			pw.flush();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (fos != null) {
-				try {
-					fos.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (pw != null) {
-				pw.close();
+	private void write(String pathname, String content) throws IOException {
+		FileOutputStream fos = new FileOutputStream(new File(pathname));
+		PrintWriter pw = new PrintWriter(fos);
+		pw.write(content.toString().toCharArray());
+		pw.flush();
+		if (fos != null) {
+			try {
+				fos.close();
+			} catch (IOException e) {
 			}
 		}
+		if (pw != null) {
+			pw.close();
+		}
+	}
 
+	private FtpServer getFTPServer(String ftpRootPath) throws FtpException,
+			IOException {
+		// 新建并配置users.properties文件
+		File file = new File(ftpRootPath + "users.properties");
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		FileOutputStream fos = new FileOutputStream(file);
+		PrintWriter pw = new PrintWriter(fos);
+		StringBuilder content = new StringBuilder();
+		content.append("ftpserver.user.anonymous.homedirectory=")
+				.append(ftpRootPath).append("\n");
+		content.append("ftpserver.user.anonymous.userpassword=\n");
+		content.append("ftpserver.user.anonymous.writepermission=true\n");
+		pw.write(content.toString().toCharArray());
+		pw.flush();
+		if (fos != null) {
+			try {
+				fos.close();
+			} catch (IOException e) {
+			}
+		}
+		if (pw != null) {
+			pw.close();
+		}
+
+		// 创建并配置服务工厂
 		FtpServerFactory serverFactory = new FtpServerFactory();
 		ListenerFactory factory = new ListenerFactory();
-
-		// set the port of the listener
 		factory.setPort(21);
-
-		// replace the default listener
-		serverFactory.addListener("default", factory.createListener());
-
-		// 设置用户配置信息
+		serverFactory.addListener("default", factory.createListener()); // 添加监听
 		PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
 		userManagerFactory.setFile(file);
-		serverFactory.setUserManager(userManagerFactory.createUserManager());
+		serverFactory.setUserManager(userManagerFactory.createUserManager()); // 设置用户配置信息
 
-		// 注册FTP事件监听
-		// Map<String, Ftplet> ftplets = new LinkedHashMap<String, Ftplet>();
-		// ftplets.put(FtpletNotification.class.getName(),
-		// new FtpletNotification());
-		// serverFactory.setFtplets(ftplets);
-
-		// start the server
-		org.apache.ftpserver.FtpServer server = serverFactory.createServer();
-
-		return server;
+		// 创建并返回服务
+		return serverFactory.createServer();
 	}
 
-	/**
-	 * 删除某个文件夹下的所有文件夹和文件
-	 * 
-	 * @param delpath
-	 *            String
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 * @return boolean
-	 */
-	private void deletefile(String delpath) {
-		File file = new File(delpath);
-		// 当且仅当此抽象路径名表示的文件存在且 是一个目录时，返回 true
-		if (!file.isDirectory()) {
-			file.delete();
-		} else if (file.isDirectory()) {
-			String[] filelist = file.list();
-			for (int i = 0; i < filelist.length; i++) {
-				File delfile = new File(delpath + "\\" + filelist[i]);
-				if (!delfile.isDirectory()) {
-					delfile.delete();
-					System.out.println(delfile.getAbsolutePath() + "删除文件成功");
-				} else if (delfile.isDirectory()) {
-					deletefile(delpath + "\\" + filelist[i]);
-				}
+	private void deleteFile(String delPath) {
+		String pathname = delPath.replaceAll("\\\\", "/");
+		File file = new File(pathname);
+		if (file.isDirectory()) {
+			String[] fileList = file.list();
+			for (int i = 0; i < fileList.length; i++) {
+				deleteFile(pathname + "/" + fileList[i]);
 			}
-			System.out.println(file.getAbsolutePath() + "删除成功");
-			file.delete();
 		}
+		System.out.println(file.getAbsolutePath() + ",删除成功");
+		file.delete();
 	}
 
 }
