@@ -582,7 +582,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 	 */
 	public ComponentInterface getComponentInstance(String componentName) {
 		ComponentInterface componentInstance = null;
-		if (componentName != null || !"".equals(componentName)) {
+		if (componentName != null && !"".equals(componentName)) {
 			componentInstance = containers.getComponentInstance(componentName);
 			return componentInstance;
 		}
