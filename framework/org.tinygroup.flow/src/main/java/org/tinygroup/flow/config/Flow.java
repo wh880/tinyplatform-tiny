@@ -45,7 +45,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 // TODO 组件也可以是流程来实现的
 @XStreamAlias("flow")
-public class Flow implements ServiceInfo {
+public class Flow {
 	/**
 	 * 
 	 */
@@ -93,13 +93,6 @@ public class Flow implements ServiceInfo {
 	@XStreamAlias("parameters")
 	private List<Parameter> parameters;// 流程的参数
 
-	public List<Parameter> getParameters() {
-		List<Parameter> p = getInputParameters();
-		if (p != null) {
-			return p;
-		}
-		return new ArrayList<Parameter>();
-	}
 
 	public List<Parameter> getInputParameters() {
 		if (parameters == null) {
@@ -277,12 +270,12 @@ public class Flow implements ServiceInfo {
 	public Map<String, Node> getNodeMap() {
 		if (nodeMap == null) {
 			nodeMap = new HashMap<String, Node>();
-		}
-		if (nodes != null) {
-			for (Node node : nodes) {
-				nodeMap.put(node.getId(), node);
-			}
-		}
+            if (nodes != null) {
+                for (Node node : nodes) {
+                    nodeMap.put(node.getId(), node);
+                }
+            }
+        }
 		return nodeMap;
 	}
 
@@ -318,20 +311,18 @@ public class Flow implements ServiceInfo {
 		this.description = description;
 	}
 
-	public String getServiceId() {
-		return id;
-	}
 
 	public String getServiceName() {
 		return id;
 	}
 
-	public List<Parameter> getResults() {
-		return getOutputParameters();
-	}
 
-	public int compareTo(ServiceInfo o) {
-		return o.getServiceId().compareTo(id);
-	}
+    public List<Parameter> getParameters() {
+        List<Parameter> p = getInputParameters();
+        if (p != null) {
+            return p;
+        }
+        return new ArrayList<Parameter>();
+    }
 
 }
