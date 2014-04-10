@@ -98,7 +98,11 @@ public class UIComponentManagerImpl implements UIComponentManager {
     public String[] getComponentJsArray(UIComponent component, boolean isDebug) {
         String path = component.getJsResource();
         if (path != null && path.trim().length() > 0) {
-            return path.trim().split(",");
+            String[] paths = path.trim().split(",");
+            for (int i = 0; i < paths.length; i++) {
+                paths[i] = paths[i].trim();
+            }
+            return paths;
         }
         return null;
     }
@@ -106,7 +110,11 @@ public class UIComponentManagerImpl implements UIComponentManager {
     public String[] getComponentCssArray(UIComponent component, boolean isDebug) {
         String path = component.getCssResource();
         if (path != null && path.trim().length() > 0) {
-            return path.trim().split(",");
+            String[] paths = path.trim().split(",");
+            for (int i = 0; i < paths.length; i++) {
+                paths[i] = paths[i].trim();
+            }
+            return paths;
         }
         return null;
     }

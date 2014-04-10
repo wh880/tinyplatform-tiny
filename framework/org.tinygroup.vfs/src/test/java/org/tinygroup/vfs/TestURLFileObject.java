@@ -28,9 +28,11 @@ import junit.framework.TestCase;
 import org.tinygroup.vfs.impl.HttpFileObject;
 import org.tinygroup.vfs.impl.HttpsFileObject;
 
+import java.io.IOException;
+
 public class TestURLFileObject extends TestCase {
 
-	public void testHttpFileObject(){
+	public void testHttpFileObject() throws IOException {
 		
 		FileObject fileObject=VFS.resolveFile("http://home.hundsun.com//Utility/jquery/jquery-1.2.6.pack.js");
 		assertTrue(fileObject instanceof HttpFileObject);
@@ -38,7 +40,7 @@ public class TestURLFileObject extends TestCase {
 		
 	}
 	
-   public void testHttpsFileObject(){
+   public void testHttpsFileObject() throws IOException {
 		
 		FileObject fileObject=VFS.resolveFile("https://www.alipay.com/");
 		assertTrue(fileObject instanceof HttpsFileObject);
