@@ -330,7 +330,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 
 	private void checkOutputParameter(Flow flow, Context context) {
 		StringBuffer buf = new StringBuffer();
-		if (flow.getInputParameters() != null) {
+		if (flow.getOutputParameters() != null) {
 			for (Parameter parameter : flow.getOutputParameters()) {
 				if (parameter.isRequired()) {// 如果是必须
 					Object value = context.get(parameter.getName());
@@ -582,7 +582,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 	 */
 	public ComponentInterface getComponentInstance(String componentName) {
 		ComponentInterface componentInstance = null;
-		if (componentName != null || !"".equals(componentName)) {
+		if (componentName != null && !"".equals(componentName)) {
 			componentInstance = containers.getComponentInstance(componentName);
 			return componentInstance;
 		}

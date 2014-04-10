@@ -31,7 +31,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ServiceMethod {
-	boolean cachable() default false;
 
 	String serviceId() default "";
 

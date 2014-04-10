@@ -46,7 +46,7 @@ import org.tinygroup.xmlparser.node.XmlNode;
 
 public class ServiceProcessorImpl extends AbstractEventProcessor implements
 		ServiceProcessor {
-	private static Logger logger = LoggerFactory.getLogger(ServicePlugin.class);
+	private static Logger logger = LoggerFactory.getLogger(ServiceProcessorImpl.class);
 
 	private List<ServiceProviderInterface> providers = new ArrayList<ServiceProviderInterface>();
 	private List<ServiceInfo> infos = new ArrayList<ServiceInfo>();
