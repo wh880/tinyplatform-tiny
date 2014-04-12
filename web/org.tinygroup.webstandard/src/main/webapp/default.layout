@@ -24,10 +24,10 @@
 
     <link rel="shortcut icon" href="${TINY_CONTEXT_PATH}/icon/logo.png">
     <link href="${TINY_CONTEXT_PATH}/uiengine.uicss" rel="stylesheet" />
+    <script src="${TINY_CONTEXT_PATH}/uiengine.uijs"></script>
 
 </head>
 <body>
     $pageContent
-<script src="${TINY_CONTEXT_PATH}/uiengine.uijs"></script>
 </body>
 </html>
