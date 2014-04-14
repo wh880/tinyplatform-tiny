@@ -63,7 +63,6 @@ public class AopTestUtil {
 		try {
 			handlerManager.addHandler("org.tinygroup.exception.TinySysRuntimeException", new ExceptionHanlder1());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		registerEventProcessor(ToolUtil.getEventProcessor1());
