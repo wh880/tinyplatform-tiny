@@ -41,11 +41,11 @@ public class AnnotationClassMap {
 		List<String> classNameList=classMap.get(annotationId);
 		if(classNameList==null){
 			classNameList=new ArrayList<String>();
-		}
-		if(!classNameList.contains(mapValue)){
-			classNameList.add(mapValue);
-		}
-		classMap.put(annotationId, classNameList);
+            classMap.put(annotationId, classNameList);
+        }
+        if(!classNameList.contains(mapValue)){
+            classNameList.add(mapValue);
+        }
 	}
 	
 	public static List<String> getClassNamesById(String annotationId){
