@@ -96,8 +96,8 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 	/**
 	 * 注册所有服务服务
 	 * 
-	 * @param clazz
-	 * @param annotation
+	 * @param object
+	 * @param serviceComponent
 	 * @param serviceRegistry
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -117,8 +117,8 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 	/**
 	 * 注册服务
 	 * 
-	 * @param clazz
-	 * @param item
+	 * @param object
+	 * @param serviceComponent
 	 * @param serviceRegistry
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -144,8 +144,8 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 	/**
 	 * 注册服务
 	 * 
-	 * @param clazz
-	 * @param method
+	 * @param object
+	 * @param serviceMethod
 	 * @param item
 	 * @param serviceRegistry
 	 * @throws NoSuchMethodException
@@ -171,7 +171,9 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 	/**
 	 * 把参数名称注册过来
 	 * 
-	 * @param method
+	 * @param item
+     * @param serviceMethod
+     * @param serviceProxy
 	 * @return
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException

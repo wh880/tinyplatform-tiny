@@ -105,10 +105,4 @@ public class ServiceExecutorTest extends TestCase {
 		assertEquals("yes", Context.get("result"));
 	}
 
-	public void testExecuteStringStringContext()
-			throws ServiceExecuteException, ServiceNotExistException {
-		serviceExecutor.execute("aaaa", "1.0", Context);
-		assertEquals("yes", Context.get("result"));
-	}
-
 }
