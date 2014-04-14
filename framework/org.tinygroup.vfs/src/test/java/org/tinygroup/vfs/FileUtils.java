@@ -109,21 +109,21 @@ public class FileUtils {
 	}
 
 	public static void printInfo(FileObject fileObject) {
-		System.out.println("schemaProvider:" + fileObject.getSchemaProvider());
-		System.out.println("url:" + fileObject.getURL());
-		System.out.println("absolutePath:" + fileObject.getAbsolutePath());
-		System.out.println("path:" + fileObject.getPath());
-		System.out.println("fileName:" + fileObject.getFileName());
-		System.out.println("extName:" + fileObject.getExtName());
-		System.out.println("isFolder:" + fileObject.isFolder());
-		System.out.println("isInPackage:" + fileObject.isInPackage());
-		System.out.println("isExist:" + fileObject.isExist());
-		System.out.println("size:" + fileObject.getSize());
-		System.out.println("lastModifiedTime:"
+		System.out.println("schemaProvider=" + fileObject.getSchemaProvider());
+		System.out.println("url=" + fileObject.getURL());
+		System.out.println("absolutePath=" + fileObject.getAbsolutePath());
+		System.out.println("path=" + fileObject.getPath());
+		System.out.println("fileName=" + fileObject.getFileName());
+		System.out.println("extName=" + fileObject.getExtName());
+		System.out.println("isFolder=" + fileObject.isFolder());
+		System.out.println("isInPackage=" + fileObject.isInPackage());
+		System.out.println("isExist=" + fileObject.isExist());
+		System.out.println("size=" + fileObject.getSize());
+		System.out.println("lastModifiedTime="
 				+ fileObject.getLastModifiedTime());
-		System.out.println("parent:" + fileObject.getParent());
-		System.out.println("inputStream:" + fileObject.getInputStream());
-		System.out.println("outputStream:" + fileObject.getOutputStream());
+		System.out.println("parent=" + fileObject.getParent());
+		System.out.println("inputStream=" + fileObject.getInputStream());
+		System.out.println("outputStream=" + fileObject.getOutputStream());
 		System.out.println("---------------------------------------------");
 	}
 

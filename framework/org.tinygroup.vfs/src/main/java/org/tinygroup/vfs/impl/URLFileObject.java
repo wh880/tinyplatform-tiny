@@ -46,158 +46,160 @@ import java.util.List;
  * <br>
  */
 public abstract class URLFileObject extends AbstractFileObject {
-    protected URL url;
-    protected String path;
-    protected String absolutePath;
-    protected String fileName;
-    protected String extName;
-    protected Boolean isFolder;
-    protected long lastModified;
-    protected long fileSize;
-    protected List<FileObject> children;
+	protected URL url;
+	protected String path;
+	protected String absolutePath;
+	protected String fileName;
+	protected String extName;
+	protected Boolean isFolder;
+	protected long lastModified;
+	protected long fileSize;
+	protected List<FileObject> children;
 
-    public URLFileObject(SchemaProvider schemaProvider, String resource) {
-        super(schemaProvider);
-        try {
-            url = new URL(resource);
-        } catch (MalformedURLException e) {
-            throw new TinySysRuntimeException("不能定位到某个资源！");
-        }
-    }
+	public URLFileObject(SchemaProvider schemaProvider) {
+		super(schemaProvider);
+	}
 
-    public String getAbsolutePath() {
-        return url.getPath();
-    }
+	public URLFileObject(SchemaProvider schemaProvider, String resource) {
+		super(schemaProvider);
+		try {
+			url = new URL(resource);
+		} catch (MalformedURLException e) {
+			throw new TinySysRuntimeException("不能定位到某个资源！");
+		}
+	}
 
-    public String getPath() {
-        if (path == null) {
-            if (parent == null) {
-                path = "";
-            } else {
-                path = parent.getPath() + "/" + getFileName();
-            }
-        }
-        return path;
-    }
+	public String getAbsolutePath() {
+		return url.getPath();
+	}
 
-    public String getFileName() {
-        if (fileName == null) {
-            String absolutePath = getAbsolutePath();
-            int lastIndex = absolutePath.lastIndexOf("/");
-            if (lastIndex != -1) {
-                fileName = absolutePath.substring(lastIndex + 1);
-            } else {
-                fileName = "";
-            }
-        }
-        return fileName;
-    }
+	public String getPath() {
+		if (path == null) {
+			if (parent == null) {
+				path = "";
+			} else {
+				path = parent.getPath() + "/" + getFileName();
+			}
+		}
+		return path;
+	}
 
-    public String getExtName() {
-        if (extName == null) {
-            String fileName = getFileName();
-            int lastIndex = fileName.lastIndexOf(".");
-            if (lastIndex != -1) {
-                extName = fileName.substring(lastIndex + 1);
-            } else {
-                extName = "";
-            }
-        }
-        return extName;
-    }
+	public String getFileName() {
+		if (fileName == null) {
+			String absolutePath = getAbsolutePath();
+			int lastIndex = absolutePath.lastIndexOf("/");
+			if (lastIndex != -1) {
+				fileName = absolutePath.substring(lastIndex + 1);
+			} else {
+				fileName = "";
+			}
+		}
+		return fileName;
+	}
 
-    public boolean isFolder() {
-        if (isFolder == null) {
-            String extName = getExtName();
-            isFolder = (extName == null || extName.trim().length() == 0);
-        }
-        return isFolder;
-    }
+	public String getExtName() {
+		if (extName == null) {
+			String fileName = getFileName();
+			int lastIndex = fileName.lastIndexOf(".");
+			if (lastIndex != -1) {
+				extName = fileName.substring(lastIndex + 1);
+			} else {
+				extName = "";
+			}
+		}
+		return extName;
+	}
 
-    public boolean isExist() {
-        // return getInputStream() != null;
-        return true;
-    }
+	public boolean isFolder() {
+		if (isFolder == null) {
+			String extName = getExtName();
+			isFolder = (extName == null || extName.trim().length() == 0);
+		}
+		return isFolder;
+	}
 
-    public InputStream getInputStream() {
-        InputStream stream = null;
-        try {
-            stream = url.openStream();
-        } catch (IOException e) {
-            stream = null;
-        }
-        return stream;
-    }
+	public boolean isExist() {
+		// return getInputStream() != null;
+		return true;
+	}
 
-    public OutputStream getOutputStream() {
-        try {
-            URLConnection connection = url.openConnection();
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-            return connection.getOutputStream();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	public InputStream getInputStream() {
+		InputStream stream = null;
+		try {
+			stream = url.openStream();
+		} catch (IOException e) {
+			stream = null;
+		}
+		return stream;
+	}
 
+	public OutputStream getOutputStream() {
+		try {
+			URLConnection connection = url.openConnection();
+			connection.setDoOutput(true);
+			connection.setDoInput(true);
+			return connection.getOutputStream();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    public FileObject getChild(String fileName) {
-        List<FileObject> children = getChildren();
-        if (children == null || children.size() == 0) {
-            return null;
-        }
-        for (FileObject fileObject : getChildren()) {
-            if (fileObject.getFileName().equals(fileName)) {
-                return fileObject;
-            }
-        }
-        return null;
-    }
+	public FileObject getChild(String fileName) {
+		List<FileObject> children = getChildren();
+		if (children == null || children.size() == 0) {
+			return null;
+		}
+		for (FileObject fileObject : getChildren()) {
+			if (fileObject.getFileName().equals(fileName)) {
+				return fileObject;
+			}
+		}
+		return null;
+	}
 
-    public List<FileObject> getChildren() {
-        if (children == null) {
-            children = new ArrayList<FileObject>();
-            // TODO 如何获取当前url的下级资源
-        }
-        return children;
-    }
+	public List<FileObject> getChildren() {
+		if (children == null) {
+			children = new ArrayList<FileObject>();
+			// TODO 如何获取当前url的下级资源
+		}
+		return children;
+	}
 
+	public boolean isInPackage() {
+		return false;
+	}
 
-    public boolean isInPackage() {
-        return false;
-    }
+	public URL getURL() {
+		return url;
+	}
 
-    public URL getURL() {
-        return url;
-    }
+	public static void main(String[] args) {
 
-    public static void main(String[] args) {
+		try {
+			URL url = new URL("ftp://192.168.84.82");
+			// System.out.println(url.getContent());
+			InputStream stream = url.openStream();
+			byte[] bytes = new byte[stream.available()];
+			stream.read(bytes);
+			System.out.println(new String(bytes, "UTF-8"));
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			System.out.println(con.getLastModified());
+			con.getRequestProperty("accept");
+			System.out.println(stream.available());
+			System.out.println(url.getAuthority());
+			System.out.println(url.getFile());
+			System.out.println(url.getHost());
+			System.out.println(url.getPath());
+			System.out.println(url.getPort());
+			System.out.println(url.getProtocol());
+			System.out.println(url.getQuery());
+			System.out.println(url.getUserInfo());
+			System.out.println(url.getRef());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-        try {
-            URL url = new URL("ftp://192.168.84.82");
-            // System.out.println(url.getContent());
-            InputStream stream = url.openStream();
-            byte[] bytes = new byte[stream.available()];
-            stream.read(bytes);
-            System.out.println(new String(bytes, "UTF-8"));
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            System.out.println(con.getLastModified());
-            con.getRequestProperty("accept");
-            System.out.println(stream.available());
-            System.out.println(url.getAuthority());
-            System.out.println(url.getFile());
-            System.out.println(url.getHost());
-            System.out.println(url.getPath());
-            System.out.println(url.getPort());
-            System.out.println(url.getProtocol());
-            System.out.println(url.getQuery());
-            System.out.println(url.getUserInfo());
-            System.out.println(url.getRef());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
+	}
 }

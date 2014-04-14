@@ -25,7 +25,6 @@ package org.tinygroup.dbrouterjdbc3.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -34,46 +33,53 @@ import junit.framework.TestCase;
 
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
+import org.tinygroup.dbrouterjdbc3.jdbc.util.FiltUtil;
 
 public class PrimarySlaveTest extends TestCase {
 
-	private static String driver = "org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver";
-	private static String routerpath = "/primarySlave.xml";
+	private static final String TINY_DRIVER = "org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver";
+	private static final String DERBY_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
+	private static final String ROUTER_PATH = "/primarySlave.xml";
+	private static final String URL = "jdbc:dbrouter://primarySlave";
+	private static final String USER = "luog";
+	private static final String PASSWORD = "123456";
+	private static final String[] DERBY_DBS = { "derbydb/db01", "derbydb/db02",
+			"derbydb/db03" };
+
 	private static RouterManager routerManager;
 
-	private static String url = "jdbc:dbrouter://primarySlave";
-	private static String user = "luog";
-	private static String password = "123456";
-
 	static {
-		routerManager = RouterManagerBeanFactory.getManager();
-		routerManager.addRouters(routerpath);
 		try {
-			Class.forName(driver);
+			Class.forName(TINY_DRIVER); // 加载tiny数据库驱动
+			Class.forName(DERBY_DRIVER); // 加载derby数据库驱动
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			throw new RuntimeException("数据库驱动加载失败!");
 		}
+
+		// 初始化routerManager
+		routerManager = RouterManagerBeanFactory.getManager();
+		routerManager.addRouters(ROUTER_PATH);
 	}
 
-	public void test1() throws Exception {
-		Connection conn = null;
-		Statement st = null;
+	protected void setUp() throws Exception {
+		super.setUp();
+		init();
+	}
 
-		conn = DriverManager.getConnection(url, user, password);
-		st = conn.createStatement();
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		destroy();
+	}
+
+	public void test() throws Exception {
+		Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+		Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_READ_ONLY);
 
 		// 准备数据
 		try {
 			conn.setAutoCommit(false);
-			// statement.addBatch("delete from teacher");
-			// statement
-			// .addBatch("insert into teacher(id,name) values(1,'zhang')");
-			// statement.addBatch("insert into teacher(id,name) values(2,'qian')");
-			// statement.addBatch("insert into teacher(id,name) values(3,'sun')");
-			// statement.addBatch("insert into teacher(id,name) values(4,'wang')");
-			// statement.addBatch("insert into teacher(id,name) values(5,'chen')");
-			// statement.executeBatch();
-			st.executeUpdate("delete from teacher");
+			st.executeUpdate("delete from teacher"); // 清空表teacher
 			st.executeUpdate("insert into teacher(id,name) values(1,'zhang')");
 			st.executeUpdate("insert into teacher(id,name) values(2,'qian')");
 			st.executeUpdate("insert into teacher(id,name) values(3,'sun')");
@@ -82,6 +88,7 @@ public class PrimarySlaveTest extends TestCase {
 			conn.commit();
 		} catch (Exception e) {
 			conn.rollback();
+			throw new RuntimeException("表teacher数据初始化失败!");
 		}
 
 		ResultSet rs = st.executeQuery("select count(*) from teacher");
@@ -94,18 +101,6 @@ public class PrimarySlaveTest extends TestCase {
 		assertEquals(15, rs.getInt(2));
 		assertEquals(5, rs.getInt(3));
 		assertEquals(1, rs.getInt(4));
-
-		PreparedStatement ps = conn
-				.prepareStatement("select avg(id),sum(id),max(id),min(id) from teacher where id in(?,?,?)");
-		ps.setInt(1, 1);
-		ps.setInt(2, 2);
-		ps.setInt(3, 3);
-		ps.executeQuery();
-		rs.first();
-		// assertEquals(2, rs.getInt(1));
-		// assertEquals(6, rs.getInt(2));
-		// assertEquals(3, rs.getInt(3));
-		// assertEquals(1, rs.getInt(4));
 
 		rs = st.executeQuery("select avg(id),sum(id),max(id),min(id) from teacher where id>1 group by id having id<3");
 		rs.first();
@@ -126,34 +121,81 @@ public class PrimarySlaveTest extends TestCase {
 		}
 
 		close(conn, st, rs);
-		close(null, ps, null);
-		System.out.println("test1执行结束！");
+		destroy();
 	}
 
-	public void test6() throws Exception {
+	/**
+	 * 初始化derby数据库和表
+	 */
+	private void init() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("CREATE TABLE ");
+		sb.append("teacher").append("(");
+		sb.append("ID int not null,");
+		sb.append("NAME varchar(20))");
+		String sql = sb.toString();
+
+		for (String derbyDB : DERBY_DBS) {
+			StringBuffer url = new StringBuffer("jdbc:derby:");
+			url.append(derbyDB);
+			url.append(";create=true");
+
+			Connection conn = null;
+			Statement st = null;
+			try {
+				conn = DriverManager.getConnection(url.toString());
+				st = conn.createStatement();
+				st.execute(sql);
+			} catch (SQLException e) {
+				throw new RuntimeException("初始化表失败!");
+			} finally {
+				close(conn, st, null);
+			}
+		}
 	}
 
-	private void close(Connection conn, Statement st, ResultSet rs) {
+	/**
+	 * 关闭数据库资源
+	 * 
+	 * @param conn
+	 * @param st
+	 * @param rs
+	 */
+	private static void close(Connection conn, Statement st, ResultSet rs) {
 		if (conn != null) {
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
 			}
 		}
 		if (st != null) {
 			try {
 				st.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
 			}
 		}
 		if (rs != null) {
 			try {
 				rs.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
 			}
 		}
 	}
+
+	/**
+	 * 清理derby数据库
+	 */
+	private void destroy() throws Exception {
+		try {
+			DriverManager.getConnection("jdbc:derby:;shutdown=true"); // 关闭derby数据库
+		} catch (SQLException e) {
+			// 关闭失败,忽略之
+		}
+
+		// 删除数据库对应文件和目录
+		FiltUtil.deletefile("derby.log");
+		FiltUtil.deletefile("file.log");
+		FiltUtil.deletefile("derbydb");
+	}
+
 }
