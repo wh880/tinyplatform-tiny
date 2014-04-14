@@ -16,7 +16,6 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.SchemaProvider;
-import org.tinygroup.vfs.impl.URLFileObject;
 
 /**
  * Created by luoguo on 14-3-31.
@@ -89,7 +88,7 @@ public class FtpFileObject extends URLFileObject {
 			fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
 			ftpClient.enterLocalPassiveMode();
 			FTPFile[] files = ftpClient.listFiles(recode(checkPath),
-					new FtpFileFilterByName(fileName)); // 从上级目录的子目录中过滤出当前资源
+					new FtpFileFilterByName1(fileName)); // 从上级目录的子目录中过滤出当前资源
 			if (files != null && files.length == 1) {
 				ftpFile = files[0];
 			} else {
