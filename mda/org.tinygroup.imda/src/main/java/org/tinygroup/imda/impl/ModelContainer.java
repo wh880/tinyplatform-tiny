@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.tinygroup.imda.ModelInfomationGetter;
+import org.tinygroup.imda.ModelInformationGetter;
 import org.tinygroup.imda.ModelLoader;
 import org.tinygroup.imda.config.ModelDefine;
 import org.tinygroup.imda.config.ModelProcessorDefine;
@@ -217,7 +217,7 @@ public class ModelContainer {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void updateModel(Object model) {
-		ModelInfomationGetter infoBean = getInfoBean(model);
+		ModelInformationGetter infoBean = getInfoBean(model);
 		String id = infoBean.getId(model);
 		models.put(id, model);
 
@@ -225,20 +225,20 @@ public class ModelContainer {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void addModel(Object model) {
-		ModelInfomationGetter infoBean = getInfoBean(model);
+		ModelInformationGetter infoBean = getInfoBean(model);
 		String id = infoBean.getId(model);
 		models.put(id, model);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void removeModel(Object model) {
-		ModelInfomationGetter infoBean = getInfoBean(model);
+		ModelInformationGetter infoBean = getInfoBean(model);
 		String id = infoBean.getId(model);
 		models.remove(id);
 	}
 
 	@SuppressWarnings({ "rawtypes" })
-	private ModelInfomationGetter getInfoBean(Object model) {
+	private ModelInformationGetter getInfoBean(Object model) {
 		ModelDefine modelDefine = getModelDefine(model);
 		String infoBean = modelDefine.getModelInfomationGetterBean();
 		return SpringUtil.getBean(infoBean);

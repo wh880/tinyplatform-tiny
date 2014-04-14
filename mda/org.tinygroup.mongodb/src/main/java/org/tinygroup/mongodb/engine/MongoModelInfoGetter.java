@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.tinygroup.imda.ModelInfomationGetter;
+import org.tinygroup.imda.ModelInformationGetter;
 import org.tinygroup.imda.config.CustomizeStageConfig;
 import org.tinygroup.imda.validate.ValidateRule;
 import org.tinygroup.logger.Logger;
@@ -40,7 +40,7 @@ import org.tinygroup.mongodb.common.Operation;
 import org.tinygroup.mongodb.common.View;
 import org.tinygroup.mongodb.model.MongoDBModel;
 
-public class MongoModelInfoGetter implements ModelInfomationGetter<MongoDBModel> {
+public class MongoModelInfoGetter implements ModelInformationGetter<MongoDBModel> {
 	static final Logger logger = LoggerFactory.getLogger(MongoModelInfoGetter.class);
 
 	public String getId(MongoDBModel model) {

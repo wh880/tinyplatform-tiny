@@ -26,11 +26,11 @@ package org.tinygroup.imda.usermodel;
 import java.util.List;
 import java.util.Map;
 
-import org.tinygroup.imda.ModelInfomationGetter;
+import org.tinygroup.imda.ModelInformationGetter;
 import org.tinygroup.imda.config.CustomizeStageConfig;
 import org.tinygroup.imda.validate.ValidateRule;
 
-public class InfoGetter implements ModelInfomationGetter<CaseModel> {
+public class InfoGetter implements ModelInformationGetter<CaseModel> {
 
 	public String getId(CaseModel model) {
 		return model.getId();

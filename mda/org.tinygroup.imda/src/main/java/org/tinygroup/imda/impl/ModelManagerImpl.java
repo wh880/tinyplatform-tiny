@@ -32,7 +32,7 @@ import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.imda.ModelDefineInfo;
-import org.tinygroup.imda.ModelInfomationGetter;
+import org.tinygroup.imda.ModelInformationGetter;
 import org.tinygroup.imda.ModelLoader;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.imda.config.CustomizeStageConfig;
@@ -135,13 +135,13 @@ public class ModelManagerImpl implements ModelManager {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public <T> T getOperationDeclare(ModelDefine modelDefine, Object model, String operationId) {
-        ModelInfomationGetter infomationGetter = SpringUtil.getBean(modelDefine.getModelInfomationGetterBean());
+        ModelInformationGetter infomationGetter = SpringUtil.getBean(modelDefine.getModelInfomationGetterBean());
         return (T) infomationGetter.getOperation(model, operationId);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public String getOperationType(ModelDefine modelDefine, Object model, String operationId) {
-        ModelInfomationGetter infomationGetter = SpringUtil.getBean(modelDefine.getModelInfomationGetterBean());
+        ModelInformationGetter infomationGetter = SpringUtil.getBean(modelDefine.getModelInfomationGetterBean());
         return infomationGetter.getOperationType(model, operationId);
     }
 
@@ -230,7 +230,7 @@ public class ModelManagerImpl implements ModelManager {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public List<String> getParamterList(Object model, Object operationObject) {
-        ModelInfomationGetter infomationGetter = SpringUtil.getBean(container.getModelDefine(model).getModelInfomationGetterBean());
+        ModelInformationGetter infomationGetter = SpringUtil.getBean(container.getModelDefine(model).getModelInfomationGetterBean());
         return infomationGetter.getParamterList(model, operationObject);
     }
 
@@ -241,7 +241,7 @@ public class ModelManagerImpl implements ModelManager {
     @SuppressWarnings({"rawtypes", "unchecked"})
     public CustomizeStageConfig getCustomizeStageConfig(Object model, String operationId,
                                                         String stageName) {
-        ModelInfomationGetter infomationGetter = SpringUtil.getBean(container.getModelDefine(model).getModelInfomationGetterBean());
+        ModelInformationGetter infomationGetter = SpringUtil.getBean(container.getModelDefine(model).getModelInfomationGetterBean());
         return infomationGetter.getCustomizeStageConfig(model, operationId, stageName);
     }
 
@@ -251,7 +251,7 @@ public class ModelManagerImpl implements ModelManager {
 
 
     public Map<String, List<ValidateRule>> getOperationValidateMap(Object model, Object operation) {
-        ModelInfomationGetter<Object> infomationGetter = SpringUtil.getBean(container.getModelDefine(model).getModelInfomationGetterBean());
+        ModelInformationGetter<Object> infomationGetter = SpringUtil.getBean(container.getModelDefine(model).getModelInfomationGetterBean());
         return infomationGetter.getOperationValidateMap(model, operation);
     }
 

@@ -36,7 +36,7 @@ import org.tinygroup.imda.validate.ValidateRule;
  * @author luog
  * 
  */
-public interface ModelInfomationGetter<T> {
+public interface ModelInformationGetter<T> {
 	/**
 	 * 返回标识
 	 * 
@@ -81,7 +81,7 @@ public interface ModelInfomationGetter<T> {
 	/**
 	 * 返回对应的操作或视图
 	 * 
-	 * @param type
+	 * @param model
 	 * @param operationId
 	 * @return
 	 */
@@ -118,8 +118,7 @@ public interface ModelInfomationGetter<T> {
 	 * 返回参数部分的URL
 	 * 
 	 * @param model
-	 * @param operationId
-	 * @param parameter
+	 * @param operation
 	 * @return
 	 */
 	List<String> getParamterList(T model, Object operation);
@@ -127,7 +126,7 @@ public interface ModelInfomationGetter<T> {
 	/**
 	 * 返回操作的校验规则列表<br>
 	 * key:字段名称
-	 * @param model TODO
+	 * @param model 
 	 * @param operation
 	 * 
 	 * @return

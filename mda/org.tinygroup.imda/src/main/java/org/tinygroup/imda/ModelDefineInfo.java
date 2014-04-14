@@ -75,7 +75,7 @@ public class ModelDefineInfo {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String getVisitUrl(){
 		if(visitUrl==null){
-			ModelInfomationGetter getter=SpringUtil.getBean(modelDefine.getModelInfomationGetterBean());
+			ModelInformationGetter getter=SpringUtil.getBean(modelDefine.getModelInfomationGetterBean());
 			visitUrl=modelDefine.getId()+"_"+modelProcessorDefine.getName()+"_"+getter.getId(model)+"_"+getter.getOperationId(processDefine);
 		}
 		return visitUrl;

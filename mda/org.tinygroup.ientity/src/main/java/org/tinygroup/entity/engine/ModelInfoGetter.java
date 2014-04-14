@@ -35,13 +35,13 @@ import org.tinygroup.entity.common.Field;
 import org.tinygroup.entity.common.Operation;
 import org.tinygroup.entity.common.View;
 import org.tinygroup.entity.entitymodel.EntityModel;
-import org.tinygroup.imda.ModelInfomationGetter;
+import org.tinygroup.imda.ModelInformationGetter;
 import org.tinygroup.imda.config.CustomizeStageConfig;
 import org.tinygroup.imda.validate.ValidateRule;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
-public class ModelInfoGetter implements ModelInfomationGetter<BaseModel> {
+public class ModelInfoGetter implements ModelInformationGetter<BaseModel> {
 	static final Logger logger = LoggerFactory.getLogger(ModelInfoGetter.class);
 
 	public String getId(BaseModel model) {
