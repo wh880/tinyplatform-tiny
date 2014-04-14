@@ -35,6 +35,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
+import org.tinygroup.vfs.impl.FileSchemaProvider;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 import java.net.URL;
@@ -254,6 +255,9 @@ public class FileResolverImpl implements FileResolver {
     }
 
     boolean isInclude(FileObject fileObject) {
+        if (fileObject.getSchemaProvider() instanceof FileSchemaProvider) {
+            return true;
+        }
         for (String patternString : includePathPatternMap.keySet()) {
             Pattern pattern = includePathPatternMap.get(patternString);
             Matcher matcher = pattern.matcher(fileObject.getFileName());
