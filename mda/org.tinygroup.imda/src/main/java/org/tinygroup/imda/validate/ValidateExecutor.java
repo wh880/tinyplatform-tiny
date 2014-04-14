@@ -39,7 +39,6 @@ public interface ValidateExecutor {
 	 * 
 	 * @param validateRule
 	 * @param context
-	 *            TODO
 	 * @return
 	 */
 	boolean isValidate(ValidateRule validateRule, String value, Context context);
