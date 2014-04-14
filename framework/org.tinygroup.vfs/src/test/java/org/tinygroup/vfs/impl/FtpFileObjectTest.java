@@ -47,8 +47,21 @@ public class FtpFileObjectTest extends TestCase {
 	private static FtpServer ftpServer; // ftp服务器
 	private static boolean inited = false; // 是否已初始化
 
+	protected void setUp() throws Exception {
+		super.setUp();
+	}
+
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		if (ftpServer != null) {
+			ftpServer.stop(); // 停止服务器
+			System.out.println("停止服务器成功");
+		}
+		deleteFile(rootDir); // 清理文件，文件夹
+	}
+
 	public static void main(String[] args) throws Exception {
-		init();
+		init(); // 初始化ftp服务器
 
 		FtpFileObjectTest ftpFileObjectTest = new FtpFileObjectTest();
 		ftpFileObjectTest.fileTest();
@@ -85,25 +98,13 @@ public class FtpFileObjectTest extends TestCase {
 		}
 	}
 
-	protected void setUp() throws Exception {
-		super.setUp();
-		init();
-	}
-
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		if (ftpServer != null) {
-			ftpServer.stop(); // 停止服务器
-			System.out.println("停止服务器成功");
-		}
-		deleteFile(rootDir); // 清理文件，文件夹
-	}
-
 	public void test() throws Exception {
-		fileTest();
-		folderTest();
-		folderTest2();
-		folderTest3();
+		// init(); // 初始化ftp服务器
+
+		// fileTest();
+		// folderTest();
+		// folderTest2();
+		// folderTest3();
 	}
 
 	private void fileTest() throws Exception {
