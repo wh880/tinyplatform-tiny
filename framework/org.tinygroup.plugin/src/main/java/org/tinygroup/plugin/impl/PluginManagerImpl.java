@@ -126,7 +126,7 @@ public class PluginManagerImpl implements PluginManager {
 		} else {
 			Plugin plugin = SpringUtil.getBean(pluginConfig.getPluginBean());
 			for (PluginConfig config : pluginConfig.getDependByList()) {// 停止依赖当前插件的插件
-				stopPlugin(config.getPluginName());
+				stopPlugin(config);
 			}
 			plugin.stop();
 			pluginConfig.setStatus(STOPED);
