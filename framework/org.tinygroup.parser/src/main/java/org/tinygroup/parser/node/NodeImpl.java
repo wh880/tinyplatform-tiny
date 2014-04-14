@@ -32,7 +32,6 @@ import org.tinygroup.parser.Node;
 import org.tinygroup.parser.NodeType;
 
 /**
- * todo 增加编码支持 todo 增加<,'等特殊字符的替换操作
  *
  * @author luoguo
  */
