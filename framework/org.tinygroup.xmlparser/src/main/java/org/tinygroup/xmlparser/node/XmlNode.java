@@ -27,8 +27,7 @@ import org.tinygroup.parser.node.NodeImpl;
 import org.tinygroup.xmlparser.XmlNodeType;
 
 /**
- * todo 增加编码支持
- * 
+ *
  * @author luoguo
  * 
  */
