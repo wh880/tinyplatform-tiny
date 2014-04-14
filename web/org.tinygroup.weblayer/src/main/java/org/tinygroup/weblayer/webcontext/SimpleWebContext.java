@@ -48,7 +48,7 @@ public class SimpleWebContext extends CommitMonitor implements WebContext {
 	/**
 	 * 创建一个新的<code>RequestContext</code>对象。
 	 * 
-	 * @param servletContext
+	 * @param webContext
 	 *            当前请求所在的<code>ServletContext</code>
 	 * @param request
 	 *            <code>HttpServletRequest</code>对象
@@ -123,7 +123,6 @@ public class SimpleWebContext extends CommitMonitor implements WebContext {
 		
 		
 		public RequestDispatcher getRequestDispatcher(String path) {
-			// TODO Auto-generated method stub
 			return super.getRequestDispatcher(path);
 		}
 		
