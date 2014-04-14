@@ -33,7 +33,7 @@ import junit.framework.TestCase;
 
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
-import org.tinygroup.dbrouterjdbc3.jdbc.util.FiltUtil;
+import org.tinygroup.dbrouterjdbc3.jdbc.util.FileUtil;
 
 public class PrimarySlaveTest extends TestCase {
 
@@ -63,15 +63,18 @@ public class PrimarySlaveTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		init();
+		// init();
+	}
+
+	public void test() {
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		destroy();
+		// destroy();
 	}
 
-	public void test() throws Exception {
+	public void _test() throws Exception {
 		Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
 		Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				ResultSet.CONCUR_READ_ONLY);
@@ -193,9 +196,9 @@ public class PrimarySlaveTest extends TestCase {
 		}
 
 		// 删除数据库对应文件和目录
-		FiltUtil.deletefile("derby.log");
-		FiltUtil.deletefile("file.log");
-		FiltUtil.deletefile("derbydb");
+		FileUtil.deletefile("derby.log");
+		FileUtil.deletefile("file.log");
+		FileUtil.deletefile("derbydb");
 	}
 
 }
