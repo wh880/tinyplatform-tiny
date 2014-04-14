@@ -48,7 +48,7 @@ public class ShardModeSameSchemaTest extends TestCase {
 	private static final String USER = "luog"; // 用户名
 	private static final String PASSWORD = "123456"; // 密码
 
-	private static final String DERBY_DBPATH = "derbyroot02"; // derby数据库存放目录
+	private static final String DERBY_DBPATH = "derbydb"; // derby数据库存放目录
 	private static final String DERBY_DB = "dbShard"; // derby数据库
 	private static final String[] DERBY_TEACHER_TABLES = { "teacher" }; // 教师表
 	private static final String[] DERBY_STUDENT_TABLES = { "student", // 学生表

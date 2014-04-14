@@ -24,7 +24,7 @@ public class ShardModeDiffSchemaTest extends TestCase {
 	private static final String USER = "luog"; // 用户名
 	private static final String PASSWORD = "123456"; // 密码
 
-	private static final String DERBY_DBPATH = "derbyroot"; // derby数据库存放目录
+	private static final String DERBY_DBPATH = "derbydb"; // derby数据库存放目录
 	private static final String[] DERBY_DBS = { "db01", "db02", "db03" }; // derby数据库
 
 	private static RouterManager routerManager; // tiny路由管理器
