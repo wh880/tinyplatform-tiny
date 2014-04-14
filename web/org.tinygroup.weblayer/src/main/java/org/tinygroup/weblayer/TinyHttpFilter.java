@@ -47,8 +47,6 @@ import org.tinygroup.weblayer.impl.WebContextImpl;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
 
-//TODO 要保证两个WebContextProcessor拿到的Context是同一个
-
 public class TinyHttpFilter implements Filter {
 	private static final String EXCLUDE_PATH = "excludePath";
 	private static final Logger logger = LoggerFactory
