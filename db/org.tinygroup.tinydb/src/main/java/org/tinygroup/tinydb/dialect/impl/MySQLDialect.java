@@ -42,7 +42,6 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.util.DialectUtil;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MySQLDialect.
  */
