@@ -238,7 +238,6 @@ public class AbstractJobCenter implements JobCenter {
                 }
                 logger.logMessage(LogLevel.DEBUG, "结束工作:{}-{}", work.getType(), work.getId());
             } catch (Throwable e) {
-                // TODO 添加日志
                 logger.errorMessage("工作:{}-{}执行时发生异常！", e, work.getType(), work.getId());
             }
         }
