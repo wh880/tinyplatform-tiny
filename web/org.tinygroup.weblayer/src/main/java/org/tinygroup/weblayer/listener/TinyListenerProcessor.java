@@ -120,7 +120,7 @@ public class TinyListenerProcessor extends AbstractConfiguration implements Appl
 	}
 
 	public void setApplication(Application application) {
-		// TODO Auto-generated method stub
+		//如果程序中需要访问application方法，则需要设置为属性
 		
 	}
 
