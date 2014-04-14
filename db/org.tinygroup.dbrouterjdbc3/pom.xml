@@ -42,5 +42,11 @@
             <artifactId>org.tinygroup.threadgroup</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency> 
+            <groupId>org.apache.derby</groupId> 
+            <artifactId>derby</artifactId> 
+            <version>10.6.1.0</version> 
+            <scope>test</scope> 
+		</dependency> 
     </dependencies>
 </project>
