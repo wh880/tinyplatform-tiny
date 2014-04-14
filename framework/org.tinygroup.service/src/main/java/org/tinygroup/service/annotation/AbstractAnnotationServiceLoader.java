@@ -121,7 +121,6 @@ public abstract class AbstractAnnotationServiceLoader implements
 				}
 
 			} catch (Exception e) {
-				// TODO log ClassNotFoundException
 				logger.log(LogLevel.ERROR, "service.loadServiceException",
 						className);
 			}
@@ -169,7 +168,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 	 * 注册服务
 	 * 
 	 * @param clazz
-	 * @param item
+	 * @param superItem
 	 * @param serviceRegistry
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
