@@ -77,18 +77,10 @@ public interface ServiceProviderInterface {
 	 * 执行指定ID服务，并把服务结果放在环境当中
 	 * 
 	 * @param serviceId
-	 * @param Context
+	 * @param context
 	 */
 	void execute(String serviceId, Context context);
 
-	/**
-	 * 执行指定ID指定版本服务，并把服务结果放在环境当中
-	 * 
-	 * @param serviceId
-	 * @param version
-	 * @param Context
-	 */
-	void execute(String serviceId, String version, Context context);
 
 	Service getService(String serviceId);
 

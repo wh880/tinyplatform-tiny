@@ -23,8 +23,6 @@
  */
 package org.tinygroup.service.impl;
 
-import java.util.List;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.i18n.I18nMessageFactory;
@@ -36,118 +34,90 @@ import org.tinygroup.service.exception.ServiceNotExistException;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
 
+import java.util.List;
+
 public class ServiceProviderImpl implements ServiceProviderInterface {
 
-	private static final String OUTPUT = "输出";
-	private static final String INPUT = "输入";
-	private ServiceRegistry serviceRegistory = null;
-	private I18nMessages i18nMessages = I18nMessageFactory.getI18nMessages();
+    private static final String OUTPUT = "输出";
+    private static final String INPUT = "输入";
+    private ServiceRegistry serviceRegistory = null;
+    private I18nMessages i18nMessages = I18nMessageFactory.getI18nMessages();
 
-	public void setServiceRegistory(ServiceRegistry serviceRegistory) {
-		this.serviceRegistory = serviceRegistory;
-	}
+    public void setServiceRegistory(ServiceRegistry serviceRegistory) {
+        this.serviceRegistory = serviceRegistory;
+    }
 
-	public ServiceRegistry getServiceRegistory() {
-		return serviceRegistory;
-	}
+    public ServiceRegistry getServiceRegistory() {
+        return serviceRegistory;
+    }
 
-	public void validateInputParameter(Service service, Context Context) {
-		ServiceRegistryItem serviceRegistryItem = serviceRegistory
-				.getServiceRegistryItem(service);
-		validateParameter(serviceRegistryItem.getParameters(), Context, INPUT);
-	}
+    public void validateInputParameter(Service service, Context Context) {
+        ServiceRegistryItem serviceRegistryItem = serviceRegistory.getServiceRegistryItem(service);
+        validateParameter(serviceRegistryItem.getParameters(), Context, INPUT);
+    }
 
-	/**
-	 * 检查参数 TODO 没有处理方向
-	 * 
-	 * @param parameterDescriptor
-	 * @param serviceRegistory2
-	 * @throws ParameterCheckFailException
-	 */
-	private void validateParameter(List<Parameter> parameterDescriptors,
-			Context context, String direct) {
+    /**
+     * 检查参数 TODO 没有处理方向
+     *
+     * @param parameterDescriptors
+     * @param context
+     * @param context
+     * @throws ParameterCheckFailException
+     */
+    private void validateParameter(List<Parameter> parameterDescriptors, Context context, String direct) {
 
-		if (parameterDescriptors != null) {
-			for (Parameter parameterDescriptor : parameterDescriptors) {
-				Object object = context.get(parameterDescriptor.getName());
-				if (parameterDescriptor.isRequired() && object == null) {
-					throw new ParameterCheckFailException(
-							i18nMessages.getMessage("service.paramIsNotExist",
-									parameterDescriptor.getName()));
-				}
+        if (parameterDescriptors != null) {
+            for (Parameter parameterDescriptor : parameterDescriptors) {
+                Object object = context.get(parameterDescriptor.getName());
+                if (parameterDescriptor.isRequired() && object == null) {
+                    throw new ParameterCheckFailException(i18nMessages.getMessage("service.paramIsNotExist", parameterDescriptor.getName()));
+                }
 
-				if (object.getClass().isArray() != parameterDescriptor
-						.isArray()) {
-					throw new ParameterCheckFailException(
-							i18nMessages.getMessage(
-									"service.paramArrayNotSuit",
-									parameterDescriptor.getName(),
-									parameterDescriptor.isArray(), object
-											.getClass().isArray()));
-				}
-				if (!object.getClass().getName()
-						.equals(parameterDescriptor.getType())) {
-					throw new ParameterCheckFailException(
-							i18nMessages.getMessage("service.paramNotSuit",
-									parameterDescriptor.getName(), object
-											.getClass().getClass().getName(),
-									parameterDescriptor.getType()));
-				}
-			}
-		}
-	}
+                if (object.getClass().isArray() != parameterDescriptor.isArray()) {
+                    throw new ParameterCheckFailException(i18nMessages.getMessage("service.paramArrayNotSuit", parameterDescriptor.getName(), parameterDescriptor.isArray(), object.getClass().isArray()));
+                }
+                if (!object.getClass().getName().equals(parameterDescriptor.getType())) {
+                    throw new ParameterCheckFailException(i18nMessages.getMessage("service.paramNotSuit", parameterDescriptor.getName(), object.getClass().getClass().getName(), parameterDescriptor.getType()));
+                }
+            }
+        }
+    }
 
-	public void validateOutputParameter(Service service, Context context) {
-		ServiceRegistryItem serviceRegistryItem = serviceRegistory
-				.getServiceRegistryItem(service);
-		validateParameter(serviceRegistryItem.getResults(), context, OUTPUT);
+    public void validateOutputParameter(Service service, Context context) {
+        ServiceRegistryItem serviceRegistryItem = serviceRegistory.getServiceRegistryItem(service);
+        validateParameter(serviceRegistryItem.getResults(), context, OUTPUT);
 
-	}
+    }
 
-	public void execute(Service service, Context context) {
-		service.execute(context);
+    public void execute(Service service, Context context) {
+        service.execute(context);
 
-	}
+    }
 
-	public void execute(String serviceId, Context context) {
-		ServiceRegistryItem serviceRegistryItem = serviceRegistory
-				.getServiceRegistryItem(serviceId);
-		if (serviceRegistryItem != null) {
-			serviceRegistryItem.getService().execute(context);
-		} else {
-			throw new ServiceNotExistException();
-		}
-	}
+    public void execute(String serviceId, Context context) {
+        ServiceRegistryItem serviceRegistryItem = serviceRegistory.getServiceRegistryItem(serviceId);
+        if (serviceRegistryItem != null) {
+            serviceRegistryItem.getService().execute(context);
+        } else {
+            throw new ServiceNotExistException();
+        }
+    }
 
-	public void execute(String serviceId, String version, Context context) {
-		serviceRegistory.getServiceRegistryItem(serviceId).getService()
-				.execute(context);
 
-	}
+    public <T> void setConfig(T config) {
 
-	public <T> void setConfig(T config) {
+    }
 
-	}
+    public Service getService(String serviceId) {
+        ServiceRegistryItem item = serviceRegistory.getServiceRegistryItem(serviceId);
+        if (item == null)
+            return null;
+        return item.getService();
+    }
 
-	public Service getService(String serviceId, String version) {
-		ServiceRegistryItem item = serviceRegistory
-				.getServiceRegistryItem(serviceId);
-		if (item == null)
-			return null;
-		return item.getService();
-	}
+    public ServiceRegistryItem getServiceRegistryItem(Service service) {
 
-	public Service getService(String serviceId) {
-		ServiceRegistryItem item = serviceRegistory
-				.getServiceRegistryItem(serviceId);
-		if (item == null)
-			return null;
-		return item.getService();
-	}
-
-	public ServiceRegistryItem getServiceRegistryItem(Service service) {
-
-		return serviceRegistory.getServiceRegistryItem(service);
-	}
+        return serviceRegistory.getServiceRegistryItem(service);
+    }
 
 }
