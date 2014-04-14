@@ -16,7 +16,6 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.SchemaProvider;
-import org.tinygroup.vfs.impl.URLFileObject;
 
 /**
  * Created by luoguo on 14-3-31.
