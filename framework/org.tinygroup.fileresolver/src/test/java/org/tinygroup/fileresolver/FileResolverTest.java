@@ -124,32 +124,26 @@ public class FileResolverTest extends TestCase {
 		}
 
 		public String getApplicationNodePath() {
-			// TODO 自动生成的方法存根
 			return null;
 		}
 
 		public String getComponentConfigPath() {
-			// TODO 自动生成的方法存根
 			return null;
 		}
 
 		public void config(XmlNode applicationConfig, XmlNode componentConfig) {
-			// TODO 自动生成的方法存根
 
 		}
 
 		public XmlNode getComponentConfig() {
-			// TODO 自动生成的方法存根
 			return null;
 		}
 
 		public XmlNode getApplicationConfig() {
-			// TODO 自动生成的方法存根
 			return null;
 		}
 
 		public int getOrder() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 	}
