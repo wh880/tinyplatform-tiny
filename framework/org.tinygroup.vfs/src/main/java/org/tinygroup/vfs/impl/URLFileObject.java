@@ -48,11 +48,8 @@ import java.util.List;
 public abstract class URLFileObject extends AbstractFileObject {
 	protected URL url;
 	protected String path;
-	protected String absolutePath;
 	protected String fileName;
 	protected String extName;
-	protected Boolean isFolder;
-	protected long lastModified;
 	protected long fileSize;
 	protected List<FileObject> children;
 
@@ -111,15 +108,10 @@ public abstract class URLFileObject extends AbstractFileObject {
 	}
 
 	public boolean isFolder() {
-		if (isFolder == null) {
-			String extName = getExtName();
-			isFolder = (extName == null || extName.trim().length() == 0);
-		}
-		return isFolder;
+		return false;
 	}
 
 	public boolean isExist() {
-		// return getInputStream() != null;
 		return true;
 	}
 
@@ -160,7 +152,6 @@ public abstract class URLFileObject extends AbstractFileObject {
 	public List<FileObject> getChildren() {
 		if (children == null) {
 			children = new ArrayList<FileObject>();
-			// TODO 如何获取当前url的下级资源
 		}
 		return children;
 	}
@@ -173,33 +164,4 @@ public abstract class URLFileObject extends AbstractFileObject {
 		return url;
 	}
 
-	public static void main(String[] args) {
-
-		try {
-			URL url = new URL("ftp://192.168.84.82");
-			// System.out.println(url.getContent());
-			InputStream stream = url.openStream();
-			byte[] bytes = new byte[stream.available()];
-			stream.read(bytes);
-			System.out.println(new String(bytes, "UTF-8"));
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			System.out.println(con.getLastModified());
-			con.getRequestProperty("accept");
-			System.out.println(stream.available());
-			System.out.println(url.getAuthority());
-			System.out.println(url.getFile());
-			System.out.println(url.getHost());
-			System.out.println(url.getPath());
-			System.out.println(url.getPort());
-			System.out.println(url.getProtocol());
-			System.out.println(url.getQuery());
-			System.out.println(url.getUserInfo());
-			System.out.println(url.getRef());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
 }
