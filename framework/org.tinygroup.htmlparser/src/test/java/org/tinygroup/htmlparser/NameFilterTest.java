@@ -30,7 +30,6 @@ import org.tinygroup.parser.filter.QuickNameFilter;
 
 import junit.framework.TestCase;
 
-//TODO 增加个数时，会内存堆栈不够
 public class NameFilterTest extends TestCase {
 	HtmlNode node = null;
 
