@@ -47,8 +47,7 @@ public class RequiredValidator implements ValidateExecutor {
 	}
 
 	public String getDefaultMessage() {
-		// TODO 自动生成的方法存根
-		return null;
+        return "此值不能为空!";
 	}
 
 }
