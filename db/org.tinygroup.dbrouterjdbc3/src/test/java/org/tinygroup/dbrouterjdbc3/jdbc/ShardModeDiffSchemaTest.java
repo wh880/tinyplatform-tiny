@@ -16,29 +16,19 @@ import org.tinygroup.dbrouterjdbc3.jdbc.util.FileUtil;
 
 public class ShardModeDiffSchemaTest extends TestCase {
 
-	private static final String TINY_DRIVER = "org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver";
-	private static final String DERBY_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
-	private static final String ROUTER_PATH = "/shardModeDiffSchema.xml";
-	private static final String URL = "jdbc:dbrouter://shardModeDiffSchema";
-	private static final String USER = "luog";
-	private static final String PASSWORD = "123456";
-	private static final String[] DERBY_DBS = { "derbydb/db01", "derbydb/db02",
-			"derbydb/db03" };
+	private static final String TINY_DRIVER = "org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver"; // tiny驱动
+	private static final String DERBY_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver"; // derby驱动
 
-	private static RouterManager routerManager;
+	private static final String ROUTER_CONFIG = "/shardModeDiffSchema.xml"; // tiny路由配置
+	private static final String URL = "jdbc:dbrouter://shardModeDiffSchema"; // url
+	private static final String USER = "luog"; // 用户名
+	private static final String PASSWORD = "123456"; // 密码
 
-	static {
-		// try {
-		// Class.forName(TINY_DRIVER); // 加载tiny数据库驱动
-		// Class.forName(DERBY_DRIVER); // 加载derby数据库驱动
-		// } catch (ClassNotFoundException e) {
-		// throw new RuntimeException("数据库驱动加载失败!");
-		// }
-		//
-		// // 初始化routerManager
-		// routerManager = RouterManagerBeanFactory.getManager();
-		// routerManager.addRouters(ROUTER_PATH);
-	}
+	private static final String DERBY_DBPATH = "derbyroot"; // derby数据库存放目录
+	private static final String[] DERBY_DBS = { "db01", "db02", "db03" }; // derby数据库
+
+	private static RouterManager routerManager; // tiny路由管理器
+	private static boolean inited; // 是否已初始化
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -50,16 +40,42 @@ public class ShardModeDiffSchemaTest extends TestCase {
 		// destroy();
 	}
 
-	public void test() {
+	public static void main(String[] args) {
+		Connection conn = null;
+		try {
+			init(); // 初始化derby数据库和表
+			conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			ShardModeDiffSchemaTest test = new ShardModeDiffSchemaTest();
+			test.relatedQueryTest(conn);
+			test.statementTest(conn);
+			test.resultSetTest(conn);
+			test.relatedQueryTest2(conn);
+		} catch (Exception e) {
+			throw new RuntimeException("测试失败", e);
+		} finally {
+			close(conn, null, null);
+			destroy(); // 关闭derby数据库，并清理对应文件夹
+		}
 	}
 
-	public void _test() throws Exception {
-		Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-		relatedQueryTest(conn);
-		statementTest(conn);
-		resultSetTest(conn);
-		relatedQueryTest2(conn);
-		close(conn, null, null);
+	public void test() {
+		// if (!inited) { // 未初始化
+		// return;
+		// }
+		//
+		// Connection conn = null;
+		// try {
+		// conn = DriverManager.getConnection(URL, USER, PASSWORD);
+		// relatedQueryTest(conn);
+		// statementTest(conn);
+		// resultSetTest(conn);
+		// relatedQueryTest2(conn);
+		// } catch (Exception e) {
+		// destroy(); // 关闭derby数据库，并清理对应文件夹
+		// throw new RuntimeException("测试失败", e);
+		// } finally {
+		// close(conn, null, null);
+		// }
 	}
 
 	/**
@@ -68,7 +84,7 @@ public class ShardModeDiffSchemaTest extends TestCase {
 	 * @param conn
 	 * @throws Exception
 	 */
-	public void relatedQueryTest(Connection conn) throws Exception {
+	private void relatedQueryTest(Connection conn) throws Exception {
 		Statement st = null;
 		ResultSet rs = null;
 
@@ -161,14 +177,6 @@ public class ShardModeDiffSchemaTest extends TestCase {
 		assertEquals("s6", _sList.get(0));
 		assertEquals("wang", _sList.get(1));
 
-		// sql =
-		// "SELECT * FROM (SELECT s.name FROM student s,teacher t WHERE s.tId=t.id) sName WHERE SUBSTR(sName.name,2,1)=1";
-		// rs = st.executeQuery(sql);
-		// _sList = new ArrayList<String>();
-		// if (rs.next()) {
-		// assertEquals("s1", rs.getString("name"));
-		// }
-
 		close(null, st, rs);
 		System.out.println("relatedQueryTest执行结束!");
 	}
@@ -179,7 +187,7 @@ public class ShardModeDiffSchemaTest extends TestCase {
 	 * @param conn
 	 * @throws Exception
 	 */
-	public void statementTest(Connection conn) throws Exception {
+	private void statementTest(Connection conn) throws Exception {
 		Statement st = null;
 		ResultSet rs = null;
 
@@ -196,38 +204,21 @@ public class ShardModeDiffSchemaTest extends TestCase {
 		st.clearBatch();
 		st.executeBatch();
 		rs = st.executeQuery("select * from teacher");
-		// assertEquals(false, rs.next());
-		// assertEquals(false, rs.first()); //first有问题
 
-		// st.cancel();
 		st.clearWarnings();
 		st.getConnection();
 
 		st.setFetchDirection(ResultSet.FETCH_REVERSE);
 		st.setFetchSize(30);
-		// assertEquals(ResultSet.FETCH_REVERSE,
-		// statement.getFetchDirection());
 		assertEquals(30, st.getFetchSize());
-
-		// statement.getGeneratedKeys();
 
 		st.setMaxFieldSize(101);
 		st.setMaxRows(3);
 		st.setQueryTimeout(13);
-		// assertEquals(30, statement.getMaxFieldSize());
 		assertEquals(3, st.getMaxRows());
 		assertEquals(false, st.getMoreResults());
 		assertEquals(false, st.getMoreResults(1));
 		assertEquals(13, st.getQueryTimeout());
-
-		st.getResultSet();
-
-		// assertEquals(ResultSet.CONCUR_UPDATABLE,
-		// st.getResultSetConcurrency());
-		// assertEquals(1, statement.getResultSetHoldability());
-		// assertEquals(ResultSet.TYPE_FORWARD_ONLY, st.getResultSetType());
-		// assertEquals(30, st.getUpdateCount());
-		st.getWarnings();
 
 		close(null, st, rs);
 		System.out.println("statementTest 执行结束");
@@ -239,7 +230,7 @@ public class ShardModeDiffSchemaTest extends TestCase {
 	 * @param conn
 	 * @throws Exception
 	 */
-	public void resultSetTest(Connection conn) throws Exception {
+	private void resultSetTest(Connection conn) throws Exception {
 		Statement st = null;
 		ResultSet rs = null;
 
@@ -258,8 +249,6 @@ public class ShardModeDiffSchemaTest extends TestCase {
 		st.addBatch("insert into teacher(id,name) values(4,'wang')");
 		st.executeBatch();
 		rs = st.executeQuery("select * from teacher");
-		// rs.setFetchDirection(ResultSet.FETCH_REVERSE);
-		// rs.setFetchSize(101);
 
 		rs.absolute(3);
 		assertEquals("zhang", rs.getString("name"));
@@ -299,14 +288,12 @@ public class ShardModeDiffSchemaTest extends TestCase {
 		assertEquals(false, rs.isAfterLast());
 
 		rs.beforeFirst();
-		// assertEquals(null, rs.getString("name")); beforeFirst 滚动有问题
 		assertEquals(false, rs.isFirst());
 		assertEquals(false, rs.isLast());
 		assertEquals(true, rs.isBeforeFirst());
 		assertEquals(false, rs.isAfterLast());
 
 		rs.afterLast();
-		// assertEquals(null, rs.getString("name")); afterLast滚动有问题
 		assertEquals(false, rs.isFirst());
 		assertEquals(false, rs.isLast());
 		assertEquals(false, rs.isBeforeFirst());
@@ -337,45 +324,10 @@ public class ShardModeDiffSchemaTest extends TestCase {
 		rs.clearWarnings();
 		assertEquals(null, rs.getWarnings());
 
-		// updateRow相关操作不能用
-		// rs.first();
-		// rs.updateString("name", "updatedName");
-		// rs.cancelRowUpdates();
-		// rs.updateRow();
-
-		// rs.first();
-		// rs.deleteRow();
-
 		assertEquals(1, rs.findColumn("id"));
 		assertEquals(2, rs.findColumn("name"));
-
 		assertEquals(ResultSet.CONCUR_UPDATABLE, rs.getConcurrency());
-		// assertEquals(ResultSet.CONCUR_UPDATABLE, rs.getCursorName());
-
 		assertEquals(ResultSet.FETCH_FORWARD, rs.getFetchDirection());
-		// assertEquals(0, rs.getFetchSize());
-
-		// ResultSetMetaData metaDate = rs.getMetaData();
-		// assertEquals(2, metaDate.getColumnCount());
-		// assertEquals("ID", metaDate.getColumnName(1));
-		// assertEquals("INT", metaDate.getColumnTypeName(1));
-		// assertEquals(8, metaDate.getColumnDisplaySize(1));
-		// assertEquals(true, metaDate.isAutoIncrement(1));
-
-		// delete相关操作不能用
-		// rs.first();
-		// rs.updateInt(1, 10);
-		// rs.updateString(1, "insertTestName");
-		// rs.moveToInsertRow();
-		// rs.insertRow();
-
-		// rs.moveToCurrentRow();
-
-		// rs.refreshRow();
-		// rs.relative(rows)
-		// rs.rowDeleted();
-		// rs.rowInserted();
-		// rs.rowUpdated();
 
 		close(null, st, rs);
 		System.out.println("resultSetTest执行结束");
@@ -387,7 +339,7 @@ public class ShardModeDiffSchemaTest extends TestCase {
 	 * @param conn
 	 * @throws Exception
 	 */
-	public void relatedQueryTest2(Connection conn) throws Exception {
+	private void relatedQueryTest2(Connection conn) throws Exception {
 		Statement st = null;
 		ResultSet rs = null;
 		String sql = null;
@@ -420,11 +372,12 @@ public class ShardModeDiffSchemaTest extends TestCase {
 		assertEquals(2, _sList.size());
 		assertEquals("s3", _sList.get(0));
 		assertEquals("s4", _sList.get(1));
-		sql = "select s.id, s.name, s.age, t.id, t.name from student s, teacher t where t.id=s.tId";
+
+		sql = "select s.id as sId, s.name as sName, s.age, t.id as tId, t.name as tName from student s, teacher t where t.id=s.tId";
 		rs = st.executeQuery(sql);
 		_sList.clear();
 		while (rs.next()) {
-			_sList.add(rs.getString("name"));
+			_sList.add(rs.getString("sName"));
 		}
 		assertEquals(6, _sList.size());
 		assertEquals("s5", _sList.get(0));
@@ -434,11 +387,11 @@ public class ShardModeDiffSchemaTest extends TestCase {
 		assertEquals("s3", _sList.get(4));
 		assertEquals("s4", _sList.get(5));
 
-		sql = "select u.id, u.name, u.age, t.id, t.name from student u join teacher t on t.id=u.tId";
+		sql = "select s.id as sId, s.name as sName, s.age, t.id as tId, t.name as tName from student s join teacher t on t.id=s.tId";
 		rs = st.executeQuery(sql);
 		_sList.clear();
 		while (rs.next()) {
-			_sList.add(rs.getString("name"));
+			_sList.add(rs.getString("sName"));
 		}
 		assertEquals(6, _sList.size());
 		assertEquals("s5", _sList.get(0));
@@ -448,11 +401,11 @@ public class ShardModeDiffSchemaTest extends TestCase {
 		assertEquals("s3", _sList.get(4));
 		assertEquals("s4", _sList.get(5));
 
-		sql = "select u.id, u.name, u.age, t.id, t.name from student u left join teacher t on t.id=u.tId";
+		sql = "select s.id as sId, s.name as sName, s.age, t.id as tId, t.name as tName from student s left join teacher t on t.id=s.tId";
 		rs = st.executeQuery(sql);
 		_sList.clear();
 		while (rs.next()) {
-			_sList.add(rs.getString("name"));
+			_sList.add(rs.getString("sName"));
 		}
 		assertEquals(6, _sList.size());
 		assertEquals("s5", _sList.get(0));
@@ -497,7 +450,7 @@ public class ShardModeDiffSchemaTest extends TestCase {
 	 * @param st
 	 * @param rs
 	 */
-	private void close(Connection conn, Statement st, ResultSet rs) {
+	private static void close(Connection conn, Statement st, ResultSet rs) {
 		if (conn != null) {
 			try {
 				conn.close();
@@ -521,23 +474,40 @@ public class ShardModeDiffSchemaTest extends TestCase {
 	/**
 	 * 清理derby数据库
 	 */
-	private void destroy() throws Exception {
+	private static void destroy() {
 		try {
 			DriverManager.getConnection("jdbc:derby:;shutdown=true"); // 关闭derby数据库
 		} catch (SQLException e) {
 			// 关闭失败,忽略之
 		}
 
-		// 删除数据库对应文件和目录
-		FileUtil.deletefile("derby.log");
-		FileUtil.deletefile("file.log");
-		FileUtil.deletefile("derbydb");
+		FileUtil.deleteFile("derby.log"); // 删除derby日志文件
+		FileUtil.deleteFile(DERBY_DBPATH); // 删除derby数据库文件夹
+
+		System.out.println("derby数据库清理完成！");
 	}
 
 	/**
 	 * 初始化derby数据库和表
 	 */
-	private void init() {
+	private static void init() {
+		if (inited) { // 已初始化
+			return;
+		}
+
+		try {
+			Class.forName(TINY_DRIVER); // 加载tiny数据库驱动
+			Class.forName(DERBY_DRIVER); // 加载derby数据库驱动
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("数据库驱动加载失败!", e);
+		}
+
+		// 初始化routerManager
+		routerManager = RouterManagerBeanFactory.getManager();
+		routerManager.addRouters(ROUTER_CONFIG);
+
+		FileUtil.deleteFile(DERBY_DBPATH); // 删除derby数据库路径
+
 		StringBuffer sb = new StringBuffer();
 		sb.append("CREATE TABLE ");
 		sb.append("teacher").append("(");
@@ -553,9 +523,14 @@ public class ShardModeDiffSchemaTest extends TestCase {
 		sb.append("NAME varchar(20))");
 		String s_sql = sb.toString();
 
+		// 在每个数据库中建表
+		String derbyDbpath = DERBY_DBPATH;
+		if (!derbyDbpath.endsWith("/") && !derbyDbpath.endsWith("\\")) {
+			derbyDbpath = derbyDbpath + "/";
+		}
 		for (String derbyDB : DERBY_DBS) {
 			StringBuffer url = new StringBuffer("jdbc:derby:");
-			url.append(derbyDB);
+			url.append(derbyDbpath + derbyDB);
 			url.append(";create=true");
 
 			Connection conn = null;
@@ -566,12 +541,15 @@ public class ShardModeDiffSchemaTest extends TestCase {
 				st.execute(t_sql);
 				st.execute(s_sql);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				destroy(); // 关闭derby数据库，并清理对应文件夹
 				throw new RuntimeException("初始化表失败!", e);
 			} finally {
 				close(conn, st, null);
 			}
 		}
+
+		inited = true;
+		System.out.println("数据库和表初始化完成！");
 	}
 
 }
