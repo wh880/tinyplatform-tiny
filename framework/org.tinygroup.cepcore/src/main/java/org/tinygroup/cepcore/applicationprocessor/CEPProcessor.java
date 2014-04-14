@@ -49,7 +49,6 @@ public class CEPProcessor implements ApplicationProcessor{
 	}
 
 	public String getComponentConfigPath() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -59,7 +58,6 @@ public class CEPProcessor implements ApplicationProcessor{
 	}
 
 	public XmlNode getComponentConfig() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
