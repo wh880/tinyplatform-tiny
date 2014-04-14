@@ -68,6 +68,9 @@ public class FtpFileObjectTest extends TestCase {
 		ftpFileObjectTest.folderTest();
 		ftpFileObjectTest.folderTest2();
 		ftpFileObjectTest.folderTest3();
+
+		System.out.println("ftp服务器对应目录删除成功");
+		deleteFile(rootDir); // 清理文件，文件夹
 	}
 
 	private static void init() throws Exception {
