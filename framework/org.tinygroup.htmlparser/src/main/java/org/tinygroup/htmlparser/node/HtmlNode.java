@@ -29,7 +29,6 @@ import org.tinygroup.parser.node.NodeImpl;
 import java.util.HashSet;
 
 /**
- * todo 增加编码支持
  *
  * @author luoguo
  */
