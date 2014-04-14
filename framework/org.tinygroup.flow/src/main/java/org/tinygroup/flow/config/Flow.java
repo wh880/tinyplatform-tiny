@@ -43,7 +43,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @author luoguo
  * 
  */
-// TODO 组件也可以是流程来实现的
+
 @XStreamAlias("flow")
 public class Flow {
 	/**
