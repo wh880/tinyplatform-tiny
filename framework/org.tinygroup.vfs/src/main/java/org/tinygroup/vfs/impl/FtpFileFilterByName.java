@@ -8,11 +8,11 @@ import org.apache.commons.net.ftp.FTPFileFilter;
  * @author wanggf10141
  *
  */
-public class FtpFileFilterByName1 implements FTPFileFilter {
+public class FtpFileFilterByName implements FTPFileFilter {
 
 	private String fileName;
 
-	public FtpFileFilterByName1(String fileName) {
+	public FtpFileFilterByName(String fileName) {
 		this.fileName = fileName;
 	}
 
