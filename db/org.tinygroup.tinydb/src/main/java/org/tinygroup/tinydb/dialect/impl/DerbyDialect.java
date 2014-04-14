@@ -41,7 +41,6 @@ import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.dialect.Dialect;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MySQLDialect.
  */
@@ -74,7 +73,6 @@ public class DerbyDialect implements Dialect {
 	 * @param limit
 	 *            int
 	 * @return String
-	 * @todo Implement this snowrain.database.data.Dialect method
 	 */
 	public String getLimitString(String sql, int offset, int limit) {
 		return getLimitStringVersion106(sql, offset, limit);
@@ -99,7 +97,6 @@ public class DerbyDialect implements Dialect {
 	 * supportsLimit.
 	 * 
 	 * @return boolean
-	 * @todo Implement this snowrain.database.data.Dialect method
 	 */
 	public boolean supportsLimit() {
 		return true;
