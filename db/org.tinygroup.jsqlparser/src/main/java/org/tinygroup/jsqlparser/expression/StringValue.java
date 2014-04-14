@@ -37,7 +37,6 @@ public class StringValue implements Expression {
 
     public StringValue() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 
