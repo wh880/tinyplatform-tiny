@@ -70,12 +70,12 @@ public class FileResolverProcessor implements ApplicationProcessor {
 	}
 
 	public void stop() {
-		// TODO Auto-generated method stub
+		// Nothing
 		
 	}
 
 	public void setApplication(Application application) {
-		// TODO Auto-generated method stub
+		// Nothing
 		
 	}
 
