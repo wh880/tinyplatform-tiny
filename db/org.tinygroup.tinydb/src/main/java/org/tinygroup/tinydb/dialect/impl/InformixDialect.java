@@ -74,7 +74,6 @@ public class InformixDialect implements Dialect {
 	 * @param limit
 	 *            int
 	 * @return String
-	 * @todo Implement this snowrain.database.data.Dialect method
 	 */
 	public String getLimitString(String sql, int offset, int limit) {
 		StringBuffer pagingSelect = new StringBuffer();
@@ -90,7 +89,6 @@ public class InformixDialect implements Dialect {
 	 * supportsLimit.
 	 * 
 	 * @return boolean
-	 * @todo Implement this snowrain.database.data.Dialect method
 	 */
 	public boolean supportsLimit() {
 		return true;
