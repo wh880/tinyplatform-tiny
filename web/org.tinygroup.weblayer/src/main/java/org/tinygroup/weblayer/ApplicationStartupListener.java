@@ -23,17 +23,6 @@
  */
 package org.tinygroup.weblayer;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.Enumeration;
-import java.util.List;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
 import org.tinygroup.application.Application;
 import org.tinygroup.application.impl.ApplicationDefault;
 import org.tinygroup.commons.io.StreamUtil;
@@ -52,116 +41,97 @@ import org.tinygroup.weblayer.listener.TinyServletContext;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.Enumeration;
+import java.util.List;
+
 public class ApplicationStartupListener implements ServletContextListener {
-	private static Logger logger = LoggerFactory
-			.getLogger(ApplicationStartupListener.class);
-	private Application application = null;
+    private static Logger logger = LoggerFactory.getLogger(ApplicationStartupListener.class);
+    private Application application = null;
 
-	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		logger.logMessage(LogLevel.INFO, "WEB 应用停止中...");
-		application.stop();
-		SpringUtil.destory();// 关闭spring容器
-		logger.logMessage(LogLevel.INFO, "WEB 应用停止完成。");
-	}
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        logger.logMessage(LogLevel.INFO, "WEB 应用停止中...");
+        application.stop();
+        SpringUtil.destory();// 关闭spring容器
+        logger.logMessage(LogLevel.INFO, "WEB 应用停止完成。");
+    }
 
-	@SuppressWarnings("unchecked")
-	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		TinyServletContext servletContext = new TinyServletContext(
-				servletContextEvent.getServletContext());
-		ServletContextHolder.setServletContext(servletContext);
-		Enumeration<String> enumeration = servletContextEvent
-				.getServletContext().getAttributeNames();
-		logger.logMessage(LogLevel.INFO, "WEB环境属性开始");
-		while (enumeration.hasMoreElements()) {
-			String key = enumeration.nextElement();
-			logger.logMessage(LogLevel.INFO, "{0}=[{1}]", key,
-					servletContextEvent.getServletContext().getAttribute(key));
-		}
-		logger.logMessage(LogLevel.INFO, "WEB 应用启动中...");
+    @SuppressWarnings("unchecked")
+    public void contextInitialized(ServletContextEvent servletContextEvent) {
+        TinyServletContext servletContext = new TinyServletContext(servletContextEvent.getServletContext());
+        ServletContextHolder.setServletContext(servletContext);
+        Enumeration<String> enumeration = servletContextEvent.getServletContext().getAttributeNames();
+        logger.logMessage(LogLevel.INFO, "WEB环境属性开始");
+        while (enumeration.hasMoreElements()) {
+            String key = enumeration.nextElement();
+            logger.logMessage(LogLevel.INFO, "{0}=[{1}]", key, servletContextEvent.getServletContext().getAttribute(key));
+        }
+        logger.logMessage(LogLevel.INFO, "WEB 应用启动中...");
 
-		logger.logMessage(LogLevel.INFO, "WEB 应用信息：[{0}]", servletContextEvent
-				.getServletContext().getServerInfo());
-		String webRootPath = servletContextEvent.getServletContext()
-				.getRealPath("/");
-		if (webRootPath == null) {
-			try {
-				webRootPath = servletContextEvent.getServletContext()
-						.getResource("/").getFile();
-			} catch (MalformedURLException e) {
-				logger.errorMessage("获取WEBROOT失败！", e);
-			}
-		}
-		logger.logMessage(LogLevel.INFO, "TINY_WEBROOT：[{0}]", webRootPath);
-		ConfigurationUtil.getConfigurationManager().setApplicationProperty(
-				"TINY_WEBROOT", webRootPath);
-		logger.logMessage(LogLevel.INFO, "应用参数<TINY_WEBROOT>=<{}>", webRootPath);
+        logger.logMessage(LogLevel.INFO, "WEB 应用信息：[{0}]", servletContextEvent.getServletContext().getServerInfo());
+        String webRootPath = servletContextEvent.getServletContext().getRealPath("/");
+        if (webRootPath == null) {
+            try {
+                webRootPath = servletContextEvent.getServletContext().getResource("/").getFile();
+            } catch (MalformedURLException e) {
+                logger.errorMessage("获取WEBROOT失败！", e);
+            }
+        }
+        logger.logMessage(LogLevel.INFO, "TINY_WEBROOT：[{0}]", webRootPath);
+        ConfigurationUtil.getConfigurationManager().setApplicationProperty("TINY_WEBROOT", webRootPath);
+        logger.logMessage(LogLevel.INFO, "应用参数<TINY_WEBROOT>=<{}>", webRootPath);
 
-		logger.logMessage(LogLevel.INFO, "ServerContextName：[{0}]",
-				servletContextEvent.getServletContext().getServletContextName());
-		logger.logMessage(LogLevel.INFO, "WEB环境属性结束");
+        logger.logMessage(LogLevel.INFO, "ServerContextName：[{0}]", servletContextEvent.getServletContext().getServletContextName());
+        logger.logMessage(LogLevel.INFO, "WEB环境属性结束");
 
-		InputStream inputStream = this.getClass().getResourceAsStream(
-				"/application.xml");
-		if (inputStream == null) {
-			try {
-				File file = new File(webRootPath + "/classes/application.xml");
-				inputStream = new FileInputStream(file);
-			} catch (FileNotFoundException e) {
-				logger.errorMessage("获取配置文件失败，错误原因：！", e, e.getMessage());
-			}
-		}
-	
-		if (inputStream != null) {
-			String applicationConfig = "";
-			try {
-				applicationConfig = StreamUtil.readText(inputStream, "UTF-8",
-						true);
-				application = new ApplicationDefault(applicationConfig);
-				SpringUtil.init();
-				loadSpringBeans(applicationConfig);
-			} catch (Exception e) {
-				logger.errorMessage("载入应用配置信息时出错，错误原因：{}！", e, e.getMessage());
-			}
-			application.start();
-		}
-
-		logger.logMessage(LogLevel.INFO, "WEB 应用启动完成。");
-	}
-
-	private void loadSpringBeans(String applicationConfig) {
-		logger.logMessage(LogLevel.INFO, "加载Spring Bean文件开始...");
-		FileResolver fileResolver = new FileResolverImpl();
-		loadFileResolverConfig(fileResolver, applicationConfig);
-		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
-		fileResolver.addFileProcessor(new ConfigurationFileProcessor());
-		fileResolver.resolve();
-		logger.logMessage(LogLevel.INFO, "加载Spring Bean文件结束。");
-	}
-
-	private void loadFileResolverConfig(FileResolver fileResolver,
-			String applicationConfig) {
-		XmlStringParser parser = new XmlStringParser();
-		XmlNode root = parser.parse(applicationConfig).getRoot();
-		PathFilter<XmlNode> filter = new PathFilter<XmlNode>(root);
-		String resolve = filter.findNode(
-				"/application/file-resolver-configuration").getAttribute(
-				"resolve-classpath");
-		if (resolve == null || resolve.length() == 0) {
-			resolve = "true";
-		}
-
-		List<XmlNode> classPathList = filter
-				.findNodeList("/application/file-resolver-configuration/class-paths/class-path");
-		for (XmlNode classPath : classPathList) {
-			fileResolver.addManualClassPath(classPath.getAttribute("path"));
-		}
-
-        List<XmlNode> includePatternList = filter
-                .findNodeList("/application/file-resolver-configuration/include-patterns/include-pattern");
-        for (XmlNode includePatternNode : includePatternList) {
-            fileResolver.addIncludePathPattern(includePatternNode.getAttribute("pattern"));
+        InputStream inputStream = this.getClass().getResourceAsStream("/application.xml");
+        if (inputStream == null) {
+            try {
+                File file = new File(webRootPath + "/classes/application.xml");
+                inputStream = new FileInputStream(file);
+            } catch (FileNotFoundException e) {
+                logger.errorMessage("获取配置文件失败，错误原因：！", e, e.getMessage());
+            }
         }
 
-	}
+        if (inputStream != null) {
+            String applicationConfig = "";
+            try {
+                applicationConfig = StreamUtil.readText(inputStream, "UTF-8", true);
+                application = new ApplicationDefault(applicationConfig);
+                SpringUtil.init();
+                loadSpringBeans(applicationConfig);
+            } catch (Exception e) {
+                logger.errorMessage("载入应用配置信息时出错，错误原因：{}！", e, e.getMessage());
+            }
+            application.start();
+        }
+
+        logger.logMessage(LogLevel.INFO, "WEB 应用启动完成。");
+    }
+
+    private void loadSpringBeans(String applicationConfig) {
+        logger.logMessage(LogLevel.INFO, "加载Spring Bean文件开始...");
+        FileResolver fileResolver = new FileResolverImpl();
+        loadFileResolverConfig(fileResolver, applicationConfig);
+        fileResolver.addFileProcessor(new SpringBeansFileProcessor());
+        fileResolver.addFileProcessor(new ConfigurationFileProcessor());
+        fileResolver.resolve();
+        logger.logMessage(LogLevel.INFO, "加载Spring Bean文件结束。");
+    }
+
+    private void loadFileResolverConfig(FileResolver fileResolver, String applicationConfig) {
+        XmlStringParser parser = new XmlStringParser();
+        XmlNode root = parser.parse(applicationConfig).getRoot();
+        PathFilter<XmlNode> filter = new PathFilter<XmlNode>(root);
+        XmlNode appConfig = filter.findNode("/application/file-resolver-configuration");
+        fileResolver.config(appConfig, null);
+    }
 
 }
