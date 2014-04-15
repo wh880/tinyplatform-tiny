@@ -329,16 +329,12 @@ public class FileResolverImpl implements FileResolver {
         logger.logMessage(LogLevel.DEBUG, "找到文件：{}", fileObject.getAbsolutePath().toString());
         processFile(fileObject);
         if (fileObject.isFolder() && fileObject.getChildren() != null) {
-            if (fileObject.getSchemaProvider().getSchema().equals("file:") || isInclude(fileObject)) {
-                for (FileObject f : fileObject.getChildren()) {
-                    if (!allScanningPath.contains(f.getAbsolutePath())) {
-                        resolveFileObject(f);
-                    } else {
-                        logger.logMessage(LogLevel.INFO, "文件:[{}]在扫描根路径列表中存在，将作为根路径进行扫描", f.getAbsolutePath());
-                    }
+            for (FileObject f : fileObject.getChildren()) {
+                if (!allScanningPath.contains(f.getAbsolutePath())) {
+                    resolveFileObject(f);
+                } else {
+                    logger.logMessage(LogLevel.INFO, "文件:[{}]在扫描根路径列表中存在，将作为根路径进行扫描", f.getAbsolutePath());
                 }
-            } else {
-                logger.logMessage(LogLevel.INFO, "文件:[{}]不在处理范围内，将被忽略", fileObject.getAbsolutePath());
             }
             return;
         }
