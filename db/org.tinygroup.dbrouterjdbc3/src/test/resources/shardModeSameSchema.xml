@@ -5,8 +5,7 @@
 			data-source-id="test" />
 		<data-source-configs>
 			<data-source-config id="test" driver="com.mysql.jdbc.Driver"
-				user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test"
-				test-sql="" />
+				url="jdbc:derby:derbydb/dbShard;create=true" test-sql="" />
 		</data-source-configs>
 		<partitions>
 			<partition id="student" mode="2">

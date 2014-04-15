@@ -15,34 +15,20 @@ public class FileUtil {
 	 * @throws IOException
 	 * @return boolean
 	 */
-	public static boolean deletefile(String delpath) throws Exception {
-		try {
-			File file = new File(delpath);
-			// 当且仅当此抽象路径名表示的文件存在且 是一个目录时，返回 true
-			if (!file.isDirectory()) {
-				file.delete();
-				System.out.println(file.getAbsolutePath() + "删除文件成功");
-			} else if (file.isDirectory()) {
-				String[] filelist = file.list();
-				for (int i = 0; i < filelist.length; i++) {
-					File delfile = new File(delpath + "\\" + filelist[i]);
-					if (!delfile.isDirectory()) {
-						delfile.delete();
-						System.out
-								.println(delfile.getAbsolutePath() + "删除文件成功");
-					} else if (delfile.isDirectory()) {
-						deletefile(delpath + "\\" + filelist[i]);
-					}
-				}
-				System.out.println(file.getAbsolutePath() + "删除成功");
-				file.delete();
-				System.out.println(file.getAbsolutePath() + "删除文件成功");
-			}
-
-		} catch (FileNotFoundException e) {
-			System.out.println("deletefile() Exception:" + e.getMessage());
+	public static void deleteFile(String delPath) {
+		if (delPath == null || delPath.trim().length() == 0) {
+			return;
 		}
-		return true;
+		String pathname = delPath.replaceAll("\\\\", "/");
+		File file = new File(pathname);
+		if (file.isDirectory()) {
+			String[] fileList = file.list();
+			for (int i = 0; i < fileList.length; i++) {
+				deleteFile(pathname + "/" + fileList[i]);
+			}
+		}
+		// System.out.println(file.getAbsolutePath() + ",删除成功");
+		file.delete();
 	}
 
 }
