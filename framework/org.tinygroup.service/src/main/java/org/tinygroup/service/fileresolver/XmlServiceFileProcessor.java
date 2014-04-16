@@ -36,7 +36,6 @@ import org.tinygroup.service.config.ServiceComponent;
 import org.tinygroup.service.config.ServiceComponents;
 import org.tinygroup.service.config.XmlConfigServiceLoader;
 import org.tinygroup.service.exception.ServiceLoadException;
-import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
@@ -58,8 +57,6 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
 
 	public void process() {
 		ServiceProviderInterface provider = SpringUtil.getBean("service");
-		ServiceRegistry reg = SpringUtil.getBean(ServiceRegistry.BEAN_NAME);
-		provider.setServiceRegistory(reg);
 		XStream stream = XStreamFactory
 				.getXStream(Service.SERVICE_XSTREAM_PACKAGENAME);
 		for (FileObject fileObject : deleteList) {

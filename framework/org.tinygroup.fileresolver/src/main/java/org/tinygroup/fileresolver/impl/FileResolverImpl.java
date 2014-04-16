@@ -351,7 +351,9 @@ public class FileResolverImpl implements FileResolver {
             if (!fileObject.isExist()) {
                 // 文件已经被删除
                 for (FileProcessor fileProcessor : fileProcessorList) {
-                    fileProcessor.delete(fileObject);
+                	if(fileProcessor.isMatch(fileObject)){//匹配后才能删除
+                		  fileProcessor.delete(fileObject);
+                	}
                 }
             } else {
                 tempMap.put(path, fileObject);

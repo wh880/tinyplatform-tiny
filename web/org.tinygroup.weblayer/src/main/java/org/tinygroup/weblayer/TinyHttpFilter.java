@@ -149,6 +149,7 @@ public class TinyHttpFilter implements Filter {
 	}
 
 	private void initExcludePattern(FilterConfig filterConfig) {
+		excludePatterns.clear();//先清空
 		String excludePath = filterConfig.getInitParameter(EXCLUDE_PATH);
 		if (excludePath != null) {
 			String[] excludeArray = excludePath.split(",");

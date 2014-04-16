@@ -39,6 +39,7 @@
             resolve-classpath="true">
         <class-paths>
             <!-- <class-path path="{TINY_WEBROOT}\WEB-INF\lib" /> -->
+            <class-path path="C:\Users\renhui.HS\Desktop\test2" />
         </class-paths>
         <include-patterns>
             <include-pattern pattern="org\.tinygroup\.(.)*\.jar"/>
@@ -284,6 +285,6 @@
     </jcs-config>
 
     <!--文件监控器配置参数，具体参见FileMonitorProcessor配置管理手册，interrupt扫描间隔时间，单位秒 -->
-    <file-monitor interval="10" enable="false"/>
+    <file-monitor interval="30" enable="true"/>
 
 </application>

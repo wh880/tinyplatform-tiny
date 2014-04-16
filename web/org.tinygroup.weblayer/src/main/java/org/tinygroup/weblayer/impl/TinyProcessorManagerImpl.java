@@ -168,6 +168,8 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 	}
 
 	public void initTinyResources() {
+		tinyProcessorList.clear();//先清除
+		processorXmlNodes.clear();
 		if (configManager != null) {
 			List<XmlNode> configs = configManager.getConfigs();
 			XmlNode component = configManager.getComponentConfig();
