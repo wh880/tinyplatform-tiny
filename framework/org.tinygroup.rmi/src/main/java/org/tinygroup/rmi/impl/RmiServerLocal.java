@@ -1,5 +1,5 @@
 /**
- *  Copyright (validateThread) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  * --------------------------------------------------------------------------
- *  版权 (validateThread) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
  *
  *  本开源软件遵循 GPL 3.0 协议;
  *  如果您不遵循此协议，则不被允许使用此文件。
