@@ -23,11 +23,10 @@
  */
 package org.tinygroup.message.email;
 
-import org.tinygroup.message.MessageException;
-import org.tinygroup.message.MessageProcessor;
-import org.tinygroup.message.MessageReceiveService;
+import org.tinygroup.message.*;
 
 import javax.mail.*;
+import javax.mail.Message;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.io.ByteArrayOutputStream;
@@ -99,9 +98,13 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
     private void executeMessageProcess(List<EmailReceiveMessage> receiveMessages) {
         if (messageProcessors != null) {
             for (EmailReceiveMessage receiveMessage : receiveMessages) {
-                for (MessageProcessor processor : messageProcessors) {
-                    if (processor.isMatch(receiveMessage)) {
-                        processor.processMessage(receiveMessage);
+                for (MessageSender messageSender : receiveMessage.getMessageSenders()) {
+                    for (MessageReceiver messageReceiver : receiveMessage.getMessageReceivers()) {
+                        for (MessageProcessor processor : messageProcessors) {
+                            if (processor.isMatch(messageSender,messageReceiver,receiveMessage.getMessage())) {
+                                processor.processMessage(messageSender,messageReceiver,receiveMessage.getMessage());
+                            }
+                        }
                     }
                 }
             }

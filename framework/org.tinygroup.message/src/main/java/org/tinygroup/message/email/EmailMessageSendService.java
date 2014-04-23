@@ -23,9 +23,7 @@
  */
 package org.tinygroup.message.email;
 
-import org.tinygroup.message.MessageException;
-import org.tinygroup.message.MessageProcessor;
-import org.tinygroup.message.MessageSendService;
+import org.tinygroup.message.*;
 
 import javax.activation.DataHandler;
 import javax.activation.MimetypesFileTypeMap;
@@ -92,7 +90,9 @@ public class EmailMessageSendService implements MessageSendService<EmailMessageA
             processAccessory(emailMessage, multipart);
             message.setContent(multipart);
             Transport.send(message);
-            executeMessageProcessor(emailMessage);
+            for (EmailMessageReceiver receiver : messageReceivers) {
+                executeMessageProcessor(messageSender, receiver, emailMessage);
+            }
         } catch (javax.mail.MessagingException e) {
             throw new MessageException(e);
         } catch (UnsupportedEncodingException e) {
@@ -112,11 +112,11 @@ public class EmailMessageSendService implements MessageSendService<EmailMessageA
         }
     }
 
-    private void executeMessageProcessor(EmailMessage emailMessage) {
+    private void executeMessageProcessor(MessageSender messageSender, MessageReceiver messageReceiver, Message message) {
         if (messageProcessors != null) {
             for (MessageProcessor processor : messageProcessors) {
-                if (processor.isMatch(emailMessage)) {
-                    processor.processMessage(emailMessage);
+                if (processor.isMatch(messageSender, messageReceiver, message)) {
+                    processor.processMessage(messageSender, messageReceiver, message);
                 }
             }
         }
