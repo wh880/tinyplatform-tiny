@@ -54,7 +54,7 @@ public final class SpringUtil {
 			return;
 		inited = true;
 		FileSystemXmlApplicationContext fileSystemXmlApplicationContext = new FileSystemXmlApplicationContext();
-		fileSystemXmlApplicationContext.setAllowBeanDefinitionOverriding(false);
+		fileSystemXmlApplicationContext.setAllowBeanDefinitionOverriding(true);
 		applicationContext = fileSystemXmlApplicationContext;
 	}
 
