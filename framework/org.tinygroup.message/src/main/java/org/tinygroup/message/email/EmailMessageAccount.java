@@ -26,6 +26,7 @@ package org.tinygroup.message.email;
 import org.tinygroup.message.MessageAccount;
 
 /**
+ * 邮件发送帐户
  * Created by luoguo on 2014/4/18.
  */
 public class EmailMessageAccount implements MessageAccount {

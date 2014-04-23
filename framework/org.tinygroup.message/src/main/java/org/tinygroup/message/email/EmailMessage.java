@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 邮件消息，这里的邮件消息仅包含主题，内容及附件
  * Created by luoguo on 2014/4/17.
  */
 public class EmailMessage implements Message {

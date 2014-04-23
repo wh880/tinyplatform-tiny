@@ -26,6 +26,7 @@ package org.tinygroup.message.email;
 import org.tinygroup.message.MessageSender;
 
 /**
+ * 邮件发送者
  * Created by luoguo on 2014/4/17.
  */
 public class EmailMessageSender implements MessageSender {

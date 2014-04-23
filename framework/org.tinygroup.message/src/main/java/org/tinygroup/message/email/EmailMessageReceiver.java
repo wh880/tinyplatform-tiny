@@ -28,12 +28,13 @@ import org.tinygroup.message.MessageReceiver;
 import javax.mail.Message;
 
 /**
+ * 邮件接收者
  * Created by luoguo on 2014/4/17.
  */
 public class EmailMessageReceiver implements MessageReceiver {
-    String email;
-    Message.RecipientType type=Message.RecipientType.TO;
-    String displayName;
+    String email;//邮箱地址
+    Message.RecipientType type = Message.RecipientType.TO;
+    String displayName;//显示名
 
     public String getDisplayName() {
         return displayName;

@@ -23,15 +23,15 @@
  */
 package org.tinygroup.message.email;
 
-import junit.framework.TestCase;
+import org.tinygroup.message.MessageException;
 
 import java.util.Collection;
 
 /**
  * Created by luoguo on 2014/4/18.
  */
-public class EmailMessageReceiveServiceTest extends TestCase {
-    public void testGetMessages() throws Exception {
+public class EmailMessageReceiveServiceTest {
+    public static void main(String[] args) throws MessageException {
         EmailMessageAccount account = new EmailMessageAccount();
         account.setHost("mail.tinygroup.org");
         account.setUsername("luoguo");

@@ -29,7 +29,6 @@ import org.tinygroup.message.MessageReceiveService;
 import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +36,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * 邮件接收服务
  * Created by luoguo on 2014/4/18.
  */
 public class EmailMessageReceiveService implements MessageReceiveService<EmailMessageAccount, EmailReceiveMessage> {
@@ -61,8 +61,7 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
             if (session == null) {
                 session = EmailMessageUtil.getSession(messageAccount);
             }
-            Store store = null;
-            store = session.getStore("pop3");
+            Store store = session.getStore("pop3");
             store.connect(messageAccount.getHost(), messageAccount.getUsername(), messageAccount.getPassword());
             Folder folder = store.getFolder("inbox");
             folder.open(Folder.READ_ONLY);
@@ -76,9 +75,8 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
                 message.setReceiveDate(messages[i].getReceivedDate());
                 message.setSendDate(messages[i].getSentDate());
                 message.setMessageReceivers(getMessageReceivers(messages[i]));
-                System.out.println();
+                messages[i].setFlag(Flags.Flag.DELETED,true);
             }
-
             folder.close(true);
             store.close();
             return receiveMessages;
@@ -167,19 +165,4 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
             System.out.println(contentType);
         }
     }
-
-
-    static String getCharset(String contentType) {
-        if (contentType != null) {
-            String[] valuePairs = contentType.split(";");
-            for (String str : valuePairs) {
-                str = str.trim();
-                if (str.startsWith("charset=")) {
-                    return str.substring(str.indexOf('=') + 1).replaceAll("[\"]", "");
-                }
-            }
-        }
-        return null;
-    }
-
 }

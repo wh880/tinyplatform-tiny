@@ -32,7 +32,7 @@ import java.util.Collection;
 public interface MessageSendService<Account extends MessageAccount, Sender extends MessageSender, Receiver extends MessageReceiver, Msg extends Message> {
 
     /**
-     * 设置消息发送者
+     * 设置消息发送收户
      *
      * @param messageAccount
      */
@@ -41,11 +41,11 @@ public interface MessageSendService<Account extends MessageAccount, Sender exten
     /**
      * 发送单条消息
      *
-     * @param messageReceivers
-     * @param message
+     * @param messageSender    消息发送者
+     * @param messageReceivers 消息接收者
+     * @param message          消息
      */
     void sendMessage(Sender messageSender, Collection<Receiver> messageReceivers, Msg message) throws MessageException;
-
 
 
 }

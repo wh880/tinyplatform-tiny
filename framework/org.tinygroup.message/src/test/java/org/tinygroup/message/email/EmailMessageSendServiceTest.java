@@ -23,18 +23,19 @@
  */
 package org.tinygroup.message.email;
 
-import junit.framework.TestCase;
+import org.tinygroup.message.MessageException;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Created by luoguo on 2014/4/21.
  */
-public class EmailMessageSendServiceTest extends TestCase {
-    public void testSendMessage() throws Exception {
+public class EmailMessageSendServiceTest  {
+    public static void main(String[] args) throws IOException, MessageException {
+
         EmailMessageAccount account = new EmailMessageAccount();
         account.setHost("mail.tinygroup.org");
         account.setUsername("luoguo");

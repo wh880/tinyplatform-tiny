@@ -24,7 +24,7 @@
 package org.tinygroup.message;
 
 /**
- * 消息的接口
+ * 消息的接口，具体消息包含啥，不管
  * Created by luoguo on 2014/4/17.
  */
 public interface Message {

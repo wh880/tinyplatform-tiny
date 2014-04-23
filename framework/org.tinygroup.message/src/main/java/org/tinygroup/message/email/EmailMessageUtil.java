@@ -65,8 +65,4 @@ public final class EmailMessageUtil {
         System.arraycopy(tmp, 0, res, 0, n);
         return res;
     }
-
-    public static void main(String[] args) throws Exception {
-        System.out.println(new String(decode("=?utf-8?B?572X5p6c?=".getBytes())));
-    }
 }

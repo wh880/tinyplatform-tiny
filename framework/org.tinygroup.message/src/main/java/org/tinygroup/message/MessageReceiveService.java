@@ -31,11 +31,17 @@ import java.util.Collection;
  */
 public interface MessageReceiveService<Account extends MessageAccount, Msg extends Message> {
     /**
-     * 设置消息发送者
+     * 设置消息发送帐号
      *
      * @param messageAccount
      */
     void setMessageAccount(Account messageAccount);
 
+    /**
+     * 返回接收的消息
+     *
+     * @return
+     * @throws MessageException
+     */
     Collection<Msg> getMessages() throws MessageException;
 }

@@ -38,6 +38,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 
 /**
+ * 邮件发送服务
  * Created by luoguo on 2014/4/17.
  */
 public class EmailMessageSendService implements MessageSendService<EmailMessageAccount, EmailMessageSender, EmailMessageReceiver, EmailMessage> {

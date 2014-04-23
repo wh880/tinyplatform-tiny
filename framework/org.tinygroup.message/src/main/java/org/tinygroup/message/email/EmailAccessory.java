@@ -28,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
+ * 邮件的附件
  * Created by luoguo on 2014/4/18.
  */
 public class EmailAccessory {
