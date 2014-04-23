@@ -28,4 +28,5 @@ package org.tinygroup.message;
  * Created by luoguo on 2014/4/17.
  */
 public interface MessageSender {
+
 }

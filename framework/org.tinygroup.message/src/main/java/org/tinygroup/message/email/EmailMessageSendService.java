@@ -24,18 +24,21 @@
 package org.tinygroup.message.email;
 
 import org.tinygroup.message.MessageException;
+import org.tinygroup.message.MessageProcessor;
 import org.tinygroup.message.MessageSendService;
 
 import javax.activation.DataHandler;
 import javax.activation.MimetypesFileTypeMap;
-import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.*;
 import javax.mail.util.ByteArrayDataSource;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 邮件发送服务
@@ -44,6 +47,18 @@ import java.util.Collection;
 public class EmailMessageSendService implements MessageSendService<EmailMessageAccount, EmailMessageSender, EmailMessageReceiver, EmailMessage> {
     private EmailMessageAccount messageAccount;
     private Session session;
+    private List<MessageProcessor> messageProcessors;
+
+    public void setMessageProcessors(List<MessageProcessor> messageProcessors) {
+        this.messageProcessors = messageProcessors;
+    }
+
+    public void addMessageProcessor(MessageProcessor messageProcessor) {
+        if (messageProcessors == null) {
+            messageProcessors = new ArrayList<MessageProcessor>();
+        }
+        messageProcessors.add(messageProcessor);
+    }
 
 
     public EmailMessageSendService() {
@@ -74,21 +89,36 @@ public class EmailMessageSendService implements MessageSendService<EmailMessageA
             MimeBodyPart part = new MimeBodyPart();
             multipart.addBodyPart(part);
             part.setContent(emailMessage.getContent(), "text/html;\n\tcharset=\"UTF-8\"");
-            if (emailMessage.getAccessories() != null) {
-                for (EmailAccessory accessory : emailMessage.getAccessories()) {
-                    MimeBodyPart mimeBodyPart = new MimeBodyPart();
-                    ByteArrayDataSource dataSource = new ByteArrayDataSource(accessory.getContent(), MimetypesFileTypeMap.getDefaultFileTypeMap().getContentType(accessory.getFileName()));
-                    mimeBodyPart.setFileName(accessory.getFileName());
-                    mimeBodyPart.setDataHandler(new DataHandler(dataSource));
-                    multipart.addBodyPart(mimeBodyPart);
-                }
-            }
+            processAccessory(emailMessage, multipart);
             message.setContent(multipart);
             Transport.send(message);
+            executeMessageProcessor(emailMessage);
         } catch (javax.mail.MessagingException e) {
             throw new MessageException(e);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void processAccessory(EmailMessage emailMessage, Multipart multipart) throws MessagingException {
+        if (emailMessage.getAccessories() != null) {
+            for (EmailAccessory accessory : emailMessage.getAccessories()) {
+                MimeBodyPart mimeBodyPart = new MimeBodyPart();
+                ByteArrayDataSource dataSource = new ByteArrayDataSource(accessory.getContent(), MimetypesFileTypeMap.getDefaultFileTypeMap().getContentType(accessory.getFileName()));
+                mimeBodyPart.setFileName(accessory.getFileName());
+                mimeBodyPart.setDataHandler(new DataHandler(dataSource));
+                multipart.addBodyPart(mimeBodyPart);
+            }
+        }
+    }
+
+    private void executeMessageProcessor(EmailMessage emailMessage) {
+        if (messageProcessors != null) {
+            for (MessageProcessor processor : messageProcessors) {
+                if (processor.isMatch(emailMessage)) {
+                    processor.processMessage(emailMessage);
+                }
+            }
         }
     }
 
