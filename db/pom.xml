@@ -8,6 +8,7 @@
   <artifactId>db</artifactId>
   <packaging>pom</packaging>
   <modules>
+  	<module>org.tinygroup.dao</module>
     <module>org.tinygroup.tinydb</module>
     <module>org.tinygroup.dbrouter</module>
     <module>org.tinygroup.dbrouterjdbc3</module>
