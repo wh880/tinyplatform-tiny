@@ -23,12 +23,11 @@
  */
 package org.tinygroup.queue;
 
-import java.util.Random;
-
+import junit.framework.TestCase;
 import org.tinygroup.commons.exceptions.NotExistException;
 import org.tinygroup.queue.impl.QueueImpl;
 
-import junit.framework.TestCase;
+import java.util.Random;
 
 public class QueueTest extends TestCase {
 	static volatile boolean stopIt = false;
@@ -117,7 +116,7 @@ public class QueueTest extends TestCase {
 		}
 	}
 
-	public void testThreadVisit() {
+/*	public void testThreadVisit() {
 		for (int i = 0; i < 10; i++) {
 			new ThreadTest().start();
 		}
@@ -137,7 +136,7 @@ public class QueueTest extends TestCase {
 		for (int i = 0; i < 10; i++) {
 			testThreadVisit();
 		}
-	}
+	}*/
 
 	class ThreadTest extends Thread {
 		public ThreadTest() {

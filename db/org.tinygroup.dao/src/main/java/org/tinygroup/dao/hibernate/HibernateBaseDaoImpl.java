@@ -23,12 +23,12 @@
  */
 package org.tinygroup.dao.hibernate;
 
+import org.springframework.stereotype.Repository;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.springframework.stereotype.Repository;
 
 /* 
  * @Service用于标注业务层组件， 
@@ -40,106 +40,106 @@ import org.springframework.stereotype.Repository;
 
 public class HibernateBaseDaoImpl extends HibernateBaseDao {
 
-	public Object save(Object entity) throws Exception {
+    public Object save(Object entity) throws Exception {
 
-		Object o = super.save(entity);
-		return o;
-	}
+        Object o = super.save(entity);
+        return o;
+    }
 
-	public void delete(Object entity) throws Exception {
-		super.delete(entity);
-	}
+    public void delete(Object entity) throws Exception {
+        super.delete(entity);
+    }
 
-	public Object update(Object entity) throws Exception  {
-		return super.update(entity);
-	}
+    public Object update(Object entity) throws Exception {
+        return super.update(entity);
+    }
 
-	public Object[] save(Object[] entitys) throws Exception {
-		for (Object entity : entitys) {
-			save(entity);
-		}
-		return entitys;
-	}
+    public Object[] save(Object[] entitys) throws Exception {
+        for (Object entity : entitys) {
+            save(entity);
+        }
+        return entitys;
+    }
 
-	public Object[] delete(Object[] entitys) throws Exception {
-		for (Object entity : entitys) {
-			delete(entity);
-		}
-		return entitys;
-	}
+    public Object[] delete(Object[] entitys) throws Exception {
+        for (Object entity : entitys) {
+            delete(entity);
+        }
+        return entitys;
+    }
 
-	public Object[] update(Object[] entitys) throws Exception {
-		for (Object entity : entitys) {
-			update(entity);
-		}
-		return entitys;
-	}
+    public Object[] update(Object[] entitys) throws Exception {
+        for (Object entity : entitys) {
+            update(entity);
+        }
+        return entitys;
+    }
 
-	public Collection<Object> save(Collection<Object> entitys) throws Exception {
-		for (Object entity : entitys) {
-			save(entity);
-		}
-		return entitys;
-	}
+    public Collection<Object> save(Collection<Object> entitys) throws Exception {
+        for (Object entity : entitys) {
+            save(entity);
+        }
+        return entitys;
+    }
 
-	public Collection<Object> update(Collection<Object> entitys)
-			throws Exception {
-		for (Object entity : entitys) {
-			update(entity);
-		}
-		return entitys;
-	}
+    public Collection<Object> update(Collection<Object> entitys)
+            throws Exception {
+        for (Object entity : entitys) {
+            update(entity);
+        }
+        return entitys;
+    }
 
-	public Collection<Object> delete(Collection<Object> entitys)
-			throws Exception {
-		for (Object entity : entitys) {
-			delete(entity);
-		}
-		return entitys;
-	}
+    public Collection<Object> delete(Collection<Object> entitys)
+            throws Exception {
+        for (Object entity : entitys) {
+            delete(entity);
+        }
+        return entitys;
+    }
 
-	public Object deleteObject(Class clazz, Object id) throws Exception {
-		return super.deleteObject(clazz, id);
-	}
-	
-	public Collection<Object> deleteByKey(Class clazz,Collection<Object> keys) throws Exception {
-		for(Object key:keys){
-			super.deleteObject(clazz, key);
-		}
-		return keys;
-	}
+    public Object deleteObject(Class clazz, Object id) throws Exception {
+        return super.deleteObject(clazz, id);
+    }
 
-	public Object[] deleteByKey(Class clazz,Object[] keys) throws Exception {
-		for(Object key:keys){
-			super.deleteObject(clazz, key);
-		}
-		return keys;
-	}
-	
-	public <T> T getObject(Class clazz, Object id) {
-		return super.getObject(clazz, id);
-	}
-	
+    public Collection<Object> deleteByKey(Class clazz, Collection<Object> keys) throws Exception {
+        for (Object key : keys) {
+            super.deleteObject(clazz, key);
+        }
+        return keys;
+    }
 
-	public <T> Collection<T> getObjects(Class clazz, Collection ids) {
-		List<T> list = new ArrayList<T>();
-		for (Object id : ids) {
-			T o = super.getObject(clazz, id);
-			if (o != null)
-				list.add(o);
-		}
-		return list;
-	}
+    public Object[] deleteByKey(Class clazz, Object[] keys) throws Exception {
+        for (Object key : keys) {
+            super.deleteObject(clazz, key);
+        }
+        return keys;
+    }
 
-	public <T> T[] getObjects(Class clazz, Object[] ids) {
-		Object[] objs = (Object[]) Array.newInstance(clazz, ids.length);
-		for (int i = 0; i < ids.length; i++) {
-			Object o = super.getObject(clazz, ids[i]);
-			if (o != null)
-				objs[i] = o;
-		}
-		return (T[]) objs;
-	}
-	
-	
+    public <T> T getObject(Class clazz, Object id) {
+        return (T) super.getObject(clazz, id);
+    }
+
+
+    public <T> Collection<T> getObjects(Class clazz, Collection ids) {
+        List<T> list = new ArrayList<T>();
+        for (Object id : ids) {
+            T o = (T) super.getObject(clazz, id);
+            if (o != null)
+                list.add(o);
+        }
+        return list;
+    }
+
+    public <T> T[] getObjects(Class clazz, Object[] ids) {
+        Object[] objs = (Object[]) Array.newInstance(clazz, ids.length);
+        for (int i = 0; i < ids.length; i++) {
+            Object o = super.getObject(clazz, ids[i]);
+            if (o != null)
+                objs[i] = o;
+        }
+        return (T[]) objs;
+    }
+
+
 }
