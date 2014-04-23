@@ -12,8 +12,6 @@
                      http://www.springframework.org/schema/aop  
            http://www.springframework.org/schema/aop/spring-aop-2.5.xsd"
 	default-autowire="byName" default-lazy-init="true">
-	<context:component-scan base-package="org.tinygroup.tinydb" />
-	<tx:annotation-driven transaction-manager="transactionManager" />
 	<bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler"
 		lazy-init="true" />
 

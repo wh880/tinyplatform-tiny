@@ -23,19 +23,18 @@
  */
 package org.tinygroup.dao;
 
-import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import org.tinygroup.dao.hibernate.HibernateBaseDaoImpl;
 import org.tinygroup.dao.query.PagingObject;
 import org.tinygroup.dao.query.QueryObject;
 import org.tinygroup.dao.util.DaoUtil;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import javax.annotation.Resource;
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 抽象Dao
@@ -167,17 +166,17 @@ public abstract class AbstractDao<T, KeyType> implements
 	}
 
 	public T get(KeyType key) {
-		return basicDaoService.getObject(entityClass, key);
+		return (T)basicDaoService.getObject(entityClass, key);
 	}
 
 	public Collection<T> get(Collection<KeyType> key) {
 		
-		return basicDaoService.getObjects(entityClass, key);
+		return (Collection<T>)basicDaoService.getObjects(entityClass, key);
 	}
 
 	public T[] get(KeyType[] key) {
 		
-		return basicDaoService.getObjects(entityClass, key);
+		return (T[])basicDaoService.getObjects(entityClass, key);
 	}
 
 	public T getObject(String sql) {
