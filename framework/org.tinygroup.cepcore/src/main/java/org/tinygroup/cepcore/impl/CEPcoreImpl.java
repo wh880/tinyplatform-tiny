@@ -59,10 +59,10 @@ public class CEPcoreImpl implements CEPCore, CEPCoreWatch {
 	 * Map<ServiceId,List<EventProcessor>>
 	 */
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
-	/**
-	 * Map<ServiceName,List<EventProcessor>>
-	 */
-	private Map<String, List<EventProcessor>> serviceNameMap = new HashMap<String, List<EventProcessor>>();
+//	/**
+//	 * Map<ServiceName,List<EventProcessor>>
+//	 */
+//	private Map<String, List<EventProcessor>> serviceNameMap = new HashMap<String, List<EventProcessor>>();
 	/**
 	 * Map<processorId,EventProcessor>
 	 */
@@ -77,10 +77,10 @@ public class CEPcoreImpl implements CEPCore, CEPCoreWatch {
 	 * 本地服务Map,Map<ServiceId,ServiceInfo>
 	 */
 	private Map<String, ServiceInfo> serviceInfoIdMap = new HashMap<String, ServiceInfo>();
-	/**
-	 * 本地服务Map,Map<ServiceName,ServiceInfo>
-	 */
-	private Map<String, ServiceInfo> serviceInfoNameMap = new HashMap<String, ServiceInfo>();
+//	/**
+//	 * 本地服务Map,Map<ServiceName,ServiceInfo>
+//	 */
+//	private Map<String, ServiceInfo> serviceInfoNameMap = new HashMap<String, ServiceInfo>();
 	/**
 	 * 节点管理器，sc和as(ar)采用不同的管理器
 	 */
