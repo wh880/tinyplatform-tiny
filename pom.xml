@@ -114,7 +114,7 @@
                 <artifactId>maven-license-plugin</artifactId>
                 <version>1.10.b1</version>
                 <configuration>
-                    <headerMap>d:\SVN\tinyorg-code\license.txt</headerMap>
+                    <header>D:/git/tiny/license.txt</header>
                     <strictCheck>true</strictCheck>
                     <encoding>UTF-8</encoding>
                     <excludes>

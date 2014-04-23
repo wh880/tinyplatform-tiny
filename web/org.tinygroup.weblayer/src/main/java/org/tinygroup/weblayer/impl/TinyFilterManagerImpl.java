@@ -72,6 +72,8 @@ public class TinyFilterManagerImpl implements TinyFilterManager {
 	}
 
 	public void initTinyResources() {
+		tinyFilters.clear();//先清空
+		processorXmlNodes.clear();
 		if (configManager != null) {
 			List<XmlNode> configs = configManager.getConfigs();
 			XmlNode component=configManager.getComponentConfig();
