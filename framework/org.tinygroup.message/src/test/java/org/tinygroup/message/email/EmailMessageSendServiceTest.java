@@ -38,7 +38,7 @@ public class EmailMessageSendServiceTest  {
 
         EmailMessageAccount account = new EmailMessageAccount();
         account.setHost("127.0.0.1");
-        account.setUsername("luoguo");
+        account.setUsername("luoguo@tinygroup.org");
         account.setPassword("123456");
         EmailMessageSendService sendService=new EmailMessageSendService();
         EmailMessageSender messageSender=new EmailMessageSender();
