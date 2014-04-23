@@ -42,18 +42,14 @@ import java.util.List;
 public class EmailMessageReceiveService implements MessageReceiveService<EmailMessageAccount, EmailReceiveMessage> {
     private EmailMessageAccount messageAccount;
     private Session session;
-    boolean removeReceivedMessage = true;
+    private EmailMessageFlagMarker emailMessageFlagMarker;
 
-    public EmailMessageReceiveService() {
-
+    public EmailMessageFlagMarker getEmailMessageFlagMarker() {
+        return emailMessageFlagMarker;
     }
 
-    public boolean isRemoveReceivedMessage() {
-        return removeReceivedMessage;
-    }
-
-    public void setRemoveReceivedMessage(boolean removeReceivedMessage) {
-        this.removeReceivedMessage = removeReceivedMessage;
+    public void setEmailMessageFlagMarker(EmailMessageFlagMarker emailMessageFlagMarker) {
+        this.emailMessageFlagMarker = emailMessageFlagMarker;
     }
 
     public EmailMessageReceiveService(EmailMessageAccount account) {
@@ -73,11 +69,7 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
             Store store = session.getStore("pop3");
             store.connect(messageAccount.getHost(), messageAccount.getUsername(), messageAccount.getPassword());
             Folder folder = store.getFolder("inbox");
-            int folderOpenMode = Folder.READ_ONLY;
-            if (removeReceivedMessage) {
-                folderOpenMode = Folder.READ_WRITE;
-            }
-            folder.open(folderOpenMode);
+            folder.open(Folder.READ_WRITE);
             Message[] messages = folder.getMessages();
             List<EmailReceiveMessage> receiveMessages = new ArrayList<EmailReceiveMessage>();
             for (int i = 0; i < messages.length; i++) {
@@ -88,11 +80,11 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
                 message.setReceiveDate(messages[i].getReceivedDate());
                 message.setSendDate(messages[i].getSentDate());
                 message.setMessageReceivers(getMessageReceivers(messages[i]));
-                if (removeReceivedMessage) {
-                    messages[i].setFlag(Flags.Flag.DELETED, true);
+                if (emailMessageFlagMarker != null) {
+                    messages[i].setFlag(emailMessageFlagMarker.getFlag(message, messages[i]), true);
                 }
             }
-            folder.close(removeReceivedMessage);
+            folder.close(true);
             store.close();
             return receiveMessages;
         } catch (Exception e) {

@@ -37,6 +37,7 @@ public class EmailMessageReceiveServiceTest {
         account.setUsername("luoguo@tinygroup.org");
         account.setPassword("T336syhd");
         EmailMessageReceiveService service = new EmailMessageReceiveService(account);
+        service.setEmailMessageFlagMarker(new RemoveAllEmailMessageFlagMarker());
         Collection<EmailReceiveMessage> messages = service.getMessages();
         for (EmailReceiveMessage message : messages) {
             System.out.println("subject:" + message.getMessage().getSubject());
