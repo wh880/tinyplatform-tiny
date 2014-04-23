@@ -42,9 +42,18 @@ import java.util.List;
 public class EmailMessageReceiveService implements MessageReceiveService<EmailMessageAccount, EmailReceiveMessage> {
     private EmailMessageAccount messageAccount;
     private Session session;
+    boolean removeReceivedMessage = true;
 
     public EmailMessageReceiveService() {
 
+    }
+
+    public boolean isRemoveReceivedMessage() {
+        return removeReceivedMessage;
+    }
+
+    public void setRemoveReceivedMessage(boolean removeReceivedMessage) {
+        this.removeReceivedMessage = removeReceivedMessage;
     }
 
     public EmailMessageReceiveService(EmailMessageAccount account) {
@@ -64,7 +73,11 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
             Store store = session.getStore("pop3");
             store.connect(messageAccount.getHost(), messageAccount.getUsername(), messageAccount.getPassword());
             Folder folder = store.getFolder("inbox");
-            folder.open(Folder.READ_ONLY);
+            int folderOpenMode = Folder.READ_ONLY;
+            if (removeReceivedMessage) {
+                folderOpenMode = Folder.READ_WRITE;
+            }
+            folder.open(folderOpenMode);
             Message[] messages = folder.getMessages();
             List<EmailReceiveMessage> receiveMessages = new ArrayList<EmailReceiveMessage>();
             for (int i = 0; i < messages.length; i++) {
@@ -75,9 +88,11 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
                 message.setReceiveDate(messages[i].getReceivedDate());
                 message.setSendDate(messages[i].getSentDate());
                 message.setMessageReceivers(getMessageReceivers(messages[i]));
-                messages[i].setFlag(Flags.Flag.DELETED,true);
+                if (removeReceivedMessage) {
+                    messages[i].setFlag(Flags.Flag.DELETED, true);
+                }
             }
-            folder.close(true);
+            folder.close(removeReceivedMessage);
             store.close();
             return receiveMessages;
         } catch (Exception e) {

@@ -37,7 +37,7 @@ public class EmailMessageSendServiceTest  {
     public static void main(String[] args) throws IOException, MessageException {
 
         EmailMessageAccount account = new EmailMessageAccount();
-        account.setHost("mail.tinygroup.org");
+        account.setHost("127.0.0.1");
         account.setUsername("luoguo");
         account.setPassword("123456");
         EmailMessageSendService sendService=new EmailMessageSendService();

@@ -33,8 +33,8 @@ import java.util.Collection;
 public class EmailMessageReceiveServiceTest {
     public static void main(String[] args) throws MessageException {
         EmailMessageAccount account = new EmailMessageAccount();
-        account.setHost("mail.tinygroup.org");
-        account.setUsername("luoguo");
+        account.setHost("127.0.0.1");
+        account.setUsername("luoguo@tinygroup.org");
         account.setPassword("T336syhd");
         EmailMessageReceiveService service = new EmailMessageReceiveService(account);
         Collection<EmailReceiveMessage> messages = service.getMessages();
