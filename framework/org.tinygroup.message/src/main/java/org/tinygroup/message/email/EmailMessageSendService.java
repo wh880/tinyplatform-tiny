@@ -23,7 +23,8 @@
  */
 package org.tinygroup.message.email;
 
-import org.tinygroup.message.*;
+import org.tinygroup.message.MessageException;
+import org.tinygroup.message.MessageSendService;
 
 import javax.activation.DataHandler;
 import javax.activation.MimetypesFileTypeMap;
@@ -34,47 +35,20 @@ import javax.mail.Transport;
 import javax.mail.internet.*;
 import javax.mail.util.ByteArrayDataSource;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 邮件发送服务
  * Created by luoguo on 2014/4/17.
  */
 public class EmailMessageSendService implements MessageSendService<EmailMessageAccount, EmailMessageSender, EmailMessageReceiver, EmailMessage> {
-    private EmailMessageAccount messageAccount;
-    private Session session;
-    private List<MessageProcessor> messageProcessors;
-
-    public void setMessageProcessors(List<MessageProcessor> messageProcessors) {
-        this.messageProcessors = messageProcessors;
-    }
-
-    public void addMessageProcessor(MessageProcessor messageProcessor) {
-        if (messageProcessors == null) {
-            messageProcessors = new ArrayList<MessageProcessor>();
-        }
-        messageProcessors.add(messageProcessor);
-    }
-
-
     public EmailMessageSendService() {
 
     }
 
-    public EmailMessageSendService(EmailMessageAccount messageAccount) {
-        setMessageAccount(messageAccount);
-    }
 
-    public void setMessageAccount(EmailMessageAccount messageAccount) {
-        this.messageAccount = messageAccount;
-    }
-
-    public void sendMessage(EmailMessageSender messageSender, Collection<EmailMessageReceiver> messageReceivers, EmailMessage emailMessage) throws MessageException {
-        if (session == null) {
-            session = EmailMessageUtil.getSession(messageAccount);
-        }
+    public void sendMessage(EmailMessageAccount messageAccount, EmailMessageSender messageSender, Collection<EmailMessageReceiver> messageReceivers, EmailMessage emailMessage) throws MessageException {
+        Session session = EmailMessageUtil.getSession(messageAccount);
         javax.mail.Message message = new MimeMessage(session);
         try {
             message.setFrom(new InternetAddress(encode(messageSender.getAddress())));
@@ -90,9 +64,6 @@ public class EmailMessageSendService implements MessageSendService<EmailMessageA
             processAccessory(emailMessage, multipart);
             message.setContent(multipart);
             Transport.send(message);
-            for (EmailMessageReceiver receiver : messageReceivers) {
-                executeMessageProcessor(messageSender, receiver, emailMessage);
-            }
         } catch (javax.mail.MessagingException e) {
             throw new MessageException(e);
         } catch (UnsupportedEncodingException e) {
@@ -108,16 +79,6 @@ public class EmailMessageSendService implements MessageSendService<EmailMessageA
                 mimeBodyPart.setFileName(accessory.getFileName());
                 mimeBodyPart.setDataHandler(new DataHandler(dataSource));
                 multipart.addBodyPart(mimeBodyPart);
-            }
-        }
-    }
-
-    private void executeMessageProcessor(MessageSender messageSender, MessageReceiver messageReceiver, Message message) {
-        if (messageProcessors != null) {
-            for (MessageProcessor processor : messageProcessors) {
-                if (processor.isMatch(messageSender, messageReceiver, message)) {
-                    processor.processMessage(messageSender, messageReceiver, message);
-                }
             }
         }
     }
