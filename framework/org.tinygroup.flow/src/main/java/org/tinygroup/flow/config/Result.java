@@ -26,7 +26,7 @@ package org.tinygroup.flow.config;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-//TODO 添加在调用组件时进行检查
+
 
 /**
  * 用于定义一个组件执行完毕后，会在环境变量中放置的值
