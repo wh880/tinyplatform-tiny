@@ -40,10 +40,7 @@ import java.util.List;
  * Created by luoguo on 2014/4/18.
  */
 public class EmailMessageReceiveService implements MessageReceiveService<EmailMessageAccount, EmailReceiveMessage> {
-    private EmailMessageAccount messageAccount;
-    private Session session;
     private EmailMessageFlagMarker emailMessageFlagMarker;
-    private List<MessageProcessor> messageProcessors;
 
     public EmailMessageFlagMarker getEmailMessageFlagMarker() {
         return emailMessageFlagMarker;
@@ -53,20 +50,11 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
         this.emailMessageFlagMarker = emailMessageFlagMarker;
     }
 
-    public EmailMessageReceiveService(EmailMessageAccount account) {
-        this.messageAccount = account;
-    }
 
-    public void setMessageAccount(EmailMessageAccount messageAccount) {
-        this.messageAccount = messageAccount;
-    }
-
-    public Collection<EmailReceiveMessage> getMessages() throws MessageException {
+    public Collection<EmailReceiveMessage> getMessages(EmailMessageAccount messageAccount) throws MessageException {
 
         try {
-            if (session == null) {
-                session = EmailMessageUtil.getSession(messageAccount);
-            }
+            Session session = EmailMessageUtil.getSession(messageAccount);
             Store store = session.getStore("pop3");
             store.connect(messageAccount.getHost(), messageAccount.getUsername(), messageAccount.getPassword());
             Folder folder = store.getFolder("inbox");
@@ -87,7 +75,6 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
             }
             folder.close(true);
             store.close();
-            executeMessageProcess(receiveMessages);
             return receiveMessages;
         } catch (Exception e) {
             throw new MessageException(e);
@@ -95,32 +82,6 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
 
     }
 
-    private void executeMessageProcess(List<EmailReceiveMessage> receiveMessages) {
-        if (messageProcessors != null) {
-            for (EmailReceiveMessage receiveMessage : receiveMessages) {
-                for (MessageSender messageSender : receiveMessage.getMessageSenders()) {
-                    for (MessageReceiver messageReceiver : receiveMessage.getMessageReceivers()) {
-                        for (MessageProcessor processor : messageProcessors) {
-                            if (processor.isMatch(messageSender,messageReceiver,receiveMessage.getMessage())) {
-                                processor.processMessage(messageSender,messageReceiver,receiveMessage.getMessage());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void setMessageProcessors(List<MessageProcessor> messageProcessors) {
-        this.messageProcessors = messageProcessors;
-    }
-
-    public void addMessageProcessor(MessageProcessor messageProcessor) {
-        if (messageProcessors == null) {
-            messageProcessors = new ArrayList<MessageProcessor>();
-        }
-        messageProcessors.add(messageProcessor);
-    }
 
     private Collection<EmailMessageReceiver> getMessageReceivers(Message message) throws MessagingException {
         List<EmailMessageReceiver> receivers = new ArrayList<EmailMessageReceiver>();

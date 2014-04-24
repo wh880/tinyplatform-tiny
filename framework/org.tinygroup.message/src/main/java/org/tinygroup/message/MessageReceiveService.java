@@ -24,29 +24,20 @@
 package org.tinygroup.message;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 信息服务，用于定义信息的发送与接收接口
  * Created by luoguo on 2014/4/17.
  */
 public interface MessageReceiveService<Account extends MessageAccount, Msg extends Message> {
-    /**
-     * 设置消息发送帐号
-     *
-     * @param messageAccount
-     */
-    void setMessageAccount(Account messageAccount);
-
+ 
     /**
      * 返回接收的消息
      *
      * @return
      * @throws MessageException
      */
-    Collection<Msg> getMessages() throws MessageException;
+    Collection<Msg> getMessages(Account messageAccount) throws MessageException;
 
-    void setMessageProcessors(List<MessageProcessor> messageProcessors);
 
-    void addMessageProcessor(MessageProcessor messageProcessor);
 }

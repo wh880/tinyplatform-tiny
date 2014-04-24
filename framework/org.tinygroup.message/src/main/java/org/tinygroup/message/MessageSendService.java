@@ -24,7 +24,6 @@
 package org.tinygroup.message;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 信息服务，用于定义信息的发送与接收接口
@@ -32,12 +31,6 @@ import java.util.List;
  */
 public interface MessageSendService<Account extends MessageAccount, Sender extends MessageSender, Receiver extends MessageReceiver, Msg extends Message> {
 
-    /**
-     * 设置消息发送收户
-     *
-     * @param messageAccount
-     */
-    void setMessageAccount(Account messageAccount);
 
     /**
      * 发送单条消息
@@ -46,10 +39,7 @@ public interface MessageSendService<Account extends MessageAccount, Sender exten
      * @param messageReceivers 消息接收者
      * @param message          消息
      */
-    void sendMessage(Sender messageSender, Collection<Receiver> messageReceivers, Msg message) throws MessageException;
+    void sendMessage(Account messageAccount, Sender messageSender, Collection<Receiver> messageReceivers, Msg message) throws MessageException;
 
-    void setMessageProcessors(List<MessageProcessor> messageProcessors);
-
-    void addMessageProcessor(MessageProcessor messageProcessor);
 
 }
