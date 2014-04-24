@@ -25,9 +25,13 @@ package org.tinygroup.convert.text.config;
 
 import java.io.UnsupportedEncodingException;
 
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+
 public class TextCell {
 	private String value;
 	private int length;
+	private static Logger logger = LoggerFactory.getLogger(TextCell.class);
 
 	public TextCell(String value) {
 		this.value = value;
@@ -72,8 +76,7 @@ public class TextCell {
 		try {
 			return s.getBytes("GBK").length;
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.errorMessage("获取字符串{0}的gbk编码长度时出错", e,s);
 		}
 		return 0;
 	}
