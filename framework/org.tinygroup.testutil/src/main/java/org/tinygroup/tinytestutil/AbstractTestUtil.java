@@ -98,7 +98,6 @@ public abstract class AbstractTestUtil {
 		try {
 			is = new ByteArrayInputStream(config.getBytes("ISO-8859-1"));
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		application = new ApplicationDefault(is, true);
