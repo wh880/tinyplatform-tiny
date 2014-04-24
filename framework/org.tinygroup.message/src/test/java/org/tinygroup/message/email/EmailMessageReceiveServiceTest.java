@@ -23,7 +23,7 @@
  */
 package org.tinygroup.message.email;
 
-import org.tinygroup.message.MessageException;
+import org.tinygroup.message.*;
 
 import java.util.Collection;
 
@@ -32,13 +32,19 @@ import java.util.Collection;
  */
 public class EmailMessageReceiveServiceTest {
     public static void main(String[] args) throws MessageException {
+        MessageManager<EmailMessageAccount, EmailMessageSender, EmailMessageReceiver, EmailReceiveMessage> messageManager = new MessageManagerDefault();
         EmailMessageAccount account = new EmailMessageAccount();
         account.setHost("127.0.0.1");
         account.setUsername("luoguo@tinygroup.org");
         account.setPassword("123456");
-        EmailMessageReceiveService service = new EmailMessageReceiveService(account);
-        service.setEmailMessageFlagMarker(new RemoveAllEmailMessageFlagMarker());
-        Collection<EmailReceiveMessage> messages = service.getMessages();
+        messageManager.setMessageAccount(account);
+        EmailMessageReceiveService messageReceiveService = new EmailMessageReceiveService();
+        MessageReceiveService receiveService=messageReceiveService;
+        MessageSendService messageSendService = new EmailMessageSendService();
+        messageManager.setMessageReceiveService(receiveService);
+        messageManager.setMessageSendService(messageSendService);
+        messageReceiveService.setEmailMessageFlagMarker(new RemoveAllEmailMessageFlagMarker());
+        Collection<EmailReceiveMessage> messages = messageManager.getMessages();
         for (EmailReceiveMessage message : messages) {
             System.out.println("subject:" + message.getMessage().getSubject());
             System.out.println("content:" + message.getMessage().getContent());
