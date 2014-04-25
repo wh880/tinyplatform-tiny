@@ -80,7 +80,7 @@ public class DbfReader {
      * @throws IOException
      */
     public void absolute(int position) throws IOException {
-        fileChannel.position(dbfHeader.getHeaderLength() + (position - 1) * dbfHeader.getHeaderLength());
+        fileChannel.position(dbfHeader.getHeaderLength() + (position - 1) * dbfHeader.getRecordLength());
     }
 
     private DbfField readField() throws IOException {
@@ -172,7 +172,6 @@ public class DbfReader {
     }
 
     void readByteBuffer(ByteBuffer byteBuffer) throws IOException {
-        int length = fileChannel.read(byteBuffer);
-//        fileChannel.position(fileChannel.position() + length);
+         fileChannel.read(byteBuffer);
     }
 }
