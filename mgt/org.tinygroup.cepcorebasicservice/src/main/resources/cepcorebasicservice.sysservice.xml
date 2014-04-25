@@ -27,7 +27,7 @@
 			<service-result name="result" required="true"
 				is-array="false" type="void" />
 		</service-method>
-		
+		<!--  
 		<service-method name="serviceSetTimeout" local-name="serviceSetTimeout"
 			service-id="serviceSetTimeout" version="" description="设置超时时间"
 			method-name="setTimeout">
@@ -37,15 +37,6 @@
 			</service-parameters>
 			<service-result name="result" required="true"
 				is-array="false" type="void" />
-		</service-method>
-		
-		<service-method name="serviceGetProcessorCount" local-name="serviceGetProcessorCount"
-			service-id="serviceGetProcessorCount" version="" description="获取CEPCore中的事件处理器个数"
-			method-name="getProcessorCount">
-			<service-parameters>
-			</service-parameters>
-			<service-result name="result" required="true"
-				is-array="false" type="int" />
 		</service-method>
 		
 		<service-method name="serviceGetTimeOutConfig" local-name="serviceGetTimeOutConfig"
@@ -60,6 +51,16 @@
 		<service-method name="serviceGetThreadCount" local-name="serviceGetThreadCount"
 			service-id="serviceGetThreadCount" version="" description="获取CEPCore中等待的线程数"
 			method-name="getThreadCount">
+			<service-parameters>
+			</service-parameters>
+			<service-result name="result" required="true"
+				is-array="false" type="int" />
+		</service-method>
+		
+		-->
+		<service-method name="serviceGetProcessorCount" local-name="serviceGetProcessorCount"
+			service-id="serviceGetProcessorCount" version="" description="获取CEPCore中的事件处理器个数"
+			method-name="getProcessorCount">
 			<service-parameters>
 			</service-parameters>
 			<service-result name="result" required="true"
