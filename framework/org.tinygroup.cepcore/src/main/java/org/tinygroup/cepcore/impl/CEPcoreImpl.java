@@ -282,8 +282,6 @@ public class CEPcoreImpl implements CEPCore, CEPCoreWatch {
 		if (list == null || list.size() == 0) {
 			return null;
 		}
-		// 这里说明有两个eventprocessor提供了同一个服务，是非法的，那么找到谁就是谁
-		// TODO
 		return list.get(0);
 	}
 
