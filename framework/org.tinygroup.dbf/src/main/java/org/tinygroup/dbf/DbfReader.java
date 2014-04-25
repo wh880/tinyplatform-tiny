@@ -12,11 +12,51 @@ import java.util.List;
  * Created by luoguo on 2014/4/25.
  */
 public class DbfReader {
-    String encode = "GBK";
-    FileChannel fileChannel;
-    DbfHeader dbfHeader;
-    List<DbfField> dbfFields;
+    private String encode = "GBK";
+    private FileChannel fileChannel;
+    private DbfHeader dbfHeader;
+    private List<DbfField> dbfFields;
     private boolean isRemoved;
+
+    public String getEncode() {
+        return encode;
+    }
+
+    public void setEncode(String encode) {
+        this.encode = encode;
+    }
+
+    public FileChannel getFileChannel() {
+        return fileChannel;
+    }
+
+    public void setFileChannel(FileChannel fileChannel) {
+        this.fileChannel = fileChannel;
+    }
+
+    public DbfHeader getDbfHeader() {
+        return dbfHeader;
+    }
+
+    public void setDbfHeader(DbfHeader dbfHeader) {
+        this.dbfHeader = dbfHeader;
+    }
+
+    public List<DbfField> getDbfFields() {
+        return dbfFields;
+    }
+
+    public void setDbfFields(List<DbfField> dbfFields) {
+        this.dbfFields = dbfFields;
+    }
+
+    public boolean isRemoved() {
+        return isRemoved;
+    }
+
+    public void setRemoved(boolean isRemoved) {
+        this.isRemoved = isRemoved;
+    }
 
     DbfReader(File dbfFile, String encode) throws IOException {
         this(dbfFile);
@@ -25,14 +65,14 @@ public class DbfReader {
 
     private List<DbfField> readFields() throws IOException {
         List<DbfField> dbfFieldList = new ArrayList<DbfField>();
-        for (int i = 0; i < (dbfHeader.headerLength - 33) / 32; i++) {
+        for (int i = 0; i < (dbfHeader.getHeaderLength() - 32 - 1) / 32; i++) {
             dbfFieldList.add(readField());
         }
         return dbfFieldList;
     }
 
     public void moveFirst() throws IOException {
-        fileChannel.position(dbfHeader.headerLength);
+        fileChannel.position(dbfHeader.getHeaderLength());
     }
 
     /**
@@ -40,12 +80,12 @@ public class DbfReader {
      * @throws IOException
      */
     public void absolute(int position) throws IOException {
-        fileChannel.position(dbfHeader.headerLength + (position - 1) * dbfHeader.recordLength);
+        fileChannel.position(dbfHeader.getHeaderLength() + (position - 1) * dbfHeader.getHeaderLength());
     }
 
     private DbfField readField() throws IOException {
         DbfField field = new DbfField();
-        field.reader = this;
+        field.setReader(this);
         ByteBuffer byteBuffer = ByteBuffer.allocate(32);
         readByteBuffer(byteBuffer);
         byte[] bytes = byteBuffer.array();
@@ -54,7 +94,7 @@ public class DbfReader {
         field.setDisplacement(getUnsignedInt(bytes, 12, 4));
         field.setLength(getUnsignedInt(bytes, 16, 1));
         field.setDecimal(getUnsignedInt(bytes, 17, 1));
-        field.flag = bytes[18];
+        field.setFlag(bytes[18]);
         return field;
     }
 
@@ -63,11 +103,11 @@ public class DbfReader {
         ByteBuffer byteBuffer = ByteBuffer.allocate(32);
         readByteBuffer(byteBuffer);
         byte[] bytes = byteBuffer.array();
-        header.version = bytes[0];
-        header.lastUpdate = (getUnsignedInt(bytes, 1, 1) + 1900) * 10000 + getUnsignedInt(bytes, 2, 1) * 100 + getUnsignedInt(bytes, 3, 1);
-        header.recordCount = getUnsignedInt(bytes, 4, 4);
-        header.headerLength = getUnsignedInt(bytes, 8, 2);
-        header.recordLength = getUnsignedInt(bytes, 10, 2);
+        header.setVersion(bytes[0]);
+        header.setLastUpdate((getUnsignedInt(bytes, 1, 1) + 1900) * 10000 + getUnsignedInt(bytes, 2, 1) * 100 + getUnsignedInt(bytes, 3, 1));
+        header.setRecordCount(getUnsignedInt(bytes, 4, 4));
+        header.setHeaderLength(getUnsignedInt(bytes, 8, 2));
+        header.setRecordLength(getUnsignedInt(bytes, 10, 2));
         System.out.println(header.getFileType());
         return header;
     }

@@ -18,14 +18,14 @@ public class DbfReaderTest {
 
     public static void printFile(String fileName) throws IOException {
         DbfReader dbfReader = new DbfReader("E:\\20140401\\" + fileName + ".DBF");
-        for (DbfField field : dbfReader.dbfFields) {
-            System.out.printf("name:%s %s(%d,%d)\n", field.name, field.type, field.length, field.decimal);
+        for (DbfField field : dbfReader.getDbfFields()) {
+            System.out.printf("name:%s %s(%d,%d)\n", field.getName(), field.getType(), field.getLength(), field.getDecimal());
         }
         System.out.println();
-        for (int i = 0; i < dbfReader.dbfHeader.recordCount; i++) {
+        for (int i = 0; i < dbfReader.getDbfHeader().getRecordCount(); i++) {
             dbfReader.readRecord();
-            for (DbfField field : dbfReader.dbfFields) {
-                System.out.printf("%" + field.length + "s", field.getStringValue());
+            for (DbfField field : dbfReader.getDbfFields()) {
+                System.out.printf("%" + field.getLength() + "s", field.getStringValue());
             }
             System.out.println();
         }

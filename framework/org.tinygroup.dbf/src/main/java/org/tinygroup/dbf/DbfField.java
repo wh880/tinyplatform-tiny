@@ -11,14 +11,50 @@ import java.util.Date;
  * Created by luoguo on 2014/4/25.
  */
 public class DbfField {
-    String name;
-    int length;
-    int decimal;
-    char type;
-    byte flag;
-    int displacement;
-    ByteBuffer buffer;
-    DbfReader reader;
+    private String name;
+    private int length;
+    private int decimal;
+    private char type;
+    private byte flag;
+    private int displacement;
+    private ByteBuffer buffer;
+    private DbfReader reader;
+
+    public String getName() {
+        return name;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public int getDecimal() {
+        return decimal;
+    }
+
+    public char getType() {
+        return type;
+    }
+
+    public byte getFlag() {
+        return flag;
+    }
+
+    public int getDisplacement() {
+        return displacement;
+    }
+
+    public ByteBuffer getBuffer() {
+        return buffer;
+    }
+
+    public void setBuffer(ByteBuffer buffer) {
+        this.buffer = buffer;
+    }
+
+    public DbfReader getReader() {
+        return reader;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -50,11 +86,11 @@ public class DbfField {
 
     void read() throws IOException {
         buffer = ByteBuffer.allocate(length);
-        reader.fileChannel.read(buffer);
+        reader.getFileChannel().read(buffer);
     }
 
     public String getStringValue() throws UnsupportedEncodingException {
-        return new String(buffer.array(), reader.encode).trim();
+        return new String(buffer.array(), reader.getEncode()).trim();
     }
 
     public int getIntValue() throws UnsupportedEncodingException {
