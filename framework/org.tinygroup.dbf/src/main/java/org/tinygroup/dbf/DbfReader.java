@@ -33,10 +33,6 @@ public abstract class DbfReader implements Reader {
         readerMap.put(type, Class.forName(className));
     }
 
-    public byte getType() {
-        return 3;
-    }
-
     public String getEncode() {
         return encode;
     }
