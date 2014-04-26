@@ -22,7 +22,7 @@ public abstract class DbfReader implements Reader {
     static Map<Integer, Class> readerMap = new HashMap<Integer, Class>();
 
     static {
-        addReader(3, FoxproDBase3Reader.class);
+        addReader(FoxproDBase3Reader.FOXPRO_DBASE3, FoxproDBase3Reader.class);
     }
 
     public static void addReader(int type, Class clazz) {
