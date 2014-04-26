@@ -26,5 +26,7 @@ public interface Reader {
 
     void close() throws IOException;
 
+    boolean hasNext();
+
     void next() throws IOException;
 }

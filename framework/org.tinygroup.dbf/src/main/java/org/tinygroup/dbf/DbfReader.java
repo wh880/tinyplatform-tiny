@@ -72,7 +72,7 @@ public abstract class DbfReader implements Reader {
         ByteBuffer byteBuffer = ByteBuffer.allocate(1);
         fileChannel.read(byteBuffer);
         byte type = byteBuffer.array()[0];
-        Class<Reader> readerClass = readerMap.get((int)type);
+        Class<Reader> readerClass = readerMap.get((int) type);
         if (readerClass == null) {
             fileChannel.close();
             throw new IOException("不支持的文件类型[" + type + "]。");
@@ -133,6 +133,10 @@ public abstract class DbfReader implements Reader {
             read(field);
         }
         position++;
+    }
+
+    public boolean hasNext() {
+        return position < header.getRecordCount();
     }
 
     private void read(Field field) throws IOException {
