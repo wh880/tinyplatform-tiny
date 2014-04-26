@@ -101,11 +101,15 @@ public abstract class DbfReader implements Reader {
      * @throws java.io.IOException
      */
     public void absolute(int position) throws IOException {
+        checkPosition(position);
+        this.position = position;
+        fileChannel.position(header.getHeaderLength() + (position - 1) * header.getRecordLength());
+    }
+
+    private void checkPosition(int position) throws IOException {
         if (position >= header.getRecordCount()) {
             throw new IOException("期望记录行数为" + (this.position + 1) + "，超过实际记录行数：" + header.getRecordCount() + "。");
         }
-        this.position = position;
-        fileChannel.position(header.getHeaderLength() + (position - 1) * header.getRecordLength());
     }
 
     protected abstract Field readField() throws IOException;
@@ -123,9 +127,7 @@ public abstract class DbfReader implements Reader {
     }
 
     public void next() throws IOException {
-        if (position >= header.getRecordCount()) {
-            throw new IOException("期望记录行数为" + (position + 1) + "，超过实际记录行数：" + header.getRecordCount() + "。");
-        }
+        checkPosition(position);
         ByteBuffer byteBuffer = ByteBuffer.allocate(1);
         readByteBuffer(byteBuffer);
         this.recordRemoved = (byteBuffer.array()[0] == '*');
