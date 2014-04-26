@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by luoguo on 2014/4/25.
  */
-public class FoxproDbase3Reader extends DbfReader {
+public class FoxproDBase3Reader extends DbfReader {
     protected void readFields() throws IOException {
         fields = new ArrayList<Field>();
         for (int i = 0; i < (header.getHeaderLength() - 32 - 1) / 32; i++) {
@@ -15,6 +15,9 @@ public class FoxproDbase3Reader extends DbfReader {
         }
     }
 
+    public byte getType() {
+        return 3;
+    }
 
     protected Field readField() throws IOException {
         Field field = new Field();

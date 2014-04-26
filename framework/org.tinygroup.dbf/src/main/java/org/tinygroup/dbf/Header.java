@@ -4,19 +4,10 @@ package org.tinygroup.dbf;
  * Created by luoguo on 2014/4/25.
  */
 public class Header {
-    private byte version;
     private int lastUpdate;
     private int recordCount;
     private int headerLength;
     private int recordLength;
-
-    public byte getVersion() {
-        return version;
-    }
-
-    public void setVersion(byte version) {
-        this.version = version;
-    }
 
     public int getLastUpdate() {
         return lastUpdate;
