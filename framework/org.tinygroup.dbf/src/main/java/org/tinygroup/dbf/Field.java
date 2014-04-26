@@ -1,6 +1,5 @@
 package org.tinygroup.dbf;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.text.ParseException;
@@ -10,7 +9,7 @@ import java.util.Date;
 /**
  * Created by luoguo on 2014/4/25.
  */
-public class DbfField {
+public class Field {
     private String name;
     private int length;
     private int decimal;
@@ -18,7 +17,7 @@ public class DbfField {
     private byte flag;
     private int displacement;
     private ByteBuffer buffer;
-    private DbfReader reader;
+    private String stringValue;
 
     public String getName() {
         return name;
@@ -52,8 +51,8 @@ public class DbfField {
         this.buffer = buffer;
     }
 
-    public DbfReader getReader() {
-        return reader;
+    public byte[] getBytesValue() {
+        return buffer.array();
     }
 
     public void setName(String name) {
@@ -80,17 +79,12 @@ public class DbfField {
         this.displacement = displacement;
     }
 
-    public void setReader(DbfReader reader) {
-        this.reader = reader;
-    }
-
-    void read() throws IOException {
-        buffer = ByteBuffer.allocate(length);
-        reader.getFileChannel().read(buffer);
+    public void setStringValue(String stringValue) {
+        this.stringValue = stringValue;
     }
 
     public String getStringValue() throws UnsupportedEncodingException {
-        return new String(buffer.array(), reader.getEncode()).trim();
+        return stringValue;
     }
 
     public int getIntValue() throws UnsupportedEncodingException {

@@ -5,173 +5,144 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by luoguo on 2014/4/25.
  */
-public class DbfReader {
-    private String encode = "GBK";
+public abstract class DbfReader implements Reader {
+    protected String encode = "GBK";
     private FileChannel fileChannel;
-    private DbfHeader dbfHeader;
-    private List<DbfField> dbfFields;
-    private boolean isRemoved;
+    protected Header header;
+    protected List<Field> fields;
+    private boolean recordRemoved;
+    int position = 0;
+    static Map<Integer, Class> readerMap = new HashMap<Integer, Class>();
+
+    static {
+        addReader(3, FoxproDbase3Reader.class);
+    }
+
+    public static void addReader(int type, Class clazz) {
+        readerMap.put(type, clazz);
+    }
+
+    public static void addReader(int type, String className) throws ClassNotFoundException {
+        readerMap.put(type, Class.forName(className));
+    }
+
+    public byte getType() {
+        return 3;
+    }
 
     public String getEncode() {
         return encode;
     }
 
-    public void setEncode(String encode) {
-        this.encode = encode;
+    public Header getHeader() {
+        return header;
     }
 
-    public FileChannel getFileChannel() {
-        return fileChannel;
+    public List<Field> getFields() {
+        return fields;
+    }
+
+
+    public boolean isRecordRemoved() {
+        return recordRemoved;
+    }
+
+    public static Reader parse(String dbfFile, String encode) throws IOException, IllegalAccessException, InstantiationException {
+        return parse(new File(dbfFile), encode);
+    }
+
+    public static Reader parse(String dbfFile) throws IOException, IllegalAccessException, InstantiationException {
+        return parse(new File(dbfFile), "GBK");
+    }
+
+    public static Reader parse(File dbfFile) throws IOException, IllegalAccessException, InstantiationException {
+        return parse(dbfFile, "GBK");
+    }
+
+    public static Reader parse(File dbfFile, String encode) throws IOException, IllegalAccessException, InstantiationException {
+        RandomAccessFile aFile = new RandomAccessFile(dbfFile, "r");
+        FileChannel fileChannel = aFile.getChannel();
+        ByteBuffer byteBuffer = ByteBuffer.allocate(1);
+        fileChannel.read(byteBuffer);
+        byte type = byteBuffer.array()[0];
+        Class<Reader> readerClass = readerMap.get((int)type);
+        if (readerClass == null) {
+            fileChannel.close();
+            throw new IOException("不支持的文件类型[" + type + "]。");
+        }
+        DbfReader reader = (DbfReader) readerClass.newInstance();
+        reader.setFileChannel(fileChannel);
+        reader.readHeader();
+        reader.readFields();
+        return reader;
     }
 
     public void setFileChannel(FileChannel fileChannel) {
         this.fileChannel = fileChannel;
     }
 
-    public DbfHeader getDbfHeader() {
-        return dbfHeader;
-    }
 
-    public void setDbfHeader(DbfHeader dbfHeader) {
-        this.dbfHeader = dbfHeader;
-    }
+    protected abstract void readFields() throws IOException;
 
-    public List<DbfField> getDbfFields() {
-        return dbfFields;
-    }
-
-    public void setDbfFields(List<DbfField> dbfFields) {
-        this.dbfFields = dbfFields;
-    }
-
-    public boolean isRemoved() {
-        return isRemoved;
-    }
-
-    public void setRemoved(boolean isRemoved) {
-        this.isRemoved = isRemoved;
-    }
-
-    DbfReader(File dbfFile, String encode) throws IOException {
-        this(dbfFile);
-        this.encode = encode;
-    }
-
-    private List<DbfField> readFields() throws IOException {
-        List<DbfField> dbfFieldList = new ArrayList<DbfField>();
-        for (int i = 0; i < (dbfHeader.getHeaderLength() - 32 - 1) / 32; i++) {
-            dbfFieldList.add(readField());
-        }
-        return dbfFieldList;
-    }
-
-    public void moveFirst() throws IOException {
-        fileChannel.position(dbfHeader.getHeaderLength());
+    public void moveBeforeFirst() throws IOException {
+        position = 0;
+        fileChannel.position(header.getHeaderLength());
     }
 
     /**
      * @param position 从1开始
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public void absolute(int position) throws IOException {
-        fileChannel.position(dbfHeader.getHeaderLength() + (position - 1) * dbfHeader.getRecordLength());
-    }
-
-    private DbfField readField() throws IOException {
-        DbfField field = new DbfField();
-        field.setReader(this);
-        ByteBuffer byteBuffer = ByteBuffer.allocate(32);
-        readByteBuffer(byteBuffer);
-        byte[] bytes = byteBuffer.array();
-        field.setName(new String(bytes, 0, 11, encode).trim().split("\0")[0]);
-        field.setType((char) bytes[11]);
-        field.setDisplacement(getUnsignedInt(bytes, 12, 4));
-        field.setLength(getUnsignedInt(bytes, 16, 1));
-        field.setDecimal(getUnsignedInt(bytes, 17, 1));
-        field.setFlag(bytes[18]);
-        return field;
-    }
-
-    private DbfHeader readDbfHeader() throws IOException {
-        DbfHeader header = new DbfHeader();
-        ByteBuffer byteBuffer = ByteBuffer.allocate(32);
-        readByteBuffer(byteBuffer);
-        byte[] bytes = byteBuffer.array();
-        header.setVersion(bytes[0]);
-        header.setLastUpdate((getUnsignedInt(bytes, 1, 1) + 1900) * 10000 + getUnsignedInt(bytes, 2, 1) * 100 + getUnsignedInt(bytes, 3, 1));
-        header.setRecordCount(getUnsignedInt(bytes, 4, 4));
-        header.setHeaderLength(getUnsignedInt(bytes, 8, 2));
-        header.setRecordLength(getUnsignedInt(bytes, 10, 2));
-        System.out.println(header.getFileType());
-        return header;
-    }
-
-    int getUnsignedInt(byte[] bytes, int start, int length) {
-        int value = 0;
-        for (int i = 0; i < length; i++) {
-            value += getIntValue(bytes[start + i], i);
+        if (position >= header.getRecordCount()) {
+            throw new IOException("期望记录行数为" + (this.position + 1) + "，超过实际记录行数：" + header.getRecordCount() + "。");
         }
-        return value;
+        this.position = position;
+        fileChannel.position(header.getHeaderLength() + (position - 1) * header.getRecordLength());
     }
 
-    int getIntValue(byte b, int bytePos) {
-        int v = 1;
-        for (int i = 0; i < bytePos; i++) {
-            v = v * 256;
-        }
-        return getUnsignedInt(b) * v;
-    }
+    protected abstract Field readField() throws IOException;
 
-    int getUnsignedInt(byte byteValue) {
-        if (byteValue < 0) {
-            return byteValue + 256;
-        } else {
-            return byteValue;
-        }
-    }
+    protected abstract void readHeader() throws IOException;
 
-    DbfReader(File dbfFile) throws IOException {
-        RandomAccessFile aFile = new RandomAccessFile(dbfFile, "r");
-
-        fileChannel = aFile.getChannel();
-        dbfHeader = readDbfHeader();
-        dbfFields = readFields();
-        skipHeaderTerminator();
-    }
 
     private void skipHeaderTerminator() throws IOException {
         ByteBuffer byteBuffer = ByteBuffer.allocate(1);
         readByteBuffer(byteBuffer);
     }
 
-    DbfReader(String file, String encode) throws IOException {
-        this(new File(file), encode);
-    }
-
-    DbfReader(String file) throws IOException {
-        this(new File(file));
-    }
-
     public void close() throws IOException {
         fileChannel.close();
     }
 
-    public void readRecord() throws IOException {
+    public void next() throws IOException {
+        if (position >= header.getRecordCount()) {
+            throw new IOException("期望记录行数为" + (position + 1) + "，超过实际记录行数：" + header.getRecordCount() + "。");
+        }
         ByteBuffer byteBuffer = ByteBuffer.allocate(1);
         readByteBuffer(byteBuffer);
-        this.isRemoved = (byteBuffer.array()[0] == '*');
-        for (DbfField field : dbfFields) {
-            field.read();
+        this.recordRemoved = (byteBuffer.array()[0] == '*');
+        for (Field field : fields) {
+            read(field);
         }
+        position++;
     }
 
-    void readByteBuffer(ByteBuffer byteBuffer) throws IOException {
-         fileChannel.read(byteBuffer);
+    private void read(Field field) throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocate(field.getLength());
+        readByteBuffer(buffer);
+        field.setStringValue(new String(buffer.array(), encode).trim());
+        field.setBuffer(buffer);
+    }
+
+    protected void readByteBuffer(ByteBuffer byteBuffer) throws IOException {
+        fileChannel.read(byteBuffer);
     }
 }

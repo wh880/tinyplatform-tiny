@@ -10,21 +10,21 @@ public class DbfReaderTest {
             "CFPROFILE20140401", "CHIBOHDQUOTE20140401", "GIBORATE20140401", "INTERESTRATE20140401", "NAV_CUR20140401",
             "NAV20140401", "OFPROFILE20140401", "RATEOFFEX20140401", "REPO20140401"};
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, IllegalAccessException, InstantiationException {
         for (String file : files) {
             printFile(file);
         }
     }
 
-    public static void printFile(String fileName) throws IOException {
-        DbfReader dbfReader = new DbfReader("E:\\20140401\\" + fileName + ".DBF");
-        for (DbfField field : dbfReader.getDbfFields()) {
+    public static void printFile(String fileName) throws IOException, InstantiationException, IllegalAccessException {
+        Reader dbfReader = DbfReader.parse("E:\\20140401\\" + fileName + ".DBF");
+        for (Field field : dbfReader.getFields()) {
             System.out.printf("name:%s %s(%d,%d)\n", field.getName(), field.getType(), field.getLength(), field.getDecimal());
         }
         System.out.println();
-        for (int i = 0; i < dbfReader.getDbfHeader().getRecordCount(); i++) {
-            dbfReader.readRecord();
-            for (DbfField field : dbfReader.getDbfFields()) {
+        for (int i = 0; i < dbfReader.getHeader().getRecordCount(); i++) {
+            dbfReader.next();
+            for (Field field : dbfReader.getFields()) {
                 System.out.printf("%" + field.getLength() + "s", field.getStringValue());
             }
             System.out.println();
