@@ -52,9 +52,7 @@
             <file ext-name="hqx" content-type="application/mac-binhex40"/>
             <file ext-name="doc" content-type="application/msword"/>
             <file ext-name="dot" content-type="application/msword"/>
-            <file ext-name="*" content-type="application/octet-stream"/>
             <file ext-name="bin" content-type="application/octet-stream"/>
-            <file ext-name="class" content-type="application/octet-stream"/>
             <file ext-name="dms" content-type="application/octet-stream"/>
             <file ext-name="exe" content-type="application/octet-stream"/>
             <file ext-name="lha" content-type="application/octet-stream"/>
@@ -320,9 +318,7 @@
             <servlet-mapping url-pattern=".*\.hqx"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.doc"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.dot"></servlet-mapping>
-            <servlet-mapping url-pattern=".*\.*"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.bin"></servlet-mapping>
-            <servlet-mapping url-pattern=".*\.class"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.dms"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.exe"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.lha"></servlet-mapping>
