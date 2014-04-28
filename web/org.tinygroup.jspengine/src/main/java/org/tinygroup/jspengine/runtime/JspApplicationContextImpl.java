@@ -45,6 +45,7 @@ import javax.el.ELContextListener;
 import javax.el.ELContextEvent;
 
 import org.tinygroup.jspengine.Constants;
+import org.tinygroup.jspengine.el.ExpressionFactoryImpl;
 
 public class JspApplicationContextImpl implements JspApplicationContext {
 
@@ -63,7 +64,7 @@ public class JspApplicationContextImpl implements JspApplicationContext {
 
     public ExpressionFactory getExpressionFactory() {
         if (expressionFactory == null) {
-            expressionFactory = ExpressionFactory.newInstance();
+            expressionFactory = new ExpressionFactoryImpl();
         }
         return expressionFactory;
     }
