@@ -8,6 +8,9 @@ import java.util.ArrayList;
  * Created by luoguo on 2014/4/25.
  */
 public class FoxproDBase3Reader extends DbfReader {
+
+    public static final int FOXPRO_DBASE3 = 3;
+
     protected void readFields() throws IOException {
         fields = new ArrayList<Field>();
         for (int i = 0; i < (header.getHeaderLength() - 32 - 1) / 32; i++) {
@@ -16,7 +19,7 @@ public class FoxproDBase3Reader extends DbfReader {
     }
 
     public byte getType() {
-        return 3;
+        return FOXPRO_DBASE3;
     }
 
     protected Field readField() throws IOException {

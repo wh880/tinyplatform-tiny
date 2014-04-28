@@ -103,4 +103,6 @@ public class Field {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         return format.parse(getStringValue());
     }
+
+
 }
