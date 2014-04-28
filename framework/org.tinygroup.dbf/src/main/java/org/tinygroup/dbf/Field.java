@@ -87,15 +87,24 @@ public class Field {
         return stringValue;
     }
 
-    public int getIntValue() throws UnsupportedEncodingException {
+    public Integer getIntValue() throws UnsupportedEncodingException {
+        if (getStringValue().equals("-")) {
+            return null;
+        }
         return Integer.parseInt(getStringValue());
     }
 
-    public double getDoubleValue() throws UnsupportedEncodingException {
+    public Double getDoubleValue() throws UnsupportedEncodingException {
+        if (getStringValue().equals("-")) {
+            return null;
+        }
         return Double.parseDouble(getStringValue());
     }
 
-    public float getFloatValue() throws UnsupportedEncodingException {
+    public Float getFloatValue() throws UnsupportedEncodingException {
+        if (getStringValue().equals("-")) {
+            return null;
+        }
         return Float.parseFloat(getStringValue());
     }
 
@@ -103,6 +112,4 @@ public class Field {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         return format.parse(getStringValue());
     }
-
-
 }
