@@ -23,6 +23,7 @@
  */
 package org.tinygroup.fileresolver.impl;
 
+import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.commons.order.OrderUtil;
 import org.tinygroup.commons.tools.ClassPathUtil;
 import org.tinygroup.config.ConfigurationManager;
@@ -235,13 +236,29 @@ public class FileResolverImpl implements FileResolver {
             FileObject fileObject = VFS.resolveFile(path);
             if (includePathPatternMap != null && includePathPatternMap.size() > 0) {
                 if (isInclude(fileObject)) {
-                    logger.logMessage(LogLevel.INFO, "扫描到jar文件<{}>。", path);
-                    classPaths.add(fileObject);
-                    allScanningPath.add(path);
+                    addJarFile(classPaths, path, fileObject);
+                    continue;
+                }
+            }
+            String mfContent = IOUtils.readFromInputStream(url.openStream(), "UTF-8");
+            String[] lines = mfContent.split("\n");
+            for (String line : lines) {
+                String[] pair = line.split(":");
+                if (pair.length == 2) {
+                    if (pair[0].trim().equals("IsTinyProject") && pair[1].trim().equals("true")) {
+                        addJarFile(classPaths, path, fileObject);
+                        break;
+                    }
                 }
             }
         }
         logger.logMessage(LogLevel.INFO, "查找Web工程中的jar文件列表完成。");
+    }
+
+    private void addJarFile(Set<FileObject> classPaths, String path, FileObject fileObject) {
+        logger.logMessage(LogLevel.INFO, "扫描到jar文件<{}>。", path);
+        classPaths.add(fileObject);
+        allScanningPath.add(path);
     }
 
     /**
@@ -351,9 +368,9 @@ public class FileResolverImpl implements FileResolver {
             if (!fileObject.isExist()) {
                 // 文件已经被删除
                 for (FileProcessor fileProcessor : fileProcessorList) {
-                	if(fileProcessor.isMatch(fileObject)){//匹配后才能删除
-                		  fileProcessor.delete(fileObject);
-                	}
+                    if (fileProcessor.isMatch(fileObject)) {//匹配后才能删除
+                        fileProcessor.delete(fileObject);
+                    }
                 }
             } else {
                 tempMap.put(path, fileObject);
