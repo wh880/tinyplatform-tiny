@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by luoguo on 2014/4/25.
  */
-public class FoxproDBase3Reader extends DbfReader {
+public class FoxproDBase3Reader1 extends DbfReader {
 
     public static final int FOXPRO_DBASE3 = 3;
 
