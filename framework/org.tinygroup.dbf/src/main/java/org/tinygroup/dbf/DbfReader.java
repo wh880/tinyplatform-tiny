@@ -77,7 +77,13 @@ public abstract class DbfReader implements Reader {
         reader.setFileChannel(fileChannel);
         reader.readHeader();
         reader.readFields();
+        reader.readHeaderEndChar();
         return reader;
+    }
+
+    private void readHeaderEndChar() throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocate(1);
+        fileChannel.read(buffer);
     }
 
     public void setFileChannel(FileChannel fileChannel) {
