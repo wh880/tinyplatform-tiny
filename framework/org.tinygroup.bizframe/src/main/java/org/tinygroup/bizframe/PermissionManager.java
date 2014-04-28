@@ -32,7 +32,7 @@ import java.util.List;
  * 
  */
 @SuppressWarnings("rawtypes")
-public interface PermissionManager<K extends Comparable<K>> {
+public interface PermissionManager<K extends Comparable<K>> extends TreeNodeService<K> {
 	/**
 	 * 设置权限主体检查器列表
 	 * 
@@ -42,7 +42,7 @@ public interface PermissionManager<K extends Comparable<K>> {
 			List<PermissionSubjectChecker<K>> permissionSubjectCheckerList);
 
 	/**
-	 * 设置权限主体检查器列表
+	 * 设置权限客体检查器列表
 	 * 
 	 * @param permissionSubjectCheckerList
 	 */
@@ -143,7 +143,7 @@ public interface PermissionManager<K extends Comparable<K>> {
 	 * 添加权限主体
 	 * 
 	 * @param permissionSubject
-	 * @return TODO
+	 * @return 
 	 */
 	PermissionSubject addPermissionSubject(
 			PermissionSubject<K, ?> permissionSubject);
@@ -163,10 +163,10 @@ public interface PermissionManager<K extends Comparable<K>> {
 	void removePermissionSubject(PermissionSubject<K, ?> permissionSubject);
 
 	/**
-	 * 添加权限客户
+	 * 添加权限客体
 	 * 
 	 * @param permissionObject
-	 * @return TODO
+	 * @return 
 	 */
 	PermissionObject addPermissionObject(PermissionObject<K, ?> permissionObject);
 
@@ -405,7 +405,7 @@ public interface PermissionManager<K extends Comparable<K>> {
 	
 	/**
 	 * 
-	 * 查询权限客体类型定义的所有权限主体列表
+	 * 查询权限客体类型定义的所有权限客体列表
 	 * @param objectBeanType
 	 * @param objectClassType
 	 * @return
@@ -439,6 +439,28 @@ public interface PermissionManager<K extends Comparable<K>> {
 	 * @param objectClassType
 	 * @return
 	 */
-	List<PermissionObject<K,?>> getChildPermissionObjects(String objectBeanType,K parentObjectId,Class<? extends PermissionObject> objectClassType);
+	List<PermissionObject<K, ?>> getChildPermissionObjects(
+			String objectBeanType, K parentObjectId,
+			Class<? extends PermissionObject> objectClassType);
+
+	/**
+	 * 获取某权限主体相关的所有子孙级权限主体
+	 * @param subjectBeanType
+	 * @param parentSubjectId
+	 * @param subjectClassType
+	 * @return
+	 */
+	List<PermissionSubject<K,?>> getBegatsPermissionSubjects(String subjectBeanType,K parentSubjectId,Class<? extends PermissionSubject> subjectClassType);
+	
+	
+	/**
+	 * 
+	 * 获取某权限主客体相关的所有子孙级权限客体
+	 * @param objectBeanType
+	 * @param parentObjectId
+	 * @param objectClassType
+	 * @return
+	 */
+	List<PermissionObject<K,?>> getBegatsPermissionObjects(String objectBeanType,K parentObjectId,Class<? extends PermissionObject> objectClassType);
 
 }

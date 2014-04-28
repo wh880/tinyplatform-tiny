@@ -35,9 +35,15 @@ public interface XmlValidatorManager extends ValidatorManager {
 	String VALIDATOR_MANAGER_BEAN_NAME = "xmlValidatorManager";
 	
 	/**
-	 * 增加xml校验规则
+	 * 增加xml校验文件
 	 * @param validatorConfigs xml校验配置信息
 	 */
 	void addObjectValidatorConfigs(ObjectValidators validatorConfigs);
+	
+	/**
+	 * 移除xml校验文件
+	 * @param validatorConfigs
+	 */
+	void removeObjectValidatorConfigs(ObjectValidators validatorConfigs);
 
 }

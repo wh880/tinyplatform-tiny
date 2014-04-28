@@ -56,10 +56,10 @@ public class XmlValidatorManagerImpl extends AbstractValidatorManger
         for (ObjectValidator objectValidatorConfig : validatorConfigs.getValidatorConfigList()) {
             String beanName = objectValidatorConfig.getObjectBeanName();
             Object object = SpringUtil.getBean(beanName);
-            Class clazz = object.getClass();
-            if (clazz == null) {
+            if (object == null) {
                 throw new TinySysRuntimeException(BEAN_INSTANCE_NOT_EXIST, beanName);
             }
+            Class clazz = object.getClass();
             FieldValidatorMap fieldValidatorMap = getFieldValidatorMap(clazz);
             if (fieldValidatorMap == null) {
                 fieldValidatorMap = new FieldValidatorMap();
@@ -67,9 +67,11 @@ public class XmlValidatorManagerImpl extends AbstractValidatorManger
             for (PropertyValidatorConfig propertyValidatorConfig : objectValidatorConfig.getValidatorConfigList()) {
                 try {
                     Field field = clazz.getDeclaredField(propertyValidatorConfig.getPropertyName());
-                    FieldWapper fieldWapper = fieldWrapperMap.get(getWrapperKey(clazz, field));
+					String wrapperKey = getWrapperKey(clazz, field);
+                    FieldWapper fieldWapper = fieldWrapperMap.get(wrapperKey);
                     if (fieldWapper == null) {
                         fieldWapper = new FieldWapper(field, propertyValidatorConfig.getPropertyName(), propertyValidatorConfig.getPropertyTitle());
+                        fieldWrapperMap.put(wrapperKey, fieldWapper);
                     }
                     if (propertyValidatorConfig.getValidatorConfigList().size() == 0) {
                         // 20130605 如果是该配置项没有ValidatorConfig
@@ -85,6 +87,7 @@ public class XmlValidatorManagerImpl extends AbstractValidatorManger
 
                 } catch (Exception e) {
                     logger.errorMessage(e.getMessage(), e);
+                    throw new RuntimeException(e);
                 }
 
             }
@@ -99,12 +102,40 @@ public class XmlValidatorManagerImpl extends AbstractValidatorManger
                     putBasicValidators(name, validator);
                 } catch (Exception e) {
                     logger.errorMessage("创建Validator时出错 name:{0},bean:{1},class:{2}", e, name, config.getValidatorBeanName(), config.getValidatorClassName());
+                    throw new RuntimeException(e);
                 }
             }
         }
     }
+    
 
-    /**
+    public void removeObjectValidatorConfigs(ObjectValidators validatorConfigs) {
+    	 for (ObjectValidator objectValidatorConfig : validatorConfigs.getValidatorConfigList()) {
+    		 String beanName = objectValidatorConfig.getObjectBeanName();
+             Object object = SpringUtil.getBean(beanName);
+             if (object == null) {
+                 throw new TinySysRuntimeException(BEAN_INSTANCE_NOT_EXIST, beanName);
+             }
+             Class clazz = object.getClass();
+             removeFieldValidatorMap(clazz);
+    	 }
+    	 for (BasicValidator basicValidator : validatorConfigs.getBasicConfigList()) {
+             String name = basicValidator.getName();
+             for (ValidatorConfig config : basicValidator.getValidatorConfigList()) {
+                 try {
+                     Validator validator = getValidator(config);
+                     removeBasicValidators(name, validator);
+                 } catch (Exception e) {
+                     logger.errorMessage("创建Validator时出错 name:{0},bean:{1},class:{2}", e, name, config.getValidatorBeanName(), config.getValidatorClassName());
+                     throw new RuntimeException(e);
+                 }
+             }
+         }
+	}
+
+
+
+	/**
      * 根据beanname和classname获取校验器,classname优先级高
      *
      * @return

@@ -87,9 +87,8 @@ public class ValidatorManagerWrapper {
 	public void putClassFieldValidators(Class<?> clazz,
 			FieldValidatorMap fieldValidatorMap) {
 		classFieldValidators.put(clazz, fieldValidatorMap);
-
 	}
-
+	
 	public void putBasicValidators(String s, Validator v) {
 		if (basicValidatorMap.containsKey(s)) {
 			basicValidatorMap.get(s).add(v);
@@ -99,10 +98,20 @@ public class ValidatorManagerWrapper {
 			basicValidatorMap.put(s, list);
 		}
 	}
+	
+	public void removeBasicValidators(String s, Validator v) {
+		if (basicValidatorMap.containsKey(s)) {
+			basicValidatorMap.get(s).remove(v);
+		} 
+	}
 
 	public FieldValidatorMap getClassFieldValidators(Class<?> clazz) {
 
 		return classFieldValidators.get(clazz);
+	}
+	
+	public FieldValidatorMap removeClassFieldValidators(Class<?> clazz) {
+		return classFieldValidators.remove(clazz);
 	}
 
 	String getWrapperKey(Class<?> clazz, Field field) {

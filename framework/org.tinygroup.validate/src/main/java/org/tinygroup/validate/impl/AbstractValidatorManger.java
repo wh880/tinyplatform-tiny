@@ -120,9 +120,15 @@ public abstract class AbstractValidatorManger implements ValidatorManager {
 	protected FieldValidatorMap getFieldValidatorMap(Class<?> clazz) {
 		return validatorManagerWrapper.getClassFieldValidators(clazz);
 	}
+	
+	protected FieldValidatorMap removeFieldValidatorMap(Class<?> clazz) {
+		return validatorManagerWrapper.removeClassFieldValidators(clazz);
+	}
 
 	protected void putBasicValidators(String s, Validator v) {
 		validatorManagerWrapper.putBasicValidators(s, v);
-
+	}
+	protected void removeBasicValidators(String s, Validator v) {
+		validatorManagerWrapper.putBasicValidators(s, v);
 	}
 }

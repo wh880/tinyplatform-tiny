@@ -69,14 +69,8 @@ public class EqualsValidator extends AbstractValidator {
 					validateResult.addError(name, i18nMessages.getMessage(EQUALS_VALIDATOR_MESSAGE_KEY,DEFAULT_MESSAGE,name, title,value,this.value));
 				}
 			}
-			//TODO 其他类型验证
-			
 		}
 		
-		
-		
-		
-
 	}
 
 }

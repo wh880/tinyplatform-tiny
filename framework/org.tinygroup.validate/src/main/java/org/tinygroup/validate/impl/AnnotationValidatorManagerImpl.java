@@ -65,8 +65,8 @@ public class AnnotationValidatorManagerImpl extends AbstractValidatorManger
 				map = new FieldValidatorMap();
 			}
 			try {
-				FieldWapper fieldWapper = fieldWrapperMap.get(getWrapperKey(
-						clazz, field));
+				String wrapperKey=getWrapperKey(clazz, field);
+				FieldWapper fieldWapper = fieldWrapperMap.get(wrapperKey);
 				if (fieldWapper == null) {
 					org.tinygroup.validate.annotation.Field fieldAnnotation = field
 							.getAnnotation(org.tinygroup.validate.annotation.Field.class);
@@ -76,6 +76,7 @@ public class AnnotationValidatorManagerImpl extends AbstractValidatorManger
 					}
 					fieldWapper = new FieldWapper(field, name,
 							fieldAnnotation.title());
+					fieldWrapperMap.put(wrapperKey, fieldWapper);
 				}
 				map.addValidator(fieldWapper, "",
 						getValidatorFromAnnotation(field, annotation));

@@ -23,10 +23,7 @@
  */
 package org.tinygroup.bizframe.impl;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import org.tinygroup.bizframe.PermissionObject;
 import org.tinygroup.bizframe.PermissionSubject;
@@ -41,50 +38,51 @@ import org.tinygroup.bizframe.PermissionSubject;
 public class PermissionManagerImpl<K extends Comparable<K>> extends
 		AbstractPermissionManager<K> {
 
-	private Map<String, PermissionSubject<K, ?>> permissionSubjectMap = new HashMap<String, PermissionSubject<K, ?>>();
-	private Map<String, PermissionObject<K, ?>> permissionObjectMap = new HashMap<String, PermissionObject<K, ?>>();
-	private Map<String, HashSet<String>> allowPermissionMap = new HashMap<String, HashSet<String>>();
-	private Map<String, HashSet<String>> blockPermissionMap = new HashMap<String, HashSet<String>>();
+	private PermissionStorage<K> storage = new PermissionStorage<K>();
+	
+	
+
+	public void setPermissionObjectInheritSupport(boolean support) {
+		super.setPermissionObjectInheritSupport(support);
+		storage.setInheritSupport(support);
+	}
 
 	public PermissionSubject<K, ?> addPermissionSubject(
 			PermissionSubject<K, ?> permissionSubject) {
-		permissionSubjectMap.put(getPermissionSubjectKey(permissionSubject),
-				permissionSubject);
+		storage.addPermissionSubject(permissionSubject);
 		return permissionSubject;
 	}
 
 	public PermissionObject<K, ?> addPermissionObject(
 			PermissionObject<K, ?> permissionObject) {
-		permissionObjectMap.put(getPermissionObjectKey(permissionObject),
-				permissionObject);
+		storage.addPermissionObject(permissionObject);
 		return permissionObject;
 	}
 
 	public void removePermissionObject(PermissionObject<K, ?> permissionObject) {
-		permissionObjectMap.remove(getPermissionObjectKey(permissionObject));
+		storage.removePermissionObject(permissionObject);
 	}
 
 	public void removePermissionSubject(
 			PermissionSubject<K, ?> permissionSubject) {
-		permissionSubjectMap.remove(getPermissionSubjectKey(permissionSubject));
+		storage.removePermissionSubject(permissionSubject);
 	}
 
 	public PermissionSubject<K, ?> getPermissionSubject(String subjectBeanType,
 			K keyValue, Class<? extends PermissionSubject> subjectClassType) {
-		return permissionSubjectMap.get(getKey(subjectBeanType, keyValue));
+		return storage.getPermissionSubject(subjectBeanType, keyValue,
+				subjectClassType);
 	}
 
 	public PermissionObject<K, ?> getPermissionObject(String objectBeanType,
 			K keyValue, Class<? extends PermissionObject> objectClassType) {
-		return permissionObjectMap.get(getKey(objectBeanType, keyValue));
+		return storage.getPermissionObject(objectBeanType, keyValue,
+				objectClassType);
 	}
 
 	public void addAllowPermission(PermissionSubject<K, ?> permissionSubject,
 			PermissionObject<K, ?> permissionObject) {
-		String permissionSubjectKey = getPermissionSubjectKey(permissionSubject);
-		String permissionObjectKey = getPermissionObjectKey(permissionObject);
-		addAllowPermission(permissionSubjectKey, permissionObjectKey);
-
+		storage.addAllowPermission(permissionSubject, permissionObject);
 	}
 
 	public void addAllowPermission(
@@ -100,9 +98,7 @@ public class PermissionManagerImpl<K extends Comparable<K>> extends
 	public void removeAllowPermission(
 			PermissionSubject<K, ?> permissionSubject,
 			PermissionObject<K, ?> permissionObject) {
-		String permissionSubjectKey = getPermissionSubjectKey(permissionSubject);
-		String permissionObjectKey = getPermissionObjectKey(permissionObject);
-		removeAllowPermission(permissionSubjectKey, permissionObjectKey);
+		storage.removeAllowPermission(permissionSubject, permissionObject);
 	}
 
 	public void removeAllowPermission(
@@ -118,52 +114,32 @@ public class PermissionManagerImpl<K extends Comparable<K>> extends
 	public void addAllowPermission(String permissionSubjectType,
 			K permissionSubjectId, String permissionObjectType,
 			K permissionObjectId) {
-		String permissionSubjectKey = getKey(permissionSubjectType,
-				permissionSubjectId);
-		String permissionObjectKey = getKey(permissionObjectType,
-				permissionObjectId);
-		addAllowPermission(permissionSubjectKey, permissionObjectKey);
-
+		PermissionSubject<K, ?> permissionSubject = storage
+				.getPermissionSubject(permissionSubjectType,
+						permissionSubjectId);
+		PermissionObject<K, ?> permissionObject = storage.getPermissionObject(
+				permissionObjectType, permissionObjectId);
+		if (permissionSubject != null && permissionObject != null) {
+			addAllowPermission(permissionSubject, permissionObject);
+		}
 	}
 
 	public void removeAllowPermission(String permissionSubjectType,
 			K permissionSubjectId, String permissionObjectType,
 			K permissionObjectId) {
-		String permissionSubjectKey = getKey(permissionSubjectType,
-				permissionSubjectId);
-		String permissionObjectKey = getKey(permissionObjectType,
-				permissionObjectId);
-		removeAllowPermission(permissionSubjectKey, permissionObjectKey);
-
-	}
-
-	private void removeAllowPermission(String permissionSubjectKey,
-			String permissionObjectKey) {
-		HashSet<String> permissionObjectIdList = allowPermissionMap
-				.get(permissionSubjectKey);
-		if (permissionObjectIdList != null) {
-			permissionObjectIdList.remove(permissionObjectKey);
+		PermissionSubject<K, ?> permissionSubject = storage
+				.getPermissionSubject(permissionSubjectType,
+						permissionSubjectId);
+		PermissionObject<K, ?> permissionObject = storage.getPermissionObject(
+				permissionObjectType, permissionObjectId);
+		if (permissionSubject != null && permissionObject != null) {
+			removeAllowPermission(permissionSubject, permissionObject);
 		}
-	}
-
-	private void addAllowPermission(String permissionSubjectKey,
-			String permissionObjectKey) {
-		HashSet<String> permissionObjectIdList = allowPermissionMap
-				.get(permissionSubjectKey);
-		if (permissionObjectIdList == null) {
-			permissionObjectIdList = new HashSet<String>();
-			allowPermissionMap
-					.put(permissionSubjectKey, permissionObjectIdList);
-		}
-		permissionObjectIdList.add(permissionObjectKey);
 	}
 
 	public void addBlockPermission(PermissionSubject<K, ?> permissionSubject,
 			PermissionObject<K, ?> permissionObject) {
-		String permissionSubjectKey = getPermissionSubjectKey(permissionSubject);
-		String permissionObjectKey = getPermissionObjectKey(permissionObject);
-		addBlockPermission(permissionSubjectKey, permissionObjectKey);
-
+		storage.addBlockPermission(permissionSubject, permissionObject);
 	}
 
 	public void addBlockPermission(
@@ -179,9 +155,7 @@ public class PermissionManagerImpl<K extends Comparable<K>> extends
 	public void removeBlockPermission(
 			PermissionSubject<K, ?> permissionSubject,
 			PermissionObject<K, ?> permissionObject) {
-		String permissionSubjectKey = getPermissionSubjectKey(permissionSubject);
-		String permissionObjectKey = getPermissionObjectKey(permissionObject);
-		removeBlockPermission(permissionSubjectKey, permissionObjectKey);
+		storage.removeBlockPermission(permissionSubject, permissionObject);
 	}
 
 	public void removeBlockPermission(
@@ -197,152 +171,135 @@ public class PermissionManagerImpl<K extends Comparable<K>> extends
 	public void addBlockPermission(String permissionSubjectType,
 			K permissionSubjectId, String permissionObjectType,
 			K permissionObjectId) {
-		String permissionSubjectKey = getKey(permissionSubjectType,
-				permissionSubjectId);
-		String permissionObjectKey = getKey(permissionObjectType,
-				permissionObjectId);
-		addBlockPermission(permissionSubjectKey, permissionObjectKey);
+		PermissionSubject<K, ?> permissionSubject = storage
+				.getPermissionSubject(permissionSubjectType,
+						permissionSubjectId);
+		PermissionObject<K, ?> permissionObject = storage.getPermissionObject(
+				permissionObjectType, permissionObjectId);
+		if (permissionSubject != null && permissionObject != null) {
+			addBlockPermission(permissionSubject, permissionObject);
+		}
 
 	}
 
 	public void removeBlockPermission(String permissionSubjectType,
 			K permissionSubjectId, String permissionObjectType,
 			K permissionObjectId) {
-		String permissionSubjectKey = getKey(permissionSubjectType,
-				permissionSubjectId);
-		String permissionObjectKey = getKey(permissionObjectType,
-				permissionObjectId);
-		removeBlockPermission(permissionSubjectKey, permissionObjectKey);
-
-	}
-
-	private void removeBlockPermission(String permissionSubjectKey,
-			String permissionObjectKey) {
-		HashSet<String> permissionObjectIdList = blockPermissionMap
-				.get(permissionSubjectKey);
-		if (permissionObjectIdList != null) {
-			permissionObjectIdList.remove(permissionObjectKey);
+		PermissionSubject<K, ?> permissionSubject = storage
+				.getPermissionSubject(permissionSubjectType,
+						permissionSubjectId);
+		PermissionObject<K, ?> permissionObject = storage.getPermissionObject(
+				permissionObjectType, permissionObjectId);
+		if (permissionSubject != null && permissionObject != null) {
+			removeBlockPermission(permissionSubject, permissionObject);
 		}
-	}
 
-	private void addBlockPermission(String permissionSubjectKey,
-			String permissionObjectKey) {
-		HashSet<String> permissionObjectIdList = blockPermissionMap
-				.get(permissionSubjectKey);
-		if (permissionObjectIdList == null) {
-			permissionObjectIdList = new HashSet<String>();
-			blockPermissionMap
-					.put(permissionSubjectKey, permissionObjectIdList);
-		}
-		permissionObjectIdList.add(permissionObjectKey);
-	}
-
-	private String getKey(String type, K id) {
-		return type + "-" + id;
 	}
 
 	public boolean isBlockDirectly(PermissionSubject<K, ?> permissionSubject,
 			PermissionObject<K, ?> permissionObject) {
-		String permissionSubjectKey = getPermissionSubjectKey(permissionSubject);
-		String permissionObjectKey = getPermissionObjectKey(permissionObject);
-		return isBlockDirectly(permissionSubjectKey, permissionObjectKey);
-	}
-
-	private boolean isBlockDirectly(String permissionSubjectKey,
-			String permissionObjectKey) {
-		HashSet<String> permissionObjectIdList = blockPermissionMap
-				.get(permissionSubjectKey);
-		if (permissionObjectIdList == null) {
-			return false;
-		} else {
-			return permissionObjectIdList.contains(permissionObjectKey);
-		}
+		return storage.isBlockDirectly(permissionSubject, permissionObject);
 	}
 
 	public boolean isAllowDirectly(PermissionSubject<K, ?> permissionSubject,
 			PermissionObject<K, ?> permissionObject) {
-		String permissionSubjectKey = getPermissionSubjectKey(permissionSubject);
-		String permissionObjectKey = getPermissionObjectKey(permissionObject);
-		return isAllowDirectly(permissionSubjectKey, permissionObjectKey);
-	}
-
-	private boolean isAllowDirectly(String permissionSubjectKey,
-			String permissionObjectKey) {
-		HashSet<String> permissionObjectIdList = allowPermissionMap
-				.get(permissionSubjectKey);
-		if (permissionObjectIdList == null) {
-			return false;
-		} else {
-			return permissionObjectIdList.contains(permissionObjectKey);
-		}
+		return storage.isAllowDirectly(permissionSubject, permissionObject);
 	}
 
 	public boolean isBlockDirectly(String permissionSubjectType,
 			K permissionSubjectId, String permissionObjectType,
 			K permissionObjectId) {
-		String permissionSubjectKey = getKey(permissionSubjectType,
-				permissionSubjectId);
-		String permissionObjectKey = getKey(permissionObjectType,
-				permissionObjectId);
-		return isBlockDirectly(permissionSubjectKey, permissionObjectKey);
+		PermissionSubject<K, ?> permissionSubject = storage
+				.getPermissionSubject(permissionSubjectType,
+						permissionSubjectId);
+		PermissionObject<K, ?> permissionObject = storage.getPermissionObject(
+				permissionObjectType, permissionObjectId);
+		if (permissionSubject != null && permissionObject != null) {
+			return isBlockDirectly(permissionSubject, permissionObject);
+		}
+		return false;
 	}
 
 	public boolean isAllowDirectly(String permissionSubjectType,
 			K permissionSubjectId, String permissionObjectType,
 			K permissionObjectId) {
-		String permissionSubjectKey = getKey(permissionSubjectType,
-				permissionSubjectId);
-		String permissionObjectKey = getKey(permissionObjectType,
-				permissionObjectId);
-		return isAllowDirectly(permissionSubjectKey, permissionObjectKey);
-	}
-
-	private String getPermissionSubjectKey(
-			PermissionSubject<K, ?> permissionSubject) {
-		return getKey(permissionSubject.getType(), permissionSubject.getId());
-	}
-
-	private String getPermissionObjectKey(
-			PermissionObject<K, ?> permissionObject) {
-		return getKey(permissionObject.getType(), permissionObject.getId());
+		PermissionSubject<K, ?> permissionSubject = storage
+				.getPermissionSubject(permissionSubjectType,
+						permissionSubjectId);
+		PermissionObject<K, ?> permissionObject = storage.getPermissionObject(
+				permissionObjectType, permissionObjectId);
+		if (permissionSubject != null && permissionObject != null) {
+			return isAllowDirectly(permissionSubject, permissionObject);
+		}
+		return false;
 	}
 
 	public List<PermissionSubject<K, ?>> getPermissionSubjects(
 			String subjectBeanType,
 			Class<? extends PermissionSubject> subjectClassType) {
-		// TODO Auto-generated method stub
-		return null;
+		return storage.getPermissionSubjects(subjectBeanType, subjectClassType);
 	}
 
 	public List<PermissionObject<K, ?>> getPermissionObjects(
 			String objectBeanType,
 			Class<? extends PermissionObject> objectClassType) {
-		// TODO Auto-generated method stub
-		return null;
+		return storage.getPermissionObjects(objectBeanType, objectClassType);
 	}
 
 	public List<PermissionObject<K, ?>> getAssignedPermission(
 			String subjectBeanType, String objectBeanType,
 			K permissionSubjectId,
 			Class<? extends PermissionObject> objectClassType) {
-		// TODO Auto-generated method stub
-		return null;
+		return storage.getAssignedPermission(subjectBeanType, objectBeanType,
+				permissionSubjectId, objectClassType);
 	}
 
 	public List<PermissionSubject<K, ?>> getChildPermissionSubjects(
 			String subjectBeanType, K parentSubjectId,
 			Class<? extends PermissionSubject> subjectClassType) {
-		// TODO Auto-generated method stub
-		return null;
+		return storage.getChildPermissionSubjects(subjectBeanType, parentSubjectId, subjectClassType);
 	}
 
 	public List<PermissionObject<K, ?>> getChildPermissionObjects(
 			String objectBeanType, K parentObjectId,
 			Class<? extends PermissionObject> objectClassType) {
-		// TODO Auto-generated method stub
-		return null;
+		return storage.getChildPermissionObjects(objectBeanType, parentObjectId, objectClassType);
 	}
 
-	
+	public List<PermissionSubject<K, ?>> getBegatsPermissionSubjects(
+			String subjectBeanType, K parentSubjectId,
+			Class<? extends PermissionSubject> subjectClassType) {
+		return storage.getBegatsPermissionSubjects(subjectBeanType, parentSubjectId, subjectClassType);
+	}
+
+	public List<PermissionObject<K, ?>> getBegatsPermissionObjects(
+			String objectBeanType, K parentObjectId,
+			Class<? extends PermissionObject> objectClassType) {
+		return storage.getBegatsPermissionObjects(objectBeanType, parentObjectId, objectClassType);
+	}
+
+	public PermissionSubject<K, ?> getChildPermissionSubjectsWithTree(
+			String subjectBeanType, K parentSubjectId,
+			Class<? extends PermissionSubject> subjectClassType) {
+		return storage.getChildPermissionSubjectsWithTree(subjectBeanType, parentSubjectId, subjectClassType);
+	}
+
+	public PermissionSubject<K, ?> getBegatsPermissionSubjectsWithTree(
+			String subjectBeanType, K parentSubjectId,
+			Class<? extends PermissionSubject> subjectClassType) {
+		return storage.getBegatsPermissionSubjectsWithTree(subjectBeanType, parentSubjectId, subjectClassType);
+	}
+
+	public PermissionObject<K, ?> getChildPermissionObjectsWithTree(
+			String objectBeanType, K parentObjectId,
+			Class<? extends PermissionObject> objectClassType) {
+		return storage.getChildPermissionObjectsWithTree(objectBeanType, parentObjectId, objectClassType);
+	}
+
+	public PermissionObject<K, ?> getBegatsPermissionObjectsWithTree(
+			String objectBeanType, K parentObjectId,
+			Class<? extends PermissionObject> objectClassType) {
+		return storage.getBegatsPermissionObjectsWithTree(objectBeanType, parentObjectId, objectClassType);
+	}
 
 }

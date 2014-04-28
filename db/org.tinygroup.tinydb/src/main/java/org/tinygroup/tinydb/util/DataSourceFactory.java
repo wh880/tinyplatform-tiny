@@ -28,6 +28,8 @@ import java.sql.SQLException;
 
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
 
 /**
@@ -37,6 +39,8 @@ import org.tinygroup.springutil.SpringUtil;
  * 
  */
 public class DataSourceFactory {
+	
+	private static Logger logger=LoggerFactory.getLogger(DataSourceFactory.class);
 
 	public static PlatformTransactionManager getTransactionManager(
 			String dataSourceName) {
@@ -57,8 +61,7 @@ public class DataSourceFactory {
 			return dataSource.getDatasource().getDataSource(dataSourceName)
 					.getConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.errorMessage(e.getMessage(), e);
 		}
 		return null;
 	}

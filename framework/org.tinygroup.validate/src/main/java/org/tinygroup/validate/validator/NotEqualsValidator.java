@@ -50,9 +50,6 @@ private static final String NOT_EQUALS_VALIDATOR_MESSAGE_KEY="not_equals_validat
 	}
 
 
-
-
-
 	public <T> void validate(String name, String title, T value,
 			ValidateResult validateResult) {
 		
@@ -69,13 +66,7 @@ private static final String NOT_EQUALS_VALIDATOR_MESSAGE_KEY="not_equals_validat
 					validateResult.addError(name, i18nMessages.getMessage(NOT_EQUALS_VALIDATOR_MESSAGE_KEY,DEFAULT_MESSAGE,name, title,value,this.value));
 				}
 			}
-			//TODO 其他类型验证
-			
 		}
-		
-		
-		
-		
 
 	}
 

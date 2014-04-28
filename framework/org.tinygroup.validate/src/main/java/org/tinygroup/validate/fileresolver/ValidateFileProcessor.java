@@ -53,23 +53,35 @@ public class ValidateFileProcessor extends AbstractFileProcessor {
 				.getBean(XmlValidatorManager.VALIDATOR_MANAGER_BEAN_NAME);
 		XStream stream = XStreamFactory
 				.getXStream(ValidatorManager.XSTEAM_PACKAGE_NAME);
-		for (FileObject fileObject : fileObjects) {
-
+		
+		for (FileObject fileObject : deleteList) {
+			logger.logMessage(LogLevel.INFO, "正在移除xml校验配置文件[{0}]",
+					fileObject.getAbsolutePath());
+			ObjectValidators objectValidatorConfigs = (ObjectValidators) caches.get(fileObject
+					.getAbsolutePath());
+			if (objectValidatorConfigs != null) {
+				validatorManager.removeObjectValidatorConfigs(objectValidatorConfigs);
+				caches.remove(fileObject.getAbsolutePath());
+			}
+			logger.logMessage(LogLevel.INFO, "移除const文件[{0}]结束",
+					fileObject.getAbsolutePath());
+		}
+		
+		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.DEBUG, "正在加载xml校验配置文件[{0}]",
 					fileObject.getAbsolutePath());
-			try {
-				ObjectValidators objectValidatorConfigs = (ObjectValidators) stream
-						.fromXML(fileObject.getInputStream());
-				validatorManager
-						.addObjectValidatorConfigs(objectValidatorConfigs);
-			} catch (Exception e) {
-				logger.errorMessage("加载xml校验配置文件[{0}]出错", e,
-						fileObject.getAbsolutePath());
+			ObjectValidators oldObjectValidatorConfigs = (ObjectValidators) caches.get(fileObject
+					.getAbsolutePath());
+			if(oldObjectValidatorConfigs!=null){
+				validatorManager.removeObjectValidatorConfigs(oldObjectValidatorConfigs);
 			}
-
+			ObjectValidators objectValidatorConfigs = (ObjectValidators) stream
+						.fromXML(fileObject.getInputStream());
+			validatorManager
+						.addObjectValidatorConfigs(objectValidatorConfigs);
+			caches.put(fileObject.getAbsolutePath(), objectValidatorConfigs);
 			logger.logMessage(LogLevel.DEBUG, "加载xml校验配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
-
 		}
 
 	}

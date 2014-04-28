@@ -23,15 +23,11 @@
  */
 package org.tinygroup.commons.tools;
 
-import static org.tinygroup.commons.tools.CollectionUtil.createArrayList;
 import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
 
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 import org.tinygroup.commons.i18n.LocaleUtil;
 
@@ -1388,20 +1384,20 @@ public class SystemUtil {
         buffer.append(caption).append(defaultIfNull(StringEscapeUtil.escapeJava(value), "[n/a]")).append("\n");
     }
 
-    public static void main(String[] args) {
-        dumpSystemInfo();
-
-        Set<?> keys = System.getProperties().keySet();
-
-        @SuppressWarnings("unchecked")
-        List<String> list = createArrayList((Set<String>) keys);
-
-        Collections.sort(list);
-
-        for (String key : list) {
-            String value = System.getProperty(key);
-
-            System.out.println(key + " = " + defaultIfNull(StringEscapeUtil.escapeJava(value), "[n/a]"));
-        }
-    }
+//    public static void main(String[] args) {
+//        dumpSystemInfo();
+//
+//        Set<?> keys = System.getProperties().keySet();
+//
+//        @SuppressWarnings("unchecked")
+//        List<String> list = createArrayList((Set<String>) keys);
+//
+//        Collections.sort(list);
+//
+//        for (String key : list) {
+//            String value = System.getProperty(key);
+//
+//            System.out.println(key + " = " + defaultIfNull(StringEscapeUtil.escapeJava(value), "[n/a]"));
+//        }
+//    }
 }

@@ -68,9 +68,7 @@ public class AuthRelationCache<K extends Comparable<K>> {
 	public void addPermissionSubject(PermissionSubject<K, ?> permissionSubject) {
 		String key = getKey(permissionSubject.getType(),
 				permissionSubject.getId());
-		if (!permissionSubjectMap.containsKey(key)) {
-			permissionSubjectMap.put(key, permissionSubject);
-		}
+		permissionSubjectMap.put(key, permissionSubject);
 	}
 
 	public PermissionSubject<K, ?> getPermissionSubject(String sub_type,
@@ -88,9 +86,7 @@ public class AuthRelationCache<K extends Comparable<K>> {
 	public void addPermissionObject(PermissionObject<K, ?> permissionObject) {
 		String key = getKey(permissionObject.getType(),
 				permissionObject.getId());
-		if (!permissionSubjectMap.containsKey(key)) {
-			permissionObjectMap.put(key, permissionObject);
-		}
+		permissionObjectMap.put(key, permissionObject);
 	}
 
 	public PermissionObject<K, ?> getPermissionObject(String ob_type, K ob_id) {
