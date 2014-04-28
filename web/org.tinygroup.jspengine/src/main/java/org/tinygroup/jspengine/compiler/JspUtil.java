@@ -41,6 +41,7 @@ import javax.el.ExpressionFactory;
 import org.tinygroup.jspengine.Constants;
 import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.JspCompilationContext;
+import org.tinygroup.jspengine.el.ExpressionFactoryImpl;
 import org.tinygroup.jspengine.runtime.ELContextImpl;
 import org.xml.sax.Attributes;
 
@@ -1148,7 +1149,7 @@ public class JspUtil {
 
     private static ExpressionFactory getExpressionFactory() {
         if (expFactory == null) {
-            expFactory = ExpressionFactory.newInstance();
+            expFactory = new ExpressionFactoryImpl();
         }
         return expFactory;
     }
