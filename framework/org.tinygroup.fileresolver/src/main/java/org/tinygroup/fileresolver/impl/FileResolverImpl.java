@@ -293,18 +293,25 @@ public class FileResolverImpl implements FileResolver {
      */
     private List<FileObject> getClassPath() {
         List<FileObject> classPathFileObjects = new ArrayList<FileObject>();
-        String classPathProperty = System.getProperties().get("java.class.path").toString();
-        String[] classPaths = classPathProperty.split(";");
-        for (String classPath : classPaths) {
-            if (classPath.length() > 0) {
-                FileObject fileObject = VFS.resolveFile(classPath);
-                if (isInclude(fileObject)) {
-                    classPathFileObjects.add(fileObject);
-                    allScanningPath.add(classPath);
-                }
-            }
+        String classPathProperty = System.getProperty("java.class.path").toString();
+        String operateSys=System.getProperty("os.name").toLowerCase();
+        String[] classPaths=null;
+        if(operateSys.indexOf("windows")>=0){
+        	classPaths = classPathProperty.split(";");
+        }else{
+        	classPaths=classPathProperty.split(":");
         }
-
+        if(classPaths!=null){
+        	 for (String classPath : classPaths) {
+                 if (classPath.length() > 0) {
+                     FileObject fileObject = VFS.resolveFile(classPath);
+                     if (isInclude(fileObject)) {
+                         classPathFileObjects.add(fileObject);
+                         allScanningPath.add(classPath);
+                     }
+                 }
+             }
+        }
         return classPathFileObjects;
     }
 
