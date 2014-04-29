@@ -246,6 +246,7 @@ public class FileResolverImpl implements FileResolver {
                 String[] pair = line.split(":");
                 if (pair.length == 2) {
                     if (pair[0].trim().equals("IsTinyProject") && pair[1].trim().equals("true")) {
+                        logger.logMessage(LogLevel.INFO, "文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。", fileObject);
                         addJarFile(classPaths, path, fileObject);
                         break;
                     }
