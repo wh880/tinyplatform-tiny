@@ -103,12 +103,15 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 					AUTH_RELATION_BEAN_NAME);
 			Bean[] beans = operator.getBeans(relation);
 			for (Bean bean : beans) {
-				// cache.addAuthRelation((String)
-				// bean.getProperty(PERMISSION_STATUS), (String)
-				// bean.getProperty(PERMISSION_SUBJECT_TYPE), (K)
-				// bean.getProperty(PERMISSION_SUBJECT_ID), (String)
-				// bean.getProperty(PERMISSION_OBJECT_TYPE), (K)
-				// bean.getProperty(PERMISSION_OBJECT_ID), bean);
+				PermissionSubject<K, ?> permissionSubject = getPermissionSubject((String)
+						bean.getProperty(PERMISSION_SUBJECT_TYPE),
+						(K) bean.getProperty(PERMISSION_SUBJECT_ID),
+						PermissionSubject.class);
+				PermissionObject<K, ?> permissionObject = getPermissionObject((String)
+						bean.getProperty(PERMISSION_OBJECT_TYPE),
+						(K) bean.getProperty(PERMISSION_OBJECT_ID),
+						PermissionObject.class);
+				addAllowPermission(permissionSubject, permissionObject);
 			}
 		}
 	}
@@ -702,7 +705,7 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 			permissionObjects = storage.getAssignedPermission(subjectBeanType,
 					objectBeanType, permissionSubjectId, objectClassType);
 		}
-		if (permissionObjects.size()==0) {
+		if (permissionObjects.size() == 0) {
 			Bean[] beans = getRelationBeans(subjectBeanType, objectBeanType,
 					permissionSubjectId);
 			DBOperator objectOperator = getManager().getDbOperator(
@@ -735,30 +738,17 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 		return beans;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<PermissionSubject<K, ?>> getChildPermissionSubjects(
 			String subjectBeanType, K parentSubjectId,
 			Class<? extends PermissionSubject> subjectClassType) {
 		List<PermissionSubject<K, ?>> children = new ArrayList<PermissionSubject<K, ?>>();
-		if(cacheSupport){
-			children=storage.getChildPermissionSubjects(subjectBeanType, parentSubjectId, subjectClassType);
+		if (cacheSupport) {
+			children = storage.getChildPermissionSubjects(subjectBeanType,
+					parentSubjectId, subjectClassType);
 		}
-		if(children.size()==0){
-			Bean queryBean = new Bean(subjectBeanType);
-			queryBean.setProperty(PARENT_ID, parentSubjectId);
-			DBOperator<K> operator = (DBOperator<K>) getManager().getDbOperator(
-					subjectBeanType);
-			Bean[] beans = operator.getBeans(queryBean);
-			if (beans != null) {
-				String primaryKeyName = getPrimaryKeyName(subjectBeanType);
-				for (Bean bean : beans) {
-					PermissionSubject permissionSubject = (PermissionSubject) TinyBeanUtil
-							.bean2Object(bean, subjectClassType);
-					permissionSubject.setId(getPrimaryKeyValue(operator, bean,
-							primaryKeyName));
-					children.add(permissionSubject);
-				}
-			}
+		if (children.size() == 0) {
+			children = getChildPermissionSubjectRecords(subjectBeanType,
+					parentSubjectId, subjectClassType);
 		}
 		return children;
 	}
@@ -768,14 +758,15 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 			String objectBeanType, K parentObjectId,
 			Class<? extends PermissionObject> objectClassType) {
 		List<PermissionObject<K, ?>> children = new ArrayList<PermissionObject<K, ?>>();
-		if(cacheSupport){
-			children=storage.getChildPermissionObjects(objectBeanType, parentObjectId, objectClassType);
+		if (cacheSupport) {
+			children = storage.getChildPermissionObjects(objectBeanType,
+					parentObjectId, objectClassType);
 		}
-		if(children.size()==0){
+		if (children.size() == 0) {
 			Bean queryBean = new Bean(objectBeanType);
 			queryBean.setProperty(PARENT_ID, parentObjectId);
-			DBOperator<K> operator = (DBOperator<K>) getManager().getDbOperator(
-					objectBeanType);
+			DBOperator<K> operator = (DBOperator<K>) getManager()
+					.getDbOperator(objectBeanType);
 			Bean[] beans = operator.getBeans(queryBean);
 			if (beans != null) {
 				String primaryKeyName = getPrimaryKeyName(objectBeanType);
@@ -791,27 +782,97 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 		return children;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<PermissionSubject<K, ?>> getBegatsPermissionSubjects(
 			String subjectBeanType, K parentSubjectId,
 			Class<? extends PermissionSubject> subjectClassType) {
 		List<PermissionSubject<K, ?>> begats = new ArrayList<PermissionSubject<K, ?>>();
-		if(cacheSupport){
-			begats=storage.getBegatsPermissionSubjects(subjectBeanType, parentSubjectId, subjectClassType);
+		if (cacheSupport) {
+			begats = storage.getBegatsPermissionSubjects(subjectBeanType,
+					parentSubjectId, subjectClassType);
 		}
-		if(begats.size()==0){
-			Bean queryBean = new Bean(subjectBeanType);
-			queryBean.setProperty(PARENT_ID, parentSubjectId);
-			DBOperator<K> operator = (DBOperator<K>) getManager().getDbOperator(
-					subjectBeanType);
-			Bean[] beans = operator.getBeans(queryBean);
-			if (beans != null) {
-				String primaryKeyName = getPrimaryKeyName(subjectBeanType);
-				for (Bean bean : beans) {
-					
-				}
+		if (begats.size() == 0) {
+			begats = getBegatsPermissionSubjectRecords(subjectBeanType,
+					parentSubjectId, subjectClassType);
+		}
+		return begats;
+	}
+
+	@SuppressWarnings({ "unchecked" })
+	private List<PermissionSubject<K, ?>> getChildPermissionSubjectRecords(
+			String subjectBeanType, K parentSubjectId,
+			Class<? extends PermissionSubject> subjectClassType) {
+		List<PermissionSubject<K, ?>> children = new ArrayList<PermissionSubject<K, ?>>();
+		Bean queryBean = new Bean(subjectBeanType);
+		queryBean.setProperty(PARENT_ID, parentSubjectId);
+		DBOperator<K> operator = (DBOperator<K>) getManager().getDbOperator(
+				subjectBeanType);
+		Bean[] beans = operator.getBeans(queryBean);
+		if (beans != null) {
+			String primaryKeyName = getPrimaryKeyName(subjectBeanType);
+			for (Bean bean : beans) {
+				PermissionSubject permissionSubject = (PermissionSubject) TinyBeanUtil
+						.bean2Object(bean, subjectClassType);
+				permissionSubject.setId(getPrimaryKeyValue(operator, bean,
+						primaryKeyName));
+				children.add(permissionSubject);
 			}
-			
+		}
+		return children;
+	}
+
+	@SuppressWarnings({ "unchecked" })
+	private List<PermissionObject<K, ?>> getChildPermissionObjectRecords(
+			String objectBeanType, K parentObjectId,
+			Class<? extends PermissionObject> objectClassType) {
+		List<PermissionObject<K, ?>> children = new ArrayList<PermissionObject<K, ?>>();
+		Bean queryBean = new Bean(objectBeanType);
+		queryBean.setProperty(PARENT_ID, parentObjectId);
+		DBOperator<K> operator = (DBOperator<K>) getManager().getDbOperator(
+				objectBeanType);
+		Bean[] beans = operator.getBeans(queryBean);
+		if (beans != null) {
+			String primaryKeyName = getPrimaryKeyName(objectBeanType);
+			for (Bean bean : beans) {
+				PermissionObject permissionObject = (PermissionObject) TinyBeanUtil
+						.bean2Object(bean, objectClassType);
+				permissionObject.setId(getPrimaryKeyValue(operator, bean,
+						primaryKeyName));
+				children.add(permissionObject);
+			}
+		}
+		return children;
+	}
+
+	private List<PermissionSubject<K, ?>> getBegatsPermissionSubjectRecords(
+			String subjectBeanType, K parentSubjectId,
+			Class<? extends PermissionSubject> subjectClassType) {
+		List<PermissionSubject<K, ?>> begats = new ArrayList<PermissionSubject<K, ?>>();
+		List<PermissionSubject<K, ?>> children = getChildPermissionSubjectRecords(
+				subjectBeanType, parentSubjectId, subjectClassType);
+		for (PermissionSubject<K, ?> child : children) {
+			begats.add(child);
+			List<PermissionSubject<K, ?>> posts = getBegatsPermissionSubjectRecords(
+					subjectBeanType, child.getId(), subjectClassType);
+			if (posts.size() > 0) {
+				begats.addAll(posts);
+			}
+		}
+		return begats;
+	}
+
+	private List<PermissionObject<K, ?>> getBegatsPermissionObjectRecords(
+			String objectBeanType, K parentObjectId,
+			Class<? extends PermissionObject> objectClassType) {
+		List<PermissionObject<K, ?>> begats = new ArrayList<PermissionObject<K, ?>>();
+		List<PermissionObject<K, ?>> children = getChildPermissionObjectRecords(
+				objectBeanType, parentObjectId, objectClassType);
+		for (PermissionObject<K, ?> child : children) {
+			begats.add(child);
+			List<PermissionObject<K, ?>> posts = getBegatsPermissionObjectRecords(
+					objectBeanType, child.getId(), objectClassType);
+			if (posts.size() > 0) {
+				begats.addAll(posts);
+			}
 		}
 		return begats;
 	}
@@ -819,36 +880,134 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 	public List<PermissionObject<K, ?>> getBegatsPermissionObjects(
 			String objectBeanType, K parentObjectId,
 			Class<? extends PermissionObject> objectClassType) {
-		// TODO Auto-generated method stub
-		return null;
+		List<PermissionObject<K, ?>> begats = new ArrayList<PermissionObject<K, ?>>();
+		if (cacheSupport) {
+			begats = storage.getBegatsPermissionObjects(objectBeanType,
+					parentObjectId, objectClassType);
+		}
+		if (begats.size() == 0) {
+			begats = getBegatsPermissionObjectRecords(objectBeanType,
+					parentObjectId, objectClassType);
+		}
+		return begats;
 	}
 
+	@SuppressWarnings("unchecked")
 	public PermissionSubject<K, ?> getChildPermissionSubjectsWithTree(
 			String subjectBeanType, K parentSubjectId,
 			Class<? extends PermissionSubject> subjectClassType) {
-		// TODO Auto-generated method stub
-		return null;
+		PermissionSubject<K, ?> permissionSubject = null;
+		if (cacheSupport) {
+			permissionSubject = storage.getChildPermissionSubjectsWithTree(
+					subjectBeanType, parentSubjectId, subjectClassType);
+		}
+		if (permissionSubject == null) {
+			permissionSubject = getPermissionSubject(subjectBeanType,
+					parentSubjectId, subjectClassType);
+			List subList = getChildPermissionSubjects(subjectBeanType,
+					parentSubjectId, subjectClassType);
+			permissionSubject.setSubList(subList);
+		}
+		return permissionSubject;
 	}
 
 	public PermissionSubject<K, ?> getBegatsPermissionSubjectsWithTree(
 			String subjectBeanType, K parentSubjectId,
 			Class<? extends PermissionSubject> subjectClassType) {
-		// TODO Auto-generated method stub
-		return null;
+		PermissionSubject<K, ?> permissionSubject = null;
+		if (cacheSupport) {
+			permissionSubject = storage.getBegatsPermissionSubjectsWithTree(
+					subjectBeanType, parentSubjectId, subjectClassType);
+		}
+		if (permissionSubject == null) {
+			permissionSubject = getBegatsPermissionSubjectRecordsWithTree(
+					subjectBeanType, parentSubjectId, subjectClassType);
+		}
+		return permissionSubject;
 	}
 
+	@SuppressWarnings("unchecked")
+	private PermissionSubject<K, ?> getBegatsPermissionSubjectRecordsWithTree(
+			String subjectBeanType, K parentSubjectId,
+			Class<? extends PermissionSubject> subjectClassType) {
+		PermissionSubject<K, ?> permissionSubject = getPermissionSubject(
+				subjectBeanType, parentSubjectId, subjectClassType);
+		List childrens = getChildPermissionSubjects(subjectBeanType,
+				parentSubjectId, subjectClassType);
+		if (childrens.size() > 0) {
+			for (int i = 0; i < childrens.size(); i++) {
+				PermissionSubject<K, ?> subject = (PermissionSubject<K, ?>) childrens
+						.get(i);
+				List subs = getChildPermissionSubjects(subjectBeanType,
+						subject.getId(), subjectClassType);
+				if (subs.size() > 0) {
+					getBegatsPermissionSubjectRecordsWithTree(subjectBeanType,
+							subject.getId(), subjectClassType);
+				}
+
+			}
+			permissionSubject.setSubList(childrens);
+		}
+		return permissionSubject;
+	}
+
+	@SuppressWarnings("unchecked")
+	private PermissionObject<K, ?> getBegatsPermissionObjectRecordsWithTree(
+			String objectBeanType, K parentObjectId,
+			Class<? extends PermissionObject> objectClassType) {
+		PermissionObject<K, ?> permissionObject = getPermissionObject(
+				objectBeanType, parentObjectId, objectClassType);
+		List childrens = getChildPermissionObjects(objectBeanType,
+				parentObjectId, objectClassType);
+		if (childrens.size() > 0) {
+			for (int i = 0; i < childrens.size(); i++) {
+				PermissionObject<K, ?> object = (PermissionObject<K, ?>) childrens
+						.get(i);
+				List subs = getChildPermissionObjects(objectBeanType,
+						object.getId(), objectClassType);
+				if (subs.size() > 0) {
+					getBegatsPermissionObjectRecordsWithTree(objectBeanType,
+							object.getId(), objectClassType);
+				}
+
+			}
+			permissionObject.setSubList(childrens);
+		}
+		return permissionObject;
+	}
+
+	@SuppressWarnings("unchecked")
 	public PermissionObject<K, ?> getChildPermissionObjectsWithTree(
 			String objectBeanType, K parentObjectId,
 			Class<? extends PermissionObject> objectClassType) {
-		// TODO Auto-generated method stub
-		return null;
+		PermissionObject<K, ?> permissionObject = null;
+		if (cacheSupport) {
+			permissionObject = storage.getChildPermissionObjectsWithTree(
+					objectBeanType, parentObjectId, objectClassType);
+		}
+		if (permissionObject == null) {
+			permissionObject = getPermissionObject(objectBeanType,
+					parentObjectId, objectClassType);
+			List subList = getChildPermissionObjects(objectBeanType,
+					parentObjectId, objectClassType);
+			permissionObject.setSubList(subList);
+		}
+		return permissionObject;
 	}
 
 	public PermissionObject<K, ?> getBegatsPermissionObjectsWithTree(
 			String objectBeanType, K parentObjectId,
 			Class<? extends PermissionObject> objectClassType) {
-		// TODO Auto-generated method stub
-		return null;
+		PermissionObject<K, ?> permissionObject = null;
+		if (cacheSupport) {
+			permissionObject = storage.getBegatsPermissionObjectsWithTree(
+					objectBeanType, parentObjectId, objectClassType);
+		}
+		if (permissionObject == null) {
+			permissionObject = getBegatsPermissionObjectRecordsWithTree(
+					objectBeanType, parentObjectId, objectClassType);
+		}
+		return permissionObject;
 	}
 
 }
