@@ -108,6 +108,16 @@ public class Field {
         return Float.parseFloat(getStringValue());
     }
 
+    public Boolean getBooleanValue() throws UnsupportedEncodingException {
+        String value = getStringValue();
+        if (value.equals("T") || value.equals("t") || value.equals("Y") || value.equals("y")) {
+            return true;
+        } else if (value.equals("F") || value.equals("f") || value.equals("N") || value.equals("n")) {
+            return false;
+        }
+        return null;
+    }
+
     public Date getDateValue() throws ParseException, UnsupportedEncodingException {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         return format.parse(getStringValue());

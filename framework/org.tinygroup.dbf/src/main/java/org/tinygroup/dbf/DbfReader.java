@@ -1,5 +1,7 @@
 package org.tinygroup.dbf;
 
+import org.tinygroup.dbf.impl.FoxproDBase3Reader;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -121,6 +123,9 @@ public abstract class DbfReader implements Reader {
 
     private void skipHeaderTerminator() throws IOException {
         ByteBuffer byteBuffer = ByteBuffer.allocate(1);
+        if (byteBuffer.array()[0] != 13) {
+            throw new IOException("头结束符期望是13，但实际是：" + byteBuffer.array()[0]);
+        }
         readByteBuffer(byteBuffer);
     }
 
@@ -134,6 +139,9 @@ public abstract class DbfReader implements Reader {
         readByteBuffer(byteBuffer);
         this.recordRemoved = (byteBuffer.array()[0] == '*');
         for (Field field : fields) {
+            if (field.getType() == 'M'||field.getType() == 'B'||field.getType() == 'G') {
+                throw new IOException("Not Support type Memo");
+            }
             read(field);
         }
         position++;
