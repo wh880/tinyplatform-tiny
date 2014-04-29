@@ -1,15 +1,13 @@
 package org.tinygroup.dbf;
 
-import org.tinygroup.dbf.impl.FoxproDBase3Reader;
+import org.tinygroup.dbf.impl.FoxproDBaseReader;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by luoguo on 2014/4/25.
@@ -21,19 +19,6 @@ public abstract class DbfReader implements Reader {
     protected List<Field> fields;
     private boolean recordRemoved;
     int position = 0;
-    static Map<Integer, Class> readerMap = new HashMap<Integer, Class>();
-
-    static {
-        addReader(FoxproDBase3Reader.FOXPRO_DBASE3, FoxproDBase3Reader.class);
-    }
-
-    public static void addReader(int type, Class clazz) {
-        readerMap.put(type, clazz);
-    }
-
-    public static void addReader(int type, String className) throws ClassNotFoundException {
-        readerMap.put(type, Class.forName(className));
-    }
 
     public String getEncode() {
         return encode;
@@ -70,12 +55,7 @@ public abstract class DbfReader implements Reader {
         ByteBuffer byteBuffer = ByteBuffer.allocate(1);
         fileChannel.read(byteBuffer);
         byte type = byteBuffer.array()[0];
-        Class<Reader> readerClass = readerMap.get((int) type);
-        if (readerClass == null) {
-            fileChannel.close();
-            throw new IOException("不支持的文件类型[" + type + "]。");
-        }
-        DbfReader reader = (DbfReader) readerClass.newInstance();
+        DbfReader reader = new FoxproDBaseReader();
         reader.setFileChannel(fileChannel);
         reader.readHeader();
         reader.readFields();
@@ -139,7 +119,7 @@ public abstract class DbfReader implements Reader {
         readByteBuffer(byteBuffer);
         this.recordRemoved = (byteBuffer.array()[0] == '*');
         for (Field field : fields) {
-            if (field.getType() == 'M'||field.getType() == 'B'||field.getType() == 'G') {
+            if (field.getType() == 'M' || field.getType() == 'B' || field.getType() == 'G') {
                 throw new IOException("Not Support type Memo");
             }
             read(field);

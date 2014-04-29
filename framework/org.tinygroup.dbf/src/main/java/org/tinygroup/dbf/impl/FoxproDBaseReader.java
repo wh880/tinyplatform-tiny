@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by luoguo on 2014/4/25.
  */
-public abstract class FoxproDBaseReader extends DbfReader {
+public class FoxproDBaseReader extends DbfReader {
     protected void readFields() throws IOException {
         fields = new ArrayList<Field>();
         for (int i = 0; i < (header.getHeaderLength() - 32 - 1) / 32; i++) {

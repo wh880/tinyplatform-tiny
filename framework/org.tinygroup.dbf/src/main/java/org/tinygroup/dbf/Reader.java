@@ -8,7 +8,6 @@ import java.util.List;
  * Created by luoguo on 2014/4/26.
  */
 public interface Reader {
-    byte getType();
 
     void setFileChannel(FileChannel fileChannel);
 
