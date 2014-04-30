@@ -46,7 +46,7 @@ public class CommonJDBC
 	private static Logger logger = LoggerFactory.getLogger(CommonJDBC.class);
 
 	public static String driverName = "com.mysql.jdbc.Driver";
-	public static String url = "jdbc:mysql://192.168.51.29:3306/test5";
+	public static String url = "jdbc:mysql://mysqldb:3306/test5";
 	public static String user = "root";
 	public static String password = "123456";
 	public static StandardXADataSource dataSource = new StandardXADataSource();

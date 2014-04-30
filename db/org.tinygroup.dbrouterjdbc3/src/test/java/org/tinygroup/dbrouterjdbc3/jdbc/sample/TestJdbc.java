@@ -33,7 +33,7 @@ import java.sql.Statement;
 public class TestJdbc {
 	public static void main(String[] args) throws Throwable {
 		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.51.29:3306/test0?generateSimpleParameterMetadata=true", "root", "123456");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://mysqldb:3306/test0?generateSimpleParameterMetadata=true", "root", "123456");
 //		Statement stmt = conn.createStatement();
 		String sql;
 //		sql = "SELECT * FROM aaa where id in (?,?,?) order by id";

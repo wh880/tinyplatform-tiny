@@ -23,20 +23,17 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
+import org.enhydra.jdbc.standard.StandardXADataSource;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.enhydra.jdbc.standard.StandardXADataSource;
 
 public class CommonJDBCTest {
 
 	private static String driverName = "com.mysql.jdbc.Driver";
-	private static String url = "jdbc:mysql://192.168.51.29:3306/testA";
+	private static String url = "jdbc:mysql://mysqldb:3306/testA";
 	private static String user = "root";
 	private static String password = "123456";
 	private static StandardXADataSource dataSource = new StandardXADataSource();

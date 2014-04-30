@@ -73,7 +73,7 @@ public class TestRouterUtil {
         List<DataSourceConfig> dataSourceList = new ArrayList<DataSourceConfig>();
         router.setDataSource(dataSourceList);
         for (int i = 0; i <= 2; i++) {
-            DataSourceConfig dataSource = new DataSourceConfig("ds" + i, "com.mysql.jdbc.Driver", "jdbc:mysql://192.168.51.29:3306/test" + i, "root", "123456");
+            DataSourceConfig dataSource = new DataSourceConfig("ds" + i, "com.mysql.jdbc.Driver", "jdbc:mysql://mysqldb:3306/test" + i, "root", "123456");
             dataSourceList.add(dataSource);
         }
         List<Partition> partitions = new ArrayList<Partition>();
@@ -123,7 +123,7 @@ public class TestRouterUtil {
         router.setKeyConfig(config);
         List<DataSourceConfig> dataSourceList = new ArrayList<DataSourceConfig>();
         router.setDataSource(dataSourceList);
-        DataSourceConfig dataSource = new DataSourceConfig("ds1", "com.mysql.jdbc.Driver", "jdbc:mysql://192.168.51.29:3306/test", "root", "123456");
+        DataSourceConfig dataSource = new DataSourceConfig("ds1", "com.mysql.jdbc.Driver", "jdbc:mysql://mysqldb:3306/test", "root", "123456");
         dataSourceList.add(dataSource);
         List<Partition> partitions = new ArrayList<Partition>();
         Partition patition = new Partition("abc", Partition.MODE_SHARD);
@@ -156,7 +156,7 @@ public class TestRouterUtil {
         List<DataSourceConfig> dataSourceList = new ArrayList<DataSourceConfig>();
         router.setDataSource(dataSourceList);
         for (int i = 0; i <= 2; i++) {
-            DataSourceConfig dataSource = new DataSourceConfig("ds" + i, "com.mysql.jdbc.Driver", "jdbc:mysql://192.168.51.29:3306/test" + i, "root", "123456");
+            DataSourceConfig dataSource = new DataSourceConfig("ds" + i, "com.mysql.jdbc.Driver", "jdbc:mysql://mysqldb:3306/test" + i, "root", "123456");
             dataSourceList.add(dataSource);
         }
         List<Partition> partitions = new ArrayList<Partition>();
@@ -187,7 +187,7 @@ public class TestRouterUtil {
         List<DataSourceConfig> dataSourceList = new ArrayList<DataSourceConfig>();
         router.setDataSource(dataSourceList);
         for (int i = 0; i <= 2; i++) {
-            DataSourceConfig dataSource = new DataSourceConfig("ds" + i, "com.mysql.jdbc.Driver", "jdbc:mysql://192.168.51.29:3306/test" + i, "root", "123456");
+            DataSourceConfig dataSource = new DataSourceConfig("ds" + i, "com.mysql.jdbc.Driver", "jdbc:mysql://mysqldb:3306/test" + i, "root", "123456");
             dataSourceList.add(dataSource);
         }
         List<Partition> partitions = new ArrayList<Partition>();

@@ -44,7 +44,7 @@ public class JotmTest {
         Connection[] connections = new Connection[3];
         for (int i = 0; i < 3; i++) {
             StandardXADataSource dataSource = new StandardXADataSource();
-            dataSource.setUrl("jdbc:mysql://192.168.51.29:3306/test" + i);
+            dataSource.setUrl("jdbc:mysql://mysqldb:3306/test" + i);
             dataSource.setDriverName("com.mysql.jdbc.Driver");
             dataSource.setUser("root");
             dataSource.setPassword("123456");
