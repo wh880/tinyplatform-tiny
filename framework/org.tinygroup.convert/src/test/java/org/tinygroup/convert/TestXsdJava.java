@@ -41,20 +41,20 @@ public class TestXsdJava extends TestCase {
 		list.add(Student.class);
 		list.add(Birthday.class);
 
-		File src = new File("c:/test");
+		File src = new File("test");
 		ClassToSchema classToSchema = new ClassToSchema(src);
 		List<File> files = classToSchema.convert(list);
 		assertTrue(files.size() > 0);
 		for (File file : files) {
 			System.out.println(file.getAbsolutePath());
 		}
-
+		src.delete();
 	}
 
 	public void testSchema2Class() {
 
 		SchemaToClass schemaToClass = new SchemaToClass(
-				"c:/test",
+				"test",
 				"src/test/resources/xjb",
 				"org.tinygroup.convert");
 		List<String> xsdFiles = new ArrayList<String>();
@@ -71,6 +71,8 @@ public class TestXsdJava extends TestCase {
 		}
 
 		schemaToClass.convert(xsdFiles);
+		File src = new File("test");
+		src.delete();
 	}
 
 	public void testSchema2ClassMuti() {
@@ -82,7 +84,7 @@ public class TestXsdJava extends TestCase {
 				for (File subFile : subFiles) {
 					List<String> xsdFiles = new ArrayList<String>();
 					SchemaToClass schemaToClass = new SchemaToClass(
-							"c:/test",
+							"test",
 							"src/test/resources/xjb",
 							"com.hundsun."
 									+ subFile.getName().replaceAll("[.]", "_"));
@@ -93,6 +95,8 @@ public class TestXsdJava extends TestCase {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
-
+		File src = new File("test");
+		System.out.println(src.getAbsolutePath());
+		src.deleteOnExit();
 	}
 }
