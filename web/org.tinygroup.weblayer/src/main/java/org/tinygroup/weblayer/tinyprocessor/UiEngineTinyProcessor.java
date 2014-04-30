@@ -230,7 +230,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
                         time += fileObject.getLastModifiedTime();
                         time += path.hashCode();
                     } else {
-                        throw new RuntimeException("不能找到资源文件：" + path);
+                        throw new RuntimeException("不能找到资源文件：" + component.getName() + "-" + path);
                     }
                 }
             }
@@ -249,7 +249,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
                         time += fileObject.getLastModifiedTime();
                         time += path.hashCode();
                     } else {
-                        throw new RuntimeException("不能找到资源文件：" + path);
+                        throw new RuntimeException("不能找到资源文件：" + component.getName() + "-" + path);
                     }
                 }
             }

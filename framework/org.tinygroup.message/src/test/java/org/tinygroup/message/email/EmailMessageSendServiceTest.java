@@ -23,7 +23,7 @@
  */
 package org.tinygroup.message.email;
 
-import org.tinygroup.message.MessageException;
+import org.tinygroup.message.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,29 +33,33 @@ import java.util.Collection;
 /**
  * Created by luoguo on 2014/4/21.
  */
-public class EmailMessageSendServiceTest  {
+public class EmailMessageSendServiceTest {
     public static void main(String[] args) throws IOException, MessageException {
-
+        MessageManager<EmailMessageAccount, EmailMessageSender, EmailMessageReceiver, EmailMessage> messageManager = new MessageManagerDefault();
         EmailMessageAccount account = new EmailMessageAccount();
         account.setHost("127.0.0.1");
         account.setUsername("luoguo@tinygroup.org");
         account.setPassword("123456");
-        EmailMessageSendService sendService=new EmailMessageSendService();
-        EmailMessageSender messageSender=new EmailMessageSender();
+        EmailMessageSendService sendService = new EmailMessageSendService();
+        EmailMessageSender messageSender = new EmailMessageSender();
         messageSender.setDisplayName("罗果");
         messageSender.setEmail("luoguo@tinygroup.org");
-        EmailMessageReceiver messageReceiver=new EmailMessageReceiver();
+        EmailMessageReceiver messageReceiver = new EmailMessageReceiver();
         messageReceiver.setDisplayName("罗果");
         messageReceiver.setEmail("luog@tinygroup.org");
-        EmailMessage emailMessage=new EmailMessage();
+        EmailMessage emailMessage = new EmailMessage();
         emailMessage.setSubject("test1111111");
         emailMessage.setContent("中华人民共和国");
-        EmailAccessory accessory=new EmailAccessory(new File("D:/RUNNING.txt"));
+        EmailAccessory accessory = new EmailAccessory(new File("D:/RUNNING.txt"));
         emailMessage.getAccessories().add(accessory);
-        sendService.setMessageAccount(account);
-        Collection<EmailMessageReceiver>receivers=new ArrayList<EmailMessageReceiver>();
+        messageManager.setMessageAccount(account);
+        MessageReceiveService messageReceiveService = new EmailMessageReceiveService();
+        MessageSendService messageSendService = new EmailMessageSendService();
+        messageManager.setMessageReceiveService(messageReceiveService);
+        messageManager.setMessageSendService(messageSendService);
+        Collection<EmailMessageReceiver> receivers = new ArrayList<EmailMessageReceiver>();
         receivers.add(messageReceiver);
-        sendService.sendMessage(messageSender,receivers,emailMessage);
+        messageManager.sendMessage(messageSender, receivers, emailMessage);
     }
 
 

@@ -33,13 +33,11 @@ public interface TinyWebResourceManager {
 	
 	/**
 	 * tiny资源初始化（servlet或filter）
-	 * @param servlets
 	 */
 	public abstract void initTinyResources();
 
 	/**
 	 * tiny资源销毁（servlet或filter）
-	 * @param servlets
 	 */
 	public abstract void destoryTinyResources();
 

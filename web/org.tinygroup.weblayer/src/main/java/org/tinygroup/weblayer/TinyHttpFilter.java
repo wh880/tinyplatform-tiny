@@ -23,20 +23,6 @@
  */
 package org.tinygroup.weblayer;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.logger.LogLevel;
@@ -46,6 +32,14 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.impl.WebContextImpl;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class TinyHttpFilter implements Filter {
 	private static final String EXCLUDE_PATH = "excludePath";
@@ -91,6 +85,9 @@ public class TinyHttpFilter implements Filter {
 		context.init(request, response,
 				ServletContextHolder.getServletContext());
 		String servletPath = context.get(WebContextUtil.TINY_SERVLET_PATH);
+        if(servletPath.endsWith("/")){
+            servletPath=servletPath+"index.page";
+        }
 		if (isExcluded(servletPath)) {
 			logger.logMessage(LogLevel.DEBUG, "请求路径:<{}>,被拒绝", servletPath);
 			filterChain.doFilter(request, response);

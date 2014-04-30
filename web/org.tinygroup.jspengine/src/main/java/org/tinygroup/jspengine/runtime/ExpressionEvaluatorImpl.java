@@ -37,6 +37,8 @@ import javax.servlet.jsp.el.FunctionMapper;
 import javax.servlet.jsp.el.ExpressionEvaluator;
 import javax.servlet.jsp.el.VariableResolver;
 
+import org.tinygroup.jspengine.el.ExpressionFactoryImpl;
+
 /**
  * <p>This is the implementation of ExpreesioEvaluator
  * using implementation of JSP2.1.
@@ -63,7 +65,7 @@ public class ExpressionEvaluatorImpl extends ExpressionEvaluator
                                       FunctionMapper fMapper )
             throws ELException {
 
-        ExpressionFactory fac = ExpressionFactory.newInstance();
+        ExpressionFactory fac = new ExpressionFactoryImpl();
         javax.el.ValueExpression expr;
         ELContextImpl elContext = new ELContextImpl(null);
         javax.el.FunctionMapper fm = new FunctionMapperWrapper(fMapper);
@@ -96,7 +98,7 @@ public class ExpressionEvaluatorImpl extends ExpressionEvaluator
 
         javax.el.FunctionMapper fm = new FunctionMapperWrapper(fMapper);
         elContext.setFunctionMapper(fm);
-        ExpressionFactory fac = ExpressionFactory.newInstance();
+        ExpressionFactory fac = new ExpressionFactoryImpl();
         Object value;
         try {
             ValueExpression expr = fac.createValueExpression(
