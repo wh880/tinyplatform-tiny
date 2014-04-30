@@ -4,11 +4,11 @@
         <key-generator-config  increment="1" data-source-id="ds0"/>
         <data-source-configs>
             <data-source-config id="ds0" driver="com.mysql.jdbc.Driver"
-                                user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test0"/>
+                                user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test0"/>
             <data-source-config id="ds1" driver="com.mysql.jdbc.Driver"
-                                user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test1"/>
+                                user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test1"/>
             <data-source-config id="ds2" driver="com.mysql.jdbc.Driver"
-                                user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test2"/>
+                                user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test2"/>
         </data-source-configs>
         <partitions>
             <partition id="abc" mode="1">

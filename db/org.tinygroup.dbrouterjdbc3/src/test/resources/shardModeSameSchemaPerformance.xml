@@ -6,7 +6,7 @@
 			data-source-id="test" />
 		<data-source-configs>
 			<data-source-config id="test" driver="com.mysql.jdbc.Driver"
-				user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test"
+				user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test"
 				test-sql="" />
 		</data-source-configs>
 		<partitions>

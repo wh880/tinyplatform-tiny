@@ -6,34 +6,34 @@
 			data-source-id="ds0" />
 		<data-source-configs>
 			<data-source-config id="ds0" driver="com.mysql.jdbc.Driver"
-				user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test0"
+				user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test0"
 				test-sql="" />
 			<data-source-config id="ds1" driver="com.mysql.jdbc.Driver"
-				user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test1"
+				user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test1"
 				test-sql="" />
 			<data-source-config id="ds2" driver="com.mysql.jdbc.Driver"
-				user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test2"
+				user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test2"
 				test-sql="" />
 			<data-source-config id="ds3" driver="com.mysql.jdbc.Driver"
-				user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test3"
+				user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test3"
 				test-sql="" />
 			<data-source-config id="ds4" driver="com.mysql.jdbc.Driver"
-				user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test4"
+				user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test4"
 				test-sql="" />
 			<data-source-config id="ds5" driver="com.mysql.jdbc.Driver"
-				user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test5"
+				user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test5"
 				test-sql="" />
 			<data-source-config id="ds6" driver="com.mysql.jdbc.Driver"
-				user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test6"
+				user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test6"
 				test-sql="" />
 			<data-source-config id="ds7" driver="com.mysql.jdbc.Driver"
-				user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test7"
+				user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test7"
 				test-sql="" />
 			<data-source-config id="ds8" driver="com.mysql.jdbc.Driver"
-				user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test8"
+				user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test8"
 				test-sql="" />
 			<data-source-config id="ds9" driver="com.mysql.jdbc.Driver"
-				user-name="root" password="123456" url="jdbc:mysql://192.168.51.29:3306/test9"
+				user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test9"
 				test-sql="" />
 		</data-source-configs>
 		<partitions>
