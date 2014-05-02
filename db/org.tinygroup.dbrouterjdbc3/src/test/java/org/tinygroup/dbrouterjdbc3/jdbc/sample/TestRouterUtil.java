@@ -23,27 +23,22 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc.sample;
 
+import org.tinygroup.dbrouter.PartitionRule;
+import org.tinygroup.dbrouter.RouterManager;
+import org.tinygroup.dbrouter.ShardRule;
+import org.tinygroup.dbrouter.config.*;
+import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
+import org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong;
+import org.tinygroup.dbrouter.impl.partionrule.PartionRuleByTableName;
+import org.tinygroup.dbrouter.impl.shardrule.ShardRuleByIdDifferentSchema;
+import org.tinygroup.dbrouter.impl.shardrule.ShardRuleByIdSameSchema;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.tinygroup.dbrouter.RouterManager;
-import org.tinygroup.dbrouter.PartitionRule;
-import org.tinygroup.dbrouter.ShardRule;
-import org.tinygroup.dbrouter.config.Router;
-import org.tinygroup.dbrouter.config.DataSourceConfig;
-import org.tinygroup.dbrouter.config.KeyGeneratorConfig;
-import org.tinygroup.dbrouter.config.Partition;
-import org.tinygroup.dbrouter.config.Shard;
-import org.tinygroup.dbrouter.config.TableMapping;
-import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
-import org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong;
-import org.tinygroup.dbrouter.impl.partionrule.PartionRuleByTableName;
-import org.tinygroup.dbrouter.impl.shardrule.ShardRuleByIdDifferentSchema;
-import org.tinygroup.dbrouter.impl.shardrule.ShardRuleByIdSameSchema;
 
 public class TestRouterUtil {
     public static void main(String[] args) throws Throwable {
@@ -100,7 +95,7 @@ public class TestRouterUtil {
         List<DataSourceConfig> dataSourceList = new ArrayList<DataSourceConfig>();
         router.setDataSource(dataSourceList);
         for (int i = 0; i <= 2; i++) {
-            DataSourceConfig dataSource = new DataSourceConfig("ds" + i, "com.mysql.jdbc.Driver", "jdbc:mysql://192.168.51.85:3306/test" + i, "root", "123456");
+            DataSourceConfig dataSource = new DataSourceConfig("ds" + i, "com.mysql.jdbc.Driver", "jdbc:mysql://mysqldb:3306/test" + i, "root", "123456");
             dataSourceList.add(dataSource);
         }
         List<Partition> partitions = new ArrayList<Partition>();
@@ -217,7 +212,7 @@ public class TestRouterUtil {
         router.setKeyConfig(config);
         List<DataSourceConfig> dataSourceList = new ArrayList<DataSourceConfig>();
         router.setDataSource(dataSourceList);
-        DataSourceConfig dataSource = new DataSourceConfig("ds1", "com.mysql.jdbc.Driver", "jdbc:mysql://192.168.51.85:3306/test0", "root", "123456");
+        DataSourceConfig dataSource = new DataSourceConfig("ds1", "com.mysql.jdbc.Driver", "jdbc:mysql://mysqldb:3306/test0", "root", "123456");
         dataSourceList.add(dataSource);
         List<Partition> partitions = new ArrayList<Partition>();
         Partition partition = new Partition("abc", Partition.MODE_SHARD);
