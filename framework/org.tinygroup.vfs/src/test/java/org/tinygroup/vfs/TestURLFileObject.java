@@ -24,7 +24,6 @@
 package org.tinygroup.vfs;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.vfs.impl.HttpFileObject;
 import org.tinygroup.vfs.impl.HttpsFileObject;
 
@@ -34,7 +33,7 @@ public class TestURLFileObject extends TestCase {
 
 	public void testHttpFileObject() throws IOException {
 		
-		FileObject fileObject=VFS.resolveFile("http://home.hundsun.com//Utility/jquery/jquery-1.2.6.pack.js");
+		FileObject fileObject=VFS.resolveFile("http://www.baidu.com/");
 		assertTrue(fileObject instanceof HttpFileObject);
 		FileUtils.printFileObject(fileObject);
 		
