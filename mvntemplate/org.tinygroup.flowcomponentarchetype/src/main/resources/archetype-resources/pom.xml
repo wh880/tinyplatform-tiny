@@ -15,7 +15,7 @@
     <jira.username>luog</jira.username>
     <site.root>E:/snowrain/apache-tomcat-6.0.35/webapps</site.root>
     <jira.password>123456</jira.password>
-    <svnroot>http://192.168.51.85:5559/svn/opensource</svnroot>
+    <svnroot>http://mysqldb:5559/svn/opensource</svnroot>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
