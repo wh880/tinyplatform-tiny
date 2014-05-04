@@ -23,58 +23,56 @@
  */
 package org.tinygroup.event;
 
-import java.io.Serializable;
-
 import org.tinygroup.context.Context;
+
+import java.io.Serializable;
 
 /**
  * 服务请求
- * 
+ *
  * @author luoguo
- * 
- * @param <Service>
  */
 public final class ServiceRequest implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3221824083023375172L;
-	transient String fullServiceName;
-	/**
-	 * 节点名称，如果有指定节点名称，则只能访问指定节点上的服务
-	 */
-	String nodeName;
-	/**
-	 * 组织标识
-	 */
-	private String serviceId;
-	/**
-	 * 服务请求所带的参数
-	 */
-	private Context context;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 3221824083023375172L;
+    /**
+     * 节点名称，如果有指定节点名称，则只能访问指定节点上的服务
+     */
+    
+    private String nodeName;
+    /**
+     * 组织标识
+     */
+    private String serviceId;
+    /**
+     * 服务请求所带的参数
+     */
+    private Context context;
 
-	public String getNodeName() {
-		return nodeName;
-	}
+    public String getNodeName() {
+        return nodeName;
+    }
 
-	public void setNodeName(String nodeName) {
-		this.nodeName = nodeName;
-	}
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
+    }
 
-	public Context getContext() {
-		return context;
-	}
+    public Context getContext() {
+        return context;
+    }
 
-	public void setContext(Context context) {
-		this.context = context;
-	}
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
-	public String getServiceId() {
-		return serviceId;
-	}
+    public String getServiceId() {
+        return serviceId;
+    }
 
-	public void setServiceId(String serviceId) {
-		this.serviceId = serviceId;
-	}
+    public void setServiceId(String serviceId) {
+        this.serviceId = serviceId;
+    }
 }

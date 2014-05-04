@@ -23,10 +23,10 @@
  */
 package org.tinygroup.event;
 
-import java.io.Serializable;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
+import java.io.Serializable;
 
 @XStreamAlias("parameter")
 public class Parameter implements Serializable {
@@ -34,28 +34,40 @@ public class Parameter implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 610138334611099410L;
-	public static final String INPUT = "in";// 输入参数
-	public static final String OUTPUT = "out";// 输出参数
-	public static final String BOTH = "both";// 输入输出参数
+    // 输入参数
+	public static final String INPUT = "in";
+    // 输出参数
+	public static final String OUTPUT = "out";
+    // 输入输出参数
+	public static final String BOTH = "both";
 	@XStreamAsAttribute
-	private String name;// 参数名称
+    // 参数名称
+	private String name;
 	@XStreamAsAttribute
-	private String title;// 参数本地名称,i18n键值,如果i18n找不到，则原样显示
+    // 参数本地名称,i18n键值,如果i18n找不到，则原样显示
+	private String title;
 	@XStreamAsAttribute
-	private String type;// 参数类型
+    // 参数类型
+	private String type;
 	@XStreamAlias("collection-type")
 	@XStreamAsAttribute
-	private String collectionType;// 参数类型
+    // 参数类型
+	private String collectionType;
 	@XStreamAsAttribute
-	private String scope;// 参数域，默认为both
+    // 参数域，默认为both
+	private String scope;
 
 	@XStreamAsAttribute
-	private boolean array;// 是否是数组，默认是false
+    // 是否是数组，默认是false
+	private boolean array;
 	@XStreamAsAttribute
-	private boolean required;// 是否是必须，默认是true
-	private String description;// 描述
+    // 是否是必须，默认是true
+	private boolean required;
+    // 描述
+	private String description;
 	@XStreamAsAttribute
-	@XStreamAlias("validate-scene")//场景
+    //场景
+	@XStreamAlias("validate-scene")
 	private String validatorScene;
 
 	public String getValidatorSence() {
