@@ -30,7 +30,9 @@ public final class Server implements MultiPartName {
     private String serverName;
     private String instanceName;
 
+    public Server(){
 
+    }
     public Server(String serverAndInstanceName) {
         if (serverAndInstanceName != null) {
             final Matcher matcher = SERVER_PATTERN.matcher(serverAndInstanceName);

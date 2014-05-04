@@ -23,16 +23,6 @@
  */
 package org.tinygroup.dbrouterjdbc3.sqlprocessor;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.dbrouter.StatementProcessor;
@@ -41,15 +31,18 @@ import org.tinygroup.dbrouter.util.DbRouterUtil;
 import org.tinygroup.dbrouter.util.OrderByProcessor;
 import org.tinygroup.dbrouter.util.OrderByProcessor.OrderByValues;
 import org.tinygroup.dbrouterjdbc3.jdbc.TinyResultSetSimple;
+import org.tinygroup.jsqlparser.expression.Alias;
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.expression.Function;
 import org.tinygroup.jsqlparser.schema.Column;
 import org.tinygroup.jsqlparser.statement.Statement;
-import org.tinygroup.jsqlparser.statement.select.PlainSelect;
-import org.tinygroup.jsqlparser.statement.select.Select;
-import org.tinygroup.jsqlparser.statement.select.SelectBody;
-import org.tinygroup.jsqlparser.statement.select.SelectExpressionItem;
-import org.tinygroup.jsqlparser.statement.select.SelectItem;
+import org.tinygroup.jsqlparser.statement.select.*;
+
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Created by luoguo on 13-12-19.
@@ -69,7 +62,7 @@ public class SqlProcessorFunction implements StatementProcessor {
         Statement statement = RouterManagerBeanFactory.getManager().getSqlStatement(sql);
         if (statement instanceof Select) {
             Select select = (Select) statement;
-            SelectBody body=select.getSelectBody();
+            SelectBody body = select.getSelectBody();
             if (body instanceof PlainSelect) {
                 PlainSelect plainSelect = (PlainSelect) body;
                 for (SelectItem selectItem : plainSelect.getSelectItems()) {
@@ -96,7 +89,7 @@ public class SqlProcessorFunction implements StatementProcessor {
             Statement statement = (Statement) BeanUtil.deepCopy(originalStatement);
             if (statement instanceof Select) {
                 Select select = (Select) statement;
-                SelectBody body=select.getSelectBody();
+                SelectBody body = select.getSelectBody();
                 if (body instanceof PlainSelect) {
                     PlainSelect plainSelect = (PlainSelect) body;
                     List<SelectItem> selectItems = plainSelect.getSelectItems();
@@ -107,7 +100,7 @@ public class SqlProcessorFunction implements StatementProcessor {
                         count.setName(COUNT);
                         count.setAllColumns(true);
                         countItem.setExpression(count);
-                        countItem.setAlias(COUNT_ALIAS_NAME);
+                        countItem.setAlias(new Alias(COUNT_ALIAS_NAME));
                         selectItems.add(countItem);
                         return plainSelect.toString();
                     }
@@ -147,7 +140,7 @@ public class SqlProcessorFunction implements StatementProcessor {
         Statement statement = RouterManagerBeanFactory.getManager().getSqlStatement(sql);
         if (statement instanceof Select) {
             Select select = (Select) statement;
-            SelectBody body=select.getSelectBody();
+            SelectBody body = select.getSelectBody();
             if (body instanceof PlainSelect) {
                 PlainSelect plainSelect = (PlainSelect) body;
                 GroupKey groupKey = getGroupKey(plainSelect);
@@ -172,7 +165,10 @@ public class SqlProcessorFunction implements StatementProcessor {
             if (selectItem instanceof SelectExpressionItem) {
                 SelectExpressionItem item = (SelectExpressionItem) selectItem;
                 Expression expression = item.getExpression();
-                String alias = item.getAlias();
+                String alias = null;
+                if (item.getAlias() != null) {
+                    item.getAlias().getName();
+                }
                 if (expression instanceof Function) {
                     Function function = (Function) expression;
                     if (alias == null) {
@@ -183,7 +179,7 @@ public class SqlProcessorFunction implements StatementProcessor {
                 } else if (expression instanceof Column) {
                     Column column = (Column) expression;
                     if (alias == null) {
-                        alias = column.getWholeColumnName();
+                        alias = column.getFullyQualifiedName();
                     }
                     SelectItemMemory memory = new SelectItemMemory(i, alias);
                     items.add(memory);
@@ -292,7 +288,7 @@ public class SqlProcessorFunction implements StatementProcessor {
     /**
      * 功能说明: 合并后resultset的列信息列表
      * <p/>
-
+     * <p/>
      * 开发人员: renhui <br>
      * 开发时间: 2013-12-21 <br>
      * <br>
@@ -325,7 +321,7 @@ public class SqlProcessorFunction implements StatementProcessor {
     /**
      * 功能说明:代表一行数据
      * <p/>
-
+     * <p/>
      * 开发人员: renhui <br>
      * 开发时间: 2013-12-21 <br>
      * <br>
@@ -526,7 +522,7 @@ public class SqlProcessorFunction implements StatementProcessor {
     /**
      * 功能说明: 存储查询语句选择项
      * <p/>
-
+     * <p/>
      * 开发人员: renhui <br>
      * 开发时间: 2013-12-22 <br>
      * <br>

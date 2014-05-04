@@ -28,7 +28,9 @@ public class LongValue implements Expression {
 
 	private long value;
 	private String stringValue;
+    public LongValue(){
 
+    }
 	public LongValue(final String value) {
 		String val = value;
 		if (val.charAt(0) == '+') {

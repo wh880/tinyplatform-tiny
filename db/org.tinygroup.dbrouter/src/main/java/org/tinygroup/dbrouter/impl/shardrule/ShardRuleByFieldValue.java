@@ -23,20 +23,14 @@
  */
 package org.tinygroup.dbrouter.impl.shardrule;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.dbrouter.ShardRule;
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
-import org.tinygroup.jsqlparser.expression.DoubleValue;
-import org.tinygroup.jsqlparser.expression.Expression;
-import org.tinygroup.jsqlparser.expression.JdbcParameter;
-import org.tinygroup.jsqlparser.expression.LongValue;
-import org.tinygroup.jsqlparser.expression.StringValue;
+import org.tinygroup.jsqlparser.expression.*;
 import org.tinygroup.jsqlparser.expression.operators.conditional.AndExpression;
 import org.tinygroup.jsqlparser.expression.operators.conditional.OrExpression;
 import org.tinygroup.jsqlparser.expression.operators.relational.EqualsTo;
@@ -53,7 +47,8 @@ import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.SelectBody;
 import org.tinygroup.jsqlparser.statement.update.Update;
 
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by luoguo on 14-1-22.
@@ -190,7 +185,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 						} else if (rightExpression instanceof DoubleValue) {
 							DoubleValue doubleValue = (DoubleValue) rightExpression;
 							match = ArrayUtil.arrayContains(params,
-									doubleValue.getStringValue());
+									doubleValue.toString());
 						} else if (rightExpression instanceof JdbcParameter) {
 							Object value = preparedParams[paramIndex];
 							match = ArrayUtil.arrayContains(params, value);
@@ -247,7 +242,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 							} else if (expression instanceof DoubleValue) {
 								DoubleValue doubleValue = (DoubleValue) expression;
 								match = ArrayUtil.arrayContains(params,
-										doubleValue.getStringValue());
+										doubleValue.toString());
 							} else if (expression instanceof JdbcParameter) {
 								int paramIndex = DbRouterUtil.checkParamIndex(
 										index, expressions);

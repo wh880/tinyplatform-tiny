@@ -23,30 +23,15 @@
  */
 package org.tinygroup.dbrouter.util;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
-import org.tinygroup.jsqlparser.expression.BinaryExpression;
-import org.tinygroup.jsqlparser.expression.Expression;
-import org.tinygroup.jsqlparser.expression.JdbcParameter;
-import org.tinygroup.jsqlparser.expression.LongValue;
-import org.tinygroup.jsqlparser.expression.StringValue;
+import org.tinygroup.jsqlparser.expression.*;
 import org.tinygroup.jsqlparser.expression.operators.conditional.AndExpression;
 import org.tinygroup.jsqlparser.expression.operators.conditional.OrExpression;
-import org.tinygroup.jsqlparser.expression.operators.relational.Between;
 import org.tinygroup.jsqlparser.expression.operators.relational.ExistsExpression;
 import org.tinygroup.jsqlparser.expression.operators.relational.ExpressionList;
 import org.tinygroup.jsqlparser.expression.operators.relational.InExpression;
@@ -56,21 +41,13 @@ import org.tinygroup.jsqlparser.schema.Table;
 import org.tinygroup.jsqlparser.statement.Statement;
 import org.tinygroup.jsqlparser.statement.delete.Delete;
 import org.tinygroup.jsqlparser.statement.insert.Insert;
-import org.tinygroup.jsqlparser.statement.select.AllColumns;
-import org.tinygroup.jsqlparser.statement.select.AllTableColumns;
-import org.tinygroup.jsqlparser.statement.select.FromItem;
-import org.tinygroup.jsqlparser.statement.select.Join;
-import org.tinygroup.jsqlparser.statement.select.OrderByElement;
-import org.tinygroup.jsqlparser.statement.select.PlainSelect;
-import org.tinygroup.jsqlparser.statement.select.Select;
-import org.tinygroup.jsqlparser.statement.select.SelectBody;
-import org.tinygroup.jsqlparser.statement.select.SelectExpressionItem;
-import org.tinygroup.jsqlparser.statement.select.SelectItem;
-import org.tinygroup.jsqlparser.statement.select.SetOperationList;
-import org.tinygroup.jsqlparser.statement.select.SubJoin;
-import org.tinygroup.jsqlparser.statement.select.SubSelect;
-import org.tinygroup.jsqlparser.statement.select.WithItem;
+import org.tinygroup.jsqlparser.statement.select.*;
 import org.tinygroup.jsqlparser.statement.update.Update;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 功能说明: 工具类
@@ -338,9 +315,9 @@ public class DbRouterUtil {
 									String value = RouterManagerBeanFactory
 											.getManager().getPrimaryKey(router,
 													tableName);
-									StringValue stringValue = new StringValue();
-									stringValue.setValue(value);
+									StringValue stringValue = new StringValue(value);
 									expression = stringValue;
+                                    break;
 								case Types.NUMERIC:
 								case Types.DECIMAL:
 								case Types.INTEGER:
@@ -351,6 +328,7 @@ public class DbRouterUtil {
 											.getManager().getPrimaryKey(router,
 													tableName);
 									expression = new LongValue(values + "");
+                                    break;
 								default:
 								}
 								expressions.add(expression);
@@ -412,7 +390,7 @@ public class DbRouterUtil {
 
 	public static void checkItem(List<SelectItem> selectItems,
 			Column checkColumn) {
-		String groupByName = checkColumn.getWholeColumnName();
+		String groupByName = checkColumn.getFullyQualifiedName();
 		boolean isExist = false;
 		for (SelectItem selectItem : selectItems) {
 			if (selectItem instanceof AllColumns) {
@@ -424,15 +402,15 @@ public class DbRouterUtil {
 				break;
 			}
 			SelectExpressionItem item = (SelectExpressionItem) selectItem;
-			String alias = item.getAlias();
-			if (alias != null && groupByName.equals(alias)) {
+			Alias alias = item.getAlias();
+			if (alias != null && groupByName.equals(alias.getName())) {
 				isExist = true;
 				break;
 			}
 			Expression expression = item.getExpression();
 			if (expression instanceof Column) {
 				Column column = (Column) expression;
-				if (groupByName.equals(column.getWholeColumnName())
+				if (groupByName.equals(column.getFullyQualifiedName())
 						|| groupByName.equals(column.getColumnName())) {
 					isExist = true;
 					break;
@@ -468,7 +446,7 @@ public class DbRouterUtil {
 		int[] indexs = new int[orderByColumns.size()];
 		for (int i = 0; i < orderByColumns.size(); i++) {
 			Column orderByColumn = orderByColumns.get(i);
-			String orderByName = orderByColumn.getWholeColumnName();
+			String orderByName = orderByColumn.getFullyQualifiedName();
 			for (int j = 0; j < selectItems.size(); j++) {
 				SelectItem selectItem = selectItems.get(j);
 				if (selectItem instanceof AllColumns
@@ -477,15 +455,15 @@ public class DbRouterUtil {
 					break;
 				}
 				SelectExpressionItem item = (SelectExpressionItem) selectItem;
-				String alias = item.getAlias();
-				if (alias != null && orderByName.equals(alias)) {
+				Alias alias = item.getAlias();
+				if (alias != null && orderByName.equals(alias.getName())) {
 					indexs[i] = j;
 					break;
 				}
 				Expression expression = item.getExpression();
 				if (expression instanceof Column) {
 					Column column = (Column) expression;
-					if (orderByName.equals(column.getWholeColumnName())
+					if (orderByName.equals(column.getFullyQualifiedName())
 							|| orderByName.equals(column.getColumnName())) {
 						indexs[i] = j;
 					}

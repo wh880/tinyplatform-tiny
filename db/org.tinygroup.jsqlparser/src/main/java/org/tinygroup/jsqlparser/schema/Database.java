@@ -24,7 +24,9 @@ package org.tinygroup.jsqlparser.schema;
 public final class Database implements MultiPartName {
     private Server server;
     private String databaseName;
+    public Database(){
 
+    }
     public Database(String databaseName) {
         setDatabaseName(databaseName);
     }

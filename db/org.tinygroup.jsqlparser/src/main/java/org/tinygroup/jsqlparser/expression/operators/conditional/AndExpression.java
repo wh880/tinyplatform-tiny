@@ -26,19 +26,22 @@ import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.expression.ExpressionVisitor;
 
 public class AndExpression extends BinaryExpression {
+    public AndExpression() {
 
-	public AndExpression(Expression leftExpression, Expression rightExpression) {
-		setLeftExpression(leftExpression);
-		setRightExpression(rightExpression);
-	}
+    }
 
-
-	public void accept(ExpressionVisitor expressionVisitor) {
-		expressionVisitor.visit(this);
-	}
+    public AndExpression(Expression leftExpression, Expression rightExpression) {
+        setLeftExpression(leftExpression);
+        setRightExpression(rightExpression);
+    }
 
 
-	public String getStringExpression() {
-		return "AND";
-	}
+    public void accept(ExpressionVisitor expressionVisitor) {
+        expressionVisitor.visit(this);
+    }
+
+
+    public String getStringExpression() {
+        return "AND";
+    }
 }
