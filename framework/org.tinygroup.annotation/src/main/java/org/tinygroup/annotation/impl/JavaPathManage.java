@@ -23,11 +23,11 @@
  */
 package org.tinygroup.annotation.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 类路径管理
@@ -71,7 +71,7 @@ public class JavaPathManage {
 	/**
 	 * 根据路径获取类全路径
 	 * 
-	 * @param filePath
+	 * @param fileName
 	 * @return
 	 */
 	public String obtainClassName(String fileName) {

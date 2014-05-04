@@ -35,10 +35,10 @@ import java.util.UUID;
  */
 public class WorkDefault implements Work {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -7558871247472425574L;
-	private String id;
+     *
+     */
+    private static final long serialVersionUID = -7558871247472425574L;
+    private String id;
     private String type;
     private Warehouse inputWarehouse;
     private boolean needSerialize = false;
@@ -123,12 +123,16 @@ public class WorkDefault implements Work {
         }
         return false;
     }
-    
-    public void setForemanType(String foremanType) {
-    	this.foremanType = foremanType;
+
+    public int hashCode() {
+        return getId().hashCode();
     }
 
-	public String getForemanType() {
-		return foremanType;
-	}
+    public void setForemanType(String foremanType) {
+        this.foremanType = foremanType;
+    }
+
+    public String getForemanType() {
+        return foremanType;
+    }
 }

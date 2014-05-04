@@ -29,7 +29,6 @@ import org.tinygroup.commons.tools.StringUtil;
 
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.*;
 
@@ -121,14 +120,13 @@ public class LocaleUtil {
 
             if (index >= 0) {
                 country = localeString.substring(start, index).trim();
-
                 // variant
                 variant = localeString.substring(index + 1).trim();
             } else {
                 country = localeString.substring(start).trim();
             }
         } else {
-            language = localeString.substring(start).trim();
+            language = localeString.trim();
         }
 
         return new Locale(language, country, variant);

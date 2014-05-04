@@ -74,7 +74,7 @@ public class WorkQueueImpl implements WorkQueue {
                 objectStorage.saveObject(work, "Work");
             } catch (IOException e) {
                 logger.error(e);
-                throw new RuntimeException(String.format("序列化Work:%s %s时出现异常", work.getType()), e);
+                throw new RuntimeException(String.format("序列化Work:%s %s时出现异常", work.getType(),work.getId()), e);
             }
         }
         workList.add(work);

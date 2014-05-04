@@ -25,13 +25,8 @@ package org.tinygroup.tinyioc;
 
 import org.tinygroup.tinyioc.impl.BeanContainerImpl;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.JarFile;
 
 /**
  * Created by luoguo on 13-12-31.
@@ -66,17 +61,5 @@ public class BeanContainerFactory {
             beanContainerMap.put(name, beanContainer);
         }
         return beanContainer;
-    }
-
-    public static void main(String[] args) throws Exception {
-        File file = new File("c:\\org.tinygroup.helloproject-0.0.12-SNAPSHOT.jar");
-        System.out.println(file.exists());
-        URL xUrl = file.toURL();
-        URLClassLoader classLoader = new URLClassLoader(new URL[]{xUrl});
-        Class xClass = classLoader.loadClass("hello.Hello");
-        URLClassLoader classLoader1 = new URLClassLoader(new URL[]{xUrl});
-        Class xClass1 = classLoader.loadClass("hello.HelloImpl");
-        Object object = xClass1.newInstance();
-        System.out.println(xClass.isInstance(object));
     }
 }

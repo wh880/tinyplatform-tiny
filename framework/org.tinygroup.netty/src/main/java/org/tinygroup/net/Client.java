@@ -23,18 +23,14 @@
  */
 package org.tinygroup.net;
 
+import org.jboss.netty.bootstrap.ClientBootstrap;
+import org.jboss.netty.channel.*;
+import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
+import org.tinygroup.net.exception.InterruptedRuntimeException;
+
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.jboss.netty.bootstrap.ClientBootstrap;
-import org.jboss.netty.channel.ChannelFuture;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.channel.ChannelPipeline;
-import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.Channels;
-import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
-import org.tinygroup.net.exception.InterruptedRuntimeException;
 
 /**
  * 客户端抽象类
@@ -57,6 +53,7 @@ public abstract class Client implements Netty {
     static String CONNECINGT = "connecting";
     static String CLOSED = "closed";
     static String FIRED_EXCEPTION = "fired_exception";
+    private byte[] lock = new byte[0];
 
     /**
      * 停止方法
@@ -128,7 +125,7 @@ public abstract class Client implements Netty {
 
         // 等待运行，直接连接关闭或出错
         connectFuture.getChannel().getCloseFuture().awaitUninterruptibly();
-        synchronized (CLOSED) {
+        synchronized (lock) {
             status = CLOSED;
             ready = false;
         }
