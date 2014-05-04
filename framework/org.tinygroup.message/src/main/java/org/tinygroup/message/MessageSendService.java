@@ -29,7 +29,7 @@ import java.util.Collection;
  * 信息服务，用于定义信息的发送与接收接口
  * Created by luoguo on 2014/4/17.
  */
-public interface MessageSendService<Account extends MessageAccount, Sender extends MessageSender, Receiver extends MessageReceiver, Msg extends Message> {
+public interface MessageSendService<ACCOUNT extends MessageAccount, SENDER extends MessageSender, RECEIVER extends MessageReceiver, MSG extends Message> {
 
 
     /**
@@ -39,7 +39,7 @@ public interface MessageSendService<Account extends MessageAccount, Sender exten
      * @param messageReceivers 消息接收者
      * @param message          消息
      */
-    void sendMessage(Account messageAccount, Sender messageSender, Collection<Receiver> messageReceivers, Msg message) throws MessageException;
+    void sendMessage(ACCOUNT messageAccount, SENDER messageSender, Collection<RECEIVER> messageReceivers, MSG message) throws MessageException;
 
 
 }
