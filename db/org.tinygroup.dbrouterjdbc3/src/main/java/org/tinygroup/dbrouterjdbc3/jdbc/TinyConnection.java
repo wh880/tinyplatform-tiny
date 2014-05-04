@@ -23,462 +23,445 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.naming.NamingException;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-
 import org.enhydra.jdbc.standard.StandardXADataSource;
 import org.objectweb.jotm.Jotm;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.dbrouter.RouterManager;
-import org.tinygroup.dbrouter.config.DataSourceConfigBean;
-import org.tinygroup.dbrouter.config.Router;
-import org.tinygroup.dbrouter.config.DataSourceConfig;
-import org.tinygroup.dbrouter.config.Partition;
-import org.tinygroup.dbrouter.config.Shard;
+import org.tinygroup.dbrouter.config.*;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
-/**
- * 
- * 功能说明: tiny数据库连接对象
- * <p>
+import javax.naming.NamingException;
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
+import java.sql.*;
+import java.util.*;
 
+/**
+ * 功能说明: tiny数据库连接对象
+ * <p/>
+ * <p/>
  * 开发人员: renhui <br>
  * 开发时间: 2013-12-11 <br>
  * <br>
  */
 public class TinyConnection implements Connection {
-	private boolean autoCommit = true;
-	private boolean isClosed = false;
-	private boolean isReadOnly = false;
-	private int holdability = 1;
-	private String catalog;
-	RouterManager manager = RouterManagerBeanFactory.getManager();
-	Router router;
-	List<Connection> connections = new ArrayList<Connection>();
-	Map<DataSourceConfigBean,StandardXADataSource> configDataSources=new HashMap<DataSourceConfigBean,StandardXADataSource>();
-	Map<Shard, Connection> dataSourceConnections = new HashMap<Shard, Connection>();// 一个数据源配置对应存储一个连接
-	int transactionIsolationLevel;
-	private UserTransaction userTransaction;
-	private Jotm jotm;
-	private TransactionManager transactionManager;
-	private String url;
-	private Logger logger = LoggerFactory.getLogger(TinyConnection.class);
+    private boolean autoCommit = true;
+    private boolean isClosed = false;
+    private boolean isReadOnly = false;
+    private int holdability = 1;
+    private String catalog;
+    RouterManager manager = RouterManagerBeanFactory.getManager();
+    Router router;
+    List<Connection> connections = new ArrayList<Connection>();
+    Map<DataSourceConfigBean, StandardXADataSource> configDataSources = new HashMap<DataSourceConfigBean, StandardXADataSource>();
+    Map<Shard, Connection> dataSourceConnections = new HashMap<Shard, Connection>();// 一个数据源配置对应存储一个连接
+    int transactionIsolationLevel;
+    private UserTransaction userTransaction;
+    private Jotm jotm;
+    private TransactionManager transactionManager;
+    private String url;
+    private Logger logger = LoggerFactory.getLogger(TinyConnection.class);
 
-	public TinyConnection(String routerId) throws SQLException {
-		router = manager.getRouter(routerId);
-		this.url = "jdbc:dbrouter://" + routerId;
-		List<Partition> partitions = router.getPartitions();
-		try {
-			jotm = new Jotm(true, false);
-			userTransaction = jotm.getUserTransaction();
-			transactionManager = jotm.getTransactionManager();
-			for (Partition partition : partitions) {
-				initPartitions(partition);
-			}
-		} catch (NamingException e) {
-			throw new SQLException(e.getMessage());
-		}
-	}
+    public TinyConnection(String routerId) throws SQLException {
+        router = manager.getRouter(routerId);
+        this.url = "jdbc:dbrouter://" + routerId;
+        List<Partition> partitions = router.getPartitions();
+        try {
+            jotm = new Jotm(true, false);
+            userTransaction = jotm.getUserTransaction();
+            transactionManager = jotm.getTransactionManager();
+            for (Partition partition : partitions) {
+                initPartitions(partition);
+            }
+        } catch (NamingException e) {
+            throw new SQLException(e.getMessage());
+        }
+    }
 
-	String getUrl() {
-		return url;
-	}
+    String getUrl() {
+        return url;
+    }
 
-	String getUserName() {
-		return router.getUserName();
-	}
+    String getUserName() {
+        return router.getUserName();
+    }
 
-	private void initPartitions(Partition partition) throws SQLException {
+    private void initPartitions(Partition partition) throws SQLException {
 
-		List<Shard> shards = partition.getShards();
-		List<Shard> ableShards = new ArrayList<Shard>();
-		int mode = partition.getMode();
-		if (mode == Partition.MODE_SHARD) {
-			for (Shard shard : shards) {
-				DataSourceConfig config = router.getDataSourceConfig(shard
-						.getDataSourceId());
-				try {
-					Connection connection = getConnection(shard, config);
-					shard.setConnection(this, connection);
-					connections.add(connection);
-					ableShards.add(shard);
-				} catch (Exception e) {
-					logger.errorMessage(
-							"get connection error:{0},the shard:{1}", e,
-							config.getUrl(), shard.getId());
-					throw new RuntimeException(e);//分区时,如果有连接不可用,则往外抛出异常
-				}
-			}
-		} else {
-			for (Shard shard : shards) {
-				DataSourceConfig config = router.getDataSourceConfig(shard
-						.getDataSourceId());
-				try {
-					Connection connection = getConnection(shard, config);
-					shard.setConnection(this, connection);
-					connections.add(connection);
-					ableShards.add(shard);
-				} catch (Exception e) {
-					logger.errorMessage(
-							"get connection error:{0},the shard:{1}", e,
-							config.getUrl(), shard.getId());
-					continue;//读写分离时，有连接出错，则继续获取下个shard的连接
-				}
-			}
-			
-		}
-		for (int i = 0; i < ableShards.size(); i++) {
-			Shard shard = ableShards.get(i);
-			if (partition.getMode() == Partition.MODE_PRIMARY_SLAVE) {// 如果是主从模式,那么就取第一个数据源连接
-				dataSourceConnections.put(shard, shard.getConnection(this));
-				break;
-			} else {
-				if (!dataSourceConnections.containsKey(shard)) {
-					dataSourceConnections.put(shard, shard.getConnection(this));
-				}
-			}
-		}
-	}
+        List<Shard> shards = partition.getShards();
+        List<Shard> ableShards = new ArrayList<Shard>();
+        int mode = partition.getMode();
+        if (mode == Partition.MODE_SHARD) {
+            for (Shard shard : shards) {
+                DataSourceConfig config = router.getDataSourceConfig(shard
+                        .getDataSourceId());
+                try {
+                    Connection connection = getConnection(shard, config);
+                    shard.setConnection(this, connection);
+                    connections.add(connection);
+                    ableShards.add(shard);
+                } catch (Exception e) {
+                    logger.errorMessage(
+                            "get connection error:{0},the shard:{1}", e,
+                            config.getUrl(), shard.getId());
+                    throw new RuntimeException(e);//分区时,如果有连接不可用,则往外抛出异常
+                }
+            }
+        } else {
+            for (Shard shard : shards) {
+                DataSourceConfig config = router.getDataSourceConfig(shard
+                        .getDataSourceId());
+                try {
+                    Connection connection = getConnection(shard, config);
+                    shard.setConnection(this, connection);
+                    connections.add(connection);
+                    ableShards.add(shard);
+                } catch (Exception e) {
+                    logger.errorMessage(
+                            "get connection error:{0},the shard:{1}", e,
+                            config.getUrl(), shard.getId());
+                    continue;//读写分离时，有连接出错，则继续获取下个shard的连接
+                }
+            }
 
-	private Connection getConnection(Shard shard, DataSourceConfig config)
-			throws SQLException {
-		DataSourceConfigBean bean=config.getDataSourceConfigBean();
-		StandardXADataSource dataSource=configDataSources.get(bean);
-		if(dataSource==null){
-			dataSource = new StandardXADataSource();
-			dataSource.setUrl(config.getUrl());
-			dataSource.setDriverName(config.getDriver());
-			dataSource.setUser(config.getUserName());
-			dataSource.setPassword(config.getPassword());
-			dataSource.setTransactionManager(transactionManager);
-		}
-		Connection connection = dataSource.getXAConnection().getConnection();
-		Statement statement = connection.createStatement();
-		String sql = config.getTestSql();
-		if (!StringUtil.isBlank(sql)) {
-			try {
-				statement.execute(sql);
-			} catch (SQLException e) {
-				logger.errorMessage(
-						"connection:{0},执行测试语句：{1}出错,shard:{2},不可用", e,
-						config.getUrl(), sql, shard.getId());
-				throw new RuntimeException(e);
-			} finally {
-				statement.close();
-			}
-		}
-		configDataSources.put(bean, dataSource);
-		return connection;
-	}
+        }
+        for (int i = 0; i < ableShards.size(); i++) {
+            Shard shard = ableShards.get(i);
+            if (partition.getMode() == Partition.MODE_PRIMARY_SLAVE) {// 如果是主从模式,那么就取第一个数据源连接
+                dataSourceConnections.put(shard, shard.getConnection(this));
+                break;
+            } else {
+                if (!dataSourceConnections.containsKey(shard)) {
+                    dataSourceConnections.put(shard, shard.getConnection(this));
+                }
+            }
+        }
+    }
 
-	public List<Connection> getConnections() {
-		return connections;
-	}
+    private Connection getConnection(Shard shard, DataSourceConfig config)
+            throws SQLException {
+        DataSourceConfigBean bean = config.getDataSourceConfigBean();
+        StandardXADataSource dataSource = configDataSources.get(bean);
+        if (dataSource == null) {
+            dataSource = new StandardXADataSource();
+            dataSource.setUrl(config.getUrl());
+            dataSource.setDriverName(config.getDriver());
+            dataSource.setUser(config.getUserName());
+            dataSource.setPassword(config.getPassword());
+            dataSource.setTransactionManager(transactionManager);
+        }
+        Connection connection = dataSource.getXAConnection().getConnection();
+        Statement statement = connection.createStatement();
+        String sql = config.getTestSql();
+        if (!StringUtil.isBlank(sql)) {
+            try {
+                statement.execute(sql);
+            } catch (SQLException e) {
+                logger.errorMessage(
+                        "connection:{0},执行测试语句：{1}出错,shard:{2},不可用", e,
+                        config.getUrl(), sql, shard.getId());
+                throw new RuntimeException(e);
+            } finally {
+                statement.close();
+                connection.close();
+            }
+        }
+        configDataSources.put(bean, dataSource);
+        return connection;
+    }
 
-	public Collection<Connection> getDatasourceConnections() {
-		return dataSourceConnections.values();
-	}
+    public List<Connection> getConnections() {
+        return connections;
+    }
 
-	public Map<Shard, Connection> getDataSourceConnections() {
-		return dataSourceConnections;
-	}
+    public Collection<Connection> getDatasourceConnections() {
+        return dataSourceConnections.values();
+    }
 
-	public Statement createStatement() throws SQLException {
-		checkClosed();
-		return new TinyStatement(router, this, ResultSet.TYPE_FORWARD_ONLY,
-				ResultSet.CONCUR_READ_ONLY, false, autoCommit);
-	}
+    public Map<Shard, Connection> getDataSourceConnections() {
+        return dataSourceConnections;
+    }
 
-	public PreparedStatement prepareStatement(String sql) throws SQLException {
-		checkClosed();
-		return new TinyPreparedStatement(router, this,
-				ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY, false,
-				autoCommit, sql);
-	}
+    public Statement createStatement() throws SQLException {
+        checkClosed();
+        return new TinyStatement(router, this, ResultSet.TYPE_FORWARD_ONLY,
+                ResultSet.CONCUR_READ_ONLY, false, autoCommit);
+    }
 
-	public CallableStatement prepareCall(String sql) throws SQLException {
-		throw new SQLException("not support method");
-	}
+    public PreparedStatement prepareStatement(String sql) throws SQLException {
+        checkClosed();
+        return new TinyPreparedStatement(router, this,
+                ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY, false,
+                autoCommit, sql);
+    }
 
-	/**
-	 * 内部管理的连接进行sql解释
-	 */
-	public String nativeSQL(String sql) throws SQLException {
-		checkClosed();
-		for (Connection connection : connections) {
-			connection.nativeSQL(sql);
-		}
-		return sql;
-	}
+    public CallableStatement prepareCall(String sql) throws SQLException {
+        throw new SQLException("not support method");
+    }
 
-	public synchronized void setAutoCommit(boolean autoCommit) throws SQLException {
-		checkClosed();
-		this.autoCommit = autoCommit;
-		if (!autoCommit) {// 开启事务
-			try {
-				userTransaction.begin();
-			} catch (Exception e) {
-				logger.errorMessage("begin transaction error", e);
-				throw new SQLException(e.getMessage());
-			}
-		}
-	}
+    /**
+     * 内部管理的连接进行sql解释
+     */
+    public String nativeSQL(String sql) throws SQLException {
+        checkClosed();
+        for (Connection connection : connections) {
+            connection.nativeSQL(sql);
+        }
+        return sql;
+    }
 
-	public synchronized boolean getAutoCommit() throws SQLException {
-		checkClosed();
-		return autoCommit;
-	}
+    public synchronized void setAutoCommit(boolean autoCommit) throws SQLException {
+        checkClosed();
+        this.autoCommit = autoCommit;
+        if (!autoCommit) {// 开启事务
+            try {
+                userTransaction.begin();
+            } catch (Exception e) {
+                logger.errorMessage("begin transaction error", e);
+                throw new SQLException(e.getMessage());
+            }
+        }
+    }
 
-	public synchronized void commit() throws SQLException {
-		checkClosed();
-		if (!autoCommit) {
-			try {
-				userTransaction.commit();
-			} catch (Exception e) {
-				logger.errorMessage("commit error", e);
-				throw new SQLException(e.getMessage());
-			}
-			autoCommit=true;
-		}
-	}
+    public synchronized boolean getAutoCommit() throws SQLException {
+        checkClosed();
+        return autoCommit;
+    }
 
-	public synchronized void rollback() throws SQLException {
-		checkClosed();
-		if (!autoCommit) {
-			try {
-				userTransaction.rollback();
-			} catch (Exception e) {
-				logger.errorMessage("rollback  error", e);
-				throw new SQLException(e.getMessage());
-			}
-			autoCommit=true;
-		}
-	}
+    public synchronized void commit() throws SQLException {
+        checkClosed();
+        if (!autoCommit) {
+            try {
+                userTransaction.commit();
+            } catch (Exception e) {
+                logger.errorMessage("commit error", e);
+                throw new SQLException(e.getMessage());
+            }
+            autoCommit = true;
+        }
+    }
 
-	public void close() throws SQLException {
-		boolean noError = true;
-		StringBuffer buffer = new StringBuffer();
-		for (Connection connection : connections) {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				buffer.append(String
-						.format("connection close error,errorcode:%s,sqlstate:%s,message:%s \n",
-								e.getErrorCode(), e.getSQLState(),
-								e.getMessage()));
-				noError = false;
-				logger.errorMessage("connection close error", e);
-			}
-		}
-		//是否真正要关闭连接池中的空闲连接
-		for (StandardXADataSource dataSource : configDataSources.values()) {
-			dataSource.closeFreeConnection();
-		}
-		jotm.stop();
-		isClosed = true;
-		if (!noError) {
-			throw new SQLException(buffer.toString());
-		}
-	}
+    public synchronized void rollback() throws SQLException {
+        checkClosed();
+        if (!autoCommit) {
+            try {
+                userTransaction.rollback();
+            } catch (Exception e) {
+                logger.errorMessage("rollback  error", e);
+                throw new SQLException(e.getMessage());
+            }
+            autoCommit = true;
+        }
+    }
 
-	public boolean isClosed() throws SQLException {
-		return isClosed;
-	}
+    public void close() throws SQLException {
+        boolean noError = true;
+        StringBuffer buffer = new StringBuffer();
+        for (Connection connection : connections) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                buffer.append(String
+                        .format("connection close error,errorcode:%s,sqlstate:%s,message:%s \n",
+                                e.getErrorCode(), e.getSQLState(),
+                                e.getMessage()));
+                noError = false;
+                logger.errorMessage("connection close error", e);
+            }
+        }
+        //是否真正要关闭连接池中的空闲连接
+        for (StandardXADataSource dataSource : configDataSources.values()) {
+            dataSource.closeFreeConnection();
+        }
+        jotm.stop();
+        isClosed = true;
+        if (!noError) {
+            throw new SQLException(buffer.toString());
+        }
+    }
 
-	void checkClosed() throws SQLException {
-		if (isClosed) {
-			throw new SQLException("connection is closed");
-		}
-	}
+    public boolean isClosed() throws SQLException {
+        return isClosed;
+    }
 
-	public DatabaseMetaData getMetaData() throws SQLException {
-		checkClosed();
-		return new TinyDatabaseMetaData(this, router);
-	}
+    void checkClosed() throws SQLException {
+        if (isClosed) {
+            throw new SQLException("connection is closed");
+        }
+    }
 
-	public void setReadOnly(boolean readOnly) throws SQLException {
-		checkClosed();
-		for (Connection connection : connections) {
-			connection.setReadOnly(readOnly);
-		}
-		this.isReadOnly = readOnly;
-	}
+    public DatabaseMetaData getMetaData() throws SQLException {
+        checkClosed();
+        return new TinyDatabaseMetaData(this, router);
+    }
 
-	public boolean isReadOnly() throws SQLException {
-		checkClosed();
-		return isReadOnly;
-	}
+    public void setReadOnly(boolean readOnly) throws SQLException {
+        checkClosed();
+        for (Connection connection : connections) {
+            connection.setReadOnly(readOnly);
+        }
+        this.isReadOnly = readOnly;
+    }
 
-	public void setCatalog(String catalog) throws SQLException {
-		checkClosed();
-		for (Connection connection : connections) {
-			connection.setCatalog(catalog);
-		}
-		this.catalog = catalog;
-	}
+    public boolean isReadOnly() throws SQLException {
+        checkClosed();
+        return isReadOnly;
+    }
 
-	public String getCatalog() throws SQLException {
-		checkClosed();
-		return catalog;
-	}
+    public void setCatalog(String catalog) throws SQLException {
+        checkClosed();
+        for (Connection connection : connections) {
+            connection.setCatalog(catalog);
+        }
+        this.catalog = catalog;
+    }
 
-	public void setTransactionIsolation(int level) throws SQLException {
-		checkClosed();
-		switch (level) {
-		case Connection.TRANSACTION_READ_UNCOMMITTED:
-		case Connection.TRANSACTION_READ_COMMITTED:
-		case Connection.TRANSACTION_REPEATABLE_READ:
-		case Connection.TRANSACTION_SERIALIZABLE:
-			this.transactionIsolationLevel = level;
-			break;
-		default:
-			throw new SQLException("not valid for the transaction level:"
-					+ level);
-		}
-		for (Connection connection : connections) {
-			connection.setTransactionIsolation(level);
-		}
-	}
+    public String getCatalog() throws SQLException {
+        checkClosed();
+        return catalog;
+    }
 
-	public int getTransactionIsolation() throws SQLException {
-		checkClosed();
-		return transactionIsolationLevel;
-	}
+    public void setTransactionIsolation(int level) throws SQLException {
+        checkClosed();
+        switch (level) {
+            case Connection.TRANSACTION_READ_UNCOMMITTED:
+            case Connection.TRANSACTION_READ_COMMITTED:
+            case Connection.TRANSACTION_REPEATABLE_READ:
+            case Connection.TRANSACTION_SERIALIZABLE:
+                this.transactionIsolationLevel = level;
+                break;
+            default:
+                throw new SQLException("not valid for the transaction level:"
+                        + level);
+        }
+        for (Connection connection : connections) {
+            connection.setTransactionIsolation(level);
+        }
+    }
 
-	public SQLWarning getWarnings() throws SQLException {
-		checkClosed();
-		for (Connection connection : connections) {
-			connection.getWarnings();
-		}
-		return null;
-	}
+    public int getTransactionIsolation() throws SQLException {
+        checkClosed();
+        return transactionIsolationLevel;
+    }
 
-	public void clearWarnings() throws SQLException {
-		checkClosed();
-		for (Connection connection : connections) {
-			connection.clearWarnings();
-		}
-	}
+    public SQLWarning getWarnings() throws SQLException {
+        checkClosed();
+        for (Connection connection : connections) {
+            connection.getWarnings();
+        }
+        return null;
+    }
 
-	public Statement createStatement(int resultSetType, int resultSetConcurrency)
-			throws SQLException {
-		checkClosed();
-		return new TinyStatement(router, this, resultSetType,
-				resultSetConcurrency, false, autoCommit);
-	}
+    public void clearWarnings() throws SQLException {
+        checkClosed();
+        for (Connection connection : connections) {
+            connection.clearWarnings();
+        }
+    }
 
-	public PreparedStatement prepareStatement(String sql, int resultSetType,
-			int resultSetConcurrency) throws SQLException {
-		checkClosed();
-		return new TinyPreparedStatement(router, this, resultSetType,
-				resultSetConcurrency, false, autoCommit, sql);
-	}
+    public synchronized Statement createStatement(int resultSetType, int resultSetConcurrency)
+            throws SQLException {
+        checkClosed();
+        return new TinyStatement(router, this, resultSetType,
+                resultSetConcurrency, false, autoCommit);
+    }
 
-	public CallableStatement prepareCall(String sql, int resultSetType,
-			int resultSetConcurrency) throws SQLException {
-		throw new SQLException("not support method");
-	}
+    public synchronized PreparedStatement prepareStatement(String sql, int resultSetType,
+                                                           int resultSetConcurrency) throws SQLException {
+        checkClosed();
+        return new TinyPreparedStatement(router, this, resultSetType,
+                resultSetConcurrency, false, autoCommit, sql);
+    }
 
-	public Map<String, Class<?>> getTypeMap() throws SQLException {
-		throw new SQLException("not support method");
-	}
+    public synchronized CallableStatement prepareCall(String sql, int resultSetType,
+                                                      int resultSetConcurrency) throws SQLException {
+        throw new SQLException("not support method");
+    }
 
-	public void setTypeMap(Map<String, Class<?>> map) throws SQLException {
-		throw new SQLException("not support method");
-	}
+    public Map<String, Class<?>> getTypeMap() throws SQLException {
+        throw new SQLException("not support method");
+    }
 
-	public void setHoldability(int holdability) throws SQLException {
-		checkClosed();
-		checkHoldability(holdability);
-		this.holdability = holdability;
-	}
+    public void setTypeMap(Map<String, Class<?>> map) throws SQLException {
+        throw new SQLException("not support method");
+    }
 
-	private static void checkHoldability(int resultSetHoldability)
-			throws SQLException {
-		// ResultSet.HOLD_CURSORS_OVER_COMMIT
-		if (resultSetHoldability != ResultSet.HOLD_CURSORS_OVER_COMMIT
-				|| resultSetHoldability != ResultSet.CLOSE_CURSORS_AT_COMMIT) {
-			throw new SQLException("not valid value for resultSetHoldability:"
-					+ resultSetHoldability);
-		}
-	}
+    public void setHoldability(int holdability) throws SQLException {
+        checkClosed();
+        checkHoldability(holdability);
+        this.holdability = holdability;
+    }
 
-	public int getHoldability() throws SQLException {
-		checkClosed();
-		return holdability;
-	}
+    private static void checkHoldability(int resultSetHoldability)
+            throws SQLException {
+        // ResultSet.HOLD_CURSORS_OVER_COMMIT
+        if (resultSetHoldability != ResultSet.HOLD_CURSORS_OVER_COMMIT
+                || resultSetHoldability != ResultSet.CLOSE_CURSORS_AT_COMMIT) {
+            throw new SQLException("not valid value for resultSetHoldability:"
+                    + resultSetHoldability);
+        }
+    }
 
-	public Savepoint setSavepoint() throws SQLException {
-		throw new SQLException("not support method");
-	}
+    public int getHoldability() throws SQLException {
+        checkClosed();
+        return holdability;
+    }
 
-	public Savepoint setSavepoint(String name) throws SQLException {
-		throw new SQLException("not support method");
-	}
+    public Savepoint setSavepoint() throws SQLException {
+        throw new SQLException("not support method");
+    }
 
-	public void rollback(Savepoint savepoint) throws SQLException {
-		checkClosed();
-		throw new SQLException("not support method");
-	}
+    public Savepoint setSavepoint(String name) throws SQLException {
+        throw new SQLException("not support method");
+    }
 
-	public void releaseSavepoint(Savepoint savepoint) throws SQLException {
-		checkClosed();
-		throw new SQLException("not support method");
-	}
+    public void rollback(Savepoint savepoint) throws SQLException {
+        checkClosed();
+        throw new SQLException("not support method");
+    }
 
-	public Statement createStatement(int resultSetType,
-			int resultSetConcurrency, int resultSetHoldability)
-			throws SQLException {
-		checkClosed();
-		return new TinyStatement(router, this, resultSetType,
-				resultSetConcurrency, false, autoCommit);
-	}
+    public void releaseSavepoint(Savepoint savepoint) throws SQLException {
+        checkClosed();
+        throw new SQLException("not support method");
+    }
 
-	public PreparedStatement prepareStatement(String sql, int resultSetType,
-			int resultSetConcurrency, int resultSetHoldability)
-			throws SQLException {
-		checkClosed();
-		return new TinyPreparedStatement(router, this, resultSetType,
-				resultSetConcurrency, false, autoCommit, sql);
-	}
+    public Statement createStatement(int resultSetType,
+                                     int resultSetConcurrency, int resultSetHoldability)
+            throws SQLException {
+        checkClosed();
+        return new TinyStatement(router, this, resultSetType,
+                resultSetConcurrency, false, autoCommit);
+    }
 
-	public CallableStatement prepareCall(String sql, int resultSetType,
-			int resultSetConcurrency, int resultSetHoldability)
-			throws SQLException {
-		checkClosed();
-		throw new SQLException("not support method");
-	}
+    public PreparedStatement prepareStatement(String sql, int resultSetType,
+                                              int resultSetConcurrency, int resultSetHoldability)
+            throws SQLException {
+        checkClosed();
+        return new TinyPreparedStatement(router, this, resultSetType,
+                resultSetConcurrency, false, autoCommit, sql);
+    }
 
-	public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys)
-			throws SQLException {
-		return prepareStatement(sql);
-	}
+    public CallableStatement prepareCall(String sql, int resultSetType,
+                                         int resultSetConcurrency, int resultSetHoldability)
+            throws SQLException {
+        checkClosed();
+        throw new SQLException("not support method");
+    }
 
-	public PreparedStatement prepareStatement(String sql, int[] columnIndexes)
-			throws SQLException {
-		return prepareStatement(sql);
-	}
+    public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys)
+            throws SQLException {
+        return prepareStatement(sql);
+    }
 
-	public PreparedStatement prepareStatement(String sql, String[] columnNames)
-			throws SQLException {
-		return prepareStatement(sql);
-	}
+    public PreparedStatement prepareStatement(String sql, int[] columnIndexes)
+            throws SQLException {
+        return prepareStatement(sql);
+    }
+
+    public PreparedStatement prepareStatement(String sql, String[] columnNames)
+            throws SQLException {
+        return prepareStatement(sql);
+    }
 }

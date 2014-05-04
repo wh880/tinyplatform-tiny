@@ -30,26 +30,26 @@ package org.tinygroup.dbrouterjdbc3.jdbc;
 public class TinyResultSetMetaDataColumn {
 	// TODO增加各种类型的简单构造方法
 
-	boolean autoIncrement;
-	boolean caseSensitive;
-	boolean searchable;
-	boolean currency;
-	int nullable;
-	boolean signed;
-	String columnLabel;
-	String columnName;
-	String schemaName;
-	int precision;
-	int scale;
-	String tableName;
-	String catalogName;
-	int columnType;
-	String columnTypeName;
-	boolean readOnly;
-	boolean writable;
-	boolean definitelyWritable;
-	String columnClassName;
-	int columnDisplaySize;
+	private boolean autoIncrement;
+    private boolean caseSensitive;
+    private boolean searchable;
+    private boolean currency;
+    private int nullable;
+    private boolean signed;
+    private String columnLabel;
+    private String columnName;
+    private String schemaName;
+    private int precision;
+    private int scale;
+    private String tableName;
+    private String catalogName;
+    private int columnType;
+    private String columnTypeName;
+    private boolean readOnly;
+    private boolean writable;
+    private boolean definitelyWritable;
+    private String columnClassName;
+    private int columnDisplaySize;
 	
 	public int getColumnDisplaySize() {
 		return columnDisplaySize;

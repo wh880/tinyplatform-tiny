@@ -266,14 +266,16 @@ public class SqlProcessorFunction implements StatementProcessor {
             if (obj == null) {
                 return false;
             }
-            GroupData data = (GroupData) obj;
-            List<Object> dataValues = data.getValues();
-            if (values.size() != dataValues.size()) {
-                return false;
-            }
-            for (int i = 0; i < values.size(); i++) {
-                if (!values.get(i).equals(dataValues.get(i))) {// 暂时只比较两个对象的equals方法
+            if (obj instanceof GroupData) {
+                GroupData data = (GroupData) obj;
+                List<Object> dataValues = data.getValues();
+                if (values.size() != dataValues.size()) {
                     return false;
+                }
+                for (int i = 0; i < values.size(); i++) {
+                    if (!values.get(i).equals(dataValues.get(i))) {// 暂时只比较两个对象的equals方法
+                        return false;
+                    }
                 }
             }
             return true;
