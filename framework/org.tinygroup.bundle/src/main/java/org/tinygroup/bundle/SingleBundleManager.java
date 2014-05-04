@@ -30,20 +30,21 @@ import org.tinygroup.bundle.config.BundleDefine;
  *
  * @author luoguo
  */
-public interface SingleBundleManager {
+interface SingleBundleManager {
+    /**
+     * 启动一个Bundle
+     *
+     * @param bundleContext
+     * @param bundleDefine
+     */
+    void start(BundleContext bundleContext, BundleDefine bundleDefine);
 
-    void init(BundleDefine bundleDefine);
-
-    void start(BundleDefine bundleDefine);
-
-    void stop(BundleDefine bundleDefine);
-
-    void pause(BundleDefine bundleDefine);
-
-    void destroy(BundleDefine bundleDefine);
-
-    void assemble(BundleDefine bundleDefine);
-
-    void disassemble(BundleDefine bundleDefine);
+    /**
+     * 停止一个Bundle
+     *
+     * @param bundleContext
+     * @param bundleDefine
+     */
+    void stop(BundleContext bundleContext, BundleDefine bundleDefine);
 
 }

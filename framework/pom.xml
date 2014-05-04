@@ -34,7 +34,6 @@
         <module>org.tinygroup.formater</module>
         <module>org.tinygroup.netty</module>
         <module>org.tinygroup.commons</module>
-        <module>org.tinygroup.base</module>
         <module>org.tinygroup.el</module>
         <module>org.tinygroup.vfs</module>
         <module>org.tinygroup.cepcore</module>

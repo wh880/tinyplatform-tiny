@@ -42,29 +42,56 @@ import java.util.List;
  */
 public class TinyClassLoader extends URLClassLoader {
 
-    FileObject[] fileObjects = null;
-    List<TinyClassLoader> subTinyClassLoaderList = new ArrayList<TinyClassLoader>();
+    private FileObject[] fileObjects = null;
+    private List<TinyClassLoader> subTinyClassLoaderList = new ArrayList<TinyClassLoader>();
 
+    /**
+     * 构造方法
+     *
+     * @param urls   类加载器要加载的jar包列表
+     * @param parent 父亲类加载器
+     */
     public TinyClassLoader(URL[] urls, ClassLoader parent) {
         super(urls, parent);
     }
 
+    /**
+     * 构造方法
+     *
+     * @param urls 类加载器要加载的jar包列表
+     */
     public TinyClassLoader(URL[] urls) {
         super(urls);
     }
 
+    public TinyClassLoader() {
+        super(new URL[0]);
+    }
+
+    /**
+     * 构造方法
+     *
+     * @param urls    类加载器要加载的jar包列表
+     * @param parent  父亲类加载器
+     * @param factory
+     */
     public TinyClassLoader(URL[] urls, ClassLoader parent, URLStreamHandlerFactory factory) {
         super(urls, parent, factory);
     }
 
-    public FileObject[] getFileObjects() {
+    /**
+     * 返回Jar包对应文件的FileObject数组，如果包含了子TinyClassLoader，也返回子TinyClassLoader包含的Jar对应的FileObject
+     *
+     * @return
+     */
+    public FileObject[] getAllFileObjects() {
         List<FileObject> result = new ArrayList<FileObject>();
         getFileObjects(result);
         return result.toArray(new FileObject[0]);
     }
 
     private void getFileObjects(List<FileObject> result) {
-        for (FileObject fileObject : getCurrentFileObjects()) {
+        for (FileObject fileObject : getFileObjects()) {
             result.add(fileObject);
         }
         for (TinyClassLoader tinyClassLoader : subTinyClassLoaderList) {
@@ -72,7 +99,12 @@ public class TinyClassLoader extends URLClassLoader {
         }
     }
 
-    private FileObject[] getCurrentFileObjects() {
+    /**
+     * 返回当前TinyClassLoader中包含Jar包对应的FileObject数组
+     *
+     * @return
+     */
+    public FileObject[] getFileObjects() {
         URL[] urLs = getURLs();
         if (fileObjects == null) {
             fileObjects = new FileObject[urLs.length];
@@ -83,22 +115,48 @@ public class TinyClassLoader extends URLClassLoader {
         return fileObjects;
     }
 
+    /**
+     * 添加子TinyClassLoade
+     *
+     * @param tinyClassLoader
+     */
     public void addSubTinyClassLoader(TinyClassLoader tinyClassLoader) {
         subTinyClassLoaderList.add(tinyClassLoader);
     }
 
+    /**
+     * 删除子TinyClassLoade
+     *
+     * @param tinyClassLoader
+     */
     public void removeSubTinyClassLoader(TinyClassLoader tinyClassLoader) {
         subTinyClassLoaderList.remove(tinyClassLoader);
     }
 
+    /**
+     * 对所有层级的TinyClassLoader中的FileObject对象进行过滤
+     *
+     * @param fileObjectFilter
+     * @param fileObjectProcessor
+     */
+    public void foreachAll(FileObjectFilter fileObjectFilter, FileObjectProcessor fileObjectProcessor) {
+        foreach(fileObjectFilter, fileObjectProcessor);
+        for (TinyClassLoader tinyClassLoader : subTinyClassLoaderList) {
+            tinyClassLoader.foreachAll(fileObjectFilter, fileObjectProcessor);
+        }
+    }
+
+    /**
+     * 对当前层级的TinyClassLoader中的FileObject对象进行过滤
+     *
+     * @param fileObjectFilter
+     * @param fileObjectProcessor
+     */
     public void foreach(FileObjectFilter fileObjectFilter, FileObjectProcessor fileObjectProcessor) {
         if (fileObjects != null) {
             for (FileObject fileObject : fileObjects) {
                 fileObject.foreach(fileObjectFilter, fileObjectProcessor);
             }
-        }
-        for (TinyClassLoader tinyClassLoader : subTinyClassLoaderList) {
-            tinyClassLoader.foreach(fileObjectFilter, fileObjectProcessor);
         }
     }
 
@@ -145,6 +203,13 @@ public class TinyClassLoader extends URLClassLoader {
         return null;
     }
 
+    /**
+     * 覆盖父类的findResource方法
+     *
+     * @param name
+     * @return
+     * @throws IOException
+     */
     public Enumeration<URL> findResources(final String name) throws IOException {
         final Enumeration<URL>[] enumerations = new Enumeration[1 + subTinyClassLoaderList.size()];
         enumerations[0] = super.findResources(name);
@@ -156,7 +221,7 @@ public class TinyClassLoader extends URLClassLoader {
 
             public boolean hasMoreElements() {
                 boolean hasMoreElements = enumerations[index].hasMoreElements();
-                while (!hasMoreElements && index < enumerations.length-1) {
+                while (!hasMoreElements && index < enumerations.length - 1) {
                     index++;
                     hasMoreElements = enumerations[index].hasMoreElements();
                 }

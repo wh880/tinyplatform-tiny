@@ -23,14 +23,22 @@
  */
 package org.tinygroup.bundle;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+/**
+ * 针对所有的插件的操作接口
+ *
+ * @author luoguo
+ */
+interface BatchBundleManager {
 
-public class TestSlf4J {
-	static Logger loger = LoggerFactory.getLogger(TestSlf4J.class);
+    /**
+     * 启动所有Bundle，如果有Bundle启动出错，则记录日志，不影响其它Bundle启动
+     */
+    void start(BundleContext bundleContext);
 
-	public static void main(String[] args) {
-		loger.debug("haha");
-		loger.error("aaa");
-	}
+
+    /**
+     * 停止所有Bundle，如果有Bundle启动出错，则记录日志，不影响其它Bundle停止
+     */
+    void stop(BundleContext bundleContext);
+
 }
