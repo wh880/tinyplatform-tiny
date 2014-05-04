@@ -23,56 +23,56 @@
  */
 package org.tinygroup.tinyspider.impl;
 
+import org.tinygroup.tinyspider.UrlRepository;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.tinygroup.tinyspider.UrlRepository;
-
 public class UrlRepositoryMemory implements UrlRepository {
-	Map<String, String> contentCache = new ConcurrentHashMap<String, String>();
+    private Map<String, String> contentCache = new ConcurrentHashMap<String, String>();
 
-	public boolean isExist(String url) {
-		return contentCache.containsKey(url);
-	}
+    public boolean isExist(String url) {
+        return contentCache.containsKey(url);
+    }
 
-	public boolean isExist(String url, Map<String, Object> parameter) {
-		String fullUrl = getFullUrl(url, parameter);
-		return isExist(fullUrl);
-	}
+    public boolean isExist(String url, Map<String, Object> parameter) {
+        String fullUrl = getFullUrl(url, parameter);
+        return isExist(fullUrl);
+    }
 
-	private String getFullUrl(String url, Map<String, Object> parameter) {
-		List<String> keyList = new ArrayList<String>();
-		keyList.addAll(parameter.keySet());
-		Collections.sort(keyList);
-		StringBuffer sb = new StringBuffer(url);
-		sb.append('\0');
-		for(String key:keyList){
-			sb.append('&');
-			sb.append(key);
-			sb.append('=');
-			sb.append(parameter.get(key));
-		}
-		return sb.toString();
-	}
+    private String getFullUrl(String url, Map<String, Object> parameter) {
+        List<String> keyList = new ArrayList<String>();
+        keyList.addAll(parameter.keySet());
+        Collections.sort(keyList);
+        StringBuffer sb = new StringBuffer(url);
+        sb.append('\0');
+        for (String key : keyList) {
+            sb.append('&');
+            sb.append(key);
+            sb.append('=');
+            sb.append(parameter.get(key));
+        }
+        return sb.toString();
+    }
 
-	public void putUrlWithContent(String url, String content) {
-		contentCache.put(url, content);
-	}
+    public void putUrlWithContent(String url, String content) {
+        contentCache.put(url, content);
+    }
 
-	public void putUrlWithContent(String url, Map<String, Object> parameter,
-			String content) {
-		contentCache.put(getFullUrl(url, parameter), content);
-	}
+    public void putUrlWithContent(String url, Map<String, Object> parameter,
+                                  String content) {
+        contentCache.put(getFullUrl(url, parameter), content);
+    }
 
-	public String getContent(String url) {
-		return contentCache.get(url);
-	}
+    public String getContent(String url) {
+        return contentCache.get(url);
+    }
 
-	public String getContent(String url, Map<String, Object> parameter) {
-		return getContent(getFullUrl(url, parameter));
-	}
+    public String getContent(String url, Map<String, Object> parameter) {
+        return getContent(getFullUrl(url, parameter));
+    }
 
 }

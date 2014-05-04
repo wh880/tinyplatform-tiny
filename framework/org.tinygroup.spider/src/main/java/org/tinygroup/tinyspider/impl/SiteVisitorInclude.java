@@ -37,8 +37,8 @@ import java.util.regex.Pattern;
  * @author luoguo
  */
 public class SiteVisitorInclude implements SiteVisitor {
-    Pattern pattern = null;
-    HttpVisitor httpVisitor;
+    private Pattern pattern = null;
+    private HttpVisitor httpVisitor;
     private String visitMode = VISIT_MODE_GET;
 
     public HttpVisitor getHttpVisitor() {

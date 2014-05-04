@@ -37,19 +37,20 @@ import java.util.List;
 import java.util.Map;
 
 public class SpiderImpl implements Spider {
-    static Logger logger = LoggerFactory.getLogger(SpiderImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(SpiderImpl.class);
+
+
+    private List<Watcher> watcherList = new ArrayList<Watcher>();
+    private List<SiteVisitor> siteVisitorList = new ArrayList<SiteVisitor>();
+    private UrlRepository urlRepository;
+    private String responseCharset = "UTF-8";
 
     public SpiderImpl() {
         this("UTF-8");
     }
 
-    List<Watcher> watcherList = new ArrayList<Watcher>();
-    List<SiteVisitor> siteVisitorList = new ArrayList<SiteVisitor>();
-    private UrlRepository urlRepository;
-    private String responseCharset = "UTF-8";
-
     public SpiderImpl(String charset) {
-        this.setResponseCharset(charset);
+        responseCharset = charset;
     }
 
     public void addWatcher(Watcher watcher) {
@@ -92,7 +93,7 @@ public class SpiderImpl implements Spider {
             if (siteVisitor.isMatch(url)) {
                 try {
                     content = siteVisitor.getContent(url, parameter, responseCharset);
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     logger.errorMessage("不能载入url:{},错误原因：{}", e, url, e.getMessage());
                     return;
                 }
@@ -106,6 +107,10 @@ public class SpiderImpl implements Spider {
         }
         urlRepository.putUrlWithContent(url, content);
         HtmlDocument document = new HtmlStringParser().parse(content);
+        processWatcher(url, document);
+    }
+
+    private void processWatcher(String url, HtmlDocument document) {
         for (Watcher watcher : watcherList) {
             NodeFilter<HtmlNode> nodeFilter = watcher.getNodeFilter();
             nodeFilter.init(document.getRoot());
