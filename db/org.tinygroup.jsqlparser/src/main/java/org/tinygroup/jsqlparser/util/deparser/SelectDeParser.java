@@ -1,36 +1,31 @@
-/**
- *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- * --------------------------------------------------------------------------
- *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
- *
- *  本开源软件遵循 GPL 3.0 协议;
- *  如果您不遵循此协议，则不被允许使用此文件。
- *  你可以从下面的地址获取完整的协议文本
- *
- *       http://www.gnu.org/licenses/gpl.html
+/*
+ * #%L
+ * JSQLParser library
+ * %%
+ * Copyright (C) 2004 - 2013 JSQLParser
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as 
+ * published by the Free Software Foundation, either version 2.1 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-2.1.html>.
+ * #L%
  */
 package org.tinygroup.jsqlparser.util.deparser;
 
-import org.tinygroup.jsqlparser.expression.Expression;
-import org.tinygroup.jsqlparser.expression.ExpressionVisitor;
-import org.tinygroup.jsqlparser.schema.Column;
-import org.tinygroup.jsqlparser.schema.Table;
+import org.tinygroup.jsqlparser.expression.*;
+import org.tinygroup.jsqlparser.schema.*;
 import org.tinygroup.jsqlparser.statement.select.*;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * A class to de-parse (that is, tranform from JSqlParser hierarchy into a
@@ -45,16 +40,16 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
     }
 
     /**
-     * @param expressionVisitor a {@link ExpressionVisitor} to de-parse expressions. It has to
-     *                          share the same<br>
-     *                          StringBuilder (buffer parameter) as this object in order to
-     *                          work
-     * @param buffer            the buffer that will be filled with the select
+     * @param expressionVisitor a {@link ExpressionVisitor} to de-parse
+     * expressions. It has to share the same<br>
+     * StringBuilder (buffer parameter) as this object in order to work
+     * @param buffer the buffer that will be filled with the select
      */
     public SelectDeParser(ExpressionVisitor expressionVisitor, StringBuilder buffer) {
         this.buffer = buffer;
         this.expressionVisitor = expressionVisitor;
     }
+
 
     public void visit(PlainSelect plainSelect) {
         buffer.append("SELECT ");
@@ -66,8 +61,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
             buffer.append("DISTINCT ");
             if (plainSelect.getDistinct().getOnSelectItems() != null) {
                 buffer.append("ON (");
-                for (Iterator<SelectItem> iter = plainSelect.getDistinct().getOnSelectItems().iterator();
-                     iter.hasNext(); ) {
+                for (Iterator<SelectItem> iter = plainSelect.getDistinct().getOnSelectItems().iterator(); iter.hasNext();) {
                     SelectItem selectItem = iter.next();
                     selectItem.accept(this);
                     if (iter.hasNext()) {
@@ -79,7 +73,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
 
         }
 
-        for (Iterator<SelectItem> iter = plainSelect.getSelectItems().iterator(); iter.hasNext(); ) {
+        for (Iterator<SelectItem> iter = plainSelect.getSelectItems().iterator(); iter.hasNext();) {
             SelectItem selectItem = iter.next();
             selectItem.accept(this);
             if (iter.hasNext()) {
@@ -98,18 +92,18 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
             }
         }
 
-        if (plainSelect.getOracleHierarchical() != null) {
-            plainSelect.getOracleHierarchical().accept(expressionVisitor);
-        }
-
         if (plainSelect.getWhere() != null) {
             buffer.append(" WHERE ");
             plainSelect.getWhere().accept(expressionVisitor);
         }
 
+        if (plainSelect.getOracleHierarchical() != null) {
+            plainSelect.getOracleHierarchical().accept(expressionVisitor);
+        }
+
         if (plainSelect.getGroupByColumnReferences() != null) {
             buffer.append(" GROUP BY ");
-            for (Iterator<Expression> iter = plainSelect.getGroupByColumnReferences().iterator(); iter.hasNext(); ) {
+            for (Iterator<Expression> iter = plainSelect.getGroupByColumnReferences().iterator(); iter.hasNext();) {
                 Expression columnReference = iter.next();
                 columnReference.accept(expressionVisitor);
                 if (iter.hasNext()) {
@@ -133,66 +127,86 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
 
     }
 
+
     public void visit(OrderByElement orderBy) {
         orderBy.getExpression().accept(expressionVisitor);
         if (!orderBy.isAsc()) {
             buffer.append(" DESC");
+        } else if (orderBy.isAscDescPresent()) {
+            buffer.append(" ASC");
+        }
+        if (orderBy.getNullOrdering() != null) {
+            buffer.append(' ');
+            buffer.append(orderBy.getNullOrdering() == OrderByElement.NullOrdering.NULLS_FIRST ? "NULLS FIRST" : "NULLS LAST");
         }
     }
 
     public void visit(Column column) {
-        buffer.append(column.getWholeColumnName());
+        buffer.append(column.getFullyQualifiedName());
     }
 
-    public void visit(AllColumns allColumns) {
-        buffer.append("*");
-    }
 
     public void visit(AllTableColumns allTableColumns) {
-        buffer.append(allTableColumns.getTable().getWholeTableName()).append(".*");
+        buffer.append(allTableColumns.getTable().getFullyQualifiedName()).append(".*");
     }
+
 
     public void visit(SelectExpressionItem selectExpressionItem) {
         selectExpressionItem.getExpression().accept(expressionVisitor);
         if (selectExpressionItem.getAlias() != null) {
-            buffer.append(" AS ").append(selectExpressionItem.getAlias());
+            buffer.append(selectExpressionItem.getAlias().toString());
         }
 
     }
+
 
     public void visit(SubSelect subSelect) {
         buffer.append("(");
         subSelect.getSelectBody().accept(this);
         buffer.append(")");
-        String alias = subSelect.getAlias();
+        Pivot pivot = subSelect.getPivot();
+        if (pivot != null) {
+            pivot.accept(this);
+        }
+        Alias alias = subSelect.getAlias();
         if (alias != null) {
-            buffer.append(" AS ").append(alias);
+            buffer.append(alias.toString());
         }
     }
 
+
     public void visit(Table tableName) {
-        buffer.append(tableName.getWholeTableName());
+        buffer.append(tableName.getFullyQualifiedName());
         Pivot pivot = tableName.getPivot();
         if (pivot != null) {
             pivot.accept(this);
         }
-        String alias = tableName.getAlias();
-        if (alias != null && alias.length() != 0) {
-            buffer.append(" AS ").append(alias);
+        Alias alias = tableName.getAlias();
+        if (alias != null) {
+            buffer.append(alias);
         }
     }
 
+
     public void visit(Pivot pivot) {
         List<Column> forColumns = pivot.getForColumns();
-        buffer.append(" PIVOT (").append(PlainSelect.getStringList(pivot.getFunctionItems())).append(" FOR ").append(PlainSelect.getStringList(forColumns, true,
-                forColumns != null && forColumns.size()
-                        > 1)).append(" IN ").append(PlainSelect.getStringList(pivot.getInItems(), true, true)).append(")");
+        buffer.append(" PIVOT (")
+                .append(PlainSelect.getStringList(pivot.getFunctionItems()))
+                .append(" FOR ")
+                .append(PlainSelect.getStringList(forColumns, true, forColumns != null && forColumns.size() > 1))
+                .append(" IN ")
+                .append(PlainSelect.getStringList(pivot.getInItems(), true, true))
+                .append(")");
     }
+
 
     public void visit(PivotXml pivot) {
         List<Column> forColumns = pivot.getForColumns();
-        buffer.append(" PIVOT XML (").append(PlainSelect.getStringList(pivot.getFunctionItems())).append(" FOR ").append(PlainSelect.getStringList(forColumns, true,
-                forColumns != null && forColumns.size() > 1)).append(" IN (");
+        buffer.append(" PIVOT XML (")
+                .append(PlainSelect.getStringList(pivot.getFunctionItems()))
+                .append(" FOR ")
+                .append(PlainSelect.getStringList(forColumns, true, forColumns != null && forColumns.size() > 1))
+                .append(" IN (");
         if (pivot.isInAny()) {
             buffer.append("ANY");
         } else if (pivot.getInSelect() != null) {
@@ -213,7 +227,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         } else {
             buffer.append(" ORDER BY ");
         }
-        for (Iterator<OrderByElement> iter = orderByElements.iterator(); iter.hasNext(); ) {
+        for (Iterator<OrderByElement> iter = orderByElements.iterator(); iter.hasNext();) {
             OrderByElement orderByElement = iter.next();
             orderByElement.accept(this);
             if (iter.hasNext()) {
@@ -256,11 +270,16 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         expressionVisitor = visitor;
     }
 
+
     public void visit(SubJoin subjoin) {
         buffer.append("(");
         subjoin.getLeft().accept(this);
         deparseJoin(subjoin.getJoin());
         buffer.append(")");
+
+        if (subjoin.getPivot() != null) {
+            subjoin.getPivot().accept(this);
+        }
     }
 
     public void deparseJoin(Join join) {
@@ -298,9 +317,9 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         }
         if (join.getUsingColumns() != null) {
             buffer.append(" USING (");
-            for (Iterator<Column> iterator = join.getUsingColumns().iterator(); iterator.hasNext(); ) {
+            for (Iterator<Column> iterator = join.getUsingColumns().iterator(); iterator.hasNext();) {
                 Column column = iterator.next();
-                buffer.append(column.getWholeColumnName());
+                buffer.append(column.getFullyQualifiedName());
                 if (iterator.hasNext()) {
                     buffer.append(", ");
                 }
@@ -309,6 +328,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         }
 
     }
+
 
     public void visit(SetOperationList list) {
         for (int i = 0; i < list.getPlainSelects().size(); i++) {
@@ -329,14 +349,22 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         }
     }
 
+
     public void visit(WithItem withItem) {
     }
+
 
     public void visit(LateralSubSelect lateralSubSelect) {
         buffer.append(lateralSubSelect.toString());
     }
 
+
     public void visit(ValuesList valuesList) {
         buffer.append(valuesList.toString());
+    }
+
+
+    public void visit(AllColumns allColumns) {
+        buffer.append('*');
     }
 }

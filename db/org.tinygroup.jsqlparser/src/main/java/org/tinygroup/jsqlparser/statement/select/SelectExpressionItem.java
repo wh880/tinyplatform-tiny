@@ -1,28 +1,27 @@
-/**
- *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- * --------------------------------------------------------------------------
- *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
- *
- *  本开源软件遵循 GPL 3.0 协议;
- *  如果您不遵循此协议，则不被允许使用此文件。
- *  你可以从下面的地址获取完整的协议文本
- *
- *       http://www.gnu.org/licenses/gpl.html
+/*
+ * #%L
+ * JSQLParser library
+ * %%
+ * Copyright (C) 2004 - 2013 JSQLParser
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as 
+ * published by the Free Software Foundation, either version 2.1 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-2.1.html>.
+ * #L%
  */
 package org.tinygroup.jsqlparser.statement.select;
 
+import org.tinygroup.jsqlparser.expression.Alias;
 import org.tinygroup.jsqlparser.expression.Expression;
 
 /**
@@ -30,32 +29,39 @@ import org.tinygroup.jsqlparser.expression.Expression;
  */
 public class SelectExpressionItem implements SelectItem {
 
-    private Expression expression;
-    private String alias;
+	private Expression expression;
+	private Alias alias;
 
-    public String getAlias() {
-        return alias;
-    }
+	public SelectExpressionItem() {
+	}
 
-    public Expression getExpression() {
-        return expression;
-    }
+	public SelectExpressionItem(Expression expression) {
+		this.expression = expression;
+	}
+	
+	public Alias getAlias() {
+		return alias;
+	}
 
-    public void setAlias(String string) {
-        alias = string;
-    }
+	public Expression getExpression() {
+		return expression;
+	}
 
-    public void setExpression(Expression expression) {
-        this.expression = expression;
-    }
+	public void setAlias(Alias alias) {
+		this.alias = alias;
+	}
+
+	public void setExpression(Expression expression) {
+		this.expression = expression;
+	}
 
 
-    public void accept(SelectItemVisitor selectItemVisitor) {
-        selectItemVisitor.visit(this);
-    }
+	public void accept(SelectItemVisitor selectItemVisitor) {
+		selectItemVisitor.visit(this);
+	}
 
 
-    public String toString() {
-        return expression + ((alias != null) ? " AS " + alias : "");
-    }
+	public String toString() {
+		return expression + ((alias != null) ? alias.toString() : "");
+	}
 }

@@ -1,44 +1,46 @@
-/**
- *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- * --------------------------------------------------------------------------
- *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
- *
- *  本开源软件遵循 GPL 3.0 协议;
- *  如果您不遵循此协议，则不被允许使用此文件。
- *  你可以从下面的地址获取完整的协议文本
- *
- *       http://www.gnu.org/licenses/gpl.html
+/*
+ * #%L
+ * JSQLParser library
+ * %%
+ * Copyright (C) 2004 - 2013 JSQLParser
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as 
+ * published by the Free Software Foundation, either version 2.1 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-2.1.html>.
+ * #L%
  */
 package org.tinygroup.jsqlparser.schema;
 
-import org.tinygroup.jsqlparser.statement.select.FromItem;
-import org.tinygroup.jsqlparser.statement.select.FromItemVisitor;
-import org.tinygroup.jsqlparser.statement.select.IntoTableVisitor;
-import org.tinygroup.jsqlparser.statement.select.Pivot;
+import org.tinygroup.jsqlparser.expression.*;
+import org.tinygroup.jsqlparser.statement.select.*;
 
 /**
  * A table. It can have an alias and the schema name it belongs to.
  */
-public class Table implements FromItem {
+public class Table implements FromItem, MultiPartName {
 
+    private Database database;
     private String schemaName;
     private String name;
-    private String alias;
+
+    private Alias alias;
     private Pivot pivot;
 
     public Table() {
+    }
+
+    public Table(String name) {
+        this.name = name;
     }
 
     public Table(String schemaName, String name) {
@@ -46,46 +48,69 @@ public class Table implements FromItem {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
+    public Table(Database database, String schemaName, String name) {
+        this.database = database;
+        this.schemaName = schemaName;
+        this.name = name;
+    }
+
+    public Database getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(Database database) {
+        this.database = database;
     }
 
     public String getSchemaName() {
         return schemaName;
     }
 
-    public void setName(String string) {
-        name = string;
-    }
-
     public void setSchemaName(String string) {
         schemaName = string;
     }
 
+    public String getName() {
+        return name;
+    }
 
-    public String getAlias() {
+    public void setName(String string) {
+        name = string;
+    }
+
+
+    public Alias getAlias() {
         return alias;
     }
 
 
-    public void setAlias(String string) {
-        alias = string;
+    public void setAlias(Alias alias) {
+        this.alias = alias;
     }
 
-    public String getWholeTableName() {
 
-        String tableWholeName = null;
-        if (name == null) {
-            return null;
+    public String getFullyQualifiedName() {
+        String fqn = "";
+
+        if (database != null) {
+            fqn += database.getFullyQualifiedName();
         }
+        if (!(fqn==null||fqn.length()==0)) {
+            fqn += ".";
+        }
+
         if (schemaName != null) {
-            tableWholeName = schemaName + "." + name;
-        } else {
-            tableWholeName = name;
+            fqn += schemaName;
+        }
+        if (!(fqn==null||fqn.length()==0)) {
+            fqn += ".";
         }
 
-        return tableWholeName;
+        if (name != null) {
+            fqn += name;
+        }
 
+        return fqn;
     }
 
 
@@ -97,9 +122,11 @@ public class Table implements FromItem {
         intoTableVisitor.visit(this);
     }
 
+
     public Pivot getPivot() {
         return pivot;
     }
+
 
     public void setPivot(Pivot pivot) {
         this.pivot = pivot;
@@ -107,8 +134,8 @@ public class Table implements FromItem {
 
 
     public String toString() {
-        return getWholeTableName() +
-                ((pivot != null) ? " " + pivot : "") +
-                ((alias != null) ? " AS " + alias : "");
+        return getFullyQualifiedName()
+               + ((pivot != null) ? " " + pivot : "")
+               + ((alias != null) ? alias.toString() : "");
     }
 }
