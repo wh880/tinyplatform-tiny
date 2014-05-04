@@ -32,11 +32,11 @@ import java.util.Date;
  * Created by luoguo on 2014/4/18.
  */
 public class EmailReceiveMessage implements Message {
-    EmailMessage message;
-    Collection<EmailMessageSender> messageSenders;
-    Collection<EmailMessageReceiver> messageReceivers;
-    Date sendDate;
-    Date receiveDate;
+    private  EmailMessage message;
+    private  Collection<EmailMessageSender> messageSenders;
+    private Collection<EmailMessageReceiver> messageReceivers;
+    private Date sendDate;
+    private Date receiveDate;
 
     public Collection<EmailMessageSender> getMessageSenders() {
         return messageSenders;

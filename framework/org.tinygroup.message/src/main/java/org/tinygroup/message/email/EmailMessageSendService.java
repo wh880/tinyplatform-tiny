@@ -67,7 +67,7 @@ public class EmailMessageSendService implements MessageSendService<EmailMessageA
         } catch (javax.mail.MessagingException e) {
             throw new MessageException(e);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            throw new MessageException(e);
         }
     }
 

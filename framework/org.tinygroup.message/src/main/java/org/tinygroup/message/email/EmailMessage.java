@@ -33,9 +33,9 @@ import java.util.List;
  * Created by luoguo on 2014/4/17.
  */
 public class EmailMessage implements Message {
-    String subject;
-    String content;
-    List<EmailAccessory> accessories;
+    private String subject;
+    private String content;
+    private  List<EmailAccessory> accessories;
 
     public String getSubject() {
         return subject;

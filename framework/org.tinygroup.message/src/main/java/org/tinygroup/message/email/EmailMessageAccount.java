@@ -30,12 +30,12 @@ import org.tinygroup.message.MessageAccount;
  * Created by luoguo on 2014/4/18.
  */
 public class EmailMessageAccount implements MessageAccount {
-    boolean auth = true;
-    boolean startTlsEnable = true;
-    String host;
-    String port;
-    String username;
-    String password;
+    private  boolean auth = true;
+    private boolean startTlsEnable = true;
+    private String host;
+    private String port;
+    private String username;
+    private String password;
 
     public boolean isAuth() {
         return auth;

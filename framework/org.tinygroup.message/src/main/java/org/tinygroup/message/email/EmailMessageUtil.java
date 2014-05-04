@@ -23,6 +23,8 @@
  */
 package org.tinygroup.message.email;
 
+import org.tinygroup.message.MessageException;
+
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.internet.MimeUtility;
@@ -56,13 +58,18 @@ public final class EmailMessageUtil {
         return session;
     }
 
-    public static byte[] decode(byte[] b) throws Exception {
-        ByteArrayInputStream bais = new ByteArrayInputStream(b);
-        InputStream b64is = MimeUtility.decode(bais, "base64");
-        byte[] tmp = new byte[b.length];
-        int n = b64is.read(tmp);
-        byte[] res = new byte[n];
-        System.arraycopy(tmp, 0, res, 0, n);
-        return res;
+    public static byte[] decode(byte[] b) throws MessageException {
+        try {
+            ByteArrayInputStream bais = new ByteArrayInputStream(b);
+            InputStream b64is = null;
+            b64is = MimeUtility.decode(bais, "base64");
+            byte[] tmp = new byte[b.length];
+            int n = b64is.read(tmp);
+            byte[] res = new byte[n];
+            System.arraycopy(tmp, 0, res, 0, n);
+            return res;
+        } catch (Exception e) {
+            throw new MessageException(e);
+        }
     }
 }

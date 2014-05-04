@@ -23,10 +23,10 @@
  */
 package org.tinygroup.message.email;
 
-import org.tinygroup.message.*;
+import org.tinygroup.message.MessageException;
+import org.tinygroup.message.MessageReceiveService;
 
 import javax.mail.*;
-import javax.mail.Message;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.io.ByteArrayOutputStream;
@@ -119,47 +119,49 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
         return messageSenders;
     }
 
-    private EmailMessage getEmailMessage(Message message) throws MessagingException, IOException {
+    private EmailMessage getEmailMessage(Message message) throws MessagingException, IOException, MessageException {
         EmailMessage emailMessage = new EmailMessage();
         emailMessage.setSubject(message.getSubject());
         getContent(emailMessage, (Part) message);
         return emailMessage;
     }
 
-    private void getContent(EmailMessage emailMessage, Part part) throws MessagingException, IOException {
+    private void getContent(EmailMessage emailMessage, Part part) throws MessagingException, IOException, MessageException {
         String contentType = part.getContentType();
         int nameIndex = contentType.indexOf("name");
-        boolean hasContentName = false;
         if (nameIndex != -1) {
-            hasContentName = true;
-        }
-        if (hasContentName) {
-            BodyPart bodyPart = (BodyPart) part;
-            String disposition = bodyPart.getDisposition();
-            if ((disposition != null)
-                    && ((disposition.equals(Part.ATTACHMENT)) || (disposition
-                    .equals(Part.INLINE)))) {
-                EmailAccessory accessory = new EmailAccessory();
-                accessory.setFileName(part.getFileName());
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                part.writeTo(outputStream);
-                accessory.setContent(outputStream.toByteArray());
-                emailMessage.getAccessories().add(accessory);
-            } else {
-                System.out.println("====");
-            }
+            processBodyPart(emailMessage, part);
         } else if ((part.isMimeType("text/plain") || part.isMimeType("text/html"))) {
             emailMessage.setContent(part.getContent().toString());
         } else if (part.isMimeType("multipart/*")) {
-            Multipart multipart = (Multipart) part.getContent();
-            int counts = multipart.getCount();
-            for (int i = 0; i < counts; i++) {
-                getContent(emailMessage, multipart.getBodyPart(i));
-            }
+            processMultipart(emailMessage, part);
         } else if (part.isMimeType("message/rfc822")) {
             getContent(emailMessage, (Part) part.getContent());
         } else {
-            System.out.println(contentType);
+            throw new MessageException("不支持的ContentType:" + contentType);
+        }
+    }
+
+    private void processMultipart(EmailMessage emailMessage, Part part) throws IOException, MessagingException, MessageException {
+        Multipart multipart = (Multipart) part.getContent();
+        int counts = multipart.getCount();
+        for (int i = 0; i < counts; i++) {
+            getContent(emailMessage, multipart.getBodyPart(i));
+        }
+    }
+
+    private void processBodyPart(EmailMessage emailMessage, Part part) throws MessagingException, IOException {
+        BodyPart bodyPart = (BodyPart) part;
+        String disposition = bodyPart.getDisposition();
+        if ((disposition != null)
+                && ((disposition.equals(Part.ATTACHMENT)) || (disposition
+                .equals(Part.INLINE)))) {
+            EmailAccessory accessory = new EmailAccessory();
+            accessory.setFileName(part.getFileName());
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            part.writeTo(outputStream);
+            accessory.setContent(outputStream.toByteArray());
+            emailMessage.getAccessories().add(accessory);
         }
     }
 }

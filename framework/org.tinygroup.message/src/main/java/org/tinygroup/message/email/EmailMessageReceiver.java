@@ -32,9 +32,11 @@ import javax.mail.Message;
  * Created by luoguo on 2014/4/17.
  */
 public class EmailMessageReceiver implements MessageReceiver {
-    String email;//邮箱地址
-    Message.RecipientType type = Message.RecipientType.TO;
-    String displayName;//显示名
+    private Message.RecipientType type = Message.RecipientType.TO;
+    //邮箱地址
+    private String email;
+    //显示名
+    private  String displayName;
 
     public String getDisplayName() {
         return displayName;

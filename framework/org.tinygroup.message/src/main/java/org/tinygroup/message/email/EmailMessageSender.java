@@ -30,8 +30,8 @@ import org.tinygroup.message.MessageSender;
  * Created by luoguo on 2014/4/17.
  */
 public class EmailMessageSender implements MessageSender {
-    String email;
-    String displayName;
+    private String email;
+    private String displayName;
 
     public String getDisplayName() {
         return displayName;

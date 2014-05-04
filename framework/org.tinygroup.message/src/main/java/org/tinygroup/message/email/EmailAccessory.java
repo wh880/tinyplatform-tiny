@@ -32,6 +32,9 @@ import java.io.IOException;
  * Created by luoguo on 2014/4/18.
  */
 public class EmailAccessory {
+    private String fileName;
+    private byte[] content;
+
     public EmailAccessory() {
 
     }
@@ -45,12 +48,10 @@ public class EmailAccessory {
     }
 
     public EmailAccessory(String fileName, byte[] content) {
-        setFileName(fileName);
-        setContent(content);
+        this.fileName = fileName;
+        this.content = content.clone();
     }
 
-    String fileName;
-    byte[] content;
 
     public String getFileName() {
         return fileName;
@@ -65,6 +66,6 @@ public class EmailAccessory {
     }
 
     public void setContent(byte[] content) {
-        this.content = content;
+        this.content = content.clone();
     }
 }
