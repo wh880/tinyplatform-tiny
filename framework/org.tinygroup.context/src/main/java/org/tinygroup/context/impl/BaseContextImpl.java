@@ -23,11 +23,11 @@
  */
 package org.tinygroup.context.impl;
 
+import org.tinygroup.context.BaseContext;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.tinygroup.context.BaseContext;
 
 @SuppressWarnings("unchecked")
 public class BaseContextImpl implements BaseContext,Serializable {
@@ -35,9 +35,13 @@ public class BaseContextImpl implements BaseContext,Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -2965722554039526665L;
-	protected Map<String, Object> itemMap = new HashMap<String, Object>();
+    private Map<String, Object> itemMap = new HashMap<String, Object>();
 
-	public <T> T put(final String name, final T object) {
+    public void setItemMap(Map<String, Object> itemMap) {
+        this.itemMap = itemMap;
+    }
+
+    public <T> T put(final String name, final T object) {
 		return (T) itemMap.put(name, object);
 	}
 

@@ -24,72 +24,82 @@
 package org.tinygroup.context;
 
 import java.util.Collection;
-
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * 把Context包装成Map
- * 
+ *
  * @author luoguo
- * 
  */
 public class Context2Map implements Map<String, Object> {
-	private Context context = null;
+    private Context context = null;
 
-	public Context2Map(Context context) {
-		this.context = context;
-	}
+    public Context2Map(Context context) {
+        this.context = context;
+    }
 
-	public int size() {
-		throw new RuntimeException("This method is not supported.");
-	}
+    public int size() {
+        return notSupportMethod();
+    }
 
-	public boolean isEmpty() {
-		throw new RuntimeException("This method is not supported.");
-	}
+    private int notSupportMethod() {
+        throw getRuntimeException();
+    }
 
-	public boolean containsKey(Object key) {
-		return context.get(key.toString()) != null;
-	}
+    private RuntimeException getRuntimeException() {
+        return new RuntimeException("This method is not supported.");
+    }
 
-	public boolean containsValue(Object value) {
-		throw new RuntimeException("This method is not supported.");
-	}
+    public boolean isEmpty() {
+        throw getRuntimeException();
+    }
 
-	public Object get(Object key) {
-		return context.get(key.toString());
-	}
+    public boolean containsKey(Object key) {
+        return context.get(key.toString()) != null;
+    }
 
-	public Object put(String key, Object value) {
-		context.put(key, value);
-		return value;
-	}
+    public boolean containsValue(Object value) {
+        throw getRuntimeException();
+    }
 
-	public Object remove(Object key) {
-		throw new RuntimeException("This method is not supported.");
-	}
+    public Object get(Object key) {
+        return context.get(key.toString());
+    }
 
-	public void putAll(Map<? extends String, ? extends Object> map) {
-		for (String key : map.keySet()) {
-			context.put(key, map.get(key));
-		}
-	}
+    public Object put(String key, Object value) {
+        context.put(key, value);
+        return value;
+    }
 
-	public void clear() {
-		throw new RuntimeException("This method is not supported.");
-	}
+    public Object remove(Object key) {
+        throw getRuntimeException();
+    }
 
-	public Set<String> keySet() {
-		throw new RuntimeException("This method is not supported.");
-	}
 
-	public Collection<Object> values() {
-		throw new RuntimeException("This method is not supported.");
-	}
+    public void putAll(Map<? extends String, ?> map) {
+        Iterator<? extends Entry<? extends String, ?>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Entry<? extends String, ?> entry = iterator.next();
+            context.put(entry.getKey(), entry.getValue());
+        }
+    }
 
-	public Set<java.util.Map.Entry<String, Object>> entrySet() {
-		throw new RuntimeException("This method is not supported.");
-	}
+    public void clear() {
+        throw getRuntimeException();
+    }
+
+    public Set<String> keySet() {
+        throw getRuntimeException();
+    }
+
+    public Collection<Object> values() {
+        throw getRuntimeException();
+    }
+
+    public Set<java.util.Map.Entry<String, Object>> entrySet() {
+        throw getRuntimeException();
+    }
 
 }
