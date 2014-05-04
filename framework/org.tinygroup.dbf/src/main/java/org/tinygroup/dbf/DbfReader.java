@@ -1,7 +1,5 @@
 package org.tinygroup.dbf;
 
-import org.tinygroup.dbf.impl.FoxproDBaseReader;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -13,12 +11,30 @@ import java.util.List;
  * Created by luoguo on 2014/4/25.
  */
 public abstract class DbfReader implements Reader {
-    protected String encode = "GBK";
+    public static final int HEADER_END_CHAR = 13;
+    private byte type;
+    private String encode = "GBK";
     private FileChannel fileChannel;
-    protected Header header;
-    protected List<Field> fields;
+    private Header header;
+    private List<Field> fields;
     private boolean recordRemoved;
-    int position = 0;
+    private int position = 0;
+
+    public byte getType() {
+        return type;
+    }
+
+    public void setFields(List<Field> fields) {
+        this.fields = fields;
+    }
+
+    public void setHeader(Header header) {
+        this.header = header;
+    }
+
+    public void setType(byte type) {
+        this.type = type;
+    }
 
     public String getEncode() {
         return encode;
@@ -54,19 +70,15 @@ public abstract class DbfReader implements Reader {
         FileChannel fileChannel = aFile.getChannel();
         ByteBuffer byteBuffer = ByteBuffer.allocate(1);
         fileChannel.read(byteBuffer);
-        byte type = byteBuffer.array()[0];
         DbfReader reader = new FoxproDBaseReader();
+        reader.setType(byteBuffer.array()[0]);
         reader.setFileChannel(fileChannel);
         reader.readHeader();
         reader.readFields();
-        reader.readHeaderEndChar();
+        reader.skipHeaderTerminator();
         return reader;
     }
 
-    private void readHeaderEndChar() throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(1);
-        fileChannel.read(buffer);
-    }
 
     public void setFileChannel(FileChannel fileChannel) {
         this.fileChannel = fileChannel;
@@ -103,10 +115,10 @@ public abstract class DbfReader implements Reader {
 
     private void skipHeaderTerminator() throws IOException {
         ByteBuffer byteBuffer = ByteBuffer.allocate(1);
-        if (byteBuffer.array()[0] != 13) {
+        readByteBuffer(byteBuffer);
+        if (byteBuffer.array()[0] != HEADER_END_CHAR) {
             throw new IOException("头结束符期望是13，但实际是：" + byteBuffer.array()[0]);
         }
-        readByteBuffer(byteBuffer);
     }
 
     public void close() throws IOException {

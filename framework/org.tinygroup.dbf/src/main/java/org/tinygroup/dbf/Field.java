@@ -110,12 +110,11 @@ public class Field {
 
     public Boolean getBooleanValue() throws UnsupportedEncodingException {
         String value = getStringValue();
-        if (value.equals("T") || value.equals("t") || value.equals("Y") || value.equals("y")) {
-            return true;
-        } else if (value.equals("F") || value.equals("f") || value.equals("N") || value.equals("n")) {
-            return false;
+        if(value==null||value.length()==0){
+            return null;
+        }else{
+            return Util.getBooleanValue(value);
         }
-        return null;
     }
 
     public Date getDateValue() throws ParseException, UnsupportedEncodingException {
