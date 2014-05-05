@@ -29,7 +29,10 @@ import java.util.UUID;
 /**
  * Created by luoguo on 14-1-8.
  */
-public class Util {
+public final class Util {
+    private Util() {
+    }
+
     private static Random random = new Random(System.currentTimeMillis());
 
     public static String getUuid() {

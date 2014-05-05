@@ -30,6 +30,6 @@ import java.io.Serializable;
  * Created by luoguo on 14-1-8.
  */
 public enum WorkStatus implements Serializable {
-    WAITING,//等待处理
-    WORKING//工作中
+    WAITING,
+    WORKING
 }

@@ -35,15 +35,15 @@ import java.rmi.RemoteException;
  */
 public abstract class AbstractForeman implements Foreman {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8812858260392860166L;
-	private WorkQueue workQueue;
+     *
+     */
+    private static final long serialVersionUID = -8812858260392860166L;
+    private WorkQueue workQueue;
     private final String type;
     private String id;
     private WorkStatus workStatus = WorkStatus.WAITING;
     protected volatile boolean cancel = false;
-    static final Logger logger = LoggerFactory.getLogger(AbstractForeman.class);
+    protected Logger logger = LoggerFactory.getLogger(AbstractForeman.class);
     private WorkCombiner workCombiner;
     private WorkSplitter workSplitter;
 

@@ -23,17 +23,17 @@
  */
 package org.tinygroup.tinypc.impl;
 
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.tinypc.PCRuntimeException;
 import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.Worker;
+
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 只找一个工人进行工作的包工头 Created by luoguo on 14-1-8.
@@ -45,7 +45,6 @@ public class ForemanSelectOneWorker extends AbstractForeman {
 	private static final long serialVersionUID = -848878926324050616L;
 	private static Logger logger = LoggerFactory
 			.getLogger(ForemanSelectOneWorker.class);
-	Random random = new Random(System.currentTimeMillis());
 
 	public ForemanSelectOneWorker(String type) throws RemoteException {
 		super(type);
@@ -72,8 +71,8 @@ public class ForemanSelectOneWorker extends AbstractForeman {
 		} catch (Exception e) {
 			logger.errorMessage("worker:{0}执行时出错", e, work.getId());
 			if (workerList.size() == 0) {
-				throw new RuntimeException(String.format("没有对应于work:%s的工人！",
-						work.getType()));
+				throw new PCRuntimeException(String.format("没有对应于work:%s的工人！",
+						work.getType()),e);
 			}
 			return reAction(work, workerList, workersActived);
 		}
@@ -92,31 +91,10 @@ public class ForemanSelectOneWorker extends AbstractForeman {
 			}
 		}
 		if (redoWorker == null) {
-			throw new RuntimeException(String.format("没有对应于%s的工人！",
+			throw new PCRuntimeException(String.format("没有对应于%s的工人！",
 					work.getType()));
 		}
 		workers.remove(redoWorker);
 		return dealWork(work, redoWorker, workers, workersActived);
 	}
-
-//	private Warehouse reAction(Work work, List<Worker> workers,
-//			List<Worker> workersActived) throws RemoteException {
-//		Iterator<Worker> iterator = workers.iterator();
-//		Worker redoWorker = null;
-//		while (iterator.hasNext()) {
-//			redoWorker = iterator.next();
-//			if (workersActived.contains(redoWorker))
-//				iterator.remove();
-//			if (redoWorker.acceptWork(work)) {
-//				iterator.remove();
-//				workersActived.add(redoWorker);
-//				break;
-//			}
-//		}
-//		if (redoWorker == null) {
-//			throw new RuntimeException(String.format("没有对应于%s的工人！",
-//					work.getType()));
-//		}
-//		return dealWork(work, redoWorker, workers, workersActived);
-//	}
 }

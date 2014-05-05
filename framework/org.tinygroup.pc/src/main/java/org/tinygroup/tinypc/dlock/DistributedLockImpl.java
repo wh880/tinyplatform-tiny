@@ -23,6 +23,8 @@
  */
 package org.tinygroup.tinypc.dlock;
 
+import org.tinygroup.tinypc.PCRuntimeException;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.TimeUnit;
@@ -34,18 +36,19 @@ import java.util.concurrent.TimeoutException;
 public class DistributedLockImpl extends UnicastRemoteObject implements
 		DistributedLock {
 
-	/**
+    /**
 	 * 
 	 */
 	private static final long serialVersionUID = -909469494489599236L;
-	/**
+    public static final int HOUR = 3600;
+    /**
 	 * 锁的令牌
 	 */
 	private volatile long token = 0;
 	/**
 	 * 同步对象
 	 */
-	byte[] lock = new byte[0];
+    private byte[] lock = new byte[0];
 	/**
 	 * 超时单位
 	 */
@@ -53,8 +56,9 @@ public class DistributedLockImpl extends UnicastRemoteObject implements
 	/**
 	 * 默认永不超时，默认超时3600秒,超过该时间后认为锁已解
 	 */
-	long lockTimeout = 60 * 60;
-	long beginLockTime;// 获取令牌时间，单位毫秒
+    private long lockTimeout = HOUR;
+    // 获取令牌时间，单位毫秒
+    private long beginLockTime;
 
 	public DistributedLockImpl() throws RemoteException {
 		super();
@@ -116,7 +120,7 @@ public class DistributedLockImpl extends UnicastRemoteObject implements
 		if (this.token != 0 && token == this.token) {
 			this.token = 0;
 		} else {
-			throw new RuntimeException("令牌" + token + "无效.");
+			throw new PCRuntimeException("令牌" + token + "无效.");
 		}
 	}
 }

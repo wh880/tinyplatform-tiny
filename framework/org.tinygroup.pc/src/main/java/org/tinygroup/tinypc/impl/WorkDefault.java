@@ -76,7 +76,7 @@ public class WorkDefault implements Work {
         return type;
     }
 
-    public Work getNextWork() {
+    public synchronized Work getNextWork() {
         return nextStepWork;
     }
 
@@ -95,7 +95,7 @@ public class WorkDefault implements Work {
         this.needSerialize = needSerialize;
     }
 
-    public WorkStatus getWorkStatus() {
+    public synchronized WorkStatus getWorkStatus() {
         return workStatus;
     }
 
@@ -112,12 +112,12 @@ public class WorkDefault implements Work {
     }
 
 
-    public String getId() {
+    public synchronized String getId() {
         return id;
     }
 
     public boolean equals(Object obj) {
-        if (obj != null && obj instanceof Work) {
+        if (obj instanceof Work) {
             Work object = (Work) obj;
             return ((Work) obj).getId().equals(object.getId());
         }

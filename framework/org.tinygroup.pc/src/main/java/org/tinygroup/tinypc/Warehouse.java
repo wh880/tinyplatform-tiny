@@ -30,5 +30,5 @@ import org.tinygroup.context.Context;
  * Created by luoguo on 14-1-8.
  */
 public interface Warehouse extends Context {
-    public void putSubWarehouse(Warehouse warehouse);
+    void putSubWarehouse(Warehouse warehouse);
 }

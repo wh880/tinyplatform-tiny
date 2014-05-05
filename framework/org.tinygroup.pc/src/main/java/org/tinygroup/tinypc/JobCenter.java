@@ -42,7 +42,7 @@ public interface JobCenter {
 
     RmiServer getRmiServer();
 
-    void setRmiServer(RmiServer rmiServer);
+    void setRmiServer(RmiServer rmiServer) throws RemoteException;
 
     /**
      * 注册工人
