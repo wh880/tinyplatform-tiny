@@ -244,7 +244,6 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		// DROP INDEX table_name.index_name
 		// DROP INDEX index_name
 		StringBuffer ddlBuffer = new StringBuffer();
-		// TODO:创建DROP语句,这里可能要进行穷举判断
 		Boolean unique = index.getUnique();
 		if (unique != null && unique.booleanValue()) {
 			ddlBuffer.append("CREATE UNIQUE INDEX ");

@@ -65,7 +65,7 @@ public final class SimpleTypeMatcher {
 		}
 		matcher = charPattern.matcher(str);
 		if (matcher.find() && matcher.group().length() == str.length()) {
-			// TODO 只支持'x'的格式，其他格式暂时不支持
+			//只支持'x'的格式，其他格式暂时不支持
 			return str.substring(1, 1);
 		}
 		matcher = stringPattern.matcher(str);

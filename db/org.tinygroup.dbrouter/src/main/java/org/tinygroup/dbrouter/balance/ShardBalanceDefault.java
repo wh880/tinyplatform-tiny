@@ -41,7 +41,6 @@ public class ShardBalanceDefault implements ShardBalance {
         List<Shard> writableShards = new ArrayList<Shard>();
         for (Shard shard : partition.getWritableShardList()) {
             if (shard.isWriteAble()) {
-                //TODO 检查Shard是否有效，如果无效，则取下一个
                 writableShards.add(shard);
             }
         }
@@ -55,7 +54,6 @@ public class ShardBalanceDefault implements ShardBalance {
         int allWeight = 0;
         Shard selectedShard = partition.getReadShardList().get(0);
         for (Shard shard : partition.getReadShardList()) {
-            //TODO 避免取到失效的分区
             allWeight += shard.getReadWeight();
         }
         int weightValue = (randomInt() % allWeight);
