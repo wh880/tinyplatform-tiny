@@ -23,12 +23,6 @@
  */
 package org.tinygroup.fileresolver.impl;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
@@ -36,6 +30,12 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 

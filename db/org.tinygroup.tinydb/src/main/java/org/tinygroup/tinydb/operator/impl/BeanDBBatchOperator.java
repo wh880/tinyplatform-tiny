@@ -23,12 +23,6 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.tinygroup.tinydb.Bean;
@@ -37,6 +31,12 @@ import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.DBRuntimeException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.util.TinyDBUtil;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
  abstract class BeanDBBatchOperator<KeyType> extends
 		BeanDBSingleOperator<KeyType> implements DBOperator<KeyType> {

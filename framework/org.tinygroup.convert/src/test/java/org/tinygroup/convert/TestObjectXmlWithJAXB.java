@@ -23,12 +23,12 @@
  */
 package org.tinygroup.convert;
 
-import java.util.List;
-
 import org.tinygroup.convert.objectxml.jaxb.ObjectToXml;
 import org.tinygroup.convert.objectxml.jaxb.XmlToObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.util.List;
 
 public class TestObjectXmlWithJAXB extends AbstractConvertTestCase{
 

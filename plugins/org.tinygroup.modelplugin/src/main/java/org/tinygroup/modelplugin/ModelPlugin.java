@@ -23,10 +23,6 @@
  */
 package org.tinygroup.modelplugin;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.entity.common.Operation;
 import org.tinygroup.entity.common.View;
@@ -36,6 +32,10 @@ import org.tinygroup.plugin.Plugin;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 

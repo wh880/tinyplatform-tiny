@@ -23,12 +23,12 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.valueparser;
 
+import org.springframework.core.MethodParameter;
+import org.tinygroup.vfs.FileObject;
+
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.Date;
-
-import org.tinygroup.vfs.FileObject;
-import org.springframework.core.MethodParameter;
 
 /**
  * 代表一个值的列表。

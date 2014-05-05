@@ -23,13 +23,12 @@
  */
 package org.tinygroup.plugin.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.tinygroup.plugin.PluginManager;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.plugin.PluginManager;
+
+import java.util.ArrayList;
+import java.util.List;
 @XStreamAlias("plugin-config")
 public class PluginConfig {
 	private static final int DEFAULT_LEVEL=10;

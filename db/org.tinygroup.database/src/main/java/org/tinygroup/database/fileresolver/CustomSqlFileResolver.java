@@ -23,6 +23,7 @@
  */
 package org.tinygroup.database.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.database.config.customsql.CustomSqls;
 import org.tinygroup.database.customesql.CustomSqlProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
@@ -31,8 +32,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 public class CustomSqlFileResolver extends AbstractFileProcessor {
 

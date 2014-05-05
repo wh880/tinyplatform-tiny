@@ -23,13 +23,12 @@
  */
 package org.tinygroup.entity.common;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.tinygroup.entity.base.BaseObject;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.entity.base.BaseObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @XStreamAlias("index")
 public class Index extends BaseObject {

@@ -23,11 +23,11 @@
  */
 package org.tinygroup.dict.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * dict-load的配置信息对象

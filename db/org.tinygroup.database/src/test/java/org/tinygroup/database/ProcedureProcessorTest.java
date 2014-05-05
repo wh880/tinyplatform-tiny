@@ -23,13 +23,12 @@
  */
 package org.tinygroup.database;
 
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.database.procedure.ProcedureProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.util.List;
 
 public class ProcedureProcessorTest extends TestCase {
 	static {

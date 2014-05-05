@@ -23,11 +23,10 @@
  */
 package org.tinygroup.htmlparser;
 
-import java.io.IOException;
-
+import junit.framework.TestCase;
 import org.tinygroup.htmlparser.node.HtmlNode;
 
-import junit.framework.TestCase;
+import java.io.IOException;
 
 public class INodeTest extends TestCase {
 	HtmlNode node = null;

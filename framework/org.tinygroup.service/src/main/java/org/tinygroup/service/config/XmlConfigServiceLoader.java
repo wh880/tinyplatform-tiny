@@ -23,11 +23,6 @@
  */
 package org.tinygroup.service.config;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.config.Configuration;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
@@ -40,6 +35,11 @@ import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class XmlConfigServiceLoader extends AbstractFileProcessor implements ServiceLoader,
 		Configuration {

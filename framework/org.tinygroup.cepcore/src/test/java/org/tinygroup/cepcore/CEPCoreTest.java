@@ -25,7 +25,6 @@ package org.tinygroup.cepcore;
 
 
 import junit.framework.TestCase;
-
 import org.tinygroup.cepcore.test.aop.util.AopTestUtil;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;

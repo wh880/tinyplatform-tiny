@@ -23,12 +23,6 @@
  */
 package org.tinygroup.database.table.impl;
 
-import java.sql.DatabaseMetaData;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.table.Table;
@@ -38,6 +32,12 @@ import org.tinygroup.database.table.TableSqlProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.sql.DatabaseMetaData;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TableProcessorImpl implements TableProcessor {
 	private  Map<String, Map<String, Table>> tableMap = new HashMap<String, Map<String, Table>>();

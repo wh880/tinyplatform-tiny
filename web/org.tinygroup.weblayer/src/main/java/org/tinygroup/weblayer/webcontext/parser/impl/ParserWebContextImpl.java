@@ -23,18 +23,6 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import static org.tinygroup.commons.tools.Assert.unsupportedOperation;
-
-import java.util.AbstractMap;
-import java.util.AbstractSet;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.weblayer.WebContext;
@@ -47,6 +35,12 @@ import org.tinygroup.weblayer.webcontext.parser.valueparser.CookieParser;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.ParameterParser;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.impl.CookieParserImpl;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.impl.ParameterParserImpl;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+import java.util.Map.Entry;
+
+import static org.tinygroup.commons.tools.Assert.unsupportedOperation;
 
 /** 
  * 自动解析request parameters和cookie parameters，并透明地处理upload请求的request context实现。

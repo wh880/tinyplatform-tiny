@@ -25,30 +25,19 @@
 
 package org.tinygroup.jspengine.compiler;
 
+import org.tinygroup.jspengine.JasperException;
+import org.tinygroup.jspengine.JspCompilationContext;
+import org.tinygroup.jspengine.runtime.JspRuntimeLibrary;
+import org.xml.sax.Attributes;
+
+import javax.el.FunctionMapper;
+import javax.servlet.jsp.tagext.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
-
-import javax.el.FunctionMapper;
-import javax.servlet.jsp.tagext.FunctionInfo;
-import javax.servlet.jsp.tagext.JspFragment;
-import javax.servlet.jsp.tagext.PageData;
-import javax.servlet.jsp.tagext.TagAttributeInfo;
-import javax.servlet.jsp.tagext.TagData;
-import javax.servlet.jsp.tagext.TagExtraInfo;
-import javax.servlet.jsp.tagext.TagInfo;
-import javax.servlet.jsp.tagext.TagLibraryInfo;
-import javax.servlet.jsp.tagext.ValidationMessage;
-
-
-import org.tinygroup.jspengine.Constants;
-import org.tinygroup.jspengine.JasperException;
-import org.tinygroup.jspengine.JspCompilationContext;
-import org.tinygroup.jspengine.runtime.JspRuntimeLibrary;
-import org.xml.sax.Attributes;
 
 /**
  * Performs validation on the page elements.  Attributes are checked for

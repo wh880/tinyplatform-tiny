@@ -23,9 +23,8 @@
  */
 package org.tinygroup.expression.impl;
 
-import org.tinygroup.expression.Expression;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.tinygroup.expression.Expression;
 
 /**
  * 

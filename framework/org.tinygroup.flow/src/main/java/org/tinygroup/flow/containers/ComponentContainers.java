@@ -23,9 +23,6 @@
  */
 package org.tinygroup.flow.containers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.flow.config.ComponentDefine;
 import org.tinygroup.flow.config.ComponentDefines;
@@ -34,6 +31,9 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 组件容器

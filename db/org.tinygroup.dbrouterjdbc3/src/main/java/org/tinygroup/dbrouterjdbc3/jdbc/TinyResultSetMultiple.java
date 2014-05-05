@@ -23,29 +23,6 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.Ref;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.config.Partition;
@@ -57,6 +34,14 @@ import org.tinygroup.dbrouter.util.ParamObjectBuilder;
 import org.tinygroup.dbrouter.util.SortOrder;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.sql.*;
+import java.sql.Date;
+import java.util.*;
 
 /**
  * 多个记录集合并的记录集 Created by luoguo on 13-12-13.

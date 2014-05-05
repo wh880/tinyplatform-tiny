@@ -23,15 +23,15 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.upload;
 
-import static org.tinygroup.commons.tools.ArrayUtil.*;
-import static org.tinygroup.commons.tools.Assert.*;
+import org.tinygroup.commons.tools.HumanReadableSize;
+import org.tinygroup.commons.tools.SystemUtil;
+import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
 
 import java.io.File;
 import java.util.Arrays;
 
-import org.tinygroup.commons.tools.HumanReadableSize;
-import org.tinygroup.commons.tools.SystemUtil;
-import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
 
 
 /**

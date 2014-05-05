@@ -23,9 +23,6 @@
  */
 package org.tinygroup.weblayer.mvc.annotationaction;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
 import org.tinygroup.annotation.AnnotationClassAction;
 import org.tinygroup.annotation.AnnotationMethodAction;
 import org.tinygroup.commons.tools.AnnotationUtils;
@@ -33,6 +30,9 @@ import org.tinygroup.weblayer.mvc.MappingClassModel;
 import org.tinygroup.weblayer.mvc.MappingMethodModel;
 import org.tinygroup.weblayer.mvc.MappingModelManager;
 import org.tinygroup.weblayer.mvc.annotation.RequestMapping;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
  * 

@@ -23,11 +23,11 @@
  */
 package org.tinygroup.docgen;
 
-import java.io.File;
-import java.io.Writer;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.vfs.FileObject;
+
+import java.io.File;
+import java.io.Writer;
 
 /**
  * 

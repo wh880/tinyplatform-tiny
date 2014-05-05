@@ -23,12 +23,12 @@
  */
 package org.tinygroup.entity.engine.entity.operation.importdata;
 
-import java.io.Writer;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.entity.BaseModel;
 import org.tinygroup.imda.processor.ModelViewProcessor;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
+
+import java.io.Writer;
 
 public class EntityModelImportViewProcessor implements
 		ModelViewProcessor<BaseModel> {

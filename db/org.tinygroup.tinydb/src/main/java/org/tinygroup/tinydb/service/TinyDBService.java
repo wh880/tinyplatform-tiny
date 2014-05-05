@@ -23,11 +23,11 @@
  */
 package org.tinygroup.tinydb.service;
 
-import java.util.List;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.config.TableConfiguration;
+
+import java.util.List;
 
 public interface TinyDBService {
 	/**

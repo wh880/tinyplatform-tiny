@@ -23,10 +23,10 @@
  */
 package org.tinygroup.cepcore;
 
-import java.util.List;
-
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
+
+import java.util.List;
 
 public interface CEPCore extends CEPCoreNodeManager {
 	String CEP_CORE_BEAN = "cepcore";

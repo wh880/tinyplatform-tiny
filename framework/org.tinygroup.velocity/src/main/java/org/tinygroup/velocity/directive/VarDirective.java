@@ -23,15 +23,15 @@
  */
 package org.tinygroup.velocity.directive;
 
-import java.io.IOException;
-import java.io.Writer;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
 import org.tinygroup.context.Context;
 import org.tinygroup.velocity.TinyVelocityContext;
+
+import java.io.IOException;
+import java.io.Writer;
 
 public class VarDirective extends Directive {
 

@@ -23,8 +23,6 @@
  */
 package org.tinygroup.service.util;
 
-import java.util.List;
-
 import org.tinygroup.event.Parameter;
 import org.tinygroup.service.exception.ServiceParamValidateException;
 import org.tinygroup.springutil.SpringUtil;
@@ -32,6 +30,8 @@ import org.tinygroup.validate.ValidateResult;
 import org.tinygroup.validate.ValidatorManager;
 import org.tinygroup.validate.XmlValidatorManager;
 import org.tinygroup.validate.impl.ValidateResultImpl;
+
+import java.util.List;
 
 public class ParamValidate {
 

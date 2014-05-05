@@ -24,17 +24,16 @@
 package org.tinygroup.loader;
 
 
-import java.io.File;
-import java.io.FileFilter;
-import java.net.URL;
-import java.util.Enumeration;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.FileObjectFilter;
 import org.tinygroup.vfs.FileObjectProcessor;
 import org.tinygroup.vfs.impl.filter.FileExtNameFileObjectFilter;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.net.URL;
+import java.util.Enumeration;
 
 /**
  * TinyClassLoader Tester.

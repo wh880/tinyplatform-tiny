@@ -24,11 +24,11 @@
 package org.tinygroup.weblayer.webcontext;
 
 
+import org.tinygroup.weblayer.WebContext;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-
-import org.tinygroup.weblayer.WebContext;
 
 
 /**

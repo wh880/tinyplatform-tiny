@@ -23,18 +23,6 @@
  */
 package org.tinygroup.weblayer.filter;
 
-import static org.tinygroup.commons.tools.StringUtil.defaultIfEmpty;
-import static org.tinygroup.weblayer.webcontext.setlocacle.SetLocaleWebContext.CHARSET_DEFAULT;
-import static org.tinygroup.weblayer.webcontext.setlocacle.SetLocaleWebContext.INPUT_CHARSET_PARAM_DEFAULT;
-import static org.tinygroup.weblayer.webcontext.setlocacle.SetLocaleWebContext.LOCALE_DEFAULT;
-import static org.tinygroup.weblayer.webcontext.setlocacle.SetLocaleWebContext.OUTPUT_CHARSET_PARAM_DEFAULT;
-import static org.tinygroup.weblayer.webcontext.setlocacle.SetLocaleWebContext.PARAMETER_KEY_DEFAULT;
-import static org.tinygroup.weblayer.webcontext.setlocacle.SetLocaleWebContext.SESSION_KEY_DEFAULT;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.regex.Pattern;
-
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
@@ -45,6 +33,13 @@ import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.setlocacle.impl.SetLocaleOverrider;
 import org.tinygroup.weblayer.webcontext.setlocacle.impl.SetLocaleWebContextImpl;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Pattern;
+
+import static org.tinygroup.commons.tools.StringUtil.defaultIfEmpty;
+import static org.tinygroup.weblayer.webcontext.setlocacle.SetLocaleWebContext.*;
 
 /**
  * 设置当前请求的区域（locale）、编码字符集（charset）。

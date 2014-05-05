@@ -23,6 +23,7 @@
  */
 package org.tinygroup.entity.engine.relation;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.entity.engine.entity.EntityModelLoader;
 import org.tinygroup.imda.ModelLoader;
 import org.tinygroup.logger.LogLevel;
@@ -30,8 +31,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 public class RelationModelLoader implements ModelLoader{
 	private static Logger logger = LoggerFactory.getLogger(EntityModelLoader.class);

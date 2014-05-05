@@ -26,9 +26,7 @@ package org.tinygroup.dbrouterjdbc3.jdbc.sample;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 public class TestJdbc {
 	public static void main(String[] args) throws Throwable {

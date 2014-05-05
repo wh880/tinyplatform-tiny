@@ -23,8 +23,8 @@
  */
 package org.tinygroup.commons.tools;
 
-import static org.tinygroup.commons.tools.Assert.*;
-import static org.tinygroup.commons.tools.StringUtil.*;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
 
 /**
  * 代表一个替换。替换字符串中的变量。通常变量以<code>'$'</code>开始，例如： <code>$1</code>，<code>$2</code>

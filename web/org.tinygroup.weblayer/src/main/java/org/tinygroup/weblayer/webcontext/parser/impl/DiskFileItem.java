@@ -23,11 +23,10 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import java.io.File;
+import org.tinygroup.weblayer.webcontext.parser.upload.FileUploadReName;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.tinygroup.weblayer.webcontext.parser.upload.FileUploadReName;
+import java.io.File;
 
 public class DiskFileItem extends AbstractFileItem {
     private static final long serialVersionUID = 4225039123863446602L;

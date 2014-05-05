@@ -23,6 +23,7 @@
  */
 package org.tinygroup.imda.fileprocessor;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.imda.config.ModelDefine;
@@ -33,8 +34,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 /**
  * 模型处理扩展文件处理器

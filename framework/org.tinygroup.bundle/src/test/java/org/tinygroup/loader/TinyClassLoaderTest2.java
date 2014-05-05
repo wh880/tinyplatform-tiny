@@ -24,13 +24,12 @@
 package org.tinygroup.loader;
 
 
+import junit.framework.TestCase;
+import org.tinygroup.vfs.FileObject;
+
 import java.io.File;
 import java.net.URL;
 import java.util.Enumeration;
-
-import junit.framework.TestCase;
-
-import org.tinygroup.vfs.FileObject;
 
 /**
  * TinyClassLoader Tester.

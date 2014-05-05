@@ -23,11 +23,11 @@
  */
 package org.tinygroup.weblayer.mvc;
 
-import java.lang.reflect.Method;
-import java.util.Set;
-
 import org.tinygroup.weblayer.mvc.annotation.RequestMapping;
 import org.tinygroup.weblayer.mvc.annotation.View;
+
+import java.lang.reflect.Method;
+import java.util.Set;
 
 public class MappingMethodModel {
 	

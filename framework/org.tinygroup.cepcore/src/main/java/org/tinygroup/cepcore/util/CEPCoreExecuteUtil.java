@@ -23,8 +23,6 @@
  */
 package org.tinygroup.cepcore.util;
 
-import java.util.List;
-
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.util.ContextFactory;
@@ -33,6 +31,8 @@ import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.util.List;
 
 public class CEPCoreExecuteUtil {
 	private static CEPCore cepcore;

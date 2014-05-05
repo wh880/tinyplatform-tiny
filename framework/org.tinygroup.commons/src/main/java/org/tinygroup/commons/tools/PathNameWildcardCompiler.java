@@ -23,10 +23,10 @@
  */
 package org.tinygroup.commons.tools;
 
-import static org.tinygroup.commons.tools.Assert.*;
-
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
 
 /**
  * 这个类将一个包含通配符的文件路径, 编译成正则表达式. 格式描述如下:

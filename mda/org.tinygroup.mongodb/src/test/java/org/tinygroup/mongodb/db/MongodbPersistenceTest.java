@@ -23,20 +23,18 @@
  */
 package org.tinygroup.mongodb.db;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-
-import org.bson.BSONObject;
-import org.tinygroup.mongodb.DBClient;
-import org.tinygroup.mongodb.engine.PageInfo;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-
 import junit.framework.TestCase;
+import org.bson.BSONObject;
+import org.tinygroup.mongodb.DBClient;
+import org.tinygroup.mongodb.engine.PageInfo;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class MongodbPersistenceTest extends TestCase {
 

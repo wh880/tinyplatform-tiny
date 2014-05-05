@@ -23,10 +23,9 @@
  */
 package org.tinygroup.htmlparser;
 
+import junit.framework.TestCase;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.htmlparser.parser.HtmlStringParser;
-
-import junit.framework.TestCase;
 
 public class SpecialNoteTest extends TestCase {
 	HtmlNode node = null;

@@ -23,14 +23,14 @@
  */
 package org.tinygroup.docgen.impl;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.docgen.DocumentGenerater;
 import org.tinygroup.velocity.VelocityHelper;
 import org.tinygroup.vfs.FileObject;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
 
 /**
  * 

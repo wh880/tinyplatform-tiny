@@ -23,11 +23,11 @@
  */
 package org.tinygroup.tinydb.testcase.operator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.test.BaseTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TestBatchOperator extends BaseTest {

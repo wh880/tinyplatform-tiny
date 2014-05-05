@@ -23,13 +23,13 @@
  */
 package org.tinygroup.tinyspider.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.parser.NodeFilter;
 import org.tinygroup.tinyspider.Processor;
 import org.tinygroup.tinyspider.Watcher;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WatcherImpl implements Watcher {
 

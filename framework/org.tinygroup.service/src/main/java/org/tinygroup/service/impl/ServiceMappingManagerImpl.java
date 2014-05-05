@@ -23,12 +23,12 @@
  */
 package org.tinygroup.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.service.ServiceMappingManager;
 import org.tinygroup.service.config.ServiceViewMapping;
 import org.tinygroup.service.config.ServiceViewMappings;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServiceMappingManagerImpl implements ServiceMappingManager {
 

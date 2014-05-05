@@ -23,15 +23,14 @@
  */
 package org.tinygroup.convert;
 
+import junit.framework.TestCase;
+import org.tinygroup.convert.textxml.simple.TextToXml;
+import org.tinygroup.convert.textxml.simple.XmlToText;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.tinygroup.convert.textxml.simple.TextToXml;
-import org.tinygroup.convert.textxml.simple.XmlToText;
-
-import junit.framework.TestCase;
 
 public class TestTextXmlWithSimple extends TestCase {
 	private static final String TEXT = "标识 姓名 地址 邮件,11 haha address email,12 hehe address email,13 xixi address email";

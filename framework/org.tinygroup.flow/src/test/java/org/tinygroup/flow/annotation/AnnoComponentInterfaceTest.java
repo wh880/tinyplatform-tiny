@@ -23,13 +23,12 @@
  */
 package org.tinygroup.flow.annotation;
 
+import junit.framework.TestCase;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
-
-import junit.framework.TestCase;
 
 public class AnnoComponentInterfaceTest extends TestCase {
 

@@ -23,12 +23,12 @@
  */
 package org.tinygroup.imda.usermodel;
 
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.imda.ModelInformationGetter;
 import org.tinygroup.imda.config.CustomizeStageConfig;
 import org.tinygroup.imda.validate.ValidateRule;
+
+import java.util.List;
+import java.util.Map;
 
 public class InfoGetter implements ModelInformationGetter<CaseModel> {
 

@@ -23,13 +23,6 @@
  */
 package org.tinygroup.datasource;
 
-import java.io.PrintWriter;
-import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
@@ -37,6 +30,12 @@ import org.springframework.context.ApplicationContextAware;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import javax.sql.DataSource;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * 动态数据源

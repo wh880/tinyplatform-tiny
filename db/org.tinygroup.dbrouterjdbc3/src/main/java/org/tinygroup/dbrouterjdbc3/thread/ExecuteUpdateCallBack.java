@@ -23,9 +23,9 @@
  */
 package org.tinygroup.dbrouterjdbc3.thread;
 
-import java.sql.SQLException;
-
 import org.tinygroup.dbrouterjdbc3.jdbc.RealStatementExecutor;
+
+import java.sql.SQLException;
 
 public class ExecuteUpdateCallBack implements StatementProcessorCallBack<Integer> {
 

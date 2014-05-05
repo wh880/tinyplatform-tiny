@@ -23,10 +23,6 @@
  */
 package org.tinygroup.imda.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.UUID;
-
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
@@ -40,6 +36,10 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.UUID;
 
 public class ServiceCaller {
 	private static Logger logger = LoggerFactory.getLogger(ServiceCaller.class);

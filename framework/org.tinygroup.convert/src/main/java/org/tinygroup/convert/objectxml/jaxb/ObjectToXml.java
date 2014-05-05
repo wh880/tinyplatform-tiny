@@ -23,13 +23,12 @@
  */
 package org.tinygroup.convert.objectxml.jaxb;
 
-import java.io.StringWriter;
+import org.tinygroup.convert.Converter;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-
-import org.tinygroup.convert.Converter;
+import java.io.StringWriter;
 
 public class ObjectToXml<T> implements Converter<T, String> {
 	JAXBContext context;

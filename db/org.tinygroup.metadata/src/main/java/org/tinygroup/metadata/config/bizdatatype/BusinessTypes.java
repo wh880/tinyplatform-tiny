@@ -23,13 +23,12 @@
  */
 package org.tinygroup.metadata.config.bizdatatype;
 
-import java.util.List;
-
-import org.tinygroup.metadata.config.BaseObject;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import org.tinygroup.metadata.config.BaseObject;
+
+import java.util.List;
 
 /**
  * 业务类型定义 

@@ -23,9 +23,7 @@
  */
 package org.tinygroup.metadata.stddatatype;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.metadata.config.Placeholder;
 import org.tinygroup.metadata.config.PlaceholderValue;
 import org.tinygroup.metadata.config.stddatatype.DialectType;
@@ -33,7 +31,8 @@ import org.tinygroup.metadata.config.stddatatype.StandardType;
 import org.tinygroup.metadata.config.stddatatype.StandardTypes;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StandDataTypeTest {
 

@@ -21,11 +21,11 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.tinygroup.jsqlparser.statement.Statement;
 import org.tinygroup.jsqlparser.statement.StatementVisitor;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class Select implements Statement {
 

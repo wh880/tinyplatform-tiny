@@ -23,11 +23,6 @@
  */
 package org.tinygroup.tinytestutil;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-
 import org.tinygroup.application.Application;
 import org.tinygroup.application.impl.ApplicationDefault;
 import org.tinygroup.commons.io.StreamUtil;
@@ -41,6 +36,11 @@ import org.tinygroup.parser.filter.PathFilter;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public abstract class AbstractTestUtil {
 	// private static FullContextFileRepository repository;

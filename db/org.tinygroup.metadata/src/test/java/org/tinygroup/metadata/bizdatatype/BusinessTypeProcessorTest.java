@@ -24,7 +24,6 @@
 package org.tinygroup.metadata.bizdatatype;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.metadata.TestInit;
 import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.springutil.SpringUtil;

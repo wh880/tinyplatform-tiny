@@ -23,18 +23,7 @@
  */
 package org.tinygroup.weblayer.webcontext.rewrite;
 
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
-import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING_ARRAY;
-import static org.tinygroup.commons.tools.StringUtil.trimToNull;
-import static org.tinygroup.weblayer.webcontext.rewrite.RewriteUtil.getSubstitutedTestString;
-
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import javax.servlet.http.HttpServletRequest;
-
+import org.springframework.beans.factory.InitializingBean;
 import org.tinygroup.commons.tools.MatchResultSubstitution;
 import org.tinygroup.commons.tools.StringEscapeUtil;
 import org.tinygroup.commons.tools.StringUtil;
@@ -43,7 +32,17 @@ import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING_ARRAY;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
+import static org.tinygroup.weblayer.webcontext.rewrite.RewriteUtil.getSubstitutedTestString;
 
 public class RewriteCondition implements InitializingBean {
 	private static final String SPLIT_CHAR = ",";

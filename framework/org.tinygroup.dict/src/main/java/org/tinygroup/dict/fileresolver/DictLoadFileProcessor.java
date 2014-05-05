@@ -23,6 +23,7 @@
  */
 package org.tinygroup.dict.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.dict.DictLoader;
 import org.tinygroup.dict.DictManager;
 import org.tinygroup.dict.config.DictLoaderConfig;
@@ -33,8 +34,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 /**
  * 字典加载器配置的文件搜索处理器

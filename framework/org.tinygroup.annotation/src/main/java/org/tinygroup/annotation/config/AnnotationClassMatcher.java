@@ -23,14 +23,13 @@
  */
 package org.tinygroup.annotation.config;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.annotation.impl.AnnotationClassMap;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.tinygroup.annotation.impl.AnnotationClassMap;
-
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 注解匹配器，通过注解匹配器定义了在什么情况下匹配注解，并定义了匹配成功时执行的处理器列表

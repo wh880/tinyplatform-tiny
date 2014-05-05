@@ -1,7 +1,7 @@
 package org.tinygroup.jsqlparser.util;
 
+import org.junit.*;
 import org.tinygroup.jsqlparser.JSQLParserException;
-import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.expression.LongValue;
 import org.tinygroup.jsqlparser.expression.operators.arithmetic.Addition;
 import org.tinygroup.jsqlparser.expression.operators.relational.EqualsTo;
@@ -12,12 +12,9 @@ import org.tinygroup.jsqlparser.statement.select.Join;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.SelectExpressionItem;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *

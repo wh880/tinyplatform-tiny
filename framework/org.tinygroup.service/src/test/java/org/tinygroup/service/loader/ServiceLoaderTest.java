@@ -24,7 +24,6 @@
 package org.tinygroup.service.loader;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.service.exception.ServiceLoadException;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.impl.ServiceRegistryImpl;

@@ -23,13 +23,10 @@
  */
 package org.tinygroup.commons.tools;
 
-import static org.tinygroup.commons.tools.Assert.ExceptionType.ILLEGAL_ARGUMENT;
-import static org.tinygroup.commons.tools.Assert.ExceptionType.UNEXPECTED_FAILURE;
-import static org.tinygroup.commons.tools.Assert.ExceptionType.UNREACHABLE_CODE;
-import static org.tinygroup.commons.tools.Assert.ExceptionType.UNSUPPORTED_OPERATION;
-
 import org.tinygroup.commons.exceptions.UnexpectedFailureException;
 import org.tinygroup.commons.exceptions.UnreachableCodeException;
+
+import static org.tinygroup.commons.tools.Assert.ExceptionType.*;
 
 /**
  * 断言工具，用来实现<a

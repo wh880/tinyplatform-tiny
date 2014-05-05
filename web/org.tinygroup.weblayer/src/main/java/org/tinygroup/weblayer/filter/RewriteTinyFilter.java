@@ -23,8 +23,6 @@
  */
 package org.tinygroup.weblayer.filter;
 
-import java.util.List;
-
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.config.ConfigurationManager;
@@ -40,6 +38,8 @@ import org.tinygroup.weblayer.webcontext.rewrite.RewriteSubstitution.Parameter;
 import org.tinygroup.weblayer.webcontext.rewrite.RewriteSubstitutionHandler;
 import org.tinygroup.weblayer.webcontext.rewrite.impl.RewriteWebContextImpl;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.List;
 
 /**
  * 改写URL及参数，类似于Apache HTTPD Server中的rewrite模块。

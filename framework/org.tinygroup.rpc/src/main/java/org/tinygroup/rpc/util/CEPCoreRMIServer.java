@@ -23,9 +23,6 @@
  */
 package org.tinygroup.rpc.util;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.event.Event;
 import org.tinygroup.logger.LogLevel;
@@ -33,6 +30,9 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.rpc.CEPCoreRMI;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 public class CEPCoreRMIServer extends UnicastRemoteObject implements CEPCoreRMI {
 

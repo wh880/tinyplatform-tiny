@@ -23,13 +23,12 @@
  */
 package org.tinygroup.database.config.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.tinygroup.metadata.config.BaseObject;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.metadata.config.BaseObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author chenjiao

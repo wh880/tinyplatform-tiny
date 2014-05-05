@@ -23,13 +23,6 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -39,6 +32,13 @@ import org.tinygroup.tinydb.exception.DBRuntimeException;
 import org.tinygroup.tinydb.util.BatchPreparedStatementSetterImpl;
 import org.tinygroup.tinydb.util.BeanRowMapper;
 import org.tinygroup.tinydb.util.SqlParamValuesBatchStatementSetterImpl;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DBSpringBaseOperator {
 

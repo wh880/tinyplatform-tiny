@@ -23,11 +23,11 @@
  */
 package org.tinygroup.imda;
 
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.imda.config.CustomizeStageConfig;
 import org.tinygroup.imda.validate.ValidateRule;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 模型基本信息获取接口<br>

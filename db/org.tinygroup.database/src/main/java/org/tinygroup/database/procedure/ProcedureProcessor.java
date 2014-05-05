@@ -23,10 +23,10 @@
  */
 package org.tinygroup.database.procedure;
 
-import java.util.List;
-
 import org.tinygroup.database.config.procedure.Procedure;
 import org.tinygroup.database.config.procedure.Procedures;
+
+import java.util.List;
 
 public interface ProcedureProcessor {
 	

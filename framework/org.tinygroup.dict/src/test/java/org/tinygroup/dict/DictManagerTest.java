@@ -24,7 +24,6 @@
 package org.tinygroup.dict;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.cache.jcs.JcsCache;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;

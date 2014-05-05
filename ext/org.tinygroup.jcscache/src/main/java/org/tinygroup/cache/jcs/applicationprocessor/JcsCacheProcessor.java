@@ -23,13 +23,6 @@
  */
 package org.tinygroup.cache.jcs.applicationprocessor;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.util.Properties;
-
 import org.apache.jcs.auxiliary.remote.server.RemoteCacheServerFactory;
 import org.apache.jcs.engine.control.CompositeCache;
 import org.apache.jcs.engine.control.CompositeCacheManager;
@@ -41,6 +34,13 @@ import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.util.Properties;
 
 public class JcsCacheProcessor extends AbstractConfiguration implements ApplicationProcessor {
 	

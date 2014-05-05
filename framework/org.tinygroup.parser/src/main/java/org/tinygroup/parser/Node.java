@@ -23,13 +23,13 @@
  */
 package org.tinygroup.parser;
 
+import org.tinygroup.commons.processor.ForEachProcessor;
+import org.tinygroup.parser.node.Attribute;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
-
-import org.tinygroup.commons.processor.ForEachProcessor;
-import org.tinygroup.parser.node.Attribute;
 
 /**
  * 节点接口

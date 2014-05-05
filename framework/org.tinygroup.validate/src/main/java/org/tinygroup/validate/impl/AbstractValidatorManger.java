@@ -23,10 +23,6 @@
  */
 package org.tinygroup.validate.impl;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.validate.ValidateResult;
@@ -34,6 +30,10 @@ import org.tinygroup.validate.Validator;
 import org.tinygroup.validate.ValidatorManager;
 import org.tinygroup.validate.ValidatorMapStorage;
 import org.tinygroup.validate.annotation.Validation;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 抽象的校验管理器类

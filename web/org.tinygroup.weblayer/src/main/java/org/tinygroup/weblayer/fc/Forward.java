@@ -23,13 +23,13 @@
  */
 package org.tinygroup.weblayer.fc;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.weblayer.WebContext;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 

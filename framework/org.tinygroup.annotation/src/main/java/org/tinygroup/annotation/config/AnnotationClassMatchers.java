@@ -23,11 +23,11 @@
  */
 package org.tinygroup.annotation.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 注解匹配匹配，用于定义一组注解匹配模式及匹配成功后的处理

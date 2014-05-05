@@ -23,13 +23,6 @@
  */
 package org.tinygroup.databasebuinstaller.impl;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.tinygroup.databasebuinstaller.InstallProcessor;
@@ -39,6 +32,12 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 /**
  * 

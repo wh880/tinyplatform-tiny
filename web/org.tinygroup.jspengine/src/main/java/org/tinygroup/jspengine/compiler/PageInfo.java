@@ -23,12 +23,11 @@
  */
 package org.tinygroup.jspengine.compiler;
 
-import java.util.*;
-
 import org.tinygroup.jspengine.Constants;
 import org.tinygroup.jspengine.JasperException;
 
 import javax.servlet.jsp.tagext.TagLibraryInfo;
+import java.util.*;
 
 /**
  * A repository for various info about the translation unit under compilation.

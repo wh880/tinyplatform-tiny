@@ -23,8 +23,6 @@
  */
 package org.tinygroup.metadata.config;
 
-import org.tinygroup.metadata.config.BaseObject;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**

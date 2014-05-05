@@ -23,15 +23,10 @@
  */
 package org.tinygroup.application.impl;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.commons.order.OrderUtil;
-import org.tinygroup.config.Configuration;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.context.Context;
@@ -41,6 +36,10 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 默认的应用实现<br>

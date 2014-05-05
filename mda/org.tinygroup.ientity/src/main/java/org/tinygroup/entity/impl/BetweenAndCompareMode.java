@@ -23,9 +23,9 @@
  */
 package org.tinygroup.entity.impl;
 
-import java.util.List;
-
 import org.tinygroup.commons.tools.Assert;
+
+import java.util.List;
 
 
 /**

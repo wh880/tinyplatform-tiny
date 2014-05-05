@@ -23,11 +23,6 @@
  */
 package org.tinygroup.net.applicationprocessor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.config.Configuration;
@@ -37,6 +32,11 @@ import org.tinygroup.net.Server;
 import org.tinygroup.net.daemon.DaemonRunnable;
 import org.tinygroup.net.daemon.DaemonUtils;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class NetProcessor implements Configuration, ApplicationProcessor {
 	private Logger logger = LoggerFactory.getLogger(NetProcessor.class);

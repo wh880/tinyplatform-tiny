@@ -23,10 +23,6 @@
  */
 package org.tinygroup.service;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Method;
-import java.util.List;
-
 import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.util.Context2ObjectUtil;
@@ -37,6 +33,10 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.service.exception.ServiceExecuteException;
 import org.tinygroup.service.exception.ServiceRunException;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
+import java.util.List;
 
 public class ServiceProxy implements Service {
 	private Logger logger = LoggerFactory.getLogger(ServiceProxy.class);

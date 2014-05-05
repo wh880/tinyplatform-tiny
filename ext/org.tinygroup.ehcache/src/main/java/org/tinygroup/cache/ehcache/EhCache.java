@@ -23,16 +23,15 @@
  */
 package org.tinygroup.cache.ehcache;
 
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+import org.tinygroup.cache.Cache;
+import org.tinygroup.cache.exception.CacheException;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-
-import org.tinygroup.cache.Cache;
-import org.tinygroup.cache.exception.CacheException;
 
 /**
  * 

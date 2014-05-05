@@ -23,13 +23,13 @@
  */
 package org.tinygroup.entity.util;
 
-import java.util.List;
-
 import org.tinygroup.entity.BaseModel;
 import org.tinygroup.entity.common.Operation;
 import org.tinygroup.entity.common.View;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
+
+import java.util.List;
 
 /**
  * 

@@ -23,8 +23,6 @@
  */
 package org.tinygroup.service.test.service;
 
-import java.util.List;
-
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -33,6 +31,8 @@ import org.tinygroup.service.annotation.ServiceMethod;
 import org.tinygroup.service.annotation.ServiceParameter;
 import org.tinygroup.service.annotation.ServiceResult;
 import org.tinygroup.service.test.base.ServiceUser;
+
+import java.util.List;
 
 @ServiceComponent()
 public class UserManagerAnnotationService {

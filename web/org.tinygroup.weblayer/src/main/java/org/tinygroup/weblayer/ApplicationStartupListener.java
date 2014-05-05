@@ -49,7 +49,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.Enumeration;
-import java.util.List;
 
 public class ApplicationStartupListener implements ServletContextListener {
     private static Logger logger = LoggerFactory.getLogger(ApplicationStartupListener.class);

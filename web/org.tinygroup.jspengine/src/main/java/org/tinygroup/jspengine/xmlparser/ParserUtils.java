@@ -25,11 +25,17 @@
 
 package org.tinygroup.jspengine.xmlparser;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.util.HashMap;
+import org.tinygroup.jspengine.Constants;
+import org.tinygroup.jspengine.JasperException;
+import org.tinygroup.jspengine.compiler.Localizer;
+import org.tinygroup.jspengine.org.apache.commons.logging.Log;
+import org.tinygroup.jspengine.org.apache.commons.logging.LogFactory;
+import org.w3c.dom.*;
+import org.w3c.dom.ls.LSInput;
+import org.w3c.dom.ls.LSResourceResolver;
+import org.xml.sax.*;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,27 +43,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import javax.xml.XMLConstants;
-
-import org.tinygroup.jspengine.Constants;
-import org.tinygroup.jspengine.JasperException;
-import org.tinygroup.jspengine.compiler.Localizer;
-import org.tinygroup.jspengine.org.apache.commons.logging.Log;
-import org.tinygroup.jspengine.org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Comment;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.w3c.dom.ls.LSResourceResolver;
-import org.w3c.dom.ls.LSInput;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.HashMap;
 
 /**
  * XML parsing utilities for processing web application deployment

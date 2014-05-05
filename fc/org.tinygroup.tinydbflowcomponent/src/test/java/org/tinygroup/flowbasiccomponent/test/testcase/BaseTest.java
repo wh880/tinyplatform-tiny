@@ -23,14 +23,7 @@
  */
 package org.tinygroup.flowbasiccomponent.test.testcase;
 
-import java.nio.charset.Charset;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.BeanOperatorManager;
@@ -41,6 +34,12 @@ import org.tinygroup.tinydb.script.Resources;
 import org.tinygroup.tinydb.script.ScriptRunner;
 import org.tinygroup.tinydb.util.DataSourceFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
+
+import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseTest extends TestCase {
 	protected  static BeanOperatorManager manager;

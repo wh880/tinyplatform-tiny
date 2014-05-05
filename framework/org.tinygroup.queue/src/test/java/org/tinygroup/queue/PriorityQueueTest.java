@@ -23,12 +23,11 @@
  */
 package org.tinygroup.queue;
 
-import java.util.Random;
-
+import junit.framework.TestCase;
 import org.tinygroup.commons.exceptions.NotExistException;
 import org.tinygroup.queue.impl.PriorityQueueImpl;
 
-import junit.framework.TestCase;
+import java.util.Random;
 
 public class PriorityQueueTest extends TestCase {
 	static volatile boolean stopIt = false;

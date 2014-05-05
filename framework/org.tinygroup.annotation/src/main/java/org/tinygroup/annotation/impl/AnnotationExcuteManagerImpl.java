@@ -23,21 +23,11 @@
  */
 package org.tinygroup.annotation.impl;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.annotation.AnnotationClassAction;
 import org.tinygroup.annotation.AnnotationExcuteManager;
 import org.tinygroup.annotation.AnnotationMethodAction;
 import org.tinygroup.annotation.AnnotationPropertyAction;
-import org.tinygroup.annotation.config.AnnotationClassMatcher;
-import org.tinygroup.annotation.config.AnnotationClassMatchers;
-import org.tinygroup.annotation.config.AnnotationMethodMatcher;
-import org.tinygroup.annotation.config.AnnotationPropertyMatcher;
-import org.tinygroup.annotation.config.ProcessorBean;
+import org.tinygroup.annotation.config.*;
 import org.tinygroup.annotation.fileresolver.AnnotationFileProcessor;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.config.util.ConfigurationUtil;
@@ -47,6 +37,12 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 注解执行管理器实现

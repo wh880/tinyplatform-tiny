@@ -23,10 +23,10 @@
  */
 package org.tinygroup.convert.common;
 
+import org.tinygroup.convert.Converter;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.tinygroup.convert.Converter;
 
 public class StringToUTCDate implements Converter<String, Date> {
 	SimpleDateFormat simpleDateFormat = new SimpleDateFormat(

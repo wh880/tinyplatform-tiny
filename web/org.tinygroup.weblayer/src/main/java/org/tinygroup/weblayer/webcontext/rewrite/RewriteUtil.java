@@ -23,10 +23,6 @@
  */
 package org.tinygroup.weblayer.webcontext.rewrite;
 
-import java.util.regex.MatchResult;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.tinygroup.commons.tools.MatchResultSubstitution;
 import org.tinygroup.format.Formater;
 import org.tinygroup.format.PatternDefine;
@@ -34,6 +30,9 @@ import org.tinygroup.format.impl.DefaultPatternDefine;
 import org.tinygroup.format.impl.FormaterImpl;
 import org.tinygroup.weblayer.webcontext.parser.ParserWebContext;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.regex.MatchResult;
 
 
 

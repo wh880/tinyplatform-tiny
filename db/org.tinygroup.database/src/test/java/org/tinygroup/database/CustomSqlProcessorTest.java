@@ -24,7 +24,6 @@
 package org.tinygroup.database;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.database.customesql.CustomSqlProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.springutil.SpringUtil;

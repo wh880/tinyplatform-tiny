@@ -24,7 +24,6 @@
 package org.tinygroup.exceptionhandler.test.testcase;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.exceptionhandler.ExceptionHandler;
 import org.tinygroup.exceptionhandler.ExceptionHandlerManager;
 import org.tinygroup.exceptionhandler.impl.ExceptionHandlerManagerImpl;

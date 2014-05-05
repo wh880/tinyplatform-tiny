@@ -23,11 +23,11 @@
  */
 package org.tinygroup.service.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @XStreamAlias("service-view-mappings")
 public class ServiceViewMappings {

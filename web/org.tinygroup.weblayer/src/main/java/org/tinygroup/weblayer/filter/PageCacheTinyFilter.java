@@ -23,8 +23,6 @@
  */
 package org.tinygroup.weblayer.filter;
 
-import java.util.List;
-
 import org.tinygroup.cache.Cache;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.ConfigurationManager;
@@ -38,6 +36,8 @@ import org.tinygroup.weblayer.webcontext.cache.PageCacheWebContext;
 import org.tinygroup.weblayer.webcontext.cache.impl.PageCacheWebContextImpl;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.List;
 
 /**
  * 

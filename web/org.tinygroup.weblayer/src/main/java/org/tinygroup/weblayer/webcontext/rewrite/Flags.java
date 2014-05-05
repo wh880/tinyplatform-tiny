@@ -23,12 +23,12 @@
  */
 package org.tinygroup.weblayer.webcontext.rewrite;
 
-import static org.tinygroup.commons.tools.ArrayUtil.*;
-import static org.tinygroup.commons.tools.Assert.*;
-import static org.tinygroup.commons.tools.BasicConstant.*;
-import static org.tinygroup.commons.tools.StringUtil.*;
-
 import org.tinygroup.commons.tools.ToStringBuilder.CollectionBuilder;
+
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.Assert.assertTrue;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING_ARRAY;
+import static org.tinygroup.commons.tools.StringUtil.trimToEmpty;
 
 
 public class Flags {

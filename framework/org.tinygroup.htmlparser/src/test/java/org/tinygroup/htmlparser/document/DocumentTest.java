@@ -23,13 +23,12 @@
  */
 package org.tinygroup.htmlparser.document;
 
-import java.io.IOException;
-
+import junit.framework.TestCase;
 import org.tinygroup.htmlparser.HtmlDocument;
 import org.tinygroup.htmlparser.parser.HtmlStringParser;
 import org.tinygroup.parser.exception.ParseException;
 
-import junit.framework.TestCase;
+import java.io.IOException;
 
 public class DocumentTest extends TestCase {
 	HtmlDocument doc = null;

@@ -23,9 +23,9 @@
  */
 package org.tinygroup.weblayer;
 
-import java.util.List;
-
 import org.tinygroup.weblayer.configmanager.TinyFiterConfigManager;
+
+import java.util.List;
 
 /**
  * 代表一组tinyfilter信息

@@ -23,12 +23,19 @@
  */
 package org.tinygroup.jspengine.compiler;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilePermission;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import org.tinygroup.jspengine.Constants;
+import org.tinygroup.jspengine.JspCompilationContext;
+import org.tinygroup.jspengine.Options;
+import org.tinygroup.jspengine.org.apache.commons.logging.Log;
+import org.tinygroup.jspengine.org.apache.commons.logging.LogFactory;
+import org.tinygroup.jspengine.runtime.JspFactoryImpl;
+import org.tinygroup.jspengine.security.SecurityClassLoad;
+import org.tinygroup.jspengine.servlet.JspServletWrapper;
+import org.tinygroup.jspengine.util.SystemLogHandler;
+
+import javax.servlet.ServletContext;
+import javax.servlet.jsp.JspFactory;
+import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
@@ -40,19 +47,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.servlet.ServletContext;
-import javax.servlet.jsp.JspFactory;
-
-import org.tinygroup.jspengine.Constants;
-import org.tinygroup.jspengine.JspCompilationContext;
-import org.tinygroup.jspengine.Options;
-import org.tinygroup.jspengine.org.apache.commons.logging.Log;
-import org.tinygroup.jspengine.org.apache.commons.logging.LogFactory;
-import org.tinygroup.jspengine.runtime.JspFactoryImpl;
-import org.tinygroup.jspengine.security.SecurityClassLoad;
-import org.tinygroup.jspengine.servlet.JspServletWrapper;
-import org.tinygroup.jspengine.util.SystemLogHandler;
 
 /**
  * Class for tracking JSP compile time file dependencies when the &060;%@include

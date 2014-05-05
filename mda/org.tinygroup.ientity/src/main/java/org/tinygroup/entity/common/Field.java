@@ -23,13 +23,12 @@
  */
 package org.tinygroup.entity.common;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.tinygroup.imda.validate.ValidateRule;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.imda.validate.ValidateRule;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 模型的属性

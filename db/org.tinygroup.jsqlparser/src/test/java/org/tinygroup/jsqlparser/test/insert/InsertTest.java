@@ -1,8 +1,5 @@
 package org.tinygroup.jsqlparser.test.insert;
 
-import java.io.StringReader;
-import static junit.framework.Assert.assertEquals;
-
 import junit.framework.TestCase;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.expression.DoubleValue;
@@ -16,7 +13,10 @@ import org.tinygroup.jsqlparser.schema.Table;
 import org.tinygroup.jsqlparser.statement.insert.Insert;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 import org.tinygroup.jsqlparser.statement.select.SubSelect;
-import static org.tinygroup.jsqlparser.test.TestUtils.*;
+
+import java.io.StringReader;
+
+import static org.tinygroup.jsqlparser.test.TestUtils.assertSqlCanBeParsedAndDeparsed;
 
 public class InsertTest extends TestCase {
 

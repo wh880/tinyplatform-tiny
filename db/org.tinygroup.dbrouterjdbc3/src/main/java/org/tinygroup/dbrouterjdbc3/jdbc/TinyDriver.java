@@ -23,13 +23,6 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.DriverPropertyInfo;
-import java.sql.SQLException;
-import java.util.Properties;
-
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
@@ -38,6 +31,9 @@ import org.tinygroup.i18n.I18nMessageFactory;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.sql.*;
+import java.util.Properties;
 
 /**
  * 功能说明: tiny版本的驱动器

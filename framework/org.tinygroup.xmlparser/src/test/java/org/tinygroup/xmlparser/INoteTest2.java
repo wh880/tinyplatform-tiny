@@ -23,9 +23,8 @@
  */
 package org.tinygroup.xmlparser;
 
-import org.tinygroup.xmlparser.node.XmlNode;
-
 import junit.framework.TestCase;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 public class INoteTest2 extends TestCase {
 	XmlNode node = null;

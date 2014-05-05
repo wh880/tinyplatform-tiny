@@ -23,12 +23,12 @@
  */
 package org.tinygroup.jspengine.appserv.server.util;
 
-import java.util.Hashtable;
-import java.util.logging.Level;
-import java.util.logging.Logger; 
-
 import org.tinygroup.jspengine.appserv.BytecodePreprocessor;
 import org.tinygroup.jspengine.common.util.logging.LogDomains;
+
+import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * PreprocessorUtil is a utility class for managing the bytecode 

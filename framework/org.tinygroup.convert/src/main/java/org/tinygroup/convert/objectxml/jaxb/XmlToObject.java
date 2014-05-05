@@ -23,11 +23,11 @@
  */
 package org.tinygroup.convert.objectxml.jaxb;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-
 import org.tinygroup.commons.io.ByteArrayInputStream;
 import org.tinygroup.convert.Converter;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 
 public class XmlToObject<T> implements Converter<String, T> {
     String encode = "UTF-8";

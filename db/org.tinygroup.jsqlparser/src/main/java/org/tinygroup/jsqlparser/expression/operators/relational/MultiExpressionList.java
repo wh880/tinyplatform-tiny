@@ -21,11 +21,12 @@
  */
 package org.tinygroup.jsqlparser.expression.operators.relational;
 
+import org.tinygroup.jsqlparser.expression.Expression;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import org.tinygroup.jsqlparser.expression.Expression;
 
 /**
  * A list of ExpressionList items. e.g. multi values of insert statements. This

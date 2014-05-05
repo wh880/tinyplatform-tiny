@@ -23,9 +23,9 @@
  */
 package org.tinygroup.mongodb.engine.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import org.bson.BSONObject;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.mongodb.common.MongoRelation;
@@ -34,9 +34,8 @@ import org.tinygroup.mongodb.db.MongodbPersistence;
 import org.tinygroup.mongodb.model.MongoDBModel;
 import org.tinygroup.springutil.SpringUtil;
 
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 

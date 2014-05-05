@@ -23,9 +23,9 @@
  */
 package org.tinygroup.service.loader;
 
-import java.lang.annotation.Annotation;
-
 import org.tinygroup.service.registry.ServiceRegistry;
+
+import java.lang.annotation.Annotation;
 
 /**
  * 

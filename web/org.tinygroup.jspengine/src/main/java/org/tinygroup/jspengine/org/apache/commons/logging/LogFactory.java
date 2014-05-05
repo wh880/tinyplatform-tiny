@@ -34,12 +34,12 @@
 // ========================================================================
 package org.tinygroup.jspengine.org.apache.commons.logging;
 
+import org.tinygroup.jspengine.org.apache.commons.logging.impl.StdErrLog;
+
 import java.lang.reflect.Constructor;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.tinygroup.jspengine.org.apache.commons.logging.impl.StdErrLog;
 
 
 /**

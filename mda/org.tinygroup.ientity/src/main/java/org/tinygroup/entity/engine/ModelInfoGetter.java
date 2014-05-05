@@ -23,11 +23,6 @@
  */
 package org.tinygroup.entity.engine;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.entity.BaseModel;
 import org.tinygroup.entity.base.BaseObject;
 import org.tinygroup.entity.common.ConditionField;
@@ -40,6 +35,11 @@ import org.tinygroup.imda.config.CustomizeStageConfig;
 import org.tinygroup.imda.validate.ValidateRule;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ModelInfoGetter implements ModelInformationGetter<BaseModel> {
 	static final Logger logger = LoggerFactory.getLogger(ModelInfoGetter.class);

@@ -23,9 +23,9 @@
  */
 package org.tinygroup.cepcore;
 
-import java.util.Map;
-
 import org.tinygroup.event.central.Node;
+
+import java.util.Map;
 
 public interface NodeStrategy {
 	Node getNode();

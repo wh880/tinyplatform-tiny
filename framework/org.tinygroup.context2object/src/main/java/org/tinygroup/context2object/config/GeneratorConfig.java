@@ -23,10 +23,10 @@
  */
 package org.tinygroup.context2object.config;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 @XStreamAlias("generator-config")
 public class GeneratorConfig {

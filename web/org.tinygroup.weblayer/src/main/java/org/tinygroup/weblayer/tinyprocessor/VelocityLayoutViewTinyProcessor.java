@@ -23,10 +23,7 @@
  */
 package org.tinygroup.weblayer.tinyprocessor;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -34,14 +31,14 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.velocity.VelocityHelper;
 import org.tinygroup.velocity.config.VelocityContextConfig;
-import org.tinygroup.velocity.impl.VelocityHelperImpl;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class VelocityLayoutViewTinyProcessor extends AbstractTinyProcessor {
 

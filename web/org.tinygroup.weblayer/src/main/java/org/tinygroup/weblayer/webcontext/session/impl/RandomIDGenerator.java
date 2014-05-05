@@ -23,16 +23,16 @@
  */
 package org.tinygroup.weblayer.webcontext.session.impl;
 
-import static org.tinygroup.commons.tools.Assert.*;
-import static org.tinygroup.commons.tools.ObjectUtil.*;
-
-import java.security.SecureRandom;
-import java.util.Random;
-
 import org.apache.commons.codec.binary.Base64;
 import org.tinygroup.commons.tools.ToStringBuilder;
 import org.tinygroup.support.BeanSupport;
 import org.tinygroup.weblayer.webcontext.session.SessionIDGenerator;
+
+import java.security.SecureRandom;
+import java.util.Random;
+
+import static org.tinygroup.commons.tools.Assert.unreachableCode;
+import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
 
 /**
  * 用随机数生成session ID的机制。

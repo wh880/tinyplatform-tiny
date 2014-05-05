@@ -23,13 +23,13 @@
  */
 package org.tinygroup.convert;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.convert.objectxml.simple.ObjectToXml;
 import org.tinygroup.convert.objectxml.simple.XmlToObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestObjectXmlWithSimple extends AbstractConvertTestCase {
 

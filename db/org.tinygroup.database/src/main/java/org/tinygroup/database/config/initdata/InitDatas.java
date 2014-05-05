@@ -23,12 +23,11 @@
  */
 package org.tinygroup.database.config.initdata;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.tinygroup.database.config.UsePackage;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import java.util.ArrayList;
+import java.util.List;
 
 @XStreamAlias("initDatas")
 public class InitDatas {

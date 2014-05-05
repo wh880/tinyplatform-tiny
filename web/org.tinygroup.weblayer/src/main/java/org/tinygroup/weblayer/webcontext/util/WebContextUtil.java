@@ -23,12 +23,12 @@
  */
 package org.tinygroup.weblayer.webcontext.util;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.tinygroup.weblayer.WebContext;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.tinygroup.weblayer.WebContext;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 和<code>WebContext</code>相关的辅助类。

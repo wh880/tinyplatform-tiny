@@ -23,9 +23,9 @@
  */
 package org.tinygroup.convert.xsdjava;
 
-import java.util.List;
-
 import org.tinygroup.convert.Converter;
+
+import java.util.List;
 
 public class SchemaToClass implements Converter<List<String>, Void> {
 	private String baseFolder;

@@ -23,9 +23,9 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.propertyedit;
 
-import java.beans.PropertyEditorSupport;
-
 import org.tinygroup.commons.tools.HumanReadableSize;
+
+import java.beans.PropertyEditorSupport;
 
 /**
  * 用于注入<code>HumanReadableSizeEditor</code>类型的property。

@@ -23,16 +23,16 @@
  */
 package org.tinygroup.database.customesql.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.config.SqlBody;
 import org.tinygroup.database.config.customsql.CustomSql;
 import org.tinygroup.database.config.customsql.CustomSqls;
 import org.tinygroup.database.customesql.CustomSqlProcessor;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CustomSqlProcessorImpl implements CustomSqlProcessor {
 	//Map<language,Map<type(before,after),sql>>

@@ -23,13 +23,12 @@
  */
 package org.tinygroup.ientity;
 
-import java.io.File;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.entity.entitymodel.EntityModel;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.springutil.SpringUtil;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.File;
 
 public class Test {
 

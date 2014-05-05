@@ -21,10 +21,10 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
-import java.util.List;
-
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.schema.Column;
+
+import java.util.List;
 
 /**
  * A join clause

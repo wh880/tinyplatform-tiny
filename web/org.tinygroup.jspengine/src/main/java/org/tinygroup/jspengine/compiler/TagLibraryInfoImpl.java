@@ -25,41 +25,19 @@
 
 package org.tinygroup.jspengine.compiler;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.JarURLConnection;
-import java.net.URL;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Vector;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
-
-import javax.servlet.jsp.tagext.FunctionInfo;
-import javax.servlet.jsp.tagext.PageData;
-import javax.servlet.jsp.tagext.TagAttributeInfo;
-import javax.servlet.jsp.tagext.TagExtraInfo;
-import javax.servlet.jsp.tagext.TagFileInfo;
-import javax.servlet.jsp.tagext.TagInfo;
-import javax.servlet.jsp.tagext.TagLibraryInfo;
-import javax.servlet.jsp.tagext.TagLibraryValidator;
-import javax.servlet.jsp.tagext.TagVariableInfo;
-import javax.servlet.jsp.tagext.ValidationMessage;
-import javax.servlet.jsp.tagext.VariableInfo;
-
 import org.tinygroup.jspengine.Constants;
 import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.JspCompilationContext;
-import org.tinygroup.jspengine.org.apache.commons.logging.Log;
-import org.tinygroup.jspengine.org.apache.commons.logging.LogFactory;
 import org.tinygroup.jspengine.xmlparser.ParserUtils;
 import org.tinygroup.jspengine.xmlparser.TreeNode;
+
+import javax.servlet.jsp.tagext.*;
+import java.io.*;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.util.*;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 /**
  * Implementation of the TagLibraryInfo class from the JSP spec. 

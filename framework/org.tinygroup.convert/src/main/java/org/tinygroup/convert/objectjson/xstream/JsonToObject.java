@@ -23,10 +23,9 @@
  */
 package org.tinygroup.convert.objectjson.xstream;
 
-import org.tinygroup.convert.Converter;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
+import org.tinygroup.convert.Converter;
 
 public class JsonToObject<T> implements Converter<String, T> {
 	XStream xstream;

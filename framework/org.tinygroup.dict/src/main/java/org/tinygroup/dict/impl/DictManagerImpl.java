@@ -23,11 +23,6 @@
  */
 package org.tinygroup.dict.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.cache.Cache;
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.context.Context;
@@ -35,6 +30,11 @@ import org.tinygroup.dict.Dict;
 import org.tinygroup.dict.DictLoader;
 import org.tinygroup.dict.DictManager;
 import org.tinygroup.support.BeanSupport;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DictManagerImpl extends BeanSupport implements DictManager {
 

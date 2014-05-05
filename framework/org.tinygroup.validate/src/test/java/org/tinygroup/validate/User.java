@@ -23,18 +23,12 @@
  */
 package org.tinygroup.validate;
 
+import org.tinygroup.validate.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.tinygroup.validate.annotation.AssertEquals;
-import org.tinygroup.validate.annotation.AssertNotNull;
-import org.tinygroup.validate.annotation.Field;
-import org.tinygroup.validate.annotation.IntegerRange;
-import org.tinygroup.validate.annotation.Pattern;
-import org.tinygroup.validate.annotation.Size;
-import org.tinygroup.validate.annotation.Validation;
 
 @Validation(name = "user")
 public class User {

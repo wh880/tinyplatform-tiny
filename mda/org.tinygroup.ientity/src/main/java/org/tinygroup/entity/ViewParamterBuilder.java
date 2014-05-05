@@ -23,13 +23,13 @@
  */
 package org.tinygroup.entity;
 
-import java.util.List;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.entity.common.ConditionField;
 import org.tinygroup.entity.common.HavingField;
 import org.tinygroup.entity.common.View;
 import org.tinygroup.entity.entitymodel.EntityModel;
+
+import java.util.List;
 
 /**
  * 

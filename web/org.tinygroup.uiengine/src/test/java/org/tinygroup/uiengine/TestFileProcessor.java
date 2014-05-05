@@ -24,7 +24,6 @@
 package org.tinygroup.uiengine;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.uiengine.config.UIComponent;
 import org.tinygroup.uiengine.manager.UIComponentManager;

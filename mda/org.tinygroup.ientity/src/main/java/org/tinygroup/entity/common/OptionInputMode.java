@@ -23,10 +23,10 @@
  */
 package org.tinygroup.entity.common;
 
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+import java.util.List;
 
 @XStreamAlias("option-input-mode")
 public class OptionInputMode extends InputMode {

@@ -23,14 +23,14 @@
  */
 package org.tinygroup.metadata.stddatatype.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.metadata.config.stddatatype.DialectType;
 import org.tinygroup.metadata.config.stddatatype.StandardType;
 import org.tinygroup.metadata.config.stddatatype.StandardTypes;
 import org.tinygroup.metadata.stddatatype.StandardTypeProcessor;
 import org.tinygroup.metadata.util.MetadataUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 

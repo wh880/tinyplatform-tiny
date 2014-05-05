@@ -23,14 +23,6 @@
  */
 package org.tinygroup.weblayer.servlet;
 
-import java.io.IOException;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -42,6 +34,13 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.impl.WebContextImpl;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class VelocityLayoutViewServlet extends HttpServlet {
 	private static final Logger logger = LoggerFactory

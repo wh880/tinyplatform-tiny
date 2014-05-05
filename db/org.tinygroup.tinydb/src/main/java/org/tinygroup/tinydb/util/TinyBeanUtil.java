@@ -23,14 +23,14 @@
  */
 package org.tinygroup.tinydb.util;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.tinygroup.exception.TinySysRuntimeException;
+import org.tinygroup.tinydb.Bean;
+
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Map;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.tinygroup.exception.TinySysRuntimeException;
-import org.tinygroup.tinydb.Bean;
 
 /**
  * 

@@ -23,8 +23,8 @@
  */
 package org.tinygroup.dbrouter.impl.shardrule;
 
-import java.util.List;
-
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import org.tinygroup.dbrouter.ShardRule;
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
@@ -45,8 +45,7 @@ import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.SelectBody;
 import org.tinygroup.jsqlparser.statement.update.Update;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.List;
 
 /**
  * Created by luoguo on 13-12-17.

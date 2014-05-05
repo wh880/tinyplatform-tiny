@@ -21,9 +21,9 @@
  */
 package org.tinygroup.jsqlparser.statement.create.table;
 
-import java.util.List;
-
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
+
+import java.util.List;
 
 /**
  * A column definition in a CREATE TABLE statement.<br>

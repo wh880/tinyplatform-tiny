@@ -23,11 +23,11 @@
  */
 package org.tinygroup.dbrouterjdbc3.thread;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.tinygroup.dbrouterjdbc3.jdbc.RealStatementExecutor;
 import org.tinygroup.dbrouterjdbc3.jdbc.ResultSetExecutor;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class ExecuteQueryCallBack implements StatementProcessorCallBack<ResultSetExecutor> {
 

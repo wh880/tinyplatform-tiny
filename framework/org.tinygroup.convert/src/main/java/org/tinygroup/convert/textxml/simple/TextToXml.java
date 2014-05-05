@@ -23,10 +23,10 @@
  */
 package org.tinygroup.convert.textxml.simple;
 
-import java.util.Map;
-
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.XmlUtils;
+
+import java.util.Map;
 
 public class TextToXml implements Converter<String, String> {
 	private String rootNodeName;

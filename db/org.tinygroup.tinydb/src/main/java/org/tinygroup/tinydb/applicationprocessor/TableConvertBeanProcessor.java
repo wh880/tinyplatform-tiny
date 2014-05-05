@@ -23,8 +23,6 @@
  */
 package org.tinygroup.tinydb.applicationprocessor;
 
-import java.util.List;
-
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.commons.tools.Assert;
@@ -46,6 +44,8 @@ import org.tinygroup.tinydb.config.ColumnConfiguration;
 import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.List;
 
 /**
  * Table对象信息转为为TableConfiguration

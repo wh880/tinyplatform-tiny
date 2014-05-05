@@ -23,11 +23,11 @@
  */
 package org.tinygroup.database.config.procedure;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @XStreamAlias("procedures")
 public class Procedures {

@@ -23,16 +23,11 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
+import junit.framework.TestCase;
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 
-import junit.framework.TestCase;
+import java.sql.*;
 
 /**
  * 

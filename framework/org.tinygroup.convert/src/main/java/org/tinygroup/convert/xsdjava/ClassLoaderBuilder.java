@@ -23,17 +23,16 @@
  */
 package org.tinygroup.convert.xsdjava;
 
+import com.sun.istack.tools.MaskingClassLoader;
+import com.sun.istack.tools.ParallelWorldClassLoader;
+
+import javax.xml.bind.JAXBContext;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-
-import com.sun.istack.tools.MaskingClassLoader;
-import com.sun.istack.tools.ParallelWorldClassLoader;
 
 /**
  * Creates a class loader configured to run XJC 1.0/2.0 safely without

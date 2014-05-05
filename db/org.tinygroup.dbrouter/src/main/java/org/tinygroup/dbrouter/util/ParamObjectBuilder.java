@@ -23,20 +23,13 @@
  */
 package org.tinygroup.dbrouter.util;
 
+import org.tinygroup.commons.tools.CollectionUtil;
+
 import java.io.InputStream;
 import java.io.Reader;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.tinygroup.commons.tools.CollectionUtil;
+import java.sql.*;
+import java.util.*;
 
 /**
  * 

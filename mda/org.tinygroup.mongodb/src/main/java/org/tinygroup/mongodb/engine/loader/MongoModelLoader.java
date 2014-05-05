@@ -23,6 +23,7 @@
  */
 package org.tinygroup.mongodb.engine.loader;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.imda.ModelLoader;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -30,8 +31,6 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.mongodb.model.MongoDBModel;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 /**
  * 

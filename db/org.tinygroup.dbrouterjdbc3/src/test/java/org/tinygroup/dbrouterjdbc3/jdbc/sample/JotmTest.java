@@ -23,15 +23,14 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc.sample;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import org.enhydra.jdbc.standard.StandardXADataSource;
+import org.objectweb.jotm.Jotm;
 
 import javax.sql.XAConnection;
 import javax.transaction.UserTransaction;
-
-import org.enhydra.jdbc.standard.StandardXADataSource;
-import org.objectweb.jotm.Jotm;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 
 /**

@@ -23,10 +23,7 @@
  */
 package org.tinygroup.imda;
 
-import java.io.StringWriter;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.context.util.ContextFactory;
 import org.tinygroup.imda.test.util.ModelTestUtil;
@@ -34,6 +31,8 @@ import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
 import org.tinygroup.imda.usermodel.CaseModel;
 import org.tinygroup.imda.usermodel.CaseModelParamBuilder;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.io.StringWriter;
 
 public class ModelManagerTest extends TestCase {
 

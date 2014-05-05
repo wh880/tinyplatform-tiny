@@ -23,15 +23,14 @@
  */
 package org.tinygroup.weblayer.impl;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import org.tinygroup.commons.tools.Enumerator;
+import org.tinygroup.weblayer.listener.ServletContextHolder;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-
-import org.tinygroup.commons.tools.Enumerator;
-import org.tinygroup.weblayer.listener.ServletContextHolder;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * tiny框架中ServletConfig的实现

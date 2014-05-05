@@ -23,9 +23,6 @@
  */
 package org.tinygroup.entity.engine.entity.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
@@ -37,6 +34,9 @@ import org.tinygroup.entity.entitymodel.EntityModel;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.impl.DefaultNameConverter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 

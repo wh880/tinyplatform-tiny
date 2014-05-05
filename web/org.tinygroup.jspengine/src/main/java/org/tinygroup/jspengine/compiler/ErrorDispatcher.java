@@ -24,15 +24,14 @@
 
 package org.tinygroup.jspengine.compiler;
 
+import org.tinygroup.jspengine.JasperException;
+import org.xml.sax.SAXException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ResourceBundle;
-import java.util.ArrayList;
 import java.net.MalformedURLException;
-
-import org.tinygroup.jspengine.JasperException;
-import org.xml.sax.SAXException;
+import java.util.ArrayList;
 
 /**
  * Class responsible for dispatching JSP parse and javac compilation errors

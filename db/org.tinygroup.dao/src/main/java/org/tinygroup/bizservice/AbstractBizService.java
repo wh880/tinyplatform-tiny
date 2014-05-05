@@ -23,11 +23,11 @@
  */
 package org.tinygroup.bizservice;
 
-import java.util.Collection;
-
 import org.tinygroup.dao.query.PagingObject;
 import org.tinygroup.dao.query.QueryObject;
 import org.tinygroup.logic.LogicInterface;
+
+import java.util.Collection;
 
 public class AbstractBizService<T, KeyType> implements
 		BizServiceInterface<T, KeyType, QueryObject> {

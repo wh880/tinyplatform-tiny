@@ -23,11 +23,11 @@
  */
 package org.tinygroup.commons.tools;
 
+import org.tinygroup.commons.i18n.LocaleUtil;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.BitSet;
-
-import org.tinygroup.commons.i18n.LocaleUtil;
 
 /**
  * 字符串转义工具类，能将字符串转换成适应 Java、Java Script、HTML、XML、和SQL语句的形式。

@@ -23,15 +23,15 @@
  */
 package org.tinygroup.context2object.test.testcase;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.context2object.test.bean.CatInterface;
 import org.tinygroup.context2object.test.bean.People2;
 import org.tinygroup.context2object.test.bean.SmallCat;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 public class TestList extends BastTestCast{
 

@@ -23,12 +23,12 @@
  */
 package org.tinygroup.validate.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.validate.ValidateResult;
 import org.tinygroup.validate.ValidatorManager;
 import org.tinygroup.validate.ValidatorMapStorage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 复合的校验器管理对象

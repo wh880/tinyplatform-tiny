@@ -23,12 +23,12 @@
  */
 package org.tinygroup.channel;
 
-import java.util.List;
-
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.channel.impl.AbstractChannel;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
+
+import java.util.List;
 
 public class ChannelSample extends AbstractChannel {
 

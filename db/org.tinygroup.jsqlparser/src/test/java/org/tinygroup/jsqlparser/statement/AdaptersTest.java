@@ -1,5 +1,6 @@
 package org.tinygroup.jsqlparser.statement;
 
+import org.junit.Test;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.expression.BinaryExpression;
 import org.tinygroup.jsqlparser.expression.ExpressionVisitorAdapter;
@@ -10,7 +11,6 @@ import org.tinygroup.jsqlparser.schema.Column;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.SelectVisitorAdapter;
-import org.junit.Test;
 
 import java.util.Stack;
 

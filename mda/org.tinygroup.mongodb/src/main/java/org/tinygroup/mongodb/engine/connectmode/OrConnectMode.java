@@ -23,9 +23,8 @@
  */
 package org.tinygroup.mongodb.engine.connectmode;
 
-import org.bson.BSONObject;
-
 import com.mongodb.BasicDBList;
+import org.bson.BSONObject;
 
 /**
  * 

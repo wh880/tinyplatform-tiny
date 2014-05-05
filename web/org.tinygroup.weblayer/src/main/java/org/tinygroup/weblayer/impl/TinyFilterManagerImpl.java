@@ -23,11 +23,6 @@
  */
 package org.tinygroup.weblayer.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.commons.order.OrderUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.util.ConfigurationUtil;
@@ -41,6 +36,11 @@ import org.tinygroup.weblayer.TinyFilter;
 import org.tinygroup.weblayer.TinyFilterManager;
 import org.tinygroup.weblayer.configmanager.TinyFiterConfigManager;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * tiny-filter的管理类

@@ -23,10 +23,6 @@
  */
 package org.tinygroup.imda;
 
-import java.io.Writer;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.imda.config.CustomizeStageConfig;
 import org.tinygroup.imda.config.ModelDefine;
@@ -35,6 +31,10 @@ import org.tinygroup.imda.config.ModelProcessorStage;
 import org.tinygroup.imda.impl.ModelContainer;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
 import org.tinygroup.imda.validate.ValidateRule;
+
+import java.io.Writer;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 模型管理器<br>

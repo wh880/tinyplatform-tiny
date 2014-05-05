@@ -23,17 +23,17 @@
  */
 package org.tinygroup.cepcore.util;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import org.tinygroup.cepcore.NodeStrategy;
 import org.tinygroup.event.central.Node;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class CEPNodeWeightPloyBak implements NodeStrategy {
 	private static final Logger logger = LoggerFactory

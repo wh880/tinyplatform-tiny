@@ -21,13 +21,14 @@
  */
 package org.tinygroup.jsqlparser.parser;
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.statement.Statement;
 import org.tinygroup.jsqlparser.statement.Statements;
+
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * Toolfunctions to start and use JSqlParser.

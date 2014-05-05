@@ -23,13 +23,13 @@
  */
 package org.tinygroup.parser.node;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.*;
-
 import org.tinygroup.commons.processor.Processor;
 import org.tinygroup.parser.Node;
 import org.tinygroup.parser.NodeType;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.*;
 
 /**
  *

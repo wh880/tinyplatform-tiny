@@ -23,13 +23,12 @@
  */
 package org.tinygroup.entity.relationmodel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.tinygroup.entity.base.BaseObject;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import org.tinygroup.entity.base.BaseObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 字段分组

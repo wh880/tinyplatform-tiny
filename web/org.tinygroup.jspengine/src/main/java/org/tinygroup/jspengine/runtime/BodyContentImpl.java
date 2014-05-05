@@ -25,16 +25,11 @@
 
 package org.tinygroup.jspengine.runtime;
 
-import java.io.CharArrayReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Writer;
-import javax.servlet.ServletResponse;
+import org.tinygroup.jspengine.Constants;
+
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyContent;
-
-import org.tinygroup.jspengine.Constants;
+import java.io.*;
 
 /**
  * Write text to a character-output stream, buffering characters so as

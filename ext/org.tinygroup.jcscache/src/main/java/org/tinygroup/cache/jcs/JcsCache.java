@@ -23,13 +23,13 @@
  */
 package org.tinygroup.cache.jcs;
 
-import java.io.Serializable;
-import java.util.Set;
-
 import org.apache.jcs.JCS;
 import org.apache.jcs.engine.control.CompositeCache;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.exception.CacheException;
+
+import java.io.Serializable;
+import java.util.Set;
 
 public class JcsCache implements Cache {
 	private JCS jcs;

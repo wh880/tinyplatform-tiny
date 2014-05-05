@@ -23,15 +23,15 @@
  */
 package org.tinygroup.database.table.impl;
 
-import java.sql.DatabaseMetaData;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
+
+import java.sql.DatabaseMetaData;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 

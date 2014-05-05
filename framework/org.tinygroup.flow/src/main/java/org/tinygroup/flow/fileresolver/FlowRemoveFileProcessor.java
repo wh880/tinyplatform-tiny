@@ -23,8 +23,7 @@
  */
 package org.tinygroup.flow.fileresolver;
 
-import java.util.List;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.flow.FlowExecutor;
@@ -34,7 +33,7 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.List;
 
 public class FlowRemoveFileProcessor extends AbstractFileProcessor {
 

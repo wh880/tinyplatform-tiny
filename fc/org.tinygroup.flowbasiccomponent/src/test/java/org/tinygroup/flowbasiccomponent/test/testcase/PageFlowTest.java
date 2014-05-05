@@ -24,7 +24,6 @@
 package org.tinygroup.flowbasiccomponent.test.testcase;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.flowbasiccomponent.test.BaseBean;

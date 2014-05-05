@@ -23,11 +23,11 @@
  */
 package org.tinygroup.convert;
 
-import java.io.File;
-import java.net.URISyntaxException;
-
 import org.tinygroup.convert.objectxml.jaxb.ObjectToXml;
 import org.tinygroup.convert.validate.schemafile.XmlValidator;
+
+import java.io.File;
+import java.net.URISyntaxException;
 
 /**
  * 

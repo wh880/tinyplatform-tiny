@@ -23,13 +23,13 @@
  */
 package org.tinygroup.plugin.fileprocessor;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.plugin.PluginManager;
 import org.tinygroup.plugin.config.PluginConfigs;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-import com.thoughtworks.xstream.XStream;
 
 public class PluginFileProcessor extends AbstractFileProcessor {
 	

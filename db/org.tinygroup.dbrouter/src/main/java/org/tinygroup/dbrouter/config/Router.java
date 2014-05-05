@@ -23,12 +23,11 @@
  */
 package org.tinygroup.dbrouter.config;
 
-import java.util.List;
-
-import org.tinygroup.commons.tools.CollectionUtil;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.commons.tools.CollectionUtil;
+
+import java.util.List;
 
 /**
  * 集群<br>

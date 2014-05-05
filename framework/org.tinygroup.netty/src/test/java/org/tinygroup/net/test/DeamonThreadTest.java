@@ -23,10 +23,10 @@
  */
 package org.tinygroup.net.test;
 
-import java.util.Date;
-
 import org.tinygroup.net.daemon.DaemonRunnable;
 import org.tinygroup.net.daemon.DaemonUtils;
+
+import java.util.Date;
 
 public class DeamonThreadTest {
 

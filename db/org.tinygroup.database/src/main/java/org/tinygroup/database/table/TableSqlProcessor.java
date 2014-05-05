@@ -23,10 +23,10 @@
  */
 package org.tinygroup.database.table;
 
+import org.tinygroup.database.config.table.Table;
+
 import java.sql.DatabaseMetaData;
 import java.util.List;
-
-import org.tinygroup.database.config.table.Table;
 
 
 public interface TableSqlProcessor {

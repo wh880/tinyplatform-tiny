@@ -23,11 +23,10 @@
  */
 package org.tinygroup.threadgroup;
 
+import junit.framework.TestCase;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-
-import junit.framework.TestCase;
 
 public class MultiThreadProcessorTest extends TestCase {
 	Logger logger = LoggerFactory.getLogger(MultiThreadProcessorTest.class);

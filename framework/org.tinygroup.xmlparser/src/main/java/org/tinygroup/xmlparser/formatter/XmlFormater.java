@@ -23,12 +23,12 @@
  */
 package org.tinygroup.xmlparser.formatter;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import org.tinygroup.parser.formater.NodeFormaterImpl;
 import org.tinygroup.xmlparser.XmlDocument;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class XmlFormater extends NodeFormaterImpl<XmlDocument, XmlNode> {
 

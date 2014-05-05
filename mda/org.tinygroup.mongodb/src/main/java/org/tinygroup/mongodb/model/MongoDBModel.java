@@ -23,24 +23,16 @@
  */
 package org.tinygroup.mongodb.model;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.mongodb.common.*;
+import org.tinygroup.mongodb.engine.MongoField;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.mongodb.common.BaseObject;
-import org.tinygroup.mongodb.common.Field;
-import org.tinygroup.mongodb.common.Group;
-import org.tinygroup.mongodb.common.ObjectField;
-import org.tinygroup.mongodb.common.Operation;
-import org.tinygroup.mongodb.common.OperationField;
-import org.tinygroup.mongodb.common.OperationGroup;
-import org.tinygroup.mongodb.common.View;
-import org.tinygroup.mongodb.engine.MongoField;
-
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 @XStreamAlias("mongo-model")
 public class MongoDBModel extends BaseObject {
 	@XStreamAsAttribute

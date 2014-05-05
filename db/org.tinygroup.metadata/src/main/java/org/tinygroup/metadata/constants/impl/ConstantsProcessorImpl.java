@@ -23,12 +23,12 @@
  */
 package org.tinygroup.metadata.constants.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.metadata.config.constants.Constant;
 import org.tinygroup.metadata.config.constants.Constants;
 import org.tinygroup.metadata.constants.ConstantProcessor;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConstantsProcessorImpl implements ConstantProcessor {
 	// private Map<String, Map<String, String>> constantsMap = new

@@ -1,9 +1,9 @@
 package org.tinygroup.jsqlparser.test.select;
 
-import java.io.StringReader;
-
 import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.statement.Statement;
+
+import java.io.StringReader;
 
 public class MemoryTest {
 

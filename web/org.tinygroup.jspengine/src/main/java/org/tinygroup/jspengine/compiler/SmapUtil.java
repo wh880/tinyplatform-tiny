@@ -23,19 +23,12 @@
  */
 package org.tinygroup.jspengine.compiler;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.JspCompilationContext;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains static utilities for generating SMAP data based on the

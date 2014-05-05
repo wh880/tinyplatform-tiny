@@ -23,8 +23,6 @@
  */
 package org.tinygroup.weblayer.tinyprocessor;
 
-import java.util.List;
-
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.Context;
@@ -38,6 +36,8 @@ import org.tinygroup.service.ServiceMappingManager;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
+
+import java.util.List;
 
 public class ServiceTinyProcessor extends AbstractTinyProcessor {
 	ServiceMappingManager manager;

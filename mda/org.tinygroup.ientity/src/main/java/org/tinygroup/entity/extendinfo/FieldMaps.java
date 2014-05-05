@@ -23,11 +23,6 @@
  */
 package org.tinygroup.entity.extendinfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.context.Context;
@@ -39,6 +34,11 @@ import org.tinygroup.tinydb.util.TinyBeanUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlParser;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 

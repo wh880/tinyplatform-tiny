@@ -23,9 +23,6 @@
  */
 package org.tinygroup.tinydb.applicationprocessor;
 
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.cache.Cache;
@@ -37,6 +34,9 @@ import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 

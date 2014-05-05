@@ -23,15 +23,14 @@
  */
 package org.tinygroup.entity.common;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import org.tinygroup.entity.base.BaseObject;
 import org.tinygroup.imda.config.CustomizeStageConfig;
 import org.tinygroup.imda.config.PageConfig;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.ArrayList;
+import java.util.List;
 
 @XStreamAlias("operation")
 public class Operation extends BaseObject {

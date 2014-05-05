@@ -23,10 +23,9 @@
  */
 package org.tinygroup.expression.impl;
 
-import org.tinygroup.commons.tools.StringUtil;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.commons.tools.StringUtil;
 
 /**
  * 

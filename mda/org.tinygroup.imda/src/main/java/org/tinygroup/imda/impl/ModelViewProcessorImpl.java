@@ -23,10 +23,6 @@
  */
 package org.tinygroup.imda.impl;
 
-import java.io.Writer;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.imda.config.ModelProcessorDefine;
@@ -37,6 +33,9 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.WebContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.Writer;
 
 /**
  * 默认的视图显示类

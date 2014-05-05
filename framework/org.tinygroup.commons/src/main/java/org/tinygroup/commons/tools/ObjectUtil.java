@@ -23,11 +23,11 @@
  */
 package org.tinygroup.commons.tools;
 
-import static org.tinygroup.commons.tools.Assert.*;
-import static org.tinygroup.commons.tools.BasicConstant.*;
-
 import java.io.IOException;
 import java.util.Arrays;
+
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
 
 
 /**

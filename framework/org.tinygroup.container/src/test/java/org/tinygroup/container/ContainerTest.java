@@ -23,14 +23,13 @@
  */
 package org.tinygroup.container;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
+import junit.framework.TestCase;
 import org.tinygroup.container.impl.BaseObjectImpl;
 import org.tinygroup.container.impl.ContainerImpl;
 
-import junit.framework.TestCase;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * 

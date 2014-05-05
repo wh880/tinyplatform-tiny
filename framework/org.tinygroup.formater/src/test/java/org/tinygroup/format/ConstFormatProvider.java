@@ -23,10 +23,10 @@
  */
 package org.tinygroup.format;
 
+import org.tinygroup.context.Context;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.tinygroup.context.Context;
 
 public class ConstFormatProvider implements FormatProvider {
 	Map<String, String> constMap = new HashMap<String, String>();

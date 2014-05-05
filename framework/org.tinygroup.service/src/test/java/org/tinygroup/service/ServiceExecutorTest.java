@@ -23,11 +23,7 @@
  */
 package org.tinygroup.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Parameter;
@@ -37,6 +33,9 @@ import org.tinygroup.service.impl.ServiceProviderImpl;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
 import org.tinygroup.service.registry.impl.ServiceRegistryImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceExecutorTest extends TestCase {
 	ServiceProviderInterface serviceExecutor = new ServiceProviderImpl();

@@ -29,9 +29,8 @@
  
 package org.tinygroup.jspengine.appserv.util.cache;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 

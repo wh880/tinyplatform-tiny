@@ -23,13 +23,12 @@
  */
 package org.tinygroup.xmlparser.document;
 
-import java.io.IOException;
-
+import junit.framework.TestCase;
 import org.tinygroup.parser.exception.ParseException;
 import org.tinygroup.xmlparser.XmlDocument;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
-import junit.framework.TestCase;
+import java.io.IOException;
 
 public class DocumentTest extends TestCase {
 	XmlDocument doc = null;

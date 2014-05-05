@@ -23,10 +23,9 @@
  */
 package org.tinygroup.expression.impl;
 
-import org.tinygroup.expression.SqlExpression;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.expression.SqlExpression;
 
 public abstract class AbstractSqlExpression implements SqlExpression {
       

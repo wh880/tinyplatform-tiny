@@ -23,13 +23,12 @@
  */
 package org.tinygroup.fileresolver;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 

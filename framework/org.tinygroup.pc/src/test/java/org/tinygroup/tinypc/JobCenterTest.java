@@ -24,7 +24,6 @@
 package org.tinygroup.tinypc;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerLocal;
 import org.tinygroup.rmi.impl.RmiServerRemote;

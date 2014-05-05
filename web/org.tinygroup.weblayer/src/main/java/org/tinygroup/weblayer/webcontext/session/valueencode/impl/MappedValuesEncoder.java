@@ -23,14 +23,14 @@
  */
 package org.tinygroup.weblayer.webcontext.session.valueencode.impl;
 
-import static org.tinygroup.commons.tools.Assert.assertTrue;
-import static org.tinygroup.commons.tools.CollectionUtil.createLinkedHashMap;
+import org.springframework.beans.TypeConverter;
+import org.tinygroup.weblayer.webcontext.session.valueencode.AbstractSessionValueEncoder;
+import org.tinygroup.weblayer.webcontext.util.QueryStringParser;
 
 import java.util.Map;
 
-import org.tinygroup.weblayer.webcontext.session.valueencode.AbstractSessionValueEncoder;
-import org.tinygroup.weblayer.webcontext.util.QueryStringParser;
-import org.springframework.beans.TypeConverter;
+import static org.tinygroup.commons.tools.Assert.assertTrue;
+import static org.tinygroup.commons.tools.CollectionUtil.createLinkedHashMap;
 
 /**
  * 将一个<code>Map</code>编码成字符串，或反之。支持加密。

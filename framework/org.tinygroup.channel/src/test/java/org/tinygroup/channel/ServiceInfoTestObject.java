@@ -23,10 +23,10 @@
  */
 package org.tinygroup.channel;
 
-import java.util.List;
-
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
+
+import java.util.List;
 
 public class ServiceInfoTestObject implements ServiceInfo {
 	/**

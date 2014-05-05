@@ -23,13 +23,13 @@
  */
 package org.tinygroup.tinydb.config;
 
+import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.tinydb.operator.DBOperator;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinydb.operator.DBOperator;
 
 public class SchemaConfigContainer {
 	// public static String UUID_KEY = "uuid";

@@ -23,15 +23,6 @@
  */
 package org.tinygroup.weblayer.webcontext.session.encode;
 
-import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.codec.binary.Base64;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.tinygroup.commons.io.ByteArrayOutputStream;
@@ -39,6 +30,15 @@ import org.tinygroup.convert.objectjson.jackson.JsonToObject;
 import org.tinygroup.convert.objectjson.jackson.ObjectToJson;
 import org.tinygroup.weblayer.webcontext.session.SessionStore.StoreContext;
 import org.tinygroup.weblayer.webcontext.session.exception.SessionEncoderException;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
 
 /**
  * 

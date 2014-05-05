@@ -23,11 +23,11 @@
  */
 package org.tinygroup.cepcore;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceInfoImpl1 implements ServiceInfo {
 

@@ -23,14 +23,13 @@
  */
 package org.tinygroup.metadata.errormessage;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.metadata.config.errormessage.ErrorMessage;
 import org.tinygroup.metadata.config.errormessage.ErrorMessages;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ErrorMessageTest {
 	public static void main(String[] args) {

@@ -23,12 +23,12 @@
  */
 package org.tinygroup.entity.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.entity.EntityRelationsManager;
 import org.tinygroup.entity.relation.EntityRelation;
 import org.tinygroup.entity.relation.EntityRelations;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 

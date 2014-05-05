@@ -23,10 +23,9 @@
  */
 package org.tinygroup.weblayer.servlet;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 public class LocalServlet extends javax.servlet.http.HttpServlet{

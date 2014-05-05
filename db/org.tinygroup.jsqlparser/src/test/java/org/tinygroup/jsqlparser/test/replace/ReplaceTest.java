@@ -1,7 +1,5 @@
 package org.tinygroup.jsqlparser.test.replace;
 
-import java.io.StringReader;
-
 import junit.framework.TestCase;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.expression.JdbcParameter;
@@ -12,6 +10,8 @@ import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.schema.Column;
 import org.tinygroup.jsqlparser.statement.replace.Replace;
 import org.tinygroup.jsqlparser.statement.select.SubSelect;
+
+import java.io.StringReader;
 
 public class ReplaceTest extends TestCase {
 

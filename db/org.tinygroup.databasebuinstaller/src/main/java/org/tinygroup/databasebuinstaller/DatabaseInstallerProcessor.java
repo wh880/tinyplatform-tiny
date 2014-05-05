@@ -23,19 +23,17 @@
  */
 package org.tinygroup.databasebuinstaller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
-import org.tinygroup.config.Configuration;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.xmlparser.node.XmlNode;
-import org.w3c.dom.views.AbstractView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * 

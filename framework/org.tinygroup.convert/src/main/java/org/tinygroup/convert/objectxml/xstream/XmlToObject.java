@@ -23,14 +23,13 @@
  */
 package org.tinygroup.convert.objectxml.xstream;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class XmlToObject<T> implements Converter<String, List<T>> {
 	XStream xstream;

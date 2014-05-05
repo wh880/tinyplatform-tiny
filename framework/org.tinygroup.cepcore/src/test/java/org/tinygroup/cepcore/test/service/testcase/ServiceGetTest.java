@@ -23,14 +23,13 @@
  */
 package org.tinygroup.cepcore.test.service.testcase;
 
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.cepcore.exception.RequestNotFoundException;
 import org.tinygroup.cepcore.test.aop.util.AopTestUtil;
 import org.tinygroup.cepcore.test.aop.util.ToolUtil;
 import org.tinygroup.event.ServiceInfo;
+
+import java.util.List;
 
 public class ServiceGetTest extends TestCase {
 	public void testServiceGet() {

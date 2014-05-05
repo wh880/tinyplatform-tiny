@@ -24,16 +24,16 @@
 
 package org.tinygroup.jspengine.compiler;
 
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.io.CharArrayWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.ListIterator;
-import javax.servlet.jsp.tagext.PageData;
-
 import org.tinygroup.jspengine.JasperException;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.AttributesImpl;
+
+import javax.servlet.jsp.tagext.PageData;
+import java.io.ByteArrayInputStream;
+import java.io.CharArrayWriter;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ListIterator;
 
 /**
  * An implementation of <tt>javax.servlet.jsp.tagext.PageData</tt> which

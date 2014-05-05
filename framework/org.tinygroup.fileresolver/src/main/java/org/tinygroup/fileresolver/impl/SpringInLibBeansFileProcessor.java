@@ -24,7 +24,6 @@
 package org.tinygroup.fileresolver.impl;
 
 import org.tinygroup.fileresolver.FileResolver;
-import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;

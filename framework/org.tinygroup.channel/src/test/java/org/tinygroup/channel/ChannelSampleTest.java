@@ -24,7 +24,6 @@
 package org.tinygroup.channel;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.channel.util.ChannelTestUtil;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;

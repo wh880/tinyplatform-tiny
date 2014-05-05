@@ -23,14 +23,8 @@
  */
 package org.tinygroup.mongodb;
 
+import com.mongodb.*;
 import org.bson.types.ObjectId;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.mongodb.DBRef;
-import com.mongodb.MongoClient;
 
 public class MogoDbTest1 {
 

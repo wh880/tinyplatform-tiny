@@ -23,6 +23,7 @@
  */
 package org.tinygroup.entity.engine.entity;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.table.TableProcessor;
 import org.tinygroup.entity.entitymodel.EntityModel;
@@ -33,8 +34,6 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 public class EntityModelLoader implements ModelLoader {
 	private static Logger logger = LoggerFactory

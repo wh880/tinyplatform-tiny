@@ -23,16 +23,16 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class RealStatementExecutor {
 	private Statement realStatement;

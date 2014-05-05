@@ -23,14 +23,14 @@
  */
 package org.tinygroup.commons.tools;
 
+import org.tinygroup.commons.io.ByteArrayOutputStream;
+
 import java.io.DataOutputStream;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.security.SecureRandom;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.tinygroup.commons.io.ByteArrayOutputStream;
 
 /**
  * 生成唯一ID。

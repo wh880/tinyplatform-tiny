@@ -23,13 +23,12 @@
  */
 package org.tinygroup.channel;
 
+import junit.framework.TestCase;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.impl.CEPcoreImpl;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;
-
-import junit.framework.TestCase;
 
 public class ChannelWithCEPCoreTest extends TestCase {
 	ChannelSample channelSample;

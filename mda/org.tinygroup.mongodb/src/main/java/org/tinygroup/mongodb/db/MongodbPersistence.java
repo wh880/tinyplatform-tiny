@@ -23,18 +23,12 @@
  */
 package org.tinygroup.mongodb.db;
 
-import java.util.List;
-
+import com.mongodb.*;
 import org.bson.BSONObject;
 import org.tinygroup.mongodb.DBClient;
 import org.tinygroup.mongodb.engine.PageInfo;
 
-import com.mongodb.AggregationOutput;
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import java.util.List;
 
 public class MongodbPersistence {
 

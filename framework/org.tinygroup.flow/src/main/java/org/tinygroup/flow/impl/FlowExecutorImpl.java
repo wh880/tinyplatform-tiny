@@ -23,10 +23,6 @@
  */
 package org.tinygroup.flow.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.tinygroup.commons.match.SimpleTypeMatcher;
 import org.tinygroup.context.Context;
@@ -35,12 +31,7 @@ import org.tinygroup.context2object.util.Context2ObjectUtil;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.flow.FlowExecutor;
-import org.tinygroup.flow.config.Component;
-import org.tinygroup.flow.config.ComponentDefine;
-import org.tinygroup.flow.config.ComponentDefines;
-import org.tinygroup.flow.config.Flow;
-import org.tinygroup.flow.config.FlowProperty;
-import org.tinygroup.flow.config.Node;
+import org.tinygroup.flow.config.*;
 import org.tinygroup.flow.containers.ComponentContainers;
 import org.tinygroup.flow.exception.FlowRuntimeException;
 import org.tinygroup.flow.util.FlowElUtil;
@@ -52,6 +43,10 @@ import org.tinygroup.i18n.I18nMessages;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 默认流程执行器

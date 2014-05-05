@@ -23,12 +23,12 @@
  */
 package org.tinygroup.htmlparser.formatter;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import org.tinygroup.htmlparser.HtmlDocument;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.parser.formater.NodeFormaterImpl;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class HtmlFormater extends NodeFormaterImpl<HtmlDocument, HtmlNode> {
 

@@ -23,14 +23,14 @@
  */
 package org.tinygroup.cepcore.test.aop;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcore.test.aop.exception.ExceptionService;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventProcessor1 implements EventProcessor{
 	List<ServiceInfo> list = new ArrayList<ServiceInfo>();

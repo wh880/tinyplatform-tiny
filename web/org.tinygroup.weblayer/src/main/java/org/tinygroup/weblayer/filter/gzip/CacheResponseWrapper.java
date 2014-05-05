@@ -23,9 +23,13 @@
  */
 package org.tinygroup.weblayer.filter.gzip;
 
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 public class CacheResponseWrapper
     extends HttpServletResponseWrapper {

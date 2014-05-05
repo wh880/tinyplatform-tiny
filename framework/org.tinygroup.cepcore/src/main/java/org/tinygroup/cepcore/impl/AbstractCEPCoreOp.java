@@ -23,15 +23,9 @@
  */
 package org.tinygroup.cepcore.impl;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcore.CEPCoreRemoteInterface;
 import org.tinygroup.cepcore.CEPCoreNodeManager;
+import org.tinygroup.cepcore.CEPCoreRemoteInterface;
 import org.tinygroup.cepcore.exception.CEPRunException;
 import org.tinygroup.cepcore.util.CEPCoreUtil;
 import org.tinygroup.context.Context;
@@ -41,6 +35,12 @@ import org.tinygroup.event.central.Node;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public abstract class AbstractCEPCoreOp implements CEPCoreNodeManager {
 

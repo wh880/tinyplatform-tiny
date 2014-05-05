@@ -23,9 +23,6 @@
  */
 package org.tinygroup.net.test.p;
 
-import java.net.InetSocketAddress;
-import java.util.concurrent.Executors;
-
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
@@ -33,6 +30,9 @@ import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.tinygroup.net.coder.hessian.HessianDecoder;
 import org.tinygroup.net.coder.hessian.HessianEncoder;
+
+import java.net.InetSocketAddress;
+import java.util.concurrent.Executors;
 
 /**
  * Modification of {@link EchoClient} which utilizes Java object serialization.

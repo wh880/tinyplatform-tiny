@@ -25,7 +25,8 @@
 
 package org.tinygroup.jspengine.tagplugins.jstl;
 
-import org.tinygroup.jspengine.compiler.tagplugin.*;
+import org.tinygroup.jspengine.compiler.tagplugin.TagPlugin;
+import org.tinygroup.jspengine.compiler.tagplugin.TagPluginContext;
 
 public final class Choose implements TagPlugin {
 

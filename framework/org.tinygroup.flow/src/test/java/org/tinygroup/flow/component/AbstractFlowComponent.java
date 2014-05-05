@@ -24,7 +24,6 @@
 package org.tinygroup.flow.component;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinytestutil.AbstractTestUtil;

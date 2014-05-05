@@ -23,9 +23,9 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.upload;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.fileupload.FileItem;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用来处理<code>multipart/form-data</code>格式的HTTP POST请求，并将它们转换成form字段或文件。

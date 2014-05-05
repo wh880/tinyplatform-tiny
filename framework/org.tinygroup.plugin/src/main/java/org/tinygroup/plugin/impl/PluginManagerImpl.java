@@ -23,11 +23,6 @@
  */
 package org.tinygroup.plugin.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -36,6 +31,11 @@ import org.tinygroup.plugin.PluginManager;
 import org.tinygroup.plugin.config.PluginConfig;
 import org.tinygroup.plugin.config.PluginConfigs;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PluginManagerImpl implements PluginManager {
 	Logger logger = LoggerFactory.getLogger(PluginManagerImpl.class);

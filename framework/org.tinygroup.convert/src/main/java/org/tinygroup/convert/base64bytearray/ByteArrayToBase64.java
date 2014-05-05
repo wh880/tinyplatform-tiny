@@ -23,9 +23,8 @@
  */
 package org.tinygroup.convert.base64bytearray;
 
-import org.tinygroup.convert.Converter;
-
 import com.thoughtworks.xstream.core.util.Base64Encoder;
+import org.tinygroup.convert.Converter;
 
 public class ByteArrayToBase64 implements Converter<byte[], String> {
 	Base64Encoder base64Encoder = new Base64Encoder();

@@ -23,11 +23,11 @@
  */
 package org.tinygroup.net.test;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-
 import com.caucho.hessian.io.HessianInput;
 import com.caucho.hessian.io.HessianOutput;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 public class Hessian {
 	public static void main(String[] args) throws Exception {

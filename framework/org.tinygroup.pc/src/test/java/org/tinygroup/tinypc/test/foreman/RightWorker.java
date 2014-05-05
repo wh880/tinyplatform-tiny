@@ -23,11 +23,11 @@
  */
 package org.tinygroup.tinypc.test.foreman;
 
-import java.rmi.RemoteException;
-
 import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.impl.AbstractWorker;
+
+import java.rmi.RemoteException;
 
 public class RightWorker extends AbstractWorker {
 

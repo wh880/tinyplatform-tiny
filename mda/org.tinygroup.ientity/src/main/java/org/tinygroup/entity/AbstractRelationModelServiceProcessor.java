@@ -24,9 +24,7 @@
 package org.tinygroup.entity;
 
 import org.tinygroup.context.Context;
-import org.tinygroup.entity.common.Operation;
 import org.tinygroup.entity.common.View;
-import org.tinygroup.entity.entitymodel.EntityModel;
 import org.tinygroup.entity.relationmodel.RelationModel;
 import org.tinygroup.entity.util.ModelUtil;
 import org.tinygroup.imda.ModelManager;

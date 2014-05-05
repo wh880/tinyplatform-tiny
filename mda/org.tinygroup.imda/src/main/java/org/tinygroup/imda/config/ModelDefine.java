@@ -23,11 +23,11 @@
  */
 package org.tinygroup.imda.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用于定义模型

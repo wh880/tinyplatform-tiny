@@ -23,11 +23,6 @@
  */
 package org.tinygroup.database.view.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.view.View;
 import org.tinygroup.database.config.view.Views;
@@ -35,6 +30,11 @@ import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.database.view.ViewProcessor;
 import org.tinygroup.database.view.ViewSqlProcessor;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ViewProcessorImpl implements ViewProcessor {
 	private static Map<String, View> viewMap = new HashMap<String, View>();

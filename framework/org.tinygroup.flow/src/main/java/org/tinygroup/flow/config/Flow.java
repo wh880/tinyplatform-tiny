@@ -23,17 +23,16 @@
  */
 package org.tinygroup.flow.config;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.flow.exception.FlowRuntimeException;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 流程，如果节点的名称叫exception，则表示是整个流程的异常处理节点，里面只能添加异常类的nextNode

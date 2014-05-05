@@ -25,6 +25,7 @@ package org.tinygroup.tinyioc;
 
 import org.tinygroup.tinyioc.annotation.Inject;
 import org.tinygroup.tinyioc.annotation.Singleton;
+
 import java.util.List;
 
 /**

@@ -23,10 +23,10 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.util;
 
-import java.beans.PropertyDescriptor;
-
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyValues;
+
+import java.beans.PropertyDescriptor;
 
 /**
  * Object to hold information and value for an individual bean property.

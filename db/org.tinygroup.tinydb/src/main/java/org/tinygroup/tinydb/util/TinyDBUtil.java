@@ -23,17 +23,17 @@
  */
 package org.tinygroup.tinydb.util;
 
-import java.lang.reflect.Array;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.operator.DBOperator;
+
+import java.lang.reflect.Array;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 工具方法

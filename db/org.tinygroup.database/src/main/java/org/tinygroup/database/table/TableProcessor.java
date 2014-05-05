@@ -23,11 +23,11 @@
  */
 package org.tinygroup.database.table;
 
-import java.sql.DatabaseMetaData;
-import java.util.List;
-
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.Tables;
+
+import java.sql.DatabaseMetaData;
+import java.util.List;
 
 /**
  * 与数据表相关的处理

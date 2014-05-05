@@ -23,26 +23,14 @@
  */
 package org.tinygroup.tinydb;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.query.QueryBean;
-import org.tinygroup.tinydb.query.impl.QueryBeanEmpty;
-import org.tinygroup.tinydb.query.impl.QueryBeanEqual;
-import org.tinygroup.tinydb.query.impl.QueryBeanGreater;
-import org.tinygroup.tinydb.query.impl.QueryBeanGreaterOrEqual;
-import org.tinygroup.tinydb.query.impl.QueryBeanIn;
-import org.tinygroup.tinydb.query.impl.QueryBeanIsNotNull;
-import org.tinygroup.tinydb.query.impl.QueryBeanIsNull;
-import org.tinygroup.tinydb.query.impl.QueryBeanLike;
-import org.tinygroup.tinydb.query.impl.QueryBeanLikeWildcardOnFirst;
-import org.tinygroup.tinydb.query.impl.QueryBeanLikeWildcardOnLast;
-import org.tinygroup.tinydb.query.impl.QueryBeanNotEqual;
-import org.tinygroup.tinydb.query.impl.QueryBeanSmaller;
-import org.tinygroup.tinydb.query.impl.QueryBeanSmallerOrEqual;
+import org.tinygroup.tinydb.query.impl.*;
 import org.tinygroup.tinydb.test.BaseTest;
 import org.tinygroup.tinydb.test.operator.BeanStringOperator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QueryUtilTest extends BaseTest {
 	BeanStringOperator queryUtil ;

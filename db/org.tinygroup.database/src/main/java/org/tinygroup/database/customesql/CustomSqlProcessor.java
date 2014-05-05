@@ -23,9 +23,9 @@
  */
 package org.tinygroup.database.customesql;
 
-import java.util.List;
-
 import org.tinygroup.database.config.customsql.CustomSqls;
+
+import java.util.List;
 
 public interface CustomSqlProcessor {
 

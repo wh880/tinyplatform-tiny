@@ -23,11 +23,10 @@
  */
 package org.tinygroup.htmlparser;
 
+import junit.framework.TestCase;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.parser.NodeFilter;
 import org.tinygroup.parser.filter.PathFilter;
-
-import junit.framework.TestCase;
 
 public class PathFilterTest extends TestCase {
 	NodeFilter filter;

@@ -23,22 +23,14 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
+import org.tinygroup.dbrouter.config.Router;
+import org.tinygroup.dbrouter.config.Shard;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
-import org.tinygroup.dbrouter.config.Router;
-import org.tinygroup.dbrouter.config.Shard;
+import java.util.*;
 
 /**
  * 

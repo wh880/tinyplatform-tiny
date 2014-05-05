@@ -23,11 +23,6 @@
  */
 package org.tinygroup.weblayer.mvc;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Collection;
-
 import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.commons.tools.ReflectionUtils;
 import org.tinygroup.commons.tools.ValueUtil;
@@ -36,8 +31,12 @@ import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.fc.Forward;
-import org.tinygroup.weblayer.flow.FullContextUrlRedirect;
 import org.tinygroup.weblayer.mvc.annotation.View;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Collection;
 
 /**
  * 

@@ -23,46 +23,24 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.util;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.tinygroup.commons.tools.CollectionFactory;
-import org.springframework.beans.AbstractPropertyAccessor;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.InvalidPropertyException;
-import org.springframework.beans.MethodInvocationException;
-import org.springframework.beans.NotReadablePropertyException;
-import org.springframework.beans.NotWritablePropertyException;
-import org.springframework.beans.NullValueInNestedPathException;
-import org.springframework.beans.PropertyAccessorFactory;
-import org.springframework.beans.PropertyAccessorUtils;
-import org.springframework.beans.PropertyEditorRegistrySupport;
-import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.*;
 import org.springframework.core.GenericCollectionTypeResolver;
 import org.springframework.core.JdkVersion;
 import org.springframework.core.MethodParameter;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.tinygroup.commons.tools.CollectionFactory;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 /**
  * Default {@link BeanWrapper} implementation that should be sufficient

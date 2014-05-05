@@ -23,15 +23,15 @@
  */
 package org.tinygroup.i18n.impl;
 
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.format.Formater;
 import org.tinygroup.i18n.I18nMessage;
 import org.tinygroup.i18n.I18nMessageFactory;
+
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class I18nMessageImpl implements I18nMessage {
 	private static final String CONTEXT_LOCALE_KEY = "contextLocale";

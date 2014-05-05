@@ -23,15 +23,14 @@
  */
 package org.tinygroup.command.test;
 
+import com.thoughtworks.xstream.XStream;
+import org.tinygroup.command.CommandSystem;
+import org.tinygroup.command.config.Commands;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import org.tinygroup.command.CommandSystem;
-import org.tinygroup.command.config.Commands;
-
-import com.thoughtworks.xstream.XStream;
 
 public class ConsoleCommander extends Thread {
 	CommandSystem commandSystem;

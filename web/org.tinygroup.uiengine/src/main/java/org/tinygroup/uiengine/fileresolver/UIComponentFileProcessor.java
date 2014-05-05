@@ -23,6 +23,7 @@
  */
 package org.tinygroup.uiengine.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.springutil.SpringUtil;
@@ -30,8 +31,6 @@ import org.tinygroup.uiengine.config.UIComponents;
 import org.tinygroup.uiengine.manager.UIComponentManager;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 /**
  * UI组件定义文件

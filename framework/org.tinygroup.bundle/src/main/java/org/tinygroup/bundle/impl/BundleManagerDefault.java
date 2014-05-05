@@ -1,21 +1,17 @@
 package org.tinygroup.bundle.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.tinygroup.bundle.BundleActivator;
-import org.tinygroup.bundle.BundleContext;
-import org.tinygroup.bundle.BundleEvent;
-import org.tinygroup.bundle.BundleException;
-import org.tinygroup.bundle.BundleManager;
+import org.tinygroup.bundle.*;
 import org.tinygroup.bundle.config.BundleDefine;
 import org.tinygroup.loader.TinyClassLoader;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by luoguo on 2014/5/4.

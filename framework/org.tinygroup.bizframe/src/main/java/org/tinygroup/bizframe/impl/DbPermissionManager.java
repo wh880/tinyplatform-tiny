@@ -23,9 +23,6 @@
  */
 package org.tinygroup.bizframe.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.bizframe.PermissionObject;
 import org.tinygroup.bizframe.PermissionSubject;
 import org.tinygroup.springutil.SpringUtil;
@@ -35,6 +32,9 @@ import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.DBRuntimeException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.util.TinyBeanUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 

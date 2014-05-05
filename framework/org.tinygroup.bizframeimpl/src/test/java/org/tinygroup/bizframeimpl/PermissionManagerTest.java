@@ -23,17 +23,16 @@
  */
 package org.tinygroup.bizframeimpl;
 
-import java.nio.charset.Charset;
-import java.sql.Connection;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.bizframe.PermissionManager;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.script.Resources;
 import org.tinygroup.tinydb.script.ScriptRunner;
 import org.tinygroup.tinydb.util.DataSourceFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
+
+import java.nio.charset.Charset;
+import java.sql.Connection;
 
 public class PermissionManagerTest extends TestCase {
 

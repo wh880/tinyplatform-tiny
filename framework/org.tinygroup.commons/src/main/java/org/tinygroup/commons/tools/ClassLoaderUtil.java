@@ -23,8 +23,7 @@
  */
 package org.tinygroup.commons.tools;
 
-import static org.tinygroup.commons.tools.CollectionUtil.createHashSet;
-import static org.tinygroup.commons.tools.CollectionUtil.createLinkedList;
+import org.tinygroup.commons.exceptions.ClassInstantiationException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +33,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.tinygroup.commons.exceptions.ClassInstantiationException;
+import static org.tinygroup.commons.tools.CollectionUtil.createHashSet;
+import static org.tinygroup.commons.tools.CollectionUtil.createLinkedList;
 
 /**
  * <p>

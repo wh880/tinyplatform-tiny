@@ -23,12 +23,11 @@
  */
 package org.tinygroup.mongodb.engine.comparemode.impl;
 
-import java.util.regex.Pattern;
-
-import org.bson.BSONObject;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.QueryOperators;
+import org.bson.BSONObject;
+
+import java.util.regex.Pattern;
 
 /**
  * 

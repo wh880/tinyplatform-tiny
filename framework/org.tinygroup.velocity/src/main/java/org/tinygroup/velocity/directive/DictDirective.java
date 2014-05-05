@@ -23,9 +23,6 @@
  */
 package org.tinygroup.velocity.directive;
 
-import java.io.IOException;
-import java.io.Writer;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.runtime.directive.Directive;
@@ -37,6 +34,9 @@ import org.tinygroup.dict.DictItem;
 import org.tinygroup.dict.DictManager;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.velocity.TinyVelocityContext;
+
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * 字典项翻译

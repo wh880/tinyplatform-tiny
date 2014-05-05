@@ -23,12 +23,11 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import java.io.File;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.tinygroup.commons.tools.UUID;
 import org.tinygroup.weblayer.webcontext.parser.upload.FileUploadReName;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 
 public class FileUploadRenameImpl implements FileUploadReName {
 	

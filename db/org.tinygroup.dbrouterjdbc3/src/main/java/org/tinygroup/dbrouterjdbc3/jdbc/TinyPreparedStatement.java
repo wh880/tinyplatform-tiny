@@ -23,32 +23,20 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.dbrouter.config.Router;
+import org.tinygroup.dbrouter.config.Shard;
+import org.tinygroup.dbrouter.util.DbRouterUtil;
+import org.tinygroup.dbrouter.util.ParamObjectBuilder;
+
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Date;
-import java.sql.ParameterMetaData;
-import java.sql.PreparedStatement;
-import java.sql.Ref;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.Calendar;
 import java.util.List;
-
-import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.dbrouter.config.Router;
-import org.tinygroup.dbrouter.config.Partition;
-import org.tinygroup.dbrouter.config.Shard;
-import org.tinygroup.dbrouter.util.DbRouterUtil;
-import org.tinygroup.dbrouter.util.ParamObjectBuilder;
 
 /**
  * 

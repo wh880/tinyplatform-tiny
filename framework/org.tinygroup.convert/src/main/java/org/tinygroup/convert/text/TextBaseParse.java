@@ -23,14 +23,14 @@
  */
 package org.tinygroup.convert.text;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.convert.text.config.Text;
 import org.tinygroup.convert.text.config.TextCell;
 import org.tinygroup.convert.text.config.TextRow;
 import org.tinygroup.convert.util.ConvertUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class TextBaseParse {
 

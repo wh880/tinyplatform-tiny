@@ -25,12 +25,12 @@
 
 package org.tinygroup.jspengine.xmlparser;
 
-import java.io.InputStream;
+import org.tinygroup.jspengine.compiler.Localizer;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.UTFDataFormatException;
-
-import org.tinygroup.jspengine.compiler.Localizer;
 
 /**
  * @author Andy Clark, IBM

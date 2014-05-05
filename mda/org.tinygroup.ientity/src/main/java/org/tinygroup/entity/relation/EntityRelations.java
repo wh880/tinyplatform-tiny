@@ -23,10 +23,10 @@
  */
 package org.tinygroup.entity.relation;
 
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+import java.util.List;
 
 /**
  * 实体关系<br>

@@ -23,10 +23,9 @@
  */
 package org.tinygroup.imda.validate;
 
-import org.tinygroup.springutil.SpringUtil;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 校验规则的定义

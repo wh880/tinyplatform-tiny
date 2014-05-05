@@ -23,25 +23,13 @@
  */
 package org.tinygroup.ientity;
 
+import com.thoughtworks.xstream.XStream;
+import org.tinygroup.entity.common.*;
+import org.tinygroup.entity.entitymodel.EntityModel;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.tinygroup.entity.common.ConditionField;
-import org.tinygroup.entity.common.DisplayField;
-import org.tinygroup.entity.common.Field;
-import org.tinygroup.entity.common.Group;
-import org.tinygroup.entity.common.GroupField;
-import org.tinygroup.entity.common.Index;
-import org.tinygroup.entity.common.Operation;
-import org.tinygroup.entity.common.OperationField;
-import org.tinygroup.entity.common.OperationGroup;
-import org.tinygroup.entity.common.OrderField;
-import org.tinygroup.entity.common.View;
-import org.tinygroup.entity.common.ViewGroup;
-import org.tinygroup.entity.entitymodel.EntityModel;
-
-import com.thoughtworks.xstream.XStream;
 
 public class ModelDemo {
 

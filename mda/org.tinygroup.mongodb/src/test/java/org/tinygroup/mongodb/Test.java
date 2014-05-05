@@ -23,15 +23,14 @@
  */
 package org.tinygroup.mongodb;
 
-import java.io.StringWriter;
-import java.util.Date;
-
+import com.mongodb.BasicDBObject;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 
-import com.mongodb.BasicDBObject;
+import java.io.StringWriter;
+import java.util.Date;
 
 public class Test {
 

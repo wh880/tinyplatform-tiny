@@ -22,10 +22,6 @@
  *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.netplugin;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.net.Server;
@@ -35,6 +31,11 @@ import org.tinygroup.netplugin.config.ClientConfig;
 import org.tinygroup.netplugin.config.ServerConfig;
 import org.tinygroup.plugin.Plugin;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 

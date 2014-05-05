@@ -25,27 +25,12 @@
 
 package org.tinygroup.jspengine.compiler;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.servlet.jsp.tagext.BodyTag;
-import javax.servlet.jsp.tagext.DynamicAttributes;
-import javax.servlet.jsp.tagext.IterationTag;
-import javax.servlet.jsp.tagext.SimpleTag;
-import javax.servlet.jsp.tagext.TagAttributeInfo;
-import javax.servlet.jsp.tagext.TagData;
-import javax.servlet.jsp.tagext.TagFileInfo;
-import javax.servlet.jsp.tagext.TagInfo;
-import javax.servlet.jsp.tagext.TagVariableInfo;
-import javax.servlet.jsp.tagext.TryCatchFinally;
-import javax.servlet.jsp.tagext.VariableInfo;
-
 import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.compiler.tagplugin.TagPluginContext;
 import org.xml.sax.Attributes;
+
+import javax.servlet.jsp.tagext.*;
+import java.util.*;
 
 
 /**

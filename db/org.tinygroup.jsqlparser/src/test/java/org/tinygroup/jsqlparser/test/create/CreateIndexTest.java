@@ -1,12 +1,13 @@
 package org.tinygroup.jsqlparser.test.create;
 
-import java.io.StringReader;
-
 import junit.framework.TestCase;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.statement.create.index.CreateIndex;
-import static org.tinygroup.jsqlparser.test.TestUtils.*;
+
+import java.io.StringReader;
+
+import static org.tinygroup.jsqlparser.test.TestUtils.assertSqlCanBeParsedAndDeparsed;
 
 /**
  * @author Raymond Augé

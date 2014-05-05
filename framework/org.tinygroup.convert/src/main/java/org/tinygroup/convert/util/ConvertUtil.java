@@ -23,14 +23,14 @@
  */
 package org.tinygroup.convert.util;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.tinygroup.convert.text.config.Text;
 import org.tinygroup.convert.text.config.TextCell;
 import org.tinygroup.convert.text.config.TextRow;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConvertUtil {
 	public static String getAttributeValue(Object object, String property) {

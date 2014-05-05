@@ -23,8 +23,6 @@
  */
 package org.tinygroup.flowbasiccomponent;
 
-import java.lang.reflect.Method;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.flow.util.FlowElUtil;
@@ -32,6 +30,8 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.lang.reflect.Method;
 
 public class CallMethod implements ComponentInterface {
 	private Logger logger = LoggerFactory.getLogger(CallMethod.class);

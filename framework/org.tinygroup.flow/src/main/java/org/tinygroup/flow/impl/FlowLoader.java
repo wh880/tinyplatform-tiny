@@ -23,6 +23,7 @@
  */
 package org.tinygroup.flow.impl;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.flow.config.Flow;
 import org.tinygroup.logger.LogLevel;
@@ -31,8 +32,6 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 public class FlowLoader {
 

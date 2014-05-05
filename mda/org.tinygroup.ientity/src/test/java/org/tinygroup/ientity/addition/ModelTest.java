@@ -23,9 +23,8 @@
  */
 package org.tinygroup.ientity.addition;
 
-import org.tinygroup.tinytestutil.AbstractTestUtil;
-
 import junit.framework.TestCase;
+import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 
 public class ModelTest extends TestCase {
