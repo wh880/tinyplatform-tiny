@@ -40,7 +40,7 @@ interface BaseOperator {
      *
      * @return
      */
-    void read(InputStream inputStream, String charset) throws IOException;
+    void read(InputStream inputStream, String charset) throws IOException, IniException;
 
     /**
      * 写出配置文件

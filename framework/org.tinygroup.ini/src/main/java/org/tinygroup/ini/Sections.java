@@ -31,7 +31,7 @@ import java.util.List;
  * Created by luoguo on 14-3-28.
  */
 public class Sections {
-    List<Section> sectionList;
+    private List<Section> sectionList;
 
     public List<Section> getSectionList() {
         return sectionList;
@@ -55,7 +55,7 @@ public class Sections {
                     if (section.getName() == sectionName) {
                         return section;
                     }
-                } else if (sectionName != null && section.getName().equals(sectionName)) {
+                } else if (section.getName().equals(sectionName)) {
                     return section;
                 }
             }

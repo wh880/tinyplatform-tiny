@@ -26,10 +26,13 @@ package org.tinygroup.ini;
 /**
  * Created by luoguo on 14-3-30.
  */
-public class Utils {
-    static String[] source = {"\t", "\r", "\n", ";", "=", ":"};
-    static String[] encodeDest = {"\\\\t", "\\\\r", "\\\\n", "\\\\;", "\\\\=", "\\\\:"};
-    static String[] decodeSource = {"[\\\\]t", "[\\\\]r", "[\\\\]n", "[\\\\];", "[\\\\]=", "[\\\\]:"};
+public final class Utils {
+    private Utils() {
+    }
+
+    private static String[] source = {"\t", "\r", "\n", ";", "=", ":"};
+    private static String[] encodeDest = {"\\\\t", "\\\\r", "\\\\n", "\\\\;", "\\\\=", "\\\\:"};
+    private static String[] decodeSource = {"[\\\\]t", "[\\\\]r", "[\\\\]n", "[\\\\];", "[\\\\]=", "[\\\\]:"};
 
 
     public static String encode(String string) {

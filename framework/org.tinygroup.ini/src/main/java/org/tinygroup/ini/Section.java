@@ -30,21 +30,21 @@ import java.util.List;
  * Created by luoguo on 14-3-28.
  */
 public class Section {
-    String name;
-    String comment;
-    List<ValuePair> valuePairList;
+    private String name;
+    private String comment;
+    private List<ValuePair> valuePairList;
 
     public Section() {
 
     }
 
     public Section(String name) {
-        setName(name);
+        this.name = name;
     }
 
     public Section(String name, String comment) {
-        setName(name);
-        setComment(comment);
+        this.name = name;
+        this.comment = comment;
     }
 
     public String getComment() {
@@ -89,8 +89,7 @@ public class Section {
         if (valuePairList != null) {
             for (ValuePair valuePair : valuePairList) {
                 if (valuePair.getKey().equals(key)) {
-                    T value = (T) valuePair.getValue(tClass);
-                    return value;
+                    return (T) valuePair.getValue(tClass);
                 }
             }
         }

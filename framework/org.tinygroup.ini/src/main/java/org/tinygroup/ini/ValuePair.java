@@ -28,9 +28,9 @@ package org.tinygroup.ini;
  * Created by luoguo on 14-3-28.
  */
 public class ValuePair {
-    String key;
-    String value;
-    String comment;
+    private String key;
+    private String value;
+    private String comment;
 
     public String getComment() {
         if (comment == null) {
@@ -44,17 +44,17 @@ public class ValuePair {
     }
 
     public ValuePair(String comment) {
-        this.setComment(comment);
+        this.comment = comment;
     }
 
     public ValuePair(String key, String value) {
-        this.setKey(key);
-        this.setValue(value);
+        this.key = key;
+        this.value = value;
     }
 
     public ValuePair(String key, String value, String comment) {
         this(key, value);
-        this.setComment(comment);
+        this.comment = comment;
     }
 
     public ValuePair() {

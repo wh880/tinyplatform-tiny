@@ -41,19 +41,11 @@ public class IniOperatorDefault implements IniOperator {
     private static final Pattern SECTION_PATTERN = Pattern.compile("([\\[])(.*)([\\]])");
     private static final Pattern VALUE_PAIR_PATTERN = Pattern.compile("(.*)=((([^\\\\;](\\\\;)?)*))");
 
-    public static void main(String[] args) {
-        String input = "a=bb;def";
-        Matcher matcher = VALUE_PAIR_PATTERN.matcher(input);
-        if (matcher.find()) {
-            System.out.println(input.substring(matcher.end()));
-        }
-    }
-
     public IniOperatorDefault() {
     }
 
     public IniOperatorDefault(Sections sections) {
-        setSections(sections);
+        this.sections=sections;
     }
 
     public void setSections(Sections sections) {
@@ -65,7 +57,7 @@ public class IniOperatorDefault implements IniOperator {
         return sections;
     }
 
-    public void read(InputStream inputStream, String charset) throws IOException {
+    public void read(InputStream inputStream, String charset) throws IOException, IniException {
         sections = new Sections();
         InputStreamReader reader = new InputStreamReader(inputStream, charset);
         BufferedReader bufferedReader = new BufferedReader(reader);
@@ -85,7 +77,7 @@ public class IniOperatorDefault implements IniOperator {
         reader.close();
     }
 
-    private void addValuePair(String string, String sectionName) {
+    private void addValuePair(String string, String sectionName) throws IniException {
         Matcher matcher = VALUE_PAIR_PATTERN.matcher(string);
         if (matcher.find()) {
             String comment = string.substring(matcher.end()).trim();
@@ -95,11 +87,11 @@ public class IniOperatorDefault implements IniOperator {
                 add(sectionName, new ValuePair(matcher.group(1).trim(), Utils.decode(matcher.group(2).trim())));
             }
         } else {
-            throw new RuntimeException("不符全规范的内容：" + string);
+            throw new IniException("不符全规范的内容：" + string);
         }
     }
 
-    private String addSection(String string) {
+    private String addSection(String string) throws IniException {
         Matcher matcher = SECTION_PATTERN.matcher(string);
         String sectionName = null;
         if (matcher.find()) {
@@ -112,19 +104,11 @@ public class IniOperatorDefault implements IniOperator {
             } else if (comment.length() == 0) {//如果没有备注
                 section = new Section(sectionName);
             } else {
-                throw new RuntimeException("不符全规范的内容：" + string);
+                throw new IniException("不符全规范的内容：" + string);
             }
             sections.addSection(section);
         }
         return sectionName;
-    }
-
-    private void addSameLineComment(String sectionName, String str) {
-        if (str.startsWith(";")) {
-            addComment(sectionName, str.substring(1));
-        } else if (str.length() > 0) {
-            throw new RuntimeException("不符全规范的内容：" + str);
-        }
     }
 
     private void addComment(String sectionName, String string) {
@@ -138,20 +122,20 @@ public class IniOperatorDefault implements IniOperator {
             for (Section section : sections.getSectionList()) {
                 if (section.getName() != null) {
                     if (section.getComment() != null) {
-                        outputStream.write(String.format("[%s];%s\n", Utils.encode(section.getName()), Utils.encode(section.getComment())).getBytes(charset));
+                        outputStream.write(String.format("[%s];%s%n", Utils.encode(section.getName()), Utils.encode(section.getComment())).getBytes(charset));
                     } else {
-                        outputStream.write(String.format("[%s]\n", Utils.encode(section.getName())).getBytes(charset));
+                        outputStream.write(String.format("[%s]%n", Utils.encode(section.getName())).getBytes(charset));
                     }
                 }
                 for (ValuePair valuePair : section.getValuePairList()) {
                     if (valuePair.getKey() != null) {
                         if (valuePair.getComment() != null && valuePair.getComment().length() > 0) {
-                            outputStream.write(String.format("%s=%s;%s\n", valuePair.getKey(), Utils.encode(valuePair.getValue()), valuePair.getComment()).getBytes(charset));
+                            outputStream.write(String.format("%s=%s;%s%n", valuePair.getKey(), Utils.encode(valuePair.getValue()), valuePair.getComment()).getBytes(charset));
                         } else {
-                            outputStream.write(String.format("%s=%s\n", valuePair.getKey(), Utils.encode(valuePair.getValue())).getBytes(charset));
+                            outputStream.write(String.format("%s=%s%n", valuePair.getKey(), Utils.encode(valuePair.getValue())).getBytes(charset));
                         }
                     } else {
-                        outputStream.write(String.format(";%s\n", valuePair.getComment()).getBytes(charset));
+                        outputStream.write(String.format(";%s%n", valuePair.getComment()).getBytes(charset));
                     }
                 }
             }
