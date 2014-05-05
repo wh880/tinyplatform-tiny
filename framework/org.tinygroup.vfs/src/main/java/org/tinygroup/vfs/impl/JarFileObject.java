@@ -25,6 +25,7 @@ package org.tinygroup.vfs.impl;
 
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.SchemaProvider;
+import org.tinygroup.vfs.VFSRuntimeException;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -53,7 +54,7 @@ public class JarFileObject extends AbstractFileObject {
                 this.jarFile = new JarFile(resource);
             }
         } catch (IOException e) {
-            throw new RuntimeException(resource + "打开失败，错误：" + e.getMessage());
+            throw new VFSRuntimeException(resource + "打开失败，错误：" + e.getMessage(),e);
         }
     }
 
@@ -102,7 +103,7 @@ public class JarFileObject extends AbstractFileObject {
         } else {
             name = file.getName();
         }
-        int lastIndexOfDot = name.lastIndexOf(".");
+        int lastIndexOfDot = name.lastIndexOf('.');
         if (lastIndexOfDot == -1) {
             // 如果不存在
             return null;
@@ -131,7 +132,10 @@ public class JarFileObject extends AbstractFileObject {
                     tempPath = tempPath + getExtName() + File.separator;
                     File tempPathFile = new File(tempPath);
                     if (!tempPathFile.exists()) {
-                        tempPathFile.mkdirs();
+                        boolean created=tempPathFile.mkdirs();
+                        if(!created){
+                            throw new VFSRuntimeException("创建临时目录"+tempPath+"失败！");
+                        }
                     }
                     cacheFile = new File(tempPath + getFileName() + "_" + getLastModifiedTime());
 
@@ -148,11 +152,10 @@ public class JarFileObject extends AbstractFileObject {
             if (file.exists() && file.isFile()) {
                 return new BufferedInputStream(new JarInputStream(new FileInputStream(file)));
             } else {
-                throw new RuntimeException(file.getAbsolutePath() + "不存在，或不是文件。");
+                throw new VFSRuntimeException(file.getAbsolutePath() + "不存在，或不是文件。");
             }
         } catch (Exception e) {
-            throw new RuntimeException(file.getAbsolutePath() + "获取FileInputStream出错，原因" + e);
-        } finally {
+            throw new VFSRuntimeException(file.getAbsolutePath() + "获取FileInputStream出错，原因" + e);
         }
     }
 
@@ -180,13 +183,14 @@ public class JarFileObject extends AbstractFileObject {
             Enumeration<JarEntry> e = (Enumeration<JarEntry>) jarFile.entries();
             while (e.hasMoreElements()) {
                 JarEntry entry = (JarEntry) e.nextElement();
-                if (parent == null) {
+                if (getParent() == null) {
                     String[] names = entry.getName().split("/");
                     // 如果当前是jar文件，如果
                     if (names.length == 1) {
                         addSubItem(entry);
                     }
-                } else {// 如果不是根目录
+                } else {
+                    // 如果不是根目录
                     String parentName = jarEntry.getName();
                     if (!entry.getName().equals(jarEntry.getName()) && entry.getName().startsWith(parentName)) {
                         String fn = entry.getName().substring(parentName.length());
@@ -204,7 +208,7 @@ public class JarFileObject extends AbstractFileObject {
 
     private void addSubItem(JarEntry entry) {
         JarFileObject jarFileObject = new JarFileObject(this, entry);
-        jarFileObject.parent = this;
+        jarFileObject.setParent(this);
         children.add(jarFileObject);
     }
 
@@ -241,12 +245,12 @@ public class JarFileObject extends AbstractFileObject {
     public URL getURL() {
         try {
             if (jarEntry != null) {
-                return new URL(JarSchemaProvider.JAR_PROTOCAL + FileSchemaProvider.FILE_PROTOCAL + getAbsolutePath());
+                return new URL(JarSchemaProvider.JAR_PROTOCOL + FileSchemaProvider.FILE_PROTOCOL + getAbsolutePath());
             } else {
-                return new URL(FileSchemaProvider.FILE_PROTOCAL + getAbsolutePath());
+                return new URL(FileSchemaProvider.FILE_PROTOCOL + getAbsolutePath());
             }
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new VFSRuntimeException(e);
         }
     }
 
@@ -254,7 +258,7 @@ public class JarFileObject extends AbstractFileObject {
         try {
             return new BufferedOutputStream(new JarOutputStream(new FileOutputStream(file)));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new VFSRuntimeException(e);
         }
     }
 

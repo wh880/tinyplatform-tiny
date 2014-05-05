@@ -34,5 +34,5 @@ public interface FileObjectFilter {
      * @param fileObject
      * @return
      */
-    public boolean accept(FileObject fileObject);
+    boolean accept(FileObject fileObject);
 }

@@ -27,11 +27,13 @@ import org.apache.commons.net.ftp.*;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.SchemaProvider;
+import org.tinygroup.vfs.VFSRuntimeException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
@@ -41,6 +43,7 @@ import java.util.TimeZone;
  */
 public class FtpFileObject extends URLFileObject {
 
+    public static final int BUF_SIZE = 102400;
     private FTPFile ftpFile;
     private FTPClient ftpClient;
 
@@ -60,13 +63,14 @@ public class FtpFileObject extends URLFileObject {
             FTPClientConfig ftpClientConfig = new FTPClientConfig();
             ftpClientConfig.setServerTimeZoneId(TimeZone.getDefault().getID());
             ftpClient.configure(ftpClientConfig);
+            URL url = getURL();
             if (url.getPort() <= 0) {
                 ftpClient.connect(url.getHost());
             } else {
                 ftpClient.connect(url.getHost(), url.getPort());
             }
             if (!FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
-                throw new RuntimeException("连接失败！");
+                throw new VFSRuntimeException("连接失败！");
             }
             if (url.getUserInfo() != null) {
                 String userInfo[] = url.getUserInfo().split(":");
@@ -79,59 +83,67 @@ public class FtpFileObject extends URLFileObject {
                     password = userInfo[1];
                 }
                 if (!ftpClient.login(userName, password)) {
-                    throw new RuntimeException("登录失败：" + url.toString());
+                    throw new VFSRuntimeException("登录失败：" + url.toString());
                 }
                 if (!ftpClient.setFileType(FTP.BINARY_FILE_TYPE)) {
-                    throw new RuntimeException("设置二进制类型失败");
+                    throw new VFSRuntimeException("设置二进制类型失败");
                 }
-                ftpClient.setBufferSize(100000);
+                ftpClient.setBufferSize(BUF_SIZE);
                 ftpClient.setControlEncoding("utf-8");
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new VFSRuntimeException(e);
         }
     }
 
     private void initFTPFile() {
         try {
-            String path = url.getPath();
-            if (path.endsWith("/")) { // 如果且以"/"结尾，去掉"/"
-                path = path.substring(0, path.lastIndexOf("/"));
+            String path = getURL().getPath();
+            // 如果且以"/"结尾，去掉"/"
+            if (path.endsWith("/")) {
+                path = path.substring(0, path.lastIndexOf('/'));
             }
-            String checkPath = path.substring(0, path.lastIndexOf("/")); // 资源在服务器中所属目录
-            if (checkPath.length() == 0) { // 如果所属目录为根目录
+            // 资源在服务器中所属目录
+            String checkPath = path.substring(0, path.lastIndexOf('/'));
+            // 如果所属目录为根目录
+            if (checkPath.length() == 0) {
                 checkPath = "/";
             }
 
-            String fileName = path.substring(path.lastIndexOf("/"));
-            fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+            String fileName = path.substring(path.lastIndexOf('/'));
+            fileName = fileName.substring(fileName.lastIndexOf('/') + 1);
             ftpClient.enterLocalPassiveMode();
-            FTPFile[] files = ftpClient.listFiles(recode(checkPath), new FtpFileFilterByName(fileName)); // 从上级目录的子目录中过滤出当前资源
+            // 从上级目录的子目录中过滤出当前资源
+            FTPFile[] files = ftpClient.listFiles(recode(checkPath), new FtpFileFilterByName(fileName));
             if (files != null && files.length == 1) {
                 ftpFile = files[0];
             } else {
-                throw new TinySysRuntimeException("查找资源失败，url=" + url);
+                throw new TinySysRuntimeException("查找资源失败，url=" + getURL());
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new VFSRuntimeException(e);
         }
     }
 
     public String getAbsolutePath() {
-        if (url != null) { // 如果是根结点
-            return url.getPath();
+        // 如果是根结点
+        if (getURL() != null) {
+            return getURL().getPath();
         }
-        String parentAbsolutePath = parent.getAbsolutePath();
-        if (parentAbsolutePath.endsWith("/"))
+        String parentAbsolutePath = getParent().getAbsolutePath();
+        if (parentAbsolutePath.endsWith("/")) {
             return parentAbsolutePath + ftpFile.getName();
-        else
+        } else {
             return parentAbsolutePath + "/" + ftpFile.getName();
+        }
     }
 
     public String getPath() {
-        if (path == null) {// 如果没有计算过
-            if (parent != null) {// 如果有父亲
-                path = parent.getPath() + "/" + getFileName();
+        // 如果没有计算过
+        if (path == null) {
+            // 如果有父亲
+            if (getParent() != null) {
+                super.setPath(getParent().getPath() + "/" + getFileName());
             } else {
                 if (ftpFile.isDirectory()) {
                     return "";
@@ -140,7 +152,7 @@ public class FtpFileObject extends URLFileObject {
                 }
             }
         }
-        return path;
+        return getPath();
     }
 
     public String getFileName() {
@@ -159,14 +171,14 @@ public class FtpFileObject extends URLFileObject {
     }
 
     public long getSize() {
-        if (fileSize > 0) {
-            return fileSize;
+        if (getFileSize() > 0) {
+            return getFileSize();
         } else if (isFolder()) {
             return 0;
         }
 
-        fileSize = ftpFile.getSize();
-        return fileSize;
+        setFileSize(ftpFile.getSize());
+        return getFileSize();
     }
 
     public InputStream getInputStream() {
@@ -180,7 +192,7 @@ public class FtpFileObject extends URLFileObject {
             remote = recode(remote);
             is = ftpClient.retrieveFileStream(remote);
         } catch (IOException e) {
-            throw new RuntimeException("获取输入流异常");
+            throw new VFSRuntimeException("获取输入流异常", e);
         }
 
         return is;
@@ -195,10 +207,9 @@ public class FtpFileObject extends URLFileObject {
         try {
             String remote = getAbsolutePath();
             remote = recode(remote);
-            // os = ftpClient.storeUniqueFileStream(remote);
             os = ftpClient.storeFileStream(remote);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new VFSRuntimeException(e);
         }
 
         return os;
@@ -209,14 +220,13 @@ public class FtpFileObject extends URLFileObject {
             return null;
         }
 
-        if (children == null) {
+        if (getChildren() == null) {
             try {
-                // String pathname = ftpFile.getName();
                 String pathname = getAbsolutePath();
                 FTPFile[] files = ftpClient.listFiles(recode(pathname));
                 List<FileObject> fileObjects = new ArrayList<FileObject>();
                 for (FTPFile file : files) {
-                    FtpFileObject fileObject = new FtpFileObject(schemaProvider);
+                    FtpFileObject fileObject = new FtpFileObject(getSchemaProvider());
                     fileObject.setParent(this);
                     fileObject.ftpFile = file;
                     fileObject.ftpClient = this.ftpClient;
@@ -224,18 +234,19 @@ public class FtpFileObject extends URLFileObject {
                 }
                 return fileObjects;
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new VFSRuntimeException(e);
             }
         }
 
-        return children;
+        return getChildren();
     }
 
     private String recode(String str) {
         String recode = str;
         try {
             recode = new String(str.getBytes("UTF-8"), "iso-8859-1");
-        } catch (UnsupportedEncodingException e) { // 转码失败,忽略之
+        } catch (UnsupportedEncodingException e) {
+            // 转码失败,忽略之
         }
         return recode;
     }

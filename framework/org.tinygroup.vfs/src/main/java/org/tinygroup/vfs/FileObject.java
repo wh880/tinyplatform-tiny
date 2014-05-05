@@ -29,40 +29,40 @@ import java.net.URL;
 import java.util.List;
 
 public interface FileObject {
-
-    SchemaProvider getSchemaProvider();// 返回模式提供者
-
-    URL getURL();// 返回url
-
-    String getAbsolutePath();// 返回绝对路径
-
-    String getPath();// 返回路径
-
-    String getFileName();// 返回文件名
-
-    String getExtName();// 返回扩展名
-
-    boolean isFolder();// 返回是否是目录，如果是目录，则getInputStream无效。
-
-    boolean isInPackage();// 是否是包文件
-
-    boolean isExist();// 是否存在
-
-    long getLastModifiedTime();// 返回修改时间
-
-    long getSize();// 返回文件大小
-
-    InputStream getInputStream();// 返回输入流
-
-    OutputStream getOutputStream();// 返回输出流
-
-    FileObject getParent();// 返回上级文件
-
-    void setParent(FileObject fileObject);// 设置上级文件
-
-    List<FileObject> getChildren();// 返回下级文件列表
-
-    FileObject getChild(String fileName);// 获取参数名称指定的fileobject
+    // 返回模式提供者
+    SchemaProvider getSchemaProvider();
+    // 返回url
+    URL getURL();
+    // 返回绝对路径
+    String getAbsolutePath();
+    // 返回路径
+    String getPath();
+    // 返回文件名
+    String getFileName();
+    // 返回扩展名
+    String getExtName();
+    // 返回是否是目录，如果是目录，则getInputStream无效。
+    boolean isFolder();
+    // 是否是包文件
+    boolean isInPackage();
+    // 是否存在
+    boolean isExist();
+    // 返回修改时间
+    long getLastModifiedTime();
+    // 返回文件大小
+    long getSize();
+    // 返回输入流
+    InputStream getInputStream();
+    // 返回输出流
+    OutputStream getOutputStream();
+    // 返回上级文件
+    FileObject getParent();
+    // 设置上级文件
+    void setParent(FileObject fileObject);
+    // 返回下级文件列表
+    List<FileObject> getChildren();
+    // 获取参数名称指定的fileobject
+    FileObject getChild(String fileName);
 
     void foreach(FileObjectFilter fileObjectFilter, FileObjectProcessor fileObjectProcessor, boolean parentFirst);
 
