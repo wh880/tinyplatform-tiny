@@ -152,7 +152,7 @@ public class UpdateableRow {
 		appendTableName(buff);
 		buff.append(" SET ");
 		appendColumnList(buff, true);
-		// TODO updatable result set: we could add all current values to the
+		// updatable result set: we could add all current values to the
 		// where clause
 		// - like this optimistic ('no') locking is possible
 		appendKeyCondition(buff);

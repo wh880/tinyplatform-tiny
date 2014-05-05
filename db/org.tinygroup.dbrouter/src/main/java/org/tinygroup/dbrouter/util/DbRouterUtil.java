@@ -550,7 +550,6 @@ public class DbRouterUtil {
 			Connection connection = DriverManager
 					.getConnection(config.getUrl(), config.getUserName(),
 							config.getPassword());
-			// TODO 这里暂时设置成自动提交
 			connection.setAutoCommit(true);
 			return connection;
 

@@ -35,12 +35,10 @@ public class ExtensionValidator implements ValidateExecutor {
 
 	public boolean isValidate(ValidateRule validateRule, String value,
 			Context context) {
-		// TODO读取文件类型并进行比较
 		return true;
 	}
 
 	public String getDefaultMessage() {
-		// TODO 自动生成的方法存根
 		return null;
 	}
 }

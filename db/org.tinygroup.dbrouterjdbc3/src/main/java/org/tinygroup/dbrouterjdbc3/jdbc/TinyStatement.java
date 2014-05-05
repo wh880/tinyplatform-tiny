@@ -569,7 +569,6 @@ public class TinyStatement implements Statement {
 	}
 
 	public ResultSet getGeneratedKeys() throws SQLException {
-		// TODO
 		routerManager.getPrimaryKey(router, "IDENTITY");// 键值
 		throw new SQLException("not support generatedKeys");
 	}

@@ -23,6 +23,7 @@
  */
 package org.tinygroup.imda.validate.impl;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.imda.validate.ValidateExecutor;
 import org.tinygroup.imda.validate.ValidateRule;
@@ -35,8 +36,16 @@ public class AcceptValidator implements ValidateExecutor {
 
 	public boolean isValidate(ValidateRule validateRule, String value,
 			Context context) {
-		// TODO读取文件类型并进行比较
-		return true;
+	    String ruleValue=validateRule.getRuleValue();
+	    if(!StringUtil.isBlank(ruleValue)){
+	    	  String[] accepts=ruleValue.split("|");
+	    	  for (String accept : accepts) {
+				if(value.endsWith(accept)){
+					return true;
+				}
+			  }
+	    }
+		return false;
 	}
 
 	public String getDefaultMessage() {

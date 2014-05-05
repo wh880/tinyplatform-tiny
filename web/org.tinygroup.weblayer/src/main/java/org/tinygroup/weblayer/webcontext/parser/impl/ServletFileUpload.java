@@ -88,7 +88,7 @@ public class ServletFileUpload extends org.apache.commons.fileupload.servlet.Ser
     	@SuppressWarnings("unchecked")
         List<FileItem> items = super.parseRequest(ctx);
         String charset = ctx.getCharacterEncoding();
-        for (FileItem fileItem : items) {//TODO 需要重构
+        for (FileItem fileItem : items) {
             if (fileItem instanceof AbstractFileItem) {
                 ((AbstractFileItem) fileItem).setCharset(charset);
             }
