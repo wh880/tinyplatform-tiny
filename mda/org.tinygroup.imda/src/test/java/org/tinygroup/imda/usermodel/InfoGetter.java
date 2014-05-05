@@ -57,29 +57,24 @@ public class InfoGetter implements ModelInformationGetter<CaseModel> {
 	}
 
 	public String getOperationType(CaseModel model, String id) {
-		// TODO 自动生成的方法存根
 		return null;
 	}
 
 	public String getOperationId(Object operation) {
-		// TODO 自动生成的方法存根
 		return null;
 	}
 
 	public List<String> getParamterList(CaseModel model, Object operation) {
-		// TODO 自动生成的方法存根
 		return null;
 	}
 
 	public CustomizeStageConfig getCustomizeStageConfig(CaseModel model, String operationId,
 			String stageName) {
-		// TODO 自动生成的方法存根
 		return null;
 	}
 
 	public Map<String, List<ValidateRule>> getOperationValidateMap(
 			CaseModel model, Object operation) {
-		// TODO 自动生成的方法存根
 		return null;
 	}
 

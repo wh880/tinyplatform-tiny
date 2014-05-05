@@ -25,7 +25,6 @@ package org.tinygroup.validate.validator;
 
 import org.tinygroup.validate.ValidateResult;
 import org.tinygroup.validate.impl.AbstractValidator;
-import org.tinygroup.validate.impl.ValidateResultImpl;
 
 /**
  * 包含校验器
@@ -62,15 +61,5 @@ public class EnumValidator extends AbstractValidator {
 			validateResult.addError(name, i18nMessages.getMessage(ENUM_VALIDATOR_MESSAGE_KEY,DEFAULT_MESSAGE, name,title));
 		}
 	}
-
-	public static void main(String[] args) {
-		EnumValidator ev = new EnumValidator();
-		ev.setValues("aa,bb,cc");
-		ValidateResultImpl validateResult = new ValidateResultImpl();
-		ev.validate("aa", "AA", "aa", validateResult);
-		ev.validate("aa", "AA", "a1", validateResult);
-		System.out.println(validateResult.getErrorList().toString());
-	}
-
 	
 }

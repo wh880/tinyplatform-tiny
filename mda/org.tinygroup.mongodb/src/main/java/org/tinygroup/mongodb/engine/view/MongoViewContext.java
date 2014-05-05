@@ -139,7 +139,7 @@ public class MongoViewContext extends MongoDbContext {
 	 * 
 	 * 根据嵌套数组的条件,过滤生成符合的记录
 	 * 
-	 * @param records
+	 * @param record
 	 */
 	private void filterArrayRecords(BSONObject record) {
 		List<ConditionField> conditionFields = view.getConditionFields();
@@ -421,7 +421,7 @@ public class MongoViewContext extends MongoDbContext {
 				for (DisplayField displayField : displayFields) {
 					MongoField field = getMongoField(displayField.getFieldId());
 					ObjectField of = field.getObjectField();
-					if (of != null) {// TODO 对是否是同一嵌套对象的验证
+					if (of != null) {
 						if (nestedObject == null) {
 							nestedObject = of.getName();
 						}

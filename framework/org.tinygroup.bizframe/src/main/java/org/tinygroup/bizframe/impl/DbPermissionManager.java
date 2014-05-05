@@ -647,4 +647,40 @@ public class DbPermissionManager<K extends Comparable<K>> extends
 		return children;
 	}
 
+	public List<PermissionSubject<K, ?>> getBegatsPermissionSubjects(
+			String subjectBeanType, K parentSubjectId,
+			Class<? extends PermissionSubject> subjectClassType) {
+		return null;
+	}
+
+	public List<PermissionObject<K, ?>> getBegatsPermissionObjects(
+			String objectBeanType, K parentObjectId,
+			Class<? extends PermissionObject> objectClassType) {
+		return null;
+	}
+
+	public PermissionSubject<K, ?> getChildPermissionSubjectsWithTree(
+			String subjectBeanType, K parentSubjectId,
+			Class<? extends PermissionSubject> subjectClassType) {
+		return null;
+	}
+
+	public PermissionSubject<K, ?> getBegatsPermissionSubjectsWithTree(
+			String subjectBeanType, K parentSubjectId,
+			Class<? extends PermissionSubject> subjectClassType) {
+		return null;
+	}
+
+	public PermissionObject<K, ?> getChildPermissionObjectsWithTree(
+			String objectBeanType, K parentObjectId,
+			Class<? extends PermissionObject> objectClassType) {
+		return null;
+	}
+
+	public PermissionObject<K, ?> getBegatsPermissionObjectsWithTree(
+			String objectBeanType, K parentObjectId,
+			Class<? extends PermissionObject> objectClassType) {
+		return null;
+	}
+
 }

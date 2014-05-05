@@ -39,7 +39,13 @@ import org.tinygroup.springutil.SpringUtil;
  * 
  */
 public class DataSourceFactory {
+<<<<<<< HEAD
 	private static Logger logger = LoggerFactory.getLogger(DataSourceFactory.class);
+=======
+	
+	private static Logger logger=LoggerFactory.getLogger(DataSourceFactory.class);
+
+>>>>>>> todo
 	public static PlatformTransactionManager getTransactionManager(
 			String dataSourceName) {
 
@@ -59,7 +65,11 @@ public class DataSourceFactory {
 			return dataSource.getDatasource().getDataSource(dataSourceName)
 					.getConnection();
 		} catch (SQLException e) {
+<<<<<<< HEAD
 			logger.errorMessage("获取数据库连接时出错",e);
+=======
+			logger.errorMessage(e.getMessage(), e);
+>>>>>>> todo
 		}
 		return null;
 	}

@@ -562,7 +562,6 @@ public class DataType {
      * @return the value type
      */
     public static int getTypeFromClass(Class <?> x) {
-        // TODO refactor: too many if/else in functions, can reduce!
         if (x == null || Void.TYPE == x) {
             return Value.NULL;
         }
