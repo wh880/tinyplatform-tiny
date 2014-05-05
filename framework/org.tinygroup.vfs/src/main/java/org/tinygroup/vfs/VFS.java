@@ -37,10 +37,10 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author luoguo
  */
-public class VFS {
-    static Map<String, FileObject> fileObjectCacheMap = new ConcurrentHashMap<String, FileObject>();
-    static Map<String, Long> fileModifyTimeMap = new ConcurrentHashMap<String, Long>();
-    static final Map<String, SchemaProvider> schemaProviderMap = new HashMap<String, SchemaProvider>();
+public final class VFS {
+    private static Map<String, FileObject> fileObjectCacheMap = new ConcurrentHashMap<String, FileObject>();
+    private static Map<String, Long> fileModifyTimeMap = new ConcurrentHashMap<String, Long>();
+    private static Map<String, SchemaProvider> schemaProviderMap = new HashMap<String, SchemaProvider>();
     private static String defaultSchema = "file:";
 
     static {
@@ -63,7 +63,7 @@ public class VFS {
     /**
      * 清空Cache
      */
-    public static final void clearCache() {
+    public static void clearCache() {
         fileObjectCacheMap.clear();
     }
 
@@ -72,7 +72,7 @@ public class VFS {
      *
      * @param schemaProvider
      */
-    public static final void addSchemaProvider(SchemaProvider schemaProvider) {
+    public static  void addSchemaProvider(SchemaProvider schemaProvider) {
         schemaProviderMap.put(schemaProvider.getSchema(), schemaProvider);
     }
 
@@ -81,7 +81,7 @@ public class VFS {
      *
      * @param schema
      */
-    public static final void setDefaultSchemaProvider(String schema) {
+    public static  void setDefaultSchemaProvider(String schema) {
         defaultSchema = schema;
     }
 
@@ -91,17 +91,18 @@ public class VFS {
      * @param schema
      * @return
      */
-    public static final SchemaProvider getSchemaProvider(String schema) {
+    public static  SchemaProvider getSchemaProvider(String schema) {
         return schemaProviderMap.get(schema);
     }
 
     /**
      * 解析文件
      *
-     * @param resource
+     * @param resourceResolve
      * @return
      */
-    public static FileObject resolveFile(String resource) {
+    public static FileObject resolveFile(String resourceResolve) {
+        String resource=resourceResolve;
         FileObject fileObject = fileObjectCacheMap.get(resource);
         if (fileObject != null && fileObject.isInPackage()) {
             long oldTime = fileModifyTimeMap.get(resource);

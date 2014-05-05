@@ -23,16 +23,7 @@
  */
 package org.tinygroup.vfs.impl;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
 import org.apache.ftpserver.ftplet.FtpException;
@@ -40,6 +31,10 @@ import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
+import org.tinygroup.vfs.VFSRuntimeException;
+
+import java.io.*;
+import java.util.List;
 
 public class FtpFileObjectTest extends TestCase {
 
@@ -97,7 +92,7 @@ public class FtpFileObjectTest extends TestCase {
 			System.out.println("ftp服务器启动成功,服务器根路径：" + rootDir);
 		} catch (FtpException e) {
 			deleteFile(rootDir); // 清理文件，文件夹
-			throw new RuntimeException("ftp服务器启动失败", e);
+			throw new VFSRuntimeException("ftp服务器启动失败", e);
 		}
 	}
 

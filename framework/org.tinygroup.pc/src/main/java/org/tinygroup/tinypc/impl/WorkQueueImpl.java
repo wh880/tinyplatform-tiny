@@ -25,10 +25,7 @@ package org.tinygroup.tinypc.impl;
 
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.tinypc.ObjectStorage;
-import org.tinygroup.tinypc.Work;
-import org.tinygroup.tinypc.WorkQueue;
-import org.tinygroup.tinypc.WorkStatus;
+import org.tinygroup.tinypc.*;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -40,26 +37,26 @@ import java.util.List;
  */
 public class WorkQueueImpl implements WorkQueue {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -6270528078815279562L;
-	List<Work> workList = new ArrayList<Work>();
-    ObjectStorage objectStorage = null;
-    private static Logger logger = LoggerFactory.getLogger(WorkQueueImpl.class);
+     *
+     */
+    private static final long serialVersionUID = -6270528078815279562L;
+    private List<Work> workList = new ArrayList<Work>();
+    private transient ObjectStorage objectStorage = null;
+    private static transient Logger logger = LoggerFactory.getLogger(WorkQueueImpl.class);
 
     public WorkQueueImpl() throws RemoteException {
 
     }
 
-    public ObjectStorage getObjectStorage() {
+    public synchronized ObjectStorage getObjectStorage() {
         return objectStorage;
     }
 
-    public void setObjectStorage(ObjectStorage objectStorage) {
+    public synchronized void setObjectStorage(ObjectStorage objectStorage) {
         this.objectStorage = objectStorage;
         try {
-            List<Work> workList = objectStorage.loadObjects("Work");
-            this.workList.addAll(workList);
+            List<Work> works = objectStorage.loadObjects("Work");
+            this.workList.addAll(works);
         } catch (Exception e) {
             logger.error(e);
         }
@@ -68,13 +65,13 @@ public class WorkQueueImpl implements WorkQueue {
     public synchronized void add(Work work) throws RemoteException {
         if (work.isNeedSerialize()) {
             if (objectStorage == null) {
-                throw new RuntimeException("没有对象仓库对象实例存在！");
+                throw new PCRuntimeException("没有对象仓库对象实例存在！");
             }
             try {
                 objectStorage.saveObject(work, "Work");
             } catch (IOException e) {
                 logger.error(e);
-                throw new RuntimeException(String.format("序列化Work:%s %s时出现异常", work.getType(),work.getId()), e);
+                throw new PCRuntimeException(String.format("序列化Work:%s %s时出现异常", work.getType(), work.getId()), e);
             }
         }
         workList.add(work);
@@ -82,7 +79,7 @@ public class WorkQueueImpl implements WorkQueue {
 
     public synchronized void updateWorkStatus(Work work, WorkStatus workStatus) throws RemoteException {
         for (Work w : workList) {
-            if (w.getId() == work.getId()) {
+            if (w.getId().equals(work.getId())) {
                 w.setWorkStatus(workStatus);
             }
         }
@@ -90,11 +87,11 @@ public class WorkQueueImpl implements WorkQueue {
 
     public synchronized WorkStatus getWorkStatus(Work work) throws RemoteException {
         for (Work w : workList) {
-            if (w.getId() == work.getId()) {
+            if (w.getId().equals(work.getId())) {
                 return work.getWorkStatus();
             }
         }
-        throw new RuntimeException(String.format("找不到查询的工作:%s-%s！", work.getType(), work.getId()));
+        throw new PCRuntimeException(String.format("找不到查询的工作:%s-%s！", work.getType(), work.getId()));
     }
 
     public synchronized void remove(Work work) throws RemoteException {

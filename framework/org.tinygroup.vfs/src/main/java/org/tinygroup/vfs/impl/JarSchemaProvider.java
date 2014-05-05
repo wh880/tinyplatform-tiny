@@ -28,28 +28,29 @@ import org.tinygroup.vfs.SchemaProvider;
 
 public class JarSchemaProvider implements SchemaProvider {
 
-	public static final String JAR = ".jar";
-	public static final String JAR_PROTOCAL = "jar:";
+    public static final String JAR = ".jar";
+    public static final String JAR_PROTOCOL = "jar:";
 
-	public FileObject resolver(String resource) {
-		if (resource.startsWith(JAR_PROTOCAL)) {
-			resource = resource.substring(JAR_PROTOCAL.length());
-		} else if (resource.startsWith(FileSchemaProvider.FILE_PROTOCAL)) {
-			resource = resource.substring(FileSchemaProvider.FILE_PROTOCAL.length());
-		}
-		if (resource.startsWith(FileSchemaProvider.FILE_PROTOCAL)) {
-	        resource = resource.substring(FileSchemaProvider.FILE_PROTOCAL.length());
-	     }
-		return new JarFileObject(this, resource);
-	}
+    public FileObject resolver(String resourceResolve) {
+        String resource = resourceResolve;
+        if (resource.startsWith(JAR_PROTOCOL)) {
+            resource = resource.substring(JAR_PROTOCOL.length());
+        } else if (resource.startsWith(FileSchemaProvider.FILE_PROTOCOL)) {
+            resource = resource.substring(FileSchemaProvider.FILE_PROTOCOL.length());
+        }
+        if (resource.startsWith(FileSchemaProvider.FILE_PROTOCOL)) {
+            resource = resource.substring(FileSchemaProvider.FILE_PROTOCOL.length());
+        }
+        return new JarFileObject(this, resource);
+    }
 
-	public boolean isMatch(String resource) {
-		String lowerCase = resource.toLowerCase();
-		return lowerCase.startsWith(JAR_PROTOCAL) || lowerCase.endsWith(JAR);
-	}
+    public boolean isMatch(String resource) {
+        String lowerCase = resource.toLowerCase();
+        return lowerCase.startsWith(JAR_PROTOCOL) || lowerCase.endsWith(JAR);
+    }
 
-	public String getSchema() {
-		return JAR_PROTOCAL;
-	}
+    public String getSchema() {
+        return JAR_PROTOCOL;
+    }
 
 }

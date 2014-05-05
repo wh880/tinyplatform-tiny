@@ -31,11 +31,11 @@ import org.tinygroup.vfs.FileObjectFilter;
  * Created by luoguo on 14-2-26.
  */
 public class FileExtNameFileObjectFilter implements FileObjectFilter {
-    String fileExtName;
+    private String fileExtName;
     /**
      * 是否大小写敏感，默认不敏感
      */
-    boolean caseSensitive = false;
+    private boolean caseSensitive = false;
 
     public FileExtNameFileObjectFilter(String fileExtName) {
         this.fileExtName = fileExtName;

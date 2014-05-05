@@ -27,6 +27,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.threadgroup.AbstractProcessor;
+import org.tinygroup.tinypc.PCRuntimeException;
 import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.Worker;
@@ -56,15 +57,15 @@ public class WorkExecutor extends AbstractProcessor {
     }
 
     public List<Worker> cloneWorkers(List<Worker> acceptWorkers) {
-        List<Worker> workers = new ArrayList<Worker>();
+        List<Worker> workerList = new ArrayList<Worker>();
         for (Worker woker : acceptWorkers) {
-            workers.add(woker);
+            workerList.add(woker);
         }
-        return workers;
+        return workerList;
     }
 
 
-    protected void action() throws Exception {
+    protected void action() throws RemoteException {
         List<Worker> workersActived = new ArrayList<Worker>();
         workersActived.add(worker);
         workers.remove(worker);
@@ -89,15 +90,15 @@ public class WorkExecutor extends AbstractProcessor {
     private void redoWork(List<Worker> workersActived) throws RemoteException {
         logger.logMessage(LogLevel.DEBUG, "开始重新查找worker");
         Worker redoWorker = null;
-        for (Worker worker : workers) {
-            if (worker.acceptWork(work)) {
-                logger.logMessage(LogLevel.DEBUG, "查找到worker:{0}", worker.getId());
-                redoWorker = worker;
-                workersActived.add(worker);
+        for (Worker wker : workers) {
+            if (wker.acceptWork(work)) {
+                logger.logMessage(LogLevel.DEBUG, "查找到worker:{0}", wker.getId());
+                redoWorker = wker;
+                workersActived.add(wker);
             }
         }
         if (redoWorker == null) {
-            throw new RuntimeException(String.format("没有对应于work:%s的工人", work.getType()));
+            throw new PCRuntimeException(String.format("没有对应于work:%s的工人", work.getType()));
         }
         workers.remove(redoWorker);
         doWork(redoWorker, workersActived);

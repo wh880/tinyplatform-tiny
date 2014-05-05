@@ -167,7 +167,7 @@ public class SqlProcessorFunction implements StatementProcessor {
                 Expression expression = item.getExpression();
                 String alias = null;
                 if (item.getAlias() != null) {
-                    item.getAlias().getName();
+                	alias=item.getAlias().getName();
                 }
                 if (expression instanceof Function) {
                     Function function = (Function) expression;

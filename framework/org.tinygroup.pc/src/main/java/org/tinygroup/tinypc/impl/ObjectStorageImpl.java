@@ -24,6 +24,7 @@
 package org.tinygroup.tinypc.impl;
 
 import org.tinygroup.tinypc.ObjectStorage;
+import org.tinygroup.tinypc.PCRuntimeException;
 
 import java.io.*;
 import java.rmi.RemoteException;
@@ -34,6 +35,10 @@ import java.util.*;
  * Created by luoguo on 14-1-14.
  */
 public class ObjectStorageImpl implements ObjectStorage {
+    private String rootFolder;
+    private Map<Serializable, String> fileObjectMapping = new HashMap<Serializable, String>();
+    private SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+
     public ObjectStorageImpl() {
 
     }
@@ -42,15 +47,13 @@ public class ObjectStorageImpl implements ObjectStorage {
         setRootFolder(rootFolder);
     }
 
-    String rootFolder;
-    Map<Serializable, String> fileObjectMapping = new HashMap<Serializable, String>();
-    SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
     public void setRootFolder(String rootFolder) {
         if (!rootFolder.endsWith(File.separator)) {
-            rootFolder = rootFolder + File.separator;
+            this.rootFolder = rootFolder + File.separator;
+        } else {
+            this.rootFolder = rootFolder;
         }
-        this.rootFolder = rootFolder;
     }
 
     public String getRootFolder() {
@@ -92,14 +95,17 @@ public class ObjectStorageImpl implements ObjectStorage {
 
     private void checkFolder() {
         if (rootFolder == null) {
-            throw new RuntimeException("存储位置没有设置！");
+            throw new PCRuntimeException("存储位置没有设置！");
         }
         File file = new File(rootFolder);
-        if (!file.exists()) {//如果目录不存在，则创建目录
+
+        if (!file.exists()) {
+            //如果目录不存在，则创建目录
             file.mkdirs();
         }
-        if (!file.isDirectory()) {//如果不是文件夹
-            throw new RuntimeException("存储位置" + rootFolder + "不是目录，是文件！");
+        if (!file.isDirectory()) {
+            //如果不是文件夹
+            throw new PCRuntimeException("存储位置" + rootFolder + "不是目录，是文件！");
         }
     }
 
@@ -119,7 +125,8 @@ public class ObjectStorageImpl implements ObjectStorage {
     private String getFileName(String typeName) throws RemoteException {
         String currentDate = format.format(new Date());
         File folder = new File(rootFolder + currentDate);
-        if (!folder.exists()) {//检查路径是否存在，如果不存在，则创建之
+        if (!folder.exists()) {
+            //检查路径是否存在，如果不存在，则创建之
             folder.mkdirs();
         }
         return rootFolder + currentDate + File.separatorChar + Util.getUuid()

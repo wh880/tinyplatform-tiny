@@ -23,11 +23,11 @@
  */
 package org.tinygroup.vfs.impl;
 
-import java.io.IOException;
+import org.tinygroup.vfs.SchemaProvider;
+import org.tinygroup.vfs.VFSRuntimeException;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import org.tinygroup.vfs.SchemaProvider;
+import java.io.IOException;
 
 /**
  * 
@@ -45,19 +45,19 @@ public class HttpsFileObject extends URLFileObject {
 
 	public long getSize() {
 		try {
-			HttpsURLConnection con= (HttpsURLConnection) url.openConnection();
+			HttpsURLConnection con= (HttpsURLConnection) getURL().openConnection();
 			return con.getContentLength();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new VFSRuntimeException(e);
 		}
 	}
 
 	public long getLastModifiedTime() {
 		try {
-			HttpsURLConnection con= (HttpsURLConnection) url.openConnection();
+			HttpsURLConnection con= (HttpsURLConnection) getURL().openConnection();
 			return con.getLastModified();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new VFSRuntimeException(e);
 		}
 		
 	}

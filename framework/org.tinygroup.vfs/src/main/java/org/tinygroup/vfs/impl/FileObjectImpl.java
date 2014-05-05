@@ -23,21 +23,16 @@
  */
 package org.tinygroup.vfs.impl;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.tinygroup.vfs.FileObject;
+import org.tinygroup.vfs.SchemaProvider;
+import org.tinygroup.vfs.VFS;
+import org.tinygroup.vfs.VFSRuntimeException;
+
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.tinygroup.vfs.FileObject;
-import org.tinygroup.vfs.SchemaProvider;
-import org.tinygroup.vfs.VFS;
 
 public class FileObjectImpl extends AbstractFileObject {
 
@@ -70,9 +65,11 @@ public class FileObjectImpl extends AbstractFileObject {
 	}
 
 	public String getPath() {
-		if (path == null) {// 如果没有计算过
-			if (parent != null) {// 如果有父亲
-				path = parent.getPath() + "/" + getFileName();
+        // 如果没有计算过
+		if (path == null) {
+            // 如果有父亲
+			if (getParent() != null) {
+				path = getParent().getPath() + "/" + getFileName();
 			} else {
 				if (file.isDirectory()) {
 					return "";
@@ -112,9 +109,8 @@ public class FileObjectImpl extends AbstractFileObject {
 				return null;
 			}
 		} catch (FileNotFoundException e) {
-			throw new RuntimeException(file.getAbsolutePath()
+			throw new VFSRuntimeException(file.getAbsolutePath()
 					+ "获取FileInputStream出错，原因" + e);
-		} finally {
 		}
 	}
 
@@ -138,7 +134,7 @@ public class FileObjectImpl extends AbstractFileObject {
 				if (subfile.getName().endsWith(".jar")) {
 					fileObject = VFS.resolveFile(subfile.getAbsolutePath());
 				} else {
-					fileObject = new FileObjectImpl(schemaProvider, subfile);
+					fileObject = new FileObjectImpl(getSchemaProvider(), subfile);
 					fileObject.setParent(this);
 				}
 				children.add(fileObject);
@@ -173,9 +169,9 @@ public class FileObjectImpl extends AbstractFileObject {
 
 	public URL getURL() {
 		try {
-			return new URL(FileSchemaProvider.FILE_PROTOCAL + getAbsolutePath());
+			return new URL(FileSchemaProvider.FILE_PROTOCOL + getAbsolutePath());
 		} catch (MalformedURLException e) {
-			throw new RuntimeException(e);
+			throw new VFSRuntimeException(e);
 		}
 	}
 
@@ -183,7 +179,7 @@ public class FileObjectImpl extends AbstractFileObject {
 		try {
 			return new FileOutputStream(file);
 		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
+			throw new VFSRuntimeException(e);
 		}
 	}
 

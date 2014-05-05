@@ -23,6 +23,7 @@
  */
 package org.tinygroup.tinypc.impl;
 
+import org.tinygroup.tinypc.PCRuntimeException;
 import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.Worker;
@@ -37,10 +38,10 @@ import java.rmi.RemoteException;
 public abstract class AbstractWorker implements Worker {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 6507469432280204341L;
-	private String id;
+     *
+     */
+    private static final long serialVersionUID = 6507469432280204341L;
+    private String id;
     private String type;
     protected volatile boolean cancel = false;
 
@@ -71,13 +72,12 @@ public abstract class AbstractWorker implements Worker {
 
     public Warehouse work(Work work) throws RemoteException {
         if (work == null) {
-            throw new RuntimeException("任务为空！");
+            throw new PCRuntimeException("任务为空！");
         }
         if (!work.getType().equalsIgnoreCase(type)) {
-            throw new RuntimeException((String.format("[%s]类型的工人不可以做[%s]类型的工作", type, work.getType())));
+            throw new PCRuntimeException((String.format("[%s]类型的工人不可以做[%s]类型的工作", type, work.getType())));
         }
-        Warehouse outputWarehouse = doWork(work);
-        return outputWarehouse;
+        return doWork(work);
     }
 
     /**
@@ -87,7 +87,7 @@ public abstract class AbstractWorker implements Worker {
      * @param work
      * @throws RemoteException
      */
-    abstract protected Warehouse doWork(Work work) throws RemoteException;
+    protected abstract Warehouse doWork(Work work) throws RemoteException;
 
     public String getType() {
         return type;

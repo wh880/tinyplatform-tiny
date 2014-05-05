@@ -23,9 +23,9 @@
  */
 package org.tinygroup.vfs;
 
-import java.io.InputStream;
-
 import junit.framework.TestCase;
+
+import java.io.InputStream;
 
 /**
  * jar fileobject 测试用例

@@ -24,7 +24,6 @@
 package org.tinygroup.vfs;
 
 import java.io.BufferedInputStream;
-import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;

@@ -30,8 +30,8 @@ import org.tinygroup.vfs.SchemaProvider;
 
 public abstract class AbstractFileObject implements FileObject {
 
-    protected SchemaProvider schemaProvider;
-    FileObject parent;
+    private SchemaProvider schemaProvider;
+    private FileObject parent;
 
     public FileObject getParent() {
         return parent;
@@ -58,8 +58,11 @@ public abstract class AbstractFileObject implements FileObject {
         if (obj == null) {
             return false;
         }
-        FileObject fileObject = (FileObject) obj;
-        return this.getAbsolutePath().equalsIgnoreCase(fileObject.getAbsolutePath());
+        if (obj instanceof FileObject) {
+            FileObject fileObject = (FileObject) obj;
+            return this.getAbsolutePath().equalsIgnoreCase(fileObject.getAbsolutePath());
+        }
+        return false;
     }
 
     /**
@@ -71,20 +74,16 @@ public abstract class AbstractFileObject implements FileObject {
      */
     public void foreach(FileObjectFilter fileObjectFilter, FileObjectProcessor fileObjectProcessor,
                         boolean parentFirst) {
-        if (parentFirst) {
-            if (fileObjectFilter.accept(this)) {
-                fileObjectProcessor.process(this);
-            }
+        if (parentFirst && fileObjectFilter.accept(this)) {
+            fileObjectProcessor.process(this);
         }
         if (isFolder()) {
             for (FileObject subFileObject : getChildren()) {
                 subFileObject.foreach(fileObjectFilter, fileObjectProcessor, parentFirst);
             }
         }
-        if (!parentFirst) {
-            if (fileObjectFilter.accept(this)) {
-                fileObjectProcessor.process(this);
-            }
+        if (!parentFirst && fileObjectFilter.accept(this)) {
+            fileObjectProcessor.process(this);
         }
     }
 

@@ -26,11 +26,11 @@ package org.tinygroup.vfs.impl;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.SchemaProvider;
+import org.tinygroup.vfs.VFSRuntimeException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -46,122 +46,150 @@ import java.util.List;
  * <br>
  */
 public abstract class URLFileObject extends AbstractFileObject {
-	protected URL url;
-	protected String path;
-	protected String fileName;
-	protected String extName;
-	protected long fileSize;
-	protected List<FileObject> children;
+    private URL url;
+    protected String path;
+    protected String fileName;
+    private String extName;
+    private long fileSize;
+    private List<FileObject> children;
 
-	public URLFileObject(SchemaProvider schemaProvider) {
-		super(schemaProvider);
-	}
+    public URL getUrl() {
+        return url;
+    }
 
-	public URLFileObject(SchemaProvider schemaProvider, String resource) {
-		super(schemaProvider);
-		try {
-			url = new URL(resource);
-		} catch (MalformedURLException e) {
-			throw new TinySysRuntimeException("不能定位到某个资源！");
-		}
-	}
+    public void setUrl(URL url) {
+        this.url = url;
+    }
 
-	public String getAbsolutePath() {
-		return url.getPath();
-	}
+    public void setExtName(String extName) {
+        this.extName = extName;
+    }
 
-	public String getPath() {
-		if (path == null) {
-			if (parent == null) {
-				path = "";
-			} else {
-				path = parent.getPath() + "/" + getFileName();
-			}
-		}
-		return path;
-	}
+    public long getFileSize() {
+        return fileSize;
+    }
 
-	public String getFileName() {
-		if (fileName == null) {
-			String absolutePath = getAbsolutePath();
-			int lastIndex = absolutePath.lastIndexOf("/");
-			if (lastIndex != -1) {
-				fileName = absolutePath.substring(lastIndex + 1);
-			} else {
-				fileName = "";
-			}
-		}
-		return fileName;
-	}
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
+    }
 
-	public String getExtName() {
-		if (extName == null) {
-			String fileName = getFileName();
-			int lastIndex = fileName.lastIndexOf(".");
-			if (lastIndex != -1) {
-				extName = fileName.substring(lastIndex + 1);
-			} else {
-				extName = "";
-			}
-		}
-		return extName;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	public boolean isFolder() {
-		return false;
-	}
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-	public boolean isExist() {
-		return true;
-	}
+    public URLFileObject(SchemaProvider schemaProvider) {
+        super(schemaProvider);
+    }
 
-	public InputStream getInputStream() {
-		InputStream stream = null;
-		try {
-			stream = url.openStream();
-		} catch (IOException e) {
-			stream = null;
-		}
-		return stream;
-	}
+    public URLFileObject(SchemaProvider schemaProvider, String resource) {
+        super(schemaProvider);
+        try {
+            url = new URL(resource);
+        } catch (MalformedURLException e) {
+            throw new TinySysRuntimeException("不能定位到资源:" + resource, e);
+        }
+    }
 
-	public OutputStream getOutputStream() {
-		try {
-			URLConnection connection = url.openConnection();
-			connection.setDoOutput(true);
-			connection.setDoInput(true);
-			return connection.getOutputStream();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public String getAbsolutePath() {
+        return url.getPath();
+    }
 
-	public FileObject getChild(String fileName) {
-		List<FileObject> children = getChildren();
-		if (children == null || children.size() == 0) {
-			return null;
-		}
-		for (FileObject fileObject : getChildren()) {
-			if (fileObject.getFileName().equals(fileName)) {
-				return fileObject;
-			}
-		}
-		return null;
-	}
+    public String getPath() {
+        if (path == null) {
+            if (getParent() == null) {
+                path = "";
+            } else {
+                path = getParent().getPath() + "/" + getFileName();
+            }
+        }
+        return path;
+    }
 
-	public List<FileObject> getChildren() {
-		if (children == null) {
-			children = new ArrayList<FileObject>();
-		}
-		return children;
-	}
+    public String getFileName() {
+        if (fileName == null) {
+            String absolutePath = getAbsolutePath();
+            int lastIndex = absolutePath.lastIndexOf('/');
+            if (lastIndex != -1) {
+                fileName = absolutePath.substring(lastIndex + 1);
+            } else {
+                fileName = "";
+            }
+        }
+        return fileName;
+    }
 
-	public boolean isInPackage() {
-		return false;
-	}
+    public String getExtName() {
+        if (extName == null) {
+            String name = getFileName();
+            int lastIndex = name.lastIndexOf('.');
+            if (lastIndex != -1) {
+                extName = name.substring(lastIndex + 1);
+            } else {
+                extName = "";
+            }
+        }
+        return extName;
+    }
 
-	public URL getURL() {
-		return url;
-	}
+    public boolean isFolder() {
+        return false;
+    }
+
+    public boolean isExist() {
+        return true;
+    }
+
+    public InputStream getInputStream() {
+        InputStream stream = null;
+        try {
+            stream = url.openStream();
+        } catch (IOException e) {
+            stream = null;
+        }
+        return stream;
+    }
+
+    public OutputStream getOutputStream() {
+        try {
+            URLConnection connection = url.openConnection();
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            return connection.getOutputStream();
+        } catch (IOException e) {
+            throw new VFSRuntimeException(e);
+        }
+    }
+
+    public FileObject getChild(String fileName) {
+        List<FileObject> child = getChildren();
+        if (child == null || child.size() == 0) {
+            return null;
+        }
+        for (FileObject fileObject : getChildren()) {
+            if (fileObject.getFileName().equals(fileName)) {
+                return fileObject;
+            }
+        }
+        return null;
+    }
+
+    public List<FileObject> getChildren() {
+        if (children == null) {
+            children = new ArrayList<FileObject>();
+        }
+        return children;
+    }
+
+    public boolean isInPackage() {
+        return false;
+    }
+
+    public URL getURL() {
+        return url;
+    }
 
 }

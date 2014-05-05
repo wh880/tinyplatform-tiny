@@ -38,7 +38,7 @@ import java.util.List;
  * Created by luoguo on 14-1-8.
  */
 public class AbstractJobCenter implements JobCenter {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractJobCenter.class);
+    private static Logger logger = LoggerFactory.getLogger(AbstractJobCenter.class);
     private RmiServer rmiServer;
     private WorkQueue workQueue;
 
@@ -54,8 +54,9 @@ public class AbstractJobCenter implements JobCenter {
         return rmiServer;
     }
 
-    public void setRmiServer(RmiServer rmiServer) {
+    public void setRmiServer(RmiServer rmiServer) throws RemoteException {
         this.rmiServer = rmiServer;
+        this.workQueue = rmiServer.getRemoteObject(WORK_QUEUE);
     }
 
     public void registerWorker(Worker worker) throws RemoteException {
@@ -76,22 +77,18 @@ public class AbstractJobCenter implements JobCenter {
     }
 
     public void registerWork(Work work) throws IOException {
-        WorkQueue workQueue = rmiServer.getRemoteObject(WORK_QUEUE);
         workQueue.add(work);
     }
 
     public void replaceWork(Work oldWork, Work newWork) throws RemoteException {
-        WorkQueue workQueue = rmiServer.getRemoteObject(WORK_QUEUE);
         workQueue.replace(oldWork, newWork);
     }
 
     public void unregisterWork(Work work) throws RemoteException {
-        WorkQueue workQueue = rmiServer.getRemoteObject(WORK_QUEUE);
         workQueue.remove(work);
     }
 
     public WorkStatus getWorkStatus(Work work) throws RemoteException {
-        WorkQueue workQueue = rmiServer.getRemoteObject(WORK_QUEUE);
         return workQueue.getWorkStatus(work);
     }
 
@@ -104,8 +101,7 @@ public class AbstractJobCenter implements JobCenter {
     }
 
     public List<Worker> getWorkerList(Work work) {
-        List<Worker> workerList = rmiServer.getRemoteObjectList(getTypeName(WORKER, work.getType()));
-        return workerList;
+        return rmiServer.getRemoteObjectList(getTypeName(WORKER, work.getType()));
     }
 
     private String getTypeName(String type, String workType) {
@@ -113,12 +109,10 @@ public class AbstractJobCenter implements JobCenter {
     }
 
     public List<Work> getWorkList() throws RemoteException {
-        WorkQueue workQueue = rmiServer.getRemoteObject(WORK_QUEUE);
         return workQueue.getWorkList();
     }
 
     public List<Work> getWorkList(String type, WorkStatus workStatus) throws RemoteException {
-        WorkQueue workQueue = rmiServer.getRemoteObject(WORK_QUEUE);
         return workQueue.getWorkList(type, workStatus);
     }
 
@@ -142,34 +136,15 @@ public class AbstractJobCenter implements JobCenter {
     }
 
     public Warehouse doWork(Work work) throws IOException {
-        List<Foreman> foremanList = null;
         String foremanType = work.getForemanType();
-        if (foremanType == null || "".equals(foremanType)) {
-            foremanList = getForeman(work.getType());
-        } else {
-            foremanList = getForeman(foremanType);
-        }
-        Foreman foreman = null;
-        if (foremanList == null || foremanList.size() > 0) {// 如果存在空闲的工头
-            //选择一个工头来处理
-            foreman = foremanList.get(Util.randomIndex(foremanList.size()));
-        } else {
-            foreman = new ForemanSelectOneWorker(foremanType);
-        }
+        List<Foreman> foremanList = null;
+        foremanList = getForemans(work, foremanType);
+        // 如果存在空闲的工头
+        Foreman foreman = getForeman(foremanType, foremanList);
         //获取所有能执行该任务的工人
         List<Worker> workers = this.getWorkerList(work);
         //存放接受该work的工人列表
-        List<Worker> acceptWorkers = new ArrayList<Worker>();
-        //查找接受该work的工人
-        for (Worker worker : workers) {
-            try {
-                if (worker.acceptWork(work)) {//判断该工人是否接受该任务
-                    acceptWorkers.add(worker);
-                }
-            } catch (RemoteException e) {
-                logger.errorMessage("判断worker是否接受work[id:{1}]时发生异常", e, work.getId());
-            }
-        }
+        List<Worker> acceptWorkers = getAcceptWorkers(work, workers);
         if (acceptWorkers.size() > 0) {
             Warehouse outputWarehouse = foreman.work(work, cloneWorkers(acceptWorkers));
             // 检查是否有子任务
@@ -180,9 +155,45 @@ public class AbstractJobCenter implements JobCenter {
             }
             return outputWarehouse;
         } else {
-            throw new RuntimeException(String.format("没有合适的工人来完成工作：%s %s", work.getType(), work.getId()));
+            throw new PCRuntimeException(String.format("没有合适的工人来完成工作：%s %s", work.getType(), work.getId()));
         }
 
+    }
+
+    private List<Worker> getAcceptWorkers(Work work, List<Worker> workers) {
+        List<Worker> acceptWorkers = new ArrayList<Worker>();
+        for (Worker worker : workers) {
+            try {
+                //判断该工人是否接受该任务
+                if (worker.acceptWork(work)) {
+                    acceptWorkers.add(worker);
+                }
+            } catch (RemoteException e) {
+                logger.errorMessage("判断worker是否接受work[id:{1}]时发生异常", e, work.getId());
+            }
+        }
+        return acceptWorkers;
+    }
+
+    private Foreman getForeman(String foremanType, List<Foreman> foremanList) throws RemoteException {
+        Foreman foreman;
+        if (foremanList == null || foremanList.size() > 0) {
+            //选择一个工头来处理
+            foreman = foremanList.get(Util.randomIndex(foremanList.size()));
+        } else {
+            foreman = new ForemanSelectOneWorker(foremanType);
+        }
+        return foreman;
+    }
+
+    private List<Foreman> getForemans(Work work, String foremanType) {
+        List<Foreman> foremanList;
+        if (foremanType == null || "".equals(foremanType)) {
+            foremanList = getForeman(work.getType());
+        } else {
+            foremanList = getForeman(foremanType);
+        }
+        return foremanList;
     }
 
     public List<Worker> cloneWorkers(List<Worker> acceptWorkers) {
@@ -232,12 +243,14 @@ public class AbstractJobCenter implements JobCenter {
                 Work nextWork = work.getNextWork();
                 if (nextWork != null) {
                     nextWork.setInputWarehouse(outputWarehouse);
-                    replaceWork(work, nextWork);// 添加新任务
+                    // 添加新任务
+                    replaceWork(work, nextWork);
                 } else {
-                    unregisterWork(work);// 去掉老任务
+                    // 去掉老任务
+                    unregisterWork(work);
                 }
                 logger.logMessage(LogLevel.DEBUG, "结束工作:{}-{}", work.getType(), work.getId());
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 logger.errorMessage("工作:{}-{}执行时发生异常！", e, work.getType(), work.getId());
             }
         }

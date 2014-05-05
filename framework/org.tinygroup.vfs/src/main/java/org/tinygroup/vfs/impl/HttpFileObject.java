@@ -23,10 +23,11 @@
  */
 package org.tinygroup.vfs.impl;
 
+import org.tinygroup.vfs.SchemaProvider;
+import org.tinygroup.vfs.VFSRuntimeException;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
-
-import org.tinygroup.vfs.SchemaProvider;
 
 public class HttpFileObject extends URLFileObject {
 
@@ -36,20 +37,20 @@ public class HttpFileObject extends URLFileObject {
 
 	public long getLastModifiedTime() {
 		try {
-			HttpURLConnection con=(HttpURLConnection) url.openConnection();
+			HttpURLConnection con=(HttpURLConnection) getURL().openConnection();
 			return con.getLastModified();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new VFSRuntimeException(e);
 		}
 		
 	}
 
 	public long getSize() {
 		try {
-			HttpURLConnection con=(HttpURLConnection) url.openConnection();
+			HttpURLConnection con=(HttpURLConnection) getURL().openConnection();
 			return con.getContentLength();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new VFSRuntimeException(e);
 		}
 	}
 

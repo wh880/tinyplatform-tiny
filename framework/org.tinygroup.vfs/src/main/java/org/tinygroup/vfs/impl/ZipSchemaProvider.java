@@ -27,37 +27,37 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.SchemaProvider;
 
 /**
- * 
  * 功能说明: zip协议
-
+ * <p/>
  * 开发人员: renhui <br>
  * 开发时间: 2013-8-29 <br>
  * <br>
  */
 public class ZipSchemaProvider implements SchemaProvider {
-	
-	public static final String ZIP = ".zip";
-	public static final String ZIP_PROTOCAL = "zip:"; 
 
-	public boolean isMatch(String resource) {
-		String lowerCase = resource.toLowerCase();
-		return lowerCase.startsWith(ZIP_PROTOCAL) || lowerCase.endsWith(ZIP);
-	}
+    public static final String ZIP = ".zip";
+    public static final String ZIP_PROTOCAL = "zip:";
 
-	public String getSchema() {
-		return ZIP_PROTOCAL;
-	}
+    public boolean isMatch(String resource) {
+        String lowerCase = resource.toLowerCase();
+        return lowerCase.startsWith(ZIP_PROTOCAL) || lowerCase.endsWith(ZIP);
+    }
 
-	public FileObject resolver(String resource) {
-		if (resource.startsWith(ZIP_PROTOCAL)) {
-			resource = resource.substring(ZIP_PROTOCAL.length());
-		} else if (resource.startsWith(FileSchemaProvider.FILE_PROTOCAL)) {
-			resource = resource.substring(FileSchemaProvider.FILE_PROTOCAL.length());
-		}
-		if (resource.startsWith(FileSchemaProvider.FILE_PROTOCAL)) {
-	        resource = resource.substring(FileSchemaProvider.FILE_PROTOCAL.length());
-	     }
-		return new ZipFileObject(this, resource);
-	}
+    public String getSchema() {
+        return ZIP_PROTOCAL;
+    }
+
+    public FileObject resolver(String resourceResolve) {
+        String resource = resourceResolve;
+        if (resource.startsWith(ZIP_PROTOCAL)) {
+            resource = resource.substring(ZIP_PROTOCAL.length());
+        } else if (resource.startsWith(FileSchemaProvider.FILE_PROTOCOL)) {
+            resource = resource.substring(FileSchemaProvider.FILE_PROTOCOL.length());
+        }
+        if (resource.startsWith(FileSchemaProvider.FILE_PROTOCOL)) {
+            resource = resource.substring(FileSchemaProvider.FILE_PROTOCOL.length());
+        }
+        return new ZipFileObject(this, resource);
+    }
 
 }
