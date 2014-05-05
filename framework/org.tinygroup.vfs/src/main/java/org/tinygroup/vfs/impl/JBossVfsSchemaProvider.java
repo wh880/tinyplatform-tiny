@@ -29,25 +29,25 @@ import org.tinygroup.vfs.VFS;
 
 public class JBossVfsSchemaProvider implements SchemaProvider {
 
-	private static final String JBossVFS = "vfs:";
+    private static final String JBOSS_VFS = "vfs:";
 
-	public FileObject resolver(String resource) {
-		resource = resource.substring(JBossVFS.length());
-		if (resource.indexOf("!") < 0) {
-			return VFS.getSchemaProvider(FileSchemaProvider.FILE_PROTOCAL).resolver(resource);
-		} else {
-			return VFS.getSchemaProvider(JarSchemaProvider.JAR_PROTOCAL).resolver(resource);
-		}
-	}
+    public FileObject resolver(String resourceResolve) {
+        String resource = resourceResolve.substring(JBOSS_VFS.length());
+        if (resource.indexOf('!') < 0) {
+            return VFS.getSchemaProvider(FileSchemaProvider.FILE_PROTOCOL).resolver(resource);
+        } else {
+            return VFS.getSchemaProvider(JarSchemaProvider.JAR_PROTOCOL).resolver(resource);
+        }
+    }
 
-	public boolean isMatch(String resource) {
-		if (resource.toLowerCase().startsWith(JBossVFS)) {
-			return true;
-		}
-		return false;
-	}
+    public boolean isMatch(String resource) {
+        if (resource.toLowerCase().startsWith(JBOSS_VFS)) {
+            return true;
+        }
+        return false;
+    }
 
-	public String getSchema() {
-		return JBossVFS;
-	}
+    public String getSchema() {
+        return JBOSS_VFS;
+    }
 }

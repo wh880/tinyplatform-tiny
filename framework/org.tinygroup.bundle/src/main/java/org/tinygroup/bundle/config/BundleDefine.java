@@ -20,7 +20,9 @@ public class BundleDefine {
     private String dependencies;
     @XStreamAlias("common-jars")
     private String commonJars;
+    @XStreamAlias("short-description")
     private String shortDescription;
+    @XStreamAlias("long-description")
     private String longDescription;
     private transient List<String> dependencyByList = new ArrayList<String>();
     private transient boolean isHealth = false;

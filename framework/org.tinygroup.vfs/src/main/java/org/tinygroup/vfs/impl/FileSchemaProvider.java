@@ -28,24 +28,24 @@ import org.tinygroup.vfs.SchemaProvider;
 
 public class FileSchemaProvider implements SchemaProvider {
 
-	public static final String FILE_PROTOCAL = "file:";
+    public static final String FILE_PROTOCOL = "file:";
 
-	public FileObject resolver(String resource) {
-		// if (resource.startsWith(FILE_PROTOCAL)) {
-		if (isMatch(resource)) {
-			resource = resource.substring(FILE_PROTOCAL.length());
-		}
-		return new FileObjectImpl(this, resource);
-	}
+    public FileObject resolver(String resourceResolve) {
+        String resource = resourceResolve;
+        if (isMatch(resource)) {
+            resource = resource.substring(FILE_PROTOCOL.length());
+        }
+        return new FileObjectImpl(this, resource);
+    }
 
-	public boolean isMatch(String resource) {
-		if (resource.toLowerCase().startsWith(FILE_PROTOCAL)) {
-			return true;
-		}
-		return false;
-	}
+    public boolean isMatch(String resource) {
+        if (resource.toLowerCase().startsWith(FILE_PROTOCOL)) {
+            return true;
+        }
+        return false;
+    }
 
-	public String getSchema() {
-		return FILE_PROTOCAL;
-	}
+    public String getSchema() {
+        return FILE_PROTOCOL;
+    }
 }

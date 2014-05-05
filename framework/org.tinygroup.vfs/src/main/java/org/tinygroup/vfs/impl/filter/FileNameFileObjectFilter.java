@@ -33,11 +33,11 @@ import java.util.regex.Pattern;
  * Created by luoguo on 14-2-26.
  */
 public class FileNameFileObjectFilter implements FileObjectFilter {
-    Pattern pattern;
+    private Pattern pattern;
     /**
      * 是否完全匹配，默认是局部区域即可
      */
-    boolean fullMatch = false;
+    private boolean fullMatch = false;
 
     public FileNameFileObjectFilter(String fileNamePattern) {
         pattern = Pattern.compile(fileNamePattern);
@@ -45,7 +45,7 @@ public class FileNameFileObjectFilter implements FileObjectFilter {
 
     public FileNameFileObjectFilter(String fileNamePattern, boolean fullMatch) {
         this(fileNamePattern);
-        fullMatch = true;
+        this.fullMatch = fullMatch;
     }
 
     public boolean accept(FileObject fileObject) {
@@ -59,11 +59,7 @@ public class FileNameFileObjectFilter implements FileObjectFilter {
             }
         } else {
             Matcher matcher = pattern.matcher(fileName);
-            if (matcher.find()) {
-                return true;
-            } else {
-                return false;
-            }
+            return matcher.find();
         }
     }
 }
