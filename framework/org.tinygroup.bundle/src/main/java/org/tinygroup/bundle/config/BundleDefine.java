@@ -1,10 +1,10 @@
 package org.tinygroup.bundle.config;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 这里的Bundle，取其杂物箱之意
@@ -24,11 +24,22 @@ public class BundleDefine {
     private String shortDescription;
     @XStreamAlias("long-description")
     private String longDescription;
+    @XStreamAlias("bundle-activator")
+    private String bundleActivator;
     private transient List<String> dependencyByList = new ArrayList<String>();
     private transient boolean isHealth = false;
     private transient String[] dependencyArray = null;
 
-    public boolean isHealth() {
+
+	public String getBundleActivator() {
+		return bundleActivator;
+	}
+
+	public void setBundleActivator(String bundleActivator) {
+		this.bundleActivator = bundleActivator;
+	}
+
+	public boolean isHealth() {
         return isHealth;
     }
 
