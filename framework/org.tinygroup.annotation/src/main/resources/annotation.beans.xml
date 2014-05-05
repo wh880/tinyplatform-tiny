@@ -5,7 +5,7 @@
        default-autowire="byName" default-lazy-init="true">
 
 		<bean id="annotationExcuteManager" scope="singleton"
-			class="org.tinygroup.annotation.impl.AnnotationExcuteManagerImpl">
+			class="org.tinygroup.annotation.impl.AnnotationExecuteManagerImpl">
 		</bean>
 		<bean id="annotationFileProcessor" scope="singleton"
 			class="org.tinygroup.annotation.fileresolver.AnnotationFileProcessor">

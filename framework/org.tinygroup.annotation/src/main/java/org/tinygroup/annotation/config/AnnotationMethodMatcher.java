@@ -40,14 +40,17 @@ import java.util.List;
 public class AnnotationMethodMatcher {
 	@XStreamAlias("method-name")
 	@XStreamAsAttribute
-	private String methodName; // 要匹配的方法名
+    // 要匹配的方法名
+	private String methodName;
 
 	@XStreamAlias("annotation-type")
 	@XStreamAsAttribute
-	private String annotationType;// 要匹配的注解类型
+    // 要匹配的注解类型
+	private String annotationType;
 	@XStreamAlias("processor-beans")
 	@XStreamAsAttribute
-	private List<ProcessorBean> processorBeans;// 如果匹配上执行的bean名称列表
+    // 如果匹配上执行的bean名称列表
+	private List<ProcessorBean> processorBeans;
 
 	private AnnotationTypeMatcher annotationTypeMatcher;
 

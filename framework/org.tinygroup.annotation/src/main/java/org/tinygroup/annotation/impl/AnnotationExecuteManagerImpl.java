@@ -50,19 +50,34 @@ import java.util.List;
  * @author luoguo
  * 
  */
-public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,Configuration{
+public class AnnotationExecuteManagerImpl implements AnnotationExcuteManager,Configuration{
 	private static Logger logger = LoggerFactory
 			.getLogger(AnnotationFileProcessor.class);
 
 	private static final int CLASS_SUFFIX_LENGTH = 6;
 	// 类匹配定义
 	private List<AnnotationClassMatcher> classMatchers = new ArrayList<AnnotationClassMatcher>();
+    private static final String ANNOTATION_NODE_PATH = "/application/annotation-configuration";
+    private XmlNode applicationConfig;
+    private XmlNode componentConfig;
 
-	public AnnotationExcuteManagerImpl() {
+    private static final String MAP_VALUE = "value";
+
+    private static final String MAP_ID = "id";
+
+	public AnnotationExecuteManagerImpl() {
 
 	}
 
-	public void addAnnotationClassMatchers(
+    public void setApplicationConfig(XmlNode applicationConfig) {
+        this.applicationConfig = applicationConfig;
+    }
+
+    public void setComponentConfig(XmlNode componentConfig) {
+        this.componentConfig = componentConfig;
+    }
+
+    public void addAnnotationClassMatchers(
 			AnnotationClassMatchers annotationClassMatchers) {
 		annotationClassMatchers.initAnnotationClassMatchers();
 		classMatchers.addAll(annotationClassMatchers
@@ -93,7 +108,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,Conf
 							.loadClass(className), classMatcher);
 				} catch (ClassNotFoundException e) {
 					logger.errorMessage("加载器加载的类[{0}]不存在", e, className);
-				} catch (Throwable e) {
+				} catch (Exception e) {
 					logger.errorMessage("加载器加载的类[{0}]时出现错误：[{1}]", e,
 							className, e.getMessage());
 
@@ -251,13 +266,6 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,Conf
 			}
 		}
 	}
-	private static final String ANNOTATION_NODE_PATH = "/application/annotation-configuration";
-	protected XmlNode applicationConfig;
-	protected XmlNode componentConfig;
-	
-	private static final String MAP_VALUE = "value";
-
-	private static final String MAP_ID = "id";
 
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 		this.applicationConfig = applicationConfig;

@@ -40,13 +40,16 @@ import java.util.List;
 public class AnnotationPropertyMatcher {
 	@XStreamAlias("property-name")
 	@XStreamAsAttribute
-	private String propertyName;// 匹配的属性名
+    // 匹配的属性名
+	private String propertyName;
 	@XStreamAlias("annotation-type")
 	@XStreamAsAttribute
-	private String annotationType;// 匹配的注解研
+    // 匹配的注解研
+	private String annotationType;
 	@XStreamAlias("processor-beans")
 	@XStreamAsAttribute
-	private List<ProcessorBean> processorBeans;// 如果匹配上执行的ProcessorBean bean名列表
+    // 如果匹配上执行的ProcessorBean bean名列表
+	private List<ProcessorBean> processorBeans;
 
 	private AnnotationTypeMatcher annotationTypeMatcher;
 
