@@ -5,7 +5,12 @@ package org.tinygroup.bundle;
  * Created by luoguo on 2014/5/4.
  */
 public class BundleException extends Exception {
-    public BundleException(String message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6293780078695113755L;
+
+	public BundleException(String message) {
         super(message);
     }
     public BundleException(Throwable throwable) {

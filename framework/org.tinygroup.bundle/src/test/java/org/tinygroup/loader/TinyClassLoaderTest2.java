@@ -24,12 +24,13 @@
 package org.tinygroup.loader;
 
 
-import junit.framework.TestCase;
-import org.tinygroup.vfs.FileObject;
-
 import java.io.File;
 import java.net.URL;
 import java.util.Enumeration;
+
+import junit.framework.TestCase;
+
+import org.tinygroup.vfs.FileObject;
 
 /**
  * TinyClassLoader Tester.
@@ -122,8 +123,8 @@ public class TinyClassLoaderTest2 extends TestCase {
     /**
      * Method: getFileObjects()
      */
-    public void testGetFileObjects() throws Exception {
-        FileObject[] fileObjects = grandClassLoader.getFileObjects();
+    public void testGetAllFileObjects() throws Exception {
+        FileObject[] fileObjects = grandClassLoader.getAllFileObjects();
         assertEquals(3, fileObjects.length);
         for (FileObject fileObject : fileObjects) {
             assertEquals(true, fileObject.isExist());

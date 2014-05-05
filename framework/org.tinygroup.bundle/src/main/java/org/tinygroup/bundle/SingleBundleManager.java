@@ -38,6 +38,14 @@ interface SingleBundleManager {
      * @param bundleDefine
      */
     void start(BundleContext bundleContext, BundleDefine bundleDefine);
+    
+    /**
+     * 启动一个Bundle
+     *
+     * @param bundleContext
+     * @param bundleDefine
+     */
+    void start(BundleContext bundleContext, String bundle);
 
     /**
      * 停止一个Bundle
@@ -46,5 +54,13 @@ interface SingleBundleManager {
      * @param bundleDefine
      */
     void stop(BundleContext bundleContext, BundleDefine bundleDefine);
+    
+    /**
+     * 停止一个Bundle
+     *
+     * @param bundleContext
+     * @param bundleDefine
+     */
+    void stop(BundleContext bundleContext, String bundle);
 
 }

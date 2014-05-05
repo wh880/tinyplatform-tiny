@@ -24,11 +24,25 @@ public class BundleDefine {
     private String shortDescription;
     @XStreamAlias("long-description")
     private String longDescription;
+    @XStreamAlias("bundle-activator")
+    private String bundleActivator;
     private transient List<String> dependencyByList = new ArrayList<String>();
     private transient boolean isHealth = false;
     private transient String[] dependencyArray = null;
 
-    public boolean isHealth() {
+    public List<String> getDependencyByList() {
+		return dependencyByList;
+	}
+
+	public String getBundleActivator() {
+		return bundleActivator;
+	}
+
+	public void setBundleActivator(String bundleActivator) {
+		this.bundleActivator = bundleActivator;
+	}
+
+	public boolean isHealth() {
         return isHealth;
     }
 
