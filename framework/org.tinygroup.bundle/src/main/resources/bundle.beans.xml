@@ -8,17 +8,13 @@
 	
 	<!-- bundle相关 -->
 	<bean id="bundleFileProcessor" scope="singleton"
-		class="org.tinygroup.bundle.fileresolve.BundleFileProcessor">
+		class="org.tinygroup.bundle.fileProcessor.BundleFileProcessor">
 		<property name="bundleManager">
 			<ref bean="bundleManager" />
 		</property>
 	</bean>
-	<bean id="bundleLoader" scope="singleton"
-		class="org.tinygroup.bundle.loader.impl.PluginLoaderImpl">
-		
-	</bean>
 	<bean id="bundleManager" scope="singleton"
-		class="org.tinygroup.bundle.impl.BundleManagerImpl">
+		class="org.tinygroup.bundle.impl.BundleManagerDefault">
 	</bean>
 	
 </beans>

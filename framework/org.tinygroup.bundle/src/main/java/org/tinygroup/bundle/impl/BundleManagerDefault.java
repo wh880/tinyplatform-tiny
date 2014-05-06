@@ -1,5 +1,7 @@
 package org.tinygroup.bundle.impl;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +13,7 @@ import org.tinygroup.bundle.BundleEvent;
 import org.tinygroup.bundle.BundleException;
 import org.tinygroup.bundle.BundleManager;
 import org.tinygroup.bundle.config.BundleDefine;
-import org.tinygroup.loader.TinyClassLoader;
+import org.tinygroup.bundle.loader.TinyClassLoader;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -139,6 +141,13 @@ public class BundleManagerDefault implements BundleManager {
 			logger.logMessage(LogLevel.INFO, "Bundle:{0}已启动，无需再次启动", bundle);
 			return;
 		}
+		String[] dependens = bundleDefine.getDependencyArray(); // 获取所依赖的bundle项
+		for (String dependen : dependens) { 
+			if(!bundleDefineMap.containsKey(dependen)){
+				logger.errorMessage("Bundle:"+bundle+"所依赖的Bundle:"+dependen+"不存在，退出启动");
+				return;
+			}
+		}
 		startBundle(bundleContext, bundleDefine, bundle);
 		logger.logMessage(LogLevel.INFO, "启动Bundle:{0}完毕", bundle);
 	}
@@ -146,7 +155,22 @@ public class BundleManagerDefault implements BundleManager {
 	private void startBundle(BundleContext bundleContext,
 			BundleDefine bundleDefine, String bundle) {
 		
+		startBundleDepend(bundleContext, bundleDefine, bundle);
+
+		processEvents(beforeStartBundleEvent, bundleContext, bundleDefine);
+		
+		loadBundleLoader(bundleDefine, bundle);
+		
+		startBundleActivator(bundleDefine, bundle);
+		
+		processEvents(afterStartBundleEvent, bundleContext, bundleDefine);
+		
+	}
+	
+	private void startBundleDepend(BundleContext bundleContext,
+			BundleDefine bundleDefine, String bundle){
 		String[] dependens = bundleDefine.getDependencyArray(); // 获取所依赖的bundle项
+		
 		for (String dependen : dependens) { // 启动所有的依赖项
 			logger.logMessage(LogLevel.DEBUG, "开始启动Bundle:{0}所依赖Bundle:{1}",
 					bundle, dependen);
@@ -154,9 +178,9 @@ public class BundleManagerDefault implements BundleManager {
 			logger.logMessage(LogLevel.DEBUG, "启动Bundle:{0}所依赖Bundle:{1}完毕",
 					bundle, dependen);
 		}
-
-		processEvents(beforeStartBundleEvent, bundleContext, bundleDefine);
-
+	}
+	
+	private void startBundleActivator(BundleDefine bundleDefine, String bundle){
 		// 执行activator
 		String activatorBean = bundleDefine.getBundleActivator();
 		if (activatorBean != null && !"".equals(activatorBean)) {
@@ -169,7 +193,55 @@ public class BundleManagerDefault implements BundleManager {
 			}
 		}
 
-		processEvents(afterStartBundleEvent, bundleContext, bundleDefine);
+	}
+	
+	private void loadBundleLoader(BundleDefine bundleDefine, String bundle){
+		String[] jars = getBundleComJar(bundleDefine.getCommonJars().split(","));
+		String bundleDir =getBundleDir(bundle);
+		URL[] urls = new URL[jars.length+1];
+		for(int i = 0;i<jars.length;i++){
+			try {
+				urls[i] = new URL(jars[i]);
+			} catch (MalformedURLException e) {
+				logger.errorMessage("为路径{0}生成url时出错", e,jars[i]);
+			}
+		}
+		try {
+			urls[urls.length-1] = new URL(bundleDir);
+		} catch (MalformedURLException e1) {
+			logger.errorMessage("为路径{0}生成url时出错", e1,bundleDir);
+		}
+		TinyClassLoader bundleLoder = new TinyClassLoader(urls,tinyClassLoader);
+		tinyClassLoaderMap.put(bundleDefine, bundleLoder);
+	}
+	
+	private String getBundleDir(String bundleName){
+		String root = getBundleRoot();
+		if(root.endsWith("/")||root.endsWith("\\")){
+			return getPath(root,"",bundleName);
+		}else{
+			return getPath(root,"/",bundleName);
+		}
+	}
+	
+	private String getPath(String root,String plus,String name){
+		return root+plus+name;
+		
+	}
+	
+	private String[] getBundleComJar(String[] jars){
+		String[] paths = new String[jars.length];
+		String root = getCommonRoot();
+		if(root.endsWith("/")||root.endsWith("\\")){
+			for(int i = 0 ; i < paths.length ; i++){
+				paths[i] = getPath(root, "", jars[i]);
+			}
+		}else{
+			for(int i = 0 ; i < paths.length ; i++){
+				paths[i] = getPath(root, "/", jars[i]);
+			}
+		}
+		return paths;
 	}
 
 	public void stop(BundleContext bundleContext, String bundle) {
@@ -196,8 +268,20 @@ public class BundleManagerDefault implements BundleManager {
 
 	private void stopBundle(BundleContext bundleContext,
 			BundleDefine bundleDefine, String bundle) {
-		//List<String> dependencyByList = bundleDefine.getDependencyByList();// 获取所依赖当前bundle的项
 		
+		stopBundleDependBy(bundleContext, bundleDefine, bundle);
+
+		processEvents(beforeStopBundleEvent, bundleContext, bundleDefine);
+
+		tinyClassLoaderMap.remove(bundleDefine);
+		
+		stopBundleActivator(bundleDefine, bundle);
+
+		processEvents(afterStopBundleEvent, bundleContext, bundleDefine);
+	}
+	
+	private void stopBundleDependBy(BundleContext bundleContext,
+			BundleDefine bundleDefine, String bundle){
 		List<String> dependencyByList = new ArrayList<String>();
 		for(BundleDefine b:bundleDefineMap.values()){
 			String[] dependencyArray = b.getDependencyArray();
@@ -208,6 +292,7 @@ public class BundleManagerDefault implements BundleManager {
 			}
 		}
 		
+		
 		for (String dependenBy : dependencyByList) { // 启动所有的依赖项
 			logger.logMessage(LogLevel.DEBUG, "开始停止依赖Bundle:{0}的Bundle:{1}",
 					bundle, dependenBy);
@@ -215,9 +300,9 @@ public class BundleManagerDefault implements BundleManager {
 			logger.logMessage(LogLevel.DEBUG, "停止依赖Bundle:{0}的Bundle:{1}完毕",
 					bundle, dependenBy);
 		}
+	}
 
-		processEvents(beforeStopBundleEvent, bundleContext, bundleDefine);
-
+	private void stopBundleActivator(BundleDefine bundleDefine, String bundle){
 		// 执行activator
 		String activatorBean = bundleDefine.getBundleActivator();
 		if (activatorBean != null && !"".equals(activatorBean)) {
@@ -229,10 +314,8 @@ public class BundleManagerDefault implements BundleManager {
 						activatorBean);
 			}
 		}
-
-		processEvents(afterStopBundleEvent, bundleContext, bundleDefine);
 	}
-
+	
 	/**
 	 * 针对某个bundleDefine处理事件
 	 * 
