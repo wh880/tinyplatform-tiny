@@ -23,8 +23,9 @@
  */
 package org.tinygroup.jspengine.el.lang;
 
-import javax.el.FunctionMapper;
 import java.lang.reflect.Method;
+
+import javax.el.FunctionMapper;
 
 /**
  * @author Jacob Hookom [jacob@hookom.net]

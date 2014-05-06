@@ -21,10 +21,10 @@
  */
 package org.tinygroup.jsqlparser.util.deparser;
 
+import java.util.Iterator;
+
 import org.tinygroup.jsqlparser.statement.create.index.CreateIndex;
 import org.tinygroup.jsqlparser.statement.create.table.Index;
-
-import java.util.Iterator;
 
 /**
  * A class to de-parse (that is, tranform from JSqlParser hierarchy into a string)

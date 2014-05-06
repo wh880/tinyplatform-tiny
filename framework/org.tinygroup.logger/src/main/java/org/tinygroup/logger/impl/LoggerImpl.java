@@ -23,17 +23,17 @@
  */
 package org.tinygroup.logger.impl;
 
-import org.tinygroup.context.Context;
-import org.tinygroup.i18n.I18nMessage;
-import org.tinygroup.i18n.I18nMessageFactory;
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
+import static org.tinygroup.logger.LogLevel.ERROR;
 
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.tinygroup.logger.LogLevel.ERROR;
+import org.tinygroup.context.Context;
+import org.tinygroup.i18n.I18nMessage;
+import org.tinygroup.i18n.I18nMessageFactory;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
 
 /**
  * @author luoguo

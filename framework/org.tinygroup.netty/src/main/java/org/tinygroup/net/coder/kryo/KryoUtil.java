@@ -23,8 +23,9 @@
  */
 package org.tinygroup.net.coder.kryo;
 
-import com.esotericsoftware.kryo.Kryo;
 import org.objenesis.strategy.StdInstantiatorStrategy;
+
+import com.esotericsoftware.kryo.Kryo;
 
 public class KryoUtil {
 	private static Kryo kryo;

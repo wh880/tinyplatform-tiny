@@ -23,11 +23,11 @@
  */
 package org.tinygroup.commons.tools;
 
-import org.tinygroup.commons.collection.IntHashMap;
+import static org.tinygroup.commons.tools.CollectionUtil.*;
 
 import java.util.Map;
 
-import static org.tinygroup.commons.tools.CollectionUtil.createHashMap;
+import org.tinygroup.commons.collection.IntHashMap;
 
 
 

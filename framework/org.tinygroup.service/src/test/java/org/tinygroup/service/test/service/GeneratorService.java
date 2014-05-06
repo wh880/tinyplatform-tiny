@@ -23,9 +23,9 @@
  */
 package org.tinygroup.service.test.service;
 
-import org.tinygroup.service.test.base.ServiceUser;
-
 import java.util.List;
+
+import org.tinygroup.service.test.base.ServiceUser;
 
 public class GeneratorService {
 	public ServiceUser userObject(ServiceUser user) {

@@ -23,7 +23,11 @@
  */
 package org.tinygroup.fileresolver;
 
+import java.io.File;
+import java.io.IOException;
+
 import junit.framework.TestCase;
+
 import org.tinygroup.fileresolver.impl.FullContextFileFinder;
 import org.tinygroup.fileresolver.impl.FullContextFileRepositoryImpl;
 import org.tinygroup.parser.Document;
@@ -31,9 +35,6 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlParser;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * 

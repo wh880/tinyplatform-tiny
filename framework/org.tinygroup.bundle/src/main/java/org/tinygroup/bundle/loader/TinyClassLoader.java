@@ -21,7 +21,7 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.loader;
+package org.tinygroup.bundle.loader;
 
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.FileObjectFilter;

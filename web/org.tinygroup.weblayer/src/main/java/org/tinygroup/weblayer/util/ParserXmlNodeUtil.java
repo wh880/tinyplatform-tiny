@@ -23,6 +23,14 @@
  */
 package org.tinygroup.weblayer.util;
 
+import java.beans.PropertyEditor;
+import java.lang.reflect.Array;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.CollectionUtil;
@@ -31,14 +39,6 @@ import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.webcontext.parser.util.BeanWrapperImpl;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.beans.PropertyEditor;
-import java.lang.reflect.Array;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 

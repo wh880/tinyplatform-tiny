@@ -23,11 +23,11 @@
  */
 package org.tinygroup.simplechannel;
 
+import java.util.List;
+
 import org.tinygroup.channel.impl.AbstractChannel;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
-
-import java.util.List;
 
 public class SimpleChannel extends AbstractChannel {
 

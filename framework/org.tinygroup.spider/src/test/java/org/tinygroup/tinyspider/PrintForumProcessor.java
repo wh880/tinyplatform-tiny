@@ -23,10 +23,10 @@
  */
 package org.tinygroup.tinyspider;
 
+import java.util.List;
+
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.parser.filter.FastNameFilter;
-
-import java.util.List;
 
 public class PrintForumProcessor implements Processor {
 

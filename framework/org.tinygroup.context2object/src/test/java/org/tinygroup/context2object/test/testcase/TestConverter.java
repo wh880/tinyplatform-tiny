@@ -23,10 +23,11 @@
  */
 package org.tinygroup.context2object.test.testcase;
 
-import junit.framework.TestCase;
-import org.tinygroup.context2object.impl.BigDecimalConverter;
-
 import java.math.BigDecimal;
+
+import junit.framework.TestCase;
+
+import org.tinygroup.context2object.impl.BigDecimalConverter;
 
 public class TestConverter extends TestCase{
 	public void testBigDecial(){

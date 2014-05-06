@@ -23,12 +23,13 @@
  */
 package org.tinygroup.database.config.customsql;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import org.tinygroup.database.config.UsePackage;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.database.config.UsePackage;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 /**
  * 自定义SQL

@@ -25,8 +25,8 @@
 
 package org.tinygroup.jspengine.compiler;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Represents a source map (SMAP), which serves to associate lines

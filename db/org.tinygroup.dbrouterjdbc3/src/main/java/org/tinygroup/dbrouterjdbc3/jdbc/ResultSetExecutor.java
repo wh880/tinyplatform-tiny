@@ -23,6 +23,9 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Shard;
@@ -33,9 +36,6 @@ import org.tinygroup.dbrouter.util.SortOrder;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.SelectBody;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class ResultSetExecutor {
 

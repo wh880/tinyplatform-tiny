@@ -23,11 +23,11 @@
  */
 package org.tinygroup.context2object.test.testcase;
 
+import java.util.List;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.context2object.test.bean.People2;
-
-import java.util.List;
 
 public class TestNull extends BastTestCast {
 	public void testNullObject() {

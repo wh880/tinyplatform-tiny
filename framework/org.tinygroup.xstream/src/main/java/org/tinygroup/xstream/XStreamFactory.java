@@ -23,11 +23,12 @@
  */
 package org.tinygroup.xstream;
 
-import com.thoughtworks.xstream.XStream;
-import org.tinygroup.xstream.config.XStreamConfiguration;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.tinygroup.xstream.config.XStreamConfiguration;
+
+import com.thoughtworks.xstream.XStream;
 
 /**
  * 

@@ -23,11 +23,11 @@
  */
 package org.tinygroup.cepcore.test.rmi.impl;
 
-import org.tinygroup.cepcore.test.rmi.RMIInterface;
-import org.tinygroup.event.Event;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+
+import org.tinygroup.cepcore.test.rmi.RMIInterface;
+import org.tinygroup.event.Event;
 
 public class RMIImpl extends UnicastRemoteObject implements RMIInterface{
 

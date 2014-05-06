@@ -23,13 +23,12 @@
  */
 package org.tinygroup.commons.tools;
 
-import java.util.ArrayList;
+import static org.tinygroup.commons.tools.Assert.*;
+import static org.tinygroup.commons.tools.BasicConstant.*;
+import static org.tinygroup.commons.tools.ObjectUtil.*;
+import static org.tinygroup.commons.tools.StringUtil.*;
 
-import static org.tinygroup.commons.tools.Assert.assertTrue;
-import static org.tinygroup.commons.tools.Assert.unreachableCode;
-import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
-import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
-import static org.tinygroup.commons.tools.StringUtil.isEmpty;
+import java.util.ArrayList;
 
 /**
  * 支持分级缩进的string builder。

@@ -23,11 +23,11 @@
  */
 package org.tinygroup.tinydb.relation;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 表间关系定义

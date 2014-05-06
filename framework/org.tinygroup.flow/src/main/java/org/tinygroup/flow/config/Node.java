@@ -23,15 +23,16 @@
  */
 package org.tinygroup.flow.config;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import org.tinygroup.context.Context;
-import org.tinygroup.flow.util.FlowElUtil;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.tinygroup.context.Context;
+import org.tinygroup.flow.util.FlowElUtil;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 流程节点

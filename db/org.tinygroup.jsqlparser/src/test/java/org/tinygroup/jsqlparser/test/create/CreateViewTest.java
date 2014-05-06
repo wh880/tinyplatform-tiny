@@ -1,15 +1,16 @@
 package org.tinygroup.jsqlparser.test.create;
 
+import java.io.StringReader;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+
 import junit.framework.TestCase;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.schema.Table;
 import org.tinygroup.jsqlparser.statement.create.view.CreateView;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
-
-import java.io.StringReader;
-
-import static org.tinygroup.jsqlparser.test.TestUtils.assertSqlCanBeParsedAndDeparsed;
+import static org.tinygroup.jsqlparser.test.TestUtils.*;
 
 public class CreateViewTest extends TestCase {
 

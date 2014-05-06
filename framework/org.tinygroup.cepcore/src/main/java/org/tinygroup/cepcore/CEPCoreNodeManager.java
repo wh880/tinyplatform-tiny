@@ -23,12 +23,12 @@
  */
 package org.tinygroup.cepcore;
 
+import java.rmi.RemoteException;
+import java.util.List;
+
 import org.tinygroup.event.Event;
 import org.tinygroup.event.central.Node;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.rmi.RemoteException;
-import java.util.List;
 
 /**
  * 此接口用于管理远端节点信息

@@ -21,10 +21,10 @@
  */
 package org.tinygroup.jsqlparser.expression.operators.relational;
 
+import java.util.List;
+
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
-
-import java.util.List;
 
 /**
  * A list of expressions, as in SELECT A FROM TAB WHERE B IN (expr1,expr2,expr3)

@@ -1,10 +1,10 @@
 package org.tinygroup.jsqlparser.test.truncate;
 
+import java.io.StringReader;
+
 import junit.framework.TestCase;
 import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.statement.truncate.Truncate;
-
-import java.io.StringReader;
 
 public class TruncateTest extends TestCase {
 

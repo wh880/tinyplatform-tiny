@@ -23,8 +23,7 @@
  */
 package org.tinygroup.logger;
 
-import static org.tinygroup.logger.LogLevel.ERROR;
-import static org.tinygroup.logger.LogLevel.INFO;
+import static org.tinygroup.logger.LogLevel.*;
 
 public class HelloB {
 	static Logger logger = LoggerFactory.getLogger(HelloB.class);

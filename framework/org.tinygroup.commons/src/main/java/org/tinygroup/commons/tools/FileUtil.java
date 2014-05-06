@@ -24,7 +24,8 @@
 package org.tinygroup.commons.tools;
 
 
-import org.tinygroup.commons.exceptions.IllegalPathException;
+
+import static org.tinygroup.commons.tools.StringUtil.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,7 +33,7 @@ import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.tinygroup.commons.tools.StringUtil.*;
+import org.tinygroup.commons.exceptions.IllegalPathException;
 
 /**
  * 操作文件的工具类

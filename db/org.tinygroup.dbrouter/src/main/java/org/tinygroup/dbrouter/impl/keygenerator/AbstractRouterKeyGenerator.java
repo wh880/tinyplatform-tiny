@@ -24,8 +24,8 @@
 package org.tinygroup.dbrouter.impl.keygenerator;
 
 import org.tinygroup.dbrouter.RouterKeyGenerator;
-import org.tinygroup.dbrouter.config.KeyGeneratorConfig;
 import org.tinygroup.dbrouter.config.Router;
+import org.tinygroup.dbrouter.config.KeyGeneratorConfig;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;

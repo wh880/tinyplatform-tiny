@@ -24,8 +24,7 @@ package org.tinygroup.jsqlparser.statement.select;
 /**
  * All the columns of a table (as in "SELECT TableName.* FROM ...")
  */
-
-import org.tinygroup.jsqlparser.schema.Table;
+import org.tinygroup.jsqlparser.schema.*;
 
 public class AllTableColumns implements SelectItem {
 

@@ -23,16 +23,22 @@
  */
 package org.tinygroup.mongodb.util;
 
-import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.context.Context;
-import org.tinygroup.mongodb.common.*;
-import org.tinygroup.mongodb.engine.MongoField;
-import org.tinygroup.mongodb.model.MongoDBModel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.context.Context;
+import org.tinygroup.mongodb.common.Field;
+import org.tinygroup.mongodb.common.ObjectField;
+import org.tinygroup.mongodb.common.Operation;
+import org.tinygroup.mongodb.common.OperationField;
+import org.tinygroup.mongodb.common.OperationGroup;
+import org.tinygroup.mongodb.engine.MongoField;
+import org.tinygroup.mongodb.model.MongoDBModel;
+
+import com.mongodb.BasicDBObject;
 
 public class MapConvert {
 

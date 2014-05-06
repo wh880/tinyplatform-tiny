@@ -23,12 +23,12 @@
  */
 package org.tinygroup.entity.engine.entity.view.chart;
 
+import java.io.Writer;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.entity.BaseModel;
 import org.tinygroup.imda.processor.ModelViewProcessor;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
-
-import java.io.Writer;
 
 public class EntityModelChartViewProcessor implements ModelViewProcessor<BaseModel> {
 

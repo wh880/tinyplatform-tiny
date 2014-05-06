@@ -23,13 +23,14 @@
  */
 package org.tinygroup.entity.common;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.entity.base.BaseObject;
 import org.tinygroup.imda.config.CustomizeStageConfig;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 视图，用于展现数据

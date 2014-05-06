@@ -23,10 +23,10 @@
  */
 package org.tinygroup.annotation.action;
 
-import org.tinygroup.annotation.AnnotationPropertyAction;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+
+import org.tinygroup.annotation.AnnotationPropertyAction;
 
 public class AnnotationPropertyActionDemo implements
 		AnnotationPropertyAction {

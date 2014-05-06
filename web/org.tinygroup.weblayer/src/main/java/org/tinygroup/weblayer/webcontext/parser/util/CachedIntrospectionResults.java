@@ -23,20 +23,26 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.FatalBeanException;
-import org.springframework.core.JdkVersion;
-import org.springframework.util.ClassUtils;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.FatalBeanException;
+import org.springframework.core.JdkVersion;
+import org.springframework.util.ClassUtils;
 
 /**
  * Internal class that caches JavaBeans {@link java.beans.PropertyDescriptor}

@@ -25,6 +25,8 @@
 
 package org.tinygroup.jspengine.compiler.tagplugin;
 
+import org.tinygroup.jspengine.compiler.ServletWriter;
+
 /**
  * This interface allows the plugin author to make inqueries about the
  * properties of the current tag, and to use Jasper resources to generate

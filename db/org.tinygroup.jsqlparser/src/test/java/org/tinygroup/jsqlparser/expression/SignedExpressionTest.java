@@ -19,11 +19,14 @@
 
 package org.tinygroup.jsqlparser.expression;
 
-import org.junit.*;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.parser.CCJSqlParserUtil;
-
-import static org.junit.Assert.fail;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *

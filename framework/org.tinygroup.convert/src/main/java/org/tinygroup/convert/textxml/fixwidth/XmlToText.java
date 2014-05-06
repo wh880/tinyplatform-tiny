@@ -23,6 +23,10 @@
  */
 package org.tinygroup.convert.textxml.fixwidth;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.text.TextBaseParse;
 import org.tinygroup.convert.text.config.Text;
@@ -31,10 +35,6 @@ import org.tinygroup.convert.text.config.TextRow;
 import org.tinygroup.convert.util.ConvertUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class XmlToText extends TextBaseParse implements
 		Converter<String, String> {

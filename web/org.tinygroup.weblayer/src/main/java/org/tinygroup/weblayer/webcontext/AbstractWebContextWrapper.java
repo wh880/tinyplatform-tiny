@@ -23,20 +23,21 @@
  */
 package org.tinygroup.weblayer.webcontext;
 
-import org.tinygroup.commons.tools.ObjectUtil;
-import org.tinygroup.context.Context;
-import org.tinygroup.context.impl.ContextImpl;
-import org.tinygroup.weblayer.WebContext;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
+
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import org.tinygroup.commons.tools.ObjectUtil;
+import org.tinygroup.context.Context;
+import org.tinygroup.context.impl.ContextImpl;
+import org.tinygroup.weblayer.WebContext;
 
 /**
  * 功能说明:抽象的包装上下文,类属性值都是从被包装的上下文对象中获得

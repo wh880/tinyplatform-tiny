@@ -23,6 +23,13 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc.performance;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Random;
+
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.logger.LogLevel;
@@ -31,9 +38,6 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.threadgroup.AbstractProcessor;
 import org.tinygroup.threadgroup.MultiThreadProcessor;
 import org.tinygroup.threadgroup.Processor;
-
-import java.sql.*;
-import java.util.Random;
 
 public class ShardModeSameSchemaPerformance {
 

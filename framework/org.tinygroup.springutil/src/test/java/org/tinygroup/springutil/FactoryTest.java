@@ -24,6 +24,7 @@
 package org.tinygroup.springutil;
 
 import junit.framework.TestCase;
+
 import org.tinygroup.springutil.config.User;
 
 public class FactoryTest extends TestCase {

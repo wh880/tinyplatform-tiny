@@ -23,6 +23,16 @@
  */
 package org.tinygroup.tinydb.impl;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -37,16 +47,6 @@ import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.relation.Relation;
 import org.tinygroup.tinydb.relation.Relations;
 import org.tinygroup.tinydb.util.DataSourceFactory;
-
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 public class BeanManagerImpl implements BeanOperatorManager {
 

@@ -21,6 +21,8 @@
  */
 package org.tinygroup.jsqlparser.util.deparser;
 
+import java.util.Iterator;
+
 import org.tinygroup.jsqlparser.statement.StatementVisitor;
 import org.tinygroup.jsqlparser.statement.Statements;
 import org.tinygroup.jsqlparser.statement.alter.Alter;
@@ -35,8 +37,6 @@ import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.WithItem;
 import org.tinygroup.jsqlparser.statement.truncate.Truncate;
 import org.tinygroup.jsqlparser.statement.update.Update;
-
-import java.util.Iterator;
 
 public class StatementDeParser implements StatementVisitor {
 

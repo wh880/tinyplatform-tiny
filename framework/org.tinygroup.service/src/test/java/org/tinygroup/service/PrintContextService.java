@@ -23,10 +23,10 @@
  */
 package org.tinygroup.service;
 
+import java.util.Map;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.service.exception.ServiceExecuteException;
-
-import java.util.Map;
 
 public class PrintContextService implements Service {
 

@@ -23,10 +23,10 @@
  */
 package org.tinygroup.cepcore;
 
-import junit.framework.TestCase;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import junit.framework.TestCase;
 
 public class ConcurrentHashMapTest extends TestCase {
 

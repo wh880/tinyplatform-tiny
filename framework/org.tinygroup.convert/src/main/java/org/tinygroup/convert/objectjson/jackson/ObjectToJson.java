@@ -23,12 +23,12 @@
  */
 package org.tinygroup.convert.objectjson.jackson;
 
+import java.io.ByteArrayOutputStream;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.tinygroup.convert.Converter;
-
-import java.io.ByteArrayOutputStream;
 
 public class ObjectToJson<T> implements Converter<T, String> {
 	ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally

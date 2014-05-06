@@ -1,13 +1,15 @@
 package org.tinygroup.jsqlparser.util;
 
-import org.junit.*;
+import java.io.StringReader;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.statement.select.Select;
-
-import java.io.StringReader;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *

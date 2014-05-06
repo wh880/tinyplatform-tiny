@@ -23,12 +23,12 @@
  */
 package org.tinygroup.annotation.config;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 方法注解匹配器
@@ -40,17 +40,14 @@ import java.util.List;
 public class AnnotationMethodMatcher {
 	@XStreamAlias("method-name")
 	@XStreamAsAttribute
-    // 要匹配的方法名
-	private String methodName;
+	private String methodName; // 要匹配的方法名
 
 	@XStreamAlias("annotation-type")
 	@XStreamAsAttribute
-    // 要匹配的注解类型
-	private String annotationType;
+	private String annotationType;// 要匹配的注解类型
 	@XStreamAlias("processor-beans")
 	@XStreamAsAttribute
-    // 如果匹配上执行的bean名称列表
-	private List<ProcessorBean> processorBeans;
+	private List<ProcessorBean> processorBeans;// 如果匹配上执行的bean名称列表
 
 	private AnnotationTypeMatcher annotationTypeMatcher;
 

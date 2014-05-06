@@ -21,10 +21,30 @@
  */
 package org.tinygroup.jsqlparser.expression;
 
-import org.tinygroup.jsqlparser.expression.operators.arithmetic.*;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Addition;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.BitwiseAnd;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.BitwiseOr;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.BitwiseXor;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Concat;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Division;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Modulo;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Multiplication;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Subtraction;
 import org.tinygroup.jsqlparser.expression.operators.conditional.AndExpression;
 import org.tinygroup.jsqlparser.expression.operators.conditional.OrExpression;
-import org.tinygroup.jsqlparser.expression.operators.relational.*;
+import org.tinygroup.jsqlparser.expression.operators.relational.Between;
+import org.tinygroup.jsqlparser.expression.operators.relational.EqualsTo;
+import org.tinygroup.jsqlparser.expression.operators.relational.ExistsExpression;
+import org.tinygroup.jsqlparser.expression.operators.relational.GreaterThan;
+import org.tinygroup.jsqlparser.expression.operators.relational.GreaterThanEquals;
+import org.tinygroup.jsqlparser.expression.operators.relational.InExpression;
+import org.tinygroup.jsqlparser.expression.operators.relational.IsNullExpression;
+import org.tinygroup.jsqlparser.expression.operators.relational.LikeExpression;
+import org.tinygroup.jsqlparser.expression.operators.relational.Matches;
+import org.tinygroup.jsqlparser.expression.operators.relational.MinorThan;
+import org.tinygroup.jsqlparser.expression.operators.relational.MinorThanEquals;
+import org.tinygroup.jsqlparser.expression.operators.relational.NotEqualsTo;
+import org.tinygroup.jsqlparser.expression.operators.relational.RegExpMatchOperator;
 import org.tinygroup.jsqlparser.schema.Column;
 import org.tinygroup.jsqlparser.statement.select.SubSelect;
 

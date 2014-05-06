@@ -23,6 +23,15 @@
  */
 package org.tinygroup.weblayer.webcontext.basic.interceptor;
 
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
+import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import org.tinygroup.commons.tools.HumanReadableSize;
 import org.tinygroup.commons.tools.StringEscapeUtil;
 import org.tinygroup.logger.LogLevel;
@@ -30,14 +39,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.weblayer.webcontext.basic.exception.ResponseHeaderRejectedException;
 import org.tinygroup.weblayer.webcontext.util.CookieSupport;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
-import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
 
 /**
  * 过滤header中的crlf，将status message用HTML entities转义，限制cookie的总大小。

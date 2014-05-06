@@ -23,6 +23,11 @@
  */
 package org.tinygroup.imda.impl;
 
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
@@ -40,11 +45,6 @@ import org.tinygroup.imda.processor.ParameterBuilder;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
 import org.tinygroup.imda.validate.ValidateRule;
 import org.tinygroup.springutil.SpringUtil;
-
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ModelManagerImpl implements ModelManager {
     Map<String, ModelDefineInfo> modelDefineInfoCache = new HashMap<String, ModelDefineInfo>();

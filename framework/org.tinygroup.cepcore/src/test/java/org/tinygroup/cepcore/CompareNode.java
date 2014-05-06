@@ -23,11 +23,12 @@
  */
 package org.tinygroup.cepcore;
 
-import junit.framework.TestCase;
-import org.tinygroup.event.central.Node;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.tinygroup.event.central.Node;
 
 public class CompareNode extends TestCase {
 	public void testContain(){

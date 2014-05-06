@@ -23,6 +23,8 @@
  */
 package org.tinygroup.weblayer.tinyprocessor;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -32,8 +34,6 @@ import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.mvc.HandlerExecutionChain;
 import org.tinygroup.weblayer.mvc.HandlerMapping;
 import org.tinygroup.weblayer.mvc.MappingModelExecute;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 /**

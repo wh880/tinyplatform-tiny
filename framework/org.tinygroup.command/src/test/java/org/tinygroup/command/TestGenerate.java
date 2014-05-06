@@ -23,14 +23,15 @@
  */
 package org.tinygroup.command;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.command.config.Command;
 import org.tinygroup.command.config.CommandGoal;
 import org.tinygroup.command.config.Commands;
 import org.tinygroup.command.config.Parameter;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.XStream;
 
 public class TestGenerate {
 

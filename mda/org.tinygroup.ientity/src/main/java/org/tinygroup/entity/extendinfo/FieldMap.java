@@ -23,6 +23,8 @@
  */
 package org.tinygroup.entity.extendinfo;
 
+import java.util.Map.Entry;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.entity.ViewServiceProcessor;
 import org.tinygroup.format.Formater;
@@ -30,8 +32,6 @@ import org.tinygroup.format.impl.ContextFormater;
 import org.tinygroup.format.impl.FormaterImpl;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.Map.Entry;
 
 /**
  * 扩展信息中的<fieldMap>节点描述对象

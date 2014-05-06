@@ -23,16 +23,16 @@
  */
 package org.tinygroup.config.util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.impl.ConfigurationManagerImpl;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 应用配置工具类，用于把父对象中的配置参数应用到子对象中。

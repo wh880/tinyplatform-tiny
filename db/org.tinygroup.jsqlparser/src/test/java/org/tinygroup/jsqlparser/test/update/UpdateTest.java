@@ -1,5 +1,8 @@
 package org.tinygroup.jsqlparser.test.update;
 
+import java.io.StringReader;
+import static junit.framework.Assert.assertEquals;
+
 import junit.framework.TestCase;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.expression.JdbcParameter;
@@ -9,10 +12,7 @@ import org.tinygroup.jsqlparser.expression.operators.relational.GreaterThanEqual
 import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.schema.Column;
 import org.tinygroup.jsqlparser.statement.update.Update;
-
-import java.io.StringReader;
-
-import static org.tinygroup.jsqlparser.test.TestUtils.assertSqlCanBeParsedAndDeparsed;
+import static org.tinygroup.jsqlparser.test.TestUtils.*;
 
 public class UpdateTest extends TestCase {
 

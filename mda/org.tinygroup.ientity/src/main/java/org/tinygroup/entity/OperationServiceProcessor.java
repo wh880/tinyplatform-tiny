@@ -23,6 +23,11 @@
  */
 package org.tinygroup.entity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.entity.common.ConditionField;
@@ -34,11 +39,6 @@ import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.util.TinyDBUtil;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 

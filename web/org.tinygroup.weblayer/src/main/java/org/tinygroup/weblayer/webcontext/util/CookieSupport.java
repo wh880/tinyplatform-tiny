@@ -23,21 +23,25 @@
  */
 package org.tinygroup.weblayer.webcontext.util;
 
-import net.sf.cglib.reflect.FastClass;
-import net.sf.cglib.reflect.FastMethod;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import static org.tinygroup.commons.tools.Assert.assertNotNull;
 import static org.tinygroup.commons.tools.BasicConstant.EMPTY_OBJECT_ARRAY;
 import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
 import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
-import static org.tinygroup.commons.tools.StringUtil.*;
+import static org.tinygroup.commons.tools.StringUtil.isEmpty;
+import static org.tinygroup.commons.tools.StringUtil.trimToEmpty;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.cglib.reflect.FastClass;
+import net.sf.cglib.reflect.FastMethod;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 扩展原cookie，使之支持HttpOnly cookie。

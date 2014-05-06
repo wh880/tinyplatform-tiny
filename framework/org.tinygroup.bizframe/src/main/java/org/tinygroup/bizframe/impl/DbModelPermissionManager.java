@@ -23,6 +23,9 @@
  */
 package org.tinygroup.bizframe.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.bizframe.PermissionObject;
 import org.tinygroup.bizframe.PermissionSubject;
 import org.tinygroup.springutil.SpringUtil;
@@ -32,9 +35,6 @@ import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.DBRuntimeException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.util.TinyBeanUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 功能说明: 模型概念的权限管理数据库存储实现，权限关联表名：auth_relation

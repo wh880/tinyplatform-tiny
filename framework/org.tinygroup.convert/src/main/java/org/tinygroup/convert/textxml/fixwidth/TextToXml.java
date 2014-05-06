@@ -23,15 +23,15 @@
  */
 package org.tinygroup.convert.textxml.fixwidth;
 
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.XmlUtils;
 import org.tinygroup.convert.text.TextBaseParse;
 import org.tinygroup.convert.text.config.Text;
 import org.tinygroup.convert.text.config.TextCell;
 import org.tinygroup.convert.text.config.TextRow;
-
-import java.util.List;
-import java.util.Map;
 
 public class TextToXml extends TextBaseParse implements Converter<String, String> {
 	private String rootNodeName;

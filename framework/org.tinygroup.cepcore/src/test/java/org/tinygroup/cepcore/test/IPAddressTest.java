@@ -23,7 +23,7 @@
  */
 package org.tinygroup.cepcore.test;
 
-import java.net.InetAddress;
+import java.net.*;
 
 public class IPAddressTest {
 	public static void main(String[] args) {

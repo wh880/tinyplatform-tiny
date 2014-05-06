@@ -24,6 +24,7 @@
 package org.tinygroup.metadata.constants;
 
 import junit.framework.TestCase;
+
 import org.tinygroup.metadata.TestInit;
 import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.springutil.SpringUtil;

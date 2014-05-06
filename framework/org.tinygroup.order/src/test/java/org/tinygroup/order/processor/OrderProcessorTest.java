@@ -23,7 +23,10 @@
  */
 package org.tinygroup.order.processor;
 
+import java.util.List;
+
 import junit.framework.TestCase;
+
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.order.orderObject.NeedOrder;
 import org.tinygroup.order.orderObject.One;
@@ -31,8 +34,6 @@ import org.tinygroup.order.orderObject.Three;
 import org.tinygroup.order.orderObject.Two;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-
-import java.util.List;
 
 public class OrderProcessorTest extends TestCase {
 	

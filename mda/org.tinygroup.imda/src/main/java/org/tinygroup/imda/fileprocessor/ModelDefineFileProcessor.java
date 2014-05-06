@@ -23,7 +23,6 @@
  */
 package org.tinygroup.imda.fileprocessor;
 
-import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.imda.config.ModelDefine;
@@ -32,6 +31,8 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
+
+import com.thoughtworks.xstream.XStream;
 
 public class ModelDefineFileProcessor extends AbstractFileProcessor {
 	private static final String MODEL_DEFINE_FILE = ".modeldefine.xml";

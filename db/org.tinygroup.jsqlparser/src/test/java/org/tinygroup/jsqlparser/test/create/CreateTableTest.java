@@ -1,14 +1,5 @@
 package org.tinygroup.jsqlparser.test.create;
 
-import junit.framework.TestCase;
-import org.tinygroup.jsqlparser.JSQLParserException;
-import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
-import org.tinygroup.jsqlparser.statement.create.table.ColumnDefinition;
-import org.tinygroup.jsqlparser.statement.create.table.CreateTable;
-import org.tinygroup.jsqlparser.statement.create.table.Index;
-import org.tinygroup.jsqlparser.test.TestException;
-import org.tinygroup.jsqlparser.util.TablesNamesFinder;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -17,7 +8,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import static org.tinygroup.jsqlparser.test.TestUtils.assertSqlCanBeParsedAndDeparsed;
+import junit.framework.TestCase;
+import org.tinygroup.jsqlparser.JSQLParserException;
+import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
+import org.tinygroup.jsqlparser.statement.create.table.ColumnDefinition;
+import org.tinygroup.jsqlparser.statement.create.table.CreateTable;
+import org.tinygroup.jsqlparser.statement.create.table.Index;
+import org.tinygroup.jsqlparser.test.TestException;
+import org.tinygroup.jsqlparser.util.TablesNamesFinder;
+import static org.tinygroup.jsqlparser.test.TestUtils.*;
 
 public class CreateTableTest extends TestCase {
 

@@ -24,6 +24,7 @@
 package org.tinygroup.annotation;
 
 import junit.framework.TestCase;
+
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class AnnotationExcuteManagerTest extends TestCase {

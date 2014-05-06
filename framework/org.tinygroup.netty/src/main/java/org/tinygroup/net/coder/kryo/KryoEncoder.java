@@ -23,8 +23,8 @@
  */
 package org.tinygroup.net.coder.kryo;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Output;
+import static org.jboss.netty.buffer.ChannelBuffers.dynamicBuffer;
+
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferOutputStream;
 import org.jboss.netty.channel.Channel;
@@ -32,7 +32,8 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
 import org.objenesis.strategy.StdInstantiatorStrategy;
 
-import static org.jboss.netty.buffer.ChannelBuffers.dynamicBuffer;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Output;
 
 public class KryoEncoder extends OneToOneEncoder{
 

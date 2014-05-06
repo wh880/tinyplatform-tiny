@@ -23,19 +23,19 @@
  */
 package org.tinygroup.weblayer;
 
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.parser.filter.NameFilter;
-import org.tinygroup.weblayer.webcontext.DefaultWebContext;
-import org.tinygroup.xmlparser.node.XmlNode;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.parser.filter.NameFilter;
+import org.tinygroup.weblayer.webcontext.DefaultWebContext;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * tinyfilter的抽象实现

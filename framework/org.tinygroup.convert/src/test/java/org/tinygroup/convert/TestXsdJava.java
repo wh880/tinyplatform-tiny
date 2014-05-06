@@ -23,14 +23,15 @@
  */
 package org.tinygroup.convert;
 
-import junit.framework.TestCase;
-import org.tinygroup.convert.xsdjava.ClassToSchema;
-import org.tinygroup.convert.xsdjava.SchemaToClass;
-
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.convert.xsdjava.ClassToSchema;
+import org.tinygroup.convert.xsdjava.SchemaToClass;
+
+import junit.framework.TestCase;
 
 public class TestXsdJava extends TestCase {
 

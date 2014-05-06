@@ -23,11 +23,11 @@
  */
 package org.tinygroup.logic;
 
+import java.util.Collection;
+
 import org.tinygroup.dao.DaoInterface;
 import org.tinygroup.dao.query.PagingObject;
 import org.tinygroup.dao.query.QueryObject;
-
-import java.util.Collection;
 
 public  class AbstractLogic<T, KeyType> implements LogicInterface<T, KeyType, QueryObject>{
 	private DaoInterface<T, KeyType, QueryObject> dao;

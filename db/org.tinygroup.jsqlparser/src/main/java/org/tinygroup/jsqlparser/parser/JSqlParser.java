@@ -21,10 +21,10 @@
  */
 package org.tinygroup.jsqlparser.parser;
 
+import java.io.Reader;
+
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.statement.Statement;
-
-import java.io.Reader;
 
 /**
  * Every parser must implements this interface

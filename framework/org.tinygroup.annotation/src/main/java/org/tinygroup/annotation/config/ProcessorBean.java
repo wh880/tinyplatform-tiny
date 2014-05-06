@@ -35,11 +35,9 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 @XStreamAlias("processor-bean")
 public class ProcessorBean {
 	@XStreamAsAttribute
-    // 是否启用
-	private Boolean enable;
+	private Boolean enable;// 是否启用
 	@XStreamAsAttribute
-    // Spring bean名称
-	private String name;
+	private String name;// Spring bean名称
 
 	public Boolean getEnable() {
 		return enable;

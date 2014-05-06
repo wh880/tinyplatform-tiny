@@ -24,6 +24,7 @@
 package org.tinygroup.cache;
 
 import junit.framework.TestCase;
+
 import org.tinygroup.cache.exception.CacheException;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.impl.I18nFileProcessor;

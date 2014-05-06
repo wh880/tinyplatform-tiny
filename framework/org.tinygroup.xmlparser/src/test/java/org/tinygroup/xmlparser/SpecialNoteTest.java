@@ -23,9 +23,10 @@
  */
 package org.tinygroup.xmlparser;
 
-import junit.framework.TestCase;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import junit.framework.TestCase;
 
 public class SpecialNoteTest extends TestCase {
 	XmlNode node = null;

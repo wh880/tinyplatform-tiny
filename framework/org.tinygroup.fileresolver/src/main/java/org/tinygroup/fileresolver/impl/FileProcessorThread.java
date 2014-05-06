@@ -23,11 +23,11 @@
  */
 package org.tinygroup.fileresolver.impl;
 
+import java.util.List;
+
 import org.tinygroup.fileresolver.ProcessorCallBack;
 import org.tinygroup.threadgroup.AbstractProcessor;
 import org.tinygroup.vfs.FileObject;
-
-import java.util.List;
 
 public  class FileProcessorThread extends AbstractProcessor{
 

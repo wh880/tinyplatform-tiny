@@ -23,6 +23,9 @@
  */
 package org.tinygroup.flow.annotation;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+
 import org.tinygroup.annotation.AnnotationClassAction;
 import org.tinygroup.annotation.AnnotationPropertyAction;
 import org.tinygroup.commons.tools.AnnotationUtils;
@@ -36,9 +39,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 
 /**
  * 流程组件注解处理器

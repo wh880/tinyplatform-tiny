@@ -23,14 +23,15 @@
  */
 package org.tinygroup.entity;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.entity.base.BaseObject;
 import org.tinygroup.entity.common.Operation;
 import org.tinygroup.entity.common.View;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 模型

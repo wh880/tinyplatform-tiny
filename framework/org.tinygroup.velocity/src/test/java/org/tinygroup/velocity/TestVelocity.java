@@ -23,15 +23,15 @@
  */
 package org.tinygroup.velocity;
 
+import java.io.File;
+import java.io.StringWriter;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.fileresolver.impl.FullContextFileRepositoryImpl;
 import org.tinygroup.velocity.impl.VelocityHelperImpl;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-
-import java.io.File;
-import java.io.StringWriter;
 
 public class TestVelocity {
 

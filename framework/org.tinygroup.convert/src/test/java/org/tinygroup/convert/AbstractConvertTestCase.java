@@ -23,10 +23,10 @@
  */
 package org.tinygroup.convert;
 
-import junit.framework.TestCase;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import junit.framework.TestCase;
 
 public abstract class AbstractConvertTestCase extends TestCase {
 	

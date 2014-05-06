@@ -23,11 +23,11 @@
  */
 package org.tinygroup.jspengine;
 
+import java.io.File;
+
 import org.tinygroup.jspengine.compiler.JspConfig;
 import org.tinygroup.jspengine.compiler.TagPluginManager;
 import org.tinygroup.jspengine.compiler.TldLocationsCache;
-
-import java.io.File;
 
 /**
  * A class to hold all init parameters specific to the JSP engine. 

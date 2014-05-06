@@ -25,8 +25,8 @@
 
 package org.tinygroup.jspengine.compiler;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Represents the line and file mappings associated with a JSR-045

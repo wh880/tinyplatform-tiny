@@ -23,6 +23,11 @@
  */
 package org.tinygroup.mongodb.engine.view.extendinfo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.bson.BSONObject;
 import org.tinygroup.commons.tools.Assert;
@@ -34,11 +39,6 @@ import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlParser;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 

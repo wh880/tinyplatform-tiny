@@ -24,6 +24,7 @@
 package org.tinygroup.xmlparser;
 
 import junit.framework.TestCase;
+import org.tinygroup.xmlparser.XmlDocument;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
 /**

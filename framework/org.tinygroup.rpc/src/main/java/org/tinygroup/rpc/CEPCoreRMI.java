@@ -23,10 +23,10 @@
  */
 package org.tinygroup.rpc;
 
-import org.tinygroup.event.Event;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+
+import org.tinygroup.event.Event;
 
 public interface CEPCoreRMI extends Remote{
 	

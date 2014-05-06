@@ -31,7 +31,6 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
-import org.tinygroup.httpvisit.HttpVisitRuntimeException;
 import org.tinygroup.httpvisit.HttpVisitor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -44,15 +43,14 @@ import java.util.List;
 import java.util.Map;
 
 public class HttpVisitorImpl implements HttpVisitor {
-    private static Logger logger = LoggerFactory.getLogger(HttpVisitorImpl.class);
-    public static final int DEFAULT_TIMEOUT = 30000;
-    private HttpClient client;
+    private static final Logger logger = LoggerFactory.getLogger(HttpVisitorImpl.class);
+    HttpClient client;
     private String responseCharset = "UTF-8";
     private String requestCharset = "ISO-8859-1";
-    private int timeout = DEFAULT_TIMEOUT;
-    private HttpState httpState = new HttpState();
-    private boolean authEnabled = false;
-    private List<String> authPrefs = null;
+    int timeout = 30000;
+    HttpState httpState = new HttpState();
+    boolean authEnabled = false;
+    List<String> authPrefs = null;
     private String proxyHost;
     private int proxyPort;
     private UsernamePasswordCredentials proxyUserPassword;
@@ -76,16 +74,16 @@ public class HttpVisitorImpl implements HttpVisitor {
      * @param password
      */
     public void setBasicAuth(String host, int port, String realm, String schema, String username, String password) {
-        httpState.setCredentials(new AuthScope(host, port, realm, schema), new UsernamePasswordCredentials(username, password));
+        httpState.setCredentials(new AuthScope("www.verisign.com", 443, realm, schema), new UsernamePasswordCredentials("username", "password"));
         authEnabled = true;
     }
 
     public void setBasicAuth(String host, int port, String username, String password) {
-        setBasicAuth(host, port, null, null, username, password);
+        setBasicAuth(host, port, username, password);
     }
 
     public void setAlternateAuth(String host, int port, String username, String password, List<String> schemaList) {
-        httpState.setCredentials(new AuthScope(host, port), new UsernamePasswordCredentials(username, password));
+        httpState.setCredentials(new AuthScope("www.verisign.com", 443), new UsernamePasswordCredentials("username", "password"));
         authEnabled = true;
 
         client.getParams().setParameter(AuthPolicy.AUTH_SCHEME_PRIORITY, schemaList);
@@ -131,16 +129,15 @@ public class HttpVisitorImpl implements HttpVisitor {
                 sb.append("?");
             }
             if (parameter != null) {
-
-                for (Map.Entry<String, ?> entry : parameter.entrySet()) {
-                    Object value = entry.getValue();
+                for (String key : parameter.keySet()) {
+                    Object value = parameter.get(key);
                     if (value.getClass().isArray()) {
                         Object[] arrayValue = (Object[]) value;
                         for (Object o : arrayValue) {
-                            appendParameter(sb, entry.getKey(), o);
+                            appendParameter(sb, key, o);
                         }
                     } else {
-                        appendParameter(sb, entry.getKey(), value);
+                        appendParameter(sb, key, value);
                     }
                 }
             }
@@ -148,7 +145,7 @@ public class HttpVisitorImpl implements HttpVisitor {
             addHeader(get, headerMap);
             return execute(get);
         } catch (UnsupportedEncodingException e) {
-            throw new HttpVisitRuntimeException(e);
+            throw new RuntimeException(e);
         }
 
     }
@@ -163,15 +160,15 @@ public class HttpVisitorImpl implements HttpVisitor {
     public String postUrl(String url, Map<String, ?> parameter) {
         PostMethod post = new PostMethod(url);
         if (parameter != null) {
-            for (Map.Entry<String, ?> entry : parameter.entrySet()) {
-                Object value = entry.getValue();
+            for (String key : parameter.keySet()) {
+                Object value = parameter.get(key);
                 if (value.getClass().isArray()) {
                     Object[] arrayValue = (Object[]) value;
                     for (Object o : arrayValue) {
-                        post.addParameter(entry.getKey(), o.toString());
+                        post.addParameter(key, o.toString());
                     }
                 } else {
-                    post.setParameter(entry.getKey(), value.toString());
+                    post.setParameter(key, value.toString());
                 }
             }
         }
@@ -192,13 +189,14 @@ public class HttpVisitorImpl implements HttpVisitor {
             int iGetResultCode = client.executeMethod(method);
             if (iGetResultCode == HttpStatus.SC_OK) {
                 logger.logMessage(LogLevel.DEBUG, "结果成功返回。");
-                return new String(method.getResponseBody(), responseCharset);
+                String strGetResponseBody = new String(method.getResponseBody(), responseCharset);
+                return strGetResponseBody;
             }
             logger.logMessage(LogLevel.ERROR, "结果返回失败，原因：{}", method.getStatusLine().toString());
-            throw new HttpVisitRuntimeException(method.getStatusLine().toString());
+            throw new RuntimeException(method.getStatusLine().toString());
         } catch (Exception e) {
             logger.logMessage(LogLevel.DEBUG, "结果返回失败，原因：{}", e.getMessage());
-            throw new HttpVisitRuntimeException(e);
+            throw new RuntimeException(e);
         } finally {
             method.releaseConnection();
         }
@@ -231,7 +229,7 @@ public class HttpVisitorImpl implements HttpVisitor {
             addHeader(post, headerMap);
             return execute(post);
         } catch (Exception e) {
-            throw new HttpVisitRuntimeException(e);
+            throw new RuntimeException(e);
         } finally {
             post.releaseConnection();
         }
@@ -250,7 +248,7 @@ public class HttpVisitorImpl implements HttpVisitor {
             addHeader(post, headerMap);
             return execute(post);
         } catch (Exception e) {
-            throw new HttpVisitRuntimeException(e);
+            throw new RuntimeException(e);
         } finally {
             post.releaseConnection();
         }
@@ -267,8 +265,8 @@ public class HttpVisitorImpl implements HttpVisitor {
 
     private void addHeader(HttpMethodBase method, Map<String, String> header) {
         if (header != null) {
-            for (Map.Entry<String, String> entry : header.entrySet()) {
-                Header h = new Header(entry.getKey(), entry.getValue());
+            for (String key : header.keySet()) {
+                Header h = new Header(key, header.get(key));
                 method.addRequestHeader(h);
             }
         }

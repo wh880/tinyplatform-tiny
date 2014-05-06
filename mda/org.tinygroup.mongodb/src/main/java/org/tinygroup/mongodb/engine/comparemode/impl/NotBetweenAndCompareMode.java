@@ -23,10 +23,11 @@
  */
 package org.tinygroup.mongodb.engine.comparemode.impl;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.QueryOperators;
 import org.bson.BSONObject;
 import org.tinygroup.context.Context;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.QueryOperators;
 
 /**
  * 

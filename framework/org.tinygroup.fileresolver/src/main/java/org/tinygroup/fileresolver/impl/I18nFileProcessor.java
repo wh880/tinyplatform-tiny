@@ -23,14 +23,14 @@
  */
 package org.tinygroup.fileresolver.impl;
 
+import java.util.Locale;
+import java.util.Properties;
+
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.i18n.I18nMessageFactory;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
-
-import java.util.Locale;
-import java.util.Properties;
 
 /**
  * 

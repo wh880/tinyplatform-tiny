@@ -23,11 +23,11 @@
  */
 package org.tinygroup.exception;
 
+import java.util.Locale;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.i18n.I18nMessage;
 import org.tinygroup.i18n.I18nMessageFactory;
-
-import java.util.Locale;
 
 public class BaseRuntimeException extends RuntimeException {
 	/**

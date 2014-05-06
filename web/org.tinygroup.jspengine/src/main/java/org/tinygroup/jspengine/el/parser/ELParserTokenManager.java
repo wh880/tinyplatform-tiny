@@ -22,6 +22,8 @@
  *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.jspengine.el.parser;
+import java.io.StringReader;
+import javax.el.ELException;
 
 public class ELParserTokenManager implements ELParserConstants
 {

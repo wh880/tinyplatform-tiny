@@ -23,11 +23,16 @@
  */
 package org.tinygroup.ientity.addition;
 
-import org.tinygroup.entity.common.*;
-import org.tinygroup.entity.entitymodel.EntityModel;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.entity.common.ConditionField;
+import org.tinygroup.entity.common.Field;
+import org.tinygroup.entity.common.Group;
+import org.tinygroup.entity.common.Operation;
+import org.tinygroup.entity.common.OperationField;
+import org.tinygroup.entity.common.OperationGroup;
+import org.tinygroup.entity.entitymodel.EntityModel;
 
 public final class DefaultOperation {
 	/**

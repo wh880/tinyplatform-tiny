@@ -23,6 +23,10 @@
  */
 package org.tinygroup.velocity.directive;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Locale;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.runtime.directive.Directive;
@@ -31,10 +35,6 @@ import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.i18n.I18nMessage;
 import org.tinygroup.i18n.I18nMessageFactory;
 import org.tinygroup.velocity.TinyVelocityContext;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Locale;
 
 public class I18nDirective extends Directive {
 

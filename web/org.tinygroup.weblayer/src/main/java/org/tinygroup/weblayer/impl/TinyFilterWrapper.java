@@ -23,6 +23,14 @@
  */
 package org.tinygroup.weblayer.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.Filter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -34,13 +42,6 @@ import org.tinygroup.weblayer.FilterWrapper;
 import org.tinygroup.weblayer.TinyFilterHandler;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import javax.servlet.Filter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * tiny-filter的包装类

@@ -21,8 +21,7 @@
  */
 package org.tinygroup.jsqlparser.schema;
 
-import org.tinygroup.jsqlparser.expression.Expression;
-import org.tinygroup.jsqlparser.expression.ExpressionVisitor;
+import org.tinygroup.jsqlparser.expression.*;
 
 /**
  * A column. It can have the table name it belongs to.

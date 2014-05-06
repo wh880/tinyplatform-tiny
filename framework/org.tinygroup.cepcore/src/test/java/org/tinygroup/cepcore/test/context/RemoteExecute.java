@@ -23,10 +23,10 @@
  */
 package org.tinygroup.cepcore.test.context;
 
-import org.tinygroup.context.Context;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+
+import org.tinygroup.context.Context;
 
 public interface RemoteExecute extends Remote {
 	/**

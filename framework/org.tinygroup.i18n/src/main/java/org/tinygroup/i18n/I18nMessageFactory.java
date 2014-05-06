@@ -23,7 +23,13 @@
  */
 package org.tinygroup.i18n;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tinygroup.commons.i18n.LocaleUtil;
@@ -38,7 +44,7 @@ import org.tinygroup.i18n.config.I18nMessage;
 import org.tinygroup.i18n.exception.I18nException;
 import org.tinygroup.i18n.impl.I18nMessageContextImpl;
 
-import java.util.*;
+import com.thoughtworks.xstream.XStream;
 
 public final class I18nMessageFactory {
 	private static Logger logger = LoggerFactory

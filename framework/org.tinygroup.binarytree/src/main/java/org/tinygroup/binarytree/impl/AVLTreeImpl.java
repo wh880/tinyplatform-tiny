@@ -27,9 +27,9 @@ package org.tinygroup.binarytree.impl;
  * 平衡二叉树
  */
 
-import org.tinygroup.binarytree.AVLTree;
-
 import java.util.Iterator;
+
+import org.tinygroup.binarytree.AVLTree;
 
 /**
  * 平衡二叉搜索（排序）树 此程序部分代码来自网上

@@ -23,9 +23,9 @@
  */
 package org.tinygroup.context2object.impl;
 
-import org.tinygroup.context2object.TypeConverter;
-
 import java.math.BigDecimal;
+
+import org.tinygroup.context2object.TypeConverter;
 
 public class BigDecimalConverter implements TypeConverter<String, BigDecimal>{
 

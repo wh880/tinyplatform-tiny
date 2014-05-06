@@ -23,6 +23,15 @@
  */
 package org.tinygroup.velocity.impl;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
+
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -43,15 +52,6 @@ import org.tinygroup.velocity.config.Bean;
 import org.tinygroup.velocity.config.StaticClass;
 import org.tinygroup.velocity.config.VelocityContextConfig;
 import org.tinygroup.vfs.FileObject;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.UUID;
 
 public final class VelocityHelperImpl implements VelocityHelper {
 	private static final String ENCODING = "UTF-8";

@@ -23,11 +23,11 @@
  */
 package org.tinygroup.database.config.dialectfunction;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @XStreamAlias("dialect-function")
 public class DialectFunction {

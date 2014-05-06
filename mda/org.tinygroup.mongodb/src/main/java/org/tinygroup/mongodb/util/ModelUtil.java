@@ -23,10 +23,10 @@
  */
 package org.tinygroup.mongodb.util;
 
+import java.util.Map;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.tinygroup.exception.TinySysRuntimeException;
-
-import java.util.Map;
 
 
 /**

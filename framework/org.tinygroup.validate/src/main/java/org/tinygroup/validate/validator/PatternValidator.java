@@ -23,13 +23,13 @@
  */
 package org.tinygroup.validate.validator;
 
-import org.tinygroup.validate.ValidateResult;
-import org.tinygroup.validate.impl.AbstractValidator;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.tinygroup.validate.ValidateResult;
+import org.tinygroup.validate.impl.AbstractValidator;
 
 public class PatternValidator extends AbstractValidator {
 	private static final String PATTERN_VALIDATOR_MESSAGE_KEY = "pattern_validator_message_key";

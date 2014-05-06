@@ -23,15 +23,15 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.util;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
-
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
 
 /**
  * Extension of the standard JavaBeans PropertyDescriptor class,

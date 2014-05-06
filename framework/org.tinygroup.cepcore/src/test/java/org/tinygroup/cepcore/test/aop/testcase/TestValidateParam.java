@@ -24,6 +24,7 @@
 package org.tinygroup.cepcore.test.aop.testcase;
 
 import junit.framework.TestCase;
+
 import org.tinygroup.cepcore.exception.RequestParamValidateException;
 import org.tinygroup.cepcore.test.aop.bean.AopValidateAddress;
 import org.tinygroup.cepcore.test.aop.bean.AopValidateUser;

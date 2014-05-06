@@ -23,9 +23,9 @@
  */
 package org.tinygroup.convert.common;
 
-import org.tinygroup.convert.Converter;
-
 import java.io.UnsupportedEncodingException;
+
+import org.tinygroup.convert.Converter;
 
 public class StringByByteArray implements Converter<String, byte[]> {
 	private String charset = null;

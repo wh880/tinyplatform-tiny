@@ -23,14 +23,15 @@
  */
 package org.tinygroup.weblayer.impl;
 
-import org.tinygroup.commons.tools.Enumerator;
-import org.tinygroup.weblayer.listener.ServletContextHolder;
-
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
+
+import org.tinygroup.commons.tools.Enumerator;
+import org.tinygroup.weblayer.listener.ServletContextHolder;
 
 /**
  * FilterConfig的tiny实现

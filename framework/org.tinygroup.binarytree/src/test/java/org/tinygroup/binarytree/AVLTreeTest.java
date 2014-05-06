@@ -23,8 +23,9 @@
  */
 package org.tinygroup.binarytree;
 
-import junit.framework.TestCase;
 import org.tinygroup.binarytree.impl.AVLTreeImpl;
+
+import junit.framework.TestCase;
 
 public class AVLTreeTest extends TestCase {
 

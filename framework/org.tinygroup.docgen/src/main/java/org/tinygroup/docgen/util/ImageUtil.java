@@ -23,11 +23,11 @@
  */
 package org.tinygroup.docgen.util;
 
-import com.thoughtworks.xstream.core.util.Base64Encoder;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+
+import com.thoughtworks.xstream.core.util.Base64Encoder;
 
 public class ImageUtil {
 

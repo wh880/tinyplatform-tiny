@@ -23,13 +23,13 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc.sample;
 
-import org.tinygroup.dbrouter.RouterManager;
-import org.tinygroup.dbrouter.config.Router;
-import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+
+import org.tinygroup.dbrouter.RouterManager;
+import org.tinygroup.dbrouter.config.Router;
+import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 
 public class TestRouterSelectPrimarySlave {
     public static void main(String[] args) throws Throwable {

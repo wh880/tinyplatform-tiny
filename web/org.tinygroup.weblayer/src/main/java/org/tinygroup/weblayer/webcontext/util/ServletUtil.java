@@ -23,14 +23,13 @@
  */
 package org.tinygroup.weblayer.webcontext.util;
 
-import javax.servlet.http.HttpServletRequest;
+import static org.tinygroup.commons.tools.FileUtil.*;
+import static org.tinygroup.commons.tools.StringUtil.*;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-
-import static org.tinygroup.commons.tools.FileUtil.normalizeAbsolutePath;
-import static org.tinygroup.commons.tools.StringUtil.trimToEmpty;
-import static org.tinygroup.commons.tools.StringUtil.trimToNull;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 有关servlet的小工具。

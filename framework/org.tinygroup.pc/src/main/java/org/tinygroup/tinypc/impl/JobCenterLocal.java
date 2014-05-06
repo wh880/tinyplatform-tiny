@@ -23,8 +23,8 @@
  */
 package org.tinygroup.tinypc.impl;
 
-import org.tinygroup.rmi.impl.RmiServerLocal;
 import org.tinygroup.tinypc.WorkQueue;
+import org.tinygroup.rmi.impl.RmiServerLocal;
 
 import java.io.IOException;
 

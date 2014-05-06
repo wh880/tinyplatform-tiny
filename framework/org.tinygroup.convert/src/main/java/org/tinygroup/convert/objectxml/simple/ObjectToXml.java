@@ -23,12 +23,12 @@
  */
 package org.tinygroup.convert.objectxml.simple;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.XmlUtils;
-
-import java.lang.reflect.Field;
-import java.util.List;
 
 public class ObjectToXml<T> implements Converter<List<T>, String> {
 	private boolean fieldAsAttribute;

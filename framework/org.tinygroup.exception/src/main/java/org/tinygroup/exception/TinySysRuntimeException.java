@@ -23,9 +23,9 @@
  */
 package org.tinygroup.exception;
 
-import org.tinygroup.context.Context;
-
 import java.util.Locale;
+
+import org.tinygroup.context.Context;
 
 public class TinySysRuntimeException extends BaseRuntimeException {
 	

@@ -23,12 +23,12 @@
  */
 package org.tinygroup.convert.textxml.simple;
 
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.convert.Converter;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import java.util.List;
-import java.util.Map;
 
 public class XmlToText implements Converter<String, String> {
 	private String rootNodeName;

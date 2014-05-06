@@ -23,9 +23,9 @@
  */
 package org.tinygroup.tinydb.operator;
 
-import org.tinygroup.tinydb.Bean;
-
 import java.util.Collection;
+
+import org.tinygroup.tinydb.Bean;
 
 /**
  * DB相关的批量操作

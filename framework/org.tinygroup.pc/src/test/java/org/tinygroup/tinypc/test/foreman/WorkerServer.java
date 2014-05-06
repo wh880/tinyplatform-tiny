@@ -23,10 +23,10 @@
  */
 package org.tinygroup.tinypc.test.foreman;
 
+import java.io.IOException;
+
 import org.tinygroup.tinypc.JobCenter;
 import org.tinygroup.tinypc.impl.JobCenterLocal;
-
-import java.io.IOException;
 
 public class WorkerServer {
 

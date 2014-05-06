@@ -23,10 +23,10 @@
  */
 package org.tinygroup.annotation.action;
 
-import org.tinygroup.annotation.AnnotationMethodAction;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+
+import org.tinygroup.annotation.AnnotationMethodAction;
 
 public class AnnotationMethodActionDemo implements AnnotationMethodAction {
 

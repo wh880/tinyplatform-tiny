@@ -23,10 +23,10 @@
  */
 package org.tinygroup.uiengine.config;
 
+import java.util.List;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
-import java.util.List;
 
 @XStreamAlias("macro")
 public class Macro {

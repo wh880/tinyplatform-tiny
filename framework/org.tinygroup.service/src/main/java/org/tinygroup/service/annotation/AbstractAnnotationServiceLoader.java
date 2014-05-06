@@ -23,6 +23,15 @@
  */
 package org.tinygroup.service.annotation;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.event.Parameter;
@@ -36,15 +45,6 @@ import org.tinygroup.service.loader.AnnotationServiceLoader;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
 import org.tinygroup.springutil.SpringUtil;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public abstract class AbstractAnnotationServiceLoader implements
 		AnnotationServiceLoader {

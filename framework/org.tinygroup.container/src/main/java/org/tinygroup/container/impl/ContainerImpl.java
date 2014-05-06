@@ -23,13 +23,13 @@
  */
 package org.tinygroup.container.impl;
 
-import org.tinygroup.container.BaseObject;
-import org.tinygroup.container.Container;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import org.tinygroup.container.BaseObject;
+import org.tinygroup.container.Container;
 
 public class ContainerImpl<K extends Comparable<K>, T extends BaseObject<K>>
 		extends BaseObjectImpl<K> implements Container<K, T> {

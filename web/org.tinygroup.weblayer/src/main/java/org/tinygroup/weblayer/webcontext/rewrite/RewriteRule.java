@@ -23,7 +23,15 @@
  */
 package org.tinygroup.weblayer.webcontext.rewrite;
 
-import org.springframework.beans.factory.InitializingBean;
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.tinygroup.commons.tools.MatchResultSubstitution;
 import org.tinygroup.commons.tools.StringEscapeUtil;
 import org.tinygroup.commons.tools.StringUtil;
@@ -32,14 +40,7 @@ import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * 代表一个rewrite规则。

@@ -23,10 +23,10 @@
  */
 package org.tinygroup.imda.processor;
 
+import java.io.Writer;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
-
-import java.io.Writer;
 
 /**
  * 模型处理器<br>

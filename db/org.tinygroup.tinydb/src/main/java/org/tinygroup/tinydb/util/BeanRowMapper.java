@@ -23,15 +23,15 @@
  */
 package org.tinygroup.tinydb.util;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.impl.DefaultNameConverter;
-
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 
 public class BeanRowMapper implements RowMapper {
 	private BeanDbNameConverter converter = new DefaultNameConverter();

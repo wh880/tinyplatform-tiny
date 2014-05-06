@@ -23,15 +23,15 @@
  */
 package org.tinygroup.imda.usermodel;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.imda.exception.IMdaRuntimeException;
 import org.tinygroup.imda.processor.ModelViewProcessor;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
 import org.tinygroup.springutil.SpringUtil;
-
-import java.io.IOException;
-import java.io.Writer;
 
 public class CaseModelViewProcessor implements ModelViewProcessor<CaseModel> {
 

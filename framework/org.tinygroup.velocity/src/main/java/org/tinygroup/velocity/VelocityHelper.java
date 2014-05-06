@@ -23,12 +23,12 @@
  */
 package org.tinygroup.velocity;
 
+import java.io.Writer;
+
 import org.apache.velocity.context.InternalContextAdapter;
 import org.tinygroup.context.Context;
 import org.tinygroup.velocity.config.VelocityContextConfig;
 import org.tinygroup.vfs.FileObject;
-
-import java.io.Writer;
 
 /**
  * Velocity接口类

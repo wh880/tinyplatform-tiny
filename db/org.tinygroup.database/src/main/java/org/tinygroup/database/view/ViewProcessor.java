@@ -23,10 +23,10 @@
  */
 package org.tinygroup.database.view;
 
+import java.util.List;
+
 import org.tinygroup.database.config.view.View;
 import org.tinygroup.database.config.view.Views;
-
-import java.util.List;
 
 public interface ViewProcessor {
 

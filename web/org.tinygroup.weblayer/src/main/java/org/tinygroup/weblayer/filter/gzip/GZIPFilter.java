@@ -23,10 +23,9 @@
  */
 package org.tinygroup.weblayer.filter.gzip;
 
+import java.io.*;
 import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.servlet.http.*;
 
 //TODO增加跳过文件过滤
 public class GZIPFilter implements Filter {

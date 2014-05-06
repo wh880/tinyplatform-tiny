@@ -23,6 +23,13 @@
  */
 package org.tinygroup.weblayer.configmanager;
 
+import static org.tinygroup.logger.LogLevel.INFO;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.commons.tools.FileUtil;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.logger.Logger;
@@ -30,13 +37,6 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.tinygroup.logger.LogLevel.INFO;
 
 
 /**

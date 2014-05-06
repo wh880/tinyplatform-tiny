@@ -23,11 +23,12 @@
  */
 package org.tinygroup.weblayer.webcontext;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * 当开始写http content的时候，通知其它request context提交其headers。在此之后将不能修改headers。

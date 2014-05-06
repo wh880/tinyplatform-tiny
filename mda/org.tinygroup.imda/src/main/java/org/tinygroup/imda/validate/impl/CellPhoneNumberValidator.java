@@ -23,12 +23,12 @@
  */
 package org.tinygroup.imda.validate.impl;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.imda.validate.ValidateExecutor;
 import org.tinygroup.imda.validate.ValidateRule;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CellPhoneNumberValidator implements ValidateExecutor {
 	static Pattern emailPattern = Pattern

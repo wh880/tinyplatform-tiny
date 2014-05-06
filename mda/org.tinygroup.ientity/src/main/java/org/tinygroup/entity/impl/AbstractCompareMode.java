@@ -23,11 +23,11 @@
  */
 package org.tinygroup.entity.impl;
 
+import java.util.List;
+
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.context.Context;
 import org.tinygroup.entity.CompareMode;
-
-import java.util.List;
 
 /**
  * 

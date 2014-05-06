@@ -23,6 +23,10 @@
  */
 package org.tinygroup.database.util;
 
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.tinygroup.commons.namestrategy.NameStrategy;
 import org.tinygroup.commons.namestrategy.impl.NormalCaseStrategy;
 import org.tinygroup.database.config.table.Table;
@@ -31,10 +35,6 @@ import org.tinygroup.database.table.TableProcessor;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.springutil.SpringUtil;
-
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class DataBaseUtil {
 	public static String DATABASE_XSTREAM = "database";
