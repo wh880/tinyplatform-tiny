@@ -23,11 +23,21 @@
  */
 package org.tinygroup.annotation.impl;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.annotation.AnnotationClassAction;
 import org.tinygroup.annotation.AnnotationExcuteManager;
 import org.tinygroup.annotation.AnnotationMethodAction;
 import org.tinygroup.annotation.AnnotationPropertyAction;
-import org.tinygroup.annotation.config.*;
+import org.tinygroup.annotation.config.AnnotationClassMatcher;
+import org.tinygroup.annotation.config.AnnotationClassMatchers;
+import org.tinygroup.annotation.config.AnnotationMethodMatcher;
+import org.tinygroup.annotation.config.AnnotationPropertyMatcher;
+import org.tinygroup.annotation.config.ProcessorBean;
 import org.tinygroup.annotation.fileresolver.AnnotationFileProcessor;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.config.util.ConfigurationUtil;
@@ -38,46 +48,25 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 注解执行管理器实现
  * 
  * @author luoguo
  * 
  */
-public class AnnotationExecuteManagerImpl implements AnnotationExcuteManager,Configuration{
+public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,Configuration{
 	private static Logger logger = LoggerFactory
 			.getLogger(AnnotationFileProcessor.class);
 
 	private static final int CLASS_SUFFIX_LENGTH = 6;
 	// 类匹配定义
 	private List<AnnotationClassMatcher> classMatchers = new ArrayList<AnnotationClassMatcher>();
-    private static final String ANNOTATION_NODE_PATH = "/application/annotation-configuration";
-    private XmlNode applicationConfig;
-    private XmlNode componentConfig;
 
-    private static final String MAP_VALUE = "value";
-
-    private static final String MAP_ID = "id";
-
-	public AnnotationExecuteManagerImpl() {
+	public AnnotationExcuteManagerImpl() {
 
 	}
 
-    public void setApplicationConfig(XmlNode applicationConfig) {
-        this.applicationConfig = applicationConfig;
-    }
-
-    public void setComponentConfig(XmlNode componentConfig) {
-        this.componentConfig = componentConfig;
-    }
-
-    public void addAnnotationClassMatchers(
+	public void addAnnotationClassMatchers(
 			AnnotationClassMatchers annotationClassMatchers) {
 		annotationClassMatchers.initAnnotationClassMatchers();
 		classMatchers.addAll(annotationClassMatchers
@@ -108,7 +97,7 @@ public class AnnotationExecuteManagerImpl implements AnnotationExcuteManager,Con
 							.loadClass(className), classMatcher);
 				} catch (ClassNotFoundException e) {
 					logger.errorMessage("加载器加载的类[{0}]不存在", e, className);
-				} catch (Exception e) {
+				} catch (Throwable e) {
 					logger.errorMessage("加载器加载的类[{0}]时出现错误：[{1}]", e,
 							className, e.getMessage());
 
@@ -266,6 +255,13 @@ public class AnnotationExecuteManagerImpl implements AnnotationExcuteManager,Con
 			}
 		}
 	}
+	private static final String ANNOTATION_NODE_PATH = "/application/annotation-configuration";
+	protected XmlNode applicationConfig;
+	protected XmlNode componentConfig;
+	
+	private static final String MAP_VALUE = "value";
+
+	private static final String MAP_ID = "id";
 
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 		this.applicationConfig = applicationConfig;

@@ -23,16 +23,17 @@
  */
 package org.tinygroup.convert.xsdjava;
 
-import org.tinygroup.convert.Converter;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.tinygroup.convert.Converter;
 
 public class ClassToSchema implements Converter<List<Class<?>>, List<File>> {
 	private File baseFolder;

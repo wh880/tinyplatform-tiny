@@ -23,13 +23,14 @@
  */
 package org.tinygroup.mongodb.common;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.imda.config.CustomizeStageConfig;
 import org.tinygroup.imda.config.PageConfig;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @XStreamAlias("operation")
 public class Operation extends BaseObject {

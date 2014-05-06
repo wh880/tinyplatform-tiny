@@ -23,10 +23,10 @@
  */
 package org.tinygroup.weblayer.webcontext.setlocacle.impl;
 
-import java.util.regex.Pattern;
+import static org.tinygroup.commons.tools.StringUtil.*;
+import static org.tinygroup.commons.tools.PathNameWildcardCompiler.*;
 
-import static org.tinygroup.commons.tools.PathNameWildcardCompiler.compilePathName;
-import static org.tinygroup.commons.tools.StringUtil.trimToNull;
+import java.util.regex.Pattern;
 
 /**
  * 根据request uri来设置输入、输出charset。

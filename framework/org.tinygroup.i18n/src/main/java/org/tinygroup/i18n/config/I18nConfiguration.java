@@ -23,10 +23,11 @@
  */
 package org.tinygroup.i18n.config;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import java.util.List;
+
 import org.tinygroup.format.config.Formater;
 
-import java.util.List;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * i18n配置

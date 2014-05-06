@@ -23,10 +23,10 @@
  */
 package org.tinygroup.convert.text.config;
 
+import java.io.UnsupportedEncodingException;
+
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-
-import java.io.UnsupportedEncodingException;
 
 public class TextCell {
 	private String value;

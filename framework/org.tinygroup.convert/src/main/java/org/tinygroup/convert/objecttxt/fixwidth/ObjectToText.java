@@ -23,6 +23,11 @@
  */
 package org.tinygroup.convert.objecttxt.fixwidth;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.text.config.Text;
@@ -30,11 +35,6 @@ import org.tinygroup.convert.text.config.TextCell;
 import org.tinygroup.convert.text.config.TextRow;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class ObjectToText<T> implements Converter<List<T>, String> {
 	private static Logger logger = LoggerFactory.getLogger(ObjectToText.class);

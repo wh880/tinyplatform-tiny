@@ -23,9 +23,9 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.upload;
 
-import org.tinygroup.commons.tools.HumanReadableSize;
-
 import java.io.File;
+
+import org.tinygroup.commons.tools.HumanReadableSize;
 
 
 /**

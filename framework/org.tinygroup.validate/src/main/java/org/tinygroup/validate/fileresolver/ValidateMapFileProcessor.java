@@ -23,7 +23,6 @@
  */
 package org.tinygroup.validate.fileresolver;
 
-import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.springutil.SpringUtil;
@@ -32,6 +31,8 @@ import org.tinygroup.validate.ValidatorMapStorage;
 import org.tinygroup.validate.config.Validators;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
+
+import com.thoughtworks.xstream.XStream;
 
 /**
  * 验证映射文件搜索器

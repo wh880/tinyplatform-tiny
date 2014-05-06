@@ -23,6 +23,11 @@
  */
 package org.tinygroup.weblayer.listener;
 
+import java.util.List;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.commons.tools.CollectionUtil;
@@ -31,10 +36,6 @@ import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import java.util.List;
 
 /**
  * ServletListener的应用程序处理器

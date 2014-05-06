@@ -23,13 +23,13 @@
  */
 package org.tinygroup.commons.tools;
 
-import org.tinygroup.commons.i18n.LocaleUtil;
+import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
 
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
+import org.tinygroup.commons.i18n.LocaleUtil;
 
 /**
  * 取得有关系统信息的工具类。

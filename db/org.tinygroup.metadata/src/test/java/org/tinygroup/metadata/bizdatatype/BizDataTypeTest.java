@@ -23,14 +23,15 @@
  */
 package org.tinygroup.metadata.bizdatatype;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.metadata.config.PlaceholderValue;
 import org.tinygroup.metadata.config.bizdatatype.BusinessType;
 import org.tinygroup.metadata.config.bizdatatype.BusinessTypes;
 import org.tinygroup.xstream.XStreamFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.XStream;
 
 public class BizDataTypeTest {
 

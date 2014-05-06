@@ -23,9 +23,21 @@
  */
 package org.tinygroup.entity;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
-import org.tinygroup.entity.common.*;
+import org.tinygroup.entity.common.ConditionField;
+import org.tinygroup.entity.common.DisplayField;
+import org.tinygroup.entity.common.GroupField;
+import org.tinygroup.entity.common.HavingField;
+import org.tinygroup.entity.common.OrderField;
+import org.tinygroup.entity.common.View;
+import org.tinygroup.entity.common.ViewGroup;
 import org.tinygroup.entity.entitymodel.EntityModel;
 import org.tinygroup.entity.extendinfo.FieldMaps;
 import org.tinygroup.entity.impl.IsNullCompareMode;
@@ -33,12 +45,6 @@ import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.imda.processor.ParameterBuilder;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.relation.Relation;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 

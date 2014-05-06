@@ -23,12 +23,13 @@
  */
 package org.tinygroup.dbrouter.config;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import org.tinygroup.dbrouter.PartitionRule;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.dbrouter.PartitionRule;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 分区

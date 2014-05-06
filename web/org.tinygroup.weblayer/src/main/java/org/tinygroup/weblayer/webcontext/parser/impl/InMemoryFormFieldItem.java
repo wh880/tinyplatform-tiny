@@ -23,10 +23,11 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import org.tinygroup.weblayer.webcontext.parser.upload.FileUploadReName;
+import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+
+import org.tinygroup.weblayer.webcontext.parser.upload.FileUploadReName;
 
 /**
  * 用来存储form field的<code>FileItem</code>实现。

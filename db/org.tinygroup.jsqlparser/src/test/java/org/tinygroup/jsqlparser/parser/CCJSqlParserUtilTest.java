@@ -1,15 +1,17 @@
 package org.tinygroup.jsqlparser.parser;
 
-import org.junit.*;
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.expression.LongValue;
 import org.tinygroup.jsqlparser.expression.Parenthesis;
 import org.tinygroup.jsqlparser.expression.operators.arithmetic.Addition;
 import org.tinygroup.jsqlparser.expression.operators.arithmetic.Multiplication;
 import org.tinygroup.jsqlparser.schema.Column;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *

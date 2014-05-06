@@ -23,10 +23,10 @@
  */
 package org.tinygroup.cepcore.test.context;
 
+import java.rmi.Naming;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
-
-import java.rmi.Naming;
 
 public class RemoteExecuteClient1 {
 	public static void main(String args[]) throws Exception {

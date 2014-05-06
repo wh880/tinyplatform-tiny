@@ -23,11 +23,12 @@
  */
 package org.tinygroup.context;
 
-import junit.framework.TestCase;
-import org.tinygroup.context.impl.ContextImpl;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import junit.framework.TestCase;
+
+import org.tinygroup.context.impl.ContextImpl;
 
 public class ContextTest extends TestCase {
 	Context Context = new ContextImpl();

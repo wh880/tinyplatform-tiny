@@ -23,13 +23,14 @@
  */
 package org.tinygroup.metadata.constants;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.metadata.config.constants.Constant;
 import org.tinygroup.metadata.config.constants.Constants;
 import org.tinygroup.xstream.XStreamFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.XStream;
 
 public class ConstantsTest {
 

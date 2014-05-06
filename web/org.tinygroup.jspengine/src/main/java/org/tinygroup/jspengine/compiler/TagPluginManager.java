@@ -25,16 +25,15 @@
 
 package org.tinygroup.jspengine.compiler;
 
+import java.util.*;
+import java.io.*;
+import javax.servlet.ServletContext;
+
 import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.compiler.tagplugin.TagPlugin;
 import org.tinygroup.jspengine.compiler.tagplugin.TagPluginContext;
 import org.tinygroup.jspengine.xmlparser.ParserUtils;
 import org.tinygroup.jspengine.xmlparser.TreeNode;
-
-import javax.servlet.ServletContext;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Manages tag plugin optimizations.

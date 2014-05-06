@@ -23,10 +23,10 @@
  */
 package org.tinygroup.cepcore.test.rmi;
 
-import org.tinygroup.event.Event;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+
+import org.tinygroup.event.Event;
 
 public interface RMIInterface extends Remote{
 	Event deal(Event context) throws RemoteException;

@@ -23,7 +23,9 @@
  */
 package org.tinygroup.ientity.addition;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.File;
+import java.io.IOException;
+
 import org.tinygroup.commons.file.FileDealUtil;
 import org.tinygroup.entity.entitymodel.EntityModel;
 import org.tinygroup.logger.LogLevel;
@@ -33,8 +35,7 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xstream.XStreamFactory;
 
-import java.io.File;
-import java.io.IOException;
+import com.thoughtworks.xstream.XStream;
 
 public final class FastModelDealer {
 	private static Logger logger = LoggerFactory

@@ -23,15 +23,16 @@
  */
 package org.tinygroup.xmlparser.node;
 
-import junit.framework.TestCase;
+import java.io.File;
+import java.util.List;
+
 import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xmlparser.XmlDocument;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
-import java.io.File;
-import java.util.List;
+import junit.framework.TestCase;
 
 public class XmlNodeTest extends TestCase {
 

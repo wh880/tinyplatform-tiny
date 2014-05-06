@@ -23,6 +23,11 @@
  */
 package org.tinygroup.weblayer.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.logger.LogLevel;
@@ -35,11 +40,6 @@ import org.tinygroup.weblayer.TinyProcessorManager;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.configmanager.TinyProcessorConfigManager;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * tiny servlet处理器管理接口的默认实现

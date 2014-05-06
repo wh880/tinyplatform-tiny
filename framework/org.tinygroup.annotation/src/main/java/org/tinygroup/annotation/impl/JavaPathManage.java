@@ -31,68 +31,66 @@ import java.util.List;
 
 /**
  * 类路径管理
- *
+ * 
  * @author renhui
+ * 
  */
 public class JavaPathManage {
 
-    private static final String FILE_RESOLVER = "fileResolver";
-    private static final String BACK_SLASH = "\\";
-    private static final String POINT = ".";
-    // Jar包分格符
-    private static final String EXCLAMATION_MARK = "!";
-    // Jar包后缀名
-    private static final String JAR_SUFFIX = ".jar";
-    // !/符号
-    private static final String EXCLAMATION_AND_SLASH_MARK = "!/";
-    //  /符号
-    private static final String SLASH_MARK = "/";
+	private static final String FILE_RESOLVER = "fileResolver";
+	private static final String BACK_SLASH = "\\";
+	private static final String POINT = ".";
+	// Jar包分格符
+	private static final String EXCLAMATION_MARK = "!";
+	// Jar包后缀名
+	private static final String JAR_SUFFIX = ".jar";
+	// !/符号
+	private static final String  EXCLAMATION_AND_SLASH_MARK="!/";
+	//  /符号
+	private static final String SLASH_MARK="/";
+	
+	// 保存的类根路径列表
+	private List<String> javaPaths = new ArrayList<String>();
+	// 文件扫描器对象
+	private FileResolver fileResolver;
 
-    // 保存的类根路径列表
-    private List<String> javaPaths = new ArrayList<String>();
-    // 文件扫描器对象
+	public void init() {
+		fileResolver = SpringUtil.getBean(FILE_RESOLVER);
+		List<String> paths=new ArrayList<String>();
+		paths.addAll(fileResolver.getAllScanningPath());
+		for (String path : paths) {
+			if(path.indexOf(JAR_SUFFIX)==-1){
+				if(!path.endsWith(SLASH_MARK)){
+					path=path.concat(SLASH_MARK);
+				}
+			javaPaths.add(path.replace(BACK_SLASH, SLASH_MARK));
+			}
+		}
+	}
 
+	/**
+	 * 根据路径获取类全路径
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	public String obtainClassName(String fileName) {
+		String className = null;
+		int jarIndex = fileName.indexOf(EXCLAMATION_MARK);
+		if (jarIndex != -1) {
+			className = fileName.substring(jarIndex + EXCLAMATION_AND_SLASH_MARK.length(), fileName.length());
+		} else {
+			for (String class_path : javaPaths) {
+				int index = fileName.indexOf(class_path);
+				if (index != -1) {
+					className = fileName.substring(
+							index + class_path.length(), fileName.length());
+					break;
+				}
+			}
+		}
+		return className.replace(SLASH_MARK, POINT);
 
-    public void init() {
-        FileResolver fileResolver = SpringUtil.getBean(FILE_RESOLVER);
-        List<String> paths = new ArrayList<String>();
-        paths.addAll(fileResolver.getAllScanningPath());
-        for (String path : paths) {
-            if (path.indexOf(JAR_SUFFIX) == -1) {
-                if (!path.endsWith(SLASH_MARK)) {
-                    path = path.concat(SLASH_MARK);
-                }
-                javaPaths.add(path.replace(BACK_SLASH, SLASH_MARK));
-            }
-        }
-    }
-
-    /**
-     * 根据路径获取类全路径
-     *
-     * @param fileName
-     * @return
-     */
-    public String obtainClassName(String fileName) {
-        String className = null;
-        int jarIndex = fileName.indexOf(EXCLAMATION_MARK);
-        if (jarIndex != -1) {
-            className = fileName.substring(jarIndex + EXCLAMATION_AND_SLASH_MARK.length(), fileName.length());
-        } else {
-            for (String classPath : javaPaths) {
-                int index = fileName.indexOf(classPath);
-                if (index != -1) {
-                    className = fileName.substring(
-                            index + classPath.length(), fileName.length());
-                    break;
-                }
-            }
-        }
-        if (className == null) {
-            throw new RuntimeException("从文件名" + fileName + "获取类名失败！");
-        }
-        return className.replace(SLASH_MARK, POINT);
-
-    }
+	}
 
 }

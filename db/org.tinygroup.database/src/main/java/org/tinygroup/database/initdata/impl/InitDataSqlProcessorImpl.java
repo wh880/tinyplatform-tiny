@@ -23,6 +23,9 @@
  */
 package org.tinygroup.database.initdata.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.database.config.initdata.InitData;
 import org.tinygroup.database.config.initdata.Record;
 import org.tinygroup.database.config.initdata.ValuePair;
@@ -35,9 +38,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 	private Logger logger = LoggerFactory

@@ -23,6 +23,9 @@
  */
 package org.tinygroup.velocity.directive;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.runtime.directive.Directive;
@@ -31,9 +34,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.velocity.impl.VelocityHelperImpl;
-
-import java.io.IOException;
-import java.io.Writer;
 
 public class BigpipePageletDirective extends Directive {
 

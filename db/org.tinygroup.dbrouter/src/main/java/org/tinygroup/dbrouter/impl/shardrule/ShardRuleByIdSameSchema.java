@@ -23,10 +23,10 @@
  */
 package org.tinygroup.dbrouter.impl.shardrule;
 
-import org.tinygroup.dbrouter.util.DbRouterUtil;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.tinygroup.dbrouter.util.DbRouterUtil;
 
 /**
  * Created by luoguo on 13-12-15.

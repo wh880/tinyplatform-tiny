@@ -23,12 +23,13 @@
  */
 package org.tinygroup.mongodb;
 
+import java.net.UnknownHostException;
+
+import org.tinygroup.mongodb.db.MongodbConfig;
+
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
-import org.tinygroup.mongodb.db.MongodbConfig;
-
-import java.net.UnknownHostException;
 
 public class DBClient {
 

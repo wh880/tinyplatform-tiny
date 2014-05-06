@@ -23,10 +23,10 @@
  */
 package org.tinygroup.command.config;
 
+import java.util.List;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
-import java.util.List;
 
 /**
  * 命令，包含了多个Goal

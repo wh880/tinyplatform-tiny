@@ -23,9 +23,9 @@
  */
 package org.tinygroup.cache;
 
+import org.tinygroup.commons.tools.Assert;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
-import org.tinygroup.commons.tools.Assert;
 
 /**
  * 

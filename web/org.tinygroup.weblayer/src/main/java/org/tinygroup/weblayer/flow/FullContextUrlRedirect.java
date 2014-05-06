@@ -23,6 +23,11 @@
  */
 package org.tinygroup.weblayer.flow;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.flow.ComponentInterface;
@@ -33,10 +38,6 @@ import org.tinygroup.velocity.VelocityHelper;
 import org.tinygroup.velocity.impl.VelocityHelperImpl;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.WebContext;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class FullContextUrlRedirect implements ComponentInterface {
 	private final static Logger logger = LoggerFactory

@@ -23,16 +23,18 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.valueparser.impl;
 
-import org.springframework.beans.TypeConverter;
-import org.springframework.beans.TypeMismatchException;
-import org.springframework.core.CollectionFactory;
-import org.springframework.core.MethodParameter;
-import org.tinygroup.commons.tools.ArrayUtil;
-import org.tinygroup.commons.tools.ClassUtil;
-import org.tinygroup.commons.tools.ObjectUtil;
-import org.tinygroup.commons.tools.ToStringBuilder;
-import org.tinygroup.vfs.FileObject;
-import org.tinygroup.weblayer.webcontext.parser.valueparser.ValueList;
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_BYTE_ARRAY;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_INTEGER_OBJECT_ARRAY;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_INT_ARRAY;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_LONG_ARRAY;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_LONG_OBJECT_ARRAY;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_OBJECT_ARRAY;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING_ARRAY;
+import static org.tinygroup.commons.tools.ClassUtil.getPrimitiveDefaultValue;
+import static org.tinygroup.commons.tools.CollectionUtil.createLinkedList;
+import static org.tinygroup.commons.tools.ObjectUtil.isEmptyObject;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
@@ -40,12 +42,16 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
-import static org.tinygroup.commons.tools.BasicConstant.*;
-import static org.tinygroup.commons.tools.ClassUtil.getPrimitiveDefaultValue;
-import static org.tinygroup.commons.tools.CollectionUtil.createLinkedList;
-import static org.tinygroup.commons.tools.ObjectUtil.isEmptyObject;
+import org.tinygroup.commons.tools.ArrayUtil;
+import org.tinygroup.commons.tools.ClassUtil;
+import org.tinygroup.commons.tools.ObjectUtil;
+import org.tinygroup.commons.tools.ToStringBuilder;
+import org.tinygroup.vfs.FileObject;
+import org.tinygroup.weblayer.webcontext.parser.valueparser.ValueList;
+import org.springframework.beans.TypeConverter;
+import org.springframework.beans.TypeMismatchException;
+import org.springframework.core.CollectionFactory;
+import org.springframework.core.MethodParameter;
 
 /**
  * 代表一个值的列表。

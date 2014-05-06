@@ -23,12 +23,17 @@
  */
 package org.tinygroup.commons.tools;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * 

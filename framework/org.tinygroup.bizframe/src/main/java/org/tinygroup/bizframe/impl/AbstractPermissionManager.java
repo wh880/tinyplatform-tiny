@@ -23,9 +23,14 @@
  */
 package org.tinygroup.bizframe.impl;
 
-import org.tinygroup.bizframe.*;
-
 import java.util.List;
+
+import org.tinygroup.bizframe.PermissionCheckStrategy;
+import org.tinygroup.bizframe.PermissionManager;
+import org.tinygroup.bizframe.PermissionObject;
+import org.tinygroup.bizframe.PermissionObjectChecker;
+import org.tinygroup.bizframe.PermissionSubject;
+import org.tinygroup.bizframe.PermissionSubjectChecker;
 
 /**
  * 

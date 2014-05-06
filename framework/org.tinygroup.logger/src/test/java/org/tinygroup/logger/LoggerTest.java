@@ -23,15 +23,20 @@
  */
 package org.tinygroup.logger;
 
-import junit.framework.TestCase;
-import org.tinygroup.context.Context;
-import org.tinygroup.context.impl.ContextImpl;
-import org.tinygroup.i18n.I18nMessageFactory;
+import static org.tinygroup.logger.LogLevel.DEBUG;
+import static org.tinygroup.logger.LogLevel.ERROR;
+import static org.tinygroup.logger.LogLevel.INFO;
+import static org.tinygroup.logger.LogLevel.TRACE;
+import static org.tinygroup.logger.LogLevel.WARN;
 
 import java.util.Locale;
 import java.util.Properties;
 
-import static org.tinygroup.logger.LogLevel.*;
+import junit.framework.TestCase;
+
+import org.tinygroup.context.Context;
+import org.tinygroup.context.impl.ContextImpl;
+import org.tinygroup.i18n.I18nMessageFactory;
 
 public class LoggerTest extends TestCase {
 

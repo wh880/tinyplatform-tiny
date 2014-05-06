@@ -23,14 +23,14 @@
  */
 package org.tinygroup.tinydb.testcase.relation;
 
-import org.tinygroup.tinydb.Bean;
-import org.tinygroup.tinydb.operator.DBOperator;
-import org.tinygroup.tinydb.test.BaseTest;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.operator.DBOperator;
+import org.tinygroup.tinydb.test.BaseTest;
 
 public class RelationTest extends BaseTest {
 

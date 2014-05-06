@@ -24,7 +24,7 @@
 package org.tinygroup.bundle;
 
 import org.tinygroup.bundle.config.BundleDefine;
-import org.tinygroup.loader.TinyClassLoader;
+import org.tinygroup.bundle.loader.TinyClassLoader;
 
 import java.util.List;
 

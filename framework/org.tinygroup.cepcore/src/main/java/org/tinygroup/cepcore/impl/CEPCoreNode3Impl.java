@@ -23,6 +23,9 @@
  */
 package org.tinygroup.cepcore.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.exception.CEPConnectException;
 import org.tinygroup.cepcore.util.CEPCoreUtil;
@@ -40,9 +43,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CEPCoreNode3Impl extends AbstractCEPCoreOp {
 

@@ -23,8 +23,8 @@
  */
 package org.tinygroup.weblayer.webcontext.session.valueencode;
 
-import org.tinygroup.weblayer.webcontext.session.SessionStore.StoreContext;
 import org.tinygroup.weblayer.webcontext.session.exception.SessionValueEncoderException;
+import org.tinygroup.weblayer.webcontext.session.SessionStore.StoreContext;
 
 
 /**

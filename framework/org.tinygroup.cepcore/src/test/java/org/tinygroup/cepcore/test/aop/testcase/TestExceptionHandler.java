@@ -23,13 +23,14 @@
  */
 package org.tinygroup.cepcore.test.aop.testcase;
 
-import junit.framework.TestCase;
 import org.tinygroup.cepcore.test.aop.util.AopTestUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.exception.TinySysRuntimeException;
+
+import junit.framework.TestCase;
 
 public class TestExceptionHandler extends TestCase {
 	public void testExceptionHandler() {

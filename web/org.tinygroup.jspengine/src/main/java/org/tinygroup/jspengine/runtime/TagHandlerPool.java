@@ -25,11 +25,11 @@
 
 package org.tinygroup.jspengine.runtime;
 
-import org.tinygroup.jspengine.Constants;
-
-import javax.servlet.ServletConfig;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
+import javax.servlet.ServletConfig;
+
+import org.tinygroup.jspengine.Constants;
 
 /**
  * Pool of tag handlers that can be reused.

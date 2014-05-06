@@ -23,10 +23,10 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
-import org.tinygroup.dbrouter.util.DbRouterUtil;
-
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+
+import org.tinygroup.dbrouter.util.DbRouterUtil;
 
 /**
  * 

@@ -23,10 +23,10 @@
  */
 package org.tinygroup.plugin;
 
+import java.util.List;
+
 import org.tinygroup.plugin.config.PluginConfig;
 import org.tinygroup.plugin.config.PluginConfigs;
-
-import java.util.List;
 
 /**
  * 插件管理器

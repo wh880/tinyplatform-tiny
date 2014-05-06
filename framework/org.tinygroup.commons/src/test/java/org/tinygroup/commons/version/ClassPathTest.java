@@ -23,8 +23,9 @@
  */
 package org.tinygroup.commons.version;
 
-import junit.framework.TestCase;
 import org.tinygroup.commons.tools.ClassPathUtil;
+
+import junit.framework.TestCase;
 
 public class ClassPathTest extends TestCase {
 

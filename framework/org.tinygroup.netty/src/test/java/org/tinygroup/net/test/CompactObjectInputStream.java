@@ -23,9 +23,14 @@
  */
 package org.tinygroup.net.test;
 
-import org.jboss.netty.handler.codec.serialization.ClassResolver;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
+import java.io.StreamCorruptedException;
 
-import java.io.*;
+import org.jboss.netty.handler.codec.serialization.ClassResolver;
 
 class CompactObjectInputStream extends ObjectInputStream {
 

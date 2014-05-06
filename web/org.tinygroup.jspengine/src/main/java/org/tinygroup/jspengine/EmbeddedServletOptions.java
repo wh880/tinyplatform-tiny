@@ -23,19 +23,20 @@
  */
 package org.tinygroup.jspengine;
 
+import java.io.File;
+import java.util.*;
+import java.text.MessageFormat;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+
 import org.tinygroup.jspengine.compiler.JspConfig;
 import org.tinygroup.jspengine.compiler.Localizer;
 import org.tinygroup.jspengine.compiler.TagPluginManager;
 import org.tinygroup.jspengine.compiler.TldLocationsCache;
 import org.tinygroup.jspengine.org.apache.commons.logging.Log;
 import org.tinygroup.jspengine.org.apache.commons.logging.LogFactory;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import java.io.File;
-import java.text.MessageFormat;
-import java.util.Enumeration;
-import java.util.Properties;
+import org.tinygroup.jspengine.xmlparser.ParserUtils;
 
 /**
  * A class to hold all init parameters specific to the JSP engine. 

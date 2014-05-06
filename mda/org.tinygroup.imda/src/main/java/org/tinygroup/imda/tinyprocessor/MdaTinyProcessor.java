@@ -23,6 +23,16 @@
  */
 package org.tinygroup.imda.tinyprocessor;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.velocity.VelocityContext;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.Context;
@@ -42,17 +52,11 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.velocity.TinyVelocityContext;
+import org.tinygroup.velocity.VelocityHelper;
 import org.tinygroup.velocity.impl.VelocityHelperImpl;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * 页面流flow-processor

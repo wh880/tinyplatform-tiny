@@ -23,11 +23,11 @@
  */
 package org.tinygroup.validate.impl;
 
-import org.tinygroup.validate.ErrorDescription;
-import org.tinygroup.validate.ValidateResult;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.validate.ErrorDescription;
+import org.tinygroup.validate.ValidateResult;
 
 /**
  * 验证结果实现类

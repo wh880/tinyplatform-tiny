@@ -23,10 +23,9 @@
  */
 package org.tinygroup.weblayer.webcontext.session.encode;
 
+import java.util.Map;
 import org.tinygroup.weblayer.webcontext.session.SessionStore.StoreContext;
 import org.tinygroup.weblayer.webcontext.session.exception.SessionEncoderException;
-
-import java.util.Map;
 
 /**
  * 将attributes map转换成字符串值或反之。

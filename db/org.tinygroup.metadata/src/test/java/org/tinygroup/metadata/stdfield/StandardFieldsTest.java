@@ -23,15 +23,16 @@
  */
 package org.tinygroup.metadata.stdfield;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.metadata.config.stdfield.NickName;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.config.stdfield.StandardFields;
 import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.xstream.XStreamFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.XStream;
 
 public class StandardFieldsTest {
 

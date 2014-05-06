@@ -28,10 +28,11 @@ package org.tinygroup.logger;
  * 日志事务，表示，从startTransaction开始到endTransaction中间记录的所有日志都会拼成一个完整的日志块，连续输出
  */
 
-import org.tinygroup.context.Context;
-import org.tinygroup.logger.impl.LogBuffer;
-
 import java.util.Locale;
+
+import org.tinygroup.context.Context;
+import org.tinygroup.i18n.I18nMessage;
+import org.tinygroup.logger.impl.LogBuffer;
 
 /**
  * 日志接口

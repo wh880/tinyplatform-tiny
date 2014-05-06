@@ -23,6 +23,8 @@
  */
 package org.tinygroup.weblayer.webcontext.basic.impl;
 
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+
 import org.tinygroup.commons.tools.HumanReadableSize;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.AbstractWebContextWrapper;
@@ -30,8 +32,6 @@ import org.tinygroup.weblayer.webcontext.WebContextException;
 import org.tinygroup.weblayer.webcontext.basic.BasicWebContext;
 import org.tinygroup.weblayer.webcontext.basic.interceptor.ResponseHeaderSecurityFilter;
 import org.tinygroup.weblayer.webcontext.basic.response.BasicResponseImpl;
-
-import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
 
 /**
  * 过滤header中的crlf，将status message用HTML entities转义，限制cookie的总大小。

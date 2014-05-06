@@ -24,8 +24,8 @@
 package org.tinygroup.springutil.config;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.Map;
 
 public class User {
 	String name;

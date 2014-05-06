@@ -23,6 +23,21 @@
  */
 package org.tinygroup.weblayer.webcontext.setlocacle.impl;
 
+import static org.tinygroup.commons.tools.StringUtil.isEmpty;
+import static org.tinygroup.commons.tools.StringUtil.substringAfterLast;
+import static org.tinygroup.commons.tools.StringUtil.substringBefore;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
+import static org.tinygroup.weblayer.webcontext.util.ServletUtil.getResourcePath;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.tinygroup.commons.i18n.LocaleInfo;
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.logger.LogLevel;
@@ -33,17 +48,6 @@ import org.tinygroup.weblayer.webcontext.AbstractRequestWrapper;
 import org.tinygroup.weblayer.webcontext.AbstractResponseWrapper;
 import org.tinygroup.weblayer.webcontext.AbstractWebContextWrapper;
 import org.tinygroup.weblayer.webcontext.setlocacle.SetLocaleWebContext;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.tinygroup.commons.tools.StringUtil.*;
-import static org.tinygroup.weblayer.webcontext.util.ServletUtil.getResourcePath;
 
 
 /**

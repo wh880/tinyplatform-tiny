@@ -30,32 +30,29 @@ import java.util.Map;
 
 /**
  * 注解类规范映射 用于保存AnnotationProcessor解析的注解规范配置信息
- *
  * @author renhui
+ *
  */
-public final class AnnotationClassMap {
-    private AnnotationClassMap() {
-
-    }
-
-    private static Map<String, List<String>> classMap = new HashMap<String, List<String>>();
-
-    public static void putAnnotationMap(String annotationId, String mapValue) {
-        List<String> classNameList = classMap.get(annotationId);
-        if (classNameList == null) {
-            classNameList = new ArrayList<String>();
+public class AnnotationClassMap {
+	
+	private static Map<String, List<String>> classMap=new HashMap<String, List<String>>();
+	
+	public static void putAnnotationMap(String annotationId,String mapValue){
+		List<String> classNameList=classMap.get(annotationId);
+		if(classNameList==null){
+			classNameList=new ArrayList<String>();
             classMap.put(annotationId, classNameList);
         }
-        if (!classNameList.contains(mapValue)) {
+        if(!classNameList.contains(mapValue)){
             classNameList.add(mapValue);
         }
-    }
+	}
+	
+	public static List<String> getClassNamesById(String annotationId){
+		return classMap.get(annotationId);
+	}
 
-    public static List<String> getClassNamesById(String annotationId) {
-        return classMap.get(annotationId);
-    }
-
-    public static void clearAnnotationMap() {
-        classMap.clear();
-    }
+	public static void clearAnnotationMap(){
+		classMap.clear();
+	}
 }

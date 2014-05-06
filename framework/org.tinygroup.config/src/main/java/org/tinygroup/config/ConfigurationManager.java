@@ -23,11 +23,11 @@
  */
 package org.tinygroup.config;
 
-import org.tinygroup.vfs.FileObject;
-import org.tinygroup.xmlparser.node.XmlNode;
-
 import java.util.Collection;
 import java.util.Map;
+
+import org.tinygroup.vfs.FileObject;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * 应用配置管理器

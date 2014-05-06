@@ -23,9 +23,9 @@
  */
 package org.tinygroup.fileresolver;
 
-import org.tinygroup.vfs.FileObject;
-
 import java.util.Map;
+
+import org.tinygroup.vfs.FileObject;
 
 /**
  * 全路径静态资源文件搜索

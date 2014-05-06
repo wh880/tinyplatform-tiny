@@ -25,10 +25,10 @@
 package org.tinygroup.jspengine.compiler;
 
 
-import org.tinygroup.jspengine.JasperException;
-
-import java.util.Hashtable;
 import java.util.Vector;
+import java.util.Hashtable;
+
+import org.tinygroup.jspengine.JasperException;
 
 /**
  * Repository of {page, request, session, application}-scoped beans 

@@ -22,9 +22,8 @@
  *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.jspengine.el.parser;
-
-import javax.el.ELException;
 import java.io.StringReader;
+import javax.el.ELException;
 public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParserConstants {/*@bgen(jjtree)*/
   protected JJTELParserState jjtree = new JJTELParserState();public static Node parse(String ref) throws ELException
     {

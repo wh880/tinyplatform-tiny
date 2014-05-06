@@ -23,11 +23,12 @@
  */
 package org.tinygroup.service.config;
 
-import com.thoughtworks.xstream.XStream;
-import org.tinygroup.springutil.SpringUtil;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.springutil.SpringUtil;
+
+import com.thoughtworks.xstream.XStream;
 
 public class XmlConfigLoader extends XmlConfigServiceLoader {
 

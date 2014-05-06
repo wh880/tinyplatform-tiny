@@ -23,15 +23,15 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import org.springframework.beans.PropertyEditorRegistrar;
-import org.springframework.beans.PropertyEditorRegistry;
-import org.tinygroup.commons.tools.ToStringBuilder;
+import static java.util.Collections.emptyList;
+import static org.tinygroup.commons.tools.CollectionUtil.createArrayList;
 
 import java.util.Iterator;
 import java.util.List;
 
-import static java.util.Collections.emptyList;
-import static org.tinygroup.commons.tools.CollectionUtil.createArrayList;
+import org.tinygroup.commons.tools.ToStringBuilder;
+import org.springframework.beans.PropertyEditorRegistrar;
+import org.springframework.beans.PropertyEditorRegistry;
 
 /**
  * 代表一个property editor registrar的集合，然而它本身也是一个

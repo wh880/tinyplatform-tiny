@@ -23,12 +23,12 @@
  */
 package org.tinygroup.order.processor;
 
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * 排序组的集合

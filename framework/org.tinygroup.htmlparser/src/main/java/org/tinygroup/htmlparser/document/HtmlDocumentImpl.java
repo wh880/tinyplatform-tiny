@@ -23,13 +23,14 @@
  */
 package org.tinygroup.htmlparser.document;
 
-import org.tinygroup.htmlparser.HtmlDocument;
-import org.tinygroup.htmlparser.node.HtmlNode;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.htmlparser.HtmlDocument;
+import org.tinygroup.htmlparser.HtmlNodeType;
+import org.tinygroup.htmlparser.node.HtmlNode;
 
 public class HtmlDocumentImpl implements HtmlDocument {
 	private HtmlNode root = null;

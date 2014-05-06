@@ -21,12 +21,10 @@
  */
 package org.tinygroup.jsqlparser.util;
 
-import org.tinygroup.jsqlparser.expression.Alias;
-import org.tinygroup.jsqlparser.expression.BinaryExpression;
+import org.tinygroup.jsqlparser.expression.*;
 import org.tinygroup.jsqlparser.statement.select.*;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Connect all selected expressions with a binary expression. Out of select a,b

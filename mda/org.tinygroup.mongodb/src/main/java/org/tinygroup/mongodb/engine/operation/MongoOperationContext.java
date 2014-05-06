@@ -23,25 +23,31 @@
  */
 package org.tinygroup.mongodb.engine.operation;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bson.BSONObject;
 import org.bson.types.BasicBSONList;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.imda.util.MdaUtil;
-import org.tinygroup.mongodb.common.*;
+import org.tinygroup.mongodb.common.Field;
+import org.tinygroup.mongodb.common.ObjectField;
+import org.tinygroup.mongodb.common.Operation;
+import org.tinygroup.mongodb.common.OperationField;
+import org.tinygroup.mongodb.common.OperationGroup;
 import org.tinygroup.mongodb.engine.MongoDbContext;
 import org.tinygroup.mongodb.engine.MongoField;
 import org.tinygroup.mongodb.model.MongoDBModel;
 import org.tinygroup.mongodb.util.MapConvert;
+import org.tinygroup.springutil.TypeConverterUtil;
 import org.tinygroup.weblayer.webcontext.parser.fileupload.TinyFileItem;
 import org.tinygroup.weblayer.webcontext.parser.impl.ItemFileObject;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 /**
  * 

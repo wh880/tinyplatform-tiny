@@ -23,6 +23,14 @@
  */
 package org.tinygroup.weblayer.servlet;
 
+import java.io.IOException;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -31,13 +39,6 @@ import org.tinygroup.weblayer.TinyProcessorManager;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.impl.WebContextImpl;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * TinyServlet入口

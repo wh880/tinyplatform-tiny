@@ -23,14 +23,14 @@
  */
 package org.tinygroup.fileresolver.impl;
 
+import java.util.List;
+
 import org.tinygroup.fileresolver.ProcessorCallBack;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.threadgroup.MultiThreadProcessor;
 import org.tinygroup.vfs.FileObject;
-
-import java.util.List;
 
 /**
  * 文件多线程处理器工具类

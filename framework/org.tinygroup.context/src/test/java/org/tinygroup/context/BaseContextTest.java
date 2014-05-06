@@ -23,8 +23,9 @@
  */
 package org.tinygroup.context;
 
-import junit.framework.TestCase;
 import org.tinygroup.context.impl.BaseContextImpl;
+
+import junit.framework.TestCase;
 
 public class BaseContextTest extends TestCase {
 	BaseContext context = new BaseContextImpl();

@@ -23,11 +23,19 @@
  */
 package org.tinygroup.entity.entitymodel;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.entity.BaseModel;
-import org.tinygroup.entity.common.*;
+import org.tinygroup.entity.common.Field;
+import org.tinygroup.entity.common.Group;
+import org.tinygroup.entity.common.Index;
+import org.tinygroup.entity.common.Operation;
+import org.tinygroup.entity.common.OperationField;
+import org.tinygroup.entity.common.OperationGroup;
 import org.tinygroup.entity.util.ModelUtil;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.springutil.SpringUtil;
@@ -35,10 +43,8 @@ import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 模型

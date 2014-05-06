@@ -23,13 +23,14 @@
  */
 package org.tinygroup.database.config.table;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.tinygroup.metadata.config.BaseObject;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import org.tinygroup.metadata.config.BaseObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @XStreamAlias("tables")
 public class Tables extends BaseObject {

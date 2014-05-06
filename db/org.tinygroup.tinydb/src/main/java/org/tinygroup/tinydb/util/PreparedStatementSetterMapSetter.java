@@ -23,11 +23,11 @@
  */
 package org.tinygroup.tinydb.util;
 
-import org.springframework.jdbc.core.PreparedStatementSetter;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.springframework.jdbc.core.PreparedStatementSetter;
 
 public class PreparedStatementSetterMapSetter implements PreparedStatementSetter {
 

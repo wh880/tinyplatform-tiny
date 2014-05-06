@@ -23,10 +23,10 @@
  */
 package org.tinygroup.tinydb.exception;
 
+import java.util.Locale;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.exception.TinySysRuntimeException;
-
-import java.util.Locale;
 
 /**
  * 数据库异常

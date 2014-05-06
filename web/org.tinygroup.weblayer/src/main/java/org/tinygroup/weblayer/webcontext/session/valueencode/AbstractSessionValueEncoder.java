@@ -23,17 +23,7 @@
  */
 package org.tinygroup.weblayer.webcontext.session.valueencode;
 
-import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.PropertyEditorRegistry;
-import org.springframework.beans.SimpleTypeConverter;
-import org.springframework.beans.TypeConverter;
-import org.tinygroup.commons.io.StreamUtil;
-import org.tinygroup.commons.tools.StringEscapeUtil;
-import org.tinygroup.support.BeanSupport;
-import org.tinygroup.weblayer.webcontext.session.SessionStore.StoreContext;
-import org.tinygroup.weblayer.webcontext.session.encrypter.Encrypter;
-import org.tinygroup.weblayer.webcontext.session.exception.SessionEncoderException;
-import org.tinygroup.weblayer.webcontext.session.exception.SessionValueEncoderException;
+import static org.tinygroup.commons.tools.StringUtil.*;
 
 import java.beans.PropertyEditor;
 import java.io.ByteArrayInputStream;
@@ -44,7 +34,17 @@ import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import static org.tinygroup.commons.tools.StringUtil.trimToNull;
+import org.tinygroup.weblayer.webcontext.session.SessionStore.StoreContext;
+import org.apache.commons.codec.binary.Base64;
+import org.tinygroup.commons.io.StreamUtil;
+import org.tinygroup.commons.tools.StringEscapeUtil;
+import org.tinygroup.support.BeanSupport;
+import org.tinygroup.weblayer.webcontext.session.encrypter.Encrypter;
+import org.tinygroup.weblayer.webcontext.session.exception.SessionEncoderException;
+import org.tinygroup.weblayer.webcontext.session.exception.SessionValueEncoderException;
+import org.springframework.beans.PropertyEditorRegistry;
+import org.springframework.beans.SimpleTypeConverter;
+import org.springframework.beans.TypeConverter;
 
 /**
  * <code>SessionEncoder</code>针对非串行化场景的抽象编码实现，加密，base64来编码、解码。

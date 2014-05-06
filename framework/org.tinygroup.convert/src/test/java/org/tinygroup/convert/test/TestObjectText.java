@@ -23,13 +23,14 @@
  */
 package org.tinygroup.convert.test;
 
-import junit.framework.TestCase;
-import org.tinygroup.convert.objecttxt.simple.ObjectToText;
-import org.tinygroup.convert.objecttxt.simple.TextToObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.tinygroup.convert.objecttxt.simple.ObjectToText;
+import org.tinygroup.convert.objecttxt.simple.TextToObject;
 
 public class TestObjectText extends TestCase {
 	private static String testText = "name_address_length,name123456_address123456_1,name1234567_address1234567_1,name12345678_address12345678_1,哈哈哈哈哈哈哈哈哈_address12345678_1,";

@@ -23,9 +23,9 @@
  */
 package org.tinygroup.tinydb.dialect.impl;
 
-import org.springframework.jdbc.support.incrementer.AbstractSequenceMaxValueIncrementer;
-
 import javax.sql.DataSource;
+
+import org.springframework.jdbc.support.incrementer.AbstractSequenceMaxValueIncrementer;
 
 
 /**

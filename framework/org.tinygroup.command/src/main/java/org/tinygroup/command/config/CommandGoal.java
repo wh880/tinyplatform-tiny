@@ -23,13 +23,14 @@
  */
 package org.tinygroup.command.config;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.List;
+
 import org.tinygroup.command.CommandGoalExecutor;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
-import java.util.List;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 命令的Goal

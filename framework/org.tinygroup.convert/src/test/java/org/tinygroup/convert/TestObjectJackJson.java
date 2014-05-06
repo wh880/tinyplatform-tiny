@@ -23,12 +23,12 @@
  */
 package org.tinygroup.convert;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.tinygroup.convert.objectjson.jackson.JsonToObject;
 import org.tinygroup.convert.objectjson.jackson.ObjectToJson;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class TestObjectJackJson extends AbstractConvertTestCase {

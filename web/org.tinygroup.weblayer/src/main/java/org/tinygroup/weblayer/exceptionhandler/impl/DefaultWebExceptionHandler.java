@@ -23,11 +23,12 @@
  */
 package org.tinygroup.weblayer.exceptionhandler.impl;
 
-import org.tinygroup.weblayer.WebContext;
-import org.tinygroup.weblayer.exceptionhandler.WebExceptionHandler;
+import java.io.IOException;
 
 import javax.servlet.ServletException;
-import java.io.IOException;
+
+import org.tinygroup.weblayer.WebContext;
+import org.tinygroup.weblayer.exceptionhandler.WebExceptionHandler;
 
 /**
  * 

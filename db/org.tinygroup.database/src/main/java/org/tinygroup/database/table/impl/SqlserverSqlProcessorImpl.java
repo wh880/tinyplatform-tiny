@@ -23,14 +23,14 @@
  */
 package org.tinygroup.database.table.impl;
 
-import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.config.table.TableField;
-
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+
+import org.tinygroup.database.config.table.Table;
+import org.tinygroup.database.config.table.TableField;
 
 public class SqlserverSqlProcessorImpl extends SqlProcessorImpl {
 

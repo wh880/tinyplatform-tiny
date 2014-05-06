@@ -23,13 +23,14 @@
  */
 package org.tinygroup.convert.test;
 
-import junit.framework.TestCase;
-import org.tinygroup.convert.objecttxt.fixwidth.ObjectToText;
-import org.tinygroup.convert.objecttxt.fixwidth.TextToObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.tinygroup.convert.objecttxt.fixwidth.ObjectToText;
+import org.tinygroup.convert.objecttxt.fixwidth.TextToObject;
 
 
 

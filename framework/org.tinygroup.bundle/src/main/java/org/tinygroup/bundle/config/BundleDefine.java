@@ -17,13 +17,16 @@ public class BundleDefine {
     private String name;
     @XStreamAsAttribute
     private String title;
+    //所依赖的bundle,以,分割
     private String dependencies;
+    //这里只存放放在公共jar目录的jar,放在当前的bundle目录下的jar不需要配置到这里
     @XStreamAlias("common-jars")
     private String commonJars;
     @XStreamAlias("short-description")
     private String shortDescription;
     @XStreamAlias("long-description")
     private String longDescription;
+    //值为其对应的bean
     @XStreamAlias("bundle-activator")
     private String bundleActivator;
     private transient List<String> dependencyByList = new ArrayList<String>();

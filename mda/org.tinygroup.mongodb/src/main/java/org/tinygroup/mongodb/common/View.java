@@ -23,12 +23,13 @@
  */
 package org.tinygroup.mongodb.common;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import org.tinygroup.imda.config.CustomizeStageConfig;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.imda.config.CustomizeStageConfig;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 视图，用于展现数据

@@ -23,10 +23,10 @@
  */
 package org.tinygroup.tinyspider;
 
+import java.util.List;
+
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.parser.NodeFilter;
-
-import java.util.List;
 
 /**
  * 监视器，用于对网页内容进行扫描，并对命中的节点进行处理

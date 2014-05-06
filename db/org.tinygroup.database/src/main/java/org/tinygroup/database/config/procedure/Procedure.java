@@ -23,14 +23,15 @@
  */
 package org.tinygroup.database.config.procedure;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.database.config.SqlBody;
 import org.tinygroup.database.config.UsePackage;
 import org.tinygroup.metadata.config.BaseObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 存储过程

@@ -23,13 +23,13 @@
  */
 package org.tinygroup.cepcore.test.rmi.impl;
 
+import java.rmi.Naming;
+
 import org.tinygroup.cepcore.test.rmi.RMIInterface;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;
-
-import java.rmi.Naming;
 
 public class Client {
 	public static void main(String[] args) {

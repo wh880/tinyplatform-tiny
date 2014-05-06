@@ -23,10 +23,10 @@
  */
 package org.tinygroup.cepcore.test.context;
 
-import org.tinygroup.context.Context;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+
+import org.tinygroup.context.Context;
 
 public class RemoteExecuteImpl extends UnicastRemoteObject implements
 		RemoteExecute {

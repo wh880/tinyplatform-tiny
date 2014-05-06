@@ -23,6 +23,11 @@
  */
 package org.tinygroup.order.processor;
 
+import static org.tinygroup.logger.LogLevel.INFO;
+
+import java.io.BufferedInputStream;
+import java.util.List;
+
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.logger.Logger;
@@ -30,11 +35,6 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import java.io.BufferedInputStream;
-import java.util.List;
-
-import static org.tinygroup.logger.LogLevel.INFO;
 
 /**
  * 

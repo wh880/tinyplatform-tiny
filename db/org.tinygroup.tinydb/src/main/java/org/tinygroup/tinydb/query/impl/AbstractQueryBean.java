@@ -23,10 +23,10 @@
  */
 package org.tinygroup.tinydb.query.impl;
 
-import org.tinygroup.tinydb.query.QueryBean;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.tinydb.query.QueryBean;
 
 /**
  * 查询Bean，用此Bean可以来查询数据，只针对单表

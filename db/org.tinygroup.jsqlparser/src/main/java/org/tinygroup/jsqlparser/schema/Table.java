@@ -21,11 +21,8 @@
  */
 package org.tinygroup.jsqlparser.schema;
 
-import org.tinygroup.jsqlparser.expression.Alias;
-import org.tinygroup.jsqlparser.statement.select.FromItem;
-import org.tinygroup.jsqlparser.statement.select.FromItemVisitor;
-import org.tinygroup.jsqlparser.statement.select.IntoTableVisitor;
-import org.tinygroup.jsqlparser.statement.select.Pivot;
+import org.tinygroup.jsqlparser.expression.*;
+import org.tinygroup.jsqlparser.statement.select.*;
 
 /**
  * A table. It can have an alias and the schema name it belongs to.

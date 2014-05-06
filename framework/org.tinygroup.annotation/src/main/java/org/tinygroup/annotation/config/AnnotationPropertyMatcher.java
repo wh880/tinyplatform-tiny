@@ -23,12 +23,12 @@
  */
 package org.tinygroup.annotation.config;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 属性注解匹配器
@@ -40,16 +40,13 @@ import java.util.List;
 public class AnnotationPropertyMatcher {
 	@XStreamAlias("property-name")
 	@XStreamAsAttribute
-    // 匹配的属性名
-	private String propertyName;
+	private String propertyName;// 匹配的属性名
 	@XStreamAlias("annotation-type")
 	@XStreamAsAttribute
-    // 匹配的注解研
-	private String annotationType;
+	private String annotationType;// 匹配的注解研
 	@XStreamAlias("processor-beans")
 	@XStreamAsAttribute
-    // 如果匹配上执行的ProcessorBean bean名列表
-	private List<ProcessorBean> processorBeans;
+	private List<ProcessorBean> processorBeans;// 如果匹配上执行的ProcessorBean bean名列表
 
 	private AnnotationTypeMatcher annotationTypeMatcher;
 

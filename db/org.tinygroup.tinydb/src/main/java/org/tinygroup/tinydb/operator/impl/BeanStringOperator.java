@@ -24,6 +24,7 @@
 package org.tinygroup.tinydb.operator.impl;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.tinygroup.tinydb.operator.impl.BeanDBSqlOperator;
 /**
  * 
  * 功能说明:框架提供以String作为keytype的实现 

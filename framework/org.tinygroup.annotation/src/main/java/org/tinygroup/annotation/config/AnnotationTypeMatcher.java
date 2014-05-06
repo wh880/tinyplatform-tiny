@@ -36,10 +36,10 @@ import java.util.regex.Pattern;
  * 
  */
 public class AnnotationTypeMatcher {
-    // 匹配的类名正则表达式
-	private List<Pattern> classPatterns = new ArrayList<Pattern>();
-    // 注解正则表达式
-	private Pattern annotationPattern;
+
+	private List<Pattern> classPatterns = new ArrayList<Pattern>();// 匹配的类名正则表达式
+
+	private Pattern annotationPattern;// 注解正则表达式
 
 	public AnnotationTypeMatcher(List<String> classNames, String annotationType) {
 		if (classNames != null) {

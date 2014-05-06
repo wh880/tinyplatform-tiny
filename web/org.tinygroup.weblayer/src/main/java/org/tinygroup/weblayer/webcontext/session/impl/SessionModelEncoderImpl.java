@@ -25,17 +25,18 @@
 
 package org.tinygroup.weblayer.webcontext.session.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.tinygroup.weblayer.webcontext.session.SessionModel;
-import org.tinygroup.weblayer.webcontext.session.SessionModel.Factory;
-import org.tinygroup.weblayer.webcontext.session.SessionModelEncoder;
+import static org.tinygroup.commons.tools.BasicConstant.*;
+import static org.tinygroup.commons.tools.ObjectUtil.*;
+import static org.tinygroup.commons.tools.StringUtil.*;
 
+import org.tinygroup.weblayer.webcontext.session.SessionModel.Factory;
 import java.text.MessageFormat;
 
-import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
-import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
-import static org.tinygroup.commons.tools.StringUtil.trimToNull;
+
+import org.tinygroup.weblayer.webcontext.session.SessionModel;
+import org.tinygroup.weblayer.webcontext.session.SessionModelEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <code>SessionModelEncoder</code>的默认实现：将model内容保存成字符串。

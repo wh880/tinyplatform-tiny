@@ -23,11 +23,17 @@
  */
 package org.tinygroup.validate;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import junit.framework.TestCase;
+
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.validate.impl.ValidateResultImpl;
-
-import java.util.*;
 
 public abstract class AbstractValidatorManagerTest extends TestCase {
 

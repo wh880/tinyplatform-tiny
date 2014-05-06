@@ -25,21 +25,33 @@
 
 package org.tinygroup.jspengine.runtime;
 
-import org.tinygroup.jspengine.compiler.Localizer;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
 
+import javax.el.ELException;
 import javax.el.ELContext;
-import javax.servlet.*;
+
+import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.el.ExpressionEvaluator;
-import javax.servlet.jsp.el.VariableResolver;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.VariableInfo;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.*;
+import javax.servlet.jsp.el.VariableResolver;
+import javax.servlet.jsp.el.ExpressionEvaluator;
+
+import org.tinygroup.jspengine.compiler.Localizer;
 
 /**
  * Implementation of a JSP Context Wrapper.

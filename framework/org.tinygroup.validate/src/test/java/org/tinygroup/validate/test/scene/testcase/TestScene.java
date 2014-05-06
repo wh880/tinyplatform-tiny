@@ -24,6 +24,7 @@
 package org.tinygroup.validate.test.scene.testcase;
 
 import junit.framework.TestCase;
+
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.validate.ErrorDescription;

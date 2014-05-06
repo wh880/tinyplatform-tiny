@@ -24,6 +24,7 @@
 package org.tinygroup.plugin.test;
 
 import junit.framework.TestCase;
+
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;

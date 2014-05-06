@@ -23,14 +23,14 @@
  */
 package org.tinygroup.metadata.bizdatatype.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.tinygroup.metadata.bizdatatype.BusinessTypeProcessor;
 import org.tinygroup.metadata.config.bizdatatype.BusinessType;
 import org.tinygroup.metadata.config.bizdatatype.BusinessTypes;
 import org.tinygroup.metadata.stddatatype.StandardTypeProcessor;
 import org.tinygroup.metadata.util.MetadataUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class BusinessTypeProcessorImpl implements BusinessTypeProcessor {
 	// packagename/name/businessType

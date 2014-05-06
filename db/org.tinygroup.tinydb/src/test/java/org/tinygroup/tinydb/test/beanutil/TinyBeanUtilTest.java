@@ -23,12 +23,13 @@
  */
 package org.tinygroup.tinydb.test.beanutil;
 
-import junit.framework.TestCase;
-import org.tinygroup.tinydb.Bean;
-import org.tinygroup.tinydb.util.TinyBeanUtil;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.util.TinyBeanUtil;
 
 public class TinyBeanUtilTest  extends TestCase{
 

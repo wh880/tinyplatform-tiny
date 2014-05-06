@@ -23,7 +23,6 @@
  */
 package org.tinygroup.database.fileresolver;
 
-import com.thoughtworks.xstream.XStream;
 import org.tinygroup.database.config.view.Views;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.database.view.ViewProcessor;
@@ -32,6 +31,8 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
+
+import com.thoughtworks.xstream.XStream;
 
 public class ViewFileResolver extends AbstractFileProcessor {
 

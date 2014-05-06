@@ -23,10 +23,11 @@
  */
 package org.tinygroup.entity.relation;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.entity.base.BaseObject;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 实体关系<br>

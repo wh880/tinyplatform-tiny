@@ -23,14 +23,14 @@
  */
 package org.tinygroup.convert.objecttxt.simple;
 
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.text.config.Text;
 import org.tinygroup.convert.text.config.TextCell;
 import org.tinygroup.convert.text.config.TextRow;
 import org.tinygroup.convert.util.ConvertUtil;
-
-import java.util.List;
-import java.util.Map;
 
 public class ObjectToText<T> implements Converter<List<T>, String> {
 	private Map<String, String> titleMap;

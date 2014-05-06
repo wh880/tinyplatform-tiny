@@ -23,9 +23,21 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.valueparser;
 
-import org.springframework.beans.SimpleTypeConverter;
-import org.springframework.beans.TypeConverter;
-import org.springframework.core.MethodParameter;
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_BYTE_ARRAY;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_INT_ARRAY;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_LONG_ARRAY;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_OBJECT_ARRAY;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING_ARRAY;
+import static org.tinygroup.commons.tools.CollectionUtil.createLinkedHashMap;
+import static org.tinygroup.commons.tools.CollectionUtil.createLinkedHashSet;
+
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.Set;
+
 import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
@@ -36,17 +48,9 @@ import org.tinygroup.weblayer.webcontext.parser.ParserWebContext;
 import org.tinygroup.weblayer.webcontext.parser.StringFileItemEditor;
 import org.tinygroup.weblayer.webcontext.parser.util.BeanWrapperImpl;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.impl.ValueListSupport;
-
-import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Map;
-import java.util.Set;
-
-import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
-import static org.tinygroup.commons.tools.BasicConstant.*;
-import static org.tinygroup.commons.tools.CollectionUtil.createLinkedHashMap;
-import static org.tinygroup.commons.tools.CollectionUtil.createLinkedHashSet;
+import org.springframework.beans.SimpleTypeConverter;
+import org.springframework.beans.TypeConverter;
+import org.springframework.core.MethodParameter;
 
 /**
  * 代表一个解析器的基类，用来取得HTTP请求中的参数和cookies。

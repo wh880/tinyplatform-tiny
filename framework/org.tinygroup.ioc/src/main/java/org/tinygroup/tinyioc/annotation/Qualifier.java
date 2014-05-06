@@ -23,12 +23,11 @@
  */
 package org.tinygroup.tinyioc.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Documented;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 
 /**
  * Identifies qualifier annotations. Anyone can define a new qualifier. A

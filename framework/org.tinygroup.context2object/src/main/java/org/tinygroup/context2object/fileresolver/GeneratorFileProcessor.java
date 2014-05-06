@@ -23,7 +23,6 @@
  */
 package org.tinygroup.context2object.fileresolver;
 
-import com.thoughtworks.xstream.XStream;
 import org.tinygroup.context2object.TypeConverter;
 import org.tinygroup.context2object.TypeCreator;
 import org.tinygroup.context2object.config.GeneratorConfig;
@@ -36,6 +35,8 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
+
+import com.thoughtworks.xstream.XStream;
 
 public class GeneratorFileProcessor extends AbstractFileProcessor {
 	private static Logger logger = LoggerFactory

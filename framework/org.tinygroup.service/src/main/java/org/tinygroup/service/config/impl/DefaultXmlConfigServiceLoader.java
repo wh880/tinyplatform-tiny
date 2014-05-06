@@ -23,7 +23,9 @@
  */
 package org.tinygroup.service.config.impl;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -36,8 +38,7 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xstream.XStreamFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.XStream;
 
 public class DefaultXmlConfigServiceLoader extends XmlConfigServiceLoader {
 	private static final String SERVICE_FILE_EXTENSION = ".service.xml";

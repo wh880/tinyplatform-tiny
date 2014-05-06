@@ -23,10 +23,12 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import org.tinygroup.weblayer.webcontext.parser.upload.ParamValueFilter;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.regex.Pattern;
+
+import org.tinygroup.weblayer.WebContext;
+import org.tinygroup.weblayer.webcontext.parser.upload.ParamValueFilter;
 
 /**
  * 

@@ -23,9 +23,9 @@
  */
 package org.tinygroup.database.initdata;
 
-import org.tinygroup.database.config.initdata.InitData;
-
 import java.util.List;
+
+import org.tinygroup.database.config.initdata.InitData;
 
 public interface InitDataSqlProcessor {
 

@@ -23,14 +23,14 @@
  */
 package org.tinygroup.convert.objectxml.simple;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 

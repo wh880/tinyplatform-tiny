@@ -23,15 +23,15 @@
  */
 package org.tinygroup.format.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.format.FormatProvider;
 import org.tinygroup.format.Formater;
 import org.tinygroup.format.PatternDefine;
 import org.tinygroup.format.exception.FormatException;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
 
 /**
  * Formater的默认实现

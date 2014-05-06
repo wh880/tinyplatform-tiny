@@ -23,12 +23,12 @@
  */
 package org.tinygroup.tinydb.util;
 
+import java.util.List;
+
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.order.OrderBean;
 import org.tinygroup.tinydb.query.QueryBean;
 import org.tinygroup.tinydb.select.SelectBean;
-
-import java.util.List;
 
 /**
  * 用于生成SQL语句

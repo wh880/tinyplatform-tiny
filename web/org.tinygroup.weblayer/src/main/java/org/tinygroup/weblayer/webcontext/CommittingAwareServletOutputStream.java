@@ -23,8 +23,8 @@
  */
 package org.tinygroup.weblayer.webcontext;
 
-import javax.servlet.ServletOutputStream;
 import java.io.IOException;
+import javax.servlet.ServletOutputStream;
 
 class CommittingAwareServletOutputStream extends ServletOutputStream {
     private final HeaderCommitter     committer;

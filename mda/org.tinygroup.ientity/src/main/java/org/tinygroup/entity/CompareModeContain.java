@@ -23,12 +23,12 @@
  */
 package org.tinygroup.entity;
 
-import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.springutil.SpringUtil;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 

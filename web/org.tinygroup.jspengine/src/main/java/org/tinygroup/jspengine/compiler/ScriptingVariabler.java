@@ -24,12 +24,10 @@
 
 package org.tinygroup.jspengine.compiler;
 
-import org.tinygroup.jspengine.JasperException;
+import java.util.*;
+import javax.servlet.jsp.tagext.*;
 
-import javax.servlet.jsp.tagext.TagVariableInfo;
-import javax.servlet.jsp.tagext.VariableInfo;
-import java.util.Hashtable;
-import java.util.Vector;
+import org.tinygroup.jspengine.JasperException;
 
 /**
  * Class responsible for determining the scripting variables that every

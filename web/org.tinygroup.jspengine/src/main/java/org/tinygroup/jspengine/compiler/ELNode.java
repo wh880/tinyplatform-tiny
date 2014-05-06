@@ -25,12 +25,10 @@
 
 package org.tinygroup.jspengine.compiler;
 
-import org.tinygroup.jspengine.JasperException;
-
+import java.util.*;
 import javax.servlet.jsp.tagext.FunctionInfo;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+
+import org.tinygroup.jspengine.JasperException;
 
 /**
  * This class defines internal representation for an EL Expression

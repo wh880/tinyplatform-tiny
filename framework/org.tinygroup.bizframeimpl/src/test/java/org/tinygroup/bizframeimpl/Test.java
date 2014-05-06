@@ -23,13 +23,13 @@
  */
 package org.tinygroup.bizframeimpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.bizframe.PermissionManager;
 import org.tinygroup.bizframe.impl.PermissionManagerImpl;
 import org.tinygroup.bizframe.impl.PermissionStrategyAllowOnly;
 import org.tinygroup.container.Category;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Test {
 	public static void main(String[] args) {

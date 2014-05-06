@@ -23,18 +23,26 @@
  */
 package org.tinygroup.dbrouter.impl.partionrule;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.List;
+
 import org.tinygroup.dbrouter.PartitionRule;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.jsqlparser.schema.Table;
 import org.tinygroup.jsqlparser.statement.Statement;
 import org.tinygroup.jsqlparser.statement.delete.Delete;
 import org.tinygroup.jsqlparser.statement.insert.Insert;
-import org.tinygroup.jsqlparser.statement.select.*;
+import org.tinygroup.jsqlparser.statement.select.FromItem;
+import org.tinygroup.jsqlparser.statement.select.Join;
+import org.tinygroup.jsqlparser.statement.select.PlainSelect;
+import org.tinygroup.jsqlparser.statement.select.Select;
+import org.tinygroup.jsqlparser.statement.select.SelectBody;
+import org.tinygroup.jsqlparser.statement.select.SetOperationList;
+import org.tinygroup.jsqlparser.statement.select.SubSelect;
+import org.tinygroup.jsqlparser.statement.select.WithItem;
 import org.tinygroup.jsqlparser.statement.update.Update;
 
-import java.util.List;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 分区规则实现类

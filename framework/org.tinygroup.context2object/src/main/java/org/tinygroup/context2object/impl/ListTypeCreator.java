@@ -23,10 +23,10 @@
  */
 package org.tinygroup.context2object.impl;
 
-import org.tinygroup.context2object.TypeCreator;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.context2object.TypeCreator;
 
 public class ListTypeCreator implements TypeCreator<List> {
 

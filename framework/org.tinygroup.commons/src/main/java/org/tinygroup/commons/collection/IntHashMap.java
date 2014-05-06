@@ -23,7 +23,7 @@
  */
 package org.tinygroup.commons.collection;
 
-import static org.tinygroup.commons.tools.BasicConstant.EMPTY_INT_ARRAY;
+import static org.tinygroup.commons.tools.BasicConstant.*;
 
 /**
  * 使用整数作为key的hash表。

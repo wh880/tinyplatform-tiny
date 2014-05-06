@@ -23,13 +23,13 @@
  */
 package org.tinygroup.weblayer.webcontext;
 
-import org.tinygroup.weblayer.WebContext;
+import static org.tinygroup.commons.tools.Assert.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import org.tinygroup.weblayer.WebContext;
 
 
 /**

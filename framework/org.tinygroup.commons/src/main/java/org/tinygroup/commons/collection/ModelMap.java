@@ -23,11 +23,11 @@
  */
 package org.tinygroup.commons.collection;
 
-import org.tinygroup.commons.tools.Assert;
-
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.tinygroup.commons.tools.Assert;
 
 /**
  * Implementation of {@link java.util.Map} for use when building model data for

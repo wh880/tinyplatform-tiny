@@ -23,12 +23,17 @@
  */
 package org.tinygroup.velocity;
 
-import org.apache.velocity.VelocityContext;
+import java.io.StringWriter;
+
+import java.util.Properties;
+
 import org.apache.velocity.app.Velocity;
-import org.apache.velocity.exception.MethodInvocationException;
+
+import org.apache.velocity.VelocityContext;
+
 import org.apache.velocity.exception.ParseErrorException;
 
-import java.io.StringWriter;
+import org.apache.velocity.exception.MethodInvocationException;
 
 public class Test
 

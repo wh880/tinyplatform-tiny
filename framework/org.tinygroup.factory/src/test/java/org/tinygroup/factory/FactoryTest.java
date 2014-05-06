@@ -23,12 +23,18 @@
  */
 package org.tinygroup.factory;
 
-import com.thoughtworks.xstream.XStream;
+import java.lang.reflect.Method;
+
 import junit.framework.TestCase;
-import org.tinygroup.factory.config.*;
+
+import org.tinygroup.factory.config.Bbb;
+import org.tinygroup.factory.config.Beans;
+import org.tinygroup.factory.config.Cat;
+import org.tinygroup.factory.config.Ccc;
+import org.tinygroup.factory.config.User;
 import org.tinygroup.xstream.XStreamFactory;
 
-import java.lang.reflect.Method;
+import com.thoughtworks.xstream.XStream;
 
 public class FactoryTest extends TestCase {
 	static Factory factory = BeanFactory.getFactory();

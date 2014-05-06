@@ -24,11 +24,11 @@
 
 package org.tinygroup.jspengine.compiler;
 
-import org.tinygroup.jspengine.JspCompilationContext;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Stack;
+import java.net.URL;
+import java.net.MalformedURLException;
+
+import org.tinygroup.jspengine.JspCompilationContext;
 
 /**
  * Mark represents a point in the JSP input. 

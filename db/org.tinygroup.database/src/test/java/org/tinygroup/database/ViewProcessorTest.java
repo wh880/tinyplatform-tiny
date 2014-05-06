@@ -22,13 +22,13 @@
  *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.database;
+import java.util.List;
 
 import junit.framework.TestCase;
+
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.database.view.ViewProcessor;
 import org.tinygroup.springutil.SpringUtil;
-
-import java.util.List;
 
 public class ViewProcessorTest extends TestCase {
 	static {

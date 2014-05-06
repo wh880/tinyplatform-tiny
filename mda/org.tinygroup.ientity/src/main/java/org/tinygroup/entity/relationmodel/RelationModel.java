@@ -23,8 +23,11 @@
  */
 package org.tinygroup.entity.relationmodel;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
@@ -44,10 +47,8 @@ import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 关系模型

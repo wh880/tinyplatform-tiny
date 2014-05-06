@@ -23,10 +23,9 @@
  */
 package org.tinygroup.weblayer.filter.gzip;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
 
 public class CacheResponseStream extends ServletOutputStream {
   protected boolean closed = false;

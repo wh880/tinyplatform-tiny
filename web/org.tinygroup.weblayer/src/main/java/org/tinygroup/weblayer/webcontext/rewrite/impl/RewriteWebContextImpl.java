@@ -23,25 +23,6 @@
  */
 package org.tinygroup.weblayer.webcontext.rewrite.impl;
 
-import org.tinygroup.commons.tools.FileUtil;
-import org.tinygroup.commons.tools.MatchResultSubstitution;
-import org.tinygroup.commons.tools.StringEscapeUtil;
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.weblayer.WebContext;
-import org.tinygroup.weblayer.webcontext.AbstractRequestWrapper;
-import org.tinygroup.weblayer.webcontext.AbstractWebContextWrapper;
-import org.tinygroup.weblayer.webcontext.parser.ParserWebContext;
-import org.tinygroup.weblayer.webcontext.parser.valueparser.ParameterParser;
-import org.tinygroup.weblayer.webcontext.rewrite.*;
-import org.tinygroup.weblayer.webcontext.util.ServletUtil;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.regex.MatchResult;
-
 import static org.tinygroup.commons.tools.ArrayUtil.defaultIfEmptyArray;
 import static org.tinygroup.commons.tools.Assert.assertNotNull;
 import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
@@ -53,6 +34,30 @@ import static org.tinygroup.weblayer.webcontext.rewrite.RewriteUtil.getMatchResu
 import static org.tinygroup.weblayer.webcontext.rewrite.RewriteUtil.isFullURL;
 import static org.tinygroup.weblayer.webcontext.util.ServletUtil.startsWithPath;
 import static org.tinygroup.weblayer.webcontext.util.WebContextUtil.findWebContext;
+
+import java.io.IOException;
+import java.util.regex.MatchResult;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.tinygroup.commons.tools.FileUtil;
+import org.tinygroup.commons.tools.MatchResultSubstitution;
+import org.tinygroup.commons.tools.StringEscapeUtil;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.weblayer.WebContext;
+import org.tinygroup.weblayer.webcontext.AbstractRequestWrapper;
+import org.tinygroup.weblayer.webcontext.AbstractWebContextWrapper;
+import org.tinygroup.weblayer.webcontext.parser.ParserWebContext;
+import org.tinygroup.weblayer.webcontext.parser.valueparser.ParameterParser;
+import org.tinygroup.weblayer.webcontext.rewrite.RewriteRule;
+import org.tinygroup.weblayer.webcontext.rewrite.RewriteSubstitution;
+import org.tinygroup.weblayer.webcontext.rewrite.RewriteSubstitutionContext;
+import org.tinygroup.weblayer.webcontext.rewrite.RewriteSubstitutionHandler;
+import org.tinygroup.weblayer.webcontext.rewrite.RewriteWebContext;
+import org.tinygroup.weblayer.webcontext.util.ServletUtil;
 
 /** 重写URL及参数的request context，类似于apache的mod_rewrite模块。 */
 public class RewriteWebContextImpl extends AbstractWebContextWrapper implements RewriteWebContext {

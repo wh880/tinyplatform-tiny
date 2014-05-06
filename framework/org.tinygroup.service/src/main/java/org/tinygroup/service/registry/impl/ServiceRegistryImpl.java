@@ -23,14 +23,18 @@
  */
 package org.tinygroup.service.registry.impl;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.service.Service;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
-
-import java.util.*;
 
 public class ServiceRegistryImpl implements ServiceRegistry {
 	/**

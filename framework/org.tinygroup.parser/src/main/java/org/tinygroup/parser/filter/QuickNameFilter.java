@@ -23,13 +23,13 @@
  */
 package org.tinygroup.parser.filter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.binarytree.AVLTree;
 import org.tinygroup.binarytree.impl.AVLTreeImpl;
 import org.tinygroup.commons.processor.Processor;
 import org.tinygroup.parser.Node;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuickNameFilter<T extends Node<T>> extends AbstractFilterImpl<T> {
 	private AVLTree<NodeList> tree = null;

@@ -23,15 +23,15 @@
  */
 package org.tinygroup.tinydb;
 
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.config.SchemaConfigContainer;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.relation.Relation;
 import org.tinygroup.tinydb.relation.Relations;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Bean管理器

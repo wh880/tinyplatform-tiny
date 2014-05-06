@@ -23,10 +23,10 @@
  */
 package org.tinygroup.bizframeimpl;
 
-import org.tinygroup.bizframe.PermissionSubject;
-
 import java.util.Comparator;
 import java.util.List;
+
+import org.tinygroup.bizframe.PermissionSubject;
 
 public interface Organization extends  PermissionSubject<String,Organization> {
 	List<User> getUserList();

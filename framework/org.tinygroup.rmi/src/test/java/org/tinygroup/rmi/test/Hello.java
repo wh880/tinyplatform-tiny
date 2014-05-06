@@ -23,10 +23,10 @@
  */
 package org.tinygroup.rmi.test;
 
-import org.tinygroup.rmi.Verifiable;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+
+import org.tinygroup.rmi.Verifiable;
 
 /**
  * Created by luoguo on 14-1-24.

@@ -23,17 +23,18 @@
  */
 package org.tinygroup.htmlparser;
 
+import java.io.File;
+import java.util.Hashtable;
+import java.util.List;
+
 import junit.framework.TestCase;
+
 import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.htmlparser.parser.HtmlStringParser;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-
-import java.io.File;
-import java.util.Hashtable;
-import java.util.List;
 
 public class FilterTest extends TestCase {
 	HtmlDocument doc = null;

@@ -23,6 +23,10 @@
  */
 package org.tinygroup.weblayer.webcontext.lazycommit.impl;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -32,9 +36,6 @@ import org.tinygroup.weblayer.webcontext.AbstractResponseWrapper;
 import org.tinygroup.weblayer.webcontext.AbstractWebContextWrapper;
 import org.tinygroup.weblayer.webcontext.lazycommit.LazyCommitWebContext;
 import org.tinygroup.weblayer.webcontext.lazycommit.exception.LazyCommitFailedException;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 
 /**

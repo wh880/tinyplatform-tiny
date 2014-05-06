@@ -23,18 +23,25 @@
  */
 package org.tinygroup.database.view.impl;
 
-import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.config.table.TableField;
-import org.tinygroup.database.config.view.*;
-import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.database.view.ViewSqlProcessor;
-import org.tinygroup.metadata.config.stdfield.StandardField;
-import org.tinygroup.metadata.util.MetadataUtil;
-
 import java.sql.DatabaseMetaData;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.tinygroup.database.config.table.Table;
+import org.tinygroup.database.config.table.TableField;
+import org.tinygroup.database.config.view.Having;
+import org.tinygroup.database.config.view.OrderByField;
+import org.tinygroup.database.config.view.View;
+import org.tinygroup.database.config.view.ViewCondition;
+import org.tinygroup.database.config.view.ViewField;
+import org.tinygroup.database.config.view.ViewFieldRef;
+import org.tinygroup.database.config.view.ViewHaving;
+import org.tinygroup.database.config.view.ViewTable;
+import org.tinygroup.database.util.DataBaseUtil;
+import org.tinygroup.database.view.ViewSqlProcessor;
+import org.tinygroup.metadata.config.stdfield.StandardField;
+import org.tinygroup.metadata.util.MetadataUtil;
 
 public class ViewSqlProcessorImpl implements ViewSqlProcessor {
 

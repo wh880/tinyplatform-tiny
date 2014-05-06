@@ -23,8 +23,8 @@
  */
 package org.tinygroup.weblayer.webcontext.session;
 
-import javax.servlet.http.HttpSession;
 import java.util.Map;
+import javax.servlet.http.HttpSession;
 
 /**
  * 用来持久化存储session attribute的机制。

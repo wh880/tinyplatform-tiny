@@ -23,11 +23,12 @@
  */
 package org.tinygroup.convert;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 @XStreamAlias("classes")
 @XmlRootElement
 public class Classes {

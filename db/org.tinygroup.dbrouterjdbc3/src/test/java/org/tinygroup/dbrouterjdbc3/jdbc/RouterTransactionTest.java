@@ -23,18 +23,19 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import junit.framework.Assert;
 import junit.framework.TestCase;
+
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.StatementProcessor;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.dbrouterjdbc3.sqlprocessor.SqlProcessorFunction;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 /**
  * 

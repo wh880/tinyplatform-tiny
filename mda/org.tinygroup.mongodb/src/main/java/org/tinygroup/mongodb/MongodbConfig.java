@@ -23,12 +23,12 @@
  */
 package org.tinygroup.mongodb;
 
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
 public class MongodbConfig {
 

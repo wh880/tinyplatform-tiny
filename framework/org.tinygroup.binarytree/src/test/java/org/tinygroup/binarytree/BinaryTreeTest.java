@@ -23,9 +23,10 @@
  */
 package org.tinygroup.binarytree;
 
-import junit.framework.TestCase;
 import org.tinygroup.binarytree.impl.BinaryTreeImpl;
 import org.tinygroup.commons.processor.Processor;
+
+import junit.framework.TestCase;
 
 public class BinaryTreeTest extends TestCase {
 

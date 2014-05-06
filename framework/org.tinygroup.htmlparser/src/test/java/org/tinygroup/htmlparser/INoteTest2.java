@@ -23,8 +23,9 @@
  */
 package org.tinygroup.htmlparser;
 
-import junit.framework.TestCase;
 import org.tinygroup.htmlparser.node.HtmlNode;
+
+import junit.framework.TestCase;
 
 public class INoteTest2 extends TestCase {
 	HtmlNode node = null;

@@ -23,9 +23,9 @@
  */
 package org.tinygroup.velocity.config;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import java.util.List;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 @XStreamAlias("velocity-context-config")
 public class VelocityContextConfig {

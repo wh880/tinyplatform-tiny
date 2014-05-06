@@ -23,14 +23,25 @@
  */
 package org.tinygroup.mongodb.engine.comparemode;
 
+import junit.framework.TestCase;
+
+import org.tinygroup.mongodb.DBClient;
+import org.tinygroup.mongodb.db.MongodbPersistence;
+import org.tinygroup.mongodb.engine.comparemode.impl.BeginsWithCompareMode;
+import org.tinygroup.mongodb.engine.comparemode.impl.ContainsWithCompareMode;
+import org.tinygroup.mongodb.engine.comparemode.impl.EndsWithCompareMode;
+import org.tinygroup.mongodb.engine.comparemode.impl.EqualsCompareMode;
+import org.tinygroup.mongodb.engine.comparemode.impl.GreaterOrEqualsCompareMode;
+import org.tinygroup.mongodb.engine.comparemode.impl.GreaterThanCompareMode;
+import org.tinygroup.mongodb.engine.comparemode.impl.IsEmptyCompareMode;
+import org.tinygroup.mongodb.engine.comparemode.impl.IsNullCompareMode;
+import org.tinygroup.mongodb.engine.comparemode.impl.LessOrEqualsCompareMode;
+import org.tinygroup.mongodb.engine.comparemode.impl.LessThanCompareMode;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import junit.framework.TestCase;
-import org.tinygroup.mongodb.DBClient;
-import org.tinygroup.mongodb.db.MongodbPersistence;
-import org.tinygroup.mongodb.engine.comparemode.impl.*;
 
 public class CompareModeTest extends TestCase {
 

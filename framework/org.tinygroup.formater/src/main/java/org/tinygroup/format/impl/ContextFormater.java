@@ -23,10 +23,10 @@
  */
 package org.tinygroup.format.impl;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.tinygroup.context.Context;
 import org.tinygroup.format.FormatProvider;
 import org.tinygroup.format.exception.FormatException;
+import org.apache.commons.beanutils.*;
 
 /**
  * 上下文格式化提供者<br>

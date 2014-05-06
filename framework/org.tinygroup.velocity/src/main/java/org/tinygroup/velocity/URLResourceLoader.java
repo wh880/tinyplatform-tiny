@@ -23,6 +23,10 @@
  */
 package org.tinygroup.velocity;
 
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.Resource;
@@ -31,10 +35,6 @@ import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 原来的Velocity的资源加载器是用得相对路径，而Tiny用得是完整路径，所以自己实现之

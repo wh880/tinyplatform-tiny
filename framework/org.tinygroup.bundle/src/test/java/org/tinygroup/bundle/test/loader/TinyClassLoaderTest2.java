@@ -21,15 +21,17 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.loader;
+package org.tinygroup.bundle.test.loader;
 
-
-import junit.framework.TestCase;
-import org.tinygroup.vfs.FileObject;
 
 import java.io.File;
 import java.net.URL;
 import java.util.Enumeration;
+
+import junit.framework.TestCase;
+
+import org.tinygroup.bundle.loader.TinyClassLoader;
+import org.tinygroup.vfs.FileObject;
 
 /**
  * TinyClassLoader Tester.

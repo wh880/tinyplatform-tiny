@@ -23,6 +23,8 @@
  */
 package org.tinygroup.cepcore.aop.impl;
 
+import java.util.List;
+
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.aop.CEPCoreAopAdapter;
 import org.tinygroup.cepcore.exception.RequestNotFoundException;
@@ -38,8 +40,6 @@ import org.tinygroup.event.exception.ParamIsNullException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-
-import java.util.List;
 
 public class RequestParamValidate implements CEPCoreAopAdapter {
 	private static Logger logger = LoggerFactory.getLogger(RequestParamValidate.class);

@@ -24,6 +24,7 @@
 package org.tinygroup.context2object.test.testcase;
 
 import junit.framework.TestCase;
+
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.context2object.impl.DateTypeConverter;
 import org.tinygroup.context2object.test.bean.PartInterface;

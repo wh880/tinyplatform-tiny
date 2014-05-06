@@ -23,12 +23,13 @@
  */
 package org.tinygroup.tinyioc.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.*;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Documented;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.FIELD;
 
 /**
  * Identifies injectable constructors, methods, and fields. May apply to static

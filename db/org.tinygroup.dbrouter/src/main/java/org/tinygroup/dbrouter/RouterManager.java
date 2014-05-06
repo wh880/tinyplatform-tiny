@@ -24,9 +24,9 @@
 package org.tinygroup.dbrouter;
 
 import org.tinygroup.dbrouter.balance.ShardBalance;
-import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.config.Routers;
+import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.jsqlparser.statement.Statement;
 

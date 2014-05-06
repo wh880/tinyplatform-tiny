@@ -23,11 +23,11 @@
  */
 package org.tinygroup.tinydb.config;
 
-import org.tinygroup.tinydb.exception.DBRuntimeException;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.tinydb.exception.DBRuntimeException;
 
 /**
  * 表信息
