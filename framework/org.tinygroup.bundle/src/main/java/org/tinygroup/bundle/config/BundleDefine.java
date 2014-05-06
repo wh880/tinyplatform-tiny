@@ -1,10 +1,10 @@
 package org.tinygroup.bundle.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 这里的Bundle，取其杂物箱之意
