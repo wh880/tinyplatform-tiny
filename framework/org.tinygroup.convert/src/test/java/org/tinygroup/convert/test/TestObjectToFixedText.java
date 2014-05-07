@@ -36,7 +36,7 @@ import java.util.List;
 
 public class TestObjectToFixedText extends TestCase {
 	private static String testText="name               address         length_name123456         address123456   1     _name1234567        address1234567  1     _name12345678       address12345678 1     _哈哈哈哈哈哈哈哈哈 address12345678 1     _";
-	public void testToFixedText() {
+	public void testToFixedText() throws ConvertException {
 		List<String> properties = new ArrayList<String>();
 		properties.add("name");
 		properties.add("address");
