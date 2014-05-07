@@ -23,19 +23,18 @@
  */
 package org.tinygroup.convert;
 
+import junit.framework.TestCase;
+import org.tinygroup.convert.xsdjava.ClassToSchema;
+import org.tinygroup.convert.xsdjava.SchemaToClass;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.convert.xsdjava.ClassToSchema;
-import org.tinygroup.convert.xsdjava.SchemaToClass;
-
-import junit.framework.TestCase;
-
 public class TestXsdJava extends TestCase {
 
-	public void testClass2Schema() {
+	public void testClass2Schema() throws ConvertException {
 		List<Class<?>> list = new ArrayList<Class<?>>();
 		list.add(Classes.class);
 		list.add(Student.class);
@@ -51,7 +50,7 @@ public class TestXsdJava extends TestCase {
 		src.delete();
 	}
 
-	public void testSchema2Class() {
+	public void testSchema2Class() throws ConvertException {
 
 		SchemaToClass schemaToClass = new SchemaToClass(
 				"test",
@@ -75,7 +74,7 @@ public class TestXsdJava extends TestCase {
 		src.delete();
 	}
 
-	public void testSchema2ClassMuti() {
+	public void testSchema2ClassMuti() throws ConvertException {
 
 		try {
 			File src = new File(getClass().getResource("/xsd").toURI());

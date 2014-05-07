@@ -23,6 +23,7 @@
  */
 package org.tinygroup.convert.xsdjava;
 
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class SchemaToClass implements Converter<List<String>, Void> {
 		this.xjbFolder = xjbFolder;
 	}
 
-	public Void convert(List<String> xsdFileNames) {
+	public Void convert(List<String> xsdFileNames) throws ConvertException {
 		String[] args = new String[NINE];
 		args[ZERO] = "-d";
 		args[ONE] = baseFolder;
@@ -63,7 +64,7 @@ public class SchemaToClass implements Converter<List<String>, Void> {
 			try {
 				XJCFacade.execute(args);
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				throw new ConvertException(e);
 			}
 		}
 		return null;

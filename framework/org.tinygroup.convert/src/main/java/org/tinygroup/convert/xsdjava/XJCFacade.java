@@ -23,7 +23,8 @@
  */
 package org.tinygroup.convert.xsdjava;
 
-import java.lang.reflect.InvocationTargetException;
+import org.tinygroup.convert.ConvertException;
+
 import java.lang.reflect.Method;
 
 /**
@@ -35,10 +36,12 @@ import java.lang.reflect.Method;
  *
  * @author Kohsuke Kawaguchi
  */
-public class XJCFacade {
+public final class XJCFacade {
+    private XJCFacade() {
+    }
 
     @SuppressWarnings("rawtypes")
-    public static void execute(String[] args) throws Exception {
+    public static void execute(String[] args) throws ConvertException {
 
         try {
             ClassLoader cl = SecureLoader.getClassClassLoader(XJCFacade.class);
@@ -47,16 +50,9 @@ public class XJCFacade {
                     .loadClass("org.tinygroup.convert.xsdjava.DriverWrapper");
             Method mainMethod = driver.getDeclaredMethod("main",
                     new Class[]{String[].class});
-            try {
-                mainMethod.invoke(null, new Object[]{args});
-            } catch (IllegalAccessException e) {
-                throw e;
-            } catch (InvocationTargetException e) {
-                throw e;
-            }
-        } catch (UnsupportedClassVersionError e) {
-            System.err
-                    .println("XJC requires JDK 5.0 or later. Please download it from http://java.sun.com/j2se/1.5/");
+            mainMethod.invoke(null, new Object[]{args});
+        } catch (Exception e) {
+            throw new ConvertException(e);
         }
     }
 

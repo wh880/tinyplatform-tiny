@@ -23,6 +23,7 @@
  */
 package org.tinygroup.convert.objectxml.jaxb;
 
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 
 import javax.xml.bind.JAXBContext;
@@ -35,27 +36,27 @@ public class ObjectToXml<T> implements Converter<T, String> {
 	private boolean format;
     private Marshaller marshaller;
 
-	public ObjectToXml(String className, boolean format) {
+	public ObjectToXml(String className, boolean format) throws ConvertException {
 		try {
 			context = JAXBContext.newInstance(className);
 			marshaller = context.createMarshaller();
 			this.format = format;
 		} catch (JAXBException e) {
-			throw new RuntimeException(e);
+			throw new ConvertException(e);
 		}
 	}
 	
-	public ObjectToXml(Class<T> clazz,boolean format){
+	public ObjectToXml(Class<T> clazz,boolean format) throws ConvertException {
 		try {
 			context=JAXBContext.newInstance(clazz);
 			marshaller = context.createMarshaller();
 			this.format = format;
 		} catch (JAXBException e) {
-			throw new RuntimeException(e);
+			throw new ConvertException(e);
 		}
 	}
 
-	public String convert(T inputData) {
+	public String convert(T inputData) throws ConvertException {
 
 		StringWriter writer = new StringWriter();
 
@@ -67,7 +68,7 @@ public class ObjectToXml<T> implements Converter<T, String> {
 			marshaller.marshal(inputData, writer);
 
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new ConvertException(e);
 		}
 		return writer.toString();
 	}

@@ -23,17 +23,17 @@
  */
 package org.tinygroup.convert.objectxml.xstream;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.XStream;
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class XmlToObject<T> implements Converter<String, List<T>> {
-	XStream xstream;
+    private XStream xstream;
 	private String rootNodeName;
 
 	public XmlToObject(Class<T> rootClass, String rootNodeName) {
@@ -44,7 +44,7 @@ public class XmlToObject<T> implements Converter<String, List<T>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<T> convert(String inputData) {
+	public List<T> convert(String inputData) throws ConvertException {
 		XmlNode root = new XmlStringParser().parse(inputData).getRoot();
 		checkRootNodeName(root);
 		List<T> list = new ArrayList<T>();
@@ -55,10 +55,10 @@ public class XmlToObject<T> implements Converter<String, List<T>> {
 		return list;
 	}
 
-	private void checkRootNodeName(XmlNode root) {
+	private void checkRootNodeName(XmlNode root) throws ConvertException {
 		if (root.getNodeName() == null
 				|| !root.getNodeName().equals(rootNodeName)) {
-			throw new RuntimeException("根节点名称[" + root.getRoot().getNodeName()
+			throw new ConvertException("根节点名称[" + root.getRoot().getNodeName()
 					+ "]与期望的根节点名称[" + rootNodeName + "]不一致！");
 		}
 	}

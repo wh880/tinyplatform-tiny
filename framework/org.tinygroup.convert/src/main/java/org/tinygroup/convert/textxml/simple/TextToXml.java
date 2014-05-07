@@ -23,10 +23,11 @@
  */
 package org.tinygroup.convert.textxml.simple;
 
-import java.util.Map;
-
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.XmlUtils;
+
+import java.util.Map;
 
 public class TextToXml implements Converter<String, String> {
 	private String rootNodeName;
@@ -56,7 +57,7 @@ public class TextToXml implements Converter<String, String> {
 		this.titleMap = titleMap;
 	}
 
-	public String convert(String inputData) {
+	public String convert(String inputData) throws ConvertException {
 		String[] lines = inputData.split(lineSplit);
 		String[] fieldNames = lines[0].split(fieldSplit);
 		StringBuffer sb = new StringBuffer();
@@ -76,9 +77,9 @@ public class TextToXml implements Converter<String, String> {
 		return sb.toString();
 	}
 
-	private void checkFeidlCount(String[] fieldNames, int i, String[] values) {
+	private void checkFeidlCount(String[] fieldNames, int i, String[] values) throws ConvertException {
 		if (fieldNames.length != values.length) {
-			throw new RuntimeException("标题个数(" + fieldNames.length + ")与第【" + i
+			throw new ConvertException("标题个数(" + fieldNames.length + ")与第【" + i
 					+ "】行的数据个数(" + values.length + ")不相等");
 		}
 	}

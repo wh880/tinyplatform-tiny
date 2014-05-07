@@ -23,12 +23,12 @@
  */
 package org.tinygroup.convert;
 
-import java.util.List;
-
 import org.tinygroup.convert.objectxml.xstream.ObjectToXml;
 import org.tinygroup.convert.objectxml.xstream.XmlToObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.util.List;
 
 public class TestObjectXmlWithXstream extends AbstractConvertTestCase {
 
@@ -49,7 +49,7 @@ public class TestObjectXmlWithXstream extends AbstractConvertTestCase {
 		assertEquals(node.getSubNode("email").getContent(), "email");
 	}
 
-	public void testXml2Object() {
+	public void testXml2Object() throws ConvertException {
 
 		String xml = "<students>" +
 				"<student>" +

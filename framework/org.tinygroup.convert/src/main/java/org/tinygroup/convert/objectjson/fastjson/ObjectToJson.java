@@ -23,10 +23,9 @@
  */
 package org.tinygroup.convert.objectjson.fastjson;
 
-import org.tinygroup.convert.Converter;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.tinygroup.convert.Converter;
 
 /**
  * 

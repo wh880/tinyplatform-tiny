@@ -23,6 +23,7 @@
  */
 package org.tinygroup.convert.objecttxt.simple;
 
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.text.TextBaseParse;
 import org.tinygroup.convert.text.config.Text;
@@ -50,7 +51,7 @@ public class TextToObject<T> extends TextBaseParse implements Converter<String, 
         setTitleMap(titleMap);
     }
 
-    public List<T> convert(String inputData) {
+    public List<T> convert(String inputData) throws ConvertException {
         Text text = computeText(inputData, lineSplit, fieldSplit);
         return ConvertUtil.textToObjectList(clazz, text);
     }

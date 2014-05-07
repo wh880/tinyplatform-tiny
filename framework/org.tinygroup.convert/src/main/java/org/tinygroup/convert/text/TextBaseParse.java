@@ -23,6 +23,7 @@
  */
 package org.tinygroup.convert.text;
 
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.text.config.Text;
 import org.tinygroup.convert.text.config.TextCell;
 import org.tinygroup.convert.text.config.TextRow;
@@ -63,7 +64,7 @@ public class TextBaseParse {
 	}
 
 	protected List<String> getFixTitle(String string,
-			List<Integer> fieldPosList, List<Integer> filedBytesPosList) {
+			List<Integer> fieldPosList, List<Integer> filedBytesPosList) throws ConvertException {
 		List<String> fieldList = new ArrayList<String>();
 		int start = 0;
 		for (int end : fieldPosList) {
@@ -77,7 +78,7 @@ public class TextBaseParse {
 	}
 
 	protected List<String> getFixData(String string,
-			List<Integer> filedBytesPosList) {
+			List<Integer> filedBytesPosList) throws ConvertException {
 		return ConvertUtil.getStringArrayByBytesLength(string,
 				filedBytesPosList);
 	}
@@ -122,16 +123,17 @@ public class TextBaseParse {
 		return titleRow;
 	}
 
-	protected void checkFeidlCount(String[] fieldNames, int i, String[] values) {
+	protected void checkFeidlCount(String[] fieldNames, int i, String[] values) throws ConvertException {
 		if (fieldNames.length != values.length) {
-			throw new RuntimeException("标题个数(" + fieldNames.length + ")与第【" + i
+			throw new ConvertException("标题个数(" + fieldNames.length + ")与第【" + i
 					+ "】行的数据个数(" + values.length + ")不相等");
 		}
 	}
 
 	protected String getProperty(String title) {
-		if (titleMap == null)
-			return title;
+		if (titleMap == null) {
+            return title;
+        }
 		String property = titleMap.get(title);
 		if (property == null || "".equals(property.trim())) {
 			return title;
@@ -140,7 +142,7 @@ public class TextBaseParse {
 
 	}
 
-	public Text computeFixWidthText(String inputData, String lineSplit) {
+	public Text computeFixWidthText(String inputData, String lineSplit) throws ConvertException {
         // 总行数(包含titleRow)
 		String[] lines = inputData.split(lineSplit);
         // 根据titleRow计算每列数据的位置
@@ -161,7 +163,7 @@ public class TextBaseParse {
 	}
 
 	public Text computeText(String inputData, String lineSplit,
-			String fieldSplit) {
+			String fieldSplit) throws ConvertException {
 		String[] lines = inputData.split(lineSplit);
 		String[] titles = lines[0].split(fieldSplit);
 		Text text = new Text();

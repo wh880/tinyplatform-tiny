@@ -23,6 +23,7 @@
  */
 package org.tinygroup.convert.textxml.fixwidth;
 
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.text.TextBaseParse;
 import org.tinygroup.convert.text.config.Text;
@@ -63,14 +64,15 @@ public class XmlToText extends TextBaseParse implements
     }
 
 	private String getNodeValue(XmlNode node){
-		if(node==null)
-			return "";
+		if(node==null) {
+            return "";
+        }
 		return node.getContent();
 	}
 	/**
  * 
  */
-	public String convert(String inputData) {
+	public String convert(String inputData) throws ConvertException {
 		XmlNode root = new XmlStringParser().parse(inputData).getRoot();
 		checkRootNodeName(root);
 		List<XmlNode> rowList = root.getSubNodes(rowNodeName);
@@ -111,10 +113,10 @@ public class XmlToText extends TextBaseParse implements
 
 	
 
-	private void checkRootNodeName(XmlNode root) {
+	private void checkRootNodeName(XmlNode root) throws ConvertException {
 		if (root.getNodeName() == null
 				|| !root.getNodeName().equals(rootNodeName)) {
-			throw new RuntimeException("根节点名称[" + root.getRoot().getNodeName()
+			throw new ConvertException("根节点名称[" + root.getRoot().getNodeName()
 					+ "]与期望的根节点名称[" + rootNodeName + "]不一致！");
 		}
 	}

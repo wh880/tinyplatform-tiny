@@ -32,5 +32,5 @@ package org.tinygroup.convert;
  * @param <O>
  */
 public interface Converter<I, O> {
-	O convert(I inputData);
+	O convert(I inputData) throws ConvertException;
 }

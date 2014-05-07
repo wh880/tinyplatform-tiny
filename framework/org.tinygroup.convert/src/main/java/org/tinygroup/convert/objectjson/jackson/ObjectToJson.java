@@ -26,6 +26,7 @@ package org.tinygroup.convert.objectjson.jackson;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 
 import java.io.ByteArrayOutputStream;
@@ -42,13 +43,13 @@ public class ObjectToJson<T> implements Converter<T, String> {
 		mapper.setSerializationInclusion(inclusion);
 	}
 
-	public String convert(T object) {
+	public String convert(T object) throws ConvertException {
 		try {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			mapper.writeValue(outputStream, object);
 			return outputStream.toString("UTF-8");
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new ConvertException(e);
 		}
 	}
 

@@ -23,6 +23,7 @@
  */
 package org.tinygroup.convert.textxml.fixwidth;
 
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.XmlUtils;
 import org.tinygroup.convert.text.TextBaseParse;
@@ -56,27 +57,7 @@ public class TextToXml extends TextBaseParse implements Converter<String, String
 		setTitleMap(titleMap);
 	}
 
-	public String convert(String inputData) {
-//		String[] lines = inputData.split(lineSplit);
-//		List<Integer> fieldPosList = getFieldEndPos(lines[0]);
-//		List<String> fieldNames = getField(lines[0], fieldPosList);
-//		StringBuffer sb = new StringBuffer();
-//		XmlUtils.appendHeader(sb, rootNodeName);
-//		for (int i = 1; i < lines.length; i++) {
-//			if (lines[i].length() != lines[0].length()) {
-//				throw new RuntimeException("标题行长度(" + lines[0].length()
-//						+ ")与第【" + i + "】行的数据长度(" + lines[i].length() + ")不相等");
-//			}
-//			XmlUtils.appendHeader(sb, rowNodeName);
-//			List<String> values = getField(lines[i], fieldPosList);
-//			for (int j = 0; j < fieldNames.size(); j++) {
-//				XmlUtils.appendHeader(sb, titleMap.get(fieldNames.get(j)));
-//				sb.append(values.get(j));
-//				XmlUtils.appendFooter(sb, titleMap.get(fieldNames.get(j)));
-//			}
-//			XmlUtils.appendFooter(sb, rowNodeName);
-//		}
-//		XmlUtils.appendFooter(sb, rootNodeName);
+	public String convert(String inputData) throws ConvertException {
 		Text text = computeFixWidthText(inputData, lineSplit);
 		StringBuffer sb = new StringBuffer();
 		XmlUtils.appendHeader(sb, rootNodeName);
@@ -98,38 +79,5 @@ public class TextToXml extends TextBaseParse implements Converter<String, String
 		
 		return sb.toString();
 	}
-
-//	private List<String> getField(String string, List<Integer> fieldPosList) {
-//		List<String> fieldList = new ArrayList<String>();
-//		int start = 0;
-//		for (int end : fieldPosList) {
-//			fieldList.add(string.substring(start, end).trim());
-//			start = end;
-//		}
-//
-//		return fieldList;
-//	}
-//
-//	private List<Integer> getFieldEndPos(String string) {
-//		List<Integer> posList = new ArrayList<Integer>();
-//		int start = 0;
-//		do {
-//			start = getFieldEnd(string, start);
-//			posList.add(start);
-//		} while (start < string.length());
-//
-//		return posList;
-//	}
-//
-//	private int getFieldEnd(String string, int start) {
-//		int pos = start;
-//		while (pos < string.length() && string.charAt(pos) != ' ') {
-//			pos++;
-//		}
-//		while (pos < string.length() && string.charAt(pos) == ' ') {
-//			pos++;
-//		}
-//		return pos;
-//	}
 
 }

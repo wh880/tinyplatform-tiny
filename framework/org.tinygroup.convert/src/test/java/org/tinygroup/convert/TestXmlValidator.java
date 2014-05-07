@@ -23,40 +23,39 @@
  */
 package org.tinygroup.convert;
 
-import java.io.File;
-import java.net.URISyntaxException;
-
 import org.tinygroup.convert.objectxml.jaxb.ObjectToXml;
 import org.tinygroup.convert.validate.schemafile.XmlValidator;
 
-/**
- * 
- * 功能说明: 验证xml格式
+import java.io.File;
+import java.net.URISyntaxException;
 
+/**
+ * 功能说明: 验证xml格式
+ * <p/>
  * 开发人员: renhui <br>
  * 开发时间: 2013-8-27 <br>
  * <br>
  */
 public class TestXmlValidator extends AbstractConvertTestCase {
 
-	public void testXmlValidator(){
-		
-		try {
-			File schemaFile = new File(getClass().getResource("/validator/schema1.xsd").toURI());
-			XmlValidator xmlValidator=new XmlValidator(schemaFile);
-			String xmlString=getXmlString();
-			assertTrue(xmlValidator.isValidate(xmlString));
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		
-		
-	}
+    public void testXmlValidator() throws ConvertException {
 
-	private String getXmlString() {
-		Classes classes=createClasses();
-		ObjectToXml<Classes> objectToXml=new ObjectToXml<Classes>(Classes.class, true);
+        try {
+            File schemaFile = new File(getClass().getResource("/validator/schema1.xsd").toURI());
+            XmlValidator xmlValidator = new XmlValidator(schemaFile);
+            String xmlString = getXmlString();
+            assertTrue(xmlValidator.isValidate(xmlString));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private String getXmlString() throws ConvertException {
+        Classes classes = createClasses();
+        ObjectToXml<Classes> objectToXml = new ObjectToXml<Classes>(Classes.class, true);
         return objectToXml.convert(classes);
-	}
-	
+    }
+
 }

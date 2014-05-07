@@ -23,12 +23,13 @@
  */
 package org.tinygroup.convert.objectxml.simple;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
 import org.apache.commons.beanutils.BeanUtils;
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.XmlUtils;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 public class ObjectToXml<T> implements Converter<List<T>, String> {
 	private boolean fieldAsAttribute;
@@ -42,7 +43,7 @@ public class ObjectToXml<T> implements Converter<List<T>, String> {
 		this.rowNodeName = rowNodeName;
 	}
 
-	public String convert(List<T> inputData) {
+	public String convert(List<T> inputData) throws ConvertException {
 		StringBuffer sb = new StringBuffer();
 		XmlUtils.appendHeader(sb, rootNodeName);
 		if (inputData != null) {
@@ -78,7 +79,7 @@ public class ObjectToXml<T> implements Converter<List<T>, String> {
 		return sb.toString();
 	}
 
-	private String getAttributeValue(T object, Field field) {
+	private String getAttributeValue(T object, Field field) throws ConvertException {
 		try {
 			Object value = BeanUtils.getProperty(object, field.getName());
 			if (value == null) {
@@ -86,7 +87,7 @@ public class ObjectToXml<T> implements Converter<List<T>, String> {
 			}
 			return value.toString();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new ConvertException(e);
 		}
 	}
 }

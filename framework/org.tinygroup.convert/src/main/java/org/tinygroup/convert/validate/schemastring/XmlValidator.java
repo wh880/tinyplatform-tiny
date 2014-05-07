@@ -24,6 +24,7 @@
 package org.tinygroup.convert.validate.schemastring;
 
 import org.tinygroup.commons.io.ByteArrayInputStream;
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.ObjectValidator;
 
 import javax.xml.XMLConstants;
@@ -37,22 +38,22 @@ public class XmlValidator implements ObjectValidator<String> {
     private String encode = "UTF-8";
     private Schema schema;
 
-    public XmlValidator(String schemaContent, String encode) {
+    public XmlValidator(String schemaContent, String encode) throws ConvertException {
         this(schemaContent);
         this.encode = encode;
     }
 
-    public XmlValidator(String schemaContent) {
+    public XmlValidator(String schemaContent) throws ConvertException {
         try {
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Source source = new StreamSource(new ByteArrayInputStream(schemaContent.getBytes(encode)));
             this.schema = schemaFactory.newSchema(source);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ConvertException(e);
         }
     }
 
-    public boolean isValidate(String xmlString) {
+    public boolean isValidate(String xmlString) throws ConvertException {
 
         try {
             Source xmlSource = new StreamSource(new ByteArrayInputStream(xmlString.getBytes(encode)));
@@ -60,9 +61,8 @@ public class XmlValidator implements ObjectValidator<String> {
             validator.validate(xmlSource);
             return true;
         } catch (Exception e) {
-            System.out.println("Reason: " + e.getLocalizedMessage());
+            throw new ConvertException(e);
         }
-        return false;
     }
 
 }

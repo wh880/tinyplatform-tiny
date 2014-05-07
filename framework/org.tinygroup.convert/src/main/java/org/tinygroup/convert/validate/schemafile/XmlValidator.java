@@ -24,6 +24,7 @@
 package org.tinygroup.convert.validate.schemafile;
 
 import org.tinygroup.commons.io.ByteArrayInputStream;
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.ObjectValidator;
 
 import javax.xml.XMLConstants;
@@ -48,7 +49,7 @@ public class XmlValidator implements ObjectValidator<String> {
         this.encode = encode;
     }
 
-    public XmlValidator(String xmlFile) {
+    public XmlValidator(String xmlFile) throws ConvertException {
         this(new File(xmlFile));
     }
 
@@ -56,13 +57,13 @@ public class XmlValidator implements ObjectValidator<String> {
         this.schema = schema;
     }
 
-    public XmlValidator(File xmlSchemaFile) {
+    public XmlValidator(File xmlSchemaFile) throws ConvertException {
         try {
             schemaFile = xmlSchemaFile.toURL();
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             this.schema = schemaFactory.newSchema(schemaFile);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ConvertException(e);
         }
     }
 
@@ -70,7 +71,7 @@ public class XmlValidator implements ObjectValidator<String> {
         schemaFile = xmlSchema;
     }
 
-    public boolean isValidate(String xmlString) {
+    public boolean isValidate(String xmlString) throws ConvertException {
 
         try {
             Source xmlFile = new StreamSource(new ByteArrayInputStream(xmlString.getBytes(encode)));
@@ -78,9 +79,8 @@ public class XmlValidator implements ObjectValidator<String> {
             validator.validate(xmlFile);
             return true;
         } catch (Exception e) {
-            System.out.println("Reason: " + e.getLocalizedMessage());
+            throw new ConvertException(e);
         }
-        return false;
     }
 
 }

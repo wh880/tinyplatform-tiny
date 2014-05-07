@@ -23,9 +23,10 @@
  */
 package org.tinygroup.convert.common;
 
-import java.io.UnsupportedEncodingException;
-
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
+
+import java.io.UnsupportedEncodingException;
 
 public class ByteArrayToString implements Converter<byte[], String> {
 	private String charset = null;
@@ -38,14 +39,14 @@ public class ByteArrayToString implements Converter<byte[], String> {
 
 	}
 
-	public String convert(byte[] inputData) {
+	public String convert(byte[] inputData) throws ConvertException {
 		if (charset == null) {
 			return new String(inputData);
 		} else {
 			try {
 				return new String(inputData, charset);
 			} catch (UnsupportedEncodingException e) {
-				throw new RuntimeException(e);
+				throw new ConvertException(e);
 			}
 		}
 	}

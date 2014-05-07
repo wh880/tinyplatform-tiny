@@ -55,12 +55,12 @@ public class TextCell {
 
     public String toString(boolean checkLength) {
         if (checkLength) {
-            return AdjustValueLength(length, value);
+            return adjustValueLength(length, value);
         }
         return value;
     }
 
-    private String AdjustValueLength(int propertyMaxLength, String data) {
+    private String adjustValueLength(int propertyMaxLength, String data) {
         String newData = data;
         int adjustLength = propertyMaxLength - getLength(data);
         if (adjustLength > 0) {
