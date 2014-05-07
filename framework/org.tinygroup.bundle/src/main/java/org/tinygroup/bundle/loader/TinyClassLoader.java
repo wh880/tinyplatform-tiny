@@ -160,6 +160,9 @@ public class TinyClassLoader extends URLClassLoader {
         }
     }
 
+    public Class<?> findClass1( String name)throws ClassNotFoundException {
+    	return findClass(name);
+    }
     /**
      * 覆盖父类的方法,在自己里找不到还找儿子
      *
