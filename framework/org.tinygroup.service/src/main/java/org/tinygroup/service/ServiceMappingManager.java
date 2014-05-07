@@ -27,14 +27,14 @@ import org.tinygroup.service.config.ServiceViewMapping;
 import org.tinygroup.service.config.ServiceViewMappings;
 
 public interface ServiceMappingManager {
-	static final String MANAGER_BEAN = "serviceMappingManager";
-	static final String XSTREAM_PACKAGENAME = "service";
+    String MANAGER_BEAN = "serviceMappingManager";
+    String XSTREAM_PACKAGE_NAME = "service";
 
-	void addServiceMappings(ServiceViewMappings mappings);
-	
-	void removeServiceMappings(ServiceViewMappings mappings);
-	
-	void addServiceMapping(ServiceViewMapping mapping);
+    void addServiceMappings(ServiceViewMappings mappings);
 
-	String getUrl(String serviceId);
+    void removeServiceMappings(ServiceViewMappings mappings);
+
+    void addServiceMapping(ServiceViewMapping mapping);
+
+    String getUrl(String serviceId);
 }

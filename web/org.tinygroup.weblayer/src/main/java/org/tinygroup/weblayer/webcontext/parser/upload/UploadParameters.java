@@ -165,7 +165,7 @@ public class UploadParameters implements UploadConfiguration {
             return true;
         }
 
-        if (obj == null || !(obj instanceof UploadParameters)) {
+        if (!(obj instanceof UploadParameters)) {
             return false;
         }
 

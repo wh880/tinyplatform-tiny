@@ -147,7 +147,7 @@ public class BeanContainerImpl implements BeanContainer {
                 }
                 Object value = null;
                 Type fc = field.getGenericType();
-                if (fc != null && fc instanceof ParameterizedType) {
+                if (fc instanceof ParameterizedType) {
                     ParameterizedType pt = (ParameterizedType) fc;
                     Class genericClazz = (Class) pt.getActualTypeArguments()[0];
                     value = getCollectionObject(field, genericClazz);

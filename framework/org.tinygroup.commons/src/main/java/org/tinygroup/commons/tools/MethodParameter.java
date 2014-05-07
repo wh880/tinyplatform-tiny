@@ -449,7 +449,7 @@ public class MethodParameter {
 		if (this == obj) {
 			return true;
 		}
-		if (obj != null && obj instanceof MethodParameter) {
+		if ( obj instanceof MethodParameter) {
 			MethodParameter other = (MethodParameter) obj;
 
 			if (this.parameterIndex != other.parameterIndex) {

@@ -24,11 +24,13 @@
 package org.tinygroup.convert.objectjson.jackson;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 
 public class JsonToObject<T> implements Converter<String, T> {
-    String encode="UTF-8";
-	ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+    private String encode="UTF-8";
+    // can reuse, share globally
+    private ObjectMapper mapper = new ObjectMapper();
 	private Class<T> rootClass;
     public JsonToObject(Class<T> rootClass,String encode) {
         this.rootClass = rootClass;
@@ -38,11 +40,11 @@ public class JsonToObject<T> implements Converter<String, T> {
 		this.rootClass = rootClass;
 	}
 
-	public T convert(String inputData) {
+	public T convert(String inputData) throws ConvertException {
 		try {
 			return mapper.readValue(inputData.getBytes(encode), rootClass);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new ConvertException(e);
 		}
 	}
 

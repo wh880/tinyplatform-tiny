@@ -39,7 +39,7 @@ public class NumberValidator implements ValidateExecutor {
 		}
 		try {
 			Double.parseDouble(value);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			return false;
 		}
 		return true;

@@ -23,17 +23,17 @@
  */
 package org.tinygroup.convert.common;
 
+import org.tinygroup.convert.Converter;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.tinygroup.convert.Converter;
-
 public class UTCDateToString implements Converter<Date, String> {
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"yyyyMMdd-hh:mm:ss");
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+            "yyyyMMdd-hh:mm:ss");
 
-	public String convert(Date inputData) {
-		return simpleDateFormat.format(inputData);
-	}
+    public String convert(Date inputData) {
+        return simpleDateFormat.format(inputData);
+    }
 
 }

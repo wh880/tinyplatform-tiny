@@ -23,18 +23,19 @@
  */
 package org.tinygroup.convert.common;
 
+import org.tinygroup.convert.ConvertException;
+import org.tinygroup.convert.Converter;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.tinygroup.convert.Converter;
-
 public class StringToUTCDate implements Converter<String, Date> {
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"yyyyMMdd-hh:mm:ss");
-	SimpleDateFormat simpleDateFormatWithMS = new SimpleDateFormat(
+    private SimpleDateFormat simpleDateFormatWithMS = new SimpleDateFormat(
 			"yyyyMMdd-hh:mm:ss.SSS");
 
-	public Date convert(String inputData) {
+	public Date convert(String inputData) throws ConvertException {
 		try {
 			if (inputData.indexOf('.') > 0) {
 				return simpleDateFormatWithMS.parse(inputData);
@@ -42,7 +43,7 @@ public class StringToUTCDate implements Converter<String, Date> {
 				return simpleDateFormat.parse(inputData);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new ConvertException(e);
 		}
 	}
 

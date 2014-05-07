@@ -34,48 +34,27 @@ import java.lang.management.RuntimeMXBean;
  * @author luoguo
  */
 public final class MonitorUtil {
-    public static final int INTERVAL_TIME = 1000;
     static OperatingSystemMXBean osbean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
     static RuntimeMXBean runbean = (RuntimeMXBean) ManagementFactory.getRuntimeMXBean();
-    static long beforeProcessTime = osbean.getProcessCpuTime();
-    static long beforeUpTime = runbean.getUptime();
-    static long lastGetTime = System.currentTimeMillis();
-    static double cpuUage = 0;
+    static long cpuTimes = 0;
+    static long cpuTimeFetch = 0;
 
     /*
     * 获取CPU利用率
     */
     public static double getCpuUsage() {
-        return getCpuUsage(INTERVAL_TIME);
+        long cpuNumber = Runtime.getRuntime().availableProcessors();
+        long currentTimeMillis = System.currentTimeMillis();
+        int sum = 0;
+        long catchTime = 0;
+        long current = 0;
+        long previous = cpuTimes;
+        current = osbean.getProcessCpuTime();
+        catchTime = runbean.getUptime();
+        sum += (current - previous);
+        cpuTimes = current;
+        cpuTimeFetch = currentTimeMillis;
+        return (double) sum / (double) ((currentTimeMillis - catchTime) * cpuNumber * 1000);
     }
 
-    /**
-     * 获取CPU利用率
-     *
-     * @param intervalTime 间隔时间,单位ms，如果没有超过间隔时间，则取上次取到的数据，如果有超过则重新计算
-     * @return
-     */
-    public static double getCpuUsage(int intervalTime) {
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lastGetTime >= intervalTime) {
-            long afterProcessTime = osbean.getProcessCpuTime();
-            long afterUpTime = runbean.getUptime();
-            double cal = (afterProcessTime - beforeProcessTime) / ((afterUpTime - beforeUpTime) * 10000f);
-            cpuUage = Math.min(100f, cal);
-            beforeProcessTime = afterProcessTime;
-            beforeUpTime = beforeUpTime;
-            lastGetTime = currentTime;
-        }
-        return cpuUage;
-    }
-
-    public static void main(String[] args) {
-        while (true) {
-            long sum = 0;
-            for (long s = 0; s < 999999; s++) {
-                sum += s * s;
-            }
-            System.out.println(MonitorUtil.getCpuUsage());
-        }
-    }
 }

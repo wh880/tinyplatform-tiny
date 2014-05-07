@@ -23,45 +23,46 @@
  */
 package org.tinygroup.weblayer;
 
-import java.util.List;
-
 import org.tinygroup.weblayer.configmanager.TinyFiterConfigManager;
+
+import java.util.List;
 
 /**
  * 代表一组tinyfilter信息
- * 
+ *
  * @author renhui
- * 
  */
 public interface TinyFilterManager extends TinyWebResourceManager {
 
-	String TINY_FILTER_MANAGER = "tinyFilterManager";
+    String TINY_FILTER_MANAGER = "tinyFilterManager";
 
-	/**
-	 * 根据请求url，获取相关的tinyfilter列表
-	 * 
-	 * @param url
-	 * @return
-	 */
-	public List<TinyFilter> getTinyFiltersWithUrl(String url);
+    /**
+     * 根据请求url，获取相关的tinyfilter列表
+     *
+     * @param url
+     * @return
+     */
+    List<TinyFilter> getTinyFiltersWithUrl(String url);
 
-	/**
-	 * 设置web资源（servlet或filter）的配置管理接口
-	 * 
-	 * @param configManager
-	 */
-	public abstract void setConfigManager(TinyFiterConfigManager configManager);
+    /**
+     * 设置web资源（servlet或filter）的配置管理接口
+     *
+     * @param configManager
+     */
+    void setConfigManager(TinyFiterConfigManager configManager);
 
-	/**
-	 * 是不是filter包装模式，配置的tiny-filter是否实现了FilterWrapper接口如果是，则采用fiter包装方式来处理
-	 * 
-	 * @return
-	 */
-	public boolean existFilterWrapper();
-	/**
-	 * 获取filter包装实例
-	 * @return
-	 */
-	public FilterWrapper getFilterWrapper();
+    /**
+     * 是不是filter包装模式，配置的tiny-filter是否实现了FilterWrapper接口如果是，则采用fiter包装方式来处理
+     *
+     * @return
+     */
+    boolean existFilterWrapper();
+
+    /**
+     * 获取filter包装实例
+     *
+     * @return
+     */
+    FilterWrapper getFilterWrapper();
 
 }

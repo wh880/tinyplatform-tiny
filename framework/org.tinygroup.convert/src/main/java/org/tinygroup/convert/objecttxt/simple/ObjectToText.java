@@ -23,14 +23,15 @@
  */
 package org.tinygroup.convert.objecttxt.simple;
 
-import java.util.List;
-import java.util.Map;
-
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.text.config.Text;
 import org.tinygroup.convert.text.config.TextCell;
 import org.tinygroup.convert.text.config.TextRow;
 import org.tinygroup.convert.util.ConvertUtil;
+
+import java.util.List;
+import java.util.Map;
 
 public class ObjectToText<T> implements Converter<List<T>, String> {
 	private Map<String, String> titleMap;
@@ -46,7 +47,7 @@ public class ObjectToText<T> implements Converter<List<T>, String> {
 		this.fieldSplit = fieldSplit;
 	}
 
-	public String convert(List<T> objectList) {
+	public String convert(List<T> objectList) throws ConvertException {
 		Text text = new Text();
 		TextRow titleRow = computeTitleRow();
 		text.addRow(titleRow);
@@ -75,7 +76,7 @@ public class ObjectToText<T> implements Converter<List<T>, String> {
 		return title;
 	}
 
-	private TextRow computeDataRow(T object){
+	private TextRow computeDataRow(T object) throws ConvertException {
 		TextRow row = new TextRow();
 		for (int i = 0; i < properties.size() ; i++) {
 			String property = properties.get(i);
@@ -86,7 +87,7 @@ public class ObjectToText<T> implements Converter<List<T>, String> {
 	}
 	
 	
-	private String getAttributeValue(T object, String property) {
+	private String getAttributeValue(T object, String property) throws ConvertException {
 		return ConvertUtil.getAttributeValue(object, property);
 	}
 

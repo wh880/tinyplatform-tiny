@@ -23,11 +23,11 @@
  */
 package org.tinygroup.imda.validate.impl;
 
-import java.text.SimpleDateFormat;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.imda.validate.ValidateExecutor;
 import org.tinygroup.imda.validate.ValidateRule;
+
+import java.text.SimpleDateFormat;
 
 public class DateISOValidator implements ValidateExecutor {
 	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSSZZ");
@@ -42,7 +42,7 @@ public class DateISOValidator implements ValidateExecutor {
 		}
 		try {
 			simpleDateFormat.parse(value);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			return false;
 		}
 		return true;

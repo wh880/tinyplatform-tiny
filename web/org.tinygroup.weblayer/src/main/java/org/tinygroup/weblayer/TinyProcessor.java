@@ -28,35 +28,37 @@ import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * WebContext处理器，用于根据WebContext进行相关处理
- * 
+ *
  * @author luoguo
- * 
  */
 public interface TinyProcessor {
-	
-	String TINY_PROCESSOR="tiny-processor";
-	/**
-	 * 判断url是否匹配，如果匹配，返回True
-	 * 
-	 * @param urlString
-	 * @return
-	 */
-	boolean isMatch(String urlString);
 
-	/**
-	 * 处理
-	 * 
-	 * @param context
-	 */
-	void process(String urlString, WebContext context);
-	/**
-	 * tinyprocessor的初始化操作
-	 */
-	void init();
+    String TINY_PROCESSOR = "tiny-processor";
+
+    /**
+     * 判断url是否匹配，如果匹配，返回True
+     *
+     * @param urlString
+     * @return
+     */
+    boolean isMatch(String urlString);
+
+    /**
+     * 处理
+     *
+     * @param context
+     */
+    void process(String urlString, WebContext context);
+
+    /**
+     * tinyprocessor的初始化操作
+     */
+    void init();
+
     /**
      * tinyprocessor的销毁操作
      */
-	void destory();
-	
-	public void setConfiguration(XmlNode xmlNode);
+    void destory();
+
+    void setConfiguration(XmlNode xmlNode);
 }

@@ -23,18 +23,17 @@
  */
 package org.tinygroup.weblayer.webcontext.session.impl;
 
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
-import static org.tinygroup.commons.tools.Assert.unexpectedException;
+import org.tinygroup.commons.tools.ToStringBuilder;
+import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
+import org.tinygroup.weblayer.webcontext.session.SessionConfig;
+import org.tinygroup.weblayer.webcontext.session.SessionModel;
 
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.tinygroup.commons.tools.ToStringBuilder;
-import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
-import org.tinygroup.weblayer.webcontext.session.SessionConfig;
-import org.tinygroup.weblayer.webcontext.session.SessionModel;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
 
 /**
  * 代表一个session本身的信息。该对象是可序列化的。
@@ -58,16 +57,6 @@ public class SessionModelImpl implements SessionModel {
         this.creationTime = creationTime;
         this.lastAccessedTime = lastAccessedTime;
         this.maxInactiveInterval = maxInactiveInterval;
-    }
-
-    
-    public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            unexpectedException(e);
-            return null;
-        }
     }
 
     private SessionConfig getSessionConfig() {

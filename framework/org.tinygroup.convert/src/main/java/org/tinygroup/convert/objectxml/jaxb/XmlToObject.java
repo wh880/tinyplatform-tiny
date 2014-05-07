@@ -23,49 +23,49 @@
  */
 package org.tinygroup.convert.objectxml.jaxb;
 
+import org.tinygroup.commons.io.ByteArrayInputStream;
+import org.tinygroup.convert.ConvertException;
+import org.tinygroup.convert.Converter;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
-import org.tinygroup.commons.io.ByteArrayInputStream;
-import org.tinygroup.convert.Converter;
-
 public class XmlToObject<T> implements Converter<String, T> {
-    String encode = "UTF-8";
-    JAXBContext context;
-    Unmarshaller unmarshaller;
+    private String encode = "UTF-8";
+    private JAXBContext context;
+    private Unmarshaller unmarshaller;
 
-    public XmlToObject(String className, String encode) {
+    public XmlToObject(String className, String encode) throws ConvertException {
         this(className);
         this.encode = encode;
     }
 
-    public XmlToObject(String className) {
+    public XmlToObject(String className) throws ConvertException {
         try {
             context = JAXBContext.newInstance(className);
             unmarshaller = context.createUnmarshaller();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ConvertException(e);
         }
     }
 
-    public XmlToObject(Class<T> clazz) {
+    public XmlToObject(Class<T> clazz) throws ConvertException {
         try {
             context = JAXBContext.newInstance(clazz);
             unmarshaller = context.createUnmarshaller();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ConvertException(e);
         }
     }
 
 
     @SuppressWarnings("unchecked")
-    public T convert(String inputData) {
+    public T convert(String inputData) throws ConvertException {
 
         try {
-            T object = (T) unmarshaller.unmarshal(new ByteArrayInputStream(inputData.getBytes(encode)));
-            return object;
+            return (T) unmarshaller.unmarshal(new ByteArrayInputStream(inputData.getBytes(encode)));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ConvertException(e);
         }
 
     }

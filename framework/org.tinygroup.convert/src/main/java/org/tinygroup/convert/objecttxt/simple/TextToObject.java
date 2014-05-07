@@ -23,44 +23,38 @@
  */
 package org.tinygroup.convert.objecttxt.simple;
 
-import java.util.List;
-import java.util.Map;
-
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.text.TextBaseParse;
 import org.tinygroup.convert.text.config.Text;
 import org.tinygroup.convert.util.ConvertUtil;
 
+import java.util.List;
+import java.util.Map;
+
 public class TextToObject<T> extends TextBaseParse implements Converter<String, List<T>> {
-	private Class<T> clazz;
-	private String lineSplit;
-	private String fieldSplit;
+    private Class<T> clazz;
+    private String lineSplit;
+    private String fieldSplit;
 
-	/**
-	 * 文本转换为Xml
-	 * 
-	 * @param rootNodeName
-	 *            根节点名称
-	 * @param rowNodeName
-	 *            行节点名称
-	 * @param lineSplit
-	 *            行分隔附
-	 * @param fieldSplit
-	 *            字段分隔符
-	 */
-	public TextToObject(Class<T> clazz, Map<String, String> titleMap,
-			String lineSplit, String fieldSplit) {
-		this.clazz = clazz;
-		this.lineSplit = lineSplit;
-		this.fieldSplit = fieldSplit;
-		this.titleMap = titleMap;
-	}
+    /**
+     * 文本转换为Xml
+     *
+     * @param lineSplit  行分隔附
+     * @param fieldSplit 字段分隔符
+     */
+    public TextToObject(Class<T> clazz, Map<String, String> titleMap,
+                        String lineSplit, String fieldSplit) {
+        this.clazz = clazz;
+        this.lineSplit = lineSplit;
+        this.fieldSplit = fieldSplit;
+        setTitleMap(titleMap);
+    }
 
-	public List<T> convert(String inputData) {
-		Text text = computeText(inputData,lineSplit,fieldSplit);
-		return ConvertUtil.textToObjectList(clazz, text);
-	}
-	
-	
+    public List<T> convert(String inputData) throws ConvertException {
+        Text text = computeText(inputData, lineSplit, fieldSplit);
+        return ConvertUtil.textToObjectList(clazz, text);
+    }
+
 
 }

@@ -23,21 +23,20 @@
  */
 package org.tinygroup.convert;
 
+import junit.framework.TestCase;
+import org.tinygroup.convert.textxml.simple.TextToXml;
+import org.tinygroup.convert.textxml.simple.XmlToText;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.tinygroup.convert.textxml.simple.TextToXml;
-import org.tinygroup.convert.textxml.simple.XmlToText;
-
-import junit.framework.TestCase;
-
 public class TestTextXmlWithSimple extends TestCase {
 	private static final String TEXT = "标识 姓名 地址 邮件,11 haha address email,12 hehe address email,13 xixi address email";
 	private static final String XML = "<students><student><id>11</id><name>haha</name><address>address</address><email>email</email></student><student><id>12</id><name>hehe</name><address>address</address><email>email</email></student><student><id>13</id><name>xixi</name><address>address</address><email>email</email></student></students>";
 
-	public void testText2Xml() {
+	public void testText2Xml() throws ConvertException {
 		Map<String, String> titleMap = new HashMap<String, String>();
 		titleMap.put("标识", "id");
 		titleMap.put("姓名", "name");
@@ -48,7 +47,7 @@ public class TestTextXmlWithSimple extends TestCase {
 		assertEquals(XML, textToXml.convert(TEXT));
 	}
 
-	public void testXml2Text() {
+	public void testXml2Text() throws ConvertException {
 		Map<String, String> titleMap = new HashMap<String, String>();
 		List<String> fieldList = new ArrayList<String>();
 		titleMap.put("id", "标识");

@@ -23,17 +23,17 @@
  */
 package org.tinygroup.convert;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.convert.objectxml.simple.ObjectToXml;
 import org.tinygroup.convert.objectxml.simple.XmlToObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TestObjectXmlWithSimple extends AbstractConvertTestCase {
 
-	public void testObject2Xml(){
+	public void testObject2Xml() throws ConvertException {
 		Student student1=createStudent();
 		Student student2=createStudent1();
 		List<Student> students=new ArrayList<Student>();
@@ -51,7 +51,7 @@ public class TestObjectXmlWithSimple extends AbstractConvertTestCase {
 	}
 	
 	
-	public void testXml2Object(){
+	public void testXml2Object() throws ConvertException {
 		
 		String xml="<students>" +
 				        "<student  id=\"1\" name=\"haha\" email=\"email\" " +

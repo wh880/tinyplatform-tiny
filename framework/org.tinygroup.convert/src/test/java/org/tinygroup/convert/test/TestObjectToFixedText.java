@@ -23,20 +23,20 @@
  */
 package org.tinygroup.convert.test;
 
+import junit.framework.TestCase;
+import org.tinygroup.convert.ConvertException;
+import org.tinygroup.convert.objecttxt.fixwidth.ObjectToText;
+import org.tinygroup.convert.objecttxt.fixwidth.TextToObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import junit.framework.TestCase;
-
-import org.tinygroup.convert.objecttxt.fixwidth.ObjectToText;
-import org.tinygroup.convert.objecttxt.fixwidth.TextToObject;
 
 
 
 public class TestObjectToFixedText extends TestCase {
 	private static String testText="name               address         length_name123456         address123456   1     _name1234567        address1234567  1     _name12345678       address12345678 1     _哈哈哈哈哈哈哈哈哈 address12345678 1     _";
-	public void testToFixedText() {
+	public void testToFixedText() throws ConvertException {
 		List<String> properties = new ArrayList<String>();
 		properties.add("name");
 		properties.add("address");
@@ -46,7 +46,7 @@ public class TestObjectToFixedText extends TestCase {
 		String text = ottUser.convert(users);
 		assertEquals(testText, text);
 	}
-	public void testToObject() {
+	public void testToObject() throws ConvertException {
 		TextToObject<User> ttoUser = new TextToObject<User>(User.class, new HashMap<String, String>(), "_");
 		List<User> users = ttoUser.convert(testText);
 		List<User> excepted = getUsers();

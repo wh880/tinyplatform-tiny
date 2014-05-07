@@ -23,63 +23,66 @@
  */
 package org.tinygroup.tinydb.operator;
 
+import org.tinygroup.tinydb.Bean;
+
 import java.util.List;
 import java.util.Map;
 
-import org.tinygroup.tinydb.Bean;
-
 /**
  * DB相关的批量操作
- * 
+ *
  * @author luoguo
- * 
  */
 public interface DbSqlOperator<KeyType> {
-	
-	// 下面是根据SQL
-	Bean[] getBeans(String sql);
 
-	Bean[] getPagedBeans(String sql, int start, int limit);
+    // 下面是根据SQL
+    Bean[] getBeans(String sql);
 
-	Bean[] getBeans(String sql,Map<String, Object> parameters);
+    Bean[] getPagedBeans(String sql, int start, int limit);
 
-	Bean[] getPagedBeans(String sql, int start, int limit, Map<String, Object> parameters);
+    Bean[] getBeans(String sql, Map<String, Object> parameters);
 
-	Bean[] getBeans(String sql,Object... parameters);
-	
-	Bean[] getBeans(String sql,List<Object> parameters);
+    Bean[] getPagedBeans(String sql, int start, int limit, Map<String, Object> parameters);
 
-	Bean[] getPagedBeans(String sql, int start, int limit, Object... parameters);
+    Bean[] getBeans(String sql, Object... parameters);
 
-	// 读取单一个值
-	Bean getSingleValue(String sql);
+    Bean[] getBeans(String sql, List<Object> parameters);
 
-	Bean getSingleValue(String sql,Map<String, Object> parameters);
+    Bean[] getPagedBeans(String sql, int start, int limit, Object... parameters);
 
-	Bean getSingleValue(String sql,Object... parameters);
-	
-	Bean getSingleValue(String sql,List<Object> parameters);
-	/**
-	 * 
-	 * 执行带参数的sql语句
-	 * @param sql
-	 * @param parameters
-	 * @return
-	 */
-	int execute(String sql,Map<String, Object> parameters);
-	/**
-	 * 
-	 * 执行带参数的sql语句
-	 * @param sql
-	 * @param parameters
-	 * @return
-	 */
-	int execute(String sql,Object... parameters);
-	
-	public int execute(String sql,List<Object> parameters);
-	
-	//查询总记录数
-	public int account(String sql,Object...parameters);
-	public int account(String sql,List<Object> parameters);
-	public int account(String sql,Map<String, Object> parameters);
+    // 读取单一个值
+    Bean getSingleValue(String sql);
+
+    Bean getSingleValue(String sql, Map<String, Object> parameters);
+
+    Bean getSingleValue(String sql, Object... parameters);
+
+    Bean getSingleValue(String sql, List<Object> parameters);
+
+    /**
+     * 执行带参数的sql语句
+     *
+     * @param sql
+     * @param parameters
+     * @return
+     */
+    int execute(String sql, Map<String, Object> parameters);
+
+    /**
+     * 执行带参数的sql语句
+     *
+     * @param sql
+     * @param parameters
+     * @return
+     */
+    int execute(String sql, Object... parameters);
+
+    int execute(String sql, List<Object> parameters);
+
+    //查询总记录数
+    int account(String sql, Object... parameters);
+
+    int account(String sql, List<Object> parameters);
+
+    int account(String sql, Map<String, Object> parameters);
 }

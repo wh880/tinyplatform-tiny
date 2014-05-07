@@ -31,5 +31,5 @@ package org.tinygroup.convert;
  * @param <T>
  */
 public interface ObjectValidator<T> {
-	boolean isValidate(T object);
+	boolean isValidate(T object) throws ConvertException;
 }

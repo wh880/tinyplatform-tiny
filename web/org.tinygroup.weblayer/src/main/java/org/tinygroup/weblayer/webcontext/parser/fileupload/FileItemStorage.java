@@ -25,14 +25,13 @@ package org.tinygroup.weblayer.webcontext.parser.fileupload;
 
 
 /**
- * 
  * 功能说明: 上传文件项存储接口
-
+ * <p/>
  * 开发人员: renhui <br>
  * 开发时间: 2014-1-3 <br>
  * <br>
  */
 public interface FileItemStorage {
 
-	public String storage(TinyFileItem fileItem);
+    String storage(TinyFileItem fileItem);
 }

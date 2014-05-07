@@ -39,7 +39,7 @@ public class DigitsValidator implements ValidateExecutor {
 		}
 		try {
 			Long.parseLong(value);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			return false;
 		}
 		return true;

@@ -26,30 +26,31 @@ package org.tinygroup.weblayer;
 import org.tinygroup.weblayer.configmanager.TinyProcessorConfigManager;
 
 
-
 /**
  * tiny servlet 处理器管理接口
- * @author renhui
  *
+ * @author renhui
  */
 public interface TinyProcessorManager extends TinyWebResourceManager {
 
     String TINY_PROCESSOR_MANAGER = "tinyProcessorManager";
-	String XSTEAM_PACKAGE_NAME = "weblayer";
-	
+    String XSTEAM_PACKAGE_NAME = "weblayer";
+
     /**
      * 根据请求路径,获取servlet处理器进行逻辑处理
-     * @param url 请求路径
+     *
+     * @param url     请求路径
      * @param context 请求环境对象
      */
-	public abstract boolean execute(String url, WebContext context);
-	
-	
-	/**
-	 * 设置web资源（servlet或filter）的配置管理接口
-	 * @param configManager
-	 */
-	public abstract void setConfigManager(
-			TinyProcessorConfigManager configManager);
+    boolean execute(String url, WebContext context);
+
+
+    /**
+     * 设置web资源（servlet或filter）的配置管理接口
+     *
+     * @param configManager
+     */
+    void setConfigManager(
+            TinyProcessorConfigManager configManager);
 
 }

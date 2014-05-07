@@ -23,14 +23,15 @@
  */
 package org.tinygroup.convert.objectxml.simple;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.beanutils.BeanUtils;
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -51,7 +52,7 @@ public class XmlToObject<T> implements Converter<String, List<T>> {
 		this.rowNodeName = rowNodeName;
 	}
 
-	public List<T> convert(String inputData) {
+	public List<T> convert(String inputData) throws ConvertException {
 		XmlNode root = new XmlStringParser().parse(inputData).getRoot();
 		checkRootNodeName(root);
 		List<T> list = new ArrayList<T>();
@@ -64,7 +65,7 @@ public class XmlToObject<T> implements Converter<String, List<T>> {
 		return list;
 	}
 
-	private void setProperty(T object, XmlNode node) {
+	private void setProperty(T object, XmlNode node) throws ConvertException {
 		for (Field field : object.getClass().getDeclaredFields()) {
 			String value = getValue(node, field.getName());
 			if (value != null) {
@@ -73,11 +74,11 @@ public class XmlToObject<T> implements Converter<String, List<T>> {
 		}
 	}
 
-	private void setPropertyValue(T object, Field field, String value) {
+	private void setPropertyValue(T object, Field field, String value) throws ConvertException {
 		try {
 			BeanUtils.setProperty(object, field.getName(), value);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new ConvertException(e);
 		}
 	}
 
@@ -94,18 +95,18 @@ public class XmlToObject<T> implements Converter<String, List<T>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	private T newObject() {
+	private T newObject() throws ConvertException {
 		try {
 			return (T) Class.forName(className).newInstance();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new ConvertException(e);
 		}
 	}
 
-	private void checkRootNodeName(XmlNode root) {
+	private void checkRootNodeName(XmlNode root) throws ConvertException {
 		if (root.getNodeName() == null
 				|| !root.getNodeName().equals(rootNodeName)) {
-			throw new RuntimeException("根节点名称[" + root.getRoot().getNodeName()
+			throw new ConvertException("根节点名称[" + root.getRoot().getNodeName()
 					+ "]与期望的根节点名称[" + rootNodeName + "]不一致！");
 		}
 	}

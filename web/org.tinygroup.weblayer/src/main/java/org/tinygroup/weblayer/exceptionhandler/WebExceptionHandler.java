@@ -23,25 +23,24 @@
  */
 package org.tinygroup.weblayer.exceptionhandler;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import org.tinygroup.weblayer.WebContext;
 
-/**
- * 
- * 功能说明:页面异常处理流程接口 
+import javax.servlet.ServletException;
+import java.io.IOException;
 
+/**
+ * 功能说明:页面异常处理流程接口
+ * <p/>
  * 开发人员: renhui <br>
  * 开发时间: 2013-9-22 <br>
  * <br>
  */
 public interface WebExceptionHandler {
-   /**
-    * 
-    * 异常处理方法
-    * @param Throwable
-    */
-	public void handler(Throwable t,WebContext webContext)throws IOException, ServletException ;
+    /**
+     * 异常处理方法
+     *
+     * @param throwable
+     * @param webContext
+     */
+    void handler(Throwable throwable, WebContext webContext) throws IOException, ServletException;
 }

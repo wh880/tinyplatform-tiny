@@ -23,12 +23,6 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.exception.DBRuntimeException;
@@ -37,6 +31,12 @@ import org.tinygroup.tinydb.order.OrderBean;
 import org.tinygroup.tinydb.query.QueryBean;
 import org.tinygroup.tinydb.select.SelectBean;
 import org.tinygroup.tinydb.util.TinyDBUtil;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BeanDBSqlOperator<KeyType> extends BeanDBBatchOperator<KeyType>
 		implements DBOperator<KeyType> {
@@ -94,8 +94,8 @@ public class BeanDBSqlOperator<KeyType> extends BeanDBBatchOperator<KeyType>
 	public Bean[] getPagedBeans(String sql, int start, int limit, Object... parameters) {
 		List<Object> params = new ArrayList<Object>();
 		if (parameters != null) {
-			for (int i = 0; i < parameters.length; i++) {
-				params.add(parameters[i]);
+			for (Object obj:parameters) {
+				params.add(obj);
 			}
 		}
 

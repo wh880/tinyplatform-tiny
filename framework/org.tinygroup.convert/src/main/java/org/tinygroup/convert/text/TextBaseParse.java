@@ -23,20 +23,29 @@
  */
 package org.tinygroup.convert.text;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.text.config.Text;
 import org.tinygroup.convert.text.config.TextCell;
 import org.tinygroup.convert.text.config.TextRow;
 import org.tinygroup.convert.util.ConvertUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class TextBaseParse {
 
-	protected Map<String, String> titleMap;
+	private Map<String, String> titleMap;
 
-	protected TextRow computeDataRow(List<String> values) {
+    public Map<String, String> getTitleMap() {
+        return titleMap;
+    }
+
+    public void setTitleMap(Map<String, String> titleMap) {
+        this.titleMap = titleMap;
+    }
+
+    protected TextRow computeDataRow(List<String> values) {
 		TextRow dataRow = new TextRow();
 		for (int j = 0; j < values.size(); j++) {
 			TextCell cell = new TextCell(values.get(j).trim());
@@ -55,7 +64,7 @@ public class TextBaseParse {
 	}
 
 	protected List<String> getFixTitle(String string,
-			List<Integer> fieldPosList, List<Integer> filedBytesPosList) {
+			List<Integer> fieldPosList, List<Integer> filedBytesPosList) throws ConvertException {
 		List<String> fieldList = new ArrayList<String>();
 		int start = 0;
 		for (int end : fieldPosList) {
@@ -69,7 +78,7 @@ public class TextBaseParse {
 	}
 
 	protected List<String> getFixData(String string,
-			List<Integer> filedBytesPosList) {
+			List<Integer> filedBytesPosList) throws ConvertException {
 		return ConvertUtil.getStringArrayByBytesLength(string,
 				filedBytesPosList);
 	}
@@ -114,16 +123,17 @@ public class TextBaseParse {
 		return titleRow;
 	}
 
-	protected void checkFeidlCount(String[] fieldNames, int i, String[] values) {
+	protected void checkFeidlCount(String[] fieldNames, int i, String[] values) throws ConvertException {
 		if (fieldNames.length != values.length) {
-			throw new RuntimeException("标题个数(" + fieldNames.length + ")与第【" + i
+			throw new ConvertException("标题个数(" + fieldNames.length + ")与第【" + i
 					+ "】行的数据个数(" + values.length + ")不相等");
 		}
 	}
 
 	protected String getProperty(String title) {
-		if (titleMap == null)
-			return title;
+		if (titleMap == null) {
+            return title;
+        }
 		String property = titleMap.get(title);
 		if (property == null || "".equals(property.trim())) {
 			return title;
@@ -132,20 +142,20 @@ public class TextBaseParse {
 
 	}
 
-	public Text computeFixWidthText(String inputData, String lineSplit) {
-		String[] lines = inputData.split(lineSplit); // 总行数(包含titleRow)
-		List<Integer> fieldStrPosList = getFieldEndPos(lines[0]); // 根据titleRow计算每列数据的位置
-		List<Integer> filedBytesPosList = new ArrayList<Integer>(); // 存放每列的长度(按byte算的)
+	public Text computeFixWidthText(String inputData, String lineSplit) throws ConvertException {
+        // 总行数(包含titleRow)
+		String[] lines = inputData.split(lineSplit);
+        // 根据titleRow计算每列数据的位置
+		List<Integer> fieldStrPosList = getFieldEndPos(lines[0]);
+        // 存放每列的长度(按byte算的)
+		List<Integer> filedBytesPosList = new ArrayList<Integer>();
+        // 计算title
 		List<String> titles = getFixTitle(lines[0], fieldStrPosList,
-				filedBytesPosList); // 计算title
+				filedBytesPosList);
 		Text text = new Text();
 		text.addRow(computeTitleRow(titles));
 
 		for (int i = 1; i < lines.length; i++) {
-			// if (lines[i].length() != lines[0].length()) {
-			// throw new RuntimeException("标题行长度(" + lines[0].length()
-			// + ")与第【" + i + "】行的数据长度(" + lines[i].length() + ")不相等");
-			// }
 			List<String> values = getFixData(lines[i], filedBytesPosList);
 			text.addRow(computeDataRow(values));
 		}
@@ -153,7 +163,7 @@ public class TextBaseParse {
 	}
 
 	public Text computeText(String inputData, String lineSplit,
-			String fieldSplit) {
+			String fieldSplit) throws ConvertException {
 		String[] lines = inputData.split(lineSplit);
 		String[] titles = lines[0].split(fieldSplit);
 		Text text = new Text();

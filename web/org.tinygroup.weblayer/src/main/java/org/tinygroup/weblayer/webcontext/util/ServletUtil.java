@@ -23,13 +23,14 @@
  */
 package org.tinygroup.weblayer.webcontext.util;
 
-import static org.tinygroup.commons.tools.FileUtil.*;
-import static org.tinygroup.commons.tools.StringUtil.*;
-
+import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import javax.servlet.http.HttpServletRequest;
+
+import static org.tinygroup.commons.tools.FileUtil.normalizeAbsolutePath;
+import static org.tinygroup.commons.tools.StringUtil.trimToEmpty;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
 
 /**
  * 有关servlet的小工具。
@@ -59,11 +60,7 @@ public class ServletUtil {
             String servletPath = trimToEmpty(request.getServletPath());
             int index = servletPath.lastIndexOf("/");
 
-            if (servletPath.indexOf(".", index + 1) >= 0) {
-                return false;
-            } else {
-                return true;
-            }
+            return servletPath.indexOf(".", index + 1) >= 0;
         }
     }
 
@@ -193,7 +190,9 @@ public class ServletUtil {
         return buf.toString();
     }
 
-    /** 规格化URI。 */
+    /**
+     * 规格化URI。
+     */
     public static String normalizeURI(String uri) {
         return URI.create(trimToEmpty(uri)).normalize().toString();
     }

@@ -29,52 +29,54 @@ import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * WebContext过滤器，用于根据WebContext进行相关处理
- * 
+ *
  * @author luoguo
- * 
  */
-public interface TinyFilter extends Ordered, WebContextFactory<WebContext>{
-	
-	String TINY_FILTER="tiny-filter";
-	String TINY_WRAPPER_FILTER = "tiny-wrapper-filter";
-	
-	int BASIC_FILTER_PRECEDENCE=HIGHEST_PRECEDENCE;//BasicTinyFilter优先级最高
-	int PARSER_FILTER_PRECEDENCE=HIGHEST_PRECEDENCE+100;
-	int BUFFERED_FILTER_PRECEDENCE=HIGHEST_PRECEDENCE+200;
-	int LAZY_COMMIT_FILTER_PRECEDENCE=HIGHEST_PRECEDENCE+300;
-	int SESSION_FILTER_PRECEDENCE=HIGHEST_PRECEDENCE+400;
-	int SETLOCALE_FILTER_PRECEDENCE=HIGHEST_PRECEDENCE+500;
-	int REWRITE_FILTER_PRECEDENCE=HIGHEST_PRECEDENCE+600;
-	
-	
-	/**
-	 * 前置操作
-	 * 
-	 * @param context
-	 */
-	void preProcess(WebContext context);
+public interface TinyFilter extends Ordered, WebContextFactory<WebContext> {
 
-	/**
-	 * 后置操作
-	 * 
-	 * @param context
-	 */
-	void postProcess(WebContext context);
-	/**
-	 * 初始化tinyFilter
-	 */
-	void initTinyFilter();
-	
-	/**
-	 * 销毁tinyFilter
-	 */
-	void destoryTinyFilter();
+    String TINY_FILTER = "tiny-filter";
+    String TINY_WRAPPER_FILTER = "tiny-wrapper-filter";
+
+    int BASIC_FILTER_PRECEDENCE = HIGHEST_PRECEDENCE;//BasicTinyFilter优先级最高
+    int PARSER_FILTER_PRECEDENCE = HIGHEST_PRECEDENCE + 100;
+    int BUFFERED_FILTER_PRECEDENCE = HIGHEST_PRECEDENCE + 200;
+    int LAZY_COMMIT_FILTER_PRECEDENCE = HIGHEST_PRECEDENCE + 300;
+    int SESSION_FILTER_PRECEDENCE = HIGHEST_PRECEDENCE + 400;
+    int SETLOCALE_FILTER_PRECEDENCE = HIGHEST_PRECEDENCE + 500;
+    int REWRITE_FILTER_PRECEDENCE = HIGHEST_PRECEDENCE + 600;
+
+
+    /**
+     * 前置操作
+     *
+     * @param context
+     */
+    void preProcess(WebContext context);
+
+    /**
+     * 后置操作
+     *
+     * @param context
+     */
+    void postProcess(WebContext context);
+
+    /**
+     * 初始化tinyFilter
+     */
+    void initTinyFilter();
+
+    /**
+     * 销毁tinyFilter
+     */
+    void destoryTinyFilter();
+
     /**
      * 是否匹配
+     *
      * @param url
      * @return
      */
-	boolean isMatch(String url);
-	
-	public void setConfiguration(XmlNode xmlNode);
+    boolean isMatch(String url);
+
+    void setConfiguration(XmlNode xmlNode);
 }

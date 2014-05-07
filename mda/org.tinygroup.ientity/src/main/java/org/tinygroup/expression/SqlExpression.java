@@ -24,27 +24,26 @@
 package org.tinygroup.expression;
 
 /**
- * 
  * 功能说明: sql表达式接口
-
+ * <p/>
  * 开发人员: renhui <br>
  * 开发时间: 2013-11-14 <br>
  * <br>
  */
 public interface SqlExpression extends Expression {
-	
-	/**
-	 * 
-	 * 表达式的唯一标示
-	 * @return
-	 */
-	public String getExpressionId();
-	
-	/**
-	 * 
-	 * 字段表达式附加的表名
-	 * @return
-	 */
-	public String getTableName();
+
+    /**
+     * 表达式的唯一标示
+     *
+     * @return
+     */
+    String getExpressionId();
+
+    /**
+     * 字段表达式附加的表名
+     *
+     * @return
+     */
+    String getTableName();
 
 }
