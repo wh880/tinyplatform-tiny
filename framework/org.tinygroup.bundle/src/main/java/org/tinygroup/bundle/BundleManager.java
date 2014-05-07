@@ -32,6 +32,7 @@ import java.util.List;
  * Bundle管理器
  */
 public interface BundleManager extends SingleBundleManager, BatchBundleManager {
+	String BEAN_NAME = "bundleManager";
     /**
      * 添加一个杂物箱
      *
