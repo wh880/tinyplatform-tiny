@@ -23,70 +23,48 @@
  */
 package org.tinygroup.weblayer.filter.gzip;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+
 public class GZIPResponseWrapper extends HttpServletResponseWrapper {
-    protected HttpServletResponse origResponse = null;
-    protected ServletOutputStream stream = null;
-    protected PrintWriter writer = null;
+	protected ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	protected PrintWriter writer = null;
+	
+	private Logger logger=LoggerFactory.getLogger(GZIPResponseWrapper.class);
 
-    public GZIPResponseWrapper(HttpServletResponse response) {
-        super(response);
-        origResponse = response;
-    }
+	public GZIPResponseWrapper(HttpServletResponse response) {
+		super(response);
+	}
 
-    public ServletOutputStream createOutputStream() throws IOException {
-        return (new GZIPResponseStream(origResponse));
-    }
+	public ServletOutputStream getOutputStream() throws IOException {
+		return new GZIPResponseStream(baos);
+	}
 
-    public void finishResponse() {
-        try {
-            if (writer != null) {
-                writer.close();
-            } else {
-                if (stream != null) {
-                    stream.close();
-                }
-            }
-        } catch (IOException e) {
-        }
-    }
+	public PrintWriter getWriter() throws IOException {
+		writer = new PrintWriter(new OutputStreamWriter(baos,
+				super.getCharacterEncoding()));
+		return writer;
+	}
 
-    public void flushBuffer() throws IOException {
-        if (stream != null){
-            stream.flush();
-        }
-    }
+	public byte[] getBufferedBytes() {
+		try {
+			if (writer != null)
+				writer.close();
+			    baos.flush();
+		} catch (IOException e) {
+			logger.errorMessage(e.getMessage(), e);
+		}
+		byte[] byteArray = baos.toByteArray();
+		return byteArray;
+	}
 
-    public ServletOutputStream getOutputStream() throws IOException {
-        if (writer != null) {
-            throw new IllegalStateException("getWriter() has already been called!");
-        }
-
-        if (stream == null)
-            stream = createOutputStream();
-        return (stream);
-    }
-
-    public PrintWriter getWriter() throws IOException {
-        if (writer != null) {
-            return (writer);
-        }
-
-        if (stream != null) {
-            throw new IllegalStateException("getOutputStream() has already been called!");
-        }
-
-        stream = createOutputStream();
-        writer = new PrintWriter(new OutputStreamWriter(stream, "UTF-8"));
-        return (writer);
-    }
-
-    public void setContentLength(int length) {
-    }
 }

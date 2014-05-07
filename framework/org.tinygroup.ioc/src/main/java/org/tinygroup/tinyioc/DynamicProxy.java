@@ -64,7 +64,7 @@ public class DynamicProxy implements MethodInterceptor {
         Object result = null;
         try {
             result = methodProxy.invokeSuper(target, args);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             exception(target, method, e, args);
             throw e;
         }

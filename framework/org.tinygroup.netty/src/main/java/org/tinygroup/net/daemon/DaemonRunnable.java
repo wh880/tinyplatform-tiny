@@ -23,6 +23,7 @@
  */
 package org.tinygroup.net.daemon;
 
+import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
@@ -43,7 +44,9 @@ public abstract class DaemonRunnable implements Runnable {
 	 */
 	public void stop() {
 		this.end = true;
+        logger.log(LogLevel.INFO,"开始停止运行...");
 		stopAction();
+        logger.log(LogLevel.INFO,"停止运行结束。");
 	}
 
 	public int getWaitTime() {
@@ -65,10 +68,10 @@ public abstract class DaemonRunnable implements Runnable {
 	public void run() {
 		while (!end) {
 			try {
-				System.out.println("开始运行...");
+                logger.log(LogLevel.INFO,"开始启动运行...");
 				startAction();
-				System.out.println("运行结束。");
-			} catch (Throwable e) {
+                logger.log(LogLevel.INFO,"运行启动结束。");
+			} catch (Exception e) {
 				logger.error(e);
 			} finally {
 				try {

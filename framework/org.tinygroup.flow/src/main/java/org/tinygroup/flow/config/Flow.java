@@ -38,282 +38,199 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 /**
  * 流程，如果节点的名称叫exception，则表示是整个流程的异常处理节点，里面只能添加异常类的nextNode
  * 在执行时，如果节点没有处理，则异常会由本部分进行处理，本部分没有处理，则由异常管理器进行处理。
- * 
+ *
  * @author luoguo
- * 
  */
 
 @XStreamAlias("flow")
 public class Flow {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7228372373320970405L;
-	@XStreamAsAttribute
-	@XStreamAlias("engine-version")
-	private String engineVersion;
-	public static final String BEGIN_ID = "begin";
-	public static final String END_ID = "end";
-	public static final String NEXT_ID = "next";
-	@XStreamAsAttribute
-	@XStreamAlias("extend-flow-id")
-	private String extendFlowId;// 继承的flowID
-	@XStreamAsAttribute
-	@XStreamAlias("extend-flow-version")
-	private String extendFlowVersion;// 继承的版本
-	@XStreamAsAttribute
-	private String id;// flow的唯一ID
-	@XStreamAsAttribute
-	private String name;// flow的名字
-	@XStreamAsAttribute
-	private String title;// 流程名称
-	private String description;// 流程说明
-	private List<Node> nodes;// 流程节点
-	private transient Map<String, Node> nodeMap;
-	private transient FlowExecutor flowExecutor;
-	private transient boolean assembled = false;// 是否已经组装完毕
-	@XStreamAsAttribute
-	@XStreamAlias("default-node-id")
-	private String defaultNodeId = NEXT_ID;// 流程默认节点，所有没有明确的下一步操作，都被转到此节点执行，默认为到下一节点
-	@XStreamAsAttribute
-	@XStreamAlias("begin-node-id")
-	private String beginNodeId = BEGIN_ID;
-	@XStreamAsAttribute
-	@XStreamAlias("end-node-id")
-	private String endNodeId = END_ID;
-	@XStreamAsAttribute
-	@XStreamAlias("private-context")
-	private boolean privateContext = false;
-	@XStreamAsAttribute
-	private boolean enable;// 是否可用
-	@XStreamAsAttribute
-	private String version;// 版本号
+    /**
+     *
+     */
+    private static final long serialVersionUID = -7228372373320970405L;
+    @XStreamAsAttribute
+    @XStreamAlias("extend-flow-id")
+    private String extendFlowId;// 继承的flowID
+    @XStreamAsAttribute
+    private String id;// flow的唯一ID
+    @XStreamAsAttribute
+    private String name;// flow的名字
+    @XStreamAsAttribute
+    private String title;// 流程名称
+    private String description;// 流程说明
+    private List<Node> nodes;// 流程节点
+    private transient Map<String, Node> nodeMap;
+    private transient FlowExecutor flowExecutor;
+    private transient boolean assembled = false;// 是否已经组装完毕
+    @XStreamAsAttribute
+    @XStreamAlias("private-context")
+    private boolean privateContext = false;
+    @XStreamAsAttribute
+    private boolean enable;// 是否可用
 
-	@XStreamAlias("parameters")
-	private List<Parameter> parameters;// 流程的参数
+    @XStreamAlias("parameters")
+    private List<Parameter> parameters;// 流程的参数
 
 
-	public List<Parameter> getInputParameters() {
-		if (parameters == null) {
-			return null;
-		}
-		List<Parameter> result = new ArrayList<Parameter>();
-		for (Parameter parameter : parameters) {
-			if (parameter.getScope() == null
-					|| parameter.getScope().equalsIgnoreCase(Parameter.BOTH)
-					|| parameter.getScope().equalsIgnoreCase(Parameter.INPUT)) {
-				result.add(parameter);
-			}
-		}
-		return result;
-	}
+    public List<Parameter> getInputParameters() {
+        if (parameters == null) {
+            return null;
+        }
+        List<Parameter> result = new ArrayList<Parameter>();
+        for (Parameter parameter : parameters) {
+            if (parameter.getScope() == null
+                    || parameter.getScope().equalsIgnoreCase(Parameter.BOTH)
+                    || parameter.getScope().equalsIgnoreCase(Parameter.INPUT)) {
+                result.add(parameter);
+            }
+        }
+        return result;
+    }
 
-	public List<Parameter> getOutputParameters() {
-		if (parameters == null) {
-			return null;
-		}
-		List<Parameter> result = new ArrayList<Parameter>();
-		for (Parameter parameter : parameters) {
-			if (parameter.getScope() == null
-					|| parameter.getScope().equalsIgnoreCase(Parameter.BOTH)
-					|| parameter.getScope().equalsIgnoreCase(Parameter.OUTPUT)) {
-				result.add(parameter);
-			}
-		}
-		return result;
-	}
+    public List<Parameter> getOutputParameters() {
+        if (parameters == null) {
+            return null;
+        }
+        List<Parameter> result = new ArrayList<Parameter>();
+        for (Parameter parameter : parameters) {
+            if (parameter.getScope() == null
+                    || parameter.getScope().equalsIgnoreCase(Parameter.BOTH)
+                    || parameter.getScope().equalsIgnoreCase(Parameter.OUTPUT)) {
+                result.add(parameter);
+            }
+        }
+        return result;
+    }
 
-	public void setParameters(List<Parameter> parameters) {
-		this.parameters = parameters;
-	}
+    public void setParameters(List<Parameter> parameters) {
+        this.parameters = parameters;
+    }
 
-	public String getEngineVersion() {
-		return engineVersion;
-	}
+    public boolean isEnable() {
+        return enable;
+    }
 
-	public void setEngineVersion(String engineVersion) {
-		this.engineVersion = engineVersion;
-	}
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
 
-	public String getExtendFlowVersion() {
-		return extendFlowVersion;
-	}
 
-	public void setExtendFlowVersion(String extendFlowVersion) {
-		this.extendFlowVersion = extendFlowVersion;
-	}
+    public boolean isPrivateContext() {
+        return privateContext;
+    }
 
-	public boolean isEnable() {
-		return enable;
-	}
+    public void setPrivateContext(boolean privateContext) {
+        this.privateContext = privateContext;
+    }
 
-	public void setEnable(boolean enable) {
-		this.enable = enable;
-	}
+    public void assemble() {
+        if (assembled) {
+            return;
+        }
+        if (extendFlowId != null) {
+            Flow parentFlow = flowExecutor.getFlowIdMap().get(extendFlowId);
+            if (parentFlow == null) {
+                throw new FlowRuntimeException("flow.flowNotExist", parentFlow);
+            } else {
+                parentFlow.assemble();
+                copyFlow(parentFlow);
+            }
+        }
+        assembled = true;
+    }
 
-	public String getVersion() {
-		return version;
-	}
+    private void copyFlow(Flow parentFlow) {
+        List<Node> tmpNodes = nodes;
+        nodes = new ArrayList<Node>();
+        nodes.addAll(parentFlow.getNodes());// 首先把父亲所有节点复制过来
+        for (Node node : tmpNodes) {
+            Node parentNode = parentFlow.getNodeMap().get(node.getId());
+            if (parentNode == null) {
+                // 如果父节点在子节点中不存在，则直接拿过来
+                getNodeMap().put(node.getId(), node);
+                nodes.add(node);
+            } else {
+                // 否则进行合并
+                int index = nodes.indexOf(parentNode);
+                nodes.remove(index);
+                node.combine(parentNode);
+                nodes.add(index, node);
+            }
+        }
+    }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public FlowExecutor getFlowExecutor() {
+        return flowExecutor;
+    }
 
-	public boolean isPrivateContext() {
-		return privateContext;
-	}
+    public void setFlowExecutor(FlowExecutor flowExecutor) {
+        this.flowExecutor = flowExecutor;
+    }
 
-	public void setPrivateContext(boolean privateContext) {
-		this.privateContext = privateContext;
-	}
+    public String getExtendFlowId() {
+        return extendFlowId;
+    }
 
-	public String getBeginNodeId() {
-		if (beginNodeId == null) {
-			beginNodeId = BEGIN_ID;
-		}
-		return beginNodeId;
-	}
+    public void setExtendFlowId(String extendFlowId) {
+        this.extendFlowId = extendFlowId;
+    }
 
-	public void setBeginNodeId(String beginNode) {
-		this.beginNodeId = beginNode;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getEndNodeId() {
-		if (endNodeId == null) {
-			endNodeId = END_ID;
-		}
-		return endNodeId;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setEndNodeId(String endNode) {
-		this.endNodeId = endNode;
-	}
-
-	public void assemble() {
-		if (assembled) {
-			return;
-		}
-		if (extendFlowId != null) {
-			Flow parentFlow = flowExecutor.getFlowIdMap().get(extendFlowId);
-			if (parentFlow == null) {
-				throw new FlowRuntimeException("flow.flowNotExist", parentFlow);
-			} else {
-				parentFlow.assemble();
-				copyFlow(parentFlow);
-			}
-		}
-		assembled = true;
-	}
-
-	private void copyFlow(Flow parentFlow) {
-		if (defaultNodeId == null) {
-			defaultNodeId = parentFlow.getDefaultNodeId();
-		}
-		if (beginNodeId == null) {
-			beginNodeId = parentFlow.getBeginNodeId();
-		}
-		if (endNodeId == null) {
-			endNodeId = parentFlow.getEndNodeId();
-		}
-		List<Node> tmpNodes = nodes;
-		nodes = new ArrayList<Node>();
-		nodes.addAll(parentFlow.getNodes());// 首先把父亲所有节点复制过来
-		for (Node node : tmpNodes) {
-			Node parentNode = parentFlow.getNodeMap().get(node.getId());
-			if (parentNode == null) {
-				// 如果父节点在子节点中不存在，则直接拿过来
-				getNodeMap().put(node.getId(), node);
-				nodes.add(node);
-			} else {
-				// 否则进行合并
-				int index = nodes.indexOf(parentNode);
-				nodes.remove(index);
-				node.combine(parentNode);
-				nodes.add(index, node);
-			}
-		}
-	}
-
-	public FlowExecutor getFlowExecutor() {
-		return flowExecutor;
-	}
-
-	public void setFlowExecutor(FlowExecutor flowExecutor) {
-		this.flowExecutor = flowExecutor;
-	}
-
-	public String getExtendFlowId() {
-		return extendFlowId;
-	}
-
-	public void setExtendFlowId(String extendFlowId) {
-		this.extendFlowId = extendFlowId;
-	}
-
-	public String getDefaultNodeId() {
-		return defaultNodeId;
-	}
-
-	public void setDefaultNodeId(String defaultNodeId) {
-		this.defaultNodeId = defaultNodeId;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public Map<String, Node> getNodeMap() {
-		if (nodeMap == null) {
-			nodeMap = new HashMap<String, Node>();
+    public Map<String, Node> getNodeMap() {
+        if (nodeMap == null) {
+            nodeMap = new HashMap<String, Node>();
             if (nodes != null) {
                 for (Node node : nodes) {
                     nodeMap.put(node.getId(), node);
                 }
             }
         }
-		return nodeMap;
-	}
+        return nodeMap;
+    }
 
-	public List<Node> getNodes() {
-		return nodes;
-	}
+    public List<Node> getNodes() {
+        return nodes;
+    }
 
-	public void setNodes(List<Node> nodes) {
-		this.nodes = nodes;
-	}
+    public void setNodes(List<Node> nodes) {
+        this.nodes = nodes;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 
-	public String getServiceName() {
-		return id;
-	}
+    public String getServiceName() {
+        return id;
+    }
 
 
     public List<Parameter> getParameters() {

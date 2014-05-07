@@ -23,9 +23,9 @@
  */
 package org.tinygroup.convert.xsdjava;
 
-import java.util.List;
-
 import org.tinygroup.convert.Converter;
+
+import java.util.List;
 
 public class SchemaToClass implements Converter<List<String>, Void> {
 	private String baseFolder;
@@ -51,7 +51,7 @@ public class SchemaToClass implements Converter<List<String>, Void> {
 		for (int i = 0; i < xsdFileNames.size(); i++) {
 			args[8] = xsdFileNames.get(i);
 			try {
-				XJCFacade.main(args);
+				XJCFacade.execute(args);
 			} catch (Throwable e) {
 				throw new RuntimeException(e);
 			}
