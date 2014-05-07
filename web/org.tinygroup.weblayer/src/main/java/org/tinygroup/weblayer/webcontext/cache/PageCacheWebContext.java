@@ -40,7 +40,7 @@ public interface PageCacheWebContext extends WebContext {
     * @param accessPath
     * @return
     */
-	public boolean isCached(String accessPath);
+	 boolean isCached(String accessPath);
 	
 	/**
 	 * 

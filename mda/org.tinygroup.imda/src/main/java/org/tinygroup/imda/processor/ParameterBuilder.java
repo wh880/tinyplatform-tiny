@@ -28,25 +28,25 @@ import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
 
 /**
  * 参数构建器<br>
- * 
+ * <p/>
  * 利用上下文构建服务调用时的参数
- * 
+ *
  * @author luoguo
- * 
  */
 public interface ParameterBuilder<T> {
-	
-	public static final String PAGE_SIZE="pageSize";
-	public static final String PAGE_NUMBER="pageNumber";
-	public static final String ORDER_BY_FIELD="sortField";//多个以逗号分隔
-	public static final String SORT_DIRECTION="sortDirection"; 
-	public static final String GROUP_BY_FIELD="groupByField"; 
-	/**
-	 * 检查并构建参数，如果参数已经存在，则不用管，如果参数不存在，则需要构建之
-	 * 
-	 * @param model
-	 * @param context
-	 */
-	Context buildParameter(ModelRequestInfo modelRequestInfo, Context context);
+
+    String PAGE_SIZE = "pageSize";
+    String PAGE_NUMBER = "pageNumber";
+    String ORDER_BY_FIELD = "sortField";//多个以逗号分隔
+    String SORT_DIRECTION = "sortDirection";
+    String GROUP_BY_FIELD = "groupByField";
+
+    /**
+     * 检查并构建参数，如果参数已经存在，则不用管，如果参数不存在，则需要构建之
+     *
+     * @param modelRequestInfo
+     * @param context
+     */
+    Context buildParameter(ModelRequestInfo modelRequestInfo, Context context);
 
 }

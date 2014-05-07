@@ -58,5 +58,5 @@ public interface Dialect {
 	 * @param sql
 	 * @return
 	 */
-	public String buildSqlFuction(String sql); 
+	 String buildSqlFuction(String sql);
 }

@@ -42,7 +42,7 @@ public interface DictLoader {
 	/**
 	 * 载入字典
 	 * 
-	 * @param context
+	 * @param dictManager
 	 */
 	void load(DictManager dictManager);
 
@@ -56,8 +56,8 @@ public interface DictLoader {
 	/**
 	 * 返回字典
 	 * 
-	 * @param groupName
 	 * @param dictTypeName
+	 * @param dictManager
 	 * @param context
 	 * @return
 	 */
@@ -82,7 +82,7 @@ public interface DictLoader {
 	 * 
 	 * @param language
 	 */
-	public void setLanguage(String language);
+	 void setLanguage(String language);
 
 	/**
 	 * 设置字典过滤器

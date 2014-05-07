@@ -23,44 +23,54 @@
  */
 package org.tinygroup.tinydb.service;
 
-import java.util.List;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.config.TableConfiguration;
 
+import java.util.List;
+
 public interface TinyDBService {
-	/**
-	 * 从本地获取table的结构信息
-	 * @param tableName
-	 * @return
-	 */
-	public TableConfiguration getTableConfig(String tableName,String schema);
-	/**
-	 * 从本地获取table的结构信息
-	 * @param beanType table对应的beanType
-	 * @return
-	 */
-	public TableConfiguration getTableConfigByBean(String beanType,String schema);
-	/**
-	 * 从本地获取bean的属性列表
-	 * @param beanType
-	 * @return
-	 */
-	public List<String> getBeanProperties(String beanType,String schema);
-	/**
-	 * 从context中获取一个bean对象,此方法调用必须保证容器中能获取Bean的定义
-	 * @param context 源context
-	 * @param beanType bean的beanType,
-	 * @return
-	 */
-	public Bean context2Bean(Context context,String beanType,String schema);
-	/**context
-	 * 从context中获取一个bean对象
-	 * @param context 源context
-	 * @param beanType bean的beanType
-	 * @param properties bean的属性列表
-	 * @return
-	 */
-	public Bean context2Bean(Context context,String beanType,List<String> properties,String schema);
+    /**
+     * 从本地获取table的结构信息
+     *
+     * @param tableName
+     * @return
+     */
+    TableConfiguration getTableConfig(String tableName, String schema);
+
+    /**
+     * 从本地获取table的结构信息
+     *
+     * @param beanType table对应的beanType
+     * @return
+     */
+    TableConfiguration getTableConfigByBean(String beanType, String schema);
+
+    /**
+     * 从本地获取bean的属性列表
+     *
+     * @param beanType
+     * @return
+     */
+    List<String> getBeanProperties(String beanType, String schema);
+
+    /**
+     * 从context中获取一个bean对象,此方法调用必须保证容器中能获取Bean的定义
+     *
+     * @param context  源context
+     * @param beanType bean的beanType,
+     * @return
+     */
+    Bean context2Bean(Context context, String beanType, String schema);
+
+    /**
+     * context
+     * 从context中获取一个bean对象
+     *
+     * @param context    源context
+     * @param beanType   bean的beanType
+     * @param properties bean的属性列表
+     * @return
+     */
+    Bean context2Bean(Context context, String beanType, List<String> properties, String schema);
 }

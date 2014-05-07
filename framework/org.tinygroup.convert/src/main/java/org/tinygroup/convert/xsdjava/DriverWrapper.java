@@ -59,7 +59,7 @@ public class DriverWrapper{
 	            public void run() {
 	                try {
 	                    _main(args);
-	                } catch( Throwable e ) {
+	                } catch( Exception e ) {
 	                    ex[0]=e;
 	                }
 	            }

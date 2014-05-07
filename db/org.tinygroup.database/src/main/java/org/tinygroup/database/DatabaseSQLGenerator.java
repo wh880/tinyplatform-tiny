@@ -27,70 +27,76 @@ import java.util.List;
 
 /**
  * 数据库脚本生成器
- * @author luoguo
  *
+ * @author luoguo
  */
 public interface DatabaseSQLGenerator {
 
-	/**
-	 * 返回自定义SQL的SQL语句
-	 * @param dialectName 方言名称
-	 * @param packgeName 包名 
-	 * @param customSqlName 自定义Sql名称
-	 * @return SQL语句
-	 */
-	String getCustomSql(String dialectName, String packgeName,
-			String customSqlName);
+    /**
+     * 返回自定义SQL的SQL语句
+     *
+     * @param dialectName   方言名称
+     * @param packgeName    包名
+     * @param customSqlName 自定义Sql名称
+     * @return SQL语句
+     */
+    String getCustomSql(String dialectName, String packgeName,
+                        String customSqlName);
 
 
-	/**
-	 * 返回建表语句
-	 * @param dialectName
-	 * @param packgeName
-	 * @param tableName
-	 * @return
-	 */
-	public String getCreateTableSql(String dialectName, String packgeName,
-			String tableName);
+    /**
+     * 返回建表语句
+     *
+     * @param dialectName
+     * @param packgeName
+     * @param tableName
+     * @return
+     */
+    String getCreateTableSql(String dialectName, String packgeName,
+                             String tableName);
 
-	/**
-	 * 返回视图创建SQL语句
-	 * @param dialectName
-	 * @param packgeName
-	 * @param viewName
-	 * @return
-	 */
-	public String getCreateViewSql(String dialectName, String packgeName,
-			String viewName);
-
-
-	/**
-	 * 返回索引SQL
-	 * @param dialectName
-	 * @param packgeName
-	 * @param indexName
-	 * @return
-	 */
-	public String getCreateIndexSql(String dialectName, String packgeName,
-			String tableName, String indexName);
+    /**
+     * 返回视图创建SQL语句
+     *
+     * @param dialectName
+     * @param packgeName
+     * @param viewName
+     * @return
+     */
+    String getCreateViewSql(String dialectName, String packgeName,
+                            String viewName);
 
 
-	/**
-	 * 返回创建存储过程SQL
-	 * @param dialectName
-	 * @param packgeName
-	 * @param procedureName
-	 * @return
-	 */
-	public String getCreateProcedureSql(String dialectName, String packgeName,
-			String procedureName);
+    /**
+     * 返回索引SQL
+     *
+     * @param dialectName
+     * @param packgeName
+     * @param indexName
+     * @return
+     */
+    String getCreateIndexSql(String dialectName, String packgeName,
+                             String tableName, String indexName);
 
-	/**
-	 * 返回初始化脚本
-	 * @param dialectName
-	 * @param tableName
-	 * @return
-	 */
-	public List<String> getInitDataSql(String dialectName, String tableName);
+
+    /**
+     * 返回创建存储过程SQL
+     *
+     * @param dialectName
+     * @param packgeName
+     * @param procedureName
+     * @return
+     */
+    String getCreateProcedureSql(String dialectName, String packgeName,
+                                 String procedureName);
+
+    /**
+     * 返回初始化脚本
+     *
+     * @param dialectName
+     * @param tableName
+     * @return
+     */
+    List<String> getInitDataSql(String dialectName, String tableName);
 
 }

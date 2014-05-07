@@ -26,22 +26,19 @@ package org.tinygroup.weblayer;
 
 /**
  * tiny web资源管理器
- * @author renhui
  *
+ * @author renhui
  */
 public interface TinyWebResourceManager {
-	
-	/**
-	 * tiny资源初始化（servlet或filter）
-	 */
-	public abstract void initTinyResources();
 
-	/**
-	 * tiny资源销毁（servlet或filter）
-	 */
-	public abstract void destoryTinyResources();
+    /**
+     * tiny资源初始化（servlet或filter）
+     */
+    void initTinyResources();
 
-	
-
+    /**
+     * tiny资源销毁（servlet或filter）
+     */
+    void destoryTinyResources();
 
 }

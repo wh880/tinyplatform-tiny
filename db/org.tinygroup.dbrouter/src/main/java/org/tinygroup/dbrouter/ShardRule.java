@@ -50,6 +50,6 @@ public interface ShardRule {
      * @param sql
      * @return
      */
-    public String getReplacedSql(String sql);
+    String getReplacedSql(String sql);
 
 }

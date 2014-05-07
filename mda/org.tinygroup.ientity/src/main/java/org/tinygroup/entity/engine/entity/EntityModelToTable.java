@@ -43,6 +43,6 @@ public interface EntityModelToTable{
 	 * @param model
 	 * @return
 	 */
-	public Table model2Table(EntityModel model);
+	 Table model2Table(EntityModel model);
 	
 }

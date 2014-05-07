@@ -176,7 +176,7 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements Ro
 	 * 查询记录不存在的回调操作
 	 */
 	interface WithNoResultCallBack {
-		public void callback(String tableName,Statement statement)throws SQLException ;
+		void callback(String tableName,Statement statement)throws SQLException ;
 	}
 
 }

@@ -24,20 +24,19 @@
 package org.tinygroup.expression;
 
 /**
- * 
  * 功能说明: 表达式管理器
-
+ * <p/>
  * 开发人员: renhui <br>
  * 开发时间: 2013-11-14 <br>
  * <br>
  */
 public interface ExpressionManager {
-	String MANAGER_BEAN_NAME="expressionManager";
-	
-	public void addExpressions(ExpressionConfigs expressions);
-	
-	public void removeExpressions(ExpressionConfigs expressions);
-	
-	public SqlExpression getExpression(String expressionId);
+    String MANAGER_BEAN_NAME = "expressionManager";
+
+    void addExpressions(ExpressionConfigs expressions);
+
+    void removeExpressions(ExpressionConfigs expressions);
+
+    SqlExpression getExpression(String expressionId);
 
 }

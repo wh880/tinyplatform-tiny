@@ -31,7 +31,6 @@ package org.tinygroup.weblayer;
  */
 public interface FilterWrapper {
 	
-	public void filterWrapper(WebContext context, TinyFilterHandler hander);
-	 
+	 void filterWrapper(WebContext context, TinyFilterHandler hander);
 
 }

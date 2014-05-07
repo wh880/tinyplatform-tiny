@@ -28,40 +28,38 @@ import org.tinygroup.tinydb.BeanOperatorManager;
 
 
 public interface DbBaseOperator extends DbRelationOperator {
-	
 
-	
-	/**
-	 * 设置schame
-	 * 
-	 * @param schame
-	 */
-	void setSchema(String schame);
-	
-	
-	void setBeanType(String beanType);
-	
-	String getBeanType();
-	
-	void setManager(BeanOperatorManager manager);
-	
-	BeanOperatorManager getManager();
-	/**
-	 * 获取schame
-	 * 
-	 * @param beanType
-	 */
-	String getSchema();
-	
-	public BeanDbNameConverter getBeanDbNameConverter();
-	
-	public void setBeanDbNameConverter(BeanDbNameConverter beanDbNameConverter);
-	
-	/**
-	 * 如果是自增长类型的Key返回新增加的值
-	 * 
-	 * @return
-	 */
-	int getAutoIncreaseKey();
+
+    /**
+     * 设置schame
+     *
+     * @param schame
+     */
+    void setSchema(String schame);
+
+
+    void setBeanType(String beanType);
+
+    String getBeanType();
+
+    void setManager(BeanOperatorManager manager);
+
+    BeanOperatorManager getManager();
+
+    /**
+     * 获取schame
+     */
+    String getSchema();
+
+    BeanDbNameConverter getBeanDbNameConverter();
+
+    void setBeanDbNameConverter(BeanDbNameConverter beanDbNameConverter);
+
+    /**
+     * 如果是自增长类型的Key返回新增加的值
+     *
+     * @return
+     */
+    int getAutoIncreaseKey();
 
 }

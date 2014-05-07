@@ -23,15 +23,15 @@
  */
 package org.tinygroup.tinydb;
 
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.config.SchemaConfigContainer;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.relation.Relation;
 import org.tinygroup.tinydb.relation.Relations;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Bean管理器
@@ -96,7 +96,6 @@ public interface BeanOperatorManager {
 	 * 根据表名获取表配置信息
 	 * 
 	 * @param tableName
-	 * @param schame
 	 * @return
 	 */
 	TableConfiguration getTableConfiguration(String tableName);
@@ -112,7 +111,6 @@ public interface BeanOperatorManager {
 	/**
 	 * 
 	 * @param beanType
-	 * @param schame
 	 * @return
 	 */
 	TableConfiguration getTableConfigurationByBean(String beanType);
@@ -130,13 +128,12 @@ public interface BeanOperatorManager {
 	 * @param schame
 	 * @return
 	 */
-	public List<String> getBeanProperties(String beanType,String schame);
+	 List<String> getBeanProperties(String beanType,String schame);
 	/**
 	 * 
 	 * 要处理的所有schema列表
-	 * @param schemas
 	 */
-	public void loadTablesFromSchemas();
+	 void loadTablesFromSchemas();
 	
 	
 	SchemaConfigContainer getSchemaContainer();
@@ -146,7 +143,7 @@ public interface BeanOperatorManager {
 	 * 获取所有schema下的所有表信息
 	 * @return
 	 */
-	public Map<String, Map<String, TableConfiguration>> getTableConfigurations();
+	 Map<String, Map<String, TableConfiguration>> getTableConfigurations();
 	
 	/**
 	 * 

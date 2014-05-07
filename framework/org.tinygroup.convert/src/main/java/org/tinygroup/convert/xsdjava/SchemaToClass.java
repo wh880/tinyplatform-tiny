@@ -52,7 +52,7 @@ public class SchemaToClass implements Converter<List<String>, Void> {
 			args[8] = xsdFileNames.get(i);
 			try {
 				XJCFacade.execute(args);
-			} catch (Throwable e) {
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}

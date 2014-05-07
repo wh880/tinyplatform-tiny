@@ -45,7 +45,7 @@ public class ServiceMappingFileProcessor extends AbstractFileProcessor {
 		ServiceMappingManager manager = SpringUtil
 				.getBean(ServiceMappingManager.MANAGER_BEAN);
 		XStream stream = XStreamFactory
-				.getXStream(ServiceMappingManager.XSTREAM_PACKAGENAME);
+				.getXStream(ServiceMappingManager.XSTREAM_PACKAGE_NAME);
 		for (FileObject fileObject : deleteList) {
 			logger.logMessage(LogLevel.INFO, "正在ServiceMappings文件[{0}]",
 					fileObject.getAbsolutePath());

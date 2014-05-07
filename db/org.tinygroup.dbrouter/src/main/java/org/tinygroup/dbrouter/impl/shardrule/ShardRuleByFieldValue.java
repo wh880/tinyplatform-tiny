@@ -83,7 +83,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 			if(fieldValueMatch==null){
 				return false;
 			}
-			return fieldValueMatch.match();
+			return fieldValueMatch.isMatch();
 		}
 		return true;
 
@@ -105,7 +105,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 	}
 
 	interface FieldValueMatch {
-		public boolean match();
+		boolean isMatch();
 	}
 
 	abstract class AbstractFieldValueMatch implements FieldValueMatch {
@@ -218,7 +218,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 			this.insert = insert;
 		}
 
-		public boolean match() {
+		public boolean isMatch() {
 			boolean match = false;
 			if (tableName.equals(insert.getTable().getName())) {
 				for (int i = 0; i < names.length; i++) {
@@ -272,7 +272,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 			this.delete = delete;
 		}
 
-		public boolean match() {
+		public boolean isMatch() {
 			String deleteTableName = delete.getTable().getName();
 			if (tableName.equals(deleteTableName)) {
 				return getWhereExpression(delete.getWhere());
@@ -298,7 +298,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 			}
 		}
 
-		public boolean match() {
+		public boolean isMatch() {
 			if (tableName.equals(update.getTable().getName())) {
 				Expression where = update.getWhere();
 				return getWhereExpression(where);
@@ -318,7 +318,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 			this.select = select;
 		}
 
-		public boolean match() {
+		public boolean isMatch() {
 			SelectBody body = select.getSelectBody();
 			if (body instanceof PlainSelect) {
 				PlainSelect plainSelect = (PlainSelect) body;

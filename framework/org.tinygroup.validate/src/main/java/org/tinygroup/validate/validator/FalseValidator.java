@@ -39,7 +39,7 @@ public class FalseValidator extends AbstractValidator {
 
 	public <T> void validate(String name, String title, T value,
 			ValidateResult validateResult) {
-		if (value != null && value instanceof Boolean
+		if (value instanceof Boolean
 				&& Boolean.getBoolean(value.toString())) {
 			validateResult.addError(name, i18nMessages.getMessage(
 					FALSE_VALIDATOR_MESSAGE_KEY, DEFAULT_MESSAGE, name, title));

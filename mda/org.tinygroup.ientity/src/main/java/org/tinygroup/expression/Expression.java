@@ -39,6 +39,6 @@ public interface Expression {
 	 * 表达式解释方法
 	 * @return
 	 */
-	public String interpret();
+	 String interpret();
 
 }

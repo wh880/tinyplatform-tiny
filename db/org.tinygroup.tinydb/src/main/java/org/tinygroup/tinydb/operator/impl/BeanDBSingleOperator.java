@@ -23,13 +23,6 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
@@ -41,6 +34,8 @@ import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.operator.DbSingleOperator;
 import org.tinygroup.tinydb.relation.Relation;
 import org.tinygroup.tinydb.util.TinyDBUtil;
+
+import java.util.*;
 
 public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 		DbSingleOperator<KeyType> {
@@ -54,14 +49,13 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 	 * 
 	 * @param bean
 	 * @param conditionColumns
-	 * @param tableName
-	 * 
+	 *
 	 * @return
 	 */
 	private int updateBean(Bean bean, List<String> conditionColumns) {
 		String sql = getUpdateSql(bean, conditionColumns);
 		SqlParameterValue[] params = getSqlParamterValue(bean, conditionColumns);
-		return executeBySqlParameterValues(sql.toString(), params);
+		return executeBySqlParameterValues(sql, params);
 	}
 
 	private Bean queryBean(KeyType beanId) {
@@ -79,7 +73,7 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 	 * 
 	 * bean对象描述的数据库记录是否存在
 	 * 
-	 * @param subBean
+	 * @param bean
 	 * @return
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
