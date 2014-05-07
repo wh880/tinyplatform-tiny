@@ -19,7 +19,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.vfs.FileObject;
 
 /**
  * Created by luoguo on 2014/5/4.
@@ -59,8 +58,12 @@ public class BundleManagerDefault implements BundleManager {
 	 * config.BundleDefine)
 	 */
 	public void removeBundle(BundleDefine bundleDefine) throws BundleException {
+		logger.logMessage(LogLevel.INFO, "开始移除Bundle:{0}", bundleDefine.getName());
 		if (bundleDefineMap.get(bundleDefine.getName()) != null) {
+			stop(bundleDefine);
 			bundleDefineMap.remove(bundleDefine.getName());
+			logger.logMessage(LogLevel.INFO, "移除Bundle:{0}完毕", bundleDefine.getName());
+			return ;
 		}
 		throw new BundleException("找不到杂物箱定义：" + bundleDefine.getName());
 	}
@@ -109,23 +112,27 @@ public class BundleManagerDefault implements BundleManager {
 		return tinyClassLoaderMap.get(bundleDefine);
 	}
 
-	public void start(BundleContext bundleContext) {
+	public void start() {
+		logger.logMessage(LogLevel.INFO, "开始启动所有Bundle");
 		for (BundleDefine bundleDefine : bundleDefineMap.values()) {
 			if (!tinyClassLoaderMap.containsKey(bundleDefine)) {// 如果说没有loader，就代表还没启动
-				start(bundleContext, bundleDefine);
+				start( bundleDefine);
 			}
 		}
+		logger.logMessage(LogLevel.INFO, "启动所有Bundle完毕");
 	}
 
-	public void stop(BundleContext bundleContext) {
+	public void stop() {
+		logger.logMessage(LogLevel.INFO, "开始停止所有Bundle");
 		for (BundleDefine bundleDefine : bundleDefineMap.values()) {
 			if (tinyClassLoaderMap.containsKey(bundleDefine)) {// 如果说有loader，就代表还没停止
-				stop(bundleContext, bundleDefine);
+				stop(bundleDefine);
 			}
 		}
+		logger.logMessage(LogLevel.INFO, "停止所有Bundle完毕");
 	}
 
-	public void start(BundleContext bundleContext, String bundle) {
+	public void start( String bundle) {
 		logger.logMessage(LogLevel.INFO, "开始启动Bundle:{0}", bundle);
 		BundleDefine bundleDefine = bundleDefineMap.get(bundle);
 		if (tinyClassLoaderMap.containsKey(bundleDefine)) {// 如果说有loader，就代表还已经启动
@@ -134,11 +141,11 @@ public class BundleManagerDefault implements BundleManager {
 		}
 		if(!checkDepend(bundleDefine, bundle))
 			return;
-		startBundle(bundleContext, bundleDefine, bundle);
+		startBundle(bundleDefine, bundle);
 		logger.logMessage(LogLevel.INFO, "启动Bundle:{0}完毕", bundle);
 	}
 
-	public void start(BundleContext bundleContext, BundleDefine bundleDefine) {
+	public void start(BundleDefine bundleDefine) {
 		String bundle = bundleDefine.getName();
 		logger.logMessage(LogLevel.INFO, "开始启动Bundle:{0}", bundle);
 		if (tinyClassLoaderMap.containsKey(bundleDefine)) {// 如果说有loader，就代表还已经启动
@@ -147,7 +154,7 @@ public class BundleManagerDefault implements BundleManager {
 		}
 		if(!checkDepend(bundleDefine, bundle))
 			return;
-		startBundle(bundleContext, bundleDefine, bundle);
+		startBundle( bundleDefine, bundle);
 		logger.logMessage(LogLevel.INFO, "启动Bundle:{0}完毕", bundle);
 	}
 	
@@ -163,10 +170,10 @@ public class BundleManagerDefault implements BundleManager {
 		return true;
 	}
 
-	private void startBundle(BundleContext bundleContext,
+	private void startBundle(
 			BundleDefine bundleDefine, String bundle) {
 
-		startBundleDepend(bundleContext, bundleDefine, bundle);
+		startBundleDepend(bundleDefine, bundle);
 
 		processEvents(beforeStartBundleEvent, bundleContext, bundleDefine);
 
@@ -178,14 +185,14 @@ public class BundleManagerDefault implements BundleManager {
 
 	}
 
-	private void startBundleDepend(BundleContext bundleContext,
+	private void startBundleDepend(
 			BundleDefine bundleDefine, String bundle) {
 		String[] dependens = bundleDefine.getDependencyArray(); // 获取所依赖的bundle项
 
 		for (String dependen : dependens) { // 启动所有的依赖项
 			logger.logMessage(LogLevel.DEBUG, "开始启动Bundle:{0}所依赖Bundle:{1}",
 					bundle, dependen);
-			start(bundleContext, dependen);
+			start(dependen);
 			logger.logMessage(LogLevel.DEBUG, "启动Bundle:{0}所依赖Bundle:{1}完毕",
 					bundle, dependen);
 		}
@@ -264,43 +271,45 @@ public class BundleManagerDefault implements BundleManager {
 		return paths;
 	}
 
-	public void stop(BundleContext bundleContext, String bundle) {
+	public void stop(String bundle) {
 		logger.logMessage(LogLevel.INFO, "开始停止Bundle:{0}", bundle);
-		if (!tinyClassLoaderMap.containsKey(bundle)) {// 如果没有loader，就代表已停止
+		BundleDefine bundleDefine = bundleDefineMap.get(bundle);
+		if (!tinyClassLoaderMap.containsKey(bundleDefine)) {// 如果没有loader，就代表已停止
 			logger.logMessage(LogLevel.INFO, "Bundle:{0}已停止，无需再次停止", bundle);
 			return;
 		}
-		BundleDefine bundleDefine = bundleDefineMap.get(bundle);
-		stopBundle(bundleContext, bundleDefine, bundle);
+		
+		stopBundle(bundleDefine, bundle);
 		logger.logMessage(LogLevel.INFO, "停止Bundle:{0}完毕", bundle);
 	}
 
-	public void stop(BundleContext bundleContext, BundleDefine bundleDefine) {
+	public void stop(BundleDefine bundleDefine) {
 		String bundle = bundleDefine.getName();
 		logger.logMessage(LogLevel.INFO, "开始停止Bundle:{0}", bundle);
-		if (!tinyClassLoaderMap.containsKey(bundle)) {// 如果没有loader，就代表已停止
+		if (!tinyClassLoaderMap.containsKey(bundleDefine)) {// 如果没有loader，就代表已停止
 			logger.logMessage(LogLevel.INFO, "Bundle:{0}已停止，无需再次停止", bundle);
 			return;
 		}
-		stopBundle(bundleContext, bundleDefine, bundle);
+		stopBundle(bundleDefine, bundle);
 		logger.logMessage(LogLevel.INFO, "停止Bundle:{0}完毕", bundle);
 	}
 
-	private void stopBundle(BundleContext bundleContext,
+	private void stopBundle(
 			BundleDefine bundleDefine, String bundle) {
 
-		stopBundleDependBy(bundleContext, bundleDefine, bundle);
+		stopBundleDependBy(bundleDefine, bundle);
 
 		processEvents(beforeStopBundleEvent, bundleContext, bundleDefine);
-
+		
+		tinyClassLoader.removeSubTinyClassLoader(tinyClassLoaderMap.get(bundleDefine));
 		tinyClassLoaderMap.remove(bundleDefine);
-
-		stopBundleActivator(bundleDefine, bundle);
+		
+		stopBundleActivator(bundleContext,bundleDefine, bundle);
 
 		processEvents(afterStopBundleEvent, bundleContext, bundleDefine);
 	}
 
-	private void stopBundleDependBy(BundleContext bundleContext,
+	private void stopBundleDependBy(
 			BundleDefine bundleDefine, String bundle) {
 		List<String> dependencyByList = new ArrayList<String>();
 		for (BundleDefine b : bundleDefineMap.values()) {
@@ -311,17 +320,17 @@ public class BundleManagerDefault implements BundleManager {
 				}
 			}
 		}
-
+		
 		for (String dependenBy : dependencyByList) { // 启动所有的依赖项
 			logger.logMessage(LogLevel.DEBUG, "开始停止依赖Bundle:{0}的Bundle:{1}",
 					bundle, dependenBy);
-			stop(bundleContext, dependenBy);
+			stop( dependenBy);
 			logger.logMessage(LogLevel.DEBUG, "停止依赖Bundle:{0}的Bundle:{1}完毕",
 					bundle, dependenBy);
 		}
 	}
 
-	private void stopBundleActivator(BundleDefine bundleDefine, String bundle) {
+	private void stopBundleActivator(BundleContext bundleContext,BundleDefine bundleDefine, String bundle) {
 		// 执行activator
 		String activatorBean = bundleDefine.getBundleActivator();
 		if (activatorBean != null && !"".equals(activatorBean)) {

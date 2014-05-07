@@ -33,12 +33,12 @@ interface BatchBundleManager {
     /**
      * 启动所有Bundle，如果有Bundle启动出错，则记录日志，不影响其它Bundle启动
      */
-    void start(BundleContext bundleContext);
+    void start();
 
 
     /**
      * 停止所有Bundle，如果有Bundle启动出错，则记录日志，不影响其它Bundle停止
      */
-    void stop(BundleContext bundleContext);
+    void stop();
 
 }
