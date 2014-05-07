@@ -23,14 +23,13 @@
  */
 package org.tinygroup.convert.base64bytearray;
 
+import com.thoughtworks.xstream.core.util.Base64Encoder;
 import org.tinygroup.convert.Converter;
 
-import com.thoughtworks.xstream.core.util.Base64Encoder;
-
 public class Base64ToByteArray implements Converter<String, byte[]> {
-	Base64Encoder base64Encoder = new Base64Encoder();
+    private Base64Encoder base64Encoder = new Base64Encoder();
 
-	public byte[] convert(String inputData) {
-		return base64Encoder.decode(inputData.trim());
-	}
+    public byte[] convert(String inputData) {
+        return base64Encoder.decode(inputData.trim());
+    }
 }

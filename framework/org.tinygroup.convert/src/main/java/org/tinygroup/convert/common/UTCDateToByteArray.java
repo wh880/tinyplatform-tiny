@@ -23,13 +23,13 @@
  */
 package org.tinygroup.convert.common;
 
+import org.tinygroup.convert.Converter;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.tinygroup.convert.Converter;
-
 public class UTCDateToByteArray implements Converter<Date, byte[]> {
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"yyyyMMdd-hh:mm:ss");
 
 	public byte[] convert(Date inputData) {

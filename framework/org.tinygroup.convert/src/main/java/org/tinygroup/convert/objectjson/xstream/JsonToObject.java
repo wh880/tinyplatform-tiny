@@ -29,7 +29,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 
 public class JsonToObject<T> implements Converter<String, T> {
-	XStream xstream;
+	private XStream xstream;
 
 	public JsonToObject(Class<T> rootClass) {
 		xstream = new XStream(new JettisonMappedXmlDriver());

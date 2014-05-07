@@ -23,10 +23,6 @@
  */
 package org.tinygroup.convert.textxml.fixwidth;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.text.TextBaseParse;
 import org.tinygroup.convert.text.config.Text;
@@ -35,6 +31,10 @@ import org.tinygroup.convert.text.config.TextRow;
 import org.tinygroup.convert.util.ConvertUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class XmlToText extends TextBaseParse implements
 		Converter<String, String> {
@@ -52,17 +52,15 @@ public class XmlToText extends TextBaseParse implements
 	 *            行节点名称
 	 * @param lineSplit
 	 *            行分隔附
-	 * @param fieldSplit
-	 *            字段分隔符
 	 */
 	public XmlToText(Map<String, String> titleMap, List<String> fieldList,
 			String rootNodeName, String rowNodeName, String lineSplit) {
 		this.rootNodeName = rootNodeName;
 		this.rowNodeName = rowNodeName;
 		this.lineSplit = lineSplit;
-		this.titleMap = titleMap;
 		this.fieldList = fieldList;
-	}
+        setTitleMap(titleMap);
+    }
 
 	private String getNodeValue(XmlNode node){
 		if(node==null)

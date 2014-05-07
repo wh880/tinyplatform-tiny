@@ -23,11 +23,6 @@
  */
 package org.tinygroup.convert.objecttxt.fixwidth;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.text.config.Text;
@@ -35,6 +30,11 @@ import org.tinygroup.convert.text.config.TextCell;
 import org.tinygroup.convert.text.config.TextRow;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ObjectToText<T> implements Converter<List<T>, String> {
 	private static Logger logger = LoggerFactory.getLogger(ObjectToText.class);
@@ -84,21 +84,22 @@ public class ObjectToText<T> implements Converter<List<T>, String> {
 			}
 		}
 		TextCell cell = new TextCell(title);
-		rows.get(0).addCell(cell); // 将列头加入数据
-
-		int maxLength = getLength(title); // 设置列头数据长度为最大长度
+        // 将列头加入数据
+		rows.get(0).addCell(cell);
+// 设置列头数据长度为最大长度
+		int maxLength = getLength(title);
 
 		for (int i = 0; i < inputDatas.size(); i++) {
 			int length = 0;
 			try {
 				String value = getAttributeValue(inputDatas.get(i), property);
-				length = getLength(value);// value.length();
+				length = getLength(value);
 				if (length > maxLength) {
 					maxLength = length;
 				}
-				// columnDatas.add(value);
 				TextCell dataCell = new TextCell(value);
-				rows.get(i+1).addCell(dataCell); // 将第n列的数据加入列表
+                // 将第n列的数据加入列表
+				rows.get(i+1).addCell(dataCell);
 			} catch (Exception e) {
 				logger.errorMessage("读取第{0}列数据的属性{1}时出错", e, i, property);
 			}

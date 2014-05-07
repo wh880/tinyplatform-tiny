@@ -28,7 +28,7 @@ import org.tinygroup.convert.Converter;
 import com.thoughtworks.xstream.XStream;
 
 public class ObjectToXml<T> implements Converter<T, String> {
-	XStream xstream;
+	private XStream xstream;
 
 	public ObjectToXml() {
 		xstream = new XStream();

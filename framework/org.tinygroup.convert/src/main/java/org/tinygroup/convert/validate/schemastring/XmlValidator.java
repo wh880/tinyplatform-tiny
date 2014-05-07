@@ -23,6 +23,9 @@
  */
 package org.tinygroup.convert.validate.schemastring;
 
+import org.tinygroup.commons.io.ByteArrayInputStream;
+import org.tinygroup.convert.ObjectValidator;
+
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -30,13 +33,9 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import org.tinygroup.commons.io.ByteArrayInputStream;
-import org.tinygroup.convert.ObjectValidator;
-import org.xml.sax.SAXException;
-
 public class XmlValidator implements ObjectValidator<String> {
-    String encode = "UTF-8";
-    Schema schema;
+    private String encode = "UTF-8";
+    private Schema schema;
 
     public XmlValidator(String schemaContent, String encode) {
         this(schemaContent);

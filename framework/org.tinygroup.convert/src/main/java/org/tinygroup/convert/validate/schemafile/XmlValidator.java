@@ -23,9 +23,8 @@
  */
 package org.tinygroup.convert.validate.schemafile;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
+import org.tinygroup.commons.io.ByteArrayInputStream;
+import org.tinygroup.convert.ObjectValidator;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
@@ -33,15 +32,13 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-
-import org.tinygroup.commons.io.ByteArrayInputStream;
-import org.tinygroup.convert.ObjectValidator;
-import org.xml.sax.SAXException;
+import java.io.File;
+import java.net.URL;
 
 public class XmlValidator implements ObjectValidator<String> {
-    URL schemaFile;
-    Schema schema;
-    String encode = "UTF-8";
+    private URL schemaFile;
+    private Schema schema;
+    private String encode = "UTF-8";
 
     public String getEncode() {
         return encode;
@@ -64,9 +61,7 @@ public class XmlValidator implements ObjectValidator<String> {
             schemaFile = xmlSchemaFile.toURL();
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             this.schema = schemaFactory.newSchema(schemaFile);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (SAXException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

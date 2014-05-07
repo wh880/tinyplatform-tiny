@@ -39,15 +39,6 @@ public class XJCFacade {
 
     @SuppressWarnings("rawtypes")
     public static void execute(String[] args) throws Exception {
-        String v = "2.0"; // by default, we go 2.0
-
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-source")) {
-                if (i + 1 < args.length) {
-                    v = parseVersion(args[i + 1]);
-                }
-            }
-        }
 
         try {
             ClassLoader cl = SecureLoader.getClassClassLoader(XJCFacade.class);
@@ -69,12 +60,5 @@ public class XJCFacade {
         }
     }
 
-    private static String parseVersion(String version) {
-        if (version.equals("1.0"))
-            return version;
-        // if we don't recognize the version number, we'll go to 2.0 RI
-        // anyway. It's easier to report an error message there,
-        // than in here.
-        return "2.0";
-    }
+
 }

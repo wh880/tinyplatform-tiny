@@ -23,12 +23,12 @@
  */
 package org.tinygroup.convert.textxml.simple;
 
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.convert.Converter;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.util.List;
+import java.util.Map;
 
 public class XmlToText implements Converter<String, String> {
 	private String rootNodeName;
@@ -77,7 +77,8 @@ public class XmlToText implements Converter<String, String> {
 				sb.append(titleMap.get(fieldList.get(i)));
 			}
 			sb.append(lineSplit);
-			for (int row = 0; row < rowList.size(); row++) {// 对所有的行进行处理
+            // 对所有的行进行处理
+			for (int row = 0; row < rowList.size(); row++) {
 				XmlNode rowNode = rowList.get(row);
 				for (int i = 0; i < fieldList.size(); i++) {
 					XmlNode fieldNode = rowNode.getSubNode(fieldList.get(i));

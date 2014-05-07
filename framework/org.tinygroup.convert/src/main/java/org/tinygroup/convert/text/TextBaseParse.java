@@ -23,20 +23,28 @@
  */
 package org.tinygroup.convert.text;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.convert.text.config.Text;
 import org.tinygroup.convert.text.config.TextCell;
 import org.tinygroup.convert.text.config.TextRow;
 import org.tinygroup.convert.util.ConvertUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class TextBaseParse {
 
-	protected Map<String, String> titleMap;
+	private Map<String, String> titleMap;
 
-	protected TextRow computeDataRow(List<String> values) {
+    public Map<String, String> getTitleMap() {
+        return titleMap;
+    }
+
+    public void setTitleMap(Map<String, String> titleMap) {
+        this.titleMap = titleMap;
+    }
+
+    protected TextRow computeDataRow(List<String> values) {
 		TextRow dataRow = new TextRow();
 		for (int j = 0; j < values.size(); j++) {
 			TextCell cell = new TextCell(values.get(j).trim());
@@ -133,19 +141,19 @@ public class TextBaseParse {
 	}
 
 	public Text computeFixWidthText(String inputData, String lineSplit) {
-		String[] lines = inputData.split(lineSplit); // 总行数(包含titleRow)
-		List<Integer> fieldStrPosList = getFieldEndPos(lines[0]); // 根据titleRow计算每列数据的位置
-		List<Integer> filedBytesPosList = new ArrayList<Integer>(); // 存放每列的长度(按byte算的)
+        // 总行数(包含titleRow)
+		String[] lines = inputData.split(lineSplit);
+        // 根据titleRow计算每列数据的位置
+		List<Integer> fieldStrPosList = getFieldEndPos(lines[0]);
+        // 存放每列的长度(按byte算的)
+		List<Integer> filedBytesPosList = new ArrayList<Integer>();
+        // 计算title
 		List<String> titles = getFixTitle(lines[0], fieldStrPosList,
-				filedBytesPosList); // 计算title
+				filedBytesPosList);
 		Text text = new Text();
 		text.addRow(computeTitleRow(titles));
 
 		for (int i = 1; i < lines.length; i++) {
-			// if (lines[i].length() != lines[0].length()) {
-			// throw new RuntimeException("标题行长度(" + lines[0].length()
-			// + ")与第【" + i + "】行的数据长度(" + lines[i].length() + ")不相等");
-			// }
 			List<String> values = getFixData(lines[i], filedBytesPosList);
 			text.addRow(computeDataRow(values));
 		}

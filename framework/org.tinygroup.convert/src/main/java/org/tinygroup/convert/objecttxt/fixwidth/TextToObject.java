@@ -23,13 +23,13 @@
  */
 package org.tinygroup.convert.objecttxt.fixwidth;
 
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.convert.Converter;
 import org.tinygroup.convert.text.TextBaseParse;
 import org.tinygroup.convert.text.config.Text;
 import org.tinygroup.convert.util.ConvertUtil;
+
+import java.util.List;
+import java.util.Map;
 
 public class TextToObject<T> extends TextBaseParse implements Converter<String, List<T>> {
 	private String lineSplit;
@@ -38,7 +38,7 @@ public class TextToObject<T> extends TextBaseParse implements Converter<String, 
 	public TextToObject(Class<T> clazz,Map<String, String> titleMap,String lineSplit) {
 		this.clazz = clazz;
 		this.lineSplit = lineSplit;
-		this.titleMap  = titleMap;
+		setTitleMap(titleMap);
 	}
 
 	public List<T> convert(String inputData) {

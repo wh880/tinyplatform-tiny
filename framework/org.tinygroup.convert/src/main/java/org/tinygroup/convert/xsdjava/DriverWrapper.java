@@ -47,7 +47,8 @@ public class DriverWrapper{
 	        }
 
 	        if( Util.getSystemProperty(Driver.class,"noThreadSwap")!=null )
-	            _main(args);    // for the ease of debugging
+                // for the ease of debugging
+	            _main(args);
 
 	        // run all the work in another thread so that the -Xss option
 	        // will take effect when compiling a large schema. See

@@ -23,28 +23,28 @@
  */
 package org.tinygroup.convert.common;
 
+import org.tinygroup.convert.Converter;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.tinygroup.convert.Converter;
-
 public class ByteArrayToUTCDate implements Converter<byte[], Date> {
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"yyyyMMdd-hh:mm:ss");
-	SimpleDateFormat simpleDateFormatWithMS = new SimpleDateFormat(
-			"yyyyMMdd-hh:mm:ss.SSS");
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+            "yyyyMMdd-hh:mm:ss");
+    private SimpleDateFormat simpleDateFormatWithMS = new SimpleDateFormat(
+            "yyyyMMdd-hh:mm:ss.SSS");
 
-	public Date convert(byte[] inputData) {
-		String str = new String(inputData);
-		try {
-			if (str.indexOf('.') > 0) {
-				return simpleDateFormatWithMS.parse(str);
-			} else {
-				return simpleDateFormat.parse(str);
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public Date convert(byte[] inputData) {
+        String str = new String(inputData);
+        try {
+            if (str.indexOf('.') > 0) {
+                return simpleDateFormatWithMS.parse(str);
+            } else {
+                return simpleDateFormat.parse(str);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

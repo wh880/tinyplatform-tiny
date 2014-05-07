@@ -27,8 +27,9 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.tinygroup.convert.Converter;
 
 public class JsonToObject<T> implements Converter<String, T> {
-    String encode="UTF-8";
-	ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+    private String encode="UTF-8";
+    // can reuse, share globally
+    private ObjectMapper mapper = new ObjectMapper();
 	private Class<T> rootClass;
     public JsonToObject(Class<T> rootClass,String encode) {
         this.rootClass = rootClass;
