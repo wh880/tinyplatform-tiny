@@ -1,4 +1,4 @@
-package org.tinygroup.bundle.fileProcessor;
+package org.tinygroup.bundle.fileprocessor;
 
 import org.tinygroup.bundle.BundleException;
 import org.tinygroup.bundle.BundleManager;

@@ -228,11 +228,11 @@ public class BundleManagerDefault implements BundleManager {
 		tinyClassLoaderMap.put(bundleDefine, bundleLoder);
 		tinyClassLoader.addSubTinyClassLoader(bundleLoder);
 		
-//		String[] dependens = bundleDefine.getDependencyArray(); // 获取所依赖的bundle项
-//		for (String dependen : dependens) { // 启动所有的依赖项
-//			BundleDefine dependenBundle = bundleDefineMap.get(dependen);
-//			bundleLoder.addSubTinyClassLoader(tinyClassLoaderMap.get(dependenBundle));
-//		}
+		String[] dependens = bundleDefine.getDependencyArray(); // 获取所依赖的bundle项
+		for (String dependen : dependens) { // 启动所有的依赖项
+			BundleDefine dependenBundle = bundleDefineMap.get(dependen);
+			bundleLoder.addSubTinyClassLoader(tinyClassLoaderMap.get(dependenBundle));
+		}
 	}
 
 	private String getBundleDir(String bundleName) {
