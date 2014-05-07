@@ -6,7 +6,7 @@
 	
 	<!-- bundle相关 -->
 	<bean id="bundleFileProcessor" scope="singleton"
-		class="org.tinygroup.bundle.fileProcessor.BundleFileProcessor">
+		class="org.tinygroup.bundle.fileprocessor.BundleFileProcessor">
 		<property name="bundleManager">
 			<ref bean="bundleManager" />
 		</property>
