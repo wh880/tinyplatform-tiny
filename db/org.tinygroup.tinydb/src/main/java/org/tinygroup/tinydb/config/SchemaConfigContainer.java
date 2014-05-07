@@ -23,104 +23,104 @@
  */
 package org.tinygroup.tinydb.config;
 
+import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.tinydb.operator.DBOperator;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinydb.operator.DBOperator;
-
 public class SchemaConfigContainer {
-	// public static String UUID_KEY = "uuid";
-	public static String INCREASE_KEY = "increase"; // 主键类型--自增长
-	/**
-	 * Map<schema,operatorBeanName>
-	 */
-	private Map<String, String> schemaMap = new HashMap<String, String>();
-	/**
-	 * Map<schema,keyType>
-	 */
-	private Map<String, String> schemaKeyTypeMap = new HashMap<String, String>();
-	/**
-	 * Map<schema,List<BeanName>>
-	 */
-	private Map<String, List<String>> schemaBeanListMap = new HashMap<String, List<String>>();
-	private List<String> schemaList = new ArrayList<String>();
+    // public static String UUID_KEY = "uuid";
+    public final static String INCREASE_KEY = "increase"; // 主键类型--自增长
+    /**
+     * Map<schema,operatorBeanName>
+     */
+    private Map<String, String> schemaMap = new HashMap<String, String>();
+    /**
+     * Map<schema,keyType>
+     */
+    private Map<String, String> schemaKeyTypeMap = new HashMap<String, String>();
+    /**
+     * Map<schema,List<BeanName>>
+     */
+    private Map<String, List<String>> schemaBeanListMap = new HashMap<String, List<String>>();
+    private List<String> schemaList = new ArrayList<String>();
 
-	/**
-	 * Map<schema,tableNamePattern>
-	 */
-	private Map<String, String> schemaTablePattern = new HashMap<String, String>();
+    /**
+     * Map<schema,tableNamePattern>
+     */
+    private Map<String, String> schemaTablePattern = new HashMap<String, String>();
 
-	public String getKeyType(String schema) {
-		return schemaKeyTypeMap.get(schema);
-	}
+    public String getKeyType(String schema) {
+        return schemaKeyTypeMap.get(schema);
+    }
 
-	/**
-	 * 添加一个schema配置信息
-	 * 
-	 * @param config
-	 */
-	public void addSchemaConfig(SchemaConfig config) {
-		String schema = config.getSchema();
-		schemaMap.put(schema, config.getOperatorBeanName());
-		String keyType = config.getKeyType();
-		if (keyType == null || "".equals(keyType))
-			keyType = INCREASE_KEY;
-		schemaKeyTypeMap.put(schema, keyType);
-		schemaTablePattern.put(schema, config.getTableNamePattern());
-		if (!schemaList.contains(schema)) {
-			schemaList.add(schema);
-		}
-	}
+    /**
+     * 添加一个schema配置信息
+     *
+     * @param config
+     */
+    public void addSchemaConfig(SchemaConfig config) {
+        String schema = config.getSchema();
+        schemaMap.put(schema, config.getOperatorBeanName());
+        String keyType = config.getKeyType();
+        if (keyType == null || "".equals(keyType))
+            keyType = INCREASE_KEY;
+        schemaKeyTypeMap.put(schema, keyType);
+        schemaTablePattern.put(schema, config.getTableNamePattern());
+        if (!schemaList.contains(schema)) {
+            schemaList.add(schema);
+        }
+    }
 
-	/**
-	 * 根据schema和beanType获取一个operator
-	 * 
-	 * @param schema
-	 * @param beanType
-	 * @return
-	 */
-	public DBOperator<?> getDbOperator(String schema, String beanType) {
-		DBOperator<?> operator = SpringUtil.getBean(schemaMap.get(schema));
-		operator.setSchema(schema);
-		operator.setBeanType(beanType);
-		return operator;
-	}
+    /**
+     * 根据schema和beanType获取一个operator
+     *
+     * @param schema
+     * @param beanType
+     * @return
+     */
+    public DBOperator<?> getDbOperator(String schema, String beanType) {
+        DBOperator<?> operator = SpringUtil.getBean(schemaMap.get(schema));
+        operator.setSchema(schema);
+        operator.setBeanType(beanType);
+        return operator;
+    }
 
-	/**
-	 * 获取schema及其下的bean列表的映射
-	 * 
-	 * @return
-	 */
-	public Map<String, List<String>> getSchemaBeanListMap() {
-		return schemaBeanListMap;
-	}
+    /**
+     * 获取schema及其下的bean列表的映射
+     *
+     * @return
+     */
+    public Map<String, List<String>> getSchemaBeanListMap() {
+        return schemaBeanListMap;
+    }
 
-	/**
-	 * 获取当前所有的schema
-	 * 
-	 * @return
-	 */
-	public List<String> getSchemaList() {
-		return schemaList;
-	}
+    /**
+     * 获取当前所有的schema
+     *
+     * @return
+     */
+    public List<String> getSchemaList() {
+        return schemaList;
+    }
 
-	/**
-	 * 获取schema对应的表格名过滤正则
-	 * 
-	 * @param schema
-	 * @return
-	 */
-	public String getTablePattern(String schema) {
-		String pattern = schemaTablePattern.get(schema);
-		if (pattern == null) {
-			return null;
-		}
-		if (pattern.trim().equals("")) {
-			pattern = null;
-		}
-		return pattern;
-	}
+    /**
+     * 获取schema对应的表格名过滤正则
+     *
+     * @param schema
+     * @return
+     */
+    public String getTablePattern(String schema) {
+        String pattern = schemaTablePattern.get(schema);
+        if (pattern == null) {
+            return null;
+        }
+        if (pattern.trim().equals("")) {
+            pattern = null;
+        }
+        return pattern;
+    }
 }

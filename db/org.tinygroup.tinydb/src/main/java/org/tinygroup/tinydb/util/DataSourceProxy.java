@@ -28,28 +28,27 @@ import org.tinygroup.datasource.DynamicDataSource;
 
 /**
  * 数据源代理
- * 
+ *
  * @author luoguo
- * 
  */
 public class DataSourceProxy {
-	DynamicDataSource datasource;
-	TransactionTemplate transactionTemplate;
+    private DynamicDataSource datasource;
+    private TransactionTemplate transactionTemplate;
 
-	public DynamicDataSource getDatasource() {
-		return datasource;
-	}
+    public DynamicDataSource getDatasource() {
+        return datasource;
+    }
 
-	public void setDatasource(DynamicDataSource datasource) {
-		this.datasource = datasource;
-	}
+    public void setDatasource(DynamicDataSource datasource) {
+        this.datasource = datasource;
+    }
 
-	public TransactionTemplate getTransactionTemplate() {
-		return transactionTemplate;
-	}
+    public TransactionTemplate getTransactionTemplate() {
+        return transactionTemplate;
+    }
 
-	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
-		this.transactionTemplate = transactionTemplate;
-	}
+    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+        this.transactionTemplate = transactionTemplate;
+    }
 
 }

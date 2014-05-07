@@ -27,63 +27,62 @@ import java.util.List;
 
 /**
  * 查询条件描述接口
- * 
+ *
  * @author luoguo
- * 
  */
 public interface QueryBean {
-	String AND = "and";
-	String OR = "or";
+    String AND = "and";
+    String OR = "or";
 
-	/**
-	 * 是否有值，有的语句是没有值的，比如：is null;
-	 * 
-	 * @return
-	 */
-	boolean hasValue();
+    /**
+     * 是否有值，有的语句是没有值的，比如：is null;
+     *
+     * @return
+     */
+    boolean hasValue();
 
-	String getPropertyName();
+    String getPropertyName();
 
-	/**
-	 * 返回值
-	 * 
-	 * @return
-	 */
-	<T> T getValue();
+    /**
+     * 返回值
+     *
+     * @return
+     */
+    <T> T getValue();
 
-	/**
-	 * 返回查询子句
-	 * 
-	 * @return
-	 */
-	String getQueryClause();
+    /**
+     * 返回查询子句
+     *
+     * @return
+     */
+    String getQueryClause();
 
-	/**
-	 * 获取子查询
-	 * 
-	 * @return
-	 */
-	List<QueryBean> getQueryBeanList();
+    /**
+     * 获取子查询
+     *
+     * @return
+     */
+    List<QueryBean> getQueryBeanList();
 
-	/**
-	 * 添加下级查询描述
-	 * 
-	 * @param queryBean
-	 */
-	void addQueryBean(QueryBean queryBean);
+    /**
+     * 添加下级查询描述
+     *
+     * @param queryBean
+     */
+    void addQueryBean(QueryBean queryBean);
 
-	/**
-	 * 设置连接方式
-	 * 
-	 * @param connectMode
-	 */
-	void setConnectMode(String connectMode);
+    /**
+     * 设置连接方式
+     *
+     * @param connectMode
+     */
+    void setConnectMode(String connectMode);
 
-	/**
-	 * 返回连接方式
-	 * 
-	 * @return
-	 */
-	String getConnectMode();
+    /**
+     * 返回连接方式
+     *
+     * @return
+     */
+    String getConnectMode();
 
 }

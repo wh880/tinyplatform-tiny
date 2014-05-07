@@ -23,11 +23,11 @@
  */
 package org.tinygroup.tinydb.relation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 表间关系定义
@@ -44,29 +44,36 @@ public class Relation {
 	public static final String ARRAY_MODE = "Array";
 
 	@XStreamAsAttribute
-	String id;// 关系标识
+    // 关系标识
+	private String id;
 	@XStreamAsAttribute
-	String type;// 类型
+    // 类型
+    private String type;
 	@XStreamAsAttribute
 	@XStreamAlias("collection-mode")
-	String collectionMode;// array,list,set
+    // array,list,set
+    private String collectionMode;
 	//keyName是当前表中的外键字段
 	@XStreamAsAttribute
 	@XStreamAlias("key-name")
-	String keyName;// 外键属性，从表的关联名称，不一定与主表的主键名称相同
+    // 外键属性，从表的关联名称，不一定与主表的主键名称相同
+    private String keyName;
 	//若父bean与当前bean关系是ontToMore，则此属性作为当前bean存在于父bean的key值
 	@XStreamAlias("relation-key-name")
 	@XStreamAsAttribute
-	String relationKeyName;
+    private String relationKeyName;
 	//mainName是parent表中的主键字段
 	@XStreamAsAttribute
-	@XStreamAlias("main-name")//主表关联名称，不一定是主表的主键名称
-	String mainName;
+    //主表关联名称，不一定是主表的主键名称
+	@XStreamAlias("main-name")
+    private String mainName;
 	@XStreamAsAttribute
-	String mode;// 1..n,n..1
+    private String mode;// 1..n,n..1
 	@XStreamAlias("relations")
-	List<Relation> relations;// 子关系
-	transient Relation parent;// 父亲
+    // 子关系
+    private List<Relation> relations;
+    // 父亲
+    private transient Relation parent;
 	
 	
 	public Relation() {
