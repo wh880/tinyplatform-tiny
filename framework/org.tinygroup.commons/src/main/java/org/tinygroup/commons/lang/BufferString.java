@@ -65,7 +65,7 @@ public final class BufferString implements Comparable<BufferString> {
 		return buf[start + pos];
 	}
 
-	private boolean equals(BufferString myString) {
+	private boolean equalsBufferString(BufferString myString) {
 		if (hashCode() != myString.hashCode()) {
 			return false;
 		}
@@ -83,7 +83,7 @@ public final class BufferString implements Comparable<BufferString> {
 		}
 		if (object instanceof BufferString) {
 			BufferString string = (BufferString) object;
-			return equals(string);
+			return equalsBufferString(string);
 		}
 		return false;
 	}

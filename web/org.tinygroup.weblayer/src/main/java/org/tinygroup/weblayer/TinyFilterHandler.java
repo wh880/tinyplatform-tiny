@@ -116,7 +116,7 @@ public class TinyFilterHandler {
 				return;
 			}
 			processFlow(wrapperContext);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			logger.errorMessage("执行WebContext处理流程时出错，原因：{}", e, e.getMessage());
 			handleException(wrapperContext, e, context.getRequest(),
 					context.getResponse());

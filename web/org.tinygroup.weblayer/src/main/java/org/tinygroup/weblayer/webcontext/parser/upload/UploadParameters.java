@@ -23,50 +23,50 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.upload;
 
-import static org.tinygroup.commons.tools.ArrayUtil.*;
-import static org.tinygroup.commons.tools.Assert.*;
-
-import java.io.File;
-import java.util.Arrays;
-
 import org.tinygroup.commons.tools.HumanReadableSize;
 import org.tinygroup.commons.tools.SystemUtil;
 import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
 
+import java.io.File;
+import java.util.Arrays;
+
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
+
 
 /**
  * multipart/form-data</code>类型的HTTP请求参数上传
- * @author renhui
  *
+ * @author renhui
  */
 public class UploadParameters implements UploadConfiguration {
     private File repository;
-    private HumanReadableSize sizeMax       = new HumanReadableSize(SIZE_MAX_DEFAULT);
-    private HumanReadableSize fileSizeMax   = new HumanReadableSize(FILE_SIZE_MAX_DEFAULT);
+    private HumanReadableSize sizeMax = new HumanReadableSize(SIZE_MAX_DEFAULT);
+    private HumanReadableSize fileSizeMax = new HumanReadableSize(FILE_SIZE_MAX_DEFAULT);
     private HumanReadableSize sizeThreshold = new HumanReadableSize(SIZE_THRESHOLD_DEFAULT);
     private boolean keepFormFieldInMemory;
     private boolean saveInFile;
-    private String  fileNameKey[];
-    private boolean diskItemFactory=true;//是否是文件介质存储,默认是
-	private String itemStorageBeanName;//如果是其他存储介质，那么给定存储介质的beanname
+    private String fileNameKey[];
+    private boolean diskItemFactory = true;//是否是文件介质存储,默认是
+    private String itemStorageBeanName;//如果是其他存储介质，那么给定存储介质的beanname
 
-	public boolean isDiskItemFactory() {
-		return diskItemFactory;
-	}
+    public boolean isDiskItemFactory() {
+        return diskItemFactory;
+    }
 
-	public void setDiskItemFactory(boolean diskItemFactory) {
-		this.diskItemFactory = diskItemFactory;
-	}
+    public void setDiskItemFactory(boolean diskItemFactory) {
+        this.diskItemFactory = diskItemFactory;
+    }
 
-	public String getItemStorageBeanName() {
-		return itemStorageBeanName;
-	}
+    public String getItemStorageBeanName() {
+        return itemStorageBeanName;
+    }
 
-	public void setItemStorageBeanName(String itemStorageBeanName) {
-		this.itemStorageBeanName = itemStorageBeanName;
-	}
+    public void setItemStorageBeanName(String itemStorageBeanName) {
+        this.itemStorageBeanName = itemStorageBeanName;
+    }
 
-	public File getRepository() {
+    public File getRepository() {
         return repository;
     }
 
@@ -118,15 +118,15 @@ public class UploadParameters implements UploadConfiguration {
         this.keepFormFieldInMemory = keepFormFieldInMemory;
     }
 
-	public boolean isSaveInFile() {
-		return saveInFile;
-	}
+    public boolean isSaveInFile() {
+        return saveInFile;
+    }
 
-	public void setSaveInFile(boolean saveInFile) {
-		this.saveInFile = saveInFile;
-	}
+    public void setSaveInFile(boolean saveInFile) {
+        this.saveInFile = saveInFile;
+    }
 
-	public String[] getFileNameKey() {
+    public String[] getFileNameKey() {
         return fileNameKey;
     }
 
@@ -134,7 +134,9 @@ public class UploadParameters implements UploadConfiguration {
         this.fileNameKey = fileNameKey;
     }
 
-    /** 设置默认值。 */
+    /**
+     * 设置默认值。
+     */
     public void applyDefaultValues() {
         if (sizeThreshold.getValue() == 0) {
             keepFormFieldInMemory = true;
@@ -146,15 +148,18 @@ public class UploadParameters implements UploadConfiguration {
 
         if (!repository.exists() && !repository.mkdirs()) {
             throw new IllegalArgumentException("Could not create repository directory for file uploading: "
-                                               + repository);
+                    + repository);
         }
 
         if (isEmptyArray(fileNameKey)) {
-            fileNameKey = new String[] { "filename" };
+            fileNameKey = new String[]{"filename"};
         }
     }
 
-    
+    public int hashCode() {
+        return this.hashCode();
+    }
+
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -197,7 +202,7 @@ public class UploadParameters implements UploadConfiguration {
         return true;
     }
 
-    
+
     public String toString() {
         MapBuilder mb = new MapBuilder();
 

@@ -57,7 +57,7 @@ public abstract class AbstractProcessor implements Processor {
             logger.logMessage(LogLevel.DEBUG, "线程<{}-{}>运行开始...", multiThreadProcess.getName(), name);
             action();
             logger.logMessage(LogLevel.DEBUG, "线程<{}-{}>运行结束", multiThreadProcess.getName(), name);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             logger.errorMessage(e.getMessage(), e);
             if (exceptionCallBack != null) {
                 exceptionCallBack.callBack(this, e);
