@@ -240,7 +240,7 @@ public class TinyClassLoader extends URLClassLoader {
 					name);
 		}
 		return new Enumeration<URL>() {
-			int index = 0;
+			private int index = 0;
 
 			public boolean hasMoreElements() {
 				boolean hasMoreElements = enumerations[index].hasMoreElements();

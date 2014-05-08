@@ -51,7 +51,6 @@ public class BundleManagerDefault implements BundleManager {
 	}
 
 	/*
-	 * TODO:不能直接remove，必须先停止，再remove (non-Javadoc)
 	 * 
 	 * @see
 	 * org.tinygroup.bundle.BundleManager#removeBundle(org.tinygroup.bundle.
@@ -139,8 +138,9 @@ public class BundleManagerDefault implements BundleManager {
 			logger.logMessage(LogLevel.INFO, "Bundle:{0}已启动，无需再次启动", bundle);
 			return;
 		}
-		if(!checkDepend(bundleDefine, bundle))
+		if(!checkDepend(bundleDefine, bundle)){
 			return;
+		}
 		startBundle(bundleDefine, bundle);
 		logger.logMessage(LogLevel.INFO, "启动Bundle:{0}完毕", bundle);
 	}
@@ -152,8 +152,9 @@ public class BundleManagerDefault implements BundleManager {
 			logger.logMessage(LogLevel.INFO, "Bundle:{0}已启动，无需再次启动", bundle);
 			return;
 		}
-		if(!checkDepend(bundleDefine, bundle))
+		if(!checkDepend(bundleDefine, bundle)){
 			return;
+		}
 		startBundle( bundleDefine, bundle);
 		logger.logMessage(LogLevel.INFO, "启动Bundle:{0}完毕", bundle);
 	}
@@ -232,9 +233,7 @@ public class BundleManagerDefault implements BundleManager {
 			logger.errorMessage("为路径{0}生成url时出错", e1, bundleDir);
 		}
 		TinyClassLoader bundleLoder = new TinyClassLoader(urls, tinyClassLoader);
-//		TinyClassLoader bundleLoder = new TinyClassLoader(urls);
 		tinyClassLoaderMap.put(bundleDefine, bundleLoder);
-//		tinyClassLoader.addSubTinyClassLoader(bundleLoder);
 		
 		String[] dependens = bundleDefine.getDependencyArray(); // 获取所依赖的bundle项
 		for (String dependen : dependens) { // 启动所有的依赖项
@@ -298,7 +297,7 @@ public class BundleManagerDefault implements BundleManager {
 	private void stopBundle(
 			BundleDefine bundleDefine, String bundle) {
 
-		stopBundleDependBy(bundleDefine, bundle);
+		stopBundleDependBy(bundle);
 
 		processEvents(beforeStopBundleEvent, bundleContext, bundleDefine);
 		
@@ -311,7 +310,7 @@ public class BundleManagerDefault implements BundleManager {
 	}
 
 	private void stopBundleDependBy(
-			BundleDefine bundleDefine, String bundle) {
+			String bundle) {
 		List<String> dependencyByList = new ArrayList<String>();
 		for (BundleDefine b : bundleDefineMap.values()) {
 			String[] dependencyArray = b.getDependencyArray();

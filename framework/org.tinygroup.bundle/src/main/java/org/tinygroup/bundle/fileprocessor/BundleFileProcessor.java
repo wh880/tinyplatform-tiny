@@ -11,8 +11,8 @@ import org.tinygroup.xstream.XStreamFactory;
 import com.thoughtworks.xstream.XStream;
 
 public class BundleFileProcessor extends AbstractFileProcessor{
-	private static final String Bundle_EXT_FILENAME = ".bundle.xml";
-	private static final String Bundle_XSTREAM = "bundle";
+	private static final String BUNDLE_EXT_FILENAME = ".bundle.xml";
+	private static final String BUNDLE_XSTREAM = "bundle";
 	private BundleManager bundleManager ;
 	
 	public BundleManager getBundleManager() {
@@ -24,11 +24,11 @@ public class BundleFileProcessor extends AbstractFileProcessor{
 	}
 
 	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(Bundle_EXT_FILENAME);
+		return fileObject.getFileName().endsWith(BUNDLE_EXT_FILENAME);
 	}
 
 	public void process() {
-		XStream stream = XStreamFactory.getXStream(Bundle_XSTREAM);
+		XStream stream = XStreamFactory.getXStream(BUNDLE_XSTREAM);
 		for (FileObject file : deleteList) {
 			logger.logMessage(LogLevel.INFO, "移除Bundle配置文件:{0}",
 					file.getFileName());
