@@ -234,7 +234,7 @@ public class BundleManagerDefault implements BundleManager {
 		TinyClassLoader bundleLoder = new TinyClassLoader(urls, tinyClassLoader);
 //		TinyClassLoader bundleLoder = new TinyClassLoader(urls);
 		tinyClassLoaderMap.put(bundleDefine, bundleLoder);
-		tinyClassLoader.addSubTinyClassLoader(bundleLoder);
+//		tinyClassLoader.addSubTinyClassLoader(bundleLoder);
 		
 		String[] dependens = bundleDefine.getDependencyArray(); // 获取所依赖的bundle项
 		for (String dependen : dependens) { // 启动所有的依赖项
