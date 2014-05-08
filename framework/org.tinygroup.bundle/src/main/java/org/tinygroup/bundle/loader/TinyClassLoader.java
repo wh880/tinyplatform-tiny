@@ -42,7 +42,7 @@ import org.tinygroup.vfs.VFS;
 public class TinyClassLoader extends URLClassLoader {
 
 	private FileObject[] fileObjects = null;
-	private List<TinyClassLoader> subTinyClassLoaderList = new ArrayList<TinyClassLoader>();
+	private List<TinyClassLoader> dependClassLoaderList = new ArrayList<TinyClassLoader>();
 
 	/**
 	 * 构造方法
@@ -85,7 +85,7 @@ public class TinyClassLoader extends URLClassLoader {
 	}
 
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
-		for(TinyClassLoader loader: subTinyClassLoaderList){
+		for(TinyClassLoader loader: dependClassLoaderList){
 			try {
 				return loader.loadClass(name);
 			} catch (ClassNotFoundException e) {
@@ -111,7 +111,7 @@ public class TinyClassLoader extends URLClassLoader {
 		for (FileObject fileObject : getFileObjects()) {
 			result.add(fileObject);
 		}
-		for (TinyClassLoader tinyClassLoader : subTinyClassLoaderList) {
+		for (TinyClassLoader tinyClassLoader : dependClassLoaderList) {
 			tinyClassLoader.getFileObjects(result);
 		}
 	}
@@ -137,8 +137,8 @@ public class TinyClassLoader extends URLClassLoader {
 	 * 
 	 * @param tinyClassLoader
 	 */
-	public void addSubTinyClassLoader(TinyClassLoader tinyClassLoader) {
-		subTinyClassLoaderList.add(tinyClassLoader);
+	public void addDependClassLoader(TinyClassLoader tinyClassLoader) {
+		dependClassLoaderList.add(tinyClassLoader);
 	}
 
 	/**
@@ -146,8 +146,8 @@ public class TinyClassLoader extends URLClassLoader {
 	 * 
 	 * @param tinyClassLoader
 	 */
-	public void removeSubTinyClassLoader(TinyClassLoader tinyClassLoader) {
-		subTinyClassLoaderList.remove(tinyClassLoader);
+	public void removeDependTinyClassLoader(TinyClassLoader tinyClassLoader) {
+		dependClassLoaderList.remove(tinyClassLoader);
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class TinyClassLoader extends URLClassLoader {
 	public void foreachAll(FileObjectFilter fileObjectFilter,
 			FileObjectProcessor fileObjectProcessor) {
 		foreach(fileObjectFilter, fileObjectProcessor);
-		for (TinyClassLoader tinyClassLoader : subTinyClassLoaderList) {
+		for (TinyClassLoader tinyClassLoader : dependClassLoaderList) {
 			tinyClassLoader.foreachAll(fileObjectFilter, fileObjectProcessor);
 		}
 	}
@@ -188,7 +188,7 @@ public class TinyClassLoader extends URLClassLoader {
 	 */
 	protected Class<?> findClass(final String name)
 			throws ClassNotFoundException {
-		for (TinyClassLoader tinyClassLoader : subTinyClassLoaderList) {
+		for (TinyClassLoader tinyClassLoader : dependClassLoaderList) {
 			try {
 				return tinyClassLoader.findClass(name);
 			} catch (ClassNotFoundException e1) {
@@ -213,7 +213,7 @@ public class TinyClassLoader extends URLClassLoader {
 	public URL findResource(final String name) {
 		URL resource = super.findResource(name);
 		if (resource == null) {
-			for (TinyClassLoader tinyClassLoader : subTinyClassLoaderList) {
+			for (TinyClassLoader tinyClassLoader : dependClassLoaderList) {
 				resource = tinyClassLoader.findResource(name);
 				if (resource != null) {
 					return resource;
@@ -232,11 +232,11 @@ public class TinyClassLoader extends URLClassLoader {
 	 * @throws IOException
 	 */
 	public Enumeration<URL> findResources(final String name) throws IOException {
-		final Enumeration<URL>[] enumerations = new Enumeration[1 + subTinyClassLoaderList
+		final Enumeration<URL>[] enumerations = new Enumeration[1 + dependClassLoaderList
 				.size()];
 		enumerations[0] = super.findResources(name);
-		for (int i = 0; i < subTinyClassLoaderList.size(); i++) {
-			enumerations[i + 1] = subTinyClassLoaderList.get(i).findResources(
+		for (int i = 0; i < dependClassLoaderList.size(); i++) {
+			enumerations[i + 1] = dependClassLoaderList.get(i).findResources(
 					name);
 		}
 		return new Enumeration<URL>() {

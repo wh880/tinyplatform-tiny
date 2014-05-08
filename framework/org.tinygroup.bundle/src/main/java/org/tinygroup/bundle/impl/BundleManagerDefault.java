@@ -238,7 +238,7 @@ public class BundleManagerDefault implements BundleManager {
 		String[] dependens = bundleDefine.getDependencyArray(); // 获取所依赖的bundle项
 		for (String dependen : dependens) { // 启动所有的依赖项
 			BundleDefine dependenBundle = bundleDefineMap.get(dependen);
-			bundleLoder.addSubTinyClassLoader(tinyClassLoaderMap.get(dependenBundle));
+			bundleLoder.addDependClassLoader(tinyClassLoaderMap.get(dependenBundle));
 		}
 	}
 
@@ -301,7 +301,7 @@ public class BundleManagerDefault implements BundleManager {
 
 		processEvents(beforeStopBundleEvent, bundleContext, bundleDefine);
 		
-		tinyClassLoader.removeSubTinyClassLoader(tinyClassLoaderMap.get(bundleDefine));
+		tinyClassLoader.removeDependTinyClassLoader(tinyClassLoaderMap.get(bundleDefine));
 		tinyClassLoaderMap.remove(bundleDefine);
 		
 		stopBundleActivator(bundleContext,bundleDefine, bundle);
