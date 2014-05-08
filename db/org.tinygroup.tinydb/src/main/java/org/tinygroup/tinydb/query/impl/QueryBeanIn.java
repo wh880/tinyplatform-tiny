@@ -37,7 +37,7 @@ public class QueryBeanIn extends AbstractQueryBeanHasValue {
 	
 	protected String getHasValueClause() {
 		checkCompareMode();
-		return " " + compareMode + " (?)";
+		return " " + getCompareMode() + " (?)";
 	}
 
 }

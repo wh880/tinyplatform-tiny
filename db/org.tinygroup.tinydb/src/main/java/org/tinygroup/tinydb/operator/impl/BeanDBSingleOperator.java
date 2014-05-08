@@ -65,7 +65,7 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 
 	public Bean insert(Bean bean) {
 		insertTopBean(bean);// 新增最上层记录
-		processRelation(bean, relation, new InsertRelationCallBack());
+		processRelation(bean, getRelation(), new InsertRelationCallBack());
 		return bean;
 	}
 
@@ -104,14 +104,14 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 
 	public int update(Bean bean) {
 		int record = updateTopBean(bean);
-		processRelation(bean, relation, new UpdateRelationCallBack());
+		processRelation(bean, getRelation(), new UpdateRelationCallBack());
 		return record;
 
 	}
 
 	public int update(Bean bean, List<String> conditionColumns) {
 		int record = updateBean(bean, conditionColumns);
-		processRelation(bean, relation, new UpdateRelationCallBack());
+		processRelation(bean, getRelation(), new UpdateRelationCallBack());
 		return record;
 	}
 
@@ -154,7 +154,7 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 
 	public int delete(Bean bean) {
 		int record = deleteTopBean(bean);
-		processRelation(bean, relation, new DeleteRelationCallBack());
+		processRelation(bean, getRelation(), new DeleteRelationCallBack());
 		return record;
 	}
 
@@ -167,7 +167,7 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 
 	public Bean getBean(KeyType beanId) {
 		Bean bean = queryBean(beanId);
-		bean = processRelation(bean, relation, new QueryRelationCallBack());
+		bean = processRelation(bean, getRelation(), new QueryRelationCallBack());
 		return bean;
 	}
 

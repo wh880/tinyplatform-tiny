@@ -23,102 +23,101 @@
  */
 package org.tinygroup.tinydb.query.impl;
 
+import org.tinygroup.tinydb.query.QueryBean;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.tinydb.query.QueryBean;
-
 /**
  * 查询Bean，用此Bean可以来查询数据，只针对单表
- * 
+ *
  * @author luoguo
- * 
  */
 public abstract class AbstractQueryBean implements QueryBean {
-	String propertyName = null;
-	String compareMode = null;
-	Object value = null;
-	String connectMode = AND;
-	private List<QueryBean> queryBeanList = new ArrayList<QueryBean>();
+    private String propertyName = null;
+    private String compareMode = null;
+    private Object value = null;
+    private String connectMode = AND;
+    private List<QueryBean> queryBeanList = new ArrayList<QueryBean>();
 
-	public String getConnectMode() {
-		return connectMode;
-	}
+    public String getConnectMode() {
+        return connectMode;
+    }
 
-	public String getQueryClause() {
-		if (hasValue()) {
-			return getHasValueClause();
-		} else {
-			return getNoneValueClause();
-		}
-	}
+    public String getQueryClause() {
+        if (hasValue()) {
+            return getHasValueClause();
+        } else {
+            return getNoneValueClause();
+        }
+    }
 
-	public void setConnectMode(String connectMode) {
-		this.connectMode = connectMode;
-	}
+    public void setConnectMode(String connectMode) {
+        this.connectMode = connectMode;
+    }
 
-	public String getPropertyName() {
-		return propertyName;
-	}
+    public String getPropertyName() {
+        return propertyName;
+    }
 
-	public void setPropertyName(String propertyName) {
-		this.propertyName = propertyName;
-	}
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
+    }
 
-	public String getCompareMode() {
-		return compareMode;
-	}
+    public String getCompareMode() {
+        return compareMode;
+    }
 
-	public void setCompareMode(String compareMode) {
-		this.compareMode = compareMode;
-	}
+    public void setCompareMode(String compareMode) {
+        this.compareMode = compareMode;
+    }
 
-	@SuppressWarnings("unchecked")
-	public <T> T getValue() {
-		return (T) value;
-	}
+    @SuppressWarnings("unchecked")
+    public <T> T getValue() {
+        return (T) value;
+    }
 
-	public void setValue(Object value) {
-		this.value = value;
-	}
+    public void setValue(Object value) {
+        this.value = value;
+    }
 
-	public AbstractQueryBean() {
+    public AbstractQueryBean() {
 
-	}
+    }
 
-	public AbstractQueryBean(String propertyName, String compareMode) {
-		this(propertyName, compareMode, null);
-	}
+    public AbstractQueryBean(String propertyName, String compareMode) {
+        this(propertyName, compareMode, null);
+    }
 
-	public AbstractQueryBean(String propertyName, String compareMode,
-			Object value) {
-		this.propertyName = propertyName;
-		this.compareMode = compareMode;
-		this.value = value;
-	}
+    public AbstractQueryBean(String propertyName, String compareMode,
+                             Object value) {
+        this.propertyName = propertyName;
+        this.compareMode = compareMode;
+        this.value = value;
+    }
 
-	protected String getNoneValueClause() {
-		checkCompareMode();
-		return " " + compareMode;
-	}
+    protected String getNoneValueClause() {
+        checkCompareMode();
+        return " " + compareMode;
+    }
 
-	private void checkCompareMode() {
-		if (propertyName == null || compareMode == null) {
-			throw new RuntimeException("无效的QueryBean，类型"
-					+ this.getClass().getName());
-		}
-	}
+    private void checkCompareMode() {
+        if (propertyName == null || compareMode == null) {
+            throw new RuntimeException("无效的QueryBean，类型"
+                    + this.getClass().getName());
+        }
+    }
 
-	protected String getHasValueClause() {
-		checkCompareMode();
-		return " " + compareMode + " ?";
-	}
+    protected String getHasValueClause() {
+        checkCompareMode();
+        return " " + compareMode + " ?";
+    }
 
-	public List<QueryBean> getQueryBeanList() {
-		return queryBeanList;
-	}
+    public List<QueryBean> getQueryBeanList() {
+        return queryBeanList;
+    }
 
-	public void addQueryBean(QueryBean queryBean) {
-		queryBeanList.add(queryBean);
-	}
+    public void addQueryBean(QueryBean queryBean) {
+        queryBeanList.add(queryBean);
+    }
 }

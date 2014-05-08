@@ -23,12 +23,6 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.tinygroup.tinydb.Bean;
@@ -37,6 +31,12 @@ import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.DBRuntimeException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.util.TinyDBUtil;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
  abstract class BeanDBBatchOperator<KeyType> extends
 		BeanDBSingleOperator<KeyType> implements DBOperator<KeyType> {
@@ -53,7 +53,7 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		//List<Integer> dataTypes = new ArrayList<Integer>();
 		for (ColumnConfiguration column : table.getColumns()) {
 			String columnsName = column.getColumnName();
-			String propertyName = beanDbNameConverter
+			String propertyName = getBeanDbNameConverter()
 					.dbFieldNameToPropertyName(columnsName);
 			if (bean.containsKey(propertyName)) {
 				conditionColumns.add(columnsName);
@@ -68,7 +68,7 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 			return null;
 		}
 		for (Bean queryBean : beans) {
-			processRelation(queryBean, relation, new QueryRelationCallBack());
+			processRelation(queryBean, getRelation(), new QueryRelationCallBack());
 		}
 		return TinyDBUtil.listToArray(beans);
 	}
@@ -78,7 +78,7 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		// 关联bean插入
 		if(insertBeans!=null){
 			for (Bean bean : insertBeans) {
-				processRelation(bean, relation, new InsertRelationCallBack());
+				processRelation(bean, getRelation(), new InsertRelationCallBack());
 			}
 		}
 		return insertBeans;
@@ -109,7 +109,7 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		int[] records= updateTopBeans(beans);
 		if(beans!=null){
 			for (Bean bean : beans) {
-				processRelation(bean, relation, new UpdateRelationCallBack());
+				processRelation(bean, getRelation(), new UpdateRelationCallBack());
 			}
 		}
 		return records;
@@ -140,7 +140,7 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		int[] records= deleteTopBeans(beans);
 		if(beans!=null){
 			for (Bean bean : beans) {
-				processRelation(bean, relation, new DeleteRelationCallBack());
+				processRelation(bean, getRelation(), new DeleteRelationCallBack());
 			}
 		}
 		return records;
@@ -179,7 +179,7 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		try {
 			List<Bean> list = queryBean(getBeanType(), beanIds);
 			for (Bean bean : list) {
-				processRelation(bean, relation, new QueryRelationCallBack());
+				processRelation(bean, getRelation(), new QueryRelationCallBack());
 			}
 			
 			return TinyDBUtil.collectionToArray(list);

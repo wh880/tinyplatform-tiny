@@ -23,13 +23,6 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -40,10 +33,17 @@ import org.tinygroup.tinydb.util.BatchPreparedStatementSetterImpl;
 import org.tinygroup.tinydb.util.BeanRowMapper;
 import org.tinygroup.tinydb.util.SqlParamValuesBatchStatementSetterImpl;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class DBSpringBaseOperator {
 
 	private JdbcTemplate jdbcTemplate;
-	protected Dialect dialect;
+	private Dialect dialect;
 	
 
 	public Dialect getDialect() {
@@ -95,7 +95,9 @@ public class DBSpringBaseOperator {
 	 * 
 	 * 根据参数中sql语句进行批处理操作
 	 * 
-	 * @param sqls
+	 * @param sql
+	 * @param parameters
+	 * @param dataTypes
 	 *            key代表未赋参数值的sql语句 value代表sql语句中的参数列表信息
 	 */
 	protected int[] executeBatchByList(String sql,
@@ -108,7 +110,8 @@ public class DBSpringBaseOperator {
 	 * 
 	 * 根据参数中sql语句进行批处理操作
 	 * 
-	 * @param sqls
+	 * @param sql
+	 * @param parameters
 	 *            key代表未赋参数值的sql语句 value代表sql语句中的参数列表信息
 	 */
 	protected int[] executeBatchBySqlParamterValues(String sql,
@@ -117,7 +120,6 @@ public class DBSpringBaseOperator {
 	}
 	
 
-	@SuppressWarnings("unchecked")
 	public List<Bean> findBeansByListForPage(String sql, String beanType,String schema,
 			int start, int limit, List<Object> parameters) {
 		if (supportsLimit()) {

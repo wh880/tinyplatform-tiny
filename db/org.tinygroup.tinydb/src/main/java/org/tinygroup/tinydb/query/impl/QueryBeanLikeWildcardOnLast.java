@@ -25,13 +25,12 @@ package org.tinygroup.tinydb.query.impl;
 
 
 public class QueryBeanLikeWildcardOnLast extends AbstractQueryBeanHasValue {
-	public QueryBeanLikeWildcardOnLast(String name, Object value) {
-		super(name, "like", value);
-	}
+    public QueryBeanLikeWildcardOnLast(String name, Object value) {
+        super(name, "like", value);
+    }
 
-	@SuppressWarnings("unchecked")
-	public <T> T getValue() {
-		return (T) ("" + value.toString() + "%");
-	}
+    public <T> T getValue() {
+        return (T)  (super.getValue() + "%");
+    }
 
 }

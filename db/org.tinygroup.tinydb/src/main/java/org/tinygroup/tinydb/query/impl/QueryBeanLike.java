@@ -29,8 +29,7 @@ public class QueryBeanLike extends AbstractQueryBeanHasValue {
 		super(name, "like", value);
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> T getValue() {
-		return (T) ("%" + value.toString() + "%");
+		return (T) ("%" + super.getValue() + "%");
 	}
 }
