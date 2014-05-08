@@ -232,6 +232,7 @@ public class BundleManagerDefault implements BundleManager {
 			logger.errorMessage("为路径{0}生成url时出错", e1, bundleDir);
 		}
 		TinyClassLoader bundleLoder = new TinyClassLoader(urls, tinyClassLoader);
+//		TinyClassLoader bundleLoder = new TinyClassLoader(urls);
 		tinyClassLoaderMap.put(bundleDefine, bundleLoder);
 		tinyClassLoader.addSubTinyClassLoader(bundleLoder);
 		
@@ -357,6 +358,11 @@ public class BundleManagerDefault implements BundleManager {
 		for (BundleEvent event : events) {
 			event.process(bundleContext, bundleDefine);
 		}
+	}
+
+	public TinyClassLoader getTinyClassLoader(String bundle) {
+		BundleDefine bundleDefine = bundleDefineMap.get(bundle);
+		return tinyClassLoaderMap.get(bundleDefine);
 	}
 
 }

@@ -13,8 +13,8 @@ public class TestUtil {
 			AbstractTestUtil.init("application.xml", true);
 			init = true;
 			BundleManager manager = SpringUtil.getBean(BundleManager.BEAN_NAME);
-			manager.setCommonRoot("J:\\tinygroupgit\\tiny\\framework\\org.tinygroup.bundle\\src\\test\\resources");
-			manager.setBundleRoot("J:\\tinygroupgit\\tiny\\framework\\org.tinygroup.bundle\\src\\test\\resources");
+			manager.setCommonRoot(TestUtil.class.getResource("/").getPath());
+			manager.setBundleRoot(TestUtil.class.getResource("/").getPath());
 		}
 		
 	}
