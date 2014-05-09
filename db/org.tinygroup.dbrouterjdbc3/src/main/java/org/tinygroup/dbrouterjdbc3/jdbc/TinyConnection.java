@@ -52,12 +52,12 @@ public class TinyConnection implements Connection {
     private boolean isReadOnly = false;
     private int holdability = 1;
     private String catalog;
-    RouterManager manager = RouterManagerBeanFactory.getManager();
-    Router router;
-    List<Connection> connections = new ArrayList<Connection>();
-    Map<DataSourceConfigBean, StandardXADataSource> configDataSources = new HashMap<DataSourceConfigBean, StandardXADataSource>();
-    Map<Shard, Connection> dataSourceConnections = new HashMap<Shard, Connection>();// 一个数据源配置对应存储一个连接
-    int transactionIsolationLevel;
+    private RouterManager manager = RouterManagerBeanFactory.getManager();
+    private Router router;
+    private List<Connection> connections = new ArrayList<Connection>();
+    private Map<DataSourceConfigBean, StandardXADataSource> configDataSources = new HashMap<DataSourceConfigBean, StandardXADataSource>();
+    private Map<Shard, Connection> dataSourceConnections = new HashMap<Shard, Connection>();// 一个数据源配置对应存储一个连接
+    private int transactionIsolationLevel;
     private UserTransaction userTransaction;
     private Jotm jotm;
     private TransactionManager transactionManager;

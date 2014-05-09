@@ -375,17 +375,6 @@ public class TinyStatement implements Statement {
 		return returnsResultSet;
 	}
 
-	private Shard getShard(String sql, Partition partition) throws SQLException {
-		Collection<Shard> shards = routerManager.getShards(partition, sql,
-				getPreparedParams());
-		if (shards.size() == 0) {
-			throw new SQLException("没有可用的数据库连接。");
-		}
-		Iterator<Shard> iterator = shards.iterator();
-		Shard shard = iterator.next();
-		return shard;
-	}
-
 	private List<Shard> getPrimarySlaveShard(String sql, Partition partition)
 			throws SQLException {
 		org.tinygroup.jsqlparser.statement.Statement statement = routerManager

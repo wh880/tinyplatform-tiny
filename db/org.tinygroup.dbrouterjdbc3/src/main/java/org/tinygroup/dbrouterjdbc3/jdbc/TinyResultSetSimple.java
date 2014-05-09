@@ -115,7 +115,8 @@ public class TinyResultSetSimple implements ResultSet, ResultSetMetaData {
 		private final Object[] value;
 
 		SimpleArray(Object[] value) {
-			this.value = value;
+			this.value=new Object[value.length];
+			System.arraycopy(value, 0, this.value, 0, value.length);
 		}
 
 		/**

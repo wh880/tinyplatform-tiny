@@ -235,11 +235,9 @@ public class SqlProcessorFunction implements StatementProcessor {
 
     class GroupData {
 
-        List<Object> values = new ArrayList<Object>();
-        GroupKey gropeKey;
+        private List<Object> values = new ArrayList<Object>();
 
         public GroupData(ResultSet rs, GroupKey gropeKey) throws SQLException {
-            this.gropeKey = gropeKey;
             if (gropeKey != null) {
                 List<String> keys = gropeKey.getKeys();
                 for (int i = 0; i < keys.size(); i++) {
@@ -329,18 +327,16 @@ public class SqlProcessorFunction implements StatementProcessor {
      * <br>
      */
     class RowData {
-        ResultSet resultSet;
-        List<SelectItemMemory> items = new ArrayList<SelectItemMemory>();
-        Object[] values;
-        Map<Integer, SelectItemMemory> aggrerateItems = new HashMap<Integer, SelectItemMemory>();
-        Long addedCount = 0l;
-        int resultRowIndex;
+    	private ResultSet resultSet;
+    	private Object[] values;
+    	private Map<Integer, SelectItemMemory> aggrerateItems = new HashMap<Integer, SelectItemMemory>();
+    	private Long addedCount = 0l;
+    	private int resultRowIndex;
 
         public RowData(int resultRowIndex, ResultSet resultSet, List<SelectItemMemory> items)
                 throws SQLException {
             this.resultSet = resultSet;
             this.resultRowIndex = resultRowIndex;
-            this.items = items;
             if (!CollectionUtil.isEmpty(items)) {
                 values = new Object[items.size()];
                 for (int i = 0; i < items.size(); i++) {
@@ -396,7 +392,7 @@ public class SqlProcessorFunction implements StatementProcessor {
     }
 
     class RowDatas {
-        Map<GroupData, List<RowData>> rowDatas = new HashMap<GroupData, List<RowData>>();
+    	private Map<GroupData, List<RowData>> rowDatas = new HashMap<GroupData, List<RowData>>();
         private OrderByProcessor orderByProcessor;
 
         public RowDatas(GroupKey gropeKey, List<ResultSet> results, List<SelectItemMemory> items,
