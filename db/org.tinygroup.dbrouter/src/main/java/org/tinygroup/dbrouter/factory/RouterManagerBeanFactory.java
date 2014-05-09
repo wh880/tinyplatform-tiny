@@ -41,14 +41,14 @@ import com.thoughtworks.xstream.XStream;
  * 开发时间: 2013-12-25 <br>
  * <br>
  */
-public class RouterManagerBeanFactory {
-
+public  final class RouterManagerBeanFactory {
+	
     private static Factory factory;
     private static RouterManager manager;
     private static Logger logger = LoggerFactory.getLogger(RouterManagerBeanFactory.class);
 
     public static final String DB_ROUTER_BEANS_XML = "/dbrouterbeans.xml";
-
+    
     static {
         factory = BeanFactory.getFactory();
         XStream xStream = XStreamFactory.getXStream();
@@ -58,9 +58,13 @@ public class RouterManagerBeanFactory {
             factory.addBeans(beans);
             factory.init();
             logger.logMessage(LogLevel.INFO, "加载Bean配置文件{}结束。", DB_ROUTER_BEANS_XML);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             logger.errorMessage("加载Bean配置文件{}时发生错误", e, DB_ROUTER_BEANS_XML);
         }
+    }
+    
+    private RouterManagerBeanFactory(){
+    	
     }
 
     public static RouterManager getManager() {

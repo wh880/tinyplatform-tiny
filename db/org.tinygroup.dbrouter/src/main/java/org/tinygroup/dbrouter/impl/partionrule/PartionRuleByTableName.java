@@ -54,7 +54,7 @@ public class PartionRuleByTableName implements PartitionRule {
      */
 	@XStreamAlias("table-name")
 	@XStreamAsAttribute
-    String tableName;
+    private String tableName;
 
     public PartionRuleByTableName() {
 

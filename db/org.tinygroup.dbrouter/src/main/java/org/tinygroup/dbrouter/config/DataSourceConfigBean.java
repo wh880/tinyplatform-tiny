@@ -31,19 +31,19 @@ public class DataSourceConfigBean {
 	/**
 	 * 驱动类名
 	 */
-	String driver;
+	private String driver;
 	/**
 	 * 连接URL
 	 */
-	String url;
+	private String url;
 	/**
 	 * 用户名
 	 */
-	String userName;
+	private String userName;
 	/**
 	 * 密码
 	 */
-	String password;
+	private String password;
 
 	public String getDriver() {
 		return driver;

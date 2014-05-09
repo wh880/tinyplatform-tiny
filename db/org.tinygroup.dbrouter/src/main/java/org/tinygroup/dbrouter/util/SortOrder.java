@@ -46,8 +46,10 @@ public class SortOrder implements Comparator<OrderByValues> {
 
 
     public SortOrder(boolean[] orderTypes, int[] orderIndexes) {
-        this.orderTypes = orderTypes;
-        this.orderIndexes = orderIndexes;
+    	this.orderTypes=new boolean[orderTypes.length];
+        System.arraycopy(orderTypes, 0, this.orderTypes, 0, orderTypes.length);
+        this.orderIndexes = new int[orderIndexes.length];
+        System.arraycopy(orderIndexes, 0, this.orderIndexes, 0, orderIndexes.length);
     }
 
     public boolean[] getOrderTypes() {
@@ -56,7 +58,8 @@ public class SortOrder implements Comparator<OrderByValues> {
 
 
     public void setOrderTypes(boolean[] orderTypes) {
-        this.orderTypes = orderTypes;
+    	this.orderTypes=new boolean[orderTypes.length];
+        System.arraycopy(orderTypes, 0, this.orderTypes, 0, orderTypes.length);
     }
 
     /**

@@ -32,7 +32,11 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
 
 /**
  * This class contains meta data information about data types,
@@ -46,110 +50,110 @@ public class DataType {
      * ResultSet (OracleTypes.CURSOR = -10).
      */
     public static final int TYPE_RESULT_SET = -10;
-    private static final ArrayList<DataType> TYPES = new ArrayList<DataType>();
-    private static final ArrayList<DataType> TYPES_BY_VALUE_TYPE = new ArrayList<DataType>();
-    private static final HashMap<String, DataType> TYPES_BY_NAME = new HashMap<String, DataType>();
+    private static final List<DataType> TYPES = new ArrayList<DataType>();
+    private static final List<DataType> TYPES_BY_VALUE_TYPE = new ArrayList<DataType>();
+    private static final Map<String, DataType> TYPES_BY_NAME = new HashMap<String, DataType>();
     
     /**
      * The value type of this data type.
      */
-    public int type;
+    private int type;
 
     /**
      * The data type name.
      */
-    public String name;
+    private String name;
 
     /**
      * The SQL type.
      */
-    public int sqlType;
+    private int sqlType;
 
     /**
      * The Java class name.
      */
-    public String jdbc;
+    private String jdbc;
 
     /**
      * How closely the data type maps to the corresponding JDBC SQL type (low is
      * best).
      */
-    public int sqlTypePos;
+    private int sqlTypePos;
 
     /**
      * The maximum supported precision.
      */
-    public long maxPrecision;
+    private long maxPrecision;
 
     /**
      * The lowest possible scale.
      */
-    public int minScale;
+    private int minScale;
 
     /**
      * The highest possible scale.
      */
-    public int maxScale;
+    private int maxScale;
 
     /**
      * If this is a numeric type.
      */
-    public boolean decimal;
+    private boolean decimal;
 
     /**
      * The prefix required for the SQL literal representation.
      */
-    public String prefix;
+    private String prefix;
 
     /**
      * The suffix required for the SQL literal representation.
      */
-    public String suffix;
+    private String suffix;
 
     /**
      * The list of parameters used in the column definition.
      */
-    public String params;
+    private String params;
 
     /**
      * If this is an autoincrement type.
      */
-    public boolean autoIncrement;
+    private boolean autoIncrement;
 
     /**
      * If this data type is an autoincrement type.
      */
-    public boolean caseSensitive;
+    private boolean caseSensitive;
 
     /**
      * If the precision parameter is supported.
      */
-    public boolean supportsPrecision;
+    private boolean supportsPrecision;
 
     /**
      * If the scale parameter is supported.
      */
-    public boolean supportsScale;
+    private boolean supportsScale;
 
     /**
      * The default precision.
      */
-    public long defaultPrecision;
+    private long defaultPrecision;
 
     /**
      * The default scale.
      */
-    public int defaultScale;
+    private int defaultScale;
 
     /**
      * The default display size.
      */
-    public int defaultDisplaySize;
+    private int defaultDisplaySize;
 
     /**
      * If this data type should not be listed in the database meta data.
      */
-    public boolean hidden;
+    private boolean hidden;
 
     
     static {
@@ -419,7 +423,7 @@ public class DataType {
      *
      * @return the list
      */
-    public static ArrayList<DataType> getTypes() {
+    public static List<DataType> getTypes() {
         return TYPES;
     }
     
@@ -492,7 +496,7 @@ public class DataType {
         case Value.RESULT_SET:
             return ResultSet.class.getName();
         default:
-            throw new RuntimeException("type="+type);
+            throw new DbrouterRuntimeException("type="+type);
         }
     }
 
@@ -551,7 +555,7 @@ public class DataType {
         case DataType.TYPE_RESULT_SET:
             return Value.RESULT_SET;
         default:
-            throw new RuntimeException(String.format("an unsupported sql type:%s", sqlType));
+            throw new DbrouterRuntimeException(String.format("an unsupported sql type:%s", sqlType));
         }
     }
 
@@ -583,7 +587,7 @@ public class DataType {
         } else if (Short.class == x) {
             return Value.SHORT;
         } else if (Character.class == x) {
-            throw new RuntimeException("char (not supported)");
+            throw new DbrouterRuntimeException("char (not supported)");
         } else if (Float.class == x) {
             return Value.FLOAT;
         } else if (byte[].class == x) {
@@ -752,7 +756,7 @@ public class DataType {
         } else if (clazz == Double.TYPE) {
             return Double.valueOf(0);
         }
-        throw new RuntimeException("primitive=" + clazz.toString());
+        throw new DbrouterRuntimeException("primitive=" + clazz.toString());
     }
     /**
      * Get the data type object for the given value type.
@@ -762,7 +766,7 @@ public class DataType {
      */
     public static DataType getDataType(int type) {
         if (type == Value.UNKNOWN) {
-            throw new RuntimeException("unsupported data type");
+            throw new DbrouterRuntimeException("unsupported data type");
         }
         DataType dt = TYPES_BY_VALUE_TYPE.get(type);
         if (dt == null) {
@@ -779,4 +783,85 @@ public class DataType {
     public static DataType getTypeByName(String s) {
         return TYPES_BY_NAME.get(s);
     }
+
+	public int getType() {
+		return type;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getSqlType() {
+		return sqlType;
+	}
+
+	public String getJdbc() {
+		return jdbc;
+	}
+
+	public int getSqlTypePos() {
+		return sqlTypePos;
+	}
+
+	public long getMaxPrecision() {
+		return maxPrecision;
+	}
+
+	public int getMinScale() {
+		return minScale;
+	}
+
+	public int getMaxScale() {
+		return maxScale;
+	}
+
+	public boolean isDecimal() {
+		return decimal;
+	}
+
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public String getSuffix() {
+		return suffix;
+	}
+
+	public String getParams() {
+		return params;
+	}
+
+	public boolean isAutoIncrement() {
+		return autoIncrement;
+	}
+
+	public boolean isCaseSensitive() {
+		return caseSensitive;
+	}
+
+	public boolean isSupportsPrecision() {
+		return supportsPrecision;
+	}
+
+	public boolean isSupportsScale() {
+		return supportsScale;
+	}
+
+	public long getDefaultPrecision() {
+		return defaultPrecision;
+	}
+
+	public int getDefaultScale() {
+		return defaultScale;
+	}
+
+	public int getDefaultDisplaySize() {
+		return defaultDisplaySize;
+	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+    
 }

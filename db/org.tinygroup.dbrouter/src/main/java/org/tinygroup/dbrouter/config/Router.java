@@ -26,6 +26,7 @@ package org.tinygroup.dbrouter.config;
 import java.util.List;
 
 import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -42,38 +43,38 @@ public class Router {
      * 集群名称,唯一确定一个集群，jdbc数据源连接时，url只要指定ID即可
      */
     @XStreamAsAttribute
-    String id;
+    private String id;
     /**
      * 用户名
      */
     @XStreamAlias("user-name")
     @XStreamAsAttribute
-    String userName;
+    private String userName;
     /**
      * 密码
      */
     @XStreamAsAttribute
-    String password;
+    private String password;
 
     @XStreamAlias("key-generator-config")
-    KeyGeneratorConfig keyConfig;
+    private KeyGeneratorConfig keyConfig;
     /**
      * 主键发生器实现类类名
      */
     @XStreamAsAttribute
     @XStreamAlias("key-generator-class")
-    String keyGeneratorClass;
+    private String keyGeneratorClass;
 
     /**
      * 集群中的数据源,这里只是定义
      */
     @XStreamAlias("data-source-configs")
-    List<DataSourceConfig> dataSources;
+    private List<DataSourceConfig> dataSources;
     /**
      * 一个集群由多个分区组成
      */
     @XStreamAlias("partitions")
-    List<Partition> partitions;
+    private List<Partition> partitions;
     @XStreamAsAttribute
     @XStreamAlias("cpu-ratio")
     private double cpuRatio;
@@ -136,7 +137,7 @@ public class Router {
                 return dataSourceConfig;
             }
         }
-        throw new RuntimeException("找不到数据源：" + datasourceId);
+        throw new DbrouterRuntimeException("找不到数据源：" + datasourceId);
     }
 
 

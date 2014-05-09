@@ -137,7 +137,8 @@ public class OrderByProcessor {
         private ResultSet resultSet;
 
         public OrderByValues(Object[] values) {
-            this.values = values;
+        	this.values=new Object[values.length];
+        	System.arraycopy(values, 0, this.values, 0, values.length);
         }
 
         public OrderByValues(ResultSet resultSet) throws SQLException {
@@ -158,7 +159,8 @@ public class OrderByProcessor {
         }
 
         public void setValues(Object[] values) {
-            this.values = values;
+        	this.values=new Object[values.length];
+        	System.arraycopy(values, 0, this.values, 0, values.length);
         }
 
         public ResultSet getResultSet() {
@@ -170,7 +172,7 @@ public class OrderByProcessor {
         }
         
         public boolean isCurrentResult(ResultSet rs){
-        	return rs==resultSet;
+        	return rs.equals(resultSet);
         }
 
     }

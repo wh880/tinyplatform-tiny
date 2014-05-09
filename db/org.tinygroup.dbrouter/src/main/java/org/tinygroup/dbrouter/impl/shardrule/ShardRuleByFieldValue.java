@@ -55,7 +55,7 @@ import java.util.List;
  */
 public class ShardRuleByFieldValue implements ShardRule {
 	@XStreamImplicit
-	List<FieldWithValues> fieldWithValues;
+	private List<FieldWithValues> fieldWithValues;
 
 	public boolean isMatch(Partition partition, String sql,
 			Object... preparedParams) {
@@ -166,7 +166,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 				if (leftExpression instanceof Column) {
 					Column column = (Column) leftExpression;
 					String columnName = column.getColumnName();
-					int index = columnName.indexOf(".");
+					int index = columnName.indexOf('.');
 					if (index != -1) {
 						columnName = columnName.substring(index + 1);
 					}

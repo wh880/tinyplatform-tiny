@@ -33,11 +33,11 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 public class FieldWithValues {
     @XStreamAlias("table-name")
     @XStreamAsAttribute
-    String tableName;
+    private String tableName;
     @XStreamAsAttribute
-    String name;
+    private String name;
     @XStreamAsAttribute
-    String values;//多个值以逗号隔开
+    private String values;//多个值以逗号隔开
 
     public String getTableName() {
         return tableName;

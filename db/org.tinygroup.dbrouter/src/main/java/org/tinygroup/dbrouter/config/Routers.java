@@ -34,7 +34,7 @@ import java.util.List;
 @XStreamAlias("routers")
 public class Routers {
     @XStreamImplicit
-    List<Router> routerList;
+    private List<Router> routerList;
 
     public List<Router> getRouterList() {
         return routerList;
