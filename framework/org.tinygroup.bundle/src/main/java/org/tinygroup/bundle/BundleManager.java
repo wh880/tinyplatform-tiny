@@ -96,7 +96,9 @@ public interface BundleManager extends SingleBundleManager, BatchBundleManager {
      * @return
      */
     TinyClassLoader getTinyClassLoader();
-
+    
+    
+    TinyClassLoader getTinyClassLoader(String bundle);
     /**
      * 设置启动前事件处理器
      *

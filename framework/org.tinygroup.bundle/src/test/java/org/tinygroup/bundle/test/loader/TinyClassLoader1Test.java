@@ -54,8 +54,8 @@ public class TinyClassLoader1Test extends TestCase {
         URL[] urls1 = {new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar1-tests.jar").toURL()};
         URL[] urls2 = {new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar2-tests.jar").toURL()};
         tinyClassLoader = new TinyClassLoader(urls0);
-        tinyClassLoader.addSubTinyClassLoader(new TinyClassLoader(urls1,tinyClassLoader));
-        tinyClassLoader.addSubTinyClassLoader(new TinyClassLoader(urls2,tinyClassLoader));
+        tinyClassLoader.addDependClassLoader(new TinyClassLoader(urls1,tinyClassLoader));
+        tinyClassLoader.addDependClassLoader(new TinyClassLoader(urls2,tinyClassLoader));
     }
 
     public void tearDown() throws Exception {

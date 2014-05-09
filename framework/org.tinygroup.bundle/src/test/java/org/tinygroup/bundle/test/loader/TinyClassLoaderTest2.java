@@ -55,8 +55,8 @@ public class TinyClassLoaderTest2 extends TestCase {
         grandClassLoader = new TinyClassLoader(urls0);
         fatherClassLoader=new TinyClassLoader(urls1,grandClassLoader);
         sonClassLoader=new TinyClassLoader(urls2,fatherClassLoader);
-        grandClassLoader.addSubTinyClassLoader(fatherClassLoader);
-        fatherClassLoader.addSubTinyClassLoader(sonClassLoader);
+        grandClassLoader.addDependClassLoader(fatherClassLoader);
+        fatherClassLoader.addDependClassLoader(sonClassLoader);
     }
 
     public void tearDown() throws Exception {

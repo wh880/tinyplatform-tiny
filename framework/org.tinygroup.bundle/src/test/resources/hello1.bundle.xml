@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<bundle name="hello1" title="hello1" dependencies="hello" common-jars="org.tinygroup.loader-0.0.13-SNAPSHOT.jar1-tests.jar"
-	bundle-activator="" short-description="实现1" long-description="实现1">
-
-</bundle>
