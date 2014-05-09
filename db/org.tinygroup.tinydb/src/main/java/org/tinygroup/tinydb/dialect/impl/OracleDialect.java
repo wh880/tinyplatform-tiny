@@ -50,13 +50,15 @@ public class OracleDialect implements Dialect{
 
 	public String getLimitString(String sql, int offset, int limit) {
 		StringBuffer pagingSelect = new StringBuffer();
-		if (offset == 0)
-			offset = 1;
+		int start=offset;
+		if (offset == 0){
+			start = 1;
+		}	
 		pagingSelect
 				.append("select * from ( select row_.*, rownum jres_db_rownum_ from ( ");
 		pagingSelect.append(sql);
-		pagingSelect.append(" ) row_ where rownum <=" + (offset + limit - 1)
-				+ ") where jres_db_rownum_ >=" + offset);
+		pagingSelect.append(" ) row_ where rownum <=" + (start + limit - 1)
+				+ ") where jres_db_rownum_ >=" + start);
 
 		return pagingSelect.toString();
 	}

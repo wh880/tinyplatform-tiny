@@ -33,7 +33,7 @@ import java.util.Map;
  *
  * @author luoguo
  */
-public interface DbSqlOperator<KeyType> {
+public interface DbSqlOperator<K> {
 
     // 下面是根据SQL
     Bean[] getBeans(String sql);

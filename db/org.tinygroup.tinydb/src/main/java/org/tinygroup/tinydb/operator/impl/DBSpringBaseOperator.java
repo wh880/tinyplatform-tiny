@@ -23,6 +23,13 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -32,13 +39,6 @@ import org.tinygroup.tinydb.exception.DBRuntimeException;
 import org.tinygroup.tinydb.util.BatchPreparedStatementSetterImpl;
 import org.tinygroup.tinydb.util.BeanRowMapper;
 import org.tinygroup.tinydb.util.SqlParamValuesBatchStatementSetterImpl;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DBSpringBaseOperator {
 
@@ -122,9 +122,10 @@ public class DBSpringBaseOperator {
 
 	public List<Bean> findBeansByListForPage(String sql, String beanType,String schema,
 			int start, int limit, List<Object> parameters) {
+		String tempSql=sql;
 		if (supportsLimit()) {
-			sql = getLimitString(sql, start, limit);
-			List<Bean> beans = jdbcTemplate.query(sql, parameters.toArray(),
+			tempSql = getLimitString(sql, start, limit);
+			List<Bean> beans = jdbcTemplate.query(tempSql, parameters.toArray(),
 					new BeanRowMapper(beanType,schema));
 			return beans;
 		}
@@ -134,9 +135,10 @@ public class DBSpringBaseOperator {
 	public List<Bean> findBeansByMapForPage(String sql, String beanType,String schema,
 			int start, int limit, Map<String, Object> parameters,
 			List<Integer> dataTypes) {
+		String tempSql=sql;
 		if (supportsLimit()) {
-			sql = getLimitString(sql, start, limit);
-			return findBeansByMap(sql, beanType,schema, parameters, dataTypes);
+			tempSql = getLimitString(sql, start, limit);
+			return findBeansByMap(tempSql, beanType,schema, parameters, dataTypes);
 		}
 		throw new DBRuntimeException("The db don't support this operation");
 	}
@@ -179,7 +181,7 @@ public class DBSpringBaseOperator {
 	public List<Bean> findBeansByMap(String sql, String beanType,String schema,
 			Map<String, Object> parameters, List<Integer> dataTypes) {
 		StringBuffer buf = new StringBuffer();
-		ArrayList<Object> paraList = getParamArray(sql, parameters, buf);
+		List<Object> paraList = getParamArray(sql, parameters, buf);
 		int[] types = getDataTypes(dataTypes);
 		if(types!=null&&types.length>0){
 			return jdbcTemplate.query(buf.toString(), paraList.toArray(),types, new BeanRowMapper(
@@ -193,7 +195,7 @@ public class DBSpringBaseOperator {
 	public Object queryObjectByMap(String sql, String beanType,String schema,
 			Map<String, Object> parameters, List<Integer> dataTypes) {
 		StringBuffer buf = new StringBuffer();
-		ArrayList<Object> paraList = getParamArray(sql, parameters, buf);
+		List<Object> paraList = getParamArray(sql, parameters, buf);
 		int[] types = getDataTypes(dataTypes);
 		if(types!=null&&types.length>0){
 			return jdbcTemplate.queryForObject(buf.toString(), paraList.toArray(),types, new BeanRowMapper(
@@ -207,7 +209,7 @@ public class DBSpringBaseOperator {
 	
 	public int executeByMap(String sql,Map<String, Object> parameters, List<Integer> dataTypes){
 		StringBuffer buf = new StringBuffer();
-		ArrayList<Object> paraList = getParamArray(sql, parameters, buf);
+		List<Object> paraList = getParamArray(sql, parameters, buf);
 		int[] types = getDataTypes(dataTypes);
 		if(types!=null&&types.length>0){
 			return jdbcTemplate.update(sql, paraList.toArray(), types);
@@ -230,7 +232,7 @@ public class DBSpringBaseOperator {
 	
 	public int queryForIntByMap(String sql,Map<String, Object> parameters){
 		StringBuffer buf = new StringBuffer();
-		ArrayList<Object> paraList = getParamArray(sql, parameters, buf);
+		List<Object> paraList = getParamArray(sql, parameters, buf);
 		return jdbcTemplate.queryForInt(sql, paraList.toArray());
 	}
 
@@ -245,7 +247,7 @@ public class DBSpringBaseOperator {
 		return types;
 	}
 
-	private ArrayList<Object> getParamArray(String sql,
+	private List<Object> getParamArray(String sql,
 			Map<String, Object> parameters, StringBuffer buf) {
 		ArrayList<Object> paraList = new ArrayList<Object>();
 		String patternStr = "([\"](.*?)[\"])|([\'](.*?)[\'])|([@][a-zA-Z_$][\\w$]*)";

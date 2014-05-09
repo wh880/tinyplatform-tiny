@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.tinydb.exception.DBRuntimeException;
+import org.tinygroup.tinydb.exception.TinyDbRuntimeException;
 
 /**
  * 表信息
@@ -86,7 +86,7 @@ public class TableConfiguration implements Serializable {
 			}
 		}
 		if (!flag) {
-			throw new DBRuntimeException("表格主键字段" + columnName + "不存在");
+			throw new TinyDbRuntimeException("表格主键字段" + columnName + "不存在");
 		}
 	}
 
@@ -96,7 +96,7 @@ public class TableConfiguration implements Serializable {
 				return column;
 			}
 		}
-		throw new RuntimeException("找不到主键字段！");
+		throw new TinyDbRuntimeException("找不到主键字段！");
 	}
 	
 	public void addColumn(ColumnConfiguration column){

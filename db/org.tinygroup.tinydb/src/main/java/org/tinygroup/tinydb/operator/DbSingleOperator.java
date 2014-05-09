@@ -33,7 +33,7 @@ import org.tinygroup.tinydb.Bean;
  * @author luoguo
  * 
  */
-public interface DbSingleOperator<KeyType> {
+public interface DbSingleOperator<K> {
 
 	
 	Bean insert(Bean bean);
@@ -49,8 +49,8 @@ public interface DbSingleOperator<KeyType> {
 
 	int delete(Bean bean);
 
-	Bean getBean(KeyType beanId);
+	Bean getBean(K beanId);
 
-	int deleteById(KeyType beanId);
+	int deleteById(K beanId);
 
 }

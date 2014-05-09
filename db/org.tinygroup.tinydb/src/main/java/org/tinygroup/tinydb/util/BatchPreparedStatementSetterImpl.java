@@ -53,13 +53,8 @@ public class BatchPreparedStatementSetterImpl implements
 	}
 
 	public void setValues(PreparedStatement ps, int i) throws SQLException {
-
-		try {
 			List<Object> sqlParams = params.get(i);
 			doSetStatementParameters(sqlParams, ps, columnTypes);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public int getBatchSize() {

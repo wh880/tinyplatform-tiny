@@ -38,8 +38,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
- abstract class BeanDBBatchOperator<KeyType> extends
-		BeanDBSingleOperator<KeyType> implements DBOperator<KeyType> {
+ abstract class BeanDBBatchOperator<K> extends
+		BeanDBSingleOperator<K> implements DBOperator<K> {
 
 	public BeanDBBatchOperator(JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);
@@ -50,7 +50,6 @@ import java.util.List;
 				bean.getType(), getSchema());
 		List<String> conditionColumns = new ArrayList<String>();
 		List<Object> params = new ArrayList<Object>();
-		//List<Integer> dataTypes = new ArrayList<Integer>();
 		for (ColumnConfiguration column : table.getColumns()) {
 			String columnsName = column.getColumnName();
 			String propertyName = getBeanDbNameConverter()
@@ -58,7 +57,6 @@ import java.util.List;
 			if (bean.containsKey(propertyName)) {
 				conditionColumns.add(columnsName);
 				params.add(bean.get(propertyName));
-				//dataTypes.add(column.getDataType());
 			}
 		}
 		String sql = getQuerySqlAndParamKeys(bean.getType(),conditionColumns);
@@ -158,7 +156,7 @@ import java.util.List;
 		return executeBatchBySqlParamterValues(sql, params);
 	}
 
-	public int[] deleteById(KeyType[] beanIds) {
+	public int[] deleteById(K[] beanIds) {
 		if (beanIds == null || beanIds.length == 0) {
 			return null;
 		}		
@@ -166,7 +164,7 @@ import java.util.List;
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
 				getBeanType(), getSchema());
 		String sql = getDeleteSqlByKey(getBeanType());
-		for (KeyType beanId : beanIds) {
+		for (K beanId : beanIds) {
 			SqlParameterValue value=createSqlParamter(beanId, table.getPrimaryKey());
 			SqlParameterValue[] values=new SqlParameterValue[1];
 			values[0]=value;
@@ -175,7 +173,7 @@ import java.util.List;
 		return executeBatchBySqlParamterValues(sql, params);
 	}
 
-	public Bean[] getBeansById(KeyType[] beanIds) {
+	public Bean[] getBeansById(K[] beanIds) {
 		try {
 			List<Bean> list = queryBean(getBeanType(), beanIds);
 			for (Bean bean : list) {
@@ -209,15 +207,15 @@ import java.util.List;
 		batchDelete(TinyDBUtil.collectionToArray(beans),batchSize);
 	}
 	@SuppressWarnings("unchecked")
-	public int[] deleteById(Collection<KeyType> beanIds) {
-		return deleteById((KeyType[]) beanIds.toArray());
+	public int[] deleteById(Collection<K> beanIds) {
+		return deleteById((K[]) beanIds.toArray());
 	}
 
-	public Bean[] getBeansById(Collection<KeyType> beanIds) {
+	public Bean[] getBeansById(Collection<K> beanIds) {
 		return getBeansById(TinyDBUtil.collectionToArray(beanIds));
 	}
 
-	private List<Bean> queryBean(String beanType, KeyType[] beanIds)
+	private List<Bean> queryBean(String beanType, K[] beanIds)
 			throws SQLException {
 
 		String sql = getQuerySql();
@@ -225,7 +223,7 @@ import java.util.List;
 		List<Integer> dataTypes = new ArrayList<Integer>();
 		dataTypes.add(TinyDBUtil.getTableConfigByBean(beanType, getSchema())
 				.getPrimaryKey().getDataType());
-		for (KeyType beanId : beanIds) {
+		for (K beanId : beanIds) {
 			List<Object> params = new ArrayList<Object>();
 			params.add(beanId);
 			list.addAll(findBeansByList(sql, beanType, getSchema(), params));

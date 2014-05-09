@@ -40,7 +40,6 @@ import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.dialect.Dialect;
-import org.tinygroup.tinydb.util.DialectUtil;
 
 /**
  * The Class MySQLDialect.
@@ -113,37 +112,6 @@ public class MySQLDialect implements Dialect {
 		return "select now()";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.hundsun.jres.interfaces.db.dialect.IDialect#getDialectName()
-	 */
-	public String getDialectName() {
-		return DialectUtil.DB_TYPE_MYSQL;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.hundsun.jres.interfaces.db.dialect.IDialect#getTotalCountSql(java
-	 * .lang.String)
-	 */
-	public String getTotalCountSql(String sql) {
-		String countStr = sql.trim();
-		if (sql.indexOf("union") != -1) {
-			sql = "select count(1) as TotalCount from (" + sql
-					+ ") temp_select ";
-			return sql;
-		}
-		if (countStr.startsWith("select")) {
-			if (countStr.indexOf("from") != -1)
-				countStr = countStr.substring(0, 6)
-						+ " count(1) as TotalCount "
-						+ countStr.substring(countStr.indexOf("from"));
-		}
-		return countStr;
-	}
 	
 	public String buildSqlFuction(String sql) {
 		DialectFunctionProcessor processor=SpringUtil.getBean(DataBaseUtil.FUNCTION_BEAN);

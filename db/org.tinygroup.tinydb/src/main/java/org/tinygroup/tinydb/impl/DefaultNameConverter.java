@@ -46,8 +46,9 @@ public class DefaultNameConverter implements BeanDbNameConverter {
 
 	public String dbTableNameToTypeName(String dbName) {
 		String property = dbFieldNameToPropertyName(dbName);
-		if (property.length() == 1)
+		if (property.length() == 1){
 			return property.toUpperCase();
+		}	
 		return property.substring(0, 1).toUpperCase() + property.substring(1);
 	}
 

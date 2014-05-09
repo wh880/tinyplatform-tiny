@@ -42,6 +42,7 @@ create table ANIMAL
 (
   id     VARCHAR2(32) not null,
   name   VARCHAR2(32),
+  sex    VARCHAR2(32),
   length NUMBER
 )
 tablespace USERS

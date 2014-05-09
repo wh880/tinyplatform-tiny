@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 
 public class SchemaConfigContainer {
-    // public static String UUID_KEY = "uuid";
     public final static String INCREASE_KEY = "increase"; // 主键类型--自增长
     /**
      * Map<schema,operatorBeanName>
@@ -66,8 +65,9 @@ public class SchemaConfigContainer {
         String schema = config.getSchema();
         schemaMap.put(schema, config.getOperatorBeanName());
         String keyType = config.getKeyType();
-        if (keyType == null || "".equals(keyType))
+        if (keyType == null || "".equals(keyType)){
             keyType = INCREASE_KEY;
+        }    
         schemaKeyTypeMap.put(schema, keyType);
         schemaTablePattern.put(schema, config.getTableNamePattern());
         if (!schemaList.contains(schema)) {

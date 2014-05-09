@@ -29,7 +29,6 @@ import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.dialect.Dialect;
-import org.tinygroup.tinydb.util.DialectUtil;
 
 public class SybaseDialect implements Dialect {
 	
@@ -58,34 +57,8 @@ public class SybaseDialect implements Dialect {
 		return "Select CONVERT(varchar(100), GETDATE(), 21)";
 	}
 
-	public String getDialectName() {
-		return DialectUtil.DB_TYPE_SYBASE;
-	}
-
 	public String getLimitString(String sql, int offset, int limit) {
-		return sql;
-	}
-
-	public String getTotalCountSql(String sql) {
-		if (sql.indexOf("union") != -1) {
-			sql = "select count(1) as TotalCount from (" + sql
-					+ ") temp_select ";
-			return sql;
-		}
-		String countStr = sql.trim();
-		StringBuilder sb = new StringBuilder();
-		if (countStr.startsWith("select")) {
-			if (countStr.indexOf("from") != -1) {
-				sb.append(countStr.substring(0, 6)).append(
-						" count(1) as TotalCount ");
-				if (countStr.indexOf("order by") != -1)
-					sb.append(countStr.substring(countStr.indexOf("from"),
-							countStr.indexOf("order by")));
-				else
-					sb.append(countStr.substring(countStr.indexOf("from")));
-			}
-		}
-		return sb.toString();
+		throw new UnsupportedOperationException( "paged queries not supported" );
 	}
 
 	public boolean supportsLimit() {
