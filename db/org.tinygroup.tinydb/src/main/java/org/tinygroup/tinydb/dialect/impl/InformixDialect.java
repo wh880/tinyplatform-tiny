@@ -39,7 +39,6 @@ import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.dialect.Dialect;
-import org.tinygroup.tinydb.util.DialectUtil;
 
 /**
  * The Class InformixDialect.
@@ -79,8 +78,8 @@ public class InformixDialect implements Dialect {
 		StringBuffer pagingSelect = new StringBuffer();
 		pagingSelect.append("select skip ");
 		pagingSelect.append(offset - 1);
-		pagingSelect.append(" first " + limit);
-		pagingSelect.append(" * from (" + sql);
+		pagingSelect.append(" first ").append(limit);
+		pagingSelect.append(" * from (").append(sql);
 		pagingSelect.append(" )");
 		return pagingSelect.toString();
 	}
@@ -113,15 +112,6 @@ public class InformixDialect implements Dialect {
 	 */
 	public String getCurrentDate() {
 		return "SELECT current FROM sysmaster:sysshmvals";
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.hundsun.jres.interfaces.db.dialect.IDialect#getDialectName()
-	 */
-	public String getDialectName() {
-		return DialectUtil.DB_TYPE_INFORMIX;
 	}
 
 	public String buildSqlFuction(String sql) {

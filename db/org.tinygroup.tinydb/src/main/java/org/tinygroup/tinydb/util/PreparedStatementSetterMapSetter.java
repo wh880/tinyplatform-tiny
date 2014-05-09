@@ -44,10 +44,11 @@ public class PreparedStatementSetterMapSetter implements PreparedStatementSetter
 			throws SQLException {
 		if (parameters != null) {// 20120326 增加非空判断
 			for (int i = 0; i < parameters.size(); i++) {
-				if (dataTypes.size() > i && dataTypes.get(i) != null)
+				if (dataTypes.size() > i && dataTypes.get(i) != null){
 					setParameter(ps, i + 1, parameters.get(i), dataTypes.get(i));
-				else
+				}else{
 					setParameter(ps, i + 1, parameters.get(i), null);
+				}	
 			}
 		}
 	}

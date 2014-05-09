@@ -50,7 +50,7 @@ import org.tinygroup.tinydb.util.DataSourceFactory;
 
 public class BeanManagerImpl implements BeanOperatorManager {
 
-	private SchemaConfigContainer schemaContainer  = new SchemaConfigContainer();
+	private SchemaConfigContainer schemaContainer = new SchemaConfigContainer();
 	private String mainSchema;
 	/**
 	 * Map<schema,Map<表名, TableConfiguration>>
@@ -62,16 +62,16 @@ public class BeanManagerImpl implements BeanOperatorManager {
 	 */
 	private Map<String, Map<String, List<String>>> propertiesMap = new HashMap<String, Map<String, List<String>>>();
 
-	private String[] tableTypes = new String[] { "TABLE","VIEW" };// 只查询TABLE和VIEW类型的表
+	private String[] tableTypes = new String[] { "TABLE", "VIEW" };// 只查询TABLE和VIEW类型的表
 
 	private static Logger logger = LoggerFactory
 			.getLogger(BeanManagerImpl.class);
 
 	private BeanDbNameConverter nameConverter = new DefaultNameConverter();
-	
-	private Map<String, Relation> relationIdMap=new HashMap<String, Relation>();
-	
-	private Map<String, Relation> relationTypeMap=new HashMap<String, Relation>();
+
+	private Map<String, Relation> relationIdMap = new HashMap<String, Relation>();
+
+	private Map<String, Relation> relationTypeMap = new HashMap<String, Relation>();
 
 	/**
 	 * 不以'_'开头，且不以'_'或者'_数字'结尾的表名
@@ -79,8 +79,9 @@ public class BeanManagerImpl implements BeanOperatorManager {
 	private static Pattern tableNamePattern = Pattern
 			.compile("^(?!_)(?!.*?(_[0-9]*)$)[a-zA-Z]+(_?[a-zA-Z0-9])+$");
 
-	public DBOperator<?> getDbOperator(String ischema,String beanType) {
-		DBOperator<?> operator = schemaContainer.getDbOperator(getRealSchema(ischema), beanType);
+	public DBOperator<?> getDbOperator(String ischema, String beanType) {
+		DBOperator<?> operator = schemaContainer.getDbOperator(
+				getRealSchema(ischema), beanType);
 		operator.setRelation(getRelationByBeanType(beanType));
 		operator.setManager(this);
 		return operator;
@@ -88,8 +89,6 @@ public class BeanManagerImpl implements BeanOperatorManager {
 
 	public void registerSchemaConfig(SchemaConfig schemaConfig) {
 		schemaContainer.addSchemaConfig(schemaConfig);
-//		schemaMap.put(schemaConfig.getSchema(), schemaConfig.getBean());
-//		schemaKeyTypeMap.put(schemaConfig.getSchema(), schemaConfig.getKeyType());
 	}
 
 	public TableConfiguration getTableConfiguration(String tableName,
@@ -98,8 +97,23 @@ public class BeanManagerImpl implements BeanOperatorManager {
 		if (!tableMap.containsKey(ischema)
 				|| !tableMap.get(ischema).containsKey(tableName)) {// 如果map中不包含该表格信息,则尝试初始化表格信息
 			logger.logMessage(LogLevel.DEBUG, "表格:{0}不存在,尝试初始化表格信息", tableName);
-			initBeanConfigration(null,
-					nameConverter.dbTableNameToTypeName(tableName), ischema);
+			Connection con = null;
+			try {
+				con = DataSourceFactory.getConnection(null);
+				if (con != null) {
+					initBeanConfigration(con,
+							nameConverter.dbTableNameToTypeName(tableName),
+							ischema);
+				}
+			} finally {
+				if (con != null) {
+					try {
+						con.close();
+					} catch (SQLException e) {
+						throw new DBRuntimeException(e);
+					}
+				}
+			}
 		}
 		return tableMap.get(ischema).get(tableName);
 	}
@@ -116,7 +130,21 @@ public class BeanManagerImpl implements BeanOperatorManager {
 				|| !propertiesMap.get(ischema).containsKey(beanType)) {
 			logger.logMessage(LogLevel.DEBUG,
 					"Bean:{0},schema:{1}属性列表不存在,尝试相关信息", beanType, ischema);
-			initBeanConfigration(null, beanType, ischema);
+			Connection con = null;
+			try {
+				con = DataSourceFactory.getConnection(null);
+				if (con != null) {
+					initBeanConfigration(con, beanType, ischema);
+				}
+			} finally {
+				if (con != null) {
+					try {
+						con.close();
+					} catch (SQLException e) {
+						throw new DBRuntimeException(e);
+					}
+				}
+			}
 		}
 		return propertiesMap.get(ischema).get(beanType);
 	}
@@ -125,7 +153,8 @@ public class BeanManagerImpl implements BeanOperatorManager {
 		Connection con = null;
 		try {
 			con = DataSourceFactory.getConnection(null);
-			Map<String, List<String>> schemaBeanListMap = schemaContainer.getSchemaBeanListMap();
+			Map<String, List<String>> schemaBeanListMap = schemaContainer
+					.getSchemaBeanListMap();
 			for (String schame : schemaBeanListMap.keySet()) {
 				for (String beanType : schemaBeanListMap.get(schame)) {
 					initBeanConfigration(con, beanType, schame);
@@ -147,79 +176,53 @@ public class BeanManagerImpl implements BeanOperatorManager {
 	private void initBeanConfigration(Connection con, String beanType,
 			String schema) {
 		try {
-			Connection c = con;
-			if (c == null) {
-				c = DataSourceFactory.getConnection(null);
-			}
 			String tableName = nameConverter.typeNameToDbTableName(beanType);
-			initTableConfiguration(c, schema, tableName);
+			initTableConfiguration(con, schema, tableName);
 			initBeanProperties(beanType, schema);
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new DBRuntimeException(e);
 		}
 	}
 
 	private void initTableConfiguration(Connection con, String schema,
 			String tableName) throws SQLException {
 		logger.logMessage(LogLevel.INFO, "开始获取表格:{0}信息", tableName);
-			
-		
-		if (tableMap.containsKey(tableName)){// 先判断map中是否已有表信息，若有则直接取出返回
+
+		if (tableMap.containsKey(tableName)) {// 先判断map中是否已有表信息，若有则直接取出返回
 			logger.logMessage(LogLevel.INFO, "表格:{0}已存在，无需重新获取", tableName);
 			return;
 		}
 		DatabaseMetaData metaData = con.getMetaData();
 		// 不对表名和schame作处理获取表信息
-		TableConfiguration table = getTableConfiguration(tableName,
-				metaData.getColumns(null, schema.trim(), tableName.trim(), "%"));
-		ResultSet rset = metaData.getPrimaryKeys(null, schema.trim(),
-				tableName.trim());
+		TableConfiguration table = getTableConfiguration(tableName, tableName,
+				schema, "%", metaData);
 		if (table == null) {
 			// 小写表名读取信息 with schema
-			table = getTableConfiguration(tableName, metaData.getColumns(null,
-					schema.trim().toLowerCase(),
-					tableName.trim().toLowerCase(), "%"));
-			rset.close();// 先关闭之前打开的
-			rset = metaData.getPrimaryKeys(null, schema.trim().toLowerCase(),
-					tableName.trim().toLowerCase());
+			table = getTableConfiguration(tableName, tableName.toLowerCase(),
+					schema.toLowerCase(), "%", metaData);
 		}
 		if (table == null) {
 			// 大写表名读取信息 with schema
-			table = getTableConfiguration(tableName, metaData.getColumns(null,
-					schema.trim().toUpperCase(),
-					tableName.trim().toUpperCase(), "%"));
-			rset.close();// 先关闭之前打开的
-			rset = metaData.getPrimaryKeys(null, schema.trim().toUpperCase(),
-					tableName.trim().toUpperCase());
+			table = getTableConfiguration(tableName, tableName.toUpperCase(),
+					schema.toUpperCase(), "%", metaData);
 		}
 		if (table == null) {
 			// 大写表名读取信息
-			table = getTableConfiguration(tableName, metaData.getColumns(null,
-					"%", tableName.trim().toUpperCase(), "%"));
-			rset.close();// 先关闭之前打开的
-			rset = metaData.getPrimaryKeys(null, "%", tableName.trim()
-					.toUpperCase());
+			table = getTableConfiguration(tableName, tableName.toUpperCase(),
+					"%", "%", metaData);
 		}
 		if (table == null) {
 			// 小写写表名读取信息
-			table = getTableConfiguration(tableName, metaData.getColumns(null,
-					"%", tableName.trim().toLowerCase(), "%"));
-			rset.close();// 先关闭之前打开的
-			rset = metaData.getPrimaryKeys(null, "%", tableName.trim()
-					.toLowerCase());
+			table = getTableConfiguration(tableName, tableName.toLowerCase(),
+					"%", "%", metaData);
 		}
 		if (table != null) {
-			// 若非空，则存入表格信息Map
-			while (rset.next()) {
-				table.setPrimaryKey(rset.getString(PK_NAME));
-			}
 			table.setSchema(schema);
 			addTableConfiguration(table);
 			logger.logMessage(LogLevel.INFO, "获取表格:{0}信息完成", tableName);
 		} else {
 			logger.logMessage(LogLevel.ERROR, "未能获取表格:{0}信息", tableName);
 		}
-		rset.close();// 关闭最后打开的
 
 	}
 
@@ -244,14 +247,20 @@ public class BeanManagerImpl implements BeanOperatorManager {
 	}
 
 	private static TableConfiguration getTableConfiguration(String tableName,
-			ResultSet colRet) throws SQLException {
+			String tableNamePatternStr, String schemaPattern,
+			String columnNamePattern, DatabaseMetaData metaData)
+			throws SQLException {
+		ResultSet colRet = metaData.getColumns(null, schemaPattern,
+				tableNamePatternStr, columnNamePattern);
+		ResultSet primaryKeySet = null;
+		TableConfiguration table = new TableConfiguration();
 		try {
-			TableConfiguration table = new TableConfiguration();
 			boolean flag = false;
 			while (colRet.next()) {
 				flag = true;
 				ColumnConfiguration column = new ColumnConfiguration();
-				column.setColumnName(colRet.getString(COLUMN_NAME).toUpperCase());
+				column.setColumnName(colRet.getString(COLUMN_NAME)
+						.toUpperCase());
 				column.setColumnSize(colRet.getString(COLUMN_SIZE));
 				column.setDecimalDigits(colRet.getString(DECIMAL_DIGITS));
 				column.setAllowNull(colRet.getString(NULLABLE));
@@ -262,10 +271,20 @@ public class BeanManagerImpl implements BeanOperatorManager {
 			if (!flag) {// 说明没有colRet中没有查到列信息
 				return null;
 			}
+			primaryKeySet = metaData.getPrimaryKeys(null, schemaPattern,
+					tableNamePatternStr);
+			if (primaryKeySet != null && primaryKeySet.next()) {
+				table.setPrimaryKey(primaryKeySet.getString(PK_NAME));
+			}
 			table.setName(tableName);
 			return table;
 		} finally {
-			colRet.close();
+			if (colRet != null) {
+				colRet.close();
+			}
+			if (primaryKeySet != null) {
+				primaryKeySet.close();
+			}
 		}
 
 	}
@@ -304,7 +323,8 @@ public class BeanManagerImpl implements BeanOperatorManager {
 	}
 
 	private void registerBean(String beanType, String schema) {
-		Map<String, List<String>> schemaBeanListMap = schemaContainer.getSchemaBeanListMap();
+		Map<String, List<String>> schemaBeanListMap = schemaContainer
+				.getSchemaBeanListMap();
 		if (!schemaBeanListMap.containsKey(schema)) {
 			schemaBeanListMap.put(schema, new ArrayList<String>());
 		}
@@ -314,18 +334,24 @@ public class BeanManagerImpl implements BeanOperatorManager {
 	private void initSchemaConfiguration(String schema, Connection con)
 			throws SQLException {
 		DatabaseMetaData metaData = con.getMetaData();
-		ResultSet tables = metaData.getTables("", schema.toUpperCase(), schemaContainer.getTablePattern(schema), tableTypes);
-		while (tables.next()) {
-			String tableName = tables.getString(TABLE_NAME);
-			if (tableNamePattern.matcher(tableName).matches()) {
-				String beanType = nameConverter
-						.dbTableNameToTypeName(tableName);
-				registerBean(beanType, schema);
-			} else {
-				logger.logMessage(LogLevel.ERROR, "表名：{0}不符合规范将被忽略", tableName);
+		ResultSet tables = metaData.getTables("", schema.toUpperCase(),
+				schemaContainer.getTablePattern(schema), tableTypes);
+		try {
+			while (tables.next()) {
+				String tableName = tables.getString(TABLE_NAME);
+				if (tableNamePattern.matcher(tableName).matches()) {
+					String beanType = nameConverter
+							.dbTableNameToTypeName(tableName);
+					registerBean(beanType, schema);
+				} else {
+					logger.logMessage(LogLevel.ERROR, "表名：{0}不符合规范将被忽略", tableName);
+				}
+			}
+		}finally{
+			if(tables!=null){
+				tables.close();
 			}
 		}
-
 	}
 
 	public void setMainSchema(String schema) {
@@ -346,8 +372,7 @@ public class BeanManagerImpl implements BeanOperatorManager {
 	public TableConfiguration getTableConfiguration(String tableName) {
 		return getTableConfiguration(tableName, mainSchema);
 	}
-	
-	
+
 	public Map<String, Map<String, TableConfiguration>> getTableConfigurations() {
 		return tableMap;
 	}
@@ -366,18 +391,18 @@ public class BeanManagerImpl implements BeanOperatorManager {
 			relationTypeMap.put(relation.getType(), relation);
 		}
 	}
-	
+
 	public void removeRelationConfigs(Relations relations) {
 		for (Relation relation : relations.getRelations()) {
 			relationIdMap.remove(relation.getId());
 			relationTypeMap.remove(relation.getType());
 		}
 	}
-	
+
 	public Relation getRelationById(String id) {
 		return relationIdMap.get(id);
 	}
-	
+
 	public Relation getRelationByBeanType(String beanType) {
 		return relationTypeMap.get(beanType);
 	}
@@ -394,11 +419,11 @@ public class BeanManagerImpl implements BeanOperatorManager {
 	}
 
 	public void addTableConfiguration(TableConfiguration configuration) {
-		String schema=configuration.getSchema();
+		String schema = configuration.getSchema();
 		if (!tableMap.containsKey(schema)) {
 			tableMap.put(schema, new HashMap<String, TableConfiguration>());
 		}
 		tableMap.get(schema).put(configuration.getName(), configuration);
-		
+
 	}
 }

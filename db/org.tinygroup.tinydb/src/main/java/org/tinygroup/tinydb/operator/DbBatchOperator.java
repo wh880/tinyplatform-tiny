@@ -33,7 +33,7 @@ import org.tinygroup.tinydb.Bean;
  * @author luoguo
  * 
  */
-public interface DbBatchOperator<KeyType> {
+public interface DbBatchOperator<K> {
 	// 下面是根据数组
 	
 	Bean[] batchInsert(Bean[] beans);
@@ -54,9 +54,9 @@ public interface DbBatchOperator<KeyType> {
 	
 	void batchDelete(Bean[] beans,int batchSize);
 
-	int[] deleteById(KeyType[] beanIds);
+	int[] deleteById(K[] beanIds);
 
-	Bean[] getBeansById(KeyType[] beanIds);
+	Bean[] getBeansById(K[] beanIds);
 
 	Bean[] getBeans(Bean bean);
 
@@ -70,9 +70,9 @@ public interface DbBatchOperator<KeyType> {
 	int[] batchDelete(Collection<Bean> beans);
 	void batchDelete(Collection<Bean> beans,int batchSize);
 	
-	int[] deleteById(Collection<KeyType> beanIds);
+	int[] deleteById(Collection<K> beanIds);
 
-	Bean[] getBeansById(Collection<KeyType> beanIds);
+	Bean[] getBeansById(Collection<K> beanIds);
 	
 	/**
 	 * 

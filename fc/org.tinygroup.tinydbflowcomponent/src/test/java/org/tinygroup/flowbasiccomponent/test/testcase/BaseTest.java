@@ -37,10 +37,10 @@ import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.operator.impl.BeanStringOperator;
-import org.tinygroup.tinydb.script.Resources;
-import org.tinygroup.tinydb.script.ScriptRunner;
 import org.tinygroup.tinydb.util.DataSourceFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
+import org.tinygroup.tinytestutil.script.Resources;
+import org.tinygroup.tinytestutil.script.ScriptRunner;
 
 public abstract class BaseTest extends TestCase {
 	protected  static BeanOperatorManager manager;

@@ -79,10 +79,10 @@ public class DerbyDialect implements Dialect {
 	}
 
 	private String getLimitStringVersion106(String sql, int offset, int limit) {
-		if(offset<0){
-			offset=0;
-		}
 		int start=offset;
+		if(offset<0){
+			start=0;
+		}
 		if(start>0){
 			start=start-1;
 		}

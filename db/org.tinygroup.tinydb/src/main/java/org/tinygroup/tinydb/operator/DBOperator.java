@@ -30,13 +30,13 @@ package org.tinygroup.tinydb.operator;
  * 
  * @param <Bean>
  *            Bean类型
- * @param <KeyType>
+ * @param <K>
  *            主键类型，可能是int,long及其包装类型或String
  */
-public interface DBOperator<KeyType> extends 
+public interface DBOperator<K> extends 
         DbBaseOperator,
-		DbSingleOperator<KeyType>,
-		DbBatchOperator<KeyType>, DbSqlOperator<KeyType>,
-		DbSqlQueryOperator<KeyType> {
+		DbSingleOperator<K>,
+		DbBatchOperator<K>, DbSqlOperator<K>,
+		DbSqlQueryOperator<K> {
 
 }

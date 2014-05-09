@@ -41,7 +41,10 @@ import org.tinygroup.tinydb.Bean;
  * 开发时间: 2013-7-30 <br>
  * <br>
  */
-public class TinyBeanUtil {
+public final class TinyBeanUtil {
+	
+	private TinyBeanUtil() {
+	}
 
 	@SuppressWarnings("rawtypes")
 	public static <T> T bean2Object(Map bean, Class<T> type) {
@@ -99,8 +102,7 @@ public class TinyBeanUtil {
 				readMethod.setAccessible(true);
 			}
 			try {
-				Object value = readMethod.invoke(obejct, new Object[0]);
-				return value;
+				return readMethod.invoke(obejct, new Object[0]);
 			} catch (Exception e) {
 				throw new TinySysRuntimeException(e);
 			}

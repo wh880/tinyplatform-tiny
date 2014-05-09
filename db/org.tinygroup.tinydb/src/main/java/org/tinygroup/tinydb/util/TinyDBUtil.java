@@ -31,7 +31,6 @@ import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 import java.lang.reflect.Array;
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
@@ -41,10 +40,7 @@ import java.util.List;
  * @author luoguo
  * 
  */
-public class TinyDBUtil {
-
-	private TinyDBUtil() {
-	}
+public final class TinyDBUtil {
 
 	private static BeanOperatorManager manager;
 
@@ -52,6 +48,11 @@ public class TinyDBUtil {
 		manager = SpringUtil.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 	}
 
+	
+	private TinyDBUtil() {
+	}
+
+	
 	public static String getSeqName(String param) {
 		return "seq_" + param;
 	}
@@ -107,7 +108,6 @@ public class TinyDBUtil {
 	 * @param columnType
 	 *            表名
 	 * @return 表信息
-	 * @throws SQLException
 	 */
 
 	public static String getColumnJavaType(String columnType) {
@@ -119,20 +119,17 @@ public class TinyDBUtil {
 	}
 
 	public static Bean getBeanInstance(String beanType,String schame) {
-		Bean bean = new Bean(beanType);
-		return bean;
+		return new Bean(beanType);
 	}
 
 	public static Bean context2Bean(Context c, String beanType,String schame) {
 		List<String> properties = getBeanProperties(beanType,schame);
-		Bean bean = context2Bean(c, beanType, properties,schame);
-		return bean;
+		return context2Bean(c, beanType, properties,schame);
 	}
 	
 	public static Bean context2Bean(Context c, String beanType) {
 		List<String> properties = getBeanProperties(beanType,null);
-		Bean bean = context2Bean(c, beanType, properties,null);
-		return bean;
+		return context2Bean(c, beanType, properties,null);
 	}
 
 	public static Bean context2Bean(Context c, String beanType,

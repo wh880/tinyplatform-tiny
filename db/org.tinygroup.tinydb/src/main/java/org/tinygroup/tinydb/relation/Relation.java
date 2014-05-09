@@ -99,7 +99,7 @@ public class Relation {
 		this.collectionMode = collectionMode;
 		this.keyName = keyName;
 		this.mode = mode;
-		setRelations(relations);
+		addRelations(relations);
 	}
 	
 	public Relation(String id, String type, String collectionMode,
@@ -165,12 +165,16 @@ public class Relation {
 	}
 
 	public void setRelations(List<Relation> relations) {
+		addRelations(relations);
+	}
+
+	private void addRelations(List<Relation> relations) {
 		for (Relation relation : relations) {
 			addRelation(relation);
 		}
 	}
 
-	public void addRelation(Relation relation) {
+	private void addRelation(Relation relation) {
 		if (relations == null) {
 			relations = new ArrayList<Relation>();
 		}

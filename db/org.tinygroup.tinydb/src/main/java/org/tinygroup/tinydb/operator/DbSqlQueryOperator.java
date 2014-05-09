@@ -34,7 +34,7 @@ import org.tinygroup.tinydb.select.SelectBean;
  * @author luoguo
  * 
  */
-public interface DbSqlQueryOperator<KeyType> {
+public interface DbSqlQueryOperator<K> {
 
 	/**
 	 * 根据查询对象获取数据

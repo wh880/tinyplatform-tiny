@@ -37,8 +37,8 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 
 import java.util.*;
 
-public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
-		DbSingleOperator<KeyType> {
+public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
+		DbSingleOperator<K> {
 
 	public BeanDBSingleOperator(JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);
@@ -58,7 +58,7 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 		return executeBySqlParameterValues(sql, params);
 	}
 
-	private Bean queryBean(KeyType beanId) {
+	private Bean queryBean(K beanId) {
 		String sql = getQuerySql();
 		return (Bean) queryObject(sql, getBeanType(), getSchema(), beanId);
 	}
@@ -148,8 +148,7 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 				bean.getType(), getSchema());
 		List<String> conditionColumns = new ArrayList<String>();
 		conditionColumns.add(table.getPrimaryKey().getColumnName());
-		int record = updateBean(bean, conditionColumns);
-		return record;
+		return updateBean(bean, conditionColumns);
 	}
 
 	public int delete(Bean bean) {
@@ -165,7 +164,7 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 		return executeBySqlParameterValues(sql, params);
 	}
 
-	public Bean getBean(KeyType beanId) {
+	public Bean getBean(K beanId) {
 		Bean bean = queryBean(beanId);
 		bean = processRelation(bean, getRelation(), new QueryRelationCallBack());
 		return bean;
@@ -202,9 +201,6 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 		for (Relation relation : relations) {
 			set.add(relation.getType());
 		}
-		// if (set.size() != 1 && relations.size() > 0) {
-		// throw new DBRuntimeException("tinydb.oneToMoreError");
-		// }
 	}
 
 	protected void checkMoreToOne(List<Relation> relations) {
@@ -220,7 +216,7 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 	@SuppressWarnings("unchecked")
 	protected Bean createRelationBean(Bean bean, Relation relation) {
 		String relationType = relation.getType();
-		DBOperator<KeyType> operator = (DBOperator<KeyType>) getManager()
+		DBOperator<K> operator = (DBOperator<K>) getManager()
 				.getDbOperator(relationType);
 		operator.setRelation(relation);
 		Bean queryBean = new Bean(relationType);
@@ -236,7 +232,7 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 	@SuppressWarnings("unchecked")
 	protected Bean[] createRelationBeans(Bean bean, Relation relation) {
 		String relationType = relation.getType();
-		DBOperator<KeyType> operator = (DBOperator<KeyType>) getManager()
+		DBOperator<K> operator = (DBOperator<K>) getManager()
 				.getDbOperator(relationType);
 		operator.setRelation(relation);
 		Bean subBean = new Bean(relationType);
@@ -245,7 +241,7 @@ public class BeanDBSingleOperator<KeyType> extends BeanDBBaseOperator implements
 		return operator.getBeans(subBean);
 	}
 
-	public int deleteById(KeyType beanId) {
+	public int deleteById(K beanId) {
 		String sql = getDeleteSqlByKey(getBeanType());
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
 				getBeanType(), getSchema());

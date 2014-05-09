@@ -40,15 +40,13 @@ import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.dialect.Dialect;
-import org.tinygroup.tinydb.util.DialectUtil;
 
 /**
  * The Class SQLServerDialect.
  */
 public class SQLServerDialect implements Dialect {
-	
+
 	private SqlServerMaxValueIncrementer incrementer;
-	
 
 	public SqlServerMaxValueIncrementer getIncrementer() {
 		return incrementer;
@@ -77,68 +75,18 @@ public class SQLServerDialect implements Dialect {
 	 * @todo Implement this snowrain.database.data.Dialect method
 	 */
 	public String getLimitString(String sql, int offset, int limit) {
-		String tempSql = DialectUtil.getCloneSql(sql).toLowerCase();
-
-		// 如果含有union语句进行特殊处理 sql语句转换成子查询
-		if (sql.indexOf("union") != -1) {
-			sql = "select temp_select.* from (" + sql + ") temp_select "; // sql
-			// 语句进行转换
+		if (offset > 0) {
+			throw new UnsupportedOperationException("sql server has no offset");
 		}
-		int startOfSelect = tempSql.indexOf("select");
-		boolean hasOffset = false;
-		if (offset >= 1) {
-			hasOffset = true;
-		}
-		StringBuffer pagingSelect = new StringBuffer(sql.length() + 100)
-				.append(sql.substring(0, startOfSelect)) // add the comment
-				.append("select * from ( select ") // nest the main query in an
-				// outer select
-				.append(getRowNumber(sql)); // add the rownnumber bit into the
-		// outer query select list
-		if (DialectUtil.hasDistinct(tempSql)) {
-			pagingSelect.append(" row_.* from ( ") // add another (inner)
-					// nested
-					// select
-					.append(sql.substring(startOfSelect)) // add the main
-					// query
-					.append(" ) as row_"); // close off the inner nested select
-		} else {
-			String fieldstr = DialectUtil.addOrderByToField(sql);
-			int orderIdx = tempSql.lastIndexOf("order by");
-			if (orderIdx != -1)
-				fieldstr = fieldstr.substring(0, orderIdx);
-			pagingSelect.append(" t_.* from(" + fieldstr + ")as t_");
-		}
-		pagingSelect.append(" ) as temp_ where rownumber_ ");
-		// add the restriction to the outer select
-		if (hasOffset) {
-			// pagingSelect.append("between ?+1 and ?");
-			pagingSelect.append("between " + (offset) + " and "
-					+ (offset + limit - 1));
-		} else {
-			pagingSelect.append("<= " + (offset + limit - 1));
-		}
-
-		return pagingSelect.toString();
+		return new StringBuffer(sql.length() + 8).append(sql)
+				.insert(getAfterSelectInsertPoint(sql), " top " + limit)
+				.toString();
 	}
-
-	private String getRowNumber(String sql) {
-		String tempSql = DialectUtil.getCloneSql(sql).toLowerCase();
-		StringBuffer rownumber = new StringBuffer(50)
-				.append("row_number() over(");
-		if (tempSql.indexOf("union") == -1) { // 没有union情况下
-
-			int orderByIndex = tempSql.lastIndexOf("order by");
-
-			if (orderByIndex > 0 && !DialectUtil.hasDistinct(tempSql)) {
-				rownumber.append("order by ").append(
-						DialectUtil.replaceSchema(sql
-								.substring(orderByIndex + 9), "t_"));
-			}
-
-		}
-		rownumber.append(") as rownumber_,");
-		return rownumber.toString();
+	
+	static int getAfterSelectInsertPoint(String sql) {
+		int selectIndex = sql.toLowerCase().indexOf( "select" );
+		final int selectDistinctIndex = sql.toLowerCase().indexOf( "select distinct" );
+		return selectIndex + ( selectDistinctIndex == selectIndex ? 15 : 6 );
 	}
 
 	/**
@@ -158,10 +106,9 @@ public class SQLServerDialect implements Dialect {
 	 * com.hundsun.jres.interfaces.db.dialect.IDialect#getAutoIncreaseKeySql()
 	 */
 	public int getNextKey() {
-		Assert.assertNotNull(incrementer,"incrementer must not null");
-		return incrementer.nextIntValue();		
+		Assert.assertNotNull(incrementer, "incrementer must not null");
+		return incrementer.nextIntValue();
 	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -169,49 +116,12 @@ public class SQLServerDialect implements Dialect {
 	 * @see com.hundsun.jres.interfaces.db.dialect.IDialect#getCurrentDate()
 	 */
 	public String getCurrentDate() {
-		return "Select CONVERT(varchar(100), GETDATE(), 21)";
+		return "select current_timestamp";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.hundsun.jres.interfaces.db.dialect.IDialect#getDialectName()
-	 */
-	public String getDialectName() {
-		return DialectUtil.DB_TYPE_SQLSERVER;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.hundsun.jres.interfaces.db.dialect.IDialect#getTotalCountSql(java
-	 * .lang.String)
-	 */
-	public String getTotalCountSql(String sql) {
-		if (sql.indexOf("union") != -1) {
-			sql = "select count(1) as TotalCount from (" + sql
-					+ ") temp_select ";
-			return sql;
-		}
-
-		String countStr = sql.trim();
-		StringBuilder sb = new StringBuilder();
-		if (countStr.startsWith("select")) {
-			if (countStr.indexOf("from") != -1) {
-				sb.append(countStr.substring(0, 6)).append(
-						" count(1) as TotalCount ");
-				if (countStr.indexOf("order by") != -1)
-					sb.append(countStr.substring(countStr.indexOf("from"),
-							countStr.indexOf("order by")));
-				else
-					sb.append(countStr.substring(countStr.indexOf("from")));
-			}
-		}
-		return sb.toString();
-	}
 	public String buildSqlFuction(String sql) {
-		DialectFunctionProcessor processor=SpringUtil.getBean(DataBaseUtil.FUNCTION_BEAN);
+		DialectFunctionProcessor processor = SpringUtil
+				.getBean(DataBaseUtil.FUNCTION_BEAN);
 		return processor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_SQLSERVER);
 	}
 

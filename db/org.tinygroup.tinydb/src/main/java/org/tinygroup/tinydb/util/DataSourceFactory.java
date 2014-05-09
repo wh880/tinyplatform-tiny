@@ -38,9 +38,13 @@ import org.tinygroup.springutil.SpringUtil;
  * @author luoguo
  * 
  */
-public class DataSourceFactory {
+public final class DataSourceFactory {
 	
 	private static Logger logger=LoggerFactory.getLogger(DataSourceFactory.class);
+	
+	private DataSourceFactory(){
+		
+	}
 
 	public static PlatformTransactionManager getTransactionManager(
 			String dataSourceName) {

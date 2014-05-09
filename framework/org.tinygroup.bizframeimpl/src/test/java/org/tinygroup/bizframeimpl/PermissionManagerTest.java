@@ -30,10 +30,10 @@ import junit.framework.TestCase;
 
 import org.tinygroup.bizframe.PermissionManager;
 import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinydb.script.Resources;
-import org.tinygroup.tinydb.script.ScriptRunner;
 import org.tinygroup.tinydb.util.DataSourceFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
+import org.tinygroup.tinytestutil.script.Resources;
+import org.tinygroup.tinytestutil.script.ScriptRunner;
 
 public class PermissionManagerTest extends TestCase {
 

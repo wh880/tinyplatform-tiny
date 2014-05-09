@@ -59,13 +59,8 @@ public class SqlParamValuesBatchStatementSetterImpl implements
 	}
 
 	public void setValues(PreparedStatement ps, int i) throws SQLException {
-
-		try {
 			SqlParameterValue[] sqlParams = params.get(i);
 			doSetStatementParameters(sqlParams, ps);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public int getBatchSize() {

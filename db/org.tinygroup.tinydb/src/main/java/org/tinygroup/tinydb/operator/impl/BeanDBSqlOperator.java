@@ -38,8 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BeanDBSqlOperator<KeyType> extends BeanDBBatchOperator<KeyType>
-        implements DBOperator<KeyType> {
+public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K>
+        implements DBOperator<K> {
 
     public BeanDBSqlOperator(JdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
