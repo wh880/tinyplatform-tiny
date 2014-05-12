@@ -16,20 +16,15 @@
 	</bean>
 
 	<bean id="beanOperatorManager"
-		class="org.tinygroup.tinydb.impl.BeanManagerImpl">
+		class="org.tinygroup.tinydb.impl.BeanOperatorManagerImpl">
+	</bean>
+	
+	<bean id="metadataTableConfigConvert"
+		class="org.tinygroup.tinydb.convert.impl.MetadataTableConfigConvert">
 	</bean>
 	
 	<bean id="relationFileProcessor" scope="singleton"
 		class="org.tinygroup.tinydb.fileresolver.RelationFileProcessor">
-	</bean>
-	
-	<bean id="beanManagerProcessor" scope="singleton"
-		class="org.tinygroup.tinydb.applicationprocessor.BeanManagerProcessor">
-		<property name="manager" ref="beanOperatorManager" />
-	</bean>
-	
-	<bean id="tableConvertBeanProcessor" scope="singleton"
-		class="org.tinygroup.tinydb.applicationprocessor.TableConvertBeanProcessor">
 	</bean>
 	
 </beans>

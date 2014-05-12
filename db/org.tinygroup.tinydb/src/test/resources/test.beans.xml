@@ -42,7 +42,8 @@
 	</bean>
 	<bean id="animalOperator"
 		class="org.tinygroup.tinydb.test.operator.BeanStringOperator">
-		<constructor-arg  ref="jdbcTemplate"></constructor-arg>  
+		<constructor-arg  ref="jdbcTemplate"></constructor-arg>
+		<property name="schema" value="opensource"></property>  
 		<property name="beanType" value="animal"></property>
 		<property name="dialect" ref="derbyDialect"></property>
 		<property name="manager" ref="beanOperatorManager"></property>
@@ -54,6 +55,7 @@
 	<bean id="branchOperator"
 		class="org.tinygroup.tinydb.test.operator.BeanStringOperator">
 		<constructor-arg  ref="jdbcTemplate"></constructor-arg>  
+		<property name="schema" value="opensource"></property>  
 		<property name="beanType" value="aBranch"></property>
 		<property name="dialect" ref="derbyDialect"></property>
 		<property name="manager" ref="beanOperatorManager"></property>

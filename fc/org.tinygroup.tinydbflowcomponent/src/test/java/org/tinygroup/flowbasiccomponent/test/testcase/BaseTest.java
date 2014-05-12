@@ -26,17 +26,13 @@ package org.tinygroup.flowbasiccomponent.test.testcase;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.BeanOperatorManager;
-import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.operator.DBOperator;
-import org.tinygroup.tinydb.operator.impl.BeanStringOperator;
 import org.tinygroup.tinydb.util.DataSourceFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.tinytestutil.script.Resources;
@@ -77,7 +73,6 @@ public abstract class BaseTest extends TestCase {
 					// e.printStackTrace();
 				}
 				manager = SpringUtil.getBean("beanOperatorManager");
-				registerBean();
 				// people_id
 				// people_name
 				// people_age
@@ -101,21 +96,6 @@ public abstract class BaseTest extends TestCase {
 
 		}
 
-	}
-
-	private void registerBean() {
-
-		BeanStringOperator beanOperator = (BeanStringOperator) SpringUtil
-				.getBean("beanStringOperator");
-		beanOperator.setSchema(mainSchema);
-		manager.setMainSchema(mainSchema);
-		SchemaConfig config = new SchemaConfig(mainSchema,
-				"beanStringOperator", "uuid", "%");
-		manager.registerSchemaConfig(config);
-		List<String> list = new ArrayList<String>();
-		list.add(mainSchema);
-		manager.loadTablesFromSchemas();
-		manager.initBeansConfiguration();
 	}
 	
 }

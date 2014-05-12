@@ -91,30 +91,30 @@ public class BeanManagerPlugin extends AbstractConfiguration implements Plugin {
 	}
 
 	public void start() {
-			String defaultSchema=ConfigurationUtil.getPropertyName(applicationConfig, componentConfig, DEFAULT_SCHEMA);
-			manager.setMainSchema(defaultSchema);
-			List<XmlNode> nodes = ConfigurationUtil.combineSubList(applicationConfig, componentConfig, BEAN_OPERATE_CONFIG, SCHEMA);
-		    for (XmlNode node : nodes) {
-				String schema=node.getAttribute(SCHEMA);
-				String beanName=node.getAttribute(BEAN_NAME);
-				String tableNamePattern=node.getAttribute(TABLE_NAME_PATTERN);
-				String keyType=node.getAttribute(KEY_TYPE);
-				manager.registerSchemaConfig(new SchemaConfig(schema, beanName, keyType, tableNamePattern));
-				manager.loadTablesFromSchemas();
-				manager.initBeansConfiguration();
-			}
-		    
-		    if(cache!=null){
-		    	CacheInitConfig config=SpringUtil.getBean("cacheInitConfig");
-		    	cache.init(config.getRegion());
-		    	Map<String, Map<String, TableConfiguration>> schemaTableConfigurations=manager.getTableConfigurations();
-		    	for (String schema : schemaTableConfigurations.keySet()) {
-					Map<String, TableConfiguration> tableConfigs=schemaTableConfigurations.get(schema);
-					for (String tableName : tableConfigs.keySet()) {
-						cache.put(schema, tableName, tableConfigs.get(tableName));
-					}
-				}
-			}
+//			String defaultSchema=ConfigurationUtil.getPropertyName(applicationConfig, componentConfig, DEFAULT_SCHEMA);
+//			manager.setMainSchema(defaultSchema);
+//			List<XmlNode> nodes = ConfigurationUtil.combineSubList(applicationConfig, componentConfig, BEAN_OPERATE_CONFIG, SCHEMA);
+//		    for (XmlNode node : nodes) {
+//				String schema=node.getAttribute(SCHEMA);
+//				String beanName=node.getAttribute(BEAN_NAME);
+//				String tableNamePattern=node.getAttribute(TABLE_NAME_PATTERN);
+//				String keyType=node.getAttribute(KEY_TYPE);
+//				manager.registerSchemaConfig(new SchemaConfig(schema, beanName, keyType, tableNamePattern));
+//				manager.loadTablesFromSchemas();
+//				manager.initBeansConfiguration();
+//			}
+//		    
+//		    if(cache!=null){
+//		    	CacheInitConfig config=SpringUtil.getBean("cacheInitConfig");
+//		    	cache.init(config.getRegion());
+//		    	Map<String, Map<String, TableConfiguration>> schemaTableConfigurations=manager.getTableConfigurations();
+//		    	for (String schema : schemaTableConfigurations.keySet()) {
+//					Map<String, TableConfiguration> tableConfigs=schemaTableConfigurations.get(schema);
+//					for (String tableName : tableConfigs.keySet()) {
+//						cache.put(schema, tableName, tableConfigs.get(tableName));
+//					}
+//				}
+//			}
 	}
 
 	public void stop() {

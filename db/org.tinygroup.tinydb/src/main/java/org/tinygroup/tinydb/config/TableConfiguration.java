@@ -44,8 +44,14 @@ public class TableConfiguration implements Serializable {
 	 * 表名
 	 */
 	private String name;
-	
+	/**
+	 * 表模式
+	 */
 	private String schema;
+	/**
+	 * 主键类型
+	 */
+	private String keyType;
 	/**
 	 * 字段信息列表
 	 */
@@ -107,4 +113,13 @@ public class TableConfiguration implements Serializable {
 		columns.remove(column);
 	}
 
+	public String getKeyType() {
+		return keyType;
+	}
+
+	public void setKeyType(String keyType) {
+		this.keyType = keyType;
+	}
+
+	
 }
