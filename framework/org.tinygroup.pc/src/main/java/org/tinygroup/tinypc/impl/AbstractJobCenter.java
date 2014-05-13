@@ -56,7 +56,6 @@ public class AbstractJobCenter implements JobCenter {
 
     public void setRmiServer(RmiServer rmiServer) throws RemoteException {
         this.rmiServer = rmiServer;
-        this.workQueue = rmiServer.getRemoteObject(WORK_QUEUE);
     }
 
     public void registerWorker(Worker worker) throws RemoteException {
