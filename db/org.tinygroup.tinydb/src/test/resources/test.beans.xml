@@ -8,6 +8,12 @@
 	default-autowire="byName" default-lazy-init="true">
 
 	
+	<bean id="metadataTableConfigConvert"
+		class="org.tinygroup.tinydb.convert.impl.MetadataTableConfigConvert">
+		<property name="dataSource">
+		  <ref bean="dynamicDataSource"/>
+		</property>
+	</bean>
 	
 	<bean id="derbyDialect"
 		class="org.tinygroup.tinydb.dialect.impl.DerbyDialect">

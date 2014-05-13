@@ -7,20 +7,25 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.sql.DataSource;
+
+import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
 import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.DBRuntimeException;
-import org.tinygroup.tinydb.util.DataSourceFactory;
 
 /**
  * 通过数据库databsemeta元数据来获取表配置信息
+ * 
  * @author renhui
- *
+ * 
  */
-public class MetadataTableConfigConvert extends AbstractTableConfigConvert{
+public class MetadataTableConfigConvert extends AbstractTableConfigConvert {
+
+	private DataSource dataSource;
 	private static final String[] TABLE_TYPES = new String[] { "TABLE", "VIEW" };// 只查询TABLE和VIEW类型的表
 	private static final String NULLABLE = "NULLABLE";
 	private static final String TYPE_NAME = "TYPE_NAME";
@@ -29,33 +34,38 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert{
 	private static final String COLUMN_NAME = "COLUMN_NAME";
 	private static final String PK_NAME = "COLUMN_NAME";
 	private static final String DATA_TYPE = "DATA_TYPE";
-	private static final String TABLE_NAME="TABLE_NAME";
+	private static final String TABLE_NAME = "TABLE_NAME";
 	/**
 	 * 不以'_'开头，且不以'_'或者'_数字'结尾的表名
 	 */
 	private static final Pattern tableNamePattern = Pattern
 			.compile("^(?!_)(?!.*?(_[0-9]*)$)[a-zA-Z]+(_?[a-zA-Z0-9])+$");
-	
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
 	public void realConvert(BeanOperatorManager manager) {
-		Connection con = DataSourceFactory.getConnection(null);;
+		Assert.assertNotNull(dataSource, "数据库连接池对象不能为空");
+		Connection connection = null;
 		try {
+			connection = dataSource.getConnection();
 			logger.logMessage(LogLevel.INFO, "开始扫描schema列表中的所有表信息");
-			List<SchemaConfig> schemaConfigs= manager.getTableConfigurationContainer().getsSchemaConfigs();
+			List<SchemaConfig> schemaConfigs = manager
+					.getTableConfigurationContainer().getsSchemaConfigs();
 			for (SchemaConfig schemaConfig : schemaConfigs) {
-				String schema=getSchema(schemaConfig.getSchema());
+				String schema = getSchema(schemaConfig.getSchema());
 				logger.logMessage(LogLevel.INFO, "开始扫描schema：{0}", schema);
-				try {
-					initSchemaConfiguration(schemaConfig, con.getMetaData());
-				} catch (SQLException e) {
-					throw new DBRuntimeException(e);
-				}
+				initSchemaConfiguration(schemaConfig, connection.getMetaData());
 				logger.logMessage(LogLevel.INFO, "扫描schema结束：{0}", schema);
 			}
 			logger.logMessage(LogLevel.INFO, "扫描schema列表中的所有表信息结束");
+		} catch (SQLException e) {
+			throw new DBRuntimeException(e);
 		} finally {
-			if (con != null) {
+			if (connection != null) {
 				try {
-					con.close();
+					connection.close();
 				} catch (SQLException e) {
 					throw new DBRuntimeException(e);
 				}
@@ -63,22 +73,24 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert{
 		}
 	}
 
-	private void initSchemaConfiguration(SchemaConfig schemaConfig, DatabaseMetaData metaData) throws SQLException{
-		String schema=schemaConfig.getSchema();
+	private void initSchemaConfiguration(SchemaConfig schemaConfig,
+			DatabaseMetaData metaData) throws SQLException {
+		String schema = schemaConfig.getSchema();
 		ResultSet tables = metaData.getTables("", schema.toUpperCase(),
 				schemaConfig.getTableNamePattern(), TABLE_TYPES);
 		try {
 			while (tables.next()) {
 				String tableName = tables.getString(TABLE_NAME);
 				if (tableNamePattern.matcher(tableName).matches()) {
-					initTableConfiguration(tableName,schema,metaData);
-					
+					initTableConfiguration(tableName, schema, metaData);
+
 				} else {
-					logger.logMessage(LogLevel.ERROR, "表名：{0}不符合命名规范将被忽略", tableName);
+					logger.logMessage(LogLevel.ERROR, "表名：{0}不符合命名规范将被忽略",
+							tableName);
 				}
 			}
-		}finally{
-			if(tables!=null){
+		} finally {
+			if (tables != null) {
 				tables.close();
 			}
 		}
@@ -87,7 +99,7 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert{
 	private void initTableConfiguration(String tableName, String schema,
 			DatabaseMetaData metaData) throws SQLException {
 		logger.logMessage(LogLevel.INFO, "开始获取表格:{0}信息", tableName);
-		if(existsTable(tableName, schema)){
+		if (existsTable(tableName, schema)) {
 			logger.logMessage(LogLevel.WARN, "表格:{0}已存在，无需重新获取", tableName);
 			return;
 		}
@@ -121,9 +133,8 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert{
 		} else {
 			logger.logMessage(LogLevel.ERROR, "未能获取表格:{0}信息", tableName);
 		}
-		
+
 	}
-	
 
 	private static TableConfiguration getTableConfiguration(String tableName,
 			String tableNamePatternStr, String schemaPattern,
@@ -167,6 +178,5 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert{
 		}
 
 	}
-	
 
 }

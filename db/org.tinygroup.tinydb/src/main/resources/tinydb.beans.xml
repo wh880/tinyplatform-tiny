@@ -19,10 +19,6 @@
 		class="org.tinygroup.tinydb.impl.BeanOperatorManagerImpl">
 	</bean>
 	
-	<bean id="metadataTableConfigConvert"
-		class="org.tinygroup.tinydb.convert.impl.MetadataTableConfigConvert">
-	</bean>
-	
 	<bean id="relationFileProcessor" scope="singleton"
 		class="org.tinygroup.tinydb.fileresolver.RelationFileProcessor">
 	</bean>
