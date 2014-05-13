@@ -70,6 +70,8 @@ public interface FileResolver extends Configuration {
 
     void setClassLoader(ClassLoader classLoader);
 
+    ClassLoader getClassLoader();
+
     /**
      * 开始找文件
      */

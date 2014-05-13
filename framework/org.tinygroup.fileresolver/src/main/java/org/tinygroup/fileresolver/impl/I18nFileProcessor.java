@@ -103,7 +103,7 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 		return locale;
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		
 		for (FileObject fileObject : deleteList) {
 			logger.logMessage(LogLevel.INFO, "开始移除国际化资源配置文件[{0}]",

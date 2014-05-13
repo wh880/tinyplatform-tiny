@@ -45,7 +45,7 @@ public class OrderFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(ORDER_FILE_NAME);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 
 		logger.logMessage(LogLevel.INFO, "处理对象顺序文件开始");
 		OrderProcessor<?> orderProcessor = SpringUtil

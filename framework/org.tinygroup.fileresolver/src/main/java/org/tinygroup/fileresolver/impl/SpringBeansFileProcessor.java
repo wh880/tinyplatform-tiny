@@ -23,7 +23,6 @@
  */
 package org.tinygroup.fileresolver.impl;
 
-import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 
@@ -34,20 +33,17 @@ public class SpringBeansFileProcessor extends AbstractFileProcessor {
 				|| fileObject.getFileName().endsWith(".beans.xml");
 	}
 
-	public void process(ClassLoader loader) {
-		if(loader==this.getClass().getClassLoader()){
+	public void process() {
+		if(getFileResolver().getClassLoader()==this.getClass().getClassLoader()){
 			SpringUtil.regSpringConfigXml(fileObjects);
 			SpringUtil.refresh();
 		}else{
-			SpringUtil.getSubApplicationContext(fileObjects, loader);
+			SpringUtil.getSubApplicationContext(fileObjects, getFileResolver().getClassLoader());
 		}
 		
 	}
 
 
-	public void setFileResolver(FileResolver fileResolver) {
-
-	}
 
 	
 	public boolean supportRefresh() {

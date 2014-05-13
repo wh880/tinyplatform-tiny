@@ -98,11 +98,14 @@ public class FileResolverImpl implements FileResolver {
         this.classLoader = classLoader;
     }
 
-    public void resolve() {
-
+    public ClassLoader getClassLoader() {
         if (classLoader == null) {
             classLoader = this.getClass().getClassLoader();
         }
+        return classLoader;
+    }
+
+    public void resolve() {
         if (fileProcessorList.size() > 0) {
             for (FileProcessor fileProcessor : fileProcessorList) {
                 fileProcessor.setFileResolver(this);
@@ -113,7 +116,7 @@ public class FileResolverImpl implements FileResolver {
             logger.logMessage(LogLevel.INFO, "正在进行全路径扫描....");
             resolverScanPath();
             for (FileProcessor fileProcessor : fileProcessorList) {
-                fileProcessor.process(classLoader);
+                fileProcessor.process();
             }
             logger.logMessage(LogLevel.INFO, "全路径扫描完成。");
         }
@@ -314,7 +317,7 @@ public class FileResolverImpl implements FileResolver {
             refreshScanPath();// 重新扫描
             for (FileProcessor fileProcessor : fileProcessorList) {
                 if (fileProcessor.supportRefresh()) {
-                    fileProcessor.process(loader);
+                    fileProcessor.process();
                 }
             }
             logger.logMessage(LogLevel.INFO, "全路径刷新结束....");

@@ -75,7 +75,7 @@ public class FileResolverTest extends TestCase {
 
 		private List<FileObject> files = new ArrayList<FileObject>();
 
-		public void process(ClassLoader loader) {
+		public void process() {
 
 		}
 

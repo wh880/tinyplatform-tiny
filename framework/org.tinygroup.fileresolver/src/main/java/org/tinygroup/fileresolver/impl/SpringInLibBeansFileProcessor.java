@@ -35,7 +35,7 @@ public class SpringInLibBeansFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(".springbeans.xml");
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 
 		logger.logMessage(LogLevel.INFO, "开始加载SpringBeans配置文件");
 		SpringUtil.regSpringConfigXml(fileObjects);
