@@ -42,7 +42,7 @@ public class ErrorMessageFileResolver extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(ERROR_EXTFILENAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		ErrorMessageProcessor errorMessageProcessor = SpringUtil
 				.getBean(MetadataUtil.ERRORMESSAGEPROCESSOR_BEAN);
 		XStream stream = XStreamFactory

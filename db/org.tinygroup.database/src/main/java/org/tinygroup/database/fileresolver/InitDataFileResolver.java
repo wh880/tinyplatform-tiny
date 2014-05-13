@@ -41,7 +41,7 @@ public class InitDataFileResolver extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(INITDATA_EXTFILENAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		logger.logMessage(LogLevel.INFO, "开始处理表格初始化数据init文件");
 		InitDataProcessor initDataProcessor = SpringUtil
 				.getBean(DataBaseUtil.INITDATA_BEAN);

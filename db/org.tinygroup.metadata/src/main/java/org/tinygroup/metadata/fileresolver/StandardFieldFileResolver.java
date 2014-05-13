@@ -42,7 +42,7 @@ public class StandardFieldFileResolver extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(STANDARDFIELD_EXTFILENAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		StandardFieldProcessor standardFieldProcessor = SpringUtil
 				.getBean(MetadataUtil.STDFIELDPROCESSOR_BEAN);
 		XStream stream = XStreamFactory

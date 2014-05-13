@@ -35,7 +35,7 @@ public class TldFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(TLD_FILE_EXT_NAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		//设置符合的tld文件列表对象
 		TldFileManager manager=TldFileManager.getInstance();
 		for (FileObject fileObject : deleteList) {

@@ -44,7 +44,7 @@ public class TinyFilterFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(FILTERS_EXT_FILENAMES);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		TinyFiterConfigManager configManager = SpringUtil
 				.getBean(TinyFiterConfigManager.TINY_FILTER_CONFIGMANAGER);
 		if(!CollectionUtil.isEmpty(deleteList)||!CollectionUtil.isEmpty(changeList)){

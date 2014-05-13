@@ -42,7 +42,7 @@ public class ConstantFileResolver extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(CONSTANT_EXTFILENAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		ConstantProcessor constantProcessor = SpringUtil
 				.getBean(MetadataUtil.CONSTANTPROCESSOR_BEAN);
 		XStream stream = XStreamFactory

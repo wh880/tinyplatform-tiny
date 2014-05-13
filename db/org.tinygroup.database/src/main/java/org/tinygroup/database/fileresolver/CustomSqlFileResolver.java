@@ -42,7 +42,7 @@ public class CustomSqlFileResolver extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(CUSTOMSQL_EXTFILENAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		CustomSqlProcessor customSqlProcessor = SpringUtil
 				.getBean(DataBaseUtil.CUSTOMESQL_BEAN);
 		XStream stream = XStreamFactory

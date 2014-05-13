@@ -41,7 +41,7 @@ public class CacheTest extends TestCase {
 				new I18nFileProcessor());
 		FileResolverFactory.getFileResolver().addFileProcessor(
 				new SpringBeansFileProcessor());
-		FileResolverFactory.getFileResolver().resolve();
+		FileResolverFactory.getFileResolver().resolve(null);
 	}
 
 	protected void setUp() throws Exception {

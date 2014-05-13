@@ -44,7 +44,7 @@ public class TestInit {
 					new SpringBeansFileProcessor());
 			FileResolverFactory.getFileResolver().addFileProcessor(
 					new UIComponentFileProcessor());
-			FileResolverFactory.getFileResolver().resolve();
+			FileResolverFactory.getFileResolver().resolve(null);
 		}
 	}
 }

@@ -50,7 +50,7 @@ public class EntityRelationsFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(ENTITY_RELATIONS_FILE_EXT_NAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		
 		XStream xStream = XStreamFactory.getXStream("entities");
 		EntityRelationsManager manager=SpringUtil.getBean(EntityRelationsManager.MANAGER_BEAN_NAME);

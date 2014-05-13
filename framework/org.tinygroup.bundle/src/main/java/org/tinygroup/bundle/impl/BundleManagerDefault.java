@@ -32,6 +32,7 @@ public class BundleManagerDefault implements BundleManager {
 	private static Logger logger = LoggerFactory
 			.getLogger(BundleManagerDefault.class);
 	private Map<String, BundleDefine> bundleDefineMap = new HashMap<String, BundleDefine>();
+	private Map<String,FileResolver> fileResolverMap = new HashMap<String, FileResolver>();
 	private Map<BundleDefine, TinyClassLoader> tinyClassLoaderMap = new HashMap<BundleDefine, TinyClassLoader>();
 	private String bundleRoot;
 	private String commonRoot;
@@ -379,7 +380,7 @@ public class BundleManagerDefault implements BundleManager {
 		f.addManualClassPath(bundleDir);
 		f.addIncludePathPattern("");
 		f.resolve(loader);
-		
+		fileResolverMap.put(bundle, f);
 	}
 
 }
