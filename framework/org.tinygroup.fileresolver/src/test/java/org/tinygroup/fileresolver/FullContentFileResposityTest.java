@@ -64,7 +64,7 @@ public class FullContentFileResposityTest extends TestCase {
 		  finder.config(document.getRoot(),null);
 		  finder.setFullContextFileRepository(repository);
 		  fileResolver.addFileProcessor(finder);
-		  fileResolver.resolve();
+		  fileResolver.resolve(null);
 	  }
 	
 	

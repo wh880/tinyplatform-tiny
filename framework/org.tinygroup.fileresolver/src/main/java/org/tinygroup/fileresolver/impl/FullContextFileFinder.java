@@ -73,7 +73,7 @@ public class FullContextFileFinder extends AbstractFileProcessor implements
 				fileObject);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		fullContextFileRepository.setFileTypeMap(extFileContentTypeMap);
 		for (FileObject fileObject : deleteList) {
 			fullContextFileRepository.removeFileObject(fileObject.getPath());

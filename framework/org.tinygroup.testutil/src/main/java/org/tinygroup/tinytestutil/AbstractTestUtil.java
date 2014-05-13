@@ -156,7 +156,7 @@ public abstract class AbstractTestUtil {
 		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 		fileResolver.addFileProcessor(new ConfigurationFileProcessor());
 		// SpringUtil.regSpringConfigXml(xmlFile);
-		fileResolver.resolve();
+		fileResolver.resolve(null);
 	}
 
 	private static void loadFileResolverConfig(FileResolver fileResolver,

@@ -49,7 +49,7 @@ public class AnnotationClassFileProcessor extends AbstractFileProcessor {
 
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		final AnnotationExcuteManager manager = SpringUtil
 				.getBean(AnnotationExcuteManager.ANNOTATION_MANAGER_BEAN_NAME);
 		MultiThreadFileProcessor.mutiProcessor(getFileResolver()

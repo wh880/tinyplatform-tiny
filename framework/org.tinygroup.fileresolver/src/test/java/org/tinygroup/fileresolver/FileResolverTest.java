@@ -57,7 +57,7 @@ public class FileResolverTest extends TestCase {
 	public void testResolve() {
 		TestFileProcess process = new TestFileProcess();
 		fileResolver.addFileProcessor(process);
-		fileResolver.resolve();
+		fileResolver.resolve(null);
 		assertEquals(true, process.exist());
 		assertEquals(2, process.fileSize());
 	}
@@ -76,7 +76,7 @@ public class FileResolverTest extends TestCase {
 
 		private List<FileObject> files = new ArrayList<FileObject>();
 
-		public void process() {
+		public void process(ClassLoader loader) {
 
 		}
 

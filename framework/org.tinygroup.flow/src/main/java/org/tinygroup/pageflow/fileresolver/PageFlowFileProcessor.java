@@ -48,7 +48,7 @@ public class PageFlowFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(PAGE_FLOW_EXT_FILENAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		FlowExecutor flowExecutor = SpringUtil
 				.getBean(FlowExecutor.PAGE_FLOW_BEAN);
 		XStream stream = XStreamFactory

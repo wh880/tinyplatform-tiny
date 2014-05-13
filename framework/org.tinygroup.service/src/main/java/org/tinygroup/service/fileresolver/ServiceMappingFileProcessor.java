@@ -41,7 +41,7 @@ public class ServiceMappingFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(SERVICEMAPPING_EXT_FILENAMES);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		ServiceMappingManager manager = SpringUtil
 				.getBean(ServiceMappingManager.MANAGER_BEAN);
 		XStream stream = XStreamFactory

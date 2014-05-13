@@ -23,6 +23,7 @@
  */
 package org.tinygroup.springutil;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -139,4 +140,19 @@ public final class SpringUtil {
 		app.close();
 	}
 
+	public static FileSystemXmlApplicationContext getSubApplicationContext(List<FileObject> files,ClassLoader loader){
+		List<String> configLocations = new ArrayList<String>();
+		for (FileObject fileObject : files) {
+			String urlString = fileObject.getURL().toString();
+			if (!configLocations.contains(urlString)) {
+				configLocations.add(urlString);
+				logger.logMessage(LogLevel.INFO, "添加Spring配置文件:{urlString}",
+						urlString);
+			}
+		}
+		FileSystemXmlApplicationContext sub = new FileSystemXmlApplicationContext(listToArray(configLocations), applicationContext);
+		sub.setClassLoader(loader);
+		sub.refresh();
+		return sub;
+	}
 }

@@ -34,9 +34,14 @@ public class SpringBeansFileProcessor extends AbstractFileProcessor {
 				|| fileObject.getFileName().endsWith(".beans.xml");
 	}
 
-	public void process() {
-		SpringUtil.regSpringConfigXml(fileObjects);
-		SpringUtil.refresh();
+	public void process(ClassLoader loader) {
+		if(loader==this.getClass().getClassLoader()){
+			SpringUtil.regSpringConfigXml(fileObjects);
+			SpringUtil.refresh();
+		}else{
+			SpringUtil.getSubApplicationContext(fileObjects, loader);
+		}
+		
 	}
 
 

@@ -23,10 +23,10 @@
  */
 package org.tinygroup.fileresolver;
 
+import java.util.List;
+
 import org.tinygroup.config.Configuration;
 import org.tinygroup.vfs.FileObject;
-
-import java.util.List;
 
 /**
  * 文件查找器
@@ -73,12 +73,12 @@ public interface FileResolver extends Configuration {
     /**
      * 开始找文件
      */
-    void resolve();
+    void resolve(ClassLoader loader);
 
     /**
      *
      */
-    void refresh();
+    void refresh(ClassLoader loader);
 
     /**
      * 获取文件搜索器扫描的所有路径

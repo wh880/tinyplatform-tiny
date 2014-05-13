@@ -160,7 +160,7 @@ public class XStreamFileProcessor extends AbstractFileProcessor {
 		}
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		for (FileObject fileObject : fileObjects) {
 			process(fileObject);
 		}

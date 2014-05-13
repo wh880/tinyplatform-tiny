@@ -49,7 +49,7 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(GENERATOR_EXT_FILENAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		ClassNameObjectGenerator generator = SpringUtil
 				.getBean(CLASSNAME_OBJECT_GENERATOR_BEAN);
 		XStream stream = XStreamFactory.getXStream(CONTEXT2OBJECT_XSTREAM);

@@ -105,7 +105,7 @@ public class FileMonitorProcessor extends AbstractConfiguration implements
 						if(!stop){//唤醒时，或者等待时间后，发现stop=false时去执行重新搜索。
 							logger.logMessage(LogLevel.INFO, "定时扫描文件变化......");
 							resolver = SpringUtil.getBean("fileResolver");
-							resolver.refresh();
+							resolver.refresh(null);
 							logger.logMessage(LogLevel.INFO, "定时扫描文件结束.");
 						}
 					}

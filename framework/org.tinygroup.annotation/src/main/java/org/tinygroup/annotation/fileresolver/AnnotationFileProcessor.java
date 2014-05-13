@@ -48,7 +48,7 @@ public class AnnotationFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(ANNOTATION_EXT_FILENAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 
 		AnnotationExcuteManager manager = SpringUtil
 				.getBean(AnnotationExcuteManager.ANNOTATION_MANAGER_BEAN_NAME);

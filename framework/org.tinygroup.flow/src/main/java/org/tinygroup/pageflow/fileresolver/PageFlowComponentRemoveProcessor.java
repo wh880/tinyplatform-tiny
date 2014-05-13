@@ -52,7 +52,7 @@ public class PageFlowComponentRemoveProcessor extends AbstractFileProcessor {
 				PAGE_FLOW_COMPONENT_EXT_FILENAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		FlowExecutor flowExecutor = SpringUtil
 				.getBean(FlowExecutor.PAGE_FLOW_BEAN);
 		XStream stream = XStreamFactory

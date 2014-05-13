@@ -51,7 +51,7 @@ public class FlowComponentProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(FLOW_COMPONENT_EXT_FILENAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		FlowExecutor flowExecutor = SpringUtil.getBean(FlowExecutor.FLOW_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(FlowExecutor.FLOW_XSTREAM_PACKAGENAME);

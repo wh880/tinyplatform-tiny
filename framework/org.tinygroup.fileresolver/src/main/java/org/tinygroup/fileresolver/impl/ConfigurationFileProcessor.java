@@ -40,7 +40,7 @@ public class ConfigurationFileProcessor extends AbstractFileProcessor {
 				.endsWith(CONFIG_EXT_FILENAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		ConfigurationManager configurationManager = ConfigurationUtil
 				.getConfigurationManager();
 		if (!CollectionUtil.isEmpty(deleteList)

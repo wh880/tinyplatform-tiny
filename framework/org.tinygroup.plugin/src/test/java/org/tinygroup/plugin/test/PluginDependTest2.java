@@ -38,7 +38,7 @@ public class PluginDependTest2 extends TestCase {
 	public void setUp() {
 		FileResolver fileResolver = new FileResolverImpl();
 		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
-		fileResolver.resolve();
+		fileResolver.resolve(null);
 	}
 	
 	private PluginConfig getPluginConfigA(){

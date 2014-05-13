@@ -86,7 +86,7 @@ public interface FileProcessor extends Configuration,Ordered {
 	/**
 	 * 对文件进行处理
 	 */
-	void process();
+	void process(ClassLoader loader);
 
 	/**
 	 * 处理完成后执行

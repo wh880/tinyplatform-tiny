@@ -50,7 +50,7 @@ public class DictLoadFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(DICT_LOAND_EXT_NAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		DictManager manager = SpringUtil
 				.getBean(DictManager.DICT_MANAGER_BEAN_NAME);
 		XStream stream = XStreamFactory

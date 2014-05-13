@@ -49,7 +49,7 @@ public class PluginFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(PLUGIN_EXT_FILENAME);
 	}
 
-	public void process() {
+	public void process(ClassLoader loader) {
 		XStream stream = XStreamFactory.getXStream(PLUGIN_XSTREAM);
 		for (FileObject file : deleteList) {
 			logger.logMessage(LogLevel.INFO, "移除plugin配置文件:{0}",

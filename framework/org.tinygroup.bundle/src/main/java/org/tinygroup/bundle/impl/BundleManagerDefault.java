@@ -15,6 +15,11 @@ import org.tinygroup.bundle.BundleException;
 import org.tinygroup.bundle.BundleManager;
 import org.tinygroup.bundle.config.BundleDefine;
 import org.tinygroup.bundle.loader.TinyClassLoader;
+import org.tinygroup.commons.order.OrderUtil;
+import org.tinygroup.fileresolver.FileProcessor;
+import org.tinygroup.fileresolver.FileResolver;
+import org.tinygroup.fileresolver.impl.FileResolverImpl;
+import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -178,8 +183,10 @@ public class BundleManagerDefault implements BundleManager {
 
 		processEvents(beforeStartBundleEvent, bundleContext, bundleDefine);
 
-		loadBundleLoader(bundleDefine, bundle);
-
+		TinyClassLoader loader = loadBundleLoader(bundleDefine, bundle);
+		
+		resolve(loader, bundle);
+		
 		startBundleActivator(bundleDefine, bundle);
 
 		processEvents(afterStartBundleEvent, bundleContext, bundleDefine);
@@ -214,7 +221,7 @@ public class BundleManagerDefault implements BundleManager {
 
 	}
 
-	private void loadBundleLoader(BundleDefine bundleDefine, String bundle) {
+	private TinyClassLoader loadBundleLoader(BundleDefine bundleDefine, String bundle) {
 		String[] jars = getBundleComJar(bundleDefine.getCommonJars().split(","));
 		String bundleDir = getBundleDir(bundle);
 		URL[] urls = new URL[jars.length + 1];
@@ -240,6 +247,7 @@ public class BundleManagerDefault implements BundleManager {
 			BundleDefine dependenBundle = bundleDefineMap.get(dependen);
 			bundleLoder.addDependClassLoader(tinyClassLoaderMap.get(dependenBundle));
 		}
+		return bundleLoder;
 	}
 
 	private String getBundleDir(String bundleName) {
@@ -362,6 +370,16 @@ public class BundleManagerDefault implements BundleManager {
 	public TinyClassLoader getTinyClassLoader(String bundle) {
 		BundleDefine bundleDefine = bundleDefineMap.get(bundle);
 		return tinyClassLoaderMap.get(bundleDefine);
+	}
+	
+	private void resolve(ClassLoader loader,String bundle){
+		FileResolver f = new FileResolverImpl(true);
+		f.addFileProcessor(new SpringBeansFileProcessor());
+		String bundleDir = getBundleDir(bundle);
+		f.addManualClassPath(bundleDir);
+		f.addIncludePathPattern("");
+		f.resolve(loader);
+		
 	}
 
 }

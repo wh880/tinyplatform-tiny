@@ -88,6 +88,9 @@ public class FileResolverImpl implements FileResolver {
         classPath = "[\\/]test-classes\\b";
         includePathPatternMap.put(classPath, Pattern.compile(classPath));
     }
+    public FileResolverImpl(boolean b){
+    	
+    }
 
     public List<String> getManualClassPaths() {
         List<String> classPaths = new ArrayList<String>();
@@ -105,7 +108,10 @@ public class FileResolverImpl implements FileResolver {
         fileProcessorList.add(fileProcessor);
     }
 
-    public void resolve() {
+    public void resolve(ClassLoader loader) {
+    	if(loader==null){
+    		loader = this.getClass().getClassLoader();
+    	}
         if (fileProcessorList.size() == 0) {
             return;
         } else {
@@ -118,7 +124,7 @@ public class FileResolverImpl implements FileResolver {
             logger.logMessage(LogLevel.INFO, "正在进行全路径扫描....");
             resolverScanPath();
             for (FileProcessor fileProcessor : fileProcessorList) {
-                fileProcessor.process();
+                fileProcessor.process(loader);
             }
             logger.logMessage(LogLevel.INFO, "全路径扫描完成。");
         }
@@ -457,7 +463,10 @@ public class FileResolverImpl implements FileResolver {
     /**
      * 刷新工作
      */
-    public void refresh() {
+    public void refresh(ClassLoader loader) {
+    	if(loader==null){
+    		loader = this.getClass().getClassLoader();
+    	}
         if (fileProcessorList.size() == 0) {
             return;
         } else {
@@ -469,7 +478,7 @@ public class FileResolverImpl implements FileResolver {
             refreshScanPath();// 重新扫描
             for (FileProcessor fileProcessor : fileProcessorList) {
                 if (fileProcessor.supportRefresh()) {
-                    fileProcessor.process();
+                    fileProcessor.process(loader);
                 }
             }
             logger.logMessage(LogLevel.INFO, "全路径刷新结束....");

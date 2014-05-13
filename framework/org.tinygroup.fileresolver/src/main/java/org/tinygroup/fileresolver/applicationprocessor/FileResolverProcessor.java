@@ -66,7 +66,7 @@ public class FileResolverProcessor implements ApplicationProcessor {
 	}
 
 	public void start() {
-		fileResolver.resolve();
+		fileResolver.resolve(null);
 	}
 
 	public void stop() {
