@@ -409,9 +409,11 @@ public class BundleManagerDefault implements BundleManager {
 		FileResolver f = new FileResolverImpl(true);
 		f.addFileProcessor(new SpringBeansFileProcessor());
 		String bundleDir = getBundleDir(bundle);
-		f.addManualClassPath(bundleDir);
+//		f.addManualClassPath(bundleDir);
 		f.addIncludePathPattern("");
-		f.resolve(loader);
+		f.addResolvePath(bundleDir);
+		f.setClassLoader(loader);
+//		f.resolve(loader);
 		fileResolverMap.put(bundle, f);
 	}
 
