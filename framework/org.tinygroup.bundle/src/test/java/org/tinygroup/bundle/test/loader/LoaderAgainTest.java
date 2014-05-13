@@ -12,8 +12,8 @@ import junit.framework.TestCase;
 public class LoaderAgainTest extends TestCase{
 
 	public void testLoadAgain(){
-		String path1 = TestUtil.class.getResource("/").getPath()+"/"+"test1-0.0.1-SNAPSHOT.jar";
-		String path2 = TestUtil.class.getResource("/").getPath()+"/"+"test2-0.0.1-SNAPSHOT.jar";
+		String path1 = System.getProperty("user.dir")+"/test1"+"/test1-0.0.1-SNAPSHOT.jar";
+		String path2 = System.getProperty("user.dir")+"/test2"+"/test2-0.0.1-SNAPSHOT.jar";
 		try {
 			URL u1 = new File(path1).toURL();
 			TinyClassLoader l1 = new TinyClassLoader(new URL[]{u1});
