@@ -401,7 +401,7 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 
 	private String getPrimaryKeyName(String beanType) {
 		TableConfiguration configuration = getManager()
-				.getTableConfigurationByBean(beanType);
+				.getTableConfiguration(beanType);
 		if (configuration != null) {
 			return configuration.getPrimaryKey().getColumnName();
 		}
@@ -643,7 +643,7 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 	}
 
 	public boolean existTable() {
-		return getManager().existsTable(AUTH_RELATION_BEAN_NAME, null);
+		return getManager().existsTableByType(AUTH_RELATION_BEAN_NAME, null);
 	}
 
 	@SuppressWarnings("unchecked")

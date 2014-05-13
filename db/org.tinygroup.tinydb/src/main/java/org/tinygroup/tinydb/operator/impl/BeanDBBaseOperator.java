@@ -30,11 +30,11 @@ import java.util.UUID;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.SqlParameterValue;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
-import org.tinygroup.tinydb.config.SchemaConfigContainer;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.DBRuntimeException;
 import org.tinygroup.tinydb.impl.DefaultNameConverter;
@@ -126,7 +126,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	 */
 	protected List<String> getColumnNames(Bean bean) {
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), schema);
+				bean.getType(), getSchema());
 		List<String> insertColumnNames = new ArrayList<String>();
 		for (ColumnConfiguration column : table.getColumns()) {
 			String columnsName = column.getColumnName();
@@ -147,7 +147,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	 */
 	protected List<Integer> getDataTypes(Bean bean) {
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), schema);
+				bean.getType(), getSchema());
 		List<Integer> dataTypes = new ArrayList<Integer>();
 		for (ColumnConfiguration column : table.getColumns()) {
 			String columnsName = column.getColumnName();
@@ -162,7 +162,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 
 	protected SqlParameterValue[] getSqlParameterValues(Bean bean) {
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), schema);
+				bean.getType(), getSchema());
 		List<ColumnConfiguration> columns = table.getColumns();
 		List<SqlParameterValue> params = new ArrayList<SqlParameterValue>();
 		for (ColumnConfiguration column : columns) {
@@ -208,7 +208,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	 */
 	protected String getInsertSql(Bean bean) {
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), schema);
+				bean.getType(), getSchema());
 		if (table != null) {
 			StringBuffer sb = new StringBuffer();
 			StringBuffer field = new StringBuffer();
@@ -253,7 +253,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		}
 
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), schema);
+				bean.getType(), getSchema());
 		if (table != null) {
 			StringBuffer sb = new StringBuffer();
 			String field = getUpdateFieldSegment(table, bean, conditionColumns);
@@ -318,7 +318,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 					getFullTableName(bean.getType()), bean.getType());
 		}
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), schema);
+				bean.getType(), getSchema());
 		if (table != null) {
 			List<ColumnConfiguration> columns = table.getColumns();
 			// 设置更新字段参数
@@ -396,14 +396,12 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 
 	protected SqlParameterValue[] createSqlParameterValue(Bean bean) {
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), schema);
+				bean.getType(), getSchema());
 		if (table != null) {
 			List<ColumnConfiguration> columns = table.getColumns();
 			if (columns != null && columns.size() > 0) {
 				List<SqlParameterValue> parameterValues = new ArrayList<SqlParameterValue>();
-				boolean isIncrease = SchemaConfigContainer.INCREASE_KEY
-						.equals(getManager().getSchemaContainer().getKeyType(
-								schema));
+				boolean isIncrease = manager.getTableConfigurationContainer().isIncrease(schema);
 				for (ColumnConfiguration column : columns) {
 					String columnsName = column.getColumnName();
 					String propertyName = beanDbNameConverter
@@ -494,7 +492,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 
 	protected List<Object> getParams(Bean bean) {
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), schema);
+				bean.getType(), getSchema());
 		List<Object> params = new ArrayList<Object>();
 		for (ColumnConfiguration column : table.getColumns()) {
 			String columnName = column.getColumnName();
@@ -569,6 +567,9 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	}
 
 	public String getSchema() {
+		if(StringUtil.isBlank(schema)){
+			schema=manager.getMainSchema();
+		}
 		return schema;
 	}
 
@@ -594,8 +595,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 
 	protected String getPrimaryFieldName(DbBaseOperator operator,
 			String beanType) {
-		TableConfiguration configuration = operator.getManager()
-				.getTableConfigurationByBean(beanType, operator.getSchema());
+		TableConfiguration configuration = manager.getTableConfiguration(beanType, operator.getSchema());
 		if (configuration != null) {
 			return operator.getBeanDbNameConverter().dbFieldNameToPropertyName(
 					configuration.getPrimaryKey().getColumnName());
