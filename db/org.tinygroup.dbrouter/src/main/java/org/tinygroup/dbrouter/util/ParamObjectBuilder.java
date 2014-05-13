@@ -146,16 +146,16 @@ public class ParamObjectBuilder {
 	
 
 	class ParameterObject {
-		int index;
-		Object value;
-		Integer targetSqlType;
-		Integer sqlType;
-		Integer scale;
-		String typeName;
-		int length;
-		Calendar cal;
-		boolean nullParam;// setNull方法标识
-		boolean asciiStream;//区分setAsciiStream与setBinaryStream
+		private int index;
+		private Object value;
+		private Integer targetSqlType;
+		private Integer sqlType;
+		private Integer scale;
+		private String typeName;
+		private int length;
+		private Calendar cal;
+		private boolean nullParam;// setNull方法标识
+		private boolean asciiStream;//区分setAsciiStream与setBinaryStream
 		
 
 		public ParameterObject(int index, Object value) {

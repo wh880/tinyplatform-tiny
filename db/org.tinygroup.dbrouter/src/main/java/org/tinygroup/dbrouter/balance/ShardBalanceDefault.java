@@ -23,19 +23,20 @@
  */
 package org.tinygroup.dbrouter.balance;
 
-import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.dbrouter.config.Partition;
-import org.tinygroup.dbrouter.config.Shard;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.dbrouter.config.Shard;
+import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
 
 /**
  * 默认分区负载均衡实现类
  */
 public class ShardBalanceDefault implements ShardBalance {
-    Random random = new Random(System.currentTimeMillis());
+    private Random random = new Random(System.currentTimeMillis());
 
     public List<Shard> getWritableShard(Partition partition) {
         List<Shard> writableShards = new ArrayList<Shard>();
@@ -45,7 +46,7 @@ public class ShardBalanceDefault implements ShardBalance {
             }
         }
         if (writableShards.size() == 0) {
-            throw new RuntimeException("No suitable shard exist.");
+            throw new DbrouterRuntimeException("No suitable shard exist.");
         }
         return writableShards;
     }

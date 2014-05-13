@@ -23,13 +23,29 @@
  */
 package org.tinygroup.dbrouter.util;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
 import org.tinygroup.dbrouter.config.Router;
+import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
-import org.tinygroup.jsqlparser.expression.*;
+import org.tinygroup.jsqlparser.expression.Alias;
+import org.tinygroup.jsqlparser.expression.BinaryExpression;
+import org.tinygroup.jsqlparser.expression.Expression;
+import org.tinygroup.jsqlparser.expression.JdbcParameter;
+import org.tinygroup.jsqlparser.expression.LongValue;
+import org.tinygroup.jsqlparser.expression.StringValue;
 import org.tinygroup.jsqlparser.expression.operators.conditional.AndExpression;
 import org.tinygroup.jsqlparser.expression.operators.conditional.OrExpression;
 import org.tinygroup.jsqlparser.expression.operators.relational.ExistsExpression;
@@ -41,13 +57,21 @@ import org.tinygroup.jsqlparser.schema.Table;
 import org.tinygroup.jsqlparser.statement.Statement;
 import org.tinygroup.jsqlparser.statement.delete.Delete;
 import org.tinygroup.jsqlparser.statement.insert.Insert;
-import org.tinygroup.jsqlparser.statement.select.*;
+import org.tinygroup.jsqlparser.statement.select.AllColumns;
+import org.tinygroup.jsqlparser.statement.select.AllTableColumns;
+import org.tinygroup.jsqlparser.statement.select.FromItem;
+import org.tinygroup.jsqlparser.statement.select.Join;
+import org.tinygroup.jsqlparser.statement.select.OrderByElement;
+import org.tinygroup.jsqlparser.statement.select.PlainSelect;
+import org.tinygroup.jsqlparser.statement.select.Select;
+import org.tinygroup.jsqlparser.statement.select.SelectBody;
+import org.tinygroup.jsqlparser.statement.select.SelectExpressionItem;
+import org.tinygroup.jsqlparser.statement.select.SelectItem;
+import org.tinygroup.jsqlparser.statement.select.SetOperationList;
+import org.tinygroup.jsqlparser.statement.select.SubJoin;
+import org.tinygroup.jsqlparser.statement.select.SubSelect;
+import org.tinygroup.jsqlparser.statement.select.WithItem;
 import org.tinygroup.jsqlparser.statement.update.Update;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 功能说明: 工具类
@@ -57,8 +81,13 @@ import java.util.Map;
  * 开发时间: 2013-12-17 <br>
  * <br>
  */
-public class DbRouterUtil {
+public  final class DbRouterUtil {
 
+	
+	private DbRouterUtil(){
+		
+	}
+	
 	/**
 	 * 
 	 * 替换sql语句中的表名信息，条件语句带表名，暂时不进行替换。
@@ -75,54 +104,72 @@ public class DbRouterUtil {
 			Statement statement = (Statement) BeanUtil
 					.deepCopy(originalStatement);
 			if (statement instanceof Insert) {
-				Insert insert = (Insert) statement;
-				String tableName = insert.getTable().getName();
-				String newTableName = tableMapping.get(tableName);
-				if (!StringUtil.isBlank(newTableName)) {
-					insert.getTable().setName(newTableName);
-					List<Column> columns = insert.getColumns();
-					for (Column column : columns) {// 变化新增字段信息
-						Table columnTable = column.getTable();
-						if (columnTable != null
-								&& !StringUtil.isBlank(columnTable.getName())) {
-							columnTable.setName(newTableName);
-						}
-					}
-					return insert.toString();
-				}
-			}
-			if (statement instanceof Delete) {
-				Delete delete = (Delete) statement;
-				String tableName = delete.getTable().getName();
-				String newTableName = tableMapping.get(tableName);
-				if (!StringUtil.isBlank(newTableName)) {
-					delete.getTable().setName(newTableName);
-				}
-				Expression expression = delete.getWhere();
-				transformExpression(expression, tableMapping);
-				return delete.toString();
-			}
-			if (statement instanceof Update) {
-				Update update = (Update) statement;
-				String tableName = update.getTable().getName();
-				String newTableName = tableMapping.get(tableName);
-				if (!StringUtil.isBlank(newTableName)) {
-					update.getTable().setName(newTableName);
-				}
-				Expression expression = update.getWhere();
-				transformExpression(expression, tableMapping);
-				return update.toString();
-			}
-			if (statement instanceof Select) {
-				Select select = (Select) statement;
-				SelectBody body = select.getSelectBody();
-				transformSelectBody(body, tableMapping);
-				return select.toString();
+				return transformInsertSql(tableMapping, statement);
+			}else if (statement instanceof Delete) {
+				return transformDeleteSql(tableMapping, statement);
+			}else if (statement instanceof Update) {
+				return transformUpdateSql(tableMapping, statement);
+			}else if (statement instanceof Select) {
+				return transformSelectSql(tableMapping, statement);
 			}
 			return sql;
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new DbrouterRuntimeException(e);
 		}
+	}
+
+	private static String transformSelectSql(Map<String, String> tableMapping,
+			Statement statement) {
+		Select select = (Select) statement;
+		SelectBody body = select.getSelectBody();
+		transformSelectBody(body, tableMapping);
+		return select.toString();
+	}
+
+	private static String transformUpdateSql(Map<String, String> tableMapping,
+			Statement statement) {
+		Update update = (Update) statement;
+		String tableName = update.getTable().getName();
+		String newTableName = tableMapping.get(tableName);
+		if (!StringUtil.isBlank(newTableName)) {
+			update.getTable().setName(newTableName);
+		}
+		Expression expression = update.getWhere();
+		transformExpression(expression, tableMapping);
+		return update.toString();
+	}
+
+	private static String transformDeleteSql(Map<String, String> tableMapping,
+			Statement statement) {
+		Delete delete = (Delete) statement;
+		String tableName = delete.getTable().getName();
+		String newTableName = tableMapping.get(tableName);
+		if (!StringUtil.isBlank(newTableName)) {
+			delete.getTable().setName(newTableName);
+		}
+		Expression expression = delete.getWhere();
+		transformExpression(expression, tableMapping);
+		return delete.toString();
+	}
+
+	private static String transformInsertSql(Map<String, String> tableMapping,
+			Statement statement) {
+		Insert insert = (Insert) statement;
+		String tableName = insert.getTable().getName();
+		String newTableName = tableMapping.get(tableName);
+		if (!StringUtil.isBlank(newTableName)) {
+			insert.getTable().setName(newTableName);
+			List<Column> columns = insert.getColumns();
+			for (Column column : columns) {// 变化新增字段信息
+				Table columnTable = column.getTable();
+				if (columnTable != null
+						&& !StringUtil.isBlank(columnTable.getName())) {
+					columnTable.setName(newTableName);
+				}
+			}
+			
+		}
+		return insert.toString();
 	}
 
 	private static void transformExpression(Expression expression,
@@ -241,29 +288,6 @@ public class DbRouterUtil {
 		return paramSize;
 	}
 
-	private static void transformPlainSelect(Map<String, String> tableMapping,
-			SelectBody body) {
-		PlainSelect plainSelect = (PlainSelect) body;
-		checkOrderByAndGroupbyItem(plainSelect);
-		Table table = (Table) plainSelect.getFromItem();
-		String tableName = table.getName();
-		String newTableName = tableMapping.get(tableName);
-		if (!StringUtil.isBlank(newTableName)) {
-			table.setName(newTableName);
-		}
-		List<Join> joins = plainSelect.getJoins();
-		if (joins != null) {
-			for (Join join : joins) {
-				Table joinTable = (Table) join.getRightItem();
-				String joinTableName = joinTable.getName();
-				String newJoinTableName = tableMapping.get(joinTableName);
-				if (!StringUtil.isBlank(newJoinTableName)) {
-					joinTable.setName(newJoinTableName);
-				}
-			}
-		}
-	}
-
 	/**
 	 * 框架内部会对sql进行处理： 如果是insert语句，会检测主键字段是否有传值。如果插入语句没有传主键字段，将会自动赋值。
 	 * 
@@ -285,12 +309,7 @@ public class DbRouterUtil {
 				Insert insert = (Insert) statement;
 				Table table = insert.getTable();
 				String tableName = table.getName();
-				String realTableName = tableName;// 真正在数据库存在的表名
-				if (tableMapping != null) {
-					if (tableMapping.containsKey(tableName)) {
-						realTableName = tableMapping.get(tableName);
-					}
-				}
+				String realTableName = getRealTableName(tableMapping, tableName);
 				rs = metaData.getPrimaryKeys(null, null, realTableName);
 				if (rs.next()) {
 					String primaryKey = rs.getString("COLUMN_NAME");
@@ -305,33 +324,8 @@ public class DbRouterUtil {
 							columns.add(primaryColumn);
 							ItemsList itemsList = insert.getItemsList();
 							if (itemsList instanceof ExpressionList) {
-								List<Expression> expressions = ((ExpressionList) itemsList)
-										.getExpressions();
-								Expression expression = null;
-								switch (dataType) {
-								case Types.CHAR:
-								case Types.VARCHAR:
-								case Types.LONGVARCHAR:
-									String value = RouterManagerBeanFactory
-											.getManager().getPrimaryKey(router,
-													tableName);
-									StringValue stringValue = new StringValue(value);
-									expression = stringValue;
-                                    break;
-								case Types.NUMERIC:
-								case Types.DECIMAL:
-								case Types.INTEGER:
-								case Types.SMALLINT:
-								case Types.TINYINT:
-								case Types.BIGINT:
-									Object values = RouterManagerBeanFactory
-											.getManager().getPrimaryKey(router,
-													tableName);
-									expression = new LongValue(values + "");
-                                    break;
-								default:
-								}
-								expressions.add(expression);
+								addPrimaryKeyExpression(router, tableName,
+										dataType, itemsList);
 							}
 							return insert.toString();
 						}
@@ -340,7 +334,7 @@ public class DbRouterUtil {
 
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new DbrouterRuntimeException(e);
 		} finally {
 			try {
 				if (rs != null) {
@@ -349,12 +343,58 @@ public class DbRouterUtil {
 				if (typeRs != null) {
 					typeRs.close();
 				}
-			} catch (Exception e) {
-
+			} catch (SQLException e) {
+				throw new DbrouterRuntimeException(e);
 			}
 
 		}
 		return sql;
+	}
+
+	private static String getRealTableName(Map<String, String> tableMapping,
+			String tableName) {
+		String realTableName = tableName;// 真正在数据库存在的表名
+		if (tableMapping != null&&tableMapping.containsKey(tableName)) {
+				realTableName = tableMapping.get(tableName);
+		}
+		return realTableName;
+	}
+   /**
+    * 新增sql语句增加主键字段信息
+    * @param router
+    * @param tableName
+    * @param dataType
+    * @param itemsList
+    */
+	private static void addPrimaryKeyExpression(Router router,
+			String tableName, int dataType, ItemsList itemsList) {
+		List<Expression> expressions = ((ExpressionList) itemsList)
+				.getExpressions();
+		Expression expression = null;
+		switch (dataType) {
+		case Types.CHAR:
+		case Types.VARCHAR:
+		case Types.LONGVARCHAR:
+			String value = RouterManagerBeanFactory
+					.getManager().getPrimaryKey(router,
+							tableName);
+			StringValue stringValue = new StringValue(value);
+			expression = stringValue;
+		    break;
+		case Types.NUMERIC:
+		case Types.DECIMAL:
+		case Types.INTEGER:
+		case Types.SMALLINT:
+		case Types.TINYINT:
+		case Types.BIGINT:
+			Object values = RouterManagerBeanFactory
+					.getManager().getPrimaryKey(router,
+							tableName);
+			expression = new LongValue(values + "");
+		    break;
+		default:
+		}
+		expressions.add(expression);
 	}
 
 	private static boolean primaryKeyInColumns(String primaryKey,
@@ -508,7 +548,7 @@ public class DbRouterUtil {
 				return getTableNameWithPlainSelect((PlainSelect) body);
 			}
 		}
-		throw new RuntimeException("must be a query sql");
+		throw new DbrouterRuntimeException("must be a query sql");
 
 	}
 
@@ -523,17 +563,16 @@ public class DbRouterUtil {
 
 	public static Connection createConnection(DataSourceConfig config)
 			throws SQLException {
-		try {
-			Class.forName(config.getDriver());
+			try {
+				Class.forName(config.getDriver());
+			} catch (ClassNotFoundException e) {
+				throw new DbrouterRuntimeException(e);
+			}
 			Connection connection = DriverManager
 					.getConnection(config.getUrl(), config.getUserName(),
 							config.getPassword());
 			connection.setAutoCommit(true);
 			return connection;
-
-		} catch (ClassNotFoundException e) {
-			throw new SQLException(e.getMessage());
-		}
 	}
 
 	/**
@@ -549,7 +588,7 @@ public class DbRouterUtil {
 			for (int i = 0; i < columns.size(); i++) {
 				Column column = columns.get(i);
 				String name = column.getColumnName();
-				int index = name.indexOf(".");
+				int index = name.indexOf('.');
 				if (index != -1) {
 					name = name.substring(index + 1);
 				}

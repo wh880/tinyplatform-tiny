@@ -37,34 +37,34 @@ public class DataSourceConfig {
      * ID唯一确定一个数据源，引用时通过指定ID来引用
      */
     @XStreamAsAttribute
-    String id;
+    private String id;
     /**
      * 驱动类名
      */
     @XStreamAsAttribute
-    String driver;
+    private String driver;
     /**
      * 连接URL
      */
     @XStreamAsAttribute
-    String url;
+    private String url;
     /**
      * 用户名
      */
     @XStreamAlias("user-name")
     @XStreamAsAttribute
-    String userName;
+    private String userName;
     /**
      * 密码
      */
     @XStreamAsAttribute
-    String password;
+    private String password;
     /**
      * 测试SQL
      */
     @XStreamAlias("test-sql")
     @XStreamAsAttribute
-    String testSql;
+    private String testSql;
 
     public DataSourceConfig() {
 

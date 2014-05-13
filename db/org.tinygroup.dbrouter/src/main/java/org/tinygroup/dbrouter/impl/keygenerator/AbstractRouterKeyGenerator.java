@@ -23,19 +23,20 @@
  */
 package org.tinygroup.dbrouter.impl.keygenerator;
 
-import org.tinygroup.dbrouter.RouterKeyGenerator;
-import org.tinygroup.dbrouter.config.Router;
-import org.tinygroup.dbrouter.config.KeyGeneratorConfig;
-import org.tinygroup.dbrouter.util.DbRouterUtil;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.tinygroup.dbrouter.RouterKeyGenerator;
+import org.tinygroup.dbrouter.config.KeyGeneratorConfig;
+import org.tinygroup.dbrouter.config.Router;
+import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
+import org.tinygroup.dbrouter.util.DbRouterUtil;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
 /**
  * 功能说明:集群主键生成器的抽象类
@@ -45,7 +46,8 @@ import java.util.Map;
  * 开发时间: 2014-1-6 <br>
  * <br>
  */
-public abstract class AbstractRouterKeyGenerator<T extends Number> implements RouterKeyGenerator<T> {
+public abstract class AbstractRouterKeyGenerator<T extends Number> implements
+		RouterKeyGenerator<T> {
 
 	protected static final String END_NUMBER = "end_number";
 
@@ -63,25 +65,27 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements Ro
 	public T getKey(String tableName) {
 		KeyConfigArea area = caches.get(tableName);
 		if (area == null) {
-			area=new KeyConfigArea();
-			updateKey(tableName,area,new WithNoResultCallBack() {
+			area = new KeyConfigArea();
+			updateKey(tableName, area, new WithNoResultCallBack() {
 
-				public void callback(String tableName,Statement statement) throws SQLException {
+				public void callback(String tableName, Statement statement)
+						throws SQLException {
 					String sql = "insert into " + keyConfig.getKeyTableName()
-							+ "(end_number,table_name) values(" + keyConfig.getStep()
-							+ ",'" + tableName + "')";
+							+ "(end_number,table_name) values("
+							+ keyConfig.getStep() + ",'" + tableName + "')";
 					statement.executeUpdate(sql);
 				}
 			});
 			caches.put(tableName, area);
 		}
 		if (area.checkUpdateKey()) {
-			updateKey(tableName,area, new WithNoResultCallBack() {
+			updateKey(tableName, area, new WithNoResultCallBack() {
 
 				public void callback(String tableName, Statement statement)
 						throws SQLException {
-					throw new RuntimeException(
-					"集群主键表:"+keyConfig.getKeyTableName()+"查询不到"+tableName+"的记录");
+					throw new DbrouterRuntimeException("集群主键表:"
+							+ keyConfig.getKeyTableName() + "查询不到" + tableName
+							+ "的记录");
 				}
 			});
 		}
@@ -91,16 +95,18 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements Ro
 		return generatorNextKey(nowCurrentNumber);
 	}
 
-	private synchronized void updateKey(String tableName,KeyConfigArea area,
+	private synchronized void updateKey(String tableName, KeyConfigArea area,
 			WithNoResultCallBack callback) {
+		Statement statement = null;
+		ResultSet resultSet = null;
 		try {
 			if (connection == null || connection.isClosed()) {
 				connection = DbRouterUtil.createConnection(router
 						.getDataSourceConfig(keyConfig.getDataSourceId()));
 			}
 			String generatorTableName = keyConfig.getKeyTableName();
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("select * from "
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery("select * from "
 					+ generatorTableName + " where table_name='" + tableName
 					+ "'");
 			if (resultSet.next()) {
@@ -113,7 +119,7 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements Ro
 				area.setCurrentNumber(oldEndNumber);
 				area.setEndNumber(newEndNumber);
 			} else {
-				callback.callback(tableName,statement);
+				callback.callback(tableName, statement);
 				area.setEndNumber(keyConfig.getStep());
 				area.setCurrentNumber(0);
 			}
@@ -124,10 +130,22 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements Ro
 					connection.close();
 				} catch (SQLException ex) {
 					logger.errorMessage("关闭连接时发生异常！", ex);
-					throw new RuntimeException(ex);
+					throw new DbrouterRuntimeException(ex);
 				}
 			}
-			throw new RuntimeException(e);
+			throw new DbrouterRuntimeException(e);
+		} finally {
+			try {
+				if (statement != null) {
+					statement.close();
+				}
+				if (resultSet != null) {
+					resultSet.close();
+				}
+			} catch (SQLException ex) {
+				logger.errorMessage(ex.getMessage(), ex);
+				throw new DbrouterRuntimeException(ex);
+			}
 		}
 	}
 
@@ -139,15 +157,14 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements Ro
 	 */
 	protected abstract T generatorNextKey(Long currentNumber);
 
-
 	public void setRouter(Router router) {
 		this.router = router;
 		keyConfig = router.getKeyConfig();
 	}
 
 	class KeyConfigArea {
-		long currentNumber;// 当前key值
-		long endNumber;// 范围
+		private long currentNumber;// 当前key值
+		private long endNumber;// 范围
 
 		public long getCurrentNumber() {
 			return currentNumber;
@@ -176,7 +193,8 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements Ro
 	 * 查询记录不存在的回调操作
 	 */
 	interface WithNoResultCallBack {
-		void callback(String tableName,Statement statement)throws SQLException ;
+		void callback(String tableName, Statement statement)
+				throws SQLException;
 	}
 
 }

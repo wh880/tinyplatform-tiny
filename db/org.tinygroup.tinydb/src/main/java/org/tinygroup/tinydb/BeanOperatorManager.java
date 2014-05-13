@@ -24,19 +24,16 @@
 package org.tinygroup.tinydb;
 
 import org.tinygroup.tinydb.config.SchemaConfig;
-import org.tinygroup.tinydb.config.SchemaConfigContainer;
 import org.tinygroup.tinydb.config.TableConfiguration;
+import org.tinygroup.tinydb.config.TableConfigurationContainer;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.relation.Relation;
 import org.tinygroup.tinydb.relation.Relations;
 
-import java.util.List;
-import java.util.Map;
-
 /**
- * Bean管理器
+ * Bean操作管理器
  * 
- * @author luoguo
+ * @author renhui
  * 
  */
 public interface BeanOperatorManager {
@@ -51,15 +48,21 @@ public interface BeanOperatorManager {
 	String DATA_TYPE = "DATA_TYPE";
 	
 	String TABLE_NAME="TABLE_NAME";
-	
+	/**
+	 * 设置默认的schema
+	 * @param schema
+	 */
 	void setMainSchema(String schema);
-
+	
+	String getMainSchema();
+	
 	/**
 	 * 获取数据操作器
+	 * @param schema
 	 * @param beanType
 	 * @return
 	 */
-	DBOperator<?> getDbOperator(String schame,String beanType);
+	DBOperator<?> getDbOperator(String schema,String beanType);
 	
 	/**
 	 * 获取数据操作器
@@ -68,82 +71,41 @@ public interface BeanOperatorManager {
 	 */
 	DBOperator<?> getDbOperator(String beanType);
 
-	
-	
 	/**
 	 * @param schemaConfig
 	 */
 	void registerSchemaConfig(SchemaConfig schemaConfig);
 
 	/**
-	 * 
-	 * @param mainBean
-	 * @param subBeanInfo
-	 * @return
-	 */
-	DBOperator<?> getDbOperator(String mainBean, Map<String, String> subBeanInfo,String schame);
-
-	/**
 	 * 根据表名获取表配置信息
 	 * 
-	 * @param tableName
-	 * @param schame
+	 * @param beanType
+	 * @param schema
 	 * @return
 	 */
-	TableConfiguration getTableConfiguration(String tableName,String schame);
+	TableConfiguration getTableConfiguration(String beanType,String schema);
 	
 	/**
 	 * 根据表名获取表配置信息
 	 * 
-	 * @param tableName
-	 * @return
-	 */
-	TableConfiguration getTableConfiguration(String tableName);
-
-	/**
-	 * 
 	 * @param beanType
-	 * @param schame
+	 * @param schema
 	 * @return
 	 */
-	TableConfiguration getTableConfigurationByBean(String beanType,String schame);
+	TableConfiguration getTableConfiguration(String beanType);
 	
-	/**
-	 * 
-	 * @param beanType
-	 * @return
-	 */
-	TableConfiguration getTableConfigurationByBean(String beanType);
-
-
-	/**
-	 * 初始化表配置
-	 */
-	void initBeansConfiguration();
-
-	/**
-	 * 获取bean的属性字段列表
-	 * 
-	 * @param beanType
-	 * @param schame
-	 * @return
-	 */
-	 List<String> getBeanProperties(String beanType,String schame);
 	/**
 	 * 
 	 * 要处理的所有schema列表
 	 */
 	 void loadTablesFromSchemas();
 	
-	
-	SchemaConfigContainer getSchemaContainer();
-	
 	/**
-	 * 
-	 * 获取所有schema下的所有表信息
+	 * 获取表配置信息容器对象
 	 * @return
 	 */
-	 Map<String, Map<String, TableConfiguration>> getTableConfigurations();
+	 TableConfigurationContainer getTableConfigurationContainer();
+	
 	
 	/**
 	 * 
@@ -180,10 +142,14 @@ public interface BeanOperatorManager {
 	 * @param schema
 	 * @return
 	 */
-	boolean existsTable(String beanType,String schema);
+	boolean existsTableByType(String beanType,String schema);
+	
 	/**
-	 * 添加表信息
-	 * @param configuration
+	 * 设置bean名称转换对象
+	 * @param beanDbNameConverter
 	 */
-	void addTableConfiguration(TableConfiguration configuration);
+	void setBeanDbNameConverter(BeanDbNameConverter beanDbNameConverter);
+	
+	BeanDbNameConverter getBeanDbNameConverter();
+
 }

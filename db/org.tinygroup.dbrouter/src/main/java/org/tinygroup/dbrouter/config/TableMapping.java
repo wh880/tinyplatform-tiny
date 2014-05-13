@@ -34,10 +34,10 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 public class TableMapping {
 	@XStreamAlias("table-name")
 	@XStreamAsAttribute
-    String tableName;
+	private String tableName;
 	@XStreamAlias("shard-table-name")
 	@XStreamAsAttribute
-    String shardTableName;
+	private String shardTableName;
 
     public TableMapping() {
 

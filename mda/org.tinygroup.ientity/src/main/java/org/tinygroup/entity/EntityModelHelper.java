@@ -127,7 +127,7 @@ public class EntityModelHelper {
 		this.operator = manager.getDbOperator(model.getName());
 		Assert.assertNotNull(operator, "operator must not null");
 		this.converter = operator.getBeanDbNameConverter();
-		this.tableName = manager.getTableConfigurationByBean(model.getName())
+		this.tableName = manager.getTableConfiguration(model.getName())
 				.getName();
 		contain=SpringUtil.getBean(CompareModeContain.COMPARE_MODE_CONTAIN);
 		List<Group> groups = model.getGroups();

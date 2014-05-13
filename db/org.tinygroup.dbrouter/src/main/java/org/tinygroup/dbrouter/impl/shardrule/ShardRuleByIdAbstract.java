@@ -56,19 +56,19 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
      * 余数
      */
     @XStreamAsAttribute
-    long remainder;
+    private long remainder;
     /**
      * 表名
      */
     @XStreamAsAttribute
     @XStreamAlias("table-name")
-    String tableName;
+    private String tableName;
     /**
      * 主键字段
      */
     @XStreamAsAttribute
     @XStreamAlias("primary-key-field-name")
-    String primaryKeyFieldName;
+    private String primaryKeyFieldName;
 
     public ShardRuleByIdAbstract() {
 

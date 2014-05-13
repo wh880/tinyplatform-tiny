@@ -44,17 +44,17 @@ public class KeyGeneratorConfig {
 
     @XStreamAlias("increment")
     @XStreamAsAttribute
-    int increment = 1;
+    private int increment = 1;
     @XStreamAlias("key-table-name")
     @XStreamAsAttribute
-    String keyTableName = DEFAULT_KEY_TABLE_NAME;
+    private String keyTableName = DEFAULT_KEY_TABLE_NAME;
     /**
      * 每次从数据库获取的幅度
      */
-    int step = DEFAULT_STEP;
+    private int step = DEFAULT_STEP;
     @XStreamAlias("data-source-id")
     @XStreamAsAttribute
-    String dataSourceId;
+    private String dataSourceId;
 
     public String getKeyTableName() {
         if (keyTableName == null) {

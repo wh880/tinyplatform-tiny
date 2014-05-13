@@ -115,7 +115,8 @@ public class TinyResultSetSimple implements ResultSet, ResultSetMetaData {
 		private final Object[] value;
 
 		SimpleArray(Object[] value) {
-			this.value = value;
+			this.value=new Object[value.length];
+			System.arraycopy(value, 0, this.value, 0, value.length);
 		}
 
 		/**
@@ -2158,7 +2159,7 @@ public class TinyResultSetSimple implements ResultSet, ResultSetMetaData {
 	public String getColumnTypeName(int columnIndex) throws SQLException {
 		int sqlType = getColumn(columnIndex - 1).sqlType;
 		int type = DataType.convertSQLTypeToValueType(sqlType);
-		return DataType.getDataType(type).name;
+		return DataType.getDataType(type).getName();
 	}
 
 	/**

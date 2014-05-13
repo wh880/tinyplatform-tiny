@@ -104,9 +104,9 @@ public class TinyResultSetMultiple implements ResultSet {
 	 */
 	private ResultSetExecutor firstExecutor;
 
-	ParamObjectBuilder insertRow;
+	private ParamObjectBuilder insertRow;
 
-	ParamObjectBuilder updateRow;
+	private ParamObjectBuilder updateRow;
 
 	private int columnCount;
 
@@ -114,7 +114,7 @@ public class TinyResultSetMultiple implements ResultSet {
 
 	private boolean isNext = true;
 	
-	protected RouterManager routerManager = RouterManagerBeanFactory
+	private RouterManager routerManager = RouterManagerBeanFactory
 	.getManager();
 
 	public TinyResultSetMultiple(String sql, Router router,

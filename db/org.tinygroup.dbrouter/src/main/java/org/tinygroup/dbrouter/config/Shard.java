@@ -38,19 +38,19 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 @XStreamAlias("shard")
 public class Shard {
-    transient Map<Connection, Connection> shardConnection =
+	private transient Map<Connection, Connection> shardConnection =
             new HashMap<Connection, Connection>();
-    transient Map<String, String> tableMappingMap = null;
+	private transient Map<String, String> tableMappingMap = null;
     /**
      * 分片标识
      */
     @XStreamAsAttribute
-    String id;
+    private String id;
     /**
      * 分片命中规则
      */
     @XStreamAlias("shard-rules")
-    List<ShardRule> shardRules;
+    private List<ShardRule> shardRules;
     /**
      * 数据源标识
      */
@@ -62,18 +62,18 @@ public class Shard {
      */
     @XStreamAsAttribute
     @XStreamAlias("read-weight")
-    int readWeight = 10;
+    private int readWeight = 10;
     /**
      * 写权重
      */
     @XStreamAsAttribute
     @XStreamAlias("write-able")
-    boolean writeAble;
+    private boolean writeAble;
     /**
      * 表名
      */
     @XStreamAlias("table-mappings")
-    List<TableMapping> tableMappings;
+    private List<TableMapping> tableMappings;
 
 
     public Shard() {

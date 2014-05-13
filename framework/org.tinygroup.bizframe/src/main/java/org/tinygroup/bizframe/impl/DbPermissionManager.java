@@ -351,7 +351,7 @@ public class DbPermissionManager<K extends Comparable<K>> extends
 
 	private String getPrimaryKeyName(String beanType) {
 		TableConfiguration configuration = getManager()
-				.getTableConfigurationByBean(beanType);
+				.getTableConfiguration(beanType);
 		if (configuration != null) {
 			return configuration.getPrimaryKey().getColumnName();
 		}

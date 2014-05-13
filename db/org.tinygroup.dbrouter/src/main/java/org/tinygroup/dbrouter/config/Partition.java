@@ -42,24 +42,24 @@ public class Partition {
      * 分区标识
      */
 	@XStreamAsAttribute
-    String id;
+	private String id;
     /**
      * 分区命中规则
      */
 	@XStreamAlias("partition-rules")
-    List<PartitionRule> partitionRules;
+    private List<PartitionRule> partitionRules;
 
     /**
      * 一个分区由多个分片组成
      */
 	@XStreamAlias("shards")
-    List<Shard> shards;
+    private List<Shard> shards;
 
     /**
      * 返回分区类型 PrimarySlave
      */
 	@XStreamAsAttribute
-    int mode;
+	private int mode;
     /**
      * 主从模式，主从模式中的数据全部一样，通过读写分离来进行分流
      */
