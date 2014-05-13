@@ -23,11 +23,7 @@
  */
 package org.tinygroup.fileresolver;
 
-import java.io.File;
-import java.io.IOException;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.fileresolver.impl.FullContextFileFinder;
 import org.tinygroup.fileresolver.impl.FullContextFileRepositoryImpl;
 import org.tinygroup.parser.Document;
@@ -35,6 +31,9 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlParser;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 
@@ -64,7 +63,7 @@ public class FullContentFileResposityTest extends TestCase {
 		  finder.config(document.getRoot(),null);
 		  finder.setFullContextFileRepository(repository);
 		  fileResolver.addFileProcessor(finder);
-		  fileResolver.resolve(null);
+		  fileResolver.resolve();
 	  }
 	
 	
@@ -126,7 +125,5 @@ public class FullContentFileResposityTest extends TestCase {
 		FileObject fileObject= repository.getRootFileObject(FILE_PATH);
 		assertTrue(fileObject.getAbsolutePath().endsWith("classes"));
 	}
-
-
 
 }
