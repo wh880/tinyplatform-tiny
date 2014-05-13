@@ -48,7 +48,7 @@ public class FlowRemoveFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(FLOW_EXT_FILENAME);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		FlowExecutor flowExecutor = SpringUtil.getBean(FlowExecutor.FLOW_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(FlowExecutor.FLOW_XSTREAM_PACKAGENAME);

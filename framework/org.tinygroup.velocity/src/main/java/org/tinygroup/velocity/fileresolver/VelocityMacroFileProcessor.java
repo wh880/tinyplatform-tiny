@@ -38,7 +38,7 @@ public class VelocityMacroFileProcessor extends AbstractFileProcessor {
 		return false;
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		VelocityHelper velocityHelper = SpringUtil.getBean("velocityHelper");
 		for (FileObject fileObject : deleteList) {
 			logger.logMessage(LogLevel.INFO, "正在移除ui宏模板组件文件[{0}]",

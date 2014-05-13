@@ -48,7 +48,7 @@ public class ValidateMapFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(VALIDATE_MAP_FILE_SUFFIX);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		ValidatorMapStorage validatorManager = SpringUtil
 				.getBean(ValidatorMapStorage.VALIDATOR_MAP_BEAN_NAME);
 

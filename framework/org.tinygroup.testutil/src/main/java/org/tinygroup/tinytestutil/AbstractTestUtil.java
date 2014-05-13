@@ -156,7 +156,7 @@ public abstract class AbstractTestUtil {
 		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 		fileResolver.addFileProcessor(new ConfigurationFileProcessor());
 		// SpringUtil.regSpringConfigXml(xmlFile);
-		fileResolver.resolve(null);
+		fileResolver.resolve();
 	}
 
 	private static void loadFileResolverConfig(FileResolver fileResolver,
@@ -168,7 +168,7 @@ public abstract class AbstractTestUtil {
 		List<XmlNode> classPathList = filter
 				.findNodeList("/application/file-resolver-configuration/class-paths/class-path");
 		for (XmlNode classPath : classPathList) {
-			fileResolver.addManualClassPath(classPath.getAttribute("path"));
+			fileResolver.addResolvePath(classPath.getAttribute("path"));
 		}
 
 		List<XmlNode> includePatternList = filter
