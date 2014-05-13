@@ -92,6 +92,7 @@ public class FileResolverImpl implements FileResolver {
 
     public void addFileProcessor(FileProcessor fileProcessor) {
         fileProcessorList.add(fileProcessor);
+        fileProcessor.setFileResolver(this);
     }
 
     public void setClassLoader(ClassLoader classLoader) {

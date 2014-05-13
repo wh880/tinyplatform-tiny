@@ -263,7 +263,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 		return false;
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		
 	}
 }

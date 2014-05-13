@@ -48,7 +48,7 @@ public class ValidateFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(VALIDATE_FILE_SUFFIX);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		XmlValidatorManager validatorManager = SpringUtil
 				.getBean(XmlValidatorManager.VALIDATOR_MANAGER_BEAN_NAME);
 		XStream stream = XStreamFactory

@@ -76,7 +76,7 @@ public class TemplateFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(fileExtName);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		for (FileObject fileObject : deleteList) {
 			logger.logMessage(LogLevel.INFO, "正在移除文档模板宏配置文件[{0}]",
 					fileObject.getAbsolutePath());
