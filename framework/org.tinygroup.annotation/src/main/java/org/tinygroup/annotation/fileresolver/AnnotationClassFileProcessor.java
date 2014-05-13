@@ -53,7 +53,7 @@ public class AnnotationClassFileProcessor extends AbstractFileProcessor {
 		final AnnotationExcuteManager manager = SpringUtil
 				.getBean(AnnotationExcuteManager.ANNOTATION_MANAGER_BEAN_NAME);
 		MultiThreadFileProcessor.mutiProcessor(getFileResolver()
-				.getFileProcessorThreadNum(), "annotation-muti", fileObjects,
+				.getFileProcessorThreadNumber(), "annotation-muti", fileObjects,
 				new ProcessorCallBack() {
 					public void callBack(FileObject fileObject) {
 						manager.processClassFileObject(fileObject);
