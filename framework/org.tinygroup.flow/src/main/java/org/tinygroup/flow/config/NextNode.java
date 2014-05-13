@@ -41,11 +41,42 @@ public class NextNode {
 	@XStreamAsAttribute
 	@XStreamAlias("exception-type")
 	private String exceptionType;// 异常类型
+    @XStreamAsAttribute
+    private String name;
+    @XStreamAsAttribute
+    private String title;
+    private String description;
+
 	@XStreamAsAttribute
 	@XStreamAlias("next-node-id")
+
 	private String nextNodeId;// 下一步要执行的节点标识，可以用a:b的形式引用调用外部的流程,a为flowId,b为NodeId
 
-	public String getEl() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getEl() {
 		return el;
 	}
 
