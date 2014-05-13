@@ -79,4 +79,9 @@ public class TableConfigurationContainer {
 		return false;
 	}
 	
+	public boolean isExistTable(String schema,String tableName){
+		TableConfiguration configuration=getTableConfiguration(schema, tableName);
+        return configuration!=null;
+	}
+	
 }

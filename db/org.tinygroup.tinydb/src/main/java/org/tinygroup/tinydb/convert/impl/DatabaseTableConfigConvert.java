@@ -3,7 +3,6 @@ package org.tinygroup.tinydb.convert.impl;
 import java.util.List;
 
 import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.table.TableProcessor;
@@ -38,15 +37,19 @@ public class DatabaseTableConfigConvert extends AbstractTableConfigConvert{
 	}
 
 	protected void realConvert(BeanOperatorManager manager) {
-
 		TableProcessor processor=SpringUtil.getBean(TableProcessor.BEAN_NAME);
 		List<Table> tables=processor.getTables();
 		if(!CollectionUtil.isEmpty(tables)){
 			for (Table table : tables) {
 				logger.logMessage(LogLevel.DEBUG, "开始转化表对象:{}",table.getName());
 				TableConfiguration configuration=new TableConfiguration();
-				configuration.setName(table.getNameWithOutSchema());
+				String tableName=table.getNameWithOutSchema();
 				String schema=getSchema(table.getSchema());
+				if(existsTable(tableName, schema)){
+					logger.logMessage(LogLevel.WARN, "表格:{0}已存在，无需重新加载", tableName);
+					continue;
+				}
+				configuration.setName(tableName);
 				configuration.setSchema(schema);
 				List<TableField> fields=table.getFieldList();
 				if(!CollectionUtil.isEmpty(fields)){
@@ -58,7 +61,6 @@ public class DatabaseTableConfigConvert extends AbstractTableConfigConvert{
 				logger.logMessage(LogLevel.DEBUG, "转化表对象:{}结束",table.getName());
 			}
 		}
-		
 	}
 	
 	private void tableFieldConvert(TableConfiguration configuration,
@@ -79,13 +81,6 @@ public class DatabaseTableConfigConvert extends AbstractTableConfigConvert{
 		column.setDecimalDigits(MetadataUtil.getPlaceholderValue(standardFieldId, DECIMAL_DIGITS_HOLDER, "0"));
 		column.setTypeName(dialectType.getTypeName());
 		configuration.addColumn(column);
-	}
-	
-	private String getSchema(String schema){
-		if(StringUtil.isBlank(schema)){
-			return getOperatorManager().getMainSchema();
-		}
-		return schema;
 	}
 	
 

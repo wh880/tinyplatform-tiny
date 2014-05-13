@@ -1,6 +1,7 @@
 package org.tinygroup.tinydb.convert.impl;
 
 import org.tinygroup.commons.tools.Assert;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinydb.BeanOperatorManager;
@@ -39,6 +40,19 @@ public abstract class AbstractTableConfigConvert implements TableConfigConvert {
 	protected void addTableConfiguration(TableConfiguration table) {
 		TableConfigurationContainer container=getOperatorManager().getTableConfigurationContainer();
 		container.addTableConfiguration(table);
+	}
+	
+	protected boolean existsTable(String tableName, String schema){
+		BeanOperatorManager manager=getOperatorManager();
+		TableConfigurationContainer container=manager.getTableConfigurationContainer();
+		return container.isExistTable(schema, tableName);
+	}
+	
+	protected String getSchema(String schema){
+		if(StringUtil.isBlank(schema)){
+			return getOperatorManager().getMainSchema();
+		}
+		return schema;
 	}
 	
 }

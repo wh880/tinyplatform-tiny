@@ -12,7 +12,6 @@ import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
 import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.config.TableConfiguration;
-import org.tinygroup.tinydb.config.TableConfigurationContainer;
 import org.tinygroup.tinydb.exception.DBRuntimeException;
 import org.tinygroup.tinydb.util.DataSourceFactory;
 
@@ -43,7 +42,7 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert{
 			logger.logMessage(LogLevel.INFO, "开始扫描schema列表中的所有表信息");
 			List<SchemaConfig> schemaConfigs= manager.getTableConfigurationContainer().getsSchemaConfigs();
 			for (SchemaConfig schemaConfig : schemaConfigs) {
-				String schema=schemaConfig.getSchema();
+				String schema=getSchema(schemaConfig.getSchema());
 				logger.logMessage(LogLevel.INFO, "开始扫描schema：{0}", schema);
 				try {
 					initSchemaConfiguration(schemaConfig, con.getMetaData());
@@ -89,7 +88,7 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert{
 			DatabaseMetaData metaData) throws SQLException {
 		logger.logMessage(LogLevel.INFO, "开始获取表格:{0}信息", tableName);
 		if(existsTable(tableName, schema)){
-			logger.logMessage(LogLevel.INFO, "表格:{0}已存在，无需重新获取", tableName);
+			logger.logMessage(LogLevel.WARN, "表格:{0}已存在，无需重新获取", tableName);
 			return;
 		}
 		// 不对表名和schame作处理获取表信息
@@ -167,15 +166,6 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert{
 			}
 		}
 
-	}
-
-
-	
-	private boolean existsTable(String tableName, String schema){
-		BeanOperatorManager manager=getOperatorManager();
-		TableConfigurationContainer container=manager.getTableConfigurationContainer();
-		TableConfiguration configuration=container.getTableConfiguration(schema, tableName);
-		return configuration!=null;
 	}
 	
 
