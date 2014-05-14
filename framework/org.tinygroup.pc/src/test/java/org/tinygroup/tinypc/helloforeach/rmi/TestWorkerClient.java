@@ -28,7 +28,7 @@ import org.tinygroup.tinypc.hellosingle.WorkerHello;
 import org.tinygroup.tinypc.impl.JobCenterRemote;
 
 public class TestWorkerClient {
-	private static String SERVERIP = "192.168.84.52";
+	private static String SERVERIP = "192.168.84.23";
 
 	public static void main(String[] args) {
 				try {
