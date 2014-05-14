@@ -23,16 +23,36 @@
  */
 package org.tinygroup.application;
 
+import java.util.List;
+
+/**
+ * 不管是Web应用还是其它类型的应用，都可以看成是一个Application
+ */
 public interface Application {
+    /**
+     * 返回应用上下文
+     *
+     * @return
+     */
+    ApplicationContext getApplicationContext();
 
-	/**
-	 * 启动
-	 */
-	void start();
+    void addApplicationProcessor(ApplicationProcessor applicationProcessor);
 
-	/**
-	 * 停止
-	 */
-	void stop();
+    List<ApplicationProcessor> getApplicationProcessors();
+
+    /**
+     * 对Application进行初始化
+     */
+    void init();
+
+    /**
+     * 启动
+     */
+    void start();
+
+    /**
+     * 停止
+     */
+    void stop();
 
 }

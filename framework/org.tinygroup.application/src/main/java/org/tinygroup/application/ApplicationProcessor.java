@@ -27,24 +27,24 @@ import org.tinygroup.commons.order.Ordered;
 import org.tinygroup.config.Configuration;
 
 
-public interface ApplicationProcessor extends Configuration,Ordered{
-	/**
-	 * 
-	 * 应用程序处理器开启方法
-	 */
-	void start();
-
-	/**
-	 * 
-	 * 应用程序处理器关闭方法
-	 */
-	void stop();
-	
+public interface ApplicationProcessor extends Configuration, Ordered {
     /**
-     * 	
-     *设置本应用处理器所属的应用程序
+     * 应用程序处理器开启方法
+     */
+    void start();
+
+    void init();
+
+    /**
+     * 应用程序处理器关闭方法
+     */
+    void stop();
+
+    void setApplication(Application application);
+    /**
+     * 设置本应用处理器所属的应用程序
+     *
      * @param application
      */
-	void setApplication(Application application);
 
 }
