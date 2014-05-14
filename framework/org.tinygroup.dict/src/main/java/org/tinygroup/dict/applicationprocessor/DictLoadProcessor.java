@@ -65,7 +65,11 @@ public class DictLoadProcessor extends AbstractConfiguration implements Applicat
 		manager.load();
 	}
 
-	public void stop() {
+    public void init() {
+
+    }
+
+    public void stop() {
 
 	}
 

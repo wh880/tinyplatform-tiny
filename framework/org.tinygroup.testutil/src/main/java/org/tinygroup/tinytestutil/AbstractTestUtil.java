@@ -23,11 +23,6 @@
  */
 package org.tinygroup.tinytestutil;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-
 import org.tinygroup.application.Application;
 import org.tinygroup.application.impl.ApplicationDefault;
 import org.tinygroup.commons.io.StreamUtil;
@@ -41,6 +36,11 @@ import org.tinygroup.parser.filter.PathFilter;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public abstract class AbstractTestUtil {
 	// private static FullContextFileRepository repository;
@@ -84,7 +84,7 @@ public abstract class AbstractTestUtil {
 				logger.errorMessage("载入应用配置信息时出错，错误原因：{}！", e, e.getMessage());
 			}
 		}
-		application = new ApplicationDefault(applicationConfig);
+		application = new ApplicationDefault();
 		initSpring(applicationConfig);
 		FileResolver fileResolver=SpringUtil.getBean(FileResolver.BEAN_NAME);
 		fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
@@ -100,7 +100,7 @@ public abstract class AbstractTestUtil {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		application = new ApplicationDefault(is, true);
+		application = new ApplicationDefault();
 		application.start();
 	}
 

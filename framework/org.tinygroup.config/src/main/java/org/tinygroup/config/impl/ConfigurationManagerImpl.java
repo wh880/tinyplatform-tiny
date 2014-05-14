@@ -33,12 +33,20 @@ public class ConfigurationManagerImpl implements org.tinygroup.config.Configurat
         this.componentConfigurationMap = componentConfigurationMap;
     }
 
+    public void setComponentConfiguration(String key, XmlNode componentConfiguration) {
+        componentConfigurationMap.put(key, componentConfiguration);
+    }
+
     public XmlNode getApplicationConfiguration() {
         return applicationConfiguration;
     }
 
     public Map<String, XmlNode> getComponentConfigurationMap() {
         return componentConfigurationMap;
+    }
+
+    public XmlNode getComponentConfiguration(String key) {
+        return componentConfigurationMap.get(key);
     }
 
     public void distributeConfiguration() {
@@ -63,7 +71,7 @@ public class ConfigurationManagerImpl implements org.tinygroup.config.Configurat
     }
 
     public void loadConfiguration() {
-        if(configurationLoader!=null){
+        if (configurationLoader != null) {
             setApplicationConfiguration(configurationLoader.loadApplicationConfiguration());
             setComponentConfigurationMap(configurationLoader.loadComponentConfiguration());
         }

@@ -40,7 +40,7 @@ public class CommandFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(COMMAND_EXT_FILENAME);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 
 		XStream stream = XStreamFactory
 				.getXStream(CommandSystem.COMMANDS_XSTREAM);

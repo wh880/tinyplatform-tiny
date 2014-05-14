@@ -44,11 +44,15 @@ public interface ConfigurationManager {
 
     void setApplicationConfiguration(XmlNode applicationConfiguration);
 
-    void setComponentConfigurationMap(Map<String, XmlNode> componentConfiguration);
+    void setComponentConfigurationMap(Map<String, XmlNode> componentConfigurationMap);
+
+    void setComponentConfiguration(String key, XmlNode componentConfiguration);
 
     XmlNode getApplicationConfiguration();
 
     Map<String, XmlNode> getComponentConfigurationMap();
+
+    XmlNode getComponentConfiguration(String key);
 
     /**
      * 分发应用配置<br>
@@ -59,5 +63,4 @@ public interface ConfigurationManager {
 
     void setConfigurationList(Collection<Configuration> configurationList);
 
-    void loadConfiguration();
 }

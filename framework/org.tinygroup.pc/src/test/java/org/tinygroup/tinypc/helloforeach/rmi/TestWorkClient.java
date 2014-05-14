@@ -23,8 +23,6 @@
  */
 package org.tinygroup.tinypc.helloforeach.rmi;
 
-import java.util.List;
-
 import org.tinygroup.tinypc.JobCenter;
 import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
@@ -33,8 +31,10 @@ import org.tinygroup.tinypc.impl.JobCenterRemote;
 import org.tinygroup.tinypc.impl.WarehouseDefault;
 import org.tinygroup.tinypc.impl.WorkDefault;
 
+import java.util.List;
+
 public class TestWorkClient {
-	private static String SERVERIP = "192.168.84.52";
+	private static String SERVERIP = "192.168.84.23";
 
 	public static void main(String[] args) {
 

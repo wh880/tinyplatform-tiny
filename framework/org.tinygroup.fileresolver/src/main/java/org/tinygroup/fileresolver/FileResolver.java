@@ -27,6 +27,7 @@ import org.tinygroup.config.Configuration;
 import org.tinygroup.vfs.FileObject;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 文件查找器
@@ -44,6 +45,12 @@ public interface FileResolver extends Configuration {
      */
     List<FileProcessor> getFileProcessorList();
 
+    /**
+     * 返回当前FileResolver要扫描的文件列表
+     *
+     * @return
+     */
+    Set<FileObject> getResolveFileObjectSet();
 
     /**
      * 手工添加扫描的匹配列表，如果有包含列表，则按包含列表
