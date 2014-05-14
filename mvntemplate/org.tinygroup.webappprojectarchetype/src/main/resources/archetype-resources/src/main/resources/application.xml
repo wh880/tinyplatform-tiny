@@ -54,7 +54,6 @@
             <file ext-name="jsp" content-type="text/html"/>
             <file ext-name="htm" content-type="text/html"/>
             <file ext-name="html" content-type="text/html"/>
-            <file ext-name="component" content-type="text/html"/>
         </full-context-file-finder>
     </file-resolver-configuration>
 

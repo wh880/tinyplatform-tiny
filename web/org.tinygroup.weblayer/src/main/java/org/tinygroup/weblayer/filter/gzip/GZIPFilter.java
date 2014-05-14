@@ -62,20 +62,22 @@ public class GZIPFilter implements Filter, Configuration {
 				chain.doFilter(req, wrappedResponse);
 				// GZIP压缩：
 				byte[] buff = wrappedResponse.getBufferedBytes();
-				// 创建缓存容器：
-				boolean isLessContentLength=maxContentLength==0||maxContentLength>=buff.length;
-				boolean isExcludeType=isExcluedType(response);
-				if(isLessContentLength&&!isExcludeType){
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					GZIPOutputStream gzip = new GZIPOutputStream(baos);
-					gzip.write(buff);
-					gzip.close();
-					buff = baos.toByteArray();
-					// 设置响应头；
-					response.setHeader("Content-Encoding", "gzip");
-					response.setContentLength(buff.length);
+				if(buff.length>0){
+					// 创建缓存容器：
+					boolean isLessContentLength=maxContentLength==0||maxContentLength>=buff.length;
+					boolean isExcludeType=isExcluedType(response);
+					if(isLessContentLength&&!isExcludeType){
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						GZIPOutputStream gzip = new GZIPOutputStream(baos);
+						gzip.write(buff);
+						gzip.close();
+						buff = baos.toByteArray();
+						// 设置响应头；
+						response.setHeader("Content-Encoding", "gzip");
+						response.setContentLength(buff.length);
+					}
+					response.getOutputStream().write(buff);
 				}
-				response.getOutputStream().write(buff);
 				return;
 			}
 			chain.doFilter(req, res);
