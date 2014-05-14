@@ -23,16 +23,18 @@
  */
 package org.tinygroup.config.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.impl.ConfigurationManagerImpl;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 应用配置工具类，用于把父对象中的配置参数应用到子对象中。
@@ -123,7 +125,7 @@ public final class ConfigurationUtil {
         }
         List<XmlNode> componentNodeList = null;
         if (componentNode != null) {
-            componentNodeList=componentNode.getSubNodes(nodeName);
+            componentNodeList = componentNode.getSubNodes(nodeName);
         }
         if (componentNodeList == null && applicationNodeList == null) {
             return result;
@@ -280,5 +282,21 @@ public final class ConfigurationUtil {
             }
         }
         return result;
+    }
+
+    public static String replace(String content, String name, String value) {
+
+        Pattern pattern = Pattern.compile("[{]" + name + "[}]");
+        Matcher matcher = pattern.matcher(content);
+        StringBuffer buf = new StringBuffer();
+        int curpos = 0;
+        while (matcher.find()) {
+            buf.append(content.substring(curpos, matcher.start()));
+            curpos = matcher.end();
+            buf.append(value);
+            continue;
+        }
+        buf.append(content.substring(curpos));
+        return buf.toString();
     }
 }

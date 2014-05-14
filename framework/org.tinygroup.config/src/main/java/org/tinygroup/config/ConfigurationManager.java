@@ -23,70 +23,41 @@
  */
 package org.tinygroup.config;
 
+import org.tinygroup.xmlparser.node.XmlNode;
+
 import java.util.Collection;
 import java.util.Map;
 
-import org.tinygroup.vfs.FileObject;
-import org.tinygroup.xmlparser.node.XmlNode;
-
 /**
  * 应用配置管理器
- * 
+ *
  * @author luoguo
- * 
  */
 public interface ConfigurationManager {
-	String APPLICATION_CONFIGURATION_FILE = "/application.xml";
-	String APPLICATION_ROOTNODE_NAME = "application";
 
-	/**
-	 * 载入配置
-	 * 
-	 * @param content
-	 *            配置内容
-	 */
-	void loadApplicationConfig(String config);
+    /**
+     * 设置配置加载器
+     *
+     * @param configurationLoader
+     */
+    void setConfigurationLoader(ConfigurationLoader configurationLoader);
 
-	Map<String, String> getApplicationPropertiesMap();
+    void setApplicationConfiguration(XmlNode applicationConfiguration);
 
-	void setApplicationProperty(String key, String value);
+    void setComponentConfigurationMap(Map<String, XmlNode> componentConfiguration);
 
-	String getApplicationProperty(String key);
+    XmlNode getApplicationConfiguration();
 
-	String getApplicationProperty(String key, String defaultValue);
+    Map<String, XmlNode> getComponentConfigurationMap();
 
-	/**
-	 * 分发应用配置<br>
-	 * 应用配置会促使配置管理器把配置信息推送到配置订阅者
-	 */
-	void distributeConfig();
+    /**
+     * 分发应用配置<br>
+     * 应用配置会促使配置管理器把配置信息推送到配置订阅者
+     */
+    void distributeConfiguration();
 
-	/**
-	 * 添加组件配置
-	 * 
-	 */
-	void loadComponentConfig(FileObject fileObject);
-	
-	/**
-	 * 卸载组件配置
-	 * @param path 组件配置文件路径
-	 */
-	void unloadComponentConfig(String path);
 
-	/**
-	 * 获取应用配置
-	 * 
-	 * @return
-	 */
-	XmlNode getApplicationConfig();
+    void setConfigurationList(Collection<Configuration> configurationList);
 
-	void setConfigurationList(Collection<Configuration> configurationList);
-
-	/**
-	 * 获取组件配置MAP
-	 * 
-	 * @return
-	 */
-	Map<String, XmlNode> getComponentConfigMap();
-
+    void loadConfiguration();
 }
