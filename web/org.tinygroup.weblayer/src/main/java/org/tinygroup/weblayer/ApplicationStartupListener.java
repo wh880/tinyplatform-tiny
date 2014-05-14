@@ -122,7 +122,7 @@ public class ApplicationStartupListener implements ServletContextListener {
         loadFileResolverConfig(fileResolver, applicationConfig);
         fileResolver.addFileProcessor(new SpringBeansFileProcessor());
         fileResolver.addFileProcessor(new ConfigurationFileProcessor());
-        fileResolver.resolve(null);
+        fileResolver.resolve();
         logger.logMessage(LogLevel.INFO, "加载Spring Bean文件结束。");
     }
 

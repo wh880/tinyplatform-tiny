@@ -146,4 +146,8 @@ public class JcsCacheProcessor extends AbstractConfiguration implements Applicat
 	public int getOrder() {
 		return DEFAULT_PRECEDENCE;
 	}
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
 }

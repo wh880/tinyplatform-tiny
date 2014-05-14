@@ -95,7 +95,7 @@ public class FileMonitorPlugin extends AbstractConfiguration implements Plugin {
 					sleep(interval * MILLISECOND_PER_SECOND);
 					logger.logMessage(LogLevel.INFO, "定时扫描文件变化......");
 					resolver = SpringUtil.getBean("fileResolver");
-					resolver.refresh(null);
+					resolver.resolve();
 					logger.logMessage(LogLevel.INFO, "定时扫描文件结束.");
 				} catch (InterruptedException e) {
 					logger.errorMessage(e.getMessage(), e);

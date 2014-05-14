@@ -53,7 +53,7 @@ public class ModelDefineFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(MODEL_DEFINE_FILE);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		XStream xStream = XStreamFactory.getXStream(IMDA_DOMAIN);
 		for (FileObject fileObject : deleteList) {
 			logger.logMessage(LogLevel.INFO, "正在移除ModelDefine描述文件：[{}]",

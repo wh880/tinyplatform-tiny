@@ -75,7 +75,7 @@ public class ModelFileProcessor extends AbstractFileProcessor {
 		return false;
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		for (FileObject fileObject : deleteList) {
 			for (ModelLoader modelLoader : manager.getModelLoaders()) {
 				if (fileObject.getFileName().endsWith(

@@ -41,7 +41,7 @@ public class BusinessTypeFileResolver extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(BIZDATATYPE_EXTFILENAME);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		BusinessTypeProcessor businessTypeProcessor = SpringUtil
 				.getBean(MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
 		XStream stream = XStreamFactory

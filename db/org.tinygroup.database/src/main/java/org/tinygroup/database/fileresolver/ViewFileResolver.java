@@ -42,7 +42,7 @@ public class ViewFileResolver extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(VIEW_EXTFILENAME);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		ViewProcessor viewProcessor = SpringUtil
 				.getBean(DataBaseUtil.VIEW_BEAN);
 		XStream stream = XStreamFactory

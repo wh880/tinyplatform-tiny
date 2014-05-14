@@ -49,7 +49,7 @@ public class UIComponentFileProcessor extends AbstractFileProcessor {
 	}
 
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		UIComponentManager manager = SpringUtil
 				.getBean(UIComponentManager.UIComponentManager_BEAN);
 		XStream stream = XStreamFactory

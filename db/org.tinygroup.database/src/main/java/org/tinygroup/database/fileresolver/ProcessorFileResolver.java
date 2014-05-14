@@ -41,7 +41,7 @@ public class ProcessorFileResolver extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(PROCESSOR_EXTFILENAME);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		logger.logMessage(LogLevel.INFO, "开始读取database.processor文件");
 		ProcessorManager processorManager = SpringUtil
 				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);

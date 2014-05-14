@@ -41,7 +41,7 @@ public class ProcedureFileResolver extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(PROCEDURE_EXTFILENAME);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		ProcedureProcessor procedureProcessor = SpringUtil
 				.getBean(DataBaseUtil.PROCEDURE_BEAN);
 		XStream stream = XStreamFactory

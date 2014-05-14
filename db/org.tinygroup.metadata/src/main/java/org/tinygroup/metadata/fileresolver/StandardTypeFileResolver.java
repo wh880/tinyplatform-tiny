@@ -42,7 +42,7 @@ public class StandardTypeFileResolver extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(DATATYPE_EXTFILENAME);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		StandardTypeProcessor standardDataTypeProcessor = SpringUtil
 				.getBean(MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
 		XStream stream = XStreamFactory

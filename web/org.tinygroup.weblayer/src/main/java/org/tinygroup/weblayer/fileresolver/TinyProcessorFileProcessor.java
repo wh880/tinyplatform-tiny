@@ -45,7 +45,7 @@ public class TinyProcessorFileProcessor extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(SERVLETS_EXT_FILENAMES);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		TinyProcessorConfigManager configManager = SpringUtil
 				.getBean(TinyProcessorConfigManager.TINY_PROCESSOR_CONFIGMANAGER);
 		if(!CollectionUtil.isEmpty(deleteList)||!CollectionUtil.isEmpty(changeList)){

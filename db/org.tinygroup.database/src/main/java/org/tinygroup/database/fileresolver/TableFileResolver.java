@@ -42,7 +42,7 @@ public class TableFileResolver extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(TABLE_EXTFILENAME);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		TableProcessor tableProcessor = SpringUtil
 				.getBean(DataBaseUtil.TABLEPROCESSOR_BEAN);
 		XStream stream = XStreamFactory

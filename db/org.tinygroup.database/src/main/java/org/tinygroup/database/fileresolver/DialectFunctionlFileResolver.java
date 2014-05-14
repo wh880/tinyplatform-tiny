@@ -42,7 +42,7 @@ public class DialectFunctionlFileResolver extends AbstractFileProcessor {
 		return fileObject.getFileName().endsWith(FUNCTION_EXTFILENAME);
 	}
 
-	public void process(ClassLoader loader) {
+	public void process() {
 		DialectFunctionProcessor functionProcessor = SpringUtil
 				.getBean(DataBaseUtil.FUNCTION_BEAN);
 		XStream stream = XStreamFactory

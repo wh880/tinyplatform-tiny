@@ -123,4 +123,9 @@ public class FileMonitorProcessor extends AbstractConfiguration implements
 	public int getOrder() {
 		return DEFAULT_PRECEDENCE;
 	}
+
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
 }
