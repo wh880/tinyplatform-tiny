@@ -99,13 +99,15 @@ public abstract class AbstractRmiServer implements RmiServer {
 		// throw new RuntimeException(e);
 		// }
 		logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}", name);
-		regThread.start();
+		if(!regThread.start){
+			regThread.start();
+		}
 		MyRemoteObject o = new MyRemoteObject(object, name);
 		regQueue.add(o);
 		logger.logMessage(LogLevel.DEBUG,"对象:{}加入注册列表完成",name);
 	}
 
-	public void registerRemoteObject(MyRemoteObject remoteObj) {
+	public void registerObject(MyRemoteObject remoteObj) {
 		String name = remoteObj.getName();
 		Remote object = remoteObj.getObject();
 		try {
@@ -260,22 +262,15 @@ public abstract class AbstractRmiServer implements RmiServer {
 		}
 	}
 
-	class RegisterThread implements Runnable {
-		boolean stop = false;
+	class RegisterThread extends Thread  {
 		boolean start = false;
-		public void start(){
-			if(!start){
-				stop = false;
-				start = true;
-				run();
-			}
-			
-		}
+		
 		public void run() {
-			while(!stop){
+			start = true;
+			while(start){
 				if (!regQueue.isEmpty()) {
 					MyRemoteObject o = regQueue.poll();
-					registerRemoteObject(o);
+					registerObject(o);
 				}
 				try {
 					Thread.sleep(100);
@@ -284,11 +279,6 @@ public abstract class AbstractRmiServer implements RmiServer {
 			}
 			
 		}
-		public void stop(){
-			stop = true;
-			start = false;
-		}
-
 	}
 
 //	class UnregisterThread implements Runnable {

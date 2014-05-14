@@ -129,4 +129,10 @@ public final class RmiServerLocal extends AbstractRmiServer {
 
         }
     }
+
+    public void registerLocalObject(Remote object, String name) {
+		
+		MyRemoteObject o = new MyRemoteObject(object, name);
+		registerObject(o);
+	}
 }
