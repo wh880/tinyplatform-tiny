@@ -73,7 +73,11 @@ public class CEPProcessor implements ApplicationProcessor{
 		}
 	}
 
-	public void stop() {
+    public void init() {
+
+    }
+
+    public void stop() {
 		try {
 			cep.stop();
 		} catch (Exception e) {
@@ -88,8 +92,4 @@ public class CEPProcessor implements ApplicationProcessor{
 		return DEFAULT_PRECEDENCE;
 	}
 
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
 }

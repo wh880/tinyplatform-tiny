@@ -23,12 +23,16 @@
  */
 package org.tinygroup.config.util;
 
+import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.impl.ConfigurationManagerImpl;
 import org.tinygroup.parser.filter.NameFilter;
+import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
+import org.tinygroup.xmlparser.parser.XmlStringParser;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -299,4 +303,11 @@ public final class ConfigurationUtil {
         buf.append(content.substring(curpos));
         return buf.toString();
     }
+
+    public static XmlNode parseXmlFromFileObject(FileObject fileObject) throws IOException {
+        String config = StreamUtil.readText(fileObject.getInputStream(), "UTF-8", true);
+        XmlNode xmlNode = new XmlStringParser().parse(config).getRoot();
+        return xmlNode;
+    }
+
 }

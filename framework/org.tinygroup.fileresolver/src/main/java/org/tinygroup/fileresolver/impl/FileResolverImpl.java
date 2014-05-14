@@ -70,6 +70,10 @@ public class FileResolverImpl implements FileResolver {
     private XmlNode applicationConfig;
     private ClassLoader classLoader;
 
+    public Set<FileObject> getResolveFileObjectSet() {
+        return resolveFileObjectSet;
+    }
+
     public List<FileProcessor> getFileProcessorList() {
         return fileProcessorList;
     }
