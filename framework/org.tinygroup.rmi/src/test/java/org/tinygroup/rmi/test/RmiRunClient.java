@@ -31,18 +31,19 @@ import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerRemote;
 
 public class RmiRunClient {
-	private static String SERVERIP = "192.168.84.23";
+	private static String SERVERIP = "192.168.84.30";
 //	private static String SERVERIP2 = "192.168.154.73";
 //	private static Logger logger = LoggerFactory.getLogger(RmiRunClient.class);
 
 	public static void main(String[] args) {
-		RmiServer remoteServer = new RmiServerRemote(SERVERIP, 8888);
-		try {
-			remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		RmiServer remoteServer = null;
+//		new RmiServerRemote(SERVERIP, 8888);
+//		try {
+//			remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
+//		} catch (RemoteException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		try {
 			Registry    registry = LocateRegistry.getRegistry(SERVERIP, 8888);
 			remoteServer = (RmiServer) registry.lookup(SERVERIP);
