@@ -91,4 +91,9 @@ public class CEPProcessor implements ApplicationProcessor{
 	public int getOrder() {
 		return DEFAULT_PRECEDENCE;
 	}
+
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
 }
