@@ -1,0 +1,34 @@
+options{
+    STATIC=false;
+}
+PARSER_BEGIN(Plus)
+package org.tinygroup.template;
+import org.tinygroup.template.impl.expression.*;
+import org.tinygroup.commons.io.ByteArrayInputStream;
+public class Plus {
+    public static void main(String[] args)throws ParseException {
+        Plus plus=new Plus(new ByteArrayInputStream("1+3+6".getBytes()));
+        System.out.println(plus.exec());
+    }
+}
+PARSER_END(Plus)
+
+SKIP:  { " " | "\t" | "\n" | "\r"}
+
+TOKEN: { "(" | ")"|"["|"]" | "+" | "*" | <NUM: (["0"-"9"])+> }
+
+int exec():{ int num;int i;}
+{
+    num=getNumber()
+    ("+" i=getNumber() {num+=i;}
+    )*
+    ("[" i=getNumber() "]" {num+=i;}
+        )*
+    {
+        return num;
+    }
+}
+int getNumber():{Token t;}
+{
+    t=<NUM> {return Integer.parseInt(t.image);}
+}

@@ -1,0 +1,174 @@
+options{
+    STATIC=false;
+}
+
+PARSER_BEGIN(Template)
+package org.tinygroup.template;
+import org.tinygroup.template.impl.expression.*;
+public class Template {
+    public static void main(String[] args) throws Exception {
+        System.out.println(args[0]);
+        TemplateItem result = new Template(new java.io.StringReader(args[0])).parse();
+        System.out.println(result.execute(null));
+    }
+}
+PARSER_END(Template)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| <SINGLE_LINE_COMMENT: "##" (~["\n", "\r"])* ("\n" | "\r" | "\r\n")?>
+| < MULTI_LINE_COMMENTS: "#*" (~["*"])* "*" ("*" | (~["*","#"] (~["*"])* "*"))* "#">
+}
+
+TOKEN: { "(" | ")" | "." | "[" | "]" | "&" | "^" | "%" | "|" | "+" | "-" | "*" | "/"| "||" | "&&"  }
+
+
+
+TOKEN :
+{
+ < NO_PARSE: "#[[" (~[])* "]]#">
+| <#VARIABLE : "${" <IDENTIFIER> "}" | "$" <IDENTIFIER>>
+| <TEXT: (~["$", "#", "\\"] | <ESCAPE_DIRECTIVE> | (["#","$"]) ([" ","\t","\n","\r"])+)+ >
+| <DIRECTIVE : "#" ("@")? ("{")? <IDENTIFIER> ("{")?>
+}
+
+TOKEN : {
+ <IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)*>
+|  <#LETTER: ["$","A"-"Z","_","a"-"z"]>
+|  <#DIGIT: ["0"-"9"]>
+}
+
+
+TOKEN :
+{
+    <#DOUBLE_ESCAPE : "\\\\">
+|   <#ESCAPE: "\\" >
+|   <#ESCAPE_DIRECTIVE :  (<DOUBLE_ESCAPE>)* "\\#" >
+}
+
+TOKEN : {
+ <INTEGER_LITERAL: <DECIMAL_LITERAL> (["l","L"])? | <HEX_LITERAL> (["l","L"])? | <OCTAL_LITERAL> (["l","L"])?>
+|  <#DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])*>
+|  <#HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+>
+|  <#OCTAL_LITERAL: "0" (["0"-"7"])*>
+|  <FLOATING_POINT_LITERAL: (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])? | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])? | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])? | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]>
+|  <#EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+>
+|  <CHARACTER_LITERAL: "\'" (~["\'","\\","\n","\r"] | "\\" (["n","t","b","r","f","\\","\'","\""] | ["0"-"7"] (["0"-"7"])? | ["0"-"3"] ["0"-"7"] ["0"-"7"])) "\'">
+|  <BOOLEAN_LITERAL: "true" | "false">
+|  <DOUBLE_STRING_LITERAL: "\"" ( ~["\"","\\","\n","\r"] | "\\" ( ["n","t","b","r","f","\\","\'","\""] | ["0"-"7"] (["0"-"7"])?  | ["0"-"3"] ["0"-"7"] ["0"-"7"] | ( ["\n","\r"] | "\r\n")))* "\"">
+|  <SINGLE_STRING_LITERAL: "'" ( ~["'","\\","\n","\r"] | "\\" ( ["n","t","b","r","f","\\","\'","'"] | ["0"-"7"] (["0"-"7"])?  | ["0"-"3"] ["0"-"7"] ["0"-"7"] | ( ["\n","\r"] | "\r\n")))* "'">
+}
+
+
+TemplateItem parse():{TemplateItem e1,e2;}
+{
+    e1=parseOneExpression()
+    (
+        e2=parseOneExpression() {e1 = new TemplateExpression("", e1, e2);}
+    )*
+    <EOF>
+    {
+        return e1;
+    }
+}
+
+TemplateItem parseOneExpression():{Token t;TemplateItem e,e1;}
+{
+    t=<NO_PARSE> {return new NoParseStringTemplateItem(t.image);}
+|   "$" e=E0() {return e;}
+|   "${" e=E0() "}" {return e;}
+|   t=<TEXT> {return new StringTemplateItem(t.image);}
+}
+
+TemplateItem E0(): {TemplateItem e1; TemplateItem e2;}
+{
+  e1=E1() (
+   "[" e2=E1() "]" {e1 = new TemplateExpression("[]", e1, e2);}
+  )* {return e1;}
+}
+
+TemplateItem E1(): {TemplateItem e1; TemplateItem e2;}
+{
+  e1=E2() (
+   "||" e2=E2() {e1 = new TemplateExpression("||", e1, e2);}
+  )* {return e1;}
+}
+
+TemplateItem E2(): {TemplateItem e1; TemplateItem e2;}
+{
+  e1=E3() (
+   "&&" e2=E3() {e1 = new TemplateExpression("&&", e1, e2);}
+  )* {return e1;}
+}
+TemplateItem E3(): {TemplateItem e1; TemplateItem e2;}
+{
+  e1=E4() (
+   "|" e2=E4() {e1 = new TemplateExpression("|", e1, e2);}
+  )* {return e1;}
+}
+TemplateItem E4(): {TemplateItem e1; TemplateItem e2;}
+{
+  e1=E5() (
+   "^" e2=E5() {e1 = new TemplateExpression("^", e1, e2);}
+  )* {return e1;}
+}
+TemplateItem E5(): {TemplateItem e1; TemplateItem e2;}
+{
+  e1=E6() (
+   "&" e2=E6() {e1 = new TemplateExpression("&", e1, e2);}
+  )* {return e1;}
+}
+TemplateItem E6(): {TemplateItem e1; TemplateItem e2;}
+{
+  e1=E7() (
+    "==" e2=E7() {e1 = new TemplateExpression("==", e1, e2);}
+|   "!=" e2=E7() {e1 = new TemplateExpression("!=", e1, e2);}
+  )* {return e1;}
+}
+TemplateItem E7(): {TemplateItem e1; TemplateItem e2;}
+{
+  e1=E8() (
+   "<" e2=E8() {e1 = new TemplateExpression("<", e1, e2);}
+|   "<=" e2=E8() {e1 = new TemplateExpression("<=", e1, e2);}
+|   ">" e2=E8() {e1 = new TemplateExpression(">", e1, e2);}
+|   ">=" e2=E8() {e1 = new TemplateExpression(">=", e1, e2);}
+  )* {return e1;}
+}
+TemplateItem E8(): {TemplateItem e1; TemplateItem e2;}
+{
+  e1=E9() (
+   "+" e2=E9() {e1 = new TemplateExpression("+", e1, e2);}
+|   "-" e2=E9() {e1 = new TemplateExpression("-", e1, e2);}
+  )* {return e1;}
+}
+TemplateItem E9(): {TemplateItem e1; TemplateItem e2;}
+{
+  e1=E10() (
+    "*" e2=E10() {e1 = new TemplateExpression("*", e1, e2);}
+|   "/" e2=E10() {e1 = new TemplateExpression("/", e1, e2);}
+|   "%" e2=E10() {e1 = new TemplateExpression("%", e1, e2);}
+  )* {return e1;}
+}
+TemplateItem E10(): {TemplateItem e1; TemplateItem e2;}
+{
+  e1=E11() (
+    "." e2=E11() {e1 = new TemplateExpression(".", e1, e2);}
+  )* {return e1;}
+}
+TemplateItem E11(): {TemplateItem e1,e2=null;Token n;}
+{
+    n=<BOOLEAN_LITERAL> {return new BooleanTemplateItem(Boolean.parseBoolean(n.image));}
+  | n=<INTEGER_LITERAL>  {return  new LongTemplateItem(Long.parseLong(n.image));}
+  | n=<FLOATING_POINT_LITERAL>  {return  new DoubleTemplateItem(Double.parseDouble(n.image));}
+  | n=<SINGLE_STRING_LITERAL>  {return  new SingleStringTemplateItem(n.image);}
+  | n=<DOUBLE_STRING_LITERAL>  {return  new DoubleStringTemplateItem(n.image);}
+  | n=<CHARACTER_LITERAL>  {return  new CharacterTemplateItem(n.image);}
+//  | n=<VARIABLE> { return  new VariableStringTemplateItem(n.image);}
+  | n=<IDENTIFIER> {return   new StringTemplateItem(n.image);}
+  |"(" e1=E1() ")" {return e1;}
+}
+
