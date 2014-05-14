@@ -30,7 +30,7 @@ import org.tinygroup.rmi.impl.RmiServerLocal;
 
 public class RmiRunServer {
 	
-	private static String LOCALIP = "192.168.84.52";
+	private static String LOCALIP = "192.168.84.23";
 
 	public static void main(String[] args) {
 		RmiServer localServer = new RmiServerLocal(LOCALIP, 8888);

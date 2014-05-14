@@ -23,6 +23,7 @@
  */
 package org.tinygroup.rmi.impl;
 
+import java.io.Serializable;
 import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -267,7 +268,7 @@ public abstract class AbstractRmiServer implements RmiServer {
 		}
 	}
 
-	class RegisterThread extends Thread  {
+	class RegisterThread extends Thread implements Serializable {
 		boolean start = false;
 		
 		public void run() {
@@ -297,7 +298,7 @@ public abstract class AbstractRmiServer implements RmiServer {
 //
 //	}
 
-	class MyRemoteObject {
+	class MyRemoteObject implements Serializable{
 		private Remote object;
 		private String name;
 

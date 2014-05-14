@@ -31,7 +31,7 @@ import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerRemote;
 
 public class RmiRunClient {
-	private static String SERVERIP = "192.168.84.30";
+	private static String SERVERIP = "192.168.84.23";
 //	private static String SERVERIP2 = "192.168.154.73";
 //	private static Logger logger = LoggerFactory.getLogger(RmiRunClient.class);
 

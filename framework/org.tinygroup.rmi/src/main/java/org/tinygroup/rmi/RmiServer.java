@@ -24,6 +24,7 @@
 package org.tinygroup.rmi;
 
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
@@ -33,7 +34,7 @@ import java.util.List;
  * RMI服务器接口
  * Created by luoguo on 14-1-10.
  */
-public interface RmiServer {
+public interface RmiServer extends Remote,Serializable{
     int DEFAULT_RMI_PORT = 8828;
 
     /**

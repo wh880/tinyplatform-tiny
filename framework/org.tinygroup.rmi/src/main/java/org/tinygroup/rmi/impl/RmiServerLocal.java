@@ -23,11 +23,7 @@
  */
 package org.tinygroup.rmi.impl;
 
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.rmi.Verifiable;
-
+import java.io.Serializable;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -35,10 +31,15 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.rmi.Verifiable;
+
 /**
  * 本地Rmi服务器 Created by luoguo on 14-1-10.
  */
-public final class RmiServerLocal extends AbstractRmiServer implements Remote {
+public final class RmiServerLocal extends AbstractRmiServer  {
 	private final static Logger logger = LoggerFactory
 			.getLogger(RmiServerRemote.class);
 	private ValidateThread validateThread = new ValidateThread();
@@ -88,7 +89,7 @@ public final class RmiServerLocal extends AbstractRmiServer implements Remote {
 		super.stop();
 	}
 
-	class ValidateThread extends Thread {
+	class ValidateThread extends Thread implements Serializable{
 		private static final int MILLISECOND_PER_SECOND = 1000;
 		private volatile boolean stop = false;
 		private int breathInterval = 5;// 单位秒
