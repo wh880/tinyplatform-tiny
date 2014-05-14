@@ -62,18 +62,26 @@ public abstract class AbstractRmiServer implements RmiServer {
 		}
 	}
 
+	public void startThread(){
+			regThread.start();
+	}
+	
 	public AbstractRmiServer() {
+		
 		this(DEFAULT_RMI_PORT);
+		startThread();
 	}
 
 	public AbstractRmiServer(int port) {
 		this("localhost", port);
+		startThread();
 	}
 
 	public AbstractRmiServer(String hostName, int port) {
 		this.hostName = hostName;
 		this.port = port;
 		getRegistry();
+		startThread();
 	}
 
 	protected void registerAllRemoteObject() {
@@ -99,9 +107,7 @@ public abstract class AbstractRmiServer implements RmiServer {
 		// throw new RuntimeException(e);
 		// }
 		logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}", name);
-		if(!regThread.start){
-			regThread.start();
-		}
+		
 		MyRemoteObject o = new MyRemoteObject(object, name);
 		regQueue.add(o);
 		logger.logMessage(LogLevel.DEBUG,"对象:{}加入注册列表完成",name);
