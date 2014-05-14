@@ -92,8 +92,4 @@ public class CEPProcessor implements ApplicationProcessor{
 		return DEFAULT_PRECEDENCE;
 	}
 
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
 }
