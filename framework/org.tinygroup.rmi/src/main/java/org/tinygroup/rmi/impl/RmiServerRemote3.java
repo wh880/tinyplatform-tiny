@@ -39,17 +39,17 @@ public class RmiServerRemote3 extends AbstractRmiServer {
     private final static Logger logger = LoggerFactory.getLogger(RmiServerRemote.class);
     HeartThread heartThread = new HeartThread();
 
-    public RmiServerRemote3() {
+    public RmiServerRemote3()throws RemoteException  {
         super();
         heartThread.start();
     }
 
-    public RmiServerRemote3(int port) {
+    public RmiServerRemote3(int port)throws RemoteException  {
         super(port);
         heartThread.start();
     }
 
-    public RmiServerRemote3(String hostName, int port) {
+    public RmiServerRemote3(String hostName, int port) throws RemoteException {
         super(hostName, port);
         heartThread.start();
     }

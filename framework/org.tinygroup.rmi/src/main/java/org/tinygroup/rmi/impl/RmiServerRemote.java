@@ -71,9 +71,10 @@ public class RmiServerRemote implements RmiServer {
 		} catch (RemoteException e) {
 			throw new RuntimeException("获取RmiServer:" + hostName + "时出错", e);
 		} catch (NotBoundException e) {
-			throw new RuntimeException("获取RmiServer:" + hostName + "时出错,该对象未曾注册", e);
+			throw new RuntimeException("获取RmiServer:" + hostName
+					+ "时出错,该对象未曾注册", e);
 		}
-		RmiUtil.start((RmiServerLocal)server);
+		// RmiUtil.start((RmiServerLocal)server);
 		return registry;
 	}
 
@@ -131,30 +132,30 @@ public class RmiServerRemote implements RmiServer {
 	}
 
 	public <T> T getRemoteObject(String name) throws RemoteException {
-		return (T)server.getRemoteObject(name);
+		return (T) server.getRemoteObject(name);
 	}
 
 	public <T> T getRemoteObject(Class<T> type) throws RemoteException {
-		return (T)server.getRemoteObject(type);
+		return (T) server.getRemoteObject(type);
 	}
 
 	public <T> List<T> getRemoteObjectList(Class<T> type) {
-		return (List<T>)server.getRemoteObjectList(type);
+		return (List<T>) server.getRemoteObjectList(type);
 	}
 
 	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type) {
-		return (List<T>)server.getRemoteObjectListInstanceOf(type);
+		return (List<T>) server.getRemoteObjectListInstanceOf(type);
 	}
 
 	public <T> List<T> getRemoteObjectList(String typeName) {
-		return (List<T>)server.getRemoteObjectList(typeName);
+		return (List<T>) server.getRemoteObjectList(typeName);
 	}
 
 	public void unexportObjects() throws RemoteException {
 		for (String name : registeredObjectMap.keySet()) {
 			unregisterRemoteObject(name);
 		}
-		
+
 	}
 
 	public void unregisterRemoteObject(Remote object) throws RemoteException {

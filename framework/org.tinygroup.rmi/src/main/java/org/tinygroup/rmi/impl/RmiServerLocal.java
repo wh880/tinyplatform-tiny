@@ -45,19 +45,19 @@ public final class RmiServerLocal extends AbstractRmiServer  {
 			.getLogger(RmiServerRemote.class);
 	private ValidateThread validateThread = new ValidateThread();
 
-	public RmiServerLocal() {
+	public RmiServerLocal() throws RemoteException {
 		super();
 		validateThread.start();
 	}
 
-	public RmiServerLocal(int port) {
+	public RmiServerLocal(int port) throws RemoteException {
 		super(port);
 		validateThread.start();
 	}
 
-	public RmiServerLocal(String hostName, int port) {
+	public RmiServerLocal(String hostName, int port) throws RemoteException {
 		super(hostName, port);
-		validateThread.start();
+		//validateThread.start();
 	}
 
 	public Registry getRegistry() {
@@ -82,6 +82,7 @@ public final class RmiServerLocal extends AbstractRmiServer  {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return registry;
 	}
 

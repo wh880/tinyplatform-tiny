@@ -69,15 +69,15 @@ public abstract class AbstractRmiServer implements RmiServer,Runnable {
 		logger.logMessage(LogLevel.INFO, "启动对象注册列表线程完成");
 	}
 
-	public AbstractRmiServer() {
+	public AbstractRmiServer() throws RemoteException {
 		this("localhost", DEFAULT_RMI_PORT);
 	}
 
-	public AbstractRmiServer(int port) {
+	public AbstractRmiServer(int port) throws RemoteException {
 		this("localhost", port);
 	}
 
-	public AbstractRmiServer(String hostName, int port) {
+	public AbstractRmiServer(String hostName, int port) throws RemoteException {
 		this.hostName = hostName;
 		this.port = port;
 		getRegistry();
@@ -132,6 +132,7 @@ public abstract class AbstractRmiServer implements RmiServer,Runnable {
 
 	public <T> T getRemoteObject(String name) {
 		try {
+			logger.logMessage(LogLevel.DEBUG, "获取对象Name:{}",name);
 			return (T) registry.lookup(name);
 		} catch (ConnectException e) {
 			throw new RuntimeException("获取对象Name:" + name + "时连接发生错误", e);
@@ -258,7 +259,7 @@ public abstract class AbstractRmiServer implements RmiServer,Runnable {
 	}
 	
 	public void run() {
-		while (true) {
+		for ( ; ; )  {
 //			logger.logMessage(LogLevel.INFO, "============="+regQueue.size());
 			try {
 				logger.logMessage(LogLevel.INFO, "wait");
