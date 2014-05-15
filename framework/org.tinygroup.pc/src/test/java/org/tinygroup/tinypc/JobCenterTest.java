@@ -39,7 +39,7 @@ public class JobCenterTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         localServer = new RmiServerLocal();
-        remoteServer = new RmiServerRemote();
+        remoteServer = new RmiServerRemote("localhost",8888);
     }
 
     public void tearDown() throws Exception {

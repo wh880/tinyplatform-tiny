@@ -52,7 +52,6 @@ public abstract class AbstractRmiServer implements RmiServer {
 	Registry registry = null;
 	Map<String, Remote> registeredObjectMap = new HashMap<String, Remote>();
 	ConcurrentLinkedQueue<MyRemoteObject> regQueue = new ConcurrentLinkedQueue<MyRemoteObject>();
-//	ConcurrentLinkedQueue<MyRemoteObject> unRegQueue = new ConcurrentLinkedQueue<MyRemoteObject>();
 	RegisterThread regThread = new RegisterThread();
 
 	public void stop() {
@@ -63,10 +62,12 @@ public abstract class AbstractRmiServer implements RmiServer {
 		}
 	}
 
-	public void startThread(){
-			regThread.start();
+	public void startThread() {
+		logger.logMessage(LogLevel.INFO, "启动对象注册列表线程");
+		regThread.start();
+		logger.logMessage(LogLevel.INFO, "启动对象注册列表线程完成");
 	}
-	
+
 	public AbstractRmiServer() {
 		this("localhost", DEFAULT_RMI_PORT);
 	}
@@ -89,11 +90,15 @@ public abstract class AbstractRmiServer implements RmiServer {
 	}
 
 	public void registerRemoteObject(Remote object, String name) {
-		logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}", name);
+		logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}"+regQueue.size(), name);
 		MyRemoteObject o = new MyRemoteObject(object, name);
-		regQueue.add(o);
-        regThread.notify();
-		logger.logMessage(LogLevel.DEBUG,"对象:{}加入注册列表完成",name);
+		synchronized (regQueue) {
+			regQueue.add(o);
+			logger.logMessage(LogLevel.INFO, "notify");
+			regQueue.notify();
+		}
+		
+		logger.logMessage(LogLevel.DEBUG, "对象:{}加入注册列表完成", name);
 	}
 
 	public void registerObject(MyRemoteObject remoteObj) {
@@ -252,24 +257,26 @@ public abstract class AbstractRmiServer implements RmiServer {
 	}
 
 	class RegisterThread extends Thread implements Serializable {
-	
-		
+
 		public void run() {
-			while(true){
-				if (!regQueue.isEmpty()) {
-					MyRemoteObject o = regQueue.poll();
-					registerObject(o);
-				}
+			while (true) {
+				logger.logMessage(LogLevel.INFO, "=============");
 				try {
-					wait();
-				} catch (InterruptedException e) {
+					logger.logMessage(LogLevel.INFO, "wait");
+					synchronized (regQueue) {
+						regQueue.wait();
+						MyRemoteObject o = regQueue.poll();
+						registerObject(o);
+					}
+				} catch (InterruptedException e1) {
+					// e1.printStackTrace();
 				}
 			}
-			
+
 		}
 	}
 
-	class MyRemoteObject implements Serializable{
+	class MyRemoteObject implements Serializable {
 		private Remote object;
 		private String name;
 

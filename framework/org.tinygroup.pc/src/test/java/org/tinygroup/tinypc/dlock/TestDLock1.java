@@ -60,7 +60,7 @@ class RunLock extends AbstractProcessor {
 
     protected void action() throws Exception {
         try {
-            RmiServer client = new RmiServerRemote();
+            RmiServer client = new RmiServerRemote("192.168.84.23",8888);
             DistributedLock lock = client.getRemoteObject("lock1");
             for (int i = 0; i < 1000; i++) {
                 long token = lock.lock();

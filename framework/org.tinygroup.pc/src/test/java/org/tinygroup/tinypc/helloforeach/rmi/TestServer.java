@@ -34,7 +34,7 @@ public class TestServer {
 
     public static void main(String[] args) {
         try {
-            JobCenter jobCenter = new JobCenterLocal("192.168.84.30", 8888);
+            JobCenter jobCenter = new JobCenterLocal("192.168.84.23", 8888);
             Foreman helloForeman = new ForemanSelectAllWorker("hello",
                     new HelloWorkCombiner());
             jobCenter.registerForeman(helloForeman);

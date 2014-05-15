@@ -39,7 +39,7 @@ public class RmiServerTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         localServer = new RmiServerLocal();
-        remoteServer = new RmiServerRemote();
+//        remoteServer = new RmiServerRemote();
 
     }
 

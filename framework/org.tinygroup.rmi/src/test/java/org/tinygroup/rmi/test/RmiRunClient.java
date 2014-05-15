@@ -23,14 +23,22 @@
  */
 package org.tinygroup.rmi.test;
 
+import java.rmi.RemoteException;
+
 import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerRemote;
 
 public class RmiRunClient {
-	private static String SERVERIP = "192.168.84.30";
+	private static String SERVERIP = "192.168.84.23";
 
 	public static void main(String[] args) {
 		RmiServer remoteServer = new RmiServerRemote(SERVERIP, 8888);
+		 try {
+			remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		RmiRunClient c = new RmiRunClient(remoteServer);
 		c.run();
 
