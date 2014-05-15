@@ -116,7 +116,7 @@ public interface JobCenter {
      *
      * @return
      */
-    List<Worker> getWorkerList(Work work);
+    List<Worker> getWorkerList(Work work) throws RemoteException;
 
 
     /**
@@ -140,7 +140,7 @@ public interface JobCenter {
      * @param type
      * @return
      */
-    List<Foreman> getForeman(String type);
+    List<Foreman> getForeman(String type) throws RemoteException;
 
     /**
      * 自动进行匹配，如果有匹配成功的，则予以触发执行

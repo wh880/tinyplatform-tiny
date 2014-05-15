@@ -100,7 +100,7 @@ public class AbstractJobCenter implements JobCenter {
         this.unregisterParallelObject(FOREMAN, foreman);
     }
 
-    public List<Worker> getWorkerList(Work work) {
+    public List<Worker> getWorkerList(Work work) throws RemoteException {
         return rmiServer.getRemoteObjectList(getTypeName(WORKER, work.getType()));
     }
 
@@ -116,7 +116,7 @@ public class AbstractJobCenter implements JobCenter {
         return workQueue.getWorkList(type, workStatus);
     }
 
-    public List<Foreman> getForeman(String type) {
+    public List<Foreman> getForeman(String type) throws RemoteException {
         List<Foreman> foremanList = rmiServer.getRemoteObjectList(getTypeName(FOREMAN, type));
         List<Foreman> foremans = new ArrayList<Foreman>();
         for (Foreman foreman : foremanList) {
@@ -186,7 +186,7 @@ public class AbstractJobCenter implements JobCenter {
         return foreman;
     }
 
-    private List<Foreman> getForemans(Work work, String foremanType) {
+    private List<Foreman> getForemans(Work work, String foremanType) throws RemoteException {
         List<Foreman> foremanList;
         if (foremanType == null || "".equals(foremanType)) {
             foremanList = getForeman(work.getType());
