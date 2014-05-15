@@ -346,7 +346,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 			}
 			inputParameterDescriptors.add(descriptor);
 		}
-		item.setResults(inputParameterDescriptors);
+		item.setParameters(inputParameterDescriptors);
 		serviceProxy.setInputParameters(inputParameterDescriptors);
 		logger.logMessage(LogLevel.INFO, "加载方法对应的服务入参完毕,方法{0},服务:{1}",
 				method.getName(), item.getServiceId());
