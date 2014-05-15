@@ -24,13 +24,13 @@
 package org.tinygroup.rmi.test;
 
 import org.tinygroup.rmi.RmiServer;
-import org.tinygroup.rmi.impl.RmiServerRemote2;
+import org.tinygroup.rmi.impl.RmiServerRemote;
 
 public class RmiRunClient {
-	private static String SERVERIP = "192.168.84.23";
+	private static String SERVERIP = "192.168.84.30";
 
 	public static void main(String[] args) {
-		RmiServer remoteServer = new RmiServerRemote2(SERVERIP, 8888);
+		RmiServer remoteServer = new RmiServerRemote(SERVERIP, 8888);
 		RmiRunClient c = new RmiRunClient(remoteServer);
 		c.run();
 
