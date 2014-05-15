@@ -68,14 +68,11 @@ public abstract class AbstractRmiServer implements RmiServer {
 	}
 	
 	public AbstractRmiServer() {
-		
-		this(DEFAULT_RMI_PORT);
-		startThread();
+		this("localhost", DEFAULT_RMI_PORT);
 	}
 
 	public AbstractRmiServer(int port) {
 		this("localhost", port);
-		startThread();
 	}
 
 	public AbstractRmiServer(String hostName, int port) {
@@ -92,21 +89,6 @@ public abstract class AbstractRmiServer implements RmiServer {
 	}
 
 	public void registerRemoteObject(Remote object, String name) {
-//		try {
-//
-//			logger.logMessage(LogLevel.DEBUG, "开始注册对象:{}", name);
-//			registeredObjectMap.put(name, object);
-//			if (object instanceof UnicastRemoteObject) {
-//				registry.rebind(name, object);
-//			} else {
-//				Remote stub = UnicastRemoteObject.exportObject(object, 0);
-//				registry.rebind(name, stub);
-//			}
-//			logger.logMessage(LogLevel.DEBUG, "结束注册对象:{}", name);
-//		} catch (RemoteException e) {
-//			logger.errorMessage("注册对象:{}时发生异常:{}！", e, name, e.getMessage());
-//			throw new RuntimeException(e);
-//		}
 		logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}", name);
 		MyRemoteObject o = new MyRemoteObject(object, name);
 		regQueue.add(o);
@@ -269,11 +251,10 @@ public abstract class AbstractRmiServer implements RmiServer {
 	}
 
 	class RegisterThread extends Thread implements Serializable {
-		boolean start = false;
+	
 		
 		public void run() {
-			start = true;
-			while(start){
+			while(true){
 				if (!regQueue.isEmpty()) {
 					MyRemoteObject o = regQueue.poll();
 					registerObject(o);
