@@ -1,22 +1,8 @@
 package org.tinygroup.bundle.impl;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.tinygroup.bundle.BundleActivator;
-import org.tinygroup.bundle.BundleContext;
-import org.tinygroup.bundle.BundleEvent;
-import org.tinygroup.bundle.BundleException;
-import org.tinygroup.bundle.BundleManager;
+import org.tinygroup.bundle.*;
 import org.tinygroup.bundle.config.BundleDefine;
 import org.tinygroup.bundle.loader.TinyClassLoader;
-import org.tinygroup.commons.order.OrderUtil;
-import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
@@ -24,6 +10,14 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by luoguo on 2014/5/4.
@@ -139,18 +133,18 @@ public class BundleManagerDefault implements BundleManager {
 		logger.logMessage(LogLevel.INFO, "停止所有Bundle完毕");
 	}
 
-	public void start(String bundle) {
-		logger.logMessage(LogLevel.INFO, "开始启动Bundle:{0}", bundle);
-		BundleDefine bundleDefine = bundleDefineMap.get(bundle);
+	public void start(String bundleName) {
+		logger.logMessage(LogLevel.INFO, "开始启动Bundle:{0}", bundleName);
+		BundleDefine bundleDefine = bundleDefineMap.get(bundleName);
 		if (tinyClassLoaderMap.containsKey(bundleDefine)) {// 如果说有loader，就代表还已经启动
-			logger.logMessage(LogLevel.INFO, "Bundle:{0}已启动，无需再次启动", bundle);
+			logger.logMessage(LogLevel.INFO, "Bundle:{0}已启动，无需再次启动", bundleName);
 			return;
 		}
-		if (!checkDepend(bundleDefine, bundle)) {
+		if (!checkDepend(bundleDefine, bundleName)) {
 			return;
 		}
-		startBundle(bundleDefine, bundle);
-		logger.logMessage(LogLevel.INFO, "启动Bundle:{0}完毕", bundle);
+		startBundle(bundleDefine, bundleName);
+		logger.logMessage(LogLevel.INFO, "启动Bundle:{0}完毕", bundleName);
 	}
 
 	public void start(BundleDefine bundleDefine) {
@@ -312,16 +306,16 @@ public class BundleManagerDefault implements BundleManager {
 		return paths;
 	}
 
-	public void stop(String bundle) {
-		logger.logMessage(LogLevel.INFO, "开始停止Bundle:{0}", bundle);
-		BundleDefine bundleDefine = bundleDefineMap.get(bundle);
+	public void stop(String bundleName) {
+		logger.logMessage(LogLevel.INFO, "开始停止Bundle:{0}", bundleName);
+		BundleDefine bundleDefine = bundleDefineMap.get(bundleName);
 		if (!tinyClassLoaderMap.containsKey(bundleDefine)) {// 如果没有loader，就代表已停止
-			logger.logMessage(LogLevel.INFO, "Bundle:{0}已停止，无需再次停止", bundle);
+			logger.logMessage(LogLevel.INFO, "Bundle:{0}已停止，无需再次停止", bundleName);
 			return;
 		}
 
-		stopBundle(bundleDefine, bundle);
-		logger.logMessage(LogLevel.INFO, "停止Bundle:{0}完毕", bundle);
+		stopBundle(bundleDefine, bundleName);
+		logger.logMessage(LogLevel.INFO, "停止Bundle:{0}完毕", bundleName);
 	}
 
 	public void stop(BundleDefine bundleDefine) {
