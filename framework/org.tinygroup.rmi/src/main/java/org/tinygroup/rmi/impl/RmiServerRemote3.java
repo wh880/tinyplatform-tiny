@@ -65,7 +65,7 @@ public class RmiServerRemote3 extends AbstractRmiServer {
         return registry;
     }
 
-    public void stop() {
+    public void stop()  throws RemoteException{
         heartThread.setStop(true);
         super.stop();
 

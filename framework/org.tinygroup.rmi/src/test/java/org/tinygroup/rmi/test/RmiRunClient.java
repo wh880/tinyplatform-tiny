@@ -37,32 +37,38 @@ public class RmiRunClient {
 	private static String SERVERIP = "192.168.84.23";
 
 	public static void main(String[] args) {
-		// RmiServer remoteServer = new RmiServerRemote(SERVERIP, 8888);
-		// try {
-		// remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
-		// } catch (RemoteException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// RmiRunClient c = new RmiRunClient(remoteServer);
-		// c.run();
-		Registry registry = null;
+		 RmiServer remoteServer = null;
 		try {
-			registry = LocateRegistry.getRegistry(SERVERIP, 8888);
-		} catch (RemoteException e) {
-			throw new RuntimeException(e);
+			remoteServer = new RmiServerRemote(SERVERIP, 8888);
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		try {
-			RmiServerLocal server = (RmiServerLocal) registry.lookup(SERVERIP);
-			server.registerRemoteObject(new HelloImpl(), "aaaaaa");
-		} catch (ConnectException e) {
-			throw new RuntimeException("获取RmiServer:" + SERVERIP + "时连接发生错误", e);
-		} catch (RemoteException e) {
-			throw new RuntimeException("获取RmiServer:" + SERVERIP + "时出错", e);
-		} catch (NotBoundException e) {
-			throw new RuntimeException("获取RmiServer:" + SERVERIP
-					+ "时出错,该对象未曾注册", e);
-		}
+		 try {
+		 remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
+		 } catch (RemoteException e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 }
+		 RmiRunClient c = new RmiRunClient(remoteServer);
+		 c.run();
+//		Registry registry = null;
+//		try {
+//			registry = LocateRegistry.getRegistry(SERVERIP, 8888);
+//		} catch (RemoteException e) {
+//			throw new RuntimeException(e);
+//		}
+//		try {
+//			RmiServerLocal server = (RmiServerLocal) registry.lookup(SERVERIP);
+//			server.registerRemoteObject(new HelloImpl(), "aaaaaa");
+//		} catch (ConnectException e) {
+//			throw new RuntimeException("获取RmiServer:" + SERVERIP + "时连接发生错误", e);
+//		} catch (RemoteException e) {
+//			throw new RuntimeException("获取RmiServer:" + SERVERIP + "时出错", e);
+//		} catch (NotBoundException e) {
+//			throw new RuntimeException("获取RmiServer:" + SERVERIP
+//					+ "时出错,该对象未曾注册", e);
+//		}
 	}
 
 	private RmiServer remoteServer;

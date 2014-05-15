@@ -51,14 +51,14 @@ public class RmiServerRemote implements RmiServer {
 	Map<String, Remote> registeredObjectMap = new HashMap<String, Remote>();
 	RmiServer server = null;
 
-	public RmiServerRemote(String hostName, int port) {
+	public RmiServerRemote(String hostName, int port)   throws RemoteException{
 		this.hostName = hostName;
 		this.port = port;
 		getRegistry();
 		heartThread.start();
 	}
 
-	public Registry getRegistry() {
+	public Registry getRegistry()   throws RemoteException{
 		try {
 			registry = LocateRegistry.getRegistry(hostName, port);
 		} catch (RemoteException e) {
@@ -74,7 +74,7 @@ public class RmiServerRemote implements RmiServer {
 			throw new RuntimeException("获取RmiServer:" + hostName
 					+ "时出错,该对象未曾注册", e);
 		}
-		// RmiUtil.start((RmiServerLocal)server);
+//		 RmiUtil.start((RmiServerLocal)server);
 		return registry;
 	}
 
@@ -86,47 +86,52 @@ public class RmiServerRemote implements RmiServer {
 		registeredObjectMap.remove(name);
 	}
 
-	public void registerRemoteObject(Remote object, Class type, String id) {
+	public void registerRemoteObject(Remote object, Class type, String id)  throws RemoteException{
 		addObjectToMap(object, RmiUtil.getName(type.getName(), id));
 		server.registerRemoteObject(object, type, id);
 	}
 
-	public void registerRemoteObject(Remote object, String type, String id) {
+	public void registerRemoteObject(Remote object, String type, String id)   throws RemoteException{
 		addObjectToMap(object, RmiUtil.getName(type, id));
 		server.registerRemoteObject(object, type, id);
 	}
 
-	public void registerRemoteObject(Remote object, String name) {
+	public void registerRemoteObject(Remote object, String name)  throws RemoteException{
 		addObjectToMap(object, name);
-		server.registerRemoteObject(object, name);
+		try {
+			server.registerRemoteObject(object, name);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public void registerRemoteObject(Remote object, Class type) {
+	public void registerRemoteObject(Remote object, Class type)   throws RemoteException{
 		addObjectToMap(object, type.getName());
 		server.registerRemoteObject(object, type);
 	}
 
-	public void unregisterRemoteObject(String name) {
+	public void unregisterRemoteObject(String name)   throws RemoteException{
 		removeObjectFromMap(name);
 		server.unregisterRemoteObject(name);
 	}
 
-	public void unregisterRemoteObjectByType(Class type) {
+	public void unregisterRemoteObjectByType(Class type)   throws RemoteException{
 		removeObjectFromMap(type.getName());
 		server.unregisterRemoteObjectByType(type);
 	}
 
-	public void unregisterRemoteObjectByType(String type) {
+	public void unregisterRemoteObjectByType(String type)   throws RemoteException{
 		removeObjectFromMap(type);
 		server.unregisterRemoteObjectByType(type);
 	}
 
-	public void unregisterRemoteObject(String type, String id) {
+	public void unregisterRemoteObject(String type, String id)   throws RemoteException{
 		removeObjectFromMap(RmiUtil.getName(type, id));
 		server.unregisterRemoteObject(type, id);
 	}
 
-	public void unregisterRemoteObject(Class type, String id) {
+	public void unregisterRemoteObject(Class type, String id)   throws RemoteException{
 		removeObjectFromMap(RmiUtil.getName(type.getName(), id));
 		server.unregisterRemoteObject(type, id);
 	}
@@ -139,19 +144,19 @@ public class RmiServerRemote implements RmiServer {
 		return (T) server.getRemoteObject(type);
 	}
 
-	public <T> List<T> getRemoteObjectList(Class<T> type) {
+	public <T> List<T> getRemoteObjectList(Class<T> type)   throws RemoteException{
 		return (List<T>) server.getRemoteObjectList(type);
 	}
 
-	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type) {
+	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type)  throws RemoteException {
 		return (List<T>) server.getRemoteObjectListInstanceOf(type);
 	}
 
-	public <T> List<T> getRemoteObjectList(String typeName) {
+	public <T> List<T> getRemoteObjectList(String typeName)   throws RemoteException{
 		return (List<T>) server.getRemoteObjectList(typeName);
 	}
 
-	public void unexportObjects() throws RemoteException {
+	public void unexportObjects() throws RemoteException  {
 		for (String name : registeredObjectMap.keySet()) {
 			unregisterRemoteObject(name);
 		}
@@ -169,7 +174,7 @@ public class RmiServerRemote implements RmiServer {
 		server.unregisterRemoteObject(object);
 	}
 
-	public void stop() {
+	public void stop()   throws RemoteException{
 		try {
 			unexportObjects();
 		} catch (RemoteException e) {
@@ -179,7 +184,12 @@ public class RmiServerRemote implements RmiServer {
 
 	protected void registerAllRemoteObject() {
 		for (String name : registeredObjectMap.keySet()) {
-			registerRemoteObject(registeredObjectMap.get(name), name);
+			try {
+				registerRemoteObject(registeredObjectMap.get(name), name);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

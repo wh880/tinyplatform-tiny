@@ -86,7 +86,7 @@ public final class RmiServerLocal extends AbstractRmiServer  {
 		return registry;
 	}
 
-	public void stop() {
+	public void stop()  throws RemoteException{
 		validateThread.setStop(true);
 		super.stop();
 	}

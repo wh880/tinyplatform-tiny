@@ -44,7 +44,7 @@ import org.tinygroup.rmi.RmiServer;
 /**
  * 抽象rmi服务器 Created by luoguo on 14-1-10.
  */
-public abstract class AbstractRmiServer implements RmiServer,Runnable {
+public abstract class AbstractRmiServer extends UnicastRemoteObject implements RmiServer,Runnable {
 	private final static Logger logger = LoggerFactory
 			.getLogger(AbstractRmiServer.class);
 	int port = DEFAULT_RMI_PORT;
@@ -54,7 +54,7 @@ public abstract class AbstractRmiServer implements RmiServer,Runnable {
 	ConcurrentLinkedQueue<MyRemoteObject> regQueue = new ConcurrentLinkedQueue<MyRemoteObject>();
 //	RegisterThread regThread = new RegisterThread();
 
-	public void stop() {
+	public void stop()  throws RemoteException{
 		try {
 			unexportObjects();
 		} catch (RemoteException e) {
@@ -86,11 +86,16 @@ public abstract class AbstractRmiServer implements RmiServer,Runnable {
 
 	protected void registerAllRemoteObject() {
 		for (String name : registeredObjectMap.keySet()) {
-			registerRemoteObject(registeredObjectMap.get(name), name);
+			try {
+				registerRemoteObject(registeredObjectMap.get(name), name);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
-	public void registerRemoteObject(Remote object, String name) {
+	public void registerRemoteObject(Remote object, String name)  throws RemoteException{
 		logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}", name);
 		MyRemoteObject o = new MyRemoteObject(object, name);
 		synchronized (this) {
@@ -122,15 +127,20 @@ public abstract class AbstractRmiServer implements RmiServer,Runnable {
 		}
 	}
 
-	public void registerRemoteObject(Remote object, Class type) {
-		registerRemoteObject(object, type.getName());
+	public void registerRemoteObject(Remote object, Class type)  throws RemoteException {
+		try {
+			registerRemoteObject(object, type.getName());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public <T> T getRemoteObject(Class<T> type) {
+	public <T> T getRemoteObject(Class<T> type)  throws RemoteException{
 		return (T) getRemoteObject(type.getName());
 	}
 
-	public <T> T getRemoteObject(String name) {
+	public <T> T getRemoteObject(String name)  throws RemoteException{
 		try {
 			logger.logMessage(LogLevel.DEBUG, "获取对象Name:{}",name);
 			return (T) registry.lookup(name);
@@ -143,11 +153,11 @@ public abstract class AbstractRmiServer implements RmiServer,Runnable {
 		}
 	}
 
-	public <T> List<T> getRemoteObjectList(Class<T> type) {
+	public <T> List<T> getRemoteObjectList(Class<T> type)  throws RemoteException{
 		return getRemoteObjectList(type.getName());
 	}
 
-	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type) {
+	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type)  throws RemoteException{
 		try {
 			List<T> result = new ArrayList<T>();
 			String[] sNames = getRemoteObjectNames();
@@ -164,7 +174,7 @@ public abstract class AbstractRmiServer implements RmiServer,Runnable {
 		}
 	}
 
-	public <T> List<T> getRemoteObjectList(String name) {
+	public <T> List<T> getRemoteObjectList(String name)  throws RemoteException{
 		try {
 			List<T> result = new ArrayList<T>();
 			for (String sName : registry.list()) {
@@ -178,21 +188,26 @@ public abstract class AbstractRmiServer implements RmiServer,Runnable {
 		}
 	}
 
-	public void registerRemoteObject(Remote object, Class type, String id) {
+	public void registerRemoteObject(Remote object, Class type, String id)   throws RemoteException{
 		// /registerRemoteObject(object, type, id);
 		// 20140214修改，原逻辑是无限递归死循环
 		registerRemoteObject(object, type.getName(), id);
 	}
 
-	public void registerRemoteObject(Remote object, String type, String id) {
-		registerRemoteObject(object, getName(type, id));
+	public void registerRemoteObject(Remote object, String type, String id)   throws RemoteException{
+		try {
+			registerRemoteObject(object, getName(type, id));
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public void unregisterRemoteObject(String type, String id) {
+	public void unregisterRemoteObject(String type, String id)  throws RemoteException{
 		unregisterRemoteObject(getName(type, id));
 	}
 
-	public void unregisterRemoteObject(Class type, String id) {
+	public void unregisterRemoteObject(Class type, String id)  throws RemoteException{
 		unregisterRemoteObject(getName(type.getName(), id));
 	}
 
@@ -200,11 +215,11 @@ public abstract class AbstractRmiServer implements RmiServer,Runnable {
 		return RmiUtil.getName(name, id);
 	}
 
-	public void unregisterRemoteObject(Class type) {
+	public void unregisterRemoteObject(Class type)  throws RemoteException{
 		unregisterRemoteObject(type.getName());
 	}
 
-	public void unregisterRemoteObject(String name) {
+	public void unregisterRemoteObject(String name)  throws RemoteException{
 		try {
 			logger.logMessage(LogLevel.DEBUG, "开始注销对象:{}", name);
 			registry.unbind(name);
@@ -218,11 +233,11 @@ public abstract class AbstractRmiServer implements RmiServer,Runnable {
 		}
 	}
 
-	public void unregisterRemoteObjectByType(Class type) {
+	public void unregisterRemoteObjectByType(Class type)  throws RemoteException{
 		unregisterRemoteObject(type.getName());
 	}
 
-	public void unregisterRemoteObjectByType(String type) {
+	public void unregisterRemoteObjectByType(String type)  throws RemoteException{
 		try {
 			for (String name : registry.list()) {
 				if (name.startsWith(type + "|")) {
