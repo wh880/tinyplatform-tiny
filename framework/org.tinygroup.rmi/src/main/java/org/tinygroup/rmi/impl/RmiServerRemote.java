@@ -73,6 +73,7 @@ public class RmiServerRemote implements RmiServer {
 		} catch (NotBoundException e) {
 			throw new RuntimeException("获取RmiServer:" + hostName + "时出错,该对象未曾注册", e);
 		}
+		RmiUtil.start((RmiServerLocal)server);
 		return registry;
 	}
 

@@ -23,12 +23,6 @@
  */
 package org.tinygroup.rmi.impl;
 
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.rmi.RmiServer;
-
-import java.io.Serializable;
 import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -41,10 +35,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.rmi.MyRemoteObject;
+import org.tinygroup.rmi.RmiServer;
+
 /**
  * 抽象rmi服务器 Created by luoguo on 14-1-10.
  */
-public abstract class AbstractRmiServer implements RmiServer {
+public abstract class AbstractRmiServer implements RmiServer,Runnable {
 	private final static Logger logger = LoggerFactory
 			.getLogger(AbstractRmiServer.class);
 	int port = DEFAULT_RMI_PORT;
@@ -52,7 +52,7 @@ public abstract class AbstractRmiServer implements RmiServer {
 	Registry registry = null;
 	Map<String, Remote> registeredObjectMap = new HashMap<String, Remote>();
 	ConcurrentLinkedQueue<MyRemoteObject> regQueue = new ConcurrentLinkedQueue<MyRemoteObject>();
-	RegisterThread regThread = new RegisterThread();
+//	RegisterThread regThread = new RegisterThread();
 
 	public void stop() {
 		try {
@@ -64,7 +64,8 @@ public abstract class AbstractRmiServer implements RmiServer {
 
 	public void startThread() {
 		logger.logMessage(LogLevel.INFO, "启动对象注册列表线程");
-		regThread.start();
+//		regThread.start();
+		RmiUtil.start(this);
 		logger.logMessage(LogLevel.INFO, "启动对象注册列表线程完成");
 	}
 
@@ -90,12 +91,12 @@ public abstract class AbstractRmiServer implements RmiServer {
 	}
 
 	public void registerRemoteObject(Remote object, String name) {
-		logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}"+regQueue.size(), name);
+		logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}", name);
 		MyRemoteObject o = new MyRemoteObject(object, name);
-		synchronized (regQueue) {
+		synchronized (this) {
 			regQueue.add(o);
-			logger.logMessage(LogLevel.INFO, "notify");
-			regQueue.notify();
+			logger.logMessage(LogLevel.INFO, "notify"+regQueue.size());
+			this.notify();
 		}
 		
 		logger.logMessage(LogLevel.DEBUG, "对象:{}加入注册列表完成", name);
@@ -255,50 +256,29 @@ public abstract class AbstractRmiServer implements RmiServer {
 			throw new RuntimeException("查询所有远程对象时出错", e);
 		}
 	}
-
-	class RegisterThread extends Thread implements Serializable {
-
-		public void run() {
-			while (true) {
-				logger.logMessage(LogLevel.INFO, "=============");
-				try {
-					logger.logMessage(LogLevel.INFO, "wait");
-					synchronized (regQueue) {
-						regQueue.wait();
-						MyRemoteObject o = regQueue.poll();
-						registerObject(o);
-					}
-				} catch (InterruptedException e1) {
-					// e1.printStackTrace();
+	
+	public void run() {
+		while (true) {
+//			logger.logMessage(LogLevel.INFO, "============="+regQueue.size());
+			try {
+				logger.logMessage(LogLevel.INFO, "wait");
+				synchronized (this) {
+					this.wait();
+					MyRemoteObject o = regQueue.poll();
+					registerObject(o);
 				}
+					
+			} catch (InterruptedException e1) {
+				// e1.printStackTrace();
 			}
-
-		}
-	}
-
-	class MyRemoteObject implements Serializable {
-		private Remote object;
-		private String name;
-
-		public MyRemoteObject(Remote object, String name) {
-			this.object = object;
-			this.name = name;
-		}
-
-		public Remote getObject() {
-			return object;
-		}
-
-		public void setObject(Remote object) {
-			this.object = object;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
+//			if(!regQueue.isEmpty()){
+//				MyRemoteObject o = regQueue.poll();
+//				registerObject(o);
+//			}
+//			try {
+//				Thread.sleep(100);
+//			} catch (InterruptedException e) {
+//			}
 		}
 
 	}

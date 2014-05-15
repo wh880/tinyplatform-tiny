@@ -34,6 +34,7 @@ import java.rmi.registry.Registry;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.rmi.MyRemoteObject;
 import org.tinygroup.rmi.Verifiable;
 
 /**
