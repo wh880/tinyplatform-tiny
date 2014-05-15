@@ -130,23 +130,23 @@ public class RmiServerRemote2 implements RmiServer {
 	}
 
 	public <T> T getRemoteObject(String name) throws RemoteException {
-		return server.getRemoteObject(name);
+		return (T)server.getRemoteObject(name);
 	}
 
 	public <T> T getRemoteObject(Class<T> type) throws RemoteException {
-		return server.getRemoteObject(type);
+		return (T)server.getRemoteObject(type);
 	}
 
 	public <T> List<T> getRemoteObjectList(Class<T> type) {
-		return server.getRemoteObjectList(type);
+		return (List<T>)server.getRemoteObjectList(type);
 	}
 
 	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type) {
-		return server.getRemoteObjectListInstanceOf(type);
+		return (List<T>)server.getRemoteObjectListInstanceOf(type);
 	}
 
 	public <T> List<T> getRemoteObjectList(String typeName) {
-		return server.getRemoteObjectList(typeName);
+		return (List<T>)server.getRemoteObjectList(typeName);
 	}
 
 	public void unexportObjects() throws RemoteException {
