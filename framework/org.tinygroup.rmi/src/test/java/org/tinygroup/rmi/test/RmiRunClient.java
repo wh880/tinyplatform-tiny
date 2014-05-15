@@ -23,27 +23,52 @@
  */
 package org.tinygroup.rmi.test;
 
+import java.rmi.ConnectException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import org.tinygroup.rmi.RmiServer;
+import org.tinygroup.rmi.impl.RmiServerLocal;
 import org.tinygroup.rmi.impl.RmiServerRemote;
 
 public class RmiRunClient {
-	private static String SERVERIP = "192.168.84.52";
-//	private static String SERVERIP2 = "192.168.154.73";
-//	private static Logger logger = LoggerFactory.getLogger(RmiRunClient.class);
+	private static String SERVERIP = "192.168.84.30";
 
 	public static void main(String[] args) {
-		RmiServer remoteServer = new RmiServerRemote(SERVERIP, 8888);
+		 RmiServer remoteServer = null;
 		try {
-			remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
-		} catch (RemoteException e) {
+			remoteServer = new RmiServerRemote(SERVERIP, 8888);
+		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
-		RmiRunClient c = new RmiRunClient(remoteServer);
-		c.run();
-
+		 try {
+		 remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
+		 } catch (RemoteException e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 }
+		 RmiRunClient c = new RmiRunClient(remoteServer);
+		 c.run();
+//		Registry registry = null;
+//		try {
+//			registry = LocateRegistry.getRegistry(SERVERIP, 8888);
+//		} catch (RemoteException e) {
+//			throw new RuntimeException(e);
+//		}
+//		try {
+//			RmiServerLocal server = (RmiServerLocal) registry.lookup(SERVERIP);
+//			server.registerRemoteObject(new HelloImpl(), "aaaaaa");
+//		} catch (ConnectException e) {
+//			throw new RuntimeException("获取RmiServer:" + SERVERIP + "时连接发生错误", e);
+//		} catch (RemoteException e) {
+//			throw new RuntimeException("获取RmiServer:" + SERVERIP + "时出错", e);
+//		} catch (NotBoundException e) {
+//			throw new RuntimeException("获取RmiServer:" + SERVERIP
+//					+ "时出错,该对象未曾注册", e);
+//		}
 	}
 
 	private RmiServer remoteServer;
@@ -51,16 +76,17 @@ public class RmiRunClient {
 	public RmiRunClient(RmiServer remoteServer) {
 		this.remoteServer = remoteServer;
 	}
-	
-	public void run(){
+
+	public void run() {
 		MyThread t = new MyThread();
 		t.run();
 	}
 
 	class MyThread extends Thread {
 		boolean end = false;
+
 		public void run() {
-			while(!end){
+			while (!end) {
 				hello();
 				try {
 					sleep(5000);
@@ -69,18 +95,18 @@ public class RmiRunClient {
 					e.printStackTrace();
 				}
 			}
-			
+
 		}
-		
-		public void hello(){
+
+		public void hello() {
 			Hello hello = null;
 			try {
 				hello = remoteServer.getRemoteObject("hello");
 			} catch (Exception e) {
 				e.printStackTrace();
-				//throw new RuntimeException("获取对象失败"+e.getMessage());
+				// throw new RuntimeException("获取对象失败"+e.getMessage());
 			}
-			
+
 			try {
 				String info = hello.sayHello("abc");
 				System.out.println(info);
@@ -89,7 +115,7 @@ public class RmiRunClient {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				//throw new RuntimeException("执行方法失败:"+e.getMessage());
+				// throw new RuntimeException("执行方法失败:"+e.getMessage());
 			}
 		}
 	}
