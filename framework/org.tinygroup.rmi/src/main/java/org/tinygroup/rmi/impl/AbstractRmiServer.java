@@ -207,7 +207,7 @@ public abstract class AbstractRmiServer implements RmiServer {
 	}
 
 	private String getName(String name, String id) {
-		return name + "|" + id;
+		return RmiUtil.getName(name, id);
 	}
 
 	public void unregisterRemoteObject(Class type) {
@@ -286,17 +286,6 @@ public abstract class AbstractRmiServer implements RmiServer {
 			
 		}
 	}
-
-//	class UnregisterThread implements Runnable {
-//
-//		public void run() {
-//			if (!unRegQueue.isEmpty()) {
-//				MyRemoteObject o = unRegQueue.poll();
-//				// unregisterRemoteObject(o);
-//			}
-//		}
-//
-//	}
 
 	class MyRemoteObject implements Serializable{
 		private Remote object;

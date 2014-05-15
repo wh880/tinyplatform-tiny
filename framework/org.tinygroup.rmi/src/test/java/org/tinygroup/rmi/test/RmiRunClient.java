@@ -23,33 +23,14 @@
  */
 package org.tinygroup.rmi.test;
 
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-
 import org.tinygroup.rmi.RmiServer;
-import org.tinygroup.rmi.impl.RmiServerRemote;
+import org.tinygroup.rmi.impl.RmiServerRemote2;
 
 public class RmiRunClient {
-	private static String SERVERIP = "192.168.84.30";
-//	private static String SERVERIP2 = "192.168.154.73";
-//	private static Logger logger = LoggerFactory.getLogger(RmiRunClient.class);
+	private static String SERVERIP = "192.168.84.23";
 
 	public static void main(String[] args) {
-		RmiServer remoteServer = null;
-//		new RmiServerRemote(SERVERIP, 8888);
-//		try {
-//			remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
-//		} catch (RemoteException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		try {
-			Registry    registry = LocateRegistry.getRegistry(SERVERIP, 8888);
-			remoteServer = (RmiServer) registry.lookup(SERVERIP);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		RmiServer remoteServer = new RmiServerRemote2(SERVERIP, 8888);
 		RmiRunClient c = new RmiRunClient(remoteServer);
 		c.run();
 
@@ -60,16 +41,17 @@ public class RmiRunClient {
 	public RmiRunClient(RmiServer remoteServer) {
 		this.remoteServer = remoteServer;
 	}
-	
-	public void run(){
+
+	public void run() {
 		MyThread t = new MyThread();
 		t.run();
 	}
 
 	class MyThread extends Thread {
 		boolean end = false;
+
 		public void run() {
-			while(!end){
+			while (!end) {
 				hello();
 				try {
 					sleep(5000);
@@ -78,18 +60,18 @@ public class RmiRunClient {
 					e.printStackTrace();
 				}
 			}
-			
+
 		}
-		
-		public void hello(){
+
+		public void hello() {
 			Hello hello = null;
 			try {
 				hello = remoteServer.getRemoteObject("hello");
 			} catch (Exception e) {
 				e.printStackTrace();
-				//throw new RuntimeException("获取对象失败"+e.getMessage());
+				// throw new RuntimeException("获取对象失败"+e.getMessage());
 			}
-			
+
 			try {
 				String info = hello.sayHello("abc");
 				System.out.println(info);
@@ -98,7 +80,7 @@ public class RmiRunClient {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				//throw new RuntimeException("执行方法失败:"+e.getMessage());
+				// throw new RuntimeException("执行方法失败:"+e.getMessage());
 			}
 		}
 	}
