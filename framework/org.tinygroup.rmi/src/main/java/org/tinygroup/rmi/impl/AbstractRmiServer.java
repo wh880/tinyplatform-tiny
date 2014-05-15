@@ -52,6 +52,7 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 	Registry registry = null;
 	Map<String, Remote> registeredObjectMap = new HashMap<String, Remote>();
 	ConcurrentLinkedQueue<MyRemoteObject> regQueue = new ConcurrentLinkedQueue<MyRemoteObject>();
+	ConcurrentLinkedQueue<String> unregQueue = new ConcurrentLinkedQueue<String>();
 //	RegisterThread regThread = new RegisterThread();
 
 	public void stop()  throws RemoteException{
@@ -100,7 +101,7 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 		MyRemoteObject o = new MyRemoteObject(object, name);
 		synchronized (this) {
 			regQueue.add(o);
-			logger.logMessage(LogLevel.INFO, "notify"+regQueue.size());
+//			logger.logMessage(LogLevel.INFO, "notify"+regQueue.size());
 			this.notify();
 		}
 		
@@ -220,6 +221,16 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 	}
 
 	public void unregisterRemoteObject(String name)  throws RemoteException{
+		
+			logger.logMessage(LogLevel.DEBUG, "将对象:{}加入注销列表", name);
+			synchronized (this) {
+				unregQueue.add(name);
+				this.notify();
+			}
+			logger.logMessage(LogLevel.DEBUG, "对象:{}加入注销列表完成", name);
+	}
+	
+	public void unregisterObject(String name){
 		try {
 			logger.logMessage(LogLevel.DEBUG, "开始注销对象:{}", name);
 			registry.unbind(name);
@@ -275,26 +286,22 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 	
 	public void run() {
 		for ( ; ; )  {
-//			logger.logMessage(LogLevel.INFO, "============="+regQueue.size());
 			try {
 				logger.logMessage(LogLevel.INFO, "wait");
 				synchronized (this) {
 					this.wait();
-					MyRemoteObject o = regQueue.poll();
-					registerObject(o);
+					while(!regQueue.isEmpty()){
+						MyRemoteObject o = regQueue.poll();
+						registerObject(o);
+					}
+					while(!unregQueue.isEmpty()){
+						String name = unregQueue.poll();
+						unregisterObject(name);
+					}
 				}
 					
 			} catch (InterruptedException e1) {
-				// e1.printStackTrace();
 			}
-//			if(!regQueue.isEmpty()){
-//				MyRemoteObject o = regQueue.poll();
-//				registerObject(o);
-//			}
-//			try {
-//				Thread.sleep(100);
-//			} catch (InterruptedException e) {
-//			}
 		}
 
 	}

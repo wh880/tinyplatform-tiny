@@ -34,7 +34,7 @@ import org.tinygroup.tinypc.impl.WorkDefault;
 import java.util.List;
 
 public class TestWorkClient {
-	private static String SERVERIP = "192.168.84.23";
+	private static String SERVERIP = "192.168.84.30";
 
 	public static void main(String[] args) {
 
