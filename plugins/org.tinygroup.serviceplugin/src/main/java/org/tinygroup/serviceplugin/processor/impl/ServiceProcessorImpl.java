@@ -46,7 +46,8 @@ import org.tinygroup.xmlparser.node.XmlNode;
 
 public class ServiceProcessorImpl extends AbstractEventProcessor implements
 		ServiceProcessor {
-	private static Logger logger = LoggerFactory.getLogger(ServiceProcessorImpl.class);
+	private static Logger logger = LoggerFactory
+			.getLogger(ServiceProcessorImpl.class);
 
 	private List<ServiceProviderInterface> providers = new ArrayList<ServiceProviderInterface>();
 	private List<ServiceInfo> infos = new ArrayList<ServiceInfo>();
@@ -73,8 +74,13 @@ public class ServiceProcessorImpl extends AbstractEventProcessor implements
 			Context oldC = event.getServiceRequest().getContext();
 			Context c = ContextFactory.getContext();
 			for (Parameter p : item.getResults()) {
-				String name = p.getName();
-				c.put(name, oldC.get(name));
+				if (("void").equals(p.getTitle()) || ("").equals(p.getTitle())
+						|| p.getType() == null) {
+				} else {
+					String name = p.getName();
+					c.put(name, oldC.get(name));
+				}
+
 			}
 			event.getServiceRequest().setContext(c);
 		} else {
