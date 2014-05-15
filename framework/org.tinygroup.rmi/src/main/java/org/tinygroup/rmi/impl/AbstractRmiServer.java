@@ -101,10 +101,8 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 		MyRemoteObject o = new MyRemoteObject(object, name);
 		synchronized (this) {
 			regQueue.add(o);
-//			logger.logMessage(LogLevel.INFO, "notify"+regQueue.size());
 			this.notify();
 		}
-		
 		logger.logMessage(LogLevel.DEBUG, "对象:{}加入注册列表完成", name);
 	}
 
@@ -287,7 +285,6 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 	public void run() {
 		for ( ; ; )  {
 			try {
-				logger.logMessage(LogLevel.INFO, "wait");
 				synchronized (this) {
 					this.wait();
 					while(!regQueue.isEmpty()){
