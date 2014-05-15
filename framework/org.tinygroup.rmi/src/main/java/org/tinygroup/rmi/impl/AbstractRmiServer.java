@@ -23,6 +23,11 @@
  */
 package org.tinygroup.rmi.impl;
 
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.rmi.RmiServer;
+
 import java.io.Serializable;
 import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
@@ -35,11 +40,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.rmi.RmiServer;
 
 /**
  * 抽象rmi服务器 Created by luoguo on 14-1-10.
@@ -92,6 +92,7 @@ public abstract class AbstractRmiServer implements RmiServer {
 		logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}", name);
 		MyRemoteObject o = new MyRemoteObject(object, name);
 		regQueue.add(o);
+        regThread.notify();
 		logger.logMessage(LogLevel.DEBUG,"对象:{}加入注册列表完成",name);
 	}
 
@@ -260,7 +261,7 @@ public abstract class AbstractRmiServer implements RmiServer {
 					registerObject(o);
 				}
 				try {
-					Thread.sleep(100);
+					wait();
 				} catch (InterruptedException e) {
 				}
 			}
