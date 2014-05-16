@@ -23,6 +23,11 @@
  */
 package org.tinygroup.rmi.impl;
 
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.rmi.RmiServer;
+
 import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -32,11 +37,6 @@ import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.rmi.RmiServer;
 
 /**
  * 远程RMI服务器 Created by luoguo on 14-1-10.
@@ -50,7 +50,16 @@ public class RmiServerRemote implements RmiServer {
 	Registry registry = null;
 	Map<String, Remote> registeredObjectMap = new HashMap<String, Remote>();
 	RmiServer server = null;
+    public RmiServerRemote()   throws RemoteException{
+        this("localhost",RmiServer.DEFAULT_RMI_PORT);
+    }
 
+	public RmiServerRemote(int port)   throws RemoteException{
+        this("localhost",port);
+    }
+    public RmiServerRemote(String hostName)   throws RemoteException{
+        this(hostName,RmiServer.DEFAULT_RMI_PORT);
+    }
 	public RmiServerRemote(String hostName, int port)   throws RemoteException{
 		this.hostName = hostName;
 		this.port = port;
