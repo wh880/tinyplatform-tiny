@@ -51,30 +51,29 @@ public class RmiServerRemote implements RmiServer {
 	Map<String, Remote> registeredObjectMap = new HashMap<String, Remote>();
 	RmiServer server = null;
 
-	public RmiServerRemote(String hostName, int port)   throws RemoteException{
+	public RmiServerRemote(String hostName, int port) throws RemoteException {
 		this.hostName = hostName;
 		this.port = port;
 		getRegistry();
 		heartThread.start();
 	}
 
-	public Registry getRegistry()   throws RemoteException{
-		try {
-			registry = LocateRegistry.getRegistry(hostName, port);
-		} catch (RemoteException e) {
-			throw new RuntimeException(e);
-		}
+	public Registry getRegistry() throws RemoteException {
+		
+		System.setProperty("java.rmi.server.hostname", hostName);
+		registry = LocateRegistry.getRegistry(hostName, port);
+
 		try {
 			server = (RmiServer) registry.lookup(hostName);
-		} catch (ConnectException e) {
-			throw new RuntimeException("获取RmiServer:" + hostName + "时连接发生错误", e);
-		} catch (RemoteException e) {
-			throw new RuntimeException("获取RmiServer:" + hostName + "时出错", e);
+//		} catch (ConnectException e) {
+//			throw new RuntimeException("获取RmiServer:" + hostName + "时连接发生错误", e);
+//		} catch (RemoteException e) {
+//			throw new RuntimeException("获取RmiServer:" + hostName + "时出错", e);
 		} catch (NotBoundException e) {
 			throw new RuntimeException("获取RmiServer:" + hostName
 					+ "时出错,该对象未曾注册", e);
 		}
-//		 RmiUtil.start((RmiServerLocal)server);
+		// RmiUtil.start((RmiServerLocal)server);
 		return registry;
 	}
 
@@ -86,52 +85,55 @@ public class RmiServerRemote implements RmiServer {
 		registeredObjectMap.remove(name);
 	}
 
-	public void registerRemoteObject(Remote object, Class type, String id)  throws RemoteException{
+	public void registerRemoteObject(Remote object, Class type, String id)
+			throws RemoteException {
 		addObjectToMap(object, RmiUtil.getName(type.getName(), id));
 		server.registerRemoteObject(object, type, id);
 	}
 
-	public void registerRemoteObject(Remote object, String type, String id)   throws RemoteException{
+	public void registerRemoteObject(Remote object, String type, String id)
+			throws RemoteException {
 		addObjectToMap(object, RmiUtil.getName(type, id));
 		server.registerRemoteObject(object, type, id);
 	}
 
-	public void registerRemoteObject(Remote object, String name)  throws RemoteException{
+	public void registerRemoteObject(Remote object, String name)
+			throws RemoteException {
 		addObjectToMap(object, name);
-		try {
-			server.registerRemoteObject(object, name);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		server.registerRemoteObject(object, name);
+
 	}
 
-	public void registerRemoteObject(Remote object, Class type)   throws RemoteException{
+	public void registerRemoteObject(Remote object, Class type)
+			throws RemoteException {
 		addObjectToMap(object, type.getName());
 		server.registerRemoteObject(object, type);
 	}
 
-	public void unregisterRemoteObject(String name)   throws RemoteException{
+	public void unregisterRemoteObject(String name) throws RemoteException {
 		removeObjectFromMap(name);
 		server.unregisterRemoteObject(name);
 	}
 
-	public void unregisterRemoteObjectByType(Class type)   throws RemoteException{
+	public void unregisterRemoteObjectByType(Class type) throws RemoteException {
 		removeObjectFromMap(type.getName());
 		server.unregisterRemoteObjectByType(type);
 	}
 
-	public void unregisterRemoteObjectByType(String type)   throws RemoteException{
+	public void unregisterRemoteObjectByType(String type)
+			throws RemoteException {
 		removeObjectFromMap(type);
 		server.unregisterRemoteObjectByType(type);
 	}
 
-	public void unregisterRemoteObject(String type, String id)   throws RemoteException{
+	public void unregisterRemoteObject(String type, String id)
+			throws RemoteException {
 		removeObjectFromMap(RmiUtil.getName(type, id));
 		server.unregisterRemoteObject(type, id);
 	}
 
-	public void unregisterRemoteObject(Class type, String id)   throws RemoteException{
+	public void unregisterRemoteObject(Class type, String id)
+			throws RemoteException {
 		removeObjectFromMap(RmiUtil.getName(type.getName(), id));
 		server.unregisterRemoteObject(type, id);
 	}
@@ -144,21 +146,29 @@ public class RmiServerRemote implements RmiServer {
 		return (T) server.getRemoteObject(type);
 	}
 
-	public <T> List<T> getRemoteObjectList(Class<T> type)   throws RemoteException{
+	public <T> List<T> getRemoteObjectList(Class<T> type)
+			throws RemoteException {
 		return (List<T>) server.getRemoteObjectList(type);
 	}
 
-	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type)  throws RemoteException {
+	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type)
+			throws RemoteException {
 		return (List<T>) server.getRemoteObjectListInstanceOf(type);
 	}
 
-	public <T> List<T> getRemoteObjectList(String typeName)   throws RemoteException{
+	public <T> List<T> getRemoteObjectList(String typeName)
+			throws RemoteException {
 		return (List<T>) server.getRemoteObjectList(typeName);
 	}
 
-	public void unexportObjects() throws RemoteException  {
+	public void unexportObjects() throws RemoteException {
 		for (String name : registeredObjectMap.keySet()) {
-			unregisterRemoteObject(name);
+			try{
+				unregisterRemoteObject(name);
+			}catch (Exception e) {
+				logger.errorMessage("注销对象name:{}时失败", e,name);
+			}
+			
 		}
 
 	}
@@ -174,12 +184,8 @@ public class RmiServerRemote implements RmiServer {
 		server.unregisterRemoteObject(object);
 	}
 
-	public void stop()   throws RemoteException{
-		try {
-			unexportObjects();
-		} catch (RemoteException e) {
-			logger.error(e);
-		}
+	public void stop() throws RemoteException {
+		unexportObjects();
 	}
 
 	protected void registerAllRemoteObject() {
@@ -187,8 +193,7 @@ public class RmiServerRemote implements RmiServer {
 			try {
 				registerRemoteObject(registeredObjectMap.get(name), name);
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.errorMessage("注册对象:{name}时失败", e, name);
 			}
 		}
 	}

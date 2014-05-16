@@ -44,7 +44,8 @@ import org.tinygroup.rmi.RmiServer;
 /**
  * 抽象rmi服务器 Created by luoguo on 14-1-10.
  */
-public abstract class AbstractRmiServer extends UnicastRemoteObject implements RmiServer,Runnable {
+public abstract class AbstractRmiServer extends UnicastRemoteObject implements
+		RmiServer, Runnable {
 	private final static Logger logger = LoggerFactory
 			.getLogger(AbstractRmiServer.class);
 	int port = DEFAULT_RMI_PORT;
@@ -53,19 +54,14 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 	Map<String, Remote> registeredObjectMap = new HashMap<String, Remote>();
 	ConcurrentLinkedQueue<MyRemoteObject> regQueue = new ConcurrentLinkedQueue<MyRemoteObject>();
 	ConcurrentLinkedQueue<String> unregQueue = new ConcurrentLinkedQueue<String>();
-//	RegisterThread regThread = new RegisterThread();
 
-	public void stop()  throws RemoteException{
-		try {
-			unexportObjects();
-		} catch (RemoteException e) {
-			logger.error(e);
-		}
+	public void stop() throws RemoteException {
+		unexportObjects();
 	}
 
 	public void startThread() {
 		logger.logMessage(LogLevel.INFO, "启动对象注册列表线程");
-//		regThread.start();
+		// regThread.start();
 		RmiUtil.start(this);
 		logger.logMessage(LogLevel.INFO, "启动对象注册列表线程完成");
 	}
@@ -90,13 +86,13 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 			try {
 				registerRemoteObject(registeredObjectMap.get(name), name);
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.errorMessage("注册对象:{name}时失败", e, name);
 			}
 		}
 	}
 
-	public void registerRemoteObject(Remote object, String name)  throws RemoteException{
+	public void registerRemoteObject(Remote object, String name)
+			throws RemoteException {
 		logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}", name);
 		MyRemoteObject o = new MyRemoteObject(object, name);
 		synchronized (this) {
@@ -126,87 +122,89 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 		}
 	}
 
-	public void registerRemoteObject(Remote object, Class type)  throws RemoteException {
-		try {
-			registerRemoteObject(object, type.getName());
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void registerRemoteObject(Remote object, Class type)
+			throws RemoteException {
+		registerRemoteObject(object, type.getName());
 	}
 
-	public <T> T getRemoteObject(Class<T> type)  throws RemoteException{
+	public <T> T getRemoteObject(Class<T> type) throws RemoteException {
 		return (T) getRemoteObject(type.getName());
 	}
 
-	public <T> T getRemoteObject(String name)  throws RemoteException{
+	public <T> T getRemoteObject(String name) throws RemoteException {
 		try {
-			logger.logMessage(LogLevel.DEBUG, "获取对象Name:{}",name);
+			logger.logMessage(LogLevel.DEBUG, "获取对象Name:{}", name);
 			return (T) registry.lookup(name);
-		} catch (ConnectException e) {
-			throw new RuntimeException("获取对象Name:" + name + "时连接发生错误", e);
-		} catch (RemoteException e) {
-			throw new RuntimeException("获取对象Name:" + name + "时出错", e);
+			// } catch (ConnectException e) {
+			// throw new RuntimeException("获取对象Name:" + name + "时连接发生错误", e);
+			// } catch (RemoteException e) {
+			// throw new RuntimeException("获取对象Name:" + name + "时出错", e);
 		} catch (NotBoundException e) {
 			throw new RuntimeException("获取对象Name:" + name + "时出错,该对象未曾注册", e);
 		}
 	}
 
-	public <T> List<T> getRemoteObjectList(Class<T> type)  throws RemoteException{
+	public <T> List<T> getRemoteObjectList(Class<T> type)
+			throws RemoteException {
 		return getRemoteObjectList(type.getName());
 	}
 
-	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type)  throws RemoteException{
-		try {
-			List<T> result = new ArrayList<T>();
-			String[] sNames = getRemoteObjectNames();
-			for (String sName : sNames) {
+	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type)
+			throws RemoteException {
+
+		List<T> result = new ArrayList<T>();
+		String[] sNames = getRemoteObjectNames();
+		for (String sName : sNames) {
+			try {
 				Remote object = getRemoteObject(sName);
 				if (type.isInstance(object)) {
 					result.add((T) object);
 				}
-
+			} catch (RemoteException e) {
+				logger.errorMessage("获取对象Name:{}时出错", e, sName);
 			}
-			return result;
-		} catch (Exception e) {
-			throw new RuntimeException("获取对象Type:" + type.getName() + "时出错", e);
 		}
+		return result;
+
 	}
 
-	public <T> List<T> getRemoteObjectList(String name)  throws RemoteException{
-		try {
-			List<T> result = new ArrayList<T>();
-			for (String sName : registry.list()) {
-				if (sName.startsWith(name + "|")) {
+	public <T> List<T> getRemoteObjectList(String name) throws RemoteException {
+
+		List<T> result = new ArrayList<T>();
+		for (String sName : registry.list()) {
+			if (sName.startsWith(name + "|")) {
+				try {
 					result.add((T) getRemoteObject(sName));
+				} catch (Exception e) {
+					logger.errorMessage("获取对象name:{}时出错", e, sName);
 				}
 			}
-			return result;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
 		}
+		return result;
+
 	}
 
-	public void registerRemoteObject(Remote object, Class type, String id)   throws RemoteException{
+	public void registerRemoteObject(Remote object, Class type, String id)
+			throws RemoteException {
 		// /registerRemoteObject(object, type, id);
 		// 20140214修改，原逻辑是无限递归死循环
 		registerRemoteObject(object, type.getName(), id);
 	}
 
-	public void registerRemoteObject(Remote object, String type, String id)   throws RemoteException{
-		try {
-			registerRemoteObject(object, getName(type, id));
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void registerRemoteObject(Remote object, String type, String id)
+			throws RemoteException {
+
+		registerRemoteObject(object, getName(type, id));
+
 	}
 
-	public void unregisterRemoteObject(String type, String id)  throws RemoteException{
+	public void unregisterRemoteObject(String type, String id)
+			throws RemoteException {
 		unregisterRemoteObject(getName(type, id));
 	}
 
-	public void unregisterRemoteObject(Class type, String id)  throws RemoteException{
+	public void unregisterRemoteObject(Class type, String id)
+			throws RemoteException {
 		unregisterRemoteObject(getName(type.getName(), id));
 	}
 
@@ -214,21 +212,21 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 		return RmiUtil.getName(name, id);
 	}
 
-	public void unregisterRemoteObject(Class type)  throws RemoteException{
+	public void unregisterRemoteObject(Class type) throws RemoteException {
 		unregisterRemoteObject(type.getName());
 	}
 
-	public void unregisterRemoteObject(String name)  throws RemoteException{
-		
-			logger.logMessage(LogLevel.DEBUG, "将对象:{}加入注销列表", name);
-			synchronized (this) {
-				unregQueue.add(name);
-				this.notify();
-			}
-			logger.logMessage(LogLevel.DEBUG, "对象:{}加入注销列表完成", name);
+	public void unregisterRemoteObject(String name) throws RemoteException {
+		// 20140516,现在是异步注销，所以此方法不会因为注销失败而抛出异常
+		logger.logMessage(LogLevel.DEBUG, "将对象:{}加入注销列表", name);
+		synchronized (this) {
+			unregQueue.add(name);
+			this.notify();
+		}
+		logger.logMessage(LogLevel.DEBUG, "对象:{}加入注销列表完成", name);
 	}
-	
-	public void unregisterObject(String name){
+
+	public void unregisterObject(String name) {
 		try {
 			logger.logMessage(LogLevel.DEBUG, "开始注销对象:{}", name);
 			registry.unbind(name);
@@ -242,24 +240,24 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 		}
 	}
 
-	public void unregisterRemoteObjectByType(Class type)  throws RemoteException{
+	public void unregisterRemoteObjectByType(Class type) throws RemoteException {
 		unregisterRemoteObject(type.getName());
 	}
 
-	public void unregisterRemoteObjectByType(String type)  throws RemoteException{
-		try {
-			for (String name : registry.list()) {
-				if (name.startsWith(type + "|")) {
-					unregisterRemoteObject(name);
-				}
+	public void unregisterRemoteObjectByType(String type)
+			throws RemoteException {
+		for (String name : registry.list()) {
+			if (name.startsWith(type + "|")) {
+				// 注销是异步注销,所以此处不需要try catch
+				unregisterRemoteObject(name);
 			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
 		}
+
 	}
 
 	public void unexportObjects() throws RemoteException {
 		for (String name : registeredObjectMap.keySet()) {
+			// 注销是异步注销,所以此处不需要try catch
 			unregisterRemoteObject(name);
 		}
 	}
@@ -278,25 +276,25 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 		try {
 			return registry.list();
 		} catch (Exception e) {
-			throw new RuntimeException("查询所有远程对象时出错", e);
+			throw new RuntimeException("查询远程对象列表时出错", e);
 		}
 	}
-	
+
 	public void run() {
-		for ( ; ; )  {
+		for (;;) {
 			try {
 				synchronized (this) {
 					this.wait();
-					while(!regQueue.isEmpty()){
+					while (!regQueue.isEmpty()) {
 						MyRemoteObject o = regQueue.poll();
 						registerObject(o);
 					}
-					while(!unregQueue.isEmpty()){
+					while (!unregQueue.isEmpty()) {
 						String name = unregQueue.poll();
 						unregisterObject(name);
 					}
 				}
-					
+
 			} catch (InterruptedException e1) {
 			}
 		}
