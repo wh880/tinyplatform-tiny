@@ -51,15 +51,19 @@ public class RmiServerTest extends TestCase {
 
     public void testGetRegistry() throws Exception {
         localServer.registerRemoteObject(new HelloImpl(), "hello");
-        assertEquals(localServer.getRegistry().list().length, 1);
-        assertEquals(remoteServer.getRegistry().list().length, 1);
+        Thread.sleep(100);
+        assertEquals(localServer.getRegistry().list().length, 2);
+        assertEquals(remoteServer.getRegistry().list().length, 2);
         Hello hello = remoteServer.getRemoteObject("hello");
         String info = hello.sayHello("abc");
         assertEquals(info, "Hello,abc");
 
         remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
-        assertEquals(localServer.getRegistry().list().length, 2);
-        assertEquals(remoteServer.getRegistry().list().length, 2);
+
+        Thread.sleep(100);
+
+        assertEquals(localServer.getRegistry().list().length, 3);
+        assertEquals(remoteServer.getRegistry().list().length, 3);
         hello = localServer.getRemoteObject("hello1");
         info = hello.sayHello("def");
         assertEquals(info, "Hello,def");
