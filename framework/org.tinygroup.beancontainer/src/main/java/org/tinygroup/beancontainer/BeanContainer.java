@@ -1,7 +1,10 @@
-package org.tinygroup.springutil;
+package org.tinygroup.beancontainer;
 
 import java.util.Collection;
 import java.util.List;
+
+import org.tinygroup.vfs.FileObject;
+
 
 /**
  * Created by luoguo on 2014/5/15.
@@ -15,11 +18,11 @@ public interface BeanContainer<C> {
     C getBeanContainerPrototype();
 
     /**
-     * 添加子容器
+     * 获取子容器
      *
      * @param subBeanContainer
      */
-    void addSubBeanContainer(C subBeanContainer);
+    C getSubBeanContainer(List<FileObject> files,ClassLoader loader);
 
     /**
      * 返回子窗口列表
