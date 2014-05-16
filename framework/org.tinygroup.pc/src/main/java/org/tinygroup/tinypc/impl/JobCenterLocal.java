@@ -40,7 +40,15 @@ public class JobCenterLocal extends AbstractJobCenter {
         RmiServerLocal rmiServer = new RmiServerLocal(port);
         WorkQueue workQueue = new WorkQueueImpl();
         setWorkQueue(workQueue);
-        rmiServer.registerRemoteObject(workQueue, "WorkQueue");
+        rmiServer.registerLocalObject(workQueue, "WorkQueue");
+        setRmiServer(rmiServer);
+    }
+    
+    public JobCenterLocal(String host,int port) throws IOException {
+        RmiServerLocal rmiServer = new RmiServerLocal(host,port);
+        WorkQueue workQueue = new WorkQueueImpl();
+        setWorkQueue(workQueue);
+        rmiServer.registerLocalObject(workQueue, "WorkQueue");
         setRmiServer(rmiServer);
     }
 }
