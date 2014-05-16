@@ -30,6 +30,11 @@ import java.rmi.RemoteException;
  * Created by luoguo on 14-1-24.
  */
 public class HelloImpl implements Hello, Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2865990858526782951L;
 	private transient static int i = 0;
 
 	public HelloImpl() throws RemoteException {
