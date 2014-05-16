@@ -29,17 +29,24 @@ import java.rmi.RemoteException;
 /**
  * Created by luoguo on 14-1-24.
  */
-public class HelloImpl implements Hello ,Serializable{
-    public HelloImpl() throws RemoteException {
-        System.out.println("创建：" + HelloImpl.class + "实例");
-    }
+public class HelloImpl implements Hello, Serializable {
+	private transient static int i = 0;
 
-    public String sayHello(String name) throws RemoteException {
-        return "Hello," + name;
-    }
+	public HelloImpl() throws RemoteException {
+		System.out.println("创建：" + HelloImpl.class + "实例");
+	}
+
+	public String sayHello(String name) throws RemoteException {
+		i++;
+		if (i % 5000 == 0){
+			System.out.println(System.currentTimeMillis()+"--" + i + "------------");
+		}
+			
+		return "Hello," + name;
+	}
 
 	public void verify() throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
