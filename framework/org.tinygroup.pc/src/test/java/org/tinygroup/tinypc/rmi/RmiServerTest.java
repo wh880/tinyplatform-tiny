@@ -45,8 +45,9 @@ public class RmiServerTest extends TestCase {
 
     public void tearDown() throws Exception {
         super.tearDown();
-        localServer.unexportObjects();
         remoteServer.unexportObjects();
+        Thread.sleep(100);
+        localServer.unexportObjects();
     }
 
     public void testGetRegistry() throws Exception {
