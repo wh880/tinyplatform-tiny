@@ -23,50 +23,19 @@
  */
 package org.tinygroup.rmi.test;
 
+import org.tinygroup.rmi.impl.RmiServerLocal;
+
 import java.rmi.RemoteException;
 
-import org.tinygroup.rmi.RmiServer;
-import org.tinygroup.rmi.impl.RmiServerLocal;
-import org.tinygroup.rmi.impl.RmiUtil;
-
 public class RmiRunServer {
-	
-	private static String LOCALIP = "192.168.84.23";
 
-	public static void main(String[] args) {
-		RmiServer localServer = null;
-		try {
-			localServer = new RmiServerLocal(LOCALIP, 8888);
-		} catch (RemoteException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		RmiUtil.start((Runnable)localServer);
-		try {
-			localServer.registerRemoteObject(new HelloImpl(), "hello");
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		RmiRunServer r = new RmiRunServer();
-		r.runThread();
-	}
 
-	public void runThread() {
-		MyThread t = new RmiRunServer.MyThread();
-		t.run();
-	}
+    public static void main(String[] args) throws RemoteException, InterruptedException {
+        RmiServerLocal localServer = new RmiServerLocal();
+        localServer.registerLocalObject(new HelloImpl(), "hello");
+        Thread.sleep(20000);
+        localServer.stop();
+    }
 
-	class MyThread extends Thread {
-		private boolean end = false;
 
-		public void run() {
-			if (!end) {
-				try {
-					sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
 }

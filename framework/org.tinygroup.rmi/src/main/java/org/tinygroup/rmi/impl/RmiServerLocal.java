@@ -26,127 +26,63 @@ package org.tinygroup.rmi.impl;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.rmi.RemoteObjectDescription;
-import org.tinygroup.rmi.Verifiable;
 
-import java.io.Serializable;
-import java.rmi.AccessException;
-import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * 本地Rmi服务器 Created by luoguo on 14-1-10.
  */
-public final class RmiServerLocal extends AbstractRmiServer  {
-	private transient final static Logger logger = LoggerFactory
-			.getLogger(RmiServerRemote.class);
-	private ValidateThread validateThread = new ValidateThread();
+public final class RmiServerLocal extends AbstractRmiServer {
+    private transient final static Logger logger = LoggerFactory
+            .getLogger(RmiServerRemote.class);
 
-	public RmiServerLocal() throws RemoteException {
-		super();
-		validateThread.start();
-	}
+    public RmiServerLocal() throws RemoteException {
+        super();
+    }
 
-	public RmiServerLocal(int port) throws RemoteException {
-		super(port);
-		validateThread.start();
-	}
+    public RmiServerLocal(int port) throws RemoteException {
+        super(port);
+    }
 
-	public RmiServerLocal(String hostName, int port) throws RemoteException {
-		super(hostName, port);
-		//validateThread.start();
-	}
+    public RmiServerLocal(String hostName, int port) throws RemoteException {
+        super(hostName, port);
+    }
 
-	public Registry getRegistry() {
-		if (registry == null) {
-			try {
-				registry = LocateRegistry.getRegistry(hostName, port);
-				registry.list();
-			} catch (Exception e) {
-				try {
-					registry = LocateRegistry.createRegistry(port);
-				} catch (RemoteException e1) {
-					throw new RuntimeException(e1);
-				}
-			}
-		}
-		try {
-			registry.rebind(hostName, this);
-		} catch (AccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return registry;
-	}
+    public Registry getRegistry() throws RemoteException {
+        if (registry == null) {
+            try {
+                registry = LocateRegistry.getRegistry(hostName, port);
+                registry.list();
+            } catch (Exception e) {
+                try {
+                    registry = LocateRegistry.createRegistry(port);
+                } catch (RemoteException e1) {
+                    throw new RuntimeException(e1);
+                }
+            }
+        }
+        registerLocalObject(this, "RmiServer");
 
-	public void stop()  throws RemoteException{
-		validateThread.setStop(true);
-		super.stop();
-	}
+        return registry;
+    }
 
-	class ValidateThread extends Thread implements Serializable{
-		private static final int MILLISECOND_PER_SECOND = 1000;
-		private volatile boolean stop = false;
-		private int breathInterval = 5;// 单位秒
+    public void stop() throws RemoteException {
+        super.stop();
+    }
 
-		public void setStop(boolean stop) {
-			this.stop = stop;
-		}
-
-		public void run() {
-			while (!stop) {
-				logger.logMessage(LogLevel.DEBUG, "开始检测已注册对象的可用性");
-				try {
-					sleep(breathInterval * MILLISECOND_PER_SECOND);
-				} catch (InterruptedException e) {
-					continue;
-				}
-				String[] names = null;
-				try {
-					names = registry.list();
-				} catch (RemoteException e) {
-					logger.errorMessage("查询已注册对象失败", e);
-					continue;
-				}
-
-				for (String name : names) {
-					Remote remote = null;
-					try {
-						remote = registry.lookup(name);
-						if (remote instanceof Verifiable) {
-							((Verifiable) remote).verify();
-						}
-					} catch (RemoteException e) {
-						logger.errorMessage("检测到对象{0}已失效", e, name);
-						try {
-							logger.logMessage(LogLevel.INFO, "开始注销对象{0}", name);
-							if (remote != null) {
-								unregisterRemoteObject(remote);
-							}
-							logger.logMessage(LogLevel.INFO, "注销对象{0}完成", name);
-						} catch (RemoteException e1) {
-							logger.errorMessage("注销对象{0}失败", e, name);
-						}
-					} catch (NotBoundException e2) {
-						logger.errorMessage("对象{0}未邦定", e2, name);
-					}
-				}
-				logger.logMessage(LogLevel.DEBUG, "检测已注册对象的可用性完成");
-			}
-
-		}
-	}
-
-	public void registerLocalObject(Remote object, String name) {
-
-		RemoteObjectDescription o = new RemoteObjectDescription(object, name);
-		registerObject(o);
-	}
+    public void registerLocalObject(Remote object, String name) throws RemoteException {
+        logger.logMessage(LogLevel.DEBUG, "开始注册对象:{}", name);
+        registeredObjectMap.put(name, object);
+        if (object instanceof UnicastRemoteObject) {
+            registry.rebind(name, object);
+        } else {
+            Remote stub = UnicastRemoteObject.exportObject(object, 0);
+            registry.rebind(name, stub);
+        }
+        logger.logMessage(LogLevel.DEBUG, "结束注册对象:{}", name);
+    }
 }

@@ -44,8 +44,8 @@ public class JobCenterTest extends TestCase {
 
     public void tearDown() throws Exception {
         super.tearDown();
-        localServer.unexportObjects();
-        remoteServer.unexportObjects();
+        remoteServer.stop();
+        localServer.stop();
     }
 
     public void testGetRmiServer() throws Exception {

@@ -36,8 +36,8 @@ import java.io.IOException;
  */
 public class Test {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-        JobCenter jobCenter = new JobCenterLocal();
-        JobCenter center = new JobCenterRemote();
+        JobCenter jobCenter = new JobCenterLocal("localhost",8888);
+        JobCenter center = new JobCenterRemote("localhost",8888);
         for (int i = 0; i < 5; i++) {
             center.registerWorker(new WorkerSum());
         }
@@ -47,10 +47,9 @@ public class Test {
         inputWarehouse.put("start", 1l);
         inputWarehouse.put("end", 10000l);
         Work work = new WorkDefault("sum", inputWarehouse);
-
         Warehouse outputWarehouse = center.doWork(work);
         System.out.println(outputWarehouse.get("sum"));
-        jobCenter.stop();
         center.stop();
+        jobCenter.stop();
     }
 }

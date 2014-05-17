@@ -23,11 +23,10 @@
  */
 package org.tinygroup.tinypc.rmi;
 
+import junit.framework.TestCase;
 import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerLocal;
 import org.tinygroup.rmi.impl.RmiServerRemote;
-
-import junit.framework.TestCase;
 
 /**
  * Created by luoguo on 14-1-24.
@@ -45,7 +44,8 @@ public class RmiServerTest extends TestCase {
 
     public void tearDown() throws Exception {
         super.tearDown();
-        localServer.unexportObjects();
+        remoteServer.stop();
+        localServer.stop();
     }
 
     public void testGetRegistry() throws Exception {

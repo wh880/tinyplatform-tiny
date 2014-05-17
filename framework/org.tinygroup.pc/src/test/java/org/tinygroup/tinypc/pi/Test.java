@@ -39,7 +39,7 @@ import java.io.IOException;
  */
 public class Test {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-        JobCenter jobCenter = new JobCenterLocal();
+        JobCenter jobCenter = new JobCenterLocal("127.0.0.1",8888);
         for (int i = 0; i < 10; i++) {
             jobCenter.registerWorker(new PiWorker());
         }
@@ -47,9 +47,11 @@ public class Test {
         jobCenter.registerForeman(helloForeman);
         Warehouse inputWarehouse = new WarehouseDefault();
         inputWarehouse.put("start", 1l);
-        inputWarehouse.put("end", 1000000001l);
+        inputWarehouse.put("end", 10000001l);
         Work work = new WorkDefault("pi", inputWarehouse);
         long start = System.currentTimeMillis();
+        Thread.sleep(1000);
+
         Warehouse outputWarehouse = jobCenter.doWork(work);
         long end = System.currentTimeMillis();
         System.out.println(String.format("time:%dms pi:%s", (end - start), outputWarehouse.get("pi")));

@@ -133,6 +133,8 @@ public class WorkDefault implements Work {
     }
 
     public String getForemanType() {
-        return foremanType;
+        if (foremanType != null)
+            return foremanType;
+        return getType();
     }
 }

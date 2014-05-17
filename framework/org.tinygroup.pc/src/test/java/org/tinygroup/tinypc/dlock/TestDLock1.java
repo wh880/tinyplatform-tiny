@@ -48,7 +48,7 @@ public class TestDLock1 {
         processor.start();
         long e = System.currentTimeMillis();
         System.out.println(e - s);
-        rmiServer.unexportObjects();
+        rmiServer.stop();
     }
 }
 

@@ -23,12 +23,10 @@
  */
 package org.tinygroup.rmi.impl;
 
-import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.rmi.RmiServer;
 
-import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -42,204 +40,126 @@ import java.util.Map;
  * 远程RMI服务器 Created by luoguo on 14-1-10.
  */
 public class RmiServerRemote implements RmiServer {
-	private transient final static Logger logger = LoggerFactory
-			.getLogger(RmiServerRemote.class);
-	HeartThread heartThread = new HeartThread();
-	int port = DEFAULT_RMI_PORT;
-	String hostName = "localhost";
-	Registry registry = null;
-	Map<String, Remote> registeredObjectMap = new HashMap<String, Remote>();
-	RmiServer server = null;
-    public RmiServerRemote()   throws RemoteException{
-        this("localhost",RmiServer.DEFAULT_RMI_PORT);
+    private transient final static Logger logger = LoggerFactory
+            .getLogger(RmiServerRemote.class);
+    private int port = DEFAULT_RMI_PORT;
+    private String hostName = "localhost";
+    private Registry registry = null;
+    private RmiServer server = null;
+    private Map<String, Remote> objectMap = new HashMap<String, Remote>();
+
+    public RmiServerRemote() throws RemoteException {
+        this("localhost", RmiServer.DEFAULT_RMI_PORT);
     }
 
-	public RmiServerRemote(int port)   throws RemoteException{
-        this("localhost",port);
+    public RmiServerRemote(int port) throws RemoteException {
+        this("localhost", port);
     }
-    public RmiServerRemote(String hostName)   throws RemoteException{
-        this(hostName,RmiServer.DEFAULT_RMI_PORT);
+
+    public RmiServerRemote(String hostName) throws RemoteException {
+        this(hostName, RmiServer.DEFAULT_RMI_PORT);
     }
-	public RmiServerRemote(String hostName, int port)   throws RemoteException{
-		this.hostName = hostName;
-		this.port = port;
-		getRegistry();
-		heartThread.start();
-	}
 
-	public Registry getRegistry()   throws RemoteException{
-		try {
-			registry = LocateRegistry.getRegistry(hostName, port);
-		} catch (RemoteException e) {
-			throw new RuntimeException(e);
-		}
-		try {
-			server = (RmiServer) registry.lookup(hostName);
-		} catch (ConnectException e) {
-			throw new RuntimeException("获取RmiServer:" + hostName + "时连接发生错误", e);
-		} catch (RemoteException e) {
-			throw new RuntimeException("获取RmiServer:" + hostName + "时出错", e);
-		} catch (NotBoundException e) {
-			throw new RuntimeException("获取RmiServer:" + hostName
-					+ "时出错,该对象未曾注册", e);
-		}
-//		 RmiUtil.start((RmiServerLocal)server);
-		return registry;
-	}
+    public RmiServerRemote(String hostName, int port) throws RemoteException {
+        this.hostName = hostName;
+        this.port = port;
+        getRegistry();
+    }
 
-	private void addObjectToMap(Remote object, String name) {
-		registeredObjectMap.put(name, object);
-	}
+    public Registry getRegistry() throws RemoteException {
+        try {
+            registry = LocateRegistry.getRegistry(hostName, port);
+            server = (RmiServer) registry.lookup("RmiServer");
+            return registry;
+        } catch (NotBoundException e) {
+            throw new RemoteException("找不到RmiServer远程对象！", e);
+        }
+    }
 
-	private void removeObjectFromMap(String name) {
-		registeredObjectMap.remove(name);
-	}
 
-	public void registerRemoteObject(Remote object, Class type, String id)  throws RemoteException{
-		addObjectToMap(object, RmiUtil.getName(type.getName(), id));
-		server.registerRemoteObject(object, type, id);
-	}
+    public void registerRemoteObject(Remote object, Class type, String id) throws RemoteException {
+        objectMap.put(RmiUtil.getName(type.getName(), id), object);
+        server.registerRemoteObject(object, type, id);
+    }
 
-	public void registerRemoteObject(Remote object, String type, String id)   throws RemoteException{
-		addObjectToMap(object, RmiUtil.getName(type, id));
-		server.registerRemoteObject(object, type, id);
-	}
+    public void registerRemoteObject(Remote object, String type, String id) throws RemoteException {
+        objectMap.put(RmiUtil.getName(type, id), object);
+        server.registerRemoteObject(object, type, id);
+    }
 
-	public void registerRemoteObject(Remote object, String name)  throws RemoteException{
-		addObjectToMap(object, name);
-		try {
-			server.registerRemoteObject(object, name);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    public void registerRemoteObject(Remote object, String name) throws RemoteException {
+        objectMap.put(name, object);
+        server.registerRemoteObject(object, name);
+    }
 
-	public void registerRemoteObject(Remote object, Class type)   throws RemoteException{
-		addObjectToMap(object, type.getName());
-		server.registerRemoteObject(object, type);
-	}
+    public void registerRemoteObject(Remote object, Class type) throws RemoteException {
+        objectMap.put(type.getName(), object);
+        server.registerRemoteObject(object, type);
+    }
 
-	public void unregisterRemoteObject(String name)   throws RemoteException{
-		removeObjectFromMap(name);
-		server.unregisterRemoteObject(name);
-	}
+    public void unregisterRemoteObject(String name) throws RemoteException {
+        objectMap.remove(name);
+        server.unregisterRemoteObject(name);
+    }
 
-	public void unregisterRemoteObjectByType(Class type)   throws RemoteException{
-		removeObjectFromMap(type.getName());
-		server.unregisterRemoteObjectByType(type);
-	}
+    public void unregisterRemoteObjectByType(Class type) throws RemoteException {
+        objectMap.remove(type.getName());
+        server.unregisterRemoteObjectByType(type);
+    }
 
-	public void unregisterRemoteObjectByType(String type)   throws RemoteException{
-		removeObjectFromMap(type);
-		server.unregisterRemoteObjectByType(type);
-	}
+    public void unregisterRemoteObjectByType(String type) throws RemoteException {
+        objectMap.remove(type);
+        server.unregisterRemoteObjectByType(type);
+    }
 
-	public void unregisterRemoteObject(String type, String id)   throws RemoteException{
-		removeObjectFromMap(RmiUtil.getName(type, id));
-		server.unregisterRemoteObject(type, id);
-	}
+    public void unregisterRemoteObject(String type, String id) throws RemoteException {
+        objectMap.remove(RmiUtil.getName(type, id));
+        server.unregisterRemoteObject(type, id);
+    }
 
-	public void unregisterRemoteObject(Class type, String id)   throws RemoteException{
-		removeObjectFromMap(RmiUtil.getName(type.getName(), id));
-		server.unregisterRemoteObject(type, id);
-	}
+    public void unregisterRemoteObject(Class type, String id) throws RemoteException {
+        objectMap.remove(RmiUtil.getName(type.getName(), id));
+        server.unregisterRemoteObject(type, id);
+    }
 
-	public <T> T getRemoteObject(String name) throws RemoteException {
-		return (T) server.getRemoteObject(name);
-	}
+    public <T> T getRemoteObject(String name) throws RemoteException {
+        return (T) server.getRemoteObject(name);
+    }
 
-	public <T> T getRemoteObject(Class<T> type) throws RemoteException {
-		return (T) server.getRemoteObject(type);
-	}
+    public <T> T getRemoteObject(Class<T> type) throws RemoteException {
+        return (T) server.getRemoteObject(type);
+    }
 
-	public <T> List<T> getRemoteObjectList(Class<T> type)   throws RemoteException{
-		return (List<T>) server.getRemoteObjectList(type);
-	}
+    public <T> List<T> getRemoteObjectList(Class<T> type) throws RemoteException {
+        return (List<T>) server.getRemoteObjectList(type);
+    }
 
-	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type)  throws RemoteException {
-		return (List<T>) server.getRemoteObjectListInstanceOf(type);
-	}
+    public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type) throws RemoteException {
+        return (List<T>) server.getRemoteObjectListInstanceOf(type);
+    }
 
-	public <T> List<T> getRemoteObjectList(String typeName)   throws RemoteException{
-		return (List<T>) server.getRemoteObjectList(typeName);
-	}
+    public <T> List<T> getRemoteObjectList(String typeName) throws RemoteException {
+        return (List<T>) server.getRemoteObjectList(typeName);
+    }
 
-	public void unexportObjects() throws RemoteException  {
-		for (String name : registeredObjectMap.keySet()) {
-			unregisterRemoteObject(name);
-		}
+    public void unexportObjects() throws RemoteException {
+        for (Map.Entry<String, Remote> entry : objectMap.entrySet()) {
+            server.unregisterRemoteObject(entry.getKey());
+            objectMap.remove(entry);
+        }
+    }
 
-	}
 
-	public void unregisterRemoteObject(Remote object) throws RemoteException {
-		for (String name : registeredObjectMap.keySet()) {
-			Remote r = registeredObjectMap.get(name);
-			if (r.equals(object)) {
-				registeredObjectMap.remove(name);
-				break;
-			}
-		}
-		server.unregisterRemoteObject(object);
-	}
+    public void unregisterRemoteObject(Remote object) throws RemoteException {
+        for (Map.Entry<String, Remote> entry : objectMap.entrySet()) {
+            if (entry.getValue().equals(object)) {
+                server.unregisterRemoteObject(entry.getKey());
+                objectMap.remove(entry);
+            }
+        }
+    }
 
-	public void stop()   throws RemoteException{
-		try {
-			unexportObjects();
-		} catch (RemoteException e) {
-			logger.error(e);
-		}
-	}
-
-	protected void registerAllRemoteObject() {
-		for (String name : registeredObjectMap.keySet()) {
-			try {
-				registerRemoteObject(registeredObjectMap.get(name), name);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-
-	class HeartThread extends Thread {
-		private static final int MILLISECOND_PER_SECOND = 1000;
-		private boolean stop = false;
-		private int breathInterval = 5;
-		private boolean isDown = false;
-
-		public void setStop(boolean stop) {
-			this.stop = stop;
-		}
-
-		public void run() {
-			while (!stop) {
-				try {
-					sleep(breathInterval * MILLISECOND_PER_SECOND);
-				} catch (InterruptedException e) {
-					continue;
-				}
-				try {
-					logger.logMessage(LogLevel.DEBUG, "开始向远端服务器{0}:{1}发起心跳检测",
-							hostName, port);
-					registry.list();
-					if (isDown) {
-						logger.logMessage(LogLevel.INFO,
-								"开始重新向远端服务器{0}:{1}注册对象", hostName, port);
-						registerAllRemoteObject();
-						logger.logMessage(LogLevel.INFO,
-								"重新向远端服务器{0}:{1}注册对象结束", hostName, port);
-						isDown = false;
-					}
-					logger.logMessage(LogLevel.DEBUG, "向远端服务器{0}:{1}心跳检测结束",
-							hostName, port);
-				} catch (RemoteException e) {
-					logger.errorMessage("向远端服务器{0}:{1}心跳检测失败", e, hostName,
-							port);
-					isDown = true;
-				}
-			}
-
-		}
-	}
+    public void stop() throws RemoteException {
+        unexportObjects();
+    }
 }
