@@ -45,7 +45,7 @@ public class WorkExecutor extends AbstractProcessor {
     private final Work work;
     private final List<Warehouse> warehouseList;
     private final List<Worker> workers;
-    private static Logger logger = LoggerFactory.getLogger(WorkExecutor.class);
+    private static transient  Logger logger = LoggerFactory.getLogger(WorkExecutor.class);
 
     public WorkExecutor(Work work, Worker worker, List<Warehouse> warehouseList, List<Worker> workers)
             throws RemoteException {

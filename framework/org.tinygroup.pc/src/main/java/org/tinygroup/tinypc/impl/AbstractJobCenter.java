@@ -38,7 +38,7 @@ import java.util.List;
  * Created by luoguo on 14-1-8.
  */
 public class AbstractJobCenter implements JobCenter {
-    private static Logger logger = LoggerFactory.getLogger(AbstractJobCenter.class);
+    private transient static Logger logger = LoggerFactory.getLogger(AbstractJobCenter.class);
     private RmiServer rmiServer;
     private WorkQueue workQueue;
 

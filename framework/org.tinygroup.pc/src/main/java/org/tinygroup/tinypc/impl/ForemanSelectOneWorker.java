@@ -43,7 +43,7 @@ public class ForemanSelectOneWorker extends AbstractForeman {
 	 * 
 	 */
 	private static final long serialVersionUID = -848878926324050616L;
-	private static Logger logger = LoggerFactory
+	private static transient Logger logger = LoggerFactory
 			.getLogger(ForemanSelectOneWorker.class);
 
 	public ForemanSelectOneWorker(String type) throws RemoteException {

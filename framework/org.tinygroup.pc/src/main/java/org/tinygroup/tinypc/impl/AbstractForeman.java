@@ -43,7 +43,7 @@ public abstract class AbstractForeman implements Foreman {
     private String id;
     private WorkStatus workStatus = WorkStatus.WAITING;
     protected volatile boolean cancel = false;
-    protected Logger logger = LoggerFactory.getLogger(AbstractForeman.class);
+    protected transient static Logger logger = LoggerFactory.getLogger(AbstractForeman.class);
     private WorkCombiner workCombiner;
     private WorkSplitter workSplitter;
 
