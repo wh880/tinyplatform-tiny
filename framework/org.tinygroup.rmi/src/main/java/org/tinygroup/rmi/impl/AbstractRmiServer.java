@@ -90,8 +90,7 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 			try {
 				registerRemoteObject(registeredObjectMap.get(name), name);
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		}
 	}
@@ -128,7 +127,7 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 
 	public void registerRemoteObject(Remote object, Class type)  throws RemoteException {
 		try {
-			registerRemoteObject(object, type.getName());
+            registerRemoteObject(object, type.getName());
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -221,7 +220,7 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 	public void unregisterRemoteObject(String name)  throws RemoteException{
 		
 			logger.logMessage(LogLevel.DEBUG, "将对象:{}加入注销列表", name);
-			synchronized (this) {
+			synchronized (unregQueue) {
 				unregQueue.add(name);
 				this.notify();
 			}
@@ -285,7 +284,7 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements R
 	public void run() {
 		for ( ; ; )  {
 			try {
-				synchronized (this) {
+				synchronized (unregQueue) {
 					this.wait();
 					while(!regQueue.isEmpty()){
 						RemoteObjectDescription o = regQueue.poll();

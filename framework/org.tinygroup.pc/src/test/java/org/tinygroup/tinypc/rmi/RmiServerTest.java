@@ -45,8 +45,6 @@ public class RmiServerTest extends TestCase {
 
     public void tearDown() throws Exception {
         super.tearDown();
-        remoteServer.unexportObjects();
-        Thread.sleep(100);
         localServer.unexportObjects();
     }
 
@@ -70,7 +68,7 @@ public class RmiServerTest extends TestCase {
         assertEquals(info, "Hello,def");
     }
 
-    public void testRegisterRemoteObject() throws Exception {
+/*    public void testRegisterRemoteObject() throws Exception {
 
     }
 
@@ -128,5 +126,5 @@ public class RmiServerTest extends TestCase {
 
     public void testUnexportObjects() throws Exception {
 
-    }
+    }*/
 }
