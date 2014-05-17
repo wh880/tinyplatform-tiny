@@ -23,6 +23,12 @@
  */
 package org.tinygroup.rmi.impl;
 
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.rmi.RemoteObjectDescription;
+import org.tinygroup.rmi.Verifiable;
+
 import java.io.Serializable;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
@@ -31,17 +37,11 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.rmi.RemoteObjectDescription;
-import org.tinygroup.rmi.Verifiable;
-
 /**
  * 本地Rmi服务器 Created by luoguo on 14-1-10.
  */
 public final class RmiServerLocal extends AbstractRmiServer  {
-	private final static Logger logger = LoggerFactory
+	private transient final static Logger logger = LoggerFactory
 			.getLogger(RmiServerRemote.class);
 	private ValidateThread validateThread = new ValidateThread();
 

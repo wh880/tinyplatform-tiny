@@ -23,6 +23,12 @@
  */
 package org.tinygroup.rmi.impl;
 
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.rmi.RemoteObjectDescription;
+import org.tinygroup.rmi.RmiServer;
+
 import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -35,17 +41,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.rmi.RemoteObjectDescription;
-import org.tinygroup.rmi.RmiServer;
-
 /**
  * 抽象rmi服务器 Created by luoguo on 14-1-10.
  */
 public abstract class AbstractRmiServer extends UnicastRemoteObject implements RmiServer,Runnable {
-	private final static Logger logger = LoggerFactory
+	private transient final static Logger logger = LoggerFactory
 			.getLogger(AbstractRmiServer.class);
 	int port = DEFAULT_RMI_PORT;
 	String hostName = "localhost";

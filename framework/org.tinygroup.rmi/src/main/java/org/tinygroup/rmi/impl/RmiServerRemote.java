@@ -42,7 +42,7 @@ import java.util.Map;
  * 远程RMI服务器 Created by luoguo on 14-1-10.
  */
 public class RmiServerRemote implements RmiServer {
-	private final static Logger logger = LoggerFactory
+	private transient final static Logger logger = LoggerFactory
 			.getLogger(RmiServerRemote.class);
 	HeartThread heartThread = new HeartThread();
 	int port = DEFAULT_RMI_PORT;
