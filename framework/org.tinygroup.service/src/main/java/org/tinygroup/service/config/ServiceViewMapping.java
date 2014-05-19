@@ -34,6 +34,9 @@ public class ServiceViewMapping {
 	@XStreamAsAttribute
 	@XStreamAlias("path")
 	private String path;
+	@XStreamAsAttribute
+	@XStreamAlias("type")
+	private String type;
 
 	public String getServiceId() {
 		return serviceId;
@@ -50,5 +53,14 @@ public class ServiceViewMapping {
 	public void setPath(String viewPath) {
 		this.path = viewPath;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 
 }

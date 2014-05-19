@@ -32,6 +32,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ServiceViewMapping {
 
-	String value();
+	String value();//跳转路径
 
+	String type() default "forward" ; //跳转类型,redirect或者forward
 }

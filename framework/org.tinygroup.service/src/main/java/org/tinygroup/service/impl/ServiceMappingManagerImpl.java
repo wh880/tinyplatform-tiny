@@ -33,16 +33,19 @@ import org.tinygroup.service.config.ServiceViewMappings;
 public class ServiceMappingManagerImpl implements ServiceMappingManager {
 
 	Map<String, String> urlMapping = new HashMap<String, String>();
+	Map<String, ServiceViewMapping> viewMapping=new HashMap<String, ServiceViewMapping>();
 
 	public void addServiceMappings(ServiceViewMappings mappings) {
 		for (ServiceViewMapping mapping : mappings.getServiceViewMappings()) {
 			urlMapping.put(mapping.getServiceId(), mapping.getPath());
+			viewMapping.put(mapping.getServiceId(), mapping);
 		}
 	}
 	
 	public void removeServiceMappings(ServiceViewMappings mappings) {
 		for (ServiceViewMapping mapping : mappings.getServiceViewMappings()) {
 			urlMapping.remove(mapping.getServiceId());
+			viewMapping.remove(mapping.getServiceId());
 		}
 	}
 
@@ -53,7 +56,12 @@ public class ServiceMappingManagerImpl implements ServiceMappingManager {
 	public void addServiceMapping(ServiceViewMapping mapping) {
 		if(mapping!=null){
 			urlMapping.put(mapping.getServiceId(), mapping.getPath());
+			viewMapping.put(mapping.getServiceId(), mapping);
 		}
+	}
+
+	public ServiceViewMapping getServiceViewMapping(String serviceId) {
+		return viewMapping.get(serviceId);
 	}
 
 }
