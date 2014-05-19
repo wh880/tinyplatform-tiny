@@ -26,9 +26,7 @@ package org.tinygroup.tinydb.testcase.operator;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.order.OrderBean;
 import org.tinygroup.tinydb.order.impl.OrderByBeanDefault;
-import org.tinygroup.tinydb.query.QueryBean;
-import org.tinygroup.tinydb.query.impl.QueryBeanEqual;
-import org.tinygroup.tinydb.query.impl.QueryBeanLike;
+import org.tinygroup.tinydb.query.Conditions;
 import org.tinygroup.tinydb.select.SelectBean;
 import org.tinygroup.tinydb.select.impl.SelectBeanDefault;
 import org.tinygroup.tinydb.test.BaseTest;
@@ -63,13 +61,12 @@ public class TestSqlQueryOperator extends BaseTest{
 		getOperator().batchInsert(insertBeans);
 		SelectBean[] selectBeans=new SelectBean[1];
 		selectBeans[0]=new SelectBeanDefault("id");
-		QueryBean queryBean=new QueryBeanLike("name", "bean");
-		
+		Conditions conditions=new Conditions();
+		conditions.condition("name", "like", "%bean%");
 		OrderBean[] orderBeans=new OrderBean[1];
 		orderBeans[0]=new OrderByBeanDefault("name", "asc");
-		Bean[] beans =getOperator().getBeans(selectBeans, queryBean,orderBeans);
+		Bean[] beans =getOperator().getBeans(selectBeans, conditions,orderBeans);
 		assertEquals(5, beans.length);
-		
 		getOperator().batchDelete(insertBeans);
 	}
 	
@@ -83,16 +80,17 @@ public class TestSqlQueryOperator extends BaseTest{
 
 		SelectBean[] selectBeans=new SelectBean[1];
 		selectBeans[0]=new SelectBeanDefault("id");
-		QueryBean queryBean=new QueryBeanLike("name", "bean");
+		Conditions conditions=new Conditions();
+		conditions.condition("name", "like", "%bean%");
 		
 		OrderBean[] orderBeans=new OrderBean[1];
 		orderBeans[0]=new OrderByBeanDefault("name", "asc");
 		
-		Bean[] beans = getOperator().getBeans(selectBeans, queryBean,orderBeans,0,5);
+		Bean[] beans = getOperator().getBeans(selectBeans, conditions,orderBeans,0,5);
 		assertEquals(5, beans.length);
-		beans = getOperator().getBeans(selectBeans, queryBean,orderBeans,6,5);
+		beans = getOperator().getBeans(selectBeans, conditions,orderBeans,6,5);
 		assertEquals(5, beans.length);
-		beans = getOperator().getBeans(selectBeans, queryBean,orderBeans,11,5);
+		beans = getOperator().getBeans(selectBeans, conditions,orderBeans,11,5);
 		assertEquals(2, beans.length);
 		getOperator().batchDelete(insertBeans);
 	}
@@ -107,8 +105,9 @@ public class TestSqlQueryOperator extends BaseTest{
 		SelectBean[] selectBeans=new SelectBean[2];
 		selectBeans[0]=new SelectBeanDefault("id");
 		selectBeans[1]=new SelectBeanDefault("name");
-		QueryBean queryBean=new QueryBeanEqual("name", "bean5");
-		Bean bean =getOperator().getSingleValue(selectBeans, queryBean);
+		Conditions conditions=new Conditions();
+		conditions.condition("name", "=", "bean5");;
+		Bean bean =getOperator().getSingleValue(selectBeans, conditions);
 		assertEquals("bean5", bean.get("name"));
 		getOperator().batchDelete(insertBeans);
 	}
@@ -121,11 +120,12 @@ public class TestSqlQueryOperator extends BaseTest{
  		getOperator().batchInsert(insertBeans);
  		
  		String slectClause="id";
- 		QueryBean queryBean=new QueryBeanLike("name", "bean");
+ 		Conditions conditions=new Conditions();
+		conditions.condition("name", "like", "%bean%");
  		
  		OrderBean[] orderBeans=new OrderBean[1];
  		orderBeans[0]=new OrderByBeanDefault("name", "asc");
- 		Bean[] beans =getOperator().getBeans(slectClause, queryBean,orderBeans);
+ 		Bean[] beans =getOperator().getBeans(slectClause, conditions,orderBeans);
  		assertEquals(5, beans.length);
  		
  		getOperator().batchDelete(insertBeans);
@@ -139,16 +139,17 @@ public class TestSqlQueryOperator extends BaseTest{
 		getOperator().batchInsert(insertBeans);
 	
 		String slectClause="id";
-		QueryBean queryBean=new QueryBeanLike("name", "bean");
+		Conditions conditions=new Conditions();
+		conditions.condition("name", "like", "%bean%");
 		
 		OrderBean[] orderBeans=new OrderBean[1];
 		orderBeans[0]=new OrderByBeanDefault("name", "asc");
 		
-		Bean[] beans = getOperator().getBeans(slectClause, queryBean,orderBeans,0,5);
+		Bean[] beans = getOperator().getBeans(slectClause, conditions,orderBeans,0,5);
 		assertEquals(5, beans.length);
-		beans = getOperator().getBeans(slectClause, queryBean,orderBeans,6,5);
+		beans = getOperator().getBeans(slectClause, conditions,orderBeans,6,5);
 		assertEquals(5, beans.length);
-		beans = getOperator().getBeans(slectClause, queryBean,orderBeans,11,5);
+		beans = getOperator().getBeans(slectClause, conditions,orderBeans,11,5);
 		assertEquals(2, beans.length);
 		getOperator().batchDelete(insertBeans);
 	}
@@ -159,8 +160,9 @@ public class TestSqlQueryOperator extends BaseTest{
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);
 		String selectClause="id,name";
-		QueryBean queryBean=new QueryBeanEqual("name", "bean5");
-		Bean bean =getOperator().getSingleValue(selectClause, queryBean);
+		Conditions conditions=new Conditions();
+		conditions.condition("name", "=", "bean5");
+		Bean bean =getOperator().getSingleValue(selectClause, conditions);
 		assertEquals("bean5", bean.get("name"));
 		getOperator().batchDelete(insertBeans);
 	}

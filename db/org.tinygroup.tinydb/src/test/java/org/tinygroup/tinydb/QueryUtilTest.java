@@ -27,39 +27,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinydb.query.QueryBean;
-import org.tinygroup.tinydb.query.impl.QueryBeanEmpty;
-import org.tinygroup.tinydb.query.impl.QueryBeanEqual;
-import org.tinygroup.tinydb.query.impl.QueryBeanGreater;
-import org.tinygroup.tinydb.query.impl.QueryBeanGreaterOrEqual;
-import org.tinygroup.tinydb.query.impl.QueryBeanIn;
-import org.tinygroup.tinydb.query.impl.QueryBeanIsNotNull;
-import org.tinygroup.tinydb.query.impl.QueryBeanIsNull;
-import org.tinygroup.tinydb.query.impl.QueryBeanLike;
-import org.tinygroup.tinydb.query.impl.QueryBeanLikeWildcardOnFirst;
-import org.tinygroup.tinydb.query.impl.QueryBeanLikeWildcardOnLast;
-import org.tinygroup.tinydb.query.impl.QueryBeanNotEqual;
-import org.tinygroup.tinydb.query.impl.QueryBeanSmaller;
-import org.tinygroup.tinydb.query.impl.QueryBeanSmallerOrEqual;
+import org.tinygroup.tinydb.query.Conditions;
 import org.tinygroup.tinydb.test.BaseTest;
 import org.tinygroup.tinydb.test.operator.BeanStringOperator;
 
 public class QueryUtilTest extends BaseTest {
-	BeanStringOperator queryUtil ;
+	BeanStringOperator queryUtil;
 
-	
-
-	
 	public void setUp() {
 		super.setUp();
-		queryUtil=SpringUtil.getBean("beanStringOperator");
+		queryUtil = SpringUtil.getBean("beanStringOperator");
 	}
 
 	public void testGenerateSqlClause1() {
-		QueryBean queryBean = new QueryBeanLike("abc", "aaa");
+		Conditions conditions = new Conditions();
+		conditions.condition("abc", "like", "%aaa%");
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
 		assertEquals("abc like ?", stringBuffer.toString());
 		assertEquals(1, valueList.size());
 		assertEquals("%aaa%", valueList.get(0));
@@ -67,10 +52,11 @@ public class QueryUtilTest extends BaseTest {
 	}
 
 	public void testGenerateSqlClause2() {
-		QueryBean queryBean = new QueryBeanLikeWildcardOnFirst("abc", "aaa");
+		Conditions conditions = new Conditions();
+		conditions.condition("abc", "like", "%aaa");
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
 		assertEquals("abc like ?", stringBuffer.toString());
 		assertEquals(1, valueList.size());
 		assertEquals("%aaa", valueList.get(0));
@@ -78,125 +64,133 @@ public class QueryUtilTest extends BaseTest {
 	}
 
 	public void testGenerateSqlClause3() {
-		QueryBean queryBean = new QueryBeanLikeWildcardOnLast("abc", "aaa");
+		Conditions conditions = new Conditions();
+		conditions.condition("abc", "like", "aaa%");
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
 		assertEquals("abc like ?", stringBuffer.toString());
 		assertEquals(1, valueList.size());
 		assertEquals("aaa%", valueList.get(0));
 	}
 
 	public void testGenerateSqlClause4() {
-		QueryBean queryBean = new QueryBeanSmaller("abc", 3);
+		Conditions conditions = new Conditions();
+		conditions.condition("abc", "<", 3);
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
 		assertEquals("abc < ?", stringBuffer.toString());
 		assertEquals(1, valueList.size());
 		assertEquals(3, valueList.get(0));
 	}
 
 	public void testGenerateSqlClause5() {
-		QueryBean queryBean = new QueryBeanSmallerOrEqual("abc", 3);
+		Conditions conditions = new Conditions();
+		conditions.condition("abc", "<=", 3);
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
 		assertEquals("abc <= ?", stringBuffer.toString());
 		assertEquals(1, valueList.size());
 		assertEquals(3, valueList.get(0));
 	}
 
 	public void testGenerateSqlClause6() {
-		QueryBean queryBean = new QueryBeanGreater("abc", 3);
+		Conditions conditions = new Conditions();
+		conditions.condition("abc", ">", 3);
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
 		assertEquals("abc > ?", stringBuffer.toString());
 		assertEquals(1, valueList.size());
 		assertEquals(3, valueList.get(0));
 	}
 
 	public void testGenerateSqlClause7() {
-		QueryBean queryBean = new QueryBeanGreaterOrEqual("abc", 3);
+		Conditions conditions = new Conditions();
+		conditions.condition("abc", ">=", 3);
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
 		assertEquals("abc >= ?", stringBuffer.toString());
 		assertEquals(1, valueList.size());
 		assertEquals(3, valueList.get(0));
 	}
 
 	public void testGenerateSqlClause8() {
-		QueryBean queryBean = new QueryBeanIsNull("abc");
+		Conditions conditions = new Conditions();
+		conditions.condition("abc", "is null", "");
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
 		assertEquals("abc is null", stringBuffer.toString());
 		assertEquals(0, valueList.size());
 	}
 
 	public void testGenerateSqlClause9() {
-		QueryBean queryBean = new QueryBeanIsNotNull("abc");
+		Conditions conditions = new Conditions();
+		conditions.condition("abc", "is not null", "");
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
 		assertEquals("abc is not null", stringBuffer.toString());
 		assertEquals(0, valueList.size());
 	}
 
 	public void testGenerateSqlClause10() {
-		QueryBean queryBean = new QueryBeanEqual("abc", 3);
+		Conditions conditions = new Conditions();
+		conditions.condition("abc", "=", 3);
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
 		assertEquals("abc = ?", stringBuffer.toString());
 		assertEquals(1, valueList.size());
 		assertEquals(3, valueList.get(0));
 	}
 
 	public void testGenerateSqlClause11() {
-		QueryBean queryBean = new QueryBeanNotEqual("abc", 3);
+		Conditions conditions = new Conditions();
+		conditions.condition("abc", "<>", 3);
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
 		assertEquals("abc <> ?", stringBuffer.toString());
 		assertEquals(1, valueList.size());
 		assertEquals(3, valueList.get(0));
 	}
 
 	public void testGenerateSqlClause12() {
-		QueryBean queryBean = new QueryBeanEmpty();
+		Conditions conditions = new Conditions();
+		conditions.condition("", "", "");
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
 		assertEquals("", stringBuffer.toString());
 		assertEquals(0, valueList.size());
 	}
 
 	public void testGenerateSqlClause13() {
-		QueryBean queryBean = new QueryBeanEmpty();
-		for (int i = 0; i < 2; i++) {
-			queryBean.addQueryBean(new QueryBeanEqual("aaa" + i, i));
-		}
+		Conditions conditions = new Conditions();
+		conditions.condition("aaa0", "=", 0).and()
+				.condition("aaa1", "=", 1);
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
-		assertEquals("(aaa0 = ? and aaa1 = ?)", stringBuffer.toString());
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
+		assertEquals("aaa0 = ? and aaa1 = ?", stringBuffer.toString());
 		assertEquals(2, valueList.size());
 		assertEquals(0, valueList.get(0));
 		assertEquals(1, valueList.get(1));
 	}
 
 	public void testGenerateSqlClause14() {
-		QueryBean queryBean = new QueryBeanEqual("aaa", 3);
-		for (int i = 0; i < 2; i++) {
-			queryBean.addQueryBean(new QueryBeanEqual("aaa" + i, i));
-		}
+		Conditions conditions = new Conditions().condition("aaa", "=", 3)
+				.and().left().condition("aaa0", "=", 0).and()
+				.condition("aaa1", "=", 1).right();
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
-		assertEquals("aaa = ? and (aaa0 = ? and aaa1 = ?)",
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
+		assertEquals("aaa = ? and ( aaa0 = ? and aaa1 = ? )",
 				stringBuffer.toString());
 		assertEquals(3, valueList.size());
 		assertEquals(3, valueList.get(0));
@@ -205,15 +199,13 @@ public class QueryUtilTest extends BaseTest {
 	}
 
 	public void testGenerateSqlClause15() {
-		QueryBean queryBean = new QueryBeanEqual("aaa", 3);
-		queryBean.setConnectMode(QueryBean.OR);
-		for (int i = 0; i < 2; i++) {
-			queryBean.addQueryBean(new QueryBeanEqual("aaa" + i, i));
-		}
+		Conditions conditions = new Conditions().condition("aaa", "=", 3)
+				.or().left().condition("aaa0", "=", 0).or()
+				.condition("aaa1", "=", 1).right();
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
-		assertEquals("aaa = ? or (aaa0 = ? or aaa1 = ?)",
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
+		assertEquals("aaa = ? or ( aaa0 = ? or aaa1 = ? )",
 				stringBuffer.toString());
 		assertEquals(3, valueList.size());
 		assertEquals(3, valueList.get(0));
@@ -222,17 +214,13 @@ public class QueryUtilTest extends BaseTest {
 	}
 
 	public void testGenerateSqlClause16() {
-		QueryBean queryBean = new QueryBeanEqual("aaa", 3);
-		queryBean.setConnectMode(QueryBean.OR);
-		QueryBean emptyBean = new QueryBeanEmpty();
-		queryBean.addQueryBean(emptyBean);
-		for (int i = 0; i < 2; i++) {
-			emptyBean.addQueryBean(new QueryBeanEqual("aaa" + i, i));
-		}
+		Conditions conditions = new Conditions().condition("aaa", "=", 3)
+				.or().left().condition("aaa0", "=", 0).and()
+				.condition("aaa1", "=", 1).right();
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
-		assertEquals("aaa = ? or (aaa0 = ? and aaa1 = ?)",
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
+		assertEquals("aaa = ? or ( aaa0 = ? and aaa1 = ? )",
 				stringBuffer.toString());
 		assertEquals(3, valueList.size());
 		assertEquals(3, valueList.get(0));
@@ -241,17 +229,13 @@ public class QueryUtilTest extends BaseTest {
 	}
 
 	public void testGenerateSqlClause17() {
-		QueryBean queryBean = new QueryBeanEqual("aaa", 3);
-		QueryBean emptyBean = new QueryBeanEmpty();
-		emptyBean.setConnectMode(QueryBean.OR);
-		queryBean.addQueryBean(emptyBean);
-		for (int i = 0; i < 2; i++) {
-			emptyBean.addQueryBean(new QueryBeanEqual("aaa" + i, i));
-		}
+		Conditions conditions = new Conditions().condition("aaa", "=", 3)
+				.and().left().condition("aaa0", "=", 0).or()
+				.condition("aaa1", "=", 1).right();
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
-		assertEquals("aaa = ? and (aaa0 = ? or aaa1 = ?)",
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
+		assertEquals("aaa = ? and ( aaa0 = ? or aaa1 = ? )",
 				stringBuffer.toString());
 		assertEquals(3, valueList.size());
 		assertEquals(3, valueList.get(0));
@@ -261,11 +245,12 @@ public class QueryUtilTest extends BaseTest {
 
 	public void testGenerateSqlClause18() {
 		int[] intArray = { 3, 4, 5 };
-		QueryBean queryBean = new QueryBeanIn("abc", intArray);
+		Conditions conditions = new Conditions();
+		conditions.condition("abc", "in", intArray);
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
-		queryUtil.generateQuerySqlClause(queryBean, stringBuffer, valueList);
-		assertEquals("abc in (?)", stringBuffer.toString());
+		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
+		assertEquals("abc in ?", stringBuffer.toString());
 		assertEquals(1, valueList.size());
 	}
 }
