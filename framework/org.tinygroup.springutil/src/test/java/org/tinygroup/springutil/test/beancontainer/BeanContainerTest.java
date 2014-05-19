@@ -11,7 +11,7 @@ import org.tinygroup.vfs.VFS;
 
 public class BeanContainerTest extends TestCase {
 
-	public void test() {
+	public void testContainer() {
 		SpringBeanContainer sbc = new SpringBeanContainer();
 		FileObject f = VFS.resolveURL(this.getClass().getClassLoader().getResource("beancontainer.beans.xml"));
 		List<FileObject> fl = new ArrayList<FileObject>();
