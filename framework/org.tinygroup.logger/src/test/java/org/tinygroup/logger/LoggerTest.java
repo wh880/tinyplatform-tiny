@@ -107,8 +107,8 @@ public class LoggerTest extends TestCase {
 	}
 
 	public void testIsEnabled() {
-		assertEquals(true, logger.isEnabled(DEBUG));
-		assertEquals(true, logger.isEnabled(TRACE));
+		assertEquals(false, logger.isEnabled(DEBUG));
+		assertEquals(false, logger.isEnabled(TRACE));
 		assertEquals(true, logger.isEnabled(ERROR));
 		assertEquals(true, logger.isEnabled(INFO));
 		assertEquals(true, logger.isEnabled(WARN));
