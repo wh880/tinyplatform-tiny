@@ -29,10 +29,10 @@ import org.tinygroup.rmi.impl.RmiServerRemote;
 import java.rmi.RemoteException;
 
 public class RmiRunClient {
-    private static String SERVERIP = "192.168.84.30";
+    private static String SERVERIP = "192.168.84.23";
 
     public static void main(String[] args) throws RemoteException {
-        RmiServer remoteServer = new RmiServerRemote();
+        RmiServer remoteServer = new RmiServerRemote(SERVERIP);
         remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
         Hello hello = remoteServer.getRemoteObject("hello");
         Hello hello1 = remoteServer.getRemoteObject("hello1");
