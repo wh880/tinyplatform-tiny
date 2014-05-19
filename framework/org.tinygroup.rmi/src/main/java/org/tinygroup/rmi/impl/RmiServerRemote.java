@@ -47,7 +47,7 @@ public class RmiServerRemote implements RmiServer {
     private RmiServer server = null;
     private Map<String, Remote> objectMap = new HashMap<String, Remote>();
     private static transient Logger logger = LoggerFactory.getLogger(RmiServerRemote.class);
-    RemoteRmiHeartBeatChecker heartBeatChecker=new RemoteRmiHeartBeatChecker();
+    RemoteRmiHeartBeatChecker heartBeatChecker = new RemoteRmiHeartBeatChecker();
 
     public RmiServerRemote() throws RemoteException {
         this("localhost", RmiServer.DEFAULT_RMI_PORT);
@@ -66,7 +66,7 @@ public class RmiServerRemote implements RmiServer {
         System.setProperty("java.rmi.server.hostname ", hostName);
         this.hostName = hostName;
         this.port = port;
-        registry=getRegistry();
+        registry = getRegistry();
         new Thread(heartBeatChecker).start();
     }
 
@@ -100,6 +100,7 @@ public class RmiServerRemote implements RmiServer {
         objectMap.put(type.getName(), object);
         server.registerRemoteObject(object, type);
     }
+
 
     public void unregisterRemoteObject(String name) throws RemoteException {
         objectMap.remove(name);
@@ -177,11 +178,12 @@ public class RmiServerRemote implements RmiServer {
 
     public void stop() throws RemoteException {
         unexportObjects();
+        registry = null;
         heartBeatChecker.setStop(true);
     }
 
     public class RemoteRmiHeartBeatChecker implements Runnable {
-        private int interval=5000;
+        private int interval = 5000;
         private volatile boolean stop = false;
 
         public RemoteRmiHeartBeatChecker() {
@@ -193,7 +195,7 @@ public class RmiServerRemote implements RmiServer {
 
         public void run() {
             boolean isDown = false;
-            while (!stop) {
+            while (!stop && registry != null) {
                 try {
                     getRegistry().list();//检查registry是否可用
                     //如果可用

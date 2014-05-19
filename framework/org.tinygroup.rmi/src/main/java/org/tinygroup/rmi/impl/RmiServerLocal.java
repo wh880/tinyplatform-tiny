@@ -56,7 +56,9 @@ public final class RmiServerLocal implements RmiServer {
     public void stop() throws RemoteException {
         try {
             unexportObjects();
+            registry = null;
             registerObject.stop = true;
+
         } catch (RemoteException e) {
             logger.error(e);
         }
@@ -98,7 +100,7 @@ public final class RmiServerLocal implements RmiServer {
         volatile boolean stop = false;
 
         public void run() {
-            while (!stop) {
+            while (!stop && registry != null) {
                 processObject();
                 verifyObject();
             }
@@ -343,7 +345,7 @@ public final class RmiServerLocal implements RmiServer {
         System.setProperty("java.rmi.server.hostname ", hostName);
         this.hostName = hostName;
         this.port = port;
-        getRegistry();
+        registerLocalObject(this, "RmiServer");
         new Thread(registerObject).start();
     }
 
@@ -354,7 +356,6 @@ public final class RmiServerLocal implements RmiServer {
                 registry.list();
             } catch (Exception e) {
                 registry = LocateRegistry.createRegistry(port);
-                registerLocalObject(this, "RmiServer");
             }
         }
         return registry;
@@ -365,10 +366,10 @@ public final class RmiServerLocal implements RmiServer {
         logger.logMessage(LogLevel.DEBUG, "开始注册对象:{}", name);
         registeredObjectMap.put(name, object);
         if (object instanceof UnicastRemoteObject) {
-            registry.rebind(name, object);
+            getRegistry().rebind(name, object);
         } else {
             Remote stub = UnicastRemoteObject.exportObject(object, 0);
-            registry.rebind(name, stub);
+            getRegistry().rebind(name, stub);
         }
         logger.logMessage(LogLevel.DEBUG, "结束注册对象:{}", name);
     }
