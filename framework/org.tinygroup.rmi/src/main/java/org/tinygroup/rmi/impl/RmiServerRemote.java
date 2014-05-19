@@ -178,8 +178,13 @@ public class RmiServerRemote implements RmiServer {
 
     public void stop() throws RemoteException {
         unexportObjects();
-        registry = null;
         heartBeatChecker.setStop(true);
+        try {
+            Thread.sleep(20);
+        } catch (InterruptedException e) {
+            //DoNothing
+        }
+        registry = null;
     }
 
     public class RemoteRmiHeartBeatChecker implements Runnable {

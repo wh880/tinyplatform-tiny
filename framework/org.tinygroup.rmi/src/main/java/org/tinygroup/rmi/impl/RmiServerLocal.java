@@ -56,11 +56,14 @@ public final class RmiServerLocal implements RmiServer {
     public void stop() throws RemoteException {
         try {
             unexportObjects();
-            registry = null;
             registerObject.stop = true;
+            Thread.sleep(20);
+            registry = null;
 
         } catch (RemoteException e) {
             logger.error(e);
+        } catch (InterruptedException e) {
+            //DoNoting
         }
     }
 
