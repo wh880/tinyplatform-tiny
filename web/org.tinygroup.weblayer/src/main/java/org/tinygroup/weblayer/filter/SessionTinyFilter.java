@@ -687,7 +687,7 @@ public class SessionTinyFilter extends AbstractTinyFilter {
 		}
 
 		public String getStoreNameForAttribute(String attrName) {
-			attrName = assertNotNull(trimToNull(attrName), "attrName");
+			attrName = assertNotNull(trimToNull(attrName), "attrName must not null");
 			String matchedStoreName = attributeMatchCache.get(attrName);
 
 			if (matchedStoreName != null) {

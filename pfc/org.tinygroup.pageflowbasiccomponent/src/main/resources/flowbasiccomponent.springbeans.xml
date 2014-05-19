@@ -17,4 +17,13 @@
 	<bean id="sessionRemoveOperate" name="sessionRemoveOperate" scope="prototype"
 		class="org.tinygroup.pageflowbasiccomponent.SessionRemoveOperate">
 	</bean>
+	<bean id="writeXmlComponent" name="writeXmlComponent" scope="prototype"
+		class="org.tinygroup.pageflowbasiccomponent.WriteXmlComponent">
+	</bean>
+	<bean id="writeJsonComponent" name="writeJsonComponent" scope="prototype"
+		class="org.tinygroup.pageflowbasiccomponent.WriteJsonComponent">
+	</bean>
+	<bean id="writeTextComponent" name="writeTextComponent" scope="prototype"
+		class="org.tinygroup.pageflowbasiccomponent.WriteTextComponent">
+	</bean>
 </beans>

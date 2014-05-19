@@ -218,6 +218,8 @@ public abstract class AbstractAnnotationServiceLoader implements
 					org.tinygroup.service.config.ServiceViewMapping mapping = new org.tinygroup.service.config.ServiceViewMapping();
 					mapping.setServiceId(serviceId);
 					mapping.setPath(serviceViewMapping.value());
+					serviceViewMapping.type();
+					mapping.setType(StringUtil.defaultIfBlank(serviceViewMapping.type(), "forward"));
 					serviceMappingManager.addServiceMapping(mapping);
 				}
 			}
@@ -263,32 +265,34 @@ public abstract class AbstractAnnotationServiceLoader implements
 		logger.logMessage(LogLevel.INFO, "开始加载方法对应的服务出参,方法{0},服务:{1}",
 				method.getName(), item.getServiceId());
 		Class<?> parameterType = method.getReturnType();
-		List<Parameter> outputParameterDescriptors = new ArrayList<Parameter>();
-		Annotation annotation = method.getAnnotation(ServiceResult.class);
-		Parameter descriptor = new Parameter();
-		descriptor.setType(parameterType.getName());
-		logger.logMessage(LogLevel.INFO, "服务出参type:{name}",
-				descriptor.getType());
-		descriptor.setArray(parameterType.isArray());
-		if (annotation != null) {
-			Boolean required = Boolean.valueOf(getAnnotationStringValue(
-					annotation, ServiceResult.class, "required"));
-			descriptor.setRequired(required);
-			String name = getAnnotationStringValue(annotation,
-					ServiceResult.class, "name");
-			if (StringUtil.isBlank(name)) {
-				name = StringUtil.toCamelCase(clazz.getSimpleName()) + "_"
-						+ StringUtil.toCamelCase(method.getName()) + "_"
-						+ "result";
+		if(!Void.TYPE.equals(parameterType)){
+			List<Parameter> outputParameterDescriptors = new ArrayList<Parameter>();
+			Annotation annotation = method.getAnnotation(ServiceResult.class);
+			Parameter descriptor = new Parameter();
+			descriptor.setType(parameterType.getName());
+			logger.logMessage(LogLevel.INFO, "服务出参type:{name}",
+					descriptor.getType());
+			descriptor.setArray(parameterType.isArray());
+			if (annotation != null) {
+				Boolean required = Boolean.valueOf(getAnnotationStringValue(
+						annotation, ServiceResult.class, "required"));
+				descriptor.setRequired(required);
+				String name = getAnnotationStringValue(annotation,
+						ServiceResult.class, "name");
+				if (StringUtil.isBlank(name)) {
+					name = StringUtil.toCamelCase(clazz.getSimpleName()) + "_"
+							+ StringUtil.toCamelCase(method.getName()) + "_"
+							+ "result";
+				}
+				descriptor.setName(name);
+				logger.logMessage(LogLevel.INFO, "服务出参name:{name}", name);
+			} else {
+				logger.logMessage(LogLevel.INFO, "服务出参未配置");
 			}
-			descriptor.setName(name);
-			logger.logMessage(LogLevel.INFO, "服务出参name:{name}", name);
-		} else {
-			logger.logMessage(LogLevel.INFO, "服务出参未配置");
+			serviceProxy.setOutputParameter(descriptor);
+			outputParameterDescriptors.add(descriptor);
+			item.setResults(outputParameterDescriptors);
 		}
-		serviceProxy.setOutputParameter(descriptor);
-		outputParameterDescriptors.add(descriptor);
-		item.setResults(outputParameterDescriptors);
 		logger.logMessage(LogLevel.INFO, "加载方法对应的服务出参完毕,方法{0},服务:{1}",
 				method.getName(), item.getServiceId());
 

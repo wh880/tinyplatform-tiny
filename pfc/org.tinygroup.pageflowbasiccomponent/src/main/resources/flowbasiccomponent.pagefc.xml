@@ -23,5 +23,26 @@
 		</long-description>
 		<parameter name="sessionKey" title="保存在session中的key" type="java.lang.String"></parameter>
 	</component>
+	<component name="writeXmlComponent" bean="writeXmlComponent"
+		title="往前台写入xml数据格式" icon="">
+		<short-description>往前台写入xml数据格式</short-description>
+		<long-description>
+		</long-description>
+		<parameter name="resultKey" title="往前台写入对象在上下文中的key" type="java.lang.String"></parameter>
+	</component>
+	<component name="writeJsonComponent" bean="writeJsonComponent"
+		title="往前台写入json数据格式" icon="">
+		<short-description>往前台写入json数据格式</short-description>
+		<long-description>
+		</long-description>
+		<parameter name="resultKey" title="往前台写入对象在上下文中的key" type="java.lang.String"></parameter>
+	</component>
+	<component name="writeTextComponent" bean="writeTextComponent"
+		title="往前台写入字符串数据格式" icon="">
+		<short-description>往前台写入字符串数据格式</short-description>
+		<long-description>
+		</long-description>
+		<parameter name="resultKey" title="往前台写入对象在上下文中的key" type="java.lang.String"></parameter>
+	</component>
 </components>
 
