@@ -39,7 +39,7 @@ import java.io.IOException;
  */
 public class Test {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-        JobCenter jobCenter = new JobCenterLocal("127.0.0.1",8888);
+        JobCenter jobCenter = new JobCenterLocal("127.0.0.1", 8888);
         for (int i = 0; i < 10; i++) {
             jobCenter.registerWorker(new PiWorker());
         }

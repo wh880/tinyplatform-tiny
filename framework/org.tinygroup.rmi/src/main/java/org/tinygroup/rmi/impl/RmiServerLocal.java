@@ -77,8 +77,45 @@ public final class RmiServerLocal implements RmiServer {
 
     public void registerRemoteObject(Remote object, String name) throws RemoteException {
         logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}", name);
+        new Thread(new RegisterObject(name, object)).start();
         getRegistry().rebind(name, object);
         logger.logMessage(LogLevel.DEBUG, "对象:{}加入注册列表完成", name);
+    }
+
+    class RegisterObject implements Runnable {
+        private final String name;
+        private final Remote object;
+
+        RegisterObject(String name, Remote object) {
+            this.name = name;
+            this.object = object;
+        }
+
+        public void run() {
+            try {
+                getRegistry().rebind(name, object);
+            } catch (RemoteException e) {
+                logger.errorMessage("注册对象{}时发生异常！", e, name);
+            }
+        }
+    }
+
+    class UnregisterObject implements Runnable {
+        private final String name;
+
+        UnregisterObject(String name) {
+            this.name = name;
+        }
+
+        public void run() {
+            try {
+                getRegistry().unbind(name);
+            } catch (RemoteException e) {
+                logger.errorMessage("注册对象{}时发生异常！", e, name);
+            } catch (NotBoundException e) {
+                logger.errorMessage("注册对象{}时发生异常！", e, name);
+            }
+        }
     }
 
     public void registerObject(RemoteObjectDescription remoteObj) {
@@ -184,12 +221,8 @@ public final class RmiServerLocal implements RmiServer {
     public void unregisterRemoteObject(String name) throws RemoteException {
 
         logger.logMessage(LogLevel.DEBUG, "开始注销对象:{}", name);
-        try {
-            registry.unbind(name);
-            logger.logMessage(LogLevel.DEBUG, "结束注销对象:{}", name);
-        } catch (NotBoundException e) {
-            logger.errorMessage("注销对象:{}时发生异常:{}！", e, name, e.getMessage());
-        }
+        new Thread(new UnregisterObject(name)).start();
+        logger.logMessage(LogLevel.DEBUG, "结束注销对象:{}", name);
     }
 
     public void unregisterObject(String name) {
