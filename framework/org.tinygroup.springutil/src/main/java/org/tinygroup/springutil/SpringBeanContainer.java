@@ -32,7 +32,9 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 		inited = true;
 		FileSystemXmlApplicationContext fileSystemXmlApplicationContext = new FileSystemXmlApplicationContext();
 		fileSystemXmlApplicationContext.setAllowBeanDefinitionOverriding(true);
+		fileSystemXmlApplicationContext.refresh();
 		applicationContext = fileSystemXmlApplicationContext;
+
 	}
 
 	public ApplicationContext getSubBeanContainer(List<FileObject> files,
@@ -92,4 +94,29 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 		return (T) applicationContext.getBean(name, clazz);
 	}
 
+	public void regSpringConfigXml(List<FileObject> files) {
+		for (FileObject fileObject : files) {
+			String urlString = fileObject.getURL().toString();
+			addUrl(urlString);
+		}
+	}
+
+	public void regSpringConfigXml(String files) {
+		String urlString = SpringUtil.class.getResource(files).toString();
+		addUrl(urlString);
+	}
+
+	private void addUrl(String urlString) {
+		if (!configs.contains(urlString)) {
+			configs.add(urlString);
+			logger.logMessage(LogLevel.INFO, "添加Spring配置文件:{urlString}",
+					urlString);
+		}
+	}
+
+	public void refresh() {
+		FileSystemXmlApplicationContext app = (FileSystemXmlApplicationContext) applicationContext;
+		app.setConfigLocations(listToArray(configs));
+		app.refresh();
+	}
 }
