@@ -21,10 +21,9 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.tinypc.rmi;
+package org.tinygroup.rmi;
 
 import junit.framework.TestCase;
-import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerLocal;
 import org.tinygroup.rmi.impl.RmiServerRemote;
 
@@ -50,16 +49,17 @@ public class RmiServerTest extends TestCase {
 
     public void testGetRegistry() throws Exception {
         localServer.registerRemoteObject(new HelloImpl(), "hello");
-        Thread.sleep(100);
-        assertEquals(localServer.getRegistry().list().length, 2);
-        assertEquals(remoteServer.getRegistry().list().length, 2);
+        for (String name : localServer.getRegistry().list()) {
+            System.out.println("====" + name);
+        }
+        assertEquals(2, localServer.getRegistry().list().length);
+        assertEquals(2, remoteServer.getRegistry().list().length);
         Hello hello = remoteServer.getRemoteObject("hello");
         String info = hello.sayHello("abc");
         assertEquals(info, "Hello,abc");
 
         remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
 
-        Thread.sleep(100);
 
         assertEquals(localServer.getRegistry().list().length, 3);
         assertEquals(remoteServer.getRegistry().list().length, 3);

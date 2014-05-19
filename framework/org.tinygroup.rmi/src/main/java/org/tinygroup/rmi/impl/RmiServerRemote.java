@@ -23,6 +23,7 @@
  */
 package org.tinygroup.rmi.impl;
 
+import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.rmi.RmiServer;
@@ -40,13 +41,13 @@ import java.util.Map;
  * 远程RMI服务器 Created by luoguo on 14-1-10.
  */
 public class RmiServerRemote implements RmiServer {
-    private transient final static Logger logger = LoggerFactory
-            .getLogger(RmiServerRemote.class);
     private int port = DEFAULT_RMI_PORT;
     private String hostName = "localhost";
     private Registry registry = null;
     private RmiServer server = null;
     private Map<String, Remote> objectMap = new HashMap<String, Remote>();
+    private static transient Logger logger = LoggerFactory.getLogger(RmiServerRemote.class);
+    RemoteRmiHeartBeatChecker heartBeatChecker=new RemoteRmiHeartBeatChecker();
 
     public RmiServerRemote() throws RemoteException {
         this("localhost", RmiServer.DEFAULT_RMI_PORT);
@@ -63,10 +64,11 @@ public class RmiServerRemote implements RmiServer {
     public RmiServerRemote(String hostName, int port) throws RemoteException {
         this.hostName = hostName;
         this.port = port;
-        getRegistry();
+        registry=getRegistry();
+        new Thread(heartBeatChecker).start();
     }
 
-    public Registry getRegistry() throws RemoteException {
+    public synchronized Registry getRegistry() throws RemoteException {
         try {
             registry = LocateRegistry.getRegistry(hostName, port);
             server = (RmiServer) registry.lookup("RmiServer");
@@ -159,7 +161,55 @@ public class RmiServerRemote implements RmiServer {
         }
     }
 
+    protected void registerAllRemoteObject() {
+        for (Map.Entry<String, Remote> entry : objectMap.entrySet()) {
+            try {
+                logger.logMessage(LogLevel.DEBUG, "向远端服务器渡口对象:{}开始...", entry.getKey());
+                registerRemoteObject(entry.getValue(), entry.getKey());
+                logger.logMessage(LogLevel.DEBUG, "向远端服务器渡口对象:{}结束。", entry.getKey());
+            } catch (RemoteException e) {
+                logger.errorMessage("向远端服务器渡口对象:{}时发生异常。", e, entry.getKey());
+            }
+        }
+    }
+
     public void stop() throws RemoteException {
         unexportObjects();
+        heartBeatChecker.setStop(true);
     }
+
+    public class RemoteRmiHeartBeatChecker implements Runnable {
+        private int interval=5000;
+        private volatile boolean stop = false;
+
+        public RemoteRmiHeartBeatChecker() {
+        }
+
+        public void setStop(boolean stop) {
+            this.stop = stop;
+        }
+
+        public void run() {
+            boolean isDown = false;
+            while (!stop) {
+                try {
+                    getRegistry().list();//检查registry是否可用
+                    //如果可用
+                    if (isDown) {
+                        registerAllRemoteObject();
+                    }
+                } catch (RemoteException e) {
+                    isDown = true;
+                }
+                try {
+                    Thread.sleep(interval);
+                } catch (InterruptedException e) {
+                    //DoNothing
+                }
+            }
+        }
+
+
+    }
+
 }
