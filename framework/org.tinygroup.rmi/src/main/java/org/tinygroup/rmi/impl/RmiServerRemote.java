@@ -62,7 +62,7 @@ public class RmiServerRemote implements RmiServer {
     }
 
     public RmiServerRemote(String hostName, int port) throws RemoteException {
-        System.setProperty("java.rmi.server.useLocalHostname", "true");
+//        System.setProperty("java.rmi.server.useLocalHostname", "true");
         System.setProperty("java.rmi.server.hostname ", hostName);
         this.hostName = hostName;
         this.port = port;
