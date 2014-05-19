@@ -25,7 +25,7 @@ package org.tinygroup.tinydb.operator;
 
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.order.OrderBean;
-import org.tinygroup.tinydb.query.QueryBean;
+import org.tinygroup.tinydb.query.Conditions;
 import org.tinygroup.tinydb.select.SelectBean;
 
 /**
@@ -36,36 +36,27 @@ import org.tinygroup.tinydb.select.SelectBean;
  */
 public interface DbSqlQueryOperator<K> {
 
-	/**
-	 * 根据查询对象获取数据
-	 * @param queryBean
-	 *            查询条件
-	 * @param sql
-	 *            SQL语句
-	 * 
-	 * @return
-	 */
-	Bean[] getBeans(SelectBean[] selectBeans, QueryBean queryBean,
+	Bean[] getBeans(SelectBean[] selectBeans, Conditions conditions,
 			OrderBean[] orderBeans);
 	
-	Bean[] getBeans(QueryBean queryBean,
+	Bean[] getBeans(Conditions conditions,
 			OrderBean[] orderBeans);
 
-	Bean[] getBeans(SelectBean[] selectBeans, QueryBean queryBean,
+	Bean[] getBeans(SelectBean[] selectBeans, Conditions conditions,
 			OrderBean[] orderBeans, int start, int limit);
 	
-	Bean[] getBeans(QueryBean queryBean,
+	Bean[] getBeans(Conditions conditions,
 			OrderBean[] orderBeans, int start, int limit);
 	
-	Bean getSingleValue(QueryBean queryBean);
+	Bean getSingleValue(Conditions conditions);
 	
-	Bean getSingleValue(SelectBean[] selectBeans, QueryBean queryBean);
+	Bean getSingleValue(SelectBean[] selectBeans, Conditions conditions);
 
-	Bean[] getBeans(String selectClause, QueryBean queryBean,
+	Bean[] getBeans(String selectClause, Conditions conditions,
 			OrderBean[] orderBeans);
 
-	Bean[] getBeans(String selectClause, QueryBean queryBean,
+	Bean[] getBeans(String selectClause, Conditions conditions,
 			OrderBean[] orderBeans, int start, int limit);
 
-	Bean getSingleValue(String selectClause, QueryBean queryBean);
+	Bean getSingleValue(String selectClause, Conditions conditions);
 }
