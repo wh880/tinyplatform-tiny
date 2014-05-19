@@ -54,9 +54,9 @@ public class PreparedStatementSetterMapSetter implements PreparedStatementSetter
 	}
 
 	private void setParameter(PreparedStatement ps, int index, Object obj,
-			Integer dateType) throws SQLException {
+			Integer dataType) throws SQLException {
 		if (obj == null) {
-			ps.setObject(index, obj, java.sql.Types.VARCHAR);
+			ps.setNull(index, dataType);
 		} else {
 			if (obj instanceof Character || obj.getClass().equals(char.class)) {
 				ps.setString(index, obj.toString());
@@ -67,10 +67,10 @@ public class PreparedStatementSetterMapSetter implements PreparedStatementSetter
 					|| obj.getClass().equals(byte[].class)) {
 				ps.setBytes(index, (byte[]) obj);
 			} else {
-				if (dateType == null) {
+				if (dataType == null) {
 					ps.setObject(index, obj);
 				} else {
-					ps.setObject(index, obj, dateType);
+					ps.setObject(index, obj, dataType);
 				}
 			}
 		}
