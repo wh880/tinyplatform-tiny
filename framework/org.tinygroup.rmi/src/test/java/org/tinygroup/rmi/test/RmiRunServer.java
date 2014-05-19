@@ -33,9 +33,7 @@ public class RmiRunServer {
     public static void main(String[] args) throws RemoteException, InterruptedException {
         RmiServerLocal localServer = new RmiServerLocal();
         localServer.registerLocalObject(new HelloImpl(), "hello");
-        Thread.sleep(20000);
+        Thread.sleep(200000);
         localServer.stop();
     }
-
-
 }

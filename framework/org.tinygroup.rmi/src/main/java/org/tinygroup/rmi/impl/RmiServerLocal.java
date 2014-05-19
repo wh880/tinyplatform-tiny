@@ -37,10 +37,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * 本地Rmi服务器 Created by luoguo on 14-1-10.
@@ -53,12 +51,14 @@ public final class RmiServerLocal implements RmiServer {
     String hostName = "localhost";
     Registry registry = null;
     Map<String, Remote> registeredObjectMap = new HashMap<String, Remote>();
-//	RegisterThread regThread = new RegisterThread();
+    Queue<ProcessObject> queue = new ConcurrentLinkedQueue<ProcessObject>();
+    transient RegisterObject registerObject = new RegisterObject();
 
     public void stop() throws RemoteException {
         try {
             unexportObjects();
             validateThread.setStop(true);
+            registerObject.stop = true;
         } catch (RemoteException e) {
             logger.error(e);
         }
@@ -77,46 +77,57 @@ public final class RmiServerLocal implements RmiServer {
 
     public void registerRemoteObject(Remote object, String name) throws RemoteException {
         logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}", name);
-        new Thread(new RegisterObject(name, object)).start();
-        getRegistry().rebind(name, object);
+        ProcessObject processObject = new ProcessObject(name, object);
+        queue.offer(processObject);
         logger.logMessage(LogLevel.DEBUG, "对象:{}加入注册列表完成", name);
     }
 
-    class RegisterObject implements Runnable {
-        private final String name;
-        private final Remote object;
-
-        RegisterObject(String name, Remote object) {
+    class ProcessObject {
+        public ProcessObject(String name, Remote object) {
             this.name = name;
             this.object = object;
         }
 
-        public void run() {
-            try {
-                getRegistry().rebind(name, object);
-            } catch (RemoteException e) {
-                logger.errorMessage("注册对象{}时发生异常！", e, name);
-            }
-        }
-    }
-
-    class UnregisterObject implements Runnable {
-        private final String name;
-
-        UnregisterObject(String name) {
+        public ProcessObject(String name) {
             this.name = name;
         }
 
+        String name;
+        Remote object;
+    }
+
+    class RegisterObject implements Runnable {
+        volatile boolean stop = false;
+
         public void run() {
+            while (!stop) {
+                while (queue.size() > 0) {
+                    ProcessObject processObject = queue.poll();
+                    try {
+                        if (processObject.object == null) {
+                            logger.logMessage(LogLevel.DEBUG, "开始注册对象{}..", processObject.name);
+                            getRegistry().rebind(processObject.name, processObject.object);
+                            logger.logMessage(LogLevel.DEBUG, "完成注册对象{}。", processObject.name);
+                        } else {
+                            logger.logMessage(LogLevel.DEBUG, "开始注销对象{}..", processObject.name);
+                            getRegistry().unbind(processObject.name);
+                            logger.logMessage(LogLevel.DEBUG, "完成注销对象{}。", processObject.name);
+                        }
+                    } catch (RemoteException e) {
+                        logger.errorMessage("注册或注销对象{}时发生异常！", e, processObject.name);
+                    } catch (NotBoundException e) {
+                        logger.errorMessage("注销对象{}时发生未绑定异常！", e, processObject.name);
+                    }
+                }
+            }
             try {
-                getRegistry().unbind(name);
-            } catch (RemoteException e) {
-                logger.errorMessage("注册对象{}时发生异常！", e, name);
-            } catch (NotBoundException e) {
-                logger.errorMessage("注册对象{}时发生异常！", e, name);
+                wait(5000);
+            } catch (InterruptedException e) {
+                //DoNothing
             }
         }
     }
+
 
     public void registerObject(RemoteObjectDescription remoteObj) {
         String name = remoteObj.getName();
@@ -221,7 +232,8 @@ public final class RmiServerLocal implements RmiServer {
     public void unregisterRemoteObject(String name) throws RemoteException {
 
         logger.logMessage(LogLevel.DEBUG, "开始注销对象:{}", name);
-        new Thread(new UnregisterObject(name)).start();
+        ProcessObject processObject = new ProcessObject(name);
+        queue.offer(processObject);
         logger.logMessage(LogLevel.DEBUG, "结束注销对象:{}", name);
     }
 
@@ -288,9 +300,11 @@ public final class RmiServerLocal implements RmiServer {
     public RmiServerLocal(int port) throws RemoteException {
         this("localhost", port);
     }
+
     public RmiServerLocal(String hostName) throws RemoteException {
         this("localhost", DEFAULT_RMI_PORT);
     }
+
     public RmiServerLocal(String hostName, int port) throws RemoteException {
 //        System.setProperty("java.rmi.server.useLocalHostname", "true");
         System.setProperty("java.rmi.server.hostname ", hostName);
@@ -298,6 +312,7 @@ public final class RmiServerLocal implements RmiServer {
         this.port = port;
         getRegistry();
         new Thread(validateThread).start();
+        new Thread(registerObject).start();
     }
 
     public synchronized Registry getRegistry() throws RemoteException {
