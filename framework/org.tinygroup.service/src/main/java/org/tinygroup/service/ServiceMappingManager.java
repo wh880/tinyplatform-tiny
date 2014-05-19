@@ -37,4 +37,7 @@ public interface ServiceMappingManager {
     void addServiceMapping(ServiceViewMapping mapping);
 
     String getUrl(String serviceId);
+    
+    ServiceViewMapping getServiceViewMapping(String serviceId);
+    
 }

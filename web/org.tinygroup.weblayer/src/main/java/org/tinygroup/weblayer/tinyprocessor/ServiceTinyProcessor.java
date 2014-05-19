@@ -35,6 +35,7 @@ import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.service.ServiceMappingManager;
+import org.tinygroup.service.config.ServiceViewMapping;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
@@ -85,10 +86,25 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 				context.getResponse().getWriter()
 						.write(objectToJson.convert(result));
 			} else if (urlString.endsWith(".servicepage")) {// 返回页面
-				String path = manager.getUrl(serviceId);
+				ServiceViewMapping viewMapping=manager.getServiceViewMapping(serviceId);
+				if(viewMapping==null){
+					throw new RuntimeException(serviceId + "对应的展现视图不存在！");
+				}
+				String path = viewMapping.getPath();
 				checkPath(serviceId, path);
-				context.getRequest().getRequestDispatcher(path)
-						.forward(context.getRequest(), context.getResponse());
+				String type=viewMapping.getType();
+				if("forward".equals(type)){
+					context.getRequest().getRequestDispatcher(path)
+					.forward(context.getRequest(), context.getResponse());
+				}else if("redirect".equals(type)){
+					if(path.startsWith("/")){
+						path=path.substring(1);
+					}
+					context.getResponse().sendRedirect(path);
+				}else{
+					throw new RuntimeException(type+"跳转类型不正确，只能是forward或者redirect");
+				}
+				
 			} else if (urlString.endsWith(".servicepagelet")) {// 返回页面片断
 				String path = manager.getUrl(serviceId);
 				checkPath(serviceId, path);
