@@ -44,7 +44,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * 本地Rmi服务器 Created by luoguo on 14-1-10.
  */
 public final class RmiServerLocal implements RmiServer {
-    private transient ValidateThread validateThread = new ValidateThread();
     private transient final static Logger logger = LoggerFactory
             .getLogger(RmiServerLocal.class);
     int port = DEFAULT_RMI_PORT;
@@ -57,7 +56,6 @@ public final class RmiServerLocal implements RmiServer {
     public void stop() throws RemoteException {
         try {
             unexportObjects();
-            validateThread.setStop(true);
             registerObject.stop = true;
         } catch (RemoteException e) {
             logger.error(e);
@@ -101,29 +99,66 @@ public final class RmiServerLocal implements RmiServer {
 
         public void run() {
             while (!stop) {
-                while (queue.size() > 0) {
-                    ProcessObject processObject = queue.poll();
-                    try {
-                        if (processObject.object == null) {
-                            logger.logMessage(LogLevel.DEBUG, "开始注册对象{}..", processObject.name);
-                            getRegistry().rebind(processObject.name, processObject.object);
-                            logger.logMessage(LogLevel.DEBUG, "完成注册对象{}。", processObject.name);
-                        } else {
-                            logger.logMessage(LogLevel.DEBUG, "开始注销对象{}..", processObject.name);
-                            getRegistry().unbind(processObject.name);
-                            logger.logMessage(LogLevel.DEBUG, "完成注销对象{}。", processObject.name);
-                        }
-                    } catch (RemoteException e) {
-                        logger.errorMessage("注册或注销对象{}时发生异常！", e, processObject.name);
-                    } catch (NotBoundException e) {
-                        logger.errorMessage("注销对象{}时发生未绑定异常！", e, processObject.name);
-                    }
-                }
+                processObject();
+                verifyObject();
             }
             try {
-                wait(5000);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 //DoNothing
+            }
+        }
+
+        private void processObject() {
+            while (queue.size() > 0) {
+                ProcessObject processObject = queue.poll();
+                try {
+                    if (processObject.object != null) {
+                        logger.logMessage(LogLevel.DEBUG, "开始注册对象{}..", processObject.name);
+                        getRegistry().rebind(processObject.name, processObject.object);
+                        logger.logMessage(LogLevel.DEBUG, "完成注册对象{}。", processObject.name);
+                    } else {
+                        logger.logMessage(LogLevel.DEBUG, "开始注销对象{}..", processObject.name);
+                        getRegistry().unbind(processObject.name);
+                        logger.logMessage(LogLevel.DEBUG, "完成注销对象{}。", processObject.name);
+                    }
+                } catch (RemoteException e) {
+                    logger.errorMessage("注册或注销对象{}时发生异常！", e, processObject.name);
+                } catch (NotBoundException e) {
+                    logger.errorMessage("注销对象{}时发生未绑定异常！", e, processObject.name);
+                }
+            }
+        }
+
+        private void verifyObject() {
+            String[] names = null;
+            try {
+                names = getRegistry().list();
+                for (String name : names) {
+                    Remote remote = null;
+                    try {
+                        remote = registry.lookup(name);
+                        if (remote instanceof Verifiable) {
+                            ((Verifiable) remote).verify();
+                        }
+                    } catch (RemoteException e) {
+                        logger.errorMessage("检测到对象{0}已失效", e, name);
+                        try {
+                            logger.logMessage(LogLevel.INFO, "开始注销对象{0}", name);
+                            if (remote != null) {
+                                unregisterRemoteObject(remote);
+                            }
+                            logger.logMessage(LogLevel.INFO, "注销对象{0}完成", name);
+                        } catch (RemoteException e1) {
+                            logger.errorMessage("注销对象{0}失败", e, name);
+                        }
+                    } catch (NotBoundException e2) {
+                        //Do Nothing
+                    }
+                }
+            } catch (RemoteException e) {
+                logger.errorMessage("查询已注册对象失败", e);
+                return;
             }
         }
     }
@@ -269,9 +304,7 @@ public final class RmiServerLocal implements RmiServer {
 
     public void unexportObjects() throws RemoteException {
         for (Map.Entry<String, Remote> entry : registeredObjectMap.entrySet()) {
-            if (!entry.getKey().equals("RmiServer")) {
-                unregisterObject(entry.getKey());
-            }
+            unregisterObject(entry.getKey());
         }
     }
 
@@ -311,7 +344,6 @@ public final class RmiServerLocal implements RmiServer {
         this.hostName = hostName;
         this.port = port;
         getRegistry();
-        new Thread(validateThread).start();
         new Thread(registerObject).start();
     }
 
@@ -341,51 +373,4 @@ public final class RmiServerLocal implements RmiServer {
         logger.logMessage(LogLevel.DEBUG, "结束注册对象:{}", name);
     }
 
-    class ValidateThread implements Runnable {
-        private volatile boolean stop = false;
-        private int interval = 5000;
-
-        public void setStop(boolean stop) {
-            this.stop = stop;
-        }
-
-        public void run() {
-            while (!stop) {
-                String[] names = null;
-                try {
-                    names = getRegistry().list();
-                    for (String name : names) {
-                        Remote remote = null;
-                        try {
-                            remote = registry.lookup(name);
-                            if (remote instanceof Verifiable) {
-                                ((Verifiable) remote).verify();
-                            }
-                        } catch (RemoteException e) {
-                            logger.errorMessage("检测到对象{0}已失效", e, name);
-                            try {
-                                logger.logMessage(LogLevel.INFO, "开始注销对象{0}", name);
-                                if (remote != null) {
-                                    unregisterRemoteObject(remote);
-                                }
-                                logger.logMessage(LogLevel.INFO, "注销对象{0}完成", name);
-                            } catch (RemoteException e1) {
-                                logger.errorMessage("注销对象{0}失败", e, name);
-                            }
-                        } catch (NotBoundException e2) {
-                            //Do Nothing
-                        }
-                    }
-                } catch (RemoteException e) {
-                    logger.errorMessage("查询已注册对象失败", e);
-                    continue;
-                }
-            }
-            try {
-                Thread.sleep(interval);
-            } catch (InterruptedException e) {
-                //Do Nothing
-            }
-        }
-    }
 }
