@@ -288,8 +288,12 @@ public final class RmiServerLocal implements RmiServer {
     public RmiServerLocal(int port) throws RemoteException {
         this("localhost", port);
     }
-
+    public RmiServerLocal(String hostName) throws RemoteException {
+        this("localhost", DEFAULT_RMI_PORT);
+    }
     public RmiServerLocal(String hostName, int port) throws RemoteException {
+//        System.setProperty("java.rmi.server.useLocalHostname", "true");
+        System.setProperty("java.rmi.server.hostname ", hostName);
         this.hostName = hostName;
         this.port = port;
         getRegistry();
