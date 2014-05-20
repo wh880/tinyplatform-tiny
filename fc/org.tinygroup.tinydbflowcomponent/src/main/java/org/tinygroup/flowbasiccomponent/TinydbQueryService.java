@@ -35,10 +35,9 @@ import org.tinygroup.tinydb.operator.DBOperator;
  */
 public class TinydbQueryService extends AbstractTinydbService {
 
-	public void tinyService(Context context, DBOperator operator) {
-		Bean queryBean=context.get(beanType);
-		if(queryBean!=null){
-			Bean[] beans= operator.getBeans(queryBean);
+	public void tinyService(Bean bean,Context context, DBOperator operator) {
+		if(bean!=null){
+			Bean[] beans= operator.getBeans(bean);
 			context.put(resultKey, beans);
 		}else{
 			logger.logMessage(LogLevel.WARN, "查询服务时,从上下文中找不到bean对象，其beantype:[{}]",beanType);

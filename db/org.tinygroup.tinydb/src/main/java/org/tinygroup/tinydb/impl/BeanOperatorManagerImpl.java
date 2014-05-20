@@ -89,7 +89,7 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager,
 	public TableConfiguration getTableConfiguration(String beanType,
 			String schema) {
 		String tableName = beanDbNameConverter.typeNameToDbTableName(beanType);
-		return container.getTableConfiguration(schema, tableName);
+		return container.getTableConfiguration(getRealSchema(schema), tableName);
 	}
 
 	public TableConfiguration getTableConfiguration(String beanType) {

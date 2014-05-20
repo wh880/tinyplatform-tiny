@@ -28,8 +28,10 @@ import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
+import org.tinygroup.tinydb.util.TinyDBUtil;
 
 public abstract class AbstractTinydbService implements ComponentInterface {
 
@@ -69,10 +71,11 @@ public abstract class AbstractTinydbService implements ComponentInterface {
 	public void execute(Context context) {
 		BeanOperatorManager manager=SpringUtil.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		DBOperator operator= manager.getDbOperator(schema, beanType);
-		tinyService(context, operator);
+		Bean bean=TinyDBUtil.context2Bean(context, beanType,schema);
+		tinyService(bean,context, operator);
 	}
 	
-	public abstract void tinyService(Context context,DBOperator operator);
+	public abstract void tinyService(Bean bean,Context context,DBOperator operator);
 	
 
 	

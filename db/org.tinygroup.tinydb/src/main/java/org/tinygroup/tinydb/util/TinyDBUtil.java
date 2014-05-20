@@ -149,8 +149,10 @@ public final class TinyDBUtil {
 			List<String> properties, String schame) {
 		Bean bean = getBeanInstance(beanType, schame);
 		for (String property : properties) {
-			bean.put(property, c.get(property));
-		}
+			if(c.exist(property)){
+				bean.put(property, c.get(property));
+			}
+		}	
 		return bean;
 	}
 }
