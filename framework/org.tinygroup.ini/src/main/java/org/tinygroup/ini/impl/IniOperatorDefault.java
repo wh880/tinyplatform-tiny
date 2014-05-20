@@ -23,6 +23,7 @@
  */
 package org.tinygroup.ini.impl;
 
+import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.ini.*;
 
 import java.io.*;
@@ -175,7 +176,10 @@ public class IniOperatorDefault implements IniOperator {
     }
 
     public <T> T get(Class<T> tClass, String sectionName, String key, T defaultValue) {
-        return null;
+    	String value = get(sectionName, key);
+        if(value==null||"".equals(value))
+        	return defaultValue;
+        return (T) ValueUtil.getValue(value, tClass.getClass().getName());
     }
 
     public String get(String sectionName, String key, String defaultValue) {
@@ -193,6 +197,7 @@ public class IniOperatorDefault implements IniOperator {
         }
         return null;
     }
+
 
     public <T> List<T> getList(Class<T> tClass, String sectionName, String key) {
         List<T> list = new ArrayList<T>();

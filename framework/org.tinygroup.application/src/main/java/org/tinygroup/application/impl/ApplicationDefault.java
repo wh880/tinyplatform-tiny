@@ -48,10 +48,10 @@ public class ApplicationDefault implements Application {
     private ApplicationContext applicationContext;
 
     public void init() {
+    	OrderUtil.order(applicationProcessors);
         for (ApplicationProcessor applicationProcessor : applicationProcessors) {
             applicationProcessor.init();
         }
-        OrderUtil.order(applicationProcessors);
     }
 
     public void start() {

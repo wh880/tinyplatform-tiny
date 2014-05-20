@@ -70,7 +70,7 @@ public class PageCacheTinyFilter extends AbstractTinyFilter {
 		Cache cache=SpringUtil.getBean(cacheBeanName);
         operater=new CacheOperater(cache);
         ConfigurationManager appConfigManager = ConfigurationUtil.getConfigurationManager();
-		XmlNode parserNode = appConfigManager.getApplicationConfig().getSubNode(
+		XmlNode parserNode = appConfigManager.getApplicationConfiguration().getSubNode(
 				PAGE_CACHE_CONFIG);
 		if(parserNode!=null){
 			parserExtraConfig(parserNode);
