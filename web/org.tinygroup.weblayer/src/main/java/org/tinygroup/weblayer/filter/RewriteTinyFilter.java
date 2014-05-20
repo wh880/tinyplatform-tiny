@@ -65,7 +65,7 @@ public class RewriteTinyFilter extends AbstractTinyFilter {
 	private void initRules() {
 
 		ConfigurationManager appConfigManager = ConfigurationUtil.getConfigurationManager();
-		XmlNode parserNode = appConfigManager.getApplicationConfig().getSubNode(
+		XmlNode parserNode = appConfigManager.getApplicationConfiguration().getSubNode(
 				REWRITE_CONFIG);
 		parserExtraConfig(parserNode);
 

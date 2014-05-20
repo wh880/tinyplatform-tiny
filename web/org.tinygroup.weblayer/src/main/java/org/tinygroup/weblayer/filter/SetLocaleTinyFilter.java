@@ -101,7 +101,7 @@ public class SetLocaleTinyFilter extends AbstractTinyFilter{
 		}
 		if(overriders==null){
 			ConfigurationManager appConfigManager = ConfigurationUtil.getConfigurationManager();
-		    XmlNode setLocale=appConfigManager.getApplicationConfig().getSubNode(SET_LOCALE_CONFIG);
+		    XmlNode setLocale=appConfigManager.getApplicationConfiguration().getSubNode(SET_LOCALE_CONFIG);
 			parserExtraConfig(setLocale);
 		}
 		logger.logMessage(LogLevel.INFO, "tiny-filter:<{}>初始化结束",getClass().getSimpleName());
