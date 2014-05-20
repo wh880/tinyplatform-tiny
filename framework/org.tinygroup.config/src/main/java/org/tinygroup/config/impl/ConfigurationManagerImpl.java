@@ -1,5 +1,6 @@
 package org.tinygroup.config.impl;
 
+import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.config.ConfigurationLoader;
 import org.tinygroup.logger.LogLevel;
@@ -77,11 +78,11 @@ public class ConfigurationManagerImpl implements org.tinygroup.config.Configurat
     }
 
     public <T> T getConfiguration(Class<T> type, String key, T defaultValue) {
-        T value = (T) configuration.get(key);
-        if (value == null) {
-            value = defaultValue;
+        String value =  configuration.get(key);
+        if (value == null ||"".equals(value)) {
+           return defaultValue;
         }
-        return value;
+        return (T) ValueUtil.getValue(value, type.getName());
     }
 
     public void loadConfiguration() {
