@@ -1,4 +1,4 @@
-package org.tinygroup.springutil;
+package org.tinygroup.spring305BeanContainer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,7 +71,6 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	}
 
 	public <T> T getBean(String name) {
-		// TODO Auto-generated method stub
 		return (T) applicationContext.getBean(name);
 	}
 
@@ -102,7 +101,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	}
 
 	public void regSpringConfigXml(String files) {
-		String urlString = SpringUtil.class.getResource(files).toString();
+		String urlString = SpringBeanContainer.class.getResource(files).toString();
 		addUrl(urlString);
 	}
 
