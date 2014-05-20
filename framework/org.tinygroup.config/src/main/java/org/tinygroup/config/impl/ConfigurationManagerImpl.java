@@ -9,6 +9,7 @@ import org.tinygroup.parser.filter.PathFilter;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,6 +21,7 @@ public class ConfigurationManagerImpl implements org.tinygroup.config.Configurat
     private XmlNode applicationConfiguration;
     private Map<String, XmlNode> componentConfigurationMap;
     private Collection<Configuration> configurationList;
+    private Map<String, String> configuration = new HashMap<String, String>();
 
     public void setConfigurationLoader(ConfigurationLoader configurationLoader) {
         this.configurationLoader = configurationLoader;
@@ -68,6 +70,18 @@ public class ConfigurationManagerImpl implements org.tinygroup.config.Configurat
 
     public void setConfigurationList(Collection<Configuration> configurationList) {
         this.configurationList = configurationList;
+    }
+
+    public <T> void setConfiguration(String key, String value) {
+        configuration.put(key, value);
+    }
+
+    public <T> T getConfiguration(Class<T> type, String key, T defaultValue) {
+        T value = (T) configuration.get(key);
+        if (value == null) {
+            value = defaultValue;
+        }
+        return value;
     }
 
     public void loadConfiguration() {

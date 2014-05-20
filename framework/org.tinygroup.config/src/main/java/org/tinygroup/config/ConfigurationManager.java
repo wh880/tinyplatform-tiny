@@ -62,5 +62,20 @@ public interface ConfigurationManager {
 
 
     void setConfigurationList(Collection<Configuration> configurationList);
+    /**
+     * 设置KeyValue形式的值
+     *
+     * @param key
+     * @param value
+     */
+    <T> void setConfiguration(String key, String value);
 
+    /**
+     * @param type
+     * @param key
+     * @param defaultValue
+     * @param <T>
+     * @return
+     */
+    <T> T getConfiguration(Class<T> type, String key, T defaultValue);
 }
