@@ -179,7 +179,7 @@ public class IniOperatorDefault implements IniOperator {
     	String value = get(sectionName, key);
         if(value==null||"".equals(value))
         	return defaultValue;
-        return (T) ValueUtil.getValue(value, tClass.getClass().getName());
+        return (T) ValueUtil.getValue(value, tClass.getName());
     }
 
     public String get(String sectionName, String key, String defaultValue) {
@@ -213,7 +213,7 @@ public class IniOperatorDefault implements IniOperator {
     }
 
 
-    public <T> T get(Class<T> tClass, String sectionName, String key) {
+    public <T> T get(Class<T> tClass, String sectionName, String key) {	
         Section section = sections.getSection(sectionName);
         if (section != null) {
             T value = section.getValue(tClass, key);
