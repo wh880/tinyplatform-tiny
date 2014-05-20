@@ -34,8 +34,7 @@ public class RmiRunServer {
         RmiServerLocal localServer = new RmiServerLocal();
         localServer.registerLocalObject(new HelloImpl(), "hello");
         Thread.sleep(20000);
+        System.out.println("stoping");
         localServer.stop();
     }
-
-
 }

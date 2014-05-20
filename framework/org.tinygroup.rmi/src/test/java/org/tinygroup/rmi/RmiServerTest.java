@@ -38,7 +38,6 @@ public class RmiServerTest extends TestCase {
         super.setUp();
         localServer = new RmiServerLocal();
         remoteServer = new RmiServerRemote();
-
     }
 
     public void tearDown() throws Exception {
@@ -49,6 +48,7 @@ public class RmiServerTest extends TestCase {
 
     public void testGetRegistry() throws Exception {
         localServer.registerRemoteObject(new HelloImpl(), "hello");
+        Thread.sleep(100);
         assertEquals(2, localServer.getRegistry().list().length);
         assertEquals(2, remoteServer.getRegistry().list().length);
         Hello hello = remoteServer.getRemoteObject("hello");
@@ -57,6 +57,7 @@ public class RmiServerTest extends TestCase {
 
         remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
 
+        Thread.sleep(100);
 
         assertEquals(localServer.getRegistry().list().length, 3);
         assertEquals(remoteServer.getRegistry().list().length, 3);
@@ -65,7 +66,47 @@ public class RmiServerTest extends TestCase {
         assertEquals(info, "Hello,def");
     }
 
-/*    public void testRegisterRemoteObject() throws Exception {
+
+    public void testGetRegistry1() throws Exception {
+        localServer.registerRemoteObject(new HelloImpl(), "hello");
+        Thread.sleep(100);
+        assertEquals(2, localServer.getRegistry().list().length);
+        assertEquals(2, remoteServer.getRegistry().list().length);
+        Hello hello = remoteServer.getRemoteObject("hello");
+        String info = hello.sayHello("abc");
+        assertEquals(info, "Hello,abc");
+
+        remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
+
+        Thread.sleep(100);
+
+        assertEquals(localServer.getRegistry().list().length, 3);
+        assertEquals(remoteServer.getRegistry().list().length, 3);
+        hello = localServer.getRemoteObject("hello1");
+        info = hello.sayHello("def");
+        assertEquals(info, "Hello,def");
+    }
+
+    public void testGetRegistry3() throws Exception {
+        localServer.registerRemoteObject(new HelloImpl(), "hello");
+        Thread.sleep(100);
+        assertEquals(2, localServer.getRegistry().list().length);
+        assertEquals(2, remoteServer.getRegistry().list().length);
+        Hello hello = remoteServer.getRemoteObject("hello");
+        String info = hello.sayHello("abc");
+        assertEquals(info, "Hello,abc");
+
+        remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
+
+        Thread.sleep(100);
+
+        assertEquals(localServer.getRegistry().list().length, 3);
+        assertEquals(remoteServer.getRegistry().list().length, 3);
+        hello = localServer.getRemoteObject("hello1");
+        info = hello.sayHello("def");
+        assertEquals(info, "Hello,def");
+    }
+ /*    public void testRegisterRemoteObject() throws Exception {
 
     }
 
