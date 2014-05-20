@@ -26,7 +26,6 @@ package org.tinygroup.rmi.impl;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.rmi.RemoteObjectDescription;
 import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.Verifiable;
 
@@ -165,27 +164,6 @@ public final class RmiServerLocal implements RmiServer {
                 logger.errorMessage("查询已注册对象失败", e);
                 return;
             }
-        }
-    }
-
-
-    public void registerObject(RemoteObjectDescription remoteObj) {
-        String name = remoteObj.getName();
-        Remote object = remoteObj.getObject();
-        try {
-
-            logger.logMessage(LogLevel.DEBUG, "开始注册对象:{}", name);
-            registeredObjectMap.put(name, object);
-            if (object instanceof UnicastRemoteObject) {
-                registry.rebind(name, object);
-            } else {
-                Remote stub = UnicastRemoteObject.exportObject(object, 0);
-                registry.rebind(name, stub);
-            }
-            logger.logMessage(LogLevel.DEBUG, "结束注册对象:{}", name);
-        } catch (RemoteException e) {
-            logger.errorMessage("注册对象:{}时发生异常:{}！", e, name, e.getMessage());
-            throw new RuntimeException(e);
         }
     }
 
