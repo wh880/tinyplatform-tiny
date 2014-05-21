@@ -1,25 +1,39 @@
 package org.tinygroup.compiler;
 
-import java.io.File;
-import java.io.IOException;
+import org.eclipse.jdt.core.compiler.CompilationProgress;
+import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
+
+import java.io.PrintWriter;
 import java.util.Collection;
 
 /**
  * 定义Java编译器的接口
  * Created by luoguo on 2014/5/21.
  */
-public interface JavaCompiler {
-    String getEncode();
+public interface JavaCompiler<S extends Source> {
+    void setClassPath(String classPath);
+
+
+    String getClassPath();
 
     /**
      * 编译一个Java源文件
      *
      * @param source
-     * @return
      */
-    Class<?> compile(JavaSource source) throws CompileException;
+    void compile(S source) throws CompileException;
 
-    void initialize();
+    void setOutPrintWriter(PrintWriter outPrintWriter);
+
+    PrintWriter getOutPrintWriter();
+
+    void setErrPrintWriter(PrintWriter errPrintWriter);
+
+    PrintWriter getErrPrintWriter();
+
+    CompilationProgress getCompilationProgress();
+
+    void setCompilationProgress(CompilationProgress compilationProgress);
 
     /**
      * 编译一组Java源文件
@@ -27,7 +41,7 @@ public interface JavaCompiler {
      * @param sources
      * @return
      */
-    Class<?>[] compile(JavaSource[] sources) throws CompileException;
+    void compile(S[] sources) throws CompileException;
 
     /**
      * 编译一组Java源文件
@@ -35,11 +49,8 @@ public interface JavaCompiler {
      * @param sources
      * @return
      */
-    Collection<Class<?>> compile(Collection<JavaSource> sources) throws CompileException;
+    void compile(Collection<S> sources) throws CompileException;
 
-    void setClassLoaderFacade(ClassLoaderFacade classLoaderFacade);
-
-    ClassLoaderFacade getClassLoaderFacade();
 
     /**
      * 返回是否允许调试
@@ -55,18 +66,16 @@ public interface JavaCompiler {
      */
     void setDebugEnabled(boolean debugEnabled);
 
-    File getOutputDirectory();
+    String getOutputDirectory();
 
-    void setOutputDirectory(File outputDirector);
+    void setOutputDirectory(String outputDirector);
 
-    void writeJavaSource(JavaSource javaSource, String encode) throws IOException;
+    void setCompilerOptions(CompilerOptions compilerOptions);
 
-    File getJavaSourceFile(String className);
+    CompilerOptions getCompilerOptions();
 
-    String getJavaSourcePath(String className);
+    void setEncode(String encode);
 
-    File getJavaClassFile(String className);
-
-    String getJavaClassPath(String className);
+    String getEncode();
 
 }

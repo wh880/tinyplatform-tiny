@@ -17,14 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tinygroup.compiler;
+package org.tinygroup.compiler.impl;
+
+import org.tinygroup.compiler.Source;
 
 /**
  * Java源代码描述
  *
  * @author luoguo
  */
-public final class JavaSource {
+public final class MemorySource implements Source {
     /**
      * 完整类名
      */
@@ -34,7 +36,7 @@ public final class JavaSource {
      */
     String content;
 
-    public JavaSource(String qualifiedClassName, String content) {
+    public MemorySource(String qualifiedClassName, String content) {
         this.qualifiedClassName = qualifiedClassName;
         this.content = content;
     }
