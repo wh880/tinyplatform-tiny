@@ -64,6 +64,10 @@
 		class="org.tinygroup.database.procedure.impl.OracleProcedureSqlProcessorImpl">
 	</bean>
 	
+	<bean id="mySqlProcedureSqlProcessorImpl" scope="singleton"
+		class="org.tinygroup.database.procedure.impl.MySqlProcedureSqlProcessorImpl">
+	</bean>
+	
 	<bean id="tableFileResolver" scope="singleton"
 		class="org.tinygroup.database.fileresolver.TableFileResolver">
 	</bean>

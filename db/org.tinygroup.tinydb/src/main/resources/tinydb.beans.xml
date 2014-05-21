@@ -23,4 +23,8 @@
 		class="org.tinygroup.tinydb.fileresolver.RelationFileProcessor">
 	</bean>
 	
+	<bean id="beanOperatorApplicationProcessor" scope="singleton"
+		class="org.tinygroup.tinydb.applicationprocessor.BeanOperatorApplicationProcessor">
+	</bean>
+	
 </beans>

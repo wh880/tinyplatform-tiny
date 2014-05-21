@@ -2,6 +2,7 @@
 <application>
 	<application-processors>
 		<application-processor bean="fileResolverProcessor"></application-processor>
+		<application-processor bean="beanOperatorApplicationProcessor"></application-processor>
 	</application-processors>
 	<bean-manager-config default-schema="opensource">
 	   <bean-opertate-config schema="opensource"

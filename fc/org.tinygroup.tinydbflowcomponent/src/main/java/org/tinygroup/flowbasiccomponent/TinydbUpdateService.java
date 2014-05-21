@@ -35,11 +35,9 @@ import org.tinygroup.tinydb.operator.DBOperator;
  */
 public class TinydbUpdateService extends AbstractTinydbService {
 
-	public void tinyService(Context context, DBOperator operator) {
-
-		Bean updateBean=context.get(beanType);
-		if(updateBean!=null){
-			int record=operator.update(updateBean);
+	public void tinyService(Bean bean,Context context, DBOperator operator) {
+		if(bean!=null){
+			int record=operator.update(bean);
 			context.put(resultKey, record);
 		}else{
 			logger.logMessage(LogLevel.WARN, "修改服务时,从上下文中找不到bean对象，其beantype:[{}]",beanType);

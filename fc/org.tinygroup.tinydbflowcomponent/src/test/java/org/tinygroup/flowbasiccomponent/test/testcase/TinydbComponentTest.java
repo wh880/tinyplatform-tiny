@@ -55,9 +55,10 @@ public class TinydbComponentTest extends BaseTest {
 
     public void testAdd() {
         Context context = new ContextImpl();
-        Bean bean = getBean();
-        context.put(ANIMAL, bean);
         context.put("beanType", ANIMAL);
+        context.put("id", "aaaaaa");
+        context.put("name", "name123");
+        context.put("length", "123");
         flowExecutor.execute("addService", context);
         Bean result = context.get("result");
         assertEquals("aaaaaa", result.get("id"));
@@ -66,10 +67,10 @@ public class TinydbComponentTest extends BaseTest {
 	public void testUpdate() {
 		Bean bean=getBean();
 		getOperator().insert(bean);
-		bean.setProperty("name", "updateName");
 		Context context=new ContextImpl();
-		context.put(ANIMAL, bean);
 		context.put("beanType", ANIMAL);
+		context.put("name", "updateName");
+		context.put("id", "aaaaaa");
 		flowExecutor.execute("updateService", context);
         Integer record=context.get("result");
         assertEquals(1, record.intValue());
@@ -79,8 +80,8 @@ public class TinydbComponentTest extends BaseTest {
 		Bean bean=getBean();
 		getOperator().insert(bean);
 		Context context=new ContextImpl();
-		context.put(ANIMAL, bean);
 		context.put("beanType", ANIMAL);
+		context.put("id", "aaaaaa");
 		flowExecutor.execute("deleteService", context);
 		Integer record=context.get("result");
         assertEquals(1, record.intValue());
@@ -94,11 +95,9 @@ public class TinydbComponentTest extends BaseTest {
             bean.setProperty("length", 100 + i);
             getOperator().insert(bean);
         }
-        Bean bean = new Bean(ANIMAL);
-        bean.setProperty("name", "name");
         Context context = new ContextImpl();
-        context.put(ANIMAL, bean);
         context.put("beanType", ANIMAL);
+        context.put("name", "name");
         flowExecutor.execute("queryService", context);
         Bean[] beans = context.get("result");
         assertEquals(3, beans.length);
@@ -108,7 +107,6 @@ public class TinydbComponentTest extends BaseTest {
         Bean bean = getBean();
         getOperator().insert(bean);
         Context context = new ContextImpl();
-        context.put(ANIMAL, bean);
         context.put("beanType", ANIMAL);
         context.put("primaryKey", "aaaaaa");
         flowExecutor.execute("queryWithIdService", context);

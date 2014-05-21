@@ -36,10 +36,9 @@ import org.tinygroup.tinydb.operator.DBOperator;
 public class TinydbAddService extends AbstractTinydbService {
 	
 
-	public void tinyService(Context context,DBOperator operator){
-		Bean paramBean=context.get(beanType);
-		if(paramBean!=null){
-			Bean insertBean=operator.insert(paramBean);
+	public void tinyService(Bean bean,Context context,DBOperator operator){
+		if(bean!=null){
+			Bean insertBean=operator.insert(bean);
 			context.put(resultKey, insertBean);
 		}else{
 			logger.logMessage(LogLevel.WARN, "新增服务时,从上下文中找不到bean对象，其beantype:[{}]",beanType);

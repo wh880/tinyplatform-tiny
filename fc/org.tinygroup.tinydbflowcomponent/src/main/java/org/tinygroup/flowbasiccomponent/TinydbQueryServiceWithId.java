@@ -34,22 +34,22 @@ import org.tinygroup.tinydb.operator.DBOperator;
  * @author renhui
  * 
  */
-public class TinydbQueryServiceWithId extends AbstractTinydbService {
+public class TinydbQueryServiceWithId<T> extends AbstractTinydbService {
 
-	private String primaryKey;
+	private T primaryKey;
 
-	public String getPrimaryKey() {
+	public T getPrimaryKey() {
 		return primaryKey;
 	}
 
-	public void setPrimaryKey(String primaryKey) {
+	public void setPrimaryKey(T primaryKey) {
 		this.primaryKey = primaryKey;
 	}
 
-	public void tinyService(Context context, DBOperator operator) {
-		Bean bean = operator.getBean(primaryKey);
-		if (bean != null) {
-			context.put(resultKey, bean);
+	public void tinyService(Bean bean,Context context, DBOperator operator) {
+		Bean primaryBean = operator.getBean(primaryKey);
+		if (primaryBean != null) {
+			context.put(resultKey, primaryBean);
 		} else {
 			logger.logMessage(LogLevel.WARN,
 					"根据主键查询不到记录，beantype:[{0}],主键值:[{1}]", beanType, primaryKey);

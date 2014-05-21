@@ -35,11 +35,9 @@ import org.tinygroup.tinydb.operator.DBOperator;
  */
 public class TinydbDeleteService extends AbstractTinydbService {
 
-	public void tinyService(Context context, DBOperator operator) {
-
-		Bean deleteBean=context.get(beanType);
-		if(deleteBean!=null){
-			int record=operator.delete(deleteBean);
+	public void tinyService(Bean bean,Context context, DBOperator operator) {
+		if(bean!=null){
+			int record=operator.delete(bean);
 			context.put(resultKey, record);
 		}else{
 			logger.logMessage(LogLevel.WARN, "删除服务时,从上下文中找不到bean对象，其beantype:[{}]",beanType);

@@ -319,9 +319,8 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		ResultSet colRet = null;
 		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
 		try {
-			colRet = metadata.getColumns(catalog, table.getSchema(),
-					DataBaseNameUtil.getTableNameFormat(table
-							.getNameWithOutSchema()), "%");
+			colRet = metadata.getColumns(catalog, table.getSchema(),table
+							.getNameWithOutSchema(), "%");
 			while (colRet.next()) {
 				Map<String, String> attributes = new HashMap<String, String>();
 				String columnName = colRet.getString(COLUMN_NAME);
@@ -353,8 +352,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		ResultSet r = null;
 		try {
 			String schema = DataBaseUtil.getSchema(table, metadata);
-			r = metadata.getTables(catalog, schema, DataBaseNameUtil
-					.getTableNameFormat(table.getNameWithOutSchema()),
+			r = metadata.getTables(catalog, schema, table.getNameWithOutSchema(),
 					new String[] { "TABLE" });
 
 			while (r.next()) {

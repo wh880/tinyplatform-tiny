@@ -8,6 +8,6 @@
 
 	<!-- plugin相关 -->
 	<bean id="tinydbFilter" scope="singleton"
-		class="org.tinygroup.weblayer.filter.TinydbFilter">
+		class="org.tinygroup.filter.TinydbFilter">
 	</bean>
 </beans>
