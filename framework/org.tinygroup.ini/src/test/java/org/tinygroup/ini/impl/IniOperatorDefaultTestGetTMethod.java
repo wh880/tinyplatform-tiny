@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * Created by luoguo on 14-3-29.
  */
-public class IniOperatorDefaultTest2 extends TestCase {
+public class IniOperatorDefaultTestGetTMethod extends TestCase {
 	IniOperator operator;
 
 	public void setUp() throws Exception {
@@ -56,7 +56,7 @@ public class IniOperatorDefaultTest2 extends TestCase {
 	
 	public void testInteger() throws Exception {
 		operator.put("aa", "abc", 456);
-		assertEquals(true,456==operator.get(Integer.class, "aa", "abc", 1233));
+		assertEquals(Integer.valueOf(456),operator.get(Integer.class, "aa", "abc", 1233));
 	}
 	
 	public void testBoolean() throws Exception {
@@ -64,6 +64,23 @@ public class IniOperatorDefaultTest2 extends TestCase {
 		assertEquals(true,Boolean.TRUE==operator.get(boolean.class, "aa", "abc", false));
 	}
 	
-	
+	public void testFloat() throws Exception {
+		operator.put("aa","abc", 1.1f);
+		System.out.println(operator.get(float.class, "aa", "abc", 1.2f));
+		assertEquals(Float.valueOf(1.1f), operator.get(Float.class, "aa", "abc", 1.2f));
+	}
+	public void testfloat() throws Exception {
+		operator.put("aa","abc", 1.1f);
+		assertEquals(true,1.1f == operator.get(float.class, "aa", "abc", 1.2f));
+	}
 
+	public void testDouble() throws Exception {
+		operator.put("aa","abc", 1.1d);
+		assertEquals(Double.valueOf(1.1d), operator.get(Double.class, "aa", "abc", 1.2d));
+	}
+	
+	public void testdouble() throws Exception {
+		operator.put("aa","abc", 1.1d);
+		assertEquals(true,1.1d == operator.get(double.class, "aa", "abc", 1.2d));
+	}
 }

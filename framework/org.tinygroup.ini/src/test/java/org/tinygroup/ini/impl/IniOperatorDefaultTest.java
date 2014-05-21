@@ -103,18 +103,22 @@ public class IniOperatorDefaultTest extends TestCase {
 		assertEquals("123", operator.getValuePair("aa", "abc").getValue());
 		assertEquals("bbb", operator.getValuePair("aa", "bbb").getValue());
 	}
+	
+	public void testsetValuePair() throws Exception {
+		operator.add("aa", new ValuePair("bbb", "bbb"));
+		operator.set("aa", new ValuePair("bbb", "bbb123"));
+		assertEquals( "bbb123", operator.getValuePair("aa", "bbb").getValue());
+	}
 
 	public void testGetValue() throws Exception {
 		operator.put("aa", "abc", 123);
 		operator.put("aa", "abc", 456);
-
 		assertEquals("456", operator.get("aa", "abc"));
 	}
 
 	public void testGetValue1() throws Exception {
 		operator.put("aa", "abc", 123);
 		operator.put("aa", "bbb", 123);
-
 		assertEquals("ccc", operator.get("aa", "ccc", "ccc"));
 		assertEquals("dd", operator.get("dd", "dd", "dd"));
 	}
