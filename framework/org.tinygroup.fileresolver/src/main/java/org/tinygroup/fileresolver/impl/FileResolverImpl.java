@@ -23,7 +23,19 @@
  */
 package org.tinygroup.fileresolver.impl;
 
-import org.tinygroup.commons.file.IOUtils;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.tinygroup.commons.order.OrderUtil;
 import org.tinygroup.commons.tools.ClassPathUtil;
 import org.tinygroup.config.ConfigurationManager;
@@ -38,11 +50,6 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.vfs.impl.FileSchemaProvider;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.net.URL;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 功能说明: 文件搜索器默认实现
@@ -240,18 +247,25 @@ public class FileResolverImpl implements FileResolver {
                     continue;
                 }
             }
-            String mfContent = IOUtils.readFromInputStream(url.openStream(), "UTF-8");
-            String[] lines = mfContent.split("\n");
-            for (String line : lines) {
-                String[] pair = line.split(":");
-                if (pair.length == 2) {
-                    if (pair[0].trim().equals("IsTinyProject") && pair[1].trim().equals("true")) {
-                        logger.logMessage(LogLevel.INFO, "文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。", fileObject);
-                        addJarFile(classPaths, path, fileObject);
-                        break;
-                    }
-                }
+            Manifest mf = new Manifest(url.openStream());
+            Attributes attributes = mf.getMainAttributes();
+            String isTinyProject = attributes.getValue("IsTinyProject");
+            if("true".equals(isTinyProject)){
+            	logger.logMessage(LogLevel.INFO, "文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。", fileObject);
+            	addJarFile(classPaths, path, fileObject);
             }
+//            String mfContent = IOUtils.readFromInputStream(url.openStream(), "UTF-8");
+//            String[] lines = mfContent.split("\n");
+//            for (String line : lines) {
+//                String[] pair = line.split(":");
+//                if (pair.length == 2) {
+//                    if (pair[0].trim().equals("IsTinyProject") && pair[1].trim().equals("true")) {
+//                        logger.logMessage(LogLevel.INFO, "文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。", fileObject);
+//                        addJarFile(classPaths, path, fileObject);
+//                        break;
+//                    }
+//                }
+//            }
         }
         logger.logMessage(LogLevel.INFO, "查找Web工程中的jar文件列表完成。");
     }
