@@ -23,18 +23,13 @@
  */
 package org.tinygroup.rmi.test;
 
-import java.rmi.ConnectException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 
 import org.tinygroup.rmi.RmiServer;
-import org.tinygroup.rmi.impl.RmiServerLocal;
 import org.tinygroup.rmi.impl.RmiServerRemote;
 
 public class RmiRunClient {
-	private static String SERVERIP = "192.168.84.30";
+	private static String SERVERIP = "192.168.84.23";
 
 	public static void main(String[] args) {
 		 RmiServer remoteServer = null;

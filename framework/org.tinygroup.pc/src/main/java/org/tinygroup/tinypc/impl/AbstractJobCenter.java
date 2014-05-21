@@ -177,7 +177,7 @@ public class AbstractJobCenter implements JobCenter {
 
     private Foreman getForeman(String foremanType, List<Foreman> foremanList) throws RemoteException {
         Foreman foreman;
-        if (foremanList == null || foremanList.size() > 0) {
+        if (foremanList != null && foremanList.size() > 0) {
             //选择一个工头来处理
             foreman = foremanList.get(Util.randomIndex(foremanList.size()));
         } else {
