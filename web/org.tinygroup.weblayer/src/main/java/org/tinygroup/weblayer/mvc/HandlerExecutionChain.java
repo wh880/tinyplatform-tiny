@@ -28,6 +28,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.commons.tools.ReflectionUtils;
 import org.tinygroup.commons.tools.ValueUtil;
@@ -35,8 +37,6 @@ import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.WebContext;
-import org.tinygroup.weblayer.fc.Forward;
-import org.tinygroup.weblayer.flow.FullContextUrlRedirect;
 import org.tinygroup.weblayer.mvc.annotation.View;
 
 /**
@@ -134,9 +134,13 @@ public class HandlerExecutionChain {
 		View view = methodModel.getView();
 		if (view != null) {
 			String pathInfo = view.value();
-			Forward forward = new Forward();
-			forward.setPath(pathInfo);
-			forward.execute(context);
+			HttpServletRequest request = context.getRequest();
+			try {
+				request.getRequestDispatcher(pathInfo).forward(request,
+						context.getResponse());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			} 
 		}
 	}
 

@@ -26,4 +26,14 @@
 	<bean id="writeTextComponent" name="writeTextComponent" scope="prototype"
 		class="org.tinygroup.pageflowbasiccomponent.WriteTextComponent">
 	</bean>
+	
+	<bean id="fullContextUrlRedirectComponent" scope="prototype"
+		class="org.tinygroup.pageflowbasiccomponent.FullContextUrlRedirect">
+	</bean>
+	<bean id="forwardComponent" scope="prototype"
+		class="org.tinygroup.pageflowbasiccomponent.Forward">
+	</bean>
+	<bean id="redirectComponent" scope="prototype"
+		class="org.tinygroup.pageflowbasiccomponent.Redirect">
+	</bean>
 </beans>

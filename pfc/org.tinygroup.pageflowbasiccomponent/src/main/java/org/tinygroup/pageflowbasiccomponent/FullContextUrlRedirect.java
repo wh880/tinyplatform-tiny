@@ -21,7 +21,7 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.weblayer.flow;
+package org.tinygroup.pageflowbasiccomponent;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

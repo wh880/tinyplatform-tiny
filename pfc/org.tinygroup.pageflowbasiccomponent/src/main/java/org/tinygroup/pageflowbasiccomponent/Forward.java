@@ -21,7 +21,9 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.weblayer.fc;
+package org.tinygroup.pageflowbasiccomponent;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.tinygroup.context.Context;
 import org.tinygroup.flow.ComponentInterface;
@@ -31,15 +33,13 @@ import org.tinygroup.weblayer.WebContext;
 
 /**
  * 
- * 功能说明:重定向组件
- * <p>
+ * 功能说明: 请求转发组件<br>
  * 开发时间: 2013-5-2 <br>
- * 功能描述: 用于重定向到新的页面，这个是通过浏览器实现的重定向<br>
+ * 功能描述: 用于Forward到指定的URL<br>
  */
-public class Redirect implements ComponentInterface {
-	private static final Logger logger = LoggerFactory
-			.getLogger(Redirect.class);
-	String path;
+public class Forward implements ComponentInterface {
+	private static final Logger logger = LoggerFactory.getLogger(Forward.class);
+	String path;// 要转到的页面
 
 	public String getPath() {
 		return path;
@@ -52,9 +52,11 @@ public class Redirect implements ComponentInterface {
 	public void execute(Context context) {
 		try {
 			WebContext webContext = (WebContext) context;
-			webContext.getResponse().sendRedirect(path);
+			HttpServletRequest request = webContext.getRequest();
+			request.getRequestDispatcher(path).forward(request,
+					webContext.getResponse());
 		} catch (Exception e) {
-			logger.errorMessage("Redirect到地址[{}]出错，错误原因：{}", e, path,
+			logger.errorMessage("Forward到地址[{}]出错，错误原因：{}", e, path,
 					e.getMessage());
 		}
 	}

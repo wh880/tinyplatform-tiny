@@ -44,5 +44,23 @@
 		</long-description>
 		<parameter name="resultKey" title="往前台写入对象在上下文中的key" type="java.lang.String"></parameter>
 	</component>
+	<component name="fullContextUrlRedirectComponent" bean="fullContextUrlRedirectComponent"
+		title="页面跳转" icon="">
+		<short-description>页面跳转</short-description>
+		<long-description>页面跳转</long-description>
+		<parameter name="path" title="页面" type="java.lang.String"></parameter>
+	</component>
+	<component name="forwardComponent" bean="forwardComponent"
+		title="页面请求转发组件" icon="">
+		<short-description>页面请求转发组件</short-description>
+		<long-description>页面请求转发组件</long-description>
+		<parameter name="path" title="页面路径" type="java.lang.String"></parameter>
+	</component>
+   <component name="redirectComponent" bean="redirectComponent"
+		title="页面请求重定向组件" icon="">
+		<short-description>页面请求重定向组件</short-description>
+		<long-description>页面请求重定向组件</long-description>
+		<parameter name="path" title="页面路径" type="java.lang.String"></parameter>
+	</component>
 </components>
 
