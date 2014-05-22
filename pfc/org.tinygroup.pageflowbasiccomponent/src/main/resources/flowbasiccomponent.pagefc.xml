@@ -30,8 +30,8 @@
 		</long-description>
 		<parameter name="resultKey" title="往前台写入对象在上下文中的key" type="java.lang.String"></parameter>
 	</component>
-	<component name="JSON输出" bean="writeJsonComponent"
-		title="往前台写入json数据格式" category="控制层" icon="">
+	<component name="writeJsonComponent" bean="writeJsonComponent"
+		title="JSON输出" category="控制层" icon="">
 		<short-description>往前台写入json数据格式</short-description>
 		<long-description>
 		</long-description>
