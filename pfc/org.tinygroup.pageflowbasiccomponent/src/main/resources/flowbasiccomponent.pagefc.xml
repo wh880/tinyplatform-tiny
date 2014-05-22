@@ -1,6 +1,6 @@
 <components>
 	<component name="parserContext2Object" bean="parserContext2Object"
-		title="对象转换组件" icon="">
+		title="对象转换" category="控制层" icon="">
 		<short-description>从parserContext中解析指定对象类型实例</short-description>
 		<long-description>
 		</long-description>
@@ -9,7 +9,7 @@
 		<parameter name="resultKey" title="转换获取的对象实例在context中的key" type="java.lang.String"></parameter>
 	</component>
 	<component name="sessionOperate" bean="sessionOperate"
-		title="session操作组件" icon="">
+		title="会话设置" category="控制层" icon="">
 		<short-description>把对象存放在session中</short-description>
 		<long-description>
 		</long-description>
@@ -17,47 +17,47 @@
 		<parameter name="contextKey" title="从上下文获取对象的key" type="java.lang.String"></parameter>
 	</component>
 	<component name="sessionRemoveOperate" bean="sessionRemoveOperate"
-		title="session移除操作组件" icon="">
+		title="会话删除" category="控制层" icon="">
 		<short-description>把对象从session中移除</short-description>
 		<long-description>
 		</long-description>
 		<parameter name="sessionKey" title="保存在session中的key" type="java.lang.String"></parameter>
 	</component>
 	<component name="writeXmlComponent" bean="writeXmlComponent"
-		title="往前台写入xml数据格式" icon="">
+		title="XML输出" category="控制层" icon="">
 		<short-description>往前台写入xml数据格式</short-description>
 		<long-description>
 		</long-description>
 		<parameter name="resultKey" title="往前台写入对象在上下文中的key" type="java.lang.String"></parameter>
 	</component>
-	<component name="writeJsonComponent" bean="writeJsonComponent"
-		title="往前台写入json数据格式" icon="">
+	<component name="JSON输出" bean="writeJsonComponent"
+		title="往前台写入json数据格式" category="控制层" icon="">
 		<short-description>往前台写入json数据格式</short-description>
 		<long-description>
 		</long-description>
 		<parameter name="resultKey" title="往前台写入对象在上下文中的key" type="java.lang.String"></parameter>
 	</component>
 	<component name="writeTextComponent" bean="writeTextComponent"
-		title="往前台写入字符串数据格式" icon="">
+		title="文本输出" category="控制层" icon="">
 		<short-description>往前台写入字符串数据格式</short-description>
 		<long-description>
 		</long-description>
 		<parameter name="resultKey" title="往前台写入对象在上下文中的key" type="java.lang.String"></parameter>
 	</component>
 	<component name="fullContextUrlRedirectComponent" bean="fullContextUrlRedirectComponent"
-		title="页面跳转" icon="">
+		title="页面跳转" category="控制层" icon="">
 		<short-description>页面跳转</short-description>
 		<long-description>页面跳转</long-description>
 		<parameter name="path" title="页面" type="java.lang.String"></parameter>
 	</component>
 	<component name="forwardComponent" bean="forwardComponent"
-		title="页面请求转发组件" icon="">
+		title="页面转发" category="控制层" icon="">
 		<short-description>页面请求转发组件</short-description>
 		<long-description>页面请求转发组件</long-description>
 		<parameter name="path" title="页面路径" type="java.lang.String"></parameter>
 	</component>
    <component name="redirectComponent" bean="redirectComponent"
-		title="页面请求重定向组件" icon="">
+		title="页面重定向" category="控制层" icon="">
 		<short-description>页面请求重定向组件</short-description>
 		<long-description>页面请求重定向组件</long-description>
 		<parameter name="path" title="页面路径" type="java.lang.String"></parameter>
