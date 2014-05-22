@@ -23,6 +23,7 @@
  */
 package org.tinygroup.tinydb.operator;
 
+import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
 
@@ -37,6 +38,7 @@ public interface DbBaseOperator extends DbRelationOperator {
      */
     void setSchema(String schame);
 
+    Bean createBean();
 
     void setBeanType(String beanType);
 

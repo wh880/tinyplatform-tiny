@@ -89,7 +89,6 @@ public interface BeanOperatorManager {
 	 * 根据表名获取表配置信息
 	 * 
 	 * @param beanType
-	 * @param schema
 	 * @return
 	 */
 	TableConfiguration getTableConfiguration(String beanType);
