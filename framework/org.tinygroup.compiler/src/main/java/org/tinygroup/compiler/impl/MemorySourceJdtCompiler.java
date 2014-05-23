@@ -23,13 +23,21 @@ public class MemorySourceJdtCompiler extends JdtCompiler<MemorySource> {
 
     void writeJavaFile(MemorySource source) throws IOException {
         File file = new File(sourceFolder + File.separatorChar + getJavaFileName(source));
+        if(!file.exists()){
+        	File parent = file.getParentFile();
+        	if(!parent.exists()){
+        		parent.mkdirs();
+        	}
+        	file.createNewFile();
+        	
+        }
         FileOutputStream stream = new FileOutputStream(file);
         stream.write(source.getContent().getBytes(getEncode()));
         stream.close();
     }
 
     private String getJavaFileName(MemorySource source) {
-        return source.getQualifiedClassName().replaceAll(".", File.separator) + ".java";
+        return source.getQualifiedClassName().replace(".", File.separator) + ".java";
     }
 
     public boolean compile(MemorySource source) throws CompileException {
