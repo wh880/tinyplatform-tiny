@@ -19,13 +19,12 @@ public class MemorySourceJdtCompilerTest extends TestCase{
 		String sourceFolder = path+"\\test2";
 		String content = selfReadFile(filePath);
 		MemorySource source = new MemorySource("org.tinygroup.Grade", content);
-		MemorySourceJdtCompiler msc = new MemorySourceJdtCompiler();
-		msc.setSourceFolder(sourceFolder);
+		MemorySourceJdtCompiler msc = new MemorySourceJdtCompiler(sourceFolder);
 		try {
-			msc.compile(source);
+			boolean flag = msc.compile(source);
+			assertTrue(flag);
 		} catch (CompileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			assertTrue(false);
 		}
 		
 	}

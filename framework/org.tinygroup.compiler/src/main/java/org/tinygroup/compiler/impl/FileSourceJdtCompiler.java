@@ -12,7 +12,7 @@ public class FileSourceJdtCompiler extends JdtCompiler<FileSource> {
     public boolean compile(FileSource source) throws CompileException {
         StringBuffer commandLine = getCommandLine().append(" \"").append(source.getSource().getAbsolutePath()).append("\"");
         return executeCommand(commandLine.toString());
-    }
+    } 
 
     public boolean compile(FileSource[] sources) throws CompileException {
         StringBuffer commandLine = getCommandLine();

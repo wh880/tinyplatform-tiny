@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 public abstract class JdtCompiler<S extends Source> extends AbstractJavaCompiler<S> {
     protected StringBuffer getCommandLine() {
         StringBuffer stringBuffer=new StringBuffer();
-        //
         return stringBuffer;
     }
 

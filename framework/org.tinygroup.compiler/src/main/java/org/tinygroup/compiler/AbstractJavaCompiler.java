@@ -97,7 +97,7 @@ public abstract class AbstractJavaCompiler<S extends Source> implements JavaComp
         return outputDirectory;
     }
 
-    public void setOutputDirectory(String outputDirector) {
+    public void setOutputDirectory(String outputDirectory) {
         this.outputDirectory = outputDirectory;
     }
 }
