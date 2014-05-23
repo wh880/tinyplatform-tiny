@@ -1,3 +1,4 @@
+package org.tinygroup.compiler.test;
 import org.eclipse.jdt.core.compiler.CompilationProgress;
 import org.eclipse.jdt.core.compiler.batch.BatchCompiler;
 
