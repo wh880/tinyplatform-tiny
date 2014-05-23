@@ -10,7 +10,7 @@ public final class DbOperatorFactory {
     private DbOperatorFactory() {
     }
 
-    static DBOperator getDBOperator(String beanType) {
+    public static DBOperator getDBOperator(String beanType) {
         BeanOperatorManager beanOperatorManager = (BeanOperatorManager) SpringUtil.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
         return beanOperatorManager.getDbOperator(beanType);
     }
