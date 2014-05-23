@@ -16,8 +16,8 @@ public abstract class JdtCompiler<S extends Source> extends AbstractJavaCompiler
         return stringBuffer;
     }
 
-    protected void executeCommand(String commandLine) {
-        BatchCompiler.compile(
+    protected boolean executeCommand(String commandLine) {
+        return BatchCompiler.compile(
                 commandLine,
                 getOutPrintWriter() != null ? getOutPrintWriter() : new PrintWriter(System.out),
                 getErrPrintWriter() != null ? getErrPrintWriter() : new PrintWriter(System.out),

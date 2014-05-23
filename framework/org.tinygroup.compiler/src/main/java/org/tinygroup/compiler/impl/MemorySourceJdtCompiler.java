@@ -32,35 +32,35 @@ public class MemorySourceJdtCompiler extends JdtCompiler<MemorySource> {
         return source.getQualifiedClassName().replaceAll(".", File.separator) + ".java";
     }
 
-    public void compile(MemorySource source) throws CompileException {
+    public boolean compile(MemorySource source) throws CompileException {
         try {
             writeJavaFile(source);
             StringBuffer commandLine = getCommandLine().append(" \"").append(sourceFolder).append("\"");
-            executeCommand(commandLine.toString());
+            return executeCommand(commandLine.toString());
         } catch (IOException e) {
             throw new CompileException(e);
         }
     }
 
-    public void compile(MemorySource[] sources) throws CompileException {
+    public boolean compile(MemorySource[] sources) throws CompileException {
         try {
             for(MemorySource source:sources) {
                 writeJavaFile(source);
             }
             StringBuffer commandLine = getCommandLine().append(" \"").append(sourceFolder).append("\"");
-            executeCommand(commandLine.toString());
+            return executeCommand(commandLine.toString());
         } catch (IOException e) {
             throw new CompileException(e);
         }
     }
 
-    public void compile(Collection<MemorySource> sources) throws CompileException {
+    public boolean compile(Collection<MemorySource> sources) throws CompileException {
         try {
             for(MemorySource source:sources) {
                 writeJavaFile(source);
             }
             StringBuffer commandLine = getCommandLine().append(" \"").append(sourceFolder).append("\"");
-            executeCommand(commandLine.toString());
+            return executeCommand(commandLine.toString());
         } catch (IOException e) {
             throw new CompileException(e);
         }

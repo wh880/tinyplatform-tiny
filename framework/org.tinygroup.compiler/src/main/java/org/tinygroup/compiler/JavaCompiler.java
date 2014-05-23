@@ -21,7 +21,7 @@ public interface JavaCompiler<S extends Source> {
      *
      * @param source
      */
-    void compile(S source) throws CompileException;
+    boolean compile(S source) throws CompileException;
 
     void setOutPrintWriter(PrintWriter outPrintWriter);
 
@@ -41,7 +41,7 @@ public interface JavaCompiler<S extends Source> {
      * @param sources
      * @return
      */
-    void compile(S[] sources) throws CompileException;
+    boolean compile(S[] sources) throws CompileException;
 
     /**
      * 编译一组Java源文件
@@ -49,7 +49,7 @@ public interface JavaCompiler<S extends Source> {
      * @param sources
      * @return
      */
-    void compile(Collection<S> sources) throws CompileException;
+    boolean compile(Collection<S> sources) throws CompileException;
 
 
     /**
