@@ -76,7 +76,7 @@
 		/> -->
 
 	<!-- 在此进行自动代理配置 -->
-	<bean id="beanNameAutoProxyCreator"
+	<!--<bean id="beanNameAutoProxyCreator"
 		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="proxyTargetClass" value="true" />
 		<property name="beanNames">
@@ -84,7 +84,7 @@
 				<value>*Impl</value>
 			</list>
 		</property>
-	</bean>
+	</bean>-->
 	<!-- <aop:config> <aop:aspect id="deal" ref="SpringTest"> <aop:pointcut 
 		id="target" expression="execution(* org.tinygroup..*.*(..))" /> 
 		<aop:before method="test" pointcut-ref="target" /> </aop:aspect> </aop:config> -->

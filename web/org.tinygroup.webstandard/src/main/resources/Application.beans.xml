@@ -9,7 +9,6 @@
 		class="org.tinygroup.fileresolver.impl.FileResolverImpl">
 		<property name="fileProcessorList">
 			<list>
-			    <ref bean="configurationFileProcessor"/>
 				<ref bean="i18nFileProcessor" />
 				<ref bean="xStreamFileProcessor" />
 				
