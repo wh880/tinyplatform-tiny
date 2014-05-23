@@ -255,7 +255,11 @@ public abstract class AbstractAnnotationServiceLoader implements
 	}
 
 	protected Object getServiceInstance(Class<?> clazz) {
-		return SpringUtil.getBean(clazz);
+		ServiceComponent serviceComponent = clazz.getAnnotation(ServiceComponent.class);
+		if (StringUtil.isBlank(serviceComponent.bean())) {
+			return SpringUtil.getBean(clazz);
+		}
+		return SpringUtil.getBean(serviceComponent.bean());
 	}
 
 	private void getOutputParameterNames(ServiceRegistryItem item,
