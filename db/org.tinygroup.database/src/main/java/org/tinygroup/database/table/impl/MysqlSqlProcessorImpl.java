@@ -24,12 +24,16 @@
 package org.tinygroup.database.table.impl;
 
 import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
+import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
 
@@ -42,6 +46,28 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 	String appendIncrease() {
 		return " auto_increment ";
 	}
+	
+	public boolean checkTableExist(Table table, String catalog,
+			DatabaseMetaData metadata) {
+		ResultSet r = null;
+		try {
+			String schema = DataBaseUtil.getSchema(table, metadata);
+			r = metadata.getTables(catalog, schema, table.getNameWithOutSchema(),
+					new String[] { "TABLE" });
+
+			if (r.next()) {
+				return true;
+			}
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			DataBaseUtil.closeResultSet(r);
+		}
+
+		return false;
+	}
+	
 	protected List<String> dealExistFields(Map<String, TableField> existInTable,Map<String, Map<String, String>> dbColumns, Table table){	
 		List<String>  existUpdateList = new ArrayList<String>();
 		for(String fieldName:existInTable.keySet()){
@@ -94,5 +120,19 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 			dropFields.add(colum);
 		}
 		return dropFields;
+	}
+	
+	protected Map<String, Map<String, String>> getColumns(
+			DatabaseMetaData metadata, String catalog, Table table) {
+		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
+		try {
+			String schema = DataBaseUtil.getSchema(table, metadata);
+			String tableName=table.getNameWithOutSchema();
+			map= getColumns(metadata, catalog, schema, tableName);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return map;
+	
 	}
 }
