@@ -213,7 +213,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 
 		Boolean primary = field.getPrimary();
 		if (primary != null && primary.booleanValue()) {
-			ddlBuffer.append(" PRIMARY KEY NOT NULL");
+			ddlBuffer.append(" PRIMARY KEY");
 		} else {
 			Boolean unique = field.getUnique();
 			if (unique != null && unique.booleanValue()) {
@@ -314,13 +314,26 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		return String.format("DROP TABLE %s", table.getName());
 	}
 
-	private Map<String, Map<String, String>> getColumns(
+	protected Map<String, Map<String, String>> getColumns(
 			DatabaseMetaData metadata, String catalog, Table table) {
+		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
+		try {
+			String schema = DataBaseUtil.getSchema(table, metadata);
+			String tableName=table.getNameWithOutSchema().toUpperCase();
+			map= getColumns(metadata, catalog, schema, tableName);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return map;
+	
+	}
+	
+	protected Map<String, Map<String, String>> getColumns(
+			DatabaseMetaData metadata, String catalog, String  schema,String tableName) {
 		ResultSet colRet = null;
 		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
 		try {
-			colRet = metadata.getColumns(catalog, table.getSchema(),table
-							.getNameWithOutSchema(), "%");
+			colRet = metadata.getColumns(catalog, schema,tableName, "%");
 			while (colRet.next()) {
 				Map<String, String> attributes = new HashMap<String, String>();
 				String columnName = colRet.getString(COLUMN_NAME);
@@ -329,15 +342,6 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 				attributes.put(COLUMN_SIZE, colRet.getString(COLUMN_SIZE));
 				attributes.put(DECIMAL_DIGITS, colRet.getString(DECIMAL_DIGITS));
 				map.put(columnName.toUpperCase(), attributes);
-//				ResultSetMetaData data = colRet.getMetaData();
-//				logger.logMessage(LogLevel.INFO, (attributes.get(DECIMAL_DIGITS)==null)+"");
-				// System.out.println(
-				// ("nullable:"+metadata.columnNullable+"no:"+metadata.columnNoNulls+";COLUMN_NAME:"+colRet.getString("COLUMN_NAME")+
-				// ";NULLABLE:"+colRet.getString("NULLABLE")+
-				// ",DATA_TYPE:"+colRet.getString("DATA_TYPE")+
-				// ",TYPE_NAME:"+colRet.getString("TYPE_NAME")+
-				// ",COLUMN_SIZE:"+colRet.getString("COLUMN_SIZE")).toLowerCase());
-				// list.add(columnName.toUpperCase());
 			}
 		} catch (SQLException e1) {
 			throw new RuntimeException(e1);
@@ -346,16 +350,17 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		}
 		return map;
 	}
+	
 
 	public boolean checkTableExist(Table table, String catalog,
 			DatabaseMetaData metadata) {
 		ResultSet r = null;
 		try {
 			String schema = DataBaseUtil.getSchema(table, metadata);
-			r = metadata.getTables(catalog, schema, table.getNameWithOutSchema(),
+			r = metadata.getTables(catalog, schema, table.getNameWithOutSchema().toUpperCase(),
 					new String[] { "TABLE" });
 
-			while (r.next()) {
+			if (r.next()) {
 				return true;
 			}
 

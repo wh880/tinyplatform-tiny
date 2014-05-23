@@ -1,12 +1,12 @@
 package org.tinygroup.tinydb.query;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.impl.DefaultNameConverter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Conditions {
 
@@ -120,11 +120,4 @@ public class Conditions {
 		}
 	}
 
-	public static void main(String[] args) {
-		Conditions conditions = new Conditions().condition("f1", "=", "1")
-				.and().left().condition("f2", "=", "2").or()
-				.condition("f3", "=", "3").right();
-
-		System.out.println(conditions.toString());
-	}
 }

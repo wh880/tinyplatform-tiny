@@ -23,11 +23,11 @@
  */
 package org.tinygroup.tinydb.testcase.operator;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.test.BaseTest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TestSqlOperator extends BaseTest{
 	
@@ -48,7 +48,7 @@ public class TestSqlOperator extends BaseTest{
 	}
 	
 //	BeanType[] getPagedBeans(String beanType,String sql);
-	public void testGetBensBySql(){
+	public void testGetBeansBySql(){
 		
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchDelete(insertBeans);
@@ -61,7 +61,7 @@ public class TestSqlOperator extends BaseTest{
 	}
 	
 //	BeanType[] getPagedBeans(String beanType,String sql, int start, int limit);
-	public void testPagingGetBensBySql(){
+	public void testPagingGetBeansBySql(){
 		
 		//getOperator().delete(getPagedBeans());
 		Bean[] insertBeans = getBeans(25);
@@ -80,7 +80,7 @@ public class TestSqlOperator extends BaseTest{
 	}
 	
 //	BeanType[] getPagedBeans(String beanType,String sql, Map<String, Object> parameters);
-	public void testGetBensBySqlAndMap(){
+	public void testGetBeansBySqlAndMap(){
 		
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchDelete(insertBeans);
@@ -95,7 +95,7 @@ public class TestSqlOperator extends BaseTest{
 	
 //	BeanType[] getPagedBeans(String beanType,String sql, int start, int limit,
 //			Map<String, Object> parameters);
-	public void testPagingGetBensBySqlAndMap(){
+	public void testPagingGetBeansBySqlAndMap(){
 		
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchInsert(insertBeans);
@@ -114,7 +114,7 @@ public class TestSqlOperator extends BaseTest{
 	}
 	
 //	BeanType[] getPagedBeans(String beanType,String sql, Object... parameters);
-	public void testGetBensBySqlAndArray(){
+	public void testGetBeansBySqlAndArray(){
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);
@@ -127,7 +127,7 @@ public class TestSqlOperator extends BaseTest{
 	}
 	
 //	BeanType[] getPagedBeans(String beanType,String sql, int start, int limit, Object... parameters);
-	public void testPagingGetBensBySqlAndArray(){
+	public void testPagingGetBeansBySqlAndArray(){
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);

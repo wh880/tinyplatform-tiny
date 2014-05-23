@@ -87,7 +87,7 @@ public class NodeServiceContainer2 {
 
 	public void setNodeStrategyBean(String nodeStrategyBean) {
 		this.nodeStrategyBean = nodeStrategyBean;
-		logger.logMessage(LogLevel.INFO, "NodeServiceContainer2负载均衡bean:",
+		logger.logMessage(LogLevel.INFO, "NodeServiceContainer2负载均衡bean:{0}",
 				nodeStrategyBean);
 	}
 

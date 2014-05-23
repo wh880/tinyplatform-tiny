@@ -31,6 +31,7 @@ import java.util.Map;
 
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
+import org.tinygroup.database.util.DataBaseUtil;
 
 
 public class Db2SqlProcessorImpl extends SqlProcessorImpl {
@@ -46,20 +47,20 @@ public class Db2SqlProcessorImpl extends SqlProcessorImpl {
 	public boolean checkTableExist(Table table, String catalog,
 			DatabaseMetaData metadata) {
 
+		ResultSet r = null;
 		try {
-			String schema = table.getSchema();
-			if(schema == null ||"".equals(schema)){
-				schema = metadata.getUserName();
-			}
-			ResultSet r = metadata.getTables(catalog, schema.toUpperCase(),
-					table.getNameWithOutSchema().toUpperCase(), new String[] { "TABLE" });
-			
-			while (r.next()) {
+			String schema = DataBaseUtil.getSchema(table, metadata);
+			r = metadata.getTables(catalog, schema.toUpperCase(), table.getNameWithOutSchema().toUpperCase(),
+					new String[] { "TABLE" });
+
+			if (r.next()) {
 				return true;
 			}
 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			DataBaseUtil.closeResultSet(r);
 		}
 
 		return false;

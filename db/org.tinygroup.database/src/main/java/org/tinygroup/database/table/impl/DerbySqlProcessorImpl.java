@@ -27,11 +27,13 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
+import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
 
@@ -42,38 +44,31 @@ public class DerbySqlProcessorImpl extends SqlProcessorImpl {
 	}
 
 	String appendIncrease() {
-		return " auto_increment ";
+		return " GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) ";
 	}
 	
 	public boolean checkTableExist(Table table, String catalog,
 			DatabaseMetaData metadata) {
 
+		ResultSet r = null;
 		try {
-			String schema = table.getSchema();
-			if(schema == null ||"".equals(schema)){
-				schema = metadata.getUserName();
-			}
-			ResultSet r = metadata.getTables(catalog, schema.toUpperCase(),
-					"%", new String[] { "TABLE" });
-			
-//			ResultSet r = metadata.getTables(catalog, schema,schema.toUpperCase()+"."+table.getNameWithOutSchema()
-//					DataBaseNameUtil.getTableNameFormat(table
-//							.getNameWithOutSchema()), new String[] { "TABLE" });
-			
-			while (r.next()) {
-				String tablename = r.getString("TABLE_NAME");
-				if(table.getNameWithOutSchema().toUpperCase().equals(tablename)){
-					return true;
-				}
+			String schema = DataBaseUtil.getSchema(table, metadata);
+			r = metadata.getTables(catalog, schema.toUpperCase(), table.getNameWithOutSchema().toUpperCase(),
+					new String[] { "TABLE" });
+
+			if (r.next()) {
+				return true;
 			}
 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			DataBaseUtil.closeResultSet(r);
 		}
 
 		return false;
 	}
-
+	
 	
 	protected List<String> dealExistFields(
 			Map<String, TableField> existInTable,
@@ -109,6 +104,23 @@ public class DerbySqlProcessorImpl extends SqlProcessorImpl {
 			
 		}
 		return existUpdateList;
+	}
+	
+	protected Map<String, Map<String, String>> getColumns(
+			DatabaseMetaData metadata, String catalog, Table table) {
+		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
+		try {
+			String schema = DataBaseUtil.getSchema(table, metadata);
+			if(schema!=null){
+				schema=schema.toUpperCase();
+			}
+			String tableName=table.getNameWithOutSchema().toUpperCase();
+			map= getColumns(metadata, catalog, schema, tableName);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return map;
+	
 	}
 
 }

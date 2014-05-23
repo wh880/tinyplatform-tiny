@@ -28,8 +28,6 @@ package org.tinygroup.tinydb.operator;
  * 
  * @author luoguo
  * 
- * @param <Bean>
- *            Bean类型
  * @param <K>
  *            主键类型，可能是int,long及其包装类型或String
  */

@@ -29,28 +29,43 @@ import java.util.HashMap;
  * Bean，用于描述各种对象
  */
 public class Bean extends HashMap<String, Object> {
-	private static final long serialVersionUID = 7766936015089695L;
-	private String type;// 对象所属的类，命名规则与类相同,
+    private static final long serialVersionUID = 7766936015089695L;
+    private String type;// 对象所属的类，命名规则与类相同,
 
-	public void setProperty(String propertyName, Object property) {
-		this.put(propertyName, property);
-	}
+    public Bean(Bean bean) {
+        putAll(bean);
+        type = bean.getType();
+    }
 
-	@SuppressWarnings("unchecked")
-	public <T> T getProperty(String propertyName) {
-		return (T) this.get(propertyName);
-	}
+    public Bean setProperty(String propertyName, Object property) {
+        put(propertyName, property);
+        return this;
+    }
 
-	/**
-	 * 
-	 * @param type
-	 */
-	public Bean(String type) {
-		this.type = type;
-	}
+    public Bean set(String propertyName, Object property) {
+        put(propertyName, property);
+        return this;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public Bean setProperty(Bean bean) {
+        putAll(bean);
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getProperty(String propertyName) {
+        return (T) this.get(propertyName);
+    }
+
+    /**
+     * @param type
+     */
+    public Bean(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
 
 }
