@@ -42,6 +42,11 @@ public class Bean extends HashMap<String, Object> {
         return this;
     }
 
+    public Bean set(String propertyName, Object property) {
+        put(propertyName, property);
+        return this;
+    }
+
     public Bean setProperty(Bean bean) {
         putAll(bean);
         return this;
