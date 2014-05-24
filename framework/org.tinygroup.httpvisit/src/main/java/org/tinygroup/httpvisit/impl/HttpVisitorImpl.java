@@ -56,7 +56,14 @@ public class HttpVisitorImpl implements HttpVisitor {
     private UsernamePasswordCredentials proxyUserPassword;
     private Map<String, String> headerMap = new HashMap<String, String>();
 
-
+    public HttpVisitorImpl(){
+        headerMap.put("Accept", "text/html, application/xhtml+xml, */*");
+        headerMap.put("Accept-Language", "zh-CN,en-US;q=0.5");
+        headerMap.put("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)");
+        headerMap.put("Accept-Encoding", "gzip, deflate");
+        headerMap.put("Host", "localhost:9999");
+        headerMap.put("Connection", "Keep-Alive");
+    }
     public void setProxy(String proxyHost, int proxyPort, String userName, String passwrod) {
         this.proxyHost = proxyHost;
         this.proxyPort = proxyPort;
@@ -255,7 +262,7 @@ public class HttpVisitorImpl implements HttpVisitor {
     }
 
     public void setHeaderMap(Map<String, String> headerMap) {
-        this.headerMap = headerMap;
+        this.headerMap.putAll(headerMap);
     }
 
     public HttpVisitor setHeader(String key, String value) {
