@@ -6,6 +6,8 @@ import org.tinygroup.compiler.CompileException;
 import org.tinygroup.compiler.impl.FileSource;
 import org.tinygroup.compiler.impl.FileSourceJdtCompiler;
 
+import java.io.File;
+
 public class FileSourceJdtCompilerTest extends TestCase{
 
 //	public static void main(String[] args) throws CompileException {
@@ -20,8 +22,8 @@ public class FileSourceJdtCompilerTest extends TestCase{
 	
 	public  void testCompile() {
 		String path = System.getProperty("user.dir");
-		String newPath = path+"\\test";
-		String newPath1 = path+"\\test1";
+		String newPath = path+ File.separatorChar+"test";
+		String newPath1 = path+File.separatorChar+"test1";
 		FileSourceJdtCompiler compiler = new FileSourceJdtCompiler();
 		FileSource[] fileSources = { new FileSource(newPath),
 				new FileSource(newPath1) };
