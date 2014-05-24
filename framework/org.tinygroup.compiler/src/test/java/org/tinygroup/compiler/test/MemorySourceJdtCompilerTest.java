@@ -1,22 +1,22 @@
 package org.tinygroup.compiler.test;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.compiler.CompileException;
 import org.tinygroup.compiler.impl.MemorySource;
 import org.tinygroup.compiler.impl.MemorySourceJdtCompiler;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 public class MemorySourceJdtCompilerTest extends TestCase{
 	public void testCompile() {
 		
 		String path = System.getProperty("user.dir");
-		String filePath = path+"\\test1\\org\\tinygroup\\Grade.java";
-		String sourceFolder = path+"\\test2";
+		String filePath = path+ File.separatorChar+"test1"+File.separatorChar+"org\"+File.separatorChar+\"tinygroup\"+File.separatorChar+\"Grade.java";
+		String sourceFolder = path+"\"+File.separatorChar+\"test2";
 		String content = selfReadFile(filePath);
 		MemorySource source = new MemorySource("org.tinygroup.Grade", content);
 		MemorySourceJdtCompiler msc = new MemorySourceJdtCompiler(sourceFolder);
