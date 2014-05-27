@@ -70,6 +70,7 @@ public interface ConfigurationManager {
      */
     <T> void setConfiguration(String key, String value);
 
+    Map<String,String> getConfiguration();
     /**
      * @param type
      * @param key

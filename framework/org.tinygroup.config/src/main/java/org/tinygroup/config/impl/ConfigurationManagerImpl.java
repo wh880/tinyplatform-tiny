@@ -91,4 +91,8 @@ public class ConfigurationManagerImpl implements org.tinygroup.config.Configurat
             setComponentConfigurationMap(configurationLoader.loadComponentConfiguration());
         }
     }
+
+	public Map<String, String> getConfiguration() {
+		return configuration;
+	}
 }

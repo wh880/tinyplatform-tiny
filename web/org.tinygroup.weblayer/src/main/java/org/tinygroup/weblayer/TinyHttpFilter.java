@@ -79,7 +79,7 @@ public class TinyHttpFilter implements Filter {
 		WebContext context = new WebContextImpl();
 		context.put("springUtil", SpringUtil.class);
 		context.put("context", context);
-		context.putSubContext("applicationproperties", new ContextImpl(ConfigurationUtil.getConfigurationManager().getApplicationPropertiesMap()));
+		context.putSubContext("applicationproperties", new ContextImpl(ConfigurationUtil.getConfigurationManager().getConfiguration()));
 		putRequstInfo(request, context);
 
 		context.init(request, response,

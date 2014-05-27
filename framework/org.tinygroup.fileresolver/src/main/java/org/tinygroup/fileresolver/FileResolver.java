@@ -27,7 +27,9 @@ import org.tinygroup.config.Configuration;
 import org.tinygroup.vfs.FileObject;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * 文件查找器
@@ -50,7 +52,7 @@ public interface FileResolver extends Configuration {
      *
      * @return
      */
-    Set<FileObject> getResolveFileObjectSet();
+    Set<String> getResolveFileObjectSet();
 
     /**
      * 手工添加扫描的匹配列表，如果有包含列表，则按包含列表
@@ -58,7 +60,7 @@ public interface FileResolver extends Configuration {
      * @param pattern
      */
     void addIncludePathPattern(String pattern);
-
+    Map<String, Pattern> getIncludePathPatternMap();
     /**
      * 添加扫描的路径
      *

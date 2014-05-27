@@ -23,6 +23,14 @@
  */
 package org.tinygroup.fileresolver.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 import org.tinygroup.commons.order.OrderUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
@@ -34,12 +42,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-import org.tinygroup.vfs.impl.FileSchemaProvider;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 功能说明: 文件搜索器默认实现
@@ -63,15 +66,16 @@ public class FileResolverImpl implements FileResolver {
     private Map<String, Long> fileDateMap = new HashMap<String, Long>();
     // 文件信息
     private Map<String, FileObject> fileObjectCaches = new HashMap<String, FileObject>();
+    
     private Map<String, Pattern> includePathPatternMap = new HashMap<String, Pattern>();
+    private Set<String> allScanningPath = new HashSet<String>();
 
-    private Set<FileObject> resolveFileObjectSet = new HashSet<FileObject>();
     private XmlNode componentConfig;
     private XmlNode applicationConfig;
     private ClassLoader classLoader;
 
-    public Set<FileObject> getResolveFileObjectSet() {
-        return resolveFileObjectSet;
+    public Set<String> getResolveFileObjectSet() {
+        return allScanningPath;
     }
 
     public List<FileProcessor> getFileProcessorList() {
@@ -129,7 +133,8 @@ public class FileResolverImpl implements FileResolver {
 
     private void refreshScanPath() {
         Set<FileObject> classPaths = new HashSet<FileObject>();
-        for (FileObject fileObject : resolveFileObjectSet) {
+        for (String filePath : allScanningPath) {
+        	FileObject fileObject = VFS.resolveFile(filePath);
             Long lastModifiedTime = fileDateMap.get(fileObject.getAbsolutePath());
             long modifiedTime = fileObject.getLastModifiedTime();
             if (lastModifiedTime.longValue() != modifiedTime || !fileObject.isInPackage()) {
@@ -144,8 +149,9 @@ public class FileResolverImpl implements FileResolver {
 
     private void resolverScanPath() {
         Set<FileObject> classPaths = new HashSet<FileObject>();
-
-        for (FileObject fileObject : classPaths) {
+        for (String filePath : allScanningPath) {
+        	FileObject fileObject = VFS.resolveFile(filePath);
+        	classPaths.add(fileObject);
             long modifiedTime = fileObject.getLastModifiedTime();
             fileDateMap.put(fileObject.getAbsolutePath(), modifiedTime);
         }
@@ -160,22 +166,7 @@ public class FileResolverImpl implements FileResolver {
         for (FileProcessor fileProcessor : fileProcessorList) {
             fileProcessor.clean();
         }
-        resolveFileObjectSet.clear();
-    }
-
-    boolean isInclude(FileObject fileObject) {
-        if (fileObject.getSchemaProvider() instanceof FileSchemaProvider) {
-            return true;
-        }
-        for (String patternString : includePathPatternMap.keySet()) {
-            Pattern pattern = includePathPatternMap.get(patternString);
-            Matcher matcher = pattern.matcher(fileObject.getFileName());
-            if (matcher.find()) {
-                logger.logMessage(LogLevel.INFO, "文件<{}>由于匹配了包含正则表达式<{}>而被扫描。", fileObject, patternString);
-                return true;
-            }
-        }
-        return false;
+        allScanningPath.clear();
     }
 
 
@@ -203,7 +194,7 @@ public class FileResolverImpl implements FileResolver {
         processFile(fileObject);
         if (fileObject.isFolder() && fileObject.getChildren() != null) {
             for (FileObject f : fileObject.getChildren()) {
-                if (!resolveFileObjectSet.contains(f.getAbsolutePath())) {
+                if (!allScanningPath.contains(f.getAbsolutePath())) {
                     resolveFileObject(f);
                 } else {
                     logger.logMessage(LogLevel.INFO, "文件:[{}]在扫描根路径列表中存在，将作为根路径进行扫描", f.getAbsolutePath());
@@ -284,14 +275,14 @@ public class FileResolverImpl implements FileResolver {
     }
 
     public void addResolveFileObject(FileObject fileObject) {
-        if (!resolveFileObjectSet.contains(fileObject)) {
-            resolveFileObjectSet.add(fileObject);
-        }
+    	String path = fileObject.getAbsolutePath();
+    	if(!allScanningPath.contains(path)){
+    		allScanningPath.add(path);
+    	}
     }
 
     public void addResolvePath(String path) {
-        FileObject fileObject = VFS.resolveFile(path);
-        addResolveFileObject(fileObject);
+    	addResolveFileObject(VFS.resolveFile(path));
     }
 
 
@@ -383,5 +374,10 @@ public class FileResolverImpl implements FileResolver {
         return fileProcessorThreadNum;
 
     }
+
+	public Map<String, Pattern> getIncludePathPatternMap() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
