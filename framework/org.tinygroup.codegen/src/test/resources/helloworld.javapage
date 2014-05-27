@@ -1,0 +1,15 @@
+package $beanPackageName;
+
+import java.io.Serializable;
+
+
+public class $className implements Serializable{
+
+     public String sayHello(String name){
+           if(name==null){
+              name="haha";
+           }
+            return "hello"+name;
+     }
+
+}

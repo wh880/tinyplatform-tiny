@@ -1,0 +1,29 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName" default-lazy-init="true">
+
+	<bean id="javaTemplateFileProcessor" scope="singleton"
+		class="org.tinygroup.docgen.fileresolver.TemplateFileProcessor">
+		<property name="fileExtName" value=".javatemplate"></property>
+		<property name="documentType" value="java"></property>
+		<property name="generate">
+		  <ref bean="javaDocumentGenerater"/>
+		</property>
+	</bean>
+	<bean id="javaDocumentGenerater" scope="singleton"
+		class="org.tinygroup.docgen.impl.DocumentGeneraterImpl">
+		<property name="documentGeneraterVelocityHelper">
+			<ref bean="javaDocumentGeneraterVelocityHelper" />
+		</property>
+	</bean>
+	<bean id="javaDocumentGeneraterVelocityHelper" scope="singleton"
+		class="org.tinygroup.velocity.impl.VelocityHelperImpl">
+		<property name="fullContextFileRepository">
+			<ref bean="fullContextFileRepository" />
+		</property>
+	</bean>
+</beans>
