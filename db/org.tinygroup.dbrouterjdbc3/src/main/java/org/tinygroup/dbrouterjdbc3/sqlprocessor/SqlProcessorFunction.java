@@ -267,8 +267,9 @@ public class SqlProcessorFunction implements StatementProcessor {
                         return false;
                     }
                 }
+                return true;
             }
-            return true;
+            return false;
         }
 
         public List<Object> getValues() {
@@ -319,16 +320,12 @@ public class SqlProcessorFunction implements StatementProcessor {
      * <br>
      */
     class RowData {
-    	private ResultSet resultSet;
     	private Object[] values;
     	private Map<Integer, SelectItemMemory> aggrerateItems = new HashMap<Integer, SelectItemMemory>();
     	private Long addedCount = 0l;
-    	private int resultRowIndex;
 
         public RowData(int resultRowIndex, ResultSet resultSet, List<SelectItemMemory> items)
                 throws SQLException {
-            this.resultSet = resultSet;
-            this.resultRowIndex = resultRowIndex;
             if (!CollectionUtil.isEmpty(items)) {
                 values = new Object[items.size()];
                 for (int i = 0; i < items.size(); i++) {
@@ -353,8 +350,10 @@ public class SqlProcessorFunction implements StatementProcessor {
         }
 
         public Long getCount(int index) throws SQLException {
-            resultSet.absolute(resultRowIndex);
-            return resultSet.getLong(index + 1);
+        	if(values!=null&&values.length>index){
+        		return Long.parseLong(values[index].toString());
+        	}
+        	throw new SQLException("calculation count error");
         }
 
         public Long getAddedCount() throws SQLException {
@@ -362,23 +361,31 @@ public class SqlProcessorFunction implements StatementProcessor {
         }
 
         public Double getSum(Integer index) throws SQLException {
-            resultSet.absolute(resultRowIndex);
-            return resultSet.getDouble(index + 1);
+        	if(values!=null&&values.length>index){
+        		return Double.parseDouble(values[index].toString());
+        	}
+        	throw new SQLException("calculation sum error");
         }
 
         public Double getMax(Integer index) throws SQLException {
-            resultSet.absolute(resultRowIndex);
-            return resultSet.getDouble(index + 1);
+        	if(values!=null&&values.length>index){
+        		return Double.parseDouble(values[index].toString());
+        	}
+        	throw new SQLException("calculation max error");
         }
 
-        public double getMin(Integer index) throws SQLException {
-            resultSet.absolute(resultRowIndex);
-            return resultSet.getDouble(index + 1);
+        public Double getMin(Integer index) throws SQLException {
+        	if(values!=null&&values.length>index){
+        		return Double.parseDouble(values[index].toString());
+        	}
+        	throw new SQLException("calculation min error");
         }
 
-        public double getAvg(Integer index) throws SQLException {
-            resultSet.absolute(resultRowIndex);
-            return resultSet.getDouble(index + 1);
+        public Double getAvg(Integer index) throws SQLException {
+        	if(values!=null&&values.length>index){
+        		return Double.parseDouble(values[index].toString());
+        	}
+        	throw new SQLException("calculation avg error");
         }
 
     }
