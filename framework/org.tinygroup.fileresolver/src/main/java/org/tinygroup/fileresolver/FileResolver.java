@@ -69,6 +69,8 @@ public interface FileResolver extends Configuration {
     void addResolveFileObject(FileObject fileObject);
 
     void addResolvePath(String path);
+    
+    void addResolvePath(Set<String> paths);
 
     /**
      * 增加文件处理器

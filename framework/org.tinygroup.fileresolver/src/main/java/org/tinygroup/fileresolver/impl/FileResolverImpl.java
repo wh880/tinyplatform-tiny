@@ -284,6 +284,12 @@ public class FileResolverImpl implements FileResolver {
     public void addResolvePath(String path) {
     	addResolveFileObject(VFS.resolveFile(path));
     }
+    
+    public void addResolvePath(Set<String> paths) {
+    	for(String path:paths){
+    		addResolveFileObject(VFS.resolveFile(path));
+    	}
+    }
 
 
     public int getFileProcessorThreadNumber() {
