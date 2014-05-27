@@ -129,6 +129,7 @@
                         <exclude>**/*.properties</exclude>
                         <exclude>**/*.xsd</exclude>
                         <exclude>**/*.js</exclude>
+                        <exclude>**/*.sql</exclude>
                         <exclude>**/*.css</exclude>
                         <exclude>**/*.html</exclude>
                         <exclude>**/*.htm</exclude>
