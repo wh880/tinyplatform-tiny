@@ -13,12 +13,6 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-/**
- * Copyright 2000-2001 by iPlanet/Sun Microsystems, Inc.,
- * 901 San Antonio Road, Palo Alto, California, 94303, U.S.A.
- * All rights reserved.
- */
- 
 package org.tinygroup.jspengine.appserv.util.cache;
 
 import java.text.MessageFormat;
