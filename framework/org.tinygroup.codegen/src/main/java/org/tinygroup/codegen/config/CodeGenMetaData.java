@@ -1,70 +1,93 @@
 package org.tinygroup.codegen.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @XStreamAlias("code-metadata")
 public class CodeGenMetaData {
+    /**
+     * 分类
+     */
     @XStreamAsAttribute
-    @XStreamAlias("catalog")
-	private String catalog;
+    @XStreamAlias("category")
+    private String category;
+    /**
+     * 图标
+     */
     @XStreamAsAttribute
     @XStreamAlias("icon")
-	private String icon;
+    private String icon;
+    /**
+     * 标题
+     */
     @XStreamAsAttribute
     @XStreamAlias("title")
-	private String title;
-	@XStreamImplicit
-	private List<Template> templates;
-	@XStreamAsAttribute
-    @XStreamAlias("ui-path")
-	private String uiPath;
+    private String title;
+    /**
+     * 长描述
+     */
+    private String description;
+    @XStreamImplicit
+    private List<TemplateDefine> templateDefines;
+    /**
+     * 人机界面交互定义方件
+     */
+    @XStreamAsAttribute
+    @XStreamAlias("ui-define-file")
+    private String uiDefineFile;
 
-	public String getCatalog() {
-		return catalog;
-	}
+    public String getCategory() {
+        return category;
+    }
 
-	public void setCatalog(String catalog) {
-		this.catalog = catalog;
-	}
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-	public String getIcon() {
-		return icon;
-	}
+    public String getIcon() {
+        return icon;
+    }
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public List<Template> getTemplates() {
-		if(templates==null){
-			templates=new ArrayList<Template>();
-		}
-		return templates;
-	}
+    public List<TemplateDefine> getTemplateDefines() {
+        if (templateDefines == null) {
+            templateDefines = new ArrayList<TemplateDefine>();
+        }
+        return templateDefines;
+    }
 
-	public void setTemplates(List<Template> templates) {
-		this.templates = templates;
-	}
+    public void setTemplateDefines(List<TemplateDefine> templateDefines) {
+        this.templateDefines = templateDefines;
+    }
 
-	public String getUiPath() {
-		return uiPath;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setUiPath(String uiPath) {
-		this.uiPath = uiPath;
-	}
-	
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getUiDefineFile() {
+        return uiDefineFile;
+    }
+
+    public void setUiDefineFile(String uiDefineFile) {
+        this.uiDefineFile = uiDefineFile;
+    }
 }

@@ -6,7 +6,7 @@
 	<file-resolver-configuration
 		resolve-classpath="true">
 		<class-paths>
-			<!-- <class-path path="{TINY_WEBROOT}\WEB-INF\lib" /> 
+			<!-- <class-templatePath templatePath="{TINY_WEBROOT}\WEB-INF\lib" />
 			 -->
 		</class-paths>
 		<full-context-file-finder>
