@@ -1,0 +1,4 @@
+<code-metadata category="javacode" icon="" name="codegen" title="java代码生成" description="java代码生成的元数据文件">
+<template-define template-path="D:\tiny-git\tiny\framework\org.tinygroup.codegen\src\test\resources\helloworld.javapage" file-name-template="${JAVA_TEST_ROOT}$codeGenUtil.repalcePackage($beanPackageName)${className}.java"></template-define>
+<template-define template-path="D:\tiny-git\tiny\framework\org.tinygroup.codegen\src\test\resources\helloworld.beanpage" file-name-template="${templateFilePath}${templateFileName}.xml"></template-define>
+</code-metadata>

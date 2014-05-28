@@ -17,6 +17,7 @@ public class TemplateDefine {
     /**
      * 利用模板文件生成文件时，生成文件的名称模板
      */
+    @XStreamAsAttribute
     @XStreamAlias("file-name-template")
     private String fileNameTemplate;
 
@@ -27,5 +28,15 @@ public class TemplateDefine {
     public void setTemplatePath(String templatePath) {
         this.templatePath = templatePath;
     }
+
+	public String getFileNameTemplate() {
+		return fileNameTemplate;
+	}
+
+	public void setFileNameTemplate(String fileNameTemplate) {
+		this.fileNameTemplate = fileNameTemplate;
+	}
+    
+    
 
 }

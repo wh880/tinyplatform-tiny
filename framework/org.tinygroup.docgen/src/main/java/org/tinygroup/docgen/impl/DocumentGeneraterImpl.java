@@ -17,6 +17,7 @@ package org.tinygroup.docgen.impl;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 
 import org.tinygroup.context.Context;
@@ -69,6 +70,12 @@ public class DocumentGeneraterImpl implements DocumentGenerater {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public String evaluteString(Context context, String inputString) {
+		StringWriter writer=new StringWriter();
+		documentGeneraterVelocityHelper.evaluteString(context, writer, inputString);
+		return writer.toString();
 	}
 
 }

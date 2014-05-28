@@ -11,9 +11,6 @@
 			<list>
 				<ref bean="i18nFileProcessor" />
 				<ref bean="xStreamFileProcessor" />
-				<ref bean="configurationFileProcessor"/>
-				<ref bean="fullContextFileFinder"/>
-				<ref bean="javaTemplateFileProcessor"/>
 			</list>
 		</property>
 	</bean>

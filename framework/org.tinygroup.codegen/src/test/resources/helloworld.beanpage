@@ -6,16 +6,7 @@
                     http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
-	<bean id="codeDocumentGenerater" scope="singleton"
-		class="org.tinygroup.docgen.impl.DocumentGeneraterImpl">
-		<property name="documentGeneraterVelocityHelper">
-			<ref bean="codeDocumentGeneraterVelocityHelper" />
-		</property>
-	</bean>
-	<bean id="codeDocumentGeneraterVelocityHelper" scope="singleton"
-		class="org.tinygroup.velocity.impl.VelocityHelperImpl">
-		<property name="fullContextFileRepository">
-			<ref bean="fullContextFileRepository" />
-		</property>
+	<bean id="$stringUtil.toCamelCase($className)" scope="prototype"
+		class="$beanPackageName.$className">
 	</bean>
 </beans>

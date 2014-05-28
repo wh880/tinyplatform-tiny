@@ -190,7 +190,7 @@ public class AggregateTest extends TestCase {
 	}
 
 	public void testMaxWithFirstAndLast() throws SQLException {
-		String sql = "select max(score) score,name,course from score group by name order by score";
+		String sql = "select max(score) score,name from score group by name order by score";
 		ResultSet resultSet = stmt.executeQuery(sql);
 		resultSet.absolute(1);
 		assertEquals(97, resultSet.getInt(1));

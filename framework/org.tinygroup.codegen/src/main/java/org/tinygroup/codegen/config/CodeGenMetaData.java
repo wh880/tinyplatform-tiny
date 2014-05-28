@@ -27,12 +27,19 @@ public class CodeGenMetaData {
     @XStreamAsAttribute
     @XStreamAlias("title")
     private String title;
+    
+    @XStreamAsAttribute
+    @XStreamAlias("name")
+    private String name;
     /**
      * 长描述
      */
+    @XStreamAsAttribute
     private String description;
     @XStreamImplicit
     private List<TemplateDefine> templateDefines;
+    @XStreamImplicit
+    private List<MacroDefine> macroDefines;
     /**
      * 人机界面交互定义方件
      */
@@ -90,4 +97,26 @@ public class CodeGenMetaData {
     public void setUiDefineFile(String uiDefineFile) {
         this.uiDefineFile = uiDefineFile;
     }
+
+	public List<MacroDefine> getMacroDefines() {
+		if(macroDefines==null){
+			macroDefines=new ArrayList<MacroDefine>();
+		}
+		return macroDefines;
+	}
+
+	public void setMacroDefines(List<MacroDefine> macroDefines) {
+		this.macroDefines = macroDefines;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+    
 }

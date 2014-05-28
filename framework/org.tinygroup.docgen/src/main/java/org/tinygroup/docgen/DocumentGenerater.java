@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.Writer;
 
 import org.tinygroup.context.Context;
+import org.tinygroup.velocity.VelocityHelper;
 import org.tinygroup.vfs.FileObject;
 
 /**
@@ -76,4 +77,15 @@ public interface DocumentGenerater {
 	 *            宏模板文件
 	 */
 	void removeMacroFile(FileObject fileObject);
+	
+	public VelocityHelper getDocumentGeneraterVelocityHelper();
+	
+	public void setDocumentGeneraterVelocityHelper(VelocityHelper helper);
+	
+	/**
+	 * 转化输入的字符串
+	 * @param context
+	 * @param string
+	 */
+	String evaluteString(Context context, String inputString);
 }
