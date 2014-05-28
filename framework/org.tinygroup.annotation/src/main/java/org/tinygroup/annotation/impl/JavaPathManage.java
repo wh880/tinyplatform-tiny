@@ -23,13 +23,11 @@
  */
 package org.tinygroup.annotation.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.vfs.FileObject;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * 类路径管理
@@ -56,18 +54,31 @@ public class JavaPathManage {
     private FileResolver fileResolver;
 
     public void init() {
-        fileResolver = SpringUtil.getBean(FILE_RESOLVER);
-        Collection<FileObject> fileObjects = fileResolver.getResolveFileObjectSet();
-        for (FileObject fileObject : fileObjects) {
-            String path = fileObject.getAbsolutePath();
-            if (path.indexOf(JAR_SUFFIX) == -1) {
-                if (!path.endsWith(SLASH_MARK)) {
-                    path = path.concat(SLASH_MARK);
-                }
-                javaPaths.add(path.replace(BACK_SLASH, SLASH_MARK));
-            }
-        }
-    }
+		fileResolver = SpringUtil.getBean(FILE_RESOLVER);
+		List<String> paths=new ArrayList<String>();
+		paths.addAll(fileResolver.getResolveFileObjectSet());
+		for (String path : paths) {
+			if(path.indexOf(JAR_SUFFIX)==-1){
+				if(!path.endsWith(SLASH_MARK)){
+					path=path.concat(SLASH_MARK);
+				}
+			javaPaths.add(path.replace(BACK_SLASH, SLASH_MARK));
+			}
+		}
+	}
+//    public void init() {
+//        fileResolver = SpringUtil.getBean(FILE_RESOLVER);
+//        Collection<FileObject> fileObjects = fileResolver.getResolveFileObjectSet();
+//        for (FileObject fileObject : fileObjects) {
+//            String path = fileObject.getAbsolutePath();
+//            if (path.indexOf(JAR_SUFFIX) == -1) {
+//                if (!path.endsWith(SLASH_MARK)) {
+//                    path = path.concat(SLASH_MARK);
+//                }
+//                javaPaths.add(path.replace(BACK_SLASH, SLASH_MARK));
+//            }
+//        }
+//    }
 
     /**
      * 根据路径获取类全路径
