@@ -15,9 +15,7 @@
  */
 package org.tinygroup.service.fileresolver;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -32,86 +30,95 @@ import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
-		FileProcessor {
-	private static Logger logger = LoggerFactory
-			.getLogger(XmlServiceFileProcessor.class);
-	private static final String SERVICE_EXT_FILENAME = ".service.xml";
+        FileProcessor {
+    private static Logger logger = LoggerFactory
+            .getLogger(XmlServiceFileProcessor.class);
+    private static final String SERVICE_EXT_FILENAME = ".service.xml";
 
-	private List<ServiceComponents> list = new ArrayList<ServiceComponents>();
+    private List<ServiceComponents> list = new ArrayList<ServiceComponents>();
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(SERVICE_EXT_FILENAME);
-	}
-
-
-	public void process() {
-		ServiceProviderInterface provider = SpringUtil.getBean("service");
-		XStream stream = XStreamFactory
-				.getXStream(Service.SERVICE_XSTREAM_PACKAGENAME);
-		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除Service文件[{0}]",
-					fileObject.getAbsolutePath());
-			ServiceComponents components = (ServiceComponents)caches.get(fileObject.getAbsolutePath());
-			if(components!=null){
-				list.remove(components);
-				caches.remove(fileObject.getAbsolutePath());
-			}
-			logger.logMessage(LogLevel.INFO, "移除Service文件[{0}]结束",
-					fileObject.getAbsolutePath());
-		}
-		
-		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在读取Service文件[{0}]",
-					fileObject.getAbsolutePath());
-			try {
-				ServiceComponents oldComponents = (ServiceComponents)caches.get(fileObject.getAbsolutePath());
-				if(oldComponents!=null){
-					list.remove(oldComponents);
-				}	
-				ServiceComponents components = (ServiceComponents) stream
-						.fromXML(fileObject.getInputStream());
-				list.add(components);
-				caches.put(fileObject.getAbsolutePath(), components);
-			} catch (Exception e) {
-				logger.errorMessage("读取Service文件[{0}]出错", e,fileObject.getAbsolutePath());
-			}
-
-			logger.logMessage(LogLevel.INFO, "读取Service文件[{0}]结束",
-					fileObject.getAbsolutePath());
-		}
-		try {
-			logger.logMessage(LogLevel.INFO, "正在注册Service");
-			this.loadService(provider.getServiceRegistory());
-			logger.logMessage(LogLevel.INFO, "注册Service结束");
-		} catch (ServiceLoadException e) {
-			logger.errorMessage("注册Service时出错", e);
-		}
-		list.clear();//扫描结束后清空服务列表
-
-	}
+    public boolean isMatch(FileObject fileObject) {
+        return fileObject.getFileName().endsWith(SERVICE_EXT_FILENAME);
+    }
 
 
-	public void setConfigPath(String path) {
+    public void process() {
+        ServiceProviderInterface provider = SpringUtil.getBean("service");
+        XStream stream = XStreamFactory
+                .getXStream(Service.SERVICE_XSTREAM_PACKAGENAME);
+        for (FileObject fileObject : deleteList) {
+            logger.logMessage(LogLevel.INFO, "正在移除Service文件[{0}]",
+                    fileObject.getAbsolutePath());
+            ServiceComponents components = (ServiceComponents) caches.get(fileObject.getAbsolutePath());
+            if (components != null) {
+                list.remove(components);
+                caches.remove(fileObject.getAbsolutePath());
+            }
+            logger.logMessage(LogLevel.INFO, "移除Service文件[{0}]结束",
+                    fileObject.getAbsolutePath());
+        }
 
-	}
+        for (FileObject fileObject : changeList) {
+            logger.logMessage(LogLevel.INFO, "正在读取Service文件[{0}]",
+                    fileObject.getAbsolutePath());
+            try {
+                ServiceComponents oldComponents = (ServiceComponents) caches.get(fileObject.getAbsolutePath());
+                if (oldComponents != null) {
+                    list.remove(oldComponents);
+                }
+                ServiceComponents components = (ServiceComponents) stream
+                        .fromXML(fileObject.getInputStream());
+                list.add(components);
+                caches.put(fileObject.getAbsolutePath(), components);
+            } catch (Exception e) {
+                logger.errorMessage("读取Service文件[{0}]出错", e, fileObject.getAbsolutePath());
+            }
 
-	
-	protected List<ServiceComponents> getServiceComponents() {
-		return list;
-	}
+            logger.logMessage(LogLevel.INFO, "读取Service文件[{0}]结束",
+                    fileObject.getAbsolutePath());
+        }
+        try {
+            logger.logMessage(LogLevel.INFO, "正在注册Service");
+            this.loadService(provider.getServiceRegistory());
+            logger.logMessage(LogLevel.INFO, "注册Service结束");
+        } catch (ServiceLoadException e) {
+            logger.errorMessage("注册Service时出错", e);
+        }
+        list.clear();//扫描结束后清空服务列表
 
-	protected Object getServiceInstance(ServiceComponent component)
-			throws Exception {
-		if (component.getBean() == null || "".equals(component.getBean())) {
-			Class<?> clazz = Class.forName(component.getType());
-			return SpringUtil.getBean(clazz);
-		}
-		return SpringUtil.getBean(component.getBean());
-	}
+    }
 
 
+    public void setConfigPath(String path) {
 
+    }
+
+
+    protected List<ServiceComponents> getServiceComponents() {
+        return list;
+    }
+
+    protected Object getServiceInstance(ServiceComponent component)
+            throws Exception {
+        //如果没有定义bean ID
+        if (component.getBean() == null || "".equals(component.getBean())) {
+            Class<?> clazz = Class.forName(component.getType());
+            return SpringUtil.getBean(clazz);
+        }
+        try {
+            return SpringUtil.getBean(component.getBean());
+        } catch (Exception e) {
+            logger.logMessage(LogLevel.WARN, "查找Bean {}时发生异常：", component.getBean(), e.getMessage());
+            Class<?> clazz = Class.forName(component.getType());
+            if (!clazz.isInterface()) {
+                return clazz.newInstance();
+            } else {
+                throw e;
+            }
+        }
+    }
 }
