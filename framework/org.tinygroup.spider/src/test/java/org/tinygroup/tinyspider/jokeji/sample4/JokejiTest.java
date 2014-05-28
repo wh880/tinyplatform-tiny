@@ -27,11 +27,11 @@ import org.tinygroup.tinyspider.impl.WatcherImpl;
 public class JokejiTest {
     static UrlRepository repository = new UrlRepositoryMemory();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         processUrl("http://www.jokeji.cn");
     }
 
-    public static void processUrl(String url) {
+    public static void processUrl(String url) throws Exception {
         System.out.println("processing:"+url);
         Spider spider = new SpiderImpl("GBK");
         spider.setUrlRepository(repository);

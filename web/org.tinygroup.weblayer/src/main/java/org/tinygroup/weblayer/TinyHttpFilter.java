@@ -17,10 +17,12 @@ package org.tinygroup.weblayer;
 
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.context.impl.ContextImpl;
+import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.impl.WebContextImpl;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
@@ -34,132 +36,142 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class TinyHttpFilter implements Filter {
-	private static final String EXCLUDE_PATH = "excludePath";
-	private static final Logger logger = LoggerFactory
-			.getLogger(TinyHttpFilter.class);
-	private TinyProcessorManager tinyProcessorManager;
-	private TinyFilterManager tinyFilterManager;
+    private static final String EXCLUDE_PATH = "excludePath";
+    private static final Logger logger = LoggerFactory
+            .getLogger(TinyHttpFilter.class);
+    private TinyProcessorManager tinyProcessorManager;
+    private TinyFilterManager tinyFilterManager;
 
-	private List<Pattern> excludePatterns = new ArrayList<Pattern>();
+    private List<Pattern> excludePatterns = new ArrayList<Pattern>();
 
-	private FilterWrapper wrapper;
+    private FilterWrapper wrapper;
+    private FullContextFileRepository fullContextFileRepository;
+    private static String[] defaultFiles = {"index.page", "index.htm", "index.html", "index.jsp"};
 
-	public void destroy() {
-		destoryTinyProcessors();
-		destoryTinyFilters();
-		wrapper = null;
-	}
+    public void destroy() {
+        destoryTinyProcessors();
+        destoryTinyFilters();
+        wrapper = null;
+    }
 
-	private void destoryTinyFilters() {
-		tinyFilterManager.destoryTinyResources();
-		tinyFilterManager = null;
-	}
+    private void destoryTinyFilters() {
+        tinyFilterManager.destoryTinyResources();
+        tinyFilterManager = null;
+    }
 
-	/**
-	 * 销毁tiny-processors
-	 */
-	private void destoryTinyProcessors() {
-		tinyProcessorManager.destoryTinyResources();
-		tinyProcessorManager = null;
-	}
+    /**
+     * 销毁tiny-processors
+     */
+    private void destoryTinyProcessors() {
+        tinyProcessorManager.destoryTinyResources();
+        tinyProcessorManager = null;
+    }
 
-	public void doFilter(ServletRequest servletRequest,
-			ServletResponse servletResponse, FilterChain filterChain)
-			throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) servletRequest;
-		HttpServletResponse response = (HttpServletResponse) servletResponse;
-		WebContext context = new WebContextImpl();
-		context.put("springUtil", SpringUtil.class);
-		context.put("context", context);
-		context.putSubContext("applicationproperties", new ContextImpl(ConfigurationUtil.getConfigurationManager().getApplicationPropertiesMap()));
-		putRequstInfo(request, context);
+    public void doFilter(ServletRequest servletRequest,
+                         ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        WebContext context = new WebContextImpl();
+        context.put("springUtil", SpringUtil.class);
+        context.put("context", context);
+        context.putSubContext("applicationproperties", new ContextImpl(ConfigurationUtil.getConfigurationManager().getApplicationPropertiesMap()));
+        putRequstInfo(request, context);
 
-		context.init(request, response,
-				ServletContextHolder.getServletContext());
-		String servletPath = context.get(WebContextUtil.TINY_SERVLET_PATH);
-        if(servletPath.endsWith("/")){
-            servletPath=servletPath+"index.page";
+        context.init(request, response,
+                ServletContextHolder.getServletContext());
+        String servletPath = context.get(WebContextUtil.TINY_SERVLET_PATH);
+        if (servletPath.endsWith("/")) {
+            for (String defaultFile : defaultFiles) {
+                String tmpPath = servletPath + defaultFile;
+                FileObject fileObject = fullContextFileRepository.getFileObject(tmpPath);
+                if (fileObject != null && fileObject.isExist()) {
+                    servletPath = tmpPath;
+                    break;
+                }
+            }
         }
-		if (isExcluded(servletPath)) {
-			logger.logMessage(LogLevel.DEBUG, "请求路径:<{}>,被拒绝", servletPath);
-			filterChain.doFilter(request, response);
-			return;
-		}
-		TinyFilterHandler hander = new TinyFilterHandler(servletPath,
-				filterChain, context, tinyFilterManager, tinyProcessorManager);
-		if (wrapper != null) {
-			wrapper.filterWrapper(context, hander);
-		} else {
-			hander.tinyFilterProcessor(request,response);
-		}
-	}
+        if (isExcluded(servletPath)) {
+            logger.logMessage(LogLevel.DEBUG, "请求路径:<{}>,被拒绝", servletPath);
+            filterChain.doFilter(request, response);
+            return;
+        }
+        TinyFilterHandler hander = new TinyFilterHandler(servletPath,
+                filterChain, context, tinyFilterManager, tinyProcessorManager);
+        if (wrapper != null) {
+            wrapper.filterWrapper(context, hander);
+        } else {
+            hander.tinyFilterProcessor(request, response);
+        }
+    }
 
-	private void putRequstInfo(HttpServletRequest request, WebContext context) {
-		context.put(WebContextUtil.TINY_CONTEXT_PATH, request.getContextPath());
-		context.put(WebContextUtil.TINY_REQUEST_URI, request.getRequestURI());
-		String servletPath = request.getServletPath();
-		if (servletPath == null || servletPath.length() == 0) {
-			servletPath = request.getPathInfo();
-		}
-		context.put(WebContextUtil.TINY_SERVLET_PATH, servletPath);
-	}
+    private void putRequstInfo(HttpServletRequest request, WebContext context) {
+        context.put(WebContextUtil.TINY_CONTEXT_PATH, request.getContextPath());
+        context.put(WebContextUtil.TINY_REQUEST_URI, request.getRequestURI());
+        String servletPath = request.getServletPath();
+        if (servletPath == null || servletPath.length() == 0) {
+            servletPath = request.getPathInfo();
+        }
+        context.put(WebContextUtil.TINY_SERVLET_PATH, servletPath);
+    }
 
-	/**
-	 * 请求是否被排除
-	 * 
-	 * @param servletPath
-	 * @return
-	 */
-	private boolean isExcluded(String servletPath) {
-		for (Pattern pattern : excludePatterns) {
-			if (pattern.matcher(servletPath).matches()) {
-				return true;
-			}
-		}
-		return false;
-	}
+    /**
+     * 请求是否被排除
+     *
+     * @param servletPath
+     * @return
+     */
+    private boolean isExcluded(String servletPath) {
+        for (Pattern pattern : excludePatterns) {
+            if (pattern.matcher(servletPath).matches()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public void init(FilterConfig filterConfig) throws ServletException {
-		logger.logMessage(LogLevel.INFO, "filter初始化开始...");
+    public void init(FilterConfig filterConfig) throws ServletException {
+        logger.logMessage(LogLevel.INFO, "filter初始化开始...");
+        fullContextFileRepository = SpringUtil
+                .getBean("fullContextFileRepository");
+        initExcludePattern(filterConfig);
 
-		initExcludePattern(filterConfig);
+        initTinyFilters();
 
-		initTinyFilters();
+        initTinyFilterWrapper();
 
-		initTinyFilterWrapper();
+        initTinyProcessors();
+        logger.logMessage(LogLevel.INFO, "filter初始化结束...");
 
-		initTinyProcessors();
-		logger.logMessage(LogLevel.INFO, "filter初始化结束...");
+    }
 
-	}
+    private void initTinyFilterWrapper() {
+        wrapper = tinyFilterManager.getFilterWrapper();
+    }
 
-	private void initTinyFilterWrapper() {
-		wrapper = tinyFilterManager.getFilterWrapper();
-	}
+    private void initExcludePattern(FilterConfig filterConfig) {
+        excludePatterns.clear();//先清空
+        String excludePath = filterConfig.getInitParameter(EXCLUDE_PATH);
+        if (excludePath != null) {
+            String[] excludeArray = excludePath.split(",");
+            for (String path : excludeArray) {
+                excludePatterns.add(Pattern.compile(path));
+            }
+        }
+    }
 
-	private void initExcludePattern(FilterConfig filterConfig) {
-		excludePatterns.clear();//先清空
-		String excludePath = filterConfig.getInitParameter(EXCLUDE_PATH);
-		if (excludePath != null) {
-			String[] excludeArray = excludePath.split(",");
-			for (String path : excludeArray) {
-				excludePatterns.add(Pattern.compile(path));
-			}
-		}
-	}
+    private void initTinyFilters() {
+        tinyFilterManager = SpringUtil
+                .getBean(TinyFilterManager.TINY_FILTER_MANAGER);
+        tinyFilterManager.initTinyResources();
+    }
 
-	private void initTinyFilters() {
-		tinyFilterManager = SpringUtil
-				.getBean(TinyFilterManager.TINY_FILTER_MANAGER);
-		tinyFilterManager.initTinyResources();
-	}
-
-	/**
-	 * tiny-processors初始化
-	 */
-	private void initTinyProcessors() {
-		tinyProcessorManager = SpringUtil
-				.getBean(TinyProcessorManager.TINY_PROCESSOR_MANAGER);
-		tinyProcessorManager.initTinyResources();
-	}
+    /**
+     * tiny-processors初始化
+     */
+    private void initTinyProcessors() {
+        tinyProcessorManager = SpringUtil
+                .getBean(TinyProcessorManager.TINY_PROCESSOR_MANAGER);
+        tinyProcessorManager.initTinyResources();
+    }
 }

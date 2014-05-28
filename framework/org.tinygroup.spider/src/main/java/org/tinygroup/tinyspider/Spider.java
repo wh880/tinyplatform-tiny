@@ -41,12 +41,16 @@ public interface Spider {
      */
     void addWatcher(Watcher watcher);
 
+    Spider watch(Watcher watcher);
+
+    Spider visitor(SiteVisitor siteVisitor);
+
     /**
      * 处理url
      *
      * @param url
      */
-    void processUrl(String url);
+    void processUrl(String url) throws Exception;
 
     /**
      * 处理url
@@ -54,7 +58,7 @@ public interface Spider {
      * @param url
      * @param parameter
      */
-    void processUrl(String url, Map<String, Object> parameter);
+    void processUrl(String url, Map<String, Object> parameter) throws Exception;
 
     /**
      * 设置URL仓库

@@ -15,26 +15,21 @@
  */
 package org.tinygroup.tinyspider;
 
+import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.htmlparser.node.HtmlNode;
-import org.tinygroup.parser.filter.QuickNameFilter;
-import org.tinygroup.tinyspider.impl.SpiderImpl;
-import org.tinygroup.tinyspider.impl.WatcherImpl;
 
-public class oschinaTest {
+import java.io.FileOutputStream;
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Spider spider = new SpiderImpl();
-		Watcher watcher = new WatcherImpl();
-		watcher.addProcessor(new PrintOsChinaProcessor());
-		QuickNameFilter<HtmlNode> nodeFilter = new QuickNameFilter<HtmlNode>();
-		nodeFilter.setNodeName("div");
-		nodeFilter.setIncludeAttribute("class", "qbody");
-		watcher.setNodeFilter(nodeFilter);
-		spider.addWatcher(watcher);
-		spider.processUrl("http://www.oschina.net/question?catalog=1");
-	}
+public class OsChinaTopicProcessor implements Processor {
+    String title;
+    String categoryTitle;
+    public OsChinaTopicProcessor(String categoryTitle,String title){
+        this.title=title;
+        this.categoryTitle=categoryTitle;
+    }
+    public void process(String url, HtmlNode node) throws Exception{
+        String fileName=OSchinaSpider.outoutPath+url.substring(url.lastIndexOf('/')+1)+".page";
+            IOUtils.writeToOutputStream(new FileOutputStream(fileName), "#pageTitle(\"topic\" \"topic\")\n#title(\""+categoryTitle+"\" \""+title+"\")\n#[["+node.toString()+"]]#","UTF-8");
+    }
 
 }

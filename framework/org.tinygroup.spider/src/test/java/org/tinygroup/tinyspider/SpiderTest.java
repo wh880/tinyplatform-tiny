@@ -25,7 +25,7 @@ public class SpiderTest {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Spider spider = new SpiderImpl();
 		Watcher watcher = new WatcherImpl();
 		watcher.addProcessor(new PrintForumProcessor());
