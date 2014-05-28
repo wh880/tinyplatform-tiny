@@ -19,21 +19,19 @@ import org.tinygroup.htmlparser.node.HtmlNode;
 
 public class OsChinaCategoryProcessor implements Processor {
     String categoryTitle;
-    public OsChinaCategoryProcessor(String categoryTitle){
-        this.categoryTitle=categoryTitle;
+
+    public OsChinaCategoryProcessor(String categoryTitle) {
+        this.categoryTitle = categoryTitle;
     }
-    public void process(String url, HtmlNode node) {
+
+    public void process(String url, HtmlNode node) throws Exception{
         HtmlNode a = node.getSubNodeRecursively("h2").getSubNode("a");
         String href = a.getAttribute("href");
         String topicId = href.substring(href.lastIndexOf('/') + 1);
-        String link=String.format("<p><a href=\"%s.page\">%s</a></p>\n", topicId, a.getPureText());
-        try {
-            OSchinaSpider.outputStream.write(link.getBytes("UTF-8"));
-            //Thread.sleep(200);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //OSchinaSpider.processTopic(categoryTitle,topicId,a.getPureText());
+        String link = String.format("<p><a href=\"%s.page\">%s</a></p>\n", topicId, a.getPureText());
+        OSchinaSpider.outputStream.write(link.getBytes("UTF-8"));
+        //Thread.sleep(200);
+        OSchinaSpider.processTopic(categoryTitle, topicId, a.getPureText());
     }
 
 }

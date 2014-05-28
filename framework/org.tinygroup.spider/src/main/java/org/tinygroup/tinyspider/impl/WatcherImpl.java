@@ -15,33 +15,43 @@
  */
 package org.tinygroup.tinyspider.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.parser.NodeFilter;
 import org.tinygroup.tinyspider.Processor;
 import org.tinygroup.tinyspider.Watcher;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WatcherImpl implements Watcher {
 
-	private NodeFilter<HtmlNode> nodeFilter;
-	private List<Processor> processorList = new ArrayList<Processor>();
+    private NodeFilter<HtmlNode> nodeFilter;
+    private List<Processor> processorList = new ArrayList<Processor>();
 
-	public void setNodeFilter(NodeFilter<HtmlNode> nodeFilter) {
-		this.nodeFilter = nodeFilter;
-	}
+    public void setNodeFilter(NodeFilter<HtmlNode> nodeFilter) {
+        this.nodeFilter = nodeFilter;
+    }
 
-	public NodeFilter<HtmlNode> getNodeFilter() {
-		return this.nodeFilter;
-	}
+    public Watcher nodeFilter(NodeFilter<HtmlNode> filter) {
+        setNodeFilter(filter);
+        return this;
+    }
 
-	public void addProcessor(Processor processor) {
-		processorList.add(processor);
-	}
+    public NodeFilter<HtmlNode> getNodeFilter() {
+        return this.nodeFilter;
+    }
 
-	public List<Processor> getProcessorList() {
-		return this.processorList;
-	}
+    public void addProcessor(Processor processor) {
+        processorList.add(processor);
+    }
+
+    public Watcher processor(Processor processor) {
+        addProcessor(processor);
+        return this;
+    }
+
+    public List<Processor> getProcessorList() {
+        return this.processorList;
+    }
 
 }

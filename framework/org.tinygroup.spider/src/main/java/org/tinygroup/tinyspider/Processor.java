@@ -29,5 +29,5 @@ public interface Processor {
      * @param url  当前页面的Url
      * @param node 命中的节点
      */
-    void process(String url, HtmlNode node);
+    void process(String url, HtmlNode node)throws Exception;
 }

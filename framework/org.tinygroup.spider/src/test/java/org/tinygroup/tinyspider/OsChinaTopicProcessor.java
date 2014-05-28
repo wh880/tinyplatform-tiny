@@ -27,13 +27,9 @@ public class OsChinaTopicProcessor implements Processor {
         this.title=title;
         this.categoryTitle=categoryTitle;
     }
-    public void process(String url, HtmlNode node) {
+    public void process(String url, HtmlNode node) throws Exception{
         String fileName=OSchinaSpider.outoutPath+url.substring(url.lastIndexOf('/')+1)+".page";
-        try {
-            IOUtils.writeToOutputStream(new FileOutputStream(fileName), "#pageTitle(\"topic\" \"topic\")\n#title(\""+categoryTitle+"\" \"主题切换及其管理\")\n#[["+node.toString()+"]]#","UTF-8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            IOUtils.writeToOutputStream(new FileOutputStream(fileName), "#pageTitle(\"topic\" \"topic\")\n#title(\""+categoryTitle+"\" \""+title+"\")\n#[["+node.toString()+"]]#","UTF-8");
     }
 
 }

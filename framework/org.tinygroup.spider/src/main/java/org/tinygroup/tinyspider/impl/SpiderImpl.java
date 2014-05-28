@@ -49,7 +49,17 @@ public class SpiderImpl implements Spider {
         watcherList.add(watcher);
     }
 
-    public void processUrl(String url) {
+    public Spider watch(Watcher watcher) {
+        addWatcher(watcher);
+        return this;
+    }
+
+    public Spider visitor(SiteVisitor siteVisitor) {
+        addSiteVisitor(siteVisitor);
+        return this;
+    }
+
+    public void processUrl(String url) throws Exception {
         processUrl(url, null);
     }
 
@@ -70,7 +80,7 @@ public class SpiderImpl implements Spider {
 
     }
 
-    public void processUrl(String url, Map<String, Object> parameter) {
+    public void processUrl(String url, Map<String, Object> parameter) throws Exception {
         if (urlRepository == null) {
             urlRepository = new UrlRepositoryMemory();
         }
@@ -102,7 +112,7 @@ public class SpiderImpl implements Spider {
         processWatcher(url, document);
     }
 
-    private void processWatcher(String url, HtmlDocument document) {
+    private void processWatcher(String url, HtmlDocument document) throws Exception {
         for (Watcher watcher : watcherList) {
             NodeFilter<HtmlNode> nodeFilter = watcher.getNodeFilter();
             nodeFilter.init(document.getRoot());

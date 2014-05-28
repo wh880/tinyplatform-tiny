@@ -23,7 +23,7 @@ import org.tinygroup.tinyspider.impl.SpiderImpl;
 import org.tinygroup.tinyspider.impl.WatcherImpl;
 
 public class JokejiCategoryTest {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Spider spider = new SpiderImpl("GBK");
 		Watcher watcher = new WatcherImpl();
 		watcher.addProcessor(new PrintJokejiCategoryProcessor());

@@ -23,7 +23,7 @@ import org.tinygroup.tinyspider.impl.SpiderImpl;
 import org.tinygroup.tinyspider.impl.WatcherImpl;
 
 public class JokejiTest {
-	public static void processUrl(String url) {
+	public static void processUrl(String url) throws Exception {
 		Spider spider = new SpiderImpl("GBK");
         Watcher nextPage=new WatcherImpl();
         QuickNameFilter<HtmlNode> nextPageFilter = new QuickNameFilter<HtmlNode>();

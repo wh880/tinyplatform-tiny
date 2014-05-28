@@ -25,7 +25,7 @@ import java.util.List;
  * Created by luoguo on 14-3-1.
  */
 public class NextPageProcessor implements Processor {
-    public void process(String url, HtmlNode node) {
+    public void process(String url, HtmlNode node) throws Exception {
         FastNameFilter<HtmlNode> filter = new FastNameFilter<HtmlNode>(node);
         filter.setNodeName("a");
         List<HtmlNode> aList = filter.findNodeList();

@@ -19,7 +19,7 @@ import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.tinyspider.Processor;
 
 public class PrintJokejiCategoryProcessor implements Processor {
-    public void process(String url, HtmlNode node) {
+    public void process(String url, HtmlNode node) throws Exception {
         System.out.println("\n===============================================");
         System.out.println(node.getContent());
         System.out.println("===============================================");
