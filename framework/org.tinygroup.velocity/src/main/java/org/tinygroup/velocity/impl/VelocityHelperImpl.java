@@ -436,6 +436,9 @@ public final class VelocityHelperImpl implements VelocityHelper {
 	}
 
 	public void evaluteString(Context context, Writer writer, String string) {
+		if (initContext != null) {
+			context.putSubContext(BASE_CONTEXT, initContext);
+		}
         TinyVelocityContext tinyVelocityContext = new TinyVelocityContext(
                 context);
         VelocityContext velocityContext = new VelocityContext(
