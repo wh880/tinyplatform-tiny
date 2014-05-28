@@ -41,6 +41,7 @@ import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
+import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
@@ -147,6 +148,14 @@ public class ApplicationStartupListener implements ServletContextListener {
     private void loadSpringBeans(String applicationConfig) {
         logger.logMessage(LogLevel.INFO, "加载Spring Bean文件开始...");
         FileResolver fileResolver = new FileResolverImpl();
+        FileResolverUtil.addClassPathPattern(fileResolver);
+        fileResolver.addResolvePath(FileResolverUtil.getClassPath(fileResolver)) ;
+        fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
+        try {
+			fileResolver.addResolvePath(FileResolverUtil.getWebLibJars(fileResolver));
+		} catch (Exception e) {
+			logger.errorMessage("为文件扫描器添加webLibJars时出错",e);
+		}
         loadFileResolverConfig(fileResolver, applicationConfig);
         fileResolver.addFileProcessor(new SpringBeansFileProcessor());
         fileResolver.addFileProcessor(new ConfigurationFileProcessor());

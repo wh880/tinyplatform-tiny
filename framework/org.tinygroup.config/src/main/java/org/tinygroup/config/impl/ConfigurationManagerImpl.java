@@ -20,7 +20,7 @@ public class ConfigurationManagerImpl implements org.tinygroup.config.Configurat
     private static Logger logger = LoggerFactory.getLogger(ConfigurationManagerImpl.class);
     private ConfigurationLoader configurationLoader;
     private XmlNode applicationConfiguration;
-    private Map<String, XmlNode> componentConfigurationMap;
+    private Map<String, XmlNode> componentConfigurationMap = new HashMap<String, XmlNode>();
     private Collection<Configuration> configurationList;
     private Map<String, String> configuration = new HashMap<String, String>();
 

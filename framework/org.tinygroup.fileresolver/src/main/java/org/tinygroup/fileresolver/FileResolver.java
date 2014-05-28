@@ -70,7 +70,7 @@ public interface FileResolver extends Configuration {
 
     void addResolvePath(String path);
     
-    void addResolvePath(Set<String> paths);
+    void addResolvePath(List<String> paths);
 
     /**
      * 增加文件处理器
