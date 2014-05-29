@@ -4,8 +4,8 @@
                     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                     http://www.springframework.org/schema/context
                     http://www.springframework.org/schema/context/spring-context-2.5.xsd"
-	default-autowire="byName" default-lazy-init="true">
-
+	default-autowire="byType" default-lazy-init="true">
+	
 	<bean id="codeDocumentGenerater" scope="singleton"
 		class="org.tinygroup.docgen.impl.DocumentGeneraterImpl">
 		<property name="documentGeneraterVelocityHelper">
@@ -15,7 +15,10 @@
 	<bean id="codeDocumentGeneraterVelocityHelper" scope="singleton"
 		class="org.tinygroup.velocity.impl.VelocityHelperImpl">
 		<property name="fullContextFileRepository">
-			<ref bean="fullContextFileRepository" />
+			<ref bean="codeFullContextFileRepository" />
 		</property>
+	</bean>
+	<bean id="codeFullContextFileRepository" scope="singleton"
+		class="org.tinygroup.fileresolver.impl.FullContextFileRepositoryImpl">
 	</bean>
 </beans>

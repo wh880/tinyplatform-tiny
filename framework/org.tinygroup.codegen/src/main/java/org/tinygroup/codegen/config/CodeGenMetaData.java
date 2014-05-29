@@ -7,7 +7,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import java.util.ArrayList;
 import java.util.List;
 
-@XStreamAlias("code-metadata")
+@XStreamAlias("code-gen-metadata")
 public class CodeGenMetaData {
     /**
      * 分类
