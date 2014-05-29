@@ -8,6 +8,7 @@
   <artifactId>web</artifactId>
   <packaging>pom</packaging>
   <modules>
+    <module>org.tinygroup.webservice</module>
     <module>org.tinygroup.webstandard</module>
     <module>org.tinygroup.weblayer</module>
     <module>org.tinygroup.jspengine</module>
