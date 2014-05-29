@@ -56,6 +56,7 @@ public class FileResolverTest extends TestCase {
 	public void testResolve() {
 		TestFileProcess process = new TestFileProcess();
 		fileResolver.addFileProcessor(process);
+		fileResolver.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
 		fileResolver.resolve();
 		assertEquals(true, process.exist());
 		assertEquals(2, process.fileSize());

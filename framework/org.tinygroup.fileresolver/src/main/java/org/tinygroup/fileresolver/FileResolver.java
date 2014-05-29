@@ -88,7 +88,10 @@ public interface FileResolver extends Configuration {
      */
     void resolve();
 
-
+    /**
+     * 开始找文件
+     */
+    void refresh();
     /**
      * 获取文件处理的线程数目
      *

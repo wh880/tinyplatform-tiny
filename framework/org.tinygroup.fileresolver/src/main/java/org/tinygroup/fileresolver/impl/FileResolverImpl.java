@@ -120,7 +120,7 @@ public class FileResolverImpl implements FileResolver {
                 fileProcessor.setFileResolver(this);
             }
             OrderUtil.order(fileProcessorList);
-            //cleanProcessor();
+            cleanProcessor();
             // 移动日志信息，文件搜索器中存在处理器时，才会进行全路径扫描，并打印日志信息
             logger.logMessage(LogLevel.INFO, "正在进行全路径扫描....");
             resolverScanPath();
@@ -166,7 +166,7 @@ public class FileResolverImpl implements FileResolver {
         for (FileProcessor fileProcessor : fileProcessorList) {
             fileProcessor.clean();
         }
-        allScanningPath.clear();
+//        allScanningPath.clear();
     }
 
 
@@ -304,9 +304,9 @@ public class FileResolverImpl implements FileResolver {
     /**
      * 刷新工作
      */
-    public void refresh(ClassLoader loader) {
-        if (loader == null) {
-            loader = this.getClass().getClassLoader();
+    public void refresh() {
+        if (classLoader == null) {
+        	classLoader = this.getClass().getClassLoader();
         }
         if (fileProcessorList.size() == 0) {
             return;
