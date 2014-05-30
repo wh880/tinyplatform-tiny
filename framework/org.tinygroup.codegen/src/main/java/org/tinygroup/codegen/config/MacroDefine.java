@@ -7,14 +7,14 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 public class MacroDefine {
 	@XStreamAlias("macro-path")
 	@XStreamAsAttribute
-	private String marcoPath;
+	private String macroPath;
 
-	public String getMarcoPath() {
-		return marcoPath;
+	public String getMacroPath() {
+		return macroPath;
 	}
 
-	public void setMarcoPath(String marcoPath) {
-		this.marcoPath = marcoPath;
+	public void setMacroPath(String macroPath) {
+		this.macroPath = macroPath;
 	}
-	
+
 }

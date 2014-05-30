@@ -7,7 +7,6 @@
   </parent>
   <artifactId>org.tinygroup.codegen</artifactId>
   <name>org.tinygroup.codegen</name>
-  <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -17,7 +16,12 @@
       <artifactId>org.tinygroup.docgen</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
+     <!--<dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.factory</artifactId>
+      <version>${project.version}</version>
+    </dependency>-->
+     <dependency>
       <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.testutil</artifactId>
       <version>${project.version}</version>
