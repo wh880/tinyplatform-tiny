@@ -15,6 +15,24 @@
  */
 package org.tinygroup.weblayer;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.tinygroup.commons.io.StreamUtil;
+import org.tinygroup.commons.tools.ObjectUtil;
+import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.fileresolver.FullContextFileRepository;
@@ -26,14 +44,7 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.impl.WebContextImpl;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 public class TinyHttpFilter implements Filter {
     private static final String EXCLUDE_PATH = "excludePath";
@@ -43,6 +54,18 @@ public class TinyHttpFilter implements Filter {
     private TinyFilterManager tinyFilterManager;
 
     private List<Pattern> excludePatterns = new ArrayList<Pattern>();
+    
+    private static final String POST_DATA_PROCESS="post-data-process";
+    
+    private static final String HOSTS="hosts";
+    
+    private static final String POST_DATA_KEY="post-data-key";
+    
+    public static final String DEFAULT_POST_DATA_KEY="$_post_data_key";
+    
+    private String[] hosts;
+    
+    private String postDataKey;
 
     private FilterWrapper wrapper;
     private FullContextFileRepository fullContextFileRepository;
@@ -74,6 +97,7 @@ public class TinyHttpFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         WebContext context = new WebContextImpl();
         context.put("springUtil", SpringUtil.class);
+        postDataProcess(request, context);
         context.put("context", context);
         context.putSubContext("applicationproperties", new ContextImpl(ConfigurationUtil.getConfigurationManager().getApplicationPropertiesMap()));
         putRequstInfo(request, context);
@@ -104,6 +128,38 @@ public class TinyHttpFilter implements Filter {
             hander.tinyFilterProcessor(request, response);
         }
     }
+
+	private void postDataProcess(HttpServletRequest request, WebContext context) throws IOException {
+		if(isPostMethod(request)&&!ObjectUtil.isEmptyObject(hosts)){
+			String remoteHost=request.getRemoteHost();
+			for (String host : hosts) {
+				if(host.equals(remoteHost)){
+					context.put(postDataKey,StreamUtil.readBytes(request.getInputStream(), true).toByteArray());
+					break;
+				}
+			}
+		}
+		
+	}
+
+	private boolean isPostMethod(HttpServletRequest request) {
+		return request.getMethod().equalsIgnoreCase("post");
+	}
+
+	private void initPostDataProcess(){
+		ConfigurationManager appConfigManager = ConfigurationUtil.getConfigurationManager();
+		XmlNode parserNode = appConfigManager.getApplicationConfig().getSubNode(POST_DATA_PROCESS);
+		if(parserNode!=null){
+			postDataKey=StringUtil.defaultIfBlank(parserNode.getAttribute(POST_DATA_KEY),DEFAULT_POST_DATA_KEY);
+			String hostsContent=parserNode.getAttribute(HOSTS);
+			if(!StringUtil.isBlank(hostsContent)){
+				hosts= hostsContent.split(",");
+			}
+		}else{
+			hosts=new String[0];
+		}
+		
+	}
 
     private void putRequstInfo(HttpServletRequest request, WebContext context) {
         context.put(WebContextUtil.TINY_CONTEXT_PATH, request.getContextPath());
@@ -141,6 +197,9 @@ public class TinyHttpFilter implements Filter {
         initTinyFilterWrapper();
 
         initTinyProcessors();
+        
+        initPostDataProcess();
+        
         logger.logMessage(LogLevel.INFO, "filter初始化结束...");
 
     }

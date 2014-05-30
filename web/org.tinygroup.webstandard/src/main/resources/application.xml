@@ -255,7 +255,7 @@
     </plugin-management>
     <!-- cep远程调用配置 -->
     <cep-node-config>
-        <node-config ip="192.168.84.57" port="8888" name="chenjiaopmclient"
+        <node-config ip="192.168.84.73" port="8888" name="chenjiaopmclient"
                      enable-remote="false"></node-config>
         <node-sc-breath interval="4000"/>
         <node-sc-check interval="2000"/>
@@ -653,5 +653,7 @@
         <!-- 多个content-type已分号隔开 -->
        <!-- <exclude-content-type>text/javascript;text/css</exclude-content-type> -->
     </gzip-filter>
+    <post-data-process hosts="192.168.84.56">
+    </post-data-process>
 
 </application>
