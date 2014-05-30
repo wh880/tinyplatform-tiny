@@ -15,13 +15,13 @@
  */
 package org.tinygroup.parser.node;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.*;
-
 import org.tinygroup.commons.processor.Processor;
 import org.tinygroup.parser.Node;
 import org.tinygroup.parser.NodeType;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.*;
 
 /**
  *
@@ -78,8 +78,9 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
      * @param nodeName
      * @return void
      */
-    public void setNodeName(String nodeName) {
+    public T setNodeName(String nodeName) {
         this.nodeName = getCaseSensitiveName(nodeName);
+        return (T)this;
     }
 
     /**
@@ -128,8 +129,9 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
      *
      * @param parent
      */
-    public void setParent(T parent) {
+    public T setParent(T parent) {
         this.parent = parent;
+        return (T)this;
     }
 
     /**
@@ -169,7 +171,7 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
      *
      * @param content
      */
-    public void setContent(String content) {
+    public T setContent(String content) {
         String contentString = content.trim();
         if (nodeType.isHasContent()) {
             if (nodeType.isText()) {
@@ -181,11 +183,12 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
             for(Node node:subNodes){
                 if(node.getNodeType().isHasContent()){
                     node.setContent(content);
-                    return;
+                    return (T)this;
                 }
             }
             addContent(contentString);
         }
+        return (T)this;
     }
 
     private String getEncodeContent() {
@@ -210,7 +213,7 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
         return attributeList;
     }
 
-    public void setAttribute(Map<String, String> attributeMap) {
+    public T setAttribute(Map<String, String> attributeMap) {
         if (attributeMap != null) {
             for (String name : attributeMap.keySet()) {
                 String value = attributeMap.get(name);
@@ -218,6 +221,7 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
                 setAttribute(name, value);
             }
         }
+        return (T)this;
     }
 
     /**
@@ -465,7 +469,7 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
     /**
      * 根据属性名删除指定的属性
      */
-    public void removeAttribute(String attributeName) {
+    public T removeAttribute(String attributeName) {
         String name = getCaseSensitiveName(attributeName);
         attributes.remove(name);
         if (attributeList != null) {
@@ -478,12 +482,13 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
                 }
             }
         }
+        return (T)this;
     }
 
     /**
      * 设置属性 若输入参数中的属性名不为空，属性值为空，则删除指定的属性 若输入参数中的属性名不为空，属性值不为空，则添加相应的属性
      */
-    public void setAttribute(String attributeName, String value) {
+    public T setAttribute(String attributeName, String value) {
         if (nodeType.isHasHeader()) {
             if (attributes == null) {
                 attributes = new HashMap<String, String>();
@@ -503,6 +508,7 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
             }
             attributes.put(name, value);
         }
+        return (T)this;
     }
 
     /**
