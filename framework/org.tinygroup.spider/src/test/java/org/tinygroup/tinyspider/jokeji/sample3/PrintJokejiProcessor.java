@@ -15,6 +15,7 @@
  */
 package org.tinygroup.tinyspider.jokeji.sample3;
 
+import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.parser.filter.FastNameFilter;
 import org.tinygroup.tinyspider.Processor;
@@ -22,7 +23,7 @@ import org.tinygroup.tinyspider.Processor;
 import java.util.List;
 
 public class PrintJokejiProcessor implements Processor {
-    public void process(String url, HtmlNode node) {
+    public void process(String url, HtmlNode node, Context context) {
         FastNameFilter<HtmlNode> filter = new FastNameFilter<HtmlNode>(node);
         filter.setNodeName("a");
         List<HtmlNode> aList = filter.findNodeList();

@@ -22,37 +22,45 @@ import java.util.List;
 
 /**
  * 监视器，用于对网页内容进行扫描，并对命中的节点进行处理
- * 
+ *
  * @author luoguo
- * 
  */
 public interface Watcher {
-	/**
-	 * 设置节点过滤器
-	 * 
-	 * @param filter
-	 */
-	void setNodeFilter(NodeFilter<HtmlNode> filter);
-    Watcher nodeFilter(NodeFilter<HtmlNode> filter);
-	/**
-	 * 获取节点过滤器
-	 * 
-	 * @return
-	 */
-	NodeFilter<HtmlNode> getNodeFilter();
+    /**
+     * 设置节点过滤器
+     *
+     * @param filter
+     */
+    void setNodeFilter(NodeFilter<HtmlNode> filter);
 
-	/**
-	 * 添加处理器
-	 * 
-	 * @param processor
-	 */
-	void addProcessor(Processor processor);
+    Watcher nodeFilter(NodeFilter<HtmlNode> filter);
+
+    /**
+     * 获取节点过滤器
+     *
+     * @return
+     */
+    NodeFilter<HtmlNode> getNodeFilter();
+
+    /**
+     * 添加处理器
+     *
+     * @param processor
+     */
+    void addProcessor(Processor processor);
 
     Watcher processor(Processor processor);
-	/**
-	 * 获取处理器列表
-	 * 
-	 * @return
-	 */
-	List<Processor> getProcessorList();
+
+    /**
+     * 获取处理器列表
+     *
+     * @return
+     */
+    List<Processor> getProcessorList();
+
+    Watcher setSubWatchers(List<Watcher> watchers);
+
+    List<Watcher> getSubWatchers();
+
+    Watcher addSubWatcher(Watcher watcher);
 }

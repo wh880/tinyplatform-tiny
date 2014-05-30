@@ -15,14 +15,12 @@
  */
 package org.tinygroup.tinyspider.jokeji.sample2;
 
+import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
-import org.tinygroup.parser.filter.FastNameFilter;
 import org.tinygroup.tinyspider.Processor;
 
-import java.util.List;
-
 public class PrintJokejiCategoryProcessor implements Processor {
-    public void process(String url, HtmlNode node) {
+    public void process(String url, HtmlNode node, Context context) {
         System.out.print(node.getContent());
         System.out.print(" ");
     }

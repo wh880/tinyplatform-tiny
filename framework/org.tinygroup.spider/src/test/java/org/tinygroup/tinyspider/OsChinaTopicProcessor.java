@@ -16,6 +16,7 @@
 package org.tinygroup.tinyspider;
 
 import org.tinygroup.commons.file.IOUtils;
+import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
 
 import java.io.FileOutputStream;
@@ -27,7 +28,7 @@ public class OsChinaTopicProcessor implements Processor {
         this.title=title;
         this.categoryTitle=categoryTitle;
     }
-    public void process(String url, HtmlNode node) throws Exception{
+    public void process(String url, HtmlNode node, Context context) throws Exception{
         String fileName=OSchinaSpider.outoutPath+url.substring(url.lastIndexOf('/')+1)+".page";
             IOUtils.writeToOutputStream(new FileOutputStream(fileName), "#pageTitle(\"topic\" \"topic\")\n#title(\""+categoryTitle+"\" \""+title+"\")\n#[["+node.toString()+"]]#","UTF-8");
     }

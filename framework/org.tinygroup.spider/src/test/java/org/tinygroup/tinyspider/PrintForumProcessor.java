@@ -17,12 +17,13 @@ package org.tinygroup.tinyspider;
 
 import java.util.List;
 
+import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.parser.filter.FastNameFilter;
 
 public class PrintForumProcessor implements Processor {
 
-	public void process(String url, HtmlNode node) {
+	public void process(String url, HtmlNode node, Context context) {
 		FastNameFilter<HtmlNode> filter = new FastNameFilter<HtmlNode>(node);
 		filter.setNodeName("h3");
 		filter.setIncludeNode("a");

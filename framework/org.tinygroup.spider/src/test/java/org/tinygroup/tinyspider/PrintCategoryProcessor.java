@@ -15,11 +15,12 @@
  */
 package org.tinygroup.tinyspider;
 
+import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
 
 public class PrintCategoryProcessor implements Processor {
 
-    public void process(String url, HtmlNode node) {
+    public void process(String url, HtmlNode node, Context context) {
         System.out.println(node.getSubNode("h5").getSubNode("a").getContent());
     }
 

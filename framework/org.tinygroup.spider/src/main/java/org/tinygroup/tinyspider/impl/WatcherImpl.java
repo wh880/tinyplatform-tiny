@@ -27,6 +27,7 @@ public class WatcherImpl implements Watcher {
 
     private NodeFilter<HtmlNode> nodeFilter;
     private List<Processor> processorList = new ArrayList<Processor>();
+    private List<Watcher> subWatchers;
 
     public void setNodeFilter(NodeFilter<HtmlNode> nodeFilter) {
         this.nodeFilter = nodeFilter;
@@ -52,6 +53,23 @@ public class WatcherImpl implements Watcher {
 
     public List<Processor> getProcessorList() {
         return this.processorList;
+    }
+
+    public Watcher setSubWatchers(List<Watcher> watchers) {
+        this.subWatchers = watchers;
+        return this;
+    }
+
+    public List<Watcher> getSubWatchers() {
+        return subWatchers;
+    }
+
+    public Watcher addSubWatcher(Watcher watcher) {
+        if (subWatchers == null) {
+            subWatchers = new ArrayList<Watcher>();
+        }
+        subWatchers.add(watcher);
+        return this;
     }
 
 }

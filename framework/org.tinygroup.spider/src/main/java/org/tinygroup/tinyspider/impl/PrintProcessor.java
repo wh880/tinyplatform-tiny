@@ -15,6 +15,7 @@
  */
 package org.tinygroup.tinyspider.impl;
 
+import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -24,7 +25,7 @@ import org.tinygroup.tinyspider.Processor;
 public class PrintProcessor implements Processor {
     private static Logger logger = LoggerFactory.getLogger(PrintProcessor.class);
 
-    public void process(String url, HtmlNode node) {
+    public void process(String url, HtmlNode node, Context context) {
         logger.logMessage(LogLevel.INFO, "url:{}", url);
         logger.logMessage(LogLevel.INFO, "content:\n{}", node.toString());
     }

@@ -15,6 +15,8 @@
  */
 package org.tinygroup.tinyspider.impl;
 
+import org.tinygroup.context.Context;
+import org.tinygroup.context.Context2Map;
 import org.tinygroup.htmlparser.HtmlDocument;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.htmlparser.parser.HtmlStringParser;
@@ -26,7 +28,6 @@ import org.tinygroup.tinyspider.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class SpiderImpl implements Spider {
     private static Logger logger = LoggerFactory.getLogger(SpiderImpl.class);
@@ -80,7 +81,7 @@ public class SpiderImpl implements Spider {
 
     }
 
-    public void processUrl(String url, Map<String, Object> parameter) throws Exception {
+    public void processUrl(String url, Context context) throws Exception {
         if (urlRepository == null) {
             urlRepository = new UrlRepositoryMemory();
         }
@@ -94,7 +95,7 @@ public class SpiderImpl implements Spider {
         for (SiteVisitor siteVisitor : siteVisitorList) {
             if (siteVisitor.isMatch(url)) {
                 try {
-                    content = siteVisitor.getContent(url, parameter, responseCharset);
+                    content = siteVisitor.getContent(url, new Context2Map(context), responseCharset);
                 } catch (Exception e) {
                     logger.errorMessage("不能载入url:{},错误原因：{}", e, url, e.getMessage());
                     return;
@@ -109,17 +110,26 @@ public class SpiderImpl implements Spider {
         }
         urlRepository.putUrlWithContent(url, content);
         HtmlDocument document = new HtmlStringParser().parse(content);
-        processWatcher(url, document);
+        processWatcher(url, document, context);
     }
 
-    private void processWatcher(String url, HtmlDocument document) throws Exception {
+    private void processWatcher(String url, HtmlDocument document, Context context) throws Exception {
         for (Watcher watcher : watcherList) {
-            NodeFilter<HtmlNode> nodeFilter = watcher.getNodeFilter();
-            nodeFilter.init(document.getRoot());
-            List<HtmlNode> nodeList = nodeFilter.findNodeList();
-            for (HtmlNode htmlNode : nodeList) {
-                for (Processor e : watcher.getProcessorList()) {
-                    e.process(url, htmlNode);
+            processorWatcher(url, document.getRoot(), context, watcher);
+        }
+    }
+
+    private void processorWatcher(String url, HtmlNode root, Context context, Watcher watcher) throws Exception {
+        NodeFilter<HtmlNode> nodeFilter = watcher.getNodeFilter();
+        nodeFilter.init(root);
+        List<HtmlNode> nodeList = nodeFilter.findNodeList();
+        for (HtmlNode htmlNode : nodeList) {
+            for (Processor processor : watcher.getProcessorList()) {
+                processor.process(url, htmlNode, context);
+            }
+            if (watcher.getSubWatchers() != null) {
+                for (Watcher subWatcher : watcher.getSubWatchers()) {
+                    processorWatcher(url, htmlNode, context, subWatcher);
                 }
             }
         }
