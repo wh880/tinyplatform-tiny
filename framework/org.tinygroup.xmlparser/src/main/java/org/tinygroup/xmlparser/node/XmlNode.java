@@ -63,10 +63,11 @@ public class XmlNode extends NodeImpl<XmlNode, XmlNodeType> {
 		super(nodeType, nodeName);
 	}
 
-	public void addContent(String content) {
+	public XmlNode addContent(String content) {
 		XmlNode node = new XmlNode(XmlNodeType.TEXT);
 		node.setContent(content);
 		addNode(node);
+        return this;
 	}
 
 	
@@ -94,7 +95,7 @@ public class XmlNode extends NodeImpl<XmlNode, XmlNodeType> {
 	public String getPureText() {
 		StringBuffer sb = new StringBuffer();
 		getPureText(this, sb);
-		return sb.toString();
+		return sb.toString().trim();
 	}
 
 	void getPureText(XmlNode node, StringBuffer sb) {

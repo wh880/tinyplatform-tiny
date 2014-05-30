@@ -15,13 +15,13 @@
  */
 package org.tinygroup.parser;
 
+import org.tinygroup.commons.processor.ForEachProcessor;
+import org.tinygroup.parser.node.Attribute;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
-
-import org.tinygroup.commons.processor.ForEachProcessor;
-import org.tinygroup.parser.node.Attribute;
 
 /**
  * 节点接口
@@ -65,14 +65,14 @@ public interface Node<T extends Node<T>> extends ForEachProcessor<T> {
      *
      * @param content
      */
-    void addContent(String content);
+    Node<T> addContent(String content);
 
     /**
      * 设置结点名称
      *
      * @param name
      */
-    void setNodeName(String name);
+    Node<T> setNodeName(String name);
 
     /**
      * 获取结尾标签
@@ -93,7 +93,7 @@ public interface Node<T extends Node<T>> extends ForEachProcessor<T> {
      *
      * @param parent
      */
-    void setParent(T parent);
+    Node<T> setParent(T parent);
 
     /**
      * 返回节点名称
@@ -144,7 +144,7 @@ public interface Node<T extends Node<T>> extends ForEachProcessor<T> {
      *
      * @param attributeName
      */
-    void removeAttribute(String attributeName);
+    Node<T> removeAttribute(String attributeName);
 
     /**
      * 设置属性值
@@ -152,14 +152,14 @@ public interface Node<T extends Node<T>> extends ForEachProcessor<T> {
      * @param attributeName
      * @param value
      */
-    void setAttribute(String attributeName, String value);
+    Node<T> setAttribute(String attributeName, String value);
 
     /**
      * 匹量设置属性
      *
      * @param attributeMap
      */
-    void setAttribute(Map<String, String> attributeMap);
+    Node<T> setAttribute(Map<String, String> attributeMap);
 
     /**
      * 获取属性值，如果值不存在，则返回默认值
@@ -212,7 +212,7 @@ public interface Node<T extends Node<T>> extends ForEachProcessor<T> {
      *
      * @param content
      */
-    void setContent(String content);
+    Node<T> setContent(String content);
 
     /**
      * 返回属属性

@@ -90,10 +90,11 @@ public class HtmlNode extends NodeImpl<HtmlNode, HtmlNodeType> {
         super(nodeType, nodeName);
     }
 
-    public void addContent(String content) {
+    public HtmlNode addContent(String content) {
         HtmlNode node = new HtmlNode(HtmlNodeType.TEXT);
         node.setContent(content);
         addNode(node);
+        return this;
     }
 
 
@@ -121,7 +122,7 @@ public class HtmlNode extends NodeImpl<HtmlNode, HtmlNodeType> {
     public String getPureText() {
         StringBuffer sb = new StringBuffer();
         getPureText(this, sb);
-        return sb.toString();
+        return sb.toString().trim();
     }
 
     void getPureText(HtmlNode node, StringBuffer sb) {
