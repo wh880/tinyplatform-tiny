@@ -653,7 +653,7 @@
         <!-- 多个content-type已分号隔开 -->
        <!-- <exclude-content-type>text/javascript;text/css</exclude-content-type> -->
     </gzip-filter>
-    <post-data-process hosts="192.168.84.56">
+    <post-data-process host-pattern="192.168.84.*">
     </post-data-process>
 
 </application>

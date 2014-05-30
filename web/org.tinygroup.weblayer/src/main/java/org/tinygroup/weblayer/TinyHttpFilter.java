@@ -57,13 +57,13 @@ public class TinyHttpFilter implements Filter {
     
     private static final String POST_DATA_PROCESS="post-data-process";
     
-    private static final String HOSTS="hosts";
+    private static final String HOST_PATTERN="host-pattern";
     
     private static final String POST_DATA_KEY="post-data-key";
     
     public static final String DEFAULT_POST_DATA_KEY="$_post_data_key";
     
-    private String[] hosts;
+    private String pattern;
     
     private String postDataKey;
 
@@ -130,13 +130,11 @@ public class TinyHttpFilter implements Filter {
     }
 
 	private void postDataProcess(HttpServletRequest request, WebContext context) throws IOException {
-		if(isPostMethod(request)&&!ObjectUtil.isEmptyObject(hosts)){
+		if(isPostMethod(request)&&!ObjectUtil.isEmptyObject(pattern)){
 			String remoteHost=request.getRemoteHost();
-			for (String host : hosts) {
-				if(host.equals(remoteHost)){
-					context.put(postDataKey,StreamUtil.readBytes(request.getInputStream(), true).toByteArray());
-					break;
-				}
+			String remoteAddr=request.getRemoteAddr();
+			if(Pattern.matches(pattern, remoteHost)||Pattern.matches(pattern, remoteAddr)){
+				context.put(postDataKey,StreamUtil.readBytes(request.getInputStream(), true).toByteArray());
 			}
 		}
 		
@@ -151,14 +149,11 @@ public class TinyHttpFilter implements Filter {
 		XmlNode parserNode = appConfigManager.getApplicationConfig().getSubNode(POST_DATA_PROCESS);
 		if(parserNode!=null){
 			postDataKey=StringUtil.defaultIfBlank(parserNode.getAttribute(POST_DATA_KEY),DEFAULT_POST_DATA_KEY);
-			String hostsContent=parserNode.getAttribute(HOSTS);
-			if(!StringUtil.isBlank(hostsContent)){
-				hosts= hostsContent.split(",");
+			String hostsPattern=parserNode.getAttribute(HOST_PATTERN);
+			if(!StringUtil.isBlank(hostsPattern)){
+				pattern=hostsPattern;
 			}
-		}else{
-			hosts=new String[0];
 		}
-		
 	}
 
     private void putRequstInfo(HttpServletRequest request, WebContext context) {
