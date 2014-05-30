@@ -30,21 +30,21 @@ public class CodeGenTest extends TestCase {
 	
 	public void testCodeGen(){
 		
-		XStream xStream=XStreamFactory.getXStream(CodeGenerater.XSTEAM_PACKAGE_NAME);
+		XStream xStream=XStreamFactory.getXStream(CodeGenerator.XSTEAM_PACKAGE_NAME);
 		CodeGenMetaData metaData=(CodeGenMetaData) xStream.fromXML(getClass().getResourceAsStream("/test.codegen.xml"));
 		Context context=ContextFactory.getContext();
 		String projectPath=System.getProperty("user.dir");
 		testJavaPath=projectPath+File.separator+"src"+File.separator+"test"+File.separator+"java"+File.separator;
-		context.put(CodeGenerater.JAVA_ROOT, projectPath+File.separator+"src"+File.separator+"main"+File.separator+"java"+File.separator);
-		context.put(CodeGenerater.JAVA_RES_ROOT, projectPath+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator);
-		context.put(CodeGenerater.JAVA_TEST_ROOT, testJavaPath);
-		context.put(CodeGenerater.JAVA_TEST_RES_ROOT, projectPath+File.separator+"src"+File.separator+"test"+File.separator+"resources"+File.separator);
-		context.put(CodeGenerater.CODE_META_DATA, metaData);
+		context.put(CodeGenerator.JAVA_ROOT, projectPath+File.separator+"src"+File.separator+"main"+File.separator+"java"+File.separator);
+		context.put(CodeGenerator.JAVA_RES_ROOT, projectPath+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator);
+		context.put(CodeGenerator.JAVA_TEST_ROOT, testJavaPath);
+		context.put(CodeGenerator.JAVA_TEST_RES_ROOT, projectPath+File.separator+"src"+File.separator+"test"+File.separator+"resources"+File.separator);
+		context.put(CodeGenerator.CODE_META_DATA, metaData);
 		context.put("beanPackageName", "org.tinygroup.codegen");
 		context.put("className", "HelloWorld");
-		CodeGenerater generater=new CodeGenerater();
+		CodeGenerator generator=new CodeGenerator();
 		try {
-			generater.generate(context);
+			generator.generate(context);
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}

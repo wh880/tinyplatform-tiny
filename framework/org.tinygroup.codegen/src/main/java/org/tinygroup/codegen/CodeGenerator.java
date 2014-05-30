@@ -25,7 +25,7 @@ import org.tinygroup.xstream.XStreamFactory;
 
 import com.thoughtworks.xstream.XStream;
 
-public class CodeGenerater{
+public class CodeGenerator{
 	
 	private static final String CODE_FULL_CONTEXT_FILE_REPOSITORY = "codeFullContextFileRepository";
 	private static final String CODE_GENERATER = "codeDocumentGenerater";
@@ -38,7 +38,7 @@ public class CodeGenerater{
 	public static final String XSTEAM_PACKAGE_NAME="codegen";
     //public static final String CODE_GEN_BEANS_XML = "/codegenbeans.xml";
 	//private static Factory factory;
-	private static Logger logger = LoggerFactory.getLogger(CodeGenerater.class);
+	private static Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
 	 
 	/* static{
 		  factory = BeanFactory.getFactory();
@@ -70,7 +70,11 @@ public class CodeGenerater{
 		List<MacroDefine> macroDefines=metaData.getMacroDefines();
 		for (MacroDefine macroDefine : macroDefines) {
 		   logger.logMessage(LogLevel.INFO, "开始加载宏文件路径：{0}",macroDefine.getMacroPath());
-		   FileObject fileObject=VFS.resolveURL(CodeGenerater.class.getResource(macroDefine.getMacroPath()));
+		   String macroPath=macroDefine.getMacroPath();
+		   if(macroPath.startsWith("/")){
+			   macroPath=CodeGenerator.class.getResource(macroPath).getPath();
+		   }
+		   FileObject fileObject=VFS.resolveFile(macroPath);
 		   generater.addMacroFile(fileObject);
 		   logger.logMessage(LogLevel.INFO, "宏文件路径：{0}，加载完毕",macroDefine.getMacroPath());
 		}
@@ -80,7 +84,7 @@ public class CodeGenerater{
 			String templatePath=templateDefine.getTemplatePath();
 			logger.logMessage(LogLevel.INFO, "开始加载模板文件路径：{0}",templatePath);
 			if(templatePath.startsWith("/")){
-				templatePath=CodeGenerater.class.getResource(templatePath).getPath();
+				templatePath=CodeGenerator.class.getResource(templatePath).getPath();
 			}
 			FileObject templateFileObject=VFS.resolveFile(templatePath);
 			logger.logMessage(LogLevel.INFO, "模板文件路径：{0}，加载完毕",templatePath);
@@ -114,7 +118,7 @@ public class CodeGenerater{
 		newContext.put(TEMPLATE_FILE, templateDefine);
 		String templatePath=templateDefine.getTemplatePath();
 		if(templatePath.startsWith("/")){
-			templatePath=CodeGenerater.class.getResource(templatePath).getPath().replaceAll("/", "\\"+File.separator);
+			templatePath=CodeGenerator.class.getResource(templatePath).getPath().replaceAll("/", "\\"+File.separator);
 		}
 		String filePath=StringUtil.substringBeforeLast(templatePath, File.separator);
 		if(!filePath.endsWith(File.separator)){
