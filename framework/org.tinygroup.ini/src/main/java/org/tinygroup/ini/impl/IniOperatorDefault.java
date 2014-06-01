@@ -37,7 +37,7 @@ public class IniOperatorDefault implements IniOperator {
     }
 
     public IniOperatorDefault(Sections sections) {
-        this.sections=sections;
+        this.sections = sections;
     }
 
     public void setSections(Sections sections) {
@@ -57,7 +57,9 @@ public class IniOperatorDefault implements IniOperator {
         String sectionName = null;
         while (string != null) {
             string = string.trim();
-            if (string.length() == 0 || string.startsWith(commentChar)) {
+            if (string.length() == 0) {
+
+            } else if (string.startsWith(commentChar)) {
                 addComment(sectionName, string);
             } else if (string.startsWith("[")) { //如果是Section
                 sectionName = addSection(string);
@@ -145,9 +147,10 @@ public class IniOperatorDefault implements IniOperator {
         this.commentChar = commentChar + "";
     }
 
-    public <T> void put(String sectionName, String key, T value) {
+    public <T> IniOperatorDefault put(String sectionName, String key, T value) {
         Section section = checkSection(sectionName);
         section.set(key, value);
+        return this;
     }
 
     private Section checkSection(String sectionName) {
@@ -162,8 +165,9 @@ public class IniOperatorDefault implements IniOperator {
         return section;
     }
 
-    public <T> void add(String sectionName, String key, T value) {
+    public <T> IniOperatorDefault add(String sectionName, String key, T value) {
         add(sectionName, new ValuePair(key, value.toString()));
+        return this;
     }
 
     public <T> T get(Class<T> tClass, String sectionName, String key, T defaultValue) {
@@ -211,18 +215,29 @@ public class IniOperatorDefault implements IniOperator {
         return null;
     }
 
-    public void add(String sectionName, ValuePair valuePair) {
+    public IniOperatorDefault add(String sectionName, ValuePair valuePair) {
         Section section = checkSection(sectionName);
         section.add(valuePair);
+        return this;
     }
 
-    public void set(String sectionName, ValuePair valuePair) {
-
+    public IniOperatorDefault set(String sectionName, ValuePair valuePair) {
+        for (Section section : sections.getSectionList()) {
+            if (sectionName.equals(section.getName())) {
+                for (ValuePair pair : section.getValuePairList()) {
+                    if (pair.getKey().equals(valuePair.getKey()))
+                        pair.setValue(valuePair.getValue());
+                    return this;
+                }
+            }
+        }
+        return add(sectionName, valuePair);
     }
 
-    public void add(String sectionName, List<ValuePair> valuePairList) {
+    public IniOperatorDefault add(String sectionName, List<ValuePair> valuePairList) {
         Section section = checkSection(sectionName);
         section.getValuePairList().addAll(valuePairList);
+        return this;
     }
 
     public List<ValuePair> getValuePairList(String sectionName, String key) {

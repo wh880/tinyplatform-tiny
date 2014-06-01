@@ -27,7 +27,7 @@ interface ValuePairOperator {
      * @param sectionName
      * @param valuePair
      */
-    void add(String sectionName, ValuePair valuePair);
+    ValueOperator add(String sectionName, ValuePair valuePair);
 
     /**
      * 如果有valuePair同名的key，则会替换
@@ -35,7 +35,7 @@ interface ValuePairOperator {
      * @param sectionName
      * @param valuePair
      */
-    void set(String sectionName, ValuePair valuePair);
+    ValueOperator set(String sectionName, ValuePair valuePair);
 
     /**
      * 添加所有的值对
@@ -43,7 +43,7 @@ interface ValuePairOperator {
      * @param sectionName
      * @param valuePairList
      */
-    void add(String sectionName, List<ValuePair> valuePairList);
+    ValueOperator add(String sectionName, List<ValuePair> valuePairList);
 
     /**
      * 返回指定键的值对
