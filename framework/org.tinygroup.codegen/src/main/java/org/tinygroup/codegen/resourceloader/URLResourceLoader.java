@@ -23,8 +23,9 @@ import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
+import org.tinygroup.codegen.CodeGenerator;
 import org.tinygroup.fileresolver.FullContextFileRepository;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.fileresolver.impl.FullContextFileRepositoryImpl;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 
@@ -40,8 +41,10 @@ public class URLResourceLoader extends ResourceLoader {
 
 	
 	public void init(ExtendedProperties configuration) {
-		fullContextFileRepository = SpringUtil
-				.getBean("codeFullContextFileRepository");
+		if(fullContextFileRepository==null){
+			fullContextFileRepository=new FullContextFileRepositoryImpl();
+			CodeGenerator.repository=fullContextFileRepository;
+		}
 	}
 
 	
