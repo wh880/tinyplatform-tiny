@@ -3,6 +3,7 @@ package org.tinygroup.codegen;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.codegen.config.CodeGenMetaData;
@@ -60,7 +61,7 @@ public class CodeGenerator{
 	 *            默认文件需要用到的上下文环境
 	 * @throws IOException 
 	 */
-	public void generate(Context context) throws IOException{
+	public List<String> generate(Context context) throws IOException{
 		CodeGenMetaData metaData=context.get(CODE_META_DATA);
 		if(metaData==null){
 			throw new RuntimeException("代码生成器的元数据不存在");
@@ -79,6 +80,7 @@ public class CodeGenerator{
 		   logger.logMessage(LogLevel.INFO, "宏文件路径：{0}，加载完毕",macroDefine.getMacroPath());
 		}
 		List<TemplateDefine> templateDefines=metaData.getTemplateDefines();
+		List<String> fileList=new ArrayList<String>();
 		for (TemplateDefine templateDefine : templateDefines) {
 			Context newContext=createNewContext(context, templateDefine);
 			String templatePath=templateDefine.getTemplatePath();
@@ -102,7 +104,9 @@ public class CodeGenerator{
 			}finally{
 				writer.close();
 			}
+			fileList.add(file.getPath());
 		}
+		return fileList;
 		
 	}
 	
