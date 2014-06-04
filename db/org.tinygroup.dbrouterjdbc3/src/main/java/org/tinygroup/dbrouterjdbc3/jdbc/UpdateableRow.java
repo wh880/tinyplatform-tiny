@@ -15,12 +15,18 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.dbrouter.config.Shard;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Locale;
+import org.tinygroup.dbrouter.util.DbRouterUtil;
+import org.tinygroup.jsqlparser.schema.Table;
 
 /**
  * 功能说明: 用于可更新的resultset insetrow、updaterow、deleterow操作
@@ -40,15 +46,26 @@ public class UpdateableRow {
 	private Connection connection;
 	private ArrayList<String> key;// 主键字段
 
-	public UpdateableRow(TinyConnection tinyConnection,
-			Shard shard,ResultSet currentResultSet) throws SQLException {
+	public UpdateableRow(TinyConnection tinyConnection,ResultSetExecutor executor) throws SQLException {
 		this.tinyConnection = tinyConnection;
+		Shard shard=executor.getShard();
+		ResultSet currentResultSet=executor.getResultSet();
 		connection = shard.getConnection(tinyConnection);
 		metaData = currentResultSet.getMetaData();
 		columnCount = metaData.getColumnCount();
 		if (columnCount > 0) {
-			schemaName = metaData.getSchemaName(1);
-			tableName = metaData.getTableName(1);
+			Table table=DbRouterUtil.getSelectTable(executor.getExecuteSql());
+			schemaName=table.getSchemaName();
+			if(StringUtil.isBlank(schemaName)){
+				schemaName = metaData.getSchemaName(1);
+			}
+			tableName=table.getName();
+			if(StringUtil.isBlank(tableName)){
+				tableName = metaData.getTableName(1);
+			}
+			if(tableName==null){
+				throw new RuntimeException("no tablename found in the sql:"+executor.getExecuteSql());
+			}
 		} else {
 			throw new RuntimeException("no column in table");
 		}
@@ -57,8 +74,23 @@ public class UpdateableRow {
 				StringUtil.escapeMetaDataPattern(schemaName),
 				StringUtil.escapeMetaDataPattern(tableName),
 				new String[] { "TABLE" });
-		if (!rs.next()) {
-			return;
+		if (!rs.next()) {//oracle 方式需要大写
+			 rs = meta.getTables(null,
+					StringUtil.escapeMetaDataPattern(schemaName).toUpperCase(),
+					StringUtil.escapeMetaDataPattern(tableName).toUpperCase(),
+					new String[] { "TABLE" });
+			 if (!rs.next()) {
+				 if(StringUtil.isBlank(schemaName)){//oracle 方式 schema一般是用户名
+					schemaName=executor.getDataSourceConfig().getUserName();
+				 }
+				 rs = meta.getTables(null,
+							StringUtil.escapeMetaDataPattern(schemaName).toUpperCase(),
+							StringUtil.escapeMetaDataPattern(tableName).toUpperCase(),
+							new String[] { "TABLE" });
+				 if(!rs.next()){
+					 return;
+				 }
+			 }
 		}
 		String table = rs.getString("TABLE_NAME");
 		boolean toUpper = !table.equals(tableName)
@@ -66,9 +98,16 @@ public class UpdateableRow {
 		key = new ArrayList<String>();
 		rs = meta.getPrimaryKeys(null,
 				StringUtil.escapeMetaDataPattern(schemaName), tableName);
-		while (rs.next()) {
+		if (!rs.next()) {
+			rs = meta.getPrimaryKeys(null,
+					StringUtil.escapeMetaDataPattern(schemaName).toUpperCase(), tableName.toUpperCase());
+		}else{
 			String c = rs.getString("COLUMN_NAME");
-			key.add(toUpper ? c.toUpperCase(Locale.ENGLISH) : c);
+			key.add(toUpper ? c.toUpperCase() : c);
+		}
+		while(rs.next()){
+			String c = rs.getString("COLUMN_NAME");
+			key.add(toUpper ? c.toUpperCase() : c);
 		}
 
 	}

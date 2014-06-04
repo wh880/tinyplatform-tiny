@@ -19,7 +19,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.tinygroup.dbrouter.RouterManager;
+import org.tinygroup.dbrouter.config.DataSourceConfig;
 import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.dbrouter.util.OrderByProcessor;
@@ -46,16 +48,19 @@ public class ResultSetExecutor {
 	private Shard shard;
 	
 	private Partition partition;
+	
+	private Router router;
 
 	private RouterManager routerManager = RouterManagerBeanFactory.getManager();
 
 	public ResultSetExecutor(ResultSet resultSet, String executeSql,
-			String originalSql, Shard shard,Partition partition) throws SQLException {
+			String originalSql, Shard shard,Partition partition,Router router) throws SQLException {
 		super();
 		this.resultSet = resultSet;
 		this.executeSql = executeSql;
 		this.originalSql = originalSql;
 		this.shard = shard;
+		this.router=router;
 		this.partition=partition;
 		org.tinygroup.jsqlparser.statement.Statement sqlStatement = routerManager
 				.getSqlStatement(executeSql);
@@ -185,4 +190,13 @@ public class ResultSetExecutor {
 		return originalSql;
 	}
 
+	public Router getRouter() {
+		return router;
+	}
+
+	public DataSourceConfig getDataSourceConfig(){
+		return router.getDataSourceConfig(shard.getDataSourceId());
+	}
+	
+	
 }

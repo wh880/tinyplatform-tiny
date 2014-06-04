@@ -79,19 +79,19 @@ public class PartionRuleByTableName implements PartitionRule {
         Statement statement = RouterManagerBeanFactory.getManager().getSqlStatement(sql);
         if (statement instanceof Delete) {
             Delete delete = (Delete) statement;
-            if (delete.getTable().getName().equals(tableName)) {
+            if (delete.getTable().getName().equalsIgnoreCase(tableName)) {
                 return true;
             }
         }
         if (statement instanceof Insert) {
             Insert insert = (Insert) statement;
-            if (insert.getTable().getName().equals(tableName)) {
+            if (insert.getTable().getName().equalsIgnoreCase(tableName)) {
                 return true;
             }
         }
         if (statement instanceof Update) {
             Update update = (Update) statement;
-            if (update.getTable().getName().equals(tableName)) {
+            if (update.getTable().getName().equalsIgnoreCase(tableName)) {
                 return true;
             }
         }
@@ -130,7 +130,7 @@ public class PartionRuleByTableName implements PartitionRule {
     	FromItem fromItem=plainSelect.getFromItem();
     	if(fromItem instanceof Table){
     		 Table table = (Table)fromItem;
-    	        if (table.getName().equals(tableName)) {
+    	        if (table.getName().equalsIgnoreCase(tableName)) {
     	            return true;
     	        }
     	        List<Join> joins = plainSelect.getJoins();
@@ -139,7 +139,7 @@ public class PartionRuleByTableName implements PartitionRule {
     	            	FromItem rightItem=join.getRightItem();
     	            	if(rightItem instanceof Table){
     	            		Table joinTable = (Table) rightItem;
-        	                if (joinTable.getName().equals(tableName)) {
+        	                if (joinTable.getName().equalsIgnoreCase(tableName)) {
         	                    return true;
         	                }
     	            	}

@@ -30,11 +30,13 @@ import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
 import org.tinygroup.dbrouter.config.Router;
+import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.jsqlparser.expression.Alias;
 import org.tinygroup.jsqlparser.expression.BinaryExpression;
 import org.tinygroup.jsqlparser.expression.Expression;
+import org.tinygroup.jsqlparser.expression.Function;
 import org.tinygroup.jsqlparser.expression.JdbcParameter;
 import org.tinygroup.jsqlparser.expression.LongValue;
 import org.tinygroup.jsqlparser.expression.StringValue;
@@ -73,13 +75,12 @@ import org.tinygroup.jsqlparser.statement.update.Update;
  * 开发时间: 2013-12-17 <br>
  * <br>
  */
-public  final class DbRouterUtil {
+public final class DbRouterUtil {
 
-	
-	private DbRouterUtil(){
-		
+	private DbRouterUtil() {
+
 	}
-	
+
 	/**
 	 * 
 	 * 替换sql语句中的表名信息，条件语句带表名，暂时不进行替换。
@@ -97,11 +98,11 @@ public  final class DbRouterUtil {
 					.deepCopy(originalStatement);
 			if (statement instanceof Insert) {
 				return transformInsertSql(tableMapping, statement);
-			}else if (statement instanceof Delete) {
+			} else if (statement instanceof Delete) {
 				return transformDeleteSql(tableMapping, statement);
-			}else if (statement instanceof Update) {
+			} else if (statement instanceof Update) {
 				return transformUpdateSql(tableMapping, statement);
-			}else if (statement instanceof Select) {
+			} else if (statement instanceof Select) {
 				return transformSelectSql(tableMapping, statement);
 			}
 			return sql;
@@ -159,7 +160,7 @@ public  final class DbRouterUtil {
 					columnTable.setName(newTableName);
 				}
 			}
-			
+
 		}
 		return insert.toString();
 	}
@@ -172,31 +173,33 @@ public  final class DbRouterUtil {
 		if (expression instanceof SubSelect) {
 			SubSelect subSelect = (SubSelect) expression;
 			transformSubSelect(subSelect, tableMapping);
-		}else if (expression instanceof AndExpression) {
+		} else if (expression instanceof AndExpression) {
 			AndExpression andExpression = (AndExpression) expression;
 			Expression rightExpression = andExpression.getRightExpression();
 			transformExpression(rightExpression, tableMapping);
-		}else if(expression instanceof OrExpression){
+		} else if (expression instanceof OrExpression) {
 			OrExpression orExpression = (OrExpression) expression;
 			Expression rightExpression = orExpression.getRightExpression();
 			transformExpression(rightExpression, tableMapping);
-		}else if(expression instanceof InExpression){
-			InExpression inExpression=(InExpression)expression;
-			ItemsList rightItemsList=inExpression.getRightItemsList();
-			if(rightItemsList instanceof SubSelect){
+		} else if (expression instanceof InExpression) {
+			InExpression inExpression = (InExpression) expression;
+			ItemsList rightItemsList = inExpression.getRightItemsList();
+			if (rightItemsList instanceof SubSelect) {
 				SubSelect subSelect = (SubSelect) rightItemsList;
 				transformSubSelect(subSelect, tableMapping);
 			}
-			
-		}else if(expression instanceof ExistsExpression){
-			ExistsExpression existsExpression=(ExistsExpression)expression;
-			transformExpression(existsExpression.getRightExpression(), tableMapping);
-			
-		}else if(expression instanceof BinaryExpression){
-			BinaryExpression binaryExpression=(BinaryExpression)expression;
-			transformExpression(binaryExpression.getRightExpression(), tableMapping);
+
+		} else if (expression instanceof ExistsExpression) {
+			ExistsExpression existsExpression = (ExistsExpression) expression;
+			transformExpression(existsExpression.getRightExpression(),
+					tableMapping);
+
+		} else if (expression instanceof BinaryExpression) {
+			BinaryExpression binaryExpression = (BinaryExpression) expression;
+			transformExpression(binaryExpression.getRightExpression(),
+					tableMapping);
 		}
-		
+
 	}
 
 	private static void transformSubSelect(SubSelect select,
@@ -287,77 +290,101 @@ public  final class DbRouterUtil {
 	 * @param router
 	 * @param metaData
 	 * @return
+	 * @throws SQLException
 	 */
-	public static String transformInsertSql(String sql, Router router,
-			Map<String, String> tableMapping, DatabaseMetaData metaData) {
+	public static String transformInsertSql(String sql, Shard shard,
+			Router router, Map<String, String> tableMapping,
+			DatabaseMetaData metaData) throws SQLException {
 		Statement originalStatement = RouterManagerBeanFactory.getManager()
 				.getSqlStatement(sql);
-		ResultSet rs = null;
-		ResultSet typeRs = null;
+		Statement statement;
 		try {
-			Statement statement = (Statement) BeanUtil
-					.deepCopy(originalStatement);
-			if (statement instanceof Insert) {
-				Insert insert = (Insert) statement;
-				Table table = insert.getTable();
-				String tableName = table.getName();
-				String realTableName = getRealTableName(tableMapping, tableName);
-				rs = metaData.getPrimaryKeys(null, null, realTableName);
+			statement = (Statement) BeanUtil.deepCopy(originalStatement);
+		} catch (Exception e) {
+			throw new SQLException(e.getMessage());
+		}
+		if (statement instanceof Insert) {
+			Insert insert = (Insert) statement;
+			Table table = insert.getTable();
+			String tableName = table.getName();
+			String realTableName = getRealTableName(tableMapping, tableName);
+			String queryTableName = realTableName;
+			ResultSet rs = null;
+			try {
+				rs = metaData.getPrimaryKeys(null, null, queryTableName);
 				if (rs.next()) {
-					String primaryKey = rs.getString("COLUMN_NAME");
-					typeRs = metaData.getColumns(null, null, realTableName,
-							primaryKey);
-					if (typeRs.next()) {
-						int dataType = typeRs.getInt("DATA_TYPE");
-						List<Column> columns = insert.getColumns();
-						boolean exist = primaryKeyInColumns(primaryKey, columns);
-						if (!exist) {
-							Column primaryColumn = new Column(table, primaryKey);
-							columns.add(primaryColumn);
-							ItemsList itemsList = insert.getItemsList();
-							if (itemsList instanceof ExpressionList) {
-								addPrimaryKeyExpression(router, tableName,
-										dataType, itemsList);
-							}
-							return insert.toString();
-						}
+					getPrimaryKeys(router, metaData, rs, insert, table,
+							queryTableName);
+				} else {
+					rs.close();//先关闭上次查询的resultset
+					queryTableName = realTableName.toUpperCase();
+					rs = metaData.getPrimaryKeys(null, null, queryTableName);
+					if (rs.next()) {
+						getPrimaryKeys(router, metaData, rs, insert, table,
+								queryTableName);
 					}
 				}
-
-			}
-		} catch (Exception e) {
-			throw new DbrouterRuntimeException(e);
-		} finally {
-			try {
+			} finally {
 				if (rs != null) {
 					rs.close();
 				}
-				if (typeRs != null) {
-					typeRs.close();
-				}
-			} catch (SQLException e) {
-				throw new DbrouterRuntimeException(e);
 			}
-
+			return insert.toString();
 		}
 		return sql;
+	}
+
+	private static void getPrimaryKeys(Router router,
+			DatabaseMetaData metaData, ResultSet rs, Insert insert,
+			Table table, String realTableName) throws SQLException {
+		String primaryKey = rs.getString("COLUMN_NAME");
+		ResultSet typeRs = metaData.getColumns(null, null, realTableName,
+				primaryKey);
+		try {
+			if (typeRs.next()) {
+				addPrimaryColumn(router, insert, table, primaryKey, typeRs);
+			}
+		} finally {
+			if (typeRs != null) {
+				typeRs.close();
+			}
+		}
+	}
+
+	private static void addPrimaryColumn(Router router, Insert insert,
+			Table table, String primaryKey, ResultSet typeRs)
+			throws SQLException {
+		int dataType = typeRs.getInt("DATA_TYPE");
+		boolean exist = primaryKeyInColumns(primaryKey, insert);
+		if (!exist) {
+			Column primaryColumn = new Column(table, primaryKey);
+			List<Column> columns = insert.getColumns();
+			columns.add(primaryColumn);
+			ItemsList itemsList = insert.getItemsList();
+			if (itemsList instanceof ExpressionList) {
+				addPrimaryKeyExpression(router, table.getName(), dataType,
+						itemsList);
+			}
+		}
 	}
 
 	private static String getRealTableName(Map<String, String> tableMapping,
 			String tableName) {
 		String realTableName = tableName;// 真正在数据库存在的表名
-		if (tableMapping != null&&tableMapping.containsKey(tableName)) {
-				realTableName = tableMapping.get(tableName);
+		if (tableMapping != null && tableMapping.containsKey(tableName)) {
+			realTableName = tableMapping.get(tableName);
 		}
 		return realTableName;
 	}
-   /**
-    * 新增sql语句增加主键字段信息
-    * @param router
-    * @param tableName
-    * @param dataType
-    * @param itemsList
-    */
+
+	/**
+	 * 新增sql语句增加主键字段信息
+	 * 
+	 * @param router
+	 * @param tableName
+	 * @param dataType
+	 * @param itemsList
+	 */
 	private static void addPrimaryKeyExpression(Router router,
 			String tableName, int dataType, ItemsList itemsList) {
 		List<Expression> expressions = ((ExpressionList) itemsList)
@@ -367,34 +394,32 @@ public  final class DbRouterUtil {
 		case Types.CHAR:
 		case Types.VARCHAR:
 		case Types.LONGVARCHAR:
-			String value = RouterManagerBeanFactory
-					.getManager().getPrimaryKey(router,
-							tableName);
+			String value = RouterManagerBeanFactory.getManager().getPrimaryKey(
+					router, tableName);
 			StringValue stringValue = new StringValue(value);
 			expression = stringValue;
-		    break;
+			break;
 		case Types.NUMERIC:
 		case Types.DECIMAL:
 		case Types.INTEGER:
 		case Types.SMALLINT:
 		case Types.TINYINT:
 		case Types.BIGINT:
-			Object values = RouterManagerBeanFactory
-					.getManager().getPrimaryKey(router,
-							tableName);
+			Object values = RouterManagerBeanFactory.getManager()
+					.getPrimaryKey(router, tableName);
 			expression = new LongValue(values + "");
-		    break;
+			break;
 		default:
 		}
 		expressions.add(expression);
 	}
 
-	private static boolean primaryKeyInColumns(String primaryKey,
-			List<Column> columns) {
+	private static boolean primaryKeyInColumns(String primaryKey, Insert insert) {
+		List<Column> columns = insert.getColumns();
 		boolean exist = false;
 		if (!CollectionUtil.isEmpty(columns)) {
 			for (Column column : columns) {
-				if (column.getColumnName().equals(primaryKey)) {
+				if (column.getColumnName().equalsIgnoreCase(primaryKey)) {
 					exist = true;
 					break;
 				}
@@ -404,25 +429,25 @@ public  final class DbRouterUtil {
 	}
 
 	/**
-	 * 检测查询语句选择项是否包含orderby字段，不存在则创建orderby字段
+	 * 检测查询语句选择项是否包含order by\group by字段，不存在则创建order by\group by字段
 	 * 
 	 * @param plainSelect
 	 */
 	public static void checkOrderByAndGroupbyItem(PlainSelect plainSelect) {
-		List<Column> orderByColumns = getOrderByColumns(plainSelect);
+		// List<Column> orderByColumns = getOrderByColumns(plainSelect);
 		List<Column> groupByColumns = getGroupByColumns(plainSelect);
 		List<SelectItem> selectItems = plainSelect.getSelectItems();
 		for (Column groupByColumn : groupByColumns) {
 			checkItem(selectItems, groupByColumn);
 		}
-		for (Column orderByColumn : orderByColumns) {
-			checkItem(selectItems, orderByColumn);
-		}
+		// for (Column orderByColumn : orderByColumns) {
+		// checkItem(selectItems, orderByColumn);
+		// }
 	}
 
 	public static void checkItem(List<SelectItem> selectItems,
 			Column checkColumn) {
-		String groupByName = checkColumn.getFullyQualifiedName();
+		String columnName = checkColumn.getFullyQualifiedName();
 		boolean isExist = false;
 		for (SelectItem selectItem : selectItems) {
 			if (selectItem instanceof AllColumns) {
@@ -435,18 +460,20 @@ public  final class DbRouterUtil {
 			}
 			SelectExpressionItem item = (SelectExpressionItem) selectItem;
 			Alias alias = item.getAlias();
-			if (alias != null && groupByName.equals(alias.getName())) {
+			if (alias != null && columnName.equals(alias.getName())) {
 				isExist = true;
 				break;
 			}
 			Expression expression = item.getExpression();
 			if (expression instanceof Column) {
 				Column column = (Column) expression;
-				if (groupByName.equals(column.getFullyQualifiedName())
-						|| groupByName.equals(column.getColumnName())) {
+				if (columnName.equals(column.getFullyQualifiedName())
+						|| columnName.equals(column.getColumnName())) {
 					isExist = true;
 					break;
 				}
+			} else if (expression instanceof Function) {
+
 			}
 		}
 		if (!isExist) {
@@ -544,6 +571,25 @@ public  final class DbRouterUtil {
 
 	}
 
+	public static Table getSelectTable(String sql) {
+		Statement statement = RouterManagerBeanFactory.getManager()
+				.getSqlStatement(sql);
+		if (statement instanceof Select) {
+			Select select = (Select) statement;
+			SelectBody body = select.getSelectBody();
+			if (body instanceof PlainSelect) {
+				PlainSelect plainSelect = (PlainSelect) body;
+				FromItem fromItem = plainSelect.getFromItem();
+				if (fromItem instanceof Table) {
+					Table table = (Table) fromItem;
+					return table;
+				}
+			}
+		}
+		throw new DbrouterRuntimeException("must be a query sql");
+
+	}
+
 	private static String getTableNameWithPlainSelect(PlainSelect plainSelect) {
 		FromItem fromItem = plainSelect.getFromItem();
 		if (fromItem instanceof Table) {
@@ -555,16 +601,15 @@ public  final class DbRouterUtil {
 
 	public static Connection createConnection(DataSourceConfig config)
 			throws SQLException {
-			try {
-				Class.forName(config.getDriver());
-			} catch (ClassNotFoundException e) {
-				throw new DbrouterRuntimeException(e);
-			}
-			Connection connection = DriverManager
-					.getConnection(config.getUrl(), config.getUserName(),
-							config.getPassword());
-			connection.setAutoCommit(true);
-			return connection;
+		try {
+			Class.forName(config.getDriver());
+		} catch (ClassNotFoundException e) {
+			throw new DbrouterRuntimeException(e);
+		}
+		Connection connection = DriverManager.getConnection(config.getUrl(),
+				config.getUserName(), config.getPassword());
+		connection.setAutoCommit(true);
+		return connection;
 	}
 
 	/**

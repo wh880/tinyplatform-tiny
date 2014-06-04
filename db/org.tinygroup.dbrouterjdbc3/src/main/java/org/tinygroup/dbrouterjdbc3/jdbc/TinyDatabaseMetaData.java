@@ -45,17 +45,11 @@ public class TinyDatabaseMetaData implements DatabaseMetaData {
 
 	private TinyConnection tinyConnection;
 
-	private Router router;
+	private Collection<Connection> connections=new ArrayList<Connection>();
 
-	private Map<Shard, Connection> dataSourceConnections = new HashMap<Shard, Connection>();// 一个数据源配置对应存储一个连接
-
-	private Collection<Connection> connections;
-
-	public TinyDatabaseMetaData(TinyConnection tinyConnection, Router router) {
+	public TinyDatabaseMetaData(TinyConnection tinyConnection, Router router) throws SQLException {
 		this.tinyConnection = tinyConnection;
-		this.router = router;
-		dataSourceConnections = tinyConnection.getDataSourceConnections();
-		connections = dataSourceConnections.values();
+		connections.addAll(tinyConnection.getDataSource2Connection().values());
 	}
 
 	public boolean allProceduresAreCallable() throws SQLException {
@@ -643,7 +637,7 @@ public class TinyDatabaseMetaData implements DatabaseMetaData {
 	public ResultSet getProcedures(String catalog, String schemaPattern,
 			String procedureNamePattern) throws SQLException {
 		List<ResultSet> resultSets = new ArrayList<ResultSet>();
-		for (Connection connection : dataSourceConnections.values()) {
+		for (Connection connection : connections) {
 			resultSets.add(connection.getMetaData().getProcedures(catalog,
 					schemaPattern, procedureNamePattern));
 		}
@@ -664,7 +658,7 @@ public class TinyDatabaseMetaData implements DatabaseMetaData {
 
 	public ResultSet getTables(String catalog, String schemaPattern,
 			String tableNamePattern, String[] types) throws SQLException {
-		ResultFilter filter=new ResultFilter(catalog, schemaPattern, tableNamePattern, types, dataSourceConnections);
+		ResultFilter filter=new ResultFilter(catalog, schemaPattern, tableNamePattern, types, tinyConnection.getShardConnections());
 		return filter.filter();
 	}
 
@@ -966,6 +960,7 @@ public class TinyDatabaseMetaData implements DatabaseMetaData {
 				if(mapping!=null){
 					for (String key : mapping.keySet()) {
 						tableMapping.put(mapping.get(key), key);
+						tableMapping.put(mapping.get(key).toUpperCase(), key);//oracle需要大写
 					}
 				}
 			}

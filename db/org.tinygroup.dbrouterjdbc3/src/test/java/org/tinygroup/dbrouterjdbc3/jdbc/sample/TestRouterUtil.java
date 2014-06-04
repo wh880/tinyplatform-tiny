@@ -15,41 +15,23 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc.sample;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.dbrouter.PartitionRule;
-import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.ShardRule;
-import org.tinygroup.dbrouter.config.*;
-import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
+import org.tinygroup.dbrouter.config.DataSourceConfig;
+import org.tinygroup.dbrouter.config.KeyGeneratorConfig;
+import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.dbrouter.config.Router;
+import org.tinygroup.dbrouter.config.Shard;
+import org.tinygroup.dbrouter.config.TableMapping;
 import org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong;
 import org.tinygroup.dbrouter.impl.partionrule.PartionRuleByTableName;
 import org.tinygroup.dbrouter.impl.shardrule.ShardRuleByIdDifferentSchema;
 import org.tinygroup.dbrouter.impl.shardrule.ShardRuleByIdSameSchema;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
 public class TestRouterUtil {
-    public static void main(String[] args) throws Throwable {
-        RouterManager routerManager = RouterManagerBeanFactory.getManager();
-        Router router = getPrimarySlaveRouter();
-        routerManager.addRouter(router);
-        Class.forName("org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver");
-        Connection conn = DriverManager.getConnection("jdbc:dbrouter://router1", "luog", "123456");
-        Statement stmt = conn.createStatement();
-        String sql;
-        sql = "SELECT * FROM aaa";
-        ResultSet rs = stmt.executeQuery(sql);
-        while (rs.next()) {
-            System.out.printf("%d %s\n", rs.getInt(1), rs.getString(2));
-        }
-        rs.close();
-
-
-    }
 
     public static Router getPrimarySlaveRouter() {
         Router router = new Router("router1", "luog", "123456");

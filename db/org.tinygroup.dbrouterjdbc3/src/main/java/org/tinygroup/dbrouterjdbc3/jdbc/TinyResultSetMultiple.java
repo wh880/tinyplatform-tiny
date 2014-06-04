@@ -133,7 +133,7 @@ public class TinyResultSetMultiple implements ResultSet {
 					Partition partition=executor.getPartition();
 					Object[] params=statement.getPreparedParams();
 					String realSql = routerManager.getSql(partition, shard, sql,params);
-					String countSql = "select count(0) from ( " + realSql+" ) as tinycounttemp";
+					String countSql = "select count(0) from ( " + realSql+" ) tinycounttemp";
 					Statement countStatement=statement.getNewStatement(countSql,shard);
 					if(countStatement instanceof PreparedStatement){
 						PreparedStatement preparedStatement=(PreparedStatement)countStatement;
@@ -1012,8 +1012,7 @@ public class TinyResultSetMultiple implements ResultSet {
 
 	private UpdateableRow getUpdateableRow(ResultSetExecutor executor)
 			throws SQLException {
-		return new UpdateableRow(tinyConnection, executor.getShard(),
-				executor.getResultSet());
+		return new UpdateableRow(tinyConnection, executor);
 	}
 
 	public void insertRow() throws SQLException {

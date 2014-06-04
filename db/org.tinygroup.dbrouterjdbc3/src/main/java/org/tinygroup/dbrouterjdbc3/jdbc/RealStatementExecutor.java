@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -32,16 +33,18 @@ public class RealStatementExecutor {
 	private String originalSql;
 	private Shard shard;
 	private Partition partition;
+	private Router router;
 	private Logger logger = LoggerFactory.getLogger(TinyStatement.class);
 
 	public RealStatementExecutor(Statement realStatement, String executeSql,
-			String originalSql, Shard shard, Partition partition) {
+			String originalSql, Shard shard, Partition partition,Router router) {
 		super();
 		this.realStatement = realStatement;
 		this.executeSql = executeSql;
 		this.originalSql = originalSql;
 		this.partition = partition;
 		this.shard = shard;
+		this.router=router;
 	}
 
 	public void addBatch() throws SQLException {
@@ -66,6 +69,11 @@ public class RealStatementExecutor {
 
 	public Partition getPartition() {
 		return partition;
+	}
+	
+
+	public Router getRouter() {
+		return router;
 	}
 
 	public ResultSet executeQuery() throws SQLException {
