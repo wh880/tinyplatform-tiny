@@ -92,20 +92,18 @@ public class TinyPreparedStatement extends TinyStatement implements
 
 	
 	protected Statement getStatement(Shard shard, String executeSql) throws SQLException {
-		Statement statement = statementMap.get(shard);
+		Statement statement = null;
 		if(tinyConnection.getAutoCommit()!=autoCommit){//有调用过tinyconnection.setAutoCommit(),重写创建statement
 			statement = shard.getConnection(tinyConnection).prepareStatement(executeSql,
 					resultSetType, resultSetConcurrency,
 					getResultSetHoldability());
 			setStatementProperties(statement);
-			statementMap.put(shard, statement);
 		}else{
 			if (statement == null) {
 				statement = shard.getConnection(tinyConnection).prepareStatement(executeSql,
 						resultSetType, resultSetConcurrency,
 						getResultSetHoldability());
 				setStatementProperties(statement);
-				statementMap.put(shard, statement);
 			}
 		}
 		setParamters((PreparedStatement) statement);//设置参数
