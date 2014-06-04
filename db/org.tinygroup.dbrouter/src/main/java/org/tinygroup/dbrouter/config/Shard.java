@@ -16,6 +16,7 @@
 package org.tinygroup.dbrouter.config;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -143,6 +144,9 @@ public class Shard {
     }
 
     public List<ShardRule> getShardRules() {
+    	if(shardRules==null){
+    		shardRules=new ArrayList<ShardRule>();
+    	}
         return shardRules;
     }
 

@@ -194,7 +194,7 @@ public class TinyStatement implements Statement {
 		return 0;
 	}
 
-	protected Statement getStatement(Shard shard) throws SQLException {
+	protected Statement getStatement(Shard shard, String executeSql) throws SQLException {
 		Statement statement = statementMap.get(shard);
 		if (tinyConnection.getAutoCommit() != autoCommit) {// 有调用过tinyconnection.setAutoCommit(),重写创建statement
 			logger.logMessage(
@@ -464,9 +464,9 @@ public class TinyStatement implements Statement {
 		if (partition.getMode() == Partition.MODE_PRIMARY_SLAVE) {
 			List<Shard> shards = getPrimarySlaveShard(sql, partition);
 			for (Shard shard : shards) {
-				Statement realStatement = getStatement(shard);
 				String realSql = routerManager.getSql(partition, shard, sql,
 						getPreparedParams());
+				Statement realStatement = getStatement(shard, realSql);
 				statements.add(new RealStatementExecutor(realStatement,
 						realSql, sql, shard, partition,router));
 			}
@@ -493,9 +493,9 @@ public class TinyStatement implements Statement {
 			Iterator<Shard> iterator = shards.iterator();
 			while (iterator.hasNext()) {
 				Shard shard = iterator.next();
-				Statement realStatement = getStatement(shard);
 				String realSql = routerManager.getSql(partition, shard,
 						transSql, getPreparedParams());// 变化表名等
+				Statement realStatement = getStatement(shard, realSql);
 				statements.add(new RealStatementExecutor(realStatement,
 						realSql, sql, shard, partition,router));
 			}

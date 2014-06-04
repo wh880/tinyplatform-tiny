@@ -210,9 +210,6 @@ public class RouterManagerImpl implements RouterManager {
 	public String getSql(Partition partition, Shard shard, String sql,
 			Object... preparedParams) {
 		List<ShardRule> rules = shard.getShardRules();
-		if (rules == null || rules.size() == 0) {
-			return sql;
-		}
 		for (ShardRule rule : rules) {
 			if (rule.isMatch(partition, sql, preparedParams)) {
 				// 如果有匹配的，则返回匹配的规则处理过的SQL

@@ -68,7 +68,6 @@ public class TinyPreparedStatement extends TinyStatement implements
 		this.sqlStatement = sql;
 		paramSize=DbRouterUtil.getSqlParamSize(sqlStatement);
 		builder=new ParamObjectBuilder(paramSize);
-		getOriginalParameterMetadata(router, sql);
 	}
 
 	private void getOriginalParameterMetadata(Router router, String sql)
@@ -79,7 +78,9 @@ public class TinyPreparedStatement extends TinyStatement implements
 			throw new RuntimeException("not found shard in the partition with sql:"+sql);
 		}
 		Shard shard=shards.get(0);//获取sql对应的分片信息。
-		PreparedStatement preparedStatement=(PreparedStatement) getStatement(shard);
+		String realSql = routerManager.getSql(partition, shard, sql,
+				getPreparedParams());
+		PreparedStatement preparedStatement=(PreparedStatement) getStatement(shard, realSql);
 		parameterMetaData=preparedStatement.getParameterMetaData();
 	}
 
@@ -90,17 +91,17 @@ public class TinyPreparedStatement extends TinyStatement implements
 	}
 
 	
-	protected Statement getStatement(Shard shard) throws SQLException {
+	protected Statement getStatement(Shard shard, String executeSql) throws SQLException {
 		Statement statement = statementMap.get(shard);
 		if(tinyConnection.getAutoCommit()!=autoCommit){//有调用过tinyconnection.setAutoCommit(),重写创建statement
-			statement = shard.getConnection(tinyConnection).prepareStatement(sqlStatement,
+			statement = shard.getConnection(tinyConnection).prepareStatement(executeSql,
 					resultSetType, resultSetConcurrency,
 					getResultSetHoldability());
 			setStatementProperties(statement);
 			statementMap.put(shard, statement);
 		}else{
 			if (statement == null) {
-				statement = shard.getConnection(tinyConnection).prepareStatement(sqlStatement,
+				statement = shard.getConnection(tinyConnection).prepareStatement(executeSql,
 						resultSetType, resultSetConcurrency,
 						getResultSetHoldability());
 				setStatementProperties(statement);
@@ -387,6 +388,7 @@ public class TinyPreparedStatement extends TinyStatement implements
 
 	public ParameterMetaData getParameterMetaData() throws SQLException {
 		if(metaData==null){
+			getOriginalParameterMetadata(router, sqlStatement);
 			metaData=new TinyParameterMetaData(parameterMetaData);
 		}
 		return metaData;
