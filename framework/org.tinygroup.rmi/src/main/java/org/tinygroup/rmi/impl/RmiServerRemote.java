@@ -23,7 +23,6 @@
  */
 package org.tinygroup.rmi.impl;
 
-import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;

@@ -66,9 +66,12 @@ public class IniOperatorDefault implements IniOperator {
         String sectionName = null;
         while (string != null) {
             string = string.trim();
-            if (string.length() == 0 || string.startsWith(commentChar)) {
-                addComment(sectionName, string);
-            } else if (string.startsWith("[")) { //如果是Section
+            if (string.length() == 0 ) {
+                addComment(sectionName, "");
+            }else if( string.startsWith(commentChar)){
+            	addComment(sectionName, string.substring(1));
+            }
+            else if (string.startsWith("[")) { //如果是Section
                 sectionName = addSection(string);
             } else {
                 addValuePair(string, sectionName);
@@ -113,7 +116,7 @@ public class IniOperatorDefault implements IniOperator {
     }
 
     private void addComment(String sectionName, String string) {
-        ValuePair valuePair = new ValuePair(string.substring(1));
+        ValuePair valuePair = new ValuePair(string);
         add(sectionName, valuePair);
     }
 

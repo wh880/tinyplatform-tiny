@@ -128,7 +128,7 @@ public class AbstractJobCenter implements JobCenter {
                     logger.errorMessage("调用工头:{0}时出错", e, foreman.getId());
                     rmiServer.unregisterRemoteObject(foreman);
                 } catch (RemoteException e1) {
-                    logger.error(e1);
+                	logger.errorMessage("注销工头:{0}时出错", e, foreman.getId());
                 }
             }
         }
