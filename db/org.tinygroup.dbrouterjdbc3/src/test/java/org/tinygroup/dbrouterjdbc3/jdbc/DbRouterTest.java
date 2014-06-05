@@ -103,9 +103,34 @@ public class DbRouterTest extends TestCase {
         resultSet.close();
         statement.close();
         conn.close();
-
     }
 
+    public void testSameSchemaPrepareStatement() throws Exception {
+        RouterManager routerManager = RouterManagerBeanFactory.getManager();
+        routerManager.addRouters("/sameSchemaDiffTableWithShard.xml");
+        Class.forName("org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver");
+        Connection conn = DriverManager.getConnection("jdbc:dbrouter://tableShard", "luog", "123456");
+        Statement stmt = conn.createStatement();
+        //先删除数据
+        stmt.executeUpdate("delete from aaa");
+        String sql;
+        //插入3条数据
+        for (int i = 1; i <= 3; i++) {
+        	   sql = "insert into aaa(id,aaa) values (" + i + ",'ppp')";
+        	   stmt.executeUpdate(sql);
+        }
+        PreparedStatement statement = conn.prepareStatement("select * from aaa where id in(?,?,?) order by id desc");
+        statement.setInt(1, 1);
+        statement.setInt(2, 2);
+        statement.setInt(3, 3);
+        ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
+        assertEquals(3,  resultSet.getInt(1));
+        resultSet.close();
+        statement.close();
+        conn.close();
+
+    }
 
     public void testAutoInsertPrimaryWithDiffSchema() throws Exception {
         RouterManager routerManager = RouterManagerBeanFactory.getManager();

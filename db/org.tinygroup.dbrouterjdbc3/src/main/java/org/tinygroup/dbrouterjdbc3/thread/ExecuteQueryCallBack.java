@@ -26,7 +26,7 @@ public class ExecuteQueryCallBack implements StatementProcessorCallBack<ResultSe
 	public ResultSetExecutor callBack(RealStatementExecutor statement)
 			throws SQLException {
 		ResultSet resultSet = statement.executeQuery();
-		return new ResultSetExecutor(resultSet, statement.getExecuteSql(),statement.getOriginalSql(), statement.getShard(),statement.getPartition());
+		return new ResultSetExecutor(resultSet, statement.getExecuteSql(),statement.getOriginalSql(), statement.getShard(),statement.getPartition(),statement.getRouter());
 	}
 
 }

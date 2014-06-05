@@ -2253,7 +2253,7 @@ public class TinyResultSetSimple implements ResultSet, ResultSetMetaData {
 		checkClosed();
 		rowId = 0;
 		currentRow = rows.get(rowId);
-		return true;
+		return currentRow!=null;
 	}
 
 	/**
@@ -2298,9 +2298,12 @@ public class TinyResultSetSimple implements ResultSet, ResultSetMetaData {
 
 	public boolean last() throws SQLException {
 		checkClosed();
-		rowId = rows.size() - 1;
-		currentRow = rows.get(rowId);
-		return true;
+		if(rows.size()>0){
+			rowId = rows.size() - 1;
+			currentRow = rows.get(rowId);
+			return true;
+		}
+		return false;
 	}
 
 	/**

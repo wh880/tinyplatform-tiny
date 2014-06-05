@@ -13,13 +13,15 @@ import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.util.ContextFactory;
 import org.tinygroup.docgen.DocumentGenerater;
+import org.tinygroup.docgen.impl.DocumentGeneraterImpl;
 import org.tinygroup.fileresolver.FullContextFileRepository;
+import org.tinygroup.fileresolver.impl.FullContextFileRepositoryImpl;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.velocity.VelocityHelper;
 import org.tinygroup.velocity.config.VelocityContextConfig;
+import org.tinygroup.velocity.impl.VelocityHelperImpl;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xstream.XStreamFactory;
@@ -40,7 +42,9 @@ public class CodeGenerator{
     //public static final String CODE_GEN_BEANS_XML = "/codegenbeans.xml";
 	//private static Factory factory;
 	private static Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
-	 
+    
+	public static FullContextFileRepository repository;//暂时定为静态
+	private DocumentGenerater generater;
 	/* static{
 		  factory = BeanFactory.getFactory();
 	        XStream xStream = XStreamFactory.getXStream();
@@ -55,6 +59,16 @@ public class CodeGenerator{
 	        }
 	 }*/
 	
+	public CodeGenerator(){
+		generater=new DocumentGeneraterImpl();
+		VelocityHelperImpl documentGeneraterVelocityHelper=new VelocityHelperImpl();
+		generater.setDocumentGeneraterVelocityHelper(documentGeneraterVelocityHelper);
+		if(repository==null){
+			repository=new FullContextFileRepositoryImpl();
+		}
+		documentGeneraterVelocityHelper.setFullContextFileRepository(repository);
+	}
+	
 
 	/**
 	 * @param context
@@ -66,7 +80,6 @@ public class CodeGenerator{
 		if(metaData==null){
 			throw new RuntimeException("代码生成器的元数据不存在");
 		}
-		DocumentGenerater generater=SpringUtil.getBean(CODE_GENERATER);
 		addUtilClass(generater.getDocumentGeneraterVelocityHelper());
 		List<MacroDefine> macroDefines=metaData.getMacroDefines();
 		for (MacroDefine macroDefine : macroDefines) {
@@ -90,7 +103,6 @@ public class CodeGenerator{
 			}
 			FileObject templateFileObject=VFS.resolveFile(templatePath);
 			logger.logMessage(LogLevel.INFO, "模板文件路径：{0}，加载完毕",templatePath);
-			FullContextFileRepository repository=SpringUtil.getBean(CODE_FULL_CONTEXT_FILE_REPOSITORY);
 			repository.addFileObject(templateFileObject.getPath(), templateFileObject);
 			String generateFile=generater.evaluteString(newContext, templateDefine.getFileNameTemplate());
 			File file=new File(generateFile);

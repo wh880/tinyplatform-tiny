@@ -127,7 +127,7 @@ public class TinyStatement implements Statement {
 					ResultSet realResultSet = statement.executeQuery();
 					resultSetExecutors.add(new ResultSetExecutor(realResultSet,
 							statement.getExecuteSql(), statement
-									.getOriginalSql(), statement.getShard(),statement.getPartition()));
+									.getOriginalSql(), statement.getShard(),statement.getPartition(),statement.getRouter()));
 					resultSetList.add(realResultSet);
 				}
 			}
@@ -194,7 +194,7 @@ public class TinyStatement implements Statement {
 		return 0;
 	}
 
-	protected Statement getStatement(Shard shard) throws SQLException {
+	protected Statement getStatement(Shard shard, String executeSql) throws SQLException {
 		Statement statement = statementMap.get(shard);
 		if (tinyConnection.getAutoCommit() != autoCommit) {// 有调用过tinyconnection.setAutoCommit(),重写创建statement
 			logger.logMessage(
@@ -464,17 +464,17 @@ public class TinyStatement implements Statement {
 		if (partition.getMode() == Partition.MODE_PRIMARY_SLAVE) {
 			List<Shard> shards = getPrimarySlaveShard(sql, partition);
 			for (Shard shard : shards) {
-				Statement realStatement = getStatement(shard);
 				String realSql = routerManager.getSql(partition, shard, sql,
 						getPreparedParams());
+				Statement realStatement = getStatement(shard, realSql);
 				statements.add(new RealStatementExecutor(realStatement,
-						realSql, sql, shard, partition));
+						realSql, sql, shard, partition,router));
 			}
 
 		} else {
 			Shard firstShard = partition.getShards().get(0);// 获取第一个分片
 			// 获取实际的表名
-			String transSql = DbRouterUtil.transformInsertSql(sql, router,
+			String transSql = DbRouterUtil.transformInsertSql(sql,firstShard, router,
 					firstShard.getTableMappingMap(),
 					tinyConnection.getMetaData());// 如果是insert语句，那么检测是否有主键字段。
 			Collection<Shard> shards = routerManager.getShards(partition,
@@ -493,11 +493,11 @@ public class TinyStatement implements Statement {
 			Iterator<Shard> iterator = shards.iterator();
 			while (iterator.hasNext()) {
 				Shard shard = iterator.next();
-				Statement realStatement = getStatement(shard);
 				String realSql = routerManager.getSql(partition, shard,
 						transSql, getPreparedParams());// 变化表名等
+				Statement realStatement = getStatement(shard, realSql);
 				statements.add(new RealStatementExecutor(realStatement,
-						realSql, sql, shard, partition));
+						realSql, sql, shard, partition,router));
 			}
 		}
 		return statements;

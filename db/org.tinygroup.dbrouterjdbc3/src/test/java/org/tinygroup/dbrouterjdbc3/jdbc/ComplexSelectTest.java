@@ -41,7 +41,7 @@ public class ComplexSelectTest extends TestCase {
 				"jdbc:dbrouter://diffSchemaShard", "luog", "123456");
 		Statement statement=conn.createStatement();
 		prepareRecord(statement);
-		String sql="select count(*) from aaa where aaa in (select aaa from aaa where id%3=0) order by id";
+		String sql="select count(*) from aaa where aaa in (select aaa from aaa where mod(id,3)=0) order by id";
 		ResultSet rs=statement.executeQuery(sql);
 		if(rs.next()){
 			assertEquals(6, rs.getInt(1));
@@ -78,7 +78,7 @@ public class ComplexSelectTest extends TestCase {
 				"jdbc:dbrouter://tableShard", "luog", "123456");
 		Statement statement=conn.createStatement();
 		prepareRecord(statement);
-		String sql="select * from aaa where aaa in (select aaa from aaa where id%3=0)";
+		String sql="select * from aaa where aaa in (select aaa from aaa where mod(id,3)=0)";
 		ResultSet rs=statement.executeQuery(sql);
 		while(rs.next()){
 			System.out.println(rs.getString("aaa"));

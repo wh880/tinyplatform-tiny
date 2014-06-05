@@ -212,7 +212,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 
 		public boolean isMatch() {
 			boolean match = false;
-			if (tableName.equals(insert.getTable().getName())) {
+			if (tableName.equalsIgnoreCase(insert.getTable().getName())) {
 				for (int i = 0; i < names.length; i++) {
 					int index = DbRouterUtil.checkColumnIndex(names[i],
 							insert.getColumns());
@@ -266,7 +266,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 
 		public boolean isMatch() {
 			String deleteTableName = delete.getTable().getName();
-			if (tableName.equals(deleteTableName)) {
+			if (tableName.equalsIgnoreCase(deleteTableName)) {
 				return getWhereExpression(delete.getWhere());
 			}
 			return false;
@@ -291,7 +291,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 		}
 
 		public boolean isMatch() {
-			if (tableName.equals(update.getTable().getName())) {
+			if (tableName.equalsIgnoreCase(update.getTable().getName())) {
 				Expression where = update.getWhere();
 				return getWhereExpression(where);
 			}
@@ -317,7 +317,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 				FromItem fromItem = plainSelect.getFromItem();
 				if (fromItem instanceof Table) {
 					Table table = (Table) fromItem;
-					if (tableName.equals(table.getName())) {
+					if (tableName.equalsIgnoreCase(table.getName())) {
 						return getWhereExpression(plainSelect.getWhere());
 					}
 				}

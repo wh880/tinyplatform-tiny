@@ -48,7 +48,8 @@ public class TinyConnection implements Connection {
     private Router router;
     private List<Connection> connections = new ArrayList<Connection>();
     private Map<DataSourceConfigBean, StandardXADataSource> configDataSources = new HashMap<DataSourceConfigBean, StandardXADataSource>();
-    private Map<Shard, Connection> dataSourceConnections = new HashMap<Shard, Connection>();// 一个数据源配置对应存储一个连接
+    private Map<DataSourceConfigBean, Connection> dataSource2Connection = new HashMap<DataSourceConfigBean, Connection>();//一个数据源配置对应存储一个连接
+    private Map<Shard, Connection> shardConnections = new HashMap<Shard, Connection>();// 一个shard对应一个数据库连接
     private int transactionIsolationLevel;
     private UserTransaction userTransaction;
     private Jotm jotm;
@@ -122,11 +123,11 @@ public class TinyConnection implements Connection {
         for (int i = 0; i < ableShards.size(); i++) {
             Shard shard = ableShards.get(i);
             if (partition.getMode() == Partition.MODE_PRIMARY_SLAVE) {// 如果是主从模式,那么就取第一个数据源连接
-                dataSourceConnections.put(shard, shard.getConnection(this));
+                shardConnections.put(shard, shard.getConnection(this));
                 break;
             } else {
-                if (!dataSourceConnections.containsKey(shard)) {
-                    dataSourceConnections.put(shard, shard.getConnection(this));
+                if (!shardConnections.containsKey(shard)) {
+                    shardConnections.put(shard, shard.getConnection(this));
                 }
             }
         }
@@ -157,10 +158,14 @@ public class TinyConnection implements Connection {
                 throw new RuntimeException(e);
             } finally {
                 statement.close();
-                connection.close();
             }
         }
-        configDataSources.put(bean, dataSource);
+        if(!configDataSources.containsKey(bean)){
+        	configDataSources.put(bean, dataSource);
+        }
+        if(!dataSource2Connection.containsKey(bean)){
+            dataSource2Connection.put(bean, connection);
+        }
         return connection;
     }
 
@@ -168,12 +173,12 @@ public class TinyConnection implements Connection {
         return connections;
     }
 
-    public Collection<Connection> getDatasourceConnections() {
-        return dataSourceConnections.values();
-    }
+	public Map<DataSourceConfigBean, Connection> getDataSource2Connection() {
+		return dataSource2Connection;
+	}
 
-    public Map<Shard, Connection> getDataSourceConnections() {
-        return dataSourceConnections;
+	public Map<Shard, Connection> getShardConnections() {
+        return shardConnections;
     }
 
     public Statement createStatement() throws SQLException {

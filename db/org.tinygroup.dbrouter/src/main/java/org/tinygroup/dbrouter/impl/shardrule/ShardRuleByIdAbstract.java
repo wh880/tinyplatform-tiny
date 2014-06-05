@@ -103,7 +103,7 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
 		int paramIndex=0;
 		if (statement instanceof Insert) {
 			Insert insert = (Insert) statement;
-			if (tableName.equals(insert.getTable().getName())) {
+			if (tableName.equalsIgnoreCase(insert.getTable().getName())) {
 				ItemsList itemsList= insert.getItemsList();
 				if(itemsList instanceof ExpressionList){
 					List<Expression> expressions = ((ExpressionList)itemsList).getExpressions();
@@ -111,7 +111,7 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
 					for (int i = 0; i < insert.getColumns().size(); i++) {
 						Column column = insert.getColumns().get(i);
 						Expression expression=expressions.get(i);
-						if (column.getColumnName().equals(primaryKeyFieldName)) {
+						if (column.getColumnName().equalsIgnoreCase(primaryKeyFieldName)) {
 							  if(expression instanceof LongValue){
 								  LongValue longValue=(LongValue)expression;
 								  if(longValue.getValue()% shardSize == remainder){
@@ -131,7 +131,7 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
 		}
 		if (statement instanceof Delete) {
 			Delete delete = (Delete) statement;
-			if (tableName.equals(delete.getTable().getName())) {
+			if (tableName.equalsIgnoreCase(delete.getTable().getName())) {
 				return getWhereExpression(0,delete.getWhere(), partition,preparedParams);
 			}
 		}
@@ -143,7 +143,7 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
 					paramIndex++;
 				}
 			}
-			if (tableName.equals(update.getTable().getName())) {
+			if (tableName.equalsIgnoreCase(update.getTable().getName())) {
 				return getWhereExpression(paramIndex,update.getWhere(), partition);
 			}
 
@@ -156,7 +156,7 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
 				FromItem fromItem = plainSelect.getFromItem();
 				if (fromItem instanceof Table) {
 					Table table = (Table) fromItem;
-					if (tableName.equals(table.getName())) {
+					if (tableName.equalsIgnoreCase(table.getName())) {
 						return getWhereExpression(0,plainSelect.getWhere(),
 								partition,preparedParams);
 					}
@@ -183,7 +183,7 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
 			Expression rightExpression = equalsTo.getRightExpression();
 			if (leftExpression instanceof Column) {
 				Column column = (Column) leftExpression;
-				if (column.getColumnName().equals(primaryKeyFieldName)) {
+				if (column.getColumnName().equalsIgnoreCase(primaryKeyFieldName)) {
 					if(rightExpression instanceof LongValue){
 						  LongValue longValue=(LongValue)rightExpression;
 						  if(longValue.getValue()% partition.getShards()
