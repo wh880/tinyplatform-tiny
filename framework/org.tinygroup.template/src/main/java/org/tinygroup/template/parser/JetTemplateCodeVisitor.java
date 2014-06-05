@@ -341,13 +341,6 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         return null;
     }
 
-    public CodeBlock visitDefine_directive(@NotNull JetTemplateParser.Define_directiveContext ctx) {
-        return null;
-    }
-
-    public CodeBlock visitExpr_class_cast(@NotNull JetTemplateParser.Expr_class_castContext ctx) {
-        return null;
-    }
 
     public CodeBlock visitExpr_math_binary_basic(@NotNull JetTemplateParser.Expr_math_binary_basicContext ctx) {
         currentCodeLet.code("O.e(\"").code(ctx.getChild(1).getText()).code("\",");
@@ -443,9 +436,10 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         currentCodeBlock.addSubCodeLet(code);
         currentCodeBlock.addSubCodeLet(new CodeLet().code("$context.put(\"$").code(name).code("For\"，$").code(name).lineCode("For);"));
         currentCodeBlock.addSubCodeLet(new CodeLet().code("while($").code(name).lineCode("For.hasNext()){"));
-        CodeBlock assign = new CodeBlock().setHeaderCodeLet(new CodeLet().code("Object ").code(name).code("=$").code(name).lineCode("For.next();")).tabIndent(1);
+        CodeBlock assign = new CodeBlock().tabIndent(1);
         assign.setFooterCodeLet(new CodeLet().code("$context.put(\"").code(name).code("\"，").code(name).lineCode(");")).tabIndent(1);
         currentCodeBlock.addSubCodeBlock(assign);
+        //TODO 运行结束后，从上下文中去掉变量及FOR
         return null;
     }
 
@@ -483,6 +477,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitFor_directive(@NotNull JetTemplateParser.For_directiveContext ctx) {
+        String name=ctx.getChild(1).getChild(1).getText();
         ctx.for_expression().accept(this);
         CodeBlock forCodeBlock = new CodeBlock();
         currentCodeBlock.addSubCodeBlock(forCodeBlock);
@@ -490,6 +485,10 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         pushCodeBlock(forCodeBlock);
         ctx.block().accept(this);
         popCodeBlock();
+        //添加清理处理
+        currentCodeBlock.addSubCodeLet(new CodeLet().code("$context.remove(\"$").code(name).lineCode("For\");"));
+        currentCodeBlock.addSubCodeLet(new CodeLet().code("$context.remove(\"").code(name).lineCode("\");"));
+
         return null;
     }
 

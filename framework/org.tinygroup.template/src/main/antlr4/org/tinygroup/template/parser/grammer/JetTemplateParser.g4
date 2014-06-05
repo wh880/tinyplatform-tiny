@@ -48,8 +48,7 @@ value       :   VALUE_OPEN         expression '}'
             |   VALUE_ESCAPED_OPEN expression '}'
             ;
 
-directive   :   define_directive
-            |   set_directive
+directive   :   set_directive
             |   put_directive
             |   if_directive
             |   for_directive
@@ -62,21 +61,18 @@ directive   :   define_directive
             |   invalid_directive
             ;
 
-define_directive
-            :   DIRECTIVE_OPEN_DEFINE define_expression_list ')'
-            ;
 define_expression_list
             :   define_expression (',' define_expression)*
             ;
 define_expression
-            :   type IDENTIFIER
+            :   IDENTIFIER
             ;
 
 set_directive
             :   DIRECTIVE_OPEN_SET set_expression (',' set_expression)* ')'
             ;
 set_expression
-            :   type? IDENTIFIER '=' expression
+            :    IDENTIFIER '=' expression
             ;
 
 put_directive
@@ -97,7 +93,7 @@ for_directive
             :   DIRECTIVE_OPEN_FOR for_expression ')' block else_directive? DIRECTIVE_END
             ;
 for_expression
-            :   type? IDENTIFIER ':' expression
+            :    IDENTIFIER ':' expression
             ;
 
 break_directive
@@ -126,8 +122,7 @@ macro_directive
             ;
 
 invalid_directive
-            :   DIRECTIVE_DEFINE
-            |   DIRECTIVE_SET
+            :   DIRECTIVE_SET
             |   DIRECTIVE_PUT
             |   DIRECTIVE_IF
             |   DIRECTIVE_ELSEIF
@@ -149,11 +144,11 @@ expression  :   '(' expression ')'                                           # e
             |   static_type_name '.' IDENTIFIER  '(' expression_list? ')'    # expr_static_method_invocation
             |   expression ('?')? '[' expression ']'                         # expr_array_get
             |   expression ('++'|'--')                                       # expr_math_unary_suffix
-//            |   ('+' <assoc=right> |'-' <assoc=right>)  expression           # expr_math_unary_prefix
+            |   ('+' <assoc=right> |'-' <assoc=right>)  expression           # expr_math_unary_prefix
 //            |   ('++'|'--')       expression                                 # expr_math_unary_prefix
-//            |   '~' <assoc=right> expression                                 # expr_math_unary_prefix
-//            |   '!' <assoc=right> expression                                 # expr_compare_not
-            |   '(' type ')'      expression                                 # expr_class_cast
+            |   '~' <assoc=right> expression                                 # expr_math_unary_prefix
+            |   '!' <assoc=right> expression                                 # expr_compare_not
+//            |   '(' type ')'      expression                                 # expr_class_cast
             |   'new' type '(' expression_list? ')'                          # expr_new_object
             |   'new' type ('[' expression ']')+                             # expr_new_array
             |   expression ('*'|'/'|'%')  expression                         # expr_math_binary_basic

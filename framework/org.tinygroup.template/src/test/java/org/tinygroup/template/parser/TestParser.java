@@ -222,11 +222,10 @@ public class TestParser extends TestCase {
     }
 
     public void testT35() throws Exception {
-        String result = execute("#for(int i: [1,2,3,4,5])#if(true)abc${i}#break(true||false)#end#end");
+        String result = execute("#for(i: [1,2,3,4,5])#if(true)abc${i}#break(true||false)#end#end");
         System.out.println(result);
         assertTrue(result.indexOf("ForIterator $iFor = new ForIterator({1,2,3,4,5});") > 0);
         assertTrue(result.indexOf("$context.put(\"$iFor\"，$iFor);") > 0);
-        assertTrue(result.indexOf("Object i=$iFor.next();") > 0);
         assertTrue(result.indexOf("$context.put(\"i\"，i);") > 0);
     }
     public void testT36() throws Exception {
@@ -253,6 +252,11 @@ public class TestParser extends TestCase {
         String result = execute("${4+6+6^3|3}");
         System.out.println(result);
         assertTrue(result.indexOf("$writer.write(O.e(\"|\",O.e(\"^\",O.e(\"+\",O.e(\"+\",4,6),6),3),3));") > 0);
+    }
+    public void testT41() throws Exception {
+        String result = execute("#set(a=1)");
+        System.out.println(result);
+        assertTrue(result.indexOf("$context.put(\"a\",1);") > 0);
     }
 
 }

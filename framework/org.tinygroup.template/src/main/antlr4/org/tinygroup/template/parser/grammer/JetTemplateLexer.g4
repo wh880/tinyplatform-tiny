@@ -39,7 +39,7 @@ VALUE_COMPACT_OPEN              : '$'                   -> pushMode(INSIDE) ;
 VALUE_OPEN              : '${'                            -> pushMode(INSIDE) ;
 VALUE_ESCAPED_OPEN      : '$!{'                           -> pushMode(INSIDE) ;
 
-DIRECTIVE_OPEN_DEFINE   : '#define'   ARGUMENT_START      -> pushMode(INSIDE) ;
+//DIRECTIVE_OPEN_DEFINE   : '#define'   ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_SET      : '#set'      ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_PUT      : '#put'      ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_IF       : '#if'       ARGUMENT_START      -> pushMode(INSIDE) ;
@@ -112,12 +112,12 @@ OP_MATH_MINUS           : '-'                              ;
 OP_MATH_MULTIPLICATION  : '*'                              ;
 OP_MATH_DIVISION        : '/'                              ;
 OP_MATH_REMAINDER       : '%'                              ;
-//OP_MATH_INCREMENT       : '++'                             ;
-//OP_MATH_DECREMENT       : '--'                             ;
+OP_MATH_INCREMENT       : '++'                             ;
+OP_MATH_DECREMENT       : '--'                             ;
 
 OP_BITWISE_AND          : '&'                              ;
 OP_BITWISE_OR           : '|'                              ;
-//OP_BITWISE_NOT          : '~'                              ;
+OP_BITWISE_NOT          : '~'                              ;
 OP_BITWISE_XOR          : '^'                              ;
 //OP_BITWISE_SHL          : '<<'                             ;
 
