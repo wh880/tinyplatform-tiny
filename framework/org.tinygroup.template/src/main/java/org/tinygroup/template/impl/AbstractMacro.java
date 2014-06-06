@@ -36,7 +36,7 @@ public abstract class AbstractMacro implements Macro {
         }
     }
 
-    protected abstract void renderTemplate(TemplateContext $context, Writer writer)throws IOException,TemplateException;
+    protected abstract void renderTemplate(TemplateContext $context, Writer $writer)throws IOException,TemplateException;
 
 
     public String getName() {

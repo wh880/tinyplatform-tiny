@@ -36,6 +36,8 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     private CodeBlock currentCodeBlock;
     private CodeBlock tmpCodeBlock;
     private CodeLet tmpCodeLet;
+    private CodeBlock initCodeBlock = null;
+    private CodeBlock macroCodeBlock = null;
 
     public CodeBlock visitExpression_list(@NotNull JetTemplateParser.Expression_listContext ctx) {
 
@@ -60,8 +62,8 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitElse_directive(@NotNull JetTemplateParser.Else_directiveContext ctx) {
-        CodeBlock elseBlock = new CodeBlock().addSubCodeLet(new CodeLet().lineCode("}else{")).tabIndent(-1);
-        currentCodeBlock.addSubCodeBlock(elseBlock);
+        CodeBlock elseBlock = new CodeBlock().subCode(new CodeLet().lineCode("}else{")).tabIndent(-1);
+        currentCodeBlock.subCode(elseBlock);
         ctx.block().accept(this);
         return null;
     }
@@ -83,11 +85,11 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         if (expression != null) {
             currentCodeLet = new CodeLet();
             expression.accept(this);
-            CodeBlock ifCodeBlock = new CodeBlock().setHeaderCodeLet(currentCodeLet.codeBefore("if(U.b(").lineCode(")){")).setFooterCodeLet(new CodeLet().lineCode("}"));
-            ifCodeBlock.addSubCodeLet(new CodeLet().lineCode("return;"));
-            currentCodeBlock.addSubCodeBlock(ifCodeBlock);
+            CodeBlock ifCodeBlock = new CodeBlock().header(currentCodeLet.codeBefore("if(U.b(").lineCode(")){")).footer(new CodeLet().lineCode("}"));
+            ifCodeBlock.subCode(new CodeLet().lineCode("return;"));
+            currentCodeBlock.subCode(ifCodeBlock);
         } else {
-            currentCodeBlock.addSubCodeLet(new CodeLet().lineCode("return;"));
+            currentCodeBlock.subCode(new CodeLet().lineCode("return;"));
         }
         return null;
     }
@@ -131,7 +133,37 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitMacro_directive(@NotNull JetTemplateParser.Macro_directiveContext ctx) {
+        String name = ctx.getChild(0).getText();
+        name = name.substring(6, name.length() - 1).trim();
+        initCodeBlock.subCode(new CodeLet().lineCode("getMacroMap().put(\"%s\", new %s());", name, name));
+        //TODO
+        CodeBlock macro = new CodeBlock();
+        JetTemplateParser.Define_expression_listContext define_expression_list = ctx.define_expression_list();
+        currentCodeLet = new CodeLet();
+        if (define_expression_list != null) {
+            define_expression_list.accept(this);
+        }
+        macro.header(new CodeLet().lineCode("class %s extends AbstractMacro {", name));
+        macro.footer(new CodeLet().lineCode("}"));
+        macro.subCode(constructMethod(name));
+        CodeBlock render=new CodeBlock();
+        macro.subCode(render);
+        render.header("protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException,TemplateException {");
+        render.footer("}");
+        pushCodeBlock(render);
+        ctx.block().accept(this);
+        popCodeBlock();
+        macroCodeBlock.subCode(macro);
         return null;
+    }
+
+    private CodeBlock constructMethod(String name) {
+        CodeBlock block = new CodeBlock();
+        block.header(CodeLet.lineCodeLet("public %s() {", name).endLine());
+        block.subCode("String[] args = {" + currentCodeLet + "};");
+        block.subCode("init(\"aaa\", args);");
+        block.footer(CodeLet.lineCodeLet("}"));
+        return block;
     }
 
     public CodeBlock visitExpr_compare_equality(@NotNull JetTemplateParser.Expr_compare_equalityContext ctx) {
@@ -157,7 +189,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         }
         currentCodeLet.codeBefore("$writer.write(").lineCode(");");
         CodeBlock valueCodeBlock = new CodeBlock();
-        valueCodeBlock.addSubCodeLet(currentCodeLet);
+        valueCodeBlock.subCode(currentCodeLet);
         return valueCodeBlock;
     }
 
@@ -174,7 +206,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitHash_map_entry_list(@NotNull JetTemplateParser.Hash_map_entry_listContext ctx) {
         List<JetTemplateParser.ExpressionContext> expression_list = ctx.expression();
         CodeLet keyPair = new CodeLet();
-        CodeBlock result = new CodeBlock().addSubCodeLet(keyPair);
+        CodeBlock result = new CodeBlock().subCode(keyPair);
         for (int i = 0; i < expression_list.size(); i += 2) {
             CodeBlock codeBlock = new CodeBlock();
             CodeLet keyCodeLet = new CodeLet();
@@ -183,7 +215,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
             CodeLet valueCodeLet = new CodeLet();
             currentCodeLet = valueCodeLet;
             expression_list.get(i + 1).accept(this);
-            codeBlock.addSubCodeLet(new CodeLet().code(keyCodeLet).code(":").code(valueCodeLet));
+            codeBlock.subCode(new CodeLet().code(keyCodeLet).code(":").code(valueCodeLet));
             if (i > 0) {
                 keyPair.code(",");
             }
@@ -199,43 +231,49 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitTemplate(@NotNull JetTemplateParser.TemplateContext ctx) {
         CodeBlock templateCodeBlock = getTemplateCodeBlock();
         CodeBlock classCodeBlock = getClassCodeBlock();
-        templateCodeBlock.addSubCodeBlock(classCodeBlock);
+        templateCodeBlock.subCode(classCodeBlock);
         CodeBlock renderMethodCodeBlock = getRenderCodeBlock();
         currentCodeBlock = renderMethodCodeBlock;
-        classCodeBlock.addSubCodeBlock(renderMethodCodeBlock);
+        classCodeBlock.subCode(renderMethodCodeBlock);
         CodeBlock getTemplatePathMethod = getTemplatePathMethodCodeBlock();
-        classCodeBlock.addSubCodeBlock(getTemplatePathMethod);
-        renderMethodCodeBlock.addSubCodeBlock(ctx.block().accept(this));
+        classCodeBlock.subCode(getTemplatePathMethod);
+        renderMethodCodeBlock.subCode(ctx.block().accept(this));
         return templateCodeBlock;
     }
 
     private CodeBlock getRenderCodeBlock() {
         CodeBlock renderMethod = new CodeBlock();
-        renderMethod.setHeaderCodeLet(new CodeLet().lineCode("public void render(Writer $writer, TemplateContext $context) throws IOException{")).setFooterCodeLet(new CodeLet().lineCode("}"));
+        renderMethod.header(new CodeLet().lineCode("protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
         return renderMethod;
     }
 
     private CodeBlock getTemplatePathMethodCodeBlock() {
         CodeBlock renderMethod = new CodeBlock();
-        renderMethod.setHeaderCodeLet(new CodeLet().lineCode("public String getPath(){")).setFooterCodeLet(new CodeLet().lineCode("}"));
-        renderMethod.addSubCodeLet(new CodeLet().lineCode("return \"abc\";"));
+        renderMethod.header(new CodeLet().lineCode("public String getPath(){")).footer(new CodeLet().lineCode("}"));
+        renderMethod.subCode(new CodeLet().lineCode("return \"abc\";"));
         return renderMethod;
     }
 
     private CodeBlock getClassCodeBlock() {
         CodeBlock templateClass = new CodeBlock();
-        templateClass.setHeaderCodeLet(new CodeLet().lineCode("public class A implements Template{"));
-        templateClass.setFooterCodeLet(new CodeLet().lineCode("}"));
+        initCodeBlock = new CodeBlock().header(new CodeLet("{").endLine()).footer(new CodeLet("}").endLine());
+        templateClass.header(new CodeLet().lineCode("public class A extends AbstractTemplate{"));
+        templateClass.subCode(initCodeBlock);
+        macroCodeBlock = new CodeBlock();
+        templateClass.subCode(macroCodeBlock);
+        templateClass.footer(new CodeLet().lineCode("}"));
         return templateClass;
     }
 
     private CodeBlock getTemplateCodeBlock() {
         CodeBlock codeBlock = new CodeBlock();
-        codeBlock.addSubCodeLet(new CodeLet().lineCode("package abc;"));
-        codeBlock.addSubCodeLet(new CodeLet().lineCode("import java.io.IOException;"));
-        codeBlock.addSubCodeLet(new CodeLet().lineCode("import java.io.Writer;"));
-        codeBlock.addSubCodeLet(new CodeLet().lineCode("import org.tinygroup.template.Template;"));
-        codeBlock.addSubCodeLet(new CodeLet().lineCode("import org.tinygroup.template.TemplateContext;"));
+        codeBlock.subCode(new CodeLet().lineCode("package abc;"));
+        codeBlock.subCode(new CodeLet().lineCode("import java.io.IOException;"));
+        codeBlock.subCode(new CodeLet().lineCode("import java.io.Writer;"));
+        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.TemplateContext;"));
+        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.TemplateException;"));
+        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.impl.AbstractTemplate;"));
+        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.impl.AbstractMacro;"));
         return codeBlock;
     }
 
@@ -260,7 +298,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
                 text = text.substring(1);
                 break;
         }
-        CodeBlock textCodeBlock = new CodeBlock().setHeaderCodeLet(new CodeLet().code("$writer.write(\"").code(StringEscapeUtils.escapeJava(text)).lineCode("\");"));
+        CodeBlock textCodeBlock = new CodeBlock().header(new CodeLet().code("$writer.write(\"").code(StringEscapeUtils.escapeJava(text)).lineCode("\");"));
         return textCodeBlock;
     }
 
@@ -282,8 +320,8 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         CodeBlock tmpCodeBlock = currentCodeBlock;
         currentCodeLet = new CodeLet();
         ctx.expression().accept(this);
-        ifCodeBlock.setHeaderCodeLet(currentCodeLet.codeBefore("if(U.b(").lineCode(")){"));
-        ifCodeBlock.setFooterCodeLet(new CodeLet().lineCode("}"));
+        ifCodeBlock.header(currentCodeLet.codeBefore("if(U.b(").lineCode(")){"));
+        ifCodeBlock.footer(new CodeLet().lineCode("}"));
         currentCodeBlock = ifCodeBlock;
         ctx.block().accept(this);
         List<JetTemplateParser.Elseif_directiveContext> elseif_directive_list = ctx.elseif_directive();
@@ -303,6 +341,10 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitDefine_expression_list(@NotNull JetTemplateParser.Define_expression_listContext ctx) {
+        if (currentCodeLet.length() > 0) {
+            currentCodeLet.code(",");
+        }
+        currentCodeLet.code("\"%s\"", ctx.getChild(0).getText());
         return null;
     }
 
@@ -338,7 +380,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         for (int i = 0; i < ctx.getChildCount(); i++) {
             ParseTree node = ctx.children.get(i);
             CodeBlock codeBlock = node.accept(this);
-            currentCodeBlock.addSubCodeBlock(codeBlock);
+            currentCodeBlock.subCode(codeBlock);
         }
         return null;
     }
@@ -364,7 +406,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitSet_expression(@NotNull JetTemplateParser.Set_expressionContext ctx) {
         CodeBlock codeBlock = new CodeBlock();
         CodeLet codeLet = new CodeLet();
-        codeBlock.setHeaderCodeLet(codeLet);
+        codeBlock.header(codeLet);
         currentCodeLet = codeLet;
         ctx.getChild(2).accept(this);
         codeLet.codeBefore("$context.put(\"" + ctx.getChild(0).getText() + "\",").lineCode(");");
@@ -383,7 +425,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitSet_directive(@NotNull JetTemplateParser.Set_directiveContext ctx) {
         List<JetTemplateParser.Set_expressionContext> set_expression_list = ctx.set_expression();
         for (JetTemplateParser.Set_expressionContext node : set_expression_list) {
-            currentCodeBlock.addSubCodeBlock(node.accept(this));
+            currentCodeBlock.subCode(node.accept(this));
         }
         return null;
     }
@@ -443,12 +485,12 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         String name = ctx.IDENTIFIER().getText();
         ctx.expression().accept(this);
         CodeLet code = new CodeLet().code("ForIterator $").code(name).code("For = new ForIterator(").code(currentCodeLet).lineCode(");");
-        currentCodeBlock.addSubCodeLet(code);
-        currentCodeBlock.addSubCodeLet(new CodeLet().code("$context.put(\"$").code(name).code("For\"，$").code(name).lineCode("For);"));
-        currentCodeBlock.addSubCodeLet(new CodeLet().code("while($").code(name).lineCode("For.hasNext()){"));
+        currentCodeBlock.subCode(code);
+        currentCodeBlock.subCode(new CodeLet().code("$context.put(\"$").code(name).code("For\"，$").code(name).lineCode("For);"));
+        currentCodeBlock.subCode(new CodeLet().code("while($").code(name).lineCode("For.hasNext()){"));
         CodeBlock assign = new CodeBlock().tabIndent(1);
-        assign.setFooterCodeLet(new CodeLet().code("$context.put(\"").code(name).code("\"，").code(name).lineCode(");")).tabIndent(1);
-        currentCodeBlock.addSubCodeBlock(assign);
+        assign.footer(new CodeLet().code("$context.put(\"").code(name).code("\"，").code(name).lineCode(");")).tabIndent(1);
+        currentCodeBlock.subCode(assign);
         return null;
     }
 
@@ -462,11 +504,11 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         if (expression != null) {
             currentCodeLet = new CodeLet();
             expression.accept(this);
-            CodeBlock ifCodeBlock = new CodeBlock().setHeaderCodeLet(currentCodeLet.codeBefore("if(U.b(").lineCode(")){")).setFooterCodeLet(new CodeLet().lineCode("}"));
-            ifCodeBlock.addSubCodeLet(new CodeLet().lineCode("return;"));
-            currentCodeBlock.addSubCodeBlock(ifCodeBlock);
+            CodeBlock ifCodeBlock = new CodeBlock().header(currentCodeLet.codeBefore("if(U.b(").lineCode(")){")).footer(new CodeLet().lineCode("}"));
+            ifCodeBlock.subCode(new CodeLet().lineCode("return;"));
+            currentCodeBlock.subCode(ifCodeBlock);
         } else {
-            currentCodeBlock.addSubCodeLet(new CodeLet().lineCode("return;"));
+            currentCodeBlock.subCode(new CodeLet().lineCode("return;"));
         }
         return null;
     }
@@ -476,27 +518,27 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         if (expression != null) {
             currentCodeLet = new CodeLet();
             expression.accept(this);
-            CodeBlock ifCodeBlock = new CodeBlock().setHeaderCodeLet(currentCodeLet.codeBefore("if(U.b(").lineCode(")){")).setFooterCodeLet(new CodeLet().lineCode("}"));
-            ifCodeBlock.addSubCodeLet(new CodeLet().lineCode("break;"));
-            currentCodeBlock.addSubCodeBlock(ifCodeBlock);
+            CodeBlock ifCodeBlock = new CodeBlock().header(currentCodeLet.codeBefore("if(U.b(").lineCode(")){")).footer(new CodeLet().lineCode("}"));
+            ifCodeBlock.subCode(new CodeLet().lineCode("break;"));
+            currentCodeBlock.subCode(ifCodeBlock);
         } else {
-            currentCodeBlock.addSubCodeLet(new CodeLet().lineCode("break;"));
+            currentCodeBlock.subCode(new CodeLet().lineCode("break;"));
         }
         return null;
     }
 
     public CodeBlock visitFor_directive(@NotNull JetTemplateParser.For_directiveContext ctx) {
-        String name=ctx.getChild(1).getChild(1).getText();
+        String name = ctx.getChild(1).getChild(1).getText();
         ctx.for_expression().accept(this);
         CodeBlock forCodeBlock = new CodeBlock();
-        currentCodeBlock.addSubCodeBlock(forCodeBlock);
-        forCodeBlock.setFooterCodeLet(new CodeLet().lineCode("}"));
+        currentCodeBlock.subCode(forCodeBlock);
+        forCodeBlock.footer(new CodeLet().lineCode("}"));
         pushCodeBlock(forCodeBlock);
         ctx.block().accept(this);
         popCodeBlock();
         //添加清理处理
-        currentCodeBlock.addSubCodeLet(new CodeLet().code("$context.remove(\"$").code(name).lineCode("For\");"));
-        currentCodeBlock.addSubCodeLet(new CodeLet().code("$context.remove(\"").code(name).lineCode("\");"));
+        currentCodeBlock.subCode(new CodeLet().code("$context.remove(\"$").code(name).lineCode("For\");"));
+        currentCodeBlock.subCode(new CodeLet().code("$context.remove(\"").code(name).lineCode("\");"));
 
         return null;
     }
@@ -527,8 +569,8 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitElseif_directive(@NotNull JetTemplateParser.Elseif_directiveContext ctx) {
         currentCodeLet = new CodeLet();
         ctx.expression().accept(this);
-        CodeBlock elseifBlock = new CodeBlock().setHeaderCodeLet(currentCodeLet.codeBefore("}else if(U.b(").lineCode(")){")).tabIndent(-1);
-        currentCodeBlock.addSubCodeBlock(elseifBlock);
+        CodeBlock elseifBlock = new CodeBlock().header(currentCodeLet.codeBefore("}else if(U.b(").lineCode(")){")).tabIndent(-1);
+        currentCodeBlock.subCode(elseifBlock);
         ctx.block().accept(this);
         return null;
     }

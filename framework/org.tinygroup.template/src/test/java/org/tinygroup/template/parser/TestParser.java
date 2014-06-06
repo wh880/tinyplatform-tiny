@@ -228,6 +228,7 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("$context.put(\"$iFor\"，$iFor);") > 0);
         assertTrue(result.indexOf("$context.put(\"i\"，i);") > 0);
     }
+
     public void testT36() throws Exception {
         String result = execute("${true||false}");
         System.out.println(result);
@@ -263,5 +264,16 @@ public class TestParser extends TestCase {
         System.out.println(result);
         assertTrue(result.indexOf("$writer.write(U.b(U.c($context,\"a\"))?1:2);") > 0);
     }
-
+    public void testT43() throws Exception {
+        String result = execute("#macro test(aa)abc #end#macro test1(bb)abc #end");
+        System.out.println(result);
+        assertTrue(result.indexOf("$writer.write(U.b(U.c($context,\"a\"))?1:2);") > 0);
+    }
+    public void testT44() throws Exception {
+        String result = execute("#for(i in [1,2,3,4,5])#end");
+        System.out.println(result);
+        assertTrue(result.indexOf("ForIterator $iFor = new ForIterator({1,2,3,4,5});") > 0);
+        assertTrue(result.indexOf("$context.put(\"$iFor\"，$iFor);") > 0);
+        assertTrue(result.indexOf("$context.put(\"i\"，i);") > 0);
+    }
 }

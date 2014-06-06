@@ -30,7 +30,7 @@ public abstract class AbstractTemplate implements Template {
         }
     }
 
-    protected abstract void renderTemplate(TemplateContext $context, Writer writer)throws IOException,TemplateException;
+    protected abstract void renderTemplate(TemplateContext $context, Writer $writer)throws IOException,TemplateException;
 
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine=templateEngine;

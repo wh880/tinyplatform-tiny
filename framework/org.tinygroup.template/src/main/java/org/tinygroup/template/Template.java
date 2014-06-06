@@ -18,9 +18,9 @@ public interface Template {
     /**
      * 进行渲染
      *
-     * @param writer
+     * @param $writer
      */
-    void render(TemplateContext context, Writer writer) throws TemplateException;
+    void render(TemplateContext $context, Writer $writer) throws TemplateException;
 
     /**
      * 返回宏对应的路径
