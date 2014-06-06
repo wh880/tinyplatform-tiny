@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.tinygroup.codegen.config.CodeGenMetaData;
 import org.tinygroup.codegen.config.MacroDefine;
 import org.tinygroup.codegen.config.TemplateDefine;
@@ -24,7 +25,6 @@ import org.tinygroup.velocity.config.VelocityContextConfig;
 import org.tinygroup.velocity.impl.VelocityHelperImpl;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-import org.tinygroup.xstream.XStreamFactory;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -39,6 +39,7 @@ public class CodeGenerator{
 	public static final String CODE_META_DATA="CODE_META_DATA";
 	public static final String TEMPLATE_FILE="TEMPLATE_FILE";
 	public static final String XSTEAM_PACKAGE_NAME="codegen";
+	public static final String ABSOLUTE_PATH="absolute_path";
     //public static final String CODE_GEN_BEANS_XML = "/codegenbeans.xml";
 	//private static Factory factory;
 	private static Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
@@ -85,11 +86,11 @@ public class CodeGenerator{
 		for (MacroDefine macroDefine : macroDefines) {
 		   logger.logMessage(LogLevel.INFO, "开始加载宏文件路径：{0}",macroDefine.getMacroPath());
 		   String macroPath=macroDefine.getMacroPath();
-		   if(macroPath.startsWith("/")){
-			   macroPath=CodeGenerator.class.getResource(macroPath).getPath();
-		   }
-		   FileObject fileObject=VFS.resolveFile(macroPath);
-		   generater.addMacroFile(fileObject);
+		   if (StringUtils.startsWith(macroPath, "/") || StringUtils.startsWith(macroPath, "\\")) {
+			   macroPath = StringUtils.substring(macroPath, 1);
+			}
+		   FileObject fileObject=VFS.resolveFile(context.get(ABSOLUTE_PATH).toString());
+		   generater.addMacroFile(fileObject.getChild(macroPath));
 		   logger.logMessage(LogLevel.INFO, "宏文件路径：{0}，加载完毕",macroDefine.getMacroPath());
 		}
 		List<TemplateDefine> templateDefines=metaData.getTemplateDefines();
@@ -98,12 +99,16 @@ public class CodeGenerator{
 			Context newContext=createNewContext(context, templateDefine);
 			String templatePath=templateDefine.getTemplatePath();
 			logger.logMessage(LogLevel.INFO, "开始加载模板文件路径：{0}",templatePath);
-			if(templatePath.startsWith("/")){
-				templatePath=CodeGenerator.class.getResource(templatePath).getPath();
-			}
-			FileObject templateFileObject=VFS.resolveFile(templatePath);
+//			if(templatePath.startsWith("/")){
+//				templatePath=CodeGenerator.class.getResource(templatePath).getPath();
+//			}
+			FileObject templateFileObject=VFS.resolveFile(context.get(ABSOLUTE_PATH).toString());
 			logger.logMessage(LogLevel.INFO, "模板文件路径：{0}，加载完毕",templatePath);
-			repository.addFileObject(templateFileObject.getPath(), templateFileObject);
+			String fileName = templatePath;
+			if (StringUtils.startsWith(templatePath, "/") || StringUtils.startsWith(templatePath, "\\")) {
+				fileName = StringUtils.substring(fileName, 1);
+			}
+			repository.addFileObject(templatePath, templateFileObject.getChild(fileName));
 			String generateFile=generater.evaluteString(newContext, templateDefine.getFileNameTemplate());
 			File file=new File(generateFile);
 			if(!file.exists()){
@@ -112,7 +117,7 @@ public class CodeGenerator{
 			}
 			FileWriter writer=new FileWriter(file);
 			try {
-				generater.generate(templateFileObject.getPath(), newContext,writer);
+				generater.generate(templatePath, newContext,writer);
 			}finally{
 				writer.close();
 			}
@@ -123,7 +128,11 @@ public class CodeGenerator{
 	}
 	
 	private void addUtilClass(VelocityHelper documentGeneraterVelocityHelper) {
-		XStream stream = XStreamFactory.getXStream(VelocityHelper.XSTEAM_PACKAGE_NAME);
+//		XStream stream = XStreamFactory.getXStream(VelocityHelper.XSTEAM_PACKAGE_NAME);
+		XStream stream = new XStream();
+		stream.setClassLoader(getClass().getClassLoader());
+		stream.autodetectAnnotations(true);
+		stream.processAnnotations(VelocityContextConfig.class);
 		VelocityContextConfig config=(VelocityContextConfig)stream.fromXML(getClass().getResourceAsStream("/codegen.util.xml"));
 		documentGeneraterVelocityHelper.setVelocityContextConfig(config);
 	}
@@ -133,15 +142,24 @@ public class CodeGenerator{
 		newContext.setParent(context);
 		newContext.put(TEMPLATE_FILE, templateDefine);
 		String templatePath=templateDefine.getTemplatePath();
-		if(templatePath.startsWith("/")){
-			templatePath=CodeGenerator.class.getResource(templatePath).getPath().replaceAll("/", "\\"+File.separator);
+//		if(templatePath.startsWith("/")){
+//			templatePath=CodeGenerator.class.getResource(templatePath).getPath().replaceAll("/", "\\"+File.separator);
+//		}
+//		String filePath=StringUtil.substringBeforeLast(templatePath, File.separator);
+//		if(!filePath.endsWith(File.separator)){
+//			filePath=filePath+File.separator;
+//		}
+		String templateFilePath = templatePath;
+		templateFilePath = StringUtil.substringBeforeLast(templateFilePath, "/");
+		templateFilePath = StringUtil.substringBeforeLast(templateFilePath, "\\");
+		newContext.put("templateFilePath", templateFilePath);
+		String fileName=templatePath;
+		if (StringUtils.indexOf(fileName, "/") > -1) {
+			fileName=StringUtil.substringAfterLast(fileName, "/");
 		}
-		String filePath=StringUtil.substringBeforeLast(templatePath, File.separator);
-		if(!filePath.endsWith(File.separator)){
-			filePath=filePath+File.separator;
+		if (StringUtils.indexOf(fileName, "\\") > -1) {
+			fileName=StringUtil.substringAfterLast(fileName, "\\");
 		}
-		newContext.put("templateFilePath", filePath);
-		String fileName=StringUtil.substringAfterLast(templatePath, File.separator);
 		newContext.put("templateFileName", StringUtil.substringBeforeLast(fileName, "."));
 		return newContext;
 	}
