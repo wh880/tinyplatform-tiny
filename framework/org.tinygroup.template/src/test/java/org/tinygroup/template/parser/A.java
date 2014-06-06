@@ -1,17 +1,17 @@
 package org.tinygroup.template.parser;
 
-import org.tinygroup.template.JetContext;
-import org.tinygroup.template.JetTemplate;
+import org.tinygroup.template.TemplateContext;
+import org.tinygroup.template.Template;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-public class A implements JetTemplate{
-    public void render(Writer writer, JetContext context) throws IOException{
+public class A implements Template {
+    public void render(TemplateContext context, Writer writer) throws IOException{
         writer.write("abc\ndef");
     }
-    public String getTemplatePath(){
+    public String getPath(){
         return "abc";
     }
 
@@ -19,7 +19,7 @@ public class A implements JetTemplate{
         ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
         Writer writer=new OutputStreamWriter(outputStream);
         A a=new A();
-        a.render(writer,null);
+        a.render(null, writer);
         writer.close();
         System.out.println(outputStream.toString());
     }

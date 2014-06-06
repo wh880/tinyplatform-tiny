@@ -79,6 +79,16 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitContinue_directive(@NotNull JetTemplateParser.Continue_directiveContext ctx) {
+        JetTemplateParser.ExpressionContext expression = ctx.expression();
+        if (expression != null) {
+            currentCodeLet = new CodeLet();
+            expression.accept(this);
+            CodeBlock ifCodeBlock = new CodeBlock().setHeaderCodeLet(currentCodeLet.codeBefore("if(U.b(").lineCode(")){")).setFooterCodeLet(new CodeLet().lineCode("}"));
+            ifCodeBlock.addSubCodeLet(new CodeLet().lineCode("return;"));
+            currentCodeBlock.addSubCodeBlock(ifCodeBlock);
+        } else {
+            currentCodeBlock.addSubCodeLet(new CodeLet().lineCode("return;"));
+        }
         return null;
     }
 
@@ -201,20 +211,20 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
     private CodeBlock getRenderCodeBlock() {
         CodeBlock renderMethod = new CodeBlock();
-        renderMethod.setHeaderCodeLet(new CodeLet().lineCode("public void render(Writer $writer, JetContext $context) throws IOException{")).setFooterCodeLet(new CodeLet().lineCode("}"));
+        renderMethod.setHeaderCodeLet(new CodeLet().lineCode("public void render(Writer $writer, TemplateContext $context) throws IOException{")).setFooterCodeLet(new CodeLet().lineCode("}"));
         return renderMethod;
     }
 
     private CodeBlock getTemplatePathMethodCodeBlock() {
         CodeBlock renderMethod = new CodeBlock();
-        renderMethod.setHeaderCodeLet(new CodeLet().lineCode("public String getTemplatePath(){")).setFooterCodeLet(new CodeLet().lineCode("}"));
+        renderMethod.setHeaderCodeLet(new CodeLet().lineCode("public String getPath(){")).setFooterCodeLet(new CodeLet().lineCode("}"));
         renderMethod.addSubCodeLet(new CodeLet().lineCode("return \"abc\";"));
         return renderMethod;
     }
 
     private CodeBlock getClassCodeBlock() {
         CodeBlock templateClass = new CodeBlock();
-        templateClass.setHeaderCodeLet(new CodeLet().lineCode("public class A implements JetTemplate{"));
+        templateClass.setHeaderCodeLet(new CodeLet().lineCode("public class A implements Template{"));
         templateClass.setFooterCodeLet(new CodeLet().lineCode("}"));
         return templateClass;
     }
@@ -224,8 +234,8 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         codeBlock.addSubCodeLet(new CodeLet().lineCode("package abc;"));
         codeBlock.addSubCodeLet(new CodeLet().lineCode("import java.io.IOException;"));
         codeBlock.addSubCodeLet(new CodeLet().lineCode("import java.io.Writer;"));
-        codeBlock.addSubCodeLet(new CodeLet().lineCode("import org.tinygroup.template.JetTemplate;"));
-        codeBlock.addSubCodeLet(new CodeLet().lineCode("import org.tinygroup.template.JetContext;"));
+        codeBlock.addSubCodeLet(new CodeLet().lineCode("import org.tinygroup.template.Template;"));
+        codeBlock.addSubCodeLet(new CodeLet().lineCode("import org.tinygroup.template.TemplateContext;"));
         return codeBlock;
     }
 
@@ -439,7 +449,6 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         CodeBlock assign = new CodeBlock().tabIndent(1);
         assign.setFooterCodeLet(new CodeLet().code("$context.put(\"").code(name).code("\"，").code(name).lineCode(");")).tabIndent(1);
         currentCodeBlock.addSubCodeBlock(assign);
-        //TODO 运行结束后，从上下文中去掉变量及FOR
         return null;
     }
 
