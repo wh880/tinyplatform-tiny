@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * Created by luoguo on 2014/6/5.
  */
-public class AddOperator extends AbstractOperator {
+public class AddOperator extends DoubleOperator {
 
 
     protected Object operation(Object left, Object right) {

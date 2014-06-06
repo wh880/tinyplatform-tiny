@@ -3,7 +3,7 @@ package org.tinygroup.template.rumtime.impl.operator;
 /**
  * Created by luoguo on 2014/6/5.
  */
-public class AdOperator extends AbstractOperator {
+public class AdOperator extends DoubleOperator {
 
 
     protected Object operation(Object left, Object right) {

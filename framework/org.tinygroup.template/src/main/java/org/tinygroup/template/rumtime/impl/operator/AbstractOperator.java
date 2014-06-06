@@ -11,10 +11,10 @@ public abstract class AbstractOperator implements Operator {
     protected boolean isType(Object left,String type) {
         return left.getClass().getSimpleName().equals(type);
     }
-
+    abstract protected int getParamterCount();
     public Object operation(Object... parameter) throws TemplateException {
-        if (parameter == null || parameter.length != 2) {
-            throw new TemplateException();
+        if (parameter == null || parameter.length != getParamterCount()) {
+            throw new TemplateException("参数变量不能为空");
         }
         Object left = parameter[0];
         Object right = parameter[1];
