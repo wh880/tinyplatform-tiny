@@ -88,7 +88,7 @@ public final class O {
     public static Object e(String op, Object... parameters) throws TemplateException {
         Operator operator = operationMap.get(op);
         if (operator == null) {
-            throw new TemplateException();
+            throw new TemplateException("找不对对应于："+op+"的处理器。");
         }
         return operator.operation(parameters);
     }

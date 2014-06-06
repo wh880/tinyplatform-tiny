@@ -30,6 +30,7 @@ public class TemplateEngineImpl implements TemplateEngine {
         Template template = templateMap.get(path);
         if (template != null) {
             template.render(context, writer);
+            return;
         }
         throw new TemplateException("找不到模板：" + path);
     }

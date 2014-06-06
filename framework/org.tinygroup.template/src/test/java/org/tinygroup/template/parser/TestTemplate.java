@@ -15,12 +15,10 @@ import java.io.Writer;
  * Created by luoguo on 2014/6/6.
  */
 public class TestTemplate extends AbstractTemplate {
-    public void render(TemplateContext $context, Writer writer) throws TemplateException {
-        try {
-            writer.write("abc");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+    @Override
+    protected void renderTemplate(TemplateContext $context, Writer writer) throws IOException {
+        writer.write("abc");
     }
 
     public String getPath() {
