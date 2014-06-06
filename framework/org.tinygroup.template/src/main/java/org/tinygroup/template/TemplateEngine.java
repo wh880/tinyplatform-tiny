@@ -25,11 +25,10 @@ public interface TemplateEngine {
 
     /**
      * 执行宏
-     *
-     * @param macroName 要执行的宏名称
+     *  @param macroName 要执行的宏名称
      * @param template  当前宏
      */
-    void executeMacro(String macroName, Template template, Writer writer, TemplateContext context) throws IOException, TemplateException;
+    void executeMacro(String macroName, Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
 
     /**
      * 渲染一个模板文件

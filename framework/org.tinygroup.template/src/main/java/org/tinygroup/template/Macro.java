@@ -25,9 +25,9 @@ public interface Macro {
     /**
      * 进行渲染
      *
-     * @param writer
      * @param context
+     * @param writer
      * @throws IOException
      */
-    void render(Writer writer, TemplateContext context) throws TemplateException;
+    void render(TemplateContext context, Writer writer) throws TemplateException;
 }

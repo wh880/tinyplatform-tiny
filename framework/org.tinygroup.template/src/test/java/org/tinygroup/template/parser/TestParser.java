@@ -258,5 +258,10 @@ public class TestParser extends TestCase {
         System.out.println(result);
         assertTrue(result.indexOf("$context.put(\"a\",1);") > 0);
     }
+    public void testT42() throws Exception {
+        String result = execute("${a?1:2}");
+        System.out.println(result);
+        assertTrue(result.indexOf("$writer.write(U.b(U.c($context,\"a\"))?1:2);") > 0);
+    }
 
 }

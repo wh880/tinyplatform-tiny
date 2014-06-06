@@ -14,18 +14,23 @@ public abstract class AbstractTemplate implements Template {
     private Map<String, Macro> macroMap=new HashMap<String, Macro>();
     private TemplateEngine templateEngine;
 
+    public TemplateEngine getTemplateEngine() {
+        return templateEngine;
+    }
+
     public Map<String, Macro> getMacroMap() {
         return macroMap;
     }
     public void render(TemplateContext $context, Writer writer) throws TemplateException {
         try {
             renderTemplate($context, writer);
+            writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
         }
     }
 
-    protected abstract void renderTemplate(TemplateContext $context, Writer writer)throws IOException;
+    protected abstract void renderTemplate(TemplateContext $context, Writer writer)throws IOException,TemplateException;
 
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine=templateEngine;

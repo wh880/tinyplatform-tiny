@@ -15,15 +15,16 @@ public class TemplateEngineImpl implements TemplateEngine {
 
     public void addTemplate(Template template) {
         templateMap.put(template.getPath(), template);
+        template.setTemplateEngine(this);
     }
 
     public Map<String, Template> getTemplateMap() {
         return templateMap;
     }
 
-    public void executeMacro(String macroName, Template template, Writer writer, TemplateContext context) throws TemplateException {
+    public void executeMacro(String macroName, Template template, TemplateContext context, Writer writer) throws TemplateException {
         Macro macro = findMacro(macroName, template);
-        macro.render(writer, context);
+        macro.render(context, writer);
     }
 
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
@@ -40,7 +41,9 @@ public class TemplateEngineImpl implements TemplateEngine {
         if (macro == null) {
             //到整个引擎查找
             //先找相同路径下的，再找子目录下的，再找上级的，再找兄弟的
+
+            throw new TemplateException("找不到宏：" + macroName);
         }
-        throw new TemplateException("找不到宏：" + macroName);
+        return macro;
     }
 }
