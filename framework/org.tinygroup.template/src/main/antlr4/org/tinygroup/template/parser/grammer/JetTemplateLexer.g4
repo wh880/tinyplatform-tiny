@@ -73,9 +73,9 @@ DIRECTIVE_MACRO         : '#macro'                        ;
 DIRECTIVE_ELSE          : '#else'|'#{else}'                   ;
 DIRECTIVE_END           : '#end'|'#{end}'                 ;
 
+DIRECTIVE_CALL    : '#' ID      ;
 DIRECTIVE_OPEN_CALL    : '#' ID     ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_BODY_CALL    : '#@' ID    ARGUMENT_START -> pushMode(INSIDE) ;
-DIRECTIVE_CALL    : '#' ID      ;
 
 // It is a text which like a directive.
 // It must be put after directive defination to avoid confliction.
