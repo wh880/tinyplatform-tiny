@@ -29,24 +29,33 @@ public class CodeBlock {
         this.tabIndent = tabIndent;
         return this;
     }
+
     public CodeBlock setTabIndent(int tabIndent) {
         this.tabIndent = tabIndent;
         return this;
     }
+
     public CodeBlock setParentCodeBlock(CodeBlock parentCodeBlock) {
         this.parentCodeBlock = parentCodeBlock;
         return this;
     }
 
+    public CodeBlock insertSubCode(String code) {
+        CodeBlock newCodeBlock = new CodeBlock().header(code);
+        getSubCodeBlocks().add(0, newCodeBlock);
+        return this;
+    }
 
     public CodeBlock header(CodeLet headerCodeLet) {
         this.headerCodeLet = headerCodeLet;
         return this;
     }
+
     public CodeBlock header(String string) {
         this.headerCodeLet = new CodeLet(string).endLine();
         return this;
     }
+
     public CodeBlock footer(String string) {
         this.footerCodeLet = new CodeLet(string).endLine();
         return this;
@@ -68,12 +77,14 @@ public class CodeBlock {
     public List<CodeBlock> getSubCodeBlocks() {
         return subCodeBlocks;
     }
+
     public CodeBlock subCode(String code) {
         if (code != null) {
             subCode(new CodeLet(code).endLine());
         }
         return this;
     }
+
     public CodeBlock subCode(CodeBlock codeBlock) {
         if (codeBlock != null) {
             if (subCodeBlocks == null) {

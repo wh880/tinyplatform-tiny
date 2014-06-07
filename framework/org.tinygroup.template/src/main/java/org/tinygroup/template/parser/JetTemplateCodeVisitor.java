@@ -184,7 +184,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         if (token.getType() == JetTemplateParser.VALUE_ESCAPED_OPEN) {
             peekCodeLet().codeBefore("StringEscapeUtils.escapeHtml((").code(")+\"\")");
         }
-        peekCodeLet().codeBefore("$writer.write(").lineCode(");");
+        peekCodeLet().codeBefore("write($writer,").lineCode(");");
         CodeBlock valueCodeBlock = new CodeBlock();
         valueCodeBlock.subCode(peekCodeLet());
         popCodeLet();
@@ -261,14 +261,14 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     private CodeBlock getTemplatePathMethodCodeBlock() {
         CodeBlock renderMethod = new CodeBlock();
         renderMethod.header(new CodeLet().lineCode("public String getPath(){")).footer(new CodeLet().lineCode("}"));
-        renderMethod.subCode(new CodeLet().lineCode("return \"abc\";"));
+        renderMethod.subCode(new CodeLet().lineCode("return \"$TEMPLATE_PATH\";"));
         return renderMethod;
     }
 
     private CodeBlock getClassCodeBlock() {
         CodeBlock templateClass = new CodeBlock();
         initCodeBlock = new CodeBlock().header(new CodeLet("{").endLine()).footer(new CodeLet("}").endLine());
-        templateClass.header(new CodeLet().lineCode("public class A extends AbstractTemplate{"));
+        templateClass.header(new CodeLet().lineCode("public class $TEMPLATE_CLASS_NAME extends AbstractTemplate{"));
         templateClass.subCode(initCodeBlock);
         macroCodeBlock = new CodeBlock();
         templateClass.subCode(macroCodeBlock);
@@ -278,8 +278,9 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
     private CodeBlock getTemplateCodeBlock() {
         CodeBlock codeBlock = new CodeBlock();
-        codeBlock.subCode(new CodeLet().lineCode("package abc;"));
         codeBlock.subCode(new CodeLet().lineCode("import java.io.IOException;"));
+        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.rumtime.U;"));
+        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.rumtime.O;"));
         codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.Macro;"));
         codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.Template;"));
         codeBlock.subCode(new CodeLet().lineCode("import java.io.Writer;"));
@@ -311,7 +312,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
                 text = text.substring(1);
                 break;
         }
-        CodeBlock textCodeBlock = new CodeBlock().header(new CodeLet().code("$writer.write(\"").code(StringEscapeUtils.escapeJava(text)).lineCode("\");"));
+        CodeBlock textCodeBlock = new CodeBlock().header(new CodeLet().code("write($writer,\"").code(StringEscapeUtils.escapeJava(text)).lineCode("\");"));
         return textCodeBlock;
     }
 

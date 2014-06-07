@@ -25,6 +25,15 @@ import java.util.Map;
  */
 public interface TemplateEngine {
     /**
+     * 添加宏
+     *
+     * @param templateResource
+     */
+    Template getTemplate(TemplateResource templateResource) throws TemplateException;
+    public String getPackageName(String path);
+    public String getSimpleClassName(String path);
+    public String getClassName(String path);
+    /**
      * 添加一个模板
      *
      * @param template
@@ -40,14 +49,15 @@ public interface TemplateEngine {
 
     /**
      * 执行宏
-     *  @param macroName 要执行的宏名称
+     *
+     * @param macroName 要执行的宏名称
      * @param template  当前宏
      */
     void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
 
 
     /**
-     * 渲染一个模板文件
+     * 根据路径渲染一个模板文件
      *
      * @param path
      * @param context
@@ -56,7 +66,17 @@ public interface TemplateEngine {
     void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException;
 
     /**
+     * 直接渲染一个模板
+     * @param template
+     * @param context
+     * @param writer
+     * @throws TemplateException
+     */
+    void renderTemplate(Template template, TemplateContext context, Writer writer) throws TemplateException;
+
+    /**
      * 根据宏名查找要调用的宏
+     *
      * @param macroName
      * @param template
      * @return

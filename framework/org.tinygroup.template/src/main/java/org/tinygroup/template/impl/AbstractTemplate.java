@@ -11,16 +11,21 @@ import java.util.Map;
  * Created by luoguo on 2014/6/6.
  */
 public abstract class AbstractTemplate implements Template {
-    private Map<String, Macro> macroMap=new HashMap<String, Macro>();
+    private Map<String, Macro> macroMap = new HashMap<String, Macro>();
     private TemplateEngine templateEngine;
 
     public TemplateEngine getTemplateEngine() {
         return templateEngine;
     }
 
+    protected void write(Writer $writer, Object object) throws IOException {
+        $writer.write(object.toString());
+    }
+
     public Map<String, Macro> getMacroMap() {
         return macroMap;
     }
+
     public void render(TemplateContext $context, Writer writer) throws TemplateException {
         try {
             renderTemplate($context, writer);
@@ -30,9 +35,9 @@ public abstract class AbstractTemplate implements Template {
         }
     }
 
-    protected abstract void renderTemplate(TemplateContext $context, Writer $writer)throws IOException,TemplateException;
+    protected abstract void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException;
 
     public void setTemplateEngine(TemplateEngine templateEngine) {
-        this.templateEngine=templateEngine;
+        this.templateEngine = templateEngine;
     }
 }

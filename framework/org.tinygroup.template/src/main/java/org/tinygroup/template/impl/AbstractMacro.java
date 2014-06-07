@@ -28,6 +28,9 @@ public abstract class AbstractMacro implements Macro {
         this.name = name;
         this.parameterNames = parameterNames;
     }
+    protected void write(Writer $writer, Object object) throws IOException {
+        $writer.write(object.toString());
+    }
     public void render(Template $template,TemplateContext $context, Writer writer) throws TemplateException {
         try {
             renderTemplate($template, $context, writer);
