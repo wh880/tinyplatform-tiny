@@ -54,7 +54,7 @@ public class test7 extends AbstractTemplate{
         $context.removeSubContext("$newContext");
     }
     public String getPath(){
-        return "/template/test7.vm";
+        return "/template/tiny/test7.vm";
     }
     public static void main(String[] args) throws TemplateException {
         TemplateEngine engine=new TemplateEngineImpl();

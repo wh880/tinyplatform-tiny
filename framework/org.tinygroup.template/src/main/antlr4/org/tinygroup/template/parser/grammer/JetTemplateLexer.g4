@@ -73,7 +73,7 @@ DIRECTIVE_MACRO         : '#macro'                        ;
 DIRECTIVE_ELSE          : '#else'|'#{else}'                   ;
 DIRECTIVE_END           : '#end'|'#{end}'                 ;
 
-DIRECTIVE_CALL    : '#' ID      ;
+//DIRECTIVE_CALL    : '#' ID      ;
 DIRECTIVE_OPEN_CALL    : '#' ID     ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_BODY_CALL    : '#@' ID    ARGUMENT_START -> pushMode(INSIDE) ;
 

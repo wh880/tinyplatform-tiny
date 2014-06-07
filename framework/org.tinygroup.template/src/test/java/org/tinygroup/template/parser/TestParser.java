@@ -288,9 +288,10 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("$context.put(\"i\",$iFor.next());") > 0);
     }
     public void testT45() throws Exception {
-        String result = execute("#test");
+        String result = execute("#test(aa)");
         System.out.println(result);
-        assertTrue(result.indexOf("getTemplateEngine().renderMacro(\"test\", $template, $newContext, $writer);") > 0);
+        assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[0],U.c($context,\"aa\"));") > 0);
+        assertTrue(result.indexOf("$macro=getTemplateEngine().findMacro(\"test\",$template,$context);") > 0);
     }
     public void testT46() throws Exception {
         String result = execute("#test(aa=1,bb=2,3)");
@@ -298,7 +299,7 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"aa\",1);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"bb\",2);") > 0);
-        assertTrue(result.indexOf("getTemplateEngine().renderMacro(\"test\", $template, $newContext, $writer);") > 0);
+        assertTrue(result.indexOf("getTemplateEngine().renderMacro($macro, $template, $newContext, $writer);") > 0);
     }
     public void testT47() throws Exception {
         String result = execute("#@test(aa=1,bb=2,3) aaa  #end");
@@ -311,12 +312,12 @@ public class TestParser extends TestCase {
     public void testT48() throws Exception {
         String result = execute("#@test(aa=1,bb=2,3) aaa #bbb  #end");
         System.out.println(result);
-        assertTrue(result.indexOf("getTemplateEngine().renderMacro(\"bbb\", $template, $newContext, $writer);") > 0);
+        assertTrue(result.indexOf("write($writer,\"#bbb\");") > 0);
     }
     public void testT48_1() throws Exception {
         String result = execute("#@test(aa=1,bb=2,3) aaa #bbb(1)  #end");
         System.out.println(result);
-        assertTrue(result.indexOf("getTemplateEngine().renderMacro(\"bbb\", $template, $newContext, $writer);") > 0);
+        assertTrue(result.indexOf("$macro=getTemplateEngine().findMacro(\"bbb\",$template,$context);") > 0);
         assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[0],1);") > 0);
     }
     public void testT49() throws Exception {

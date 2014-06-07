@@ -137,7 +137,7 @@ macro_directive
 
 call_macro_directive
             :  DIRECTIVE_OPEN_CALL   para_expression_list? ')'
-            |  DIRECTIVE_CALL
+//            |  DIRECTIVE_CALL
             ;
 call_macro_block_directive
             :  DIRECTIVE_BODY_CALL   para_expression_list? ')' block DIRECTIVE_END
