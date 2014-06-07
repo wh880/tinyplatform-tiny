@@ -326,4 +326,10 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[0],9);") > 0);
         assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
     }
+    public void testT50() throws Exception {
+        String result = execute("#macro test(aaa)ddd#end #@test(aa=1,bb=2,3) aaa #@bbb(9)bb#end  #end");
+        System.out.println(result);
+        assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[0],9);") > 0);
+        assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
+    }
 }

@@ -244,6 +244,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         CodeBlock renderMethod = new CodeBlock();
         renderMethod.header(new CodeLet().lineCode("protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
         renderMethod.subCode("Macro $macro=null;");
+        renderMethod.subCode("Template $template=this;");
         renderMethod.subCode("TemplateContext $newContext=null;");
 
         return renderMethod;
@@ -408,7 +409,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         CodeBlock callMacro = new CodeBlock();
         String name = ctx.getChild(0).getText();
         name = name.substring(2, name.length()-1).trim();
-        callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",this);", name));
+        callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template);", name));
         callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
         List<JetTemplateParser.Para_expressionContext> expList = ctx.para_expression_list().para_expression();
         if (expList != null) {
@@ -431,7 +432,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         }
         CodeBlock bodyContentMacro = new CodeBlock();
         callMacro.subCode(bodyContentMacro);
-        callMacro.subCode(String.format("getTemplateEngine().renderMacro(\"%s\", this, $newContext, $writer);",name));
+        callMacro.subCode(String.format("getTemplateEngine().renderMacro(\"%s\", $template, $newContext, $writer);",name));
 
         bodyContentMacro.header("$newContext.put(\"$bodyContent\",new AbstractMacro() {");
         CodeBlock render = getMacroRenderCodeBlock();
