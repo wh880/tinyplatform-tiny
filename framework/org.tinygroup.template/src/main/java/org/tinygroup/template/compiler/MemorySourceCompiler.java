@@ -10,6 +10,7 @@ import org.eclipse.jdt.internal.compiler.env.INameEnvironment;
 import org.eclipse.jdt.internal.compiler.env.NameEnvironmentAnswer;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
 import org.eclipse.jdt.internal.compiler.problem.DefaultProblemFactory;
+import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.template.TemplateException;
 
 import java.io.*;
@@ -146,7 +147,16 @@ public class MemorySourceCompiler {
         compile(sources);
     }
 
-    public void compile(MemorySource[] sources) {
+    public void compile(final MemorySource[] sources) {
+        for(MemorySource source:sources){
+            String javaFileName = source.getQualifiedClassName().replaceAll(".","/")+ ".java";
+            try {
+                IOUtils.writeToOutputStream(new FileOutputStream(new File(outputDir,javaFileName)),source.getContent(),"UTF-8");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         /**
          * To find types ...
          */
@@ -171,7 +181,7 @@ public class MemorySourceCompiler {
                     }
                     throw new RuntimeException(sb.toString());
                 } else {
-                    save(result.getClassFiles());
+                    save(result.getClassFiles(),sources);
                 }
 
             }
@@ -208,19 +218,19 @@ public class MemorySourceCompiler {
         }
     }
 
-    private void save(ClassFile[] classFiles) {
+    private void save(ClassFile[] classFiles,MemorySource[] sources) {
         if (classFiles == null) return;
 
-        for (ClassFile classFile : classFiles) {
-            String fileName = new String(classFile.fileName()) + ".class";
-            File javaClassFile = new File(outputDir, fileName);
-            File pa = javaClassFile.getParentFile();
-            if (!pa.exists()) {
-                pa.mkdirs();
-            }
+        for (int i=0;i<classFiles.length;i++) {
             try {
+                String fileName = new String(classFiles[i].fileName()) + ".class";
+                File javaClassFile = new File(outputDir, fileName);
+                File pa = javaClassFile.getParentFile();
+                if (!pa.exists()) {
+                    pa.mkdirs();
+                }
                 FileOutputStream fout = new FileOutputStream(javaClassFile);
-                byte[] bytes = classFile.getBytes();
+                byte[] bytes = classFiles[i].getBytes();
                 fout.write(bytes);
                 fout.close();
             } catch (Exception e) {

@@ -13,7 +13,9 @@ import org.tinygroup.template.parser.grammer.JetTemplateLexer;
 import org.tinygroup.template.parser.grammer.JetTemplateParser;
 
 import java.io.Writer;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -23,6 +25,41 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TemplateEngineImpl implements TemplateEngine {
     private Map<String, Template> templateMap = new ConcurrentHashMap<String, Template>();
     static MemorySourceCompiler compiler = new MemorySourceCompiler();
+    Path root = new Path("");
+
+    public static void main(String[] args) {
+        TemplateEngineImpl engine=new TemplateEngineImpl();
+        engine.buildPath("/a/b/c/d.page");
+        engine.buildPath("/a/b/e/f.page");
+        engine.buildPath("/a/c/c/g.page");
+        System.out.println();;
+    }
+    class Path implements Comparable<Path>{
+        public Path(String name) {
+            this.name = name;
+        }
+
+        public Path setParent(Path path) {
+            this.parent = path;
+            path.subPaths.add(this);
+            return this;
+        }
+
+        public Path addPath(Path path) {
+            subPaths.add(path);
+            path.parent = this;
+            return this;
+        }
+
+        String name;
+        Path parent;
+        Set<Path> subPaths = new HashSet<Path>();
+
+        @Override
+        public int compareTo(Path o) {
+            return -name.compareTo(o.name);
+        }
+    }
 
     public static CodeBlock preCompile(String template, String sourceName) {
         char[] source = template.toCharArray();
@@ -46,7 +83,6 @@ public class TemplateEngineImpl implements TemplateEngine {
         MemorySource memorySource = new MemorySource(getClassName(templateResource.getPath()), codeBlock.toString().replace("$TEMPLATE_PATH", templateResource.getPath())
                 .replace("$TEMPLATE_CLASS_NAME", getSimpleClassName(templateResource.getPath())));
         Template template = compiler.loadInstance(memorySource);
-        System.out.println(memorySource.getContent());
         addTemplate(template);
         return template;
     }
@@ -84,8 +120,34 @@ public class TemplateEngineImpl implements TemplateEngine {
 
     public Template addTemplate(Template template) {
         templateMap.put(template.getPath(), template);
+        buildPath(template.getPath());
         template.setTemplateEngine(this);
         return template;
+    }
+
+    private void buildPath(String path) {
+        String[] paths = path.split("/");
+        Path current=root;
+        for(String name:paths){
+            //   /a/b/c/aa.def
+            if(name.equals(current.name)){//如果是根，则继续
+                continue;
+            }else{
+                boolean has=false;
+                for(Path p:current.subPaths) {
+                    if (p.name.equals(name)) {
+                        current = p;//如果对上了，则继续向下找
+                        has=true;
+                        break;
+                    }
+                }
+                if(!has){//如果不包含，则添加之后继续
+                    Path newPath = new Path(name);
+                    current.addPath(newPath);
+                    current=newPath;
+                }
+            }
+        }
     }
 
     public Map<String, Template> getTemplateMap() {
@@ -105,6 +167,7 @@ public class TemplateEngineImpl implements TemplateEngine {
     public void renderMacro(Macro macro, Template template, TemplateContext context, Writer writer) throws TemplateException {
         macro.render(template, context, writer);
     }
+
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
         Template template = templateMap.get(path);
         if (template != null) {
@@ -121,9 +184,9 @@ public class TemplateEngineImpl implements TemplateEngine {
     public Macro findMacro(String macroName, Template template, TemplateContext $context) throws TemplateException {
         Macro macro = template.getMacroMap().get(macroName);
         if (macro == null) {
-            Object obj=  $context.getItemMap().get(macroName);
-            if(obj!=null&&obj instanceof Macro){
-                macro= (Macro) obj;
+            Object obj = $context.getItemMap().get(macroName);
+            if (obj != null && obj instanceof Macro) {
+                macro = (Macro) obj;
             }
             if (macro == null) {
                 //到整个引擎查找
