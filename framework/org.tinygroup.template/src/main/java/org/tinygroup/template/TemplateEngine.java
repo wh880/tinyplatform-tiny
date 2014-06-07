@@ -38,7 +38,7 @@ public interface TemplateEngine {
      *
      * @param template
      */
-    void addTemplate(Template template);
+    Template addTemplate(Template template);
 
     /**
      * 返回所有的模板
@@ -54,6 +54,8 @@ public interface TemplateEngine {
      * @param template  当前宏
      */
     void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
+
+    void renderMacro(Macro macro, Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
 
 
     /**
@@ -79,8 +81,9 @@ public interface TemplateEngine {
      *
      * @param macroName
      * @param template
+     * @param $context
      * @return
      * @throws TemplateException
      */
-    Macro findMacro(String macroName, Template template) throws TemplateException;
+    Macro findMacro(String macroName, Template template, TemplateContext $context) throws TemplateException;
 }

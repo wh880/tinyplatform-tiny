@@ -99,7 +99,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         ctx.expression(0).accept(this);
         pushCodeLet();
         ctx.expression(1).accept(this);
-        CodeLet exp=peekCodeLet();
+        CodeLet exp = peekCodeLet();
         popCodeLet();
         peekCodeLet().codeBefore("U.p(").code(",").code(exp).code(")");
         return null;
@@ -168,7 +168,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         CodeLet left = pushPeekCodeLet();
         ctx.expression(0).accept(this);
         popCodeLet();
-        CodeLet right =pushPeekCodeLet();
+        CodeLet right = pushPeekCodeLet();
         ctx.expression(1).accept(this);
         popCodeLet();
         String op = ctx.getChild(1).getText();
@@ -179,13 +179,24 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitValue(@NotNull JetTemplateParser.ValueContext ctx) {
 
         pushCodeLet();
-        ctx.expression().accept(this);
-        Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
-        if (token.getType() == JetTemplateParser.VALUE_ESCAPED_OPEN) {
-            peekCodeLet().codeBefore("StringEscapeUtils.escapeHtml((").code(")+\"\")");
-        }
-        peekCodeLet().codeBefore("write($writer,").lineCode(");");
         CodeBlock valueCodeBlock = new CodeBlock();
+/*        JetTemplateParser.Identify_listContext list = ctx.identify_list();
+        if (list != null) {
+            for (int i = 0; i < list.IDENTIFIER().size(); i++) {
+                if (i == 0) {
+                    peekCodeLet().code("U.c($context,\"" + list.IDENTIFIER().get(i).getText() + "\")");
+                } else {
+                    peekCodeLet().codeBefore("U.p(").code(",").code(list.IDENTIFIER().get(i).getText()).code(")");
+                }
+            }
+        } else {*/
+            ctx.expression().accept(this);
+            Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
+            if (token.getType() == JetTemplateParser.VALUE_ESCAPED_OPEN) {
+                peekCodeLet().codeBefore("StringEscapeUtils.escapeHtml((").code(")+\"\")");
+            }
+//        }
+        peekCodeLet().codeBefore("write($writer,").lineCode(");");
         valueCodeBlock.subCode(peekCodeLet());
         popCodeLet();
         return valueCodeBlock;
@@ -249,6 +260,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
         return renderMethod;
     }
+
     private CodeBlock getMacroRenderCodeBlock() {
         CodeBlock renderMethod = new CodeBlock();
         renderMethod.header(new CodeLet().lineCode("protected void renderTemplate(Template $template, TemplateContext $context, Writer $writer) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
@@ -287,6 +299,12 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitExpr_compare_not(@NotNull JetTemplateParser.Expr_compare_notContext ctx) {
+        return null;
+    }
+
+    @Override
+    public CodeBlock visitIdentify_list(@NotNull JetTemplateParser.Identify_listContext ctx) {
+
         return null;
     }
 
@@ -362,10 +380,10 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         CodeBlock callMacro = new CodeBlock();
         String name = ctx.getChild(0).getText();
         name = name.substring(1, name.length());
-        if(name.endsWith("(")){
-            name=name.substring(0,name.length()-1);
+        if (name.endsWith("(")) {
+            name = name.substring(0, name.length() - 1);
         }
-        callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template);", name));
+        callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template,$context);", name));
         callMacro.subCode("$newContext = new TemplateContextImpl();");
         callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
         if (ctx.para_expression_list() != null) {
@@ -389,7 +407,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
                 popCodeBlock();
             }
         }
-        callMacro.subCode(String.format("getTemplateEngine().renderMacro(\"%s\", $template, $newContext, $writer);",name));
+        callMacro.subCode(String.format("getTemplateEngine().renderMacro($macro, $template, $newContext, $writer);"));
         callMacro.subCode("$context.removeSubContext(\"$newContext\");");
         return callMacro;
     }
@@ -405,8 +423,9 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitCall_macro_block_directive(@NotNull JetTemplateParser.Call_macro_block_directiveContext ctx) {
         CodeBlock callMacro = new CodeBlock();
         String name = ctx.getChild(0).getText();
-        name = name.substring(2, name.length()-1).trim();
-        callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template);", name));
+        name = name.substring(2, name.length() - 1).trim();
+        callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template,$context);", name));
+        callMacro.subCode("$newContext=new TemplateContextImpl();");
         callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
         List<JetTemplateParser.Para_expressionContext> expList = ctx.para_expression_list().para_expression();
         if (expList != null) {
@@ -429,9 +448,9 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         }
         CodeBlock bodyContentMacro = new CodeBlock();
         callMacro.subCode(bodyContentMacro);
-        callMacro.subCode(String.format("getTemplateEngine().renderMacro(\"%s\", $template, $newContext, $writer);",name));
+        callMacro.subCode(String.format("getTemplateEngine().renderMacro(\"%s\", $template, $newContext, $writer);", name));
 
-        bodyContentMacro.header("$newContext.put(\"$bodyContent\",new AbstractMacro() {");
+        bodyContentMacro.header("$newContext.put(\"bodyContent\",new AbstractMacro() {");
         CodeBlock render = getMacroRenderCodeBlock();
         bodyContentMacro.subCode(render);
 
@@ -538,7 +557,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         ParseTree items = ctx.getChild(1);
 
         for (int i = 0; i < items.getChildCount(); i++) {
-            CodeLet tmp=pushPeekCodeLet();
+            CodeLet tmp = pushPeekCodeLet();
             items.getChild(i).accept(this);
             popCodeLet();
             peekCodeLet().code(tmp);
@@ -637,12 +656,13 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     void pushCodeBlock(CodeBlock codeBlock) {
         codeBlocks.push(codeBlock);
     }
+
     void pushCodeBlock() {
         pushCodeBlock(new CodeBlock());
     }
 
     void popCodeBlock() {
-         codeBlocks.pop();
+        codeBlocks.pop();
     }
 
 
@@ -653,12 +673,15 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     void pushCodeLet(CodeLet codeLet) {
         codeLets.push(codeLet);
     }
+
     void pushCodeLet() {
         pushCodeLet(new CodeLet());
     }
+
     CodeLet peekCodeLet() {
         return codeLets.peek();
     }
+
     CodeLet pushPeekCodeLet() {
         pushCodeLet();
         return codeLets.peek();
@@ -667,10 +690,12 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     CodeBlock peekCodeBlock() {
         return codeBlocks.peek();
     }
+
     CodeBlock pushPeekCodeBlock() {
         pushCodeBlock();
         return codeBlocks.peek();
     }
+
     public CodeBlock visitElseif_directive(@NotNull JetTemplateParser.Elseif_directiveContext ctx) {
         pushCodeLet();
         ctx.expression().accept(this);

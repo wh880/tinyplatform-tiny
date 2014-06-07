@@ -13,7 +13,7 @@ import java.io.Writer;
 /**
  * Created by luoguo on 2014/6/6.
  */
-public class TestTemplate extends AbstractTemplate {
+public class TestTemplate1 extends AbstractTemplate {
     {
         getMacroMap().put("aaa", new aaa());
     }
@@ -21,14 +21,20 @@ public class TestTemplate extends AbstractTemplate {
     @Override
     protected void renderTemplate(TemplateContext $context, Writer writer) throws IOException, TemplateException {
         Macro $macro=null;
-        Template $template=this;
+        Template $template=null;
         TemplateContext $newContext=null;
         writer.write("abc");
-        $macro=getTemplateEngine().findMacro("aaa",$template, $context);
+        $macro=getTemplateEngine().findMacro("aaa",this, $context);
         $newContext=new TemplateContextImpl();
         $context.putSubContext("$newContext", $newContext);
         $newContext.put("aa",1);
         $newContext.put($macro.getParameterNames()[1],1);
+        $newContext.put("$bodyContent",new AbstractMacro() {
+            @Override
+            protected void renderTemplate(Template template, TemplateContext $context, Writer $writer) throws IOException, TemplateException {
+
+            }
+        });
         getTemplateEngine().renderMacro("aaa", this, $newContext, writer);
         $context.removeSubContext("$newContext");
     }
@@ -52,7 +58,7 @@ public class TestTemplate extends AbstractTemplate {
 
     public static void main(String[] args) throws TemplateException {
         TemplateEngine engine = new TemplateEngineImpl();
-        engine.addTemplate(new TestTemplate());
+        engine.addTemplate(new TestTemplate1());
         engine.renderTemplate("abc", new TemplateContextImpl(), new OutputStreamWriter(System.out));
     }
 }

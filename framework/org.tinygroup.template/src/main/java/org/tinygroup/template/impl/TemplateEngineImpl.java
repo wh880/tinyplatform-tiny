@@ -25,7 +25,6 @@ public class TemplateEngineImpl implements TemplateEngine {
     static MemorySourceCompiler compiler = new MemorySourceCompiler();
 
     public static CodeBlock preCompile(String template, String sourceName) {
-        System.out.println("模板内容：\n"+template);
         char[] source = template.toCharArray();
         ANTLRInputStream is = new ANTLRInputStream(source, source.length);
         is.name = sourceName; // set source file name, it will be displayed in error report.
@@ -43,11 +42,11 @@ public class TemplateEngineImpl implements TemplateEngine {
     public Template getTemplate(TemplateResource templateResource) throws TemplateException {
 
         CodeBlock codeBlock = preCompile(templateResource.getContent(), templateResource.getPath());
-        codeBlock.insertSubCode("package "+getPackageName(templateResource.getPath())+";");
-        MemorySource memorySource = new MemorySource(getClassName(templateResource.getPath()),codeBlock.toString().replace("$TEMPLATE_PATH",templateResource.getPath())
-                .replace("$TEMPLATE_CLASS_NAME",getSimpleClassName(templateResource.getPath())));
-        System.out.println("java代码：\n"+memorySource.getContent());
+        codeBlock.insertSubCode("package " + getPackageName(templateResource.getPath()) + ";");
+        MemorySource memorySource = new MemorySource(getClassName(templateResource.getPath()), codeBlock.toString().replace("$TEMPLATE_PATH", templateResource.getPath())
+                .replace("$TEMPLATE_CLASS_NAME", getSimpleClassName(templateResource.getPath())));
         Template template = compiler.loadInstance(memorySource);
+        System.out.println(memorySource.getContent());
         addTemplate(template);
         return template;
     }
@@ -62,12 +61,10 @@ public class TemplateEngineImpl implements TemplateEngine {
         return name.replaceAll("/", ".");
     }
 
-    public static void main(String[] args) {
-        System.out.println(new TemplateEngineImpl().getPackageName("/aa/bb/cc/def.aa"));
-    }
+
     @Override
     public String getSimpleClassName(String path) {
-        String name = path.substring(path.lastIndexOf('/')+1).split("[.]")[0];
+        String name = path.substring(path.lastIndexOf('/') + 1).split("[.]")[0];
         return name;
     }
 
@@ -79,15 +76,16 @@ public class TemplateEngineImpl implements TemplateEngine {
         }
         int pos = path.indexOf('.');
         if (pos >= 0) {
-            name = name.substring(0, pos-1);//去掉文件扩展名
+            name = name.substring(0, pos - 1);//去掉文件扩展名
         }
         return name.replaceAll("/", ".");
     }
 
 
-    public void addTemplate(Template template) {
+    public Template addTemplate(Template template) {
         templateMap.put(template.getPath(), template);
         template.setTemplateEngine(this);
+        return template;
     }
 
     public Map<String, Template> getTemplateMap() {
@@ -95,11 +93,18 @@ public class TemplateEngineImpl implements TemplateEngine {
     }
 
     public void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws TemplateException {
-        Macro macro = findMacro(macroName, template);
-        macro.render(template, context, writer);
+        Macro macro = findMacro(macroName, template, context);
+        if (macro != null) {
+            macro.render(template, context, writer);
+        } else {
+            throw new TemplateException("找不到宏：" + macroName);
+        }
     }
 
 
+    public void renderMacro(Macro macro, Template template, TemplateContext context, Writer writer) throws TemplateException {
+        macro.render(template, context, writer);
+    }
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
         Template template = templateMap.get(path);
         if (template != null) {
@@ -113,13 +118,19 @@ public class TemplateEngineImpl implements TemplateEngine {
         template.render(context, writer);
     }
 
-    public Macro findMacro(String macroName, Template template) throws TemplateException {
+    public Macro findMacro(String macroName, Template template, TemplateContext $context) throws TemplateException {
         Macro macro = template.getMacroMap().get(macroName);
         if (macro == null) {
-            //到整个引擎查找
-            //先找相同路径下的，再找子目录下的，再找上级的，再找兄弟的
+            Object obj=  $context.getItemMap().get(macroName);
+            if(obj!=null&&obj instanceof Macro){
+                macro= (Macro) obj;
+            }
+            if (macro == null) {
+                //到整个引擎查找
+                //先找相同路径下的，再找子目录下的，再找上级的，再找兄弟的
 
-            throw new TemplateException("找不到宏：" + macroName);
+                throw new TemplateException("找不到宏：" + macroName);
+            }
         }
         return macro;
     }

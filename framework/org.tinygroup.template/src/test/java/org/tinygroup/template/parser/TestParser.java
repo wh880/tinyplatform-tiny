@@ -53,7 +53,7 @@ public class TestParser extends TestCase {
     }
 
     public void testT6() throws Exception {
-        String result = execute("$123");
+        String result = execute("${123}");
         assertTrue(result.indexOf("write($writer,123);") > 0);
     }
 
@@ -63,7 +63,7 @@ public class TestParser extends TestCase {
     }
 
     public void testT8() throws Exception {
-        String result = execute("$\"123\"");
+        String result = execute("${\"123\"}");
         assertTrue(result.indexOf("write($writer,\"123\");") > 0);
     }
 
@@ -73,13 +73,13 @@ public class TestParser extends TestCase {
     }
 
     public void testT10() throws Exception {
-        String result = execute("$1+2");
+        String result = execute("${1+2}");
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,O.e(\"+\",1,2));") > 0);
     }
 
     public void testT11() throws Exception {
-        String result = execute("$a.b");
+        String result = execute("${a.b}");
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,U.p(U.c($context,\"a\"),U.c($context,\"b\")));") > 0);
     }
@@ -103,7 +103,7 @@ public class TestParser extends TestCase {
     }
 
     public void testT15() throws Exception {
-        String result = execute("$a+$b");
+        String result = execute("${a+b}");
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,O.e(\"+\",U.c($context,\"a\"),U.c($context,\"b\")));") > 0);
     }
@@ -121,17 +121,17 @@ public class TestParser extends TestCase {
     public void testT18() throws Exception {
         String result = execute("#set(arraylist = [\"a\",\"b\",\"c\",\"d\"])");
         System.out.println(result);
-        assertTrue(result.indexOf("$context.put(\"arraylist\",{\"a\",\"b\",\"c\",\"d\"});") > 0);
+        assertTrue(result.indexOf("$context.put(\"arraylist\",new Object[]{\"a\",\"b\",\"c\",\"d\"});") > 0);
     }
     public void testT19() throws Exception {
         String result = execute("#set(arraylist = [\"a\",aa,\"c\",\"d\"])");
         System.out.println(result);
-        assertTrue(result.indexOf("$context.put(\"arraylist\",{\"a\",U.c($context,\"aa\"),\"c\",\"d\"});") > 0);
+        assertTrue(result.indexOf("$context.put(\"arraylist\",new Object[]{\"a\",U.c($context,\"aa\"),\"c\",\"d\"});") > 0);
     }
     public void testT20() throws Exception {
         String result = execute("#set(arraylist = [\"a\",$aa,\"c\",\"d\"])");
         System.out.println(result);
-        assertTrue(result.indexOf("$context.put(\"arraylist\",{\"a\",U.c($context,\"aa\"),\"c\",\"d\"});") > 0);
+        assertTrue(result.indexOf("$context.put(\"arraylist\",new Object[]{\"a\",U.c($context,\"aa\"),\"c\",\"d\"});") > 0);
     }
     public void testT21() throws Exception {
         String result = execute("${a.($b+1)}");
@@ -179,7 +179,7 @@ public class TestParser extends TestCase {
     public void testT29() throws Exception {
         String result = execute("#set(arraylist = {\"a\":[1,aa,3],\"b\":1} )");
         System.out.println(result);
-        assertTrue(result.indexOf("$context.put(\"arraylist\",{\"a\":{1,U.c($context,\"aa\"),3},\"b\":1});") > 0);
+        assertTrue(result.indexOf("$context.put(\"arraylist\",{\"a\":new Object[]{1,U.c($context,\"aa\"),3},\"b\":1});") > 0);
     }
     public void testT30() throws Exception {
         String result = execute("#if(true)abc#end");
@@ -224,9 +224,8 @@ public class TestParser extends TestCase {
     public void testT35() throws Exception {
         String result = execute("#for(i: [1,2,3,4,5])#if(true)abc${i}#break(true||false)#end#end");
         System.out.println(result);
-        assertTrue(result.indexOf("ForIterator $iFor = new ForIterator({1,2,3,4,5});") > 0);
-        assertTrue(result.indexOf("$context.put(\"$iFor\"，$iFor);") > 0);
-        assertTrue(result.indexOf("$context.put(\"i\"，i);") > 0);
+        assertTrue(result.indexOf("ForIterator $iFor = new ForIterator(new Object[]{1,2,3,4,5});") > 0);
+        assertTrue(result.indexOf("$context.put(\"i\",$iFor.next());") > 0);
     }
 
     public void testT36() throws Exception {
@@ -284,9 +283,9 @@ public class TestParser extends TestCase {
     public void testT44() throws Exception {
         String result = execute("#for(i : [1,2,3,4,5])#end");
         System.out.println(result);
-        assertTrue(result.indexOf("ForIterator $iFor = new ForIterator({1,2,3,4,5});") > 0);
-        assertTrue(result.indexOf("$context.put(\"$iFor\"，$iFor);") > 0);
-        assertTrue(result.indexOf("$context.put(\"i\"，i);") > 0);
+        assertTrue(result.indexOf("ForIterator $iFor = new ForIterator(new Object[]{1,2,3,4,5});") > 0);
+        assertTrue(result.indexOf("$context.put(\"$iFor\",$iFor);") > 0);
+        assertTrue(result.indexOf("$context.put(\"i\",$iFor.next());") > 0);
     }
     public void testT45() throws Exception {
         String result = execute("#test");
@@ -331,5 +330,15 @@ public class TestParser extends TestCase {
         System.out.println(result);
         assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[0],9);") > 0);
         assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
+    }
+    public void testT51() throws Exception {
+        String result = execute("${a1.b.c}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,U.p(U.p(U.c($context,\"a1\"),U.c($context,\"b\")),U.c($context,\"c\")));") > 0);
+    }
+    public void testT52() throws Exception {
+        String result = execute("#macro aab()aa : ${aa}#end");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,U.c($context,\"aa\"));") > 0);
     }
 }

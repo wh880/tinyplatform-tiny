@@ -33,9 +33,9 @@ fragment NEWLINE        : ('\r'? '\n' | EOF)              ;
 TEXT_PLAIN              : ~('$'|'#'|'\\')+                ;
 TEXT_CDATA              : '#[[' .*? ']]#'                 ;
 TEXT_ESCAPED_CHAR       : ('\\#'|'\\$'|'\\\\')            ;
-//TEXT_SINGLE_CHAR        : ('#'|'$'|'\\')                  ;
+TEXT_SINGLE_CHAR        : ('#'|'$'|'\\')                  ;
 
-VALUE_COMPACT_OPEN              : '$'                   -> pushMode(INSIDE) ;
+VALUE_COMPACT_OPEN              : '$'                    ;
 VALUE_OPEN              : '${'                            -> pushMode(INSIDE) ;
 VALUE_ESCAPED_OPEN      : '$!{'                           -> pushMode(INSIDE) ;
 

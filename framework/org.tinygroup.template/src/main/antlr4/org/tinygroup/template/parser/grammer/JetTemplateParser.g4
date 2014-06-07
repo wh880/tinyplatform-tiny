@@ -36,17 +36,18 @@ template    :   block
 block       :   (text | value | directive)*
             ;
 
+
 text        :   TEXT_PLAIN
             |   TEXT_CDATA
-//            |   TEXT_SINGLE_CHAR
+            |   TEXT_SINGLE_CHAR
             |   TEXT_ESCAPED_CHAR
             |   TEXT_DIRECTIVE_LIKE
             ;
-
-value       :   VALUE_OPEN         expression '}'
-            |   VALUE_COMPACT_OPEN      expression
+value       :   //VALUE_COMPACT_OPEN  identify_list
+               VALUE_OPEN         expression '}'
             |   VALUE_ESCAPED_OPEN expression '}'
             ;
+
 
 directive   :   set_directive
             |   put_directive
@@ -61,6 +62,9 @@ directive   :   set_directive
             |   call_macro_directive
             |   call_macro_block_directive
             |   invalid_directive
+            ;
+identify_list
+            :IDENTIFIER ('.' IDENTIFIER)*
             ;
 
 define_expression_list

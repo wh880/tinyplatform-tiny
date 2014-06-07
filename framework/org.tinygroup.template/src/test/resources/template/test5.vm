@@ -1,0 +1,5 @@
+#macro ttt(aa,bb)aa : ${aa},bb:${bb} #end
+#set(aa=1,bb=2)
+#ttt
+#ttt(bb=3)
+OK

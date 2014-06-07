@@ -1,0 +1,9 @@
+#macro aa(a)
+This is ${a} start
+ #bodyContent
+This is ${a} end
+#end
+
+#@aa(3)
+aaa
+#end
