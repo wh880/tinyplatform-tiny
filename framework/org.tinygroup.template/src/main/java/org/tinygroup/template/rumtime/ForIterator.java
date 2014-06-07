@@ -54,9 +54,12 @@ public final class ForIterator implements Iterator, ForStatus {
             List<?> itemList = Arrays.asList(((Class<?>) object).getEnumConstants());
             iterator = itemList.iterator();
             size = itemList.size();
-        }else{
-            iterator=new SingletonIterator(object);
-            size=1;
+        } else if (object.getClass().isArray()) {
+            iterator=new ArrayIterator(object);
+            size=ArrayUtil.arrayLength(object);
+        } else {
+            iterator = new SingletonIterator(object);
+            size = 1;
         }
     }
 

@@ -29,12 +29,12 @@ public class TestParser extends TestCase {
 
     public void testT1() throws Exception {
         String result = execute("");
-        assertEquals(-1, result.indexOf("$writer.write("));
+        assertEquals(-1, result.indexOf("write($writer,"));
     }
 
     public void testT2() throws Exception {
         String result = execute("abc");
-        assertTrue(result.indexOf("$writer.write(\"abc\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"abc\");") > 0);
     }
 
     public void testT3() throws Exception {
@@ -54,69 +54,69 @@ public class TestParser extends TestCase {
 
     public void testT6() throws Exception {
         String result = execute("$123");
-        assertTrue(result.indexOf("$writer.write(123);") > 0);
+        assertTrue(result.indexOf("write($writer,123);") > 0);
     }
 
     public void testT7() throws Exception {
         String result = execute("${123}");
-        assertTrue(result.indexOf("$writer.write(123);") > 0);
+        assertTrue(result.indexOf("write($writer,123);") > 0);
     }
 
     public void testT8() throws Exception {
         String result = execute("$\"123\"");
-        assertTrue(result.indexOf("$writer.write(\"123\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"123\");") > 0);
     }
 
     public void testT9() throws Exception {
         String result = execute("${\"123\"}");
-        assertTrue(result.indexOf("$writer.write(\"123\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"123\");") > 0);
     }
 
     public void testT10() throws Exception {
         String result = execute("$1+2");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(O.e(\"+\",1,2));") > 0);
+        assertTrue(result.indexOf("write($writer,O.e(\"+\",1,2));") > 0);
     }
 
     public void testT11() throws Exception {
         String result = execute("$a.b");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(U.p(U.c($context,\"a\"),U.c($context,\"b\")));") > 0);
+        assertTrue(result.indexOf("write($writer,U.p(U.c($context,\"a\"),U.c($context,\"b\")));") > 0);
     }
 
     public void testT12() throws Exception {
         String result = execute("${a+1}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(O.e(\"+\",U.c($context,\"a\"),1));") > 0);
+        assertTrue(result.indexOf("write($writer,O.e(\"+\",U.c($context,\"a\"),1));") > 0);
     }
 
     public void testT13() throws Exception {
         String result = execute("${a[1]}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(U.a(U.c($context,\"a\"),1));") > 0);
+        assertTrue(result.indexOf("write($writer,U.a(U.c($context,\"a\"),1));") > 0);
     }
 
     public void testT14() throws Exception {
         String result = execute("${a[$b]}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(U.a(U.c($context,\"a\"),U.c($context,\"b\")));") > 0);
+        assertTrue(result.indexOf("write($writer,U.a(U.c($context,\"a\"),U.c($context,\"b\")));") > 0);
     }
 
     public void testT15() throws Exception {
         String result = execute("$a+$b");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(O.e(\"+\",U.c($context,\"a\"),U.c($context,\"b\")));") > 0);
+        assertTrue(result.indexOf("write($writer,O.e(\"+\",U.c($context,\"a\"),U.c($context,\"b\")));") > 0);
     }
 
     public void testT16() throws Exception {
         String result = execute("${a.$b}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(U.p(U.c($context,\"a\"),U.c($context,\"b\")));") > 0);
+        assertTrue(result.indexOf("write($writer,U.p(U.c($context,\"a\"),U.c($context,\"b\")));") > 0);
     }
     public void testT17() throws Exception {
         String result = execute("$!{\"<abc\"}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(StringEscapeUtils.escapeHtml((\"<abc\")+\"\"));") > 0);
+        assertTrue(result.indexOf("write($writer,StringEscapeUtils.escapeHtml((\"<abc\")+\"\"));") > 0);
     }
     public void testT18() throws Exception {
         String result = execute("#set(arraylist = [\"a\",\"b\",\"c\",\"d\"])");
@@ -136,7 +136,7 @@ public class TestParser extends TestCase {
     public void testT21() throws Exception {
         String result = execute("${a.($b+1)}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(U.p(U.c($context,\"a\"),(O.e(\"+\",U.c($context,\"b\"),1))));") > 0);
+        assertTrue(result.indexOf("write($writer,U.p(U.c($context,\"a\"),(O.e(\"+\",U.c($context,\"b\"),1))));") > 0);
     }
     public void testT22() throws Exception {
         String result = execute("#set(arraylist = 123)");
@@ -164,17 +164,17 @@ public class TestParser extends TestCase {
     public void testT26() throws Exception {
         String result = execute("${1==2}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(1==2);") > 0);
+        assertTrue(result.indexOf("write($writer,1==2);") > 0);
     }
     public void testT27() throws Exception {
         String result = execute("${1==2*3}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(1==O.e(\"*\",2,3));") > 0);
+        assertTrue(result.indexOf("write($writer,1==O.e(\"*\",2,3));") > 0);
     }
     public void testT28() throws Exception {
         String result = execute("${aa==2*3}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(U.c($context,\"aa\")==O.e(\"*\",2,3));") > 0);
+        assertTrue(result.indexOf("write($writer,U.c($context,\"aa\")==O.e(\"*\",2,3));") > 0);
     }
     public void testT29() throws Exception {
         String result = execute("#set(arraylist = {\"a\":[1,aa,3],\"b\":1} )");
@@ -185,30 +185,30 @@ public class TestParser extends TestCase {
         String result = execute("#if(true)abc#end");
         System.out.println(result);
         assertTrue(result.indexOf("if(U.b(true)){") > 0);
-        assertTrue(result.indexOf("$writer.write(\"abc\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"abc\");") > 0);
     }
     public void testT31() throws Exception {
         String result = execute("#if(true)abc#if(false)def#end#end");
         System.out.println(result);
         assertTrue(result.indexOf("if(U.b(true)){") > 0);
         assertTrue(result.indexOf("if(U.b(false)){") > 0);
-        assertTrue(result.indexOf("$writer.write(\"abc\");") > 0);
-        assertTrue(result.indexOf("$writer.write(\"def\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"abc\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"def\");") > 0);
     }
     public void testT32() throws Exception {
         String result = execute("#if(true)abc#{end}def");
         System.out.println(result);
         assertTrue(result.indexOf("if(U.b(true)){") > 0);
-        assertTrue(result.indexOf("$writer.write(\"abc\");") > 0);
-        assertTrue(result.indexOf("$writer.write(\"def\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"abc\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"def\");") > 0);
     }
     public void testT33() throws Exception {
         String result = execute("#if(true)abc#{else}def#end");
         System.out.println(result);
         assertTrue(result.indexOf("if(U.b(true)){") > 0);
         assertTrue(result.indexOf("}else{") > 0);
-        assertTrue(result.indexOf("$writer.write(\"abc\");") > 0);
-        assertTrue(result.indexOf("$writer.write(\"def\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"abc\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"def\");") > 0);
     }
 
     public void testT34() throws Exception {
@@ -217,8 +217,8 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("if(U.b(true)){") > 0);
         assertTrue(result.indexOf("}else if(U.b(true)){") > 0);
         assertTrue(result.indexOf("}else{") > 0);
-        assertTrue(result.indexOf("$writer.write(\"abc\");") > 0);
-        assertTrue(result.indexOf("$writer.write(\"def\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"abc\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"def\");") > 0);
     }
 
     public void testT35() throws Exception {
@@ -232,12 +232,12 @@ public class TestParser extends TestCase {
     public void testT36() throws Exception {
         String result = execute("${true||false}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(true||false);") > 0);
+        assertTrue(result.indexOf("write($writer,true||false);") > 0);
     }
     public void testT37() throws Exception {
         String result = execute("${true? 1 : 2 }");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(U.b(true)?1:2);") > 0);
+        assertTrue(result.indexOf("write($writer,U.b(true)?1:2);") > 0);
     }
     public void testT38() throws Exception {
         String result = execute("#set(a=true? 1 : 2 )");
@@ -247,12 +247,12 @@ public class TestParser extends TestCase {
     public void testT39() throws Exception {
         String result = execute("${4|6|6}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(O.e(\"|\",O.e(\"|\",4,6),6));") > 0);
+        assertTrue(result.indexOf("write($writer,O.e(\"|\",O.e(\"|\",4,6),6));") > 0);
     }
     public void testT40() throws Exception {
         String result = execute("${4+6+6^3|3}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(O.e(\"|\",O.e(\"^\",O.e(\"+\",O.e(\"+\",4,6),6),3),3));") > 0);
+        assertTrue(result.indexOf("write($writer,O.e(\"|\",O.e(\"^\",O.e(\"+\",O.e(\"+\",4,6),6),3),3));") > 0);
     }
     public void testT41() throws Exception {
         String result = execute("#set(a=1)");
@@ -262,15 +262,15 @@ public class TestParser extends TestCase {
     public void testT42() throws Exception {
         String result = execute("${a?1:2}");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(U.b(U.c($context,\"a\"))?1:2);") > 0);
+        assertTrue(result.indexOf("write($writer,U.b(U.c($context,\"a\"))?1:2);") > 0);
     }
     public void testT43_1() throws Exception {
         String result = execute("#macro test(aa)abc #end");
         System.out.println(result);
         assertTrue(result.indexOf("String[] args = {\"aa\"};") > 0);
-        assertTrue(result.indexOf("class A extends AbstractTemplate{") > 0);
+        assertTrue(result.indexOf("class $TEMPLATE_CLASS_NAME extends AbstractTemplate{") > 0);
         assertTrue(result.indexOf(" protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException{") > 0);
-        assertTrue(result.indexOf("$writer.write(\"abc \");") > 0);
+        assertTrue(result.indexOf("write($writer,\"abc \");") > 0);
     }
 
     public void testT43() throws Exception {
@@ -278,8 +278,8 @@ public class TestParser extends TestCase {
         System.out.println(result);
         assertTrue(result.indexOf("class test1 extends AbstractMacro {") > 0);
         assertTrue(result.indexOf("class test extends AbstractMacro {") > 0);
-        assertTrue(result.indexOf("$writer.write(\"abc \");") > 0);
-        assertTrue(result.indexOf("$writer.write(\"def \");") > 0);
+        assertTrue(result.indexOf("write($writer,\"abc \");") > 0);
+        assertTrue(result.indexOf("write($writer,\"def \");") > 0);
     }
     public void testT44() throws Exception {
         String result = execute("#for(i : [1,2,3,4,5])#end");

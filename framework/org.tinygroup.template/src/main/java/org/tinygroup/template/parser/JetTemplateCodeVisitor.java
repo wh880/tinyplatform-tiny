@@ -279,15 +279,10 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     private CodeBlock getTemplateCodeBlock() {
         CodeBlock codeBlock = new CodeBlock();
         codeBlock.subCode(new CodeLet().lineCode("import java.io.IOException;"));
-        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.rumtime.U;"));
-        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.rumtime.O;"));
-        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.Macro;"));
-        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.Template;"));
+        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.rumtime.*;"));
+        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.*;"));
         codeBlock.subCode(new CodeLet().lineCode("import java.io.Writer;"));
-        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.TemplateContext;"));
-        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.TemplateException;"));
-        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.impl.AbstractTemplate;"));
-        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.impl.AbstractMacro;"));
+        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.impl.*;"));
         return codeBlock;
     }
 
@@ -371,6 +366,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
             name=name.substring(0,name.length()-1);
         }
         callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template);", name));
+        callMacro.subCode("$newContext = new TemplateContextImpl();");
         callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
         if (ctx.para_expression_list() != null) {
             List<JetTemplateParser.Para_expressionContext> expList = ctx.para_expression_list().para_expression();
@@ -547,7 +543,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
             popCodeLet();
             peekCodeLet().code(tmp);
         }
-        peekCodeLet().codeBefore("{").code("}");
+        peekCodeLet().codeBefore("new Object[]{").code("}");
         return null;
     }
 
@@ -579,10 +575,10 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         CodeLet code = new CodeLet().code("ForIterator $").code(name).code("For = new ForIterator(").code(peekCodeLet()).lineCode(");");
         popCodeLet();
         peekCodeBlock().subCode(code);
-        peekCodeBlock().subCode(new CodeLet().code("$context.put(\"$").code(name).code("For\"，$").code(name).lineCode("For);"));
+        peekCodeBlock().subCode(new CodeLet().code("$context.put(\"$").code(name).code("For\",$").code(name).lineCode("For);"));
         peekCodeBlock().subCode(new CodeLet().code("while($").code(name).lineCode("For.hasNext()){"));
         CodeBlock assign = new CodeBlock().tabIndent(1);
-        assign.footer(new CodeLet().code("$context.put(\"").code(name).code("\"，").code(name).lineCode(");")).tabIndent(1);
+        assign.footer(new CodeLet().code("$context.put(\"").code(name).code("\",$").code(name).lineCode("For.next());")).tabIndent(1);
         peekCodeBlock().subCode(assign);
         return null;
     }

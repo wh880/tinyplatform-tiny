@@ -28,6 +28,9 @@ public abstract class AbstractTemplate implements Template {
 
     public void render(TemplateContext $context, Writer writer) throws TemplateException {
         try {
+            if($context==null){
+                $context=new TemplateContextImpl();
+            }
             renderTemplate($context, writer);
             writer.flush();
         } catch (IOException e) {

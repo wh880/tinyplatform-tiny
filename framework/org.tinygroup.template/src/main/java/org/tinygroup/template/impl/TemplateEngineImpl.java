@@ -25,6 +25,7 @@ public class TemplateEngineImpl implements TemplateEngine {
     static MemorySourceCompiler compiler = new MemorySourceCompiler();
 
     public static CodeBlock preCompile(String template, String sourceName) {
+        System.out.println("模板内容：\n"+template);
         char[] source = template.toCharArray();
         ANTLRInputStream is = new ANTLRInputStream(source, source.length);
         is.name = sourceName; // set source file name, it will be displayed in error report.
@@ -45,8 +46,9 @@ public class TemplateEngineImpl implements TemplateEngine {
         codeBlock.insertSubCode("package "+getPackageName(templateResource.getPath())+";");
         MemorySource memorySource = new MemorySource(getClassName(templateResource.getPath()),codeBlock.toString().replace("$TEMPLATE_PATH",templateResource.getPath())
                 .replace("$TEMPLATE_CLASS_NAME",getSimpleClassName(templateResource.getPath())));
-        System.out.println(memorySource.getContent());
+        System.out.println("java代码：\n"+memorySource.getContent());
         Template template = compiler.loadInstance(memorySource);
+        addTemplate(template);
         return template;
     }
 
