@@ -58,12 +58,22 @@ directive   :   set_directive
             |   include_directive
             |   tag_directive
             |   macro_directive
+            |   call_macro_directive
+            |   call_macro_block_directive
             |   invalid_directive
             ;
 
 define_expression_list
             :   define_expression (',' define_expression)*
             ;
+para_expression_list
+            :   para_expression (',' para_expression)*
+            ;
+para_expression
+            :   IDENTIFIER '=' expression
+            |   expression
+            ;
+
 define_expression
             :   IDENTIFIER
             ;
@@ -121,6 +131,13 @@ macro_directive
             :   DIRECTIVE_OPEN_MACRO define_expression_list? ')' block DIRECTIVE_END
             ;
 
+call_macro_directive
+            :  DIRECTIVE_OPEN_CALL   para_expression_list? ')'
+            |  DIRECTIVE_CALL
+            ;
+call_macro_block_directive
+            :  DIRECTIVE_BODY_CALL   para_expression_list? ')' block DIRECTIVE_END
+            ;
 invalid_directive
             :   DIRECTIVE_SET
             |   DIRECTIVE_PUT
@@ -140,8 +157,8 @@ expression  :   '(' expression ')'                                           # e
             |   expression ('.'|'?.') expression                             # expr_field_access
             |   expression ('.'|'?.') expression '(' expression_list? ')'    # expr_method_invocation
             |   IDENTIFIER '(' expression_list? ')'                          # expr_function_call
-            |   static_type_name '.' IDENTIFIER                              # expr_static_field_access
-            |   static_type_name '.' IDENTIFIER  '(' expression_list? ')'    # expr_static_method_invocation
+//            |   static_type_name '.' IDENTIFIER                              # expr_static_field_access
+//            |   static_type_name '.' IDENTIFIER  '(' expression_list? ')'    # expr_static_method_invocation
             |   expression ('?')? '[' expression ']'                         # expr_array_get
             |   expression ('++'|'--')                                       # expr_math_unary_suffix
             |   ('+' <assoc=right> |'-' <assoc=right>)  expression           # expr_math_unary_prefix
@@ -182,12 +199,12 @@ expression_list
 hash_map_entry_list
             :   expression ':' expression (',' expression ':' expression)*
             ;
-
+/*
 static_type_name
             : '@' IDENTIFIER
             | '@' '(' IDENTIFIER ('.' IDENTIFIER)* ')'
             ;
-
+*/
 type        :   IDENTIFIER ('.' IDENTIFIER)* type_arguments? type_array_suffix*
             ;
 

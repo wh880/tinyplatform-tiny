@@ -1,8 +1,6 @@
 package org.tinygroup.template.parser;
 
-import org.tinygroup.template.TemplateContext;
-import org.tinygroup.template.TemplateEngine;
-import org.tinygroup.template.TemplateException;
+import org.tinygroup.template.*;
 import org.tinygroup.template.impl.AbstractMacro;
 import org.tinygroup.template.impl.AbstractTemplate;
 import org.tinygroup.template.impl.TemplateContextImpl;
@@ -22,8 +20,17 @@ public class TestTemplate extends AbstractTemplate {
 
     @Override
     protected void renderTemplate(TemplateContext $context, Writer writer) throws IOException, TemplateException {
+        Macro $macro=null;
+        Template $template=null;
+        TemplateContext $newContext=null;
         writer.write("abc");
-        getTemplateEngine().executeMacro("aaa", this, $context, writer);
+        $macro=getTemplateEngine().findMacro("aaa",this);
+        $newContext=new TemplateContextImpl();
+        $context.putSubContext("$newContext", $newContext);
+        $newContext.put("aa",1);
+        $newContext.put($macro.getParameterNames()[1],1);
+        getTemplateEngine().renderMacro("aaa", this, $newContext, writer);
+        $context.removeSubContext("$newContext");
     }
 
     class aaa extends AbstractMacro {
@@ -34,7 +41,7 @@ public class TestTemplate extends AbstractTemplate {
         }
 
         @Override
-        protected void renderTemplate(TemplateContext $context, Writer writer) throws IOException {
+        protected void renderTemplate(Template template, TemplateContext $context, Writer writer) throws IOException {
             writer.write("def");
         }
     }

@@ -22,10 +22,11 @@ public class TemplateEngineImpl implements TemplateEngine {
         return templateMap;
     }
 
-    public void executeMacro(String macroName, Template template, TemplateContext context, Writer writer) throws TemplateException {
+    public void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws TemplateException {
         Macro macro = findMacro(macroName, template);
-        macro.render(context, writer);
+        macro.render(template,context, writer);
     }
+
 
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
         Template template = templateMap.get(path);
@@ -36,7 +37,7 @@ public class TemplateEngineImpl implements TemplateEngine {
         throw new TemplateException("找不到模板：" + path);
     }
 
-    private Macro findMacro(String macroName, Template template) throws TemplateException {
+    public Macro findMacro(String macroName, Template template) throws TemplateException {
         Macro macro = template.getMacroMap().get(macroName);
         if (macro == null) {
             //到整个引擎查找

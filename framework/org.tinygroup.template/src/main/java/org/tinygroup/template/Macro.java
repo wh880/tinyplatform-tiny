@@ -29,5 +29,5 @@ public interface Macro {
      * @param $writer
      * @throws IOException
      */
-    void render(TemplateContext $context, Writer $writer) throws TemplateException;
+    void render(Template $template ,TemplateContext $context, Writer $writer) throws TemplateException;
 }

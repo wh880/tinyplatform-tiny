@@ -5,6 +5,21 @@ import java.io.Writer;
 import java.util.Map;
 
 /**
+ * 新需求
+ Sept(626135288)  21:43:50
+ map = { 'parama': '1', 'paramb': '2' }
+ 假设 1.参数是不确定的
+ #call('func', map)
+ 假设 2.参数可能是需要多处使用的
+ #call('common_1', map)
+ #call('common_2', map)
+ Sept(626135288)  21:45:14
+ #call(hasOpen?'func_open':'func_close', map)
+ #call(selector_function(status), map)
+ 等等情况
+ */
+
+/**
  * 模板引擎
  * Created by luoguo on 2014/6/6.
  */
@@ -28,7 +43,8 @@ public interface TemplateEngine {
      *  @param macroName 要执行的宏名称
      * @param template  当前宏
      */
-    void executeMacro(String macroName, Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
+    void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
+
 
     /**
      * 渲染一个模板文件
@@ -38,4 +54,13 @@ public interface TemplateEngine {
      * @param writer
      */
     void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException;
+
+    /**
+     * 根据宏名查找要调用的宏
+     * @param macroName
+     * @param template
+     * @return
+     * @throws TemplateException
+     */
+    Macro findMacro(String macroName, Template template) throws TemplateException;
 }

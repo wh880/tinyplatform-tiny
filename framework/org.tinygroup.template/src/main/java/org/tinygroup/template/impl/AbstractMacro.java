@@ -1,6 +1,7 @@
 package org.tinygroup.template.impl;
 
 import org.tinygroup.template.Macro;
+import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 
@@ -27,16 +28,16 @@ public abstract class AbstractMacro implements Macro {
         this.name = name;
         this.parameterNames = parameterNames;
     }
-    public void render(TemplateContext $context, Writer writer) throws TemplateException {
+    public void render(Template $template,TemplateContext $context, Writer writer) throws TemplateException {
         try {
-            renderTemplate($context, writer);
+            renderTemplate($template, $context, writer);
             writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
         }
     }
 
-    protected abstract void renderTemplate(TemplateContext $context, Writer $writer)throws IOException,TemplateException;
+    protected abstract void renderTemplate(Template template, TemplateContext $context, Writer $writer)throws IOException,TemplateException;
 
 
     public String getName() {

@@ -53,6 +53,7 @@ DIRECTIVE_OPEN_INCLUDE  : '#include'  ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_TAG      : '#tag'      [ \t]+ ID ARGUMENT_START -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_MACRO    : '#macro'    [ \t]+ ID ARGUMENT_START -> pushMode(INSIDE) ;
 
+
 fragment ID             : [_a-zA-Z$][_a-zA-Z$0-9]*        ;
 fragment ARGUMENT_START : [ \t]* '('                      ;
 
@@ -71,6 +72,10 @@ DIRECTIVE_MACRO         : '#macro'                        ;
 
 DIRECTIVE_ELSE          : '#else'|'#{else}'                   ;
 DIRECTIVE_END           : '#end'|'#{end}'                 ;
+
+DIRECTIVE_OPEN_CALL    : '#' ID     ARGUMENT_START      -> pushMode(INSIDE) ;
+DIRECTIVE_BODY_CALL    : '#@' ID    ARGUMENT_START -> pushMode(INSIDE) ;
+DIRECTIVE_CALL    : '#' ID      ;
 
 // It is a text which like a directive.
 // It must be put after directive defination to avoid confliction.

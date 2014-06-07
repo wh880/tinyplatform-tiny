@@ -264,16 +264,66 @@ public class TestParser extends TestCase {
         System.out.println(result);
         assertTrue(result.indexOf("$writer.write(U.b(U.c($context,\"a\"))?1:2);") > 0);
     }
-    public void testT43() throws Exception {
-        String result = execute("#macro test(aa)abc #end#macro test1(bb)abc #end");
+    public void testT43_1() throws Exception {
+        String result = execute("#macro test(aa)abc #end");
         System.out.println(result);
-        assertTrue(result.indexOf("$writer.write(U.b(U.c($context,\"a\"))?1:2);") > 0);
+        assertTrue(result.indexOf("String[] args = {\"aa\"};") > 0);
+        assertTrue(result.indexOf("class A extends AbstractTemplate{") > 0);
+        assertTrue(result.indexOf(" protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException{") > 0);
+        assertTrue(result.indexOf("$writer.write(\"abc \");") > 0);
+    }
+
+    public void testT43() throws Exception {
+        String result = execute("#macro test(aa)abc #end#macro test1(bb)def #end");
+        System.out.println(result);
+        assertTrue(result.indexOf("class test1 extends AbstractMacro {") > 0);
+        assertTrue(result.indexOf("class test extends AbstractMacro {") > 0);
+        assertTrue(result.indexOf("$writer.write(\"abc \");") > 0);
+        assertTrue(result.indexOf("$writer.write(\"def \");") > 0);
     }
     public void testT44() throws Exception {
-        String result = execute("#for(i in [1,2,3,4,5])#end");
+        String result = execute("#for(i : [1,2,3,4,5])#end");
         System.out.println(result);
         assertTrue(result.indexOf("ForIterator $iFor = new ForIterator({1,2,3,4,5});") > 0);
         assertTrue(result.indexOf("$context.put(\"$iFor\"，$iFor);") > 0);
         assertTrue(result.indexOf("$context.put(\"i\"，i);") > 0);
+    }
+    public void testT45() throws Exception {
+        String result = execute("#test");
+        System.out.println(result);
+        assertTrue(result.indexOf("getTemplateEngine().renderMacro(\"test\", $template, $newContext, $writer);") > 0);
+    }
+    public void testT46() throws Exception {
+        String result = execute("#test(aa=1,bb=2,3)");
+        System.out.println(result);
+        assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
+        assertTrue(result.indexOf("$newContext.put(\"aa\",1);") > 0);
+        assertTrue(result.indexOf("$newContext.put(\"bb\",2);") > 0);
+        assertTrue(result.indexOf("getTemplateEngine().renderMacro(\"test\", $template, $newContext, $writer);") > 0);
+    }
+    public void testT47() throws Exception {
+        String result = execute("#@test(aa=1,bb=2,3) aaa  #end");
+        System.out.println(result);
+        assertTrue(result.indexOf("$newContext.put(\"aa\",1);") > 0);
+        assertTrue(result.indexOf("$newContext.put(\"bb\",2);") > 0);
+        assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
+        assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
+    }
+    public void testT48() throws Exception {
+        String result = execute("#@test(aa=1,bb=2,3) aaa #bbb  #end");
+        System.out.println(result);
+        assertTrue(result.indexOf("getTemplateEngine().renderMacro(\"bbb\", $template, $newContext, $writer);") > 0);
+    }
+    public void testT48_1() throws Exception {
+        String result = execute("#@test(aa=1,bb=2,3) aaa #bbb(1)  #end");
+        System.out.println(result);
+        assertTrue(result.indexOf("getTemplateEngine().renderMacro(\"bbb\", $template, $newContext, $writer);") > 0);
+        assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[0],1);") > 0);
+    }
+    public void testT49() throws Exception {
+        String result = execute("#@test(aa=1,bb=2,3) aaa #@bbb(9)bb#end  #end");
+        System.out.println(result);
+        assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[0],9);") > 0);
+        assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
     }
 }

@@ -29,13 +29,12 @@ import org.tinygroup.template.parser.grammer.JetTemplateParser;
 import org.tinygroup.template.parser.grammer.JetTemplateParserVisitor;
 
 import java.util.List;
+import java.util.Stack;
 
 // Visitor 模式访问器，用来生成 Java 代码
 public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> implements JetTemplateParserVisitor<CodeBlock> {
-    private CodeLet currentCodeLet = null;
-    private CodeBlock currentCodeBlock;
-    private CodeBlock tmpCodeBlock;
-    private CodeLet tmpCodeLet;
+    Stack<CodeBlock> codeBlocks = new Stack<CodeBlock>();
+    Stack<CodeLet> codeLets = new Stack<CodeLet>();
     private CodeBlock initCodeBlock = null;
     private CodeBlock macroCodeBlock = null;
 
@@ -49,9 +48,9 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
             expression.accept(this);
             popCodeLet();
             if (i > 0) {
-                currentCodeLet.code(",");
+                peekCodeLet().code(",");
             }
-            currentCodeLet.code(exp);
+            peekCodeLet().code(exp);
             i++;
         }
         return null;
@@ -63,7 +62,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
     public CodeBlock visitElse_directive(@NotNull JetTemplateParser.Else_directiveContext ctx) {
         CodeBlock elseBlock = new CodeBlock().subCode(new CodeLet().lineCode("}else{")).tabIndent(-1);
-        currentCodeBlock.subCode(elseBlock);
+        peekCodeBlock().subCode(elseBlock);
         ctx.block().accept(this);
         return null;
     }
@@ -75,7 +74,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitExpr_hash_map(@NotNull JetTemplateParser.Expr_hash_mapContext ctx) {
         JetTemplateParser.Hash_map_entry_listContext hash_map_entry_list = ctx.hash_map_entry_list();
         if (hash_map_entry_list != null) {
-            currentCodeLet.code("{").code(hash_map_entry_list.accept(this).toString()).code("}");
+            peekCodeLet().code("{").code(hash_map_entry_list.accept(this).toString()).code("}");
         }
         return null;
     }
@@ -83,13 +82,14 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitContinue_directive(@NotNull JetTemplateParser.Continue_directiveContext ctx) {
         JetTemplateParser.ExpressionContext expression = ctx.expression();
         if (expression != null) {
-            currentCodeLet = new CodeLet();
+            pushCodeLet();
             expression.accept(this);
-            CodeBlock ifCodeBlock = new CodeBlock().header(currentCodeLet.codeBefore("if(U.b(").lineCode(")){")).footer(new CodeLet().lineCode("}"));
+            CodeBlock ifCodeBlock = new CodeBlock().header(peekCodeLet().codeBefore("if(U.b(").lineCode(")){")).footer(new CodeLet().lineCode("}"));
+            popCodeLet();
             ifCodeBlock.subCode(new CodeLet().lineCode("return;"));
-            currentCodeBlock.subCode(ifCodeBlock);
+            peekCodeBlock().subCode(ifCodeBlock);
         } else {
-            currentCodeBlock.subCode(new CodeLet().lineCode("return;"));
+            peekCodeBlock().subCode(new CodeLet().lineCode("return;"));
         }
         return null;
     }
@@ -97,25 +97,23 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
     public CodeBlock visitExpr_field_access(@NotNull JetTemplateParser.Expr_field_accessContext ctx) {
         ctx.expression(0).accept(this);
-        CodeLet oldCodeLet = currentCodeLet;
-        currentCodeLet = new CodeLet();
+        pushCodeLet();
         ctx.expression(1).accept(this);
-        oldCodeLet.codeBefore("U.p(").code(",").code(currentCodeLet).code(")");
-        currentCodeLet = oldCodeLet;
+        CodeLet exp=peekCodeLet();
+        popCodeLet();
+        peekCodeLet().codeBefore("U.p(").code(",").code(exp).code(")");
         return null;
     }
 
     public CodeBlock visitExpr_compare_condition(@NotNull JetTemplateParser.Expr_compare_conditionContext ctx) {
-        CodeLet tmpCodeLet = currentCodeLet;
-        CodeLet left = new CodeLet();
-        currentCodeLet = left;
+        CodeLet left = pushPeekCodeLet();
         ctx.expression(0).accept(this);
-        CodeLet right = new CodeLet();
-        currentCodeLet = right;
+        popCodeLet();
+        CodeLet right = pushPeekCodeLet();
         ctx.expression(1).accept(this);
+        popCodeLet();
         String op = ctx.getChild(1).getText();
-        tmpCodeLet.code(left).code(op).code(right);
-        currentCodeLet = tmpCodeLet;
+        peekCodeLet().code(left).code(op).code(right);
         return null;
     }
 
@@ -125,6 +123,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitExpr_function_call(@NotNull JetTemplateParser.Expr_function_callContext ctx) {
+        //
         return null;
     }
 
@@ -139,18 +138,17 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         //TODO
         CodeBlock macro = new CodeBlock();
         JetTemplateParser.Define_expression_listContext define_expression_list = ctx.define_expression_list();
-        currentCodeLet = new CodeLet();
+        pushPeekCodeLet();
         if (define_expression_list != null) {
             define_expression_list.accept(this);
         }
         macro.header(new CodeLet().lineCode("class %s extends AbstractMacro {", name));
         macro.footer(new CodeLet().lineCode("}"));
         macro.subCode(constructMethod(name));
-        CodeBlock render=new CodeBlock();
-        macro.subCode(render);
-        render.header("protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException,TemplateException {");
-        render.footer("}");
+        popCodeLet();
+        CodeBlock render = getMacroRenderCodeBlock();
         pushCodeBlock(render);
+        macro.subCode(render);
         ctx.block().accept(this);
         popCodeBlock();
         macroCodeBlock.subCode(macro);
@@ -159,46 +157,46 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
     private CodeBlock constructMethod(String name) {
         CodeBlock block = new CodeBlock();
-        block.header(CodeLet.lineCodeLet("public %s() {", name).endLine());
-        block.subCode("String[] args = {" + currentCodeLet + "};");
-        block.subCode("init(\"aaa\", args);");
+        block.header(CodeLet.lineCodeLet("public %s() {", name));
+        block.subCode("String[] args = {" + peekCodeLet() + "};");
+        block.subCode("init(\"%s\", args);");
         block.footer(CodeLet.lineCodeLet("}"));
         return block;
     }
 
     public CodeBlock visitExpr_compare_equality(@NotNull JetTemplateParser.Expr_compare_equalityContext ctx) {
-        CodeLet tmpCodeLet = currentCodeLet;
-        CodeLet left = new CodeLet();
-        currentCodeLet = left;
+        CodeLet left = pushPeekCodeLet();
         ctx.expression(0).accept(this);
-        CodeLet right = new CodeLet();
-        currentCodeLet = right;
+        popCodeLet();
+        CodeLet right =pushPeekCodeLet();
         ctx.expression(1).accept(this);
+        popCodeLet();
         String op = ctx.getChild(1).getText();
-        tmpCodeLet.code(left).code(op).code(right);
-        currentCodeLet = tmpCodeLet;
+        peekCodeLet().code(left).code(op).code(right);
         return null;
     }
 
     public CodeBlock visitValue(@NotNull JetTemplateParser.ValueContext ctx) {
-        currentCodeLet = new CodeLet();
+
+        pushCodeLet();
         ctx.expression().accept(this);
         Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
         if (token.getType() == JetTemplateParser.VALUE_ESCAPED_OPEN) {
-            currentCodeLet.codeBefore("StringEscapeUtils.escapeHtml((").code(")+\"\")");
+            peekCodeLet().codeBefore("StringEscapeUtils.escapeHtml((").code(")+\"\")");
         }
-        currentCodeLet.codeBefore("$writer.write(").lineCode(");");
+        peekCodeLet().codeBefore("$writer.write(").lineCode(");");
         CodeBlock valueCodeBlock = new CodeBlock();
-        valueCodeBlock.subCode(currentCodeLet);
+        valueCodeBlock.subCode(peekCodeLet());
+        popCodeLet();
         return valueCodeBlock;
     }
 
     public CodeBlock visitExpr_math_binary_bitwise(@NotNull JetTemplateParser.Expr_math_binary_bitwiseContext ctx) {
-        currentCodeLet.code("O.e(\"").code(ctx.getChild(1).getText()).code("\",");
+        peekCodeLet().code("O.e(\"").code(ctx.getChild(1).getText()).code("\",");
         ctx.expression(0).accept(this);
-        currentCodeLet.code(",");
+        peekCodeLet().code(",");
         ctx.expression(1).accept(this);
-        currentCodeLet.code(")");
+        peekCodeLet().code(")");
         return null;
     }
 
@@ -209,12 +207,12 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         CodeBlock result = new CodeBlock().subCode(keyPair);
         for (int i = 0; i < expression_list.size(); i += 2) {
             CodeBlock codeBlock = new CodeBlock();
-            CodeLet keyCodeLet = new CodeLet();
-            currentCodeLet = keyCodeLet;
+            CodeLet keyCodeLet = pushPeekCodeLet();
             expression_list.get(i).accept(this);
-            CodeLet valueCodeLet = new CodeLet();
-            currentCodeLet = valueCodeLet;
+            popCodeLet();
+            CodeLet valueCodeLet = pushPeekCodeLet();
             expression_list.get(i + 1).accept(this);
+            popCodeLet();
             codeBlock.subCode(new CodeLet().code(keyCodeLet).code(":").code(valueCodeLet));
             if (i > 0) {
                 keyPair.code(",");
@@ -233,17 +231,29 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         CodeBlock classCodeBlock = getClassCodeBlock();
         templateCodeBlock.subCode(classCodeBlock);
         CodeBlock renderMethodCodeBlock = getRenderCodeBlock();
-        currentCodeBlock = renderMethodCodeBlock;
         classCodeBlock.subCode(renderMethodCodeBlock);
         CodeBlock getTemplatePathMethod = getTemplatePathMethodCodeBlock();
         classCodeBlock.subCode(getTemplatePathMethod);
+        pushCodeBlock(renderMethodCodeBlock);
         renderMethodCodeBlock.subCode(ctx.block().accept(this));
+        popCodeBlock();
         return templateCodeBlock;
     }
 
     private CodeBlock getRenderCodeBlock() {
         CodeBlock renderMethod = new CodeBlock();
         renderMethod.header(new CodeLet().lineCode("protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
+        renderMethod.subCode("Macro $macro=null;");
+        renderMethod.subCode("TemplateContext $newContext=null;");
+
+        return renderMethod;
+    }
+    private CodeBlock getMacroRenderCodeBlock() {
+        CodeBlock renderMethod = new CodeBlock();
+        renderMethod.header(new CodeLet().lineCode("protected void renderTemplate(Template $template, TemplateContext $context, Writer $writer) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
+        renderMethod.subCode("Macro $macro=null;");
+        renderMethod.subCode("TemplateContext $newContext=null;");
+
         return renderMethod;
     }
 
@@ -269,6 +279,8 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         CodeBlock codeBlock = new CodeBlock();
         codeBlock.subCode(new CodeLet().lineCode("package abc;"));
         codeBlock.subCode(new CodeLet().lineCode("import java.io.IOException;"));
+        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.Macro;"));
+        codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.Template;"));
         codeBlock.subCode(new CodeLet().lineCode("import java.io.Writer;"));
         codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.TemplateContext;"));
         codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.TemplateException;"));
@@ -307,23 +319,20 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         if (name.startsWith("$")) {
             name = name.substring(1);
         }
-        currentCodeLet.code("U.c($context,\"" + name + "\")");
+        peekCodeLet().code("U.c($context,\"" + name + "\")");
         return null;
     }
 
-    public CodeBlock visitExpr_static_method_invocation(@NotNull JetTemplateParser.Expr_static_method_invocationContext ctx) {
-        return null;
-    }
 
     public CodeBlock visitIf_directive(@NotNull JetTemplateParser.If_directiveContext ctx) {
-        CodeBlock ifCodeBlock = new CodeBlock();
-        CodeBlock tmpCodeBlock = currentCodeBlock;
-        currentCodeLet = new CodeLet();
+        CodeBlock ifCodeBlock = pushPeekCodeBlock();
+        pushCodeLet();
         ctx.expression().accept(this);
-        ifCodeBlock.header(currentCodeLet.codeBefore("if(U.b(").lineCode(")){"));
+        ifCodeBlock.header(peekCodeLet().codeBefore("if(U.b(").lineCode(")){"));
+        popCodeLet();
         ifCodeBlock.footer(new CodeLet().lineCode("}"));
-        currentCodeBlock = ifCodeBlock;
         ctx.block().accept(this);
+        popCodeBlock();
         List<JetTemplateParser.Elseif_directiveContext> elseif_directive_list = ctx.elseif_directive();
         for (JetTemplateParser.Elseif_directiveContext elseif_directive : elseif_directive_list) {
             elseif_directive.accept(this);
@@ -332,7 +341,6 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         if (else_directive != null) {
             else_directive.accept(this);
         }
-        currentCodeBlock = tmpCodeBlock;
         return ifCodeBlock;
     }
 
@@ -341,19 +349,51 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitDefine_expression_list(@NotNull JetTemplateParser.Define_expression_listContext ctx) {
-        if (currentCodeLet.length() > 0) {
-            currentCodeLet.code(",");
+        if (peekCodeLet().length() > 0) {
+            peekCodeLet().code(",");
         }
-        currentCodeLet.code("\"%s\"", ctx.getChild(0).getText());
+        peekCodeLet().code("\"%s\"", ctx.getChild(0).getText());
         return null;
     }
 
-    public CodeBlock visitExpr_static_field_access(@NotNull JetTemplateParser.Expr_static_field_accessContext ctx) {
-        return null;
-    }
 
     public CodeBlock visitExpr_new_array(@NotNull JetTemplateParser.Expr_new_arrayContext ctx) {
         return null;
+    }
+
+    public CodeBlock visitCall_macro_directive(@NotNull JetTemplateParser.Call_macro_directiveContext ctx) {
+        CodeBlock callMacro = new CodeBlock();
+        String name = ctx.getChild(0).getText();
+        name = name.substring(1, name.length());
+        if(name.endsWith("(")){
+            name=name.substring(0,name.length()-1);
+        }
+        callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template);", name));
+        callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
+        if (ctx.para_expression_list() != null) {
+            List<JetTemplateParser.Para_expressionContext> expList = ctx.para_expression_list().para_expression();
+            if (expList != null) {
+                pushCodeBlock(callMacro);
+                int i = 0;
+                for (JetTemplateParser.Para_expressionContext visitPara_expression : expList) {
+                    CodeLet expression = new CodeLet();
+                    pushCodeLet(expression);
+                    if (visitPara_expression.getChildCount() == 3) {//如果是带参数的
+                        visitPara_expression.getChild(2).accept(this);
+                        peekCodeBlock().subCode(String.format("$newContext.put(\"%s\",%s);", visitPara_expression.getChild(0).getText(), expression));
+                    } else {
+                        visitPara_expression.getChild(0).accept(this);
+                        peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterNames()[%d],%s);", i, expression));
+                    }
+                    popCodeLet();
+                    i++;
+                }
+                popCodeBlock();
+            }
+        }
+        callMacro.subCode(String.format("getTemplateEngine().renderMacro(\"%s\", $template, $newContext, $writer);",name));
+        callMacro.subCode("$context.removeSubContext(\"$newContext\");");
+        return callMacro;
     }
 
     public CodeBlock visitType_name(@NotNull JetTemplateParser.Type_nameContext ctx) {
@@ -364,15 +404,63 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         return null;
     }
 
+    public CodeBlock visitCall_macro_block_directive(@NotNull JetTemplateParser.Call_macro_block_directiveContext ctx) {
+        CodeBlock callMacro = new CodeBlock();
+        String name = ctx.getChild(0).getText();
+        name = name.substring(2, name.length()-1).trim();
+        callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",this);", name));
+        callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
+        List<JetTemplateParser.Para_expressionContext> expList = ctx.para_expression_list().para_expression();
+        if (expList != null) {
+            pushCodeBlock(callMacro);
+            int i = 0;
+            for (JetTemplateParser.Para_expressionContext visitPara_expression : expList) {
+                CodeLet expression = new CodeLet();
+                pushCodeLet(expression);
+                if (visitPara_expression.getChildCount() == 3) {//如果是带参数的
+                    visitPara_expression.getChild(2).accept(this);
+                    peekCodeBlock().subCode(String.format("$newContext.put(\"%s\",%s);", visitPara_expression.getChild(0).getText(), expression));
+                } else {
+                    visitPara_expression.getChild(0).accept(this);
+                    peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterNames()[%d],%s);", i, expression));
+                }
+                popCodeLet();
+                i++;
+            }
+            popCodeBlock();
+        }
+        CodeBlock bodyContentMacro = new CodeBlock();
+        callMacro.subCode(bodyContentMacro);
+        callMacro.subCode(String.format("getTemplateEngine().renderMacro(\"%s\", this, $newContext, $writer);",name));
+
+        bodyContentMacro.header("$newContext.put(\"$bodyContent\",new AbstractMacro() {");
+        CodeBlock render = getMacroRenderCodeBlock();
+        bodyContentMacro.subCode(render);
+
+        pushCodeBlock(render);
+        ctx.block().accept(this);
+        popCodeBlock();
+        bodyContentMacro.footer("});");
+        callMacro.subCode("$context.removeSubContext(\"$newContext\");");
+
+        //Body部分创建新的类，然后传入要调用的宏
+        return callMacro;
+    }
+
     public CodeBlock visitInclude_directive(@NotNull JetTemplateParser.Include_directiveContext ctx) {
+        return null;
+    }
+
+    public CodeBlock visitPara_expression(@NotNull JetTemplateParser.Para_expressionContext ctx) {
+
         return null;
     }
 
     public CodeBlock visitExpr_array_get(@NotNull JetTemplateParser.Expr_array_getContext ctx) {
         ctx.expression(0).accept(this);
-        currentCodeLet.codeBefore("U.a(").code(",");
+        peekCodeLet().codeBefore("U.a(").code(",");
         ctx.expression(1).accept(this);
-        currentCodeLet.code(")");
+        peekCodeLet().code(")");
         return null;
     }
 
@@ -380,7 +468,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         for (int i = 0; i < ctx.getChildCount(); i++) {
             ParseTree node = ctx.children.get(i);
             CodeBlock codeBlock = node.accept(this);
-            currentCodeBlock.subCode(codeBlock);
+            peekCodeBlock().subCode(codeBlock);
         }
         return null;
     }
@@ -395,26 +483,31 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
 
     public CodeBlock visitExpr_math_binary_basic(@NotNull JetTemplateParser.Expr_math_binary_basicContext ctx) {
-        currentCodeLet.code("O.e(\"").code(ctx.getChild(1).getText()).code("\",");
+        peekCodeLet().code("O.e(\"").code(ctx.getChild(1).getText()).code("\",");
         ctx.expression(0).accept(this);
-        currentCodeLet.code(",");
+        peekCodeLet().code(",");
         ctx.expression(1).accept(this);
-        currentCodeLet.code(")");
+        peekCodeLet().code(")");
+        return null;
+    }
+
+    public CodeBlock visitPara_expression_list(@NotNull JetTemplateParser.Para_expression_listContext ctx) {
+
         return null;
     }
 
     public CodeBlock visitSet_expression(@NotNull JetTemplateParser.Set_expressionContext ctx) {
         CodeBlock codeBlock = new CodeBlock();
-        CodeLet codeLet = new CodeLet();
+        CodeLet codeLet = pushPeekCodeLet();
         codeBlock.header(codeLet);
-        currentCodeLet = codeLet;
         ctx.getChild(2).accept(this);
+        popCodeLet();
         codeLet.codeBefore("$context.put(\"" + ctx.getChild(0).getText() + "\",").lineCode(");");
         return codeBlock;
     }
 
     public CodeBlock visitTerminal(@org.antlr.v4.runtime.misc.NotNull org.antlr.v4.runtime.tree.TerminalNode node) {
-        currentCodeLet.code(node.getText());
+        peekCodeLet().code(node.getText());
         return null;
     }
 
@@ -425,7 +518,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitSet_directive(@NotNull JetTemplateParser.Set_directiveContext ctx) {
         List<JetTemplateParser.Set_expressionContext> set_expression_list = ctx.set_expression();
         for (JetTemplateParser.Set_expressionContext node : set_expression_list) {
-            currentCodeBlock.subCode(node.accept(this));
+            peekCodeBlock().subCode(node.accept(this));
         }
         return null;
     }
@@ -438,9 +531,6 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         return null;
     }
 
-    public CodeBlock visitStatic_type_name(@NotNull JetTemplateParser.Static_type_nameContext ctx) {
-        return null;
-    }
 
     public CodeBlock visitPut_directive(@NotNull JetTemplateParser.Put_directiveContext ctx) {
         return null;
@@ -448,14 +538,14 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
     public CodeBlock visitExpr_array_list(@NotNull JetTemplateParser.Expr_array_listContext ctx) {
         ParseTree items = ctx.getChild(1);
-        CodeLet tempCodeLet = currentCodeLet;
+
         for (int i = 0; i < items.getChildCount(); i++) {
-            currentCodeLet = new CodeLet();
+            CodeLet tmp=pushPeekCodeLet();
             items.getChild(i).accept(this);
-            tempCodeLet.code(currentCodeLet.toString());
+            popCodeLet();
+            peekCodeLet().code(tmp);
         }
-        tempCodeLet.codeBefore("{").code("}");
-        currentCodeLet = tempCodeLet;
+        peekCodeLet().codeBefore("{").code("}");
         return null;
     }
 
@@ -472,7 +562,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         pushCodeLet(right);
         ctx.expression(2).accept(this);
         popCodeLet();
-        currentCodeLet.code("U.b(").code(condition).code(")?").code(left).code(":").code(right);
+        peekCodeLet().code("U.b(%s)?%s:%s", condition, left, right);
         return null;
     }
 
@@ -481,16 +571,17 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitFor_expression(@NotNull JetTemplateParser.For_expressionContext ctx) {
-        currentCodeLet = new CodeLet();
         String name = ctx.IDENTIFIER().getText();
+        pushCodeLet();
         ctx.expression().accept(this);
-        CodeLet code = new CodeLet().code("ForIterator $").code(name).code("For = new ForIterator(").code(currentCodeLet).lineCode(");");
-        currentCodeBlock.subCode(code);
-        currentCodeBlock.subCode(new CodeLet().code("$context.put(\"$").code(name).code("For\"，$").code(name).lineCode("For);"));
-        currentCodeBlock.subCode(new CodeLet().code("while($").code(name).lineCode("For.hasNext()){"));
+        CodeLet code = new CodeLet().code("ForIterator $").code(name).code("For = new ForIterator(").code(peekCodeLet()).lineCode(");");
+        popCodeLet();
+        peekCodeBlock().subCode(code);
+        peekCodeBlock().subCode(new CodeLet().code("$context.put(\"$").code(name).code("For\"，$").code(name).lineCode("For);"));
+        peekCodeBlock().subCode(new CodeLet().code("while($").code(name).lineCode("For.hasNext()){"));
         CodeBlock assign = new CodeBlock().tabIndent(1);
         assign.footer(new CodeLet().code("$context.put(\"").code(name).code("\"，").code(name).lineCode(");")).tabIndent(1);
-        currentCodeBlock.subCode(assign);
+        peekCodeBlock().subCode(assign);
         return null;
     }
 
@@ -502,13 +593,14 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitStop_directive(@NotNull JetTemplateParser.Stop_directiveContext ctx) {
         JetTemplateParser.ExpressionContext expression = ctx.expression();
         if (expression != null) {
-            currentCodeLet = new CodeLet();
+            pushCodeLet();
             expression.accept(this);
-            CodeBlock ifCodeBlock = new CodeBlock().header(currentCodeLet.codeBefore("if(U.b(").lineCode(")){")).footer(new CodeLet().lineCode("}"));
+            CodeBlock ifCodeBlock = new CodeBlock().header(peekCodeLet().codeBefore("if(U.b(").lineCode(")){")).footer(new CodeLet().lineCode("}"));
+            popCodeLet();
             ifCodeBlock.subCode(new CodeLet().lineCode("return;"));
-            currentCodeBlock.subCode(ifCodeBlock);
+            peekCodeBlock().subCode(ifCodeBlock);
         } else {
-            currentCodeBlock.subCode(new CodeLet().lineCode("return;"));
+            peekCodeBlock().subCode(new CodeLet().lineCode("return;"));
         }
         return null;
     }
@@ -516,13 +608,14 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitBreak_directive(@NotNull JetTemplateParser.Break_directiveContext ctx) {
         JetTemplateParser.ExpressionContext expression = ctx.expression();
         if (expression != null) {
-            currentCodeLet = new CodeLet();
+            pushCodeLet();
             expression.accept(this);
-            CodeBlock ifCodeBlock = new CodeBlock().header(currentCodeLet.codeBefore("if(U.b(").lineCode(")){")).footer(new CodeLet().lineCode("}"));
+            CodeBlock ifCodeBlock = new CodeBlock().header(peekCodeLet().codeBefore("if(U.b(").lineCode(")){")).footer(new CodeLet().lineCode("}"));
+            popCodeLet();
             ifCodeBlock.subCode(new CodeLet().lineCode("break;"));
-            currentCodeBlock.subCode(ifCodeBlock);
+            peekCodeBlock().subCode(ifCodeBlock);
         } else {
-            currentCodeBlock.subCode(new CodeLet().lineCode("break;"));
+            peekCodeBlock().subCode(new CodeLet().lineCode("break;"));
         }
         return null;
     }
@@ -531,46 +624,61 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         String name = ctx.getChild(1).getChild(1).getText();
         ctx.for_expression().accept(this);
         CodeBlock forCodeBlock = new CodeBlock();
-        currentCodeBlock.subCode(forCodeBlock);
+        peekCodeBlock().subCode(forCodeBlock);
         forCodeBlock.footer(new CodeLet().lineCode("}"));
         pushCodeBlock(forCodeBlock);
         ctx.block().accept(this);
         popCodeBlock();
         //添加清理处理
-        currentCodeBlock.subCode(new CodeLet().code("$context.remove(\"$").code(name).lineCode("For\");"));
-        currentCodeBlock.subCode(new CodeLet().code("$context.remove(\"").code(name).lineCode("\");"));
+        peekCodeBlock().subCode(new CodeLet().code("$context.remove(\"$").code(name).lineCode("For\");"));
+        peekCodeBlock().subCode(new CodeLet().code("$context.remove(\"").code(name).lineCode("\");"));
 
         return null;
     }
 
     void pushCodeBlock(CodeBlock codeBlock) {
-        tmpCodeBlock = currentCodeBlock;
-        currentCodeBlock = codeBlock;
+        codeBlocks.push(codeBlock);
+    }
+    void pushCodeBlock() {
+        pushCodeBlock(new CodeBlock());
     }
 
-    CodeLet popCodeLet() {
-        CodeLet pop = currentCodeLet;
-        currentCodeLet = tmpCodeLet;
-        return pop;
+    void popCodeBlock() {
+         codeBlocks.pop();
+    }
+
+
+    void popCodeLet() {
+        codeLets.pop();
     }
 
     void pushCodeLet(CodeLet codeLet) {
-        tmpCodeLet = currentCodeLet;
-        currentCodeLet = codeLet;
+        codeLets.push(codeLet);
+    }
+    void pushCodeLet() {
+        pushCodeLet(new CodeLet());
+    }
+    CodeLet peekCodeLet() {
+        return codeLets.peek();
+    }
+    CodeLet pushPeekCodeLet() {
+        pushCodeLet();
+        return codeLets.peek();
     }
 
-    CodeBlock popCodeBlock() {
-        CodeBlock pop = currentCodeBlock;
-        currentCodeBlock = tmpCodeBlock;
-        return pop;
+    CodeBlock peekCodeBlock() {
+        return codeBlocks.peek();
     }
-
-
+    CodeBlock pushPeekCodeBlock() {
+        pushCodeBlock();
+        return codeBlocks.peek();
+    }
     public CodeBlock visitElseif_directive(@NotNull JetTemplateParser.Elseif_directiveContext ctx) {
-        currentCodeLet = new CodeLet();
+        pushCodeLet();
         ctx.expression().accept(this);
-        CodeBlock elseifBlock = new CodeBlock().header(currentCodeLet.codeBefore("}else if(U.b(").lineCode(")){")).tabIndent(-1);
-        currentCodeBlock.subCode(elseifBlock);
+        CodeBlock elseifBlock = new CodeBlock().header(peekCodeLet().codeBefore("}else if(U.b(").lineCode(")){")).tabIndent(-1);
+        popCodeLet();
+        peekCodeBlock().subCode(elseifBlock);
         ctx.block().accept(this);
         return null;
     }
@@ -580,14 +688,14 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitExpr_group(@NotNull JetTemplateParser.Expr_groupContext ctx) {
-        currentCodeLet.code("(");
+        peekCodeLet().code("(");
         ctx.expression().accept(this);
-        currentCodeLet.code(")");
+        peekCodeLet().code(")");
         return null;
     }
 
     public CodeBlock visitExpr_constant(@NotNull JetTemplateParser.Expr_constantContext ctx) {
-        currentCodeLet.code(ctx.getText());
+        peekCodeLet().code(ctx.getText());
         return null;
     }
 
