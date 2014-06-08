@@ -17,6 +17,7 @@ public class A extends AbstractTemplate{
         Template $template=this;
         TemplateContext $newContext=null;
         ForIterator $aFor = new ForIterator(new Object[]{1,2,3,4,5});
+        $context.put("iFor",new ForIterator(new Object[]{}));
         $context.put("$aFor",$aFor);
         while($aFor.hasNext()){
             $context.put("a",$aFor.next());

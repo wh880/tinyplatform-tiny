@@ -118,6 +118,7 @@ public class TemplateEngineImpl implements TemplateEngine {
         if (pos >= 0) {
             name = name.substring(0, pos - 1);//去掉文件扩展名
         }
+        name = name + "Template";
         return name.replaceAll("/", ".");
     }
 

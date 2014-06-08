@@ -38,7 +38,9 @@ public final class ForIterator implements Iterator, ForStatus {
     public void setSize(int size) {
         this.size = size;
     }
-
+    public ForIterator(){
+        this.object=null;
+    }
     public ForIterator(Object object) {
         this.object = object;
         if (object instanceof Map) {

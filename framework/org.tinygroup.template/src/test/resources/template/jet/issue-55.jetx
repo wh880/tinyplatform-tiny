@@ -1,8 +1,8 @@
-#for (String x : ["a","b","c","d"])
-    ${for.index} - ${for.size}: ${x}
-    ${for.first} - ${for.last}
+#for ( x : ["a","b","c","d"])
+    ${xFor.index} - ${xFor.size}: ${x}
+    ${xFor.first} - ${xFor.last}
 #end
-#for (String x : {})
-    ${for.index} - ${for.size}: ${x}
-    ${for.first} - ${for.last}
+#for (x : {})
+    ${xFor.index} - ${xFor.size}: ${x}
+    ${xFor.first} - ${xFor.last}
 #end

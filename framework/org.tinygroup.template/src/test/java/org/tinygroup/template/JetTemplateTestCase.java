@@ -17,7 +17,7 @@ public class JetTemplateTestCase {
         final TemplateEngine engine = new TemplateEngineImpl();
         engine.put("luoguo", "悠然");
         FileObject root = VFS.resolveFile("src/test/resources");
-        root.foreach(new FileNameFileObjectFilter("include.*\\.jetx", true), new FileObjectProcessor() {
+        root.foreach(new FileNameFileObjectFilter(".*\\.jetx", true), new FileObjectProcessor() {
             @Override
             public void process(FileObject fileObject) {
                 try {
@@ -29,6 +29,8 @@ public class JetTemplateTestCase {
                 }
             }
         });
-        engine.renderTemplate("/template/jet/include.jetx", null, new OutputStreamWriter(System.out));
+        for (String path : engine.getTemplateMap().keySet()) {
+            engine.renderTemplate(path, null, new OutputStreamWriter(System.out));
+        }
     }
 }

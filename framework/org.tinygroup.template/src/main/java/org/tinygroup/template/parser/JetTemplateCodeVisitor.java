@@ -718,14 +718,12 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         String name = ctx.IDENTIFIER().getText();
         pushCodeLet();
         ctx.expression().accept(this);
-        CodeLet code = new CodeLet().code("ForIterator $").code(name).code("For = new ForIterator(").code(peekCodeLet()).lineCode(");");
-        popCodeLet();
-        peekCodeBlock().subCode(code);
-        peekCodeBlock().subCode(new CodeLet().code("$context.put(\"").code(name).code("For\",$").code(name).lineCode("For);"));
-        peekCodeBlock().subCode(new CodeLet().code("while($").code(name).lineCode("For.hasNext()){"));
+        peekCodeBlock().subCode(new CodeLet().code("$context.put(\"").code(name).code("For\",new ForIterator(").code(peekCodeLet()).lineCode("));"));
+        peekCodeBlock().subCode(new CodeLet().code("while($context.get(\"").code(name).lineCode("\").hasNext()){"));
         CodeBlock assign = new CodeBlock().tabIndent(1);
-        assign.footer(new CodeLet().code("$context.put(\"").code(name).code("\",$").code(name).lineCode("For.next());")).tabIndent(1);
+        assign.footer(new CodeLet().code("$context.put(\"").code(name).code("\",$context.get(\"").code(name).lineCode("For\").next());")).tabIndent(1);
         peekCodeBlock().subCode(assign);
+        popCodeLet();
         return null;
     }
 
