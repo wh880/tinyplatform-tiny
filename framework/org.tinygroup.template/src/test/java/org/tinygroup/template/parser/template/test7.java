@@ -24,7 +24,7 @@ public class test7 extends AbstractTemplate{
             Macro $macro=null;
             TemplateContext $newContext=null;
             write($writer,"\r\nThis is ");
-            write($writer,U.c($context,"a"));
+            write($writer,U.v($context, "a"));
             write($writer,"\r\n");
             $macro=getTemplateEngine().findMacro("bodyContent",$template,$context);
             $newContext = new TemplateContextImpl();

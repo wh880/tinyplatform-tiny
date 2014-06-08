@@ -28,11 +28,13 @@ public abstract class AbstractTemplate implements Template {
 
     public void render(TemplateContext $context, Writer writer) throws TemplateException {
         try {
-            if($context==null){
-                $context=new TemplateContextImpl();
+            if ($context == null) {
+                $context = new TemplateContextImpl();
             }
+            $context.putSubContext("$templateEngineContext", getTemplateEngine().getTemplateEngineContext());
             renderTemplate($context, writer);
             writer.flush();
+            $context.removeSubContext("$templateEngineContext");
         } catch (IOException e) {
             throw new TemplateException(e);
         }

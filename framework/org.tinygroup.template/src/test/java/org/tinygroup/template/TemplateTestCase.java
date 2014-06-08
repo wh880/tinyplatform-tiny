@@ -7,7 +7,6 @@ import org.tinygroup.vfs.FileObjectProcessor;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.vfs.impl.filter.FileExtNameFileObjectFilter;
 
-import java.io.File;
 import java.io.OutputStreamWriter;
 
 /**
@@ -16,12 +15,12 @@ import java.io.OutputStreamWriter;
 public class TemplateTestCase {
     public static void main(String[] args) {
         final TemplateEngine engine=new TemplateEngineImpl();
-        File file =new File(".");
         FileObject root= VFS.resolveFile("src/test/resources");
         root.foreach(new FileExtNameFileObjectFilter("vm"),new FileObjectProcessor() {
             @Override
             public void process(FileObject fileObject) {
                 try {
+                    System.out.println("\n" + fileObject.getAbsolutePath());
                     FileObjectTemplateResource resource=new FileObjectTemplateResource(fileObject);
                     Template template=engine.getTemplate(resource);
                     template.render(null,new OutputStreamWriter(System.out));

@@ -1,12 +1,15 @@
 package org.tinygroup.template.rumtime;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.MethodUtils;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Enumerator;
 import org.tinygroup.context.Context;
 import org.tinygroup.template.TemplateException;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -23,6 +26,40 @@ public class U {
             throw new TemplateException(e);
         }
     }
+
+    public static Object c(Object object, String methodName, Object... parameters) throws TemplateException {
+        try {
+
+            if (parameters == null) {
+                return invokeMethod(object, methodName, parameters, getParameterTypes(object, methodName));
+            }
+            for (Object para : parameters) {
+                if (para == null) {
+                    return invokeMethod(object, methodName, parameters, getParameterTypes(object, methodName));
+                }
+            }
+            return MethodUtils.invokeMethod(object, methodName, parameters);
+        } catch (Exception e) {
+            throw new TemplateException(e);
+        }
+    }
+
+    private static Object invokeMethod(Object object, String methodName, Object[] parameters, Class<?>[] parameterTypes) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        if(parameters==null&&parameterTypes.length>0){
+            parameters=new Object[parameterTypes.length];
+        }
+        return MethodUtils.invokeMethod(object, methodName, parameters,parameterTypes);
+    }
+
+    private static Class<?>[] getParameterTypes(Object object, String methodName) throws IllegalAccessException, InvocationTargetException, TemplateException {
+        for (Method method : object.getClass().getMethods()) {
+            if (method.getName().equals(methodName)) {
+                return method.getParameterTypes();
+            }
+        }
+        throw new TemplateException(object.getClass().getName() + "中找不到方法:" + methodName);
+    }
+
     /**
      * 从上下文获取对应标识的值，如果找不到，则返回字符器
      *
@@ -30,7 +67,7 @@ public class U {
      * @param key
      * @return
      */
-    public static Object c(Context context, Object key) {
+    public static Object v(Context context, Object key) {
         Object object = context.get(key.toString());
         if (object != null) {
             return object;

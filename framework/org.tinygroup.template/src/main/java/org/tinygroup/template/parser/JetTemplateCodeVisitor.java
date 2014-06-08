@@ -43,8 +43,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         List<JetTemplateParser.ExpressionContext> expression_list = ctx.expression();
         int i = 0;
         for (JetTemplateParser.ExpressionContext expression : expression_list) {
-            CodeLet exp = new CodeLet();
-            pushCodeLet(exp);
+            CodeLet exp = pushPeekCodeLet();
             expression.accept(this);
             popCodeLet();
             if (i > 0) {
@@ -101,7 +100,9 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         ctx.expression(1).accept(this);
         CodeLet exp = peekCodeLet();
         popCodeLet();
-        peekCodeLet().codeBefore("U.p(").code(",").code(exp).code(")");
+        if (exp.length() > 0) {
+            peekCodeLet().codeBefore("U.p(").code(",").code(exp).code(")");
+        }
         return null;
     }
 
@@ -123,7 +124,16 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitExpr_function_call(@NotNull JetTemplateParser.Expr_function_callContext ctx) {
-        //
+        popCodeLet();
+        String functionName = ctx.getChild(0).getText();
+        peekCodeLet().codeBefore("U.c(").code(",\"").code(functionName).code("\"");
+        JetTemplateParser.Expression_listContext list = ctx.expression_list();
+        if (list != null) {
+            peekCodeLet().code(",");
+            list.accept(this);
+        }
+        peekCodeLet().code(")");
+        pushCodeLet();
         return null;
     }
 
@@ -181,7 +191,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         if (list != null) {
             for (int i = 0; i < list.IDENTIFIER().size(); i++) {
                 if (i == 0) {
-                    peekCodeLet().code("U.c($context,\"" + list.IDENTIFIER().get(i).getText() + "\")");
+                    peekCodeLet().code("U.v($context,\"" + list.IDENTIFIER().get(i).getText() + "\")");
                 } else {
                     peekCodeLet().codeBefore("U.p(").code(",").code(list.IDENTIFIER().get(i).getText()).code(")");
                 }
@@ -331,7 +341,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         if (name.startsWith("$")) {
             name = name.substring(1);
         }
-        peekCodeLet().code("U.c($context,\"" + name + "\")");
+        peekCodeLet().code("U.v($context,\"" + name + "\")");
         return null;
     }
 
@@ -652,7 +662,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
         JetTemplateParser.Else_directiveContext else_directive = ctx.else_directive();
         if (else_directive != null) {
-            CodeBlock elseCodeBlock =pushPeekCodeBlock().header("if(U.b($" + name + "For.getSize()>0)){").footer("}");
+            CodeBlock elseCodeBlock = pushPeekCodeBlock().header("if(U.b($" + name + "For.getSize()>0)){").footer("}");
             else_directive.block().accept(this);
             popCodeBlock();
             peekCodeBlock().subCode(elseCodeBlock);

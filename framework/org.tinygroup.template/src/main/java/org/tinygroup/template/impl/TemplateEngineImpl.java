@@ -26,12 +26,17 @@ public class TemplateEngineImpl implements TemplateEngine {
     private Map<String, Template> templateMap = new ConcurrentHashMap<String, Template>();
     static MemorySourceCompiler compiler = new MemorySourceCompiler();
     Path root = new Path("");
+    private TemplateContext templateEngineContext = new TemplateContextImpl();
+
+    public TemplateContext getTemplateEngineContext() {
+        return templateEngineContext;
+    }
 
     public static void main(String[] args) {
         TemplateEngineImpl engine = new TemplateEngineImpl();
-        engine.buildPath("/a/b/c/d.page");
+        engine.buildPath("/a/b/v/d.page");
         engine.buildPath("/a/b/e/f.page");
-        engine.buildPath("/a/c/c/g.page");
+        engine.buildPath("/a/v/v/g.page");
         System.out.println();
         ;
     }
@@ -91,15 +96,15 @@ public class TemplateEngineImpl implements TemplateEngine {
 
     @Override
     public String getPackageName(String path) {
-        String className=getClassName(path);
-        return className.substring(0,className.lastIndexOf('.'));
+        String className = getClassName(path);
+        return className.substring(0, className.lastIndexOf('.'));
     }
 
 
     @Override
     public String getSimpleClassName(String path) {
-        String className=getClassName(path);
-        return className.substring(className.lastIndexOf('.')+1);
+        String className = getClassName(path);
+        return className.substring(className.lastIndexOf('.') + 1);
     }
 
     @Override
@@ -120,15 +125,15 @@ public class TemplateEngineImpl implements TemplateEngine {
         StringBuffer sb = new StringBuffer(200);
 
         for (char c : path.toCharArray()) {
-            if (c == '/'||c=='.') {
+            if (c == '/' || c == '.') {
                 sb.append(c);
-            } else if (c >= 0 && c <= 0) {
+            } else if (c >= '0' && c <= '9') {
                 sb.append(c);
             } else if (c >= 'a' && c <= 'z') {
                 sb.append(c);
             } else if (c >= 'A' && c <= 'Z') {
                 sb.append(c);
-            }else {
+            } else {
                 sb.append("_");
             }
         }
@@ -143,11 +148,17 @@ public class TemplateEngineImpl implements TemplateEngine {
         return template;
     }
 
+    @Override
+    public TemplateEngine put(String key, Object value) {
+        templateEngineContext.put(key, value);
+        return this;
+    }
+
     private void buildPath(String path) {
         String[] paths = path.split("/");
         Path current = root;
         for (String name : paths) {
-            //   /a/b/c/aa.def
+            //   /a/b/v/aa.def
             if (name.equals(current.name)) {//如果是根，则继续
                 continue;
             } else {

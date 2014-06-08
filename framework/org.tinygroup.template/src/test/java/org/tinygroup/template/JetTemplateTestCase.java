@@ -7,7 +7,6 @@ import org.tinygroup.vfs.FileObjectProcessor;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.vfs.impl.filter.FileNameFileObjectFilter;
 
-import java.io.File;
 import java.io.OutputStreamWriter;
 
 /**
@@ -15,18 +14,17 @@ import java.io.OutputStreamWriter;
  */
 public class JetTemplateTestCase {
     public static void main(String[] args) {
-        final TemplateEngine engine=new TemplateEngineImpl();
-
-        File file =new File(".");
-        FileObject root= VFS.resolveFile("src/test/resources");
-        root.foreach(new FileNameFileObjectFilter("for-loop-map.*\\.jetx",true),new FileObjectProcessor() {
+        final TemplateEngine engine = new TemplateEngineImpl();
+        engine.put("luoguo","悠然");
+        FileObject root = VFS.resolveFile("src/test/resources");
+        root.foreach(new FileNameFileObjectFilter("issue-37.*\\.jetx", true), new FileObjectProcessor() {
             @Override
             public void process(FileObject fileObject) {
                 try {
-                    System.out.println("\n"+fileObject.getAbsolutePath());
-                    FileObjectTemplateResource resource=new FileObjectTemplateResource(fileObject);
-                    Template template=engine.getTemplate(resource);
-                    template.render(null,new OutputStreamWriter(System.out));
+                    System.out.println("\n" + fileObject.getAbsolutePath());
+                    FileObjectTemplateResource resource = new FileObjectTemplateResource(fileObject);
+                    Template template = engine.getTemplate(resource);
+                    template.render(null, new OutputStreamWriter(System.out));
                 } catch (TemplateException e) {
                     throw new RuntimeException(e);
                 }

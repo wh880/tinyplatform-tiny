@@ -30,15 +30,21 @@ public interface TemplateEngine {
      * @param templateResource
      */
     Template getTemplate(TemplateResource templateResource) throws TemplateException;
+    TemplateContext getTemplateEngineContext();
     public String getPackageName(String path);
+
     public String getSimpleClassName(String path);
+
     public String getClassName(String path);
+
     /**
      * 添加一个模板
      *
      * @param template
      */
     Template addTemplate(Template template);
+
+    TemplateEngine put(String key, Object value);
 
     /**
      * 返回所有的模板
@@ -69,6 +75,7 @@ public interface TemplateEngine {
 
     /**
      * 直接渲染一个模板
+     *
      * @param template
      * @param context
      * @param writer
