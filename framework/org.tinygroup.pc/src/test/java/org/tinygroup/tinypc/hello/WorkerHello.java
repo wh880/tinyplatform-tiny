@@ -26,9 +26,6 @@ import java.rmi.RemoteException;
  * Created by luoguo on 14-1-8.
  */
 public class WorkerHello extends AbstractWorker {
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 624918239419991539L;
 
 	public WorkerHello() throws RemoteException {
@@ -42,6 +39,4 @@ public class WorkerHello extends AbstractWorker {
         outputWarehouse.put("helloInfo", "Hello," + name);
         return outputWarehouse;
     }
-
-
 }

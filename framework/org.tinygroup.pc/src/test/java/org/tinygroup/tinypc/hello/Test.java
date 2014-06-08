@@ -43,8 +43,8 @@ public class Test {
 
         Foreman helloForeman = new ForemanSelectOneWorker("hello");
         jobCenter.registerForeman(helloForeman);
+        Thread.sleep(100);
         for (int i = 0; i < 50; i++) {
-//            Warehouse warehouse = 
             	jobCenter.doWork(work);
         }
         jobCenter.stop();
