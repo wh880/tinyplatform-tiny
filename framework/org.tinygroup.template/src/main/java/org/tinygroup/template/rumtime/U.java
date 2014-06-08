@@ -10,6 +10,7 @@ import org.tinygroup.template.TemplateException;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -45,10 +46,10 @@ public class U {
     }
 
     private static Object invokeMethod(Object object, String methodName, Object[] parameters, Class<?>[] parameterTypes) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        if(parameters==null&&parameterTypes.length>0){
-            parameters=new Object[parameterTypes.length];
+        if (parameters == null && parameterTypes.length > 0) {
+            parameters = new Object[parameterTypes.length];
         }
-        return MethodUtils.invokeMethod(object, methodName, parameters,parameterTypes);
+        return MethodUtils.invokeMethod(object, methodName, parameters, parameterTypes);
     }
 
     private static Class<?>[] getParameterTypes(Object object, String methodName) throws IllegalAccessException, InvocationTargetException, TemplateException {
@@ -75,6 +76,15 @@ public class U {
             return key;
         }
     }
+
+    public static String getPath(String currentPath, String newPath) {
+        URI uri = URI.create(currentPath);
+        newPath=newPath.replaceAll("[\\\\]","/");
+        URI newUri = uri.resolve(newPath);
+
+        return newUri.getPath();
+    }
+
 
     /**
      * 判断布尔值是否成立

@@ -22,15 +22,11 @@ public class TestParser extends TestCase {
         parser.setErrorHandler(new JetTemplateErrorStrategy());
 
         JetTemplateParser.TemplateContext templateParseTree = parser.template();
-        JetTemplateCodeVisitor visitor = new JetTemplateCodeVisitor();
+        JetTemplateCodeVisitor visitor = new JetTemplateCodeVisitor(parser);
         CodeBlock codeBlock = templateParseTree.accept(visitor);
         return codeBlock.toString();
     }
 
-    public void testT1() throws Exception {
-        String result = execute("");
-        assertEquals(-1, result.indexOf("write($writer,"));
-    }
 
     public void testT2() throws Exception {
         String result = execute("abc");

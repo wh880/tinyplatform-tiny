@@ -19,6 +19,7 @@
  */
 package org.tinygroup.template.parser;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
@@ -33,10 +34,16 @@ import java.util.Stack;
 
 // Visitor 模式访问器，用来生成 Java 代码
 public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> implements JetTemplateParserVisitor<CodeBlock> {
+    private JetTemplateParser parser = null;
     Stack<CodeBlock> codeBlocks = new Stack<CodeBlock>();
     Stack<CodeLet> codeLets = new Stack<CodeLet>();
     private CodeBlock initCodeBlock = null;
     private CodeBlock macroCodeBlock = null;
+
+
+    public JetTemplateCodeVisitor(JetTemplateParser parser) {
+        this.parser = parser;
+    }
 
     public CodeBlock visitExpression_list(@NotNull JetTemplateParser.Expression_listContext ctx) {
 
@@ -472,23 +479,23 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitInclude_directive(@NotNull JetTemplateParser.Include_directiveContext ctx) {
-        CodeBlock include=new CodeBlock();
-        CodeLet path=pushPeekCodeLet();
+        CodeBlock include = new CodeBlock();
+        CodeLet path = pushPeekCodeLet();
         ctx.expression().accept(this);
         popCodeLet();
-        CodeLet map=pushPeekCodeLet();
-        if(ctx.hash_map_entry_list()!=null){
+        CodeLet map = pushPeekCodeLet();
+        if (ctx.hash_map_entry_list() != null) {
             peekCodeLet().code("new TemplateMap()").code(ctx.hash_map_entry_list().accept(this).toString()).code("");
         }
         popCodeLet();
         //getTemplateEngine().renderTemplate("aa",$context,$writer);
         include.subCode("$newContext = new TemplateContextImpl();");
-        if(map.length()>0){
-            include.subCode(String.format("$newContext.putAll(%s);",map));
+        if (map.length() > 0) {
+            include.subCode(String.format("$newContext.putAll(%s);", map));
         }
         include.subCode("$context.putSubContext(\"$newContext\",$newContext);");
-        include.subCode(String.format("getTemplateEngine().renderTemplate(%s,$newContext,$writer);",path));
-        include.subCode("$context.removeSubContext(\"$newContext\",$newContext);");
+        include.subCode(String.format("getTemplateEngine().renderTemplate(U.getPath(getPath(),%s),$newContext,$writer);", path));
+        include.subCode("$context.removeSubContext(\"$newContext\");");
         return include;
     }
 
@@ -609,7 +616,18 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitExpr_method_invocation(@NotNull JetTemplateParser.Expr_method_invocationContext ctx) {
-        return null;
+        throw reportError("Missing arguments for " + ctx.getText() + " directive.", ctx);
+    }
+
+    private RuntimeException reportError(String message, Object node) {
+        if (node instanceof ParserRuleContext) {
+            parser.notifyErrorListeners(((ParserRuleContext) node).getStart(), message, null);
+        } else if (node instanceof TerminalNode) {
+            parser.notifyErrorListeners(((TerminalNode) node).getSymbol(), message, null);
+        } else if (node instanceof Token) {
+            parser.notifyErrorListeners((Token) node, message, null);
+        }
+        return new SyntaxErrorException(message);
     }
 
     public CodeBlock visitFor_expression(@NotNull JetTemplateParser.For_expressionContext ctx) {

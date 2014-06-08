@@ -77,7 +77,7 @@ public class TemplateEngineImpl implements TemplateEngine {
         parser.addErrorListener(JetTemplateErrorListener.getInstance());
         parser.setErrorHandler(new JetTemplateErrorStrategy());
         JetTemplateParser.TemplateContext templateParseTree = parser.template();
-        JetTemplateCodeVisitor visitor = new JetTemplateCodeVisitor();
+        JetTemplateCodeVisitor visitor = new JetTemplateCodeVisitor(parser);
         CodeBlock codeBlock = templateParseTree.accept(visitor);
         return codeBlock;
     }
@@ -201,6 +201,7 @@ public class TemplateEngineImpl implements TemplateEngine {
         Template template = templateMap.get(path);
         if (template != null) {
             renderTemplate(template, context, writer);
+            return;
         }
         throw new TemplateException("找不到模板：" + path);
     }

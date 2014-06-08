@@ -13,22 +13,22 @@ import java.io.OutputStreamWriter;
  * Created by luoguo on 2014/6/7.
  */
 public class JetTemplateTestCase {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws TemplateException {
         final TemplateEngine engine = new TemplateEngineImpl();
-        engine.put("luoguo","悠然");
+        engine.put("luoguo", "悠然");
         FileObject root = VFS.resolveFile("src/test/resources");
-        root.foreach(new FileNameFileObjectFilter("issue-37.*\\.jetx", true), new FileObjectProcessor() {
+        root.foreach(new FileNameFileObjectFilter("include.*\\.jetx", true), new FileObjectProcessor() {
             @Override
             public void process(FileObject fileObject) {
                 try {
                     System.out.println("\n" + fileObject.getAbsolutePath());
                     FileObjectTemplateResource resource = new FileObjectTemplateResource(fileObject);
-                    Template template = engine.getTemplate(resource);
-                    template.render(null, new OutputStreamWriter(System.out));
+                    engine.getTemplate(resource);
                 } catch (TemplateException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
+        engine.renderTemplate("/template/jet/include.jetx", null, new OutputStreamWriter(System.out));
     }
 }
