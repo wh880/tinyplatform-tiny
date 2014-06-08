@@ -31,7 +31,7 @@ public class MemorySourceCompiler {
         try {
             compile(source);
             URL[] urls = new URL[1];
-            File file = new File(getOutputDir() );
+            File file = new File(getOutputDir());
             urls[0] = file.toURI().toURL();
             Class<T> type = (Class<T>) new URLClassLoader(urls).loadClass(source.qualifiedClassName);
             return type;
@@ -55,7 +55,7 @@ public class MemorySourceCompiler {
     }
 
     public static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
-    String outputDir = TEMP_DIR+"ttl"+File.separatorChar;
+    String outputDir = TEMP_DIR + "ttl" + File.separatorChar;
 
     public String getOutputDir() {
         return outputDir;
@@ -143,15 +143,15 @@ public class MemorySourceCompiler {
     }
 
     public void compile(final MemorySource[] sources) {
-        for(MemorySource source:sources){
-            String javaFileName = source.getQualifiedClassName().replaceAll("[.]","/")+ ".java";
+        for (MemorySource source : sources) {
+            String javaFileName = source.getQualifiedClassName().replaceAll("[.]", "/") + ".java";
             try {
-                File file=new File(outputDir,javaFileName);
-                File path=file.getParentFile();
-                if(!path.exists()){
+                File file = new File(outputDir, javaFileName);
+                File path = file.getParentFile();
+                if (!path.exists()) {
                     path.mkdirs();
                 }
-                IOUtils.writeToOutputStream(new FileOutputStream(file),source.getContent(),"UTF-8");
+                IOUtils.writeToOutputStream(new FileOutputStream(file), source.getContent(), "UTF-8");
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -168,20 +168,30 @@ public class MemorySourceCompiler {
 
             public void acceptResult(CompilationResult result) {
                 if (result.hasErrors()) {
-                    StringBuffer sb = new StringBuffer();
-                    for (IProblem problem : result.getErrors()) {
-                        String className = new String(problem.getOriginatingFileName()).replace("/", ".");
-                        className = className.substring(0, className.length() - 5);
-                        String message = problem.getMessage();
-                        if (problem.getID() == IProblem.CannotImportPackage) {
-                            // Non sense !
-                            message = problem.getArguments()[0] + " cannot be resolved";
+                    MemorySource source = sources[0];
+                    String sourceCode = source.getContent();
+                    String[] sourceCodeLines = sourceCode.split("(\r\n|\r|\n)", -1);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Compilation failed.");
+                    sb.append('\n');
+                    for (IProblem p : result.getErrors()) {
+                        sb.append(p.getMessage()).append('\n');
+                        int start = p.getSourceStart();
+                        int column = start; // default
+                        for (int i = start; i >= 0; i--) {
+                            char c = sourceCode.charAt(i);
+                            if (c == '\n' || c == '\r') {
+                                column = start - i;
+                                break;
+                            }
                         }
-                        sb.append(className).append(":").append(message).append("\n");
+                        sb.append(MemorySourceCompiler.getPrettyError(sourceCodeLines, p.getSourceLineNumber(), column, p.getSourceStart(), p.getSourceEnd(), 3));
                     }
+                    sb.append(result.getErrors().length);
+                    sb.append(" error(s)\n");
                     throw new RuntimeException(sb.toString());
                 } else {
-                    save(result.getClassFiles(),sources);
+                    saveClassFile(result.getClassFiles(), sources);
                 }
 
             }
@@ -205,6 +215,45 @@ public class MemorySourceCompiler {
         jdtCompiler.compile(units);
     }
 
+    public static CharSequence getPrettyError(String[] sourceLines, int line, int column, int start, int stop, int show_lines) {
+        StringBuilder sb = new StringBuilder(128);
+        for (int i = line - show_lines; i < line; i++) {
+            if (i >= 0) {
+                String sourceLine = sourceLines[i];
+
+                // 1 个 Tab 变成 4 个空格
+                if (i == line - 1) {
+                    int origin_column = Math.min(column, sourceLine.length() - 1);
+                    for (int j = 0; j < origin_column; j++) {
+                        char c = sourceLine.charAt(j);
+                        if (c == '\t') {
+                            column += 3;
+                        } else if (c >= '\u2E80' && c <= '\uFE4F') {
+                            column++; // 中日韩统一表意文字（CJK Unified Ideographs）
+                        }
+                    }
+                }
+                sourceLine = sourceLine.replaceAll("\\t", "    ");
+                sb.append(String.format("%4d: %s%n", i + 1, sourceLine));
+            }
+        }
+        if (start > stop) {
+            // <EOF>
+            sb.append("      <EOF>\n");
+            sb.append("      ^^^^^");
+        } else {
+            sb.append("      "); // padding
+            for (int i = 0; i < column - 1; i++) {
+                sb.append(' ');
+            }
+            for (int i = start; i <= stop; i++) {
+                sb.append('^');
+            }
+        }
+        sb.append('\n');
+        return sb;
+    }
+
     private static byte[] readByteArray(InputStream input) {
         BufferedInputStream stream = new BufferedInputStream(input);
         try {
@@ -218,10 +267,10 @@ public class MemorySourceCompiler {
         }
     }
 
-    private void save(ClassFile[] classFiles,MemorySource[] sources) {
+    private void saveClassFile(ClassFile[] classFiles, MemorySource[] sources) {
         if (classFiles == null) return;
 
-        for (int i=0;i<classFiles.length;i++) {
+        for (int i = 0; i < classFiles.length; i++) {
             try {
                 String fileName = new String(classFiles[i].fileName()) + ".class";
                 File javaClassFile = new File(outputDir, fileName);

@@ -48,6 +48,8 @@ DIRECTIVE_OPEN_BREAK    : '#break'    ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_CONTINUE : '#continue' ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_STOP     : '#stop'     ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_INCLUDE  : '#include'  ARGUMENT_START      -> pushMode(INSIDE) ;
+DIRECTIVE_OPEN_CALL  : '#@call'  ARGUMENT_START      -> pushMode(INSIDE) ;
+DIRECTIVE_CALL  : '#call'  ARGUMENT_START      -> pushMode(INSIDE) ;
 
 DIRECTIVE_OPEN_TAG      : '#tag'      [ \t]+ ID ARGUMENT_START -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_MACRO    : '#macro'    [ \t]+ ID ARGUMENT_START -> pushMode(INSIDE) ;
@@ -73,8 +75,8 @@ DIRECTIVE_ELSE          : '#else'|'#{else}'                   ;
 DIRECTIVE_END           : '#end'|'#{end}'                 ;
 
 //DIRECTIVE_CALL    : '#' ID      ;
-DIRECTIVE_OPEN_CALL    : '#' ID     ARGUMENT_START      -> pushMode(INSIDE) ;
-DIRECTIVE_BODY_CALL    : '#@' ID    ARGUMENT_START -> pushMode(INSIDE) ;
+DIRECTIVE_MACRO_INVOKE    : '#' ID     ARGUMENT_START      -> pushMode(INSIDE) ;
+DIRECTIVE_OPEN_MACRO_INVOKE    : '#@' ID    ARGUMENT_START -> pushMode(INSIDE) ;
 
 // It is a text which like a directive.
 // It must be put after directive defination to avoid confliction.

@@ -63,7 +63,45 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitInvalid_directive(@NotNull JetTemplateParser.Invalid_directiveContext ctx) {
-        return null;
+        throw reportError("Missing arguments for " + ctx.getText() + " directive.", ctx);
+    }
+
+    @Override
+    public CodeBlock visitCall_directive(@NotNull JetTemplateParser.Call_directiveContext ctx) {
+        CodeBlock callMacro = new CodeBlock();
+        CodeLet nameCodeBlock=pushPeekCodeLet();
+        ctx.expression().accept(this);
+        popCodeLet();
+
+        String name = nameCodeBlock.toString();
+
+        callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(%s,$template,$context);", name));
+        callMacro.subCode("$newContext = new TemplateContextImpl();");
+        callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
+        if (ctx.para_expression_list() != null) {
+            List<JetTemplateParser.Para_expressionContext> expList = ctx.para_expression_list().para_expression();
+            if (expList != null) {
+                pushCodeBlock(callMacro);
+                int i = 0;
+                for (JetTemplateParser.Para_expressionContext visitPara_expression : expList) {
+                    CodeLet expression = new CodeLet();
+                    pushCodeLet(expression);
+                    if (visitPara_expression.getChildCount() == 3) {//如果是带参数的
+                        visitPara_expression.getChild(2).accept(this);
+                        peekCodeBlock().subCode(String.format("$newContext.put(\"%s\",%s);", visitPara_expression.getChild(0).getText(), expression));
+                    } else {
+                        visitPara_expression.getChild(0).accept(this);
+                        peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterNames()[%d],%s);", i, expression));
+                    }
+                    popCodeLet();
+                    i++;
+                }
+                popCodeBlock();
+            }
+        }
+        callMacro.subCode(String.format("getTemplateEngine().renderMacro($macro, $template, $newContext, $writer);"));
+        callMacro.subCode("$context.removeSubContext(\"$newContext\");");
+        return callMacro;
     }
 
     public CodeBlock visitElse_directive(@NotNull JetTemplateParser.Else_directiveContext ctx) {
@@ -502,6 +540,55 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitPara_expression(@NotNull JetTemplateParser.Para_expressionContext ctx) {
 
         return null;
+    }
+
+    @Override
+    public CodeBlock visitCall_block_directive(@NotNull JetTemplateParser.Call_block_directiveContext ctx) {
+        CodeBlock callMacro = new CodeBlock();
+        CodeLet nameCodeBlock=pushPeekCodeLet();
+        ctx.expression().accept(this);
+        popCodeLet();
+
+        String name = nameCodeBlock.toString();
+        name = name.substring(2, name.length() - 1).trim();
+        callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template,$context);", name));
+        callMacro.subCode("$newContext=new TemplateContextImpl();");
+        callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
+        List<JetTemplateParser.Para_expressionContext> expList = ctx.para_expression_list().para_expression();
+        if (expList != null) {
+            pushCodeBlock(callMacro);
+            int i = 0;
+            for (JetTemplateParser.Para_expressionContext visitPara_expression : expList) {
+                CodeLet expression = new CodeLet();
+                pushCodeLet(expression);
+                if (visitPara_expression.getChildCount() == 3) {//如果是带参数的
+                    visitPara_expression.getChild(2).accept(this);
+                    peekCodeBlock().subCode(String.format("$newContext.put(\"%s\",%s);", visitPara_expression.getChild(0).getText(), expression));
+                } else {
+                    visitPara_expression.getChild(0).accept(this);
+                    peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterNames()[%d],%s);", i, expression));
+                }
+                popCodeLet();
+                i++;
+            }
+            popCodeBlock();
+        }
+        CodeBlock bodyContentMacro = new CodeBlock();
+        callMacro.subCode(bodyContentMacro);
+        callMacro.subCode(String.format("getTemplateEngine().renderMacro(\"%s\", $template, $newContext, $writer);", name));
+
+        bodyContentMacro.header("$newContext.put(\"bodyContent\",new AbstractMacro() {");
+        CodeBlock render = getMacroRenderCodeBlock();
+        bodyContentMacro.subCode(render);
+
+        pushCodeBlock(render);
+        ctx.block().accept(this);
+        popCodeBlock();
+        bodyContentMacro.footer("});");
+        callMacro.subCode("$context.removeSubContext(\"$newContext\");");
+
+        //Body部分创建新的类，然后传入要调用的宏
+        return callMacro;
     }
 
     public CodeBlock visitExpr_array_get(@NotNull JetTemplateParser.Expr_array_getContext ctx) {

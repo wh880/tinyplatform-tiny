@@ -58,6 +58,8 @@ directive   :   set_directive
             |   include_directive
             |   tag_directive
             |   macro_directive
+            |   call_block_directive
+            |   call_directive
             |   call_macro_directive
             |   call_macro_block_directive
             |   invalid_directive
@@ -130,12 +132,19 @@ macro_directive
             :   DIRECTIVE_OPEN_MACRO define_expression_list? ')' block DIRECTIVE_END
             ;
 
-call_macro_directive
-            :  DIRECTIVE_OPEN_CALL   para_expression_list? ')'
-//            |  DIRECTIVE_CALL
+call_block_directive
+            :   DIRECTIVE_OPEN_CALL  expression (','  para_expression_list )? ')' block DIRECTIVE_END
             ;
+
+call_directive
+            :   DIRECTIVE_CALL  expression ( ',' para_expression_list )? ')'
+            ;
+
 call_macro_block_directive
-            :  DIRECTIVE_BODY_CALL   para_expression_list? ')' block DIRECTIVE_END
+            :  DIRECTIVE_OPEN_MACRO_INVOKE   para_expression_list? ')' block DIRECTIVE_END
+            ;
+call_macro_directive
+            :  DIRECTIVE_MACRO_INVOKE   para_expression_list? ')'
             ;
 invalid_directive
             :   DIRECTIVE_SET
@@ -144,7 +153,9 @@ invalid_directive
             |   DIRECTIVE_ELSEIF
             |   DIRECTIVE_FOR
             |   DIRECTIVE_INCLUDE
+            |   DIRECTIVE_OPEN_CALL_MACRO
             |   DIRECTIVE_TAG
+            |   DIRECTIVE_BODY_CALL
             |   DIRECTIVE_MACRO
             ;
 
