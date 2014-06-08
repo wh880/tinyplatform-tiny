@@ -50,7 +50,6 @@ value       :   //VALUE_COMPACT_OPEN  identify_list
 
 
 directive   :   set_directive
-            |   put_directive
             |   if_directive
             |   for_directive
             |   break_directive
@@ -87,10 +86,6 @@ set_directive
             ;
 set_expression
             :    IDENTIFIER '=' expression
-            ;
-
-put_directive
-            :   DIRECTIVE_OPEN_PUT expression (',' expression)* ')'
             ;
 
 if_directive

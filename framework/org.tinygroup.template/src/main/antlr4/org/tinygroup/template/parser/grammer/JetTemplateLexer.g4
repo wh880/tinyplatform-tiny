@@ -41,7 +41,6 @@ VALUE_ESCAPED_OPEN      : '$!{'                           -> pushMode(INSIDE) ;
 
 //DIRECTIVE_OPEN_DEFINE   : '#define'   ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_SET      : '#set'      ARGUMENT_START      -> pushMode(INSIDE) ;
-DIRECTIVE_OPEN_PUT      : '#put'      ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_IF       : '#if'       ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_ELSEIF   : '#elseif'   ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_FOR      : '#for'      ARGUMENT_START      -> pushMode(INSIDE) ;

@@ -308,7 +308,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitText(@NotNull JetTemplateParser.TextContext ctx) {
         Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
         String text = token.getText();
-        if (!text.equals("\r\n") || !text.equals("\n") || !text.equals("\r")) {
+        if (text.equals("\r\n") || text.equals("\n") || text.equals("\r")) {
             return null;
         }
         switch (token.getType()) {

@@ -1,1 +1,5 @@
-0#if(true)123#else()456#end()789
+#if(true)
+123
+#else
+456
+#end
