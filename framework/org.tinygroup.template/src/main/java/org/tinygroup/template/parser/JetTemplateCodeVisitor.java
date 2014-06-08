@@ -472,7 +472,24 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitInclude_directive(@NotNull JetTemplateParser.Include_directiveContext ctx) {
-        return null;
+        CodeBlock include=new CodeBlock();
+        CodeLet path=pushPeekCodeLet();
+        ctx.expression().accept(this);
+        popCodeLet();
+        CodeLet map=pushPeekCodeLet();
+        if(ctx.hash_map_entry_list()!=null){
+            peekCodeLet().code("new TemplateMap()").code(ctx.hash_map_entry_list().accept(this).toString()).code("");
+        }
+        popCodeLet();
+        //getTemplateEngine().renderTemplate("aa",$context,$writer);
+        include.subCode("$newContext = new TemplateContextImpl();");
+        if(map.length()>0){
+            include.subCode(String.format("$newContext.putAll(%s);",map));
+        }
+        include.subCode("$context.putSubContext(\"$newContext\",$newContext);");
+        include.subCode(String.format("getTemplateEngine().renderTemplate(%s,$newContext,$writer);",path));
+        include.subCode("$context.removeSubContext(\"$newContext\",$newContext);");
+        return include;
     }
 
     public CodeBlock visitPara_expression(@NotNull JetTemplateParser.Para_expressionContext ctx) {
@@ -560,10 +577,6 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         return null;
     }
 
-
-    public CodeBlock visitPut_directive(@NotNull JetTemplateParser.Put_directiveContext ctx) {
-        return null;
-    }
 
     public CodeBlock visitExpr_array_list(@NotNull JetTemplateParser.Expr_array_listContext ctx) {
         ParseTree items = ctx.getChild(1);

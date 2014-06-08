@@ -41,7 +41,21 @@ public class TestParser extends TestCase {
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,U.p(U.v($context,\"aa\"),U.v($context,\"bb\")));") > 0);
     }
-
+    public void testT2_2() throws Exception {
+        String result = execute("#include(\"aaa/bb/cc/dd\",{a:2,b:3,c:4})");
+        System.out.println(result);
+        assertTrue(result.indexOf("$newContext.putAll(new TemplateMap().putItem(U.v($context,\"a\"),2).putItem(U.v($context,\"b\"),3).putItem(U.v($context,\"c\"),4));") > 0);
+        assertTrue(result.indexOf("$context.putSubContext(\"$newContext\",$newContext);") > 0);
+        assertTrue(result.indexOf("getTemplateEngine().renderTemplate(\"aaa/bb/cc/dd\",$newContext,$writer);") > 0);
+        assertTrue(result.indexOf("$context.removeSubContext(\"$newContext\",$newContext);") > 0);
+    }
+    public void testT2_3() throws Exception {
+        String result = execute("#include(\"aaa/bb/cc/dd\")");
+        System.out.println(result);
+        assertTrue(result.indexOf("$context.putSubContext(\"$newContext\",$newContext);") > 0);
+        assertTrue(result.indexOf("getTemplateEngine().renderTemplate(\"aaa/bb/cc/dd\",$newContext,$writer);") > 0);
+        assertTrue(result.indexOf("$context.removeSubContext(\"$newContext\",$newContext);") > 0);
+    }
     public void testT3() throws Exception {
         String result = execute("a#--abc--#b");
         System.out.println(result);

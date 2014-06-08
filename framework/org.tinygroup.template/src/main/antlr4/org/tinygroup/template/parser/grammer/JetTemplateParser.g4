@@ -119,7 +119,7 @@ stop_directive
             ;
 
 include_directive
-            :   DIRECTIVE_OPEN_INCLUDE expression_list ')'
+            :   DIRECTIVE_OPEN_INCLUDE expression (',' '{' hash_map_entry_list? '}')? ')'
             ;
 
 tag_directive
