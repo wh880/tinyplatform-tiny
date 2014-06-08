@@ -13,6 +13,7 @@
 #if({"a":123})
     {"a":123} = true
 #end
+#*
 #if(!false)
     !false = true
 #end
@@ -22,6 +23,7 @@
 #if(!"")
     !"" = true
 #end
+*#
 #if(1>2 || "abc")
     1>2 || "abc" = true
 #end

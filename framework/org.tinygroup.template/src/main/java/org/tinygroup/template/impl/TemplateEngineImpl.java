@@ -27,19 +27,17 @@ public class TemplateEngineImpl implements TemplateEngine {
     static MemorySourceCompiler compiler = new MemorySourceCompiler();
     Path root = new Path("");
     private TemplateContext templateEngineContext = new TemplateContextImpl();
+    ClassNameGetter classNameGetter;
 
-    public TemplateContext getTemplateEngineContext() {
+    public TemplateContext getTemplateContext() {
         return templateEngineContext;
     }
 
-    public static void main(String[] args) {
-        TemplateEngineImpl engine = new TemplateEngineImpl();
-        engine.buildPath("/a/b/v/d.page");
-        engine.buildPath("/a/b/e/f.page");
-        engine.buildPath("/a/v/v/g.page");
-        System.out.println();
-        ;
+    @Override
+    public void setClassNameGetter(ClassNameGetter classNameGetter) {
+        this.classNameGetter=classNameGetter;
     }
+
 
     class Path implements Comparable<Path> {
         public Path(String name) {
@@ -86,60 +84,14 @@ public class TemplateEngineImpl implements TemplateEngine {
     public Template getTemplate(TemplateResource templateResource) throws TemplateException {
 
         CodeBlock codeBlock = preCompile(templateResource.getContent(), templateResource.getPath());
-        codeBlock.insertSubCode("package " + getPackageName(templateResource.getPath()) + ";");
-        MemorySource memorySource = new MemorySource(getClassName(templateResource.getPath()), codeBlock.toString().replace("$TEMPLATE_PATH", templateResource.getPath())
-                .replace("$TEMPLATE_CLASS_NAME", getSimpleClassName(templateResource.getPath())));
+        codeBlock.insertSubCode("package " + classNameGetter.getPackageName(templateResource.getPath()) + ";");
+        MemorySource memorySource = new MemorySource(classNameGetter.getClassName(templateResource.getPath()), codeBlock.toString().replace("$TEMPLATE_PATH", templateResource.getPath())
+                .replace("$TEMPLATE_CLASS_NAME", classNameGetter.getSimpleClassName(templateResource.getPath())));
         Template template = compiler.loadInstance(memorySource);
         addTemplate(template);
         return template;
     }
 
-    @Override
-    public String getPackageName(String path) {
-        String className = getClassName(path);
-        return className.substring(0, className.lastIndexOf('.'));
-    }
-
-
-    @Override
-    public String getSimpleClassName(String path) {
-        String className = getClassName(path);
-        return className.substring(className.lastIndexOf('.') + 1);
-    }
-
-    @Override
-    public String getClassName(String path) {
-        String name = path;
-        name = convertGoodStylePath(path);
-        if (name.startsWith("/")) {//去掉前置"/"
-            name = name.substring(1);
-        }
-        int pos = path.indexOf('.');
-        if (pos >= 0) {
-            name = name.substring(0, pos - 1);//去掉文件扩展名
-        }
-        name = name + "Template";
-        return name.replaceAll("/", ".");
-    }
-
-    private String convertGoodStylePath(String path) {
-        StringBuffer sb = new StringBuffer(200);
-
-        for (char c : path.toCharArray()) {
-            if (c == '/' || c == '.') {
-                sb.append(c);
-            } else if (c >= '0' && c <= '9') {
-                sb.append(c);
-            } else if (c >= 'a' && c <= 'z') {
-                sb.append(c);
-            } else if (c >= 'A' && c <= 'Z') {
-                sb.append(c);
-            } else {
-                sb.append("_");
-            }
-        }
-        return sb.toString();
-    }
 
 
     public Template addTemplate(Template template) {

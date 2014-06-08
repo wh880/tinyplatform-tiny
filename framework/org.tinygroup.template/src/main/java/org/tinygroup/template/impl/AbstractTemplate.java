@@ -13,6 +13,7 @@ import java.util.Map;
 public abstract class AbstractTemplate implements Template {
     private Map<String, Macro> macroMap = new HashMap<String, Macro>();
     private TemplateEngine templateEngine;
+    private TemplateContext templateContext = new TemplateContextImpl();
 
     public TemplateEngine getTemplateEngine() {
         return templateEngine;
@@ -31,7 +32,7 @@ public abstract class AbstractTemplate implements Template {
             if ($context == null) {
                 $context = new TemplateContextImpl();
             }
-            $context.putSubContext("$templateEngineContext", getTemplateEngine().getTemplateEngineContext());
+            $context.putSubContext("$templateEngineContext", getTemplateEngine().getTemplateContext());
             renderTemplate($context, writer);
             writer.flush();
             $context.removeSubContext("$templateEngineContext");
@@ -44,5 +45,14 @@ public abstract class AbstractTemplate implements Template {
 
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
+    }
+    @Override
+    public TemplateContext getTemplateContext() {
+        return templateContext;
+    }
+
+    @Override
+    public Object put(String key, Object value) {
+        return templateContext.put(key, value);
     }
 }

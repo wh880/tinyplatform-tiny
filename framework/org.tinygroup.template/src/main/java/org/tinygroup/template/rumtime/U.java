@@ -2,14 +2,15 @@ package org.tinygroup.template.rumtime;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Enumerator;
 import org.tinygroup.context.Context;
 import org.tinygroup.template.TemplateException;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Iterator;
@@ -45,14 +46,18 @@ public class U {
         }
     }
 
-    private static Object invokeMethod(Object object, String methodName, Object[] parameters, Class<?>[] parameterTypes) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private static Object invokeMethod(Object object, String methodName, Object[] parameters, Class<?>[] parameterTypes) throws TemplateException {
         if (parameters == null && parameterTypes.length > 0) {
             parameters = new Object[parameterTypes.length];
         }
-        return MethodUtils.invokeMethod(object, methodName, parameters, parameterTypes);
+        try {
+            return MethodUtils.invokeMethod(object, methodName, parameters, parameterTypes);
+        } catch (Exception e) {
+            throw new TemplateException(e);
+        }
     }
 
-    private static Class<?>[] getParameterTypes(Object object, String methodName) throws IllegalAccessException, InvocationTargetException, TemplateException {
+    private static Class<?>[] getParameterTypes(Object object, String methodName) throws  TemplateException {
         for (Method method : object.getClass().getMethods()) {
             if (method.getName().equals(methodName)) {
                 return method.getParameterTypes();
@@ -84,7 +89,9 @@ public class U {
 
         return newUri.getPath();
     }
-
+    public static String escapeHtml(Object object){
+        return StringEscapeUtils.escapeHtml(object.toString());
+    }
 
     /**
      * 判断布尔值是否成立
@@ -122,11 +129,27 @@ public class U {
      * 访问数组类型的内容
      *
      * @param object
-     * @param index  索引值
+     * @param indexObject  索引值
      * @return
      * @throws Exception
      */
-    public static Object a(Object object, int index) throws Exception {
+    public static Object a(Object object, Object indexObject) throws TemplateException {
+        int index;
+        if(indexObject instanceof Integer){
+            index=((Integer) indexObject).intValue();
+        }else if(indexObject instanceof Long){
+            index=((Long)indexObject).intValue();
+        }else if(indexObject instanceof Double){
+            index=((Double)indexObject).intValue();
+        }else if(indexObject instanceof Float){
+            index=((Float)indexObject).intValue();
+        }else if(indexObject instanceof Byte){
+            index=((Byte)indexObject).intValue();
+        }else if(indexObject instanceof BigDecimal){
+            index=((BigDecimal)indexObject).intValue();
+        }else{
+            index=Integer.parseInt(indexObject.toString());
+        }
         if (object.getClass().isArray()) {
             return Array.get(object, index);
         } else if (object instanceof Map) {
@@ -147,7 +170,7 @@ public class U {
             return o.charAt(index);
         }
 
-        throw new Exception(object.getClass().getName() + "不可以用下标方式取值。");
+        throw new TemplateException(object.getClass().getName() + "不可以用下标方式取值。");
     }
 
 }

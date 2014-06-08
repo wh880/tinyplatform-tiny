@@ -326,7 +326,8 @@ public class TestParser extends TestCase {
         String result = execute("#for(i: [1,2,3,4,5])#if(true)abc${i}#break(true||false)#end#end");
         System.out.println(result);
         assertTrue(result.indexOf("$context.put(\"iFor\",new ForIterator(new Object[]{1,2,3,4,5}));") > 0);
-        assertTrue(result.indexOf("$context.put(\"i\",$context.get(\"iFor\").next());") > 0);
+        assertTrue(result.indexOf("while(((ForIterator)$context.get(\"i\")).hasNext()){") > 0);
+        assertTrue(result.indexOf("$context.put(\"i\",((ForIterator)$context.get(\"iFor\")).next());") > 0);
     }
 
     public void testT36() throws Exception {
@@ -399,29 +400,29 @@ public class TestParser extends TestCase {
         String result = execute("#for(i : [1,2,3,4,5])#end");
         System.out.println(result);
         assertTrue(result.indexOf(" $context.put(\"iFor\",new ForIterator(new Object[]{1,2,3,4,5}));") > 0);
-        assertTrue(result.indexOf("$context.put(\"i\",$context.get(\"iFor\").next());") > 0);
+        assertTrue(result.indexOf("$context.put(\"i\",((ForIterator)$context.get(\"iFor\")).next());") > 0);
     }
 
     public void testT44_1() throws Exception {
         String result = execute("#for(i : [1,2,3,4,5])#{else}ddd#end");
         System.out.println(result);
         assertTrue(result.indexOf("$context.put(\"iFor\",new ForIterator(new Object[]{1,2,3,4,5}));") > 0);
-        assertTrue(result.indexOf("if(U.b($iFor.getSize()>0)){") > 0);
-        assertTrue(result.indexOf("$context.put(\"i\",$context.get(\"iFor\").next());") > 0);
+        assertTrue(result.indexOf("if(U.b(((ForIterator)$context.get(\"i\")).getSize()>0)){") > 0);
+        assertTrue(result.indexOf("$context.put(\"i\",((ForIterator)$context.get(\"iFor\")).next());") > 0);
     }
 
     public void testT44_2() throws Exception {
         String result = execute("#for(i : [])ddd#end");
         System.out.println(result);
         assertTrue(result.indexOf("$context.put(\"iFor\",new ForIterator(new Object[]{}));") > 0);
-        assertTrue(result.indexOf("$context.put(\"i\",$context.get(\"iFor\").next());") > 0);
+        assertTrue(result.indexOf("$context.put(\"i\",((ForIterator)$context.get(\"iFor\")).next());") > 0);
     }
 
     public void testT44_3() throws Exception {
         String result = execute("#for(i : {})ddd#end");
         System.out.println(result);
-        assertTrue(result.indexOf("$context.put(\"iFor\",new ForIterator());") > 0);
-        assertTrue(result.indexOf("$context.put(\"i\",$context.get(\"iFor\").next());") > 0);
+        assertTrue(result.indexOf("while(((ForIterator)$context.get(\"i\")).hasNext()){") > 0);
+        assertTrue(result.indexOf("$context.put(\"i\",((ForIterator)$context.get(\"iFor\")).next());") > 0);
     }
 
     public void testT45() throws Exception {

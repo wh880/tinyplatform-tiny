@@ -25,8 +25,11 @@ public class LeftNotOperator extends SingleOperator {
         if (isType(type,"Long")) {
             return ~((Long) var);
         }
-        throw new TemplateException("类型" + type + "不支持“!”操作。");
+        throw new TemplateException("类型" + type + "不支持“~”操作。");
     }
 
+    public static void main(String[] args) {
+
+    }
 
 }

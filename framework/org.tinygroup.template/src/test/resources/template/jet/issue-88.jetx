@@ -1,2 +1,2 @@
-#define(String notFound)
+#define( notFound)
 ${notFound?.asDefault("xxx")}

@@ -1,3 +1,0 @@
-${"a" instanceof String}
-${[] is java.util.ArrayList}
-${[1,2,"3"] is java.util.List}

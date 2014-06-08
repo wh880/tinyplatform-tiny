@@ -1,3 +1,0 @@
-${new String("aa")}
-${new java.lang.String("aa")}
-${(new int[2]).length}

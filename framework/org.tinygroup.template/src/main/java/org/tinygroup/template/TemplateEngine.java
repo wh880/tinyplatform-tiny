@@ -23,62 +23,73 @@ import java.util.Map;
  * 模板引擎
  * Created by luoguo on 2014/6/6.
  */
-public interface TemplateEngine {
+public interface TemplateEngine extends TemplateContextOperator {
     /**
      * 添加宏
      *
      * @param templateResource
      */
     Template getTemplate(TemplateResource templateResource) throws TemplateException;
-    TemplateContext getTemplateEngineContext();
-    public String getPackageName(String path);
-
-    public String getSimpleClassName(String path);
-
-    public String getClassName(String path);
 
     /**
-     * 添加一个模板
+     * 可以通过设置新的ClassNameGetter来修改生成类名的规则，一般情况默认的就够了
+     *
+     * @param classNameGetter
+     */
+    void setClassNameGetter(ClassNameGetter classNameGetter);
+
+    /**
+     * 直接添加一个模板定义类到引擎中
      *
      * @param template
      */
     Template addTemplate(Template template);
 
-    TemplateEngine put(String key, Object value);
-
     /**
-     * 返回所有的模板
+     * 返回所有的模板定义
      *
      * @return
      */
     Map<String, Template> getTemplateMap();
 
     /**
-     * 执行宏
+     * 渲染宏
      *
      * @param macroName 要执行的宏名称
-     * @param template  当前宏
+     * @param template  调用宏的模板
+     * @param context   上下文
+     * @param writer    输出器
      */
     void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
 
+    /**
+     * 直接渲染指定的模板
+     *
+     * @param macro    要执行的宏
+     * @param template 调用宏的模板
+     * @param context  上下文
+     * @param writer   输出器
+     * @throws IOException
+     * @throws TemplateException
+     */
     void renderMacro(Macro macro, Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
 
 
     /**
      * 根据路径渲染一个模板文件
      *
-     * @param path
-     * @param context
-     * @param writer
+     * @param path    模板对应的路径
+     * @param context 上下文
+     * @param writer  输出器
      */
     void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException;
 
     /**
      * 直接渲染一个模板
      *
-     * @param template
-     * @param context
-     * @param writer
+     * @param template 要渲染的模板
+     * @param context 上下文
+     * @param writer 输出器
      * @throws TemplateException
      */
     void renderTemplate(Template template, TemplateContext context, Writer writer) throws TemplateException;

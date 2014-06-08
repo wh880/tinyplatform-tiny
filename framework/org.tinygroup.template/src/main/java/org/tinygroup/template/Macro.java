@@ -7,7 +7,7 @@ import java.io.Writer;
  * 宏，就是个方法
  * Created by luoguo on 2014/6/6.
  */
-public interface Macro {
+public interface Macro extends TemplateContextOperator{
     /**
      * 返回宏的名字
      *

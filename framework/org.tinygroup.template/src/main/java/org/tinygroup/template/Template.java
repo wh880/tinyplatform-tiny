@@ -7,7 +7,7 @@ import java.util.Map;
  * 模板
  * Created by luoguo on 2014/6/4.
  */
-public interface Template {
+public interface Template extends TemplateContextOperator{
     /**
      * 返回宏的内容
      *

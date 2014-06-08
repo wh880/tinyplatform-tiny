@@ -15,6 +15,7 @@ import java.io.Writer;
 public abstract class AbstractMacro implements Macro {
     private String name;
     private String[] parameterNames;
+    private TemplateContext templateContext = new TemplateContextImpl();
 
     public void setName(String name) {
         this.name = name;
@@ -28,10 +29,12 @@ public abstract class AbstractMacro implements Macro {
         this.name = name;
         this.parameterNames = parameterNames;
     }
+
     protected void write(Writer $writer, Object object) throws IOException {
         $writer.write(object.toString());
     }
-    public void render(Template $template,TemplateContext $context, Writer writer) throws TemplateException {
+
+    public void render(Template $template, TemplateContext $context, Writer writer) throws TemplateException {
         try {
             renderTemplate($template, $context, writer);
             writer.flush();
@@ -40,7 +43,7 @@ public abstract class AbstractMacro implements Macro {
         }
     }
 
-    protected abstract void renderTemplate(Template template, TemplateContext $context, Writer $writer)throws IOException,TemplateException;
+    protected abstract void renderTemplate(Template template, TemplateContext $context, Writer $writer) throws IOException, TemplateException;
 
 
     public String getName() {
@@ -51,4 +54,13 @@ public abstract class AbstractMacro implements Macro {
         return parameterNames;
     }
 
+    @Override
+    public TemplateContext getTemplateContext() {
+        return templateContext;
+    }
+
+    @Override
+    public Object put(String key, Object value) {
+        return templateContext.put(key, value);
+    }
 }

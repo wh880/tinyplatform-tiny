@@ -155,9 +155,11 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         CodeLet left = pushPeekCodeLet();
         ctx.expression(0).accept(this);
         popCodeLet();
+        left.codeBefore("U.b(").code(")");
         CodeLet right = pushPeekCodeLet();
         ctx.expression(1).accept(this);
         popCodeLet();
+        right.codeBefore("U.b(").code(")");
         String op = ctx.getChild(1).getText();
         peekCodeLet().code(left).code(op).code(right);
         return null;
@@ -245,7 +247,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         ctx.expression().accept(this);
         Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
         if (token.getType() == JetTemplateParser.VALUE_ESCAPED_OPEN) {
-            peekCodeLet().codeBefore("StringEscapeUtils.escapeHtml((").code(")+\"\")");
+            peekCodeLet().codeBefore("U.escapeHtml((").code("))");
         }
 //        }
         peekCodeLet().codeBefore("write($writer,").lineCode(");");
@@ -719,9 +721,9 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         pushCodeLet();
         ctx.expression().accept(this);
         peekCodeBlock().subCode(new CodeLet().code("$context.put(\"").code(name).code("For\",new ForIterator(").code(peekCodeLet()).lineCode("));"));
-        peekCodeBlock().subCode(new CodeLet().code("while($context.get(\"").code(name).lineCode("\").hasNext()){"));
+        peekCodeBlock().subCode(new CodeLet().code("while(((ForIterator)$context.get(\"").code(name).lineCode("\")).hasNext()){"));
         CodeBlock assign = new CodeBlock().tabIndent(1);
-        assign.footer(new CodeLet().code("$context.put(\"").code(name).code("\",$context.get(\"").code(name).lineCode("For\").next());")).tabIndent(1);
+        assign.footer(new CodeLet().code("$context.put(\"").code(name).code("\",((ForIterator)$context.get(\"").code(name).lineCode("For\")).next());")).tabIndent(1);
         peekCodeBlock().subCode(assign);
         popCodeLet();
         return null;
@@ -742,7 +744,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
             ifCodeBlock.subCode(new CodeLet().lineCode("return;"));
             peekCodeBlock().subCode(ifCodeBlock);
         } else {
-            peekCodeBlock().subCode(new CodeLet().lineCode("return;"));
+            peekCodeBlock().subCode(new CodeLet().lineCode("if(true)return;"));
         }
         return null;
     }
@@ -775,7 +777,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
         JetTemplateParser.Else_directiveContext else_directive = ctx.else_directive();
         if (else_directive != null) {
-            CodeBlock elseCodeBlock = pushPeekCodeBlock().header("if(U.b($" + name + "For.getSize()>0)){").footer("}");
+            CodeBlock elseCodeBlock = pushPeekCodeBlock().header("if(U.b(((ForIterator)$context.get(\""+name+"\")).getSize()>0)){").footer("}");
             else_directive.block().accept(this);
             popCodeBlock();
             peekCodeBlock().subCode(elseCodeBlock);
