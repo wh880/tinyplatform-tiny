@@ -166,7 +166,7 @@ expression  :   '(' expression ')'                                           # e
             |   expression ('?')? '[' expression ']'                         # expr_array_get
             |   expression ('++'|'--')                                       # expr_math_unary_suffix
             |   ('+' <assoc=right> |'-' <assoc=right>)  expression           # expr_math_unary_prefix
-//            |   ('++'|'--')       expression                                 # expr_math_unary_prefix
+            |   ('++'|'--')       expression                                 # expr_math_unary_prefix
             |   '~' <assoc=right> expression                                 # expr_math_unary_prefix
             |   '!' <assoc=right> expression                                 # expr_compare_not
 //            |   '(' type ')'      expression                                 # expr_class_cast

@@ -42,6 +42,7 @@ public final class O {
         addConverter(new FloatDouble());
         addConverter(new FloatBigDecimal());
         addConverter(new DoubleBigDecimal());
+        //数学操作
         addOperator(new AddOperator());
         addOperator(new SubtractOperator());
         addOperator(new MultiplyOperator());
@@ -50,6 +51,20 @@ public final class O {
         addOperator(new AdOperator());
         addOperator(new OrOperator());
         addOperator(new ModOperator());
+        //一元操作符
+        addOperator(new LeftAddOperator());
+        addOperator(new LeftSubtractOperator());
+        addOperator(new LeftPlusPlusOperator());
+        addOperator(new LeftSubtractSubtractOperator());
+        addOperator(new LeftLiteralOperator());
+        addOperator(new LeftNotOperator());
+        //逻辑比较符
+        addOperator(new EqualsOperator());
+        addOperator(new NotEqualsOperator());
+        addOperator(new LessEqualsOperator());
+        addOperator(new LessOperator());
+        addOperator(new BigOperator());
+        addOperator(new BigEqualsOperator());
     }
     public static Object convert(Object object,String sourceType,String destType){
         Converter converter=converterMap.get(sourceType+destType);
@@ -93,35 +108,4 @@ public final class O {
         return operator.operation(parameters);
     }
 
-    public static void main(String[] args) throws TemplateException {
-        System.out.println(O.e("+",1,2));
-        System.out.println(O.e("-",1,2));
-        System.out.println(O.e("*",1,2));
-        System.out.println(O.e("/",12,2));
-        System.out.println(O.e("%",12,2));
-        System.out.println(O.e("^",3,2));
-        System.out.println(O.e("&",1,2));
-        System.out.println(O.e("|",1,2));
-        System.out.println(O.e("+","1","2"));
-        System.out.println(O.e("+","1",2));
-        System.out.println(~12);
-    }
- /*   public static boolean isType(Class type, Object... parameters) {
-        for (Object obj : parameters) {
-            if (!(type.isInstance(obj))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isType(Class typeA, Class typeB, Object... parameters) {
-        boolean isType = true;
-        for (Object obj : parameters) {
-            if (!typeA.isInstance(obj) || !typeB.isInstance(obj)) {
-                return false;
-            }
-        }
-        return false;
-    }*/
 }

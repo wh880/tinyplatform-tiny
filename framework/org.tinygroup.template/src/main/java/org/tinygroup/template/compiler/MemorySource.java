@@ -36,6 +36,7 @@ public final class MemorySource  {
         if(lastPositon >=0){
             simpName=simpName.substring(lastPositon + 1);
         }
+
         return simpName;
     }
     public MemorySource(String qualifiedClassName, String content) {

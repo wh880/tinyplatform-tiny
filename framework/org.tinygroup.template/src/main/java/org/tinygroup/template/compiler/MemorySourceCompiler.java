@@ -55,7 +55,7 @@ public class MemorySourceCompiler {
     }
 
     public static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
-    String outputDir = TEMP_DIR;
+    String outputDir = TEMP_DIR+"ttl"+File.separatorChar;
 
     public String getOutputDir() {
         return outputDir;
@@ -65,11 +65,6 @@ public class MemorySourceCompiler {
         this.outputDir = outputDir;
     }
 
-    public static void main(String[] args) {
-        MemorySource source = new MemorySource("org.tinygroup.template.parser.Context1", "package org.tinygroup.template.parser;import org.tinygroup.context.impl.ContextImpl;public class Context1 extends ContextImpl{}\n");
-        MemorySourceCompiler compiler = new MemorySourceCompiler();
-        compiler.compile(source);
-    }
 
     class NameEnvironment implements INameEnvironment {
 
@@ -149,9 +144,14 @@ public class MemorySourceCompiler {
 
     public void compile(final MemorySource[] sources) {
         for(MemorySource source:sources){
-            String javaFileName = source.getQualifiedClassName().replaceAll(".","/")+ ".java";
+            String javaFileName = source.getQualifiedClassName().replaceAll("[.]","/")+ ".java";
             try {
-                IOUtils.writeToOutputStream(new FileOutputStream(new File(outputDir,javaFileName)),source.getContent(),"UTF-8");
+                File file=new File(outputDir,javaFileName);
+                File path=file.getParentFile();
+                if(!path.exists()){
+                    path.mkdirs();
+                }
+                IOUtils.writeToOutputStream(new FileOutputStream(file),source.getContent(),"UTF-8");
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

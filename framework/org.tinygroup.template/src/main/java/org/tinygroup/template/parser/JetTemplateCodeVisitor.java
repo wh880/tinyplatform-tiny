@@ -165,14 +165,11 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitExpr_compare_equality(@NotNull JetTemplateParser.Expr_compare_equalityContext ctx) {
-        CodeLet left = pushPeekCodeLet();
+        peekCodeLet().code("O.e(\"").code(ctx.getChild(1).getText()).code("\",");
         ctx.expression(0).accept(this);
-        popCodeLet();
-        CodeLet right = pushPeekCodeLet();
+        peekCodeLet().code(",");
         ctx.expression(1).accept(this);
-        popCodeLet();
-        String op = ctx.getChild(1).getText();
-        peekCodeLet().code(left).code(op).code(right);
+        peekCodeLet().code(")");
         return null;
     }
 
@@ -190,11 +187,11 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
                 }
             }
         } else {*/
-            ctx.expression().accept(this);
-            Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
-            if (token.getType() == JetTemplateParser.VALUE_ESCAPED_OPEN) {
-                peekCodeLet().codeBefore("StringEscapeUtils.escapeHtml((").code(")+\"\")");
-            }
+        ctx.expression().accept(this);
+        Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
+        if (token.getType() == JetTemplateParser.VALUE_ESCAPED_OPEN) {
+            peekCodeLet().codeBefore("StringEscapeUtils.escapeHtml((").code(")+\"\")");
+        }
 //        }
         peekCodeLet().codeBefore("write($writer,").lineCode(");");
         valueCodeBlock.subCode(peekCodeLet());
@@ -311,6 +308,9 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     public CodeBlock visitText(@NotNull JetTemplateParser.TextContext ctx) {
         Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
         String text = token.getText();
+        if (!text.equals("\r\n") || !text.equals("\n") || !text.equals("\r")) {
+            return null;
+        }
         switch (token.getType()) {
             case JetTemplateParser.COMMENT_LINE:
             case JetTemplateParser.COMMENT_BLOCK1:
@@ -491,6 +491,11 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitExpr_compare_relational(@NotNull JetTemplateParser.Expr_compare_relationalContext ctx) {
+        peekCodeLet().code("O.e(\"").code(ctx.getChild(1).getText()).code("\",");
+        ctx.expression(0).accept(this);
+        peekCodeLet().code(",");
+        ctx.expression(1).accept(this);
+        peekCodeLet().code(")");
         return null;
     }
 
@@ -517,7 +522,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         CodeBlock codeBlock = new CodeBlock();
         CodeLet codeLet = pushPeekCodeLet();
         codeBlock.header(codeLet);
-        ctx.getChild(2).accept(this);
+        ctx.expression().accept(this);
         popCodeLet();
         codeLet.codeBefore("$context.put(\"" + ctx.getChild(0).getText() + "\",").lineCode(");");
         return codeBlock;
@@ -707,6 +712,9 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitExpr_math_unary_prefix(@NotNull JetTemplateParser.Expr_math_unary_prefixContext ctx) {
+        peekCodeLet().code("O.e(\"l").code(ctx.getChild(0).getText()).code("\",");
+        ctx.expression().accept(this);
+        peekCodeLet().code(")");
         return null;
     }
 
@@ -718,9 +726,16 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitExpr_constant(@NotNull JetTemplateParser.Expr_constantContext ctx) {
-        peekCodeLet().code(ctx.getText());
+        String text = ctx.getText();
+        if (text.startsWith("\'")) {
+            text=text.substring(1,text.length()-1);
+            text=text.replaceAll("\\\\'","'");
+            text=text.replaceAll("\\\\\"","\"");
+            text=text.replaceAll("\"", "\\\\\"");
+            peekCodeLet().code("\"").code(text).code("\"");
+        }else {
+            peekCodeLet().code(text);
+        }
         return null;
     }
-
-
 }

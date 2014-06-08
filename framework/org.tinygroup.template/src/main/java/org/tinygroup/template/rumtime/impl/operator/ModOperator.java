@@ -7,19 +7,19 @@ public class ModOperator extends DoubleOperator {
 
 
     protected Object operation(Object left, Object right) {
-        if (isType(left,"Byte")) {
+        if (isType(left,"java.lang.Byte")) {
             return (Byte) left % (Byte) right;
         }
-        if (isType(left,"Character")) {
+        if (isType(left,"java.lang.Character")) {
             return (Character) left % (Character) right;
         }
-        if (isType(left,"Integer")) {
+        if (isType(left,"java.lang.Integer")) {
             return (Integer) left % (Integer) right;
         }
-        if (isType(left,"Float")) {
+        if (isType(left,"java.lang.Float")) {
             return (Float) left % (Float) right;
         }
-        if (isType(left,"Double")) {
+        if (isType(left,"java.lang.Double")) {
             return (Double) left % (Double) right;
         }
         throw new UnsupportedOperationException(left.getClass().getName() + "%" + right.getClass().getName());

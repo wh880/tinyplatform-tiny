@@ -9,4 +9,6 @@ public interface Operator {
     public Object operation(Object... parameter) throws TemplateException;
 
     public String getOperation();
+
+    int getParameterCount();
 }

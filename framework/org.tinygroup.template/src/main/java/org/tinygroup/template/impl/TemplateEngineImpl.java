@@ -28,13 +28,15 @@ public class TemplateEngineImpl implements TemplateEngine {
     Path root = new Path("");
 
     public static void main(String[] args) {
-        TemplateEngineImpl engine=new TemplateEngineImpl();
+        TemplateEngineImpl engine = new TemplateEngineImpl();
         engine.buildPath("/a/b/c/d.page");
         engine.buildPath("/a/b/e/f.page");
         engine.buildPath("/a/c/c/g.page");
-        System.out.println();;
+        System.out.println();
+        ;
     }
-    class Path implements Comparable<Path>{
+
+    class Path implements Comparable<Path> {
         public Path(String name) {
             this.name = name;
         }
@@ -89,24 +91,21 @@ public class TemplateEngineImpl implements TemplateEngine {
 
     @Override
     public String getPackageName(String path) {
-        String name = path;
-        if (name.startsWith("/")) {//去掉前置"/"
-            name = name.substring(1);
-        }
-        name = name.substring(0, name.lastIndexOf("/"));
-        return name.replaceAll("/", ".");
+        String className=getClassName(path);
+        return className.substring(0,className.lastIndexOf('.'));
     }
 
 
     @Override
     public String getSimpleClassName(String path) {
-        String name = path.substring(path.lastIndexOf('/') + 1).split("[.]")[0];
-        return name;
+        String className=getClassName(path);
+        return className.substring(className.lastIndexOf('.')+1);
     }
 
     @Override
     public String getClassName(String path) {
         String name = path;
+        name = convertGoodStylePath(path);
         if (name.startsWith("/")) {//去掉前置"/"
             name = name.substring(1);
         }
@@ -115,6 +114,25 @@ public class TemplateEngineImpl implements TemplateEngine {
             name = name.substring(0, pos - 1);//去掉文件扩展名
         }
         return name.replaceAll("/", ".");
+    }
+
+    private String convertGoodStylePath(String path) {
+        StringBuffer sb = new StringBuffer(200);
+
+        for (char c : path.toCharArray()) {
+            if (c == '/'||c=='.') {
+                sb.append(c);
+            } else if (c >= 0 && c <= 0) {
+                sb.append(c);
+            } else if (c >= 'a' && c <= 'z') {
+                sb.append(c);
+            } else if (c >= 'A' && c <= 'Z') {
+                sb.append(c);
+            }else {
+                sb.append("_");
+            }
+        }
+        return sb.toString();
     }
 
 
@@ -127,24 +145,24 @@ public class TemplateEngineImpl implements TemplateEngine {
 
     private void buildPath(String path) {
         String[] paths = path.split("/");
-        Path current=root;
-        for(String name:paths){
+        Path current = root;
+        for (String name : paths) {
             //   /a/b/c/aa.def
-            if(name.equals(current.name)){//如果是根，则继续
+            if (name.equals(current.name)) {//如果是根，则继续
                 continue;
-            }else{
-                boolean has=false;
-                for(Path p:current.subPaths) {
+            } else {
+                boolean has = false;
+                for (Path p : current.subPaths) {
                     if (p.name.equals(name)) {
                         current = p;//如果对上了，则继续向下找
-                        has=true;
+                        has = true;
                         break;
                     }
                 }
-                if(!has){//如果不包含，则添加之后继续
+                if (!has) {//如果不包含，则添加之后继续
                     Path newPath = new Path(name);
                     current.addPath(newPath);
-                    current=newPath;
+                    current = newPath;
                 }
             }
         }

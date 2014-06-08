@@ -25,9 +25,9 @@ package jetbrick.template.parser.grammer;
 */
 // *******************************************************************
 // ------- DEFAULT mode for Plain Text -------------------------------
-COMMENT_BLOCK1            : '#--' .*? '--#'                 -> skip ;
-COMMENT_BLOCK2            : '#*' .*? '*#'                 -> skip ;
 COMMENT_LINE           : '##' ~[\r\n]* NEWLINE           -> skip ;
+COMMENT_BLOCK2            : '#*' .*? '*#'                 -> skip ;
+COMMENT_BLOCK1            : '#--' .*? '--#'                 -> skip ;
 fragment NEWLINE        : ('\r'? '\n' | EOF)              ;
 
 TEXT_PLAIN              : ~('$'|'#'|'\\')+                ;

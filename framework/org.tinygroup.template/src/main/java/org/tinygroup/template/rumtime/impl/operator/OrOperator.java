@@ -7,13 +7,13 @@ public class OrOperator extends DoubleOperator {
 
 
     protected Object operation(Object left, Object right) {
-        if (isType(left,"Byte")) {
+        if (isType(left,"java.lang.Byte")) {
             return (Byte) left | (Byte) right;
         }
-        if (isType(left,"Character")) {
+        if (isType(left,"java.lang.Character")) {
             return (Character) left | (Character) right;
         }
-        if (isType(left,"Integer")) {
+        if (isType(left,"java.lang.Integer")) {
             return (Integer) left | (Integer) right;
         }
 

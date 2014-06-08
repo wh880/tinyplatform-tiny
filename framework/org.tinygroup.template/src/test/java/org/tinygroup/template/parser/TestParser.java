@@ -38,12 +38,39 @@ public class TestParser extends TestCase {
     }
 
     public void testT3() throws Exception {
-        String result = execute("#--abc--#");
+        String result = execute("a#--abc--#b");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,\"a\");") < 0);
+        assertTrue(result.indexOf("write($writer,\"b\");") < 0);
+    }
+    public void testT3_1() throws Exception {
+        String result = execute("${-123}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,O.e(\"l-\",123));") < 0);
+    }
+    public void testT3_2() throws Exception {
+        String result = execute("${'abc\"def'}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,\"'abc\\\"def'\");") < 0);
+    }
+    public void testT3_3() throws Exception {
+        String result = execute("#set(a=1>2)");
+        System.out.println(result);
+        assertTrue(result.indexOf("$context.put(\"a\",O.e(\">\",1,2));") < 0);
+    }
+    public void testT3_4() throws Exception {
+        String result = execute("${1==2}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,\"'abc\\\"def'\");") < 0);
+    }
+    public void testT4() throws Exception {
+        String result = execute("a#*abc*#b");
+        System.out.println(result);
         assertTrue(result.indexOf("$writer.write") < 0);
     }
 
-    public void testT4() throws Exception {
-        String result = execute("#*abc*#");
+    public void testT4_2() throws Exception {
+        String result = execute("ab##cd");
         assertTrue(result.indexOf("$writer.write") < 0);
     }
 
