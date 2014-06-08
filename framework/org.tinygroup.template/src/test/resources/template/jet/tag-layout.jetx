@@ -1,6 +1,0 @@
-#tag layout("tag-layout-page.jetx")
-    hello from main
-    #tag layout("tag-layout-page.jetx")
-        hello from main1
-    #end
-#end

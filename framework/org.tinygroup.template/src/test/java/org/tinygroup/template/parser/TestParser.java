@@ -56,6 +56,12 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("$context.removeSubContext(\"$newContext\");") > 0);
     }
 
+    public void testT2_4() throws Exception {
+        String result = execute("<a>b</c>");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,\"<a>b<\\/c>\");") > 0);
+    }
+
     public void testT3() throws Exception {
         String result = execute("a#--abc--#b");
         System.out.println(result);
@@ -419,6 +425,7 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("$newContext.put(\"bb\",2);") > 0);
         assertTrue(result.indexOf("getTemplateEngine().renderMacro($macro, $template, $newContext, $writer);") > 0);
     }
+
     public void testT46_0() throws Exception {
         String result = execute("#call(\"test\",aa=1,bb=2,3)");
         System.out.println(result);
@@ -427,6 +434,7 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("$newContext.put(\"bb\",2);") > 0);
         assertTrue(result.indexOf("getTemplateEngine().renderMacro($macro, $template, $newContext, $writer);") > 0);
     }
+
     public void testT46_1() throws Exception {
         String result = execute("#call(\"test\")#end");
         System.out.println(result);
@@ -441,6 +449,7 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
         assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
     }
+
     public void testT47_1() throws Exception {
         String result = execute("#@call('test',aa=1,bb=2,3) aaa  #end");
         System.out.println(result);
@@ -449,6 +458,7 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
         assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
     }
+
     public void testT48() throws Exception {
         String result = execute("#@test(aa=1,bb=2,3) aaa #bbb  #end");
         System.out.println(result);

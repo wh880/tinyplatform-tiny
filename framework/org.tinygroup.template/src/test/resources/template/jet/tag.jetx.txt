@@ -1,2 +1,0 @@
-    NAME: JACK 123
-    name: Jack 123HELLO!

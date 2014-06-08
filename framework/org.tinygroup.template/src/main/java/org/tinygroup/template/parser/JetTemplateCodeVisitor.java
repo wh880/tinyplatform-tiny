@@ -651,9 +651,6 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         return null;
     }
 
-    public CodeBlock visitTag_directive(@NotNull JetTemplateParser.Tag_directiveContext ctx) {
-        return null;
-    }
 
     public CodeBlock visitSet_directive(@NotNull JetTemplateParser.Set_directiveContext ctx) {
         List<JetTemplateParser.Set_expressionContext> set_expression_list = ctx.set_expression();

@@ -1,8 +1,0 @@
-This is a header.
-<div>
-        BODY 1111
-</div>
-<div>
-        BODY 2222
-</div>
-This is a footer.

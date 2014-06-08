@@ -1,7 +1,0 @@
-header
-
-    MY is BLOCK 1
-
-    MY is BLOCK 2
-    BLOCK 3
-footer

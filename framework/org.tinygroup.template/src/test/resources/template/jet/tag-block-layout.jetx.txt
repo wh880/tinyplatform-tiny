@@ -1,8 +1,0 @@
-This is a header.
-<div>
-    
-</div>
-<div>
-    
-</div>
-This is a footer.

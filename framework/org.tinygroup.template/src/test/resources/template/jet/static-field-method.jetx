@@ -1,5 +1,0 @@
-${@Long.MAX_VALUE}
-${@(java.lang.Long).MAX_VALUE}
-${@Long.valueOf("123")}
-${@(java.lang.Long).valueOf("123")}
-${@Collections.emptyList()}

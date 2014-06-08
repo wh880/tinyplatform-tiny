@@ -51,7 +51,6 @@ DIRECTIVE_OPEN_INCLUDE  : '#include'  ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_CALL  : '#@call'  ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_CALL  : '#call'  ARGUMENT_START      -> pushMode(INSIDE) ;
 
-DIRECTIVE_OPEN_TAG      : '#tag'      [ \t]+ ID ARGUMENT_START -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_MACRO    : '#macro'    [ \t]+ ID ARGUMENT_START -> pushMode(INSIDE) ;
 
 
@@ -68,7 +67,6 @@ DIRECTIVE_INCLUDE       : '#include'                      ;
 DIRECTIVE_BREAK         : '#break'                        ;
 DIRECTIVE_CONTINUE      : '#continue'                     ;
 DIRECTIVE_STOP          : '#stop'                         ;
-DIRECTIVE_TAG           : '#tag'                          ;
 DIRECTIVE_MACRO         : '#macro'                        ;
 
 DIRECTIVE_ELSE          : '#else'|'#{else}'                   ;

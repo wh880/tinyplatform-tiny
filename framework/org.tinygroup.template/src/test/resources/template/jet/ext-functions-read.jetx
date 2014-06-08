@@ -1,2 +1,0 @@
-${read("if.jetx")}
-${read("if.jetx", "utf-8")}

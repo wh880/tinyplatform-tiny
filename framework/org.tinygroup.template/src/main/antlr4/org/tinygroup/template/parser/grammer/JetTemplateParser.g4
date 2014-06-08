@@ -56,7 +56,6 @@ directive   :   set_directive
             |   continue_directive
             |   stop_directive
             |   include_directive
-            |   tag_directive
             |   macro_directive
             |   call_block_directive
             |   call_directive
@@ -124,9 +123,6 @@ include_directive
             :   DIRECTIVE_OPEN_INCLUDE expression (',' '{' hash_map_entry_list? '}')? ')'
             ;
 
-tag_directive
-            :   DIRECTIVE_OPEN_TAG expression_list? ')' block DIRECTIVE_END
-            ;
 
 macro_directive
             :   DIRECTIVE_OPEN_MACRO define_expression_list? ')' block DIRECTIVE_END
