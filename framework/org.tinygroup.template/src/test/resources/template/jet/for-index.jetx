@@ -1,3 +1,3 @@
-#for (String x : ["a","b","c","d"])
-    ${for.index} - ${x}
+#for (x : ["a","b","c","d"])
+    ${xFor.index} - ${x}
 #end

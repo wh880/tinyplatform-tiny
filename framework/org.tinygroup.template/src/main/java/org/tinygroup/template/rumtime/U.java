@@ -4,9 +4,9 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Enumerator;
 import org.tinygroup.context.Context;
+import org.tinygroup.template.TemplateException;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,10 +16,13 @@ import java.util.Map;
  * Created by luoguo on 2014/6/4.
  */
 public class U {
-    public static Object p(Object object, String name) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        return BeanUtils.getProperty(object, name);
+    public static Object p(Object object, Object name) throws TemplateException {
+        try {
+            return BeanUtils.getProperty(object, name.toString());
+        } catch (Exception e) {
+            throw new TemplateException(e);
+        }
     }
-
     /**
      * 从上下文获取对应标识的值，如果找不到，则返回字符器
      *
@@ -27,8 +30,8 @@ public class U {
      * @param key
      * @return
      */
-    public static Object c(Context context, String key) {
-        Object object = context.get(key);
+    public static Object c(Context context, Object key) {
+        Object object = context.get(key.toString());
         if (object != null) {
             return object;
         } else {

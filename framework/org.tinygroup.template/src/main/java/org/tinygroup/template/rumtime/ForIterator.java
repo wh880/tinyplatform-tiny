@@ -31,11 +31,19 @@ public final class ForIterator implements Iterator, ForStatus {
     private int index = 0;
     private int size;
 
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
     public ForIterator(Object object) {
         this.object = object;
         if (object instanceof Map) {
             Map map = (Map) object;
-            iterator = map.keySet().iterator();
+            iterator = map.entrySet().iterator();
             size = map.size();
         } else if (object instanceof Collection) {
             Collection collection = (Collection) object;

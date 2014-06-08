@@ -36,6 +36,11 @@ public class TestParser extends TestCase {
         String result = execute("abc");
         assertTrue(result.indexOf("write($writer,\"abc\");") > 0);
     }
+    public void testT2_1() throws Exception {
+        String result = execute("${aa.bb}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,U.p(U.c($context,\"aa\"),U.c($context,\"bb\")));") > 0);
+    }
 
     public void testT3() throws Exception {
         String result = execute("a#--abc--#b");
@@ -68,6 +73,13 @@ public class TestParser extends TestCase {
         System.out.println(result);
         assertTrue(result.indexOf("if(U.b(true)){") > 0);
         assertTrue(result.indexOf("write($writer,\"aaa\");") > 0);
+    }
+    public void testT3_6() throws Exception {
+        String result = execute("#if(true)bbb#{else}aaa#end");
+        System.out.println(result);
+        assertTrue(result.indexOf("if(U.b(true)){") > 0);
+        assertTrue(result.indexOf("write($writer,\"aaa\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"bbb\");") > 0);
     }
     public void testT4() throws Exception {
         String result = execute("a#*abc*#b");
@@ -198,7 +210,7 @@ public class TestParser extends TestCase {
     public void testT25() throws Exception {
         String result = execute("#set(arraylist = {\"a\":1,\"b\":1} )");
         System.out.println(result);
-        assertTrue(result.indexOf("$context.put(\"arraylist\",{\"a\":1,\"b\":1});") > 0);
+        assertTrue(result.indexOf("$context.put(\"arraylist\",new TemplateMap().putItem(\"a\",1).putItem(\"b\",1));") > 0);
     }
     public void testT26() throws Exception {
         String result = execute("${1==2}");
@@ -218,7 +230,7 @@ public class TestParser extends TestCase {
     public void testT29() throws Exception {
         String result = execute("#set(arraylist = {\"a\":[1,aa,3],\"b\":1} )");
         System.out.println(result);
-        assertTrue(result.indexOf("$context.put(\"arraylist\",{\"a\":new Object[]{1,U.c($context,\"aa\"),3},\"b\":1});") > 0);
+        assertTrue(result.indexOf("$context.put(\"arraylist\",new TemplateMap().putItem(\"a\",new Object[]{1,U.c($context,\"aa\"),3}).putItem(\"b\",1));") > 0);
     }
     public void testT30() throws Exception {
         String result = execute("#if(true)abc#end");
@@ -272,6 +284,12 @@ public class TestParser extends TestCase {
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,true||false);") > 0);
     }
+    public void testT36_1() throws Exception {
+        String result = execute("#set(a={\"aa\":1})");
+        System.out.println(result);
+        assertTrue(result.indexOf("$context.put(\"a\",new TemplateMap().putItem(\"aa\",1));") > 0);
+    }
+
     public void testT37() throws Exception {
         String result = execute("${true? 1 : 2 }");
         System.out.println(result);
@@ -323,7 +341,13 @@ public class TestParser extends TestCase {
         String result = execute("#for(i : [1,2,3,4,5])#end");
         System.out.println(result);
         assertTrue(result.indexOf("ForIterator $iFor = new ForIterator(new Object[]{1,2,3,4,5});") > 0);
-        assertTrue(result.indexOf("$context.put(\"$iFor\",$iFor);") > 0);
+        assertTrue(result.indexOf("$context.put(\"i\",$iFor.next());") > 0);
+    }
+    public void testT44_1() throws Exception {
+        String result = execute("#for(i : [1,2,3,4,5])#{else}ddd#end");
+        System.out.println(result);
+        assertTrue(result.indexOf("ForIterator $iFor = new ForIterator(new Object[]{1,2,3,4,5});") > 0);
+        assertTrue(result.indexOf("if(U.b($iFor.getSize()>0)){") > 0);
         assertTrue(result.indexOf("$context.put(\"i\",$iFor.next());") > 0);
     }
     public void testT45() throws Exception {

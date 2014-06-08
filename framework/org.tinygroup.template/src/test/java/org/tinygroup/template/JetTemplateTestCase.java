@@ -19,7 +19,7 @@ public class JetTemplateTestCase {
 
         File file =new File(".");
         FileObject root= VFS.resolveFile("src/test/resources");
-        root.foreach(new FileNameFileObjectFilter("else-.*\\.jetx",true),new FileObjectProcessor() {
+        root.foreach(new FileNameFileObjectFilter("for-loop-map.*\\.jetx",true),new FileObjectProcessor() {
             @Override
             public void process(FileObject fileObject) {
                 try {
