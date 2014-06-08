@@ -56,13 +56,14 @@ public interface BaseContext {
 	 */
 	<T> T get(String name);
 
+    void putAll(Map<String,Object>map);
+
 	/**
 	 * 
 	 * @param name
 	 * @param defaultValue
 	 *            默认值
 	 * @return
-	 * @throws NotExistException
 	 */
 	<T> T get(String name, T defaultValue);
 
