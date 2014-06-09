@@ -1,7 +1,6 @@
 <routers>
-    <router id="tableMappingShard" user-name="luog" password="123456"
-             key-generator-class="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong">
-        <key-generator-config  increment="1" data-source-id="ds0"/>
+    <router id="tableMappingShard" user-name="luog" password="123456">
+        <key-generator class="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong" increment="1" data-source-id="ds0"/>
         <data-source-configs>
             <data-source-config id="ds0" driver="com.mysql.jdbc.Driver" user-name="root" password="123456"
                                 url="jdbc:mysql://mysqldb:3306/test" test-sql=""/>

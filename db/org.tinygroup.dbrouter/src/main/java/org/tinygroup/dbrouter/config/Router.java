@@ -18,6 +18,7 @@ package org.tinygroup.dbrouter.config;
 import java.util.List;
 
 import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.dbrouter.RouterKeyGenerator;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -48,14 +49,8 @@ public class Router {
     @XStreamAsAttribute
     private String password;
 
-    @XStreamAlias("key-generator-config")
-    private KeyGeneratorConfig keyConfig;
-    /**
-     * 主键发生器实现类类名
-     */
-    @XStreamAsAttribute
-    @XStreamAlias("key-generator-class")
-    private String keyGeneratorClass;
+    @XStreamAlias("key-generator")
+    private RouterKeyGenerator keyGenerator;
 
     /**
      * 集群中的数据源,这里只是定义
@@ -132,23 +127,6 @@ public class Router {
         throw new DbrouterRuntimeException("找不到数据源：" + datasourceId);
     }
 
-
-    public KeyGeneratorConfig getKeyConfig() {
-        return keyConfig;
-    }
-
-    public void setKeyConfig(KeyGeneratorConfig keyConfig) {
-        this.keyConfig = keyConfig;
-    }
-
-    public String getKeyGeneratorClass() {
-        return keyGeneratorClass;
-    }
-
-    public void setKeyGeneratorClass(String keyGeneratorClass) {
-        this.keyGeneratorClass = keyGeneratorClass;
-    }
-
 	public double getCpuRatio() {
 		if(cpuRatio<0){
 			cpuRatio=0;
@@ -161,6 +139,18 @@ public class Router {
 
 	public void setCpuRatio(double cpuRatio) {
 		this.cpuRatio = cpuRatio;
+	}
+
+	public RouterKeyGenerator getKeyGenerator() {
+		return keyGenerator;
+	}
+
+	public void setKeyGenerator(RouterKeyGenerator keyGenerator) {
+		this.keyGenerator = keyGenerator;
+	}
+
+	public void setDataSources(List<DataSourceConfig> dataSources) {
+		this.dataSources = dataSources;
 	}
     
 }
