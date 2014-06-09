@@ -13,13 +13,11 @@ public class LeftLiteralOperator extends SingleOperator {
     }
 
 
-
     protected Object operation(Object var) throws TemplateException {
-        String typeVar = var.getClass().getName();
-        if (isType(typeVar, "Boolean")) {
+        if (isType(var, "Boolean")) {
             return !(Boolean) var;
         }
-        throw new TemplateException("类型" + typeVar + "不支持“!”操作。");
+        throw getUnsupportedOperationException(var);
     }
 
     public static void main(String[] args) {

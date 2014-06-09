@@ -22,4 +22,8 @@ public abstract class SingleOperator extends AbstractOperator {
     }
 
     protected abstract Object operation(Object var) throws TemplateException;
+
+    protected UnsupportedOperationException getUnsupportedOperationException(Object object) {
+        throw new UnsupportedOperationException("类型" + object.getClass().getName() + "不支持" + "+" + getOperation() + "操作");
+    }
 }

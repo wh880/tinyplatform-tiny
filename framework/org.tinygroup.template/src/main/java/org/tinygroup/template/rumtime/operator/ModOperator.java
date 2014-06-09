@@ -22,7 +22,7 @@ public class ModOperator extends DoubleOperator {
         if (isType(left,"java.lang.Double")) {
             return (Double) left % (Double) right;
         }
-        throw new UnsupportedOperationException(left.getClass().getName() + "%" + right.getClass().getName());
+        throw getUnsupportedOperationException(left,right);
     }
 
 

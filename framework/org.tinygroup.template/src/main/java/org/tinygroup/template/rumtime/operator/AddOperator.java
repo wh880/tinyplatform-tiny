@@ -30,7 +30,7 @@ public class AddOperator extends DoubleOperator {
             return b1.add(b2);
         }
 
-        throw new UnsupportedOperationException(left.getClass().getName() + "+" + right.getClass().getName());
+        throw getUnsupportedOperationException(left,right);
     }
 
 

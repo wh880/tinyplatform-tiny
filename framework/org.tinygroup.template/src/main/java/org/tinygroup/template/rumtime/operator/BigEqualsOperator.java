@@ -10,7 +10,7 @@ public class BigEqualsOperator extends DoubleOperator {
         if(left instanceof Comparable&&right instanceof Comparable){
             return ((Comparable) left).compareTo(right)>=0;
         }
-        throw new UnsupportedOperationException(left.getClass().getName() + ">=" + right.getClass().getName());
+        throw getUnsupportedOperationException(left,right);
     }
 
 

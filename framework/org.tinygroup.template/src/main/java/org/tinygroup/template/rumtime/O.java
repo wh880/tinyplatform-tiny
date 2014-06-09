@@ -58,7 +58,7 @@ public final class O {
         addOperator(new LeftPlusPlusOperator());
         addOperator(new LeftSubtractSubtractOperator());
         addOperator(new LeftLiteralOperator());
-        addOperator(new LeftNotOperator());
+        addOperator(new ComplementOperator());
         //逻辑比较符
         addOperator(new EqualsOperator());
         addOperator(new NotEqualsOperator());

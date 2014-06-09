@@ -17,7 +17,7 @@ public class OrOperator extends DoubleOperator {
             return (Integer) left | (Integer) right;
         }
 
-        throw new UnsupportedOperationException(left.getClass().getName() + "|" + right.getClass().getName());
+        throw getUnsupportedOperationException(left,right);
     }
 
 

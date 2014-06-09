@@ -32,7 +32,21 @@ public class TestParser extends TestCase {
         String result = execute("abc");
         assertTrue(result.indexOf("write($writer,\"abc\");") > 0);
     }
-
+    public void testT2_10() throws Exception {
+        String result = execute("${2++}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,O.e(\"l++\",2));") > 0);
+    }
+    public void testT2_11() throws Exception {
+        String result = execute("${2--}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,O.e(\"l--\",2));") > 0);
+    }
+    public void testT2_12() throws Exception {
+        String result = execute("${map[\"id\"]}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,U.a(U.v($context,\"map\"),\"id\"));") > 0);
+    }
     public void testT2_1() throws Exception {
         String result = execute("${aa.bb}");
         System.out.println(result);

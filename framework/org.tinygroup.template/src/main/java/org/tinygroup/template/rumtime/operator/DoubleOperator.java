@@ -11,12 +11,13 @@ public abstract class DoubleOperator extends AbstractOperator {
     public int getParameterCount() {
         return 2;
     }
+
     public Object operation(Object... parameter) throws TemplateException {
-        if (parameter == null ) {
+        if (parameter == null) {
             throw new TemplateException("参数变量不能为空");
         }
-        if( parameter.length != getParameterCount()){
-            throw new TemplateException("参数变量数量不匹配，期望:"+getParameterCount()+",实际:"+parameter.length);
+        if (parameter.length != getParameterCount()) {
+            throw new TemplateException("参数变量数量不匹配，期望:" + getParameterCount() + ",实际:" + parameter.length);
         }
         Object left = parameter[0];
         Object right = parameter[1];
@@ -41,6 +42,10 @@ public abstract class DoubleOperator extends AbstractOperator {
         return operation(left, right);
     }
 
-    protected abstract Object operation(Object left, Object right) ;
+    protected abstract Object operation(Object left, Object right);
+
+    protected UnsupportedOperationException getUnsupportedOperationException(Object left, Object right) {
+        throw new UnsupportedOperationException("类型" + left.getClass().getName() + ","+right.getClass().getName()+"不支持" + "+" + getOperation() + "操作");
+    }
 
 }

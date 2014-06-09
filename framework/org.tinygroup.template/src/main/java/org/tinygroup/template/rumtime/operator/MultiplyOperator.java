@@ -30,7 +30,7 @@ public class MultiplyOperator extends DoubleOperator {
             return b1.multiply(b2);
         }
 
-        throw new UnsupportedOperationException(left.getClass().getName() + "*" + right.getClass().getName());
+        throw getUnsupportedOperationException(left,right);
     }
 
 
