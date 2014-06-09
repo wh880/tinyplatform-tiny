@@ -10,8 +10,7 @@ import java.io.OutputStreamWriter;
 public class TemplateTestCase {
     public static void main(String[] args) throws TemplateException {
         final TemplateEngine engine = new TemplateEngineImpl();
-        Template template = engine.getTemplateLoader("default").createTemplate("你好");
+        Template template = engine.getTemplateLoader("default").createTemplate("#for(i:[1,2,3,4,5])#for(j:[1,2,3,4,5])number ${i*j}\n#end \n #end");
         template.render(null, new OutputStreamWriter(System.out));
-        engine.renderTemplate(template, null, new OutputStreamWriter(System.out));
     }
 }

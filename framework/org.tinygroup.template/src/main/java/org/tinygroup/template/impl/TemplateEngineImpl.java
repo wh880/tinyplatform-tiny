@@ -14,6 +14,7 @@ import java.util.Set;
  * Created by luoguo on 2014/6/6.
  */
 public class TemplateEngineImpl implements TemplateEngine {
+    public static final String DEFAULT = "default";
     Path root = new Path("");
     private TemplateContext templateEngineContext = new TemplateContextImpl();
 
@@ -77,6 +78,11 @@ public class TemplateEngineImpl implements TemplateEngine {
 
     public TemplateLoader getTemplateLoader(String type) throws TemplateException {
         return templateLoaderMap.get(type);
+    }
+
+    @Override
+    public TemplateLoader getDefaultTemplateLoader() throws TemplateException {
+        return getTemplateLoader(DEFAULT);
     }
 
 

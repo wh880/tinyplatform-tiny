@@ -43,6 +43,12 @@ public interface TemplateEngine extends TemplateContextOperator {
     TemplateLoader getTemplateLoader(String type) throws TemplateException;
 
     /**
+     * 返回默认加载器
+     * @return
+     * @throws TemplateException
+     */
+    TemplateLoader getDefaultTemplateLoader() throws TemplateException;
+    /**
      * 返回所有的 Loader
      *
      * @return
