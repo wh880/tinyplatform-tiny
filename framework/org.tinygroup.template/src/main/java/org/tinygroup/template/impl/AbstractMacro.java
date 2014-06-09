@@ -36,10 +36,13 @@ public abstract class AbstractMacro implements Macro {
 
     public void render(Template $template, TemplateContext $context, Writer writer) throws TemplateException {
         try {
+            $context.putSubContext("$currentMacroContext", getTemplateContext());
             renderTemplate($template, $context, writer);
             writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
+        } finally {//无论如何从里面拿掉
+            $context.removeSubContext("$currentMacroContext");
         }
     }
 

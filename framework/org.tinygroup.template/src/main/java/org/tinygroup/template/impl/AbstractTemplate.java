@@ -33,17 +33,23 @@ public abstract class AbstractTemplate implements Template {
             if ($context == null) {
                 $context = new TemplateContextImpl();
             }
+            $context.putSubContext("$currentTemplateContext", getTemplateContext());
             $context.putSubContext("$templateEngineContext", getTemplateEngine().getTemplateContext());
             renderTemplate($context, writer);
             writer.flush();
             $context.removeSubContext("$templateEngineContext");
         } catch (IOException e) {
             throw new TemplateException(e);
+        } finally {
+            $context.removeSubContext("$currentTemplateContext");
+            $context.removeSubContext("$templateEngineContext");
         }
     }
-    public void render() throws TemplateException{
-        render(new TemplateContextImpl(),new OutputStreamWriter(System.out));
+
+    public void render() throws TemplateException {
+        render(new TemplateContextImpl(), new OutputStreamWriter(System.out));
     }
+
     protected abstract void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException;
 
     public void setTemplateEngine(TemplateEngine templateEngine) {

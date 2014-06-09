@@ -24,10 +24,11 @@ public class JetTemplateTestCase {
                 try {
                     System.out.println("\n" + fileObject.getPath());
                     engine.renderTemplate(fileObject.getPath(), null, new OutputStreamWriter(System.out));
-                } catch (TemplateException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+        System.out.println("======");
     }
 }
