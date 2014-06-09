@@ -89,7 +89,7 @@ public class CodeGenerator{
 		   if (StringUtils.startsWith(macroPath, "/") || StringUtils.startsWith(macroPath, "\\")) {
 			   macroPath = StringUtils.substring(macroPath, 1);
 			}
-		   FileObject fileObject=VFS.resolveFile(context.get(ABSOLUTE_PATH).toString());
+		   FileObject fileObject=VFS.resolveFile(String.valueOf(context.get(ABSOLUTE_PATH)));
 		   generater.addMacroFile(fileObject.getChild(macroPath));
 		   logger.logMessage(LogLevel.INFO, "宏文件路径：{0}，加载完毕",macroDefine.getMacroPath());
 		}
@@ -102,7 +102,7 @@ public class CodeGenerator{
 //			if(templatePath.startsWith("/")){
 //				templatePath=CodeGenerator.class.getResource(templatePath).getPath();
 //			}
-			FileObject templateFileObject=VFS.resolveFile(context.get(ABSOLUTE_PATH).toString());
+			FileObject templateFileObject=VFS.resolveFile(String.valueOf(context.get(ABSOLUTE_PATH)));
 			logger.logMessage(LogLevel.INFO, "模板文件路径：{0}，加载完毕",templatePath);
 			String fileName = templatePath;
 			if (StringUtils.startsWith(templatePath, "/") || StringUtils.startsWith(templatePath, "\\")) {
