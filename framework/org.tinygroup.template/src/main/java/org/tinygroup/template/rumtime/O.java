@@ -66,6 +66,10 @@ public final class O {
         addOperator(new LessOperator());
         addOperator(new BigOperator());
         addOperator(new BigEqualsOperator());
+        //移位运算符
+        addOperator(new ShlOperator());
+        addOperator(new ShrOperator());
+        addOperator(new Shr2Operator());
     }
 
     public static Object convert(Object object, String sourceType, String destType) {

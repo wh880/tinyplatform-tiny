@@ -736,6 +736,16 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         return null;
     }
 
+    @Override
+    public CodeBlock visitExpr_math_binary_shift(@NotNull JetTemplateParser.Expr_math_binary_shiftContext ctx) {
+        peekCodeLet().code("O.e(\"").code(ctx.getChild(1).getText()).code("\",");
+        ctx.expression(0).accept(this);
+        peekCodeLet().code(",");
+        ctx.expression(1).accept(this);
+        peekCodeLet().code(")");
+        return null;
+    }
+
 
     public CodeBlock visitStop_directive(@NotNull JetTemplateParser.Stop_directiveContext ctx) {
         JetTemplateParser.ExpressionContext expression = ctx.expression();
