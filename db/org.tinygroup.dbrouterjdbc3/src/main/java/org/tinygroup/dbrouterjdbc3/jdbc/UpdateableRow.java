@@ -21,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import org.tinygroup.commons.tools.StringUtil;
@@ -189,7 +190,11 @@ public class UpdateableRow {
 			if (v == null) {
 				v = current[i];
 			}
-			prep.setObject(i + 1, v);
+			if(v==null){
+				prep.setNull(i + 1, Types.NULL);
+			}else{
+				prep.setObject(i + 1, v);
+			}
 			j++;
 		}
 		setKey(prep, j, current);

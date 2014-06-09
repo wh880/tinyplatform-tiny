@@ -266,7 +266,6 @@ public class ParamObjectBuilder {
 
 	public void clear() {
 		params.clear();
-        paramsCache=null;
 	}
 	
 	public void setParamters(PreparedStatement preparedStatement) throws SQLException{

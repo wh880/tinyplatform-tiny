@@ -200,5 +200,30 @@ public class DbRouterTest extends TestCase {
         conn.close();
     }
 
+    public void testReuserPrepareStatement() throws Exception{
+  	  RouterManager routerManager = RouterManagerBeanFactory.getManager();
+        routerManager.addRouters("/sameSchemaDiffTableWithShard.xml");
+        Class.forName("org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver");
+        Connection conn = DriverManager.getConnection("jdbc:dbrouter://tableShard", "luog", "123456");
+        Statement stmt = conn.createStatement();
+        //先删除数据
+        stmt.executeUpdate("delete from aaa");
+        PreparedStatement statement = conn.prepareStatement("insert into aaa(id,aaa) values(?,?)");
+        //插入3条数据
+        for (int i = 1; i <= 3; i++) {
+        	   statement.setLong(1, i);
+        	   statement.setString(2, "aaa"+i);
+        	   statement.executeUpdate();
+        }
+        ResultSet rs=stmt.executeQuery("select count(*) from aaa");
+        if(rs.next()){
+      	   assertEquals(3, rs.getInt(1));
+        }
+        rs.close();
+        statement.close();
+        conn.close();
+
+  }
+
 
 }
