@@ -17,12 +17,15 @@ package org.tinygroup.dbrouter;
 
 import org.tinygroup.dbrouter.config.Router;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * 分布式Key获取器
  *
  * @param <T>
  * @author luoguo
  */
+@XStreamAlias("key-generator")
 public interface RouterKeyGenerator<T> {
     /**
      * 返回指定表的新主键

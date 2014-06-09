@@ -5,5 +5,8 @@
 		<xstream-annotation-class class-name="org.tinygroup.dbrouter.impl.shardrule.ShardRuleByFieldValue" />
 		<xstream-annotation-class class-name="org.tinygroup.dbrouter.impl.shardrule.ShardRuleByIdSameSchema" />
 		<xstream-annotation-class class-name="org.tinygroup.dbrouter.impl.shardrule.ShardRuleByIdDifferentSchema" />
+		<xstream-annotation-class class-name="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorInteger" />
+		<xstream-annotation-class class-name="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong" />
+		<xstream-annotation-class class-name="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorUUID" />
 	</xstream-annotation-classes>
 </xstream-configuration>
