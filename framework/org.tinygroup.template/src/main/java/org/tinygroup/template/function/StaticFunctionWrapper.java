@@ -9,7 +9,7 @@ import org.tinygroup.template.TemplateFunction;
  */
 public class StaticFunctionWrapper implements TemplateFunction{
     @Override
-    public String getName() {
+    public String getNames() {
         return null;
     }
 

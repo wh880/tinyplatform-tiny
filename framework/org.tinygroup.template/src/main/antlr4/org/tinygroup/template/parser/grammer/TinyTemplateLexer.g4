@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-lexer grammar JetTemplateLexer;
+lexer grammar TinyTemplateLexer;
 /*
 @header {
 package jetbrick.template.parser.grammer;

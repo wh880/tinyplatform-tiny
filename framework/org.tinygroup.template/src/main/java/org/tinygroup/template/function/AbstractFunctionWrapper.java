@@ -15,7 +15,7 @@ public abstract class AbstractFunctionWrapper implements TemplateFunction {
     }
 
     @Override
-    public String getName() {
+    public String getNames() {
         return name;
     }
 

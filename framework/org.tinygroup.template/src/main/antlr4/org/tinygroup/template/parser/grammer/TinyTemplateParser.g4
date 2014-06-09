@@ -17,10 +17,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-parser grammar JetTemplateParser;
+parser grammar TinyTemplateParser;
 
 options {
-    tokenVocab = JetTemplateLexer; // use tokens from JetTemplateLexer.g4
+    tokenVocab = TinyTemplateLexer; // use tokens from JetTemplateLexer.g4
 }
 
 /*

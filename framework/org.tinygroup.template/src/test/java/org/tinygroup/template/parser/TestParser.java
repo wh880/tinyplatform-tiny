@@ -18,11 +18,11 @@ public class TestParser extends TestCase {
         is.name = "testname"; // set source file name, it will be displayed in error report.
         JetTemplateParser parser = new JetTemplateParser(new CommonTokenStream(new JetTemplateLexer(is)));
         parser.removeErrorListeners(); // remove ConsoleErrorListener
-        parser.addErrorListener(JetTemplateErrorListener.getInstance());
-        parser.setErrorHandler(new JetTemplateErrorStrategy());
+        parser.addErrorListener(TinyTemplateErrorListener.getInstance());
+        parser.setErrorHandler(new TinyTemplateErrorStrategy());
 
         JetTemplateParser.TemplateContext templateParseTree = parser.template();
-        JetTemplateCodeVisitor visitor = new JetTemplateCodeVisitor(parser);
+        TinyTemplateCodeVisitor visitor = new TinyTemplateCodeVisitor(parser);
         CodeBlock codeBlock = templateParseTree.accept(visitor);
         return codeBlock.toString();
     }

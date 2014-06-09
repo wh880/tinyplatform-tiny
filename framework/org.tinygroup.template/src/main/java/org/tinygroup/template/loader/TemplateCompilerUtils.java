@@ -10,11 +10,11 @@ import org.tinygroup.template.compiler.MemorySource;
 import org.tinygroup.template.compiler.MemorySourceCompiler;
 import org.tinygroup.template.impl.ClassNameGetterDefault;
 import org.tinygroup.template.parser.CodeBlock;
-import org.tinygroup.template.parser.JetTemplateCodeVisitor;
-import org.tinygroup.template.parser.JetTemplateErrorListener;
-import org.tinygroup.template.parser.JetTemplateErrorStrategy;
+import org.tinygroup.template.parser.TinyTemplateCodeVisitor;
+import org.tinygroup.template.parser.TinyTemplateErrorListener;
+import org.tinygroup.template.parser.TinyTemplateErrorStrategy;
 import org.tinygroup.template.parser.grammer.JetTemplateLexer;
-import org.tinygroup.template.parser.grammer.JetTemplateParser;
+import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 /**
  * Created by luoguo on 2014/6/9.
@@ -46,12 +46,12 @@ public class TemplateCompilerUtils {
         char[] source = template.toCharArray();
         ANTLRInputStream is = new ANTLRInputStream(source, source.length);
         is.name = sourceName; // set source file name, it will be displayed in error report.
-        JetTemplateParser parser = new JetTemplateParser(new CommonTokenStream(new JetTemplateLexer(is)));
+        TinyTemplateParser parser = new TinyTemplateParser(new CommonTokenStream(new JetTemplateLexer(is)));
         parser.removeErrorListeners(); // remove ConsoleErrorListener
-        parser.addErrorListener(JetTemplateErrorListener.getInstance());
-        parser.setErrorHandler(new JetTemplateErrorStrategy());
-        JetTemplateParser.TemplateContext templateParseTree = parser.template();
-        JetTemplateCodeVisitor visitor = new JetTemplateCodeVisitor(parser);
+        parser.addErrorListener(TinyTemplateErrorListener.getInstance());
+        parser.setErrorHandler(new TinyTemplateErrorStrategy());
+        TinyTemplateParser.TemplateContext templateParseTree = parser.template();
+        TinyTemplateCodeVisitor visitor = new TinyTemplateCodeVisitor(parser);
         CodeBlock codeBlock = templateParseTree.accept(visitor);
         return codeBlock;
     }

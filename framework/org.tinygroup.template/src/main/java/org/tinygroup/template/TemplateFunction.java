@@ -6,11 +6,11 @@ package org.tinygroup.template;
  */
 public interface TemplateFunction {
     /**
-     * 返回函数名
+     * 返回函数名，如果有多个名字，则用逗号分隔
      *
      * @return
      */
-    String getName();
+    String getNames();
 
     /**
      * 设置模板引擎

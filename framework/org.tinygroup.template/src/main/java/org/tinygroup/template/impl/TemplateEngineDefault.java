@@ -1,7 +1,8 @@
 package org.tinygroup.template.impl;
 
 import org.tinygroup.template.*;
-import org.tinygroup.template.function.Formatter;
+import org.tinygroup.template.function.FormatterTemplateFunction;
+import org.tinygroup.template.function.InstanceOfTemplateFunction;
 import org.tinygroup.template.loader.StringTemplateLoader;
 
 import java.io.OutputStreamWriter;
@@ -28,7 +29,8 @@ public class TemplateEngineDefault implements TemplateEngine {
     public TemplateEngineDefault() {
         //添加一个默认的加载器
         addTemplateLoader(new StringTemplateLoader("default"));
-        addTemplateFunction(new Formatter());
+        addTemplateFunction(new FormatterTemplateFunction());
+        addTemplateFunction(new InstanceOfTemplateFunction());
     }
 
     public TemplateContext getTemplateContext() {
@@ -81,7 +83,10 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     @Override
     public void addTemplateFunction(TemplateFunction function) {
-        functionMap.put(function.getName(), function);
+        String[] names = function.getNames().split(",");
+        for (String name : names) {
+            functionMap.put(name, function);
+        }
     }
 
 
