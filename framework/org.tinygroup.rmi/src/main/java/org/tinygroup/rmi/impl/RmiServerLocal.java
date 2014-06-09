@@ -30,6 +30,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -144,8 +145,20 @@ public final class RmiServerLocal extends AbstractRmiServer  {
 	}
 
 	public void registerLocalObject(Remote object, String name) {
+		try {
 
-		MyRemoteObject o = new MyRemoteObject(object, name);
-		registerObject(o);
+			logger.logMessage(LogLevel.DEBUG, "开始注册对象:{}", name);
+			registeredObjectMap.put(name, object);
+			if (object instanceof UnicastRemoteObject) {
+				registry.rebind(name, object);
+			} else {
+				Remote stub = UnicastRemoteObject.exportObject(object, 0);
+				registry.rebind(name, stub);
+			}
+			logger.logMessage(LogLevel.DEBUG, "结束注册对象:{}", name);
+		} catch (RemoteException e) {
+			logger.errorMessage("注册对象:{}时发生异常:{}！", e, name, e.getMessage());
+			throw new RuntimeException(e);
+		}
 	}
 }

@@ -44,27 +44,18 @@ import org.tinygroup.rmi.RmiServer;
  * 抽象rmi服务器 Created by luoguo on 14-1-10.
  */
 public abstract class AbstractRmiServer extends UnicastRemoteObject implements
-		RmiServer, Runnable {
+		RmiServer{
 	private final static Logger logger = LoggerFactory
 			.getLogger(AbstractRmiServer.class);
 	int port = DEFAULT_RMI_PORT;
 	String hostName = "localhost";
 	Registry registry = null;
 	Map<String, Remote> registeredObjectMap = new HashMap<String, Remote>();
-	ConcurrentLinkedQueue<MyRemoteObject> regQueue = new ConcurrentLinkedQueue<MyRemoteObject>();
-	ConcurrentLinkedQueue<String> unregQueue = new ConcurrentLinkedQueue<String>();
 
 	public void stop() throws RemoteException {
 		unexportObjects();
 	}
-
-	public void startThread() {
-		logger.logMessage(LogLevel.INFO, "启动对象注册列表线程");
-		// regThread.start();
-		RmiUtil.start(this);
-		logger.logMessage(LogLevel.INFO, "启动对象注册列表线程完成");
-	}
-
+	
 	public AbstractRmiServer() throws RemoteException {
 		this("localhost", DEFAULT_RMI_PORT);
 	}
@@ -77,48 +68,13 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements
 		this.hostName = hostName;
 		this.port = port;
 		getRegistry();
-		startThread();
 	}
-
-	protected void registerAllRemoteObject() {
-		for (String name : registeredObjectMap.keySet()) {
-			try {
-				registerRemoteObject(registeredObjectMap.get(name), name);
-			} catch (RemoteException e) {
-				logger.errorMessage("注册对象:{name}时失败", e, name);
-			}
-		}
-	}
-
 	public void registerRemoteObject(Remote object, String name)
 			throws RemoteException {
 		logger.logMessage(LogLevel.DEBUG, "将对象加入注册列表:{}", name);
 		MyRemoteObject o = new MyRemoteObject(object, name);
-		synchronized (this) {
-			regQueue.add(o);
-			this.notify();
-		}
+		
 		logger.logMessage(LogLevel.DEBUG, "对象:{}加入注册列表完成", name);
-	}
-
-	public void registerObject(MyRemoteObject remoteObj) {
-		String name = remoteObj.getName();
-		Remote object = remoteObj.getObject();
-		try {
-
-			logger.logMessage(LogLevel.DEBUG, "开始注册对象:{}", name);
-			registeredObjectMap.put(name, object);
-			if (object instanceof UnicastRemoteObject) {
-				registry.rebind(name, object);
-			} else {
-				Remote stub = UnicastRemoteObject.exportObject(object, 0);
-				registry.rebind(name, stub);
-			}
-			logger.logMessage(LogLevel.DEBUG, "结束注册对象:{}", name);
-		} catch (RemoteException e) {
-			logger.errorMessage("注册对象:{}时发生异常:{}！", e, name, e.getMessage());
-			throw new RuntimeException(e);
-		}
 	}
 
 	public void registerRemoteObject(Remote object, Class type)
@@ -220,10 +176,7 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements
 	public void unregisterRemoteObject(String name) throws RemoteException {
 		// 20140516,现在是异步注销，所以此方法不会因为注销失败而抛出异常
 		logger.logMessage(LogLevel.DEBUG, "将对象:{}加入注销列表", name);
-		synchronized (this) {
-			unregQueue.add(name);
-			this.notify();
-		}
+		registeredObjectMap.remove(name);
 		logger.logMessage(LogLevel.DEBUG, "对象:{}加入注销列表完成", name);
 	}
 
@@ -281,25 +234,5 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements
 		}
 	}
 
-	public void run() {
-		for (;;) {
-			try {
-				synchronized (this) {
-					this.wait();
-					while (!regQueue.isEmpty()) {
-						MyRemoteObject o = regQueue.poll();
-						//registerObject(o);
-						registeredObjectMap.put(o.getName(), o.getObject());
-					}
-					while (!unregQueue.isEmpty()) {
-						String name = unregQueue.poll();
-						unregisterObject(name);
-					}
-				}
 
-			} catch (InterruptedException e1) {
-			}
-		}
-
-	}
 }
