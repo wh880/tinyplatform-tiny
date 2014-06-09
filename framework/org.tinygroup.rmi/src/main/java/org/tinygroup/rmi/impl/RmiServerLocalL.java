@@ -42,7 +42,7 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.rmi.RmiServerL;
 import org.tinygroup.rmi.Verifiable;
 
-public final class RmiServerLocalL implements RmiServerL {
+public final class RmiServerLocalL extends UnicastRemoteObject implements RmiServerL{
 	/**
 	 * 
 	 */
@@ -122,6 +122,7 @@ public final class RmiServerLocalL implements RmiServerL {
 		remoteRegistry = LocateRegistry.getRegistry(remoteHostName, remotePort);
 		try {
 			server = (RmiServerL) remoteRegistry.lookup(remoteHostName);
+			
 		} catch (NotBoundException e) {
 			throw new RuntimeException("获取RmiServer:" + remoteHostName
 					+ "时出错,该对象未曾注册", e);
@@ -131,7 +132,7 @@ public final class RmiServerLocalL implements RmiServerL {
 
 	public void stop() throws RemoteException {
 		validateThread.setStop(true);
-		stop();
+		unexportObjects();
 	}
 
 	class ValidateThread extends Thread implements Serializable {
@@ -189,7 +190,7 @@ public final class RmiServerLocalL implements RmiServerL {
 
 	public void registerLocalObject(Remote object, String name) throws RemoteException{
 		try {
-			logger.logMessage(LogLevel.DEBUG, "开始注册对象:{}", name);
+			logger.logMessage(LogLevel.DEBUG, "开始注册本地对象:{}", name);
 
 			registeredLocalObjectMap.put(name, object);
 			if (object instanceof UnicastRemoteObject) {
@@ -202,9 +203,9 @@ public final class RmiServerLocalL implements RmiServerL {
 				server.registerRemoteObject(object, name);
 			}
 			
-			logger.logMessage(LogLevel.DEBUG, "结束注册对象:{}", name);
+			logger.logMessage(LogLevel.DEBUG, "结束注册本地对象:{}", name);
 		} catch (RemoteException e) {
-			logger.errorMessage("注册对象:{}时发生异常:{}！", e, name, e.getMessage());
+			logger.errorMessage("注册本地对象:{}时发生异常:{}！", e, name, e.getMessage());
 			registeredLocalObjectMap.remove(name);
 			throw new RuntimeException(e);
 		}
@@ -237,7 +238,9 @@ public final class RmiServerLocalL implements RmiServerL {
 
 	public void registerRemoteObject(Remote object, String name)
 			throws RemoteException {
+		logger.logMessage(LogLevel.DEBUG, "开始注册远程对象:{}", name);
 		registeredRemoteObjectMap.put(name, object);
+		logger.logMessage(LogLevel.DEBUG, "注册远程对象:{}结束", name);
 	}
 
 	public void registerRemoteObject(Remote object, Class type)
@@ -246,6 +249,7 @@ public final class RmiServerLocalL implements RmiServerL {
 	}
 
 	public void unregisterObject(Remote object) throws RemoteException {
+		logger.logMessage(LogLevel.DEBUG, "开始注销对象object:{}", object);
 		boolean flag = false;
 		for (String name : registeredLocalObjectMap.keySet()) {
 			Remote r = registeredLocalObjectMap.get(name);
@@ -266,13 +270,14 @@ public final class RmiServerLocalL implements RmiServerL {
 			}
 		}
 		if (!flag) {
-			logger.logMessage(LogLevel.ERROR, "需要移除的对象object:{}不存在", object);
+			logger.logMessage(LogLevel.ERROR, "需要注销的对象object:{}不存在", object);
 		}
+		logger.logMessage(LogLevel.DEBUG, "注销对象object:{}完成", object);
 	}
 
 	private void unregisterLocalObject(String name) throws RemoteException{
 		try {
-			logger.logMessage(LogLevel.DEBUG, "开始注销对象:{}", name);
+			logger.logMessage(LogLevel.DEBUG, "开始注销本地对象:{}", name);
 			registry.unbind(name);
 			if (registeredLocalObjectMap.get(name) != null) {
 				UnicastRemoteObject.unexportObject(
@@ -282,29 +287,35 @@ public final class RmiServerLocalL implements RmiServerL {
 			if (server != null) {
 				server.unregisterObject(name);
 			}
-			logger.logMessage(LogLevel.DEBUG, "结束注销对象:{}", name);
+			logger.logMessage(LogLevel.DEBUG, "注销本地对象:{}完成", name);
 		} catch (Exception e) {
 			logger.errorMessage("注销对象:{}时发生异常:{}！", e, name, e.getMessage());
 		}
 	}
 
 	private void unregisterRemoteObject(String name) throws RemoteException{
+		logger.logMessage(LogLevel.DEBUG, "开始注销远程对象:{}", name);
 		registeredRemoteObjectMap.remove(name);
+		logger.logMessage(LogLevel.DEBUG, "注销远程对象:{}完成", name);
 	}
 
 	public void unregisterObject(String name) throws RemoteException{
+		logger.logMessage(LogLevel.DEBUG, "开始注销对象:{}", name);
 		if (registeredLocalObjectMap.containsKey(name)) {
 			unregisterLocalObject(name);
 		} else if (registeredRemoteObjectMap.containsKey(name)) {
 			unregisterRemoteObject(name);
 		} else {
-			logger.logMessage(LogLevel.ERROR, "需要移除的对象name:{}不存在", name);
+			logger.logMessage(LogLevel.ERROR, "需要注销的对象name:{}不存在", name);
 		}
+		logger.logMessage(LogLevel.DEBUG, "结束注销对象:{}", name);
 	}
 
 	public void unregisterObjectByType(Class type) throws RemoteException {
+		logger.logMessage(LogLevel.DEBUG, "开始注销对象type:{}", type.getName());
 		unregisterLocalObjectByType(type);
 		unregisterRemoteObjecttByType(type);
+		logger.logMessage(LogLevel.DEBUG, "注销对象type:{}完成", type.getName());
 	}
 
 	private void unregisterLocalObjectByType(Class type) throws RemoteException {
