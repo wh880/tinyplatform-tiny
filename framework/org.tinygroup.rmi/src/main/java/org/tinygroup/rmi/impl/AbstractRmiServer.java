@@ -133,6 +133,8 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements
 	public <T> T getRemoteObject(String name) throws RemoteException {
 		try {
 			logger.logMessage(LogLevel.DEBUG, "获取对象Name:{}", name);
+			if(registeredObjectMap.containsKey(name))
+				return (T) registeredObjectMap.get(name);
 			return (T) registry.lookup(name);
 			// } catch (ConnectException e) {
 			// throw new RuntimeException("获取对象Name:" + name + "时连接发生错误", e);
@@ -286,7 +288,8 @@ public abstract class AbstractRmiServer extends UnicastRemoteObject implements
 					this.wait();
 					while (!regQueue.isEmpty()) {
 						MyRemoteObject o = regQueue.poll();
-						registerObject(o);
+						//registerObject(o);
+						registeredObjectMap.put(o.getName(), o.getObject());
 					}
 					while (!unregQueue.isEmpty()) {
 						String name = unregQueue.poll();

@@ -57,7 +57,6 @@ public final class RmiServerLocal extends AbstractRmiServer  {
 
 	public RmiServerLocal(String hostName, int port) throws RemoteException {
 		super(hostName, port);
-		//validateThread.start();
 	}
 
 	public Registry getRegistry() {

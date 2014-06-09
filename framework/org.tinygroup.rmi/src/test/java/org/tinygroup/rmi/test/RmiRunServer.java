@@ -34,7 +34,7 @@ public class RmiRunServer {
 	private static String LOCALIP = "192.168.84.23";
 
 	public static void main(String[] args) {
-		RmiServer localServer = null;
+		RmiServerLocal localServer = null;
 		try {
 			localServer = new RmiServerLocal(LOCALIP, 8888);
 		} catch (RemoteException e1) {
@@ -43,27 +43,37 @@ public class RmiRunServer {
 		}
 		RmiUtil.start((Runnable)localServer);
 		try {
-			localServer.registerRemoteObject(new HelloImpl(), "hello");
+			localServer.registerLocalObject(new HelloImpl(), "hello");
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		RmiRunServer r = new RmiRunServer();
-		r.runThread();
+		r.runThread(localServer);
+		
 	}
 
-	public void runThread() {
-		MyThread t = new RmiRunServer.MyThread();
-		t.run();
+	public void runThread(RmiServer localServer) {
+		MyThread t = new RmiRunServer.MyThread(localServer);
+		t.start();
 	}
 
 	class MyThread extends Thread {
+		RmiServer localServer;
+		public MyThread(RmiServer localServer){
+			this.localServer = localServer;
+		}
 		private boolean end = false;
 
 		public void run() {
-			if (!end) {
+			while (!end) {
 				try {
 					sleep(1000);
-				} catch (InterruptedException e) {
+					//System.out.println(localServer.getRemoteObject("hello1"));
+					if(localServer.getRemoteObject("hello1")!=null){
+						Hello hello = localServer.getRemoteObject("hello1");
+						String info = hello.sayHello("abc111111");
+					}
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

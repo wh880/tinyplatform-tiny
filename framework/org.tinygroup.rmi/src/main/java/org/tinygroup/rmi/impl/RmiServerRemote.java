@@ -86,8 +86,9 @@ public class RmiServerRemote implements RmiServer {
 
 	public void registerRemoteObject(Remote object, Class type, String id)
 			throws RemoteException {
-		addObjectToMap(object, RmiUtil.getName(type.getName(), id));
-		server.registerRemoteObject(object, type, id);
+		registerRemoteObject(object, type.getName(), id);
+//		addObjectToMap(object, RmiUtil.getName(type.getName(), id));
+//		server.registerRemoteObject(object, type, id);
 	}
 
 	public void registerRemoteObject(Remote object, String type, String id)
@@ -105,8 +106,9 @@ public class RmiServerRemote implements RmiServer {
 
 	public void registerRemoteObject(Remote object, Class type)
 			throws RemoteException {
-		addObjectToMap(object, type.getName());
-		server.registerRemoteObject(object, type);
+		registerRemoteObject(object, type.getName());
+//		addObjectToMap(object, type.getName());
+//		server.registerRemoteObject(object, type);
 	}
 
 	public void unregisterRemoteObject(String name) throws RemoteException {
@@ -115,8 +117,9 @@ public class RmiServerRemote implements RmiServer {
 	}
 
 	public void unregisterRemoteObjectByType(Class type) throws RemoteException {
-		removeObjectFromMap(type.getName());
-		server.unregisterRemoteObjectByType(type);
+//		removeObjectFromMap(type.getName());
+//		server.unregisterRemoteObjectByType(type);
+		unregisterRemoteObjectByType(type.getName());
 	}
 
 	public void unregisterRemoteObjectByType(String type)
@@ -133,8 +136,9 @@ public class RmiServerRemote implements RmiServer {
 
 	public void unregisterRemoteObject(Class type, String id)
 			throws RemoteException {
-		removeObjectFromMap(RmiUtil.getName(type.getName(), id));
-		server.unregisterRemoteObject(type, id);
+		unregisterRemoteObject(type.getName(), id);
+//		removeObjectFromMap(RmiUtil.getName(type.getName(), id));
+//		server.unregisterRemoteObject(type, id);
 	}
 
 	public <T> T getRemoteObject(String name) throws RemoteException {

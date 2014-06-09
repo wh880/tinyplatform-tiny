@@ -44,9 +44,9 @@ public class HelloImpl implements Hello, Serializable {
 	public String sayHello(String name) throws RemoteException {
 		i++;
 		if (i % 5000 == 0){
-			System.out.println(System.currentTimeMillis()+"--" + i + "------------");
+			System.out.println(System.currentTimeMillis()+"------" + i + "------------");
 		}
-			
+		System.out.println("Hello," + name);	
 		return "Hello," + name;
 	}
 

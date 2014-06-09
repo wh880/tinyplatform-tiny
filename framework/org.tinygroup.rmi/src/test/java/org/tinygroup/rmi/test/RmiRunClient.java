@@ -23,47 +23,39 @@
  */
 package org.tinygroup.rmi.test;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import org.tinygroup.rmi.RmiServer;
+import org.tinygroup.rmi.impl.RmiServerLocal;
 import org.tinygroup.rmi.impl.RmiServerRemote;
 
 public class RmiRunClient {
 	private static String SERVERIP = "192.168.84.23";
+	private static String LOCALIP = "192.168.84.23";
 
 	public static void main(String[] args) {
-		 RmiServer remoteServer = null;
+		RmiServer remoteServer = null;
+		RmiServerLocal localServer = null;
 		try {
+		
 			remoteServer = new RmiServerRemote(SERVERIP, 8888);
+			localServer = new RmiServerLocal(LOCALIP, 7777);
+		
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		 try {
-		 remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
-		 } catch (RemoteException e) {
-		 // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 }
-		 RmiRunClient c = new RmiRunClient(remoteServer);
-		 c.run();
-//		Registry registry = null;
-//		try {
-//			registry = LocateRegistry.getRegistry(SERVERIP, 8888);
-//		} catch (RemoteException e) {
-//			throw new RuntimeException(e);
-//		}
-//		try {
-//			RmiServerLocal server = (RmiServerLocal) registry.lookup(SERVERIP);
-//			server.registerRemoteObject(new HelloImpl(), "aaaaaa");
-//		} catch (ConnectException e) {
-//			throw new RuntimeException("获取RmiServer:" + SERVERIP + "时连接发生错误", e);
-//		} catch (RemoteException e) {
-//			throw new RuntimeException("获取RmiServer:" + SERVERIP + "时出错", e);
-//		} catch (NotBoundException e) {
-//			throw new RuntimeException("获取RmiServer:" + SERVERIP
-//					+ "时出错,该对象未曾注册", e);
-//		}
+		try {
+			localServer.registerLocalObject(new HelloImpl(), "hello1");
+			remoteServer.registerRemoteObject((Remote)localServer.getRemoteObject("hello1"), "hello1");
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RmiRunClient c = new RmiRunClient(remoteServer);
+		c.run();
+		
 	}
 
 	private RmiServer remoteServer;
@@ -104,7 +96,7 @@ public class RmiRunClient {
 
 			try {
 				String info = hello.sayHello("abc");
-				System.out.println(info);
+//				System.out.println(info);
 				if (!"Hello,abc".equals(info)) {
 					throw new RuntimeException("执行结果的字符串不匹配");
 				}
