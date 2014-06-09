@@ -6,7 +6,7 @@ import org.tinygroup.template.TemplateException;
  * Created by luoguo on 2014/6/8.
  */
 public abstract class SingleOperator extends AbstractOperator {
-    @Override
+
     public int getParameterCount() {
         return 1;
     }

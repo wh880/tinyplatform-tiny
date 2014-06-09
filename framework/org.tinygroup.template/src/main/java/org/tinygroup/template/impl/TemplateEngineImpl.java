@@ -1,41 +1,32 @@
 package org.tinygroup.template.impl;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.tinygroup.template.*;
-import org.tinygroup.template.compiler.MemorySource;
-import org.tinygroup.template.compiler.MemorySourceCompiler;
-import org.tinygroup.template.parser.CodeBlock;
-import org.tinygroup.template.parser.JetTemplateCodeVisitor;
-import org.tinygroup.template.parser.JetTemplateErrorListener;
-import org.tinygroup.template.parser.JetTemplateErrorStrategy;
-import org.tinygroup.template.parser.grammer.JetTemplateLexer;
-import org.tinygroup.template.parser.grammer.JetTemplateParser;
+import org.tinygroup.template.loader.StringTemplateLoader;
 
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 模板引擎实现类
  * Created by luoguo on 2014/6/6.
  */
 public class TemplateEngineImpl implements TemplateEngine {
-    private Map<String, Template> templateMap = new ConcurrentHashMap<String, Template>();
-    static MemorySourceCompiler compiler = new MemorySourceCompiler();
     Path root = new Path("");
     private TemplateContext templateEngineContext = new TemplateContextImpl();
-    ClassNameGetter classNameGetter;
+
+    private Map<String, TemplateLoader> templateLoaderMap = new HashMap();
+    private String encode="UTF-8";
+
+    public TemplateEngineImpl() {
+        //添加一个默认的加载器
+        addTemplateLoader(new StringTemplateLoader("default"));
+    }
 
     public TemplateContext getTemplateContext() {
         return templateEngineContext;
-    }
-
-    @Override
-    public void setClassNameGetter(ClassNameGetter classNameGetter) {
-        this.classNameGetter=classNameGetter;
     }
 
 
@@ -60,48 +51,40 @@ public class TemplateEngineImpl implements TemplateEngine {
         Path parent;
         Set<Path> subPaths = new HashSet<Path>();
 
-        @Override
+
         public int compareTo(Path o) {
             return -name.compareTo(o.name);
         }
     }
 
-    public static CodeBlock preCompile(String template, String sourceName) {
-        char[] source = template.toCharArray();
-        ANTLRInputStream is = new ANTLRInputStream(source, source.length);
-        is.name = sourceName; // set source file name, it will be displayed in error report.
-        JetTemplateParser parser = new JetTemplateParser(new CommonTokenStream(new JetTemplateLexer(is)));
-        parser.removeErrorListeners(); // remove ConsoleErrorListener
-        parser.addErrorListener(JetTemplateErrorListener.getInstance());
-        parser.setErrorHandler(new JetTemplateErrorStrategy());
-        JetTemplateParser.TemplateContext templateParseTree = parser.template();
-        JetTemplateCodeVisitor visitor = new JetTemplateCodeVisitor(parser);
-        CodeBlock codeBlock = templateParseTree.accept(visitor);
-        return codeBlock;
-    }
 
-    @Override
-    public Template getTemplate(TemplateResource templateResource) throws TemplateException {
 
-        CodeBlock codeBlock = preCompile(templateResource.getContent(), templateResource.getPath());
-        codeBlock.insertSubCode("package " + classNameGetter.getPackageName(templateResource.getPath()) + ";");
-        MemorySource memorySource = new MemorySource(classNameGetter.getClassName(templateResource.getPath()), codeBlock.toString().replace("$TEMPLATE_PATH", templateResource.getPath())
-                .replace("$TEMPLATE_CLASS_NAME", classNameGetter.getSimpleClassName(templateResource.getPath())));
-        Template template = compiler.loadInstance(memorySource);
-        addTemplate(template);
-        return template;
+    public TemplateEngine setEncode(String encode) {
+        this.encode = encode;
+        return this;
     }
 
 
-
-    public Template addTemplate(Template template) {
-        templateMap.put(template.getPath(), template);
-        buildPath(template.getPath());
-        template.setTemplateEngine(this);
-        return template;
+    public String getEncode() {
+        return encode;
     }
 
-    @Override
+
+    public void addTemplateLoader(TemplateLoader templateLoader) {
+        templateLoader.setTemplateEngine(this);
+        templateLoaderMap.put(templateLoader.getType(), templateLoader);
+    }
+
+    public TemplateLoader getTemplateLoader(String type) throws TemplateException {
+        return templateLoaderMap.get(type);
+    }
+
+
+    public Map<String, TemplateLoader> getTemplateLoaderMap() {
+        return templateLoaderMap;
+    }
+
+
     public TemplateEngine put(String key, Object value) {
         templateEngineContext.put(key, value);
         return this;
@@ -132,9 +115,6 @@ public class TemplateEngineImpl implements TemplateEngine {
         }
     }
 
-    public Map<String, Template> getTemplateMap() {
-        return templateMap;
-    }
 
     public void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws TemplateException {
         Macro macro = findMacro(macroName, template, context);
@@ -151,15 +131,17 @@ public class TemplateEngineImpl implements TemplateEngine {
     }
 
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
-        Template template = templateMap.get(path);
-        if (template != null) {
-            renderTemplate(template, context, writer);
-            return;
+        for(TemplateLoader loader:templateLoaderMap.values()){
+            Template template = loader.getTemplate(path);
+            if (template != null) {
+                renderTemplate(template, context, writer);
+                return;
+            }
         }
         throw new TemplateException("找不到模板：" + path);
     }
 
-    @Override
+
     public void renderTemplate(Template template, TemplateContext context, Writer writer) throws TemplateException {
         template.render(context, writer);
     }

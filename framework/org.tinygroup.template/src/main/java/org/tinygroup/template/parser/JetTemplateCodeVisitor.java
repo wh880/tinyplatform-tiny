@@ -66,7 +66,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         throw reportError("Missing arguments for " + ctx.getText() + " directive.", ctx);
     }
 
-    @Override
+
     public CodeBlock visitCall_directive(@NotNull JetTemplateParser.Call_directiveContext ctx) {
         CodeBlock callMacro = new CodeBlock();
         CodeLet nameCodeBlock=pushPeekCodeLet();
@@ -353,7 +353,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         return null;
     }
 
-    @Override
+
     public CodeBlock visitIdentify_list(@NotNull JetTemplateParser.Identify_listContext ctx) {
 
         return null;
@@ -544,7 +544,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         return null;
     }
 
-    @Override
+
     public CodeBlock visitCall_block_directive(@NotNull JetTemplateParser.Call_block_directiveContext ctx) {
         CodeBlock callMacro = new CodeBlock();
         CodeLet nameCodeBlock=pushPeekCodeLet();
@@ -721,7 +721,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         pushCodeLet();
         ctx.expression().accept(this);
         peekCodeBlock().subCode(new CodeLet().code("$context.put(\"").code(name).code("For\",new ForIterator(").code(peekCodeLet()).lineCode("));"));
-        peekCodeBlock().subCode(new CodeLet().code("while(((ForIterator)$context.get(\"").code(name).lineCode("\")).hasNext()){"));
+        peekCodeBlock().subCode(new CodeLet().code("while(((ForIterator)$context.get(\"").code(name).lineCode("For\")).hasNext()){"));
         CodeBlock assign = new CodeBlock().tabIndent(1);
         assign.footer(new CodeLet().code("$context.put(\"").code(name).code("\",((ForIterator)$context.get(\"").code(name).lineCode("For\")).next());")).tabIndent(1);
         peekCodeBlock().subCode(assign);
@@ -777,7 +777,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
         JetTemplateParser.Else_directiveContext else_directive = ctx.else_directive();
         if (else_directive != null) {
-            CodeBlock elseCodeBlock = pushPeekCodeBlock().header("if(U.b(((ForIterator)$context.get(\""+name+"\")).getSize()>0)){").footer("}");
+            CodeBlock elseCodeBlock = pushPeekCodeBlock().header("if(U.b(((ForIterator)$context.get(\""+name+"For\")).getSize()>0)){").footer("}");
             else_directive.block().accept(this);
             popCodeBlock();
             peekCodeBlock().subCode(elseCodeBlock);

@@ -54,12 +54,12 @@ public abstract class AbstractMacro implements Macro {
         return parameterNames;
     }
 
-    @Override
+
     public TemplateContext getTemplateContext() {
         return templateContext;
     }
 
-    @Override
+
     public Object put(String key, Object value) {
         return templateContext.put(key, value);
     }

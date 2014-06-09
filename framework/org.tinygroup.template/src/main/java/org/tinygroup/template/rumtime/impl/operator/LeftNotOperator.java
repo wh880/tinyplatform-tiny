@@ -7,13 +7,13 @@ import org.tinygroup.template.TemplateException;
  */
 public class LeftNotOperator extends SingleOperator {
 
-    @Override
+
     public String getOperation() {
         return "l~";
     }
 
 
-    @Override
+
     protected Object operation(Object var) throws TemplateException {
         String type=var.getClass().getName();
         if (isType(type,"java.lang.Byte")) {

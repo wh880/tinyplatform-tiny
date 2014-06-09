@@ -46,12 +46,12 @@ public abstract class AbstractTemplate implements Template {
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
-    @Override
+
     public TemplateContext getTemplateContext() {
         return templateContext;
     }
 
-    @Override
+
     public Object put(String key, Object value) {
         return templateContext.put(key, value);
     }

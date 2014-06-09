@@ -5,13 +5,13 @@ package org.tinygroup.template.rumtime.impl.operator;
  */
 public class LeftAddOperator extends SingleOperator {
 
-    @Override
+
     public String getOperation() {
         return "l+";
     }
 
 
-    @Override
+
     protected Object operation(Object var) {
         return var;
     }

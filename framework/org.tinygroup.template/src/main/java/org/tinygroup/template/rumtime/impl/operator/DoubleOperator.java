@@ -7,7 +7,7 @@ import org.tinygroup.template.rumtime.O;
  * Created by luoguo on 2014/6/6.
  */
 public abstract class DoubleOperator extends AbstractOperator {
-    @Override
+
     public int getParameterCount() {
         return 2;
     }

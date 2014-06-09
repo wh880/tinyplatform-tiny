@@ -7,13 +7,13 @@ import org.tinygroup.template.TemplateException;
  */
 public class LeftLiteralOperator extends SingleOperator {
 
-    @Override
+
     public String getOperation() {
         return "l!";
     }
 
 
-    @Override
+
     protected Object operation(Object var) throws TemplateException {
         String typeVar = var.getClass().getName();
         if (isType(typeVar, "Boolean")) {

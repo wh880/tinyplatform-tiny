@@ -8,13 +8,13 @@ import org.tinygroup.template.rumtime.O;
  */
 public class LeftPlusPlusOperator extends SingleOperator {
 
-    @Override
+
     public String getOperation() {
         return "l++";
     }
 
 
-    @Override
+
     protected Object operation(Object var) throws TemplateException {
         return O.e("+", var, 1);
     }

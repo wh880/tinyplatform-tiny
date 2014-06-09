@@ -83,22 +83,22 @@ public class JetTemplateLexer extends Lexer {
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
-	@Override
+
 	public String getGrammarFileName() { return "JetTemplateLexer.g4"; }
 
-	@Override
+
 	public String[] getTokenNames() { return tokenNames; }
 
-	@Override
+
 	public String[] getRuleNames() { return ruleNames; }
 
-	@Override
+
 	public String getSerializedATN() { return _serializedATN; }
 
-	@Override
+
 	public String[] getModeNames() { return modeNames; }
 
-	@Override
+
 	public ATN getATN() { return _ATN; }
 
 	public static final String _serializedATN =
