@@ -87,6 +87,9 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException;
 
+    void renderTemplate(String path) throws TemplateException;
+    void renderTemplate(Template template) throws TemplateException;
+
     /**
      * 直接渲染一个模板
      *

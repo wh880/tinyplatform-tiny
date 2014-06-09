@@ -3,6 +3,7 @@ package org.tinygroup.template.impl;
 import org.tinygroup.template.*;
 import org.tinygroup.template.loader.StringTemplateLoader;
 
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ public class TemplateEngineImpl implements TemplateEngine {
     private TemplateContext templateEngineContext = new TemplateContextImpl();
 
     private Map<String, TemplateLoader> templateLoaderMap = new HashMap();
-    private String encode="UTF-8";
+    private String encode = "UTF-8";
 
     public TemplateEngineImpl() {
         //添加一个默认的加载器
@@ -57,7 +58,6 @@ public class TemplateEngineImpl implements TemplateEngine {
             return -name.compareTo(o.name);
         }
     }
-
 
 
     public TemplateEngine setEncode(String encode) {
@@ -137,7 +137,7 @@ public class TemplateEngineImpl implements TemplateEngine {
     }
 
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
-        for(TemplateLoader loader:templateLoaderMap.values()){
+        for (TemplateLoader loader : templateLoaderMap.values()) {
             Template template = loader.getTemplate(path);
             if (template != null) {
                 renderTemplate(template, context, writer);
@@ -145,6 +145,16 @@ public class TemplateEngineImpl implements TemplateEngine {
             }
         }
         throw new TemplateException("找不到模板：" + path);
+    }
+
+    @Override
+    public void renderTemplate(String path) throws TemplateException {
+        renderTemplate(path, new TemplateContextImpl(), new OutputStreamWriter(System.out));
+    }
+
+    @Override
+    public void renderTemplate(Template template) throws TemplateException {
+        renderTemplate(template, new TemplateContextImpl(), new OutputStreamWriter(System.out));
     }
 
 

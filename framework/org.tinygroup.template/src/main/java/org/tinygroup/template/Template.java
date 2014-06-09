@@ -22,6 +22,8 @@ public interface Template extends TemplateContextOperator{
      */
     void render(TemplateContext $context, Writer $writer) throws TemplateException;
 
+    void render() throws TemplateException;
+
     /**
      * 返回宏对应的路径
      *
