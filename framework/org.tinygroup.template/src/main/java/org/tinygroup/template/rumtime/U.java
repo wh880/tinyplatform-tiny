@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Enumerator;
 import org.tinygroup.context.Context;
+import org.tinygroup.template.I18nVistor;
 import org.tinygroup.template.TemplateException;
 
 import java.lang.reflect.Array;
@@ -36,7 +37,13 @@ public class U {
             throw new TemplateException(e);
         }
     }
-
+    public static String getI18n(I18nVistor i18nVistor,String key){
+        if(i18nVistor==null){
+            return key;
+        }else{
+            return i18nVistor.getI18nMessage(key);
+        }
+    }
     /**
      * 进行方法调用
      * @param object

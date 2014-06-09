@@ -37,4 +37,10 @@ public interface Template extends TemplateContextOperator{
      * @param templateEngine
      */
     void setTemplateEngine(TemplateEngine templateEngine);
+
+    /**
+     * 返回模板引擎
+     * @return
+     */
+    TemplateEngine getTemplateEngine();
 }

@@ -35,6 +35,8 @@ TEXT_CDATA              : '#[[' .*? ']]#'                 ;
 TEXT_ESCAPED_CHAR       : ('\\#'|'\\$'|'\\\\')            ;
 TEXT_SINGLE_CHAR        : ('#'|'$'|'\\')                  ;
 
+I18N_OPEN              : '$${'                            -> pushMode(INSIDE) ;
+
 VALUE_COMPACT_OPEN              : '$'                    ;
 VALUE_OPEN              : '${'                            -> pushMode(INSIDE) ;
 VALUE_ESCAPED_OPEN      : '$!{'                           -> pushMode(INSIDE) ;
@@ -132,6 +134,8 @@ OP_INSTANCEOF           : 'instanceof' | 'is'              ;
 OP_NEW                  : 'new'                            ;
 OP_CONDITIONAL_TERNARY  : '?'                              ;
 
+OP_SIMPLE_CONDITION_TERNARY      : '?:'                           ;
+
 COMMA                   : ','                              ;
 COLON                   : ':'                              ;
 AT                      : '@'                              ;
@@ -139,6 +143,7 @@ AT                      : '@'                              ;
 KEYWORD_TRUE            : 'true'                           ;
 KEYWORD_FALSE           : 'false'                          ;
 KEYWORD_NULL            : 'null'                           ;
+
 
 IDENTIFIER              : [_a-zA-Z$][_a-zA-Z$0-9]*         ;
 

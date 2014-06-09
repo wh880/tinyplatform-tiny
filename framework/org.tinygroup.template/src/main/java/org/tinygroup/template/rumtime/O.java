@@ -52,6 +52,8 @@ public final class O {
         addOperator(new AdOperator());
         addOperator(new OrOperator());
         addOperator(new ModOperator());
+        //简化三元操作符
+        addOperator(new SimpleConditionOperator());
         //一元操作符
         addOperator(new LeftAddOperator());
         addOperator(new LeftSubtractOperator());

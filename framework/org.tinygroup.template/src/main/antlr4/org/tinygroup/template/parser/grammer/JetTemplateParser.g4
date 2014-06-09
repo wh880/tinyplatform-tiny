@@ -46,6 +46,7 @@ text        :   TEXT_PLAIN
 value       :   //VALUE_COMPACT_OPEN  identify_list
                VALUE_OPEN         expression '}'
             |   VALUE_ESCAPED_OPEN expression '}'
+            |  I18N_OPEN  identify_list '}'
             ;
 
 
@@ -186,6 +187,7 @@ expression  :   '(' expression ')'                                           # e
             |   expression '&&' expression                                   # expr_compare_condition
             |   expression '||' expression                                   # expr_compare_condition
             |   expression '?' <assoc=right> expression ':' expression       # expr_conditional_ternary
+            |   expression '?:' expression       # expr_simple_condition_ternary
             ;
 
 constant    :   STRING_DOUBLE

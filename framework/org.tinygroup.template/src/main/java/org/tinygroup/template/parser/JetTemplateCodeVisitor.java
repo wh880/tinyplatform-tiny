@@ -231,26 +231,19 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitValue(@NotNull JetTemplateParser.ValueContext ctx) {
-
-        pushCodeLet();
         CodeBlock valueCodeBlock = new CodeBlock();
-/*        JetTemplateParser.Identify_listContext list = ctx.identify_list();
-        if (list != null) {
-            for (int i = 0; i < list.IDENTIFIER().size(); i++) {
-                if (i == 0) {
-                    peekCodeLet().code("U.v($context,\"" + list.IDENTIFIER().get(i).getText() + "\")");
-                } else {
-                    peekCodeLet().codeBefore("U.p(").code(",").code(list.IDENTIFIER().get(i).getText()).code(")");
-                }
+        pushCodeLet();
+        if (ctx.getChild(0).getText().equals("$${")) {
+            peekCodeLet().code("write($writer,U.getI18n($template.getTemplateEngine().getI18nVistor(),\"").code(ctx.identify_list().getText()).lineCode("\"));");
+        } else {
+            ctx.expression().accept(this);
+            Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
+            if (token.getType() == JetTemplateParser.VALUE_ESCAPED_OPEN) {
+                peekCodeLet().codeBefore("U.escapeHtml((").code("))");
             }
-        } else {*/
-        ctx.expression().accept(this);
-        Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
-        if (token.getType() == JetTemplateParser.VALUE_ESCAPED_OPEN) {
-            peekCodeLet().codeBefore("U.escapeHtml((").code("))");
-        }
 //        }
-        peekCodeLet().codeBefore("write($writer,").lineCode(");");
+            peekCodeLet().codeBefore("write($writer,").lineCode(");");
+        }
         valueCodeBlock.subCode(peekCodeLet());
         popCodeLet();
         return valueCodeBlock;
@@ -878,6 +871,16 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         } else {
             peekCodeLet().code(text);
         }
+        return null;
+    }
+
+    @Override
+    public CodeBlock visitExpr_simple_condition_ternary(@NotNull JetTemplateParser.Expr_simple_condition_ternaryContext ctx) {
+        peekCodeLet().code("O.e(\"").code(ctx.getChild(1).getText()).code("\",");
+        ctx.expression(0).accept(this);
+        peekCodeLet().code(",");
+        ctx.expression(1).accept(this);
+        peekCodeLet().code(")");
         return null;
     }
 }
