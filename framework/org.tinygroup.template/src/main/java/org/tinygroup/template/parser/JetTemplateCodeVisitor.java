@@ -166,9 +166,6 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
 
-    public CodeBlock visitExpr_instanceof(@NotNull JetTemplateParser.Expr_instanceofContext ctx) {
-        return null;
-    }
 
     public CodeBlock visitExpr_function_call(@NotNull JetTemplateParser.Expr_function_callContext ctx) {
         String functionName = ctx.getChild(0).getText();
@@ -419,9 +416,6 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
 
-    public CodeBlock visitExpr_new_array(@NotNull JetTemplateParser.Expr_new_arrayContext ctx) {
-        return null;
-    }
 
     public CodeBlock visitCall_macro_directive(@NotNull JetTemplateParser.Call_macro_directiveContext ctx) {
         CodeBlock callMacro = new CodeBlock();
@@ -655,9 +649,6 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         return null;
     }
 
-    public CodeBlock visitExpr_new_object(@NotNull JetTemplateParser.Expr_new_objectContext ctx) {
-        return null;
-    }
 
     public CodeBlock visitConstant(@NotNull JetTemplateParser.ConstantContext ctx) {
         return null;
@@ -709,9 +700,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         return null;
     }
 
-    public CodeBlock visitExpr_method_invocation(@NotNull JetTemplateParser.Expr_method_invocationContext ctx) {
-        throw reportError("Missing arguments for " + ctx.getText() + " directive.", ctx);
-    }
+
 
     private RuntimeException reportError(String message, Object node) {
         if (node instanceof ParserRuleContext) {
