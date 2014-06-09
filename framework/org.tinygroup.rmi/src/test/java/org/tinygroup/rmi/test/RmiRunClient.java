@@ -36,19 +36,16 @@ public class RmiRunClient {
 
 	public static void main(String[] args) {
 		RmiServer remoteServer = null;
-		RmiServerLocal localServer = null;
 		try {
 		
 			remoteServer = new RmiServerRemote(SERVERIP, 8888);
-			localServer = new RmiServerLocal(LOCALIP, 7777);
 		
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
-			localServer.registerLocalObject(new HelloImpl(), "hello1");
-			remoteServer.registerRemoteObject((Remote)localServer.getRemoteObject("hello1"), "hello1");
+			remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
