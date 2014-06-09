@@ -21,6 +21,7 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     private Map<String, TemplateLoader> templateLoaderMap = new HashMap();
     private String encode = "UTF-8";
+    private I18nVistor i18nVistor;
 
     public TemplateEngineDefault() {
         //添加一个默认的加载器
@@ -63,6 +64,16 @@ public class TemplateEngineDefault implements TemplateEngine {
     public TemplateEngine setEncode(String encode) {
         this.encode = encode;
         return this;
+    }
+
+    @Override
+    public void setI18nVistor(I18nVistor i18nVistor) {
+        this.i18nVistor=i18nVistor;
+    }
+
+    @Override
+    public I18nVistor getI18nVistor() {
+        return i18nVistor;
     }
 
 

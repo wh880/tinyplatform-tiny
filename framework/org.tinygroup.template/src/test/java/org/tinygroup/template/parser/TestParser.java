@@ -42,6 +42,16 @@ public class TestParser extends TestCase {
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,O.e(\"l++\",2));") > 0);
     }
+   public void testT2_14() throws Exception {
+        String result = execute("${2?:1}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,O.e(\"?:\",2,1));") > 0);
+    }
+    public void testT2_15() throws Exception {
+        String result = execute("$${abc.bb}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,U.getI18n($template.getTemplateEngine().getI18nVistor(),\"abc.bb\"));") > 0);
+    }
     public void testT2_11() throws Exception {
         String result = execute("${2--}");
         System.out.println(result);
