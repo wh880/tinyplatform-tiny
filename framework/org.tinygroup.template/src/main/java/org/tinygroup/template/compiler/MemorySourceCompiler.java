@@ -321,17 +321,17 @@ public class MemorySourceCompiler {
             this.source = source;
         }
 
-        @Override
+
         public char[] getContents() {
             return source.getContent().toCharArray();
         }
 
-        @Override
+
         public char[] getMainTypeName() {
             return source.getSimpleName().toCharArray();
         }
 
-        @Override
+
         public char[][] getPackageName() {
             String[] names = source.getQualifiedClassName().split("[.]");
             char[][] result = new char[names.length - 1][];
@@ -341,12 +341,12 @@ public class MemorySourceCompiler {
             return result;
         }
 
-        @Override
+
         public boolean ignoreOptionalProblems() {
             return false;
         }
 
-        @Override
+
         public char[] getFileName() {
             return (source.getSimpleName() + ".java").toCharArray();
         }

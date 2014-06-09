@@ -24,33 +24,36 @@ import java.util.Map;
  * Created by luoguo on 2014/6/6.
  */
 public interface TemplateEngine extends TemplateContextOperator {
-    /**
-     * 添加宏
-     *
-     * @param templateResource
-     */
-    Template getTemplate(TemplateResource templateResource) throws TemplateException;
+    TemplateEngine setEncode(String encode);
+
+    String getEncode();
 
     /**
-     * 可以通过设置新的ClassNameGetter来修改生成类名的规则，一般情况默认的就够了
+     * 添加类型加载器
      *
-     * @param classNameGetter
+     * @param templateLoader
      */
-    void setClassNameGetter(ClassNameGetter classNameGetter);
+    void addTemplateLoader(TemplateLoader templateLoader);
 
     /**
-     * 直接添加一个模板定义类到引擎中
-     *
-     * @param template
-     */
-    Template addTemplate(Template template);
-
-    /**
-     * 返回所有的模板定义
+     * 返回指定类型的加载器
      *
      * @return
      */
-    Map<String, Template> getTemplateMap();
+    TemplateLoader getTemplateLoader(String type) throws TemplateException;
+
+    /**
+     * 返回默认加载器
+     * @return
+     * @throws TemplateException
+     */
+    TemplateLoader getDefaultTemplateLoader() throws TemplateException;
+    /**
+     * 返回所有的 Loader
+     *
+     * @return
+     */
+    Map<String, TemplateLoader> getTemplateLoaderMap();
 
     /**
      * 渲染宏
@@ -84,12 +87,15 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException;
 
+    void renderTemplate(String path) throws TemplateException;
+    void renderTemplate(Template template) throws TemplateException;
+
     /**
      * 直接渲染一个模板
      *
      * @param template 要渲染的模板
-     * @param context 上下文
-     * @param writer 输出器
+     * @param context  上下文
+     * @param writer   输出器
      * @throws TemplateException
      */
     void renderTemplate(Template template, TemplateContext context, Writer writer) throws TemplateException;

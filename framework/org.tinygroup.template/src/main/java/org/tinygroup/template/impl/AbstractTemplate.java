@@ -3,6 +3,7 @@ package org.tinygroup.template.impl;
 import org.tinygroup.template.*;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,18 +41,20 @@ public abstract class AbstractTemplate implements Template {
             throw new TemplateException(e);
         }
     }
-
+    public void render() throws TemplateException{
+        render(new TemplateContextImpl(),new OutputStreamWriter(System.out));
+    }
     protected abstract void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException;
 
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
-    @Override
+
     public TemplateContext getTemplateContext() {
         return templateContext;
     }
 
-    @Override
+
     public Object put(String key, Object value) {
         return templateContext.put(key, value);
     }
