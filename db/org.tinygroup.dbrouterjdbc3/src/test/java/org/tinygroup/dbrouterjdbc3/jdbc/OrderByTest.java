@@ -63,7 +63,7 @@ public class OrderByTest extends TestCase {
 		Class.forName("org.tinygroup.dbrouterjdbc3.jdbc.TinyDriver");
 		conn = DriverManager.getConnection(
 				"jdbc:dbrouter://diffSchemaShard", "luog", "123456");
-		stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+		stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 	}
 
 
