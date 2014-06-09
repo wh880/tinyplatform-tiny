@@ -11,6 +11,6 @@ public class IntegerFloat implements Converter<Integer,Float> {
     }
 
     public String getType() {
-        return "IntegerFloat";
+        return "java.lang.Integerjava.lang.Float";
     }
 }

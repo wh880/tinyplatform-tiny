@@ -12,6 +12,6 @@ public class FloatDouble implements Converter<Float,Double> {
     }
 
     public String getType() {
-        return "Double2Float";
+        return "java.lang.Floatjava.lang.Double";
     }
 }

@@ -1,6 +1,6 @@
 package org.tinygroup.template;
 
-import org.tinygroup.template.impl.TemplateEngineImpl;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.FileObjectTemplateLoader;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.FileObjectProcessor;
@@ -14,15 +14,15 @@ import java.io.OutputStreamWriter;
  */
 public class JetTemplateTestCase {
     public static void main(String[] args) throws TemplateException {
-        final TemplateEngine engine = new TemplateEngineImpl();
+        final TemplateEngine engine = new TemplateEngineDefault();
         FileObjectTemplateLoader jetSample = new FileObjectTemplateLoader("jetSample", "src/test/resources");
         engine.addTemplateLoader(jetSample);
         FileObject fileObject = VFS.resolveFile("src/test/resources");
-        fileObject.foreach(new FileNameFileObjectFilter("for-else\\.jetx", true), new FileObjectProcessor() {
+        fileObject.foreach(new FileNameFileObjectFilter(".*\\.jetx", true), new FileObjectProcessor() {
             @Override
             public void process(FileObject fileObject) {
                 try {
-                    System.out.println(fileObject.getPath());
+                    System.out.println("\n" + fileObject.getPath());
                     engine.renderTemplate(fileObject.getPath(), null, new OutputStreamWriter(System.out));
                 } catch (TemplateException e) {
                     e.printStackTrace();

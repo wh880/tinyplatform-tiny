@@ -12,6 +12,6 @@ public class ByteFloat implements Converter<Byte, Float> {
     }
 
     public String getType() {
-        return "FloatDouble";
+        return "java.lang.Bytejava.lang.Float";
     }
 }

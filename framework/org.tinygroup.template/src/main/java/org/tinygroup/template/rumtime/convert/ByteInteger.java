@@ -12,6 +12,6 @@ public class ByteInteger implements Converter<Byte, Integer> {
     }
 
     public String getType() {
-        return "FloatDouble";
+        return "java.lang.Bytejava.lang.Integer";
     }
 }

@@ -14,6 +14,6 @@ public class DoubleBigDecimal implements Converter<Double,BigDecimal> {
     }
 
     public String getType() {
-        return "DoubleBigDecimal";
+        return "java.lang.Doublejava.math.BigDecimal";
     }
 }
