@@ -12,6 +12,6 @@ public class CharacterFloat implements Converter<Character,Float> {
     }
 
     public String getType() {
-        return "Float2Float";
+        return "java.lang.Characterjava.lang.Float";
     }
 }

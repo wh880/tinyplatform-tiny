@@ -44,10 +44,12 @@ public interface TemplateEngine extends TemplateContextOperator {
 
     /**
      * 返回默认加载器
+     *
      * @return
      * @throws TemplateException
      */
     TemplateLoader getDefaultTemplateLoader() throws TemplateException;
+
     /**
      * 返回所有的 Loader
      *
@@ -87,7 +89,20 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException;
 
+    /**
+     * 采用没有上下文，控制台输出方式进行渲染
+     *
+     * @param path
+     * @throws TemplateException
+     */
     void renderTemplate(String path) throws TemplateException;
+
+    /**
+     * 采用没有上下文，控制台输出方式进行渲染
+     *
+     * @param template
+     * @throws TemplateException
+     */
     void renderTemplate(Template template) throws TemplateException;
 
     /**

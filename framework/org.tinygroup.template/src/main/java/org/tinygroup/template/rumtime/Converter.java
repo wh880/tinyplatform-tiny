@@ -5,4 +5,6 @@ package org.tinygroup.template.rumtime;
  */
 public interface Converter<S, D> {
     D convert(S object);
+
+    String getType();
 }

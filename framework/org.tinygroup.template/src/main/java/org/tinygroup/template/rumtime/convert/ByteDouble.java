@@ -12,6 +12,6 @@ public class ByteDouble implements Converter<Byte, Double> {
     }
 
     public String getType() {
-        return "Double2Double";
+        return "java.lang.Bytejava.lang.Double";
     }
 }

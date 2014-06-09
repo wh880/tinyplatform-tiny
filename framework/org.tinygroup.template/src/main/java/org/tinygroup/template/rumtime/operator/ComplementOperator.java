@@ -3,9 +3,10 @@ package org.tinygroup.template.rumtime.operator;
 import org.tinygroup.template.TemplateException;
 
 /**
+ * 补数
  * Created by luoguo on 2014/6/8.
  */
-public class LeftNotOperator extends SingleOperator {
+public class ComplementOperator extends SingleOperator {
 
 
     public String getOperation() {
@@ -15,21 +16,16 @@ public class LeftNotOperator extends SingleOperator {
 
 
     protected Object operation(Object var) throws TemplateException {
-        String type=var.getClass().getName();
-        if (isType(type,"java.lang.Byte")) {
+        if (isType(var,"java.lang.Byte")) {
             return ~((Byte) var);
         }
-        if (isType(type,"java.lang.Integer")) {
+        if (isType(var,"java.lang.Integer")) {
             return ~((Integer) var);
         }
-        if (isType(type,"Long")) {
+        if (isType(var,"Long")) {
             return ~((Long) var);
         }
-        throw new TemplateException("类型" + type + "不支持“~”操作。");
-    }
-
-    public static void main(String[] args) {
-
+        throw getUnsupportedOperationException(var);
     }
 
 }

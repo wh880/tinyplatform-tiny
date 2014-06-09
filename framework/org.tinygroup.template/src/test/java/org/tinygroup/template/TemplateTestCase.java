@@ -1,6 +1,6 @@
 package org.tinygroup.template;
 
-import org.tinygroup.template.impl.TemplateEngineImpl;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 
 import java.io.OutputStreamWriter;
 
@@ -9,8 +9,8 @@ import java.io.OutputStreamWriter;
  */
 public class TemplateTestCase {
     public static void main(String[] args) throws TemplateException {
-        final TemplateEngine engine = new TemplateEngineImpl();
-        Template template = engine.getTemplateLoader("default").createTemplate("#for(i:[1,2,3,4,5])#for(j:[1,2,3,4,5])number ${i*j}\n#end \n #end");
+        final TemplateEngine engine = new TemplateEngineDefault();
+        Template template = engine.getDefaultTemplateLoader().createTemplate("#for(i:[1,2,3,4,5])#for(j:[1,2,3,4,5])number ${i*j}\n#end#end");
         template.render(null, new OutputStreamWriter(System.out));
     }
 }

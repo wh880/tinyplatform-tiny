@@ -7,8 +7,3 @@ ${items?[i+1]}
 #set (map = {"id":1, "name":"chen"})
 ${map?["id"]}
 ${map?[name]}
-#set ( u = context?["user"])
-${u.name}
-${xxx?[0]}
-${yyy?[0]}
-${zzz?["a"]}

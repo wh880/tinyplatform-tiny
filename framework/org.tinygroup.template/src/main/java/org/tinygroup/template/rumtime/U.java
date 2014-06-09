@@ -21,6 +21,14 @@ import java.util.Map;
  * Created by luoguo on 2014/6/4.
  */
 public class U {
+    /**
+     * 获取属性
+     *
+     * @param object
+     * @param name
+     * @return
+     * @throws TemplateException
+     */
     public static Object p(Object object, Object name) throws TemplateException {
         try {
             return BeanUtils.getProperty(object, name.toString());
@@ -29,6 +37,14 @@ public class U {
         }
     }
 
+    /**
+     * 进行方法调用
+     * @param object
+     * @param methodName
+     * @param parameters
+     * @return
+     * @throws TemplateException
+     */
     public static Object c(Object object, String methodName, Object... parameters) throws TemplateException {
         try {
 
@@ -57,7 +73,7 @@ public class U {
         }
     }
 
-    private static Class<?>[] getParameterTypes(Object object, String methodName) throws  TemplateException {
+    private static Class<?>[] getParameterTypes(Object object, String methodName) throws TemplateException {
         for (Method method : object.getClass().getMethods()) {
             if (method.getName().equals(methodName)) {
                 return method.getParameterTypes();
@@ -82,14 +98,26 @@ public class U {
         }
     }
 
+    /**
+     * 根据当前路径，计算新路径的绝对路径
+     * @param currentPath
+     * @param newPath
+     * @return
+     */
     public static String getPath(String currentPath, String newPath) {
         URI uri = URI.create(currentPath);
-        newPath=newPath.replaceAll("[\\\\]","/");
+        newPath = newPath.replaceAll("[\\\\]", "/");
         URI newUri = uri.resolve(newPath);
 
         return newUri.getPath();
     }
-    public static String escapeHtml(Object object){
+
+    /**
+     * 进行Html转义
+     * @param object
+     * @return
+     */
+    public static String escapeHtml(Object object) {
         return StringEscapeUtils.escapeHtml(object.toString());
     }
 
@@ -129,32 +157,33 @@ public class U {
      * 访问数组类型的内容
      *
      * @param object
-     * @param indexObject  索引值
+     * @param indexObject 索引值
      * @return
      * @throws Exception
      */
     public static Object a(Object object, Object indexObject) throws TemplateException {
         int index;
-        if(indexObject instanceof Integer){
-            index=((Integer) indexObject).intValue();
-        }else if(indexObject instanceof Long){
-            index=((Long)indexObject).intValue();
-        }else if(indexObject instanceof Double){
-            index=((Double)indexObject).intValue();
-        }else if(indexObject instanceof Float){
-            index=((Float)indexObject).intValue();
-        }else if(indexObject instanceof Byte){
-            index=((Byte)indexObject).intValue();
-        }else if(indexObject instanceof BigDecimal){
-            index=((BigDecimal)indexObject).intValue();
-        }else{
-            index=Integer.parseInt(indexObject.toString());
+        if (object instanceof Map) {
+            Map map = (Map) object;
+            return map.get(indexObject.toString());
+        }
+        if (indexObject instanceof Integer) {
+            index = ((Integer) indexObject).intValue();
+        } else if (indexObject instanceof Long) {
+            index = ((Long) indexObject).intValue();
+        } else if (indexObject instanceof Double) {
+            index = ((Double) indexObject).intValue();
+        } else if (indexObject instanceof Float) {
+            index = ((Float) indexObject).intValue();
+        } else if (indexObject instanceof Byte) {
+            index = ((Byte) indexObject).intValue();
+        } else if (indexObject instanceof BigDecimal) {
+            index = ((BigDecimal) indexObject).intValue();
+        } else {
+            index = Integer.parseInt(indexObject.toString());
         }
         if (object.getClass().isArray()) {
             return Array.get(object, index);
-        } else if (object instanceof Map) {
-            Map map = (Map) object;
-            return a(map.entrySet(), index);
         } else if (object instanceof Collection) {
             Collection c = (Collection) object;
             int i = 0;

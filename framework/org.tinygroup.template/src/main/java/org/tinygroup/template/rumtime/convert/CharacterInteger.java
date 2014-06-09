@@ -12,6 +12,6 @@ public class CharacterInteger implements Converter<Character,Integer> {
     }
 
     public String getType() {
-        return "FloatDouble";
+        return "java.lang.Characterjava.lang.Integer";
     }
 }

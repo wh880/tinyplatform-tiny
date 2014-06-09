@@ -14,6 +14,6 @@ public class CharacterBigDecimal implements Converter<Character,BigDecimal> {
     }
 
     public String getType() {
-        return "FloatDouble";
+        return "java.lang.CharacterBigjava.math.BigDecimal";
     }
 }

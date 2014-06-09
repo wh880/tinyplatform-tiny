@@ -123,12 +123,10 @@ OP_BITWISE_AND          : '&'                              ;
 OP_BITWISE_OR           : '|'                              ;
 OP_BITWISE_NOT          : '~'                              ;
 OP_BITWISE_XOR          : '^'                              ;
-//OP_BITWISE_SHL          : '<<'                             ;
+OP_BITWISE_SHL          : '<<'                             ;
 
-// Following operators are conflict with Java Generic Type definition.
-// Sample: List<List<String>>
-//OP_BITWISE_SHR        : '>>'                             ;
-//OP_BITWISE_SHR_2      : '>>>'                            ;
+OP_BITWISE_SHR        : '>>'                             ;
+OP_BITWISE_SHR_2      : '>>>'                            ;
 
 OP_INSTANCEOF           : 'instanceof' | 'is'              ;
 OP_NEW                  : 'new'                            ;

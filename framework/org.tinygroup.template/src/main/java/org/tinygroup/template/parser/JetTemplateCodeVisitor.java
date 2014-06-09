@@ -69,7 +69,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
     public CodeBlock visitCall_directive(@NotNull JetTemplateParser.Call_directiveContext ctx) {
         CodeBlock callMacro = new CodeBlock();
-        CodeLet nameCodeBlock=pushPeekCodeLet();
+        CodeLet nameCodeBlock = pushPeekCodeLet();
         ctx.expression().accept(this);
         popCodeLet();
 
@@ -414,6 +414,9 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitExpr_math_unary_suffix(@NotNull JetTemplateParser.Expr_math_unary_suffixContext ctx) {
+        peekCodeLet().code("O.e(\"l").code(ctx.getChild(1).getText()).code("\",");
+        ctx.expression().accept(this);
+        peekCodeLet().code(")");
         return null;
     }
 
@@ -547,7 +550,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
     public CodeBlock visitCall_block_directive(@NotNull JetTemplateParser.Call_block_directiveContext ctx) {
         CodeBlock callMacro = new CodeBlock();
-        CodeLet nameCodeBlock=pushPeekCodeLet();
+        CodeLet nameCodeBlock = pushPeekCodeLet();
         ctx.expression().accept(this);
         popCodeLet();
 
@@ -733,6 +736,16 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
         return null;
     }
 
+    @Override
+    public CodeBlock visitExpr_math_binary_shift(@NotNull JetTemplateParser.Expr_math_binary_shiftContext ctx) {
+        peekCodeLet().code("O.e(\"").code(ctx.getChild(1).getText()).code("\",");
+        ctx.expression(0).accept(this);
+        peekCodeLet().code(",");
+        ctx.expression(1).accept(this);
+        peekCodeLet().code(")");
+        return null;
+    }
+
 
     public CodeBlock visitStop_directive(@NotNull JetTemplateParser.Stop_directiveContext ctx) {
         JetTemplateParser.ExpressionContext expression = ctx.expression();
@@ -777,7 +790,7 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
 
         JetTemplateParser.Else_directiveContext else_directive = ctx.else_directive();
         if (else_directive != null) {
-            CodeBlock elseCodeBlock = pushPeekCodeBlock().header("if(U.b(((ForIterator)$context.get(\""+name+"For\")).getSize()>0)){").footer("}");
+            CodeBlock elseCodeBlock = pushPeekCodeBlock().header("if(U.b(((ForIterator)$context.get(\"" + name + "For\")).getSize()>0)){").footer("}");
             else_directive.block().accept(this);
             popCodeBlock();
             peekCodeBlock().subCode(elseCodeBlock);

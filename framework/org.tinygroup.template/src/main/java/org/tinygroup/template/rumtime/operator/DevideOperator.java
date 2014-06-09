@@ -30,7 +30,7 @@ public class DevideOperator extends DoubleOperator {
             return b1.divide(b2);
         }
 
-        throw new UnsupportedOperationException(left.getClass().getName() + "/" + right.getClass().getName());
+        throw getUnsupportedOperationException(left,right);
     }
 
 

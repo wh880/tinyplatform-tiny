@@ -1,9 +1,10 @@
 package org.tinygroup.template.rumtime;
 
 import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.rumtime.impl.operator.*;
-import org.tinygroup.template.rumtime.impl.convert.*;
+import org.tinygroup.template.rumtime.convert.*;
+import org.tinygroup.template.rumtime.operator.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,12 +21,12 @@ public final class O {
     private static List<String> numberTypeOrder = new ArrayList<String>();
 
     static {
-        numberTypeOrder.add("Byte");
-        numberTypeOrder.add("Character");
-        numberTypeOrder.add("Integer");
-        numberTypeOrder.add("Float");
-        numberTypeOrder.add("Double");
-        numberTypeOrder.add("BigDecimal");
+        numberTypeOrder.add(Byte.class.getName());
+        numberTypeOrder.add(Character.class.getName());
+        numberTypeOrder.add(Integer.class.getName());
+        numberTypeOrder.add(Float.class.getName());
+        numberTypeOrder.add(Double.class.getName());
+        numberTypeOrder.add(BigDecimal.class.getName());
 
         addConverter(new ByteCharacter());
         addConverter(new ByteInteger());
@@ -57,7 +58,7 @@ public final class O {
         addOperator(new LeftPlusPlusOperator());
         addOperator(new LeftSubtractSubtractOperator());
         addOperator(new LeftLiteralOperator());
-        addOperator(new LeftNotOperator());
+        addOperator(new ComplementOperator());
         //逻辑比较符
         addOperator(new EqualsOperator());
         addOperator(new NotEqualsOperator());
@@ -65,23 +66,30 @@ public final class O {
         addOperator(new LessOperator());
         addOperator(new BigOperator());
         addOperator(new BigEqualsOperator());
+        //移位运算符
+        addOperator(new ShlOperator());
+        addOperator(new ShrOperator());
+        addOperator(new Shr2Operator());
     }
-    public static Object convert(Object object,String sourceType,String destType){
-        Converter converter=converterMap.get(sourceType+destType);
+
+    public static Object convert(Object object, String sourceType, String destType) {
+        Converter converter = converterMap.get(sourceType + destType);
         return converter.convert(object);
     }
-    public static int compare(String type1,String type2){
+
+    public static int compare(String type1, String type2) {
         int index1 = numberTypeOrder.indexOf(type1);
         int index2 = numberTypeOrder.indexOf(type2);
-        if(index1==index2){
+        if (index1 == index2) {
             return 0;
         }
-        if(index1>index2){
+        if (index1 > index2) {
             return 1;
-        }else{
+        } else {
             return -1;
         }
     }
+
     public static String getResultType(String type1, String type2) {
         int index1 = numberTypeOrder.indexOf(type1);
         int index2 = numberTypeOrder.indexOf(type2);
@@ -93,7 +101,7 @@ public final class O {
     }
 
     public static void addConverter(Converter converter) {
-        converterMap.put(converter.getClass().getName(), converter);
+        converterMap.put(converter.getType(), converter);
     }
 
     public static void addOperator(Operator operator) {
@@ -103,7 +111,7 @@ public final class O {
     public static Object e(String op, Object... parameters) throws TemplateException {
         Operator operator = operationMap.get(op);
         if (operator == null) {
-            throw new TemplateException("找不对对应于："+op+"的处理器。");
+            throw new TemplateException("找不对对应于：" + op + "的处理器。");
         }
         return operator.operation(parameters);
     }

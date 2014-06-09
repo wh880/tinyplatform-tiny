@@ -14,6 +14,6 @@ public class FloatBigDecimal implements Converter<Float,BigDecimal> {
     }
 
     public String getType() {
-        return "BigDecimal2Float";
+        return "java.lang.Floatjava.math.BigDecimal";
     }
 }

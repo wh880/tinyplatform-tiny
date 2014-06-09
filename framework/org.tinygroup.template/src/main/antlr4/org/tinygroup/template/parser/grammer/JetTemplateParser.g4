@@ -176,7 +176,7 @@ expression  :   '(' expression ')'                                           # e
             |   'new' type ('[' expression ']')+                             # expr_new_array
             |   expression ('*'|'/'|'%')  expression                         # expr_math_binary_basic
             |   expression ('+'|'-')      expression                         # expr_math_binary_basic
-//            |   expression ('<<'|'>' '>'|'>' '>' '>') expression             # expr_math_binary_shift
+            |   expression ('<<'|'>' '>'|'>' '>' '>') expression             # expr_math_binary_shift
             |   expression ('>='|'<='|'>'|'<') expression                    # expr_compare_relational
             |   expression OP_INSTANCEOF type                                # expr_instanceof
             |   expression ('=='|'!=') expression                            # expr_compare_equality

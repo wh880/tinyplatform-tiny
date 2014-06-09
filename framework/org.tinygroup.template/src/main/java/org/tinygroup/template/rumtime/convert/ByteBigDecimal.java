@@ -14,6 +14,6 @@ public class ByteBigDecimal implements Converter<Byte,BigDecimal> {
     }
 
     public String getType() {
-        return "FloatDouble";
+        return "java.lang.Bytejava.math.BigDecimal";
     }
 }

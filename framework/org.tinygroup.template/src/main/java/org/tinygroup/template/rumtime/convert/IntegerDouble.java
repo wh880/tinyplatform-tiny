@@ -11,6 +11,6 @@ public class IntegerDouble implements Converter<Integer,Double> {
     }
 
     public String getType() {
-        return "IntegerDouble";
+        return "java.lang.Integerjava.lang.Double";
     }
 }

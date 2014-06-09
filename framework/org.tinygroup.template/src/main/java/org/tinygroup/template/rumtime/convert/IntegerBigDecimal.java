@@ -13,6 +13,6 @@ public class IntegerBigDecimal implements Converter<Integer,BigDecimal> {
     }
 
     public String getType() {
-        return "IntegerBigDecimal";
+        return "java.lang.Integerjava.math.BigDecimal";
     }
 }

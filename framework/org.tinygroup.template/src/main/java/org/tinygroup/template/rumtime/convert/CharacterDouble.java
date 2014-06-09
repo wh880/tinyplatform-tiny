@@ -12,6 +12,6 @@ public class CharacterDouble implements Converter<Character,Double> {
     }
 
     public String getType() {
-        return "FloatDouble";
+        return "java.lang.Characterjava.lang.Double";
     }
 }

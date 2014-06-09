@@ -1,2 +1,0 @@
-${a?[0].asDefault(1)}
-${notFoundUser?.status.asDefault(123)}

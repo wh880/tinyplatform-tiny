@@ -12,6 +12,6 @@ public class ByteCharacter implements Converter<Byte,Character> {
     }
 
     public String getType() {
-        return "FloatDouble";
+        return "java.lang.Bytejava.lang.Character";
     }
 }

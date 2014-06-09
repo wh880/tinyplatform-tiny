@@ -30,7 +30,7 @@ public class SubtractOperator extends DoubleOperator {
             return b1.subtract(b2);
         }
 
-        throw new UnsupportedOperationException(left.getClass().getName() + "-" + right.getClass().getName());
+        throw getUnsupportedOperationException(left,right);
     }
 
 
