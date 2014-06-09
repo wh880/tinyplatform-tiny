@@ -163,6 +163,7 @@ expression  :   '(' expression ')'                                           # e
             |   '{' hash_map_entry_list? '}'                                 # expr_hash_map
             |   expression ('.'|'?.') expression                             # expr_field_access
             |   expression ('.'|'?.') expression '(' expression_list? ')'    # expr_method_invocation
+            |   expression '.' IDENTIFIER '(' expression_list? ')'           # expr_member_function_call
             |   IDENTIFIER '(' expression_list? ')'                          # expr_function_call
 //            |   static_type_name '.' IDENTIFIER                              # expr_static_field_access
 //            |   static_type_name '.' IDENTIFIER  '(' expression_list? ')'    # expr_static_method_invocation

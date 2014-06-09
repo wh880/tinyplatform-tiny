@@ -32,36 +32,72 @@ public class TestParser extends TestCase {
         String result = execute("abc");
         assertTrue(result.indexOf("write($writer,\"abc\");") > 0);
     }
+
     public void testT2_10() throws Exception {
         String result = execute("${2++}");
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,O.e(\"l++\",2));") > 0);
     }
+
     public void testT2_13() throws Exception {
         String result = execute("${2>>1}");
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,O.e(\"l++\",2));") > 0);
     }
-   public void testT2_14() throws Exception {
+
+    public void testT2_14() throws Exception {
         String result = execute("${2?:1}");
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,O.e(\"?:\",2,1));") > 0);
     }
+
     public void testT2_15() throws Exception {
+        String result = execute("${abc(2)}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,U.c(\"abc\",2));") > 0);
+    }
+
+    public void testT2_16() throws Exception {
+        String result = execute("${aa()}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,U.c(\"aa\"));") > 0);
+    }
+
+    public void testT2_18() throws Exception {
+        String result = execute("${aa(bb(1))}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,U.c(\"aa\",U.c(\"bb\",1)));") > 0);
+    }
+
+    public void testT2_19() throws Exception {
+        String result = execute("${abc.aa(bb(1))}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,U.p(U.v($context,\"abc\"),U.c(\"aa\",U.c(\"bb\",1))));") > 0);
+    }
+   public void testT2_20() throws Exception {
+        String result = execute("${format('this is %s',2)}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,U.p(U.v($context,\"abc\"),U.c(\"aa\",U.c(\"bb\",1))));") > 0);
+    }
+
+    public void testT2_17() throws Exception {
         String result = execute("$${abc.bb}");
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,U.getI18n($template.getTemplateEngine().getI18nVistor(),\"abc.bb\"));") > 0);
     }
+
     public void testT2_11() throws Exception {
         String result = execute("${2--}");
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,O.e(\"l--\",2));") > 0);
     }
+
     public void testT2_12() throws Exception {
         String result = execute("${map[\"id\"]}");
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,U.a(U.v($context,\"map\"),\"id\"));") > 0);
     }
+
     public void testT2_1() throws Exception {
         String result = execute("${aa.bb}");
         System.out.println(result);

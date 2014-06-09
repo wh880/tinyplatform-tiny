@@ -171,16 +171,13 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitExpr_function_call(@NotNull JetTemplateParser.Expr_function_callContext ctx) {
-        popCodeLet();
         String functionName = ctx.getChild(0).getText();
-        peekCodeLet().codeBefore("U.c(").code(",\"").code(functionName).code("\"");
+
+        peekCodeLet().codeBefore("getTemplateEngine().executeFunction(\"").code(functionName).code("\", $context");
         JetTemplateParser.Expression_listContext list = ctx.expression_list();
-        if (list != null) {
-            peekCodeLet().code(",");
-            list.accept(this);
-        }
+        peekCodeLet().code(",");
+        list.accept(this);
         peekCodeLet().code(")");
-        pushCodeLet();
         return null;
     }
 
@@ -663,6 +660,21 @@ public class JetTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> 
     }
 
     public CodeBlock visitConstant(@NotNull JetTemplateParser.ConstantContext ctx) {
+        return null;
+    }
+
+    @Override
+    public CodeBlock visitExpr_member_function_call(@NotNull JetTemplateParser.Expr_member_function_callContext ctx) {
+        popCodeLet();
+        String functionName = ctx.getChild(0).getText();
+        peekCodeLet().codeBefore("U.c(").code(",\"").code(functionName).code("\"");
+        JetTemplateParser.Expression_listContext list = ctx.expression_list();
+        if (list != null) {
+            peekCodeLet().code(",");
+            list.accept(this);
+        }
+        peekCodeLet().code(")");
+        pushCodeLet();
         return null;
     }
 

@@ -1,6 +1,7 @@
 package org.tinygroup.template.impl;
 
 import org.tinygroup.template.*;
+import org.tinygroup.template.function.Formatter;
 import org.tinygroup.template.loader.StringTemplateLoader;
 
 import java.io.OutputStreamWriter;
@@ -17,6 +18,7 @@ import java.util.Set;
 public class TemplateEngineDefault implements TemplateEngine {
     public static final String DEFAULT = "default";
     Path root = new Path("");
+    Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
     private TemplateContext templateEngineContext = new TemplateContextImpl();
 
     private Map<String, TemplateLoader> templateLoaderMap = new HashMap();
@@ -26,6 +28,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     public TemplateEngineDefault() {
         //添加一个默认的加载器
         addTemplateLoader(new StringTemplateLoader("default"));
+        addTemplateFunction(new Formatter());
     }
 
     public TemplateContext getTemplateContext() {
@@ -68,12 +71,17 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     @Override
     public void setI18nVistor(I18nVistor i18nVistor) {
-        this.i18nVistor=i18nVistor;
+        this.i18nVistor = i18nVistor;
     }
 
     @Override
     public I18nVistor getI18nVistor() {
         return i18nVistor;
+    }
+
+    @Override
+    public void addTemplateFunction(TemplateFunction function) {
+        functionMap.put(function.getName(), function);
     }
 
 
@@ -173,7 +181,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         template.render(context, writer);
     }
 
-    public Macro findMacro(String macroName, Template template, TemplateContext $context) throws TemplateException {
+    public Macro findMacro(Object macroName, Template template, TemplateContext $context) throws TemplateException {
         Macro macro = template.getMacroMap().get(macroName);
         if (macro == null) {
             Object obj = $context.getItemMap().get(macroName);
@@ -188,5 +196,14 @@ public class TemplateEngineDefault implements TemplateEngine {
             }
         }
         return macro;
+    }
+
+    @Override
+    public Object executeFunction(String functionName, TemplateContext context, Object... parameters) throws TemplateException {
+        TemplateFunction function = functionMap.get(functionName);
+        if (function != null) {
+            return function.execute(context, parameters);
+        }
+        throw new TemplateException("找不到函数：" + functionName);
     }
 }
