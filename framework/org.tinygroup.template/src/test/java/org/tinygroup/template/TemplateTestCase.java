@@ -8,6 +8,7 @@ import org.tinygroup.template.impl.TemplateEngineDefault;
  */
 public class TemplateTestCase {
     static class I18nvi implements I18nVistor{
+       
 
         @Override
         public String getI18nMessage(String key) {
@@ -17,7 +18,7 @@ public class TemplateTestCase {
     static  class  StringBoldFunction extends AbstractBindTemplateFunction {
 
         public StringBoldFunction() {
-            super("bold","java.lang.String");
+            super("bold", "java.lang.String");
         }
 
         @Override

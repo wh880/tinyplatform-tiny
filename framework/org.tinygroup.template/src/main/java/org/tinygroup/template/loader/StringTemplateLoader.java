@@ -11,6 +11,11 @@ public class StringTemplateLoader extends AbstractTemplateLoader<String> {
         super(type);
     }
 
+    @Override
+    public String getResource(String path) {
+        return null;
+    }
+
     public Template createTemplate(String stringTemplateMaterial) throws TemplateException {
         Template template = TemplateCompilerUtils.compileTemplate(StringTemplateLoader.class.getClassLoader(),stringTemplateMaterial, getRandomPath());
         //这里没有调用putTemplate是避免内存泄露

@@ -25,7 +25,7 @@ public interface TemplateFunction {
      * @param templateEngine
      */
     void setTemplateEngine(TemplateEngine templateEngine);
-
+    TemplateEngine getTemplateEngine();
     /**
      * 执行函数体
      *

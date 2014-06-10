@@ -83,30 +83,30 @@ public class TestParser extends TestCase {
     public void testT2_15() throws Exception {
         String result = execute("${abc(2)}");
         System.out.println(result);
-        assertTrue(result.indexOf("write($writer,getTemplateEngine().executeFunction(\"abc\", $context,2));") > 0);
+        assertTrue(result.indexOf("write($writer,getTemplateEngine().executeFunction(\"abc\",2));") > 0);
     }
 
     public void testT2_16() throws Exception {
         String result = execute("${aa()}");
         System.out.println(result);
-        assertTrue(result.indexOf("write($writer,getTemplateEngine().executeFunction(\"aa\", $context));") > 0);
+        assertTrue(result.indexOf("write($writer,getTemplateEngine().executeFunction(\"aa\"));") > 0);
     }
 
     public void testT2_18() throws Exception {
         String result = execute("${aa(bb(1))}");
         System.out.println(result);
-        assertTrue(result.indexOf("write($writer,getTemplateEngine().executeFunction(\"aa\", $context,getTemplateEngine().executeFunction(\"bb\", $context,1)));") > 0);
+        assertTrue(result.indexOf("write($writer,getTemplateEngine().executeFunction(\"aa\",getTemplateEngine().executeFunction(\"bb\",1)));") > 0);
     }
 
     public void testT2_19() throws Exception {
         String result = execute("${abc.aa(bb(1))}");
         System.out.println(result);
-        assertTrue(result.indexOf("write($writer,U.c($template,U.v($context,\"abc\"),\"aa\",getTemplateEngine().executeFunction(\"bb\", $context,1)));") > 0);
+        assertTrue(result.indexOf("write($writer,U.c($template,U.v($context,\"abc\"),\"aa\",getTemplateEngine().executeFunction(\"bb\",1)));") > 0);
     }
    public void testT2_20() throws Exception {
         String result = execute("${format('this is %s',2)}");
         System.out.println(result);
-        assertTrue(result.indexOf("write($writer,getTemplateEngine().executeFunction(\"format\", $context,\"this is %s\",2));") > 0);
+        assertTrue(result.indexOf("write($writer,getTemplateEngine().executeFunction(\"format\",\"this is %s\",2));") > 0);
     }
 
     public void testT2_17() throws Exception {
@@ -313,7 +313,7 @@ public class TestParser extends TestCase {
     public void testT21() throws Exception {
         String result = execute("${a(b+1)}");
         System.out.println(result);
-        assertTrue(result.indexOf("write($writer,getTemplateEngine().executeFunction(\"a\", $context,O.e(\"+\",U.v($context,\"b\"),1)));") > 0);
+        assertTrue(result.indexOf("write($writer,getTemplateEngine().executeFunction(\"a\",O.e(\"+\",U.v($context,\"b\"),1)));") > 0);
     }
 
     public void testT22() throws Exception {

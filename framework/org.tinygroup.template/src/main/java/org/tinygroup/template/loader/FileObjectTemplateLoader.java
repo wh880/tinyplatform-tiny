@@ -57,6 +57,11 @@ public class FileObjectTemplateLoader extends AbstractTemplateLoader<FileObject>
         return null;
     }
 
+    @Override
+    public FileObject getResource(String path) {
+        return null;
+    }
+
     private void loadTemplate(String path, FileObject fileObject,ClassLoader classLoader) {
         try {
             Template template = TemplateCompilerUtils.compileTemplate(classLoader,IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()), fileObject.getPath());

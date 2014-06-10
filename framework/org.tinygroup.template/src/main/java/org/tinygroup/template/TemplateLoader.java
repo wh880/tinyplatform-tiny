@@ -23,6 +23,14 @@ public interface TemplateLoader<T> {
     Template getTemplate(String path) throws TemplateException;
 
     /**
+     * 获取其它的资源
+     *
+     * @param path
+     * @return
+     */
+    T getResource(String path);
+
+    /**
      * 添加模板对象
      *
      * @param template

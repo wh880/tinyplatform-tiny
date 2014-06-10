@@ -15,6 +15,10 @@ public abstract class AbstractFunctionWrapper implements TemplateFunction {
         this.name = name;
     }
 
+    @Override
+    public TemplateEngine getTemplateEngine() {
+        return templateEngine;
+    }
 
     @Override
     public String getBindingTypes() {

@@ -45,14 +45,14 @@ public interface ForStatus {
      *
      * @since 1.1.3
      */
-    public boolean isAtFirst();
+    public boolean isFirst();
 
     /**
      * 是否最后一个元素.
      *
      * @since 1.1.3
      */
-    public boolean isAtLast();
+    public boolean isLast();
 
     /**
      * 是否第奇数个元素.

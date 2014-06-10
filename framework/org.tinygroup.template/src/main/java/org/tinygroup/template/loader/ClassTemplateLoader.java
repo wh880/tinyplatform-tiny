@@ -22,6 +22,11 @@ public class ClassTemplateLoader extends AbstractTemplateLoader<String> {
     }
 
     @Override
+    public String getResource(String path) {
+        return null;
+    }
+
+    @Override
     public Template createTemplate(String path) throws TemplateException {
         String className=TemplateCompilerUtils.getClassNameGetter().getClassName(path).getClassName();
         try {
