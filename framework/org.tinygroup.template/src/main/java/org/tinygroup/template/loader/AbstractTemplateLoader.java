@@ -2,6 +2,7 @@ package org.tinygroup.template.loader;
 
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateEngine;
+import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.TemplateLoader;
 
 import java.util.Map;
@@ -28,7 +29,7 @@ public abstract class AbstractTemplateLoader<T> implements TemplateLoader<T> {
         return templateMap;
     }
 
-    public Template getTemplate(String path) throws Exception {
+    public Template getTemplate(String path) throws TemplateException{
         return templateMap.get(path);
     }
     public TemplateLoader putTemplate(T key,Template template){

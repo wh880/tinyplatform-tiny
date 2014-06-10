@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.tinygroup.template.parser.grammer.JetTemplateLexer;
-import org.tinygroup.template.parser.grammer.JetTemplateParser;
+import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 /**
  * Created by luoguo on 2014/6/4.
@@ -16,12 +16,12 @@ public class TestParser extends TestCase {
         char[] source = template.toCharArray();
         ANTLRInputStream is = new ANTLRInputStream(source, source.length);
         is.name = "testname"; // set source file name, it will be displayed in error report.
-        JetTemplateParser parser = new JetTemplateParser(new CommonTokenStream(new JetTemplateLexer(is)));
+        TinyTemplateParser parser = new TinyTemplateParser(new CommonTokenStream(new JetTemplateLexer(is)));
         parser.removeErrorListeners(); // remove ConsoleErrorListener
         parser.addErrorListener(TinyTemplateErrorListener.getInstance());
         parser.setErrorHandler(new TinyTemplateErrorStrategy());
 
-        JetTemplateParser.TemplateContext templateParseTree = parser.template();
+        TinyTemplateParser.TemplateContext templateParseTree = parser.template();
         TinyTemplateCodeVisitor visitor = new TinyTemplateCodeVisitor(parser);
         CodeBlock codeBlock = templateParseTree.accept(visitor);
         return codeBlock.toString();

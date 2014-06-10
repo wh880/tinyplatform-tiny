@@ -31,7 +31,7 @@ public class FileObjectTemplateLoader extends AbstractTemplateLoader<FileObject>
         return null;
     }
 
-    public Template getTemplate(final String path) throws Exception {
+    public Template getTemplate(final String path) throws TemplateException {
         FileObject fileObject = pathMap.get(path);
         if (fileObject == null) {//如果文件缓冲里没有找到加载的文件
             root.foreach(new EqualsPathFileObjectFilter(path), new FileObjectProcessor() {
@@ -50,7 +50,11 @@ public class FileObjectTemplateLoader extends AbstractTemplateLoader<FileObject>
                 loadTemplate(path, fileObject);
             }
         }
-        return getTemplate(path);
+        fileObject = pathMap.get(path);
+        if (fileObject != null) {
+            return super.getTemplateMap().get(fileObject);
+        }
+        return null;
     }
 
     private void loadTemplate(String path, FileObject fileObject) {

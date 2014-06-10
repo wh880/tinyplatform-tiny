@@ -20,7 +20,7 @@ public interface TemplateLoader<T> {
      * @param path
      * @return
      */
-    Template getTemplate(String path) throws Exception;
+    Template getTemplate(String path) throws TemplateException;
 
     /**
      * 添加模板对象
