@@ -22,12 +22,12 @@ public abstract class AbstractMacro implements Macro {
     }
 
     public void setParameterNames(String[] parameterNames) {
-        this.parameterNames = parameterNames;
+        this.parameterNames = parameterNames.clone();
     }
 
     protected void init(String name, String[] parameterNames) {
         this.name = name;
-        this.parameterNames = parameterNames;
+        this.parameterNames = parameterNames.clone();
     }
 
     protected void write(Writer $writer, Object object) throws IOException {

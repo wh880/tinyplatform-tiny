@@ -1,6 +1,5 @@
 package org.tinygroup.template;
 
-import java.io.IOException;
 import java.io.Writer;
 
 /**
@@ -27,7 +26,6 @@ public interface Macro extends TemplateContextOperator{
      *
      * @param $context
      * @param $writer
-     * @throws IOException
      */
     void render(Template $template ,TemplateContext $context, Writer $writer) throws TemplateException;
 }

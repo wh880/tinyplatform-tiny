@@ -18,7 +18,7 @@ public class ClassTemplateLoader extends AbstractTemplateLoader<String> {
 
     public ClassTemplateLoader(String type, URL[] urls, ClassLoader classLoader) {
         super(type);
-         templateClassLoader = new URLClassLoader(urls,classLoader);
+         templateClassLoader = new URLClassLoader(urls.clone(),classLoader);
     }
 
     @Override

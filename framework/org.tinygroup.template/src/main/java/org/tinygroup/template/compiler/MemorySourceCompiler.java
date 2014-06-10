@@ -26,7 +26,7 @@ public class MemorySourceCompiler {
     private String outputDir = TEMP_DIR + "ttl" + File.separatorChar;
 
 
-    public <T> Class<T> loadClass(MemorySource source) throws TemplateException {
+    public <T> Class<T> loadClass( MemorySource source) throws TemplateException {
         return loadClass(MemorySourceCompiler.class.getClassLoader(), source);
     }
 
