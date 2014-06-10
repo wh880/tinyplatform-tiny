@@ -37,15 +37,25 @@ public class U {
             throw new TemplateException(e);
         }
     }
-    public static String getI18n(I18nVistor i18nVistor,String key){
-        if(i18nVistor==null){
+
+    public static Object sp(Object object, Object name) throws TemplateException {
+        if (object != null) {
+            return p(object, name);
+        }
+        return null;
+    }
+
+    public static String getI18n(I18nVistor i18nVistor, String key) {
+        if (i18nVistor == null) {
             return key;
-        }else{
+        } else {
             return i18nVistor.getI18nMessage(key);
         }
     }
+
     /**
      * 进行方法调用
+     *
      * @param object
      * @param methodName
      * @param parameters
@@ -68,6 +78,13 @@ public class U {
         }
     }
 
+    public static Object sc(Object object, String methodName, Object... parameters) throws TemplateException {
+        if (object != null) {
+            return c(object, methodName, parameters);
+        }
+        return null;
+    }
+
     private static Object invokeMethod(Object object, String methodName, Object[] parameters, Class<?>[] parameterTypes) throws TemplateException {
         if (parameters == null && parameterTypes.length > 0) {
             parameters = new Object[parameterTypes.length];
@@ -79,7 +96,7 @@ public class U {
         }
     }
 
-    public static Class<?>[] getParameterTypes(Class  clazz, String methodName) throws TemplateException {
+    public static Class<?>[] getParameterTypes(Class clazz, String methodName) throws TemplateException {
         for (Method method : clazz.getMethods()) {
             if (method.getName().equals(methodName)) {
                 return method.getParameterTypes();
@@ -106,6 +123,7 @@ public class U {
 
     /**
      * 根据当前路径，计算新路径的绝对路径
+     *
      * @param currentPath
      * @param newPath
      * @return
@@ -120,6 +138,7 @@ public class U {
 
     /**
      * 进行Html转义
+     *
      * @param object
      * @return
      */

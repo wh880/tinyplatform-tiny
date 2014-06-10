@@ -140,13 +140,13 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitExpr_field_access(@NotNull TinyTemplateParser.Expr_field_accessContext ctx) {
-        ctx.expression(0).accept(this);
+        ctx.expression().accept(this);
         pushCodeLet();
-        ctx.expression(1).accept(this);
+        ctx.IDENTIFIER().accept(this);
         CodeLet exp = peekCodeLet();
         popCodeLet();
         if (exp.length() > 0) {
-            peekCodeLet().codeBefore("U.p(").code(",").code(exp).code(")");
+            peekCodeLet().codeBefore(ctx.getChild(1).getText().equals("?.") ? "U.sp(" : "U.p(").code(",\"").code(exp).code("\")");
         }
         return null;
     }
@@ -166,14 +166,15 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
 
-
     public CodeBlock visitExpr_function_call(@NotNull TinyTemplateParser.Expr_function_callContext ctx) {
         String functionName = ctx.getChild(0).getText();
 
         peekCodeLet().codeBefore("getTemplateEngine().executeFunction(\"").code(functionName).code("\", $context");
         TinyTemplateParser.Expression_listContext list = ctx.expression_list();
-        peekCodeLet().code(",");
-        list.accept(this);
+        if (list != null) {
+            peekCodeLet().code(",");
+            list.accept(this);
+        }
         peekCodeLet().code(")");
         return null;
     }
@@ -416,7 +417,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
 
-
     public CodeBlock visitCall_macro_directive(@NotNull TinyTemplateParser.Call_macro_directiveContext ctx) {
         CodeBlock callMacro = new CodeBlock();
         String name = ctx.getChild(0).getText();
@@ -656,16 +656,15 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     @Override
     public CodeBlock visitExpr_member_function_call(@NotNull TinyTemplateParser.Expr_member_function_callContext ctx) {
-        popCodeLet();
-        String functionName = ctx.getChild(0).getText();
-        peekCodeLet().codeBefore("U.c(").code(",\"").code(functionName).code("\"");
+        ctx.expression().accept(this);
+        String functionName = ctx.IDENTIFIER().getText();
+        peekCodeLet().codeBefore(ctx.getChild(1).getText().equals(".")?"U.c(":"U.sc(").code(",\"").code(functionName).code("\"");
         TinyTemplateParser.Expression_listContext list = ctx.expression_list();
         if (list != null) {
             peekCodeLet().code(",");
             list.accept(this);
         }
         peekCodeLet().code(")");
-        pushCodeLet();
         return null;
     }
 
@@ -699,7 +698,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         peekCodeLet().code("U.b(%s)?%s:%s", condition, left, right);
         return null;
     }
-
 
 
     private RuntimeException reportError(String message, Object node) {

@@ -161,9 +161,10 @@ expression  :   '(' expression ')'                                           # e
             |   IDENTIFIER                                                   # expr_identifier
             |   '[' expression_list? ']'                                     # expr_array_list
             |   '{' hash_map_entry_list? '}'                                 # expr_hash_map
-            |   expression ('.'|'?.') expression                             # expr_field_access
-            |   expression '.' IDENTIFIER '(' expression_list? ')'           # expr_member_function_call
+            |   expression ('.'|'?.') IDENTIFIER '(' expression_list? ')'    # expr_member_function_call
+            |   expression ('.'|'?.') IDENTIFIER                             # expr_field_access
             |   IDENTIFIER '(' expression_list? ')'                          # expr_function_call
+
 //            |   static_type_name '.' IDENTIFIER                              # expr_static_field_access
 //            |   static_type_name '.' IDENTIFIER  '(' expression_list? ')'    # expr_static_method_invocation
             |   expression ('?')? '[' expression ']'                         # expr_array_get
@@ -175,7 +176,7 @@ expression  :   '(' expression ')'                                           # e
 //            |   '(' type ')'      expression                                 # expr_class_cast
             |   expression ('*'|'/'|'%')  expression                         # expr_math_binary_basic
             |   expression ('+'|'-')      expression                         # expr_math_binary_basic
-            |   expression ('<<'|'>' '>'|'>' '>' '>') expression             # expr_math_binary_shift
+            |   expression ('<<'|'>>'|'>>>') expression             # expr_math_binary_shift
             |   expression ('>='|'<='|'>'|'<') expression                    # expr_compare_relational
             |   expression ('=='|'!=') expression                            # expr_compare_equality
             |   expression '&'  expression                                   # expr_math_binary_bitwise
