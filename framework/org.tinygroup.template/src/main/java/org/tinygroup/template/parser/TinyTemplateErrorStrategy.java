@@ -21,7 +21,7 @@ package org.tinygroup.template.parser;
 
 import org.antlr.v4.runtime.*;
 
-public class JetTemplateErrorStrategy extends DefaultErrorStrategy {
+public class TinyTemplateErrorStrategy extends DefaultErrorStrategy {
 
     public void recover(Parser recognizer, RecognitionException e) {
         throw new SyntaxErrorException(e);

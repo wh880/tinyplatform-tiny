@@ -17,10 +17,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-parser grammar JetTemplateParser;
+parser grammar TinyTemplateParser;
 
 options {
-    tokenVocab = JetTemplateLexer; // use tokens from JetTemplateLexer.g4
+    tokenVocab = TinyTemplateLexer; // use tokens from JetTemplateLexer.g4
 }
 
 /*
@@ -162,7 +162,7 @@ expression  :   '(' expression ')'                                           # e
             |   '[' expression_list? ']'                                     # expr_array_list
             |   '{' hash_map_entry_list? '}'                                 # expr_hash_map
             |   expression ('.'|'?.') expression                             # expr_field_access
-            |   expression ('.'|'?.') expression '(' expression_list? ')'    # expr_method_invocation
+            |   expression '.' IDENTIFIER '(' expression_list? ')'           # expr_member_function_call
             |   IDENTIFIER '(' expression_list? ')'                          # expr_function_call
 //            |   static_type_name '.' IDENTIFIER                              # expr_static_field_access
 //            |   static_type_name '.' IDENTIFIER  '(' expression_list? ')'    # expr_static_method_invocation
@@ -173,13 +173,10 @@ expression  :   '(' expression ')'                                           # e
             |   '~' <assoc=right> expression                                 # expr_math_unary_prefix
             |   '!' <assoc=right> expression                                 # expr_compare_not
 //            |   '(' type ')'      expression                                 # expr_class_cast
-            |   'new' type '(' expression_list? ')'                          # expr_new_object
-            |   'new' type ('[' expression ']')+                             # expr_new_array
             |   expression ('*'|'/'|'%')  expression                         # expr_math_binary_basic
             |   expression ('+'|'-')      expression                         # expr_math_binary_basic
             |   expression ('<<'|'>' '>'|'>' '>' '>') expression             # expr_math_binary_shift
             |   expression ('>='|'<='|'>'|'<') expression                    # expr_compare_relational
-            |   expression OP_INSTANCEOF type                                # expr_instanceof
             |   expression ('=='|'!=') expression                            # expr_compare_equality
             |   expression '&'  expression                                   # expr_math_binary_bitwise
             |   expression '^' <assoc=right> expression                      # expr_math_binary_bitwise

@@ -21,14 +21,14 @@ package org.tinygroup.template.parser;
 
 import org.antlr.v4.runtime.*;
 
-public class JetTemplateErrorListener extends BaseErrorListener {
-    private static JetTemplateErrorListener instance = new JetTemplateErrorListener();
+public class TinyTemplateErrorListener extends BaseErrorListener {
+    private static TinyTemplateErrorListener instance = new TinyTemplateErrorListener();
 
-    public static JetTemplateErrorListener getInstance() {
+    public static TinyTemplateErrorListener getInstance() {
         return instance;
     }
 
-    private JetTemplateErrorListener() {
+    private TinyTemplateErrorListener() {
     }
 
 

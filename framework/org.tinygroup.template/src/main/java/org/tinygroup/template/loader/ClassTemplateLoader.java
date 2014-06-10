@@ -25,9 +25,7 @@ public class ClassTemplateLoader extends AbstractTemplateLoader<String> {
     public Template createTemplate(String path) throws TemplateException {
         String className=TemplateCompilerUtils.getClassNameGetter().getClassName(path).getClassName();
         try {
-            Template template= (Template) templateClassLoader.loadClass(className).newInstance();
-            putTemplate(template);
-            return template;
+            return (Template) templateClassLoader.loadClass(className).newInstance();
         } catch (Exception e) {
             throw new TemplateException(e);
         }

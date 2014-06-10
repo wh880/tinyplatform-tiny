@@ -12,12 +12,13 @@ public class StringTemplateLoader extends AbstractTemplateLoader<String> {
     }
 
     public Template createTemplate(String stringTemplateMaterial) throws TemplateException {
-        Template template=TemplateCompilerUtils.compileTemplate(stringTemplateMaterial,getRandomPath());
-        putTemplate(template);
+        Template template = TemplateCompilerUtils.compileTemplate(stringTemplateMaterial, getRandomPath());
+        //这里没有调用putTemplate是避免内存泄露
+        template.setTemplateEngine(getTemplateEngine());
         return template;
     }
 
     private String getRandomPath() {
-        return  "/string/template/NoT" +System.nanoTime();
+        return "/string/template/NoT" + System.nanoTime();
     }
 }

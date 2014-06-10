@@ -1,6 +1,8 @@
 package org.tinygroup.template.impl;
 
 import org.tinygroup.template.*;
+import org.tinygroup.template.function.FormatterTemplateFunction;
+import org.tinygroup.template.function.InstanceOfTemplateFunction;
 import org.tinygroup.template.loader.StringTemplateLoader;
 
 import java.io.OutputStreamWriter;
@@ -17,6 +19,7 @@ import java.util.Set;
 public class TemplateEngineDefault implements TemplateEngine {
     public static final String DEFAULT = "default";
     Path root = new Path("");
+    Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
     private TemplateContext templateEngineContext = new TemplateContextImpl();
 
     private Map<String, TemplateLoader> templateLoaderMap = new HashMap();
@@ -26,6 +29,8 @@ public class TemplateEngineDefault implements TemplateEngine {
     public TemplateEngineDefault() {
         //添加一个默认的加载器
         addTemplateLoader(new StringTemplateLoader("default"));
+        addTemplateFunction(new FormatterTemplateFunction());
+        addTemplateFunction(new InstanceOfTemplateFunction());
     }
 
     public TemplateContext getTemplateContext() {
@@ -68,12 +73,20 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     @Override
     public void setI18nVistor(I18nVistor i18nVistor) {
-        this.i18nVistor=i18nVistor;
+        this.i18nVistor = i18nVistor;
     }
 
     @Override
     public I18nVistor getI18nVistor() {
         return i18nVistor;
+    }
+
+    @Override
+    public void addTemplateFunction(TemplateFunction function) {
+        String[] names = function.getNames().split(",");
+        for (String name : names) {
+            functionMap.put(name, function);
+        }
     }
 
 
@@ -173,7 +186,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         template.render(context, writer);
     }
 
-    public Macro findMacro(String macroName, Template template, TemplateContext $context) throws TemplateException {
+    public Macro findMacro(Object macroName, Template template, TemplateContext $context) throws TemplateException {
         Macro macro = template.getMacroMap().get(macroName);
         if (macro == null) {
             Object obj = $context.getItemMap().get(macroName);
@@ -181,6 +194,7 @@ public class TemplateEngineDefault implements TemplateEngine {
                 macro = (Macro) obj;
             }
             if (macro == null) {
+                //TODO
                 //到整个引擎查找
                 //先找相同路径下的，再找子目录下的，再找上级的，再找兄弟的
 
@@ -188,5 +202,14 @@ public class TemplateEngineDefault implements TemplateEngine {
             }
         }
         return macro;
+    }
+
+    @Override
+    public Object executeFunction(String functionName, TemplateContext context, Object... parameters) throws TemplateException {
+        TemplateFunction function = functionMap.get(functionName);
+        if (function != null) {
+            return function.execute(context, parameters);
+        }
+        throw new TemplateException("找不到函数：" + functionName);
     }
 }

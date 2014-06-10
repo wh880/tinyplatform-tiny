@@ -20,7 +20,7 @@ public interface TemplateLoader<T> {
      * @param path
      * @return
      */
-    Template getTemplate(String path);
+    Template getTemplate(String path) throws Exception;
 
     /**
      * 添加模板对象
@@ -28,7 +28,7 @@ public interface TemplateLoader<T> {
      * @param template
      * @return
      */
-    TemplateLoader putTemplate(Template template);
+    TemplateLoader putTemplate(T key,Template template);
 
     /**
      * 创建并注册模板
@@ -52,5 +52,5 @@ public interface TemplateLoader<T> {
      */
     TemplateEngine getTemplateEngine();
 
-    Map<String,Template>getTemplateMap();
+    Map<T,Template>getTemplateMap();
 }

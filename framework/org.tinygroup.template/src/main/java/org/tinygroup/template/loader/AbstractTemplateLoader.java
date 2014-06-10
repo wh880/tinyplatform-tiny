@@ -4,7 +4,8 @@ import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateLoader;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 抽象模板加载器
@@ -13,7 +14,7 @@ import java.util.HashMap;
 public abstract class AbstractTemplateLoader<T> implements TemplateLoader<T> {
     private final String type;
 
-    private HashMap<String, Template> templateMap = new HashMap<String, Template>();
+    private Map<T, Template> templateMap = new ConcurrentHashMap<T, Template>();
     private TemplateEngine templateEngine;
     public AbstractTemplateLoader(String type) {
         this.type = type;
@@ -23,15 +24,15 @@ public abstract class AbstractTemplateLoader<T> implements TemplateLoader<T> {
         return type;
     }
 
-    public HashMap<String, Template> getTemplateMap() {
+    public Map<T, Template> getTemplateMap() {
         return templateMap;
     }
 
-    public Template getTemplate(String path) {
+    public Template getTemplate(String path) throws Exception {
         return templateMap.get(path);
     }
-    public TemplateLoader putTemplate(Template template){
-        templateMap.put(template.getPath(), template);
+    public TemplateLoader putTemplate(T key,Template template){
+        templateMap.put(key, template);
         template.setTemplateEngine(templateEngine);
         return this;
     }

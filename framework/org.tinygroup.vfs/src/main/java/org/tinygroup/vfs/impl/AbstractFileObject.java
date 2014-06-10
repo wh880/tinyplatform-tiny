@@ -45,6 +45,9 @@ public abstract class AbstractFileObject implements FileObject {
         return this.getAbsolutePath().hashCode();
     }
 
+    public boolean isModified(){
+        return false;
+    }
 
     public boolean equals(Object obj) {
         if (obj == null) {

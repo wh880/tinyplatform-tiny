@@ -1,4 +1,4 @@
-// Generated from D:/git/tiny/framework/org.tinygroup.template/src/main/antlr4/org/tinygroup/template/parser/grammer\JetTemplateLexer.g4 by ANTLR 4.x
+// Generated from D:/git/tiny/framework/org.tinygroup.template/src/main/antlr4/org/tinygroup/template/parser/grammer\TinyTemplateLexer.g4 by ANTLR 4.x
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class JetTemplateLexer extends Lexer {
+public class TinyTemplateLexer extends Lexer {
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
@@ -80,13 +80,13 @@ public class JetTemplateLexer extends Lexer {
 	};
 
 
-	public JetTemplateLexer(CharStream input) {
+	public TinyTemplateLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "JetTemplateLexer.g4"; }
+	public String getGrammarFileName() { return "TinyTemplateLexer.g4"; }
 
 	@Override
 	public String[] getTokenNames() { return tokenNames; }

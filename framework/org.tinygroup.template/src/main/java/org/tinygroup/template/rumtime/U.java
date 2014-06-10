@@ -54,13 +54,12 @@ public class U {
      */
     public static Object c(Object object, String methodName, Object... parameters) throws TemplateException {
         try {
-
             if (parameters == null) {
-                return invokeMethod(object, methodName, parameters, getParameterTypes(object, methodName));
+                return invokeMethod(object, methodName, parameters, getParameterTypes(object.getClass(), methodName));
             }
             for (Object para : parameters) {
                 if (para == null) {
-                    return invokeMethod(object, methodName, parameters, getParameterTypes(object, methodName));
+                    return invokeMethod(object, methodName, parameters, getParameterTypes(object.getClass(), methodName));
                 }
             }
             return MethodUtils.invokeMethod(object, methodName, parameters);
@@ -80,13 +79,13 @@ public class U {
         }
     }
 
-    private static Class<?>[] getParameterTypes(Object object, String methodName) throws TemplateException {
-        for (Method method : object.getClass().getMethods()) {
+    public static Class<?>[] getParameterTypes(Class  clazz, String methodName) throws TemplateException {
+        for (Method method : clazz.getMethods()) {
             if (method.getName().equals(methodName)) {
                 return method.getParameterTypes();
             }
         }
-        throw new TemplateException(object.getClass().getName() + "中找不到方法:" + methodName);
+        throw new TemplateException(clazz.getName() + "中找不到方法:" + methodName);
     }
 
     /**

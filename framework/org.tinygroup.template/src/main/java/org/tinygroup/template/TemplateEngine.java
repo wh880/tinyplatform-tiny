@@ -27,15 +27,24 @@ public interface TemplateEngine extends TemplateContextOperator {
     TemplateEngine setEncode(String encode);
 
     /**
-     *设置
+     * 设置
+     *
      * @param i18nVistor
      */
     void setI18nVistor(I18nVistor i18nVistor);
 
-    I18nVistor  getI18nVistor();
+    I18nVistor getI18nVistor();
+
+    /**
+     * 添加函数
+     *
+     * @param function
+     */
+    void addTemplateFunction(TemplateFunction function);
 
     /**
      * 返回编码
+     *
      * @return
      */
     String getEncode();
@@ -136,5 +145,7 @@ public interface TemplateEngine extends TemplateContextOperator {
      * @return
      * @throws TemplateException
      */
-    Macro findMacro(String macroName, Template template, TemplateContext $context) throws TemplateException;
+    Macro findMacro(Object macroName, Template template, TemplateContext $context) throws TemplateException;
+
+    public Object executeFunction(String functionName, TemplateContext context, Object... parameters) throws TemplateException;
 }

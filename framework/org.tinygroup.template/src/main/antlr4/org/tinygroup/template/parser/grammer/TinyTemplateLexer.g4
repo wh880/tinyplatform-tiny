@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-lexer grammar JetTemplateLexer;
+lexer grammar TinyTemplateLexer;
 /*
 @header {
 package jetbrick.template.parser.grammer;
@@ -37,7 +37,7 @@ TEXT_SINGLE_CHAR        : ('#'|'$'|'\\')                  ;
 
 I18N_OPEN              : '$${'                            -> pushMode(INSIDE) ;
 
-VALUE_COMPACT_OPEN              : '$'                    ;
+//VALUE_COMPACT_OPEN              : '$'                    ;
 VALUE_OPEN              : '${'                            -> pushMode(INSIDE) ;
 VALUE_ESCAPED_OPEN      : '$!{'                           -> pushMode(INSIDE) ;
 
@@ -130,8 +130,6 @@ OP_BITWISE_SHL          : '<<'                             ;
 OP_BITWISE_SHR        : '>>'                             ;
 OP_BITWISE_SHR_2      : '>>>'                            ;
 
-OP_INSTANCEOF           : 'instanceof' | 'is'              ;
-OP_NEW                  : 'new'                            ;
 OP_CONDITIONAL_TERNARY  : '?'                              ;
 
 OP_SIMPLE_CONDITION_TERNARY      : '?:'                           ;
