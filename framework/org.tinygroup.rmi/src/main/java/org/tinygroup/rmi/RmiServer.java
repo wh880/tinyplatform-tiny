@@ -45,6 +45,40 @@ public interface RmiServer extends Remote,Serializable{
     Registry getRegistry()   throws RemoteException;
 
     /**
+     * 注册本地对象，类型及ID
+     *
+     * @param type   注册的对象类型，可以重复
+     * @param id     注册的对象的ID，相同类型不可以重复，不同类型可以重复
+     * @param object
+     */
+    void registerLocalObject(Remote object, Class type, String id)  throws RemoteException;
+
+    /**
+     * 注册本地对象，类型及ID
+     *
+     * @param type   注册的对象类型，可以重复
+     * @param id     注册的对象的ID，相同类型不可以重复，不同类型可以重复
+     * @param object
+     */
+    void registerLocalObject(Remote object, String type, String id)  throws RemoteException;
+
+    /**
+     * 注册本地对象，类型及ID
+     *
+     * @param name   名字如果重复，已经存在的对象将被替换，全局唯一
+     * @param object
+     */
+    void registerLocalObject(Remote object, String name)  throws RemoteException;
+
+    /**
+     * 按类型名称注册本地对象,如果此类型已经存在对象，则已经存在的对象将被替换
+     *
+     * @param type
+     * @param object
+     */
+    void registerLocalObject(Remote object, Class type)  throws RemoteException;
+
+    /**
      * 注册远程对象，类型及ID，在Server中仅仅将该对象存放在内存map中
      *
      * @param type   注册的远程对象类型，可以重复
@@ -77,55 +111,68 @@ public interface RmiServer extends Remote,Serializable{
      * @param object
      */
     void registerRemoteObject(Remote object, Class type)  throws RemoteException;
-
-
+    
+    <T> List<T> getRemoteObjectListInstanceOf(Class<T> type)
+	throws RemoteException;
+    
+    
+    
     /**
-     * 根据名称注销远程对象
+     * 根据名称注销对象
      *
      * @param name 要注销的对象名
      */
-    void unregisterRemoteObject(String name)   throws RemoteException;
+    void unregisterObject(String name)   throws RemoteException;
 
     /**
-     * 根据类型注销远程对象
+     * 根据类型注销对象
      *
      * @param type 要注销的对象类型，所有匹配的对象都会被注销
      */
-    void unregisterRemoteObjectByType(Class type)   throws RemoteException;
+    void unregisterObjectByType(Class type)   throws RemoteException;
 
     /**
-     * 根据类型注销远程对象
+     * 根据类型注销对象
      *
      * @param type
      */
-    void unregisterRemoteObjectByType(String type)   throws RemoteException;
+    void unregisterObjectByType(String type)   throws RemoteException;
 
     /**
-     * 根据类型注销远程对象
+     * 根据类型注销对象
      *
      * @param type 要注销的类型
      * @param id   要注销的ID
      */
-    void unregisterRemoteObject(String type, String id)   throws RemoteException;
+    void unregisterObject(String type, String id)   throws RemoteException;
 
     /**
-     * 根据类型注销远程对象
+     * 根据类型注销对象
      *
      * @param type 要注销的类型
      * @param id   要注销的ID
      */
-    void unregisterRemoteObject(Class type, String id)   throws RemoteException;
-
-
+    void unregisterObject(Class type, String id)   throws RemoteException;
     /**
-     * 返回远程对象
+     * 停止具体的注册在此远程服务中心的本地对象
+     *
+     * @param object
+     * @throws RemoteException
+     */
+    void unregisterObject(Remote object) throws RemoteException;
+
+    
+    
+    
+    /**
+     * 返回对象
      *
      * @param name
      * @param <T>
      * @return
      * @throws RemoteException
      */
-    <T> T getRemoteObject(String name) throws RemoteException;
+    <T> T getObject(String name) throws RemoteException;
 
     /**
      * 根据类型获取对象
@@ -135,49 +182,36 @@ public interface RmiServer extends Remote,Serializable{
      * @return
      * @throws RemoteException
      */
-    <T> T getRemoteObject(Class<T> type) throws RemoteException;
+    <T> T getObject(Class<T> type) throws RemoteException;
 
     /**
-     * 根据类型返回远程对象列表
+     * 根据类型返回对象列表
      *
      * @param type
      * @param <T>
      * @return
      */
-    <T> List<T> getRemoteObjectList(Class<T> type)   throws RemoteException;
+    <T> List<T> getObjectList(Class<T> type)   throws RemoteException;
+
+    
 
     /**
-     * 返回某种类型的子类对象列表
-     *
-     * @param type
-     * @param <T>
-     * @return
-     */
-    <T> List<T> getRemoteObjectListInstanceOf(Class<T> type)   throws RemoteException;
-
-    /**
-     * 根据类型返回远程对象列表
+     * 根据类型返回对象列表
      *
      * @param typeName
      * @param <T>
      * @return
      */
-    <T> List<T> getRemoteObjectList(String typeName)   throws RemoteException;
+    <T> List<T> getObjectList(String typeName)   throws RemoteException;
 
     /**
-     * 停止所有提供远程访问的对象，会把注册在此远程服务中心的远程对象全部停止
+     * 停止所有提供远程访问的对象
      *
      * @throws RemoteException
      */
     void unexportObjects() throws RemoteException;
 
-    /**
-     * 停止具体的注册在此远程服务中心的本地对象
-     *
-     * @param object
-     * @throws RemoteException
-     */
-    void unregisterRemoteObject(Remote object) throws RemoteException;
+    
 
     /**
      * 停止RMIServer

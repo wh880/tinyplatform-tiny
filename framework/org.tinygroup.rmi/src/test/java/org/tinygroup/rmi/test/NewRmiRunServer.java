@@ -25,16 +25,15 @@ package org.tinygroup.rmi.test;
 
 import java.rmi.RemoteException;
 
-import org.tinygroup.rmi.RmiServerL;
+import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerLocalL;
-import org.tinygroup.rmi.impl.RmiUtil;
 
 public class NewRmiRunServer {
 	
 	private static String LOCALIP = "192.168.84.23";
 
 	public static void main(String[] args) {
-		RmiServerL localServer = null;
+		RmiServer localServer = null;
 		try {
 			localServer = new RmiServerLocalL(LOCALIP, 8888);
 		} catch (RemoteException e1) {
@@ -52,14 +51,14 @@ public class NewRmiRunServer {
 		
 	}
 
-	public void runThread(RmiServerL localServer) {
+	public void runThread(RmiServer localServer) {
 		MyThread t = new NewRmiRunServer.MyThread(localServer);
 		t.start();
 	}
 
 	class MyThread extends Thread {
-		RmiServerL localServer;
-		public MyThread(RmiServerL localServer){
+		RmiServer localServer;
+		public MyThread(RmiServer localServer){
 			this.localServer = localServer;
 		}
 		private boolean end = false;

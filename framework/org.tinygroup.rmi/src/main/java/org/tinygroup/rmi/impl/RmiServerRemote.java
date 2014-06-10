@@ -37,11 +37,14 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.rmi.RmiServer;
+import org.tinygroup.rmi.RmiServerL;
+import org.tinygroup.rmi.RmiServerL;
+import org.tinygroup.rmi.RmiServerL;
 
 /**
  * 远程RMI服务器 Created by luoguo on 14-1-10.
  */
-public class RmiServerRemote  extends UnicastRemoteObject implements RmiServer{
+public class RmiServerRemote  extends UnicastRemoteObject implements RmiServerL{
 	private final static Logger logger = LoggerFactory
 			.getLogger(RmiServerRemote.class);
 	HeartThread heartThread = new HeartThread();
@@ -49,7 +52,7 @@ public class RmiServerRemote  extends UnicastRemoteObject implements RmiServer{
 	String hostName = "localhost";
 	Registry registry = null;
 	Map<String, Remote> registeredObjectMap = new HashMap<String, Remote>();
-	RmiServer server = null;
+	RmiServerL server = null;
 
 	public RmiServerRemote(String hostName, int port) throws RemoteException {
 		this.hostName = hostName;
@@ -64,7 +67,7 @@ public class RmiServerRemote  extends UnicastRemoteObject implements RmiServer{
 		registry = LocateRegistry.getRegistry(hostName, port);
 
 		try {
-			server = (RmiServer) registry.lookup(hostName);
+			server = (RmiServerL) registry.lookup(hostName);
 //		} catch (ConnectException e) {
 //			throw new RuntimeException("获取RmiServer:" + hostName + "时连接发生错误", e);
 //		} catch (RemoteException e) {

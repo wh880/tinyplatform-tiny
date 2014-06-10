@@ -25,7 +25,7 @@ package org.tinygroup.rmi.test;
 
 import java.rmi.RemoteException;
 
-import org.tinygroup.rmi.RmiServer;
+import org.tinygroup.rmi.RmiServerL;
 import org.tinygroup.rmi.impl.RmiServerLocal;
 import org.tinygroup.rmi.impl.RmiUtil;
 
@@ -52,14 +52,14 @@ public class RmiRunServer {
 		
 	}
 
-	public void runThread(RmiServer localServer) {
+	public void runThread(RmiServerL localServer) {
 		MyThread t = new RmiRunServer.MyThread(localServer);
 		t.start();
 	}
 
 	class MyThread extends Thread {
-		RmiServer localServer;
-		public MyThread(RmiServer localServer){
+		RmiServerL localServer;
+		public MyThread(RmiServerL localServer){
 			this.localServer = localServer;
 		}
 		private boolean end = false;

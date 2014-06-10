@@ -23,11 +23,9 @@
  */
 package org.tinygroup.rmi.test;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-import org.tinygroup.rmi.RmiServer;
-import org.tinygroup.rmi.impl.RmiServerLocal;
+import org.tinygroup.rmi.RmiServerL;
 import org.tinygroup.rmi.impl.RmiServerRemote;
 
 public class RmiRunClient {
@@ -35,7 +33,7 @@ public class RmiRunClient {
 	private static String LOCALIP = "192.168.84.23";
 
 	public static void main(String[] args) {
-		RmiServer remoteServer = null;
+		RmiServerL remoteServer = null;
 		try {
 		
 			remoteServer = new RmiServerRemote(SERVERIP, 8888);
@@ -55,9 +53,9 @@ public class RmiRunClient {
 		
 	}
 
-	private RmiServer remoteServer;
+	private RmiServerL remoteServer;
 
-	public RmiRunClient(RmiServer remoteServer) {
+	public RmiRunClient(RmiServerL remoteServer) {
 		this.remoteServer = remoteServer;
 	}
 

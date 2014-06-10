@@ -39,11 +39,12 @@ import java.util.Map;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.RmiServerL;
 import org.tinygroup.rmi.Verifiable;
 
 public final class RmiServerLocalL extends UnicastRemoteObject implements
-		RmiServerL {
+		RmiServer {
 	/**
 	 * 
 	 */
@@ -60,7 +61,7 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements
 	private ValidateThread validateThread = new ValidateThread();
 	Registry registry = null;
 	Registry remoteRegistry = null;
-	RmiServerL server = null;
+	RmiServer server = null;
 	Map<String, Remote> registeredRemoteObjectMap = new HashMap<String, Remote>();
 	Map<String, Remote> registeredLocalObjectMap = new HashMap<String, Remote>();
 
@@ -122,7 +123,7 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements
 		System.setProperty("java.rmi.server.hostname", remoteHostName);
 		remoteRegistry = LocateRegistry.getRegistry(remoteHostName, remotePort);
 		try {
-			server = (RmiServerL) remoteRegistry.lookup(remoteHostName);
+			server = (RmiServer) remoteRegistry.lookup(remoteHostName);
 
 		} catch (NotBoundException e) {
 			throw new RuntimeException("获取RmiServer:" + remoteHostName

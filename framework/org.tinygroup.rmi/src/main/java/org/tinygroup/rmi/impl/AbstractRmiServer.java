@@ -38,13 +38,13 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.rmi.MyRemoteObject;
-import org.tinygroup.rmi.RmiServer;
+import org.tinygroup.rmi.RmiServerL;
 
 /**
  * 抽象rmi服务器 Created by luoguo on 14-1-10.
  */
 public abstract class AbstractRmiServer extends UnicastRemoteObject implements
-		RmiServer, Runnable {
+		RmiServerL, Runnable {
 	private final static Logger logger = LoggerFactory
 			.getLogger(AbstractRmiServer.class);
 	int port = DEFAULT_RMI_PORT;
