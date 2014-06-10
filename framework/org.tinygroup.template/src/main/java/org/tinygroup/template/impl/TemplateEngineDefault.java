@@ -194,6 +194,7 @@ public class TemplateEngineDefault implements TemplateEngine {
                 macro = (Macro) obj;
             }
             if (macro == null) {
+                //TODO
                 //到整个引擎查找
                 //先找相同路径下的，再找子目录下的，再找上级的，再找兄弟的
 

@@ -8,41 +8,58 @@ import org.tinygroup.vfs.FileObjectProcessor;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.vfs.impl.filter.EqualsPathFileObjectFilter;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Created by luoguo on 2014/6/9.
  */
 public class FileObjectTemplateLoader extends AbstractTemplateLoader<FileObject> {
-    private FileObject root=null;
+    private FileObject root = null;
+    Map<String, FileObject> pathMap = new ConcurrentHashMap<String, FileObject>();
 
-    public FileObjectTemplateLoader(String type,String root) {
+    public FileObjectTemplateLoader(String type, String root) {
         this(type, VFS.resolveFile(root));
     }
-    public FileObjectTemplateLoader(String type,FileObject root) {
+
+    public FileObjectTemplateLoader(String type, FileObject root) {
         super(type);
-        this.root=root;
+        this.root = root;
     }
 
     public Template createTemplate(FileObject templateMaterial) throws TemplateException {
         return null;
     }
 
-    public Template getTemplate(String path) {
-        final Template[] template = {super.getTemplate(path)};
-        if(template[0] ==null){//如果不存在，则说明要查找并构建之
-            root.foreach(new EqualsPathFileObjectFilter(path),new FileObjectProcessor() {
-
+    public Template getTemplate(final String path) throws Exception {
+        FileObject fileObject = pathMap.get(path);
+        if (fileObject == null) {//如果文件缓冲里没有找到加载的文件
+            root.foreach(new EqualsPathFileObjectFilter(path), new FileObjectProcessor() {
                 public void process(FileObject fileObject) {
-                    //这里载入之
-                    try {
-                        template[0] =TemplateCompilerUtils.compileTemplate(IOUtils.readFromInputStream(fileObject.getInputStream(),getTemplateEngine().getEncode()),fileObject.getPath());
-                        putTemplate(template[0]);
-                    } catch (Exception e) {
-                       throw new RuntimeException(e);
-                        //DO Nothing
-                    }
+                    loadTemplate(path, fileObject);
                 }
             });
+        } else {
+            if (!fileObject.isExist()) {
+                //如果已经被删除
+                pathMap.remove(path);
+                getTemplateMap().remove(fileObject);
+                return null;
+            } else if (fileObject.isModified()) {
+                //如果文件已经被修改
+                loadTemplate(path, fileObject);
+            }
         }
-        return template[0];
+        return getTemplate(path);
+    }
+
+    private void loadTemplate(String path, FileObject fileObject) {
+        try {
+            Template template = TemplateCompilerUtils.compileTemplate(IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()), fileObject.getPath());
+            putTemplate(fileObject, template);
+            pathMap.put(path, fileObject);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

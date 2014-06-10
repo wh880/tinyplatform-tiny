@@ -98,12 +98,12 @@ public final class ForIterator implements Iterator, ForStatus {
     }
 
 
-    public boolean isFirst() {
+    public boolean isAtFirst() {
         return index == 1;
     }
 
 
-    public boolean isLast() {
+    public boolean isAtLast() {
         return !iterator.hasNext();
     }
 
