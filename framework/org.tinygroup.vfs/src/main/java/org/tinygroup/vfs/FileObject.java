@@ -77,5 +77,12 @@ public interface FileObject {
     void foreach(FileObjectFilter fileObjectFilter, FileObjectProcessor fileObjectProcessor, boolean parentFirst);
 
     void foreach(FileObjectFilter fileObjectFilter, FileObjectProcessor fileObjectProcessor);
+    
+    /**
+     * 根据路径查找子对象
+     * @param path
+     * @return
+     */
+    FileObject getSubFileObject(String path);
 
 }
