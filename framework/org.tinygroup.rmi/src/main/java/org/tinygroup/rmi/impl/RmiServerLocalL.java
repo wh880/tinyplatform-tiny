@@ -442,9 +442,10 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements
 	public <T> List<T> getObjectList(String typeName) throws RemoteException {
 		List<T> result = new ArrayList<T>();
 		getObjectList(typeName, result, registeredLocalObjectMap);
-		getObjectList(typeName, result, registeredLocalObjectMap);
+		getObjectList(typeName, result, registeredRemoteObjectMap);
 		if (server != null) {
-			for (Object t : server.getObjectList(typeName)) {
+			List<T> list = server.getObjectList(typeName);
+			for (Object t : list) {
 				if (!result.contains(t)) {
 					result.add((T) t);
 				}
@@ -459,7 +460,8 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements
 		getObjectListInstanceOf(type, result, registeredLocalObjectMap);
 		getObjectListInstanceOf(type, result, registeredRemoteObjectMap);
 		if (server != null) {
-			for (T t : server.getObjectList(type)) {
+			List<T> list = server.getRemoteObjectListInstanceOf(type);
+			for (T t : list) {
 				if (!result.contains(t)) {
 					result.add(t);
 				}
