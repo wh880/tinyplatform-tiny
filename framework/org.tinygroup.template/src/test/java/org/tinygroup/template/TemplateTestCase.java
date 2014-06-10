@@ -7,15 +7,16 @@ import org.tinygroup.template.impl.TemplateEngineDefault;
  * Created by luoguo on 2014/6/7.
  */
 public class TemplateTestCase {
-    static class I18nvi implements I18nVistor{
-       
+    static class I18nvi implements I18nVistor {
+
 
         @Override
-        public String getI18nMessage(String key) {
-        return key.toUpperCase();
+        public String getI18nMessage(TemplateContext context, String key) {
+            return key.toUpperCase();
+        }
     }
-}
-    static  class  StringBoldFunction extends AbstractBindTemplateFunction {
+
+    static class StringBoldFunction extends AbstractBindTemplateFunction {
 
         public StringBoldFunction() {
             super("bold", "java.lang.String");
@@ -23,10 +24,11 @@ public class TemplateTestCase {
 
         @Override
         public Object execute(Object... parameters) throws TemplateException {
-            String obj= (String) parameters[0];
-            return "<b>"+obj+"</b>";
+            String obj = (String) parameters[0];
+            return "<b>" + obj + "</b>";
         }
     }
+
     public static void main(String[] args) throws TemplateException {
         final TemplateEngine engine = new TemplateEngineDefault();
         engine.addTemplateFunction(new StringBoldFunction());

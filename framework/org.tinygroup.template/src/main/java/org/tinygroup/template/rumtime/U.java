@@ -52,10 +52,13 @@ public class U {
      * @return
      */
     public static String getI18n(I18nVistor i18nVistor, TemplateContext context, String key) {
+        if (key == null) {
+            return null;
+        }
         if (i18nVistor == null) {
             return key;
         } else {
-            return i18nVistor.getI18nMessage(key);
+            return i18nVistor.getI18nMessage(context, key);
         }
     }
 
@@ -76,9 +79,7 @@ public class U {
                 Object[] newParameters = new Object[(parameters == null ? 1 : parameters.length) + 1];
                 newParameters[0] = object;
                 if (parameters != null) {
-                    for (int i = 0; i < parameters.length; i++) {
-                        newParameters[i + 1] = parameters[i];
-                    }
+                    System.arraycopy(parameters,1,newParameters,0,parameters.length);
                 }
                 return function.execute(newParameters);
             } else {

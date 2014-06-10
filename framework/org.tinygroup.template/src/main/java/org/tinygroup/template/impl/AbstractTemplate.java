@@ -28,21 +28,21 @@ public abstract class AbstractTemplate implements Template {
         return macroMap;
     }
 
-    public void render(TemplateContext $context, Writer writer) throws TemplateException {
+    public void render(TemplateContext context, Writer writer) throws TemplateException {
+        if (context == null) {
+            context = new TemplateContextImpl();
+        }
         try {
-            if ($context == null) {
-                $context = new TemplateContextImpl();
-            }
-            $context.putSubContext("$currentTemplateContext", getTemplateContext());
-            $context.putSubContext("$templateEngineContext", getTemplateEngine().getTemplateContext());
-            renderTemplate($context, writer);
+            context.putSubContext("$currentTemplateContext", getTemplateContext());
+            context.putSubContext("$templateEngineContext", getTemplateEngine().getTemplateContext());
+            renderTemplate(context, writer);
             writer.flush();
-            $context.removeSubContext("$templateEngineContext");
+            context.removeSubContext("$templateEngineContext");
         } catch (IOException e) {
             throw new TemplateException(e);
         } finally {
-            $context.removeSubContext("$currentTemplateContext");
-            $context.removeSubContext("$templateEngineContext");
+            context.removeSubContext("$currentTemplateContext");
+            context.removeSubContext("$templateEngineContext");
         }
     }
 

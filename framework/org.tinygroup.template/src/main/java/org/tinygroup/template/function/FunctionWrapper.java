@@ -1,6 +1,5 @@
 package org.tinygroup.template.function;
 
-import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.rumtime.U;
 
@@ -10,8 +9,8 @@ import java.lang.reflect.Method;
  * Created by luoguo on 2014/6/9.
  */
 public class FunctionWrapper extends AbstractFunctionWrapper {
-    Method method;
-    Object object;
+    private Method method;
+    private Object object;
 
     public FunctionWrapper(String functionName, Class clazz, Method method) {
         super(functionName);
@@ -49,7 +48,7 @@ public class FunctionWrapper extends AbstractFunctionWrapper {
 
 
     @Override
-    public Object execute( Object... parameters) throws TemplateException {
+    public Object execute(Object... parameters) throws TemplateException {
         try {
             return method.invoke(parameters);
         } catch (Exception e) {

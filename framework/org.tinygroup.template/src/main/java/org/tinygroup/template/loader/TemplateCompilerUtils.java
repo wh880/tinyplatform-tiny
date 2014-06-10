@@ -37,22 +37,22 @@ public class TemplateCompilerUtils {
         codeBlock.insertSubCode("package " + className.getPackageName() + ";");
         MemorySource memorySource = new MemorySource(className.getClassName(), codeBlock.toString().replace("$TEMPLATE_PATH", path)
                 .replace("$TEMPLATE_CLASS_NAME", className.getSimpleClassName()));
-        Template template = compiler.loadInstance(classLoader,memorySource);
-        return template;
+        return compiler.loadInstance(classLoader,memorySource);
 
     }
 
     public static CodeBlock preCompile(String template, String sourceName) {
         char[] source = template.toCharArray();
         ANTLRInputStream is = new ANTLRInputStream(source, source.length);
-        is.name = sourceName; // set source file name, it will be displayed in error report.
+        // set source file name, it will be displayed in error report.
+        is.name = sourceName;
         TinyTemplateParser parser = new TinyTemplateParser(new CommonTokenStream(new JetTemplateLexer(is)));
-        parser.removeErrorListeners(); // remove ConsoleErrorListener
+        // remove ConsoleErrorListener
+        parser.removeErrorListeners();
         parser.addErrorListener(TinyTemplateErrorListener.getInstance());
         parser.setErrorHandler(new TinyTemplateErrorStrategy());
         TinyTemplateParser.TemplateContext templateParseTree = parser.template();
         TinyTemplateCodeVisitor visitor = new TinyTemplateCodeVisitor(parser);
-        CodeBlock codeBlock = templateParseTree.accept(visitor);
-        return codeBlock;
+        return templateParseTree.accept(visitor);
     }
 }

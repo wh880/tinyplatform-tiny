@@ -25,11 +25,11 @@ public final class MemorySource  {
     /**
      * 完整类名
      */
-    String qualifiedClassName;
+    private String qualifiedClassName;
     /**
      * 类内容
      */
-    String content;
+    private String content;
     public String getSimpleName(){
         String simpName=qualifiedClassName;
         int lastPositon = qualifiedClassName.lastIndexOf('.');

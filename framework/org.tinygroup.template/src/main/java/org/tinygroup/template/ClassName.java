@@ -5,9 +5,9 @@ package org.tinygroup.template;
  * Created by luoguo on 2014/6/9.
  */
 public final class ClassName {
-    String simpleClassName;
-    String className;
-    String packageName;
+    private String simpleClassName;
+    private String className;
+    private String packageName;
 
     public String getSimpleClassName() {
         return simpleClassName;

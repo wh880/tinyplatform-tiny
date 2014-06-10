@@ -35,8 +35,8 @@ import java.util.Stack;
 // Visitor 模式访问器，用来生成 Java 代码
 public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> implements TinyTemplateParserVisitor<CodeBlock> {
     private TinyTemplateParser parser = null;
-    Stack<CodeBlock> codeBlocks = new Stack<CodeBlock>();
-    Stack<CodeLet> codeLets = new Stack<CodeLet>();
+    private Stack<CodeBlock> codeBlocks = new Stack<CodeBlock>();
+    private Stack<CodeLet> codeLets = new Stack<CodeLet>();
     private CodeBlock initCodeBlock = null;
     private CodeBlock macroCodeBlock = null;
 
@@ -86,7 +86,8 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                 for (TinyTemplateParser.Para_expressionContext visitPara_expression : expList) {
                     CodeLet expression = new CodeLet();
                     pushCodeLet(expression);
-                    if (visitPara_expression.getChildCount() == 3) {//如果是带参数的
+                    if (visitPara_expression.getChildCount() == 3) {
+                        //如果是带参数的
                         visitPara_expression.getChild(2).accept(this);
                         peekCodeBlock().subCode(String.format("$newContext.put(\"%s\",%s);", visitPara_expression.getChild(0).getText(), expression));
                     } else {
@@ -187,7 +188,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         String name = ctx.getChild(0).getText();
         name = name.substring(6, name.length() - 1).trim();
         initCodeBlock.subCode(new CodeLet().lineCode("getMacroMap().put(\"%s\", new %s());", name, name));
-        //TODO
+
         CodeBlock macro = new CodeBlock();
         TinyTemplateParser.Define_expression_listContext define_expression_list = ctx.define_expression_list();
         pushPeekCodeLet();
@@ -366,9 +367,10 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             case TinyTemplateParser.TEXT_ESCAPED_CHAR:
                 text = text.substring(1);
                 break;
+            default:
+                break;
         }
-        CodeBlock textCodeBlock = new CodeBlock().header(new CodeLet().code("write($writer,\"").code(StringEscapeUtils.escapeJava(text)).lineCode("\");"));
-        return textCodeBlock;
+        return new CodeBlock().header(new CodeLet().code("write($writer,\"").code(StringEscapeUtils.escapeJava(text)).lineCode("\");"));
     }
 
     public CodeBlock visitExpr_identifier(@NotNull TinyTemplateParser.Expr_identifierContext ctx) {

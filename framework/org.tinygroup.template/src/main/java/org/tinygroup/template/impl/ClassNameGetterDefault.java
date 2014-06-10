@@ -31,12 +31,14 @@ public class ClassNameGetterDefault implements ClassNameGetter {
     public ClassName getClassName(String path) {
         String name = path;
         name = convertGoodStylePath(path);
-        if (name.startsWith("/")) {//去掉前置"/"
+        //去掉前置"/"
+        if (name.startsWith("/")) {
             name = name.substring(1);
         }
         int pos = path.indexOf('.');
         if (pos >= 0) {
-            name = name.substring(0, pos - 1);//去掉文件扩展名
+            //去掉文件扩展名
+            name = name.substring(0, pos - 1);
         }
         name = name + "Template";
         ClassName className = new ClassName();

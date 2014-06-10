@@ -58,7 +58,7 @@ public interface TemplateEngine extends TemplateContextOperator {
      * @param methodName 注册的方法名
      * @return
      */
-    TemplateFunction getTemplateFunction(String className, String methodName) ;
+    TemplateFunction getTemplateFunction(String className, String methodName);
 
     /**
      * 返回编码
@@ -167,5 +167,13 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     Macro findMacro(Object macroName, Template template, TemplateContext $context) throws TemplateException;
 
-    public Object executeFunction(String functionName,  Object... parameters) throws TemplateException;
+    /**
+     * 执行方法
+     *
+     * @param functionName
+     * @param parameters
+     * @return
+     * @throws TemplateException
+     */
+    Object executeFunction(String functionName, Object... parameters) throws TemplateException;
 }

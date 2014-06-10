@@ -1,6 +1,5 @@
 package org.tinygroup.template.function;
 
-import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateException;
 
 import java.util.Arrays;
@@ -10,7 +9,6 @@ import java.util.Arrays;
  */
 public class InstanceOfTemplateFunction extends AbstractTemplateFunction {
 
-    private TemplateEngine templateEngine;
 
     public InstanceOfTemplateFunction() {
         super("is,instanceOf,instance");

@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class FileObjectTemplateLoader extends AbstractTemplateLoader<FileObject> {
     private FileObject root = null;
-    Map<String, FileObject> pathMap = new ConcurrentHashMap<String, FileObject>();
+    private Map<String, FileObject> pathMap = new ConcurrentHashMap<String, FileObject>();
 
     public FileObjectTemplateLoader(String type, String root) {
         this(type, VFS.resolveFile(root));

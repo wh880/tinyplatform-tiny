@@ -1,5 +1,6 @@
 package org.tinygroup.template.impl;
 
+import com.thoughtworks.xstream.io.path.Path;
 import org.tinygroup.template.*;
 import org.tinygroup.template.function.FormatterTemplateFunction;
 import org.tinygroup.template.function.InstanceOfTemplateFunction;
@@ -8,9 +9,7 @@ import org.tinygroup.template.loader.StringTemplateLoader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 模板引擎实现类
@@ -18,9 +17,9 @@ import java.util.Set;
  */
 public class TemplateEngineDefault implements TemplateEngine {
     public static final String DEFAULT = "default";
-    Path root = new Path("");
-    Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
-    Map<String, TemplateFunction> typeFunctionMap = new HashMap<String, TemplateFunction>();
+    private Path root = new Path("");
+    private Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
+    private Map<String, TemplateFunction> typeFunctionMap = new HashMap<String, TemplateFunction>();
     private TemplateContext templateEngineContext = new TemplateContextImpl();
 
     private Map<String, TemplateLoader> templateLoaderMap = new HashMap();
@@ -37,35 +36,6 @@ public class TemplateEngineDefault implements TemplateEngine {
     public TemplateContext getTemplateContext() {
         return templateEngineContext;
     }
-
-
-    class Path implements Comparable<Path> {
-        public Path(String name) {
-            this.name = name;
-        }
-
-        public Path setParent(Path path) {
-            this.parent = path;
-            path.subPaths.add(this);
-            return this;
-        }
-
-        public Path addPath(Path path) {
-            subPaths.add(path);
-            path.parent = this;
-            return this;
-        }
-
-        String name;
-        Path parent;
-        Set<Path> subPaths = new HashSet<Path>();
-
-
-        public int compareTo(Path o) {
-            return -name.compareTo(o.name);
-        }
-    }
-
 
     public TemplateEngine setEncode(String encode) {
         this.encode = encode;
@@ -154,31 +124,6 @@ public class TemplateEngineDefault implements TemplateEngine {
         return this;
     }
 
-    private void buildPath(String path) {
-        String[] paths = path.split("/");
-        Path current = root;
-        for (String name : paths) {
-            //   /a/b/v/aa.def
-            if (name.equals(current.name)) {//如果是根，则继续
-                continue;
-            } else {
-                boolean has = false;
-                for (Path p : current.subPaths) {
-                    if (p.name.equals(name)) {
-                        current = p;//如果对上了，则继续向下找
-                        has = true;
-                        break;
-                    }
-                }
-                if (!has) {//如果不包含，则添加之后继续
-                    Path newPath = new Path(name);
-                    current.addPath(newPath);
-                    current = newPath;
-                }
-            }
-        }
-    }
-
 
     public void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws TemplateException {
         Macro macro = findMacro(macroName, template, context);
@@ -224,7 +169,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         Macro macro = template.getMacroMap().get(macroName);
         if (macro == null) {
             Object obj = $context.getItemMap().get(macroName);
-            if (obj != null && obj instanceof Macro) {
+            if (obj instanceof Macro) {
                 macro = (Macro) obj;
             }
             if (macro == null) {

@@ -23,17 +23,17 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 
-public class LoopIterator implements Iterator<Integer> {
+public class RanageIterator implements Iterator<Integer> {
     private final int start;
     private final int step;
     private final int stop;
     private int current;
 
-    public LoopIterator(int start, int stop) {
+    public RanageIterator(int start, int stop) {
         this(start, stop, 1);
     }
 
-    public LoopIterator(int start, int stop, int step) {
+    public RanageIterator(int start, int stop, int step) {
         this.start = start;
         this.stop = stop;
         this.step = step;
