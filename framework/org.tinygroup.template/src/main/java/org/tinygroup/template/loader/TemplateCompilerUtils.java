@@ -13,7 +13,7 @@ import org.tinygroup.template.parser.CodeBlock;
 import org.tinygroup.template.parser.TinyTemplateCodeVisitor;
 import org.tinygroup.template.parser.TinyTemplateErrorListener;
 import org.tinygroup.template.parser.TinyTemplateErrorStrategy;
-import org.tinygroup.template.parser.grammer.JetTemplateLexer;
+import org.tinygroup.template.parser.grammer.TinyTemplateLexer;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 /**
@@ -46,9 +46,8 @@ public class TemplateCompilerUtils {
         ANTLRInputStream is = new ANTLRInputStream(source, source.length);
         // set source file name, it will be displayed in error report.
         is.name = sourceName;
-        TinyTemplateParser parser = new TinyTemplateParser(new CommonTokenStream(new JetTemplateLexer(is)));
-        // remove ConsoleErrorListener
-        parser.removeErrorListeners();
+        TinyTemplateParser parser = new TinyTemplateParser(new CommonTokenStream(new TinyTemplateLexer(is)));
+        parser.removeErrorListeners(); // remove ConsoleErrorListener
         parser.addErrorListener(TinyTemplateErrorListener.getInstance());
         parser.setErrorHandler(new TinyTemplateErrorStrategy());
         TinyTemplateParser.TemplateContext templateParseTree = parser.template();

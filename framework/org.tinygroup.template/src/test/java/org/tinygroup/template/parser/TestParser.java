@@ -3,7 +3,7 @@ package org.tinygroup.template.parser;
 import junit.framework.TestCase;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.tinygroup.template.parser.grammer.JetTemplateLexer;
+import org.tinygroup.template.parser.grammer.TinyTemplateLexer;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 /**
@@ -16,7 +16,7 @@ public class TestParser extends TestCase {
         char[] source = template.toCharArray();
         ANTLRInputStream is = new ANTLRInputStream(source, source.length);
         is.name = "testname"; // set source file name, it will be displayed in error report.
-        TinyTemplateParser parser = new TinyTemplateParser(new CommonTokenStream(new JetTemplateLexer(is)));
+        TinyTemplateParser parser = new TinyTemplateParser(new CommonTokenStream(new TinyTemplateLexer(is)));
         parser.removeErrorListeners(); // remove ConsoleErrorListener
         parser.addErrorListener(TinyTemplateErrorListener.getInstance());
         parser.setErrorHandler(new TinyTemplateErrorStrategy());
