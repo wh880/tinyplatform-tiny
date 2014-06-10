@@ -39,11 +39,11 @@ public class TestFileObjectImpl extends TestCase {
 		String projectPath=System.getProperty("user.dir");
 		String testResourcePath=projectPath+File.separator+"src"+File.separator+"test"+File.separator+"resources"+File.separator;
 		FileObject fileObject=VFS.resolveFile(testResourcePath);
-		FileObject subFile= fileObject.getSubFileObject("/");
+		FileObject subFile= fileObject.getFileObject("/");
 		assertEquals(fileObject, subFile);
-		subFile=fileObject.getSubFileObject("/test");
+		subFile=fileObject.getFileObject("/test");
 		assertTrue(subFile!=null);
-		subFile=fileObject.getSubFileObject("/test/0.html");
+		subFile=fileObject.getFileObject("/test/0.html");
 		assertTrue(subFile!=null);
 		
 	}

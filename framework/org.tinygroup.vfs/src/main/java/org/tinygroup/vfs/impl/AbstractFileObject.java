@@ -93,7 +93,7 @@ public abstract class AbstractFileObject implements FileObject {
         foreach(fileObjectFilter, fileObjectProcessor, true);
     }
 
-	public FileObject getSubFileObject(String path) {
+	public FileObject getFileObject(String path) {
 		
 		if(path.equals("/")){
 			return this;
@@ -106,7 +106,7 @@ public abstract class AbstractFileObject implements FileObject {
 			for (FileObject subFileObject : getChildren()) {
 				if(subFileObject.getFileName().equals(pathLayers[0])){
 					   if(pathLayers.length>1){
-						   return subFileObject.getSubFileObject(StringUtil.substringAfter(path, "/"));
+						   return subFileObject.getFileObject(StringUtil.substringAfter(path, "/"));
 					   }else{
 						   return subFileObject;
 					   }

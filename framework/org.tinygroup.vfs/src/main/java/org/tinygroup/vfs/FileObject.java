@@ -83,6 +83,6 @@ public interface FileObject {
      * @param path
      * @return
      */
-    FileObject getSubFileObject(String path);
+    FileObject getFileObject(String path);
 
 }
