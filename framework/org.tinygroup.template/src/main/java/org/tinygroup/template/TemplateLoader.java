@@ -28,7 +28,7 @@ public interface TemplateLoader<T> {
      * @param template
      * @return
      */
-    TemplateLoader putTemplate(T key,Template template);
+    TemplateLoader putTemplate(T key, Template template);
 
     /**
      * 创建并注册模板
@@ -45,6 +45,10 @@ public interface TemplateLoader<T> {
      */
     void setTemplateEngine(TemplateEngine templateEngine);
 
+    ClassLoader getTemplateEngineClassLoader();
+
+    void setTemplateEngineClassLoader(ClassLoader classLoader);
+
     /**
      * 获取流程引擎
      *
@@ -52,5 +56,5 @@ public interface TemplateLoader<T> {
      */
     TemplateEngine getTemplateEngine();
 
-    Map<T,Template>getTemplateMap();
+    Map<T, Template> getTemplateMap();
 }

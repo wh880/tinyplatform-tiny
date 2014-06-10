@@ -23,6 +23,7 @@ import java.util.Map;
  * 模板引擎
  * Created by luoguo on 2014/6/6.
  */
+
 public interface TemplateEngine extends TemplateContextOperator {
     TemplateEngine setEncode(String encode);
 
@@ -55,6 +56,8 @@ public interface TemplateEngine extends TemplateContextOperator {
      * @param templateLoader
      */
     void addTemplateLoader(TemplateLoader templateLoader);
+
+    Template getTemplate(String path) throws TemplateException;
 
     /**
      * 返回指定类型的加载器

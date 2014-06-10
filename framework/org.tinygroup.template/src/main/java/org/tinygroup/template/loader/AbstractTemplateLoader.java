@@ -14,6 +14,15 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class AbstractTemplateLoader<T> implements TemplateLoader<T> {
     private final String type;
+    private ClassLoader gettemplateEngineClassLoader;
+
+    public ClassLoader getTemplateEngineClassLoader(){
+        return gettemplateEngineClassLoader;
+    }
+
+    public void setTemplateEngineClassLoader(ClassLoader classLoader){
+        this.gettemplateEngineClassLoader=classLoader;
+    }
 
     private Map<T, Template> templateMap = new ConcurrentHashMap<T, Template>();
     private TemplateEngine templateEngine;
