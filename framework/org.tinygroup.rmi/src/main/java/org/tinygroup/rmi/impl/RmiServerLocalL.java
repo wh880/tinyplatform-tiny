@@ -40,7 +40,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.rmi.RmiServer;
-import org.tinygroup.rmi.RmiServerL;
 import org.tinygroup.rmi.Verifiable;
 
 public final class RmiServerLocalL extends UnicastRemoteObject implements
@@ -407,7 +406,7 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements
 		return null;
 	}
 
-	private <T> void getObjectList(Class<T> type, List<T> result,
+	private <T> void getObjectListInstanceOf(Class<T> type, List<T> result,
 			Map<String, Remote> map) throws RemoteException {
 		for (String sName : map.keySet()) {
 			try {
@@ -425,14 +424,29 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements
 		return getObjectList(type.getName());
 	}
 
+	private <T> void getObjectList(String typeName, List<T> result,
+			Map<String, Remote> map) throws RemoteException {
+		for (String sName : map.keySet()) {
+			Object o = map.get(sName);
+			if (result.contains(o)) {
+				continue;
+			}
+			if (sName.startsWith(typeName + "|")) {
+				result.add((T) o);
+			} else if (o.getClass().toString().equals(typeName)) {
+				result.add((T) o);
+			}
+		}
+	}
+
 	public <T> List<T> getObjectList(String typeName) throws RemoteException {
 		List<T> result = new ArrayList<T>();
-		for (String sName : registry.list()) {
-			if (sName.startsWith(typeName + "|")) {
-				try {
-					result.add((T) getObject(sName));
-				} catch (Exception e) {
-					logger.errorMessage("获取对象name:{}时出错", e, sName);
+		getObjectList(typeName, result, registeredLocalObjectMap);
+		getObjectList(typeName, result, registeredLocalObjectMap);
+		if (server != null) {
+			for (Object t : server.getObjectList(typeName)) {
+				if (!result.contains(t)) {
+					result.add((T) t);
 				}
 			}
 		}
@@ -442,8 +456,8 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements
 	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type)
 			throws RemoteException {
 		List<T> result = new ArrayList<T>();
-		getObjectList(type, result, registeredLocalObjectMap);
-		getObjectList(type, result, registeredRemoteObjectMap);
+		getObjectListInstanceOf(type, result, registeredLocalObjectMap);
+		getObjectListInstanceOf(type, result, registeredRemoteObjectMap);
 		if (server != null) {
 			for (T t : server.getObjectList(type)) {
 				if (!result.contains(t)) {
