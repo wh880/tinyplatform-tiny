@@ -23,23 +23,26 @@
  */
 package org.tinygroup.tinypc.rmi;
 
-import org.tinygroup.rmi.RmiServer;
-import org.tinygroup.rmi.impl.RmiServerLocal;
-import org.tinygroup.rmi.impl.RmiServerRemote;
-
 import junit.framework.TestCase;
+
+import org.tinygroup.rmi.RmiServer;
+import org.tinygroup.rmi.impl.RmiServerLocalL;
 
 /**
  * Created by luoguo on 14-1-24.
  */
 public class RmiServerTest extends TestCase {
+	static String SIP = "192.168.84.23";
+	static String CIP = "192.168.84.23";
+	static int SP = 8888;
+	static int CP = 7777;
     RmiServer localServer;
     RmiServer remoteServer;
 
     public void setUp() throws Exception {
         super.setUp();
-        localServer = new RmiServerLocal();
-//        remoteServer = new RmiServerRemote();
+        localServer = new RmiServerLocalL(SIP,SP);
+        remoteServer = new RmiServerLocalL(CIP,CP,SIP,SP);
 
     }
 
@@ -50,17 +53,17 @@ public class RmiServerTest extends TestCase {
     }
 
     public void testGetRegistry() throws Exception {
-        localServer.registerRemoteObject(new HelloImpl(), "hello");
-        assertEquals(localServer.getRegistry().list().length, 1);
+        localServer.registerLocalObject(new HelloImpl(), "hello");
+        assertEquals(localServer.getRegistry().list().length, 2);
         assertEquals(remoteServer.getRegistry().list().length, 1);
-        Hello hello = remoteServer.getRemoteObject("hello");
+        Hello hello = remoteServer.getObject("hello");
         String info = hello.sayHello("abc");
         assertEquals(info, "Hello,abc");
 
-        remoteServer.registerRemoteObject(new HelloImpl(), "hello1");
+        remoteServer.registerLocalObject(new HelloImpl(), "hello1");
         assertEquals(localServer.getRegistry().list().length, 2);
         assertEquals(remoteServer.getRegistry().list().length, 2);
-        hello = localServer.getRemoteObject("hello1");
+        hello = localServer.getObject("hello1");
         info = hello.sayHello("def");
         assertEquals(info, "Hello,def");
     }

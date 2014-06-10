@@ -25,6 +25,7 @@ package org.tinygroup.tinypc.helloforeach.rmi;
 
 import org.tinygroup.tinypc.Foreman;
 import org.tinygroup.tinypc.JobCenter;
+import org.tinygroup.tinypc.TestUtil;
 import org.tinygroup.tinypc.helloforeach.HelloWorkCombiner;
 import org.tinygroup.tinypc.impl.ForemanSelectAllWorker;
 import org.tinygroup.tinypc.impl.JobCenterLocal;
@@ -34,7 +35,7 @@ public class TestServer {
 
     public static void main(String[] args) {
         try {
-            JobCenter jobCenter = new JobCenterLocal("192.168.84.23", 8888);
+            JobCenter jobCenter = new JobCenterLocal(TestUtil.SIP,TestUtil.SP);
             Foreman helloForeman = new ForemanSelectAllWorker("hello",
                     new HelloWorkCombiner());
             jobCenter.registerForeman(helloForeman);

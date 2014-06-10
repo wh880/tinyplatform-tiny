@@ -64,7 +64,7 @@ public class AbstractJobCenter implements JobCenter {
     }
 
     private void registerParallelObject(String objectType, ParallelObject parallelObject) throws RemoteException {
-        rmiServer.registerRemoteObject(parallelObject,
+        rmiServer.registerLocalObject(parallelObject,
                 objectType + "|" + parallelObject.getType(), parallelObject.getId());
     }
 

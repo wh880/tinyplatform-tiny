@@ -50,6 +50,8 @@ public interface JobCenter {
      * @param worker
      */
     void registerWorker(Worker worker) throws RemoteException;
+    
+    
 
     /**
      * 返回工作队列对象

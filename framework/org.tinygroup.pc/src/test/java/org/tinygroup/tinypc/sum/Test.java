@@ -35,9 +35,13 @@ import java.io.IOException;
  * Created by luoguo on 14-1-8.
  */
 public class Test {
+	static String SIP = "192.168.84.23";
+	static String CIP = "192.168.84.23";
+	static int SP = 8888;
+	static int CP = 7777;
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-        JobCenter jobCenter = new JobCenterLocal();
-        JobCenter center = new JobCenterRemote();
+        JobCenter jobCenter = new JobCenterLocal(SIP,SP);
+        JobCenter center = new JobCenterRemote(CIP,CP,SIP,SP);
         for (int i = 0; i < 5; i++) {
             center.registerWorker(new WorkerSum());
         }

@@ -23,21 +23,20 @@
  */
 package org.tinygroup.tinypc.dlock;
 
+import java.rmi.RemoteException;
+
+import org.tinygroup.rmi.RmiServer;
+import org.tinygroup.rmi.impl.RmiServerLocalL;
 import org.tinygroup.threadgroup.AbstractProcessor;
 import org.tinygroup.threadgroup.MultiThreadProcessor;
-import org.tinygroup.rmi.RmiServer;
-import org.tinygroup.rmi.impl.RmiServerLocal;
-import org.tinygroup.rmi.impl.RmiServerRemote;
-
-import java.rmi.RemoteException;
+import org.tinygroup.tinypc.TestUtil;
 
 /**
  * Created by luoguo on 14-1-13.
  */
 public class TestDLock1 {
-
     public static void main(String[] args) throws Exception {
-        RmiServer rmiServer = new RmiServerLocal();
+        RmiServer rmiServer = new RmiServerLocalL(TestUtil.SIP,TestUtil.SP);
         DistributedLockImpl distributedLock = new DistributedLockImpl();
         rmiServer.registerRemoteObject( distributedLock,"lock1");
         MultiThreadProcessor processor = new MultiThreadProcessor("aa");
@@ -60,8 +59,8 @@ class RunLock extends AbstractProcessor {
 
     protected void action() throws Exception {
         try {
-            RmiServer client = new RmiServerRemote("192.168.84.23",8888);
-            DistributedLock lock = client.getRemoteObject("lock1");
+            RmiServer client = new RmiServerLocalL(TestUtil.CIP,TestUtil.CP,TestUtil.SIP,TestUtil.SP);
+            DistributedLock lock = client.getObject("lock1");
             for (int i = 0; i < 1000; i++) {
                 long token = lock.lock();
                 lock.unlock(token);
