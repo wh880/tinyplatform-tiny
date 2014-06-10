@@ -1,6 +1,5 @@
 package org.tinygroup.template.function;
 
-import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateException;
 
@@ -18,8 +17,10 @@ public class FormatterTemplateFunction extends AbstractTemplateFunction{
         super("fmt,format,formatter");
     }
 
+
+
     @Override
-    public Object execute(TemplateContext context, Object... parameters) throws TemplateException {
+    public Object execute(Object... parameters) throws TemplateException {
         if(parameters.length==0||!(parameters[0] instanceof String)){
             notSupported(parameters);
         }

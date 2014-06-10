@@ -6,8 +6,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Enumerator;
 import org.tinygroup.context.Context;
-import org.tinygroup.template.I18nVistor;
-import org.tinygroup.template.TemplateException;
+import org.tinygroup.template.*;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -45,7 +44,14 @@ public class U {
         return null;
     }
 
-    public static String getI18n(I18nVistor i18nVistor, String key) {
+    /**
+     * 获取
+     *
+     * @param i18nVistor
+     * @param key
+     * @return
+     */
+    public static String getI18n(I18nVistor i18nVistor, TemplateContext context, String key) {
         if (i18nVistor == null) {
             return key;
         } else {
@@ -62,25 +68,47 @@ public class U {
      * @return
      * @throws TemplateException
      */
-    public static Object c(Object object, String methodName, Object... parameters) throws TemplateException {
+    public static Object c(Template template, Object object, String methodName, Object... parameters) throws TemplateException {
         try {
-            if (parameters == null) {
-                return invokeMethod(object, methodName, parameters, getParameterTypes(object.getClass(), methodName));
-            }
-            for (Object para : parameters) {
-                if (para == null) {
+
+            TemplateFunction function = template.getTemplateEngine().getTemplateFunction(object.getClass().getName(), methodName);
+            if (function != null) {
+                Object[] newParameters = new Object[(parameters == null ? 1 : parameters.length) + 1];
+                newParameters[0] = object;
+                if (parameters != null) {
+                    for (int i = 0; i < parameters.length; i++) {
+                        newParameters[i + 1] = parameters[i];
+                    }
+                }
+                return function.execute(newParameters);
+            } else {
+                if (parameters == null) {
                     return invokeMethod(object, methodName, parameters, getParameterTypes(object.getClass(), methodName));
                 }
+                for (Object para : parameters) {
+                    if (para == null) {
+                        return invokeMethod(object, methodName, parameters, getParameterTypes(object.getClass(), methodName));
+                    }
+                }
+                return MethodUtils.invokeMethod(object, methodName, parameters);
             }
-            return MethodUtils.invokeMethod(object, methodName, parameters);
         } catch (Exception e) {
             throw new TemplateException(e);
         }
     }
 
-    public static Object sc(Object object, String methodName, Object... parameters) throws TemplateException {
+    /**
+     * 安全方法调用
+     *
+     * @param object
+     * @param methodName
+     * @param parameters
+     * @return
+     * @throws TemplateException
+     */
+    public static Object sc(Template template, Object object, String methodName, Object... parameters) throws TemplateException {
         if (object != null) {
-            return c(object, methodName, parameters);
+            return c(template, object, methodName, parameters);
         }
         return null;
     }

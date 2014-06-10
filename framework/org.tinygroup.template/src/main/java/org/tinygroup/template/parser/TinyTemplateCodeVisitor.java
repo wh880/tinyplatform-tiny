@@ -229,7 +229,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         CodeBlock valueCodeBlock = new CodeBlock();
         pushCodeLet();
         if (ctx.getChild(0).getText().equals("$${")) {
-            peekCodeLet().code("write($writer,U.getI18n($template.getTemplateEngine().getI18nVistor(),\"").code(ctx.identify_list().getText()).lineCode("\"));");
+            peekCodeLet().code("write($writer,U.getI18n($template.getTemplateEngine().getI18nVistor(),$context,\"").code(ctx.identify_list().getText()).lineCode("\"));");
         } else {
             ctx.expression().accept(this);
             Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
@@ -658,7 +658,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     public CodeBlock visitExpr_member_function_call(@NotNull TinyTemplateParser.Expr_member_function_callContext ctx) {
         ctx.expression().accept(this);
         String functionName = ctx.IDENTIFIER().getText();
-        peekCodeLet().codeBefore(ctx.getChild(1).getText().equals(".")?"U.c(":"U.sc(").code(",\"").code(functionName).code("\"");
+        peekCodeLet().codeBefore(ctx.getChild(1).getText().equals(".")?"U.c($template,":"U.sc($template,").code(",\"").code(functionName).code("\"");
         TinyTemplateParser.Expression_listContext list = ctx.expression_list();
         if (list != null) {
             peekCodeLet().code(",");

@@ -1,5 +1,6 @@
 package org.tinygroup.template;
 
+import org.tinygroup.template.function.AbstractBindTemplateFunction;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 
 /**
@@ -13,11 +14,23 @@ public class TemplateTestCase {
         return key.toUpperCase();
     }
 }
+    static  class  StringBoldFunction extends AbstractBindTemplateFunction {
+
+        public StringBoldFunction() {
+            super("bold","java.lang.String");
+        }
+
+        @Override
+        public Object execute(Object... parameters) throws TemplateException {
+            String obj= (String) parameters[0];
+            return "<b>"+obj+"</b>";
+        }
+    }
     public static void main(String[] args) throws TemplateException {
         final TemplateEngine engine = new TemplateEngineDefault();
+        engine.addTemplateFunction(new StringBoldFunction());
         engine.setI18nVistor(new I18nvi());
-        System.out.println(engine.executeFunction("format", null, "this is %s %s", 1, 2));
-        Template template = engine.getDefaultTemplateLoader().createTemplate("$${abc}$${abc.def.gh}");
+        Template template = engine.getDefaultTemplateLoader().createTemplate("${'abc'.bold()}");
         template.render();
     }
 }

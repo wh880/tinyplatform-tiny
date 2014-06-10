@@ -20,6 +20,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     public static final String DEFAULT = "default";
     Path root = new Path("");
     Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
+    Map<String, TemplateFunction> typeFunctionMap = new HashMap<String, TemplateFunction>();
     private TemplateContext templateEngineContext = new TemplateContextImpl();
 
     private Map<String, TemplateLoader> templateLoaderMap = new HashMap();
@@ -84,11 +85,33 @@ public class TemplateEngineDefault implements TemplateEngine {
     @Override
     public void addTemplateFunction(TemplateFunction function) {
         String[] names = function.getNames().split(",");
-        for (String name : names) {
-            functionMap.put(name, function);
+        if (function.getBindingTypes() == null) {
+            for (String name : names) {
+                functionMap.put(name, function);
+            }
+        } else {
+            String[] types = function.getBindingTypes().split(",");
+            for (String type : types) {
+                for (String name : names) {
+                    typeFunctionMap.put(getkeyName(type, name), function);
+                }
+            }
         }
     }
 
+    @Override
+    public TemplateFunction getTemplateFunction(String methodName) {
+        return functionMap.get(methodName);
+    }
+
+    @Override
+    public TemplateFunction getTemplateFunction(String className, String methodName)  {
+        return typeFunctionMap.get(getkeyName(className, methodName));
+    }
+
+    private String getkeyName(String className, String methodName) {
+        return className + ":" + methodName;
+    }
 
     public String getEncode() {
         return encode;

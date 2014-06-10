@@ -45,12 +45,12 @@ public class TestParser extends TestCase {
     public void testT2_23() throws Exception {
         String result = execute("${b.abc()}");
         System.out.println(result);
-        assertTrue(result.indexOf("write($writer,U.c(U.v($context,\"b\"),\"abc\"));") > 0);
+        assertTrue(result.indexOf("write($writer,U.c($template,U.v($context,\"b\"),\"abc\"));") > 0);
     }
     public void testT2_24() throws Exception {
         String result = execute("${b.abc()}");
         System.out.println(result);
-        assertTrue(result.indexOf("write($writer,U.c(U.v($context,\"b\"),\"abc\"));") > 0);
+        assertTrue(result.indexOf("write($writer,U.c($template,U.v($context,\"b\"),\"abc\"));") > 0);
     }
     public void testT2_10() throws Exception {
         String result = execute("${2++}");
@@ -101,7 +101,7 @@ public class TestParser extends TestCase {
     public void testT2_19() throws Exception {
         String result = execute("${abc.aa(bb(1))}");
         System.out.println(result);
-        assertTrue(result.indexOf("write($writer,U.c(U.v($context,\"abc\"),\"aa\",getTemplateEngine().executeFunction(\"bb\", $context,1)));") > 0);
+        assertTrue(result.indexOf("write($writer,U.c($template,U.v($context,\"abc\"),\"aa\",getTemplateEngine().executeFunction(\"bb\", $context,1)));") > 0);
     }
    public void testT2_20() throws Exception {
         String result = execute("${format('this is %s',2)}");
@@ -112,7 +112,7 @@ public class TestParser extends TestCase {
     public void testT2_17() throws Exception {
         String result = execute("$${abc.bb}");
         System.out.println(result);
-        assertTrue(result.indexOf("write($writer,U.getI18n($template.getTemplateEngine().getI18nVistor(),\"abc.bb\"));") > 0);
+        assertTrue(result.indexOf("write($writer,U.getI18n($template.getTemplateEngine().getI18nVistor(),$context,\"abc.bb\"));") > 0);
     }
 
     public void testT2_11() throws Exception {
@@ -377,7 +377,7 @@ public class TestParser extends TestCase {
     public void testT30_1() throws Exception {
         String result = execute("${aa.bb(1,2,bb)}");
         System.out.println(result);
-        assertTrue(result.indexOf("write($writer,U.c(U.v($context,\"aa\"),\"bb\",1,2,U.v($context,\"bb\")));") > 0);
+        assertTrue(result.indexOf("write($writer,U.c($template,U.v($context,\"aa\"),\"bb\",1,2,U.v($context,\"bb\")));") > 0);
     }
 
     public void testT31() throws Exception {

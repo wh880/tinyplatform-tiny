@@ -9,6 +9,11 @@ import org.tinygroup.template.TemplateFunction;
  */
 public class StaticFunctionWrapper implements TemplateFunction{
     @Override
+    public String getBindingTypes() {
+        return null;
+    }
+
+    @Override
     public String getNames() {
         return null;
     }
@@ -19,7 +24,7 @@ public class StaticFunctionWrapper implements TemplateFunction{
     }
 
     @Override
-    public Object execute(TemplateContext context, Object... parameters) {
+    public Object execute( Object... parameters) {
         return null;
     }
 }
