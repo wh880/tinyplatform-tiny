@@ -30,10 +30,8 @@ public class SimpleConditionOperator extends DoubleOperator {
                 return right;
             }
         }
-        if (left.getClass().isArray()) {
-            if (ArrayUtil.arrayLength(left) == 0) {
+        if (left.getClass().isArray() &&ArrayUtil.arrayLength(left) == 0) {
                 return right;
-            }
         }
         if (left instanceof Iterator) {
             Iterator iterator= (Iterator) left;

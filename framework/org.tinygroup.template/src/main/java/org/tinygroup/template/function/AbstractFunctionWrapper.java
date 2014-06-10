@@ -9,9 +9,24 @@ import org.tinygroup.template.TemplateFunction;
 public abstract class AbstractFunctionWrapper implements TemplateFunction {
     private final String name;
     private TemplateEngine templateEngine;
+    private String bindingTypes;
 
     public AbstractFunctionWrapper(String name) {
         this.name = name;
+    }
+
+    @Override
+    public TemplateEngine getTemplateEngine() {
+        return templateEngine;
+    }
+
+    @Override
+    public String getBindingTypes() {
+        return bindingTypes;
+    }
+
+    protected void setBindingTypes(String bindingTypes) {
+        this.bindingTypes = bindingTypes;
     }
 
     @Override

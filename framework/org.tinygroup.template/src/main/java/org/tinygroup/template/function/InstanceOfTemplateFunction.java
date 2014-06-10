@@ -1,7 +1,5 @@
 package org.tinygroup.template.function;
 
-import org.tinygroup.template.TemplateContext;
-import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateException;
 
 import java.util.Arrays;
@@ -11,7 +9,6 @@ import java.util.Arrays;
  */
 public class InstanceOfTemplateFunction extends AbstractTemplateFunction {
 
-    private TemplateEngine templateEngine;
 
     public InstanceOfTemplateFunction() {
         super("is,instanceOf,instance");
@@ -19,7 +16,7 @@ public class InstanceOfTemplateFunction extends AbstractTemplateFunction {
 
 
     @Override
-    public Object execute(TemplateContext context, Object... parameters) throws TemplateException {
+    public Object execute(Object... parameters) throws TemplateException {
         boolean result=true;
         Object object= parameters[0];
 

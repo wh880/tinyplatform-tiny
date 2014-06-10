@@ -51,8 +51,8 @@ public final class ForIterator implements Iterator, ForStatus {
             Collection collection = (Collection) object;
             iterator = collection.iterator();
             size = collection.size();
-        } else if (object instanceof LoopIterator) {
-            LoopIterator loopIterator = (LoopIterator) object;
+        } else if (object instanceof RanageIterator) {
+            RanageIterator loopIterator = (RanageIterator) object;
             iterator = (Iterator) object;
             size = loopIterator.getSize();
         } else if (object instanceof Enumeration) {
@@ -98,23 +98,23 @@ public final class ForIterator implements Iterator, ForStatus {
     }
 
 
-    public boolean isAtFirst() {
+    public boolean isFirst() {
         return index == 1;
     }
 
 
-    public boolean isAtLast() {
+    public boolean isLast() {
         return !iterator.hasNext();
     }
 
 
     public boolean isOdd() {
-        return index % 2 == 1;
+        return (index & 2) != 0;
     }
 
 
     public boolean isEven() {
-        return index % 2 == 0;
+        return (index % 2) == 0;
     }
 
 
@@ -145,8 +145,8 @@ public final class ForIterator implements Iterator, ForStatus {
 
     class ArrayIterator implements Iterator {
         private final Object object;
-        int size = 0;
-        int index = 0;
+        private int size = 0;
+        private int index = 0;
 
         public ArrayIterator(Object object) {
             this.object = object;

@@ -22,12 +22,12 @@ public abstract class AbstractMacro implements Macro {
     }
 
     public void setParameterNames(String[] parameterNames) {
-        this.parameterNames = parameterNames;
+        this.parameterNames = parameterNames.clone();
     }
 
     protected void init(String name, String[] parameterNames) {
         this.name = name;
-        this.parameterNames = parameterNames;
+        this.parameterNames = parameterNames.clone();
     }
 
     protected void write(Writer $writer, Object object) throws IOException {
@@ -41,7 +41,8 @@ public abstract class AbstractMacro implements Macro {
             writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
-        } finally {//无论如何从里面拿掉
+        } finally {
+            //无论如何从里面拿掉
             $context.removeSubContext("$currentMacroContext");
         }
     }
@@ -54,7 +55,7 @@ public abstract class AbstractMacro implements Macro {
     }
 
     public String[] getParameterNames() {
-        return parameterNames;
+        return parameterNames.clone();
     }
 
 

@@ -23,7 +23,10 @@ import java.util.Map;
 
 
 public class MemorySourceCompiler {
-    public <T> Class<T> loadClass(MemorySource source) throws TemplateException {
+    private String outputDir = TEMP_DIR + "ttl" + File.separatorChar;
+
+
+    public <T> Class<T> loadClass( MemorySource source) throws TemplateException {
         return loadClass(MemorySourceCompiler.class.getClassLoader(), source);
     }
 
@@ -34,9 +37,9 @@ public class MemorySourceCompiler {
             File file = new File(getOutputDir());
             urls[0] = file.toURI().toURL();
             if(classLoader==null){
-                return (Class<T>) new URLClassLoader(urls).loadClass(source.qualifiedClassName);
+                return (Class<T>) new URLClassLoader(urls).loadClass(source.getQualifiedClassName());
             }else {
-                return (Class<T>) new URLClassLoader(urls,classLoader).loadClass(source.qualifiedClassName);
+                return (Class<T>) new URLClassLoader(urls,classLoader).loadClass(source.getQualifiedClassName());
             }
         } catch (Exception e) {
             throw new TemplateException(e);
@@ -49,17 +52,13 @@ public class MemorySourceCompiler {
 
     public <T> T loadInstance(ClassLoader classLoader, MemorySource source) throws TemplateException {
         try {
-            Class<T> clazz = loadClass(classLoader, source);
-            T object = (T) clazz.newInstance();
-            return object;
+            return (T) loadClass(classLoader, source).newInstance();
         } catch (Exception e) {
             throw new TemplateException(e);
         }
     }
 
     public static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
-    String outputDir = TEMP_DIR + "ttl" + File.separatorChar;
-
     public String getOutputDir() {
         return outputDir;
     }
@@ -180,7 +179,7 @@ public class MemorySourceCompiler {
                     for (IProblem p : result.getErrors()) {
                         sb.append(p.getMessage()).append('\n');
                         int start = p.getSourceStart();
-                        int column = start; // default
+                        int column = start;
                         for (int i = start; i >= 0; i--) {
                             char c = sourceCode.charAt(i);
                             if (c == '\n' || c == '\r') {
@@ -232,7 +231,7 @@ public class MemorySourceCompiler {
                         if (c == '\t') {
                             column += 3;
                         } else if (c >= '\u2E80' && c <= '\uFE4F') {
-                            column++; // 中日韩统一表意文字（CJK Unified Ideographs）
+                            column++;
                         }
                     }
                 }
@@ -245,7 +244,7 @@ public class MemorySourceCompiler {
             sb.append("      <EOF>\n");
             sb.append("      ^^^^^");
         } else {
-            sb.append("      "); // padding
+            sb.append("      ");
             for (int i = 0; i < column - 1; i++) {
                 sb.append(' ');
             }

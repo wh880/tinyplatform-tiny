@@ -20,6 +20,7 @@
 package org.tinygroup.template.parser;
 
 import org.antlr.v4.runtime.*;
+import org.tinygroup.template.compiler.MemorySourceCompiler;
 
 public class TinyTemplateErrorListener extends BaseErrorListener {
     private static TinyTemplateErrorListener instance = new TinyTemplateErrorListener();
@@ -43,10 +44,12 @@ public class TinyTemplateErrorListener extends BaseErrorListener {
         sb.append(recognizer.getInputStream().getSourceName());
         sb.append(':');
         sb.append(line);
+        sb.append(':');
+        sb.append(line);
         sb.append("\nmessage: ");
         sb.append(msg);
         sb.append('\n');
-//        sb.append(StringUtils.getPrettyError(sourceLines, line, charPositionInLine + 1, offendingToken.getStartIndex(), offendingToken.getStopIndex(), 5));
+        sb.append(MemorySourceCompiler.getPrettyError(sourceLines, line, charPositionInLine + 1, offendingToken.getStartIndex(), offendingToken.getStopIndex(), 5));
 
         if (e != null) {
             throw new SyntaxErrorException(sb.toString(), e);

@@ -35,8 +35,8 @@ import java.util.Stack;
 // Visitor 模式访问器，用来生成 Java 代码
 public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> implements TinyTemplateParserVisitor<CodeBlock> {
     private TinyTemplateParser parser = null;
-    Stack<CodeBlock> codeBlocks = new Stack<CodeBlock>();
-    Stack<CodeLet> codeLets = new Stack<CodeLet>();
+    private Stack<CodeBlock> codeBlocks = new Stack<CodeBlock>();
+    private Stack<CodeLet> codeLets = new Stack<CodeLet>();
     private CodeBlock initCodeBlock = null;
     private CodeBlock macroCodeBlock = null;
 
@@ -86,7 +86,8 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                 for (TinyTemplateParser.Para_expressionContext visitPara_expression : expList) {
                     CodeLet expression = new CodeLet();
                     pushCodeLet(expression);
-                    if (visitPara_expression.getChildCount() == 3) {//如果是带参数的
+                    if (visitPara_expression.getChildCount() == 3) {
+                        //如果是带参数的
                         visitPara_expression.getChild(2).accept(this);
                         peekCodeBlock().subCode(String.format("$newContext.put(\"%s\",%s);", visitPara_expression.getChild(0).getText(), expression));
                     } else {
@@ -140,13 +141,13 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitExpr_field_access(@NotNull TinyTemplateParser.Expr_field_accessContext ctx) {
-        ctx.expression(0).accept(this);
+        ctx.expression().accept(this);
         pushCodeLet();
-        ctx.expression(1).accept(this);
+        ctx.IDENTIFIER().accept(this);
         CodeLet exp = peekCodeLet();
         popCodeLet();
         if (exp.length() > 0) {
-            peekCodeLet().codeBefore("U.p(").code(",").code(exp).code(")");
+            peekCodeLet().codeBefore(ctx.getChild(1).getText().equals("?.") ? "U.sp(" : "U.p(").code(",\"").code(exp).code("\")");
         }
         return null;
     }
@@ -166,14 +167,15 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
 
-
     public CodeBlock visitExpr_function_call(@NotNull TinyTemplateParser.Expr_function_callContext ctx) {
         String functionName = ctx.getChild(0).getText();
 
-        peekCodeLet().codeBefore("getTemplateEngine().executeFunction(\"").code(functionName).code("\", $context");
+        peekCodeLet().codeBefore("getTemplateEngine().executeFunction(\"").code(functionName).code("\"");
         TinyTemplateParser.Expression_listContext list = ctx.expression_list();
-        peekCodeLet().code(",");
-        list.accept(this);
+        if (list != null) {
+            peekCodeLet().code(",");
+            list.accept(this);
+        }
         peekCodeLet().code(")");
         return null;
     }
@@ -186,7 +188,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         String name = ctx.getChild(0).getText();
         name = name.substring(6, name.length() - 1).trim();
         initCodeBlock.subCode(new CodeLet().lineCode("getMacroMap().put(\"%s\", new %s());", name, name));
-        //TODO
+
         CodeBlock macro = new CodeBlock();
         TinyTemplateParser.Define_expression_listContext define_expression_list = ctx.define_expression_list();
         pushPeekCodeLet();
@@ -228,7 +230,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         CodeBlock valueCodeBlock = new CodeBlock();
         pushCodeLet();
         if (ctx.getChild(0).getText().equals("$${")) {
-            peekCodeLet().code("write($writer,U.getI18n($template.getTemplateEngine().getI18nVistor(),\"").code(ctx.identify_list().getText()).lineCode("\"));");
+            peekCodeLet().code("write($writer,U.getI18n($template.getTemplateEngine().getI18nVistor(),$context,\"").code(ctx.identify_list().getText()).lineCode("\"));");
         } else {
             ctx.expression().accept(this);
             Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
@@ -365,9 +367,10 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             case TinyTemplateParser.TEXT_ESCAPED_CHAR:
                 text = text.substring(1);
                 break;
+            default:
+                break;
         }
-        CodeBlock textCodeBlock = new CodeBlock().header(new CodeLet().code("write($writer,\"").code(StringEscapeUtils.escapeJava(text)).lineCode("\");"));
-        return textCodeBlock;
+        return new CodeBlock().header(new CodeLet().code("write($writer,\"").code(StringEscapeUtils.escapeJava(text)).lineCode("\");"));
     }
 
     public CodeBlock visitExpr_identifier(@NotNull TinyTemplateParser.Expr_identifierContext ctx) {
@@ -414,7 +417,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         peekCodeLet().code("\"%s\"", ctx.getChild(0).getText());
         return null;
     }
-
 
 
     public CodeBlock visitCall_macro_directive(@NotNull TinyTemplateParser.Call_macro_directiveContext ctx) {
@@ -656,16 +658,15 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     @Override
     public CodeBlock visitExpr_member_function_call(@NotNull TinyTemplateParser.Expr_member_function_callContext ctx) {
-        popCodeLet();
-        String functionName = ctx.getChild(0).getText();
-        peekCodeLet().codeBefore("U.c(").code(",\"").code(functionName).code("\"");
+        ctx.expression().accept(this);
+        String functionName = ctx.IDENTIFIER().getText();
+        peekCodeLet().codeBefore(ctx.getChild(1).getText().equals(".")?"U.c($template,":"U.sc($template,").code(",\"").code(functionName).code("\"");
         TinyTemplateParser.Expression_listContext list = ctx.expression_list();
         if (list != null) {
             peekCodeLet().code(",");
             list.accept(this);
         }
         peekCodeLet().code(")");
-        pushCodeLet();
         return null;
     }
 
@@ -699,7 +700,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         peekCodeLet().code("U.b(%s)?%s:%s", condition, left, right);
         return null;
     }
-
 
 
     private RuntimeException reportError(String message, Object node) {

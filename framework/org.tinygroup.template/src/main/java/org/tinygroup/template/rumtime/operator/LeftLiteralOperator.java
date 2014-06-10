@@ -20,7 +20,4 @@ public class LeftLiteralOperator extends SingleOperator {
         throw getUnsupportedOperationException(var);
     }
 
-    public static void main(String[] args) {
-        System.out.println(!true);
-    }
 }
