@@ -100,6 +100,17 @@ public class TemplateEngineDefault implements TemplateEngine {
         templateLoaderMap.put(templateLoader.getType(), templateLoader);
     }
 
+    @Override
+    public Template getTemplate(String path) throws TemplateException {
+        for (TemplateLoader loader : templateLoaderMap.values()) {
+            Template template = loader.getTemplate(path);
+            if (template != null) {
+                return template;
+            }
+        }
+        throw new TemplateException("找不到模板：" + path);
+    }
+
     public TemplateLoader getTemplateLoader(String type) throws TemplateException {
         return templateLoaderMap.get(type);
     }

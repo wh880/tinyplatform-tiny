@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class MemorySourceCompiler {
     public <T> Class<T> loadClass(MemorySource source) throws TemplateException {
-        return loadClass(null, source);
+        return loadClass(MemorySourceCompiler.class.getClassLoader(), source);
     }
 
     public <T> Class<T> loadClass(ClassLoader classLoader, MemorySource source) throws TemplateException {
@@ -33,15 +33,18 @@ public class MemorySourceCompiler {
             URL[] urls = new URL[1];
             File file = new File(getOutputDir());
             urls[0] = file.toURI().toURL();
-            Class<T> type = (Class<T>) new URLClassLoader(urls).loadClass(source.qualifiedClassName);
-            return type;
+            if(classLoader==null){
+                return (Class<T>) new URLClassLoader(urls).loadClass(source.qualifiedClassName);
+            }else {
+                return (Class<T>) new URLClassLoader(urls,classLoader).loadClass(source.qualifiedClassName);
+            }
         } catch (Exception e) {
             throw new TemplateException(e);
         }
     }
 
     public <T> T loadInstance(MemorySource source) throws TemplateException {
-        return loadInstance(null, source);
+        return loadInstance(MemorySourceCompiler.class.getClassLoader(), source);
     }
 
     public <T> T loadInstance(ClassLoader classLoader, MemorySource source) throws TemplateException {
@@ -274,6 +277,9 @@ public class MemorySourceCompiler {
             try {
                 String fileName = new String(classFiles[i].fileName()) + ".class";
                 File javaClassFile = new File(outputDir, fileName);
+                if(javaClassFile.exists()){
+                    javaClassFile.delete();
+                }
                 File pa = javaClassFile.getParentFile();
                 if (!pa.exists()) {
                     pa.mkdirs();

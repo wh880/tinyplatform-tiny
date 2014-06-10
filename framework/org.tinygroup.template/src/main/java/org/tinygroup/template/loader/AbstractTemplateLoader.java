@@ -2,6 +2,7 @@ package org.tinygroup.template.loader;
 
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateEngine;
+import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.TemplateLoader;
 
 import java.util.Map;
@@ -13,6 +14,15 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class AbstractTemplateLoader<T> implements TemplateLoader<T> {
     private final String type;
+    private ClassLoader gettemplateEngineClassLoader;
+
+    public ClassLoader getTemplateEngineClassLoader(){
+        return gettemplateEngineClassLoader;
+    }
+
+    public void setTemplateEngineClassLoader(ClassLoader classLoader){
+        this.gettemplateEngineClassLoader=classLoader;
+    }
 
     private Map<T, Template> templateMap = new ConcurrentHashMap<T, Template>();
     private TemplateEngine templateEngine;
@@ -28,7 +38,7 @@ public abstract class AbstractTemplateLoader<T> implements TemplateLoader<T> {
         return templateMap;
     }
 
-    public Template getTemplate(String path) throws Exception {
+    public Template getTemplate(String path) throws TemplateException{
         return templateMap.get(path);
     }
     public TemplateLoader putTemplate(T key,Template template){

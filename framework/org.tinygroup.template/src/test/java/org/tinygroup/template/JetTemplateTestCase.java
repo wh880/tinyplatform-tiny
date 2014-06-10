@@ -7,8 +7,6 @@ import org.tinygroup.vfs.FileObjectProcessor;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.vfs.impl.filter.FileNameFileObjectFilter;
 
-import java.io.OutputStreamWriter;
-
 /**
  * Created by luoguo on 2014/6/7.
  */
@@ -23,7 +21,7 @@ public class JetTemplateTestCase {
             public void process(FileObject fileObject) {
                 try {
                     System.out.println("\n" + fileObject.getPath());
-                    engine.renderTemplate(fileObject.getPath(), null, new OutputStreamWriter(System.out));
+                    engine.renderTemplate(fileObject.getPath());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -31,12 +31,12 @@ public class FileObjectTemplateLoader extends AbstractTemplateLoader<FileObject>
         return null;
     }
 
-    public Template getTemplate(final String path) throws Exception {
+    public Template getTemplate(final String path) throws TemplateException {
         FileObject fileObject = pathMap.get(path);
         if (fileObject == null) {//如果文件缓冲里没有找到加载的文件
             root.foreach(new EqualsPathFileObjectFilter(path), new FileObjectProcessor() {
                 public void process(FileObject fileObject) {
-                    loadTemplate(path, fileObject);
+                    loadTemplate(path, fileObject,getTemplateEngineClassLoader());
                 }
             });
         } else {
@@ -47,15 +47,19 @@ public class FileObjectTemplateLoader extends AbstractTemplateLoader<FileObject>
                 return null;
             } else if (fileObject.isModified()) {
                 //如果文件已经被修改
-                loadTemplate(path, fileObject);
+                loadTemplate(path, fileObject,getTemplateEngineClassLoader());
             }
         }
-        return getTemplate(path);
+        fileObject = pathMap.get(path);
+        if (fileObject != null) {
+            return super.getTemplateMap().get(fileObject);
+        }
+        return null;
     }
 
-    private void loadTemplate(String path, FileObject fileObject) {
+    private void loadTemplate(String path, FileObject fileObject,ClassLoader classLoader) {
         try {
-            Template template = TemplateCompilerUtils.compileTemplate(IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()), fileObject.getPath());
+            Template template = TemplateCompilerUtils.compileTemplate(classLoader,IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()), fileObject.getPath());
             putTemplate(fileObject, template);
             pathMap.put(path, fileObject);
         } catch (Exception e) {
