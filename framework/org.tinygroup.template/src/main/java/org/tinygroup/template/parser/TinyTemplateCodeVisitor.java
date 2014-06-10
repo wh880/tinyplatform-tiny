@@ -188,7 +188,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         String name = ctx.getChild(0).getText();
         name = name.substring(6, name.length() - 1).trim();
         initCodeBlock.subCode(new CodeLet().lineCode("getMacroMap().put(\"%s\", new %s());", name, name));
-
+        //TODO
         CodeBlock macro = new CodeBlock();
         TinyTemplateParser.Define_expression_listContext define_expression_list = ctx.define_expression_list();
         pushPeekCodeLet();
@@ -366,8 +366,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                 break;
             case TinyTemplateParser.TEXT_ESCAPED_CHAR:
                 text = text.substring(1);
-                break;
-            default:
                 break;
         }
         return new CodeBlock().header(new CodeLet().code("write($writer,\"").code(StringEscapeUtils.escapeJava(text)).lineCode("\");"));

@@ -1,6 +1,6 @@
 #for ( x : ["a","b","c","d"])
     ${xFor.index} - ${xFor.size}: ${x}
-    ${xFor.isFirst} - ${xFor.isLast}
+    ${xFor.first} - ${xFor.last}
 #end
 #for (x : {})
     ${xFor.index} - ${xFor.size}: ${x}

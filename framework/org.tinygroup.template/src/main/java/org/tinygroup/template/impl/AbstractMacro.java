@@ -16,9 +16,17 @@ public abstract class AbstractMacro implements Macro {
     private String name;
     private String[] parameterNames;
     private TemplateContext templateContext = new TemplateContextImpl();
-
+    private Template template;
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Template getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(Template template) {
+        this.template = template;
     }
 
     public void setParameterNames(String[] parameterNames) {
@@ -34,16 +42,23 @@ public abstract class AbstractMacro implements Macro {
         $writer.write(object.toString());
     }
 
-    public void render(Template $template, TemplateContext $context, Writer writer) throws TemplateException {
+    public void render(Template $template, TemplateContext invokeContext, Writer writer) throws TemplateException {
+        TemplateContext newContext = new TemplateContextImpl();
         try {
-            $context.putSubContext("$currentMacroContext", getTemplateContext());
-            renderTemplate($template, $context, writer);
+            if (invokeContext != null) {
+                newContext.putSubContext("$invokeContext", invokeContext);
+            }
+            invokeContext.putSubContext("$currentMacroContext", getTemplateContext());
+            renderTemplate($template, newContext, writer);
             writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
         } finally {
             //无论如何从里面拿掉
-            $context.removeSubContext("$currentMacroContext");
+            if (invokeContext != null) {
+                newContext.removeSubContext("$invokeContext");
+            }
+            invokeContext.removeSubContext("$currentMacroContext");
         }
     }
 

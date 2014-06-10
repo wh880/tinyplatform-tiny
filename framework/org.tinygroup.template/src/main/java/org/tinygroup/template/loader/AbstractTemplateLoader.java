@@ -44,6 +44,7 @@ public abstract class AbstractTemplateLoader<T> implements TemplateLoader<T> {
     public TemplateLoader putTemplate(T key,Template template){
         templateMap.put(key, template);
         template.setTemplateEngine(templateEngine);
+        template.getTemplateContext().setParent(templateEngine.getTemplateContext());
         return this;
     }
     public void setTemplateEngine(TemplateEngine templateEngine) {
