@@ -1,4 +1,4 @@
-package org.tinygroup.template;
+package org.tinygroup.template.impl;
 
 /**
  * 用来描述类名的对象

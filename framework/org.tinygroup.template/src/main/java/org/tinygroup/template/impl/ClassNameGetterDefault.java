@@ -1,7 +1,6 @@
 package org.tinygroup.template.impl;
 
-import org.tinygroup.template.ClassName;
-import org.tinygroup.template.ClassNameGetter;
+import org.tinygroup.template.loader.ClassNameGetter;
 
 /**
  * Created by luoguo on 2014/6/9.

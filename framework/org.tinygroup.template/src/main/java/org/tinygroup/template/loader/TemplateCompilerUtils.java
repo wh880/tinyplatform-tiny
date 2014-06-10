@@ -2,8 +2,7 @@ package org.tinygroup.template.loader;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.tinygroup.template.ClassName;
-import org.tinygroup.template.ClassNameGetter;
+import org.tinygroup.template.impl.ClassName;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.compiler.MemorySource;

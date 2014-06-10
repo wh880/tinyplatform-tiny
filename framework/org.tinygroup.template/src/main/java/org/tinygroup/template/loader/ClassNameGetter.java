@@ -1,4 +1,6 @@
-package org.tinygroup.template;
+package org.tinygroup.template.loader;
+
+import org.tinygroup.template.impl.ClassName;
 
 /**
  * 类名称获取器
