@@ -26,8 +26,7 @@ package org.tinygroup.tinypc;
 import junit.framework.TestCase;
 
 import org.tinygroup.rmi.RmiServer;
-import org.tinygroup.rmi.impl.RmiServerLocal;
-import org.tinygroup.rmi.impl.RmiServerRemote;
+import org.tinygroup.rmi.impl.RmiServerLocalL;
 
 /**
  * Created by luoguo on 14-1-24.
@@ -38,8 +37,8 @@ public class JobCenterTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        localServer = new RmiServerLocal();
-        remoteServer = new RmiServerRemote("localhost",8888);
+        localServer = new RmiServerLocalL();
+        remoteServer = new RmiServerLocalL("localhost",8888);
     }
 
     public void tearDown() throws Exception {

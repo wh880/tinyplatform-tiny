@@ -56,7 +56,7 @@ public class AbstractJobCenter implements JobCenter {
 
     public void setRmiServer(RmiServer rmiServer) throws RemoteException {
         this.rmiServer = rmiServer;
-        this.workQueue = rmiServer.getRemoteObject(WORK_QUEUE);
+        this.workQueue = rmiServer.getObject(WORK_QUEUE);
     }
 
     public void registerWorker(Worker worker) throws RemoteException {
@@ -69,7 +69,7 @@ public class AbstractJobCenter implements JobCenter {
     }
 
     private void unregisterParallelObject(String objectType, ParallelObject parallelObject) throws RemoteException {
-        rmiServer.unregisterRemoteObject(objectType + "|" + parallelObject.getType(), parallelObject.getId());
+        rmiServer.unregisterObject(objectType + "|" + parallelObject.getType(), parallelObject.getId());
     }
 
     public void unregisterWorker(Worker worker) throws RemoteException {
@@ -101,7 +101,7 @@ public class AbstractJobCenter implements JobCenter {
     }
 
     public List<Worker> getWorkerList(Work work) throws RemoteException {
-        return rmiServer.getRemoteObjectList(getTypeName(WORKER, work.getType()));
+        return rmiServer.getObjectList(getTypeName(WORKER, work.getType()));
     }
 
     private String getTypeName(String type, String workType) {
@@ -117,7 +117,7 @@ public class AbstractJobCenter implements JobCenter {
     }
 
     public List<Foreman> getForeman(String type) throws RemoteException {
-        List<Foreman> foremanList = rmiServer.getRemoteObjectList(getTypeName(FOREMAN, type));
+        List<Foreman> foremanList = rmiServer.getObjectList(getTypeName(FOREMAN, type));
         List<Foreman> foremans = new ArrayList<Foreman>();
         for (Foreman foreman : foremanList) {
             try {
@@ -126,7 +126,7 @@ public class AbstractJobCenter implements JobCenter {
             } catch (RemoteException e) {
                 try {
                     logger.errorMessage("调用工头:{0}时出错", e, foreman.getId());
-                    rmiServer.unregisterRemoteObject(foreman);
+                    rmiServer.unregisterObject(foreman);
                 } catch (RemoteException e1) {
                 	logger.errorMessage("注销工头:{0}时出错", e, foreman.getId());
                 }

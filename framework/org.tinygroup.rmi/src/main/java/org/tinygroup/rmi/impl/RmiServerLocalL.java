@@ -67,7 +67,6 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements
 
 	public RmiServerLocalL() throws RemoteException {
 		this("localhost", DEFAULT_RMI_PORT);
-		validateThread.start();
 	}
 
 	public RmiServerLocalL(int port) throws RemoteException {
