@@ -239,10 +239,10 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     @Override
-    public Object executeFunction(String functionName, TemplateContext context, Object... parameters) throws TemplateException {
+    public Object executeFunction(String functionName,  Object... parameters) throws TemplateException {
         TemplateFunction function = functionMap.get(functionName);
         if (function != null) {
-            return function.execute(context, parameters);
+            return function.execute( parameters);
         }
         throw new TemplateException("找不到函数：" + functionName);
     }

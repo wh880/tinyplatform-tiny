@@ -167,5 +167,5 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     Macro findMacro(Object macroName, Template template, TemplateContext $context) throws TemplateException;
 
-    public Object executeFunction(String functionName, TemplateContext context, Object... parameters) throws TemplateException;
+    public Object executeFunction(String functionName,  Object... parameters) throws TemplateException;
 }

@@ -32,5 +32,9 @@ public class TemplateTestCase {
         engine.setI18nVistor(new I18nvi());
         Template template = engine.getDefaultTemplateLoader().createTemplate("${'abc'.bold()}");
         template.render();
+        template = engine.getDefaultTemplateLoader().createTemplate("${'abc'.equals('a')}");
+        template.render();
+        template = engine.getDefaultTemplateLoader().createTemplate("${fmt('add%sinfo',3)}");
+        template.render();
     }
 }

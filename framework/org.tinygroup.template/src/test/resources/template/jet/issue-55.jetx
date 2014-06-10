@@ -1,8 +1,8 @@
 #for ( x : ["a","b","c","d"])
     ${xFor.index} - ${xFor.size}: ${x}
-    ${xFor.first} - ${xFor.last}
+    ${xFor.atFirst} - ${xFor.atLast}
 #end
 #for (x : {})
     ${xFor.index} - ${xFor.size}: ${x}
-    ${xFor.first} - ${xFor.last}
+    ${xFor.atFirst} - ${xFor.atLast}
 #end
