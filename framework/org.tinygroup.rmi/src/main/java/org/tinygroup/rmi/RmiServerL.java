@@ -112,7 +112,8 @@ public interface RmiServerL extends Remote,Serializable{
      */
     void registerRemoteObject(Remote object, Class type)  throws RemoteException;
     
-    
+    <T> List<T> getRemoteObjectListInstanceOf(Class<T> type)
+	throws RemoteException;
     
     
     

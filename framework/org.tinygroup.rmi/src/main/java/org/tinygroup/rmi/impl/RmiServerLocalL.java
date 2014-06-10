@@ -42,7 +42,8 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.rmi.RmiServerL;
 import org.tinygroup.rmi.Verifiable;
 
-public final class RmiServerLocalL extends UnicastRemoteObject implements RmiServerL{
+public final class RmiServerLocalL extends UnicastRemoteObject implements
+		RmiServerL {
 	/**
 	 * 
 	 */
@@ -89,7 +90,7 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements RmiSer
 		validateThread.start();
 	}
 
-	public Registry getRegistry() throws RemoteException{
+	public Registry getRegistry() throws RemoteException {
 		if (registry == null) {
 			try {
 				registry = LocateRegistry.getRegistry(hostName, port);
@@ -114,7 +115,7 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements RmiSer
 	}
 
 	public Registry getRemoteRegistry() throws RemoteException {
-		
+
 		if (remoteHostName == null || "".equals(remoteHostName)) {
 			return null;
 		}
@@ -122,7 +123,7 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements RmiSer
 		remoteRegistry = LocateRegistry.getRegistry(remoteHostName, remotePort);
 		try {
 			server = (RmiServerL) remoteRegistry.lookup(remoteHostName);
-			
+
 		} catch (NotBoundException e) {
 			throw new RuntimeException("获取RmiServer:" + remoteHostName
 					+ "时出错,该对象未曾注册", e);
@@ -188,7 +189,8 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements RmiSer
 		}
 	}
 
-	public void registerLocalObject(Remote object, String name) throws RemoteException{
+	public void registerLocalObject(Remote object, String name)
+			throws RemoteException {
 		try {
 			logger.logMessage(LogLevel.DEBUG, "开始注册本地对象:{}", name);
 
@@ -199,10 +201,10 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements RmiSer
 				Remote stub = UnicastRemoteObject.exportObject(object, 0);
 				registry.rebind(name, stub);
 			}
-			if(server!=null){
+			if (server != null) {
 				server.registerRemoteObject(object, name);
 			}
-			
+
 			logger.logMessage(LogLevel.DEBUG, "结束注册本地对象:{}", name);
 		} catch (RemoteException e) {
 			logger.errorMessage("注册本地对象:{}时发生异常:{}！", e, name, e.getMessage());
@@ -275,7 +277,7 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements RmiSer
 		logger.logMessage(LogLevel.DEBUG, "注销对象object:{}完成", object);
 	}
 
-	private void unregisterLocalObject(String name) throws RemoteException{
+	private void unregisterLocalObject(String name) throws RemoteException {
 		try {
 			logger.logMessage(LogLevel.DEBUG, "开始注销本地对象:{}", name);
 			registry.unbind(name);
@@ -293,13 +295,13 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements RmiSer
 		}
 	}
 
-	private void unregisterRemoteObject(String name) throws RemoteException{
+	private void unregisterRemoteObject(String name) throws RemoteException {
 		logger.logMessage(LogLevel.DEBUG, "开始注销远程对象:{}", name);
 		registeredRemoteObjectMap.remove(name);
 		logger.logMessage(LogLevel.DEBUG, "注销远程对象:{}完成", name);
 	}
 
-	public void unregisterObject(String name) throws RemoteException{
+	public void unregisterObject(String name) throws RemoteException {
 		logger.logMessage(LogLevel.DEBUG, "开始注销对象:{}", name);
 		if (registeredLocalObjectMap.containsKey(name)) {
 			unregisterLocalObject(name);
@@ -338,13 +340,13 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements RmiSer
 		for (String name : registeredRemoteObjectMap.keySet()) {
 			if (name.startsWith(typeName + "|")) { // 如果名称是以typeName打头
 				unregisterRemoteObject(name);
-			} else{
+			} else {
 				Object obj = registeredRemoteObjectMap.get(name); // 如果名称不匹配再进行类型判断
 				if (type.isInstance(obj)) {// type.isAssignableFrom(obj.getClass())
 					unregisterRemoteObject(name);
 				}
 			}
-			
+
 		}
 	}
 
@@ -372,7 +374,7 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements RmiSer
 		if (registeredLocalObjectMap.containsKey(name)) {
 			return (T) registeredLocalObjectMap.get(name);
 		}
-		if(server!=null){
+		if (server != null) {
 			return server.getObject(name);
 		}
 		return null;
@@ -399,18 +401,18 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements RmiSer
 				logger.errorMessage("获取对象Name:{}时出错", e, sName);
 			}
 		}
-		if(server!=null){
+		if (server != null) {
 			return server.getObject(type);
 		}
 		return null;
 	}
 
 	private <T> void getObjectList(Class<T> type, List<T> result,
-			Map<String, Remote> map) throws RemoteException{
+			Map<String, Remote> map) throws RemoteException {
 		for (String sName : map.keySet()) {
 			try {
 				Remote object = getObject(sName);
-				if (type.isInstance(object)&&!result.contains(object)) {
+				if (type.isInstance(object) && !result.contains(object)) {
 					result.add((T) object);
 				}
 			} catch (RemoteException e) {
@@ -420,25 +422,36 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements RmiSer
 	}
 
 	public <T> List<T> getObjectList(Class<T> type) throws RemoteException {
+		return getObjectList(type.getName());
+	}
+
+	public <T> List<T> getObjectList(String typeName) throws RemoteException {
 		List<T> result = new ArrayList<T>();
-		getObjectList(type, result, registeredLocalObjectMap);
-		getObjectList(type, result, registeredRemoteObjectMap);
-		if(server!=null){
-			for(T t:server.getObjectList(type)){
-				if(!result.contains(t)){
-					result.add(t);
+		for (String sName : registry.list()) {
+			if (sName.startsWith(typeName + "|")) {
+				try {
+					result.add((T) getObject(sName));
+				} catch (Exception e) {
+					logger.errorMessage("获取对象name:{}时出错", e, sName);
 				}
 			}
 		}
 		return result;
 	}
 
-	public <T> List<T> getObjectList(String typeName) throws RemoteException {
-		try {
-			return (List<T>) getObjectList(Class.forName(typeName));
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
+	public <T> List<T> getRemoteObjectListInstanceOf(Class<T> type)
+			throws RemoteException {
+		List<T> result = new ArrayList<T>();
+		getObjectList(type, result, registeredLocalObjectMap);
+		getObjectList(type, result, registeredRemoteObjectMap);
+		if (server != null) {
+			for (T t : server.getObjectList(type)) {
+				if (!result.contains(t)) {
+					result.add(t);
+				}
+			}
 		}
+		return result;
 	}
 
 	public void unexportObjects() throws RemoteException {
@@ -458,10 +471,8 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements RmiSer
 		}
 	}
 
-	private String getName(String name, String id) throws RemoteException{
+	private String getName(String name, String id) throws RemoteException {
 		return RmiUtil.getName(name, id);
 	}
-
-	
 
 }
