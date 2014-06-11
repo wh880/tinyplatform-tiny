@@ -81,6 +81,7 @@ public final class ForIterator implements Iterator, ForStatus {
     }
 
     public Object next() {
+        index++;
         return iterator.next();
     }
 

@@ -1,7 +1,7 @@
 package org.tinygroup.template.rumtime;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Enumerator;
@@ -31,7 +31,7 @@ public class U {
      */
     public static Object p(Object object, Object name) throws TemplateException {
         try {
-            return BeanUtils.getProperty(object, name.toString());
+            return PropertyUtils.getProperty(object, name.toString());
         } catch (Exception e) {
             throw new TemplateException(e);
         }

@@ -132,6 +132,11 @@ public class TestParser extends TestCase {
         System.out.println(result);
         assertTrue(result.indexOf("write($writer,U.p(U.v($context,\"aa\"),\"bb\"));") > 0);
     }
+   public void testT3_30() throws Exception {
+        String result = execute("${itemFor.index%2}");
+        System.out.println(result);
+        assertTrue(result.indexOf("write($writer,O.e(\"%\",U.p(U.v($context,\"itemFor\"),\"index\"),2));") > 0);
+    }
 
     public void testT2_2() throws Exception {
         String result = execute("#include(\"aaa/bb/cc/dd\",{a:2,b:3,c:4})");
@@ -153,7 +158,7 @@ public class TestParser extends TestCase {
     public void testT2_4() throws Exception {
         String result = execute("<a>b</c>");
         System.out.println(result);
-        assertTrue(result.indexOf("write($writer,\"<a>b<\\/c>\");") > 0);
+        assertTrue(result.indexOf("write($writer,\"<a>b</c>\");") > 0);
     }
 
     public void testT3() throws Exception {
