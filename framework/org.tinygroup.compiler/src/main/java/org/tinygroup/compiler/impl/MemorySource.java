@@ -31,7 +31,14 @@ public final class MemorySource implements Source {
      * 类内容
      */
     String content;
-
+    public String getSimpleName(){
+        String simpName=qualifiedClassName;
+        int lastPositon = qualifiedClassName.lastIndexOf('.');
+        if(lastPositon >=0){
+            simpName=simpName.substring(lastPositon+1);
+        }
+        return simpName;
+    }
     public MemorySource(String qualifiedClassName, String content) {
         this.qualifiedClassName = qualifiedClassName;
         this.content = content;

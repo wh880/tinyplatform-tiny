@@ -23,12 +23,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.tinygroup.dbrouter.RouterKeyGenerator;
-import org.tinygroup.dbrouter.config.KeyGeneratorConfig;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 功能说明:集群主键生成器的抽象类
@@ -45,16 +47,76 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements
 
 	transient protected Router router;
 
-	transient protected KeyGeneratorConfig keyConfig;
-
 	transient private Connection connection = null;
 	// 表名：主键配置
-	protected Map<String, KeyConfigArea> caches = new HashMap<String, KeyConfigArea>();
+	protected transient  Map<String, KeyConfigArea> caches = new HashMap<String, KeyConfigArea>();
 
 	private static Logger logger = LoggerFactory
 			.getLogger(AbstractRouterKeyGenerator.class);
 
+	private static final int DEFAULT_STEP = 100;
+
+	public static final String DEFAULT_KEY_TABLE_NAME = "key_table";
+
+	@XStreamAlias("increment")
+	@XStreamAsAttribute
+	private int increment = 1;
+	@XStreamAlias("key-table-name")
+	@XStreamAsAttribute
+	private String keyTableName = DEFAULT_KEY_TABLE_NAME;
+	/**
+	 * 每次从数据库获取的幅度
+	 */
+	private int step = DEFAULT_STEP;
+	@XStreamAlias("data-source-id")
+	@XStreamAsAttribute
+	private String dataSourceId;
+
+	public String getKeyTableName() {
+		if (keyTableName == null) {
+			keyTableName = DEFAULT_KEY_TABLE_NAME;
+		}
+		return keyTableName;
+	}
+
+	public void setKeyTableName(String keyTableName) {
+		this.keyTableName = keyTableName;
+	}
+
+	public int getIncrement() {
+		if (increment == 0) {
+			increment = 1;
+		}
+		return increment;
+	}
+
+	public void setIncrement(int increment) {
+		this.increment = increment;
+	}
+
+	public int getStep() {
+		if (step == 0) {
+			step = DEFAULT_STEP;
+		}
+		return step;
+	}
+
+	public void setStep(int step) {
+		this.step = step;
+	}
+
+	public String getDataSourceId() {
+		return dataSourceId;
+	}
+
+	public void setDataSourceId(String dataSourceId) {
+		this.dataSourceId = dataSourceId;
+	}
+
 	public T getKey(String tableName) {
+		if(caches==null){
+			caches=new HashMap<String, KeyConfigArea>();
+		}
 		KeyConfigArea area = caches.get(tableName);
 		if (area == null) {
 			area = new KeyConfigArea();
@@ -62,9 +124,9 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements
 
 				public void callback(String tableName, Statement statement)
 						throws SQLException {
-					String sql = "insert into " + keyConfig.getKeyTableName()
+					String sql = "insert into " + getKeyTableName()
 							+ "(end_number,table_name) values("
-							+ keyConfig.getStep() + ",'" + tableName + "')";
+							+ getStep() + ",'" + tableName + "')";
 					statement.executeUpdate(sql);
 				}
 			});
@@ -76,13 +138,13 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements
 				public void callback(String tableName, Statement statement)
 						throws SQLException {
 					throw new DbrouterRuntimeException("集群主键表:"
-							+ keyConfig.getKeyTableName() + "查询不到" + tableName
+							+ getKeyTableName() + "查询不到" + tableName
 							+ "的记录");
 				}
 			});
 		}
 		long nowCurrentNumber = area.getCurrentNumber()
-				+ keyConfig.getIncrement();
+				+ getIncrement();
 		area.setCurrentNumber(nowCurrentNumber);
 		return generatorNextKey(nowCurrentNumber);
 	}
@@ -94,16 +156,16 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements
 		try {
 			if (connection == null || connection.isClosed()) {
 				connection = DbRouterUtil.createConnection(router
-						.getDataSourceConfig(keyConfig.getDataSourceId()));
+						.getDataSourceConfig(getDataSourceId()));
 			}
-			String generatorTableName = keyConfig.getKeyTableName();
+			String generatorTableName = getKeyTableName();
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery("select * from "
 					+ generatorTableName + " where table_name='" + tableName
 					+ "'");
 			if (resultSet.next()) {
 				long oldEndNumber = resultSet.getLong(END_NUMBER);
-				long newEndNumber = oldEndNumber + keyConfig.getStep();
+				long newEndNumber = oldEndNumber + getStep();
 				String sql = "update " + generatorTableName
 						+ " set end_number=" + newEndNumber
 						+ " where table_name='" + tableName + "'";
@@ -112,7 +174,7 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements
 				area.setEndNumber(newEndNumber);
 			} else {
 				callback.callback(tableName, statement);
-				area.setEndNumber(keyConfig.getStep());
+				area.setEndNumber(getStep());
 				area.setCurrentNumber(0);
 			}
 		} catch (SQLException e) {
@@ -151,7 +213,6 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements
 
 	public void setRouter(Router router) {
 		this.router = router;
-		keyConfig = router.getKeyConfig();
 	}
 
 	class KeyConfigArea {
@@ -175,7 +236,7 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements
 		}
 
 		public boolean checkUpdateKey() {
-			return currentNumber + keyConfig.getIncrement() - endNumber > 0;
+			return currentNumber + getIncrement() - endNumber > 0;
 		}
 
 	}

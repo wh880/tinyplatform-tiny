@@ -57,4 +57,19 @@ public class TestJarFileObject extends TestCase {
 		}
 		return null;
 	}
+	
+	public void testSubFile(){
+		String path=getClass().getResource("/vfs-0.0.1-SNAPSHOT.jar").getFile();
+		FileObject fileObject = VFS.resolveFile(path);
+		FileObject subFile= fileObject.getFileObject("/");
+		assertEquals(fileObject, subFile);
+		subFile= fileObject.getFileObject("/org");
+		assertTrue(subFile!=null);
+		subFile= fileObject.getFileObject("/org/hundsun");
+		assertTrue(subFile!=null);
+		subFile= fileObject.getFileObject("/org/hundsun/opensource/vfs/VFS.class");
+		assertTrue(subFile!=null);
+		assertEquals("VFS.class", subFile.getFileName());
+	}
+	
 }

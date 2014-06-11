@@ -16,6 +16,7 @@
 package org.tinygroup.dbrouter.impl.keygenerator;
 
 
+
 /**
  * Created by luoguo on 13-12-13.
  */

@@ -96,7 +96,6 @@ public interface Context extends BaseContext {
 	 * @return 子环境
 	 */
 	Context getSubContext(String contextName);
-
 	/**
 	 * 删除所有子上下文
 	 */

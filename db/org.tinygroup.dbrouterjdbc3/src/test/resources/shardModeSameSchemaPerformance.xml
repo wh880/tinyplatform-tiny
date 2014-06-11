@@ -1,9 +1,7 @@
 <routers>
 	<router id="shardModeSameSchemaPerformance" user-name="luog"
-		password="123456"
-		key-generator-class="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong">
-		<key-generator-config increment="1"
-			data-source-id="test" />
+		password="123456">
+		<key-generator class="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong" increment="1" data-source-id="test"/>
 		<data-source-configs>
 			<data-source-config id="test" driver="com.mysql.jdbc.Driver"
 				user-name="root" password="123456" url="jdbc:mysql://mysqldb:3306/test"

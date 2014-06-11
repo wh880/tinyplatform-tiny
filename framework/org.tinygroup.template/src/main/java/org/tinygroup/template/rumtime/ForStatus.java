@@ -29,7 +29,7 @@ public interface ForStatus {
     /**
      * foreach 计数器，从 1 开始
      */
-    public int getIndex();
+     int getIndex();
 
     /**
      * 获取循环总数.
@@ -38,33 +38,33 @@ public interface ForStatus {
      *
      * @since 1.1.3
      */
-    public int getSize();
+     int getSize();
 
     /**
      * 是否第一个元素.
      *
      * @since 1.1.3
      */
-    public boolean isFirst();
+     boolean isFirst();
 
     /**
      * 是否最后一个元素.
      *
      * @since 1.1.3
      */
-    public boolean isLast();
+     boolean isLast();
 
     /**
      * 是否第奇数个元素.
      *
      * @since 1.2.0
      */
-    public boolean isOdd();
+     boolean isOdd();
 
     /**
      * 是否第偶数个元素.
      *
      * @since 1.2.0
      */
-    public boolean isEven();
+     boolean isEven();
 }

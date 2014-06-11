@@ -29,22 +29,39 @@ public class CodeBlock {
         this.tabIndent = tabIndent;
         return this;
     }
+
     public CodeBlock setTabIndent(int tabIndent) {
         this.tabIndent = tabIndent;
         return this;
     }
+
     public CodeBlock setParentCodeBlock(CodeBlock parentCodeBlock) {
         this.parentCodeBlock = parentCodeBlock;
         return this;
     }
 
+    public CodeBlock insertSubCode(String code) {
+        CodeBlock newCodeBlock = new CodeBlock().header(code);
+        getSubCodeBlocks().add(0, newCodeBlock);
+        return this;
+    }
 
-    public CodeBlock setHeaderCodeLet(CodeLet headerCodeLet) {
+    public CodeBlock header(CodeLet headerCodeLet) {
         this.headerCodeLet = headerCodeLet;
         return this;
     }
 
-    public CodeBlock setFooterCodeLet(CodeLet footerCodeLet) {
+    public CodeBlock header(String string) {
+        this.headerCodeLet = new CodeLet(string).endLine();
+        return this;
+    }
+
+    public CodeBlock footer(String string) {
+        this.footerCodeLet = new CodeLet(string).endLine();
+        return this;
+    }
+
+    public CodeBlock footer(CodeLet footerCodeLet) {
         this.footerCodeLet = footerCodeLet;
         return this;
     }
@@ -61,7 +78,14 @@ public class CodeBlock {
         return subCodeBlocks;
     }
 
-    public CodeBlock addSubCodeBlock(CodeBlock codeBlock) {
+    public CodeBlock subCode(String code) {
+        if (code != null) {
+            subCode(new CodeLet(code).endLine());
+        }
+        return this;
+    }
+
+    public CodeBlock subCode(CodeBlock codeBlock) {
         if (codeBlock != null) {
             if (subCodeBlocks == null) {
                 subCodeBlocks = new ArrayList<CodeBlock>();
@@ -72,11 +96,11 @@ public class CodeBlock {
         return this;
     }
 
-    public CodeBlock addSubCodeLet(CodeLet codeLet) {
+    public CodeBlock subCode(CodeLet codeLet) {
         if (codeLet != null) {
             CodeBlock codeBlock = new CodeBlock();
-            codeBlock.setHeaderCodeLet(codeLet);
-            return addSubCodeBlock(codeBlock);
+            codeBlock.header(codeLet);
+            return subCode(codeBlock);
         }
         return this;
     }

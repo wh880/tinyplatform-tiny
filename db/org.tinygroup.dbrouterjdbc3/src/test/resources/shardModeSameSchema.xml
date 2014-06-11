@@ -1,8 +1,6 @@
 <routers>
-	<router id="shardModeSameSchema" user-name="luog" password="123456"
-		key-generator-class="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong">
-		<key-generator-config increment="1"
-			data-source-id="test" />
+	<router id="shardModeSameSchema" user-name="luog" password="123456">
+		<key-generator class="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong" increment="1" data-source-id="test"/>
 		<data-source-configs>
 			<data-source-config id="test" driver="com.mysql.jdbc.Driver"
 				url="jdbc:derby:derbydb/dbShard;create=true" test-sql="" />

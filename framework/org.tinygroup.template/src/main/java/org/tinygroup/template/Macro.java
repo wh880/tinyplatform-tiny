@@ -1,13 +1,12 @@
 package org.tinygroup.template;
 
-import java.io.IOException;
 import java.io.Writer;
 
 /**
  * 宏，就是个方法
  * Created by luoguo on 2014/6/6.
  */
-public interface Macro {
+public interface Macro extends TemplateContextOperator {
     /**
      * 返回宏的名字
      *
@@ -22,12 +21,15 @@ public interface Macro {
      */
     String[] getParameterNames();
 
+    void setTemplate(Template template);
+
+    Template getTemplate();
+
     /**
      * 进行渲染
      *
-     * @param writer
-     * @param context
-     * @throws IOException
+     * @param $context
+     * @param $writer
      */
-    void render(Writer writer, TemplateContext context) throws TemplateException;
+    void render(Template $template, TemplateContext $context, Writer $writer) throws TemplateException;
 }

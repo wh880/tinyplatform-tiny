@@ -1,8 +1,6 @@
 <routers>
-	<router id="primarySlave" user-name="luog" password="123456"
-		key-generator-class="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong">
-		<key-generator-config increment="1"
-			data-source-id="ds0" />
+	<router id="primarySlave" user-name="luog" password="123456">
+		<key-generator class="org.tinygroup.dbrouter.impl.keygenerator.RouterKeyGeneratorLong" increment="1" data-source-id="ds0"/>
 		<data-source-configs>
 			<data-source-config id="ds0"
 				driver="org.apache.derby.jdbc.EmbeddedDriver" url="jdbc:derby:derbydb/db01;create=true" />

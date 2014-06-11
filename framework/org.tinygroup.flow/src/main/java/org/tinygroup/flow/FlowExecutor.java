@@ -15,13 +15,13 @@
  */
 package org.tinygroup.flow;
 
-import java.util.Map;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.flow.config.ComponentDefine;
 import org.tinygroup.flow.config.ComponentDefines;
 import org.tinygroup.flow.config.Flow;
 import org.tinygroup.flow.config.Node;
+
+import java.util.Map;
 
 /**
  * 流程执行器
@@ -37,7 +37,7 @@ public interface FlowExecutor {
 	/**
 	 * 流程执行接口方法
 	 * 
-	 * @param flow
+	 * @param flowId
 	 *            要执行的流程
 	 * @param nodeId
 	 *            要执行的节点标识
@@ -106,7 +106,7 @@ public interface FlowExecutor {
 	/**
 	 * 增加组件定义信息
 	 * 
-	 * @param components
+	 * @param component
 	 */
 	void addComponent(ComponentDefine component);
 
@@ -115,7 +115,7 @@ public interface FlowExecutor {
 	/**
 	 * 移除组件定义信息
 	 * 
-	 * @param components
+	 * @param component
 	 */
 	void removeComponent(ComponentDefine component);
 

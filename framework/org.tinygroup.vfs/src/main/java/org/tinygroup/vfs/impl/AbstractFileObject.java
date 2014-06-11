@@ -15,6 +15,7 @@
  */
 package org.tinygroup.vfs.impl;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.FileObjectFilter;
 import org.tinygroup.vfs.FileObjectProcessor;
@@ -45,6 +46,9 @@ public abstract class AbstractFileObject implements FileObject {
         return this.getAbsolutePath().hashCode();
     }
 
+    public boolean isModified(){
+        return false;
+    }
 
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -88,4 +92,30 @@ public abstract class AbstractFileObject implements FileObject {
     public void foreach(FileObjectFilter fileObjectFilter, FileObjectProcessor fileObjectProcessor) {
         foreach(fileObjectFilter, fileObjectProcessor, true);
     }
+
+	public FileObject getFileObject(String path) {
+		
+		if(path.equals("/")){
+			return this;
+		}
+		if(path.startsWith("/")){
+			path=path.substring(1);
+		}
+		String[] pathLayers=path.split("/");
+		if(isFolder()){
+			for (FileObject subFileObject : getChildren()) {
+				if(subFileObject.getFileName().equals(pathLayers[0])){
+					   if(pathLayers.length>1){
+						   return subFileObject.getFileObject(StringUtil.substringAfter(path, "/"));
+					   }else{
+						   return subFileObject;
+					   }
+				}
+			}
+			
+		}
+		
+		return null;
+	}
+    
 }

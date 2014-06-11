@@ -150,20 +150,13 @@ public class RouterManagerImpl implements RouterManager {
 	}
 
 	public synchronized <T> T getPrimaryKey(Router router, String tableName) {
-		try {
-			RouterKeyGenerator generator = routerKeyGeneratorMap.get(tableName);
-			if (generator == null) {
-				generator = (RouterKeyGenerator) Class.forName(
-						router.getKeyGeneratorClass()).newInstance();
-				generator.setRouter(router);
-				routerKeyGeneratorMap.put(tableName, generator);
-			}
+		RouterKeyGenerator generator = router.getKeyGenerator();
+		if (generator != null) {
+			generator.setRouter(router);
 			return (T) generator.getKey(tableName);
-		} catch (Exception e) {
-			logger.errorMessage("不存在key获取器:{0}", e,
-					router.getKeyGeneratorClass());
-			throw new DbrouterRuntimeException(e);
 		}
+		logger.log(LogLevel.ERROR, "router:{0},不存在key获取器:{0}", router.getId());
+		throw new DbrouterRuntimeException("不存在key获取器");
 	}
 
 	public void addRouter(Router router) {
@@ -258,7 +251,7 @@ public class RouterManagerImpl implements RouterManager {
 	public List<Shard> getShards(Partition partition, String sql,
 			Object... preparedParams) {
 		List<Shard> shards = new ArrayList<Shard>();
-		if (partition != null &&!CollectionUtil.isEmpty(partition.getShards())) {
+		if (partition != null && !CollectionUtil.isEmpty(partition.getShards())) {
 			for (Shard shard : partition.getShards()) {
 				if (isMatch(partition, shard, sql, preparedParams)) {
 					shards.add(shard);

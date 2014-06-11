@@ -17,6 +17,7 @@ package org.tinygroup.vfs;
 
 import junit.framework.TestCase;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -30,6 +31,21 @@ public class TestFileObjectImpl extends TestCase {
 		String path=getClass().getResource("/test/0.html").getFile();
 		FileObject fileObject= VFS.resolveFile(path);
 		FileUtils.printFileObject(fileObject);
+	}
+	
+	
+	public void testGetSubFile(){
+		
+		String projectPath=System.getProperty("user.dir");
+		String testResourcePath=projectPath+File.separator+"src"+File.separator+"test"+File.separator+"resources"+File.separator;
+		FileObject fileObject=VFS.resolveFile(testResourcePath);
+		FileObject subFile= fileObject.getFileObject("/");
+		assertEquals(fileObject, subFile);
+		subFile=fileObject.getFileObject("/test");
+		assertTrue(subFile!=null);
+		subFile=fileObject.getFileObject("/test/0.html");
+		assertTrue(subFile!=null);
+		
 	}
 	
 }

@@ -31,18 +31,28 @@ public final class ForIterator implements Iterator, ForStatus {
     private int index = 0;
     private int size;
 
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+    public ForIterator(){
+        this.object=null;
+    }
     public ForIterator(Object object) {
         this.object = object;
         if (object instanceof Map) {
             Map map = (Map) object;
-            iterator = map.keySet().iterator();
+            iterator = map.entrySet().iterator();
             size = map.size();
         } else if (object instanceof Collection) {
             Collection collection = (Collection) object;
             iterator = collection.iterator();
             size = collection.size();
-        } else if (object instanceof LoopIterator) {
-            LoopIterator loopIterator = (LoopIterator) object;
+        } else if (object instanceof RanageIterator) {
+            RanageIterator loopIterator = (RanageIterator) object;
             iterator = (Iterator) object;
             size = loopIterator.getSize();
         } else if (object instanceof Enumeration) {
@@ -54,9 +64,12 @@ public final class ForIterator implements Iterator, ForStatus {
             List<?> itemList = Arrays.asList(((Class<?>) object).getEnumConstants());
             iterator = itemList.iterator();
             size = itemList.size();
-        }else{
-            iterator=new SingletonIterator(object);
-            size=1;
+        } else if (object.getClass().isArray()) {
+            iterator=new ArrayIterator(object);
+            size=ArrayUtil.arrayLength(object);
+        } else {
+            iterator = new SingletonIterator(object);
+            size = 1;
         }
     }
 
@@ -96,12 +109,12 @@ public final class ForIterator implements Iterator, ForStatus {
 
 
     public boolean isOdd() {
-        return index % 2 == 1;
+        return (index & 2) != 0;
     }
 
 
     public boolean isEven() {
-        return index % 2 == 0;
+        return (index % 2) == 0;
     }
 
 
@@ -132,8 +145,8 @@ public final class ForIterator implements Iterator, ForStatus {
 
     class ArrayIterator implements Iterator {
         private final Object object;
-        int size = 0;
-        int index = 0;
+        private int size = 0;
+        private int index = 0;
 
         public ArrayIterator(Object object) {
             this.object = object;

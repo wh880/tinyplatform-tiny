@@ -18,7 +18,7 @@ package org.tinygroup.dict;
 import org.tinygroup.context.Context;
 
 /**
- * 字典项过滤器，有时根据不同的人员情况对字典项进行一定过滤
+ * 字典项过滤器，有时需要根据不同的人员情况对字典项进行一定过滤
  * 
  * @author luoguo
  * 

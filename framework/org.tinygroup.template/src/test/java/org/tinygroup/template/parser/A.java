@@ -1,26 +1,31 @@
 package org.tinygroup.template.parser;
 
-import org.tinygroup.template.TemplateContext;
+import org.tinygroup.template.Macro;
 import org.tinygroup.template.Template;
+import org.tinygroup.template.TemplateContext;
+import org.tinygroup.template.TemplateException;
+import org.tinygroup.template.impl.AbstractTemplate;
+import org.tinygroup.template.rumtime.ForIterator;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
-public class A implements Template {
-    public void render(TemplateContext context, Writer writer) throws IOException{
-        writer.write("abc\ndef");
+public class A extends AbstractTemplate{
+    {
+    }
+    protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException{
+        Macro $macro=null;
+        Template $template=this;
+        TemplateContext $newContext=null;
+        ForIterator $aFor = new ForIterator(new Object[]{1,2,3,4,5});
+        $context.put("iFor",new ForIterator(new Object[]{}));
+        $context.put("$aFor",$aFor);
+        while($aFor.hasNext()){
+            $context.put("a",$aFor.next());
+        }
+        $context.remove("$:For");
+        $context.remove(":");
     }
     public String getPath(){
-        return "abc";
-    }
-
-    public static void main(String[] args) throws IOException {
-        ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
-        Writer writer=new OutputStreamWriter(outputStream);
-        A a=new A();
-        a.render(null, writer);
-        writer.close();
-        System.out.println(outputStream.toString());
+        return "hello/hello";
     }
 }

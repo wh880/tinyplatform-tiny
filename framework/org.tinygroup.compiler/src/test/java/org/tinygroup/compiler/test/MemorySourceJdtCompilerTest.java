@@ -17,8 +17,8 @@ package org.tinygroup.compiler.test;
 
 import junit.framework.TestCase;
 import org.tinygroup.compiler.CompileException;
+import org.tinygroup.compiler.impl.JdtMemorySourceCompiler;
 import org.tinygroup.compiler.impl.MemorySource;
-import org.tinygroup.compiler.impl.MemorySourceJdtCompiler;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,7 +34,7 @@ public class MemorySourceJdtCompilerTest extends TestCase {
         String sourceFolder = path + File.separatorChar + "test2";
         String content = selfReadFile(filePath);
         MemorySource source = new MemorySource("org.tinygroup.Grade", content);
-        MemorySourceJdtCompiler msc = new MemorySourceJdtCompiler(sourceFolder);
+        JdtMemorySourceCompiler msc = new JdtMemorySourceCompiler(sourceFolder);
         try {
             boolean flag = msc.compile(source);
             assertTrue(flag);

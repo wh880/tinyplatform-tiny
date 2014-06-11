@@ -9,7 +9,9 @@ import java.io.Writer;
  */
 public class CodeLet {
     private StringBuffer codeBuffer = new StringBuffer();
-
+    public int length(){
+        return codeBuffer.length();
+    }
     public CodeLet() {
 
     }
@@ -24,6 +26,14 @@ public class CodeLet {
 
     public CodeLet lineCode(String code, Object... args) {
         return code(code, args).endLine();
+    }
+
+    public static CodeLet codeLet(String code, Object... args) {
+        return new CodeLet().code(code, args);
+    }
+
+    public static CodeLet lineCodeLet(String code, Object... args) {
+        return new CodeLet().lineCode(code, args);
     }
 
     public CodeLet code(String code) {
@@ -66,6 +76,7 @@ public class CodeLet {
     public CodeLet code(CodeLet codeLet) {
         return this.code(codeLet.toString());
     }
+
     public CodeLet lineCode(CodeLet codeLet) {
         return this.lineCode(codeLet.toString());
     }

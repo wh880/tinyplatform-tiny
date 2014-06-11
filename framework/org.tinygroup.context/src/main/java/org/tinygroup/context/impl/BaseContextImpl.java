@@ -45,7 +45,11 @@ public class BaseContextImpl implements BaseContext,Serializable {
 		return (T) itemMap.get(name);
 	}
 
-	public <T> T get(final String name, final T defaultValue) {
+    public void putAll(Map<String, Object> map) {
+        this.itemMap.putAll(map);
+    }
+
+    public <T> T get(final String name, final T defaultValue) {
 		T result = (T) itemMap.get(name);
 		if (result == null) {
 			result = defaultValue;

@@ -15,16 +15,11 @@
  */
 package org.tinygroup.dbrouterjdbc3.jdbc;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
+
+import java.sql.*;
 
 public class AggregateTest extends TestCase {
 	static Connection conn;
@@ -155,29 +150,29 @@ public class AggregateTest extends TestCase {
 		}
 	}
 
-	public void testMultiWithOrderby() throws SQLException {
-		String sql = "select min(score) minscore,max(score) maxscore,sum(score) sumscore,avg(score) avgscore, name from score group by name order by name";
-		ResultSet resultSet = stmt.executeQuery(sql);
-		while (resultSet.next()) {
-			String name = resultSet.getString("name");
-			if (name.equals("xiaohuihui")) {
-				assertEquals(95.0, resultSet.getDouble(1));
-				assertEquals(99.0, resultSet.getDouble(2));
-				assertEquals(291.0, resultSet.getDouble(3));
-				assertEquals(97.0, resultSet.getDouble(4));
-			} else if (name.equals("xiaom")) {
-				assertEquals(95.0, resultSet.getDouble(1));
-				assertEquals(100.0, resultSet.getDouble(2));
-				assertEquals(291.0, resultSet.getDouble(3));
-				assertEquals(97.0, resultSet.getDouble(4));
-			} else if (name.equals("xiaof")) {
-				assertEquals(95.0, resultSet.getDouble(1));
-				assertEquals(97.0, resultSet.getDouble(2));
-				assertEquals(288.0, resultSet.getDouble(3));
-				assertEquals(96.0, resultSet.getDouble(4));
-			}
-		}
-	}
+public void testMultiWithOrderby() throws SQLException {
+    String sql = "select min(score) minscore,max(score) maxscore,sum(score) sumscore,avg(score) avgscore, name from score group by name order by name";
+    ResultSet resultSet = stmt.executeQuery(sql);
+    while (resultSet.next()) {
+        String name = resultSet.getString("name");
+        if (name.equals("xiaohuihui")) {
+            assertEquals(95.0, resultSet.getDouble(1));
+            assertEquals(99.0, resultSet.getDouble(2));
+            assertEquals(291.0, resultSet.getDouble(3));
+            assertEquals(97.0, resultSet.getDouble(4));
+        } else if (name.equals("xiaom")) {
+            assertEquals(95.0, resultSet.getDouble(1));
+            assertEquals(100.0, resultSet.getDouble(2));
+            assertEquals(291.0, resultSet.getDouble(3));
+            assertEquals(97.0, resultSet.getDouble(4));
+        } else if (name.equals("xiaof")) {
+            assertEquals(95.0, resultSet.getDouble(1));
+            assertEquals(97.0, resultSet.getDouble(2));
+            assertEquals(288.0, resultSet.getDouble(3));
+            assertEquals(96.0, resultSet.getDouble(4));
+        }
+    }
+}
 
 	public void testMultiSingle() throws SQLException {
 		String sql = "select min(score) minscore,max(score) maxscore,sum(score) sumscore,avg(score) avgscore from score";

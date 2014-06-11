@@ -19,6 +19,8 @@ import org.eclipse.jdt.core.compiler.CompilationProgress;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class AbstractJavaCompiler<S extends Source> implements JavaCompiler<S> {
 
@@ -73,6 +75,31 @@ public abstract class AbstractJavaCompiler<S extends Source> implements JavaComp
     }
 
     public CompilerOptions getCompilerOptions() {
+        if (compilerOptions == null) {
+            Map
+
+                    settings = new HashMap();
+            settings.put(CompilerOptions.OPTION_ReportMissingSerialVersion, CompilerOptions.IGNORE);
+            settings.put(CompilerOptions.OPTION_LineNumberAttribute, CompilerOptions.GENERATE);
+            settings.put(CompilerOptions.OPTION_SourceFileAttribute, CompilerOptions.GENERATE);
+            settings.put(CompilerOptions.OPTION_ReportDeprecation, CompilerOptions.IGNORE);
+            settings.put(CompilerOptions.OPTION_ReportUnusedImport, CompilerOptions.IGNORE);
+            settings.put(CompilerOptions.OPTION_Encoding, "UTF-8");
+            settings.put(CompilerOptions.OPTION_LocalVariableAttribute, CompilerOptions.GENERATE);
+            String javaVersion = CompilerOptions.VERSION_1_5;
+            if (System.getProperty("java.version").startsWith("1.6")) {
+                javaVersion = CompilerOptions.VERSION_1_6;
+            } else if (System.getProperty("java.version").startsWith("1.7")) {
+                javaVersion = CompilerOptions.VERSION_1_7;
+            }
+            settings.put(CompilerOptions.OPTION_Source, javaVersion);
+            settings.put(CompilerOptions.OPTION_TargetPlatform, javaVersion);
+            settings.put(CompilerOptions.OPTION_PreserveUnusedLocal, CompilerOptions.PRESERVE);
+            settings.put(CompilerOptions.OPTION_Compliance, javaVersion);
+            compilerOptions = new CompilerOptions(settings);
+            compilerOptions.parseLiteralExpressionsAsConstants = true;
+
+        }
         return compilerOptions;
     }
 

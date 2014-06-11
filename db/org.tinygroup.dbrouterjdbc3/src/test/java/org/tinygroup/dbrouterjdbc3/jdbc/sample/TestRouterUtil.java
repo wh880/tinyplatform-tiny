@@ -21,7 +21,6 @@ import java.util.List;
 import org.tinygroup.dbrouter.PartitionRule;
 import org.tinygroup.dbrouter.ShardRule;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
-import org.tinygroup.dbrouter.config.KeyGeneratorConfig;
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.config.Shard;
@@ -35,10 +34,9 @@ public class TestRouterUtil {
 
     public static Router getPrimarySlaveRouter() {
         Router router = new Router("router1", "luog", "123456");
-        router.setKeyGeneratorClass(RouterKeyGeneratorLong.class.getName());
-        KeyGeneratorConfig config=new KeyGeneratorConfig();
-        config.setDataSourceId("ds0");
-        router.setKeyConfig(config);
+        RouterKeyGeneratorLong keyGenerator=new RouterKeyGeneratorLong();
+        keyGenerator.setDataSourceId("ds0");
+        router.setKeyGenerator(keyGenerator);
         List<DataSourceConfig> dataSourceList = new ArrayList<DataSourceConfig>();
         router.setDataSource(dataSourceList);
         for (int i = 0; i <= 2; i++) {
@@ -62,10 +60,9 @@ public class TestRouterUtil {
 
     public static Router getDifferentSchemaPrimarySlaveRouter() {
         Router router = new Router("router1", "luog", "123456");
-        router.setKeyGeneratorClass(RouterKeyGeneratorLong.class.getName());
-        KeyGeneratorConfig config=new KeyGeneratorConfig();
-        config.setDataSourceId("ds0");
-        router.setKeyConfig(config);
+        RouterKeyGeneratorLong keyGenerator=new RouterKeyGeneratorLong();
+        keyGenerator.setDataSourceId("ds0");
+        router.setKeyGenerator(keyGenerator);
         List<DataSourceConfig> dataSourceList = new ArrayList<DataSourceConfig>();
         router.setDataSource(dataSourceList);
         for (int i = 0; i <= 2; i++) {
@@ -86,10 +83,9 @@ public class TestRouterUtil {
 
     public static Router getSameSchemaDiffrentTableRouter() {
         Router router = new Router("router1", "luog", "123456");
-        router.setKeyGeneratorClass(RouterKeyGeneratorLong.class.getName());
-        KeyGeneratorConfig config=new KeyGeneratorConfig();
-        config.setDataSourceId("ds1");
-        router.setKeyConfig(config);
+        RouterKeyGeneratorLong keyGenerator=new RouterKeyGeneratorLong();
+        keyGenerator.setDataSourceId("ds1");
+        router.setKeyGenerator(keyGenerator);
         List<DataSourceConfig> dataSourceList = new ArrayList<DataSourceConfig>();
         router.setDataSource(dataSourceList);
         DataSourceConfig dataSource = new DataSourceConfig("ds1", "com.mysql.jdbc.Driver", "jdbc:mysql://mysqldb:3306/test", "root", "123456");
@@ -117,11 +113,10 @@ public class TestRouterUtil {
     }
     public static Router getDifferentSchemaRouter() {
         Router router = new Router("router1", "luog", "123456");
-        router.setKeyGeneratorClass(RouterKeyGeneratorLong.class.getName());
-        KeyGeneratorConfig config=new KeyGeneratorConfig();
-        config.setDataSourceId("ds0");
-        config.setIncrement(1);
-        router.setKeyConfig(config);
+        RouterKeyGeneratorLong keyGenerator=new RouterKeyGeneratorLong();
+        keyGenerator.setDataSourceId("ds0");
+        keyGenerator.setIncrement(1);
+        router.setKeyGenerator(keyGenerator);
         List<DataSourceConfig> dataSourceList = new ArrayList<DataSourceConfig>();
         router.setDataSource(dataSourceList);
         for (int i = 0; i <= 2; i++) {
@@ -149,10 +144,9 @@ public class TestRouterUtil {
 
     public static Router getDifferentSchemaRouterGroupBy() {
         Router router = new Router("router1", "luog", "123456");
-        router.setKeyGeneratorClass(RouterKeyGeneratorLong.class.getName());
-        KeyGeneratorConfig config=new KeyGeneratorConfig();
-        config.setDataSourceId("ds0");
-        router.setKeyConfig(config);
+        RouterKeyGeneratorLong keyGenerator=new RouterKeyGeneratorLong();
+        keyGenerator.setDataSourceId("ds0");
+        router.setKeyGenerator(keyGenerator);
         List<DataSourceConfig> dataSourceList = new ArrayList<DataSourceConfig>();
         router.setDataSource(dataSourceList);
         for (int i = 0; i <= 2; i++) {
@@ -180,10 +174,9 @@ public class TestRouterUtil {
 
     public static Router getSameSchemaDiffrentTableRouterWithTableShard() {
         Router router = new Router("router1", "luog", "123456");
-        router.setKeyGeneratorClass(RouterKeyGeneratorLong.class.getName());
-        KeyGeneratorConfig config=new KeyGeneratorConfig();
-        config.setDataSourceId("ds1");
-        router.setKeyConfig(config);
+        RouterKeyGeneratorLong keyGenerator=new RouterKeyGeneratorLong();
+        keyGenerator.setDataSourceId("ds1");
+        router.setKeyGenerator(keyGenerator);
         List<DataSourceConfig> dataSourceList = new ArrayList<DataSourceConfig>();
         router.setDataSource(dataSourceList);
         DataSourceConfig dataSource = new DataSourceConfig("ds1", "com.mysql.jdbc.Driver", "jdbc:mysql://mysqldb:3306/test0", "root", "123456");

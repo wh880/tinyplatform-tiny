@@ -7,7 +7,7 @@ import java.util.Map;
  * 模板
  * Created by luoguo on 2014/6/4.
  */
-public interface Template {
+public interface Template extends TemplateContextOperator{
     /**
      * 返回宏的内容
      *
@@ -18,9 +18,11 @@ public interface Template {
     /**
      * 进行渲染
      *
-     * @param writer
+     * @param $writer
      */
-    void render(TemplateContext context, Writer writer) throws TemplateException;
+    void render(TemplateContext $context, Writer $writer) throws TemplateException;
+
+    void render() throws TemplateException;
 
     /**
      * 返回宏对应的路径
@@ -35,4 +37,10 @@ public interface Template {
      * @param templateEngine
      */
     void setTemplateEngine(TemplateEngine templateEngine);
+
+    /**
+     * 返回模板引擎
+     * @return
+     */
+    TemplateEngine getTemplateEngine();
 }
