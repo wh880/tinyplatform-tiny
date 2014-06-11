@@ -44,7 +44,9 @@ public class ClassNameGetterDefault implements ClassNameGetter {
         String fullClassName = name.replaceAll("/", ".");
         className.setClassName(fullClassName);
         className.setSimpleClassName(fullClassName.substring(fullClassName.lastIndexOf('.') + 1));
-        className.setPackageName(fullClassName.substring(0, fullClassName.lastIndexOf('.')));
+        if(fullClassName.indexOf('.')>0) {
+            className.setPackageName(fullClassName.substring(0, fullClassName.lastIndexOf('.')));
+        }
         return className;
     }
 }

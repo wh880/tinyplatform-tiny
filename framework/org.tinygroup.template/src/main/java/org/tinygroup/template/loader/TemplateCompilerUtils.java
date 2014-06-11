@@ -33,7 +33,9 @@ public class TemplateCompilerUtils {
     public static Template compileTemplate(ClassLoader classLoader,String content, String path) throws TemplateException {
         CodeBlock codeBlock = preCompile(content, path);
         ClassName className = classNameGetter.getClassName(path);
-        codeBlock.insertSubCode("package " + className.getPackageName() + ";");
+        if(className.getPackageName()!=null) {
+            codeBlock.insertSubCode("package " + className.getPackageName() + ";");
+        }
         MemorySource memorySource = new MemorySource(className.getClassName(), codeBlock.toString().replace("$TEMPLATE_PATH", path)
                 .replace("$TEMPLATE_CLASS_NAME", className.getSimpleClassName()));
         return compiler.loadInstance(classLoader,memorySource);
