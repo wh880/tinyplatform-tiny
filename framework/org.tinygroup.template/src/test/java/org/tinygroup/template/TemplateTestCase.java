@@ -33,7 +33,7 @@ public class TemplateTestCase {
         final TemplateEngine engine = new TemplateEngineDefault();
         engine.addTemplateFunction(new StringBoldFunction());
         engine.setI18nVistor(new I18nvi());
-        Template template = engine.getDefaultTemplateLoader().createTemplate("${'abc'.bold()}");
+        Template template = engine.getDefaultTemplateLoader().createTemplate("${getResourceContent()}");
         template.render();
         template = engine.getDefaultTemplateLoader().createTemplate("${'abc'.equals('a')}");
         template.render();

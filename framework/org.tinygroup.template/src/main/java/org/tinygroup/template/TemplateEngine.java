@@ -176,4 +176,22 @@ public interface TemplateEngine extends TemplateContextOperator {
      * @throws TemplateException
      */
     Object executeFunction(String functionName, Object... parameters) throws TemplateException;
+
+    /**
+     * 通过模板加载器获取资源
+     *
+     * @param path
+     * @param <T>
+     * @return
+     */
+    <T> T getResource(String path) throws TemplateException;
+
+    /**
+     * 获取资源对应的文本
+     *
+     * @param path
+     * @return
+     */
+    String getResourceContent(String path, String encode) throws TemplateException;
+
 }

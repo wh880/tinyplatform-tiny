@@ -4,9 +4,7 @@ import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.vfs.FileObject;
-import org.tinygroup.vfs.FileObjectProcessor;
 import org.tinygroup.vfs.VFS;
-import org.tinygroup.vfs.impl.filter.EqualsPathFileObjectFilter;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,40 +31,51 @@ public class FileObjectTemplateLoader extends AbstractTemplateLoader<FileObject>
 
     public Template getTemplate(final String path) throws TemplateException {
         FileObject fileObject = pathMap.get(path);
-        if (fileObject == null) {//如果文件缓冲里没有找到加载的文件
-            root.foreach(new EqualsPathFileObjectFilter(path), new FileObjectProcessor() {
-                public void process(FileObject fileObject) {
-                    loadTemplate(path, fileObject,getTemplateEngineClassLoader());
-                }
-            });
-        } else {
+        if (fileObject != null) {
             if (!fileObject.isExist()) {
                 //如果已经被删除
                 pathMap.remove(path);
                 getTemplateMap().remove(fileObject);
                 return null;
-            } else if (fileObject.isModified()) {
-                //如果文件已经被修改
-                loadTemplate(path, fileObject,getTemplateEngineClassLoader());
+            } else {
+                //返回缓冲的对象
+                return super.getTemplateMap().get(fileObject);
+            }
+        } else {
+            //如果没有渲染过
+            fileObject = root.getFileObject(path);
+            if (fileObject != null) {
+                //对文件进行重新加载
+                return loadTemplate(path, fileObject, getTemplateEngineClassLoader());
             }
         }
-        fileObject = pathMap.get(path);
-        if (fileObject != null) {
-            return super.getTemplateMap().get(fileObject);
-        }
         return null;
+    }
+
+
+    public FileObject getResource(String path) {
+        return root.getFileObject(path);
     }
 
     @Override
-    public FileObject getResource(String path) {
+    public String getResourceContent(String path, String encode) throws TemplateException {
+        FileObject fileObject=getResource(path);
+        if(fileObject!=null) {
+            try {
+                return IOUtils.readFromInputStream(fileObject.getInputStream(),encode);
+            } catch (Exception e) {
+                throw new TemplateException(e);
+            }
+        }
         return null;
     }
 
-    private void loadTemplate(String path, FileObject fileObject,ClassLoader classLoader) {
+    private Template loadTemplate(String path, FileObject fileObject, ClassLoader classLoader) {
         try {
-            Template template = TemplateCompilerUtils.compileTemplate(classLoader,IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()), fileObject.getPath());
+            Template template = TemplateCompilerUtils.compileTemplate(classLoader, IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()), fileObject.getPath());
             putTemplate(fileObject, template);
             pathMap.put(path, fileObject);
+            return template;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

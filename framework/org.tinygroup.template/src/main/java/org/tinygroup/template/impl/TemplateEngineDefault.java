@@ -3,6 +3,7 @@ package org.tinygroup.template.impl;
 import com.thoughtworks.xstream.io.path.Path;
 import org.tinygroup.template.*;
 import org.tinygroup.template.function.FormatterTemplateFunction;
+import org.tinygroup.template.function.GetResourceContentFunction;
 import org.tinygroup.template.function.InstanceOfTemplateFunction;
 import org.tinygroup.template.loader.StringTemplateLoader;
 
@@ -31,6 +32,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         addTemplateLoader(new StringTemplateLoader("default"));
         addTemplateFunction(new FormatterTemplateFunction());
         addTemplateFunction(new InstanceOfTemplateFunction());
+        addTemplateFunction(new GetResourceContentFunction());
     }
 
     public TemplateContext getTemplateContext() {
@@ -54,6 +56,7 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     @Override
     public void addTemplateFunction(TemplateFunction function) {
+        function.setTemplateEngine(this);
         String[] names = function.getNames().split(",");
         if (function.getBindingTypes() == null) {
             for (String name : names) {
@@ -75,7 +78,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     @Override
-    public TemplateFunction getTemplateFunction(String className, String methodName)  {
+    public TemplateFunction getTemplateFunction(String className, String methodName) {
         return typeFunctionMap.get(getkeyName(className, methodName));
     }
 
@@ -184,11 +187,33 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     @Override
-    public Object executeFunction(String functionName,  Object... parameters) throws TemplateException {
+    public Object executeFunction(String functionName, Object... parameters) throws TemplateException {
         TemplateFunction function = functionMap.get(functionName);
         if (function != null) {
-            return function.execute( parameters);
+            return function.execute(parameters);
         }
         throw new TemplateException("找不到函数：" + functionName);
+    }
+
+    @Override
+    public <T> T getResource(String path) throws TemplateException {
+        for (TemplateLoader templateLoader : templateLoaderMap.values()) {
+            Object object = templateLoader.getResource(path);
+            if (object != null) {
+                return (T) object;
+            }
+        }
+        throw new TemplateException("找不到资源：" + path);
+    }
+
+    @Override
+    public String getResourceContent(String path, String encode) throws TemplateException {
+        for (TemplateLoader templateLoader : templateLoaderMap.values()) {
+            String content = templateLoader.getResourceContent(path,encode);
+            if (content != null) {
+                return content;
+            }
+        }
+        throw new TemplateException("找不到资源：" + path);
     }
 }
