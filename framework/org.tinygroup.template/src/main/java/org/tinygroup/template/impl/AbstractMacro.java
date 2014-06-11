@@ -15,7 +15,7 @@ import java.io.Writer;
 public abstract class AbstractMacro implements Macro {
     private String name;
     private String[] parameterNames;
-    private TemplateContext templateContext = new TemplateContextImpl();
+    private TemplateContext templateContext = new TemplateContextDefault();
     private Template template;
     public void setName(String name) {
         this.name = name;
@@ -43,7 +43,7 @@ public abstract class AbstractMacro implements Macro {
     }
 
     public void render(Template $template, TemplateContext invokeContext, Writer writer) throws TemplateException {
-        TemplateContext newContext = new TemplateContextImpl();
+        TemplateContext newContext = new TemplateContextDefault();
         try {
             if (invokeContext != null) {
                 newContext.putSubContext("$invokeContext", invokeContext);

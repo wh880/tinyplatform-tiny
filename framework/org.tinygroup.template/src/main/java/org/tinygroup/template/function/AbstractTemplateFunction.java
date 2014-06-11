@@ -20,17 +20,17 @@ public abstract class AbstractTemplateFunction implements TemplateFunction {
         return templateEngine;
     }
 
-    @Override
+
     public String getNames() {
         return name;
     }
 
-    @Override
+
     public String getBindingTypes() {
         return null;
     }
 
-    @Override
+
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }

@@ -11,7 +11,7 @@ public class StaticFunctionWrapper extends AbstractFunctionWrapper{
         super(name);
     }
 
-    @Override
+
     public Object execute(Object... parameters) throws TemplateException {
         return null;
     }

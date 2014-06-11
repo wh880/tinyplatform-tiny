@@ -16,16 +16,17 @@ public abstract class AbstractTemplateLoader<T> implements TemplateLoader<T> {
     private final String type;
     private ClassLoader gettemplateEngineClassLoader;
 
-    public ClassLoader getTemplateEngineClassLoader(){
+    public ClassLoader getTemplateEngineClassLoader() {
         return gettemplateEngineClassLoader;
     }
 
-    public void setTemplateEngineClassLoader(ClassLoader classLoader){
-        this.gettemplateEngineClassLoader=classLoader;
+    public void setTemplateEngineClassLoader(ClassLoader classLoader) {
+        this.gettemplateEngineClassLoader = classLoader;
     }
 
-    private Map<T, Template> templateMap = new ConcurrentHashMap<T, Template>();
+    private Map<String, Template> templateMap = new ConcurrentHashMap<String, Template>();
     private TemplateEngine templateEngine;
+
     public AbstractTemplateLoader(String type) {
         this.type = type;
     }
@@ -34,21 +35,29 @@ public abstract class AbstractTemplateLoader<T> implements TemplateLoader<T> {
         return type;
     }
 
-    public Map<T, Template> getTemplateMap() {
+    public Map<String, Template> getTemplateMap() {
         return templateMap;
     }
 
-    public Template getTemplate(String path) throws TemplateException{
-        return templateMap.get(path);
+    public Template getTemplate(String path) throws TemplateException {
+        Template template = templateMap.get(path);
+        if (template != null && !isModified(path)) {
+            return template;
+        }
+        return loadTemplate(path);
     }
-    public TemplateLoader putTemplate(T key,Template template){
-        templateMap.put(key, template);
+
+    protected abstract Template loadTemplate(String path) throws TemplateException;
+
+    public TemplateLoader putTemplate(String path, Template template) {
+        templateMap.put(path, template);
         template.setTemplateEngine(templateEngine);
         template.getTemplateContext().setParent(templateEngine.getTemplateContext());
         return this;
     }
+
     public void setTemplateEngine(TemplateEngine templateEngine) {
-        this.templateEngine=templateEngine;
+        this.templateEngine = templateEngine;
     }
 
     public TemplateEngine getTemplateEngine() {

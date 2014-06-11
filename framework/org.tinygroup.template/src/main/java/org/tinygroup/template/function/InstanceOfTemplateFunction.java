@@ -15,7 +15,7 @@ public class InstanceOfTemplateFunction extends AbstractTemplateFunction {
     }
 
 
-    @Override
+
     public Object execute(Object... parameters) throws TemplateException {
         boolean result=true;
         Object object= parameters[0];

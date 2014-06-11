@@ -55,4 +55,9 @@ public class TemplateCompilerUtils {
         TinyTemplateCodeVisitor visitor = new TinyTemplateCodeVisitor(parser);
         return templateParseTree.accept(visitor);
     }
+
+    public static void main(String[] args) {
+        ClassName aaa=TemplateCompilerUtils.getClassNameGetter().getClassName("template/jet/constant-number.jetx");
+        System.out.println(aaa.getClassName());
+    }
 }

@@ -21,7 +21,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     private Path root = new Path("");
     private Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
     private Map<String, TemplateFunction> typeFunctionMap = new HashMap<String, TemplateFunction>();
-    private TemplateContext templateEngineContext = new TemplateContextImpl();
+    private TemplateContext templateEngineContext = new TemplateContextDefault();
 
     private Map<String, TemplateLoader> templateLoaderMap = new HashMap();
     private String encode = "UTF-8";
@@ -44,17 +44,17 @@ public class TemplateEngineDefault implements TemplateEngine {
         return this;
     }
 
-    @Override
+
     public void setI18nVistor(I18nVistor i18nVistor) {
         this.i18nVistor = i18nVistor;
     }
 
-    @Override
+
     public I18nVistor getI18nVistor() {
         return i18nVistor;
     }
 
-    @Override
+
     public void addTemplateFunction(TemplateFunction function) {
         function.setTemplateEngine(this);
         String[] names = function.getNames().split(",");
@@ -72,12 +72,12 @@ public class TemplateEngineDefault implements TemplateEngine {
         }
     }
 
-    @Override
+
     public TemplateFunction getTemplateFunction(String methodName) {
         return functionMap.get(methodName);
     }
 
-    @Override
+
     public TemplateFunction getTemplateFunction(String className, String methodName) {
         return typeFunctionMap.get(getkeyName(className, methodName));
     }
@@ -96,7 +96,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         templateLoaderMap.put(templateLoader.getType(), templateLoader);
     }
 
-    @Override
+
     public Template getTemplate(String path) throws TemplateException {
         for (TemplateLoader loader : templateLoaderMap.values()) {
             Template template = loader.getTemplate(path);
@@ -111,7 +111,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         return templateLoaderMap.get(type);
     }
 
-    @Override
+
     public TemplateLoader getDefaultTemplateLoader() throws TemplateException {
         return getTemplateLoader(DEFAULT);
     }
@@ -153,14 +153,14 @@ public class TemplateEngineDefault implements TemplateEngine {
         throw new TemplateException("找不到模板：" + path);
     }
 
-    @Override
+
     public void renderTemplate(String path) throws TemplateException {
-        renderTemplate(path, new TemplateContextImpl(), new OutputStreamWriter(System.out));
+        renderTemplate(path, new TemplateContextDefault(), new OutputStreamWriter(System.out));
     }
 
-    @Override
+
     public void renderTemplate(Template template) throws TemplateException {
-        renderTemplate(template, new TemplateContextImpl(), new OutputStreamWriter(System.out));
+        renderTemplate(template, new TemplateContextDefault(), new OutputStreamWriter(System.out));
     }
 
 
@@ -186,7 +186,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         return macro;
     }
 
-    @Override
+
     public Object executeFunction(String functionName, Object... parameters) throws TemplateException {
         TemplateFunction function = functionMap.get(functionName);
         if (function != null) {
@@ -195,18 +195,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         throw new TemplateException("找不到函数：" + functionName);
     }
 
-    @Override
-    public <T> T getResource(String path) throws TemplateException {
-        for (TemplateLoader templateLoader : templateLoaderMap.values()) {
-            Object object = templateLoader.getResource(path);
-            if (object != null) {
-                return (T) object;
-            }
-        }
-        throw new TemplateException("找不到资源：" + path);
-    }
 
-    @Override
     public String getResourceContent(String path, String encode) throws TemplateException {
         for (TemplateLoader templateLoader : templateLoaderMap.values()) {
             String content = templateLoader.getResourceContent(path,encode);

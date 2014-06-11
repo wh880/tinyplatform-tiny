@@ -18,6 +18,11 @@
             <artifactId>org.tinygroup.vfs</artifactId>
             <version>${project.version}</version>
         </dependency>
+       <dependency>
+            <groupId>org.tinygroup</groupId>
+            <artifactId>org.tinygroup.threadgroup</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.jdt.core.compiler</groupId>
             <artifactId>ecj</artifactId>

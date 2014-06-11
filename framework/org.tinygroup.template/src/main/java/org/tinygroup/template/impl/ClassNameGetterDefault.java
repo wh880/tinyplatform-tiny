@@ -29,22 +29,22 @@ public class ClassNameGetterDefault implements ClassNameGetter {
 
     public ClassName getClassName(String path) {
         String name = path;
-        name = convertGoodStylePath(path);
+        name = convertGoodStylePath(name);
         //去掉前置"/"
         if (name.startsWith("/")) {
             name = name.substring(1);
         }
-        int pos = path.indexOf('.');
+        int pos = name.indexOf('.');
         if (pos >= 0) {
             //去掉文件扩展名
-            name = name.substring(0, pos - 1);
+            name = name.substring(0, pos);
         }
         name = name + "Template";
         ClassName className = new ClassName();
         String fullClassName = name.replaceAll("/", ".");
         className.setClassName(fullClassName);
         className.setSimpleClassName(fullClassName.substring(fullClassName.lastIndexOf('.') + 1));
-        if(fullClassName.indexOf('.')>0) {
+        if (fullClassName.indexOf('.') > 0) {
             className.setPackageName(fullClassName.substring(0, fullClassName.lastIndexOf('.')));
         }
         return className;

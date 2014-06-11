@@ -13,7 +13,7 @@ public abstract class AbstractBindTemplateFunction extends AbstractTemplateFunct
         this.bindingType=bindingType;
     }
 
-    @Override
+
     public String getBindingTypes() {
         return bindingType;
     }

@@ -13,7 +13,7 @@ public class GetResourceContentFunction extends AbstractTemplateFunction{
 
 
 
-    @Override
+
     public Object execute(Object... parameters) throws TemplateException {
         String encode=super.getTemplateEngine().getEncode();
         String path=null;

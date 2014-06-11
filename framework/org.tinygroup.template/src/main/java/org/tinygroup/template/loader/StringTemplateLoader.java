@@ -11,18 +11,36 @@ public class StringTemplateLoader extends AbstractTemplateLoader<String> {
         super(type);
     }
 
+    /**
+     * 字符串内存型的，不支持根据路径载入
+     *
+     * @param path
+     * @return
+     * @throws TemplateException
+     */
     @Override
-    public String getResource(String path) {
+    protected Template loadTemplate(String path) throws TemplateException {
         return null;
     }
 
     @Override
+    public boolean isModified(String path) {
+        return false;
+    }
+
+    /**
+     * 字符串内存型的，不支持根据路径载入
+     *
+     * @param path
+     * @param encode
+     * @return
+     */
     public String getResourceContent(String path, String encode) {
         return null;
     }
 
     public Template createTemplate(String stringTemplateMaterial) throws TemplateException {
-        Template template = TemplateCompilerUtils.compileTemplate(StringTemplateLoader.class.getClassLoader(),stringTemplateMaterial, getRandomPath());
+        Template template = TemplateCompilerUtils.compileTemplate(StringTemplateLoader.class.getClassLoader(), stringTemplateMaterial, getRandomPath());
         //这里没有调用putTemplate是避免内存泄露
         template.setTemplateEngine(getTemplateEngine());
         return template;
@@ -31,4 +49,5 @@ public class StringTemplateLoader extends AbstractTemplateLoader<String> {
     private String getRandomPath() {
         return "/string/template/NoT" + System.nanoTime();
     }
+
 }

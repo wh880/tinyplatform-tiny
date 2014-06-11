@@ -14,6 +14,8 @@ public interface TemplateLoader<T> {
      */
     String getType();
 
+    boolean isModified(String path);
+
     /**
      * 返回模板对象，如果不存在则返回null
      *
@@ -21,14 +23,6 @@ public interface TemplateLoader<T> {
      * @return
      */
     Template getTemplate(String path) throws TemplateException;
-
-    /**
-     * 获取资源
-     *
-     * @param path
-     * @return
-     */
-    T getResource(String path);
 
     /**
      * 获取资源对应的文本
@@ -44,7 +38,7 @@ public interface TemplateLoader<T> {
      * @param template
      * @return
      */
-    TemplateLoader putTemplate(T key, Template template);
+    TemplateLoader putTemplate(String path, Template template);
 
     /**
      * 创建并注册模板
@@ -72,5 +66,5 @@ public interface TemplateLoader<T> {
      */
     TemplateEngine getTemplateEngine();
 
-    Map<T, Template> getTemplateMap();
+    Map<String, Template> getTemplateMap();
 }
