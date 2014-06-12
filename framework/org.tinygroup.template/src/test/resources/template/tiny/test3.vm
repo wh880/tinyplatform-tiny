@@ -1,2 +1,11 @@
-#set(aa="Luog")
-hello,${aa}
+#macro test()
+<div>
+    #bodyContent
+</div>
+#end
+=======
+#test()
+-------
+#@test()
+aaaaa
+#end

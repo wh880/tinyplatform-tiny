@@ -25,7 +25,6 @@ public abstract class AbstractTemplate implements Template {
     }
 
     protected void addMacro(Macro macro) {
-        macro.getTemplateContext().setParent(templateContext);
         macroMap.put(macro.getName(), macro);
     }
 
@@ -34,20 +33,14 @@ public abstract class AbstractTemplate implements Template {
     }
 
     public void render(TemplateContext invokeContext, Writer writer) throws TemplateException {
-        TemplateContext newContext = new TemplateContextDefault();
         try {
-            if (invokeContext != null) {
-                newContext.putSubContext("$invokeContext", invokeContext);
-            }
-            renderTemplate(newContext, writer);
+            renderTemplate(invokeContext, writer);
+            invokeContext.putSubContext("$currentTemplateContext",getTemplateContext());
             writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
         } finally {
-            if (invokeContext != null) {
-                newContext.removeSubContext("$invokeContext");
-            }
-            newContext.removeSubContext("$currentTemplateContext");
+            invokeContext.removeSubContext("$currentTemplateContext");
         }
     }
 

@@ -455,6 +455,16 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         return null;
     }
 
+    @Override
+    public CodeBlock visitBodycontent_directive(@NotNull TinyTemplateParser.Bodycontent_directiveContext ctx) {
+        CodeBlock codeBlock=new CodeBlock();
+        codeBlock.subCode("$macro= (Macro) $context.getItemMap().get(\"bodyContent\");");
+        codeBlock.subCode("if($macro!=null) {");
+        codeBlock.subCode("    getTemplateEngine().renderMacro($macro, $template, $context, $writer);");
+        codeBlock.subCode("}");
+        return codeBlock;
+    }
+
     public CodeBlock visitDefine_expression_list(@NotNull TinyTemplateParser.Define_expression_listContext ctx) {
         if (peekCodeLet().length() > 0) {
             peekCodeLet().code(",");
@@ -475,11 +485,11 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         callMacro.subCode("$newContext = new TemplateContextDefault();");
         callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
         if (ctx.para_expression_list() != null) {
-            List<TinyTemplateParser.Para_expressionContext> expList = ctx.para_expression_list().para_expression();
+            TinyTemplateParser.Para_expression_listContext expList = ctx.para_expression_list();
             if (expList != null) {
                 pushCodeBlock(callMacro);
                 int i = 0;
-                for (TinyTemplateParser.Para_expressionContext visitPara_expression : expList) {
+                for (TinyTemplateParser.Para_expressionContext visitPara_expression : expList.para_expression()) {
                     CodeLet expression = new CodeLet();
                     pushCodeLet(expression);
                     if (visitPara_expression.getChildCount() == 3) {//如果是带参数的
@@ -515,11 +525,11 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template,$context);", name));
         callMacro.subCode("$newContext=new TemplateContextDefault();");
         callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
-        List<TinyTemplateParser.Para_expressionContext> expList = ctx.para_expression_list().para_expression();
+        TinyTemplateParser.Para_expression_listContext expList = ctx.para_expression_list();
         if (expList != null) {
             pushCodeBlock(callMacro);
             int i = 0;
-            for (TinyTemplateParser.Para_expressionContext visitPara_expression : expList) {
+            for (TinyTemplateParser.Para_expressionContext visitPara_expression : expList.para_expression()) {
                 CodeLet expression = new CodeLet();
                 pushCodeLet(expression);
                 if (visitPara_expression.getChildCount() == 3) {//如果是带参数的

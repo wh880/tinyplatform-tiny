@@ -186,7 +186,6 @@ public class TemplateEngineDefault implements TemplateEngine {
         return macro;
     }
 
-
     public Object executeFunction(String functionName, Object... parameters) throws TemplateException {
         TemplateFunction function = functionMap.get(functionName);
         if (function != null) {
@@ -198,7 +197,7 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public String getResourceContent(String path, String encode) throws TemplateException {
         for (TemplateLoader templateLoader : templateLoaderMap.values()) {
-            String content = templateLoader.getResourceContent(path,encode);
+            String content = templateLoader.getResourceContent(path, encode);
             if (content != null) {
                 return content;
             }

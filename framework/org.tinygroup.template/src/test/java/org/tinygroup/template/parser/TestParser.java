@@ -32,6 +32,13 @@ public class TestParser extends TestCase {
         String result = execute("abc");
         assertTrue(result.indexOf("write($writer,\"abc\");") > 0);
     }
+
+
+    public void testT2_200() throws Exception {
+        String result = execute("#bodyContent");
+        System.out.println(result);
+        assertTrue(result.indexOf("getTemplateEngine().renderMacro($macro, $template, $context, $writer);") > 0);
+    }
     public void testT2_21() throws Exception {
         String result = execute("$!{abc}");
         System.out.println(result);

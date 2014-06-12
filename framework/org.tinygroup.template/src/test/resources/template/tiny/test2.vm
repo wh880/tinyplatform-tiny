@@ -1,1 +1,4 @@
-你好
+#macro test()
+这里是宏内容
+#end
+#test()

@@ -62,6 +62,7 @@ directive   :   set_directive
             |   call_directive
             |   call_macro_directive
             |   call_macro_block_directive
+            |   bodycontent_directive
             |   invalid_directive
             ;
 identify_list
@@ -139,6 +140,10 @@ call_directive
 
 call_macro_block_directive
             :  DIRECTIVE_OPEN_MACRO_INVOKE   para_expression_list? ')' block DIRECTIVE_END
+            ;
+
+bodycontent_directive
+            :DIRECTIVE_BODYCONTENT
             ;
 call_macro_directive
             :  DIRECTIVE_MACRO_INVOKE   para_expression_list? ')'

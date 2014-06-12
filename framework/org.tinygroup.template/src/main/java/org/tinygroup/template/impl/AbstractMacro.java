@@ -15,7 +15,6 @@ import java.io.Writer;
 public abstract class AbstractMacro implements Macro {
     private String name;
     private String[] parameterNames;
-    private TemplateContext templateContext = new TemplateContextDefault();
     private Template template;
     public void setName(String name) {
         this.name = name;
@@ -43,22 +42,11 @@ public abstract class AbstractMacro implements Macro {
     }
 
     public void render(Template $template, TemplateContext invokeContext, Writer writer) throws TemplateException {
-        TemplateContext newContext = new TemplateContextDefault();
         try {
-            if (invokeContext != null) {
-                newContext.putSubContext("$invokeContext", invokeContext);
-            }
-            invokeContext.putSubContext("$currentMacroContext", getTemplateContext());
-            renderTemplate($template, newContext, writer);
+            renderTemplate($template, invokeContext, writer);
             writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
-        } finally {
-            //无论如何从里面拿掉
-            if (invokeContext != null) {
-                newContext.removeSubContext("$invokeContext");
-            }
-            invokeContext.removeSubContext("$currentMacroContext");
         }
     }
 
@@ -74,12 +62,5 @@ public abstract class AbstractMacro implements Macro {
     }
 
 
-    public TemplateContext getTemplateContext() {
-        return templateContext;
-    }
 
-
-    public Object put(String key, Object value) {
-        return templateContext.put(key, value);
-    }
 }
