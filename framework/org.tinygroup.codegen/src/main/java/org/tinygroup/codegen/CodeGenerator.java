@@ -1,8 +1,11 @@
 package org.tinygroup.codegen;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +42,7 @@ public class CodeGenerator{
 	public static final String CODE_META_DATA="CODE_META_DATA";
 	public static final String TEMPLATE_FILE="TEMPLATE_FILE";
 	public static final String XSTEAM_PACKAGE_NAME="codegen";
-	public static final String ABSOLUTE_PATH="absolute_path";
+	public static final String ABSOLUTE_PATH="ABSOLUTE_PATH";
     //public static final String CODE_GEN_BEANS_XML = "/codegenbeans.xml";
 	//private static Factory factory;
 	private static Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
@@ -115,7 +118,7 @@ public class CodeGenerator{
 				file.getParentFile().mkdirs();
 				file.createNewFile();
 			}
-			FileWriter writer=new FileWriter(file);
+			OutputStreamWriter writer=new OutputStreamWriter(new FileOutputStream(file),"UTF-8");
 			try {
 				generater.generate(templatePath, newContext,writer);
 			}finally{
