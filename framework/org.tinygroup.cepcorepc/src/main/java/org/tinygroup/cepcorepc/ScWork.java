@@ -1,69 +1,74 @@
 package org.tinygroup.cepcorepc;
 
-import java.util.ArrayList;
-
 import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.WorkStatus;
 
-public class CepcoreWork implements Work {
+public class ScWork  implements Work {
 
-	Warehouse w;
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8667837999575269710L;
-
+	public static String WORK_TYPE = "sc";
 	
+	private static final long serialVersionUID = -2351110050683109862L;
+
+	private Warehouse warehouse;
+
+	private String worker;
+	
+	private String id;
+
+	public String getWorker() {
+		return worker;
+	}
+
+	public void setWorker(String worker) {
+		this.worker = worker;
+	}
 
 	public String getType() {
-		return "reg";
+		return WORK_TYPE;
 	}
 
 	public String getForemanType() {
-		return "reg";
+		return WORK_TYPE;
 	}
 
 	public String getId() {
-		// TODO Auto-generated method stub
-		return "CepcoreWork";
+		return id;
+	}
+	
+	public void setId(String id){
+		this.id = id;
 	}
 
 	public Work getNextWork() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public Work setNextWork(Work nextWork) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public boolean isNeedSerialize() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public void setNeedSerialize(boolean needSerialize) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public Warehouse getInputWarehouse() {
-		return w;
+		return warehouse;
 	}
 
 	public void setInputWarehouse(Warehouse inputWarehouse) {
-		w = inputWarehouse;
+		warehouse = inputWarehouse;
 	}
 
 	public void setWorkStatus(WorkStatus workStatus) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public WorkStatus getWorkStatus() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

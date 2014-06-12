@@ -1,4 +1,4 @@
-package org.tinygroup.cepcorepc;
+package org.tinygroup.cepcorepc.test;
 
 import java.rmi.RemoteException;
 import java.util.Map;
@@ -8,14 +8,13 @@ import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.Worker;
 
-public class CepcoreWorker implements Worker {
-	/**
-	 * 
-	 */
+public class ArTestWorker implements Worker {
+	
+	private static final long serialVersionUID = -8302946955163643890L;
+	
 	DataUtil d = new DataUtil();
 	String id;
-	private static final long serialVersionUID = -4183566064003919135L;
-	public CepcoreWorker(String id) {
+	public ArTestWorker(String id) {
 		this.id = id;
 	}
 	public String getId() throws RemoteException {
@@ -31,11 +30,11 @@ public class CepcoreWorker implements Worker {
 	}
 
 	public boolean acceptWork(Work work) throws RemoteException {
-		return true;
+		return ArTestWork.WORK_TYPE.equals(work.getType());
 	}
 
 	public String getType() throws RemoteException {
-		return "reg";
+		return ArTestWork.WORK_TYPE;
 	}
 
 }

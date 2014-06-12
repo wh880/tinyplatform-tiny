@@ -55,8 +55,17 @@ public class CEPCoreRMIRemoteImpl implements CEPCoreRemoteInterface {
 			logger.logMessage(LogLevel.INFO, "IP:{0},PORT:{1},NAME:{2}",
 					node.getIp(), node.getPort(), node.getNodeName());
 			System.setProperty("java.rmi.server.hostname", node.getIp());
-			registry = LocateRegistry.createRegistry(Integer.parseInt(node
-					.getPort()));// 绑定端口
+			int port = Integer.parseInt(node.getPort());
+			//registry = LocateRegistry.createRegistry(port);// 绑定端口
+			try {
+				registry = LocateRegistry.getRegistry(node.getIp(), port);
+				registry.list();
+			} catch (Exception e) {
+				
+					registry = LocateRegistry.createRegistry(port);
+				
+			}
+
 			String url = RMIRemoteUtil.getURL(node);// 地址
 			// server = new CEPCoreRMIServer();
 			Naming.rebind(url, new CEPCoreRMIServer());// 绑定
@@ -134,15 +143,13 @@ public class CEPCoreRMIRemoteImpl implements CEPCoreRemoteInterface {
 			result = rmiCep.processFromRemote(event);
 			// logger.logMessage(LogLevel.ERROR,
 			// "=======after deal====="+System.currentTimeMillis());
-			logger.logMessage(
-					LogLevel.INFO,
-					"请求成功,目标节点{0}:{1}:{2},请求信息:[serviceId:{3}]",
-					remoteNode.getIp(), remoteNode.getPort(), remoteNode
+			logger.logMessage(LogLevel.INFO,
+					"请求成功,目标节点{0}:{1}:{2},请求信息:[serviceId:{3}]", remoteNode
+							.getIp(), remoteNode.getPort(), remoteNode
 							.getNodeName(), event.getServiceRequest()
 							.getServiceId());
 		} catch (RemoteException e) {
-			logger.logMessage(
-					LogLevel.ERROR,
+			logger.logMessage(LogLevel.ERROR,
 					"请求失败,目标节点{0}:{1}:{2},请求信息:[serviceId:{3}],信息:{5}",
 					remoteNode.getIp(), remoteNode.getPort(), remoteNode
 							.getNodeName(), event.getServiceRequest()

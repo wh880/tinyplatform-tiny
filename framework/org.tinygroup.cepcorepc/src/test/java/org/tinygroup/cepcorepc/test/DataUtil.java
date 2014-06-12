@@ -1,4 +1,4 @@
-package org.tinygroup.cepcorepc;
+package org.tinygroup.cepcorepc.test;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -21,7 +21,9 @@ public class DataUtil implements Serializable {
 	public void addServices(Map<String, ServiceInfo> map) {
 		int oldSize = services.size();
 		int addSize = map.size();
-
+		for(String s:map.keySet()){
+			System.out.println("======== " + s + "===========");
+		}
 		services.putAll(map);
 		if (services.size() == (oldSize + addSize)) {
 			System.out.println("============== 没有重复的 ===================");
