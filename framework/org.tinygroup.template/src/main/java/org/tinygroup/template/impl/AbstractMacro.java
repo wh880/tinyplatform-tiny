@@ -43,14 +43,14 @@ public abstract class AbstractMacro implements Macro {
 
     public void render(Template $template, TemplateContext invokeContext, Writer writer) throws TemplateException {
         try {
-            renderTemplate($template, invokeContext, writer);
+            renderMacro($template, invokeContext, writer);
             writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
         }
     }
 
-    protected abstract void renderTemplate(Template template, TemplateContext $context, Writer $writer) throws IOException, TemplateException;
+    protected abstract void renderMacro(Template template, TemplateContext $context, Writer $writer) throws IOException, TemplateException;
 
 
     public String getName() {

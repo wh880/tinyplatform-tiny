@@ -26,7 +26,7 @@ public class TinyTemplateTestCase {
             }
         });*/
         System.out.println("======");
-        engine.renderTemplate("/template/tiny/test3.vm");
+        engine.renderTemplate("/template/tiny/test4.vm");
 
 
     }

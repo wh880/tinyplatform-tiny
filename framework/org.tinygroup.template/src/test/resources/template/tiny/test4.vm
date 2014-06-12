@@ -1,0 +1,19 @@
+#macro test()
+<div>
+    #bodyContent
+</div>
+#end
+
+#macro test1()
+<b>
+    #@test()
+        #bodyContent
+    #end
+</b>
+#end
+=======
+#test1()
+-------
+#@test1()
+aaaaa
+#end
