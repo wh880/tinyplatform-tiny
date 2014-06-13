@@ -1,7 +1,7 @@
 package org.tinygroup.template;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.Map;
 
 /**
@@ -28,6 +28,16 @@ public interface TemplateEngine extends TemplateContextOperator {
     public static final String DEFAULT = "default";
 
     TemplateEngine setEncode(String encode);
+
+    /**
+     * 写出数据
+     * @param outputStream
+     * @param data
+     * @throws IOException
+     */
+    void write(OutputStream outputStream, byte[] data) throws IOException;
+
+    void write(OutputStream outputStream, Object object) throws IOException;
 
     /**
      * 设置
@@ -103,34 +113,34 @@ public interface TemplateEngine extends TemplateContextOperator {
     /**
      * 渲染宏
      *
-     * @param macroName 要执行的宏名称
-     * @param template  调用宏的模板
-     * @param context   上下文
-     * @param writer    输出器
+     * @param macroName    要执行的宏名称
+     * @param template     调用宏的模板
+     * @param context      上下文
+     * @param outputStream 输出器
      */
-    void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
+    void renderMacro(String macroName, Template template, TemplateContext context, OutputStream outputStream) throws IOException, TemplateException;
 
     /**
      * 直接渲染指定的模板
      *
-     * @param macro    要执行的宏
-     * @param template 调用宏的模板
-     * @param context  上下文
-     * @param writer   输出器
+     * @param macro        要执行的宏
+     * @param template     调用宏的模板
+     * @param context      上下文
+     * @param outputStream 输出器
      * @throws IOException
      * @throws TemplateException
      */
-    void renderMacro(Macro macro, Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
+    void renderMacro(Macro macro, Template template, TemplateContext context, OutputStream outputStream) throws IOException, TemplateException;
 
 
     /**
      * 根据路径渲染一个模板文件
      *
-     * @param path    模板对应的路径
-     * @param context 上下文
-     * @param writer  输出器
+     * @param path         模板对应的路径
+     * @param context      上下文
+     * @param outputStream 输出器
      */
-    void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException;
+    void renderTemplate(String path, TemplateContext context, OutputStream outputStream) throws TemplateException;
 
     /**
      * 采用没有上下文，控制台输出方式进行渲染
@@ -155,12 +165,12 @@ public interface TemplateEngine extends TemplateContextOperator {
     /**
      * 直接渲染一个模板
      *
-     * @param template 要渲染的模板
-     * @param context  上下文
-     * @param writer   输出器
+     * @param template     要渲染的模板
+     * @param context      上下文
+     * @param outputStream 输出器
      * @throws TemplateException
      */
-    void renderTemplate(Template template, TemplateContext context, Writer writer) throws TemplateException;
+    void renderTemplate(Template template, TemplateContext context, OutputStream outputStream) throws TemplateException;
 
     /**
      * 根据宏名查找要调用的宏

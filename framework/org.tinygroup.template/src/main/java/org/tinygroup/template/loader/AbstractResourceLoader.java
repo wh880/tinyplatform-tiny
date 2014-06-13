@@ -48,17 +48,17 @@ public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
         return templateMap;
     }
 
-    @Override
+
     public Map<String, Layout> getLayoutMap() {
         return layoutMap;
     }
 
-    @Override
+
     public String getTemplateExtName() {
         return templateExtName;
     }
 
-    @Override
+
     public String getLayoutExtName() {
         return layoutExtName;
     }
@@ -96,7 +96,7 @@ public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
         return this;
     }
 
-    @Override
+
     public ResourceLoader addLayout(Layout layout) {
         layoutMap.put(layout.getPath(), layout);
         return this;

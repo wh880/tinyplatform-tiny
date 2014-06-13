@@ -15,7 +15,7 @@ public class TinyTemplateTestCase {
         engine.putTemplateLoader("TinySample",tinySample);
         FileObject fileObject = VFS.resolveFile("src/test/resources");
  /*       fileObject.foreach(new FileNameFileObjectFilter(".*\\.vm", true), new FileObjectProcessor() {
-            @Override
+
             public void process(FileObject fileObject) {
                 try {
                     System.out.println("\n" + fileObject.getPath());
@@ -26,7 +26,7 @@ public class TinyTemplateTestCase {
             }
         });*/
         System.out.println("======");
-        engine.renderTemplate("/template/tiny/test5.vm");
+        engine.renderTemplate("/template/tiny/test1.html");
 
 
     }

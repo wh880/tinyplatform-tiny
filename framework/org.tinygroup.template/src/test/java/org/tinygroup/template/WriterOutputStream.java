@@ -31,7 +31,7 @@ public class WriterOutputStream extends OutputStream {
         decoderIn = ByteBuffer.allocate(DEFAULT_BUFFER_SIZE);
     }
 
-    @Override
+
     public void write(byte[] b, int off, int len) throws IOException {
         while (len > 0) {
             int c = Math.min(len, decoderIn.remaining());
@@ -43,23 +43,23 @@ public class WriterOutputStream extends OutputStream {
         flushOutput();
     }
 
-    @Override
+
     public void write(byte[] b) throws IOException {
         write(b, 0, b.length);
     }
 
-    @Override
+
     public void write(int b) throws IOException {
         write(new byte[]{(byte) b}, 0, 1);
     }
 
-    @Override
+
     public void flush() throws IOException {
         flushOutput();
         writer.flush();
     }
 
-    @Override
+
     public void close() throws IOException {
         processInput(true);
         flushOutput();

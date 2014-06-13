@@ -17,7 +17,7 @@ public class JetTemplateTestCase {
         engine.putTemplateLoader("jetSample",jetSample);
         FileObject fileObject = VFS.resolveFile("src/test/resources");
         fileObject.foreach(new FileNameFileObjectFilter(".*\\.jetx", true), new FileObjectProcessor() {
-            @Override
+
             public void process(FileObject fileObject) {
                 try {
                     System.out.println("\n" + fileObject.getPath());
