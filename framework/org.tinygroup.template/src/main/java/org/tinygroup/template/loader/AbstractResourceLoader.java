@@ -79,7 +79,7 @@ public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
             return null;
         }
         Layout layout = layoutMap.get(path);
-        if (layout != null && !isModified(path)) {
+        if (layout != null && (templateEngine.isCacheEnabled() || !isModified(path))) {
             return layout;
         }
         return loadLayout(path);

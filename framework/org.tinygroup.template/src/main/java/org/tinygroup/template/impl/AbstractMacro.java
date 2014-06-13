@@ -44,7 +44,6 @@ public abstract class AbstractMacro implements Macro {
     public void render(Template $template, TemplateContext invokeContext, Writer writer) throws TemplateException {
         try {
             renderMacro($template, invokeContext, writer);
-            writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
         }

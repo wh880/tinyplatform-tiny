@@ -34,13 +34,12 @@ public abstract class AbstractLayout implements Layout {
 
     public void render(TemplateContext invokeContext, Writer writer) throws TemplateException {
         try {
+            invokeContext.putSubContext("$currentLayoutContext", getTemplateContext());
             renderLayout(invokeContext, writer);
-            invokeContext.putSubContext("$currentTemplateContext",getTemplateContext());
-            writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
         } finally {
-            invokeContext.removeSubContext("$currentTemplateContext");
+            invokeContext.removeSubContext("$currentLayoutContext");
         }
     }
 

@@ -1,14 +1,13 @@
 package org.tinygroup.template.impl;
 
 import com.thoughtworks.xstream.io.path.Path;
-import org.tinygroup.commons.io.ByteArrayOutputStream;
 import org.tinygroup.template.*;
 import org.tinygroup.template.function.FormatterTemplateFunction;
 import org.tinygroup.template.function.GetResourceContentFunction;
 import org.tinygroup.template.function.InstanceOfTemplateFunction;
 import org.tinygroup.template.loader.StringResourceLoader;
 
-import java.io.BufferedWriter;
+import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -161,46 +160,38 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
-        Layout layout = null;
-        Template template = null;
-        for (ResourceLoader loader : templateLoaderMap.values()) {
-            template = loader.getTemplate(path);
+        try {
+            Layout layout = null;
+            Template template = getTemplate(path);
             if (template != null) {
-                break;
-            }
-        }
-        if (template != null) {
-            List<Layout> layoutPaths = getLayoutList(template.getPath());
-            if (layoutPaths.size() > 0) {
-                ByteArrayOutputStream templateOutputStream = new ByteArrayOutputStream();
-                Writer templateWriter = new BufferedWriter(new OutputStreamWriter(templateOutputStream));
-                template.render(context, templateWriter);
-                context.put("pageContent", new String(templateOutputStream.toByteArray().toByteArray()));
-                ByteArrayOutputStream layoutOutputStream = null;
-                TemplateContext layoutContext = context;
-                for (int i = layoutPaths.size() - 1; i >= 0; i--) {
-                    //每次都构建新的Writer和Context来执行
-                    TemplateContext tempContext = new TemplateContextDefault();
-                    layoutOutputStream = new ByteArrayOutputStream();
-                    tempContext.setParent(layoutContext);
-                    layoutContext = tempContext;
-                    Writer layoutWriter = new OutputStreamWriter(layoutOutputStream);
-                    layoutPaths.get(i).render(layoutContext, layoutWriter);
-                    if (i >= 0) {
-                        layoutContext.put("pageContent", new String(layoutOutputStream.toByteArray().toByteArray()));
+                List<Layout> layoutPaths = getLayoutList(template.getPath());
+                if (layoutPaths.size() > 0) {
+                    Writer templateWriter = new CharArrayWriter();
+                    template.render(context, templateWriter);
+                    context.put("pageContent", templateWriter.toString());
+                    Writer layoutWriter = null;
+                    TemplateContext layoutContext = context;
+                    for (int i = layoutPaths.size() - 1; i >= 0; i--) {
+                        //每次都构建新的Writer和Context来执行
+                        TemplateContext tempContext = new TemplateContextDefault();
+                        tempContext.setParent(layoutContext);
+                        layoutContext = tempContext;
+                        layoutWriter = new CharArrayWriter();
+                        layoutPaths.get(i).render(layoutContext, layoutWriter);
+                        if (i > 0) {
+                            layoutContext.put("pageContent", layoutWriter);
+                        }
                     }
+                    writer.write(layoutWriter.toString());
+                } else {
+                    renderTemplate(template, context, writer);
                 }
-                try {
-                    writer.write(new String(layoutOutputStream.toByteArray().toByteArray()));
-                    writer.flush();
-                } catch (IOException e) {
-                    throw new TemplateException(e);
-                }
+                writer.flush();
             } else {
-                renderTemplate(template, context, writer);
+                throw new TemplateException("找不到模板：" + path);
             }
-        } else {
-            throw new TemplateException("找不到模板：" + path);
+        } catch (IOException e) {
+            throw new TemplateException(e);
         }
     }
 
