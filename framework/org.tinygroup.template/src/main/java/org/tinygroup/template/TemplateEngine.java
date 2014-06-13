@@ -187,4 +187,7 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     String getResourceContent(String path, String encode) throws TemplateException;
 
+    boolean isCacheEnabled();
+
+    TemplateEngine setCacheEnabled(boolean cacheEnabled);
 }

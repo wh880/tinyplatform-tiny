@@ -14,6 +14,7 @@ import java.io.Writer;
 public final class TinyTemplate {
     public static void main(String[] args) throws TemplateException {
         TemplateEngine engine = new TemplateEngineDefault();
+        engine.setCacheEnabled(true);
         TemplateContext context = new TemplateContextDefault();
         context.put("outputEncoding", "GBK");
         context.put("items", StockModel.dummyItems());
@@ -38,7 +39,7 @@ public final class TinyTemplate {
 
             }
         };
-        for (int i = 0; i < 200000; i++) {
+        for (int i = 0; i < 100000; i++) {
             engine.renderTemplate("/tiny.html", context, writer);
         }
         long end = System.currentTimeMillis();

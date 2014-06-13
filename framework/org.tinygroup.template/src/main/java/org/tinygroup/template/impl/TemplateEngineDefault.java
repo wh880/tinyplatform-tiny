@@ -30,7 +30,8 @@ public class TemplateEngineDefault implements TemplateEngine {
     private Map<String, ResourceLoader> templateLoaderMap = new HashMap();
     private String encode = "UTF-8";
     private I18nVistor i18nVistor;
-    private boolean cacheEnabled = true;
+    private boolean cacheEnabled = false;
+    private TemplateCache layoutPathListCache = new TemplateCacheDefault();
 
     public boolean isCacheEnabled() {
         return cacheEnabled;
@@ -205,7 +206,16 @@ public class TemplateEngineDefault implements TemplateEngine {
 
 
     private List<Layout> getLayoutList(String templatePath) throws TemplateException {
-        List<Layout> layoutPathList = new ArrayList<Layout>();
+        List<Layout> layoutPathList = null;
+        if (cacheEnabled) {
+            layoutPathList = layoutPathListCache.get(templatePath);
+            if (layoutPathList != null) {
+                return layoutPathList;
+            }
+        }
+        if (layoutPathList == null) {
+            layoutPathList = new ArrayList<Layout>();
+        }
         String[] paths = templatePath.split("/");
         String path = "";
 
@@ -225,6 +235,10 @@ public class TemplateEngineDefault implements TemplateEngine {
                 }
             }
         }
+        if (cacheEnabled) {
+            layoutPathListCache.put(templatePath, layoutPathList);
+        }
+
         return layoutPathList;
     }
 
@@ -279,4 +293,5 @@ public class TemplateEngineDefault implements TemplateEngine {
         }
         throw new TemplateException("找不到资源：" + path);
     }
+
 }
