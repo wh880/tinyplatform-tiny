@@ -19,5 +19,10 @@
       <artifactId>org.tinygroup.pc</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.rpc</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     </dependencies>
 </project>

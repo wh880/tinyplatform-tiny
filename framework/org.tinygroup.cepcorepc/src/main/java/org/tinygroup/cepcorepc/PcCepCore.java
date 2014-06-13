@@ -23,6 +23,7 @@
  */
 package org.tinygroup.cepcorepc;
 
+import java.rmi.Remote;
 import java.util.List;
 
 import org.tinygroup.cepcore.CEPCoreNodeManager;
@@ -30,7 +31,7 @@ import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
 
-public interface PcCepCore  {
+public interface PcCepCore extends Remote {
 	String PC_CEP_CORE_BEAN = "pccepcore";
 
 	/**
@@ -39,6 +40,7 @@ public interface PcCepCore  {
 	 * @return
 	 */
 	String getNodeName();
+	void setNodeName(String nodeName);
 
 	/**
 	 * 注册一个事件处理器

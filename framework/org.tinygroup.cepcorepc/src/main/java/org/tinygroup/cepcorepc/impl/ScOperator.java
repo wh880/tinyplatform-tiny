@@ -1,28 +1,59 @@
 package org.tinygroup.cepcorepc.impl;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.cepcore.CEPCore;
+import org.tinygroup.cepcorepc.ArWork;
 import org.tinygroup.cepcorepc.PcCepOperator;
+import org.tinygroup.cepcorepc.ScWork;
+import org.tinygroup.cepcorepc.ScWorker;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.central.Node;
+import org.tinygroup.rmi.RemoteObject;
+import org.tinygroup.tinypc.Foreman;
 import org.tinygroup.tinypc.JobCenter;
+import org.tinygroup.tinypc.impl.ForemanSelectAllWorker;
+import org.tinygroup.tinypc.impl.ForemanSelectOneWorker;
 import org.tinygroup.tinypc.impl.JobCenterLocal;
 
-public class ScOperator implements PcCepOperator {
+public class ScOperator implements PcCepOperator, RemoteObject {
+
+	private static final long serialVersionUID = 6587086087705014319L;
 	private Map<Node, List<ServiceInfo>> arServices = new HashMap<Node, List<ServiceInfo>>();
 	private JobCenter jobCenter = null;
-	private String port = "8888";
+	private int port;
 	private String ip;
+
+	public ScOperator(String ip, int port) {
+		this.ip = ip;
+		this.port = port;
+		getJobCenter();
+	}
 
 	public void putArServices(Map<Node, List<ServiceInfo>> services) {
 		for (Node node : services.keySet()) {
 			arServices.put(node, services.get(node));
 		}
 
+	}
+	public void putArServices(Node node, List<ServiceInfo> list) {
+		arServices.put(node, list);
+	}
+	
+	public void removeArServices(String nodeName) {
+		Node removeNode = null;
+		for (Node node : arServices.keySet()) {
+			if(node.getNodeName().equals(nodeName)){
+				removeNode = node;
+				break;
+			}
+		}
+		arServices.remove(removeNode);
+		
 	}
 
 	public Map<Node, List<ServiceInfo>> gettArServices() {
@@ -32,7 +63,7 @@ public class ScOperator implements PcCepOperator {
 	public JobCenter getJobCenter() {
 		if (jobCenter == null) {
 			try {
-				jobCenter = new JobCenterLocal(ip, Integer.parseInt(port));
+				jobCenter = new JobCenterLocal(ip, port);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -42,6 +73,21 @@ public class ScOperator implements PcCepOperator {
 
 	public void startCEPCore(CEPCore cep) {
 		getJobCenter();
+		init();
+	}
+
+	private void init() {
+		try {
+			ScWorker worker = new ScWorker(ip);
+			worker.setScOperator(this);
+			jobCenter.registerWorker(worker);
+			Foreman cepForeman = new ForemanSelectOneWorker(ScWork.WORK_TYPE);
+			Foreman arForeman = new ForemanSelectAllWorker(ArWork.WORK_TYPE);
+			jobCenter.registerForeman(cepForeman);
+			jobCenter.registerForeman(arForeman);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void stopCEPCore(CEPCore cep) {
