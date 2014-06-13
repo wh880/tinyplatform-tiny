@@ -10,12 +10,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by luoguo on 2014/6/9.
  */
 public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
+    private boolean checkModified = false;
     private ClassLoader classLoader;
     private Map<String, Layout> layoutMap = new ConcurrentHashMap<String, Layout>();
     private Map<String, Template> templateMap = new ConcurrentHashMap<String, Template>();
     private TemplateEngine templateEngine;
     private String templateExtName;
     private String layoutExtName;
+
+    public void setCheckModified(boolean checkModified) {
+        this.checkModified = checkModified;
+    }
 
     public ClassLoader getClassLoader() {
         return classLoader;
@@ -63,7 +68,7 @@ public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
             return null;
         }
         Template template = templateMap.get(path);
-        if (template != null && !isModified(path)) {
+        if (template != null && (!checkModified || !isModified(path))) {
             return template;
         }
         return loadTemplate(path);
