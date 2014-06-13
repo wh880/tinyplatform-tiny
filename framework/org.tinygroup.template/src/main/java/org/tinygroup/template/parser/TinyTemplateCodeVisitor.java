@@ -99,7 +99,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                 popCodeBlock();
             }
         }
-        callMacro.subCode(String.format("$macro.render($template,$newContext,$writer);"));
+        callMacro.subCode(String.format("$macro.render($template,$newContext,outputStream);"));
         return callMacro;
     }
 
@@ -224,7 +224,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         CodeBlock valueCodeBlock = new CodeBlock();
         pushCodeLet();
         if (ctx.getChild(0).getText().equals("$${")) {
-            peekCodeLet().code("write($writer,U.getI18n($template.getTemplateEngine().getI18nVistor(),$context,\"").code(ctx.identify_list().getText()).lineCode("\"));");
+            peekCodeLet().code("write(outputStream,U.getI18n($template.getTemplateEngine().getI18nVistor(),$context,\"").code(ctx.identify_list().getText()).lineCode("\"));");
         } else {
             ctx.expression().accept(this);
             Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
@@ -232,7 +232,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                 peekCodeLet().codeBefore("U.escapeHtml((").code("))");
             }
 //        }
-            peekCodeLet().codeBefore("write($writer,").lineCode(");");
+            peekCodeLet().codeBefore("write(outputStream,").lineCode(");");
         }
         valueCodeBlock.subCode(peekCodeLet());
         popCodeLet();
@@ -287,7 +287,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     private CodeBlock getTemplateRenderCodeBlock() {
         CodeBlock renderMethod = new CodeBlock();
-        renderMethod.header(new CodeLet().lineCode("protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
+        renderMethod.header(new CodeLet().lineCode("protected void renderTemplate(TemplateContext $context, OutputStream outputStream) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
         renderMethod.subCode("Macro $macro=null;");
         renderMethod.subCode("Template $template=this;");
         renderMethod.subCode("TemplateContext $newContext=null;");
@@ -297,7 +297,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     private CodeBlock getMacroRenderCodeBlock() {
         CodeBlock renderMethod = new CodeBlock();
-        renderMethod.header(new CodeLet().lineCode("protected void renderMacro(Template $template, TemplateContext $context, Writer $writer) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
+        renderMethod.header(new CodeLet().lineCode("protected void renderMacro(Template $template, TemplateContext $context, OutputStream outputStream) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
         renderMethod.subCode("Macro $macro=null;");
         renderMethod.subCode("TemplateContext $newContext=null;");
 
@@ -327,7 +327,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         codeBlock.subCode(new CodeLet().lineCode("import java.io.IOException;"));
         codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.rumtime.*;"));
         codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.*;"));
-        codeBlock.subCode(new CodeLet().lineCode("import java.io.Writer;"));
+        codeBlock.subCode(new CodeLet().lineCode("import java.io.OutputStream;"));
         codeBlock.subCode(new CodeLet().lineCode("import org.tinygroup.template.impl.*;"));
         return codeBlock;
     }
@@ -362,7 +362,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                 text = text.substring(1);
                 break;
         }
-        return new CodeBlock().header(new CodeLet().code("write($writer,\"").code(escapeJavaStyleString(text).toString()).lineCode("\");"));
+        return new CodeBlock().header(new CodeLet().code("write(outputStream,\"").code(escapeJavaStyleString(text).toString()).lineCode("\");"));
     }
 
     private static StringBuffer escapeJavaStyleString(String str) {
@@ -455,12 +455,12 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         return null;
     }
 
-    @Override
+
     public CodeBlock visitBodycontent_directive(@NotNull TinyTemplateParser.Bodycontent_directiveContext ctx) {
         CodeBlock codeBlock = new CodeBlock();
         codeBlock.subCode("$macro= (Macro) $context.getItemMap().get(\"bodyContent\");");
         codeBlock.subCode("if($macro!=null) {");
-        codeBlock.subCode("    $macro.render($template,$context,$writer);");
+        codeBlock.subCode("    $macro.render($template,$context,outputStream);");
         codeBlock.subCode("}");
         return codeBlock;
     }
@@ -505,7 +505,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                 popCodeBlock();
             }
         }
-        callMacro.subCode(String.format("$macro.render($template,$newContext,$writer);"));
+        callMacro.subCode(String.format("$macro.render($template,$newContext,outputStream);"));
         return callMacro;
     }
 
@@ -545,7 +545,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         }
         CodeBlock bodyContentMacro = new CodeBlock();
         callMacro.subCode(bodyContentMacro);
-        callMacro.subCode(String.format("$macro.render($template,$newContext,$writer);", name));
+        callMacro.subCode(String.format("$macro.render($template,$newContext,outputStream);", name));
 
         bodyContentMacro.header("$newContext.put(\"bodyContent\",new AbstractMacro() {");
         CodeBlock render = getMacroRenderCodeBlock();
@@ -570,13 +570,13 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             peekCodeLet().code("new TemplateMap()").code(ctx.hash_map_entry_list().accept(this).toString()).code("");
         }
         popCodeLet();
-        //getTemplateEngine().renderTemplate("aa",$context,$writer);
+        //getTemplateEngine().renderTemplate("aa",$context,outputStream);
         include.subCode("$newContext = new TemplateContextDefault();");
         if (map.length() > 0) {
             include.subCode(String.format("$newContext.putAll(%s);", map));
         }
         include.subCode("$context.putSubContext(\"$newContext\",$newContext);");
-        include.subCode(String.format("getTemplateEngine().renderTemplate(U.getPath(getPath(),%s),$newContext,$writer);", path));
+        include.subCode(String.format("getTemplateEngine().renderTemplate(U.getPath(getPath(),%s),$newContext,outputStream);", path));
         include.subCode("$context.removeSubContext(\"$newContext\");");
         return include;
     }
@@ -619,7 +619,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         }
         CodeBlock bodyContentMacro = new CodeBlock();
         callMacro.subCode(bodyContentMacro);
-        callMacro.subCode(String.format("$macro.render($template,$newContext,$writer);", name));
+        callMacro.subCode(String.format("$macro.render($template,$newContext,outputStream);", name));
 
         bodyContentMacro.header("$newContext.put(\"bodyContent\",new AbstractMacro() {");
         CodeBlock render = getMacroRenderCodeBlock();

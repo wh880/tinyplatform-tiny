@@ -5,7 +5,7 @@ import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * @author Boilit
@@ -19,24 +19,14 @@ public final class TinyTemplate {
         context.put("items", StockModel.dummyItems());
         engine.putTemplateLoader(TemplateEngine.DEFAULT, new FileObjectResourceLoader("html", null, "D:\\git\\ebm\\src\\main\\resources\\templates"));
         long start = System.currentTimeMillis();
-        Writer writer = new Writer() {
+        OutputStream outputStream=new OutputStream() {
             @Override
-            public void write(char[] cbuf, int off, int len) throws IOException {
-
-            }
-
-            @Override
-            public void flush() throws IOException {
-
-            }
-
-            @Override
-            public void close() throws IOException {
+            public void write(int b) throws IOException {
 
             }
         };
         for (int i = 0; i < 100000; i++) {
-            engine.renderTemplate("/tiny.html", context, writer);
+            engine.renderTemplate("/tiny.html", context, outputStream);
         }
         long end = System.currentTimeMillis();
         System.out.println(end - start);

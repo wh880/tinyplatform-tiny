@@ -8,10 +8,8 @@ import org.tinygroup.template.function.GetResourceContentFunction;
 import org.tinygroup.template.function.InstanceOfTemplateFunction;
 import org.tinygroup.template.loader.StringResourceLoader;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +44,15 @@ public class TemplateEngineDefault implements TemplateEngine {
     public TemplateEngine setEncode(String encode) {
         this.encode = encode;
         return this;
+    }
+
+
+    public void write(OutputStream outputStream, byte[] data) throws IOException {
+        outputStream.write(data);
+    }
+
+    public void write(OutputStream outputStream, Object object) throws IOException {
+        outputStream.write(object.toString().getBytes(this.getEncode()));
     }
 
 
@@ -132,21 +139,21 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws TemplateException {
+    public void renderMacro(String macroName, Template template, TemplateContext context, OutputStream outputStream) throws TemplateException {
         Macro macro = findMacro(macroName, template, context);
         if (macro != null) {
-            macro.render(template, context, writer);
+            macro.render(template, context, outputStream);
         } else {
             throw new TemplateException("找不到宏：" + macroName);
         }
     }
 
 
-    public void renderMacro(Macro macro, Template template, TemplateContext context, Writer writer) throws TemplateException {
-        macro.render(template, context, writer);
+    public void renderMacro(Macro macro, Template template, TemplateContext context, OutputStream outputStream) throws TemplateException {
+        macro.render(template, context, outputStream);
     }
 
-    public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
+    public void renderTemplate(String path, TemplateContext context, OutputStream outputStream) throws TemplateException {
         Layout layout = null;
         Template template = null;
         for (ResourceLoader loader : templateLoaderMap.values()) {
@@ -159,8 +166,7 @@ public class TemplateEngineDefault implements TemplateEngine {
             List<Layout> layoutPaths = getLayoutList(template.getPath());
             if (layoutPaths.size() > 0) {
                 ByteArrayOutputStream templateOutputStream = new ByteArrayOutputStream();
-                Writer templateWriter = new BufferedWriter(new OutputStreamWriter(templateOutputStream));
-                template.render(context, templateWriter);
+                template.render(context, templateOutputStream);
                 context.put("pageContent", new String(templateOutputStream.toByteArray().toByteArray()));
                 ByteArrayOutputStream layoutOutputStream = null;
                 TemplateContext layoutContext = context;
@@ -170,20 +176,19 @@ public class TemplateEngineDefault implements TemplateEngine {
                     layoutOutputStream = new ByteArrayOutputStream();
                     tempContext.setParent(layoutContext);
                     layoutContext = tempContext;
-                    Writer layoutWriter = new OutputStreamWriter(layoutOutputStream);
-                    layoutPaths.get(i).render(layoutContext, layoutWriter);
+                    layoutPaths.get(i).render(layoutContext, layoutOutputStream);
                     if (i >= 0) {
                         layoutContext.put("pageContent", new String(layoutOutputStream.toByteArray().toByteArray()));
                     }
                 }
                 try {
-                    writer.write(new String(layoutOutputStream.toByteArray().toByteArray()));
-                    writer.flush();
+                    outputStream.write(layoutOutputStream.toByteArray().toByteArray());
+                    outputStream.flush();
                 } catch (IOException e) {
                     throw new TemplateException(e);
                 }
             } else {
-                renderTemplate(template, context, writer);
+                renderTemplate(template, context, outputStream);
             }
         } else {
             throw new TemplateException("找不到模板：" + path);
@@ -217,17 +222,17 @@ public class TemplateEngineDefault implements TemplateEngine {
 
 
     public void renderTemplate(String path) throws TemplateException {
-        renderTemplate(path, new TemplateContextDefault(), new OutputStreamWriter(System.out));
+        renderTemplate(path, new TemplateContextDefault(), System.out);
     }
 
 
     public void renderTemplate(Template template) throws TemplateException {
-        renderTemplate(template, new TemplateContextDefault(), new OutputStreamWriter(System.out));
+        renderTemplate(template, new TemplateContextDefault(), System.out);
     }
 
 
-    public void renderTemplate(Template template, TemplateContext context, Writer writer) throws TemplateException {
-        template.render(context, writer);
+    public void renderTemplate(Template template, TemplateContext context, OutputStream outputStream) throws TemplateException {
+        template.render(context, outputStream);
     }
 
     public Macro findMacro(Object macroName, Template template, TemplateContext $context) throws TemplateException {

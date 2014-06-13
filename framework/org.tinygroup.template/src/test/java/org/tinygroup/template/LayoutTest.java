@@ -6,7 +6,7 @@ import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.ClassLoaderResourceLoader;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luoguo on 2014/6/13.
@@ -23,40 +23,40 @@ public class LayoutTest {
 }
 
 class Template1 extends AbstractTemplate {
-    @Override
-    protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException {
-        $writer.write("Hello");
+
+    protected void renderTemplate(TemplateContext $context, OutputStream outputStream) throws IOException, TemplateException {
+        getTemplateEngine().write(outputStream,"Hello");
     }
 
-    @Override
+
     public String getPath() {
         return "/aaa/a.page";
     }
 }
 
 class Layout1 extends AbstractLayout {
-    @Override
-    protected void renderLayout(TemplateContext $context, Writer $writer) throws IOException, TemplateException {
-        $writer.write("<b>");
-        $writer.write($context.get("pageContent").toString());
-        $writer.write("</b>");
+
+    protected void renderLayout(TemplateContext $context, OutputStream outputStream) throws IOException, TemplateException {
+        getTemplateEngine().write(outputStream,"<b>");
+        getTemplateEngine().write(outputStream,$context.get("pageContent").toString());
+        getTemplateEngine().write(outputStream,"</b>");
     }
 
-    @Override
+
     public String getPath() {
         return "/aaa/a.layout";
     }
 }
 
 class Layout2 extends AbstractLayout {
-    @Override
-    protected void renderLayout(TemplateContext $context, Writer $writer) throws IOException, TemplateException {
-        $writer.write("<div>");
-        $writer.write($context.get("pageContent").toString());
-        $writer.write("</div>");
+
+    protected void renderLayout(TemplateContext $context, OutputStream outputStream) throws IOException, TemplateException {
+        getTemplateEngine().write(outputStream,"<div>");
+        getTemplateEngine().write(outputStream,$context.get("pageContent").toString());
+        getTemplateEngine().write(outputStream,"</div>");
     }
 
-    @Override
+
     public String getPath() {
         return "/a.layout";
     }

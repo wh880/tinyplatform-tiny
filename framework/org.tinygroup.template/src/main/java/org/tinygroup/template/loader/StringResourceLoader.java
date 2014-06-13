@@ -19,17 +19,17 @@ public class StringResourceLoader extends AbstractResourceLoader<String> {
      * @return
      * @throws TemplateException
      */
-    @Override
+
     protected Template loadTemplate(String path) throws TemplateException {
         return null;
     }
 
-    @Override
+
     protected Layout loadLayout(String path) throws TemplateException {
         return null;
     }
 
-    @Override
+
     public boolean isModified(String path) {
         return false;
     }
@@ -52,7 +52,7 @@ public class StringResourceLoader extends AbstractResourceLoader<String> {
         return template;
     }
 
-    @Override
+
     public Layout createLayout(String templateMaterial) throws TemplateException {
         Layout layout = ResourceCompilerUtils.compileResource(StringResourceLoader.class.getClassLoader(), templateMaterial, getRandomPath());
         //这里没有调用putTemplate是避免内存泄露

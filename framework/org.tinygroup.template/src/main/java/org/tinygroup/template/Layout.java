@@ -1,6 +1,6 @@
 package org.tinygroup.template;
 
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.Map;
 
 /**
@@ -18,9 +18,9 @@ public interface Layout {
     /**
      * 进行渲染
      *
-     * @param $writer
+     * @param outputStream
      */
-    void render(TemplateContext $context, Writer $writer) throws TemplateException;
+    void render(TemplateContext $context, OutputStream outputStream) throws TemplateException;
 
     /**
      * 返回宏对应的路径

@@ -10,7 +10,7 @@ public class TemplateTestCase {
     static class I18nvi implements I18nVistor {
 
 
-        @Override
+
         public String getI18nMessage(TemplateContext context, String key) {
             return key.toUpperCase();
         }
@@ -22,7 +22,7 @@ public class TemplateTestCase {
             super("bold", "java.lang.String");
         }
 
-        @Override
+
         public Object execute(Object... parameters) throws TemplateException {
             String obj = (String) parameters[0];
             return "<b>" + obj + "</b>";

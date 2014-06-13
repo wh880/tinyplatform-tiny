@@ -20,12 +20,12 @@ public class ClassLoaderResourceLoader extends AbstractResourceLoader<String> {
         classLoader = ClassLoaderResourceLoader.class.getClassLoader();
     }
 
-    @Override
+
     protected Template loadTemplate(String path) throws TemplateException {
         return createTemplate(path);
     }
 
-    @Override
+
     protected Layout loadLayout(String path) throws TemplateException {
         return createLayout(path);
     }
@@ -44,7 +44,7 @@ public class ClassLoaderResourceLoader extends AbstractResourceLoader<String> {
         }
     }
 
-    @Override
+
     public boolean isModified(String path) {
         return false;
     }
