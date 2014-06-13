@@ -4,7 +4,8 @@ import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
 
-import java.io.OutputStreamWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * @author Boilit
@@ -13,11 +14,32 @@ import java.io.OutputStreamWriter;
 public final class TinyTemplate {
     public static void main(String[] args) throws TemplateException {
         TemplateEngine engine = new TemplateEngineDefault();
-        TemplateContext context=new TemplateContextDefault();
-        context.put("outputEncoding","GBK");
+        TemplateContext context = new TemplateContextDefault();
+        context.put("outputEncoding", "GBK");
         context.put("items", StockModel.dummyItems());
-        engine.putTemplateLoader(TemplateEngine.DEFAULT,new FileObjectResourceLoader( "vm", null, "D:\\git\\ebm\\src\\main\\resources\\templates"));
-        engine.renderTemplate("/tiny.html",context,new OutputStreamWriter(System.out));
+        engine.putTemplateLoader(TemplateEngine.DEFAULT, new FileObjectResourceLoader("html", null, "D:\\git\\ebm\\src\\main\\resources\\templates"));
+        long start = System.currentTimeMillis();
+        Writer writer = new Writer() {
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {
+
+            }
+
+            @Override
+            public void flush() throws IOException {
+
+            }
+
+            @Override
+            public void close() throws IOException {
+
+            }
+        };
+        for (int i = 0; i < 100000; i++) {
+            engine.renderTemplate("/tiny.html", context, writer);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
     }
 
 }
