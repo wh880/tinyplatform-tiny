@@ -1,7 +1,7 @@
 package org.tinygroup.template;
 
 import org.tinygroup.template.impl.TemplateEngineDefault;
-import org.tinygroup.template.loader.FileObjectTemplateLoader;
+import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.FileObjectProcessor;
 import org.tinygroup.vfs.VFS;
@@ -13,8 +13,8 @@ import org.tinygroup.vfs.impl.filter.FileNameFileObjectFilter;
 public class JetTemplateTestCase {
     public static void main(String[] args) throws TemplateException {
         final TemplateEngine engine = new TemplateEngineDefault();
-        FileObjectTemplateLoader jetSample = new FileObjectTemplateLoader("jetSample", "src/test/resources");
-        engine.addTemplateLoader(jetSample);
+        FileObjectResourceLoader jetSample = new FileObjectResourceLoader("jetx",null, "src/test/resources");
+        engine.putTemplateLoader("jetSample",jetSample);
         FileObject fileObject = VFS.resolveFile("src/test/resources");
         fileObject.foreach(new FileNameFileObjectFilter(".*\\.jetx", true), new FileObjectProcessor() {
             @Override

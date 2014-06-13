@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by luoguo on 2014/6/6.
+ * Created by luoguo on 2014/6/12.
  */
-public abstract class AbstractTemplate implements Template {
+public abstract class AbstractLayout implements Layout {
     private Map<String, Macro> macroMap = new HashMap<String, Macro>();
     private TemplateEngine templateEngine;
     private TemplateContext templateContext = new TemplateContextDefault();
@@ -34,8 +34,8 @@ public abstract class AbstractTemplate implements Template {
 
     public void render(TemplateContext invokeContext, Writer writer) throws TemplateException {
         try {
+            renderLayout(invokeContext, writer);
             invokeContext.putSubContext("$currentTemplateContext",getTemplateContext());
-            renderTemplate(invokeContext, writer);
             writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
@@ -48,7 +48,7 @@ public abstract class AbstractTemplate implements Template {
         render(new TemplateContextDefault(), new OutputStreamWriter(System.out));
     }
 
-    protected abstract void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException;
+    protected abstract void renderLayout(TemplateContext $context, Writer $writer) throws IOException, TemplateException;
 
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
@@ -62,4 +62,5 @@ public abstract class AbstractTemplate implements Template {
     public Object put(String key, Object value) {
         return templateContext.put(key, value);
     }
+
 }

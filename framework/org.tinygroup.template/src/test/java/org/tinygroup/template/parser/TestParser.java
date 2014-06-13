@@ -544,7 +544,7 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"aa\",1);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"bb\",2);") > 0);
-        assertTrue(result.indexOf("$macro.render($template,$context,$writer);") > 0);
+        assertTrue(result.indexOf("$macro.render($template,$newContext,$writer);") > 0);
     }
 
     public void testT46_0() throws Exception {
@@ -553,13 +553,13 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("$newContext.put($macro.getParameterNames()[2],3);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"aa\",1);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"bb\",2);") > 0);
-        assertTrue(result.indexOf("$macro.render($template,$context,$writer);") > 0);
+        assertTrue(result.indexOf("$macro.render($template,$newContext,$writer);") > 0);
     }
 
     public void testT46_1() throws Exception {
         String result = execute("#call(\"test\")#end");
         System.out.println(result);
-        assertTrue(result.indexOf("$macro.render($template,$context,$writer);") > 0);
+        assertTrue(result.indexOf("$macro.render($template,$newContext,$writer);") > 0);
     }
 
     public void testT47() throws Exception {

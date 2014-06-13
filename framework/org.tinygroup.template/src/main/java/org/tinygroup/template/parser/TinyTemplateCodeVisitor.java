@@ -76,7 +76,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
         callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(%s,$template,$context);", name));
         callMacro.subCode("$newContext = new TemplateContextDefault();");
-        callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
+        callMacro.subCode("$newContext.setParent(\"$context\");");
         if (ctx.para_expression_list() != null) {
             List<TinyTemplateParser.Para_expressionContext> expList = ctx.para_expression_list().para_expression();
             if (expList != null) {
@@ -99,8 +99,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                 popCodeBlock();
             }
         }
-        callMacro.subCode(String.format("$macro.render($template,$context,$writer);"));
-        callMacro.subCode("$context.removeSubContext(\"$newContext\");");
+        callMacro.subCode(String.format("$macro.render($template,$newContext,$writer);"));
         return callMacro;
     }
 
@@ -140,7 +139,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitExpr_field_access(@NotNull TinyTemplateParser.Expr_field_accessContext ctx) {
-        CodeLet exp=pushPeekCodeLet();
+        CodeLet exp = pushPeekCodeLet();
         ctx.expression().accept(this);
         popCodeLet();
         peekCodeLet().code(ctx.getChild(1).getText().equals("?.") ? "U.sp(" : "U.p(").code(exp).code(",\"").code(ctx.IDENTIFIER().getText()).code("\")");
@@ -276,7 +275,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         CodeBlock templateCodeBlock = getTemplateCodeBlock();
         CodeBlock classCodeBlock = getClassCodeBlock();
         templateCodeBlock.subCode(classCodeBlock);
-        CodeBlock renderMethodCodeBlock = getRenderCodeBlock();
+        CodeBlock renderMethodCodeBlock = getTemplateRenderCodeBlock();
         classCodeBlock.subCode(renderMethodCodeBlock);
         CodeBlock getTemplatePathMethod = getTemplatePathMethodCodeBlock();
         classCodeBlock.subCode(getTemplatePathMethod);
@@ -286,7 +285,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         return templateCodeBlock;
     }
 
-    private CodeBlock getRenderCodeBlock() {
+    private CodeBlock getTemplateRenderCodeBlock() {
         CodeBlock renderMethod = new CodeBlock();
         renderMethod.header(new CodeLet().lineCode("protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
         renderMethod.subCode("Macro $macro=null;");
@@ -365,8 +364,9 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         }
         return new CodeBlock().header(new CodeLet().code("write($writer,\"").code(escapeJavaStyleString(text).toString()).lineCode("\");"));
     }
-    private static StringBuffer escapeJavaStyleString( String str) {
-        StringBuffer stringBuffer=new StringBuffer();
+
+    private static StringBuffer escapeJavaStyleString(String str) {
+        StringBuffer stringBuffer = new StringBuffer();
         int sz;
         sz = str.length();
         for (int i = 0; i < sz; i++) {
@@ -395,8 +395,8 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                         stringBuffer.append('\\');
                         stringBuffer.append('r');
                         break;
-                    default :
-                            stringBuffer.append(ch);
+                    default:
+                        stringBuffer.append(ch);
                         break;
                 }
             } else {
@@ -409,7 +409,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                         stringBuffer.append('\\');
                         stringBuffer.append('\\');
                         break;
-                    default :
+                    default:
                         stringBuffer.append(ch);
                         break;
                 }
@@ -457,7 +457,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     @Override
     public CodeBlock visitBodycontent_directive(@NotNull TinyTemplateParser.Bodycontent_directiveContext ctx) {
-        CodeBlock codeBlock=new CodeBlock();
+        CodeBlock codeBlock = new CodeBlock();
         codeBlock.subCode("$macro= (Macro) $context.getItemMap().get(\"bodyContent\");");
         codeBlock.subCode("if($macro!=null) {");
         codeBlock.subCode("    $macro.render($template,$context,$writer);");
@@ -483,7 +483,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         }
         callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template,$context);", name));
         callMacro.subCode("$newContext = new TemplateContextDefault();");
-        callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
+        callMacro.subCode("$newContext.setParent(\"$context\");");
         if (ctx.para_expression_list() != null) {
             TinyTemplateParser.Para_expression_listContext expList = ctx.para_expression_list();
             if (expList != null) {
@@ -505,8 +505,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                 popCodeBlock();
             }
         }
-        callMacro.subCode(String.format("$macro.render($template,$context,$writer);"));
-        callMacro.subCode("$context.removeSubContext(\"$newContext\");");
+        callMacro.subCode(String.format("$macro.render($template,$newContext,$writer);"));
         return callMacro;
     }
 
@@ -524,7 +523,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         name = name.substring(2, name.length() - 1).trim();
         callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template,$context);", name));
         callMacro.subCode("$newContext=new TemplateContextDefault();");
-        callMacro.subCode("$context.putSubContext(\"$newContext\",$newContext);");
+        callMacro.subCode("$newContext.setParent(\"$context\");");
         TinyTemplateParser.Para_expression_listContext expList = ctx.para_expression_list();
         if (expList != null) {
             pushCodeBlock(callMacro);
@@ -546,7 +545,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         }
         CodeBlock bodyContentMacro = new CodeBlock();
         callMacro.subCode(bodyContentMacro);
-        callMacro.subCode(String.format("$macro.render($template,$context,$writer);", name));
+        callMacro.subCode(String.format("$macro.render($template,$newContext,$writer);", name));
 
         bodyContentMacro.header("$newContext.put(\"bodyContent\",new AbstractMacro() {");
         CodeBlock render = getMacroRenderCodeBlock();
@@ -556,7 +555,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         ctx.block().accept(this);
         popCodeBlock();
         bodyContentMacro.footer("});");
-        callMacro.subCode("$context.removeSubContext(\"$newContext\");");
 
         //Body部分创建新的类，然后传入要调用的宏
         return callMacro;
@@ -649,7 +647,9 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         for (int i = 0; i < ctx.getChildCount(); i++) {
             ParseTree node = ctx.children.get(i);
             CodeBlock codeBlock = node.accept(this);
-            peekCodeBlock().subCode(codeBlock);
+            if (codeBlock != null) {
+                peekCodeBlock().subCode(codeBlock);
+            }
         }
         return null;
     }
@@ -738,6 +738,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         peekCodeLet().codeBefore("new Object[]{").code("}");
         return null;
     }
+
 
     public CodeBlock visitExpr_conditional_ternary(@NotNull TinyTemplateParser.Expr_conditional_ternaryContext ctx) {
         CodeLet condition = new CodeLet();

@@ -1,15 +1,20 @@
 package org.tinygroup.template.impl;
 
 import com.thoughtworks.xstream.io.path.Path;
+import org.tinygroup.commons.io.ByteArrayOutputStream;
 import org.tinygroup.template.*;
 import org.tinygroup.template.function.FormatterTemplateFunction;
 import org.tinygroup.template.function.GetResourceContentFunction;
 import org.tinygroup.template.function.InstanceOfTemplateFunction;
-import org.tinygroup.template.loader.StringTemplateLoader;
+import org.tinygroup.template.loader.StringResourceLoader;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,19 +22,18 @@ import java.util.Map;
  * Created by luoguo on 2014/6/6.
  */
 public class TemplateEngineDefault implements TemplateEngine {
-    public static final String DEFAULT = "default";
     private Path root = new Path("");
     private Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
     private Map<String, TemplateFunction> typeFunctionMap = new HashMap<String, TemplateFunction>();
     private TemplateContext templateEngineContext = new TemplateContextDefault();
 
-    private Map<String, TemplateLoader> templateLoaderMap = new HashMap();
+    private Map<String, ResourceLoader> templateLoaderMap = new HashMap();
     private String encode = "UTF-8";
     private I18nVistor i18nVistor;
 
     public TemplateEngineDefault() {
         //添加一个默认的加载器
-        addTemplateLoader(new StringTemplateLoader("default"));
+        putTemplateLoader("default", new StringResourceLoader());
         addTemplateFunction(new FormatterTemplateFunction());
         addTemplateFunction(new InstanceOfTemplateFunction());
         addTemplateFunction(new GetResourceContentFunction());
@@ -91,14 +95,14 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public void addTemplateLoader(TemplateLoader templateLoader) {
+    public void putTemplateLoader(String type, ResourceLoader templateLoader) {
         templateLoader.setTemplateEngine(this);
-        templateLoaderMap.put(templateLoader.getType(), templateLoader);
+        templateLoaderMap.put(type, templateLoader);
     }
 
 
     public Template getTemplate(String path) throws TemplateException {
-        for (TemplateLoader loader : templateLoaderMap.values()) {
+        for (ResourceLoader loader : templateLoaderMap.values()) {
             Template template = loader.getTemplate(path);
             if (template != null) {
                 return template;
@@ -107,17 +111,17 @@ public class TemplateEngineDefault implements TemplateEngine {
         throw new TemplateException("找不到模板：" + path);
     }
 
-    public TemplateLoader getTemplateLoader(String type) throws TemplateException {
+    public ResourceLoader getTemplateLoader(String type) throws TemplateException {
         return templateLoaderMap.get(type);
     }
 
 
-    public TemplateLoader getDefaultTemplateLoader() throws TemplateException {
+    public ResourceLoader getDefaultTemplateLoader() throws TemplateException {
         return getTemplateLoader(DEFAULT);
     }
 
 
-    public Map<String, TemplateLoader> getTemplateLoaderMap() {
+    public Map<String, ResourceLoader> getTemplateLoaderMap() {
         return templateLoaderMap;
     }
 
@@ -143,14 +147,72 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
-        for (TemplateLoader loader : templateLoaderMap.values()) {
-            Template template = loader.getTemplate(path);
+        Layout layout = null;
+        Template template = null;
+        for (ResourceLoader loader : templateLoaderMap.values()) {
+            template = loader.getTemplate(path);
             if (template != null) {
-                renderTemplate(template, context, writer);
-                return;
+                break;
             }
         }
-        throw new TemplateException("找不到模板：" + path);
+        if (template != null) {
+            List<Layout> layoutPaths = getLayoutList(template.getPath());
+            if (layoutPaths.size() > 0) {
+                ByteArrayOutputStream templateOutputStream = new ByteArrayOutputStream();
+                Writer templateWriter = new BufferedWriter(new OutputStreamWriter(templateOutputStream));
+                template.render(context, templateWriter);
+                context.put("pageContent", new String(templateOutputStream.toByteArray().toByteArray()));
+                ByteArrayOutputStream layoutOutputStream = null;
+                TemplateContext layoutContext = context;
+                for (int i = layoutPaths.size() - 1; i >= 0; i--) {
+                    //每次都构建新的Writer和Context来执行
+                    TemplateContext tempContext = new TemplateContextDefault();
+                    layoutOutputStream = new ByteArrayOutputStream();
+                    tempContext.setParent(layoutContext);
+                    layoutContext = tempContext;
+                    Writer layoutWriter = new OutputStreamWriter(layoutOutputStream);
+                    layoutPaths.get(i).render(layoutContext, layoutWriter);
+                    if (i >= 0) {
+                        layoutContext.put("pageContent", new String(layoutOutputStream.toByteArray().toByteArray()));
+                    }
+                }
+                try {
+                    writer.write(new String(layoutOutputStream.toByteArray().toByteArray()));
+                    writer.flush();
+                } catch (IOException e) {
+                    throw new TemplateException(e);
+                }
+            } else {
+                renderTemplate(template, context, writer);
+            }
+        } else {
+            throw new TemplateException("找不到模板：" + path);
+        }
+    }
+
+
+    private List<Layout> getLayoutList(String templatePath) throws TemplateException {
+        List<Layout> layoutPathList = new ArrayList<Layout>();
+        String[] paths = templatePath.split("/");
+        String path = "";
+
+        String templateFileName = paths[paths.length - 1];
+        for (int i = 0; i < paths.length - 1; i++) {
+            path += paths[i] + "/";
+            String template = path + templateFileName;
+            for (ResourceLoader loader : templateLoaderMap.values()) {
+                String layoutPath = loader.getLayoutPath(template);
+                Layout layout = loader.getLayout(layoutPath);
+                if (layout == null) {
+                    String defaultTemplateName = path + DEFAULT + templateFileName.substring(templateFileName.lastIndexOf('.'));
+                    layout = loader.getLayout(defaultTemplateName);
+                }
+                if (layout != null) {
+                    layoutPathList.add(layout);
+                }
+            }
+        }
+        return layoutPathList;
     }
 
 
@@ -196,7 +258,7 @@ public class TemplateEngineDefault implements TemplateEngine {
 
 
     public String getResourceContent(String path, String encode) throws TemplateException {
-        for (TemplateLoader templateLoader : templateLoaderMap.values()) {
+        for (ResourceLoader templateLoader : templateLoaderMap.values()) {
             String content = templateLoader.getResourceContent(path, encode);
             if (content != null) {
                 return content;

@@ -1,14 +1,15 @@
 package org.tinygroup.template.loader;
 
+import org.tinygroup.template.Layout;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateException;
 
 /**
  * Created by luoguo on 2014/6/9.
  */
-public class StringTemplateLoader extends AbstractTemplateLoader<String> {
-    public StringTemplateLoader(String type) {
-        super(type);
+public class StringResourceLoader extends AbstractResourceLoader<String> {
+    public StringResourceLoader() {
+        super(null,null);
     }
 
     /**
@@ -20,6 +21,11 @@ public class StringTemplateLoader extends AbstractTemplateLoader<String> {
      */
     @Override
     protected Template loadTemplate(String path) throws TemplateException {
+        return null;
+    }
+
+    @Override
+    protected Layout loadLayout(String path) throws TemplateException {
         return null;
     }
 
@@ -40,14 +46,21 @@ public class StringTemplateLoader extends AbstractTemplateLoader<String> {
     }
 
     public Template createTemplate(String stringTemplateMaterial) throws TemplateException {
-        Template template = TemplateCompilerUtils.compileTemplate(StringTemplateLoader.class.getClassLoader(), stringTemplateMaterial, getRandomPath());
+        Template template = ResourceCompilerUtils.compileResource(StringResourceLoader.class.getClassLoader(), stringTemplateMaterial, getRandomPath());
         //这里没有调用putTemplate是避免内存泄露
         template.setTemplateEngine(getTemplateEngine());
         return template;
     }
 
+    @Override
+    public Layout createLayout(String templateMaterial) throws TemplateException {
+        Layout layout = ResourceCompilerUtils.compileResource(StringResourceLoader.class.getClassLoader(), templateMaterial, getRandomPath());
+        //这里没有调用putTemplate是避免内存泄露
+        layout.setTemplateEngine(getTemplateEngine());
+        return layout;
+    }
+
     private String getRandomPath() {
         return "/string/template/NoT" + System.nanoTime();
     }
-
 }

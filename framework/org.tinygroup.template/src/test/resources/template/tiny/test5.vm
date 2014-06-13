@@ -1,5 +1,30 @@
-#macro ttt(aa,bb)aa : ${aa},bb:${bb} #end
-#set(aa=1,bb=2)
-#ttt
-#ttt(bb=3)
-OK
+#macro test()
+<div>
+    #bodyContent
+</div>
+#end
+
+#macro test1()
+<b>
+    #@test()
+        #bodyContent
+    #end
+</b>
+#end
+
+#macro test2()
+<p>
+    #@test1()
+        #bodyContent
+    #end
+</p>
+#end
+
+=======
+#*
+#test1()
+-------
+*#
+#@test2()
+aaaaa
+#end

@@ -25,6 +25,8 @@ import java.util.Map;
  */
 
 public interface TemplateEngine extends TemplateContextOperator {
+    public static final String DEFAULT = "default";
+
     TemplateEngine setEncode(String encode);
 
     /**
@@ -72,7 +74,7 @@ public interface TemplateEngine extends TemplateContextOperator {
      *
      * @param templateLoader
      */
-    void addTemplateLoader(TemplateLoader templateLoader);
+    void putTemplateLoader(String type, ResourceLoader templateLoader);
 
     Template getTemplate(String path) throws TemplateException;
 
@@ -81,7 +83,7 @@ public interface TemplateEngine extends TemplateContextOperator {
      *
      * @return
      */
-    TemplateLoader getTemplateLoader(String type) throws TemplateException;
+    ResourceLoader getTemplateLoader(String type) throws TemplateException;
 
     /**
      * 返回默认加载器
@@ -89,14 +91,14 @@ public interface TemplateEngine extends TemplateContextOperator {
      * @return
      * @throws TemplateException
      */
-    TemplateLoader getDefaultTemplateLoader() throws TemplateException;
+    ResourceLoader getDefaultTemplateLoader() throws TemplateException;
 
     /**
      * 返回所有的 Loader
      *
      * @return
      */
-    Map<String, TemplateLoader> getTemplateLoaderMap();
+    Map<String, ResourceLoader> getTemplateLoaderMap();
 
     /**
      * 渲染宏

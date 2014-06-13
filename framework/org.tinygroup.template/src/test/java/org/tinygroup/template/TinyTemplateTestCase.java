@@ -1,7 +1,7 @@
 package org.tinygroup.template;
 
 import org.tinygroup.template.impl.TemplateEngineDefault;
-import org.tinygroup.template.loader.FileObjectTemplateLoader;
+import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 
@@ -11,8 +11,8 @@ import org.tinygroup.vfs.VFS;
 public class TinyTemplateTestCase {
     public static void main(String[] args) throws TemplateException {
         final TemplateEngine engine = new TemplateEngineDefault();
-        FileObjectTemplateLoader tinySample = new FileObjectTemplateLoader("TinySample", "src/test/resources");
-        engine.addTemplateLoader(tinySample);
+        FileObjectResourceLoader tinySample = new FileObjectResourceLoader("html",null, "src/test/resources");
+        engine.putTemplateLoader("TinySample",tinySample);
         FileObject fileObject = VFS.resolveFile("src/test/resources");
  /*       fileObject.foreach(new FileNameFileObjectFilter(".*\\.vm", true), new FileObjectProcessor() {
             @Override
@@ -26,7 +26,7 @@ public class TinyTemplateTestCase {
             }
         });*/
         System.out.println("======");
-        engine.renderTemplate("/template/tiny/test4.vm");
+        engine.renderTemplate("/template/tiny/test5.vm");
 
 
     }

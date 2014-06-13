@@ -1,7 +1,7 @@
 package org.tinygroup.template;
 
 import org.tinygroup.template.impl.TemplateEngineDefault;
-import org.tinygroup.template.loader.ClassLoaderTemplateloader;
+import org.tinygroup.template.loader.ClassLoaderResourceLoader;
 
 import java.io.File;
 import java.net.URL;
@@ -14,7 +14,7 @@ public class TemplateTestCase1 {
     public static void main(String[] args) throws Exception {
         URL[] urls = {new File("C:\\Users\\luoguo\\AppData\\Local\\Temp\\ttl").toURI().toURL()};
         final TemplateEngine engine = new TemplateEngineDefault();
-        engine.addTemplateLoader(new ClassLoaderTemplateloader("classLoader", urls));
+        engine.putTemplateLoader(TemplateEngine.DEFAULT,new ClassLoaderResourceLoader("jetx", null, urls));
         engine.renderTemplate("template/jet/constant-number.jetx");
     }
 }
