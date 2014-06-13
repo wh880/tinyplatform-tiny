@@ -44,7 +44,7 @@ public interface TemplateEngine extends TemplateContextOperator {
      *
      * @param i18nVistor
      */
-    TemplateEngine setI18nVistor(I18nVistor i18nVistor);
+    void setI18nVistor(I18nVistor i18nVistor);
 
     I18nVistor getI18nVistor();
 
@@ -53,7 +53,7 @@ public interface TemplateEngine extends TemplateContextOperator {
      *
      * @param function
      */
-    TemplateEngine addTemplateFunction(TemplateFunction function);
+    void addTemplateFunction(TemplateFunction function);
 
     /**
      * 返回注册的方法
@@ -84,7 +84,7 @@ public interface TemplateEngine extends TemplateContextOperator {
      *
      * @param templateLoader
      */
-    TemplateEngine putTemplateLoader(String type, ResourceLoader templateLoader);
+    void putTemplateLoader(String type, ResourceLoader templateLoader);
 
     Template getTemplate(String path) throws TemplateException;
 
@@ -149,10 +149,6 @@ public interface TemplateEngine extends TemplateContextOperator {
      * @throws TemplateException
      */
     void renderTemplate(String path) throws TemplateException;
-
-    boolean isCacheEnabled();
-
-    TemplateEngine setCacheEnabled(boolean cacheEnabled);
 
     /**
      * 采用没有上下文，控制台输出方式进行渲染

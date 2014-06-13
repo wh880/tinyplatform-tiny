@@ -13,15 +13,13 @@ import org.tinygroup.vfs.VFS;
 public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject> {
     private FileObject root = null;
 
-    public FileObjectResourceLoader(String templateExtName, String layoutExtName, String root) {
-        this(templateExtName, layoutExtName, VFS.resolveFile(root));
-        setCheckModified(true);
+    public FileObjectResourceLoader(String templateExtName,String layoutExtName, String root) {
+        this(templateExtName,layoutExtName, VFS.resolveFile(root));
     }
 
-    public FileObjectResourceLoader(String templateExtName, String layoutExtName, FileObject root) {
-        super(templateExtName, layoutExtName);
+    public FileObjectResourceLoader(String templateExtName,String layoutExtName, FileObject root) {
+        super(templateExtName,layoutExtName);
         this.root = root;
-        setCheckModified(true);
     }
 
     public Template createTemplate(FileObject fileObject) throws TemplateException {
@@ -51,12 +49,7 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
 
 
     public boolean isModified(String path) {
-        FileObject fileObject = getFileObject(path);
-        return !fileObject.isExist() || fileObject.isModified();
-    }
-
-    private FileObject getFileObject(String path) {
-        return root.getFileObject(path);
+        return root.getFileObject(path).isModified();
     }
 
     public String getResourceContent(String path, String encode) throws TemplateException {
@@ -80,7 +73,6 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
             throw new RuntimeException(e);
         }
     }
-
     private Layout loadLayout(FileObject fileObject, ClassLoader classLoader) {
         try {
             Layout layout = ResourceCompilerUtils.compileResource(classLoader, IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()), fileObject.getPath());
