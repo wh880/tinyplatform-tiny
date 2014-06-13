@@ -1,6 +1,6 @@
 package org.tinygroup.template;
 
-import java.io.OutputStream;
+import java.io.Writer;
 
 /**
  * 宏，就是个方法
@@ -29,7 +29,7 @@ public interface Macro {
      * 进行渲染
      *
      * @param $context
-     * @param $outputStream
+     * @param $writer
      */
-    void render(Template $template, TemplateContext $context, OutputStream $outputStream) throws TemplateException;
+    void render(Template $template, TemplateContext $context, Writer $writer) throws TemplateException;
 }

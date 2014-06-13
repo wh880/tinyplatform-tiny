@@ -1,6 +1,6 @@
 package org.tinygroup.template;
 
-import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Map;
 
 /**
@@ -18,9 +18,9 @@ public interface Template extends TemplateContextOperator{
     /**
      * 进行渲染
      *
-     * @param outputStream
+     * @param $writer
      */
-    void render(TemplateContext $context, OutputStream outputStream) throws TemplateException;
+    void render(TemplateContext $context, Writer $writer) throws TemplateException;
 
     void render() throws TemplateException;
 

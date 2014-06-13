@@ -3,7 +3,8 @@ package org.tinygroup.template.impl;
 import org.tinygroup.template.*;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +20,8 @@ public abstract class AbstractTemplate implements Template {
         return templateEngine;
     }
 
-    protected void write(OutputStream outputStream, Object object) throws IOException {
-        templateEngine.write(outputStream,object.toString().getBytes());
+    protected void write(Writer $writer, Object object) throws IOException {
+        $writer.write(object.toString());
     }
 
     protected void addMacro(Macro macro) {
@@ -31,11 +32,11 @@ public abstract class AbstractTemplate implements Template {
         return macroMap;
     }
 
-    public void render(TemplateContext invokeContext, OutputStream outputStream) throws TemplateException {
+    public void render(TemplateContext invokeContext, Writer writer) throws TemplateException {
         try {
-            invokeContext.putSubContext("$currentTemplateContext", getTemplateContext());
-            renderTemplate(invokeContext, outputStream);
-            outputStream.flush();
+            invokeContext.putSubContext("$currentTemplateContext",getTemplateContext());
+            renderTemplate(invokeContext, writer);
+            writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
         } finally {
@@ -44,10 +45,10 @@ public abstract class AbstractTemplate implements Template {
     }
 
     public void render() throws TemplateException {
-        render(new TemplateContextDefault(), System.out);
+        render(new TemplateContextDefault(), new OutputStreamWriter(System.out));
     }
 
-    protected abstract void renderTemplate(TemplateContext $context,OutputStream outputStream ) throws IOException, TemplateException;
+    protected abstract void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException;
 
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
