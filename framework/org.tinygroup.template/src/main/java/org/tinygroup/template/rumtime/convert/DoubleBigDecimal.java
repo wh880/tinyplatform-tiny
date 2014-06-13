@@ -13,7 +13,13 @@ public class DoubleBigDecimal implements Converter<Double,BigDecimal> {
         return new BigDecimal(object);
     }
 
-    public String getType() {
-        return "java.lang.Doublejava.math.BigDecimal";
+    @Override
+    public Class getSourceType() {
+        return Double.class;
+    }
+
+    @Override
+    public Class getDestType() {
+        return BigDecimal.class;
     }
 }

@@ -13,7 +13,13 @@ public class FloatBigDecimal implements Converter<Float,BigDecimal> {
         return new BigDecimal(object);
     }
 
-    public String getType() {
-        return "java.lang.Floatjava.math.BigDecimal";
+    @Override
+    public Class getSourceType() {
+        return Float.class;
+    }
+
+    @Override
+    public Class getDestType() {
+        return BigDecimal.class;
     }
 }

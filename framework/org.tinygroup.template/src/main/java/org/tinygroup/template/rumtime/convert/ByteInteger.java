@@ -11,7 +11,13 @@ public class ByteInteger implements Converter<Byte, Integer> {
         return (int) object.byteValue();
     }
 
-    public String getType() {
-        return "java.lang.Bytejava.lang.Integer";
+    @Override
+    public Class getSourceType() {
+        return Byte.class;
+    }
+
+    @Override
+    public Class getDestType() {
+        return Integer.class;
     }
 }

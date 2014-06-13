@@ -5,9 +5,7 @@ import org.tinygroup.template.rumtime.convert.*;
 import org.tinygroup.template.rumtime.operator.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,16 +15,16 @@ import java.util.Map;
  */
 public final class O {
     private static Map<String, Operator> operationMap = new HashMap<String, Operator>();
+    private static Converter [][]converters=new Converter[6][6];
     private static Map<String, Converter> converterMap = new HashMap<String, Converter>();
-    private static List<String> numberTypeOrder = new ArrayList<String>();
-
+    private static Map<Class,Integer>typeMap=new HashMap<Class, Integer>();
     static {
-        numberTypeOrder.add(Byte.class.getName());
-        numberTypeOrder.add(Character.class.getName());
-        numberTypeOrder.add(Integer.class.getName());
-        numberTypeOrder.add(Float.class.getName());
-        numberTypeOrder.add(Double.class.getName());
-        numberTypeOrder.add(BigDecimal.class.getName());
+        typeMap.put(Byte.class,0);
+        typeMap.put(Character.class,1);
+        typeMap.put(Integer.class,2);
+        typeMap.put(Float.class,3);
+        typeMap.put(Double.class,4);
+        typeMap.put(BigDecimal.class,5);
 
         addConverter(new ByteCharacter());
         addConverter(new ByteInteger());
@@ -74,14 +72,14 @@ public final class O {
         addOperator(new Shr2Operator());
     }
 
-    public static Object convert(Object object, String sourceType, String destType) {
-        Converter converter = converterMap.get(sourceType + destType);
-        return converter.convert(object);
+    public static Object convert(Object object, Class sourceType, Class destType) {
+        ;
+        return converters[typeMap.get(sourceType)][typeMap.get(destType)].convert(object);
     }
 
-    public static int compare(String type1, String type2) {
-        int index1 = numberTypeOrder.indexOf(type1);
-        int index2 = numberTypeOrder.indexOf(type2);
+    public static int compare(Class type1, Class type2) {
+        int index1 = typeMap.get(type1);
+        int index2 = typeMap.get(type2);
         if (index1 == index2) {
             return 0;
         }
@@ -93,17 +91,17 @@ public final class O {
     }
 
     public static String getResultType(String type1, String type2) {
-        int index1 = numberTypeOrder.indexOf(type1);
-        int index2 = numberTypeOrder.indexOf(type2);
+        int index1 = typeMap.get(type1);
+        int index2 = typeMap.get(type2);
         return index1 < index2 ? type2 : type1;
     }
 
-    public static boolean isNumberic(String typeName) {
-        return numberTypeOrder.contains(typeName);
+    public static boolean isNumberic(Class type) {
+        return typeMap.containsKey(type);
     }
 
     public static void addConverter(Converter converter) {
-        converterMap.put(converter.getType(), converter);
+        converters[typeMap.get(converter.getSourceType())][typeMap.get(converter.getDestType())]=converter;
     }
 
     public static void addOperator(Operator operator) {

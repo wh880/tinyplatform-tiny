@@ -2,6 +2,7 @@ package org.tinygroup.template.rumtime.convert;
 
 import org.tinygroup.template.rumtime.Converter;
 
+
 /**
  * Created by luoguo on 2014/6/5.
  */
@@ -11,7 +12,13 @@ public class FloatDouble implements Converter<Float,Double> {
         return object.doubleValue();
     }
 
-    public String getType() {
-        return "java.lang.Floatjava.lang.Double";
+    @Override
+    public Class getSourceType() {
+        return Float.class;
+    }
+
+    @Override
+    public Class getDestType() {
+        return Double.class;
     }
 }

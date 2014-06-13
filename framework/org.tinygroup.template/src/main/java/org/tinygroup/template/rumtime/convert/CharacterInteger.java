@@ -11,7 +11,13 @@ public class CharacterInteger implements Converter<Character,Integer> {
         return (int)object.charValue();
     }
 
-    public String getType() {
-        return "java.lang.Characterjava.lang.Integer";
+    @Override
+    public Class getSourceType() {
+        return Character.class;
+    }
+
+    @Override
+    public Class getDestType() {
+        return Integer.class;
     }
 }

@@ -10,7 +10,13 @@ public class IntegerFloat implements Converter<Integer,Float> {
         return object.floatValue();
     }
 
-    public String getType() {
-        return "java.lang.Integerjava.lang.Float";
+    @Override
+    public Class getSourceType() {
+        return Integer.class;
+    }
+
+    @Override
+    public Class getDestType() {
+        return Float.class;
     }
 }

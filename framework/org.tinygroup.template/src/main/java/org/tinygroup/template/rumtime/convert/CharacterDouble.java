@@ -2,6 +2,7 @@ package org.tinygroup.template.rumtime.convert;
 
 import org.tinygroup.template.rumtime.Converter;
 
+
 /**
  * Created by luoguo on 2014/6/5.
  */
@@ -11,7 +12,13 @@ public class CharacterDouble implements Converter<Character,Double> {
         return (double)object.charValue();
     }
 
-    public String getType() {
-        return "java.lang.Characterjava.lang.Double";
+    @Override
+    public Class getSourceType() {
+        return Character.class;
+    }
+
+    @Override
+    public Class getDestType() {
+        return Double.class;
     }
 }

@@ -11,7 +11,13 @@ public class ByteDouble implements Converter<Byte, Double> {
         return (double) object.byteValue();
     }
 
-    public String getType() {
-        return "java.lang.Bytejava.lang.Double";
+    @Override
+    public Class getSourceType() {
+        return Byte.class;
+    }
+
+    @Override
+    public Class getDestType() {
+        return Double.class;
     }
 }

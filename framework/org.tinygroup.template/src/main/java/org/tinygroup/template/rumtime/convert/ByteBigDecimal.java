@@ -13,7 +13,13 @@ public class ByteBigDecimal implements Converter<Byte,BigDecimal> {
         return new BigDecimal((int)object.byteValue());
     }
 
-    public String getType() {
-        return "java.lang.Bytejava.math.BigDecimal";
+    @Override
+    public Class getSourceType() {
+        return Byte.class;
+    }
+
+    @Override
+    public Class getDestType() {
+        return BigDecimal.class;
     }
 }

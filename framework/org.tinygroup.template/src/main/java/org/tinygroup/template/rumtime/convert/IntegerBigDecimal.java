@@ -12,7 +12,13 @@ public class IntegerBigDecimal implements Converter<Integer,BigDecimal> {
         return new BigDecimal(object);
     }
 
-    public String getType() {
-        return "java.lang.Integerjava.math.BigDecimal";
+    @Override
+    public Class getSourceType() {
+        return Integer.class;
+    }
+
+    @Override
+    public Class getDestType() {
+        return BigDecimal.class;
     }
 }

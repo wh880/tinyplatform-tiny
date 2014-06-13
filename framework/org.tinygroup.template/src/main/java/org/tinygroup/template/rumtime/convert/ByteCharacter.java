@@ -5,13 +5,19 @@ import org.tinygroup.template.rumtime.Converter;
 /**
  * Created by luoguo on 2014/6/5.
  */
-public class ByteCharacter implements Converter<Byte,Character> {
+public class ByteCharacter implements Converter<Byte, Character> {
 
     public Character convert(Byte object) {
-        return (char)object.byteValue();
+        return (char) object.byteValue();
     }
 
-    public String getType() {
-        return "java.lang.Bytejava.lang.Character";
+    @Override
+    public Class getSourceType() {
+        return Byte.class;
+    }
+
+    @Override
+    public Class getDestType() {
+        return Character.class;
     }
 }

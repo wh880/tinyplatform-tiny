@@ -10,7 +10,13 @@ public class IntegerDouble implements Converter<Integer,Double> {
         return object.doubleValue();
     }
 
-    public String getType() {
-        return "java.lang.Integerjava.lang.Double";
+    @Override
+    public Class getSourceType() {
+        return Integer.class;
+    }
+
+    @Override
+    public Class getDestType() {
+        return Double.class;
     }
 }
