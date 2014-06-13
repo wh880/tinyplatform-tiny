@@ -30,6 +30,16 @@ public class TemplateEngineDefault implements TemplateEngine {
     private Map<String, ResourceLoader> templateLoaderMap = new HashMap();
     private String encode = "UTF-8";
     private I18nVistor i18nVistor;
+    private boolean cacheEnabled = true;
+
+    public boolean isCacheEnabled() {
+        return cacheEnabled;
+    }
+
+    public TemplateEngine setCacheEnabled(boolean cacheEnabled) {
+        this.cacheEnabled = cacheEnabled;
+        return this;
+    }
 
     public TemplateEngineDefault() {
         //添加一个默认的加载器
@@ -49,8 +59,9 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public void setI18nVistor(I18nVistor i18nVistor) {
+    public TemplateEngine setI18nVistor(I18nVistor i18nVistor) {
         this.i18nVistor = i18nVistor;
+        return this;
     }
 
 
@@ -59,7 +70,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public void addTemplateFunction(TemplateFunction function) {
+    public TemplateEngine addTemplateFunction(TemplateFunction function) {
         function.setTemplateEngine(this);
         String[] names = function.getNames().split(",");
         if (function.getBindingTypes() == null) {
@@ -74,6 +85,7 @@ public class TemplateEngineDefault implements TemplateEngine {
                 }
             }
         }
+        return this;
     }
 
 
@@ -95,9 +107,10 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public void putTemplateLoader(String type, ResourceLoader templateLoader) {
+    public TemplateEngine putTemplateLoader(String type, ResourceLoader templateLoader) {
         templateLoader.setTemplateEngine(this);
         templateLoaderMap.put(type, templateLoader);
+        return this;
     }
 
 

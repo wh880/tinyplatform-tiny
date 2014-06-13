@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public interface ResourceLoader<T> {
 
-
+    void setCheckModified(boolean checkModified);
     /**
      * 确定某个路径对应的文件是否被修改
      *
