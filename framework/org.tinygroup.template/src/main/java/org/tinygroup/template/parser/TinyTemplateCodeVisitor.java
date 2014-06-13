@@ -110,9 +110,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         return null;
     }
 
-    public CodeBlock visitType(@NotNull TinyTemplateParser.TypeContext ctx) {
-        return null;
-    }
 
     public CodeBlock visitExpr_hash_map(@NotNull TinyTemplateParser.Expr_hash_mapContext ctx) {
         TinyTemplateParser.Hash_map_entry_listContext hash_map_entry_list = ctx.hash_map_entry_list();
@@ -174,9 +171,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         return null;
     }
 
-    public CodeBlock visitType_array_suffix(@NotNull TinyTemplateParser.Type_array_suffixContext ctx) {
-        return null;
-    }
 
     public CodeBlock visitMacro_directive(@NotNull TinyTemplateParser.Macro_directiveContext ctx) {
         String name = ctx.getChild(0).getText();
@@ -287,7 +281,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     private CodeBlock getTemplateRenderCodeBlock() {
         CodeBlock renderMethod = new CodeBlock();
-        renderMethod.header(new CodeLet().lineCode("protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
+        renderMethod.header(new CodeLet().lineCode("protected void renderContent(TemplateContext $context, Writer $writer) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
         renderMethod.subCode("Macro $macro=null;");
         renderMethod.subCode("Template $template=this;");
         renderMethod.subCode("TemplateContext $newContext=null;");
@@ -509,13 +503,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         return callMacro;
     }
 
-    public CodeBlock visitType_name(@NotNull TinyTemplateParser.Type_nameContext ctx) {
-        return null;
-    }
-
-    public CodeBlock visitType_list(@NotNull TinyTemplateParser.Type_listContext ctx) {
-        return null;
-    }
 
     public CodeBlock visitCall_macro_block_directive(@NotNull TinyTemplateParser.Call_macro_block_directiveContext ctx) {
         CodeBlock callMacro = new CodeBlock();
@@ -660,10 +647,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         peekCodeLet().code(",");
         ctx.expression(1).accept(this);
         peekCodeLet().code(")");
-        return null;
-    }
-
-    public CodeBlock visitType_arguments(@NotNull TinyTemplateParser.Type_argumentsContext ctx) {
         return null;
     }
 

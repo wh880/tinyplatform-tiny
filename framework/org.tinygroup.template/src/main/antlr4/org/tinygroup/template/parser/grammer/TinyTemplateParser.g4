@@ -170,15 +170,12 @@ expression  :   '(' expression ')'                                           # e
             |   expression ('.'|'?.') IDENTIFIER                             # expr_field_access
             |   IDENTIFIER '(' expression_list? ')'                          # expr_function_call
 
-//            |   static_type_name '.' IDENTIFIER                              # expr_static_field_access
-//            |   static_type_name '.' IDENTIFIER  '(' expression_list? ')'    # expr_static_method_invocation
             |   expression ('?')? '[' expression ']'                         # expr_array_get
             |   expression ('++'|'--')                                       # expr_math_unary_suffix
             |   ('+' <assoc=right> |'-' <assoc=right>)  expression           # expr_math_unary_prefix
             |   ('++'|'--')       expression                                 # expr_math_unary_prefix
             |   '~' <assoc=right> expression                                 # expr_math_unary_prefix
             |   '!' <assoc=right> expression                                 # expr_compare_not
-//            |   '(' type ')'      expression                                 # expr_class_cast
             |   expression ('*'|'/'|'%')  expression                         # expr_math_binary_basic
             |   expression ('+'|'-')      expression                         # expr_math_binary_basic
             |   expression ('<<'|'>>'|'>>>') expression             # expr_math_binary_shift
@@ -210,26 +207,7 @@ expression_list
 hash_map_entry_list
             :   expression ':' expression (',' expression ':' expression)*
             ;
-/*
-static_type_name
-            : '@' IDENTIFIER
-            | '@' '(' IDENTIFIER ('.' IDENTIFIER)* ')'
-            ;
-*/
-type        :   IDENTIFIER ('.' IDENTIFIER)* type_arguments? type_array_suffix*
-            ;
 
-type_array_suffix
-            :   '[' ']'
-            ;
 
-type_arguments
-            :   '<' type_list '>'
-            ;
-type_list   :   type_name (',' type_name)*
-            ;
-
-type_name   :   type | '?'
-            ;
 
 
