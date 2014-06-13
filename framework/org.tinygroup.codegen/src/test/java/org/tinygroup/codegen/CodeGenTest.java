@@ -9,7 +9,6 @@ import org.tinygroup.codegen.config.CodeGenMetaData;
 import org.tinygroup.codegen.util.CodeGenUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.util.ContextFactory;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.xstream.XStreamFactory;
 
 import com.thoughtworks.xstream.XStream;
@@ -19,7 +18,7 @@ public class CodeGenTest extends TestCase {
 	String testResourcePath;
 	protected void setUp() throws Exception {
 		super.setUp();
-		AbstractTestUtil.init(null, true);
+//		AbstractTestUtil.init(null, true);
 	}
 
 	protected void tearDown() throws Exception {
@@ -34,7 +33,10 @@ public class CodeGenTest extends TestCase {
 	
 	public void testCodeGen(){
 		
-		XStream xStream=XStreamFactory.getXStream(CodeGenerator.XSTEAM_PACKAGE_NAME);
+		XStream xStream=XStreamFactory.getXStream();
+		xStream.setClassLoader(getClass().getClassLoader());
+		xStream.autodetectAnnotations(true);
+		xStream.processAnnotations(CodeGenMetaData.class);
 		CodeGenMetaData metaData=(CodeGenMetaData) xStream.fromXML(getClass().getResourceAsStream("/test.codegen.xml"));
 		Context context=ContextFactory.getContext();
 		String projectPath=System.getProperty("user.dir");
