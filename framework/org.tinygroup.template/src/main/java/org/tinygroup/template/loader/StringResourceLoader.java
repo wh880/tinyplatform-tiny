@@ -1,6 +1,5 @@
 package org.tinygroup.template.loader;
 
-import org.tinygroup.template.Layout;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateException;
 
@@ -25,7 +24,7 @@ public class StringResourceLoader extends AbstractResourceLoader<String> {
     }
 
 
-    protected Layout loadLayout(String path) throws TemplateException {
+    protected Template loadLayout(String path) throws TemplateException {
         return null;
     }
 
@@ -53,8 +52,8 @@ public class StringResourceLoader extends AbstractResourceLoader<String> {
     }
 
 
-    public Layout createLayout(String templateMaterial) throws TemplateException {
-        Layout layout = ResourceCompilerUtils.compileResource(StringResourceLoader.class.getClassLoader(), templateMaterial, getRandomPath());
+    public Template createLayout(String templateMaterial) throws TemplateException {
+        Template layout = ResourceCompilerUtils.compileResource(StringResourceLoader.class.getClassLoader(), templateMaterial, getRandomPath());
         //这里没有调用putTemplate是避免内存泄露
         layout.setTemplateEngine(getTemplateEngine());
         return layout;

@@ -1,7 +1,6 @@
 package org.tinygroup.template.loader;
 
 import org.tinygroup.commons.file.IOUtils;
-import org.tinygroup.template.Layout;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.vfs.FileObject;
@@ -32,7 +31,7 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
     }
 
 
-    public Layout createLayout(FileObject fileObject) throws TemplateException {
+    public Template createLayout(FileObject fileObject) throws TemplateException {
         if (fileObject != null) {
             return loadLayout(fileObject, getClassLoader());
         }
@@ -44,7 +43,7 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
     }
 
 
-    protected Layout loadLayout(String path) throws TemplateException {
+    protected Template loadLayout(String path) throws TemplateException {
         return createLayout(root.getFileObject(path));
     }
 
@@ -81,9 +80,9 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
         }
     }
 
-    private Layout loadLayout(FileObject fileObject, ClassLoader classLoader) {
+    private Template loadLayout(FileObject fileObject, ClassLoader classLoader) {
         try {
-            Layout layout = ResourceCompilerUtils.compileResource(classLoader, IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()), fileObject.getPath());
+            Template layout = ResourceCompilerUtils.compileResource(classLoader, IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()), fileObject.getPath());
             addLayout(layout);
             return layout;
         } catch (Exception e) {

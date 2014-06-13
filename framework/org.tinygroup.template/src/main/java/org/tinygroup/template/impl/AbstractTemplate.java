@@ -35,7 +35,7 @@ public abstract class AbstractTemplate implements Template {
     public void render(TemplateContext invokeContext, Writer writer) throws TemplateException {
         try {
             invokeContext.putSubContext("$currentTemplateContext",getTemplateContext());
-            renderTemplate(invokeContext, writer);
+            renderContent(invokeContext, writer);
         } catch (IOException e) {
             throw new TemplateException(e);
         } finally {
@@ -47,7 +47,7 @@ public abstract class AbstractTemplate implements Template {
         render(new TemplateContextDefault(), new OutputStreamWriter(System.out));
     }
 
-    protected abstract void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException;
+    protected abstract void renderContent(TemplateContext $context, Writer $writer) throws IOException, TemplateException;
 
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;

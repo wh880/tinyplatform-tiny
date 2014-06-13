@@ -1,6 +1,5 @@
 package org.tinygroup.template;
 
-import org.tinygroup.template.impl.AbstractLayout;
 import org.tinygroup.template.impl.AbstractTemplate;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.ClassLoaderResourceLoader;
@@ -24,7 +23,7 @@ public class LayoutTest {
 
 class Template1 extends AbstractTemplate {
     @Override
-    protected void renderTemplate(TemplateContext $context, Writer $writer) throws IOException, TemplateException {
+    protected void renderContent(TemplateContext $context, Writer $writer) throws IOException, TemplateException {
         $writer.write("Hello");
     }
 
@@ -34,9 +33,9 @@ class Template1 extends AbstractTemplate {
     }
 }
 
-class Layout1 extends AbstractLayout {
+class Layout1 extends AbstractTemplate {
     @Override
-    protected void renderLayout(TemplateContext $context, Writer $writer) throws IOException, TemplateException {
+    protected void renderContent(TemplateContext $context, Writer $writer) throws IOException, TemplateException {
         $writer.write("<b>");
         $writer.write($context.get("pageContent").toString());
         $writer.write("</b>");
@@ -48,9 +47,9 @@ class Layout1 extends AbstractLayout {
     }
 }
 
-class Layout2 extends AbstractLayout {
+class Layout2 extends AbstractTemplate {
     @Override
-    protected void renderLayout(TemplateContext $context, Writer $writer) throws IOException, TemplateException {
+    protected void renderContent(TemplateContext $context, Writer $writer) throws IOException, TemplateException {
         $writer.write("<div>");
         $writer.write($context.get("pageContent").toString());
         $writer.write("</div>");

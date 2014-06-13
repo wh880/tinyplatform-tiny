@@ -161,10 +161,10 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
         try {
-            Layout layout = null;
+            Template layout = null;
             Template template = getTemplate(path);
             if (template != null) {
-                List<Layout> layoutPaths = getLayoutList(template.getPath());
+                List<Template> layoutPaths = getLayoutList(template.getPath());
                 if (layoutPaths.size() > 0) {
                     Writer templateWriter = new CharArrayWriter();
                     template.render(context, templateWriter);
@@ -196,8 +196,8 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    private List<Layout> getLayoutList(String templatePath) throws TemplateException {
-        List<Layout> layoutPathList = null;
+    private List<Template> getLayoutList(String templatePath) throws TemplateException {
+        List<Template> layoutPathList = null;
         if (cacheEnabled) {
             layoutPathList = layoutPathListCache.get(templatePath);
             if (layoutPathList != null) {
@@ -205,7 +205,7 @@ public class TemplateEngineDefault implements TemplateEngine {
             }
         }
         if (layoutPathList == null) {
-            layoutPathList = new ArrayList<Layout>();
+            layoutPathList = new ArrayList<Template>();
         }
         String[] paths = templatePath.split("/");
         String path = "";
@@ -216,7 +216,7 @@ public class TemplateEngineDefault implements TemplateEngine {
             String template = path + templateFileName;
             for (ResourceLoader loader : templateLoaderMap.values()) {
                 String layoutPath = loader.getLayoutPath(template);
-                Layout layout = loader.getLayout(layoutPath);
+                Template layout = loader.getLayout(layoutPath);
                 if (layout == null) {
                     String defaultTemplateName = path + DEFAULT + templateFileName.substring(templateFileName.lastIndexOf('.'));
                     layout = loader.getLayout(defaultTemplateName);

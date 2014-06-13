@@ -41,7 +41,7 @@ public interface ResourceLoader<T> {
      * @return
      * @throws TemplateException
      */
-    Layout getLayout(String path) throws TemplateException;
+    Template getLayout(String path) throws TemplateException;
 
     /**
      * 获取资源对应的文本
@@ -65,7 +65,7 @@ public interface ResourceLoader<T> {
      * @param layout
      * @return
      */
-    ResourceLoader addLayout(Layout layout);
+    ResourceLoader addLayout(Template layout);
 
     /**
      * 创建并注册模板
@@ -82,7 +82,7 @@ public interface ResourceLoader<T> {
      * @return
      * @throws TemplateException
      */
-    Layout createLayout(T templateMaterial) throws TemplateException;
+    Template createLayout(T templateMaterial) throws TemplateException;
 
     /**
      * 返回注入模板引擎
@@ -114,7 +114,7 @@ public interface ResourceLoader<T> {
      *
      * @return
      */
-    Map<String, Layout> getLayoutMap();
+    Map<String, Template> getLayoutMap();
 
     /**
      * 返回模板文件的扩展

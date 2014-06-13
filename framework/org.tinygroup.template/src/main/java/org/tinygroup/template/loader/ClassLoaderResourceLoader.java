@@ -1,7 +1,6 @@
 package org.tinygroup.template.loader;
 
 import org.tinygroup.commons.file.IOUtils;
-import org.tinygroup.template.Layout;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateException;
 
@@ -26,7 +25,7 @@ public class ClassLoaderResourceLoader extends AbstractResourceLoader<String> {
     }
 
 
-    protected Layout loadLayout(String path) throws TemplateException {
+    protected Template loadLayout(String path) throws TemplateException {
         return createLayout(path);
     }
 
@@ -71,10 +70,10 @@ public class ClassLoaderResourceLoader extends AbstractResourceLoader<String> {
 
     }
 
-    public Layout createLayout(String path) throws TemplateException {
+    public Template createLayout(String path) throws TemplateException {
         try {
             String className = ResourceCompilerUtils.getClassNameGetter().getClassName(path).getClassName();
-            Layout layout = (Layout) classLoader.loadClass(className).newInstance();
+            Template layout = (Template) classLoader.loadClass(className).newInstance();
             addLayout(layout);
             return layout;
         } catch (Exception e) {

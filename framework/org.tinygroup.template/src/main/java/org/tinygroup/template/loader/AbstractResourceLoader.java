@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
     private boolean checkModified = false;
     private ClassLoader classLoader;
-    private Map<String, Layout> layoutMap = new ConcurrentHashMap<String, Layout>();
+    private Map<String, Template> layoutMap = new ConcurrentHashMap<String, Template>();
     private Map<String, Template> templateMap = new ConcurrentHashMap<String, Template>();
     private TemplateEngine templateEngine;
     private String templateExtName;
@@ -49,7 +49,7 @@ public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
     }
 
 
-    public Map<String, Layout> getLayoutMap() {
+    public Map<String, Template> getLayoutMap() {
         return layoutMap;
     }
 
@@ -74,11 +74,11 @@ public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
         return loadTemplate(path);
     }
 
-    public Layout getLayout(String path) throws TemplateException {
+    public Template getLayout(String path) throws TemplateException {
         if (!path.endsWith(layoutExtName)) {
             return null;
         }
-        Layout layout = layoutMap.get(path);
+        Template layout = layoutMap.get(path);
         if (layout != null && (templateEngine.isCacheEnabled() || !isModified(path))) {
             return layout;
         }
@@ -87,7 +87,7 @@ public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
 
     protected abstract Template loadTemplate(String path) throws TemplateException;
 
-    protected abstract Layout loadLayout(String path) throws TemplateException;
+    protected abstract Template loadLayout(String path) throws TemplateException;
 
     public ResourceLoader addTemplate(Template template) {
         templateMap.put(template.getPath(), template);
@@ -97,7 +97,7 @@ public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
     }
 
 
-    public ResourceLoader addLayout(Layout layout) {
+    public ResourceLoader addLayout(Template layout) {
         layoutMap.put(layout.getPath(), layout);
         return this;
     }
