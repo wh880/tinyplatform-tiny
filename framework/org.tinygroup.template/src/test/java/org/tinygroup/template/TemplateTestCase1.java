@@ -14,7 +14,7 @@ public class TemplateTestCase1 {
     public static void main(String[] args) throws Exception {
         URL[] urls = {new File("C:\\Users\\luoguo\\AppData\\Local\\Temp\\ttl").toURI().toURL()};
         final TemplateEngine engine = new TemplateEngineDefault();
-        engine.putTemplateLoader(TemplateEngine.DEFAULT,new ClassLoaderResourceLoader("jetx", null, urls));
+        engine.putTemplateLoader(TemplateEngine.DEFAULT,new ClassLoaderResourceLoader("jetx",null, null, urls));
         engine.renderTemplate("template/jet/constant-number.jetx");
     }
 }

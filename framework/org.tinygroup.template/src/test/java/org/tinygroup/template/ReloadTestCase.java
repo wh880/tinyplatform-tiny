@@ -9,7 +9,7 @@ import org.tinygroup.template.loader.FileObjectResourceLoader;
 public class ReloadTestCase {
     public static void main(String[] args) throws TemplateException {
         final TemplateEngine engine = new TemplateEngineDefault();
-        FileObjectResourceLoader jetSample = new FileObjectResourceLoader("jetx",null, "src/test/resources");
+        FileObjectResourceLoader jetSample = new FileObjectResourceLoader("jetx",null,null, "src/test/resources");
         engine.putTemplateLoader("jetSample",jetSample);
         Template template = engine.getTemplate("/template/jet/trim.jetx");
         System.out.println("======" + template);

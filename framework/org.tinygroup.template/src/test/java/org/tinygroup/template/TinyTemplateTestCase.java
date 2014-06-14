@@ -11,7 +11,7 @@ import org.tinygroup.vfs.VFS;
 public class TinyTemplateTestCase {
     public static void main(String[] args) throws TemplateException {
         final TemplateEngine engine = new TemplateEngineDefault();
-        FileObjectResourceLoader tinySample = new FileObjectResourceLoader("html",null, "src/test/resources");
+        FileObjectResourceLoader tinySample = new FileObjectResourceLoader("html",null,null, "src/test/resources");
         engine.putTemplateLoader("TinySample",tinySample);
         FileObject fileObject = VFS.resolveFile("src/test/resources");
  /*       fileObject.foreach(new FileNameFileObjectFilter(".*\\.vm", true), new FileObjectProcessor() {

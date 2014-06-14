@@ -172,7 +172,16 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     String getResourceContent(String path, String encode) throws TemplateException;
 
+    String getResourceContent(String path) throws TemplateException;
+
     boolean isCacheEnabled();
 
     TemplateEngine setCacheEnabled(boolean cacheEnabled);
+
+    /**
+     * 注册宏的库文件
+     *
+     * @param path
+     */
+    void registerMacroLibrary(String path) throws TemplateException;
 }

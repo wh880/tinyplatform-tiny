@@ -13,9 +13,9 @@ import java.io.Writer;
 public class LayoutTest {
     public static void main(String[] args) throws TemplateException {
         TemplateEngine engine=new TemplateEngineDefault();
-        engine.putTemplateLoader(TemplateEngine.DEFAULT,new ClassLoaderResourceLoader("page","layout"));
-        engine.getDefaultTemplateLoader().addLayout(new Layout1());
-        engine.getDefaultTemplateLoader().addLayout(new Layout2());
+        engine.putTemplateLoader(TemplateEngine.DEFAULT,new ClassLoaderResourceLoader("page","layout","macro"));
+        engine.getDefaultTemplateLoader().addTemplate(new Layout1());
+        engine.getDefaultTemplateLoader().addTemplate(new Layout2());
         engine.getDefaultTemplateLoader().addTemplate(new Template1());
         engine.renderTemplate("/aaa/a.page");
     }

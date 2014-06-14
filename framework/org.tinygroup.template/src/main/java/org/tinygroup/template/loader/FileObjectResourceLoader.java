@@ -12,13 +12,13 @@ import org.tinygroup.vfs.VFS;
 public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject> {
     private FileObject root = null;
 
-    public FileObjectResourceLoader(String templateExtName, String layoutExtName, String root) {
-        this(templateExtName, layoutExtName, VFS.resolveFile(root));
+    public FileObjectResourceLoader(String templateExtName, String layoutExtName,String macroLibraryExtName, String root) {
+        this(templateExtName, layoutExtName,macroLibraryExtName, VFS.resolveFile(root));
         setCheckModified(true);
     }
 
-    public FileObjectResourceLoader(String templateExtName, String layoutExtName, FileObject root) {
-        super(templateExtName, layoutExtName);
+    public FileObjectResourceLoader(String templateExtName, String layoutExtName,String macroLibraryExtName, FileObject root) {
+        super(templateExtName, layoutExtName,macroLibraryExtName);
         this.root = root;
         setCheckModified(true);
     }
@@ -30,21 +30,8 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
         return null;
     }
 
-
-    public Template createLayout(FileObject fileObject) throws TemplateException {
-        if (fileObject != null) {
-            return loadLayout(fileObject, getClassLoader());
-        }
-        return null;
-    }
-
-    protected Template loadTemplate(final String path) throws TemplateException {
+    protected Template loadTemplateItem(final String path) throws TemplateException {
         return createTemplate(root.getFileObject(path));
-    }
-
-
-    protected Template loadLayout(String path) throws TemplateException {
-        return createLayout(root.getFileObject(path));
     }
 
 
@@ -80,13 +67,4 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
         }
     }
 
-    private Template loadLayout(FileObject fileObject, ClassLoader classLoader) {
-        try {
-            Template layout = ResourceCompilerUtils.compileResource(classLoader, IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()), fileObject.getPath());
-            addLayout(layout);
-            return layout;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

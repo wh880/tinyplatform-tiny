@@ -1,6 +1,9 @@
 package org.tinygroup.template.loader;
 
-import org.tinygroup.template.*;
+import org.tinygroup.template.ResourceLoader;
+import org.tinygroup.template.Template;
+import org.tinygroup.template.TemplateEngine;
+import org.tinygroup.template.TemplateException;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,11 +15,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
     private boolean checkModified = false;
     private ClassLoader classLoader;
-    private Map<String, Template> layoutMap = new ConcurrentHashMap<String, Template>();
-    private Map<String, Template> templateMap = new ConcurrentHashMap<String, Template>();
+    private Map<String, Template> repositories = new ConcurrentHashMap<String, Template>();
     private TemplateEngine templateEngine;
     private String templateExtName;
     private String layoutExtName;
+    private String macroLibraryExtName;
 
     public void setCheckModified(boolean checkModified) {
         this.checkModified = checkModified;
@@ -31,9 +34,10 @@ public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
     }
 
 
-    public AbstractResourceLoader(String templateExtName, String layoutExtName) {
+    public AbstractResourceLoader(String templateExtName, String layoutExtName, String macroLibraryExtName) {
         this.templateExtName = "." + templateExtName;
         this.layoutExtName = "." + layoutExtName;
+        this.macroLibraryExtName = "." + macroLibraryExtName;
     }
 
 
@@ -42,15 +46,6 @@ public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
             return templatePath.substring(0, templatePath.length() - templateExtName.length()) + layoutExtName;
         }
         return null;
-    }
-
-    public Map<String, Template> getTemplateMap() {
-        return templateMap;
-    }
-
-
-    public Map<String, Template> getLayoutMap() {
-        return layoutMap;
     }
 
 
@@ -63,42 +58,47 @@ public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
         return layoutExtName;
     }
 
+    public String getMacroLibraryExtName() {
+        return macroLibraryExtName;
+    }
+
+    public void setMacroLibraryExtName(String macroLibraryExtName) {
+        this.macroLibraryExtName = macroLibraryExtName;
+    }
+
     public Template getTemplate(String path) throws TemplateException {
+        return getTemplateItem(path, templateExtName);
+    }
+
+    private Template getTemplateItem(String path, String templateExtName) throws TemplateException {
         if (!path.endsWith(templateExtName)) {
             return null;
         }
-        Template template = templateMap.get(path);
+        Template template = repositories.get(path);
         if (template != null && (!checkModified || !isModified(path))) {
             return template;
         }
-        return loadTemplate(path);
+        return loadTemplateItem(path);
     }
 
     public Template getLayout(String path) throws TemplateException {
-        if (!path.endsWith(layoutExtName)) {
-            return null;
-        }
-        Template layout = layoutMap.get(path);
-        if (layout != null && (templateEngine.isCacheEnabled() || !isModified(path))) {
-            return layout;
-        }
-        return loadLayout(path);
+        return getTemplateItem(path, layoutExtName);
     }
 
-    protected abstract Template loadTemplate(String path) throws TemplateException;
+    public Template getMacroLibrary(String path) throws TemplateException {
+        return getTemplateItem(path, macroLibraryExtName);
+    }
 
-    protected abstract Template loadLayout(String path) throws TemplateException;
+    protected abstract Template loadTemplateItem(String path) throws TemplateException;
 
-    public ResourceLoader addTemplate(Template template) {
-        templateMap.put(template.getPath(), template);
+    public ResourceLoader addTemplate(Template template) throws TemplateException {
+        return addTemplateItem(template);
+    }
+
+    private ResourceLoader addTemplateItem(Template template) {
+        repositories.put(template.getPath(), template);
         template.setTemplateEngine(templateEngine);
         template.getTemplateContext().setParent(templateEngine.getTemplateContext());
-        return this;
-    }
-
-
-    public ResourceLoader addLayout(Template layout) {
-        layoutMap.put(layout.getPath(), layout);
         return this;
     }
 

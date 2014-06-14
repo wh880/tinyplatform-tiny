@@ -28,7 +28,9 @@ public class TemplateEngineDefault implements TemplateEngine {
     private String encode = "UTF-8";
     private I18nVistor i18nVistor;
     private boolean cacheEnabled = false;
-    private TemplateCache layoutPathListCache = new TemplateCacheDefault();
+    private TemplateCache<List<Template>> layoutPathListCache = new TemplateCacheDefault<List<Template>>();
+    private TemplateCache<Macro> macroCache = new TemplateCacheDefault<Macro>();
+    private List<String> macroLibraryList = new ArrayList<String>();
 
     public boolean isCacheEnabled() {
         return cacheEnabled;
@@ -37,6 +39,10 @@ public class TemplateEngineDefault implements TemplateEngine {
     public TemplateEngine setCacheEnabled(boolean cacheEnabled) {
         this.cacheEnabled = cacheEnabled;
         return this;
+    }
+
+    public void registerMacroLibrary(String path) throws TemplateException {
+        macroLibraryList.add(path);
     }
 
     public TemplateEngineDefault() {
@@ -240,22 +246,40 @@ public class TemplateEngineDefault implements TemplateEngine {
         template.render(context, writer);
     }
 
-    public Macro findMacro(Object macroName, Template template, TemplateContext context) throws TemplateException {
+    public Macro findMacro(Object macroNameObject, Template template, TemplateContext context) throws TemplateException {
+        //上下文中的宏优先处理，主要是考虑bodyContent宏
+        String macroName = macroNameObject.toString();
+        Object obj = context.getItemMap().get(macroName);
+        if (obj instanceof Macro) {
+            return (Macro) obj;
+        }
+        //查找私有宏
         Macro macro = template.getMacroMap().get(macroName);
-        if (macro == null) {
-            Object obj = context.getItemMap().get(macroName);
-            if (obj instanceof Macro) {
-                macro = (Macro) obj;
-            }
-            if (macro == null) {
-                //TODO
-                //到整个引擎查找
-                //先找相同路径下的，再找子目录下的，再找上级的，再找兄弟的
-
-                throw new TemplateException("找不到宏：" + macroName);
+        if (macro != null) {
+            return macro;
+        }
+        if (cacheEnabled) {
+            macro = macroCache.get(macroName);
+            if (macro != null) {
+                return macro;
             }
         }
-        return macro;
+        /**
+         * 查找公共宏，后添加加的优先
+         */
+        for (int i = macroLibraryList.size() - 1; i >= 0; i--) {
+            Template macroLibrary = getTemplate(macroLibraryList.get(i));
+            if (macroLibrary != null) {
+                macro = macroLibrary.getMacroMap().get(macroName);
+                if (macro != null) {
+                    if (cacheEnabled) {
+                        macroCache.put(macroName, macro);
+                    }
+                    return macro;
+                }
+            }
+        }
+        throw new TemplateException("找不到宏：" + macroName);
     }
 
     public Object executeFunction(String functionName, Object... parameters) throws TemplateException {
@@ -275,6 +299,10 @@ public class TemplateEngineDefault implements TemplateEngine {
             }
         }
         throw new TemplateException("找不到资源：" + path);
+    }
+
+    public String getResourceContent(String path) throws TemplateException {
+        return getResourceContent(path, getEncode());
     }
 
 }

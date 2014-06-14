@@ -8,7 +8,7 @@ import org.tinygroup.template.TemplateException;
  */
 public class StringResourceLoader extends AbstractResourceLoader<String> {
     public StringResourceLoader() {
-        super(null,null);
+        super(null,null,null);
     }
 
     /**
@@ -19,7 +19,7 @@ public class StringResourceLoader extends AbstractResourceLoader<String> {
      * @throws TemplateException
      */
 
-    protected Template loadTemplate(String path) throws TemplateException {
+    protected Template loadTemplateItem(String path) throws TemplateException {
         return null;
     }
 
@@ -28,6 +28,9 @@ public class StringResourceLoader extends AbstractResourceLoader<String> {
         return null;
     }
 
+    protected Template loadMacroLibrary(String path) throws TemplateException {
+        return null;
+    }
 
     public boolean isModified(String path) {
         return false;
@@ -51,12 +54,17 @@ public class StringResourceLoader extends AbstractResourceLoader<String> {
         return template;
     }
 
-
     public Template createLayout(String templateMaterial) throws TemplateException {
         Template layout = ResourceCompilerUtils.compileResource(StringResourceLoader.class.getClassLoader(), templateMaterial, getRandomPath());
         //这里没有调用putTemplate是避免内存泄露
         layout.setTemplateEngine(getTemplateEngine());
         return layout;
+    }
+    public Template createMacroLibrary(String templateMaterial) throws TemplateException {
+        Template macroLibrary = ResourceCompilerUtils.compileResource(StringResourceLoader.class.getClassLoader(), templateMaterial, getRandomPath());
+        //这里没有调用putTemplate是避免内存泄露
+        macroLibrary.setTemplateEngine(getTemplateEngine());
+        return macroLibrary;
     }
 
     private String getRandomPath() {

@@ -14,28 +14,23 @@ import java.net.URLClassLoader;
 public class ClassLoaderResourceLoader extends AbstractResourceLoader<String> {
     private ClassLoader classLoader;
 
-    public ClassLoaderResourceLoader(String templateExtName,String layoutExtName) {
-        super(templateExtName,layoutExtName);
+    public ClassLoaderResourceLoader(String templateExtName, String layoutExtName, String macroLibraryExtName) {
+        super(templateExtName, layoutExtName, macroLibraryExtName);
         classLoader = ClassLoaderResourceLoader.class.getClassLoader();
     }
 
-
-    protected Template loadTemplate(String path) throws TemplateException {
+    protected Template loadTemplateItem(String path) throws TemplateException {
         return createTemplate(path);
     }
 
 
-    protected Template loadLayout(String path) throws TemplateException {
-        return createLayout(path);
-    }
-
-    public ClassLoaderResourceLoader(String templateExtName,String layoutExtName, URL[] urls) throws TemplateException {
-        super(templateExtName,layoutExtName);
+    public ClassLoaderResourceLoader(String templateExtName, String layoutExtName,String macroLibraryExtName, URL[] urls) throws TemplateException {
+        super(templateExtName, layoutExtName, macroLibraryExtName);
         classLoader = URLClassLoader.newInstance(urls);
     }
 
-    public ClassLoaderResourceLoader(String templateExtName,String layoutExtName, ClassLoader classLoader) {
-        super(templateExtName,layoutExtName);
+    public ClassLoaderResourceLoader(String templateExtName, String layoutExtName,String macroLibraryExtName, ClassLoader classLoader) {
+        super(templateExtName, layoutExtName,macroLibraryExtName);
         if (classLoader != null) {
             this.classLoader = classLoader;
         } else {
@@ -68,16 +63,5 @@ public class ClassLoaderResourceLoader extends AbstractResourceLoader<String> {
             throw new RuntimeException(e);
         }
 
-    }
-
-    public Template createLayout(String path) throws TemplateException {
-        try {
-            String className = ResourceCompilerUtils.getClassNameGetter().getClassName(path).getClassName();
-            Template layout = (Template) classLoader.loadClass(className).newInstance();
-            addLayout(layout);
-            return layout;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

@@ -162,7 +162,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         String name = ctx.getChild(0).getText();
         name = name.substring(6, name.length() - 1).trim();
         initCodeBlock.subCode(new CodeLet().lineCode("getMacroMap().put(\"%s\", new %s());", name, name));
-        //TODO
         CodeBlock macro = new CodeBlock();
         TinyTemplateParser.Define_expression_listContext defineExpressionListContext = ctx.define_expression_list();
         pushPeekCodeLet();

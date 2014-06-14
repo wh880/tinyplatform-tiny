@@ -18,7 +18,7 @@ public final class TinyTemplate {
         TemplateContext context = new TemplateContextDefault();
         context.put("outputEncoding", "GBK");
         context.put("items", StockModel.dummyItems());
-        FileObjectResourceLoader html = new FileObjectResourceLoader("html", null, "D:\\git\\ebm\\src\\main\\resources\\templates");
+        FileObjectResourceLoader html = new FileObjectResourceLoader("html", null,null, "D:\\git\\ebm\\src\\main\\resources\\templates");
         html.setCheckModified(false);
         engine.putTemplateLoader(TemplateEngine.DEFAULT, html);
         engine.getTemplate("/tiny.html");
