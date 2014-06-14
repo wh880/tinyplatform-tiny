@@ -4,8 +4,9 @@ import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.rumtime.U;
 
 import java.lang.reflect.Method;
-
+//TODO 还没有完成
 /**
+ *
  * Created by luoguo on 2014/6/9.
  */
 public class FunctionWrapper extends AbstractFunctionWrapper {

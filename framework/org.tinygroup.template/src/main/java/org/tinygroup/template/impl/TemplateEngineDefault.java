@@ -1,6 +1,5 @@
 package org.tinygroup.template.impl;
 
-import com.thoughtworks.xstream.io.path.Path;
 import org.tinygroup.template.*;
 import org.tinygroup.template.function.FormatterTemplateFunction;
 import org.tinygroup.template.function.GetResourceContentFunction;
@@ -21,7 +20,6 @@ import java.util.Map;
  * Created by luoguo on 2014/6/6.
  */
 public class TemplateEngineDefault implements TemplateEngine {
-    private Path root = new Path("");
     private Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
     private Map<String, TemplateFunction> typeFunctionMap = new HashMap<String, TemplateFunction>();
     private TemplateContext templateEngineContext = new TemplateContextDefault();

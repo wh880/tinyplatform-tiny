@@ -22,6 +22,7 @@ import java.util.Map;
  * Created by luoguo on 2014/6/4.
  */
 public class U {
+    private U(){}
     /**
      * 获取属性
      *

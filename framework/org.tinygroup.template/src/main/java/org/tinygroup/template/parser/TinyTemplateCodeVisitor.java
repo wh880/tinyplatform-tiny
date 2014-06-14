@@ -46,9 +46,9 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     public CodeBlock visitExpression_list(@NotNull TinyTemplateParser.Expression_listContext ctx) {
 
-        List<TinyTemplateParser.ExpressionContext> expression_list = ctx.expression();
+        List<TinyTemplateParser.ExpressionContext> expressionList = ctx.expression();
         int i = 0;
-        for (TinyTemplateParser.ExpressionContext expression : expression_list) {
+        for (TinyTemplateParser.ExpressionContext expression : expressionList) {
             CodeLet exp = pushPeekCodeLet();
             expression.accept(this);
             popCodeLet();
@@ -68,11 +68,11 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     public CodeBlock visitCall_directive(@NotNull TinyTemplateParser.Call_directiveContext ctx) {
         CodeBlock callMacro = processVisitCallHead(ctx.expression(), ctx.para_expression_list());
-        callMacro.subCode(String.format("$macro.render($template,$newContext,$writer);"));
+        callMacro.subCode("$macro.render($template,$newContext,$writer);");
         return callMacro;
     }
 
-    private CodeBlock processVisitCallHead(TinyTemplateParser.ExpressionContext macroName, TinyTemplateParser.Para_expression_listContext para_expression_listContext) {
+    private CodeBlock processVisitCallHead(TinyTemplateParser.ExpressionContext macroName, TinyTemplateParser.Para_expression_listContext paraExpressionListContext) {
         CodeBlock callMacro = new CodeBlock();
         CodeLet nameCodeBlock = pushPeekCodeLet();
         macroName.accept(this);
@@ -83,13 +83,13 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template,$context);", name));
         callMacro.subCode("$newContext=new TemplateContextDefault();");
         callMacro.subCode("$newContext.setParent(\"$context\");");
-        if (para_expression_listContext != null) {
-            List<TinyTemplateParser.Para_expressionContext> expList = para_expression_listContext.para_expression();
+        if (paraExpressionListContext != null) {
+            List<TinyTemplateParser.Para_expressionContext> expList = paraExpressionListContext.para_expression();
             if (expList != null) {
                 pushCodeBlock(callMacro);
                 int i = 0;
-                for (TinyTemplateParser.Para_expressionContext visitPara_expression : expList) {
-                    processVisitPara(i, visitPara_expression);
+                for (TinyTemplateParser.Para_expressionContext visitParaExpression : expList) {
+                    processVisitPara(i, visitParaExpression);
                     i++;
                 }
                 popCodeBlock();
@@ -107,9 +107,9 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitExpr_hash_map(@NotNull TinyTemplateParser.Expr_hash_mapContext ctx) {
-        TinyTemplateParser.Hash_map_entry_listContext hash_map_entry_list = ctx.hash_map_entry_list();
-        if (hash_map_entry_list != null) {
-            peekCodeLet().code("new TemplateMap()").code(hash_map_entry_list.accept(this).toString()).code("");
+        TinyTemplateParser.Hash_map_entry_listContext hashMapEntryListContext = ctx.hash_map_entry_list();
+        if (hashMapEntryListContext != null) {
+            peekCodeLet().code("new TemplateMap()").code(hashMapEntryListContext.accept(this).toString()).code("");
         }
         return null;
     }
@@ -164,10 +164,10 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         initCodeBlock.subCode(new CodeLet().lineCode("getMacroMap().put(\"%s\", new %s());", name, name));
         //TODO
         CodeBlock macro = new CodeBlock();
-        TinyTemplateParser.Define_expression_listContext define_expression_list = ctx.define_expression_list();
+        TinyTemplateParser.Define_expression_listContext defineExpressionListContext = ctx.define_expression_list();
         pushPeekCodeLet();
-        if (define_expression_list != null) {
-            define_expression_list.accept(this);
+        if (defineExpressionListContext != null) {
+            defineExpressionListContext.accept(this);
         }
         macro.header(new CodeLet().lineCode("class %s extends AbstractMacro {", name));
         macro.footer(new CodeLet().lineCode("}"));
@@ -211,7 +211,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             if (token.getType() == TinyTemplateParser.VALUE_ESCAPED_OPEN) {
                 peekCodeLet().codeBefore("U.escapeHtml((").code("))");
             }
-//        }
             peekCodeLet().codeBefore("write($writer,").lineCode(");");
         }
         valueCodeBlock.subCode(peekCodeLet());
@@ -230,16 +229,16 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitHash_map_entry_list(@NotNull TinyTemplateParser.Hash_map_entry_listContext ctx) {
-        List<TinyTemplateParser.ExpressionContext> expression_list = ctx.expression();
+        List<TinyTemplateParser.ExpressionContext> expressionContexts = ctx.expression();
         CodeLet keyPair = new CodeLet();
         CodeBlock result = new CodeBlock().subCode(keyPair);
-        for (int i = 0; i < expression_list.size(); i += 2) {
+        for (int i = 0; i < expressionContexts.size(); i += 2) {
             CodeBlock codeBlock = new CodeBlock();
             CodeLet keyCodeLet = pushPeekCodeLet();
-            expression_list.get(i).accept(this);
+            expressionContexts.get(i).accept(this);
             popCodeLet();
             CodeLet valueCodeLet = pushPeekCodeLet();
-            expression_list.get(i + 1).accept(this);
+            expressionContexts.get(i + 1).accept(this);
             popCodeLet();
             codeBlock.subCode(new CodeLet().code(keyCodeLet).code(":").code(valueCodeLet));
             keyPair.code(".putItem(").code(keyCodeLet).code(",").code(valueCodeLet).code(")");
@@ -354,7 +353,8 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         for (int i = 0; i < sz; i++) {
             char ch = str.charAt(i);
 
-            if (ch == '\b' || ch == '\n' || ch == '\t' || ch == '\f' || ch == '\r' || ch == '"' || ch == '\\') {
+            boolean isEscapeChar = ch == '\b' || ch == '\n' || ch == '\t' || ch == '\f' || ch == '\r' || ch == '"' || ch == '\\';
+            if (isEscapeChar) {
                 stringBuffer.append('\\');
             }
             stringBuffer.append(ch);
@@ -380,13 +380,13 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         popCodeLet();
         ifCodeBlock.footer(new CodeLet().lineCode("}"));
         ctx.block().accept(this);
-        List<TinyTemplateParser.Elseif_directiveContext> elseif_directive_list = ctx.elseif_directive();
-        for (TinyTemplateParser.Elseif_directiveContext elseif_directive : elseif_directive_list) {
+        List<TinyTemplateParser.Elseif_directiveContext> elseifDirectiveContexts = ctx.elseif_directive();
+        for (TinyTemplateParser.Elseif_directiveContext elseif_directive : elseifDirectiveContexts) {
             elseif_directive.accept(this);
         }
-        TinyTemplateParser.Else_directiveContext else_directive = ctx.else_directive();
-        if (else_directive != null) {
-            else_directive.accept(this);
+        TinyTemplateParser.Else_directiveContext elseDirectiveContext = ctx.else_directive();
+        if (elseDirectiveContext != null) {
+            elseDirectiveContext.accept(this);
         }
         popCodeBlock();
         return ifCodeBlock;
@@ -461,23 +461,23 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         if (expList != null) {
             pushCodeBlock(callMacro);
             int i = 0;
-            for (TinyTemplateParser.Para_expressionContext visitPara_expression : expList.para_expression()) {
-                processVisitPara(i, visitPara_expression);
+            for (TinyTemplateParser.Para_expressionContext paraExpressionContext : expList.para_expression()) {
+                processVisitPara(i, paraExpressionContext);
                 i++;
             }
             popCodeBlock();
         }
     }
 
-    private void processVisitPara(int i, TinyTemplateParser.Para_expressionContext visitPara_expression) {
+    private void processVisitPara(int i, TinyTemplateParser.Para_expressionContext visitParaExpression) {
         CodeLet expression = new CodeLet();
         pushCodeLet(expression);
-        if (visitPara_expression.getChildCount() == 3) {
+        if (visitParaExpression.getChildCount() == 3) {
             //如果是带参数的
-            visitPara_expression.getChild(2).accept(this);
-            peekCodeBlock().subCode(String.format("$newContext.put(\"%s\",%s);", visitPara_expression.getChild(0).getText(), expression));
+            visitParaExpression.getChild(2).accept(this);
+            peekCodeBlock().subCode(String.format("$newContext.put(\"%s\",%s);", visitParaExpression.getChild(0).getText(), expression));
         } else {
-            visitPara_expression.getChild(0).accept(this);
+            visitParaExpression.getChild(0).accept(this);
             peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterNames()[%d],%s);", i, expression));
         }
         popCodeLet();
@@ -493,7 +493,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             peekCodeLet().code("new TemplateMap()").code(ctx.hash_map_entry_list().accept(this).toString()).code("");
         }
         popCodeLet();
-        //getTemplateEngine().renderTemplate("aa",$context,$writer);
         include.subCode("$newContext = new TemplateContextDefault();");
         if (map.length() > 0) {
             include.subCode(String.format("$newContext.putAll(%s);", map));
@@ -591,8 +590,8 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitSet_directive(@NotNull TinyTemplateParser.Set_directiveContext ctx) {
-        List<TinyTemplateParser.Set_expressionContext> set_expression_list = ctx.set_expression();
-        for (TinyTemplateParser.Set_expressionContext node : set_expression_list) {
+        List<TinyTemplateParser.Set_expressionContext> setExpressionContexts = ctx.set_expression();
+        for (TinyTemplateParser.Set_expressionContext node : setExpressionContexts) {
             peekCodeBlock().subCode(node.accept(this));
         }
         return null;
@@ -724,10 +723,10 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         ctx.block().accept(this);
         popCodeBlock();
 
-        TinyTemplateParser.Else_directiveContext else_directive = ctx.else_directive();
-        if (else_directive != null) {
+        TinyTemplateParser.Else_directiveContext elseDirectiveContext = ctx.else_directive();
+        if (elseDirectiveContext != null) {
             CodeBlock elseCodeBlock = pushPeekCodeBlock().header("if(U.b(((ForIterator)$context.get(\"" + varName + "For\")).getSize()>0)){").footer("}");
-            else_directive.block().accept(this);
+            elseDirectiveContext.block().accept(this);
             popCodeBlock();
             peekCodeBlock().subCode(elseCodeBlock);
         }

@@ -13,14 +13,6 @@ public abstract class TwoOperator extends AbstractOperator {
     }
 
     public Object operation(Object... parameter) throws TemplateException {
-/*
-        if (parameter == null) {
-            throw new TemplateException("参数变量不能为空");
-        }
-        if (parameter.length != getParameterCount()) {
-            throw new TemplateException("参数变量数量不匹配，期望:" + getParameterCount() + ",实际:" + parameter.length);
-        }
-*/
         Object left = parameter[0];
         Object right = parameter[1];
         if (O.isNumber(left.getClass()) && O.isNumber(right.getClass())) {

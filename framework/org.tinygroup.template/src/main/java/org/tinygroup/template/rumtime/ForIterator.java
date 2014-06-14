@@ -26,7 +26,6 @@ import java.util.*;
 
 
 public final class ForIterator implements Iterator, ForStatus {
-    private Object object;
     private Iterator iterator = null;
     private int index = 0;
     private int size;
@@ -39,10 +38,8 @@ public final class ForIterator implements Iterator, ForStatus {
         this.size = size;
     }
     public ForIterator(){
-        this.object=null;
     }
     public ForIterator(Object object) {
-        this.object = object;
         if (object instanceof Map) {
             Map map = (Map) object;
             iterator = map.entrySet().iterator();
@@ -144,7 +141,7 @@ public final class ForIterator implements Iterator, ForStatus {
         }
     }
 
-    class ArrayIterator implements Iterator {
+    static class ArrayIterator implements Iterator {
         private final Object object;
         private int size = 0;
         private int index = 0;

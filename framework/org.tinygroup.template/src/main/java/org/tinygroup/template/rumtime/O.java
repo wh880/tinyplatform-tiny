@@ -14,6 +14,7 @@ import java.util.Map;
  * Created by luoguo on 2014/6/5.
  */
 public final class O {
+    private O(){}
     private static Map<String, Operator> operationMap = new HashMap<String, Operator>();
     private static Converter [][]converters=new Converter[6][6];
     private static Map<Class,Integer>typeMap=new HashMap<Class, Integer>();
