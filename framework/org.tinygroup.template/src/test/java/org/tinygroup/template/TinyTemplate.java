@@ -39,7 +39,7 @@ public final class TinyTemplate {
 
             }
         };
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200000; i++) {
             engine.renderTemplate("/tiny.html", context, writer);
         }
         long end = System.currentTimeMillis();

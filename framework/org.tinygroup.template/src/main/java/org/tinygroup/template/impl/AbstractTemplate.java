@@ -36,6 +36,7 @@ public abstract class AbstractTemplate implements Template {
         try {
             context.putSubContext("$currentTemplateContext",getTemplateContext());
             renderContent(context, writer);
+            writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
         } finally {

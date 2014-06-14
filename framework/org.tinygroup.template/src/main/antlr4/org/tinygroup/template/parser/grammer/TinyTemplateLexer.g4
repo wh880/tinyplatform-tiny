@@ -45,7 +45,7 @@ VALUE_ESCAPED_OPEN      : '$!{'                           -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_SET      : '#set'      ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_IF       : '#if'       ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_ELSEIF   : '#elseif'   ARGUMENT_START      -> pushMode(INSIDE) ;
-DIRECTIVE_OPEN_FOR      : '#for'      ARGUMENT_START      -> pushMode(INSIDE) ;
+DIRECTIVE_OPEN_FOR      : ('#for'|'#foreach')      ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_BREAK    : '#break'    ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_CONTINUE : '#continue' ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_STOP     : '#stop'     ARGUMENT_START      -> pushMode(INSIDE) ;
@@ -96,7 +96,7 @@ LEFT_BRACKET            : '['                              ;
 RIGHT_BRACKET           : ']'                              ;
 LEFT_BRACE              : '{'                              -> pushMode(INSIDE) ;
 RIGHT_BRACE             : '}'                              -> popMode ;
-
+IN                       : 'in'                             ;
 OP_ASSIGNMENT           : '='                              ;
 
 OP_DOT_INVOCATION       : '.'                              ;
@@ -144,7 +144,7 @@ KEYWORD_FALSE           : 'false'                          ;
 KEYWORD_NULL            : 'null'                           ;
 
 
-IDENTIFIER              : [_a-zA-Z$][_a-zA-Z$0-9]*         ;
+IDENTIFIER              : [_a-zA-Z][_a-zA-Z0-9]*         ;
 
 INTEGER                 : INT [lLfFdD]?                    ;
 INTEGER_HEX             : '0x' HEX+ [lL]?                  ;

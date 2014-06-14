@@ -184,4 +184,7 @@ public interface TemplateEngine extends TemplateContextOperator {
      * @param path
      */
     void registerMacroLibrary(String path) throws TemplateException;
+
+    void registerMacroLibrary(Template template) throws TemplateException;
+
 }

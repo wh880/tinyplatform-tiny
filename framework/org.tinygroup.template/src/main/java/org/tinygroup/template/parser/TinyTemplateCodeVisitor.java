@@ -82,7 +82,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         name = name.substring(2, name.length() - 1).trim();
         callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template,$context);", name));
         callMacro.subCode("$newContext=new TemplateContextDefault();");
-        callMacro.subCode("$newContext.setParent(\"$context\");");
+        callMacro.subCode("$newContext.setParent($context);");
         if (paraExpressionListContext != null) {
             List<TinyTemplateParser.Para_expressionContext> expList = paraExpressionListContext.para_expression();
             if (expList != null) {
@@ -352,11 +352,39 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         for (int i = 0; i < sz; i++) {
             char ch = str.charAt(i);
 
-            boolean isEscapeChar = ch == '\b' || ch == '\n' || ch == '\t' || ch == '\f' || ch == '\r' || ch == '"' || ch == '\\';
-            if (isEscapeChar) {
-                stringBuffer.append('\\');
+            switch (ch) {
+                case '\b':
+                    stringBuffer.append('\\');
+                    stringBuffer.append('b');
+                    break;
+                case '\n':
+                    stringBuffer.append('\\');
+                    stringBuffer.append('n');
+                    break;
+                case '\t':
+                    stringBuffer.append('\\');
+                    stringBuffer.append('t');
+                    break;
+                case '\f':
+                    stringBuffer.append('\\');
+                    stringBuffer.append('f');
+                    break;
+                case '\r':
+                    stringBuffer.append('\\');
+                    stringBuffer.append('r');
+                    break;
+                case '"':
+                    stringBuffer.append('\\');
+                    stringBuffer.append('"');
+                    break;
+                case '\\':
+                    stringBuffer.append('\\');
+                    stringBuffer.append('\\');
+                    break;
+                default:
+                    stringBuffer.append(ch);
+                    break;
             }
-            stringBuffer.append(ch);
         }
         return stringBuffer;
     }
@@ -455,7 +483,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     private void processCallMacro(TinyTemplateParser.Para_expression_listContext listContext, CodeBlock callMacro, String name) {
         callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template,$context);", name));
         callMacro.subCode("$newContext=new TemplateContextDefault();");
-        callMacro.subCode("$newContext.setParent(\"$context\");");
+        callMacro.subCode("$newContext.setParent($context);");
         TinyTemplateParser.Para_expression_listContext expList = listContext;
         if (expList != null) {
             pushCodeBlock(callMacro);
@@ -695,7 +723,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     public CodeBlock visitBreak_directive(@NotNull TinyTemplateParser.Break_directiveContext ctx) {
         TinyTemplateParser.ExpressionContext expression = ctx.expression();
-        processorConditionDirective(expression, "breack;");
+        processorConditionDirective(expression, "break;");
         return null;
     }
 

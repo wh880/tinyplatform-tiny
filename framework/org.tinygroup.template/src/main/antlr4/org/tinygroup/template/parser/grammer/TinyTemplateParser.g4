@@ -105,7 +105,7 @@ for_directive
             :   DIRECTIVE_OPEN_FOR for_expression ')' block else_directive? DIRECTIVE_END
             ;
 for_expression
-            :    IDENTIFIER ':' expression
+            :    IDENTIFIER (':'|'in') expression
             ;
 
 break_directive

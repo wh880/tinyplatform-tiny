@@ -45,6 +45,11 @@ public class TemplateEngineDefault implements TemplateEngine {
         macroLibraryList.add(path);
     }
 
+    public void registerMacroLibrary(Template template) throws TemplateException {
+        getDefaultTemplateLoader().addTemplate(template);
+        registerMacroLibrary(template.getPath());
+    }
+
     public TemplateEngineDefault() {
         //添加一个默认的加载器
         putTemplateLoader("default", new StringResourceLoader());
@@ -214,13 +219,15 @@ public class TemplateEngineDefault implements TemplateEngine {
             String template = path + templateFileName;
             for (ResourceLoader loader : templateLoaderMap.values()) {
                 String layoutPath = loader.getLayoutPath(template);
-                Template layout = loader.getLayout(layoutPath);
-                if (layout == null) {
-                    String defaultTemplateName = path + DEFAULT + templateFileName.substring(templateFileName.lastIndexOf('.'));
-                    layout = loader.getLayout(defaultTemplateName);
-                }
-                if (layout != null) {
-                    layoutPathList.add(layout);
+                if (layoutPath != null) {
+                    Template layout = loader.getLayout(layoutPath);
+                    if (layout == null) {
+                        String defaultTemplateName = path + DEFAULT + templateFileName.substring(templateFileName.lastIndexOf('.'));
+                        layout = loader.getLayout(defaultTemplateName);
+                    }
+                    if (layout != null) {
+                        layoutPathList.add(layout);
+                    }
                 }
             }
         }

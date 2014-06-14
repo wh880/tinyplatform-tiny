@@ -16,15 +16,16 @@ import java.util.Map;
 public final class O {
     private O(){}
     private static Map<String, Operator> operationMap = new HashMap<String, Operator>();
-    private static Converter [][]converters=new Converter[6][6];
+    private static Converter [][]converters=new Converter[7][7];
     private static Map<Class,Integer>typeMap=new HashMap<Class, Integer>();
     static {
         typeMap.put(Byte.class,0);
         typeMap.put(Character.class,1);
         typeMap.put(Integer.class,2);
-        typeMap.put(Float.class,3);
-        typeMap.put(Double.class,4);
-        typeMap.put(BigDecimal.class,5);
+        typeMap.put(Long.class,3);
+        typeMap.put(Float.class,4);
+        typeMap.put(Double.class,5);
+        typeMap.put(BigDecimal.class,6);
 
         addConverter(new ByteCharacter());
         addConverter(new ByteInteger());

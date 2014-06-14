@@ -28,7 +28,7 @@ import java.util.*;
 public final class ForIterator implements Iterator, ForStatus {
     private Iterator iterator = null;
     private int index = 0;
-    private int size;
+    private int size=0;
 
     public void setIndex(int index) {
         this.index = index;
@@ -37,10 +37,13 @@ public final class ForIterator implements Iterator, ForStatus {
     public void setSize(int size) {
         this.size = size;
     }
-    public ForIterator(){
+
+    public ForIterator() {
     }
+
     public ForIterator(Object object) {
-        if (object instanceof Map) {
+        if (object == null) {
+        } else if (object instanceof Map) {
             Map map = (Map) object;
             iterator = map.entrySet().iterator();
             size = map.size();
@@ -48,8 +51,8 @@ public final class ForIterator implements Iterator, ForStatus {
             Collection collection = (Collection) object;
             iterator = collection.iterator();
             size = collection.size();
-        } else if (object instanceof RanageIterator) {
-            RanageIterator loopIterator = (RanageIterator) object;
+        } else if (object instanceof RangeIterator) {
+            RangeIterator loopIterator = (RangeIterator) object;
             iterator = (Iterator) object;
             size = loopIterator.getSize();
         } else if (object instanceof Enumeration) {
@@ -62,8 +65,8 @@ public final class ForIterator implements Iterator, ForStatus {
             iterator = itemList.iterator();
             size = itemList.size();
         } else if (object.getClass().isArray()) {
-            iterator=new ArrayIterator(object);
-            size=ArrayUtil.arrayLength(object);
+            iterator = new ArrayIterator(object);
+            size = ArrayUtil.arrayLength(object);
         } else {
             iterator = new SingletonIterator(object);
             size = 1;

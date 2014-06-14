@@ -16,7 +16,7 @@ public class JetTemplateTestCase {
         FileObjectResourceLoader jetSample = new FileObjectResourceLoader("jetx",null,null, "src/test/resources");
         engine.putTemplateLoader("jetSample",jetSample);
         FileObject fileObject = VFS.resolveFile("src/test/resources");
-        fileObject.foreach(new FileNameFileObjectFilter(".*\\.jetx", true), new FileObjectProcessor() {
+        fileObject.foreach(new FileNameFileObjectFilter("op-compare.*\\.jetx", true), new FileObjectProcessor() {
 
             public void process(FileObject fileObject) {
                 try {
