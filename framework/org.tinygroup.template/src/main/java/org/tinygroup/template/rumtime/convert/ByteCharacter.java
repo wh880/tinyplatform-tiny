@@ -11,12 +11,12 @@ public class ByteCharacter implements Converter<Byte, Character> {
         return (char) object.byteValue();
     }
 
-    @Override
+
     public Class getSourceType() {
         return Byte.class;
     }
 
-    @Override
+
     public Class getDestType() {
         return Character.class;
     }

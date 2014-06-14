@@ -11,12 +11,12 @@ public class ByteDouble implements Converter<Byte, Double> {
         return (double) object.byteValue();
     }
 
-    @Override
+
     public Class getSourceType() {
         return Byte.class;
     }
 
-    @Override
+
     public Class getDestType() {
         return Double.class;
     }

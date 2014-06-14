@@ -5,7 +5,7 @@ import org.tinygroup.template.rumtime.U;
 /**
  * Created by luoguo on 2014/6/5.
  */
-public class OrLogicOperator extends DoubleOperator {
+public class OrLogicOperator extends TwoOperator {
 
 
     protected Object operation(Object left, Object right) {

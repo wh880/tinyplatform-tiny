@@ -11,12 +11,12 @@ public class ByteFloat implements Converter<Byte, Float> {
         return (float) object.byteValue();
     }
 
-    @Override
+
     public Class getSourceType() {
         return Byte.class;
     }
 
-    @Override
+
     public Class getDestType() {
         return Float.class;
     }

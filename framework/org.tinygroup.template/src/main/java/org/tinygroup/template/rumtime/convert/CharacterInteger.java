@@ -11,12 +11,12 @@ public class CharacterInteger implements Converter<Character,Integer> {
         return (int)object.charValue();
     }
 
-    @Override
+
     public Class getSourceType() {
         return Character.class;
     }
 
-    @Override
+
     public Class getDestType() {
         return Integer.class;
     }

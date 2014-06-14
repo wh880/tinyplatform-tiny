@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Created by luoguo on 2014/6/5.
  */
-public class SimpleConditionOperator extends DoubleOperator {
+public class SimpleConditionOperator extends TwoOperator {
 
 
     protected Object operation(Object left, Object right) {

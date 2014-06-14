@@ -16,7 +16,6 @@ import java.util.Map;
 public final class O {
     private static Map<String, Operator> operationMap = new HashMap<String, Operator>();
     private static Converter [][]converters=new Converter[6][6];
-    private static Map<String, Converter> converterMap = new HashMap<String, Converter>();
     private static Map<Class,Integer>typeMap=new HashMap<Class, Integer>();
     static {
         typeMap.put(Byte.class,0);

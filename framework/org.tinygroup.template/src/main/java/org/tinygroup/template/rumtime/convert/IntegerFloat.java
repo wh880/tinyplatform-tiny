@@ -10,12 +10,12 @@ public class IntegerFloat implements Converter<Integer,Float> {
         return object.floatValue();
     }
 
-    @Override
+
     public Class getSourceType() {
         return Integer.class;
     }
 
-    @Override
+
     public Class getDestType() {
         return Float.class;
     }

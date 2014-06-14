@@ -11,12 +11,12 @@ public class CharacterFloat implements Converter<Character,Float> {
         return (float)object.charValue();
     }
 
-    @Override
+
     public Class getSourceType() {
         return Character.class;
     }
 
-    @Override
+
     public Class getDestType() {
         return Float.class;
     }

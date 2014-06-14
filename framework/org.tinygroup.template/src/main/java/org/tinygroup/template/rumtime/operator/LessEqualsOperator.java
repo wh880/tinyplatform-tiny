@@ -3,7 +3,7 @@ package org.tinygroup.template.rumtime.operator;
 /**
  * Created by luoguo on 2014/6/5.
  */
-public class LessEqualsOperator extends DoubleOperator {
+public class LessEqualsOperator extends TwoOperator {
 
 
     protected Object operation(Object left, Object right) {
@@ -11,10 +11,6 @@ public class LessEqualsOperator extends DoubleOperator {
             return ((Comparable) left).compareTo(right)<=0;
         }
         throw getUnsupportedOperationException(left,right);
-    }
-
-    public static void main(String[] args) {
-        System.out.println("2".compareTo("3"));
     }
 
     public String getOperation() {

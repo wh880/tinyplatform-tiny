@@ -18,9 +18,9 @@ public interface Template extends TemplateContextOperator{
     /**
      * 进行渲染
      *
-     * @param $writer
+     * @param writer
      */
-    void render(TemplateContext $context, Writer $writer) throws TemplateException;
+    void render(TemplateContext context, Writer writer) throws TemplateException;
 
     void render() throws TemplateException;
 

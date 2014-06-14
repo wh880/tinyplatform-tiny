@@ -8,10 +8,10 @@ import org.tinygroup.template.TemplateFunction;
  * Created by luoguo on 2014/6/9.
  */
 public abstract class AbstractTemplateFunction implements TemplateFunction {
-    private final String name;
+    private final String names;
 
     public AbstractTemplateFunction(String name) {
-        this.name = name;
+        this.names = name;
     }
 
     private TemplateEngine templateEngine;
@@ -22,7 +22,7 @@ public abstract class AbstractTemplateFunction implements TemplateFunction {
 
 
     public String getNames() {
-        return name;
+        return names;
     }
 
 
@@ -36,7 +36,8 @@ public abstract class AbstractTemplateFunction implements TemplateFunction {
     }
 
     protected TemplateException notSupported(Object[] parameters) throws TemplateException {
-        StringBuffer sb = new StringBuffer(getNames() + "不支持下面的参数：[\n");
+        StringBuffer sb = new StringBuffer(getNames());
+        sb.append("不支持下面的参数：[\n");
         for (Object parameter : parameters) {
             sb.append(parameter.getClass().getName()).append("\n");
         }

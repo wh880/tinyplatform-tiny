@@ -13,12 +13,12 @@ public class CharacterBigDecimal implements Converter<Character,BigDecimal> {
         return new BigDecimal((int)object.charValue());
     }
 
-    @Override
+
     public Class getSourceType() {
         return Character.class;
     }
 
-    @Override
+
     public Class getDestType() {
         return BigDecimal.class;
     }

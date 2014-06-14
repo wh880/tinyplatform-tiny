@@ -68,10 +68,6 @@ public class CodeLet {
         return code("\r\n");
     }
 
-    public static void main(String[] args) {
-        CodeLet codeLet = new CodeLet().code("int").code(" a=3;").endLine().lineCode("int b=3;");
-        System.out.println(codeLet);
-    }
 
     public CodeLet code(CodeLet codeLet) {
         return this.code(codeLet.toString());

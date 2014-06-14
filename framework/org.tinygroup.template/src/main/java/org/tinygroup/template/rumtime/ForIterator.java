@@ -122,7 +122,7 @@ public final class ForIterator implements Iterator, ForStatus {
     /**
      * Created by luoguo on 2014/6/5.
      */
-    class SingletonIterator implements Iterator {
+    static class SingletonIterator implements Iterator {
         private Object object;
 
         public SingletonIterator(Object object) {

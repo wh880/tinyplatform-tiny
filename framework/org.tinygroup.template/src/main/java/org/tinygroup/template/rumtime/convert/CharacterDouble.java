@@ -12,12 +12,12 @@ public class CharacterDouble implements Converter<Character,Double> {
         return (double)object.charValue();
     }
 
-    @Override
+
     public Class getSourceType() {
         return Character.class;
     }
 
-    @Override
+
     public Class getDestType() {
         return Double.class;
     }

@@ -26,7 +26,7 @@ public class MemorySourceCompiler {
     private String outputDir = TEMP_DIR + "ttl" + File.separatorChar;
 
 
-    public <T> Class<T> loadClass( MemorySource source) throws TemplateException {
+    public <T> Class<T> loadClass(MemorySource source) throws TemplateException {
         return loadClass(MemorySourceCompiler.class.getClassLoader(), source);
     }
 
@@ -36,10 +36,10 @@ public class MemorySourceCompiler {
             URL[] urls = new URL[1];
             File file = new File(getOutputDir());
             urls[0] = file.toURI().toURL();
-            if(classLoader==null){
+            if (classLoader == null) {
                 return (Class<T>) new URLClassLoader(urls).loadClass(source.getQualifiedClassName());
-            }else {
-                return (Class<T>) new URLClassLoader(urls,classLoader).loadClass(source.getQualifiedClassName());
+            } else {
+                return (Class<T>) new URLClassLoader(urls, classLoader).loadClass(source.getQualifiedClassName());
             }
         } catch (Exception e) {
             throw new TemplateException(e);
@@ -59,6 +59,7 @@ public class MemorySourceCompiler {
     }
 
     public static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
+
     public String getOutputDir() {
         return outputDir;
     }
@@ -217,9 +218,10 @@ public class MemorySourceCompiler {
         jdtCompiler.compile(units);
     }
 
-    public static CharSequence getPrettyError(String[] sourceLines, int line, int column, int start, int stop, int show_lines) {
+    public static CharSequence getPrettyError(String[] sourceLines, int line, int inputColumn, int start, int stop, int showLines) {
+        int column=inputColumn;
         StringBuilder sb = new StringBuilder(128);
-        for (int i = line - show_lines; i < line; i++) {
+        for (int i = line - showLines; i < line; i++) {
             if (i >= 0) {
                 String sourceLine = sourceLines[i];
 
@@ -270,13 +272,15 @@ public class MemorySourceCompiler {
     }
 
     private void saveClassFile(ClassFile[] classFiles) {
-        if (classFiles == null) return;
+        if (classFiles == null) {
+            return;
+        }
 
         for (int i = 0; i < classFiles.length; i++) {
             try {
                 String fileName = new String(classFiles[i].fileName()) + ".class";
                 File javaClassFile = new File(outputDir, fileName);
-                if(javaClassFile.exists()){
+                if (javaClassFile.exists()) {
                     javaClassFile.delete();
                 }
                 File pa = javaClassFile.getParentFile();
@@ -294,9 +298,7 @@ public class MemorySourceCompiler {
     }
 
     public static CompilerOptions getCompilerOptions() {
-        Map
-
-                settings = new HashMap();
+        Map settings = new HashMap();
         settings.put(CompilerOptions.OPTION_ReportMissingSerialVersion, CompilerOptions.IGNORE);
         settings.put(CompilerOptions.OPTION_LineNumberAttribute, CompilerOptions.GENERATE);
         settings.put(CompilerOptions.OPTION_SourceFileAttribute, CompilerOptions.GENERATE);

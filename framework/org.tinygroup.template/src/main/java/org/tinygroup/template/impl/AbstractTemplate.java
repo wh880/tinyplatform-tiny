@@ -32,14 +32,14 @@ public abstract class AbstractTemplate implements Template {
         return macroMap;
     }
 
-    public void render(TemplateContext invokeContext, Writer writer) throws TemplateException {
+    public void render(TemplateContext context, Writer writer) throws TemplateException {
         try {
-            invokeContext.putSubContext("$currentTemplateContext",getTemplateContext());
-            renderContent(invokeContext, writer);
+            context.putSubContext("$currentTemplateContext",getTemplateContext());
+            renderContent(context, writer);
         } catch (IOException e) {
             throw new TemplateException(e);
         } finally {
-            invokeContext.removeSubContext("$currentTemplateContext");
+            context.removeSubContext("$currentTemplateContext");
         }
     }
 

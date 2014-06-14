@@ -8,8 +8,8 @@ import org.tinygroup.template.TemplateException;
 public abstract class AbstractBindTemplateFunction extends AbstractTemplateFunction{
     private final String bindingType;
 
-    public AbstractBindTemplateFunction(String name,String bindingType){
-        super(name);
+    public AbstractBindTemplateFunction(String names,String bindingType){
+        super(names);
         this.bindingType=bindingType;
     }
 
@@ -19,7 +19,8 @@ public abstract class AbstractBindTemplateFunction extends AbstractTemplateFunct
     }
 
     protected TemplateException notSupported(Object[]parameters) throws TemplateException {
-        StringBuffer sb=new StringBuffer(getNames()+"不支持下面的参数：[\n");
+        StringBuffer sb=new StringBuffer(getNames());
+        sb.append("不支持下面的参数：[\n");
         for(Object parameter:parameters){
             sb.append(parameter.getClass().getName()).append("\n");
         }

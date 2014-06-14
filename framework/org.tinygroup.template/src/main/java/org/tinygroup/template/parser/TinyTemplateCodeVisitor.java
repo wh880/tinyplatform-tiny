@@ -354,48 +354,10 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         for (int i = 0; i < sz; i++) {
             char ch = str.charAt(i);
 
-            // handle unicode
-            if (ch < 32) {
-                switch (ch) {
-                    case '\b':
-                        stringBuffer.append('\\');
-                        stringBuffer.append('b');
-                        break;
-                    case '\n':
-                        stringBuffer.append('\\');
-                        stringBuffer.append('n');
-                        break;
-                    case '\t':
-                        stringBuffer.append('\\');
-                        stringBuffer.append('t');
-                        break;
-                    case '\f':
-                        stringBuffer.append('\\');
-                        stringBuffer.append('f');
-                        break;
-                    case '\r':
-                        stringBuffer.append('\\');
-                        stringBuffer.append('r');
-                        break;
-                    default:
-                        stringBuffer.append(ch);
-                        break;
-                }
-            } else {
-                switch (ch) {
-                    case '"':
-                        stringBuffer.append('\\');
-                        stringBuffer.append('"');
-                        break;
-                    case '\\':
-                        stringBuffer.append('\\');
-                        stringBuffer.append('\\');
-                        break;
-                    default:
-                        stringBuffer.append(ch);
-                        break;
-                }
+            if (ch == '\b' || ch == '\n' || ch == '\t' || ch == '\f' || ch == '\r' || ch == '"' || ch == '\\') {
+                stringBuffer.append('\\');
             }
+            stringBuffer.append(ch);
         }
         return stringBuffer;
     }
@@ -437,7 +399,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         return null;
     }
 
-    @Override
+
     public CodeBlock visitBodycontent_directive(@NotNull TinyTemplateParser.Bodycontent_directiveContext ctx) {
         CodeBlock codeBlock = new CodeBlock();
         codeBlock.subCode("$macro= (Macro) $context.getItemMap().get(\"bodyContent\");");

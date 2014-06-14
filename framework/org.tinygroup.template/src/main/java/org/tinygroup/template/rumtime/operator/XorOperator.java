@@ -3,7 +3,7 @@ package org.tinygroup.template.rumtime.operator;
 /**
  * Created by luoguo on 2014/6/5.
  */
-public class XorOperator extends DoubleOperator {
+public class XorOperator extends TwoOperator {
 
 
     protected Object operation(Object left, Object right) {

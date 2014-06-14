@@ -56,8 +56,4 @@ public class ResourceCompilerUtils {
         return templateParseTree.accept(visitor);
     }
 
-    public static void main(String[] args) {
-        ClassName aaa= ResourceCompilerUtils.getClassNameGetter().getClassName("template/jet/constant-number.jetx");
-        System.out.println(aaa.getClassName());
-    }
 }

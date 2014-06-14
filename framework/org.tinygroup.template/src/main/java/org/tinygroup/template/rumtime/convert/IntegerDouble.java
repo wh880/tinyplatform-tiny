@@ -10,12 +10,12 @@ public class IntegerDouble implements Converter<Integer,Double> {
         return object.doubleValue();
     }
 
-    @Override
+
     public Class getSourceType() {
         return Integer.class;
     }
 
-    @Override
+
     public Class getDestType() {
         return Double.class;
     }

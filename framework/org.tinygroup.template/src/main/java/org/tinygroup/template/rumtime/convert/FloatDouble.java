@@ -12,12 +12,12 @@ public class FloatDouble implements Converter<Float,Double> {
         return object.doubleValue();
     }
 
-    @Override
+
     public Class getSourceType() {
         return Float.class;
     }
 
-    @Override
+
     public Class getDestType() {
         return Double.class;
     }

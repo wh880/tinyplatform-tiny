@@ -3,18 +3,15 @@ package org.tinygroup.template.rumtime.operator;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.rumtime.O;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * Created by luoguo on 2014/6/6.
  */
-public abstract class DoubleOperator extends AbstractOperator {
+public abstract class TwoOperator extends AbstractOperator {
 
     public int getParameterCount() {
         return 2;
     }
-    static Map<Class,Boolean>typeCache= new ConcurrentHashMap<Class,Boolean>();
+
     public Object operation(Object... parameter) throws TemplateException {
 /*
         if (parameter == null) {
@@ -35,20 +32,21 @@ public abstract class DoubleOperator extends AbstractOperator {
     }
 
     private Object operation(Object left, Object right, Class type1, Class type2) {
+        Object leftObject=left,rightObject=right;
         if (!type1.equals(type2)) {
             if (O.compare(type1, type2) > 0) {
-                right = O.convert(right, type2, type1);
+                rightObject = O.convert(rightObject, type2, type1);
             } else {
-                left = O.convert(left, type1, type2);
+                leftObject = O.convert(leftObject, type1, type2);
             }
         }
-        return operation(left, right);
+        return operation(leftObject, rightObject);
     }
 
     protected abstract Object operation(Object left, Object right);
 
     protected UnsupportedOperationException getUnsupportedOperationException(Object left, Object right) {
-        throw new UnsupportedOperationException("类型" + left.getClass().getName() + ","+right.getClass().getName()+"不支持" + "+" + getOperation() + "操作");
+        throw new UnsupportedOperationException("类型" + left.getClass().getName() + "," + right.getClass().getName() + "不支持" + "+" + getOperation() + "操作");
     }
 
 }

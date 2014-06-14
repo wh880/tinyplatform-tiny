@@ -9,6 +9,7 @@ import org.tinygroup.context.Context;
 import org.tinygroup.template.*;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.URI;
@@ -76,26 +77,34 @@ public class U {
 
             TemplateFunction function = template.getTemplateEngine().getTemplateFunction(object.getClass().getName(), methodName);
             if (function != null) {
-                Object[] newParameters = new Object[(parameters == null ? 1 : parameters.length) + 1];
-                newParameters[0] = object;
-                if (parameters != null) {
-                    System.arraycopy(parameters,1,newParameters,0,parameters.length);
-                }
-                return function.execute(newParameters);
+                return executeExtendFunction(object, function, parameters);
             } else {
-                if (parameters == null) {
-                    return invokeMethod(object, methodName, parameters, getParameterTypes(object.getClass(), methodName));
-                }
-                for (Object para : parameters) {
-                    if (para == null) {
-                        return invokeMethod(object, methodName, parameters, getParameterTypes(object.getClass(), methodName));
-                    }
-                }
-                return MethodUtils.invokeMethod(object, methodName, parameters);
+                return executeClassMethod(object, methodName, parameters);
             }
         } catch (Exception e) {
             throw new TemplateException(e);
         }
+    }
+
+    private static Object executeClassMethod(Object object, String methodName, Object[] parameters) throws TemplateException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        if (parameters == null) {
+            return invokeMethod(object, methodName, parameters, getParameterTypes(object.getClass(), methodName));
+        }
+        for (Object para : parameters) {
+            if (para == null) {
+                return invokeMethod(object, methodName, parameters, getParameterTypes(object.getClass(), methodName));
+            }
+        }
+        return MethodUtils.invokeMethod(object, methodName, parameters);
+    }
+
+    private static Object executeExtendFunction(Object object, TemplateFunction function, Object[] parameters) throws TemplateException {
+        Object[] newParameters = new Object[(parameters == null ? 1 : parameters.length) + 1];
+        newParameters[0] = object;
+        if (parameters != null) {
+            System.arraycopy(parameters, 1, newParameters, 0, parameters.length);
+        }
+        return function.execute(newParameters);
     }
 
     /**
@@ -115,11 +124,12 @@ public class U {
     }
 
     private static Object invokeMethod(Object object, String methodName, Object[] parameters, Class<?>[] parameterTypes) throws TemplateException {
-        if (parameters == null && parameterTypes.length > 0) {
-            parameters = new Object[parameterTypes.length];
+        Object[] callParameters = parameters;
+        if (callParameters == null && parameterTypes.length > 0) {
+            callParameters = new Object[parameterTypes.length];
         }
         try {
-            return MethodUtils.invokeMethod(object, methodName, parameters, parameterTypes);
+            return MethodUtils.invokeMethod(object, methodName, callParameters, parameterTypes);
         } catch (Exception e) {
             throw new TemplateException(e);
         }
@@ -158,10 +168,10 @@ public class U {
      * @return
      */
     public static String getPath(String currentPath, String newPath) {
+        String path = newPath;
         URI uri = URI.create(currentPath);
-        newPath = newPath.replaceAll("[\\\\]", "/");
-        URI newUri = uri.resolve(newPath);
-
+        path = path.replaceAll("[\\\\]", "/");
+        URI newUri = uri.resolve(path);
         return newUri.getPath();
     }
 
@@ -186,8 +196,7 @@ public class U {
             return false;
         }
         if (o instanceof Boolean) {
-            Boolean b = (Boolean) o;
-            return b.booleanValue();
+            return ((Boolean) o).booleanValue();
         } else if (o instanceof String) {
             return ((String) o).length() > 0;
         } else if (o instanceof Collection) {
