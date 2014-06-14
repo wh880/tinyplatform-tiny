@@ -10,7 +10,7 @@ import java.util.Map;
  */
 
 public interface TemplateEngine extends TemplateContextOperator {
-    public static final String DEFAULT = "default";
+    String DEFAULT = "default";
 
     TemplateEngine setEncode(String encode);
 
@@ -148,11 +148,11 @@ public interface TemplateEngine extends TemplateContextOperator {
      *
      * @param macroName
      * @param template
-     * @param $context
+     * @param context
      * @return
      * @throws TemplateException
      */
-    Macro findMacro(Object macroName, Template template, TemplateContext $context) throws TemplateException;
+    Macro findMacro(Object macroName, Template template, TemplateContext context) throws TemplateException;
 
     /**
      * 执行方法

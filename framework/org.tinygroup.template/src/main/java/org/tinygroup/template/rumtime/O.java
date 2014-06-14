@@ -73,7 +73,6 @@ public final class O {
     }
 
     public static Object convert(Object object, Class sourceType, Class destType) {
-        ;
         return converters[typeMap.get(sourceType)][typeMap.get(destType)].convert(object);
     }
 
@@ -90,13 +89,7 @@ public final class O {
         }
     }
 
-    public static String getResultType(String type1, String type2) {
-        int index1 = typeMap.get(type1);
-        int index2 = typeMap.get(type2);
-        return index1 < index2 ? type2 : type1;
-    }
-
-    public static boolean isNumberic(Class type) {
+    public static boolean isNumber(Class type) {
         return typeMap.containsKey(type);
     }
 

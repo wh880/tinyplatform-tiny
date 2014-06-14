@@ -37,19 +37,19 @@ public abstract class AbstractMacro implements Macro {
         this.parameterNames = parameterNames.clone();
     }
 
-    protected void write(Writer $writer, Object object) throws IOException {
-        $writer.write(object.toString());
+    protected void write(Writer writer, Object object) throws IOException {
+        writer.write(object.toString());
     }
 
-    public void render(Template $template, TemplateContext invokeContext, Writer writer) throws TemplateException {
+    public void render(Template template, TemplateContext context, Writer writer) throws TemplateException {
         try {
-            renderMacro($template, invokeContext, writer);
+            renderMacro(template, context, writer);
         } catch (IOException e) {
             throw new TemplateException(e);
         }
     }
 
-    protected abstract void renderMacro(Template template, TemplateContext $context, Writer $writer) throws IOException, TemplateException;
+    protected abstract void renderMacro(Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
 
 
     public String getName() {

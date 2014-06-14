@@ -195,7 +195,6 @@ public class U {
         } else if (o.getClass().isArray()) {
             return ArrayUtil.arrayLength(o) > 0;
         } else if (o instanceof Iterator) {
-            Iterator i = (Iterator) o;
             return ((Iterator) o).hasNext();
         } else if (o instanceof Enumerator) {
             Enumerator e = (Enumerator) o;

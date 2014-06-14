@@ -146,12 +146,7 @@ public class TemplateEngineDefault implements TemplateEngine {
 
 
     public void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws TemplateException {
-        Macro macro = findMacro(macroName, template, context);
-        if (macro != null) {
-            macro.render(template, context, writer);
-        } else {
-            throw new TemplateException("找不到宏：" + macroName);
-        }
+        findMacro(macroName, template, context).render(template, context, writer);
     }
 
 
@@ -161,7 +156,6 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
         try {
-            Template layout = null;
             Template template = getTemplate(path);
             if (template != null) {
                 List<Template> layoutPaths = getLayoutList(template.getPath());
@@ -248,10 +242,10 @@ public class TemplateEngineDefault implements TemplateEngine {
         template.render(context, writer);
     }
 
-    public Macro findMacro(Object macroName, Template template, TemplateContext $context) throws TemplateException {
+    public Macro findMacro(Object macroName, Template template, TemplateContext context) throws TemplateException {
         Macro macro = template.getMacroMap().get(macroName);
         if (macro == null) {
-            Object obj = $context.getItemMap().get(macroName);
+            Object obj = context.getItemMap().get(macroName);
             if (obj instanceof Macro) {
                 macro = (Macro) obj;
             }

@@ -28,8 +28,8 @@ public interface Macro {
     /**
      * 进行渲染
      *
-     * @param $context
-     * @param $writer
+     * @param context
+     * @param writer
      */
-    void render(Template $template, TemplateContext $context, Writer $writer) throws TemplateException;
+    void render(Template $template, TemplateContext context, Writer writer) throws TemplateException;
 }

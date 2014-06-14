@@ -2,8 +2,6 @@ package org.tinygroup.template.function;
 
 import org.tinygroup.template.TemplateException;
 
-import java.util.Arrays;
-
 /**
  * Created by luoguo on 2014/6/9.
  */
@@ -17,7 +15,6 @@ public class InstanceOfTemplateFunction extends AbstractTemplateFunction {
 
 
     public Object execute(Object... parameters) throws TemplateException {
-        boolean result=true;
         Object object= parameters[0];
 
         for(Object parameter:parameters){
@@ -31,6 +28,9 @@ public class InstanceOfTemplateFunction extends AbstractTemplateFunction {
                 //如果是字符串
                 try {
                     Class clazz=Class.forName((String)parameter);
+                    if(!clazz.isInstance(object)){
+                        return false;
+                    }
                 } catch (ClassNotFoundException e) {
                     throw new TemplateException(e);
                 }
@@ -38,8 +38,7 @@ public class InstanceOfTemplateFunction extends AbstractTemplateFunction {
                 notSupported(parameters);
             }
         }
-        Object[] objects = Arrays.copyOfRange(parameters, 1, parameters.length);
-        return result;
+        return true;
     }
 
  }

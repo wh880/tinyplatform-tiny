@@ -20,8 +20,8 @@ public abstract class AbstractTemplate implements Template {
         return templateEngine;
     }
 
-    protected void write(Writer $writer, Object object) throws IOException {
-        $writer.write(object.toString());
+    protected void write(Writer writer, Object object) throws IOException {
+        writer.write(object.toString());
     }
 
     protected void addMacro(Macro macro) {
@@ -47,7 +47,7 @@ public abstract class AbstractTemplate implements Template {
         render(new TemplateContextDefault(), new OutputStreamWriter(System.out));
     }
 
-    protected abstract void renderContent(TemplateContext $context, Writer $writer) throws IOException, TemplateException;
+    protected abstract void renderContent(TemplateContext context, Writer writer) throws IOException, TemplateException;
 
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;

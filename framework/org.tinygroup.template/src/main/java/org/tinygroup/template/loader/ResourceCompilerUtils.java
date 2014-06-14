@@ -47,7 +47,8 @@ public class ResourceCompilerUtils {
         // set source file name, it will be displayed in error report.
         is.name = sourceName;
         TinyTemplateParser parser = new TinyTemplateParser(new CommonTokenStream(new TinyTemplateLexer(is)));
-        parser.removeErrorListeners(); // remove ConsoleErrorListener
+        // remove ConsoleErrorListener
+        parser.removeErrorListeners();
         parser.addErrorListener(TinyTemplateErrorListener.getInstance());
         parser.setErrorHandler(new TinyTemplateErrorStrategy());
         TinyTemplateParser.TemplateContext templateParseTree = parser.template();

@@ -73,7 +73,7 @@ public class MemorySourceCompiler {
         private final MemorySource[] sources;
 
         public NameEnvironment(MemorySource[] sources) {
-            this.sources = sources;
+            this.sources = sources.clone();
         }
 
         /**
@@ -193,7 +193,7 @@ public class MemorySourceCompiler {
                     sb.append(" error(s)\n");
                     throw new RuntimeException(sb.toString());
                 } else {
-                    saveClassFile(result.getClassFiles(), sources);
+                    saveClassFile(result.getClassFiles());
                 }
 
             }
@@ -269,7 +269,7 @@ public class MemorySourceCompiler {
         }
     }
 
-    private void saveClassFile(ClassFile[] classFiles, MemorySource[] sources) {
+    private void saveClassFile(ClassFile[] classFiles) {
         if (classFiles == null) return;
 
         for (int i = 0; i < classFiles.length; i++) {

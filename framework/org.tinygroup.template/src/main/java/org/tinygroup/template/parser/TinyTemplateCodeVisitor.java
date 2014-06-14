@@ -89,16 +89,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                 pushCodeBlock(callMacro);
                 int i = 0;
                 for (TinyTemplateParser.Para_expressionContext visitPara_expression : expList) {
-                    CodeLet expression = new CodeLet();
-                    pushCodeLet(expression);
-                    if (visitPara_expression.getChildCount() == 3) {
-                        visitPara_expression.getChild(2).accept(this);
-                        peekCodeBlock().subCode(String.format("$newContext.put(\"%s\",%s);", visitPara_expression.getChild(0).getText(), expression));
-                    } else {
-                        visitPara_expression.getChild(0).accept(this);
-                        peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterNames()[%d],%s);", i, expression));
-                    }
-                    popCodeLet();
+                    processVisitPara(i, visitPara_expression);
                     i++;
                 }
                 popCodeBlock();
@@ -350,6 +341,8 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             case TinyTemplateParser.TEXT_ESCAPED_CHAR:
                 text = text.substring(1);
                 break;
+            default:
+                break;
         }
         return new CodeBlock().header(new CodeLet().code("write($writer,\"").code(escapeJavaStyleString(text).toString()).lineCode("\");"));
     }
@@ -483,7 +476,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         processCallMacro(ctx.para_expression_list(), callMacro, name);
         CodeBlock bodyContentMacro = new CodeBlock();
         callMacro.subCode(bodyContentMacro);
-        callMacro.subCode(String.format("$macro.render($template,$newContext,$writer);", name));
+        callMacro.subCode("$macro.render($template,$newContext,$writer);");
 
         bodyContentMacro.header("$newContext.put(\"bodyContent\",new AbstractMacro() {");
         CodeBlock render = getMacroRenderCodeBlock();
@@ -507,20 +500,25 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             pushCodeBlock(callMacro);
             int i = 0;
             for (TinyTemplateParser.Para_expressionContext visitPara_expression : expList.para_expression()) {
-                CodeLet expression = new CodeLet();
-                pushCodeLet(expression);
-                if (visitPara_expression.getChildCount() == 3) {//如果是带参数的
-                    visitPara_expression.getChild(2).accept(this);
-                    peekCodeBlock().subCode(String.format("$newContext.put(\"%s\",%s);", visitPara_expression.getChild(0).getText(), expression));
-                } else {
-                    visitPara_expression.getChild(0).accept(this);
-                    peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterNames()[%d],%s);", i, expression));
-                }
-                popCodeLet();
+                processVisitPara(i, visitPara_expression);
                 i++;
             }
             popCodeBlock();
         }
+    }
+
+    private void processVisitPara(int i, TinyTemplateParser.Para_expressionContext visitPara_expression) {
+        CodeLet expression = new CodeLet();
+        pushCodeLet(expression);
+        if (visitPara_expression.getChildCount() == 3) {
+            //如果是带参数的
+            visitPara_expression.getChild(2).accept(this);
+            peekCodeBlock().subCode(String.format("$newContext.put(\"%s\",%s);", visitPara_expression.getChild(0).getText(), expression));
+        } else {
+            visitPara_expression.getChild(0).accept(this);
+            peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterNames()[%d],%s);", i, expression));
+        }
+        popCodeLet();
     }
 
     public CodeBlock visitInclude_directive(@NotNull TinyTemplateParser.Include_directiveContext ctx) {

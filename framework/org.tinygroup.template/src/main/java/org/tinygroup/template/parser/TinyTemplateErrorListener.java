@@ -22,7 +22,7 @@ package org.tinygroup.template.parser;
 import org.antlr.v4.runtime.*;
 import org.tinygroup.template.compiler.MemorySourceCompiler;
 
-public class TinyTemplateErrorListener extends BaseErrorListener {
+public final class TinyTemplateErrorListener extends BaseErrorListener {
     private static TinyTemplateErrorListener instance = new TinyTemplateErrorListener();
 
     public static TinyTemplateErrorListener getInstance() {

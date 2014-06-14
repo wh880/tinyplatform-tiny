@@ -26,7 +26,7 @@ public abstract class DoubleOperator extends AbstractOperator {
 */
         Object left = parameter[0];
         Object right = parameter[1];
-        if (O.isNumberic(left.getClass()) && O.isNumberic(right.getClass())) {
+        if (O.isNumber(left.getClass()) && O.isNumber(right.getClass())) {
             //如果两个都是数字类型
             return operation(left, right, left.getClass(), right.getClass());
         } else {
