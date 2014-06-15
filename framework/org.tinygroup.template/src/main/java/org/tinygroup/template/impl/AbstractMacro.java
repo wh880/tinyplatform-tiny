@@ -1,9 +1,6 @@
 package org.tinygroup.template.impl;
 
-import org.tinygroup.template.Macro;
-import org.tinygroup.template.Template;
-import org.tinygroup.template.TemplateContext;
-import org.tinygroup.template.TemplateException;
+import org.tinygroup.template.*;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -13,19 +10,25 @@ import java.io.Writer;
  * Created by luoguo on 2014/6/6.
  */
 public abstract class AbstractMacro implements Macro {
-    private String name;
-    private String[] parameterNames;
-    private Template template;
-    public void setName(String name) {
+    public AbstractMacro(String name) {
         this.name = name;
     }
 
-    public Template getTemplate() {
-        return template;
+    public AbstractMacro(String name, String[] parameterNames) {
+        this(name);
+        this.parameterNames = parameterNames.clone();
     }
 
-    public void setTemplate(Template template) {
-        this.template = template;
+    private String name;
+    private String[] parameterNames;
+    private TemplateEngine templateEngine;
+
+    public TemplateEngine getTemplateEngine() {
+        return templateEngine;
+    }
+
+    public void setTemplateEngine(TemplateEngine templateEngine) {
+        this.templateEngine = templateEngine;
     }
 
     public void setParameterNames(String[] parameterNames) {
@@ -59,7 +62,6 @@ public abstract class AbstractMacro implements Macro {
     public String[] getParameterNames() {
         return parameterNames.clone();
     }
-
 
 
 }

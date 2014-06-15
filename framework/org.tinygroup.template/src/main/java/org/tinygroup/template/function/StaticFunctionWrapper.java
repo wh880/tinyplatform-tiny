@@ -1,13 +1,15 @@
 package org.tinygroup.template.function;
 
+import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.rumtime.U;
 
 import java.lang.reflect.Method;
+
 /**
  * Created by luoguo on 2014/6/9.
  */
-public class StaticFunctionWrapper extends AbstractFunctionWrapper{
+public class StaticFunctionWrapper extends AbstractFunctionWrapper {
     private Method method;
     private Object object;
 
@@ -55,7 +57,7 @@ public class StaticFunctionWrapper extends AbstractFunctionWrapper{
 
     }
 
-    public Object execute(Object... parameters) throws TemplateException {
+    public Object execute(TemplateContext context, Object... parameters) throws TemplateException {
         try {
             return method.invoke(object, parameters);
         } catch (Exception e) {

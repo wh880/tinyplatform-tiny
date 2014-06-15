@@ -1,5 +1,6 @@
 package org.tinygroup.template.function;
 
+import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 
 import java.util.Arrays;
@@ -15,17 +16,14 @@ public class FormatterTemplateFunction extends AbstractTemplateFunction{
         super("fmt,format,formatter");
     }
 
-
-
-
-    public Object execute(Object... parameters) throws TemplateException {
+    public Object execute(TemplateContext context,Object... parameters) throws TemplateException {
         if(parameters.length==0||!(parameters[0] instanceof String)){
             notSupported(parameters);
         }
         String formatString = parameters[0].toString();
 
         Object[] objects = Arrays.copyOfRange(parameters, 1, parameters.length);
-        return formatter.format(formatString, objects);
+        return formatter.format(formatString, objects).toString();
     }
 
 }

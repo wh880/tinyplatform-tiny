@@ -22,7 +22,9 @@ import java.util.Map;
  * Created by luoguo on 2014/6/4.
  */
 public class U {
-    private U(){}
+    private U() {
+    }
+
     /**
      * 获取属性
      *
@@ -53,7 +55,7 @@ public class U {
      * @param key
      * @return
      */
-    public static String getI18n(I18nVistor i18nVistor, TemplateContext context, String key) {
+    public static String getI18n(I18nVisitor i18nVistor, TemplateContext context, String key) {
         if (key == null) {
             return null;
         }
@@ -73,14 +75,13 @@ public class U {
      * @return
      * @throws TemplateException
      */
-    public static Object c(Template template, Object object, String methodName, Object... parameters) throws TemplateException {
+    public static Object c(Template template, TemplateContext context, Object object, String methodName, Object... parameters) throws TemplateException {
         try {
-
             TemplateFunction function = template.getTemplateEngine().getTemplateFunction(object.getClass().getName(), methodName);
             if (function != null) {
-                return executeExtendFunction(object, function, parameters);
+                return executeExtendFunction(context, object, function, parameters);
             } else {
-                return executeClassMethod(object, methodName, parameters);
+                return MethodUtils.invokeMethod(object, methodName, parameters);
             }
         } catch (Exception e) {
             throw new TemplateException(e);
@@ -99,13 +100,13 @@ public class U {
         return MethodUtils.invokeMethod(object, methodName, parameters);
     }
 
-    private static Object executeExtendFunction(Object object, TemplateFunction function, Object[] parameters) throws TemplateException {
+    private static Object executeExtendFunction(TemplateContext context, Object object, TemplateFunction function, Object[] parameters) throws TemplateException {
         Object[] newParameters = new Object[(parameters == null ? 1 : parameters.length) + 1];
         newParameters[0] = object;
-        if (parameters != null) {
+        if (parameters != null && parameters.length > 0) {
             System.arraycopy(parameters, 1, newParameters, 0, parameters.length);
         }
-        return function.execute(newParameters);
+        return function.execute(context, newParameters);
     }
 
     /**
@@ -117,9 +118,9 @@ public class U {
      * @return
      * @throws TemplateException
      */
-    public static Object sc(Template template, Object object, String methodName, Object... parameters) throws TemplateException {
+    public static Object sc(Template template,TemplateContext context, Object object, String methodName, Object... parameters) throws TemplateException {
         if (object != null) {
-            return c(template, object, methodName, parameters);
+            return c(template,context, object, methodName, parameters);
         }
         return null;
     }

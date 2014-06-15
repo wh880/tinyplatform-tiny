@@ -26,7 +26,7 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     private Map<String, ResourceLoader> templateLoaderMap = new HashMap();
     private String encode = "UTF-8";
-    private I18nVistor i18nVistor;
+    private I18nVisitor i18nVistor;
     private boolean cacheEnabled = false;
     private TemplateCache<List<Template>> layoutPathListCache = new TemplateCacheDefault<List<Template>>();
     private TemplateCache<Macro> macroCache = new TemplateCacheDefault<Macro>();
@@ -43,6 +43,11 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public void registerMacroLibrary(String path) throws TemplateException {
         macroLibraryList.add(path);
+    }
+
+    @Override
+    public void registerMacro(Macro macro) throws TemplateException {
+        macroCache.put(macro.getName(), macro);
     }
 
     public void registerMacroLibrary(Template template) throws TemplateException {
@@ -68,13 +73,13 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public TemplateEngine setI18nVistor(I18nVistor i18nVistor) {
+    public TemplateEngine setI18nVistor(I18nVisitor i18nVistor) {
         this.i18nVistor = i18nVistor;
         return this;
     }
 
 
-    public I18nVistor getI18nVistor() {
+    public I18nVisitor getI18nVistor() {
         return i18nVistor;
     }
 
@@ -265,11 +270,9 @@ public class TemplateEngineDefault implements TemplateEngine {
         if (macro != null) {
             return macro;
         }
-        if (cacheEnabled) {
-            macro = macroCache.get(macroName);
-            if (macro != null) {
-                return macro;
-            }
+        macro = macroCache.get(macroName);
+        if (macro != null) {
+            return macro;
         }
         /**
          * 查找公共宏，后添加加的优先
@@ -289,10 +292,10 @@ public class TemplateEngineDefault implements TemplateEngine {
         throw new TemplateException("找不到宏：" + macroName);
     }
 
-    public Object executeFunction(String functionName, Object... parameters) throws TemplateException {
+    public Object executeFunction(TemplateContext context, String functionName, Object... parameters) throws TemplateException {
         TemplateFunction function = functionMap.get(functionName);
         if (function != null) {
-            return function.execute(parameters);
+            return function.execute(context, parameters);
         }
         throw new TemplateException("找不到函数：" + functionName);
     }

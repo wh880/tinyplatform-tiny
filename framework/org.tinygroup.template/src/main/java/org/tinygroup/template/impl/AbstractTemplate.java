@@ -26,6 +26,7 @@ public abstract class AbstractTemplate implements Template {
 
     protected void addMacro(Macro macro) {
         macroMap.put(macro.getName(), macro);
+        macro.setTemplateEngine(getTemplateEngine());
     }
 
     public Map<String, Macro> getMacroMap() {

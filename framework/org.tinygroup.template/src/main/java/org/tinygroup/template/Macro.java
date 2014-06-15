@@ -3,7 +3,7 @@ package org.tinygroup.template;
 import java.io.Writer;
 
 /**
- * 宏，就是个方法
+ * 宏，就可以理解为一个对方法，它有输入参数，但没有输出参数，而是直接针对Writer对象进行内容输出
  * Created by luoguo on 2014/6/6.
  */
 public interface Macro {
@@ -21,9 +21,17 @@ public interface Macro {
      */
     String[] getParameterNames();
 
-    void setTemplate(Template template);
+    /**
+     * 设置模板引擎
+     * @param templateEngine
+     */
+    void setTemplateEngine(TemplateEngine templateEngine);
 
-    Template getTemplate();
+    /**
+     * 获得模板引擎
+     * @return
+     */
+    TemplateEngine getTemplateEngine();
 
     /**
      * 进行渲染

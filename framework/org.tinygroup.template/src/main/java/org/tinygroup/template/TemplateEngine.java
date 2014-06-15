@@ -19,9 +19,9 @@ public interface TemplateEngine extends TemplateContextOperator {
      *
      * @param i18nVistor
      */
-    TemplateEngine setI18nVistor(I18nVistor i18nVistor);
+    TemplateEngine setI18nVistor(I18nVisitor i18nVistor);
 
-    I18nVistor getI18nVistor();
+    I18nVisitor getI18nVistor();
 
     /**
      * 添加函数
@@ -162,7 +162,7 @@ public interface TemplateEngine extends TemplateContextOperator {
      * @return
      * @throws TemplateException
      */
-    Object executeFunction(String functionName, Object... parameters) throws TemplateException;
+    Object executeFunction(TemplateContext context, String functionName, Object... parameters) throws TemplateException;
 
     /**
      * 获取资源对应的文本
@@ -184,6 +184,8 @@ public interface TemplateEngine extends TemplateContextOperator {
      * @param path
      */
     void registerMacroLibrary(String path) throws TemplateException;
+
+    void registerMacro(Macro macro) throws TemplateException;
 
     void registerMacroLibrary(Template template) throws TemplateException;
 

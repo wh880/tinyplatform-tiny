@@ -161,7 +161,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     public CodeBlock visitMacro_directive(@NotNull TinyTemplateParser.Macro_directiveContext ctx) {
         String name = ctx.getChild(0).getText();
         name = name.substring(6, name.length() - 1).trim();
-        initCodeBlock.subCode(new CodeLet().lineCode("getMacroMap().put(\"%s\", new %s());", name, name));
+        initCodeBlock.subCode(new CodeLet().lineCode("addMacro(new %s());", name));
         CodeBlock macro = new CodeBlock();
         TinyTemplateParser.Define_expression_listContext defineExpressionListContext = ctx.define_expression_list();
         pushPeekCodeLet();
@@ -467,7 +467,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         callMacro.subCode(bodyContentMacro);
         callMacro.subCode("$macro.render($template,$newContext,$writer);");
 
-        bodyContentMacro.header("$newContext.put(\"bodyContent\",new AbstractMacro() {");
+        bodyContentMacro.header("$newContext.put(\"bodyContent\",new AbstractMacro(\"bodyContent\") {");
         CodeBlock render = getMacroRenderCodeBlock();
         bodyContentMacro.subCode(render);
 
@@ -633,7 +633,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     public CodeBlock visitExpr_member_function_call(@NotNull TinyTemplateParser.Expr_member_function_callContext ctx) {
         ctx.expression().accept(this);
         String functionName = ctx.IDENTIFIER().getText();
-        peekCodeLet().codeBefore(ctx.getChild(1).getText().equals(".") ? "U.c($template," : "U.sc($template,").code(",\"").code(functionName).code("\"");
+        peekCodeLet().codeBefore(ctx.getChild(1).getText().equals(".") ? "U.c($template,$context," : "U.sc($template,$context,").code(",\"").code(functionName).code("\"");
         TinyTemplateParser.Expression_listContext list = ctx.expression_list();
         if (list != null) {
             peekCodeLet().code(",");
@@ -736,7 +736,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             ifCodeBlock.subCode(new CodeLet().lineCode(directive));
             peekCodeBlock().subCode(ifCodeBlock);
         } else {
-            peekCodeBlock().subCode(new CodeLet().lineCode(directive));
+            peekCodeBlock().subCode(new CodeLet().lineCode("if(true)"+directive+";"));
         }
     }
 

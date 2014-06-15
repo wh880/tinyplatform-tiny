@@ -1,5 +1,6 @@
 package org.tinygroup.template.function;
 
+import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 
 /**
@@ -14,7 +15,7 @@ public class InstanceOfTemplateFunction extends AbstractTemplateFunction {
 
 
 
-    public Object execute(Object... parameters) throws TemplateException {
+    public Object execute(TemplateContext context,Object... parameters) throws TemplateException {
         Object object= parameters[0];
 
         for(Object parameter:parameters){

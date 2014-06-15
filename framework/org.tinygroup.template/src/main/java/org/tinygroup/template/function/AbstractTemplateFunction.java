@@ -10,8 +10,8 @@ import org.tinygroup.template.TemplateFunction;
 public abstract class AbstractTemplateFunction implements TemplateFunction {
     private final String names;
 
-    public AbstractTemplateFunction(String name) {
-        this.names = name;
+    public AbstractTemplateFunction(String names) {
+        this.names = names;
     }
 
     private TemplateEngine templateEngine;

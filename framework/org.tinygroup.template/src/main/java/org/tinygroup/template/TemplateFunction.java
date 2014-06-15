@@ -1,7 +1,7 @@
 package org.tinygroup.template;
 
 /**
- * 函数扩展
+ * 模板函数扩展
  * Created by luoguo on 2014/6/9.
  */
 public interface TemplateFunction {
@@ -25,6 +25,11 @@ public interface TemplateFunction {
      * @param templateEngine
      */
     void setTemplateEngine(TemplateEngine templateEngine);
+
+    /**
+     * 返回模板引擎
+     * @return
+     */
     TemplateEngine getTemplateEngine();
     /**
      * 执行函数体
@@ -32,5 +37,5 @@ public interface TemplateFunction {
      * @param parameters
      * @return
      */
-    Object execute( Object... parameters) throws TemplateException;
+    Object execute(TemplateContext context, Object... parameters) throws TemplateException;
 }

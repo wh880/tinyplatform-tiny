@@ -32,15 +32,24 @@ public final class O {
         addConverter(new ByteFloat());
         addConverter(new ByteDouble());
         addConverter(new ByteBigDecimal());
+
         addConverter(new CharacterInteger());
         addConverter(new CharacterFloat());
         addConverter(new CharacterDouble());
         addConverter(new CharacterBigDecimal());
+
+        addConverter(new IntegerLong());
         addConverter(new IntegerFloat());
         addConverter(new IntegerDouble());
         addConverter(new IntegerBigDecimal());
+
+        addConverter(new LongFloat());
+        addConverter(new LongDouble());
+        addConverter(new LongBigDecimal());
+
         addConverter(new FloatDouble());
         addConverter(new FloatBigDecimal());
+
         addConverter(new DoubleBigDecimal());
         //数学操作
         addOperator(new AddOperator());
