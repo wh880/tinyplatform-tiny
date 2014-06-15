@@ -13,10 +13,11 @@ import java.io.Writer;
 public class LayoutTest {
     public static void main(String[] args) throws TemplateException {
         TemplateEngine engine=new TemplateEngineDefault();
-        engine.putTemplateLoader(TemplateEngine.DEFAULT,new ClassLoaderResourceLoader("page","layout","macro"));
-        engine.getDefaultTemplateLoader().addTemplate(new Layout1());
-        engine.getDefaultTemplateLoader().addTemplate(new Layout2());
-        engine.getDefaultTemplateLoader().addTemplate(new Template1());
+        ClassLoaderResourceLoader templateLoader = new ClassLoaderResourceLoader("page", "layout", "macro");
+        engine.addTemplateLoader(templateLoader);
+        templateLoader.addTemplate(new Layout1());
+        templateLoader.addTemplate(new Layout2());
+        templateLoader.addTemplate(new Template1());
         engine.renderTemplate("/aaa/a.page");
     }
 }

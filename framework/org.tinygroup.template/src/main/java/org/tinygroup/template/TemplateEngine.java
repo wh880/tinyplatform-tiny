@@ -2,7 +2,7 @@ package org.tinygroup.template;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Map;
+import java.util.List;
 
 /**
  * 模板引擎
@@ -10,8 +10,19 @@ import java.util.Map;
  */
 
 public interface TemplateEngine extends TemplateContextOperator {
-    String DEFAULT = "default";
+    /**
+     * 设置模板加载器列表
+     *
+     * @param templateLoaderList
+     */
+    void setTemplateLoaderList(List<ResourceLoader> templateLoaderList);
 
+    /**
+     * 设置编码
+     *
+     * @param encode
+     * @return
+     */
     TemplateEngine setEncode(String encode);
 
     /**
@@ -21,7 +32,12 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     TemplateEngine setI18nVistor(I18nVisitor i18nVistor);
 
-    I18nVisitor getI18nVistor();
+    /**
+     * 返回国际化访问接口实现类
+     *
+     * @return
+     */
+    I18nVisitor getI18nVisitor();
 
     /**
      * 添加函数
@@ -59,31 +75,14 @@ public interface TemplateEngine extends TemplateContextOperator {
      *
      * @param templateLoader
      */
-    TemplateEngine putTemplateLoader(String type, ResourceLoader templateLoader);
-
-    Template getTemplate(String path) throws TemplateException;
-
-    /**
-     * 返回指定类型的加载器
-     *
-     * @return
-     */
-    ResourceLoader getTemplateLoader(String type) throws TemplateException;
-
-    /**
-     * 返回默认加载器
-     *
-     * @return
-     * @throws TemplateException
-     */
-    ResourceLoader getDefaultTemplateLoader() throws TemplateException;
+    TemplateEngine addTemplateLoader(ResourceLoader templateLoader);
 
     /**
      * 返回所有的 Loader
      *
      * @return
      */
-    Map<String, ResourceLoader> getTemplateLoaderMap();
+    List<ResourceLoader> getTemplateLoaderList();
 
     /**
      * 渲染宏
@@ -172,10 +171,28 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     String getResourceContent(String path, String encode) throws TemplateException;
 
+    /**
+     * 获取指定路径资源的内容
+     *
+     * @param path
+     * @return
+     * @throws TemplateException
+     */
     String getResourceContent(String path) throws TemplateException;
 
+    /**
+     * 返回是否允许缓冲
+     *
+     * @return
+     */
     boolean isCacheEnabled();
 
+    /**
+     * 设置是否允许缓冲
+     *
+     * @param cacheEnabled
+     * @return
+     */
     TemplateEngine setCacheEnabled(boolean cacheEnabled);
 
     /**
@@ -185,8 +202,20 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     void registerMacroLibrary(String path) throws TemplateException;
 
+    /**
+     * 注册单个宏
+     *
+     * @param macro
+     * @throws TemplateException
+     */
     void registerMacro(Macro macro) throws TemplateException;
 
+    /**
+     * 注册模板文件中所有的宏文件
+     *
+     * @param template
+     * @throws TemplateException
+     */
     void registerMacroLibrary(Template template) throws TemplateException;
 
 }

@@ -2,6 +2,7 @@ package org.tinygroup.template;
 
 import org.tinygroup.template.function.AbstractBindTemplateFunction;
 import org.tinygroup.template.impl.TemplateEngineDefault;
+import org.tinygroup.template.loader.StringResourceLoader;
 
 import java.util.Locale;
 
@@ -27,7 +28,7 @@ public class TemplateTestCase {
         }
 
 
-        public Object execute(Object... parameters) throws TemplateException {
+        public Object execute(TemplateContext context,Object... parameters) throws TemplateException {
             String obj = (String) parameters[0];
             return "<b>" + obj + "</b>";
         }
@@ -37,11 +38,13 @@ public class TemplateTestCase {
         final TemplateEngine engine = new TemplateEngineDefault();
         engine.addTemplateFunction(new StringBoldFunction());
         engine.setI18nVistor(new I18nvi());
-        Template template = engine.getDefaultTemplateLoader().createTemplate("${getResourceContent()}");
+        StringResourceLoader templateLoader = new StringResourceLoader();
+        engine.addTemplateLoader(templateLoader);
+        Template template = templateLoader.createTemplate("${getResourceContent()}");
         template.render();
-        template = engine.getDefaultTemplateLoader().createTemplate("${'abc'.equals('a')}");
+        template = templateLoader.createTemplate("${'abc'.equals('a')}");
         template.render();
-        template = engine.getDefaultTemplateLoader().createTemplate("${fmt('add%sinfo',3)}");
+        template = templateLoader.createTemplate("${fmt('add%sinfo',3)}");
         template.render();
     }
 }

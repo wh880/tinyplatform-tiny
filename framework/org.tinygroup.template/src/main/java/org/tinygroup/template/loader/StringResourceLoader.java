@@ -55,16 +55,10 @@ public class StringResourceLoader extends AbstractResourceLoader<String> {
     }
 
     public Template createLayout(String templateMaterial) throws TemplateException {
-        Template layout = ResourceCompilerUtils.compileResource(StringResourceLoader.class.getClassLoader(), templateMaterial, getRandomPath());
-        //这里没有调用putTemplate是避免内存泄露
-        layout.setTemplateEngine(getTemplateEngine());
-        return layout;
+        throw new TemplateException("Not supported.");
     }
     public Template createMacroLibrary(String templateMaterial) throws TemplateException {
-        Template macroLibrary = ResourceCompilerUtils.compileResource(StringResourceLoader.class.getClassLoader(), templateMaterial, getRandomPath());
-        //这里没有调用putTemplate是避免内存泄露
-        macroLibrary.setTemplateEngine(getTemplateEngine());
-        return macroLibrary;
+        throw new TemplateException("Not supported.");
     }
 
     private String getRandomPath() {

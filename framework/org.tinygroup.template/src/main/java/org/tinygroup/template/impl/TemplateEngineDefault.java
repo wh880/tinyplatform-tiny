@@ -1,10 +1,10 @@
 package org.tinygroup.template.impl;
 
 import org.tinygroup.template.*;
+import org.tinygroup.template.function.EvaluateTemplateFunction;
 import org.tinygroup.template.function.FormatterTemplateFunction;
 import org.tinygroup.template.function.GetResourceContentFunction;
 import org.tinygroup.template.function.InstanceOfTemplateFunction;
-import org.tinygroup.template.loader.StringResourceLoader;
 
 import java.io.CharArrayWriter;
 import java.io.IOException;
@@ -20,11 +20,12 @@ import java.util.Map;
  * Created by luoguo on 2014/6/6.
  */
 public class TemplateEngineDefault implements TemplateEngine {
+    private static final String DEFAULT ="default" ;
     private Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
     private Map<String, TemplateFunction> typeFunctionMap = new HashMap<String, TemplateFunction>();
     private TemplateContext templateEngineContext = new TemplateContextDefault();
 
-    private Map<String, ResourceLoader> templateLoaderMap = new HashMap();
+    private List<ResourceLoader> templateLoaderList = new ArrayList<ResourceLoader>();
     private String encode = "UTF-8";
     private I18nVisitor i18nVistor;
     private boolean cacheEnabled = false;
@@ -42,7 +43,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public void registerMacroLibrary(String path) throws TemplateException {
-        macroLibraryList.add(path);
+        registerMacroLibrary(getMacroLibrary(path));
     }
 
     @Override
@@ -51,16 +52,17 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public void registerMacroLibrary(Template template) throws TemplateException {
-        getDefaultTemplateLoader().addTemplate(template);
-        registerMacroLibrary(template.getPath());
+        for(Map.Entry<String,Macro> entry:template.getMacroMap().entrySet()){
+            registerMacro(entry.getValue());
+        }
     }
 
     public TemplateEngineDefault() {
         //添加一个默认的加载器
-        putTemplateLoader("default", new StringResourceLoader());
         addTemplateFunction(new FormatterTemplateFunction());
         addTemplateFunction(new InstanceOfTemplateFunction());
         addTemplateFunction(new GetResourceContentFunction());
+        addTemplateFunction(new EvaluateTemplateFunction());
     }
 
     public TemplateContext getTemplateContext() {
@@ -79,10 +81,13 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public I18nVisitor getI18nVistor() {
+    public I18nVisitor getI18nVisitor() {
         return i18nVistor;
     }
 
+    public void setTemplateLoaderList(List<ResourceLoader> templateLoaderList) {
+        this.templateLoaderList = templateLoaderList;
+    }
 
     public TemplateEngine addTemplateFunction(TemplateFunction function) {
         function.setTemplateEngine(this);
@@ -121,15 +126,15 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public TemplateEngine putTemplateLoader(String type, ResourceLoader templateLoader) {
+    public TemplateEngine addTemplateLoader(ResourceLoader templateLoader) {
         templateLoader.setTemplateEngine(this);
-        templateLoaderMap.put(type, templateLoader);
+        templateLoaderList.add(templateLoader);
         return this;
     }
 
 
-    public Template getTemplate(String path) throws TemplateException {
-        for (ResourceLoader loader : templateLoaderMap.values()) {
+    private Template getTemplate(String path) throws TemplateException {
+        for (ResourceLoader loader : templateLoaderList) {
             Template template = loader.getTemplate(path);
             if (template != null) {
                 return template;
@@ -138,21 +143,24 @@ public class TemplateEngineDefault implements TemplateEngine {
         throw new TemplateException("找不到模板：" + path);
     }
 
-    public ResourceLoader getTemplateLoader(String type) throws TemplateException {
-        return templateLoaderMap.get(type);
+    private Template getMacroLibrary(String path) throws TemplateException {
+        for (ResourceLoader loader : templateLoaderList) {
+            Template template = loader.getMacroLibrary(path);
+            if (template != null) {
+                return template;
+            }
+        }
+        throw new TemplateException("找不到模板：" + path);
     }
-
-
-    public ResourceLoader getDefaultTemplateLoader() throws TemplateException {
-        return getTemplateLoader(DEFAULT);
+    private Template getLayout(String path) throws TemplateException {
+        for (ResourceLoader loader : templateLoaderList) {
+            Template template = loader.getLayout(path);
+            if (template != null) {
+                return template;
+            }
+        }
+        throw new TemplateException("找不到模板：" + path);
     }
-
-
-    public Map<String, ResourceLoader> getTemplateLoaderMap() {
-        return templateLoaderMap;
-    }
-
-
     public TemplateEngine put(String key, Object value) {
         templateEngineContext.put(key, value);
         return this;
@@ -222,7 +230,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         for (int i = 0; i < paths.length - 1; i++) {
             path += paths[i] + "/";
             String template = path + templateFileName;
-            for (ResourceLoader loader : templateLoaderMap.values()) {
+            for (ResourceLoader loader : templateLoaderList) {
                 String layoutPath = loader.getLayoutPath(template);
                 if (layoutPath != null) {
                     Template layout = loader.getLayout(layoutPath);
@@ -278,7 +286,7 @@ public class TemplateEngineDefault implements TemplateEngine {
          * 查找公共宏，后添加加的优先
          */
         for (int i = macroLibraryList.size() - 1; i >= 0; i--) {
-            Template macroLibrary = getTemplate(macroLibraryList.get(i));
+            Template macroLibrary = getMacroLibrary(macroLibraryList.get(i));
             if (macroLibrary != null) {
                 macro = macroLibrary.getMacroMap().get(macroName);
                 if (macro != null) {
@@ -300,9 +308,12 @@ public class TemplateEngineDefault implements TemplateEngine {
         throw new TemplateException("找不到函数：" + functionName);
     }
 
+    public List<ResourceLoader> getTemplateLoaderList() {
+        return templateLoaderList;
+    }
 
     public String getResourceContent(String path, String encode) throws TemplateException {
-        for (ResourceLoader templateLoader : templateLoaderMap.values()) {
+        for (ResourceLoader templateLoader : templateLoaderList) {
             String content = templateLoader.getResourceContent(path, encode);
             if (content != null) {
                 return content;
