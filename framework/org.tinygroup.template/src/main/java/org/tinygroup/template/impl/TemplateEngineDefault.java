@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by luoguo on 2014/6/6.
  */
 public class TemplateEngineDefault implements TemplateEngine {
-    private static final String DEFAULT ="default" ;
+    private static final String DEFAULT = "default";
     private Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
     private Map<String, TemplateFunction> typeFunctionMap = new HashMap<String, TemplateFunction>();
     private TemplateContext templateEngineContext = new TemplateContextDefault();
@@ -52,7 +52,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public void registerMacroLibrary(Template template) throws TemplateException {
-        for(Map.Entry<String,Macro> entry:template.getMacroMap().entrySet()){
+        for (Map.Entry<String, Macro> entry : template.getMacroMap().entrySet()) {
             registerMacro(entry.getValue());
         }
     }
@@ -152,6 +152,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         }
         throw new TemplateException("找不到模板：" + path);
     }
+
     private Template getLayout(String path) throws TemplateException {
         for (ResourceLoader loader : templateLoaderList) {
             Template template = loader.getLayout(path);
@@ -161,6 +162,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         }
         throw new TemplateException("找不到模板：" + path);
     }
+
     public TemplateEngine put(String key, Object value) {
         templateEngineContext.put(key, value);
         return this;
@@ -300,10 +302,10 @@ public class TemplateEngineDefault implements TemplateEngine {
         throw new TemplateException("找不到宏：" + macroName);
     }
 
-    public Object executeFunction(TemplateContext context, String functionName, Object... parameters) throws TemplateException {
+    public Object executeFunction(Template template, TemplateContext context, String functionName, Object... parameters) throws TemplateException {
         TemplateFunction function = functionMap.get(functionName);
         if (function != null) {
-            return function.execute(context, parameters);
+            return function.execute(template, context, parameters);
         }
         throw new TemplateException("找不到函数：" + functionName);
     }

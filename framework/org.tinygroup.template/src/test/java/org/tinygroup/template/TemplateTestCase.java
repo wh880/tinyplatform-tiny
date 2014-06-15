@@ -28,7 +28,7 @@ public class TemplateTestCase {
         }
 
 
-        public Object execute(TemplateContext context,Object... parameters) throws TemplateException {
+        public Object execute(Template template,TemplateContext context,Object... parameters) throws TemplateException {
             String obj = (String) parameters[0];
             return "<b>" + obj + "</b>";
         }

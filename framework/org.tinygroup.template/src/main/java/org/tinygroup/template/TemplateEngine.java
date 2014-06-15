@@ -161,7 +161,7 @@ public interface TemplateEngine extends TemplateContextOperator {
      * @return
      * @throws TemplateException
      */
-    Object executeFunction(TemplateContext context, String functionName, Object... parameters) throws TemplateException;
+    Object executeFunction(Template template,TemplateContext context, String functionName, Object... parameters) throws TemplateException;
 
     /**
      * 获取资源对应的文本

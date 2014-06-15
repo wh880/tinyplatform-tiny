@@ -158,7 +158,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
 
-
     public CodeBlock visitMacro_directive(@NotNull TinyTemplateParser.Macro_directiveContext ctx) {
         String name = ctx.getChild(0).getText();
         name = name.substring(6, name.length() - 1).trim();
@@ -446,7 +445,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
 
-
     public CodeBlock visitCall_macro_directive(@NotNull TinyTemplateParser.Call_macro_directiveContext ctx) {
         CodeBlock callMacro = new CodeBlock();
         String name = ctx.getChild(0).getText();
@@ -457,6 +455,11 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         processCallMacro(ctx.para_expression_list(), callMacro, name);
         callMacro.subCode(String.format("$macro.render($template,$newContext,$writer);"));
         return callMacro;
+    }
+
+    @Override
+    public CodeBlock visitExpression_range(@NotNull TinyTemplateParser.Expression_rangeContext ctx) {
+        return null;
     }
 
 
@@ -647,15 +650,22 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitExpr_array_list(@NotNull TinyTemplateParser.Expr_array_listContext ctx) {
-        ParseTree items = ctx.getChild(1);
+        if (ctx.expression_range() != null) {
+            int start=Integer.parseInt(ctx.expression_range().INTEGER().get(0).getText());
+            int end=Integer.parseInt(ctx.expression_range().INTEGER().get(1).getText());
+            int step=start>=end?1:-1;
+            peekCodeLet().code("new RangeIterator(%d,%d,%d)",start,end,step);
+        } else {
+            ParseTree items = ctx.getChild(1);
 
-        for (int i = 0; i < items.getChildCount(); i++) {
-            CodeLet tmp = pushPeekCodeLet();
-            items.getChild(i).accept(this);
-            popCodeLet();
-            peekCodeLet().code(tmp);
+            for (int i = 0; i < items.getChildCount(); i++) {
+                CodeLet tmp = pushPeekCodeLet();
+                items.getChild(i).accept(this);
+                popCodeLet();
+                peekCodeLet().code(tmp);
+            }
+            peekCodeLet().codeBefore("new Object[]{").code("}");
         }
-        peekCodeLet().codeBefore("new Object[]{").code("}");
         return null;
     }
 
@@ -738,7 +748,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             ifCodeBlock.subCode(new CodeLet().lineCode(directive));
             peekCodeBlock().subCode(ifCodeBlock);
         } else {
-            peekCodeBlock().subCode(new CodeLet().lineCode("if(true)"+directive+";"));
+            peekCodeBlock().subCode(new CodeLet().lineCode("if(true)" + directive + ";"));
         }
     }
 

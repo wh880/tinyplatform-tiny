@@ -79,7 +79,7 @@ public class U {
         try {
             TemplateFunction function = template.getTemplateEngine().getTemplateFunction(object.getClass().getName(), methodName);
             if (function != null) {
-                return executeExtendFunction(context, object, function, parameters);
+                return executeExtendFunction(template, context, object, function, parameters);
             } else {
                 return MethodUtils.invokeMethod(object, methodName, parameters);
             }
@@ -100,13 +100,13 @@ public class U {
         return MethodUtils.invokeMethod(object, methodName, parameters);
     }
 
-    private static Object executeExtendFunction(TemplateContext context, Object object, TemplateFunction function, Object[] parameters) throws TemplateException {
+    private static Object executeExtendFunction(Template template, TemplateContext context, Object object, TemplateFunction function, Object[] parameters) throws TemplateException {
         Object[] newParameters = new Object[(parameters == null ? 1 : parameters.length) + 1];
         newParameters[0] = object;
         if (parameters != null && parameters.length > 0) {
             System.arraycopy(parameters, 1, newParameters, 0, parameters.length);
         }
-        return function.execute(context, newParameters);
+        return function.execute(template, context, newParameters);
     }
 
     /**
@@ -118,9 +118,9 @@ public class U {
      * @return
      * @throws TemplateException
      */
-    public static Object sc(Template template,TemplateContext context, Object object, String methodName, Object... parameters) throws TemplateException {
+    public static Object sc(Template template, TemplateContext context, Object object, String methodName, Object... parameters) throws TemplateException {
         if (object != null) {
-            return c(template,context, object, methodName, parameters);
+            return c(template, context, object, methodName, parameters);
         }
         return null;
     }

@@ -164,7 +164,7 @@ invalid_directive
 expression  :   '(' expression ')'                                           # expr_group
             |   constant                                                     # expr_constant
             |   IDENTIFIER                                                   # expr_identifier
-            |   '[' expression_list? ']'                                     # expr_array_list
+            |   '[' (expression_list |expression_range)?  ']'       # expr_array_list
             |   '{' hash_map_entry_list? '}'                                 # expr_hash_map
             |   expression ('.'|'?.') IDENTIFIER '(' expression_list? ')'    # expr_member_function_call
             |   expression ('.'|'?.') IDENTIFIER                             # expr_field_access
@@ -202,6 +202,9 @@ constant    :   STRING_DOUBLE
 
 expression_list
             :   expression (',' expression)*
+            ;
+expression_range
+            :   INTEGER '..' INTEGER
             ;
 
 hash_map_entry_list

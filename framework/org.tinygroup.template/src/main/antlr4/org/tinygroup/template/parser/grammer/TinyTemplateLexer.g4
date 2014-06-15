@@ -99,6 +99,7 @@ RIGHT_BRACE             : '}'                              -> popMode ;
 IN                       : 'in'                             ;
 OP_ASSIGNMENT           : '='                              ;
 
+OP_DOT_DOT              :  '..'                              ;
 OP_DOT_INVOCATION       : '.'                              ;
 OP_DOT_INVOCATION_SAFE  : '?.'                             ;
 

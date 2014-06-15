@@ -408,6 +408,11 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("write($writer,\"abc\");") > 0);
         assertTrue(result.indexOf("write($writer,\"def\");") > 0);
     }
+    public void testT32_1() throws Exception {
+        String result = execute("#set(a=[1..2])");
+        System.out.println(result);
+        assertTrue(result.indexOf("$context.put(\"a\",new RangeIterator(1,2,-1));") > 0);
+    }
 
     public void testT33() throws Exception {
         String result = execute("#if(true)abc#{else}def#end");
