@@ -158,6 +158,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
 
+
     public CodeBlock visitMacro_directive(@NotNull TinyTemplateParser.Macro_directiveContext ctx) {
         String name = ctx.getChild(0).getText();
         name = name.substring(6, name.length() - 1).trim();
@@ -443,6 +444,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         peekCodeLet().code("\"%s\"", ctx.getChild(0).getText());
         return null;
     }
+
 
 
     public CodeBlock visitCall_macro_directive(@NotNull TinyTemplateParser.Call_macro_directiveContext ctx) {

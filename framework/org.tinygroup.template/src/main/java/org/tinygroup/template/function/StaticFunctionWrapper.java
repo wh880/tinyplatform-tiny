@@ -1,5 +1,6 @@
 package org.tinygroup.template.function;
 
+import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.rumtime.U;
@@ -57,7 +58,7 @@ public class StaticFunctionWrapper extends AbstractFunctionWrapper {
 
     }
 
-    public Object execute(TemplateContext context, Object... parameters) throws TemplateException {
+    public Object execute(Template template, TemplateContext context, Object... parameters) throws TemplateException {
         try {
             return method.invoke(object, parameters);
         } catch (Exception e) {

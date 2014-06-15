@@ -1,5 +1,6 @@
 package org.tinygroup.template.function;
 
+import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 
@@ -15,7 +16,7 @@ public class GetResourceContentFunction extends AbstractTemplateFunction{
 
 
 
-    public Object execute(TemplateContext context,Object... parameters) throws TemplateException {
+    public Object execute(Template template,TemplateContext context,Object... parameters) throws TemplateException {
         String encode=super.getTemplateEngine().getEncode();
         String path=null;
         if(parameters.length==0||!(parameters[0] instanceof String)){

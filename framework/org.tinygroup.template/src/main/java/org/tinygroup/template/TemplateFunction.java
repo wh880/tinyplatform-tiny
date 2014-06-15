@@ -28,14 +28,16 @@ public interface TemplateFunction {
 
     /**
      * 返回模板引擎
+     *
      * @return
      */
     TemplateEngine getTemplateEngine();
+
     /**
      * 执行函数体
      *
      * @param parameters
      * @return
      */
-    Object execute(TemplateContext context, Object... parameters) throws TemplateException;
+    Object execute(Template template, TemplateContext context, Object... parameters) throws TemplateException;
 }

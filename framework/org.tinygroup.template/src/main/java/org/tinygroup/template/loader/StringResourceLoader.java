@@ -62,6 +62,6 @@ public class StringResourceLoader extends AbstractResourceLoader<String> {
     }
 
     private String getRandomPath() {
-        return "/string/template/NoT" + System.nanoTime();
+        return null;
     }
 }

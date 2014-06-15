@@ -5,7 +5,10 @@ package org.tinygroup.template;
  * Created by luoguo on 2014/6/9.
  */
 public interface ResourceLoader<T> {
-
+    /**
+     * 是否检查模板是否被修改过
+     * @param checkModified
+     */
     void setCheckModified(boolean checkModified);
 
     /**
@@ -82,8 +85,16 @@ public interface ResourceLoader<T> {
      */
     void setTemplateEngine(TemplateEngine templateEngine);
 
+    /**
+     * 返回类加载器
+     * @return
+     */
     ClassLoader getClassLoader();
 
+    /**
+     * 设置类加载器
+     * @param classLoader
+     */
     void setClassLoader(ClassLoader classLoader);
 
     /**
