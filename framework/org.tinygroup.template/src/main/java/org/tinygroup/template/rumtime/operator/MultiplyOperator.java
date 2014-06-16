@@ -9,22 +9,22 @@ public class MultiplyOperator extends TwoOperator {
 
 
     protected Object operation(Object left, Object right) {
-        if (isType(left,"java.lang.Byte")) {
+        if (isType(left,Byte.class)) {
             return (Byte) left * (Byte) right;
         }
-        if (isType(left,"java.lang.Character")) {
+        if (isType(left,Character.class)) {
             return (Character) left * (Character) right;
         }
-        if (isType(left,"java.lang.Integer")) {
+        if (isType(left,Integer.class)) {
             return (Integer) left * (Integer) right;
         }
-        if (isType(left,"java.lang.Float")) {
+        if (isType(left,Float.class)) {
             return (Float) left * (Float) right;
         }
-        if (isType(left,"java.lang.Double")) {
+        if (isType(left,Double.class)) {
             return (Double) left * (Double) right;
         }
-        if (isType(left,"java.math.BigDecimal")) {
+        if (isType(left,BigDecimal.class)) {
             BigDecimal b1 = (BigDecimal) left;
             BigDecimal b2 = (BigDecimal) right;
             return b1.multiply(b2);

@@ -196,7 +196,7 @@ public interface TemplateEngine extends TemplateContextOperator {
     TemplateEngine setCacheEnabled(boolean cacheEnabled);
 
     /**
-     * 注册宏的库文件
+     * 注册库文件中所有的宏
      *
      * @param path
      */
@@ -211,7 +211,7 @@ public interface TemplateEngine extends TemplateContextOperator {
     void registerMacro(Macro macro) throws TemplateException;
 
     /**
-     * 注册模板文件中所有的宏文件
+     * 注册模板文件中所有的宏
      *
      * @param template
      * @throws TemplateException

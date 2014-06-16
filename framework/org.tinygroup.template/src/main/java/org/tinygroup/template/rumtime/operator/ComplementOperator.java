@@ -16,13 +16,13 @@ public class ComplementOperator extends SingleOperator {
 
 
     protected Object operation(Object var) throws TemplateException {
-        if (isType(var,"java.lang.Byte")) {
+        if (isType(var,Byte.class)) {
             return ~((Byte) var);
         }
-        if (isType(var,"java.lang.Integer")) {
+        if (isType(var,Integer.class)) {
             return ~((Integer) var);
         }
-        if (isType(var,"Long")) {
+        if (isType(var,Long.class)) {
             return ~((Long) var);
         }
         throw getUnsupportedOperationException(var);

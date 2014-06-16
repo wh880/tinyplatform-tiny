@@ -14,7 +14,7 @@ public class LeftLiteralOperator extends SingleOperator {
 
 
     protected Object operation(Object var) throws TemplateException {
-        if (isType(var, "Boolean")) {
+        if (isType(var, Boolean.class)) {
             return !(Boolean) var;
         }
         throw getUnsupportedOperationException(var);

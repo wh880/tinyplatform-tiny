@@ -413,6 +413,11 @@ public class TestParser extends TestCase {
         System.out.println(result);
         assertTrue(result.indexOf("$context.put(\"a\",new RangeIterator(1,2,-1));") > 0);
     }
+    public void testT32_2() throws Exception {
+        String result = execute("#set(a=null)");
+        System.out.println(result);
+        assertTrue(result.indexOf("$context.put(\"a\",null);") > 0);
+    }
 
     public void testT33() throws Exception {
         String result = execute("#if(true)abc#{else}def#end");

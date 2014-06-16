@@ -651,8 +651,8 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     public CodeBlock visitExpr_array_list(@NotNull TinyTemplateParser.Expr_array_listContext ctx) {
         if (ctx.expression_range() != null) {
-            int start=Integer.parseInt(ctx.expression_range().INTEGER().get(0).getText());
-            int end=Integer.parseInt(ctx.expression_range().INTEGER().get(1).getText());
+            int start=Integer.parseInt(ctx.expression_range().expression().get(0).getText());
+            int end=Integer.parseInt(ctx.expression_range().expression().get(1).getText());
             int step=start>=end?1:-1;
             peekCodeLet().code("new RangeIterator(%d,%d,%d)",start,end,step);
         } else {

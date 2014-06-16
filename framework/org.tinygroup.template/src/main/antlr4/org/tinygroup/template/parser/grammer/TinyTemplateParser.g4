@@ -204,7 +204,7 @@ expression_list
             :   expression (',' expression)*
             ;
 expression_range
-            :   INTEGER '..' INTEGER
+            :   expression '..' expression
             ;
 
 hash_map_entry_list
