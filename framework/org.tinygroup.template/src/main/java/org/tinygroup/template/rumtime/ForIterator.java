@@ -51,10 +51,6 @@ public final class ForIterator implements Iterator, ForStatus {
             Collection collection = (Collection) object;
             iterator = collection.iterator();
             size = collection.size();
-        } else if (object instanceof RangeIterator) {
-            RangeIterator loopIterator = (RangeIterator) object;
-            iterator = (Iterator) object;
-            size = loopIterator.getSize();
         } else if (object instanceof Enumeration) {
             Enumeration enumeration = (Enumeration) object;
             ArrayList<?> list = Collections.list(enumeration);

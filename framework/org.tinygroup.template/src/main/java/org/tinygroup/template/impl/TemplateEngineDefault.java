@@ -29,8 +29,8 @@ public class TemplateEngineDefault implements TemplateEngine {
     private String encode = "UTF-8";
     private I18nVisitor i18nVistor;
     private boolean cacheEnabled = false;
-    private TemplateCache<List<Template>> layoutPathListCache = new TemplateCacheDefault<List<Template>>();
-    private TemplateCache<Macro> macroCache = new TemplateCacheDefault<Macro>();
+    private TemplateCache<String,List<Template>> layoutPathListCache = new TemplateCacheDefault<String,List<Template>>();
+    private TemplateCache<String,Macro> macroCache = new TemplateCacheDefault<String,Macro>();
     private List<String> macroLibraryList = new ArrayList<String>();
 
     public boolean isCacheEnabled() {

@@ -1,13 +1,15 @@
 package org.tinygroup.template.rumtime;
 
 import org.apache.commons.beanutils.MethodUtils;
-import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Enumerator;
 import org.tinygroup.context.Context;
 import org.tinygroup.template.*;
+import org.tinygroup.template.impl.TemplateCacheDefault;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -22,6 +24,9 @@ import java.util.Map;
  * Created by luoguo on 2014/6/4.
  */
 public class U {
+    private static TemplateCache<String, Method> methodCache = new TemplateCacheDefault<String, Method>();
+    private static PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
+
     private U() {
     }
 
@@ -35,7 +40,16 @@ public class U {
      */
     public static Object p(Object object, Object name) throws TemplateException {
         try {
-            return PropertyUtils.getProperty(object, name.toString());
+            String methodKey = getMethodKey(object, name.toString());
+            if (methodCache.contains(methodKey)) {
+                return methodCache.get(methodKey).invoke(object);
+            } else {
+                PropertyDescriptor descriptor =
+                        propertyUtilsBean.getPropertyDescriptor(object, name.toString());
+                Method method = MethodUtils.getAccessibleMethod(object.getClass(), descriptor.getReadMethod());
+                methodCache.put(methodKey, method);
+                return method.invoke(object);
+            }
         } catch (Exception e) {
             throw new TemplateException(e);
         }
@@ -81,7 +95,8 @@ public class U {
             if (function != null) {
                 return executeExtendFunction(template, context, object, function, parameters);
             } else {
-                return MethodUtils.invokeMethod(object, methodName, parameters);
+                //如果有缓冲，则用缓冲方式调用之
+                return executeClassMethod(object, methodName, parameters);
             }
         } catch (Exception e) {
             throw new TemplateException(e);
@@ -89,13 +104,10 @@ public class U {
     }
 
     private static Object executeClassMethod(Object object, String methodName, Object[] parameters) throws TemplateException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        if (parameters == null) {
-            return invokeMethod(object, methodName, parameters, getParameterTypes(object.getClass(), methodName));
-        }
-        for (Object para : parameters) {
-            if (para == null) {
-                return invokeMethod(object, methodName, parameters, getParameterTypes(object.getClass(), methodName));
-            }
+        Method method = methodCache.get(getMethodKey(object, methodName));
+        //如果有缓冲，则用缓冲方式调用
+        if (method != null) {
+            return method.invoke(object, parameters);
         }
         return MethodUtils.invokeMethod(object, methodName, parameters);
     }
@@ -125,17 +137,6 @@ public class U {
         return null;
     }
 
-    private static Object invokeMethod(Object object, String methodName, Object[] parameters, Class<?>[] parameterTypes) throws TemplateException {
-        Object[] callParameters = parameters;
-        if (callParameters == null && parameterTypes.length > 0) {
-            callParameters = new Object[parameterTypes.length];
-        }
-        try {
-            return MethodUtils.invokeMethod(object, methodName, callParameters, parameterTypes);
-        } catch (Exception e) {
-            throw new TemplateException(e);
-        }
-    }
 
     public static Class<?>[] getParameterTypes(Class clazz, String methodName) throws TemplateException {
         for (Method method : clazz.getMethods()) {
@@ -266,4 +267,35 @@ public class U {
         throw new TemplateException(object.getClass().getName() + "不可以用下标方式取值。");
     }
 
+    Method getMethod(Object object, String methodName) {
+        String key = getMethodKey(object, methodName);
+        if (methodCache.contains(key)) {
+            return methodCache.get(key);
+        }
+        Method method = null;
+        for (Method m : object.getClass().getMethods()) {
+            if (m.getName().equals(methodName)) {
+                if (method != null) {
+                    //如果多次出现，则返回空，表示无法缓冲
+                    method = null;
+                    break;
+                } else {
+                    method = m;
+                }
+            }
+        }
+        methodCache.put(key, method);
+        return method;
+    }
+
+    private static String getMethodKey(Object object, String methodName) {
+        return object.getClass().getName() + methodName;
+    }
+
+    public static void main(String[] args) {
+        Double d=new Double(3);
+        Integer i=new Integer(2);
+        System.out.println(d+i);
+    }
 }
+

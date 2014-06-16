@@ -654,7 +654,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             int start=Integer.parseInt(ctx.expression_range().expression().get(0).getText());
             int end=Integer.parseInt(ctx.expression_range().expression().get(1).getText());
             int step=start>=end?1:-1;
-            peekCodeLet().code("new RangeIterator(%d,%d,%d)",start,end,step);
+            peekCodeLet().code("new RangeList(%d,%d,%d)",start,end,step);
         } else {
             ParseTree items = ctx.getChild(1);
 
