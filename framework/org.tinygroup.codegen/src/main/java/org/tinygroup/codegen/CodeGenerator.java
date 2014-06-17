@@ -2,10 +2,8 @@ package org.tinygroup.codegen;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +31,8 @@ import com.thoughtworks.xstream.XStream;
 
 public class CodeGenerator{
 	
-	private static final String CODE_FULL_CONTEXT_FILE_REPOSITORY = "codeFullContextFileRepository";
-	private static final String CODE_GENERATER = "codeDocumentGenerater";
+//	private static final String CODE_FULL_CONTEXT_FILE_REPOSITORY = "codeFullContextFileRepository";
+//	private static final String CODE_GENERATER = "codeDocumentGenerater";
 	public static final String JAVA_ROOT="JAVA_ROOT";
 	public static final String JAVA_TEST_ROOT="JAVA_TEST_ROOT";
 	public static final String JAVA_RES_ROOT="JAVA_RES_ROOT";
@@ -89,11 +87,11 @@ public class CodeGenerator{
 		for (MacroDefine macroDefine : macroDefines) {
 		   logger.logMessage(LogLevel.INFO, "开始加载宏文件路径：{0}",macroDefine.getMacroPath());
 		   String macroPath=macroDefine.getMacroPath();
-		   if (StringUtils.startsWith(macroPath, "/") || StringUtils.startsWith(macroPath, "\\")) {
-			   macroPath = StringUtils.substring(macroPath, 1);
-			}
+		   if (!StringUtils.startsWith(macroPath, "/")) {
+			   macroPath = "/"+macroPath;
+		   }
 		   FileObject fileObject=VFS.resolveFile(String.valueOf(context.get(ABSOLUTE_PATH)));
-		   generater.addMacroFile(fileObject.getChild(macroPath));
+		   generater.addMacroFile(fileObject.getFileObject(macroPath));
 		   logger.logMessage(LogLevel.INFO, "宏文件路径：{0}，加载完毕",macroDefine.getMacroPath());
 		}
 		List<TemplateDefine> templateDefines=metaData.getTemplateDefines();
@@ -107,11 +105,11 @@ public class CodeGenerator{
 //			}
 			FileObject templateFileObject=VFS.resolveFile(String.valueOf(context.get(ABSOLUTE_PATH)));
 			logger.logMessage(LogLevel.INFO, "模板文件路径：{0}，加载完毕",templatePath);
-			String fileName = templatePath;
-			if (StringUtils.startsWith(templatePath, "/") || StringUtils.startsWith(templatePath, "\\")) {
-				fileName = StringUtils.substring(fileName, 1);
+			String filePath = templatePath;
+			if (!StringUtils.startsWith(templatePath, "/")) {
+				filePath = "/"+templatePath;
 			}
-			repository.addFileObject(templatePath, templateFileObject.getChild(fileName));
+			repository.addFileObject(templatePath, templateFileObject.getFileObject(filePath));
 			String generateFile=generater.evaluteString(newContext, templateDefine.getFileNameTemplate());
 			File file=new File(generateFile);
 			if(!file.exists()){
@@ -145,24 +143,16 @@ public class CodeGenerator{
 		newContext.setParent(context);
 		newContext.put(TEMPLATE_FILE, templateDefine);
 		String templatePath=templateDefine.getTemplatePath();
-//		if(templatePath.startsWith("/")){
-//			templatePath=CodeGenerator.class.getResource(templatePath).getPath().replaceAll("/", "\\"+File.separator);
-//		}
-//		String filePath=StringUtil.substringBeforeLast(templatePath, File.separator);
-//		if(!filePath.endsWith(File.separator)){
-//			filePath=filePath+File.separator;
-//		}
-		String templateFilePath = templatePath;
-		templateFilePath = StringUtil.substringBeforeLast(templateFilePath, "/");
-		templateFilePath = StringUtil.substringBeforeLast(templateFilePath, "\\");
-		newContext.put("templateFilePath", templateFilePath);
-		String fileName=templatePath;
-		if (StringUtils.indexOf(fileName, "/") > -1) {
-			fileName=StringUtil.substringAfterLast(fileName, "/");
+		String templateFilePath = templatePath.replaceAll("/", "\\"+File.separator);//把/../..路径转化成系统认知的路径格式
+		String path = StringUtil.substringBeforeLast(templateFilePath, File.separator);
+		if(path.startsWith(File.separator)){
+			path=path.substring(1);
 		}
-		if (StringUtils.indexOf(fileName, "\\") > -1) {
-			fileName=StringUtil.substringAfterLast(fileName, "\\");
+		if(path.trim().length()>0&&!path.endsWith(File.separator)){
+			path=path+File.separator;
 		}
+		newContext.put("templateFilePath", path);
+		String fileName=StringUtil.substringAfterLast(templateFilePath, File.separator);
 		newContext.put("templateFileName", StringUtil.substringBeforeLast(fileName, "."));
 		return newContext;
 	}
