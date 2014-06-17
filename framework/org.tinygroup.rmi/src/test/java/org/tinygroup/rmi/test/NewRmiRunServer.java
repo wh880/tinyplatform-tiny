@@ -26,7 +26,7 @@ package org.tinygroup.rmi.test;
 import java.rmi.RemoteException;
 
 import org.tinygroup.rmi.RmiServer;
-import org.tinygroup.rmi.impl.RmiServerLocalL;
+import org.tinygroup.rmi.impl.RmiServerImpl;
 
 public class NewRmiRunServer {
 	
@@ -35,7 +35,7 @@ public class NewRmiRunServer {
 	public static void main(String[] args) {
 		RmiServer localServer = null;
 		try {
-			localServer = new RmiServerLocalL(LOCALIP, 8888);
+			localServer = new RmiServerImpl(LOCALIP, 8888);
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

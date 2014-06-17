@@ -25,7 +25,7 @@ package org.tinygroup.tinypc.impl;
 
 import java.io.IOException;
 
-import org.tinygroup.rmi.impl.RmiServerLocalL;
+import org.tinygroup.rmi.impl.RmiServerImpl;
 import org.tinygroup.tinypc.WorkQueue;
 
 /**
@@ -34,7 +34,7 @@ import org.tinygroup.tinypc.WorkQueue;
 public class JobCenterRemote extends AbstractJobCenter {
 
     public JobCenterRemote(String hostName, int port,String remoteHostName,int remotePort) throws IOException {
-        setRmiServer(new RmiServerLocalL(hostName, port,remoteHostName,remotePort));
+        setRmiServer(new RmiServerImpl(hostName, port,remoteHostName,remotePort));
         setWorkQueue((WorkQueue) getRmiServer().getObject("WorkQueue"));
     }
 }

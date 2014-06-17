@@ -26,7 +26,7 @@ package org.tinygroup.tinypc.rmi;
 import junit.framework.TestCase;
 
 import org.tinygroup.rmi.RmiServer;
-import org.tinygroup.rmi.impl.RmiServerLocalL;
+import org.tinygroup.rmi.impl.RmiServerImpl;
 
 /**
  * Created by luoguo on 14-1-24.
@@ -41,8 +41,8 @@ public class RmiServerTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        localServer = new RmiServerLocalL(SIP,SP);
-        remoteServer = new RmiServerLocalL(CIP,CP,SIP,SP);
+        localServer = new RmiServerImpl(SIP,SP);
+        remoteServer = new RmiServerImpl(CIP,CP,SIP,SP);
 
     }
 

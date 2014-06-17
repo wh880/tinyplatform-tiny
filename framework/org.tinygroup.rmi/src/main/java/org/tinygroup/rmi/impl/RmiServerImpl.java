@@ -42,7 +42,7 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.Verifiable;
 
-public final class RmiServerLocalL extends UnicastRemoteObject implements
+public final class RmiServerImpl extends UnicastRemoteObject implements
 		RmiServer {
 	/**
 	 * 
@@ -64,19 +64,19 @@ public final class RmiServerLocalL extends UnicastRemoteObject implements
 	Map<String, Remote> registeredRemoteObjectMap = new HashMap<String, Remote>();
 	Map<String, Remote> registeredLocalObjectMap = new HashMap<String, Remote>();
 
-	public RmiServerLocalL() throws RemoteException {
+	public RmiServerImpl() throws RemoteException {
 		this("localhost", DEFAULT_RMI_PORT);
 	}
 
-	public RmiServerLocalL(int port) throws RemoteException {
+	public RmiServerImpl(int port) throws RemoteException {
 		this("localhost", port);
 	}
 
-	public RmiServerLocalL(String hostName, int port) throws RemoteException {
+	public RmiServerImpl(String hostName, int port) throws RemoteException {
 		this(hostName, port, null, 0);
 	}
 
-	public RmiServerLocalL(String hostName, int port, String remoteHostName,
+	public RmiServerImpl(String hostName, int port, String remoteHostName,
 			int remotePort) throws RemoteException {
 		if (hostName != null && !"".equals(hostName)) {
 			this.hostName = hostName;

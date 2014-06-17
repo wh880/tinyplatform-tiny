@@ -26,7 +26,7 @@ package org.tinygroup.tinypc.impl;
 import java.io.IOException;
 
 import org.tinygroup.rmi.RmiServer;
-import org.tinygroup.rmi.impl.RmiServerLocalL;
+import org.tinygroup.rmi.impl.RmiServerImpl;
 import org.tinygroup.tinypc.WorkQueue;
 
 /**
@@ -38,7 +38,7 @@ public class JobCenterLocal extends AbstractJobCenter {
     }
 
     public JobCenterLocal(int port) throws IOException {
-        RmiServer rmiServer = new RmiServerLocalL(port);
+        RmiServer rmiServer = new RmiServerImpl(port);
         WorkQueue workQueue = new WorkQueueImpl();
         setWorkQueue(workQueue);
         rmiServer.registerLocalObject(workQueue, "WorkQueue");
@@ -46,7 +46,7 @@ public class JobCenterLocal extends AbstractJobCenter {
     }
     
     public JobCenterLocal(String host,int port) throws IOException {
-    	RmiServer rmiServer = new RmiServerLocalL(host,port);
+    	RmiServer rmiServer = new RmiServerImpl(host,port);
         WorkQueue workQueue = new WorkQueueImpl();
         setWorkQueue(workQueue);
         rmiServer.registerLocalObject(workQueue, "WorkQueue");
