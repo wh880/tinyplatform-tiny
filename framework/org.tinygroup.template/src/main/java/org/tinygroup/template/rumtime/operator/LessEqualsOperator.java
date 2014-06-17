@@ -3,7 +3,7 @@ package org.tinygroup.template.rumtime.operator;
 /**
  * Created by luoguo on 2014/6/5.
  */
-public class LessEqualsOperator extends TwoOperator {
+public class LessEqualsOperator extends TwoConvertOperator {
 
 
     protected Object operation(Object left, Object right) {

@@ -24,7 +24,7 @@ import java.util.Map;
  * Created by luoguo on 2014/6/4.
  */
 public class U {
-    private static TemplateCache<String, Method> methodCache = new TemplateCacheDefault<String, Method>();
+    private static TemplateCache<MethodKey, Method> methodCache = new TemplateCacheDefault<MethodKey, Method>();
     private static PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
 
     private U() {
@@ -40,7 +40,10 @@ public class U {
      */
     public static Object p(Object object, Object name) throws TemplateException {
         try {
-            String methodKey = getMethodKey(object, name.toString());
+            if (object instanceof Map) {
+                return ((Map) object).get(name);
+            }
+            MethodKey methodKey = getMethodKey(object, name.toString());
             if (methodCache.contains(methodKey)) {
                 return methodCache.get(methodKey).invoke(object);
             } else {
@@ -268,7 +271,7 @@ public class U {
     }
 
     Method getMethod(Object object, String methodName) {
-        String key = getMethodKey(object, methodName);
+        MethodKey key = getMethodKey(object, methodName);
         if (methodCache.contains(key)) {
             return methodCache.get(key);
         }
@@ -288,14 +291,30 @@ public class U {
         return method;
     }
 
-    private static String getMethodKey(Object object, String methodName) {
-        return object.getClass().getName() + methodName;
+    private static MethodKey getMethodKey(Object object, String methodName) {
+        return new MethodKey(object.getClass(), methodName);
     }
 
-    public static void main(String[] args) {
-        Double d=new Double(3);
-        Integer i=new Integer(2);
-        System.out.println(d+i);
+    static class MethodKey {
+        MethodKey(Class clazz, String methodName) {
+            this.clazz = clazz;
+            this.methodName = methodName;
+        }
+
+        Class clazz;
+        String methodName;
+
+        public boolean equals(Object object) {
+            if (!MethodKey.class.isInstance(object)) {
+                return false;
+            }
+            MethodKey methodKey = (MethodKey) object;
+            return methodKey.clazz.equals(methodKey.clazz) && methodKey.methodName.equals(methodName);
+        }
+
+        public int hashCode() {
+            return clazz.hashCode() + methodName.hashCode();
+        }
     }
 }
 

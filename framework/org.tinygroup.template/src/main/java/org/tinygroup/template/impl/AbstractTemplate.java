@@ -2,6 +2,7 @@ package org.tinygroup.template.impl;
 
 import org.tinygroup.template.*;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -36,8 +37,9 @@ public abstract class AbstractTemplate implements Template {
     public void render(TemplateContext context, Writer writer) throws TemplateException {
         try {
             context.putSubContext("$currentTemplateContext",getTemplateContext());
-            renderContent(context, writer);
-            writer.flush();
+            BufferedWriter bufferedWriter=new BufferedWriter(writer);
+            renderContent(context, bufferedWriter);
+            bufferedWriter.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
         } finally {
