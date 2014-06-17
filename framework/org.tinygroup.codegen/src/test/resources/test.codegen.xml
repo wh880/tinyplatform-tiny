@@ -1,5 +1,6 @@
 <code-gen-metadata category="javacode" icon="" name="codegen"
-	title="java代码生成" description="java代码生成的元数据文件">
+	title="java代码生成">
+	<description>java代码生成的元数据文件</description>
 	<template-define template-path="/helloworld.javapage"
 		file-name-template="${JAVA_TEST_ROOT}$codeGenUtil.packageToPath($beanPackageName)${className}.java">
 	</template-define>
