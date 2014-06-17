@@ -23,4 +23,10 @@
 	<bean id="tinydbUpdateService" name="tinydbUpdateService" scope="prototype"
 		class="org.tinygroup.flowbasiccomponent.TinydbUpdateService">
 	</bean>
+	<bean id="tinydbPageQueryService" name="tinydbPageQueryService" scope="prototype"
+		class="org.tinygroup.flowbasiccomponent.TinydbPageQueryService">
+	</bean>
+	<bean id="tinydbSqlQueryService" name="tinydbSqlQueryService" scope="prototype"
+		class="org.tinygroup.flowbasiccomponent.TinydbSqlQueryService">
+	</bean>
 </beans>

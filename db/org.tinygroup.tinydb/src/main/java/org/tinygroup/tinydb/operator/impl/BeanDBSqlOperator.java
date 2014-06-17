@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.exception.DBRuntimeException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.order.OrderBean;
@@ -252,7 +253,11 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 	}
 
 	private String buildSqlFuction(String sql) {
-		return getDialect().buildSqlFuction(sql);
+		Dialect dialect= getDialect();
+		if(dialect!=null){
+			return dialect.buildSqlFuction(sql);
+		}
+		return sql;
 	}
 
 	public int account(String sql, Object... parameters) {
