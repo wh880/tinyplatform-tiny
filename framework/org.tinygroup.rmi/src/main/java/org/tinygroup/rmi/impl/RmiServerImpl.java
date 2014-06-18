@@ -24,7 +24,6 @@
 package org.tinygroup.rmi.impl;
 
 import java.io.Serializable;
-import java.net.ConnectException;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -214,7 +213,8 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 				logger.errorMessage(
 						"获取RmiServer:" + remoteHostName + "时出错,该对象未曾注册", e);
 			}catch (RemoteException e1) {
-			
+				logger.errorMessage(
+						"获取RmiServer:" + remoteHostName + "时出错,该对象未曾注册", e1);
 			}
 		
 		for (String name : registeredLocalObjectMap.keySet()) {
