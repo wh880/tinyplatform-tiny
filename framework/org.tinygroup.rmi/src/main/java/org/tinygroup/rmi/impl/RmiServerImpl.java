@@ -124,7 +124,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			}
 		}
 		try {
-			registry.rebind(hostName, this);
+			registry.rebind(getKeyName(hostName, port+""), this);
 		} catch (AccessException e) {
 			throw new RuntimeException(e);
 		} catch (RemoteException e) {
@@ -142,11 +142,11 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		System.setProperty("java.rmi.server.hostname", remoteHostName);
 		remoteRegistry = LocateRegistry.getRegistry(remoteHostName, remotePort);
 		try {
-			remoteServer = (RmiServer) remoteRegistry.lookup(remoteHostName);
+			remoteServer = (RmiServer) remoteRegistry.lookup(getKeyName(remoteHostName, remotePort+""));
 		} catch (NotBoundException e) {
 			logger.errorMessage(
-					"获取RmiServer:" + remoteHostName + "时出错,该对象未曾注册", e);
-			throw new RuntimeException("获取RmiServer:" + remoteHostName
+					"获取远端服务器:" + remoteHostName + "时出错,该对象未曾注册", e);
+			throw new RuntimeException("获取远端服务器:" + remoteHostName
 					+ "时出错,该对象未曾注册", e);
 		}
 		return remoteRegistry;
@@ -172,13 +172,13 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 
 		public void run() {
 			while (!stop) {
-				logger.logMessage(LogLevel.DEBUG, "开始检测远端服务器的可用性");
+				
 				try {
 					sleep(breathInterval * MILLISECOND_PER_SECOND);
 				} catch (InterruptedException e) {
 					continue;
 				}
-
+				logger.logMessage(LogLevel.DEBUG, "开始检测远端服务器的可用性");
 				try {
 					remoteRegistry.list();
 					logger.logMessage(LogLevel.DEBUG, "远端服务器正常");
@@ -211,10 +211,10 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 					.lookup(remoteHostName);
 			} catch (NotBoundException e) {
 				logger.errorMessage(
-						"获取RmiServer:" + remoteHostName + "时出错,该对象未曾注册", e);
+						"获取远端服务器:" + remoteHostName + "时出错,该对象未曾注册", e);
 			}catch (RemoteException e1) {
 				logger.errorMessage(
-						"获取RmiServer:" + remoteHostName + "时出错,该对象未曾注册", e1);
+						"连接远端服务器:" + remoteHostName + "失败", e1);
 			}
 		
 		for (String name : registeredLocalObjectMap.keySet()) {
