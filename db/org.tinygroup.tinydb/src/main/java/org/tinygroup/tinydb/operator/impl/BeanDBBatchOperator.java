@@ -15,6 +15,12 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.tinygroup.tinydb.Bean;
@@ -24,12 +30,6 @@ import org.tinygroup.tinydb.exception.DBRuntimeException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.util.TinyDBUtil;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
  abstract class BeanDBBatchOperator<K> extends
 		BeanDBSingleOperator<K> implements DBOperator<K> {
 
@@ -38,20 +38,8 @@ import java.util.List;
 	}
 
 	public Bean[] getBeans(Bean bean) {
-		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), getSchema());
-		List<String> conditionColumns = new ArrayList<String>();
-		List<Object> params = new ArrayList<Object>();
-		for (ColumnConfiguration column : table.getColumns()) {
-			String columnsName = column.getColumnName();
-			String propertyName = getBeanDbNameConverter()
-					.dbFieldNameToPropertyName(columnsName);
-			if (bean.containsKey(propertyName)) {
-				conditionColumns.add(columnsName);
-				params.add(bean.get(propertyName));
-			}
-		}
-		String sql = getQuerySqlAndParamKeys(bean.getType(),conditionColumns);
+		List<Object> params = getConditionParams(bean);
+		String sql = getSelectSql(bean);
 		List<Bean> beans = findBeansByList(sql, bean.getType(), getSchema(),
 				params);
 		if (beans == null || beans.size() == 0) {
@@ -62,6 +50,35 @@ import java.util.List;
 		}
 		return TinyDBUtil.listToArray(beans);
 	}
+	
+	public Bean[] getBeans(Bean bean, int start, int limit) {
+		List<Object> params = getConditionParams(bean);
+		String sql = getSelectSql(bean);
+		List<Bean> beans = findBeansByListForPage(sql, bean.getType(), getSchema(),start,limit,params);
+		if (beans == null || beans.size() == 0) {
+			return null;
+		}
+		for (Bean queryBean : beans) {
+			processRelation(queryBean, getRelation(), new QueryRelationCallBack());
+		}
+		return TinyDBUtil.listToArray(beans);
+	}
+
+	private List<Object> getConditionParams(Bean bean) {
+		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
+				bean.getType(), getSchema());
+		List<Object> params = new ArrayList<Object>();
+		for (ColumnConfiguration column : table.getColumns()) {
+			String columnsName = column.getColumnName();
+			String propertyName = getBeanDbNameConverter()
+					.dbFieldNameToPropertyName(columnsName);
+			if (bean.containsKey(propertyName)) {
+				params.add(bean.get(propertyName));
+			}
+		}
+		return params;
+	}
+	
 
 	public Bean[] batchInsert(Bean[] beans) {
 		Bean[] insertBeans = insertTopBeans(beans);

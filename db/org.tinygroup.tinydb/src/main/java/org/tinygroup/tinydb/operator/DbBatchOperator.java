@@ -51,6 +51,16 @@ public interface DbBatchOperator<K> {
 	Bean[] getBeansById(K[] beanIds);
 
 	Bean[] getBeans(Bean bean);
+	
+
+	/**
+	 * 分页查询bean
+	 * @param bean
+	 * @param start
+	 * @param limit
+	 * @return
+	 */
+	Bean[] getBeans(Bean bean,int start, int limit);
 
 	// 下面是根据集合
 	Bean[] batchInsert(Collection<Bean> beans);

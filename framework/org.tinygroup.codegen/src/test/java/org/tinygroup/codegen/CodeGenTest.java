@@ -25,7 +25,7 @@ public class CodeGenTest extends TestCase {
 		File javaFile=new File(testJavaPath+CodeGenUtil.packageToPath("org.tinygroup.codegen")+"HelloWorld.java");
 		assertTrue(javaFile.exists());
 		javaFile.deleteOnExit();
-		File xmlFile=new File(testResourcePath+"helloworld.xml");
+		File xmlFile=new File(testResourcePath+"test"+File.separator+"helloworld.xml");
 		assertTrue(xmlFile.exists());
 		xmlFile.deleteOnExit();
 	}

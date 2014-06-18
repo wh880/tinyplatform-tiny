@@ -405,5 +405,4 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 
 		}
 	}
-
 }
