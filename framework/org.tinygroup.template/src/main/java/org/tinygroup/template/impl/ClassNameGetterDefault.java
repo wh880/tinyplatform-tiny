@@ -26,8 +26,9 @@ public class ClassNameGetterDefault implements ClassNameGetter {
         StringBuffer sb = new StringBuffer(200);
         //除了下面的几种情况，全部替换成"_"
         for (char c : path.toCharArray()) {
-            if (c == '/' || c == '.') {
+            if (c == '/' ) {
                 sb.append(c);
+                sb.append("p_");
             } else if (c >= '0' && c <= '9') {
                 sb.append(c);
             } else if (c >= 'a' && c <= 'z') {
@@ -49,12 +50,6 @@ public class ClassNameGetterDefault implements ClassNameGetter {
         if (name.startsWith("/")) {
             name = name.substring(1);
         }
-        int pos = name.indexOf('.');
-        if (pos >= 0) {
-            //去掉文件扩展名
-            name = name.substring(0, pos);
-        }
-        name = name + "Template";
         ClassName className = new ClassName();
         String fullClassName = name.replaceAll("/", ".");
         className.setClassName(fullClassName);
