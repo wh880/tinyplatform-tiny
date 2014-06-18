@@ -1,10 +1,22 @@
+/**
+ *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *
+ *  Licensed under the GPL, Version 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.gnu.org/licenses/gpl.html
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package org.tinygroup.template.impl;
 
 import org.tinygroup.template.*;
-import org.tinygroup.template.function.EvaluateTemplateFunction;
-import org.tinygroup.template.function.FormatterTemplateFunction;
-import org.tinygroup.template.function.GetResourceContentFunction;
-import org.tinygroup.template.function.InstanceOfTemplateFunction;
+import org.tinygroup.template.function.*;
 
 import java.io.CharArrayWriter;
 import java.io.IOException;
@@ -63,6 +75,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         addTemplateFunction(new InstanceOfTemplateFunction());
         addTemplateFunction(new GetResourceContentFunction());
         addTemplateFunction(new EvaluateTemplateFunction());
+        addTemplateFunction(new CallMacroFunction());
     }
 
     public TemplateContext getTemplateContext() {
@@ -180,6 +193,7 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
         try {
+            context.put("$templateContext",context);
             Template template = getTemplate(path);
             if (template != null) {
                 List<Template> layoutPaths = getLayoutList(template.getPath());
@@ -237,7 +251,7 @@ public class TemplateEngineDefault implements TemplateEngine {
                 if (layoutPath != null) {
                     Template layout = loader.getLayout(layoutPath);
                     if (layout == null) {
-                        String defaultTemplateName = path + DEFAULT + templateFileName.substring(templateFileName.lastIndexOf('.'));
+                        String defaultTemplateName = path + DEFAULT + layoutPath.substring(layoutPath.lastIndexOf('.'));
                         layout = loader.getLayout(defaultTemplateName);
                     }
                     if (layout != null) {

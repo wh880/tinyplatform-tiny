@@ -147,7 +147,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     public CodeBlock visitExpr_function_call(@NotNull TinyTemplateParser.Expr_function_callContext ctx) {
         String functionName = ctx.getChild(0).getText();
 
-        peekCodeLet().codeBefore("getTemplateEngine().executeFunction(\"").code(functionName).code("\"");
+        peekCodeLet().codeBefore("getTemplateEngine().executeFunction(this,$context,\"").code(functionName).code("\"");
         TinyTemplateParser.Expression_listContext list = ctx.expression_list();
         if (list != null) {
             peekCodeLet().code(",");
@@ -184,8 +184,9 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     private CodeBlock constructMethod(String name) {
         CodeBlock block = new CodeBlock();
         block.header(CodeLet.lineCodeLet("public %s() {", name));
+        block.subCode(String.format("super(\"%s\");",name));
         block.subCode("String[] args = {" + peekCodeLet() + "};");
-        block.subCode("init(\"%s\", args);");
+        block.subCode(String.format("init(\"%s\", args);",name));
         block.footer(CodeLet.lineCodeLet("}"));
         return block;
     }
