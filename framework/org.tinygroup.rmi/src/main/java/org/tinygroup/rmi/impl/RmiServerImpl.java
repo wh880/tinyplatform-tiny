@@ -87,11 +87,13 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		try {
 			getRemoteRegistry();
 			bindThis();
-			if (remoteRegistry != null)
+			if (remoteRegistry != null){
 				startHeart();
+			}
+				
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (RemoteException e) {
+			logger.errorMessage("连接远端服务器时发生异常",e );
 			startHeart();
 		}
 
@@ -143,7 +145,6 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		try {
 			remoteServer = (RmiServer) remoteRegistry.lookup(remoteHostName);
 		} catch (NotBoundException e) {
-
 			logger.errorMessage(
 					"获取RmiServer:" + remoteHostName + "时出错,该对象未曾注册", e);
 			throw new RuntimeException("获取RmiServer:" + remoteHostName
@@ -206,19 +207,15 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 	private void reReg() {
 		
 		
-		try {
-			remoteServer = (RmiServer) remoteRegistry
-				.lookup(remoteHostName);
-		} catch (AccessException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (RemoteException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (NotBoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+			try {
+				remoteServer = (RmiServer) remoteRegistry
+					.lookup(remoteHostName);
+			} catch (NotBoundException e) {
+				logger.errorMessage(
+						"获取RmiServer:" + remoteHostName + "时出错,该对象未曾注册", e);
+			}catch (RemoteException e1) {
+			
+			}
 		
 		for (String name : registeredLocalObjectMap.keySet()) {
 			try {
