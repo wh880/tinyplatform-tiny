@@ -15,7 +15,7 @@
  */
 package org.tinygroup.tinyspider;
 
-import org.tinygroup.context.Context;
+import java.util.Map;
 
 /**
  * 网络爬虫
@@ -55,9 +55,9 @@ public interface Spider {
     /**
      * 处理url
      *  @param url
-     * @param context
+     * @param parameters
      */
-    void processUrl(String url, Context context) throws Exception;
+    void processUrl(String url, Map<String,Object>parameters) throws Exception;
 
     /**
      * 设置URL仓库

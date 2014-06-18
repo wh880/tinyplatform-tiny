@@ -28,6 +28,7 @@ import org.tinygroup.tinyspider.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SpiderImpl implements Spider {
     private static Logger logger = LoggerFactory.getLogger(SpiderImpl.class);
@@ -81,7 +82,7 @@ public class SpiderImpl implements Spider {
 
     }
 
-    public void processUrl(String url, Context context) throws Exception {
+    public void processUrl(String url, Map<String,Object>parameters) throws Exception {
         if (urlRepository == null) {
             urlRepository = new UrlRepositoryMemory();
         }
@@ -95,7 +96,7 @@ public class SpiderImpl implements Spider {
         for (SiteVisitor siteVisitor : siteVisitorList) {
             if (siteVisitor.isMatch(url)) {
                 try {
-                    content = siteVisitor.getContent(url, new Context2Map(context), responseCharset);
+                    content = siteVisitor.getContent(url, parameters, responseCharset);
                 } catch (Exception e) {
                     logger.errorMessage("不能载入url:{},错误原因：{}", e, url, e.getMessage());
                     return;
@@ -110,26 +111,26 @@ public class SpiderImpl implements Spider {
         }
         urlRepository.putUrlWithContent(url, content);
         HtmlDocument document = new HtmlStringParser().parse(content);
-        processWatcher(url, document, context);
+        processWatcher(url, document, parameters);
     }
 
-    private void processWatcher(String url, HtmlDocument document, Context context) throws Exception {
+    private void processWatcher(String url, HtmlDocument document, Map<String,Object>parameters) throws Exception {
         for (Watcher watcher : watcherList) {
-            processorWatcher(url, document.getRoot(), context, watcher);
+            processorWatcher(url, document.getRoot(), parameters, watcher);
         }
     }
 
-    private void processorWatcher(String url, HtmlNode root, Context context, Watcher watcher) throws Exception {
+    private void processorWatcher(String url, HtmlNode root, Map<String,Object>parameters, Watcher watcher) throws Exception {
         NodeFilter<HtmlNode> nodeFilter = watcher.getNodeFilter();
         nodeFilter.init(root);
         List<HtmlNode> nodeList = nodeFilter.findNodeList();
         for (HtmlNode htmlNode : nodeList) {
             for (Processor processor : watcher.getProcessorList()) {
-                processor.process(url, htmlNode, context);
+                processor.process(url, htmlNode, parameters);
             }
             if (watcher.getSubWatchers() != null) {
                 for (Watcher subWatcher : watcher.getSubWatchers()) {
-                    processorWatcher(url, htmlNode, context, subWatcher);
+                    processorWatcher(url, htmlNode, parameters, subWatcher);
                 }
             }
         }

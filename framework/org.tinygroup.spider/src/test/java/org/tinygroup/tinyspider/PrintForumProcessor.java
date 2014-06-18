@@ -15,15 +15,15 @@
  */
 package org.tinygroup.tinyspider;
 
-import java.util.List;
-
-import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.parser.filter.FastNameFilter;
 
+import java.util.List;
+import java.util.Map;
+
 public class PrintForumProcessor implements Processor {
 
-	public void process(String url, HtmlNode node, Context context) {
+	public void process(String url, HtmlNode node, Map<String,Object> parameters) {
 		FastNameFilter<HtmlNode> filter = new FastNameFilter<HtmlNode>(node);
 		filter.setNodeName("h3");
 		filter.setIncludeNode("a");

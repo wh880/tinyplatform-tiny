@@ -2,9 +2,10 @@ package org.tinygroup.tinyspider.impl;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.tinyspider.Processor;
+
+import java.util.Map;
 
 /**
  * Created by luoguo on 2014/5/30.
@@ -15,8 +16,8 @@ public class ContentReadProcessor implements Processor {
     @XStreamAsAttribute
     String name;
 
-    public void process(String url, HtmlNode node, Context context) throws Exception {
-        context.put(name, node.getPureText());
+    public void process(String url, HtmlNode node, Map<String,Object> parameters) throws Exception {
+        parameters.put(name, node.getPureText());
     }
 
     public String getName() {

@@ -15,13 +15,14 @@
  */
 package org.tinygroup.tinyspider.jokeji.sample4;
 
-import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.tinyspider.Processor;
 import org.tinygroup.tinyspider.UrlUtils;
 
+import java.util.Map;
+
 public class JokejiHrefProcessor implements Processor {
-    public void process(String url, HtmlNode node, Context context) {
+    public void process(String url, HtmlNode node, Map<String,Object> parameters) {
         String href = node.getAttribute("href");
         if (href == null || href.toLowerCase().startsWith("javascript:")) {
             return;

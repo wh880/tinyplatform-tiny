@@ -15,16 +15,17 @@
  */
 package org.tinygroup.tinyspider.jokeji.sample4;
 
-import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.tinyspider.Processor;
+
+import java.util.Map;
 
 /**
  * Created by luoguo on 14-3-3.
  */
 public class JokeTitleProcessor implements Processor {
 
-    public void process(String url, HtmlNode node, Context context) {
+    public void process(String url, HtmlNode node, Map<String,Object> parameters) {
         System.out.println("=========================================");
         System.out.println(node.getParent().getContent());
     }

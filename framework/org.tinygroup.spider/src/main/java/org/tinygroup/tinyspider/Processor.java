@@ -15,8 +15,9 @@
  */
 package org.tinygroup.tinyspider;
 
-import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
+
+import java.util.Map;
 
 /**
  * 处理器
@@ -28,7 +29,7 @@ public interface Processor {
      * 处理节点
      *  @param url  当前页面的Url
      * @param node 命中的节点
-     * @param context
+     * @param parameters
      */
-    void process(String url, HtmlNode node, Context context) throws Exception;
+    void process(String url, HtmlNode node, Map<String,Object> parameters) throws Exception;
 }

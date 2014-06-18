@@ -15,8 +15,9 @@
  */
 package org.tinygroup.tinyspider;
 
-import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
+
+import java.util.Map;
 
 public class OsChinaCategoryProcessor implements Processor {
     String categoryTitle;
@@ -25,7 +26,7 @@ public class OsChinaCategoryProcessor implements Processor {
         this.categoryTitle = categoryTitle;
     }
 
-    public void process(String url, HtmlNode node, Context context) throws Exception{
+    public void process(String url, HtmlNode node, Map<String,Object> parameters) throws Exception{
         HtmlNode a = node.getSubNodeRecursively("h2").getSubNode("a");
         String href = a.getAttribute("href");
         String topicId = href.substring(href.lastIndexOf('/') + 1);

@@ -15,17 +15,18 @@
  */
 package org.tinygroup.tinyspider.impl;
 
-import org.tinygroup.context.Context;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinyspider.Processor;
 
+import java.util.Map;
+
 public class PrintProcessor implements Processor {
     private static Logger logger = LoggerFactory.getLogger(PrintProcessor.class);
 
-    public void process(String url, HtmlNode node, Context context) {
+    public void process(String url, HtmlNode node, Map<String,Object> parameter ) {
         logger.logMessage(LogLevel.INFO, "url:{}", url);
         logger.logMessage(LogLevel.INFO, "content:\n{}", node.toString());
     }
