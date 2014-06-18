@@ -28,77 +28,49 @@ import java.rmi.RemoteException;
 import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerImpl;
 
-public class NewRmiRunClient {
-	private static String SERVERIP = "192.168.84.23";
+public class NewRmiRunServerForReconnect {
+	
 	private static String LOCALIP = "192.168.84.23";
 
 	public static void main(String[] args) {
-		RmiServer remoteServer = null;
-		
+		RmiServer localServer = null;
 		try {
-			remoteServer = new RmiServerImpl(LOCALIP, 7777,SERVERIP,8888);
-		
+			localServer = new RmiServerImpl(LOCALIP, 8888);
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+//		RmiUtil.start((Runnable)localServer);
 		try {
-			remoteServer.registerLocalObject(new HelloImpl(), "hello1");
-			
+			localServer.registerLocalObject(new HelloImpl(), "hello");
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		NewRmiRunClient c = new NewRmiRunClient(remoteServer);
-		c.run();
+		NewRmiRunServerForReconnect r = new NewRmiRunServerForReconnect();
+		r.runThread(localServer);
 		
 	}
 
-	private RmiServer remoteServer;
-
-	public NewRmiRunClient(RmiServer remoteServer) {
-		this.remoteServer = remoteServer;
-	}
-
-	public void run() {
-		MyThread t = new MyThread();
-		t.run();
+	public void runThread(RmiServer localServer) {
+		MyThread t = new NewRmiRunServerForReconnect.MyThread(localServer);
+		t.start();
 	}
 
 	class MyThread extends Thread {
-		boolean end = false;
+		RmiServer localServer;
+		public MyThread(RmiServer localServer){
+			this.localServer = localServer;
+		}
+		private boolean end = false;
 
 		public void run() {
 			while (!end) {
-				hello();
 				try {
-					sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
+					sleep(1000);
+				
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
-
-		}
-
-		public void hello() {
-			Hello hello = null;
-			try {
-				hello = remoteServer.getObject("hello");
-			} catch (Exception e) {
-				e.printStackTrace();
-				// throw new RuntimeException("获取对象失败"+e.getMessage());
-			}
-
-			try {
-				String info = hello.sayHello("abc");
-//				System.out.println(info);
-				if (!"Hello,abc".equals(info)) {
-					throw new RuntimeException("执行结果的字符串不匹配");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				// throw new RuntimeException("执行方法失败:"+e.getMessage());
 			}
 		}
 	}
