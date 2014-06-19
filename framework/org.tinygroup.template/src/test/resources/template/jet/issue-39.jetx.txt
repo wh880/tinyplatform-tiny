@@ -1,4 +1,0 @@
-header
-jetbrick
-    hello from main
-footer

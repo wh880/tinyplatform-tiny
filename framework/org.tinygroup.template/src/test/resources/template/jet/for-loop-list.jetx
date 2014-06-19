@@ -1,4 +1,0 @@
-#set ( items = ["a","b","c","d"])
-#for (x : items)
-    ${x}
-#end

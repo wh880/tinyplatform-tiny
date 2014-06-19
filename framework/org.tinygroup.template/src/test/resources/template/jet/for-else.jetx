@@ -1,5 +1,0 @@
-#for(item: [])
-    ${item}
-#else
-    empty of list
-#end

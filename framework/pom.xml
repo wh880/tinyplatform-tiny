@@ -9,7 +9,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>org.tinygroup.compiler</module>
-        <module>org.tinygroup.template</module>
         <module>org.tinygroup.dbf</module>
         <module>org.tinygroup.message</module>
         <module>org.tinygroup.ini</module>

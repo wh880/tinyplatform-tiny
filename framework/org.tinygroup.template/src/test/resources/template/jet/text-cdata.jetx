@@ -1,4 +1,0 @@
-#[[
-    #if(test) ${xxx}
-    Hello World!
-]]#

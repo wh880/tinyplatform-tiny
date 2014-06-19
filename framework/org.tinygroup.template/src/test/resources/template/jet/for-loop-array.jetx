@@ -1,3 +1,0 @@
-#for ( x : array)
-    ${x}
-#end

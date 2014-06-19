@@ -1,7 +1,0 @@
-#set(obj = "123")
-
- #macro test(status)
-          aaaa ${status}
- #end
-  #test(0)
-  #test(1)
