@@ -104,6 +104,7 @@ public class HtmlNode extends NodeImpl<HtmlNode, HtmlNodeType> {
         str = str.replaceAll("<", "&lt;");
         str = str.replaceAll(">", "&gt;");
         str = str.replaceAll("\"", "&quot;");
+        str = str.replaceAll(" ", "&nbsp;");
         str = str.replaceAll("'", "&apos;");
         return str;
     }
@@ -113,6 +114,7 @@ public class HtmlNode extends NodeImpl<HtmlNode, HtmlNodeType> {
         String str = string;
         str = str.replaceAll("&amp;", "&");
         str = str.replaceAll("&lt;", "<");
+        str = str.replaceAll("&nbsp;", " ");
         str = str.replaceAll("&gt;", ">");
         str = str.replaceAll("&quot;", "\"");
         str = str.replaceAll("&apos;", "'");
