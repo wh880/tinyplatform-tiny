@@ -39,6 +39,7 @@ import java.util.Map;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.rmi.ConnectTrigger;
 import org.tinygroup.rmi.RmiServer;
 
 public final class RmiServerImpl extends UnicastRemoteObject implements
@@ -61,6 +62,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 	Map<String, Remote> registeredRemoteObjectMap = new HashMap<String, Remote>();
 	Map<String, Remote> registeredLocalObjectMap = new HashMap<String, Remote>();
 	HeartThread heartThread = new HeartThread();
+	Map<String,List<ConnectTrigger>> triggers = new HashMap<String, List<ConnectTrigger>>();
 
 	public RmiServerImpl() throws RemoteException {
 		this("localhost", DEFAULT_RMI_PORT);
@@ -161,6 +163,16 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		heartThread.stop();
 	}
 
+	public void addTrigger(ConnectTrigger trigger)throws RemoteException{
+		String type = trigger.getType();
+		if(triggers.containsKey(type)){
+			triggers.get(type).add(trigger);
+		}else{
+			List<ConnectTrigger> list = new ArrayList<ConnectTrigger>();
+			list.add(trigger);
+			triggers.put(type, list);
+		}
+	}
 	class HeartThread extends Thread implements Serializable {
 		private static final int MILLISECOND_PER_SECOND = 1000;
 		private volatile boolean stop = false;
@@ -196,6 +208,10 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 				if (!checkRemoteHasThis()) {
 					logger.logMessage(LogLevel.DEBUG, "远端服务器上不存在本地服务器信息");
 					reReg();
+					List<ConnectTrigger> list = triggers.get(ConnectTrigger.REREG);
+					for(ConnectTrigger trigger:list){
+						trigger.deal();
+					}
 
 				}
 				logger.logMessage(LogLevel.DEBUG, "检测远端服务器的可用性完成");
@@ -207,8 +223,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		
 		
 			try {
-				remoteServer = (RmiServer) remoteRegistry
-					.lookup(remoteHostName);
+				remoteServer = (RmiServer) remoteRegistry.lookup(getKeyName(remoteHostName, remotePort+""));
 			} catch (NotBoundException e) {
 				logger.errorMessage(
 						"获取远端服务器:" + remoteHostName + "时出错,该对象未曾注册", e);

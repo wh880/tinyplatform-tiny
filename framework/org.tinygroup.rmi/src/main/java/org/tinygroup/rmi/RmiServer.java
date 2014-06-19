@@ -36,7 +36,7 @@ import java.util.List;
  */
 public interface RmiServer extends Remote,Serializable{
     int DEFAULT_RMI_PORT = 8828;
-
+    void addTrigger(ConnectTrigger trigger)throws RemoteException;
     /**
      * 返回本地对象注册表
      *
