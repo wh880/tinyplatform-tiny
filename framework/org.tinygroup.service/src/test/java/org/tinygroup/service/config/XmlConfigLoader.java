@@ -39,7 +39,7 @@ public class XmlConfigLoader extends XmlConfigServiceLoader {
 		serviceMethod.setLocalName("你好");
 		serviceMethod.setServiceId("hello");
 		serviceMethod.setMethodName("sayHello");
-		ServiceResult serviceResult = new ServiceResult();
+		ServiceParameter serviceResult = new ServiceParameter();
 		serviceResult.setArray(false);
 		serviceResult.setRequired(true);
 		serviceResult.setType("java.lang.String");

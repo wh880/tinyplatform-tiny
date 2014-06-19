@@ -34,7 +34,7 @@ public class ServiceMethod {
 	@XStreamAlias("service-parameters")
 	private List<ServiceParameter> serviceParameters;
 	@XStreamAlias("service-result")
-	private ServiceResult serviceResult;
+	private ServiceParameter serviceResult;
 	@XStreamAsAttribute
 	@XStreamAlias("method-name")
 	private String methodName;
@@ -67,11 +67,11 @@ public class ServiceMethod {
 		this.serviceParameters = serviceParameters;
 	}
 
-	public ServiceResult getServiceResult() {
+	public ServiceParameter getServiceResult() {
 		return serviceResult;
 	}
 
-	public void setServiceResult(ServiceResult serviceResult) {
+	public void setServiceResult(ServiceParameter serviceResult) {
 		this.serviceResult = serviceResult;
 	}
 

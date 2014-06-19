@@ -187,7 +187,9 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 			descriptor.setName(serviceParameter.getName());
 			descriptor.setRequired(serviceParameter.isRequired());
 			descriptor.setValidatorSence(serviceParameter.getValidatorScene());
+			descriptor.setTitle(serviceParameter.getLocalName());
 			descriptor.setCollectionType(serviceParameter.getCollectionType());
+			descriptor.setDescription(serviceParameter.getDescription());
 			inputParameterDescriptors.add(descriptor);
 		}
 		// ==================入参处理 end========================
@@ -201,12 +203,16 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 			NoSuchMethodException {
 		// ==================出参处理 begin========================
 		if (serviceMethod.getServiceResult() != null) {
-			ServiceResult serviceResult = serviceMethod.getServiceResult();
+			ServiceParameter serviceResult = serviceMethod.getServiceResult();
 			Parameter descriptor = new Parameter();
 			descriptor.setType(serviceResult.getType());
 			descriptor.setArray(serviceResult.isArray());
 			descriptor.setRequired(serviceResult.isRequired());
 			descriptor.setName(serviceResult.getName());
+			descriptor.setValidatorSence(serviceResult.getValidatorScene());
+			descriptor.setTitle(serviceResult.getLocalName());
+			descriptor.setCollectionType(serviceResult.getCollectionType());
+			descriptor.setDescription(serviceResult.getDescription());
 			serviceProxy.setOutputParameter(descriptor);
 			List<Parameter> outputParameterDescriptors = new ArrayList<Parameter>();
 			outputParameterDescriptors.add(descriptor);
