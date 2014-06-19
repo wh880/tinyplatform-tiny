@@ -13,6 +13,8 @@ import org.tinygroup.cepcorepc.ScWork;
 import org.tinygroup.cepcorepc.ScWorker;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.central.Node;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.rmi.RemoteObject;
 import org.tinygroup.tinypc.Foreman;
 import org.tinygroup.tinypc.JobCenter;
@@ -21,7 +23,7 @@ import org.tinygroup.tinypc.impl.ForemanSelectOneWorker;
 import org.tinygroup.tinypc.impl.JobCenterLocal;
 
 public class ScOperator implements PcCepOperator, RemoteObject {
-
+	private static Logger logger = LoggerFactory.getLogger(ScOperator.class);
 	private static final long serialVersionUID = 6587086087705014319L;
 	private Map<Node, List<ServiceInfo>> arServices = new HashMap<Node, List<ServiceInfo>>();
 	private JobCenter jobCenter = null;
@@ -64,8 +66,9 @@ public class ScOperator implements PcCepOperator, RemoteObject {
 		if (jobCenter == null) {
 			try {
 				jobCenter = new JobCenterLocal(ip, port);
+				
 			} catch (IOException e) {
-				e.printStackTrace();
+				throw new RuntimeException("创建服务器失败",e);
 			}
 		}
 		return jobCenter;
@@ -86,7 +89,8 @@ public class ScOperator implements PcCepOperator, RemoteObject {
 			jobCenter.registerForeman(cepForeman);
 			jobCenter.registerForeman(arForeman);
 		} catch (RemoteException e) {
-			e.printStackTrace();
+			logger.errorMessage("初始化SC服务器的Foreman/ScWorker数据时出错",e);
+			
 		}
 	}
 

@@ -8,7 +8,6 @@ import java.util.Map;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.CEPCoreNodeManager;
 import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcorepc.PcCepCore;
 import org.tinygroup.cepcorepc.PcCepOperator;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
@@ -17,7 +16,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
-public abstract class PcCepCoreImpl implements CEPCore, PcCepCore {
+public abstract class PcCepCoreImpl implements CEPCore{
 	private static Logger logger = LoggerFactory.getLogger(PcCepCoreImpl.class);
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
 	private Map<String, EventProcessor> processorMap = new HashMap<String, EventProcessor>();

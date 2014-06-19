@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcorepc.impl.OperatorUtil;
 import org.tinygroup.cepcorepc.impl.ServicePcEventProcessor;
@@ -20,7 +21,7 @@ import org.tinygroup.tinypc.Worker;
 public class ArWorker implements Worker {
 	private static Logger logger = LoggerFactory.getLogger(ArWorker.class);
 	private static final long serialVersionUID = -8302946955163643890L;
-	private PcCepCore core;
+	private CEPCore core;
 	private String id;
 	private Map<String, EventProcessor> eventprocessors = new HashMap<String, EventProcessor>();
 
@@ -28,11 +29,11 @@ public class ArWorker implements Worker {
 		this.id = id;
 	}
 
-	public PcCepCore getCore() {
+	public CEPCore getCore() {
 		return core;
 	}
 
-	public void setCore(PcCepCore core) {
+	public void setCore(CEPCore core) {
 		this.core = core;
 	}
 

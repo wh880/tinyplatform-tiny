@@ -15,6 +15,8 @@ import org.tinygroup.cepcorepc.PcCepOperator;
 import org.tinygroup.cepcorepc.ScWork;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.central.Node;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.rpc.CEPCoreRMIRemoteImpl;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinypc.JobCenter;
@@ -30,8 +32,9 @@ public class ArOperator implements PcCepOperator {
 	private CEPCoreRemoteInterface remoteImpl = new CEPCoreRMIRemoteImpl();
 	private Node localNode;
 	private JobCenter jobCenter;
-	private PcCepCore cep;
+	private CEPCore cep;
 	private ArWorker arWorker;
+	private Logger logger = LoggerFactory.getLogger(ArOperator.class);
 
 	public ArOperator(String ip, String port, String scIp, String scPort) {
 		this.ip = ip;
@@ -40,7 +43,7 @@ public class ArOperator implements PcCepOperator {
 		this.remotePort = scPort;
 	}
 
-	public void setCep(PcCepCore cep){
+	public void setCep(CEPCore cep){
 		this.cep =cep;
 	}
 	protected Node getNode() {
@@ -68,13 +71,18 @@ public class ArOperator implements PcCepOperator {
 	}
 
 	public void startCEPCore(CEPCore cep) {
-		getJobCenter();
+		JobCenter j = getJobCenter();
 		init();
+		try {
+			j.getRmiServer().addTrigger(new ArReConnectTrigger(this));
+		} catch (RemoteException e) {
+			logger.errorMessage("添加重连触发器时出错",e);
+		}
 		remoteImpl.startCEPCore(cep, getNode());
 		try {
 			reg();
 		} catch (RemoteException e) {
-			e.printStackTrace();
+			logger.errorMessage("向远端服务器注册时出错",e);
 		}
 	}
 	public void init(){
@@ -84,8 +92,7 @@ public class ArOperator implements PcCepOperator {
 		try {
 			jobCenter.registerWorker(arWorker);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.errorMessage("注册ArWorker时出错",e);
 		}
 	}
 	public void reg() throws RemoteException {
@@ -101,7 +108,7 @@ public class ArOperator implements PcCepOperator {
 		try {
 			jobCenter.doWork(w);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.errorMessage("向服务器分发执行服务注册任务时出错",e);
 		}
 	}
 	public void unreg(){
@@ -114,7 +121,7 @@ public class ArOperator implements PcCepOperator {
 		try {
 			jobCenter.doWork(w);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.errorMessage("向服务器分发执行服务注销任务时出错",e);
 		}
 	}
 
@@ -136,8 +143,7 @@ public class ArOperator implements PcCepOperator {
 			jobCenter.unregisterWorker(arWorker);
 			unreg();
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.errorMessage("服务器执行注销时出错",e);
 		}
 		remoteImpl.stopCEPCore(cep, getNode());
 	}

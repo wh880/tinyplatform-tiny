@@ -1,7 +1,5 @@
 package org.tinygroup.cepcorepc.test.cepcorepc;
 
-import java.rmi.RemoteException;
-
 import org.tinygroup.cepcorepc.impl.ArOperator;
 import org.tinygroup.cepcorepc.impl.PcCepCoreImpl2;
 
@@ -14,6 +12,7 @@ public class TestAr {
 		aro.setCep(p);
 		p.setOperator(aro);
 		p.startCEPCore(p);
+		
 	
 	}
 }
