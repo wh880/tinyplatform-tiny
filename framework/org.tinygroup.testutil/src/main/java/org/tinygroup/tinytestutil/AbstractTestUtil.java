@@ -138,51 +138,7 @@ public abstract class AbstractTestUtil {
 		application.start();
 	}
 
-	// /**
-	// * 初始化
-	// *
-	// * @param classPathResolve
-	// * 是否对classPath进行处理
-	// */
-	// public static void init(String xmlFile, boolean classPathResolve,
-	// XmlNode node, List<String> paths) {
-	// if (init)
-	// return;
-	// donInit(xmlFile, classPathResolve, node, paths);
-	// init = true;
-	// }
-	//
-	// public static VelocityHelperImpl getVelocityHelper() {
-	// return helper;
-	// }
-	//
-	// public static void donInit(String xmlFile, boolean classPathResolve,
-	// XmlNode node, List<String> paths) {
-	// if (xmlFile == null || "".equals(xmlFile))
-	// xmlFile = DEFAULT_FILERESOLVER_BEAN_XML;
-	// initSpring(xmlFile);
-	// FileResolver fileResolver = SpringUtil.getBean("fileResolver");
-	// if (node != null) {
-	// repository = SpringUtil.getBean("fullContextFileRepository");
-	// helper = SpringUtil.getBean("velocityHelper");
-	// FullContextFileFinder finder = SpringUtil
-	// .getBean("fullContextFileFinder");
-	// helper.setFullContextFileRepository(repository);
-	// finder.config(node, null);
-	// finder.setFullContextFileRepository(repository);
-	// fileResolver.addFileProcessor(finder);
-	// }
-	// if (paths != null) {
-	// for (String path : paths) {
-	// fileResolver.addManualClassPath(path);
-	// if (repository != null) {
-	// repository.addSearchPath(path);
-	// }
-	// }
-	// }
-	// fileResolver.resolve();
-	// }
-	//
+	
 	private static void initSpring(String applicationConfig) {
 		FileResolver fileResolver = new FileResolverImpl();
 
