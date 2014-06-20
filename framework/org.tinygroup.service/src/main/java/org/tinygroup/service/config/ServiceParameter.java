@@ -23,6 +23,9 @@ public class ServiceParameter {
 	@XStreamAsAttribute
 	private String name;
 	@XStreamAsAttribute
+	@XStreamAlias("local-name")
+	private String localName;
+	@XStreamAsAttribute
 	private String type;
 	@XStreamAlias("collection-type")
 	@XStreamAsAttribute
@@ -36,8 +39,18 @@ public class ServiceParameter {
 	@XStreamAlias("validate-scene")
 	private String validatorScene;
 
+	private String description;
+
 	public String getCollectionType() {
 		return collectionType;
+	}
+
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName;
 	}
 
 	public void setCollectionType(String collectionType) {
@@ -82,6 +95,14 @@ public class ServiceParameter {
 
 	public void setRequired(boolean required) {
 		this.required = required;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

@@ -23,8 +23,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ServiceResult {
-	boolean required() default true;
-
 	String name() default "";
-
+	String localName() default "";
+	boolean required() default true;
+	boolean isArray() default false;
+	String collectionType() default "";
+	String validatorSence() default "";
+	String description() default "";
 }

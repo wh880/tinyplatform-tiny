@@ -24,7 +24,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ServiceParameter {
 	String name() default "";// 如果省略，默认为属性名
+	String localName() default "";
 	boolean required() default true;
 	boolean isArray() default false;
+	String collectionType() default "";
 	String validatorSence() default "";
+	String description() default "";
 }

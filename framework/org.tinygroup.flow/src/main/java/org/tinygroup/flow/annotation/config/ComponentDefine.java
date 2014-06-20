@@ -28,6 +28,8 @@ public @interface ComponentDefine {
 	
 	String bean();
 	
+	ComponentType type() default ComponentType.BOTH;
+	
 	String category() default "";
 	
 	String title() default "";

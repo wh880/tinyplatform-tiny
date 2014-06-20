@@ -9,7 +9,7 @@
         </long-description>
         <parameter name="beanType" title="类型" type="java.lang.String"></parameter>
         <parameter name="schema" title="模式" type="java.lang.String"></parameter>
-        <parameter name="resultKey" title="结果键值" type="java.lang.String"></parameter>
+        <result name="resultKey" title="结果键值" type="java.lang.String"></result>
     </component>
 
     <component name="tinydbUpdateService" bean="tinydbUpdateService"
@@ -22,7 +22,7 @@
         </long-description>
         <parameter name="beanType" title="类型" type="java.lang.String"></parameter>
         <parameter name="schema" title="模式" type="java.lang.String"></parameter>
-        <parameter name="resultKey" title="结果键值" type="java.lang.String"></parameter>
+        <result name="resultKey" title="结果键值" type="java.lang.String"></result>
     </component>
     <component name="tinydbDeleteService" bean="tinydbDeleteService"
                title="删除组件" category="数据库" icon="">
@@ -34,7 +34,7 @@
         </long-description>
         <parameter name="beanType" title="类型" type="java.lang.String"></parameter>
         <parameter name="schema" title="模式" type="java.lang.String"></parameter> 
-        <parameter name="resultKey" title="结果键值" type="java.lang.String"></parameter>
+        <result name="resultKey" title="结果键值" type="java.lang.String"></result>
     </component>
     <component name="tinydbQueryService" bean="tinydbQueryService"
                title="查询组件" category="数据库" icon="">
@@ -46,7 +46,7 @@
         </long-description>
         <parameter name="beanType" title="类型" type="java.lang.String"></parameter>
         <parameter name="schema" title="模式" type="java.lang.String"></parameter> 
-        <parameter name="resultKey" title="结果键值" type="java.lang.String"></parameter>
+        <result name="resultKey" title="结果键值" type="java.lang.String"></result>
     </component>
     <component name="tinydbQueryServiceWithId" bean="tinydbQueryServiceWithId"
                title="单记录查询组件" category="数据库" icon="">
@@ -60,7 +60,7 @@
         <parameter name="beanType" title="类型" type="java.lang.String"></parameter>
         <parameter name="schema" title="模式" type="java.lang.String"></parameter> 
         <parameter name="primaryKey" title="主键值" type="java.lang.String"></parameter>
-        <parameter name="resultKey" title="结果键值" type="java.lang.String"></parameter>
+        <result name="resultKey" title="结果键值" type="java.lang.String"></result>
     </component>
     <component name="tinydbPageQueryService" bean="tinydbPageQueryService"
                title="分页查询组件" category="数据库" icon="">
@@ -76,7 +76,7 @@
         <parameter name="schema" title="模式" type="java.lang.String"></parameter>  
         <parameter name="start" title="开始记录数" type="java.lang.Integer"></parameter>
         <parameter name="limit" title="每页记录数" type="java.lang.Integer"></parameter>
-        <parameter name="resultKey" title="结果键值" type="java.lang.String"></parameter>
+        <result name="resultKey" title="结果键值" type="java.lang.String"></result>
     </component>
     <component name="tinydbSqlQueryService" bean="tinydbSqlQueryService"
                title="sql查询组件" category="数据库" icon="">
@@ -86,7 +86,7 @@
             schema:数据库模式 
             querySql:查询的sql语句
             resultKey:方法返回的Bean对象，将以resultKey属性对应的值作为key保存到上下文中
-            start:每页开始的记录数；
+            start:每页开始的记录数
             limit:每页记录数
         </long-description>
         <parameter name="beanType" title="类型" type="java.lang.String"></parameter>
@@ -94,7 +94,7 @@
         <parameter name="querySql" title="查询sql语句" type="java.lang.String"></parameter>   
         <parameter name="start" title="开始记录数" type="java.lang.Integer"></parameter>
         <parameter name="limit" title="每页记录数" type="java.lang.Integer"></parameter>
-        <parameter name="resultKey" title="结果键值" type="java.lang.String"></parameter>
+        <result name="resultKey" title="结果键值" type="java.lang.String"></result>
     </component>
 </components>
 

@@ -22,27 +22,4 @@
 			</annotation-property-matcher>
 		</annotation-property-matchers>
 	</annotation-class-matcher>
-	<annotation-class-matcher class-name="(.)*Component" annotation-id="pageflow"
-		annotation-type="org\.tinygroup\.flow\.annotation\.config\.ComponentDefine">
-		<processor-beans>
-			<processor-bean enable="true" name="pageFlowComponentAnnotationAction">
-			</processor-bean>
-		</processor-beans>
-		<annotation-property-matchers>
-			<annotation-property-matcher
-				property-name=".*" annotation-type="org\.tinygroup\.flow\.annotation\.config\.ComponentParameter">
-				<processor-beans>
-					<processor-bean enable="true" name="pageFlowComponentAnnotationAction">
-					</processor-bean>
-				</processor-beans>
-			</annotation-property-matcher>
-			<annotation-property-matcher
-				property-name=".*" annotation-type="org\.tinygroup\.flow\.annotation\.config\.ComponentResult">
-				<processor-beans>
-					<processor-bean enable="true" name="pageFlowComponentAnnotationAction">
-					</processor-bean>
-				</processor-beans>
-			</annotation-property-matcher>
-		</annotation-property-matchers>
-	</annotation-class-matcher>
 </annotation-class-matchers>
