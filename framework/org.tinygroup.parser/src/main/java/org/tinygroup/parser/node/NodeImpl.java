@@ -172,7 +172,7 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
      * @param content
      */
     public T setContent(String content) {
-        String contentString = content.trim();
+        String contentString = decode(content.trim());
         if (nodeType.isHasContent()) {
             if (nodeType.isText()) {
                 this.content = decode(contentString);
@@ -489,6 +489,7 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
      * 设置属性 若输入参数中的属性名不为空，属性值为空，则删除指定的属性 若输入参数中的属性名不为空，属性值不为空，则添加相应的属性
      */
     public T setAttribute(String attributeName, String value) {
+        value=decode(value);
         if (nodeType.isHasHeader()) {
             if (attributes == null) {
                 attributes = new HashMap<String, String>();
