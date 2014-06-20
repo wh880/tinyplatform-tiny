@@ -23,17 +23,6 @@
  */
 package com.sun.xml.ws.transport.http.servlet;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.logging.Logger;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-import javax.xml.ws.WebServiceException;
-
 import com.sun.istack.NotNull;
 import com.sun.xml.ws.api.model.wsdl.WSDLPort;
 import com.sun.xml.ws.api.server.BoundEndpoint;
@@ -42,6 +31,16 @@ import com.sun.xml.ws.api.server.WSEndpoint;
 import com.sun.xml.ws.api.server.WebModule;
 import com.sun.xml.ws.transport.http.HttpAdapter;
 import com.sun.xml.ws.transport.http.WSHTTPConnection;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+import javax.xml.ws.WebServiceException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Logger;
 
 /**
  * {@link HttpAdapter} for servlets.
@@ -73,7 +72,7 @@ public final class TG_ServletAdapter extends HttpAdapter implements BoundEndpoin
     }
 
     public ServletContext getServletContext() {
-        return ((ServletAdapterList)owner).getServletContext();
+        return ((TG_ServletAdapterList)owner).getServletContext();
     }
 
     /**
