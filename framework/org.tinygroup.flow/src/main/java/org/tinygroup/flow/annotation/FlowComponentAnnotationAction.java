@@ -26,6 +26,7 @@ import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.flow.annotation.config.ComponentDefine;
 import org.tinygroup.flow.annotation.config.ComponentParameter;
 import org.tinygroup.flow.annotation.config.ComponentResult;
+import org.tinygroup.flow.annotation.config.ComponentType;
 import org.tinygroup.flow.config.Result;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -41,26 +42,30 @@ public class FlowComponentAnnotationAction implements AnnotationClassAction,Anno
 
 	private FlowExecutor executor;
 	
+	private FlowExecutor pageflowExecutor;
+	
 	private Logger logger=LoggerFactory.getLogger(FlowComponentAnnotationAction.class);
 	
-	public FlowExecutor getExecutor() {
-		return executor;
-	}
-
-	public void setExecutor(FlowExecutor executor) {
-		this.executor = executor;
-	}
-
 	public <T> void process(Class<T> clazz, Annotation annotation) {
 		if(executor==null){
 			executor=SpringUtil.getBean(FlowExecutor.FLOW_BEAN);
 		}
-		
+		if(pageflowExecutor==null){
+			pageflowExecutor=SpringUtil.getBean(FlowExecutor.PAGE_FLOW_BEAN);
+		}
 		ComponentDefine annoDefine = AnnotationUtils.findAnnotation(clazz,
 				ComponentDefine.class);
 		org.tinygroup.flow.config.ComponentDefine componentDefine = new org.tinygroup.flow.config.ComponentDefine();
         setBasicProperty(annoDefine, componentDefine);
-        executor.addComponent(componentDefine);
+        ComponentType type=annoDefine.type();
+        if(type.equals(ComponentType.BOTH)){
+        	 executor.addComponent(componentDefine);
+        	 pageflowExecutor.addComponent(componentDefine);
+        }else if(type.equals(ComponentType.FLOW)){
+        	executor.addComponent(componentDefine);
+        }else if(type.equals(ComponentType.FLOW)){
+        	 pageflowExecutor.addComponent(componentDefine);
+        }
 	}
 
 	private void setBasicProperty(ComponentDefine annoDefine,
@@ -80,19 +85,29 @@ public class FlowComponentAnnotationAction implements AnnotationClassAction,Anno
 		String componentName=annoDefine.name();
 		org.tinygroup.flow.config.ComponentDefine componentDefine=executor.getComponentDefine(componentName);
 		if(componentDefine!=null){
-			if(annotation.annotationType().isAssignableFrom(ComponentParameter.class)){
-				ComponentParameter annoParameter=(ComponentParameter)annotation;
-				Parameter parameter=createParameter(annoParameter);
-				componentDefine.addParamter(parameter);
-			}else if(annotation.annotationType().isAssignableFrom(ComponentResult.class)){
-				ComponentResult componentResult=(ComponentResult)annotation;
-				Result result=createResult(componentResult);
-				componentDefine.addResult(result);
-			}			
-		}else{
+			propertiesProcess(componentDefine, annotation);	
+		}
+		componentDefine=pageflowExecutor.getComponentDefine(componentName);
+		if(componentDefine!=null){
+			propertiesProcess(componentDefine, annotation);	
+		}
+		if(componentDefine==null){
 			logger.logMessage(LogLevel.WARN, "不存在组件名称为：[{0}]的组件信息",componentName);
 		}
 	}
+	
+	public void propertiesProcess(org.tinygroup.flow.config.ComponentDefine componentDefine,Annotation annotation){
+		if(annotation.annotationType().isAssignableFrom(ComponentParameter.class)){
+			ComponentParameter annoParameter=(ComponentParameter)annotation;
+			Parameter parameter=createParameter(annoParameter);
+			componentDefine.addParamter(parameter);
+		}else if(annotation.annotationType().isAssignableFrom(ComponentResult.class)){
+			ComponentResult componentResult=(ComponentResult)annotation;
+			Result result=createResult(componentResult);
+			componentDefine.addResult(result);
+		}		
+	}
+	
 
 	private Result createResult(ComponentResult componentResult) {
 		Result result=new Result();
