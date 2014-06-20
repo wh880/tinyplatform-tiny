@@ -11,7 +11,6 @@
   	<module>org.tinygroup.dao</module>
     <module>org.tinygroup.tinydb</module>
     <module>org.tinygroup.dbrouter</module>
-    <module>org.tinygroup.dbrouterjdbc3</module>
     <module>org.tinygroup.jsqlparser</module>
     <module>org.tinygroup.database</module>
     <module>org.tinygroup.metadata</module>
