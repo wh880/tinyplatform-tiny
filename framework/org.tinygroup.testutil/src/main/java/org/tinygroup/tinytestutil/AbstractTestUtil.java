@@ -27,6 +27,7 @@ import org.tinygroup.application.Application;
 import org.tinygroup.application.impl.ApplicationDefault;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.fileresolver.FileResolver;
+import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
@@ -52,8 +53,7 @@ public abstract class AbstractTestUtil {
 	private static String DEFAULT_CONFIG = "application.xml";
 	private static Logger logger = LoggerFactory
 			.getLogger(AbstractTestUtil.class);
-	private static final String TINY_JAR_PATTERN="org\\.tinygroup\\.(.)*\\.jar";
-
+	private static final String TINY_JAR_PATTERN = "org\\.tinygroup\\.(.)*\\.jar";
 
 	/**
 	 * 初始化
@@ -62,7 +62,7 @@ public abstract class AbstractTestUtil {
 	 *            是否对classPath进行处理
 	 */
 	public static void init(String xmlFile, boolean classPathResolve) {
-		if(init){
+		if (init) {
 			return;
 		}
 		// init(xmlFile, classPathResolve, null, null);
@@ -86,10 +86,10 @@ public abstract class AbstractTestUtil {
 		}
 		application = new ApplicationDefault();
 		initSpring(applicationConfig);
-		FileResolver fileResolver=SpringUtil.getBean(FileResolver.BEAN_NAME);
+		FileResolver fileResolver = SpringUtil.getBean(FileResolver.BEAN_NAME);
 		fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
 		application.start();
-		init=true;
+		init = true;
 	}
 
 	public static void initWidthString(String config, boolean classPathResolve) {
@@ -151,8 +151,19 @@ public abstract class AbstractTestUtil {
 	//
 	private static void initSpring(String applicationConfig) {
 		FileResolver fileResolver = new FileResolverImpl();
-		loadFileResolverConfig(fileResolver, applicationConfig);
+
+		FileResolverUtil.addClassPathPattern(fileResolver);
+		fileResolver
+				.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
+		fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
+		try {
+			fileResolver.addResolvePath(FileResolverUtil
+					.getWebLibJars(fileResolver));
+		} catch (Exception e) {
+			logger.errorMessage("为文件扫描器添加webLibJars时出错", e);
+		}
 		fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
+		loadFileResolverConfig(fileResolver, applicationConfig);
 		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 		fileResolver.addFileProcessor(new ConfigurationFileProcessor());
 		// SpringUtil.regSpringConfigXml(xmlFile);
@@ -161,7 +172,7 @@ public abstract class AbstractTestUtil {
 
 	private static void loadFileResolverConfig(FileResolver fileResolver,
 			String applicationConfig) {
-		
+
 		XmlStringParser parser = new XmlStringParser();
 		XmlNode root = parser.parse(applicationConfig).getRoot();
 		PathFilter<XmlNode> filter = new PathFilter<XmlNode>(root);

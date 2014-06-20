@@ -54,7 +54,7 @@ public class CEPProcessor implements ApplicationProcessor{
 
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 		xmlNode = applicationConfig;
-		cep.setConfig(xmlNode);
+//		cep.setConfig(xmlNode);
 	}
 
 	public XmlNode getComponentConfig() {

@@ -60,8 +60,8 @@ public class CepPlugin extends AbstractConfiguration implements Plugin {
 
 	public void start() {
 		try {
-			cepcore.setConfig(applicationConfig);
-//			cepcore.start();
+//			cepcore.setConfig(applicationConfig);
+			cepcore.start();
 		} catch (Exception e) {
 			logger.errorMessage("CEP 启动出错", e);
 		}

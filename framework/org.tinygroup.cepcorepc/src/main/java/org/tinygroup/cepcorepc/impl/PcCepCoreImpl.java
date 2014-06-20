@@ -6,9 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcore.CEPCoreNodeManager;
+import org.tinygroup.cepcore.CEPCoreOperator;
 import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcorepc.PcCepOperator;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.ServiceRequest;
@@ -16,14 +15,18 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
-public abstract class PcCepCoreImpl implements CEPCore{
+public  class PcCepCoreImpl implements CEPCore{
 	private static Logger logger = LoggerFactory.getLogger(PcCepCoreImpl.class);
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
 	private Map<String, EventProcessor> processorMap = new HashMap<String, EventProcessor>();
-	private Map<String, ServiceInfo> serviceMap = new HashMap<String, ServiceInfo>();
+	private Map<String, ServiceInfo> localServiceMap = new HashMap<String, ServiceInfo>();
+	private List<ServiceInfo> localServices = new ArrayList<ServiceInfo>();
 	private String nodeName;
-	private PcCepOperator operator;
+	private CEPCoreOperator operator;
 
+	public CEPCoreOperator getOperator(){
+		return operator;
+	}
 	public void startCEPCore(CEPCore cep) {
 		operator.startCEPCore(cep);
 	}
@@ -32,8 +35,9 @@ public abstract class PcCepCoreImpl implements CEPCore{
 		operator.stopCEPCore(cep);
 	}
 
-	public void setOperator(PcCepOperator operator) {
+	public void setOperator(CEPCoreOperator operator) {
 		this.operator = operator;
+		this.operator.setCEPCore(this);
 	}
 
 	public String getNodeName() {
@@ -51,7 +55,10 @@ public abstract class PcCepCoreImpl implements CEPCore{
 
 		if (EventProcessor.TYPE_CHANNEL != eventProcessor.getType()) {
 			for (ServiceInfo service : eventProcessor.getServiceInfos()) {
-				serviceMap.put(service.getServiceId(), service);
+				if(!localServiceMap.containsKey(service.getServiceId())){
+					localServiceMap.put(service.getServiceId(), service);
+					localServices.add(service);
+				}	
 			}
 		}
 		for (ServiceInfo service : eventProcessor.getServiceInfos()) {
@@ -84,7 +91,7 @@ public abstract class PcCepCoreImpl implements CEPCore{
 					list.remove(eventProcessor);
 					if(list.size()==0){
 						serviceIdMap.remove(name);
-						serviceMap.remove(name);
+						localServiceMap.remove(name);
 					}
 				}
 				
@@ -144,21 +151,23 @@ public abstract class PcCepCoreImpl implements CEPCore{
 	}
 
 	public List<ServiceInfo> getServiceInfos() {
-		return null;
+		return localServices;
 	}
 
-	public void setManager(CEPCoreNodeManager manager) {
-
-	}
+	
 
 	public boolean isEnableRemote() {
-
 		return false;
 	}
 
 	public void setEnableRemote(boolean enableRemote) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public ServiceInfo getServiceInfo(String serviceId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

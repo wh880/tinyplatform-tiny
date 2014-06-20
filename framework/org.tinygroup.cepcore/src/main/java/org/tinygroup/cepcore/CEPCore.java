@@ -23,12 +23,13 @@
  */
 package org.tinygroup.cepcore;
 
+import java.rmi.Remote;
 import java.util.List;
 
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
 
-public interface CEPCore extends CEPCoreNodeManager {
+public interface CEPCore extends Remote {
 	String CEP_CORE_BEAN = "cepcore";
 
 	/**
@@ -37,6 +38,10 @@ public interface CEPCore extends CEPCoreNodeManager {
 	 * @return
 	 */
 	String getNodeName();
+
+	void setNodeName(String nodeName);
+
+	CEPCoreOperator getOperator();
 
 	/**
 	 * 注册一个事件处理器
@@ -71,11 +76,14 @@ public interface CEPCore extends CEPCoreNodeManager {
 
 	/**
 	 * 获取本地服务列表
+	 * 
 	 * @return
 	 */
 	List<ServiceInfo> getServiceInfos();
 
-	void setManager(CEPCoreNodeManager manager);
+	ServiceInfo getServiceInfo(String serviceId);
+
+
 
 	boolean isEnableRemote();
 
