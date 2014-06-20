@@ -24,8 +24,11 @@
 package org.tinygroup.tinytestutil;
 
 import org.tinygroup.application.Application;
+import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.application.impl.ApplicationDefault;
 import org.tinygroup.commons.io.StreamUtil;
+import org.tinygroup.config.ConfigurationManager;
+import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
@@ -80,14 +83,45 @@ public abstract class AbstractTestUtil {
 			try {
 				applicationConfig = StreamUtil.readText(inputStream, "UTF-8",
 						false);
+				if(applicationConfig!=null){
+                	ConfigurationManager c = ConfigurationUtil.getConfigurationManager();
+                	XmlNode applicationXml = ConfigurationUtil.loadApplicationConfig(applicationConfig);
+                	c.setApplicationConfiguration(applicationXml);
+            		
+                }
+				application = new ApplicationDefault();
+				initSpring(applicationConfig);
+				FileResolver fileResolver = SpringUtil.getBean(FileResolver.BEAN_NAME);
+				FileResolverUtil.addClassPathPattern(fileResolver);
+				fileResolver
+						.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
+				fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
+				try {
+					fileResolver.addResolvePath(FileResolverUtil
+							.getWebLibJars(fileResolver));
+				} catch (Exception e) {
+					logger.errorMessage("为文件扫描器添加webLibJars时出错", e);
+				}
+				fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
+				 XmlNode applicationXml = ConfigurationUtil.getConfigurationManager().getApplicationConfiguration();
+	                if (applicationXml != null) {
+	        			List<XmlNode> processorConfigs = applicationXml
+	        					.getSubNodesRecursively("application-processor");
+	        			if (processorConfigs != null) {
+	        				for (XmlNode processorConfig : processorConfigs) {
+	        					String processorBean = processorConfig.getAttribute("bean");
+	        					ApplicationProcessor processor = SpringUtil
+	        							.getBean(processorBean);//TODO
+	        					application.addApplicationProcessor(processor);
+	        				}
+	        			}
+	        		}
 			} catch (Exception e) {
 				logger.errorMessage("载入应用配置信息时出错，错误原因：{}！", e, e.getMessage());
 			}
 		}
-		application = new ApplicationDefault();
-		initSpring(applicationConfig);
-		FileResolver fileResolver = SpringUtil.getBean(FileResolver.BEAN_NAME);
-		fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
+		
+		application.init();
 		application.start();
 		init = true;
 	}
