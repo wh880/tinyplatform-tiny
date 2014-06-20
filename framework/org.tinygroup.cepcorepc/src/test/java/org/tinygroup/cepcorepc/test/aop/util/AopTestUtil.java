@@ -21,16 +21,20 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.channel.util;
+package org.tinygroup.cepcorepc.test.aop.util;
 
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcore.aop.CEPCoreAopManager;
+import org.tinygroup.cepcorepc.test.aop.exception.ExceptionHanlder1;
 import org.tinygroup.event.Event;
+import org.tinygroup.event.ServiceInfo;
+import org.tinygroup.exceptionhandler.ExceptionHandlerManager;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
-public class ChannelTestUtil {
+public class AopTestUtil {
+	static ExceptionHandlerManager handlerManager = null;
 	static CEPCoreAopManager manager = null;
 	static CEPCore cep = null;
 	private static boolean init = false;
@@ -50,12 +54,27 @@ public class ChannelTestUtil {
 		if(init)
 			return;
 		init = true;
-		AbstractTestUtil.init("application.xml", true);
+		AbstractTestUtil.init(null, true);
+		manager = SpringUtil.getBean(CEPCoreAopManager.CEPCORE_AOP_BEAN);
+		manager.addAopAdapter(CEPCoreAopManager.BEFORE_LOCAL, "aopTestAdapter","aop.*");
+		manager.addAopAdapter(CEPCoreAopManager.BEFORE_LOCAL, "requestParamValidate",null);
+		
+		handlerManager = SpringUtil.getBean(ExceptionHandlerManager.MANAGER_BEAN);
+		try {
+			handlerManager.addHandler("org.tinygroup.exception.TinySysRuntimeException", new ExceptionHanlder1());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		registerEventProcessor(ToolUtil.getEventProcessor1());
 		
 	}
 
 	public static void execute(Event event) {
 		init();
 		getCep().process(event);
+	}
+
+	public static ServiceInfo getService(String id){
+		return getCep().getServiceInfo(id);
 	}
 }

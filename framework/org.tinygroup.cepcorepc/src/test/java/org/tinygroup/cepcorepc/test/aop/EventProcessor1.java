@@ -21,41 +21,42 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.channel.util;
+package org.tinygroup.cepcorepc.test.aop;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcore.aop.CEPCoreAopManager;
+import org.tinygroup.cepcorepc.test.aop.exception.ExceptionService;
 import org.tinygroup.event.Event;
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
+import org.tinygroup.event.ServiceInfo;
 
-public class ChannelTestUtil {
-	static CEPCoreAopManager manager = null;
-	static CEPCore cep = null;
-	private static boolean init = false;
-
-	public static void registerEventProcessor(EventProcessor processor) {
-		getCep().registerEventProcessor(processor);
-	}
-	
-	public static CEPCore getCep(){
-		init();
-		if (cep == null)
-			cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-		return cep;
+public class EventProcessor1 implements EventProcessor{
+	List<ServiceInfo> list = new ArrayList<ServiceInfo>();
+	public void process(Event event) {
+		System.out.println("EventProcessor1 execute");
+		if("exceptionService".equals(event.getServiceRequest().getServiceId())){
+			ExceptionService e = new ExceptionService();
+			e.deal();
+		}
 	}
 
-	private static void init(){
-		if(init)
-			return;
-		init = true;
-		AbstractTestUtil.init("application.xml", true);
+	public void setCepCore(CEPCore cepCore) {
 		
 	}
 
-	public static void execute(Event event) {
-		init();
-		getCep().process(event);
+	public List<ServiceInfo> getServiceInfos() {
+		return list;
 	}
+
+	public String getId() {
+		return EventProcessor1.class.getName();
+	}
+
+	public int getType() {
+		
+		return 0;
+	}
+
 }

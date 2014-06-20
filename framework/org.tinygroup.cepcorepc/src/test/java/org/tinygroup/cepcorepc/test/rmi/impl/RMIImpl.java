@@ -21,41 +21,27 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.channel.util;
+package org.tinygroup.cepcorepc.test.rmi.impl;
 
-import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcore.aop.CEPCoreAopManager;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+import org.tinygroup.cepcorepc.test.rmi.RMIInterface;
 import org.tinygroup.event.Event;
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
 
-public class ChannelTestUtil {
-	static CEPCoreAopManager manager = null;
-	static CEPCore cep = null;
-	private static boolean init = false;
+public class RMIImpl extends UnicastRemoteObject implements RMIInterface{
 
-	public static void registerEventProcessor(EventProcessor processor) {
-		getCep().registerEventProcessor(processor);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1542017064746686457L;
+	public RMIImpl() throws RemoteException {
+		super();
 	}
-	
-	public static CEPCore getCep(){
-		init();
-		if (cep == null)
-			cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-		return cep;
-	}
-
-	private static void init(){
-		if(init)
-			return;
-		init = true;
-		AbstractTestUtil.init("application.xml", true);
+	public Event deal(Event context) throws RemoteException {
+		return context;
+		//System.out.println(context.getServiceRequest().getContext().get("node"));
 		
 	}
 
-	public static void execute(Event event) {
-		init();
-		getCep().process(event);
-	}
 }

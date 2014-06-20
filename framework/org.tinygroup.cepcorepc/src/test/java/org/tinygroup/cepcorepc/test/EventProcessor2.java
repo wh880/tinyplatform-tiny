@@ -21,41 +21,39 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.channel.util;
+package org.tinygroup.cepcorepc.test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcore.aop.CEPCoreAopManager;
 import org.tinygroup.event.Event;
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
+import org.tinygroup.event.ServiceInfo;
 
-public class ChannelTestUtil {
-	static CEPCoreAopManager manager = null;
-	static CEPCore cep = null;
-	private static boolean init = false;
-
-	public static void registerEventProcessor(EventProcessor processor) {
-		getCep().registerEventProcessor(processor);
-	}
-	
-	public static CEPCore getCep(){
-		init();
-		if (cep == null)
-			cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-		return cep;
+public class EventProcessor2 implements EventProcessor {
+	private List<ServiceInfo> infos = new ArrayList<ServiceInfo>();
+	public void process(Event event) {
+		System.out.println("EventProcessor2:" + event.getEventId());
 	}
 
-	private static void init(){
-		if(init)
-			return;
-		init = true;
-		AbstractTestUtil.init("application.xml", true);
-		
+	public String getId() {
+		return "dd";
 	}
 
-	public static void execute(Event event) {
-		init();
-		getCep().process(event);
+	public void setCepCore(CEPCore cepCore) {
 	}
+
+	public int getType() {
+		return EventProcessor.TYPE_LOGICAL;
+	}
+
+	public List<ServiceInfo> getServiceInfos() {
+		if(infos.size()==0){
+			infos.add(new ServiceInfoImpl("2222","2222"));
+			infos.add(new ServiceInfoImpl("3333","3333"));
+		}
+		return infos;
+	}
+
 }

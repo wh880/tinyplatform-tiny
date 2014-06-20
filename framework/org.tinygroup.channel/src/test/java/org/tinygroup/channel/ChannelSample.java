@@ -23,6 +23,7 @@
  */
 package org.tinygroup.channel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.cepcore.EventProcessor;
@@ -43,7 +44,7 @@ public class ChannelSample extends AbstractChannel {
 	}
 
 	public List<ServiceInfo> getServiceInfos() {
-		return null;
+		return new ArrayList<ServiceInfo>();
 	}
 
 

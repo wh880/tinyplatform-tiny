@@ -21,41 +21,15 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.channel.util;
+package org.tinygroup.cepcorepc.test;
 
-import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcore.aop.CEPCoreAopManager;
-import org.tinygroup.event.Event;
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
+import junit.framework.TestCase;
 
-public class ChannelTestUtil {
-	static CEPCoreAopManager manager = null;
-	static CEPCore cep = null;
-	private static boolean init = false;
+public class SerializableTest extends TestCase{
 
-	public static void registerEventProcessor(EventProcessor processor) {
-		getCep().registerEventProcessor(processor);
-	}
-	
-	public static CEPCore getCep(){
-		init();
-		if (cep == null)
-			cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-		return cep;
-	}
-
-	private static void init(){
-		if(init)
-			return;
-		init = true;
-		AbstractTestUtil.init("application.xml", true);
-		
-	}
-
-	public static void execute(Event event) {
-		init();
-		getCep().process(event);
+	public void test(){
+		Object i = 1;
+		System.out.println(i.getClass());
+		assertEquals(true, i instanceof java.io.Serializable);
 	}
 }

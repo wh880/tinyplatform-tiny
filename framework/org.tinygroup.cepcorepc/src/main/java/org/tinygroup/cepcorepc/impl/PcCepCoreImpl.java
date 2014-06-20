@@ -52,7 +52,7 @@ public  class PcCepCoreImpl implements CEPCore{
 		logger.logMessage(LogLevel.INFO, "开始 注册EventProcessor:{}",
 				eventProcessor.getId());
 		processorMap.put(eventProcessor.getId(), eventProcessor);
-
+		eventProcessor.setCepCore(this);
 		if (EventProcessor.TYPE_CHANNEL != eventProcessor.getType()) {
 			for (ServiceInfo service : eventProcessor.getServiceInfos()) {
 				if(!localServiceMap.containsKey(service.getServiceId())){

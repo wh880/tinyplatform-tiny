@@ -21,41 +21,21 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.channel.util;
+package org.tinygroup.cepcorepc.test.aop.adapter;
 
-import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcore.aop.CEPCoreAopManager;
+import org.tinygroup.cepcore.aop.CEPCoreAopAdapter;
 import org.tinygroup.event.Event;
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
-public class ChannelTestUtil {
-	static CEPCoreAopManager manager = null;
-	static CEPCore cep = null;
-	private static boolean init = false;
-
-	public static void registerEventProcessor(EventProcessor processor) {
-		getCep().registerEventProcessor(processor);
-	}
+public class AopTestAdapter implements CEPCoreAopAdapter{
 	
-	public static CEPCore getCep(){
-		init();
-		if (cep == null)
-			cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-		return cep;
+	private static Logger logger = LoggerFactory.getLogger(AopTestAdapter.class);
+	public void handle(Event event) {
+		logger.logMessage(LogLevel.INFO, "====================================");
+		logger.logMessage(LogLevel.INFO, "aopTest:"+event.getServiceRequest().getServiceId());
+		logger.logMessage(LogLevel.INFO, "====================================");
 	}
 
-	private static void init(){
-		if(init)
-			return;
-		init = true;
-		AbstractTestUtil.init("application.xml", true);
-		
-	}
-
-	public static void execute(Event event) {
-		init();
-		getCep().process(event);
-	}
 }

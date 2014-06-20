@@ -21,41 +21,35 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.channel.util;
+package org.tinygroup.cepcorepc.test.aop.testcase;
 
-import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcore.aop.CEPCoreAopManager;
+import org.tinygroup.cepcorepc.test.aop.util.AopTestUtil;
+import org.tinygroup.context.Context;
+import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
+import org.tinygroup.event.ServiceRequest;
+import org.tinygroup.exception.TinySysRuntimeException;
 
-public class ChannelTestUtil {
-	static CEPCoreAopManager manager = null;
-	static CEPCore cep = null;
-	private static boolean init = false;
+import junit.framework.TestCase;
 
-	public static void registerEventProcessor(EventProcessor processor) {
-		getCep().registerEventProcessor(processor);
-	}
-	
-	public static CEPCore getCep(){
-		init();
-		if (cep == null)
-			cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-		return cep;
-	}
-
-	private static void init(){
-		if(init)
-			return;
-		init = true;
-		AbstractTestUtil.init("application.xml", true);
+public class TestExceptionHandler extends TestCase {
+	public void testExceptionHandler() {
+		Event event = new Event();
+		ServiceRequest request = new ServiceRequest();
+		event.setServiceRequest(request);
+		event.setEventId("aaaa");
+		Context context = new ContextImpl();
+		request.setContext(context);
+		request.setServiceId("exceptionService");
+		boolean flag = false;
+		try {
+			AopTestUtil.execute(event);
+		} catch (TinySysRuntimeException e) {
+			flag = true;
+		}
+		if(flag){
+			assertTrue(true);
+		}
 		
-	}
-
-	public static void execute(Event event) {
-		init();
-		getCep().process(event);
 	}
 }

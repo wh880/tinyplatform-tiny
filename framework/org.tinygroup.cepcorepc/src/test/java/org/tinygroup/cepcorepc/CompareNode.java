@@ -21,41 +21,28 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.channel.util;
+package org.tinygroup.cepcorepc;
 
-import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcore.aop.CEPCoreAopManager;
-import org.tinygroup.event.Event;
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ChannelTestUtil {
-	static CEPCoreAopManager manager = null;
-	static CEPCore cep = null;
-	private static boolean init = false;
+import junit.framework.TestCase;
 
-	public static void registerEventProcessor(EventProcessor processor) {
-		getCep().registerEventProcessor(processor);
-	}
-	
-	public static CEPCore getCep(){
-		init();
-		if (cep == null)
-			cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-		return cep;
-	}
+import org.tinygroup.event.central.Node;
 
-	private static void init(){
-		if(init)
-			return;
-		init = true;
-		AbstractTestUtil.init("application.xml", true);
+public class CompareNode extends TestCase {
+	public void testContain(){
+		List<Node> nodes = new ArrayList<Node>();
+		nodes.add(getNode("a"));
+		nodes.add(getNode("b"));
+		assertEquals(false, nodes.contains(getNode("a")));
 		
 	}
-
-	public static void execute(Event event) {
-		init();
-		getCep().process(event);
+	
+	private Node getNode(String name){
+		Node node = new Node();
+		node.setNodeName(name);
+		return node;
 	}
+	
 }

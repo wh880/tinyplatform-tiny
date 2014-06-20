@@ -26,6 +26,7 @@ package org.tinygroup.channel;
 import junit.framework.TestCase;
 
 import org.tinygroup.cepcore.CEPCore;
+import org.tinygroup.cepcorepc.impl.PcCepCoreImpl;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;
@@ -33,7 +34,7 @@ import org.tinygroup.event.ServiceRequest;
 public class ChannelWithCEPCoreTest extends TestCase {
 	ChannelSample channelSample;
 //	CEPCore cepCore = new CEPcoreImpl();
-	CEPCore cepCore = null;
+	CEPCore cepCore = new PcCepCoreImpl();
 	protected void setUp() throws Exception {
 		super.setUp();
 		channelSample = new ChannelSample();

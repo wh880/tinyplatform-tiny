@@ -21,41 +21,48 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.channel.util;
+package org.tinygroup.cepcorepc.test.aop;
 
-import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcore.aop.CEPCoreAopManager;
-import org.tinygroup.event.Event;
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ChannelTestUtil {
-	static CEPCoreAopManager manager = null;
-	static CEPCore cep = null;
-	private static boolean init = false;
+import org.tinygroup.event.Parameter;
+import org.tinygroup.event.ServiceInfo;
 
-	public static void registerEventProcessor(EventProcessor processor) {
-		getCep().registerEventProcessor(processor);
-	}
+public class ServiceInfo1 implements ServiceInfo {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6015372475020547107L;
+	private String serviceId;
+	private String serviceName;
+	private List<Parameter> list = new ArrayList<Parameter>();
+	private List<Parameter> result = new ArrayList<Parameter>();
 	
-	public static CEPCore getCep(){
-		init();
-		if (cep == null)
-			cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-		return cep;
+ 	public void setServiceId(String serviceId) {
+		this.serviceId = serviceId;
 	}
 
-	private static void init(){
-		if(init)
-			return;
-		init = true;
-		AbstractTestUtil.init("application.xml", true);
-		
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
 	}
 
-	public static void execute(Event event) {
-		init();
-		getCep().process(event);
+	public String getServiceId() {
+		return serviceId;
+	}
+
+	public String getServiceName() {
+		return serviceName;
+	}
+
+	public List<Parameter> getParameters() {
+		return list;
+	}
+
+	public List<Parameter> getResults() {
+		return result;
+	}
+	public int compareTo(ServiceInfo o) {
+		return o.getServiceId().compareTo(serviceId);
 	}
 }

@@ -21,41 +21,20 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.channel.util;
+package org.tinygroup.cepcorepc.test.hellormi;
 
-import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcore.aop.CEPCoreAopManager;
-import org.tinygroup.event.Event;
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.Map;
 
-public class ChannelTestUtil {
-	static CEPCoreAopManager manager = null;
-	static CEPCore cep = null;
-	private static boolean init = false;
+public interface RemoteExecute extends Remote {
+	/**
+	 * 简单的返回“Hello World！"字样
+	 * 
+	 * @return 返回“Hello World！"字样
+	 * @throws java.rmi.RemoteException
+	 */
+	public Map<String, Object> execute(Map<String, Object> context)
+			throws RemoteException;
 
-	public static void registerEventProcessor(EventProcessor processor) {
-		getCep().registerEventProcessor(processor);
-	}
-	
-	public static CEPCore getCep(){
-		init();
-		if (cep == null)
-			cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-		return cep;
-	}
-
-	private static void init(){
-		if(init)
-			return;
-		init = true;
-		AbstractTestUtil.init("application.xml", true);
-		
-	}
-
-	public static void execute(Event event) {
-		init();
-		getCep().process(event);
-	}
 }

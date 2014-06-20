@@ -21,41 +21,27 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.channel.util;
+package org.tinygroup.cepcorepc.test.context;
 
-import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcore.aop.CEPCoreAopManager;
-import org.tinygroup.event.Event;
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
+import java.rmi.Naming;
 
-public class ChannelTestUtil {
-	static CEPCoreAopManager manager = null;
-	static CEPCore cep = null;
-	private static boolean init = false;
+import org.tinygroup.context.Context;
+import org.tinygroup.context.impl.ContextImpl;
 
-	public static void registerEventProcessor(EventProcessor processor) {
-		getCep().registerEventProcessor(processor);
-	}
-	
-	public static CEPCore getCep(){
-		init();
-		if (cep == null)
-			cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-		return cep;
-	}
+public class RemoteExecuteClient {
+	public static void main(String args[]) throws Exception {
+		RemoteExecute remoteExecute = (RemoteExecute) Naming
+				.lookup("rmi://192.168.84.57:8888/RemoteExecute");
+		Context context = new ContextImpl();
+		for (int j = 0; j < 100; j++) {
+			context.put("abcdef" + j, "value" + j);
+		}
+		long start = System.currentTimeMillis();
+		for (int i = 0; i < 10000; i++) {
+			remoteExecute.execute(context);
+		}
+		long end = System.currentTimeMillis();
 
-	private static void init(){
-		if(init)
-			return;
-		init = true;
-		AbstractTestUtil.init("application.xml", true);
-		
-	}
-
-	public static void execute(Event event) {
-		init();
-		getCep().process(event);
+		System.out.println(end - start);
 	}
 }
