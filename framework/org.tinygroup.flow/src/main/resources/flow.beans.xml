@@ -35,17 +35,5 @@
 	<bean id="flowComponentAnnotationAction" name="flowComponentAnnotationAction"
 		scope="singleton"
 		class="org.tinygroup.flow.annotation.FlowComponentAnnotationAction">
-		<property name="executor">
-		    <ref bean="flowExecutor"/>
-		</property>
 	</bean>
-	
-	<bean id="pageFlowComponentAnnotationAction" name="pageFlowComponentAnnotationAction"
-		scope="singleton"
-		class="org.tinygroup.flow.annotation.FlowComponentAnnotationAction">
-		<property name="executor">
-		    <ref bean="pageFlowExecutor"/>
-		</property>
-	</bean>
-	
 </beans>
