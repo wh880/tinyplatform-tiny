@@ -9,6 +9,7 @@ import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.CEPCoreOperator;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcore.EventProcessorChoose;
+import org.tinygroup.cepcore.impl.WeightChooser;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.ServiceRequest;
@@ -121,7 +122,7 @@ public class PcCepCoreImpl implements CEPCore {
 		List<EventProcessor> list = serviceIdMap.get(serviceRequest
 				.getServiceId());
 		if (list == null || list.size() == 0) {
-			return null;
+			throw new RuntimeException("没有找到合适的服务处理器");
 		}
 		boolean hasNotNodeName = (eventNodeName == null || ""
 				.equals(eventNodeName));
@@ -131,6 +132,7 @@ public class PcCepCoreImpl implements CEPCore {
 					return e;
 				}
 			}
+			throw new RuntimeException("没有找到指定的服务处理器："+eventNodeName);
 		}
 		// 如果有本地的 则直接返回本地的EventProcessor
 		for (EventProcessor e : list) {
@@ -139,7 +141,7 @@ public class PcCepCoreImpl implements CEPCore {
 			}
 		}
 		// 如果全是远程EventProcessor,那么需要根据负载均衡机制计算
-		return chooser.choose(list);
+		return getEventProcessorChoose().choose(list);
 	}
 
 	public void start() {
@@ -173,6 +175,13 @@ public class PcCepCoreImpl implements CEPCore {
 
 	public void setEventProcessorChoose(EventProcessorChoose chooser) {
 		this.chooser = chooser;
+	}
+	
+	private EventProcessorChoose getEventProcessorChoose(){
+		if(chooser==null){
+			chooser = new WeightChooser();
+		}
+		return chooser;
 	}
 
 }
