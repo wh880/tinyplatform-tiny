@@ -15,11 +15,14 @@ public class ServicePcEventProcessor implements EventProcessor {
 	private String nodeName;
 	private List<ServiceInfo> services = new ArrayList<ServiceInfo>();
 	private CEPCoreRemoteInterface remoteImpl;
-	public ServicePcEventProcessor(String nodeName, List<ServiceInfo> list,Node remoteNode,CEPCoreRemoteInterface remoteImpl) {
+	private int weight ;
+	
+	public ServicePcEventProcessor(String nodeName, List<ServiceInfo> list,Node remoteNode,CEPCoreRemoteInterface remoteImpl,int weight) {
 		this.services = list;
 		this.nodeName = nodeName;
 		this.remoteNode = remoteNode;
 		this.remoteImpl = remoteImpl;
+		this.weight = weight;
 	}
 	
 	public void process(Event event) {
@@ -43,8 +46,7 @@ public class ServicePcEventProcessor implements EventProcessor {
 	}
 
 	public int getWeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return weight;
 	}
 
 }

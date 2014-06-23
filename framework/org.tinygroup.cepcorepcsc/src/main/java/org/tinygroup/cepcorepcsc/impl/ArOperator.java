@@ -9,6 +9,7 @@ import java.util.List;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.CEPCoreOperator;
 import org.tinygroup.cepcore.CEPCoreRemoteInterface;
+import org.tinygroup.cepcore.EventProcessorChoose;
 import org.tinygroup.cepcore.exception.CEPRunException;
 import org.tinygroup.cepcorepc.impl.OperatorUtil;
 import org.tinygroup.cepcorepcsc.ArWorker;
@@ -32,7 +33,7 @@ public class ArOperator implements CEPCoreOperator {
 	private String ip;
 	private String remoteIp;
 	private String remotePort;
-	private int weight = Node.DEFAULT_WEIGHT;
+	private int weight = EventProcessorChoose.DEFAULT_WEIGHT;
 	
 	private Node localNode;
 	private JobCenter jobCenter;
@@ -73,16 +74,22 @@ public class ArOperator implements CEPCoreOperator {
 		this.remotePort = remotePort;
 	}
 
-	public ArOperator(String ip, String port, String scIp, String scPort) {
+	public int getWeight() {
+		return weight;
+	}
+
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+	
+	public ArOperator(String ip, String port, String scIp, String scPort,int weight) {
 		this.ip = ip;
 		this.port = port;
 		this.remoteIp = scIp;
 		this.remotePort = scPort;
+		this.weight = weight;
 	}
 	
-	
-	
-
 	protected Node getNode() {
 		if (localNode != null) {
 			return localNode;

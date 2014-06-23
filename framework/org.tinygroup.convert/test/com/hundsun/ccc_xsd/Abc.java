@@ -1,8 +1,8 @@
 //
-// æ­¤æ–‡ä»¶æ˜¯ç”± JavaTM Architecture for XML Binding (JAXB) å¼•ç”¨å®ç° v2.2.5-2 ç”Ÿæˆçš„
-// è¯·è®¿é—® <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// åœ¨é‡æ–°ç¼–è¯‘æºæ¨¡å¼æ—¶, å¯¹æ­¤æ–‡ä»¶çš„æ‰€æœ‰ä¿®æ”¹éƒ½å°†ä¸¢å¤±ã€‚
-// ç”Ÿæˆæ—¶é—´: 2014.04.30 æ—¶é—´ 09:43:23 AM CST 
+// ´ËÎÄ¼şÊÇÓÉ JavaTM Architecture for XML Binding (JAXB) ÒıÓÃÊµÏÖ v2.2.5-2 Éú³ÉµÄ
+// Çë·ÃÎÊ <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
+// ÔÚÖØĞÂ±àÒëÔ´Ä£Ê½Ê±, ¶Ô´ËÎÄ¼şµÄËùÓĞĞŞ¸Ä¶¼½«¶ªÊ§¡£
+// Éú³ÉÊ±¼ä: 2014.06.23 Ê±¼ä 01:43:05 PM CST 
 //
 
 
@@ -16,9 +16,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>anonymous complex typeçš„ Java ç±»ã€‚
+ * <p>anonymous complex typeµÄ Java Àà¡£
  * 
- * <p>ä»¥ä¸‹æ¨¡å¼ç‰‡æ®µæŒ‡å®šåŒ…å«åœ¨æ­¤ç±»ä¸­çš„é¢„æœŸå†…å®¹ã€‚
+ * <p>ÒÔÏÂÄ£Ê½Æ¬¶ÎÖ¸¶¨°üº¬ÔÚ´ËÀàÖĞµÄÔ¤ÆÚÄÚÈİ¡£
  * 
  * <pre>
  * &lt;complexType>
@@ -41,7 +41,7 @@ public class Abc {
     protected boolean aa;
 
     /**
-     * è·å–aaå±æ€§çš„å€¼ã€‚
+     * »ñÈ¡aaÊôĞÔµÄÖµ¡£
      * 
      */
     public boolean isAa() {
@@ -49,7 +49,7 @@ public class Abc {
     }
 
     /**
-     * è®¾ç½®aaå±æ€§çš„å€¼ã€‚
+     * ÉèÖÃaaÊôĞÔµÄÖµ¡£
      * 
      */
     public void setAa(boolean value) {

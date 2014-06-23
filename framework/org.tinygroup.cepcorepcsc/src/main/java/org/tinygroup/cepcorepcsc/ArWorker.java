@@ -75,7 +75,7 @@ public class ArWorker implements Worker {
 				continue;
 			}
 			ServicePcEventProcessor p = new ServicePcEventProcessor(nodeName,
-					list, node,arOperator.getRemoteImpl());
+					list, node,arOperator.getRemoteImpl(),arOperator.getWeight());
 
 			if (eventprocessors.containsKey(nodeName)) {
 				EventProcessor unregProcessor = eventprocessors

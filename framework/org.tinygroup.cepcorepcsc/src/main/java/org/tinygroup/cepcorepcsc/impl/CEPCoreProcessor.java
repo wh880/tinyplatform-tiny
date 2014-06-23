@@ -73,12 +73,14 @@ public class CEPCoreProcessor implements ApplicationProcessor {
 	}
 
 	public void stop() {
-
+		logger.logMessage(LogLevel.INFO, "开始关闭CEPCoreProcessor");
+		CEPCore core = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
+		core.stop();
+		logger.logMessage(LogLevel.INFO, "关闭CEPCoreProcessor完毕");
 	}
 
 	public void setApplication(Application application) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 }

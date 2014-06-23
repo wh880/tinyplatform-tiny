@@ -31,7 +31,7 @@ import org.tinygroup.event.ServiceInfo;
 
 public interface CEPCore extends Remote {
 	String CEP_CORE_BEAN = "cepcore";
-
+	void setEventProcessorChoose(EventProcessorChoose chooser);
 	/**
 	 * 获取结点名称
 	 * 

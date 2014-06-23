@@ -8,6 +8,7 @@ import java.util.Map;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.CEPCoreOperator;
 import org.tinygroup.cepcore.EventProcessor;
+import org.tinygroup.cepcore.EventProcessorChoose;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.ServiceRequest;
@@ -23,6 +24,7 @@ public class PcCepCoreImpl implements CEPCore {
 	private List<ServiceInfo> localServices = new ArrayList<ServiceInfo>();
 	private String nodeName;
 	private CEPCoreOperator operator;
+	private EventProcessorChoose chooser;
 
 	public CEPCoreOperator getOperator() {
 		return operator;
@@ -137,9 +139,7 @@ public class PcCepCoreImpl implements CEPCore {
 			}
 		}
 		// 如果全是远程EventProcessor,那么需要根据负载均衡机制计算
-		// TODO: 根据负载均衡机制进行计算
-
-		return list.get(0);
+		return chooser.choose(list);
 	}
 
 	public void start() {
@@ -168,8 +168,11 @@ public class PcCepCoreImpl implements CEPCore {
 	}
 
 	public ServiceInfo getServiceInfo(String serviceId) {
-		// TODO Auto-generated method stub
-		return null;
+		return localServiceMap.get(serviceId);
+	}
+
+	public void setEventProcessorChoose(EventProcessorChoose chooser) {
+		this.chooser = chooser;
 	}
 
 }

@@ -28,6 +28,7 @@
 		<property name="port" value="7777"></property>
 		<property name="remoteIp" value="192.168.84.23"></property>
 		<property name="remotePort" value="8888"></property>
+		<property name="weight" value="20"></property>
 	</bean>
 	<bean id="sc" scope="singleton"
 		class="org.tinygroup.cepcorepcsc.impl.ScOperator">
