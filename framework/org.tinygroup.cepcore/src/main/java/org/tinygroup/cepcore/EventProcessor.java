@@ -61,4 +61,10 @@ public interface EventProcessor {
 	 * @return
 	 */
 	int getType();
+	
+	/**
+	 * 返回处理权重
+	 * @return
+	 */
+	int getWeight();
 }

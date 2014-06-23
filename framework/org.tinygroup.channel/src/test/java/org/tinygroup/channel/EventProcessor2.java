@@ -63,4 +63,11 @@ public class EventProcessor2 implements EventProcessor {
 		
 	}
 
+
+
+	public int getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

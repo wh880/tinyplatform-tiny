@@ -42,4 +42,9 @@ public class ServicePcEventProcessor implements EventProcessor {
 		return EventProcessor.TYPE_CHANNEL;
 	}
 
+	public int getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

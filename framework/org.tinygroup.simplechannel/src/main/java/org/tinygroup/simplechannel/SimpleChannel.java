@@ -48,4 +48,9 @@ public class SimpleChannel extends AbstractChannel {
 		return TYPE_CHANNEL;
 	}
 
+	public int getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

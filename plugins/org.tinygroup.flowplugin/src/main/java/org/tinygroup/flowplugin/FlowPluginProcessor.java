@@ -87,4 +87,9 @@ public class FlowPluginProcessor extends AbstractEventProcessor {
         return list;
     }
 
+	public int getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

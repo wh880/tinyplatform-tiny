@@ -4,7 +4,7 @@
 		<application-processor bean="fileResolverProcessor"></application-processor>
 		<application-processor bean="cepProcessor"></application-processor>
 	</application-processors>
-	<cep-configuration node-name="ar">
-		<operator name="ar"></operator>
+	<cep-configuration node-name="sc">
+		<operator name="sc"></operator>
 	</cep-configuration>
 </application>

@@ -15,7 +15,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
-public  class PcCepCoreImpl implements CEPCore{
+public class PcCepCoreImpl implements CEPCore {
 	private static Logger logger = LoggerFactory.getLogger(PcCepCoreImpl.class);
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
 	private Map<String, EventProcessor> processorMap = new HashMap<String, EventProcessor>();
@@ -24,9 +24,10 @@ public  class PcCepCoreImpl implements CEPCore{
 	private String nodeName;
 	private CEPCoreOperator operator;
 
-	public CEPCoreOperator getOperator(){
+	public CEPCoreOperator getOperator() {
 		return operator;
 	}
+
 	public void startCEPCore(CEPCore cep) {
 		operator.startCEPCore(cep);
 	}
@@ -55,10 +56,10 @@ public  class PcCepCoreImpl implements CEPCore{
 		eventProcessor.setCepCore(this);
 		if (EventProcessor.TYPE_CHANNEL != eventProcessor.getType()) {
 			for (ServiceInfo service : eventProcessor.getServiceInfos()) {
-				if(!localServiceMap.containsKey(service.getServiceId())){
+				if (!localServiceMap.containsKey(service.getServiceId())) {
 					localServiceMap.put(service.getServiceId(), service);
 					localServices.add(service);
-				}	
+				}
 			}
 		}
 		for (ServiceInfo service : eventProcessor.getServiceInfos()) {
@@ -82,25 +83,24 @@ public  class PcCepCoreImpl implements CEPCore{
 		logger.logMessage(LogLevel.INFO, "开始 注销EventProcessor:{}",
 				eventProcessor.getId());
 		processorMap.remove(eventProcessor.getId());
-		
+
 		for (ServiceInfo service : eventProcessor.getServiceInfos()) {
 			String name = service.getServiceId();
 			if (serviceIdMap.containsKey(name)) {
 				List<EventProcessor> list = serviceIdMap.get(name);
-				if(list.contains(eventProcessor)){
+				if (list.contains(eventProcessor)) {
 					list.remove(eventProcessor);
-					if(list.size()==0){
+					if (list.size() == 0) {
 						serviceIdMap.remove(name);
 						localServiceMap.remove(name);
 					}
 				}
-				
+
 			} else {
-				
+
 			}
 		}
-		
-		
+
 		logger.logMessage(LogLevel.INFO, "注销EventProcessor:{}完成",
 				eventProcessor.getId());
 	}
@@ -143,18 +143,20 @@ public  class PcCepCoreImpl implements CEPCore{
 	}
 
 	public void start() {
-
+		if (operator != null) {
+			operator.startCEPCore(this);
+		}
 	}
 
 	public void stop() {
-
+		if (operator != null) {
+			operator.stopCEPCore(this);
+		}
 	}
 
 	public List<ServiceInfo> getServiceInfos() {
 		return localServices;
 	}
-
-	
 
 	public boolean isEnableRemote() {
 		return false;

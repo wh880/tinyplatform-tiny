@@ -42,6 +42,8 @@ public interface CEPCore extends Remote {
 	void setNodeName(String nodeName);
 
 	CEPCoreOperator getOperator();
+	
+	void setOperator(CEPCoreOperator operator);
 
 	/**
 	 * 注册一个事件处理器

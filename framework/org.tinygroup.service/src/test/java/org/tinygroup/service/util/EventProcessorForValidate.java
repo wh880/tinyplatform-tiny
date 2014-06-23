@@ -56,4 +56,9 @@ public class EventProcessorForValidate implements EventProcessor{
 		return 0;
 	}
 
+	public int getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

@@ -91,6 +91,9 @@ public abstract class AbstractTestUtil {
                 }
 				application = new ApplicationDefault();
 				initSpring(applicationConfig);
+				
+				ConfigurationUtil.getConfigurationManager().distributeConfiguration();
+				
 				FileResolver fileResolver = SpringUtil.getBean(FileResolver.BEAN_NAME);
 				FileResolverUtil.addClassPathPattern(fileResolver);
 				fileResolver

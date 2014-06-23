@@ -24,17 +24,54 @@ import org.tinygroup.tinypc.impl.JobCenterRemote;
 import org.tinygroup.tinypc.impl.WarehouseDefault;
 
 public class ArOperator implements CEPCoreOperator {
+	
+	private static Logger logger = LoggerFactory.getLogger(ArOperator.class);
+	private CEPCoreRemoteInterface remoteImpl = new CEPCoreRMIRemoteImpl();
+	
 	private String port = "8888";
 	private String ip;
 	private String remoteIp;
 	private String remotePort;
 	private int weight = Node.DEFAULT_WEIGHT;
-	private CEPCoreRemoteInterface remoteImpl = new CEPCoreRMIRemoteImpl();
+	
 	private Node localNode;
 	private JobCenter jobCenter;
 	private CEPCore cep;
 	private ArWorker arWorker;
-	private Logger logger = LoggerFactory.getLogger(ArOperator.class);
+	
+	public ArOperator(){}
+	
+	public String getPort() {
+		return port;
+	}
+
+	public void setPort(String port) {
+		this.port = port;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public String getRemoteIp() {
+		return remoteIp;
+	}
+
+	public void setRemoteIp(String remoteIp) {
+		this.remoteIp = remoteIp;
+	}
+
+	public String getRemotePort() {
+		return remotePort;
+	}
+
+	public void setRemotePort(String remotePort) {
+		this.remotePort = remotePort;
+	}
 
 	public ArOperator(String ip, String port, String scIp, String scPort) {
 		this.ip = ip;
@@ -42,6 +79,9 @@ public class ArOperator implements CEPCoreOperator {
 		this.remoteIp = scIp;
 		this.remotePort = scPort;
 	}
+	
+	
+	
 
 	protected Node getNode() {
 		if (localNode != null) {

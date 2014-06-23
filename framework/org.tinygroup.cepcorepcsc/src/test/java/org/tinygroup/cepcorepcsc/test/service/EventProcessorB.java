@@ -41,4 +41,9 @@ public class EventProcessorB implements EventProcessor {
 	public void addServiceInfo(ServiceInfo s){
 		list.add(s);
 	}
+
+	public int getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

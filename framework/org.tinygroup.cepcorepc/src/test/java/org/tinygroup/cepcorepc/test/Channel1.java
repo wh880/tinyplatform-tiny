@@ -58,4 +58,9 @@ public class Channel1 implements EventProcessor {
 		return infos;
 	}
 
+	public int getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

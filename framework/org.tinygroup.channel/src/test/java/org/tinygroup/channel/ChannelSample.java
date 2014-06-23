@@ -47,5 +47,10 @@ public class ChannelSample extends AbstractChannel {
 		return new ArrayList<ServiceInfo>();
 	}
 
+	public int getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

@@ -14,9 +14,24 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="cepProcessor" scope="singleton"
+		class="org.tinygroup.cepcorepcsc.impl.CEPCoreProcessor">
+		
+	</bean>
 	<bean id="fileResolverProcessor" scope="singleton"
 		class="org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor">
 		<property name="fileResolver" ref="fileResolver"></property>
 	</bean>
-	
+	<bean id="ar" scope="singleton"
+		class="org.tinygroup.cepcorepcsc.impl.ArOperator">
+		<property name="ip" value="192.168.84.23"></property>
+		<property name="port" value="7777"></property>
+		<property name="remoteIp" value="192.168.84.23"></property>
+		<property name="remotePort" value="8888"></property>
+	</bean>
+	<bean id="sc" scope="singleton"
+		class="org.tinygroup.cepcorepcsc.impl.ScOperator">
+		<property name="ip" value="192.168.84.23"></property>
+		<property name="port" value="8888"></property>
+	</bean>
 </beans>
