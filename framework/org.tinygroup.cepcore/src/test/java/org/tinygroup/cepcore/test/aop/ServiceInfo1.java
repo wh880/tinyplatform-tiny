@@ -15,11 +15,11 @@
  */
 package org.tinygroup.cepcore.test.aop;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceInfo1 implements ServiceInfo {
 	/**
@@ -43,7 +43,11 @@ public class ServiceInfo1 implements ServiceInfo {
 		return serviceId;
 	}
 
-	public String getServiceName() {
+    public String getCategory() {
+        return null;
+    }
+
+    public String getServiceName() {
 		return serviceName;
 	}
 

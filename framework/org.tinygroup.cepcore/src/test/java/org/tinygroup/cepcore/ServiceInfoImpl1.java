@@ -15,11 +15,11 @@
  */
 package org.tinygroup.cepcore;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceInfoImpl1 implements ServiceInfo {
 
@@ -29,8 +29,9 @@ public class ServiceInfoImpl1 implements ServiceInfo {
 	private static final long serialVersionUID = -8801040268597265461L;
 	private String serviceId;
 	private String serviceName;
-	
-	public ServiceInfoImpl1(String id,String name){
+    private String category;
+
+    public ServiceInfoImpl1(String id,String name){
 		this.serviceId = id;
 		this.serviceName = name;
 	}
@@ -47,7 +48,11 @@ public class ServiceInfoImpl1 implements ServiceInfo {
 		return serviceId;
 	}
 
-	public String getServiceName() {
+    public String getCategory() {
+        return category;
+    }
+
+    public String getServiceName() {
 		return serviceName;
 	}
 

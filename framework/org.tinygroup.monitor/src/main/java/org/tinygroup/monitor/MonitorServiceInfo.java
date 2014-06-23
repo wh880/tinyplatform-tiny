@@ -15,11 +15,11 @@
  */
 package org.tinygroup.monitor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MonitorServiceInfo implements ServiceInfo{
 	/**
@@ -28,16 +28,27 @@ public class MonitorServiceInfo implements ServiceInfo{
 	private static final long serialVersionUID = -4140356973662445850L;
 	private String serviceId;
 	private String serviceName;
-	
-	public MonitorServiceInfo(String id,String name){
+    private String category;
+
+    public MonitorServiceInfo(String id,String name){
 		this.serviceId = id;
 		this.serviceName  = name;
 	}
-	
-	public String getServiceId() {
+    public MonitorServiceInfo(String category,String id,String name){
+        this.serviceId = id;
+        this.serviceName  = name;
+        this.category=category;
+    }
+
+    public String getServiceId() {
 		return serviceId;
 	}
-	public void setServiceId(String serviceId) {
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setServiceId(String serviceId) {
 		this.serviceId = serviceId;
 	}
 	public String getServiceName() {

@@ -64,7 +64,13 @@ public class ServiceRegistryItem implements ServiceInfo {
 	 */
 	private List<Parameter> results;
 
-	public boolean isCacheable() {
+    private String category;
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public boolean isCacheable() {
 		return cacheable;
 	}
 
@@ -108,7 +114,11 @@ public class ServiceRegistryItem implements ServiceInfo {
 		return serviceId;
 	}
 
-	public void setServiceId(String serviceId) {
+    public String getCategory() {
+        return category;
+    }
+
+    public void setServiceId(String serviceId) {
 		this.serviceId = serviceId;
 	}
 
