@@ -32,7 +32,6 @@
         <module>org.tinygroup.netty</module>
         <module>org.tinygroup.commons</module>
         <module>org.tinygroup.el</module>
-        <module>org.tinygroup.vfs</module>
         <module>org.tinygroup.cepcore</module>
         <module>org.tinygroup.logger</module>
         <module>org.tinygroup.pc</module>
