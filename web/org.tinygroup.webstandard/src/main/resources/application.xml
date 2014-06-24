@@ -51,6 +51,8 @@
             <file ext-name="acx" content-type="application/internet-property-stream"/>
             <file ext-name="hqx" content-type="application/mac-binhex40"/>
             <file ext-name="doc" content-type="application/msword"/>
+            <file ext-name="woff" content-type="application/x-font-woff"/>
+            <file ext-name="ttf" content-type="application/x-font-ttf"/>
             <file ext-name="dot" content-type="application/msword"/>
             <file ext-name="bin" content-type="application/octet-stream"/>
             <file ext-name="dms" content-type="application/octet-stream"/>
@@ -177,6 +179,7 @@
             <file ext-name="jpe" content-type="image/jpeg"/>
             <file ext-name="jpeg" content-type="image/jpeg"/>
             <file ext-name="jpg" content-type="image/jpeg"/>
+            <file ext-name="png" content-type="image/png"/>
             <file ext-name="jfif" content-type="image/pipeg"/>
             <file ext-name="svg" content-type="image/svg+xml"/>
             <file ext-name="tif" content-type="image/tiff"/>
@@ -380,6 +383,8 @@
             <servlet-mapping url-pattern=".*\.m14"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.mvb"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.wmf"></servlet-mapping>
+            <servlet-mapping url-pattern=".*\.woff"></servlet-mapping>
+            <servlet-mapping url-pattern=".*\.ttf"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.mny"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.pub"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.scd"></servlet-mapping>
@@ -447,6 +452,7 @@
             <servlet-mapping url-pattern=".*\.svg"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.tif"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.tiff"></servlet-mapping>
+            <servlet-mapping url-pattern=".*\.png"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.ras"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.cmx"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.ico"></servlet-mapping>
