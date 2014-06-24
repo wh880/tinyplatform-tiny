@@ -37,17 +37,12 @@ public class FlowServiceInfo implements ServiceInfo {
     private List<Parameter> parameters;
     private List<Parameter> results;
     private String category;
+   
     public FlowServiceInfo(Flow flow) {
         serviceId = flow.getId();
         parameters = flow.getParameters();
         results = flow.getOutputParameters();
-    }
-    
-    public FlowServiceInfo(Flow flow,String category) {
-        serviceId = flow.getId();
-        parameters = flow.getParameters();
-        results = flow.getOutputParameters();
-        this.category = category;
+        category = flow.getCategory();
     }
 
     public String getServiceId() {

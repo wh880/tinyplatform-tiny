@@ -70,7 +70,8 @@ public class Flow {
 
     @XStreamAlias("parameters")
     private List<Parameter> parameters;// 流程的参数
-
+    @XStreamAsAttribute
+	private String category;
 
     public List<Parameter> getInputParameters() {
         if (parameters == null) {
@@ -240,5 +241,13 @@ public class Flow {
         }
         return new ArrayList<Parameter>();
     }
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
 }
