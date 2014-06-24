@@ -38,7 +38,7 @@ import org.tinygroup.service.Service;
  * @param <Service>
  */
 public class ServiceRegistryItem implements ServiceInfo {
-
+	
 	/**
 	 * 
 	 */
@@ -71,6 +71,13 @@ public class ServiceRegistryItem implements ServiceInfo {
 	 * 输出参数描述列表
 	 */
 	private List<Parameter> results;
+
+	private String category;
+	
+	
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
 	public boolean isCacheable() {
 		return cacheable;
@@ -140,4 +147,10 @@ public class ServiceRegistryItem implements ServiceInfo {
 	public int compareTo(ServiceInfo o) {
 		return o.getServiceId().compareTo(serviceId);
 	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	
 }

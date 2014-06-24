@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -12,14 +12,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- * --------------------------------------------------------------------------
- *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
- *
- *  本开源软件遵循 GPL 3.0 协议;
- *  如果您不遵循此协议，则不被允许使用此文件。
- *  你可以从下面的地址获取完整的协议文本
- *
- *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.service.config;
 
@@ -137,6 +129,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 			item.setLocalName(serviceMethod.getLocalName());
 			item.setDescription(serviceMethod.getDescription());
 			item.setCacheable(serviceMethod.isCacheable());
+			item.setCategory(serviceMethod.getCategory());
 			registerService(object, serviceMethod, item, serviceRegistry);
 		}
 	}
@@ -195,7 +188,9 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 			descriptor.setName(serviceParameter.getName());
 			descriptor.setRequired(serviceParameter.isRequired());
 			descriptor.setValidatorSence(serviceParameter.getValidatorScene());
+			descriptor.setTitle(serviceParameter.getLocalName());
 			descriptor.setCollectionType(serviceParameter.getCollectionType());
+			descriptor.setDescription(serviceParameter.getDescription());
 			inputParameterDescriptors.add(descriptor);
 		}
 		// ==================入参处理 end========================
@@ -209,12 +204,16 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 			NoSuchMethodException {
 		// ==================出参处理 begin========================
 		if (serviceMethod.getServiceResult() != null) {
-			ServiceResult serviceResult = serviceMethod.getServiceResult();
+			ServiceParameter serviceResult = serviceMethod.getServiceResult();
 			Parameter descriptor = new Parameter();
 			descriptor.setType(serviceResult.getType());
 			descriptor.setArray(serviceResult.isArray());
 			descriptor.setRequired(serviceResult.isRequired());
 			descriptor.setName(serviceResult.getName());
+			descriptor.setValidatorSence(serviceResult.getValidatorScene());
+			descriptor.setTitle(serviceResult.getLocalName());
+			descriptor.setCollectionType(serviceResult.getCollectionType());
+			descriptor.setDescription(serviceResult.getDescription());
 			serviceProxy.setOutputParameter(descriptor);
 			List<Parameter> outputParameterDescriptors = new ArrayList<Parameter>();
 			outputParameterDescriptors.add(descriptor);

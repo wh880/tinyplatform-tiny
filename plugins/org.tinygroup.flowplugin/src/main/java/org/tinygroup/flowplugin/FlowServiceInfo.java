@@ -36,11 +36,18 @@ public class FlowServiceInfo implements ServiceInfo {
     private String serviceId;
     private List<Parameter> parameters;
     private List<Parameter> results;
-
+    private String category;
     public FlowServiceInfo(Flow flow) {
         serviceId = flow.getId();
         parameters = flow.getParameters();
         results = flow.getOutputParameters();
+    }
+    
+    public FlowServiceInfo(Flow flow,String category) {
+        serviceId = flow.getId();
+        parameters = flow.getParameters();
+        results = flow.getOutputParameters();
+        this.category = category;
     }
 
     public String getServiceId() {
@@ -58,5 +65,9 @@ public class FlowServiceInfo implements ServiceInfo {
     public int compareTo(ServiceInfo o) {
         return o.getServiceId().compareTo(serviceId);
     }
+
+	public String getCategory() {
+		return category;
+	}
 
 }

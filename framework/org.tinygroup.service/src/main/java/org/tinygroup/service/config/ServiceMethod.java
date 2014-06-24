@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -12,14 +12,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- * --------------------------------------------------------------------------
- *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
- *
- *  本开源软件遵循 GPL 3.0 协议;
- *  如果您不遵循此协议，则不被允许使用此文件。
- *  你可以从下面的地址获取完整的协议文本
- *
- *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.service.config;
 
@@ -42,12 +34,14 @@ public class ServiceMethod {
 	@XStreamAlias("service-parameters")
 	private List<ServiceParameter> serviceParameters;
 	@XStreamAlias("service-result")
-	private ServiceResult serviceResult;
+	private ServiceParameter serviceResult;
 	@XStreamAsAttribute
 	@XStreamAlias("method-name")
 	private String methodName;
 	@XStreamAsAttribute
 	private boolean cacheable = false;
+	@XStreamAsAttribute
+	private String category;
 
 	public boolean isCacheable() {
 		return cacheable;
@@ -75,11 +69,11 @@ public class ServiceMethod {
 		this.serviceParameters = serviceParameters;
 	}
 
-	public ServiceResult getServiceResult() {
+	public ServiceParameter getServiceResult() {
 		return serviceResult;
 	}
 
-	public void setServiceResult(ServiceResult serviceResult) {
+	public void setServiceResult(ServiceParameter serviceResult) {
 		this.serviceResult = serviceResult;
 	}
 
@@ -105,6 +99,13 @@ public class ServiceMethod {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 }

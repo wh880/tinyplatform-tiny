@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -12,14 +12,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- * --------------------------------------------------------------------------
- *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
- *
- *  本开源软件遵循 GPL 3.0 协议;
- *  如果您不遵循此协议，则不被允许使用此文件。
- *  你可以从下面的地址获取完整的协议文本
- *
- *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.service.config;
 
@@ -30,6 +22,9 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 public class ServiceParameter {
 	@XStreamAsAttribute
 	private String name;
+	@XStreamAsAttribute
+	@XStreamAlias("local-name")
+	private String localName;
 	@XStreamAsAttribute
 	private String type;
 	@XStreamAlias("collection-type")
@@ -44,8 +39,18 @@ public class ServiceParameter {
 	@XStreamAlias("validate-scene")
 	private String validatorScene;
 
+	private String description;
+
 	public String getCollectionType() {
 		return collectionType;
+	}
+
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName;
 	}
 
 	public void setCollectionType(String collectionType) {
@@ -90,6 +95,14 @@ public class ServiceParameter {
 
 	public void setRequired(boolean required) {
 		this.required = required;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

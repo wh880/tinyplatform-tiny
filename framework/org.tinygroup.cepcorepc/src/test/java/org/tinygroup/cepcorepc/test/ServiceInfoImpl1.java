@@ -69,4 +69,9 @@ public class ServiceInfoImpl1 implements ServiceInfo {
 	public int compareTo(ServiceInfo o) {
 		return o.getServiceId().compareTo(serviceId);
 	}
+
+	public String getCategory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

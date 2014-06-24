@@ -33,5 +33,9 @@ public class ServiceB implements ServiceInfo {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	public String getCategory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
