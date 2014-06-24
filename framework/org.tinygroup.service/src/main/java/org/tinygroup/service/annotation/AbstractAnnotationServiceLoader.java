@@ -188,11 +188,10 @@ public abstract class AbstractAnnotationServiceLoader implements
                 String localName = getAnnotationStringValue(annotation,
                         ServiceMethod.class, "localName");
                 item.setLocalName(localName);
-                // description
-                // localName
-                String categrory = getAnnotationStringValue(annotation,
-                        ServiceMethod.class, "categrory");
-                item.setCategory(categrory);
+                // category
+                String category = getAnnotationStringValue(annotation,
+                        ServiceMethod.class, "category");
+                item.setCategory(category);
                 // description
                 String description = getAnnotationStringValue(annotation,
                         ServiceMethod.class, "description");

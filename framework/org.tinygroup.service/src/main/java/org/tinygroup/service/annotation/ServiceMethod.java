@@ -29,6 +29,8 @@ public @interface ServiceMethod {
 	String localName() default "";
 
 	String description() default "";
+	
+	String category() default "";
 
 	boolean cacheable() default false;
 

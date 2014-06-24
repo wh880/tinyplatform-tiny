@@ -129,6 +129,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 			item.setLocalName(serviceMethod.getLocalName());
 			item.setDescription(serviceMethod.getDescription());
 			item.setCacheable(serviceMethod.isCacheable());
+			item.setCategory(serviceMethod.getCategory());
 			registerService(object, serviceMethod, item, serviceRegistry);
 		}
 	}
