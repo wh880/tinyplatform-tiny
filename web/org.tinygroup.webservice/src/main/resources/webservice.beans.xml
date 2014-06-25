@@ -5,6 +5,6 @@
                     http://www.springframework.org/schema/context
                     http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	default-autowire="byName" default-lazy-init="true">
-	
+	<bean id="TG_WSServletContextListener" name="TG_WSServletContextListener" class="com.sun.xml.ws.transport.http.servlet.TG_WSServletContextListener"></bean>
 	
 </beans>

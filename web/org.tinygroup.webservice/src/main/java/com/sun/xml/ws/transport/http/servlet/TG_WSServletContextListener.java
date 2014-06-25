@@ -137,6 +137,9 @@ public class TG_WSServletContextListener implements
 
 	private void addSkipPathPattern(XmlNode xmlNode) {
 		List<XmlNode> skipTags = xmlNode.getSubNodes(SKIP_TAG);
+		if(skipTags==null){
+			return;
+		}
 		for (XmlNode tag : skipTags) {
 			String pattern = tag.getAttribute(SKIP_ATTRIBUTE);
 			addSkipPathPattern(pattern);
@@ -148,6 +151,9 @@ public class TG_WSServletContextListener implements
 
 	private void addPastPathPattern(XmlNode xmlNode) {
 		List<XmlNode> pastTags = xmlNode.getSubNodes(PAST_TAG);
+		if(pastTags==null){
+			return;
+		}
 		for (XmlNode tag : pastTags) {
 			String pattern = tag.getAttribute(PAST_ATTRIBUTE);
 			addPastPathPattern(pattern);
@@ -213,6 +219,9 @@ public class TG_WSServletContextListener implements
 				// "失败"+WsservletMessages.LISTENER_PARSING_FAILED(e));
 
 			}
+		}
+		if(adapters==null){
+			adapters=new ArrayList<TG_ServletAdapter>();
 		}
 		delegate = createDelegate(adapters, context);
 		context.setAttribute(TG_WSServlet.JAXWS_RI_RUNTIME_INFO, delegate);
