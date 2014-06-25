@@ -489,6 +489,10 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
      * 设置属性 若输入参数中的属性名不为空，属性值为空，则删除指定的属性 若输入参数中的属性名不为空，属性值不为空，则添加相应的属性
      */
     public T setAttribute(String attributeName, String value) {
+    	if(value==null){
+    		removeAttribute(attributeName);
+    		return (T)this;
+    	}
         value=decode(value);
         if (nodeType.isHasHeader()) {
             if (attributes == null) {
