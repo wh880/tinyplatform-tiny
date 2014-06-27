@@ -22,6 +22,17 @@
             <id>java.net</id>
             <url>http://download.java.net/maven/2/</url>
         </repository>
+        <repository>
+            <id>sonatype-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
     </repositories>
     <licenses>
         <license>
@@ -38,6 +49,7 @@
         <developerConnection>scm:git:http://git.oschina.net/tinyframework/tiny.git</developerConnection>
         <url>http://git.oschina.net/tinyframework/tiny.git</url>
     </scm>
+
     <contributors>
         <contributor>
             <name>LuoGuo</name>
@@ -98,6 +110,21 @@
     </profiles>
     <build>
         <plugins>
+            <plugin>
+            <!-- NOTE: We don't need a groupId specification because the group is
+                 org.apache.maven.plugins ...which is assumed by default.
+             -->
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.4</version>
+            <configuration>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                <descriptors>
+                    <descriptor>src/main/assembly/bin-release.xml</descriptor>
+                </descriptors>
+            </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
