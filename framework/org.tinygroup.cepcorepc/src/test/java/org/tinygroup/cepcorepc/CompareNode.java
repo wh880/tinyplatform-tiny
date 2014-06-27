@@ -35,7 +35,7 @@ public class CompareNode extends TestCase {
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(getNode("a"));
 		nodes.add(getNode("b"));
-		assertEquals(false, nodes.contains(getNode("a")));
+		assertEquals(true, nodes.contains(getNode("a")));
 		
 	}
 	

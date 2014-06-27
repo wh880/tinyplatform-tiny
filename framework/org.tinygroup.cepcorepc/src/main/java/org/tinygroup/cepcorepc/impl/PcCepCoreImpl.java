@@ -9,13 +9,17 @@ import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.CEPCoreOperator;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcore.EventProcessorChoose;
+import org.tinygroup.cepcore.aop.CEPCoreAopManager;
+import org.tinygroup.cepcore.exception.RequestNotFoundException;
 import org.tinygroup.cepcore.impl.WeightChooser;
+import org.tinygroup.cepcore.util.CEPCoreUtil;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.springutil.SpringUtil;
 
 public class PcCepCoreImpl implements CEPCore {
 	private static Logger logger = LoggerFactory.getLogger(PcCepCoreImpl.class);
@@ -109,12 +113,57 @@ public class PcCepCoreImpl implements CEPCore {
 	}
 
 	public void process(Event event) {
+		CEPCoreAopManager aopMananger = SpringUtil
+				.getBean(CEPCoreAopManager.CEPCORE_AOP_BEAN);
+		// 前置Aop
+		aopMananger.beforeHandle(event);
 		ServiceRequest request = event.getServiceRequest();
 		String eventNodeName = event.getServiceRequest().getNodeName();
+		logger.logMessage(LogLevel.INFO, "请求指定的执行节点为:{0}", eventNodeName);
 		EventProcessor eventProcessor = getEventProcessor(request,
 				eventNodeName);
-		eventProcessor.process(event);
+		if (EventProcessor.TYPE_LOCAL == eventProcessor.getType()) {
+			// local前置Aop
+			aopMananger.beforeLocalHandle(event);
+			try {
+				// local处理
+				eventProcessor.process(event);
+			} catch (RuntimeException e) {
+				dealException(e, event);
+				throw e;
+			} catch (java.lang.Error e) {
+				dealException(e, event);
+				throw e;
+			}
+			// local后置Aop
+			aopMananger.afterLocalHandle(event);
+		} else {
+			// remote前置Aop
+			aopMananger.beforeRemoteHandle(event);
+			try {
+				// remote处理
+				eventProcessor.process(event);
+			} catch (RuntimeException e) {
+				dealException(e, event);
+				throw e;
+			} catch (java.lang.Error e) {
+				dealException(e, event);
+				throw e;
+			}
+			// remote后置Aop
+			aopMananger.afterRemoteHandle(event);
+		}
+		// 后置Aop
+		aopMananger.afterHandle(event);
+	}
 
+	private void dealException(Throwable e, Event event) {
+		CEPCoreUtil.handle(e, event);
+		Throwable t = e.getCause();
+		while (t != null) {
+			CEPCoreUtil.handle(t, event);
+			t = t.getCause();
+		}
 	}
 
 	private EventProcessor getEventProcessor(ServiceRequest serviceRequest,
@@ -132,7 +181,7 @@ public class PcCepCoreImpl implements CEPCore {
 					return e;
 				}
 			}
-			throw new RuntimeException("没有找到指定的服务处理器："+eventNodeName);
+			throw new RuntimeException("没有找到指定的服务处理器：" + eventNodeName);
 		}
 		// 如果有本地的 则直接返回本地的EventProcessor
 		for (EventProcessor e : list) {
@@ -160,25 +209,20 @@ public class PcCepCoreImpl implements CEPCore {
 		return localServices;
 	}
 
-	public boolean isEnableRemote() {
-		return false;
-	}
-
-	public void setEnableRemote(boolean enableRemote) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public ServiceInfo getServiceInfo(String serviceId) {
-		return localServiceMap.get(serviceId);
+		ServiceInfo info = localServiceMap.get(serviceId);
+		if (info == null) {// 如果本地查询服务没有查询到，且未开启远程调用，则抛出服务未找到异常
+			throw new RequestNotFoundException(serviceId);
+		}
+		return info;
 	}
 
 	public void setEventProcessorChoose(EventProcessorChoose chooser) {
 		this.chooser = chooser;
 	}
-	
-	private EventProcessorChoose getEventProcessorChoose(){
-		if(chooser==null){
+
+	private EventProcessorChoose getEventProcessorChoose() {
+		if (chooser == null) {
 			chooser = new WeightChooser();
 		}
 		return chooser;

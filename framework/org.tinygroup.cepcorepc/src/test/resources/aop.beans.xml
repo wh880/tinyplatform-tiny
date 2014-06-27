@@ -18,6 +18,6 @@
 	default-autowire="byName" default-lazy-init="true">
 	
 	<bean id="aopTestAdapter" name="aopTestAdapter" scope="prototype"
-		class="org.tinygroup.cepcore.test.aop.adapter.AopTestAdapter">
+		class="org.tinygroup.cepcorepc.test.aop.adapter.AopTestAdapter">
 	</bean>
 </beans>

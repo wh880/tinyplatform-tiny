@@ -8,5 +8,14 @@
 	<bean id="weightChooser" name="weightChooser" scope="singleton"
 		class="org.tinygroup.cepcore.impl.WeightChooser">
 	</bean>
-	
+	<bean id="cepcore_aop_bean" name="cepcore_aop_bean"
+		scope="singleton" class="org.tinygroup.cepcore.aop.impl.CEPCoreAopManagerImpl">
+	</bean>
+	<bean id="requestParamValidate" name="requestParamValidate"
+		scope="singleton" class="org.tinygroup.cepcore.aop.impl.RequestParamValidate">
+		
+		<property name="cepCore">
+			<ref bean="cepcore" />
+		</property>
+	</bean>
 </beans>

@@ -33,13 +33,11 @@ import org.tinygroup.event.ServiceRequest;
 
 public class ChannelWithCEPCoreTest extends TestCase {
 	ChannelSample channelSample;
-//	CEPCore cepCore = new CEPcoreImpl();
 	CEPCore cepCore = new PcCepCoreImpl();
 	protected void setUp() throws Exception {
 		super.setUp();
 		channelSample = new ChannelSample();
 		EventFilter eventFilter = new EventFilter() {
-
 			public Event filter(Event event) {
 				Event e = event;
 				return e;
@@ -48,7 +46,6 @@ public class ChannelWithCEPCoreTest extends TestCase {
 		channelSample.addSendEventFilter(eventFilter);
 		channelSample.addReceiveEventFilter(eventFilter);
 		EventListener eventListener = new EventListener() {
-
 			public void process(Event event) {
 				System.out.println(String.format("Log:%s", event
 						.getServiceRequest().getServiceId()));
@@ -60,7 +57,6 @@ public class ChannelWithCEPCoreTest extends TestCase {
 		cepCore.registerEventProcessor(new EventProcessor1());
 		cepCore.registerEventProcessor(new EventProcessor2());
 	}
-
 	public void testSendEvent() {
 		Event event = getEvent("aabbcc","","","");
 		channelSample.sendEvent(event);
@@ -69,13 +65,11 @@ public class ChannelWithCEPCoreTest extends TestCase {
 		channelSample.sendEvent(event);
 		assertEquals("bb", event.getServiceRequest().getContext().get("result"));
 	}
-	
 	public void testSendEvent1() {
 		Event event = getEvent("111111","111111","a","a");
 		channelSample.sendEvent(event);
 		assertEquals("bb", event.getServiceRequest().getContext().get("result"));
 	}
-
 	private Event getEvent(String id,String name,String artifactId,String groupId) {
 		Event event = new Event();
 		event.setEventId("123");
@@ -85,6 +79,4 @@ public class ChannelWithCEPCoreTest extends TestCase {
 		serviceRequest.setContext(new ContextImpl());
 		return event;
 	}
-	
-
 }

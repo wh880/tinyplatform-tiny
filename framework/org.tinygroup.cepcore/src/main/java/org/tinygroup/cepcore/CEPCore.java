@@ -46,7 +46,7 @@ public interface CEPCore extends Remote {
 	void setOperator(CEPCoreOperator operator);
 
 	/**
-	 * 注册一个事件处理器
+	 * 注册一个事件处理器	
 	 * 
 	 * @param eventProcessor
 	 */
@@ -85,9 +85,4 @@ public interface CEPCore extends Remote {
 
 	ServiceInfo getServiceInfo(String serviceId);
 
-
-
-	boolean isEnableRemote();
-
-	void setEnableRemote(boolean enableRemote);
 }
