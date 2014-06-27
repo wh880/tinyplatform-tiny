@@ -52,7 +52,7 @@ public class UserManagerAnnotationService {
 	}
 	@ServiceMethod( serviceId = "serviceAddServiceUserListAnnotation")
 	@ServiceResult(name = "userList")
-	public List<ServiceUser> addServiceUserList(@ServiceParameter(name="users") List<ServiceUser> users){
+	public List<ServiceUser> addServiceUserList(@ServiceParameter(name="users",collectionType="java.util.List") List<ServiceUser> users){
 		return users;
 	}
 	
