@@ -34,8 +34,8 @@ import org.tinygroup.event.ServiceInfo;
  *
  */
 public interface EventProcessor {
-	int TYPE_CHANNEL = 1;
-	int TYPE_LOGICAL = 2;
+	int TYPE_REMOTE = 1;
+	int TYPE_LOCAL = 2;
 
 	/**
 	 * 处理事件

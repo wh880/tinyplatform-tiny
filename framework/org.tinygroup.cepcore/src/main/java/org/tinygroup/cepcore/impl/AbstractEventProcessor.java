@@ -37,6 +37,6 @@ public abstract class AbstractEventProcessor implements EventProcessor {
 	}
 
 	public int getType() {
-		return EventProcessor.TYPE_LOGICAL;
+		return EventProcessor.TYPE_LOCAL;
 	}
 }

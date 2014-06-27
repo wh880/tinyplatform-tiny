@@ -45,7 +45,7 @@ public class EventProcessor2 implements EventProcessor {
 	}
 
 	public int getType() {
-		return EventProcessor.TYPE_LOGICAL;
+		return EventProcessor.TYPE_LOCAL;
 	}
 
 	public List<ServiceInfo> getServiceInfos() {

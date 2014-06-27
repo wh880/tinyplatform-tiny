@@ -48,7 +48,7 @@ public class Channel1 implements EventProcessor {
 	}
 
 	public int getType() {
-		return EventProcessor.TYPE_CHANNEL;
+		return EventProcessor.TYPE_REMOTE;
 	}
 
 	public List<ServiceInfo> getServiceInfos() {

@@ -36,7 +36,7 @@ public class EventProcessorA implements EventProcessor {
 	}
 
 	public int getType() {
-		return EventProcessorA.TYPE_LOGICAL;
+		return EventProcessorA.TYPE_LOCAL;
 	}
 
 	public void addServiceInfo(ServiceInfo s){

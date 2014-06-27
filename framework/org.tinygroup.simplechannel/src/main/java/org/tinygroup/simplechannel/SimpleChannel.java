@@ -45,7 +45,7 @@ public class SimpleChannel extends AbstractChannel {
 	}
 
 	public int getType() {
-		return TYPE_CHANNEL;
+		return TYPE_REMOTE;
 	}
 
 	public int getWeight() {

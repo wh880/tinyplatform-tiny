@@ -42,7 +42,7 @@ public class ServicePcEventProcessor implements EventProcessor {
 	}
 
 	public int getType() {
-		return EventProcessor.TYPE_CHANNEL;
+		return EventProcessor.TYPE_REMOTE;
 	}
 
 	public int getWeight() {

@@ -57,7 +57,7 @@ public class PcCepCoreImpl implements CEPCore {
 				eventProcessor.getId());
 		processorMap.put(eventProcessor.getId(), eventProcessor);
 		eventProcessor.setCepCore(this);
-		if (EventProcessor.TYPE_CHANNEL != eventProcessor.getType()) {
+		if (EventProcessor.TYPE_REMOTE != eventProcessor.getType()) {
 			for (ServiceInfo service : eventProcessor.getServiceInfos()) {
 				if (!localServiceMap.containsKey(service.getServiceId())) {
 					localServiceMap.put(service.getServiceId(), service);
@@ -136,7 +136,7 @@ public class PcCepCoreImpl implements CEPCore {
 		}
 		// 如果有本地的 则直接返回本地的EventProcessor
 		for (EventProcessor e : list) {
-			if (e.getType() == EventProcessor.TYPE_LOGICAL) {
+			if (e.getType() == EventProcessor.TYPE_LOCAL) {
 				return e;
 			}
 		}

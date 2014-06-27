@@ -40,7 +40,7 @@ public class ChannelSample extends AbstractChannel {
 	}
 
 	public int getType() {
-		return EventProcessor.TYPE_CHANNEL;
+		return EventProcessor.TYPE_REMOTE;
 	}
 
 	public List<ServiceInfo> getServiceInfos() {
