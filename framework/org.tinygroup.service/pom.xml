@@ -80,7 +80,7 @@
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.cepcore</artifactId>
+      <artifactId>org.tinygroup.cepcorepc</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>

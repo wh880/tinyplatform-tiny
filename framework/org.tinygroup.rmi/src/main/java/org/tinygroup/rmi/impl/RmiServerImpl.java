@@ -62,7 +62,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 	Map<String, Remote> registeredRemoteObjectMap = new HashMap<String, Remote>();
 	Map<String, Remote> registeredLocalObjectMap = new HashMap<String, Remote>();
 	HeartThread heartThread = new HeartThread();
-	Map<String,List<ConnectTrigger>> triggers = new HashMap<String, List<ConnectTrigger>>();
+	Map<String, List<ConnectTrigger>> triggers = new HashMap<String, List<ConnectTrigger>>();
 
 	public RmiServerImpl() throws RemoteException {
 		this("localhost", DEFAULT_RMI_PORT);
@@ -88,13 +88,12 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		try {
 			getRemoteRegistry();
 			bindThis();
-			if (remoteRegistry != null){
+			if (remoteRegistry != null) {
 				startHeart();
 			}
-				
 
 		} catch (RemoteException e) {
-			logger.errorMessage("连接远端服务器时发生异常",e );
+			logger.errorMessage("连接远端服务器时发生异常", e);
 			startHeart();
 		}
 
@@ -126,7 +125,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			}
 		}
 		try {
-			registry.rebind(getKeyName(hostName, port+""), this);
+			registry.rebind(getKeyName(hostName, port + ""), this);
 		} catch (AccessException e) {
 			throw new RuntimeException(e);
 		} catch (RemoteException e) {
@@ -144,10 +143,10 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		System.setProperty("java.rmi.server.hostname", remoteHostName);
 		remoteRegistry = LocateRegistry.getRegistry(remoteHostName, remotePort);
 		try {
-			remoteServer = (RmiServer) remoteRegistry.lookup(getKeyName(remoteHostName, remotePort+""));
+			remoteServer = (RmiServer) remoteRegistry.lookup(getKeyName(
+					remoteHostName, remotePort + ""));
 		} catch (NotBoundException e) {
-			logger.errorMessage(
-					"获取远端服务器:" + remoteHostName + "时出错,该对象未曾注册", e);
+			logger.errorMessage("获取远端服务器:" + remoteHostName + "时出错,该对象未曾注册", e);
 			throw new RuntimeException("获取远端服务器:" + remoteHostName
 					+ "时出错,该对象未曾注册", e);
 		}
@@ -163,16 +162,17 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		heartThread.stop();
 	}
 
-	public void addTrigger(ConnectTrigger trigger)throws RemoteException{
+	public void addTrigger(ConnectTrigger trigger) throws RemoteException {
 		String type = trigger.getType();
-		if(triggers.containsKey(type)){
+		if (triggers.containsKey(type)) {
 			triggers.get(type).add(trigger);
-		}else{
+		} else {
 			List<ConnectTrigger> list = new ArrayList<ConnectTrigger>();
 			list.add(trigger);
 			triggers.put(type, list);
 		}
 	}
+
 	class HeartThread extends Thread implements Serializable {
 		private static final int MILLISECOND_PER_SECOND = 1000;
 		private volatile boolean stop = false;
@@ -184,7 +184,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 
 		public void run() {
 			while (!stop) {
-				
+
 				try {
 					sleep(breathInterval * MILLISECOND_PER_SECOND);
 				} catch (InterruptedException e) {
@@ -208,8 +208,9 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 				if (!checkRemoteHasThis()) {
 					logger.logMessage(LogLevel.DEBUG, "远端服务器上不存在本地服务器信息");
 					reReg();
-					List<ConnectTrigger> list = triggers.get(ConnectTrigger.REREG);
-					for(ConnectTrigger trigger:list){
+					List<ConnectTrigger> list = triggers
+							.get(ConnectTrigger.REREG);
+					for (ConnectTrigger trigger : list) {
 						trigger.deal();
 					}
 
@@ -220,18 +221,16 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 	}
 
 	private void reReg() {
-		
-		
-			try {
-				remoteServer = (RmiServer) remoteRegistry.lookup(getKeyName(remoteHostName, remotePort+""));
-			} catch (NotBoundException e) {
-				logger.errorMessage(
-						"获取远端服务器:" + remoteHostName + "时出错,该对象未曾注册", e);
-			}catch (RemoteException e1) {
-				logger.errorMessage(
-						"连接远端服务器:" + remoteHostName + "失败", e1);
-			}
-		
+
+		try {
+			remoteServer = (RmiServer) remoteRegistry.lookup(getKeyName(
+					remoteHostName, remotePort + ""));
+		} catch (NotBoundException e) {
+			logger.errorMessage("获取远端服务器:" + remoteHostName + "时出错,该对象未曾注册", e);
+		} catch (RemoteException e1) {
+			logger.errorMessage("连接远端服务器:" + remoteHostName + "失败", e1);
+		}
+
 		for (String name : registeredLocalObjectMap.keySet()) {
 			try {
 				remoteServer.registerRemoteObject(
@@ -544,14 +543,23 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 	}
 
 	public void unexportObjects() throws RemoteException {
+		List<String> names = new ArrayList<String>();
 		for (String name : registeredLocalObjectMap.keySet()) {
+			names.add(name);
+		}
+		for (String name : names) {
 			try {
 				unregisterLocalObject(name);
 			} catch (Exception e) {
 				logger.errorMessage("注销对象name:{}时失败", e, name);
 			}
 		}
+		names.clear();
+
 		for (String name : registeredRemoteObjectMap.keySet()) {
+			names.add(name);
+		}
+		for (String name : names) {
 			try {
 				unregisterRemoteObject(name);
 			} catch (Exception e) {
