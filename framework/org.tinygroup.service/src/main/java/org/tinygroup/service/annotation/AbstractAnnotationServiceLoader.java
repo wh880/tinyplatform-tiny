@@ -309,7 +309,7 @@ public abstract class AbstractAnnotationServiceLoader implements
                         ServiceResult.class, "collectionType");
                 descriptor.setCollectionType(collectionType);
                 boolean isArray = Boolean.valueOf(getAnnotationStringValue(
-                        annotation, ServiceParameter.class, "isArray"));
+                        annotation, ServiceResult.class, "isArray"));
                 descriptor.setArray(isArray);
                 logger.logMessage(LogLevel.INFO, "服务出参name:{name}", name);
             } else {
