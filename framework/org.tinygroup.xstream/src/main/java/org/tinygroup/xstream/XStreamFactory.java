@@ -69,7 +69,7 @@ public final class XStreamFactory {
 		if (classLoader != null) {
 			xstream.setClassLoader(classLoader);
 		}else{
-			xstream.setClassLoader(Thread.currentThread().getContextClassLoader());
+			xstream.setClassLoader(XStreamFactory.class.getClassLoader());
 		}
 		xstream.autodetectAnnotations(true);
 		xstream.setMode(XStream.NO_REFERENCES);
