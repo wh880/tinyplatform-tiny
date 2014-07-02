@@ -29,7 +29,7 @@ interface ValueOperator {
      * @param value
      * @param <T>
      */
-    <T> ValueOperator put(String sectionName, String key, T value);
+    <T> IniOperator put(String sectionName, String key, T value);
 
     /**
      * 添加值，不关心是否有同名的
@@ -39,7 +39,7 @@ interface ValueOperator {
      * @param value
      * @param <T>
      */
-    <T> ValueOperator add(String sectionName, String key, T value);
+    <T> IniOperator add(String sectionName, String key, T value);
 
     /**
      * 获取值，如果读不到值，则取默认值
