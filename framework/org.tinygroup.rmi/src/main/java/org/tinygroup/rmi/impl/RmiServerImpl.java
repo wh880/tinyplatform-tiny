@@ -23,12 +23,6 @@
  */
 package org.tinygroup.rmi.impl;
 
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.rmi.ConnectTrigger;
-import org.tinygroup.rmi.RmiServer;
-
 import java.io.Serializable;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
@@ -42,13 +36,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.rmi.ConnectTrigger;
+import org.tinygroup.rmi.RmiServer;
+
 public final class RmiServerImpl extends UnicastRemoteObject implements
 		RmiServer {
 
 	private static final long serialVersionUID = -8847587819458611248L;
 
 	private final static Logger logger = LoggerFactory
-			.getLogger(RmiServerRemote.class);
+			.getLogger(RmiServerImpl.class);
 
 	int port = DEFAULT_RMI_PORT;
 	String hostName = "localhost";
