@@ -30,6 +30,24 @@
 		<property name="remotePort" value="8888"></property>
 		<property name="weight" value="20"></property>
 	</bean>
+	
+	<bean id="asa" scope="singleton"
+		class="org.tinygroup.cepcorepcsc.impl.ArOperator">
+		<property name="ip" value="192.168.84.23"></property>
+		<property name="port" value="5555"></property>
+		<property name="remoteIp" value="192.168.84.23"></property>
+		<property name="remotePort" value="8888"></property>
+		<property name="weight" value="20"></property>
+	</bean>
+	
+	<bean id="asb" scope="singleton"
+		class="org.tinygroup.cepcorepcsc.impl.ArOperator">
+		<property name="ip" value="192.168.84.23"></property>
+		<property name="port" value="6666"></property>
+		<property name="remoteIp" value="192.168.84.23"></property>
+		<property name="remotePort" value="8888"></property>
+		<property name="weight" value="20"></property>
+	</bean>
 	<bean id="sc" scope="singleton"
 		class="org.tinygroup.cepcorepcsc.impl.ScOperator">
 		<property name="ip" value="192.168.84.23"></property>
