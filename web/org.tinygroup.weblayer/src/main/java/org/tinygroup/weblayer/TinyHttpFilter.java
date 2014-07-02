@@ -99,7 +99,7 @@ public class TinyHttpFilter implements Filter {
         context.put("springUtil", SpringUtil.class);
         postDataProcess(request, context);
         context.put("context", context);
-        context.putSubContext("applicationproperties", new ContextImpl(ConfigurationUtil.getConfigurationManager().getApplicationPropertiesMap()));
+        context.putSubContext("applicationproperties", new ContextImpl(ConfigurationUtil.getConfigurationManager().getConfiguration()));
         putRequstInfo(request, context);
 
         context.init(request, response,
@@ -146,7 +146,7 @@ public class TinyHttpFilter implements Filter {
 
 	private void initPostDataProcess(){
 		ConfigurationManager appConfigManager = ConfigurationUtil.getConfigurationManager();
-		XmlNode parserNode = appConfigManager.getApplicationConfig().getSubNode(POST_DATA_PROCESS);
+		XmlNode parserNode = appConfigManager.getApplicationConfiguration().getSubNode(POST_DATA_PROCESS);
 		if(parserNode!=null){
 			postDataKey=StringUtil.defaultIfBlank(parserNode.getAttribute(POST_DATA_KEY),DEFAULT_POST_DATA_KEY);
 			String hostsPattern=parserNode.getAttribute(HOST_PATTERN);
