@@ -39,7 +39,7 @@ public class EventProcessor2 implements EventProcessor {
 
 
 	public int getType() {
-		return EventProcessor.TYPE_LOGICAL;
+		return EventProcessor.TYPE_LOCAL;
 	}
 
 	public List<ServiceInfo> getServiceInfos() {
@@ -53,6 +53,13 @@ public class EventProcessor2 implements EventProcessor {
 
 	public void setCepCore(CEPCore cepCore) {
 		
+	}
+
+
+
+	public int getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

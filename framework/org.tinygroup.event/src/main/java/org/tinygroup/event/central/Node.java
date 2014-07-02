@@ -48,7 +48,7 @@ public final class Node implements Comparable<Node>, Serializable {
 
     public static final String CEP_NODE = "cepnode";
     public static final String CENTRAL_NODE = "centralnode";
-    public static final int DEFAULT_WEIGHT = 10;
+    
 
     private List<ServiceInfo> serviceInfos;
 

@@ -15,6 +15,7 @@
  */
 package org.tinygroup.channel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.cepcore.EventProcessor;
@@ -31,11 +32,16 @@ public class ChannelSample extends AbstractChannel {
 	}
 
 	public int getType() {
-		return EventProcessor.TYPE_CHANNEL;
+		return EventProcessor.TYPE_REMOTE;
 	}
 
 	public List<ServiceInfo> getServiceInfos() {
-		return null;
+		return new ArrayList<ServiceInfo>();
+	}
+
+	public int getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 

@@ -18,6 +18,7 @@ package org.tinygroup.fileresolver.applicationprocessor;
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.fileresolver.FileResolver;
+import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.xmlparser.node.XmlNode;
@@ -58,6 +59,13 @@ public class FileResolverProcessor implements ApplicationProcessor {
 	}
 
 	public void start() {
+		fileResolver.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
+		fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
+		try {
+			fileResolver.addResolvePath(FileResolverUtil.getWebLibJars(fileResolver));
+		} catch (Exception e) {
+			logger.errorMessage("为文件扫描器添加webLibJars时出错",e);
+		}
 		fileResolver.resolve();
 	}
 
@@ -82,5 +90,10 @@ public class FileResolverProcessor implements ApplicationProcessor {
 
 	public int getOrder() {
 		return DEFAULT_PRECEDENCE;
+	}
+
+	public void init() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -42,7 +42,7 @@ public class ChannelTestUtil {
 		if(init)
 			return;
 		init = true;
-		AbstractTestUtil.init(null, true);
+		AbstractTestUtil.init("application.xml", true);
 		
 	}
 

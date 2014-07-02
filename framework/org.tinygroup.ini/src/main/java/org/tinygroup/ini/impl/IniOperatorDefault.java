@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -12,9 +12,18 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ * --------------------------------------------------------------------------
+ *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *
+ *  本开源软件遵循 GPL 3.0 协议;
+ *  如果您不遵循此协议，则不被允许使用此文件。
+ *  你可以从下面的地址获取完整的协议文本
+ *
+ *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.ini.impl;
 
+import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.ini.*;
 
 import java.io.*;
@@ -37,7 +46,7 @@ public class IniOperatorDefault implements IniOperator {
     }
 
     public IniOperatorDefault(Sections sections) {
-        this.sections = sections;
+        this.sections=sections;
     }
 
     public void setSections(Sections sections) {
@@ -57,11 +66,12 @@ public class IniOperatorDefault implements IniOperator {
         String sectionName = null;
         while (string != null) {
             string = string.trim();
-            if (string.length() == 0) {
-
-            } else if (string.startsWith(commentChar)) {
-                addComment(sectionName, string);
-            } else if (string.startsWith("[")) { //如果是Section
+            if (string.length() == 0 ) {
+                addComment(sectionName, "");
+            }else if( string.startsWith(commentChar)){
+            	addComment(sectionName, string.substring(1));
+            }
+            else if (string.startsWith("[")) { //如果是Section
                 sectionName = addSection(string);
             } else {
                 addValuePair(string, sectionName);
@@ -106,7 +116,7 @@ public class IniOperatorDefault implements IniOperator {
     }
 
     private void addComment(String sectionName, String string) {
-        ValuePair valuePair = new ValuePair(string.substring(1));
+        ValuePair valuePair = new ValuePair(string);
         add(sectionName, valuePair);
     }
 
@@ -147,10 +157,9 @@ public class IniOperatorDefault implements IniOperator {
         this.commentChar = commentChar + "";
     }
 
-    public <T> IniOperatorDefault put(String sectionName, String key, T value) {
+    public <T> void put(String sectionName, String key, T value) {
         Section section = checkSection(sectionName);
         section.set(key, value);
-        return this;
     }
 
     private Section checkSection(String sectionName) {
@@ -165,13 +174,16 @@ public class IniOperatorDefault implements IniOperator {
         return section;
     }
 
-    public <T> IniOperatorDefault add(String sectionName, String key, T value) {
+    public <T> void add(String sectionName, String key, T value) {
         add(sectionName, new ValuePair(key, value.toString()));
-        return this;
     }
 
     public <T> T get(Class<T> tClass, String sectionName, String key, T defaultValue) {
-        return null;
+    	String value = get(sectionName, key);
+        if(value==null||"".equals(value)){
+        	return defaultValue;
+        }
+        return (T) ValueUtil.getValue(value, tClass.getName());
     }
 
     public String get(String sectionName, String key, String defaultValue) {
@@ -190,6 +202,7 @@ public class IniOperatorDefault implements IniOperator {
         return null;
     }
 
+
     public <T> List<T> getList(Class<T> tClass, String sectionName, String key) {
         List<T> list = new ArrayList<T>();
         Section section = getSection(sectionName);
@@ -204,7 +217,7 @@ public class IniOperatorDefault implements IniOperator {
     }
 
 
-    public <T> T get(Class<T> tClass, String sectionName, String key) {
+    public <T> T get(Class<T> tClass, String sectionName, String key) {	
         Section section = sections.getSection(sectionName);
         if (section != null) {
             T value = section.getValue(tClass, key);
@@ -215,29 +228,32 @@ public class IniOperatorDefault implements IniOperator {
         return null;
     }
 
-    public IniOperatorDefault add(String sectionName, ValuePair valuePair) {
+    public void add(String sectionName, ValuePair valuePair) {
         Section section = checkSection(sectionName);
         section.add(valuePair);
-        return this;
     }
 
-    public IniOperatorDefault set(String sectionName, ValuePair valuePair) {
-        for (Section section : sections.getSectionList()) {
-            if (sectionName.equals(section.getName())) {
-                for (ValuePair pair : section.getValuePairList()) {
-                    if (pair.getKey().equals(valuePair.getKey()))
-                        pair.setValue(valuePair.getValue());
-                    return this;
-                }
-            }
-        }
-        return add(sectionName, valuePair);
+    public void set(String sectionName, ValuePair valuePair) {
+    	Section s = checkSection(sectionName);
+    	List<ValuePair> list = s.getValuePairList();
+    	ValuePair replaceValuePair = null;
+    	for(ValuePair v:list){
+    		if(v.getKey().equals(valuePair.getKey())){
+    			replaceValuePair = v;
+    			break;
+    		}
+    	}
+    	if(replaceValuePair==null){
+    		s.add(valuePair);
+    	}else{
+    		list.remove(replaceValuePair);
+    		list.add(valuePair);
+    	}
     }
 
-    public IniOperatorDefault add(String sectionName, List<ValuePair> valuePairList) {
+    public void add(String sectionName, List<ValuePair> valuePairList) {
         Section section = checkSection(sectionName);
         section.getValuePairList().addAll(valuePairList);
-        return this;
     }
 
     public List<ValuePair> getValuePairList(String sectionName, String key) {

@@ -18,6 +18,7 @@ package org.tinygroup.plugin.test;
 import junit.framework.TestCase;
 
 import org.tinygroup.fileresolver.FileResolver;
+import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
 import org.tinygroup.plugin.PluginManager;
@@ -29,6 +30,17 @@ public class PluginTest extends TestCase {
 	public void setUp(){
 		
 			FileResolver fileResolver = new FileResolverImpl();
+			FileResolverUtil.addClassPathPattern(fileResolver);
+			fileResolver
+					.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
+			fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
+			try {
+				fileResolver.addResolvePath(FileResolverUtil
+						.getWebLibJars(fileResolver));
+			} catch (Exception e) {
+				
+			}
+			fileResolver.addIncludePathPattern("org\\.tinygroup\\.(.)*\\.jar");
 			fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 			fileResolver.resolve();
 	}

@@ -15,70 +15,60 @@
  */
 package org.tinygroup.config;
 
+import org.tinygroup.xmlparser.node.XmlNode;
+
 import java.util.Collection;
 import java.util.Map;
 
-import org.tinygroup.vfs.FileObject;
-import org.tinygroup.xmlparser.node.XmlNode;
-
 /**
  * 应用配置管理器
- * 
+ *
  * @author luoguo
- * 
  */
 public interface ConfigurationManager {
-	String APPLICATION_CONFIGURATION_FILE = "/application.xml";
-	String APPLICATION_ROOTNODE_NAME = "application";
 
-	/**
-	 * 载入配置
-	 * 
-	 * @param content
-	 *            配置内容
-	 */
-	void loadApplicationConfig(String config);
+    /**
+     * 设置配置加载器
+     *
+     * @param configurationLoader
+     */
+    void setConfigurationLoader(ConfigurationLoader configurationLoader);
 
-	Map<String, String> getApplicationPropertiesMap();
+    void setApplicationConfiguration(XmlNode applicationConfiguration);
 
-	void setApplicationProperty(String key, String value);
+    void setComponentConfigurationMap(Map<String, XmlNode> componentConfigurationMap);
 
-	String getApplicationProperty(String key);
+    void setComponentConfiguration(String key, XmlNode componentConfiguration);
 
-	String getApplicationProperty(String key, String defaultValue);
+    XmlNode getApplicationConfiguration();
 
-	/**
-	 * 分发应用配置<br>
-	 * 应用配置会促使配置管理器把配置信息推送到配置订阅者
-	 */
-	void distributeConfig();
+    Map<String, XmlNode> getComponentConfigurationMap();
 
-	/**
-	 * 添加组件配置
-	 * 
-	 */
-	void loadComponentConfig(FileObject fileObject);
-	
-	/**
-	 * 卸载组件配置
-	 * @param path 组件配置文件路径
-	 */
-	void unloadComponentConfig(String path);
+    XmlNode getComponentConfiguration(String key);
 
-	/**
-	 * 获取应用配置
-	 * 
-	 * @return
-	 */
-	XmlNode getApplicationConfig();
+    /**
+     * 分发应用配置<br>
+     * 应用配置会促使配置管理器把配置信息推送到配置订阅者
+     */
+    void distributeConfiguration();
 
-	void setConfigurationList(Collection<Configuration> configurationList);
 
-	/**
-	 * 获取组件配置MAP
-	 * 
-	 * @return
-	 */
-	Map<String, XmlNode> getComponentConfigMap();
+    void setConfigurationList(Collection<Configuration> configurationList);
+    /**
+     * 设置KeyValue形式的值
+     *
+     * @param key
+     * @param value
+     */
+    <T> void setConfiguration(String key, String value);
 
+    Map<String,String> getConfiguration();
+    /**
+     * @param type
+     * @param key
+     * @param defaultValue
+     * @param <T>
+     * @return
+     */
+    <T> T getConfiguration(Class<T> type, String key, T defaultValue);
 }

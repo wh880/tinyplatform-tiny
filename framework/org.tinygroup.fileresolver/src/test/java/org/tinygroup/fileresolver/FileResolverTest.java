@@ -15,13 +15,12 @@
  */
 package org.tinygroup.fileresolver;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -49,6 +48,7 @@ public class FileResolverTest extends TestCase {
 	public void testResolve() {
 		TestFileProcess process = new TestFileProcess();
 		fileResolver.addFileProcessor(process);
+		fileResolver.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
 		fileResolver.resolve();
 		assertEquals(true, process.exist());
 		assertEquals(2, process.fileSize());

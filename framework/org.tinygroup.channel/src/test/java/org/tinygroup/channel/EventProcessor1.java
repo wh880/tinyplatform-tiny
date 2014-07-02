@@ -41,7 +41,7 @@ public class EventProcessor1 implements EventProcessor {
 	}
 
 	public int getType() {
-		return EventProcessor.TYPE_LOGICAL;
+		return EventProcessor.TYPE_LOCAL;
 	}
 
 	public List<ServiceInfo> getServiceInfos() {
@@ -49,6 +49,12 @@ public class EventProcessor1 implements EventProcessor {
 			list.add(new ServiceInfoTestObject("aabbcc","a.a.aabbcc1"));
 		}
 		return list;
+	}
+
+
+	public int getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
