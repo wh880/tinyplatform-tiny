@@ -50,10 +50,11 @@ public class OrderByProcessor {
                 orderByList.add(new OrderByColumn(column, orderByElement.isAsc()));
             }
             orderTypes = new boolean[orderByList.size()];
+            orderByIndexs=new int[orderByList.size()];
             for (int i = 0; i < orderTypes.length; i++) {
                 orderTypes[i] = orderByList.get(i).isAsc();
+                orderByIndexs[i]=i;
             }
-            orderByIndexs = DbRouterUtil.getOrderByIndexs(plainSelect, resultSet);
             hasOrderBy = true;
             sortOrder = new SortOrder(orderTypes, orderByIndexs);
         }
