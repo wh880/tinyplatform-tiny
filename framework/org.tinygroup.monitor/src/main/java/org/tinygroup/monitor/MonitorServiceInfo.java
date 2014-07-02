@@ -68,8 +68,4 @@ public class MonitorServiceInfo implements ServiceInfo{
 		return o.getServiceId().compareTo(serviceId);
 	}
 
-	public String getCategory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

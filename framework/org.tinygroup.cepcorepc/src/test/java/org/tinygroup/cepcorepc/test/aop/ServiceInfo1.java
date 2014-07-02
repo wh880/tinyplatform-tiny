@@ -30,8 +30,9 @@ public class ServiceInfo1 implements ServiceInfo {
 	private String serviceName;
 	private List<Parameter> list = new ArrayList<Parameter>();
 	private List<Parameter> result = new ArrayList<Parameter>();
-	
- 	public void setServiceId(String serviceId) {
+    private String category;
+
+    public void setServiceId(String serviceId) {
 		this.serviceId = serviceId;
 	}
 
@@ -44,7 +45,7 @@ public class ServiceInfo1 implements ServiceInfo {
 	}
 
     public String getCategory() {
-        return null;
+        return category;
     }
 
     public String getServiceName() {
@@ -62,8 +63,4 @@ public class ServiceInfo1 implements ServiceInfo {
 		return o.getServiceId().compareTo(serviceId);
 	}
 
-	public String getCategory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

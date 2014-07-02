@@ -48,10 +48,6 @@ public class ServiceInfoImpl1 implements ServiceInfo {
 		return serviceId;
 	}
 
-    public String getCategory() {
-        return category;
-    }
-
     public String getServiceName() {
 		return serviceName;
 	}
