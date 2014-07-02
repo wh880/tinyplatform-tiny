@@ -267,13 +267,17 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			registeredLocalObjectMap.put(name, object);
 			if (object instanceof UnicastRemoteObject) {
 				registry.rebind(name, object);
+				if (remoteServer != null) {
+					remoteServer.registerRemoteObject(object, name);
+				}
 			} else {
 				Remote stub = UnicastRemoteObject.exportObject(object, 0);
 				registry.rebind(name, stub);
+				if (remoteServer != null) {
+					remoteServer.registerRemoteObject(stub, name);
+				}
 			}
-			if (remoteServer != null) {
-				remoteServer.registerRemoteObject(object, name);
-			}
+			
 
 			logger.logMessage(LogLevel.DEBUG, "结束注册本地对象:{}", name);
 		} catch (RemoteException e) {
