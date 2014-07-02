@@ -21,7 +21,7 @@
  *
  *       http://www.gnu.org/licenses/gpl.html
  */
-package org.tinygroup.tinypc.rmi;
+package org.tinygroup.rmi;
 
 import junit.framework.TestCase;
 

@@ -24,11 +24,7 @@ public interface ServiceInfo extends Serializable,Comparable<ServiceInfo> {
 	 */
 	String getServiceId();
 
-    /**
-     * 返回服务分类
-     * @return
-     */
-    String getCategory();
+  
 	/**
 	 * 若参数为空，需要返回一个空list
 	 * @return 参数列表
