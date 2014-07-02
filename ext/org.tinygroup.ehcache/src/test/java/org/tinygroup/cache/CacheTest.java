@@ -18,7 +18,9 @@ package org.tinygroup.cache;
 import junit.framework.TestCase;
 
 import org.tinygroup.cache.exception.CacheException;
+import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverFactory;
+import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.I18nFileProcessor;
 import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
 import org.tinygroup.fileresolver.impl.XStreamFileProcessor;
@@ -27,13 +29,27 @@ import org.tinygroup.springutil.SpringUtil;
 public class CacheTest extends TestCase {
 	Cache cache;
 	static {
-		FileResolverFactory.getFileResolver().addFileProcessor(
+		FileResolver fileResolver = FileResolverFactory.getFileResolver();
+		fileResolver.addFileProcessor(
 				new XStreamFileProcessor());
-		FileResolverFactory.getFileResolver().addFileProcessor(
+		FileResolverUtil.addClassPathPattern(fileResolver);
+		fileResolver
+				.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
+		fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
+		try {
+			fileResolver.addResolvePath(FileResolverUtil
+					.getWebLibJars(fileResolver));
+		} catch (Exception e) {
+			
+		}
+		fileResolver.addIncludePathPattern("org\\.tinygroup\\.(.)*\\.jar");
+		fileResolver.addFileProcessor(
+				new XStreamFileProcessor());
+		fileResolver.addFileProcessor(
 				new I18nFileProcessor());
-		FileResolverFactory.getFileResolver().addFileProcessor(
+		fileResolver.addFileProcessor(
 				new SpringBeansFileProcessor());
-		FileResolverFactory.getFileResolver().resolve();
+		fileResolver.resolve();
 	}
 
 	protected void setUp() throws Exception {
