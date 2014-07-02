@@ -10,7 +10,7 @@ public class TestAr {
 		p.setNodeName("ar");
 		ArOperator aro = new ArOperator("192.168.84.23","6666","192.168.84.23","8888",10);
 		p.setOperator(aro);
-		p.startCEPCore(p);
+		p.start();
 		
 	
 	}

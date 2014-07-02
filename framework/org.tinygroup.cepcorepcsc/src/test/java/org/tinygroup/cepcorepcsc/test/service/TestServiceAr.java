@@ -14,7 +14,7 @@ public class TestServiceAr {
 //		p.setNodeName("asa");
 //		ArOperator aro = new ArOperator("192.168.84.23","3333","192.168.84.23","8888",10);
 //		p.setOperator(aro);
-		p.startCEPCore(p);
+//		p.startCEPCore(p);
 		p.process(getEvent());
 	}
 	

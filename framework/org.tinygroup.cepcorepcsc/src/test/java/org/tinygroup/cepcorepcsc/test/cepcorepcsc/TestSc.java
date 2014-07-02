@@ -9,6 +9,6 @@ public class TestSc {
 		p.setNodeName("sc");
 		ScOperator o = new  ScOperator("192.168.84.23",8888);
 		p.setOperator(o);
-		p.startCEPCore(p);
+		p.start();
 	}
 }
