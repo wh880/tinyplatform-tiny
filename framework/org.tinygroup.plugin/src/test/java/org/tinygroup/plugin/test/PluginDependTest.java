@@ -18,6 +18,7 @@ package org.tinygroup.plugin.test;
 import junit.framework.TestCase;
 
 import org.tinygroup.fileresolver.FileResolver;
+import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
 import org.tinygroup.plugin.PluginManager;
@@ -29,11 +30,23 @@ public class PluginDependTest extends TestCase {
 	
 	public void setUp() {
 		FileResolver fileResolver = new FileResolverImpl();
+		FileResolverUtil.addClassPathPattern(fileResolver);
+		fileResolver
+				.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
+		fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
+		try {
+			fileResolver.addResolvePath(FileResolverUtil
+					.getWebLibJars(fileResolver));
+		} catch (Exception e) {
+			
+		}
+		fileResolver.addIncludePathPattern("org\\.tinygroup\\.(.)*\\.jar");
 		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 		fileResolver.resolve();
 	}
 	
 	private PluginConfig getPluginConfigA(){
+		
 		PluginConfig config = new PluginConfig();
 		config.setDependPlugins("B");
 		config.setPluginBean("pluginA");
@@ -52,6 +65,7 @@ public class PluginDependTest extends TestCase {
 	}
 	
 	public void testStart(){
+		
 		PluginManager manager = new PluginManagerImpl();
 		manager.addPlugin(getPluginConfigA());
 		manager.addPlugin(getPluginConfigB());
@@ -60,6 +74,7 @@ public class PluginDependTest extends TestCase {
 			manager.start();
 			assertEquals(0, PluginCounter.getCounter());
 		} catch (Exception e) {
+			e.printStackTrace();
 			assertTrue(false);
 		}
 		
@@ -76,6 +91,7 @@ public class PluginDependTest extends TestCase {
 			manager.stop();
 			assertEquals(1, PluginCounter.getCounter());
 		} catch (Exception e) {
+			e.printStackTrace();
 			assertTrue(false);
 		}
 

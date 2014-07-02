@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -12,24 +12,26 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ * --------------------------------------------------------------------------
+ *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *
+ *  本开源软件遵循 GPL 3.0 协议;
+ *  如果您不遵循此协议，则不被允许使用此文件。
+ *  你可以从下面的地址获取完整的协议文本
+ *
+ *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.fileresolver.impl;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.tinygroup.commons.order.OrderUtil;
-import org.tinygroup.commons.tools.ClassPathUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileProcessor;
@@ -40,7 +42,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-import org.tinygroup.vfs.impl.FileSchemaProvider;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
@@ -59,19 +60,23 @@ public class FileResolverImpl implements FileResolver {
 
     // 是否对classPath进行处理，默认为处理
     private int fileProcessorThreadNum = DEFAULT_THREAD_NUM;
-    // 需要扫描的额外路径列表
-    private Set<String> manualClassPaths = new HashSet<String>();
     // 文件处理器列表，由文件查找器统一管理
     private List<FileProcessor> fileProcessorList = new ArrayList<FileProcessor>();
     // 文件信息 key:path,value:modify-time
     private Map<String, Long> fileDateMap = new HashMap<String, Long>();
     // 文件信息
     private Map<String, FileObject> fileObjectCaches = new HashMap<String, FileObject>();
+    
     private Map<String, Pattern> includePathPatternMap = new HashMap<String, Pattern>();
-
     private Set<String> allScanningPath = new HashSet<String>();
+
     private XmlNode componentConfig;
     private XmlNode applicationConfig;
+    private ClassLoader classLoader;
+
+    public Set<String> getResolveFileObjectSet() {
+        return allScanningPath;
+    }
 
     public List<FileProcessor> getFileProcessorList() {
         return fileProcessorList;
@@ -88,26 +93,29 @@ public class FileResolverImpl implements FileResolver {
         includePathPatternMap.put(classPath, Pattern.compile(classPath));
     }
 
-    public List<String> getManualClassPaths() {
-        List<String> classPaths = new ArrayList<String>();
-        classPaths.addAll(manualClassPaths);
-        return classPaths;
+    public FileResolverImpl(boolean b) {
+
     }
 
-    public void addManualClassPath(String path) {
-        if (!manualClassPaths.contains(path)) {
-            manualClassPaths.add(path);
-        }
-    }
 
     public void addFileProcessor(FileProcessor fileProcessor) {
         fileProcessorList.add(fileProcessor);
+        fileProcessor.setFileResolver(this);
+    }
+
+    public void setClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
+
+    public ClassLoader getClassLoader() {
+        if (classLoader == null) {
+            classLoader = this.getClass().getClassLoader();
+        }
+        return classLoader;
     }
 
     public void resolve() {
-        if (fileProcessorList.size() == 0) {
-            return;
-        } else {
+        if (fileProcessorList.size() > 0) {
             for (FileProcessor fileProcessor : fileProcessorList) {
                 fileProcessor.setFileResolver(this);
             }
@@ -125,8 +133,8 @@ public class FileResolverImpl implements FileResolver {
 
     private void refreshScanPath() {
         Set<FileObject> classPaths = new HashSet<FileObject>();
-        for (String file : allScanningPath) {
-            FileObject fileObject = VFS.resolveFile(file);
+        for (String filePath : allScanningPath) {
+        	FileObject fileObject = VFS.resolveFile(filePath);
             Long lastModifiedTime = fileDateMap.get(fileObject.getAbsolutePath());
             long modifiedTime = fileObject.getLastModifiedTime();
             if (lastModifiedTime.longValue() != modifiedTime || !fileObject.isInPackage()) {
@@ -141,132 +149,15 @@ public class FileResolverImpl implements FileResolver {
 
     private void resolverScanPath() {
         Set<FileObject> classPaths = new HashSet<FileObject>();
-        String debugMode = configurationManager.getApplicationProperty("DEBUG_MODE");
-        boolean isDebugMode = false;
-        if (debugMode == null || debugMode.equalsIgnoreCase("true")) {
-            isDebugMode = true;
-        }
-        if (isDebugMode) {
-            classPaths.addAll(getClassPath());
-        }
-        classPaths.addAll(resolveManualClassPath());
-        try {
-            addWebClasses(classPaths);
-        } catch (Exception e) {
-            logger.errorMessage("查找WEB-INF/classes路径失败！", e);
-        }
-        try {
-            if (isDebugMode) {
-                getWebLibJars(classPaths);
-            }
-        } catch (Exception e) {
-            logger.errorMessage("查找Web工程中的jar文件列表失败！", e);
-        }
-        for (FileObject fileObject : classPaths) {
+        for (String filePath : allScanningPath) {
+        	FileObject fileObject = VFS.resolveFile(filePath);
+        	classPaths.add(fileObject);
             long modifiedTime = fileObject.getLastModifiedTime();
             fileDateMap.put(fileObject.getAbsolutePath(), modifiedTime);
         }
         resolveClassPaths(classPaths);
-        // resolveDeletedFile();
     }
 
-    void addWebClasses(Set<FileObject> classPaths) {
-        logger.logMessage(LogLevel.INFO, "查找WEB-INF/classes路径开始...");
-        URL url = FileResolverImpl.class.getResource("/");
-        String path = url.toString();
-        logger.logMessage(LogLevel.INFO, "WEB-INF/classes路径是:{}", path);
-        if (path.indexOf("!") < 0) {// 如果在目录中
-            FileObject fileObject = VFS.resolveFile(path);
-            classPaths.add(fileObject);
-            allScanningPath.add(fileObject.getAbsolutePath());
-            String libPath = path.replaceAll("/classes", "/lib");
-            logger.logMessage(LogLevel.INFO, "WEB-INF/lib路径是:{}", libPath);
-            FileObject libFileObject = VFS.resolveFile(libPath);
-            classPaths.add(libFileObject);
-            allScanningPath.add(libFileObject.getAbsolutePath());
-            int index = path.indexOf("/classes");
-            if (index > 0) {
-                String webInfPath = path.substring(0, index);
-                if (webInfPath.endsWith("WEB-INF")) {
-                    logger.logMessage(LogLevel.INFO, "WEB-INF路径是:{}", webInfPath);
-                    FileObject webInfoFileObject = VFS.resolveFile(webInfPath);
-                    classPaths.add(webInfoFileObject);
-                    allScanningPath.add(webInfoFileObject.getAbsolutePath());
-                }
-            }
-
-        } else {// 如果在jar包中
-            path = url.getFile().split("!")[0];
-            FileObject fileObject = VFS.resolveFile(path);
-            classPaths.add(fileObject);
-            allScanningPath.add(path);
-            String libPath = path.substring(0, path.lastIndexOf('/'));
-            logger.logMessage(LogLevel.INFO, "WEB-INF/lib路径是:{}", libPath);
-            FileObject libFileObject = VFS.resolveFile(libPath);
-            classPaths.add(libFileObject);
-            allScanningPath.add(libFileObject.getAbsolutePath());
-        }
-        logger.logMessage(LogLevel.INFO, "查找WEB-INF/classes路径完成。");
-
-        String webinfPath = configurationManager.getApplicationProperty("TINY_WEBROOT");
-        if (webinfPath == null || webinfPath.length() == 0) {
-            logger.logMessage(LogLevel.WARN, "WEBROOT变量找不到");
-            return;
-        }
-        FileObject fileObject = VFS.resolveFile(webinfPath);
-        classPaths.add(fileObject);
-        allScanningPath.add(fileObject.getAbsolutePath());
-    }
-
-    void getWebLibJars(Set<FileObject> classPaths) throws Exception {
-        logger.logMessage(LogLevel.INFO, "查找Web工程中的jar文件列表开始...");
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        Enumeration<URL> urls = loader.getResources("META-INF/MANIFEST.MF");
-        while (urls.hasMoreElements()) {
-            URL url = urls.nextElement();
-            String path = url.toString();
-            path = path.replaceAll("/./", "/");// weblogic中存在这种情况
-            if (path.indexOf("!") > 0) {
-                path = path.split("!")[0];
-            } else {// 专门为JBOSS vfs开头的处理
-                path = path.substring(0, path.length() - "META-INF/MANIFEST.MF".length() - 1);
-                path = path.substring(path.indexOf(':') + 1);
-            }
-            FileObject fileObject = VFS.resolveFile(path);
-            if (includePathPatternMap != null && includePathPatternMap.size() > 0) {
-                if (isInclude(fileObject)) {
-                    addJarFile(classPaths, path, fileObject);
-                    continue;
-                }
-            }
-            Manifest mf = new Manifest(url.openStream());
-            Attributes attributes = mf.getMainAttributes();
-            String isTinyProject = attributes.getValue("IsTinyProject");
-            if("true".equals(isTinyProject)){
-            	logger.logMessage(LogLevel.INFO, "文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。", fileObject);
-            	addJarFile(classPaths, path, fileObject);
-            }
-//            String mfContent = IOUtils.readFromInputStream(url.openStream(), "UTF-8");
-//            String[] lines = mfContent.split("\n");
-//            for (String line : lines) {
-//                String[] pair = line.split(":");
-//                if (pair.length == 2) {
-//                    if (pair[0].trim().equals("IsTinyProject") && pair[1].trim().equals("true")) {
-//                        logger.logMessage(LogLevel.INFO, "文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。", fileObject);
-//                        addJarFile(classPaths, path, fileObject);
-//                        break;
-//                    }
-//                }
-//            }
-        }
-        logger.logMessage(LogLevel.INFO, "查找Web工程中的jar文件列表完成。");
-    }
-
-    private void addJarFile(Set<FileObject> classPaths, String path, FileObject fileObject) {
-        logger.logMessage(LogLevel.INFO, "扫描到jar文件<{}>。", path);
-        classPaths.add(fileObject);
-        allScanningPath.add(path);
-    }
 
     /**
      * 文件搜索器重新搜索时，需要清空上次各个文件处理器中处理的文件列表,并清除记录的扫描路径。
@@ -275,67 +166,9 @@ public class FileResolverImpl implements FileResolver {
         for (FileProcessor fileProcessor : fileProcessorList) {
             fileProcessor.clean();
         }
-        allScanningPath.clear();
+//        allScanningPath.clear();
     }
 
-    boolean isInclude(FileObject fileObject) {
-        if (fileObject.getSchemaProvider() instanceof FileSchemaProvider) {
-            return true;
-        }
-        for (String patternString : includePathPatternMap.keySet()) {
-            Pattern pattern = includePathPatternMap.get(patternString);
-            Matcher matcher = pattern.matcher(fileObject.getFileName());
-            if (matcher.find()) {
-                logger.logMessage(LogLevel.INFO, "文件<{}>由于匹配了包含正则表达式<{}>而被扫描。", fileObject, patternString);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 把系统变量中定义的classpath路径，转化为FileObject对象，并返回FileObject列表
-     *
-     * @return
-     */
-    private List<FileObject> getClassPath() {
-        List<FileObject> classPathFileObjects = new ArrayList<FileObject>();
-        String classPathProperty = System.getProperty("java.class.path").toString();
-        String operateSys=System.getProperty("os.name").toLowerCase();
-        String[] classPaths=null;
-        if(operateSys.indexOf("windows")>=0){
-        	classPaths = classPathProperty.split(";");
-        }else{
-        	classPaths=classPathProperty.split(":");
-        }
-        if(classPaths!=null){
-        	 for (String classPath : classPaths) {
-                 if (classPath.length() > 0) {
-                     FileObject fileObject = VFS.resolveFile(classPath);
-                     if (isInclude(fileObject)) {
-                         classPathFileObjects.add(fileObject);
-                         allScanningPath.add(classPath);
-                     }
-                 }
-             }
-        }
-        return classPathFileObjects;
-    }
-
-    /**
-     * 把额外定义的路径，转化为FileObject
-     *
-     * @return
-     */
-    private List<FileObject> resolveManualClassPath() {
-        List<FileObject> classPathFileObjects = new ArrayList<FileObject>();
-        for (String manualClassPath : manualClassPaths) {
-            FileObject fileObject = VFS.resolveFile(manualClassPath);
-            classPathFileObjects.add(fileObject);
-            allScanningPath.add(manualClassPath);
-        }
-        return classPathFileObjects;
-    }
 
     /**
      * 文件搜索器根据路径列表进行搜索
@@ -441,21 +274,29 @@ public class FileResolverImpl implements FileResolver {
         includePathPatternMap.put(pattern, Pattern.compile(pattern));
     }
 
-    public List<String> getAllScanningPath() {
-        List<String> scanList = new ArrayList<String>();
-        scanList.addAll(allScanningPath);
-        return scanList;
+    public void addResolveFileObject(FileObject fileObject) {
+    	String path = fileObject.getAbsolutePath();
+    	if(!allScanningPath.contains(path)){
+    		allScanningPath.add(path);
+    	}
     }
 
-    public FileObject getClassesPath() {
-        return VFS.resolveFile(ClassPathUtil.getClassRootPath());
+    public void addResolvePath(String path) {
+    	addResolveFileObject(VFS.resolveFile(path));
+    }
+    
+    public void addResolvePath(List<String> paths) {
+    	for(String path:paths){
+    		addResolveFileObject(VFS.resolveFile(path));
+    	}
     }
 
-    public int getFileProcessorThreadNum() {
+
+    public int getFileProcessorThreadNumber() {
         return fileProcessorThreadNum;
     }
 
-    public void setFileProcessorThreadNum(int threadNum) {
+    public void setFileProcessorThreadNumber(int threadNum) {
         this.fileProcessorThreadNum = threadNum;
 
     }
@@ -464,6 +305,9 @@ public class FileResolverImpl implements FileResolver {
      * 刷新工作
      */
     public void refresh() {
+        if (classLoader == null) {
+        	classLoader = this.getClass().getClassLoader();
+        }
         if (fileProcessorList.size() == 0) {
             return;
         } else {
@@ -497,25 +341,9 @@ public class FileResolverImpl implements FileResolver {
         initConfig();
     }
 
-    public XmlNode getComponentConfig() {
-        return componentConfig;
-    }
-
-    public XmlNode getApplicationConfig() {
-        return applicationConfig;
-    }
-
     private void initConfig() {
         String threadCount = ConfigurationUtil.getPropertyName(applicationConfig, componentConfig, "thread-count");
-        this.setFileProcessorThreadNum(getThreadNum(threadCount));
-        List<XmlNode> classPaths = ConfigurationUtil.combineFindNodeList("class-path", applicationConfig, componentConfig);
-        for (XmlNode classPath : classPaths) {
-            String path = classPath.getAttribute("path");
-            if (path != null && path.length() > 0) {
-                logger.logMessage(LogLevel.INFO, "添加手工配置classpath: [{0}]...", path);
-                this.addManualClassPath(path);
-            }
-        }
+        this.setFileProcessorThreadNumber(getThreadNumber(threadCount));
         List<XmlNode> includePatterns = ConfigurationUtil.combineFindNodeList("include-pattern", applicationConfig, componentConfig);
         for (XmlNode includePatter : includePatterns) {
             String pattern = includePatter.getAttribute("pattern");
@@ -526,11 +354,20 @@ public class FileResolverImpl implements FileResolver {
         }
     }
 
-    private int getThreadNum(String threadNum) {
+    public XmlNode getComponentConfig() {
+        return componentConfig;
+    }
+
+    public XmlNode getApplicationConfig() {
+        return applicationConfig;
+    }
+
+
+    private int getThreadNumber(String threadNumber) {
         int fileProcessorThreadNum = 1;
-        if (threadNum != null) {
+        if (threadNumber != null) {
             try {
-                fileProcessorThreadNum = Integer.parseInt(threadNum);
+                fileProcessorThreadNum = Integer.parseInt(threadNumber);
                 if (fileProcessorThreadNum <= 0) {
                     fileProcessorThreadNum = 1;
                 }
@@ -543,5 +380,9 @@ public class FileResolverImpl implements FileResolver {
         return fileProcessorThreadNum;
 
     }
+
+	public Map<String, Pattern> getIncludePathPatternMap() {
+		return includePathPatternMap;
+	}
 
 }

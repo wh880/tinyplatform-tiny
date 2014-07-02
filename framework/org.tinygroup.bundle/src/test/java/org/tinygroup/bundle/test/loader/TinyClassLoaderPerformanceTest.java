@@ -67,7 +67,7 @@ public class TinyClassLoaderPerformanceTest extends TestCase {
      */
     public void testGetFileObjects() throws Exception {
         FileObject[] fileObjects = tinyClassLoader.getFileObjects();
-        assertEquals(6, fileObjects.length);
+        assertEquals(3, fileObjects.length);
         for (FileObject fileObject : fileObjects) {
             assertEquals(true, fileObject.isExist());
         }

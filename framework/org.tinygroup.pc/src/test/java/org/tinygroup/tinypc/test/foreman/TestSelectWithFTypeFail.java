@@ -19,15 +19,15 @@ import java.io.IOException;
 
 import org.tinygroup.tinypc.Foreman;
 import org.tinygroup.tinypc.JobCenter;
+import org.tinygroup.tinypc.TestUtil;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.impl.ForemanSelectAllWorker;
 import org.tinygroup.tinypc.impl.JobCenterRemote;
 
 public class TestSelectWithFTypeFail {
-	private static String SERVERIP = "192.168.84.52";
 	public static void main(String[] args) {
 		try {
-			JobCenter jobCenter = new JobCenterRemote(SERVERIP,8888);
+			JobCenter jobCenter = new JobCenterRemote(TestUtil.CIP,TestUtil.CP,TestUtil.SIP,TestUtil.SP);
 			Work work  = new WorkTask("a","aaa","af");
 			Foreman f = new ForemanSelectAllWorker("a");
 			jobCenter.registerForeman(f);

@@ -119,4 +119,9 @@ public class TinyListenerProcessor extends AbstractConfiguration implements Appl
 	public int getOrder() {
 		return DEFAULT_PRECEDENCE;
 	}
+
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
 }

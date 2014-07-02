@@ -15,7 +15,6 @@
  */
 package org.tinygroup.fileresolver.impl;
 
-import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 
@@ -27,14 +26,16 @@ public class SpringBeansFileProcessor extends AbstractFileProcessor {
 	}
 
 	public void process() {
-		SpringUtil.regSpringConfigXml(fileObjects);
-		SpringUtil.refresh();
+		if(getFileResolver().getClassLoader()==this.getClass().getClassLoader()){
+			SpringUtil.regSpringConfigXml(fileObjects);
+			SpringUtil.refresh();
+		}else{
+			SpringUtil.getSubApplicationContext(fileObjects, getFileResolver().getClassLoader());
+		}
+		
 	}
 
 
-	public void setFileResolver(FileResolver fileResolver) {
-
-	}
 
 	
 	public boolean supportRefresh() {

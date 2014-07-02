@@ -88,8 +88,12 @@ public interface BundleManager extends SingleBundleManager, BatchBundleManager {
      * @return
      */
     TinyClassLoader getTinyClassLoader();
-    
-    
+
+    /**
+     * 返回指定Bundle对应的TinyClassLoader
+     * @param bundle
+     * @return
+     */
     TinyClassLoader getTinyClassLoader(String bundle);
     /**
      * 设置启动前事件处理器

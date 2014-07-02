@@ -15,11 +15,25 @@
  */
 package org.tinygroup.weblayer;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.Enumeration;
+import java.util.List;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 import org.tinygroup.application.Application;
+import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.application.impl.ApplicationDefault;
 import org.tinygroup.commons.io.StreamUtil;
+import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
+import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
@@ -32,16 +46,6 @@ import org.tinygroup.weblayer.listener.ServletContextHolder;
 import org.tinygroup.weblayer.listener.TinyServletContext;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.Enumeration;
-import java.util.List;
 
 public class ApplicationStartupListener implements ServletContextListener {
     private static Logger logger = LoggerFactory.getLogger(ApplicationStartupListener.class);
@@ -76,7 +80,7 @@ public class ApplicationStartupListener implements ServletContextListener {
             }
         }
         logger.logMessage(LogLevel.INFO, "TINY_WEBROOT：[{0}]", webRootPath);
-        ConfigurationUtil.getConfigurationManager().setApplicationProperty("TINY_WEBROOT", webRootPath);
+        ConfigurationUtil.getConfigurationManager().setConfiguration("TINY_WEBROOT", webRootPath);
         logger.logMessage(LogLevel.INFO, "应用参数<TINY_WEBROOT>=<{}>", webRootPath);
 
         logger.logMessage(LogLevel.INFO, "ServerContextName：[{0}]", servletContextEvent.getServletContext().getServletContextName());
@@ -95,13 +99,38 @@ public class ApplicationStartupListener implements ServletContextListener {
         if (inputStream != null) {
             String applicationConfig = "";
             try {
+            	application = new ApplicationDefault();
                 applicationConfig = StreamUtil.readText(inputStream, "UTF-8", true);
-                application = new ApplicationDefault(applicationConfig);
+                if(applicationConfig!=null){
+                	ConfigurationManager c = ConfigurationUtil.getConfigurationManager();
+                	XmlNode applicationXml = ConfigurationUtil.loadApplicationConfig(applicationConfig);
+                	c.setApplicationConfiguration(applicationXml);
+            		
+                }
+                
                 SpringUtil.init();
                 loadSpringBeans(applicationConfig);
+                
+                
+                XmlNode applicationXml = ConfigurationUtil.getConfigurationManager().getApplicationConfiguration();
+                if (applicationXml != null) {
+        			List<XmlNode> processorConfigs = applicationXml
+        					.getSubNodesRecursively("application-processor");
+        			if (processorConfigs != null) {
+        				for (XmlNode processorConfig : processorConfigs) {
+        					String processorBean = processorConfig.getAttribute("bean");
+        					ApplicationProcessor processor = SpringUtil
+        							.getBean(processorBean);//TODO
+        					application.addApplicationProcessor(processor);
+        				}
+        			}
+        		}
             } catch (Exception e) {
                 logger.errorMessage("载入应用配置信息时出错，错误原因：{}！", e, e.getMessage());
             }
+            
+            logger.logMessage(LogLevel.INFO, "启动应用开始...");
+    		application.init();
             application.start();
         }
 
@@ -111,6 +140,14 @@ public class ApplicationStartupListener implements ServletContextListener {
     private void loadSpringBeans(String applicationConfig) {
         logger.logMessage(LogLevel.INFO, "加载Spring Bean文件开始...");
         FileResolver fileResolver = new FileResolverImpl();
+        FileResolverUtil.addClassPathPattern(fileResolver);
+        fileResolver.addResolvePath(FileResolverUtil.getClassPath(fileResolver)) ;
+        fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
+        try {
+			fileResolver.addResolvePath(FileResolverUtil.getWebLibJars(fileResolver));
+		} catch (Exception e) {
+			logger.errorMessage("为文件扫描器添加webLibJars时出错",e);
+		}
         loadFileResolverConfig(fileResolver, applicationConfig);
         fileResolver.addFileProcessor(new SpringBeansFileProcessor());
         fileResolver.addFileProcessor(new ConfigurationFileProcessor());

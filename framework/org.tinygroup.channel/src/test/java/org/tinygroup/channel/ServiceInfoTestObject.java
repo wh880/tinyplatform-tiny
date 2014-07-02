@@ -27,18 +27,15 @@ public class ServiceInfoTestObject implements ServiceInfo {
 	private static final long serialVersionUID = -165652974304811062L;
 	private String serviceId;
 	private String serviceName;
+    private String category;
 
-	public ServiceInfoTestObject(String id,String name){
+    public ServiceInfoTestObject(String id,String name){
 		this.serviceId = id;
 		this.serviceName = name;
 	}
 	public String getServiceId() {
 		return serviceId;
 	}
-
-    public String getCategory() {
-        return null;
-    }
 
     public void setServiceId(String serviceId) {
 		this.serviceId = serviceId;
@@ -61,5 +58,8 @@ public class ServiceInfoTestObject implements ServiceInfo {
 	}
 	public int compareTo(ServiceInfo o) {
 		return o.getServiceId().compareTo(serviceId);
+	}
+	public String getCategory() {
+		return category;
 	}
 }

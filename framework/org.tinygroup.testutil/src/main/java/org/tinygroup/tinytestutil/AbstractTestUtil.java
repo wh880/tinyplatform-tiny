@@ -15,15 +15,14 @@
  */
 package org.tinygroup.tinytestutil;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-
 import org.tinygroup.application.Application;
+import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.application.impl.ApplicationDefault;
 import org.tinygroup.commons.io.StreamUtil;
+import org.tinygroup.config.ConfigurationManager;
+import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
+import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
@@ -33,6 +32,11 @@ import org.tinygroup.parser.filter.PathFilter;
 import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public abstract class AbstractTestUtil {
 	// private static FullContextFileRepository repository;
@@ -44,8 +48,7 @@ public abstract class AbstractTestUtil {
 	private static String DEFAULT_CONFIG = "application.xml";
 	private static Logger logger = LoggerFactory
 			.getLogger(AbstractTestUtil.class);
-	private static final String TINY_JAR_PATTERN="org\\.tinygroup\\.(.)*\\.jar";
-
+	private static final String TINY_JAR_PATTERN = "org\\.tinygroup\\.(.)*\\.jar";
 
 	/**
 	 * 初始化
@@ -54,7 +57,7 @@ public abstract class AbstractTestUtil {
 	 *            是否对classPath进行处理
 	 */
 	public static void init(String xmlFile, boolean classPathResolve) {
-		if(init){
+		if (init) {
 			return;
 		}
 		// init(xmlFile, classPathResolve, null, null);
@@ -72,16 +75,50 @@ public abstract class AbstractTestUtil {
 			try {
 				applicationConfig = StreamUtil.readText(inputStream, "UTF-8",
 						false);
+				if(applicationConfig!=null){
+                	ConfigurationManager c = ConfigurationUtil.getConfigurationManager();
+                	XmlNode applicationXml = ConfigurationUtil.loadApplicationConfig(applicationConfig);
+                	c.setApplicationConfiguration(applicationXml);
+            		
+                }
+				application = new ApplicationDefault();
+				initSpring(applicationConfig);
+				
+				ConfigurationUtil.getConfigurationManager().distributeConfiguration();
+				
+				FileResolver fileResolver = SpringUtil.getBean(FileResolver.BEAN_NAME);
+				FileResolverUtil.addClassPathPattern(fileResolver);
+				fileResolver
+						.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
+				fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
+				try {
+					fileResolver.addResolvePath(FileResolverUtil
+							.getWebLibJars(fileResolver));
+				} catch (Exception e) {
+					logger.errorMessage("为文件扫描器添加webLibJars时出错", e);
+				}
+				fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
+				 XmlNode applicationXml = ConfigurationUtil.getConfigurationManager().getApplicationConfiguration();
+	                if (applicationXml != null) {
+	        			List<XmlNode> processorConfigs = applicationXml
+	        					.getSubNodesRecursively("application-processor");
+	        			if (processorConfigs != null) {
+	        				for (XmlNode processorConfig : processorConfigs) {
+	        					String processorBean = processorConfig.getAttribute("bean");
+	        					ApplicationProcessor processor = SpringUtil
+	        							.getBean(processorBean);//TODO
+	        					application.addApplicationProcessor(processor);
+	        				}
+	        			}
+	        		}
 			} catch (Exception e) {
 				logger.errorMessage("载入应用配置信息时出错，错误原因：{}！", e, e.getMessage());
 			}
 		}
-		application = new ApplicationDefault(applicationConfig);
-		initSpring(applicationConfig);
-		FileResolver fileResolver=SpringUtil.getBean(FileResolver.BEAN_NAME);
-		fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
+		
+		application.init();
 		application.start();
-		init=true;
+		init = true;
 	}
 
 	public static void initWidthString(String config, boolean classPathResolve) {
@@ -92,59 +129,26 @@ public abstract class AbstractTestUtil {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		application = new ApplicationDefault(is, true);
+		application = new ApplicationDefault();
 		application.start();
 	}
 
-	// /**
-	// * 初始化
-	// *
-	// * @param classPathResolve
-	// * 是否对classPath进行处理
-	// */
-	// public static void init(String xmlFile, boolean classPathResolve,
-	// XmlNode node, List<String> paths) {
-	// if (init)
-	// return;
-	// donInit(xmlFile, classPathResolve, node, paths);
-	// init = true;
-	// }
-	//
-	// public static VelocityHelperImpl getVelocityHelper() {
-	// return helper;
-	// }
-	//
-	// public static void donInit(String xmlFile, boolean classPathResolve,
-	// XmlNode node, List<String> paths) {
-	// if (xmlFile == null || "".equals(xmlFile))
-	// xmlFile = DEFAULT_FILERESOLVER_BEAN_XML;
-	// initSpring(xmlFile);
-	// FileResolver fileResolver = SpringUtil.getBean("fileResolver");
-	// if (node != null) {
-	// repository = SpringUtil.getBean("fullContextFileRepository");
-	// helper = SpringUtil.getBean("velocityHelper");
-	// FullContextFileFinder finder = SpringUtil
-	// .getBean("fullContextFileFinder");
-	// helper.setFullContextFileRepository(repository);
-	// finder.config(node, null);
-	// finder.setFullContextFileRepository(repository);
-	// fileResolver.addFileProcessor(finder);
-	// }
-	// if (paths != null) {
-	// for (String path : paths) {
-	// fileResolver.addManualClassPath(path);
-	// if (repository != null) {
-	// repository.addSearchPath(path);
-	// }
-	// }
-	// }
-	// fileResolver.resolve();
-	// }
-	//
+	
 	private static void initSpring(String applicationConfig) {
 		FileResolver fileResolver = new FileResolverImpl();
-		loadFileResolverConfig(fileResolver, applicationConfig);
+
+		FileResolverUtil.addClassPathPattern(fileResolver);
+		fileResolver
+				.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
+		fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
+		try {
+			fileResolver.addResolvePath(FileResolverUtil
+					.getWebLibJars(fileResolver));
+		} catch (Exception e) {
+			logger.errorMessage("为文件扫描器添加webLibJars时出错", e);
+		}
 		fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
+		loadFileResolverConfig(fileResolver, applicationConfig);
 		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 		fileResolver.addFileProcessor(new ConfigurationFileProcessor());
 		// SpringUtil.regSpringConfigXml(xmlFile);
@@ -153,14 +157,14 @@ public abstract class AbstractTestUtil {
 
 	private static void loadFileResolverConfig(FileResolver fileResolver,
 			String applicationConfig) {
-		
+
 		XmlStringParser parser = new XmlStringParser();
 		XmlNode root = parser.parse(applicationConfig).getRoot();
 		PathFilter<XmlNode> filter = new PathFilter<XmlNode>(root);
 		List<XmlNode> classPathList = filter
 				.findNodeList("/application/file-resolver-configuration/class-paths/class-path");
 		for (XmlNode classPath : classPathList) {
-			fileResolver.addManualClassPath(classPath.getAttribute("path"));
+			fileResolver.addResolvePath(classPath.getAttribute("path"));
 		}
 
 		List<XmlNode> includePatternList = filter

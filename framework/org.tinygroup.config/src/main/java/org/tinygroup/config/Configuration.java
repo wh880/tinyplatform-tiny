@@ -20,44 +20,45 @@ import org.tinygroup.xmlparser.node.XmlNode;
 /**
  * 所有需要进行应用配置统一管理的类，都推荐实现此接口。
  * 通过此接口，可以由框架自动注入配置信息，且在配置进行刷新的时候，自动推送参数到应用，以便及时做出更新。
- * 
- * 
+ *
  * @author luoguo
- * 
  */
 public interface Configuration {
-	/**
-	 * 获取对应的节点名，指在父节点下的子节点
-	 * @return
-	 */
-	String getApplicationNodePath();
+    /**
+     * 获取对应的节点名，指在父节点下的子节点
+     *
+     * @return
+     */
+    String getApplicationNodePath();
 
-	/**
-	 * 返回模块配置路径不用带扩展名
-	 * 
-	 * @return
-	 */
-	String getComponentConfigPath();
+    /**
+     * 返回模块配置路径不用带扩展名
+     *
+     * @return
+     */
+    String getComponentConfigPath();
 
-	/**
-	 * 设置配置信息
-	 * 
-	 * @param applicationConfig
+    /**
+     * 设置配置信息
+     *
+     * @param applicationConfig
      * @param componentConfig
-	 */
-	void config(XmlNode applicationConfig, XmlNode componentConfig);
+     */
+    void config(XmlNode applicationConfig, XmlNode componentConfig);
 
-	/**
-	 * 获取组件配置信息
-	 * 
-	 * @return
-	 */
-	XmlNode getComponentConfig();
+    /**
+     * 获取组件配置信息
+     *
+     * @return
+     */
+    XmlNode getComponentConfig();
 
-	/**
-	 * 获取应用配置信息
-	 * 
-	 * @return
-	 */
-	XmlNode getApplicationConfig();
+    /**
+     * 获取应用配置信息
+     *
+     * @return
+     */
+    XmlNode getApplicationConfig();
+
+
 }

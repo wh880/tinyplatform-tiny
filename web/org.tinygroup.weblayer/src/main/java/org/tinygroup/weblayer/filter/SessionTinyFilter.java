@@ -86,7 +86,7 @@ public class SessionTinyFilter extends AbstractTinyFilter {
 	public void initTinyFilter() {
 		super.initTinyFilter();
 		ConfigurationManager appConfigManager = ConfigurationUtil.getConfigurationManager();
-		sessionNode = appConfigManager.getApplicationConfig().getSubNode(
+		sessionNode = appConfigManager.getApplicationConfiguration().getSubNode(
 				SESSION_CONFIG);
 		try {
 			config.init();

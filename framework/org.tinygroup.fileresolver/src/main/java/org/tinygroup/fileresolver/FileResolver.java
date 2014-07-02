@@ -19,6 +19,9 @@ import org.tinygroup.config.Configuration;
 import org.tinygroup.vfs.FileObject;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * 文件查找器
@@ -29,8 +32,6 @@ public interface FileResolver extends Configuration {
 
     String BEAN_NAME = "fileResolver";
 
-    FileObject getClassesPath();
-
     /**
      * 返回所有的文件处理器
      *
@@ -39,12 +40,11 @@ public interface FileResolver extends Configuration {
     List<FileProcessor> getFileProcessorList();
 
     /**
-     * 手动添加路径
+     * 返回当前FileResolver要扫描的文件列表
      *
-     * @param path
+     * @return
      */
-    void addManualClassPath(String path);
-
+    Set<String> getResolveFileObjectSet();
 
     /**
      * 手工添加扫描的匹配列表，如果有包含列表，则按包含列表
@@ -52,8 +52,17 @@ public interface FileResolver extends Configuration {
      * @param pattern
      */
     void addIncludePathPattern(String pattern);
+    Map<String, Pattern> getIncludePathPatternMap();
+    /**
+     * 添加扫描的路径
+     *
+     * @param fileObject
+     */
+    void addResolveFileObject(FileObject fileObject);
 
-    List<String> getManualClassPaths();
+    void addResolvePath(String path);
+    
+    void addResolvePath(List<String> paths);
 
     /**
      * 增加文件处理器
@@ -62,34 +71,30 @@ public interface FileResolver extends Configuration {
      */
     void addFileProcessor(FileProcessor fileProcessor);
 
+    void setClassLoader(ClassLoader classLoader);
+
+    ClassLoader getClassLoader();
+
     /**
      * 开始找文件
      */
     void resolve();
 
     /**
-     *
+     * 开始找文件
      */
     void refresh();
-
-    /**
-     * 获取文件搜索器扫描的所有路径
-     *
-     * @return
-     */
-    List<String> getAllScanningPath();
-
     /**
      * 获取文件处理的线程数目
      *
      * @return
      */
-    int getFileProcessorThreadNum();
+    int getFileProcessorThreadNumber();
 
     /**
      * 设置文件处理的线程数目
      *
      * @param threadNum
      */
-    void setFileProcessorThreadNum(int threadNum);
+    void setFileProcessorThreadNumber(int threadNum);
 }

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -12,6 +12,14 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ * --------------------------------------------------------------------------
+ *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *
+ *  本开源软件遵循 GPL 3.0 协议;
+ *  如果您不遵循此协议，则不被允许使用此文件。
+ *  你可以从下面的地址获取完整的协议文本
+ *
+ *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.tinypc.impl;
 
@@ -30,7 +38,7 @@ import java.util.List;
  * Created by luoguo on 14-1-8.
  */
 public class AbstractJobCenter implements JobCenter {
-    private transient static Logger logger = LoggerFactory.getLogger(AbstractJobCenter.class);
+    private static Logger logger = LoggerFactory.getLogger(AbstractJobCenter.class);
     private RmiServer rmiServer;
     private WorkQueue workQueue;
 
@@ -48,7 +56,7 @@ public class AbstractJobCenter implements JobCenter {
 
     public void setRmiServer(RmiServer rmiServer) throws RemoteException {
         this.rmiServer = rmiServer;
-        this.workQueue = rmiServer.getRemoteObject(WORK_QUEUE);
+        this.workQueue = rmiServer.getObject(WORK_QUEUE);
     }
 
     public void registerWorker(Worker worker) throws RemoteException {
@@ -56,12 +64,12 @@ public class AbstractJobCenter implements JobCenter {
     }
 
     private void registerParallelObject(String objectType, ParallelObject parallelObject) throws RemoteException {
-        rmiServer.registerRemoteObject(parallelObject,
+        rmiServer.registerLocalObject(parallelObject,
                 objectType + "|" + parallelObject.getType(), parallelObject.getId());
     }
 
     private void unregisterParallelObject(String objectType, ParallelObject parallelObject) throws RemoteException {
-        rmiServer.unregisterRemoteObject(objectType + "|" + parallelObject.getType(), parallelObject.getId());
+        rmiServer.unregisterObject(objectType + "|" + parallelObject.getType(), parallelObject.getId());
     }
 
     public void unregisterWorker(Worker worker) throws RemoteException {
@@ -93,7 +101,7 @@ public class AbstractJobCenter implements JobCenter {
     }
 
     public List<Worker> getWorkerList(Work work) throws RemoteException {
-        return rmiServer.getRemoteObjectList(getTypeName(WORKER, work.getType()));
+        return rmiServer.getObjectList(getTypeName(WORKER, work.getType()));
     }
 
     private String getTypeName(String type, String workType) {
@@ -109,7 +117,7 @@ public class AbstractJobCenter implements JobCenter {
     }
 
     public List<Foreman> getForeman(String type) throws RemoteException {
-        List<Foreman> foremanList = rmiServer.getRemoteObjectList(getTypeName(FOREMAN, type));
+        List<Foreman> foremanList = rmiServer.getObjectList(getTypeName(FOREMAN, type));
         List<Foreman> foremans = new ArrayList<Foreman>();
         for (Foreman foreman : foremanList) {
             try {
@@ -118,9 +126,9 @@ public class AbstractJobCenter implements JobCenter {
             } catch (RemoteException e) {
                 try {
                     logger.errorMessage("调用工头:{0}时出错", e, foreman.getId());
-                    rmiServer.unregisterRemoteObject(foreman);
+                    rmiServer.unregisterObject(foreman);
                 } catch (RemoteException e1) {
-                    logger.error(e1);
+                	logger.errorMessage("注销工头:{0}时出错", e, foreman.getId());
                 }
             }
         }
@@ -169,7 +177,7 @@ public class AbstractJobCenter implements JobCenter {
 
     private Foreman getForeman(String foremanType, List<Foreman> foremanList) throws RemoteException {
         Foreman foreman;
-        if (foremanList == null || foremanList.size() > 0) {
+        if (foremanList != null && foremanList.size() > 0) {
             //选择一个工头来处理
             foreman = foremanList.get(Util.randomIndex(foremanList.size()));
         } else {

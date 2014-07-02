@@ -26,8 +26,8 @@ import org.tinygroup.event.ServiceInfo;
  *
  */
 public interface EventProcessor {
-	int TYPE_CHANNEL = 1;
-	int TYPE_LOGICAL = 2;
+	int TYPE_REMOTE = 1;
+	int TYPE_LOCAL = 2;
 
 	/**
 	 * 处理事件
@@ -53,4 +53,10 @@ public interface EventProcessor {
 	 * @return
 	 */
 	int getType();
+	
+	/**
+	 * 返回处理权重
+	 * @return
+	 */
+	int getWeight();
 }

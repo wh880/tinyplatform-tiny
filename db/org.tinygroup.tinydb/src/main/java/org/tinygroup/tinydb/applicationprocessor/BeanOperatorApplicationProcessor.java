@@ -108,4 +108,9 @@ public class BeanOperatorApplicationProcessor implements ApplicationProcessor{
 		
 	}
 
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
