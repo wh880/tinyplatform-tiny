@@ -18,13 +18,14 @@ package org.tinygroup.tinypc.test.foreman;
 import java.io.IOException;
 
 import org.tinygroup.tinypc.JobCenter;
+import org.tinygroup.tinypc.TestUtil;
 import org.tinygroup.tinypc.impl.JobCenterLocal;
 
 public class WorkerServer {
 
 	public static void main(String[] args) {
 		try {
-			JobCenter jobCenter = new JobCenterLocal(8888);
+			JobCenter jobCenter = new JobCenterLocal(TestUtil.SIP,TestUtil.SP);
 			jobCenter.getRmiServer();
 		} catch (IOException e) {
 			e.printStackTrace();

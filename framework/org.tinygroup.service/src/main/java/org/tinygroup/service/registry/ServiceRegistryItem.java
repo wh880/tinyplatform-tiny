@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -12,6 +12,14 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ * --------------------------------------------------------------------------
+ *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *
+ *  本开源软件遵循 GPL 3.0 协议;
+ *  如果您不遵循此协议，则不被允许使用此文件。
+ *  你可以从下面的地址获取完整的协议文本
+ *
+ *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.service.registry;
 
@@ -30,7 +38,7 @@ import org.tinygroup.service.Service;
  * @param <Service>
  */
 public class ServiceRegistryItem implements ServiceInfo {
-
+	
 	/**
 	 * 
 	 */
@@ -64,13 +72,14 @@ public class ServiceRegistryItem implements ServiceInfo {
 	 */
 	private List<Parameter> results;
 
-    private String category;
+	private String category;
+	
+	
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public boolean isCacheable() {
+	public boolean isCacheable() {
 		return cacheable;
 	}
 
@@ -114,11 +123,7 @@ public class ServiceRegistryItem implements ServiceInfo {
 		return serviceId;
 	}
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setServiceId(String serviceId) {
+	public void setServiceId(String serviceId) {
 		this.serviceId = serviceId;
 	}
 
@@ -142,4 +147,10 @@ public class ServiceRegistryItem implements ServiceInfo {
 	public int compareTo(ServiceInfo o) {
 		return o.getServiceId().compareTo(serviceId);
 	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	
 }

@@ -15,9 +15,8 @@
  */
 package org.tinygroup.tinypc.helloforeach.rmi;
 
-import java.util.List;
-
 import org.tinygroup.tinypc.JobCenter;
+import org.tinygroup.tinypc.TestUtil;
 import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.hellosingle.WorkerHello;
@@ -25,9 +24,9 @@ import org.tinygroup.tinypc.impl.JobCenterRemote;
 import org.tinygroup.tinypc.impl.WarehouseDefault;
 import org.tinygroup.tinypc.impl.WorkDefault;
 
-public class TestWorkClient {
-	private static String SERVERIP = "192.168.84.52";
+import java.util.List;
 
+public class TestWorkClient {
 	public static void main(String[] args) {
 
 		TestWorkClient c = new TestWorkClient();
@@ -42,7 +41,7 @@ public class TestWorkClient {
 
 	private void work() {
 		try {
-			JobCenter jobCenter = new JobCenterRemote(SERVERIP, 8888);
+			JobCenter jobCenter = new JobCenterRemote(TestUtil.CIP,TestUtil.CP,TestUtil.SIP,TestUtil.SP);
 			jobCenter.registerWorker(new WorkerHello());
 			Warehouse inputWarehouse = new WarehouseDefault();
 			inputWarehouse.put("name", "world");

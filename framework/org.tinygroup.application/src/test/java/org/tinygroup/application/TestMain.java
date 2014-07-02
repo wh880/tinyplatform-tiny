@@ -16,7 +16,6 @@
 package org.tinygroup.application;
 
 import org.tinygroup.application.impl.ApplicationDefault;
-import org.tinygroup.commons.tools.FileUtil;
 
 public class TestMain {
 
@@ -25,9 +24,7 @@ public class TestMain {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		String content = FileUtil.readStreamContent(
-				TestMain.class.getResourceAsStream("/application.xml"), "UTF-8");
-		Application application = new ApplicationDefault(content);
+		Application application = new ApplicationDefault();
 		application.start();
 		System.out.println("============Yes==============");
 		application.stop();

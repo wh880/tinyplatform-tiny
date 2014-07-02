@@ -53,7 +53,7 @@ public class CommandProcessor extends AbstractConfiguration implements Applicati
 		logger.logMessage(LogLevel.DEBUG, "启动插件命令行管理器成功");
 	}
 	
-	private void init() {
+	public void init() {
 		logger.logMessage(LogLevel.DEBUG, "初始化插件命令行管理器");
 		command = CommandSystem.getInstance(PLUGIN_INSTANCE_NAME);
 		consoleCommander = new ConsoleCommander(command);

@@ -106,4 +106,9 @@ public class ServiceProcessorImpl extends AbstractEventProcessor implements
 
 	}
 
+	public int getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

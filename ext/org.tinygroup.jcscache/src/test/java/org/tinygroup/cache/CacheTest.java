@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 
 import org.tinygroup.cache.exception.CacheException;
 import org.tinygroup.fileresolver.FileResolverFactory;
+import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.I18nFileProcessor;
 import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
 import org.tinygroup.fileresolver.impl.XStreamFileProcessor;
@@ -33,6 +34,10 @@ public class CacheTest extends TestCase {
 				new I18nFileProcessor());
 		FileResolverFactory.getFileResolver().addFileProcessor(
 				new SpringBeansFileProcessor());
+		FileResolverUtil.addClassPathPattern(FileResolverFactory.getFileResolver());
+		FileResolverFactory.getFileResolver().addResolvePath(FileResolverUtil.getClassPath(FileResolverFactory.getFileResolver())) ;
+//		FileResolverFactory.getFileResolver().addResolvePath(FileResolverUtil.getWebClasses());
+      
 		FileResolverFactory.getFileResolver().resolve();
 	}
 

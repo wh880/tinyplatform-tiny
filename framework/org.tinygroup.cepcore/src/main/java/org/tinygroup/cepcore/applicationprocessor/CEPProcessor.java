@@ -45,7 +45,7 @@ public class CEPProcessor implements ApplicationProcessor{
 
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 		xmlNode = applicationConfig;
-		cep.setConfig(xmlNode);
+//		cep.setConfig(xmlNode);
 	}
 
 	public XmlNode getComponentConfig() {
@@ -64,7 +64,11 @@ public class CEPProcessor implements ApplicationProcessor{
 		}
 	}
 
-	public void stop() {
+    public void init() {
+
+    }
+
+    public void stop() {
 		try {
 			cep.stop();
 		} catch (Exception e) {
@@ -78,4 +82,5 @@ public class CEPProcessor implements ApplicationProcessor{
 	public int getOrder() {
 		return DEFAULT_PRECEDENCE;
 	}
+
 }

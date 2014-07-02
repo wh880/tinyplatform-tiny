@@ -228,7 +228,7 @@ public class ParserTinyFilter extends AbstractTinyFilter {
 		}
 
 		ConfigurationManager appConfigManager = ConfigurationUtil.getConfigurationManager();
-		XmlNode parserNode = appConfigManager.getApplicationConfig().getSubNode(
+		XmlNode parserNode = appConfigManager.getApplicationConfiguration().getSubNode(
 				PARSER_CONFIG);
 		parserExtraConfig(parserNode);
 

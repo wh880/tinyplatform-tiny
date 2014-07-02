@@ -16,15 +16,15 @@
 package org.tinygroup.tinypc.helloforeach.rmi;
 
 import org.tinygroup.tinypc.JobCenter;
+import org.tinygroup.tinypc.TestUtil;
 import org.tinygroup.tinypc.hellosingle.WorkerHello;
 import org.tinygroup.tinypc.impl.JobCenterRemote;
 
 public class TestWorkerClient {
-	private static String SERVERIP = "192.168.84.52";
 
 	public static void main(String[] args) {
 				try {
-			JobCenter jobCenter = new JobCenterRemote(SERVERIP, 8888);
+			JobCenter jobCenter = new JobCenterRemote(TestUtil.CIP,TestUtil.CP,TestUtil.SIP,TestUtil.SP);
 			for (int i = 0; i < 5; i++) {
 				jobCenter.registerWorker(new WorkerHello());
 			}
