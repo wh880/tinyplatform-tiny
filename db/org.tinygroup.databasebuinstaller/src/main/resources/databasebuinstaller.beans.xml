@@ -35,6 +35,20 @@
 		</property>
 	</bean>
 	
+	<bean id="triggerInstallProcessor" scope="singleton"
+		class="org.tinygroup.databasebuinstaller.impl.TriggerInstallProcessor">
+		<property name="processor">
+			<ref bean="triggerProcessor" />
+		</property>
+	</bean>
+	
+	<bean id="sequenceInstallProcessor" scope="singleton"
+		class="org.tinygroup.databasebuinstaller.impl.SequenceInstallProcessor">
+		<property name="processor">
+			<ref bean="sequenceProcessor" />
+		</property>
+	</bean>
+	
 	<bean id="databaseInstallerProcessor" scope="singleton"
 		class="org.tinygroup.databasebuinstaller.DatabaseInstallerProcessor">
 		<property name="installProcessors">
@@ -43,6 +57,7 @@
 		       <ref bean="viewInstallProcessor"/>
 		       <ref bean="initDataInstallProcessor"/>
 		       <ref bean="procedureInstallProcessor"/>
+		       <ref bean="triggerInstallProcessor"/>
  		   </list>
 		</property>
 	</bean>

@@ -90,5 +90,23 @@
 	<bean id="viewFileResolver" scope="singleton"
 		class="org.tinygroup.database.fileresolver.ViewFileResolver">
 	</bean>
+	<bean id="triggerFileProcessor" scope="singleton"
+		class="org.tinygroup.database.fileresolver.TriggerFileProcessor">
+	</bean>
+	<bean id="triggerProcessor" scope="singleton"
+		class="org.tinygroup.database.trigger.impl.TriggerProcessorImpl">
+	</bean>
 	
+	<bean id="db2SequenceSqlProcessor" scope="singleton"
+		class="org.tinygroup.database.sequence.impl.Db2SequenceSqlProcessor">
+	</bean>
+	<bean id="oracleSequenceSqlProcessor" scope="singleton"
+		class="org.tinygroup.database.sequence.impl.OracleSequenceSqlProcessor">
+	</bean>
+	<bean id="sequenceFileProcessor" scope="singleton"
+		class="org.tinygroup.database.fileresolver.SequenceFileProcessor">
+	</bean>
+	<bean id="sequenceProcessor" scope="singleton"
+		class="org.tinygroup.database.sequence.impl.SequenceProcessorImpl">
+	</bean>
 </beans>

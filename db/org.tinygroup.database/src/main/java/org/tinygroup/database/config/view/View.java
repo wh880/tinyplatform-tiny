@@ -25,7 +25,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * @author chenjiao
- *
+ * 
  */
 @XStreamAlias("view")
 public class View extends BaseObject {
@@ -41,12 +41,13 @@ public class View extends BaseObject {
 	List<ViewTable> tableList;
 	@XStreamAlias("view-havings")
 	List<ViewHaving> havingList;// 表间有主外键关系的，不用加条件
-	
+
 	public String getName() {
 		if (getSchema() == null || "".equals(getSchema()))
 			return super.getName();
 		return String.format("%s.%s", getSchema(), super.getName());
 	}
+
 	public String getSchema() {
 		return schema;
 	}
@@ -105,14 +106,16 @@ public class View extends BaseObject {
 		this.orderByFieldList = orderByFieldList;
 	}
 
-	// @XStreamAlias("group-by-fields")
-	// List<GroupByField> groupByFieldList;
-	// public List<GroupByField> getGroupByFieldList() {
-	// if(groupByFieldList==null)
-	// groupByFieldList = new ArrayList<GroupByField>();
-	// return groupByFieldList;
-	// }
-	// public void setGroupByFieldList(List<GroupByField> groupByFieldList) {
-	// this.groupByFieldList = groupByFieldList;
-	// }
+	@XStreamAlias("group-by-fields")
+	private List<GroupByField> groupByFieldList;
+
+	public List<GroupByField> getGroupByFieldList() {
+		if (groupByFieldList == null)
+			groupByFieldList = new ArrayList<GroupByField>();
+		return groupByFieldList;
+	}
+
+	public void setGroupByFieldList(List<GroupByField> groupByFieldList) {
+		this.groupByFieldList = groupByFieldList;
+	}
 }

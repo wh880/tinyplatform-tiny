@@ -15,24 +15,34 @@
  */
 package org.tinygroup.database.table.impl;
 
+import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.database.config.table.ForeignReference;
 import org.tinygroup.database.config.table.Index;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.table.TableSqlProcessor;
 import org.tinygroup.database.util.DataBaseNameUtil;
 import org.tinygroup.database.util.DataBaseUtil;
+import org.tinygroup.datasource.DynamicDataSource;
+import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
+import org.tinygroup.springutil.SpringUtil;
 
 public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	private static Logger logger = LoggerFactory
@@ -44,9 +54,28 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		List<String> list = new ArrayList<String>();
 		// 生成表格创建语句
 		list.addAll(getTableCreateSql(table, packageName));
+		// 增加外键语句
+		list.addAll(getForeignKeySqls(table, packageName));
 		// 生成index
 		list.addAll(getIndexCreateSql(table, packageName));
 		return list;
+	}
+
+	public List<String> getForeignKeySqls(Table table, String packageName) {
+		List<ForeignReference> foreigns = table.getForeignReferences();
+		List<String> foreignSqls = new ArrayList<String>();
+		if (!CollectionUtil.isEmpty(foreigns)) {
+			for (ForeignReference foreignReference : foreigns) {
+				String sql = String
+						.format("ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s(%s)",
+								table.getName(), foreignReference.getName(),
+								foreignReference.getForeignField(),
+								foreignReference.getMainTable(),
+								foreignReference.getReferenceField());
+				foreignSqls.add(sql);
+			}
+		}
+		return foreignSqls;
 	}
 
 	public List<String> getTableCreateSql(Table table, String packageName) {
@@ -74,7 +103,82 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 
 	protected void getOtherUpdate(Table table, DatabaseMetaData metadata,
 			String catalog, List<String> list) {
+		getForeignUpdate(table, list);
+	}
 
+	private void getForeignUpdate(Table table, List<String> list) {
+		String sql = getQueryForeignSql(table);
+		if (sql != null) {
+			DataSource dataSource = SpringUtil
+					.getBean(DynamicDataSource.DATASOURCE_NAME);
+			List<ForeignReference> foreigns = table.getForeignReferences();
+			List<ForeignReference> newForeigns = cloneReferences(foreigns);
+			Connection con = DataSourceUtils.getConnection(dataSource);
+			Statement statement = null;
+			ResultSet rs = null;
+			try {
+				statement = con.createStatement();
+				rs = statement.executeQuery(sql);
+				List<String> dropConstraints = new ArrayList<String>();
+				while (rs.next()) {
+					String constraName = rs.getString("CONSTRAINT_NAME");
+					String columnName = rs.getString("COLUMN_NAME");
+					String referenceTableName = rs
+							.getString("REFERENCED_TABLE_NAME");
+					String referenceColumnName = rs
+							.getString("REFERENCED_COLUMN_NAME");
+					ForeignReference foreignReference = new ForeignReference(
+							constraName, referenceTableName,
+							referenceColumnName, columnName);
+					if (newForeigns.contains(foreignReference)) {
+						newForeigns.remove(foreignReference);
+					} else {
+						dropConstraints.add(constraName);
+					}
+				}
+				for (String dropConstraint : dropConstraints) {
+					list.add(String.format(
+							"ALTER TABLE %s DROP FOREIGN KEY %s",
+							table.getName(), dropConstraint));
+				}
+				for (ForeignReference foreignReference : newForeigns) {
+					list.add(String
+							.format("ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY %s REFERENCES %s (%s)",
+									table.getName(),
+									foreignReference.getName(),
+									foreignReference.getForeignField(),
+									foreignReference.getMainTable(),
+									foreignReference.getReferenceField()));
+				}
+			} catch (SQLException ex) {
+				throw new TinySysRuntimeException(ex);
+			} finally {
+				try {
+					if (statement != null) {
+						statement.close();
+					}
+					if (rs != null) {
+						rs.close();
+					}
+				} catch (SQLException e) {
+					throw new TinySysRuntimeException(e);
+				}
+				DataSourceUtils.releaseConnection(con, dataSource);
+			}
+		}
+	}
+
+	protected String getQueryForeignSql(Table table) {
+		return null;
+	}
+
+	private List<ForeignReference> cloneReferences(
+			List<ForeignReference> foreigns) {
+		List<ForeignReference> cloneForeigns = new ArrayList<ForeignReference>();
+		for (ForeignReference foreignReference : foreigns) {
+			cloneForeigns.add(foreignReference);
+		}
+		return cloneForeigns;
 	}
 
 	protected void getTableColumnUpdate(Table table, String packageName,
@@ -168,7 +272,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 
 	protected abstract List<String> dealExistFields(
 			Map<String, TableField> existInTable,
-			Map<String, Map<String, String>> dbColumns, Table table) ;
+			Map<String, Map<String, String>> dbColumns, Table table);
 
 	protected void appendBody(StringBuffer ddlBuffer, String packageName,
 			Table table, List<String> list) {
@@ -311,28 +415,30 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
 		try {
 			String schema = DataBaseUtil.getSchema(table, metadata);
-			String tableName=table.getNameWithOutSchema().toUpperCase();
-			map= getColumns(metadata, catalog, schema, tableName);
+			String tableName = table.getNameWithOutSchema().toUpperCase();
+			map = getColumns(metadata, catalog, schema, tableName);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 		return map;
-	
+
 	}
-	
+
 	protected Map<String, Map<String, String>> getColumns(
-			DatabaseMetaData metadata, String catalog, String  schema,String tableName) {
+			DatabaseMetaData metadata, String catalog, String schema,
+			String tableName) {
 		ResultSet colRet = null;
 		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
 		try {
-			colRet = metadata.getColumns(catalog, schema,tableName, "%");
+			colRet = metadata.getColumns(catalog, schema, tableName, "%");
 			while (colRet.next()) {
 				Map<String, String> attributes = new HashMap<String, String>();
 				String columnName = colRet.getString(COLUMN_NAME);
 				attributes.put(NULLABLE, colRet.getString(NULLABLE));
 				attributes.put(TYPE_NAME, colRet.getString(TYPE_NAME));
 				attributes.put(COLUMN_SIZE, colRet.getString(COLUMN_SIZE));
-				attributes.put(DECIMAL_DIGITS, colRet.getString(DECIMAL_DIGITS));
+				attributes
+						.put(DECIMAL_DIGITS, colRet.getString(DECIMAL_DIGITS));
 				map.put(columnName.toUpperCase(), attributes);
 			}
 		} catch (SQLException e1) {
@@ -342,14 +448,14 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		}
 		return map;
 	}
-	
 
 	public boolean checkTableExist(Table table, String catalog,
 			DatabaseMetaData metadata) {
 		ResultSet r = null;
 		try {
 			String schema = DataBaseUtil.getSchema(table, metadata);
-			r = metadata.getTables(catalog, schema, table.getNameWithOutSchema().toUpperCase(),
+			r = metadata.getTables(catalog, schema, table
+					.getNameWithOutSchema().toUpperCase(),
 					new String[] { "TABLE" });
 
 			if (r.next()) {
@@ -365,12 +471,12 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		return false;
 	}
 
-	protected String getDbColumnType(Map<String,String> attributes){
+	protected String getDbColumnType(Map<String, String> attributes) {
 		String lengthInfo = attributes.get(COLUMN_SIZE);
-		if(attributes.get(DECIMAL_DIGITS)!=null){
-			lengthInfo = lengthInfo+","+attributes.get(DECIMAL_DIGITS);
+		if (attributes.get(DECIMAL_DIGITS) != null) {
+			lengthInfo = lengthInfo + "," + attributes.get(DECIMAL_DIGITS);
 		}
-		return String.format("%s(%s)", attributes.get(TYPE_NAME),lengthInfo);
+		return String.format("%s(%s)", attributes.get(TYPE_NAME), lengthInfo);
 	}
 	// public List<String> getDeupdateSql(Table table, String packageName,
 	// DatabaseMetaData metadata,String catalog ) {

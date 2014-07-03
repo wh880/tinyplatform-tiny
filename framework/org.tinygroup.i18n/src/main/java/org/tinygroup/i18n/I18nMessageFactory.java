@@ -48,7 +48,7 @@ public final class I18nMessageFactory {
 		XStream stream = new XStream();
 		stream.autodetectAnnotations(true);
 		stream.alias("i18n-configuration", I18nConfiguration.class);
-
+		stream.setClassLoader(I18nConfiguration.class.getClassLoader());
 		I18nConfiguration configuration = (I18nConfiguration) stream
 				.fromXML(I18nMessageFactory.class
 						.getResourceAsStream("/I18nConfiguration.xml"));

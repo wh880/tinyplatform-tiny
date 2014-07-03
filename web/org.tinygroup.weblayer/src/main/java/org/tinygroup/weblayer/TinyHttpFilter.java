@@ -17,7 +17,9 @@ package org.tinygroup.weblayer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
@@ -30,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.tinygroup.commons.io.StreamUtil;
-import org.tinygroup.commons.tools.ObjectUtil;
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
@@ -57,13 +59,17 @@ public class TinyHttpFilter implements Filter {
     
     private static final String POST_DATA_PROCESS="post-data-process";
     
+    private static final String DATA_MAPPING="data-mapping";
+    
     private static final String HOST_PATTERN="host-pattern";
     
     private static final String POST_DATA_KEY="post-data-key";
     
     public static final String DEFAULT_POST_DATA_KEY="$_post_data_key";
     
-    private String pattern;
+    public static final String DEFAULT_POST_NODE_NAME="$_post_node_name";
+    
+    private Map<String, String> mapping=new HashMap<String, String>();
     
     private String postDataKey;
 
@@ -95,16 +101,20 @@ public class TinyHttpFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+        String servletPath = request.getServletPath();
+        if (isExcluded(servletPath)) {
+            logger.logMessage(LogLevel.DEBUG, "请求路径:<{}>,被拒绝", servletPath);
+            filterChain.doFilter(request, response);
+            return;
+        }
         WebContext context = new WebContextImpl();
         context.put("springUtil", SpringUtil.class);
         postDataProcess(request, context);
         context.put("context", context);
         context.putSubContext("applicationproperties", new ContextImpl(ConfigurationUtil.getConfigurationManager().getConfiguration()));
         putRequstInfo(request, context);
-
         context.init(request, response,
                 ServletContextHolder.getServletContext());
-        String servletPath = context.get(WebContextUtil.TINY_SERVLET_PATH);
         if (servletPath.endsWith("/")) {
             for (String defaultFile : defaultFiles) {
                 String tmpPath = servletPath + defaultFile;
@@ -114,11 +124,6 @@ public class TinyHttpFilter implements Filter {
                     break;
                 }
             }
-        }
-        if (isExcluded(servletPath)) {
-            logger.logMessage(LogLevel.DEBUG, "请求路径:<{}>,被拒绝", servletPath);
-            filterChain.doFilter(request, response);
-            return;
         }
         TinyFilterHandler hander = new TinyFilterHandler(servletPath,
                 filterChain, context, tinyFilterManager, tinyProcessorManager);
@@ -130,11 +135,14 @@ public class TinyHttpFilter implements Filter {
     }
 
 	private void postDataProcess(HttpServletRequest request, WebContext context) throws IOException {
-		if(isPostMethod(request)&&!ObjectUtil.isEmptyObject(pattern)){
+		if(isPostMethod(request)){
 			String remoteHost=request.getRemoteHost();
 			String remoteAddr=request.getRemoteAddr();
-			if(Pattern.matches(pattern, remoteHost)||Pattern.matches(pattern, remoteAddr)){
-				context.put(postDataKey,StreamUtil.readBytes(request.getInputStream(), true).toByteArray());
+			for (String pattern : mapping.values()) {
+				if(Pattern.matches(pattern, remoteHost)||Pattern.matches(pattern, remoteAddr)){
+					context.put(postDataKey,StreamUtil.readBytes(request.getInputStream(), true).toByteArray());
+					break;
+				}
 			}
 		}
 		
@@ -149,9 +157,19 @@ public class TinyHttpFilter implements Filter {
 		XmlNode parserNode = appConfigManager.getApplicationConfiguration().getSubNode(POST_DATA_PROCESS);
 		if(parserNode!=null){
 			postDataKey=StringUtil.defaultIfBlank(parserNode.getAttribute(POST_DATA_KEY),DEFAULT_POST_DATA_KEY);
-			String hostsPattern=parserNode.getAttribute(HOST_PATTERN);
-			if(!StringUtil.isBlank(hostsPattern)){
-				pattern=hostsPattern;
+			List<XmlNode> dataMapNode=parserNode.getSubNodes(DATA_MAPPING);
+			if(!CollectionUtil.isEmpty(dataMapNode)){
+				for (int i = 0; i < dataMapNode.size(); i++) {
+					XmlNode xmlNode =dataMapNode.get(i);
+					String hostsPattern=xmlNode.getAttribute(HOST_PATTERN);
+					if(!StringUtil.isBlank(hostsPattern)){
+						String nodeName=xmlNode.getAttribute("name");
+						if(StringUtil.isBlank(nodeName)){
+							nodeName=DEFAULT_POST_NODE_NAME+i;
+						}
+						mapping.put(nodeName, hostsPattern);
+					}
+				}
 			}
 		}
 	}

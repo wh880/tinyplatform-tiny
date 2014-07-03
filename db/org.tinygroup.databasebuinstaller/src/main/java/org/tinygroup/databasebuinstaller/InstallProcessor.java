@@ -31,6 +31,8 @@ public interface InstallProcessor extends Ordered {
 	String PROCEDURE_INSTALL_PROCESSOR="procedureInstallProcessor";
 	String VIEW_INSTALL_PROCESSOR="viewInstallProcessor";
 	String DATABASE_INSTALL_PROCESSOR="databaseInstaller";
+	String TRIGGER_INSTALL_PROCESSOR="triggerInstallProcessor";
+	String SEQUENCE_INSTALL_PROCESSOR="sequenceInstallProcessor";
    /**
     * 
     * 对某种数据库语言进行处理

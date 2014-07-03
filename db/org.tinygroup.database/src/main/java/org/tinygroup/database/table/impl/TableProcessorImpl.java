@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.ProcessorManager;
+import org.tinygroup.database.config.table.ForeignReference;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.Tables;
 import org.tinygroup.database.table.TableProcessor;
@@ -32,16 +33,20 @@ import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.springutil.SpringUtil;
 
 public class TableProcessorImpl implements TableProcessor {
+	//存储所有表信息
 	private  Map<String, Map<String, Table>> tableMap = new HashMap<String, Map<String, Table>>();
+	//表依赖关系
+	private Map<String, List<String>> dependencyMap=new HashMap<String, List<String>>();
+	//表格是否已经被处理过
+	private Map<String, Boolean> loadStatus=new HashMap<String, Boolean>();
 
 	public void addTables(Tables tables) {
 		String packageName = MetadataUtil.passNull(tables.getPackageName());
 		if(!tableMap.containsKey(packageName)){
 			tableMap.put(packageName, new HashMap<String, Table>());
 		}
-		Map<String, Table> nameMap = tableMap.get(packageName);
 		for (Table table : tables.getTableList()) {
-			nameMap.put(table.getName(), table);
+			addTable(table);
 		}
 	}
 	
@@ -50,7 +55,7 @@ public class TableProcessorImpl implements TableProcessor {
 		Map<String, Table> nameMap = tableMap.get(packageName);
 		if(!CollectionUtil.isEmpty(nameMap)){
 			for (Table table : tables.getTableList()) {
-				nameMap.remove(table.getName());
+				removeTable(table);
 			}
 		}
 	}
@@ -62,6 +67,14 @@ public class TableProcessorImpl implements TableProcessor {
 		}
 		Map<String, Table> nameMap = tableMap.get(packageName);
 	    nameMap.put(table.getName(), table);
+		List<ForeignReference> foreigns=table.getForeignReferences();
+		if(!CollectionUtil.isEmpty(foreigns)){
+			List<String> dependencies=new ArrayList<String>();
+			for (ForeignReference foreignReference : foreigns) {
+				dependencies.add(foreignReference.getMainTable());
+			}
+			dependencyMap.put(table.getName(), dependencies);
+		}
 	}
 	
 	public void removeTable(Table table) {
@@ -69,6 +82,7 @@ public class TableProcessorImpl implements TableProcessor {
 		Map<String, Table> nameMap = tableMap.get(packageName);
 		if(!CollectionUtil.isEmpty(nameMap)){
 			nameMap.remove(table.getName());
+			dependencyMap.remove(table.getName());
 		}
 	}
 
@@ -110,8 +124,27 @@ public class TableProcessorImpl implements TableProcessor {
 	public List<String> getCreateSql(String name, String packageName,
 			String language) {
 		Table table = getTable(packageName, name);
-		return getCreateSql(table, packageName, language);
+		return getCreateSql(language, table);
 	}
+	
+	private List<String> getCreateSql(String language,Table table){
+		List<String> sqls=new ArrayList<String>();
+		Boolean load=loadStatus.get(table.getName());
+		if(load==null||!load){
+			loadStatus.put(table.getName(), true);
+			List<String> dependencies=dependencyMap.get(table.getName());
+			if(!CollectionUtil.isEmpty(dependencies)){
+				for (String depend : dependencies) {
+					Table dependTable=getTable(depend);
+					sqls.addAll(getCreateSql(language, dependTable));
+				}
+			}else{
+				sqls.addAll(getCreateSql(table, table.getPackageName(), language));
+			}
+		}
+		return sqls;
+	}
+	
 
 	public List<String> getCreateSql(Table table, String packageName,
 			String language) {

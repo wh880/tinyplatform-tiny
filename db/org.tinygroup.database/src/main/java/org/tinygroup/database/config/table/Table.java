@@ -34,7 +34,9 @@ public class Table extends BaseObject {
 	private List<Index> indexList;
 	@XStreamAsAttribute
 	private String packageName;
-
+	@XStreamImplicit
+	private List<ForeignReference> foreignReferences;
+	
 	public String getNameWithOutSchema() {
 		return super.getName();
 	}
@@ -79,6 +81,17 @@ public class Table extends BaseObject {
 
 	public void setIndexList(List<Index> indexList) {
 		this.indexList = indexList;
+	}
+
+	public List<ForeignReference> getForeignReferences() {
+		if(foreignReferences==null){
+			foreignReferences=new ArrayList<ForeignReference>();
+		}
+		return foreignReferences;
+	}
+
+	public void setForeignReferences(List<ForeignReference> foreignReferences) {
+		this.foreignReferences = foreignReferences;
 	}
 
 }
