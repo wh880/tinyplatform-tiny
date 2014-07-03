@@ -16,8 +16,6 @@
 package org.tinygroup.database.table.impl;
 
 import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +23,10 @@ import java.util.Map;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
 
 public class OracleSqlProcessorImpl extends SqlProcessorImpl {
-	private static Logger logger = LoggerFactory
-			.getLogger(OracleSqlProcessorImpl.class);
 
 	protected String getDatabaseType() {
 		return "oracle";
@@ -98,61 +92,33 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 		return String.format("%s_seq", table.getName()).toUpperCase();
 	}
 
-	protected void getOtherUpdate(Table table, DatabaseMetaData metadata,
-			String catalog, List<String> list) {
-		TableField field = DataBaseUtil.getPrimaryField(table);
-		if (field.isAutoIncrease()) {
-			getSeqUpdate(table, field, catalog, metadata, list);
-			getTriggerUpdate(table, field, catalog, metadata, list);
-		}
+	protected String getQueryForeignSql(Table table) {
+		String sql = "Select a.constraint_name CONSTRAINT_NAME,"
+				+ "a.column_name  COLUMN_NAME,"
+				+ "b.table_name  REFERENCED_TABLE_NAME,"
+				+ "b.column_name REFERENCED_COLUMN_NAME"
+				+ " From (Select a,owner,a.constraint_name,"
+				+ "b.table_name,b.column_name,a.r_constraint_name"
+				+ " From user_constraints a, user_cons_columns b"
+				+ " Where a.constraint_type = 'R'"
+				+ " And a.constraint_name = b.constraint_name) a,"
+				+ "(Select Distinct a.r_constraint_name, b.table_name, b.column_name"
+				+ " From user_constraints a, user_cons_columns b"
+				+ " Where a.constraint_type = 'R'"
+				+ " And a.r_constraint_name = b.constraint_name) b"
+				+ " Where a.r_constraint_name = b.r_constraint_name"
+				+ " and a.table_name ='" + table.getName().toUpperCase()
+				+ "' and a.owner='" + table.getSchema().toUpperCase() + "'";
+		return sql;
 	}
 
-	private void getTriggerUpdate(Table table, TableField pField,
-			String catalog, DatabaseMetaData metadata, List<String> list) {
-		String trigger = getTriggerName(table, pField);
-		ResultSet r = null;
-		try {
-			r = metadata.getTables(catalog,
-					DataBaseUtil.getSchema(table, metadata), trigger,
-					new String[] { "TRIGGER" });
-			while (r.next()) {
-				// 如果存在该trigger，则直接跳过
-				return;
-			}
-			appendTrigger(list, table, pField);
-		} catch (SQLException e) {
-			logger.errorMessage("查找TRIGGER:{trigger}时出错", e, trigger);
-		} finally {
-			DataBaseUtil.closeResultSet(r);
-		}
-
-	}
-
-	private void getSeqUpdate(Table table, TableField pField, String catalog,
-			DatabaseMetaData metadata, List<String> list) {
-		String seq = getSequenceName(table, pField);
-		ResultSet r = null;
-		try {
-			r = metadata.getTables(catalog,
-					DataBaseUtil.getSchema(table, metadata), seq,
-					new String[] { "SEQUENCE" });
-			while (r.next()) {
-				// 如果存在该sequence，则直接跳过
-				return;
-			}
-			appendSeq(list, table, pField);
-		} catch (SQLException e) {
-			logger.errorMessage("查找TRIGGER:{seq}时出错", e, seq);
-		}finally {
-			DataBaseUtil.closeResultSet(r);
-		}
-	}
-	
-	protected List<String> dealExistFields(Map<String, TableField> existInTable,Map<String, Map<String, String>> dbColumns, Table table){
-		List<String>  existUpdateList = new ArrayList<String>();
-		for(String fieldName:existInTable.keySet()){
+	protected List<String> dealExistFields(
+			Map<String, TableField> existInTable,
+			Map<String, Map<String, String>> dbColumns, Table table) {
+		List<String> existUpdateList = new ArrayList<String>();
+		for (String fieldName : existInTable.keySet()) {
 			TableField field = existInTable.get(fieldName);
-			if(field.getPrimary()){
+			if (field.getPrimary()) {
 				continue;
 			}
 			StandardField standardField = MetadataUtil.getStandardField(field
@@ -160,25 +126,31 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 			Map<String, String> attribute = dbColumns.get(fieldName);
 			String tableDataType = MetadataUtil.getStandardFieldType(
 					standardField.getId(), getDatabaseType());
-			String dbColumnType = getDbColumnType(attribute).replaceAll(" ", "").toLowerCase();
-			
-			if(dbColumnType.indexOf(tableDataType.replaceAll(" ", "").toLowerCase())==-1){
-				existUpdateList.add( String.format("ALTER TABLE %s MODIFY %s %s ", table.getName(),fieldName,tableDataType));
+			String dbColumnType = getDbColumnType(attribute)
+					.replaceAll(" ", "").toLowerCase();
+
+			if (dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
+					.toLowerCase()) == -1) {
+				existUpdateList.add(String.format(
+						"ALTER TABLE %s MODIFY %s %s ", table.getName(),
+						fieldName, tableDataType));
 			}
-//			logger.logMessage(LogLevel.INFO, tableDataType+"+"+dbColumnType);
-//			StandardField standardField = MetadataUtil.getStandardField(field
-//					.getStandardFieldId());
-//			//如果数据库中字段允许为空，但table中不允许为空
-			if(field.getNotNull()&&
-					Integer.parseInt( attribute.get(NULLABLE))==DatabaseMetaData.columnNullable ){
-				existUpdateList.add(String.format("ALTER TABLE %s MODIFY %s NOT NULL",
-						table.getName(), fieldName));
-			}else if(!field.getNotNull()&&
-					Integer.parseInt(attribute.get(NULLABLE))==DatabaseMetaData.columnNoNulls ){
-				existUpdateList.add(String.format("ALTER TABLE %s MODIFY %s NULL",
-						table.getName(), fieldName));
+			// logger.logMessage(LogLevel.INFO, tableDataType+"+"+dbColumnType);
+			// StandardField standardField = MetadataUtil.getStandardField(field
+			// .getStandardFieldId());
+			// //如果数据库中字段允许为空，但table中不允许为空
+			if (field.getNotNull()
+					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNullable) {
+				existUpdateList.add(String.format(
+						"ALTER TABLE %s MODIFY %s NOT NULL", table.getName(),
+						fieldName));
+			} else if (!field.getNotNull()
+					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNoNulls) {
+				existUpdateList.add(String.format(
+						"ALTER TABLE %s MODIFY %s NULL", table.getName(),
+						fieldName));
 			}
-			
+
 		}
 		return existUpdateList;
 	}

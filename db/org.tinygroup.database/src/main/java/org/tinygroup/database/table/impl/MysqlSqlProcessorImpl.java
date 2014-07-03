@@ -38,14 +38,14 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 	String appendIncrease() {
 		return " auto_increment ";
 	}
-	
+
 	public boolean checkTableExist(Table table, String catalog,
 			DatabaseMetaData metadata) {
 		ResultSet r = null;
 		try {
 			String schema = DataBaseUtil.getSchema(table, metadata);
-			r = metadata.getTables(catalog, schema, table.getNameWithOutSchema(),
-					new String[] { "TABLE" });
+			r = metadata.getTables(catalog, schema,
+					table.getNameWithOutSchema(), new String[] { "TABLE" });
 
 			if (r.next()) {
 				return true;
@@ -59,12 +59,14 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 
 		return false;
 	}
-	
-	protected List<String> dealExistFields(Map<String, TableField> existInTable,Map<String, Map<String, String>> dbColumns, Table table){	
-		List<String>  existUpdateList = new ArrayList<String>();
-		for(String fieldName:existInTable.keySet()){
+
+	protected List<String> dealExistFields(
+			Map<String, TableField> existInTable,
+			Map<String, Map<String, String>> dbColumns, Table table) {
+		List<String> existUpdateList = new ArrayList<String>();
+		for (String fieldName : existInTable.keySet()) {
 			TableField field = existInTable.get(fieldName);
-			if(field.getPrimary()){
+			if (field.getPrimary()) {
 				continue;
 			}
 			StandardField standardField = MetadataUtil.getStandardField(field
@@ -72,28 +74,34 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 			Map<String, String> attribute = dbColumns.get(fieldName);
 			String tableDataType = MetadataUtil.getStandardFieldType(
 					standardField.getId(), getDatabaseType());
-			String dbColumnType = getDbColumnType(attribute).replaceAll(" ", "").toLowerCase();
-			if(dbColumnType.indexOf(tableDataType.replaceAll(" ", "").toLowerCase())==-1){
-				existUpdateList.add( String.format("ALTER TABLE %s CHANGE %s %s %s", table.getName(),fieldName, fieldName,tableDataType));
+			String dbColumnType = getDbColumnType(attribute)
+					.replaceAll(" ", "").toLowerCase();
+			if (dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
+					.toLowerCase()) == -1) {
+				existUpdateList.add(String.format(
+						"ALTER TABLE %s CHANGE %s %s %s", table.getName(),
+						fieldName, fieldName, tableDataType));
 			}
-			
-//			StandardField standardField = MetadataUtil.getStandardField(field
-//					.getStandardFieldId());
-//			//如果数据库中字段允许为空，但table中不允许为空
-			if(field.getNotNull()&&
-					Integer.parseInt( attribute.get(NULLABLE))==DatabaseMetaData.columnNullable ){
-				existUpdateList.add(String.format("ALTER TABLE %s CHANGE %s %s %s NOT NULL",
-						table.getName(), fieldName, fieldName,tableDataType));
-			}else if(!field.getNotNull()&&
-					Integer.parseInt(attribute.get(NULLABLE))==DatabaseMetaData.columnNoNulls ){
-				existUpdateList.add(String.format("ALTER TABLE %s CHANGE %s %s %s NULL",
-						table.getName(), fieldName, fieldName,tableDataType));
+
+			// StandardField standardField = MetadataUtil.getStandardField(field
+			// .getStandardFieldId());
+			// //如果数据库中字段允许为空，但table中不允许为空
+			if (field.getNotNull()
+					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNullable) {
+				existUpdateList.add(String.format(
+						"ALTER TABLE %s CHANGE %s %s %s NOT NULL",
+						table.getName(), fieldName, fieldName, tableDataType));
+			} else if (!field.getNotNull()
+					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNoNulls) {
+				existUpdateList.add(String.format(
+						"ALTER TABLE %s CHANGE %s %s %s NULL", table.getName(),
+						fieldName, fieldName, tableDataType));
 			}
-			
+
 		}
 		return existUpdateList;
 	}
-	
+
 	protected List<String> checkTableColumn(
 			Map<String, Map<String, String>> columns,
 			Map<String, TableField> fieldDbNames,
@@ -113,18 +121,36 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 		}
 		return dropFields;
 	}
-	
+
 	protected Map<String, Map<String, String>> getColumns(
 			DatabaseMetaData metadata, String catalog, Table table) {
 		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
 		try {
 			String schema = DataBaseUtil.getSchema(table, metadata);
-			String tableName=table.getNameWithOutSchema();
-			map= getColumns(metadata, catalog, schema, tableName);
+			String tableName = table.getNameWithOutSchema();
+			map = getColumns(metadata, catalog, schema, tableName);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 		return map;
-	
+
 	}
+	
+	protected String getQueryForeignSql(Table table) {
+		 String sql = "SELECT c.COLUMN_NAME, tc.CONSTRAINT_NAME,fc.REFERENCED_TABLE_NAME,kcu.REFERENCED_COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS c"
+			+ " LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu ON kcu.TABLE_SCHEMA = c.TABLE_SCHEMA"
+			+ " AND kcu.TABLE_NAME = c.TABLE_NAME"
+			+ " AND kcu.COLUMN_NAME = c.COLUMN_NAME"
+			+ " LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc ON tc.CONSTRAINT_SCHEMA = kcu.CONSTRAINT_SCHEMA"
+			+ " AND tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME"
+			+ " LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS fc ON kcu.CONSTRAINT_SCHEMA = fc.CONSTRAINT_SCHEMA"
+			+ " AND kcu.CONSTRAINT_NAME = fc.CONSTRAINT_NAME"
+			+ " where CONSTRAINT_TYPE='FOREIGN KEY' and table_name='"
+			+ table.getName()
+			+ "' and table_schema='"
+			+ table.getSchema() + "'";
+		 return sql;
+	}
+
+
 }

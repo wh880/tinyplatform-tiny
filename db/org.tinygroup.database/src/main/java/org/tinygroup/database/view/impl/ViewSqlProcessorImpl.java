@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.config.view.Having;
@@ -38,23 +39,56 @@ import org.tinygroup.metadata.util.MetadataUtil;
 public class ViewSqlProcessorImpl implements ViewSqlProcessor {
 
 	public String getCreateSql(View view) {
+		Map<String,String> tableNames = initTables(view.getTableList());
 		// 这里生成视图的逻辑过于复杂了
 		// 是否可以考虑直接让用户写代码块
 		StringBuffer sb = new StringBuffer();
 		appendHead(view.getName(), sb);
-		
-		Map<String,String> tableNames = new HashMap<String,String>();//table的 id与tableName映射
-		appendTables(view, sb,tableNames);
 		Map<String,String> fieldNames= new HashMap<String,String>();//viewfield的 id与fieldName映射
 		appendFields(view,sb,tableNames,fieldNames);
+		appendTables(sb,view);
 		//处理条件
 		appendCondition(view,sb,tableNames,fieldNames);
-		//appendGroupBy(view, sb);
+//		appendGroupBy(view, sb);
 		//处理Having子句
 		appendHaving(view,sb,tableNames,fieldNames);
 		appendOrderBy(view,sb,tableNames,fieldNames);
 		sb.append(";");
 		return sb.toString();
+	}
+
+	private void appendTables(StringBuffer buffer, View view) {
+		buffer.append(" FROM ");
+		List<ViewTable> viewTables=view.getTableList();
+		for (int i = 0; i < viewTables.size(); i++) {
+			ViewTable viewTable=viewTables.get(i);
+			String tableAlias = viewTable.getTableAlias();
+			String tableId = viewTable.getTableId();
+			String tableName = DataBaseUtil.getTableById(tableId).getName();
+			if(StringUtil.isBlank(tableAlias)){
+				buffer.append(tableName);
+			}else{
+				buffer.append(tableName).append(" ").append(tableAlias);
+			}
+			if(i<viewTables.size()-1){
+				buffer.append(",");
+			}
+		}
+	}
+
+	private Map<String, String> initTables(List<ViewTable> tableList) {
+		Map<String, String> tableNames=new HashMap<String, String>();
+		for (ViewTable viewTable : tableList) {
+			String tableAlias = viewTable.getTableAlias();
+			String tableId = viewTable.getTableId();
+			String tableName = DataBaseUtil.getTableById(tableId).getName();
+			if(!StringUtil.isBlank(tableAlias)){
+				tableName=tableAlias;
+			}
+			tableNames.put(viewTable.getId(), tableName);
+		}
+		return tableNames;
+		
 	}
 
 	// CREATE VIEW [视图名] AS
@@ -79,19 +113,6 @@ public class ViewSqlProcessorImpl implements ViewSqlProcessor {
 			fieldStr = fieldStr.substring(0, fieldStr.length() - 1);
 		}
 		sb.append(fieldStr);
-	}
-
-	private void appendTables(View view, StringBuffer sb,Map<String,String> tableNames) {
-		sb.append(" FROM ");
-		String tableStr = "";
-		for (ViewTable viewTable : view.getTableList()) {
-			String tableName = getTableName(viewTable, tableNames);
-			tableStr = tableStr + tableName + ",";
-		}
-		if (tableStr.endsWith(",")) {
-			tableStr = tableStr.substring(0, tableStr.length() - 1);
-		}
-		sb.append(tableStr);
 	}
 
 	// 这里暂时只有 key = value and key = value;
@@ -282,19 +303,6 @@ public class ViewSqlProcessorImpl implements ViewSqlProcessor {
 			fieldNames.put(field.getId(), fieldAlias);
 		}
 		return fieldName;
-	}
-
-	private String getTableName(ViewTable viewTable,Map<String,String> tableNames) {
-		String tableAlias = viewTable.getTableAlias();
-		String tableId = viewTable.getTableId();
-		String tableName = DataBaseUtil.getTableById(tableId).getName();
-		if (tableAlias == null || "".equals(tableAlias)) {
-			tableNames.put(viewTable.getId(), tableName);
-		} else {
-			tableName = tableName + " " + tableAlias;
-			tableNames.put(viewTable.getId(), tableAlias);
-		}
-		return tableName;
 	}
 
 	public String getDropSql(View view) {

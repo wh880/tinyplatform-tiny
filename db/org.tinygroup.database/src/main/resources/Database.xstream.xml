@@ -9,6 +9,12 @@
 			<xstream-annotation-class
 			class-name="org.tinygroup.database.config.dialectfunction.DialectFunctions">
 			</xstream-annotation-class>
+			<xstream-annotation-class
+			class-name="org.tinygroup.database.config.trigger.Triggers">
+			</xstream-annotation-class>
+			<xstream-annotation-class
+			class-name="org.tinygroup.database.config.sequence.Sequences">
+			</xstream-annotation-class>
 	</xstream-annotation-classes>
 </xstream-configuration>
 

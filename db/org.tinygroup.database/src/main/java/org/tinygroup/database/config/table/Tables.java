@@ -41,8 +41,13 @@ public class Tables extends BaseObject {
 	}
 
 	public List<Table> getTableList() {
-		if(tableList ==null)
+		if (tableList == null) {
 			tableList = new ArrayList<Table>();
+
+		}
+		for (Table table : tableList) {
+			table.setPackageName(packageName);
+		}
 		return tableList;
 	}
 

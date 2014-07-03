@@ -48,6 +48,9 @@ public interface TableSqlProcessor {
 	 * @return
 	 */
 	List<String> getIndexCreateSql(Table table, String packageName);
+	
+	List<String> getForeignKeySqls(Table table,
+			String packageName);
 	/**
 	 * 获得(正向)Update表格的语句
 	 * @param table

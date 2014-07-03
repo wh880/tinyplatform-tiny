@@ -39,6 +39,8 @@ public class DataBaseUtil {
 	public static String INITDATA_BEAN = "initDataProcessor";
 	public static String PROCEDURE_BEAN = "procedureProcessor";
 	public static String VIEW_BEAN = "viewProcessor";
+	public static String TRIGGER_BEAN = "triggerProcessor";
+	public static String SEQUENCE_BEAN = "sequenceProcessor";
 	
 	/* 数据库类型 */
 	public static final String DB_TYPE_ORACLE = "oracle";
