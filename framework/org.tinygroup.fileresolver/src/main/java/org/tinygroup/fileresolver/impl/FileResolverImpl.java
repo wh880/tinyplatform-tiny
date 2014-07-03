@@ -36,6 +36,7 @@ import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
+import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.ProcessorCallBack;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -53,333 +54,345 @@ import org.tinygroup.xmlparser.node.XmlNode;
  * <br>
  */
 public class FileResolverImpl implements FileResolver {
-    private static final String FILE_RESOLVER_CONFIG = "/application/file-resolver-configuration";
-    private static final int DEFAULT_THREAD_NUM = 1;
-    ConfigurationManager configurationManager = ConfigurationUtil.getConfigurationManager();
-    private static Logger logger = LoggerFactory.getLogger(FileResolverImpl.class);
+	private static final String FILE_RESOLVER_CONFIG = "/application/file-resolver-configuration";
+	private static final int DEFAULT_THREAD_NUM = 1;
+	ConfigurationManager configurationManager = ConfigurationUtil
+			.getConfigurationManager();
+	private static Logger logger = LoggerFactory
+			.getLogger(FileResolverImpl.class);
 
-    // 是否对classPath进行处理，默认为处理
-    private int fileProcessorThreadNum = DEFAULT_THREAD_NUM;
-    // 文件处理器列表，由文件查找器统一管理
-    private List<FileProcessor> fileProcessorList = new ArrayList<FileProcessor>();
-    // 文件信息 key:path,value:modify-time
-    private Map<String, Long> fileDateMap = new HashMap<String, Long>();
-    // 文件信息
-    private Map<String, FileObject> fileObjectCaches = new HashMap<String, FileObject>();
-    
-    private Map<String, Pattern> includePathPatternMap = new HashMap<String, Pattern>();
-    private Set<String> allScanningPath = new HashSet<String>();
+	// 是否对classPath进行处理，默认为处理
+	private int fileProcessorThreadNum = DEFAULT_THREAD_NUM;
+	// 文件处理器列表，由文件查找器统一管理
+	private List<FileProcessor> fileProcessorList = new ArrayList<FileProcessor>();
+	// 文件信息 key:path,value:modify-time
+	private Map<String, Long> fileDateMap = new HashMap<String, Long>();
+	// 文件信息
+	private Map<String, FileObject> fileObjectCaches = new HashMap<String, FileObject>();
 
-    private XmlNode componentConfig;
-    private XmlNode applicationConfig;
-    private ClassLoader classLoader;
+	private Map<String, Pattern> includePathPatternMap = new HashMap<String, Pattern>();
+	private Set<String> allScanningPath = new HashSet<String>();
 
-    public Set<String> getResolveFileObjectSet() {
-        return allScanningPath;
-    }
+	private XmlNode componentConfig;
+	private XmlNode applicationConfig;
+	private ClassLoader classLoader;
 
-    public List<FileProcessor> getFileProcessorList() {
-        return fileProcessorList;
-    }
+	public Set<String> getResolveFileObjectSet() {
+		return allScanningPath;
+	}
 
-    public void setFileProcessorList(List<FileProcessor> fileProcessorList) {
-        this.fileProcessorList = fileProcessorList;
-    }
+	public List<FileProcessor> getFileProcessorList() {
+		return fileProcessorList;
+	}
 
-    public FileResolverImpl() {
-        String classPath = "[\\/]classes\\b";
-        includePathPatternMap.put(classPath, Pattern.compile(classPath));
-        classPath = "[\\/]test-classes\\b";
-        includePathPatternMap.put(classPath, Pattern.compile(classPath));
-    }
+	public void setFileProcessorList(List<FileProcessor> fileProcessorList) {
+		this.fileProcessorList = fileProcessorList;
+	}
 
-    public FileResolverImpl(boolean b) {
+	public FileResolverImpl() {
+		String classPath = "[\\/]classes\\b";
+		includePathPatternMap.put(classPath, Pattern.compile(classPath));
+		classPath = "[\\/]test-classes\\b";
+		includePathPatternMap.put(classPath, Pattern.compile(classPath));
+	}
 
-    }
+	public FileResolverImpl(boolean b) {
 
+	}
 
-    public void addFileProcessor(FileProcessor fileProcessor) {
-        fileProcessorList.add(fileProcessor);
-        fileProcessor.setFileResolver(this);
-    }
+	public void addFileProcessor(FileProcessor fileProcessor) {
+		fileProcessorList.add(fileProcessor);
+		fileProcessor.setFileResolver(this);
+	}
 
-    public void setClassLoader(ClassLoader classLoader) {
-        this.classLoader = classLoader;
-    }
+	public void setClassLoader(ClassLoader classLoader) {
+		this.classLoader = classLoader;
+	}
 
-    public ClassLoader getClassLoader() {
-        if (classLoader == null) {
-            classLoader = this.getClass().getClassLoader();
-        }
-        return classLoader;
-    }
+	public ClassLoader getClassLoader() {
+		if (classLoader == null) {
+			classLoader = this.getClass().getClassLoader();
+		}
+		return classLoader;
+	}
 
-    public void resolve() {
-        if (fileProcessorList.size() > 0) {
-            for (FileProcessor fileProcessor : fileProcessorList) {
-                fileProcessor.setFileResolver(this);
-            }
-            OrderUtil.order(fileProcessorList);
-            cleanProcessor();
-            // 移动日志信息，文件搜索器中存在处理器时，才会进行全路径扫描，并打印日志信息
-            logger.logMessage(LogLevel.INFO, "正在进行全路径扫描....");
-            resolverScanPath();
-            for (FileProcessor fileProcessor : fileProcessorList) {
-                fileProcessor.process();
-            }
-            logger.logMessage(LogLevel.INFO, "全路径扫描完成。");
-        }
-    }
+	public void resolve() {
+		if (fileProcessorList.size() > 0) {
+			for (FileProcessor fileProcessor : fileProcessorList) {
+				fileProcessor.setFileResolver(this);
+			}
+			OrderUtil.order(fileProcessorList);
+			cleanProcessor();
+			// 移动日志信息，文件搜索器中存在处理器时，才会进行全路径扫描，并打印日志信息
+			logger.logMessage(LogLevel.INFO, "正在进行全路径扫描....");
+			resolverScanPath();
+			for (FileProcessor fileProcessor : fileProcessorList) {
+				fileProcessor.process();
+			}
+			logger.logMessage(LogLevel.INFO, "全路径扫描完成。");
+		}
+	}
 
-    private void refreshScanPath() {
-        Set<FileObject> classPaths = new HashSet<FileObject>();
-        for (String filePath : allScanningPath) {
-        	FileObject fileObject = VFS.resolveFile(filePath);
-            Long lastModifiedTime = fileDateMap.get(fileObject.getAbsolutePath());
-            long modifiedTime = fileObject.getLastModifiedTime();
-            if (lastModifiedTime.longValue() != modifiedTime || !fileObject.isInPackage()) {
-                fileDateMap.put(fileObject.getAbsolutePath(), modifiedTime);
-                if (fileObject.isExist()) {
-                    classPaths.add(fileObject);
-                }
-            }
-        }
-        resolveClassPaths(classPaths);
-    }
+	private void refreshScanPath() {
+		Set<FileObject> classPaths = new HashSet<FileObject>();
+		for (String filePath : allScanningPath) {
+			FileObject fileObject = VFS.resolveFile(filePath);
+			Long lastModifiedTime = fileDateMap.get(fileObject
+					.getAbsolutePath());
+			long modifiedTime = fileObject.getLastModifiedTime();
+			if (lastModifiedTime.longValue() != modifiedTime
+					|| !fileObject.isInPackage()) {
+				fileDateMap.put(fileObject.getAbsolutePath(), modifiedTime);
+				if (fileObject.isExist()) {
+					classPaths.add(fileObject);
+				}
+			}
+		}
+		resolveClassPaths(classPaths);
+	}
 
-    private void resolverScanPath() {
-        Set<FileObject> classPaths = new HashSet<FileObject>();
-        for (String filePath : allScanningPath) {
-        	FileObject fileObject = VFS.resolveFile(filePath);
-        	classPaths.add(fileObject);
-            long modifiedTime = fileObject.getLastModifiedTime();
-            fileDateMap.put(fileObject.getAbsolutePath(), modifiedTime);
-        }
-        resolveClassPaths(classPaths);
-    }
+	private void resolverScanPath() {
+		Set<FileObject> classPaths = new HashSet<FileObject>();
+		for (String filePath : allScanningPath) {
+			FileObject fileObject = VFS.resolveFile(filePath);
+			classPaths.add(fileObject);
+			long modifiedTime = fileObject.getLastModifiedTime();
+			fileDateMap.put(fileObject.getAbsolutePath(), modifiedTime);
+		}
+		resolveClassPaths(classPaths);
+	}
 
+	/**
+	 * 文件搜索器重新搜索时，需要清空上次各个文件处理器中处理的文件列表,并清除记录的扫描路径。
+	 */
+	private void cleanProcessor() {
+		for (FileProcessor fileProcessor : fileProcessorList) {
+			fileProcessor.clean();
+		}
+		// allScanningPath.clear();
+	}
 
-    /**
-     * 文件搜索器重新搜索时，需要清空上次各个文件处理器中处理的文件列表,并清除记录的扫描路径。
-     */
-    private void cleanProcessor() {
-        for (FileProcessor fileProcessor : fileProcessorList) {
-            fileProcessor.clean();
-        }
-//        allScanningPath.clear();
-    }
+	/**
+	 * 文件搜索器根据路径列表进行搜索
+	 * 
+	 * @param classPaths
+	 */
+	private void resolveClassPaths(Set<FileObject> classPaths) {
+		List<FileObject> scanPathsList = new ArrayList<FileObject>();
+		scanPathsList.addAll(classPaths);
+		MultiThreadFileProcessor.mutiProcessor(fileProcessorThreadNum,
+				"file-resolver-threads", scanPathsList,
+				new ProcessorCallBack() {
+					public void callBack(FileObject fileObject) {
 
+						logger.logMessage(LogLevel.INFO, "正在扫描路径[{0}]...",
+								fileObject.getAbsolutePath());
+						resolveFileObject(fileObject);
+						logger.logMessage(LogLevel.INFO, "路径[{0}]扫描完成。",
+								fileObject.getAbsolutePath());
+					}
+				});
+	}
 
-    /**
-     * 文件搜索器根据路径列表进行搜索
-     *
-     * @param classPaths
-     */
-    private void resolveClassPaths(Set<FileObject> classPaths) {
-        List<FileObject> scanPathsList = new ArrayList<FileObject>();
-        scanPathsList.addAll(classPaths);
-        MultiThreadFileProcessor.mutiProcessor(fileProcessorThreadNum, "file-resolver-threads", scanPathsList, new ProcessorCallBack() {
-            public void callBack(FileObject fileObject) {
+	private void resolveFileObject(FileObject fileObject) {
 
-                logger.logMessage(LogLevel.INFO, "正在扫描路径[{0}]...", fileObject.getAbsolutePath());
-                resolveFileObject(fileObject);
-                logger.logMessage(LogLevel.INFO, "路径[{0}]扫描完成。", fileObject.getAbsolutePath());
-            }
-        });
-    }
+		logger.logMessage(LogLevel.DEBUG, "找到文件：{}", fileObject
+				.getAbsolutePath().toString());
+		processFile(fileObject);
+		if (fileObject.isFolder() && fileObject.getChildren() != null) {
+			for (FileObject f : fileObject.getChildren()) {
+				if (!allScanningPath.contains(f.getAbsolutePath())) {
+					if (FileResolverUtil.isInclude(f, this)) {
+						resolveFileObject(f);
+					}
+				} else {
+					logger.logMessage(LogLevel.INFO,
+							"文件:[{}]在扫描根路径列表中存在，将作为根路径进行扫描",
+							f.getAbsolutePath());
+				}
+			}
+			return;
+		}
+	}
 
-    private void resolveFileObject(FileObject fileObject) {
+	/**
+	 * 移除已删除文件
+	 */
+	private void resolveDeletedFile() {
+		// 处理删除的文件
+		Map<String, FileObject> tempMap = new HashMap<String, FileObject>();
+		for (String path : fileObjectCaches.keySet()) {
+			FileObject fileObject = fileObjectCaches.get(path);
+			if (!fileObject.isExist()) {
+				// 文件已经被删除
+				for (FileProcessor fileProcessor : fileProcessorList) {
+					if (fileProcessor.isMatch(fileObject)) {// 匹配后才能删除
+						fileProcessor.delete(fileObject);
+					}
+				}
+			} else {
+				tempMap.put(path, fileObject);
+			}
+		}
+		fileObjectCaches = tempMap;
+	}
 
-        logger.logMessage(LogLevel.DEBUG, "找到文件：{}", fileObject.getAbsolutePath().toString());
-        processFile(fileObject);
-        if (fileObject.isFolder() && fileObject.getChildren() != null) {
-            for (FileObject f : fileObject.getChildren()) {
-                if (!allScanningPath.contains(f.getAbsolutePath())) {
-                    resolveFileObject(f);
-                } else {
-                    logger.logMessage(LogLevel.INFO, "文件:[{}]在扫描根路径列表中存在，将作为根路径进行扫描", f.getAbsolutePath());
-                }
-            }
-            return;
-        }
-    }
+	/**
+	 * 文件存在并且不在忽略处理列表中，再交给各个文件处理器进行处理。
+	 * 
+	 * @param fileObject
+	 */
+	private synchronized void processFile(FileObject fileObject) {
+		if (fileObject.isExist()) {
+			for (FileProcessor fileProcessor : fileProcessorList) {
+				if (fileProcessor.isMatch(fileObject)) {
+					String absolutePath = fileObject.getAbsolutePath();
+					Long lastModifiedTime = fileDateMap.get(absolutePath);
+					long modifiedTime = fileObject.getLastModifiedTime();
+					if (lastModifiedTime == null) {// 说明是第一次发现
+						addFile(fileObject, fileProcessor);
+						fileDateMap.put(absolutePath, modifiedTime);
+						fileObjectCaches.put(absolutePath, fileObject);
+					} else if (lastModifiedTime.longValue() != modifiedTime) {
+						changeFile(absolutePath, fileObject, fileProcessor);
+						fileDateMap.put(absolutePath, modifiedTime);
+						fileObjectCaches.put(absolutePath, fileObject);
+					} else {
+						noChangeFile(fileObject, fileProcessor);
+					}
+					break;// 已经找到文件处理器，就退出
+				}
+			}
+		}
+	}
 
-    /**
-     * 移除已删除文件
-     */
-    private void resolveDeletedFile() {
-        // 处理删除的文件
-        Map<String, FileObject> tempMap = new HashMap<String, FileObject>();
-        for (String path : fileObjectCaches.keySet()) {
-            FileObject fileObject = fileObjectCaches.get(path);
-            if (!fileObject.isExist()) {
-                // 文件已经被删除
-                for (FileProcessor fileProcessor : fileProcessorList) {
-                    if (fileProcessor.isMatch(fileObject)) {//匹配后才能删除
-                        fileProcessor.delete(fileObject);
-                    }
-                }
-            } else {
-                tempMap.put(path, fileObject);
-            }
-        }
-        fileObjectCaches = tempMap;
-    }
+	private void noChangeFile(FileObject fileObject, FileProcessor fileProcessor) {
+		fileProcessor.noChange(fileObject);
 
-    /**
-     * 文件存在并且不在忽略处理列表中，再交给各个文件处理器进行处理。
-     *
-     * @param fileObject
-     */
-    private synchronized void processFile(FileObject fileObject) {
-        if (fileObject.isExist()) {
-            for (FileProcessor fileProcessor : fileProcessorList) {
-                if (fileProcessor.isMatch(fileObject)) {
-                    String absolutePath = fileObject.getAbsolutePath();
-                    Long lastModifiedTime = fileDateMap.get(absolutePath);
-                    long modifiedTime = fileObject.getLastModifiedTime();
-                    if (lastModifiedTime == null) {// 说明是第一次发现
-                        addFile(fileObject, fileProcessor);
-                        fileDateMap.put(absolutePath, modifiedTime);
-                        fileObjectCaches.put(absolutePath, fileObject);
-                    } else if (lastModifiedTime.longValue() != modifiedTime) {
-                        changeFile(absolutePath, fileObject, fileProcessor);
-                        fileDateMap.put(absolutePath, modifiedTime);
-                        fileObjectCaches.put(absolutePath, fileObject);
-                    } else {
-                        noChangeFile(fileObject, fileProcessor);
-                    }
-                    break;// 已经找到文件处理器，就退出
-                }
-            }
-        }
-    }
+	}
 
-    private void noChangeFile(FileObject fileObject, FileProcessor fileProcessor) {
-        fileProcessor.noChange(fileObject);
+	private void changeFile(String path, FileObject fileObject,
+			FileProcessor fileProcessor) {
+		fileProcessor.delete(fileObjectCaches.get(path));
+		fileObjectCaches.remove(path);
+		fileProcessor.modify(fileObject);// 先删除之前的，再增加新的
+	}
 
-    }
+	private void addFile(FileObject fileObject, FileProcessor fileProcessor) {
+		fileProcessor.add(fileObject);
+	}
 
-    private void changeFile(String path, FileObject fileObject, FileProcessor fileProcessor) {
-        fileProcessor.delete(fileObjectCaches.get(path));
-        fileObjectCaches.remove(path);
-        fileProcessor.modify(fileObject);// 先删除之前的，再增加新的
-    }
+	public void addIncludePathPattern(String pattern) {
+		includePathPatternMap.put(pattern, Pattern.compile(pattern));
+	}
 
-    private void addFile(FileObject fileObject, FileProcessor fileProcessor) {
-        fileProcessor.add(fileObject);
-    }
+	public void addResolveFileObject(FileObject fileObject) {
+		String path = fileObject.getAbsolutePath();
+		if (!allScanningPath.contains(path)) {
+			allScanningPath.add(path);
+		}
+	}
 
-    public void addIncludePathPattern(String pattern) {
-        includePathPatternMap.put(pattern, Pattern.compile(pattern));
-    }
+	public void addResolvePath(String path) {
+		addResolveFileObject(VFS.resolveFile(path));
+	}
 
-    public void addResolveFileObject(FileObject fileObject) {
-    	String path = fileObject.getAbsolutePath();
-    	if(!allScanningPath.contains(path)){
-    		allScanningPath.add(path);
-    	}
-    }
+	public void addResolvePath(List<String> paths) {
+		for (String path : paths) {
+			addResolveFileObject(VFS.resolveFile(path));
+		}
+	}
 
-    public void addResolvePath(String path) {
-    	addResolveFileObject(VFS.resolveFile(path));
-    }
-    
-    public void addResolvePath(List<String> paths) {
-    	for(String path:paths){
-    		addResolveFileObject(VFS.resolveFile(path));
-    	}
-    }
+	public int getFileProcessorThreadNumber() {
+		return fileProcessorThreadNum;
+	}
 
+	public void setFileProcessorThreadNumber(int threadNum) {
+		this.fileProcessorThreadNum = threadNum;
 
-    public int getFileProcessorThreadNumber() {
-        return fileProcessorThreadNum;
-    }
+	}
 
-    public void setFileProcessorThreadNumber(int threadNum) {
-        this.fileProcessorThreadNum = threadNum;
+	/**
+	 * 刷新工作
+	 */
+	public void refresh() {
+		if (classLoader == null) {
+			classLoader = this.getClass().getClassLoader();
+		}
+		if (fileProcessorList.size() == 0) {
+			return;
+		} else {
+			logger.logMessage(LogLevel.INFO, "正在进行全路径刷新....");
+			for (FileProcessor fileProcessor : fileProcessorList) {
+				fileProcessor.clean();// 清空文件列表
+			}
+			resolveDeletedFile();// 删除不存在的文件
+			refreshScanPath();// 重新扫描
+			for (FileProcessor fileProcessor : fileProcessorList) {
+				if (fileProcessor.supportRefresh()) {
+					fileProcessor.process();
+				}
+			}
+			logger.logMessage(LogLevel.INFO, "全路径刷新结束....");
+		}
 
-    }
+	}
 
-    /**
-     * 刷新工作
-     */
-    public void refresh() {
-        if (classLoader == null) {
-        	classLoader = this.getClass().getClassLoader();
-        }
-        if (fileProcessorList.size() == 0) {
-            return;
-        } else {
-            logger.logMessage(LogLevel.INFO, "正在进行全路径刷新....");
-            for (FileProcessor fileProcessor : fileProcessorList) {
-                fileProcessor.clean();// 清空文件列表
-            }
-            resolveDeletedFile();// 删除不存在的文件
-            refreshScanPath();// 重新扫描
-            for (FileProcessor fileProcessor : fileProcessorList) {
-                if (fileProcessor.supportRefresh()) {
-                    fileProcessor.process();
-                }
-            }
-            logger.logMessage(LogLevel.INFO, "全路径刷新结束....");
-        }
+	public String getApplicationNodePath() {
+		return FILE_RESOLVER_CONFIG;
+	}
 
-    }
+	public String getComponentConfigPath() {
+		return "/fileresolver.config.xml";
+	}
 
-    public String getApplicationNodePath() {
-        return FILE_RESOLVER_CONFIG;
-    }
+	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
+		this.applicationConfig = applicationConfig;
+		this.componentConfig = componentConfig;
+		initConfig();
+	}
 
-    public String getComponentConfigPath() {
-        return "/fileresolver.config.xml";
-    }
+	private void initConfig() {
+		String threadCount = ConfigurationUtil.getPropertyName(
+				applicationConfig, componentConfig, "thread-count");
+		this.setFileProcessorThreadNumber(getThreadNumber(threadCount));
+		List<XmlNode> includePatterns = ConfigurationUtil.combineFindNodeList(
+				"include-pattern", applicationConfig, componentConfig);
+		for (XmlNode includePatter : includePatterns) {
+			String pattern = includePatter.getAttribute("pattern");
+			if (pattern != null && pattern.length() > 0) {
+				logger.logMessage(LogLevel.INFO, "添加包含文件正则表达式: [{0}]...",
+						pattern);
+				this.addIncludePathPattern(pattern);
+			}
+		}
+	}
 
-    public void config(XmlNode applicationConfig, XmlNode componentConfig) {
-        this.applicationConfig = applicationConfig;
-        this.componentConfig = componentConfig;
-        initConfig();
-    }
+	public XmlNode getComponentConfig() {
+		return componentConfig;
+	}
 
-    private void initConfig() {
-        String threadCount = ConfigurationUtil.getPropertyName(applicationConfig, componentConfig, "thread-count");
-        this.setFileProcessorThreadNumber(getThreadNumber(threadCount));
-        List<XmlNode> includePatterns = ConfigurationUtil.combineFindNodeList("include-pattern", applicationConfig, componentConfig);
-        for (XmlNode includePatter : includePatterns) {
-            String pattern = includePatter.getAttribute("pattern");
-            if (pattern != null && pattern.length() > 0) {
-                logger.logMessage(LogLevel.INFO, "添加包含文件正则表达式: [{0}]...", pattern);
-                this.addIncludePathPattern(pattern);
-            }
-        }
-    }
+	public XmlNode getApplicationConfig() {
+		return applicationConfig;
+	}
 
-    public XmlNode getComponentConfig() {
-        return componentConfig;
-    }
+	private int getThreadNumber(String threadNumber) {
+		int fileProcessorThreadNum = 1;
+		if (threadNumber != null) {
+			try {
+				fileProcessorThreadNum = Integer.parseInt(threadNumber);
+				if (fileProcessorThreadNum <= 0) {
+					fileProcessorThreadNum = 1;
+				}
+			} catch (Exception e) {
+				// 传入非int值
+				fileProcessorThreadNum = 1;
+			}
 
-    public XmlNode getApplicationConfig() {
-        return applicationConfig;
-    }
+		}
+		return fileProcessorThreadNum;
 
-
-    private int getThreadNumber(String threadNumber) {
-        int fileProcessorThreadNum = 1;
-        if (threadNumber != null) {
-            try {
-                fileProcessorThreadNum = Integer.parseInt(threadNumber);
-                if (fileProcessorThreadNum <= 0) {
-                    fileProcessorThreadNum = 1;
-                }
-            } catch (Exception e) {
-                // 传入非int值
-                fileProcessorThreadNum = 1;
-            }
-
-        }
-        return fileProcessorThreadNum;
-
-    }
+	}
 
 	public Map<String, Pattern> getIncludePathPatternMap() {
 		return includePathPatternMap;
