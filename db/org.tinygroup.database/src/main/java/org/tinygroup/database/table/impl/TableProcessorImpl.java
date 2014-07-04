@@ -37,8 +37,6 @@ public class TableProcessorImpl implements TableProcessor {
 	private  Map<String, Map<String, Table>> tableMap = new HashMap<String, Map<String, Table>>();
 	//表依赖关系
 	private Map<String, List<String>> dependencyMap=new HashMap<String, List<String>>();
-	//表格是否已经被处理过
-	private Map<String, Boolean> loadStatus=new HashMap<String, Boolean>();
 
 	public void addTables(Tables tables) {
 		String packageName = MetadataUtil.passNull(tables.getPackageName());
@@ -94,10 +92,6 @@ public class TableProcessorImpl implements TableProcessor {
 				if (table != null) {
 					return table;
 				}
-			} else {
-				//如果当前包中没有找到，则从所有的包中去找
-//				throw new RuntimeException("未找到package:" + packageName
-//						+ ",name:" + name + "的表格");
 			}
 		}
 		for (String pkgName : tableMap.keySet()) {
@@ -128,6 +122,10 @@ public class TableProcessorImpl implements TableProcessor {
 	}
 	
 	private List<String> getCreateSql(String language,Table table){
+		return getCreateSql(language, table, new HashMap<String, Boolean>());
+	}
+	
+	private List<String> getCreateSql(String language,Table table,Map<String, Boolean> loadStatus){
 		List<String> sqls=new ArrayList<String>();
 		Boolean load=loadStatus.get(table.getName());
 		if(load==null||!load){
@@ -138,22 +136,27 @@ public class TableProcessorImpl implements TableProcessor {
 					Table dependTable=getTable(depend);
 					sqls.addAll(getCreateSql(language, dependTable));
 				}
-			}else{
-				sqls.addAll(getCreateSql(table, table.getPackageName(), language));
 			}
+			sqls.addAll(createSql(table, table.getPackageName(), language));
 		}
 		return sqls;
+	}
+	
+	
+	private List<String> createSql(Table table, String packageName,
+			String language){
+		TableSqlProcessor sqlProcessor = getSqlProcessor(language);
+		return sqlProcessor.getCreateSql(table, packageName);
 	}
 	
 
 	public List<String> getCreateSql(Table table, String packageName,
 			String language) {
-		TableSqlProcessor sqlProcessor = getSqlProcessor(language);
-		return sqlProcessor.getCreateSql(table, packageName);
+		return getCreateSql(language, table);
 	}
 
 	public List<String> getCreateSql(Table table, String language) {
-		return getCreateSql(table, null, language);
+		return getCreateSql(language, table);
 	}
 
 	public Table getTableById(String id) {

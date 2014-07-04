@@ -16,25 +16,19 @@
 package org.tinygroup.database.config.view;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @XStreamAlias("group-by-field")
 public class GroupByField {
 	
-	@XStreamAlias("view-field")
-	@XStreamAsAttribute
-	private ViewField field;
-	
-	
-	
-	public ViewField getField() {
+	private ViewFieldRef field;
+
+	public ViewFieldRef getField() {
 		return field;
 	}
 
-	public void setField(ViewField field) {
+	public void setField(ViewFieldRef field) {
 		this.field = field;
 	}
-	
 	
 	
 }

@@ -45,8 +45,8 @@ public class ViewProcessorTest extends TestCase {
 
 	public void testGetCreateSqlString() {
 		System.out.println("aa.bb.aa,sql:");
-		String tableSql= viewProcessor.getCreateSql("view1", "oracle");
-		System.out.println(tableSql);
+		List<String> tableSqls= viewProcessor.getCreateSql("view1", "oracle");
+		System.out.println(tableSqls.get(0));
 		
 	}
 	public void testGetCreateSqlString2() {

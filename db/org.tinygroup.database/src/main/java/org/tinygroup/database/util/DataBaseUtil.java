@@ -23,7 +23,9 @@ import org.tinygroup.commons.namestrategy.NameStrategy;
 import org.tinygroup.commons.namestrategy.impl.NormalCaseStrategy;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
+import org.tinygroup.database.config.view.View;
 import org.tinygroup.database.table.TableProcessor;
+import org.tinygroup.database.view.ViewProcessor;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.springutil.SpringUtil;
@@ -67,6 +69,13 @@ public class DataBaseUtil {
 				DataBaseUtil.TABLEPROCESSOR_BEAN);
 		return tableProcessor.getTableById(id);
 	}
+	
+	public static View getViewById(String id) {
+		ViewProcessor viewProcessor = SpringUtil.getBean(
+				DataBaseUtil.VIEW_BEAN);
+		return viewProcessor.getViewById(id);
+	}
+	
 	
 	public static TableField getPrimaryField(Table table){
 		for(TableField field:table.getFieldList()){
