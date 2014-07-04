@@ -141,7 +141,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		if (remoteHostName == null || "".equals(remoteHostName)) {
 			return null;
 		}
-		//System.setProperty("java.rmi.server.hostname", remoteHostName);
+		System.setProperty("java.rmi.server.hostname", remoteHostName);
 		remoteRegistry = LocateRegistry.getRegistry(remoteHostName, remotePort);
 		try {
 			remoteServer = (RmiServer) remoteRegistry.lookup(getKeyName(
@@ -264,7 +264,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			throws RemoteException {
 		try {
 			logger.logMessage(LogLevel.DEBUG, "开始注册本地对象:{}", name);
-
+			System.setProperty("java.rmi.server.hostname", hostName);
 			registeredLocalObjectMap.put(name, object);
 			if (object instanceof UnicastRemoteObject) {
 				registry.rebind(name, object);
