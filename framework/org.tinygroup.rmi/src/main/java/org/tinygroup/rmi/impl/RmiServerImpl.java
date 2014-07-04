@@ -84,7 +84,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		this.port = port;
 		this.remoteHostName = remoteHostName;
 		this.remotePort = remotePort;
-		getRegistry();
+		
 		try {
 			getRemoteRegistry();
 			bindThis();
@@ -96,6 +96,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			logger.errorMessage("连接远端服务器时发生异常", e);
 			startHeart();
 		}
+		getRegistry();
 
 	}
 
@@ -140,7 +141,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		if (remoteHostName == null || "".equals(remoteHostName)) {
 			return null;
 		}
-		System.setProperty("java.rmi.server.hostname", remoteHostName);
+		//System.setProperty("java.rmi.server.hostname", remoteHostName);
 		remoteRegistry = LocateRegistry.getRegistry(remoteHostName, remotePort);
 		try {
 			remoteServer = (RmiServer) remoteRegistry.lookup(getKeyName(
