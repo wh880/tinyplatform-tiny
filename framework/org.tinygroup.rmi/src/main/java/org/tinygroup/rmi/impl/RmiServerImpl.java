@@ -84,7 +84,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		this.port = port;
 		this.remoteHostName = remoteHostName;
 		this.remotePort = remotePort;
-		getRegistry();
+		
 		try {
 			getRemoteRegistry();
 			bindThis();
@@ -96,6 +96,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			logger.errorMessage("连接远端服务器时发生异常", e);
 			startHeart();
 		}
+		getRegistry();
 
 	}
 
@@ -263,7 +264,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			throws RemoteException {
 		try {
 			logger.logMessage(LogLevel.DEBUG, "开始注册本地对象:{}", name);
-
+			System.setProperty("java.rmi.server.hostname", hostName);
 			registeredLocalObjectMap.put(name, object);
 			if (object instanceof UnicastRemoteObject) {
 				registry.rebind(name, object);
