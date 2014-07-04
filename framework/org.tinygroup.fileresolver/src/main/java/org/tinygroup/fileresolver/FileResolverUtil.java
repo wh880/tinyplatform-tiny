@@ -17,7 +17,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-import org.tinygroup.vfs.impl.FileSchemaProvider;
+import org.tinygroup.vfs.impl.JarSchemaProvider;
 
 public class FileResolverUtil {
 	private static Logger logger = LoggerFactory
@@ -52,22 +52,26 @@ public class FileResolverUtil {
 		return classPathFileObjects;
 	}
 
-	static boolean isInclude(FileObject fileObject, FileResolver resolver) {
-		if (fileObject.getSchemaProvider() instanceof FileSchemaProvider) {
+	public static boolean isInclude(FileObject fileObject, FileResolver resolver) {
+		URL url = fileObject.getURL();
+		if (url.getProtocol().equals("file")
+				&& fileObject.getSchemaProvider() instanceof JarSchemaProvider) {
+			Map<String, Pattern> includePathPatternMap = resolver
+					.getIncludePathPatternMap();
+			for (String patternString : includePathPatternMap.keySet()) {
+				Pattern pattern = includePathPatternMap.get(patternString);
+				Matcher matcher = pattern.matcher(fileObject.getFileName());
+				if (matcher.find()) {
+					// logger.logMessage(LogLevel.INFO,
+					// "文件<{}>由于匹配了包含正则表达式<{}>而被扫描。", fileObject,
+					// patternString);
+					return true;
+				}
+			}
+			return false;
+		}else{
 			return true;
 		}
-		Map<String, Pattern> includePathPatternMap = resolver
-				.getIncludePathPatternMap();
-		for (String patternString : includePathPatternMap.keySet()) {
-			Pattern pattern = includePathPatternMap.get(patternString);
-			Matcher matcher = pattern.matcher(fileObject.getFileName());
-			if (matcher.find()) {
-				// logger.logMessage(LogLevel.INFO,
-				// "文件<{}>由于匹配了包含正则表达式<{}>而被扫描。", fileObject, patternString);
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public static List<String> getWebLibJars(FileResolver resolver)

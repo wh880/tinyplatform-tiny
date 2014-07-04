@@ -141,6 +141,7 @@ public class ApplicationStartupListener implements ServletContextListener {
         logger.logMessage(LogLevel.INFO, "加载Spring Bean文件开始...");
         FileResolver fileResolver = new FileResolverImpl();
         FileResolverUtil.addClassPathPattern(fileResolver);
+        loadFileResolverConfig(fileResolver, applicationConfig);
         fileResolver.addResolvePath(FileResolverUtil.getClassPath(fileResolver)) ;
         fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
         try {
@@ -148,7 +149,6 @@ public class ApplicationStartupListener implements ServletContextListener {
 		} catch (Exception e) {
 			logger.errorMessage("为文件扫描器添加webLibJars时出错",e);
 		}
-        loadFileResolverConfig(fileResolver, applicationConfig);
         fileResolver.addFileProcessor(new SpringBeansFileProcessor());
         fileResolver.addFileProcessor(new ConfigurationFileProcessor());
         fileResolver.resolve();
