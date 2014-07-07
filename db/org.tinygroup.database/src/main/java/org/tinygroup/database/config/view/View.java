@@ -118,4 +118,14 @@ public class View extends BaseObject {
 	public void setGroupByFieldList(List<GroupByField> groupByFieldList) {
 		this.groupByFieldList = groupByFieldList;
 	}
+	
+	public ViewField getViewField(String tableFieldId){
+		for (ViewField viewField : fieldList) {
+			if(viewField.getTableFieldId().equals(tableFieldId)){
+				return viewField;
+			}
+			
+		}
+		return null;
+	}
 }

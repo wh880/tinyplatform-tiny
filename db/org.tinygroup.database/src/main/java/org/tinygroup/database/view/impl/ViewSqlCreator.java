@@ -63,8 +63,7 @@ public class ViewSqlCreator {
 		List<ViewField> fields=view.getFieldList();
 		for (ViewField viewField : fields) {
 			String viewTableId = viewField.getViewTable();//
-			Table table=viewTables.get(viewTableId);
-			TableField tableField = getTableField(viewField.getTableFieldId(), table);
+			TableField tableField =getTableField(viewField);
 			StandardField tableFieldStd = MetadataUtil.getStandardField(tableField.getStandardFieldId());
 			String tableFieldName = DataBaseUtil.getDataBaseName( tableFieldStd.getName());
 			String tableName=tableNames.get(viewTableId);
@@ -74,6 +73,17 @@ public class ViewSqlCreator {
 		}
 		
 		
+	}
+	
+	public TableField getTableField(ViewField field){
+	  Table table=viewTables.get(field.getViewTable());
+	  if(table!=null){
+		  return getTableField(field.getTableFieldId(), table);
+	  }else{
+           View view=DataBaseUtil.getViewById(field.getTableFieldId());	  
+		   ViewField viewField=view.getViewField(field.getTableFieldId());
+		   return getTableField(viewField);
+	  }
 	}
 	
 	private String getViewTableName(String viewTableId){
