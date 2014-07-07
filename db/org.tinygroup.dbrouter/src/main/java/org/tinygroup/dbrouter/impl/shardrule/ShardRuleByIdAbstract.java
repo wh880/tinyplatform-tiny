@@ -122,20 +122,18 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
 									if ((value % partition.getShards().size()) == remainder) {
 										return true;
 									}
-								  paramIndex++;
 							  }
 						}
+						 paramIndex++;
 					}
 				}
 			}
-		}
-		if (statement instanceof Delete) {
+		}else if (statement instanceof Delete) {
 			Delete delete = (Delete) statement;
 			if (tableName.equalsIgnoreCase(delete.getTable().getName())) {
 				return getWhereExpression(0,delete.getWhere(), partition,preparedParams);
 			}
-		}
-		if (statement instanceof Update) {
+		}else if (statement instanceof Update) {
 			Update update = (Update) statement;
 			List<Expression> expressions = update.getExpressions();
 			for (Expression expression : expressions) {
@@ -147,8 +145,7 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
 				return getWhereExpression(paramIndex,update.getWhere(), partition);
 			}
 
-		}
-		if (statement instanceof Select) {
+		}else if (statement instanceof Select) {
 			Select select = (Select) statement;
 			SelectBody body = select.getSelectBody();
 			if (body instanceof PlainSelect) {
