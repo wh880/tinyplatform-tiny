@@ -76,7 +76,7 @@ public class ViewSqlCreator {
 	}
 	
 	public TableField getTableField(ViewField field){
-	  Table table=viewTables.get(field.getViewTable());
+	  Table table=DataBaseUtil.getTableById(field.getViewTable());
 	  if(table!=null){
 		  return getTableField(field.getTableFieldId(), table);
 	  }else{
