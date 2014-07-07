@@ -18,6 +18,7 @@ package org.tinygroup.database.config.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.metadata.config.BaseObject;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -125,6 +126,15 @@ public class View extends BaseObject {
 				return viewField;
 			}
 			
+		}
+		return null;
+	}
+	
+	public ViewTable getViewTable(String viewTableId){
+		for (ViewTable viewTable : tableList) {
+			if(viewTable.getId().equals(viewTableId)){
+				return viewTable;
+			}
 		}
 		return null;
 	}
