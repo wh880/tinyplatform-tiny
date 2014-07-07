@@ -17,10 +17,6 @@ public class TableSort implements Comparator<Table> {
 		boolean isEmpty2 = CollectionUtil.isEmpty(dependTables2);
 		if (isEmpty1 && isEmpty2) {
 			return 1;
-		} else if (isEmpty1) {
-			return 1;
-		} else if (isEmpty2) {
-			return -1;
 		} else {
 			boolean contains1 = dependTables1.contains(table2.getName());
 			boolean contains2 = dependTables2.contains(table1.getName());
