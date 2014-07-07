@@ -19,11 +19,11 @@ public class Sequence extends BaseObject {
 	@XStreamAlias("start-with")
 	@XStreamAsAttribute
 	private int startWith;
-
+	@XStreamAlias("value-config")
 	private ValueConfig valueConfig;
 	@XStreamAsAttribute
 	private boolean cycle;
-
+	@XStreamAlias("seq-cache-config")
 	private SeqCacheConfig seqCacheConfig;
 	@XStreamAsAttribute
 	private boolean order;

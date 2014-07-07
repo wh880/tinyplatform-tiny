@@ -1,5 +1,7 @@
 package org.tinygroup.database.sequence;
 
+import java.sql.Connection;
+
 import org.tinygroup.database.config.sequence.Sequence;
 
 /**
@@ -10,4 +12,5 @@ import org.tinygroup.database.config.sequence.Sequence;
 public interface SequenceSqlProcessor {
 	String getCreateSql(Sequence sequence);
 	String getDropSql(Sequence sequence);
+	String checkSequenceExist(Sequence sequence,Connection connection);
 }

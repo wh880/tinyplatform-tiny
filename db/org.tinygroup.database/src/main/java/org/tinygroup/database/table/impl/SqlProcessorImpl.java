@@ -25,9 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.config.table.ForeignReference;
 import org.tinygroup.database.config.table.Index;
@@ -36,17 +33,10 @@ import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.table.TableSqlProcessor;
 import org.tinygroup.database.util.DataBaseNameUtil;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.datasource.DynamicDataSource;
-import org.tinygroup.exception.TinySysRuntimeException;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public abstract class SqlProcessorImpl implements TableSqlProcessor {
-	private static Logger logger = LoggerFactory
-			.getLogger(SqlProcessorImpl.class);
 
 	protected abstract String getDatabaseType();
 
@@ -94,30 +84,30 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	}
 
 	public List<String> getUpdateSql(Table table, String packageName,
-			DatabaseMetaData metadata, String catalog) {
+			Connection connection) throws SQLException {
 		List<String> list = new ArrayList<String>();
+		DatabaseMetaData metadata = connection.getMetaData();
+		String catalog = connection.getCatalog();
 		getTableColumnUpdate(table, packageName, metadata, catalog, list);
-		getOtherUpdate(table, metadata, catalog, list);
+		getOtherUpdate(table, connection, list);
 		return list;
 	}
 
-	protected void getOtherUpdate(Table table, DatabaseMetaData metadata,
-			String catalog, List<String> list) {
-		getForeignUpdate(table, list);
+	protected void getOtherUpdate(Table table, Connection connection,
+			List<String> list) throws SQLException {
+		getForeignUpdate(table, connection, list);
 	}
 
-	private void getForeignUpdate(Table table, List<String> list) {
+	private void getForeignUpdate(Table table, Connection connection,
+			List<String> list) throws SQLException {
 		String sql = getQueryForeignSql(table);
 		if (sql != null) {
-			DataSource dataSource = SpringUtil
-					.getBean(DynamicDataSource.DATASOURCE_NAME);
 			List<ForeignReference> foreigns = table.getForeignReferences();
 			List<ForeignReference> newForeigns = cloneReferences(foreigns);
-			Connection con = DataSourceUtils.getConnection(dataSource);
 			Statement statement = null;
 			ResultSet rs = null;
 			try {
-				statement = con.createStatement();
+				statement = connection.createStatement();
 				rs = statement.executeQuery(sql);
 				List<String> dropConstraints = new ArrayList<String>();
 				while (rs.next()) {
@@ -150,20 +140,13 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 									foreignReference.getMainTable(),
 									foreignReference.getReferenceField()));
 				}
-			} catch (SQLException ex) {
-				throw new TinySysRuntimeException(ex);
 			} finally {
-				try {
-					if (statement != null) {
-						statement.close();
-					}
-					if (rs != null) {
-						rs.close();
-					}
-				} catch (SQLException e) {
-					throw new TinySysRuntimeException(e);
+				if (statement != null) {
+					statement.close();
 				}
-				DataSourceUtils.releaseConnection(con, dataSource);
+				if (rs != null) {
+					rs.close();
+				}
 			}
 		}
 	}
@@ -182,7 +165,8 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	}
 
 	protected void getTableColumnUpdate(Table table, String packageName,
-			DatabaseMetaData metadata, String catalog, List<String> list) {
+			DatabaseMetaData metadata, String catalog, List<String> list)
+			throws SQLException {
 
 		Map<String, Map<String, String>> dbColumns = getColumns(metadata,
 				catalog, table);
@@ -194,36 +178,31 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		// 存放table中无，但数据库中有的字段
 		List<String> dropFields = checkTableColumn(dbColumns,
 				tableFieldDbNames, existInTable);
-		try {
-			// 处理完所有表格列，若filedDbNames中依然有数据，则表格该数据是新增字段
-			for (TableField field : tableFieldDbNames.values()) {
-				// 如果新增的字段包含表格的主键,则直接drop整张表格，重新创建表格
-				if (field.getPrimary()) {
-					list.add(getDropSql(table, packageName));
-					list.addAll(getCreateSql(table, packageName));
-					return;
-				}
-				// StringBuffer ddlBuffer = new StringBuffer();
-				// ddlBuffer.append(String.format("ALTER TABLE %s ADD ",
-				// table.getName()));
-				// appendField(ddlBuffer, packageName, field);
-				// addlist.add(ddlBuffer.toString());
+		// 处理完所有表格列，若filedDbNames中依然有数据，则表格该数据是新增字段
+		for (TableField field : tableFieldDbNames.values()) {
+			// 如果新增的字段包含表格的主键,则直接drop整张表格，重新创建表格
+			if (field.getPrimary()) {
+				list.add(getDropSql(table, packageName));
+				list.addAll(getCreateSql(table, packageName));
+				return;
 			}
-			// 对于table\数据库中均有的字段的处理，这里是对比是否允许为空而进行相关修改
-			List<String> existUpdateList = dealExistFields(existInTable,
-					dbColumns, table);
-			// 生成drop字段的sql
-			List<String> droplist = dealDropFields(dropFields, table);
-			// 生成add字段的sql
-			List<String> addlist = dealAddFields(tableFieldDbNames,
-					packageName, table);
-			list.addAll(existUpdateList);
-			list.addAll(droplist);
-			list.addAll(addlist);
-		} catch (Exception e) {
-			logger.errorMessage("生成表格{0}更新sql失败", e, table.getName());
+			// StringBuffer ddlBuffer = new StringBuffer();
+			// ddlBuffer.append(String.format("ALTER TABLE %s ADD ",
+			// table.getName()));
+			// appendField(ddlBuffer, packageName, field);
+			// addlist.add(ddlBuffer.toString());
 		}
-
+		// 对于table\数据库中均有的字段的处理，这里是对比是否允许为空而进行相关修改
+		List<String> existUpdateList = dealExistFields(existInTable, dbColumns,
+				table);
+		// 生成drop字段的sql
+		List<String> droplist = dealDropFields(dropFields, table);
+		// 生成add字段的sql
+		List<String> addlist = dealAddFields(tableFieldDbNames, packageName,
+				table);
+		list.addAll(existUpdateList);
+		list.addAll(droplist);
+		list.addAll(addlist);
 	}
 
 	protected List<String> checkTableColumn(
@@ -411,22 +390,18 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	}
 
 	protected Map<String, Map<String, String>> getColumns(
-			DatabaseMetaData metadata, String catalog, Table table) {
+			DatabaseMetaData metadata, String catalog, Table table)
+			throws SQLException {
 		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
-		try {
-			String schema = DataBaseUtil.getSchema(table, metadata);
-			String tableName = table.getNameWithOutSchema().toUpperCase();
-			map = getColumns(metadata, catalog, schema, tableName);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		String schema = DataBaseUtil.getSchema(table, metadata);
+		String tableName = table.getNameWithOutSchema().toUpperCase();
+		map = getColumns(metadata, catalog, schema, tableName);
 		return map;
-
 	}
 
 	protected Map<String, Map<String, String>> getColumns(
 			DatabaseMetaData metadata, String catalog, String schema,
-			String tableName) {
+			String tableName) throws SQLException {
 		ResultSet colRet = null;
 		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
 		try {
@@ -441,33 +416,40 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 						.put(DECIMAL_DIGITS, colRet.getString(DECIMAL_DIGITS));
 				map.put(columnName.toUpperCase(), attributes);
 			}
-		} catch (SQLException e1) {
-			throw new RuntimeException(e1);
 		} finally {
-			DataBaseUtil.closeResultSet(colRet);
+			if(colRet!=null){
+				colRet.close();
+			}
 		}
 		return map;
 	}
 
-	public boolean checkTableExist(Table table, String catalog,
-			DatabaseMetaData metadata) {
-		ResultSet r = null;
+	public boolean checkTableExist(Table table, Connection connection)
+			throws SQLException {
+		ResultSet resultset = null;
+		DatabaseMetaData metadata = connection.getMetaData();
 		try {
 			String schema = DataBaseUtil.getSchema(table, metadata);
-			r = metadata.getTables(catalog, schema, table
-					.getNameWithOutSchema().toUpperCase(),
+			resultset = metadata.getTables(connection.getCatalog(), schema, table
+					.getNameWithOutSchema(),
 					new String[] { "TABLE" });
 
-			if (r.next()) {
+			if (resultset.next()) {
 				return true;
+			}else{
+				resultset.close();//关闭上次打开的
+				resultset = metadata.getTables(connection.getCatalog(), schema, table
+						.getNameWithOutSchema().toUpperCase(),
+						new String[] { "TABLE" });
+				if(resultset.next()){
+					return true;
+				}
 			}
-
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
 		} finally {
-			DataBaseUtil.closeResultSet(r);
+			if (resultset != null) {
+				resultset.close();
+			}
 		}
-
 		return false;
 	}
 
@@ -478,41 +460,5 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		}
 		return String.format("%s(%s)", attributes.get(TYPE_NAME), lengthInfo);
 	}
-	// public List<String> getDeupdateSql(Table table, String packageName,
-	// DatabaseMetaData metadata,String catalog ) {
-	// List<String> list = new ArrayList<String>();
-	// Map<String, String> columns = getColumns(metadata, catalog,table);
-	// try {
-	// for (TableField field : table.getFieldList()) {
-	// if (findExist(field.getStandardFieldId(), columns)) {
-	// continue;
-	// }
-	// StandardField standardField = MetadataUtil
-	// .getStandardField(field.getStandardFieldId());
-	// StringBuffer ddlBuffer = new StringBuffer();
-	// ddlBuffer.append(String.format("ALTER TABLE %s DROP %s",
-	// table.getName(),
-	// DataBaseUtil.getDataBaseName(standardField.getName())));
-	// // 20130216注释错误代码
-	// // appendField(ddlBuffer, packageName, field);
-	//
-	// list.add(ddlBuffer.toString());
-	// }
-	// } catch (Exception e) {
-	// logger.errorMessage("生成表格{0}反向更新sql失败", e, table.getName());
-	// }
-	//
-	// return list;
-	// }
-	// private boolean findExist(String tableFiledId, Map<String, String> map) {
-	// for (String colName : map.keySet()) {
-	// StandardField standardField = MetadataUtil
-	// .getStandardField(tableFiledId);
-	// String fieldName = DataBaseUtil.getDataBaseName(standardField
-	// .getName());
-	// if (colName.equals(DataBaseNameUtil.getColumnNameFormat(fieldName)))
-	// return true;
-	// }
-	// return false;
-	// }
+
 }

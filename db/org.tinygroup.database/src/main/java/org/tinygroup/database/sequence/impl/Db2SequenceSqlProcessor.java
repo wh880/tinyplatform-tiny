@@ -1,10 +1,11 @@
 package org.tinygroup.database.sequence.impl;
 
+import java.sql.Connection;
+
 import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.database.config.sequence.ValueConfig;
 import org.tinygroup.database.config.sequence.SeqCacheConfig;
 import org.tinygroup.database.config.sequence.Sequence;
-import org.tinygroup.database.sequence.SequenceSqlProcessor;
+import org.tinygroup.database.config.sequence.ValueConfig;
 
 /**
  * db2 sequence sql处理
@@ -12,7 +13,7 @@ import org.tinygroup.database.sequence.SequenceSqlProcessor;
  * @author renhui
  * 
  */
-public class Db2SequenceSqlProcessor implements SequenceSqlProcessor {
+public class Db2SequenceSqlProcessor extends AbstractSequenceSqlProcessor {
 
 	public String getCreateSql(Sequence sequence) {
 		StringBuffer seqBuffer = new StringBuffer();
@@ -62,8 +63,9 @@ public class Db2SequenceSqlProcessor implements SequenceSqlProcessor {
 		return seqBuffer.toString();
 	}
 
-	public String getDropSql(Sequence sequence) {
-		return "DROP SEQUENCE "+sequence.getName();
+	public String checkSequenceExist(Sequence sequence,Connection connection) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

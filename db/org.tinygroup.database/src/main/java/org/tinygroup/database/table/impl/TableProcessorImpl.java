@@ -15,18 +15,20 @@
  */
 package org.tinygroup.database.table.impl;
 
-import java.sql.DatabaseMetaData;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.ProcessorManager;
-import org.tinygroup.database.config.table.ForeignReference;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.Tables;
 import org.tinygroup.database.table.TableProcessor;
+import org.tinygroup.database.table.TableSort;
 import org.tinygroup.database.table.TableSqlProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.metadata.util.MetadataUtil;
@@ -35,8 +37,6 @@ import org.tinygroup.springutil.SpringUtil;
 public class TableProcessorImpl implements TableProcessor {
 	//存储所有表信息
 	private  Map<String, Map<String, Table>> tableMap = new HashMap<String, Map<String, Table>>();
-	//表依赖关系
-	private Map<String, List<String>> dependencyMap=new HashMap<String, List<String>>();
 
 	public void addTables(Tables tables) {
 		String packageName = MetadataUtil.passNull(tables.getPackageName());
@@ -65,14 +65,6 @@ public class TableProcessorImpl implements TableProcessor {
 		}
 		Map<String, Table> nameMap = tableMap.get(packageName);
 	    nameMap.put(table.getName(), table);
-		List<ForeignReference> foreigns=table.getForeignReferences();
-		if(!CollectionUtil.isEmpty(foreigns)){
-			List<String> dependencies=new ArrayList<String>();
-			for (ForeignReference foreignReference : foreigns) {
-				dependencies.add(foreignReference.getMainTable());
-			}
-			dependencyMap.put(table.getName(), dependencies);
-		}
 	}
 	
 	public void removeTable(Table table) {
@@ -80,7 +72,6 @@ public class TableProcessorImpl implements TableProcessor {
 		Map<String, Table> nameMap = tableMap.get(packageName);
 		if(!CollectionUtil.isEmpty(nameMap)){
 			nameMap.remove(table.getName());
-			dependencyMap.remove(table.getName());
 		}
 	}
 
@@ -118,45 +109,18 @@ public class TableProcessorImpl implements TableProcessor {
 	public List<String> getCreateSql(String name, String packageName,
 			String language) {
 		Table table = getTable(packageName, name);
-		return getCreateSql(language, table);
+		return getCreateSql(table, language);
 	}
 	
-	private List<String> getCreateSql(String language,Table table){
-		return getCreateSql(language, table, new HashMap<String, Boolean>());
-	}
-	
-	private List<String> getCreateSql(String language,Table table,Map<String, Boolean> loadStatus){
-		List<String> sqls=new ArrayList<String>();
-		Boolean load=loadStatus.get(table.getName());
-		if(load==null||!load){
-			loadStatus.put(table.getName(), true);
-			List<String> dependencies=dependencyMap.get(table.getName());
-			if(!CollectionUtil.isEmpty(dependencies)){
-				for (String depend : dependencies) {
-					Table dependTable=getTable(depend);
-					sqls.addAll(getCreateSql(language, dependTable));
-				}
-			}
-			sqls.addAll(createSql(table, table.getPackageName(), language));
-		}
-		return sqls;
-	}
-	
-	
-	private List<String> createSql(Table table, String packageName,
-			String language){
-		TableSqlProcessor sqlProcessor = getSqlProcessor(language);
-		return sqlProcessor.getCreateSql(table, packageName);
-	}
-	
-
 	public List<String> getCreateSql(Table table, String packageName,
 			String language) {
-		return getCreateSql(language, table);
+		table.setPackageName(packageName);
+		return getCreateSql(table, language);
 	}
 
 	public List<String> getCreateSql(Table table, String language) {
-		return getCreateSql(language, table);
+		TableSqlProcessor sqlProcessor = getSqlProcessor(language);
+		return sqlProcessor.getCreateSql(table, table.getPackageName());
 	}
 
 	public Table getTableById(String id) {
@@ -175,19 +139,18 @@ public class TableProcessorImpl implements TableProcessor {
 		for (Map<String, Table> tables : tableMap.values()) {
 			tableList.addAll(tables.values());
 		}
+		Collections.sort(tableList, new TableSort());
 		return tableList;
 	}
 
-	public List<String> getUpdateSql(String name, String packageName,
-			DatabaseMetaData metadata,String catalog, String language) {
+	public List<String> getUpdateSql(String name, String packageName,String language,Connection connection)throws SQLException {
 		Table table = getTable(packageName, name);
-		return getUpdateSql(table, packageName, metadata,catalog, language);
+		return getUpdateSql(table, packageName,language,connection);
 	}
 
-	public List<String> getUpdateSql(Table table, String packageName,
-			DatabaseMetaData metadata,String catalog, String language) {
+	public List<String> getUpdateSql(Table table, String packageName,String language,Connection connection)throws SQLException {
 		TableSqlProcessor sqlProcessor = getSqlProcessor(language);
-		return sqlProcessor.getUpdateSql(table, packageName, metadata, catalog);
+		return sqlProcessor.getUpdateSql(table, packageName, connection);
 	}
 
 
@@ -201,10 +164,9 @@ public class TableProcessorImpl implements TableProcessor {
 		return sqlProcessor.getDropSql(table, packageName);
 	}
 
-	public boolean checkTableExist(Table table, String catalog,
-			DatabaseMetaData metadata, String language) {
+	public boolean checkTableExist(Table table,String language,Connection connection)throws SQLException {
 		TableSqlProcessor sqlProcessor = getSqlProcessor(language);
-		return sqlProcessor.checkTableExist(table, catalog, metadata);
+		return sqlProcessor.checkTableExist(table,connection);
 	}
 
 	private TableSqlProcessor getSqlProcessor(String language) {
@@ -215,6 +177,13 @@ public class TableProcessorImpl implements TableProcessor {
 		return sqlProcessor;
 	}
 
+	public List<String> getCreateSqls(String language) {
+		List<String> sqls=new ArrayList<String>();
+		List<Table> tables = getTables();
+        for (Table table : tables) {
+        	sqls.addAll(getCreateSql(table, language));
+		}		
+		return sqls;
+	}
 	
-
 }
