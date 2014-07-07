@@ -124,7 +124,9 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
 									}
 							  }
 						}
-						 paramIndex++;
+						if (expression instanceof JdbcParameter) {
+							 paramIndex++;
+						}
 					}
 				}
 			}
