@@ -80,7 +80,7 @@ public class ViewSqlCreator {
 	  if(table!=null){
 		  return getTableField(field.getTableFieldId(), table);
 	  }else{
-           View view=DataBaseUtil.getViewById(field.getTableFieldId());	  
+           View view=DataBaseUtil.getViewById(field.getViewTable());	  
 		   ViewField viewField=view.getViewField(field.getTableFieldId());
 		   return getTableField(viewField);
 	  }
