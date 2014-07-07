@@ -3,7 +3,7 @@ package org.tinygroup.database.config.sequence;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-@XStreamAlias("max-value-config")
+@XStreamAlias("value-config")
 public class ValueConfig {
 
 	@XStreamAlias("min-value")

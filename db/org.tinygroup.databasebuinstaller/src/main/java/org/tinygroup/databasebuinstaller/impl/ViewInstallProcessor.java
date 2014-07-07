@@ -17,10 +17,8 @@ package org.tinygroup.databasebuinstaller.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.database.config.view.View;
 import org.tinygroup.database.view.ViewProcessor;
 
 /**
@@ -42,19 +40,9 @@ public class ViewInstallProcessor extends AbstractInstallProcessor {
 	public void setViewProcessor(ViewProcessor viewProcessor) {
 		this.viewProcessor = viewProcessor;
 	}
-
-	private void dealViews(List<View> list, List<String> sqls) {
-		for (View view : list) {
-			sqls.add(viewProcessor.getCreateSql(view, language));
-		}
-	}
-
 	
 	protected List<String> getDealSqls(Connection con) throws SQLException {
-		List<View> list = viewProcessor.getViews();
-		List<String> sqls = new ArrayList<String>();
-		dealViews(list, sqls);
-		return sqls;
+	    return viewProcessor.getCreateSql(language);
 	}
 
 }

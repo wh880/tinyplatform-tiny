@@ -1,19 +1,19 @@
 <views>
 	<view name="usercompanyview">
   <view-fields>
-    <view-field view-table-id="companyrefuuid" alias="conpanyname" tableFieldId="companynameuuid" id="companynamerefuuid"/>
+    <view-field view-table-id="companyrefuuid" alias="companyid" tableFieldId="companyiduuid" id="companyidrefuuid"/>
     <view-field view-table-id="userrefuuid" alias="username" tableFieldId="usernameuuid" id="usernamerefuuid"/>
     <view-field view-table-id="userrefuuid" alias="userid" tableFieldId="useriduuid" id="useridrefuuid"/>
   </view-fields>
   <view-conditions>
     <view-condition operator="=">
-      <key-field view-table-id="userrefuuid" table-field-id="companyiduuid"/>
+      <key-field view-table-id="userrefuuid" table-field-id="useriduuid"/>
       <value-field view-table-id="companyrefuuid" table-field-id="companyiduuid"/>
     </view-condition>
   </view-conditions>
   <order-by-fields>
     <order-by-field direction="desc">
-      <field view-field-id="companynamerefuuid"/>
+      <field view-field-id="companyidrefuuid"/>
     </order-by-field>
     <order-by-field direction="asc">
       <field view-field-id="useridrefuuid"/>
@@ -24,20 +24,25 @@
     <view-table table-alias="user" table-id="useruuid" id="userrefuuid"/>
   </view-tables>
   <view-havings>
-    <view-having operator="comparemode" value="1">
+    <view-having operator=">" value="1">
       <key-having aggregate-function="count">
         <field view-field-id="useridrefuuid"/>
       </key-having>
     </view-having>
-    <view-having operator="comparemode">
-      <key-having aggregate-function="count">
+    <view-having operator="=">
+      <key-having>
         <field view-field-id="useridrefuuid"/>
       </key-having>
       <value-having>
-        <field view-table-id="userrefuuid" table-field-id="usernameuuid"/>
+        <field view-table-id="companyrefuuid" table-field-id="companyiduuid"/>
       </value-having>
     </view-having>
   </view-havings>
+  <group-by-fields>
+      <group-by-field>
+        <field view-field-id="useridrefuuid"></field>
+      </group-by-field>
+  </group-by-fields>
 </view>
 
 </views>

@@ -16,7 +16,6 @@
 package org.tinygroup.databasebuinstaller.impl;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,14 +57,9 @@ public class TableInstallProcessor extends AbstractInstallProcessor {
 	private void installTable(String language,Table table, List<String> sqls, Connection connect)throws SQLException  {
 		logger.logMessage(LogLevel.INFO, "开始生成表格语句,表格 包:{0},名:{1}",
 				table.getPackageName(), table.getName());
-			DatabaseMetaData data = connect.getMetaData();
-			// TableSqlProcessor sqlprocessor = new OracleSqlProcessorImpl();
 			List<String> tableSqls = null;
-			if (tableProcessor.checkTableExist(table, connect.getCatalog(),
-					data, language)) {
-				tableSqls = tableProcessor.getUpdateSql(table,
-						table.getPackageName(), data, connect.getCatalog(),
-						language);
+			if (tableProcessor.checkTableExist(table, language, connect)) {
+				tableSqls = tableProcessor.getUpdateSql(table, table.getPackageName(), language, connect);
 			} else {
 				tableSqls = tableProcessor.getCreateSql(table,
 						table.getPackageName(), language);

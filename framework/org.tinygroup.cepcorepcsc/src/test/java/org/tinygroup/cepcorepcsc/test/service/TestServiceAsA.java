@@ -1,18 +1,22 @@
 package org.tinygroup.cepcorepcsc.test.service;
 
+import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
+import org.tinygroup.cepcorepc.impl.PcCepCoreImpl;
+import org.tinygroup.cepcorepcsc.impl.ArOperator;
+import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class TestServiceAsA {
 	public static void main(String[] args) {
-		AbstractTestUtil.init("applicationAsA.xml", true);
-//		PcCepCoreImpl p  = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-//		p.setNodeName("asa");
-//		ArOperator aro = new ArOperator("192.168.84.23","5555","192.168.84.23","8888",10);
-//		
-//		p.setOperator(aro);
-//		p.registerEventProcessor(getEventProcessor());
-//		p.startCEPCore(p);
+		AbstractTestUtil.init("application2.xml", true);
+		PcCepCoreImpl p  = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
+		p.setNodeName("asa");
+		ArOperator aro = new ArOperator("192.168.84.23","5555","192.168.84.23","8888",10);
+		
+		p.setOperator(aro);
+		p.registerEventProcessor(getEventProcessor());
+		p.startCEPCore(p);
 	}
 	
 	public static EventProcessor getEventProcessor(){

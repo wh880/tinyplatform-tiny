@@ -25,14 +25,20 @@ public interface ViewProcessor {
 	void addViews(Views views);
 	void removeViews(Views views);
 	View getView(String name);
+	View getViewById(String id);
 	List<View> getViews();
-	String getCreateSql(String name, String language);
-	String getCreateSql(View view, String language);
+	List<String> getCreateSql(String name, String language);
+	List<String> getCreateSql(View view, String language);
 	List<String> getCreateSql(String language);
 	
 	String getDropSql(String name, String language);
 	String getDropSql(View view, String language);
 	List<String> getDropSql(String language);
+	
+	/**
+	 * 视图依赖初始化
+	 */
+	void dependencyInit();
 	
 	
 }

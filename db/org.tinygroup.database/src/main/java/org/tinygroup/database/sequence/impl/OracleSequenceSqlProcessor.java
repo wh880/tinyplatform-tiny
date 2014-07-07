@@ -1,11 +1,12 @@
 package org.tinygroup.database.sequence.impl;
 
-import org.tinygroup.database.config.sequence.ValueConfig;
+import java.sql.Connection;
+
 import org.tinygroup.database.config.sequence.SeqCacheConfig;
 import org.tinygroup.database.config.sequence.Sequence;
-import org.tinygroup.database.sequence.SequenceSqlProcessor;
+import org.tinygroup.database.config.sequence.ValueConfig;
 
-public class OracleSequenceSqlProcessor implements SequenceSqlProcessor {
+public class OracleSequenceSqlProcessor extends AbstractSequenceSqlProcessor {
 
 	public String getCreateSql(Sequence sequence) {
 		StringBuffer seqBuffer = new StringBuffer();
@@ -36,8 +37,18 @@ public class OracleSequenceSqlProcessor implements SequenceSqlProcessor {
 		return seqBuffer.toString();
 	}
 
-	public String getDropSql(Sequence sequence) {
-		return "DROP SEQUENCE "+sequence.getName();
+
+	public String checkSequenceExist(Sequence sequence,Connection connection) {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return null;
 	}
 
 }

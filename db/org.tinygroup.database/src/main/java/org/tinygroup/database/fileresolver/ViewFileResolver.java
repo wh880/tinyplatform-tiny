@@ -63,6 +63,7 @@ public class ViewFileResolver extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载view文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
+		viewProcessor.dependencyInit();
 	}
 
 }

@@ -15,7 +15,8 @@
  */
 package org.tinygroup.database.table;
 
-import java.sql.DatabaseMetaData;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.tinygroup.database.config.table.Table;
@@ -53,18 +54,17 @@ public interface TableProcessor {
 	List<String> getCreateSql(Table table, String packageName, String language);
 
 	List<String> getCreateSql(Table table, String language);
+	
+	List<String> getCreateSqls(String language);
 
-	List<String> getUpdateSql(String name, String packageName,
-			DatabaseMetaData metadata,String catalog, String language);
+	List<String> getUpdateSql(String name, String packageName,String language,Connection connection)throws SQLException;
 
-	List<String> getUpdateSql(Table table, String packageName,
-			DatabaseMetaData metadata,String catalog, String language);
+	List<String> getUpdateSql(Table table, String packageName, String language,Connection connection)throws SQLException;
 
 	String getDropSql(String name, String packageName, String language);
 
 	String getDropSql(Table table, String packageName, String language);
 
-	boolean checkTableExist(Table table, String catalog,
-			DatabaseMetaData metadata, String language);
+	boolean checkTableExist(Table table,String language,Connection connection)throws SQLException;
 
 }
