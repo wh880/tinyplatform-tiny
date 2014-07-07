@@ -27,8 +27,8 @@ public interface ViewProcessor {
 	View getView(String name);
 	View getViewById(String id);
 	List<View> getViews();
-	List<String> getCreateSql(String name, String language);
-	List<String> getCreateSql(View view, String language);
+	String getCreateSql(String name, String language);
+	String getCreateSql(View view, String language);
 	List<String> getCreateSql(String language);
 	
 	String getDropSql(String name, String language);

@@ -16,11 +16,11 @@
 package org.tinygroup.database.view.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.view.View;
@@ -47,6 +47,7 @@ public class ViewProcessorImpl implements ViewProcessor {
 	public void removeViews(Views views) {
 		for (View view : views.getViewTableList()) {
 			viewMap.remove(view.getName());
+			viewIdMap.remove(view.getId());
 		}
 
 	}
@@ -58,12 +59,12 @@ public class ViewProcessorImpl implements ViewProcessor {
 		return viewMap.get(name);
 	}
 
-	public List<String> getCreateSql(String name, String language) {
+	public String getCreateSql(String name, String language) {
 		View view = getView(name);
 		return getCreateSql(view, language);
 	}
 
-	private String createSql(View view, String language) {
+	public String getCreateSql(View view, String language) {
 		ProcessorManager processorManager = SpringUtil
 				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		ViewSqlProcessor sqlProcessor = (ViewSqlProcessor) processorManager
@@ -71,31 +72,12 @@ public class ViewProcessorImpl implements ViewProcessor {
 		return sqlProcessor.getCreateSql(view);
 	}
 
-	public List<String> getCreateSql(View view, String language) {
-		return getCreateSql(language, view, new HashMap<String, Boolean>());
-	}
-	
-	private List<String> getCreateSql(String language,View view, Map<String, Boolean> loadStatus){
-		List<String> sqls=new ArrayList<String>();
-		Boolean load=loadStatus.get(view.getName());
-		if(load==null||!load){
-			loadStatus.put(view.getName(), true);
-			 List<String> dependViews=dependencyMap.get(view.getId());
-			 if(!CollectionUtil.isEmpty(dependViews)){
-			    for (String dependViewId : dependViews) {
-					View dependView=getViewById(dependViewId);
-                    sqls.addAll(getCreateSql(language, dependView,loadStatus));					
-				}
-			 }
-			  sqls.add(createSql(view, language));
-		}
-		return sqls;
-	}
 
 	public List<String> getCreateSql(String language) {
 		List<String> list = new ArrayList<String>();
-		for (View view : viewMap.values()) {
-			list.addAll(getCreateSql(view, language));
+		List<View> views=getViews();
+		for (View view : views) {
+			list.add(getCreateSql(view, language));
 		}
 		return list;
 	}
@@ -124,6 +106,7 @@ public class ViewProcessorImpl implements ViewProcessor {
 	public List<View> getViews() {
 		List<View> list = new ArrayList<View>();
 		list.addAll(viewMap.values());
+		Collections.sort(list, new ViewSort(dependencyMap));
 		return list;
 	}
 
@@ -137,6 +120,11 @@ public class ViewProcessorImpl implements ViewProcessor {
 	public void dependencyInit() {
 
 		for (View view : viewIdMap.values()) {
+			List<String> dependencies = dependencyMap.get(view.getId());
+			if (dependencies == null) {
+				dependencies = new ArrayList<String>();
+				dependencyMap.put(view.getId(), dependencies);
+			}
 			List<ViewTable> viewTables = view.getTableList();
 			for (ViewTable viewTable : viewTables) {
 				String viewTableId = viewTable.getTableId();
@@ -148,12 +136,7 @@ public class ViewProcessorImpl implements ViewProcessor {
 								"视图[id:%s]依赖的视图[id:%s]不存在,", view.getId(),
 								viewTableId));
 					}
-					List<String> dependencies = dependencyMap.get(view.getId());
-					if (dependencies == null) {
-						dependencies = new ArrayList<String>();
-						dependencyMap.put(view.getId(), dependencies);
-					}
-					if(!dependencies.contains(dependView.getId())){
+					if (!dependencies.contains(dependView.getId())) {
 						dependencies.add(dependView.getId());
 					}
 				}
