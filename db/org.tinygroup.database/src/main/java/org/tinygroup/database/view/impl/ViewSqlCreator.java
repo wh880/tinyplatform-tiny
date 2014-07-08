@@ -40,8 +40,6 @@ public class ViewSqlCreator {
 
 	private Map<String, String> fieldNames = new HashMap<String, String>();
 
-	private Map<String, TableField> tableFields = new HashMap<String, TableField>();
-
 	private Map<String, String> fieldId2Name = new HashMap<String, String>();
 
 	private Logger logger = LoggerFactory.getLogger(ViewSqlCreator.class);
@@ -62,33 +60,13 @@ public class ViewSqlCreator {
 		List<ViewField> fields = view.getFieldList();
 		for (ViewField viewField : fields) {
 			String viewTableId = viewField.getViewTable();//
-			TableField tableField = getTableField(view,
-					viewField.getViewTable(), viewField.getTableFieldId());
-			StandardField tableFieldStd = MetadataUtil
-					.getStandardField(tableField.getStandardFieldId());
-			String tableFieldName = DataBaseUtil.getDataBaseName(tableFieldStd
-					.getName());
+			String tableFieldName =getTableFieldName(viewTableId, viewField.getTableFieldId(), view);
 			String tableName = tableNames.get(viewTableId);
 			fieldNames.put(viewField.getId(), tableName + "." + tableFieldName);
-			tableFields.put(viewField.getTableFieldId(), tableField);
 			fieldId2Name.put(viewField.getTableFieldId(), tableFieldName);
 		}
-
 	}
 
-	public TableField getTableField(View view, String viewTableId,
-			String tableFieldId) {
-		ViewTable viewTable = view.getViewTable(viewTableId);
-		Table table = DataBaseUtil.getTableById(viewTable.getTableId());
-		if (table != null) {
-			return getTableField(tableFieldId, table);
-		} else {
-			View dependView = DataBaseUtil.getViewById(viewTable.getTableId());
-			ViewField viewField = dependView.getViewField(tableFieldId);
-			return getTableField(dependView, viewField.getViewTable(),
-					viewField.getTableFieldId());
-		}
-	}
 
 	private String getViewTableName(String viewTableId) {
 		Table table = DataBaseUtil.getTableById(viewTableId);
@@ -327,8 +305,12 @@ public class ViewSqlCreator {
 						tableFieldId,
 						dependView.getId()));
 			}else{
-				return getTableFieldName(viewField.getViewTable(), viewField.getTableFieldId(), dependView);
-				
+				String alias=viewField.getAlias();
+				String fieldName=alias;
+				if(StringUtil.isBlank(alias)){
+					fieldName=getTableFieldName(viewField.getViewTable(), viewField.getTableFieldId(), dependView);
+				}
+				return fieldName;
 			}
 		}
 	}
