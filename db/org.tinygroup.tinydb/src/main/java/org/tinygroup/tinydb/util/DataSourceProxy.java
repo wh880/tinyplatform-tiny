@@ -16,7 +16,7 @@
 package org.tinygroup.tinydb.util;
 
 import org.springframework.transaction.support.TransactionTemplate;
-import org.tinygroup.datasource.DynamicDataSource;
+import org.tinygroup.dynamicdatasource.DynamicDataSource;
 
 /**
  * 数据源代理

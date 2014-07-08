@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.datasource;
+package org.tinygroup.dynamicdatasource;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
