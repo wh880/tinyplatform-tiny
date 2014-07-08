@@ -131,7 +131,7 @@ public class TableProcessorImpl implements TableProcessor {
 				}
 			}
 		}
-		throw new RuntimeException("未找到ID:" + id + "的表格");
+		return null;
 	}
 
 	public List<Table> getTables() {
