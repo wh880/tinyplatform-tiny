@@ -63,6 +63,7 @@ public class DbfWriterTest {
     		
     		
     		w.writeFields(list);
+//    		w.writeRecord("*","11","333333333","sss");删除标识
     		w.writeRecord("11","333333333","sss");
     		w.writeRecord("33","44","ssd");
     		w.save();

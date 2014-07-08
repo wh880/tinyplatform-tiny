@@ -51,12 +51,10 @@ public final class Util {
     ///added by wcg;
     public static byte[] getByteFromInt(int value,int bit) {
     	byte[] result = new byte[bit];
-        byte[] abyte0 = new byte[4];
-        abyte0[0] = (byte) (0xff & value);
-        abyte0[1] = (byte) ((0xff00 & value) >> 8);
-        abyte0[2] = (byte) ((0xff0000 & value) >> 16);
-        abyte0[3] = (byte) ((0xff000000 & value) >> 24);
-        System.arraycopy(abyte0, 0, result, 0, bit);
+    	for(int i = 0;i<bit;i++) {
+    		int pos = i<<3;
+    		result[i] = (byte)(((0xff<<pos)&value)>>pos);
+    	}
     	return result;
     }
     

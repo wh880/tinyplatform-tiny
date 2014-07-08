@@ -16,15 +16,15 @@
 package org.tinygroup.dbf;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 /**
+ * 
  * Created by wcg on 2014/7/7.
+ * 
  */
 public class FoxproDBaseWriter extends DbfWriter {
-
     public static final int NAME_LENGTH = 10;
     public static final int RECORD_COUNT_LENGTH = 4;
     public static final int HEADER_LENGTH_LENGTH = 2;
@@ -32,10 +32,10 @@ public class FoxproDBaseWriter extends DbfWriter {
     public static final int START_YEAR = 1900;
     int allFieldsLength = 0;
     private void writeField(Field field) throws IOException {
-    	byte[] bytearr = field.getName().getBytes(getEncode());
+    	byte[] fieldNameBytearr = field.getName().getBytes(getEncode());
     	byte[] destFieldNameBuffer= new byte[NAME_LENGTH];
-    	int destl = bytearr.length>NAME_LENGTH?NAME_LENGTH:bytearr.length;
-    	System.arraycopy(bytearr, 0, destFieldNameBuffer, 0, destl);
+    	int destlen = fieldNameBytearr.length>NAME_LENGTH?NAME_LENGTH:fieldNameBytearr.length;
+    	System.arraycopy(fieldNameBytearr, 0, destFieldNameBuffer, 0, destlen);
     	bodybuffer.write(destFieldNameBuffer);
     	bodybuffer.write(0);
     	bodybuffer.write((byte)field.getType());
@@ -43,10 +43,9 @@ public class FoxproDBaseWriter extends DbfWriter {
     	bodybuffer.write(Util.getByteFromInt(field.getLength(), 1));
     	bodybuffer.write(Util.getByteFromInt(field.getDecimal(), 1));
     	bodybuffer.write(new byte[14]);
-    	allFieldsLength+= field.getLength();
+    	allFieldsLength += field.getLength();
     }
     
-	@Override
 	public void writeFields(List<Field> fieldlist) throws IOException {
 		this.setFields(fieldlist);
 		for(Field field:fieldlist) {
@@ -55,7 +54,6 @@ public class FoxproDBaseWriter extends DbfWriter {
 		bodybuffer.write(HEADER_END_CHAR);
 	}
 	
-	@Override
 	protected void writeHeaders() throws IOException {
 		headbuffer.write(0X30);
 		headbuffer.write(getDateInfoByteArray());
@@ -65,20 +63,39 @@ public class FoxproDBaseWriter extends DbfWriter {
 		headbuffer.write(new byte[20]);
 	}
 	
-	@Override
-	public void writeRecord(String... args) throws UnsupportedEncodingException, IOException ,NullPointerException {
-		if(fields==null)throw new NullPointerException("字段表为空指针,请先调用writeFields方法");
+	public void writeRecord(String... values) throws  IOException , NullPointerException {
+		if(fields==null) {
+			
+			throw new NullPointerException("字段表为空指针,请先调用writeFields方法");
+		}
+		boolean removed = false;
 		int fieldsLength = fields.size();
-		if(args.length!=fieldsLength)throw new IOException(String.format("字段长度为:%d,但该条数据长度为:%d,游标:%d", 
-																		fieldsLength,args.length,getPostion()));
+		int valueLength = values.length;
+		if(valueLength!=fieldsLength) {
+			if(valueLength-fieldsLength==1) {
+				if(!values[0].equals("*")) {
+					System.out.println("here");
+					throw new IOException(String.format("字段长度为:%d,但该条数据长度为:%d,游标:%d",
+							fieldsLength,values.length,getPostion()));
+				}
+				else {
+					removed = true;
+				}
+			}
+			else {
+				throw new IOException(String.format("字段长度为:%d,但该条数据长度为:%d,游标:%d",
+						fieldsLength,values.length,getPostion()));
+			}
+	
+		}
 		next();
-		for(int i = 0;i<args.length;i++) {
-			Field f = fields.get(i);
-			int needFillLength  = f.getLength()-args[i].length();
-			byte[] fillbank = new byte[needFillLength];
-			for(int j = 0;j<needFillLength;j++) fillbank[j] = 0x20;
-			bodybuffer.write(fillbank);
-			bodybuffer.write(args[i].getBytes(getEncode()));
+		int i = 0;
+		if(removed) {
+			bodybuffer.write((byte)'*');
+			i++;
+		}
+		for(int j=0;i<valueLength;i++,j++) {
+			fillRecord(fields.get(j),values[i]);
 		}
 	}
 	
@@ -89,5 +106,16 @@ public class FoxproDBaseWriter extends DbfWriter {
 		result[1] = Util.getByteFromInt(Integer.parseInt(new SimpleDateFormat("M").format(date)), 1)[0];
 		result[2] = Util.getByteFromInt(Integer.parseInt(new SimpleDateFormat("d").format(date)), 1)[0];
 		return result;
+	}
+	
+	private void fillRecord (Field field,String value) throws IOException {
+		
+		int needFillLength  = field.getLength()-value.length();
+		byte[] fillbank = new byte[needFillLength];
+		for(int j = 0;j<needFillLength;j++) {
+			fillbank[j] = 0x20;
+		}
+		bodybuffer.write(fillbank);
+		bodybuffer.write(value.getBytes(getEncode()));
 	}
 }

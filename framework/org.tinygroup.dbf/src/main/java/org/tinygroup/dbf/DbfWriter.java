@@ -18,7 +18,7 @@ public abstract class DbfWriter implements Writer {
     protected List<Field> fields;//字段信息
     protected ByteArrayOutputStream bodybuffer = new ByteArrayOutputStream();
     protected ByteArrayOutputStream headbuffer = new ByteArrayOutputStream();
-    private int postion = 0;
+    private int position = 0;
     
     public void setFilename(String filename) {
     	this.filename = filename;
@@ -43,13 +43,13 @@ public abstract class DbfWriter implements Writer {
     
     public void save() throws IOException {
     	writeHeaders();
-    	FileOutputStream fos = new FileOutputStream(new File(filename));
-    	byte[] arr = bodybuffer.toByteArray();
-    	headbuffer.write(arr,0,arr.length);
-    	headbuffer.writeTo(fos);
+    	FileOutputStream dbffos = new FileOutputStream(new File(filename));
+    	byte[] bodybytearray = bodybuffer.toByteArray();
+    	headbuffer.write(bodybytearray,0,bodybytearray.length);
+    	headbuffer.writeTo(dbffos);
     	headbuffer.close();
     	bodybuffer.close();
-    	fos.close();
+    	dbffos.close();
     }
     
     
@@ -60,11 +60,11 @@ public abstract class DbfWriter implements Writer {
     protected abstract void writeHeaders() throws IOException;
     
     protected void next() {
-		postion ++;
+		position ++;
 	}
     
     protected int  getPostion() {
-		return postion;
+		return position;
 	}
 
 }
