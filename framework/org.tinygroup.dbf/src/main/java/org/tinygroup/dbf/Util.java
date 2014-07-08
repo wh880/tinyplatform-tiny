@@ -36,9 +36,10 @@ public final class Util {
     public static int getIntValue(byte b, int bytePos) {
         int v = 1;
         for (int i = 0; i < bytePos; i++) {
-            v = v * MAX_MINI_UINT;
+            v = v <<8;
         }
         return getUnsignedInt(b) * v;
+        
     }
 
     public static int getUnsignedInt(byte byteValue) {
@@ -48,6 +49,18 @@ public final class Util {
             return byteValue;
         }
     }
+    ///added by wcg;
+    public static byte[] getByteFromInt(int v,int l) {
+    	byte[] in = new byte[l];
+        byte[] abyte0 = new byte[4];
+        abyte0[0] = (byte) (0xff & v);
+        abyte0[1] = (byte) ((0xff00 & v) >> 8);
+        abyte0[2] = (byte) ((0xff0000 & v) >> 16);
+        abyte0[3] = (byte) ((0xff000000 & v) >> 24);
+        System.arraycopy(abyte0, 0, in, 0, l);
+    	return in;
+    }
+    
 
     public static Boolean getBooleanValue(String stringValue) {
         String value = stringValue.toLowerCase();
