@@ -23,26 +23,20 @@ import org.tinygroup.bundle.config.BundleDefine;
 import org.tinygroup.bundle.test.util.TestUtil;
 import org.tinygroup.springutil.SpringUtil;
 
-public class BundleManagerTest extends TestCase{
-	public void testStart(){
+public class BundleManagerTest2 extends TestCase{
+
+	public void testLoad() {
 		TestUtil.init();
 		BundleManager manager = SpringUtil.getBean(BundleManager.BEAN_NAME);
-		manager.start();
+		BundleDefine b;
 		try {
-			manager.getTinyClassLoader("test1").loadClass("org.tinygroup.MyTestInterface");
-			manager.getTinyClassLoader("test1").loadClass("org.tinygroup.MyTestImpl");
-			manager.getTinyClassLoader("test2").loadClass("org.tinygroup.MyTestImpl2");
-			manager.getTinyClassLoader("test3").loadClass("org.tinygroup.MyTestImpl3");
-			
-		} catch (ClassNotFoundException e) {
+			b = manager.getBundleDefine("test1");
+			assertNotNull(b);
+		} catch (BundleException e) {
 			e.printStackTrace();
 			assertFalse(true);
 		}
 //		manager.stop();
 	}
-	
-	
-	
-
 
 }

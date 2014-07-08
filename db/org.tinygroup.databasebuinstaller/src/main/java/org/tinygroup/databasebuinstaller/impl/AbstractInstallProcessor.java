@@ -25,7 +25,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.tinygroup.databasebuinstaller.InstallProcessor;
-import org.tinygroup.datasource.DynamicDataSource;
+import org.tinygroup.dynamicdatasource.DynamicDataSource;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
