@@ -13,9 +13,7 @@ import java.util.List;
 public abstract class DbfWriter implements Writer {
 	
     public static final int HEADER_END_CHAR = 13;
-    private byte type;//记录类型
     private String encode = "GBK"; //默认编码
-    private Header header; //头字节
     private String filename;
     protected List<Field> fields;//字段信息
     protected ByteArrayOutputStream bodybuffer = new ByteArrayOutputStream();
@@ -25,17 +23,9 @@ public abstract class DbfWriter implements Writer {
     public void setFilename(String filename) {
     	this.filename = filename;
     }
-            
-    public void setHeader(Header header) {
-    	this.header = header;
-    }
     
     public void setFields(List<Field> filelds) {
     	this.fields = filelds;
-    }
-    
-    public void setType(byte type) {
-    	this.type = type;
     }
     
     public String getEncode() {
@@ -45,14 +35,13 @@ public abstract class DbfWriter implements Writer {
     	this.encode = encode; 
     }
     
-    public static DbfWriter generate(String filename,String encode)  throws IOException, IllegalAccessException, InstantiationException  {
+    public static Writer generate(String filename,String encode)   {
         DbfWriter writer = new FoxproDBaseWriter();
         writer.setFilename(filename);
-        
     	return writer;
     }
     
-    public void write() throws IOException {
+    public void save() throws IOException {
     	writeHeaders();
     	FileOutputStream fos = new FileOutputStream(new File(filename));
     	byte[] arr = bodybuffer.toByteArray();
@@ -62,11 +51,13 @@ public abstract class DbfWriter implements Writer {
     	bodybuffer.close();
     	fos.close();
     }
+    
+    
     public abstract void writeFields(List<Field> f) throws IOException;
     
-    public abstract void writeData(String...args) throws UnsupportedEncodingException, IOException;
+    public abstract void writeRecord(String...args) throws UnsupportedEncodingException, IOException,NullPointerException;
     
-    public abstract void writeHeaders() throws IOException;
+    protected abstract void writeHeaders() throws IOException;
     
     protected void next() {
 		postion ++;

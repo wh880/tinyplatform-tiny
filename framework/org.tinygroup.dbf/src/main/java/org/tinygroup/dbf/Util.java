@@ -20,8 +20,7 @@ package org.tinygroup.dbf;
  */
 public final class Util {
 
-    private Util() {
-    }
+    private Util() {}
 
     public static final int MAX_MINI_UINT = 256;
 
@@ -36,7 +35,7 @@ public final class Util {
     public static int getIntValue(byte b, int bytePos) {
         int v = 1;
         for (int i = 0; i < bytePos; i++) {
-            v = v <<8;
+            v = v << 8;
         }
         return getUnsignedInt(b) * v;
         
@@ -50,15 +49,15 @@ public final class Util {
         }
     }
     ///added by wcg;
-    public static byte[] getByteFromInt(int v,int l) {
-    	byte[] in = new byte[l];
+    public static byte[] getByteFromInt(int value,int bit) {
+    	byte[] result = new byte[bit];
         byte[] abyte0 = new byte[4];
-        abyte0[0] = (byte) (0xff & v);
-        abyte0[1] = (byte) ((0xff00 & v) >> 8);
-        abyte0[2] = (byte) ((0xff0000 & v) >> 16);
-        abyte0[3] = (byte) ((0xff000000 & v) >> 24);
-        System.arraycopy(abyte0, 0, in, 0, l);
-    	return in;
+        abyte0[0] = (byte) (0xff & value);
+        abyte0[1] = (byte) ((0xff00 & value) >> 8);
+        abyte0[2] = (byte) ((0xff0000 & value) >> 16);
+        abyte0[3] = (byte) ((0xff000000 & value) >> 24);
+        System.arraycopy(abyte0, 0, result, 0, bit);
+    	return result;
     }
     
 

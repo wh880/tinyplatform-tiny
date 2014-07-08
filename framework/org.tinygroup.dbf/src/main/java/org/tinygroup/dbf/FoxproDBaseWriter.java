@@ -15,84 +15,79 @@
  */
 package org.tinygroup.dbf;
 
-import java.awt.BufferCapabilities.FlipContents;
-import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-
-import javax.swing.text.Position;
-
 /**
  * Created by wcg on 2014/7/7.
  */
 public class FoxproDBaseWriter extends DbfWriter {
 
-    public static final int HEADER_LENGTH = 32;
-    public static final int FIELD_LENGTH = 32;
     public static final int NAME_LENGTH = 10;
-    public static final int RECORD_COUNT_POSITION = 3;
     public static final int RECORD_COUNT_LENGTH = 4;
-    public static final int HEADER_LENGTH_POSITION = 7;
     public static final int HEADER_LENGTH_LENGTH = 2;
-    public static final int RECORD_LENGTH_POSITION = 9;
     public static final int RECORD_LENGTH_LENGTH = 2;
-    public static final int FIELD_LENGTH_POSITON = 16;
-    public static final int FIELD_DECIMAL_POSITON = 17;
-    public static final int DISPLACEMENT_POSITION = 12;
-    public static final int DISPLACEMENT_LENGTH = 4;
-    public static final int FIELD_FLAG_POSITION = 18;
     public static final int START_YEAR = 1900;
-    public static final int YEAR_POS = 10000;
-    public static final int MONTO_POS = 100;
-    private int l = 0;
-    private void writeByteArray(Field f) throws IOException {
-    	byte[] bytearr = f.getName().getBytes(getEncode());
-    	byte[] dest = new byte[NAME_LENGTH];
+    int allFieldsLength = 0;
+    private void writeField(Field field) throws IOException {
+    	byte[] bytearr = field.getName().getBytes(getEncode());
+    	byte[] destFieldNameBuffer= new byte[NAME_LENGTH];
     	int destl = bytearr.length>NAME_LENGTH?NAME_LENGTH:bytearr.length;
-    	System.arraycopy(bytearr, 0, dest, 0, destl);
-    	bodybuffer.write(dest);
+    	System.arraycopy(bytearr, 0, destFieldNameBuffer, 0, destl);
+    	bodybuffer.write(destFieldNameBuffer);
     	bodybuffer.write(0);
-    	bodybuffer.write((byte)f.getType());
-    	bodybuffer.write(Util.getByteFromInt(f.getDisplacement(), 4));
-    	bodybuffer.write(Util.getByteFromInt(f.getLength(), 1));
-    	bodybuffer.write(Util.getByteFromInt(f.getDecimal(), 1));
+    	bodybuffer.write((byte)field.getType());
+    	bodybuffer.write(Util.getByteFromInt(field.getDisplacement(), 4));
+    	bodybuffer.write(Util.getByteFromInt(field.getLength(), 1));
+    	bodybuffer.write(Util.getByteFromInt(field.getDecimal(), 1));
     	bodybuffer.write(new byte[14]);
+    	allFieldsLength+= field.getLength();
     }
     
 	@Override
-	public void writeFields(List<Field> flist) throws IOException {
-		this.setFields(flist);
-		for(Field f:flist) {
-			writeByteArray(f);
+	public void writeFields(List<Field> fieldlist) throws IOException {
+		this.setFields(fieldlist);
+		for(Field field:fieldlist) {
+			writeField(field);
 		}
-		bodybuffer.write(13);
+		bodybuffer.write(HEADER_END_CHAR);
 	}
-	@Override
-	public void writeHeaders() throws IOException {
 	
+	@Override
+	protected void writeHeaders() throws IOException {
 		headbuffer.write(0X30);
-		headbuffer.write(new byte[]{ //年月日
-				0x72,0x07,0x07
-		});
+		headbuffer.write(getDateInfoByteArray());
 		headbuffer.write(Util.getByteFromInt(getPostion(), RECORD_COUNT_LENGTH)); //4
 		headbuffer.write(Util.getByteFromInt(32+32* fields.size()+1, HEADER_LENGTH_LENGTH));//2
-		headbuffer.write(Util.getByteFromInt(39, RECORD_LENGTH_LENGTH)); //2
+		headbuffer.write(Util.getByteFromInt(allFieldsLength, RECORD_LENGTH_LENGTH)); //2
 		headbuffer.write(new byte[20]);
-		
-		
 	}
+	
 	@Override
-	public void writeData(String... args) throws UnsupportedEncodingException, IOException {
+	public void writeRecord(String... args) throws UnsupportedEncodingException, IOException ,NullPointerException {
+		if(fields==null)throw new NullPointerException("字段表为空指针,请先调用writeFields方法");
+		int fieldsLength = fields.size();
+		if(args.length!=fieldsLength)throw new IOException(String.format("字段长度为:%d,但该条数据长度为:%d,游标:%d", 
+																		fieldsLength,args.length,getPostion()));
 		next();
 		for(int i = 0;i<args.length;i++) {
 			Field f = fields.get(i);
-			byte[] fillbank = new byte[f.getLength()];
-			for(int j = 0;j<f.getLength();j++) fillbank[j] = 0x20;
+			int needFillLength  = f.getLength()-args[i].length();
+			byte[] fillbank = new byte[needFillLength];
+			for(int j = 0;j<needFillLength;j++) fillbank[j] = 0x20;
 			bodybuffer.write(fillbank);
 			bodybuffer.write(args[i].getBytes(getEncode()));
 		}
+	}
+	
+	private byte[] getDateInfoByteArray() {
+		byte[] result = new byte[3];
+		Date date = new Date();
+		result[0] = Util.getByteFromInt(Integer.parseInt(new SimpleDateFormat("yyyy").format(date))-START_YEAR, 1)[0];
+		result[1] = Util.getByteFromInt(Integer.parseInt(new SimpleDateFormat("M").format(date)), 1)[0];
+		result[2] = Util.getByteFromInt(Integer.parseInt(new SimpleDateFormat("d").format(date)), 1)[0];
+		return result;
 	}
 }

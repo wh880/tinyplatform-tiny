@@ -23,7 +23,7 @@ import java.util.List;
  * Created by wcg on 2014/7/7.
  */
 public class DbfWriterTest {
-    static String[] files = {"aaa1"};
+    static String[] files = {"aaa2"};
 
     public static void main(String[] args) throws IOException, IllegalAccessException, InstantiationException {
         for (String file : files) {
@@ -32,8 +32,10 @@ public class DbfWriterTest {
     }
 
     public static void writetoFile(String fileName) throws IOException, InstantiationException, IllegalAccessException {
-    		DbfWriter w = DbfWriter.generate("G:\\"+fileName+".DBF", "utf-8");
+    		Writer w = DbfWriter.generate("G:\\"+fileName+".DBF", "utf-8");
     		List<Field> list = new ArrayList<Field>();
+    		
+    		
     		Field f = new Field();
     		f.setDecimal(1);
     		f.setType('N');
@@ -51,13 +53,19 @@ public class DbfWriterTest {
     		f1.setLength(19);
     		list.add(f1);
     		
+    		Field f3= new Field();
+    		f3.setDecimal(1);
+    		f3.setType('N');
+    		f3.setFlag((byte)1);
+    		f3.setName("aaa2");
+    		f3.setLength(19);
+    		list.add(f3);   	
+    		
+    		
     		w.writeFields(list);
-    		
-    		
-    		w.writeData("11","22");
-    		w.writeData("33","44");
-    		
-    		w.write();
+    		w.writeRecord("11","333333333","sss");
+    		w.writeRecord("33","44","ssd");
+    		w.save();
     		
 
     }
