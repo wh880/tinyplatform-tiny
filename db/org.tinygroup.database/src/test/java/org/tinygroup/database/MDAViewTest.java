@@ -15,8 +15,6 @@
  */
 package org.tinygroup.database;
 
-import java.util.List;
-
 import junit.framework.TestCase;
 
 import org.tinygroup.database.util.DataBaseUtil;
@@ -46,8 +44,8 @@ public class MDAViewTest extends TestCase {
 
 	public void testGetCreateSqlString() {
 		System.out.println("usercompanyview,sql:");
-		List<String> tableSqls= viewProcessor.getCreateSql("usercompanyview", "oracle");
-		System.out.println(tableSqls.get(0));
+		String tableSql= viewProcessor.getCreateSql("usercompanyview", "oracle");
+		System.out.println(tableSql);
 		
 	}
 	
