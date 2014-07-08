@@ -20,8 +20,7 @@ package org.tinygroup.dbf;
  */
 public final class Util {
 
-    private Util() {
-    }
+    private Util() {}
 
     public static final int MAX_MINI_UINT = 256;
 
@@ -36,9 +35,10 @@ public final class Util {
     public static int getIntValue(byte b, int bytePos) {
         int v = 1;
         for (int i = 0; i < bytePos; i++) {
-            v = v * MAX_MINI_UINT;
+            v = v << 8;
         }
         return getUnsignedInt(b) * v;
+        
     }
 
     public static int getUnsignedInt(byte byteValue) {
@@ -48,6 +48,16 @@ public final class Util {
             return byteValue;
         }
     }
+    ///added by wcg;
+    public static byte[] getByteFromInt(int value,int bit) {
+    	byte[] result = new byte[bit];
+    	for(int i = 0;i<bit;i++) {
+    		int pos = i<<3;
+    		result[i] = (byte)(((0xff<<pos)&value)>>pos);
+    	}
+    	return result;
+    }
+    
 
     public static Boolean getBooleanValue(String stringValue) {
         String value = stringValue.toLowerCase();
