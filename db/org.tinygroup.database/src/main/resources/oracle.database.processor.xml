@@ -4,4 +4,5 @@
 	<processor name="view" bean="viewSqlProcessor"></processor>
 	<processor name="procedure" bean="oracleProcedureSqlProcessor"></processor>
 	<processor name="sequence" bean="oracleSequenceSqlProcessor"></processor>
+	<processor name="trigger" bean="oracleTriggerSqlProcessor"></processor>
 </processors>

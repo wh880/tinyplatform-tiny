@@ -15,81 +15,12 @@
  */
 package org.tinygroup.database.table.impl;
 
-import java.sql.DatabaseMetaData;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.config.table.TableField;
-import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.metadata.config.stdfield.StandardField;
-import org.tinygroup.metadata.util.MetadataUtil;
 
 public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 
 	protected String getDatabaseType() {
 		return "oracle";
-	}
-
-	String appendIncrease() {
-		return "";
-	}
-
-	// 覆盖父类方法
-	protected void appendBody(StringBuffer ddlBuffer, String packageName,
-			Table table, List<String> list) {
-		boolean isFirst = true;
-		for (TableField field : table.getFieldList()) {
-			if (!isFirst) {
-				ddlBuffer.append(",");
-			} else {
-				isFirst = false;
-			}
-			appendField(ddlBuffer, field);
-			if (field.isAutoIncrease() && field.getPrimary()) {// 如果是自增而且是主键
-				appendSeq(list, table, field);
-				appendTrigger(list, table, field);
-			}
-			// 外键FOREIGN KEY REFERENCES Persons(Id_P)
-			// 目前的设定好象是不进行设置？
-		}
-	}
-
-	private void appendSeq(List<String> list, Table table, TableField field) {
-		String seq = "CREATE SEQUENCE "
-				+ getSequenceName(table, field)
-				+ " INCREMENT BY 1 START WITH 1 MAXVALUE 1.0E28 MINVALUE 1 NOCYCLE  NOCACHE NOORDER";
-		list.add(seq);
-	}
-
-	private void appendTrigger(List<String> list, Table table, TableField field) {
-		StandardField standardField = MetadataUtil.getStandardField(field
-				.getStandardFieldId());
-		String fieldName = DataBaseUtil
-				.getDataBaseName(standardField.getName());
-		StringBuffer trigger = new StringBuffer();
-		trigger.append("CREATE OR REPLACE TRIGGER ").append(
-				getTriggerName(table, field));
-		trigger.append(" BEFORE INSERT ");
-		trigger.append(" ON ").append(table.getName()).append(" FOR EACH ROW ");
-		trigger.append(" BEGIN SELECT ");
-		trigger.append(getSequenceName(table, field)).append(".NEXTVAL INTO:");
-		trigger.append("NEW.").append(fieldName);
-		trigger.append(" FROM DUAL;");
-		trigger.append(" END;");
-		list.add(trigger.toString());
-	}
-
-	private String getTriggerName(Table table, TableField field) {
-		// return String.format("%s_%s_trigger", table.getName(),
-		// field.getId());
-		return String.format("%s_trigger", table.getName()).toUpperCase();
-	}
-
-	private String getSequenceName(Table table, TableField field) {
-		// return String.format("%s_%s_seq", table.getName(), field.getId());
-		return String.format("%s_seq", table.getName()).toUpperCase();
 	}
 
 	protected String getQueryForeignSql(Table table) {
@@ -112,46 +43,19 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 		return sql;
 	}
 
-	protected List<String> dealExistFields(
-			Map<String, TableField> existInTable,
-			Map<String, Map<String, String>> dbColumns, Table table) {
-		List<String> existUpdateList = new ArrayList<String>();
-		for (String fieldName : existInTable.keySet()) {
-			TableField field = existInTable.get(fieldName);
-			if (field.getPrimary()) {
-				continue;
-			}
-			StandardField standardField = MetadataUtil.getStandardField(field
-					.getStandardFieldId());
-			Map<String, String> attribute = dbColumns.get(fieldName);
-			String tableDataType = MetadataUtil.getStandardFieldType(
-					standardField.getId(), getDatabaseType());
-			String dbColumnType = getDbColumnType(attribute)
-					.replaceAll(" ", "").toLowerCase();
+	protected String createNotNullSql(String tableName, String fieldName,String tableDataType) {
+		return String.format("ALTER TABLE %s MODIFY %s NOT NULL", tableName,
+				fieldName);
+	}
 
-			if (dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
-					.toLowerCase()) == -1) {
-				existUpdateList.add(String.format(
-						"ALTER TABLE %s MODIFY %s %s ", table.getName(),
-						fieldName, tableDataType));
-			}
-			// logger.logMessage(LogLevel.INFO, tableDataType+"+"+dbColumnType);
-			// StandardField standardField = MetadataUtil.getStandardField(field
-			// .getStandardFieldId());
-			// //如果数据库中字段允许为空，但table中不允许为空
-			if (field.getNotNull()
-					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNullable) {
-				existUpdateList.add(String.format(
-						"ALTER TABLE %s MODIFY %s NOT NULL", table.getName(),
-						fieldName));
-			} else if (!field.getNotNull()
-					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNoNulls) {
-				existUpdateList.add(String.format(
-						"ALTER TABLE %s MODIFY %s NULL", table.getName(),
-						fieldName));
-			}
+	protected String createNullSql(String tableName, String fieldName,String tableDataType) {
+		return String.format("ALTER TABLE %s MODIFY %s NULL", tableName,
+				fieldName);
+	}
 
-		}
-		return existUpdateList;
+	protected String createAlterTypeSql(String tableName, String fieldName,
+			String tableDataType) {
+		return String.format("ALTER TABLE %s MODIFY %s %s ", tableName,
+				fieldName, tableDataType);
 	}
 }

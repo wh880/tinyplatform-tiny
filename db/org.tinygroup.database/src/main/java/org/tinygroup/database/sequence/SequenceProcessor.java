@@ -1,5 +1,7 @@
 package org.tinygroup.database.sequence;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.tinygroup.database.config.sequence.Sequence;
@@ -27,4 +29,7 @@ public interface SequenceProcessor {
 	
 	public List<String> getDropSql(String language);
 	
+	public List<Sequence> getSequences(String language);
+	
+	public  boolean checkSequenceExist(String language,Sequence sequence,Connection connection)throws SQLException;
 }

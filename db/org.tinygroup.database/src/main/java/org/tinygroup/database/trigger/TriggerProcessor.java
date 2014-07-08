@@ -1,5 +1,7 @@
 package org.tinygroup.database.trigger;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.tinygroup.database.config.trigger.Trigger;
@@ -25,6 +27,10 @@ public interface TriggerProcessor {
 	public List<String> getCreateSql(String language);
 	
 	public List<String> getDropSql(String language);
+	
+	public List<Trigger> getTriggers(String language);
+	
+	public  boolean checkTriggerExist(String language,Trigger trigger,Connection connection)throws SQLException;
 	
 	
 }

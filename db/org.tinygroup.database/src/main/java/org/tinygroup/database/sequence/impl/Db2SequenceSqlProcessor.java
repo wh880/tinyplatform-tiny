@@ -1,7 +1,5 @@
 package org.tinygroup.database.sequence.impl;
 
-import java.sql.Connection;
-
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.sequence.SeqCacheConfig;
 import org.tinygroup.database.config.sequence.Sequence;
@@ -63,9 +61,9 @@ public class Db2SequenceSqlProcessor extends AbstractSequenceSqlProcessor {
 		return seqBuffer.toString();
 	}
 
-	public String checkSequenceExist(Sequence sequence,Connection connection) {
-		// TODO Auto-generated method stub
-		return null;
+	protected String getQuerySql(Sequence sequence) {
+		String sql="SELECT *  FROM SYSCAT.SEQUENCES WHERE SEQNAME='"+sequence.getName()+"'";
+		return sql;
 	}
 
 }

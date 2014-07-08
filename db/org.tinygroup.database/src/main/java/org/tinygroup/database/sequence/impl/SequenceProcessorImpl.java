@@ -1,5 +1,7 @@
 package org.tinygroup.database.sequence.impl;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +79,19 @@ public class SequenceProcessorImpl implements SequenceProcessor {
 			sqls.add(getDropSql(sequence, language));
 		}
 		return sqls;
+	}
+
+	public List<Sequence> getSequences(String language) {
+        List<Sequence> sequences=new ArrayList<Sequence>();
+        sequences.addAll(sequenceMap.values());
+		return sequences;
+	}
+
+	public boolean checkSequenceExist(String language,Sequence sequence, Connection connection)
+			throws SQLException {
+		ProcessorManager processorManager = SpringUtil.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+		SequenceSqlProcessor sqlProcessor = (SequenceSqlProcessor)processorManager.getProcessor(language, "sequence");
+		return sqlProcessor.checkSequenceExist(sequence,connection);
 	}
 
 }

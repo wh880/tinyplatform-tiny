@@ -109,4 +109,14 @@
 	<bean id="sequenceProcessor" scope="singleton"
 		class="org.tinygroup.database.sequence.impl.SequenceProcessorImpl">
 	</bean>
+	
+	<bean id="oracleTriggerSqlProcessor" scope="singleton"
+		class="org.tinygroup.database.trigger.impl.OracleTriggerSqlProcessor">
+	</bean>
+	<bean id="mysqlTriggerSqlProcessor" scope="singleton"
+		class="org.tinygroup.database.trigger.impl.MysqlTriggerSqlProcessor">
+	</bean>
+	<bean id="sqlServerTriggerSqlProcessor" scope="singleton"
+		class="org.tinygroup.database.trigger.impl.SqlServerTriggerSqlProcessor">
+	</bean>
 </beans>
