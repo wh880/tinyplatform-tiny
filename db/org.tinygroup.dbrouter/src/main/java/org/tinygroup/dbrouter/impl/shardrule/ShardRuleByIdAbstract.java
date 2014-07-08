@@ -144,7 +144,7 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
 				}
 			}
 			if (tableName.equalsIgnoreCase(update.getTable().getName())) {
-				return getWhereExpression(paramIndex,update.getWhere(), partition);
+				return getWhereExpression(paramIndex,update.getWhere(), partition,preparedParams);
 			}
 
 		}else if (statement instanceof Select) {

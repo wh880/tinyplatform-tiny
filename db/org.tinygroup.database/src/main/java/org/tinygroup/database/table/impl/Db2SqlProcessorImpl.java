@@ -15,15 +15,6 @@
  */
 package org.tinygroup.database.table.impl;
 
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
-import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.config.table.TableField;
-import org.tinygroup.database.util.DataBaseUtil;
 
 
 public class Db2SqlProcessorImpl extends SqlProcessorImpl {
@@ -32,37 +23,26 @@ public class Db2SqlProcessorImpl extends SqlProcessorImpl {
 		return "db2";
 	}
 
-	String appendIncrease() {
-		return "";
-	}
-	
-	public boolean checkTableExist(Table table, String catalog,
-			DatabaseMetaData metadata) {
-
-		ResultSet r = null;
-		try {
-			String schema = DataBaseUtil.getSchema(table, metadata);
-			r = metadata.getTables(catalog, schema.toUpperCase(), table.getNameWithOutSchema().toUpperCase(),
-					new String[] { "TABLE" });
-
-			if (r.next()) {
-				return true;
-			}
-
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			DataBaseUtil.closeResultSet(r);
-		}
-
-		return false;
+	protected String appendIncrease() {
+		return " GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1 ) ";
 	}
 
-	
-	protected List<String> dealExistFields(
-			Map<String, TableField> existInTable,
-			Map<String, Map<String, String>> dbColumns, Table table) {
-		return null;
+
+	protected String createNotNullSql(String tableName, String fieldName,
+			String tableDataType) {
+		return String.format("ALTER TABLE %s ALTER COLUMN %s SET NOT NULL",
+				tableName, fieldName);
+	}
+
+	protected String createNullSql(String tableName, String fieldName,
+			String tableDataType) {
+		return String.format("ALTER TABLE %s ALTER COLUMN %s SET NULL",
+				tableName, fieldName);
+	}
+
+	protected String createAlterTypeSql(String tableName, String fieldName,
+			String tableDataType) {
+		 return String.format("ALTER TABLE %s ALTER COLUMN %s SET DATA TYPE %s", tableName,fieldName,tableDataType);
 	}
 
 }

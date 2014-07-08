@@ -1,7 +1,5 @@
 package org.tinygroup.database.sequence.impl;
 
-import java.sql.Connection;
-
 import org.tinygroup.database.config.sequence.SeqCacheConfig;
 import org.tinygroup.database.config.sequence.Sequence;
 import org.tinygroup.database.config.sequence.ValueConfig;
@@ -11,44 +9,38 @@ public class OracleSequenceSqlProcessor extends AbstractSequenceSqlProcessor {
 	public String getCreateSql(Sequence sequence) {
 		StringBuffer seqBuffer = new StringBuffer();
 		seqBuffer.append("CREATE SEQUENCE ").append(sequence.getName())
-				.append(" INCREMENT BY ").append(sequence.getIncrementBy()).append(" START WITH ").append(sequence.getStartWith());
-		ValueConfig maxValueConfig=sequence.getValueConfig();
-		if(maxValueConfig==null){
+				.append(" INCREMENT BY ").append(sequence.getIncrementBy())
+				.append(" START WITH ").append(sequence.getStartWith());
+		ValueConfig maxValueConfig = sequence.getValueConfig();
+		if (maxValueConfig == null) {
 			seqBuffer.append(" NOMAXVALUE ");
-		}else{
-			seqBuffer.append(" MINVALUE ").append(maxValueConfig.getMinValue()).append(" MAXVALUE ").append(maxValueConfig.getMaxValue());
+		} else {
+			seqBuffer.append(" MINVALUE ").append(maxValueConfig.getMinValue())
+					.append(" MAXVALUE ").append(maxValueConfig.getMaxValue());
 		}
-		if(sequence.isCycle()){
+		if (sequence.isCycle()) {
 			seqBuffer.append(" CYCLE ");
-		}else{
+		} else {
 			seqBuffer.append(" NOCYCLE ");
 		}
-		SeqCacheConfig cacheConfig=sequence.getSeqCacheConfig();
-		if(cacheConfig==null||!cacheConfig.isCache()){
+		SeqCacheConfig cacheConfig = sequence.getSeqCacheConfig();
+		if (cacheConfig == null || !cacheConfig.isCache()) {
 			seqBuffer.append(" NOCACHE ");
-		}else{
+		} else {
 			seqBuffer.append(" CACHE ").append(cacheConfig.getNumber());
 		}
-		if(sequence.isOrder()){
+		if (sequence.isOrder()) {
 			seqBuffer.append(" ORDER ");
-		}else {
+		} else {
 			seqBuffer.append(" NOORDER ");
 		}
 		return seqBuffer.toString();
 	}
 
-
-	public String checkSequenceExist(Sequence sequence,Connection connection) {
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		return null;
+	protected String getQuerySql(Sequence sequence) {
+	   String sql="select  sequence_name  from  user_sequences  where  sequence_name= '"
+		+ sequence.getName() + "'";
+	   return sql;
 	}
 
 }

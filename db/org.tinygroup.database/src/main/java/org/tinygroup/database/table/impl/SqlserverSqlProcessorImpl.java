@@ -15,14 +15,6 @@
  */
 package org.tinygroup.database.table.impl;
 
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
-import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.config.table.TableField;
 
 public class SqlserverSqlProcessorImpl extends SqlProcessorImpl {
 
@@ -30,39 +22,27 @@ public class SqlserverSqlProcessorImpl extends SqlProcessorImpl {
 		return "sqlserver";
 	}
 
-	String appendIncrease() {
-		return "";
+	protected String appendIncrease() {
+		return " identity(1,1) ";
+	}
+
+	protected String createNotNullSql(String tableName, String fieldName,
+			String tableDataType) {
+		return String.format("ALTER TABLE %s ALTER COLUMN %s %s NOT NULL",
+				tableName, fieldName,tableDataType);
+	}
+
+	protected String createNullSql(String tableName, String fieldName,
+			String tableDataType) {
+		return String.format("ALTER TABLE %s ALTER COLUMN %s %s NULL",
+				tableName, fieldName,tableDataType);
+	}
+
+	protected String createAlterTypeSql(String tableName, String fieldName,
+			String tableDataType) {
+		return String.format("ALTER TABLE %s ALTER COLUMN %s %s ", tableName,
+				fieldName, tableDataType);
 	}
 	
-	public boolean checkTableExist(Table table, String catalog,
-			DatabaseMetaData metadata) {
-
-		try {
-			String schema = table.getSchema();
-			if(schema == null ||"".equals(schema)){
-				schema = metadata.getUserName();
-			}
-			ResultSet r = metadata.getTables(null, null,
-					table.getNameWithOutSchema(), new String[] { "TABLE" });
-			
-			while (r.next()) {
-//				r.getString("TABLE_NAME");
-				return true;
-			}
-
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-
-		return false;
-	}
-
-	
-	protected List<String> dealExistFields(
-			Map<String, TableField> existInTable,
-			Map<String, Map<String, String>> dbColumns, Table table) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

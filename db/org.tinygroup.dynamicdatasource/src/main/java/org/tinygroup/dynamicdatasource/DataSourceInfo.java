@@ -16,7 +16,7 @@
 /**
  * 
  */
-package org.tinygroup.datasource;
+package org.tinygroup.dynamicdatasource;
 
 /**
  * 数据源信息
