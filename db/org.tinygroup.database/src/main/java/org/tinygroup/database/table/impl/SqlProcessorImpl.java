@@ -214,9 +214,10 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			// 遍历当前表格所有列
 			// 若存在于map，则不处理，切从map中删除该key
 			// 若不存在于map，则从表格中删除该列
-			if (fieldDbNames.containsKey(colum)) {
-				existInTable.put(colum, fieldDbNames.get(colum));
-				fieldDbNames.remove(colum);
+			String temp = colum.toUpperCase();
+			if (fieldDbNames.containsKey(temp)) {
+				existInTable.put(temp, fieldDbNames.get(temp));
+				fieldDbNames.remove(temp);
 				continue;
 			}
 			dropFields.add(colum);
@@ -249,9 +250,48 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		return addList;
 	}
 
-	protected abstract List<String> dealExistFields(
+	protected List<String> dealExistFields(
 			Map<String, TableField> existInTable,
-			Map<String, Map<String, String>> dbColumns, Table table);
+			Map<String, Map<String, String>> dbColumns, Table table) {
+		List<String> existUpdateList = new ArrayList<String>();
+		for (String fieldName : existInTable.keySet()) {
+			TableField field = existInTable.get(fieldName);
+			if (field.getPrimary()) {
+				continue;
+			}
+			StandardField standardField = MetadataUtil.getStandardField(field
+					.getStandardFieldId());
+			Map<String, String> attribute = dbColumns.get(fieldName);
+			String tableDataType = MetadataUtil.getStandardFieldType(
+					standardField.getId(), getDatabaseType());
+			String dbColumnType = getDbColumnType(attribute)
+					.replaceAll(" ", "").toLowerCase();
+			if (dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
+					.toLowerCase()) == -1) {
+				String alterType=createAlterTypeSql(table.getName(),fieldName,tableDataType);
+				existUpdateList.add(alterType);
+			}
+			// 如果数据库中字段允许为空，但table中不允许为空
+			if (field.getNotNull()
+					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNullable) {
+				String notNullSql=createNotNullSql(table.getName(),fieldName,tableDataType);
+				existUpdateList.add(notNullSql);
+			} else if (!field.getNotNull()
+					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNoNulls) {
+				String nullSql=createNullSql(table.getName(), fieldName,tableDataType);
+				existUpdateList.add(nullSql);
+			}
+		}
+		return existUpdateList;
+
+	}
+
+	protected abstract String createNotNullSql(String tableName, String fieldName,String tableDataType);
+	
+	protected abstract String createNullSql(String tableName, String fieldName,String tableDataType);
+
+	protected abstract String createAlterTypeSql(String tableName, String fieldName,
+			String tableDataType);
 
 	protected void appendBody(StringBuffer ddlBuffer, String packageName,
 			Table table, List<String> list) {
@@ -301,7 +341,9 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		}
 	}
 
-	abstract String appendIncrease();
+	protected String appendIncrease() {
+		return "";
+	}
 
 	private List<String> appendIndexs(Table table) {
 		List<String> indexSqlList = new ArrayList<String>();
@@ -392,36 +434,58 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	protected Map<String, Map<String, String>> getColumns(
 			DatabaseMetaData metadata, String catalog, Table table)
 			throws SQLException {
-		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
 		String schema = DataBaseUtil.getSchema(table, metadata);
-		String tableName = table.getNameWithOutSchema().toUpperCase();
-		map = getColumns(metadata, catalog, schema, tableName);
-		return map;
+		String tableName = table.getNameWithOutSchema();
+		return getColumns(metadata, catalog, schema, tableName);
 	}
 
-	protected Map<String, Map<String, String>> getColumns(
+	private Map<String, Map<String, String>> getColumns(
 			DatabaseMetaData metadata, String catalog, String schema,
 			String tableName) throws SQLException {
 		ResultSet colRet = null;
 		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
 		try {
 			colRet = metadata.getColumns(catalog, schema, tableName, "%");
+			boolean exist = false;
 			while (colRet.next()) {
-				Map<String, String> attributes = new HashMap<String, String>();
-				String columnName = colRet.getString(COLUMN_NAME);
-				attributes.put(NULLABLE, colRet.getString(NULLABLE));
-				attributes.put(TYPE_NAME, colRet.getString(TYPE_NAME));
-				attributes.put(COLUMN_SIZE, colRet.getString(COLUMN_SIZE));
-				attributes
-						.put(DECIMAL_DIGITS, colRet.getString(DECIMAL_DIGITS));
-				map.put(columnName.toUpperCase(), attributes);
+				getMapByResultSet(colRet, map);
+				exist = true;
+			}
+			if (!exist) {
+				colRet.close();
+				colRet = metadata.getColumns(catalog, schema,
+						tableName.toUpperCase(), "%");
+				while (colRet.next()) {
+					getMapByResultSet(colRet, map);
+					exist = true;
+				}
+				if (!exist) {
+					colRet.close();
+					colRet = metadata.getColumns(catalog, schema.toUpperCase(),
+							tableName.toUpperCase(), "%");
+					while (colRet.next()) {
+						getMapByResultSet(colRet, map);
+						exist = true;
+					}
+				}
 			}
 		} finally {
-			if(colRet!=null){
+			if (colRet != null) {
 				colRet.close();
 			}
 		}
 		return map;
+	}
+
+	private void getMapByResultSet(ResultSet colRet,
+			Map<String, Map<String, String>> map) throws SQLException {
+		Map<String, String> attributes = new HashMap<String, String>();
+		String columnName = colRet.getString(COLUMN_NAME);
+		attributes.put(NULLABLE, colRet.getString(NULLABLE));
+		attributes.put(TYPE_NAME, colRet.getString(TYPE_NAME));
+		attributes.put(COLUMN_SIZE, colRet.getString(COLUMN_SIZE));
+		attributes.put(DECIMAL_DIGITS, colRet.getString(DECIMAL_DIGITS));
+		map.put(columnName.toUpperCase(), attributes);
 	}
 
 	public boolean checkTableExist(Table table, Connection connection)
@@ -430,19 +494,25 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		DatabaseMetaData metadata = connection.getMetaData();
 		try {
 			String schema = DataBaseUtil.getSchema(table, metadata);
-			resultset = metadata.getTables(connection.getCatalog(), schema, table
-					.getNameWithOutSchema(),
-					new String[] { "TABLE" });
-
+			resultset = metadata.getTables(connection.getCatalog(), schema,
+					table.getNameWithOutSchema(), new String[] { "TABLE" });
 			if (resultset.next()) {
 				return true;
-			}else{
-				resultset.close();//关闭上次打开的
-				resultset = metadata.getTables(connection.getCatalog(), schema, table
-						.getNameWithOutSchema().toUpperCase(),
+			} else {
+				resultset.close();// 关闭上次打开的
+				resultset = metadata.getTables(connection.getCatalog(), schema,
+						table.getNameWithOutSchema().toUpperCase(),
 						new String[] { "TABLE" });
-				if(resultset.next()){
+				if (resultset.next()) {
 					return true;
+				} else {
+					resultset.close();
+					resultset = metadata.getTables(connection.getCatalog(),
+							schema.toUpperCase(), table.getNameWithOutSchema()
+									.toUpperCase(), new String[] { "TABLE" });
+					if (resultset.next()) {
+						return true;
+					}
 				}
 			}
 		} finally {

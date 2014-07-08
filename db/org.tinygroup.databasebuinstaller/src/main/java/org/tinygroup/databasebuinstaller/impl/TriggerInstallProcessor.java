@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.database.config.trigger.Trigger;
 import org.tinygroup.database.trigger.TriggerProcessor;
 
 public class TriggerInstallProcessor extends AbstractInstallProcessor {
@@ -21,7 +22,12 @@ public class TriggerInstallProcessor extends AbstractInstallProcessor {
 
 	protected List<String> getDealSqls(Connection con) throws SQLException {
 		List<String> sqls=new ArrayList<String>();
-		sqls.addAll(processor.getCreateSql(language));
+		List<Trigger> triggers=processor.getTriggers(language);
+		for (Trigger trigger : triggers) {
+			if(!processor.checkTriggerExist(language, trigger, con)){
+				sqls.add(processor.getCreateSql(trigger.getName(), language));
+			}
+		}
 		return sqls;
 	}
 

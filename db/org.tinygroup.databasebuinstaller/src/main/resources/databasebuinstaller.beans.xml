@@ -58,6 +58,7 @@
 		       <ref bean="initDataInstallProcessor"/>
 		       <ref bean="procedureInstallProcessor"/>
 		       <ref bean="triggerInstallProcessor"/>
+		       <ref bean=sequenceInstallProcessor/>
  		   </list>
 		</property>
 	</bean>
