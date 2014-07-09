@@ -29,8 +29,8 @@ import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerImpl;
 
 public class NewRmiRunClient2 {
-	private static String SERVERIP = "192.168.84.23";
-	private static String LOCALIP = "192.168.84.23";
+	private static String SERVERIP = "127.0.0.1";
+	private static String LOCALIP = "127.0.0.1";
 
 	public static void main(String[] args) {
 		RmiServer remoteServer = null;
