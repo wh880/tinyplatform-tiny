@@ -35,12 +35,7 @@ public class BundleManagerTest3 extends TestCase{
 		} catch (ClassNotFoundException e) {
 			assertFalse(true);
 		}
-		try {
-			manager.removeBundle(manager.getBundleDefine("test1"));
-		} catch (BundleException e) {
-			
-			e.printStackTrace();
-		}
+		
 //		manager.stop();
 	}
 	
