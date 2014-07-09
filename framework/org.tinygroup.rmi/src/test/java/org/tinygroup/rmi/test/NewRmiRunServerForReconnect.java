@@ -30,7 +30,7 @@ import org.tinygroup.rmi.impl.RmiServerImpl;
 
 public class NewRmiRunServerForReconnect {
 	
-	private static String LOCALIP = "192.168.84.23";
+	private static String LOCALIP = "127.0.0.1";
 
 	public static void main(String[] args) {
 		RmiServer localServer = null;

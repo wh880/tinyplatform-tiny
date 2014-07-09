@@ -28,7 +28,7 @@ import java.rmi.RemoteException;
 import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerImpl;
 
-public class NewRmiRunClientForReconnect {
+public class NewRmiRunClient {
 	private static String SERVERIP = "127.0.0.1";
 	private static String LOCALIP = "127.0.0.1";
 
@@ -36,7 +36,7 @@ public class NewRmiRunClientForReconnect {
 		RmiServer remoteServer = null;
 		
 		try {
-			remoteServer = new RmiServerImpl(LOCALIP, 7777,SERVERIP,8888);
+			remoteServer = new RmiServerImpl(LOCALIP, 9999,SERVERIP,8888);
 		
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
@@ -49,14 +49,14 @@ public class NewRmiRunClientForReconnect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		NewRmiRunClientForReconnect c = new NewRmiRunClientForReconnect(remoteServer);
+		NewRmiRunClient c = new NewRmiRunClient(remoteServer);
 		c.run();
 		
 	}
 
 	private RmiServer remoteServer;
 
-	public NewRmiRunClientForReconnect(RmiServer remoteServer) {
+	public NewRmiRunClient(RmiServer remoteServer) {
 		this.remoteServer = remoteServer;
 	}
 
@@ -70,7 +70,7 @@ public class NewRmiRunClientForReconnect {
 
 		public void run() {
 			while (!end) {
-//				hello();
+				hello();
 				try {
 					sleep(5000);
 				} catch (InterruptedException e) {
@@ -84,16 +84,16 @@ public class NewRmiRunClientForReconnect {
 		public void hello() {
 			Hello hello = null;
 			try {
-				hello = remoteServer.getObject("hello");
+				hello = remoteServer.getObject("hello1");
 			} catch (Exception e) {
 				e.printStackTrace();
 				// throw new RuntimeException("获取对象失败"+e.getMessage());
 			}
 
 			try {
-				String info = hello.sayHello("abc");
+				String info = hello.sayHello("abc1");
 //				System.out.println(info);
-				if (!"Hello,abc".equals(info)) {
+				if (!"Hello,abc1".equals(info)) {
 					throw new RuntimeException("执行结果的字符串不匹配");
 				}
 			} catch (Exception e) {
