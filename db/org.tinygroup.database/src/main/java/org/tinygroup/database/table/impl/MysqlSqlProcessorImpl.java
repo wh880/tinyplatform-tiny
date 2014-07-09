@@ -18,16 +18,9 @@ package org.tinygroup.database.table.impl;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.metadata.config.stdfield.StandardField;
-import org.tinygroup.metadata.util.MetadataUtil;
 
 public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 
@@ -35,7 +28,7 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 		return "mysql";
 	}
 
-	String appendIncrease() {
+	protected String appendIncrease() {
 		return " auto_increment ";
 	}
 
@@ -60,82 +53,7 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 		return false;
 	}
 
-	protected List<String> dealExistFields(
-			Map<String, TableField> existInTable,
-			Map<String, Map<String, String>> dbColumns, Table table) {
-		List<String> existUpdateList = new ArrayList<String>();
-		for (String fieldName : existInTable.keySet()) {
-			TableField field = existInTable.get(fieldName);
-			if (field.getPrimary()) {
-				continue;
-			}
-			StandardField standardField = MetadataUtil.getStandardField(field
-					.getStandardFieldId());
-			Map<String, String> attribute = dbColumns.get(fieldName);
-			String tableDataType = MetadataUtil.getStandardFieldType(
-					standardField.getId(), getDatabaseType());
-			String dbColumnType = getDbColumnType(attribute)
-					.replaceAll(" ", "").toLowerCase();
-			if (dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
-					.toLowerCase()) == -1) {
-				existUpdateList.add(String.format(
-						"ALTER TABLE %s CHANGE %s %s %s", table.getName(),
-						fieldName, fieldName, tableDataType));
-			}
 
-			// StandardField standardField = MetadataUtil.getStandardField(field
-			// .getStandardFieldId());
-			// //如果数据库中字段允许为空，但table中不允许为空
-			if (field.getNotNull()
-					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNullable) {
-				existUpdateList.add(String.format(
-						"ALTER TABLE %s CHANGE %s %s %s NOT NULL",
-						table.getName(), fieldName, fieldName, tableDataType));
-			} else if (!field.getNotNull()
-					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNoNulls) {
-				existUpdateList.add(String.format(
-						"ALTER TABLE %s CHANGE %s %s %s NULL", table.getName(),
-						fieldName, fieldName, tableDataType));
-			}
-
-		}
-		return existUpdateList;
-	}
-
-	protected List<String> checkTableColumn(
-			Map<String, Map<String, String>> columns,
-			Map<String, TableField> fieldDbNames,
-			Map<String, TableField> existInTable) {
-		List<String> dropFields = new ArrayList<String>();
-		for (String colum : columns.keySet()) {
-			// 遍历当前表格所有列
-			// 若存在于map，则不处理，切从map中删除该key
-			// 若不存在于map，则从表格中删除该列
-			String temp = colum.toUpperCase();
-			if (fieldDbNames.containsKey(temp)) {
-				existInTable.put(temp, fieldDbNames.get(temp));
-				fieldDbNames.remove(temp);
-				continue;
-			}
-			dropFields.add(colum);
-		}
-		return dropFields;
-	}
-
-	protected Map<String, Map<String, String>> getColumns(
-			DatabaseMetaData metadata, String catalog, Table table) {
-		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
-		try {
-			String schema = DataBaseUtil.getSchema(table, metadata);
-			String tableName = table.getNameWithOutSchema();
-			map = getColumns(metadata, catalog, schema, tableName);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-		return map;
-
-	}
-	
 	protected String getQueryForeignSql(Table table) {
 		 String sql = "SELECT c.COLUMN_NAME, tc.CONSTRAINT_NAME,fc.REFERENCED_TABLE_NAME,kcu.REFERENCED_COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS c"
 			+ " LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu ON kcu.TABLE_SCHEMA = c.TABLE_SCHEMA"
@@ -150,6 +68,25 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 			+ "' and table_schema='"
 			+ table.getSchema() + "'";
 		 return sql;
+	}
+
+	protected String createNotNullSql(String tableName, String fieldName,String tableDataType) {
+		return String.format(
+				"ALTER TABLE %s CHANGE %s %s %s NOT NULL",
+				tableName, fieldName, fieldName, tableDataType);
+	}
+
+	protected String createNullSql(String tableName, String fieldName,String tableDataType) {
+		return String.format(
+				"ALTER TABLE %s CHANGE %s %s %s NULL", tableName,
+				fieldName, fieldName, tableDataType);
+	}
+
+	protected String createAlterTypeSql(String tableName, String fieldName,
+			String tableDataType) {
+		return String.format(
+				"ALTER TABLE %s CHANGE %s %s %s", tableName,
+				fieldName, fieldName, tableDataType);
 	}
 
 

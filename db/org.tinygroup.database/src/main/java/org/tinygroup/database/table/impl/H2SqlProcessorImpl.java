@@ -15,57 +15,28 @@
  */
 package org.tinygroup.database.table.impl;
 
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
-import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.config.table.TableField;
-
 public class H2SqlProcessorImpl extends SqlProcessorImpl {
 
 	protected String getDatabaseType() {
 		return "h2";
 	}
 
-	String appendIncrease() {
-		return "";
-	}
-	
-	public boolean checkTableExist(Table table, String catalog,
-			DatabaseMetaData metadata) {
-
-		try {
-			String schema = table.getSchema();
-			if(schema == null ||"".equals(schema)){
-				schema = metadata.getUserName();
-			}
-			ResultSet r = metadata.getTables(catalog, "%",
-					table.getNameWithOutSchema().toUpperCase(), new String[] { "TABLE" });
-			
-//			ResultSet r = metadata.getTables(catalog, schema,schema.toUpperCase()+"."+table.getNameWithOutSchema()
-//					DataBaseNameUtil.getTableNameFormat(table
-//							.getNameWithOutSchema()), new String[] { "TABLE" });
-			
-			while (r.next()) {
-				return true;
-			}
-
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-
-		return false;
+	protected String createNotNullSql(String tableName, String fieldName,
+			String tableDataType) {
+		return String.format("ALTER TABLE %s ALTER COLUMN %s %s NOT NULL",
+				tableName, fieldName,tableDataType);
 	}
 
-	
-	protected List<String> dealExistFields(
-			Map<String, TableField> existInTable,
-			Map<String, Map<String, String>> dbColumns, Table table) {
-		// TODO Auto-generated method stub
-		return null;
+	protected String createNullSql(String tableName, String fieldName,
+			String tableDataType) {
+		return String.format("ALTER TABLE %s ALTER COLUMN %s %s NULL", tableName,
+				fieldName,tableDataType);
+	}
+
+	protected String createAlterTypeSql(String tableName, String fieldName,
+			String tableDataType) {
+		return String.format("ALTER TABLE %s ALTER COLUMN %s SET DATA TYPE %s",
+				tableName, fieldName, tableDataType);
 	}
 
 }

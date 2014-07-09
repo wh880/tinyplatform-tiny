@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.database.config.sequence.Sequence;
 import org.tinygroup.database.sequence.SequenceProcessor;
 
 public class SequenceInstallProcessor extends AbstractInstallProcessor {
@@ -19,7 +20,12 @@ public class SequenceInstallProcessor extends AbstractInstallProcessor {
 	}
 	protected List<String> getDealSqls(Connection con) throws SQLException {
 		List<String> sqls=new ArrayList<String>();
-		sqls.addAll(processor.getCreateSql(language));
+		List<Sequence> sequences=processor.getSequences(language);
+		for (Sequence sequence : sequences) {
+			if(!processor.checkSequenceExist(language, sequence, con)){
+				sqls.add(processor.getCreateSql(sequence.getName(), language));
+			}
+		}
 		return sqls;
 	}
 
