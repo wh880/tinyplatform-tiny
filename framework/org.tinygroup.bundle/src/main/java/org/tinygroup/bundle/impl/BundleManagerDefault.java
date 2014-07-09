@@ -422,7 +422,7 @@ public class BundleManagerDefault implements BundleManager {
 		f.addIncludePathPattern("");
 		f.addResolvePath(bundleDir);
 		f.setClassLoader(loader);
-//		f.resolve(loader);
+		f.resolve();
 		fileResolverMap.put(bundle, f);
 	}
 
