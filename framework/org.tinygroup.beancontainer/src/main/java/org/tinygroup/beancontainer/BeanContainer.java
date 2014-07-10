@@ -23,6 +23,9 @@ public interface BeanContainer<C> {
      * @param subBeanContainer
      */
     C getSubBeanContainer(List<FileObject> files,ClassLoader loader);
+    
+    
+    C getSubBeanContainer(ClassLoader loader);
 
     /**
      * 返回子窗口列表

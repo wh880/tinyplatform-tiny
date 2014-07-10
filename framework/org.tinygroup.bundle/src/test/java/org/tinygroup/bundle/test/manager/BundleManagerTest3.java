@@ -17,19 +17,33 @@ package org.tinygroup.bundle.test.manager;
 
 import junit.framework.TestCase;
 
-import org.tinygroup.bundle.BundleException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
 import org.tinygroup.bundle.BundleManager;
 import org.tinygroup.bundle.test.util.TestUtil;
 import org.tinygroup.springutil.SpringUtil;
 
-public class BundleManagerTest3 extends TestCase{
+public class BundleManagerTest3 extends TestCase {
 
-	public void testRemove(){
+	public void testSpringBean(){
 		TestUtil.init();
 		BundleManager manager = SpringUtil.getBean(BundleManager.BEAN_NAME);
 		manager.start();
 		try {
 			manager.getTinyClassLoader("test2").loadClass("org.tinygroup.MyTestImpl2");
+			
+			ApplicationContext app = SpringUtil.getSubBeanContainer(manager.getTinyClassLoader("test2")
+			);
+			System.out.println(app);
+			assertNotNull(app);
+			System.out.println(app.getBean("mytestImpl2"));
+			assertNotNull(app.getBean("mytestImpl2"));
+			try {
+				System.out.println(app.getBean("mytestImpl"));
+				assertTrue(false);
+			} catch (NoSuchBeanDefinitionException e) {
+				assertTrue(true);
+			}
 			//manager.getTinyClassLoader().loadClass("org.tinygroup.hello.HelloImpl2");
 			
 		} catch (ClassNotFoundException e) {
@@ -38,6 +52,5 @@ public class BundleManagerTest3 extends TestCase{
 		
 //		manager.stop();
 	}
-	
 
 }

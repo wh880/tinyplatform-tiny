@@ -56,6 +56,16 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 		return sub;
 
 	}
+	
+	public ApplicationContext getSubBeanContainer(
+			ClassLoader loader) {
+		for(ApplicationContext app:subs){
+			if(app.getClassLoader()==loader){
+				return app;
+			}
+		}
+		return null;
+	}
 
 	private static String[] listToArray(List<String> list) {
 		String[] a = new String[0];
