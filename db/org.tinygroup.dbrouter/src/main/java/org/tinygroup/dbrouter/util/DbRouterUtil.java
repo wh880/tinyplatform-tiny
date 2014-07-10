@@ -297,13 +297,13 @@ public final class DbRouterUtil {
 			DatabaseMetaData metaData) throws SQLException {
 		Statement originalStatement = RouterManagerBeanFactory.getManager()
 				.getSqlStatement(sql);
-		Statement statement;
-		try {
-			statement = (Statement) BeanUtil.deepCopy(originalStatement);
-		} catch (Exception e) {
-			throw new SQLException(e.getMessage());
-		}
-		if (statement instanceof Insert) {
+		if (originalStatement instanceof Insert) {
+			Statement statement;
+			try {
+				statement = (Statement) BeanUtil.deepCopy(originalStatement);
+			} catch (Exception e) {
+				throw new SQLException(e.getMessage());
+			}
 			Insert insert = (Insert) statement;
 			Table table = insert.getTable();
 			String tableName = table.getName();
@@ -316,7 +316,7 @@ public final class DbRouterUtil {
 					getPrimaryKeys(router, metaData, rs, insert, table,
 							queryTableName);
 				} else {
-					rs.close();//先关闭上次查询的resultset
+					rs.close();// 先关闭上次查询的resultset
 					queryTableName = realTableName.toUpperCase();
 					rs = metaData.getPrimaryKeys(null, null, queryTableName);
 					if (rs.next()) {
