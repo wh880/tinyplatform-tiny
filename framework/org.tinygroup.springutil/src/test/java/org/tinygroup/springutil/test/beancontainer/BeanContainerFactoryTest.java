@@ -23,7 +23,7 @@ public class BeanContainerFactoryTest extends TestCase {
 				.getResource("beancontainer.beans.xml"));
 		List<FileObject> fl = new ArrayList<FileObject>();
 		fl.add(f);
-		ApplicationContext app = container.getSubBeanContainer(fl, this
+		BeanContainer app = container.getSubBeanContainer(fl, this
 				.getClass().getClassLoader());
 		assertNotNull(app);
 		assertEquals(1, container.getSubBeanContainers().size());

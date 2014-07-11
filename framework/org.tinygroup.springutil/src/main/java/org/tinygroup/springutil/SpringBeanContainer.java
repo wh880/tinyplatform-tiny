@@ -2,7 +2,9 @@ package org.tinygroup.springutil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
@@ -19,7 +21,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 			.getLogger(SpringBeanContainer.class);
 	ApplicationContext applicationContext = null;
 	List<String> configs = new ArrayList<String>();
-	List<ApplicationContext> subs = new ArrayList<ApplicationContext>();
+	Map<ClassLoader, BeanContainer<?>> subs = new HashMap<ClassLoader, BeanContainer<?>>();
 	boolean inited = false;
 
 	public ApplicationContext getBeanContainerPrototype() {
@@ -34,11 +36,25 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 		fileSystemXmlApplicationContext.setAllowBeanDefinitionOverriding(true);
 		fileSystemXmlApplicationContext.refresh();
 		applicationContext = fileSystemXmlApplicationContext;
-
 	}
 
-	public ApplicationContext getSubBeanContainer(List<FileObject> files,
-			ClassLoader loader) {
+	public SpringBeanContainer(SpringBeanContainer parent, ClassLoader loader) {
+		if (inited == true)
+			return;
+		inited = true;
+		FileSystemXmlApplicationContext fileSystemXmlApplicationContext = new FileSystemXmlApplicationContext(
+				parent.getBeanContainerPrototype());
+		fileSystemXmlApplicationContext.setAllowBeanDefinitionOverriding(true);
+		fileSystemXmlApplicationContext.setClassLoader(loader);
+		fileSystemXmlApplicationContext.refresh();
+		applicationContext = fileSystemXmlApplicationContext;
+	}
+
+	public SpringBeanContainer(SpringBeanContainer parent,
+			List<FileObject> files, ClassLoader loader) {
+		if (inited == true)
+			return;
+		inited = true;
 		List<String> configLocations = new ArrayList<String>();
 		for (FileObject fileObject : files) {
 			String urlString = fileObject.getURL().toString();
@@ -48,13 +64,24 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 						urlString);
 			}
 		}
-		FileSystemXmlApplicationContext sub = new FileSystemXmlApplicationContext(
-				listToArray(configLocations), applicationContext);
-		sub.setClassLoader(loader);
-		sub.refresh();
-		subs.add(sub);
-		return sub;
+		FileSystemXmlApplicationContext fileSystemXmlApplicationContext = new FileSystemXmlApplicationContext(
+				listToArray(configLocations),
+				parent.getBeanContainerPrototype());
+		fileSystemXmlApplicationContext.setAllowBeanDefinitionOverriding(true);
+		fileSystemXmlApplicationContext.setClassLoader(loader);
+		fileSystemXmlApplicationContext.refresh();
+		applicationContext = fileSystemXmlApplicationContext;
+	}
 
+	public BeanContainer<?> getSubBeanContainer(List<FileObject> files,
+			ClassLoader loader) {
+		SpringBeanContainer b = new SpringBeanContainer(this, files, loader);
+		subs.put(loader, b);
+		return b;
+	}
+
+	public BeanContainer<?> getSubBeanContainer(ClassLoader loader) {
+		return subs.get(loader);
 	}
 
 	private static String[] listToArray(List<String> list) {
@@ -62,7 +89,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 		return (String[]) list.toArray(a);
 	}
 
-	public List<ApplicationContext> getSubBeanContainers() {
+	public Map<ClassLoader, BeanContainer<?>> getSubBeanContainers() {
 		return subs;
 	}
 
@@ -71,7 +98,6 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	}
 
 	public <T> T getBean(String name) {
-		// TODO Auto-generated method stub
 		return (T) applicationContext.getBean(name);
 	}
 
@@ -119,4 +145,5 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 		app.setConfigLocations(listToArray(configs));
 		app.refresh();
 	}
+
 }

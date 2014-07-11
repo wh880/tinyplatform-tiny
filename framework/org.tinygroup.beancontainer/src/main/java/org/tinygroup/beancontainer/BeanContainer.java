@@ -2,6 +2,7 @@ package org.tinygroup.beancontainer;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.tinygroup.vfs.FileObject;
 
@@ -22,14 +23,17 @@ public interface BeanContainer<C> {
      *
      * @param subBeanContainer
      */
-    C getSubBeanContainer(List<FileObject> files,ClassLoader loader);
+    BeanContainer<?> getSubBeanContainer(List<FileObject> files,ClassLoader loader);
+    
+    
+    BeanContainer<?> getSubBeanContainer(ClassLoader loader);
 
     /**
      * 返回子窗口列表
      *
      * @return
      */
-    List<C> getSubBeanContainers();
+    Map<ClassLoader,BeanContainer<?>> getSubBeanContainers();
 
     /**
      * 返回指定类型的bean列表

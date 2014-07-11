@@ -32,8 +32,8 @@ import org.tinygroup.rmi.impl.RmiServerImpl;
  * Created by luoguo on 14-1-24.
  */
 public class RmiServerTest extends TestCase {
-	static String SIP = "192.168.84.23";
-	static String CIP = "192.168.84.23";
+	static String SIP = "127.0.0.1";
+	static String CIP = "127.0.0.1";
 	static int SP = 8888;
 	static int CP = 7777;
     RmiServer localServer;

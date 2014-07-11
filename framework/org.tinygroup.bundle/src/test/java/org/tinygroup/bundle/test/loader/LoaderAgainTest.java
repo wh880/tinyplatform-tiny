@@ -16,13 +16,11 @@
 package org.tinygroup.bundle.test.loader;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.tinygroup.bundle.loader.TinyClassLoader;
-import org.tinygroup.bundle.test.util.TestUtil;
-
 import junit.framework.TestCase;
+
+import org.tinygroup.bundle.loader.TinyClassLoader;
 
 public class LoaderAgainTest extends TestCase{
 

@@ -21,7 +21,7 @@ import java.util.List;
  * A database set operation. This operation consists of a list of plainSelects
  * connected by set operations (UNION,INTERSECT,MINUS,EXCEPT). All these
  * operations have the same priority.
- *
+ * 
  * @author tw
  */
 public class SetOperationList implements SelectBody {
@@ -30,7 +30,6 @@ public class SetOperationList implements SelectBody {
 	private List<SetOperation> operations;
 	private List<OrderByElement> orderByElements;
 	private Limit limit;
-
 
 	public void accept(SelectVisitor selectVisitor) {
 		selectVisitor.visit(this);
@@ -52,7 +51,8 @@ public class SetOperationList implements SelectBody {
 		this.orderByElements = orderByElements;
 	}
 
-	public void setOpsAndSelects(List<PlainSelect> select, List<SetOperation> ops) {
+	public void setOpsAndSelects(List<PlainSelect> select,
+			List<SetOperation> ops) {
 		plainSelects = select;
 		operations = ops;
 
@@ -69,15 +69,24 @@ public class SetOperationList implements SelectBody {
 		this.limit = limit;
 	}
 
+	public void setPlainSelects(List<PlainSelect> plainSelects) {
+		this.plainSelects = plainSelects;
+	}
+
+	public void setOperations(List<SetOperation> operations) {
+		this.operations = operations;
+	}
 
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 
 		for (int i = 0; i < plainSelects.size(); i++) {
 			if (i != 0) {
-				buffer.append(" ").append(operations.get(i - 1).toString()).append(" ");
+				buffer.append(" ").append(operations.get(i - 1).toString())
+						.append(" ");
 			}
-			buffer.append("(").append(plainSelects.get(i).toString()).append(")");
+			buffer.append("(").append(plainSelects.get(i).toString())
+					.append(")");
 		}
 
 		if (orderByElements != null) {
@@ -94,9 +103,6 @@ public class SetOperationList implements SelectBody {
 	 */
 	public enum SetOperationType {
 
-		INTERSECT,
-		EXCEPT,
-		MINUS,
-		UNION
+		INTERSECT, EXCEPT, MINUS, UNION
 	}
 }

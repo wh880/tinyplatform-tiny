@@ -59,7 +59,7 @@
 			<value>opensource</value>
 		</property>
 	</bean>
-	<bean id="dynamicDataSource" class="org.tinygroup.datasource.DynamicDataSource">
+	<bean id="dynamicDataSource" class="org.tinygroup.dynamicdatasource.DynamicDataSource">
 		<property name="dataSource" ref="dataSource1" />
 	</bean>
 

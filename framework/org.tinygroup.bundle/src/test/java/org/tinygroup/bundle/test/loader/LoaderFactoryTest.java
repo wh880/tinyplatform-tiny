@@ -1,15 +1,6 @@
 package org.tinygroup.bundle.test.loader;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.logging.Logger;
-
 import junit.framework.TestCase;
-
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.tinygroup.bundle.loader.TinyClassLoader;
 
 public class LoaderFactoryTest extends TestCase{
 

@@ -15,7 +15,6 @@
  */
 package org.tinygroup.springutil;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -38,6 +37,7 @@ public final class SpringUtil {
 	static ApplicationContext applicationContext = null;
 	static List<String> configs = new ArrayList<String>();
 	static boolean inited = false;
+	static List<ApplicationContext> subs = new ArrayList<ApplicationContext>();
 	static {
 		init();
 	}
@@ -131,7 +131,15 @@ public final class SpringUtil {
 		FileSystemXmlApplicationContext app = (FileSystemXmlApplicationContext) applicationContext;
 		app.close();
 	}
-
+	public static ApplicationContext getSubBeanContainer(
+			ClassLoader loader) {
+		for(ApplicationContext app:subs){
+			if(app.getClassLoader()==loader){
+				return app;
+			}
+		}
+		return null;
+	}
 	public static FileSystemXmlApplicationContext getSubApplicationContext(List<FileObject> files,ClassLoader loader){
 		List<String> configLocations = new ArrayList<String>();
 		for (FileObject fileObject : files) {
@@ -144,6 +152,7 @@ public final class SpringUtil {
 		}
 		FileSystemXmlApplicationContext sub = new FileSystemXmlApplicationContext(listToArray(configLocations), applicationContext);
 		sub.setClassLoader(loader);
+		subs.add(sub);
 		sub.refresh();
 		return sub;
 	}

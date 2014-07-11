@@ -17,9 +17,7 @@ package org.tinygroup.bundle.test.manager;
 
 import junit.framework.TestCase;
 
-import org.tinygroup.bundle.BundleException;
 import org.tinygroup.bundle.BundleManager;
-import org.tinygroup.bundle.config.BundleDefine;
 import org.tinygroup.bundle.test.util.TestUtil;
 import org.tinygroup.springutil.SpringUtil;
 

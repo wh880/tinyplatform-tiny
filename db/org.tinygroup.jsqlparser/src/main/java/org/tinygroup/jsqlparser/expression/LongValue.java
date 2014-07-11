@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -12,6 +12,14 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ * --------------------------------------------------------------------------
+ *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *
+ *  本开源软件遵循 GPL 3.0 协议;
+ *  如果您不遵循此协议，则不被允许使用此文件。
+ *  你可以从下面的地址获取完整的协议文本
+ *
+ *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.jsqlparser.expression;
 
@@ -20,48 +28,51 @@ package org.tinygroup.jsqlparser.expression;
  */
 public class LongValue implements Expression {
 
-	private long value;
-	private String stringValue;
-    public LongValue(){
+    private long value;
+    private String stringValue;
 
-    }
-	public LongValue(final String value) {
-		String val = value;
-		if (val.charAt(0) == '+') {
-			val = val.substring(1);
-		}
-		this.value = Long.parseLong(val);
+    public LongValue(final String value) {
+        String val = value;
+        if (val.charAt(0) == '+') {
+            val = val.substring(1);
+        }
+        this.value = Long.parseLong(val);
         this.stringValue = val;
-	}
-	
-	public LongValue(long value) {
+    }
+
+    public LongValue(long value) {
 		this.value=value;
 		stringValue = String.valueOf(value);
 	}
 
-
-	public void accept(ExpressionVisitor expressionVisitor) {
-		expressionVisitor.visit(this);
-	}
-
-	public long getValue() {
-		return value;
-	}
-
-	public void setValue(long d) {
-		value = d;
-	}
-
-	public String getStringValue() {
-		return stringValue;
-	}
-
-	public void setStringValue(String string) {
-		stringValue = string;
-	}
+    public LongValue() {
+        super();
+    }
 
 
-	public String toString() {
-		return getStringValue();
-	}
+    public void accept(ExpressionVisitor expressionVisitor) {
+        expressionVisitor.visit(this);
+    }
+
+    public long getValue() {
+        return value;
+    }
+
+    public void setValue(long d) {
+        value = d;
+        stringValue = d + "";
+    }
+
+    public String getStringValue() {
+        return stringValue;
+    }
+
+    public void setStringValue(String string) {
+        stringValue = string;
+    }
+
+
+    public String toString() {
+        return getStringValue();
+    }
 }

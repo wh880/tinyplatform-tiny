@@ -35,7 +35,6 @@
         <module>org.tinygroup.el</module>
         <module>org.tinygroup.cepcore</module>
         <module>org.tinygroup.cepcorepc</module>
-        <module>org.tinygroup.cepcorepcsc</module>
         <module>org.tinygroup.logger</module>
         <module>org.tinygroup.pc</module>
         <module>org.tinygroup.ioc</module>
