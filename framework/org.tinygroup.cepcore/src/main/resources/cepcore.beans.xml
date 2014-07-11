@@ -18,4 +18,10 @@
 			<ref bean="cepcore" />
 		</property>
 	</bean>
+	<bean id="CEPProcessor" name="CEPProcessor"
+		scope="singleton" class="org.tinygroup.cepcore.applicationprocessor.CEPProcessor">
+		<property name="cep">
+			<ref bean="cepcore" />
+		</property>
+	</bean>
 </beans>
