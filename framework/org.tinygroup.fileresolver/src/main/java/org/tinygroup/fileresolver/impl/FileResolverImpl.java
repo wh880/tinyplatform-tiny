@@ -244,25 +244,22 @@ public class FileResolverImpl implements FileResolver {
 	 */
 	private synchronized void processFile(FileObject fileObject) {
 		if (fileObject.isExist()) {
+			String absolutePath = fileObject.getAbsolutePath();
+			Long lastModifiedTime = fileDateMap.get(absolutePath);
+			long modifiedTime = fileObject.getLastModifiedTime();
 			for (FileProcessor fileProcessor : fileProcessorList) {
 				if (fileProcessor.isMatch(fileObject)) {
-					String absolutePath = fileObject.getAbsolutePath();
-					Long lastModifiedTime = fileDateMap.get(absolutePath);
-					long modifiedTime = fileObject.getLastModifiedTime();
 					if (lastModifiedTime == null) {// 说明是第一次发现
 						addFile(fileObject, fileProcessor);
-						fileDateMap.put(absolutePath, modifiedTime);
-						fileObjectCaches.put(absolutePath, fileObject);
 					} else if (lastModifiedTime.longValue() != modifiedTime) {
 						changeFile(absolutePath, fileObject, fileProcessor);
-						fileDateMap.put(absolutePath, modifiedTime);
-						fileObjectCaches.put(absolutePath, fileObject);
 					} else {
 						noChangeFile(fileObject, fileProcessor);
 					}
-					break;// 已经找到文件处理器，就退出
 				}
 			}
+			fileDateMap.put(absolutePath, modifiedTime);
+			fileObjectCaches.put(absolutePath, fileObject);
 		}
 	}
 
