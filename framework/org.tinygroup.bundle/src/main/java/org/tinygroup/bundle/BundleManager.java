@@ -15,10 +15,11 @@
  */
 package org.tinygroup.bundle;
 
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.bundle.config.BundleDefine;
 import org.tinygroup.bundle.loader.TinyClassLoader;
-
-import java.util.List;
 
 /**
  * Bundle管理器
@@ -132,4 +133,6 @@ public interface BundleManager extends SingleBundleManager, BatchBundleManager {
      * @return
      */
     TinyClassLoader getTinyClassLoader(BundleDefine bundleDefine);
+    
+    Map<BundleDefine, TinyClassLoader> getBundleMap();
 }
