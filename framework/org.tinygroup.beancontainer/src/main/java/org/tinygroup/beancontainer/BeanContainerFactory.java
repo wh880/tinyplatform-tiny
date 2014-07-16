@@ -15,4 +15,13 @@ public class BeanContainerFactory {
 	public static BeanContainer<?> getBeanContainer(){
 		return container;
 	}
+	public static BeanContainer<?> getBeanContainer(ClassLoader loader){
+		if(loader == BeanContainerFactory.class.getClassLoader()){
+			return container;
+		}else{
+			return container.getSubBeanContainer(loader);
+		}
+		
+		
+	}
 }

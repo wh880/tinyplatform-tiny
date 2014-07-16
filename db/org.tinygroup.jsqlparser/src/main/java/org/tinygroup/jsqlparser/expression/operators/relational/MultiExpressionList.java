@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -12,14 +12,23 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ * --------------------------------------------------------------------------
+ *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *
+ *  本开源软件遵循 GPL 3.0 协议;
+ *  如果您不遵循此协议，则不被允许使用此文件。
+ *  你可以从下面的地址获取完整的协议文本
+ *
+ *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.jsqlparser.expression.operators.relational;
+
+import org.tinygroup.jsqlparser.expression.Expression;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import org.tinygroup.jsqlparser.expression.Expression;
 
 /**
  * A list of ExpressionList items. e.g. multi values of insert statements. This
@@ -29,46 +38,45 @@ import org.tinygroup.jsqlparser.expression.Expression;
  */
 public class MultiExpressionList implements ItemsList {
 
-	private List<ExpressionList> exprList;
+    private List<ExpressionList> exprList;
 
-	public MultiExpressionList() {
-		this.exprList = new ArrayList<ExpressionList>();
-	}
-
-
-	public void accept(ItemsListVisitor itemsListVisitor) {
-		itemsListVisitor.visit(this);
-	}
-
-	public List<ExpressionList> getExprList() {
-		return exprList;
-	}
-
-	public void addExpressionList(ExpressionList el) {
-		if (!exprList.isEmpty()
-				&& exprList.get(0).getExpressions().size() != el.getExpressions().size()) {
-			throw new IllegalArgumentException("different count of parameters");
-		}
-		exprList.add(el);
-	}
-
-	public void addExpressionList(List<Expression> list) {
-		addExpressionList(new ExpressionList(list));
-	}
-
-	public void addExpressionList(Expression expr) {
-		addExpressionList(new ExpressionList(Arrays.asList(expr)));
-	}
+    public MultiExpressionList() {
+        this.exprList = new ArrayList<ExpressionList>();
+    }
 
 
-	public String toString() {
-		StringBuilder b = new StringBuilder();
-		for (Iterator<ExpressionList> it = exprList.iterator(); it.hasNext();) {
-			b.append(it.next().toString());
-			if (it.hasNext()) {
-				b.append(", ");
-			}
-		}
-		return b.toString();
-	}
+    public void accept(ItemsListVisitor itemsListVisitor) {
+        itemsListVisitor.visit(this);
+    }
+
+    public List<ExpressionList> getExprList() {
+        return exprList;
+    }
+
+    public void addExpressionList(ExpressionList el) {
+        if (!exprList.isEmpty() && exprList.get(0).getExpressions().size() != el.getExpressions().size()) {
+            throw new IllegalArgumentException("different count of parameters");
+        }
+        exprList.add(el);
+    }
+
+    public void addExpressionList(List<Expression> list) {
+        addExpressionList(new ExpressionList(list));
+    }
+
+    public void addExpressionList(Expression expr) {
+        addExpressionList(new ExpressionList(Arrays.asList(expr)));
+    }
+
+
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        for (Iterator<ExpressionList> it = exprList.iterator(); it.hasNext(); ) {
+            b.append(it.next().toString());
+            if (it.hasNext()) {
+                b.append(", ");
+            }
+        }
+        return b.toString();
+    }
 }

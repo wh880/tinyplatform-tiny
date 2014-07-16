@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -12,6 +12,14 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ * --------------------------------------------------------------------------
+ *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *
+ *  本开源软件遵循 GPL 3.0 协议;
+ *  如果您不遵循此协议，则不被允许使用此文件。
+ *  你可以从下面的地址获取完整的协议文本
+ *
+ *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.jsqlparser.expression.operators.relational;
 
@@ -20,8 +28,8 @@ import org.tinygroup.jsqlparser.expression.BinaryExpression;
 public abstract class OldOracleJoinBinaryExpression extends BinaryExpression implements SupportsOldOracleJoinSyntax {
 
     private int oldOracleJoinSyntax = NO_ORACLE_JOIN;
-	
-	private int oraclePriorPosition = NO_ORACLE_PRIOR;
+
+    private int oraclePriorPosition = NO_ORACLE_PRIOR;
 
 
     public void setOldOracleJoinSyntax(int oldOracleJoinSyntax) {
@@ -33,14 +41,10 @@ public abstract class OldOracleJoinBinaryExpression extends BinaryExpression imp
 
 
     public String toString() {
-        return (isNot() ? "NOT " : "") 
-				+ (oraclePriorPosition == ORACLE_PRIOR_START ? "PRIOR " : "")
-				+ getLeftExpression() 
-				+ (oldOracleJoinSyntax == ORACLE_JOIN_RIGHT ? "(+)" : "") + " " 
-				+ getStringExpression() + " " 
-				+ (oraclePriorPosition == ORACLE_PRIOR_END ? "PRIOR " : "")
-				+ getRightExpression() 
-				+ (oldOracleJoinSyntax == ORACLE_JOIN_LEFT ? "(+)" : "");
+        return (isNot() ? "NOT " : "") + (oraclePriorPosition == ORACLE_PRIOR_START ? "PRIOR " : "")
+                + getLeftExpression() + (oldOracleJoinSyntax == ORACLE_JOIN_RIGHT ? "(+)" : "") + " "
+                + getStringExpression() + " " + (oraclePriorPosition == ORACLE_PRIOR_END ? "PRIOR " : "")
+                + getRightExpression() + (oldOracleJoinSyntax == ORACLE_JOIN_LEFT ? "(+)" : "");
     }
 
 
@@ -49,12 +53,12 @@ public abstract class OldOracleJoinBinaryExpression extends BinaryExpression imp
     }
 
 
-	public int getOraclePriorPosition() {
-		return oraclePriorPosition;
-	}
+    public int getOraclePriorPosition() {
+        return oraclePriorPosition;
+    }
 
 
-	public void setOraclePriorPosition(int oraclePriorPosition) {
-		this.oraclePriorPosition = oraclePriorPosition;
-	}
+    public void setOraclePriorPosition(int oraclePriorPosition) {
+        this.oraclePriorPosition = oraclePriorPosition;
+    }
 }
