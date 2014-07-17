@@ -41,6 +41,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.PathFilter;
+import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
 import org.tinygroup.weblayer.listener.TinyServletContext;
@@ -155,6 +156,7 @@ public class ApplicationStartupListener implements ServletContextListener {
 
 	private void loadSpringBeans(String applicationConfig) {
 		logger.logMessage(LogLevel.INFO, "加载Spring Bean文件开始...");
+		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
 		FileResolver fileResolver = new FileResolverImpl();
 		FileResolverUtil.addClassPathPattern(fileResolver);
 		loadFileResolverConfig(fileResolver, applicationConfig);
