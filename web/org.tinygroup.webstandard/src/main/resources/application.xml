@@ -662,5 +662,9 @@
    <!--   <post-data-process host-pattern="192.168.84.*">
        <data-mapping name="" host-pattern=""></data-mapping>
     </post-data-process>-->
+    <!-- 服务接口正则配置 -->
+    <service-interface>
+         <class-name-regular pattern=".*"></class-name-regular>
+    </service-interface>
 
 </application>

@@ -336,6 +336,8 @@ public abstract class AbstractFilterImpl<T extends Node<T>> implements NodeFilte
         excludeText = null;
         includeNode = null;
         excludeNode = null;
+        includeByNode=null;
+        excludeByNode=null;
         includeAttribute = null;
         excludeAttribute = null;
         xorSubNode = null;

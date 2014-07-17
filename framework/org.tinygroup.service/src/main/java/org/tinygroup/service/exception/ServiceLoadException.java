@@ -26,6 +26,10 @@ public class ServiceLoadException extends Exception {
 		super("服务装载失败！");
 	}
 
+	public ServiceLoadException(String message) {
+		super(message);
+	}
+	
 	public ServiceLoadException(Throwable cause) {
 		super(cause);
 	}

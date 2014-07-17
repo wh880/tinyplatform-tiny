@@ -44,5 +44,16 @@
 		class="org.tinygroup.service.fileresolver.ServiceMappingFileProcessor">
 		<property name="manager" ref="serviceMappingManager"></property>
 	</bean>
+	
+	<bean id="serviceInterfaceServiceLoader" scope="singleton"
+		class="org.tinygroup.service.loader.ServiceInterfaceServiceLoader">
+	</bean>
+	
+	<bean id="serviceClassFileProcessor" scope="singleton"
+		class="org.tinygroup.service.fileresolver.ServiceClassFileProcessor">
+		<property name="serviceLoader">
+		   <ref bean="serviceInterfaceServiceLoader"/>
+		</property>
+	</bean>
 
 </beans>

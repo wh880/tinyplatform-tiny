@@ -39,6 +39,10 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 			.getLogger(ServiceRegistryImpl.class);
 
 	public void registeService(ServiceRegistryItem serviceRegistryItem) {
+		if (serviceIdMap.containsKey(serviceRegistryItem.getServiceId())) {
+			logger.logMessage(LogLevel.WARN, "服务号:[{0}]已经存在,之前的服务将被覆盖",
+					serviceRegistryItem.getServiceId());
+		}
 		logger.logMessage(LogLevel.INFO, "添加服务[serviceId:{0}]",
 				serviceRegistryItem.getServiceId());
 		serviceIdMap.put(serviceRegistryItem.getServiceId(),

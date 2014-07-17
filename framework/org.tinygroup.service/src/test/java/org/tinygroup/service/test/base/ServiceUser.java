@@ -15,7 +15,9 @@
  */
 package org.tinygroup.service.test.base;
 
-public class ServiceUser {
+import java.io.Serializable;
+
+public class ServiceUser implements Serializable {
 	private String name;
 	private int age;
 	private boolean male;

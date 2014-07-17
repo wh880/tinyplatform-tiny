@@ -473,11 +473,11 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
         String name = getCaseSensitiveName(attributeName);
         attributes.remove(name);
         if (attributeList != null) {
-            Iterator<Attribute> iterable = attributeList.iterator();
-            while (iterable.hasNext()) {
-                Attribute attribute = iterable.next();
+            Iterator<Attribute> iterator = attributeList.iterator();
+            while (iterator.hasNext()) {
+                Attribute attribute = iterator.next();
                 if (attribute.getName().equals(name)) {
-                    iterable.remove();
+                    iterator.remove();
                     break;
                 }
             }

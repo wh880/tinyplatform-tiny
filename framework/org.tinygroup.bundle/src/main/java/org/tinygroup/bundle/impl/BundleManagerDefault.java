@@ -432,4 +432,8 @@ public class BundleManagerDefault implements BundleManager {
 		fileResolverMap.put(bundle, f);
 	}
 
+	public Map<BundleDefine, TinyClassLoader> getBundleMap() {
+		return tinyClassLoaderMap;
+	}
+
 }

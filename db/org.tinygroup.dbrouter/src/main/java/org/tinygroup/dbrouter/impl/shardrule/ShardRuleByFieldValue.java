@@ -143,7 +143,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 				Expression rightExpression = orExpression.getRightExpression();
 				boolean leftMatch = getWhereExpression(leftExpression);
 				boolean rightMatch = getWhereExpression(rightExpression);
-				return leftMatch && rightMatch;
+				return leftMatch || rightMatch;
 			}
 			return equalsTo;
 

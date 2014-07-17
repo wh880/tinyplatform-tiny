@@ -18,7 +18,9 @@ package org.tinygroup.service.config;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.tinygroup.config.Configuration;
 import org.tinygroup.event.Parameter;
@@ -30,15 +32,29 @@ import org.tinygroup.service.exception.ServiceLoadException;
 import org.tinygroup.service.loader.ServiceLoader;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
+import org.tinygroup.service.util.ServiceUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 
-public abstract class XmlConfigServiceLoader extends AbstractFileProcessor implements ServiceLoader,
-		Configuration {
+public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
+		implements ServiceLoader, Configuration {
 	private Logger logger = LoggerFactory
 			.getLogger(XmlConfigServiceLoader.class);
 	private XmlNode applicationConfig;
 	private XmlNode componentConfig;
+
+	private static Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
+	static {
+		classMap.put("int", int.class);
+		classMap.put("short", short.class);
+		classMap.put("byte", byte.class);
+		classMap.put("char", char.class);
+		classMap.put("long", long.class);
+		classMap.put("double", double.class);
+		classMap.put("float", float.class);
+		classMap.put("boolean", boolean.class);
+		classMap.put("void", void.class);
+	}
 
 	/**
 	 * 载入服务
@@ -91,16 +107,12 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 	 * @param object
 	 * @param serviceComponent
 	 * @param serviceRegistry
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
-	 * @throws Exception
+	 * @throws ServiceLoadException
+	 * @throws ClassNotFoundException
 	 */
 	private void registerServices(Object object,
 			ServiceComponent serviceComponent, ServiceRegistry serviceRegistry)
-			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException, InstantiationException {
+			throws ClassNotFoundException, ServiceLoadException {
 		ServiceRegistryItem item = new ServiceRegistryItem();
 		registerServices(object, serviceComponent, item, serviceRegistry);
 
@@ -112,17 +124,13 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 	 * @param object
 	 * @param serviceComponent
 	 * @param serviceRegistry
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
-	 * @throws Exception
+	 * @throws ServiceLoadException
+	 * @throws ClassNotFoundException
 	 */
 	private void registerServices(Object object,
 			ServiceComponent serviceComponent, ServiceRegistryItem superItem,
-			ServiceRegistry serviceRegistry) throws IllegalAccessException,
-			InvocationTargetException, NoSuchMethodException,
-			InstantiationException {
+			ServiceRegistry serviceRegistry) throws ClassNotFoundException,
+			ServiceLoadException {
 		for (ServiceMethod serviceMethod : serviceComponent.getServiceMethods()) {
 			ServiceRegistryItem item = new ServiceRegistryItem();
 			item.setServiceId(serviceMethod.getServiceId());
@@ -141,16 +149,12 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 	 * @param serviceMethod
 	 * @param item
 	 * @param serviceRegistry
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
-	 * @throws Exception
+	 * @throws ServiceLoadException
+	 * @throws ClassNotFoundException
 	 */
 	private void registerService(Object object, ServiceMethod serviceMethod,
 			ServiceRegistryItem item, ServiceRegistry serviceRegistry)
-			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException, InstantiationException {
+			throws ClassNotFoundException, ServiceLoadException {
 		ServiceProxy serviceProxy = new ServiceProxy();
 		serviceProxy.setMethodName(serviceMethod.getMethodName());
 		serviceProxy.setObjectInstance(object);
@@ -165,25 +169,34 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 	 * 把参数名称注册过来
 	 * 
 	 * @param item
-     * @param serviceMethod
-     * @param serviceProxy
+	 * @param serviceMethod
+	 * @param serviceProxy
 	 * @return
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
 	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 * @throws ServiceLoadException
 	 */
 	private void getInputParameterNames(ServiceRegistryItem item,
 			ServiceMethod serviceMethod, ServiceProxy serviceProxy)
-			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException {
-		List<Parameter> inputParameterList = new ArrayList<Parameter>();
+			throws ClassNotFoundException, ServiceLoadException {
 		List<Parameter> inputParameterDescriptors = new ArrayList<Parameter>();
 		// ==================入参处理 begin========================
 		for (ServiceParameter serviceParameter : serviceMethod
 				.getServiceParameters()) {
+			String type = serviceParameter.getType();
+			Class<?> parameterType = classMap.get(type);
+			if (parameterType == null) {
+				parameterType = Class.forName(type);
+				classMap.put(type, parameterType);
+			}
 			Parameter descriptor = new Parameter();
-			inputParameterList.add(descriptor);
-			descriptor.setType(serviceParameter.getType());
+			if (!ServiceUtil.assignFromSerializable(parameterType)) {
+				throw new ServiceLoadException("服务返回值类型:<"
+						+ parameterType.getName() + ">必须实现Serializable接口");
+			}
+			descriptor.setType(parameterType.getName());
 			descriptor.setArray(serviceParameter.isArray());
 			descriptor.setName(serviceParameter.getName());
 			descriptor.setRequired(serviceParameter.isRequired());
@@ -195,25 +208,34 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 		}
 		// ==================入参处理 end========================
 		item.setParameters(inputParameterDescriptors);
-		serviceProxy.setInputParameters(inputParameterList);
+		serviceProxy.setInputParameters(inputParameterDescriptors);
 	}
 
 	private void getOutputParameterNames(ServiceRegistryItem item,
 			ServiceMethod serviceMethod, ServiceProxy serviceProxy)
-			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException {
+			throws ClassNotFoundException, ServiceLoadException {
 		// ==================出参处理 begin========================
 		if (serviceMethod.getServiceResult() != null) {
 			ServiceParameter serviceResult = serviceMethod.getServiceResult();
+			String type = serviceResult.getType();
+			Class<?> parameterType = classMap.get(type);
+			if (parameterType == null) {
+				parameterType = Class.forName(type);
+				classMap.put(type, parameterType);
+			}
 			Parameter descriptor = new Parameter();
-			descriptor.setType(serviceResult.getType());
+			if (!ServiceUtil.assignFromSerializable(parameterType)) {
+				throw new ServiceLoadException("服务返回值类型:<"
+						+ parameterType.getName() + ">必须实现Serializable接口");
+			}
+			descriptor.setType(parameterType.getName());
 			descriptor.setArray(serviceResult.isArray());
 			descriptor.setRequired(serviceResult.isRequired());
 			descriptor.setName(serviceResult.getName());
 			descriptor.setValidatorSence(serviceResult.getValidatorScene());
 			descriptor.setTitle(serviceResult.getLocalName());
-			descriptor.setCollectionType(serviceResult.getCollectionType());
 			descriptor.setDescription(serviceResult.getDescription());
+			descriptor.setCollectionType(serviceResult.getCollectionType());
 			serviceProxy.setOutputParameter(descriptor);
 			List<Parameter> outputParameterDescriptors = new ArrayList<Parameter>();
 			outputParameterDescriptors.add(descriptor);
@@ -257,12 +279,12 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor imple
 	public XmlNode getApplicationConfig() {
 		return applicationConfig;
 	}
-	
+
 	public boolean isMatch(FileObject fileObject) {
 		return false;
 	}
 
 	public void process() {
-		
+
 	}
 }
