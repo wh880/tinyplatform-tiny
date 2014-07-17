@@ -21,10 +21,12 @@
 	
 	<bean id="relationFileProcessor" scope="singleton"
 		class="org.tinygroup.tinydb.fileresolver.RelationFileProcessor">
+		<property name="manager" ref="beanOperatorManager"></property>
 	</bean>
 	
 	<bean id="beanOperatorApplicationProcessor" scope="singleton"
 		class="org.tinygroup.tinydb.applicationprocessor.BeanOperatorApplicationProcessor">
+		<property name="manager" ref="beanOperatorManager"></property>
 	</bean>
 	
 </beans>

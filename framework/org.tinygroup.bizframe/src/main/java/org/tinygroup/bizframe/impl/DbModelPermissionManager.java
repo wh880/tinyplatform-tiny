@@ -18,9 +18,9 @@ package org.tinygroup.bizframe.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.bizframe.PermissionObject;
 import org.tinygroup.bizframe.PermissionSubject;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.TableConfiguration;
@@ -72,7 +72,7 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 
 	public BeanOperatorManager getManager() {
 		if (manager == null) {
-			manager = SpringUtil.getBean("beanOperatorManager");
+			manager = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean("beanOperatorManager");
 		}
 		return manager;
 	}

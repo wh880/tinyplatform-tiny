@@ -17,9 +17,9 @@ package org.tinygroup.ientity;
 
 import java.io.File;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.entity.entitymodel.EntityModel;
 import org.tinygroup.imda.ModelManager;
-import org.tinygroup.springutil.SpringUtil;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -30,11 +30,13 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 		ModelTestUtil.init();
-		ModelManager manager = SpringUtil
-				.getBean(ModelManager.MODELMANAGER_BEAN);
-		XStream stream=new XStream();
+		ModelManager manager = BeanContainerFactory.getBeanContainer(
+				Test.class.getClassLoader()).getBean(
+				ModelManager.MODELMANAGER_BEAN);
+		XStream stream = new XStream();
 		stream.processAnnotations(EntityModel.class);
-		EntityModel user=(EntityModel) stream.fromXML(new File("src/main/resources/models/user.entity.xml"));
+		EntityModel user = (EntityModel) stream.fromXML(new File(
+				"src/main/resources/models/user.entity.xml"));
 		manager.addModel(user);
 	}
 

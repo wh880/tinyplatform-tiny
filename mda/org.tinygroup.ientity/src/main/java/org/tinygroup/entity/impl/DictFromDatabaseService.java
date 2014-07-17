@@ -15,13 +15,13 @@
  */
 package org.tinygroup.entity.impl;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.dict.Dict;
 import org.tinygroup.dict.DictGroup;
 import org.tinygroup.dict.DictItem;
 import org.tinygroup.service.annotation.ServiceComponent;
 import org.tinygroup.service.annotation.ServiceMethod;
 import org.tinygroup.service.annotation.ServiceResult;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
@@ -38,7 +38,8 @@ public class DictFromDatabaseService {
 	@ServiceResult(name = "dictResult")
 	public Dict getDict(String beanType, String sql, String valueFieldName,
 			String textFieldName) {
-		BeanOperatorManager manager = SpringUtil
+		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader())
 				.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		DBOperator<?> itemOperator = manager.getDbOperator(beanType);
 		Dict dict = new Dict(beanType, beanType);
@@ -59,7 +60,8 @@ public class DictFromDatabaseService {
 	@ServiceResult(name = "dictText")
 	public String getText(String beanType, String sql, String value,
 			String textFieldName) {
-		BeanOperatorManager manager = SpringUtil
+		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader())
 				.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		DBOperator<?> itemOperator = manager.getDbOperator(beanType);
 		Bean[] beans = itemOperator.getBeans(sql, value);

@@ -15,6 +15,17 @@
  */
 package org.tinygroup.service.annotation;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.tinygroup.beancontainer.BeanContainer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.event.Parameter;
@@ -27,16 +38,6 @@ import org.tinygroup.service.exception.ServiceLoadException;
 import org.tinygroup.service.loader.AnnotationServiceLoader;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
-import org.tinygroup.springutil.SpringUtil;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public abstract class AbstractAnnotationServiceLoader implements
         AnnotationServiceLoader {
@@ -251,11 +252,12 @@ public abstract class AbstractAnnotationServiceLoader implements
 
     protected Object getServiceInstance(Class<?> clazz) {
         ServiceComponent serviceComponent = clazz.getAnnotation(ServiceComponent.class);
+        BeanContainer container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
         if (StringUtil.isBlank(serviceComponent.bean())) {
-            return SpringUtil.getBean(clazz);
+            return container.getBean(clazz);
         }
         try {
-            return SpringUtil.getBean(serviceComponent.bean());
+            return container.getBean(serviceComponent.bean());
         } catch (RuntimeException e) {
             logger.logMessage(LogLevel.WARN, "查找Bean {}时发生异常：", serviceComponent.bean(), e.getMessage());
             if (!clazz.isInterface()) {

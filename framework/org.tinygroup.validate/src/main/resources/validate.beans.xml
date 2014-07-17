@@ -69,11 +69,13 @@
 			<ref bean="annotationValidatorManager"></ref>
 		</property>
 	</bean>
-		<bean id="validateMapFileProcessor" scope="singleton"
+	<bean id="validateMapFileProcessor" scope="singleton"
 		class="org.tinygroup.validate.fileresolver.ValidateMapFileProcessor">
+		<property name="validatorManager" ref="validatorMapStorage"></property>
 	</bean>
 	<bean id="validateFileProcessor" scope="singleton"
 		class="org.tinygroup.validate.fileresolver.ValidateFileProcessor">
+		<property name="validatorManager" ref="xmlValidatorManager"></property>
 	</bean>
 	<!--流程校验组件-->
 	<bean id="validateComponent" name="validateComponent" scope="singleton"

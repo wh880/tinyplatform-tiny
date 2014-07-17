@@ -34,14 +34,15 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
 public class RequestParamValidate implements CEPCoreAopAdapter {
-	private static Logger logger = LoggerFactory.getLogger(RequestParamValidate.class);
-	
+	private static Logger logger = LoggerFactory
+			.getLogger(RequestParamValidate.class);
+
 	private CEPCore cepCore;
-	
+
 	public CEPCore getCepCore() {
 		return cepCore;
 	}
-	
+
 	public void setCepCore(CEPCore cepCore) {
 		this.cepCore = cepCore;
 	}
@@ -49,36 +50,35 @@ public class RequestParamValidate implements CEPCoreAopAdapter {
 	public void handle(Event event) {
 		ServiceRequest request = event.getServiceRequest();
 		ServiceInfo info = find(request);
-		Object[] args = getArguments(request.getContext(),info);
-		ParameterValidator.validate(args, info.getParameters());
+		Object[] args = getArguments(request.getContext(), info);
+		ParameterValidator.validate(args, info.getParameters(), this.getClass()
+				.getClassLoader());
 	}
-	
-	private ServiceInfo find(ServiceRequest request){
+
+	private ServiceInfo find(ServiceRequest request) {
 		String requestId = request.getServiceId();
 		List<ServiceInfo> list = cepCore.getServiceInfos();
 		ServiceInfo info = null;
-		if(!CEPCoreUtil.isNull(requestId)){
+		if (!CEPCoreUtil.isNull(requestId)) {
 			info = findById(requestId, list);
 		}
-		if(info==null){
+		if (info == null) {
 			throw new RequestNotFoundException(requestId);
 		}
 		return info;
 	}
-	
-	private ServiceInfo findById(String requestId,List<ServiceInfo> list){
-		for(ServiceInfo info:list){
-			if(requestId.equals(info.getServiceId())){
+
+	private ServiceInfo findById(String requestId, List<ServiceInfo> list) {
+		for (ServiceInfo info : list) {
+			if (requestId.equals(info.getServiceId())) {
 				return info;
 			}
 		}
 		return null;
-		
-	}
-	
 
-	
-	private Object[] getArguments(Context context,ServiceInfo info) {
+	}
+
+	private Object[] getArguments(Context context, ServiceInfo info) {
 		Object args[] = null;
 		List<Parameter> params = info.getParameters();
 		if (params != null && params.size() > 0) {
@@ -89,10 +89,10 @@ public class RequestParamValidate implements CEPCoreAopAdapter {
 		}
 		return args;
 	}
-	
+
 	private Object getArgument(Context context, Parameter param) {
 		String paramName = param.getName();
-		Object obj = Context2ObjectUtil.getObject(param, context);
+		Object obj = Context2ObjectUtil.getObject(param, context,this.getClass().getClassLoader());
 		if (obj == null) {
 			if (param.isRequired()) { // 如果输入参数是必须的,则抛出异常
 				logger.logMessage(LogLevel.ERROR, "参数{paramName}未传递", paramName);

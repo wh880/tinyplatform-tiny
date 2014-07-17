@@ -17,46 +17,48 @@ package org.tinygroup.cache;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.exception.CacheException;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.I18nFileProcessor;
-import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
 import org.tinygroup.fileresolver.impl.XStreamFileProcessor;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.springutil.SpringBeanContainer;
+import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 
 public class CacheTest extends TestCase {
 	Cache cache;
 	static {
+		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class
+				.getName());
 		FileResolverFactory.getFileResolver().addFileProcessor(
 				new XStreamFileProcessor());
 		FileResolverFactory.getFileResolver().addFileProcessor(
 				new I18nFileProcessor());
 		FileResolverFactory.getFileResolver().addFileProcessor(
 				new SpringBeansFileProcessor());
-		FileResolverUtil.addClassPathPattern(FileResolverFactory.getFileResolver());
-		FileResolverFactory.getFileResolver().addResolvePath(FileResolverUtil.getClassPath(FileResolverFactory.getFileResolver())) ;
-//		FileResolverFactory.getFileResolver().addResolvePath(FileResolverUtil.getWebClasses());
-      
+		FileResolverUtil.addClassPathPattern(FileResolverFactory
+				.getFileResolver());
+		FileResolverFactory.getFileResolver().addResolvePath(
+				FileResolverUtil.getClassPath(FileResolverFactory
+						.getFileResolver()));
+		// FileResolverFactory.getFileResolver().addResolvePath(FileResolverUtil.getWebClasses());
+
 		FileResolverFactory.getFileResolver().resolve();
 	}
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		cache = SpringUtil.getBean("jcsCache");
+		cache = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean("jcsCache");
 		cache.init("testCache1");
-		//cache.clear();
+		// cache.clear();
 	}
-	
-	
 
-	
 	protected void tearDown() throws Exception {
 		super.tearDown();
-//		cache.destory();
+		// cache.destory();
 	}
-
-
 
 	public void testGetString() throws CacheException {
 		cache.put("aa", "123");
@@ -152,7 +154,7 @@ public class CacheTest extends TestCase {
 			cache.freeMemoryElements(100);
 			assertEquals("aa", cache.get("aa"));
 			cache.get("aa1");
-//			/fail();
+			// /fail();
 		} catch (Exception e) {
 
 		}

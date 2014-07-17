@@ -22,9 +22,9 @@ import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.velocity.impl.VelocityHelperImpl;
 
 public class IncludeDirective extends Directive {
@@ -33,17 +33,14 @@ public class IncludeDirective extends Directive {
 	private static Logger logger = LoggerFactory
 			.getLogger(BigpipePageletDirective.class);
 
-	
 	public String getName() {
 		return INCLUDE;
 	}
 
-	
 	public int getType() {
 		return LINE;
 	}
 
-	
 	public boolean render(InternalContextAdapter context, Writer writer,
 			Node node) throws IOException {
 		String path = node.jjtGetChild(0).value(context).toString();
@@ -55,8 +52,9 @@ public class IncludeDirective extends Directive {
 			pagelet = templatePath.substring(0,
 					templatePath.lastIndexOf('/') + 1) + path;
 		}
-		VelocityHelperImpl velocityHelperImpl = SpringUtil
-				.getBean("velocityHelper");
+		VelocityHelperImpl velocityHelperImpl = BeanContainerFactory
+				.getBeanContainer(this.getClass().getClassLoader()).getBean(
+						"velocityHelper");
 		try {
 			velocityHelperImpl.processTempleate(context, writer, pagelet);
 		} catch (Exception e) {

@@ -20,7 +20,6 @@ import org.tinygroup.database.table.TableProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -29,14 +28,21 @@ import com.thoughtworks.xstream.XStream;
 public class TableFileResolver extends AbstractFileProcessor {
 
 	private static final String TABLE_EXTFILENAME = ".table.xml";
+	TableProcessor tableProcessor;
+	
+	public TableProcessor getTableProcessor() {
+		return tableProcessor;
+	}
+
+	public void setTableProcessor(TableProcessor tableProcessor) {
+		this.tableProcessor = tableProcessor;
+	}
 
 	public boolean isMatch(org.tinygroup.vfs.FileObject fileObject) {
 		return fileObject.getFileName().endsWith(TABLE_EXTFILENAME);
 	}
 
 	public void process() {
-		TableProcessor tableProcessor = SpringUtil
-				.getBean(DataBaseUtil.TABLEPROCESSOR_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.DATABASE_XSTREAM);
 		for (FileObject fileObject : deleteList) {

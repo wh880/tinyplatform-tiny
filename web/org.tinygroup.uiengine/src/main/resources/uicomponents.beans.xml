@@ -11,6 +11,7 @@
 	</bean>
 	<bean id="uIComponentFileProcessor" scope="singleton"
 		class="org.tinygroup.uiengine.fileresolver.UIComponentFileProcessor">
+		<property name="manager" ref="uiComponentManager"/>
 	</bean>
 	
 </beans>

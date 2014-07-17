@@ -32,7 +32,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * @author chenjiao
@@ -47,6 +46,16 @@ public class InitDataProcessorImpl implements InitDataProcessor {
 	 */
 	private static Map<String, Map<String, InitData>> initDatasNameMap = new HashMap<String, Map<String, InitData>>();
 	private static Map<String, InitData> initDatasIdMap = new HashMap<String, InitData>();
+	private ProcessorManager processorManager;
+	
+	
+	public ProcessorManager getProcessorManager() {
+		return processorManager;
+	}
+
+	public void setProcessorManager(ProcessorManager processorManager) {
+		this.processorManager = processorManager;
+	}
 
 	public List<String> getInitSql(String packageName, String tableName,
 			String language) {
@@ -64,8 +73,8 @@ public class InitDataProcessorImpl implements InitDataProcessor {
 	}
 
 	public List<String> getInitSql(String language) {
-		ProcessorManager processorManager = SpringUtil
-				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer
+//				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		InitDataSqlProcessor sqlProcessor = (InitDataSqlProcessor) processorManager
 				.getProcessor(language, "initData");
 		List<String> list = new ArrayList<String>();
@@ -79,8 +88,8 @@ public class InitDataProcessorImpl implements InitDataProcessor {
 
 	public List<String> getInitSql(InitData tableInitData, String language) {
 		List<String> sqls = new ArrayList<String>();
-		ProcessorManager processorManager = SpringUtil
-				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer
+//				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		InitDataSqlProcessor sqlProcessor = (InitDataSqlProcessor) processorManager
 				.getProcessor(language, "initData");
 		sqls.addAll(sqlProcessor.getInitSql(tableInitData));
@@ -119,7 +128,7 @@ public class InitDataProcessorImpl implements InitDataProcessor {
 	private void removeInitData(InitData initData) {
 		String packageName = MetadataUtil.passNull(initData.getPackageName());
 		String tableId = MetadataUtil.passNull(initData.getTableId());
-		String tableName = DataBaseUtil.getTableById(tableId).getName();
+		String tableName = DataBaseUtil.getTableById(tableId,this.getClass().getClassLoader()).getName();
 		logger.logMessage(LogLevel.DEBUG, "开始移除表格[包:{0},表名:{1},表ID:{2}]的初始化数据",
 				packageName, tableName, tableId);
 
@@ -144,7 +153,7 @@ public class InitDataProcessorImpl implements InitDataProcessor {
 	private void addInitData(InitData initData) {
 		String packageName = MetadataUtil.passNull(initData.getPackageName());
 		String tableId = MetadataUtil.passNull(initData.getTableId());
-		String tableName = DataBaseUtil.getTableById(tableId).getName();
+		String tableName = DataBaseUtil.getTableById(tableId,this.getClass().getClassLoader()).getName();
 		logger.logMessage(LogLevel.DEBUG, "开始为表格[包:{0},表名:{1},表ID:{2}]添加初始化数据",
 				packageName, tableName, tableId);
 
@@ -224,8 +233,8 @@ public class InitDataProcessorImpl implements InitDataProcessor {
 	}
 
 	public List<String> getDeinitSql(String language) {
-		ProcessorManager processorManager = SpringUtil
-				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer
+//				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		InitDataSqlProcessor sqlProcessor = (InitDataSqlProcessor) processorManager
 				.getProcessor(language, "initData");
 		List<String> list = new ArrayList<String>();
@@ -239,8 +248,8 @@ public class InitDataProcessorImpl implements InitDataProcessor {
 
 	private List<String> getDeinitSql(InitData tableInitData, String language) {
 		List<String> sqls = new ArrayList<String>();
-		ProcessorManager processorManager = SpringUtil
-				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer
+//				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		InitDataSqlProcessor sqlProcessor = (InitDataSqlProcessor) processorManager
 				.getProcessor(language, "initData");
 		sqls.addAll(sqlProcessor.getDeinitSql(tableInitData));

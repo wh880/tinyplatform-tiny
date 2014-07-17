@@ -21,7 +21,6 @@ import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.util.ConfigurationUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.xmlparser.node.XmlNode;
@@ -52,6 +51,16 @@ public class BeanOperatorApplicationProcessor implements ApplicationProcessor{
 
 	private static final String BEAN_OPERATE_CONFIG = "bean-opertate-config";
 
+	BeanOperatorManager manager;
+	
+	public BeanOperatorManager getManager() {
+		return manager;
+	}
+
+	public void setManager(BeanOperatorManager manager) {
+		this.manager = manager;
+	}
+
 	public String getApplicationNodePath() {
 		return BEAN_MANAGER_NODE_PATH;
 	}
@@ -63,7 +72,7 @@ public class BeanOperatorApplicationProcessor implements ApplicationProcessor{
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 			this.applicationConfig = applicationConfig;
 			this.componentConfig = componentConfig;
-			BeanOperatorManager manager=SpringUtil.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+//			BeanOperatorManager manager=SpringBeanContainer.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 			String defaultSchema = ConfigurationUtil.getPropertyName(
 					applicationConfig, componentConfig, DEFAULT_SCHEMA);
 			manager.setMainSchema(defaultSchema);
@@ -96,7 +105,7 @@ public class BeanOperatorApplicationProcessor implements ApplicationProcessor{
 	}
 
 	public void start() {
-		BeanOperatorManager manager=SpringUtil.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+//		BeanOperatorManager manager=SpringBeanContainer.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		manager.loadTablesFromSchemas();
 	}
 

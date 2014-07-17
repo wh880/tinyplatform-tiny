@@ -17,7 +17,6 @@ package org.tinygroup.validate.fileresolver;
 
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.validate.ValidatorManager;
 import org.tinygroup.validate.ValidatorMapStorage;
 import org.tinygroup.validate.config.Validators;
@@ -35,14 +34,24 @@ import com.thoughtworks.xstream.XStream;
 public class ValidateMapFileProcessor extends AbstractFileProcessor {
 
 	private static final String VALIDATE_MAP_FILE_SUFFIX = ".validatemap.xml";
+	ValidatorMapStorage validatorManager;
+	
+	
+	public ValidatorMapStorage getValidatorManager() {
+		return validatorManager;
+	}
+
+	public void setValidatorManager(ValidatorMapStorage validatorManager) {
+		this.validatorManager = validatorManager;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(VALIDATE_MAP_FILE_SUFFIX);
 	}
 
 	public void process() {
-		ValidatorMapStorage validatorManager = SpringUtil
-				.getBean(ValidatorMapStorage.VALIDATOR_MAP_BEAN_NAME);
+//		ValidatorMapStorage validatorManager = SpringBeanContainer
+//				.getBean(ValidatorMapStorage.VALIDATOR_MAP_BEAN_NAME);
 
 		XStream stream = XStreamFactory
 				.getXStream(ValidatorManager.XSTEAM_PACKAGE_NAME);

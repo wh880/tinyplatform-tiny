@@ -18,13 +18,13 @@ package org.tinygroup.rpc.util;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.event.Event;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.rpc.CEPCoreRMI;
-import org.tinygroup.springutil.SpringUtil;
 
 public class CEPCoreRMIServer extends UnicastRemoteObject implements CEPCoreRMI {
 
@@ -37,15 +37,15 @@ public class CEPCoreRMIServer extends UnicastRemoteObject implements CEPCoreRMI 
 	}
 
 	public Event processFromRemote(Event event) throws RemoteException {
-		logger.logMessage(LogLevel.DEBUG,
-				"接收到远程请求,serivceId:{0}", event
-						.getServiceRequest().getServiceId());
-		CEPCore cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
+		logger.logMessage(LogLevel.DEBUG, "接收到远程请求,serivceId:{0}", event
+				.getServiceRequest().getServiceId());
+		CEPCore cep = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader())
+				.getBean(CEPCore.CEP_CORE_BEAN);
 		cep.process(event);
-		
-		logger.logMessage(LogLevel.DEBUG,
-				"处理远程请求完毕,serivceId:{0}", event
-						.getServiceRequest().getServiceId());
+
+		logger.logMessage(LogLevel.DEBUG, "处理远程请求完毕,serivceId:{0}", event
+				.getServiceRequest().getServiceId());
 		return event;
 	}
 

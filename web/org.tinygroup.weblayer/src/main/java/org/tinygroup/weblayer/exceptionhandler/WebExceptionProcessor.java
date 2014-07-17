@@ -17,32 +17,32 @@ package org.tinygroup.weblayer.exceptionhandler;
 
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * 
- * 功能说明:页面异常处理配置信息加载类 
-
+ * 功能说明:页面异常处理配置信息加载类
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-9-22 <br>
  * <br>
  */
 public class WebExceptionProcessor extends AbstractConfiguration {
-	private static final String EXCEPTION_CONFIG_PATH="/application/exception-config/exception-handlers";
+	private static final String EXCEPTION_CONFIG_PATH = "/application/exception-config/exception-handlers";
 	private WebExceptionHandlerManager webHandlerManager;
-	
+
 	public WebExceptionHandlerManager getWebHandlerManager() {
 		return webHandlerManager;
 	}
 
-	public void setWebHandlerManager(WebExceptionHandlerManager webHandlerManager) {
+	public void setWebHandlerManager(
+			WebExceptionHandlerManager webHandlerManager) {
 		this.webHandlerManager = webHandlerManager;
 	}
-
 
 	public String getApplicationNodePath() {
 		return EXCEPTION_CONFIG_PATH;
@@ -51,25 +51,32 @@ public class WebExceptionProcessor extends AbstractConfiguration {
 	public String getComponentConfigPath() {
 		return "webexceptionhandler.config.xml";
 	}
-	
-	
+
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 		super.config(applicationConfig, componentConfig);
-		List<XmlNode> webHandlerList=ConfigurationUtil.combineSubList("web-exception-handler",applicationConfig, componentConfig);
-		for(XmlNode handler:webHandlerList){
+		List<XmlNode> webHandlerList = ConfigurationUtil.combineSubList(
+				"web-exception-handler", applicationConfig, componentConfig);
+		for (XmlNode handler : webHandlerList) {
 			String exception = handler.getAttribute("exception");
 			String handlerBean = handler.getAttribute("handler");
-			logger.logMessage(LogLevel.INFO, "添加web-exception-handler,Exception:{0},handerBean:{1}",exception,handlerBean);
-			WebExceptionHandler exceptionHandler = SpringUtil.getBean(handlerBean);
+			logger.logMessage(LogLevel.INFO,
+					"添加web-exception-handler,Exception:{0},handerBean:{1}",
+					exception, handlerBean);
+			WebExceptionHandler exceptionHandler = BeanContainerFactory
+					.getBeanContainer(this.getClass().getClassLoader())
+					.getBean(handlerBean);
 			try {
 				webHandlerManager.addHandler(exception, exceptionHandler);
 			} catch (ClassNotFoundException e) {
-				logger.logMessage(LogLevel.INFO, "添加web-exception-handler出错,Exception类:{0}找不到",exception,handlerBean);
+				logger.logMessage(LogLevel.INFO,
+						"添加web-exception-handler出错,Exception类:{0}找不到",
+						exception, handlerBean);
 				continue;
 			}
-			logger.logMessage(LogLevel.INFO, "添加web-exception-handler,Exception:{0},handerBean:{1}完成",exception,handlerBean);
+			logger.logMessage(LogLevel.INFO,
+					"添加web-exception-handler,Exception:{0},handerBean:{1}完成",
+					exception, handlerBean);
 		}
 	}
-	
 
 }

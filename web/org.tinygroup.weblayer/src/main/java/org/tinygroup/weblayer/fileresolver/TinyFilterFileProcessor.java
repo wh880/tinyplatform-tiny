@@ -18,7 +18,6 @@ package org.tinygroup.weblayer.fileresolver;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.TinyFilterManager;
 import org.tinygroup.weblayer.configmanager.TinyFiterConfigManager;
@@ -31,14 +30,29 @@ import org.tinygroup.weblayer.configmanager.TinyFiterConfigManager;
 public class TinyFilterFileProcessor extends AbstractFileProcessor {
 
 	private static final String FILTERS_EXT_FILENAMES = ".tinyfilters.xml";
+	private TinyFiterConfigManager configManager;
+	private TinyFilterManager tinyFilterManager;
+	public TinyFiterConfigManager getConfigManager() {
+		return configManager;
+	}
+
+	public void setConfigManager(TinyFiterConfigManager configManager) {
+		this.configManager = configManager;
+	}
+
+	public TinyFilterManager getTinyFilterManager() {
+		return tinyFilterManager;
+	}
+
+	public void setTinyFilterManager(TinyFilterManager tinyFilterManager) {
+		this.tinyFilterManager = tinyFilterManager;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(FILTERS_EXT_FILENAMES);
 	}
 
 	public void process() {
-		TinyFiterConfigManager configManager = SpringUtil
-				.getBean(TinyFiterConfigManager.TINY_FILTER_CONFIGMANAGER);
 		if(!CollectionUtil.isEmpty(deleteList)||!CollectionUtil.isEmpty(changeList)){
 			for (FileObject fileObject : deleteList) {
 				logger.log(LogLevel.INFO, "正在移除tiny-filter描述文件：<{}>",
@@ -62,8 +76,6 @@ public class TinyFilterFileProcessor extends AbstractFileProcessor {
 				configManager.addConfig(fileObject);
 				caches.put(fileObject.getAbsolutePath(), fileObject);
 			}
-			TinyFilterManager tinyFilterManager = SpringUtil
-			.getBean(TinyFilterManager.TINY_FILTER_MANAGER);
 			tinyFilterManager.initTinyResources();
 		}
 	}

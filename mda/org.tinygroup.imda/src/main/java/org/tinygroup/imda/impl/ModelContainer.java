@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.imda.ModelInformationGetter;
 import org.tinygroup.imda.ModelLoader;
 import org.tinygroup.imda.config.ModelDefine;
@@ -27,7 +28,6 @@ import org.tinygroup.imda.config.ModelProcessorDefine;
 import org.tinygroup.imda.config.ModelProcessorStage;
 import org.tinygroup.imda.exception.IMdaRuntimeException;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
-import org.tinygroup.springutil.SpringUtil;
 
 public class ModelContainer {
 	/**
@@ -57,10 +57,11 @@ public class ModelContainer {
 					modelDefine.getId(), modelDefine.getModelClass());
 		}
 		String loaderBean = modelDefine.getModelLoaderBean();
-		ModelLoader loader = SpringUtil.getBean(loaderBean);
+		ModelLoader loader = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(loaderBean);
 		modelLoaders.add(loader);
 	}
-	
+
 	public void removeModelDefine(ModelDefine modelDefine) {
 		modelDefines.remove(modelDefine.getId());
 		String className = modelDefine.getModelClass();
@@ -71,7 +72,8 @@ public class ModelContainer {
 					modelDefine.getId(), modelDefine.getModelClass());
 		}
 		String loaderBean = modelDefine.getModelLoaderBean();
-		ModelLoader loader = SpringUtil.getBean(loaderBean);
+		ModelLoader loader = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(loaderBean);
 		modelLoaders.remove(loader);
 	}
 
@@ -101,7 +103,6 @@ public class ModelContainer {
 				modelClass.getName());
 	}
 
-	
 	/**
 	 * 根据模型类型名获取模型类型
 	 * 
@@ -233,7 +234,8 @@ public class ModelContainer {
 	private ModelInformationGetter getInfoBean(Object model) {
 		ModelDefine modelDefine = getModelDefine(model);
 		String infoBean = modelDefine.getModelInfomationGetterBean();
-		return SpringUtil.getBean(infoBean);
+		return BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(infoBean);
 	}
 
 	@SuppressWarnings("unchecked")

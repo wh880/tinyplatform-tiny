@@ -33,7 +33,7 @@ import org.tinygroup.weblayer.webcontext.parser.impl.ItemFileObject;
  * 
  * 功能说明: 操作类参数组装
  * <p>
-
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-9-6 <br>
  * <br>
@@ -89,11 +89,10 @@ public class OperationParamterBuilder extends EntityModelHelper {
 								.replaceAll("-", "");
 					}
 				}
-				newContext.put(
-						propertyName,
-						MdaUtil.getObject(value, field.getDefaultValue(),
-								field.getDataType(),
-								field.getDefaultValueGetter()));
+				newContext.put(propertyName, MdaUtil.getObject(value,
+						field.getDefaultValue(), field.getDataType(),
+						field.getDefaultValueGetter(), this.getClass()
+						.getClassLoader()));
 			}
 			if (operationGroup.getOperationGroups() != null) {
 				for (OperationGroup subGroup : operationGroup

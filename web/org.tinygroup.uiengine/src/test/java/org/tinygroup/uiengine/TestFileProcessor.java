@@ -17,7 +17,7 @@ package org.tinygroup.uiengine;
 
 import junit.framework.TestCase;
 
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.uiengine.config.UIComponent;
 import org.tinygroup.uiengine.manager.UIComponentManager;
 
@@ -25,7 +25,8 @@ public class TestFileProcessor extends TestCase {
 	private static UIComponentManager manager;
 	static {
 		TestInit.init();
-		manager = SpringUtil.getBean(
+		manager = BeanContainerFactory.getBeanContainer(
+				TestFileProcessor.class.getClassLoader()).getBean(
 				UIComponentManager.UIComponentManager_BEAN);
 	}
 

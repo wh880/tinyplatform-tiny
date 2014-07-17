@@ -33,11 +33,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.ws.Holder;
 import javax.xml.ws.WebServiceException;
 
-import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.util.CEPCoreExecuteUtil;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 
 import com.sun.xml.ws.api.SOAPVersion;
 import com.sun.xml.ws.api.WSBinding;
@@ -71,7 +69,7 @@ import com.sun.xml.ws.model.WrapperParameter;
  * @author Jitendra Kotamraju
  */
 final class TG_EndpointMethodHandler {
-	private static CEPCore core ;
+//	private static CEPCore core ;
 	
     private final SOAPVersion soapVersion;
     private final Method method;
@@ -245,11 +243,11 @@ final class TG_EndpointMethodHandler {
         }
         Message responseMessage;
         try {
-        	if(core==null){
-        		core = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-        	}
+//        	if(core==null){
+//        		core = SpringBeanContainer.getBean(CEPCore.CEP_CORE_BEAN);
+//        	}
         	
-            Object ret = CEPCoreExecuteUtil.execute(method.getName(), args);
+            Object ret = CEPCoreExecuteUtil.execute(method.getName(), args,this.getClass().getClassLoader());
             	//owner.getInvoker(req).invoke(req, method, args);
             if(ret instanceof Integer){
             	Integer i = (Integer)ret+2;

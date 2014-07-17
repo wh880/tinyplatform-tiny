@@ -15,6 +15,7 @@
  */
 package org.tinygroup.mongodb.engine.operation;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.util.ContextFactory;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
@@ -22,7 +23,6 @@ import org.tinygroup.mongodb.common.Operation;
 import org.tinygroup.mongodb.engine.AbstractMongoParamterBuilder;
 import org.tinygroup.mongodb.engine.MongoModelInfoGetter;
 import org.tinygroup.mongodb.model.MongoDBModel;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 
@@ -37,7 +37,8 @@ public class AbstractOperationFieldParamterBuilder extends AbstractMongoParamter
 	
 	protected Context buildParameter(MongoDBModel model,
 			ModelRequestInfo modelRequestInfo, Context context) {
-		MongoModelInfoGetter getter=SpringUtil.getBean("mongoModelInfoGetter");
+		MongoModelInfoGetter getter=BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean("mongoModelInfoGetter");
 		Operation operation=(Operation) getter.getOperation(model, modelRequestInfo.getProcessorId());
 		MongoOperationContext builder=new MongoOperationContext(model, operation, context);
 		return builder.buildOperationFieldParamter(operation.getOperationGroup(), ContextFactory.getContext());

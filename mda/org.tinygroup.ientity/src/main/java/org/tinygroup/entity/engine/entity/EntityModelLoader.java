@@ -22,7 +22,6 @@ import org.tinygroup.imda.ModelLoader;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -35,6 +34,24 @@ public class EntityModelLoader implements ModelLoader {
 	private EntityModelToTable entityModelToTable;
 
 	private TableProcessor tableProcessor;
+
+	
+	
+	public EntityModelToTable getEntityModelToTable() {
+		return entityModelToTable;
+	}
+
+	public void setEntityModelToTable(EntityModelToTable entityModelToTable) {
+		this.entityModelToTable = entityModelToTable;
+	}
+
+	public TableProcessor getTableProcessor() {
+		return tableProcessor;
+	}
+
+	public void setTableProcessor(TableProcessor tableProcessor) {
+		this.tableProcessor = tableProcessor;
+	}
 
 	public String getExtFileName() {
 		return ".entity.xml";
@@ -53,14 +70,6 @@ public class EntityModelLoader implements ModelLoader {
 	}
 
 	public void addTableWithModel(EntityModel model) {
-		if (tableProcessor == null) {
-			tableProcessor = SpringUtil
-					.getBean(TableProcessor.BEAN_NAME);
-		}
-		if (entityModelToTable == null) {
-			entityModelToTable = SpringUtil
-					.getBean(EntityModelToTable.MODEL_TO_TABLE_BEAN_NAME);
-		}
 		Table table = entityModelToTable.model2Table(model);
 		if (table != null) {
 			tableProcessor.addTable(table);

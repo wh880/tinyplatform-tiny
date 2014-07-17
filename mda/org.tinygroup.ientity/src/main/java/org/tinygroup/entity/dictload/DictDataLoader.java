@@ -21,7 +21,6 @@ import org.tinygroup.dict.DictGroup;
 import org.tinygroup.dict.DictItem;
 import org.tinygroup.dict.DictManager;
 import org.tinygroup.dict.impl.AbstractDictLoader;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
@@ -36,7 +35,6 @@ import org.tinygroup.tinydb.operator.DBOperator;
  * <br>
  */
 public class DictDataLoader extends AbstractDictLoader {
-
 	private static final String DICT_TYPE_NAME = "dict";
 	private static final String DICTITEM_TYPE_NAME = "dictItem";
 	private static final String DICT_ID = "dictId";
@@ -46,10 +44,19 @@ public class DictDataLoader extends AbstractDictLoader {
 	private static final String DICT_ITEM_VALUE = "dictItemValue";
 	private static final String DICT_ITEM_GROUP = "dictItemGroup";
 	private static final String DEFAULT_GROUP_NAME = "defaultGroupName";
+	private static BeanOperatorManager manager;
+	
+	public static BeanOperatorManager getManager() {
+		return manager;
+	}
+
+	public static void setManager(BeanOperatorManager manager) {
+		DictDataLoader.manager = manager;
+	}
 
 	public void load(DictManager dictManager) {
-		BeanOperatorManager manager = SpringUtil
-				.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+//		BeanOperatorManager manager = SpringBeanContainer
+//				.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		DBOperator operator = manager.getDbOperator(DICT_TYPE_NAME);
 		DBOperator itemOperator = manager.getDbOperator(DICTITEM_TYPE_NAME);
 		Bean[] beans = operator.getBeans(new Bean(DICT_TYPE_NAME));

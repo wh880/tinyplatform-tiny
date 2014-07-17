@@ -39,7 +39,7 @@ import java.util.UUID;
  * 
  * 功能说明: 操作的上下文，包括参数组装和服务处理
  * <p>
-
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-11-27 <br>
  * <br>
@@ -75,12 +75,13 @@ public class MongoOperationContext extends MongoDbContext {
 		if (operation != null) {
 			DBObject objectArray = new BasicDBObject();
 			DBObject common = new BasicDBObject();
-			addObjectArrayOperationObject(operation.getOperationGroup(), objectArray,common);
+			addObjectArrayOperationObject(operation.getOperationGroup(),
+					objectArray, common);
 			DBObject condition = generateConditionObject();
-			if(common.keySet().size()>0){
-				persistence.update(condition, common);//先增加普通属性
+			if (common.keySet().size() > 0) {
+				persistence.update(condition, common);// 先增加普通属性
 			}
-			return persistence.insertObjectArrayModel(condition, objectArray);//再更新数组对象字段
+			return persistence.insertObjectArrayModel(condition, objectArray);// 再更新数组对象字段
 		}
 		return null;
 	}
@@ -158,44 +159,49 @@ public class MongoOperationContext extends MongoDbContext {
 			for (OperationField operationField : operationFields) {
 				MongoField mongoField = getMongoField(operationField
 						.getFieldId());
-				Field field=mongoField.getField();
+				Field field = mongoField.getField();
 				String propertyName = mongoField.getFieldName();
 				Object value = context.get(propertyName);
-				if(value==null){//mongoField.getFieldName()可能是对象嵌套属性例如：aaa.name,不存在参数值则获取name属性的参数值
-					value=context.get(field.getName());
+				if (value == null) {// mongoField.getFieldName()可能是对象嵌套属性例如：aaa.name,不存在参数值则获取name属性的参数值
+					value = context.get(field.getName());
 				}
 				if (value != null) {
-					if (value.getClass().isArray()) {//如果是文件表单字段，那么需要对参数值进行特殊处理。
-						Object[] values=(Object[])value;
+					if (value.getClass().isArray()) {// 如果是文件表单字段，那么需要对参数值进行特殊处理。
+						Object[] values = (Object[]) value;
 						for (int i = 0; i < values.length; i++) {
-							if(values[i] instanceof ItemFileObject){
-								ItemFileObject fileObject=(ItemFileObject)values[i];
-								TinyFileItem fileItem= (TinyFileItem)fileObject.getFileItem();
-								values[i]=fileItem.getUnique();
+							if (values[i] instanceof ItemFileObject) {
+								ItemFileObject fileObject = (ItemFileObject) values[i];
+								TinyFileItem fileItem = (TinyFileItem) fileObject
+										.getFileItem();
+								values[i] = fileItem.getUnique();
 							}
 						}
 					} else {
-						if(value instanceof ItemFileObject){//如果是文件类型表单字段
-							ItemFileObject fileObject=(ItemFileObject)value;
-							TinyFileItem fileItem= (TinyFileItem)fileObject.getFileItem();
-							value=fileItem.getUnique();
+						if (value instanceof ItemFileObject) {// 如果是文件类型表单字段
+							ItemFileObject fileObject = (ItemFileObject) value;
+							TinyFileItem fileItem = (TinyFileItem) fileObject
+									.getFileItem();
+							value = fileItem.getUnique();
 						}
 					}
-					if(field.isEncrypt()){//加密字段特殊处理
+					if (field.isEncrypt()) {// 加密字段特殊处理
 						try {
-							value=cryptor.encrypt(String.valueOf(value));
+							value = cryptor.encrypt(String.valueOf(value));
 						} catch (Exception e) {
 							logger.errorMessage("encrypt error", e);
 						}
 					}
-				} else {//参数值为null，是否需要进行特殊处理
+				} else {// 参数值为null，是否需要进行特殊处理
 					if (mongoField.isObjectIdField()) {
 						value = UUID.randomUUID().toString()
 								.replaceAll("-", "");
 					}
 				}
-				//对参数值进行类型转换处理
-				newContext.put(propertyName, MdaUtil.getObject(value, field.getDefaultValue(), field.getDataType(), field.getDefaultValueGetter()));
+				// 对参数值进行类型转换处理
+				newContext.put(propertyName, MdaUtil.getObject(value, field
+						.getDefaultValue(), field.getDataType(), field
+						.getDefaultValueGetter(), this.getClass()
+						.getClassLoader()));
 			}
 			if (operationGroup.getOperationGroups() != null) {
 				for (OperationGroup subGroup : operationGroup
@@ -284,12 +290,12 @@ public class MongoOperationContext extends MongoDbContext {
 	}
 
 	private void addObjectArrayOperationObject(OperationGroup group,
-			BSONObject objectArrayObject,BSONObject commonObject) {
+			BSONObject objectArrayObject, BSONObject commonObject) {
 		MapConvert convert = new MapConvert(model, operation, context);
 		Map<String, Object> commonMap = new HashMap<String, Object>();
-		Map<String, Object> addToSetMap= new HashMap<String, Object>();
+		Map<String, Object> addToSetMap = new HashMap<String, Object>();
 		convert.addObjectArrayOperationObject(operation.getOperationGroup(),
-				addToSetMap,commonMap);
+				addToSetMap, commonMap);
 		objectArrayObject.putAll(addToSetMap);
 		commonObject.putAll(commonMap);
 	}

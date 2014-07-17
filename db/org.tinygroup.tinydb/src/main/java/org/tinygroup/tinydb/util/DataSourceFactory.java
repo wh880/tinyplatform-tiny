@@ -20,9 +20,9 @@ import java.sql.SQLException;
 
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 数据源工厂
@@ -39,19 +39,19 @@ public final class DataSourceFactory {
 	}
 
 	public static PlatformTransactionManager getTransactionManager(
-			String dataSourceName) {
+			String dataSourceName,ClassLoader loader) {
 
-		return getTransactionTemplate(dataSourceName).getTransactionManager();
+		return getTransactionTemplate(dataSourceName,loader).getTransactionManager();
 	}
 
 	public static TransactionTemplate getTransactionTemplate(
-			String dataSourceName) {
-		DataSourceProxy dataSource = SpringUtil.getBean("dataSourceProxy");
+			String dataSourceName,ClassLoader loader) {
+		DataSourceProxy dataSource = BeanContainerFactory.getBeanContainer(loader).getBean("dataSourceProxy");
 		return dataSource.getTransactionTemplate();
 	}
 
-	public static Connection getConnection(String dataSourceName) {
-		DataSourceProxy dataSource = SpringUtil.getBean("dataSourceProxy");
+	public static Connection getConnection(String dataSourceName,ClassLoader loader) {
+		DataSourceProxy dataSource = BeanContainerFactory.getBeanContainer(loader).getBean("dataSourceProxy");
 
 		try {
 			return dataSource.getDatasource().getDataSource(dataSourceName)

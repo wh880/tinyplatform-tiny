@@ -20,7 +20,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.metadata.config.errormessage.ErrorMessages;
 import org.tinygroup.metadata.errormessage.ErrorMessageProcessor;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -29,14 +28,21 @@ import com.thoughtworks.xstream.XStream;
 public class ErrorMessageFileResolver extends AbstractFileProcessor {
 
 	private static final String ERROR_EXTFILENAME = ".error.xml";
+	private ErrorMessageProcessor errorMessageProcessor;
+	
+	public ErrorMessageProcessor getErrorMessageProcessor() {
+		return errorMessageProcessor;
+	}
+
+	public void setErrorMessageProcessor(ErrorMessageProcessor errorMessageProcessor) {
+		this.errorMessageProcessor = errorMessageProcessor;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(ERROR_EXTFILENAME);
 	}
 
 	public void process() {
-		ErrorMessageProcessor errorMessageProcessor = SpringUtil
-				.getBean(MetadataUtil.ERRORMESSAGEPROCESSOR_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
 		for (FileObject fileObject : deleteList) {

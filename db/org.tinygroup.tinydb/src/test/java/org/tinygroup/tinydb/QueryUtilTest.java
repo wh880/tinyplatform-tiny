@@ -18,7 +18,7 @@ package org.tinygroup.tinydb;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinydb.query.Conditions;
 import org.tinygroup.tinydb.test.BaseTest;
 import org.tinygroup.tinydb.test.operator.BeanStringOperator;
@@ -28,7 +28,8 @@ public class QueryUtilTest extends BaseTest {
 
 	public void setUp() {
 		super.setUp();
-		queryUtil = SpringUtil.getBean("beanStringOperator");
+		queryUtil = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean("beanStringOperator");
 	}
 
 	public void testGenerateSqlClause1() {
@@ -164,8 +165,7 @@ public class QueryUtilTest extends BaseTest {
 
 	public void testGenerateSqlClause13() {
 		Conditions conditions = new Conditions();
-		conditions.condition("aaa0", "=", 0).and()
-				.condition("aaa1", "=", 1);
+		conditions.condition("aaa0", "=", 0).and().condition("aaa1", "=", 1);
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
 		queryUtil.generateQuerySqlClause(conditions, stringBuffer, valueList);
@@ -176,8 +176,8 @@ public class QueryUtilTest extends BaseTest {
 	}
 
 	public void testGenerateSqlClause14() {
-		Conditions conditions = new Conditions().condition("aaa", "=", 3)
-				.and().left().condition("aaa0", "=", 0).and()
+		Conditions conditions = new Conditions().condition("aaa", "=", 3).and()
+				.left().condition("aaa0", "=", 0).and()
 				.condition("aaa1", "=", 1).right();
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
@@ -191,8 +191,8 @@ public class QueryUtilTest extends BaseTest {
 	}
 
 	public void testGenerateSqlClause15() {
-		Conditions conditions = new Conditions().condition("aaa", "=", 3)
-				.or().left().condition("aaa0", "=", 0).or()
+		Conditions conditions = new Conditions().condition("aaa", "=", 3).or()
+				.left().condition("aaa0", "=", 0).or()
 				.condition("aaa1", "=", 1).right();
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
@@ -206,8 +206,8 @@ public class QueryUtilTest extends BaseTest {
 	}
 
 	public void testGenerateSqlClause16() {
-		Conditions conditions = new Conditions().condition("aaa", "=", 3)
-				.or().left().condition("aaa0", "=", 0).and()
+		Conditions conditions = new Conditions().condition("aaa", "=", 3).or()
+				.left().condition("aaa0", "=", 0).and()
 				.condition("aaa1", "=", 1).right();
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();
@@ -221,8 +221,8 @@ public class QueryUtilTest extends BaseTest {
 	}
 
 	public void testGenerateSqlClause17() {
-		Conditions conditions = new Conditions().condition("aaa", "=", 3)
-				.and().left().condition("aaa0", "=", 0).or()
+		Conditions conditions = new Conditions().condition("aaa", "=", 3).and()
+				.left().condition("aaa0", "=", 0).or()
 				.condition("aaa1", "=", 1).right();
 		StringBuffer stringBuffer = new StringBuffer();
 		List<Object> valueList = new ArrayList<Object>();

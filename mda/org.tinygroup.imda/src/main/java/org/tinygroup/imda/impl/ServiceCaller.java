@@ -31,11 +31,11 @@ import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 
 public class ServiceCaller {
 	private static Logger logger = LoggerFactory.getLogger(ServiceCaller.class);
-	ModelManager modelManager;
+	private ModelManager modelManager;
+	private CEPCore cepCore;
 
 	public ModelManager getModelManager() {
 		return modelManager;
@@ -117,7 +117,6 @@ public class ServiceCaller {
             newContext.put("modelRequestContext", c);
 
 		}
-		CEPCore cepCore = (CEPCore)SpringUtil.getBean("cepcore");
 
 		Event event = getEvent(newContext, serviceId);
 		cepCore.process(event);

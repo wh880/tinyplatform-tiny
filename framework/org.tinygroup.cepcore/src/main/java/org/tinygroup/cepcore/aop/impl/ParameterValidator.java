@@ -17,9 +17,9 @@ package org.tinygroup.cepcore.aop.impl;
 
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.exception.RequestParamValidateException;
 import org.tinygroup.event.Parameter;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.validate.ValidateResult;
 import org.tinygroup.validate.ValidatorManager;
 import org.tinygroup.validate.XmlValidatorManager;
@@ -27,14 +27,14 @@ import org.tinygroup.validate.impl.ValidateResultImpl;
 
 public class ParameterValidator {
 
-	public static void validate(Object[] args, List<Parameter> inputParameters) {
+	public static void validate(Object[] args, List<Parameter> inputParameters,ClassLoader loader) {
 		ValidateResult result = new ValidateResultImpl();
 		for (int i = 0; i < inputParameters.size(); i++) {
 			Parameter p = inputParameters.get(i);
 			Object value = args[i];
 			String scene = p.getValidatorSence();
 			if (scene != null && !"".equals(scene)) {
-				ValidatorManager xmlValidatorManager = SpringUtil
+				ValidatorManager xmlValidatorManager = BeanContainerFactory.getBeanContainer(loader)
 						.getBean(XmlValidatorManager.class);
 				if (p.isArray()) {// 如果是数组
 					Object[] array = (Object[]) value;

@@ -12,12 +12,20 @@ import org.tinygroup.database.config.sequence.Sequence;
 import org.tinygroup.database.config.sequence.Sequences;
 import org.tinygroup.database.sequence.SequenceProcessor;
 import org.tinygroup.database.sequence.SequenceSqlProcessor;
-import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class SequenceProcessorImpl implements SequenceProcessor {
 
 	private Map<String, Sequence> sequenceMap = new HashMap<String, Sequence>();
+	private ProcessorManager processorManager;
+	
+	
+	public ProcessorManager getProcessorManager() {
+		return processorManager;
+	}
+
+	public void setProcessorManager(ProcessorManager processorManager) {
+		this.processorManager = processorManager;
+	}
 
 	public void addSequences(Sequences sequences) {
 		for (Sequence sequence : sequences.getSequences()) {
@@ -45,7 +53,7 @@ public class SequenceProcessorImpl implements SequenceProcessor {
 	}
 
 	private String getCreateSql(Sequence sequence, String language) {
-		ProcessorManager processorManager = SpringUtil.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		SequenceSqlProcessor sqlProcessor = (SequenceSqlProcessor)processorManager.getProcessor(language, "sequence");
 		return sqlProcessor.getCreateSql(sequence);
 	}
@@ -60,7 +68,7 @@ public class SequenceProcessorImpl implements SequenceProcessor {
 	}
 
 	private String getDropSql(Sequence sequence, String language) {
-		ProcessorManager processorManager = SpringUtil.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		SequenceSqlProcessor sqlProcessor = (SequenceSqlProcessor)processorManager.getProcessor(language, "sequence");
 		return sqlProcessor.getDropSql(sequence);
 	}
@@ -89,7 +97,7 @@ public class SequenceProcessorImpl implements SequenceProcessor {
 
 	public boolean checkSequenceExist(String language,Sequence sequence, Connection connection)
 			throws SQLException {
-		ProcessorManager processorManager = SpringUtil.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		SequenceSqlProcessor sqlProcessor = (SequenceSqlProcessor)processorManager.getProcessor(language, "sequence");
 		return sqlProcessor.checkSequenceExist(sequence,connection);
 	}

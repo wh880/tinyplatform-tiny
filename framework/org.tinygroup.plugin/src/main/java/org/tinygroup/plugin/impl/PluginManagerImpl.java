@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -27,7 +28,6 @@ import org.tinygroup.plugin.Plugin;
 import org.tinygroup.plugin.PluginManager;
 import org.tinygroup.plugin.config.PluginConfig;
 import org.tinygroup.plugin.config.PluginConfigs;
-import org.tinygroup.springutil.SpringUtil;
 
 public class PluginManagerImpl implements PluginManager {
 	Logger logger = LoggerFactory.getLogger(PluginManagerImpl.class);
@@ -92,7 +92,9 @@ public class PluginManagerImpl implements PluginManager {
 					}
 				}
 			}
-			Plugin plugin = SpringUtil.getBean(pluginConfig.getPluginBean());
+			Plugin plugin = (Plugin) BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					pluginConfig.getPluginBean());
 			plugin.start();
 			pluginConfig.setStatus(RUNING);
 		}
@@ -106,7 +108,7 @@ public class PluginManagerImpl implements PluginManager {
 		if (pluginConfig == null) {
 			logger.logMessage(LogLevel.INFO, "不存在<{}>插件！", pluginName);
 			return;
-		}else{
+		} else {
 			stopPlugin(pluginConfig);
 		}
 	}
@@ -116,7 +118,9 @@ public class PluginManagerImpl implements PluginManager {
 			logger.logMessage(LogLevel.INFO, "<{}>插件已经停止！",
 					pluginConfig.getPluginName());
 		} else {
-			Plugin plugin = SpringUtil.getBean(pluginConfig.getPluginBean());
+			Plugin plugin = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					pluginConfig.getPluginBean());
 			for (PluginConfig config : pluginConfig.getDependByList()) {// 停止依赖当前插件的插件
 				stopPlugin(config);
 			}
@@ -168,7 +172,7 @@ public class PluginManagerImpl implements PluginManager {
 			pluginConfig.setRefacted(false);
 		}// 进行反应计算
 		for (PluginConfig pluginConfig : pluginConfigList) {
-			refactPlugin(pluginConfig,new ArrayList<String>());
+			refactPlugin(pluginConfig, new ArrayList<String>());
 		}// 停止不健康的
 		for (PluginConfig pluginConfig : pluginConfigList) {
 			if (!pluginConfig.isHealthy()) {// 停止不健康的插件
@@ -177,23 +181,25 @@ public class PluginManagerImpl implements PluginManager {
 		}
 	}
 
-	private void refactPlugin(PluginConfig pluginConfig,List<String> pluginNames) {
+	private void refactPlugin(PluginConfig pluginConfig,
+			List<String> pluginNames) {
 		String pluginName = pluginConfig.getPluginName();
-		if(pluginNames.contains(pluginName)){
-			return ;
-		}else{
+		if (pluginNames.contains(pluginName)) {
+			return;
+		} else {
 			pluginNames.add(pluginName);
 		}
 		boolean healthy = true;
-		healthy = healthy&&dealDepend(pluginConfig,pluginNames);
-		healthy = healthy&&dealDependBy(pluginConfig,pluginNames);
+		healthy = healthy && dealDepend(pluginConfig, pluginNames);
+		healthy = healthy && dealDependBy(pluginConfig, pluginNames);
 		pluginConfig.setHealthy(healthy);// 设置健康情况
 		pluginConfig.setRefacted(true);// 设置已经反应过
 	}
-	
-	private boolean dealDependBy(PluginConfig pluginConfig,List<String> pluginNames){
+
+	private boolean dealDependBy(PluginConfig pluginConfig,
+			List<String> pluginNames) {
 		String dependByPlugins = pluginConfig.getDependByPlugins();
-		if(dependByPlugins != null && dependByPlugins.length() > 0){
+		if (dependByPlugins != null && dependByPlugins.length() > 0) {
 			String[] dependByPluginArray = dependByPlugins.split(",");
 			boolean healthy = true;
 			for (String name : dependByPluginArray) {
@@ -204,7 +210,7 @@ public class PluginManagerImpl implements PluginManager {
 							pluginConfig.getPluginName(), name);
 				} else {
 					if (!dependByPluginConfig.isRefacted()) {// 如果还没有发生过，则使反应
-						refactPlugin(dependByPluginConfig,pluginNames);
+						refactPlugin(dependByPluginConfig, pluginNames);
 					}
 					if (!dependByPluginConfig.isHealthy()) {
 						logger.logMessage(LogLevel.ERROR, "依赖插件{}的插件{}不健康！",
@@ -216,11 +222,12 @@ public class PluginManagerImpl implements PluginManager {
 				}
 			}
 			return healthy;
-		} 
+		}
 		return true;
 	}
-	
-	private boolean dealDepend(PluginConfig pluginConfig,List<String> pluginNames){
+
+	private boolean dealDepend(PluginConfig pluginConfig,
+			List<String> pluginNames) {
 		String dependPlugins = pluginConfig.getDependPlugins();
 		if (dependPlugins != null && dependPlugins.length() > 0) {
 			String[] dependPluginArray = dependPlugins.split(",");
@@ -233,7 +240,7 @@ public class PluginManagerImpl implements PluginManager {
 							pluginConfig.getPluginName(), name);
 				} else {
 					if (!dependPluginConfig.isRefacted()) {// 如果还没有发生过，则使反应
-						refactPlugin(dependPluginConfig,pluginNames);
+						refactPlugin(dependPluginConfig, pluginNames);
 					}
 					if (!dependPluginConfig.isHealthy()) {
 						logger.logMessage(LogLevel.ERROR, "插件{}依赖的插件{}不健康！",

@@ -260,13 +260,13 @@ public class SessionTinyFilter extends AbstractTinyFilter {
 				}
 			}
 
-			sessionModelEncoders = ParserXmlNodeUtil.parseConfigToArray(
+			sessionModelEncoders = ParserXmlNodeUtil.parseConfigToArray(this.getClass().getClassLoader(),
 					SESSION_MODEL_ENCODER, sessionNode,
 					SessionModelEncoder.class);
 			if (isEmptyArray(sessionModelEncoders)) {
 				sessionModelEncoders = new SessionModelEncoder[] { new SessionModelEncoderImpl() };
 			}
-			sessionInterceptors = ParserXmlNodeUtil.parseConfigToArray(
+			sessionInterceptors = ParserXmlNodeUtil.parseConfigToArray(this.getClass().getClassLoader(),
 					INTERCEPTOR, sessionNode, SessionInterceptor.class);
 			if (isEmptyArray(sessionInterceptors)) {
 				sessionInterceptors = new SessionInterceptor[0];
@@ -368,7 +368,7 @@ public class SessionTinyFilter extends AbstractTinyFilter {
 
 			if (generator == null) {
 				generator = defaultIfNull(
-						ParserXmlNodeUtil.parseConfigToObject(SESSIONID_GENERATOR,
+						ParserXmlNodeUtil.parseConfigToObject(this.getClass().getClassLoader(),SESSIONID_GENERATOR,
 								sessionNode, SessionIDGenerator.class),
 						new UUIDGenerator());
 			}
@@ -587,7 +587,7 @@ public class SessionTinyFilter extends AbstractTinyFilter {
 
 		private void init(SessionConfig sessionConfig) throws Exception {
 			if (stores == null) {
-				stores = defaultIfNull(ParserXmlNodeUtil.parseConfigToMap(
+				stores = defaultIfNull(ParserXmlNodeUtil.parseConfigToMap(this.getClass().getClassLoader(),
 						SESSION_STORE_CONFIG_NAME, ATTRIBUTE_NAME, sessionNode,
 						SessionStore.class),
 						new LinkedHashMap<String, SessionStore>());

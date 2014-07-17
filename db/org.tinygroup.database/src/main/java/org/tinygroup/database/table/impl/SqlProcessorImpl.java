@@ -260,25 +260,29 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 				continue;
 			}
 			StandardField standardField = MetadataUtil.getStandardField(field
-					.getStandardFieldId());
+					.getStandardFieldId(), this.getClass().getClassLoader());
 			Map<String, String> attribute = dbColumns.get(fieldName);
 			String tableDataType = MetadataUtil.getStandardFieldType(
-					standardField.getId(), getDatabaseType());
+					standardField.getId(), getDatabaseType(), this.getClass()
+							.getClassLoader());
 			String dbColumnType = getDbColumnType(attribute)
 					.replaceAll(" ", "").toLowerCase();
 			if (dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
 					.toLowerCase()) == -1) {
-				String alterType=createAlterTypeSql(table.getName(),fieldName,tableDataType);
+				String alterType = createAlterTypeSql(table.getName(),
+						fieldName, tableDataType);
 				existUpdateList.add(alterType);
 			}
 			// 如果数据库中字段允许为空，但table中不允许为空
 			if (field.getNotNull()
 					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNullable) {
-				String notNullSql=createNotNullSql(table.getName(),fieldName,tableDataType);
+				String notNullSql = createNotNullSql(table.getName(),
+						fieldName, tableDataType);
 				existUpdateList.add(notNullSql);
 			} else if (!field.getNotNull()
 					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNoNulls) {
-				String nullSql=createNullSql(table.getName(), fieldName,tableDataType);
+				String nullSql = createNullSql(table.getName(), fieldName,
+						tableDataType);
 				existUpdateList.add(nullSql);
 			}
 		}
@@ -286,12 +290,14 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 
 	}
 
-	protected abstract String createNotNullSql(String tableName, String fieldName,String tableDataType);
-	
-	protected abstract String createNullSql(String tableName, String fieldName,String tableDataType);
+	protected abstract String createNotNullSql(String tableName,
+			String fieldName, String tableDataType);
 
-	protected abstract String createAlterTypeSql(String tableName, String fieldName,
+	protected abstract String createNullSql(String tableName, String fieldName,
 			String tableDataType);
+
+	protected abstract String createAlterTypeSql(String tableName,
+			String fieldName, String tableDataType);
 
 	protected void appendBody(StringBuffer ddlBuffer, String packageName,
 			Table table, List<String> list) {
@@ -309,13 +315,13 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	}
 
 	protected void appendField(StringBuffer ddlBuffer, TableField field) {
-		StandardField standardField = MetadataUtil.getStandardField(field
-				.getStandardFieldId());
+		StandardField standardField = MetadataUtil.getStandardField(
+				field.getStandardFieldId(), this.getClass().getClassLoader());
 		ddlBuffer.append(String.format(" %s ",
 				DataBaseUtil.getDataBaseName(standardField.getName())));
 		ddlBuffer.append(" ");
-		ddlBuffer.append(MetadataUtil.getStandardFieldType(
-				standardField.getId(), getDatabaseType()));
+		ddlBuffer.append(MetadataUtil.getStandardFieldType(standardField
+				.getId(), getDatabaseType(), this.getClass().getClassLoader()));
 		Boolean notNull = field.getNotNull();
 		if (notNull != null && notNull.booleanValue()) {
 			ddlBuffer.append(" NOT NULL");
@@ -396,8 +402,9 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	private String getFieldStdFieldName(String fieldId, Table table) {
 		for (TableField field : table.getFieldList()) {
 			if (field.getId().equals(fieldId)) {
-				StandardField standardField = MetadataUtil
-						.getStandardField(field.getStandardFieldId());
+				StandardField standardField = MetadataUtil.getStandardField(
+						field.getStandardFieldId(), this.getClass()
+								.getClassLoader());
 				return DataBaseUtil.getDataBaseName(standardField.getName());
 			}
 		}
@@ -418,7 +425,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		Map<String, TableField> filedDbNames = new HashMap<String, TableField>();
 		for (TableField field : fields) {
 			StandardField standardField = MetadataUtil.getStandardField(field
-					.getStandardFieldId());
+					.getStandardFieldId(), this.getClass().getClassLoader());
 			String filedDbName = DataBaseUtil.getDataBaseName(standardField
 					.getName());
 			filedDbNames.put(DataBaseNameUtil.getColumnNameFormat(filedDbName),

@@ -22,12 +22,13 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.commons.tools.ReflectionUtils;
 import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.mvc.annotation.View;
 
@@ -35,7 +36,7 @@ import org.tinygroup.weblayer.mvc.annotation.View;
  * 
  * 功能说明: 根据http请求获取本次请求的处理相关对象
  * <p>
-
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-4-22 <br>
  * <br>
@@ -92,8 +93,10 @@ public class HandlerExecutionChain {
 				if (type.equals(WebContext.class)) {
 					args[i] = context;
 				} else {
-					ClassNameObjectGenerator generator = SpringUtil
-							.getBean(GeneratorFileProcessor.CLASSNAME_OBJECT_GENERATOR_BEAN);
+					ClassNameObjectGenerator generator = BeanContainerFactory
+							.getBeanContainer(this.getClass().getClassLoader())
+							.getBean(
+									GeneratorFileProcessor.CLASSNAME_OBJECT_GENERATOR_BEAN);
 					if (Collection.class.isAssignableFrom(type)) {
 						ParameterizedType pt = (ParameterizedType) (method
 								.getGenericParameterTypes()[i]);
@@ -108,8 +111,9 @@ public class HandlerExecutionChain {
 								type.getName(), context);
 					}
 				}
-			}else{
-				args[i]=ValueUtil.getValue(args[i].toString(), type.getName());
+			} else {
+				args[i] = ValueUtil
+						.getValue(args[i].toString(), type.getName());
 			}
 			context.put(parameterNames[i], args[i]);
 
@@ -132,14 +136,15 @@ public class HandlerExecutionChain {
 						context.getResponse());
 			} catch (Exception e) {
 				throw new RuntimeException(e);
-			} 
+			}
 		}
 	}
 
 	private Object getInstance(Class mapClass) throws Exception {
 		Object object = null;
 		try {
-			object = SpringUtil.getBean(mapClass);
+			object = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(mapClass);
 		} catch (Exception e) {
 			if (object == null) {
 				object = model.getMapClass().newInstance();

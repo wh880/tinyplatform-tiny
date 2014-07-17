@@ -17,9 +17,9 @@ package org.tinygroup.metadata.stddatatype;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.metadata.TestInit;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class StandardTypeProcessorTest extends TestCase {
 	StandardTypeProcessor standardTypeProcessor;
@@ -29,14 +29,16 @@ public class StandardTypeProcessorTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		standardTypeProcessor = SpringUtil.getBean(MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
+		standardTypeProcessor = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
 	}
 
 	public void testGetTypeStringStringString() {
-//		assertEquals("varchar2(12)",
-//				standardTypeProcessor.getType( "hsvarcharid", "oracle"));
-//		assertEquals("varchar2(${length})",
-//				standardTypeProcessor.getType( "hsvarchar1id", "oracle"));
+		// assertEquals("varchar2(12)",
+		// standardTypeProcessor.getType( "hsvarcharid", "oracle"));
+		// assertEquals("varchar2(${length})",
+		// standardTypeProcessor.getType( "hsvarchar1id", "oracle"));
 	}
 
 }

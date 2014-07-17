@@ -15,6 +15,7 @@
  */
 package org.tinygroup.context2object.fileresolver;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context2object.TypeConverter;
 import org.tinygroup.context2object.TypeCreator;
 import org.tinygroup.context2object.config.GeneratorConfig;
@@ -24,7 +25,6 @@ import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -36,20 +36,30 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 	private static final String GENERATOR_EXT_FILENAME = ".generatorconfig.xml";
 	public static final String CLASSNAME_OBJECT_GENERATOR_BEAN = "classNameObjectGenerator";
 	public static final String CONTEXT2OBJECT_XSTREAM = "context2object";
+	private ClassNameObjectGenerator generator;
+
+	public ClassNameObjectGenerator getGenerator() {
+		return generator;
+	}
+
+	public void setGenerator(ClassNameObjectGenerator generator) {
+		this.generator = generator;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(GENERATOR_EXT_FILENAME);
 	}
 
 	public void process() {
-		ClassNameObjectGenerator generator = SpringUtil
-				.getBean(CLASSNAME_OBJECT_GENERATOR_BEAN);
+		// ClassNameObjectGenerator generator = SpringBeanContainer
+		// .getBean(CLASSNAME_OBJECT_GENERATOR_BEAN);
 		XStream stream = XStreamFactory.getXStream(CONTEXT2OBJECT_XSTREAM);
 		for (FileObject fileObject : deleteList) {
 			logger.logMessage(LogLevel.INFO, "开始移除generator配置文件:{0}",
 					fileObject.getFileName());
-			GeneratorConfig config = (GeneratorConfig)caches.get(fileObject.getAbsolutePath());
-			if(config!=null){
+			GeneratorConfig config = (GeneratorConfig) caches.get(fileObject
+					.getAbsolutePath());
+			if (config != null) {
 				removeConfig(config, generator);
 				caches.remove(fileObject.getAbsolutePath());
 			}
@@ -60,8 +70,9 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 		for (FileObject file : changeList) {
 			logger.logMessage(LogLevel.INFO, "开始读取generator配置文件:{0}",
 					file.getFileName());
-			GeneratorConfig oldConfig=(GeneratorConfig)caches.get(file.getAbsolutePath());
-			if (oldConfig!=null) {
+			GeneratorConfig oldConfig = (GeneratorConfig) caches.get(file
+					.getAbsolutePath());
+			if (oldConfig != null) {
 				removeConfig(oldConfig, generator);
 			}
 			GeneratorConfig config = (GeneratorConfig) stream.fromXML(file
@@ -90,7 +101,7 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 			TypeCreator o = (TypeCreator) deal(item);
 			generator.removeTypeCreator(o);
 		}
-		
+
 	}
 
 	private void deal(GeneratorConfig config, ClassNameObjectGenerator generator) {
@@ -129,7 +140,8 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 			}
 		}
 		{
-			return SpringUtil.getBean(beanName);
+			return BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(beanName);
 		}
 	}
 

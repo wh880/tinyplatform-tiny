@@ -15,19 +15,24 @@
  */
 package org.tinygroup.imda.usermodel;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.imda.processor.ModelServiceProcessor;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
-import org.tinygroup.springutil.SpringUtil;
 
 public class CaseModelServiceProcessor<T> implements
-		ModelServiceProcessor<CaseModel,T> {
+		ModelServiceProcessor<CaseModel, T> {
 	public T process(ModelRequestInfo modelRequestInfo, Context context) {
-		ModelManager modelManager=SpringUtil.getBean("modelManager");
-		CaseModel model=modelManager.getModel(modelRequestInfo.getModelId());
-		context.put("model:", model.getId() + "page is:"+context.get(CaseModelParamBuilder.KEY));
-		context.put(CaseModelParamBuilder.KEY,1+(Integer)context.get(CaseModelParamBuilder.KEY));
+		ModelManager modelManager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean("modelManager");
+		CaseModel model = modelManager.getModel(modelRequestInfo.getModelId());
+		context.put(
+				"model:",
+				model.getId() + "page is:"
+						+ context.get(CaseModelParamBuilder.KEY));
+		context.put(CaseModelParamBuilder.KEY,
+				1 + (Integer) context.get(CaseModelParamBuilder.KEY));
 		return null;
 	}
 }

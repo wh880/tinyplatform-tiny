@@ -28,6 +28,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.ObjectGenerator;
 import org.tinygroup.context2object.TypeConverter;
@@ -35,7 +36,6 @@ import org.tinygroup.context2object.TypeCreator;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 
 public class ClassNameObjectGenerator implements
 		ObjectGenerator<Object, String> {
@@ -43,27 +43,28 @@ public class ClassNameObjectGenerator implements
 			.getLogger(ClassNameObjectGenerator.class);
 	private List<TypeConverter<?, ?>> typeConverterList = new ArrayList<TypeConverter<?, ?>>();
 	private List<TypeCreator<?>> typeCreatorList = new ArrayList<TypeCreator<?>>();
-	
+
 	public Object getObject(String varName, String bean, String className,
 			Context context) {
 		if (className == null || "".equals(className)) {
 			return getObject(varName, bean, null, context, null);
 		}
-		//20130808注释LoaderManagerFactory
-//		return getObject(varName, bean, LoaderManagerFactory.getManager()
-//				.getClass(className), context, null);
+		// 20130808注释LoaderManagerFactory
+		// return getObject(varName, bean, LoaderManagerFactory.getManager()
+		// .getClass(className), context, null);
 		return getObject(varName, bean, getClazz(className), context, null);
 	}
 
 	public Object getObjectArray(String varName, String className,
 			Context context) {
-		//20130808注释LoaderManagerFactory
-//		return buildArrayObjectWithObject(varName, LoaderManagerFactory
-//				.getManager().getClass(className), context, null);
-		return buildArrayObjectWithObject(varName, getClazz(className), context, null);
+		// 20130808注释LoaderManagerFactory
+		// return buildArrayObjectWithObject(varName, LoaderManagerFactory
+		// .getManager().getClass(className), context, null);
+		return buildArrayObjectWithObject(varName, getClazz(className),
+				context, null);
 	}
-	
-	private Class<?> getClazz(String className){
+
+	private Class<?> getClazz(String className) {
 		try {
 			return Class.forName(className);
 		} catch (ClassNotFoundException e) {
@@ -73,10 +74,12 @@ public class ClassNameObjectGenerator implements
 
 	public Collection<Object> getObjectCollection(String varName,
 			String collectionName, String className, Context context) {
-		//20130808注释LoaderManagerFactory
-//		Class<?> collectionClass = LoaderManagerFactory.getManager().getClass(
-//				collectionName);
-//		Class<?> clazz = LoaderManagerFactory.getManager().getClass(className);
+		// 20130808注释LoaderManagerFactory
+		// Class<?> collectionClass =
+		// LoaderManagerFactory.getManager().getClass(
+		// collectionName);
+		// Class<?> clazz =
+		// LoaderManagerFactory.getManager().getClass(className);
 		Class<?> collectionClass = getClazz(collectionName);
 		Class<?> clazz = getClazz(className);
 		Collection<Object> collection = (Collection<Object>) getObjectInstance(collectionClass);
@@ -137,10 +140,11 @@ public class ClassNameObjectGenerator implements
 			if (descriptor.getPropertyType().equals(Class.class)) {
 				continue;
 			}
-			//201402025修改此处代码，修改propertyName获取逻辑
-			//String propertyName = getPropertyName(clazz, descriptor.getName());
+			// 201402025修改此处代码，修改propertyName获取逻辑
+			// String propertyName = getPropertyName(clazz,
+			// descriptor.getName());
 			String propertyName = descriptor.getName();
-			
+
 			Object propertyValue = getPerpertyValue(preName, objName,
 					propertyName, context);// user.name,user_name,name
 			if (propertyValue != null) { // 如果值取出来为空，则跳过不处理了
@@ -295,7 +299,7 @@ public class ClassNameObjectGenerator implements
 		Object object = getObjectInstance(clazz);
 		String objName = varName;
 		if (isNull(objName)) {
-			//20130806修改变量名为首字母小写
+			// 20130806修改变量名为首字母小写
 			objName = getObjName(object);
 		}
 		Map<String, Object> valueMap = new HashMap<String, Object>();
@@ -310,10 +314,11 @@ public class ClassNameObjectGenerator implements
 			if (size != -1) {
 				break;
 			}
-			//201402025修改此处代码，修改propertyName获取逻辑
-//			String propertyName = getPropertyName(reallyType, descriptor.getName());
+			// 201402025修改此处代码，修改propertyName获取逻辑
+			// String propertyName = getPropertyName(reallyType,
+			// descriptor.getName());
 			String propertyName = descriptor.getName();
-			
+
 			Object propertyValue = getPerpertyValue(preName, objName,
 					propertyName, context);
 			if (propertyValue != null) {
@@ -347,8 +352,9 @@ public class ClassNameObjectGenerator implements
 			if (descriptor.getPropertyType().equals(Class.class)) {
 				continue;
 			}
-			//201402025修改此处代码，修改propertyName获取逻辑
-//			String propertyName = getPropertyName(reallyType, descriptor.getName());
+			// 201402025修改此处代码，修改propertyName获取逻辑
+			// String propertyName = getPropertyName(reallyType,
+			// descriptor.getName());
 			String propertyName = descriptor.getName();
 			Object propertyValue = getPerpertyValue(preName, objName,
 					propertyName, context);
@@ -440,25 +446,26 @@ public class ClassNameObjectGenerator implements
 		}
 		return false;
 	}
-	//201402025注释此函数
-//	private String getPropertyName(Class<?> clazz, String name) {
-//		try {
-//			Field[] fileds = clazz.getDeclaredFields();
-//			
-//			Annotation parameterNameAnnotation = clazz.getDeclaredField(name)
-//					.getAnnotation(ParameterName.class);
-//			if (parameterNameAnnotation != null) {
-//				Object[] args = null;
-//				Class<?>[] argsType = null;
-//				return parameterNameAnnotation.annotationType()
-//						.getDeclaredMethod("name", argsType)
-//						.invoke(parameterNameAnnotation, args).toString();
-//			}
-//		} catch (Exception e) {
-//			logger.errorMessage("获取属性名重名名时失败", e);
-//		}
-//		return name;
-//	}
+
+	// 201402025注释此函数
+	// private String getPropertyName(Class<?> clazz, String name) {
+	// try {
+	// Field[] fileds = clazz.getDeclaredFields();
+	//
+	// Annotation parameterNameAnnotation = clazz.getDeclaredField(name)
+	// .getAnnotation(ParameterName.class);
+	// if (parameterNameAnnotation != null) {
+	// Object[] args = null;
+	// Class<?>[] argsType = null;
+	// return parameterNameAnnotation.annotationType()
+	// .getDeclaredMethod("name", argsType)
+	// .invoke(parameterNameAnnotation, args).toString();
+	// }
+	// } catch (Exception e) {
+	// logger.errorMessage("获取属性名重名名时失败", e);
+	// }
+	// return name;
+	// }
 
 	/**
 	 * 根据clazz获取对象 先从creator中获取，若找不到，则去springbean中获取
@@ -479,7 +486,8 @@ public class ClassNameObjectGenerator implements
 			return null;
 		}
 		try {
-			return SpringUtil.getBean(bean);
+			return BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(bean);
 		} catch (Exception e) {
 			logger.logMessage(LogLevel.WARN, e.getMessage());
 			return null;
@@ -492,7 +500,8 @@ public class ClassNameObjectGenerator implements
 			return null;
 		}
 		try {
-			return SpringUtil.getBean(clazz);
+			return BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(clazz);
 		} catch (Exception e) {
 			logger.logMessage(LogLevel.WARN, e.getMessage());
 			try {
@@ -532,7 +541,7 @@ public class ClassNameObjectGenerator implements
 	public void addTypeConverter(TypeConverter<?, ?> typeConverter) {
 		typeConverterList.add(typeConverter);
 	}
-	
+
 	public void removeTypeConverter(TypeConverter<?, ?> typeConverter) {
 		typeConverterList.remove(typeConverter);
 	}
@@ -541,7 +550,7 @@ public class ClassNameObjectGenerator implements
 		typeCreatorList.add(typeCreator);
 
 	}
-	
+
 	public void removeTypeCreator(TypeCreator<?> typeCreator) {
 		typeCreatorList.remove(typeCreator);
 
@@ -581,12 +590,12 @@ public class ClassNameObjectGenerator implements
 		}
 		return false;
 	}
-	
-	private String getObjName(Object object){
-		String className =  object.getClass().getSimpleName();
-		if(className.length()==1)
+
+	private String getObjName(Object object) {
+		String className = object.getClass().getSimpleName();
+		if (className.length() == 1)
 			return className.toLowerCase();
-		return className.substring(0,1).toLowerCase() + className.substring(1);
+		return className.substring(0, 1).toLowerCase() + className.substring(1);
 	}
 
 }

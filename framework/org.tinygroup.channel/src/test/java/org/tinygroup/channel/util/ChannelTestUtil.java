@@ -15,11 +15,11 @@
  */
 package org.tinygroup.channel.util;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcore.aop.CEPCoreAopManager;
 import org.tinygroup.event.Event;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class ChannelTestUtil {
@@ -30,20 +30,22 @@ public class ChannelTestUtil {
 	public static void registerEventProcessor(EventProcessor processor) {
 		getCep().registerEventProcessor(processor);
 	}
-	
-	public static CEPCore getCep(){
+
+	public static CEPCore getCep() {
 		init();
 		if (cep == null)
-			cep = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
+			cep = BeanContainerFactory.getBeanContainer(
+					ChannelTestUtil.class.getClassLoader()).getBean(
+					CEPCore.CEP_CORE_BEAN);
 		return cep;
 	}
 
-	private static void init(){
-		if(init)
+	private static void init() {
+		if (init)
 			return;
 		init = true;
 		AbstractTestUtil.init("application.xml", true);
-		
+
 	}
 
 	public static void execute(Event event) {

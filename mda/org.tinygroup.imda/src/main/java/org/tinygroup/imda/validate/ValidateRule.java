@@ -15,7 +15,7 @@
  */
 package org.tinygroup.imda.validate;
 
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -39,7 +39,8 @@ public class ValidateRule {
 
 	public String getMessege() {
 		if (messege == null || messege.length() == 0) {
-			ValidateManager validateManager = SpringUtil
+			ValidateManager validateManager = BeanContainerFactory
+					.getBeanContainer(this.getClass().getClassLoader())
 					.getBean("validateManager");
 			messege = validateManager.getDefaultMessage(ruleName);
 		}

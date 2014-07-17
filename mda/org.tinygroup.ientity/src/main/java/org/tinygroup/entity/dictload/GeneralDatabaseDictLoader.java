@@ -15,12 +15,12 @@
  */
 package org.tinygroup.entity.dictload;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.dict.Dict;
 import org.tinygroup.dict.DictGroup;
 import org.tinygroup.dict.DictItem;
 import org.tinygroup.dict.DictManager;
 import org.tinygroup.dict.impl.AbstractDictLoader;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
@@ -38,8 +38,9 @@ public class GeneralDatabaseDictLoader extends AbstractDictLoader {
 	String sql;
 
 	public void load(DictManager dictManager) {
-		BeanOperatorManager manager = SpringUtil
-				.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		DBOperator<?> itemOperator = manager.getDbOperator(beanType);
 		Dict dict = new Dict(beanType, beanType);
 		Bean[] dictItemBeans = itemOperator.getBeans(sql);

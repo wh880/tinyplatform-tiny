@@ -19,7 +19,6 @@ import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
 
@@ -32,11 +31,20 @@ public class PageFlowTinyProcessor extends AbstractTinyProcessor {
 
 	private Logger logger = LoggerFactory.getLogger(PageFlowTinyProcessor.class);
 	private final static String NODE_ID = "tiny_flow_id";
+	private FlowExecutor executor;
 	
+	public FlowExecutor getExecutor() {
+		return executor;
+	}
+
+	public void setExecutor(FlowExecutor executor) {
+		this.executor = executor;
+	}
+
 	public void reallyProcess(String urlString, WebContext context) {
 		logger.logMessage(LogLevel.INFO, "{}开始处理",urlString);
 		String serviceId = getRequestId(urlString);
-	    FlowExecutor executor=SpringUtil.getBean(FlowExecutor.PAGE_FLOW_BEAN); 
+//	    =SpringBeanContainer.getBean(FlowExecutor.PAGE_FLOW_BEAN); 
 	    String nodeId = context.get(NODE_ID);
 	    if(nodeId==null||"".equals(nodeId)){
 	    	executor.execute(serviceId, context);

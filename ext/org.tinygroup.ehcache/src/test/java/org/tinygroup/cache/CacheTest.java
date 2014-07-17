@@ -17,21 +17,22 @@ package org.tinygroup.cache;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.exception.CacheException;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.I18nFileProcessor;
-import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
 import org.tinygroup.fileresolver.impl.XStreamFileProcessor;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.springutil.SpringBeanContainer;
+import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 
 public class CacheTest extends TestCase {
 	Cache cache;
 	static {
+		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
 		FileResolver fileResolver = FileResolverFactory.getFileResolver();
-		fileResolver.addFileProcessor(
-				new XStreamFileProcessor());
+		fileResolver.addFileProcessor(new XStreamFileProcessor());
 		FileResolverUtil.addClassPathPattern(fileResolver);
 		fileResolver
 				.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
@@ -40,21 +41,19 @@ public class CacheTest extends TestCase {
 			fileResolver.addResolvePath(FileResolverUtil
 					.getWebLibJars(fileResolver));
 		} catch (Exception e) {
-			
+
 		}
 		fileResolver.addIncludePathPattern("org\\.tinygroup\\.(.)*\\.jar");
-		fileResolver.addFileProcessor(
-				new XStreamFileProcessor());
-		fileResolver.addFileProcessor(
-				new I18nFileProcessor());
-		fileResolver.addFileProcessor(
-				new SpringBeansFileProcessor());
+		fileResolver.addFileProcessor(new XStreamFileProcessor());
+		fileResolver.addFileProcessor(new I18nFileProcessor());
+		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 		fileResolver.resolve();
 	}
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		cache = SpringUtil.getBean("ehCache");
+		cache = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean("ehCache");
 		cache.init("DC");
 		cache.clear();
 	}

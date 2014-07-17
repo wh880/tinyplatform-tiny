@@ -14,6 +14,7 @@
 		<property name="manager">
 			<ref bean="serviceMappingManager" />
 		</property>
+		<property name="core" ref="cepcore"></property>
 	</bean>
 	<bean id="uiEngineTinyProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.tinyprocessor.UiEngineTinyProcessor">
@@ -26,15 +27,22 @@
 	</bean>
 	<bean id="velocityViewServlet" scope="singleton"
 		class="org.tinygroup.weblayer.servlet.VelocityLayoutViewServlet">
+		<property name="fullContextFileRepository" ref="fullContextFileRepository"></property>
+		<property name="velocityHelper" ref="velocityHelper"></property>
 	</bean>
 	<bean id="tinyProcessorFileProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.fileresolver.TinyProcessorFileProcessor">
+		<property name="configManager" ref="tinyProcessorConfigManager"></property>
+		<property name="tinyProcessorManager" ref="tinyProcessorManager"></property>
 	</bean>
 	<bean id="tinyFilterFileProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.fileresolver.TinyFilterFileProcessor">
+		<property name="configManager" ref="tinyFilterConfigManager"></property>
+		<property name="tinyFilterManager" ref="tinyFilterManager"></property>
 	</bean>
 	<bean id="fullContextServlet" scope="singleton"
 		class="org.tinygroup.weblayer.servlet.FullContextUrlRedirectServlet">
+		<property name="fullContextFileRepository" ref="fullContextFileRepository"></property>
 	</bean>
 
 	<bean id="mappingModelManager" scope="singleton"
@@ -67,25 +75,29 @@
 	</bean>
 	<bean id="pageFlowTinyProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.tinyprocessor.PageFlowTinyProcessor">
+		<property name="executor" ref="pageFlowExecutor"></property>
 	</bean>
 	<bean id="fullContextProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.tinyprocessor.FullContextUrlRedirectTinyProcessor">
+		<property name="fullContextFileRepository" ref="fullContextFileRepository"></property>
 	</bean>
 	<bean id="velocityViewProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.tinyprocessor.VelocityLayoutViewTinyProcessor">
+		<property name="fullContextFileRepository" ref="fullContextFileRepository"></property>
+		<property name="velocityHelper" ref="velocityHelper"></property>
 	</bean>
 	<!--fiter\servlet manager -->
 	<bean id="tinyProcessorManager" scope="singleton"
 		class="org.tinygroup.weblayer.impl.TinyProcessorManagerImpl">
 		<property name="configManager">
-		  <ref bean="tinyProcessorConfigManager"/>
+			<ref bean="tinyProcessorConfigManager" />
 		</property>
 	</bean>
 
 	<bean id="tinyFilterManager" scope="singleton"
 		class="org.tinygroup.weblayer.impl.TinyFilterManagerImpl">
 		<property name="configManager">
-		  <ref bean="tinyFilterConfigManager"/>
+			<ref bean="tinyFilterConfigManager" />
 		</property>
 	</bean>
 	<!--tiny filter -->
@@ -189,8 +201,7 @@
 		scope="singleton">
 	</bean>
 	<!-- TinyListenerPlugin -->
-	<bean id="tinyListenerProcessor"
-		class="org.tinygroup.weblayer.listener.TinyListenerProcessor"
+	<bean id="tinyListenerProcessor" class="org.tinygroup.weblayer.listener.TinyListenerProcessor"
 		scope="singleton">
 	</bean>
 	<!--页面异常处理配置加载 -->
@@ -204,7 +215,7 @@
 	<bean id="webExceptionHandlerManager" scope="singleton"
 		class="org.tinygroup.weblayer.exceptionhandler.impl.WebExceptionHandlerManagerImpl">
 	</bean>
-	
+
 	<!--filter\servlet 配置管理对象 -->
 	<bean id="tinyProcessorConfigManager" scope="singleton"
 		class="org.tinygroup.weblayer.configmanager.TinyProcessorConfigManager">
@@ -213,7 +224,7 @@
 	<bean id="tinyFilterConfigManager" scope="singleton"
 		class="org.tinygroup.weblayer.configmanager.TinyFiterConfigManager">
 	</bean>
-	
+
 	<bean id="velocityContextConfiguration" scope="singleton"
 		class="org.tinygroup.weblayer.tinyprocessor.VelocityContextConfiguration">
 	</bean>

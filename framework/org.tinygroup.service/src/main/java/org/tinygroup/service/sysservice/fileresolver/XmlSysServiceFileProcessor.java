@@ -18,6 +18,8 @@ package org.tinygroup.service.sysservice.fileresolver;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -29,7 +31,6 @@ import org.tinygroup.service.config.ServiceComponents;
 import org.tinygroup.service.config.XmlConfigServiceLoader;
 import org.tinygroup.service.exception.ServiceLoadException;
 import org.tinygroup.service.registry.ServiceRegistry;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -40,17 +41,34 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 	private static Logger logger = LoggerFactory
 			.getLogger(XmlSysServiceFileProcessor.class);
 	private static final String SERVICE_EXT_FILENAME = ".sysservice.xml";
-
+	private ServiceProviderInterface provider ;
+	private ServiceRegistry reg;
 	private List<ServiceComponents> list = new ArrayList<ServiceComponents>();
+	
 
+	public ServiceProviderInterface getProvider() {
+		return provider;
+	}
+
+	public void setProvider(ServiceProviderInterface provider) {
+		this.provider = provider;
+	}
+
+	public ServiceRegistry getReg() {
+		return reg;
+	}
+
+	public void setReg(ServiceRegistry reg) {
+		this.reg = reg;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(SERVICE_EXT_FILENAME);
 	}
 
 	public void process() {
-		ServiceProviderInterface provider = SpringUtil.getBean("service");
-		ServiceRegistry reg = SpringUtil.getBean(ServiceRegistry.BEAN_NAME);
+//		ServiceProviderInterface provider = SpringBeanContainer.getBean("service");
+//		ServiceRegistry reg = SpringBeanContainer.getBean(ServiceRegistry.BEAN_NAME);
 		provider.setServiceRegistory(reg);
 
 		XStream stream = XStreamFactory
@@ -108,12 +126,13 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 
 	protected Object getServiceInstance(ServiceComponent component)
 			throws Exception {
+		BeanContainer container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
 		if (component.getBean() == null
 				|| "".equals(component.getBean().trim())) {
 			Class<?> clazz = Class.forName(component.getType());
-			return SpringUtil.getBean(clazz);
+			return container.getBean(clazz);
 		}
-		return SpringUtil.getBean(component.getBean());
+		return container.getBean(component.getBean());
 	}
 
 }

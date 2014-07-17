@@ -22,7 +22,6 @@ import org.tinygroup.context.Context;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.flow.ComponentInterface;
-import org.tinygroup.springutil.SpringUtil;
 
 public class CallServiceComponent implements ComponentInterface {
 
@@ -31,7 +30,7 @@ public class CallServiceComponent implements ComponentInterface {
 	private String groupId;
 	private String artifactId;
 	private String version;
-
+	private CEPCore cepCore;
 	public String getGroupId() {
 		return groupId;
 	}
@@ -73,7 +72,7 @@ public class CallServiceComponent implements ComponentInterface {
 	}
 
 	public void execute(Context context) {
-		CEPCore cepCore = (CEPCore)SpringUtil.getBean("cepcore");
+//		CEPCore cepCore = (CEPCore)SpringBeanContainer.getBean("cepcore");
 		Event event = getEvent(context);
 		cepCore.process(event);
 	}

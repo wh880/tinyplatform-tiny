@@ -18,7 +18,8 @@ package org.tinygroup.service.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.beancontainer.BeanContainer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -67,12 +68,13 @@ public class XmlConfigLoader extends XmlConfigServiceLoader {
 
 	protected Object getServiceInstance(ServiceComponent component)
 			throws Exception {
+		BeanContainer container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
 		if (component.getBean() == null
 				|| "".equals(component.getBean().trim())) {
 			Class<?> clazz = Class.forName(component.getType());
-			return SpringUtil.getBean(clazz);
+			return container.getBean(clazz);
 		}
-		return SpringUtil.getBean(component.getBean());
+		return container.getBean(component.getBean());
 	}
 
 }

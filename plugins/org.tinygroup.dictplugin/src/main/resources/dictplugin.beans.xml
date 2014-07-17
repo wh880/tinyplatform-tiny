@@ -8,6 +8,7 @@
 	
 	<bean id="dictPlugin" scope="singleton"
 		class="org.tinygroup.dictplugin.DictPlugin">
+		<property name="config" ref="cacheInitConfig"></property>
 	</bean>
 
 </beans>

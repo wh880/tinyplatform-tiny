@@ -23,28 +23,29 @@
  */
 package org.tinygroup.webservice.test.util;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.service.ServiceProviderInterface;
-import org.tinygroup.springutil.SpringUtil;
 
 public class WebServiceTestUtil {
-	private static boolean init = false;
 
 	public static void init() {
-//		if (!init) {
-//			AbstractTestUtil.init(null, true);
-//			init = true;
-//			ServiceProviderInterface provider = SpringUtil.getBean("service");
-//			ServiceProcessor processor = new ServiceProcessorImpl();
-//			processor.addServiceProvider(provider);
-//			CEPCore core = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-//			core.registerEventProcessor(processor);
-//		}
+		// if (!init) {
+		// AbstractTestUtil.init(null, true);
+		// init = true;
+		// ServiceProviderInterface provider = SpringUtil.getBean("service");
+		// ServiceProcessor processor = new ServiceProcessorImpl();
+		// processor.addServiceProvider(provider);
+		// CEPCore core = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
+		// core.registerEventProcessor(processor);
+		// }
 	}
 
 	public static void execute(String serviceId, Context context) {
 		init();
-		ServiceProviderInterface provider = SpringUtil.getBean("service");
+		ServiceProviderInterface provider = BeanContainerFactory
+				.getBeanContainer(WebServiceTestUtil.class.getClassLoader())
+				.getBean("service");
 		provider.execute(serviceId, context);
 	}
 

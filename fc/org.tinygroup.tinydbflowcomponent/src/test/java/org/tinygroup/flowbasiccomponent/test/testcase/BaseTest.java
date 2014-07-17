@@ -21,8 +21,8 @@ import java.sql.SQLException;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.flow.FlowExecutor;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.util.DataSourceFactory;
@@ -31,7 +31,7 @@ import org.tinygroup.tinytestutil.script.Resources;
 import org.tinygroup.tinytestutil.script.ScriptRunner;
 
 public abstract class BaseTest extends TestCase {
-	protected  static BeanOperatorManager manager;
+	protected static BeanOperatorManager manager;
 	private static DBOperator<String> operator;
 	static FlowExecutor flowExecutor;
 	protected static String ANIMAL = "animal";
@@ -41,7 +41,6 @@ public abstract class BaseTest extends TestCase {
 	public DBOperator<String> getOperator() {
 		return operator;
 	}
-
 
 	public void setOperator(DBOperator<String> operator) {
 		BaseTest.operator = operator;
@@ -53,7 +52,8 @@ public abstract class BaseTest extends TestCase {
 			Connection conn = null;
 			try {
 				AbstractTestUtil.init(null, true);
-				conn = DataSourceFactory.getConnection("dynamicDataSource");
+				conn = DataSourceFactory.getConnection("dynamicDataSource",
+						this.getClass().getClassLoader());
 				ScriptRunner runner = new ScriptRunner(conn, false, false);
 				// 设置字符集
 				Resources.setCharset(Charset.forName("utf-8"));
@@ -64,17 +64,21 @@ public abstract class BaseTest extends TestCase {
 				} catch (Exception e) {
 					// e.printStackTrace();
 				}
-				manager = SpringUtil.getBean("beanOperatorManager");
+				manager = BeanContainerFactory.getBeanContainer(
+						this.getClass().getClassLoader()).getBean(
+						"beanOperatorManager");
 				// people_id
 				// people_name
 				// people_age
 				// branch
 				// registerBean();
 				// registerBean();
-//				manager.initBeansConfiguration();
+				// manager.initBeansConfiguration();
 				operator = (DBOperator<String>) manager.getDbOperator(
 						mainSchema, ANIMAL);
-				flowExecutor=SpringUtil.getBean("flowExecutor");
+				flowExecutor = BeanContainerFactory.getBeanContainer(
+						this.getClass().getClassLoader()).getBean(
+						"flowExecutor");
 				hasExcuted = true;
 			} finally {
 				if (conn != null) {
@@ -89,5 +93,5 @@ public abstract class BaseTest extends TestCase {
 		}
 
 	}
-	
+
 }

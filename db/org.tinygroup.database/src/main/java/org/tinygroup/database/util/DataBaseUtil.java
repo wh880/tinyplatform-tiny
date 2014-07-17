@@ -19,6 +19,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.namestrategy.NameStrategy;
 import org.tinygroup.commons.namestrategy.impl.NormalCaseStrategy;
 import org.tinygroup.database.config.table.Table;
@@ -28,7 +29,6 @@ import org.tinygroup.database.table.TableProcessor;
 import org.tinygroup.database.view.ViewProcessor;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class DataBaseUtil {
 	public static String DATABASE_XSTREAM = "database";
@@ -54,24 +54,24 @@ public class DataBaseUtil {
 	public static final String DB_TYPE_DERBY = "derby"; 
 
 	public static StandardField getStandardField(String tableFieldId,
-			Table table) {
+			Table table,ClassLoader loader) {
 		for (TableField field : table.getFieldList()) {
 			if (field.getId().equals(tableFieldId)) {
 				return MetadataUtil
-						.getStandardField(field.getStandardFieldId());
+						.getStandardField(field.getStandardFieldId(),loader);
 			}
 		}
 		return null;
 	}
 
-	public static Table getTableById(String id) {
-		TableProcessor tableProcessor = SpringUtil.getBean(
+	public static Table getTableById(String id,ClassLoader loader) {
+		TableProcessor tableProcessor = BeanContainerFactory.getBeanContainer(loader).getBean(
 				DataBaseUtil.TABLEPROCESSOR_BEAN);
 		return tableProcessor.getTableById(id);
 	}
 	
-	public static View getViewById(String id) {
-		ViewProcessor viewProcessor = SpringUtil.getBean(
+	public static View getViewById(String id,ClassLoader loader) {
+		ViewProcessor viewProcessor = BeanContainerFactory.getBeanContainer(loader).getBean(
 				DataBaseUtil.VIEW_BEAN);
 		return viewProcessor.getViewById(id);
 	}

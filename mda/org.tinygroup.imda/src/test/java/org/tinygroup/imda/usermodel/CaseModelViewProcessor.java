@@ -18,19 +18,20 @@ package org.tinygroup.imda.usermodel;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.imda.exception.IMdaRuntimeException;
 import org.tinygroup.imda.processor.ModelViewProcessor;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
-import org.tinygroup.springutil.SpringUtil;
 
 public class CaseModelViewProcessor implements ModelViewProcessor<CaseModel> {
 
 	public void process(ModelRequestInfo modelRequestInfo, Context context,
 			Writer writer) {
 		try {
-			ModelManager modelManager = SpringUtil.getBean("modelManager");
+			ModelManager modelManager = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean("modelManager");
 			CaseModel model = modelManager.getModel(modelRequestInfo
 					.getModelId());
 			writer.write("page:" + context.get(CaseModelParamBuilder.KEY));

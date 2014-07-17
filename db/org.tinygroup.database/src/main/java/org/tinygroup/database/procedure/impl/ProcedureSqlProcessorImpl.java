@@ -64,10 +64,11 @@ public abstract class ProcedureSqlProcessorImpl implements
 			ProcedureParameter param, Procedure procedure) {
 		String id = param.getStandardFieldId();
 		String defaultValue = param.getDefaultValue();
-		StandardField field = MetadataUtil.getStandardField(id);
+		StandardField field = MetadataUtil.getStandardField(id, this.getClass()
+				.getClassLoader());
 		String name = DataBaseUtil.getDataBaseName(field.getName());
 		String dataType = MetadataUtil.getStandardFieldType(id,
-				getDatabaseType());
+				getDatabaseType(), this.getClass().getClassLoader());
 		String paramStr = "";
 		if (defaultValue != null) {
 			paramStr = String.format("%s %s %s default %s,", name, type,
@@ -89,7 +90,6 @@ public abstract class ProcedureSqlProcessorImpl implements
 			}
 		}
 	}
-
 
 	public String getDropSql(Procedure procedure) {
 		return "DROP PROCEDURE " + procedure.getName() + ";";

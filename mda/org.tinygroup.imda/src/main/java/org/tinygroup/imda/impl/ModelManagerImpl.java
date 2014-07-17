@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
@@ -36,215 +37,262 @@ import org.tinygroup.imda.processor.ModelViewProcessor;
 import org.tinygroup.imda.processor.ParameterBuilder;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
 import org.tinygroup.imda.validate.ValidateRule;
-import org.tinygroup.springutil.SpringUtil;
 
 public class ModelManagerImpl implements ModelManager {
-    Map<String, ModelDefineInfo> modelDefineInfoCache = new HashMap<String, ModelDefineInfo>();
-    private ModelContainer container = new ModelContainer();
+	Map<String, ModelDefineInfo> modelDefineInfoCache = new HashMap<String, ModelDefineInfo>();
+	private ModelContainer container = new ModelContainer();
 
-    public void updateModel(Object model) {
-        container.updateModel(model);
-    }
+	public void updateModel(Object model) {
+		container.updateModel(model);
+	}
 
-    public void addModel(Object model) {
-        container.addModel(model);
-    }
+	public void addModel(Object model) {
+		container.addModel(model);
+	}
 
-    public void removeModel(Object model) {
-        container.removeModel(model);
-    }
+	public void removeModel(Object model) {
+		container.removeModel(model);
+	}
 
-    public void addModelDefine(ModelDefine modelDefine) {
-        container.addModelDefine(modelDefine);
-    }
-    
-    public void removeModelDefine(ModelDefine modelDefine) {
-        container.removeModelDefine(modelDefine);
-    }
+	public void addModelDefine(ModelDefine modelDefine) {
+		container.addModelDefine(modelDefine);
+	}
 
-    public <T> T getModel(String modelId) {
-        return (T) container.getModel(modelId);
-    }
+	public void removeModelDefine(ModelDefine modelDefine) {
+		container.removeModelDefine(modelDefine);
+	}
 
-    public ModelDefine getModelDefine(String modelDefineId) {
-        return container.getModelDefine(modelDefineId);
-    }
+	public <T> T getModel(String modelId) {
+		return (T) container.getModel(modelId);
+	}
 
-    public ModelProcessorDefine getModelProcessorDefine(String modelDefineId,
-                                                        String processorName) {
-        ModelDefine modelDefine = getModelDefine(modelDefineId);
-        return container.getModelProcessorDefine(modelDefine, processorName);
-    }
+	public ModelDefine getModelDefine(String modelDefineId) {
+		return container.getModelDefine(modelDefineId);
+	}
 
-    public ModelProcessorDefine getModelProcessorDefine(ModelDefine modelDefine,
-                                                        String processorName) {
-        return getModelProcessorDefine(modelDefine.getId(), processorName);
-    }
+	public ModelProcessorDefine getModelProcessorDefine(String modelDefineId,
+			String processorName) {
+		ModelDefine modelDefine = getModelDefine(modelDefineId);
+		return container.getModelProcessorDefine(modelDefine, processorName);
+	}
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public <T> T processService(ModelRequestInfo modelRequestInfo, Context context) {
-        CustomizeStageConfig customizeConfig = getCustomizeStageConfig(getModel(modelRequestInfo.getModelId()), modelRequestInfo.getProcessorId(), modelRequestInfo.getStageName());
-        String serviceProcessorBean;
-        if (customizeConfig != null && customizeConfig.getServiceProcessorBean() != null
-                && customizeConfig.getServiceProcessorBean().length() > 0) {
-            serviceProcessorBean = customizeConfig.getServiceProcessorBean();
-        } else {
-            ModelProcessorStage processorStage = container.getModelProcessorStage(modelRequestInfo);
-            serviceProcessorBean = processorStage.getServiceProcessorBean();
-        }
+	public ModelProcessorDefine getModelProcessorDefine(
+			ModelDefine modelDefine, String processorName) {
+		return getModelProcessorDefine(modelDefine.getId(), processorName);
+	}
 
-        if (StringUtil.isBlank(serviceProcessorBean)) {
-            throw new RuntimeException("找不到服务处理bean:" + serviceProcessorBean);
-        }
-        ModelServiceProcessor serviceProcessor = SpringUtil.getBean(serviceProcessorBean);
-        return (T) serviceProcessor.process(modelRequestInfo, context);
-    }
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public <T> T processService(ModelRequestInfo modelRequestInfo,
+			Context context) {
+		CustomizeStageConfig customizeConfig = getCustomizeStageConfig(
+				getModel(modelRequestInfo.getModelId()),
+				modelRequestInfo.getProcessorId(),
+				modelRequestInfo.getStageName());
+		String serviceProcessorBean;
+		if (customizeConfig != null
+				&& customizeConfig.getServiceProcessorBean() != null
+				&& customizeConfig.getServiceProcessorBean().length() > 0) {
+			serviceProcessorBean = customizeConfig.getServiceProcessorBean();
+		} else {
+			ModelProcessorStage processorStage = container
+					.getModelProcessorStage(modelRequestInfo);
+			serviceProcessorBean = processorStage.getServiceProcessorBean();
+		}
 
-    @SuppressWarnings({"rawtypes"})
-    public void processView(ModelRequestInfo modelRequestInfo, Writer writer, Context context) {
-        ModelProcessorStage processorStage = container.getModelProcessorStage(modelRequestInfo);
-        String viewProcessorBean = processorStage.getViewProcessorBean();
-        if (StringUtil.isBlank(viewProcessorBean)) {
-            throw new RuntimeException("找不到服务处理bean:" + viewProcessorBean);
-        }
-        ModelViewProcessor viewProcessor = SpringUtil.getBean(viewProcessorBean);
-        viewProcessor.process(modelRequestInfo, context, writer);
-    }
+		if (StringUtil.isBlank(serviceProcessorBean)) {
+			throw new RuntimeException("找不到服务处理bean:" + serviceProcessorBean);
+		}
+		ModelServiceProcessor serviceProcessor = BeanContainerFactory
+				.getBeanContainer(this.getClass().getClassLoader()).getBean(
+						serviceProcessorBean);
+		return (T) serviceProcessor.process(modelRequestInfo, context);
+	}
 
-    @SuppressWarnings({"rawtypes"})
-    public Context processParameter(ModelRequestInfo modelRequestInfo,
-                                    String parameterBuilderBeanName, Context context) {
-        if (StringUtil.isBlank(parameterBuilderBeanName)) {
-            return new ContextImpl();
-        }
-        ParameterBuilder builder = SpringUtil.getBean(parameterBuilderBeanName);
-        return builder.buildParameter(modelRequestInfo, context);
-    }
+	@SuppressWarnings({ "rawtypes" })
+	public void processView(ModelRequestInfo modelRequestInfo, Writer writer,
+			Context context) {
+		ModelProcessorStage processorStage = container
+				.getModelProcessorStage(modelRequestInfo);
+		String viewProcessorBean = processorStage.getViewProcessorBean();
+		if (StringUtil.isBlank(viewProcessorBean)) {
+			throw new RuntimeException("找不到服务处理bean:" + viewProcessorBean);
+		}
+		ModelViewProcessor viewProcessor = BeanContainerFactory
+		.getBeanContainer(this.getClass().getClassLoader())
+				.getBean(viewProcessorBean);
+		viewProcessor.process(modelRequestInfo, context, writer);
+	}
 
-    public List<ModelLoader> getModelLoaders() {
-        return container.getModelLoaders();
-    }
+	@SuppressWarnings({ "rawtypes" })
+	public Context processParameter(ModelRequestInfo modelRequestInfo,
+			String parameterBuilderBeanName, Context context) {
+		if (StringUtil.isBlank(parameterBuilderBeanName)) {
+			return new ContextImpl();
+		}
+		ParameterBuilder builder = BeanContainerFactory
+		.getBeanContainer(this.getClass().getClassLoader())
+				.getBean(parameterBuilderBeanName);
+		return builder.buildParameter(modelRequestInfo, context);
+	}
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public <T> T getOperationDeclare(ModelDefine modelDefine, Object model, String operationId) {
-        ModelInformationGetter infomationGetter = SpringUtil.getBean(modelDefine.getModelInfomationGetterBean());
-        return (T) infomationGetter.getOperation(model, operationId);
-    }
+	public List<ModelLoader> getModelLoaders() {
+		return container.getModelLoaders();
+	}
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public String getOperationType(ModelDefine modelDefine, Object model, String operationId) {
-        ModelInformationGetter infomationGetter = SpringUtil.getBean(modelDefine.getModelInfomationGetterBean());
-        return infomationGetter.getOperationType(model, operationId);
-    }
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public <T> T getOperationDeclare(ModelDefine modelDefine, Object model,
+			String operationId) {
+		ModelInformationGetter infomationGetter = BeanContainerFactory
+		.getBeanContainer(this.getClass().getClassLoader())
+				.getBean(modelDefine.getModelInfomationGetterBean());
+		return (T) infomationGetter.getOperation(model, operationId);
+	}
 
-    public ModelProcessorStage getModelProcessorStage(ModelRequestInfo modelRequestInfo) {
-        return container.getModelProcessorStage(modelRequestInfo);
-    }
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String getOperationType(ModelDefine modelDefine, Object model,
+			String operationId) {
+		ModelInformationGetter infomationGetter = BeanContainerFactory
+		.getBeanContainer(this.getClass().getClassLoader())
+				.getBean(modelDefine.getModelInfomationGetterBean());
+		return infomationGetter.getOperationType(model, operationId);
+	}
 
-    public ModelProcessorDefine getModelProcessorDefine(ModelRequestInfo modelRequestInfo) {
-        return container.getModelProcessorDefine(modelRequestInfo.getModelTypeName(), modelRequestInfo.getOperationType());
-    }
+	public ModelProcessorStage getModelProcessorStage(
+			ModelRequestInfo modelRequestInfo) {
+		return container.getModelProcessorStage(modelRequestInfo);
+	}
 
-    public String getOperationRecordMode(ModelRequestInfo modelRequestInfo) {
-        ModelDefine modelDefine = this.getModelDefine(modelRequestInfo.getModelTypeName());
-        for (ModelProcessorDefine processorDefine : modelDefine.getModelProcessorDefines()) {
-            if (processorDefine.getName().equalsIgnoreCase(modelRequestInfo.getOperationType())) {
-                return processorDefine.getRecordMode();
-            }
-        }
-        return null;
-    }
+	public ModelProcessorDefine getModelProcessorDefine(
+			ModelRequestInfo modelRequestInfo) {
+		return container.getModelProcessorDefine(
+				modelRequestInfo.getModelTypeName(),
+				modelRequestInfo.getOperationType());
+	}
 
-    /**
-     * 返回指定模型指定操作的记录操作类型
-     */
-    public String getOperationRecordMode(ModelRequestInfo modelRequestInfo, String modelId,
-                                         String operationId) {
-        if (modelId == null || modelId.length() == 0) {// 如果没有指定模型，表示当前模型
-            modelId = modelRequestInfo.getModelId();
-        }
-        Object model = container.getModel(modelId);
-        ModelDefine modelDefine = container.getModelDefine(model);
-        return getModelProcessorDefine(modelDefine.getId(), getOperationType(modelDefine, model, operationId)).getRecordMode();
-    }
+	public String getOperationRecordMode(ModelRequestInfo modelRequestInfo) {
+		ModelDefine modelDefine = this.getModelDefine(modelRequestInfo
+				.getModelTypeName());
+		for (ModelProcessorDefine processorDefine : modelDefine
+				.getModelProcessorDefines()) {
+			if (processorDefine.getName().equalsIgnoreCase(
+					modelRequestInfo.getOperationType())) {
+				return processorDefine.getRecordMode();
+			}
+		}
+		return null;
+	}
 
-    public ModelDefine getModelDefine(ModelRequestInfo modelRequestInfo, String modelId,
-                                      String operationId) {
-        if (modelId == null || modelId.length() == 0) {// 如果没有指定模型，表示当前模型
-            modelId = modelRequestInfo.getModelId();
-        }
-        Object model = container.getModel(modelId);
-        return container.getModelDefine(model);
-    }
+	/**
+	 * 返回指定模型指定操作的记录操作类型
+	 */
+	public String getOperationRecordMode(ModelRequestInfo modelRequestInfo,
+			String modelId, String operationId) {
+		if (modelId == null || modelId.length() == 0) {// 如果没有指定模型，表示当前模型
+			modelId = modelRequestInfo.getModelId();
+		}
+		Object model = container.getModel(modelId);
+		ModelDefine modelDefine = container.getModelDefine(model);
+		return getModelProcessorDefine(modelDefine.getId(),
+				getOperationType(modelDefine, model, operationId))
+				.getRecordMode();
+	}
 
-    public ModelProcessorDefine getModelOperationDefine(ModelRequestInfo modelRequestInfo,
-                                                        String modelId, String operationId) {
-        ModelDefine modelDefine = getModelDefine(modelRequestInfo, modelId, operationId);
-        for (ModelProcessorDefine modelProcessorDefine : modelDefine.getModelProcessorDefines()) {
-            if (modelProcessorDefine.getName().equals(this.getOperationType(modelDefine, getModel(modelId), operationId))) {
-                return modelProcessorDefine;
-            }
-        }
-        return null;
-    }
+	public ModelDefine getModelDefine(ModelRequestInfo modelRequestInfo,
+			String modelId, String operationId) {
+		if (modelId == null || modelId.length() == 0) {// 如果没有指定模型，表示当前模型
+			modelId = modelRequestInfo.getModelId();
+		}
+		Object model = container.getModel(modelId);
+		return container.getModelDefine(model);
+	}
 
-    public <T> T getOperationDeclare(ModelRequestInfo modelRequestInfo, String modelId,
-                                     String operationId) {
-        if (modelId == null || modelId.length() == 0) {// 如果没有指定模型，表示当前模型
-            modelId = modelRequestInfo.getModelId();
-        }
-        Object model = container.getModel(modelId);
-        ModelDefine modelDefine = container.getModelDefine(model);
-        return (T) this.getOperationDeclare(modelDefine, model, operationId);
-    }
+	public ModelProcessorDefine getModelOperationDefine(
+			ModelRequestInfo modelRequestInfo, String modelId,
+			String operationId) {
+		ModelDefine modelDefine = getModelDefine(modelRequestInfo, modelId,
+				operationId);
+		for (ModelProcessorDefine modelProcessorDefine : modelDefine
+				.getModelProcessorDefines()) {
+			if (modelProcessorDefine.getName().equals(
+					this.getOperationType(modelDefine, getModel(modelId),
+							operationId))) {
+				return modelProcessorDefine;
+			}
+		}
+		return null;
+	}
 
-    public ModelDefineInfo getModelDefineInfo(ModelRequestInfo modelRequestInfo, String modelId,
-                                              String operationId) {
-        if (modelId == null) {
-            modelId = modelRequestInfo.getModelId();
-        }
-        String key = modelId + "|" + operationId;
-        ModelDefineInfo modelDefineInfo = modelDefineInfoCache.get(key);
-        if (modelDefineInfo != null) {
-            return modelDefineInfo;
-        } else {
-            modelDefineInfo = new ModelDefineInfo();
-            modelDefineInfoCache.put(key, modelDefineInfo);
-        }
-        Object model = getModel(modelId);
-        modelDefineInfo.setModel(model);
-        ModelDefine modelDefine = this.getModelDefine(modelRequestInfo, modelId, operationId);
-        modelDefineInfo.setModelDefine(modelDefine);
-        modelDefineInfo.setModelProcessorDefine(this.getModelOperationDefine(modelRequestInfo, modelId, operationId));
-        modelDefineInfo.setProcessDefine(getOperationDeclare(modelRequestInfo, modelId, operationId));
-        return modelDefineInfo;
-    }
+	public <T> T getOperationDeclare(ModelRequestInfo modelRequestInfo,
+			String modelId, String operationId) {
+		if (modelId == null || modelId.length() == 0) {// 如果没有指定模型，表示当前模型
+			modelId = modelRequestInfo.getModelId();
+		}
+		Object model = container.getModel(modelId);
+		ModelDefine modelDefine = container.getModelDefine(model);
+		return (T) this.getOperationDeclare(modelDefine, model, operationId);
+	}
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public List<String> getParamterList(Object model, Object operationObject) {
-        ModelInformationGetter infomationGetter = SpringUtil.getBean(container.getModelDefine(model).getModelInfomationGetterBean());
-        return infomationGetter.getParamterList(model, operationObject);
-    }
+	public ModelDefineInfo getModelDefineInfo(
+			ModelRequestInfo modelRequestInfo, String modelId,
+			String operationId) {
+		if (modelId == null) {
+			modelId = modelRequestInfo.getModelId();
+		}
+		String key = modelId + "|" + operationId;
+		ModelDefineInfo modelDefineInfo = modelDefineInfoCache.get(key);
+		if (modelDefineInfo != null) {
+			return modelDefineInfo;
+		} else {
+			modelDefineInfo = new ModelDefineInfo();
+			modelDefineInfoCache.put(key, modelDefineInfo);
+		}
+		Object model = getModel(modelId);
+		modelDefineInfo.setModel(model);
+		ModelDefine modelDefine = this.getModelDefine(modelRequestInfo,
+				modelId, operationId);
+		modelDefineInfo.setModelDefine(modelDefine);
+		modelDefineInfo.setModelProcessorDefine(this.getModelOperationDefine(
+				modelRequestInfo, modelId, operationId));
+		modelDefineInfo.setProcessDefine(getOperationDeclare(modelRequestInfo,
+				modelId, operationId));
+		return modelDefineInfo;
+	}
 
-    public ModelDefine getModelDefine(Object model) {
-        return container.getModelDefine(model);
-    }
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<String> getParamterList(Object model, Object operationObject) {
+		ModelInformationGetter infomationGetter = BeanContainerFactory
+		.getBeanContainer(this.getClass().getClassLoader())
+				.getBean(container.getModelDefine(model)
+						.getModelInfomationGetterBean());
+		return infomationGetter.getParamterList(model, operationObject);
+	}
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public CustomizeStageConfig getCustomizeStageConfig(Object model, String operationId,
-                                                        String stageName) {
-        ModelInformationGetter infomationGetter = SpringUtil.getBean(container.getModelDefine(model).getModelInfomationGetterBean());
-        return infomationGetter.getCustomizeStageConfig(model, operationId, stageName);
-    }
+	public ModelDefine getModelDefine(Object model) {
+		return container.getModelDefine(model);
+	}
 
-    public ModelContainer getModelContainer() {
-        return container;
-    }
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public CustomizeStageConfig getCustomizeStageConfig(Object model,
+			String operationId, String stageName) {
+		ModelInformationGetter infomationGetter = BeanContainerFactory
+		.getBeanContainer(this.getClass().getClassLoader())
+				.getBean(container.getModelDefine(model)
+						.getModelInfomationGetterBean());
+		return infomationGetter.getCustomizeStageConfig(model, operationId,
+				stageName);
+	}
 
+	public ModelContainer getModelContainer() {
+		return container;
+	}
 
-    public Map<String, List<ValidateRule>> getOperationValidateMap(Object model, Object operation) {
-        ModelInformationGetter<Object> infomationGetter = SpringUtil.getBean(container.getModelDefine(model).getModelInfomationGetterBean());
-        return infomationGetter.getOperationValidateMap(model, operation);
-    }
+	public Map<String, List<ValidateRule>> getOperationValidateMap(
+			Object model, Object operation) {
+		ModelInformationGetter<Object> infomationGetter = BeanContainerFactory
+		.getBeanContainer(this.getClass().getClassLoader())
+				.getBean(container.getModelDefine(model)
+						.getModelInfomationGetterBean());
+		return infomationGetter.getOperationValidateMap(model, operation);
+	}
 
 }

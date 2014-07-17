@@ -15,6 +15,7 @@
 	<bean id="serviceCaller" scope="singleton"
 		class="org.tinygroup.imda.impl.ServiceCaller">
 		<property name="modelManager" ref="modelManager"></property>
+		<property name="cepCore" ref="cepcore"></property>
 	</bean>
 
 	<bean id="modelManager" name="modelManager" scope="singleton"
@@ -37,6 +38,8 @@
 		class="org.tinygroup.imda.tinyprocessor.MdaTinyProcessor">
 		<property name="modelManager" ref="modelManager"></property>
 		<property name="validateManager" ref="validateManager"></property>
+		<property name="cepCore" ref="cepcore"></property>
+		<property name="velocityHelper" ref="velocityHelper"></property>
 	</bean>
 	<bean id="modelService" name="modelService" scope="singleton"
 		class="org.tinygroup.imda.ModelService">
@@ -44,6 +47,7 @@
 	</bean>
 	<bean id="defaultModelViewProcessor" name="defaultModelViewProcessor"
 		scope="singleton" class="org.tinygroup.imda.impl.ModelViewProcessorImpl">
+		<property name="modelManager" ref="modelManager"></property>
 	</bean>
 	<bean id="modelFileProcessor" name="modelFileProcessor"
 		scope="singleton" class="org.tinygroup.imda.fileprocessor.ModelFileProcessor">

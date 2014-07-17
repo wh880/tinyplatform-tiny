@@ -17,9 +17,9 @@ package org.tinygroup.service.util;
 
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.service.exception.ServiceParamValidateException;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.validate.ValidateResult;
 import org.tinygroup.validate.ValidatorManager;
 import org.tinygroup.validate.XmlValidatorManager;
@@ -34,7 +34,7 @@ public class ParamValidate {
 			Object value = args[i];
 			String sence = p.getValidatorSence();
 			if (sence != null && !"".equals(sence)) {
-				ValidatorManager xmlValidatorManager = SpringUtil
+				ValidatorManager xmlValidatorManager = BeanContainerFactory.getBeanContainer(ParamValidate.class.getClassLoader())
 						.getBean(XmlValidatorManager.class);
 				if (p.isArray()) {//如果是数组
 					Object[] array = (Object[]) value;

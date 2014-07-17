@@ -26,18 +26,18 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 public class TinyDBServiceImpl implements TinyDBService{
 
 	public TableConfiguration getTableConfig(String tableName,String schema) {
-		return TinyDBUtil.getTableConfig(tableName,schema);
+		return TinyDBUtil.getTableConfig(tableName,schema,this.getClass().getClassLoader());
 	}
 
 	public TableConfiguration getTableConfigByBean(String beanType,String schema) {
-		return TinyDBUtil.getTableConfigByBean(beanType,schema);
+		return TinyDBUtil.getTableConfigByBean(beanType,schema,this.getClass().getClassLoader());
 	}
 
 	public List<String> getBeanProperties(String beanType,String schema) {
-		return TinyDBUtil.getBeanProperties(beanType,schema);
+		return TinyDBUtil.getBeanProperties(beanType,schema,this.getClass().getClassLoader());
 	}
 	public Bean context2Bean(Context c,String beanType,String schema){
-		return TinyDBUtil.context2Bean(c, beanType,schema);
+		return TinyDBUtil.context2Bean(c, beanType,schema,this.getClass().getClassLoader());
 	}
 	public Bean context2Bean(Context c,String beanType,List<String> properties,String schema){
 		return TinyDBUtil.context2Bean(c, beanType, properties,schema);

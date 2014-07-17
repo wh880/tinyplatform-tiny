@@ -19,42 +19,40 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 
- * 功能说明:比较模式的容器对象 
-
+ * 功能说明:比较模式的容器对象
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-11-4 <br>
  * <br>
  */
 public class CompareModeContain {
-	
-	public static final String COMPARE_MODE_CONTAIN="compareModeContain";
 
-	private  Map<String, CompareMode> compareModeMap = new HashMap<String, CompareMode>();
-	
-	public CompareModeContain(){
-		 Collection<CompareMode> compareModes=SpringUtil.getBeansOfType(CompareMode.class);
-		 if(!CollectionUtil.isEmpty(compareModes)){
-			 for (CompareMode compareMode : compareModes) {
+	public static final String COMPARE_MODE_CONTAIN = "compareModeContain";
+
+	private Map<String, CompareMode> compareModeMap = new HashMap<String, CompareMode>();
+
+	public CompareModeContain() {
+		Collection<CompareMode> compareModes = BeanContainerFactory
+				.getBeanContainer(this.getClass().getClassLoader())
+				.getBeans(CompareMode.class);
+		if (!CollectionUtil.isEmpty(compareModes)) {
+			for (CompareMode compareMode : compareModes) {
 				compareModeMap.put(compareMode.getCompareKey(), compareMode);
 			}
-		 }
+		}
 	}
 
-
-	public CompareMode getCompareMode(String compareModeName){
+	public CompareMode getCompareMode(String compareModeName) {
 		return compareModeMap.get(compareModeName);
 	}
-	
-	public void addCompareMode(String compareModeName,CompareMode compareMode){
+
+	public void addCompareMode(String compareModeName, CompareMode compareMode) {
 		compareModeMap.put(compareModeName, compareMode);
 	}
-	
-	
-	
-	
+
 }

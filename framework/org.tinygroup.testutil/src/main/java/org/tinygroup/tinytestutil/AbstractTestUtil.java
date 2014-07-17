@@ -15,9 +15,15 @@
  */
 package org.tinygroup.tinytestutil;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.application.impl.ApplicationDefault;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
@@ -25,18 +31,13 @@ import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
-import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.PathFilter;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.springutil.SpringBeanContainer;
+import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 public abstract class AbstractTestUtil {
 	// private static FullContextFileRepository repository;
@@ -75,21 +76,27 @@ public abstract class AbstractTestUtil {
 			try {
 				applicationConfig = StreamUtil.readText(inputStream, "UTF-8",
 						false);
-				if(applicationConfig!=null){
-                	ConfigurationManager c = ConfigurationUtil.getConfigurationManager();
-                	XmlNode applicationXml = ConfigurationUtil.loadApplicationConfig(applicationConfig);
-                	c.setApplicationConfiguration(applicationXml);
-            		
-                }
+				if (applicationConfig != null) {
+					ConfigurationManager c = ConfigurationUtil
+							.getConfigurationManager();
+					XmlNode applicationXml = ConfigurationUtil
+							.loadApplicationConfig(applicationConfig);
+					c.setApplicationConfiguration(applicationXml);
+
+				}
 				application = new ApplicationDefault();
 				initSpring(applicationConfig);
-				
-				ConfigurationUtil.getConfigurationManager().distributeConfiguration();
-				
-				FileResolver fileResolver = SpringUtil.getBean(FileResolver.BEAN_NAME);
+
+				ConfigurationUtil.getConfigurationManager()
+						.distributeConfiguration();
+
+				FileResolver fileResolver = BeanContainerFactory
+						.getBeanContainer(
+								AbstractTestUtil.class.getClassLoader())
+						.getBean(FileResolver.BEAN_NAME);
 				FileResolverUtil.addClassPathPattern(fileResolver);
-				fileResolver
-						.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
+				fileResolver.addResolvePath(FileResolverUtil
+						.getClassPath(fileResolver));
 				fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
 				try {
 					fileResolver.addResolvePath(FileResolverUtil
@@ -98,24 +105,30 @@ public abstract class AbstractTestUtil {
 					logger.errorMessage("为文件扫描器添加webLibJars时出错", e);
 				}
 				fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
-				 XmlNode applicationXml = ConfigurationUtil.getConfigurationManager().getApplicationConfiguration();
-	                if (applicationXml != null) {
-	        			List<XmlNode> processorConfigs = applicationXml
-	        					.getSubNodesRecursively("application-processor");
-	        			if (processorConfigs != null) {
-	        				for (XmlNode processorConfig : processorConfigs) {
-	        					String processorBean = processorConfig.getAttribute("bean");
-	        					ApplicationProcessor processor = SpringUtil
-	        							.getBean(processorBean);//TODO
-	        					application.addApplicationProcessor(processor);
-	        				}
-	        			}
-	        		}
+				XmlNode applicationXml = ConfigurationUtil
+						.getConfigurationManager()
+						.getApplicationConfiguration();
+				if (applicationXml != null) {
+					List<XmlNode> processorConfigs = applicationXml
+							.getSubNodesRecursively("application-processor");
+					if (processorConfigs != null) {
+						for (XmlNode processorConfig : processorConfigs) {
+							String processorBean = processorConfig
+									.getAttribute("bean");
+							ApplicationProcessor processor = BeanContainerFactory
+									.getBeanContainer(
+											AbstractTestUtil.class
+													.getClassLoader()).getBean(
+											processorBean);// TODO
+							application.addApplicationProcessor(processor);
+						}
+					}
+				}
 			} catch (Exception e) {
 				logger.errorMessage("载入应用配置信息时出错，错误原因：{}！", e, e.getMessage());
 			}
 		}
-		
+
 		application.init();
 		application.start();
 		init = true;
@@ -133,8 +146,8 @@ public abstract class AbstractTestUtil {
 		application.start();
 	}
 
-	
 	private static void initSpring(String applicationConfig) {
+		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
 		FileResolver fileResolver = new FileResolverImpl();
 
 		FileResolverUtil.addClassPathPattern(fileResolver);

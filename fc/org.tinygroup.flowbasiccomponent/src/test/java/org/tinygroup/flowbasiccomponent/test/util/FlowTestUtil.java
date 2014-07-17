@@ -15,33 +15,37 @@
  */
 package org.tinygroup.flowbasiccomponent.test.util;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.flow.FlowExecutor;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
-public class FlowTestUtil extends AbstractTestUtil{
+public class FlowTestUtil extends AbstractTestUtil {
 	static FlowExecutor flowExecutor;
 	static FlowExecutor pageFlowExecutor;
 	static FlowTestUtil flowTestUtil = new FlowTestUtil();
 
 	private static void init() {
-		init(null,true);
+		init(null, true);
 	}
 
 	public static void execute(String flowId, Context context) {
 		check();
 		flowExecutor.execute(flowId, context);
 	}
+
 	public static void executePage(String flowId, Context context) {
 		check();
 		pageFlowExecutor.execute(flowId, context);
 	}
+
 	private static void check() {
-			init();
-			flowExecutor = SpringUtil.getBean("flowExecutor");
-			pageFlowExecutor = SpringUtil.getBean(
-					"pageFlowExecutor");
+		init();
+		flowExecutor = BeanContainerFactory.getBeanContainer(
+				FlowTestUtil.class.getClassLoader()).getBean("flowExecutor");
+		pageFlowExecutor = BeanContainerFactory.getBeanContainer(
+				FlowTestUtil.class.getClassLoader())
+				.getBean("pageFlowExecutor");
 	}
 
 }

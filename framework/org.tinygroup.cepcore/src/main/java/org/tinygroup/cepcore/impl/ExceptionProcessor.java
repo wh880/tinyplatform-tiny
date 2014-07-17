@@ -17,19 +17,19 @@ package org.tinygroup.cepcore.impl;
 
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.exceptionhandler.ExceptionHandler;
 import org.tinygroup.exceptionhandler.ExceptionHandlerManager;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public class ExceptionProcessor extends AbstractConfiguration {
-	
-	private static final String EXCEPTION_CONFIG_PATH="/application/exception-config/exception-handlers";
+
+	private static final String EXCEPTION_CONFIG_PATH = "/application/exception-config/exception-handlers";
 	private ExceptionHandlerManager manager;
-	
+
 	public ExceptionHandlerManager getManager() {
 		return manager;
 	}
@@ -37,23 +37,31 @@ public class ExceptionProcessor extends AbstractConfiguration {
 	public void setManager(ExceptionHandlerManager manager) {
 		this.manager = manager;
 	}
-	
 
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 		super.config(applicationConfig, componentConfig);
-		List<XmlNode> handlerList=ConfigurationUtil.combineSubList("exception-handler",applicationConfig, componentConfig);
-		for(XmlNode handler:handlerList){
+		List<XmlNode> handlerList = ConfigurationUtil.combineSubList(
+				"exception-handler", applicationConfig, componentConfig);
+		for (XmlNode handler : handlerList) {
 			String exception = handler.getAttribute("exception");
 			String handlerBean = handler.getAttribute("handler");
-			logger.logMessage(LogLevel.INFO, "添加exception-handler,Exception:{0},handerBean:{1}",exception,handlerBean);
-			ExceptionHandler<?> exceptionHandler = SpringUtil.getBean(handlerBean);
+			logger.logMessage(LogLevel.INFO,
+					"添加exception-handler,Exception:{0},handerBean:{1}",
+					exception, handlerBean);
+			ExceptionHandler<?> exceptionHandler = BeanContainerFactory
+					.getBeanContainer(this.getClass().getClassLoader())
+					.getBean(handlerBean);
 			try {
 				manager.addHandler(exception, exceptionHandler);
 			} catch (ClassNotFoundException e) {
-				logger.logMessage(LogLevel.INFO, "添加exception-handler出错,Exception类:{0}找不到",exception,handlerBean);
+				logger.logMessage(LogLevel.INFO,
+						"添加exception-handler出错,Exception类:{0}找不到", exception,
+						handlerBean);
 				continue;
 			}
-			logger.logMessage(LogLevel.INFO, "添加exception-handler,Exception:{0},handerBean:{1}完成",exception,handlerBean);
+			logger.logMessage(LogLevel.INFO,
+					"添加exception-handler,Exception:{0},handerBean:{1}完成",
+					exception, handlerBean);
 		}
 	}
 

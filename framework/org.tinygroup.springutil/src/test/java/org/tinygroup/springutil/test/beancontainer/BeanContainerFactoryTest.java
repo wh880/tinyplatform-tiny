@@ -17,7 +17,7 @@ public class BeanContainerFactoryTest extends TestCase {
 		BeanContainerFactory
 				.setBeanContainer("org.tinygroup.springutil.SpringBeanContainer");
 		BeanContainer<ApplicationContext> container = (BeanContainer<ApplicationContext>) BeanContainerFactory
-				.getBeanContainer();
+				.getBeanContainer(this.getClass().getClassLoader());
 		assertNotNull(container);
 		FileObject f = VFS.resolveURL(this.getClass().getClassLoader()
 				.getResource("beancontainer.beans.xml"));
@@ -34,7 +34,7 @@ public class BeanContainerFactoryTest extends TestCase {
 		BeanContainerFactory
 				.setBeanContainer("org.tinygroup.springutil.SpringBeanContainer");
 		BeanContainer<ApplicationContext> container = (BeanContainer<ApplicationContext>) BeanContainerFactory
-				.getBeanContainer();
+				.getBeanContainer(this.getClass().getClassLoader());
 		assertNotNull(container);
 		FileObject f = VFS.resolveURL(this.getClass().getClassLoader()
 				.getResource("beancontainer.beans.xml"));

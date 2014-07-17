@@ -17,17 +17,21 @@ package org.tinygroup.plugin.test;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
-import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
 import org.tinygroup.plugin.PluginManager;
 import org.tinygroup.plugin.config.PluginConfig;
 import org.tinygroup.plugin.impl.PluginManagerImpl;
+import org.tinygroup.springutil.SpringBeanContainer;
+import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 
 public class PluginDependCricleTest extends TestCase {
 	
 	public void setUp() {
+		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
+		
 		FileResolver fileResolver = new FileResolverImpl();
 	
 		FileResolverUtil.addClassPathPattern(fileResolver);

@@ -9,6 +9,7 @@
 
 	<bean id="entitiesModelViewProcessor" name="entitiesModelViewProcessor"
 		scope="singleton" class="org.tinygroup.entity.engine.EntitiesModelViewProcessor">
+		<property name="modelManager" ref="modelManager"></property>
 	</bean>
 	<bean id="entityOperationTableParameterBuilder" name="entityOperationTableParameterBuilder"
 		scope="singleton" class="org.tinygroup.entity.engine.entity.view.table.EntityOperationTableParameterBuilder">
@@ -42,6 +43,8 @@
 	</bean>
 	<bean id="entityModelLoader" name="entityModelLoader" scope="singleton"
 		class="org.tinygroup.entity.engine.entity.EntityModelLoader">
+		<property name="tableProcessor" ref="tableProcessor"></property>
+		<property name="entityModelToTable" ref="entityModelToTable"></property>
 	</bean>
 	<bean id="relationModelLoader" name="relationModelLoader" scope="singleton"
 		class="org.tinygroup.entity.engine.relation.RelationModelLoader">
@@ -115,6 +118,7 @@
 	</bean>
 	 <bean id="dictDataLoader" name="dictDataLoader" scope="singleton"
 		class="org.tinygroup.entity.dictload.DictDataLoader">
+		<property name="modelManager" ref="beanOperatorManager"></property>
 	</bean>
 	 <bean id="dictFromDatabaseService" name="dictFromDatabaseService" scope="singleton"
 		class="org.tinygroup.entity.impl.DictFromDatabaseService">
@@ -199,6 +203,7 @@
 	
 	<bean id="expressionFileProcesor" name="expressionFileProcesor"
 		scope="singleton" class="org.tinygroup.expression.fileresolver.ExpressionFileProcesor">
+		<property name="manager" ref="expressionManager"></property>
 	</bean>
 	
 </beans>

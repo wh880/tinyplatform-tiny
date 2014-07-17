@@ -17,7 +17,6 @@ package org.tinygroup.tinydb.fileresolver;
 
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.relation.Relations;
 import org.tinygroup.vfs.FileObject;
@@ -36,13 +35,23 @@ import com.thoughtworks.xstream.XStream;
 public class RelationFileProcessor  extends AbstractFileProcessor{
 	
 	private static final String RELATION_CONFIG_FILE_EXT_NAME=".relation.xml";
+	BeanOperatorManager manager;
+	
+	
+	public BeanOperatorManager getManager() {
+		return manager;
+	}
+
+	public void setManager(BeanOperatorManager manager) {
+		this.manager = manager;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(RELATION_CONFIG_FILE_EXT_NAME);
 	}
 
 	public void process() {
-		BeanOperatorManager manager=SpringUtil.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+//		=SpringBeanContainer.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(BeanOperatorManager.XSTEAM_PACKAGE_NAME);
 		for (FileObject fileObject : deleteList) {

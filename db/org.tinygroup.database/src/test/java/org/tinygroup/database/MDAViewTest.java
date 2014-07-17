@@ -17,9 +17,9 @@ package org.tinygroup.database;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.database.view.ViewProcessor;
-import org.tinygroup.springutil.SpringUtil;
 
 public class MDAViewTest extends TestCase {
 	static {
@@ -31,7 +31,7 @@ public class MDAViewTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		viewProcessor = SpringUtil.getBean(DataBaseUtil.VIEW_BEAN);
+		viewProcessor = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(DataBaseUtil.VIEW_BEAN);
 	}
 
 	public void testGetTableStringString() {

@@ -137,7 +137,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 	 */
 	protected int updateTopBean(Bean bean) {
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), getSchema());
+				bean.getType(), getSchema(),this.getClass().getClassLoader());
 		List<String> conditionColumns = new ArrayList<String>();
 		conditionColumns.add(table.getPrimaryKey().getColumnName());
 		return updateBean(bean, conditionColumns);
@@ -236,7 +236,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 	public int deleteById(K beanId) {
 		String sql = getDeleteSqlByKey(getBeanType());
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				getBeanType(), getSchema());
+				getBeanType(), getSchema(),this.getClass().getClassLoader());
 		SqlParameterValue param = createSqlParamter(beanId,
 				table.getPrimaryKey());
 		return executeBySqlParameterValue(sql, param);

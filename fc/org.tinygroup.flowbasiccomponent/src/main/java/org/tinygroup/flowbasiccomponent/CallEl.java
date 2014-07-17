@@ -21,7 +21,6 @@ import org.tinygroup.flow.util.FlowElUtil;
 
 public class CallEl implements ComponentInterface {
 
-	
 	private String expression;
 	private String resultKey;
 
@@ -42,7 +41,8 @@ public class CallEl implements ComponentInterface {
 	}
 
 	public void execute(Context context) {
-		context.put(resultKey, FlowElUtil.execute(expression, context));
+		context.put(resultKey, FlowElUtil.execute(expression, context, this
+				.getClass().getClassLoader()));
 	}
 
 }

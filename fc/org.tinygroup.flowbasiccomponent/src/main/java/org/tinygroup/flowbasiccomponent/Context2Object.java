@@ -15,6 +15,7 @@
  */
 package org.tinygroup.flowbasiccomponent;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
@@ -22,10 +23,10 @@ import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 
 public class Context2Object implements ComponentInterface {
-	private static Logger logger = LoggerFactory.getLogger(Context2Object.class);
+	private static Logger logger = LoggerFactory
+			.getLogger(Context2Object.class);
 	private String className;
 	private String collectionClassName;
 	private String resultKey;
@@ -74,34 +75,37 @@ public class Context2Object implements ComponentInterface {
 	}
 
 	public void execute(Context context) {
-		ClassNameObjectGenerator generator = SpringUtil.getBean(GeneratorFileProcessor.CLASSNAME_OBJECT_GENERATOR_BEAN);
+		ClassNameObjectGenerator generator = BeanContainerFactory
+				.getBeanContainer(this.getClass().getClassLoader()).getBean(
+						GeneratorFileProcessor.CLASSNAME_OBJECT_GENERATOR_BEAN);
 		if (isNull(resultKey))
 			resultKey = varName;
-		if(isNull(resultKey)){
-			//20130808注释LoaderManagerFactory
-//			resultKey = LoaderManagerFactory.getManager().getClass(className).getSimpleName().toLowerCase();
+		if (isNull(resultKey)) {
+			// 20130808注释LoaderManagerFactory
+			// resultKey =
+			// LoaderManagerFactory.getManager().getClass(className).getSimpleName().toLowerCase();
 			try {
-				resultKey = Class.forName(className).getSimpleName().toLowerCase();
+				resultKey = Class.forName(className).getSimpleName()
+						.toLowerCase();
 			} catch (ClassNotFoundException e) {
 				logger.logMessage(LogLevel.WARN, e.getMessage());
 			}
-			if(isNull(resultKey))
+			if (isNull(resultKey))
 				resultKey = DEFAULT_KEY;
 		}
-			
-		
+
 		if (collectionClassName == null || "".equals(collectionClassName)) {
 			context.put(resultKey,
-					generator.getObject(varName,beanName, className, context));
+					generator.getObject(varName, beanName, className, context));
 		} else {
 			context.put(resultKey, generator.getObjectCollection(varName,
 					collectionClassName, className, context));
 		}
 
 	}
-	
-	private boolean isNull(String str){
-		if(str==null||"".equals(str.trim()))
+
+	private boolean isNull(String str) {
+		if (str == null || "".equals(str.trim()))
 			return true;
 		return false;
 	}

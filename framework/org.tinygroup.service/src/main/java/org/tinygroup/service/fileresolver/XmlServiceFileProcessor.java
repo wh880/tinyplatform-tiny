@@ -15,7 +15,11 @@
  */
 package org.tinygroup.service.fileresolver;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.tinygroup.beancontainer.BeanContainer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -26,19 +30,17 @@ import org.tinygroup.service.config.ServiceComponent;
 import org.tinygroup.service.config.ServiceComponents;
 import org.tinygroup.service.config.XmlConfigServiceLoader;
 import org.tinygroup.service.exception.ServiceLoadException;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.XStream;
 
 public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
         FileProcessor {
     private static Logger logger = LoggerFactory
             .getLogger(XmlServiceFileProcessor.class);
     private static final String SERVICE_EXT_FILENAME = ".service.xml";
-
+    private ServiceProviderInterface provider;
     private List<ServiceComponents> list = new ArrayList<ServiceComponents>();
 
     public boolean isMatch(FileObject fileObject) {
@@ -46,8 +48,18 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
     }
 
 
-    public void process() {
-        ServiceProviderInterface provider = SpringUtil.getBean("service");
+    public ServiceProviderInterface getProvider() {
+		return provider;
+	}
+
+
+	public void setProvider(ServiceProviderInterface provider) {
+		this.provider = provider;
+	}
+
+
+	public void process() {
+//        ServiceProviderInterface provider = SpringBeanContainer.getBean("service");
         XStream stream = XStreamFactory
                 .getXStream(Service.SERVICE_XSTREAM_PACKAGENAME);
         for (FileObject fileObject : deleteList) {
@@ -104,13 +116,14 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
 
     protected Object getServiceInstance(ServiceComponent component)
             throws Exception {
+    	BeanContainer container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
         //如果没有定义bean ID
         if (component.getBean() == null || "".equals(component.getBean())) {
             Class<?> clazz = Class.forName(component.getType());
-            return SpringUtil.getBean(clazz);
+            return container.getBean(clazz);
         }
         try {
-            return SpringUtil.getBean(component.getBean());
+            return container.getBean(component.getBean());
         } catch (Exception e) {
             logger.logMessage(LogLevel.WARN, "查找Bean {}时发生异常：", component.getBean(), e.getMessage());
             Class<?> clazz = Class.forName(component.getType());

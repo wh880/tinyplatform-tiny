@@ -40,12 +40,12 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.xml.ws.WebServiceException;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.listener.TinyListenerProcessor;
 import org.tinygroup.webservice.util.WebserviceUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
@@ -123,7 +123,7 @@ public class TG_WSServletContextListener implements
 		XmlNode xmlNode = parser.parse(linsenterConfig).getRoot();
 		addSkipPathPattern(xmlNode);
 		addPastPathPattern(xmlNode);
-		core = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
+		core = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(CEPCore.CEP_CORE_BEAN);
 		List<ServiceInfo> serviceInfos = core.getServiceInfos();
 		List<ServiceInfo> publishList = new ArrayList<ServiceInfo>();
 		for (ServiceInfo serviceInfo : serviceInfos) {

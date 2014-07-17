@@ -25,13 +25,21 @@ import org.tinygroup.database.config.procedure.Procedure;
 import org.tinygroup.database.config.procedure.Procedures;
 import org.tinygroup.database.procedure.ProcedureProcessor;
 import org.tinygroup.database.procedure.ProcedureSqlProcessor;
-import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class ProcedureProcessorImpl implements ProcedureProcessor {
 	Map<String,Procedure> procedureMap = new HashMap<String,Procedure>();
+	ProcessorManager processorManager;
 	
 	
+	
+	public ProcessorManager getProcessorManager() {
+		return processorManager;
+	}
+
+	public void setProcessorManager(ProcessorManager processorManager) {
+		this.processorManager = processorManager;
+	}
+
 	public Procedure getProcedure(String procedureName) {
 		return procedureMap.get(procedureName);
 	}
@@ -53,7 +61,7 @@ public class ProcedureProcessorImpl implements ProcedureProcessor {
 	}
 
 	private String getCreateSql(Procedure procedure,String language){
-		ProcessorManager processorManager = SpringUtil.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		ProcedureSqlProcessor sqlProcessor = (ProcedureSqlProcessor)processorManager.getProcessor(language, "procedure");
 		return sqlProcessor.getCreateSql(procedure);
 	}
@@ -86,7 +94,7 @@ public class ProcedureProcessorImpl implements ProcedureProcessor {
 		return list;
 	}
 	private String getDropSql(Procedure procedure,String language){
-		ProcessorManager processorManager = SpringUtil.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		ProcedureSqlProcessor sqlProcessor = (ProcedureSqlProcessor)processorManager.getProcessor(language, "procedure");
 		return sqlProcessor.getDropSql(procedure);
 	}

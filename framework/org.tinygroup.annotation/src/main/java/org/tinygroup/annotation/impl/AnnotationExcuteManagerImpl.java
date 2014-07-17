@@ -15,26 +15,30 @@
  */
 package org.tinygroup.annotation.impl;
 
-import org.tinygroup.annotation.AnnotationClassAction;
-import org.tinygroup.annotation.AnnotationExcuteManager;
-import org.tinygroup.annotation.AnnotationMethodAction;
-import org.tinygroup.annotation.AnnotationPropertyAction;
-import org.tinygroup.annotation.config.*;
-import org.tinygroup.annotation.fileresolver.AnnotationFileProcessor;
-import org.tinygroup.config.Configuration;
-import org.tinygroup.config.util.ConfigurationUtil;
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.vfs.FileObject;
-import org.tinygroup.xmlparser.node.XmlNode;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.annotation.AnnotationClassAction;
+import org.tinygroup.annotation.AnnotationExcuteManager;
+import org.tinygroup.annotation.AnnotationMethodAction;
+import org.tinygroup.annotation.AnnotationPropertyAction;
+import org.tinygroup.annotation.config.AnnotationClassMatcher;
+import org.tinygroup.annotation.config.AnnotationClassMatchers;
+import org.tinygroup.annotation.config.AnnotationMethodMatcher;
+import org.tinygroup.annotation.config.AnnotationPropertyMatcher;
+import org.tinygroup.annotation.config.ProcessorBean;
+import org.tinygroup.annotation.fileresolver.AnnotationFileProcessor;
+import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.config.Configuration;
+import org.tinygroup.config.util.ConfigurationUtil;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.vfs.FileObject;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * 注解执行管理器实现
@@ -42,7 +46,8 @@ import java.util.List;
  * @author luoguo
  * 
  */
-public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,Configuration{
+public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
+		Configuration {
 	private static Logger logger = LoggerFactory
 			.getLogger(AnnotationFileProcessor.class);
 
@@ -66,7 +71,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,Conf
 		classMatchers.removeAll(annotationClassMatchers
 				.getAnnotationClassMatcherList());
 	}
-	
+
 	/**
 	 * 判断class文件是否符合注解配置文件
 	 * 
@@ -207,7 +212,8 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,Conf
 				.getAnnotationClassMatcher().getProcessorBeans();
 		for (ProcessorBean processorBean : processorBeans) {
 			if (processorBean.getEnable()) {
-				AnnotationClassAction classAction = SpringUtil
+				AnnotationClassAction classAction = BeanContainerFactory
+						.getBeanContainer(this.getClass().getClassLoader())
 						.getBean(processorBean.getName());
 				classAction.process(clazz, annotation);
 			}
@@ -221,7 +227,8 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,Conf
 				.getAnnotationMethodMatcher().getProcessorBeans();
 		for (ProcessorBean processorBean : processorBeans) {
 			if (processorBean.getEnable()) {
-				AnnotationMethodAction methodAction = SpringUtil
+				AnnotationMethodAction methodAction = BeanContainerFactory
+						.getBeanContainer(this.getClass().getClassLoader())
 						.getBean(processorBean.getName());
 				methodAction.process(clazz, annotationMatcherDto.getMethod(),
 						annotation);
@@ -236,17 +243,19 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,Conf
 				.getAnnotationPropertyMatcher().getProcessorBeans();
 		for (ProcessorBean processorBean : processorBeans) {
 			if (processorBean.getEnable()) {
-				AnnotationPropertyAction propertyAction = SpringUtil
+				AnnotationPropertyAction propertyAction = BeanContainerFactory
+				.getBeanContainer(this.getClass().getClassLoader())
 						.getBean(processorBean.getName());
 				propertyAction.process(clazz, annotationMatcherDto.getField(),
 						annotation);
 			}
 		}
 	}
+
 	private static final String ANNOTATION_NODE_PATH = "/application/annotation-configuration";
 	protected XmlNode applicationConfig;
 	protected XmlNode componentConfig;
-	
+
 	private static final String MAP_VALUE = "value";
 
 	private static final String MAP_ID = "id";
@@ -254,10 +263,11 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,Conf
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 		this.applicationConfig = applicationConfig;
 		this.componentConfig = componentConfig;
-		List<XmlNode> combineNodes=ConfigurationUtil.combineSubList(applicationConfig, componentConfig);
+		List<XmlNode> combineNodes = ConfigurationUtil.combineSubList(
+				applicationConfig, componentConfig);
 		for (XmlNode xmlNode : combineNodes) {
-				AnnotationClassMap.putAnnotationMap(xmlNode.getAttribute(MAP_ID),
-						xmlNode.getAttribute(MAP_VALUE));
+			AnnotationClassMap.putAnnotationMap(xmlNode.getAttribute(MAP_ID),
+					xmlNode.getAttribute(MAP_VALUE));
 		}
 	}
 
@@ -276,7 +286,5 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,Conf
 	public String getComponentConfigPath() {
 		return "/annotation.config.xml";
 	}
-
-
 
 }

@@ -17,11 +17,11 @@ package org.tinygroup.fileresolver.applicationprocessor;
 
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public class FileMonitorProcessor extends AbstractConfiguration implements
@@ -80,7 +80,7 @@ public class FileMonitorProcessor extends AbstractConfiguration implements
 		synchronized (synObject) {
 			if (enable && thread != null && thread.isAlive()) {
 				thread.stop = true;
-				synObject.notify();//唤醒其他等待的线程
+				synObject.notify();// 唤醒其他等待的线程
 			}
 		}
 	}
@@ -93,10 +93,12 @@ public class FileMonitorProcessor extends AbstractConfiguration implements
 			while (!stop) {
 				try {
 					synchronized (synObject) {
-						synObject.wait(interval * MILLISECOND_PER_SECOND);//没有线程唤醒，那么等待这么多时间
-						if(!stop){//唤醒时，或者等待时间后，发现stop=false时去执行重新搜索。
+						synObject.wait(interval * MILLISECOND_PER_SECOND);// 没有线程唤醒，那么等待这么多时间
+						if (!stop) {// 唤醒时，或者等待时间后，发现stop=false时去执行重新搜索。 
 							logger.logMessage(LogLevel.INFO, "定时扫描文件变化......");
-							resolver = SpringUtil.getBean("fileResolver");
+							resolver = BeanContainerFactory.getBeanContainer(
+									this.getClass().getClassLoader()).getBean(
+									"fileResolver");
 							resolver.refresh();
 							logger.logMessage(LogLevel.INFO, "定时扫描文件结束.");
 						}
@@ -118,6 +120,6 @@ public class FileMonitorProcessor extends AbstractConfiguration implements
 
 	public void init() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

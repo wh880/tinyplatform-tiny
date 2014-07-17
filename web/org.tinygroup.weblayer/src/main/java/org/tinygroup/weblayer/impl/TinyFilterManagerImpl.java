@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.order.OrderUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.util.ConfigurationUtil;
@@ -27,7 +28,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.NameFilter;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.FilterWrapper;
 import org.tinygroup.weblayer.TinyFilter;
 import org.tinygroup.weblayer.TinyFilterManager;
@@ -64,14 +64,16 @@ public class TinyFilterManagerImpl implements TinyFilterManager {
 	}
 
 	public void initTinyResources() {
-		tinyFilters.clear();//先清空
+		tinyFilters.clear();// 先清空
 		processorXmlNodes.clear();
 		if (configManager != null) {
 			List<XmlNode> configs = configManager.getConfigs();
-			XmlNode component=configManager.getComponentConfig();
+			XmlNode component = configManager.getComponentConfig();
 			XmlNode application = configManager.getApplicationConfig();
-			configs.addAll(ConfigurationUtil.combineSubList(application, component, TinyFilter.TINY_FILTER, "id"));
-			configs.addAll(ConfigurationUtil.combineSubList(application, component, TinyFilter.TINY_WRAPPER_FILTER, "id"));//包装节点
+			configs.addAll(ConfigurationUtil.combineSubList(application,
+					component, TinyFilter.TINY_FILTER, "id"));
+			configs.addAll(ConfigurationUtil.combineSubList(application,
+					component, TinyFilter.TINY_WRAPPER_FILTER, "id"));// 包装节点
 			for (XmlNode config : configs) {
 				nodeProcessor(config);
 			}
@@ -106,7 +108,7 @@ public class TinyFilterManagerImpl implements TinyFilterManager {
 
 	private TinyFilter createTinyFilter(XmlNode node) {
 		String filterId = node.getAttribute("id");
-		String filterClassName =getFilterBeanName(node); 
+		String filterClassName = getFilterBeanName(node);
 		logger.logMessage(LogLevel.INFO, "tiny-filter:{}开始被加载", filterId);
 		TinyFilter filter = null;
 		try {
@@ -121,9 +123,9 @@ public class TinyFilterManagerImpl implements TinyFilterManager {
 	}
 
 	private String getFilterBeanName(XmlNode node) {
-		String beanName= node.getAttribute("bean-name");
-		if(StringUtil.isBlank(beanName)){
-			beanName=node.getAttribute("class");
+		String beanName = node.getAttribute("bean-name");
+		if (StringUtil.isBlank(beanName)) {
+			beanName = node.getAttribute("class");
 		}
 		return beanName;
 	}
@@ -170,7 +172,8 @@ public class TinyFilterManagerImpl implements TinyFilterManager {
 	private TinyFilter instanceFilter(String className)
 			throws InstantiationException, IllegalAccessException,
 			ClassNotFoundException {
-		TinyFilter filter = SpringUtil.getBean(className);
+		TinyFilter filter = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(className);
 		if (filter == null) {
 			filter = (TinyFilter) Class.forName(className).newInstance();
 		}

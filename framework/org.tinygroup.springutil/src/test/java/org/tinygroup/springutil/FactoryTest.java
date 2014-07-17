@@ -17,21 +17,29 @@ package org.tinygroup.springutil;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.springutil.config.User;
 
 public class FactoryTest extends TestCase {
-	static {
-		SpringUtil.regSpringConfigXml("/Test.beans.xml");
-		SpringUtil.refresh();
-	}
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class
+				.getName());
+		((SpringBeanContainer) (BeanContainerFactory
+				.getBeanContainer(FactoryTest.class.getClassLoader())))
+				.regSpringConfigXml("/Test.beans.xml");
+		((SpringBeanContainer) (BeanContainerFactory
+				.getBeanContainer(FactoryTest.class.getClassLoader())))
+				.refresh();
+
 	}
 
 	public void testInitComparePrototype1() {
-		User user = SpringUtil.getBean("user2");
-		User user2 = SpringUtil.getBean("user2");
+		User user = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean("user2");
+		User user2 = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean("user2");
 		assertEquals(false, user == user2);
 		assertEquals(false, user.getCatMap() == user2.getCat());
 	}

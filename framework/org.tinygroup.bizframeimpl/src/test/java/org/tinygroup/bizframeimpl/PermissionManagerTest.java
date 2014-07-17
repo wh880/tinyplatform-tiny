@@ -20,8 +20,9 @@ import java.sql.Connection;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.bizframe.PermissionManager;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.tinydb.util.DataSourceFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.tinytestutil.script.Resources;
@@ -37,14 +38,13 @@ public class PermissionManagerTest extends TestCase {
 
 	private Function function;
 
-	
 	protected void setUp() throws Exception {
 		super.setUp();
 		if (!hasExcuted) {
 			Connection conn = null;
 			try {
 				AbstractTestUtil.init(null, true);
-				conn = DataSourceFactory.getConnection("dynamicDataSource");
+				conn = DataSourceFactory.getConnection("dynamicDataSource",this.getClass().getClassLoader());
 				ScriptRunner runner = new ScriptRunner(conn, false, false);
 				Resources.setCharset(Charset.forName("utf-8"));
 				// 加载sql脚本并执行
@@ -61,13 +61,14 @@ public class PermissionManagerTest extends TestCase {
 				}
 			}
 		}
-		manager = SpringUtil.getBean("dbPermissionManager");
+		manager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader())
+				.getBean("dbPermissionManager");
 		user = getUser();
 		function = getFunction();
 
 	}
 
-	
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		manager.removePermissionSubject(user);

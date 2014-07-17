@@ -11,9 +11,11 @@
 		</bean>
 		<bean id="annotationFileProcessor" scope="singleton"
 			class="org.tinygroup.annotation.fileresolver.AnnotationFileProcessor">
+			<property name="manager" ref="annotationExcuteManager"></property>
 		</bean>
 		<bean id="annotationClassFileProcessor" scope="singleton"
 			class="org.tinygroup.annotation.fileresolver.AnnotationClassFileProcessor">
+			<property name="manager" ref="annotationExcuteManager"></property>
 		</bean>
 
 	</beans>

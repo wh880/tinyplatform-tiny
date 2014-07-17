@@ -17,6 +17,7 @@ package org.tinygroup.plugin.test;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
@@ -24,10 +25,14 @@ import org.tinygroup.plugin.PluginManager;
 import org.tinygroup.plugin.config.PluginConfig;
 import org.tinygroup.plugin.impl.PluginManagerImpl;
 import org.tinygroup.plugin.test.plugin.PluginCounter;
+import org.tinygroup.springutil.SpringBeanContainer;
+import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 
 public class PluginDependTest2 extends TestCase {
 	
 	public void setUp() {
+		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
+		
 		FileResolver fileResolver = new FileResolverImpl();
 		FileResolverUtil.addClassPathPattern(fileResolver);
 		fileResolver
@@ -40,6 +45,7 @@ public class PluginDependTest2 extends TestCase {
 			
 		}
 		fileResolver.addIncludePathPattern("org\\.tinygroup\\.(.)*\\.jar");
+		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 		fileResolver.resolve();
 	}
 	
@@ -70,6 +76,7 @@ public class PluginDependTest2 extends TestCase {
 			manager.start();
 			assertEquals(1, PluginCounter.getCounter());
 		} catch (Exception e) {
+			e.printStackTrace();
 			assertTrue(false);
 		}
 		

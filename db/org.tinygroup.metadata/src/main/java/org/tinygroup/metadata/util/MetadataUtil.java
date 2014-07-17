@@ -17,6 +17,7 @@ package org.tinygroup.metadata.util;
 
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.metadata.bizdatatype.BusinessTypeProcessor;
 import org.tinygroup.metadata.config.PlaceholderValue;
@@ -26,7 +27,6 @@ import org.tinygroup.metadata.config.stddatatype.StandardType;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.stddatatype.StandardTypeProcessor;
 import org.tinygroup.metadata.stdfield.StandardFieldProcessor;
-import org.tinygroup.springutil.SpringUtil;
 
 public final class MetadataUtil {
 	public static final String METADATA_XSTREAM = "metadata";
@@ -59,21 +59,28 @@ public final class MetadataUtil {
 		return result;
 	}
 
-	public static StandardField getStandardField(String fieldId) {
-		StandardFieldProcessor standardFieldProcessor = SpringUtil.getBean(MetadataUtil.STDFIELDPROCESSOR_BEAN);
+	public static StandardField getStandardField(String fieldId,
+			ClassLoader loader) {
+		StandardFieldProcessor standardFieldProcessor = BeanContainerFactory
+				.getBeanContainer(loader).getBean(
+						MetadataUtil.STDFIELDPROCESSOR_BEAN);
 		return standardFieldProcessor.getStandardField(fieldId);
 	}
 
-	public static String getStandardFieldType(String stdFieldId, String type) {
-		StandardFieldProcessor standardFieldProcessor = SpringUtil.getBean(MetadataUtil.STDFIELDPROCESSOR_BEAN);
+	public static String getStandardFieldType(String stdFieldId, String type,
+			ClassLoader loader) {
+		StandardFieldProcessor standardFieldProcessor = BeanContainerFactory
+				.getBeanContainer(loader).getBean(
+						MetadataUtil.STDFIELDPROCESSOR_BEAN);
 		String datatype = standardFieldProcessor.getType(stdFieldId, type);
 		return datatype;
 	}
-	
-	public static DialectType getDialectType(String stdFieldId, String type) {
-		StandardType standardType=getStandardType(stdFieldId);
-		List<DialectType> dialectTypes=standardType.getDialectTypeList();
-		if(!CollectionUtil.isEmpty(dialectTypes)){
+
+	public static DialectType getDialectType(String stdFieldId, String type,
+			ClassLoader loader) {
+		StandardType standardType = getStandardType(stdFieldId, loader);
+		List<DialectType> dialectTypes = standardType.getDialectTypeList();
+		if (!CollectionUtil.isEmpty(dialectTypes)) {
 			for (DialectType dialectType : dialectTypes) {
 				if (dialectType.getLanguage().equals(type)) {
 					return dialectType;
@@ -82,19 +89,21 @@ public final class MetadataUtil {
 		}
 		return null;
 	}
-	
-	public static String getPlaceholderValue(String stdFieldId,String holderName){
-		return getPlaceholderValue(stdFieldId, holderName,null);
+
+	public static String getPlaceholderValue(String stdFieldId,
+			String holderName,ClassLoader loader) {
+		return getPlaceholderValue(stdFieldId, holderName, null,loader);
 	}
-	
-	public static String getPlaceholderValue(String stdFieldId,String holderName,String defaultValue){
-		BusinessType businessType=getBusinessType(stdFieldId);
-		List<PlaceholderValue> values=businessType.getPlaceholderValueList();
-		if(!CollectionUtil.isEmpty(values)){
-			String[] names=holderName.split(",");
+
+	public static String getPlaceholderValue(String stdFieldId,
+			String holderName, String defaultValue, ClassLoader loader) {
+		BusinessType businessType = getBusinessType(stdFieldId, loader);
+		List<PlaceholderValue> values = businessType.getPlaceholderValueList();
+		if (!CollectionUtil.isEmpty(values)) {
+			String[] names = holderName.split(",");
 			for (String name : names) {
 				for (PlaceholderValue value : values) {
-					if(value.getName().equals(name)){
+					if (value.getName().equals(name)) {
 						return value.getValue();
 					}
 				}
@@ -103,33 +112,42 @@ public final class MetadataUtil {
 		return defaultValue;
 	}
 
-	public static StandardType getStandardType(String fieldId) {
-		StandardField field = getStandardField(fieldId);
-		BusinessTypeProcessor businessTypeProcessor = SpringUtil
-				.getBean(MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
+	public static StandardType getStandardType(String fieldId,
+			ClassLoader loader) {
+		StandardField field = getStandardField(fieldId, loader);
+		BusinessTypeProcessor businessTypeProcessor = BeanContainerFactory
+				.getBeanContainer(loader).getBean(
+						MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
 		BusinessType businessType = businessTypeProcessor
 				.getBusinessTypes(field.getTypeId());
-		StandardTypeProcessor standardTypeProcessor = SpringUtil
-				.getBean(MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
+		StandardTypeProcessor standardTypeProcessor = BeanContainerFactory
+				.getBeanContainer(loader).getBean(
+						MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
 		return standardTypeProcessor.getStandardType(businessType.getTypeId());
 	}
-	
-	public static BusinessType getBusinessType(String fieldId) {
-		StandardField field = getStandardField(fieldId);
-		BusinessTypeProcessor businessTypeProcessor = SpringUtil
-				.getBean(MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
+
+	public static BusinessType getBusinessType(String fieldId,
+			ClassLoader loader) {
+		StandardField field = getStandardField(fieldId, loader);
+		BusinessTypeProcessor businessTypeProcessor = BeanContainerFactory
+				.getBeanContainer(loader).getBean(
+						MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
+		Thread.currentThread().getContextClassLoader();
 		BusinessType businessType = businessTypeProcessor
 				.getBusinessTypes(field.getTypeId());
 		return businessType;
 	}
-	
-	public static StandardType getStandardType(StandardField field) {
-		BusinessTypeProcessor businessTypeProcessor = SpringUtil
-				.getBean(MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
+
+	public static StandardType getStandardType(StandardField field,
+			ClassLoader loader) {
+		BusinessTypeProcessor businessTypeProcessor = BeanContainerFactory
+				.getBeanContainer(loader).getBean(
+						MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
 		BusinessType businessType = businessTypeProcessor
 				.getBusinessTypes(field.getTypeId());
-		StandardTypeProcessor standardTypeProcessor = SpringUtil
-				.getBean(MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
+		StandardTypeProcessor standardTypeProcessor = BeanContainerFactory
+				.getBeanContainer(loader).getBean(
+						MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
 		return standardTypeProcessor.getStandardType(businessType.getTypeId());
 	}
 }

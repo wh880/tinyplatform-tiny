@@ -23,13 +23,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.velocity.VelocityHelper;
-import org.tinygroup.velocity.impl.VelocityHelperImpl;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.impl.WebContextImpl;
@@ -45,13 +44,11 @@ public class VelocityLayoutViewServlet extends HttpServlet {
 	private VelocityHelper velocityHelper;
 	private FullContextFileRepository fullContextFileRepository;
 
-	
 	public void init(ServletConfig config) throws ServletException {
-		fullContextFileRepository = SpringUtil.getBean(
-				"fullContextFileRepository");
-		VelocityHelperImpl velocityHelperImpl = SpringUtil
-				.getBean("velocityHelper");
-		velocityHelper = velocityHelperImpl;
+		// fullContextFileRepository = SpringBeanContainer.getBean(
+		// "fullContextFileRepository");
+		// VelocityHelperImpl velocityHelperImpl = SpringBeanContainer
+		// .getBean("velocityHelper");
 		// 初始化时候对xml文档的内容进行读取 //这个是重写超类方法
 		templeteWithLayout = config
 				.getInitParameter("templeteWithLayoutExtFileName");
@@ -74,8 +71,8 @@ public class VelocityLayoutViewServlet extends HttpServlet {
 		try {
 			long startTime = System.currentTimeMillis();
 			String servletPath = request.getServletPath();
-			if(servletPath==null||servletPath.length()==0){
-				servletPath=request.getPathInfo();
+			if (servletPath == null || servletPath.length() == 0) {
+				servletPath = request.getPathInfo();
 			}
 			boolean isPagelet = false;
 			if (servletPath.endsWith(PAGELET_EXT_FILE_NAME)) {
@@ -89,9 +86,11 @@ public class VelocityLayoutViewServlet extends HttpServlet {
 
 			if (fileObject != null) {
 				WebContext webContent = new WebContextImpl();
-				webContent.put("uiengine",
-						SpringUtil.getBean("uiComponentManager"));
-				webContent.init(request, response,ServletContextHolder.getServletContext());
+				webContent.put("uiengine", BeanContainerFactory
+						.getBeanContainer(this.getClass().getClassLoader())
+						.getBean("uiComponentManager"));
+				webContent.init(request, response,
+						ServletContextHolder.getServletContext());
 				if (isPagelet) {
 					velocityHelper.processTempleate(webContent,
 							response.getWriter(), servletPath);

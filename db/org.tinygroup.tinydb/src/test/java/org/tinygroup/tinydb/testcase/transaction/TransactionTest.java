@@ -15,31 +15,31 @@
  */
 package org.tinygroup.tinydb.testcase.transaction;
 
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.test.BaseTest;
 import org.tinygroup.tinydb.testcase.transaction.service.TransactionService;
 
 public class TransactionTest extends BaseTest {
-	
+
 	Bean[] beans1;
-	
+
 	Bean[] beans2;
 	TransactionService service;
-	
+
 	public void setUp() {
 		super.setUp();
-		beans1=getAnimalBeans();
-		beans2=getBranchBeans();
-	    service=SpringUtil.getBean("transactionService");
-		//先删除表中已存在的记录
-	    service.deleteBean(beans1, beans2);
+		beans1 = getAnimalBeans();
+		beans2 = getBranchBeans();
+		service = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean("transactionService");
+		// 先删除表中已存在的记录
+		service.deleteBean(beans1, beans2);
 	}
 
-	
 	protected void tearDown() throws Exception {
 		super.tearDown();
-	  service.deleteBean(beans1, beans2);
+		service.deleteBean(beans1, beans2);
 	}
 
 	private Bean[] getAnimalBeans() {
@@ -57,7 +57,7 @@ public class TransactionTest extends BaseTest {
 		beans[1] = bean2;
 		return beans;
 	}
-	
+
 	private Bean[] getBranchBeans() {
 		Bean bean = new Bean(BRANCH);
 		bean.setProperty("branchId", "beanId3");
@@ -71,27 +71,27 @@ public class TransactionTest extends BaseTest {
 		beans[1] = bean2;
 		return beans;
 	}
-	
-		
-	public void testTransactionSuccess(){
+
+	public void testTransactionSuccess() {
 		service.transactionSuccess(beans1, beans2);
-		int length=getOperator().getBeans("select * from animal").length;
+		int length = getOperator().getBeans("select * from animal").length;
 		assertEquals(2, length);
 	}
-	
+
 	/**
 	 * 
 	 * 事务回滚测试,由于抛出异常需要注释掉
 	 */
-	public void testTransactionRollback(){
-//	    service.transactionFailure(beans1, beans2);
+	public void testTransactionRollback() {
+		// service.transactionFailure(beans1, beans2);
 	}
+
 	/**
 	 * 
 	 * 独立事务回滚测试,由于抛出异常需要注释掉
 	 */
-	public void testIndependentTransaction(){
-//		 service.independentTransaction(beans1, beans2);
+	public void testIndependentTransaction() {
+		// service.independentTransaction(beans1, beans2);
 	}
-	
+
 }

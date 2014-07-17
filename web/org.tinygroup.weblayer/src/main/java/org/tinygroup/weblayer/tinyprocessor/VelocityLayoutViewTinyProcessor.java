@@ -15,12 +15,15 @@
  */
 package org.tinygroup.weblayer.tinyprocessor;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.velocity.VelocityHelper;
 import org.tinygroup.velocity.config.VelocityContextConfig;
 import org.tinygroup.vfs.FileObject;
@@ -29,8 +32,7 @@ import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xstream.XStreamFactory;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import com.thoughtworks.xstream.XStream;
 
 public class VelocityLayoutViewTinyProcessor extends AbstractTinyProcessor {
 
@@ -43,16 +45,15 @@ public class VelocityLayoutViewTinyProcessor extends AbstractTinyProcessor {
 	private VelocityHelper velocityHelper;
 	private FullContextFileRepository fullContextFileRepository;
 
-//	private static final String VELOCITY_CONFIGS = "velocity-context-config";
+	// private static final String VELOCITY_CONFIGS = "velocity-context-config";
 
-	
 	public void init() {
 		super.init();
-		fullContextFileRepository = SpringUtil
-				.getBean("fullContextFileRepository");
-		VelocityHelper velocityHelperImpl = SpringUtil
-				.getBean("velocityHelper");
-		velocityHelper = velocityHelperImpl;
+		// fullContextFileRepository = SpringBeanContainer
+		// .getBean("fullContextFileRepository");
+		// VelocityHelper velocityHelperImpl = SpringBeanContainer
+		// .getBean("velocityHelper");
+		// velocityHelper = velocityHelperImpl;
 		// 初始化时候对xml文档的内容进行读取 //这个是重写超类方法
 		templeteWithLayout = getInitParamMap().get(
 				"templeteWithLayoutExtFileName");
@@ -71,8 +72,10 @@ public class VelocityLayoutViewTinyProcessor extends AbstractTinyProcessor {
 	 * 初始化application.xml文件中配置的velocity属性
 	 */
 	private void initVelocityConfig() {
-		VelocityContextConfiguration configuration=SpringUtil.getBean(VelocityContextConfiguration.class);
-		XmlNode velocityConfig=configuration.getCombineNode();
+		VelocityContextConfiguration configuration = BeanContainerFactory
+				.getBeanContainer(this.getClass().getClassLoader()).getBean(
+						VelocityContextConfiguration.class);
+		XmlNode velocityConfig = configuration.getCombineNode();
 		XStream stream = XStreamFactory
 				.getXStream(VelocityHelper.XSTEAM_PACKAGE_NAME);
 		if (velocityConfig != null) {
@@ -82,7 +85,6 @@ public class VelocityLayoutViewTinyProcessor extends AbstractTinyProcessor {
 		}
 	}
 
-	
 	public void reallyProcess(String servletPath, WebContext context) {
 		HttpServletResponse response = context.getResponse();
 		try {
@@ -98,8 +100,11 @@ public class VelocityLayoutViewTinyProcessor extends AbstractTinyProcessor {
 					.getFileObjectDetectLocale(servletPath);
 
 			if (fileObject != null && fileObject.isExist()) {
-				context.put("uiengine",
-						SpringUtil.getBean("uiComponentManager"));
+				context.put(
+						"uiengine",
+						BeanContainerFactory.getBeanContainer(
+								this.getClass().getClassLoader()).getBean(
+								"uiComponentManager"));
 				if (isPagelet) {
 					velocityHelper.processTempleate(context,
 							response.getWriter(), servletPath);

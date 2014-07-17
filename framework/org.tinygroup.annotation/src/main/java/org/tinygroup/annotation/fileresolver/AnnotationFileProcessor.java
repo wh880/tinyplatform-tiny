@@ -19,7 +19,6 @@ import org.tinygroup.annotation.AnnotationExcuteManager;
 import org.tinygroup.annotation.config.AnnotationClassMatchers;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -34,16 +33,21 @@ import com.thoughtworks.xstream.XStream;
 public class AnnotationFileProcessor extends AbstractFileProcessor {
 
 	private static final String ANNOTATION_EXT_FILENAME = ".annotation.xml";
-
+	private AnnotationExcuteManager manager;
 	public boolean isMatch(FileObject fileObject) {
 
 		return fileObject.getFileName().endsWith(ANNOTATION_EXT_FILENAME);
 	}
+	public AnnotationExcuteManager getManager() {
+		return manager;
+	}
 
+	public void setManager(AnnotationExcuteManager manager) {
+		this.manager = manager;
+	}
 	public void process() {
 
-		AnnotationExcuteManager manager = SpringUtil
-				.getBean(AnnotationExcuteManager.ANNOTATION_MANAGER_BEAN_NAME);
+		
 		XStream stream = XStreamFactory
 				.getXStream(AnnotationExcuteManager.XSTEAM_PACKAGE_NAME);
 		for (FileObject fileObject : deleteList) {

@@ -18,7 +18,6 @@ package org.tinygroup.weblayer.fileresolver;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.TinyProcessorManager;
 import org.tinygroup.weblayer.configmanager.TinyProcessorConfigManager;
@@ -32,14 +31,30 @@ import org.tinygroup.weblayer.configmanager.TinyProcessorConfigManager;
 public class TinyProcessorFileProcessor extends AbstractFileProcessor {
 
 	private static final String SERVLETS_EXT_FILENAMES = ".tinyprocessor.xml";
+	private TinyProcessorConfigManager configManager;
+	private TinyProcessorManager tinyProcessorManager;
+	
+	public TinyProcessorManager getTinyProcessorManager() {
+		return tinyProcessorManager;
+	}
+
+	public void setTinyProcessorManager(TinyProcessorManager tinyProcessorManager) {
+		this.tinyProcessorManager = tinyProcessorManager;
+	}
+
+	public TinyProcessorConfigManager getConfigManager() {
+		return configManager;
+	}
+
+	public void setConfigManager(TinyProcessorConfigManager configManager) {
+		this.configManager = configManager;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(SERVLETS_EXT_FILENAMES);
 	}
 
 	public void process() {
-		TinyProcessorConfigManager configManager = SpringUtil
-				.getBean(TinyProcessorConfigManager.TINY_PROCESSOR_CONFIGMANAGER);
 		if(!CollectionUtil.isEmpty(deleteList)||!CollectionUtil.isEmpty(changeList)){
 			for (FileObject fileObject : deleteList) {
 				logger.log(LogLevel.INFO, "正在移除tiny-processor描述文件：<{}>",
@@ -63,8 +78,6 @@ public class TinyProcessorFileProcessor extends AbstractFileProcessor {
 				configManager.addConfig(fileObject);
 				caches.put(fileObject.getAbsolutePath(), fileObject);
 			}
-			TinyProcessorManager tinyProcessorManager = SpringUtil
-					.getBean(TinyProcessorManager.TINY_PROCESSOR_MANAGER);
 			tinyProcessorManager.initTinyResources();
 		}
 	}

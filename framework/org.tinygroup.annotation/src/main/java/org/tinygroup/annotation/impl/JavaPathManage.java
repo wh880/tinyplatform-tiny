@@ -18,8 +18,8 @@ package org.tinygroup.annotation.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.fileresolver.FileResolver;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 类路径管理
@@ -46,7 +46,8 @@ public class JavaPathManage {
     private FileResolver fileResolver;
 
     public void init() {
-		fileResolver = SpringUtil.getBean(FILE_RESOLVER);
+		fileResolver = BeanContainerFactory
+		.getBeanContainer(this.getClass().getClassLoader()).getBean(FILE_RESOLVER);
 		List<String> paths=new ArrayList<String>();
 		paths.addAll(fileResolver.getResolveFileObjectSet());
 		for (String path : paths) {

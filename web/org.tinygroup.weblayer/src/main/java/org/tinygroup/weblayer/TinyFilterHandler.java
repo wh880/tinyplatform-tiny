@@ -23,12 +23,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.ExceptionUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.weblayer.exceptionhandler.WebExceptionHandlerManager;
 import org.tinygroup.weblayer.webcontext.CommitMonitor;
 import org.tinygroup.weblayer.webcontext.SimpleWebContext;
@@ -66,18 +67,14 @@ public class TinyFilterHandler {
 		this.tinyFilterManager = tinyFilterManager;
 		this.tinyProcessorManager = tinyProcessorManager;
 	}
-	
-	
+
 	public WebContext getContext() {
 		return context;
 	}
 
-
 	public void setContext(WebContext context) {
 		this.context = context;
 	}
-
-
 
 	/**
 	 * 采用tiny-filter方式来处理
@@ -168,7 +165,8 @@ public class TinyFilterHandler {
 	private WebContext createWrapperContext(WebContext context,
 			List<TinyFilter> tinyFilters, HttpServletRequest request,
 			HttpServletResponse response) {
-		SimpleWebContext innerWebContext = new SimpleWebContext(context, this,request,response);
+		SimpleWebContext innerWebContext = new SimpleWebContext(context, this,
+				request, response);
 		WebContext wrapperedContext = innerWebContext;
 		WebContextUtil.setWebContext(wrapperedContext);
 		logger.logMessage(LogLevel.DEBUG, "tiny-filter开始进行前置处理操作");
@@ -214,8 +212,9 @@ public class TinyFilterHandler {
 		logger.errorMessage("Full stack trace of the error "
 				+ originalExceptionMessage, e);
 		// 进行自定义异常处理
-		WebExceptionHandlerManager exceptionHandlerManager = SpringUtil
-				.getBean(WebExceptionHandlerManager.MANAGER_BEAN);
+		WebExceptionHandlerManager exceptionHandlerManager = BeanContainerFactory
+				.getBeanContainer(this.getClass().getClassLoader()).getBean(
+						WebExceptionHandlerManager.MANAGER_BEAN);
 		exceptionHandlerManager.handler(rootCause, webContext);
 	}
 

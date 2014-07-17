@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.entity.common.ConditionField;
@@ -33,7 +34,6 @@ import org.tinygroup.entity.relation.EntityRelation;
 import org.tinygroup.entity.relationmodel.RelationField;
 import org.tinygroup.entity.relationmodel.RelationModel;
 import org.tinygroup.imda.processor.ParameterBuilder;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
@@ -42,7 +42,7 @@ import org.tinygroup.tinydb.operator.DBOperator;
  * 
  * 功能说明: 关联关系服务和参数组装处理类
  * <p>
-
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-10-23 <br>
  * <br>
@@ -52,7 +52,7 @@ public class RelationProcessor {
 	private Context context;
 
 	private View view;
-	
+
 	private RelationModel relationModel;
 
 	@SuppressWarnings("rawtypes")
@@ -67,19 +67,19 @@ public class RelationProcessor {
 	private Map<String, OrderField> orderExist = new HashMap<String, OrderField>();
 
 	private Map<String, GroupField> groupExist = new HashMap<String, GroupField>();
-	
 
 	public RelationProcessor(RelationModel relationModel, View view,
 			Context context) {
 		this.context = context;
 		this.view = view;
-		this.relationModel=relationModel;
-		BeanOperatorManager manager = SpringUtil
-				.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+		this.relationModel = relationModel;
+		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		this.operator = manager.getDbOperator(relationModel.getMainBeanType());
-		
-		relationModel.init(context);//对关联模型进行初始化
-		
+
+		relationModel.init(context);// 对关联模型进行初始化
+
 		this.conditionFields = view.getConditionFields();
 		this.viewGroups = view.getViewGroups();
 		this.groupFields = view.getGroupFields();
@@ -129,7 +129,8 @@ public class RelationProcessor {
 						/ pageSize : totalSize / pageSize + 1;
 				pageNum = checkPageNumber(totalPages, pageNum);
 				int start = pageNum * pageSize + 1;
-				beans = operator.getPagedBeans(sql, start, pageSize, params.toArray());
+				beans = operator.getPagedBeans(sql, start, pageSize,
+						params.toArray());
 				pageInfo.setPageSize(pageSize);
 				pageInfo.setTotalPages(totalPages);
 				pageInfo.setPageNumber(pageNum);
@@ -311,19 +312,19 @@ public class RelationProcessor {
 	private void genetateTableSqlClause(StringBuffer stringBuffer) {
 		stringBuffer.append(" from ");
 		Map<String, Boolean> status = new HashMap<String, Boolean>();
-		List<EntityRelation> relations=relationModel.getRelations();
+		List<EntityRelation> relations = relationModel.getRelations();
 		for (int i = 0; i < relations.size(); i++) {
 			EntityRelation relation = relations.get(i);
 			String mainModelId = relation.getMainEntityId();
 			String mainAliasName = relation.getMainAliasName();
 			boolean hasAppend = false;
-			boolean hasConnect=false;
+			boolean hasConnect = false;
 			String mainKey = formmatKey(mainModelId, mainAliasName);
 			if (!status.containsKey(mainKey)) {// 模型未被处理过
 				if (i != 0) {
 					stringBuffer.append(" ").append(relation.getConnectMode())
 							.append(" ");// 第一个模型引用除外
-					hasConnect=true;
+					hasConnect = true;
 				}
 				tableNameSqlClause(stringBuffer, mainModelId, mainAliasName);
 				hasAppend = true;
@@ -333,9 +334,9 @@ public class RelationProcessor {
 			String fromAliasName = relation.getFromAliasName();
 			String fromKey = formmatKey(fromModelId, fromAliasName);
 			if (!status.containsKey(fromKey)) {// 引用的模型为被处理过
-				if(!hasConnect){
-				stringBuffer.append(" ").append(relation.getConnectMode())
-						.append(" ");// 连接信息
+				if (!hasConnect) {
+					stringBuffer.append(" ").append(relation.getConnectMode())
+							.append(" ");// 连接信息
 				}
 				tableNameSqlClause(stringBuffer, fromModelId, fromAliasName);
 				hasAppend = true;
@@ -380,7 +381,8 @@ public class RelationProcessor {
 	 */
 	private void joinConditionSqlClase(StringBuffer stringBuffer,
 			String modelId, String modelAliasName, String standardFieldId) {
-		EntityModelHelper modelHelper = relationModel.getHelperWithModelId(modelId);
+		EntityModelHelper modelHelper = relationModel
+				.getHelperWithModelId(modelId);
 		if (StringUtil.isBlank(modelAliasName)) {
 			modelAliasName = modelHelper.getTableAliasName(modelAliasName);
 		}
@@ -399,7 +401,8 @@ public class RelationProcessor {
 	 */
 	private void tableNameSqlClause(StringBuffer stringBuffer, String modelId,
 			String modelAliasName) {
-		EntityModelHelper modelHelper = relationModel.getHelperWithModelId(modelId);
+		EntityModelHelper modelHelper = relationModel
+				.getHelperWithModelId(modelId);
 		stringBuffer.append(modelHelper.getTableName());
 		if (StringUtil.isBlank(modelAliasName)) {
 			modelAliasName = modelHelper.getTableAliasName(modelAliasName);
@@ -416,23 +419,25 @@ public class RelationProcessor {
 				List<DisplayField> displayFields = viewGroup.getFields();
 				for (DisplayField displayField : displayFields) {
 					String fieldId = displayField.getFieldId();
-					RelationField relationField = relationModel.getRelationFieldWithFieldId(fieldId);
+					RelationField relationField = relationModel
+							.getRelationFieldWithFieldId(fieldId);
 					if (relationField != null) {
 						String aliasName = relationField.getAliseName();
-						String refFieldId=relationField.getRefFieldId();
-						if(!StringUtil.isBlank(refFieldId)){
-							if(StringUtil.isBlank(aliasName)){//如果 ref-field-id值不为空且没有设置别名，那么别名值取自field-id的值
-								aliasName=relationField.getFieldId();
+						String refFieldId = relationField.getRefFieldId();
+						if (!StringUtil.isBlank(refFieldId)) {
+							if (StringUtil.isBlank(aliasName)) {// 如果
+																// ref-field-id值不为空且没有设置别名，那么别名值取自field-id的值
+								aliasName = relationField.getFieldId();
 							}
-						}else{
-							refFieldId=relationField.getFieldId();
+						} else {
+							refFieldId = relationField.getFieldId();
 						}
 						EntityModelHelper helper = getHelper(refFieldId);
-						hasField = helper.processDisplayField(stringBuffer,refFieldId,
-								getTableAliasName(fieldId), aliasName, hasField,
-								displayField);
+						hasField = helper.processDisplayField(stringBuffer,
+								refFieldId, getTableAliasName(fieldId),
+								aliasName, hasField, displayField);
 					}
-					
+
 				}
 			}
 		}
@@ -443,8 +448,6 @@ public class RelationProcessor {
 		}
 
 	}
-
-
 
 	/**
 	 * 

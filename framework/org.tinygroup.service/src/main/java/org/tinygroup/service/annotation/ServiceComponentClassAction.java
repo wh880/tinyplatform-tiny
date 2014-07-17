@@ -18,9 +18,9 @@ package org.tinygroup.service.annotation;
 import java.lang.annotation.Annotation;
 
 import org.tinygroup.annotation.AnnotationClassAction;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.service.loader.AnnotationServiceLoader;
 import org.tinygroup.service.registry.ServiceRegistry;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 符合@ServiceComponent注解配置的处理器
@@ -33,8 +33,9 @@ public class ServiceComponentClassAction implements AnnotationClassAction {
 	private AnnotationServiceLoader annotationLoader;
 
 	public <T> void process(Class<T> clazz, Annotation annotation) {
-		if(annotationLoader!=null){
-			ServiceRegistry reg = SpringUtil.getBean(
+		if (annotationLoader != null) {
+			ServiceRegistry reg = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
 					ServiceRegistry.BEAN_NAME);
 			annotationLoader.loadService(clazz, annotation, reg);
 		}

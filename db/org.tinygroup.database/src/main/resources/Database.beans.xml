@@ -7,10 +7,11 @@
 	default-autowire="byName" default-lazy-init="true">
 	<bean id="tableProcessor" scope="singleton"
 		class="org.tinygroup.database.table.impl.TableProcessorImpl">
-
+		<property name="processorManager" ref="processorManager"></property>
 	</bean>
 	<bean id="initDataProcessor" scope="singleton"
 		class="org.tinygroup.database.initdata.impl.InitDataProcessorImpl">
+		<property name="processorManager" ref="processorManager"></property>
 	</bean>
 	<bean id="processorManager" scope="singleton"
 		class="org.tinygroup.database.impl.ProcessorManagerImpl">
@@ -20,12 +21,14 @@
 	</bean>
 	<bean id="viewProcessor" scope="singleton"
 		class="org.tinygroup.database.view.impl.ViewProcessorImpl">
+		<property name="processorManager" ref="processorManager"></property>
 	</bean>
 	<bean id="dialectFunctionProcessor" scope="singleton"
 		class="org.tinygroup.database.dialectfunction.impl.DialectFunctionProcessorImpl">
 	</bean>
 	<bean id="procedureProcessor" scope="singleton"
 		class="org.tinygroup.database.procedure.impl.ProcedureProcessorImpl">
+		<property name="processorManager" ref="processorManager"></property>
 	</bean>
 
 	<bean id="oracleSqlProcessor" scope="singleton"
@@ -70,31 +73,40 @@
 	
 	<bean id="tableFileResolver" scope="singleton"
 		class="org.tinygroup.database.fileresolver.TableFileResolver">
+		<property name="tableProcessor" ref="tableProcessor"></property>
 	</bean>
 	
 	<bean id="customSqlFileResolver" scope="singleton"
 		class="org.tinygroup.database.fileresolver.CustomSqlFileResolver">
+		<property name="customSqlProcessor" ref="customeSqlProcessor"></property>
 	</bean>
 	<bean id="dialectFunctionlFileResolver" scope="singleton"
 		class="org.tinygroup.database.fileresolver.DialectFunctionlFileResolver">
+		<property name="functionProcessor" ref="dialectFunctionProcessor"></property>
 	</bean>
 	<bean id="initDataFileResolver" scope="singleton"
 		class="org.tinygroup.database.fileresolver.InitDataFileResolver">
+		<property name="initDataProcessor" ref="initDataProcessor"></property>
 	</bean>
 	<bean id="procedureFileResolver" scope="singleton"
 		class="org.tinygroup.database.fileresolver.ProcedureFileResolver">
+		<property name="procedureProcessor" ref="procedureProcessor"></property>
 	</bean>
 	<bean id="processorFileResolver" scope="singleton"
 		class="org.tinygroup.database.fileresolver.ProcessorFileResolver">
+		<property name="processorManager" ref="processorManager"></property>
 	</bean>
 	<bean id="viewFileResolver" scope="singleton"
 		class="org.tinygroup.database.fileresolver.ViewFileResolver">
+		<property name="viewProcessor" ref="viewProcessor"></property>
 	</bean>
 	<bean id="triggerFileProcessor" scope="singleton"
 		class="org.tinygroup.database.fileresolver.TriggerFileProcessor">
+		<property name="processor" ref="triggerProcessor"></property>
 	</bean>
 	<bean id="triggerProcessor" scope="singleton"
 		class="org.tinygroup.database.trigger.impl.TriggerProcessorImpl">
+		<property name="processorManager" ref="processorManager"></property>
 	</bean>
 	
 	<bean id="db2SequenceSqlProcessor" scope="singleton"
@@ -105,9 +117,11 @@
 	</bean>
 	<bean id="sequenceFileProcessor" scope="singleton"
 		class="org.tinygroup.database.fileresolver.SequenceFileProcessor">
+		<property name="processor" ref="sequenceProcessor"></property>
 	</bean>
 	<bean id="sequenceProcessor" scope="singleton"
 		class="org.tinygroup.database.sequence.impl.SequenceProcessorImpl">
+		<property name="processorManager" ref="processorManager"></property>
 	</bean>
 	
 	<bean id="oracleTriggerSqlProcessor" scope="singleton"

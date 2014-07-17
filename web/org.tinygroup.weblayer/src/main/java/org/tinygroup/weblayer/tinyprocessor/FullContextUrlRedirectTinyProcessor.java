@@ -28,7 +28,6 @@ import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
@@ -48,10 +47,21 @@ public class FullContextUrlRedirectTinyProcessor extends AbstractTinyProcessor {
 			.getLogger(FullContextUrlRedirectTinyProcessor.class);
 
 	
+	public FullContextFileRepository getFullContextFileRepository() {
+		return fullContextFileRepository;
+	}
+
+
+	public void setFullContextFileRepository(
+			FullContextFileRepository fullContextFileRepository) {
+		this.fullContextFileRepository = fullContextFileRepository;
+	}
+
+
 	public void init() {
 		super.init();
-		fullContextFileRepository = SpringUtil
-				.getBean("fullContextFileRepository");
+//		fullContextFileRepository = SpringBeanContainer
+//				.getBean("fullContextFileRepository");
 	}
 
 	

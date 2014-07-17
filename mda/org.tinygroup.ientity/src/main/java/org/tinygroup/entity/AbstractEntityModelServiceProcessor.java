@@ -15,6 +15,7 @@
  */
 package org.tinygroup.entity;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.entity.common.Operation;
 import org.tinygroup.entity.common.View;
@@ -23,29 +24,31 @@ import org.tinygroup.entity.util.ModelUtil;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.imda.processor.ModelServiceProcessor;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 
- * 功能说明:模型实体服务处理的抽象类 
-
+ * 功能说明:模型实体服务处理的抽象类
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-9-6 <br>
  * <br>
  */
-public abstract  class AbstractEntityModelServiceProcessor<R> implements
-		ModelServiceProcessor<EntityModel,R> {
-
+public abstract class AbstractEntityModelServiceProcessor<R> implements
+		ModelServiceProcessor<EntityModel, R> {
 
 	public R process(ModelRequestInfo modelRequestInfo, Context context) {
-		ModelManager modelManager=SpringUtil.getBean(ModelManager.MODELMANAGER_BEAN);
-		EntityModel model=modelManager.getModel(modelRequestInfo.getModelId());
-		Operation operation=ModelUtil.getOperation(model, modelRequestInfo.getProcessorId());
-		if(operation!=null){
+		ModelManager modelManager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				ModelManager.MODELMANAGER_BEAN);
+		EntityModel model = modelManager
+				.getModel(modelRequestInfo.getModelId());
+		Operation operation = ModelUtil.getOperation(model,
+				modelRequestInfo.getProcessorId());
+		if (operation != null) {
 			return process(context, model, operation);
 		}
-		View view=ModelUtil.getView(model, modelRequestInfo.getProcessorId());
-		if(view!=null){
+		View view = ModelUtil.getView(model, modelRequestInfo.getProcessorId());
+		if (view != null) {
 			return process(context, model, view);
 		}
 		return null;
@@ -54,6 +57,7 @@ public abstract  class AbstractEntityModelServiceProcessor<R> implements
 	/**
 	 * 
 	 * 具体的操作服务处理逻辑
+	 * 
 	 * @param context
 	 * @param entityModel
 	 * @param operation
@@ -61,10 +65,11 @@ public abstract  class AbstractEntityModelServiceProcessor<R> implements
 	 */
 	protected abstract R process(Context context, EntityModel entityModel,
 			Operation operation);
-	
+
 	/**
 	 * 
 	 * 具体的视图服务处理逻辑
+	 * 
 	 * @param context
 	 * @param entityModel
 	 * @param operation

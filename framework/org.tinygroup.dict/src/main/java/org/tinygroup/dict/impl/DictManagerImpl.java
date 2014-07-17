@@ -26,9 +26,8 @@ import org.tinygroup.context.Context;
 import org.tinygroup.dict.Dict;
 import org.tinygroup.dict.DictLoader;
 import org.tinygroup.dict.DictManager;
-import org.tinygroup.support.BeanSupport;
 
-public class DictManagerImpl extends BeanSupport implements DictManager {
+public class DictManagerImpl implements DictManager {
 
 	private Map<String, List<DictLoader>> dictLoaderMap = new HashMap<String, List<DictLoader>>();
 	private Cache cache;
@@ -38,7 +37,7 @@ public class DictManagerImpl extends BeanSupport implements DictManager {
 	}
 
 	public void load() {
-		clear();//先清除再去加载
+		clear();// 先清除再去加载
 		for (List<DictLoader> dictLoaderList : dictLoaderMap.values()) {
 			for (DictLoader tempDictLoader : dictLoaderList) {
 				tempDictLoader.load(this);
@@ -91,6 +90,5 @@ public class DictManagerImpl extends BeanSupport implements DictManager {
 		}
 		dictLoaderList.add(dictLoader);
 	}
-	
 
 }

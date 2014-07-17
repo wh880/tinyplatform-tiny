@@ -19,13 +19,13 @@ import java.io.StringWriter;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.util.ContextFactory;
 import org.tinygroup.imda.test.util.ModelTestUtil;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
 import org.tinygroup.imda.usermodel.CaseModel;
 import org.tinygroup.imda.usermodel.CaseModelParamBuilder;
-import org.tinygroup.springutil.SpringUtil;
 
 public class ModelManagerTest extends TestCase {
 
@@ -33,7 +33,9 @@ public class ModelManagerTest extends TestCase {
 
 	public void setUp() {
 		ModelTestUtil.init();
-		manager = SpringUtil.getBean(ModelManager.MODELMANAGER_BEAN);
+		manager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				ModelManager.MODELMANAGER_BEAN);
 		manager.addModel(getCaseModel());
 	}
 
@@ -51,14 +53,16 @@ public class ModelManagerTest extends TestCase {
 
 	public void testProcessService() {
 		Context context = ContextFactory.getContext();
-		manager.processParameter(getModelRequestInfo(),"parameterBuilder", context);
+		manager.processParameter(getModelRequestInfo(), "parameterBuilder",
+				context);
 		manager.processService(getModelRequestInfo(), context);
 		assertEquals(11, context.get(CaseModelParamBuilder.KEY));
 	}
 
 	public void testProcessView() {
 		Context context = ContextFactory.getContext();
-		manager.processParameter(getModelRequestInfo(),"parameterBuilder", context);
+		manager.processParameter(getModelRequestInfo(), "parameterBuilder",
+				context);
 		manager.processService(getModelRequestInfo(), context);
 		manager.processView(getModelRequestInfo(), new StringWriter(), context);
 		assertEquals(12, context.get(CaseModelParamBuilder.KEY));
@@ -66,28 +70,31 @@ public class ModelManagerTest extends TestCase {
 
 	public void testProcessParam() {
 		Context context = ContextFactory.getContext();
-		manager.processParameter(getModelRequestInfo(),"parameterBuilder", context);
+		manager.processParameter(getModelRequestInfo(), "parameterBuilder",
+				context);
 		assertEquals(10, context.get(CaseModelParamBuilder.KEY));
 	}
 
 	public void testUpdate() {
 		manager.updateModel(getCaseModel2());
 		Context context = ContextFactory.getContext();
-		manager.processParameter(getModelRequestInfo(),"parameterBuilder", context);
+		manager.processParameter(getModelRequestInfo(), "parameterBuilder",
+				context);
 		assertEquals(10, context.get(CaseModelParamBuilder.KEY));
 		manager.updateModel(getCaseModel());
 		context.clear();
-		manager.processParameter(getModelRequestInfo(),"parameterBuilder", context);
+		manager.processParameter(getModelRequestInfo(), "parameterBuilder",
+				context);
 		assertEquals(10, context.get(CaseModelParamBuilder.KEY));
 	}
 
 	public void testRemove() {
 		CaseModel caseModel = getCaseModel();
 		manager.removeModel(caseModel);
-		try{
+		try {
 			manager.getModel(caseModel.getId());
 			fail();
-		}catch (Exception e) {
+		} catch (Exception e) {
 		}
 	}
 

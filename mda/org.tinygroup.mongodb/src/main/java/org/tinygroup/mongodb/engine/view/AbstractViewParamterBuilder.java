@@ -15,6 +15,7 @@
  */
 package org.tinygroup.mongodb.engine.view;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.util.ContextFactory;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
@@ -22,7 +23,6 @@ import org.tinygroup.mongodb.common.View;
 import org.tinygroup.mongodb.engine.AbstractMongoParamterBuilder;
 import org.tinygroup.mongodb.engine.MongoModelInfoGetter;
 import org.tinygroup.mongodb.model.MongoDBModel;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 
@@ -37,7 +37,8 @@ public abstract class AbstractViewParamterBuilder extends AbstractMongoParamterB
 	
 	protected Context buildParameter(MongoDBModel model,
 			ModelRequestInfo modelRequestInfo, Context context) {
-		MongoModelInfoGetter getter=SpringUtil.getBean("mongoModelInfoGetter");
+		MongoModelInfoGetter getter=BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean("mongoModelInfoGetter");
 		View view=(View) getter.getOperation(model, modelRequestInfo.getProcessorId());
 		MongoViewContext viewContext=new MongoViewContext(model, view, context);
 		return viewContext.buildConditionParameter(ContextFactory.getContext(), view.getConditionFields());

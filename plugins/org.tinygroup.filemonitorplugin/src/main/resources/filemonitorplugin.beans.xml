@@ -8,6 +8,7 @@
 	
 	<bean id="fileMonitorPlugin" scope="singleton"
 		class="org.tinygroup.filemonitorplugin.FileMonitorPlugin">
+		<property name="resolver" ref="fileResolver"></property>
 	</bean>
 
 </beans>

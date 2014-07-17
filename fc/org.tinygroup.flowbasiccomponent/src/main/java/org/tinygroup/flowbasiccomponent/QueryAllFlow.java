@@ -15,10 +15,10 @@
  */
 package org.tinygroup.flowbasiccomponent;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.flow.FlowExecutor;
-import org.tinygroup.springutil.SpringUtil;
 
 public class QueryAllFlow implements ComponentInterface {
 
@@ -31,7 +31,8 @@ public class QueryAllFlow implements ComponentInterface {
 		this.resultKey = resultKey;
 	}
 	public void execute(Context context) {
-		FlowExecutor flowExecutor = SpringUtil.getBean(FlowExecutor.FLOW_BEAN);
+		FlowExecutor flowExecutor = BeanContainerFactory
+		.getBeanContainer(this.getClass().getClassLoader()).getBean(FlowExecutor.FLOW_BEAN);
 		context.put(resultKey, flowExecutor.getFlowIdVersionMap().values() );
 	}
 

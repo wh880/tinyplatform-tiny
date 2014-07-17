@@ -23,10 +23,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.TinyProcessorManager;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.impl.WebContextImpl;
@@ -39,17 +39,17 @@ import org.tinygroup.weblayer.listener.ServletContextHolder;
  * 
  */
 public class TinyServlet extends HttpServlet {
-	
-	private static Logger logger = LoggerFactory
-	.getLogger(TinyServlet.class);
+
+	private static Logger logger = LoggerFactory.getLogger(TinyServlet.class);
 	TinyProcessorManager tinyProcessorManager;
 
 	public void init() {
-		tinyProcessorManager = SpringUtil.getBean(TinyProcessorManager.TINY_PROCESSOR_MANAGER);
+		tinyProcessorManager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				TinyProcessorManager.TINY_PROCESSOR_MANAGER);
 		tinyProcessorManager.initTinyResources();
 	}
 
-	
 	public void init(ServletConfig config) throws ServletException {
 		init();
 	}
@@ -57,21 +57,19 @@ public class TinyServlet extends HttpServlet {
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String servletPath = request.getServletPath();
-		if(servletPath==null||servletPath.length()==0){
-			servletPath=request.getPathInfo();
+		if (servletPath == null || servletPath.length() == 0) {
+			servletPath = request.getPathInfo();
 		}
-		logger.logMessage(LogLevel.DEBUG, "servlet请求路径：<{}>",servletPath
-				);
+		logger.logMessage(LogLevel.DEBUG, "servlet请求路径：<{}>", servletPath);
 		WebContext context = new WebContextImpl();
-		context.init(request, response,ServletContextHolder.getServletContext());
+		context.init(request, response,
+				ServletContextHolder.getServletContext());
 		tinyProcessorManager.execute(servletPath, context);
 	}
 
-	
 	public void destroy() {
 		tinyProcessorManager.destoryTinyResources();
-		tinyProcessorManager=null;
+		tinyProcessorManager = null;
 	}
 
-	
 }

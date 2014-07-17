@@ -15,18 +15,20 @@
  */
 package org.tinygroup.tinydb;
 
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 /**
  * Created by luoguo on 2014/5/23.
  */
 public final class DbOperatorFactory {
-    private DbOperatorFactory() {
-    }
+	private DbOperatorFactory() {
+	}
 
-    public static DBOperator getDBOperator(String beanType) {
-        BeanOperatorManager beanOperatorManager = (BeanOperatorManager) SpringUtil.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-        return beanOperatorManager.getDbOperator(beanType);
-    }
+	public static DBOperator getDBOperator(String beanType, ClassLoader loader) {
+		BeanOperatorManager beanOperatorManager = (BeanOperatorManager) BeanContainerFactory
+				.getBeanContainer(loader).getBean(
+						BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+		return beanOperatorManager.getDbOperator(beanType);
+	}
 }

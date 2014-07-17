@@ -20,7 +20,6 @@ import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.cache.CacheInitConfig;
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.dict.DictManager;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 
@@ -34,6 +33,16 @@ public class DictLoadProcessor extends AbstractConfiguration implements Applicat
 
 	private static final String DICT_NODE_PATH = "/application/dict-load-config";
 	private DictManager manager;
+	private CacheInitConfig config;
+	
+	
+	public CacheInitConfig getConfig() {
+		return config;
+	}
+
+	public void setConfig(CacheInitConfig config) {
+		this.config = config;
+	}
 
 	public DictManager getManager() {
 		return manager;
@@ -52,7 +61,7 @@ public class DictLoadProcessor extends AbstractConfiguration implements Applicat
 	}
 	
 	public void start() {
-		CacheInitConfig config=SpringUtil.getBean("cacheInitConfig");
+//		CacheInitConfig config=SpringBeanContainer.getBean("cacheInitConfig");
 		manager.getCache().init(config.getRegion());
 		manager.load();
 	}

@@ -19,7 +19,6 @@ import org.tinygroup.docgen.DocumentGenerater;
 import org.tinygroup.docgen.DocumentGeneraterManager;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 
 /**
@@ -39,6 +38,18 @@ public class TemplateFileProcessor extends AbstractFileProcessor {
 	private String documentType;
 	
 	private DocumentGenerater generate;
+
+	private DocumentGeneraterManager manager;
+	
+	
+	
+	public DocumentGeneraterManager getManager() {
+		return manager;
+	}
+
+	public void setManager(DocumentGeneraterManager manager) {
+		this.manager = manager;
+	}
 
 	public String getFileExtName() {
 		return fileExtName;
@@ -89,8 +100,6 @@ public class TemplateFileProcessor extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载文档模板宏配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
-		DocumentGeneraterManager manager = SpringUtil
-				.getBean(DocumentGeneraterManager.MANAGER_BEAN_NAME);
 		manager.putDocumentGenerater(documentType, generate);
 	}
 

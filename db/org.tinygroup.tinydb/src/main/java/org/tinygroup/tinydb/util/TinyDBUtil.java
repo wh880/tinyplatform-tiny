@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
@@ -36,11 +36,12 @@ import org.tinygroup.tinydb.operator.DBOperator;
  */
 public final class TinyDBUtil {
 
-	private static BeanOperatorManager manager;
-
-	static {
-		manager = SpringUtil.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-	}
+	// private static BeanOperatorManager manager;
+	//
+	// static {
+	// BeanOperatorManager manager =
+	// BeanContainerFactory.getBeanContainer(loader).getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+	// }
 
 	private TinyDBUtil() {
 	}
@@ -80,18 +81,24 @@ public final class TinyDBUtil {
 	}
 
 	public static TableConfiguration getTableConfig(String tableName,
-			String schema) {
+			String schema,ClassLoader loader) {
+		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
+				loader).getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		String beanType = manager.getBeanDbNameConverter()
 				.dbTableNameToTypeName(tableName);
 		return manager.getTableConfiguration(beanType, schema);
 	}
 
-	public static DBOperator<?> getDBOperator(String schema, String beanType) {
+	public static DBOperator<?> getDBOperator(String schema, String beanType,ClassLoader loader) {
+		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
+				loader).getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		return manager.getDbOperator(schema, beanType);
 	}
 
 	public static TableConfiguration getTableConfigByBean(String beanType,
-			String schema) {
+			String schema,ClassLoader loader) {
+		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
+				loader).getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		return manager.getTableConfiguration(beanType, schema);
 	}
 
@@ -109,8 +116,10 @@ public final class TinyDBUtil {
 		return null;
 	}
 
-	public static List<String> getBeanProperties(String beanType, String schame) {
-		TableConfiguration tableConfig = getTableConfigByBean(beanType, schame);
+	public static List<String> getBeanProperties(String beanType, String schame,ClassLoader loader) {
+		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
+				loader).getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+		TableConfiguration tableConfig = getTableConfigByBean(beanType, schame,loader);
 		List<String> properties = new ArrayList<String>();
 		if (tableConfig != null) {
 			for (ColumnConfiguration c : tableConfig.getColumns()) {
@@ -127,13 +136,13 @@ public final class TinyDBUtil {
 		return new Bean(beanType);
 	}
 
-	public static Bean context2Bean(Context c, String beanType, String schame) {
-		List<String> properties = getBeanProperties(beanType, schame);
+	public static Bean context2Bean(Context c, String beanType, String schame,ClassLoader loader) {
+		List<String> properties = getBeanProperties(beanType, schame,loader);
 		return context2Bean(c, beanType, properties, schame);
 	}
 
-	public static Bean context2Bean(Context c, String beanType) {
-		List<String> properties = getBeanProperties(beanType, null);
+	public static Bean context2Bean(Context c, String beanType,ClassLoader loader) {
+		List<String> properties = getBeanProperties(beanType, null,loader);
 		return context2Bean(c, beanType, properties, null);
 	}
 
@@ -141,10 +150,10 @@ public final class TinyDBUtil {
 			List<String> properties, String schame) {
 		Bean bean = getBeanInstance(beanType, schame);
 		for (String property : properties) {
-			if(c.exist(property)){
+			if (c.exist(property)) {
 				bean.put(property, c.get(property));
 			}
-		}	
+		}
 		return bean;
 	}
 }

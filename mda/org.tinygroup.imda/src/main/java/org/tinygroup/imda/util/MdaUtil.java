@@ -15,8 +15,8 @@
  */
 package org.tinygroup.imda.util;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.imda.GetDefaultValue;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.springutil.TypeConverterUtil;
 
 /**
@@ -40,9 +40,9 @@ public class MdaUtil {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public static Object getObject(Object value,String defaultValue,String className,String defaultValueBean){
+	public static Object getObject(Object value,String defaultValue,String className,String defaultValueBean,ClassLoader loader){
 		if(defaultValueBean!=null){
-			GetDefaultValue getDefaultValue=SpringUtil.getBean(defaultValueBean);
+			GetDefaultValue getDefaultValue=BeanContainerFactory.getBeanContainer(loader).getBean(defaultValueBean);
 			if(getDefaultValue!=null){
 				return getDefaultValue.getDefaultValue(value, defaultValue);
 			}

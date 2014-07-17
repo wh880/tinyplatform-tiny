@@ -17,6 +17,7 @@ package org.tinygroup.cepcore.util;
 
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.util.ContextFactory;
@@ -24,15 +25,12 @@ import org.tinygroup.event.Event;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.ServiceRequest;
-import org.tinygroup.springutil.SpringUtil;
 
 public class CEPCoreExecuteUtil {
-	private static CEPCore cepcore;
-
-	public static Object execute(String serviceId, Object[] paramArray) {
-		if (cepcore == null) {
-			cepcore = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
-		}
+	public static Object execute(String serviceId, Object[] paramArray,
+			ClassLoader loader) {
+		CEPCore cepcore = BeanContainerFactory.getBeanContainer(loader)
+				.getBean(CEPCore.CEP_CORE_BEAN);
 		// 获取服务信息
 		ServiceInfo serviceInfo = cepcore.getServiceInfo(serviceId);
 		// 将服务参数值与key映射起来,组装一个context出来

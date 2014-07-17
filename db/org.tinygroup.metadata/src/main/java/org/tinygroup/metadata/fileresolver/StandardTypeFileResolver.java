@@ -20,7 +20,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.metadata.config.stddatatype.StandardTypes;
 import org.tinygroup.metadata.stddatatype.StandardTypeProcessor;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -29,14 +28,22 @@ import com.thoughtworks.xstream.XStream;
 public class StandardTypeFileResolver extends AbstractFileProcessor {
 
 	private static final String DATATYPE_EXTFILENAME = ".datatype.xml";
+	private StandardTypeProcessor standardDataTypeProcessor;
+	
+	public StandardTypeProcessor getStandardDataTypeProcessor() {
+		return standardDataTypeProcessor;
+	}
+
+	public void setStandardDataTypeProcessor(
+			StandardTypeProcessor standardDataTypeProcessor) {
+		this.standardDataTypeProcessor = standardDataTypeProcessor;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(DATATYPE_EXTFILENAME);
 	}
 
 	public void process() {
-		StandardTypeProcessor standardDataTypeProcessor = SpringUtil
-				.getBean(MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
 		for (FileObject fileObject : deleteList) {

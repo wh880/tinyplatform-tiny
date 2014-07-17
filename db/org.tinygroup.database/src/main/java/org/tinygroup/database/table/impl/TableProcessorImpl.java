@@ -30,13 +30,22 @@ import org.tinygroup.database.config.table.Tables;
 import org.tinygroup.database.table.TableProcessor;
 import org.tinygroup.database.table.TableSort;
 import org.tinygroup.database.table.TableSqlProcessor;
-import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class TableProcessorImpl implements TableProcessor {
 	//存储所有表信息
 	private  Map<String, Map<String, Table>> tableMap = new HashMap<String, Map<String, Table>>();
+	private ProcessorManager processorManager;
+	
+	
+	
+	public ProcessorManager getProcessorManager() {
+		return processorManager;
+	}
+
+	public void setProcessorManager(ProcessorManager processorManager) {
+		this.processorManager = processorManager;
+	}
 
 	public void addTables(Tables tables) {
 		String packageName = MetadataUtil.passNull(tables.getPackageName());
@@ -170,8 +179,8 @@ public class TableProcessorImpl implements TableProcessor {
 	}
 
 	private TableSqlProcessor getSqlProcessor(String language) {
-		ProcessorManager processorManager = SpringUtil
-				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer
+//				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		TableSqlProcessor sqlProcessor = (TableSqlProcessor) processorManager
 				.getProcessor(language, "table");
 		return sqlProcessor;

@@ -20,7 +20,6 @@ import org.tinygroup.database.config.processor.Processors;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -28,6 +27,16 @@ import com.thoughtworks.xstream.XStream;
 
 public class ProcessorFileResolver extends AbstractFileProcessor {
 	private static final String PROCESSOR_EXTFILENAME = ".database.processor.xml";
+	ProcessorManager processorManager;
+	
+	
+	public ProcessorManager getProcessorManager() {
+		return processorManager;
+	}
+
+	public void setProcessorManager(ProcessorManager processorManager) {
+		this.processorManager = processorManager;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(PROCESSOR_EXTFILENAME);
@@ -35,8 +44,6 @@ public class ProcessorFileResolver extends AbstractFileProcessor {
 
 	public void process() {
 		logger.logMessage(LogLevel.INFO, "开始读取database.processor文件");
-		ProcessorManager processorManager = SpringUtil
-				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.PROCESSOR_XSTREAM);
 		for (FileObject fileObject : deleteList) {

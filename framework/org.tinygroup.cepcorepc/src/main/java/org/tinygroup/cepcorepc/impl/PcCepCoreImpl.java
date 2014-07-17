@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.CEPCoreOperator;
 import org.tinygroup.cepcore.EventProcessor;
@@ -19,7 +20,6 @@ import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 
 public class PcCepCoreImpl implements CEPCore {
 	private static Logger logger = LoggerFactory.getLogger(PcCepCoreImpl.class);
@@ -113,8 +113,9 @@ public class PcCepCoreImpl implements CEPCore {
 	}
 
 	public void process(Event event) {
-		CEPCoreAopManager aopMananger = SpringUtil
-				.getBean(CEPCoreAopManager.CEPCORE_AOP_BEAN);
+		CEPCoreAopManager aopMananger = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				CEPCoreAopManager.CEPCORE_AOP_BEAN);
 		// 前置Aop
 		aopMananger.beforeHandle(event);
 		ServiceRequest request = event.getServiceRequest();
@@ -158,10 +159,10 @@ public class PcCepCoreImpl implements CEPCore {
 	}
 
 	private void dealException(Throwable e, Event event) {
-		CEPCoreUtil.handle(e, event);
+		CEPCoreUtil.handle(e, event,this.getClass().getClassLoader());
 		Throwable t = e.getCause();
 		while (t != null) {
-			CEPCoreUtil.handle(t, event);
+			CEPCoreUtil.handle(t, event,this.getClass().getClassLoader());
 			t = t.getCause();
 		}
 	}

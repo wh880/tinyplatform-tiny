@@ -19,9 +19,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.SchemaConfig;
@@ -40,7 +40,7 @@ import org.tinygroup.tinydb.relation.Relations;
  * @author renhui
  * 
  */
-public class BeanOperatorManagerImpl implements BeanOperatorManager{
+public class BeanOperatorManagerImpl implements BeanOperatorManager {
 
 	private String mainSchema;
 
@@ -52,13 +52,13 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager{
 
 	private Map<String, Relation> relationTypeMap = new HashMap<String, Relation>();
 
-
 	public DBOperator<?> getDbOperator(String schema, String beanType) {
-		String realSchema=getRealSchema(schema);
+		String realSchema = getRealSchema(schema);
 		SchemaConfig schemaConfig = container.getSchemaConfig(realSchema);
 		if (schemaConfig != null) {
-			DBOperator<?> operator = SpringUtil.getBean(schemaConfig
-					.getOperatorBeanName());
+			DBOperator<?> operator = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					schemaConfig.getOperatorBeanName());
 			operator.setSchema(realSchema);
 			operator.setBeanType(beanType);
 			operator.setBeanDbNameConverter(beanDbNameConverter);
@@ -66,7 +66,8 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager{
 			operator.setRelation(getRelationByBeanType(beanType));
 			return operator;
 		}
-		throw new TinyDbRuntimeException("不存在schema:" + realSchema + "对应的bean操作对象。");
+		throw new TinyDbRuntimeException("不存在schema:" + realSchema
+				+ "对应的bean操作对象。");
 	}
 
 	public DBOperator<?> getDbOperator(String beanType) {
@@ -80,16 +81,19 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager{
 	public TableConfiguration getTableConfiguration(String beanType,
 			String schema) {
 		String tableName = beanDbNameConverter.typeNameToDbTableName(beanType);
-		return container.getTableConfiguration(getRealSchema(schema), tableName);
+		return container
+				.getTableConfiguration(getRealSchema(schema), tableName);
 	}
 
 	public TableConfiguration getTableConfiguration(String beanType) {
 		return getTableConfiguration(beanType, mainSchema);
 	}
-	
+
 	public void loadTablesFromSchemas() {
-		Collection<TableConfigConvert> converts= SpringUtil.getBeansOfType(TableConfigConvert.class);
-		if(!CollectionUtil.isEmpty(converts)){
+		Collection<TableConfigConvert> converts = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader())
+				.getBeans(TableConfigConvert.class);
+		if (!CollectionUtil.isEmpty(converts)) {
 			for (TableConfigConvert convert : converts) {
 				convert.setOperatorManager(this);
 				convert.convert();
@@ -157,7 +161,5 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager{
 	public String getMainSchema() {
 		return mainSchema;
 	}
-
-	
 
 }

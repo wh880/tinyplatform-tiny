@@ -18,11 +18,20 @@ package org.tinygroup.flowservicecomponent;
 import org.tinygroup.context.Context;
 import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.flow.FlowExecutor;
-import org.tinygroup.springutil.SpringUtil;
 
 public class CallPageFlow implements ComponentInterface {
 	String flowId;
 	String version;
+	FlowExecutor executor;
+	
+	
+	public FlowExecutor getExecutor() {
+		return executor;
+	}
+
+	public void setExecutor(FlowExecutor executor) {
+		this.executor = executor;
+	}
 
 	public String getFlowId() {
 		return flowId;
@@ -41,8 +50,6 @@ public class CallPageFlow implements ComponentInterface {
 	}
 
 	public void execute(Context context) {
-		FlowExecutor executor = SpringUtil.getBean(
-				FlowExecutor.PAGE_FLOW_BEAN);
 		if (notNull(version)) {
 			executor.execute(flowId, null, version, context);
 		} else {

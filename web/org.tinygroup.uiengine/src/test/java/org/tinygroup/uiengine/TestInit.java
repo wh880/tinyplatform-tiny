@@ -19,8 +19,8 @@ import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.I18nFileProcessor;
-import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
 import org.tinygroup.fileresolver.impl.XStreamFileProcessor;
+import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 import org.tinygroup.uiengine.fileresolver.UIComponentFileProcessor;
 
 public class TestInit {

@@ -7,6 +7,7 @@
 	default-autowire="byName" default-lazy-init="true">
 	<bean id="velocityMacroFileProcessor" scope="singleton"
 		class="org.tinygroup.velocity.fileresolver.VelocityMacroFileProcessor">
+		<property name="velocityHelper" ref="velocityHelper"></property>
 	</bean>
 	<bean id="velocityHelper" scope="singleton"
 		class="org.tinygroup.velocity.impl.VelocityHelperImpl">

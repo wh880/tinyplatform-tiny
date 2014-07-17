@@ -15,11 +15,11 @@
  */
 package org.tinygroup.entity.fileresolver;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.entity.EntityRelationsManager;
 import org.tinygroup.entity.relation.EntityRelations;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -27,30 +27,33 @@ import com.thoughtworks.xstream.XStream;
 
 /**
  * 
- * 功能说明:模型引用关系文件处理器 
-
+ * 功能说明:模型引用关系文件处理器
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-10-25 <br>
  * <br>
  */
 public class EntityRelationsFileProcessor extends AbstractFileProcessor {
-	
-	private static final String ENTITY_RELATIONS_FILE_EXT_NAME=".entityrelations.xml";
 
-	
+	private static final String ENTITY_RELATIONS_FILE_EXT_NAME = ".entityrelations.xml";
+
 	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(ENTITY_RELATIONS_FILE_EXT_NAME);
+		return fileObject.getFileName()
+				.endsWith(ENTITY_RELATIONS_FILE_EXT_NAME);
 	}
 
 	public void process() {
-		
+
 		XStream xStream = XStreamFactory.getXStream("entities");
-		EntityRelationsManager manager=SpringUtil.getBean(EntityRelationsManager.MANAGER_BEAN_NAME);
-		for (FileObject fileObject  : deleteList) {
+		EntityRelationsManager manager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				EntityRelationsManager.MANAGER_BEAN_NAME);
+		for (FileObject fileObject : deleteList) {
 			logger.logMessage(LogLevel.INFO, "正在移除EntityRelation描述文件：[{}]",
 					fileObject.getAbsolutePath());
-			EntityRelations entityRelations = (EntityRelations)caches.get(fileObject.getAbsolutePath());
-			if(entityRelations!=null){
+			EntityRelations entityRelations = (EntityRelations) caches
+					.get(fileObject.getAbsolutePath());
+			if (entityRelations != null) {
 				manager.removeEntityRelations(entityRelations);
 				caches.remove(fileObject.getAbsolutePath());
 			}
@@ -60,8 +63,9 @@ public class EntityRelationsFileProcessor extends AbstractFileProcessor {
 		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在加载EntityRelation描述文件：[{}]",
 					fileObject.getAbsolutePath());
-			EntityRelations oldRelations=(EntityRelations)caches.get(fileObject.getAbsolutePath());
-			if(oldRelations!=null){
+			EntityRelations oldRelations = (EntityRelations) caches
+					.get(fileObject.getAbsolutePath());
+			if (oldRelations != null) {
 				manager.removeEntityRelations(oldRelations);
 			}
 			EntityRelations entityRelations = (EntityRelations) xStream
@@ -69,8 +73,8 @@ public class EntityRelationsFileProcessor extends AbstractFileProcessor {
 			manager.addEntityRelations(entityRelations);
 			caches.put(fileObject.getAbsolutePath(), entityRelations);
 			logger.logMessage(LogLevel.INFO, "EntityRelation描述文件：[{}]加载成功。",
-						fileObject.getAbsolutePath());
-			
+					fileObject.getAbsolutePath());
+
 		}
 
 	}

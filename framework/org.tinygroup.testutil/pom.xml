@@ -17,5 +17,10 @@
       <artifactId>org.tinygroup.fileresolver</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.springutil</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>

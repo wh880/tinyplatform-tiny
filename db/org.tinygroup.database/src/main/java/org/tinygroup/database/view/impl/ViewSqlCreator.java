@@ -60,20 +60,22 @@ public class ViewSqlCreator {
 		List<ViewField> fields = view.getFieldList();
 		for (ViewField viewField : fields) {
 			String viewTableId = viewField.getViewTable();//
-			String tableFieldName =getTableFieldName(viewTableId, viewField.getTableFieldId(), view);
+			String tableFieldName = getTableFieldName(viewTableId,
+					viewField.getTableFieldId(), view);
 			String tableName = tableNames.get(viewTableId);
 			fieldNames.put(viewField.getId(), tableName + "." + tableFieldName);
 			fieldId2Name.put(viewField.getTableFieldId(), tableFieldName);
 		}
 	}
 
-
 	private String getViewTableName(String viewTableId) {
-		Table table = DataBaseUtil.getTableById(viewTableId);
+		Table table = DataBaseUtil.getTableById(viewTableId, this.getClass()
+				.getClassLoader());
 		if (table != null) {
 			return table.getName();
 		} else {
-			View view = DataBaseUtil.getViewById(viewTableId);
+			View view = DataBaseUtil.getViewById(viewTableId, this.getClass()
+					.getClassLoader());
 			if (view == null) {
 				throw new RuntimeException(String.format("视图[id:%s]不存在,",
 						viewTableId));
@@ -274,7 +276,8 @@ public class ViewSqlCreator {
 			String tableName = tableNames.get(valueField.getViewTableId()); // 获取表格对应的表明
 			String fieldName = fieldId2Name.get(valueField.getTableFieldId());
 			if (fieldName == null) {
-				fieldName=getTableFieldName(valueField.getViewTableId(), valueField.getTableFieldId(), view);
+				fieldName = getTableFieldName(valueField.getViewTableId(),
+						valueField.getTableFieldId(), view);
 			}
 			return tableName + "." + fieldName;
 		} else {
@@ -282,39 +285,41 @@ public class ViewSqlCreator {
 		}
 	}
 
-	private String getTableFieldName(String viewTableId,String tableFieldId,View view){
-		
+	private String getTableFieldName(String viewTableId, String tableFieldId,
+			View view) {
+
 		ViewTable viewTable = view.getViewTable(viewTableId);
-		Table table = DataBaseUtil.getTableById(viewTable.getTableId());
+		Table table = DataBaseUtil.getTableById(viewTable.getTableId(), this
+				.getClass().getClassLoader());
 		if (table != null) {
-			TableField tableField = getTableField(
-					tableFieldId, table);
-			StandardField tableFieldStd = MetadataUtil
-					.getStandardField(tableField.getStandardFieldId());
+			TableField tableField = getTableField(tableFieldId, table);
+			StandardField tableFieldStd = MetadataUtil.getStandardField(
+					tableField.getStandardFieldId(), this.getClass()
+							.getClassLoader());
 			String fieldName = DataBaseUtil.getDataBaseName(tableFieldStd
 					.getName());
 			return fieldName;
 		} else {
 			// 引用的视图字段，一定要在视图ViewField列表中定义
-			View dependView = DataBaseUtil.getViewById(viewTable
-					.getTableId());
+			View dependView = DataBaseUtil.getViewById(viewTable.getTableId(),
+					this.getClass().getClassLoader());
 			ViewField viewField = dependView.getViewField(tableFieldId);
 			if (viewField == null) {
 				throw new RuntimeException(String.format(
-						"视图字段[id:%s]没有在视图[id:%s]中定义",
-						tableFieldId,
+						"视图字段[id:%s]没有在视图[id:%s]中定义", tableFieldId,
 						dependView.getId()));
-			}else{
-				String alias=viewField.getAlias();
-				String fieldName=alias;
-				if(StringUtil.isBlank(alias)){
-					fieldName=getTableFieldName(viewField.getViewTable(), viewField.getTableFieldId(), dependView);
+			} else {
+				String alias = viewField.getAlias();
+				String fieldName = alias;
+				if (StringUtil.isBlank(alias)) {
+					fieldName = getTableFieldName(viewField.getViewTable(),
+							viewField.getTableFieldId(), dependView);
 				}
 				return fieldName;
 			}
 		}
 	}
-	
+
 	private void appendTables(StringBuffer buffer) {
 		buffer.append(" FROM ");
 		List<ViewTable> viewTables = view.getTableList();

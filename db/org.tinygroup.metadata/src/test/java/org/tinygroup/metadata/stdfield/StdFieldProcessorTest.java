@@ -17,9 +17,9 @@ package org.tinygroup.metadata.stdfield;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.metadata.TestInit;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class StdFieldProcessorTest extends TestCase {
 
@@ -30,18 +30,20 @@ public class StdFieldProcessorTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		standardFieldProcessor = SpringUtil.getBean(MetadataUtil.STDFIELDPROCESSOR_BEAN);
+		standardFieldProcessor = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				MetadataUtil.STDFIELDPROCESSOR_BEAN);
 	}
 
 	public void testGetTypeStringStringString() {
-//		assertEquals("varchar2(12)",
-//				standardFieldProcessor.getType( "aaid", "oracle"));
-//		assertEquals("varchar2(112)",
-//				standardFieldProcessor.getType( "bbid", "oracle"));
-//		assertEquals("varchar2(12)",
-//				standardFieldProcessor.getType( "aa1id", "oracle"));
-//		assertEquals("varchar2(112)",
-//				standardFieldProcessor.getType( "bb1id", "oracle"));
+		// assertEquals("varchar2(12)",
+		// standardFieldProcessor.getType( "aaid", "oracle"));
+		// assertEquals("varchar2(112)",
+		// standardFieldProcessor.getType( "bbid", "oracle"));
+		// assertEquals("varchar2(12)",
+		// standardFieldProcessor.getType( "aa1id", "oracle"));
+		// assertEquals("varchar2(112)",
+		// standardFieldProcessor.getType( "bb1id", "oracle"));
 	}
 
 }

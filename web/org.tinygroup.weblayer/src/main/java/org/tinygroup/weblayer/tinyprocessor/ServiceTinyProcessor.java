@@ -28,15 +28,23 @@ import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.service.ServiceMappingManager;
 import org.tinygroup.service.config.ServiceViewMapping;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
 
 public class ServiceTinyProcessor extends AbstractTinyProcessor {
 	ServiceMappingManager manager;
+	CEPCore core;
 	ObjectToXml<Object> objectToXml = new ObjectToXml<Object>();
 	ObjectToJson<Object> objectToJson = new ObjectToJson<Object>(
 			JsonSerialize.Inclusion.NON_NULL);
+
+	public CEPCore getCore() {
+		return core;
+	}
+
+	public void setCore(CEPCore core) {
+		this.core = core;
+	}
 
 	public ServiceMappingManager getManager() {
 		return manager;
@@ -47,7 +55,7 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 	}
 
 	private Object callService(String serviceId, Context context) {
-		CEPCore core = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
+//		CEPCore core = SpringBeanContainer.getBean(CEPCore.CEP_CORE_BEAN);
 		Event event = new Event();
 		ServiceRequest sq = new ServiceRequest();
 		sq.setServiceId(serviceId);

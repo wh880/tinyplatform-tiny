@@ -20,9 +20,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.impl.TinyServletConfig;
@@ -44,7 +44,7 @@ public class TinyProcessorWapper extends AbstractTinyProcessor {
 		String servletBeanName = getInitParamMap().get(
 				TinyServletConfig.SERVLET_BEAN);
 		if (servletBeanName != null) {
-			servlet = SpringUtil.getBean(servletBeanName);
+			servlet = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(servletBeanName);
 			if (servlet != null) {
 				try {
 					servlet.init(new TinyServletConfig(getInitParamMap()));

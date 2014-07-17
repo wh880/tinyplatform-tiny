@@ -27,10 +27,10 @@
 package org.tinygroup.tinydb.dialect.impl;
 
 import org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.dialect.Dialect;
 
 /**
@@ -106,7 +106,8 @@ public class MySQLDialect implements Dialect {
 
 	
 	public String buildSqlFuction(String sql) {
-		DialectFunctionProcessor processor=SpringUtil.getBean(DataBaseUtil.FUNCTION_BEAN);
+		DialectFunctionProcessor processor=BeanContainerFactory
+		.getBeanContainer(this.getClass().getClassLoader()).getBean(DataBaseUtil.FUNCTION_BEAN);
 		return processor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_MYSQL);
 	}
 }

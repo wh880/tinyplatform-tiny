@@ -19,7 +19,6 @@ import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.service.ServiceMappingManager;
 import org.tinygroup.service.config.ServiceViewMappings;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -28,14 +27,21 @@ import com.thoughtworks.xstream.XStream;
 public class ServiceMappingFileProcessor extends AbstractFileProcessor {
 
 	private static final String SERVICEMAPPING_EXT_FILENAMES = ".servicemapping.xml";
-
+	private ServiceMappingManager manager;
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(SERVICEMAPPING_EXT_FILENAMES);
 	}
 
+	public ServiceMappingManager getManager() {
+		return manager;
+	}
+
+	public void setManager(ServiceMappingManager manager) {
+		this.manager = manager;
+	}
+
 	public void process() {
-		ServiceMappingManager manager = SpringUtil
-				.getBean(ServiceMappingManager.MANAGER_BEAN);
+		
 		XStream stream = XStreamFactory
 				.getXStream(ServiceMappingManager.XSTREAM_PACKAGE_NAME);
 		for (FileObject fileObject : deleteList) {

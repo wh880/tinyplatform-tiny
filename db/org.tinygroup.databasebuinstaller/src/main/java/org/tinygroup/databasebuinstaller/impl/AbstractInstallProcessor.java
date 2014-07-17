@@ -22,57 +22,64 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.jdbc.support.JdbcUtils;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.databasebuinstaller.InstallProcessor;
 import org.tinygroup.dynamicdatasource.DynamicDataSource;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 
- * 功能说明:安装处理的抽象实现 
-
+ * 功能说明:安装处理的抽象实现
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-8-15 <br>
  * <br>
  */
 public abstract class AbstractInstallProcessor implements InstallProcessor {
-	
+
 	protected String language;
-	
-	protected Logger logger = LoggerFactory.getLogger(AbstractInstallProcessor.class);
+
+	protected Logger logger = LoggerFactory
+			.getLogger(AbstractInstallProcessor.class);
 
 	public int getOrder() {
 		return 0;
 	}
 
 	public void process(String language) {
-		this.language=language;
-		DataSource dataSource = SpringUtil
-				.getBean(DynamicDataSource.DATASOURCE_NAME);
-		Connection con = DataSourceUtils.getConnection(dataSource);
+		this.language = language;
+		DataSource dataSource = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				DynamicDataSource.DATASOURCE_NAME);
+		// DataSourceUtils.getConnection(dataSource);
+		Connection con = null;
 		try {
+			con = dataSource.getConnection();
 			processWithConn(con);
-		}catch (SQLException ex) {
+		} catch (SQLException ex) {
 			con = null;
 			throw new TinySysRuntimeException(ex);
-		}
-		finally {
-			DataSourceUtils.releaseConnection(con, dataSource);
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					
+				}
+			}
 		}
 	}
 
-	protected  void processWithConn(Connection con)throws SQLException{
+	protected void processWithConn(Connection con) throws SQLException {
 		List<String> sqls = getDealSqls(con);
-		excute(sqls,con);
-		
+		excute(sqls, con);
+
 	}
 
-	private void excute(List<String> sqls,Connection con) throws SQLException{
+	private void excute(List<String> sqls, Connection con) throws SQLException {
 		Statement statement = null;
 		try {
 			statement = con.createStatement();
@@ -82,16 +89,17 @@ public abstract class AbstractInstallProcessor implements InstallProcessor {
 				statement.execute(sql);
 			}
 			logger.logMessage(LogLevel.INFO, "执行sql处理完成");
-		}
-		catch (SQLException ex) {
-			JdbcUtils.closeStatement(statement);
+		} catch (SQLException ex) {
 			throw ex;
-		}
-		finally {
-			JdbcUtils.closeStatement(statement);
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+
 		}
 	}
 
-	protected abstract List<String> getDealSqls(Connection con)throws SQLException;
+	protected abstract List<String> getDealSqls(Connection con)
+			throws SQLException;
 
 }

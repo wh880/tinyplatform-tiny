@@ -15,7 +15,17 @@
  */
 package org.tinygroup.imda.tinyprocessor;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.util.ContextFactory;
@@ -33,18 +43,9 @@ import org.tinygroup.imda.validate.ValidateRule;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.velocity.impl.VelocityHelperImpl;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * 页面流flow-processor
@@ -62,6 +63,24 @@ public class MdaTinyProcessor extends AbstractTinyProcessor {
 	public final static String STAGE_NAME = "_stageName_";
 	ModelManager modelManager;
 	ValidateManager validateManager;
+	CEPCore cepCore;
+	VelocityHelperImpl velocityHelper;
+
+	public VelocityHelperImpl getVelocityHelper() {
+		return velocityHelper;
+	}
+
+	public void setVelocityHelper(VelocityHelperImpl velocityHelper) {
+		this.velocityHelper = velocityHelper;
+	}
+
+	public CEPCore getCepCore() {
+		return cepCore;
+	}
+
+	public void setCepCore(CEPCore cepCore) {
+		this.cepCore = cepCore;
+	}
 
 	public ValidateManager getValidateManager() {
 		return validateManager;
@@ -183,7 +202,6 @@ public class MdaTinyProcessor extends AbstractTinyProcessor {
 
 				Context newContext = modelManager.processParameter(
 						modelRequestInfo, parameterBuilderBean, context);
-				CEPCore cepCore = (CEPCore) SpringUtil.getBean("cepcore");
 
 				Event event = getEvent(modelRequestInfo, newContext);
 				cepCore.process(event);
@@ -248,8 +266,7 @@ public class MdaTinyProcessor extends AbstractTinyProcessor {
 		if (paths.length == 2) {
 			p = p + "?" + paths[1];
 		}
-		VelocityHelperImpl velocityHelper = SpringUtil
-				.getBean("velocityHelper");
+
 		StringWriter out = new StringWriter();
 		velocityHelper.evaluteString(context, out, p);
 		String forwardPath = out.toString();
@@ -272,8 +289,9 @@ public class MdaTinyProcessor extends AbstractTinyProcessor {
 			throw new RuntimeException("模型类型不能为空！");
 		}
 		if (modelDefine.getModelPermissionCheckerBean() != null) {
-			ModelPermissionChecker checker = SpringUtil.getBean(modelDefine
-					.getModelPermissionCheckerBean());
+			ModelPermissionChecker checker = BeanContainerFactory
+					.getBeanContainer(this.getClass().getClassLoader())
+					.getBean(modelDefine.getModelPermissionCheckerBean());
 			if (!checker.isHasPermission(modelRequestInfo.getModelId(),
 					modelRequestInfo.getProcessorId(), context)) {
 				throw new RuntimeException("没有权限操作" + modelDefine.getTitle()

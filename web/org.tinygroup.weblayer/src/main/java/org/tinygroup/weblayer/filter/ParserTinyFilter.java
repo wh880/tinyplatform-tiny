@@ -244,11 +244,11 @@ public class ParserTinyFilter extends AbstractTinyFilter {
 			propertyEditorRegistrars.setPropertyEditorRegistrars(strars);
 		}
 		if (filters == null) {
-			setParameterParserFilters(ParserXmlNodeUtil.parseConfigToArray(
+			setParameterParserFilters(ParserXmlNodeUtil.parseConfigToArray(this.getClass().getClassLoader(),
 					PARAM_PARSER_FILTER, parserNode,
 					ParameterParserFilter.class));
 		}
-		setUploadService(ParserXmlNodeUtil.parseConfigToObject(UPLOAD_SERVICE,
+		setUploadService(ParserXmlNodeUtil.parseConfigToObject(this.getClass().getClassLoader(),UPLOAD_SERVICE,
 				PROPERTY, parserNode, UploadService.class));
 
 	}

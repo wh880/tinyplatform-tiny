@@ -5,7 +5,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.springframework.context.ApplicationContext;
 import org.tinygroup.beancontainer.BeanContainer;
 import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.vfs.FileObject;

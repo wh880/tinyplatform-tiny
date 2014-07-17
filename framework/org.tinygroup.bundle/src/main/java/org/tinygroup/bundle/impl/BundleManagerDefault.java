@@ -15,17 +15,6 @@
  */
 package org.tinygroup.bundle.impl;
 
-import org.tinygroup.bundle.*;
-import org.tinygroup.bundle.config.BundleDefine;
-import org.tinygroup.bundle.loader.TinyClassLoader;
-import org.tinygroup.fileresolver.FileResolver;
-import org.tinygroup.fileresolver.impl.FileResolverImpl;
-import org.tinygroup.fileresolver.impl.SpringBeansFileProcessor;
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,6 +22,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.bundle.BundleActivator;
+import org.tinygroup.bundle.BundleContext;
+import org.tinygroup.bundle.BundleEvent;
+import org.tinygroup.bundle.BundleException;
+import org.tinygroup.bundle.BundleManager;
+import org.tinygroup.bundle.config.BundleDefine;
+import org.tinygroup.bundle.loader.TinyClassLoader;
+import org.tinygroup.fileresolver.FileResolver;
+import org.tinygroup.fileresolver.impl.FileResolverImpl;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 
 /**
  * Created by luoguo on 2014/5/4.
@@ -220,7 +224,8 @@ public class BundleManagerDefault implements BundleManager {
 		// 执行activator
 		String activatorBean = bundleDefine.getBundleActivator();
 		if (activatorBean != null && !"".equals(activatorBean)) {
-			BundleActivator activator = SpringUtil.getBean(activatorBean);
+			BundleActivator activator = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(activatorBean);
 			try {
 				activator.start(bundleContext);
 			} catch (BundleException e) {
@@ -384,7 +389,8 @@ public class BundleManagerDefault implements BundleManager {
 		// 执行activator
 		String activatorBean = bundleDefine.getBundleActivator();
 		if (activatorBean != null && !"".equals(activatorBean)) {
-			BundleActivator activator = SpringUtil.getBean(activatorBean);
+			BundleActivator activator = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(activatorBean);
 			try {
 				activator.stop(bundleContext);
 			} catch (BundleException e) {
@@ -418,7 +424,7 @@ public class BundleManagerDefault implements BundleManager {
 		FileResolver f = new FileResolverImpl(true);
 		f.addFileProcessor(new SpringBeansFileProcessor());
 		String bundleDir = getBundleDir(bundle);
-//		f.addManualClassPath(bundleDir);
+		// f.addManualClassPath(bundleDir);
 		f.addIncludePathPattern("");
 		f.addResolvePath(bundleDir);
 		f.setClassLoader(loader);

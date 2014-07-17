@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.tinygroup.fileresolver.FullContextFileRepository;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 /**
  * 
@@ -35,9 +34,18 @@ public class FullContextUrlRedirectServlet extends HttpServlet {
 	FullContextFileRepository fullContextFileRepository;
 
 	
+	public FullContextFileRepository getFullContextFileRepository() {
+		return fullContextFileRepository;
+	}
+
+	public void setFullContextFileRepository(
+			FullContextFileRepository fullContextFileRepository) {
+		this.fullContextFileRepository = fullContextFileRepository;
+	}
+
 	public void init() {
-		fullContextFileRepository = SpringUtil.getBean(
-				"fullContextFileRepository");
+//		fullContextFileRepository = SpringBeanContainer.getBean(
+//				"fullContextFileRepository");
 	}
 
 	/**

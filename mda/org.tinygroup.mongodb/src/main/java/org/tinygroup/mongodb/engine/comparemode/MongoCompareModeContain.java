@@ -19,8 +19,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 
@@ -37,7 +37,8 @@ public class MongoCompareModeContain {
 	private Map<String, MongoCompareMode> compareModes=new HashMap<String, MongoCompareMode>();
 	
 	public MongoCompareModeContain(){
-		 Collection<MongoCompareMode> mongoCompareModes=SpringUtil.getBeansOfType(MongoCompareMode.class);
+		 Collection<MongoCompareMode> mongoCompareModes=BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBeans(MongoCompareMode.class);
 		 if(!CollectionUtil.isEmpty(mongoCompareModes)){
 			 for (MongoCompareMode compareMode : mongoCompareModes) {
 				 compareModes.put(compareMode.getCompareKey(), compareMode);

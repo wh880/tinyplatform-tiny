@@ -141,29 +141,30 @@ public class ServiceProxy implements Service {
 			} else {
 				method.invoke(objectInstance, args);
 			}
-//		} catch (InvocationTargetException e) {
-//			InvocationTargetException realException = (InvocationTargetException) e;
-//			Object targetExeception = realException.getTargetException();
-//			if (targetExeception != null
-//					&& targetExeception instanceof Exception) {
-//				dealException((Exception) targetExeception);
-//			}
-//
+			// } catch (InvocationTargetException e) {
+			// InvocationTargetException realException =
+			// (InvocationTargetException) e;
+			// Object targetExeception = realException.getTargetException();
+			// if (targetExeception != null
+			// && targetExeception instanceof Exception) {
+			// dealException((Exception) targetExeception);
+			// }
+			//
 		} catch (Exception e) {
-//			dealException(e);
-          throw new ServiceRunException(e);
+			// dealException(e);
+			throw new ServiceRunException(e);
 		}
 	}
 
-//	private void dealException(Exception e) {
-//		if (e instanceof BaseRuntimeException) {
-//			throw (BaseRuntimeException) e;
-//		} else {
-//			if (!ExceptionUtil.handle(e)) {
-//				throw new ServiceRunException(e);
-//			}
-//		}
-//	}
+	// private void dealException(Exception e) {
+	// if (e instanceof BaseRuntimeException) {
+	// throw (BaseRuntimeException) e;
+	// } else {
+	// if (!ExceptionUtil.handle(e)) {
+	// throw new ServiceRunException(e);
+	// }
+	// }
+	// }
 
 	private Method findMethod() {
 		Class<?>[] argsType = null;// 参数类型列表
@@ -203,7 +204,8 @@ public class ServiceProxy implements Service {
 		Parameter des = inputParameters.get(i);
 		String paramName = des.getName();
 		// =============20130619修改bengin================
-		Object obj = Context2ObjectUtil.getObject(des, context);
+		Object obj = Context2ObjectUtil.getObject(des, context, this.getClass()
+				.getClassLoader());
 		// =============20130619修改end================
 		if (obj == null) {
 			if (des.isRequired()) { // 如果输入参数是必须的,则抛出异常

@@ -15,6 +15,7 @@
  */
 package org.tinygroup.dict.fileresolver;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.dict.DictLoader;
 import org.tinygroup.dict.DictManager;
 import org.tinygroup.dict.config.DictLoaderConfig;
@@ -22,7 +23,6 @@ import org.tinygroup.dict.config.DictLoaderConfigs;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -37,14 +37,21 @@ import com.thoughtworks.xstream.XStream;
 public class DictLoadFileProcessor extends AbstractFileProcessor {
 
 	private static final String DICT_LOAND_EXT_NAME = ".dictloader.xml";
+	private DictManager manager;
+
+	public DictManager getManager() {
+		return manager;
+	}
+
+	public void setManager(DictManager manager) {
+		this.manager = manager;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(DICT_LOAND_EXT_NAME);
 	}
 
 	public void process() {
-		DictManager manager = SpringUtil
-				.getBean(DictManager.DICT_MANAGER_BEAN_NAME);
 		XStream stream = XStreamFactory
 				.getXStream(DictManager.XSTEAM_PACKAGE_NAME);
 		logger.logMessage(LogLevel.INFO, "字典加载器配置文件处理开始");
@@ -54,14 +61,15 @@ public class DictLoadFileProcessor extends AbstractFileProcessor {
 			DictLoaderConfigs configs = (DictLoaderConfigs) stream
 					.fromXML(fileObject.getInputStream());
 			for (DictLoaderConfig config : configs.getConfigs()) {
-				DictLoader dictLoader = SpringUtil
-						.getBean(config.getBeanName());
+				DictLoader dictLoader = BeanContainerFactory.getBeanContainer(
+						this.getClass().getClassLoader()).getBean(
+						config.getBeanName());
 				dictLoader.setGroupName(config.getGroupName());
 				dictLoader.setLanguage(config.getLanguage());
 				manager.addDictLoader(dictLoader);
 			}
 		}
-//		manager.load();
+		// manager.load();
 		logger.logMessage(LogLevel.INFO, "字典加载器配置文件处理结束");
 	}
 

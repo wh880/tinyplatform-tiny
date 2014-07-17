@@ -72,12 +72,12 @@ public class ModelUtil {
 	 * @param 标准字段
 	 * @return
 	 */
-	public static String getDbFieldName(String standardFieldId) {
-		return MetadataUtil.getStandardField(standardFieldId).getName();
+	public static String getDbFieldName(String standardFieldId,ClassLoader loader) {
+		return MetadataUtil.getStandardField(standardFieldId,loader).getName();
 	}
 
-	public static StandardField getStandardField(String standardFieldId) {
-		return MetadataUtil.getStandardField(standardFieldId);
+	public static StandardField getStandardField(String standardFieldId,ClassLoader loader) {
+		return MetadataUtil.getStandardField(standardFieldId,loader);
 	}
 	
 	public static String getSpliceParamterName(String propertyName, String suffix) {

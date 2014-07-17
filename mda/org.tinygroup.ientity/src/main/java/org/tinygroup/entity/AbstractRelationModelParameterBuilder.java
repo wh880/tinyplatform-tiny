@@ -15,30 +15,35 @@
  */
 package org.tinygroup.entity;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.entity.relationmodel.RelationModel;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.imda.processor.ParameterBuilder;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 
- * 功能说明:参数组装基类 
-
+ * 功能说明:参数组装基类
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-9-6 <br>
  * <br>
  */
-public abstract class AbstractRelationModelParameterBuilder implements ParameterBuilder<RelationModel> {
+public abstract class AbstractRelationModelParameterBuilder implements
+		ParameterBuilder<RelationModel> {
 
 	public Context buildParameter(ModelRequestInfo modelRequestInfo,
 			Context context) {
-		ModelManager modelManager=SpringUtil.getBean(ModelManager.MODELMANAGER_BEAN);
-		RelationModel model=modelManager.getModel(modelRequestInfo.getModelId());
-		return buildParameter(model,modelRequestInfo,context);
+		ModelManager modelManager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				ModelManager.MODELMANAGER_BEAN);
+		RelationModel model = modelManager.getModel(modelRequestInfo
+				.getModelId());
+		return buildParameter(model, modelRequestInfo, context);
 	}
 
-	protected abstract Context buildParameter(RelationModel model,ModelRequestInfo modelRequestInfo, Context context);
+	protected abstract Context buildParameter(RelationModel model,
+			ModelRequestInfo modelRequestInfo, Context context);
 
 }

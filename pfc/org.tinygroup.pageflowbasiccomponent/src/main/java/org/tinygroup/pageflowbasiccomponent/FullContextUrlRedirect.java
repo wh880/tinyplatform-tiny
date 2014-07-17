@@ -20,12 +20,14 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.tinygroup.beancontainer.BeanContainer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.velocity.VelocityHelper;
 import org.tinygroup.velocity.impl.VelocityHelperImpl;
 import org.tinygroup.vfs.FileObject;
@@ -50,11 +52,12 @@ public class FullContextUrlRedirect implements ComponentInterface {
 		this.path = path;
 	}
 
-
 	public void init() {
-		fullContextFileRepository = SpringUtil
+		BeanContainer container = BeanContainerFactory.getBeanContainer(this
+				.getClass().getClassLoader());
+		fullContextFileRepository = (FullContextFileRepository) container
 				.getBean("fullContextFileRepository");
-		VelocityHelperImpl velocityHelperImpl = SpringUtil
+		VelocityHelperImpl velocityHelperImpl = (VelocityHelperImpl) container
 				.getBean("velocityHelper");
 		velocityHelperImpl
 				.setFullContextFileRepository(fullContextFileRepository);
@@ -84,9 +87,12 @@ public class FullContextUrlRedirect implements ComponentInterface {
 			webContent = (WebContext) context;
 		else
 			return;
-		if (fileObject != null&&fileObject.isExist()) {
-			webContent
-					.put("uiengine", SpringUtil.getBean("uiComponentManager"));
+		if (fileObject != null && fileObject.isExist()) {
+			webContent.put(
+					"uiengine",
+					BeanContainerFactory.getBeanContainer(
+							this.getClass().getClassLoader()).getBean(
+							"uiComponentManager"));
 
 			if (isPagelet) {
 				velocityHelper.processTempleate(webContent, webContent

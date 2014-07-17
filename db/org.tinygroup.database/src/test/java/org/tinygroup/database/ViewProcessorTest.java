@@ -14,13 +14,14 @@
  *  limitations under the License.
  */
 package org.tinygroup.database;
+
 import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.database.view.ViewProcessor;
-import org.tinygroup.springutil.SpringUtil;
 
 public class ViewProcessorTest extends TestCase {
 	static {
@@ -28,11 +29,12 @@ public class ViewProcessorTest extends TestCase {
 
 	}
 	ViewProcessor viewProcessor;
-	
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		viewProcessor = SpringUtil.getBean(DataBaseUtil.VIEW_BEAN);
+		viewProcessor = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				DataBaseUtil.VIEW_BEAN);
 	}
 
 	public void testGetTableStringString() {
@@ -45,15 +47,16 @@ public class ViewProcessorTest extends TestCase {
 
 	public void testGetCreateSqlString() {
 		System.out.println("aa.bb.aa,sql:");
-		String tableSql= viewProcessor.getCreateSql("view1", "oracle");
+		String tableSql = viewProcessor.getCreateSql("view1", "oracle");
 		System.out.println(tableSql);
-		
+
 	}
+
 	public void testGetCreateSqlString2() {
 		System.out.println("sql:");
-		List<String> tableSql= viewProcessor.getCreateSql("oracle");
+		List<String> tableSql = viewProcessor.getCreateSql("oracle");
 		System.out.println(tableSql);
-		
+
 	}
-	
+
 }

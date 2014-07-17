@@ -19,9 +19,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.database.initdata.InitDataProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class InitDataProcessorTest extends TestCase {
 	static {
@@ -31,7 +31,7 @@ public class InitDataProcessorTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		initDataProcessor = SpringUtil.getBean(DataBaseUtil.INITDATA_BEAN);
+		initDataProcessor = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(DataBaseUtil.INITDATA_BEAN);
 	}
 
 	public void testGetInitSql() {

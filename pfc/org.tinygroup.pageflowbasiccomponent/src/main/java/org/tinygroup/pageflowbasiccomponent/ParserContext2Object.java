@@ -15,11 +15,12 @@
  */
 package org.tinygroup.pageflowbasiccomponent;
 
+import org.tinygroup.beancontainer.BeanContainer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.flow.ComponentInterface;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.parser.ParserWebContext;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.ParameterParser;
@@ -70,16 +71,16 @@ public class ParserContext2Object implements ComponentInterface {
 				
 			}
 		}
-		
+		BeanContainer container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
 		if(StringUtil.isEmpty(beanName)){
 			if(clazz!=null){
-				object=SpringUtil.getBean(clazz);
+				object=container.getBean(clazz);
 			}
 		}else{
 			if(clazz==null){
-				object=SpringUtil.getBean(beanName);
+				object=container.getBean(beanName);
 			}else{
-				object=SpringUtil.getBean(beanName, clazz);
+				object=container.getBean(beanName, clazz);
 			}
 		}
 		ParserWebContext parser = WebContextUtil.findWebContext(

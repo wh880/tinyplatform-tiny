@@ -17,17 +17,20 @@ package org.tinygroup.bundle.test.manager;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.bundle.BundleException;
 import org.tinygroup.bundle.BundleManager;
 import org.tinygroup.bundle.config.BundleDefine;
 import org.tinygroup.bundle.test.util.TestUtil;
-import org.tinygroup.springutil.SpringUtil;
 
-public class BundleManagerTest2 extends TestCase{
+public class BundleManagerTest2 extends TestCase {
 
 	public void testLoad() {
 		TestUtil.init();
-		BundleManager manager = SpringUtil.getBean(BundleManager.BEAN_NAME);
+
+		BundleManager manager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				BundleManager.BEAN_NAME);
 		BundleDefine b;
 		try {
 			b = manager.getBundleDefine("test1");
@@ -36,7 +39,7 @@ public class BundleManagerTest2 extends TestCase{
 			e.printStackTrace();
 			assertFalse(true);
 		}
-//		manager.stop();
+		// manager.stop();
 	}
 
 }

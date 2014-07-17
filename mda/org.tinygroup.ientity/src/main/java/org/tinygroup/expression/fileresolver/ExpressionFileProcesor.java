@@ -19,7 +19,6 @@ import org.tinygroup.expression.ExpressionConfigs;
 import org.tinygroup.expression.ExpressionManager;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -36,6 +35,16 @@ import com.thoughtworks.xstream.XStream;
 public class ExpressionFileProcesor extends AbstractFileProcessor {
 	
 	private static final String EXPRESSION_EXT_FILENAME = ".expression.xml";
+	private ExpressionManager manager;
+	
+	
+	public ExpressionManager getManager() {
+		return manager;
+	}
+
+	public void setManager(ExpressionManager manager) {
+		this.manager = manager;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(EXPRESSION_EXT_FILENAME);
@@ -44,7 +53,7 @@ public class ExpressionFileProcesor extends AbstractFileProcessor {
 	public void process() {
 	
 		XStream stream = XStreamFactory.getXStream("entities");
-		ExpressionManager manager=SpringUtil.getBean(ExpressionManager.MANAGER_BEAN_NAME);
+//		ExpressionManager manager=SpringBeanContainer.getBean(ExpressionManager.MANAGER_BEAN_NAME);
 		for (FileObject fileObject : deleteList) {
 			logger.logMessage(LogLevel.DEBUG, "正在移除表达式配置文件[{0}]",
 					fileObject.getAbsolutePath());

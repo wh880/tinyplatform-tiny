@@ -15,16 +15,17 @@
  */
 package org.tinygroup.docgen;
 
-import junit.framework.TestCase;
-import org.tinygroup.context.Context;
-import org.tinygroup.context.impl.ContextImpl;
-import org.tinygroup.docgen.util.ImageUtil;
-import org.tinygroup.springutil.SpringUtil;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+
+import junit.framework.TestCase;
+
+import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.context.Context;
+import org.tinygroup.context.impl.ContextImpl;
+import org.tinygroup.docgen.util.ImageUtil;
+import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class DocGenTest extends TestCase {
 
@@ -34,8 +35,9 @@ public class DocGenTest extends TestCase {
 		super.setUp();
 		AbstractTestUtil.init(null, true);
 		if (manager == null) {
-			manager = SpringUtil
-					.getBean(DocumentGeneraterManager.MANAGER_BEAN_NAME);
+			manager = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					DocumentGeneraterManager.MANAGER_BEAN_NAME);
 		}
 	}
 

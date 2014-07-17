@@ -15,9 +15,9 @@
  */
 package org.tinygroup.imda;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.imda.config.ModelDefine;
 import org.tinygroup.imda.config.ModelProcessorDefine;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 模型相关定义信息
@@ -64,11 +64,17 @@ public class ModelDefineInfo {
 	public void setProcessDefine(Object processDefine) {
 		this.processDefine = processDefine;
 	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String getVisitUrl(){
-		if(visitUrl==null){
-			ModelInformationGetter getter=SpringUtil.getBean(modelDefine.getModelInfomationGetterBean());
-			visitUrl=modelDefine.getId()+"_"+modelProcessorDefine.getName()+"_"+getter.getId(model)+"_"+getter.getOperationId(processDefine);
+	public String getVisitUrl() {
+		if (visitUrl == null) {
+			ModelInformationGetter getter = BeanContainerFactory
+					.getBeanContainer(this.getClass().getClassLoader())
+					.getBean(modelDefine.getModelInfomationGetterBean());
+			visitUrl = modelDefine.getId() + "_"
+					+ modelProcessorDefine.getName() + "_"
+					+ getter.getId(model) + "_"
+					+ getter.getOperationId(processDefine);
 		}
 		return visitUrl;
 	}

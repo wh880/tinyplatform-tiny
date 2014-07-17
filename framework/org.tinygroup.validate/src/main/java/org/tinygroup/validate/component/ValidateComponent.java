@@ -15,10 +15,10 @@
  */
 package org.tinygroup.validate.component;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.flow.exception.FlowRuntimeException;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.validate.ValidateResult;
 import org.tinygroup.validate.ValidatorManager;
 import org.tinygroup.validate.impl.ValidateResultImpl;
@@ -43,8 +43,6 @@ public class ValidateComponent implements ComponentInterface {
 	private static final String VALIDATE_MESSAGE = "validateMessage";
 	private String objectName;
 	private String scene;
-	
-	
 
 	public String getScene() {
 		return scene;
@@ -81,13 +79,15 @@ public class ValidateComponent implements ComponentInterface {
 		if (validateObject != null) {
 			ValidateResult result = new ValidateResultImpl();
 			if (validatorManager == null) {
-				validatorManager = SpringUtil.getBean(VALIDATOR_MANAGER);
+				validatorManager = BeanContainerFactory.getBeanContainer(
+						this.getClass().getClassLoader()).getBean(
+						VALIDATOR_MANAGER);
 			}
-			validatorManager.validate(scene,validateObject, result);
-			context.put(VALIDATE_DOMAIN,  VALIDATE_MESSAGE, result);
-			if(result.hasError()){
+			validatorManager.validate(scene, validateObject, result);
+			context.put(VALIDATE_DOMAIN, VALIDATE_MESSAGE, result);
+			if (result.hasError()) {
 				context.put(VALIDATE_ERROR, true);
-			}else{
+			} else {
 				context.put(VALIDATE_ERROR, false);
 			}
 			return;

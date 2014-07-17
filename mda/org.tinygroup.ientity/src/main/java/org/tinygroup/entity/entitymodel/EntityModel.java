@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.entity.BaseModel;
 import org.tinygroup.entity.common.Field;
@@ -30,7 +31,6 @@ import org.tinygroup.entity.common.OperationField;
 import org.tinygroup.entity.common.OperationGroup;
 import org.tinygroup.entity.util.ModelUtil;
 import org.tinygroup.metadata.config.stdfield.StandardField;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
@@ -59,7 +59,8 @@ public class EntityModel extends BaseModel {
 	@SuppressWarnings("rawtypes")
 	public String getCamelName(String name) {
 		if (nameConverter == null) {
-			BeanOperatorManager manager = SpringUtil
+			BeanOperatorManager manager = BeanContainerFactory
+					.getBeanContainer(this.getClass().getClassLoader())
 					.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 			DBOperator operator = manager.getDbOperator(this.getName());
 			Assert.assertNotNull(operator, "operator must not null");
@@ -91,14 +92,13 @@ public class EntityModel extends BaseModel {
 
 	public StandardField getStandardField(String fieldId) {
 		StandardField stdField = ModelUtil.getStandardField(getField(fieldId)
-				.getStandardFieldId());
+				.getStandardFieldId(),this.getClass().getClassLoader());
 		if (stdField != null) {
 			return stdField;
 		}
 		throw new RuntimeException("实体模型" + title + "中找不到标识是" + fieldId
 				+ "对应的标准字段定义");
 	}
-
 
 	/**
 	 * 返回操作的字段对应的字段定义列表
@@ -121,7 +121,6 @@ public class EntityModel extends BaseModel {
 			processOperationGroup(subGroup, fields);
 		}
 	}
-
 
 	public List<Group> getGroups() {
 		if (groups == null) {

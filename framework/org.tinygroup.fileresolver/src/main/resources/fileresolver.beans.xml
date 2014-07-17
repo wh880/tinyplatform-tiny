@@ -23,6 +23,7 @@
 	</bean>
 	<bean id="orderFileProcessor" scope="singleton"
 		class="org.tinygroup.fileresolver.impl.OrderFileProcessor">
+		<property name="orderProcessor" ref="orderProcessor"></property>
 	</bean>
 	<bean id="springBeansFileProcessor" scope="singleton"
 		class="org.tinygroup.fileresolver.impl.SpringBeansFileProcessor">

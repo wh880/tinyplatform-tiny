@@ -20,13 +20,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.NameFilter;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.TinyProcessor;
 import org.tinygroup.weblayer.TinyProcessorManager;
 import org.tinygroup.weblayer.WebContext;
@@ -53,8 +53,7 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.tinygroup.weblayer.impl.TinyProcessorManager#execute(java
+	 * @see org.tinygroup.weblayer.impl.TinyProcessorManager#execute(java
 	 * .lang.String, org.tinygroup.weblayer.WebContext)
 	 */
 	public boolean execute(String url, WebContext context) {
@@ -84,7 +83,7 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 				.findNodeList(TinyProcessor.TINY_PROCESSOR);
 		for (XmlNode node : nodes) {
 			String processorId = node.getAttribute("id");
-			String processorClassName =getProcessorBeanName(node); 
+			String processorClassName = getProcessorBeanName(node);
 			logger.logMessage(LogLevel.INFO, "tiny-processor:{}开始被加载",
 					processorId);
 			TinyProcessor processor = null;
@@ -114,9 +113,9 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 	}
 
 	private String getProcessorBeanName(XmlNode xmlNode) {
-		String beanName= xmlNode.getAttribute("bean-name");
-		if(StringUtil.isBlank(beanName)){
-			beanName=xmlNode.getAttribute("class");
+		String beanName = xmlNode.getAttribute("bean-name");
+		if (StringUtil.isBlank(beanName)) {
+			beanName = xmlNode.getAttribute("class");
 		}
 		return beanName;
 	}
@@ -150,8 +149,8 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 	private TinyProcessor instanceProcessor(String servletClassName)
 			throws InstantiationException, IllegalAccessException,
 			ClassNotFoundException {
-		TinyProcessor processor = SpringUtil.getBean(
-				servletClassName);
+		TinyProcessor processor = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(servletClassName);
 		if (processor == null) {
 			processor = (TinyProcessor) Class.forName(servletClassName)
 					.newInstance();
@@ -160,13 +159,14 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 	}
 
 	public void initTinyResources() {
-		tinyProcessorList.clear();//先清除
+		tinyProcessorList.clear();// 先清除
 		processorXmlNodes.clear();
 		if (configManager != null) {
 			List<XmlNode> configs = configManager.getConfigs();
 			XmlNode component = configManager.getComponentConfig();
 			XmlNode application = configManager.getApplicationConfig();
-			configs.addAll(ConfigurationUtil.combineSubList(application, component, TinyProcessor.TINY_PROCESSOR, "id"));
+			configs.addAll(ConfigurationUtil.combineSubList(application,
+					component, TinyProcessor.TINY_PROCESSOR, "id"));
 			for (XmlNode config : configs) {
 				nodeProcessor(config);
 			}

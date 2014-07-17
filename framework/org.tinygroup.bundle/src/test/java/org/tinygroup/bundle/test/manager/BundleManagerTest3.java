@@ -18,21 +18,22 @@ package org.tinygroup.bundle.test.manager;
 import junit.framework.TestCase;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
+import org.tinygroup.beancontainer.BeanContainer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.bundle.BundleManager;
 import org.tinygroup.bundle.test.util.TestUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class BundleManagerTest3 extends TestCase {
 
 	public void testSpringBean(){
 		TestUtil.init();
-		BundleManager manager = SpringUtil.getBean(BundleManager.BEAN_NAME);
+		BeanContainer container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
+		BundleManager manager = (BundleManager) container.getBean(BundleManager.BEAN_NAME);
 		manager.start();
 		try {
 			manager.getTinyClassLoader("test2").loadClass("org.tinygroup.MyTestImpl2");
 			
-			ApplicationContext app = SpringUtil.getSubBeanContainer(manager.getTinyClassLoader("test2")
+			BeanContainer app = container.getSubBeanContainer(manager.getTinyClassLoader("test2")
 			);
 			System.out.println(app);
 			assertNotNull(app);

@@ -13,12 +13,20 @@ import org.tinygroup.database.config.trigger.Trigger;
 import org.tinygroup.database.config.trigger.Triggers;
 import org.tinygroup.database.trigger.TriggerProcessor;
 import org.tinygroup.database.trigger.TriggerSqlProcessor;
-import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class TriggerProcessorImpl implements TriggerProcessor {
 	
 	private Map<String, Trigger> triggerMap=new HashMap<String, Trigger>();
+	private ProcessorManager processorManager;
+	
+	
+	public ProcessorManager getProcessorManager() {
+		return processorManager;
+	}
+
+	public void setProcessorManager(ProcessorManager processorManager) {
+		this.processorManager = processorManager;
+	}
 
 	public void addTriggers(Triggers triggers) {
 		for(Trigger trigger:triggers.getTriggers()){
@@ -90,8 +98,8 @@ public class TriggerProcessorImpl implements TriggerProcessor {
 
 	public boolean checkTriggerExist(String language, Trigger trigger,
 			Connection connection) throws SQLException {
-		ProcessorManager processorManager = SpringUtil
-				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer
+//				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
         TriggerSqlProcessor sqlProcessor = (TriggerSqlProcessor) processorManager.getProcessor(language, "trigger");
 		return sqlProcessor.checkSequenceExist(trigger, connection);
 	}

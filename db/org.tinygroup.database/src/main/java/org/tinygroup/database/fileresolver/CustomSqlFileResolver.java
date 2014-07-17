@@ -20,7 +20,6 @@ import org.tinygroup.database.customesql.CustomSqlProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -29,14 +28,21 @@ import com.thoughtworks.xstream.XStream;
 public class CustomSqlFileResolver extends AbstractFileProcessor {
 
 	private static final String CUSTOMSQL_EXTFILENAME = ".customsql.xml";
+	CustomSqlProcessor customSqlProcessor;
+	
+	public CustomSqlProcessor getCustomSqlProcessor() {
+		return customSqlProcessor;
+	}
+
+	public void setCustomSqlProcessor(CustomSqlProcessor customSqlProcessor) {
+		this.customSqlProcessor = customSqlProcessor;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(CUSTOMSQL_EXTFILENAME);
 	}
 
 	public void process() {
-		CustomSqlProcessor customSqlProcessor = SpringUtil
-				.getBean(DataBaseUtil.CUSTOMESQL_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.DATABASE_XSTREAM);
 		for (FileObject fileObject : deleteList) {

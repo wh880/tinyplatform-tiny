@@ -24,11 +24,12 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.parser.filter.NameFilter;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.weblayer.webcontext.parser.util.BeanWrapperImpl;
 import org.tinygroup.xmlparser.node.XmlNode;
 
@@ -47,7 +48,7 @@ public class ParserXmlNodeUtil {
 	private static final String BEAN_NAME = "bean-name";
 	private static BeanWrapperImpl beanWrapper=new BeanWrapperImpl();
 	static{
-		Map customEditors=SpringUtil.getCustomEditors();
+		Map customEditors=null;//SpringBeanContainer.getCustomEditors(); //TODO:renhui重构
 		Set keySet=customEditors.keySet();
 		for (Object key : keySet) {
 			Class requiredType=(Class)key;
@@ -65,7 +66,7 @@ public class ParserXmlNodeUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T[] parseConfigToArray(String subNodeName, XmlNode node,
+	public static <T> T[] parseConfigToArray(ClassLoader loader,String subNodeName, XmlNode node,
 			Class<T> clazz) {
 		Assert.assertNotNull(node, "解析的节点对象不能为空");
 		NameFilter<XmlNode> nameFilter = new NameFilter<XmlNode>(node);
@@ -74,7 +75,7 @@ public class ParserXmlNodeUtil {
 			if (!CollectionUtil.isEmpty(subNodes)) {
 				T[] array = (T[]) Array.newInstance(clazz, subNodes.size());
 				for (int i = 0; i < subNodes.size(); i++) {
-					T object = newInstance(
+					T object = newInstance(loader,
 							subNodes.get(i).getAttribute(BEAN_NAME), clazz);
 					array[i] = object;
 				}
@@ -87,7 +88,7 @@ public class ParserXmlNodeUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T[] parseConfigToArray(String subNodeName, XmlNode node,
+	public static <T> T[] parseConfigToArray(ClassLoader loader,String subNodeName, XmlNode node,
 			Class<T> clazz, String... attributeNames) {
 		Assert.assertNotNull(node, "解析的节点对象不能为空");
 		NameFilter<XmlNode> nameFilter = new NameFilter<XmlNode>(node);
@@ -96,7 +97,7 @@ public class ParserXmlNodeUtil {
 			if (!CollectionUtil.isEmpty(subNodes)) {
 				T[] array = (T[]) Array.newInstance(clazz, subNodes.size());
 				for (int i = 0; i < subNodes.size(); i++) {
-					array[i] = parseConfigToObject(null,null,
+					array[i] = parseConfigToObject(loader,null,null,
 							subNodes.get(i), clazz, attributeNames);
 				}
 				return array;
@@ -128,7 +129,7 @@ public class ParserXmlNodeUtil {
 
 	}
 
-	public static <T> T parseConfigToObject(String subNodeName, XmlNode node,
+	public static <T> T parseConfigToObject(ClassLoader loader,String subNodeName, XmlNode node,
 			Class<T> clazz) {
 		Assert.assertNotNull(node, "解析的节点对象不能为空");
 		XmlNode xmlNode=node;
@@ -139,10 +140,10 @@ public class ParserXmlNodeUtil {
 				xmlNode=subNode;
 			}
 		} 
-		return newInstance(xmlNode.getAttribute(BEAN_NAME), clazz);
+		return newInstance(loader,xmlNode.getAttribute(BEAN_NAME), clazz);
 	}
 
-	public static <T> T parseConfigToObject(String subNodeName,String propertyNode, XmlNode node,
+	public static <T> T parseConfigToObject(ClassLoader loader,String subNodeName,String propertyNode, XmlNode node,
 			Class<T> clazz, String... attributeNames) {
 		Assert.assertNotNull(node, "解析的节点对象不能为空");
 		XmlNode xmlNode=node;
@@ -154,14 +155,14 @@ public class ParserXmlNodeUtil {
 			}
 		} 
 		if(propertyNode!=null){
-			return createObjectWithProperty(clazz, xmlNode, propertyNode);
+			return createObjectWithProperty(loader,clazz, xmlNode, propertyNode);
 		}
-		return createObject(clazz, xmlNode, attributeNames);
+		return createObject(loader,clazz, xmlNode, attributeNames);
 	}
 
-	private static <T> T createObject(Class<T> clazz, XmlNode subNode,
+	private static <T> T createObject(ClassLoader loader,Class<T> clazz, XmlNode subNode,
 			String... attributeNames) {
-		T object = newInstance(subNode.getAttribute(BEAN_NAME), clazz);
+		T object = newInstance(loader,subNode.getAttribute(BEAN_NAME), clazz);
 		Map<String, String> properties=CollectionUtil.createHashMap();
 		for (String attribute : attributeNames) {
 			try {
@@ -197,9 +198,9 @@ public class ParserXmlNodeUtil {
 	 * @param propertyNode
 	 * @return
 	 */
-	private static <T> T createObjectWithProperty(Class<T> clazz, XmlNode node,
+	private static <T> T createObjectWithProperty(ClassLoader loader,Class<T> clazz, XmlNode node,
 			String propertyNode) {
-		T object = newInstance(node.getAttribute(BEAN_NAME), clazz);
+		T object = newInstance(loader,node.getAttribute(BEAN_NAME), clazz);
 		Map<String, String> properties=CollectionUtil.createHashMap();
 		NameFilter<XmlNode> propertyFilter = new NameFilter<XmlNode>(node);
 		List<XmlNode> subNodes=propertyFilter.findNodeList(propertyNode);
@@ -235,7 +236,7 @@ public class ParserXmlNodeUtil {
 		return object;
 	}
 
-	public static <T> Map<String, T> parseConfigToMap(String subNodeName,
+	public static <T> Map<String, T> parseConfigToMap(ClassLoader loader,String subNodeName,
 			String attributeKeyName, XmlNode node, Class<T> clazz) {
 		Assert.assertNotNull(node, "解析的节点对象不能为空");
 		Assert.assertNotNull(attributeKeyName, "解析的节点属性名不能为空");
@@ -245,7 +246,7 @@ public class ParserXmlNodeUtil {
 			if (!CollectionUtil.isEmpty(subNodes)) {
 				Map<String, T> map = new LinkedHashMap<String, T>();
 				for (XmlNode subNode : subNodes) {
-					T object = newInstance(subNode.getAttribute(BEAN_NAME),
+					T object = newInstance(loader,subNode.getAttribute(BEAN_NAME),
 							clazz);
 					map.put(subNode.getAttribute(attributeKeyName), object);
 				}
@@ -317,10 +318,10 @@ public class ParserXmlNodeUtil {
 	 * @param clazz
 	 * @return
 	 */
-	private static <T> T newInstance(String bean, Class<T> clazz) {
+	private static <T> T newInstance(ClassLoader loader,String bean, Class<T> clazz) {
 		T instance = null;
 		try {
-			instance = SpringUtil.getBean(bean, clazz);
+			instance = BeanContainerFactory.getBeanContainer(loader).getBean(bean, clazz);
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}

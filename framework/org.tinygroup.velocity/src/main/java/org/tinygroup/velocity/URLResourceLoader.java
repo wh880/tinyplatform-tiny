@@ -23,8 +23,8 @@ import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.fileresolver.FullContextFileRepository;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 
@@ -38,13 +38,12 @@ public class URLResourceLoader extends ResourceLoader {
 	private Map<String, Long> resourceModifiedTimeMap = new HashMap<String, Long>();
 	private FullContextFileRepository fullContextFileRepository;
 
-	
 	public void init(ExtendedProperties configuration) {
-		fullContextFileRepository = SpringUtil
-				.getBean("fullContextFileRepository");
+		fullContextFileRepository = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				"fullContextFileRepository");
 	}
 
-	
 	public InputStream getResourceStream(String source) {
 		FileObject fileObject = fullContextFileRepository.getFileObject(source);
 		if (fileObject == null || !fileObject.isExist()) {
@@ -53,7 +52,6 @@ public class URLResourceLoader extends ResourceLoader {
 		return fileObject.getInputStream();
 	}
 
-	
 	public boolean isSourceModified(Resource resource) {
 		Long oldTime = resourceModifiedTimeMap.get(resource.getName());
 		if (oldTime == null || oldTime != getLastModified(resource)) {
@@ -64,7 +62,6 @@ public class URLResourceLoader extends ResourceLoader {
 		return oldTime == lastModifiedTime;
 	}
 
-	
 	public long getLastModified(Resource resource) {
 		long lastModifiedTime = VFS.resolveFile(resource.getName())
 				.getLastModifiedTime();

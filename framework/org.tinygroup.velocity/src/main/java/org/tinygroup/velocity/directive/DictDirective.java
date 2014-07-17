@@ -22,12 +22,12 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.dict.Dict;
 import org.tinygroup.dict.DictGroup;
 import org.tinygroup.dict.DictItem;
 import org.tinygroup.dict.DictManager;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.velocity.TinyVelocityContext;
 
 /**
@@ -40,20 +40,18 @@ public class DictDirective extends Directive {
 
 	private static final String DICT = "d";
 
-	
 	public String getName() {
 		return DICT;
 	}
 
-	
 	public int getType() {
 		return LINE;
 	}
 
-	
 	public boolean render(InternalContextAdapter context, Writer writer,
 			Node node) throws IOException {
-		DictManager dictManager = SpringUtil.getBean("dictManager");
+		DictManager dictManager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean("dictManager");
 
 		String dictType = node.jjtGetChild(0).value(context).toString();
 		String dictGroupName = node.jjtGetChild(1).value(context).toString();

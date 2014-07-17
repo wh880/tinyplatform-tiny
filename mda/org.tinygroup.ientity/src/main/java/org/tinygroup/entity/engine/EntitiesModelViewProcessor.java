@@ -29,17 +29,25 @@ import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.WebContext;
 
 public class EntitiesModelViewProcessor implements
 		ModelViewProcessor<BaseModel> {
 	Logger logger = LoggerFactory.getLogger(EntitiesModelViewProcessor.class);
+	ModelManager modelManager;
+	
+	public ModelManager getModelManager() {
+		return modelManager;
+	}
+
+	public void setModelManager(ModelManager modelManager) {
+		this.modelManager = modelManager;
+	}
 
 	public void process(ModelRequestInfo modelRequestInfo, Context context,
 			Writer writer) {
 		// 上下文放入模型
-		ModelManager modelManager = SpringUtil.getBean("modelManager");
+//		ModelManager modelManager = SpringBeanContainer.getBean("modelManager");
 		BaseModel model = modelManager.getModel(modelRequestInfo.getModelId());
 		context.put("_modelDefine_", model);
 		Object processDefine = getProcessDefine(model,

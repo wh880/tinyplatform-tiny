@@ -15,6 +15,7 @@
  */
 package org.tinygroup.cepcore.util;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.exception.CEPRunException;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
@@ -24,20 +25,16 @@ import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.central.Node;
 import org.tinygroup.exceptionhandler.ExceptionHandlerManager;
-import org.tinygroup.springutil.SpringUtil;
 
 public final class CEPCoreUtil {
-	private static ExceptionHandlerManager manager;
-
-	static {
-		manager = SpringUtil.getBean(ExceptionHandlerManager.MANAGER_BEAN);
-	}
 
 	private CEPCoreUtil() {
 	}
 
-	public static boolean handle(Throwable e,Event event) {
-		return manager.handle(e,event);
+	public static boolean handle(Throwable e, Event event,ClassLoader loader) {
+		ExceptionHandlerManager manager = BeanContainerFactory.getBeanContainer(loader)
+				.getBean(ExceptionHandlerManager.MANAGER_BEAN);
+		return manager.handle(e, event);
 	}
 
 	public static boolean isNull(String s) {
@@ -53,14 +50,14 @@ public final class CEPCoreUtil {
 				.format("%s_%s_%s", node.getIp(), node.getPort(), nodeName);
 	}
 
-	public static Context getContext(Event event, ServiceInfo info) {
+	public static Context getContext(Event event, ServiceInfo info,ClassLoader loder) {
 		Context c = new ContextImpl();
 		Context oldContext = event.getServiceRequest().getContext();
 		if (info.getParameters() == null) {
 			return c;
 		}
 		for (Parameter p : info.getParameters()) {
-			Object value = Context2ObjectUtil.getObject(p, oldContext);
+			Object value = Context2ObjectUtil.getObject(p, oldContext,loder);
 			if (value != null && !(value instanceof java.io.Serializable)) {
 				throw new CEPRunException("cepcore.paramNotSerializable", event
 						.getServiceRequest().getServiceId(), p.getName());

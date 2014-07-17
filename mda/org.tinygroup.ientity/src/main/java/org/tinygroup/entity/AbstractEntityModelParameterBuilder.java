@@ -15,12 +15,12 @@
  */
 package org.tinygroup.entity;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.entity.entitymodel.EntityModel;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.imda.processor.ParameterBuilder;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 
@@ -34,7 +34,8 @@ public abstract class AbstractEntityModelParameterBuilder implements ParameterBu
 
 	public Context buildParameter(ModelRequestInfo modelRequestInfo,
 			Context context) {
-		ModelManager modelManager=SpringUtil.getBean(ModelManager.MODELMANAGER_BEAN);
+		ModelManager modelManager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(ModelManager.MODELMANAGER_BEAN);
 		EntityModel model=modelManager.getModel(modelRequestInfo.getModelId());
 		return buildParameter(model,modelRequestInfo,context);
 	}

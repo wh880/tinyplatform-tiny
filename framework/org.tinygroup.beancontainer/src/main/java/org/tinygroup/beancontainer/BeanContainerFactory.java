@@ -12,9 +12,7 @@ public class BeanContainerFactory {
 			throw new TinyBizRuntimeException(e, "beancontainer_init_failed",beanClassName);
 		}
 	}
-	public static BeanContainer<?> getBeanContainer(){
-		return container;
-	}
+	
 	public static BeanContainer<?> getBeanContainer(ClassLoader loader){
 		if(loader == BeanContainerFactory.class.getClassLoader()){
 			return container;

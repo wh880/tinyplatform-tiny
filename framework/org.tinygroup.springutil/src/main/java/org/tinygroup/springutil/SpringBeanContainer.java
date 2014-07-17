@@ -128,7 +128,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	}
 
 	public void regSpringConfigXml(String files) {
-		String urlString = SpringUtil.class.getResource(files).toString();
+		String urlString = SpringBeanContainer.class.getResource(files).toString();
 		addUrl(urlString);
 	}
 

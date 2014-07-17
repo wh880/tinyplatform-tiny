@@ -18,43 +18,45 @@ package org.tinygroup.database.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.processor.Processor;
 import org.tinygroup.database.config.processor.Processors;
-import org.tinygroup.springutil.SpringUtil;
 
 public class ProcessorManagerImpl implements ProcessorManager {
-	Map<String,Map<String,Object>> processorsMap  = new HashMap<String,Map<String,Object>>();
+	Map<String, Map<String, Object>> processorsMap = new HashMap<String, Map<String, Object>>();
 
 	public void addPocessors(Processors processors) {
 		String language = processors.getLanguage();
-		
-		if(!processorsMap.containsKey(language)){
-			processorsMap.put(language, new HashMap<String,Object>());
+
+		if (!processorsMap.containsKey(language)) {
+			processorsMap.put(language, new HashMap<String, Object>());
 		}
-		Map<String,Object> map = processorsMap.get(language);
-		for(Processor processor: processors.getList()){
+		Map<String, Object> map = processorsMap.get(language);
+		for (Processor processor : processors.getList()) {
 			String processorName = processor.getName();
 			String bean = processor.getBean();
-			map.put(processorName,SpringUtil.getBean(bean));
+			map.put(processorName,
+					BeanContainerFactory.getBeanContainer(
+							this.getClass().getClassLoader()).getBean(bean));
 		}
 	}
-	
+
 	public void removePocessors(Processors processors) {
 		String language = processors.getLanguage();
-		Map<String,Object> map = processorsMap.get(language);
-		if(!CollectionUtil.isEmpty(map)){
-			for(Processor processor: processors.getList()){
+		Map<String, Object> map = processorsMap.get(language);
+		if (!CollectionUtil.isEmpty(map)) {
+			for (Processor processor : processors.getList()) {
 				String processorName = processor.getName();
 				map.remove(processorName);
 			}
 		}
-		
+
 	}
 
 	public Object getProcessor(String language, String name) {
-		if(processorsMap.containsKey(language)){
+		if (processorsMap.containsKey(language)) {
 			return processorsMap.get(language).get(name);
 		}
 		return null;

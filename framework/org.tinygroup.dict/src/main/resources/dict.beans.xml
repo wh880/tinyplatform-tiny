@@ -8,6 +8,7 @@
 
 	<bean id="dictLoadFileProcessor" scope="singleton"
 		class="org.tinygroup.dict.fileresolver.DictLoadFileProcessor">
+		<property name="manager" ref="dictManager"></property>
 	</bean>
 	
 	<bean id="dictManager" name="dictManager" scope="singleton"
@@ -15,5 +16,6 @@
 	</bean>
 	<bean id="dictLoadProcessor" scope="singleton"
 		class="org.tinygroup.dict.applicationprocessor.DictLoadProcessor">
+		<property name="config" ref="cacheInitConfig"></property>
 	</bean>
 </beans>

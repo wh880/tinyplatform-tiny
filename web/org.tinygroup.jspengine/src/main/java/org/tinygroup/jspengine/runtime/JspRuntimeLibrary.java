@@ -40,7 +40,7 @@ import org.tinygroup.jspengine.Constants;
 import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.compiler.Localizer;
 import org.tinygroup.jspengine.servlet.JspServlet;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.springutil.SpringBeanContainer;
 
 /**
  * Bunch of util methods that are used by code generated for useBean,

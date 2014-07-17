@@ -28,13 +28,14 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.InternalContextAdapter;
+import org.tinygroup.beancontainer.BeanContainer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.threadgroup.AbstractProcessor;
 import org.tinygroup.threadgroup.MultiThreadProcessor;
 import org.tinygroup.threadgroup.Processor;
@@ -236,7 +237,6 @@ public final class VelocityHelperImpl implements VelocityHelper {
 			this.id = id;
 		}
 
-		
 		protected void action() throws Exception {
 			StringWriter stringWriter = new StringWriter();
 			stringWriter.write("$('#");
@@ -311,7 +311,7 @@ public final class VelocityHelperImpl implements VelocityHelper {
 					+ LAYOUT_EXT_FILENAME;
 			object = fullContextFileRepository
 					.getFileObjectDetectLocale(privateLayout);
-			if (object!=null&&object.isExist()) {
+			if (object != null && object.isExist()) {
 				layoutPathList.add(object.getPath());
 			}
 
@@ -321,7 +321,7 @@ public final class VelocityHelperImpl implements VelocityHelper {
 					defaultFileName, layoutExtFileName);
 			FileObject fileObject = fullContextFileRepository
 					.getFileObjectDetectLocale(findPath);
-			if (fileObject!=null&&fileObject.isExist()) {
+			if (fileObject != null && fileObject.isExist()) {
 				layoutPathList.add(fileObject.getPath());
 			}
 		}
@@ -347,10 +347,10 @@ public final class VelocityHelperImpl implements VelocityHelper {
 			throws FileNotFoundException {
 		String findPath = String.format("%s/%s.%s", path, defaultFileName,
 				viewExtFileName);
-		logger.logMessage(LogLevel.INFO, "由于文件{}找不到，因此查找默认文件",path,findPath);
+		logger.logMessage(LogLevel.INFO, "由于文件{}找不到，因此查找默认文件", path, findPath);
 		FileObject fileObject = fullContextFileRepository
 				.getFileObjectDetectLocale(findPath);
-		if (fileObject != null&&fileObject.isExist()) {
+		if (fileObject != null && fileObject.isExist()) {
 			return fileObject.getPath();
 		} else {
 			int lastIndexSlash = path.lastIndexOf('/');
@@ -398,13 +398,14 @@ public final class VelocityHelperImpl implements VelocityHelper {
 	}
 
 	private void initSpringVelocityBean(Bean bean) {
+		BeanContainer c = BeanContainerFactory.getBeanContainer(this.getClass()
+				.getClassLoader());
 		try {
 			if (bean.getType() != null) {
 				initContext.put(bean.getName(),
-						SpringUtil.getBean(Class.forName(bean.getType())));
+						c.getBean(Class.forName(bean.getType())));
 			} else {
-				initContext.put(bean.getName(),
-						SpringUtil.getBean(bean.getName()));
+				initContext.put(bean.getName(), c.getBean(bean.getName()));
 			}
 		} catch (ClassNotFoundException e) {
 			if (bean.getType() != null) {
@@ -417,13 +418,14 @@ public final class VelocityHelperImpl implements VelocityHelper {
 	}
 
 	private void initVelocityBean(Bean bean) {
+		BeanContainer c = BeanContainerFactory.getBeanContainer(this.getClass()
+				.getClassLoader());
 		try {
 			if (bean.getType() != null) {
 				initContext.put(bean.getName(),
-						SpringUtil.getBean(Class.forName(bean.getType())));
+						c.getBean(Class.forName(bean.getType())));
 			} else {
-				initContext.put(bean.getName(),
-						SpringUtil.getBean(bean.getName()));
+				initContext.put(bean.getName(), c.getBean(bean.getName()));
 			}
 		} catch (ClassNotFoundException e) {
 			if (bean.getType() != null) {
@@ -439,12 +441,12 @@ public final class VelocityHelperImpl implements VelocityHelper {
 		if (initContext != null) {
 			context.putSubContext(BASE_CONTEXT, initContext);
 		}
-        TinyVelocityContext tinyVelocityContext = new TinyVelocityContext(
-                context);
-        VelocityContext velocityContext = new VelocityContext(
-                tinyVelocityContext);
+		TinyVelocityContext tinyVelocityContext = new TinyVelocityContext(
+				context);
+		VelocityContext velocityContext = new VelocityContext(
+				tinyVelocityContext);
 
-        velocity.evaluate(velocityContext, writer, "mystring", string);
+		velocity.evaluate(velocityContext, writer, "mystring", string);
 	}
 
 }

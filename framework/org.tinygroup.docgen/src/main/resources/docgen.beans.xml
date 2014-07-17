@@ -10,6 +10,7 @@
 		class="org.tinygroup.docgen.fileresolver.TemplateFileProcessor">
 		<property name="fileExtName" value=".doctemplate"></property>
 		<property name="documentType" value="doc"></property>
+		<property name="manager" ref="documentGeneraterManager"></property>
 		<property name="generate">
 		  <ref bean="docDocumentGenerater"/>
 		</property>

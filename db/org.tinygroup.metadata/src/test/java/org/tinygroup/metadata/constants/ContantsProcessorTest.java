@@ -17,9 +17,9 @@ package org.tinygroup.metadata.constants;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.metadata.TestInit;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class ContantsProcessorTest extends TestCase {
 	ConstantProcessor contantsProcessor;
@@ -29,7 +29,9 @@ public class ContantsProcessorTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		contantsProcessor = SpringUtil.getBean(MetadataUtil.CONSTANTPROCESSOR_BEAN);
+		contantsProcessor = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				MetadataUtil.CONSTANTPROCESSOR_BEAN);
 	}
 
 	public void testGetIntValueStringString() {

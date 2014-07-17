@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.cryptor.Cryptor;
 import org.tinygroup.commons.cryptor.DefaultCryptor;
 import org.tinygroup.commons.tools.Assert;
@@ -41,7 +42,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
@@ -50,7 +50,7 @@ import org.tinygroup.tinydb.operator.DBOperator;
  * 
  * 功能说明:实体模型帮助类
  * <p>
-
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-9-6 <br>
  * <br>
@@ -105,23 +105,26 @@ public class EntityModelHelper {
 	protected Map<String, Field> fieldId2Field = new HashMap<String, Field>();
 
 	protected Map<String, String> fieldId2ModelId = new HashMap<String, String>();
-    
+
 	private CompareModeContain contain;
-	
+
 	protected Cryptor cryptor = new DefaultCryptor();
 
 	public EntityModelHelper(EntityModel model, Context context) {
 		super();
 		this.model = model;
 		this.context = context;
-		BeanOperatorManager manager = SpringUtil
-				.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		this.operator = manager.getDbOperator(model.getName());
 		Assert.assertNotNull(operator, "operator must not null");
 		this.converter = operator.getBeanDbNameConverter();
 		this.tableName = manager.getTableConfiguration(model.getName())
 				.getName();
-		contain=SpringUtil.getBean(CompareModeContain.COMPARE_MODE_CONTAIN);
+		contain = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				CompareModeContain.COMPARE_MODE_CONTAIN);
 		List<Group> groups = model.getGroups();
 		if (groups != null) {
 			for (Group group : groups) {
@@ -162,7 +165,7 @@ public class EntityModelHelper {
 	 */
 	public String getDbFieldName(String standardFieldId) {
 		try {
-			StandardField standardField=getStandardField(standardFieldId);
+			StandardField standardField = getStandardField(standardFieldId);
 			return standardField.getName();
 		} catch (Exception e) {
 		}
@@ -170,7 +173,7 @@ public class EntityModelHelper {
 	}
 
 	public StandardField getStandardField(String standardFieldId) {
-		return MetadataUtil.getStandardField(standardFieldId);
+		return MetadataUtil.getStandardField(standardFieldId,this.getClass().getClassLoader());
 	}
 
 	/**
@@ -333,9 +336,9 @@ public class EntityModelHelper {
 							temp.getConnectMode(), conditionBuffer);
 					appendCondition(dbFieldName, propertyName, tableAliasName,
 							conditionBuffer, compare, params);
-//					if(compare.needValue()){//需要有值才能放入list参数列表中
-						compare.assembleParamterValue(propertyName, context, params);
-//					}
+					// if(compare.needValue()){//需要有值才能放入list参数列表中
+					compare.assembleParamterValue(propertyName, context, params);
+					// }
 					temp.setHasCondition(true);
 					temp.setConnectMode(conditionField.getConnectMode());
 				}
@@ -374,10 +377,10 @@ public class EntityModelHelper {
 	public void appendCondition(String dbFieldName, String propertyName,
 			String tableAliasName, StringBuffer conditionBuffer,
 			CompareMode compare, List<Object> params) {
-			String compareSymbols = compare
-					.generateCompareSymbols(getDbFieldWithTableAliasName(
-							dbFieldName, tableAliasName));
-			conditionBuffer.append(compareSymbols);
+		String compareSymbols = compare
+				.generateCompareSymbols(getDbFieldWithTableAliasName(
+						dbFieldName, tableAliasName));
+		conditionBuffer.append(compareSymbols);
 	}
 
 	public String checkCompareMode(String defaultCompareMode,
@@ -510,9 +513,10 @@ public class EntityModelHelper {
 		if (compareModeValue != null) {
 			newContext.put(compareParamterName, compareModeValue);
 		}
-		String lengthParamterName=getSpliceParamterName(propertyName, LEVEL_LENGTH);
-		Object lengthValue=context.get(lengthParamterName);
-		if(lengthValue!=null){
+		String lengthParamterName = getSpliceParamterName(propertyName,
+				LEVEL_LENGTH);
+		Object lengthValue = context.get(lengthParamterName);
+		if (lengthValue != null) {
 			newContext.put(lengthParamterName, lengthValue);
 		}
 	}
@@ -582,21 +586,24 @@ public class EntityModelHelper {
 						.append(SPLIT);
 			}
 			hasField = true;
-		}else{
-			appendExpressionClause(dbFieldAliasName,displayField, stringBuffer);
+		} else {
+			appendExpressionClause(dbFieldAliasName, displayField, stringBuffer);
 		}
 		return hasField;
 	}
-	
-	
-	protected void appendExpressionClause(String fieldAliasName,OperationField field,StringBuffer stringBuffer){
-		String expressionMode=field.getExpressionMode();
-		if(!StringUtil.isBlank(expressionMode)){
-			ExpressionManager manager=SpringUtil.getBean(ExpressionManager.MANAGER_BEAN_NAME);
-			SqlExpression expression=manager.getExpression(expressionMode);
-			if(expression!=null){
+
+	protected void appendExpressionClause(String fieldAliasName,
+			OperationField field, StringBuffer stringBuffer) {
+		String expressionMode = field.getExpressionMode();
+		if (!StringUtil.isBlank(expressionMode)) {
+			ExpressionManager manager = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					ExpressionManager.MANAGER_BEAN_NAME);
+			SqlExpression expression = manager.getExpression(expressionMode);
+			if (expression != null) {
 				stringBuffer.append(expression.interpret());
-				String aliasName=getExpressionAliasName(field.getFieldId(), fieldAliasName);
+				String aliasName = getExpressionAliasName(field.getFieldId(),
+						fieldAliasName);
 				if (aliasName != null) {
 					stringBuffer.append(" ").append(aliasName);
 				}
@@ -604,20 +611,22 @@ public class EntityModelHelper {
 			}
 		}
 	}
-    /**
-     * 
-     * 获取表达式片段的别名
-     * @param fieldId
-     * @param fieldAliasName
-     * @return
-     */
+
+	/**
+	 * 
+	 * 获取表达式片段的别名
+	 * 
+	 * @param fieldId
+	 * @param fieldAliasName
+	 * @return
+	 */
 	private String getExpressionAliasName(String fieldId, String fieldAliasName) {
 		if (!StringUtil.isBlank(fieldAliasName)) {
 			return fieldAliasName;
 		}
-		String aliasName= fieldId2Field.get(fieldId).getAliseName();
-		if(StringUtil.isBlank(aliasName)){
-		    aliasName= fieldId2DbFieldName.get(fieldId);
+		String aliasName = fieldId2Field.get(fieldId).getAliseName();
+		if (StringUtil.isBlank(aliasName)) {
+			aliasName = fieldId2DbFieldName.get(fieldId);
 		}
 		return aliasName;
 	}

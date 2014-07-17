@@ -17,9 +17,9 @@ package org.tinygroup.metadata.bizdatatype;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.metadata.TestInit;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class BusinessTypeProcessorTest extends TestCase {
 
@@ -30,14 +30,16 @@ public class BusinessTypeProcessorTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		businessTypeProcessor = SpringUtil.getBean(MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
+		businessTypeProcessor = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
 	}
 
 	public void testGetTypeStringStringString() {
-//		assertEquals("varchar2(12)",
-//				businessTypeProcessor.getType("aaid", "oracle"));
-//		assertEquals("varchar2(112)",
-//				businessTypeProcessor.getType( "bbid", "oracle"));
+		// assertEquals("varchar2(12)",
+		// businessTypeProcessor.getType("aaid", "oracle"));
+		// assertEquals("varchar2(112)",
+		// businessTypeProcessor.getType( "bbid", "oracle"));
 	}
 
 }

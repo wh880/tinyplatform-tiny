@@ -18,12 +18,13 @@ package org.tinygroup.service.aop;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.service.ServiceProxy;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public class ServiceAopManager {
@@ -68,7 +69,8 @@ public class ServiceAopManager {
 		String bean = node.getAttribute("bean");
 		String enable = node.getAttribute("enable");
 		try {
-			ServiceAopAdapter adapter = SpringUtil.getBean(bean);
+			ServiceAopAdapter adapter = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(bean);
 			allList.add(adapter);
 			if (enable == null || "true".equals(enable)) {
 				enbaleList.add(adapter);
@@ -84,9 +86,11 @@ public class ServiceAopManager {
 		logger.logMessage(LogLevel.INFO, "开始执行SerciveAop前置处理器");
 		for (int i = 0; i < beforeEnableList.size(); i++) {
 			ServiceAopAdapter adapter = beforeEnableList.get(i);
-			logger.logMessage(LogLevel.INFO, "开始执行SerciveAop前置处理器{0}",adapter.getClass().toString());
+			logger.logMessage(LogLevel.INFO, "开始执行SerciveAop前置处理器{0}", adapter
+					.getClass().toString());
 			adapter.handle(args, sp);
-			logger.logMessage(LogLevel.INFO, "执行SerciveAop前置处理器{0}完成",adapter.getClass().toString());
+			logger.logMessage(LogLevel.INFO, "执行SerciveAop前置处理器{0}完成", adapter
+					.getClass().toString());
 		}
 		logger.logMessage(LogLevel.INFO, "执行SerciveAop前置处理器完成");
 	}
@@ -95,9 +99,11 @@ public class ServiceAopManager {
 		logger.logMessage(LogLevel.INFO, "开始执行SerciveAop后置处理器");
 		for (int i = 0; i < afterEnableList.size(); i++) {
 			ServiceAopAdapter adapter = afterEnableList.get(i);
-			logger.logMessage(LogLevel.INFO, "开始执行SerciveAop后置处理器{0}",adapter.getClass().toString());
+			logger.logMessage(LogLevel.INFO, "开始执行SerciveAop后置处理器{0}", adapter
+					.getClass().toString());
 			adapter.handle(args, sp);
-			logger.logMessage(LogLevel.INFO, "执行SerciveAop后置处理器{0}完成",adapter.getClass().toString());
+			logger.logMessage(LogLevel.INFO, "执行SerciveAop后置处理器{0}完成", adapter
+					.getClass().toString());
 		}
 		logger.logMessage(LogLevel.INFO, "执行SerciveAop后置处理器完成");
 	}

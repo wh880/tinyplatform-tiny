@@ -15,6 +15,7 @@
  */
 package org.tinygroup.mongodb.engine;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.imda.processor.ModelServiceProcessor;
@@ -22,7 +23,6 @@ import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
 import org.tinygroup.mongodb.common.Operation;
 import org.tinygroup.mongodb.common.View;
 import org.tinygroup.mongodb.model.MongoDBModel;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 
@@ -36,9 +36,11 @@ public abstract class AbstractMongoServiceProcessor<R> implements
 		ModelServiceProcessor<MongoDBModel, R> {
 
 	public R process(ModelRequestInfo modelRequestInfo, Context context) {
-		ModelManager modelManager=SpringUtil.getBean(ModelManager.MODELMANAGER_BEAN);
+		ModelManager modelManager=BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(ModelManager.MODELMANAGER_BEAN);
 		MongoDBModel model=modelManager.getModel(modelRequestInfo.getModelId());
-		MongoModelInfoGetter getter=SpringUtil.getBean("mongoModelInfoGetter");
+		MongoModelInfoGetter getter=BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean("mongoModelInfoGetter");
 		Object operate=getter.getOperation(model, modelRequestInfo.getProcessorId());
 		if(operate!=null){
 			if(operate instanceof Operation){

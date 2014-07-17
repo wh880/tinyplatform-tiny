@@ -17,7 +17,7 @@ package org.tinygroup.validate.test.scene.testcase;
 
 import junit.framework.TestCase;
 
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.validate.ErrorDescription;
 import org.tinygroup.validate.ValidateResult;
@@ -38,8 +38,9 @@ public class TestScene extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		init();
-		validatorManager = SpringUtil
-				.getBean(XmlValidatorManager.VALIDATOR_MANAGER_BEAN_NAME);
+		validatorManager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				XmlValidatorManager.VALIDATOR_MANAGER_BEAN_NAME);
 	}
 
 	private SceneUser getChinaSucessUser() {

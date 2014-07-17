@@ -22,11 +22,11 @@ import javax.servlet.ServletContextListener;
 
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
@@ -35,7 +35,8 @@ import org.tinygroup.xmlparser.node.XmlNode;
  * @author renhui
  * 
  */
-public class TinyListenerProcessor extends AbstractConfiguration implements ApplicationProcessor  {
+public class TinyListenerProcessor extends AbstractConfiguration implements
+		ApplicationProcessor {
 
 	private static final String CONTEXT_PARAM = "context-param";
 
@@ -68,14 +69,17 @@ public class TinyListenerProcessor extends AbstractConfiguration implements Appl
 		List<XmlNode> listenerNodes = ConfigurationUtil.combineSubList(
 				LISTENER_BEAN, applicationConfig, componentConfig);
 		for (XmlNode node : listenerNodes) {
-			ServletContextListener listener = SpringUtil.getBean(node
-					.getAttribute("name"));
+			ServletContextListener listener = BeanContainerFactory
+					.getBeanContainer(this.getClass().getClassLoader())
+					.getBean(node.getAttribute("name"));
 			listeners.add(listener);
 		}
 		TinyServletContext servletContext = (TinyServletContext) ServletContextHolder
 				.getServletContext();
-		if(servletContext!=null){//不是web程序启动，比如是测试用例启动插件
-			servletContext.setFullContextFileRepository(SpringUtil.getBean(FullContextFileRepository.class));
+		if (servletContext != null) {// 不是web程序启动，比如是测试用例启动插件
+			servletContext.setFullContextFileRepository(BeanContainerFactory
+					.getBeanContainer(this.getClass().getClassLoader())
+					.getBean(FullContextFileRepository.class));
 			event = new ServletContextEvent(servletContext);
 			List<XmlNode> paramNodes = ConfigurationUtil.combineSubList(
 					CONTEXT_PARAM, applicationConfig, componentConfig);
@@ -87,7 +91,7 @@ public class TinyListenerProcessor extends AbstractConfiguration implements Appl
 			servletContext.setInitParameter(LISTENER_NODE_CONFIG,
 					applicationConfig.toString());
 		}
-		
+
 	}
 
 	public void stop() {
@@ -112,8 +116,8 @@ public class TinyListenerProcessor extends AbstractConfiguration implements Appl
 	}
 
 	public void setApplication(Application application) {
-		//如果程序中需要访问application方法，则需要设置为属性
-		
+		// 如果程序中需要访问application方法，则需要设置为属性
+
 	}
 
 	public int getOrder() {
@@ -122,6 +126,6 @@ public class TinyListenerProcessor extends AbstractConfiguration implements Appl
 
 	public void init() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

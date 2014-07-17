@@ -17,13 +17,13 @@ package org.tinygroup.flowbasiccomponent;
 
 import java.lang.reflect.Method;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.flow.util.FlowElUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 
 public class CallMethod implements ComponentInterface {
 	private Logger logger = LoggerFactory.getLogger(CallMethod.class);
@@ -105,7 +105,8 @@ public class CallMethod implements ComponentInterface {
 	}
 
 	private Object execBeanMethod(Object[] args) {
-		Object obj = SpringUtil.getBean(beanName);
+		Object obj = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(beanName);
 		if (obj == null) {
 			String info = String.format("找不到bean::%s", beanName);
 			logger.logMessage(LogLevel.ERROR, info);
@@ -172,7 +173,8 @@ public class CallMethod implements ComponentInterface {
 		String[] paramArray = params.split(",");
 		args = new Object[paramArray.length];
 		for (int i = 0; i < paramArray.length; i++) {
-			args[i] = FlowElUtil.execute(paramArray[i], context);
+			args[i] = FlowElUtil.execute(paramArray[i], context, this
+					.getClass().getClassLoader());
 		}
 		return args;
 	}

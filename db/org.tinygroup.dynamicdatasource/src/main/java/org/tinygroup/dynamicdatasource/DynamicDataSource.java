@@ -22,10 +22,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -36,12 +33,11 @@ import org.tinygroup.logger.LoggerFactory;
  * @author chenjiao
  * 
  */
-public class DynamicDataSource implements DataSource, ApplicationContextAware {
+public class DynamicDataSource implements DataSource {
 
-	public static final String DATASOURCE_NAME="dynamicDataSource";
+	public static final String DATASOURCE_NAME = "dynamicDataSource";
 	private static final Logger log = LoggerFactory
 			.getLogger(DynamicDataSource.class);
-	private ApplicationContext applicationContext = null;
 	private DataSource dataSource = null;
 
 	private Method unwrapMethod = null;
@@ -72,22 +68,15 @@ public class DynamicDataSource implements DataSource, ApplicationContextAware {
 		getDataSource().setLoginTimeout(timeout);
 	}
 
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		this.applicationContext = applicationContext;
-	}
 
 	public DataSource getDataSource(String dataSourceName) {
 		log.logMessage(LogLevel.DEBUG, "数据源名:" + dataSourceName);
-		try {
-			if (dataSourceName == null || dataSourceName.equals("")) {
-				return this.dataSource;
-			}
-			return (DataSource) this.applicationContext.getBean(dataSourceName);
-		} catch (NoSuchBeanDefinitionException ex) {
-			throw new RuntimeException("There is not the dataSource <name:"
-					+ dataSourceName + "> in the applicationContext!");
+		if (dataSourceName == null || dataSourceName.equals("")) {
+			return this.dataSource;
 		}
+		return (DataSource) BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(dataSourceName);
+
 	}
 
 	public void setDataSource(DataSource dataSource) {

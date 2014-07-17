@@ -19,7 +19,6 @@ import org.tinygroup.annotation.AnnotationExcuteManager;
 import org.tinygroup.fileresolver.ProcessorCallBack;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.fileresolver.impl.MultiThreadFileProcessor;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 
 /**
@@ -29,7 +28,7 @@ import org.tinygroup.vfs.FileObject;
  * 
  */
 public class AnnotationClassFileProcessor extends AbstractFileProcessor {
-
+	private AnnotationExcuteManager manager;
 	private static final String CLASS_EXT_FILENAME = ".class";
 
 	public boolean isMatch(FileObject fileObject) {
@@ -41,9 +40,15 @@ public class AnnotationClassFileProcessor extends AbstractFileProcessor {
 
 	}
 
+	public AnnotationExcuteManager getManager() {
+		return manager;
+	}
+
+	public void setManager(AnnotationExcuteManager manager) {
+		this.manager = manager;
+	}
+
 	public void process() {
-		final AnnotationExcuteManager manager = SpringUtil
-				.getBean(AnnotationExcuteManager.ANNOTATION_MANAGER_BEAN_NAME);
 		MultiThreadFileProcessor.mutiProcessor(getFileResolver()
 				.getFileProcessorThreadNumber(), "annotation-muti", fileObjects,
 				new ProcessorCallBack() {

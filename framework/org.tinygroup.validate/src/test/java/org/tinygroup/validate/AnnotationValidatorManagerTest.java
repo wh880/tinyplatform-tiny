@@ -15,18 +15,16 @@
  */
 package org.tinygroup.validate;
 
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 
-public class AnnotationValidatorManagerTest extends AbstractValidatorManagerTest {
-	
-	
+public class AnnotationValidatorManagerTest extends
+		AbstractValidatorManagerTest {
 
-		
-		protected void setUp() throws Exception {
-			super.setUp();
-			validatorManager=SpringUtil.getBean(AnnotationValidatorManager.VALIDATOR_MANAGER_BEAN_NAME);
-		}
-		
-		
+	protected void setUp() throws Exception {
+		super.setUp();
+		validatorManager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				AnnotationValidatorManager.VALIDATOR_MANAGER_BEAN_NAME);
+	}
 
 }

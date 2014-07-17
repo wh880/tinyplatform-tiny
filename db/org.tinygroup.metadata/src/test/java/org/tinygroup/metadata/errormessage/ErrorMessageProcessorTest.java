@@ -17,9 +17,9 @@ package org.tinygroup.metadata.errormessage;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.metadata.TestInit;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class ErrorMessageProcessorTest extends TestCase {
 	ErrorMessageProcessor errorMessageProcessor;
@@ -29,7 +29,9 @@ public class ErrorMessageProcessorTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		errorMessageProcessor = SpringUtil.getBean(MetadataUtil.ERRORMESSAGEPROCESSOR_BEAN);
+		errorMessageProcessor = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				MetadataUtil.ERRORMESSAGEPROCESSOR_BEAN);
 	}
 
 	public void testGetErrorMessageStringString() {

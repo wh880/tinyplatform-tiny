@@ -7,10 +7,14 @@
 
 	<bean id="callService" scope="prototype"
 		class="org.tinygroup.flowservicecomponent.CallServiceComponent">
+		<property name="cepCore" ref="cepcore"></property>
 	</bean>
 	<bean id="callFlow" scope="prototype"
-		class="org.tinygroup.flowservicecomponent.CallFlow"></bean>
+		class="org.tinygroup.flowservicecomponent.CallFlow">
+		<property name="cepCore" ref="cepcore"></property>
+	</bean>
 	<bean id="callPageFlow" scope="prototype"
 		class="org.tinygroup.flowservicecomponent.CallPageFlow">
+		<property name="executor" ref="pageFlowExecutor"></property>
 	</bean>
 </beans>

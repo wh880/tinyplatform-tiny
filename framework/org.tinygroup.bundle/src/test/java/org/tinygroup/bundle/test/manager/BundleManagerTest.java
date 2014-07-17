@@ -17,14 +17,15 @@ package org.tinygroup.bundle.test.manager;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.bundle.BundleManager;
 import org.tinygroup.bundle.test.util.TestUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class BundleManagerTest extends TestCase{
 	public void testStart(){
 		TestUtil.init();
-		BundleManager manager = SpringUtil.getBean(BundleManager.BEAN_NAME);
+		BundleManager manager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(BundleManager.BEAN_NAME);
 		manager.start();
 		try {
 			manager.getTinyClassLoader("test1").loadClass("org.tinygroup.MyTestInterface");

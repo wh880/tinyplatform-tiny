@@ -20,7 +20,6 @@ import org.tinygroup.database.initdata.InitDataProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -28,6 +27,15 @@ import com.thoughtworks.xstream.XStream;
 
 public class InitDataFileResolver extends AbstractFileProcessor {
 	private static final String INITDATA_EXTFILENAME = ".init.xml";
+	InitDataProcessor initDataProcessor;
+	
+	public InitDataProcessor getInitDataProcessor() {
+		return initDataProcessor;
+	}
+
+	public void setInitDataProcessor(InitDataProcessor initDataProcessor) {
+		this.initDataProcessor = initDataProcessor;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(INITDATA_EXTFILENAME);
@@ -35,8 +43,6 @@ public class InitDataFileResolver extends AbstractFileProcessor {
 
 	public void process() {
 		logger.logMessage(LogLevel.INFO, "开始处理表格初始化数据init文件");
-		InitDataProcessor initDataProcessor = SpringUtil
-				.getBean(DataBaseUtil.INITDATA_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.INITDATA_XSTREAM);
 		for (FileObject fileObject : deleteList) {

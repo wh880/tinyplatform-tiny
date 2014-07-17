@@ -20,7 +20,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.metadata.config.constants.Constants;
 import org.tinygroup.metadata.constants.ConstantProcessor;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -29,14 +28,23 @@ import com.thoughtworks.xstream.XStream;
 public class ConstantFileResolver extends AbstractFileProcessor {
 
 	private static final String CONSTANT_EXTFILENAME = ".const.xml";
+	private ConstantProcessor constantProcessor;
+	
+	
+	
+	public ConstantProcessor getConstantProcessor() {
+		return constantProcessor;
+	}
+
+	public void setConstantProcessor(ConstantProcessor constantProcessor) {
+		this.constantProcessor = constantProcessor;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(CONSTANT_EXTFILENAME);
 	}
 
 	public void process() {
-		ConstantProcessor constantProcessor = SpringUtil
-				.getBean(MetadataUtil.CONSTANTPROCESSOR_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
 		for (FileObject fileObject : deleteList) {

@@ -17,7 +17,6 @@ package org.tinygroup.validate.fileresolver;
 
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.validate.ValidatorManager;
 import org.tinygroup.validate.XmlValidatorManager;
 import org.tinygroup.validate.config.ObjectValidators;
@@ -35,14 +34,23 @@ import com.thoughtworks.xstream.XStream;
 public class ValidateFileProcessor extends AbstractFileProcessor {
 
 	private static final String VALIDATE_FILE_SUFFIX = ".validate.xml";
+	XmlValidatorManager validatorManager;
+	
+	public XmlValidatorManager getValidatorManager() {
+		return validatorManager;
+	}
+
+	public void setValidatorManager(XmlValidatorManager validatorManager) {
+		this.validatorManager = validatorManager;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(VALIDATE_FILE_SUFFIX);
 	}
 
 	public void process() {
-		XmlValidatorManager validatorManager = SpringUtil
-				.getBean(XmlValidatorManager.VALIDATOR_MANAGER_BEAN_NAME);
+//		 = SpringBeanContainer
+//				.getBean(XmlValidatorManager.VALIDATOR_MANAGER_BEAN_NAME);
 		XStream stream = XStreamFactory
 				.getXStream(ValidatorManager.XSTEAM_PACKAGE_NAME);
 		

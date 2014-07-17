@@ -3,7 +3,6 @@ package org.tinygroup.flowbasiccomponent;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.Context2Map;
 import org.tinygroup.flow.ComponentInterface;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
@@ -26,6 +25,16 @@ public class TinydbSqlQueryService implements ComponentInterface {
 	private String resultKey;
 	private String schema;
 	
+	private BeanOperatorManager manager;
+	
+	
+	public BeanOperatorManager getManager() {
+		return manager;
+	}
+
+	public void setManager(BeanOperatorManager manager) {
+		this.manager = manager;
+	}
 
 	public int getStart() {
 		return start;
@@ -76,7 +85,6 @@ public class TinydbSqlQueryService implements ComponentInterface {
 	}
 
 	public void execute(Context context) {
-		BeanOperatorManager manager=SpringUtil.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		DBOperator operator= manager.getDbOperator(schema, beanType);
 		Bean[] beans=null;
 		Context2Map context2Map=new Context2Map(context);

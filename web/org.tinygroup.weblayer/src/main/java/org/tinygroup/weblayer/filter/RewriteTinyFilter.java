@@ -95,7 +95,7 @@ public class RewriteTinyFilter extends AbstractTinyFilter {
 	}
 
 	private Object[] ruleHandlers(XmlNode ruleNode) {
-		return ParserXmlNodeUtil.parseConfigToArray("rewrite-handler",
+		return ParserXmlNodeUtil.parseConfigToArray(this.getClass().getClassLoader(),"rewrite-handler",
 				ruleNode, RewriteSubstitutionHandler.class);
 	}
 
@@ -108,10 +108,10 @@ public class RewriteTinyFilter extends AbstractTinyFilter {
 	 */
 	private RewriteSubstitution ruleSubstitution(XmlNode ruleNode) {
 		RewriteSubstitution substitution = ParserXmlNodeUtil
-				.parseConfigToObject("substitution",null, ruleNode,
+				.parseConfigToObject(this.getClass().getClassLoader(),"substitution",null, ruleNode,
 						RewriteSubstitution.class, new String[] { "uri",
 								"flags" });
-		Parameter[] parameters = ParserXmlNodeUtil.parseConfigToArray(
+		Parameter[] parameters = ParserXmlNodeUtil.parseConfigToArray(this.getClass().getClassLoader(),
 				"parameter", ruleNode, Parameter.class, new String[] { "key",
 						"value" });
 		substitution.setParameters(parameters);
@@ -126,7 +126,7 @@ public class RewriteTinyFilter extends AbstractTinyFilter {
 	 * @return
 	 */
 	private RewriteCondition[] ruleConditions(XmlNode ruleNode) {
-		return ParserXmlNodeUtil.parseConfigToArray("condition", ruleNode,
+		return ParserXmlNodeUtil.parseConfigToArray(this.getClass().getClassLoader(),"condition", ruleNode,
 				RewriteCondition.class, new String[] { "test", "flags",
 						"pattern" });
 	}

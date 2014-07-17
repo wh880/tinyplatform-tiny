@@ -23,12 +23,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.NameFilter;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.FilterWrapper;
 import org.tinygroup.weblayer.TinyFilterHandler;
@@ -53,7 +53,6 @@ public class TinyFilterWrapper extends AbstractTinyFilter implements
 
 	private List<String> filterBeanNames = new ArrayList<String>();;
 
-	
 	protected void initParam(XmlNode xmlNode) {
 		NameFilter<XmlNode> nameFilter = new NameFilter<XmlNode>(xmlNode);
 		List<XmlNode> initParamNodes = nameFilter.findNodeList(INIT_PARAM);
@@ -70,11 +69,11 @@ public class TinyFilterWrapper extends AbstractTinyFilter implements
 						filterBeanNames.add(beanName);
 					}
 				}
-				if(buffer.length()>0){
-					initParamMap.put(name, buffer.deleteCharAt(buffer.length() - 1)
-							.toString());
+				if (buffer.length() > 0) {
+					initParamMap
+							.put(name, buffer.deleteCharAt(buffer.length() - 1)
+									.toString());
 				}
-				
 
 			} else {
 				initParamMap.put(name, value);
@@ -85,12 +84,12 @@ public class TinyFilterWrapper extends AbstractTinyFilter implements
 		}
 	}
 
-	
 	public void initTinyFilter() {
 		super.initTinyFilter();
 		logger.logMessage(LogLevel.INFO, "filter包装类开始实例化filter");
 		for (String beanName : filterBeanNames) {
-			Filter filter = SpringUtil.getBean(beanName);
+			Filter filter = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(beanName);
 			if (filter != null) {
 				logger.logMessage(LogLevel.INFO, "实例化filter：<{}>", beanName);
 				try {
@@ -106,7 +105,6 @@ public class TinyFilterWrapper extends AbstractTinyFilter implements
 
 	}
 
-	
 	public void destoryTinyFilter() {
 		super.destoryTinyFilter();
 		for (Filter filter : filters) {

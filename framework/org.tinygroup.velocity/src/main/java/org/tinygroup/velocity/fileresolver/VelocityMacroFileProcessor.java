@@ -17,11 +17,20 @@ package org.tinygroup.velocity.fileresolver;
 
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.velocity.VelocityHelper;
 import org.tinygroup.vfs.FileObject;
 
 public class VelocityMacroFileProcessor extends AbstractFileProcessor {
+	VelocityHelper velocityHelper;
+	
+	
+	public VelocityHelper getVelocityHelper() {
+		return velocityHelper;
+	}
+
+	public void setVelocityHelper(VelocityHelper velocityHelper) {
+		this.velocityHelper = velocityHelper;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		if (fileObject.getFileName().endsWith(".component")) {
@@ -31,7 +40,7 @@ public class VelocityMacroFileProcessor extends AbstractFileProcessor {
 	}
 
 	public void process() {
-		VelocityHelper velocityHelper = SpringUtil.getBean("velocityHelper");
+//		VelocityHelper velocityHelper = SpringBeanContainer.getBean("velocityHelper");
 		for (FileObject fileObject : deleteList) {
 			logger.logMessage(LogLevel.INFO, "正在移除ui宏模板组件文件[{0}]",
 					fileObject.getAbsolutePath());

@@ -17,7 +17,6 @@ package org.tinygroup.uiengine.fileresolver;
 
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.uiengine.config.UIComponents;
 import org.tinygroup.uiengine.manager.UIComponentManager;
 import org.tinygroup.vfs.FileObject;
@@ -32,6 +31,18 @@ import com.thoughtworks.xstream.XStream;
  * 
  */
 public class UIComponentFileProcessor extends AbstractFileProcessor {
+	UIComponentManager manager ;
+	
+	
+	public UIComponentManager getManager() {
+		return manager;
+	}
+
+
+	public void setManager(UIComponentManager manager) {
+		this.manager = manager;
+	}
+
 
 	public boolean isMatch(FileObject fileObject) {
 		if (fileObject.getFileName().endsWith(".ui.xml")) {
@@ -42,8 +53,6 @@ public class UIComponentFileProcessor extends AbstractFileProcessor {
 
 
 	public void process() {
-		UIComponentManager manager = SpringUtil
-				.getBean(UIComponentManager.UIComponentManager_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(UIComponentManager.UIComponentManager_XSTREAM);
 		for (FileObject fileObject : deleteList) {

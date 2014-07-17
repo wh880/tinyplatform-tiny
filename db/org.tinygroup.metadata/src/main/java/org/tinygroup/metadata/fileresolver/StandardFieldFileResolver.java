@@ -20,7 +20,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.metadata.config.stdfield.StandardFields;
 import org.tinygroup.metadata.stdfield.StandardFieldProcessor;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -29,14 +28,22 @@ import com.thoughtworks.xstream.XStream;
 public class StandardFieldFileResolver extends AbstractFileProcessor {
 
 	private static final String STANDARDFIELD_EXTFILENAME = ".stdfield.xml";
+	private StandardFieldProcessor standardFieldProcessor;
+	
+	public StandardFieldProcessor getStandardFieldProcessor() {
+		return standardFieldProcessor;
+	}
+
+	public void setStandardFieldProcessor(
+			StandardFieldProcessor standardFieldProcessor) {
+		this.standardFieldProcessor = standardFieldProcessor;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(STANDARDFIELD_EXTFILENAME);
 	}
 
 	public void process() {
-		StandardFieldProcessor standardFieldProcessor = SpringUtil
-				.getBean(MetadataUtil.STDFIELDPROCESSOR_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
 		for (FileObject fileObject : deleteList) {

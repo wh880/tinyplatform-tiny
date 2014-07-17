@@ -15,29 +15,34 @@
  */
 package org.tinygroup.mongodb.engine;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.imda.processor.ParameterBuilder;
 import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
 import org.tinygroup.mongodb.model.MongoDBModel;
-import org.tinygroup.springutil.SpringUtil;
 
 /**
  * 
- * 功能说明:抽象的参数组装对象 
-
+ * 功能说明:抽象的参数组装对象
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-11-25 <br>
  * <br>
  */
-public abstract class AbstractMongoParamterBuilder implements ParameterBuilder<MongoDBModel> {
+public abstract class AbstractMongoParamterBuilder implements
+		ParameterBuilder<MongoDBModel> {
 
 	public Context buildParameter(ModelRequestInfo modelRequestInfo,
 			Context context) {
-		ModelManager modelManager=SpringUtil.getBean(ModelManager.MODELMANAGER_BEAN);
-		MongoDBModel model=modelManager.getModel(modelRequestInfo.getModelId());
-		return buildParameter(model,modelRequestInfo,context);
+		ModelManager modelManager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				ModelManager.MODELMANAGER_BEAN);
+		MongoDBModel model = modelManager.getModel(modelRequestInfo
+				.getModelId());
+		return buildParameter(model, modelRequestInfo, context);
 	}
 
-	protected abstract Context buildParameter(MongoDBModel model,ModelRequestInfo modelRequestInfo, Context context);
+	protected abstract Context buildParameter(MongoDBModel model,
+			ModelRequestInfo modelRequestInfo, Context context);
 }

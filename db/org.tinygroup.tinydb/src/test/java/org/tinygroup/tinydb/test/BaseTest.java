@@ -21,7 +21,7 @@ import java.sql.SQLException;
 
 import junit.framework.TestCase;
 
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.util.DataSourceFactory;
@@ -30,7 +30,7 @@ import org.tinygroup.tinytestutil.script.Resources;
 import org.tinygroup.tinytestutil.script.ScriptRunner;
 
 public abstract class BaseTest extends TestCase {
-	protected  static BeanOperatorManager manager;
+	protected static BeanOperatorManager manager;
 	private static DBOperator<String> operator;
 	protected static String ANIMAL = "animal";
 	protected static String PEOPLE = "aPeople";
@@ -42,7 +42,6 @@ public abstract class BaseTest extends TestCase {
 		return operator;
 	}
 
-
 	public void setOperator(DBOperator<String> operator) {
 		BaseTest.operator = operator;
 	}
@@ -53,7 +52,8 @@ public abstract class BaseTest extends TestCase {
 			Connection conn = null;
 			try {
 				AbstractTestUtil.init(null, true);
-				conn = DataSourceFactory.getConnection("dynamicDataSource");
+				conn = DataSourceFactory.getConnection("dynamicDataSource",
+						this.getClass().getClassLoader());
 				ScriptRunner runner = new ScriptRunner(conn, false, false);
 				// 设置字符集
 				Resources.setCharset(Charset.forName("utf-8"));
@@ -64,14 +64,16 @@ public abstract class BaseTest extends TestCase {
 				} catch (Exception e) {
 					// e.printStackTrace();
 				}
-				manager = SpringUtil.getBean("beanOperatorManager");
+				manager = BeanContainerFactory.getBeanContainer(
+						this.getClass().getClassLoader()).getBean(
+						"beanOperatorManager");
 				// people_id
 				// people_name
 				// people_age
 				// branch
 				// registerBean();
 				// registerBean();
-//				manager.initBeansConfiguration();
+				// manager.initBeansConfiguration();
 				operator = (DBOperator<String>) manager.getDbOperator(
 						mainSchema, ANIMAL);
 				hasExcuted = true;
@@ -88,5 +90,4 @@ public abstract class BaseTest extends TestCase {
 		}
 
 	}
-	
 }

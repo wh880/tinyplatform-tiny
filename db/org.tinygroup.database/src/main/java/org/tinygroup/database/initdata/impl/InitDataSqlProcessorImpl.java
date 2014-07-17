@@ -37,7 +37,8 @@ public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 
 	public List<String> getInitSql(InitData initData) {
 		List<String> initSqlList = new ArrayList<String>();
-		Table table = DataBaseUtil.getTableById(initData.getTableId());
+		Table table = DataBaseUtil.getTableById(initData.getTableId(), this
+				.getClass().getClassLoader());
 		if (initData.getRecordList() != null) {
 			for (Record record : initData.getRecordList()) {
 				String sql = valuePairsToAddString(record, table);
@@ -45,10 +46,10 @@ public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 					continue;
 				}
 				logger.logMessage(LogLevel.DEBUG, "添加sql:{0}", sql);
-				if(!initSqlList.contains(sql)){
+				if (!initSqlList.contains(sql)) {
 					initSqlList.add(sql);
 				}
-				
+
 			}
 		}
 		return initSqlList;
@@ -58,33 +59,37 @@ public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 		List<ValuePair> valuePairs = record.getValuePairs();
 		if (valuePairs == null || valuePairs.size() == 0) {
 			return "";
-		}else{
+		} else {
 			StringBuffer keys = new StringBuffer();
 			StringBuffer values = new StringBuffer();
-				for (ValuePair valuePair : valuePairs) {
-					StandardField standField = DataBaseUtil.getStandardField(
-							valuePair.getTableFiledId(), table);
-					String standFieldName = DataBaseUtil.getDataBaseName(standField
-							.getName());
-					String value = valuePair.getValue();
-					// 数据由用户手动填写，包括如''之类的信息
-					keys = keys.append(",").append(standFieldName);
-					values = values.append(",").append("'").append(value).append("'");
-				}
+			for (ValuePair valuePair : valuePairs) {
+				StandardField standField = DataBaseUtil.getStandardField(
+						valuePair.getTableFiledId(), table, this.getClass()
+								.getClassLoader());
+				String standFieldName = DataBaseUtil.getDataBaseName(standField
+						.getName());
+				String value = valuePair.getValue();
+				// 数据由用户手动填写，包括如''之类的信息
+				keys = keys.append(",").append(standFieldName);
+				values = values.append(",").append("'").append(value)
+						.append("'");
+			}
 
-				return String.format("INSERT INTO %s (%s) VALUES (%s)",
-						table.getName(), keys.substring(1), values.substring(1));
+			return String.format("INSERT INTO %s (%s) VALUES (%s)",
+					table.getName(), keys.substring(1), values.substring(1));
 		}
 	}
 
 	public List<String> getDeinitSql(InitData initData) {
 		List<String> initSqlList = new ArrayList<String>();
-		Table table = DataBaseUtil.getTableById(initData.getTableId());
+		Table table = DataBaseUtil.getTableById(initData.getTableId(), this
+				.getClass().getClassLoader());
 		List<String> keys = new ArrayList<String>();
 		for (TableField field : table.getFieldList()) {
 			if (field.getPrimary()) {
-				StandardField stdField = MetadataUtil.getStandardField(field
-						.getStandardFieldId());
+				StandardField stdField = MetadataUtil
+						.getStandardField(field.getStandardFieldId(), this
+								.getClass().getClassLoader());
 				keys.add(DataBaseUtil.getDataBaseName(stdField.getName())
 
 				);
@@ -97,7 +102,7 @@ public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 					continue;
 				}
 				logger.logMessage(LogLevel.DEBUG, "添加sql:{0}", sql);
-				if(!initSqlList.contains(sql)){
+				if (!initSqlList.contains(sql)) {
 					initSqlList.add(sql);
 				}
 			}
@@ -115,8 +120,9 @@ public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 		String where = "";
 		int times = 0;// 当单条数据的delete语句生成时,times的次数应该等于keys，即主键列表的长度
 		for (ValuePair valuePair : valuePairs) {
-			StandardField standField = DataBaseUtil.getStandardField(
-					valuePair.getTableFiledId(), table);
+			StandardField standField = DataBaseUtil
+					.getStandardField(valuePair.getTableFiledId(), table, this
+							.getClass().getClassLoader());
 			String standFieldName = DataBaseUtil.getDataBaseName(standField
 					.getName());
 			String value = valuePair.getValue();
@@ -124,7 +130,8 @@ public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 				continue;// 不是主键
 			}
 			// 数据由用户手动填写，包括如''之类的信息
-			where =where+ String.format(" AND %s='%s'", standFieldName, value);
+			where = where
+					+ String.format(" AND %s='%s'", standFieldName, value);
 			times++;
 		}
 		if (times != keys.size()) {
@@ -134,8 +141,7 @@ public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 		}
 		int index = where.indexOf("AND");
 		where = where.substring(index + 3);
-		return String
-				.format("DELETE FROM %s WHERE %s", table.getName(), where);
+		return String.format("DELETE FROM %s WHERE %s", table.getName(), where);
 	}
 
 }

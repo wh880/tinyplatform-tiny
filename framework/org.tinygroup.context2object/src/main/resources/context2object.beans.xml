@@ -12,5 +12,6 @@
 	<bean id="generatorFileProcessor" name="generatorFileProcessor"
 		scope="singleton"
 		class="org.tinygroup.context2object.fileresolver.GeneratorFileProcessor">
+		<property name="generator" ref="classNameObjectGenerator"></property>
 	</bean>
 </beans>

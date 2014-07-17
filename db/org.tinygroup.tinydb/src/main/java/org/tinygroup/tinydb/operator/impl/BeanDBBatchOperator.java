@@ -66,7 +66,7 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 
 	private List<Object> getConditionParams(Bean bean) {
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), getSchema());
+				bean.getType(), getSchema(),this.getClass().getClassLoader());
 		List<Object> params = new ArrayList<Object>();
 		for (ColumnConfiguration column : table.getColumns()) {
 			String columnsName = column.getColumnName();
@@ -129,7 +129,7 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		checkBeanType(beans);
 		List<String> conditionFields = new ArrayList<String>();
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				beans[0].getType(), getSchema());
+				beans[0].getType(), getSchema(),this.getClass().getClassLoader());
 		ColumnConfiguration pk = table.getPrimaryKey();
 		conditionFields.add(pk.getColumnName());
 		//所有的bean都采用根据第一个bean生成的sql来做处理
@@ -171,7 +171,7 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		}		
 		List<SqlParameterValue[]> params=new ArrayList<SqlParameterValue[]>();
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				getBeanType(), getSchema());
+				getBeanType(), getSchema(),this.getClass().getClassLoader());
 		String sql = getDeleteSqlByKey(getBeanType());
 		for (K beanId : beanIds) {
 			SqlParameterValue value=createSqlParamter(beanId, table.getPrimaryKey());
@@ -230,7 +230,7 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		String sql = getQuerySql();
 		List<Bean> list = new ArrayList<Bean>();
 		List<Integer> dataTypes = new ArrayList<Integer>();
-		dataTypes.add(TinyDBUtil.getTableConfigByBean(beanType, getSchema())
+		dataTypes.add(TinyDBUtil.getTableConfigByBean(beanType, getSchema(),this.getClass().getClassLoader())
 				.getPrimaryKey().getDataType());
 		for (K beanId : beanIds) {
 			List<Object> params = new ArrayList<Object>();

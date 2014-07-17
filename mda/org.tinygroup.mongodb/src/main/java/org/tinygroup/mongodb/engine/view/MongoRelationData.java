@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.BSONObject;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.mongodb.common.MongoRelation;
 import org.tinygroup.mongodb.common.RelationField;
 import org.tinygroup.mongodb.db.MongodbPersistence;
 import org.tinygroup.mongodb.model.MongoDBModel;
-import org.tinygroup.springutil.SpringUtil;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -51,7 +51,8 @@ public class MongoRelationData {
 		this.relation = relation;
 		this.objectFieldName=objectFieldName;
 		this.sourcePropertyName=sourcePropertyName;
-		ModelManager modelManager=SpringUtil.getBean(ModelManager.MODELMANAGER_BEAN);
+		ModelManager modelManager=BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(ModelManager.MODELMANAGER_BEAN);
 		MongoDBModel model=modelManager.getModel(relation.getRelationModelId());
 		model.groups();
 		this.targetPropertyName = model.getMongoFieldName(targetFieldId);

@@ -30,7 +30,7 @@
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.springutil</artifactId>
+      <artifactId>org.tinygroup.beancontainer</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

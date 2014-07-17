@@ -70,7 +70,11 @@
       <artifactId>org.tinygroup.beancontainer</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
+    <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.fileresolver</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>

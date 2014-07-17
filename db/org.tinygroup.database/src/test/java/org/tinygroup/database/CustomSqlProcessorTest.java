@@ -17,9 +17,9 @@ package org.tinygroup.database;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.database.customesql.CustomSqlProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class CustomSqlProcessorTest extends TestCase {
 	static {
@@ -29,7 +29,8 @@ public class CustomSqlProcessorTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		customSqlProcessor = SpringUtil.getBean(DataBaseUtil.CUSTOMESQL_BEAN);
+		customSqlProcessor = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(DataBaseUtil.CUSTOMESQL_BEAN);
 	}
 
 	public void testBefore() {

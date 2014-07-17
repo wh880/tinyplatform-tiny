@@ -15,7 +15,7 @@
  */
 package org.tinygroup.entity.common;
 
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
@@ -27,7 +27,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * 
  * 功能说明:下拉框输入模式
  * <p>
-
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-11-6 <br>
  * <br>
@@ -70,27 +70,28 @@ public class ComboBoxInputMode extends InputMode {
 
 	@SuppressWarnings("rawtypes")
 	public String getComboBoxDataJson() {
-		BeanOperatorManager manager = SpringUtil
-				.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		DBOperator operator = manager.getDbOperator(beanType);
 		Bean[] beans = operator.getBeans(new Bean(beanType));
 		ComboBoxItem[] items = new ComboBoxItem[beans.length];
 		if (beans != null) {
 			for (int i = 0; i < beans.length; i++) {
-				Bean bean=beans[i];
-				if(bean!=null){
-					ComboBoxItem item=new ComboBoxItem();
+				Bean bean = beans[i];
+				if (bean != null) {
+					ComboBoxItem item = new ComboBoxItem();
 					item.setLabel((String) bean.getProperty(labelProperty));
 					item.setValue((String) bean.getProperty(valueProperty));
-					items[i]=item;
+					items[i] = item;
 				}
 			}
-			
+
 		}
-		StringBuffer buffer=new StringBuffer();
+		StringBuffer buffer = new StringBuffer();
 		buffer.append("[");
 		for (int i = 0; i < items.length; i++) {
-			if(i>0){
+			if (i > 0) {
 				buffer.append(",");
 			}
 			buffer.append(items[i]);

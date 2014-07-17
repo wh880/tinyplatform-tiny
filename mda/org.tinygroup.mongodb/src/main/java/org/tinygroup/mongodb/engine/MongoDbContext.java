@@ -18,6 +18,7 @@ package org.tinygroup.mongodb.engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.cryptor.Cryptor;
 import org.tinygroup.commons.cryptor.DefaultCryptor;
 import org.tinygroup.commons.tools.CollectionUtil;
@@ -34,7 +35,6 @@ import org.tinygroup.mongodb.engine.comparemode.MongoCompareMode;
 import org.tinygroup.mongodb.engine.comparemode.MongoCompareModeContain;
 import org.tinygroup.mongodb.model.MongoDBModel;
 import org.tinygroup.mongodb.util.ModelUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.springutil.TypeConverterUtil;
 
 import com.mongodb.BasicDBList;
@@ -86,7 +86,8 @@ public class MongoDbContext {
 		this.model = model;
 		this.context = context;
 		init(model);
-		contain = SpringUtil
+		contain = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader())
 				.getBean(MongoCompareModeContain.COMPARE_MODE_CONTAIN);
 		persistence = new MongodbPersistence(model.getName());
 	}
@@ -95,7 +96,8 @@ public class MongoDbContext {
 		//加载继承模型
 		String parentModelId=model.getParentModelId();
 		if(!StringUtil.isBlank(parentModelId)){
-			ModelManager modelManager=SpringUtil.getBean(ModelManager.MODELMANAGER_BEAN);
+			ModelManager modelManager=BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(ModelManager.MODELMANAGER_BEAN);
 			MongoDBModel parentModel=modelManager.getModel(parentModelId);
 			if(parentModel!=null){
 				model.fieldMap(parentModel.getGroups());

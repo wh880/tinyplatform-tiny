@@ -17,9 +17,9 @@ package org.tinygroup.metadata.stdfield;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.metadata.TestInit;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class TestStdFieldProcessorTest extends TestCase {
 
@@ -30,18 +30,19 @@ public class TestStdFieldProcessorTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		standardFieldProcessor = SpringUtil.getBean(MetadataUtil.STDFIELDPROCESSOR_BEAN);
+		standardFieldProcessor = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				MetadataUtil.STDFIELDPROCESSOR_BEAN);
 	}
 
 	public void testGetTypeStringStringString() {
 		assertEquals("VARCHAR(30)",
-				standardFieldProcessor.getType( "test_name", "mysql"));
-		assertEquals("INT",
-				standardFieldProcessor.getType( "test_age", "mysql"));
+				standardFieldProcessor.getType("test_name", "mysql"));
+		assertEquals("INT", standardFieldProcessor.getType("test_age", "mysql"));
 		assertEquals("TINYTEXT",
-				standardFieldProcessor.getType( "test_short_info", "mysql"));
+				standardFieldProcessor.getType("test_short_info", "mysql"));
 		assertEquals("DATETIME",
-				standardFieldProcessor.getType( "test_create_time", "mysql"));
+				standardFieldProcessor.getType("test_create_time", "mysql"));
 	}
 
 }

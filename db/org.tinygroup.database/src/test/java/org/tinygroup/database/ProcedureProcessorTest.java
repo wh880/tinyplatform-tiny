@@ -19,9 +19,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.database.procedure.ProcedureProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.springutil.SpringUtil;
 
 public class ProcedureProcessorTest extends TestCase {
 	static {
@@ -33,7 +33,7 @@ public class ProcedureProcessorTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		procedureProcessor = SpringUtil.getBean(DataBaseUtil.PROCEDURE_BEAN);
+		procedureProcessor = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(DataBaseUtil.PROCEDURE_BEAN);
 	}
 
 	public void testGetTableStringString() {

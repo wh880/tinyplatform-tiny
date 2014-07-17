@@ -28,5 +28,6 @@
 	</bean>
 	<bean id="tinydbSqlQueryService" name="tinydbSqlQueryService" scope="prototype"
 		class="org.tinygroup.flowbasiccomponent.TinydbSqlQueryService">
+		<property name="manager" ref="beanOperatorManager"></property>
 	</bean>
 </beans>

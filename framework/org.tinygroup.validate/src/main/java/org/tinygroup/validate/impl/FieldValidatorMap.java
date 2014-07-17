@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.i18n.I18nMessageFactory;
 import org.tinygroup.i18n.I18nMessages;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.validate.ValidateResult;
 import org.tinygroup.validate.Validator;
 import org.tinygroup.validate.ValidatorManager;
@@ -45,8 +45,9 @@ public class FieldValidatorMap {
 	public static final String TINY_DEFAULT_SCENE = "tiny_default";
 
 	public FieldValidatorMap() {
-		validatorManagerWrapper = SpringUtil
-				.getBean(ValidatorManagerWrapper.class);
+		validatorManagerWrapper = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				ValidatorManagerWrapper.class);
 	}
 
 	private Map<FieldWapper, Map<String, List<Validator>>> fieldSceneValidatorsMap = new HashMap<FieldWapper, Map<String, List<Validator>>>();

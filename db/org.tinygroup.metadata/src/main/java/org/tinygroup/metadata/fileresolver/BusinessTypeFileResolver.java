@@ -20,7 +20,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.metadata.bizdatatype.BusinessTypeProcessor;
 import org.tinygroup.metadata.config.bizdatatype.BusinessTypes;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -28,14 +27,24 @@ import com.thoughtworks.xstream.XStream;
 
 public class BusinessTypeFileResolver extends AbstractFileProcessor {
 	private static final String BIZDATATYPE_EXTFILENAME = ".bizdatatype.xml";
+	private BusinessTypeProcessor businessTypeProcessor;
+	
+	
+	public BusinessTypeProcessor getBusinessTypeProcessor() {
+		return businessTypeProcessor;
+	}
+
+	public void setBusinessTypeProcessor(BusinessTypeProcessor businessTypeProcessor) {
+		this.businessTypeProcessor = businessTypeProcessor;
+	}
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(BIZDATATYPE_EXTFILENAME);
 	}
 
 	public void process() {
-		BusinessTypeProcessor businessTypeProcessor = SpringUtil
-				.getBean(MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
+//		BusinessTypeProcessor businessTypeProcessor = SpringBeanContainer
+//				.getBean(MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
 		for (FileObject fileObject : deleteList) {

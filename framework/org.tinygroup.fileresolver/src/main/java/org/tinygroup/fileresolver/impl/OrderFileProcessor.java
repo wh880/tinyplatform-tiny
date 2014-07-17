@@ -17,7 +17,6 @@ package org.tinygroup.fileresolver.impl;
 
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.order.processor.OrderProcessor;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 
 /**
@@ -30,18 +29,26 @@ import org.tinygroup.vfs.FileObject;
  * <br>
  */
 public class OrderFileProcessor extends AbstractFileProcessor {
-
+	private OrderProcessor<?> orderProcessor;
 	private static final String ORDER_FILE_NAME = ".order.xml";
 
 	public boolean isMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(ORDER_FILE_NAME);
 	}
 
+	public OrderProcessor<?> getOrderProcessor() {
+		return orderProcessor;
+	}
+
+	public void setOrderProcessor(OrderProcessor<?> orderProcessor) {
+		this.orderProcessor = orderProcessor;
+	}
+
 	public void process() {
 
 		logger.logMessage(LogLevel.INFO, "处理对象顺序文件开始");
-		OrderProcessor<?> orderProcessor = SpringUtil
-				.getBean(OrderProcessor.ORDER_NAME);
+//		OrderProcessor<?> orderProcessor = SpringBeanContainer
+//				.getBean(OrderProcessor.ORDER_NAME);
 		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "加载对象顺序文件：[{}]",
 					fileObject.getAbsolutePath());

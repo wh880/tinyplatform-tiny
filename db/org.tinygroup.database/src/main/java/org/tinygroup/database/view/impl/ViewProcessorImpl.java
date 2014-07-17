@@ -29,11 +29,20 @@ import org.tinygroup.database.config.view.Views;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.database.view.ViewProcessor;
 import org.tinygroup.database.view.ViewSqlProcessor;
-import org.tinygroup.springutil.SpringUtil;
 
 public class ViewProcessorImpl implements ViewProcessor {
 	private Map<String, View> viewMap = new HashMap<String, View>();
 	private Map<String, View> viewIdMap = new HashMap<String, View>();
+	private ProcessorManager processorManager;
+	
+	public ProcessorManager getProcessorManager() {
+		return processorManager;
+	}
+
+	public void setProcessorManager(ProcessorManager processorManager) {
+		this.processorManager = processorManager;
+	}
+
 	// 视图依赖关系
 	private Map<String, List<String>> dependencyMap = new HashMap<String, List<String>>();
 
@@ -65,8 +74,8 @@ public class ViewProcessorImpl implements ViewProcessor {
 	}
 
 	public String getCreateSql(View view, String language) {
-		ProcessorManager processorManager = SpringUtil
-				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer
+//				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		ViewSqlProcessor sqlProcessor = (ViewSqlProcessor) processorManager
 				.getProcessor(language, "view");
 		return sqlProcessor.getCreateSql(view);
@@ -88,8 +97,8 @@ public class ViewProcessorImpl implements ViewProcessor {
 	}
 
 	public String getDropSql(View view, String language) {
-		ProcessorManager processorManager = SpringUtil
-				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
+//		ProcessorManager processorManager = SpringBeanContainer
+//				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		ViewSqlProcessor sqlProcessor = (ViewSqlProcessor) processorManager
 				.getProcessor(language, "view");
 		return sqlProcessor.getDropSql(view);
@@ -128,7 +137,7 @@ public class ViewProcessorImpl implements ViewProcessor {
 			List<ViewTable> viewTables = view.getTableList();
 			for (ViewTable viewTable : viewTables) {
 				String viewTableId = viewTable.getTableId();
-				Table table = DataBaseUtil.getTableById(viewTableId);
+				Table table = DataBaseUtil.getTableById(viewTableId,this.getClass().getClassLoader());
 				if (table == null) {
 					View dependView = viewIdMap.get(viewTableId);
 					if (dependView == null) {

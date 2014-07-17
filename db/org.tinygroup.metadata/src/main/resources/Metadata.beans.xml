@@ -28,17 +28,22 @@
 	</bean>
 	<bean id="constantFileResolver" scope="singleton"
 		class="org.tinygroup.metadata.fileresolver.ConstantFileResolver">
+		<property name="constantProcessor" ref="constantProcessor"></property>
 	</bean>
 	<bean id="businessTypeFileResolver" scope="singleton"
 		class="org.tinygroup.metadata.fileresolver.BusinessTypeFileResolver">
+		<property name="businessTypeProcessor" ref="businessTypeProcessor"></property>
 	</bean>
 	<bean id="standardFieldFileResolver" scope="singleton"
 		class="org.tinygroup.metadata.fileresolver.StandardFieldFileResolver">
+		<property name="standardFieldProcessor" ref="standardFieldProcessor"></property>
 	</bean>
 	<bean id="errorMessageFileResolver" scope="singleton"
 		class="org.tinygroup.metadata.fileresolver.ErrorMessageFileResolver">
+		<property name="errorMessageProcessor" ref="errorMessageProcessor"></property>
 	</bean>
 	<bean id="standardTypeFileResolver" scope="singleton"
 		class="org.tinygroup.metadata.fileresolver.StandardTypeFileResolver">
+		<property name="standardDataTypeProcessor" ref="standardTypeProcessor"></property>
 	</bean>
 </beans>

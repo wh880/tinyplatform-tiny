@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
@@ -34,7 +35,6 @@ import org.tinygroup.entity.util.ModelUtil;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.imda.ModelManager;
 import org.tinygroup.metadata.config.stdfield.StandardField;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.operator.DBOperator;
@@ -101,7 +101,8 @@ public class RelationModel extends BaseModel {
 	@SuppressWarnings("rawtypes")
 	public String getCamelName(String name) {
 		if (nameConverter == null) {
-			BeanOperatorManager manager = SpringUtil
+			BeanOperatorManager manager = BeanContainerFactory
+					.getBeanContainer(this.getClass().getClassLoader())
 					.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 			DBOperator operator = manager.getDbOperator(this.getMainBeanType());
 			Assert.assertNotNull(operator, "operator must not null");
@@ -115,7 +116,9 @@ public class RelationModel extends BaseModel {
 			fieldMap = new HashMap<String, Field>();
 		}
 		if (manager == null) {
-			manager = SpringUtil.getBean(ModelManager.MODELMANAGER_BEAN);
+			manager = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					ModelManager.MODELMANAGER_BEAN);
 		}
 		Field field = fieldMap.get(fieldId);
 		if (field != null) {
@@ -144,7 +147,7 @@ public class RelationModel extends BaseModel {
 		RelationField relationField = relationFields.get(fieldId);
 		if (relationField != null) {
 			StandardField stdField = ModelUtil.getStandardField(getField(
-					fieldId).getStandardFieldId());
+					fieldId).getStandardFieldId(),this.getClass().getClassLoader());
 			if (stdField != null) {
 				return createNewStandardField(relationField, stdField);
 			}
@@ -157,29 +160,32 @@ public class RelationModel extends BaseModel {
 		}
 
 	}
-    /**
-     * 
-     * 创建新的标准字段信息带有name和title属性
-     * @param relationField
-     * @param stdField
-     * @return
-     */
+
+	/**
+	 * 
+	 * 创建新的标准字段信息带有name和title属性
+	 * 
+	 * @param relationField
+	 * @param stdField
+	 * @return
+	 */
 	public StandardField createNewStandardField(RelationField relationField,
 			StandardField stdField) {
 		String aliasName = relationField.getAliseName();
-		String title= relationField.getTitle();
-		String refFieldId=relationField.getRefFieldId();
-		if(!StringUtil.isBlank(refFieldId)){
-			if(StringUtil.isBlank(aliasName)){//如果 ref-field-id值不为空且没有设置别名，那么别名值取自field-id的值
-				aliasName=relationField.getFieldId();
+		String title = relationField.getTitle();
+		String refFieldId = relationField.getRefFieldId();
+		if (!StringUtil.isBlank(refFieldId)) {
+			if (StringUtil.isBlank(aliasName)) {// 如果
+												// ref-field-id值不为空且没有设置别名，那么别名值取自field-id的值
+				aliasName = relationField.getFieldId();
 			}
 		}
 		StandardField newStdField = new StandardField();
-		if (StringUtil.isBlank(aliasName)) {//如果没有设置aliasName属性则取自标准字段
-			aliasName=stdField.getName();
+		if (StringUtil.isBlank(aliasName)) {// 如果没有设置aliasName属性则取自标准字段
+			aliasName = stdField.getName();
 		}
-		if(StringUtil.isBlank(title)){//如果为设置title属性则取自标准字段
-		    title=stdField.getTitle();
+		if (StringUtil.isBlank(title)) {// 如果为设置title属性则取自标准字段
+			title = stdField.getTitle();
 		}
 		newStdField.setName(aliasName);
 		newStdField.setTitle(title);
@@ -209,18 +215,19 @@ public class RelationModel extends BaseModel {
 	 * key：model-alias-id；value:modelId
 	 */
 	private transient Map<String, String> aliasId2ModelId = new HashMap<String, String>();
+
 	/**
 	 * 是否可以初始化的标识，只能进行一次初始化
 	 */
-//	private boolean hasInited = false;
+	// private boolean hasInited = false;
 
 	public void init(Context context) {
-//		if (!hasInited) {
-			initVariable();
-			initModelReference(context);
-			initRelationGroup();
-//			hasInited = true;
-//		}
+		// if (!hasInited) {
+		initVariable();
+		initModelReference(context);
+		initRelationGroup();
+		// hasInited = true;
+		// }
 
 	}
 
@@ -249,10 +256,12 @@ public class RelationModel extends BaseModel {
 	}
 
 	public void initModelReference(Context context) {
-		ModelManager modelManager = SpringUtil
-				.getBean(ModelManager.MODELMANAGER_BEAN);
-		EntityRelationsManager entityRelationsManager = SpringUtil
-				.getBean(EntityRelationsManager.MANAGER_BEAN_NAME);
+		ModelManager modelManager = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				ModelManager.MODELMANAGER_BEAN);
+		EntityRelationsManager entityRelationsManager = BeanContainerFactory
+				.getBeanContainer(this.getClass().getClassLoader()).getBean(
+						EntityRelationsManager.MANAGER_BEAN_NAME);
 		List<ModelReference> ModelReferences = this.getModelReferences();
 		for (ModelReference modelReference : ModelReferences) {
 			String relationId = modelReference.getRelationId();

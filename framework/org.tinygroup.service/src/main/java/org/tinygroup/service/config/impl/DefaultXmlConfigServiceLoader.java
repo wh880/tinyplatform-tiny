@@ -18,6 +18,8 @@ package org.tinygroup.service.config.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -25,7 +27,7 @@ import org.tinygroup.service.Service;
 import org.tinygroup.service.config.ServiceComponent;
 import org.tinygroup.service.config.ServiceComponents;
 import org.tinygroup.service.config.XmlConfigServiceLoader;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xstream.XStreamFactory;
@@ -90,12 +92,13 @@ public class DefaultXmlConfigServiceLoader extends XmlConfigServiceLoader {
 
 	protected Object getServiceInstance(ServiceComponent component)
 			throws Exception {
+		BeanContainer contaner = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
 		if (component.getBean() == null
 				|| "".equals(component.getBean().trim())) {
 			Class<?> clazz = Class.forName(component.getType());
-			return SpringUtil.getBean(clazz);
+			return contaner.getBean(clazz);
 		}
-		return SpringUtil.getBean(component.getBean());
+		return contaner.getBean(component.getBean());
 	}
 
 }

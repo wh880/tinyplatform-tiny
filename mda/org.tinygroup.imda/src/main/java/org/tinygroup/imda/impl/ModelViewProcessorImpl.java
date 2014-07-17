@@ -27,7 +27,6 @@ import org.tinygroup.imda.tinyprocessor.ModelRequestInfo;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.weblayer.WebContext;
 
 /**
@@ -38,10 +37,17 @@ import org.tinygroup.weblayer.WebContext;
  */
 public class ModelViewProcessorImpl implements ModelViewProcessor<Object> {
 	Logger logger = LoggerFactory.getLogger(ModelViewProcessor.class);
-
+	ModelManager modelManager;
+	
+	
+	public ModelManager getModelManager() {
+		return modelManager;
+	}
+	public void setModelManager(ModelManager modelManager) {
+		this.modelManager = modelManager;
+	}
 	public void process(ModelRequestInfo modelRequestInfo, Context context,
 			Writer writer) {
-		ModelManager modelManager = SpringUtil.getBean("modelManager");
 		ModelProcessorDefine processDefine = modelManager
 				.getModelProcessorDefine(modelRequestInfo.getModelTypeName(),
 						modelRequestInfo.getOperationType());

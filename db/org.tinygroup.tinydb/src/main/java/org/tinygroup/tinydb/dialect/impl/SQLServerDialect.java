@@ -27,10 +27,10 @@
 package org.tinygroup.tinydb.dialect.impl;
 
 import org.springframework.jdbc.support.incrementer.SqlServerMaxValueIncrementer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.dialect.Dialect;
 
 /**
@@ -112,7 +112,8 @@ public class SQLServerDialect implements Dialect {
 	}
 
 	public String buildSqlFuction(String sql) {
-		DialectFunctionProcessor processor = SpringUtil
+		DialectFunctionProcessor processor = BeanContainerFactory
+		.getBeanContainer(this.getClass().getClassLoader())
 				.getBean(DataBaseUtil.FUNCTION_BEAN);
 		return processor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_SQLSERVER);
 	}

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.aop.CEPCoreAopAdapter;
 import org.tinygroup.cepcore.aop.CEPCoreAopManager;
 import org.tinygroup.event.Event;
@@ -26,7 +27,6 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.NameFilter;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public class CEPCoreAopManagerImpl implements CEPCoreAopManager{
@@ -107,7 +107,7 @@ public class CEPCoreAopManagerImpl implements CEPCoreAopManager{
 			servicePattern = Pattern.compile(patternString);
 		}
 		try {
-			adapter = SpringUtil.getBean(bean);
+			adapter = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(bean);
 		} catch (Exception e) {
 			logger.logMessage(LogLevel.ERROR, "初始化AOP处理器{0}出错:{1}",bean,e.getMessage());
 			return;

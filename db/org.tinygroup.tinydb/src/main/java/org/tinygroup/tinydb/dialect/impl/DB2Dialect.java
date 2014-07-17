@@ -16,16 +16,16 @@
 package org.tinygroup.tinydb.dialect.impl;
 
 import org.springframework.jdbc.support.incrementer.DB2SequenceMaxValueIncrementer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.dialect.Dialect;
 
-public class DB2Dialect implements Dialect{
+public class DB2Dialect implements Dialect {
 
 	private DB2SequenceMaxValueIncrementer incrementer;
-	
+
 	public DB2SequenceMaxValueIncrementer getIncrementer() {
 		return incrementer;
 	}
@@ -39,65 +39,66 @@ public class DB2Dialect implements Dialect{
 	}
 
 	public String getLimitString(String sql, int offset, int limit) {
-		 return getLimitString( sql, offset > 0 );
+		return getLimitString(sql, offset > 0);
 	}
-	
+
 	private String getLimitString(String sql, boolean hasOffset) {
 
 		int startOfSelect = sql.toLowerCase().indexOf("select");
 
-		StringBuffer pagingSelect = new StringBuffer( sql.length()+100 )
-					.append( sql.substring(0, startOfSelect) ) //add the comment
-					.append("select * from ( select ") //nest the main query in an outer select
-					.append( getRowNumber(sql) ); //add the rownnumber bit into the outer query select list
+		StringBuffer pagingSelect = new StringBuffer(sql.length() + 100)
+				.append(sql.substring(0, startOfSelect)) // add the comment
+				.append("select * from ( select ") // nest the main query in an
+													// outer select
+				.append(getRowNumber(sql)); // add the rownnumber bit into the
+											// outer query select list
 
-		if ( hasDistinct(sql) ) {
-			pagingSelect.append(" row_.* from ( ") //add another (inner) nested select
-				.append( sql.substring(startOfSelect) ) //add the main query
-				.append(" ) as row_"); //close off the inner nested select
-		}
-		else {
-			pagingSelect.append( sql.substring( startOfSelect + 6 ) ); //add the main query
+		if (hasDistinct(sql)) {
+			pagingSelect.append(" row_.* from ( ") // add another (inner) nested
+													// select
+					.append(sql.substring(startOfSelect)) // add the main query
+					.append(" ) as row_"); // close off the inner nested select
+		} else {
+			pagingSelect.append(sql.substring(startOfSelect + 6)); // add the
+																	// main
+																	// query
 		}
 
 		pagingSelect.append(" ) as temp_ where rownumber_ ");
 
-		//add the restriction to the outer select
+		// add the restriction to the outer select
 		if (hasOffset) {
 			pagingSelect.append("between ?+1 and ?");
-		}
-		else {
+		} else {
 			pagingSelect.append("<= ?");
 		}
 
 		return pagingSelect.toString();
 	}
-	
 
 	public int getNextKey() {
-		Assert.assertNotNull(incrementer,"incrementer must not null");
+		Assert.assertNotNull(incrementer, "incrementer must not null");
 		return incrementer.nextIntValue();
 	}
 
 	/**
-	 * Render the <tt>rownumber() over ( .... ) as rownumber_,</tt> 
-	 * bit, that goes in the select list
+	 * Render the <tt>rownumber() over ( .... ) as rownumber_,</tt> bit, that
+	 * goes in the select list
 	 */
 	private String getRowNumber(String sql) {
 		StringBuffer rownumber = new StringBuffer(50)
-			.append("rownumber() over(");
+				.append("rownumber() over(");
 
 		int orderByIndex = sql.toLowerCase().indexOf("order by");
 
-		if ( orderByIndex>0 && !hasDistinct(sql) ) {
-			rownumber.append( sql.substring(orderByIndex) );
+		if (orderByIndex > 0 && !hasDistinct(sql)) {
+			rownumber.append(sql.substring(orderByIndex));
 		}
 
 		rownumber.append(") as rownumber_,");
 
 		return rownumber.toString();
 	}
-
 
 	/**
 	 * Checks for distinct.
@@ -106,8 +107,8 @@ public class DB2Dialect implements Dialect{
 	 *            the sql
 	 * @return true, if successful
 	 */
-	private  boolean hasDistinct(String sql) {
-		return sql.toLowerCase().indexOf("select distinct")>=0;
+	private boolean hasDistinct(String sql) {
+		return sql.toLowerCase().indexOf("select distinct") >= 0;
 	}
 
 	public String getCurrentDate() {
@@ -115,7 +116,9 @@ public class DB2Dialect implements Dialect{
 	}
 
 	public String buildSqlFuction(String sql) {
-		DialectFunctionProcessor processor=SpringUtil.getBean(DataBaseUtil.FUNCTION_BEAN);
+		DialectFunctionProcessor processor = BeanContainerFactory
+				.getBeanContainer(this.getClass().getClassLoader()).getBean(
+						DataBaseUtil.FUNCTION_BEAN);
 		return processor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_DB2);
 	}
 

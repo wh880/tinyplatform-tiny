@@ -17,6 +17,7 @@ package org.tinygroup.tinydb.convert.impl;
 
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
@@ -25,24 +26,24 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.metadata.config.stddatatype.DialectType;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
 import org.tinygroup.tinydb.config.TableConfiguration;
 
 /**
  * tiny database描述的表结构配置
+ * 
  * @author renhui
- *
+ * 
  */
-public class DatabaseTableConfigConvert extends AbstractTableConfigConvert{
-	
+public class DatabaseTableConfigConvert extends AbstractTableConfigConvert {
+
 	private static final String DECIMAL_DIGITS_HOLDER = "scale";
 
 	private static final String COLUMN_SIZE_HOLDER = "length,precision";
-	
+
 	private String database;
-	
+
 	public String getDatabase() {
 		return database;
 	}
@@ -52,51 +53,59 @@ public class DatabaseTableConfigConvert extends AbstractTableConfigConvert{
 	}
 
 	protected void realConvert(BeanOperatorManager manager) {
-		TableProcessor processor=SpringUtil.getBean(TableProcessor.BEAN_NAME);
-		List<Table> tables=processor.getTables();
-		if(!CollectionUtil.isEmpty(tables)){
+		TableProcessor processor = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				TableProcessor.BEAN_NAME);
+		List<Table> tables = processor.getTables();
+		if (!CollectionUtil.isEmpty(tables)) {
 			for (Table table : tables) {
-				logger.logMessage(LogLevel.DEBUG, "开始转化表对象:{}",table.getName());
-				TableConfiguration configuration=new TableConfiguration();
-				String tableName=table.getNameWithOutSchema();
-				String schema=getSchema(table.getSchema());
-				if(existsTable(tableName, schema)){
-					logger.logMessage(LogLevel.WARN, "表格:{0}已存在，无需重新加载", tableName);
+				logger.logMessage(LogLevel.DEBUG, "开始转化表对象:{}", table.getName());
+				TableConfiguration configuration = new TableConfiguration();
+				String tableName = table.getNameWithOutSchema();
+				String schema = getSchema(table.getSchema());
+				if (existsTable(tableName, schema)) {
+					logger.logMessage(LogLevel.WARN, "表格:{0}已存在，无需重新加载",
+							tableName);
 					continue;
 				}
 				configuration.setName(tableName);
 				configuration.setSchema(schema);
-				List<TableField> fields=table.getFieldList();
-				if(!CollectionUtil.isEmpty(fields)){
+				List<TableField> fields = table.getFieldList();
+				if (!CollectionUtil.isEmpty(fields)) {
 					for (TableField tableField : fields) {
 						tableFieldConvert(configuration, tableField);
 					}
 					addTableConfiguration(configuration);
 				}
-				logger.logMessage(LogLevel.DEBUG, "转化表对象:{}结束",table.getName());
+				logger.logMessage(LogLevel.DEBUG, "转化表对象:{}结束", table.getName());
 			}
 		}
 	}
-	
+
 	private void tableFieldConvert(TableConfiguration configuration,
 			TableField tableField) {
-		ColumnConfiguration column=new ColumnConfiguration();
-		String standardFieldId=tableField.getStandardFieldId();
-		StandardField standardField=MetadataUtil.getStandardField(standardFieldId);
-		if(standardField==null){
-			logger.logMessage(LogLevel.ERROR, "找不到[{}]对应的标准字段信息",standardFieldId);
+		ColumnConfiguration column = new ColumnConfiguration();
+		String standardFieldId = tableField.getStandardFieldId();
+		StandardField standardField = MetadataUtil.getStandardField(
+				standardFieldId, this.getClass().getClassLoader());
+		if (standardField == null) {
+			logger.logMessage(LogLevel.ERROR, "找不到[{}]对应的标准字段信息",
+					standardFieldId);
 			return;
 		}
-		DialectType dialectType=MetadataUtil.getDialectType(standardFieldId, database);
+		DialectType dialectType = MetadataUtil.getDialectType(standardFieldId,
+				database, this.getClass().getClassLoader());
 		column.setColumnName(standardField.getName());
 		column.setAllowNull(Boolean.toString(!tableField.getNotNull()));
-		column.setColumnSize(MetadataUtil.getPlaceholderValue(standardFieldId, COLUMN_SIZE_HOLDER));
+		column.setColumnSize(MetadataUtil.getPlaceholderValue(standardFieldId,
+				COLUMN_SIZE_HOLDER, this.getClass().getClassLoader()));
 		column.setDataType(dialectType.getDataType());
 		column.setPrimaryKey(tableField.getPrimary());
-		column.setDecimalDigits(MetadataUtil.getPlaceholderValue(standardFieldId, DECIMAL_DIGITS_HOLDER, "0"));
+		column.setDecimalDigits(MetadataUtil.getPlaceholderValue(
+				standardFieldId, DECIMAL_DIGITS_HOLDER, "0", this.getClass()
+						.getClassLoader()));
 		column.setTypeName(dialectType.getTypeName());
 		configuration.addColumn(column);
 	}
-	
 
 }

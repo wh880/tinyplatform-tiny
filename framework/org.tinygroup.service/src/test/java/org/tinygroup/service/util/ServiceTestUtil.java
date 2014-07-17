@@ -15,13 +15,15 @@
  */
 package org.tinygroup.service.util;
 
+import org.tinygroup.beancontainer.BeanContainer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.aop.CEPCoreAopManager;
 import org.tinygroup.context.Context;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.service.ServiceProviderInterface;
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class ServiceTestUtil {
@@ -64,18 +66,20 @@ public class ServiceTestUtil {
 	}
 	
 	private static void initAopManager(){
-		CEPCoreAopManager aopManager = SpringUtil.getBean(CEPCoreAopManager.CEPCORE_AOP_BEAN);
+		BeanContainer contaner = BeanContainerFactory.getBeanContainer(ServiceTestUtil.class.getClassLoader());
+		CEPCoreAopManager aopManager = (CEPCoreAopManager) contaner.getBean(CEPCoreAopManager.CEPCORE_AOP_BEAN);
 		aopManager.addAopAdapter(CEPCoreAopManager.BEFORE_LOCAL, "requestParamValidate",null);
-		CEPCore core = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
+		CEPCore core = (CEPCore) contaner.getBean(CEPCore.CEP_CORE_BEAN);
 		EventProcessorForValidate ep = new EventProcessorForValidate();
-		ServiceProviderInterface provider = SpringUtil.getBean("service");
+		ServiceProviderInterface provider = (ServiceProviderInterface) contaner.getBean("service");
 		ep.getServiceInfos().addAll(provider.getServiceRegistory().getServiceRegistryItems());
 		core.registerEventProcessor(ep);
 	}
 
 	public static void execute(String serviceId, Context context) {
 		init();
-		ServiceProviderInterface provider = SpringUtil.getBean("service");
+		BeanContainer contaner = BeanContainerFactory.getBeanContainer(ServiceTestUtil.class.getClassLoader());
+		ServiceProviderInterface provider = (ServiceProviderInterface) contaner.getBean("service");
 		provider.execute(serviceId, context);
 	}
 	public static void executeForValidate(String serviceId, Context context) {
@@ -85,7 +89,9 @@ public class ServiceTestUtil {
 		e.setServiceRequest(sr);
 		sr.setServiceId(serviceId);
 		sr.setContext(context);
-		CEPCore core = SpringUtil.getBean(CEPCore.CEP_CORE_BEAN);
+		BeanContainer contaner = BeanContainerFactory.getBeanContainer(ServiceTestUtil.class.getClassLoader());
+		
+		CEPCore core = (CEPCore) contaner.getBean(CEPCore.CEP_CORE_BEAN);
 		core.process(e);
 		
 	}

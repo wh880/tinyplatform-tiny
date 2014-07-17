@@ -18,31 +18,33 @@ package org.tinygroup.validate.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.validate.Validator;
 import org.tinygroup.validate.ValidatorMapStorage;
 import org.tinygroup.validate.config.Validators;
 
 /**
  * 校验映射信息存储接口的实现
+ * 
  * @author renhui
- *
+ * 
  */
 public class ValidatorMapStorageImpl implements ValidatorMapStorage {
-	
+
 	private Map<String, Validator> validateMap = new HashMap<String, Validator>();
-	
 
 	public void addValidators(Validators validators) {
 
 		for (org.tinygroup.validate.config.Validator validator : validators
 				.getValidatorList()) {
-			validateMap.put(validator.getAnnotaionClassName(),
-					(Validator) SpringUtil.getBean(validator
-							.getValidatorClassName()));
+			validateMap.put(
+					validator.getAnnotaionClassName(),
+					(Validator) BeanContainerFactory.getBeanContainer(
+							this.getClass().getClassLoader()).getBean(
+							validator.getValidatorClassName()));
 		}
 	}
-	
+
 	public void removeValidators(Validators validators) {
 		for (org.tinygroup.validate.config.Validator validator : validators
 				.getValidatorList()) {

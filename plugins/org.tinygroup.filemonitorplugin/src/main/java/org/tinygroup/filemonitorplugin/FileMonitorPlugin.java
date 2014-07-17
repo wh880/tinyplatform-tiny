@@ -20,7 +20,6 @@ import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.plugin.Plugin;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public class FileMonitorPlugin extends AbstractConfiguration implements Plugin {
@@ -86,7 +85,6 @@ public class FileMonitorPlugin extends AbstractConfiguration implements Plugin {
 				try {
 					sleep(interval * MILLISECOND_PER_SECOND);
 					logger.logMessage(LogLevel.INFO, "定时扫描文件变化......");
-					resolver = SpringUtil.getBean("fileResolver");
 					resolver.refresh();
 					logger.logMessage(LogLevel.INFO, "定时扫描文件结束.");
 				} catch (InterruptedException e) {

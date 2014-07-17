@@ -15,14 +15,14 @@
  */
 package org.tinygroup.weblayer.mvc.handlermapping;
 
-import org.tinygroup.springutil.SpringUtil;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.weblayer.mvc.HandlerMapping;
 import org.tinygroup.weblayer.mvc.MappingModelManager;
 
 /**
  * 
  * 功能说明: 抽象的handlermapping
-
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-4-22 <br>
  * <br>
@@ -30,8 +30,7 @@ import org.tinygroup.weblayer.mvc.MappingModelManager;
 public abstract class AbstractHandlerMapping implements HandlerMapping {
 
 	private MappingModelManager manager;
-	
-	
+
 	public MappingModelManager getManager() {
 		return manager;
 	}
@@ -39,11 +38,12 @@ public abstract class AbstractHandlerMapping implements HandlerMapping {
 	public void setManager(MappingModelManager manager) {
 		this.manager = manager;
 	}
-	
 
 	public void init() {
-		if(manager==null){
-			manager=SpringUtil.getBean("mappingModelManager");
+		if (manager == null) {
+			manager = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					"mappingModelManager");
 		}
 	}
 

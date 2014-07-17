@@ -15,25 +15,25 @@
  */
 package org.tinygroup.context2object.util;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.event.Parameter;
-import org.tinygroup.springutil.SpringUtil;
 
 public final class Context2ObjectUtil {
 	private Context2ObjectUtil() {
 
 	}
 
-	public static Object getObject(Parameter p, Context context) {
+	public static Object getObject(Parameter p, Context context,ClassLoader loader) {
 		if(context.exist(p.getName()))
 			return context.get(p.getName());
 //		Object o = context.get(p.getName());
 //		if (o != null) {
 //			return o;
 //		}
-		return getObjectByGenerator(p, context);
+		return getObjectByGenerator(p, context,loader);
 	}
 
 	private static boolean isNull(String s) {
@@ -41,11 +41,11 @@ public final class Context2ObjectUtil {
 	}
 
 	public static Object getObjectByGenerator(Parameter parameter,
-			Context context) {
+			Context context,ClassLoader loader) {
 		String collectionType = parameter.getCollectionType();// 集合类型
 		String paramName = parameter.getName();
 		String paramType = parameter.getType();
-		ClassNameObjectGenerator generator = SpringUtil
+		ClassNameObjectGenerator generator = BeanContainerFactory.getBeanContainer(loader)
 				.getBean(GeneratorFileProcessor.CLASSNAME_OBJECT_GENERATOR_BEAN);
 		if (!isNull(collectionType)) {// 如果集合类型非空
 			return generator.getObjectCollection(paramName, collectionType,
