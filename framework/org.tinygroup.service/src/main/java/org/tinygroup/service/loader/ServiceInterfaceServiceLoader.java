@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.commons.tools.ClassUtil;
 import org.tinygroup.commons.tools.StringUtil;
@@ -25,7 +26,6 @@ import org.tinygroup.service.exception.ServiceLoadException;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
 import org.tinygroup.service.util.ServiceUtil;
-import org.tinygroup.springutil.SpringUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 
@@ -224,7 +224,9 @@ public class ServiceInterfaceServiceLoader extends AbstractConfiguration
 			throws InstantiationException, IllegalAccessException {
 		ServiceInterface serviceInterface = null;
 		try {
-			serviceInterface = (ServiceInterface)SpringUtil.getBean(clazz);
+			serviceInterface = (ServiceInterface) BeanContainerFactory
+					.getBeanContainer(this.getClass().getClassLoader())
+					.getBean(clazz);
 		} catch (Exception e) {
 			// 出现异常不用处理，随后要进行实例化
 		}
