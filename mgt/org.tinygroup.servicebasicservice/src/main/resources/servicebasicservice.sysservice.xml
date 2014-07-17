@@ -18,7 +18,7 @@
 			<service-parameters>
 			</service-parameters>
 			<service-result name="result" required="true"
-				is-array="false" type="java.util.Collection" />
+				is-array="false" type="org.tinygroup.service.registry.ServiceRegistryItem" collection-type="java.util.Collection" />
 		</service-method>
 	</service-component>
 </service-components>

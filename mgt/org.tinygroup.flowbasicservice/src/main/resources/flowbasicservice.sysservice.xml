@@ -1,5 +1,5 @@
 <service-components>
-	<service-component
+	<!-- <service-component
 		type="org.tinygroup.flow.FlowExecutor" bean="flowExecutor"
 		group-id="org.tinygroup.flow.impl" artifact-id="FlowExecutorImpl">
 
@@ -53,4 +53,5 @@
 		</service-method>
 		
 	</service-component>
+-->
 </service-components>

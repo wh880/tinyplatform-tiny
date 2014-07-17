@@ -3,4 +3,7 @@
 	<application-processors>
 		<application-processor bean="fileResolverProcessor"></application-processor>
 	</application-processors>
+	<service-interface>
+         <class-name-regular pattern="org\.tinygroup\.service\.test\.serviceinterfacetest\.service.*"></class-name-regular>
+    </service-interface>
 </application>

@@ -15,7 +15,9 @@
  */
 package org.tinygroup.service.test.validate;
 
-public class ValidateUser {
+import java.io.Serializable;
+
+public class ValidateUser implements Serializable {
 	private String name;
 	private int age;
 	private int grade;

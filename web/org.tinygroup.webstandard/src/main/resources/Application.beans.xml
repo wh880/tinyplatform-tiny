@@ -25,7 +25,8 @@
 				<!-- xmlservice -->
 				<ref bean="xmlServiceFileProcessor" />
 				<ref bean="xmlSysServiceFileProcessor" />
-
+                <!-- serviceinterface -->
+                <ref bean="serviceClassFileProcessor" />
 				<!-- flow -->
 				<ref bean="flowFileProcessor" />
 				<ref bean="flowComponentProcessor" />
