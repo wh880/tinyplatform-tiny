@@ -135,4 +135,21 @@ public class VelocityLayoutViewTinyProcessor extends AbstractTinyProcessor {
 
 	}
 
+	public VelocityHelper getVelocityHelper() {
+		return velocityHelper;
+	}
+
+	public void setVelocityHelper(VelocityHelper velocityHelper) {
+		this.velocityHelper = velocityHelper;
+	}
+
+	public FullContextFileRepository getFullContextFileRepository() {
+		return fullContextFileRepository;
+	}
+
+	public void setFullContextFileRepository(
+			FullContextFileRepository fullContextFileRepository) {
+		this.fullContextFileRepository = fullContextFileRepository;
+	}
+	
 }

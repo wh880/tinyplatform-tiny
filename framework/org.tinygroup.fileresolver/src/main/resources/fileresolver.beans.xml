@@ -25,9 +25,6 @@
 		class="org.tinygroup.fileresolver.impl.OrderFileProcessor">
 		<property name="orderProcessor" ref="orderProcessor"></property>
 	</bean>
-	<bean id="springBeansFileProcessor" scope="singleton"
-		class="org.tinygroup.fileresolver.impl.SpringBeansFileProcessor">
-	</bean>
 	<bean id="configurationFileProcessor" scope="singleton"
 		class="org.tinygroup.fileresolver.impl.ConfigurationFileProcessor">
 	</bean>

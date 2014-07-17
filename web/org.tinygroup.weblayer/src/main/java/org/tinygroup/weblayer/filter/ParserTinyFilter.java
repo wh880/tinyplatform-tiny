@@ -239,7 +239,7 @@ public class ParserTinyFilter extends AbstractTinyFilter {
 
 		if (propertyEditorRegistrars.size() == 0) {
 			PropertyEditorRegistrar[] strars = ParserXmlNodeUtil
-					.parseConfigToArray(PROPERTY_EDITOR, PROPERTY, parserNode,
+					.parseConfigToArray(this.getClass().getClassLoader(),PROPERTY_EDITOR, PROPERTY, parserNode,
 							PropertyEditorRegistrar.class);
 			propertyEditorRegistrars.setPropertyEditorRegistrars(strars);
 		}

@@ -653,7 +653,7 @@
     </jcs-config>
 
     <!--文件监控器配置参数，具体参见FileMonitorProcessor配置管理手册，interrupt扫描间隔时间，单位秒 -->
-    <file-monitor interval="10" enable="true"/>
+    <file-monitor interval="10" enable="false"/>
     
     <gzip-filter max-content-length="0">
         <!-- 多个content-type已分号隔开 -->

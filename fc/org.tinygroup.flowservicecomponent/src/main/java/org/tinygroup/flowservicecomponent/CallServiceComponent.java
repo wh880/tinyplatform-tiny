@@ -93,4 +93,11 @@ public class CallServiceComponent implements ComponentInterface {
 		return str != null && !"".equals(str);
 	}
 
+	public CEPCore getCepCore() {
+		return cepCore;
+	}
+
+	public void setCepCore(CEPCore cepCore) {
+		this.cepCore = cepCore;
+	}
 }
