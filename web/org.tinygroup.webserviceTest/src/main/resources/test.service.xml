@@ -19,8 +19,8 @@
 					is-array="false" type="java.lang.String" />
 				
 			</service-parameters>
-			<service-result name="result" required="false"
-				is-array="false" type="void" />
+			<service-result name="result1" required="false"
+				is-array="false" type="java.lang.String" />
 		</service-method>
 		
 		<service-method name="write1" local-name="write1"
