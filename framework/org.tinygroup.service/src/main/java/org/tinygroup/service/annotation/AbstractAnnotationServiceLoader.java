@@ -311,18 +311,13 @@ public abstract class AbstractAnnotationServiceLoader implements
 		logger.logMessage(LogLevel.INFO, "服务出参type:{name}",
 				descriptor.getType());
 		descriptor.setArray(parameterType.isArray());
+		String name=null;
 		if (annotation != null) {
 			Boolean required = Boolean.valueOf(getAnnotationStringValue(
 					annotation, ServiceResult.class, "required"));
 			descriptor.setRequired(required);
-			String name = getAnnotationStringValue(annotation,
+			name = getAnnotationStringValue(annotation,
 					ServiceResult.class, "name");
-			if (StringUtil.isBlank(name)) {
-				name = StringUtil.toCamelCase(clazz.getSimpleName()) + "_"
-						+ StringUtil.toCamelCase(method.getName()) + "_"
-						+ "result";
-			}
-			descriptor.setName(name);
 			String validatorSence = getAnnotationStringValue(annotation,
 					ServiceResult.class, "validatorSence");
 			descriptor.setValidatorSence(validatorSence);
@@ -332,9 +327,6 @@ public abstract class AbstractAnnotationServiceLoader implements
 			String description = getAnnotationStringValue(annotation,
 					ServiceResult.class, "description");
 			descriptor.setDescription(description);
-			String collectionType = getAnnotationStringValue(annotation,
-					ServiceResult.class, "collectionType");
-			descriptor.setCollectionType(collectionType);
 			boolean isArray = Boolean.valueOf(getAnnotationStringValue(
 					annotation, ServiceResult.class, "isArray"));
 			descriptor.setArray(isArray);
@@ -342,6 +334,12 @@ public abstract class AbstractAnnotationServiceLoader implements
 		} else {
 			logger.logMessage(LogLevel.INFO, "服务出参未配置");
 		}
+		if (StringUtil.isBlank(name)) {
+			name = StringUtil.toCamelCase(clazz.getSimpleName()) + "_"
+					+ StringUtil.toCamelCase(method.getName()) + "_"
+					+ "result";
+		}
+		descriptor.setName(name);
 		serviceProxy.setOutputParameter(descriptor);
 		outputParameterDescriptors.add(descriptor);
 		item.setResults(outputParameterDescriptors);

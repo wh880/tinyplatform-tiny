@@ -123,7 +123,15 @@ public class ServiceInterfaceServiceLoader extends AbstractConfiguration
 		Class<?> parameterType = method.getReturnType();
 		List<Parameter> outputParameterDescriptors = new ArrayList<Parameter>();
 		Parameter descriptor = new Parameter();
-		descriptor.setName(serviceInterface.getResultKey());
+		String resultKey = serviceInterface.getResultKey();
+		if (StringUtil.isBlank(resultKey)) {
+			resultKey = StringUtil.toCamelCase(serviceInterface.getClass()
+					.getSimpleName())
+					+ "_"
+					+ StringUtil.toCamelCase(method.getName()) + "_" + "result";
+		}
+		descriptor.setName(resultKey);
+
 		if (implmentInterface(parameterType, Collection.class)) {
 			ParameterizedType pt = (ParameterizedType) (method
 					.getGenericReturnType());
