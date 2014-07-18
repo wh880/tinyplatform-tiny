@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 public @interface ServiceResult {
 	String name() default "";
 	String localName() default "";
-	boolean required() default true;
+	boolean required() default false;
 	boolean isArray() default false;
 	String collectionType() default "";
 	String validatorSence() default "";
