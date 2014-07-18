@@ -97,7 +97,7 @@ public class ServiceInterfaceServiceLoader extends AbstractConfiguration
 				descriptor.setCollectionType(parameterType.getName());
 			} else {
 				if (!ServiceUtil.assignFromSerializable(parameterType)) {
-					throw new ServiceLoadException("服务返回值类型:<"
+					throw new ServiceLoadException("服务参数类型:<"
 							+ parameterType.getName() + ">必须实现Serializable接口");
 				}
 				descriptor.setType(parameterType.getName());

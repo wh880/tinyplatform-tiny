@@ -31,7 +31,7 @@
 					required="true" is-array="false" />
 			</service-parameters>
 			<service-result name="properties" required="true"
-				is-array="false" type="java.util.List" />
+				is-array="false" type="java.lang.String" collection-type="java.util.List" />
 		</service-method>
 
 	<!--  
