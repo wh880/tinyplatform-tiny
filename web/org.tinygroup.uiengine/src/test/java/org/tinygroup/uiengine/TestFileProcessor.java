@@ -18,17 +18,21 @@ package org.tinygroup.uiengine;
 import junit.framework.TestCase;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.uiengine.config.UIComponent;
 import org.tinygroup.uiengine.manager.UIComponentManager;
 
 public class TestFileProcessor extends TestCase {
 	private static UIComponentManager manager;
-	static {
-		TestInit.init();
+	
+	@Override
+	protected void setUp() throws Exception {
+		AbstractTestUtil.init(null, true);
 		manager = BeanContainerFactory.getBeanContainer(
 				TestFileProcessor.class.getClassLoader()).getBean(
 				UIComponentManager.UIComponentManager_BEAN);
 	}
+
 
 	public void testGet() {
 		UIComponent component = manager.getUiComponents().iterator().next();

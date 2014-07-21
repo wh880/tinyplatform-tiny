@@ -19,6 +19,7 @@
 		class="org.tinygroup.docgen.fileresolver.TemplateFileProcessor">
 		<property name="fileExtName" value=".xlstemplate"></property>
 		<property name="documentType" value="xls"></property>
+		<property name="manager" ref="documentGeneraterManager"></property>
 		<property name="generate">
 		  <ref bean="xlsDocumentGenerater"/>
 		</property>
