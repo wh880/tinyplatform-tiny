@@ -56,6 +56,7 @@ public class BeanRowMapper implements RowMapper {
 			bean.put(propertyName, rs.getObject(columnName));
 
 		}
+		bean.clearMark();
 		return bean;
 	}
 

@@ -307,7 +307,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 				if (!conditionColumns.contains(columnName)) {
 					String propertyName = beanDbNameConverter
 							.dbFieldNameToPropertyName(columnName);
-					if (bean.containsKey(propertyName)) {
+					if (bean.containsKey(propertyName)&&bean.getMark(propertyName)) {
 						field.append("," + columnName + "=?");
 					}
 				}
@@ -315,26 +315,6 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 
 		}
 		return field.toString();
-	}
-
-	private String getConditionSegment(TableConfiguration table,
-			List<String> conditionColumns) {
-		// 条件字段计算
-		StringBuffer condition = new StringBuffer();
-		List<ColumnConfiguration> columns = table.getColumns();
-		boolean first = true;
-		for (ColumnConfiguration column : columns) {
-			String columnName = column.getColumnName();
-			if (conditionColumns.contains(columnName)) {
-				if (first) {
-					first = false;
-				} else {
-					condition.append(" and ");
-				}
-				condition.append(columnName).append("=?");
-			}
-		}
-		return condition.toString();
 	}
 
 	protected SqlParameterValue[] getSqlParamterValue(Bean bean,
@@ -364,11 +344,11 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		for (ColumnConfiguration column : columns) {
 			String columnName = column.getColumnName();
 			if (!column.isPrimaryKey()) {
+				String propertyName = beanDbNameConverter
+				.dbFieldNameToPropertyName(columnName);
 				// 如果说不是条件字段
 				if (!conditionColumns.contains(columnName)) {
-					String propertyName = beanDbNameConverter
-							.dbFieldNameToPropertyName(columnName);
-					if (bean.containsKey(propertyName)) {
+					if (bean.containsKey(propertyName)&&bean.getMark(propertyName)) {
 						params.add(createSqlParamter(
 								bean.getProperty(propertyName), column));
 					}

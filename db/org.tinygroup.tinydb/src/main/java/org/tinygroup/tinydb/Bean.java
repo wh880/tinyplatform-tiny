@@ -16,6 +16,7 @@
 package org.tinygroup.tinydb;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Bean，用于描述各种对象
@@ -23,6 +24,7 @@ import java.util.HashMap;
 public class Bean extends HashMap<String, Object> {
     private static final long serialVersionUID = 7766936015089695L;
     private String type;// 对象所属的类，命名规则与类相同,
+    private Map<String, Boolean> updateMarkMap=new HashMap<String, Boolean>();
 
     public Bean(Bean bean) {
         putAll(bean);
@@ -43,8 +45,22 @@ public class Bean extends HashMap<String, Object> {
         putAll(bean);
         return this;
     }
+    
+	public Object put(String key, Object value) {
+		Object object= super.put(key, value);
+		updateMarkMap.put(key, true);
+		return object;
+	}
 
-    @SuppressWarnings("unchecked")
+	@Override
+	public void putAll(Map<? extends String, ? extends Object> map) {
+		super.putAll(map);
+		for (String key : map.keySet()) {
+			updateMarkMap.put(key, true);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
     public <T> T getProperty(String propertyName) {
         return (T) this.get(propertyName);
     }
@@ -59,5 +75,17 @@ public class Bean extends HashMap<String, Object> {
     public String getType() {
         return type;
     }
+    
+    public void clearMark(){
+    	updateMarkMap.clear();
+    }
+
+	public boolean getMark(String propertyName) {
+		Boolean mark=updateMarkMap.get(propertyName);
+		if(mark==null){
+		   mark=false;
+		}
+		return mark;
+	}
 
 }
