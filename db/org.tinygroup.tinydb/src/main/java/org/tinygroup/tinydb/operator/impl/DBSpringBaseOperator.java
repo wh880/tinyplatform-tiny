@@ -24,19 +24,33 @@ import java.util.regex.Pattern;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.CallbackPreferringPlatformTransactionManager;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.exception.DBRuntimeException;
+import org.tinygroup.tinydb.operator.TransactionCallBack;
+import org.tinygroup.tinydb.operator.TransactionOperator;
 import org.tinygroup.tinydb.util.BatchPreparedStatementSetterImpl;
 import org.tinygroup.tinydb.util.BeanRowMapper;
 import org.tinygroup.tinydb.util.SqlParamValuesBatchStatementSetterImpl;
 
-public class DBSpringBaseOperator {
+public class DBSpringBaseOperator implements TransactionOperator {
 
 	private JdbcTemplate jdbcTemplate;
 	private Dialect dialect;
-	
+	private TransactionStatus status;
+	private PlatformTransactionManager transactionManager;
+	private TransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
+	private Logger logger = LoggerFactory.getLogger(DBSpringBaseOperator.class);
 
 	public Dialect getDialect() {
 		return dialect;
@@ -62,26 +76,24 @@ public class DBSpringBaseOperator {
 	public int executeByList(String sql, List<Object> parameters,
 			List<Integer> dataTypes) {
 		int[] types = getDataTypes(dataTypes);
-		if(types!=null&&types.length>0){
-			return jdbcTemplate.update(sql, parameters.toArray(),types);
-		}else{
+		if (types != null && types.length > 0) {
+			return jdbcTemplate.update(sql, parameters.toArray(), types);
+		} else {
 			return jdbcTemplate.update(sql, parameters.toArray());
 		}
-	
+
 	}
-	
-	public int executeBySqlParameterValues(String sql, SqlParameterValue[] values) {
-			return jdbcTemplate.update(sql, values);
+
+	public int executeBySqlParameterValues(String sql,
+			SqlParameterValue[] values) {
+		return jdbcTemplate.update(sql, values);
 	}
-	
+
 	public int executeBySqlParameterValue(String sql, SqlParameterValue value) {
-		SqlParameterValue[] values= new SqlParameterValue[1];
-		values[0]=value;
-		return jdbcTemplate.update(sql,values);
-    }
-	
-	
-	
+		SqlParameterValue[] values = new SqlParameterValue[1];
+		values[0] = value;
+		return jdbcTemplate.update(sql, values);
+	}
 
 	/**
 	 * 
@@ -94,10 +106,10 @@ public class DBSpringBaseOperator {
 	 */
 	protected int[] executeBatchByList(String sql,
 			List<List<Object>> parameters, List<Integer> dataTypes) {
-		return jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetterImpl(parameters,
-				dataTypes));
+		return jdbcTemplate.batchUpdate(sql,
+				new BatchPreparedStatementSetterImpl(parameters, dataTypes));
 	}
-	
+
 	/**
 	 * 
 	 * 根据参数中sql语句进行批处理操作
@@ -108,58 +120,59 @@ public class DBSpringBaseOperator {
 	 */
 	protected int[] executeBatchBySqlParamterValues(String sql,
 			List<SqlParameterValue[]> parameters) {
-		return jdbcTemplate.batchUpdate(sql, new SqlParamValuesBatchStatementSetterImpl(parameters));
+		return jdbcTemplate.batchUpdate(sql,
+				new SqlParamValuesBatchStatementSetterImpl(parameters));
 	}
-	
 
-	public List<Bean> findBeansByListForPage(String sql, String beanType,String schema,
-			int start, int limit, List<Object> parameters) {
-		String tempSql=sql;
+	public List<Bean> findBeansByListForPage(String sql, String beanType,
+			String schema, int start, int limit, List<Object> parameters) {
+		String tempSql = sql;
 		if (supportsLimit()) {
 			tempSql = getLimitString(sql, start, limit);
-			List<Bean> beans = jdbcTemplate.query(tempSql, parameters.toArray(),
-					new BeanRowMapper(beanType,schema));
+			List<Bean> beans = jdbcTemplate.query(tempSql,
+					parameters.toArray(), new BeanRowMapper(beanType, schema));
 			return beans;
 		}
 		throw new DBRuntimeException("The db don't support this operation");
 	}
 
-	public List<Bean> findBeansByMapForPage(String sql, String beanType,String schema,
-			int start, int limit, Map<String, Object> parameters,
-			List<Integer> dataTypes) {
-		String tempSql=sql;
+	public List<Bean> findBeansByMapForPage(String sql, String beanType,
+			String schema, int start, int limit,
+			Map<String, Object> parameters, List<Integer> dataTypes) {
+		String tempSql = sql;
 		if (supportsLimit()) {
 			tempSql = getLimitString(sql, start, limit);
-			return findBeansByMap(tempSql, beanType,schema, parameters, dataTypes);
+			return findBeansByMap(tempSql, beanType, schema, parameters,
+					dataTypes);
 		}
 		throw new DBRuntimeException("The db don't support this operation");
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Bean> findBeans(String sql, String beanType ,String schema) throws SQLException {
-		return jdbcTemplate.query(sql, new BeanRowMapper(beanType,schema));
+	public List<Bean> findBeans(String sql, String beanType, String schema)
+			throws SQLException {
+		return jdbcTemplate.query(sql, new BeanRowMapper(beanType, schema));
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Bean> findBeans(String sql, String beanType,String schema,
+	public List<Bean> findBeans(String sql, String beanType, String schema,
 			Object... parameters) {
-		return jdbcTemplate.query(sql, parameters, new BeanRowMapper(beanType,schema));
+		return jdbcTemplate.query(sql, parameters, new BeanRowMapper(beanType,
+				schema));
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Bean> findBeansByList(String sql, String beanType,String schema,
-			List<Object> parameters) {
+	public List<Bean> findBeansByList(String sql, String beanType,
+			String schema, List<Object> parameters) {
 		return jdbcTemplate.query(sql, parameters.toArray(), new BeanRowMapper(
-				beanType,schema));
+				beanType, schema));
 	}
-	
-	
-	public Object queryObject(String sql, String beanType,String schema,
+
+	public Object queryObject(String sql, String beanType, String schema,
 			Object... parameters) {
 		return jdbcTemplate.queryForObject(sql, parameters, new BeanRowMapper(
-				beanType,schema));
+				beanType, schema));
 	}
-
 
 	private boolean supportsLimit() {
 		return dialect.supportsLimit();
@@ -170,70 +183,73 @@ public class DBSpringBaseOperator {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Bean> findBeansByMap(String sql, String beanType,String schema,
+	public List<Bean> findBeansByMap(String sql, String beanType,
+			String schema, Map<String, Object> parameters,
+			List<Integer> dataTypes) {
+		StringBuffer buf = new StringBuffer();
+		List<Object> paraList = getParamArray(sql, parameters, buf);
+		int[] types = getDataTypes(dataTypes);
+		if (types != null && types.length > 0) {
+			return jdbcTemplate.query(buf.toString(), paraList.toArray(),
+					types, new BeanRowMapper(beanType, schema));
+		} else {
+			return jdbcTemplate.query(buf.toString(), paraList.toArray(),
+					new BeanRowMapper(beanType, schema));
+		}
+
+	}
+
+	public Object queryObjectByMap(String sql, String beanType, String schema,
 			Map<String, Object> parameters, List<Integer> dataTypes) {
 		StringBuffer buf = new StringBuffer();
 		List<Object> paraList = getParamArray(sql, parameters, buf);
 		int[] types = getDataTypes(dataTypes);
-		if(types!=null&&types.length>0){
-			return jdbcTemplate.query(buf.toString(), paraList.toArray(),types, new BeanRowMapper(
-					beanType,schema));
-		}else{
-			return jdbcTemplate.query(buf.toString(), paraList.toArray(), new BeanRowMapper(
-					beanType,schema));
+		if (types != null && types.length > 0) {
+			return jdbcTemplate.queryForObject(buf.toString(), paraList
+					.toArray(), types, new BeanRowMapper(beanType, schema));
+		} else {
+			return jdbcTemplate.queryForObject(buf.toString(),
+					paraList.toArray(), new BeanRowMapper(beanType, schema));
 		}
-		
+
 	}
-	public Object queryObjectByMap(String sql, String beanType,String schema,
-			Map<String, Object> parameters, List<Integer> dataTypes) {
+
+	public int executeByMap(String sql, Map<String, Object> parameters,
+			List<Integer> dataTypes) {
 		StringBuffer buf = new StringBuffer();
 		List<Object> paraList = getParamArray(sql, parameters, buf);
 		int[] types = getDataTypes(dataTypes);
-		if(types!=null&&types.length>0){
-			return jdbcTemplate.queryForObject(buf.toString(), paraList.toArray(),types, new BeanRowMapper(
-					beanType,schema));
-		}else{
-			return jdbcTemplate.queryForObject(buf.toString(), paraList.toArray(), new BeanRowMapper(
-					beanType,schema));
-		}
-		
-	}
-	
-	public int executeByMap(String sql,Map<String, Object> parameters, List<Integer> dataTypes){
-		StringBuffer buf = new StringBuffer();
-		List<Object> paraList = getParamArray(sql, parameters, buf);
-		int[] types = getDataTypes(dataTypes);
-		if(types!=null&&types.length>0){
+		if (types != null && types.length > 0) {
 			return jdbcTemplate.update(sql, paraList.toArray(), types);
-		}else{
+		} else {
 			return jdbcTemplate.update(sql, paraList.toArray());
 		}
 	}
-	
-	public int executeByArray(String sql,Object... parameters){
+
+	public int executeByArray(String sql, Object... parameters) {
 		return jdbcTemplate.update(sql, parameters);
 	}
-	
-	public int queryForInt(String sql,Object... parameters){
-		 return jdbcTemplate.queryForInt(sql, parameters);
+
+	public int queryForInt(String sql, Object... parameters) {
+		return jdbcTemplate.queryForInt(sql, parameters);
 	}
-	
-	public int queryForIntByList(String sql,List<Object> parameters){
-		 return jdbcTemplate.queryForInt(sql, parameters.toArray());
+
+	public int queryForIntByList(String sql, List<Object> parameters) {
+		return jdbcTemplate.queryForInt(sql, parameters.toArray());
 	}
-	
-	public int queryForIntByMap(String sql,Map<String, Object> parameters){
+
+	public int queryForIntByMap(String sql, Map<String, Object> parameters) {
 		StringBuffer buf = new StringBuffer();
 		List<Object> paraList = getParamArray(sql, parameters, buf);
 		return jdbcTemplate.queryForInt(sql, paraList.toArray());
 	}
 
 	private int[] getDataTypes(List<Integer> dataTypes) {
-		int[] types=null;
-		if(dataTypes!=null){
-			types=new int[dataTypes.size()];
+		int[] types = null;
+		if (dataTypes != null) {
+			types = new int[dataTypes.size()];
 			for (int i = 0; i < dataTypes.size(); i++) {
-				types[i]=dataTypes.get(i);
+				types[i] = dataTypes.get(i);
 			}
 		}
 		return types;
@@ -260,6 +276,81 @@ public class DBSpringBaseOperator {
 		}
 		buf.append(sql.substring(curpos));
 		return paraList;
+	}
+
+	public void beginTransaction() {
+		try {
+			if (status == null || status.isCompleted()) {
+				status = this.getTransactionManager().getTransaction(
+						transactionDefinition);
+				if (status.isNewTransaction()) {
+					logger.log(LogLevel.INFO, "新开启一个事务");
+				} else {
+					logger.log(LogLevel.INFO, "未开启新事务，将使用之前的事务");
+				}
+
+			}
+		} catch (Exception e) {
+			throw new DBRuntimeException(e);
+		}
+
+	}
+
+	public void commitTransaction() {
+		if (status != null && !status.isCompleted()) {
+			try {
+				this.getTransactionManager().commit(status);
+			} catch (Exception e) {
+				throw new DBRuntimeException(e);
+			}
+		}
+	}
+
+	public void rollbackTransaction() {
+		if (status != null && !status.isCompleted()) {
+			try {
+				this.getTransactionManager().rollback(status);
+			} catch (Exception e) {
+				throw new DBRuntimeException(e);
+			}
+		}
+	}
+
+	public PlatformTransactionManager getTransactionManager() {
+		if (transactionManager == null) {
+			transactionManager = new DataSourceTransactionManager(
+					jdbcTemplate.getDataSource());
+		}
+		return transactionManager;
+	}
+
+	public void setTransactionManager(
+			PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
+	}
+
+	public TransactionDefinition getTransactionDefinition() {
+		return transactionDefinition;
+	}
+
+	public void setTransactionDefinition(
+			TransactionDefinition transactionDefinition) {
+		this.transactionDefinition = transactionDefinition;
+	}
+
+	public Object execute(TransactionCallBack callback) {
+		TransactionStatus status = this.getTransactionManager().getTransaction(
+				transactionDefinition);
+		Object result = null;
+		try {
+			result = callback.callBack(status);
+			this.getTransactionManager().commit(status);
+			return result;
+		} catch (Exception ex) {
+			logger.errorMessage(ex.getMessage(), ex);
+			this.getTransactionManager().rollback(status);
+			throw new DBRuntimeException(ex);
+		}
 	}
 
 }

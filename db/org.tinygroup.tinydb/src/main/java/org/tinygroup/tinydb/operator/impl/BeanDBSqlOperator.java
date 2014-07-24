@@ -341,5 +341,4 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		SelectBean[] selectBeans = new SelectBean[0];
 		return getBeans(selectBeans, conditions, orderBeans);
 	}
-
 }

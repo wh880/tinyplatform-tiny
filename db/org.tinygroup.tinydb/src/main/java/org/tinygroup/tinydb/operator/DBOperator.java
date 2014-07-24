@@ -27,6 +27,6 @@ public interface DBOperator<K> extends
         DbBaseOperator,
 		DbSingleOperator<K>,
 		DbBatchOperator<K>, DbSqlOperator<K>,
-		DbSqlQueryOperator<K> {
+		DbSqlQueryOperator<K> ,TransactionOperator{
 
 }
