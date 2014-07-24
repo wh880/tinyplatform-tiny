@@ -1,7 +1,10 @@
 package org.tinygroup.tinydb.testcase.transaction;
 
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.operator.TransactionCallBack;
 import org.tinygroup.tinydb.test.BaseTest;
@@ -77,7 +80,32 @@ public class SelfTransactionTest extends BaseTest{
 	private void throwException(){
 		throw new RuntimeException("主动抛出错误异常");
 	}
-	
-	
-//	pu
+    
+	public void testNestedTransaction(){
+		DBOperator operator=DbOperatorFactory.getDBOperator(ANIMAL, getClass().getClassLoader());
+		operator.execute("delete from animal");//刪除
+		Bean bean=getAnimalBean();
+		try {
+			operator.beginTransaction();
+			operator.insert(bean);
+			DBOperator operator2=DbOperatorFactory.getDBOperator(ANIMAL, getClass().getClassLoader());
+			operator2.setTransactionDefinition(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRES_NEW));
+			try {
+				operator2.beginTransaction();
+				operator2.insert(bean);
+				operator2.insert(bean);
+				operator2.insert(bean);
+				throwException();
+				operator2.commitTransaction();
+			} catch (Exception e) {
+				operator2.rollbackTransaction();
+			}
+			operator.commitTransaction();
+		} catch (Exception e) {
+			operator.rollbackTransaction();
+		}
+		int accout=operator.account("select count(*) from animal");
+		assertEquals(1, accout);
+		
+	}
 }

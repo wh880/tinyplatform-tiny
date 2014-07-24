@@ -284,9 +284,9 @@ public class DBSpringBaseOperator implements TransactionOperator {
 				status = this.getTransactionManager().getTransaction(
 						transactionDefinition);
 				if (status.isNewTransaction()) {
-					logger.log(LogLevel.INFO, "新开启一个事务");
+					logger.logMessage(LogLevel.INFO, "新开启一个事务");
 				} else {
-					logger.log(LogLevel.INFO, "未开启新事务，将使用之前的事务");
+					logger.logMessage(LogLevel.INFO, "未开启新事务，将使用之前的事务");
 				}
 
 			}
