@@ -29,18 +29,36 @@ public interface DbSqlOperator<K> {
 
     // 下面是根据SQL
     Bean[] getBeans(String sql);
-
-    Bean[] getPagedBeans(String sql, int start, int limit);
-
-    Bean[] getBeans(String sql, Map<String, Object> parameters);
-
-    Bean[] getPagedBeans(String sql, int start, int limit, Map<String, Object> parameters);
-
+    
     Bean[] getBeans(String sql, Object... parameters);
 
     Bean[] getBeans(String sql, List<Object> parameters);
 
-    Bean[] getPagedBeans(String sql, int start, int limit, Object... parameters);
+    Bean[] getBeans(String sql, Map<String, Object> parameters);
+    
+    Bean[] getPageBeans(String sql, int start, int limit);
+    
+    Bean[] getCursorPageBeans(String sql, int start, int limit);
+    
+    Bean[] getDialectPageBeans(String sql, int start, int limit);
+    
+    Bean[] getPageBeans(String sql, int start, int limit,Object... parameters);
+    
+    Bean[] getCursorPageBeans(String sql, int start, int limit,Object... parameters);
+    
+    Bean[] getDialectPageBeans(String sql, int start, int limit,Object... parameters);
+    
+    Bean[] getPageBeans(String sql, int start, int limit,List<Object> parameters);
+    
+    Bean[] getCursorPageBeans(String sql, int start, int limit,List<Object> parameters);
+    
+    Bean[] getDialectPageBeans(String sql, int start, int limit,List<Object> parameters);
+    
+    Bean[] getPageBeans(String sql, int start, int limit,Map<String, Object> parameters);
+    
+    Bean[] getCursorPageBeans(String sql, int start, int limit,Map<String, Object> parameters);
+    
+    Bean[] getDialectPageBeans(String sql, int start, int limit,Map<String, Object> parameters);
 
     // 读取单一个值
     Bean getSingleValue(String sql);

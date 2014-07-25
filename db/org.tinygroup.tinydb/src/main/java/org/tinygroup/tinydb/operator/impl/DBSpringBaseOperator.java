@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -29,19 +30,20 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.CallbackPreferringPlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.exception.DBRuntimeException;
+import org.tinygroup.tinydb.impl.DefaultNameConverter;
+import org.tinygroup.tinydb.jdbctemplate.BatchPreparedStatementSetterImpl;
+import org.tinygroup.tinydb.jdbctemplate.SqlParamValuesBatchStatementSetterImpl;
+import org.tinygroup.tinydb.jdbctemplate.TinydbResultExtractor;
 import org.tinygroup.tinydb.operator.TransactionCallBack;
 import org.tinygroup.tinydb.operator.TransactionOperator;
-import org.tinygroup.tinydb.util.BatchPreparedStatementSetterImpl;
-import org.tinygroup.tinydb.util.BeanRowMapper;
-import org.tinygroup.tinydb.util.SqlParamValuesBatchStatementSetterImpl;
 
 public class DBSpringBaseOperator implements TransactionOperator {
 
@@ -51,6 +53,16 @@ public class DBSpringBaseOperator implements TransactionOperator {
 	private PlatformTransactionManager transactionManager;
 	private TransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
 	private Logger logger = LoggerFactory.getLogger(DBSpringBaseOperator.class);
+
+	protected BeanDbNameConverter beanDbNameConverter = new DefaultNameConverter();
+
+	public BeanDbNameConverter getBeanDbNameConverter() {
+		return beanDbNameConverter;
+	}
+
+	public void setBeanDbNameConverter(BeanDbNameConverter beanDbNameConverter) {
+		this.beanDbNameConverter = beanDbNameConverter;
+	}
 
 	public Dialect getDialect() {
 		return dialect;
@@ -123,58 +135,144 @@ public class DBSpringBaseOperator implements TransactionOperator {
 		return jdbcTemplate.batchUpdate(sql,
 				new SqlParamValuesBatchStatementSetterImpl(parameters));
 	}
+	
+	public List<Bean> findBeansForPage(String sql, String beanType,
+			String schema, int start, int limit){
+		if (supportsLimit()) {
+			return findBeansForDialectPage(sql, beanType, schema, start,
+					limit);
+		} else {
+			return findBeansForCursorPage(sql, beanType, schema, start,
+					limit);
+		}
+		
+	}
+	@SuppressWarnings("unchecked")
+	protected List<Bean> findBeansForCursorPage(String sql, String beanType,
+			String schema, int start, int limit) {
+		List<Bean> beans = (List<Bean>) jdbcTemplate.query(sql,
+				new TinydbResultExtractor(beanType, schema, start,
+				limit, beanDbNameConverter));
+		return beans;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected List<Bean> findBeansForDialectPage(String sql, String beanType,
+			String schema, int start, int limit) {
+		String tempSql = sql;
+		tempSql = getLimitString(sql, start, limit);
+		List<Bean> beans = (List<Bean>) jdbcTemplate.query(tempSql,new TinydbResultExtractor(beanType, schema,
+				beanDbNameConverter));
+		return beans;
+	}
 
 	public List<Bean> findBeansByListForPage(String sql, String beanType,
 			String schema, int start, int limit, List<Object> parameters) {
-		String tempSql = sql;
 		if (supportsLimit()) {
-			tempSql = getLimitString(sql, start, limit);
-			List<Bean> beans = jdbcTemplate.query(tempSql,
-					parameters.toArray(), new BeanRowMapper(beanType, schema));
-			return beans;
+			return findBeansByListForDialectPage(sql, beanType, schema, start,
+					limit, parameters);
+		} else {
+			return findBeansByListForCursorPage(sql, beanType, schema, start,
+					limit, parameters);
 		}
-		throw new DBRuntimeException("The db don't support this operation");
+	}
+
+	@SuppressWarnings("unchecked")
+	protected List<Bean> findBeansByListForDialectPage(String sql,
+			String beanType, String schema, int start, int limit,
+			List<Object> parameters) {
+		String tempSql = sql;
+		tempSql = getLimitString(sql, start, limit);
+		List<Bean> beans = (List<Bean>) jdbcTemplate.query(tempSql, parameters
+				.toArray(), new TinydbResultExtractor(beanType, schema,
+				beanDbNameConverter));
+		return beans;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected List<Bean> findBeansByListForCursorPage(String sql, String beanType,
+			String schema, int start, int limit, List<Object> parameters) {
+		List<Bean> beans = (List<Bean>) jdbcTemplate.query(sql, parameters
+				.toArray(), new TinydbResultExtractor(beanType, schema, start,
+				limit, beanDbNameConverter));
+		return beans;
 	}
 
 	public List<Bean> findBeansByMapForPage(String sql, String beanType,
 			String schema, int start, int limit,
 			Map<String, Object> parameters, List<Integer> dataTypes) {
-		String tempSql = sql;
 		if (supportsLimit()) {
-			tempSql = getLimitString(sql, start, limit);
-			return findBeansByMap(tempSql, beanType, schema, parameters,
-					dataTypes);
+			return findBeansByMapForDialectPage(sql, beanType, schema, start,
+					limit, parameters, dataTypes);
+		} else {
+			return findBeansByMapForCursorPage(sql, beanType, schema, start,
+					limit, parameters, dataTypes);
 		}
-		throw new DBRuntimeException("The db don't support this operation");
+	}
+
+	protected List<Bean> findBeansByMapForDialectPage(String sql, String beanType,
+			String schema, int start, int limit,
+			Map<String, Object> parameters, List<Integer> dataTypes) {
+		String tempSql = sql;
+		tempSql = getLimitString(sql, start, limit);
+		return findBeansByMap(tempSql, beanType, schema, parameters, dataTypes);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected List<Bean> findBeansByMapForCursorPage(String sql, String beanType,
+			String schema, int start, int limit,
+			Map<String, Object> parameters, List<Integer> dataTypes) {
+		StringBuffer buf = new StringBuffer();
+		List<Object> paraList = getParamArray(sql, parameters, buf);
+		int[] types = getDataTypes(dataTypes);
+		if (types != null && types.length > 0) {
+			return (List<Bean>) jdbcTemplate.query(buf.toString(), paraList
+					.toArray(), types, new TinydbResultExtractor(beanType,
+					schema, start, limit, beanDbNameConverter));
+		} else {
+			return (List<Bean>) jdbcTemplate.query(buf.toString(), paraList
+					.toArray(), new TinydbResultExtractor(beanType, schema,
+					start, limit, beanDbNameConverter));
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Bean> findBeans(String sql, String beanType, String schema)
 			throws SQLException {
-		return jdbcTemplate.query(sql, new BeanRowMapper(beanType, schema));
+		return (List<Bean>) jdbcTemplate.query(sql, new TinydbResultExtractor(
+				beanType, schema, beanDbNameConverter));
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Bean> findBeans(String sql, String beanType, String schema,
 			Object... parameters) {
-		return jdbcTemplate.query(sql, parameters, new BeanRowMapper(beanType,
-				schema));
+		return (List<Bean>) jdbcTemplate
+				.query(sql, parameters, new TinydbResultExtractor(beanType,
+						schema, beanDbNameConverter));
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Bean> findBeansByList(String sql, String beanType,
 			String schema, List<Object> parameters) {
-		return jdbcTemplate.query(sql, parameters.toArray(), new BeanRowMapper(
-				beanType, schema));
+		return (List<Bean>) jdbcTemplate
+				.query(sql, parameters.toArray(), new TinydbResultExtractor(
+						beanType, schema, beanDbNameConverter));
 	}
 
+	
+	@SuppressWarnings("rawtypes")
 	public Object queryObject(String sql, String beanType, String schema,
 			Object... parameters) {
-		return jdbcTemplate.queryForObject(sql, parameters, new BeanRowMapper(
-				beanType, schema));
+		List results = (List) jdbcTemplate
+				.query(sql, parameters, new TinydbResultExtractor(beanType,
+						schema, beanDbNameConverter));
+		return DataAccessUtils.requiredSingleResult(results);
 	}
 
 	private boolean supportsLimit() {
+		if(dialect==null){
+			return false;
+		}
 		return dialect.supportsLimit();
 	}
 
@@ -190,26 +288,33 @@ public class DBSpringBaseOperator implements TransactionOperator {
 		List<Object> paraList = getParamArray(sql, parameters, buf);
 		int[] types = getDataTypes(dataTypes);
 		if (types != null && types.length > 0) {
-			return jdbcTemplate.query(buf.toString(), paraList.toArray(),
-					types, new BeanRowMapper(beanType, schema));
+			return (List<Bean>) jdbcTemplate.query(buf.toString(), paraList
+					.toArray(), types, new TinydbResultExtractor(beanType,
+					schema, beanDbNameConverter));
 		} else {
-			return jdbcTemplate.query(buf.toString(), paraList.toArray(),
-					new BeanRowMapper(beanType, schema));
+			return (List<Bean>) jdbcTemplate.query(buf.toString(), paraList
+					.toArray(), new TinydbResultExtractor(beanType, schema,
+					beanDbNameConverter));
 		}
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Object queryObjectByMap(String sql, String beanType, String schema,
 			Map<String, Object> parameters, List<Integer> dataTypes) {
 		StringBuffer buf = new StringBuffer();
 		List<Object> paraList = getParamArray(sql, parameters, buf);
 		int[] types = getDataTypes(dataTypes);
 		if (types != null && types.length > 0) {
-			return jdbcTemplate.queryForObject(buf.toString(), paraList
-					.toArray(), types, new BeanRowMapper(beanType, schema));
+			List results = (List) jdbcTemplate.query(buf.toString(), paraList
+					.toArray(), types, new TinydbResultExtractor(beanType,
+					schema, beanDbNameConverter));
+			return DataAccessUtils.requiredSingleResult(results);
 		} else {
-			return jdbcTemplate.queryForObject(buf.toString(),
-					paraList.toArray(), new BeanRowMapper(beanType, schema));
+			List results = (List) jdbcTemplate.query(buf.toString(), paraList
+					.toArray(), new TinydbResultExtractor(beanType, schema,
+					beanDbNameConverter));
+			return DataAccessUtils.requiredSingleResult(results);
 		}
 
 	}

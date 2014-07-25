@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinydb.util;
+package org.tinygroup.tinydb.jdbctemplate;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -23,6 +23,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.jdbc.core.SqlTypeValue;
 import org.springframework.jdbc.core.StatementCreatorUtils;
+import org.tinygroup.tinydb.util.TinyDBUtil;
 
 public class BatchPreparedStatementSetterImpl implements
 		BatchPreparedStatementSetter {

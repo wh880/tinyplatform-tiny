@@ -18,23 +18,32 @@ package org.tinygroup.tinydb.util;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.jdbc.support.JdbcUtils;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.BeanDbNameConverter;
+import org.tinygroup.tinydb.Field;
 
 /**
  * 
  * 功能说明: bean对象与普通pojo对象相互转换
  * <p>
-
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-7-30 <br>
  * <br>
  */
 public final class TinyBeanUtil {
-	
+
 	private TinyBeanUtil() {
 	}
 
@@ -48,7 +57,7 @@ public final class TinyBeanUtil {
 			throw new TinySysRuntimeException(e);
 		}
 	}
-	
+
 	public static <T> T bean2Object(Map bean, T target) {
 		try {
 			BeanUtils.populate(target, bean);
@@ -102,4 +111,31 @@ public final class TinyBeanUtil {
 		return null;
 	}
 
+	public static List<Field> getFieldsWithResultSet(ResultSet rs,BeanDbNameConverter converter)
+			throws SQLException {
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int columnCount = rsmd.getColumnCount();
+		List<Field> fields = new ArrayList<Field>();
+		Map<String, Integer> columnViewnum = new HashMap<String, Integer>();
+		for (int index = 1; index <= columnCount; index++) {
+			String columnName = JdbcUtils.lookupColumnName(rsmd, index);
+			String propertyName = converter.dbFieldNameToPropertyName(columnName);
+			String name = propertyName;
+			if (!columnViewnum.containsKey(propertyName)) {
+				columnViewnum.put(propertyName, 1);
+			} else {
+				int number = columnViewnum.get(propertyName);
+				name = propertyName + number;
+				columnViewnum.put(propertyName, number++);
+			}
+			Field field = new Field();
+			field.setName(name);
+			field.setIndex(index);
+			field.setPrecision(rsmd.getPrecision(index));
+			field.setScale(rsmd.getScale(index));
+			field.setType(rsmd.getColumnType(index));
+			fields.add(field);
+		}
+		return fields;
+	}
 }

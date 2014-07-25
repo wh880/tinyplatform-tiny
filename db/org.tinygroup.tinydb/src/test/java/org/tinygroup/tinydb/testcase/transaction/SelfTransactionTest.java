@@ -106,6 +106,7 @@ public class SelfTransactionTest extends BaseTest{
 		}
 		int accout=operator.account("select count(*) from animal");
 		assertEquals(1, accout);
+		operator.execute("delete from animal");//刪除
 		
 	}
 }

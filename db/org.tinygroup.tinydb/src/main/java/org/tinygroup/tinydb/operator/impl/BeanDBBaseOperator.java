@@ -48,17 +48,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	/**
 	 * 如果操作的bean是关联对象，需要进行关联操作
 	 */
-	private Relation relation;
-
-	private BeanDbNameConverter beanDbNameConverter = new DefaultNameConverter();
-
-	public BeanDbNameConverter getBeanDbNameConverter() {
-		return beanDbNameConverter;
-	}
-
-	public void setBeanDbNameConverter(BeanDbNameConverter beanDbNameConverter) {
-		this.beanDbNameConverter = beanDbNameConverter;
-	}
+	protected Relation relation;
 
 	public int getAutoIncreaseKey() {
 		return getDialect().getNextKey();

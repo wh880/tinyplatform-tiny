@@ -153,7 +153,7 @@ public class ViewServiceProcessor extends EntityModelHelper {
 						/ pageSize : totalSize / pageSize + 1;
 				pageNum = checkPageNumber(totalPages, pageNum);
 				int start = pageNum * pageSize + 1;
-				beans = operator.getPagedBeans(sql, start, pageSize, params.toArray());
+				beans = operator.getPageBeans(sql, start, pageSize, params.toArray());
 				pageInfo.setPageSize(pageSize);
 				pageInfo.setTotalPages(totalPages);
 				pageInfo.setPageNumber(pageNum);

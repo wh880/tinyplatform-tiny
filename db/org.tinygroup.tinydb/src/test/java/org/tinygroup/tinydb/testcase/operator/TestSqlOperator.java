@@ -15,11 +15,13 @@
  */
 package org.tinygroup.tinydb.testcase.operator;
 
-import org.tinygroup.tinydb.Bean;
-import org.tinygroup.tinydb.test.BaseTest;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.DbOperatorFactory;
+import org.tinygroup.tinydb.operator.DBOperator;
+import org.tinygroup.tinydb.test.BaseTest;
 
 public class TestSqlOperator extends BaseTest{
 	
@@ -61,11 +63,11 @@ public class TestSqlOperator extends BaseTest{
 		getOperator().batchInsert(insertBeans);
 		
 		String sql = "select * from ANIMAL";
-		Bean[] beans = getOperator().getPagedBeans(sql, 0, 10);
+		Bean[] beans = getOperator().getPageBeans(sql, 0, 10);
 		assertEquals(10, beans.length);
-		beans = getOperator().getPagedBeans(sql, 11, 10);
+		beans = getOperator().getPageBeans(sql, 11, 10);
 		assertEquals(10, beans.length);
-		beans = getOperator().getPagedBeans(sql, 21, 10);
+		beans = getOperator().getPageBeans(sql, 21, 10);
 		assertEquals(5, beans.length);
 		
 		getOperator().batchDelete(insertBeans);
@@ -95,11 +97,11 @@ public class TestSqlOperator extends BaseTest{
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("name", "testSql");
 		
-		Bean[] beans =getOperator().getPagedBeans(sql, 0, 10, parameters);
+		Bean[] beans =getOperator().getPageBeans(sql, 0, 10, parameters);
 		assertEquals(10, beans.length);
-		beans =getOperator().getPagedBeans(sql, 11, 10, parameters);
+		beans =getOperator().getPageBeans(sql, 11, 10, parameters);
 		assertEquals(10, beans.length);
-		beans =getOperator().getPagedBeans(sql, 21, 10, parameters);
+		beans =getOperator().getPageBeans(sql, 21, 10, parameters);
 		assertEquals(5, beans.length);
 		
 		getOperator().batchDelete(insertBeans);
@@ -124,12 +126,48 @@ public class TestSqlOperator extends BaseTest{
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);
 		String sql = "select * from ANIMAL  where name=? and length=?";
-		Bean[] beans =getOperator().getPagedBeans(sql, 0, 10, "testSql", 1234);
+		Bean[] beans =getOperator().getPageBeans(sql, 0, 10, "testSql", 1234);
 		assertEquals(10, beans.length);
-		beans =getOperator().getPagedBeans(sql, 11, 10, "testSql", 1234);
+		beans =getOperator().getPageBeans(sql, 11, 10, "testSql", 1234);
 		assertEquals(10, beans.length);
-		beans =getOperator().getPagedBeans(sql, 21, 10, "testSql", 1234);
+		beans =getOperator().getPageBeans(sql, 21, 10, "testSql", 1234);
 		assertEquals(5, beans.length);
 		getOperator().batchDelete(insertBeans);
+	}
+	
+	public void testCursorPagingGetBeansBySqlAndArray(){
+		Bean[] insertBeans = getBeans(25);
+		getOperator().batchDelete(insertBeans);
+		getOperator().batchInsert(insertBeans);
+		String sql = "select * from ANIMAL  where name=? and length=?";
+		Bean[] beans =getOperator().getCursorPageBeans(sql, 0, 10, "testSql", 1234);
+		assertEquals(10, beans.length);
+		beans =getOperator().getCursorPageBeans(sql, 11, 10, "testSql", 1234);
+		assertEquals(10, beans.length);
+		beans =getOperator().getCursorPageBeans(sql, 21, 10, "testSql", 1234);
+		assertEquals(5, beans.length);
+		getOperator().batchDelete(insertBeans);
+	}
+	
+	
+	
+	public void testSynColumnName(){
+		Bean animalBean=new Bean(ANIMAL);
+		animalBean.setProperty("name","testSql");
+		animalBean.setProperty("length","1234");
+		getOperator().delete(animalBean);
+		getOperator().insert(animalBean);
+		DBOperator operator2=DbOperatorFactory.getDBOperator(BRANCH, getClass().getClassLoader());
+		Bean branchBean = new Bean(BRANCH);
+		branchBean.set("branchName", "sfsf");
+		operator2.delete(branchBean);
+		operator2.insert(branchBean);
+		Bean[] beans=getOperator().getBeans("select a.name name,b.branch_name name from ANIMAL a,A_BRANCH b");
+		for (Bean bean : beans) {
+			assertEquals("testSql", bean.get("name"));
+			assertEquals("sfsf", bean.get("name1"));
+		}
+		getOperator().delete(animalBean);
+		operator2.delete(branchBean);
 	}
 }

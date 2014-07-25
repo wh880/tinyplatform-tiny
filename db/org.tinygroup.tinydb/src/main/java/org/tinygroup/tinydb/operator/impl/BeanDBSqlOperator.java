@@ -17,7 +17,6 @@ package org.tinygroup.tinydb.operator.impl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,50 +46,42 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		}
 	}
 
-	public Bean[] getPagedBeans(String sql, int start, int limit) {
-		return getPagedBeans(buildSqlFuction(sql), start, limit,
-				new HashMap<String, Object>());
-	}
-
 	public Bean[] getBeans(String sql, Map<String, Object> parameters) {
 		List<Bean> beans = findBeansByMap(buildSqlFuction(sql), getBeanType(),
 				getSchema(), parameters, new ArrayList<Integer>());
-		for (Bean bean : beans) {
-			processRelation(bean, getRelation(), new QueryRelationCallBack());
+		return relationProcess(beans);
+	}
+
+	private Bean[] relationProcess(List<Bean> beans) {
+		if(relation!=null){
+			for (Bean bean : beans) {
+				processRelation(bean, relation, new QueryRelationCallBack());
+			}
 		}
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
-	public Bean[] getPagedBeans(String sql, int start, int limit,
+	public Bean[] getPageBeans(String sql, int start, int limit,
 			Map<String, Object> parameters) {
 		List<Bean> beans = findBeansByMapForPage(buildSqlFuction(sql),
 				getBeanType(), getSchema(), start, limit, parameters,
 				new ArrayList<Integer>());
-		for (Bean bean : beans) {
-			processRelation(bean, getRelation(), new QueryRelationCallBack());
-		}
-		return TinyDBUtil.collectionToArray(beans);
+		return relationProcess(beans);
 	}
 
 	public Bean[] getBeans(String sql, Object... parameters) {
 		List<Bean> beans = findBeans(buildSqlFuction(sql), getBeanType(),
 				getSchema(), parameters);
-		for (Bean bean : beans) {
-			processRelation(bean, getRelation(), new QueryRelationCallBack());
-		}
-		return TinyDBUtil.collectionToArray(beans);
+		return relationProcess(beans);
 	}
 
 	public Bean[] getBeans(String sql, List<Object> parameters) {
 		List<Bean> beans = findBeansByList(buildSqlFuction(sql), getBeanType(),
 				getSchema(), parameters);
-		for (Bean bean : beans) {
-			processRelation(bean, getRelation(), new QueryRelationCallBack());
-		}
-		return TinyDBUtil.collectionToArray(beans);
+		return relationProcess(beans);
 	}
 
-	public Bean[] getPagedBeans(String sql, int start, int limit,
+	public Bean[] getPageBeans(String sql, int start, int limit,
 			Object... parameters) {
 		List<Object> params = new ArrayList<Object>();
 		if (parameters != null) {
@@ -98,13 +89,90 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 				params.add(obj);
 			}
 		}
-
 		List<Bean> beans = findBeansByListForPage(buildSqlFuction(sql),
 				getBeanType(), getSchema(), start, limit, params);
-		for (Bean bean : beans) {
-			processRelation(bean, getRelation(), new QueryRelationCallBack());
+		return relationProcess(beans);
+	}
+
+	public Bean[] getCursorPageBeans(String sql, int start, int limit) {
+		List<Bean> beans = findBeansForCursorPage(buildSqlFuction(sql),
+				getBeanType(), getSchema(), start, limit);
+		return relationProcess(beans);
+	}
+
+	public Bean[] getCursorPageBeans(String sql, int start, int limit,
+			Map<String, Object> parameters) {
+		List<Bean> beans = findBeansByMapForCursorPage(buildSqlFuction(sql),
+				getBeanType(), getSchema(), start, limit, parameters,
+				new ArrayList<Integer>());
+		return relationProcess(beans);
+	}
+
+	public Bean[] getCursorPageBeans(String sql, int start, int limit,
+			List<Object> parameters) {
+		List<Bean> beans = findBeansByListForCursorPage(buildSqlFuction(sql),
+				getBeanType(), getSchema(), start, limit, parameters);
+		return relationProcess(beans);
+	}
+
+	public Bean[] getCursorPageBeans(String sql, int start, int limit,
+			Object... parameters) {
+		List<Object> params = new ArrayList<Object>();
+		if (parameters != null) {
+			for (Object obj : parameters) {
+				params.add(obj);
+			}
 		}
-		return TinyDBUtil.collectionToArray(beans);
+		List<Bean> beans = findBeansByListForCursorPage(buildSqlFuction(sql),
+				getBeanType(), getSchema(), start, limit, params);
+		return relationProcess(beans);
+	}
+
+	public Bean[] getPageBeans(String sql, int start, int limit) {
+		List<Bean> beans = findBeansForPage(buildSqlFuction(sql),
+				getBeanType(), getSchema(), start, limit);
+		return relationProcess(beans);
+	}
+
+	public Bean[] getDialectPageBeans(String sql, int start, int limit) {
+		List<Bean> beans = findBeansForDialectPage(buildSqlFuction(sql),
+				getBeanType(), getSchema(), start, limit);
+		return relationProcess(beans);
+	}
+
+	public Bean[] getDialectPageBeans(String sql, int start, int limit,
+			Object... parameters) {
+		List<Object> params = new ArrayList<Object>();
+		if (parameters != null) {
+			for (Object obj : parameters) {
+				params.add(obj);
+			}
+		}
+		List<Bean> beans = findBeansByListForDialectPage(buildSqlFuction(sql),
+				getBeanType(), getSchema(), start, limit, params);
+		return relationProcess(beans);
+	}
+
+	public Bean[] getPageBeans(String sql, int start, int limit,
+			List<Object> parameters) {
+		List<Bean> beans = findBeansByListForPage(buildSqlFuction(sql),
+				getBeanType(), getSchema(), start, limit, parameters);
+		return relationProcess(beans);
+	}
+
+	public Bean[] getDialectPageBeans(String sql, int start, int limit,
+			List<Object> parameters) {
+		List<Bean> beans = findBeansByListForDialectPage(buildSqlFuction(sql),
+				getBeanType(), getSchema(), start, limit, parameters);
+		return relationProcess(beans);
+	}
+
+	public Bean[] getDialectPageBeans(String sql, int start, int limit,
+			Map<String, Object> parameters) {
+		List<Bean> beans = findBeansByMapForDialectPage(buildSqlFuction(sql),
+				getBeanType(), getSchema(), start, limit, parameters,
+				new ArrayList<Integer>());
+		return relationProcess(beans);
 	}
 
 	public Bean getSingleValue(String sql) {
@@ -139,8 +207,10 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		List<Object> params = new ArrayList<Object>();
 		List<Bean> beans = findBeansByList(sql, getBeanType(), getSchema(),
 				params);
-		for (Bean bean : beans) {
-			processRelation(bean, getRelation(), new QueryRelationCallBack());
+		if(relation!=null){
+			for (Bean bean : beans) {
+				processRelation(bean, relation, new QueryRelationCallBack());
+			}
 		}
 		return beans;
 	}
@@ -253,8 +323,8 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 	}
 
 	private String buildSqlFuction(String sql) {
-		Dialect dialect= getDialect();
-		if(dialect!=null){
+		Dialect dialect = getDialect();
+		if (dialect != null) {
 			return dialect.buildSqlFuction(sql);
 		}
 		return sql;
@@ -285,7 +355,7 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		List<Object> valueList = new ArrayList<Object>();
 		String sql = this.generateSqlClause(selectBeans, conditions,
 				orderBeans, valueList);
-		return getPagedBeans(sql, start, limit,
+		return getPageBeans(sql, start, limit,
 				TinyDBUtil.collectionToArray(valueList));
 	}
 
@@ -323,7 +393,7 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		List<Object> valueList = new ArrayList<Object>();
 		String sql = this.generateSqlClause(selectClause, conditions,
 				orderBeans, valueList);
-		return getPagedBeans(sql, start, limit,
+		return getPageBeans(sql, start, limit,
 				TinyDBUtil.collectionToArray(valueList));
 	}
 
@@ -341,4 +411,5 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		SelectBean[] selectBeans = new SelectBean[0];
 		return getBeans(selectBeans, conditions, orderBeans);
 	}
+
 }

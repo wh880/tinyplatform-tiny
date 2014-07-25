@@ -89,7 +89,7 @@ public class TinydbSqlQueryService implements ComponentInterface {
 		Bean[] beans=null;
 		Context2Map context2Map=new Context2Map(context);
         if(limit!=0){//分页查询
-			beans=operator.getPagedBeans(querySql, start, limit, context2Map);
+			beans=operator.getPageBeans(querySql, start, limit, context2Map);
 		}else{
 			beans=operator.getBeans(querySql, context2Map);
 		}
