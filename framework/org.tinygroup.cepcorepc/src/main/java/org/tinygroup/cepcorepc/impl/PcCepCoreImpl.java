@@ -1,5 +1,6 @@
 package org.tinygroup.cepcorepc.impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -128,7 +129,8 @@ public class PcCepCoreImpl implements CEPCore {
 			aopMananger.beforeLocalHandle(event);
 			try {
 				// local处理
-				eventProcessor.process(event);
+//				eventProcessor.process(event);
+				deal(eventProcessor, event);
 			} catch (RuntimeException e) {
 				dealException(e, event);
 				throw e;
@@ -143,7 +145,8 @@ public class PcCepCoreImpl implements CEPCore {
 			aopMananger.beforeRemoteHandle(event);
 			try {
 				// remote处理
-				eventProcessor.process(event);
+//				eventProcessor.process(event);
+				deal(eventProcessor, event);
 			} catch (RuntimeException e) {
 				dealException(e, event);
 				throw e;
@@ -157,7 +160,27 @@ public class PcCepCoreImpl implements CEPCore {
 		// 后置Aop
 		aopMananger.afterHandle(event);
 	}
-
+	private void deal(EventProcessor eventProcessor,Event event){
+		if(event.getMode() == Event.EVENT_MODE_SYNCHRONOUS){
+			Event e = getEventClone(event);
+			event.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
+			event.setType(Event.EVENT_TYPE_RESPONSE);
+			SynchronousDeal thread = new SynchronousDeal(eventProcessor, e);
+			thread.start();
+		}else{
+			eventProcessor.process(event);
+		}
+	}
+	private Event getEventClone(Event event) {
+		Event e = new Event();
+		e.setEventId(event.getEventId());
+		e.setServiceRequest(event.getServiceRequest());
+		e.setType(event.getType());
+		e.setGroupMode(event.getGroupMode());
+		e.setMode(event.getMode());
+		e.setPriority(event.getPriority());
+		return e;
+	}
 	private void dealException(Throwable e, Event event) {
 		CEPCoreUtil.handle(e, event,this.getClass().getClassLoader());
 		Throwable t = e.getCause();
@@ -227,6 +250,21 @@ public class PcCepCoreImpl implements CEPCore {
 			chooser = new WeightChooser();
 		}
 		return chooser;
+	}
+	class SynchronousDeal extends Thread implements Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		Event e;
+		EventProcessor eventProcessor;
+		public SynchronousDeal(EventProcessor eventProcessor,Event e){
+			this.e  = e;
+			this.eventProcessor = eventProcessor;
+		}
+		public void run() {
+			eventProcessor.process(e);
+		}
 	}
 
 }

@@ -17,15 +17,15 @@
 	http://www.springframework.org/schema/aop/spring-aop.xsd"
 	default-autowire="byName" default-lazy-init="true">
 	<bean id="validateAddress" name="validateAddress" scope="prototype"
-		class="org.tinygroup.cepcore.test.aop.bean.AopValidateAddress">
+		class="org.tinygroup.cepcorepc.test.aop.bean.AopValidateAddress">
 	</bean>
 	<bean id="validateUser" name="validateUser" scope="prototype"
-		class="org.tinygroup.cepcore.test.aop.bean.AopValidateUser">
+		class="org.tinygroup.cepcorepc.test.aop.bean.AopValidateUser">
 	</bean>
 	<bean id="validateService" name="validateService" scope="prototype"
-		class="org.tinygroup.cepcore.test.aop.bean.AopValidateService">
+		class="org.tinygroup.cepcorepc.test.aop.bean.AopValidateService">
 	</bean>
 	<bean id="exceptionService" name="exceptionService" scope="prototype"
-		class="org.tinygroup.cepcore.test.aop.exception.ExceptionService">
+		class="org.tinygroup.cepcorepc.test.aop.exception.ExceptionService">
 	</bean>
 </beans>
