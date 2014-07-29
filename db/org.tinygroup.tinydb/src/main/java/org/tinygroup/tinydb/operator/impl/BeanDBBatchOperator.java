@@ -15,7 +15,6 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,42 +25,31 @@ import org.springframework.jdbc.core.SqlParameterValue;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
 import org.tinygroup.tinydb.config.TableConfiguration;
-import org.tinygroup.tinydb.exception.DBRuntimeException;
-import org.tinygroup.tinydb.operator.DBOperator;
+import org.tinygroup.tinydb.exception.TinyDbException;
+import org.tinygroup.tinydb.operator.DbBatchOperator;
+import org.tinygroup.tinydb.relation.Relation;
 import org.tinygroup.tinydb.util.TinyDBUtil;
 
- abstract class BeanDBBatchOperator<K> extends
-		BeanDBSingleOperator<K> implements DBOperator<K> {
+public class BeanDBBatchOperator<K> extends
+		BeanDBSingleOperator<K> implements DbBatchOperator<K> {
 
 	public BeanDBBatchOperator(JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);
 	}
 
-	public Bean[] getBeans(Bean bean) {
+	public Bean[] getBeans(Bean bean) throws TinyDbException {
 		List<Object> params = getConditionParams(bean);
 		String sql = getSelectSql(bean);
 		List<Bean> beans = findBeansByList(sql, bean.getType(), getSchema(),
 				params);
-		if (beans == null || beans.size() == 0) {
-			return null;
-		}
-		for (Bean queryBean : beans) {
-			processRelation(queryBean, getRelation(), new QueryRelationCallBack());
-		}
-		return TinyDBUtil.listToArray(beans);
+		return relationProcess(bean.getType(), beans);
 	}
 	
-	public Bean[] getBeans(Bean bean, int start, int limit) {
+	public Bean[] getBeans(Bean bean, int start, int limit) throws TinyDbException {
 		List<Object> params = getConditionParams(bean);
 		String sql = getSelectSql(bean);
 		List<Bean> beans = findBeansByListForPage(sql, bean.getType(), getSchema(),start,limit,params);
-		if (beans == null || beans.size() == 0) {
-			return null;
-		}
-		for (Bean queryBean : beans) {
-			processRelation(queryBean, getRelation(), new QueryRelationCallBack());
-		}
-		return TinyDBUtil.listToArray(beans);
+		return relationProcess(bean.getType(), beans);
 	}
 
 	private List<Object> getConditionParams(Bean bean) {
@@ -80,18 +68,21 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 	}
 	
 
-	public Bean[] batchInsert(Bean[] beans) {
+	public Bean[] batchInsert(Bean[] beans) throws TinyDbException {
 		Bean[] insertBeans = insertTopBeans(beans);
 		// 关联bean插入
-		if(insertBeans!=null){
-			for (Bean bean : insertBeans) {
-				processRelation(bean, getRelation(), new InsertRelationCallBack());
+		if(insertBeans!=null&&insertBeans.length>0){
+			Relation relation=getRelation(insertBeans[0].getType());
+			if(relation!=null){
+				for (Bean bean : insertBeans) {
+					processRelation(bean, relation, new InsertRelationCallBack());
+				}
 			}
 		}
 		return insertBeans;
 	}
 
-	private Bean[] insertTopBeans(Bean[] beans) {
+	private Bean[] insertTopBeans(Bean[] beans) throws TinyDbException {
 		if (beans == null || beans.length == 0) {
 			return null;
 		}
@@ -102,27 +93,30 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		return beans;
 	}
 
-	private void checkBeanType(Bean[] beans) {
+	private void checkBeanType(Bean[] beans) throws TinyDbException {
 		String beanType=beans[0].getType();
 		for (int i = 1; i < beans.length; i++) {
 			Bean bean = beans[i];
 			if(!beanType.equals(bean.getType())){
-				throw new DBRuntimeException("tinydb.batchBeanTypeError");
+				throw new TinyDbException("批处理对象的bean类型不同");
 			}
 		}
 	}
 
-	public int[] batchUpdate(Bean[] beans) {
+	public int[] batchUpdate(Bean[] beans) throws TinyDbException {
 		int[] records= updateTopBeans(beans);
-		if(beans!=null){
-			for (Bean bean : beans) {
-				processRelation(bean, getRelation(), new UpdateRelationCallBack());
+		if(beans!=null&&beans.length>0){
+			Relation relation=getRelation(beans[0].getType());
+			if(relation!=null){
+				for (Bean bean : beans) {
+					processRelation(bean, relation, new UpdateRelationCallBack());
+				}
 			}
 		}
 		return records;
 	}
 
-	private int[] updateTopBeans(Bean[] beans) {
+	private int[] updateTopBeans(Bean[] beans) throws TinyDbException {
 		if (beans == null || beans.length == 0) {
 			return null;
 		}
@@ -143,17 +137,20 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 
 	
 
-	public int[] batchDelete(Bean[] beans) {
+	public int[] batchDelete(Bean[] beans)  throws TinyDbException{
 		int[] records= deleteTopBeans(beans);
-		if(beans!=null){
-			for (Bean bean : beans) {
-				processRelation(bean, getRelation(), new DeleteRelationCallBack());
+		if(beans!=null&&beans.length>0){
+			Relation relation=getRelation(beans[0].getType());
+			if(relation!=null){
+				for (Bean bean : beans) {
+					processRelation(bean, relation, new DeleteRelationCallBack());
+				}
 			}
 		}
 		return records;
 	}
 
-	private int[] deleteTopBeans(Bean[] beans) {
+	private int[] deleteTopBeans(Bean[] beans) throws TinyDbException {
 		if (beans == null || beans.length == 0) {
 			return null;
 		}
@@ -165,14 +162,14 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		return executeBatchBySqlParamterValues(sql, params);
 	}
 
-	public int[] deleteById(K[] beanIds) {
+	public int[] deleteById(K[] beanIds,String beanType) throws TinyDbException {
 		if (beanIds == null || beanIds.length == 0) {
 			return null;
 		}		
 		List<SqlParameterValue[]> params=new ArrayList<SqlParameterValue[]>();
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				getBeanType(), getSchema(),this.getClass().getClassLoader());
-		String sql = getDeleteSqlByKey(getBeanType());
+				beanType, getSchema(),this.getClass().getClassLoader());
+		String sql = getDeleteSqlByKey(beanType);
 		for (K beanId : beanIds) {
 			SqlParameterValue value=createSqlParamter(beanId, table.getPrimaryKey());
 			SqlParameterValue[] values=new SqlParameterValue[1];
@@ -182,52 +179,49 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		return executeBatchBySqlParamterValues(sql, params);
 	}
 
-	public Bean[] getBeansById(K[] beanIds) {
-		try {
-			List<Bean> list = queryBean(getBeanType(), beanIds);
-			for (Bean bean : list) {
-				processRelation(bean, getRelation(), new QueryRelationCallBack());
+	public Bean[] getBeansById(K[] beanIds,String beanType) throws TinyDbException {
+			List<Bean> list = queryBean(beanType, beanIds);
+			Relation relation=getRelation(beanType);
+			if(relation!=null){
+				for (Bean bean : list) {
+					processRelation(bean, relation, new QueryRelationCallBack());
+				}
 			}
-			
 			return TinyDBUtil.collectionToArray(list);
-		} catch (SQLException e) {
-			throw new DBRuntimeException(e);
-		}
 	}
 
-	public Bean[] batchInsert(Collection<Bean> beans) {
+	public Bean[] batchInsert(Collection<Bean> beans) throws TinyDbException {
 		return batchInsert(TinyDBUtil.collectionToArray(beans));
 	}
-	public Bean[] batchInsert(Collection<Bean> beans, int batchSize) {
+	public Bean[] batchInsert(Collection<Bean> beans, int batchSize) throws TinyDbException {
 		return batchInsert(TinyDBUtil.collectionToArray(beans),batchSize);
 	}
-	public int[] batchUpdate(Collection<Bean> beans) {
+	public int[] batchUpdate(Collection<Bean> beans)  throws TinyDbException{
 		return batchUpdate(TinyDBUtil.collectionToArray(beans));
 	}
 
-	public void batchUpdate(Collection<Bean> beans, int batchSize) {
+	public void batchUpdate(Collection<Bean> beans, int batchSize) throws TinyDbException {
 		batchUpdate(TinyDBUtil.collectionToArray(beans),batchSize);
 	}
 	
-	public int[] batchDelete(Collection<Bean> beans) {
+	public int[] batchDelete(Collection<Bean> beans) throws TinyDbException {
 		return batchDelete(TinyDBUtil.collectionToArray(beans));
 	}
-	public void batchDelete(Collection<Bean> beans, int batchSize) {
+	public void batchDelete(Collection<Bean> beans, int batchSize)  throws TinyDbException{
 		batchDelete(TinyDBUtil.collectionToArray(beans),batchSize);
 	}
 	@SuppressWarnings("unchecked")
-	public int[] deleteById(Collection<K> beanIds) {
-		return deleteById((K[]) beanIds.toArray());
+	public int[] deleteById(Collection<K> beanIds,String beanType)  throws TinyDbException{
+		return deleteById((K[]) beanIds.toArray(),beanType);
 	}
 
-	public Bean[] getBeansById(Collection<K> beanIds) {
-		return getBeansById(TinyDBUtil.collectionToArray(beanIds));
+	public Bean[] getBeansById(Collection<K> beanIds,String beanType)  throws TinyDbException{
+		return getBeansById(TinyDBUtil.collectionToArray(beanIds),beanType);
 	}
 
-	private List<Bean> queryBean(String beanType, K[] beanIds)
-			throws SQLException {
+	private List<Bean> queryBean(String beanType, K[] beanIds) throws TinyDbException{
 
-		String sql = getQuerySql();
+		String sql = getQuerySql(beanType);
 		List<Bean> list = new ArrayList<Bean>();
 		List<Integer> dataTypes = new ArrayList<Integer>();
 		dataTypes.add(TinyDBUtil.getTableConfigByBean(beanType, getSchema(),this.getClass().getClassLoader())
@@ -241,13 +235,13 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 
 	}
 
-	public Bean[] batchInsert(Bean[] beans, int batchSize) {
+	public Bean[] batchInsert(Bean[] beans, int batchSize) throws TinyDbException {
 		
 		if(beans.length>batchSize){
 		   
 			batchProcess(batchSize, Arrays.asList(beans), new BatchCallBack() {
 				
-				public void callback(List<Bean> beans) {
+				public void callback(List<Bean> beans) throws TinyDbException {
 					batchInsert(beans);
 				}
 			});
@@ -259,10 +253,10 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		
 	}
 
-	public void batchUpdate(Bean[] beans, int batchSize) {
+	public void batchUpdate(Bean[] beans, int batchSize) throws TinyDbException {
 		if(beans.length>batchSize){
 			batchProcess(batchSize, Arrays.asList(beans), new BatchCallBack() {
-				public void callback(List<Bean> beans) {
+				public void callback(List<Bean> beans) throws TinyDbException {
 					batchUpdate(beans);
 				}
 			});
@@ -272,10 +266,10 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		}
 	}
 
-	public void batchDelete(Bean[] beans, int batchSize) {
+	public void batchDelete(Bean[] beans, int batchSize) throws TinyDbException {
 		if(beans.length>batchSize){
 			batchProcess(batchSize, Arrays.asList(beans), new BatchCallBack() {
-				public void callback(List<Bean> beans) {
+				public void callback(List<Bean> beans) throws TinyDbException {
 					batchDelete(beans);
 				}
 			});
@@ -285,7 +279,7 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		}
 	}
 
-	private void batchProcess(int batchSize,List<Bean> beans,BatchCallBack callback){
+	private void batchProcess(int batchSize,List<Bean> beans,BatchCallBack callback) throws TinyDbException{
 		int totalSize=beans.size();
 		int times=totalSize%batchSize==0?totalSize/batchSize:totalSize/batchSize+1;
 		int numOfEach = totalSize % times == 0 ? totalSize/times : totalSize/times + 1;
@@ -302,18 +296,18 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 		 }	
 		
 	}
-	interface BatchCallBack{
-		void callback(List<Bean> beans);
+	interface BatchCallBack {
+		void callback(List<Bean> beans)throws TinyDbException;
 	}
 	
-	public Bean[] insertBean(Bean[] beans) {
+	public Bean[] insertBean(Bean[] beans) throws TinyDbException {
 		for (Bean bean : beans) {
 			insert(bean);
 		}
 		return beans;
 	}
 
-	public int[] updateBean(Bean[] beans) {
+	public int[] updateBean(Bean[] beans) throws TinyDbException {
 		int[] records=new int[beans.length];
 		for (int i = 0; i < beans.length; i++) {
 			records[i]=update(beans[i]);
@@ -321,7 +315,7 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 	   return records;
 	}
 
-	public int[] deleteBean(Bean[] beans) {
+	public int[] deleteBean(Bean[] beans) throws TinyDbException {
 		int[] records=new int[beans.length];
 		for (int i = 0; i < beans.length; i++) {
 			records[i]=delete(beans[i]);

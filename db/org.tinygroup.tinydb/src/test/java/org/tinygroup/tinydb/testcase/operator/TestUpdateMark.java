@@ -1,6 +1,7 @@
 package org.tinygroup.tinydb.testcase.operator;
 
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.test.BaseTest;
 
 public class TestUpdateMark extends BaseTest{
@@ -14,7 +15,7 @@ public class TestUpdateMark extends BaseTest{
 		return bean;
 	}
 	
-	public void testUpdateMark(){
+	public void testUpdateMark() throws TinyDbException{
 		Bean bean = getBean();
 		getOperator().delete(bean);
 		getOperator().insert(bean);
@@ -22,7 +23,7 @@ public class TestUpdateMark extends BaseTest{
 		bean=beans[0];
 		bean.setProperty("name","testMark");
 		assertEquals(1, getOperator().update(bean));
-		bean=getOperator().getBean(bean.get("id").toString());
+		bean=getOperator().getBean(bean.get("id").toString(),ANIMAL);
 		assertEquals("testMark", bean.get("name"));
 		assertEquals(123, bean.get("length"));
 		getOperator().delete(bean);

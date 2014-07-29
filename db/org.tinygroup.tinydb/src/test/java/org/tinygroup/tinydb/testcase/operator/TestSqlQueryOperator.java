@@ -16,6 +16,7 @@
 package org.tinygroup.tinydb.testcase.operator;
 
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.order.OrderBean;
 import org.tinygroup.tinydb.order.impl.OrderByBeanDefault;
 import org.tinygroup.tinydb.query.Conditions;
@@ -46,7 +47,7 @@ public class TestSqlQueryOperator extends BaseTest{
 	
 //	BeanType[] getPagedBeans(String beanType, SelectBean[] selectBeans,
 //	QueryBean queryBean, OrderBean[] orderBeans);
-	public void testGetBeans(){
+	public void testGetBeans() throws TinyDbException{
 		
 		Bean[] insertBeans = getBeans(5);
 		getOperator().batchDelete(insertBeans);
@@ -57,14 +58,14 @@ public class TestSqlQueryOperator extends BaseTest{
 		conditions.condition("name", "like", "%bean%");
 		OrderBean[] orderBeans=new OrderBean[1];
 		orderBeans[0]=new OrderByBeanDefault("name", "asc");
-		Bean[] beans =getOperator().getBeans(selectBeans, conditions,orderBeans);
+		Bean[] beans =getOperator().getBeans(selectBeans, ANIMAL,conditions,orderBeans);
 		assertEquals(5, beans.length);
 		getOperator().batchDelete(insertBeans);
 	}
 	
 //	BeanType[] getPagedBeans(String beanType, SelectBean[] selectBeans,
 //	QueryBean queryBean, OrderBean[] orderBeans, int start, int limit);
-	public void testPagingGetBeans(){
+	public void testPagingGetBeans() throws TinyDbException{
 		
 		Bean[] insertBeans = getBeans(12);
 		getOperator().batchDelete(insertBeans);
@@ -78,18 +79,18 @@ public class TestSqlQueryOperator extends BaseTest{
 		OrderBean[] orderBeans=new OrderBean[1];
 		orderBeans[0]=new OrderByBeanDefault("name", "asc");
 		
-		Bean[] beans = getOperator().getBeans(selectBeans, conditions,orderBeans,0,5);
+		Bean[] beans = getOperator().getBeans(selectBeans,ANIMAL, conditions,orderBeans,0,5);
 		assertEquals(5, beans.length);
-		beans = getOperator().getBeans(selectBeans, conditions,orderBeans,6,5);
+		beans = getOperator().getBeans(selectBeans,ANIMAL, conditions,orderBeans,6,5);
 		assertEquals(5, beans.length);
-		beans = getOperator().getBeans(selectBeans, conditions,orderBeans,11,5);
+		beans = getOperator().getBeans(selectBeans,ANIMAL, conditions,orderBeans,11,5);
 		assertEquals(2, beans.length);
 		getOperator().batchDelete(insertBeans);
 	}
 	
 //	<T> T getSingleValue(String beanType, SelectBean[] selectBeans,
 //	QueryBean queryBean);
-	public void testGetSingleObject(){
+	public void testGetSingleObject() throws TinyDbException{
 		
 		Bean[] insertBeans = getBeans(5);
 		getOperator().batchDelete(insertBeans);
@@ -99,13 +100,13 @@ public class TestSqlQueryOperator extends BaseTest{
 		selectBeans[1]=new SelectBeanDefault("name");
 		Conditions conditions=new Conditions();
 		conditions.condition("name", "=", "bean5");;
-		Bean bean =getOperator().getSingleValue(selectBeans, conditions);
+		Bean bean =getOperator().getSingleValue(selectBeans, ANIMAL,conditions);
 		assertEquals("bean5", bean.get("name"));
 		getOperator().batchDelete(insertBeans);
 	}
 //	BeanType[] getPagedBeans(String beanType, String selectClause,
 //			QueryBean queryBean, OrderBean[] orderBeans);
-     public void testGetBeansWithSelectClause(){
+     public void testGetBeansWithSelectClause() throws TinyDbException{
 		
  		Bean[] insertBeans = getBeans(5);
  		getOperator().batchDelete(insertBeans);
@@ -117,14 +118,14 @@ public class TestSqlQueryOperator extends BaseTest{
  		
  		OrderBean[] orderBeans=new OrderBean[1];
  		orderBeans[0]=new OrderByBeanDefault("name", "asc");
- 		Bean[] beans =getOperator().getBeans(slectClause, conditions,orderBeans);
+ 		Bean[] beans =getOperator().getBeans(slectClause, ANIMAL,conditions,orderBeans);
  		assertEquals(5, beans.length);
  		
  		getOperator().batchDelete(insertBeans);
 	}
 //     BeanType[] getPagedBeans(String beanType, String selectClause,
 // 			QueryBean queryBean, OrderBean[] orderBeans, int start, int limit);
-	public void testPagingGetBeansWithSelectClause(){
+	public void testPagingGetBeansWithSelectClause() throws TinyDbException{
 
 		Bean[] insertBeans = getBeans(12);
 		getOperator().batchDelete(insertBeans);
@@ -137,16 +138,16 @@ public class TestSqlQueryOperator extends BaseTest{
 		OrderBean[] orderBeans=new OrderBean[1];
 		orderBeans[0]=new OrderByBeanDefault("name", "asc");
 		
-		Bean[] beans = getOperator().getBeans(slectClause, conditions,orderBeans,0,5);
+		Bean[] beans = getOperator().getBeans(slectClause,ANIMAL, conditions,orderBeans,0,5);
 		assertEquals(5, beans.length);
-		beans = getOperator().getBeans(slectClause, conditions,orderBeans,6,5);
+		beans = getOperator().getBeans(slectClause, ANIMAL, conditions,orderBeans,6,5);
 		assertEquals(5, beans.length);
-		beans = getOperator().getBeans(slectClause, conditions,orderBeans,11,5);
+		beans = getOperator().getBeans(slectClause,ANIMAL,conditions,orderBeans,11,5);
 		assertEquals(2, beans.length);
 		getOperator().batchDelete(insertBeans);
 	}
 	
-	public void testGetSingleObjectWithSelectClause(){
+	public void testGetSingleObjectWithSelectClause() throws TinyDbException{
 		
 		Bean[] insertBeans = getBeans(5);
 		getOperator().batchDelete(insertBeans);
@@ -154,7 +155,7 @@ public class TestSqlQueryOperator extends BaseTest{
 		String selectClause="id,name";
 		Conditions conditions=new Conditions();
 		conditions.condition("name", "=", "bean5");
-		Bean bean =getOperator().getSingleValue(selectClause, conditions);
+		Bean bean =getOperator().getSingleValue(selectClause,ANIMAL, conditions);
 		assertEquals("bean5", bean.get("name"));
 		getOperator().batchDelete(insertBeans);
 	}

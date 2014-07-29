@@ -18,13 +18,10 @@ package org.tinygroup.tinydb.operator;
 import org.tinygroup.tinydb.relation.Relation;
 
 public interface DbRelationOperator {
-	void setRelation(String id);
-
-	void setRelation(Relation relation);
 	/**
 	 * 
 	 * 获取关联操作对象
 	 * @return
 	 */
-	Relation getRelation();
+	Relation getRelation(String beanType);
 }

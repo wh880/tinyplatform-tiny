@@ -5,6 +5,7 @@ import org.tinygroup.context.Context2Map;
 import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 /**
@@ -85,17 +86,21 @@ public class TinydbSqlQueryService implements ComponentInterface {
 	}
 
 	public void execute(Context context) {
-		DBOperator operator= manager.getDbOperator(schema, beanType);
-		Bean[] beans=null;
-		Context2Map context2Map=new Context2Map(context);
-        if(limit!=0){//分页查询
-			beans=operator.getPageBeans(querySql, start, limit, context2Map);
-		}else{
-			beans=operator.getBeans(querySql, context2Map);
+		try {
+			DBOperator operator = manager.getDbOperator(schema);
+			Bean[] beans=null;
+			Context2Map context2Map=new Context2Map(context);
+	        if(limit!=0){//分页查询
+				beans=operator.getPageBeans(querySql, start, limit, context2Map);
+			}else{
+				beans=operator.getBeans(querySql, context2Map);
+			}
+	        if(beans!=null){
+	        	context.put(resultKey, beans);
+	        }
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
 		}
-        if(beans!=null){
-        	context.put(resultKey, beans);
-        }
 	}
 
 }

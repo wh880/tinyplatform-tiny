@@ -18,6 +18,7 @@ package org.tinygroup.tinydb.operator;
 import java.util.List;
 
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
  * DB相关的操作
@@ -28,21 +29,21 @@ import org.tinygroup.tinydb.Bean;
 public interface DbSingleOperator<K> {
 
 	
-	Bean insert(Bean bean);
+	Bean insert(Bean bean)throws TinyDbException;
 
-	int update(Bean bean);
+	int update(Bean bean)throws TinyDbException;
 	/**
 	 * 
 	 * @param bean bean对象
 	 * @param conditionColumns 条件字段- 数据库字段大写名称的列表集合
 	 * @return
 	 */
-	int update(Bean bean,List<String> conditionColumns);
+	int update(Bean bean,List<String> conditionColumns)throws TinyDbException;
 
-	int delete(Bean bean);
+	int delete(Bean bean)throws TinyDbException;
 
-	Bean getBean(K beanId);
+	Bean getBean(K beanId,String beanType)throws TinyDbException;
 
-	int deleteById(K beanId);
+	int deleteById(K beanId,String beanType)throws TinyDbException;
 
 }

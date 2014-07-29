@@ -23,6 +23,7 @@ import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.config.TableConfigurationContainer;
 import org.tinygroup.tinydb.convert.TableConfigConvert;
+import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
  * 表信息转换的抽象实现
@@ -44,12 +45,12 @@ public abstract class AbstractTableConfigConvert implements TableConfigConvert {
 		return manager;
 	}
 
-	public void convert() {
+	public void convert()throws TinyDbException {
 		Assert.assertNotNull(manager, "bean操作管理对象不能为空");
 		realConvert(manager);
 	}
 
-	protected abstract void realConvert(BeanOperatorManager manager);
+	protected abstract void realConvert(BeanOperatorManager manager)throws TinyDbException;
 	
 	
 	protected void addTableConfiguration(TableConfiguration table) {

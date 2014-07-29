@@ -23,6 +23,7 @@ import org.tinygroup.dict.DictManager;
 import org.tinygroup.dict.impl.AbstractDictLoader;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 /**
@@ -41,19 +42,23 @@ public class GeneralDatabaseDictLoader extends AbstractDictLoader {
 		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 				BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-		DBOperator<?> itemOperator = manager.getDbOperator(beanType);
-		Dict dict = new Dict(beanType, beanType);
-		Bean[] dictItemBeans = itemOperator.getBeans(sql);
-		DictGroup dictGroup = new DictGroup("defaultGroupName",
-				"defaultGroupName");
-		dict.addDictGroup(dictGroup);
-		for (Bean bean : dictItemBeans) {
-			String value = bean.getProperty(valueFieldName);
-			String text = bean.getProperty(textFieldName);
-			DictItem dictItem = new DictItem(value, text);
-			dictGroup.addDictItem(dictItem);
+		try {
+			DBOperator<?> itemOperator = manager.getDbOperator();
+			Dict dict = new Dict(beanType, beanType);
+			Bean[] dictItemBeans = itemOperator.getBeans(sql);
+			DictGroup dictGroup = new DictGroup("defaultGroupName",
+					"defaultGroupName");
+			dict.addDictGroup(dictGroup);
+			for (Bean bean : dictItemBeans) {
+				String value = bean.getProperty(valueFieldName);
+				String text = bean.getProperty(textFieldName);
+				DictItem dictItem = new DictItem(value, text);
+				dictGroup.addDictItem(dictItem);
+			}
+			putDict(dict.getName(), dict, dictManager);
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
 		}
-		putDict(dict.getName(), dict, dictManager);
 	}
 
 	public String getBeanType() {

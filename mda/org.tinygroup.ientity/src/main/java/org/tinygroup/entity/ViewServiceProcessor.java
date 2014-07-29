@@ -36,13 +36,14 @@ import org.tinygroup.entity.impl.IsNullCompareMode;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.imda.processor.ParameterBuilder;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.relation.Relation;
 
 /**
  * 
  * 功能说明:视图服务处理逻辑类
  * <p>
-
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-9-6 <br>
  * <br>
@@ -142,34 +143,40 @@ public class ViewServiceProcessor extends EntityModelHelper {
 			String sql = stringBuffer.toString();
 			Bean[] beans = null;
 			int totalSize = 0;
-			if (pageSize > 0) {
-				int pageNum = 0;
-				if (pageNumStr != null) {
-					pageNum = Integer.parseInt(pageNumStr);
-				}
-				String accountSql = "select count(*) from (" + sql + ") temp";
-				totalSize = operator.account(accountSql, params);
-				int totalPages = totalSize % pageSize == 0 ? totalSize
-						/ pageSize : totalSize / pageSize + 1;
-				pageNum = checkPageNumber(totalPages, pageNum);
-				int start = pageNum * pageSize + 1;
-				beans = operator.getPageBeans(sql, start, pageSize, params.toArray());
-				pageInfo.setPageSize(pageSize);
-				pageInfo.setTotalPages(totalPages);
-				pageInfo.setPageNumber(pageNum);
+			try {
+				if (pageSize > 0) {
+					int pageNum = 0;
+					if (pageNumStr != null) {
+						pageNum = Integer.parseInt(pageNumStr);
+					}
+					String accountSql = "select count(*) from (" + sql
+							+ ") temp";
+					totalSize = operator.account(accountSql, params);
+					int totalPages = totalSize % pageSize == 0 ? totalSize
+							/ pageSize : totalSize / pageSize + 1;
+					pageNum = checkPageNumber(totalPages, pageNum);
+					int start = pageNum * pageSize + 1;
+					beans = operator.getPageBeans(sql, start, pageSize,
+							params.toArray());
+					pageInfo.setPageSize(pageSize);
+					pageInfo.setTotalPages(totalPages);
+					pageInfo.setPageNumber(pageNum);
 
-			} else {
-				beans = operator.getBeans(sql, params.toArray());
-				if (beans != null) {
-					totalSize = beans.length;
+				} else {
+					beans = operator.getBeans(sql, params.toArray());
+					if (beans != null) {
+						totalSize = beans.length;
+					}
 				}
+				if (beans == null) {
+					beans = new Bean[0];
+				}
+				pageInfo.setBeans(beans);
+				pageInfo.setTotalSize(totalSize);
+				return pageInfo;
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
 			}
-			if (beans == null) {
-				beans = new Bean[0];
-			}
-			pageInfo.setBeans(beans);
-			pageInfo.setTotalSize(totalSize);
-			return pageInfo;
 		}
 		return null;
 	}
@@ -352,22 +359,28 @@ public class ViewServiceProcessor extends EntityModelHelper {
 			generateOrderSqlClause(stringBuffer);
 			FieldMaps fieldMaps = new FieldMaps(this, context);
 			fieldMaps.parserExtendInfos(view.getExtendInformation());
-			Bean[] beans = operator.getBeans(stringBuffer.toString(), params);
-			if (beans != null) {
-				String keyName = getKeyName();
-				T[] treeNodes = (T[]) Array.newInstance(clazz, beans.length);
-				for (int i = 0; i < beans.length; i++) {
-					treeNodes[i] = fieldMaps.bean2TreeNode(beans[i], keyName,
-							clazz);
+			try {
+				Bean[] beans = operator.getBeans(stringBuffer.toString(),
+						params);
+				if (beans != null) {
+					String keyName = getKeyName();
+					T[] treeNodes = (T[]) Array
+							.newInstance(clazz, beans.length);
+					for (int i = 0; i < beans.length; i++) {
+						treeNodes[i] = fieldMaps.bean2TreeNode(beans[i],
+								keyName, clazz);
+					}
+					return treeNodes;
 				}
-				return treeNodes;
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
 			}
 		}
 		return (T[]) Array.newInstance(clazz, 0);
 	}
 
 	private String getKeyName() {
-		Relation relation = operator.getRelation();
+		Relation relation = operator.getRelation(model.getName());
 		if (relation == null) {
 			throw new TinySysRuntimeException("ientity.treeRelationIsNotExist");
 		}
@@ -387,15 +400,20 @@ public class ViewServiceProcessor extends EntityModelHelper {
 			String sql = generateSql(params);
 			FieldMaps fieldMaps = new FieldMaps(this, context);
 			fieldMaps.parserExtendInfos(view.getExtendInformation());
-			Bean[] beans = operator.getBeans(sql, params);
-			if (beans != null) {
-				T[] treeNodes = (T[]) Array.newInstance(clazz, beans.length);
-				for (int i = 0; i < beans.length; i++) {
-					Bean[] subBeans = getBeans(beans[i]);
-					treeNodes[i] = fieldMaps.bean2TreeNodeWithRecursive(
-							beans[i], clazz, subBeans);
+			try {
+				Bean[] beans = operator.getBeans(sql, params);
+				if (beans != null) {
+					T[] treeNodes = (T[]) Array
+							.newInstance(clazz, beans.length);
+					for (int i = 0; i < beans.length; i++) {
+						Bean[] subBeans = getBeans(beans[i]);
+						treeNodes[i] = fieldMaps.bean2TreeNodeWithRecursive(
+								beans[i], clazz, subBeans);
+					}
+					return treeNodes;
 				}
-				return treeNodes;
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
 			}
 		}
 		return (T[]) Array.newInstance(clazz, 0);
@@ -431,7 +449,11 @@ public class ViewServiceProcessor extends EntityModelHelper {
 		contextReplace(bean);
 		List<Object> subParams = new ArrayList<Object>();
 		String sql = generateSql(subParams);
-		return operator.getBeans(sql, subParams);
+		try {
+			return operator.getBeans(sql, subParams);
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**

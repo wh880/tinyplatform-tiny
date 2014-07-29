@@ -16,6 +16,7 @@
 package org.tinygroup.tinydb.operator;
 
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.order.OrderBean;
 import org.tinygroup.tinydb.query.Conditions;
 import org.tinygroup.tinydb.select.SelectBean;
@@ -28,27 +29,27 @@ import org.tinygroup.tinydb.select.SelectBean;
  */
 public interface DbSqlQueryOperator<K> {
 
-	Bean[] getBeans(SelectBean[] selectBeans, Conditions conditions,
-			OrderBean[] orderBeans);
+	Bean[] getBeans(SelectBean[] selectBeans,String beanType, Conditions conditions,
+			OrderBean[] orderBeans)throws TinyDbException;
 	
-	Bean[] getBeans(Conditions conditions,
-			OrderBean[] orderBeans);
+	Bean[] getBeans(String beanType,Conditions conditions,
+			OrderBean[] orderBeans)throws TinyDbException;
 
-	Bean[] getBeans(SelectBean[] selectBeans, Conditions conditions,
-			OrderBean[] orderBeans, int start, int limit);
+	Bean[] getBeans(SelectBean[] selectBeans,String beanType, Conditions conditions,
+			OrderBean[] orderBeans, int start, int limit)throws TinyDbException;
 	
-	Bean[] getBeans(Conditions conditions,
-			OrderBean[] orderBeans, int start, int limit);
+	Bean[] getBeans(String beanType,Conditions conditions,
+			OrderBean[] orderBeans, int start, int limit)throws TinyDbException;
 	
-	Bean getSingleValue(Conditions conditions);
+	Bean getSingleValue(String beanType,Conditions conditions)throws TinyDbException;
 	
-	Bean getSingleValue(SelectBean[] selectBeans, Conditions conditions);
+	Bean getSingleValue(SelectBean[] selectBeans,String beanType, Conditions conditions)throws TinyDbException;
 
-	Bean[] getBeans(String selectClause, Conditions conditions,
-			OrderBean[] orderBeans);
+	Bean[] getBeans(String selectClause,String beanType, Conditions conditions,
+			OrderBean[] orderBeans)throws TinyDbException;
 
-	Bean[] getBeans(String selectClause, Conditions conditions,
-			OrderBean[] orderBeans, int start, int limit);
+	Bean[] getBeans(String selectClause, String beanType,Conditions conditions,
+			OrderBean[] orderBeans, int start, int limit)throws TinyDbException;
 
-	Bean getSingleValue(String selectClause, Conditions conditions);
+	Bean getSingleValue(String selectClause,String beanType, Conditions conditions)throws TinyDbException;
 }

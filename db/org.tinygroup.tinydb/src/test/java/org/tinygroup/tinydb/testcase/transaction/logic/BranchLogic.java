@@ -16,6 +16,7 @@
 package org.tinygroup.tinydb.testcase.transaction.logic;
 
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 public class BranchLogic {
@@ -26,16 +27,16 @@ public class BranchLogic {
 		
 	}
 
-	public void insertBeanSuccess(Bean[] beans1) {
+	public void insertBeanSuccess(Bean[] beans1) throws TinyDbException {
 		getOperator().batchInsert(beans1);
 	}
 	
-	public void insertBeanFaiure(Bean[] beans1) {
+	public void insertBeanFaiure(Bean[] beans1) throws TinyDbException {
 		getOperator().batchInsert(beans1);
 		throw new RuntimeException("我错误了。。。");
 	}
 
-	public void deleteBean(Bean[] beans1) {
+	public void deleteBean(Bean[] beans1) throws TinyDbException {
 		getOperator().batchDelete(beans1);
 	}
 	

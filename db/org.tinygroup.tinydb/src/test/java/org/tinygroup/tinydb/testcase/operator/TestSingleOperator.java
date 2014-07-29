@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.test.BaseTest;
 
 public class TestSingleOperator extends BaseTest{
@@ -33,7 +34,7 @@ public class TestSingleOperator extends BaseTest{
 	
 	
 	
-	public void testUpdate(){
+	public void testUpdate() throws TinyDbException{
 		Bean bean = getBean();
 		getOperator().delete(bean);
 		getOperator().insert(bean);
@@ -43,7 +44,7 @@ public class TestSingleOperator extends BaseTest{
 		getOperator().delete(bean);
 	}
 	
-	public void testUpdateWithCondition(){
+	public void testUpdateWithCondition() throws TinyDbException{
 		Bean bean = getBean();
 		getOperator().delete(bean);
 		getOperator().insert(bean);
@@ -56,18 +57,18 @@ public class TestSingleOperator extends BaseTest{
 	}
 	
 	
-	public void testDelete(){
+	public void testDelete() throws TinyDbException{
 		Bean bean = getBean();
 		getOperator().delete(bean);
 		getOperator().insert(bean);
 		assertEquals(1, getOperator().delete(bean));
 	}
 	
-	public void testQuery(){
+	public void testQuery() throws TinyDbException{
 		Bean bean = getBean();
 		getOperator().delete(bean);
 		getOperator().insert(bean);
-		Bean b = getOperator().getBean(String.valueOf(bean.getProperty("id")));
+		Bean b = getOperator().getBean(String.valueOf(bean.getProperty("id")),ANIMAL);
 		getOperator().delete(b );
 	}
 	

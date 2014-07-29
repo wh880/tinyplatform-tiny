@@ -30,6 +30,7 @@ import org.tinygroup.entity.entitymodel.EntityModel;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.util.TinyDBUtil;
 
 /**
@@ -73,7 +74,11 @@ public class OperationServiceProcessor extends EntityModelHelper {
 			}
 			generateQuerySqlClause(aliasName,conditionFields, params, stringBuffer);
 			logger.logMessage(LogLevel.DEBUG, stringBuffer.toString());
-			return operator.getBeans(stringBuffer.toString(), params.toArray());
+			try {
+				return operator.getBeans(stringBuffer.toString(), params.toArray());
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		return new Bean[0];
 
@@ -81,7 +86,11 @@ public class OperationServiceProcessor extends EntityModelHelper {
 
 	@SuppressWarnings("unchecked")
 	public Bean getBeanWithPrimaryKey() {
-		return operator.getBean(context.get(primaryPropertyName));
+		try {
+			return operator.getBean(context.get(primaryPropertyName),model.getName());
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private void generateSelectSqlClause(OperationGroup operationGroup,
@@ -129,7 +138,11 @@ public class OperationServiceProcessor extends EntityModelHelper {
 		}
 		Bean bean = new Bean(model.getName());
 		insertBeanWithOperation(operationGroup, bean);
-		bean = operator.insert(bean);
+		try {
+			bean = operator.insert(bean);
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
+		}
 		return bean;
 	}
 
@@ -179,12 +192,16 @@ public class OperationServiceProcessor extends EntityModelHelper {
 					}
 					beans.add(bean);
 				}
-				int[] affects= operator.batchDelete(beans);
-				Integer[] records=new Integer[affects.length];
-				for (int i = 0; i < affects.length; i++) {
-					records[i]=affects[i];
+				try {
+					int[] affects = operator.batchDelete(beans);
+					Integer[] records=new Integer[affects.length];
+					for (int i = 0; i < affects.length; i++) {
+						records[i]=affects[i];
+					}
+					return records;
+				} catch (TinyDbException e) {
+					throw new RuntimeException(e);
 				}
-				return records;
 			}
 			
 		}
@@ -207,7 +224,11 @@ public class OperationServiceProcessor extends EntityModelHelper {
 				bean.setProperty(propertyName, context.get(propertyName));
 				conditionColumns.add(dbFieldName.toUpperCase());
 			}
-			return operator.update(bean,conditionColumns);
+			try {
+				return operator.update(bean,conditionColumns);
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
+			}
 
 		}
 		return 0;
@@ -230,7 +251,6 @@ public class OperationServiceProcessor extends EntityModelHelper {
 	}
 
 	public Bean createBeanParamter() {
-
 		if (conditionFields != null && conditionFields.size() > 0) {
 			List<String> properties = new ArrayList<String>();
 			for (ConditionField conditionField : conditionFields) {

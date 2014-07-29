@@ -22,6 +22,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.util.TinyDBUtil;
 
@@ -63,9 +64,13 @@ public abstract class AbstractTinydbService implements ComponentInterface {
 	public void execute(Context context) {
 		BeanOperatorManager manager=BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-		DBOperator operator= manager.getDbOperator(schema, beanType);
-		Bean bean=TinyDBUtil.context2Bean(context, beanType,schema,this.getClass().getClassLoader());
-		tinyService(bean,context, operator);
+		try {
+			DBOperator operator = manager.getDbOperator(schema);
+			Bean bean=TinyDBUtil.context2Bean(context, beanType,schema,this.getClass().getClassLoader());
+			tinyService(bean,context, operator);
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public abstract void tinyService(Bean bean,Context context,DBOperator operator);

@@ -16,6 +16,7 @@
 package org.tinygroup.tinydb.testcase.transaction.service;
 
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.testcase.transaction.logic.AnimalLogic;
 import org.tinygroup.tinydb.testcase.transaction.logic.BranchLogic;
 
@@ -50,8 +51,9 @@ public class TransactionService {
 	 * 事务成功测试服务
 	 * @param animals
 	 * @param branchs
+	 * @throws TinyDbException 
 	 */
-	public void transactionSuccess(Bean[] animals,Bean[] branchs){
+	public void transactionSuccess(Bean[] animals,Bean[] branchs) throws TinyDbException{
 		  animalLogic.insertBeanSuccess(animals);
 		  branchLogic.insertBeanSuccess(branchs);
 	}
@@ -60,8 +62,9 @@ public class TransactionService {
 	 * 独立事务测试服务，场景：logic1开启独立事务，新增一条记录，logic不开启独立事务，新增失败
 	 * @param animals
 	 * @param branchs
+	 * @throws TinyDbException 
 	 */
-	public void independentTransaction(Bean[] animals,Bean[] branchs){
+	public void independentTransaction(Bean[] animals,Bean[] branchs) throws TinyDbException{
 		  animalLogic.insertBeanWithRequiresNew(animals);
 		  branchLogic.insertBeanFaiure(branchs);
 	}
@@ -70,14 +73,15 @@ public class TransactionService {
 	 * 场景：logic、logic都不开启独立事务，logic2操作失败，记录都回滚
 	 * @param animals
 	 * @param branchs
+	 * @throws TinyDbException 
 	 */
-	public void transactionFailure(Bean[] animals,Bean[] branchs){
+	public void transactionFailure(Bean[] animals,Bean[] branchs) throws TinyDbException{
 		  animalLogic.insertBeanSuccess(animals);
 		  branchLogic.insertBeanFaiure(branchs);
 	}
 	
 
-	public void deleteBean(Bean[] beans1, Bean[] beans2) {
+	public void deleteBean(Bean[] beans1, Bean[] beans2) throws TinyDbException {
 		 animalLogic.deleteBean(beans1);
 		 branchLogic.deleteBean(beans2);
 	}

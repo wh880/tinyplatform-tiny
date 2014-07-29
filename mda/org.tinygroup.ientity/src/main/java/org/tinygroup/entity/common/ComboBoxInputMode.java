@@ -18,6 +18,7 @@ package org.tinygroup.entity.common;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -73,31 +74,35 @@ public class ComboBoxInputMode extends InputMode {
 		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 				BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-		DBOperator operator = manager.getDbOperator(beanType);
-		Bean[] beans = operator.getBeans(new Bean(beanType));
-		ComboBoxItem[] items = new ComboBoxItem[beans.length];
-		if (beans != null) {
-			for (int i = 0; i < beans.length; i++) {
-				Bean bean = beans[i];
-				if (bean != null) {
-					ComboBoxItem item = new ComboBoxItem();
-					item.setLabel((String) bean.getProperty(labelProperty));
-					item.setValue((String) bean.getProperty(valueProperty));
-					items[i] = item;
+		try {
+			DBOperator operator = manager.getDbOperator();
+			Bean[] beans = operator.getBeans(new Bean(beanType));
+			ComboBoxItem[] items = new ComboBoxItem[beans.length];
+			if (beans != null) {
+				for (int i = 0; i < beans.length; i++) {
+					Bean bean = beans[i];
+					if (bean != null) {
+						ComboBoxItem item = new ComboBoxItem();
+						item.setLabel((String) bean.getProperty(labelProperty));
+						item.setValue((String) bean.getProperty(valueProperty));
+						items[i] = item;
+					}
 				}
-			}
 
-		}
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("[");
-		for (int i = 0; i < items.length; i++) {
-			if (i > 0) {
-				buffer.append(",");
 			}
-			buffer.append(items[i]);
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("[");
+			for (int i = 0; i < items.length; i++) {
+				if (i > 0) {
+					buffer.append(",");
+				}
+				buffer.append(items[i]);
+			}
+			buffer.append("]");
+			return buffer.toString();
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
 		}
-		buffer.append("]");
-		return buffer.toString();
 	}
 
 }

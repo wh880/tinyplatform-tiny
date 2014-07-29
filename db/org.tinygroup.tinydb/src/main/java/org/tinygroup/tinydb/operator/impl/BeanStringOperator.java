@@ -16,7 +16,7 @@
 package org.tinygroup.tinydb.operator.impl;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.tinygroup.tinydb.operator.impl.BeanDBSqlOperator;
+import org.tinygroup.tinydb.operator.DBOperator;
 /**
  * 
  * 功能说明:框架提供以String作为keytype的实现 
@@ -25,7 +25,7 @@ import org.tinygroup.tinydb.operator.impl.BeanDBSqlOperator;
  * 开发时间: 2013-7-31 <br>
  * <br>
  */
-public class BeanStringOperator extends BeanDBSqlOperator<String>{
+public class BeanStringOperator extends BeanDBSqlQueryOperator<String> implements DBOperator<String>{
 
 	public BeanStringOperator(JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);

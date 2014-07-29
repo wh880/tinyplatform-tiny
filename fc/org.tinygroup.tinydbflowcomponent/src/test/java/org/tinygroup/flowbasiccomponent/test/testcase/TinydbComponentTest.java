@@ -18,6 +18,7 @@ package org.tinygroup.flowbasiccomponent.test.testcase;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 
 
 public class TinydbComponentTest extends BaseTest {
@@ -25,7 +26,11 @@ public class TinydbComponentTest extends BaseTest {
 
     public void setUp() {
         super.setUp();
-        getOperator().execute("delete from animal");//删除所有记录
+        try {
+			getOperator().execute("delete from animal");
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
+		}//删除所有记录
         //		for (int i = 0; i < 3; i++) {
         //			Bean bean = new Bean(ANIMAL);
         //			bean.setProperty("id",i+"");
@@ -56,7 +61,7 @@ public class TinydbComponentTest extends BaseTest {
         assertEquals("aaaaaa", result.get("id"));
     }
 
-	public void testUpdate() {
+	public void testUpdate() throws TinyDbException {
 		Bean bean=getBean();
 		getOperator().insert(bean);
 		Context context=new ContextImpl();
@@ -68,7 +73,7 @@ public class TinydbComponentTest extends BaseTest {
         assertEquals(1, record.intValue());
 	}
 
-	public void testDelete() {
+	public void testDelete() throws TinyDbException {
 		Bean bean=getBean();
 		getOperator().insert(bean);
 		Context context=new ContextImpl();
@@ -79,7 +84,7 @@ public class TinydbComponentTest extends BaseTest {
         assertEquals(1, record.intValue());
 	}
 
-    public void testQuery() {
+    public void testQuery() throws TinyDbException {
         for (int i = 0; i < 3; i++) {
             Bean bean = new Bean(ANIMAL);
             bean.setProperty("id", i + "");
@@ -95,7 +100,7 @@ public class TinydbComponentTest extends BaseTest {
         assertEquals(3, beans.length);
     }
 
-    public void testQueryWithId() {
+    public void testQueryWithId() throws TinyDbException {
         Bean bean = getBean();
         getOperator().insert(bean);
         Context context = new ContextImpl();

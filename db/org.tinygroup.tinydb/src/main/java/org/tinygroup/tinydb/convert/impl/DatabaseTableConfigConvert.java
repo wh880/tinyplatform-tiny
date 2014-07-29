@@ -29,6 +29,7 @@ import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
 import org.tinygroup.tinydb.config.TableConfiguration;
+import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
  * tiny database描述的表结构配置
@@ -52,11 +53,15 @@ public class DatabaseTableConfigConvert extends AbstractTableConfigConvert {
 		this.database = database;
 	}
 
-	protected void realConvert(BeanOperatorManager manager) {
+	protected void realConvert(BeanOperatorManager manager) throws TinyDbException{
 		TableProcessor processor = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 				TableProcessor.BEAN_NAME);
 		List<Table> tables = processor.getTables();
+		String database=manager.getDatabase();
+		if(database!=null){
+			this.database=database;
+		}
 		if (!CollectionUtil.isEmpty(tables)) {
 			for (Table table : tables) {
 				logger.logMessage(LogLevel.DEBUG, "开始转化表对象:{}", table.getName());
@@ -94,7 +99,7 @@ public class DatabaseTableConfigConvert extends AbstractTableConfigConvert {
 			return;
 		}
 		DialectType dialectType = MetadataUtil.getDialectType(standardFieldId,
-				database, this.getClass().getClassLoader());
+				getDatabase(), this.getClass().getClassLoader());
 		column.setColumnName(standardField.getName());
 		column.setAllowNull(Boolean.toString(!tableField.getNotNull()));
 		column.setColumnSize(MetadataUtil.getPlaceholderValue(standardFieldId,

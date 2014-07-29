@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.tinydb.exception.TinyDbRuntimeException;
+import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
  * 表信息
@@ -74,7 +74,7 @@ public class TableConfiguration implements Serializable {
 		this.schema = schema;
 	}
 
-	public void setPrimaryKey(String columnName) {
+	public void setPrimaryKey(String columnName) throws TinyDbException {
 		boolean flag = false;
 		for (ColumnConfiguration column : columns) {
 			if (column.getColumnName().equals(columnName.toUpperCase())) {
@@ -84,17 +84,17 @@ public class TableConfiguration implements Serializable {
 			}
 		}
 		if (!flag) {
-			throw new TinyDbRuntimeException("表格主键字段" + columnName + "不存在");
+			throw new TinyDbException("表格主键字段" + columnName + "不存在");
 		}
 	}
 
-	public ColumnConfiguration getPrimaryKey() {
+	public ColumnConfiguration getPrimaryKey() throws TinyDbException {
 		for (ColumnConfiguration column : columns) {
 			if (column.isPrimaryKey()) {
 				return column;
 			}
 		}
-		throw new TinyDbRuntimeException("找不到主键字段！");
+		throw new TinyDbException("找不到主键字段！");
 	}
 	
 	public void addColumn(ColumnConfiguration column){

@@ -18,6 +18,7 @@ package org.tinygroup.tinydb.testcase.transaction.logic;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 public class AnimalLogic {
@@ -28,16 +29,16 @@ public class AnimalLogic {
 		
 	}
     @Transactional
-	public void insertBeanSuccess(Bean[] beans1) {
+	public void insertBeanSuccess(Bean[] beans1) throws TinyDbException {
 		getOperator().batchInsert(beans1);
 	}
 	
     @Transactional(propagation=Propagation.REQUIRES_NEW)
-  	public void insertBeanWithRequiresNew(Bean[] beans1) {
+  	public void insertBeanWithRequiresNew(Bean[] beans1) throws TinyDbException {
   		getOperator().batchInsert(beans1);
   	}
 
-	public void deleteBean(Bean[] beans1) {
+	public void deleteBean(Bean[] beans1) throws TinyDbException {
 		getOperator().batchDelete(beans1);
 	}
 	

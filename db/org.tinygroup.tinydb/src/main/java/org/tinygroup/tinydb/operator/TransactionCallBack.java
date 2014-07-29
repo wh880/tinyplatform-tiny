@@ -1,6 +1,7 @@
 package org.tinygroup.tinydb.operator;
 
 import org.springframework.transaction.TransactionStatus;
+import org.tinygroup.tinydb.exception.TinyDbException;
 
 
 /**
@@ -10,6 +11,6 @@ import org.springframework.transaction.TransactionStatus;
  */
 public interface TransactionCallBack {
 
-	public Object callBack(TransactionStatus status);
+	public Object callBack(TransactionStatus status)throws TinyDbException;
 	
 }

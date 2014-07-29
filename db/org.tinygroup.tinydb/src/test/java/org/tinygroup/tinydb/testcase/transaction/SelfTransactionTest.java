@@ -1,10 +1,9 @@
 package org.tinygroup.tinydb.testcase.transaction;
 
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.DbOperatorFactory;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.operator.TransactionCallBack;
 import org.tinygroup.tinydb.test.BaseTest;
@@ -21,7 +20,7 @@ public class SelfTransactionTest extends BaseTest{
 	}
 
 
-	public void testRollbackTransaction(){
+	public void testRollbackTransaction() throws TinyDbException{
 		Bean bean=getAnimalBean();
 		DBOperator operator=getOperator();
 		operator.delete(bean);//先刪除
@@ -40,13 +39,13 @@ public class SelfTransactionTest extends BaseTest{
 		operator.delete(bean);//最后刪除
 	}
 	
-	public void testTransactionCallBack(){
+	public void testTransactionCallBack() throws TinyDbException{
 		final DBOperator operator=getOperator();
 		final Bean bean=getAnimalBean();
 		operator.delete(bean);//先刪除
 		try {
 			operator.execute(new TransactionCallBack() {
-				public Object callBack(TransactionStatus status) {
+				public Object callBack(TransactionStatus status) throws TinyDbException {
 					operator.insert(bean);
 					operator.insert(bean);
 					operator.insert(bean);
@@ -81,15 +80,14 @@ public class SelfTransactionTest extends BaseTest{
 		throw new RuntimeException("主动抛出错误异常");
 	}
     
-	public void testNestedTransaction(){
-		DBOperator operator=DbOperatorFactory.getDBOperator(ANIMAL, getClass().getClassLoader());
+	public void testNestedTransaction() throws TinyDbException{
+		DBOperator operator=manager.getDbOperator();
 		operator.execute("delete from animal");//刪除
 		Bean bean=getAnimalBean();
 		try {
 			operator.beginTransaction();
 			operator.insert(bean);
-			DBOperator operator2=DbOperatorFactory.getDBOperator(ANIMAL, getClass().getClassLoader());
-			operator2.setTransactionDefinition(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRES_NEW));
+			DBOperator operator2=manager.getNewDbOperator();
 			try {
 				operator2.beginTransaction();
 				operator2.insert(bean);

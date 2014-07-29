@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.test.BaseTest;
 
 
@@ -72,14 +73,14 @@ public class TestBatchOperator extends BaseTest {
 		
 	}
 	
-	public void testArrayDelete(){
+	public void testArrayDelete() throws TinyDbException{
 		Bean[] beans = getBeans();
 		getOperator().batchDelete(beans);
 		assertEquals(2, getOperator().batchInsert(beans).length);
 		assertEquals(2,getOperator().batchDelete(beans).length);
 	}
 	
-	public void testArrayUpdate(){
+	public void testArrayUpdate() throws TinyDbException{
 		Bean[] beans = getBeans();
 		getOperator().batchInsert(beans);
 		beans[0].setProperty("name","123456");
@@ -89,30 +90,30 @@ public class TestBatchOperator extends BaseTest {
 		
 	}
 	
-	public void testArrayQuery(){
+	public void testArrayQuery() throws TinyDbException{
 		Bean[] beans = getBeans();
 		beans=getOperator().batchInsert(beans);
 		String[] ids = getBeanIds(beans);
-		Bean[] beans2 =getOperator().getBeansById(ids);
+		Bean[] beans2 =getOperator().getBeansById(ids,ANIMAL);
 		assertEquals(2, beans2.length);
 		getOperator().batchDelete(beans);
 	}
 	
-	public void testArrayDeleteById(){
+	public void testArrayDeleteById() throws TinyDbException{
 		Bean[] beans = getBeans();
 		beans=getOperator().batchInsert(beans);
 		String[] ids = getBeanIds(beans);
-		assertEquals(2,getOperator().deleteById(ids).length);
+		assertEquals(2,getOperator().deleteById(ids,ANIMAL).length);
 		
 	}
 	
-	public void testCollectionDelete(){
+	public void testCollectionDelete() throws TinyDbException{
 		List<Bean> beans = getBeanList();
 		assertEquals(2,getOperator().batchInsert(beans).length);
 		assertEquals(2,getOperator().batchDelete(beans).length);
 	}
 	
-	public void testCollectionUpdate(){
+	public void testCollectionUpdate() throws TinyDbException{
 		List<Bean> beans = getBeanList();
 		getOperator().batchInsert(beans);
 		beans.get(0).setProperty("name","123456");
@@ -122,23 +123,23 @@ public class TestBatchOperator extends BaseTest {
 		
 	}
 	
-	public void testCollectionQuery(){
+	public void testCollectionQuery() throws TinyDbException{
 		List<Bean> beans = getBeanList();
 		Bean[] insertBeans=getOperator().batchInsert(beans);
 		List<String> ids = getBeanIdList(insertBeans);
-		Bean[] beans2 =getOperator().getBeansById(ids);
+		Bean[] beans2 =getOperator().getBeansById(ids,ANIMAL);
 		assertEquals(2, beans2.length);
 		getOperator().batchDelete(beans);
 	}
 	
-	public void testCollectionDeleteById(){
+	public void testCollectionDeleteById() throws TinyDbException{
 		List<Bean> beans = getBeanList();
 		Bean[] insertBeans=getOperator().batchInsert(beans);
 		List<String> ids = getBeanIdList(insertBeans);
-		assertEquals(2,getOperator().deleteById(ids).length);
+		assertEquals(2,getOperator().deleteById(ids,ANIMAL).length);
 	}
 	
-	public void testInsertDiffType(){
+	public void testInsertDiffType() throws TinyDbException{
 		List<Bean> beans = getBeanDiffList();
 		try {
 			getOperator().batchInsert(beans);

@@ -16,9 +16,10 @@
 package org.tinygroup.tinydb.test.operator;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.tinygroup.tinydb.operator.impl.BeanDBSqlOperator;
+import org.tinygroup.tinydb.operator.DBOperator;
+import org.tinygroup.tinydb.operator.impl.BeanDBSqlQueryOperator;
 
-public class BeanStringOperator extends BeanDBSqlOperator<String>{
+public class BeanStringOperator extends BeanDBSqlQueryOperator<String> implements DBOperator<String>{
 
 	public BeanStringOperator(JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);

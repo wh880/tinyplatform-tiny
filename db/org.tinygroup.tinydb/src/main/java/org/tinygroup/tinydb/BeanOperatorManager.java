@@ -18,6 +18,7 @@ package org.tinygroup.tinydb;
 import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.config.TableConfigurationContainer;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.relation.Relation;
 import org.tinygroup.tinydb.relation.Relations;
@@ -49,19 +50,39 @@ public interface BeanOperatorManager {
 	String getMainSchema();
 	
 	/**
-	 * 获取数据操作器
+	 * 设置默认的databse
 	 * @param schema
-	 * @param beanType
-	 * @return
 	 */
-	DBOperator<?> getDbOperator(String schema,String beanType);
+	void setDatabase(String database);
+	
+	String getDatabase();
 	
 	/**
 	 * 获取数据操作器
-	 * @param beanType
 	 * @return
 	 */
-	DBOperator<?> getDbOperator(String beanType);
+	DBOperator<?> getDbOperator()throws TinyDbException;
+	
+	
+	/**
+	 * 获取数据操作器
+	 * @param schema
+	 * @return
+	 */
+	DBOperator<?> getDbOperator(String schema)throws TinyDbException;
+	
+	/**
+	 * 新获取数据操作器
+	 * @return
+	 */
+	DBOperator<?> getNewDbOperator()throws TinyDbException;
+	
+	/**
+	 * 获取数据操作器
+	 * @param schema
+	 * @return
+	 */
+	DBOperator<?> getNewDbOperator(String schema)throws TinyDbException;
 
 	/**
 	 * @param schemaConfig
@@ -89,7 +110,7 @@ public interface BeanOperatorManager {
 	 * 
 	 * 要处理的所有schema列表
 	 */
-	 void loadTablesFromSchemas();
+	 void loadTablesFromSchemas()throws TinyDbException ;
 	
 	/**
 	 * 获取表配置信息容器对象

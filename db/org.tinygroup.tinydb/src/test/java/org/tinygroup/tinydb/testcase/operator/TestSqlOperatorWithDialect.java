@@ -16,6 +16,7 @@
 package org.tinygroup.tinydb.testcase.operator;
 
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.test.BaseTest;
 
 /**
@@ -45,7 +46,7 @@ public class TestSqlOperatorWithDialect  extends BaseTest{
 		return insertBeans;
 	}
 
-	public void testDialectFunction(){
+	public void testDialectFunction() throws TinyDbException{
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);
@@ -60,7 +61,7 @@ public class TestSqlOperatorWithDialect  extends BaseTest{
 		
 		getOperator().batchDelete(insertBeans);
 	}
-	public void testMutiDialectFunction(){
+	public void testMutiDialectFunction() throws TinyDbException{
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);

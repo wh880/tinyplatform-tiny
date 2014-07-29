@@ -26,6 +26,7 @@ import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
 import org.tinygroup.tinydb.config.TableConfiguration;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 /**
@@ -89,10 +90,10 @@ public final class TinyDBUtil {
 		return manager.getTableConfiguration(beanType, schema);
 	}
 
-	public static DBOperator<?> getDBOperator(String schema, String beanType,ClassLoader loader) {
+	public static DBOperator<?> getDBOperator(String schema,ClassLoader loader) throws TinyDbException {
 		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
 				loader).getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-		return manager.getDbOperator(schema, beanType);
+		return manager.getDbOperator(schema);
 	}
 
 	public static TableConfiguration getTableConfigByBean(String beanType,

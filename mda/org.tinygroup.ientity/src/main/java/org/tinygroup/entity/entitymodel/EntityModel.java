@@ -33,6 +33,7 @@ import org.tinygroup.entity.util.ModelUtil;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -62,7 +63,12 @@ public class EntityModel extends BaseModel {
 			BeanOperatorManager manager = BeanContainerFactory
 					.getBeanContainer(this.getClass().getClassLoader())
 					.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-			DBOperator operator = manager.getDbOperator(this.getName());
+			DBOperator operator = null;
+			try {
+				operator = manager.getDbOperator();
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
+			}
 			Assert.assertNotNull(operator, "operator must not null");
 			this.nameConverter = operator.getBeanDbNameConverter();
 		}

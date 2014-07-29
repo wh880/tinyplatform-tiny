@@ -30,7 +30,7 @@ import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
 import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.config.TableConfiguration;
-import org.tinygroup.tinydb.exception.DBRuntimeException;
+import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
  * 通过数据库databsemeta元数据来获取表配置信息
@@ -60,7 +60,7 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert {
 		this.dataSource = dataSource;
 	}
 
-	public void realConvert(BeanOperatorManager manager) {
+	public void realConvert(BeanOperatorManager manager) throws TinyDbException {
 		Assert.assertNotNull(dataSource, "数据库连接池对象不能为空");
 		Connection connection = null;
 		try {
@@ -76,20 +76,20 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert {
 			}
 			logger.logMessage(LogLevel.INFO, "扫描schema列表中的所有表信息结束");
 		} catch (SQLException e) {
-			throw new DBRuntimeException(e);
+			throw new TinyDbException(e);
 		} finally {
 			if (connection != null) {
 				try {
 					connection.close();
 				} catch (SQLException e) {
-					throw new DBRuntimeException(e);
+					throw new TinyDbException(e);
 				}
 			}
 		}
 	}
 
 	private void initSchemaConfiguration(SchemaConfig schemaConfig,
-			DatabaseMetaData metaData) throws SQLException {
+			DatabaseMetaData metaData) throws SQLException, TinyDbException {
 		String schema = schemaConfig.getSchema();
 		ResultSet tables = metaData.getTables("", schema.toUpperCase(),
 				schemaConfig.getTableNamePattern(), TABLE_TYPES);
@@ -112,7 +112,7 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert {
 	}
 
 	private void initTableConfiguration(String tableName, String schema,
-			DatabaseMetaData metaData) throws SQLException {
+			DatabaseMetaData metaData) throws SQLException, TinyDbException {
 		logger.logMessage(LogLevel.INFO, "开始获取表格:{0}信息", tableName);
 		if (existsTable(tableName, schema)) {
 			logger.logMessage(LogLevel.WARN, "表格:{0}已存在，无需重新获取", tableName);
@@ -154,7 +154,7 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert {
 	private static TableConfiguration getTableConfiguration(String tableName,
 			String tableNamePatternStr, String schemaPattern,
 			String columnNamePattern, DatabaseMetaData metaData)
-			throws SQLException {
+			throws SQLException, TinyDbException {
 		ResultSet colRet = metaData.getColumns(null, schemaPattern,
 				tableNamePatternStr, columnNamePattern);
 		ResultSet primaryKeySet = null;
