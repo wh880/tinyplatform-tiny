@@ -353,6 +353,16 @@ public class FileResolverImpl implements FileResolver {
 		String threadCount = ConfigurationUtil.getPropertyName(
 				applicationConfig, componentConfig, "thread-count");
 		this.setFileProcessorThreadNumber(getThreadNumber(threadCount));
+		List<XmlNode> classPaths = ConfigurationUtil.combineFindNodeList(
+				"class-path", applicationConfig, componentConfig);
+		for (XmlNode classPath : classPaths) {
+			String path = classPath.getAttribute("path");
+			if (path != null && path.length() > 0) {
+				logger.logMessage(LogLevel.INFO, "添加手工配置classpath: [{0}]...",
+						path);
+				addResolvePath(path);
+			}
+		}
 		List<XmlNode> includePatterns = ConfigurationUtil.combineFindNodeList(
 				"include-pattern", applicationConfig, componentConfig);
 		for (XmlNode includePatter : includePatterns) {
