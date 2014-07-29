@@ -53,4 +53,9 @@ public class EventProcessorForValidate implements EventProcessor{
 		return 0;
 	}
 
+	public List<String> getRegex() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

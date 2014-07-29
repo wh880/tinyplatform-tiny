@@ -45,4 +45,9 @@ public class SimpleChannel extends AbstractChannel {
 		return 0;
 	}
 
+	public List<String> getRegex() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

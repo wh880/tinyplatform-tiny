@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
@@ -28,6 +30,7 @@ public class PcCepCoreImpl implements CEPCore {
 	private Map<String, EventProcessor> processorMap = new HashMap<String, EventProcessor>();
 	private Map<String, ServiceInfo> localServiceMap = new HashMap<String, ServiceInfo>();
 	private List<ServiceInfo> localServices = new ArrayList<ServiceInfo>();
+	private Map<EventProcessor, List<String>> regexMap = new HashMap<EventProcessor, List<String>>();
 	private String nodeName;
 	private CEPCoreOperator operator;
 	private EventProcessorChoose chooser;
@@ -83,6 +86,11 @@ public class PcCepCoreImpl implements CEPCore {
 				list.add(eventProcessor);
 			}
 		}
+
+		if (eventProcessor.getRegex() != null
+				&& eventProcessor.getRegex().size() > 0) {
+			regexMap.put(eventProcessor, eventProcessor.getRegex());
+		}
 		logger.logMessage(LogLevel.INFO, "注册EventProcessor:{}完成",
 				eventProcessor.getId());
 	}
@@ -129,7 +137,7 @@ public class PcCepCoreImpl implements CEPCore {
 			aopMananger.beforeLocalHandle(event);
 			try {
 				// local处理
-//				eventProcessor.process(event);
+				// eventProcessor.process(event);
 				deal(eventProcessor, event);
 			} catch (RuntimeException e) {
 				dealException(e, event);
@@ -145,7 +153,7 @@ public class PcCepCoreImpl implements CEPCore {
 			aopMananger.beforeRemoteHandle(event);
 			try {
 				// remote处理
-//				eventProcessor.process(event);
+				// eventProcessor.process(event);
 				deal(eventProcessor, event);
 			} catch (RuntimeException e) {
 				dealException(e, event);
@@ -160,17 +168,19 @@ public class PcCepCoreImpl implements CEPCore {
 		// 后置Aop
 		aopMananger.afterHandle(event);
 	}
-	private void deal(EventProcessor eventProcessor,Event event){
-		if(event.getMode() == Event.EVENT_MODE_SYNCHRONOUS){
+
+	private void deal(EventProcessor eventProcessor, Event event) {
+		if (event.getMode() == Event.EVENT_MODE_SYNCHRONOUS) {
 			Event e = getEventClone(event);
 			event.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
 			event.setType(Event.EVENT_TYPE_RESPONSE);
 			SynchronousDeal thread = new SynchronousDeal(eventProcessor, e);
 			thread.start();
-		}else{
+		} else {
 			eventProcessor.process(event);
 		}
 	}
+
 	private Event getEventClone(Event event) {
 		Event e = new Event();
 		e.setEventId(event.getEventId());
@@ -181,13 +191,46 @@ public class PcCepCoreImpl implements CEPCore {
 		e.setPriority(event.getPriority());
 		return e;
 	}
+
 	private void dealException(Throwable e, Event event) {
-		CEPCoreUtil.handle(e, event,this.getClass().getClassLoader());
+		CEPCoreUtil.handle(e, event, this.getClass().getClassLoader());
 		Throwable t = e.getCause();
 		while (t != null) {
-			CEPCoreUtil.handle(t, event,this.getClass().getClassLoader());
+			CEPCoreUtil.handle(t, event, this.getClass().getClassLoader());
 			t = t.getCause();
 		}
+	}
+
+	private EventProcessor getEventProcessorByRegx(
+			ServiceRequest serviceRequest, String eventNodeName) {
+		String serviceId = serviceRequest.getServiceId();
+		boolean hasNotNodeName = (eventNodeName == null || ""
+				.equals(eventNodeName));
+		for (EventProcessor p : regexMap.keySet()) {
+			if (!hasNotNodeName) {
+				if (!eventNodeName.equals(p.getId())) {
+					continue;// 如果指定了节点，则先判断节点名是否对应，再做服务判断
+				}
+			}
+			List<String> regex = p.getRegex();
+			for (String s : regex) {
+				Pattern pattern = Pattern.compile(s);
+				Matcher matcher = pattern.matcher(serviceId);
+				boolean b = matcher.matches(); // 满足时，将返回true，否则返回false
+				if (b) {
+					return p;
+				}
+			}
+			throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
+					+ serviceRequest.getServiceId());
+		}
+//		if (hasNotNodeName){
+			throw new RuntimeException("没有找到合适的服务处理器");
+//		}else{
+//			throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
+//					+ serviceRequest.getServiceId());
+//		}
+//			
 	}
 
 	private EventProcessor getEventProcessor(ServiceRequest serviceRequest,
@@ -195,7 +238,7 @@ public class PcCepCoreImpl implements CEPCore {
 		List<EventProcessor> list = serviceIdMap.get(serviceRequest
 				.getServiceId());
 		if (list == null || list.size() == 0) {
-			throw new RuntimeException("没有找到合适的服务处理器");
+			return getEventProcessorByRegx(serviceRequest, eventNodeName);
 		}
 		boolean hasNotNodeName = (eventNodeName == null || ""
 				.equals(eventNodeName));
@@ -205,7 +248,8 @@ public class PcCepCoreImpl implements CEPCore {
 					return e;
 				}
 			}
-			throw new RuntimeException("没有找到指定的服务处理器：" + eventNodeName);
+			throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
+					+ serviceRequest.getServiceId());
 		}
 		// 如果有本地的 则直接返回本地的EventProcessor
 		for (EventProcessor e : list) {
@@ -251,6 +295,7 @@ public class PcCepCoreImpl implements CEPCore {
 		}
 		return chooser;
 	}
+
 	class SynchronousDeal extends Thread implements Serializable {
 		/**
 		 * 
@@ -258,10 +303,12 @@ public class PcCepCoreImpl implements CEPCore {
 		private static final long serialVersionUID = 1L;
 		Event e;
 		EventProcessor eventProcessor;
-		public SynchronousDeal(EventProcessor eventProcessor,Event e){
-			this.e  = e;
+
+		public SynchronousDeal(EventProcessor eventProcessor, Event e) {
+			this.e = e;
 			this.eventProcessor = eventProcessor;
 		}
+
 		public void run() {
 			eventProcessor.process(e);
 		}

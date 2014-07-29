@@ -59,4 +59,12 @@ public interface EventProcessor {
 	 * @return
 	 */
 	int getWeight();
+	
+	
+	
+	/**
+	 * 返回正则
+	 * @return
+	 */
+	List<String> getRegex();
 }
