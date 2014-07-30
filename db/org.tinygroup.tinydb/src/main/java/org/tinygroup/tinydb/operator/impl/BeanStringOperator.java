@@ -25,7 +25,7 @@ import org.tinygroup.tinydb.operator.DBOperator;
  * 开发时间: 2013-7-31 <br>
  * <br>
  */
-public class BeanStringOperator extends BeanDBSqlQueryOperator<String> implements DBOperator<String>{
+public class BeanStringOperator extends GenericDbOperator<String> implements DBOperator<String>{
 
 	public BeanStringOperator(JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);

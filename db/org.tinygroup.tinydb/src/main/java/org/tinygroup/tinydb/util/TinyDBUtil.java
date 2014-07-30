@@ -117,10 +117,10 @@ public final class TinyDBUtil {
 		return null;
 	}
 
-	public static List<String> getBeanProperties(String beanType, String schame,ClassLoader loader) {
+	public static List<String> getBeanProperties(String beanType, String schema,ClassLoader loader) {
 		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
 				loader).getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-		TableConfiguration tableConfig = getTableConfigByBean(beanType, schame,loader);
+		TableConfiguration tableConfig = manager.getTableConfiguration(beanType, schema);
 		List<String> properties = new ArrayList<String>();
 		if (tableConfig != null) {
 			for (ColumnConfiguration c : tableConfig.getColumns()) {

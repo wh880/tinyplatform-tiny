@@ -26,22 +26,6 @@ import org.tinygroup.tinydb.test.BaseTest;
 
 public class TestSqlOperator extends BaseTest{
 	
-	private Bean getBean(String id){
-		Bean bean = new Bean(ANIMAL);
-		bean.setProperty("id",id);
-		bean.setProperty("name","testSql");
-		bean.setProperty("length","1234");
-		return bean;
-	}
-	
-	private Bean[] getBeans(int length){
-		Bean[] insertBeans = new Bean[length];
-		for(int i = 0 ; i < length ; i++ ){
-			insertBeans[i] = getBean(i+"");
-		}
-		return insertBeans;
-	}
-	
 //	BeanType[] getPagedBeans(String beanType,String sql);
 	public void testGetBeansBySql() throws TinyDbException{
 		

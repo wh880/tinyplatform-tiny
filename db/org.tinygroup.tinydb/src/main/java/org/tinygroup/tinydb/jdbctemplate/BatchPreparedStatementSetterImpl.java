@@ -23,18 +23,17 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.jdbc.core.SqlTypeValue;
 import org.springframework.jdbc.core.StatementCreatorUtils;
-import org.tinygroup.tinydb.util.TinyDBUtil;
 
 public class BatchPreparedStatementSetterImpl implements
 		BatchPreparedStatementSetter {
 	private List<List<Object>> params;
 	
-	private Integer[] columnTypes;
+	private int[] columnTypes;
 
 	public BatchPreparedStatementSetterImpl(List<List<Object>> params,
-			List<Integer> types) {
+			int[] columnTypes) {
 		this.params = params;
-		columnTypes=TinyDBUtil.collectionToArray(types);
+		this.columnTypes=columnTypes;
 	}
 
 	public List<List<Object>> getParams() {
@@ -55,7 +54,7 @@ public class BatchPreparedStatementSetterImpl implements
 	}
 
 	
-	private void doSetStatementParameters(List<Object> values, PreparedStatement ps, Integer[] columnTypes) throws SQLException {
+	private void doSetStatementParameters(List<Object> values, PreparedStatement ps, int[] columnTypes) throws SQLException {
 		int colIndex = 0;
 		for (Object value : values) {
 			colIndex++;

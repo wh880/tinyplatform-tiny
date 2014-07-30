@@ -24,9 +24,9 @@ import org.tinygroup.tinydb.select.SelectBean;
 import org.tinygroup.tinydb.select.impl.SelectBeanDefault;
 import org.tinygroup.tinydb.test.BaseTest;
 
-public class TestSqlQueryOperator extends BaseTest{
+public class TestSqlQueryOperator extends BaseTest {
 	
-	private Bean getBean(String id,String name){
+	private Bean getQueryBean(String id,String name){
 		Bean bean = new Bean(ANIMAL);
 		bean.setProperty("id",id);
 		bean.setProperty("name",name);
@@ -34,13 +34,13 @@ public class TestSqlQueryOperator extends BaseTest{
 		return bean;
 	}
 	
-	private Bean[] getBeans(int length){
+	private Bean[] getQueryBeans(int length){
 		Bean[] insertBeans = new Bean[length*2];
 		for(int i = 0 ; i < length ; i++ ){
-			insertBeans[i] = getBean(i+"","name"+i);
+			insertBeans[i] = getQueryBean(i+"","name"+i);
 		}
 		for(int i = length ; i < length*2 ; i++ ){
-			insertBeans[i] = getBean(i+"","bean"+i);
+			insertBeans[i] = getQueryBean(i+"","bean"+i);
 		}
 		return insertBeans;
 	}
@@ -49,7 +49,7 @@ public class TestSqlQueryOperator extends BaseTest{
 //	QueryBean queryBean, OrderBean[] orderBeans);
 	public void testGetBeans() throws TinyDbException{
 		
-		Bean[] insertBeans = getBeans(5);
+		Bean[] insertBeans = getQueryBeans(5);
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);
 		SelectBean[] selectBeans=new SelectBean[1];
@@ -67,7 +67,7 @@ public class TestSqlQueryOperator extends BaseTest{
 //	QueryBean queryBean, OrderBean[] orderBeans, int start, int limit);
 	public void testPagingGetBeans() throws TinyDbException{
 		
-		Bean[] insertBeans = getBeans(12);
+		Bean[] insertBeans = getQueryBeans(12);
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);
 
@@ -92,7 +92,7 @@ public class TestSqlQueryOperator extends BaseTest{
 //	QueryBean queryBean);
 	public void testGetSingleObject() throws TinyDbException{
 		
-		Bean[] insertBeans = getBeans(5);
+		Bean[] insertBeans = getQueryBeans(5);
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);
 		SelectBean[] selectBeans=new SelectBean[2];
@@ -108,7 +108,7 @@ public class TestSqlQueryOperator extends BaseTest{
 //			QueryBean queryBean, OrderBean[] orderBeans);
      public void testGetBeansWithSelectClause() throws TinyDbException{
 		
- 		Bean[] insertBeans = getBeans(5);
+ 		Bean[] insertBeans = getQueryBeans(5);
  		getOperator().batchDelete(insertBeans);
  		getOperator().batchInsert(insertBeans);
  		
@@ -127,7 +127,7 @@ public class TestSqlQueryOperator extends BaseTest{
 // 			QueryBean queryBean, OrderBean[] orderBeans, int start, int limit);
 	public void testPagingGetBeansWithSelectClause() throws TinyDbException{
 
-		Bean[] insertBeans = getBeans(12);
+		Bean[] insertBeans = getQueryBeans(12);
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);
 	
@@ -149,7 +149,7 @@ public class TestSqlQueryOperator extends BaseTest{
 	
 	public void testGetSingleObjectWithSelectClause() throws TinyDbException{
 		
-		Bean[] insertBeans = getBeans(5);
+		Bean[] insertBeans = getQueryBeans(5);
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);
 		String selectClause="id,name";

@@ -16,7 +16,9 @@
 package org.tinygroup.tinydb.testcase.operator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.exception.TinyDbException;
@@ -139,6 +141,48 @@ public class TestBatchOperator extends BaseTest {
 		assertEquals(2,getOperator().deleteById(ids,ANIMAL).length);
 	}
 	
+	public void testBatchSqls() throws TinyDbException{
+		Bean[] beans = getBeans(20);
+		beans=getOperator().batchInsert(beans);
+		List<String> sqls=new ArrayList<String>();
+		for (int i = 0; i < beans.length; i++) {
+			sqls.add("update animal set name='fdfs' where id='"+beans[i].get("id").toString()+"'");
+		}
+		int[] affects=getOperator().executeBatch(sqls);
+        assertEquals(20, affects.length);
+        assertEquals(1, affects[0]);
+        getOperator().execute("delete from animal");
+	}
+	
+	public void testBatchWithParams() throws TinyDbException{
+		Bean[] beans = getBeans(20);
+		beans=getOperator().batchInsert(beans);
+		String sql="update animal set name=? where id=?";
+		List<List<Object>> params=new ArrayList<List<Object>>();
+		for (int i = 0; i < beans.length; i++) {
+			Bean bean=beans[i];
+			List<Object> param=new ArrayList<Object>();
+			param.add("name"+i);
+			param.add(bean.get("id").toString());
+			params.add(param);
+		}
+		int[] affects=getOperator().executeBatchByList(sql, params);
+		assertEquals(20, affects.length);
+	    assertEquals(1, affects[0]);
+		String sqlMap="delete from animal where id=@id";
+		List<Map<String, Object>> paramsMap=new ArrayList<Map<String,Object>>();
+		for (int i = 0; i < beans.length; i++) {
+			Bean bean=beans[i];
+			Map<String, Object> param=new HashMap<String, Object>();
+			param.put("id", bean.get("id"));
+			paramsMap.add(param);
+		}
+		affects=getOperator().executeBatchByMap(sqlMap, paramsMap);
+		assertEquals(20, affects.length);
+	    assertEquals(1, affects[0]);
+	    getOperator().execute("delete from animal");
+	}
+	
 	public void testInsertDiffType() throws TinyDbException{
 		List<Bean> beans = getBeanDiffList();
 		try {
@@ -168,4 +212,5 @@ public class TestBatchOperator extends BaseTest {
 		list.add(bean2);
 		return list;
 	}
+	
 }

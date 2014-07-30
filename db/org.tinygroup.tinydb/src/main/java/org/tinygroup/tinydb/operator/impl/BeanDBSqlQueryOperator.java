@@ -10,7 +10,6 @@ import org.tinygroup.tinydb.operator.DbSqlQueryOperator;
 import org.tinygroup.tinydb.order.OrderBean;
 import org.tinygroup.tinydb.query.Conditions;
 import org.tinygroup.tinydb.select.SelectBean;
-import org.tinygroup.tinydb.util.TinyDBUtil;
 
 public class BeanDBSqlQueryOperator<K> extends  BeanDBSqlOperator<K> implements DbSqlQueryOperator<K>{
 
@@ -118,7 +117,7 @@ public class BeanDBSqlQueryOperator<K> extends  BeanDBSqlOperator<K> implements 
 		List<Object> valueList = new ArrayList<Object>();
 		String sql = this.generateSqlClause(selectBeans,beanType, conditions,
 				orderBeans, valueList);
-		return getBeans(sql, TinyDBUtil.collectionToArray(valueList));
+		return getBeans(sql, valueList.toArray());
 	}
 
 	public Bean[] getBeans(SelectBean[] selectBeans,String beanType, Conditions conditions,
@@ -127,7 +126,7 @@ public class BeanDBSqlQueryOperator<K> extends  BeanDBSqlOperator<K> implements 
 		String sql = this.generateSqlClause(selectBeans,beanType, conditions,
 				orderBeans, valueList);
 		return getPageBeans(sql, start, limit,
-				TinyDBUtil.collectionToArray(valueList));
+				valueList.toArray());
 	}
 
 	public Bean[] getBeans(String beanType,Conditions conditions, OrderBean[] orderBeans,
@@ -155,7 +154,7 @@ public class BeanDBSqlQueryOperator<K> extends  BeanDBSqlOperator<K> implements 
 		List<Object> valueList = new ArrayList<Object>();
 		String sql = this.generateSqlClause(selectClause, beanType,conditions,
 				orderBeans, valueList);
-		return getBeans(sql, TinyDBUtil.collectionToArray(valueList));
+		return getBeans(sql, valueList.toArray());
 	}
 
 	public Bean[] getBeans(String selectClause, String beanType,Conditions conditions,
@@ -164,7 +163,7 @@ public class BeanDBSqlQueryOperator<K> extends  BeanDBSqlOperator<K> implements 
 		String sql = this.generateSqlClause(selectClause,beanType, conditions,
 				orderBeans, valueList);
 		return getPageBeans(sql, start, limit,
-				TinyDBUtil.collectionToArray(valueList));
+				valueList.toArray());
 	}
 
 	public Bean getSingleValue(String selectClause,String beanType, Conditions conditions) throws TinyDbException {

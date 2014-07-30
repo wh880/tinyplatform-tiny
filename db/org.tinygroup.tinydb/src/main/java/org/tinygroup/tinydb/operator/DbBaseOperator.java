@@ -15,6 +15,8 @@
  */
 package org.tinygroup.tinydb.operator;
 
+import java.util.UUID;
+
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.exception.TinyDbException;
@@ -49,5 +51,7 @@ public interface DbBaseOperator extends DbRelationOperator {
      * @return
      */
     int getAutoIncreaseKey()throws TinyDbException;
+    
+    UUID getUniqueCode();
 
 }

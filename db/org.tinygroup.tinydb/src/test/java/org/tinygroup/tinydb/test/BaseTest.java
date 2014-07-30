@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import junit.framework.TestCase;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
@@ -92,5 +93,25 @@ public abstract class BaseTest extends TestCase {
 
 		}
 
+	}
+	
+	protected Bean getBean(String id){
+		return getBean(id,"testSql");
+	}
+	
+	private Bean getBean(String id,String name){
+		Bean bean = new Bean(ANIMAL);
+		bean.setProperty("id",id);
+		bean.setProperty("name",name);
+		bean.setProperty("length","1234");
+		return bean;
+	}
+	
+	protected Bean[] getBeans(int length){
+		Bean[] insertBeans = new Bean[length];
+		for(int i = 0 ; i < length ; i++ ){
+			insertBeans[i] = getBean(i+"");
+		}
+		return insertBeans;
 	}
 }

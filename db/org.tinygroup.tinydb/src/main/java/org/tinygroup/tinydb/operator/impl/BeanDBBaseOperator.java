@@ -31,13 +31,12 @@ import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DbBaseOperator;
 import org.tinygroup.tinydb.relation.Relation;
-import org.tinygroup.tinydb.util.TinyDBUtil;
 
 class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator {
 
-	private BeanOperatorManager manager;
+	protected BeanOperatorManager manager;
 
-	private String schema;
+	protected String schema;
 	
 	public int getAutoIncreaseKey()throws TinyDbException {
 		try {
@@ -56,8 +55,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		StringBuffer sb = new StringBuffer();
 		StringBuffer condition = new StringBuffer();
 		sb.append("delete from ").append(tableName);
-		TableConfiguration table = TinyDBUtil.getTableConfigByBean(beanType,
-				getSchema(),this.getClass().getClassLoader());
+		TableConfiguration table = manager.getTableConfiguration(beanType, getSchema());
 		String pk = table.getPrimaryKey().getColumnName();
 		condition.append(pk).append("=?");
 		sb.append(" where ").append(condition);
@@ -72,8 +70,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	 * @return
 	 */
 	protected List<String> getColumnNames(Bean bean) {
-		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), getSchema(),this.getClass().getClassLoader());
+		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
 		List<String> insertColumnNames = new ArrayList<String>();
 		for (ColumnConfiguration column : table.getColumns()) {
 			String columnsName = column.getColumnName();
@@ -93,8 +90,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	 * @return
 	 */
 	protected List<Integer> getDataTypes(Bean bean) {
-		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), getSchema(),this.getClass().getClassLoader());
+		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
 		List<Integer> dataTypes = new ArrayList<Integer>();
 		for (ColumnConfiguration column : table.getColumns()) {
 			String columnsName = column.getColumnName();
@@ -108,8 +104,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	}
 
 	protected SqlParameterValue[] getSqlParameterValues(Bean bean) {
-		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), getSchema(),this.getClass().getClassLoader());
+		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
 		List<ColumnConfiguration> columns = table.getColumns();
 		List<SqlParameterValue> params = new ArrayList<SqlParameterValue>();
 		for (ColumnConfiguration column : columns) {
@@ -155,8 +150,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	 * @throws TinyDbException 
 	 */
 	protected String getInsertSql(Bean bean) throws TinyDbException {
-		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), getSchema(),this.getClass().getClassLoader());
+		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
 		if (table != null) {
 			StringBuffer sb = new StringBuffer();
 			StringBuffer field = new StringBuffer();
@@ -199,8 +193,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		if (conditionColumns == null || conditionColumns.size() == 0) {
 			throw new TinyDbException("beanType为:"+bean.getType()+"的更新操作不存在查询条件");
 		}
-		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), getSchema(),this.getClass().getClassLoader());
+		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
 		if (table != null) {
 			StringBuffer sb = new StringBuffer();
 			String field = getUpdateFieldSegment(table, bean, conditionColumns);
@@ -217,8 +210,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	}
 
 	public String getSelectSql(Bean bean) throws TinyDbException {
-		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), getSchema(),this.getClass().getClassLoader());
+		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
 		if (table != null) {
 			StringBuffer sb = new StringBuffer(" select * from ");
 			sb.append(getFullTableName(bean.getType()));
@@ -276,8 +268,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		if (conditionColumns == null || conditionColumns.size() == 0) {
 			throw new TinyDbException("beanType为:"+bean.getType()+"不存在查询条件信息");
 		}
-		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), getSchema(),this.getClass().getClassLoader());
+		TableConfiguration table =manager.getTableConfiguration(bean.getType(), getSchema());
 		if (table != null) {
 			List<ColumnConfiguration> columns = table.getColumns();
 			// 设置更新字段参数
@@ -353,8 +344,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	}
 
 	protected SqlParameterValue[] createSqlParameterValue(Bean bean) throws TinyDbException {
-		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), getSchema(),this.getClass().getClassLoader());
+		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
 		if (table != null) {
 			List<ColumnConfiguration> columns = table.getColumns();
 			if (columns != null && columns.size() > 0) {
@@ -435,7 +425,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		return params;
 	}
 
-	private String getFullTableName(String beanType) {
+	protected String getFullTableName(String beanType) {
 		String tempType = beanType;
 		String tableName = beanDbNameConverter.typeNameToDbTableName(tempType);
 		return getTableNameWithSchame(tableName);
@@ -446,8 +436,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	}
 
 	protected List<Object> getParams(Bean bean) {
-		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				bean.getType(), getSchema(),this.getClass().getClassLoader());
+		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
 		List<Object> params = new ArrayList<Object>();
 		for (ColumnConfiguration column : table.getColumns()) {
 			String columnName = column.getColumnName();
@@ -485,8 +474,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		StringBuffer sb = new StringBuffer();
 		StringBuffer where = new StringBuffer();
 		// 条件字段计算
-		TableConfiguration table = TinyDBUtil.getTableConfigByBean(beanType,
-				schema,this.getClass().getClassLoader());
+		TableConfiguration table = manager.getTableConfiguration(beanType, getSchema());
 		String primaryKeyName = table.getPrimaryKey().getColumnName();
 		where.append(primaryKeyName).append("=?");
 		sb.append("select * from ").append(getFullTableName(beanType));

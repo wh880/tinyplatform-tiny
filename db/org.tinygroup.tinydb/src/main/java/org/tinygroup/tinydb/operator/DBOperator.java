@@ -15,6 +15,7 @@
  */
 package org.tinygroup.tinydb.operator;
 
+
 /**
  * 数据库相关的操作<br>
  * 
@@ -27,6 +28,6 @@ public interface DBOperator<K> extends
         DbBaseOperator,
 		DbSingleOperator<K>,
 		DbBatchOperator<K>, DbSqlOperator<K>,
-		DbSqlQueryOperator<K> ,TransactionOperator{
-
+		DbSqlQueryOperator<K> ,TransactionOperator,ResultsetOperator{
+	
 }
