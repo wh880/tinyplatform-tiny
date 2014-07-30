@@ -1,21 +1,17 @@
 package org.tinygroup.service.loader;
 
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.beanutil.BeanUtil;
-import org.tinygroup.commons.tools.ClassUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.impl.AbstractConfiguration;
+import org.tinygroup.context.Context;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -46,36 +42,54 @@ public class ServiceInterfaceServiceLoader extends AbstractConfiguration
 			throws ServiceLoadException {
 
 		for (ServiceInterface serviceInterface : services) {
-			ServiceRegistryItem item = new ServiceRegistryItem();
-			item.setServiceId(serviceInterface.getServiceId());
-			item.setCategory(serviceInterface.getCategory());
-			Method method = getExecuteMethod(serviceInterface.getClass());
-			if (method != null) {
-				try {
-					ServiceProxy serviceProxy = new ServiceProxy();
-					serviceProxy.setObjectInstance(serviceInterface);
-					serviceProxy.setMethod(method);
-					getInputParameterNames(item, method, serviceProxy);
-					getOutputParameterNames(item, serviceInterface, method,
-							serviceProxy);
-					item.setService(serviceProxy);
+			try {
+				Method method = getExecuteMethod(serviceInterface.getClass());
+				ServiceRegistryItem serviceiItem = createServiceItem(
+						serviceInterface, method);
+				String serviceId = serviceInterface.getServiceId();
+				if (!StringUtil.isBlank(serviceId)) {
+					ServiceRegistryItem item =  ServiceUtil.copyServiceItem(serviceiItem);
+					item.setServiceId(serviceId);
 					serviceRegistry.registeService(item);
-				} catch (Exception e) {
-					logger.error("service.loadServiceException", e,
-							serviceInterface.getClass().getName());
-					throw new ServiceLoadException(e);
 				}
+				String aliasId = serviceInterface.getAlias();
+				if (!StringUtil.isBlank(aliasId)) {
+					ServiceRegistryItem item =  ServiceUtil.copyServiceItem(serviceiItem);
+					item.setServiceId(aliasId);
+					serviceRegistry.registeService(item);
+				}
+
+			} catch (Exception e) {
+				logger.error("service.loadServiceException", e,
+						serviceInterface.getClass().getName());
+				throw new ServiceLoadException(e);
 			}
 		}
 
+	}
+
+	private ServiceRegistryItem createServiceItem(
+			ServiceInterface serviceInterface, Method method) throws Exception {
+		ServiceRegistryItem item = new ServiceRegistryItem();
+		item.setCategory(serviceInterface.getCategory());
+		if (method != null) {
+			ServiceProxy serviceProxy = new ServiceProxy();
+			serviceProxy.setObjectInstance(serviceInterface);
+			serviceProxy.setMethod(method);
+			getInputParameterNames(item, method, serviceProxy);
+			getOutputParameterNames(item, serviceInterface, method,
+					serviceProxy);
+			item.setService(serviceProxy);
+		}
+		return item;
 	}
 
 	private void getInputParameterNames(ServiceRegistryItem item,
 			Method method, ServiceProxy serviceProxy)
 			throws IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException, ServiceLoadException {
-		logger.logMessage(LogLevel.INFO, "开始加载方法对应的服务入参,方法{0},服务:{1}",
-				method.getName(), item.getServiceId());
+		logger.logMessage(LogLevel.INFO, "开始加载方法对应的服务入参,方法{0}",
+				method.getName());
 		String[] parameterNames = BeanUtil.getMethodParameterName(
 				method.getDeclaringClass(), method);
 		Class<?>[] parameterTypes = method.getParameterTypes();
@@ -83,33 +97,19 @@ public class ServiceInterfaceServiceLoader extends AbstractConfiguration
 		for (int i = 0; i < parameterTypes.length; i++) {
 			Parameter descriptor = new Parameter();
 			Class<?> parameterType = parameterTypes[i];
-			if (implmentInterface(parameterType, Collection.class)) {
-				ParameterizedType pt = (ParameterizedType) (method
-						.getGenericParameterTypes()[i]);
-				Type[] actualTypeArguments = pt.getActualTypeArguments();
-				Class<?> clazz = (Class<?>) actualTypeArguments[0];
-				if (!clazz.isPrimitive()
-						&& !Serializable.class.isAssignableFrom(clazz)) {
-					throw new ServiceLoadException("服务参数集合类型中元素类型:<"
-							+ clazz.getName() + ">必须实现Serializable接口");
-				}
-				descriptor.setType(clazz.getName());
-				descriptor.setCollectionType(parameterType.getName());
-			} else {
-				if (!ServiceUtil.assignFromSerializable(parameterType)) {
-					throw new ServiceLoadException("服务参数类型:<"
-							+ parameterType.getName() + ">必须实现Serializable接口");
-				}
-				descriptor.setType(parameterType.getName());
+			if (!ServiceUtil.assignFromSerializable(parameterType)) {
+				throw new ServiceLoadException("服务参数类型:<"
+						+ parameterType.getName() + ">必须实现Serializable接口");
 			}
+			descriptor.setType(parameterType.getName());
 			descriptor.setArray(parameterType.isArray());
 			descriptor.setName(parameterNames[i]);
 			inputParameterDescriptors.add(descriptor);
 		}
 		item.setParameters(inputParameterDescriptors);
 		serviceProxy.setInputParameters(inputParameterDescriptors);
-		logger.logMessage(LogLevel.INFO, "加载方法对应的服务入参完毕,方法{0},服务:{1}",
-				method.getName(), item.getServiceId());
+		logger.logMessage(LogLevel.INFO, "加载方法对应的服务入参完毕,方法{0}",
+				method.getName());
 
 	}
 
@@ -131,25 +131,11 @@ public class ServiceInterfaceServiceLoader extends AbstractConfiguration
 					+ StringUtil.toCamelCase(method.getName()) + "_" + "result";
 		}
 		descriptor.setName(resultKey);
-
-		if (implmentInterface(parameterType, Collection.class)) {
-			ParameterizedType pt = (ParameterizedType) (method
-					.getGenericReturnType());
-			Type[] actualTypeArguments = pt.getActualTypeArguments();
-			Class<?> clazz = (Class<?>) actualTypeArguments[0];
-			if (!ServiceUtil.assignFromSerializable(clazz)) {
-				throw new ServiceLoadException("服务返回值为集合类型,其中元素类型:<"
-						+ clazz.getName() + ">必须实现Serializable接口");
-			}
-			descriptor.setType(clazz.getName());
-			descriptor.setCollectionType(parameterType.getName());
-		} else {
-			if (!ServiceUtil.assignFromSerializable(parameterType)) {
-				throw new ServiceLoadException("服务返回值类型:<"
-						+ parameterType.getName() + ">必须实现Serializable接口");
-			}
-			descriptor.setType(parameterType.getName());
+		if (!ServiceUtil.assignFromSerializable(parameterType)) {
+			throw new ServiceLoadException("服务返回值类型:<"
+					+ parameterType.getName() + ">必须实现Serializable接口");
 		}
+		descriptor.setType(parameterType.getName());
 		logger.logMessage(LogLevel.INFO, "服务出参type:{0}", descriptor.getType());
 		descriptor.setArray(parameterType.isArray());
 		serviceProxy.setOutputParameter(descriptor);
@@ -160,30 +146,12 @@ public class ServiceInterfaceServiceLoader extends AbstractConfiguration
 
 	}
 
-	private boolean implmentInterface(Class<?> clazz, Class<?> interfaceClazz) {
-		return interfaceClazz.isAssignableFrom(clazz);
-	}
 
-	private Method getExecuteMethod(Class<? extends ServiceInterface> clazz) {
-		Method[] methods = clazz.getMethods();
-		List<Method> executeMethods = new ArrayList<Method>();
-		for (Method method : methods) {
-			if (method.getName().equals(SERVICE_METHOD_NAME)) {
-				executeMethods.add(method);
-			}
-		}
-		int methodCount = executeMethods.size();
-		if (methodCount == 0) {
-			logger.logMessage(LogLevel.ERROR, "类名：[{0}]不存在execute方法",
-					clazz.getSimpleName());
-		} else if (executeMethods.size() > 1) {
-			logger.logMessage(LogLevel.ERROR,
-					"类名：[{0}]存在多个execute方法，只保留第一个execute方法,方法描述信息：{1}",
-					clazz.getSimpleName(),
-					ClassUtil.getSimpleMethodSignature(executeMethods.get(0)));
-			return executeMethods.get(0);
-		} else {
-			return executeMethods.get(0);
+	private Method getExecuteMethod(Class<? extends ServiceInterface> clazz)
+			throws NoSuchMethodException {
+		Method method = clazz.getMethod(SERVICE_METHOD_NAME, Context.class);
+		if (method != null) {
+			return method;
 		}
 		return null;
 	}

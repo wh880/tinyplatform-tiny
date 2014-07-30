@@ -23,7 +23,6 @@ package org.tinygroup.logger;
 import java.util.Locale;
 
 import org.tinygroup.context.Context;
-import org.tinygroup.i18n.I18nMessage;
 import org.tinygroup.logger.impl.LogBuffer;
 
 /**
@@ -185,5 +184,17 @@ public interface Logger {
     void errorMessage(String message, Throwable throwable, Object... args);
 
     void errorMessage(String message, Throwable throwable, Context context);
+    
+    /**
+     * 往MDC存放值
+     * @param key
+     * @param value
+     */
+    public void putToMDC(String key, Object value);
+    /**
+     * 移除MDC中变量值
+     * @param key
+     */
+    public void removeFromMDC(String key);
 
 }

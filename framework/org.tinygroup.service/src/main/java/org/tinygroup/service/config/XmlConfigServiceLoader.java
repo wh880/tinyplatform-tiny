@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
@@ -102,7 +103,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 	}
 
 	/**
-	 * 注册所有服务服务
+	 * 注册服务
 	 * 
 	 * @param object
 	 * @param serviceComponent
@@ -113,32 +114,26 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 	private void registerServices(Object object,
 			ServiceComponent serviceComponent, ServiceRegistry serviceRegistry)
 			throws ClassNotFoundException, ServiceLoadException {
-		ServiceRegistryItem item = new ServiceRegistryItem();
-		registerServices(object, serviceComponent, item, serviceRegistry);
-
-	}
-
-	/**
-	 * 注册服务
-	 * 
-	 * @param object
-	 * @param serviceComponent
-	 * @param serviceRegistry
-	 * @throws ServiceLoadException
-	 * @throws ClassNotFoundException
-	 */
-	private void registerServices(Object object,
-			ServiceComponent serviceComponent, ServiceRegistryItem superItem,
-			ServiceRegistry serviceRegistry) throws ClassNotFoundException,
-			ServiceLoadException {
 		for (ServiceMethod serviceMethod : serviceComponent.getServiceMethods()) {
 			ServiceRegistryItem item = new ServiceRegistryItem();
-			item.setServiceId(serviceMethod.getServiceId());
 			item.setLocalName(serviceMethod.getLocalName());
 			item.setDescription(serviceMethod.getDescription());
 			item.setCacheable(serviceMethod.isCacheable());
 			item.setCategory(serviceMethod.getCategory());
-			registerService(object, serviceMethod, item, serviceRegistry);
+			registerService(object, serviceMethod, item);
+			String serviceId=serviceMethod.getServiceId();
+			if(!StringUtil.isBlank(serviceId)){
+				ServiceRegistryItem registryItem =  ServiceUtil.copyServiceItem(item);
+				registryItem.setServiceId(serviceId);
+				serviceRegistry.registeService(registryItem);
+			}
+			String alias=serviceMethod.getAlias();
+			if(!StringUtil.isBlank(alias)){
+				ServiceRegistryItem registryItem =  ServiceUtil.copyServiceItem(item);
+				registryItem.setServiceId(alias);
+				serviceRegistry.registeService(registryItem);
+			}
+
 		}
 	}
 
@@ -153,15 +148,14 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 	 * @throws ClassNotFoundException
 	 */
 	private void registerService(Object object, ServiceMethod serviceMethod,
-			ServiceRegistryItem item, ServiceRegistry serviceRegistry)
-			throws ClassNotFoundException, ServiceLoadException {
+			ServiceRegistryItem item) throws ClassNotFoundException,
+			ServiceLoadException {
 		ServiceProxy serviceProxy = new ServiceProxy();
 		serviceProxy.setMethodName(serviceMethod.getMethodName());
 		serviceProxy.setObjectInstance(object);
 		getInputParameterNames(item, serviceMethod, serviceProxy);
 		getOutputParameterNames(item, serviceMethod, serviceProxy);
 		item.setService(serviceProxy);
-		serviceRegistry.registeService(item);
 
 	}
 

@@ -182,13 +182,6 @@ public abstract class AbstractAnnotationServiceLoader implements
 						method.getName());
 				ServiceRegistryItem item = new ServiceRegistryItem();
 				// serviceId
-				String serviceId = getAnnotationStringValue(annotation,
-						ServiceMethod.class, "serviceId");
-				if (StringUtil.isBlank(serviceId)) {
-					serviceId = StringUtil.toCamelCase(clazz.getSimpleName())
-							+ "." + StringUtil.toCamelCase(method.getName());
-				}
-				item.setServiceId(serviceId);
 				// localName
 				String localName = getAnnotationStringValue(annotation,
 						ServiceMethod.class, "localName");
@@ -206,9 +199,24 @@ public abstract class AbstractAnnotationServiceLoader implements
 						.parseBoolean(getAnnotationStringValue(annotation,
 								ServiceMethod.class, "cacheable"));
 				item.setCacheable(cacheable);
-				logger.logMessage(LogLevel.INFO, "方法对应服务serviceId:{serviceId}",
-						serviceId);
-				registerService(clazz, method, item, serviceRegistry);
+				registerService(clazz, method, item);
+
+				ServiceRegistryItem registryItem =  ServiceUtil.copyServiceItem(item);
+				String serviceId = getAnnotationStringValue(annotation,
+						ServiceMethod.class, "serviceId");
+				if (StringUtil.isBlank(serviceId)) {
+					serviceId = StringUtil.toCamelCase(clazz.getSimpleName())
+							+ "." + StringUtil.toCamelCase(method.getName());
+				}
+				registryItem.setServiceId(serviceId);
+				serviceRegistry.registeService(registryItem);
+				String alias = getAnnotationStringValue(annotation,
+						ServiceMethod.class, "alias");
+				if (!StringUtil.isBlank(alias)) {
+					registryItem =  ServiceUtil.copyServiceItem(item);
+					registryItem.setServiceId(alias);
+					serviceRegistry.registeService(registryItem);
+				}
 				logger.logMessage(LogLevel.INFO, "加载方法{0}为服务完毕",
 						method.getName());
 				// 跳转信息servicemapping
@@ -218,14 +226,22 @@ public abstract class AbstractAnnotationServiceLoader implements
 					org.tinygroup.service.config.ServiceViewMapping mapping = new org.tinygroup.service.config.ServiceViewMapping();
 					mapping.setServiceId(serviceId);
 					mapping.setPath(serviceViewMapping.value());
-					serviceViewMapping.type();
 					mapping.setType(StringUtil.defaultIfBlank(
 							serviceViewMapping.type(), "forward"));
 					serviceMappingManager.addServiceMapping(mapping);
+					if (!StringUtil.isBlank(alias)) {
+						mapping = new org.tinygroup.service.config.ServiceViewMapping();
+						mapping.setServiceId(alias);
+						mapping.setPath(serviceViewMapping.value());
+						mapping.setType(StringUtil.defaultIfBlank(
+								serviceViewMapping.type(), "forward"));
+						serviceMappingManager.addServiceMapping(mapping);
+					}
 				}
 			}
 		}
 	}
+
 
 	/**
 	 * 注册服务
@@ -233,7 +249,6 @@ public abstract class AbstractAnnotationServiceLoader implements
 	 * @param clazz
 	 * @param method
 	 * @param item
-	 * @param serviceRegistry
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
 	 * @throws IllegalAccessException
@@ -242,9 +257,9 @@ public abstract class AbstractAnnotationServiceLoader implements
 	 * @throws Exception
 	 */
 	private void registerService(Class<?> clazz, Method method,
-			ServiceRegistryItem item, ServiceRegistry serviceRegistry)
-			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException, InstantiationException, ServiceLoadException {
+			ServiceRegistryItem item) throws IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException,
+			InstantiationException, ServiceLoadException {
 		ServiceProxy serviceProxy = new ServiceProxy();
 		serviceProxy.setObjectInstance(getServiceInstance(clazz));
 		serviceProxy.setMethod(method);
@@ -252,7 +267,6 @@ public abstract class AbstractAnnotationServiceLoader implements
 		getOutputParameterNames(item, clazz, method, serviceProxy);
 
 		item.setService(serviceProxy);
-		serviceRegistry.registeService(item);
 
 	}
 
@@ -311,13 +325,13 @@ public abstract class AbstractAnnotationServiceLoader implements
 		logger.logMessage(LogLevel.INFO, "服务出参type:{name}",
 				descriptor.getType());
 		descriptor.setArray(parameterType.isArray());
-		String name=null;
+		String name = null;
 		if (annotation != null) {
 			Boolean required = Boolean.valueOf(getAnnotationStringValue(
 					annotation, ServiceResult.class, "required"));
 			descriptor.setRequired(required);
-			name = getAnnotationStringValue(annotation,
-					ServiceResult.class, "name");
+			name = getAnnotationStringValue(annotation, ServiceResult.class,
+					"name");
 			String validatorSence = getAnnotationStringValue(annotation,
 					ServiceResult.class, "validatorSence");
 			descriptor.setValidatorSence(validatorSence);
@@ -336,8 +350,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 		}
 		if (StringUtil.isBlank(name)) {
 			name = StringUtil.toCamelCase(clazz.getSimpleName()) + "_"
-					+ StringUtil.toCamelCase(method.getName()) + "_"
-					+ "result";
+					+ StringUtil.toCamelCase(method.getName()) + "_" + "result";
 		}
 		descriptor.setName(name);
 		serviceProxy.setOutputParameter(descriptor);

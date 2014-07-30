@@ -4,7 +4,7 @@
 		group-id="org.tinygroup.service.test.service" artifact-id="GeneratorService">
 
 		<service-method name="serviceUserObject" local-name="serviceUserObject"
-			service-id="serviceUserObject" version="" description="用户(对象)"
+			service-id="serviceUserObject" version="" description="用户(对象)" alias="serviceAliasUserObject"
 			method-name="userObject">
 			<service-parameters>
 				<service-parameter name="user"

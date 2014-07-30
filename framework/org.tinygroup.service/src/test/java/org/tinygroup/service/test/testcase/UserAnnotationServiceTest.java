@@ -37,8 +37,10 @@ public class UserAnnotationServiceTest extends TestCase {
 		user.setMale(true);
 		context.put("user", user);
 		ServiceTestUtil.execute("serviceAddServiceUserAnnotation", context);
-
 		Object user2 = context.get("user2");
+		assertEquals(user, user2);
+		ServiceTestUtil.execute("addServiceUserAnnotation", context);
+		user2 = context.get("user2");
 		assertEquals(user, user2);
 	}
 	

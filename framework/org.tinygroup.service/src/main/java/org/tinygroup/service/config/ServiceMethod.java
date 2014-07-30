@@ -42,6 +42,8 @@ public class ServiceMethod {
 	private boolean cacheable = false;
 	@XStreamAsAttribute
 	private String category;
+	@XStreamAsAttribute
+	private String alias;
 
 	public boolean isCacheable() {
 		return cacheable;
@@ -107,5 +109,14 @@ public class ServiceMethod {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+	
 
 }

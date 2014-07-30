@@ -32,7 +32,7 @@ public class UserManagerAnnotationService {
 	private static Logger logger = LoggerFactory
 			.getLogger(UserManagerAnnotationService.class);
 
-	@ServiceMethod(serviceId = "serviceAddServiceUserAnnotation")
+	@ServiceMethod(serviceId = "serviceAddServiceUserAnnotation",alias="addServiceUserAnnotation")
 	@ServiceResult(name = "user2")
 	public ServiceUser addServiceUser(
 			@ServiceParameter(name = "user",required=false) ServiceUser user) {

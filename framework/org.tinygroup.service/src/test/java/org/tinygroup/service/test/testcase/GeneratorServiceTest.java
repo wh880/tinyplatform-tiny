@@ -38,6 +38,12 @@ public class GeneratorServiceTest extends TestCase {
 		assertEquals("username",user2.getName());
 		assertEquals(true, user2.isMale());
 		
+		ServiceTestUtil.execute("serviceAliasUserObject", context);
+		user2 = context.get("user2");
+		assertEquals(11, user2.getAge());
+		assertEquals("username",user2.getName());
+		assertEquals(true, user2.isMale());
+		
 	}
 	
 	

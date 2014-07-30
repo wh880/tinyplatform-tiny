@@ -25,6 +25,8 @@ import java.lang.annotation.Target;
 public @interface ServiceMethod {
 
 	String serviceId() default "";
+	
+	String alias() default "";
 
 	String localName() default "";
 

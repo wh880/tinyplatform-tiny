@@ -8,13 +8,18 @@ import org.tinygroup.context.Context;
  * 通时有一个默认的约定：
  * 在这个接口的实现类中，必须有一个execute方法，execute方法用于完成服务的业务逻辑实现，其入参及返回值必须实现序列化接口
  */
-public interface ServiceInterface {
+public interface ServiceInterface  {
     /**
      * 返回服务ID
      *
      * @return
      */
     String getServiceId();
+    /**
+     * 返回服务别名
+     * @return
+     */
+    String getAlias();
 
     /**
      * 返回目录，多重目录用“.”分隔
@@ -30,6 +35,11 @@ public interface ServiceInterface {
      */
     String getResultKey();
     
-//    Context execute(Context context);
+    /**
+     * 服务执行接口方法
+     * @param context
+     * @return
+     */
+    Context execute(Context context);
 
 }

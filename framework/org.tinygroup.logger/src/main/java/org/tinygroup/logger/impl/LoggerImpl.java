@@ -26,6 +26,7 @@ import org.tinygroup.i18n.I18nMessage;
 import org.tinygroup.i18n.I18nMessageFactory;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.MDCAdaptor;
 
 /**
  * @author luoguo
@@ -34,6 +35,8 @@ public class LoggerImpl implements Logger {
     private static Pattern pattern = Pattern.compile("[{](.)*?[}]");
 
     private org.slf4j.Logger logger;
+    // MDC适配器
+	protected MDCAdaptor MDC = new BasicMDCAdapter();
     private boolean supportTransaction = true;
     private ThreadLocal<LogBuffer> threadLocal = new ThreadLocal<LogBuffer>();
     private static I18nMessage i18nMessage = I18nMessageFactory.getI18nMessages();
@@ -381,4 +384,13 @@ public class LoggerImpl implements Logger {
             logger.error(message, throwable);
         }
     }
+
+	public void putToMDC(String key, Object value) {
+		MDC.put(key, value);
+	}
+
+	public void removeFromMDC(String key) {
+		MDC.remove(key);
+	}
+	
 }

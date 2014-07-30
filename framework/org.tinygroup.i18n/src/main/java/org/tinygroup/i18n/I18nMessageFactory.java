@@ -22,8 +22,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.format.FormatProvider;
@@ -39,8 +37,6 @@ import org.tinygroup.i18n.impl.I18nMessageContextImpl;
 import com.thoughtworks.xstream.XStream;
 
 public final class I18nMessageFactory {
-	private static Logger logger = LoggerFactory
-			.getLogger(I18nMessageFactory.class);
 	private static Map<Locale, List<Properties>> resourceMap = new HashMap<Locale, List<Properties>>();
 	private static Locale defaultLocale = LocaleUtil.getContext().getLocale();
 	private static I18nMessages i18nMessages = new I18nMessages();
@@ -59,7 +55,7 @@ public final class I18nMessageFactory {
 				object = getObject(msg.getClassName());
 				i18nMessageStandards.add(object);
 			} catch (I18nException e) {
-				logger.error(e.getMessage(), e);
+				throw new RuntimeException(e);
 			}
 		}
 		List<I18nMessageContext> i18nMessageContexts = new ArrayList<I18nMessageContext>();
@@ -90,7 +86,7 @@ public final class I18nMessageFactory {
 				object.setFormater(formater);
 			}
 		} catch (I18nException e) {
-			logger.error(e.getMessage(), e);
+			throw new RuntimeException(e);
 		}
 		i18nMessages.setI18nMessageStandards(i18nMessageStandards);
 		i18nMessages.setI18nMessageContexts(i18nMessageContexts);

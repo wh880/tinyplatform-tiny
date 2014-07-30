@@ -105,5 +105,10 @@ public class LoggerTest extends TestCase {
 		assertEquals(true, logger.isEnabled(INFO));
 		assertEquals(true, logger.isEnabled(WARN));
 	}
+	
+	public void testMdc(){
+		logger.putToMDC("bizId", "testMDC");
+		logger.logMessage(LogLevel.INFO, "测试是否输出mdc，打印的日志是否输出testMDC");
+	}
 
 }
