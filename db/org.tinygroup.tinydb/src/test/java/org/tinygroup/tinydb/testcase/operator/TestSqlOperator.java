@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.DbOperatorFactory;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.test.BaseTest;
 
@@ -42,7 +43,7 @@ public class TestSqlOperator extends BaseTest{
 	}
 	
 //	BeanType[] getPagedBeans(String beanType,String sql);
-	public void testGetBeansBySql(){
+	public void testGetBeansBySql() throws TinyDbException{
 		
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchDelete(insertBeans);
@@ -55,7 +56,7 @@ public class TestSqlOperator extends BaseTest{
 	}
 	
 //	BeanType[] getPagedBeans(String beanType,String sql, int start, int limit);
-	public void testPagingGetBeansBySql(){
+	public void testPagingGetBeansBySql() throws TinyDbException{
 		
 		//getOperator().delete(getPagedBeans());
 		Bean[] insertBeans = getBeans(25);
@@ -74,7 +75,7 @@ public class TestSqlOperator extends BaseTest{
 	}
 	
 //	BeanType[] getPagedBeans(String beanType,String sql, Map<String, Object> parameters);
-	public void testGetBeansBySqlAndMap(){
+	public void testGetBeansBySqlAndMap() throws TinyDbException{
 		
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchDelete(insertBeans);
@@ -89,7 +90,7 @@ public class TestSqlOperator extends BaseTest{
 	
 //	BeanType[] getPagedBeans(String beanType,String sql, int start, int limit,
 //			Map<String, Object> parameters);
-	public void testPagingGetBeansBySqlAndMap(){
+	public void testPagingGetBeansBySqlAndMap() throws TinyDbException{
 		
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchInsert(insertBeans);
@@ -108,7 +109,7 @@ public class TestSqlOperator extends BaseTest{
 	}
 	
 //	BeanType[] getPagedBeans(String beanType,String sql, Object... parameters);
-	public void testGetBeansBySqlAndArray(){
+	public void testGetBeansBySqlAndArray() throws TinyDbException{
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);
@@ -121,7 +122,7 @@ public class TestSqlOperator extends BaseTest{
 	}
 	
 //	BeanType[] getPagedBeans(String beanType,String sql, int start, int limit, Object... parameters);
-	public void testPagingGetBeansBySqlAndArray(){
+	public void testPagingGetBeansBySqlAndArray() throws TinyDbException{
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);
@@ -135,7 +136,7 @@ public class TestSqlOperator extends BaseTest{
 		getOperator().batchDelete(insertBeans);
 	}
 	
-	public void testCursorPagingGetBeansBySqlAndArray(){
+	public void testCursorPagingGetBeansBySqlAndArray() throws TinyDbException{
 		Bean[] insertBeans = getBeans(25);
 		getOperator().batchDelete(insertBeans);
 		getOperator().batchInsert(insertBeans);
@@ -151,13 +152,13 @@ public class TestSqlOperator extends BaseTest{
 	
 	
 	
-	public void testSynColumnName(){
+	public void testSynColumnName() throws TinyDbException{
 		Bean animalBean=new Bean(ANIMAL);
 		animalBean.setProperty("name","testSql");
 		animalBean.setProperty("length","1234");
 		getOperator().delete(animalBean);
 		getOperator().insert(animalBean);
-		DBOperator operator2=DbOperatorFactory.getDBOperator(BRANCH, getClass().getClassLoader());
+		DBOperator operator2=DbOperatorFactory.getDBOperator(getClass().getClassLoader());
 		Bean branchBean = new Bean(BRANCH);
 		branchBean.set("branchName", "sfsf");
 		operator2.delete(branchBean);

@@ -16,6 +16,7 @@
 package org.tinygroup.tinydb.operator;
 
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 
 import java.util.List;
 import java.util.Map;
@@ -28,55 +29,46 @@ import java.util.Map;
 public interface DbSqlOperator<K> {
 
     // 下面是根据SQL
-    Bean[] getBeans(String sql);
+    Bean[] getBeans(String sql)throws TinyDbException;
     
-    Bean[] getBeans(String sql, Object... parameters);
+    Bean[] getBeans(String sql, Object... parameters)throws TinyDbException;
 
-    Bean[] getBeans(String sql, List<Object> parameters);
+    Bean[] getBeans(String sql, List<Object> parameters)throws TinyDbException;
 
-    Bean[] getBeans(String sql, Map<String, Object> parameters);
+    Bean[] getBeans(String sql, Map<String, Object> parameters)throws TinyDbException;
     
-    Bean[] getPageBeans(String sql, int start, int limit);
+    Bean[] getPageBeans(String sql, int start, int limit)throws TinyDbException;
     
-    Bean[] getCursorPageBeans(String sql, int start, int limit);
+    Bean[] getCursorPageBeans(String sql, int start, int limit)throws TinyDbException;
     
-    Bean[] getDialectPageBeans(String sql, int start, int limit);
+    Bean[] getDialectPageBeans(String sql, int start, int limit)throws TinyDbException;
     
-    Bean[] getPageBeans(String sql, int start, int limit,Object... parameters);
+    Bean[] getPageBeans(String sql, int start, int limit,Object... parameters)throws TinyDbException;
     
-    Bean[] getCursorPageBeans(String sql, int start, int limit,Object... parameters);
+    Bean[] getCursorPageBeans(String sql, int start, int limit,Object... parameters)throws TinyDbException;
     
-    Bean[] getDialectPageBeans(String sql, int start, int limit,Object... parameters);
+    Bean[] getDialectPageBeans(String sql, int start, int limit,Object... parameters)throws TinyDbException;
     
-    Bean[] getPageBeans(String sql, int start, int limit,List<Object> parameters);
+    Bean[] getPageBeans(String sql, int start, int limit,List<Object> parameters)throws TinyDbException;
     
-    Bean[] getCursorPageBeans(String sql, int start, int limit,List<Object> parameters);
+    Bean[] getCursorPageBeans(String sql, int start, int limit,List<Object> parameters)throws TinyDbException;
     
-    Bean[] getDialectPageBeans(String sql, int start, int limit,List<Object> parameters);
+    Bean[] getDialectPageBeans(String sql, int start, int limit,List<Object> parameters)throws TinyDbException;
     
-    Bean[] getPageBeans(String sql, int start, int limit,Map<String, Object> parameters);
+    Bean[] getPageBeans(String sql, int start, int limit,Map<String, Object> parameters)throws TinyDbException;
     
-    Bean[] getCursorPageBeans(String sql, int start, int limit,Map<String, Object> parameters);
+    Bean[] getCursorPageBeans(String sql, int start, int limit,Map<String, Object> parameters)throws TinyDbException;
     
-    Bean[] getDialectPageBeans(String sql, int start, int limit,Map<String, Object> parameters);
+    Bean[] getDialectPageBeans(String sql, int start, int limit,Map<String, Object> parameters)throws TinyDbException;
 
     // 读取单一个值
-    Bean getSingleValue(String sql);
+    Bean getSingleValue(String sql)throws TinyDbException;
 
-    Bean getSingleValue(String sql, Map<String, Object> parameters);
+    Bean getSingleValue(String sql, Map<String, Object> parameters)throws TinyDbException;
 
-    Bean getSingleValue(String sql, Object... parameters);
+    Bean getSingleValue(String sql, Object... parameters)throws TinyDbException;
 
-    Bean getSingleValue(String sql, List<Object> parameters);
-
-    /**
-     * 执行带参数的sql语句
-     *
-     * @param sql
-     * @param parameters
-     * @return
-     */
-    int execute(String sql, Map<String, Object> parameters);
+    Bean getSingleValue(String sql, List<Object> parameters)throws TinyDbException;
 
     /**
      * 执行带参数的sql语句
@@ -85,14 +77,23 @@ public interface DbSqlOperator<K> {
      * @param parameters
      * @return
      */
-    int execute(String sql, Object... parameters);
+    int execute(String sql, Map<String, Object> parameters)throws TinyDbException;
 
-    int execute(String sql, List<Object> parameters);
+    /**
+     * 执行带参数的sql语句
+     *
+     * @param sql
+     * @param parameters
+     * @return
+     */
+    int execute(String sql, Object... parameters)throws TinyDbException;
+
+    int execute(String sql, List<Object> parameters)throws TinyDbException;
 
     //查询总记录数
-    int account(String sql, Object... parameters);
+    int account(String sql, Object... parameters)throws TinyDbException;
 
-    int account(String sql, List<Object> parameters);
+    int account(String sql, List<Object> parameters)throws TinyDbException;
 
-    int account(String sql, Map<String, Object> parameters);
+    int account(String sql, Map<String, Object> parameters)throws TinyDbException;
 }

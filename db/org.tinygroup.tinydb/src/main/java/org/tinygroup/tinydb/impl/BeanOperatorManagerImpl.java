@@ -19,6 +19,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
@@ -28,8 +30,7 @@ import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.config.TableConfigurationContainer;
 import org.tinygroup.tinydb.convert.TableConfigConvert;
-import org.tinygroup.tinydb.exception.DBRuntimeException;
-import org.tinygroup.tinydb.exception.TinyDbRuntimeException;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.relation.Relation;
 import org.tinygroup.tinydb.relation.Relations;
@@ -44,6 +45,8 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager {
 
 	private String mainSchema;
 
+	private String database;
+
 	private BeanDbNameConverter beanDbNameConverter = new DefaultNameConverter();
 
 	private TableConfigurationContainer container = new TableConfigurationContainer();
@@ -52,7 +55,39 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager {
 
 	private Map<String, Relation> relationTypeMap = new HashMap<String, Relation>();
 
-	public DBOperator<?> getDbOperator(String schema, String beanType) {
+	private Map<String, DBOperator<?>> schemaOperates = new HashMap<String, DBOperator<?>>();
+
+	public DBOperator<?> getDbOperator(String schema) throws TinyDbException {
+		String realSchema = getRealSchema(schema);
+		DBOperator<?> operator = schemaOperates.get(realSchema);
+		if (operator == null) {
+			SchemaConfig schemaConfig = container.getSchemaConfig(realSchema);
+			if (schemaConfig != null) {
+				operator = BeanContainerFactory.getBeanContainer(
+						this.getClass().getClassLoader()).getBean(
+						schemaConfig.getOperatorBeanName());
+				operator.setSchema(realSchema);
+				operator.setBeanDbNameConverter(beanDbNameConverter);
+				operator.setManager(this);
+				schemaOperates.put(realSchema, operator);
+			} else {
+				throw new TinyDbException("不存在schema:" + realSchema
+						+ "对应的bean操作对象。");
+			}
+
+		}
+		return operator;
+	}
+
+	public DBOperator<?> getDbOperator() throws TinyDbException {
+		return getDbOperator(mainSchema);
+	}
+
+	public DBOperator<?> getNewDbOperator() throws TinyDbException {
+		return getNewDbOperator(mainSchema);
+	}
+
+	public DBOperator<?> getNewDbOperator(String schema) throws TinyDbException {
 		String realSchema = getRealSchema(schema);
 		SchemaConfig schemaConfig = container.getSchemaConfig(realSchema);
 		if (schemaConfig != null) {
@@ -60,18 +95,13 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager {
 					this.getClass().getClassLoader()).getBean(
 					schemaConfig.getOperatorBeanName());
 			operator.setSchema(realSchema);
-			operator.setBeanType(beanType);
 			operator.setBeanDbNameConverter(beanDbNameConverter);
 			operator.setManager(this);
-			operator.setRelation(getRelationByBeanType(beanType));
+			operator.setTransactionDefinition(new DefaultTransactionDefinition(
+					TransactionDefinition.PROPAGATION_REQUIRES_NEW));// 事务传播特性是REQUIRES_NEW,不管之前是不是事务存在，总是新开启事务
 			return operator;
 		}
-		throw new TinyDbRuntimeException("不存在schema:" + realSchema
-				+ "对应的bean操作对象。");
-	}
-
-	public DBOperator<?> getDbOperator(String beanType) {
-		return getDbOperator(mainSchema, beanType);
+		throw new TinyDbException("不存在schema:" + realSchema + "对应的bean操作对象。");
 	}
 
 	public void registerSchemaConfig(SchemaConfig schemaConfig) {
@@ -89,10 +119,10 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager {
 		return getTableConfiguration(beanType, mainSchema);
 	}
 
-	public void loadTablesFromSchemas() {
-		Collection<TableConfigConvert> converts = BeanContainerFactory.getBeanContainer(
-				this.getClass().getClassLoader())
-				.getBeans(TableConfigConvert.class);
+	public void loadTablesFromSchemas() throws TinyDbException {
+		Collection<TableConfigConvert> converts = BeanContainerFactory
+				.getBeanContainer(this.getClass().getClassLoader()).getBeans(
+						TableConfigConvert.class);
 		if (!CollectionUtil.isEmpty(converts)) {
 			for (TableConfigConvert convert : converts) {
 				convert.setOperatorManager(this);
@@ -132,11 +162,7 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager {
 		String realSchema = getRealSchema(schema);
 		TableConfiguration configuration = container.getTableConfiguration(
 				realSchema, tableName);
-		if (configuration == null) {
-			throw new DBRuntimeException("tinydb.tableNotExist", beanType,
-					realSchema + "." + tableName);
-		}
-		return true;
+		return configuration!=null;
 	}
 
 	public void setBeanDbNameConverter(BeanDbNameConverter beanDbNameConverter) {
@@ -160,6 +186,14 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager {
 
 	public String getMainSchema() {
 		return mainSchema;
+	}
+
+	public void setDatabase(String database) {
+		this.database = database;
+	}
+
+	public String getDatabase() {
+		return database;
 	}
 
 }

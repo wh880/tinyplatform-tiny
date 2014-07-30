@@ -15,19 +15,24 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.config.TableConfiguration;
-import org.tinygroup.tinydb.exception.DBRuntimeException;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.operator.DbSingleOperator;
 import org.tinygroup.tinydb.relation.Relation;
 import org.tinygroup.tinydb.util.TinyDBUtil;
-
-import java.util.*;
 
 public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 		DbSingleOperator<K> {
@@ -43,21 +48,22 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 	 * @param conditionColumns
 	 *
 	 * @return
+	 * @throws TinyDbException 
 	 */
-	private int updateBean(Bean bean, List<String> conditionColumns) {
+	private int updateBean(Bean bean, List<String> conditionColumns) throws TinyDbException {
 		String sql = getUpdateSql(bean, conditionColumns);
 		SqlParameterValue[] params = getSqlParamterValue(bean, conditionColumns);
 		return executeBySqlParameterValues(sql, params);
 	}
 
-	private Bean queryBean(K beanId) {
-		String sql = getQuerySql();
-		return (Bean) queryObject(sql, getBeanType(), getSchema(), beanId);
+	private Bean queryBean(K beanId,String beanType) throws TinyDbException {
+		String sql = getQuerySql(beanType);
+		return (Bean) queryObject(sql, beanType, getSchema(), beanId);
 	}
 
-	public Bean insert(Bean bean) {
+	public Bean insert(Bean bean)throws TinyDbException {
 		insertTopBean(bean);// 新增最上层记录
-		processRelation(bean, getRelation(), new InsertRelationCallBack());
+		processRelation(bean, getRelation(bean.getType()), new InsertRelationCallBack());
 		return bean;
 	}
 
@@ -67,14 +73,15 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 	 * 
 	 * @param bean
 	 * @return
+	 * @throws TinyDbException 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected boolean beanNotExist(Bean bean) {
-		DBOperator operator = getManager().getDbOperator(bean.getType());
+	protected boolean beanNotExist(Bean bean) throws TinyDbException {
+		DBOperator operator = getManager().getDbOperator();
 		String primaryValue = getPrimaryKeyValue(operator, bean);
 		if (primaryValue != null) {
 			try {
-				Bean selectBean = operator.getBean(primaryValue);
+				Bean selectBean = operator.getBean(primaryValue,bean.getType());
 				if (selectBean != null) {
 					return false;
 				}
@@ -88,22 +95,22 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 		return true;
 	}
 
-	protected void insertTopBean(Bean bean) {
+	protected void insertTopBean(Bean bean) throws TinyDbException {
 		String insertSql = getInsertSql(bean);
 		SqlParameterValue[] sqlParameterValues = createSqlParameterValue(bean);
 		executeBySqlParameterValues(insertSql, sqlParameterValues);
 	}
 
-	public int update(Bean bean) {
+	public int update(Bean bean)throws TinyDbException {
 		int record = updateTopBean(bean);
-		processRelation(bean, getRelation(), new UpdateRelationCallBack());
+		processRelation(bean, getRelation(bean.getType()), new UpdateRelationCallBack());
 		return record;
 
 	}
 
-	public int update(Bean bean, List<String> conditionColumns) {
+	public int update(Bean bean, List<String> conditionColumns)throws TinyDbException {
 		int record = updateBean(bean, conditionColumns);
-		processRelation(bean, getRelation(), new UpdateRelationCallBack());
+		processRelation(bean, getRelation(bean.getType()), new UpdateRelationCallBack());
 		return record;
 	}
 
@@ -134,8 +141,9 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 	 * 
 	 * @param bean
 	 * @return
+	 * @throws TinyDbException 
 	 */
-	protected int updateTopBean(Bean bean) {
+	protected int updateTopBean(Bean bean) throws TinyDbException {
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
 				bean.getType(), getSchema(),this.getClass().getClassLoader());
 		List<String> conditionColumns = new ArrayList<String>();
@@ -143,27 +151,27 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 		return updateBean(bean, conditionColumns);
 	}
 
-	public int delete(Bean bean) {
+	public int delete(Bean bean) throws TinyDbException{
 		int record = deleteTopBean(bean);
-		processRelation(bean, getRelation(), new DeleteRelationCallBack());
+		processRelation(bean, getRelation(bean.getType()), new DeleteRelationCallBack());
 		return record;
 	}
 
-	protected int deleteTopBean(Bean bean) {
+	protected int deleteTopBean(Bean bean) throws TinyDbException {
 		SqlParameterValue[] params = getSqlParameterValues(bean);
 		List<String> conditionColumns = getColumnNames(bean);
 		String sql = getDeleteSql(bean.getType(), conditionColumns);
 		return executeBySqlParameterValues(sql, params);
 	}
 
-	public Bean getBean(K beanId) {
-		Bean bean = queryBean(beanId);
-		bean = processRelation(bean, getRelation(), new QueryRelationCallBack());
+	public Bean getBean(K beanId,String beanType)throws TinyDbException {
+		Bean bean = queryBean(beanId,beanType);
+		bean = processRelation(bean, getRelation(beanType), new QueryRelationCallBack());
 		return bean;
 	}
 
 	protected Bean processRelation(Bean bean, Relation relation,
-			RelationCallBack callBack) {
+			RelationCallBack callBack) throws TinyDbException {
 		if (relation != null) {
 			if (relation.getType().equals(bean.getType())) {
 				List<Relation> relations = relation.getRelations();
@@ -180,8 +188,8 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 					}
 				}
 			} else {
-				throw new DBRuntimeException("tinydb.typeOfInconsistency",
-						relation.getType(), bean.getType());
+				throw new TinyDbException("relation的类型:" + relation.getType()
+						+ "与beantype的类型：" + bean.getType() + "不一致");
 			}
 		}
 		return bean;
@@ -195,22 +203,21 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 		}
 	}
 
-	protected void checkMoreToOne(List<Relation> relations) {
+	protected void checkMoreToOne(List<Relation> relations) throws TinyDbException {
 		Set<String> set = new HashSet<String>();
 		for (Relation relation : relations) {
 			set.add(relation.getType());
 		}
 		if (set.size() != relations.size()) {
-			throw new DBRuntimeException("tinydb.moreToOneError");
+			throw new TinyDbException("多对一关系，关联关系中不能存在多个相同的beanType");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Bean createRelationBean(Bean bean, Relation relation) {
+	protected Bean createRelationBean(Bean bean, Relation relation) throws TinyDbException {
 		String relationType = relation.getType();
 		DBOperator<K> operator = (DBOperator<K>) getManager()
-				.getDbOperator(relationType);
-		operator.setRelation(relation);
+				.getDbOperator(getSchema());
 		Bean queryBean = new Bean(relationType);
 		queryBean.setProperty(relation.getMainName(),
 				bean.getProperty(relation.getKeyName()));
@@ -218,25 +225,23 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 		if (beans != null && beans.length == 1) {
 			return beans[0];
 		}
-		throw new DBRuntimeException("tinydb.onlyUniqueRecords");
+		throw new TinyDbException("tinydb.onlyUniqueRecords");
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Bean[] createRelationBeans(Bean bean, Relation relation) {
+	protected Bean[] createRelationBeans(Bean bean, Relation relation) throws TinyDbException {
 		String relationType = relation.getType();
-		DBOperator<K> operator = (DBOperator<K>) getManager()
-				.getDbOperator(relationType);
-		operator.setRelation(relation);
+		DBOperator<K> operator = (DBOperator<K>) getManager().getDbOperator(getSchema());
 		Bean subBean = new Bean(relationType);
 		subBean.setProperty(relation.getMainName(),
 				bean.getProperty(relation.getKeyName()));
 		return operator.getBeans(subBean);
 	}
 
-	public int deleteById(K beanId) {
-		String sql = getDeleteSqlByKey(getBeanType());
+	public int deleteById(K beanId,String beanType) throws TinyDbException{
+		String sql = getDeleteSqlByKey(beanType);
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
-				getBeanType(), getSchema(),this.getClass().getClassLoader());
+				beanType, getSchema(),this.getClass().getClassLoader());
 		SqlParameterValue param = createSqlParamter(beanId,
 				table.getPrimaryKey());
 		return executeBySqlParameterValue(sql, param);
@@ -253,16 +258,16 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 	 */
 	interface RelationCallBack {
 		void processMoreToOne(Bean bean, Relation relation,
-				List<Relation> subRelations);
+				List<Relation> subRelations) throws TinyDbException;
 
 		void processOneToMore(Bean bean, Relation relation,
-				List<Relation> relations);
+				List<Relation> relations) throws TinyDbException;
 	}
 
 	abstract class CrudRelationCallBack implements RelationCallBack {
 
 		public void processMoreToOne(Bean bean, Relation relation,
-				List<Relation> relations) {
+				List<Relation> relations) throws TinyDbException {
 			checkMoreToOne(relations);
 			String relationKeyName = relation.getRelationKeyName();
 			if (StringUtil.isBlank(relationKeyName)) {
@@ -279,7 +284,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 		}
 
 		public void processOneToMore(Bean bean, Relation relation,
-				List<Relation> relations) {
+				List<Relation> relations) throws TinyDbException {
 			checkOneToMore(relations);
 			String relationKeyName = relation.getRelationKeyName();
 			if (StringUtil.isBlank(relationKeyName)) {
@@ -297,22 +302,22 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 			}
 		}
 
-		abstract void moreToOnecallBack(Bean bean);
+		abstract void moreToOnecallBack(Bean bean)throws TinyDbException;
 
-		abstract void oneToMorecallBack(Bean bean);
+		abstract void oneToMorecallBack(Bean bean)throws TinyDbException;
 
 	}
 
 	class InsertRelationCallBack extends CrudRelationCallBack {
 		
-		void moreToOnecallBack(Bean bean) {
+		void moreToOnecallBack(Bean bean) throws TinyDbException {
 			if (beanNotExist(bean)) {
 				insertTopBean(bean);
 			}
 		}
 
 		
-		void oneToMorecallBack(Bean bean) {
+		void oneToMorecallBack(Bean bean) throws TinyDbException {
 			if (beanNotExist(bean)) {
 				insertTopBean(bean);
 			}
@@ -321,7 +326,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 
 	class UpdateRelationCallBack extends CrudRelationCallBack {
 		
-		void moreToOnecallBack(Bean bean) {
+		void moreToOnecallBack(Bean bean) throws TinyDbException {
 			if (beanNotExist(bean)) {
 				insertTopBean(bean);
 			} else {
@@ -331,7 +336,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 		}
 
 		
-		void oneToMorecallBack(Bean bean) {
+		void oneToMorecallBack(Bean bean) throws TinyDbException {
 			if (beanNotExist(bean)) {
 				insertTopBean(bean);
 			} else {
@@ -343,7 +348,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 
 	class DeleteRelationCallBack extends CrudRelationCallBack {
 		
-		void moreToOnecallBack(Bean bean) {
+		void moreToOnecallBack(Bean bean) throws TinyDbException {
 			if (!beanNotExist(bean)) {
 				deleteTopBean(bean);
 			}
@@ -351,7 +356,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 		}
 
 		
-		void oneToMorecallBack(Bean bean) {
+		void oneToMorecallBack(Bean bean) throws TinyDbException {
 			if (!beanNotExist(bean)) {
 				deleteTopBean(bean);
 			}
@@ -361,7 +366,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 
 	class QueryRelationCallBack implements RelationCallBack {
 		public void processMoreToOne(Bean bean, Relation relation,
-				List<Relation> relations) {
+				List<Relation> relations) throws TinyDbException {
 			checkMoreToOne(relations);
 			Bean subBean = createRelationBean(bean, relation);
 			String relationKeyName = relation.getRelationKeyName();
@@ -374,7 +379,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 		}
 
 		public void processOneToMore(Bean bean, Relation relation,
-				List<Relation> relations) {
+				List<Relation> relations) throws TinyDbException {
 			checkOneToMore(relations);
 			Bean[] beans = createRelationBeans(bean, relation);// 创建一对多关联的beans
 			List<Bean> subBeans = new ArrayList<Bean>();
@@ -404,5 +409,18 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 			}
 
 		}
+	}
+	
+	protected Bean[] relationProcess(String beanType,List<Bean> beans) throws TinyDbException {
+		if (beans == null || beans.size() == 0) {
+			return null;
+		}
+		Relation relation=getRelation(beanType);
+		if(relation!=null){
+			for (Bean bean : beans) {
+				processRelation(bean, relation, new QueryRelationCallBack());
+			}
+		}
+		return TinyDBUtil.collectionToArray(beans);
 	}
 }

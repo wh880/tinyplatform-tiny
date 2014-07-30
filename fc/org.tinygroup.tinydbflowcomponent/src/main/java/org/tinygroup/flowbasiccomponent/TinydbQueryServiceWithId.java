@@ -18,6 +18,7 @@ package org.tinygroup.flowbasiccomponent;
 import org.tinygroup.context.Context;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 /**
@@ -39,12 +40,16 @@ public class TinydbQueryServiceWithId<T> extends AbstractTinydbService {
 	}
 
 	public void tinyService(Bean bean,Context context, DBOperator operator) {
-		Bean primaryBean = operator.getBean(primaryKey);
-		if (primaryBean != null) {
-			context.put(resultKey, primaryBean);
-		} else {
-			logger.logMessage(LogLevel.WARN,
-					"根据主键查询不到记录，beantype:[{0}],主键值:[{1}]", beanType, primaryKey);
+		try {
+			Bean primaryBean = operator.getBean(primaryKey,bean.getType());
+			if (primaryBean != null) {
+				context.put(resultKey, primaryBean);
+			} else {
+				logger.logMessage(LogLevel.WARN,
+						"根据主键查询不到记录，beantype:[{0}],主键值:[{1}]", beanType, primaryKey);
+			}
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

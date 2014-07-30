@@ -16,6 +16,7 @@
 package org.tinygroup.tinydb;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 /**
@@ -25,10 +26,18 @@ public final class DbOperatorFactory {
 	private DbOperatorFactory() {
 	}
 
-	public static DBOperator getDBOperator(String beanType, ClassLoader loader) {
+	public static DBOperator getDBOperator(String schema, ClassLoader loader) throws TinyDbException {
 		BeanOperatorManager beanOperatorManager = (BeanOperatorManager) BeanContainerFactory
 				.getBeanContainer(loader).getBean(
 						BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-		return beanOperatorManager.getDbOperator(beanType);
+		return beanOperatorManager.getDbOperator(schema);
 	}
+	
+	public static DBOperator getDBOperator(ClassLoader loader) throws TinyDbException {
+		BeanOperatorManager beanOperatorManager = (BeanOperatorManager) BeanContainerFactory
+				.getBeanContainer(loader).getBean(
+						BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+		return beanOperatorManager.getDbOperator();
+	}
+	
 }

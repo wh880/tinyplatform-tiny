@@ -1,5 +1,7 @@
 package org.tinygroup.service;
 
+import org.tinygroup.context.Context;
+
 /**
  * 服务接口
  * 通过实现此接口来编写服务
@@ -27,5 +29,7 @@ public interface ServiceInterface {
      * @return
      */
     String getResultKey();
+    
+//    Context execute(Context context);
 
 }

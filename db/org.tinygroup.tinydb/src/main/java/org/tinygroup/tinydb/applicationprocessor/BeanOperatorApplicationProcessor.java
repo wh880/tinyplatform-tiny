@@ -21,8 +21,11 @@ import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.util.ConfigurationUtil;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.SchemaConfig;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 
@@ -38,6 +41,8 @@ public class BeanOperatorApplicationProcessor implements ApplicationProcessor{
 	private XmlNode componentConfig;
 	
 	private static final String DEFAULT_SCHEMA = "default-schema";
+	
+	private static final String DATABASE = "database";
 
 	private static final String KEY_TYPE = "key-type";
 
@@ -51,7 +56,9 @@ public class BeanOperatorApplicationProcessor implements ApplicationProcessor{
 
 	private static final String BEAN_OPERATE_CONFIG = "bean-opertate-config";
 
-	BeanOperatorManager manager;
+	private BeanOperatorManager manager;
+	
+	private Logger logger=LoggerFactory.getLogger(BeanOperatorApplicationProcessor.class);
 	
 	public BeanOperatorManager getManager() {
 		return manager;
@@ -72,10 +79,12 @@ public class BeanOperatorApplicationProcessor implements ApplicationProcessor{
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 			this.applicationConfig = applicationConfig;
 			this.componentConfig = componentConfig;
-//			BeanOperatorManager manager=SpringBeanContainer.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 			String defaultSchema = ConfigurationUtil.getPropertyName(
 					applicationConfig, componentConfig, DEFAULT_SCHEMA);
 			manager.setMainSchema(defaultSchema);
+			String database=ConfigurationUtil.getPropertyName(applicationConfig,
+					componentConfig, DATABASE);
+			manager.setDatabase(database);
 			List<XmlNode> nodes = ConfigurationUtil
 					.combineSubList(applicationConfig, componentConfig,
 							BEAN_OPERATE_CONFIG, SCHEMA);
@@ -106,7 +115,11 @@ public class BeanOperatorApplicationProcessor implements ApplicationProcessor{
 
 	public void start() {
 //		BeanOperatorManager manager=SpringBeanContainer.getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-		manager.loadTablesFromSchemas();
+		try {
+			manager.loadTablesFromSchemas();
+		} catch (TinyDbException e) {
+			logger.errorMessage(e.getMessage(), e);
+		}
 	}
 
 	public void stop() {

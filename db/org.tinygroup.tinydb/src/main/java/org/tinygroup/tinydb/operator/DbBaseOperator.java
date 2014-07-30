@@ -15,26 +15,20 @@
  */
 package org.tinygroup.tinydb.operator;
 
-import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.exception.TinyDbException;
 
 
 public interface DbBaseOperator extends DbRelationOperator {
 
-
+	String DEFAULT_BEAN_TYPE="TINYDB";
     /**
-     * 设置schame
+     * 设置schema
      *
-     * @param schame
+     * @param schema
      */
-    void setSchema(String schame);
-
-    Bean createBean();
-
-    void setBeanType(String beanType);
-
-    String getBeanType();
+    void setSchema(String schema);
 
     void setManager(BeanOperatorManager manager);
 
@@ -54,6 +48,6 @@ public interface DbBaseOperator extends DbRelationOperator {
      *
      * @return
      */
-    int getAutoIncreaseKey();
+    int getAutoIncreaseKey()throws TinyDbException;
 
 }

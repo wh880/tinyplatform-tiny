@@ -44,6 +44,7 @@ import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 /**
@@ -117,7 +118,11 @@ public class EntityModelHelper {
 		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 				BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-		this.operator = manager.getDbOperator(model.getName());
+		try {
+			this.operator = manager.getDbOperator();
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
+		}
 		Assert.assertNotNull(operator, "operator must not null");
 		this.converter = operator.getBeanDbNameConverter();
 		this.tableName = manager.getTableConfiguration(model.getName())

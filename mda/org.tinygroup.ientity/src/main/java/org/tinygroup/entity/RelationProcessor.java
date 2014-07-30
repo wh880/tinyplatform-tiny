@@ -36,6 +36,7 @@ import org.tinygroup.entity.relationmodel.RelationModel;
 import org.tinygroup.imda.processor.ParameterBuilder;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 /**
@@ -76,10 +77,12 @@ public class RelationProcessor {
 		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 				BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-		this.operator = manager.getDbOperator(relationModel.getMainBeanType());
-
+		try {
+			this.operator = manager.getDbOperator();
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
+		}
 		relationModel.init(context);// 对关联模型进行初始化
-
 		this.conditionFields = view.getConditionFields();
 		this.viewGroups = view.getViewGroups();
 		this.groupFields = view.getGroupFields();
@@ -118,35 +121,42 @@ public class RelationProcessor {
 			String sql = stringBuffer.toString();
 			Bean[] beans = null;
 			int totalSize = 0;
-			if (pageSize > 0) {
-				int pageNum = 0;
-				if (pageNumStr != null) {
-					pageNum = Integer.parseInt(pageNumStr);
-				}
-				String accountSql = "select count(*) from (" + sql + ") temp";
-				totalSize = operator.account(accountSql, params);
-				int totalPages = totalSize % pageSize == 0 ? totalSize
-						/ pageSize : totalSize / pageSize + 1;
-				pageNum = checkPageNumber(totalPages, pageNum);
-				int start = pageNum * pageSize + 1;
-				beans = operator.getPageBeans(sql, start, pageSize,
-						params.toArray());
-				pageInfo.setPageSize(pageSize);
-				pageInfo.setTotalPages(totalPages);
-				pageInfo.setPageNumber(pageNum);
+			try {
+				if (pageSize > 0) {
+					int pageNum = 0;
+					if (pageNumStr != null) {
+						pageNum = Integer.parseInt(pageNumStr);
+					}
+					String accountSql = "select count(*) from (" + sql
+							+ ") temp";
 
-			} else {
-				beans = operator.getBeans(sql, params.toArray());
-				if (beans != null) {
-					totalSize = beans.length;
+					totalSize = operator.account(accountSql, params);
+
+					int totalPages = totalSize % pageSize == 0 ? totalSize
+							/ pageSize : totalSize / pageSize + 1;
+					pageNum = checkPageNumber(totalPages, pageNum);
+					int start = pageNum * pageSize + 1;
+					beans = operator.getPageBeans(sql, start, pageSize,
+							params.toArray());
+					pageInfo.setPageSize(pageSize);
+					pageInfo.setTotalPages(totalPages);
+					pageInfo.setPageNumber(pageNum);
+
+				} else {
+					beans = operator.getBeans(sql, params.toArray());
+					if (beans != null) {
+						totalSize = beans.length;
+					}
 				}
+				if (beans == null) {
+					beans = new Bean[0];
+				}
+				pageInfo.setBeans(beans);
+				pageInfo.setTotalSize(totalSize);
+				return pageInfo;
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
 			}
-			if (beans == null) {
-				beans = new Bean[0];
-			}
-			pageInfo.setBeans(beans);
-			pageInfo.setTotalSize(totalSize);
-			return pageInfo;
 		}
 		return null;
 

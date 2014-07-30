@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.util.DataSourceFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
@@ -75,11 +76,13 @@ public abstract class BaseTest extends TestCase {
 				// registerBean();
 				// manager.initBeansConfiguration();
 				operator = (DBOperator<String>) manager.getDbOperator(
-						mainSchema, ANIMAL);
+						mainSchema);
 				flowExecutor = BeanContainerFactory.getBeanContainer(
 						this.getClass().getClassLoader()).getBean(
 						"flowExecutor");
 				hasExcuted = true;
+			} catch (TinyDbException e) {
+				
 			} finally {
 				if (conn != null) {
 					try {

@@ -17,6 +17,7 @@ package org.tinygroup.tinydb.testcase.transaction;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.test.BaseTest;
 import org.tinygroup.tinydb.testcase.transaction.service.TransactionService;
 
@@ -34,7 +35,11 @@ public class TransactionTest extends BaseTest {
 		service = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean("transactionService");
 		// 先删除表中已存在的记录
-		service.deleteBean(beans1, beans2);
+		try {
+			service.deleteBean(beans1, beans2);
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	protected void tearDown() throws Exception {
@@ -72,7 +77,7 @@ public class TransactionTest extends BaseTest {
 		return beans;
 	}
 
-	public void testTransactionSuccess() {
+	public void testTransactionSuccess() throws TinyDbException {
 		service.transactionSuccess(beans1, beans2);
 		int length = getOperator().getBeans("select * from animal").length;
 		assertEquals(2, length);

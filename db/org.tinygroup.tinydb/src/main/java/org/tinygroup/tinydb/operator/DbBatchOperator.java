@@ -18,6 +18,7 @@ package org.tinygroup.tinydb.operator;
 import java.util.Collection;
 
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
  * DB相关的批量操作
@@ -28,7 +29,7 @@ import org.tinygroup.tinydb.Bean;
 public interface DbBatchOperator<K> {
 	// 下面是根据数组
 	
-	Bean[] batchInsert(Bean[] beans);
+	Bean[] batchInsert(Bean[] beans) throws TinyDbException;
 	/**
 	 * 
 	 * 可以分批次进行批处理操作
@@ -36,21 +37,21 @@ public interface DbBatchOperator<K> {
 	 * @param batchSize 一次批处理最大数量
 	 * @return
 	 */
-    Bean[] batchInsert(Bean[] beans,int batchSize);
+    Bean[] batchInsert(Bean[] beans,int batchSize) throws TinyDbException;
 
-	int[] batchUpdate(Bean[] beans);
+	int[] batchUpdate(Bean[] beans) throws TinyDbException;
 	
-	void batchUpdate(Bean[] beans,int batchSize);
+	void batchUpdate(Bean[] beans,int batchSize) throws TinyDbException;
 
-	int[] batchDelete(Bean[] beans);
+	int[] batchDelete(Bean[] beans) throws TinyDbException;
 	
-	void batchDelete(Bean[] beans,int batchSize);
+	void batchDelete(Bean[] beans,int batchSize) throws TinyDbException;
 
-	int[] deleteById(K[] beanIds);
+	int[] deleteById(K[] beanIds,String beanType) throws TinyDbException;
 
-	Bean[] getBeansById(K[] beanIds);
+	Bean[] getBeansById(K[] beanIds,String beanTyoe) throws TinyDbException;
 
-	Bean[] getBeans(Bean bean);
+	Bean[] getBeans(Bean bean) throws TinyDbException;
 	
 
 	/**
@@ -60,21 +61,21 @@ public interface DbBatchOperator<K> {
 	 * @param limit
 	 * @return
 	 */
-	Bean[] getBeans(Bean bean,int start, int limit);
+	Bean[] getBeans(Bean bean,int start, int limit) throws TinyDbException;
 
 	// 下面是根据集合
-	Bean[] batchInsert(Collection<Bean> beans);
-	Bean[] batchInsert(Collection<Bean> beans,int batchSize);
+	Bean[] batchInsert(Collection<Bean> beans)throws TinyDbException;
+	Bean[] batchInsert(Collection<Bean> beans,int batchSize) throws TinyDbException;
 	
-	int[] batchUpdate(Collection<Bean> beans);
-	void batchUpdate(Collection<Bean> beans,int batchSize);
+	int[] batchUpdate(Collection<Bean> beans) throws TinyDbException;
+	void batchUpdate(Collection<Bean> beans,int batchSize) throws TinyDbException;
 	
-	int[] batchDelete(Collection<Bean> beans);
-	void batchDelete(Collection<Bean> beans,int batchSize);
+	int[] batchDelete(Collection<Bean> beans)throws TinyDbException;
+	void batchDelete(Collection<Bean> beans,int batchSize)throws TinyDbException;
 	
-	int[] deleteById(Collection<K> beanIds);
+	int[] deleteById(Collection<K> beanIds,String beanType)throws TinyDbException;
 
-	Bean[] getBeansById(Collection<K> beanIds);
+	Bean[] getBeansById(Collection<K> beanIds,String beanType)throws TinyDbException;
 	
 	/**
 	 * 
@@ -82,10 +83,10 @@ public interface DbBatchOperator<K> {
 	 * @param beans
 	 * @return
 	 */
-	Bean[] insertBean(Bean[] beans);
+	Bean[] insertBean(Bean[] beans)throws TinyDbException;
 	
-	int[] updateBean(Bean[] beans);
+	int[] updateBean(Bean[] beans)throws TinyDbException;
 	
-	int[] deleteBean(Bean[] beans);
+	int[] deleteBean(Bean[] beans)throws TinyDbException;
 
 }

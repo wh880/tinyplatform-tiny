@@ -19,46 +19,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.Bean;
-import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
 import org.tinygroup.tinydb.config.TableConfiguration;
-import org.tinygroup.tinydb.exception.DBRuntimeException;
-import org.tinygroup.tinydb.impl.DefaultNameConverter;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DbBaseOperator;
 import org.tinygroup.tinydb.relation.Relation;
 import org.tinygroup.tinydb.util.TinyDBUtil;
 
 class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator {
 
-	private static final String TINYDB_INSERT_FIELD_NOT_EXIST = "tinydb.insertFieldNotExist";
-
-	private static final String TINYDB_TABLE_NOT_EXIST = "tinydb.tableNotExist";
-
 	private BeanOperatorManager manager;
 
-	private String beanType;
-
 	private String schema;
-	/**
-	 * 如果操作的bean是关联对象，需要进行关联操作
-	 */
-	protected Relation relation;
-
-	public int getAutoIncreaseKey() {
-		return getDialect().getNextKey();
+	
+	public int getAutoIncreaseKey()throws TinyDbException {
+		try {
+			return getDialect().getNextKey();
+		} catch (DataAccessException e) {
+			throw new TinyDbException(e.getRootCause());
+		}
 	}
 
 	public BeanDBBaseOperator(JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);
 	}
 
-	protected String getDeleteSqlByKey(String beanType) {
+	protected String getDeleteSqlByKey(String beanType) throws TinyDbException {
 		String tableName = getFullTableName(beanType);
 		StringBuffer sb = new StringBuffer();
 		StringBuffer condition = new StringBuffer();
@@ -71,34 +64,6 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		return sb.toString();
 	}
 
-	/**
-	 * @param beanType
-	 * @param conditionColumns
-	 * @return
-	 */
-	protected String getQuerySqlAndParamKeys(String beanType,
-			List<String> conditionColumns) {
-		String tableName = getFullTableName(beanType);
-		if (conditionColumns == null) {
-			throw new DBRuntimeException("查询配置的条件字段为空,tableName:" + tableName
-					+ " Object:" + beanType);
-		}
-		StringBuffer sb = new StringBuffer();
-		sb.append("select * from ").append(tableName);
-		// 条件字段计算
-		StringBuffer where = new StringBuffer();
-		if (conditionColumns.size() > 0) {
-			for (int i = 0; i < conditionColumns.size(); i++) {
-				where.append(conditionColumns.get(i)).append("=?");
-				if (i < conditionColumns.size() - 1) {
-					where.append(" and ");
-				}
-			}
-			sb.append(" where ");
-			sb.append(where);
-		}
-		return sb.toString();
-	}
 
 	/**
 	 * 获取操作的所有数据库字段名称
@@ -187,15 +152,17 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	 * 
 	 * @param bean
 	 * @return
+	 * @throws TinyDbException 
 	 */
-	protected String getInsertSql(Bean bean) {
+	protected String getInsertSql(Bean bean) throws TinyDbException {
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
 				bean.getType(), getSchema(),this.getClass().getClassLoader());
 		if (table != null) {
 			StringBuffer sb = new StringBuffer();
 			StringBuffer field = new StringBuffer();
 			StringBuffer values = new StringBuffer();
-			sb.append("insert into " + getTableName(table) + "(");
+			String tableName=getTableName(table);
+			sb.append("insert into " + tableName + "(");
 			List<ColumnConfiguration> columns = table.getColumns();
 			if (columns != null && columns.size() > 0) {
 				for (ColumnConfiguration column : columns) {
@@ -212,12 +179,11 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 						.append(values.substring(1)).append(")");
 				return sb.toString();
 			} else {
-				throw new DBRuntimeException(TINYDB_INSERT_FIELD_NOT_EXIST);
+				throw new TinyDbException("表格:"+tableName+"不存在字段");
 			}
 
 		}
-		throw new DBRuntimeException(TINYDB_TABLE_NOT_EXIST, bean.getType(),
-				getFullTableName(bean.getType()));
+		throw new TinyDbException("不存在beanType："+bean.getType()+"的表格");
 	}
 
 	/**
@@ -226,14 +192,13 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	 *            sql中用到的字段的列表，包括 update table set * where *两个*区域用到的所有字段
 	 *            外部传进来的空列表，由此函数进行填充，字段按在sql中使用的先后顺序放入列表
 	 * @return
+	 * @throws TinyDbException 
 	 */
-	protected String getUpdateSql(Bean bean, List<String> conditionColumns) {
+	protected String getUpdateSql(Bean bean, List<String> conditionColumns) throws TinyDbException {
 
 		if (conditionColumns == null || conditionColumns.size() == 0) {
-			throw new DBRuntimeException("tinydb.updateFieldNotExist",
-					getFullTableName(bean.getType()), bean.getType());
+			throw new TinyDbException("beanType为:"+bean.getType()+"的更新操作不存在查询条件");
 		}
-
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
 				bean.getType(), getSchema(),this.getClass().getClassLoader());
 		if (table != null) {
@@ -248,16 +213,15 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 			}
 			return sb.toString();
 		}
-		throw new DBRuntimeException(TINYDB_TABLE_NOT_EXIST, bean.getType(),
-				getFullTableName(bean.getType()));
+		throw new TinyDbException("不存在beanType："+bean.getType()+"的表格");
 	}
 
-	public String getSelectSql(Bean bean) {
+	public String getSelectSql(Bean bean) throws TinyDbException {
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
 				bean.getType(), getSchema(),this.getClass().getClassLoader());
 		if (table != null) {
 			StringBuffer sb = new StringBuffer(" select * from ");
-			sb.append(getFullTableName(beanType));
+			sb.append(getFullTableName(bean.getType()));
 			List<String> conditionColumns = getColumnNames(bean);
 			String condition=getConditionSql(conditionColumns);
 			if(condition!=null&&condition.length()>0){
@@ -266,8 +230,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 			return sb.toString();
 
 		}
-		throw new DBRuntimeException(TINYDB_TABLE_NOT_EXIST, bean.getType(),
-				getFullTableName(bean.getType()));
+		throw new TinyDbException("不存在beanType："+bean.getType()+"的表格");
 
 	}
 
@@ -308,11 +271,10 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	}
 
 	protected SqlParameterValue[] getSqlParamterValue(Bean bean,
-			List<String> conditionColumns) {
+			List<String> conditionColumns) throws TinyDbException {
 		List<SqlParameterValue> params = new ArrayList<SqlParameterValue>();
 		if (conditionColumns == null || conditionColumns.size() == 0) {
-			throw new DBRuntimeException("tinydb.updateFieldNotExist",
-					getFullTableName(bean.getType()), bean.getType());
+			throw new TinyDbException("beanType为:"+bean.getType()+"不存在查询条件信息");
 		}
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
 				bean.getType(), getSchema(),this.getClass().getClassLoader());
@@ -324,8 +286,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 			setConditionParamter(bean, params, columns, conditionColumns);
 			return params.toArray(new SqlParameterValue[0]);
 		}
-		throw new DBRuntimeException(TINYDB_TABLE_NOT_EXIST, bean.getType(),
-				getFullTableName(bean.getType()));
+		throw new TinyDbException("不存在beanType："+bean.getType()+"的表格");
 
 	}
 
@@ -391,7 +352,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		return params;
 	}
 
-	protected SqlParameterValue[] createSqlParameterValue(Bean bean) {
+	protected SqlParameterValue[] createSqlParameterValue(Bean bean) throws TinyDbException {
 		TableConfiguration table = TinyDBUtil.getTableConfigByBean(
 				bean.getType(), getSchema(),this.getClass().getClassLoader());
 		if (table != null) {
@@ -422,13 +383,12 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 			}
 
 		}
-		throw new DBRuntimeException(TINYDB_TABLE_NOT_EXIST, beanType,
-				getFullTableName(beanType));
+		throw new TinyDbException("不存在beanType："+bean.getType()+"的表格");
 
 	}
 
 	private Object getPrimaryKeyValue(Bean bean, boolean isIncrease,
-			String propertyName) {
+			String propertyName) throws TinyDbException {
 		Object value = null;
 		if (isIncrease) {
 			value = getAutoIncreaseKey();
@@ -442,7 +402,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		return value;
 	}
 
-	protected List<SqlParameterValue[]> getInsertParams(Bean[] beans) {
+	protected List<SqlParameterValue[]> getInsertParams(Bean[] beans) throws TinyDbException {
 		List<SqlParameterValue[]> params = new ArrayList<SqlParameterValue[]>();
 		for (Bean bean : beans) {
 			params.add(createSqlParameterValue(bean));
@@ -477,9 +437,6 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 
 	private String getFullTableName(String beanType) {
 		String tempType = beanType;
-		if (beanType == null) {
-			tempType = this.beanType;
-		}
 		String tableName = beanDbNameConverter.typeNameToDbTableName(tempType);
 		return getTableNameWithSchame(tableName);
 	}
@@ -509,11 +466,11 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	 * @param beanType
 	 * @param conditionColumns
 	 * @return
+	 * @throws TinyDbException 
 	 */
-	protected String getDeleteSql(String beanType, List<String> conditionColumns) {
+	protected String getDeleteSql(String beanType, List<String> conditionColumns) throws TinyDbException {
 		if (conditionColumns == null || conditionColumns.size() == 0) {
-			throw new DBRuntimeException("tinydb.deleteFieldNotExist",
-					getFullTableName(beanType), beanType);
+			throw new TinyDbException("beanType为:"+beanType+"的删除操作不存在查询条件");
 		}
 		StringBuffer sb = new StringBuffer();
 		sb.append("delete from ").append(getFullTableName(beanType));
@@ -524,7 +481,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		return sb.toString();
 	}
 
-	protected String getQuerySql() {
+	protected String getQuerySql(String beanType) throws TinyDbException {
 		StringBuffer sb = new StringBuffer();
 		StringBuffer where = new StringBuffer();
 		// 条件字段计算
@@ -538,20 +495,8 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		return sb.toString();
 	}
 
-	public String getBeanType() {
-		return beanType;
-	}
-
-	public void setBeanType(String beanType) {
-		this.beanType = beanType;
-	}
-
 	public void setSchema(String schame) {
 		this.schema = schame;
-	}
-
-	public Bean createBean() {
-		return new Bean(getBeanType());
 	}
 
 	protected String getTableNameWithSchame(String tableName) {
@@ -576,28 +521,22 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		return manager;
 	}
 
-	public void setRelation(String id) {
-		this.relation = manager.getRelationById(id);
-	}
-
-	public void setRelation(Relation relation) {
-		this.relation = relation;
-	}
-
-	public Relation getRelation() {
-		return relation;
+	public Relation getRelation(String beanType) {
+		if(manager!=null){
+			return manager.getRelationByBeanType(beanType);
+		}
+		return null;
 	}
 
 	protected String getPrimaryFieldName(DbBaseOperator operator,
-			String beanType) {
+			String beanType) throws TinyDbException {
 		TableConfiguration configuration = manager.getTableConfiguration(
 				beanType, operator.getSchema());
 		if (configuration != null) {
 			return operator.getBeanDbNameConverter().dbFieldNameToPropertyName(
 					configuration.getPrimaryKey().getColumnName());
 		}
-		throw new DBRuntimeException("tinydb.notExistPrimaryField",
-				getFullTableName(beanType));
+		throw new TinyDbException("beanType:"+beanType+"不存在主键字段信息");
 	}
 
 	/**
@@ -606,8 +545,9 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 	 * @param operator
 	 * @param bean
 	 * @return
+	 * @throws TinyDbException 
 	 */
-	protected String getPrimaryKeyValue(DbBaseOperator operator, Bean bean) {
+	protected String getPrimaryKeyValue(DbBaseOperator operator, Bean bean) throws TinyDbException {
 		Object primaryKeyValue = bean.getProperty(getPrimaryFieldName(operator,
 				bean.getType()));
 		if (primaryKeyValue != null) {
@@ -615,5 +555,4 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		}
 		return null;
 	}
-
 }

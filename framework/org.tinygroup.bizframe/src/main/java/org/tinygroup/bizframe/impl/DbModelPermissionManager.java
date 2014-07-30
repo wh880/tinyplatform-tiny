@@ -24,7 +24,7 @@ import org.tinygroup.bizframe.PermissionSubject;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.TableConfiguration;
-import org.tinygroup.tinydb.exception.DBRuntimeException;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.util.TinyBeanUtil;
 
@@ -72,7 +72,9 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 
 	public BeanOperatorManager getManager() {
 		if (manager == null) {
-			manager = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean("beanOperatorManager");
+			manager = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					"beanOperatorManager");
 		}
 		return manager;
 	}
@@ -91,19 +93,22 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 
 		if (cacheSupport && existTable()) {
 			Bean relation = new Bean(AUTH_RELATION_BEAN_NAME);
-			DBOperator<?> operator = getManager().getDbOperator(
-					AUTH_RELATION_BEAN_NAME);
-			Bean[] beans = operator.getBeans(relation);
-			for (Bean bean : beans) {
-				PermissionSubject<K, ?> permissionSubject = getPermissionSubject((String)
-						bean.getProperty(PERMISSION_SUBJECT_TYPE),
-						(K) bean.getProperty(PERMISSION_SUBJECT_ID),
-						PermissionSubject.class);
-				PermissionObject<K, ?> permissionObject = getPermissionObject((String)
-						bean.getProperty(PERMISSION_OBJECT_TYPE),
-						(K) bean.getProperty(PERMISSION_OBJECT_ID),
-						PermissionObject.class);
-				addAllowPermission(permissionSubject, permissionObject);
+			try {
+				DBOperator<?> operator = getManager().getDbOperator();
+				Bean[] beans = operator.getBeans(relation);
+				for (Bean bean : beans) {
+					PermissionSubject<K, ?> permissionSubject = getPermissionSubject(
+							(String) bean.getProperty(PERMISSION_SUBJECT_TYPE),
+							(K) bean.getProperty(PERMISSION_SUBJECT_ID),
+							PermissionSubject.class);
+					PermissionObject<K, ?> permissionObject = getPermissionObject(
+							(String) bean.getProperty(PERMISSION_OBJECT_TYPE),
+							(K) bean.getProperty(PERMISSION_OBJECT_ID),
+							PermissionObject.class);
+					addAllowPermission(permissionSubject, permissionObject);
+				}
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}
@@ -114,21 +119,24 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 	@SuppressWarnings("unchecked")
 	public PermissionSubject addPermissionSubject(
 			PermissionSubject<K, ?> permissionSubject) {
-		DBOperator<?> operator = getManager().getDbOperator(
-				permissionSubject.getType());
-		Bean bean = operator.insert(TinyBeanUtil.object2Bean(permissionSubject,
-				new Bean(permissionSubject.getType())));
-		PermissionSubject subject = TinyBeanUtil.bean2Object(bean,
-				permissionSubject.getClass());
-		String primaryKeyName = getPrimaryKeyName(permissionSubject.getType());
-		subject.setId(String.valueOf(bean.getProperty(operator
-				.getBeanDbNameConverter().dbFieldNameToPropertyName(
-						primaryKeyName))));
-		if (cacheSupport) {// 支持缓存
-			storage.addPermissionSubject(permissionSubject);
+		try {
+			DBOperator<?> operator = getManager().getDbOperator();
+			Bean bean = operator.insert(TinyBeanUtil.object2Bean(
+					permissionSubject, new Bean(permissionSubject.getType())));
+			PermissionSubject subject = TinyBeanUtil.bean2Object(bean,
+					permissionSubject.getClass());
+			String primaryKeyName = getPrimaryKeyName(permissionSubject
+					.getType());
+			subject.setId(String.valueOf(bean.getProperty(operator
+					.getBeanDbNameConverter().dbFieldNameToPropertyName(
+							primaryKeyName))));
+			if (cacheSupport) {// 支持缓存
+				storage.addPermissionSubject(permissionSubject);
+			}
+			return subject;
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
 		}
-		return subject;
-
 	}
 
 	/**
@@ -137,40 +145,49 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 	@SuppressWarnings("unchecked")
 	public PermissionObject<K, ?> addPermissionObject(
 			PermissionObject<K, ?> permissionObject) {
-		DBOperator<?> operator = getManager().getDbOperator(
-				permissionObject.getType());
-		Bean bean = operator.insert(TinyBeanUtil.object2Bean(permissionObject,
-				new Bean(permissionObject.getType())));
-		PermissionObject<K, ?> object = TinyBeanUtil.bean2Object(bean,
-				permissionObject.getClass());
-		String primaryKeyName = getPrimaryKeyName(permissionObject.getType());
-		object.setId((K) bean.getProperty(operator.getBeanDbNameConverter()
-				.dbFieldNameToPropertyName(primaryKeyName)));
-		if (cacheSupport) {
-			storage.addPermissionObject(permissionObject);
+		try {
+			DBOperator<?> operator = getManager().getDbOperator();
+			Bean bean = operator.insert(TinyBeanUtil.object2Bean(
+					permissionObject, new Bean(permissionObject.getType())));
+			PermissionObject<K, ?> object = TinyBeanUtil.bean2Object(bean,
+					permissionObject.getClass());
+			String primaryKeyName = getPrimaryKeyName(permissionObject
+					.getType());
+			object.setId((K) bean.getProperty(operator.getBeanDbNameConverter()
+					.dbFieldNameToPropertyName(primaryKeyName)));
+			if (cacheSupport) {
+				storage.addPermissionObject(permissionObject);
+			}
+			return object;
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
 		}
-		return object;
 	}
 
 	public void removePermissionObject(PermissionObject<K, ?> permissionObject) {
-		DBOperator<?> operator = getManager().getDbOperator(
-				permissionObject.getType());
-		operator.delete(TinyBeanUtil.object2Bean(permissionObject, new Bean(
-				permissionObject.getType())));
-		if (cacheSupport) {
-			storage.removePermissionObject(permissionObject);
+		try {
+			DBOperator<?> operator = getManager().getDbOperator();
+			operator.delete(TinyBeanUtil.object2Bean(permissionObject,
+					new Bean(permissionObject.getType())));
+			if (cacheSupport) {
+				storage.removePermissionObject(permissionObject);
+			}
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
 		}
-
 	}
 
 	public void removePermissionSubject(
 			PermissionSubject<K, ?> permissionSubject) {
-		DBOperator<?> operator = getManager().getDbOperator(
-				permissionSubject.getType());
-		operator.delete(TinyBeanUtil.object2Bean(permissionSubject, new Bean(
-				permissionSubject.getType())));
-		if (cacheSupport) {
-			storage.removePermissionSubject(permissionSubject);
+		try {
+			DBOperator<?> operator = getManager().getDbOperator();
+			operator.delete(TinyBeanUtil.object2Bean(permissionSubject,
+					new Bean(permissionSubject.getType())));
+			if (cacheSupport) {
+				storage.removePermissionSubject(permissionSubject);
+			}
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -183,14 +200,18 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 					keyValue, subjectClassType);
 		}
 		if (permissionSubject == null) {
-			DBOperator<K> operator = (DBOperator<K>) getManager()
-					.getDbOperator(subjectBeanType);
-			Bean bean = operator.getBean(keyValue);
-			String primaryKeyName = getPrimaryKeyName(subjectBeanType);
-			permissionSubject = (PermissionSubject) TinyBeanUtil.bean2Object(
-					bean, subjectClassType);
-			permissionSubject.setId(getPrimaryKeyValue(operator, bean,
-					primaryKeyName));
+			try {
+				DBOperator<K> operator = (DBOperator<K>) getManager()
+						.getDbOperator();
+				Bean bean = operator.getBean(keyValue, subjectBeanType);
+				String primaryKeyName = getPrimaryKeyName(subjectBeanType);
+				permissionSubject = (PermissionSubject) TinyBeanUtil
+						.bean2Object(bean, subjectClassType);
+				permissionSubject.setId(getPrimaryKeyValue(operator, bean,
+						primaryKeyName));
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		return permissionSubject;
 	}
@@ -204,14 +225,18 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 					keyValue, objectClassType);
 		}
 		if (permissionObject == null) {
-			DBOperator<K> operator = (DBOperator<K>) getManager()
-					.getDbOperator(objectBeanType);
-			Bean bean = operator.getBean(keyValue);
-			String primaryKeyName = getPrimaryKeyName(objectBeanType);
-			permissionObject = (PermissionObject) TinyBeanUtil.bean2Object(
-					bean, objectClassType);
-			permissionObject.setId(getPrimaryKeyValue(operator, bean,
-					primaryKeyName));
+			try {
+				DBOperator<K> operator = (DBOperator<K>) getManager()
+						.getDbOperator();
+				Bean bean = operator.getBean(keyValue, objectBeanType);
+				String primaryKeyName = getPrimaryKeyName(objectBeanType);
+				permissionObject = (PermissionObject) TinyBeanUtil.bean2Object(
+						bean, objectClassType);
+				permissionObject.setId(getPrimaryKeyValue(operator, bean,
+						primaryKeyName));
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		return permissionObject;
 	}
@@ -264,10 +289,14 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 							permissionObject);
 				}
 			}
-			Bean[] beans = getManager().getDbOperator(
-					relation.getRelationType()).getBeans(relation.getBean());
-			if (beans != null && beans.length > 0) {
-				return true;
+			try {
+				Bean[] beans = getManager().getDbOperator().getBeans(
+						relation.getBean());
+				if (beans != null && beans.length > 0) {
+					return true;
+				}
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
 			}
 		}
 		return false;
@@ -292,10 +321,14 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 							permissionObject);
 				}
 			}
-			Bean[] beans = getManager().getDbOperator(
-					relation.getRelationType()).getBeans(relation.getBean());
-			if (beans != null && beans.length > 0) {
-				return true;
+			try {
+				Bean[] beans = getManager().getDbOperator().getBeans(
+						relation.getBean());
+				if (beans != null && beans.length > 0) {
+					return true;
+				}
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
 			}
 		}
 		return false;
@@ -391,13 +424,13 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 
 	}
 
-	private String getPrimaryKeyName(String beanType) {
-		TableConfiguration configuration = getManager()
-				.getTableConfiguration(beanType);
+	private String getPrimaryKeyName(String beanType) throws TinyDbException {
+		TableConfiguration configuration = getManager().getTableConfiguration(
+				beanType);
 		if (configuration != null) {
 			return configuration.getPrimaryKey().getColumnName();
 		}
-		throw new DBRuntimeException("tinydb.notExistPrimaryField", beanType);
+		throw new TinyDbException("beanType:" + beanType + "不存在主键字段");
 	}
 
 	private void addRelationInfo(String status, String permissionSubjectType,
@@ -407,8 +440,11 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 				permissionSubjectType, permissionSubjectId,
 				permissionObjectType, permissionObjectId);
 		if (relation.existTable()) {
-			getManager().getDbOperator(relation.getRelationType()).insert(
-					relation.getBean());
+			try {
+				getManager().getDbOperator().insert(relation.getBean());
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
+			}
 			if (cacheSupport) {
 				PermissionSubject<K, ?> permissionSubject = storage
 						.getPermissionSubject(permissionSubjectType,
@@ -458,8 +494,11 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 					}
 				}
 				relation.setBeans(beans);
-				getManager().getDbOperator(relation.getRelationType())
-						.batchInsert(beans);
+				try {
+					getManager().getDbOperator().batchInsert(beans);
+				} catch (TinyDbException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		}
 	}
@@ -493,8 +532,11 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 					}
 				}
 				relation.setBeans(beans);
-				getManager().getDbOperator(relation.getRelationType())
-						.batchDelete(beans);
+				try {
+					getManager().getDbOperator().batchDelete(beans);
+				} catch (TinyDbException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		}
 	}
@@ -506,8 +548,11 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 				permissionSubjectType, permissionSubjectId,
 				permissionObjectType, permissionObjectId);
 		if (relation.existTable()) {
-			getManager().getDbOperator(relation.getRelationType()).delete(
-					relation.getBean());
+			try {
+				getManager().getDbOperator().delete(relation.getBean());
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
+			}
 			if (cacheSupport) {
 				PermissionSubject<K, ?> permissionSubject = storage
 						.getPermissionSubject(permissionSubjectType,
@@ -642,21 +687,24 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 	public List<PermissionObject<K, ?>> getPermissionObjects(
 			String objectBeanType,
 			Class<? extends PermissionObject> objectClassType) {
-		DBOperator<K> operator = (DBOperator<K>) getManager().getDbOperator(
-				objectBeanType);
-		Bean[] objectBeans = operator.getBeans(new Bean(objectBeanType));
-		List<PermissionObject<K, ?>> permissionObjects = new ArrayList<PermissionObject<K, ?>>();
-		String primaryKeyName = getPrimaryKeyName(objectBeanType);
-		if (objectBeans != null) {
-			for (Bean bean : objectBeans) {
-				PermissionObject permissionObject = (PermissionObject) TinyBeanUtil
-						.bean2Object(bean, objectClassType);
-				permissionObject.setId(getPrimaryKeyValue(operator, bean,
-						primaryKeyName));
-				permissionObjects.add(permissionObject);
+		try {
+			DBOperator<K> operator = (DBOperator<K>) getManager().getDbOperator();
+			Bean[] objectBeans = operator.getBeans(new Bean(objectBeanType));
+			List<PermissionObject<K, ?>> permissionObjects = new ArrayList<PermissionObject<K, ?>>();
+			String primaryKeyName = getPrimaryKeyName(objectBeanType);
+			if (objectBeans != null) {
+				for (Bean bean : objectBeans) {
+					PermissionObject permissionObject = (PermissionObject) TinyBeanUtil
+							.bean2Object(bean, objectClassType);
+					permissionObject.setId(getPrimaryKeyValue(operator, bean,
+							primaryKeyName));
+					permissionObjects.add(permissionObject);
+				}
 			}
+			return permissionObjects;
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
 		}
-		return permissionObjects;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -669,18 +717,22 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 					subjectClassType);
 		}
 		if (permissionSubjects.size() == 0) {// 没有再查询数据库
-			DBOperator<K> operator = (DBOperator<K>) getManager()
-					.getDbOperator(subjectBeanType);
-			Bean[] subjectBeans = operator.getBeans(new Bean(subjectBeanType));
-			String primaryKeyName = getPrimaryKeyName(subjectBeanType);
-			if (subjectBeans != null) {
-				for (Bean bean : subjectBeans) {
-					PermissionSubject permissionSubject = (PermissionSubject) TinyBeanUtil
-							.bean2Object(bean, subjectClassType);
-					permissionSubject.setId(getPrimaryKeyValue(operator, bean,
-							primaryKeyName));
-					permissionSubjects.add(permissionSubject);
+			try {
+				DBOperator<K> operator = (DBOperator<K>) getManager()
+						.getDbOperator();
+				Bean[] subjectBeans = operator.getBeans(new Bean(subjectBeanType));
+				String primaryKeyName = getPrimaryKeyName(subjectBeanType);
+				if (subjectBeans != null) {
+					for (Bean bean : subjectBeans) {
+						PermissionSubject permissionSubject = (PermissionSubject) TinyBeanUtil
+								.bean2Object(bean, subjectClassType);
+						permissionSubject.setId(getPrimaryKeyValue(operator, bean,
+								primaryKeyName));
+						permissionSubjects.add(permissionSubject);
+					}
 				}
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
 			}
 		}
 		return permissionSubjects;
@@ -700,17 +752,21 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 		if (permissionObjects.size() == 0) {
 			Bean[] beans = getRelationBeans(subjectBeanType, objectBeanType,
 					permissionSubjectId);
-			DBOperator objectOperator = getManager().getDbOperator(
-					objectBeanType);
-			if (beans != null) {
-				for (Bean bean : beans) {
-					K objectId = (K) bean.getProperty(PERMISSION_OBJECT_ID);
-					Bean objectBean = objectOperator.getBean(objectId);
-					PermissionObject permissionObject = (PermissionObject) TinyBeanUtil
-							.bean2Object(objectBean, objectClassType);
-					permissionObject.setId(objectId);
-					permissionObjects.add(permissionObject);
+			try {
+				DBOperator objectOperator = getManager().getDbOperator();
+				if (beans != null) {
+					for (Bean bean : beans) {
+						K objectId = (K) bean.getProperty(PERMISSION_OBJECT_ID);
+						Bean objectBean = objectOperator.getBean(objectId,
+								objectBeanType);
+						PermissionObject permissionObject = (PermissionObject) TinyBeanUtil
+								.bean2Object(objectBean, objectClassType);
+						permissionObject.setId(objectId);
+						permissionObjects.add(permissionObject);
+					}
 				}
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
 			}
 		}
 
@@ -721,13 +777,15 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 	@SuppressWarnings("unchecked")
 	private Bean[] getRelationBeans(String subjectBeanType,
 			String objectBeanType, K permissionSubjectId) {
-		String relationBeanType = AUTH_RELATION_BEAN_NAME;
-		DBOperator<K> operator = (DBOperator<K>) getManager().getDbOperator(
-				relationBeanType);
-		Bean relationBean = newRelationBean(subjectBeanType,
-				permissionSubjectId, objectBeanType);
-		Bean[] beans = operator.getBeans(relationBean);
-		return beans;
+		try {
+			DBOperator<K> operator= (DBOperator<K>) getManager().getDbOperator();
+			Bean relationBean = newRelationBean(subjectBeanType,
+					permissionSubjectId, objectBeanType);
+			Bean[] beans = operator.getBeans(relationBean);
+			return beans;
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public List<PermissionSubject<K, ?>> getChildPermissionSubjects(
@@ -757,18 +815,22 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 		if (children.size() == 0) {
 			Bean queryBean = new Bean(objectBeanType);
 			queryBean.setProperty(PARENT_ID, parentObjectId);
-			DBOperator<K> operator = (DBOperator<K>) getManager()
-					.getDbOperator(objectBeanType);
-			Bean[] beans = operator.getBeans(queryBean);
-			if (beans != null) {
-				String primaryKeyName = getPrimaryKeyName(objectBeanType);
-				for (Bean bean : beans) {
-					PermissionObject permissionObject = (PermissionObject) TinyBeanUtil
-							.bean2Object(bean, objectClassType);
-					permissionObject.setId(getPrimaryKeyValue(operator, bean,
-							primaryKeyName));
-					children.add(permissionObject);
+			try {
+				DBOperator<K> operator = (DBOperator<K>) getManager()
+						.getDbOperator();
+				Bean[] beans = operator.getBeans(queryBean);
+				if (beans != null) {
+					String primaryKeyName = getPrimaryKeyName(objectBeanType);
+					for (Bean bean : beans) {
+						PermissionObject permissionObject = (PermissionObject) TinyBeanUtil
+								.bean2Object(bean, objectClassType);
+						permissionObject.setId(getPrimaryKeyValue(operator, bean,
+								primaryKeyName));
+						children.add(permissionObject);
+					}
 				}
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
 			}
 		}
 		return children;
@@ -796,20 +858,24 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 		List<PermissionSubject<K, ?>> children = new ArrayList<PermissionSubject<K, ?>>();
 		Bean queryBean = new Bean(subjectBeanType);
 		queryBean.setProperty(PARENT_ID, parentSubjectId);
-		DBOperator<K> operator = (DBOperator<K>) getManager().getDbOperator(
-				subjectBeanType);
-		Bean[] beans = operator.getBeans(queryBean);
-		if (beans != null) {
-			String primaryKeyName = getPrimaryKeyName(subjectBeanType);
-			for (Bean bean : beans) {
-				PermissionSubject permissionSubject = (PermissionSubject) TinyBeanUtil
-						.bean2Object(bean, subjectClassType);
-				permissionSubject.setId(getPrimaryKeyValue(operator, bean,
-						primaryKeyName));
-				children.add(permissionSubject);
+		try {
+			DBOperator<K> operator= (DBOperator<K>) getManager().getDbOperator();
+			Bean[] beans = operator.getBeans(queryBean);
+			if (beans != null) {
+				String primaryKeyName = getPrimaryKeyName(subjectBeanType);
+				for (Bean bean : beans) {
+					PermissionSubject permissionSubject = (PermissionSubject) TinyBeanUtil
+							.bean2Object(bean, subjectClassType);
+					permissionSubject.setId(getPrimaryKeyValue(operator, bean,
+							primaryKeyName));
+					children.add(permissionSubject);
+				}
 			}
+			return children;
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
 		}
-		return children;
+		
 	}
 
 	@SuppressWarnings({ "unchecked" })
@@ -819,20 +885,23 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 		List<PermissionObject<K, ?>> children = new ArrayList<PermissionObject<K, ?>>();
 		Bean queryBean = new Bean(objectBeanType);
 		queryBean.setProperty(PARENT_ID, parentObjectId);
-		DBOperator<K> operator = (DBOperator<K>) getManager().getDbOperator(
-				objectBeanType);
-		Bean[] beans = operator.getBeans(queryBean);
-		if (beans != null) {
-			String primaryKeyName = getPrimaryKeyName(objectBeanType);
-			for (Bean bean : beans) {
-				PermissionObject permissionObject = (PermissionObject) TinyBeanUtil
-						.bean2Object(bean, objectClassType);
-				permissionObject.setId(getPrimaryKeyValue(operator, bean,
-						primaryKeyName));
-				children.add(permissionObject);
+		try {
+			DBOperator<K> operator = (DBOperator<K>) getManager().getDbOperator();
+			Bean[] beans = operator.getBeans(queryBean);
+			if (beans != null) {
+				String primaryKeyName = getPrimaryKeyName(objectBeanType);
+				for (Bean bean : beans) {
+					PermissionObject permissionObject = (PermissionObject) TinyBeanUtil
+							.bean2Object(bean, objectClassType);
+					permissionObject.setId(getPrimaryKeyValue(operator, bean,
+							primaryKeyName));
+					children.add(permissionObject);
+				}
 			}
+			return children;
+		} catch (TinyDbException e) {
+			throw new RuntimeException(e);
 		}
-		return children;
 	}
 
 	private List<PermissionSubject<K, ?>> getBegatsPermissionSubjectRecords(

@@ -18,6 +18,7 @@ package org.tinygroup.flowbasiccomponent;
 import org.tinygroup.context.Context;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 /**
@@ -30,8 +31,12 @@ public class TinydbAddService extends AbstractTinydbService {
 
 	public void tinyService(Bean bean,Context context,DBOperator operator){
 		if(bean!=null){
-			Bean insertBean=operator.insert(bean);
-			context.put(resultKey, insertBean);
+			try {
+				Bean insertBean = operator.insert(bean);
+				context.put(resultKey, insertBean);
+			} catch (TinyDbException e) {
+				throw new RuntimeException(e);
+			}
 		}else{
 			logger.logMessage(LogLevel.WARN, "新增服务时,从上下文中找不到bean对象，其beantype:[{}]",beanType);
 		}

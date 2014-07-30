@@ -1,6 +1,7 @@
 package org.tinygroup.tinydb.jdbctemplate;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +9,11 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.Field;
 import org.tinygroup.tinydb.impl.DefaultNameConverter;
+import org.tinygroup.tinydb.operator.DbBaseOperator;
 import org.tinygroup.tinydb.util.TinyBeanUtil;
 
 /**
@@ -50,6 +53,16 @@ public class TinydbResultExtractor implements ResultSetExtractor {
 			start = 1;
 		}
 		List<Field> fields = TinyBeanUtil.getFieldsWithResultSet(rs, converter);
+		if(DbBaseOperator.DEFAULT_BEAN_TYPE.equals(beanType)){
+			ResultSetMetaData rsmd = rs.getMetaData();
+			try {
+				String tableName=rsmd.getTableName(1);//只获取第一列对应的表名
+				if(!StringUtil.isBlank(tableName)){
+					beanType=converter.dbTableNameToTypeName(tableName);
+				}
+			} catch (Exception e) {
+			}
+		}
 		RowMapper mapper = new BeanRowMapper(beanType, schema, fields);
 		List results = new ArrayList();
 		if (limit != 0) {// 需要进行游标分页

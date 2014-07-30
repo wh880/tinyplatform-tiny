@@ -13,24 +13,29 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinydb.convert;
-
-import org.tinygroup.tinydb.BeanOperatorManager;
-import org.tinygroup.tinydb.exception.TinyDbException;
+package org.tinygroup.tinydb.exception;
 
 /**
- * 表配置信息转化接口
+ * 
  * @author renhui
  *
  */
-public interface TableConfigConvert {
-    /**
-     * 表配置信息转换接口  
-     * @return
-     */
-	public void convert()throws TinyDbException;
+public class TinyDbException extends Exception {
+
+	public TinyDbException() {
+		super();
+	}
+
+	public TinyDbException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public TinyDbException(String message) {
+		super(message);
+	}
+
+	public TinyDbException(Throwable cause) {
+		super(cause);
+	}
 	
-	public void setOperatorManager(BeanOperatorManager manager);
-	
-	public BeanOperatorManager getOperatorManager();
 }
