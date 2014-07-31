@@ -17,17 +17,26 @@ package org.tinygroup.channel;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcorepc.impl.PcCepCoreImpl;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;
+import org.tinygroup.channel.ChannelInterface;
+import org.tinygroup.springutil.SpringBeanContainer;
+import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class ChannelWithCEPCoreTest extends TestCase {
-	ChannelSample channelSample;
-	CEPCore cepCore = new PcCepCoreImpl();
+	ChannelInterface channelSample;
+
 	protected void setUp() throws Exception {
 		super.setUp();
+		AbstractTestUtil.init(null, true);
+		// BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
+		CEPCore cepCore = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader())
+				.getBean(CEPCore.CEP_CORE_BEAN);
 		channelSample = new ChannelSample();
 		EventFilter eventFilter = new EventFilter() {
 			public Event filter(Event event) {
@@ -49,20 +58,24 @@ public class ChannelWithCEPCoreTest extends TestCase {
 		cepCore.registerEventProcessor(new EventProcessor1());
 		cepCore.registerEventProcessor(new EventProcessor2());
 	}
+
 	public void testSendEvent() {
-		Event event = getEvent("aabbcc","","","");
+		Event event = getEvent("aabbcc", "", "", "");
 		channelSample.sendEvent(event);
 		assertEquals("aa", event.getServiceRequest().getContext().get("result"));
-		event = getEvent("111111","aabbcc1","a","a");
+		event = getEvent("111111", "aabbcc1", "a", "a");
 		channelSample.sendEvent(event);
 		assertEquals("bb", event.getServiceRequest().getContext().get("result"));
 	}
+
 	public void testSendEvent1() {
-		Event event = getEvent("111111","111111","a","a");
+		Event event = getEvent("111111", "111111", "a", "a");
 		channelSample.sendEvent(event);
 		assertEquals("bb", event.getServiceRequest().getContext().get("result"));
 	}
-	private Event getEvent(String id,String name,String artifactId,String groupId) {
+
+	private Event getEvent(String id, String name, String artifactId,
+			String groupId) {
 		Event event = new Event();
 		event.setEventId("123");
 		ServiceRequest serviceRequest = new ServiceRequest();
