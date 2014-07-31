@@ -20,7 +20,7 @@ public class TestCase extends junit.framework.TestCase {
 		e.setServiceRequest(s);
 		s.setContext(ContextFactory.getContext());
 		s.setServiceId("s1");
-		e.setMode(Event.EVENT_MODE_SYNCHRONOUS);
+		e.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
 
 		AopTestUtil.execute(e);
 	}

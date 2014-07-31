@@ -170,7 +170,7 @@ public class PcCepCoreImpl implements CEPCore {
 	}
 
 	private void deal(EventProcessor eventProcessor, Event event) {
-		if (event.getMode() == Event.EVENT_MODE_SYNCHRONOUS) {
+		if (event.getMode() == Event.EVENT_MODE_ASYNCHRONOUS) {
 			Event e = getEventClone(event);
 			event.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
 			event.setType(Event.EVENT_TYPE_RESPONSE);
