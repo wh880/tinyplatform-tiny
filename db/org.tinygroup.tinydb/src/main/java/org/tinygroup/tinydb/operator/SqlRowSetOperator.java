@@ -11,7 +11,7 @@ import org.tinygroup.tinydb.exception.TinyDbException;
  * @author renhui
  *
  */
-public interface ResultsetOperator {
+public interface SqlRowSetOperator {
 
 	SqlRowSet getSqlRowSet(String sql)throws TinyDbException;
 	
