@@ -65,25 +65,29 @@ public class PcCepCoreImpl implements CEPCore {
 				eventProcessor.getId());
 		processorMap.put(eventProcessor.getId(), eventProcessor);
 		eventProcessor.setCepCore(this);
-		if (EventProcessor.TYPE_REMOTE != eventProcessor.getType()) {
-			for (ServiceInfo service : eventProcessor.getServiceInfos()) {
-				if (!localServiceMap.containsKey(service.getServiceId())) {
-					localServiceMap.put(service.getServiceId(), service);
-					localServices.add(service);
+
+		List<ServiceInfo> servicelist = eventProcessor.getServiceInfos();
+		if (servicelist != null && servicelist.size() > 0) {
+			if (EventProcessor.TYPE_REMOTE != eventProcessor.getType()) {
+				for (ServiceInfo service : servicelist) {
+					if (!localServiceMap.containsKey(service.getServiceId())) {
+						localServiceMap.put(service.getServiceId(), service);
+						localServices.add(service);
+					}
 				}
 			}
-		}
-		for (ServiceInfo service : eventProcessor.getServiceInfos()) {
-			String name = service.getServiceId();
-			if (serviceIdMap.containsKey(name)) {
-				List<EventProcessor> list = serviceIdMap.get(name);
-				if (!list.contains(eventProcessor)) {
+			for (ServiceInfo service : servicelist) {
+				String name = service.getServiceId();
+				if (serviceIdMap.containsKey(name)) {
+					List<EventProcessor> list = serviceIdMap.get(name);
+					if (!list.contains(eventProcessor)) {
+						list.add(eventProcessor);
+					}
+				} else {
+					List<EventProcessor> list = new ArrayList<EventProcessor>();
+					serviceIdMap.put(name, list);
 					list.add(eventProcessor);
 				}
-			} else {
-				List<EventProcessor> list = new ArrayList<EventProcessor>();
-				serviceIdMap.put(name, list);
-				list.add(eventProcessor);
 			}
 		}
 
@@ -224,13 +228,13 @@ public class PcCepCoreImpl implements CEPCore {
 			throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
 					+ serviceRequest.getServiceId());
 		}
-//		if (hasNotNodeName){
-			throw new RuntimeException("没有找到合适的服务处理器");
-//		}else{
-//			throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
-//					+ serviceRequest.getServiceId());
-//		}
-//			
+		// if (hasNotNodeName){
+		throw new RuntimeException("没有找到合适的服务处理器");
+		// }else{
+		// throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
+		// + serviceRequest.getServiceId());
+		// }
+		//
 	}
 
 	private EventProcessor getEventProcessor(ServiceRequest serviceRequest,
