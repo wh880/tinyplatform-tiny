@@ -14,7 +14,6 @@
 				<ref bean="xmlServiceFileProcessor" />
 				<ref bean="annotationFileProcessor" />
 				<ref bean="annotationClassFileProcessor" />
-				<ref bean="serviceClassFileProcessor" />
 				<ref bean="generatorFileProcessor" />
 				<ref bean="validateFileProcessor" />
 			</list>
