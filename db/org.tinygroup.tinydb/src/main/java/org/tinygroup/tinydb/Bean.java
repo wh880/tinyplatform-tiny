@@ -15,7 +15,6 @@
  */
 package org.tinygroup.tinydb;
 
-import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +29,11 @@ public class Bean extends HashMap<String, Object> {
     private Map<String, Boolean> updateMarkMap=new HashMap<String, Boolean>();
     private List<Field> fields=new ArrayList<Field>();
     
-    /**
+    public Bean() {
+		super();
+	}
+
+	/**
      * @param type
      */
     public Bean(String type) {
