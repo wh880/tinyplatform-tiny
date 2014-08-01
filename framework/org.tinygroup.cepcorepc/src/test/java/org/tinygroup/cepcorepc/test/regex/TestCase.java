@@ -9,8 +9,8 @@ import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class TestCase {
+	public static void main(String[] args) {
 
-	public void main() {
 		AbstractTestUtil.init(null, true);
 		CEPCore cep = BeanContainerFactory.getBeanContainer(
 				TestCase.class.getClassLoader()).getBean(CEPCore.CEP_CORE_BEAN);
@@ -20,7 +20,10 @@ public class TestCase {
 		p.addService(s1);
 		p.addService(s2);
 		cep.registerEventProcessor(p);
-
+		
+		RegexProcessor2 p2 = new RegexProcessor2();
+		cep.registerEventProcessor(p2);
+		
 		Event e = new Event();
 		ServiceRequest s = new ServiceRequest();
 		e.setServiceRequest(s);
@@ -28,5 +31,14 @@ public class TestCase {
 		s.setServiceId("a3");
 		e.setMode(Event.EVENT_MODE_SYNCHRONOUS);
 		cep.process(e);
+		
+		
+		Event e1 = new Event();
+		ServiceRequest ss1 = new ServiceRequest();
+		e1.setServiceRequest(ss1);
+		ss1.setContext(ContextFactory.getContext());
+		ss1.setServiceId("v3");
+		e1.setMode(Event.EVENT_MODE_SYNCHRONOUS);
+		cep.process(e1);
 	}
 }

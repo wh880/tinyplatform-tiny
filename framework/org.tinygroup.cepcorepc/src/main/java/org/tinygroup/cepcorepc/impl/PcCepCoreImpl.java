@@ -31,6 +31,7 @@ public class PcCepCoreImpl implements CEPCore {
 	private Map<String, ServiceInfo> localServiceMap = new HashMap<String, ServiceInfo>();
 	private List<ServiceInfo> localServices = new ArrayList<ServiceInfo>();
 	private Map<EventProcessor, List<String>> regexMap = new HashMap<EventProcessor, List<String>>();
+	private List<EventProcessor> processorList = new ArrayList<EventProcessor>();
 	private String nodeName;
 	private CEPCoreOperator operator;
 	private EventProcessorChoose chooser;
@@ -94,6 +95,7 @@ public class PcCepCoreImpl implements CEPCore {
 		if (eventProcessor.getRegex() != null
 				&& eventProcessor.getRegex().size() > 0) {
 			regexMap.put(eventProcessor, eventProcessor.getRegex());
+			processorList.add(eventProcessor);
 		}
 		logger.logMessage(LogLevel.INFO, "注册EventProcessor:{}完成",
 				eventProcessor.getId());
@@ -210,13 +212,13 @@ public class PcCepCoreImpl implements CEPCore {
 		String serviceId = serviceRequest.getServiceId();
 		boolean hasNotNodeName = (eventNodeName == null || ""
 				.equals(eventNodeName));
-		for (EventProcessor p : regexMap.keySet()) {
+		for (EventProcessor p : processorList) {
+			List<String> regex = regexMap.get(p);
 			if (!hasNotNodeName) {
 				if (!eventNodeName.equals(p.getId())) {
 					continue;// 如果指定了节点，则先判断节点名是否对应，再做服务判断
 				}
 			}
-			List<String> regex = p.getRegex();
 			for (String s : regex) {
 				Pattern pattern = Pattern.compile(s);
 				Matcher matcher = pattern.matcher(serviceId);
@@ -225,8 +227,12 @@ public class PcCepCoreImpl implements CEPCore {
 					return p;
 				}
 			}
-			throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
-					+ serviceRequest.getServiceId());
+
+			if (!hasNotNodeName) {
+				throw new RuntimeException("指定的服务处理器：" + eventNodeName
+						+ "上不存在服务:" + serviceRequest.getServiceId());
+			}
+
 		}
 		// if (hasNotNodeName){
 		throw new RuntimeException("没有找到合适的服务处理器");
