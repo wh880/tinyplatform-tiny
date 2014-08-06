@@ -111,4 +111,74 @@ public class LoggerTest extends TestCase {
 		logger.logMessage(LogLevel.INFO, "测试是否输出mdc，打印的日志是否输出testMDC");
 	}
 
+	public void testThreadMdc(){
+		LoggerFactory.putThreadVariable("key1", "value1");
+		LoggerFactory.putThreadVariable("key2", "value2");
+		Logger logger1=LoggerFactory.getLogger("name1");
+		logger1.logMessage(LogLevel.INFO, "输出MDC,key1和key2");
+		LoggerFactory.putThreadVariable("key3", "value3");
+		logger1.logMessage(LogLevel.INFO, "输出MDC,key1、key2,key3");
+		Thread thread=new Thread(new Runnable() {
+			public void run() {
+				LoggerFactory.putThreadVariable("key1", "name2-value1");
+				Logger logger2=LoggerFactory.getLogger("name1");
+				logger2.logMessage(LogLevel.INFO, "只输出MDC,key1");
+			}
+		});
+		thread.start();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+	}
+	
+	public void testLogMaxSize(){
+		Logger logger1=LoggerFactory.getLogger("name1");
+		logger1.startTransaction();
+		logger1.setMaxBufferRecords(10);
+		logger1.logMessage(LogLevel.INFO, "打印日志信息：{1}",1);
+		System.out.println("日志未输出。。。");
+		for (int i = 2; i <= 10; i++) {
+			logger1.logMessage(LogLevel.INFO, "打印日志信息：{1}",i);
+		}
+		System.out.println("日志输出。。。");
+		for (int i = 0; i < 5; i++) {
+			logger1.logMessage(LogLevel.INFO, "再次打印日志信息：{1}",i+1);
+		}
+		logger1.endTransaction();
+		System.out.println("日志再次输出。。。");
+	}
+	
+	public void testThreadLogLevel(){
+		Logger logger1=LoggerFactory.getLogger("name1");
+		logger1.setMaxBufferRecords(10);
+		LoggerFactory.setThreadLogLevel(LogLevel.INFO);
+		logger1.logMessage(LogLevel.DEBUG, "打印DEBUG日志信息：{1}",1);
+		logger1.logMessage(LogLevel.INFO, "打印INFO日志信息：{1}",2);
+		System.out.println("由于线程日志输出级别是INFO,只打印INFO日志");
+		Thread thread2=new Thread(new Runnable() {
+			public void run() {
+				Logger logger1=LoggerFactory.getLogger("name1");
+				LoggerFactory.setThreadLogLevel(LogLevel.INFO);
+				logger1.startTransaction();
+				logger1.logMessage(LogLevel.DEBUG, "打印事务日志信息：{1}",1);
+				for (int i = 1; i <= 10; i++) {
+					logger1.logMessage(LogLevel.DEBUG, "打印DEBUG日志信息：{1}",i);
+					logger1.logMessage(LogLevel.INFO, "打印INFO日志信息：{1}",i);
+				}
+				System.out.println("由于线程日志输出级别是INFO,只打印INFO日志");
+				for (int i = 0; i < 5; i++) {
+					logger1.logMessage(LogLevel.DEBUG, "再次打印DEBUG日志信息：{1}",i+1);
+					logger1.logMessage(LogLevel.INFO, "再次打印INFO日志信息：{1}",i+1);
+				}
+				logger1.endTransaction();
+				System.out.println("INFO日志再次输出。。。");
+			}
+		});
+		thread2.start();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+	}
 }

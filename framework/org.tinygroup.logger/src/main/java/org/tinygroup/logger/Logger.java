@@ -196,5 +196,27 @@ public interface Logger {
      * @param key
      */
     public void removeFromMDC(String key);
+    
+    /**
+	 * 返回缓存限制记录条数 <br>
+	 * <br>
+	 * 说明：该参数在日志对象被置为缓存模式后才有效，<br>
+	 * 若缓存待输出日志条数超过该参数，插件将调用<br>
+	 * flush方法输出日志并清空缓存。<br>
+	 * 
+	 * @return 返回限制记录数
+	 */
+	public int getMaxBufferRecords();
+
+	/**
+	 * 设置缓存限制记录条数 <br>
+	 * <br>
+	 * 说明：当日志对象被置为缓存模式后，该参数用于<br>
+	 * 限制缓存允许的最大记录条数。<br>
+	 * 
+	 * @param bufferRecords
+	 *            设置限制记录数
+	 */
+	public void setMaxBufferRecords(int bufferRecords);
 
 }

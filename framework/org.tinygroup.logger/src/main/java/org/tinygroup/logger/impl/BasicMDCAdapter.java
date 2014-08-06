@@ -1,6 +1,7 @@
 package org.tinygroup.logger.impl;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
@@ -60,8 +61,11 @@ public class BasicMDCAdapter implements MDCAdaptor {
 		HashMap hashMap = (HashMap) inheritableThreadLocal.get();
 		if (hashMap != null) {
 			hashMap.clear();
-			MDC.getContext().clear();
 			inheritableThreadLocal.remove();
+		}
+		Hashtable hashtable= MDC.getContext();
+		if(hashtable!=null){
+			hashtable.clear();
 		}
 	}
 
