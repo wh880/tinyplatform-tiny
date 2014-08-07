@@ -15,23 +15,12 @@
  */
 package org.tinygroup.weblayer.filter;
 
-import java.util.List;
-
-import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.config.ConfigurationManager;
-import org.tinygroup.config.util.ConfigurationUtil;
-import org.tinygroup.parser.filter.NameFilter;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
-import org.tinygroup.weblayer.util.ParserXmlNodeUtil;
-import org.tinygroup.weblayer.webcontext.rewrite.RewriteCondition;
+import org.tinygroup.weblayer.webcontext.rewrite.RewriteConfiguration;
 import org.tinygroup.weblayer.webcontext.rewrite.RewriteRule;
-import org.tinygroup.weblayer.webcontext.rewrite.RewriteSubstitution;
-import org.tinygroup.weblayer.webcontext.rewrite.RewriteSubstitution.Parameter;
-import org.tinygroup.weblayer.webcontext.rewrite.RewriteSubstitutionHandler;
 import org.tinygroup.weblayer.webcontext.rewrite.impl.RewriteWebContextImpl;
-import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * 改写URL及参数，类似于Apache HTTPD Server中的rewrite模块。
@@ -41,97 +30,25 @@ import org.tinygroup.xmlparser.node.XmlNode;
  */
 public class RewriteTinyFilter extends AbstractTinyFilter {
 
-	private static final String REWRITE_CONFIG = "rewrite";
 	private RewriteRule[] rules;
 
 	public void setRules(RewriteRule[] rules) {
 		this.rules = rules;
 	}
-
 	
 	public void initTinyFilter() {
 		super.initTinyFilter();
-		initRules();
+		parserExtraConfig();
 	}
 
-	private void initRules() {
-
-		ConfigurationManager appConfigManager = ConfigurationUtil.getConfigurationManager();
-		XmlNode parserNode = appConfigManager.getApplicationConfiguration().getSubNode(
-				REWRITE_CONFIG);
-		parserExtraConfig(parserNode);
-
-	}
-
-	
-	protected void parserExtraConfig(XmlNode parserNode) {
-
+	protected void parserExtraConfig() {
 		if (rules == null) {
-			Assert.assertNotNull(parserNode, "rewrite config must not null");
-			NameFilter<XmlNode> nameFilter = new NameFilter<XmlNode>(parserNode);
-			List<XmlNode> ruleNodes = nameFilter.findNodeList("rule");
-			if (!CollectionUtil.isEmpty(ruleNodes)) {
-				rules = new RewriteRule[ruleNodes.size()];
-				for (int i = 0; i < ruleNodes.size(); i++) {
-					XmlNode ruleNode = ruleNodes.get(i);
-					RewriteRule rule = new RewriteRule();
-					rule.setPattern(ruleNode.getAttribute("pattern"));
-					rule.setConditions(ruleConditions(ruleNode));
-					rule.setSubstitution(ruleSubstitution(ruleNode));
-					rule.setHandlers(ruleHandlers(ruleNode));
-					rules[i] = rule;
-					try {
-						rule.afterPropertiesSet();
-					} catch (Exception e) {
-						logger.errorMessage("initializingBean error", e);
-						throw new RuntimeException("initializingBean error", e);
-					}
-				}
-
-			}
-
+			RewriteConfiguration rewriteConfiguration=BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean("rewriteConfiguration");
+			rules=rewriteConfiguration.getRules();
 		}
 
 	}
 
-	private Object[] ruleHandlers(XmlNode ruleNode) {
-		return ParserXmlNodeUtil.parseConfigToArray(this.getClass().getClassLoader(),"rewrite-handler",
-				ruleNode, RewriteSubstitutionHandler.class);
-	}
-
-	/**
-	 * 
-	 * 解析配置创建RewriteSubstitution对象
-	 * 
-	 * @param ruleNode
-	 * @return
-	 */
-	private RewriteSubstitution ruleSubstitution(XmlNode ruleNode) {
-		RewriteSubstitution substitution = ParserXmlNodeUtil
-				.parseConfigToObject(this.getClass().getClassLoader(),"substitution",null, ruleNode,
-						RewriteSubstitution.class, new String[] { "uri",
-								"flags" });
-		Parameter[] parameters = ParserXmlNodeUtil.parseConfigToArray(this.getClass().getClassLoader(),
-				"parameter", ruleNode, Parameter.class, new String[] { "key",
-						"value" });
-		substitution.setParameters(parameters);
-		return substitution;
-	}
-
-	/**
-	 * 
-	 * 解析配置创建RewriteCondition对象
-	 * 
-	 * @param ruleNode
-	 * @return
-	 */
-	private RewriteCondition[] ruleConditions(XmlNode ruleNode) {
-		return ParserXmlNodeUtil.parseConfigToArray(this.getClass().getClassLoader(),"condition", ruleNode,
-				RewriteCondition.class, new String[] { "test", "flags",
-						"pattern" });
-	}
-
-	
 	public void preProcess(WebContext context) {
 		RewriteWebContextImpl rewrite = (RewriteWebContextImpl) context;
 		rewrite.prepare();

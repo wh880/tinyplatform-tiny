@@ -40,11 +40,38 @@ import javassist.bytecode.CodeAttribute;
 import javassist.bytecode.LocalVariableAttribute;
 import javassist.bytecode.MethodInfo;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.tinygroup.commons.tools.ClassUtil;
 
 public class BeanUtil {
+
+	public static String[] getMethodParamNames(Class clazz, String method,
+			Class... paramTypes) throws NotFoundException {
+
+		ClassPool pool = ClassPool.getDefault();
+		CtClass cc = pool.get(clazz.getName());
+		String[] paramTypeNames = new String[paramTypes.length];
+		for (int i = 0; i < paramTypes.length; i++)
+			paramTypeNames[i] = paramTypes[i].getName();
+		CtMethod cm = cc.getDeclaredMethod(method, pool.get(paramTypeNames));
+		return getMethodParamNames(cm);
+	}
+	
+	 protected static String[] getMethodParamNames(CtMethod cm) throws NotFoundException, MissingLVException {  
+	        CtClass cc = cm.getDeclaringClass();  
+	        MethodInfo methodInfo = cm.getMethodInfo();  
+	        CodeAttribute codeAttribute = methodInfo.getCodeAttribute();  
+	        LocalVariableAttribute attr = (LocalVariableAttribute) codeAttribute.getAttribute(LocalVariableAttribute.tag);  
+	        if (attr == null)  
+	            throw new MissingLVException(cc.getName());  
+	  
+	        String[] paramNames = new String[cm.getParameterTypes().length];  
+	        int pos = Modifier.isStatic(cm.getModifiers()) ? 0 : 1;  
+	        for (int i = 0; i < paramNames.length; i++)  
+	            paramNames[i] = attr.variableName(i + pos);  
+	        return paramNames;  
+	    }  
+
 	public static String[] getMethodParameterName(Class<?> clazz, Method method) {
 		try {
 			ClassPool pool = ClassPool.getDefault();
@@ -94,30 +121,30 @@ public class BeanUtil {
 				Object value = PropertyUtils.getSimpleProperty(orig, name);
 				Object valueDest = null;
 				if (value != null && canDeepCopyObject(value)) {
-					if(value instanceof Collection){
-						Collection coll=(Collection)value;
-						Collection newColl=createApproximateCollection(value);
-						Iterator it= coll.iterator();
-						while(it.hasNext()){
+					if (value instanceof Collection) {
+						Collection coll = (Collection) value;
+						Collection newColl = createApproximateCollection(value);
+						Iterator it = coll.iterator();
+						while (it.hasNext()) {
 							newColl.add(deepCopy(it.next()));
 						}
-						valueDest=newColl;
-					}else if(value.getClass().isArray()){
-						Object[] values=(Object[])value;
-						Object[] newValues=new Object[values.length];
+						valueDest = newColl;
+					} else if (value.getClass().isArray()) {
+						Object[] values = (Object[]) value;
+						Object[] newValues = new Object[values.length];
 						for (int i = 0; i < newValues.length; i++) {
-							newValues[i]=deepCopy(values[i]);
+							newValues[i] = deepCopy(values[i]);
 						}
-						valueDest=newValues;
-					}else if(value instanceof Map){
-						Map map=(Map)value;
-						Map newMap=createApproximateMap(map);
+						valueDest = newValues;
+					} else if (value instanceof Map) {
+						Map map = (Map) value;
+						Map newMap = createApproximateMap(map);
 						for (Object key : map.keySet()) {
 							newMap.put(key, deepCopy(map.get(key)));
 						}
-						valueDest=newMap;
-					}else{
-						valueDest=deepCopy(value);
+						valueDest = newMap;
+					} else {
+						valueDest = deepCopy(value);
 					}
 				} else {
 					valueDest = value;
@@ -143,23 +170,19 @@ public class BeanUtil {
 	public static Collection createApproximateCollection(Object collection) {
 		if (collection instanceof LinkedList) {
 			return new LinkedList();
-		}
-		else if (collection instanceof List) {
+		} else if (collection instanceof List) {
 			return new ArrayList();
-		}
-		else if (collection instanceof SortedSet) {
+		} else if (collection instanceof SortedSet) {
 			return new TreeSet(((SortedSet) collection).comparator());
-		}
-		else {
+		} else {
 			return new LinkedHashSet();
 		}
 	}
-	
+
 	public static Map createApproximateMap(Object map) {
 		if (map instanceof SortedMap) {
 			return new TreeMap(((SortedMap) map).comparator());
-		}
-		else {
+		} else {
 			return new LinkedHashMap();
 		}
 	}

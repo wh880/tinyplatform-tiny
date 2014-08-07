@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.weblayer.impl;
+package org.tinygroup.weblayer.filter;
 
 import org.tinygroup.dynamicdatasource.DataSourceInfo;
 import org.tinygroup.weblayer.AbstractTinyFilter;

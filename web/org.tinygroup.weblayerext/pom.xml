@@ -2,34 +2,29 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.tinygroup</groupId>
-    <artifactId>framework</artifactId>
+    <artifactId>web</artifactId>
     <version>1.2.0-SNAPSHOT</version>
   </parent>
-  <artifactId>org.tinygroup.velocity</artifactId>
-  <name>org.tinygroup.velocity</name>
+  <artifactId>org.tinygroup.weblayerext</artifactId>
+  <name>org.tinygroup.weblayerext</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
     <dependency>
-      <groupId>org.apache.velocity</groupId>
-      <artifactId>velocity</artifactId>
-      <version>1.7</version>
-    </dependency>
-    <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.threadgroup</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.beancontainer</artifactId>
+      <artifactId>org.tinygroup.weblayer</artifactId>
       <version>${project.version}</version>
     </dependency>
      <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.fileresolver</artifactId>
+      <artifactId>org.tinygroup.velocity</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.dict</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

@@ -16,20 +16,18 @@
 package org.tinygroup.weblayer.filter;
 
 import org.springframework.beans.PropertyEditorRegistrar;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.config.ConfigurationManager;
-import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
-import org.tinygroup.weblayer.util.ParserXmlNodeUtil;
+import org.tinygroup.weblayer.webcontext.parser.ParserConfiguration;
 import org.tinygroup.weblayer.webcontext.parser.ParserWebContext;
 import org.tinygroup.weblayer.webcontext.parser.impl.ParserWebContextImpl;
 import org.tinygroup.weblayer.webcontext.parser.impl.PropertyEditorRegistrarsSupport;
 import org.tinygroup.weblayer.webcontext.parser.upload.ParameterParserFilter;
 import org.tinygroup.weblayer.webcontext.parser.upload.UploadService;
-import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * 解析用户提交的参数，无论是普通的请求，还是multipart/form-data这样的用于上传文件的 请求。
@@ -39,7 +37,7 @@ import org.tinygroup.xmlparser.node.XmlNode;
  */
 public class ParserTinyFilter extends AbstractTinyFilter {
 
-	private static final String PROPERTY = "property";
+	private static final String PARSER_CONFIGURATION_BEAN_NAME = "parserConfiguration";
 	private static final boolean CONVERTER_QUIET_DEFAULT = true;
 	private static final String CONVERTER_QUIET_PARAM = "converterQuietParam";
 	private static final String URL_CASE_FOLDING_DEFAULT = ParserWebContext.URL_CASE_FOLDING_LOWER_WITH_UNDERSCORES;
@@ -58,11 +56,6 @@ public class ParserTinyFilter extends AbstractTinyFilter {
 	private static final String TRIMMING = "trimming";
 	private static final String HTML_FIELD_SUFFIX_DEFAULT = ".~html";
 	private static final String HTML_FIELD_SUFFIX = "htmlFieldSuffix";
-	private static final String PARSER_CONFIG = "parser";
-	private static final String PROPERTY_EDITOR = "property-editor";
-	private static final String PARAM_PARSER_FILTER = "param-parser-filter";
-	private static final String UPLOAD_SERVICE = "upload-service";
-
 	private PropertyEditorRegistrarsSupport propertyEditorRegistrars = new PropertyEditorRegistrarsSupport();
 	/**
 	 * 类型转换出错时，是否不报错，而是返回默认值。
@@ -161,7 +154,6 @@ public class ParserTinyFilter extends AbstractTinyFilter {
 		this.uploadService = uploadService;
 	}
 
-	
 	public void initTinyFilter() {
 		super.initTinyFilter();
 		init();
@@ -226,44 +218,32 @@ public class ParserTinyFilter extends AbstractTinyFilter {
 			htmlFieldSuffix = StringUtil.defaultIfEmpty(get(HTML_FIELD_SUFFIX),
 					HTML_FIELD_SUFFIX_DEFAULT);
 		}
-
-		ConfigurationManager appConfigManager = ConfigurationUtil.getConfigurationManager();
-		XmlNode parserNode = appConfigManager.getApplicationConfiguration().getSubNode(
-				PARSER_CONFIG);
-		parserExtraConfig(parserNode);
+		parserExtraConfig();
 
 	}
 
-	
-	protected void parserExtraConfig(XmlNode parserNode) {
-
+	protected void parserExtraConfig() {
+		ParserConfiguration parserConfiguration = BeanContainerFactory
+				.getBeanContainer(getClass().getClassLoader()).getBean(
+						PARSER_CONFIGURATION_BEAN_NAME);
 		if (propertyEditorRegistrars.size() == 0) {
-			PropertyEditorRegistrar[] strars = ParserXmlNodeUtil
-					.parseConfigToArray(this.getClass().getClassLoader(),PROPERTY_EDITOR, PROPERTY, parserNode,
-							PropertyEditorRegistrar.class);
+			PropertyEditorRegistrar[] strars = parserConfiguration.getPropertyEditors();
 			propertyEditorRegistrars.setPropertyEditorRegistrars(strars);
 		}
 		if (filters == null) {
-			setParameterParserFilters(ParserXmlNodeUtil.parseConfigToArray(this.getClass().getClassLoader(),
-					PARAM_PARSER_FILTER, parserNode,
-					ParameterParserFilter.class));
+			setParameterParserFilters(parserConfiguration.getParserFilters());
 		}
-		setUploadService(ParserXmlNodeUtil.parseConfigToObject(this.getClass().getClassLoader(),UPLOAD_SERVICE,
-				PROPERTY, parserNode, UploadService.class));
-
+		setUploadService(parserConfiguration.getUploadService());
 	}
 
-	
 	public void preProcess(WebContext context) {
 
 	}
 
-	
 	public void postProcess(WebContext context) {
 
 	}
 
-	
 	public WebContext getAlreadyWrappedContext(WebContext wrappedContext) {
 		ParserWebContextImpl parserWebContext = new ParserWebContextImpl(
 				wrappedContext);
@@ -290,7 +270,6 @@ public class ParserTinyFilter extends AbstractTinyFilter {
 		return parserWebContext;
 	}
 
-	
 	public int getOrder() {
 		return PARSER_FILTER_PRECEDENCE;
 	}

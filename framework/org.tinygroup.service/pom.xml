@@ -18,6 +18,12 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+     <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.testutil</artifactId>
+      <version>${project.version}</version>
+       <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.event</artifactId>
@@ -26,11 +32,6 @@
     <dependency>
       <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.context2object</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.testutil</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

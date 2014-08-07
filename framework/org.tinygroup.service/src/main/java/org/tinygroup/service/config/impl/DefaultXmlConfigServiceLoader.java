@@ -27,7 +27,6 @@ import org.tinygroup.service.Service;
 import org.tinygroup.service.config.ServiceComponent;
 import org.tinygroup.service.config.ServiceComponents;
 import org.tinygroup.service.config.XmlConfigServiceLoader;
-import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xstream.XStreamFactory;

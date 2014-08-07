@@ -30,6 +30,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.SimpleTypeConverter;
+import org.springframework.beans.TypeConverter;
+import org.springframework.core.MethodParameter;
+import org.tinygroup.beanwrapper.BeanWrapperImpl;
 import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
@@ -38,11 +42,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.weblayer.webcontext.parser.ParserWebContext;
 import org.tinygroup.weblayer.webcontext.parser.StringFileItemEditor;
-import org.tinygroup.weblayer.webcontext.parser.util.BeanWrapperImpl;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.impl.ValueListSupport;
-import org.springframework.beans.SimpleTypeConverter;
-import org.springframework.beans.TypeConverter;
-import org.springframework.core.MethodParameter;
 
 /**
  * 代表一个解析器的基类，用来取得HTTP请求中的参数和cookies。

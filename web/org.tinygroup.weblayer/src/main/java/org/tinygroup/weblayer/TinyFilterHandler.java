@@ -29,14 +29,11 @@ import org.tinygroup.commons.tools.ExceptionUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.weblayer.exceptionhandler.WebExceptionHandlerManager;
 import org.tinygroup.weblayer.webcontext.CommitMonitor;
 import org.tinygroup.weblayer.webcontext.SimpleWebContext;
 import org.tinygroup.weblayer.webcontext.TwoPhaseCommitWebContext;
 import org.tinygroup.weblayer.webcontext.buffered.BufferedWebContext;
-import org.tinygroup.weblayer.webcontext.cache.PageCacheWebContext;
-import org.tinygroup.weblayer.webcontext.lazycommit.LazyCommitWebContext;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
 
 /**
@@ -95,8 +92,7 @@ public class TinyFilterHandler {
 			wrapperContext = getWebContext(context, tinyFilters, request,
 					response);
 			// 如果请求已经结束，则不执行进一步的处理。例如，当requestContext已经被重定向了，则立即结束请求的处理。
-			if (isRequestFinished(wrapperContext)
-					|| isPageCached(wrapperContext)) {
+			if (isRequestFinished(tinyFilters.size(),wrapperContext)) {
 				return;
 			}
 
@@ -112,17 +108,6 @@ public class TinyFilterHandler {
 		} finally {
 			postProcess(wrapperContext, tinyFilters);
 		}
-	}
-
-	private boolean isPageCached(WebContext wrapperContext) {
-		PageCacheWebContext pageCacheWebContext = WebContextUtil
-				.findWebContext(wrapperContext, PageCacheWebContext.class);
-		String accessPath = wrapperContext.get(WebContextUtil.TINY_REQUEST_URI);
-		if (pageCacheWebContext != null) {
-			return pageCacheWebContext.isCached(accessPath);
-		}
-		return false;
-
 	}
 
 	private void giveUpControl(WebContext wrapperContext) throws IOException,
@@ -235,10 +220,17 @@ public class TinyFilterHandler {
 	 * @param webContext
 	 * @return
 	 */
-	private boolean isRequestFinished(WebContext webContext) {
-		LazyCommitWebContext lcrc = WebContextUtil.findWebContext(webContext,
-				LazyCommitWebContext.class);
-		return lcrc != null && lcrc.isRedirected();
+	private boolean isRequestFinished(int filterSize,WebContext webContext) {
+		WebContext wrapContext=webContext;
+		for (int i = 0; i < filterSize; i++) {
+			if(wrapContext!=null){
+				if(wrapContext.isRequestFinished()){
+					return true;
+				}
+			}
+			wrapContext = wrapContext.getWrappedWebContext();
+		}
+		return false;
 	}
 
 	private void processFlow(WebContext context) {

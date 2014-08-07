@@ -25,11 +25,6 @@
 			<ref bean="fullContextFileRepository" />
 		</property>
 	</bean>
-	<bean id="velocityViewServlet" scope="singleton"
-		class="org.tinygroup.weblayer.servlet.VelocityLayoutViewServlet">
-		<property name="fullContextFileRepository" ref="fullContextFileRepository"></property>
-		<property name="velocityHelper" ref="velocityHelper"></property>
-	</bean>
 	<bean id="tinyProcessorFileProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.fileresolver.TinyProcessorFileProcessor">
 		<property name="configManager" ref="tinyProcessorConfigManager"></property>
@@ -81,11 +76,6 @@
 		class="org.tinygroup.weblayer.tinyprocessor.FullContextUrlRedirectTinyProcessor">
 		<property name="fullContextFileRepository" ref="fullContextFileRepository"></property>
 	</bean>
-	<bean id="velocityViewProcessor" scope="singleton"
-		class="org.tinygroup.weblayer.tinyprocessor.VelocityLayoutViewTinyProcessor">
-		<property name="fullContextFileRepository" ref="fullContextFileRepository"></property>
-		<property name="velocityHelper" ref="velocityHelper"></property>
-	</bean>
 	<!--fiter\servlet manager -->
 	<bean id="tinyProcessorManager" scope="singleton"
 		class="org.tinygroup.weblayer.impl.TinyProcessorManagerImpl">
@@ -121,9 +111,6 @@
 	</bean>
 	<bean id="sessionTinyFilter" scope="singleton"
 		class="org.tinygroup.weblayer.filter.SessionTinyFilter">
-	</bean>
-	<bean id="pageCacheTinyFilter" scope="singleton"
-		class="org.tinygroup.weblayer.filter.PageCacheTinyFilter">
 	</bean>
 	<bean id="uploadService" scope="singleton"
 		class="org.tinygroup.weblayer.webcontext.parser.impl.UploadServiceImpl">
@@ -224,8 +211,18 @@
 	<bean id="tinyFilterConfigManager" scope="singleton"
 		class="org.tinygroup.weblayer.configmanager.TinyFiterConfigManager">
 	</bean>
-
-	<bean id="velocityContextConfiguration" scope="singleton"
-		class="org.tinygroup.weblayer.tinyprocessor.VelocityContextConfiguration">
+	
+	<bean id="sessionConfiguration" scope="singleton"
+		class="org.tinygroup.weblayer.webcontext.session.SessionConfiguration">
 	</bean>
+	
+	<bean id="rewriteConfiguration" scope="singleton"
+		class="org.tinygroup.weblayer.webcontext.rewrite.RewriteConfiguration">
+	</bean>
+	
+	<bean id="parserConfiguration" scope="singleton"
+		class="org.tinygroup.weblayer.webcontext.parser.ParserConfiguration">
+	</bean>
+	
+	
 </beans>

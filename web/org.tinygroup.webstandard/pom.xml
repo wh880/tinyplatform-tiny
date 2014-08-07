@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.weblayer</artifactId>
+            <artifactId>org.tinygroup.weblayerext</artifactId>
             <version>${project.version}</version>
             <exclusions>
                 <exclusion>

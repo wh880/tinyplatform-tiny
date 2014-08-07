@@ -37,5 +37,10 @@
       <artifactId>org.tinygroup.weblayer</artifactId>
       <version>${project.version}</version>
     </dependency>
+     <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.velocity</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>

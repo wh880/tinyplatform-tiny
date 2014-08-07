@@ -375,8 +375,8 @@ public abstract class AbstractAnnotationServiceLoader implements
 			Method method, ServiceProxy serviceProxy)
 			throws IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException, ServiceLoadException {
-		logger.logMessage(LogLevel.INFO, "开始加载方法对应的服务入参,方法{0},服务:{1}",
-				method.getName(), item.getServiceId());
+		logger.logMessage(LogLevel.INFO, "开始加载方法对应的服务入参,方法{0}",
+				method.getName());
 		String[] parameterNames = BeanUtil.getMethodParameterName(
 				method.getDeclaringClass(), method);
 		Annotation[][] annotations = method.getParameterAnnotations();
@@ -437,8 +437,8 @@ public abstract class AbstractAnnotationServiceLoader implements
 		}
 		item.setParameters(inputParameterDescriptors);
 		serviceProxy.setInputParameters(inputParameterDescriptors);
-		logger.logMessage(LogLevel.INFO, "加载方法对应的服务入参完毕,方法{0},服务:{1}",
-				method.getName(), item.getServiceId());
+		logger.logMessage(LogLevel.INFO, "加载方法对应的服务入参完毕,方法{0}",
+				method.getName());
 
 	}
 

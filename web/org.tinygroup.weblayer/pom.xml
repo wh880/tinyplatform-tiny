@@ -49,11 +49,6 @@
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.velocity</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.beancontainer</artifactId>
       <version>${project.version}</version>
     </dependency>

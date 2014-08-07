@@ -24,7 +24,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.service.ServiceProxy;
-import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public class ServiceAopManager {

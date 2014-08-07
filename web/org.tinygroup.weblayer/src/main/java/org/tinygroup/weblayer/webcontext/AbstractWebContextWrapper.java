@@ -278,7 +278,11 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements W
         super.put("httpServletContext", servletContext);
     }
 
-    public void setObject(String scope, String key, Object value) {
+    public boolean isRequestFinished() {
+		return false;
+	}
+
+	public void setObject(String scope, String key, Object value) {
         WebContextScope webContextScope = scopes.get(scope);
         if (webContextScope != null) {
             webContextScope.setObject(key, value);

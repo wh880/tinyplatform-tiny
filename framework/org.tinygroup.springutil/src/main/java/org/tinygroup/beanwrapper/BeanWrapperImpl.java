@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.weblayer.webcontext.parser.util;
+package org.tinygroup.beanwrapper;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyDescriptor;
@@ -21,10 +21,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,9 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.tinygroup.commons.tools.CollectionFactory;
 import org.springframework.beans.AbstractPropertyAccessor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -55,6 +48,10 @@ import org.springframework.core.MethodParameter;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.tinygroup.commons.tools.CollectionFactory;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
 /**
  * Default {@link BeanWrapper} implementation that should be sufficient
@@ -97,7 +94,7 @@ public class BeanWrapperImpl extends AbstractPropertyAccessor implements BeanWra
 	/**
 	 * We'll create a lot of these objects, so we don't want a new logger every time.
 	 */
-	private static final Log logger = LogFactory.getLog(BeanWrapperImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(BeanWrapperImpl.class);
 
 
 	/** The wrapped object */
@@ -495,9 +492,7 @@ public class BeanWrapperImpl extends AbstractPropertyAccessor implements BeanWra
 		// Lookup cached sub-BeanWrapper, create new one if not found.
 		BeanWrapperImpl nestedBw = this.nestedBeanWrappers.get(canonicalName);
 		if (nestedBw == null || nestedBw.getWrappedInstance() != propertyValue) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Creating new nested BeanWrapper for property '" + canonicalName + "'");
-			}
+			logger.log(LogLevel.TRACE, "Creating new nested BeanWrapper for property:{0}", canonicalName);
 			nestedBw = newNestedBeanWrapper(propertyValue, this.nestedPath + canonicalName + NESTED_PROPERTY_SEPARATOR);
 			// Inherit all type-specific PropertyEditors.
 			copyDefaultEditorsTo(nestedBw);
@@ -505,9 +500,7 @@ public class BeanWrapperImpl extends AbstractPropertyAccessor implements BeanWra
 			this.nestedBeanWrappers.put(canonicalName, nestedBw);
 		}
 		else {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Using cached nested BeanWrapper for property '" + canonicalName + "'");
-			}
+			logger.log(LogLevel.TRACE, "Using cached nested BeanWrapper for property:{0}",canonicalName);
 		}
 		return nestedBw;
 	}
@@ -972,10 +965,7 @@ public class BeanWrapperImpl extends AbstractPropertyAccessor implements BeanWra
 								oldValue = readMethod.invoke(this.object, new Object[0]);
 							}
 							catch (Exception ex) {
-								if (logger.isDebugEnabled()) {
-									logger.debug("Could not read previous value of property '" +
-											this.nestedPath + propertyName + "'", ex);
-								}
+								logger.errorMessage("Could not read previous value of property:{0}" ,ex,this.nestedPath + propertyName);
 							}
 						}
 						valueToApply = this.typeConverterDelegate.convertIfNecessary(oldValue, originalValue, pd);

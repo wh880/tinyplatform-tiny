@@ -28,6 +28,7 @@ import org.tinygroup.weblayer.webcontext.AbstractResponseWrapper;
 import org.tinygroup.weblayer.webcontext.AbstractWebContextWrapper;
 import org.tinygroup.weblayer.webcontext.lazycommit.LazyCommitWebContext;
 import org.tinygroup.weblayer.webcontext.lazycommit.exception.LazyCommitFailedException;
+import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
 
 
 /**
@@ -135,8 +136,12 @@ public class LazyCommitWebContextImpl extends AbstractWebContextWrapper implemen
             throw new LazyCommitFailedException(e);
         }
     }
+    
+	public boolean isRequestFinished() {
+		return isRedirected();
+	}
 
-    /** 包装response。 */
+	/** 包装response。 */
     private class ResponseWrapper extends AbstractResponseWrapper {
         private boolean headersCommitted;
 

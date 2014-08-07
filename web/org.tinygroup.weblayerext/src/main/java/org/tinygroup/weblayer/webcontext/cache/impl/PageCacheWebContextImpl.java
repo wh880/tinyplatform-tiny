@@ -28,17 +28,16 @@ import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
 
 /**
  * 
- * 功能说明:缓存页面上下文实现类 
-
+ * 功能说明:缓存页面上下文实现类
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-8-22 <br>
  * <br>
  */
 public class PageCacheWebContextImpl extends AbstractWebContextWrapper
 		implements PageCacheWebContext {
-	
+
 	private CacheOperater operater;
-	
 
 	public PageCacheWebContextImpl(WebContext wrappedContext) {
 		super(wrappedContext);
@@ -48,41 +47,46 @@ public class PageCacheWebContextImpl extends AbstractWebContextWrapper
 	 * 是否在缓存中有，或者是否已经失效
 	 */
 	public boolean isCached(String accessPath) {
-		  String content=operater.getCacheContent(accessPath,this);
-		  if(content==null){
-			  return false;
-		  }
-		  return true;
+		String content = operater.getCacheContent(accessPath, this);
+		if (content == null) {
+			return false;
+		}
+		return true;
 	}
 
 	public void cacheOutputPage(String accessPath) {
-		String content=operater.getCacheContent(accessPath,this);
-		if(content!=null){
+		String content = operater.getCacheContent(accessPath, this);
+		if (content != null) {
 			try {
-				PrintWriter writer= getResponse().getWriter();
+				PrintWriter writer = getResponse().getWriter();
 				writer.write(content);
 			} catch (IOException e) {
 				throw new PageCacheOutputException(e);
 			}
-			
+
 		}
 	}
 
-
 	public void setCacheOperater(CacheOperater operater) {
-          this.operater=operater;
+		this.operater = operater;
 	}
 
 	public void putCachePage(String accessPath) {
-		if(isCachePath(accessPath)){
-			BufferedWebContext buffer= WebContextUtil.findWebContext(this,BufferedWebContext.class);
-			String content=buffer.peekCharBuffer();
+		if (isCachePath(accessPath)) {
+			BufferedWebContext buffer = WebContextUtil.findWebContext(this,
+					BufferedWebContext.class);
+			String content = buffer.peekCharBuffer();
 			operater.putCache(accessPath, content, this);
 		}
 	}
 
 	public boolean isCachePath(String accessPath) {
 		return operater.isCachePath(accessPath);
+	}
+
+	public boolean isRequestFinished() {
+		String accessPath =get(WebContextUtil.TINY_REQUEST_URI);
+	    return isCached(accessPath);
 	}
 
 }

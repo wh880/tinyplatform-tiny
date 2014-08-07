@@ -23,8 +23,8 @@ import org.tinygroup.context.Context;
 
 /**
  * 
- * 功能说明:定义web上下文接口 
-
+ * 功能说明:定义web上下文接口
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-4-28 <br>
  * <br>
@@ -33,11 +33,13 @@ public interface WebContext extends Context {
 	/**
 	 * 
 	 * 初始化web上下文方法
+	 * 
 	 * @param request
 	 * @param response
 	 * @param servletContext
 	 */
-	void init(HttpServletRequest request, HttpServletResponse response,ServletContext servletContext);
+	void init(HttpServletRequest request, HttpServletResponse response,
+			ServletContext servletContext);
 
 	HttpServletRequest getRequest();
 
@@ -46,39 +48,55 @@ public interface WebContext extends Context {
 	void setResponse(HttpServletResponse response);
 
 	HttpServletResponse getResponse();
-	
+
 	/**
 	 * 获取包装的WebContext
+	 * 
 	 * @return
 	 */
 	WebContext getWrappedWebContext();
+
 	/**
 	 * 取得servletContext对象
+	 * 
 	 * @return
 	 */
 	ServletContext getServletContext();
+
 	/**
 	 * 
 	 * 设置servletContext对象
+	 * 
 	 * @param servletContext
 	 */
 	void setServletContext(ServletContext servletContext);
+
 	/**
 	 * 
 	 * 把对象设置到scope指定的范围内
+	 * 
 	 * @param scope
 	 * @param key
 	 * @param value
 	 */
-	void setObject(String scope,String key,Object value);
-	
+	void setObject(String scope, String key, Object value);
+
 	/**
 	 * 
 	 * 获取指定范围内的对象
+	 * 
 	 * @param scope
 	 * @param key
 	 * @return
 	 */
-	Object getObject(String scope,String key);
-	
+	Object getObject(String scope, String key);
+
+	/**
+	 * 请求是否已终止，例如请求已被重定向了，该请求将被终止，返回true。还有访问的页面已被缓存，可以直接从缓存中获取页面信息，也将返回true，
+	 * 默认实现是返回false。
+	 * 
+	 * @return
+	 */
+	boolean isRequestFinished();
+
 }

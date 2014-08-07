@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.weblayer.webcontext.parser.util;
+package org.tinygroup.beanwrapper;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;

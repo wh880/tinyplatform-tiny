@@ -163,14 +163,6 @@ public abstract class AbstractTinyFilter implements TinyFilter {
 	protected  String get(String param) {
 		return getInitParamMap().get(param);  
 	}
-	/**
-	 * 
-	 * 解析额外节点配置信息
-	 * @param parserNode
-	 */
-	protected void parserExtraConfig(XmlNode parserNode) {
-
-	}
 
 	public int getOrder() {
 		return DEFAULT_PRECEDENCE;
