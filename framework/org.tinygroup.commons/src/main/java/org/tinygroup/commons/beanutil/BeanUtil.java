@@ -45,33 +45,6 @@ import org.tinygroup.commons.tools.ClassUtil;
 
 public class BeanUtil {
 
-	public static String[] getMethodParamNames(Class clazz, String method,
-			Class... paramTypes) throws NotFoundException {
-
-		ClassPool pool = ClassPool.getDefault();
-		CtClass cc = pool.get(clazz.getName());
-		String[] paramTypeNames = new String[paramTypes.length];
-		for (int i = 0; i < paramTypes.length; i++)
-			paramTypeNames[i] = paramTypes[i].getName();
-		CtMethod cm = cc.getDeclaredMethod(method, pool.get(paramTypeNames));
-		return getMethodParamNames(cm);
-	}
-	
-	 protected static String[] getMethodParamNames(CtMethod cm) throws NotFoundException, MissingLVException {  
-	        CtClass cc = cm.getDeclaringClass();  
-	        MethodInfo methodInfo = cm.getMethodInfo();  
-	        CodeAttribute codeAttribute = methodInfo.getCodeAttribute();  
-	        LocalVariableAttribute attr = (LocalVariableAttribute) codeAttribute.getAttribute(LocalVariableAttribute.tag);  
-	        if (attr == null)  
-	            throw new MissingLVException(cc.getName());  
-	  
-	        String[] paramNames = new String[cm.getParameterTypes().length];  
-	        int pos = Modifier.isStatic(cm.getModifiers()) ? 0 : 1;  
-	        for (int i = 0; i < paramNames.length; i++)  
-	            paramNames[i] = attr.variableName(i + pos);  
-	        return paramNames;  
-	    }  
-
 	public static String[] getMethodParameterName(Class<?> clazz, Method method) {
 		try {
 			ClassPool pool = ClassPool.getDefault();
