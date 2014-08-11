@@ -56,19 +56,21 @@ public class SessionConfiguration extends AbstractConfiguration {
 
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 		super.config(applicationConfig, componentConfig);
-		sessionNode = applicationConfig;
-		try {
-			config.init();
-		} catch (Exception e) {
-			throw new SessionFrameworkException(e.getMessage(), e);
-		}
-		String storeName = config.getStoreMappings().getStoreNameForAttribute(
-				config.getModelKey());
+		if(applicationConfig!=null){
+			sessionNode = applicationConfig;
+			try {
+				config.init();
+			} catch (Exception e) {
+				throw new SessionFrameworkException(e.getMessage(), e);
+			}
+			String storeName = config.getStoreMappings().getStoreNameForAttribute(
+					config.getModelKey());
 
-		if (storeName == null) {
-			throw new IllegalArgumentException(
-					"No storage configured for session model: key="
-							+ config.getModelKey());
+			if (storeName == null) {
+				throw new IllegalArgumentException(
+						"No storage configured for session model: key="
+								+ config.getModelKey());
+			}
 		}
 	}
 
