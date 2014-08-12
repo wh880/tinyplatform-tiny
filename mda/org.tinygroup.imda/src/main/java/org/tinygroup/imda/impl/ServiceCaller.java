@@ -44,6 +44,14 @@ public class ServiceCaller {
 	public void setModelManager(ModelManager modelManager) {
 		this.modelManager = modelManager;
 	}
+	
+	public CEPCore getCepCore() {
+		return cepCore;
+	}
+
+	public void setCepCore(CEPCore cepCore) {
+		this.cepCore = cepCore;
+	}
 
 	private ModelRequestInfo getModelRequestInfo(String name) {
 		ModelRequestInfo modelRequestInfo = new ModelRequestInfo();
