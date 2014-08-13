@@ -45,14 +45,14 @@ public class DictDataLoader extends AbstractDictLoader {
 	private static final String DICT_ITEM_VALUE = "dictItemValue";
 	private static final String DICT_ITEM_GROUP = "dictItemGroup";
 	private static final String DEFAULT_GROUP_NAME = "defaultGroupName";
-	private static BeanOperatorManager manager;
+	private  BeanOperatorManager manager;
 
-	public static BeanOperatorManager getManager() {
+	public  BeanOperatorManager getManager() {
 		return manager;
 	}
 
-	public static void setManager(BeanOperatorManager manager) {
-		DictDataLoader.manager = manager;
+	public  void setManager(BeanOperatorManager manager) {
+		this.manager = manager;
 	}
 
 	public void load(DictManager dictManager) {
