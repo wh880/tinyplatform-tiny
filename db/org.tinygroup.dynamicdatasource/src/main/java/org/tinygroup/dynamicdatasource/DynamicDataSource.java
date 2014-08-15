@@ -16,9 +16,15 @@
 package org.tinygroup.dynamicdatasource;
 
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -42,14 +48,52 @@ public class DynamicDataSource implements DataSource {
 
 	private Method unwrapMethod = null;
 	private Method isWrapperForMethod = null;
+	private Map<Connection, ConnectionTrace> connectionMap=new HashMap<Connection, ConnectionTrace>();
+	private byte[] synObject = new byte[0];
 
 	public Connection getConnection() throws SQLException {
-		return getDataSource().getConnection();
+		Connection connection = getConnectionProxy(getDataSource());
+		addConnectionTrace(connection);
+		return connection;
 	}
 
+	private void addConnectionTrace(Connection connection) {
+		synchronized (synObject) {
+			StringBuffer buffer = new StringBuffer();
+			// 添加调用栈信息
+			StackTraceElement st[] = Thread.currentThread().getStackTrace();
+			for (int i = 0; i < st.length; i++) {
+				buffer.append(st[i]).append("; ");
+			}
+			ConnectionTrace trace = new ConnectionTrace(connection,
+					new java.util.Date(), Thread.currentThread().getId(), Thread
+							.currentThread().getName(), buffer.toString());
+			connectionMap.put(connection, trace);
+		}
+	}
+
+	/**
+	 * 此方法不监控数据库连接信息
+	 */
 	public Connection getConnection(String username, String password)
 			throws SQLException {
-		return getDataSource().getConnection(username, password);
+		DataSource targetDataSource=getDataSource();
+		Connection connection = targetDataSource.getConnection(username, password);
+		ConnectionInvocationHandler handler=new ConnectionInvocationHandler(connection, targetDataSource);
+		Connection proxycConnection=(Connection) handler.getProxy();
+		return proxycConnection;
+	}
+	
+	public Collection<ConnectionTrace> getConnectionTraces(){
+		synchronized (synObject) {
+			return connectionMap.values();
+		}
+	}
+	
+	protected Connection getConnectionProxy(DataSource targetDataSource) throws SQLException {
+		ConnectionInvocationHandler handler=new ConnectionInvocationHandler(targetDataSource.getConnection(), targetDataSource);
+		Connection collection=(Connection) handler.getProxy();
+		return collection;
 	}
 
 	public PrintWriter getLogWriter() throws SQLException {
@@ -67,7 +111,6 @@ public class DynamicDataSource implements DataSource {
 	public void setLoginTimeout(int timeout) throws SQLException {
 		getDataSource().setLoginTimeout(timeout);
 	}
-
 
 	public DataSource getDataSource(String dataSourceName) {
 		log.logMessage(LogLevel.DEBUG, "数据源名:" + dataSourceName);
@@ -122,6 +165,69 @@ public class DynamicDataSource implements DataSource {
 			return (Boolean) isWrapperForMethod.invoke(dataSource, iface);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+	private class ConnectionInvocationHandler implements InvocationHandler{
+		private final DataSource targetDataSource;
+
+		private Connection target;
+
+		private boolean closed = false;
+
+		public ConnectionInvocationHandler(Connection target,DataSource targetDataSource) {
+			this.targetDataSource = targetDataSource;
+			this.target=target;
+		}
+		
+		public Object getProxy() {  
+	        return Proxy.newProxyInstance(ConnectionProxy.class.getClassLoader(),   
+	        		new Class[] {ConnectionProxy.class}, this);  
+	    }  
+
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			// Invocation on ConnectionProxy interface coming in...
+
+			if (method.getName().equals("equals")) {
+				// Only considered as equal when proxies are identical.
+				return (proxy == args[0] ? Boolean.TRUE : Boolean.FALSE);
+			}
+			else if (method.getName().equals("hashCode")) {
+				// Use hashCode of Connection proxy.
+				return new Integer(System.identityHashCode(proxy));
+			}
+			else if (method.getName().equals("toString")) {
+				// Allow for differentiating between the proxy and the raw Connection.
+				StringBuffer buf = new StringBuffer("proxy for target Connection ");
+				if (this.target != null) {
+					buf.append("[").append(this.target.toString()).append("]");
+				}
+				else {
+					buf.append(" from DataSource [").append(this.targetDataSource).append("]");
+				}
+			}
+			else if (method.getName().equals("close")) {
+				// Handle close method: only close if not within a transaction.
+				synchronized (synObject) {
+				   connectionMap.remove(proxy);
+				}
+				this.closed = true;
+			}
+
+			if (this.target == null) {
+				if (this.closed) {
+					throw new SQLException("Connection handle already closed");
+				}
+				this.target=targetDataSource.getConnection();
+			}
+			Connection actualTarget = this.target;
+			// Invoke method on target Connection.
+			try {
+				Object retVal = method.invoke(actualTarget, args);
+				return retVal;
+			}
+			catch (InvocationTargetException ex) {
+				throw ex.getTargetException();
+			}
 		}
 	}
 
