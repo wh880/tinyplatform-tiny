@@ -106,6 +106,7 @@ public class RewriteConfiguration extends AbstractConfiguration{
 				parameter.setValue(paramNode.getAttribute("value"));//多个值以逗号分隔
 				parameters[i]=parameter;
 			}	
+			substitution.setParameters(parameters);
 		}
 		rule.setSubstitution(substitution);
 	}
