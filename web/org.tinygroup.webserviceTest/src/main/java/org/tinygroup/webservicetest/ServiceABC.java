@@ -11,13 +11,13 @@ public class ServiceABC implements Serializable{
 	public void read() {
 		logger.logMessage(LogLevel.INFO, "read");
 	}
-
+	
 	public String write(int i, String s) {
 		logger.logMessage(LogLevel.INFO, "write {} {}",i,s);
 		return s+""+i;
 	}
 
-	public void write1(ServiceABC abc) {
+	public void write1(User abc) {
 		logger.logMessage(LogLevel.INFO, "write1");
 	}
 }

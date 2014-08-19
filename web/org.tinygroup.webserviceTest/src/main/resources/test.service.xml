@@ -27,7 +27,7 @@
 			service-id="write1" version="" description="" method-name="write1">
 			<service-parameters>
 				<service-parameter name="i" required="true"
-					is-array="false" type="org.tinygroup.webservicetest.ServiceABC" />
+					is-array="false" type="org.tinygroup.webservicetest.User" />
 				
 			</service-parameters>
 			<service-result name="result" required="false"
