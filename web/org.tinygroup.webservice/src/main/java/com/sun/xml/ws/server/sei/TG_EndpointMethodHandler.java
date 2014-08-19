@@ -23,17 +23,22 @@
  */
 package com.sun.xml.ws.server.sei;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebParam.Mode;
 import javax.xml.bind.JAXBException;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import javax.xml.ws.Holder;
 import javax.xml.ws.WebServiceException;
 
 import org.tinygroup.cepcore.util.CEPCoreExecuteUtil;
+import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
@@ -86,7 +91,7 @@ final class TG_EndpointMethodHandler {
     private final MessageFiller[] outFillers;
 
     private final SEIInvokerTube owner;
-
+    private static Logger logger = LoggerFactory.getLogger(TG_EndpointMethodHandler.class);
     public TG_EndpointMethodHandler(TG_SEIInvokerTube owner, JavaMethodImpl method, WSBinding binding) {
         this.owner = owner;
         this.soapVersion = binding.getSOAPVersion();
@@ -246,6 +251,15 @@ final class TG_EndpointMethodHandler {
 //        	if(core==null){
 //        		core = SpringBeanContainer.getBean(CEPCore.CEP_CORE_BEAN);
 //        	}
+        	logger.logMessage(LogLevel.DEBUG, "webservice开始执行",method.getName());
+        	if(args.length==0){
+        		logger.logMessage(LogLevel.DEBUG, "无参数");
+        	}else{
+        		logger.logMessage(LogLevel.DEBUG, "执行参数:");
+            	for(Object arg:args){
+            		logger.logMessage(LogLevel.DEBUG, arg+"");
+            	}
+        	}
         	
             Object ret = CEPCoreExecuteUtil.execute(method.getName(), args,this.getClass().getClassLoader());
             	//owner.getInvoker(req).invoke(req, method, args);
@@ -253,7 +267,20 @@ final class TG_EndpointMethodHandler {
             	Integer i = (Integer)ret+2;
             	ret = i;
             } 
+            logger.logMessage(LogLevel.DEBUG, "webservice执行完毕",method.getName());
             responseMessage = isOneWay ? null : createResponseMessage(args, ret);
+            
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();  
+            try {
+    			XMLStreamWriter s = XMLOutputFactory.newInstance().createXMLStreamWriter(baos);
+    			responseMessage.copy().writeTo(s);
+    			logger.logMessage(LogLevel.DEBUG, "结果报文体为:");
+    			logger.logMessage(LogLevel.DEBUG, baos.toString());
+            } catch (XMLStreamException e1) {
+            	logger.errorMessage("解析结果报文体时出错",e1);
+    		} catch (FactoryConfigurationError e1) {
+    			logger.errorMessage("解析结果报文体时出错",e1);
+    		}
 //        } catch (Exception e) {
 //            Throwable cause = e.getCause();
 //

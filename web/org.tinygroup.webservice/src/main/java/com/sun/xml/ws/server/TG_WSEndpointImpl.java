@@ -23,6 +23,7 @@
  */
 package com.sun.xml.ws.server;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,12 +38,17 @@ import java.util.logging.Logger;
 
 import javax.annotation.PreDestroy;
 import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import javax.xml.ws.EndpointReference;
 import javax.xml.ws.WebServiceException;
 import javax.xml.ws.handler.Handler;
 
 import org.glassfish.gmbal.ManagedObjectManager;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.LoggerFactory;
 import org.w3c.dom.Element;
 
 import com.sun.istack.NotNull;
@@ -121,7 +127,7 @@ public final class TG_WSEndpointImpl<T> extends WSEndpoint<T> {
      * @see #dispose()
      */
     private boolean disposed;
-
+    private static org.tinygroup.logger.Logger tinylogger = LoggerFactory.getLogger(TG_WSEndpointImpl.class);
     private final Class<T> implementationClass;
     private final @Nullable WSDLProperties wsdlProperties;
     private final Set<EndpointComponent> componentRegistry = new LinkedHashSet<EndpointComponent>();
@@ -294,6 +300,18 @@ public final class TG_WSEndpointImpl<T> extends WSEndpoint<T> {
                 }
                 TG_Fiber fiber = ((TG_Engine)engine).createTGFiber();
                 Packet response;
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();  
+                try {
+        			XMLStreamWriter s = XMLOutputFactory.newInstance().createXMLStreamWriter(baos);
+        			request.getMessage().copy().writeTo(s);
+        			tinylogger.logMessage(LogLevel.DEBUG, "请求体为:");
+        			tinylogger.logMessage(LogLevel.DEBUG, baos.toString());
+                } catch (XMLStreamException e1) {
+                	tinylogger.errorMessage("解析请求体时出错",e1);
+        		} catch (FactoryConfigurationError e1) {
+        			tinylogger.errorMessage("解析请求体时出错",e1);
+        		}
+                
                 try {
                     response = fiber.runSync(tube,request);
                 } catch (RuntimeException re) {

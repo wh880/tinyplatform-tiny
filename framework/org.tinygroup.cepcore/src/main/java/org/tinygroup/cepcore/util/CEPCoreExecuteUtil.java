@@ -53,4 +53,9 @@ public class CEPCoreExecuteUtil {
 		return event.getServiceRequest().getContext()
 				.get(result.get(0).getName());
 	}
+	
+	public static Object execute(String serviceId, Object[] paramArray
+			) {
+		return execute(serviceId,paramArray,CEPCoreExecuteUtil.class.getClassLoader());
+	}
 }
