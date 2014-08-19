@@ -97,12 +97,15 @@ public class RewriteRule implements InitializingBean {
         if (conditions == null) {
             conditions = new RewriteCondition[0];
         }
+        for(RewriteCondition condition:conditions){
+    		condition.afterPropertiesSet();
+    	}
 
         // substitution
         if (substitution == null) {
             substitution = new RewriteSubstitution();
-            substitution.afterPropertiesSet();
         }
+        substitution.afterPropertiesSet();
 
         // handlers
         if (handlers == null) {

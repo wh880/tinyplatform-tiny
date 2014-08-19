@@ -42,7 +42,6 @@ import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.impl.WebContextImpl;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
@@ -110,7 +109,7 @@ public class TinyHttpFilter implements Filter {
 			return;
 		}
 		WebContext context = new WebContextImpl();
-		context.put("springUtil", SpringBeanContainer.class);
+		context.put("springUtil", BeanContainerFactory.getBeanContainer(getClass().getClassLoader()));
 		postDataProcess(request, context);
 		context.put("context", context);
 		context.putSubContext("applicationproperties", new ContextImpl(

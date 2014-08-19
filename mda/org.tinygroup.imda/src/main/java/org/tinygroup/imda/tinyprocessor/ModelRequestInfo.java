@@ -15,13 +15,15 @@
  */
 package org.tinygroup.imda.tinyprocessor;
 
+import java.io.Serializable;
+
 /**
  * 请求的信息
  * 
  * @author luoguo
  * 
  */
-public class ModelRequestInfo {
+public class ModelRequestInfo implements Serializable {
 	String requestName;
 	String modelTypeName;
 	String operationType;

@@ -118,7 +118,7 @@
 	</bean>
 	 <bean id="dictDataLoader" name="dictDataLoader" scope="singleton"
 		class="org.tinygroup.entity.dictload.DictDataLoader">
-		<property name="modelManager" ref="beanOperatorManager"></property>
+		<property name="manager" ref="beanOperatorManager"></property>
 	</bean>
 	 <bean id="dictFromDatabaseService" name="dictFromDatabaseService" scope="singleton"
 		class="org.tinygroup.entity.impl.DictFromDatabaseService">

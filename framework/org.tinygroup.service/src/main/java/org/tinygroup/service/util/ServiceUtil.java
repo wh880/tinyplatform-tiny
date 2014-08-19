@@ -20,6 +20,9 @@ public class ServiceUtil {
 		if(isMapTypes){
 			return true;
 		}
+		if(clazz==Object.class){
+			return true;
+		}
 		boolean seriaType=Serializable.class.isAssignableFrom(clazz);
 		if(seriaType){
 			return true;
