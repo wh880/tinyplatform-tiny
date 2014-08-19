@@ -32,7 +32,6 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.service.Service;
 import org.tinygroup.service.ServiceProviderInterface;
 import org.tinygroup.service.registry.ServiceRegistryItem;
-import org.tinygroup.serviceplugin.ServicePlugin;
 import org.tinygroup.serviceplugin.processor.ServiceProcessor;
 import org.tinygroup.xmlparser.node.XmlNode;
 
@@ -66,7 +65,7 @@ public class ServiceProcessorImpl extends AbstractEventProcessor implements
 			Context oldC = event.getServiceRequest().getContext();
 			Context c = ContextFactory.getContext();
 			for (Parameter p : item.getResults()) {
-				if (("void").equals(p.getTitle()) || ("").equals(p.getTitle())
+				if (("void").equals(p.getType()) || ("").equals(p.getType())
 						|| p.getType() == null) {
 				} else {
 					String name = p.getName();
