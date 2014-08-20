@@ -23,13 +23,14 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.MDC;
+import org.slf4j.spi.MDCAdapter;
 import org.tinygroup.context.Context;
 import org.tinygroup.i18n.I18nMessage;
 import org.tinygroup.i18n.I18nMessageFactory;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.logger.MDCAdaptor;
 
 /**
  * @author luoguo
@@ -39,7 +40,7 @@ public class LoggerImpl implements Logger {
 
 	private org.slf4j.Logger logger;
 	// MDC适配器
-	protected MDCAdaptor MDC = new BasicMDCAdapter();
+	protected MDCAdapter mdc = MDC.getMDCAdapter();
 	private boolean supportTransaction = true;
 	private ThreadLocal<LogBuffer> threadLocal = new ThreadLocal<LogBuffer>();
 	private static I18nMessage i18nMessage = I18nMessageFactory
@@ -456,11 +457,11 @@ public class LoggerImpl implements Logger {
 	}
 
 	public void putToMDC(String key, Object value) {
-		MDC.put(key, value);
+		mdc.put(key, value.toString());
 	}
 
 	public void removeFromMDC(String key) {
-		MDC.remove(key);
+		mdc.remove(key);
 	}
 
 	public int getMaxBufferRecords() {
