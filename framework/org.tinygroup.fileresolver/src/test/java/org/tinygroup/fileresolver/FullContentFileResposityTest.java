@@ -16,6 +16,8 @@
 package org.tinygroup.fileresolver;
 
 import junit.framework.TestCase;
+
+import org.tinygroup.commons.tools.FileUtil;
 import org.tinygroup.fileresolver.impl.FullContextFileFinder;
 import org.tinygroup.fileresolver.impl.FullContextFileRepositoryImpl;
 import org.tinygroup.parser.Document;
@@ -78,18 +80,19 @@ public class FullContentFileResposityTest extends TestCase {
 	public void testAddSearchPath() throws IOException {
 		FileObject fileObject=repository.getFileObject("test.xml");
 		assertTrue(fileObject==null);
-		File director=new File("c:/test");
+		File director=new File("./test");
 		if(!director.exists()){
 			director.mkdirs();
 		}
-		File testFile=new File("c:/test/test.xml");
+		File testFile=new File("./test/test.xml");
 		if(!testFile.exists()){
 			testFile.createNewFile();
 		}
-		repository.addSearchPath("c:/test");
+		repository.addSearchPath("./test");
 		
 		fileObject=repository.getFileObject("/test.xml");
 		assertTrue(fileObject!=null);
+		FileUtil.delete(director);
 		
 		
 	}
