@@ -1,5 +1,6 @@
 package org.tinygroup.tinydb.operator.impl;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlRowSetResultSetExtractor;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.tinygroup.dynamicdatasource.ConnectionTrace;
+import org.tinygroup.dynamicdatasource.DynamicDataSource;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
@@ -70,4 +73,8 @@ public class GenericDbOperator<K> extends BeanDBSqlQueryOperator<K> implements
 		}
 	}
 
+	public Collection<ConnectionTrace> queryAllActiveConnection() {
+		DynamicDataSource dataSource=(DynamicDataSource)jdbcTemplate.getDataSource();
+		return dataSource.getConnectionTraces();
+	}
 }

@@ -63,9 +63,9 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 			+ " AND tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME"
 			+ " LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS fc ON kcu.CONSTRAINT_SCHEMA = fc.CONSTRAINT_SCHEMA"
 			+ " AND kcu.CONSTRAINT_NAME = fc.CONSTRAINT_NAME"
-			+ " where CONSTRAINT_TYPE='FOREIGN KEY' and table_name='"
+			+ " where tc.CONSTRAINT_TYPE='FOREIGN KEY' and c.table_name='"
 			+ table.getName()
-			+ "' and table_schema='"
+			+ "' and c.table_schema='"
 			+ table.getSchema() + "'";
 		 return sql;
 	}

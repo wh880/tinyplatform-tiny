@@ -55,28 +55,21 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager {
 
 	private Map<String, Relation> relationTypeMap = new HashMap<String, Relation>();
 
-	private Map<String, DBOperator<?>> schemaOperates = new HashMap<String, DBOperator<?>>();
-
 	public DBOperator<?> getDbOperator(String schema) throws TinyDbException {
 		String realSchema = getRealSchema(schema);
-		DBOperator<?> operator = schemaOperates.get(realSchema);
-		if (operator == null) {
-			SchemaConfig schemaConfig = container.getSchemaConfig(realSchema);
-			if (schemaConfig != null) {
-				operator = BeanContainerFactory.getBeanContainer(
-						this.getClass().getClassLoader()).getBean(
-						schemaConfig.getOperatorBeanName());
-				operator.setSchema(realSchema);
-				operator.setBeanDbNameConverter(beanDbNameConverter);
-				operator.setManager(this);
-				schemaOperates.put(realSchema, operator);
-			} else {
-				throw new TinyDbException("不存在schema:" + realSchema
-						+ "对应的bean操作对象。");
-			}
-
+		SchemaConfig schemaConfig = container.getSchemaConfig(realSchema);
+		if (schemaConfig != null) {
+			DBOperator<?> operator = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					schemaConfig.getOperatorBeanName());
+			operator.setSchema(realSchema);
+			operator.setBeanDbNameConverter(beanDbNameConverter);
+			operator.setManager(this);
+			return operator;
+		} else {
+			throw new TinyDbException("不存在schema:" + realSchema
+					+ "对应的bean操作对象。");
 		}
-		return operator;
 	}
 
 	public DBOperator<?> getDbOperator() throws TinyDbException {
@@ -162,7 +155,7 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager {
 		String realSchema = getRealSchema(schema);
 		TableConfiguration configuration = container.getTableConfiguration(
 				realSchema, tableName);
-		return configuration!=null;
+		return configuration != null;
 	}
 
 	public void setBeanDbNameConverter(BeanDbNameConverter beanDbNameConverter) {
