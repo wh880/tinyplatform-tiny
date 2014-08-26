@@ -16,6 +16,8 @@
 package org.tinygroup.fileresolver;
 
 import junit.framework.TestCase;
+
+import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 
@@ -37,7 +39,7 @@ public class FileResolverTest extends TestCase {
 
 	
 	protected void setUp() throws Exception {
-		fileResolver = FileResolverFactory.getFileResolver();
+		fileResolver = new FileResolverImpl();
 	}
 
 	

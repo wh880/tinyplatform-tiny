@@ -86,6 +86,8 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 				if (fileObject.isExist()) {
 					addFileObject(path, fileObject);
 					break;
+				}else{
+					fileObject=null;
 				}
 			}
 		}
