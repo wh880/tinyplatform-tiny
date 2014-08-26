@@ -275,10 +275,10 @@ public abstract class AbstractAnnotationServiceLoader implements
 				.getAnnotation(ServiceComponent.class);
 		BeanContainer container = BeanContainerFactory.getBeanContainer(this
 				.getClass().getClassLoader());
-		if (StringUtil.isBlank(serviceComponent.bean())) {
-			return container.getBean(clazz);
-		}
 		try {
+			if (StringUtil.isBlank(serviceComponent.bean())) {
+				return container.getBean(clazz);
+			}
 			return container.getBean(serviceComponent.bean());
 		} catch (RuntimeException e) {
 			logger.logMessage(LogLevel.WARN, "查找Bean {}时发生异常：",
