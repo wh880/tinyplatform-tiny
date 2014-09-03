@@ -15,24 +15,10 @@
  */
 package org.tinygroup.tinydb.dialect.impl;
 
-import org.springframework.jdbc.support.incrementer.DB2SequenceMaxValueIncrementer;
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.tinydb.dialect.Dialect;
 
-public class DB2Dialect implements Dialect {
+public class DB2Dialect extends AbstractSequenceDialcet {
 
-	private DB2SequenceMaxValueIncrementer incrementer;
-
-	public DB2SequenceMaxValueIncrementer getIncrementer() {
-		return incrementer;
-	}
-
-	public void setIncrementer(DB2SequenceMaxValueIncrementer incrementer) {
-		this.incrementer = incrementer;
-	}
 
 	public boolean supportsLimit() {
 		return true;
@@ -76,11 +62,6 @@ public class DB2Dialect implements Dialect {
 		return pagingSelect.toString();
 	}
 
-	public int getNextKey() {
-		Assert.assertNotNull(incrementer, "incrementer must not null");
-		return incrementer.nextIntValue();
-	}
-
 	/**
 	 * Render the <tt>rownumber() over ( .... ) as rownumber_,</tt> bit, that
 	 * goes in the select list
@@ -116,10 +97,11 @@ public class DB2Dialect implements Dialect {
 	}
 
 	public String buildSqlFuction(String sql) {
-		DialectFunctionProcessor processor = BeanContainerFactory
-				.getBeanContainer(this.getClass().getClassLoader()).getBean(
-						DataBaseUtil.FUNCTION_BEAN);
-		return processor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_DB2);
+		return functionProcessor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_DB2);
+	}
+	
+	protected String getSequenceQuery() {
+		return "values nextval for " + getIncrementerName();
 	}
 
 }

@@ -37,14 +37,14 @@ import org.tinygroup.tinydb.exception.TinyDbException;
  * @author renhui
  * 
  */
-public class DatabaseTableConfigConvert extends AbstractTableConfigConvert {
+public class DatabaseTableConfigLoad extends AbstractTableConfigLoad {
 
 	private static final String DECIMAL_DIGITS_HOLDER = "scale";
 
 	private static final String COLUMN_SIZE_HOLDER = "length,precision";
 
 	private String database;
-
+	
 	public String getDatabase() {
 		return database;
 	}
@@ -52,16 +52,12 @@ public class DatabaseTableConfigConvert extends AbstractTableConfigConvert {
 	public void setDatabase(String database) {
 		this.database = database;
 	}
-
-	protected void realConvert(BeanOperatorManager manager) throws TinyDbException{
+	
+	protected void realLoadTable() throws TinyDbException {
 		TableProcessor processor = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 				TableProcessor.BEAN_NAME);
 		List<Table> tables = processor.getTables();
-		String database=manager.getDatabase();
-		if(database!=null){
-			this.database=database;
-		}
 		if (!CollectionUtil.isEmpty(tables)) {
 			for (Table table : tables) {
 				logger.logMessage(LogLevel.DEBUG, "开始转化表对象:{}", table.getName());
@@ -85,6 +81,11 @@ public class DatabaseTableConfigConvert extends AbstractTableConfigConvert {
 				logger.logMessage(LogLevel.DEBUG, "转化表对象:{}结束", table.getName());
 			}
 		}
+		
+	}
+
+	protected void realConvert(BeanOperatorManager manager) throws TinyDbException{
+		
 	}
 
 	private void tableFieldConvert(TableConfiguration configuration,
@@ -112,5 +113,9 @@ public class DatabaseTableConfigConvert extends AbstractTableConfigConvert {
 		column.setTypeName(dialectType.getTypeName());
 		configuration.addColumn(column);
 	}
+
+
+
+	
 
 }

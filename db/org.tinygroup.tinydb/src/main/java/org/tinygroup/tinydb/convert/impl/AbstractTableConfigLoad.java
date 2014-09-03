@@ -15,14 +15,13 @@
  */
 package org.tinygroup.tinydb.convert.impl;
 
-import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.config.TableConfigurationContainer;
-import org.tinygroup.tinydb.convert.TableConfigConvert;
+import org.tinygroup.tinydb.convert.TableConfigLoad;
 import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
@@ -30,45 +29,34 @@ import org.tinygroup.tinydb.exception.TinyDbException;
  * @author renhui
  *
  */
-public abstract class AbstractTableConfigConvert implements TableConfigConvert {
+public abstract class AbstractTableConfigLoad implements TableConfigLoad {
+	protected Configuration configuration;
 	
-	private BeanOperatorManager manager;
-	
-	protected static Logger logger = LoggerFactory.getLogger(AbstractTableConfigConvert.class);
+	protected static Logger logger = LoggerFactory.getLogger(AbstractTableConfigLoad.class);
 
 
-	public void setOperatorManager(BeanOperatorManager manager) {
-		this.manager=manager;
+	public void loadTable(Configuration configuration) throws TinyDbException {
+		this.configuration=configuration;
+		realLoadTable();
 	}
 
-	public BeanOperatorManager getOperatorManager() {
-		return manager;
-	}
+	protected abstract void realLoadTable()throws TinyDbException;
 
-	public void convert()throws TinyDbException {
-		Assert.assertNotNull(manager, "bean操作管理对象不能为空");
-		realConvert(manager);
-	}
-
-	protected abstract void realConvert(BeanOperatorManager manager)throws TinyDbException;
-	
-	
 	protected void addTableConfiguration(TableConfiguration table) {
-		TableConfigurationContainer container=getOperatorManager().getTableConfigurationContainer();
-		container.addTableConfiguration(table);
+		 configuration.addTableConfiguration(table);
 	}
 	
 	protected boolean existsTable(String tableName, String schema){
-		BeanOperatorManager manager=getOperatorManager();
-		TableConfigurationContainer container=manager.getTableConfigurationContainer();
+		TableConfigurationContainer container=configuration.getContainer();
 		return container.isExistTable(schema, tableName);
 	}
 	
 	protected String getSchema(String schema){
 		if(StringUtil.isBlank(schema)){
-			return getOperatorManager().getMainSchema();
+			return configuration.getDefaultSchema();
 		}
 		return schema;
 	}
+	
 	
 }

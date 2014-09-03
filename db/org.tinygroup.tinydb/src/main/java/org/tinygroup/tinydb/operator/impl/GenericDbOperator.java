@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.SqlRowSetResultSetExtractor;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.tinygroup.dynamicdatasource.ConnectionTrace;
 import org.tinygroup.dynamicdatasource.DynamicDataSource;
+import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
@@ -17,8 +18,12 @@ public class GenericDbOperator<K> extends BeanDBSqlQueryOperator<K> implements
 		DBOperator<K> {
 	
 
-	public GenericDbOperator(JdbcTemplate jdbcTemplate) {
-		super(jdbcTemplate);
+	public GenericDbOperator() {
+		super();
+	}
+
+	public GenericDbOperator(JdbcTemplate jdbcTemplate,Configuration configuration) {
+		super(jdbcTemplate,configuration);
 	}
 
 	public SqlRowSet getSqlRowSet(String sql) throws TinyDbException {

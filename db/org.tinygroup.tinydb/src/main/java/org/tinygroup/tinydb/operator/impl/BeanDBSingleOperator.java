@@ -27,6 +27,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
@@ -36,9 +37,13 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 
 public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 		DbSingleOperator<K> {
+	
+	public BeanDBSingleOperator(){
+		super();
+	}
 
-	public BeanDBSingleOperator(JdbcTemplate jdbcTemplate) {
-		super(jdbcTemplate);
+	public BeanDBSingleOperator(JdbcTemplate jdbcTemplate,Configuration configuration) {
+		super(jdbcTemplate,configuration);
 	}
 
 	/**

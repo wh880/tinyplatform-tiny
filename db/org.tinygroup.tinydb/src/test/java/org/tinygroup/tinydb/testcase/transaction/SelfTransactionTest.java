@@ -2,7 +2,6 @@ package org.tinygroup.tinydb.testcase.transaction;
 
 import org.springframework.transaction.TransactionStatus;
 import org.tinygroup.tinydb.Bean;
-import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.operator.TransactionCallBack;
@@ -81,13 +80,13 @@ public class SelfTransactionTest extends BaseTest{
 	}
     
 	public void testNestedTransaction() throws TinyDbException{
-		DBOperator operator=manager.getDbOperator();
+		DBOperator operator=factory.getDBOperator();
 		operator.execute("delete from animal");//刪除
 		Bean bean=getAnimalBean();
 		try {
 			operator.beginTransaction();
 			operator.insert(bean);
-			DBOperator operator2=manager.getNewDbOperator();
+			DBOperator operator2=factory.getNewDBOperator();
 			try {
 				operator2.beginTransaction();
 				operator2.insert(bean);
@@ -100,6 +99,7 @@ public class SelfTransactionTest extends BaseTest{
 			}
 			operator.commitTransaction();
 		} catch (Exception e) {
+			e.printStackTrace();
 			operator.rollbackTransaction();
 		}
 		int accout=operator.account("select count(*) from animal");

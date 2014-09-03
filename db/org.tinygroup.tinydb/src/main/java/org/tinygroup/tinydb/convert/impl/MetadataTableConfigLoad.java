@@ -19,16 +19,12 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
-import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
-import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.TinyDbException;
 
@@ -38,9 +34,8 @@ import org.tinygroup.tinydb.exception.TinyDbException;
  * @author renhui
  * 
  */
-public class MetadataTableConfigConvert extends AbstractTableConfigConvert {
+public class MetadataTableConfigLoad extends AbstractTableConfigLoad {
 
-	private DataSource dataSource;
 	private static final String[] TABLE_TYPES = new String[] { "TABLE", "VIEW" };// 只查询TABLE和VIEW类型的表
 	private static final String NULLABLE = "NULLABLE";
 	private static final String TYPE_NAME = "TYPE_NAME";
@@ -50,31 +45,41 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert {
 	private static final String PK_NAME = "COLUMN_NAME";
 	private static final String DATA_TYPE = "DATA_TYPE";
 	private static final String TABLE_NAME = "TABLE_NAME";
+	
+	private String schema;
+	private String tableNamePattern;
+	
+	public String getSchema() {
+		return schema;
+	}
+
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
+
+	public String getTableNamePattern() {
+		return tableNamePattern;
+	}
+
+	public void setTableNamePattern(String tableNamePattern) {
+		this.tableNamePattern = tableNamePattern;
+	}
+
 	/**
 	 * 不以'_'开头，且不以'_'或者'_数字'结尾的表名
 	 */
-	private static final Pattern tableNamePattern = Pattern
+	private static final Pattern pattern = Pattern
 			.compile("^(?!_)(?!.*?(_[0-9]*)$)[a-zA-Z]+(_?[a-zA-Z0-9])+$");
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
 
-	public void realConvert(BeanOperatorManager manager) throws TinyDbException {
-		Assert.assertNotNull(dataSource, "数据库连接池对象不能为空");
+	protected void realLoadTable() throws TinyDbException {
+		DataSource dataSource=configuration.getUseDataSource();
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
-			logger.logMessage(LogLevel.INFO, "开始扫描schema列表中的所有表信息");
-			List<SchemaConfig> schemaConfigs = manager
-					.getTableConfigurationContainer().getsSchemaConfigs();
-			for (SchemaConfig schemaConfig : schemaConfigs) {
-				String schema = getSchema(schemaConfig.getSchema());
-				logger.logMessage(LogLevel.INFO, "开始扫描schema：{0}", schema);
-				initSchemaConfiguration(schemaConfig, connection.getMetaData());
-				logger.logMessage(LogLevel.INFO, "扫描schema结束：{0}", schema);
-			}
-			logger.logMessage(LogLevel.INFO, "扫描schema列表中的所有表信息结束");
+			logger.logMessage(LogLevel.INFO, "开始扫描schema：{0}", schema);
+			initSchemaConfiguration(connection.getMetaData());
+			logger.logMessage(LogLevel.INFO, "扫描schema结束：{0}", schema);
 		} catch (SQLException e) {
 			throw new TinyDbException(e);
 		} finally {
@@ -86,17 +91,17 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert {
 				}
 			}
 		}
+		
 	}
+	
 
-	private void initSchemaConfiguration(SchemaConfig schemaConfig,
-			DatabaseMetaData metaData) throws SQLException, TinyDbException {
-		String schema = schemaConfig.getSchema();
+	private void initSchemaConfiguration(DatabaseMetaData metaData) throws SQLException, TinyDbException {
 		ResultSet tables = metaData.getTables("", schema.toUpperCase(),
-				schemaConfig.getTableNamePattern(), TABLE_TYPES);
+				tableNamePattern, TABLE_TYPES);
 		try {
 			while (tables.next()) {
 				String tableName = tables.getString(TABLE_NAME);
-				if (tableNamePattern.matcher(tableName).matches()) {
+				if (pattern.matcher(tableName).matches()) {
 					initTableConfiguration(tableName, schema, metaData);
 
 				} else {
@@ -193,5 +198,6 @@ public class MetadataTableConfigConvert extends AbstractTableConfigConvert {
 		}
 
 	}
+
 
 }

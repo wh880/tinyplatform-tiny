@@ -38,6 +38,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanDbNameConverter;
+import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.impl.DefaultNameConverter;
@@ -49,17 +50,28 @@ import org.tinygroup.tinydb.operator.TransactionOperator;
 
 public class DBSpringBaseOperator implements TransactionOperator {
 
-	protected JdbcTemplate jdbcTemplate;
 	private Dialect dialect;
 	private TransactionStatus status;
 	private PlatformTransactionManager transactionManager;
 	private TransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
 	private Logger logger = LoggerFactory.getLogger(DBSpringBaseOperator.class);
+	protected JdbcTemplate jdbcTemplate;
+	protected Configuration configuration;
 
 	protected BeanDbNameConverter beanDbNameConverter = new DefaultNameConverter();
 
 	private UUID uuid;
-
+	
+	public DBSpringBaseOperator(){
+		uuid = UUID.randomUUID();
+	}
+	
+	public DBSpringBaseOperator(JdbcTemplate jdbcTemplate,Configuration configuration) {
+		this.jdbcTemplate = jdbcTemplate;
+		this.configuration=configuration;
+		uuid = UUID.randomUUID();
+	}
+	
 	public UUID getUniqueCode() {
 		return uuid;
 	}
@@ -79,6 +91,14 @@ public class DBSpringBaseOperator implements TransactionOperator {
 	public void setDialect(Dialect dialect) {
 		this.dialect = dialect;
 	}
+	
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate=jdbcTemplate;
+	}
+	
+	public void setConfiguration(Configuration configuration){
+		 this.configuration=configuration;
+	}
 
 	public int account(String sql) throws TinyDbException {
 		try {
@@ -93,10 +113,6 @@ public class DBSpringBaseOperator implements TransactionOperator {
 		}
 	}
 
-	public DBSpringBaseOperator(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-		uuid = UUID.randomUUID();
-	}
 
 	public int executeByList(String sql, List<Object> parameters,
 			List<Integer> dataTypes) throws TinyDbException {

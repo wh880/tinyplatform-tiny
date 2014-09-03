@@ -142,7 +142,7 @@ public class TestSqlOperator extends BaseTest{
 		animalBean.setProperty("length","1234");
 		getOperator().delete(animalBean);
 		getOperator().insert(animalBean);
-		DBOperator operator2=DbOperatorFactory.getDBOperator(getClass().getClassLoader());
+		DBOperator operator2=factory.getDBOperator();
 		Bean branchBean = new Bean(BRANCH);
 		branchBean.set("branchName", "sfsf");
 		operator2.delete(branchBean);

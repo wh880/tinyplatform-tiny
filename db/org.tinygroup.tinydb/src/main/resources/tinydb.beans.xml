@@ -9,24 +9,7 @@
 		class="org.tinygroup.tinydb.service.impl.TinyDBServiceImpl">
 	</bean>
 	
-	<bean id="dataSourceProxy"
-		class="org.tinygroup.tinydb.util.DataSourceProxy">
-		<property name="datasource" ref="dynamicDataSource" />
-		<property name="transactionTemplate" ref="transactionTemplate" />
-	</bean>
-
 	<bean id="beanOperatorManager"
 		class="org.tinygroup.tinydb.impl.BeanOperatorManagerImpl">
 	</bean>
-	
-	<bean id="relationFileProcessor" scope="singleton"
-		class="org.tinygroup.tinydb.fileresolver.RelationFileProcessor">
-		<property name="manager" ref="beanOperatorManager"></property>
-	</bean>
-	
-	<bean id="beanOperatorApplicationProcessor" scope="singleton"
-		class="org.tinygroup.tinydb.applicationprocessor.BeanOperatorApplicationProcessor">
-		<property name="manager" ref="beanOperatorManager"></property>
-	</bean>
-	
 </beans>

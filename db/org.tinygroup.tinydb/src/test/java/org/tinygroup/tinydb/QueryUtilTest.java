@@ -18,18 +18,16 @@ package org.tinygroup.tinydb;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.tinydb.operator.impl.BeanStringOperator;
 import org.tinygroup.tinydb.query.Conditions;
 import org.tinygroup.tinydb.test.BaseTest;
-import org.tinygroup.tinydb.test.operator.BeanStringOperator;
 
 public class QueryUtilTest extends BaseTest {
 	BeanStringOperator queryUtil;
 
 	public void setUp() {
 		super.setUp();
-		queryUtil = BeanContainerFactory.getBeanContainer(
-				this.getClass().getClassLoader()).getBean("beanStringOperator");
+		queryUtil=(BeanStringOperator) operator;
 	}
 
 	public void testGenerateSqlClause1() {

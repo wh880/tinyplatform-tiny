@@ -26,27 +26,26 @@
  */
 package org.tinygroup.tinydb.dialect.impl;
 
-import org.springframework.jdbc.support.incrementer.SqlServerMaxValueIncrementer;
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.jdbc.support.JdbcUtils;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.tinydb.dialect.Dialect;
 
 /**
  * The Class SQLServerDialect.
  */
-public class SQLServerDialect implements Dialect {
+public class SQLServerDialect extends AbstractColumnDialcet {
 
-	private SqlServerMaxValueIncrementer incrementer;
+	/** The current cache of values */
+	private int[] valueCache;
 
-	public SqlServerMaxValueIncrementer getIncrementer() {
-		return incrementer;
-	}
-
-	public void setIncrementer(SqlServerMaxValueIncrementer incrementer) {
-		this.incrementer = incrementer;
-	}
+	/** The next id to serve from the value cache */
+	private int nextValueIndex = -1;
 
 	/**
 	 * Instantiates a new sQL server dialect.
@@ -74,11 +73,12 @@ public class SQLServerDialect implements Dialect {
 				.insert(getAfterSelectInsertPoint(sql), " top " + limit)
 				.toString();
 	}
-	
+
 	static int getAfterSelectInsertPoint(String sql) {
-		int selectIndex = sql.toLowerCase().indexOf( "select" );
-		final int selectDistinctIndex = sql.toLowerCase().indexOf( "select distinct" );
-		return selectIndex + ( selectDistinctIndex == selectIndex ? 15 : 6 );
+		int selectIndex = sql.toLowerCase().indexOf("select");
+		final int selectDistinctIndex = sql.toLowerCase().indexOf(
+				"select distinct");
+		return selectIndex + (selectDistinctIndex == selectIndex ? 15 : 6);
 	}
 
 	/**
@@ -98,8 +98,46 @@ public class SQLServerDialect implements Dialect {
 	 * com.hundsun.jres.interfaces.db.dialect.IDialect#getAutoIncreaseKeySql()
 	 */
 	public int getNextKey() {
-		Assert.assertNotNull(incrementer, "incrementer must not null");
-		return incrementer.nextIntValue();
+		if (this.nextValueIndex < 0 || this.nextValueIndex >= getCacheSize()) {
+			/*
+			 * Need to use straight JDBC code because we need to make sure that
+			 * the insert and select are performed on the same connection
+			 * (otherwise we can't be sure that @@identity returnes the correct
+			 * value)
+			 */
+			Connection con = DataSourceUtils.getConnection(getDataSource());
+			Statement stmt = null;
+			try {
+				stmt = con.createStatement();
+				DataSourceUtils.applyTransactionTimeout(stmt, getDataSource());
+				this.valueCache = new int[getCacheSize()];
+				this.nextValueIndex = 0;
+				for (int i = 0; i < getCacheSize(); i++) {
+					stmt.executeUpdate("insert into " + getIncrementerName()
+							+ " default values");
+					ResultSet rs = stmt.executeQuery("select @@identity");
+					try {
+						if (!rs.next()) {
+							throw new DataAccessResourceFailureException(
+									"@@identity failed after executing an update");
+						}
+						this.valueCache[i] = rs.getInt(1);
+					} finally {
+						JdbcUtils.closeResultSet(rs);
+					}
+				}
+				long maxValue = this.valueCache[(this.valueCache.length - 1)];
+				stmt.executeUpdate("delete from " + getIncrementerName()
+						+ " where " + getColumnName() + " < " + maxValue);
+			} catch (SQLException ex) {
+				throw new DataAccessResourceFailureException(
+						"Could not increment identity", ex);
+			} finally {
+				JdbcUtils.closeStatement(stmt);
+				DataSourceUtils.releaseConnection(con, getDataSource());
+			}
+		}
+		return this.valueCache[this.nextValueIndex++];
 	}
 
 	/*
@@ -112,10 +150,7 @@ public class SQLServerDialect implements Dialect {
 	}
 
 	public String buildSqlFuction(String sql) {
-		DialectFunctionProcessor processor = BeanContainerFactory
-		.getBeanContainer(this.getClass().getClassLoader())
-				.getBean(DataBaseUtil.FUNCTION_BEAN);
-		return processor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_SQLSERVER);
+		return functionProcessor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_SQLSERVER);
 	}
 
 }

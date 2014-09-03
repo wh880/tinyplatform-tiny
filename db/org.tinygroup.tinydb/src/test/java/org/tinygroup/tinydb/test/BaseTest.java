@@ -15,25 +15,25 @@
  */
 package org.tinygroup.tinydb.test;
 
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import junit.framework.TestCase;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinydb.Bean;
-import org.tinygroup.tinydb.BeanOperatorManager;
-import org.tinygroup.tinydb.exception.TinyDbException;
+import org.tinygroup.tinydb.Configuration;
+import org.tinygroup.tinydb.ConfigurationBuilder;
+import org.tinygroup.tinydb.DbOperatorFactory;
+import org.tinygroup.tinydb.DbOperatorFactoryBuilder;
 import org.tinygroup.tinydb.operator.DBOperator;
-import org.tinygroup.tinydb.util.DataSourceFactory;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.tinytestutil.script.Resources;
 import org.tinygroup.tinytestutil.script.ScriptRunner;
 
 public abstract class BaseTest extends TestCase {
-	protected static BeanOperatorManager manager;
-	private static DBOperator<String> operator;
+	protected static DbOperatorFactory factory;
+	protected static DBOperator<String> operator;
 	protected static String ANIMAL = "animal";
 	protected static String PEOPLE = "aPeople";
 	protected static String BRANCH = "aBranch";
@@ -44,43 +44,26 @@ public abstract class BaseTest extends TestCase {
 		return operator;
 	}
 
-	public void setOperator(DBOperator<String> operator) {
-		BaseTest.operator = operator;
-	}
-
 	@SuppressWarnings("unchecked")
 	public void setUp() {
 		if (!hasExcuted) {
 			Connection conn = null;
 			try {
-				AbstractTestUtil.init(null, true);
-				conn = DataSourceFactory.getConnection("dynamicDataSource",
-						this.getClass().getClassLoader());
+				Reader reader=Resources.getResourceAsReader("tinydb.xml");
+				ConfigurationBuilder builder = new ConfigurationBuilder(reader);
+				Configuration configuration=builder.parser();
+				conn = configuration.getUseDataSource().getConnection();
 				ScriptRunner runner = new ScriptRunner(conn, false, false);
 				// 设置字符集
 				Resources.setCharset(Charset.forName("utf-8"));
 				// 加载sql脚本并执行
-				try {
-					runner.runScript(Resources
+				runner.runScript(Resources
 							.getResourceAsReader("table_derby.sql"));
-				} catch (Exception e) {
-					// e.printStackTrace();
-				}
-				manager = BeanContainerFactory.getBeanContainer(
-						this.getClass().getClassLoader()).getBean(
-						"beanOperatorManager");
-				// people_id
-				// people_name
-				// people_age
-				// branch
-				// registerBean();
-				// registerBean();
-				// manager.initBeansConfiguration();
-				operator = (DBOperator<String>) manager
-						.getDbOperator(mainSchema);
+				factory=new DbOperatorFactoryBuilder().build(configuration);
+				operator=factory.getDBOperator();
 				hasExcuted = true;
-			} catch (TinyDbException e) {
-
+			} catch (Exception e) {
+				e.printStackTrace();
 			} finally {
 				if (conn != null) {
 					try {

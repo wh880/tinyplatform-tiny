@@ -17,8 +17,11 @@ package org.tinygroup.tinydb.operator;
 
 import java.util.UUID;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.Configuration;
+import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.exception.TinyDbException;
 
 
@@ -44,6 +47,10 @@ public interface DbBaseOperator extends DbRelationOperator {
     BeanDbNameConverter getBeanDbNameConverter();
 
     void setBeanDbNameConverter(BeanDbNameConverter beanDbNameConverter);
+    
+    void setDialect(Dialect dialect);
+    
+    Dialect getDialect();
 
     /**
      * 如果是自增长类型的Key返回新增加的值
@@ -53,5 +60,8 @@ public interface DbBaseOperator extends DbRelationOperator {
     int getAutoIncreaseKey()throws TinyDbException;
     
     UUID getUniqueCode();
+    
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate);
 
+    public void setConfiguration(Configuration configuration);
 }

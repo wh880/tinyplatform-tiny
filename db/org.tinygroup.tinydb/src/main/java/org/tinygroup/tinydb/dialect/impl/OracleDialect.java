@@ -15,26 +15,10 @@
  */
 package org.tinygroup.tinydb.dialect.impl;
 
-import org.springframework.jdbc.support.incrementer.OracleSequenceMaxValueIncrementer;
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.tinydb.dialect.Dialect;
 
-public class OracleDialect implements Dialect{
+public class OracleDialect extends AbstractSequenceDialcet{
 	
-	private OracleSequenceMaxValueIncrementer incrementer;
-	
-	
-
-	public OracleSequenceMaxValueIncrementer getIncrementer() {
-		return incrementer;
-	}
-
-	public void setIncrementer(OracleSequenceMaxValueIncrementer incrementer) {
-		this.incrementer = incrementer;
-	}
 
 	public boolean supportsLimit() {
 		return true;
@@ -55,19 +39,16 @@ public class OracleDialect implements Dialect{
 		return pagingSelect.toString();
 	}
 
-	public int getNextKey() {
-		Assert.assertNotNull(incrementer,"incrementer must not null");
-		return incrementer.nextIntValue();
-	}
-
 
 	public String getCurrentDate() {
 		return "select  to_char(sysdate,'YYYY-MM-DD HH24:MI:SS') from dual";
 	}
 
 	public String buildSqlFuction(String sql) {
-		DialectFunctionProcessor processor=BeanContainerFactory
-		.getBeanContainer(this.getClass().getClassLoader()).getBean(DataBaseUtil.FUNCTION_BEAN);
-		return processor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_ORACLE);
+		return functionProcessor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_ORACLE);
+	}
+	
+	protected String getSequenceQuery() {
+		return "select " + getIncrementerName() + ".nextval from dual";
 	}
 }

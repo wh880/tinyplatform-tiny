@@ -16,12 +16,20 @@
 package org.tinygroup.tinydb.test.operator;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.operator.impl.BeanDBSqlOperator;
 
 public class UuidKeyDbOperator extends BeanDBSqlOperator<String>{
 
-	public UuidKeyDbOperator(JdbcTemplate jdbcTemplate) {
-		super(jdbcTemplate);
+	public UuidKeyDbOperator() {
+		super();
 	}
+
+	public UuidKeyDbOperator(JdbcTemplate jdbcTemplate,
+			Configuration configuration) {
+		super(jdbcTemplate, configuration);
+	}
+
+	
 
 }

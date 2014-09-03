@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DbSqlOperator;
@@ -29,8 +31,13 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		DbSqlOperator<K> {
 	
-	public BeanDBSqlOperator(JdbcTemplate jdbcTemplate) {
-		super(jdbcTemplate);
+	
+	public BeanDBSqlOperator() {
+		super();
+	}
+
+	public BeanDBSqlOperator(JdbcTemplate jdbcTemplate,Configuration configuration) {
+		super(jdbcTemplate,configuration);
 	}
 
 	public Bean[] getBeans(String sql) throws TinyDbException {

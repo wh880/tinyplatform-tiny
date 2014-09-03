@@ -40,12 +40,6 @@ public class TableConfigurationContainer {
 	 * 保存所有模式配置
 	 */
 	private List<SchemaConfig> schemaConfigs=new ArrayList<SchemaConfig>();
-	/**
-	 * 保存所有模式的映射关系
-	 */
-	private Map<String, SchemaConfig> schemaMap=new HashMap<String, SchemaConfig>();
-	
-	private final static String INCREASE_KEY = "increase"; // 主键类型--自增长
 	
 	public void addTableConfiguration(TableConfiguration configuration){
 		if(!tableConfigurations.contains(configuration)){
@@ -57,17 +51,6 @@ public class TableConfigurationContainer {
 			schemaTables.put(configuration.getSchema(), tables);
 		}
 		tables.add(configuration);
-	}
-	
-	public void addSchemaConfigs(SchemaConfig config){
-		if(!schemaConfigs.contains(config)){
-			schemaConfigs.add(config);
-			schemaMap.put(config.getSchema(), config);
-		}
-	}
-	
-	public SchemaConfig getSchemaConfig(String schema){
-		return schemaMap.get(schema);
 	}
 	
 	public TableConfiguration getTableConfiguration(String schema,String tableName){
@@ -84,14 +67,6 @@ public class TableConfigurationContainer {
 	
 	public List<SchemaConfig> getsSchemaConfigs(){
 		return schemaConfigs;
-	}
-	
-	public boolean isIncrease(String schema){
-		SchemaConfig schemaConfig=getSchemaConfig(schema);
-		if(schemaConfig!=null&&schemaConfig.getKeyType().equals(INCREASE_KEY)){
-			return true;
-		}
-		return false;
 	}
 	
 	public boolean isExistTable(String schema,String tableName){

@@ -15,7 +15,8 @@
  */
 package org.tinygroup.tinydb.convert;
 
-import org.tinygroup.tinydb.BeanOperatorManager;
+
+import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
@@ -23,14 +24,11 @@ import org.tinygroup.tinydb.exception.TinyDbException;
  * @author renhui
  *
  */
-public interface TableConfigConvert {
+public interface TableConfigLoad {
     /**
      * 表配置信息转换接口  
-     * @return
+     * @param configuration 
      */
-	public void convert()throws TinyDbException;
+	public void loadTable(Configuration configuration)throws TinyDbException;
 	
-	public void setOperatorManager(BeanOperatorManager manager);
-	
-	public BeanOperatorManager getOperatorManager();
 }

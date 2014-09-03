@@ -8,7 +8,7 @@ import org.tinygroup.tinydb.test.BaseTest;
 public class TestDbMonitor extends BaseTest{
 
 	public void testMonitor() throws TinyDbException{
-		DBOperator operator=manager.getDbOperator();
+		DBOperator operator=factory.getDBOperator();
 		operator.execute("delete from animal");//刪除
 		Thread thread1=new Thread(new Runnable() {
 			public void run() {
@@ -43,7 +43,7 @@ public class TestDbMonitor extends BaseTest{
 	private void beanOperator() {
 		final Bean bean=getAnimalBean();
 		try {
-			DBOperator operator=manager.getDbOperator();
+			DBOperator operator=factory.getDBOperator();
 			operator.beginTransaction();
 			Bean newBean=operator.insert(bean);
 			try {

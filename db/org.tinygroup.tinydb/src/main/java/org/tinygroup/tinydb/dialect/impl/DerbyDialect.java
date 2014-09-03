@@ -26,28 +26,32 @@
  */
 package org.tinygroup.tinydb.dialect.impl;
 
-import org.springframework.jdbc.support.incrementer.DerbyMaxValueIncrementer;
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.jdbc.support.JdbcUtils;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.tinydb.dialect.Dialect;
 
 /**
  * The Class MySQLDialect.
  */
-public class DerbyDialect implements Dialect {
+public class DerbyDialect extends AbstractColumnDialcet {
 
-	private DerbyMaxValueIncrementer incrementer;
-	
-	
-	public DerbyMaxValueIncrementer getIncrementer() {
-		return incrementer;
-	}
+	/** The default for dummy name */
+	private static final String DEFAULT_DUMMY_NAME = "dummy";
 
-	public void setIncrementer(DerbyMaxValueIncrementer incrementer) {
-		this.incrementer = incrementer;
-	}
+	/** The name of the dummy column used for inserts */
+	private String dummyName = DEFAULT_DUMMY_NAME;
+
+	/** The current cache of values */
+	private int[] valueCache;
+
+	/** The next id to serve from the value cache */
+	private int nextValueIndex = -1;
 
 	/**
 	 * Instantiates a new my sql dialect.
@@ -101,8 +105,45 @@ public class DerbyDialect implements Dialect {
 	 * com.hundsun.jres.interfaces.db.dialect.IDialect#getAutoIncreaseKeySql()
 	 */
 	public int getNextKey() {
-		Assert.assertNotNull(incrementer,"incrementer must not null");
-		return incrementer.nextIntValue();
+		if (this.nextValueIndex < 0 || this.nextValueIndex >= getCacheSize()) {
+			/*
+			* Need to use straight JDBC code because we need to make sure that the insert and select
+			* are performed on the same connection (otherwise we can't be sure that last_insert_id()
+			* returned the correct value)
+			*/
+			Connection con = DataSourceUtils.getConnection(getDataSource());
+			Statement stmt = null;
+			try {
+				stmt = con.createStatement();
+				DataSourceUtils.applyTransactionTimeout(stmt, getDataSource());
+				this.valueCache = new int[getCacheSize()];
+				this.nextValueIndex = 0;
+				for (int i = 0; i < getCacheSize(); i++) {
+					stmt.executeUpdate("insert into " + getIncrementerName() + " (" + getDummyName() + ") values(null)");
+					ResultSet rs = stmt.executeQuery("select IDENTITY_VAL_LOCAL() from " + getIncrementerName());
+					try {
+						if (!rs.next()) {
+							throw new DataAccessResourceFailureException("IDENTITY_VAL_LOCAL() failed after executing an update");
+						}
+						this.valueCache[i] = rs.getInt(1);
+					}
+					finally {
+						JdbcUtils.closeResultSet(rs);
+					}
+				}
+				long maxValue = this.valueCache[(this.valueCache.length - 1)];
+				stmt.executeUpdate("delete from " + getIncrementerName() + " where " + getColumnName() + " < " + maxValue);
+			}
+			catch (SQLException ex) {
+				throw new DataAccessResourceFailureException("Could not obtain IDENTITY value", ex);
+			}
+			finally {
+				JdbcUtils.closeStatement(stmt);
+				DataSourceUtils.releaseConnection(con, getDataSource());
+			}
+		}
+		return this.valueCache[this.nextValueIndex++];
+		
 	}
 
 
@@ -116,9 +157,21 @@ public class DerbyDialect implements Dialect {
 	}
 
 	public String buildSqlFuction(String sql) {
-		DialectFunctionProcessor processor=BeanContainerFactory
-		.getBeanContainer(this.getClass().getClassLoader()).getBean(DataBaseUtil.FUNCTION_BEAN);
-		return processor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_DERBY);
+		return functionProcessor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_DERBY);
+	}
+
+	/**
+	 * Set the name of the dummy column.
+	 */
+	public void setDummyName(String dummyName) {
+		this.dummyName = dummyName;
+	}
+
+	/**
+	 * Return the name of the dummy column.
+	 */
+	public String getDummyName() {
+		return this.dummyName;
 	}
 
 }

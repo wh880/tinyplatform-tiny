@@ -26,6 +26,7 @@ import org.springframework.jdbc.core.SqlParameterValue;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.TinyDbException;
@@ -38,16 +39,20 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 
 	protected String schema;
 	
+	public BeanDBBaseOperator(){
+		super();
+	}
+
+	public BeanDBBaseOperator(JdbcTemplate jdbcTemplate,Configuration configuration) {
+		super(jdbcTemplate,configuration);
+	}
+	
 	public int getAutoIncreaseKey()throws TinyDbException {
 		try {
 			return getDialect().getNextKey();
 		} catch (DataAccessException e) {
 			throw new TinyDbException(e.getRootCause());
 		}
-	}
-
-	public BeanDBBaseOperator(JdbcTemplate jdbcTemplate) {
-		super(jdbcTemplate);
 	}
 
 	protected String getDeleteSqlByKey(String beanType) throws TinyDbException {
@@ -349,8 +354,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 			List<ColumnConfiguration> columns = table.getColumns();
 			if (columns != null && columns.size() > 0) {
 				List<SqlParameterValue> parameterValues = new ArrayList<SqlParameterValue>();
-				boolean isIncrease = manager.getTableConfigurationContainer()
-						.isIncrease(schema);
+				boolean isIncrease = configuration.isIncrease();
 				for (ColumnConfiguration column : columns) {
 					String columnsName = column.getColumnName();
 					String propertyName = beanDbNameConverter
@@ -543,4 +547,5 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		}
 		return null;
 	}
+
 }

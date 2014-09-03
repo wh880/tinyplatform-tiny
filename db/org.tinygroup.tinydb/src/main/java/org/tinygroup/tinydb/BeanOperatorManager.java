@@ -41,21 +41,8 @@ public interface BeanOperatorManager {
 	String DATA_TYPE = "DATA_TYPE";
 	
 	String TABLE_NAME="TABLE_NAME";
-	/**
-	 * 设置默认的schema
-	 * @param schema
-	 */
-	void setMainSchema(String schema);
 	
 	String getMainSchema();
-	
-	/**
-	 * 设置默认的databse
-	 * @param schema
-	 */
-	void setDatabase(String database);
-	
-	String getDatabase();
 	
 	/**
 	 * 获取数据操作器
@@ -85,11 +72,6 @@ public interface BeanOperatorManager {
 	DBOperator<?> getNewDbOperator(String schema)throws TinyDbException;
 
 	/**
-	 * @param schemaConfig
-	 */
-	void registerSchemaConfig(SchemaConfig schemaConfig);
-
-	/**
 	 * 根据表名获取表配置信息
 	 * 
 	 * @param beanType
@@ -107,31 +89,10 @@ public interface BeanOperatorManager {
 	TableConfiguration getTableConfiguration(String beanType);
 	
 	/**
-	 * 
-	 * 要处理的所有schema列表
-	 */
-	 void loadTablesFromSchemas()throws TinyDbException ;
-	
-	/**
 	 * 获取表配置信息容器对象
 	 * @return
 	 */
 	 TableConfigurationContainer getTableConfigurationContainer();
-	
-	
-	/**
-	 * 
-	 * 添加数据库表关联关系
-	 * @param relations
-	 */
-	void addRelationConfigs(Relations relations);
-	
-	/**
-	 * 
-	 * 移除数据库表关联关系
-	 * @param relations
-	 */
-	void removeRelationConfigs(Relations relations);
 	
 	/**
 	 * 
@@ -156,11 +117,6 @@ public interface BeanOperatorManager {
 	 */
 	boolean existsTableByType(String beanType,String schema);
 	
-	/**
-	 * 设置bean名称转换对象
-	 * @param beanDbNameConverter
-	 */
-	void setBeanDbNameConverter(BeanDbNameConverter beanDbNameConverter);
 	
 	BeanDbNameConverter getBeanDbNameConverter();
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DbSqlQueryOperator;
 import org.tinygroup.tinydb.order.OrderBean;
@@ -13,8 +14,12 @@ import org.tinygroup.tinydb.select.SelectBean;
 
 public class BeanDBSqlQueryOperator<K> extends  BeanDBSqlOperator<K> implements DbSqlQueryOperator<K>{
 
-	public BeanDBSqlQueryOperator(JdbcTemplate jdbcTemplate) {
-		super(jdbcTemplate);
+	public BeanDBSqlQueryOperator() {
+		super();
+	}
+
+	public BeanDBSqlQueryOperator(JdbcTemplate jdbcTemplate,Configuration configuration) {
+		super(jdbcTemplate,configuration);
 	}
 	
 	/**

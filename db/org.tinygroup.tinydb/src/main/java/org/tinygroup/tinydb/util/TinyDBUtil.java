@@ -19,8 +19,12 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.beanwrapper.BeanWrapperHolder;
+import org.tinygroup.beanwrapper.BeanWrapperImpl;
 import org.tinygroup.context.Context;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
@@ -156,5 +160,19 @@ public final class TinyDBUtil {
 			}
 		}
 		return bean;
+	}
+	
+	public static void setProperties(Object object,Map<String, String> properties){
+		BeanWrapperHolder holder=new BeanWrapperHolder();
+		BeanWrapperImpl wrapperImpl=holder.getBeanWrapper();
+		wrapperImpl.setWrappedInstance(object);
+		for (String attribute : properties.keySet()) {
+			try {
+				String value = properties.get(attribute);
+				wrapperImpl.setPropertyValue(attribute, value);
+			} catch (Exception e) {
+				throw new RuntimeException("设置对象属性出错", e);
+			}
+		}
 	}
 }

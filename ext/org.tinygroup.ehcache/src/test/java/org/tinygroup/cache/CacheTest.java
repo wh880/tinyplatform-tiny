@@ -32,7 +32,6 @@ public class CacheTest extends TestCase {
 	static {
 		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
 		FileResolver fileResolver = FileResolverFactory.getFileResolver();
-		fileResolver.addFileProcessor(new XStreamFileProcessor());
 		FileResolverUtil.addClassPathPattern(fileResolver);
 		fileResolver
 				.addResolvePath(FileResolverUtil.getClassPath(fileResolver));

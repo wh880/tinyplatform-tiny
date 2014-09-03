@@ -26,29 +26,13 @@
  */
 package org.tinygroup.tinydb.dialect.impl;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.tinydb.dialect.Dialect;
 
 /**
  * The Class InformixDialect.
  */
-public class InformixDialect implements Dialect {
+public class InformixDialect extends AbstractSequenceDialcet {
 	
-	private InformixSequenceMaxValueIncrementer incrementer;
-	
-	
-
-	public InformixSequenceMaxValueIncrementer getIncrementer() {
-		return incrementer;
-	}
-
-	public void setIncrementer(InformixSequenceMaxValueIncrementer incrementer) {
-		this.incrementer = incrementer;
-	}
-
 	/**
 	 * Instantiates a new informix dialect.
 	 */
@@ -85,16 +69,6 @@ public class InformixDialect implements Dialect {
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.hundsun.jres.interfaces.db.dialect.IDialect#getAutoIncreaseKeySql()
-	 */
-	public int getNextKey() {
-		Assert.assertNotNull(incrementer,"incrementer must not null");
-		return incrementer.nextIntValue();
-	}
 
 
 	/*
@@ -107,9 +81,15 @@ public class InformixDialect implements Dialect {
 	}
 
 	public String buildSqlFuction(String sql) {
-		DialectFunctionProcessor processor=BeanContainerFactory
-		.getBeanContainer(this.getClass().getClassLoader()).getBean(DataBaseUtil.FUNCTION_BEAN);
-		return processor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_INFORMIX);
+		return functionProcessor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_INFORMIX);
+	}
+	
+	protected String getSequenceQuery() {
+		return "select " + getSelectSequenceNextValString( getIncrementerName() ) + " from systables where tabid=1";
+	}
+	
+	private String getSelectSequenceNextValString(String sequenceName) {
+		return sequenceName + ".nextval";
 	}
 
 	

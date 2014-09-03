@@ -26,6 +26,7 @@ import org.springframework.jdbc.core.SqlParameterValue;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.TinyDbException;
@@ -36,8 +37,12 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 public class BeanDBBatchOperator<K> extends BeanDBSingleOperator<K> implements
 		DbBatchOperator<K> {
 
-	public BeanDBBatchOperator(JdbcTemplate jdbcTemplate) {
-		super(jdbcTemplate);
+	public BeanDBBatchOperator(){
+		super();
+	}
+	
+	public BeanDBBatchOperator(JdbcTemplate jdbcTemplate,Configuration configuration) {
+		super(jdbcTemplate,configuration);
 	}
 
 	public Bean[] getBeans(Bean bean) throws TinyDbException {

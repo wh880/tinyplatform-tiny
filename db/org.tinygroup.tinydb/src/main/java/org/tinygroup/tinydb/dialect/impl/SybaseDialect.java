@@ -15,33 +15,67 @@
  */
 package org.tinygroup.tinydb.dialect.impl;
 
-import org.springframework.jdbc.support.incrementer.SybaseMaxValueIncrementer;
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.jdbc.support.JdbcUtils;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.tinydb.dialect.Dialect;
 
-public class SybaseDialect implements Dialect {
+public class SybaseDialect extends AbstractColumnDialcet {
 	
-	private SybaseMaxValueIncrementer incrementer;
-	
+	/** The current cache of values */
+	private int[] valueCache;
 
-	public SybaseMaxValueIncrementer getIncrementer() {
-		return incrementer;
-	}
-
-	public void setIncrementer(SybaseMaxValueIncrementer incrementer) {
-		this.incrementer = incrementer;
-	}
+	/** The next id to serve from the value cache */
+	private int nextValueIndex = -1;
 
 	public SybaseDialect() {
 
 	}
 
 	public int getNextKey() {
-		Assert.assertNotNull(incrementer,"incrementer must not null");
-		return incrementer.nextIntValue();
+		if (this.nextValueIndex < 0 || this.nextValueIndex >= getCacheSize()) {
+			/*
+			* Need to use straight JDBC code because we need to make sure that the insert and select
+			* are performed on the same connection (otherwise we can't be sure that @@identity
+			* returnes the correct value)
+			*/
+			Connection con = DataSourceUtils.getConnection(getDataSource());
+			Statement stmt = null;
+			try {
+				stmt = con.createStatement();
+				DataSourceUtils.applyTransactionTimeout(stmt, getDataSource());
+				this.valueCache = new int[getCacheSize()];
+				this.nextValueIndex = 0;
+				for (int i = 0; i < getCacheSize(); i++) {
+					stmt.executeUpdate("insert into " + getIncrementerName() + " values()");
+					ResultSet rs = stmt.executeQuery("select @@identity");
+					try {
+						if (!rs.next()) {
+							throw new DataAccessResourceFailureException("@@identity failed after executing an update");
+						}
+						this.valueCache[i] = rs.getInt(1);
+					}
+					finally {
+						JdbcUtils.closeResultSet(rs);
+					}
+				}
+				long maxValue = this.valueCache[(this.valueCache.length - 1)];
+				stmt.executeUpdate("delete from " + getIncrementerName() + " where " + getColumnName() + " < " + maxValue);
+			}
+			catch (SQLException ex) {
+				throw new DataAccessResourceFailureException("Could not increment identity", ex);
+			}
+			finally {
+				JdbcUtils.closeStatement(stmt);
+				DataSourceUtils.releaseConnection(con, getDataSource());
+			}
+		}
+		return this.valueCache[this.nextValueIndex++];
 	}
 
 	
@@ -58,8 +92,6 @@ public class SybaseDialect implements Dialect {
 	}
 	
 	public String buildSqlFuction(String sql) {
-		DialectFunctionProcessor processor=BeanContainerFactory
-		.getBeanContainer(this.getClass().getClassLoader()).getBean(DataBaseUtil.FUNCTION_BEAN);
-		return processor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_SYBASE);
+		return functionProcessor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_SYBASE);
 	}
 }

@@ -15,29 +15,37 @@
  */
 package org.tinygroup.tinydb;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinydb.exception.TinyDbException;
+import org.tinygroup.tinydb.impl.BeanOperatorManagerImpl;
 import org.tinygroup.tinydb.operator.DBOperator;
 
 /**
  * Created by luoguo on 2014/5/23.
  */
-public final class DbOperatorFactory {
-	private DbOperatorFactory() {
+public  class DbOperatorFactory {
+	private Configuration configuration;
+	public DbOperatorFactory(Configuration configuration) {
+		this.configuration=configuration;
 	}
-
-	public static DBOperator getDBOperator(String schema, ClassLoader loader) throws TinyDbException {
-		BeanOperatorManager beanOperatorManager = (BeanOperatorManager) BeanContainerFactory
-				.getBeanContainer(loader).getBean(
-						BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+	
+	public DBOperator getDBOperator() throws TinyDbException{
+		BeanOperatorManager beanOperatorManager = new BeanOperatorManagerImpl(configuration);
+		return beanOperatorManager.getDbOperator();
+	}
+	
+	public DBOperator getDBOperator(String schema) throws TinyDbException{
+		BeanOperatorManager beanOperatorManager = new BeanOperatorManagerImpl(configuration);
 		return beanOperatorManager.getDbOperator(schema);
 	}
 	
-	public static DBOperator getDBOperator(ClassLoader loader) throws TinyDbException {
-		BeanOperatorManager beanOperatorManager = (BeanOperatorManager) BeanContainerFactory
-				.getBeanContainer(loader).getBean(
-						BeanOperatorManager.OPERATOR_MANAGER_BEAN);
-		return beanOperatorManager.getDbOperator();
+	public DBOperator getNewDBOperator() throws TinyDbException{
+		BeanOperatorManager beanOperatorManager = new BeanOperatorManagerImpl(configuration);
+		return beanOperatorManager.getNewDbOperator();
+	}
+	
+	public DBOperator getNewDBOperator(String schema) throws TinyDbException{
+		BeanOperatorManager beanOperatorManager = new BeanOperatorManagerImpl(configuration);
+		return beanOperatorManager.getNewDbOperator(schema);
 	}
 	
 }
