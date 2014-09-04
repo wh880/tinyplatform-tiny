@@ -5,7 +5,10 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.tinygroup.database.config.dialectfunction.DialectFunctions;
 import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
+import org.tinygroup.database.dialectfunction.impl.DialectFunctionProcessorImpl;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.config.TableConfigurationContainer;
 import org.tinygroup.tinydb.dialect.Dialect;
@@ -33,7 +36,11 @@ public class Configuration {
 	
 	private Dialect dialect;
 	
+	private JdbcTemplate jdbcTemplate;
+	
 	private BeanDbNameConverter converter=new DefaultNameConverter();
+	
+	private DialectFunctionProcessor functionProcessor=new DialectFunctionProcessorImpl();
 	
 	private Map<String, DataSource> dataSourceMap=new HashMap<String, DataSource>();
 	
@@ -139,5 +146,20 @@ public class Configuration {
 	public void setIncrease(boolean increase) {
 		this.increase = increase;
 	}
+	
+	public DialectFunctionProcessor getFunctionProcessor() {
+		return functionProcessor;
+	}
+	
+	public void addDialectFunctions(DialectFunctions functions){
+		functionProcessor.addDialectFunctions(functions);
+	}
 
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 }

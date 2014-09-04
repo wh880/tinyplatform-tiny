@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
@@ -119,20 +120,19 @@ public class ConfigurationBuilder {
 				String resource=node.getAttribute("resource");
 				XStream stream = XStreamFactory.getXStream();
 				stream.processAnnotations(DialectFunctions.class);
-				DialectFunctionProcessor functionProcessor=new DialectFunctionProcessorImpl();
 				if(url!=null&&resource==null){
 					FileObject fileObject=VFS.resolveFile(url);
 					DialectFunctions functions=(DialectFunctions) stream.fromXML(fileObject.getInputStream());
-					functionProcessor.addDialectFunctions(functions);
+					configuration.addDialectFunctions(functions);
 				}else if(url==null&&resource!=null){
 					InputStream inputStream=getClass().getClassLoader().getResourceAsStream(resource);
 					DialectFunctions functions=(DialectFunctions) stream.fromXML(inputStream);
-					functionProcessor.addDialectFunctions(functions);
+					configuration.addDialectFunctions(functions);
 				}else{
 					throw new TinyDbRuntimeException("relation元素的属性只能是url或者是resource");
 				}
 				AbstractDialect dialect=(AbstractDialect) configuration.getDialect();
-				dialect.setFunctionProcessor(functionProcessor);
+				dialect.setFunctionProcessor(configuration.getFunctionProcessor());
 			}
 		}
 		
@@ -262,6 +262,8 @@ public class ConfigurationBuilder {
 			if(!existDefault){
 				throw new TinyDbRuntimeException("默认数据源:"+dataSource+"没有设置");
 			}
+			JdbcTemplate template=new JdbcTemplate(configuration.getUseDataSource());
+			configuration.setJdbcTemplate(template);
 		}
 	}
 
@@ -307,6 +309,10 @@ public class ConfigurationBuilder {
 		DataSource dataSource = (DataSource) dataSourceType.newInstance();
 		return dataSource;
 	}
+	
+	 public Configuration getConfiguration() {
+		    return configuration;
+		  }
 	
 
 }

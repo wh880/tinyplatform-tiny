@@ -60,7 +60,7 @@ public class Shard {
      * 写权重
      */
     @XStreamAsAttribute
-    @XStreamAlias("write-able")
+    @XStreamAlias("writeable")
     private boolean writeAble;
     /**
      * 表名

@@ -8,8 +8,4 @@
 	<bean id="tinyDBService" name="tinyDBService" scope="singleton"
 		class="org.tinygroup.tinydb.service.impl.TinyDBServiceImpl">
 	</bean>
-	
-	<bean id="beanOperatorManager"
-		class="org.tinygroup.tinydb.impl.BeanOperatorManagerImpl">
-	</bean>
 </beans>

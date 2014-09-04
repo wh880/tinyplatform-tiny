@@ -22,10 +22,9 @@ import junit.framework.TestCase;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.bizframe.PermissionManager;
-import org.tinygroup.springutil.SpringBeanContainer;
+import org.tinygroup.commons.tools.Resources;
 import org.tinygroup.tinydb.util.DataSourceFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
-import org.tinygroup.tinytestutil.script.Resources;
 import org.tinygroup.tinytestutil.script.ScriptRunner;
 
 public class PermissionManagerTest extends TestCase {

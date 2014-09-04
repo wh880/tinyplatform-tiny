@@ -1,4 +1,4 @@
-package org.tinygroup.tinydb.jdbctemplate;
+package org.tinygroup.tinydb.spring;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

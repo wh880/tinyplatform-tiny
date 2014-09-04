@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinydb.jdbctemplate;
+package org.tinygroup.tinydb.spring;
 
 import org.springframework.jdbc.core.PreparedStatementSetter;
 

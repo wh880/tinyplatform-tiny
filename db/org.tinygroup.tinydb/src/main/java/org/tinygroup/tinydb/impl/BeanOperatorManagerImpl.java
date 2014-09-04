@@ -55,8 +55,11 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager {
 		String realSchema = getRealSchema(schema);
 		try {
 			DBOperator operator = (DBOperator) Class.forName(configuration.getOperatorType()).newInstance();
-			JdbcTemplate template=new JdbcTemplate(configuration.getUseDataSource());
-			operator.setJdbcTemplate(template);
+			JdbcTemplate jdbcTemplate=configuration.getJdbcTemplate();
+			if(jdbcTemplate==null){
+				jdbcTemplate=new JdbcTemplate(configuration.getUseDataSource());
+			}
+			operator.setJdbcTemplate(jdbcTemplate);
 			operator.setConfiguration(configuration);
 			operator.setSchema(realSchema);
 			operator.setDialect(configuration.getDialect());

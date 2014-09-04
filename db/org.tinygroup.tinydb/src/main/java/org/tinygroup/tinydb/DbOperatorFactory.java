@@ -24,28 +24,34 @@ import org.tinygroup.tinydb.operator.DBOperator;
  */
 public  class DbOperatorFactory {
 	private Configuration configuration;
+	private BeanOperatorManager beanOperatorManager;
 	public DbOperatorFactory(Configuration configuration) {
 		this.configuration=configuration;
+		beanOperatorManager = new BeanOperatorManagerImpl(configuration);
 	}
 	
 	public DBOperator getDBOperator() throws TinyDbException{
-		BeanOperatorManager beanOperatorManager = new BeanOperatorManagerImpl(configuration);
 		return beanOperatorManager.getDbOperator();
 	}
 	
 	public DBOperator getDBOperator(String schema) throws TinyDbException{
-		BeanOperatorManager beanOperatorManager = new BeanOperatorManagerImpl(configuration);
 		return beanOperatorManager.getDbOperator(schema);
 	}
 	
 	public DBOperator getNewDBOperator() throws TinyDbException{
-		BeanOperatorManager beanOperatorManager = new BeanOperatorManagerImpl(configuration);
 		return beanOperatorManager.getNewDbOperator();
 	}
 	
 	public DBOperator getNewDBOperator(String schema) throws TinyDbException{
-		BeanOperatorManager beanOperatorManager = new BeanOperatorManagerImpl(configuration);
 		return beanOperatorManager.getNewDbOperator(schema);
 	}
-	
+
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public BeanOperatorManager getBeanOperatorManager() {
+		return beanOperatorManager;
+	}
+
 }

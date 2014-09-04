@@ -281,7 +281,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 			}
 			return container.getBean(serviceComponent.bean());
 		} catch (RuntimeException e) {
-			logger.logMessage(LogLevel.WARN, "查找Bean {}时发生异常：",
+			logger.logMessage(LogLevel.WARN, "查找Bean:{0}时发生异常：{1}",
 					serviceComponent.bean(), e.getMessage());
 			if (!clazz.isInterface()) {
 				try {

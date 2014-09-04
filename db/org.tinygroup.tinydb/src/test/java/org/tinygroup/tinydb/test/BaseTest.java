@@ -22,13 +22,13 @@ import java.sql.SQLException;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.commons.tools.Resources;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.ConfigurationBuilder;
 import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.DbOperatorFactoryBuilder;
 import org.tinygroup.tinydb.operator.DBOperator;
-import org.tinygroup.tinytestutil.script.Resources;
 import org.tinygroup.tinytestutil.script.ScriptRunner;
 
 public abstract class BaseTest extends TestCase {

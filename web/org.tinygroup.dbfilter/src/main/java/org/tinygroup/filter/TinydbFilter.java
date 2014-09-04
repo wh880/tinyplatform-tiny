@@ -15,11 +15,13 @@
  */
 package org.tinygroup.filter;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.util.TinyDBUtil;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;

@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinytestutil.script;
+package org.tinygroup.commons.tools;
 
 import java.io.File;
 import java.io.IOException;

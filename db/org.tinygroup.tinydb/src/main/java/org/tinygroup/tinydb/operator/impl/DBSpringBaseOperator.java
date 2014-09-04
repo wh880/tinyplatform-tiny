@@ -42,11 +42,11 @@ import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.impl.DefaultNameConverter;
-import org.tinygroup.tinydb.jdbctemplate.BatchPreparedStatementSetterImpl;
-import org.tinygroup.tinydb.jdbctemplate.SqlParamValuesBatchStatementSetterImpl;
-import org.tinygroup.tinydb.jdbctemplate.TinydbResultExtractor;
 import org.tinygroup.tinydb.operator.TransactionCallBack;
 import org.tinygroup.tinydb.operator.TransactionOperator;
+import org.tinygroup.tinydb.spring.BatchPreparedStatementSetterImpl;
+import org.tinygroup.tinydb.spring.SqlParamValuesBatchStatementSetterImpl;
+import org.tinygroup.tinydb.spring.TinydbResultExtractor;
 
 public class DBSpringBaseOperator implements TransactionOperator {
 
