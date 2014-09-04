@@ -8,7 +8,6 @@
   <artifactId>plugins</artifactId>
   <packaging>pom</packaging>
   <modules>
-    <module>org.tinygroup.beanmanagerplugin</module>
     <module>org.tinygroup.cacheplugin</module>
     <module>org.tinygroup.commandplugin</module>
     <module>org.tinygroup.databaseinstallplugin</module>

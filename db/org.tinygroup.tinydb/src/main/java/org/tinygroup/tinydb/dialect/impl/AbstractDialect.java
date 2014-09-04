@@ -4,11 +4,12 @@ import javax.sql.DataSource;
 
 import org.springframework.dao.DataAccessException;
 import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
+import org.tinygroup.database.dialectfunction.impl.DialectFunctionProcessorImpl;
 import org.tinygroup.tinydb.dialect.Dialect;
 
 public abstract class AbstractDialect implements Dialect {
 	
-	protected DialectFunctionProcessor functionProcessor;
+	protected DialectFunctionProcessor functionProcessor=new DialectFunctionProcessorImpl();
 	
 	private DataSource dataSource;
 

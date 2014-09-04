@@ -24,16 +24,15 @@ import junit.framework.TestCase;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Resources;
 import org.tinygroup.flow.FlowExecutor;
-import org.tinygroup.tinydb.BeanOperatorManager;
-import org.tinygroup.tinydb.exception.TinyDbException;
+import org.tinygroup.tinydb.Configuration;
+import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.operator.DBOperator;
-import org.tinygroup.tinydb.util.DataSourceFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.tinytestutil.script.ScriptRunner;
 
 public abstract class BaseTest extends TestCase {
-	protected static BeanOperatorManager manager;
-	private static DBOperator<String> operator;
+	protected static DbOperatorFactory factory;
+	protected static DBOperator<String> operator;
 	static FlowExecutor flowExecutor;
 	protected static String ANIMAL = "animal";
 	String mainSchema = "opensource";
@@ -53,36 +52,24 @@ public abstract class BaseTest extends TestCase {
 			Connection conn = null;
 			try {
 				AbstractTestUtil.init(null, true);
-				conn = DataSourceFactory.getConnection("dynamicDataSource",
-						this.getClass().getClassLoader());
+				factory=BeanContainerFactory.getBeanContainer(
+						this.getClass().getClassLoader()).getBean(
+						"tinyDBOperatorFactory");
+				Configuration configuration=factory.getConfiguration();
+				conn = configuration.getUseDataSource().getConnection();
 				ScriptRunner runner = new ScriptRunner(conn, false, false);
 				// 设置字符集
 				Resources.setCharset(Charset.forName("utf-8"));
 				// 加载sql脚本并执行
-				try {
-					runner.runScript(Resources
+				runner.runScript(Resources
 							.getResourceAsReader("table_derby.sql"));
-				} catch (Exception e) {
-					// e.printStackTrace();
-				}
-				manager = BeanContainerFactory.getBeanContainer(
-						this.getClass().getClassLoader()).getBean(
-						"beanOperatorManager");
-				// people_id
-				// people_name
-				// people_age
-				// branch
-				// registerBean();
-				// registerBean();
-				// manager.initBeansConfiguration();
-				operator = (DBOperator<String>) manager.getDbOperator(
-						mainSchema);
+				operator=factory.getDBOperator();
 				flowExecutor = BeanContainerFactory.getBeanContainer(
 						this.getClass().getClassLoader()).getBean(
 						"flowExecutor");
 				hasExcuted = true;
-			} catch (TinyDbException e) {
-				
+			} catch (Exception e) {
+				fail(e.getMessage());
 			} finally {
 				if (conn != null) {
 					try {

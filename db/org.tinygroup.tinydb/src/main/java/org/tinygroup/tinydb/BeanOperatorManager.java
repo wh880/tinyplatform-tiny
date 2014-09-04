@@ -15,13 +15,11 @@
  */
 package org.tinygroup.tinydb;
 
-import org.tinygroup.tinydb.config.SchemaConfig;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.config.TableConfigurationContainer;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.relation.Relation;
-import org.tinygroup.tinydb.relation.Relations;
 
 /**
  * Bean操作管理器

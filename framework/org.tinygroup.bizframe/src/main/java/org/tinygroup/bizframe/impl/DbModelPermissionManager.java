@@ -74,7 +74,7 @@ public class DbModelPermissionManager<K extends Comparable<K>> extends
 		if (manager == null) {
 			manager = BeanContainerFactory.getBeanContainer(
 					this.getClass().getClassLoader()).getBean(
-					"beanOperatorManager");
+							BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		}
 		return manager;
 	}

@@ -15,13 +15,16 @@
  */
 package org.tinygroup.tinydb.impl;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.Configuration;
+import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.config.TableConfigurationContainer;
 import org.tinygroup.tinydb.exception.TinyDbException;
@@ -34,7 +37,7 @@ import org.tinygroup.tinydb.relation.Relation;
  * @author renhui
  * 
  */
-public class BeanOperatorManagerImpl implements BeanOperatorManager {
+public class BeanOperatorManagerImpl implements BeanOperatorManager,InitializingBean {
 
 	private String mainSchema;
 
@@ -43,6 +46,10 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager {
 	private BeanDbNameConverter beanDbNameConverter;
 
 	private TableConfigurationContainer container;
+	
+	public BeanOperatorManagerImpl(){
+		
+	}
 
 	public BeanOperatorManagerImpl(Configuration configuration) {
 		this.configuration = configuration;
@@ -130,6 +137,17 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager {
 
 	public String getMainSchema() {
 		return mainSchema;
+	}
+
+	public void afterPropertiesSet() throws Exception {
+		if(configuration==null){
+			DbOperatorFactory factory = BeanContainerFactory.getBeanContainer(
+					getClass().getClassLoader()).getBean(DbOperatorFactory.class);
+			configuration=factory.getConfiguration();
+		}
+		container = configuration.getContainer();
+		beanDbNameConverter = configuration.getConverter();
+		mainSchema = configuration.getDefaultSchema();
 	}
 
 }

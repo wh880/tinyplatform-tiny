@@ -131,8 +131,6 @@ public class ConfigurationBuilder {
 				}else{
 					throw new TinyDbRuntimeException("relation元素的属性只能是url或者是resource");
 				}
-				AbstractDialect dialect=(AbstractDialect) configuration.getDialect();
-				dialect.setFunctionProcessor(configuration.getFunctionProcessor());
 			}
 		}
 		
@@ -175,6 +173,7 @@ public class ConfigurationBuilder {
 		Dialect dialect=(Dialect) newInstance(dialectType);
 		setProperties(dialectNode, dialect);
 		AbstractDialect abstractDialect=(AbstractDialect) dialect;
+		abstractDialect.setFunctionProcessor(configuration.getFunctionProcessor());
 		abstractDialect.setDataSource(configuration.getUseDataSource());
 		configuration.setDialect(abstractDialect);
 	}

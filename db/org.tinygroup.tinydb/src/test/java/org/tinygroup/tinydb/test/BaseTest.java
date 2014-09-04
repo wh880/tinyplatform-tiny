@@ -63,7 +63,7 @@ public abstract class BaseTest extends TestCase {
 				operator=factory.getDBOperator();
 				hasExcuted = true;
 			} catch (Exception e) {
-				e.printStackTrace();
+				fail(e.getMessage());
 			} finally {
 				if (conn != null) {
 					try {

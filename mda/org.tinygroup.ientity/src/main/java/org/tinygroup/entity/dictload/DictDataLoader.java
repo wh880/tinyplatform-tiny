@@ -56,11 +56,8 @@ public class DictDataLoader extends AbstractDictLoader {
 	}
 
 	public void load(DictManager dictManager) {
-		// BeanOperatorManager manager = SpringBeanContainer
-		// .getBean(BeanOperatorManager.OPERATOR_MANAGER_BEAN);
 		try {
 			DBOperator operator = manager.getDbOperator();
-			DBOperator itemOperator = manager.getDbOperator();
 			Bean[] beans = operator.getBeans(new Bean(DICT_TYPE_NAME));
 			if (beans != null) {
 				for (Bean bean : beans) {
@@ -68,7 +65,7 @@ public class DictDataLoader extends AbstractDictLoader {
 					String dictCode = bean.getProperty(DICT_CODE);
 					String description = bean.getProperty(DICT_DESCRIPTION);
 					Dict dict = new Dict(dictCode, description);
-					Bean[] groupItemBeans = itemOperator
+					Bean[] groupItemBeans = operator
 							.getBeans(
 									"SELECT dict_item_group FROM dict_item where dict_id=? group by dict_item_group",
 									dictId);
@@ -88,7 +85,7 @@ public class DictDataLoader extends AbstractDictLoader {
 								itemParamBean.setProperty(DICT_ITEM_GROUP,
 										dictItemGroup);
 							}
-							Bean[] itemBeans = itemOperator
+							Bean[] itemBeans = operator
 									.getBeans(itemParamBean);
 							for (Bean itemBean : itemBeans) {
 								String dictItemCode = itemBean

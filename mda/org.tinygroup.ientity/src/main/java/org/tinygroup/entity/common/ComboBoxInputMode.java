@@ -17,7 +17,7 @@ package org.tinygroup.entity.common;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinydb.Bean;
-import org.tinygroup.tinydb.BeanOperatorManager;
+import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 
@@ -71,11 +71,10 @@ public class ComboBoxInputMode extends InputMode {
 
 	@SuppressWarnings("rawtypes")
 	public String getComboBoxDataJson() {
-		BeanOperatorManager manager = BeanContainerFactory.getBeanContainer(
-				this.getClass().getClassLoader()).getBean(
-				BeanOperatorManager.OPERATOR_MANAGER_BEAN);
+		DbOperatorFactory factory = BeanContainerFactory.getBeanContainer(
+				getClass().getClassLoader()).getBean(DbOperatorFactory.class);
 		try {
-			DBOperator operator = manager.getDbOperator();
+			DBOperator operator = factory.getDBOperator();
 			Bean[] beans = operator.getBeans(new Bean(beanType));
 			ComboBoxItem[] items = new ComboBoxItem[beans.length];
 			if (beans != null) {

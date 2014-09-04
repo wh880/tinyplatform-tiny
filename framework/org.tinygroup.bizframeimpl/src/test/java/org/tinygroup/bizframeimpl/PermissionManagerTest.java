@@ -15,6 +15,7 @@
  */
 package org.tinygroup.bizframeimpl;
 
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 
@@ -23,6 +24,9 @@ import junit.framework.TestCase;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.bizframe.PermissionManager;
 import org.tinygroup.commons.tools.Resources;
+import org.tinygroup.tinydb.Configuration;
+import org.tinygroup.tinydb.ConfigurationBuilder;
+import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.util.DataSourceFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.tinytestutil.script.ScriptRunner;
@@ -43,7 +47,10 @@ public class PermissionManagerTest extends TestCase {
 			Connection conn = null;
 			try {
 				AbstractTestUtil.init(null, true);
-				conn = DataSourceFactory.getConnection("dynamicDataSource",this.getClass().getClassLoader());
+				DbOperatorFactory factory = BeanContainerFactory.getBeanContainer(
+						getClass().getClassLoader()).getBean("tinyDBOperatorFactory");
+				Configuration configuration=factory.getConfiguration();
+				conn = configuration.getUseDataSource().getConnection();
 				ScriptRunner runner = new ScriptRunner(conn, false, false);
 				Resources.setCharset(Charset.forName("utf-8"));
 				// 加载sql脚本并执行

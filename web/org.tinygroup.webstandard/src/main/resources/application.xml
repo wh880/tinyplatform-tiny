@@ -287,13 +287,6 @@
         <annotation-mapping id="validate" value="org\.tiny\..*"></annotation-mapping>
     </annotation-configuration>
 
-    <!-- beanmanager配置信息  schema为表模式, bean-name为beanoperate的bean名称,table-name-pattern配置加载的表名称模式，key-type：表主键类型，现有increase和uuid-->
-    <bean-manager-config default-schema="netshop">
-        <bean-opertate-config schema="netshop"
-                              table-name-pattern="" bean-name="beanStringOperator" key-type="uuid">
-        </bean-opertate-config>
-    </bean-manager-config>
-
     <!--tiny-processor实现 -->
     <tiny-processors>
         <tiny-processor id="uiEngineTinyProcessor" class="uiEngineTinyProcessor">

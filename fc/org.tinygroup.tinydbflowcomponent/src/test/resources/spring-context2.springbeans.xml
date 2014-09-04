@@ -98,6 +98,11 @@
 		<property name="dataSource" ref="dynamicDataSource" />
 	</bean>
 
+    <bean id="tinyDBOperatorFactory" class="org.tinygroup.tinydb.spring.DBOperatorFactoryBean">
+	         <property name="dataSource" ref="dynamicDataSource" />
+	         <property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	         <property name="configLocation" value="classpath:tinydb.xml"></property>
+	</bean>
 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
