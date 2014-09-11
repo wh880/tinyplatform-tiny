@@ -182,12 +182,10 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 				if (relations != null) {
 					for (Relation subRelation : relations) {
 						if (subRelation.getMode().equals(Relation.MORE_TO_ONE)) {// n对1
-							callBack.processMoreToOne(bean, subRelation,
-									subRelation.getRelations());
+							callBack.processMoreToOne(bean, subRelation);
 						} else if (subRelation.getMode().equals(
 								Relation.ONE_TO_MORE)) {
-							callBack.processOneToMore(bean, subRelation,
-									subRelation.getRelations());
+							callBack.processOneToMore(bean, subRelation);
 						}
 					}
 				}
@@ -260,18 +258,15 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 	 * <br>
 	 */
 	interface RelationCallBack {
-		void processMoreToOne(Bean bean, Relation relation,
-				List<Relation> subRelations) throws TinyDbException;
+		void processMoreToOne(Bean bean, Relation relation) throws TinyDbException;
 
-		void processOneToMore(Bean bean, Relation relation,
-				List<Relation> relations) throws TinyDbException;
+		void processOneToMore(Bean bean, Relation relation) throws TinyDbException;
 	}
 
 	abstract class CrudRelationCallBack implements RelationCallBack {
 
-		public void processMoreToOne(Bean bean, Relation relation,
-				List<Relation> relations) throws TinyDbException {
-			checkMoreToOne(relations);
+		public void processMoreToOne(Bean bean, Relation relation) throws TinyDbException {
+			checkMoreToOne(relation.getRelations());
 			String relationKeyName = relation.getRelationKeyName();
 			if (StringUtil.isBlank(relationKeyName)) {
 				relationKeyName = relation.getType();
@@ -286,9 +281,8 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 
 		}
 
-		public void processOneToMore(Bean bean, Relation relation,
-				List<Relation> relations) throws TinyDbException {
-			checkOneToMore(relations);
+		public void processOneToMore(Bean bean, Relation relation) throws TinyDbException {
+			checkOneToMore(relation.getRelations());
 			String relationKeyName = relation.getRelationKeyName();
 			if (StringUtil.isBlank(relationKeyName)) {
 				relationKeyName = relation.getType();
@@ -368,9 +362,8 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 	}
 
 	class QueryRelationCallBack implements RelationCallBack {
-		public void processMoreToOne(Bean bean, Relation relation,
-				List<Relation> relations) throws TinyDbException {
-			checkMoreToOne(relations);
+		public void processMoreToOne(Bean bean, Relation relation) throws TinyDbException {
+			checkMoreToOne(relation.getRelations());
 			Bean subBean = createRelationBean(bean, relation);
 			String relationKeyName = relation.getRelationKeyName();
 			if (StringUtil.isBlank(relationKeyName)) {
@@ -381,9 +374,8 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 
 		}
 
-		public void processOneToMore(Bean bean, Relation relation,
-				List<Relation> relations) throws TinyDbException {
-			checkOneToMore(relations);
+		public void processOneToMore(Bean bean, Relation relation) throws TinyDbException {
+			checkOneToMore(relation.getRelations());
 			Bean[] beans = createRelationBeans(bean, relation);// 创建一对多关联的beans
 			List<Bean> subBeans = new ArrayList<Bean>();
 			if (beans != null) {
