@@ -109,6 +109,10 @@ public class Shard {
     public Connection getConnection(Connection connection) {
         return shardConnection.get(connection);
     }
+    
+    public void removeConnection(Connection connection) {
+         shardConnection.remove(connection);
+    }
 
     public int getReadWeight() {
         return readWeight;
