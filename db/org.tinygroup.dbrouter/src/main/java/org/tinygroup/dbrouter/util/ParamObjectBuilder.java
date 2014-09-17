@@ -61,6 +61,15 @@ public class ParamObjectBuilder {
 		}
 	}
 	
+	public void expandParam(){
+		this.paramNumber=paramNumber+1;
+		Object[] newParamCache=new Object[paramNumber];
+		for (int i = 0; i < paramsCache.length; i++) {
+			newParamCache[i]=paramsCache[i];
+		}
+		paramsCache=newParamCache;
+	}
+	
 	
 	public void addParamterObject(int parameterIndex, Object value) throws SQLException {
 		checkColumnIndex(parameterIndex);

@@ -63,19 +63,22 @@ public  final class RouterManagerBeanFactory {
     }
 
     public static RouterManager getManager() {
-       return getManager(DEFAULT_REGION, new JcsCache());
+       return getManager(DEFAULT_REGION);
     }
     
     public static RouterManager getManager(String region){
-    	return getManager(region, new JcsCache());
+    	return getManager(region,null);
     }
     
      public static RouterManager getManager(String region,Cache cache){
     	  if (manager == null) {
               manager = factory.getBean("routerManager");
+              if(cache==null){
+            	  cache=new JcsCache();
+              }
+              cache.init(region);
+              manager.setCache(cache);
           }
-          cache.init(region);
-          manager.setCache(cache);
           return manager;
     }
     
