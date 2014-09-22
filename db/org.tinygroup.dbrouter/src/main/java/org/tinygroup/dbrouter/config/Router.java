@@ -63,9 +63,6 @@ public class Router {
     @XStreamAlias("partitions")
     private List<Partition> partitions;
     @XStreamAsAttribute
-    @XStreamAlias("cpu-ratio")
-    private double cpuRatio;
-    @XStreamAsAttribute
     @XStreamAlias("time-out")
     private int timeOut;
     @XStreamAsAttribute
@@ -134,20 +131,6 @@ public class Router {
         }
         throw new DbrouterRuntimeException("找不到数据源：" + datasourceId);
     }
-
-	public double getCpuRatio() {
-		if(cpuRatio<0){
-			cpuRatio=0;
-		}
-		if(cpuRatio>100){
-			cpuRatio=100;
-		}
-		return cpuRatio;
-	}
-
-	public void setCpuRatio(double cpuRatio) {
-		this.cpuRatio = cpuRatio;
-	}
 
 	public RouterKeyGenerator getKeyGenerator() {
 		return keyGenerator;
