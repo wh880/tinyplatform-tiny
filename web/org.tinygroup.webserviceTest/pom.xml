@@ -15,7 +15,11 @@
             <artifactId>org.tinygroup.validate</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
+        <dependency>
+            <groupId>org.tinygroup</groupId>
+            <artifactId>org.tinygroup.cepcorepcsc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
             <artifactId>org.tinygroup.jspengine</artifactId>
