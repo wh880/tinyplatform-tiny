@@ -65,6 +65,14 @@ public class Router {
     @XStreamAsAttribute
     @XStreamAlias("cpu-ratio")
     private double cpuRatio;
+    @XStreamAsAttribute
+    @XStreamAlias("time-out")
+    private int timeOut;
+    @XStreamAsAttribute
+    @XStreamAlias("thread-size")
+    private int threadSize=DEFAULT_THREAD_SIZE;
+    
+    private static final int DEFAULT_THREAD_SIZE=100;
 
     public Router(String id, String userName, String password) {
         this.id = id;
@@ -151,6 +159,25 @@ public class Router {
 
 	public void setDataSources(List<DataSourceConfig> dataSources) {
 		this.dataSources = dataSources;
+	}
+
+	public int getTimeOut() {
+		return timeOut;
+	}
+
+	public void setTimeOut(int timeOut) {
+		this.timeOut = timeOut;
+	}
+
+	public int getThreadSize() {
+		if(threadSize<=0){
+			threadSize=DEFAULT_THREAD_SIZE;
+		}
+		return threadSize;
+	}
+
+	public void setThreadSize(int threadSize) {
+		this.threadSize = threadSize;
 	}
     
 }
