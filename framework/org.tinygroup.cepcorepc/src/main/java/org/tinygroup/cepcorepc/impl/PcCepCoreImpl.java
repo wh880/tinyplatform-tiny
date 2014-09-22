@@ -17,6 +17,7 @@ import org.tinygroup.cepcore.aop.CEPCoreAopManager;
 import org.tinygroup.cepcore.exception.RequestNotFoundException;
 import org.tinygroup.cepcore.impl.WeightChooser;
 import org.tinygroup.cepcore.util.CEPCoreUtil;
+import org.tinygroup.context.Context;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.ServiceRequest;
@@ -29,6 +30,7 @@ public class PcCepCoreImpl implements CEPCore {
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
 	private Map<String, EventProcessor> processorMap = new HashMap<String, EventProcessor>();
 	private Map<String, ServiceInfo> localServiceMap = new HashMap<String, ServiceInfo>();
+	private Map<String, ServiceInfo> remoteServiceMap = new HashMap<String, ServiceInfo>();
 	private List<ServiceInfo> localServices = new ArrayList<ServiceInfo>();
 	private Map<EventProcessor, List<String>> regexMap = new HashMap<EventProcessor, List<String>>();
 	private List<EventProcessor> processorList = new ArrayList<EventProcessor>();
@@ -75,6 +77,10 @@ public class PcCepCoreImpl implements CEPCore {
 						localServiceMap.put(service.getServiceId(), service);
 						localServices.add(service);
 					}
+				}
+			} else {
+				for (ServiceInfo service : servicelist) {
+					remoteServiceMap.put(service.getServiceId(), service);
 				}
 			}
 			for (ServiceInfo service : servicelist) {
@@ -155,8 +161,19 @@ public class PcCepCoreImpl implements CEPCore {
 			// local后置Aop
 			aopMananger.afterLocalHandle(event);
 		} else {
+			ServiceInfo sinfo = null;
+			List<ServiceInfo> list = eventProcessor.getServiceInfos();
+			for (ServiceInfo info : list) {
+				if (info.getServiceId().equals(request.getServiceId())) {
+					sinfo = info;
+				}
+			}
+			Context newContext = CEPCoreUtil.getContext(event, sinfo, this
+					.getClass().getClassLoader());
+
 			// remote前置Aop
 			aopMananger.beforeRemoteHandle(event);
+			event.getServiceRequest().setContext(newContext);
 			try {
 				// remote处理
 				// eventProcessor.process(event);
@@ -261,6 +278,10 @@ public class PcCepCoreImpl implements CEPCore {
 			throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
 					+ serviceRequest.getServiceId());
 		}
+		if(list.size()==1){
+			return list.get(0);
+		}
+		
 		// 如果有本地的 则直接返回本地的EventProcessor
 		for (EventProcessor e : list) {
 			if (e.getType() == EventProcessor.TYPE_LOCAL) {
@@ -287,14 +308,23 @@ public class PcCepCoreImpl implements CEPCore {
 		return localServices;
 	}
 
+	private ServiceInfo getLocalServiceInfo(String serviceId) {
+		return localServiceMap.get(serviceId);
+	}
+	private ServiceInfo getRemoteServiceInfo(String serviceId) {
+		return remoteServiceMap.get(serviceId);
+	}
 	public ServiceInfo getServiceInfo(String serviceId) {
-		ServiceInfo info = localServiceMap.get(serviceId);
-		if (info == null) {// 如果本地查询服务没有查询到，且未开启远程调用，则抛出服务未找到异常
+		ServiceInfo info = getLocalServiceInfo(serviceId);
+		if(info == null){
+			info = getRemoteServiceInfo(serviceId);
+		}
+		if (info == null) {
 			throw new RequestNotFoundException(serviceId);
 		}
 		return info;
+		
 	}
-
 	public void setEventProcessorChoose(EventProcessorChoose chooser) {
 		this.chooser = chooser;
 	}
@@ -323,5 +353,7 @@ public class PcCepCoreImpl implements CEPCore {
 			eventProcessor.process(e);
 		}
 	}
+
+	
 
 }
