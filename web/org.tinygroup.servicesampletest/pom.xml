@@ -5,8 +5,8 @@
     <artifactId>web</artifactId>
     <version>1.2.0-SNAPSHOT</version>
   </parent>
-   <groupId>org.tinygroup</groupId>
-  <artifactId>org.tinygroup.webserviceTest</artifactId>
+  <groupId>org.tinygroup</groupId>
+  <artifactId>org.tinygroup.servicesampletest</artifactId>
   <version>1.2.0-SNAPSHOT</version>
   <packaging>war</packaging>
    <dependencies>
@@ -17,7 +17,7 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.cepcorepcsc</artifactId>
+            <artifactId>org.tinygroup.cepcorenetty</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -107,7 +107,7 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.webservice</artifactId>
+            <artifactId>org.tinygroup.servicesample</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

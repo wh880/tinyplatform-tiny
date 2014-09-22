@@ -28,10 +28,9 @@
 	<application-processors>
 		<application-processor bean="fileResolverProcessor"></application-processor>
 		<application-processor bean="PluginMgtProcessor"></application-processor>
-		<application-processor bean="CEPProcessor"></application-processor>
-		<application-processor bean="dictLoadProcessor"></application-processor>
 		<application-processor bean="tinyListenerProcessor"></application-processor>
 		<application-processor bean="fileMonitorProcessor"></application-processor>
+		<application-processor bean="nettyCepCoreProcessor" />
 	</application-processors>
 
 	<!-- 这里是文件搜索器相关配置，如果配置请参考file-resolver-configuration配置手册 -->
@@ -256,7 +255,7 @@
 	<!-- cep远程调用配置 -->
 
 	<cep-configuration node-name="ar">
-		<operator name="arWorker"></operator>
+		<operator name="ar"></operator>
 	</cep-configuration>
 	
 	<!-- aop配置 -->
@@ -552,7 +551,8 @@
 			</tiny-wrapper-filter> -->
 	</tiny-filters>
 	<!--tiny listener 配置 -->
-	<tiny-listener>
+	<tiny-listener/>
+	<!--<tiny-listener>
 		<listener-bean name="TG_WSServletContextListener"></listener-bean>
 		<past-pattern pattern=".*" />
 		<skip-pattern
@@ -562,7 +562,7 @@
 		<skip-pattern
 			pattern="serviceGetFlow|serviceGetFlowWithVersion|serviceRemoveFlow|serviceRemoveFlowWithVersion" />
 		<skip-pattern pattern="serviceGetServiceCount|serviceGetServiceRegistryItems" />
-	</tiny-listener>
+	</tiny-listener> -->
 	<!--velocity 自定义类配置 -->
 	<velocity-context-config>
 		<static-classes>
