@@ -26,7 +26,6 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.config.util.ConfigurationUtil;
-import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
@@ -68,28 +67,29 @@ public class TinyListenerProcessor extends AbstractConfiguration implements
 	private void initListeners() {
 		List<XmlNode> listenerNodes = ConfigurationUtil.combineSubList(
 				LISTENER_BEAN, applicationConfig, componentConfig);
-		for (XmlNode node : listenerNodes) {
-			ServletContextListener listener = BeanContainerFactory
-					.getBeanContainer(this.getClass().getClassLoader())
-					.getBean(node.getAttribute("name"));
-			listeners.add(listener);
-		}
-		TinyServletContext servletContext = (TinyServletContext) ServletContextHolder
-				.getServletContext();
-		if (servletContext != null) {// 不是web程序启动，比如是测试用例启动插件
-			servletContext.setFullContextFileRepository(BeanContainerFactory
-					.getBeanContainer(this.getClass().getClassLoader())
-					.getBean(FullContextFileRepository.class));
-			event = new ServletContextEvent(servletContext);
-			List<XmlNode> paramNodes = ConfigurationUtil.combineSubList(
-					CONTEXT_PARAM, applicationConfig, componentConfig);
-			for (XmlNode node : paramNodes) {
-				String name = node.getAttribute("name");
-				String value = node.getAttribute("value");
-				servletContext.setInitParameter(name, value);
+		if (!CollectionUtil.isEmpty(listenerNodes)) {
+			for (XmlNode node : listenerNodes) {
+				ServletContextListener listener = BeanContainerFactory
+						.getBeanContainer(this.getClass().getClassLoader())
+						.getBean(node.getAttribute("name"));
+				listeners.add(listener);
 			}
-			servletContext.setInitParameter(LISTENER_NODE_CONFIG,
-					applicationConfig.toString());
+			TinyServletContext servletContext = (TinyServletContext) ServletContextHolder
+					.getServletContext();
+			if (servletContext != null) {// 不是web程序启动，比如是测试用例启动插件
+				event = new ServletContextEvent(servletContext);
+				List<XmlNode> paramNodes = ConfigurationUtil.combineSubList(
+						CONTEXT_PARAM, applicationConfig, componentConfig);
+				if (!CollectionUtil.isEmpty(paramNodes)) {
+					for (XmlNode node : paramNodes) {
+						String name = node.getAttribute("name");
+						String value = node.getAttribute("value");
+						servletContext.setInitParameter(name, value);
+					}
+				}
+				servletContext.setInitParameter(LISTENER_NODE_CONFIG,
+						applicationConfig.toString());
+			}
 		}
 
 	}
