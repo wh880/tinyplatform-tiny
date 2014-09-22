@@ -15,10 +15,12 @@
  */
 package org.tinygroup.jsqlparser.statement;
 
+import java.io.Serializable;
+
 /**
  * An operation on the db (SELECT, UPDATE ecc.)
  */
-public interface Statement {
+public interface Statement extends Serializable {
 
 	void accept(StatementVisitor statementVisitor);
 }

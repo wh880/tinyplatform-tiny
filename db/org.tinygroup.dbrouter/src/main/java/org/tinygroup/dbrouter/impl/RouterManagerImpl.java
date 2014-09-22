@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.tinygroup.cache.Cache;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.dbrouter.PartitionRule;
 import org.tinygroup.dbrouter.RouterKeyGenerator;
@@ -75,7 +76,8 @@ public class RouterManagerImpl implements RouterManager {
 	/**
 	 * 已经解析出来的语句缓冲
 	 */
-	private Map<String, Statement> statementCache = new ConcurrentHashMap<String, Statement>();
+	private Cache cache;
+	
 	/**
 	 * 分片负载平衡器
 	 */
@@ -113,6 +115,14 @@ public class RouterManagerImpl implements RouterManager {
 			logger.errorMessage("查找集群配置:dbrouter-config.xml出错", e);
 			throw new DbrouterRuntimeException(e);
 		}
+	}
+	
+	public Cache getCache() {
+		return cache;
+	}
+
+	public void setCache(Cache cache) {
+		this.cache = cache;
 	}
 
 	public boolean isShardSql(Partition partition, String sql,
@@ -264,14 +274,18 @@ public class RouterManagerImpl implements RouterManager {
 
 	public Statement getSqlStatement(String sql) {
 		synchronized (parserManager) {
-			Statement statement = statementCache.get(sql);
+			Statement statement=null;
+			try {
+				 statement = (Statement) cache.get(sql);
+			} catch (Exception e) {
+			}
 			if (statement == null) {
 				try {
 					statement = parserManager.parse(new StringReader(sql));
 				} catch (JSQLParserException e) {
 					throw new DbrouterRuntimeException(e);
 				}
-				statementCache.put(sql, statement);
+				cache.put(sql, statement);
 			}
 			return statement;
 		}

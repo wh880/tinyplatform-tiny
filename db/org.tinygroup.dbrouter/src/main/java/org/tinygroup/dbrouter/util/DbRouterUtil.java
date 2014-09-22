@@ -16,7 +16,6 @@
 package org.tinygroup.dbrouter.util;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,7 +29,6 @@ import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
 import org.tinygroup.dbrouter.config.Router;
-import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.jsqlparser.expression.Alias;
@@ -283,90 +281,6 @@ public final class DbRouterUtil {
 		return paramSize;
 	}
 
-	/**
-	 * 框架内部会对sql进行处理： 如果是insert语句，会检测主键字段是否有传值。如果插入语句没有传主键字段，将会自动赋值。
-	 * 
-	 * @param sql
-	 * @param router
-	 * @param metaData
-	 * @return
-	 * @throws SQLException
-	 */
-	public static String transformInsertSql(String sql, Shard shard,
-			Router router, Map<String, String> tableMapping,
-			DatabaseMetaData metaData) throws SQLException {
-		Statement originalStatement = RouterManagerBeanFactory.getManager()
-				.getSqlStatement(sql);
-		if (originalStatement instanceof Insert) {
-			Statement statement;
-			try {
-				statement = (Statement) BeanUtil.deepCopy(originalStatement);
-			} catch (Exception e) {
-				throw new SQLException(e.getMessage());
-			}
-			Insert insert = (Insert) statement;
-			Table table = insert.getTable();
-			String tableName = table.getName();
-			String realTableName = getRealTableName(tableMapping, tableName);
-			String queryTableName = realTableName;
-			ResultSet rs = null;
-			try {
-				rs = metaData.getPrimaryKeys(null, null, queryTableName);
-				if (rs.next()) {
-					getPrimaryKeys(router, metaData, rs, insert, table,
-							queryTableName);
-				} else {
-					rs.close();// 先关闭上次查询的resultset
-					queryTableName = realTableName.toUpperCase();
-					rs = metaData.getPrimaryKeys(null, null, queryTableName);
-					if (rs.next()) {
-						getPrimaryKeys(router, metaData, rs, insert, table,
-								queryTableName);
-					}
-				}
-			} finally {
-				if (rs != null) {
-					rs.close();
-				}
-			}
-			return insert.toString();
-		}
-		return sql;
-	}
-
-	private static void getPrimaryKeys(Router router,
-			DatabaseMetaData metaData, ResultSet rs, Insert insert,
-			Table table, String realTableName) throws SQLException {
-		String primaryKey = rs.getString("COLUMN_NAME");
-		ResultSet typeRs = metaData.getColumns(null, null, realTableName,
-				primaryKey);
-		try {
-			if (typeRs.next()) {
-				addPrimaryColumn(router, insert, table, primaryKey, typeRs);
-			}
-		} finally {
-			if (typeRs != null) {
-				typeRs.close();
-			}
-		}
-	}
-
-	private static void addPrimaryColumn(Router router, Insert insert,
-			Table table, String primaryKey, ResultSet typeRs)
-			throws SQLException {
-		int dataType = typeRs.getInt("DATA_TYPE");
-		boolean exist = primaryKeyInColumns(primaryKey, insert);
-		if (!exist) {
-			Column primaryColumn = new Column(table, primaryKey);
-			List<Column> columns = insert.getColumns();
-			columns.add(primaryColumn);
-			ItemsList itemsList = insert.getItemsList();
-			if (itemsList instanceof ExpressionList) {
-				addPrimaryKeyExpression(router, table.getName(), dataType,
-						itemsList);
-			}
-		}
-	}
 
 	private static String getRealTableName(Map<String, String> tableMapping,
 			String tableName) {
@@ -414,19 +328,6 @@ public final class DbRouterUtil {
 		expressions.add(expression);
 	}
 
-	private static boolean primaryKeyInColumns(String primaryKey, Insert insert) {
-		List<Column> columns = insert.getColumns();
-		boolean exist = false;
-		if (!CollectionUtil.isEmpty(columns)) {
-			for (Column column : columns) {
-				if (column.getColumnName().equalsIgnoreCase(primaryKey)) {
-					exist = true;
-					break;
-				}
-			}
-		}
-		return exist;
-	}
 
 	/**
 	 * 检测查询语句选择项是否包含order by\group by字段，不存在则创建order by\group by字段

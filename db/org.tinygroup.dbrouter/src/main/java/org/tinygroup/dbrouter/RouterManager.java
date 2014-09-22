@@ -15,6 +15,7 @@
  */
 package org.tinygroup.dbrouter;
 
+import org.tinygroup.cache.Cache;
 import org.tinygroup.dbrouter.balance.ShardBalance;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.config.Routers;
@@ -205,4 +206,14 @@ public interface RouterManager {
      * @param inputStream
      */
     void addRouters(InputStream inputStream);
+    /**
+     * 设置缓存
+     * @param cache
+     */
+    void setCache(Cache cache);
+    /**
+     * 获取缓存
+     * @return
+     */
+    Cache getCache();
 }

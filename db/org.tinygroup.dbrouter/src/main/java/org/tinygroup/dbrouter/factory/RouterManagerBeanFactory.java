@@ -15,6 +15,8 @@
  */
 package org.tinygroup.dbrouter.factory;
 
+import org.tinygroup.cache.Cache;
+import org.tinygroup.cache.jcs.JcsCache;
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.factory.BeanFactory;
 import org.tinygroup.factory.Factory;
@@ -38,6 +40,7 @@ public  final class RouterManagerBeanFactory {
     private static Factory factory;
     private static RouterManager manager;
     private static Logger logger = LoggerFactory.getLogger(RouterManagerBeanFactory.class);
+    private static String DEFAULT_REGION="dbrouter";
 
     public static final String DB_ROUTER_BEANS_XML = "/dbrouterbeans.xml";
     
@@ -60,11 +63,25 @@ public  final class RouterManagerBeanFactory {
     }
 
     public static RouterManager getManager() {
-        if (manager == null) {
-            manager = factory.getBean("routerManager");
-        }
-        return manager;
+       return getManager(DEFAULT_REGION);
     }
+    
+    public static RouterManager getManager(String region){
+    	return getManager(region,null);
+    }
+    
+     public static RouterManager getManager(String region,Cache cache){
+    	  if (manager == null) {
+              manager = factory.getBean("routerManager");
+              if(cache==null){
+            	  cache=new JcsCache();
+              }
+              cache.init(region);
+              manager.setCache(cache);
+          }
+          return manager;
+    }
+    
 
 
 }
