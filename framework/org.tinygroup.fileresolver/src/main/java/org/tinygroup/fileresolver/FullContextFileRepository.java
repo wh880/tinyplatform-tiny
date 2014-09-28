@@ -26,6 +26,8 @@ import org.tinygroup.vfs.FileObject;
  * 
  */
 public interface FullContextFileRepository {
+	
+	String FILE_REPOSITORY_BEAN_NAME="fullContextFileRepository";
 	/**
 	 * 添加文件
 	 * 

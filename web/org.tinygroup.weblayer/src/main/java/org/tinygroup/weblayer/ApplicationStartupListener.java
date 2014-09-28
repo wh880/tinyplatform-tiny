@@ -35,6 +35,7 @@ import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverUtil;
+import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.logger.LogLevel;
@@ -49,14 +50,14 @@ import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
 public class ApplicationStartupListener implements ServletContextListener {
-    private static Logger logger = LoggerFactory
+	private static Logger logger = LoggerFactory
 			.getLogger(ApplicationStartupListener.class);
 	private Application application = null;
 
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		logger.logMessage(LogLevel.INFO, "WEB 应用停止中...");
 		application.stop();
-//		SpringBeanContainer.destory();// 关闭spring容器
+		// SpringBeanContainer.destory();// 关闭spring容器
 		logger.logMessage(LogLevel.INFO, "WEB 应用停止完成。");
 	}
 
@@ -149,6 +150,10 @@ public class ApplicationStartupListener implements ServletContextListener {
 			logger.logMessage(LogLevel.INFO, "启动应用开始...");
 			application.init();
 			application.start();
+			FullContextFileRepository fileRepository = BeanContainerFactory
+					.getBeanContainer(this.getClass().getClassLoader())
+					.getBean(FullContextFileRepository.FILE_REPOSITORY_BEAN_NAME);
+			servletContext.setFullContextFileRepository(fileRepository);//设置上下文关联的全文搜索对象
 		}
 
 		logger.logMessage(LogLevel.INFO, "WEB 应用启动完成。");
@@ -156,7 +161,8 @@ public class ApplicationStartupListener implements ServletContextListener {
 
 	private void loadSpringBeans(String applicationConfig) {
 		logger.logMessage(LogLevel.INFO, "加载Spring Bean文件开始...");
-		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
+		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class
+				.getName());
 		FileResolver fileResolver = new FileResolverImpl();
 		FileResolverUtil.addClassPathPattern(fileResolver);
 		loadFileResolverConfig(fileResolver, applicationConfig);

@@ -63,8 +63,13 @@ public class Router {
     @XStreamAlias("partitions")
     private List<Partition> partitions;
     @XStreamAsAttribute
-    @XStreamAlias("cpu-ratio")
-    private double cpuRatio;
+    @XStreamAlias("time-out")
+    private int timeOut;
+    @XStreamAsAttribute
+    @XStreamAlias("thread-size")
+    private int threadSize=DEFAULT_THREAD_SIZE;
+    
+    private static final int DEFAULT_THREAD_SIZE=100;
 
     public Router(String id, String userName, String password) {
         this.id = id;
@@ -127,20 +132,6 @@ public class Router {
         throw new DbrouterRuntimeException("找不到数据源：" + datasourceId);
     }
 
-	public double getCpuRatio() {
-		if(cpuRatio<0){
-			cpuRatio=0;
-		}
-		if(cpuRatio>100){
-			cpuRatio=100;
-		}
-		return cpuRatio;
-	}
-
-	public void setCpuRatio(double cpuRatio) {
-		this.cpuRatio = cpuRatio;
-	}
-
 	public RouterKeyGenerator getKeyGenerator() {
 		return keyGenerator;
 	}
@@ -151,6 +142,25 @@ public class Router {
 
 	public void setDataSources(List<DataSourceConfig> dataSources) {
 		this.dataSources = dataSources;
+	}
+
+	public int getTimeOut() {
+		return timeOut;
+	}
+
+	public void setTimeOut(int timeOut) {
+		this.timeOut = timeOut;
+	}
+
+	public int getThreadSize() {
+		if(threadSize<=0){
+			threadSize=DEFAULT_THREAD_SIZE;
+		}
+		return threadSize;
+	}
+
+	public void setThreadSize(int threadSize) {
+		this.threadSize = threadSize;
 	}
     
 }
