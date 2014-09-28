@@ -338,23 +338,24 @@ public class WebserviceUtil {
 		String type = parameter.getType();
 		if (type == null || type.trim().length() == 0 || "void".equals(type)) {
 			return "void";
-		} else if ("char".equals(type)) {
-			return "java.lang.Character";
-		} else if ("byte".equals(type)) {
-			return "java.lang.Byte";
-		} else if ("short".equals(type)) {
-			return "java.lang.Short";
-		} else if ("int".equals(type)) {
-			return "java.lang.Integer";
-		} else if ("long".equals(type)) {
-			return "java.lang.Long";
-		} else if ("float".equals(type)) {
-			return "java.lang.Float";
-		} else if ("double".equals(type)) {
-			return "java.lang.Double";
-		} else if ("boolean".equals(type)) {
-			return "java.lang.Boolean";
-		}
+		} 
+//		else if ("char".equals(type)) {
+//			return "java.lang.Character";
+//		} else if ("byte".equals(type)) {
+//			return "java.lang.Byte";
+//		} else if ("short".equals(type)) {
+//			return "java.lang.Short";
+//		} else if ("int".equals(type)) {
+//			return "java.lang.Integer";
+//		} else if ("long".equals(type)) {
+//			return "java.lang.Long";
+//		} else if ("float".equals(type)) {
+//			return "java.lang.Float";
+//		} else if ("double".equals(type)) {
+//			return "java.lang.Double";
+//		} else if ("boolean".equals(type)) {
+//			return "java.lang.Boolean";
+//		}
 		return type;
 	}
 
