@@ -28,7 +28,6 @@ import java.util.Map;
 
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.CEPCoreOperator;
-import org.tinygroup.cepcore.CEPCoreRemoteInterface;
 import org.tinygroup.cepcore.exception.CEPConnectException;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.central.Node;

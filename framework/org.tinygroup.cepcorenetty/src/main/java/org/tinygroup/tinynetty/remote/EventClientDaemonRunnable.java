@@ -36,7 +36,6 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 	List<EventTrigger> preTriggers = new ArrayList<EventTrigger>();
 	List<EventTrigger> postTriggers = new ArrayList<EventTrigger>();
 	boolean triggered = false;
-	TriggerThread triggerThread = new TriggerThread();
 
 	public EventClientDaemonRunnable(String hostName, int port,
 			boolean reconnect) {
@@ -53,7 +52,9 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 	}
 
 	public void run() {
-		triggerThread.start();
+		if(preTriggers.size()>0){
+			(new PreTriggerThread()).start();
+		}
 		super.run();
 	}
 
@@ -64,6 +65,9 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 			if (reconnect) {
 				flag = true;
 				triggered = false;
+				if(preTriggers.size()>0){
+					(new PreTriggerThread()).start();
+				}
 			}
 
 		} else {
@@ -89,16 +93,15 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 		}
 	}
 
-	class TriggerThread extends Thread {
+	class PreTriggerThread extends Thread {
 		public void run() {
-			while (true) {
+			while (!triggered) {
 				if (client.isReady()) {
-					if (!triggered) {
-						for (EventTrigger trigger : preTriggers) {
-							trigger.execute();
-						}
-						triggered = true;
+					// if (!triggered) {
+					for (EventTrigger trigger : preTriggers) {
+						trigger.execute();
 					}
+					triggered = true;
 				}
 
 			}
