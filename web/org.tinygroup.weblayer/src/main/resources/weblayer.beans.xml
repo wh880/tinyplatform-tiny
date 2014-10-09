@@ -123,11 +123,7 @@
 		<property name="customEditors">
 			<map>
 				<!-- 类型 -->
-				<entry key="org.tinygroup.commons.tools.HumanReadableSize">
-					<!-- 内部Bean只能在此类中访问 -->
-					<bean
-						class="org.tinygroup.weblayer.webcontext.parser.propertyedit.HumanReadableSizeEditor">
-					</bean>
+				<entry key="org.tinygroup.commons.tools.HumanReadableSize" value="org.tinygroup.weblayer.webcontext.parser.propertyedit.HumanReadableSizeEditor">
 				</entry>
 			</map>
 		</property>

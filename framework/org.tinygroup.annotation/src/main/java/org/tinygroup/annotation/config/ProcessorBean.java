@@ -30,6 +30,8 @@ public class ProcessorBean {
 	private Boolean enable;// 是否启用
 	@XStreamAsAttribute
 	private String name;// Spring bean名称
+	@XStreamAsAttribute
+	private String type;//类的全路径
 
 	public Boolean getEnable() {
 		return enable;
@@ -47,4 +49,12 @@ public class ProcessorBean {
 		this.name = name;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 }

@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.tinygroup.commons.tools.StringUtil;
+
 /**
  * 封装classname和annotationType正则表达式的类
  * 
@@ -40,7 +42,9 @@ public class AnnotationTypeMatcher {
 				classPatterns.add(pattern);
 			}
 		}
-		annotationPattern = Pattern.compile(annotationType);
+		if(!StringUtil.isBlank(annotationType)){
+			annotationPattern = Pattern.compile(annotationType);
+		}
 	}
 
 	/**

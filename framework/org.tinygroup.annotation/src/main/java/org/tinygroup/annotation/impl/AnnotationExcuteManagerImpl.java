@@ -32,6 +32,7 @@ import org.tinygroup.annotation.config.AnnotationPropertyMatcher;
 import org.tinygroup.annotation.config.ProcessorBean;
 import org.tinygroup.annotation.fileresolver.AnnotationFileProcessor;
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.logger.LogLevel;
@@ -78,6 +79,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 	 * @param fileObject
 	 * @return
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void processClassFileObject(FileObject fileObject) {
 
 		for (AnnotationClassMatcher classMatcher : classMatchers) {
@@ -86,8 +88,12 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 				logger.logMessage(LogLevel.DEBUG, "找到匹配类名正则[{0}]的类:[{1}]",
 						classMatcher.getClassName(), className);
 				try {
-					processClassProcessor(getClass().getClassLoader()
-							.loadClass(className), classMatcher);
+					Class clazz=getClass().getClassLoader().loadClass(className);
+					processClassProcessor(clazz, classMatcher);
+					processPropertyProcessor(clazz,
+							classMatcher.getAnnotationPropertyMatchers());
+					processMethodProcessor(clazz,
+							classMatcher.getAnnotationMethodMatchers());
 				} catch (ClassNotFoundException e) {
 					logger.errorMessage("加载器加载的类[{0}]不存在", e, className);
 				} catch (Exception e) {
@@ -113,14 +119,8 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 						classMatcher.getAnnotationType());
 				processClassBean(clazz, annotation, new AnnotationMatcherDto(
 						classMatcher));
-				processPropertyProcessor(clazz,
-						classMatcher.getAnnotationPropertyMatchers());
-				processMethodProcessor(clazz,
-						classMatcher.getAnnotationMethodMatchers());
-
 			}
 		}
-
 	}
 
 	/**
@@ -212,10 +212,10 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 				.getAnnotationClassMatcher().getProcessorBeans();
 		for (ProcessorBean processorBean : processorBeans) {
 			if (processorBean.getEnable()) {
-				AnnotationClassAction classAction = BeanContainerFactory
-						.getBeanContainer(this.getClass().getClassLoader())
-						.getBean(processorBean.getName());
-				classAction.process(clazz, annotation);
+				AnnotationClassAction classAction = (AnnotationClassAction) newInstance(processorBean);
+				if(classAction!=null){
+					classAction.process(clazz, annotation);
+				}
 			}
 
 		}
@@ -227,14 +227,29 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 				.getAnnotationMethodMatcher().getProcessorBeans();
 		for (ProcessorBean processorBean : processorBeans) {
 			if (processorBean.getEnable()) {
-				AnnotationMethodAction methodAction = BeanContainerFactory
-						.getBeanContainer(this.getClass().getClassLoader())
-						.getBean(processorBean.getName());
-				methodAction.process(clazz, annotationMatcherDto.getMethod(),
-						annotation);
-
+				AnnotationMethodAction methodAction =(AnnotationMethodAction) newInstance(processorBean);
+				if(methodAction!=null){
+					methodAction.process(clazz, annotationMatcherDto.getMethod(),
+							annotation);
+				}
 			}
 		}
+	}
+	
+	private Object newInstance(ProcessorBean processorBean){
+		String beanName=processorBean.getName();
+		if(!StringUtil.isBlank(beanName)){
+			 return BeanContainerFactory
+				.getBeanContainer(this.getClass().getClassLoader())
+				.getBean(beanName);
+		}
+		try {
+			Object instance=Class.forName(processorBean.getType()).newInstance();
+			return instance; 
+		} catch (Exception e) {
+			logger.errorMessage("type:[{0}]实例化出错", e,processorBean.getType());
+		}
+		return null;
 	}
 
 	private <T> void processPropertyBean(Class<T> clazz, Annotation annotation,
@@ -243,11 +258,11 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 				.getAnnotationPropertyMatcher().getProcessorBeans();
 		for (ProcessorBean processorBean : processorBeans) {
 			if (processorBean.getEnable()) {
-				AnnotationPropertyAction propertyAction = BeanContainerFactory
-				.getBeanContainer(this.getClass().getClassLoader())
-						.getBean(processorBean.getName());
-				propertyAction.process(clazz, annotationMatcherDto.getField(),
-						annotation);
+				AnnotationPropertyAction propertyAction = (AnnotationPropertyAction) newInstance(processorBean);
+				if(propertyAction!=null){
+					propertyAction.process(clazz, annotationMatcherDto.getField(),
+							annotation);
+				}
 			}
 		}
 	}

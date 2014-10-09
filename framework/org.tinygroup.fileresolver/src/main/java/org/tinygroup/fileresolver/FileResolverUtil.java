@@ -124,6 +124,9 @@ public class FileResolverUtil {
 		List<String> allScanningPath = new ArrayList<String>();
 		logger.logMessage(LogLevel.INFO, "查找WEB-INF/classes路径开始...");
 		URL url = FileResolverImpl.class.getResource("/");
+		if(url==null){
+			url = FileResolverImpl.class.getResource("");
+		}
 		String path = url.toString();
 		logger.logMessage(LogLevel.INFO, "WEB-INF/classes路径是:{}", path);
 		if (path.indexOf("!") < 0) {// 如果在目录中
