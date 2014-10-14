@@ -15,10 +15,12 @@
  */
 package org.tinygroup.jsqlparser.expression;
 
+import java.io.Serializable;
+
 /**
  * @author toben
  */
-public class Alias {
+public class Alias implements Serializable{
 
     private String name;
     private boolean useAs = true;

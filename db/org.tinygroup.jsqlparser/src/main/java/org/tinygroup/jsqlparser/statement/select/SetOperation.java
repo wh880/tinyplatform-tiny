@@ -15,6 +15,8 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
+import java.io.Serializable;
+
 import org.tinygroup.jsqlparser.statement.select.SetOperationList.SetOperationType;
 
 /**
@@ -23,7 +25,7 @@ import org.tinygroup.jsqlparser.statement.select.SetOperationList.SetOperationTy
  *
  * @author tw
  */
-public abstract class SetOperation {
+public abstract class SetOperation implements Serializable{
 
 	private SetOperationType type;
 

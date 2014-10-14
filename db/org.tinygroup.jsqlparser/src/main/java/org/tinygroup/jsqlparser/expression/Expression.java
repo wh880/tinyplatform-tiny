@@ -15,7 +15,9 @@
  */
 package org.tinygroup.jsqlparser.expression;
 
-public interface Expression {
+import java.io.Serializable;
+
+public interface Expression extends Serializable {
 
 	void accept(ExpressionVisitor expressionVisitor);
 }

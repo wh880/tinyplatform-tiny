@@ -15,13 +15,15 @@
  */
 package org.tinygroup.jsqlparser.schema;
 
+import java.io.Serializable;
+
 import org.tinygroup.jsqlparser.expression.*;
 import org.tinygroup.jsqlparser.statement.select.*;
 
 /**
  * A table. It can have an alias and the schema name it belongs to.
  */
-public class Table implements FromItem, MultiPartName {
+public class Table implements FromItem, MultiPartName,Serializable {
 
     private Database database;
     private String schemaName;

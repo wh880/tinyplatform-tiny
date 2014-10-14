@@ -15,10 +15,11 @@
  */
 package org.tinygroup.jsqlparser.schema;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class Server implements MultiPartName {
+public final class Server implements MultiPartName,Serializable {
     public static final Pattern SERVER_PATTERN = Pattern.compile("\\[([^\\]]+?)(?:\\\\([^\\]]+))?\\]");
 
     private String serverName;

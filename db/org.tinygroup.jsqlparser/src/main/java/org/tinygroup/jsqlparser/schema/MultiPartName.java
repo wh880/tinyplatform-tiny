@@ -15,6 +15,8 @@
  */
 package org.tinygroup.jsqlparser.schema;
 
-public interface MultiPartName {
+import java.io.Serializable;
+
+public interface MultiPartName extends Serializable {
     String getFullyQualifiedName();
 }

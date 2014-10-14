@@ -15,11 +15,13 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
+import java.io.Serializable;
+
 /**
  * A limit clause in the form [LIMIT {[offset,] row_count) | (row_count | ALL)
  * OFFSET offset}]
  */
-public class Limit {
+public class Limit implements Serializable{
 
 	private long offset;
 	private long rowCount;

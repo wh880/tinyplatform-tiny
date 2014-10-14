@@ -17,9 +17,10 @@ package org.tinygroup.jsqlparser.statement.select;
 
 import org.tinygroup.jsqlparser.schema.Column;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Pivot {
+public class Pivot implements Serializable {
 
     private List<FunctionItem> functionItems;
 

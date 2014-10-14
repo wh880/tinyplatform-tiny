@@ -15,7 +15,9 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
-public interface SelectBody {
+import java.io.Serializable;
+
+public interface SelectBody extends Serializable {
 
 	void accept(SelectVisitor selectVisitor);
 }

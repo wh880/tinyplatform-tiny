@@ -15,12 +15,14 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
+import java.io.Serializable;
+
 import org.tinygroup.jsqlparser.expression.Expression;
 
 /**
  * An element (column reference) in an "ORDER BY" clause.
  */
-public class OrderByElement {
+public class OrderByElement implements Serializable {
 
     public enum NullOrdering {
 

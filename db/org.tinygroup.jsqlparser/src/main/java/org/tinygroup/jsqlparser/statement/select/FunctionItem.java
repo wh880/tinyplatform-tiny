@@ -15,10 +15,12 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
+import java.io.Serializable;
+
 import org.tinygroup.jsqlparser.expression.Alias;
 import org.tinygroup.jsqlparser.expression.Function;
 
-public class FunctionItem {
+public class FunctionItem implements Serializable {
 
     private Function function;
     private Alias alias;

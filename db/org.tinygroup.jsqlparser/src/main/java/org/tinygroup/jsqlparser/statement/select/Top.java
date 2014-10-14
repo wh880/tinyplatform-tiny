@@ -15,10 +15,12 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
+import java.io.Serializable;
+
 /**
  * A top clause in the form [TOP (row_count) or TOP row_count]
  */
-public class Top {
+public class Top implements Serializable {
 
     private long rowCount;
     private boolean rowCountJdbcParameter = false;

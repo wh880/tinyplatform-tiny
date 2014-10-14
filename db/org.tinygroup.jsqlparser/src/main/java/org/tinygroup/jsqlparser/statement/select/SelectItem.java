@@ -15,11 +15,13 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
+import java.io.Serializable;
+
 /**
  * Anything between "SELECT" and "FROM"<BR>
  * (that is, any column or expression etc to be retrieved with the query)
  */
-public interface SelectItem {
+public interface SelectItem  extends Serializable{
 
 	void accept(SelectItemVisitor selectItemVisitor);
 }

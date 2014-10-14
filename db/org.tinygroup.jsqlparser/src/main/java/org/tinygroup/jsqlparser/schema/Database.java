@@ -15,7 +15,9 @@
  */
 package org.tinygroup.jsqlparser.schema;
 
-public final class Database implements MultiPartName {
+import java.io.Serializable;
+
+public final class Database implements MultiPartName,Serializable {
     private Server server;
     private String databaseName;
     public Database(){

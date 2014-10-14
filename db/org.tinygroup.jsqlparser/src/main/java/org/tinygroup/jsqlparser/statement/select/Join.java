@@ -15,6 +15,7 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.tinygroup.jsqlparser.expression.Expression;
@@ -23,7 +24,7 @@ import org.tinygroup.jsqlparser.schema.Column;
 /**
  * A join clause
  */
-public class Join {
+public class Join implements Serializable{
 
 	private boolean outer = false;
 	private boolean right = false;

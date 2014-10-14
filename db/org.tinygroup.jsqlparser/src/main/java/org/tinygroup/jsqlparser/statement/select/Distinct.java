@@ -15,12 +15,13 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * A DISTINCT [ON (expression, ...)] clause
  */
-public class Distinct {
+public class Distinct implements Serializable {
 
 	private List<SelectItem> onSelectItems;
 

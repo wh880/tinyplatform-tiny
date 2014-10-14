@@ -15,10 +15,12 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
+import java.io.Serializable;
+
 import org.tinygroup.jsqlparser.expression.Alias;
 import org.tinygroup.jsqlparser.expression.operators.relational.ExpressionList;
 
-public class ExpressionListItem {
+public class ExpressionListItem implements Serializable{
 
     private ExpressionList expressionList;
     private Alias alias;

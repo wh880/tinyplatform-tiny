@@ -15,6 +15,11 @@
  */
 package org.tinygroup.dbrouter.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -24,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
@@ -92,8 +96,7 @@ public final class DbRouterUtil {
 		try {
 			Statement originalStatement = RouterManagerBeanFactory.getManager()
 					.getSqlStatement(sql);
-			Statement statement = (Statement) BeanUtil
-					.deepCopy(originalStatement);
+			Statement statement = (Statement) deepCopy(originalStatement);
 			if (statement instanceof Insert) {
 				return transformInsertSql(tableMapping, statement);
 			} else if (statement instanceof Delete) {
@@ -562,6 +565,17 @@ public final class DbRouterUtil {
 			}
 		}
 		return paramIndex;
+	}
+	
+	public static Object deepCopy(Statement statement) throws IOException, ClassNotFoundException{
+		
+		    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	        ObjectOutputStream oos = new ObjectOutputStream(bos);
+	        oos.writeObject(statement);
+	        // 反序列化
+	        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+	        ObjectInputStream ois = new ObjectInputStream(bis);
+	        return ois.readObject();
 	}
 
 }
