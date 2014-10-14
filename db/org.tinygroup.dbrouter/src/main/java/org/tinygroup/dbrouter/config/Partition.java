@@ -100,7 +100,7 @@ public class Partition {
         return partitionRules;
     }
 
-    public List<Shard> getWritableShardList() {
+    public synchronized List<Shard> getWritableShardList() {
         if (writableShardList == null) {
             writableShardList = new ArrayList<Shard>();
             for (Shard shard : shards) {
@@ -112,7 +112,7 @@ public class Partition {
         return writableShardList;
     }
 
-    public List<Shard> getReadShardList() {
+    public synchronized List<Shard> getReadShardList() {
         if (readableShardList == null) {
             readableShardList = new ArrayList<Shard>();
             for (Shard shard : shards) {
@@ -124,17 +124,6 @@ public class Partition {
         return readableShardList;
     }
 
-    public void addReadAndWriteShard(Shard shard){
-    	if (readableShardList == null) {
-    		readableShardList = new ArrayList<Shard>(); 	
-    	}
-    	readableShardList.add(shard);
-    	if (writableShardList == null) {
-            writableShardList = new ArrayList<Shard>();
-    	}
-    	writableShardList.add(shard);
-    }
-    
     public void setPartitionRules(List<PartitionRule> partitionRules) {
         this.partitionRules = partitionRules;
     }
