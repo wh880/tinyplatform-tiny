@@ -36,6 +36,10 @@
           <artifactId>xerces</artifactId>
           <groupId>xerces</groupId>
         </exclusion>
+        <exclusion>
+          <artifactId>servlet-api</artifactId>
+          <groupId>javax.servlet</groupId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>

@@ -33,18 +33,47 @@ import org.tinygroup.weblayer.listener.ServletContextHolder;
 public class TinyServletConfig implements ServletConfig {
 	public static final String SERVLET_BEAN = "servlet_bean";
 	private Map<String, String> initParams=new HashMap<String, String>();
-
-	public TinyServletConfig(Map<String, String> initParams){
-		this.initParams=initParams;
+	private ServletConfig servletConfig;
+	
+	public TinyServletConfig(){
 	}
 	
-	
+	public ServletConfig getServletConfig() {
+		return servletConfig;
+	}
+
+	public void setServletConfig(ServletConfig servletConfig) {
+		this.servletConfig = servletConfig;
+	}
+
+	public Map<String, String> getInitParams() {
+		return initParams;
+	}
+
+	public void setInitParams(Map<String, String> initParams) {
+		this.initParams = initParams;
+	}
+
 	public String getInitParameter(String s) {
-		return initParams.get(s);
+		String value= initParams.get(s);
+		if(value!=null){
+			return value;
+		}
+		if(servletConfig!=null){
+			value=servletConfig.getInitParameter(s);
+		}
+		return value;
 	}
 
 	public Enumeration getInitParameterNames() {
-		return new Enumerator(initParams.keySet());
+		Enumeration enumer= new Enumerator(initParams.keySet());
+		if(enumer!=null){
+			return enumer;
+		}
+		if(servletConfig!=null){
+			enumer=servletConfig.getInitParameterNames();
+		}
+		return enumer;
 	}
 
 	public ServletContext getServletContext() {

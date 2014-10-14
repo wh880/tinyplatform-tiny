@@ -28,7 +28,6 @@
     <application-processors>
         <application-processor bean="fileResolverProcessor"></application-processor>
         <application-processor bean="PluginMgtProcessor"></application-processor>
-        <application-processor bean="CEPProcessor"></application-processor>
         <application-processor bean="dictLoadProcessor"></application-processor>
         <application-processor bean="tinyListenerProcessor"></application-processor>
         <application-processor bean="fileMonitorProcessor"></application-processor>
@@ -42,6 +41,7 @@
         </class-paths>
         <include-patterns>
             <include-pattern pattern="org\.tinygroup\.(.)*\.jar"/>
+            <include-pattern pattern="jstl-1.2.jar"/>
         </include-patterns>
         <full-context-file-finder>
             <file ext-name="evy" content-type="application/envoy"/>

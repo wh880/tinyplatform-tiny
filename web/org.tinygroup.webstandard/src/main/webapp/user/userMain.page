@@ -1,0 +1,18 @@
+#@form("user" "user" "updateUser.do" "post")
+	#@fieldLabel ("ID")
+		#text( "id" "id" "")
+	#end
+	#@fieldLabel ("姓名")
+		#text( "name" "name" "")
+	#end
+	#@fieldLabel ("性别")
+		#text( "sex" "sex" "")
+	#end
+	#submit("ok" "ok" "进入")
+#end
+<hr />
+#if($!user)
+id=$user.id<br />
+name=$user.name<br />
+sex=$user.sex<br />
+#end

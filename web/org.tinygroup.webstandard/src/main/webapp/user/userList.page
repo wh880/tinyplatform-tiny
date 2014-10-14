@@ -1,0 +1,41 @@
+#@form("user" "user" "updateUserList.do" "post")
+	#@fieldLabel ("ID")
+		#text( "id" "id" "")
+	#end
+	#@fieldLabel ("姓名")
+		#text( "name" "name" "")
+	#end
+	#@fieldLabel ("性别")
+		#text( "sex" "sex" "")
+	#end
+	#@fieldLabel ("ID")
+		#text( "id" "id" "")
+	#end
+	#@fieldLabel ("姓名")
+		#text( "name" "name" "")
+	#end
+	#@fieldLabel ("性别")
+		#text( "sex" "sex" "")
+	#end
+	#@fieldLabel ("ID")
+		#text( "id" "id" "")
+	#end
+	#@fieldLabel ("姓名")
+		#text( "name" "name" "")
+	#end
+	#@fieldLabel ("性别")
+		#text( "sex" "sex" "")
+	#end
+
+	#submit("ok" "ok" "进入")
+#end
+<hr />
+<table border="1">
+#foreach( $user in $users) 
+<tr>
+<td>$user.id</td>
+<td>$user.name</td>
+<td>$user.sex</td>
+</tr> 
+#end 
+</table>

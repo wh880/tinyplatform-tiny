@@ -46,7 +46,8 @@
 				<ref bean="generatorFileProcessor"/>
 				<!-- serviceMapping -->
 				<ref bean="serviceMappingFileProcessor"/>
-
+				<!-- tld -->
+                <ref bean="tldFileProcessor"/>
 			</list>
 		</property>
 	</bean>

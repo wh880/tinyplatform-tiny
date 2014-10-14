@@ -19,4 +19,13 @@
 		 <dispatcher>REQUEST</dispatcher>  
          <dispatcher>FORWARD</dispatcher>  
 	</filter-mapping>
+	<servlet>
+		<servlet-name>jsp</servlet-name>
+		<servlet-class>org.tinygroup.jspengine.servlet.JspServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>jsp</servlet-name>
+		<url-pattern>*.jsp</url-pattern>
+	</servlet-mapping>
 </web-app>

@@ -487,8 +487,9 @@ public class Compiler {
             }
         }
 
-        if (targetLastModified == 0L)
+        if (targetLastModified == 0L){
             return true;
+        }
 
         // Check if the jsp exists in the filesystem (instead of a jar
         // or a remote location). If yes, then do a File.lastModified()

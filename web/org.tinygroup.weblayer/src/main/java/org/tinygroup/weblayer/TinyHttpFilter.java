@@ -102,7 +102,7 @@ public class TinyHttpFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
-		String servletPath = request.getServletPath();
+		String servletPath =getServletPath(request);
 		if (isExcluded(servletPath)) {
 			logger.logMessage(LogLevel.DEBUG, "请求路径:<{}>,被拒绝", servletPath);
 			filterChain.doFilter(request, response);
@@ -135,6 +135,14 @@ public class TinyHttpFilter implements Filter {
 		} else {
 			hander.tinyFilterProcessor(request, response);
 		}
+	}
+
+	private String getServletPath(HttpServletRequest request) {
+		String servletPath=request.getServletPath();
+		if(StringUtil.isBlank(servletPath)){
+			servletPath=request.getPathInfo();
+		}
+		return servletPath;
 	}
 
 	private void postDataProcess(HttpServletRequest request, WebContext context)

@@ -24,6 +24,7 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
@@ -863,7 +864,10 @@ public class TagLibraryInfoImpl extends TagLibraryInfo implements TagConstants {
     public ValidationMessage[] validate(PageData thePage) {
 	TagLibraryValidator tlv = getTagLibraryValidator();
 	if (tlv == null) return null;
-
+	    Map<String, Object> initParameters=tlv.getInitParameters();
+	    if(initParameters==null){
+	    	tlv.setInitParameters(new HashMap<String, Object>());
+	    }
         String uri = getURI();
         if (uri.startsWith("/")) {
             uri = URN_JSPTLD + uri;

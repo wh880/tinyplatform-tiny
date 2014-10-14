@@ -102,11 +102,16 @@ public class JspServlet extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 
-		super.init(config);
 		if (!(config instanceof TinyServletConfig)) {
 			JspServlet servlet = BeanContainerFactory.getBeanContainer(
 					this.getClass().getClassLoader()).getBean("jspServlet");
-			config = servlet.getConfig();
+			TinyServletConfig tinyServletConfig=(TinyServletConfig) servlet.getServletConfig();
+			if(tinyServletConfig==null){
+				 tinyServletConfig=new TinyServletConfig();
+			}
+			tinyServletConfig.setServletConfig(config);
+			servlet.setServletConfig(tinyServletConfig);
+			config=tinyServletConfig;
 		}
 		this.config = config;
 		this.context = config.getServletContext();
@@ -460,8 +465,16 @@ public class JspServlet extends HttpServlet {
 
 	// END S1AS
 
-	public ServletConfig getConfig() {
+
+	public ServletConfig getServletConfig() {
 		return config;
 	}
+
+	public void setServletConfig(ServletConfig config) {
+		this.config = config;
+	}
+	
+    	
+
 
 }

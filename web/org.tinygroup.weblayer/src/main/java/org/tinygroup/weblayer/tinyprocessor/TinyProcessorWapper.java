@@ -47,7 +47,10 @@ public class TinyProcessorWapper extends AbstractTinyProcessor {
 			servlet = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(servletBeanName);
 			if (servlet != null) {
 				try {
-					servlet.init(new TinyServletConfig(getInitParamMap()));
+					TinyServletConfig servletConfig= new TinyServletConfig();
+					servletConfig.setInitParams(getInitParamMap());
+					servletConfig.setServletConfig(servlet.getServletConfig());
+					servlet.init(servletConfig);
 				} catch (ServletException e) {
 					logger.errorMessage("初始化servlet:{}出错", e, servletBeanName);
 					throw new RuntimeException("初始化servlet出错", e);
@@ -66,7 +69,8 @@ public class TinyProcessorWapper extends AbstractTinyProcessor {
 		try {
 			servlet.service(request, response);
 		} catch (Exception e) {
-			logger.errorMessage("servlet:{}执行出错", e, servlet.getServletName());
+			e.printStackTrace();
+//			logger.errorMessage("servlet:{}执行出错", e, servlet.getServletName());
 			throw new RuntimeException("servlet执行出错", e);
 		}
 

@@ -31,17 +31,17 @@ public class TldFileProcessor extends AbstractFileProcessor {
 		//设置符合的tld文件列表对象
 		TldFileManager manager=TldFileManager.getInstance();
 		for (FileObject fileObject : deleteList) {
-			logger.log(LogLevel.INFO, "正在移除tld文件：<{}>",
+			logger.logMessage(LogLevel.INFO, "正在移除tld文件：<{}>",
 					fileObject.getAbsolutePath());
 			manager.removeTldFile(fileObject);
-			logger.log(LogLevel.INFO, "移除tld文件：<{}>结束",
+			logger.logMessage(LogLevel.INFO, "移除tld文件：<{}>结束",
 					fileObject.getAbsolutePath());
 		}
 		for (FileObject fileObject : changeList) {
-			logger.log(LogLevel.INFO, "正在加载tld文件：<{}>",
+			logger.logMessage(LogLevel.INFO, "正在加载tld文件：<{}>",
 					fileObject.getAbsolutePath());
 			manager.addTldFile(fileObject);
-			logger.log(LogLevel.INFO, "加载tld文件：<{}>结束",
+			logger.logMessage(LogLevel.INFO, "加载tld文件：<{}>结束",
 					fileObject.getAbsolutePath());
 		}
 	}
