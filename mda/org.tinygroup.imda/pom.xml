@@ -48,7 +48,7 @@
     </dependency>
      <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.cepcorepc</artifactId>
+      <artifactId>org.tinygroup.cepcore</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

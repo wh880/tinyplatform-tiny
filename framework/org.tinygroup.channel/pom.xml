@@ -14,11 +14,6 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.cepcore</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-         <dependency>
-            <groupId>org.tinygroup</groupId>
             <artifactId>org.tinygroup.cepcorepc</artifactId>
             <version>${project.version}</version>
         </dependency>
