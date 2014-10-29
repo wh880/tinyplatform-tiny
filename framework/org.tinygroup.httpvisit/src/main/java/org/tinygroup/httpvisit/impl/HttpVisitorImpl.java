@@ -23,16 +23,19 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.httpvisit.HttpVisitor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 public class HttpVisitorImpl implements HttpVisitor {
     private static final Logger logger = LoggerFactory.getLogger(HttpVisitorImpl.class);
@@ -48,7 +51,7 @@ public class HttpVisitorImpl implements HttpVisitor {
     private UsernamePasswordCredentials proxyUserPassword;
     private Map<String, String> headerMap = new HashMap<String, String>();
 
-    public HttpVisitorImpl(){
+    public HttpVisitorImpl() {
         headerMap.put("Accept", "text/html, application/xhtml+xml, */*");
         headerMap.put("Accept-Language", "zh-CN,en-US;q=0.5");
         headerMap.put("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)");
@@ -56,6 +59,7 @@ public class HttpVisitorImpl implements HttpVisitor {
         headerMap.put("Host", "localhost:9999");
         headerMap.put("Connection", "Keep-Alive");
     }
+
     public void setProxy(String proxyHost, int proxyPort, String userName, String passwrod) {
         this.proxyHost = proxyHost;
         this.proxyPort = proxyPort;
@@ -124,10 +128,10 @@ public class HttpVisitorImpl implements HttpVisitor {
     public String getUrl(String url, Map<String, ?> parameter) {
         try {
             StringBuffer sb = new StringBuffer(url);
-            if (url.indexOf('?') < 0) {
-                sb.append("?");
-            }
             if (parameter != null) {
+                if (url.indexOf('?') < 0) {
+                    sb.append("?");
+                }
                 for (String key : parameter.keySet()) {
                     Object value = parameter.get(key);
                     if (value.getClass().isArray()) {
@@ -188,8 +192,15 @@ public class HttpVisitorImpl implements HttpVisitor {
             int iGetResultCode = client.executeMethod(method);
             if (iGetResultCode == HttpStatus.SC_OK) {
                 logger.logMessage(LogLevel.DEBUG, "结果成功返回。");
-                String strGetResponseBody = new String(method.getResponseBody(), responseCharset);
-                return strGetResponseBody;
+                String acceptEncoding = method.getResponseHeader("Content-Encoding").getValue();
+                if (acceptEncoding != null && acceptEncoding.equals("gzip")) {
+                    //如果是gzip压缩方式
+                    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(method.getResponseBody());
+                    GZIPInputStream gzipInputStream = new GZIPInputStream(byteArrayInputStream);
+                    return IOUtils.readFromInputStream(gzipInputStream, responseCharset);
+                } else {
+                    return new String(method.getResponseBody(), responseCharset);
+                }
             }
             logger.logMessage(LogLevel.ERROR, "结果返回失败，原因：{}", method.getStatusLine().toString());
             throw new RuntimeException(method.getStatusLine().toString());

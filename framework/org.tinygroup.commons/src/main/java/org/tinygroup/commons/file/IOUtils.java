@@ -15,20 +15,26 @@
  */
 package org.tinygroup.commons.file;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 public class IOUtils {
-	public static String readFromInputStream(InputStream inputStream,
-			String encode) throws Exception {
-		byte[] buf = new byte[inputStream.available()];
-		inputStream.read(buf);
-		return new String(buf, encode);
-	}
+    public static String readFromInputStream(InputStream inputStream,
+                                             String encode) throws Exception {
+        BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream, encode));
+        StringBuffer sb = new StringBuffer();
+        String lineInput;
+        while ((lineInput = bf.readLine()) != null) {
+            sb.append(lineInput);
+        }
+        return sb.toString();
+    }
 
-	public static void writeToOutputStream(OutputStream outputStream,
-			String content, String encode) throws Exception {
-		outputStream.write(content.getBytes(encode));
-	}
+    public static void writeToOutputStream(OutputStream outputStream,
+                                           String content, String encode) throws Exception {
+        outputStream.write(content.getBytes(encode));
+    }
 
 }
