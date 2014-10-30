@@ -52,13 +52,17 @@ public class TextToXml implements Converter<String, String> {
 	public String convert(String inputData) throws ConvertException {
 		String[] lines = inputData.split(lineSplit);
 		String[] fieldNames = lines[0].split(fieldSplit);
+        for(int i=0;i<fieldNames.length;i++){
+            fieldNames[i]=fieldNames[i].trim();
+        }
 		StringBuffer sb = new StringBuffer();
 		XmlUtils.appendHeader(sb, rootNodeName);
 		for (int i = 1; i < lines.length; i++) {
-			String[] values = lines[i].split(fieldSplit);
-			checkFeidlCount(fieldNames, i, values);
+            System.out.println(lines[i]);
+            String[] values = lines[i].split(fieldSplit);
+			//checkFeidlCount(fieldNames, i, values);
 			XmlUtils.appendHeader(sb, rowNodeName);
-			for (int j = 0; j < fieldNames.length; j++) {
+			for (int j = 0; j < values.length; j++) {
 				XmlUtils.appendHeader(sb, titleMap.get(fieldNames[j]));
 				sb.append(values[j]);
 				XmlUtils.appendFooter(sb, titleMap.get(fieldNames[j]));
@@ -69,7 +73,7 @@ public class TextToXml implements Converter<String, String> {
 		return sb.toString();
 	}
 
-	private void checkFeidlCount(String[] fieldNames, int i, String[] values) throws ConvertException {
+	private void checkFieldCount(String[] fieldNames, int i, String[] values) throws ConvertException {
 		if (fieldNames.length != values.length) {
 			throw new ConvertException("标题个数(" + fieldNames.length + ")与第【" + i
 					+ "】行的数据个数(" + values.length + ")不相等");
