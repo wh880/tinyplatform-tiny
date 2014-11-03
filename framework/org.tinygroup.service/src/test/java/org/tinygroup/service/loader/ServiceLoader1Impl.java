@@ -29,7 +29,7 @@ public class ServiceLoader1Impl implements ServiceLoader {
 			ServiceRegistryItem serviceRegistryItem = new ServiceRegistryItem();
 			serviceRegistryItem.setService(printContextService);
 			serviceRegistryItem.setServiceId("PrintContextService");
-			serviceRegistry.registeService(serviceRegistryItem);
+			serviceRegistry.registerService(serviceRegistryItem);
 		}
 	}
 

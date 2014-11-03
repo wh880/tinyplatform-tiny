@@ -29,7 +29,7 @@ import org.tinygroup.service.registry.ServiceRegistryItem;
  */
 public interface ServiceProviderInterface {
 
-	/**
+     /**
 	 * 设置服务注册表
 	 * 
 	 * @param serviceRegistry

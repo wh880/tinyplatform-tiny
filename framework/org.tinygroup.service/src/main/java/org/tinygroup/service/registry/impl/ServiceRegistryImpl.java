@@ -15,18 +15,14 @@
  */
 package org.tinygroup.service.registry.impl;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.service.Service;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
+
+import java.util.*;
 
 public class ServiceRegistryImpl implements ServiceRegistry {
 	/**
@@ -38,7 +34,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	private static Logger logger = LoggerFactory
 			.getLogger(ServiceRegistryImpl.class);
 
-	public void registeService(ServiceRegistryItem serviceRegistryItem) {
+	public void registerService(ServiceRegistryItem serviceRegistryItem) {
 		if (serviceIdMap.containsKey(serviceRegistryItem.getServiceId())) {
 			logger.logMessage(LogLevel.WARN, "服务号:[{0}]已经存在,之前的服务将被覆盖",
 					serviceRegistryItem.getServiceId());
@@ -52,21 +48,21 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 
 	}
 
-	public void registeService(List<ServiceRegistryItem> serviceRegistryItems) {
+	public void registerService(List<ServiceRegistryItem> serviceRegistryItems) {
 		for (ServiceRegistryItem serviceRegistryItem : serviceRegistryItems) {
-			registeService(serviceRegistryItem);
+			registerService(serviceRegistryItem);
 		}
 	}
 
-	public void registeService(ServiceRegistryItem[] serviceRegistryItems) {
+	public void registerService(ServiceRegistryItem[] serviceRegistryItems) {
 		for (ServiceRegistryItem serviceRegistryItem : serviceRegistryItems) {
-			registeService(serviceRegistryItem);
+			registerService(serviceRegistryItem);
 		}
 	}
 
-	public void registeService(Set<ServiceRegistryItem> serviceRegistryItems) {
+	public void registerService(Set<ServiceRegistryItem> serviceRegistryItems) {
 		for (ServiceRegistryItem serviceRegistryItem : serviceRegistryItems) {
-			registeService(serviceRegistryItem);
+			registerService(serviceRegistryItem);
 		}
 	}
 

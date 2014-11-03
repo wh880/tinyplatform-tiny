@@ -209,13 +209,13 @@ public abstract class AbstractAnnotationServiceLoader implements
 							+ "." + StringUtil.toCamelCase(method.getName());
 				}
 				registryItem.setServiceId(serviceId);
-				serviceRegistry.registeService(registryItem);
+				serviceRegistry.registerService(registryItem);
 				String alias = getAnnotationStringValue(annotation,
 						ServiceMethod.class, "alias");
 				if (!StringUtil.isBlank(alias)) {
 					registryItem =  ServiceUtil.copyServiceItem(item);
 					registryItem.setServiceId(alias);
-					serviceRegistry.registeService(registryItem);
+					serviceRegistry.registerService(registryItem);
 				}
 				logger.logMessage(LogLevel.INFO, "加载方法{0}为服务完毕",
 						method.getName());
