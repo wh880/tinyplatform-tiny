@@ -125,13 +125,13 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 			if(!StringUtil.isBlank(serviceId)){
 				ServiceRegistryItem registryItem =  ServiceUtil.copyServiceItem(item);
 				registryItem.setServiceId(serviceId);
-				serviceRegistry.registeService(registryItem);
+				serviceRegistry.registerService(registryItem);
 			}
 			String alias=serviceMethod.getAlias();
 			if(!StringUtil.isBlank(alias)){
 				ServiceRegistryItem registryItem =  ServiceUtil.copyServiceItem(item);
 				registryItem.setServiceId(alias);
-				serviceRegistry.registeService(registryItem);
+				serviceRegistry.registerService(registryItem);
 			}
 
 		}

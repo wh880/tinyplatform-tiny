@@ -53,7 +53,7 @@ public class ServiceExecutorTest extends TestCase {
 		parameterDescriptors.add(parameterDescriptor);
 		item.setParameters(parameterDescriptors);
 		item.setResults(parameterDescriptors);
-		serviceRegistry.registeService(item);
+		serviceRegistry.registerService(item);
 	}
 
 	public void testSetServiceRegistory() {
