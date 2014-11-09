@@ -156,21 +156,20 @@ public abstract class AbstractFilterImpl<T extends Node<T>> implements NodeFilte
         if (includeByNode != null) {
             List<String> ancNodeNames = new ArrayList<String>();
             ancestorNodeNames(node, ancNodeNames);// 将所有祖先节点名字放入list
-            if (ancNodeNames.size() == 0) {
-                return false;
-            }
-            for (String inByName : includeByNode) {
-                if (!ancNodeNames.contains(inByName)) {
-                    return false;
+            for (String ancNodeName : ancNodeNames) {
+                for (String inByName : includeByNode) {
+                    if (!node.getCaseSensitiveName(ancNodeName).equals(node.getCaseSensitiveName(inByName))) {
+                        return false;
+                    }
                 }
             }
         }
         if (excludeByNode != null) {
             List<String> ancNodeNames = new ArrayList<String>();
             ancestorNodeNames(node, ancNodeNames);// 将所有祖先节点名字放入list
-            if (ancNodeNames.size() != 0) {
+            for (String ancNodeName : ancNodeNames) {
                 for (String inByName : excludeByNode) {
-                    if (ancNodeNames.contains(inByName)) {
+                    if (node.getCaseSensitiveName(ancNodeName).equals(node.getCaseSensitiveName(inByName))) {
                         return false;
                     }
                 }
@@ -234,7 +233,7 @@ public abstract class AbstractFilterImpl<T extends Node<T>> implements NodeFilte
      */
     private boolean existNode(List<T> nodes, String nodeName) {
         for (T node : nodes) {
-            if (nodeName.equals(node.getNodeName())) {
+            if (node.getCaseSensitiveName(nodeName).equals(node.getCaseSensitiveName(node.getNodeName()))) {
                 return true;
             }
         }
@@ -336,8 +335,8 @@ public abstract class AbstractFilterImpl<T extends Node<T>> implements NodeFilte
         excludeText = null;
         includeNode = null;
         excludeNode = null;
-        includeByNode=null;
-        excludeByNode=null;
+        includeByNode = null;
+        excludeByNode = null;
         includeAttribute = null;
         excludeAttribute = null;
         xorSubNode = null;
