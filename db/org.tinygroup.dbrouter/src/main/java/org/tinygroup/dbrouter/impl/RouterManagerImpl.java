@@ -77,7 +77,7 @@ public class RouterManagerImpl implements RouterManager {
 	 * 已经解析出来的语句缓冲
 	 */
 	private Cache cache;
-	
+
 	/**
 	 * 分片负载平衡器
 	 */
@@ -116,7 +116,7 @@ public class RouterManagerImpl implements RouterManager {
 			throw new DbrouterRuntimeException(e);
 		}
 	}
-	
+
 	public Cache getCache() {
 		return cache;
 	}
@@ -273,20 +273,21 @@ public class RouterManagerImpl implements RouterManager {
 	}
 
 	public Statement getSqlStatement(String sql) {
+		Statement statement = null;
+		try {
+			statement = (Statement) cache.get(sql);
+		} catch (Exception e) {
+		}
+		if (statement != null) {
+			return statement;
+		}
 		synchronized (parserManager) {
-			Statement statement=null;
 			try {
-				 statement = (Statement) cache.get(sql);
-			} catch (Exception e) {
+				statement = parserManager.parse(new StringReader(sql));
+			} catch (JSQLParserException e) {
+				throw new DbrouterRuntimeException(e);
 			}
-			if (statement == null) {
-				try {
-					statement = parserManager.parse(new StringReader(sql));
-				} catch (JSQLParserException e) {
-					throw new DbrouterRuntimeException(e);
-				}
-				cache.put(sql, statement);
-			}
+			cache.put(sql, statement);
 			return statement;
 		}
 	}
