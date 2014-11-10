@@ -71,9 +71,9 @@ public class Router {
 	/**
 	 * 是否启用JTA事务
 	 */
-	@XStreamAlias("isEnableJta")
+	@XStreamAlias("jta-enabled")
 	@XStreamAsAttribute
-	private boolean isEnableJta = true;
+	private boolean jtaEnabled = true;
 
 	private static final int DEFAULT_THREAD_SIZE = 100;
 
@@ -168,11 +168,12 @@ public class Router {
 		this.threadSize = threadSize;
 	}
 
-	public void setIsEnableJta(boolean isEnableJta) {
-		this.isEnableJta = isEnableJta;
+	public boolean isJtaEnabled() {
+		return jtaEnabled;
 	}
 
-	public boolean getIsEnableJta() {
-		return isEnableJta;
+	public void setJtaEnabled(boolean jtaEnabled) {
+		this.jtaEnabled = jtaEnabled;
 	}
+
 }
