@@ -40,7 +40,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 
 	private boolean change = true;
 
-	public void registeService(ServiceRegistryItem serviceRegistryItem) {
+	public void registerService(ServiceRegistryItem serviceRegistryItem) {
 		change = true;
 		if (serviceIdMap.containsKey(serviceRegistryItem.getServiceId())) {
 			logger.logMessage(LogLevel.WARN, "服务号:[{0}]已经存在,之前的服务将被覆盖",
@@ -55,21 +55,21 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 
 	}
 
-	public void registeService(List<ServiceRegistryItem> serviceRegistryItems) {
+	public void registerService(List<ServiceRegistryItem> serviceRegistryItems) {
 		for (ServiceRegistryItem serviceRegistryItem : serviceRegistryItems) {
-			registeService(serviceRegistryItem);
+			registerService(serviceRegistryItem);
 		}
 	}
 
-	public void registeService(ServiceRegistryItem[] serviceRegistryItems) {
+	public void registerService(ServiceRegistryItem[] serviceRegistryItems) {
 		for (ServiceRegistryItem serviceRegistryItem : serviceRegistryItems) {
-			registeService(serviceRegistryItem);
+			registerService(serviceRegistryItem);
 		}
 	}
 
-	public void registeService(Set<ServiceRegistryItem> serviceRegistryItems) {
+	public void registerService(Set<ServiceRegistryItem> serviceRegistryItems) {
 		for (ServiceRegistryItem serviceRegistryItem : serviceRegistryItems) {
-			registeService(serviceRegistryItem);
+			registerService(serviceRegistryItem);
 		}
 	}
 
@@ -119,5 +119,10 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	public void setChange(boolean change) {
 		this.change = change;
 	}
+
+	
+
+
+	
 
 }
