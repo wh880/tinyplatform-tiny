@@ -15,23 +15,18 @@
  */
 package org.tinygroup.weblayer.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.weblayer.TinyFilterHandler;
 import org.tinygroup.weblayer.WebContext;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 过滤器链接口的默认实现，不再往下传递调用,直接返回
@@ -46,12 +41,12 @@ public class TinyFilterChain implements FilterChain {
 	private static final Logger logger = LoggerFactory
 			.getLogger(TinyFilterChain.class);
 
-	private TinyFilterHandler hander;
+	private TinyFilterHandler tinyFilterHandler;
 
 	public TinyFilterChain(List<Filter> filters, TinyFilterHandler hander) {
 		this.filters = filters;
 		size = filters.size();
-		this.hander = hander;
+		this.tinyFilterHandler = hander;
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response)
@@ -64,12 +59,12 @@ public class TinyFilterChain implements FilterChain {
 			nextFilter.doFilter(request, response, this);
 		} else {
 			initWebContext(request, response);//重新初始化webcontext中保存的request和response对象
-			hander.tinyFilterProcessor((HttpServletRequest)request,(HttpServletResponse)response);
+			tinyFilterHandler.tinyFilterProcessor((HttpServletRequest) request, (HttpServletResponse) response);
 		}
 	}
 
 	private void initWebContext(ServletRequest request, ServletResponse response) {
-		WebContext webContext=hander.getContext();
+		WebContext webContext= tinyFilterHandler.getContext();
 		webContext.setRequest((HttpServletRequest)request);
 		webContext.setResponse((HttpServletResponse)response);
 	}

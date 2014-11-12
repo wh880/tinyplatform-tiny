@@ -1376,20 +1376,4 @@ public class SystemUtil {
         buffer.append(caption).append(defaultIfNull(StringEscapeUtil.escapeJava(value), "[n/a]")).append("\n");
     }
 
-//    public static void main(String[] args) {
-//        dumpSystemInfo();
-//
-//        Set<?> keys = System.getProperties().keySet();
-//
-//        @SuppressWarnings("unchecked")
-//        List<String> list = createArrayList((Set<String>) keys);
-//
-//        Collections.sort(list);
-//
-//        for (String key : list) {
-//            String value = System.getProperty(key);
-//
-//            System.out.println(key + " = " + defaultIfNull(StringEscapeUtil.escapeJava(value), "[n/a]"));
-//        }
-//    }
 }

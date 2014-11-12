@@ -192,15 +192,17 @@ public class HttpVisitorImpl implements HttpVisitor {
             int iGetResultCode = client.executeMethod(method);
             if (iGetResultCode == HttpStatus.SC_OK) {
                 logger.logMessage(LogLevel.DEBUG, "结果成功返回。");
-                String acceptEncoding = method.getResponseHeader("Content-Encoding").getValue();
-                if (acceptEncoding != null && acceptEncoding.equals("gzip")) {
-                    //如果是gzip压缩方式
-                    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(method.getResponseBody());
-                    GZIPInputStream gzipInputStream = new GZIPInputStream(byteArrayInputStream);
-                    return IOUtils.readFromInputStream(gzipInputStream, responseCharset);
-                } else {
-                    return new String(method.getResponseBody(), responseCharset);
+                Header responseHeader = method.getResponseHeader("Content-Encoding");
+                if (responseHeader != null) {
+                    String acceptEncoding = responseHeader.getValue();
+                    if (acceptEncoding != null && acceptEncoding.equals("gzip")) {
+                        //如果是gzip压缩方式
+                        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(method.getResponseBody());
+                        GZIPInputStream gzipInputStream = new GZIPInputStream(byteArrayInputStream);
+                        return IOUtils.readFromInputStream(gzipInputStream, responseCharset);
+                    }
                 }
+                return new String(method.getResponseBody(), responseCharset);
             }
             logger.logMessage(LogLevel.ERROR, "结果返回失败，原因：{}", method.getStatusLine().toString());
             throw new RuntimeException(method.getStatusLine().toString());

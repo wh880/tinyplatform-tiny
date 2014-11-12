@@ -533,7 +533,7 @@ public final class DbRouterUtil {
 				if (index != -1) {
 					name = name.substring(index + 1);
 				}
-				if (name.equals(columnName)) {
+				if (name.equalsIgnoreCase(columnName)) {
 					return i + 1;
 				}
 			}

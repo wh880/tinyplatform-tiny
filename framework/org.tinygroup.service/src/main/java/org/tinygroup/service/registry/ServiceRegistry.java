@@ -34,7 +34,7 @@ public interface ServiceRegistry {
      *
      * @param serviceRegistryItem
      */
-    void registeService(ServiceRegistryItem serviceRegistryItem);
+    void registerService(ServiceRegistryItem serviceRegistryItem);
 
     /**
      * 返回指定服务的服务注册信息
@@ -49,7 +49,7 @@ public interface ServiceRegistry {
      *
      * @param serviceRegistryItems
      */
-    void registeService(List<ServiceRegistryItem> serviceRegistryItems);
+    void registerService(List<ServiceRegistryItem> serviceRegistryItems);
 
     /**
      * 注册一批服务，重复注册时旧的被替换
@@ -57,14 +57,14 @@ public interface ServiceRegistry {
      * @param serviceRegistryItems
      */
 
-    void registeService(ServiceRegistryItem[] serviceRegistryItems);
+    void registerService(ServiceRegistryItem[] serviceRegistryItems);
 
     /**
      * 注册一批服务，重复注册时旧的被替换
      *
      * @param serviceRegistryItems
      */
-    void registeService(Set<ServiceRegistryItem> serviceRegistryItems);
+    void registerService(Set<ServiceRegistryItem> serviceRegistryItems);
 
     /**
      * 删除服务

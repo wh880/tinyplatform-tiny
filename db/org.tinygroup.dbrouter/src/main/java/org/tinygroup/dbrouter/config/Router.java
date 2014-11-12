@@ -27,110 +27,115 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 /**
  * 集群<br>
  * 一个集群可包含多个分区
- *
+ * 
  * @author luoguo
  */
 @XStreamAlias("router")
 public class Router {
-    /**
-     * 集群名称,唯一确定一个集群，jdbc数据源连接时，url只要指定ID即可
-     */
-    @XStreamAsAttribute
-    private String id;
-    /**
-     * 用户名
-     */
-    @XStreamAlias("user-name")
-    @XStreamAsAttribute
-    private String userName;
-    /**
-     * 密码
-     */
-    @XStreamAsAttribute
-    private String password;
+	/**
+	 * 集群名称,唯一确定一个集群，jdbc数据源连接时，url只要指定ID即可
+	 */
+	@XStreamAsAttribute
+	private String id;
+	/**
+	 * 用户名
+	 */
+	@XStreamAlias("user-name")
+	@XStreamAsAttribute
+	private String userName;
+	/**
+	 * 密码
+	 */
+	@XStreamAsAttribute
+	private String password;
 
-    @XStreamAlias("key-generator")
-    private RouterKeyGenerator keyGenerator;
+	@XStreamAlias("key-generator")
+	private RouterKeyGenerator keyGenerator;
 
-    /**
-     * 集群中的数据源,这里只是定义
-     */
-    @XStreamAlias("data-source-configs")
-    private List<DataSourceConfig> dataSources;
-    /**
-     * 一个集群由多个分区组成
-     */
-    @XStreamAlias("partitions")
-    private List<Partition> partitions;
-    @XStreamAsAttribute
-    @XStreamAlias("time-out")
-    private int timeOut;
-    @XStreamAsAttribute
-    @XStreamAlias("thread-size")
-    private int threadSize=DEFAULT_THREAD_SIZE;
-    
-    private static final int DEFAULT_THREAD_SIZE=100;
+	/**
+	 * 集群中的数据源,这里只是定义
+	 */
+	@XStreamAlias("data-source-configs")
+	private List<DataSourceConfig> dataSources;
+	/**
+	 * 一个集群由多个分区组成
+	 */
+	@XStreamAlias("partitions")
+	private List<Partition> partitions;
+	@XStreamAsAttribute
+	@XStreamAlias("time-out")
+	private int timeOut;
+	@XStreamAsAttribute
+	@XStreamAlias("thread-size")
+	private int threadSize = DEFAULT_THREAD_SIZE;
+	/**
+	 * 是否启用JTA事务
+	 */
+	@XStreamAlias("jta-enabled")
+	@XStreamAsAttribute
+	private boolean jtaEnabled = true;
 
-    public Router(String id, String userName, String password) {
-        this.id = id;
-        this.userName = userName;
-        this.password = password;
-    }
+	private static final int DEFAULT_THREAD_SIZE = 100;
 
-    public String getUserName() {
-        return userName;
-    }
+	public Router(String id, String userName, String password) {
+		this.id = id;
+		this.userName = userName;
+		this.password = password;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public List<DataSourceConfig> getDataSources() {
-        return dataSources;
-    }
+	public List<DataSourceConfig> getDataSources() {
+		return dataSources;
+	}
 
-    public void setDataSource(List<DataSourceConfig> dataSources) {
-        this.dataSources = dataSources;
-    }
+	public void setDataSource(List<DataSourceConfig> dataSources) {
+		this.dataSources = dataSources;
+	}
 
-    public List<Partition> getPartitions() {
-        return partitions;
-    }
+	public List<Partition> getPartitions() {
+		return partitions;
+	}
 
-    public void setPartitions(List<Partition> partitions) {
-        this.partitions = partitions;
-        if (!CollectionUtil.isEmpty(partitions)) {
-            for (Partition partition : partitions) {
-                partition.setRouter(this);
-            }
-        }
-    }
+	public void setPartitions(List<Partition> partitions) {
+		this.partitions = partitions;
+		if (!CollectionUtil.isEmpty(partitions)) {
+			for (Partition partition : partitions) {
+				partition.setRouter(this);
+			}
+		}
+	}
 
-    public DataSourceConfig getDataSourceConfig(String datasourceId) {
-        for (DataSourceConfig dataSourceConfig : dataSources) {
-            if (datasourceId.equals(dataSourceConfig.getId())) {
-                return dataSourceConfig;
-            }
-        }
-        throw new DbrouterRuntimeException("找不到数据源：" + datasourceId);
-    }
+	public DataSourceConfig getDataSourceConfig(String datasourceId) {
+		for (DataSourceConfig dataSourceConfig : dataSources) {
+			if (datasourceId.equals(dataSourceConfig.getId())) {
+				return dataSourceConfig;
+			}
+		}
+		throw new DbrouterRuntimeException("找不到数据源：" + datasourceId);
+	}
 
 	public RouterKeyGenerator getKeyGenerator() {
 		return keyGenerator;
@@ -153,8 +158,8 @@ public class Router {
 	}
 
 	public int getThreadSize() {
-		if(threadSize<=0){
-			threadSize=DEFAULT_THREAD_SIZE;
+		if (threadSize <= 0) {
+			threadSize = DEFAULT_THREAD_SIZE;
 		}
 		return threadSize;
 	}
@@ -162,5 +167,13 @@ public class Router {
 	public void setThreadSize(int threadSize) {
 		this.threadSize = threadSize;
 	}
-    
+
+	public boolean isJtaEnabled() {
+		return jtaEnabled;
+	}
+
+	public void setJtaEnabled(boolean jtaEnabled) {
+		this.jtaEnabled = jtaEnabled;
+	}
+
 }
