@@ -68,7 +68,7 @@ public class ServicePlugin implements Plugin, Configuration {
 		logger.logMessage(LogLevel.DEBUG, "初始化ServiceProcessor");
 		processor = new ServiceProcessorImpl();
 		processor.setConfig(config);
-		processor.addServiceProvider(provider);
+		processor.setServiceProvider(provider);
 		logger.logMessage(LogLevel.DEBUG, "初始化ServiceProcessor完成");
 	}
 

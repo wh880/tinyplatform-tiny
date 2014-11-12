@@ -18,6 +18,8 @@ package org.tinygroup.service.annotation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.service.registry.ServiceRegistry;
+
 public class AnnotationLoader extends AbstractAnnotationServiceLoader {
 	
 	private List<String> classNames=new ArrayList<String>();
@@ -35,5 +37,7 @@ public class AnnotationLoader extends AbstractAnnotationServiceLoader {
 	public void addClassName(String className){
 		classNames.add(className);
 	}
+
+
 
 }

@@ -28,7 +28,9 @@ public class TestArray extends BastTestCast{
 		String[] colors = { "red", "coller", "coller2" };
 		context.put("smallCat.name", names);
 		context.put("smallCat.coller", colors);
-		SmallCat[] parts = (SmallCat[]) generator.getObject(null,null, SmallCat[].class.getName(), context);
+//		SmallCat[] parts = (SmallCat[]) generator.getObject(null,null, SmallCat[].class.getName(),this.getClass().getClassLoader(), context);
+		SmallCat[] parts = (SmallCat[]) generator.getObjectArray(null, SmallCat.class.getName(),this.getClass().getClassLoader(), context);
+		
 		assertEquals(3, parts.length);
 			assertEquals("tomcat", parts[0].getName());
 			assertEquals("name1", parts[1].getName());
@@ -42,7 +44,9 @@ public class TestArray extends BastTestCast{
 		Context context = new ContextImpl();
 		context.put("smallCat.name", "tomcat");
 		context.put("smallCat.coller", "red");
-		SmallCat[] parts = (SmallCat[]) generator.getObject(null,null, SmallCat[].class.getName(), context);
+//		SmallCat[] parts = (SmallCat[]) generator.getObject(null,null, SmallCat[].class.getName(),this.getClass().getClassLoader(), context);
+		SmallCat[] parts = (SmallCat[]) generator.getObjectArray(null,SmallCat.class.getName(),this.getClass().getClassLoader(), context);
+		
 		assertEquals(1, parts.length);
 		assertEquals("tomcat", parts[0].getName());
 		assertEquals("red", parts[0].getColler());
@@ -54,7 +58,8 @@ public class TestArray extends BastTestCast{
 		String[] colors = { "red", "coller", "coller2" };
 		context.put("smallCat.name", names);
 		context.put("smallCat.coller", colors);
-		CatInterface[] parts = (CatInterface[]) generator.getObject(null,null, CatInterface[].class.getName(), context);
+//		CatInterface[] parts = (CatInterface[]) generator.getObject(null,null, CatInterface[].class.getName(),this.getClass().getClassLoader(), context);
+		CatInterface[] parts = (CatInterface[]) generator.getObjectArray(null, CatInterface.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(3, parts.length);
 		assertEquals(true, parts[0].getName().equals("tomcat"));
 		assertEquals(true, parts[1].getName().equals("name1"));
@@ -64,7 +69,8 @@ public class TestArray extends BastTestCast{
 	public void testStringArray() {
 		Context context = new ContextImpl();
 		context.put("a", new String[]{"tomcat","name"});
-		String[] s = (String[]) generator.getObject("a", null,String[].class.getName(), context);
+//		String[] s = (String[]) generator.getObject("a", null,String[].class.getName(),this.getClass().getClassLoader(), context);
+		String[] s = (String[]) generator.getObjectArray("a",String.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(2, s.length);
 		assertEquals("tomcat", s[0]);
 		assertEquals("name", s[1]);
@@ -73,7 +79,8 @@ public class TestArray extends BastTestCast{
 	public void testStringArrayWithOneLength() {
 		Context context = new ContextImpl();
 		context.put("a", "tomcat");
-		String[] s = (String[]) generator.getObject("a", null,String[].class.getName(), context);
+//		String[] s = (String[]) generator.getObject("a", null,String[].class.getName(),this.getClass().getClassLoader(), context);
+		String[] s = (String[]) generator.getObjectArray("a",String.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(1, s.length);
 		assertEquals("tomcat", s[0]);
 	}

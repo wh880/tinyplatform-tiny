@@ -13,8 +13,8 @@ import org.tinygroup.event.central.Node;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.netty.daemon.DaemonUtils;
-import org.tinygroup.netty.exception.InterruptedRuntimeException;
+import org.tinygroup.net.daemon.DaemonUtils;
+import org.tinygroup.net.exception.InterruptedRuntimeException;
 import org.tinygroup.tinynetty.EventClient;
 
 public class NettyEventProcessor implements EventProcessor {
@@ -108,7 +108,6 @@ public class NettyEventProcessor implements EventProcessor {
 	}
 
 	public List<String> getRegex() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -119,5 +118,14 @@ public class NettyEventProcessor implements EventProcessor {
 		client.addPostEventTrigger(new ArUnregTrigger(core, this));
 		DaemonUtils.daemon(nodeInfo, client);
 		return client;
+	}
+
+	public boolean isRead() {
+		return true;
+	}
+
+	public void setRead(boolean read) {
+		// TODO Auto-generated method stub
+		
 	}
 }

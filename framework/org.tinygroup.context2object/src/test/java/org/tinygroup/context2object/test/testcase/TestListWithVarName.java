@@ -32,7 +32,7 @@ public class TestListWithVarName extends BastTestCast{
 		String[] colors = { "red", "coller", "coller2" };
 		context.put("a.name", names);
 		context.put("a.coller", colors);
-		Collection<Object> parts = generator.getObjectCollection("a",List.class.getName(), SmallCat.class.getName(), context);
+		Collection<Object> parts = generator.getObjectCollection("a",List.class.getName(), SmallCat.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(3, parts.size());
 		Iterator<Object> iterator = parts.iterator();
 		String catNames = "";
@@ -54,7 +54,7 @@ public class TestListWithVarName extends BastTestCast{
 		String[] colors = { "red", "coller", "coller2" };
 		context.put("a.name", names);
 		context.put("a.coller", colors);
-		Collection<Object> parts = generator.getObjectCollection("a",List.class.getName(), CatInterface.class.getName(), context);
+		Collection<Object> parts = generator.getObjectCollection("a",List.class.getName(), CatInterface.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(3, parts.size());
 		Iterator<Object> iterator = parts.iterator();
 		String catNames = "";

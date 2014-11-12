@@ -35,7 +35,7 @@ public class TestArrayWithVarName extends BastTestCast{
 		context.put("b.name", names2);
 		context.put("b.coller", colors2);
 		
-		SmallCat[] parts = (SmallCat[]) generator.getObject("a",null, SmallCat[].class.getName(), context);
+		SmallCat[] parts = (SmallCat[]) generator.getObjectArray("a", SmallCat.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(3, parts.length);
 		assertEquals(true, parts[0].getName().equals("tomcat"));
 		assertEquals(true, parts[1].getName().equals("tomcat1"));
@@ -45,7 +45,7 @@ public class TestArrayWithVarName extends BastTestCast{
 		assertEquals(true, parts[2].getColler().equals("red2"));
 		
 		
-		SmallCat[] parts2 = (SmallCat[]) generator.getObject("b",null, SmallCat[].class.getName(), context);
+		SmallCat[] parts2 = (SmallCat[]) generator.getObjectArray("b", SmallCat.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(3, parts2.length);
 		assertEquals(true, parts2[0].getName().equals("tomcat2"));
 		assertEquals(true, parts2[1].getName().equals("tomcat21"));
@@ -61,7 +61,8 @@ public class TestArrayWithVarName extends BastTestCast{
 		String[] colors = { "red", "coller", "coller2" };
 		context.put("a.name", names);
 		context.put("a.coller", colors);
-		CatInterface[] parts = (CatInterface[]) generator.getObject("a", null,CatInterface[].class.getName(), context);
+//		CatInterface[] parts = (CatInterface[]) generator.getObject("a", null,CatInterface[].class.getName(),this.getClass().getClassLoader(), context);
+		CatInterface[] parts = (CatInterface[]) generator.getObjectArray("a", CatInterface.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(3, parts.length);
 		assertEquals(true, parts[0].getName().equals("tomcat"));
 		assertEquals(true, parts[1].getName().equals("name1"));
@@ -71,7 +72,8 @@ public class TestArrayWithVarName extends BastTestCast{
 	public void testStringArray() {
 		Context context = new ContextImpl();
 		context.put("a", new String[]{"tomcat","name"});
-		String[] s = (String[]) generator.getObject("a",null, String[].class.getName(), context);
+//		String[] s = (String[]) generator.getObject("a",null, String[].class.getName(),this.getClass().getClassLoader(), context);
+		String[] s = (String[]) generator.getObjectArray("a", String.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(2, s.length);
 		assertEquals("tomcat", s[0]);
 		assertEquals("name", s[1]);

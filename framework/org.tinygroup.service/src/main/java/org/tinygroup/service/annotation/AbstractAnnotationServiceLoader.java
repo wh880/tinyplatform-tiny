@@ -59,14 +59,14 @@ public abstract class AbstractAnnotationServiceLoader implements
 	/**
 	 * 载入服务
 	 */
-	public void loadService(ServiceRegistry serviceRegistry)
+	public void loadService(ServiceRegistry serviceRegistry,ClassLoader classLoader)
 			throws ServiceLoadException {
 		List<String> classNames = getClassNames();// 这个由子类提供
 		for (String className : classNames) {
 			try {
 				logger.logMessage(LogLevel.INFO,
 						"从{className}中查找ServiceAnnotation", className);
-				Class<?> clazz = Class.forName(className);
+				Class<?> clazz = classLoader.loadClass(className);
 				Annotation annotation = clazz
 						.getAnnotation(ServiceComponent.class);
 				if (annotation != null) {
@@ -102,11 +102,11 @@ public abstract class AbstractAnnotationServiceLoader implements
 		}
 	}
 
-	public void removeService(ServiceRegistry serviceRegistry) {
+	public void removeService(ServiceRegistry serviceRegistry,ClassLoader classLoader) {
 		List<String> classNames = getClassNames();// 这个由子类提供
 		for (String className : classNames) {
 			try {
-				Class<?> clazz = Class.forName(className);
+				Class<?> clazz = classLoader.loadClass(className);
 				Annotation annotation = clazz
 						.getAnnotation(ServiceComponent.class);
 				if (annotation != null) {

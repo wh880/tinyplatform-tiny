@@ -21,5 +21,5 @@ import org.tinygroup.xmlparser.node.XmlNode;
 
 public interface ServiceProcessor extends EventProcessor {
 	 void setConfig(XmlNode config);
-	 void addServiceProvider(ServiceProviderInterface provider) ;
+	 void setServiceProvider(ServiceProviderInterface provider) ;
 }

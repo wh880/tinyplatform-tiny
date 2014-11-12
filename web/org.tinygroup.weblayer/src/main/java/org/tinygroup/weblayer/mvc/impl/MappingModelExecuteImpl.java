@@ -32,7 +32,11 @@ public class MappingModelExecuteImpl implements MappingModelExecute {
 	
 	public void execute(HandlerExecutionChain chain, WebContext context) {
 		chain.setContext(context);
-		chain.execute();
+		try {
+			chain.execute();
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

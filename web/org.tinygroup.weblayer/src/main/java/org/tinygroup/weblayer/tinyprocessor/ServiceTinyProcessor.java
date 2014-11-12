@@ -65,7 +65,7 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 
 		ServiceInfo info = core.getServiceInfo(serviceId);
 		List<Parameter> resultsParam = info.getResults();
-		if (resultsParam.size() == 0) {
+		if (resultsParam==null||resultsParam.size() == 0) {
 			return null;
 		}
 		return event.getServiceRequest().getContext()

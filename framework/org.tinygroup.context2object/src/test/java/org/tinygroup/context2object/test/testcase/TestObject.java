@@ -37,7 +37,7 @@ public class TestObject extends BastTestCast{
 		context.put("people.tomCat.name", "tomcat");
 		context.put("people.tomCat.coller", "red");
 		
-		People people = (People) generator.getObject(null,null,People.class.getName(), context);
+		People people = (People) generator.getObject(null,null,People.class.getName(), this.getClass().getClassLoader(),context);
 		assertEquals(people.getAge(), 11);
 		assertEquals(true, people.isBo());
 		assertEquals("c".getBytes()[0], people.getBb());
@@ -54,7 +54,7 @@ public class TestObject extends BastTestCast{
 		context.put("a.grade", 15);
 		context.put("a.tomCat.name", "tomcat");
 		context.put("a.tomCat.coller", "red");
-		People people = (People) generator.getObject("a",null,People.class.getName(), context);
+		People people = (People) generator.getObject("a",null,People.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(people.getAge(), 11);
 		assertEquals(people.getTomCat().getName(), "tomcat");
 	}
@@ -66,7 +66,7 @@ public class TestObject extends BastTestCast{
 		context.put("people_grade", 15);
 		context.put("people_tomCat_name", "tomcat");
 		context.put("people_tomCat_coller", "red");
-		People people = (People) generator.getObject(null,null,People.class.getName(), context);
+		People people = (People) generator.getObject(null,null,People.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(people.getAge(), 11);
 		assertEquals(people.getTomCat().getName(), "tomcat");
 	}
@@ -78,7 +78,7 @@ public class TestObject extends BastTestCast{
 		context.put("a_grade", 15);
 		context.put("a_tomCat_name", "tomcat");
 		context.put("a_tomCat_coller", "red");
-		People people = (People) generator.getObject("a",null,People.class.getName(), context);
+		People people = (People) generator.getObject("a",null,People.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(people.getAge(), 11);
 		assertEquals(people.getTomCat().getName(), "tomcat");
 	}
@@ -90,7 +90,7 @@ public class TestObject extends BastTestCast{
 		context.put("people_grade", 15);
 		context.put("people.tomCat.name", "tomcat");
 		context.put("people.tomCat.coller", "red");
-		People people = (People) generator.getObject(null,null,People.class.getName(), context);
+		People people = (People) generator.getObject(null,null,People.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(people.getAge(), 11);
 		assertEquals(people.getTomCat().getName(), "tomcat");
 	}
@@ -102,7 +102,7 @@ public class TestObject extends BastTestCast{
 		context.put("a_grade", 15);
 		context.put("a.tomCat.name", "tomcat");
 		context.put("a.tomCat.coller", "red");
-		People people = (People) generator.getObject("a",null,People.class.getName(), context);
+		People people = (People) generator.getObject("a",null,People.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(people.getAge(), 11);
 		assertEquals(people.getTomCat().getName(), "tomcat");
 	}

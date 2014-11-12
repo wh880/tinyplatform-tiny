@@ -23,6 +23,7 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.bundle.loader.LoaderManager;
 import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.commons.tools.ReflectionUtils;
 import org.tinygroup.commons.tools.ValueUtil;
@@ -80,7 +81,7 @@ public class HandlerExecutionChain {
 		this.context = context;
 	}
 
-	public void execute() {
+	public void execute() throws ClassNotFoundException {
 		Method method = methodModel.getMapMethod();
 		Class[] paramTypes = method.getParameterTypes();
 		Object[] args = new Object[paramTypes.length];
@@ -97,18 +98,24 @@ public class HandlerExecutionChain {
 							.getBeanContainer(this.getClass().getClassLoader())
 							.getBean(
 									GeneratorFileProcessor.CLASSNAME_OBJECT_GENERATOR_BEAN);
+					//TODO:此处应该还要考虑数据的情况
 					if (Collection.class.isAssignableFrom(type)) {
 						ParameterizedType pt = (ParameterizedType) (method
 								.getGenericParameterTypes()[i]);
 						Type[] actualTypeArguments = pt
 								.getActualTypeArguments();
+						ClassLoader loader = LoaderManager
+								.getLoader(getClassName(actualTypeArguments[0]
+										.toString()));
 						args[i] = generator
 								.getObjectCollection(null, type.getName(),
 										getClassName(actualTypeArguments[0]
-												.toString()), context);
+												.toString()), loader, context);
 					} else {
+						ClassLoader loader = LoaderManager.getLoader(type
+								.getName());
 						args[i] = generator.getObject(null, null,
-								type.getName(), context);
+								type.getName(), loader, context);
 					}
 				}
 			} else {

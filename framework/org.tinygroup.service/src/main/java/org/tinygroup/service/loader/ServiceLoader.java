@@ -31,10 +31,10 @@ public interface ServiceLoader {
 	 * 
 	 * @param serviceRegistry
 	 */
-	void loadService(ServiceRegistry serviceRegistry)
+	void loadService(ServiceRegistry serviceRegistry,ClassLoader classLoader)
 			throws ServiceLoadException;
 
 	void setConfigPath(String path);
 
-	void removeService(ServiceRegistry serviceRegistry);
+	void removeService(ServiceRegistry serviceRegistry,ClassLoader classLoader);
 }

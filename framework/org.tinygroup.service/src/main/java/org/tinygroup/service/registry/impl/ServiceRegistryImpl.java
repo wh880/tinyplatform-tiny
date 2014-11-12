@@ -38,7 +38,10 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	private static Logger logger = LoggerFactory
 			.getLogger(ServiceRegistryImpl.class);
 
+	private boolean change = true;
+
 	public void registeService(ServiceRegistryItem serviceRegistryItem) {
+		change = true;
 		if (serviceIdMap.containsKey(serviceRegistryItem.getServiceId())) {
 			logger.logMessage(LogLevel.WARN, "服务号:[{0}]已经存在,之前的服务将被覆盖",
 					serviceRegistryItem.getServiceId());
@@ -79,10 +82,12 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		if (serviceRegistryItem == null) {
 			return;
 		}
+		change = true;
 		logger.logMessage(LogLevel.INFO, "删除服务[serviceId:{0}]",
 				serviceRegistryItem.getServiceId());
-		serviceIdMap.remove(serviceRegistryItem.getServiceId());
-		serviceToServiceRegistryItem.remove(serviceRegistryItem.getService());
+		ServiceRegistryItem removedItem = serviceIdMap
+				.remove(serviceRegistryItem.getServiceId());
+		serviceToServiceRegistryItem.remove(removedItem.getService());
 	}
 
 	public int size() {
@@ -103,7 +108,16 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	}
 
 	public Collection<ServiceRegistryItem> getServiceRegistryItems() {
+
 		return serviceIdMap.values();
+	}
+
+	public boolean isChange() {
+		return change;
+	}
+
+	public void setChange(boolean change) {
+		this.change = change;
 	}
 
 }

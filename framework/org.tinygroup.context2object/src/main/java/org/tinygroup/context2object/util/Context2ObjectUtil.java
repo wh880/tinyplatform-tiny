@@ -26,14 +26,15 @@ public final class Context2ObjectUtil {
 
 	}
 
-	public static Object getObject(Parameter p, Context context,ClassLoader loader) {
-		if(context.exist(p.getName()))
+	public static Object getObject(Parameter p, Context context,
+			ClassLoader loader) {
+		if (context.exist(p.getName()))
 			return context.get(p.getName());
-//		Object o = context.get(p.getName());
-//		if (o != null) {
-//			return o;
-//		}
-		return getObjectByGenerator(p, context,loader);
+		// Object o = context.get(p.getName());
+		// if (o != null) {
+		// return o;
+		// }
+		return getObjectByGenerator(p, context, loader);
 	}
 
 	private static boolean isNull(String s) {
@@ -41,19 +42,20 @@ public final class Context2ObjectUtil {
 	}
 
 	public static Object getObjectByGenerator(Parameter parameter,
-			Context context,ClassLoader loader) {
+			Context context, ClassLoader loader) {
 		String collectionType = parameter.getCollectionType();// 集合类型
 		String paramName = parameter.getName();
 		String paramType = parameter.getType();
-		ClassNameObjectGenerator generator = BeanContainerFactory.getBeanContainer(loader)
+		ClassNameObjectGenerator generator = BeanContainerFactory
+				.getBeanContainer(Context2ObjectUtil.class.getClassLoader())
 				.getBean(GeneratorFileProcessor.CLASSNAME_OBJECT_GENERATOR_BEAN);
 		if (!isNull(collectionType)) {// 如果集合类型非空
 			return generator.getObjectCollection(paramName, collectionType,
-					paramType, context);
+					paramType, loader,context);
 		} else if (parameter.isArray()) {// 如果是数组
-			return generator.getObjectArray(paramName, paramType, context);
+			return generator.getObjectArray(paramName, paramType, loader,context);
 		}
 		// 否则就是对象
-		return generator.getObject(paramName, paramName, paramType, context);
+		return generator.getObject(paramName, paramName, paramType,loader, context);
 	}
 }

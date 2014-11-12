@@ -37,13 +37,13 @@ public class TestObjectWithVarName extends BastTestCast{
 		context.put("b.tomCat.name", "tomcat2");
 		context.put("b.tomCat.coller", "red2");
 		
-		People people = (People) generator.getObject("a",null,People.class.getName(), context);
+		People people = (People) generator.getObject("a",null,People.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(people.getAge(), 10);
 		assertEquals(people.getGrade(), 11);
 		assertEquals(people.getTomCat().getName(), "tomcat");
 		assertEquals(people.getTomCat().getColler(), "red");
 		
-		People people2 = (People) generator.getObject("b",null,People.class.getName(), context);
+		People people2 = (People) generator.getObject("b",null,People.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(people2.getAge(), 12);
 		assertEquals(people2.getGrade(), 13);
 		assertEquals(people2.getTomCat().getName(), "tomcat2");

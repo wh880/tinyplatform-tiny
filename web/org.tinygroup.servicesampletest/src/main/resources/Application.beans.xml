@@ -7,6 +7,11 @@
 
 	<bean id="fileResolver" scope="singleton"
 		class="org.tinygroup.fileresolver.impl.FileResolverImpl">
+		<property name="changeLisenters">
+			<list>
+				<ref bean="eventProcessorChangeLisenter" />
+			</list>
+		</property>
 		<property name="fileProcessorList">
 			<list>
 				<ref bean="i18nFileProcessor" />
@@ -22,6 +27,7 @@
 				<ref bean="annotationFileProcessor" />
 				<ref bean="annotationClassFileProcessor" />
 
+				<ref bean="xmlServiceFileProcessor" />
 				<ref bean="xmlSysServiceFileProcessor" />
 				<!-- flow -->
 				<ref bean="flowFileProcessor" />
@@ -41,7 +47,7 @@
 				<ref bean="generatorFileProcessor" />
 				<!-- serviceMapping -->
 				<ref bean="serviceMappingFileProcessor" />
-				
+
 			</list>
 		</property>
 	</bean>
@@ -55,11 +61,11 @@
 		class="org.tinygroup.cepcorenetty.operator.ArOperator">
 		<property name="ip" value="192.168.84.23"></property>
 		<property name="port" value="7777"></property>
-		<property name="remoteIp" value="192.168.84.23"></property>
+		<property name="remoteIp" value="192.168.51.28"></property>
 		<property name="remotePort" value="8888"></property>
 		<property name="weight" value="20"></property>
 	</bean>
-	
+
 	<bean id="sc" scope="singleton"
 		class="org.tinygroup.cepcorenetty.operator.ScOperator">
 		<property name="port" value="8888"></property>

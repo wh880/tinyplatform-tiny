@@ -27,7 +27,7 @@ public class TestUtil {
 		System.out.println(System.getProperty("user.dir"));
 		if (!init) {
 			AbstractTestUtil.init("application.xml", true);
-			init = true;
+			
 			BundleManager manager = BeanContainerFactory.getBeanContainer(
 					TestUtil.class.getClassLoader()).getBean(
 					BundleManager.BEAN_NAME);

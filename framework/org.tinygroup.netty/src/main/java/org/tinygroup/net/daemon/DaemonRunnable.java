@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -12,6 +12,14 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ * --------------------------------------------------------------------------
+ *  版权 (c) 1997-2013, tinygroup.org (luo_guo@live.cn).
+ *
+ *  本开源软件遵循 GPL 3.0 协议;
+ *  如果您不遵循此协议，则不被允许使用此文件。
+ *  你可以从下面的地址获取完整的协议文本
+ *
+ *       http://www.gnu.org/licenses/gpl.html
  */
 package org.tinygroup.net.daemon;
 
@@ -36,9 +44,7 @@ public abstract class DaemonRunnable implements Runnable {
 	 */
 	public void stop() {
 		this.end = true;
-        logger.log(LogLevel.INFO,"开始停止运行...");
 		stopAction();
-        logger.log(LogLevel.INFO,"停止运行结束。");
 	}
 
 	public int getWaitTime() {
@@ -60,10 +66,10 @@ public abstract class DaemonRunnable implements Runnable {
 	public void run() {
 		while (!end) {
 			try {
-                logger.log(LogLevel.INFO,"开始启动运行...");
+				logger.logMessage(LogLevel.DEBUG, "开始运行...");
 				startAction();
-                logger.log(LogLevel.INFO,"运行启动结束。");
-			} catch (Exception e) {
+				logger.logMessage(LogLevel.DEBUG, "运行结束。");
+			} catch (Throwable e) {
 				logger.error(e);
 			} finally {
 				try {

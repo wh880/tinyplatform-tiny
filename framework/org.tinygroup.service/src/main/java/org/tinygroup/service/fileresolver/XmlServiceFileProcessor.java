@@ -59,7 +59,6 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
 
 
 	public void process() {
-//        ServiceProviderInterface provider = SpringBeanContainer.getBean("service");
         XStream stream = XStreamFactory
                 .getXStream(Service.SERVICE_XSTREAM_PACKAGENAME);
         for (FileObject fileObject : deleteList) {
@@ -67,9 +66,10 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
                     fileObject.getAbsolutePath());
             ServiceComponents components = (ServiceComponents) caches.get(fileObject.getAbsolutePath());
             if (components != null) {
-                list.remove(components);
+//                list.remove(components);
                 caches.remove(fileObject.getAbsolutePath());
             }
+            removeServiceComponents(provider.getServiceRegistory(), components);
             logger.logMessage(LogLevel.INFO, "移除Service文件[{0}]结束",
                     fileObject.getAbsolutePath());
         }
@@ -95,7 +95,7 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
         }
         try {
             logger.logMessage(LogLevel.INFO, "正在注册Service");
-            this.loadService(provider.getServiceRegistory());
+            this.loadService(provider.getServiceRegistory(),getFileResolver().getClassLoader());
             logger.logMessage(LogLevel.INFO, "注册Service结束");
         } catch (ServiceLoadException e) {
             logger.errorMessage("注册Service时出错", e);
@@ -116,10 +116,12 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
 
     protected Object getServiceInstance(ServiceComponent component)
             throws Exception {
-    	BeanContainer container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
+    	BeanContainer container = BeanContainerFactory.getBeanContainer(getFileResolver().getClassLoader());
         //如果没有定义bean ID
         if (component.getBean() == null || "".equals(component.getBean())) {
-            Class<?> clazz = Class.forName(component.getType());
+        	//20141023 为bundle修改
+        	Class<?> clazz = getFileResolver().getClassLoader().loadClass(component.getType());
+            //Class<?> clazz = Class.forName(component.getType());
             return container.getBean(clazz);
         }
         try {

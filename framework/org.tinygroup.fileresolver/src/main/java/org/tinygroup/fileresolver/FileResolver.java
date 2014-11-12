@@ -15,86 +15,100 @@
  */
 package org.tinygroup.fileresolver;
 
-import org.tinygroup.config.Configuration;
-import org.tinygroup.vfs.FileObject;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.tinygroup.config.Configuration;
+import org.tinygroup.vfs.FileObject;
+
 /**
  * 文件查找器
- *
+ * 
  * @author luoguo
  */
 public interface FileResolver extends Configuration {
 
-    String BEAN_NAME = "fileResolver";
+	String BEAN_NAME = "fileResolver";
 
-    /**
-     * 返回所有的文件处理器
-     *
-     * @return
-     */
-    List<FileProcessor> getFileProcessorList();
+	/**
+	 * 返回所有的文件处理器
+	 * 
+	 * @return
+	 */
+	List<FileProcessor> getFileProcessorList();
 
-    /**
-     * 返回当前FileResolver要扫描的文件列表
-     *
-     * @return
-     */
-    Set<String> getResolveFileObjectSet();
+	/**
+	 * 返回当前FileResolver要扫描的文件列表
+	 * 
+	 * @return
+	 */
+	Set<String> getResolveFileObjectSet();
 
-    /**
-     * 手工添加扫描的匹配列表，如果有包含列表，则按包含列表
-     *
-     * @param pattern
-     */
-    void addIncludePathPattern(String pattern);
-    Map<String, Pattern> getIncludePathPatternMap();
-    /**
-     * 添加扫描的路径
-     *
-     * @param fileObject
-     */
-    void addResolveFileObject(FileObject fileObject);
+	/**
+	 * 手工添加扫描的匹配列表，如果有包含列表，则按包含列表
+	 * 
+	 * @param pattern
+	 */
+	void addIncludePathPattern(String pattern);
 
-    void addResolvePath(String path);
-    
-    void addResolvePath(List<String> paths);
+	Map<String, Pattern> getIncludePathPatternMap();
 
-    /**
-     * 增加文件处理器
-     *
-     * @param fileProcessor
-     */
-    void addFileProcessor(FileProcessor fileProcessor);
+	/**
+	 * 添加扫描的路径
+	 * 
+	 * @param fileObject
+	 */
+	void addResolveFileObject(FileObject fileObject);
 
-    void setClassLoader(ClassLoader classLoader);
+	void addResolvePath(String path);
 
-    ClassLoader getClassLoader();
+	void addResolvePath(List<String> paths);
+	
+	void removeResolvePath(String path);
 
-    /**
-     * 开始找文件
-     */
-    void resolve();
+	/**
+	 * 增加文件处理器
+	 * 
+	 * @param fileProcessor
+	 */
+	void addFileProcessor(FileProcessor fileProcessor);
 
-    /**
-     * 开始找文件
-     */
-    void refresh();
-    /**
-     * 获取文件处理的线程数目
-     *
-     * @return
-     */
-    int getFileProcessorThreadNumber();
+	void setClassLoader(ClassLoader classLoader);
 
-    /**
-     * 设置文件处理的线程数目
-     *
-     * @param threadNum
-     */
-    void setFileProcessorThreadNumber(int threadNum);
+	ClassLoader getClassLoader();
+
+	/**
+	 * 开始找文件
+	 */
+	void resolve();
+
+	/**
+	 * 开始找文件
+	 */
+	void refresh();
+
+	/**
+	 * 获取文件处理的线程数目
+	 * 
+	 * @return
+	 */
+	int getFileProcessorThreadNumber();
+
+	/**
+	 * 设置文件处理的线程数目
+	 * 
+	 * @param threadNum
+	 */
+	void setFileProcessorThreadNumber(int threadNum);
+
+	void addChangeLisenter(ChangeLisenter lisenter);
+
+	List<ChangeLisenter> getChangeLisenters();
+	/**
+	 * 触发 ChangeLisenters
+	 * 
+	 */
+	void change();
 }

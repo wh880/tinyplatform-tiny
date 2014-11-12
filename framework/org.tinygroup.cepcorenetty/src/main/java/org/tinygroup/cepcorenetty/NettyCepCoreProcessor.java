@@ -18,7 +18,19 @@ public class NettyCepCoreProcessor implements ApplicationProcessor {
 	private static Logger logger = LoggerFactory
 			.getLogger(NettyCepCoreProcessor.class);
 
+	private CEPCore cepcore ;
+	
 	private XmlNode appConfig;
+
+	
+
+	public CEPCore getCepcore() {
+		return cepcore;
+	}
+
+	public void setCepcore(CEPCore cepcore) {
+		this.cepcore = cepcore;
+	}
 
 	public String getApplicationNodePath() {
 		return CEP_CONFIG_PATH;
@@ -60,12 +72,12 @@ public class NettyCepCoreProcessor implements ApplicationProcessor {
 		String nodeName = appConfig.getAttribute(NODE_NAME);
 		logger.logMessage(LogLevel.INFO, "NodeName为:{0}",nodeName);
 		
-		CEPCore core = BeanContainerFactory.getBeanContainer(
-				this.getClass().getClassLoader()).getBean(CEPCore.CEP_CORE_BEAN);
-		core.setOperator(operator);
-		core.setNodeName(nodeName);
-		core.start();
-		
+//		CEPCore cepcore = BeanContainerFactory.getBeanContainer(
+//				this.getClass().getClassLoader()).getBean(CEPCore.CEP_CORE_BEAN);
+		cepcore.setOperator(operator);
+		cepcore.setNodeName(nodeName);
+		cepcore.start();
+		cepcore.addEventProcessorRegisterTrigger(new ArReRegisterTrigger());
 		logger.logMessage(LogLevel.INFO, "启动CEPCoreProcessor完毕");
 
 	}

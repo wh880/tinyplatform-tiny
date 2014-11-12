@@ -16,7 +16,7 @@ import org.tinygroup.event.central.Node;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.netty.daemon.DaemonUtils;
+import org.tinygroup.net.daemon.DaemonUtils;
 import org.tinygroup.tinynetty.EventClient;
 import org.tinygroup.tinynetty.EventServer;
 import org.tinygroup.tinynetty.remote.EventClientDaemonRunnable;
@@ -82,6 +82,10 @@ public class ArOperator implements CEPCoreOperator {
 		
 	}
 
+	public void reReg(){
+		ArRegister ar = new ArRegister(client, core, getNode());
+		ar.regToSc();
+	}
 	
 
 	private void unregToSc(EventClient client) {
@@ -106,7 +110,7 @@ public class ArOperator implements CEPCoreOperator {
 		server.stop();
 		client.stop();
 	}
-
+	
 	public void setCEPCore(CEPCore cep) {
 		core = cep;
 	}

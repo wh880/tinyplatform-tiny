@@ -26,7 +26,7 @@ package org.tinygroup.tinynetty.remote;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.netty.daemon.DaemonRunnable;
+import org.tinygroup.net.daemon.DaemonRunnable;
 import org.tinygroup.tinynetty.EventClient;
 
 public class EventClientDaemonRunnable extends DaemonRunnable {

@@ -98,7 +98,18 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	}
 
 	public <T> T getBean(String name) {
-		return (T) applicationContext.getBean(name);
+		try {
+			return (T) applicationContext.getBean(name);
+		} catch (Exception e) {
+			for(BeanContainer<?> sb:subs.values()){
+				try {
+					return sb.getBean(name);
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			}
+		}
+		throw new NoSuchBeanDefinitionException(name);
 	}
 
 	public <T> T getBean(Class<T> clazz) {
@@ -122,6 +133,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 
 	public void regSpringConfigXml(List<FileObject> files) {
 		for (FileObject fileObject : files) {
+			logger.logMessage(LogLevel.INFO,"添加文件:{}",fileObject.getPath());
 			String urlString = fileObject.getURL().toString();
 			addUrl(urlString);
 		}
@@ -136,6 +148,14 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 		if (!configs.contains(urlString)) {
 			configs.add(urlString);
 			logger.logMessage(LogLevel.INFO, "添加Spring配置文件:{urlString}",
+					urlString);
+		}
+	}
+	
+	public void removeUrl(String urlString) {
+		if (configs.contains(urlString)) {
+			configs.remove(urlString);
+			logger.logMessage(LogLevel.INFO, "删除Spring配置文件:{urlString}",
 					urlString);
 		}
 	}

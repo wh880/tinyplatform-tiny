@@ -37,6 +37,15 @@ public class ServiceProxy implements Service {
 	private List<Parameter> inputParameters;
 	private Parameter outputParameter;
 	private String methodName;
+	private ClassLoader loader = this.getClass().getClassLoader();
+
+	public ClassLoader getLoader() {
+		return loader;
+	}
+
+	public void setLoader(ClassLoader loader) {
+		this.loader = loader;
+	}
 
 	public String getMethodName() {
 		return methodName;
@@ -119,7 +128,7 @@ public class ServiceProxy implements Service {
 				return boolean.class;
 			}
 
-			return Class.forName(name);
+			return loader.loadClass(name);
 		} catch (ClassNotFoundException e) {
 			throw new ServiceExecuteException(e);
 		}
@@ -204,8 +213,7 @@ public class ServiceProxy implements Service {
 		Parameter des = inputParameters.get(i);
 		String paramName = des.getName();
 		// =============20130619修改bengin================
-		Object obj = Context2ObjectUtil.getObject(des, context, this.getClass()
-				.getClassLoader());
+		Object obj = Context2ObjectUtil.getObject(des, context, loader);
 		// =============20130619修改end================
 		if (obj == null) {
 			if (des.isRequired()) { // 如果输入参数是必须的,则抛出异常

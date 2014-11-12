@@ -22,7 +22,7 @@ import org.tinygroup.service.registry.ServiceRegistryItem;
 
 public class ServiceLoaderImpl implements ServiceLoader {
 
-	public void loadService(ServiceRegistry serviceRegistry)
+	public void loadService(ServiceRegistry serviceRegistry,ClassLoader classLoader)
 			throws ServiceLoadException {
 		for (int index = 6; index < 11; index++) {
 			PrintContextService printContextService = new PrintContextService();
@@ -37,7 +37,7 @@ public class ServiceLoaderImpl implements ServiceLoader {
 
 	}
 
-	public void removeService(ServiceRegistry serviceRegistry) {
+	public void removeService(ServiceRegistry serviceRegistry,ClassLoader classLoader) {
 
 	}
 

@@ -34,7 +34,7 @@ public class ClassNameObjectGeneratorTest extends BastTestCast {
 		context.put("cat", cat);
 		context.put("name", "luog");
 		context.put("age", 33);
-		User user = (User) generator.getObject(null,null,User.class.getName(), context);
+		User user = (User) generator.getObject(null,null,User.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(user.getName(), "luog");
 		assertEquals(user.getAge(), 33);
 		assertEquals(user.getCat().getNickName(), "tom");
@@ -43,7 +43,7 @@ public class ClassNameObjectGeneratorTest extends BastTestCast {
 	public void testGetAnnotation() {
 		Context context = new ContextImpl();
 		context.put("name", "luog");
-		NewUser user = (NewUser) newgenerator.getObject(null,null,NewUser.class.getName(), context);
+		NewUser user = (NewUser) newgenerator.getObject(null,null,NewUser.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(user.getName(), "luog");
 	}
 
@@ -52,7 +52,7 @@ public class ClassNameObjectGeneratorTest extends BastTestCast {
 		context.put("nickName", "tom");
 		context.put("name", "luog");
 		context.put("age", 33);
-		User user = (User) generator.getObject(null,null,User.class.getName(), context);
+		User user = (User) generator.getObject(null,null,User.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(user.getName(), "luog");
 		assertEquals(user.getAge(), 33);
 		assertEquals(user.getCat().getNickName(), "tom");
@@ -62,7 +62,7 @@ public class ClassNameObjectGeneratorTest extends BastTestCast {
 		Context context = new ContextImpl();
 		context.put("nickName", "tom");
 		context.put("name", "luog");
-		NewUser user = (NewUser) newgenerator.getObject(null,null,NewUser.class.getName(), context);
+		NewUser user = (NewUser) newgenerator.getObject(null,null,NewUser.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(user.getName(), "luog");
 		assertEquals(user.getCat().getNickName(), "tom");
 	}
@@ -74,7 +74,7 @@ public class ClassNameObjectGeneratorTest extends BastTestCast {
 		context.put("name", "luog");
 		context.put("birthday", "1999-3-3");
 		context.put("age", 33);
-		User user = (User) generator.getObject(null,null,User.class.getName(), context);
+		User user = (User) generator.getObject(null,null,User.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(user.getName(), "luog");
 		assertEquals(user.getAge(), 33);
 		assertEquals(user.getCats()[0].getNickName(), "tom");

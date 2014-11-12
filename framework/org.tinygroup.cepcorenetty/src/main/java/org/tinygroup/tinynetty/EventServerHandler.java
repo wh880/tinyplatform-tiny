@@ -43,8 +43,8 @@ import org.tinygroup.event.central.Node;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.netty.ServerHandler;
-import org.tinygroup.netty.daemon.DaemonUtils;
+import org.tinygroup.net.ServerHandler;
+import org.tinygroup.net.daemon.DaemonUtils;
 import org.tinygroup.tinynetty.remote.EventClientDaemonRunnable;
 import org.tinygroup.tinynetty.remote.NettyEventProcessor;
 import org.tinygroup.tinynetty.remote.NettyEventProcessorConatiner;
@@ -154,7 +154,6 @@ public class EventServerHandler extends ServerHandler {
 			newContext.put(NettyCepCoreUtil.SC_TO_AR_SERVICE_KEY, list);
 			Event newEvent = Event.createEvent(NettyCepCoreUtil.SC_TO_AR,
 					newContext);
-			System.out.println(clients + "==" + client);
 			client.getClient().sendObject(newEvent);
 			logger.logMessage(LogLevel.INFO, "将该节点注册至已有节点:{}完成", string);
 		}

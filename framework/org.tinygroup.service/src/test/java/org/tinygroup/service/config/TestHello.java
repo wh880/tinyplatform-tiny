@@ -32,7 +32,7 @@ public class TestHello {
 		ServiceProviderInterface serviceProvider = new ServiceProviderImpl();
 		ServiceRegistry serviceRegistry = new ServiceRegistryImpl();
 		serviceProvider.setServiceRegistory(serviceRegistry);
-		new XmlConfigLoader().loadService(serviceRegistry);
+		new XmlConfigLoader().loadService(serviceRegistry,TestHello.class.getClassLoader());
 		System.out.println(serviceRegistry.size());
 
 		Context Context = new ContextImpl();

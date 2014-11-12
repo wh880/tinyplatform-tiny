@@ -24,21 +24,21 @@ import org.tinygroup.context2object.test.bean.People2;
 public class TestNull extends BastTestCast {
 	public void testNullObject() {
 		Context context = new ContextImpl();
-		Object people =  generator.getObject(null,null, People2.class.getName(), context);
+		Object people =  generator.getObject(null,null, People2.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(null,people);
 		
 	}
 	
 	public void testNullList() {
 		Context context = new ContextImpl();
-		Object peoples =  generator.getObjectCollection(null, List.class.getName(),People2.class.getName(), context);
+		Object peoples =  generator.getObjectCollection(null, List.class.getName(),People2.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(null,peoples);
 		
 	}
 	
 	public void testNullArray() {
 		Context context = new ContextImpl();
-		Object peoples =  generator.getObject(null,null, People2[].class.getName(), context);
+		Object peoples =  generator.getObjectArray(null, People2.class.getName(), this.getClass().getClassLoader(),context);
 		assertEquals(null,peoples);
 		
 	}
@@ -46,7 +46,7 @@ public class TestNull extends BastTestCast {
 	public void testNullProperty() {
 		Context context = new ContextImpl();
 		context.put("people2.type", "type1");
-		People2 people = (People2) generator.getObject(null,null, People2.class.getName(), context);
+		People2 people = (People2) generator.getObject(null,null, People2.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(null,people.getNames());
 		assertEquals("type1", people.getType());
 	}

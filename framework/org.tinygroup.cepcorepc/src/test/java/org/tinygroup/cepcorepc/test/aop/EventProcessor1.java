@@ -61,4 +61,14 @@ public class EventProcessor1 implements EventProcessor{
 		return null;
 	}
 
+	public boolean isRead() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	public void setRead(boolean read) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

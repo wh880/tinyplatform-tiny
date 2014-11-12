@@ -106,7 +106,7 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 		}
 		try {
 			logger.logMessage(LogLevel.INFO, "正在注册SysService");
-			this.loadService(provider.getServiceRegistory());
+			this.loadService(provider.getServiceRegistory(),getFileResolver().getClassLoader());
 			logger.logMessage(LogLevel.INFO, "注册SysService结束");
 		} catch (ServiceLoadException e) {
 			logger.errorMessage("注册SysService时出错", e);

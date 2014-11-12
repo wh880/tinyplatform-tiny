@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 import org.tinygroup.commons.order.OrderUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
+import org.tinygroup.fileresolver.ChangeLisenter;
 import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverUtil;
@@ -61,6 +62,8 @@ public class FileResolverImpl implements FileResolver {
 	private static Logger logger = LoggerFactory
 			.getLogger(FileResolverImpl.class);
 
+	private List<ChangeLisenter> changeLisenters = new ArrayList<ChangeLisenter>();
+
 	// 是否对classPath进行处理，默认为处理
 	private int fileProcessorThreadNum = DEFAULT_THREAD_NUM;
 	// 文件处理器列表，由文件查找器统一管理
@@ -76,6 +79,14 @@ public class FileResolverImpl implements FileResolver {
 	private XmlNode componentConfig;
 	private XmlNode applicationConfig;
 	private ClassLoader classLoader;
+
+	public List<ChangeLisenter> getChangeLisenters() {
+		return changeLisenters;
+	}
+
+	public void setChangeLisenters(List<ChangeLisenter> changeLisenters) {
+		this.changeLisenters = changeLisenters;
+	}
 
 	public Set<String> getResolveFileObjectSet() {
 		return allScanningPath;
@@ -149,6 +160,7 @@ public class FileResolverImpl implements FileResolver {
 			}
 		}
 		resolveClassPaths(classPaths);
+		change();
 	}
 
 	private void resolverScanPath() {
@@ -403,6 +415,61 @@ public class FileResolverImpl implements FileResolver {
 
 	public Map<String, Pattern> getIncludePathPatternMap() {
 		return includePathPatternMap;
+	}
+
+	public void addChangeLisenter(ChangeLisenter lisenter) {
+		changeLisenters.add(lisenter);
+	}
+
+	public void change() {
+		for (ChangeLisenter changeLisenter : changeLisenters) {
+			changeLisenter.change(this);
+		}
+	}
+	private void removeFile(FileObject fileObject){
+		fileObjectCaches.remove(fileObject.getPath());
+		for (FileProcessor fileProcessor : fileProcessorList) {
+			if (fileProcessor.isMatch(fileObject)) {// 匹配后才能删除
+				fileProcessor.delete(fileObject);
+			}
+		}
+		if(fileObject.getChildren()!=null){
+			for(FileObject child:fileObject.getChildren()){
+				removeFile(child);
+			}
+		}
+	}
+
+	public void removeResolvePath(String path) {
+		FileObject fileObject = VFS.resolveFile(path);
+		String filePath = fileObject.getAbsolutePath();
+		allScanningPath.remove(filePath);
+		for (FileProcessor fileProcessor : fileProcessorList) {
+			fileProcessor.clean();// 清空文件列表
+		}
+		removeFile(fileObject);
+		for (FileProcessor fileProcessor : fileProcessorList) {
+			if (fileProcessor.supportRefresh()) {
+				fileProcessor.process();
+			}
+		}
+		
+		
+//		Map<String, FileObject> tempMap = new HashMap<String, FileObject>();
+//		for (String path : fileObjectCaches.keySet()) {
+//			FileObject fileObject = fileObjectCaches.get(path);
+//			if (!fileObject.isExist()) {
+//				// 文件已经被删除
+//				for (FileProcessor fileProcessor : fileProcessorList) {
+//					if (fileProcessor.isMatch(fileObject)) {// 匹配后才能删除
+//						fileProcessor.delete(fileObject);
+//					}
+//				}
+//			} else {
+//				tempMap.put(path, fileObject);
+//			}
+//		}
+//		fileObjectCaches = tempMap;
 	}
 
 }

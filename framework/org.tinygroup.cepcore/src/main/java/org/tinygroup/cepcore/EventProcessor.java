@@ -67,4 +67,8 @@ public interface EventProcessor {
 	 * @return
 	 */
 	List<String> getRegex();
+	
+	boolean isRead();
+	
+	void setRead(boolean read);
 }

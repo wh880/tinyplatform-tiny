@@ -29,7 +29,6 @@
 		<application-processor bean="fileResolverProcessor"></application-processor>
 		<application-processor bean="PluginMgtProcessor"></application-processor>
 		<application-processor bean="CEPProcessor"></application-processor>
-		<application-processor bean="dictLoadProcessor"></application-processor>
 		<application-processor bean="tinyListenerProcessor"></application-processor>
 		<application-processor bean="fileMonitorProcessor"></application-processor>
 	</application-processors>
@@ -253,11 +252,11 @@
 			</plugin-config>
 		</plugin-configs>
 	</plugin-management>
-	<!-- cep远程调用配置 -->
+	<!-- cep远程调用配置
 
 	<cep-configuration node-name="ar">
 		<operator name="arWorker"></operator>
-	</cep-configuration>
+	</cep-configuration> -->
 	
 	<!-- aop配置 -->
 	<cepcore-aop-config>

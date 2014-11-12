@@ -76,5 +76,9 @@ public interface CEPCore extends Remote {
 	List<ServiceInfo> getServiceInfos();
 
 	ServiceInfo getServiceInfo(String serviceId);
+	
+	void addEventProcessorRegisterTrigger(EventProcessorRegisterTrigger trigger);
+	
+	void refreshEventProcessors();
 
 }

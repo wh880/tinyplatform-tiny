@@ -15,6 +15,8 @@
  */
 package org.tinygroup.bundle.config;
 
+import java.io.Serializable;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -23,7 +25,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * Created by luoguo on 2014/5/4.
  */
 @XStreamAlias("bundle")
-public class BundleDefine {
+public class BundleDefine implements Serializable{
     @XStreamAsAttribute
     private String name;
 

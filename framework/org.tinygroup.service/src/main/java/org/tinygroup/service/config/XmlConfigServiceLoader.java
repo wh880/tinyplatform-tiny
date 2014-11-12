@@ -60,22 +60,22 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 	/**
 	 * 载入服务
 	 */
-	public void loadService(ServiceRegistry serviceRegistry)
+	public void loadService(ServiceRegistry serviceRegistry,ClassLoader classLoader)
 			throws ServiceLoadException {
 		List<ServiceComponents> list = getServiceComponents();// 这个由子类提供
 		for (ServiceComponents serviceComponents : list) {
-			loadService(serviceRegistry, serviceComponents);
+			loadService(serviceRegistry, serviceComponents,classLoader);
 		}
 	}
 
-	public void removeService(ServiceRegistry serviceRegistry) {
+	public void removeService(ServiceRegistry serviceRegistry,ClassLoader classLoader) {
 		List<ServiceComponents> list = getServiceComponents();
 		for (ServiceComponents serviceComponents : list) {
 			removeServiceComponents(serviceRegistry, serviceComponents);
 		}
 	}
 
-	private void removeServiceComponents(ServiceRegistry serviceRegistry,
+	public void removeServiceComponents(ServiceRegistry serviceRegistry,
 			ServiceComponents serviceComponents) {
 		for (ServiceComponent component : serviceComponents
 				.getServiceComponents()) {
@@ -87,13 +87,13 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 	}
 
 	private void loadService(ServiceRegistry serviceRegistry,
-			ServiceComponents serviceComponents) throws ServiceLoadException {
+			ServiceComponents serviceComponents,ClassLoader classLoader) throws ServiceLoadException {
 		for (ServiceComponent serviceComponent : serviceComponents
 				.getServiceComponents()) {
 			try {
 
 				Object object = getServiceInstance(serviceComponent);
-				registerServices(object, serviceComponent, serviceRegistry);
+				registerServices(object, serviceComponent, serviceRegistry,classLoader);
 
 			} catch (Exception e) {
 				logger.errorMessage("实例化ServiceComponent时出错,类名:", e,
@@ -112,7 +112,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 	 * @throws ClassNotFoundException
 	 */
 	private void registerServices(Object object,
-			ServiceComponent serviceComponent, ServiceRegistry serviceRegistry)
+			ServiceComponent serviceComponent, ServiceRegistry serviceRegistry,ClassLoader classLoader)
 			throws ClassNotFoundException, ServiceLoadException {
 		for (ServiceMethod serviceMethod : serviceComponent.getServiceMethods()) {
 			ServiceRegistryItem item = new ServiceRegistryItem();
@@ -120,7 +120,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 			item.setDescription(serviceMethod.getDescription());
 			item.setCacheable(serviceMethod.isCacheable());
 			item.setCategory(serviceMethod.getCategory());
-			registerService(object, serviceMethod, item);
+			registerService(object, serviceMethod, item,classLoader);
 			String serviceId=serviceMethod.getServiceId();
 			if(!StringUtil.isBlank(serviceId)){
 				ServiceRegistryItem registryItem =  ServiceUtil.copyServiceItem(item);
@@ -148,13 +148,14 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 	 * @throws ClassNotFoundException
 	 */
 	private void registerService(Object object, ServiceMethod serviceMethod,
-			ServiceRegistryItem item) throws ClassNotFoundException,
+			ServiceRegistryItem item,ClassLoader classLoader) throws ClassNotFoundException,
 			ServiceLoadException {
 		ServiceProxy serviceProxy = new ServiceProxy();
 		serviceProxy.setMethodName(serviceMethod.getMethodName());
+		serviceProxy.setLoader(classLoader);
 		serviceProxy.setObjectInstance(object);
-		getInputParameterNames(item, serviceMethod, serviceProxy);
-		getOutputParameterNames(item, serviceMethod, serviceProxy);
+		getInputParameterNames(item, serviceMethod, serviceProxy,classLoader);
+		getOutputParameterNames(item, serviceMethod, serviceProxy,classLoader);
 		item.setService(serviceProxy);
 
 	}
@@ -173,7 +174,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 	 * @throws ServiceLoadException
 	 */
 	private void getInputParameterNames(ServiceRegistryItem item,
-			ServiceMethod serviceMethod, ServiceProxy serviceProxy)
+			ServiceMethod serviceMethod, ServiceProxy serviceProxy,ClassLoader classLoader)
 			throws ClassNotFoundException, ServiceLoadException {
 		List<Parameter> inputParameterDescriptors = new ArrayList<Parameter>();
 		// ==================入参处理 begin========================
@@ -182,7 +183,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 			String type = serviceParameter.getType();
 			Class<?> parameterType = classMap.get(type);
 			if (parameterType == null) {
-				parameterType = Class.forName(type);
+				parameterType = classLoader.loadClass(type);
 				classMap.put(type, parameterType);
 			}
 			Parameter descriptor = new Parameter();
@@ -206,7 +207,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 	}
 
 	private void getOutputParameterNames(ServiceRegistryItem item,
-			ServiceMethod serviceMethod, ServiceProxy serviceProxy)
+			ServiceMethod serviceMethod, ServiceProxy serviceProxy,ClassLoader classLoader)
 			throws ClassNotFoundException, ServiceLoadException {
 		// ==================出参处理 begin========================
 		if (serviceMethod.getServiceResult() != null) {
@@ -214,7 +215,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 			String type = serviceResult.getType();
 			Class<?> parameterType = classMap.get(type);
 			if (parameterType == null) {
-				parameterType = Class.forName(type);
+				parameterType = classLoader.loadClass(type);
 				classMap.put(type, parameterType);
 			}
 			Parameter descriptor = new Parameter();

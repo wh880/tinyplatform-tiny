@@ -11,7 +11,9 @@
 			<list>
 				<ref bean="i18nFileProcessor" />
 				<ref bean="xStreamFileProcessor" />
+				
 				<ref bean="bundleFileProcessor" />
+				
 			</list>
 		</property>
 	</bean>

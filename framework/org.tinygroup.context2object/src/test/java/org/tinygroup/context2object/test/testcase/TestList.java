@@ -33,7 +33,7 @@ public class TestList extends BastTestCast{
 		String[] colors = { "red", "coller", "coller2" };
 		context.put("smallCat.name", names);
 		context.put("smallCat.coller", colors);
-		Collection<Object> parts = generator.getObjectCollection(null,List.class.getName(), SmallCat.class.getName(), context);
+		Collection<Object> parts = generator.getObjectCollection(null,List.class.getName(), SmallCat.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(3, parts.size());
 		Iterator<Object> iterator = parts.iterator();
 		String catNames = "";
@@ -55,7 +55,7 @@ public class TestList extends BastTestCast{
 		String[] colors = { "red", "coller", "coller2" };
 		context.put("smallCat.name", names);
 		context.put("smallCat.coller", colors);
-		Collection<Object> parts = generator.getObjectCollection(null,List.class.getName(), CatInterface.class.getName(), context);
+		Collection<Object> parts = generator.getObjectCollection(null,List.class.getName(), CatInterface.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(3, parts.size());
 		Iterator<Object> iterator = parts.iterator();
 		String catNames = "";
@@ -72,7 +72,7 @@ public class TestList extends BastTestCast{
 		Context context = new ContextImpl();
 		String[] names = { "tomcat", "name1", "name2" };
 		context.put("a", names);
-		Collection<Object> parts = generator.getObjectCollection("a",List.class.getName(), String.class.getName(), context);
+		Collection<Object> parts = generator.getObjectCollection("a",List.class.getName(), String.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(3, parts.size());
 		Iterator<Object> iterator = parts.iterator();
 		String strings = "";
@@ -88,7 +88,7 @@ public class TestList extends BastTestCast{
 		Context context = new ContextImpl();
 		String[] names = { "tomcat", "name1", "name2" };
 		context.put("people2.names", names);
-		People2 people = (People2) generator.getObject(null,null, People2.class.getName(), context);
+		People2 people = (People2) generator.getObject(null,null, People2.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(3,people.getNames().size());
 		assertEquals(true, people.getNames().get(0).equals("tomcat"));
 		assertEquals(true, people.getNames().get(1).equals("name1"));

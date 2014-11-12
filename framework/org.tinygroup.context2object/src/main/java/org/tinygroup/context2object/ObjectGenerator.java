@@ -15,6 +15,8 @@
  */
 package org.tinygroup.context2object;
 
+import java.util.Collection;
+
 import org.tinygroup.context.Context;
 
 /**
@@ -35,7 +37,15 @@ public interface ObjectGenerator<ReturnType, ParaType> {
 	 *            用来获取对象的环境
 	 * @return 获取的对象
 	 */
-	ReturnType getObject(String varName,String bean,ParaType paraType, Context context);
+	ReturnType getObject(String varName, String bean, ParaType paraType,
+			ClassLoader loader, Context context);
+
+	Collection<ReturnType> getObjectCollection(String varName,
+			String collectionName, String className, ClassLoader loader,
+			Context context);
+
+	Object getObjectArray(String varName, String className, ClassLoader loader,
+			Context context);
 
 	/**
 	 * 添加类型转换器
@@ -43,7 +53,7 @@ public interface ObjectGenerator<ReturnType, ParaType> {
 	 * @param typeConverter
 	 */
 	void addTypeConverter(TypeConverter<?, ?> typeConverter);
-	
+
 	/**
 	 * 移除类型转换器
 	 * 
@@ -57,7 +67,7 @@ public interface ObjectGenerator<ReturnType, ParaType> {
 	 * @param typeCreator
 	 */
 	void addTypeCreator(TypeCreator<?> typeCreator);
-	
+
 	/**
 	 * 移除类型创建器
 	 * 

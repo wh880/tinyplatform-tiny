@@ -60,5 +60,6 @@
         <module>org.tinygroup.service</module>
         <module>org.tinygroup.validate</module>
         <module>org.tinygroup.codegen</module>
+        <module>org.tinygroup.loader</module>
     </modules>
 </project>

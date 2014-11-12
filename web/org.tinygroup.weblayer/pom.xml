@@ -34,6 +34,11 @@
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.loader</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.annotation</artifactId>
       <version>${project.version}</version>
     </dependency>

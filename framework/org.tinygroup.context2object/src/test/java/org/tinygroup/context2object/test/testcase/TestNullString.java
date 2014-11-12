@@ -24,7 +24,7 @@ public class TestNullString extends BastTestCast{
 		Context context = new ContextImpl();
 		context.put("name", "name1");
 		context.put("nickName", "");
-		CatChild c = (CatChild) generator.getObject(null,null, CatChild.class.getName(), context);
+		CatChild c = (CatChild) generator.getObject(null,null, CatChild.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(c.getNickName(), "");
 		System.out.println(c.getNickName().equals(""));
 	}

@@ -29,12 +29,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.tinygroup.event.Event;
-import org.tinygroup.netty.Client;
-import org.tinygroup.netty.ClientHandler;
-import org.tinygroup.netty.coder.hessian.HessianDecoder;
-import org.tinygroup.netty.coder.hessian.HessianEncoder;
-import org.tinygroup.netty.coder.kryo.KryoDecoder;
-import org.tinygroup.netty.exception.InterruptedRuntimeException;
+import org.tinygroup.net.Client;
+import org.tinygroup.net.ClientHandler;
+import org.tinygroup.net.coder.hessian.HessianDecoder;
+import org.tinygroup.net.coder.hessian.HessianEncoder;
+import org.tinygroup.net.exception.InterruptedRuntimeException;
 
 public class EventClient extends Client {
 	/**

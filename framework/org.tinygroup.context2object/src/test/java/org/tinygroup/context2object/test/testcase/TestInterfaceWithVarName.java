@@ -34,7 +34,7 @@ public class TestInterfaceWithVarName extends BastTestCast {
 		context.put("a.cats.coller", colors);
 		context.put("a.catsArray.name", names);
 		context.put("a.catsArray.coller", colors);
-		PartMent2 part = (PartMent2) generator.getObject("a",null,PartMent2.class.getName(), context);
+		PartMent2 part = (PartMent2) generator.getObject("a",null,PartMent2.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(3, part.getCats().size());
 		assertEquals("tomcat", part.getCats().get(0).getName());
 		assertEquals("name1", part.getCats().get(1).getName());

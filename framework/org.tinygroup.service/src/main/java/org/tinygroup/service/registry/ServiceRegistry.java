@@ -102,4 +102,13 @@ public interface ServiceRegistry {
      * @return 所有的服务注册项
      */
     Collection<ServiceRegistryItem> getServiceRegistryItems();
+    
+    
+    /**
+     * 距离上次调用getServiceRegistryItems后，服务列表是否发生变化
+     * @return
+     */
+    boolean isChange();
+    
+    void setChange(boolean b);
 }

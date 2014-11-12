@@ -17,6 +17,7 @@ package org.tinygroup.bundle.test.manager;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.bundle.BundleManager;
 import org.tinygroup.bundle.test.util.TestUtil;
@@ -25,9 +26,9 @@ public class BundleManagerTest1 extends TestCase {
 
 	public void testStop() {
 		TestUtil.init();
-		BundleManager manager = BeanContainerFactory.getBeanContainer(
-				this.getClass().getClassLoader()).getBean(
-				BundleManager.BEAN_NAME);
+		BeanContainer container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
+		BundleManager manager = (BundleManager) container.getBean(BundleManager.BEAN_NAME);
+		
 		manager.start();
 		try {
 			manager.getTinyClassLoader("test2").loadClass(

@@ -13,6 +13,7 @@ import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.CEPCoreOperator;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcore.EventProcessorChoose;
+import org.tinygroup.cepcore.EventProcessorRegisterTrigger;
 import org.tinygroup.cepcore.aop.CEPCoreAopManager;
 import org.tinygroup.cepcore.exception.RequestNotFoundException;
 import org.tinygroup.cepcore.impl.WeightChooser;
@@ -352,6 +353,17 @@ public class PcCepCoreImpl implements CEPCore {
 		public void run() {
 			eventProcessor.process(e);
 		}
+	}
+
+	public void addEventProcessorRegisterTrigger(
+			EventProcessorRegisterTrigger trigger) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void refreshEventProcessors() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

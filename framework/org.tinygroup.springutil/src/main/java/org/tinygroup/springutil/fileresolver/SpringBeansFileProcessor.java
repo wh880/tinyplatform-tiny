@@ -15,6 +15,7 @@
  */
 package org.tinygroup.springutil.fileresolver;
 
+import org.tinygroup.beancontainer.BeanContainer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.springutil.SpringBeanContainer;
@@ -28,27 +29,60 @@ public class SpringBeansFileProcessor extends AbstractFileProcessor {
 	}
 
 	public void process() {
-		SpringBeanContainer container = (SpringBeanContainer)BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
-		if(getFileResolver().getClassLoader()==this.getClass().getClassLoader()){
-			container.regSpringConfigXml(fileObjects);
-			container.refresh();
-		}else{
-			container.getSubBeanContainer(fileObjects, getFileResolver().getClassLoader());
+		SpringBeanContainer container = (SpringBeanContainer) BeanContainerFactory
+				.getBeanContainer(this.getClass().getClassLoader());
+		ClassLoader fileResolverLoader = getFileResolver().getClassLoader();
+		if (fileResolverLoader == this.getClass().getClassLoader()) {
+			dealMainContainer(container);
+		} else {
+			dealSubContainer(container, fileResolverLoader);
 		}
-		
+
+	}
+	private void dealMainContainer(SpringBeanContainer container){
+		if (fileObjects.size() != 0) {
+			container.regSpringConfigXml(fileObjects);
+		}
+		if (deleteList.size() != 0) {
+			for (FileObject fileObject : deleteList) {
+				container.removeUrl(fileObject.getURL().toString());
+			}
+		}
+		container.refresh();
 	}
 
+	private void dealSubContainer(SpringBeanContainer container,
+			ClassLoader fileResolverLoader) {
+		BeanContainer<?> subContainer = container
+				.getSubBeanContainer(fileResolverLoader);
+		SpringBeanContainer springBeanContainer = null;
+		if (subContainer == null) {
+			// 这次肯定不会有deleteList的内容，因为是第一次
+			subContainer = container.getSubBeanContainer(fileObjects,
+					getFileResolver().getClassLoader());
+		} else {
+			// 不是第一次了，所有有deleteList的内容
+			springBeanContainer = (SpringBeanContainer) subContainer;
+			if (fileObjects.size() != 0) {
+				springBeanContainer.regSpringConfigXml(fileObjects);
+			}
+			if (deleteList.size() != 0) {
+				for (FileObject fileObject : deleteList) {
+					springBeanContainer.removeUrl(fileObject.getURL()
+							.toString());
+				}
+			}
+			springBeanContainer.refresh();
+		}
+	}
 
-
-	
 	public boolean supportRefresh() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public int getOrder() {
 		return HIGHEST_PRECEDENCE;
 	}
-	
 
 }

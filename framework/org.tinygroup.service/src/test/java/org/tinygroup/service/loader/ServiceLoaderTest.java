@@ -31,7 +31,7 @@ public class ServiceLoaderTest extends TestCase {
 	}
 
 	public void testLoadService() throws ServiceLoadException {
-		serviceLoader.loadService(serviceRegistry);
+		serviceLoader.loadService(serviceRegistry,this.getClass().getClassLoader());
 		assertEquals(5, serviceRegistry.size());
 	}
 }

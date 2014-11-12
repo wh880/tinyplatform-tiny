@@ -47,4 +47,14 @@ public class RegexProcessor implements EventProcessor{
 		list.add("a(.)*");
 		return list;
 	}
+
+	public boolean isRead() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	public void setRead(boolean read) {
+		// TODO Auto-generated method stub
+		
+	}
 }

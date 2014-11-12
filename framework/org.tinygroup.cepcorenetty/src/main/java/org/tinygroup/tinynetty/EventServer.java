@@ -24,11 +24,10 @@
 package org.tinygroup.tinynetty;
 
 import org.jboss.netty.channel.ChannelHandler;
-import org.tinygroup.netty.Server;
-import org.tinygroup.netty.ServerHandler;
-import org.tinygroup.netty.coder.hessian.HessianDecoder;
-import org.tinygroup.netty.coder.hessian.HessianEncoder;
-import org.tinygroup.netty.coder.kryo.KryoDecoder;
+import org.tinygroup.net.Server;
+import org.tinygroup.net.ServerHandler;
+import org.tinygroup.net.coder.hessian.HessianDecoder;
+import org.tinygroup.net.coder.hessian.HessianEncoder;
 
 public class EventServer extends Server {
 

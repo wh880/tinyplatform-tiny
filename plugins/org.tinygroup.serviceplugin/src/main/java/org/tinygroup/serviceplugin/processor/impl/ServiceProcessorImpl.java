@@ -39,29 +39,17 @@ public class ServiceProcessorImpl extends AbstractEventProcessor implements
 		ServiceProcessor {
 	private static Logger logger = LoggerFactory
 			.getLogger(ServiceProcessorImpl.class);
-
-	private List<ServiceProviderInterface> providers = new ArrayList<ServiceProviderInterface>();
+	private boolean read = false;
+	private ServiceProviderInterface provider;
 	private List<ServiceInfo> infos = new ArrayList<ServiceInfo>();
 
 	public void process(Event event) {
 		String serviceId = event.getServiceRequest().getServiceId();
-		Service service = null;
-		ServiceProviderInterface serviceProvider = null;
-
-		for (ServiceProviderInterface provider : providers) {
-			service = provider.getService(serviceId);
-			if (service != null) {
-				serviceProvider = provider;
-				break;
-			}
-		}
-
+		Service service = provider.getService(serviceId);
 		if (service != null) {
-			serviceProvider.execute(service, event.getServiceRequest()
-					.getContext());
+			provider.execute(service, event.getServiceRequest().getContext());
 			// 回写Context,event返回时
-			ServiceRegistryItem item = serviceProvider
-					.getServiceRegistryItem(service);
+			ServiceRegistryItem item = provider.getServiceRegistryItem(service);
 			Context oldC = event.getServiceRequest().getContext();
 			Context c = ContextFactory.getContext();
 			for (Parameter p : item.getResults()) {
@@ -84,21 +72,25 @@ public class ServiceProcessorImpl extends AbstractEventProcessor implements
 
 	}
 
-	public void addServiceProvider(ServiceProviderInterface provider) {
-		providers.add(provider);
-		Collection<ServiceRegistryItem> collection = provider
-				.getServiceRegistory().getServiceRegistryItems();
-		if (collection != null) {
-			for (ServiceRegistryItem item : collection) {
-				if (!infos.contains(item))
-					infos.add(item);
-			}
-		}
+	public void setServiceProvider(ServiceProviderInterface provider) {
+		this.provider = provider;
 
 	}
 
 	public List<ServiceInfo> getServiceInfos() {
+		if (!isRead()) {
+			infos.clear();
+			Collection<ServiceRegistryItem> collection = provider
+					.getServiceRegistory().getServiceRegistryItems();
+			if (collection != null) {
+				for (ServiceRegistryItem item : collection) {
+					if (!infos.contains(item))
+						infos.add(item);
+				}
+			}
+		}
 		return infos;
+
 	}
 
 	public void setConfig(XmlNode config) {
@@ -113,6 +105,14 @@ public class ServiceProcessorImpl extends AbstractEventProcessor implements
 	public List<String> getRegex() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public boolean isRead() {
+		return !provider.getServiceRegistory().isChange();
+	}
+
+	public void setRead(boolean read) {
+		provider.getServiceRegistory().setChange(!read);
 	}
 
 }

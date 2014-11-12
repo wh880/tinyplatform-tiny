@@ -28,6 +28,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.log4j.helpers.Loader;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.ObjectGenerator;
@@ -44,7 +45,7 @@ public class ClassNameObjectGenerator implements
 	private List<TypeConverter<?, ?>> typeConverterList = new ArrayList<TypeConverter<?, ?>>();
 	private List<TypeCreator<?>> typeCreatorList = new ArrayList<TypeCreator<?>>();
 
-	public Object getObject(String varName, String bean, String className,
+	public Object getObject(String varName, String bean, String className,ClassLoader loader,
 			Context context) {
 		if (className == null || "".equals(className)) {
 			return getObject(varName, bean, null, context, null);
@@ -52,36 +53,36 @@ public class ClassNameObjectGenerator implements
 		// 20130808注释LoaderManagerFactory
 		// return getObject(varName, bean, LoaderManagerFactory.getManager()
 		// .getClass(className), context, null);
-		return getObject(varName, bean, getClazz(className), context, null);
+		return getObject(varName, bean, getClazz(className,loader), context, null);
 	}
 
-	public Object getObjectArray(String varName, String className,
+	public Object getObjectArray(String varName, String className,ClassLoader loader,
 			Context context) {
 		// 20130808注释LoaderManagerFactory
 		// return buildArrayObjectWithObject(varName, LoaderManagerFactory
 		// .getManager().getClass(className), context, null);
-		return buildArrayObjectWithObject(varName, getClazz(className),
+		return buildArrayObjectWithObject(varName, getClazz(className,loader),
 				context, null);
 	}
 
-	private Class<?> getClazz(String className) {
+	private Class<?> getClazz(String className,ClassLoader loader) {
 		try {
-			return Class.forName(className);
+			return loader.loadClass(className);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e.getMessage());
 		}
 	}
 
 	public Collection<Object> getObjectCollection(String varName,
-			String collectionName, String className, Context context) {
+			String collectionName, String className,ClassLoader loader, Context context) {
 		// 20130808注释LoaderManagerFactory
 		// Class<?> collectionClass =
 		// LoaderManagerFactory.getManager().getClass(
 		// collectionName);
 		// Class<?> clazz =
 		// LoaderManagerFactory.getManager().getClass(className);
-		Class<?> collectionClass = getClazz(collectionName);
-		Class<?> clazz = getClazz(className);
+		Class<?> collectionClass = getClazz(collectionName,loader);
+		Class<?> clazz = getClazz(className,loader);
 		Collection<Object> collection = (Collection<Object>) getObjectInstance(collectionClass);
 		buildCollection(varName, collection, clazz, context, null);
 		if (collection.size() == 0) {

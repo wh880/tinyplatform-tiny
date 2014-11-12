@@ -16,6 +16,7 @@
 package org.tinygroup.flowbasiccomponent;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.bundle.loader.LoaderManager;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
@@ -29,10 +30,19 @@ public class Context2Object implements ComponentInterface {
 			.getLogger(Context2Object.class);
 	private String className;
 	private String collectionClassName;
+	private boolean isArray = false;
 	private String resultKey;
 	private String varName;
 	private String beanName;
 	private static String DEFAULT_KEY = "context2Object_result";
+
+	public boolean isArray() {
+		return isArray;
+	}
+
+	public void setArray(boolean isArray) {
+		this.isArray = isArray;
+	}
 
 	public String getBeanName() {
 		return beanName;
@@ -78,6 +88,13 @@ public class Context2Object implements ComponentInterface {
 		ClassNameObjectGenerator generator = BeanContainerFactory
 				.getBeanContainer(this.getClass().getClassLoader()).getBean(
 						GeneratorFileProcessor.CLASSNAME_OBJECT_GENERATOR_BEAN);
+		ClassLoader loader;
+		try {
+			loader = LoaderManager.getLoader(className);
+		} catch (ClassNotFoundException e1) {
+			logger.errorMessage("类" + className + "没找到", e1);
+			throw new RuntimeException(e1);
+		}
 		if (isNull(resultKey))
 			resultKey = varName;
 		if (isNull(resultKey)) {
@@ -85,7 +102,7 @@ public class Context2Object implements ComponentInterface {
 			// resultKey =
 			// LoaderManagerFactory.getManager().getClass(className).getSimpleName().toLowerCase();
 			try {
-				resultKey = Class.forName(className).getSimpleName()
+				resultKey = loader.loadClass(className).getSimpleName()
 						.toLowerCase();
 			} catch (ClassNotFoundException e) {
 				logger.logMessage(LogLevel.WARN, e.getMessage());
@@ -95,11 +112,14 @@ public class Context2Object implements ComponentInterface {
 		}
 
 		if (collectionClassName == null || "".equals(collectionClassName)) {
-			context.put(resultKey,
-					generator.getObject(varName, beanName, className, context));
+			context.put(resultKey, generator.getObject(varName, beanName,
+					className, loader, context));
+		} else if (isArray) {
+			context.put(resultKey, generator.getObjectArray(varName, className,
+					loader, context));
 		} else {
 			context.put(resultKey, generator.getObjectCollection(varName,
-					collectionClassName, className, context));
+					collectionClassName, className, loader, context));
 		}
 
 	}

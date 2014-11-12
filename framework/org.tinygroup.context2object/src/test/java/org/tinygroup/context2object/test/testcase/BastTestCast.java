@@ -17,6 +17,7 @@ package org.tinygroup.context2object.test.testcase;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.context2object.ObjectGenerator;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.context2object.impl.DateTypeConverter;
 import org.tinygroup.context2object.test.bean.PartInterface;
@@ -24,8 +25,8 @@ import org.tinygroup.context2object.test.bean.PartMent;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class BastTestCast extends TestCase{
-	protected ClassNameObjectGenerator generator = new ClassNameObjectGenerator();
-	protected ClassNameObjectGenerator newgenerator = new ClassNameObjectGenerator();
+	protected ObjectGenerator generator = new ClassNameObjectGenerator();
+	protected ObjectGenerator newgenerator = new ClassNameObjectGenerator();
 
 	protected void setUp() {
 		generator.addTypeCreator(new ListCreator());

@@ -55,7 +55,7 @@ public class FlowPlugin implements Plugin {
 
 	public void initProcessors() {
 		flowProcessor = new FlowPluginProcessor();
-		flowProcessor.addExecutor(executor);
+		flowProcessor.setExecutor(executor);
 	}
 
 	public void start() {

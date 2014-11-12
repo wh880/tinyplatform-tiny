@@ -31,7 +31,7 @@ public class TestListObject extends BastTestCast {
 		context.put("partMent.cats.coller", colors);
 		context.put("partMent.catsArray.name", names);
 		context.put("partMent.catsArray.coller", colors);
-		PartMent part = (PartMent) generator.getObject(null,null,PartMent.class.getName(), context);
+		PartMent part = (PartMent) generator.getObject(null,null,PartMent.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(true, part.getNum() == 11);
 		assertEquals(3, part.getCats().size());
 		assertEquals(true, part.getCats().get(0).getName().equals("tomcat"));

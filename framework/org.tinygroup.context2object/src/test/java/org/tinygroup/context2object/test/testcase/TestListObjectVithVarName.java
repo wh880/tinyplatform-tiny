@@ -42,7 +42,7 @@ public class TestListObjectVithVarName extends BastTestCast {
 		context.put("b.catsArray.name", names2);
 		context.put("b.catsArray.coller", colors2);
 		
-		PartMent part = (PartMent) generator.getObject("a",null,PartMent.class.getName(), context);
+		PartMent part = (PartMent) generator.getObject("a",null,PartMent.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(true, part.getNum() == 11);
 		assertEquals(3, part.getCats().size());
 		assertEquals(true, part.getCats().get(0).getName().equals("tomcat"));
@@ -53,7 +53,7 @@ public class TestListObjectVithVarName extends BastTestCast {
 		assertEquals(true, part.getCats().get(2).getColler().equals("red12"));
 		assertEquals(3, part.getCatsArray().length);
 		
-		PartMent part2 = (PartMent) generator.getObject("b",null,PartMent.class.getName(), context);
+		PartMent part2 = (PartMent) generator.getObject("b",null,PartMent.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(true, part2.getNum() == 12);
 		assertEquals(3, part2.getCats().size());
 		assertEquals(true, part2.getCats().get(0).getName().equals("tomcat2"));

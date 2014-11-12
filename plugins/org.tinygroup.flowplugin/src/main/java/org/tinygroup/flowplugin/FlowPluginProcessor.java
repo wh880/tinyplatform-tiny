@@ -15,6 +15,9 @@
  */
 package org.tinygroup.flowplugin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.impl.AbstractEventProcessor;
 import org.tinygroup.context.Context;
@@ -26,58 +29,52 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FlowPluginProcessor extends AbstractEventProcessor {
-    /**
-     * 流程执行器，用于执行具体的Service
-     */
-    private List<FlowExecutor> executors = new ArrayList<FlowExecutor>();
+	/**
+	 * 流程执行器，用于执行具体的Service
+	 */
+	private FlowExecutor executor;
 
-    private static Logger logger = LoggerFactory.getLogger(FlowPluginProcessor.class);
+	private static Logger logger = LoggerFactory
+			.getLogger(FlowPluginProcessor.class);
 
-    public void process(Event event) {
-        Flow flow = null;
-        FlowExecutor flowExecutor = null;
-        String nodeId = null;
-        String serviceId = event.getServiceRequest().getServiceId();
-        String flowId = serviceId;
-        String[] str = serviceId.split(":");
-        if (str.length > 1) {
-            nodeId = str[str.length - 1];
-            flowId = serviceId.substring(0, serviceId.length() - nodeId.length() - 1);
-        }
-        for (FlowExecutor executor : executors) {
-            flow = executor.getFlow(flowId);
-            if (flow != null) {
-                flowExecutor = executor;
-                break;
-            }
-        }
-        if (flow != null) {
-            flowExecutor.execute(flowId, nodeId, (Context) event.getServiceRequest().getContext());
-        } else {
-            logger.logMessage(LogLevel.ERROR, "[Flow:{0}]不存在或无合适的Flow流程执行器", flowId);
-            throw new RuntimeException("[Flow:" + flowId + "]不存在或无合适的Flow流程执行器");
-        }
+	public void process(Event event) {
+		Flow flow = null;
+		String nodeId = null;
+		String serviceId = event.getServiceRequest().getServiceId();
+		String flowId = serviceId;
+		String[] str = serviceId.split(":");
+		if (str.length > 1) {
+			nodeId = str[str.length - 1];
+			flowId = serviceId.substring(0,
+					serviceId.length() - nodeId.length() - 1);
+		}
+		flow = executor.getFlow(flowId);
+		if (flow != null) {
+			executor.execute(flowId, nodeId, (Context) event
+					.getServiceRequest().getContext());
+		} else {
+			logger.logMessage(LogLevel.ERROR, "[Flow:{0}]不存在或无合适的Flow流程执行器",
+					flowId);
+			throw new RuntimeException("[Flow:" + flowId + "]不存在或无合适的Flow流程执行器");
+		}
 
-    }
+	}
 
-    public void setCepCore(CEPCore cepCore) {
-    }
+	public void setCepCore(CEPCore cepCore) {
+	}
 
-    public void addExecutor(FlowExecutor executor) {
-        this.executors.add(executor);
-    }
+	public void setExecutor(FlowExecutor executor) {
+		this.executor = executor;
+	}
 
-    public List<ServiceInfo> getServiceInfos() {
-        List<ServiceInfo> list = new ArrayList<ServiceInfo>();
-        for (Flow f : executors.get(0).getFlowIdMap().values()) {
-            list.add(new FlowServiceInfo(f));
-        }
-        return list;
-    }
+	public List<ServiceInfo> getServiceInfos() {
+		List<ServiceInfo> list = new ArrayList<ServiceInfo>();
+		for (Flow f : executor.getFlowIdMap().values()) {
+			list.add(new FlowServiceInfo(f));
+		}
+		return list;
+	}
 
 	public int getWeight() {
 		// TODO Auto-generated method stub
@@ -87,6 +84,14 @@ public class FlowPluginProcessor extends AbstractEventProcessor {
 	public List<String> getRegex() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public boolean isRead() {
+		return !executor.isChange();
+	}
+
+	public void setRead(boolean read) {
+		executor.setChange(!read);
 	}
 
 }

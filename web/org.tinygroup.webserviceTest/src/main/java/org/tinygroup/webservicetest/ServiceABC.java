@@ -8,8 +8,9 @@ import org.tinygroup.logger.LoggerFactory;
 
 public class ServiceABC implements Serializable{
 	private static Logger logger = LoggerFactory.getLogger(ServiceABC.class);
-	public void read() {
+	public boolean read(boolean a) {
 		logger.logMessage(LogLevel.INFO, "read");
+		return true;
 	}
 	
 	public String write(int i, String s) {

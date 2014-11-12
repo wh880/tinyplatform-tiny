@@ -30,6 +30,7 @@ import org.tinygroup.bundle.BundleEvent;
 import org.tinygroup.bundle.BundleException;
 import org.tinygroup.bundle.BundleManager;
 import org.tinygroup.bundle.config.BundleDefine;
+import org.tinygroup.bundle.loader.LoaderManager;
 import org.tinygroup.bundle.loader.TinyClassLoader;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
@@ -50,7 +51,8 @@ public class BundleManagerDefault implements BundleManager {
 	private String bundleRoot;
 	private String commonRoot;
 	private BundleContext bundleContext = new BundleContextImpl();
-	private TinyClassLoader tinyClassLoader = new TinyClassLoader();
+	private TinyClassLoader tinyClassLoader = new TinyClassLoader(new URL[0],
+			this.getClass().getClassLoader());
 	private List<BundleEvent> beforeStartBundleEvent = new ArrayList<BundleEvent>();
 	private List<BundleEvent> afterStartBundleEvent = new ArrayList<BundleEvent>();
 	private List<BundleEvent> beforeStopBundleEvent = new ArrayList<BundleEvent>();
@@ -167,17 +169,19 @@ public class BundleManagerDefault implements BundleManager {
 	}
 
 	public void start(BundleDefine bundleDefine) {
-		String bundle = bundleDefine.getName();
-		logger.logMessage(LogLevel.INFO, "开始启动Bundle:{0}", bundle);
-		if (tinyClassLoaderMap.containsKey(bundleDefine)) {// 如果说有loader，就代表还已经启动
-			logger.logMessage(LogLevel.INFO, "Bundle:{0}已启动，无需再次启动", bundle);
-			return;
-		}
-		if (!checkDepend(bundleDefine, bundle)) {
-			return;
-		}
-		startBundle(bundleDefine, bundle);
-		logger.logMessage(LogLevel.INFO, "启动Bundle:{0}完毕", bundle);
+		start(bundleDefine.getName()
+			);
+//		String bundle = bundleDefine.getName();
+//		logger.logMessage(LogLevel.INFO, "开始启动Bundle:{0}", bundle);
+//		if (tinyClassLoaderMap.containsKey(bundleDefine)) {// 如果说有loader，就代表还已经启动
+//			logger.logMessage(LogLevel.INFO, "Bundle:{0}已启动，无需再次启动", bundle);
+//			return;
+//		}
+//		if (!checkDepend(bundleDefine, bundle)) {
+//			return;
+//		}
+//		startBundle(bundleDefine, bundle);
+//		logger.logMessage(LogLevel.INFO, "启动Bundle:{0}完毕", bundle);
 	}
 
 	private boolean checkDepend(BundleDefine bundleDefine, String bundle) {
@@ -201,7 +205,7 @@ public class BundleManagerDefault implements BundleManager {
 		TinyClassLoader loader = loadBundleLoader(bundleDefine, bundle);
 
 		resolve(loader, bundle);
-
+		LoaderManager.addClassLoader(loader);
 		startBundleActivator(bundleDefine, bundle);
 
 		processEvents(afterStartBundleEvent, bundleContext, bundleDefine);
@@ -339,14 +343,16 @@ public class BundleManagerDefault implements BundleManager {
 	}
 
 	public void stop(BundleDefine bundleDefine) {
-		String bundle = bundleDefine.getName();
-		logger.logMessage(LogLevel.INFO, "开始停止Bundle:{0}", bundle);
-		if (!tinyClassLoaderMap.containsKey(bundleDefine)) {// 如果没有loader，就代表已停止
-			logger.logMessage(LogLevel.INFO, "Bundle:{0}已停止，无需再次停止", bundle);
-			return;
-		}
-		stopBundle(bundleDefine, bundle);
-		logger.logMessage(LogLevel.INFO, "停止Bundle:{0}完毕", bundle);
+		stop(bundleDefine.getName());
+		// String bundle = bundleDefine.getName();
+		// logger.logMessage(LogLevel.INFO, "开始停止Bundle:{0}", bundle);
+		// if (!tinyClassLoaderMap.containsKey(bundleDefine)) {//
+		// 如果没有loader，就代表已停止
+		// logger.logMessage(LogLevel.INFO, "Bundle:{0}已停止，无需再次停止", bundle);
+		// return;
+		// }
+		// stopBundle(bundleDefine, bundle);
+		// logger.logMessage(LogLevel.INFO, "停止Bundle:{0}完毕", bundle);
 	}
 
 	private void stopBundle(BundleDefine bundleDefine, String bundle) {
@@ -357,7 +363,9 @@ public class BundleManagerDefault implements BundleManager {
 
 		tinyClassLoader.removeDependTinyClassLoader(tinyClassLoaderMap
 				.get(bundleDefine));
+		LoaderManager.removeClassLoader(tinyClassLoaderMap.get(bundleDefine));
 		tinyClassLoaderMap.remove(bundleDefine);
+		deResolve(bundle);
 
 		stopBundleActivator(bundleContext, bundleDefine, bundle);
 
@@ -421,15 +429,34 @@ public class BundleManagerDefault implements BundleManager {
 	}
 
 	private void resolve(ClassLoader loader, String bundle) {
+		FileResolver fileResolver = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				FileResolver.BEAN_NAME);
 		FileResolver f = new FileResolverImpl(true);
+		f.setClassLoader(loader);
 		f.addFileProcessor(new SpringBeansFileProcessor());
+		for (int i = 0; i < fileResolver.getFileProcessorList().size(); i++) {
+			f.addFileProcessor(fileResolver.getFileProcessorList().get(i));
+		}
+		for (int i = 0; i < fileResolver.getChangeLisenters().size(); i++) {
+			f.addChangeLisenter(fileResolver.getChangeLisenters().get(i));
+		}
+
 		String bundleDir = getBundleDir(bundle);
-		// f.addManualClassPath(bundleDir);
 		f.addIncludePathPattern("");
 		f.addResolvePath(bundleDir);
-		f.setClassLoader(loader);
+
 		f.resolve();
+		f.change();
 		fileResolverMap.put(bundle, f);
+	}
+
+	private void deResolve(String bundle) {
+		FileResolver fileResolver = fileResolverMap.get(bundle);
+		String bundleDir = getBundleDir(bundle);
+		fileResolver.removeResolvePath(bundleDir);
+		fileResolver.change();
+		fileResolverMap.remove(bundle);
 	}
 
 	public Map<BundleDefine, TinyClassLoader> getBundleMap() {

@@ -25,7 +25,7 @@ package org.tinygroup.tinynetty;
 
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.tinygroup.event.Event;
-import org.tinygroup.netty.ClientHandler;
+import org.tinygroup.net.ClientHandler;
 
 public class EventClientHandler extends ClientHandler {
 

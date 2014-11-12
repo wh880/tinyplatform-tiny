@@ -31,7 +31,7 @@
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.queue</artifactId>
+      <artifactId>org.tinygroup.netty</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
