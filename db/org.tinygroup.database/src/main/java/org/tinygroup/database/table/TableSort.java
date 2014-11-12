@@ -1,7 +1,6 @@
 package org.tinygroup.database.table;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -39,35 +38,6 @@ public class TableSort implements Comparator<Table> {
 			dependencies.add(foreignReference.getMainTable());
 		}
 		return dependencies;
-	}
-	
-	public static void main(String[] args) {
-		
-		Table table1=new Table();
-		table1.setId("personId");
-		table1.setName("person");
-		List<ForeignReference> foreigns=new ArrayList<ForeignReference>();
-		ForeignReference reference=new ForeignReference("sds", "city", "dss", "dsdf");
-		foreigns.add(reference);
-		table1.setForeignReferences(foreigns);
-		Table table2=new Table();
-		table2.setId("cityId");
-		table2.setName("city");
-		
-		Table table3=new Table();
-		table3.setId("fdff");
-		table3.setName("fddd");
-		List<Table> tables=new ArrayList<Table>();
-		tables.add(table1);
-		tables.add(table2);
-		tables.add(table3);
-		Collections.sort(tables, new TableSort());
-		
-		for (Table table : tables) {
-			System.out.println(table.getName());
-		}
-		
-		
 	}
 	
 }
