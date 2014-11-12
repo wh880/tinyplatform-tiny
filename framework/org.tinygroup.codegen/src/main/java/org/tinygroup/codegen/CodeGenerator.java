@@ -63,7 +63,7 @@ public class CodeGenerator{
 	
 	public CodeGenerator(){
 		generater=new DocumentGeneraterImpl();
-		VelocityHelperImpl documentGeneraterVelocityHelper=new VelocityHelperImpl();
+		VelocityHelperImpl documentGeneraterVelocityHelper=new VelocityHelperImpl("/codegen-velocity.properties");
 		generater.setDocumentGeneraterVelocityHelper(documentGeneraterVelocityHelper);
 		if(repository==null){
 			repository=new FullContextFileRepositoryImpl();

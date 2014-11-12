@@ -90,15 +90,15 @@ public final class VelocityHelperImpl implements VelocityHelper {
 		this.layoutExtFileName = layoutExtFileName;
 	}
 
-	public VelocityHelperImpl() {
+	public VelocityHelperImpl(String configPath) {
 		Properties properties = new Properties();
 
 		try {
 			logger.logMessage(LogLevel.INFO, "Velocity配置文件：{}",
 					VelocityHelperImpl.class
-							.getResource("/velocity.properties").toString());
+							.getResource(configPath).toString());
 			properties.load(VelocityHelperImpl.class
-					.getResourceAsStream("/velocity.properties"));
+					.getResourceAsStream(configPath));
 			for (Object key : properties.keySet()) {
 				String value = properties.getProperty(key.toString());
 				if (value != null) {

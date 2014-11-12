@@ -28,7 +28,7 @@ import org.tinygroup.vfs.VFS;
 public class TestVelocity {
 
 	public static void main(String[] args) throws Exception {
-		VelocityHelperImpl velocityHelper = new VelocityHelperImpl();
+		VelocityHelperImpl velocityHelper = new VelocityHelperImpl("/velocity.properties");
 		FullContextFileRepositoryImpl fullContextFileRepository = new FullContextFileRepositoryImpl();
 		File baseFile = new File("src/test/resources");
 		fullContextFileRepository.addFileObject("/aa/bb/aa.view", VFS
