@@ -15,13 +15,11 @@
  */
 package org.tinygroup.bundle.fileprocessor;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.bundle.BundleException;
 import org.tinygroup.bundle.BundleManager;
 import org.tinygroup.bundle.config.BundleDefine;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
