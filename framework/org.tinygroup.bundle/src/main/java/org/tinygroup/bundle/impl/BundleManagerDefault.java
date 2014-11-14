@@ -252,7 +252,7 @@ public class BundleManagerDefault implements BundleManager {
 		for (int i = 0; i < jars.length; i++) {
 			File f = new File(jars[i]);
 			try {
-				urls[i] = f.toURL();
+				urls[i] = f.toURI().toURL();
 			} catch (MalformedURLException e) {
 				logger.errorMessage("为路径{0}生成url时出错", e, jars[i]);
 			}
@@ -290,7 +290,7 @@ public class BundleManagerDefault implements BundleManager {
 			} else {
 				if (subF.getName().endsWith(".jar")) {
 					try {
-						list.add(subF.toURL());
+						list.add(subF.toURI().toURL());
 					} catch (MalformedURLException e) {
 						logger.errorMessage("为路径{0}生成url时出错", e,
 								subF.getAbsolutePath());

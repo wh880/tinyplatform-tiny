@@ -25,7 +25,6 @@ import junit.framework.TestCase;
 
 import org.tinygroup.bundle.loader.TinyClassLoader;
 import org.tinygroup.vfs.FileObject;
-import org.tinygroup.vfs.FileObjectFilter;
 import org.tinygroup.vfs.FileObjectProcessor;
 import org.tinygroup.vfs.impl.filter.FileExtNameFileObjectFilter;
 
@@ -52,7 +51,7 @@ public class TinyClassLoaderPerformanceTest extends TestCase {
         });
         URL[] urls = new URL[files.length];
         for (int i = 0; i < files.length; i++) {
-            urls[i] = files[i].toURL();
+            urls[i] = files[i].toURI().toURL();
         }
         tinyClassLoader = new TinyClassLoader(urls);
 
@@ -80,7 +79,7 @@ public class TinyClassLoaderPerformanceTest extends TestCase {
             for (int i = 0; i < 10000; i++) {
                 while (urls.hasMoreElements()) {
                     URL url = urls.nextElement();
-                    //            System.out.println(url.toString());
+                    System.out.println(url.toString());
                 }
             }
             long end = System.currentTimeMillis();
@@ -97,7 +96,7 @@ public class TinyClassLoaderPerformanceTest extends TestCase {
                 while (urls.hasMoreElements()) {
                     URL url = urls.nextElement();
                     count++;
-                    //System.out.println(url.toString());
+                    System.out.println(url.toString());
                 }
             }
             long end = System.currentTimeMillis();
@@ -108,7 +107,7 @@ public class TinyClassLoaderPerformanceTest extends TestCase {
         FileObject[]fileObjects=tinyClassLoader.getFileObjects();
         long start = System.currentTimeMillis();
         for(FileObject fileObject:fileObjects){
-            FileObjectFilter filter;
+//            FileObjectFilter filter;
             fileObject.foreach(new FileExtNameFileObjectFilter("class"),new FileObjectProcessor() {
                 public void process(FileObject fileObject) {
                     //System.out.println(fileObject.getPath());
@@ -122,7 +121,7 @@ public class TinyClassLoaderPerformanceTest extends TestCase {
         FileObject[]fileObjects=tinyClassLoader.getFileObjects();
         long start = System.currentTimeMillis();
         for(FileObject fileObject:fileObjects){
-            FileObjectFilter filter;
+//            FileObjectFilter filter;
             fileObject.foreach(new FileExtNameFileObjectFilter("mf"),new FileObjectProcessor() {
                 public void process(FileObject fileObject) {
                     System.out.println(fileObject.getPath());

@@ -26,7 +26,7 @@ public class BundleManagerTest1 extends TestCase {
 
 	public void testStop() {
 		TestUtil.init();
-		BeanContainer container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
+		BeanContainer<?> container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
 		BundleManager manager = (BundleManager) container.getBean(BundleManager.BEAN_NAME);
 		
 		manager.start();

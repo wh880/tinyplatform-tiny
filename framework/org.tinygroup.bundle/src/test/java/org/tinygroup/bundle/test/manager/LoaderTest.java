@@ -33,7 +33,7 @@ public class LoaderTest extends TestCase {
 		try {
 			manager.getTinyClassLoader("test1").loadClass(
 					"org.tinygroup.MyTestInterface");
-			Class c = manager.getTinyClassLoader("test1").loadClass(
+			Class<?> c = manager.getTinyClassLoader("test1").loadClass(
 					"org.tinygroup.MyTestImpl");
 			for (Method m : c.getMethods()) {
 				if (m.getName().equals("test")) {

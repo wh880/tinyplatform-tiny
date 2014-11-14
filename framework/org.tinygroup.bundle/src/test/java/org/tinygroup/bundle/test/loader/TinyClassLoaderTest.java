@@ -16,14 +16,14 @@
 package org.tinygroup.bundle.test.loader;
 
 
+import java.io.File;
+import java.net.URL;
+import java.util.Enumeration;
+
 import junit.framework.TestCase;
 
 import org.tinygroup.bundle.loader.TinyClassLoader;
 import org.tinygroup.vfs.FileObject;
-
-import java.io.File;
-import java.net.URL;
-import java.util.Enumeration;
 
 /**
  * TinyClassLoader Tester.
@@ -40,9 +40,9 @@ public class TinyClassLoaderTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        URL[] urls = {new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar-tests.jar").toURL(),
-                new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar1-tests.jar").toURL(),
-                new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar2-tests.jar").toURL()};
+        URL[] urls = {new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar-tests.jar").toURI().toURL(),
+                new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar1-tests.jar").toURI().toURL(),
+                new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar2-tests.jar").toURI().toURL()};
         tinyClassLoader = new TinyClassLoader(urls);
     }
 
@@ -67,7 +67,7 @@ public class TinyClassLoaderTest extends TestCase {
         for (int i = 0; i < 10000; i++) {
             while (urls.hasMoreElements()) {
                 URL url = urls.nextElement();
-                //            System.out.println(url.toString());
+                System.out.println(url.toString());
             }
         }
         long end = System.currentTimeMillis();
