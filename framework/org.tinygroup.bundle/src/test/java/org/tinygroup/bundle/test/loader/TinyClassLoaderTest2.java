@@ -41,9 +41,9 @@ public class TinyClassLoaderTest2 extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        URL[] urls0 = {new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar-tests.jar").toURL()};
-        URL[] urls1 = {new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar1-tests.jar").toURL()};
-        URL[] urls2 = {new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar2-tests.jar").toURL()};
+        URL[] urls0 = {new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar-tests.jar").toURI().toURL()};
+        URL[] urls1 = {new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar1-tests.jar").toURI().toURL()};
+        URL[] urls2 = {new File("src/test/resources/org.tinygroup.loader-0.0.13-SNAPSHOT.jar2-tests.jar").toURI().toURL()};
         grandClassLoader = new TinyClassLoader(urls0);
         fatherClassLoader=new TinyClassLoader(urls1,grandClassLoader);
         sonClassLoader=new TinyClassLoader(urls2,fatherClassLoader);
@@ -60,7 +60,7 @@ public class TinyClassLoaderTest2 extends TestCase {
     	
     	try {
     		
-			Class clazz=Class.forName("org.tinygroup.hello.HelloImpl", true, grandClassLoader);
+			Class<?> clazz=Class.forName("org.tinygroup.hello.HelloImpl", true, grandClassLoader);
 			assertTrue(clazz!=null);
 			clazz=Class.forName("org.tinygroup.hello.HelloImpl1", true, grandClassLoader);
 			assertTrue(clazz!=null);
@@ -73,7 +73,7 @@ public class TinyClassLoaderTest2 extends TestCase {
 			clazz=grandClassLoader.loadClass("org.tinygroup.hello.HelloImpl2");
 			assertTrue(clazz!=null);
 			
-			Class clazz2=Class.forName("org.tinygroup.hello.HelloImpl", true, fatherClassLoader);
+			Class<?> clazz2=Class.forName("org.tinygroup.hello.HelloImpl", true, fatherClassLoader);
 			assertTrue(clazz2!=null);
 			clazz2=Class.forName("org.tinygroup.hello.HelloImpl1", true, fatherClassLoader);
 			assertTrue(clazz2!=null);
@@ -86,7 +86,7 @@ public class TinyClassLoaderTest2 extends TestCase {
 			clazz2=fatherClassLoader.loadClass("org.tinygroup.hello.HelloImpl2");
 			assertTrue(clazz2!=null);
 			
-			Class clazz3=Class.forName("org.tinygroup.hello.HelloImpl", true, sonClassLoader);
+			Class<?> clazz3=Class.forName("org.tinygroup.hello.HelloImpl", true, sonClassLoader);
 			assertTrue(clazz3!=null);
 			clazz3=Class.forName("org.tinygroup.hello.HelloImpl1", true, sonClassLoader);
 			assertTrue(clazz3!=null);
@@ -130,7 +130,7 @@ public class TinyClassLoaderTest2 extends TestCase {
         for (int i = 0; i < 10000; i++) {
             while (urls.hasMoreElements()) {
                 URL url = urls.nextElement();
-                //            System.out.println(url.toString());
+                System.out.println(url.toString());
             }
         }
         long end = System.currentTimeMillis();

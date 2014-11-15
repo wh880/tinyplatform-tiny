@@ -51,16 +51,20 @@ public abstract class AbstractTestUtil {
 			.getLogger(AbstractTestUtil.class);
 	private static final String TINY_JAR_PATTERN = "org\\.tinygroup\\.(.)*\\.jar";
 
+	public static void init(String xmlFile, boolean classPathResolve) {
+		if (init) {
+			return;
+		}
+		initDirect(xmlFile, classPathResolve);
+	}
 	/**
 	 * 初始化
 	 * 
 	 * @param classPathResolve
 	 *            是否对classPath进行处理
 	 */
-	public static void init(String xmlFile, boolean classPathResolve) {
-		if (init) {
-			return;
-		}
+	public static void initDirect(String xmlFile, boolean classPathResolve) {
+		
 		// init(xmlFile, classPathResolve, null, null);
 		String configXml = xmlFile;
 		if (null == configXml || "".equals(configXml)) {

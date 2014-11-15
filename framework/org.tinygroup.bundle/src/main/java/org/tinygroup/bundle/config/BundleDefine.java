@@ -26,7 +26,12 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 @XStreamAlias("bundle")
 public class BundleDefine implements Serializable{
-    @XStreamAsAttribute
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3065325983140938663L;
+
+	@XStreamAsAttribute
     private String name;
 
     @XStreamAsAttribute

@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 public class TestTextXmlWithSimple extends TestCase {
-	private static final String TEXT = "标识,姓名,地址,邮件;11,haha,address,;12,hehe,address,email;13,xixi,address,email";
-	private static final String XML = "<students><student><id>11</id><name>haha</name><address>address</address><email></email></student><student><id>12</id><name>hehe</name><address>address</address><email>email</email></student><student><id>13</id><name>xixi</name><address>address</address><email>email</email></student></students>";
+	private static final String TEXT = "标识,姓名,地址,邮件;11,haha,address,e;12,hehe,address,email;13,xixi,address,email";
+	private static final String XML = "<students><student><id>11</id><name>haha</name><address>address</address><email>e</email></student><student><id>12</id><name>hehe</name><address>address</address><email>email</email></student><student><id>13</id><name>xixi</name><address>address</address><email>email</email></student></students>";
 
 	public void testText2Xml() throws ConvertException {
 		Map<String, String> titleMap = new HashMap<String, String>();

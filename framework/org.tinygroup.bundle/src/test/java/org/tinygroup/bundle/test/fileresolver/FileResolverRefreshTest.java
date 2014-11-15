@@ -31,7 +31,7 @@ public class FileResolverRefreshTest extends TestCase {
 		URL u = null;
 		File f = new File(path);
 		try {
-			u = f.toURL();
+			u = f.toURI().toURL();
 		} catch (MalformedURLException e) {
 			assertTrue(false);
 		}

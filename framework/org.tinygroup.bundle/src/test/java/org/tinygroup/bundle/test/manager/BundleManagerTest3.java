@@ -27,13 +27,13 @@ public class BundleManagerTest3 extends TestCase {
 
 	public void testSpringBean(){
 		TestUtil.init();
-		BeanContainer container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
+		BeanContainer<?> container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
 		BundleManager manager = (BundleManager) container.getBean(BundleManager.BEAN_NAME);
 		manager.start();
 		try {
 			manager.getTinyClassLoader("test2").loadClass("org.tinygroup.MyTestImpl2");
 			
-			BeanContainer app = container.getSubBeanContainer(manager.getTinyClassLoader("test2")
+			BeanContainer<?> app = container.getSubBeanContainer(manager.getTinyClassLoader("test2")
 			);
 			System.out.println(app);
 			assertNotNull(app);

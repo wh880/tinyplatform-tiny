@@ -28,10 +28,10 @@ public class LoaderAgainTest extends TestCase{
 		String path1 = System.getProperty("user.dir")+"/test1"+"/test1-0.0.1-SNAPSHOT.jar";
 		String path2 = System.getProperty("user.dir")+"/test2"+"/test2-0.0.1-SNAPSHOT.jar";
 		try {
-			URL u1 = new File(path1).toURL();
+			URL u1 = new File(path1).toURI().toURL();
 			TinyClassLoader l1 = new TinyClassLoader(new URL[]{u1});
 			
-			URL u2 = new File(path2).toURL();
+			URL u2 = new File(path2).toURI().toURL();
 			TinyClassLoader l2 = new TinyClassLoader(new URL[]{u2});
 			
 			l2.addDependClassLoader(l1);
