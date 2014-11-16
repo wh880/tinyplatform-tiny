@@ -1,5 +1,0 @@
-<xstream-configuration  package-name="imda">
-	<xstream-annotation-classes>
-		<xstream-annotation-class class-name="org.tinygroup.imda.config.ModelDefine" />
-	</xstream-annotation-classes>
-</xstream-configuration>

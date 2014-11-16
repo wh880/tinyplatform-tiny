@@ -1,3 +1,0 @@
-<dict-loaders>
-	<dict-loader groupName="dict" beanName="dictDataLoader"></dict-loader>
-</dict-loaders>
