@@ -15,7 +15,6 @@
     <module>org.tinygroup.filemonitorplugin</module>
     <module>org.tinygroup.nettyplugin</module>
     <module>org.tinygroup.flowplugin</module>
-    <module>org.tinygroup.modelplugin</module>
     <module>org.tinygroup.cepcoreplugin</module>
     <module>org.tinygroup.serviceplugin</module>
   </modules>
