@@ -33,7 +33,7 @@ public class LogBuffer {
 		transactionDepth++;
 	}
 
-	public void decreeaseTransactionDepth() {
+	public void decreaseTransactionDepth() {
 		transactionDepth--;
 	}
 

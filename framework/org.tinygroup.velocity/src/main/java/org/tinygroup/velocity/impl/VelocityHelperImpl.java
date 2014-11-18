@@ -90,6 +90,10 @@ public final class VelocityHelperImpl implements VelocityHelper {
 		this.layoutExtFileName = layoutExtFileName;
 	}
 
+	public VelocityHelperImpl() {
+		this("/velocity.properties");
+	}
+	
 	public VelocityHelperImpl(String configPath) {
 		Properties properties = new Properties();
 

@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.weblayer</artifactId>
+            <artifactId>org.tinygroup.weblayerext</artifactId>
             <version>1.2.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
@@ -85,6 +85,11 @@
         <dependency>
             <groupId>org.tinygroup</groupId>
             <artifactId>org.tinygroup.jcscache</artifactId>
+            <version>1.2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.tinygroup</groupId>
+            <artifactId>org.tinygroup.dbfilter</artifactId>
             <version>1.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
