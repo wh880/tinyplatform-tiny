@@ -43,7 +43,7 @@ public class FileResolverRefreshTest extends TestCase {
 		resolver.resolve();
 		try {
 			BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(
+					loader).getBean(
 					"bundleTestService");
 			assertTrue(true);
 		} catch (Exception e) {
@@ -55,7 +55,7 @@ public class FileResolverRefreshTest extends TestCase {
 		resolver.refresh();
 		try {
 			BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(
+					loader).getBean(
 					"bundleTestService");
 			assertTrue(false);
 		} catch (Exception e) {

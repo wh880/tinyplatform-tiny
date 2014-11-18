@@ -15,9 +15,13 @@
  */
 package org.tinygroup.springutil;
 
+import java.util.Collection;
+
 import junit.framework.TestCase;
 
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.springutil.config.BeanObject;
 import org.tinygroup.springutil.config.User;
 
 public class FactoryTest extends TestCase {
@@ -42,6 +46,50 @@ public class FactoryTest extends TestCase {
 				this.getClass().getClassLoader()).getBean("user2");
 		assertEquals(false, user == user2);
 		assertEquals(false, user.getCatMap() == user2.getCat());
+	}
+
+	public void testNobean() {
+		try {
+			BeanObject o = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean("beanObject2");
+		} catch (NoSuchBeanDefinitionException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e);
+		}
+
+	}
+	
+	public void testGetByClassAndNameNobean() {
+		try {
+			BeanObject o = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean("beanObject2222",BeanObject.class);
+		} catch (NoSuchBeanDefinitionException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e);
+		}
+
+	}
+	
+	public void testgetBeansByTypeNobean() {
+		try {
+			Collection<FactoryTest> o = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBeans(FactoryTest.class);
+			System.out.println(o);
+		} catch (NoSuchBeanDefinitionException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e);
+		}
+
+	}
+
+	public void testNobean2() {
+		try {
+			BeanObject o = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(BeanObject.class);
+		} catch (NoSuchBeanDefinitionException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e);
+		}
 	}
 
 }

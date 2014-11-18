@@ -169,19 +169,19 @@ public class BundleManagerDefault implements BundleManager {
 	}
 
 	public void start(BundleDefine bundleDefine) {
-		start(bundleDefine.getName()
-			);
-//		String bundle = bundleDefine.getName();
-//		logger.logMessage(LogLevel.INFO, "开始启动Bundle:{0}", bundle);
-//		if (tinyClassLoaderMap.containsKey(bundleDefine)) {// 如果说有loader，就代表还已经启动
-//			logger.logMessage(LogLevel.INFO, "Bundle:{0}已启动，无需再次启动", bundle);
-//			return;
-//		}
-//		if (!checkDepend(bundleDefine, bundle)) {
-//			return;
-//		}
-//		startBundle(bundleDefine, bundle);
-//		logger.logMessage(LogLevel.INFO, "启动Bundle:{0}完毕", bundle);
+		start(bundleDefine.getName());
+		// String bundle = bundleDefine.getName();
+		// logger.logMessage(LogLevel.INFO, "开始启动Bundle:{0}", bundle);
+		// if (tinyClassLoaderMap.containsKey(bundleDefine)) {//
+		// 如果说有loader，就代表还已经启动
+		// logger.logMessage(LogLevel.INFO, "Bundle:{0}已启动，无需再次启动", bundle);
+		// return;
+		// }
+		// if (!checkDepend(bundleDefine, bundle)) {
+		// return;
+		// }
+		// startBundle(bundleDefine, bundle);
+		// logger.logMessage(LogLevel.INFO, "启动Bundle:{0}完毕", bundle);
 	}
 
 	private boolean checkDepend(BundleDefine bundleDefine, String bundle) {
@@ -360,10 +360,12 @@ public class BundleManagerDefault implements BundleManager {
 		stopBundleDependBy(bundle);
 
 		processEvents(beforeStopBundleEvent, bundleContext, bundleDefine);
-
-		tinyClassLoader.removeDependTinyClassLoader(tinyClassLoaderMap
-				.get(bundleDefine));
-		LoaderManager.removeClassLoader(tinyClassLoaderMap.get(bundleDefine));
+		TinyClassLoader loader = tinyClassLoaderMap.get(bundleDefine);
+		tinyClassLoader.removeDependTinyClassLoader(loader);
+		
+		LoaderManager.removeClassLoader(loader);
+		BeanContainerFactory.removeBeanContainer(loader);
+		
 		tinyClassLoaderMap.remove(bundleDefine);
 		deResolve(bundle);
 

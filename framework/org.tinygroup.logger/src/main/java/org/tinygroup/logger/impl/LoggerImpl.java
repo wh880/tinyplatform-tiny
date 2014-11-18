@@ -15,14 +15,6 @@
  */
 package org.tinygroup.logger.impl;
 
-import static org.tinygroup.logger.LogLevel.ERROR;
-
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.slf4j.MDC;
 import org.slf4j.spi.MDCAdapter;
 import org.tinygroup.context.Context;
@@ -31,6 +23,14 @@ import org.tinygroup.i18n.I18nMessageFactory;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.tinygroup.logger.LogLevel.ERROR;
 
 /**
  * @author luoguo
@@ -106,7 +106,7 @@ public class LoggerImpl implements Logger {
 		if(supportTransaction){
 			LogBuffer logBuffer = getLogBuffer();
 			if (logBuffer != null) {
-				logBuffer.decreeaseTransactionDepth();
+				logBuffer.decreaseTransactionDepth();
 				if (logBuffer.getTimes() == 0) {
 					flushLog(logBuffer);
 					removeLogBuffer();

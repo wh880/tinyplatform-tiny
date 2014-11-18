@@ -22,9 +22,11 @@ public class BundleTest extends TestCase{
 		d.setName("testJar");
 		bundleManager.addBundleDefine(d);
 		bundleManager.start("testJar");
+		ClassLoader loader = null;
+		loader = bundleManager.getTinyClassLoader(d);
 		try {
 			BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(
+					loader).getBean(
 					"bundleTestService");
 			assertTrue(true);
 		} catch (Exception e) {
@@ -37,7 +39,7 @@ public class BundleTest extends TestCase{
 		}
 		try {
 			BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(
+					loader).getBean(
 					"bundleTestService");
 			assertTrue(false);
 		} catch (Exception e) {
