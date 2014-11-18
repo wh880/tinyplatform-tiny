@@ -28,7 +28,6 @@
     <application-processors>
         <application-processor bean="fileResolverProcessor"></application-processor>
         <application-processor bean="PluginMgtProcessor"></application-processor>
-        <application-processor bean="CEPProcessor"></application-processor>
         <application-processor bean="dictLoadProcessor"></application-processor>
         <application-processor bean="tinyListenerProcessor"></application-processor>
         <application-processor bean="fileMonitorProcessor"></application-processor>
@@ -42,18 +41,11 @@
         </class-paths>
         <include-patterns>
             <include-pattern pattern="org\.tinygroup\.(.)*\.jar"/>
+            <include-pattern pattern="jstl-1.2.jar"/>
         </include-patterns>
         <full-context-file-finder>
-            <file ext-name="gif" content-type="image/gif"/>
-            <file ext-name="png" content-type="image/png"/>
-            <file ext-name="jpg" content-type="image/jpeg"/>
-            <file ext-name="page" content-type="text/html"/>
-            <file ext-name="layout" content-type="text/html"/>
-            <file ext-name="js" content-type="text/javascript"/>
-            <file ext-name="css" content-type="text/css"/>
-            <file ext-name="jsp" content-type="text/html"/>
-            <file ext-name="htm" content-type="text/html"/>
-            <file ext-name="html" content-type="text/html"/>
+            <!--这里是全路径资源提供器的扩展支持配置,请对照org.tinygroup.fileresolver组件filefind.config.xml-->
+            <!--<file ext-name="gif" content-type="image/gif" />-->
         </full-context-file-finder>
     </file-resolver-configuration>
 
@@ -74,7 +66,7 @@
     </plugin-management>
     <!-- cep远程调用配置 -->
     <cep-node-config>
-        <node-config ip="192.168.84.57" port="8888" name="chenjiaopmclient"
+        <node-config ip="192.168.84.73" port="8888" name="chenjiaopmclient"
                      enable-remote="false"></node-config>
         <node-sc-breath interval="4000"/>
         <node-sc-check interval="2000"/>
@@ -103,52 +95,8 @@
         <annotation-mapping id="validate" value="org\.tiny\..*"></annotation-mapping>
     </annotation-configuration>
 
-    <!-- beanmanager配置信息  schema为表模式, bean-name为beanoperate的bean名称,table-name-pattern配置加载的表名称模式，key-type：表主键类型，现有increase和uuid-->
-    <bean-manager-config default-schema="netshop">
-        <bean-opertate-config schema="netshop"
-                              table-name-pattern="" bean-name="beanStringOperator" key-type="uuid">
-        </bean-opertate-config>
-    </bean-manager-config>
-
     <!--tiny-processor实现 -->
-    <tiny-processors>
-        <tiny-processor id="uiEngineTinyProcessor" class="uiEngineTinyProcessor">
-            <servlet-mapping url-pattern=".*/uiengine\.uijs"></servlet-mapping>
-            <servlet-mapping url-pattern=".*/uiengine\.uicss"></servlet-mapping>
-        </tiny-processor>
-        <tiny-processor id="serviceTinyProcessor" class="serviceTinyProcessor">
-            <servlet-mapping url-pattern=".*\.servicexml"></servlet-mapping>
-            <servlet-mapping url-pattern=".*\.servicejson"></servlet-mapping>
-            <servlet-mapping url-pattern=".*\.servicepage"></servlet-mapping>
-            <servlet-mapping url-pattern=".*\.servicepagelet"></servlet-mapping>
-        </tiny-processor>
-        <tiny-processor id="mvcTinyProcessor" class="mvcTinyProcessor">
-            <servlet-mapping url-pattern=".*\.do"></servlet-mapping>
-        </tiny-processor>
-        <tiny-processor id="pageFlowTinyProcessor" class="pageFlowTinyProcessor">
-            <servlet-mapping url-pattern=".*\.pageflow"></servlet-mapping>
-        </tiny-processor>
-        <tiny-processor id="fullContextProcessor" class="fullContextProcessor">
-            <servlet-mapping url-pattern=".*\.css"></servlet-mapping>
-            <servlet-mapping url-pattern=".*\.jpg"></servlet-mapping>
-            <servlet-mapping url-pattern=".*\.png"></servlet-mapping>
-            <servlet-mapping url-pattern=".*\.html"></servlet-mapping>
-            <servlet-mapping url-pattern=".*\.js"></servlet-mapping>
-            <servlet-mapping url-pattern=".*\.gif"></servlet-mapping>
-        </tiny-processor>
-        <tiny-processor id="velocityViewProcessor" class="velocityViewProcessor">
-            <init-param name="templeteWithLayoutExtFileName" value=".page"></init-param>
-            <init-param name="templateExtFileName" value=".pagelet"></init-param>
-            <servlet-mapping url-pattern=".*\.page"></servlet-mapping>
-            <servlet-mapping url-pattern=".*\.pagelet"></servlet-mapping>
-        </tiny-processor>
-        <tiny-processor id="jspProcessor" class="tinyProcessorWapper">
-            <init-param name="servlet_bean" value="jspServlet"></init-param>
-            <servlet-mapping url-pattern=".*\.jsp"></servlet-mapping>
-            <init-param name="fork" value="false"></init-param>
-            <init-param name="xpoweredBy" value="false"></init-param>
-        </tiny-processor>
-    </tiny-processors>
+    <!--这里是Tiny处理器的配置扩展,请对照org.tinygroup.weblayer组件tinyprocessor.config.xml-->
 
     <!--tiny-filters配置 -->
     <tiny-filters>
@@ -191,6 +139,9 @@
             <filter-mapping url-pattern=".*"></filter-mapping>
         </tiny-filter>
         <tiny-filter id="sessionTinyFilter" class="sessionTinyFilter">
+            <filter-mapping url-pattern=".*"></filter-mapping>
+        </tiny-filter>
+        <tiny-filter id="tinydbFilter" class="tinydbFilter">
             <filter-mapping url-pattern=".*"></filter-mapping>
         </tiny-filter>
         <!--<tiny-wrapper-filter id="tinyFilterWrapper" class="tinyFilterWrapper">
@@ -283,5 +234,17 @@
 
     <!--文件监控器配置参数，具体参见FileMonitorProcessor配置管理手册，interrupt扫描间隔时间，单位秒 -->
     <file-monitor interval="10" enable="false"/>
+    
+    <gzip-filter max-content-length="0">
+        <!-- 多个content-type已分号隔开 -->
+       <!-- <exclude-content-type>text/javascript;text/css</exclude-content-type> -->
+    </gzip-filter>
+   <!--   <post-data-process host-pattern="192.168.84.*">
+       <data-mapping name="" host-pattern=""></data-mapping>
+    </post-data-process>-->
+    <!-- 服务接口正则配置 -->
+    <service-interface>
+         <class-name-regular pattern=".*"></class-name-regular>
+    </service-interface>
 
 </application>
