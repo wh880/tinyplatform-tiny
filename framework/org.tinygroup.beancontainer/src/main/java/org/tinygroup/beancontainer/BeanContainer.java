@@ -27,6 +27,11 @@ public interface BeanContainer<C> {
     
     
     BeanContainer<?> getSubBeanContainer(ClassLoader loader);
+    
+    
+    void removeSubBeanContainer(ClassLoader loader);
+    
+    void setParent(BeanContainer<?> container);
 
     /**
      * 返回子窗口列表

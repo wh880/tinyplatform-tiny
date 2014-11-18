@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
+import org.tinygroup.springutil.test.beancontainer.ContainerBean;
 
 public class BeanContainerTest extends TestCase {
 

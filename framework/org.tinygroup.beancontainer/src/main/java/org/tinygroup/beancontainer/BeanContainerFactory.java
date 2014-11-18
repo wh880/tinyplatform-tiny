@@ -4,22 +4,28 @@ import org.tinygroup.exception.TinyBizRuntimeException;
 
 public class BeanContainerFactory {
 	public static BeanContainer<?> container;
-	
-	public static void setBeanContainer(String beanClassName){
+
+	public static void setBeanContainer(String beanClassName) {
 		try {
-			container = (BeanContainer)Class.forName(beanClassName).newInstance();
+			container = (BeanContainer) Class.forName(beanClassName)
+					.newInstance();
 		} catch (Exception e) {
-			throw new TinyBizRuntimeException(e, "beancontainer_init_failed",beanClassName);
+			throw new TinyBizRuntimeException(e, "beancontainer_init_failed",
+					beanClassName);
 		}
 	}
-	
-	public static BeanContainer<?> getBeanContainer(ClassLoader loader){
-		if(loader == BeanContainerFactory.class.getClassLoader()){
+
+	public static BeanContainer<?> getBeanContainer(ClassLoader loader) {
+		if (loader == BeanContainerFactory.class.getClassLoader()) {
 			return container;
-		}else{
+		} else {
 			return container.getSubBeanContainer(loader);
 		}
-		
-		
+
+	}
+
+	public static void removeBeanContainer(ClassLoader loader) {
+		container.removeSubBeanContainer(loader);
+
 	}
 }

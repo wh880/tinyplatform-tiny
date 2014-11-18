@@ -19,13 +19,25 @@ import org.tinygroup.vfs.FileObject;
 public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	private static Logger logger = LoggerFactory
 			.getLogger(SpringBeanContainer.class);
-	ApplicationContext applicationContext = null;
-	List<String> configs = new ArrayList<String>();
-	Map<ClassLoader, BeanContainer<?>> subs = new HashMap<ClassLoader, BeanContainer<?>>();
-	boolean inited = false;
+	private ApplicationContext applicationContext = null;
+	private List<String> configs = new ArrayList<String>();
+	private Map<ClassLoader, BeanContainer<?>> subs = new HashMap<ClassLoader, BeanContainer<?>>();
+	private boolean inited = false;
+	private BeanContainer<?> parent;
+	private String noBeanCaseInfo;
 
 	public ApplicationContext getBeanContainerPrototype() {
 		return applicationContext;
+	}
+
+	private void initNoBeanCaseInfo() {
+		if (noBeanCaseInfo != null)
+			return;
+		try {
+			applicationContext.getBean(hashCode() + "");
+		} catch (NoSuchBeanDefinitionException e) {
+			noBeanCaseInfo = e.getMessage();
+		}
 	}
 
 	public SpringBeanContainer() {
@@ -36,6 +48,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 		fileSystemXmlApplicationContext.setAllowBeanDefinitionOverriding(true);
 		fileSystemXmlApplicationContext.refresh();
 		applicationContext = fileSystemXmlApplicationContext;
+		initNoBeanCaseInfo();
 	}
 
 	public SpringBeanContainer(SpringBeanContainer parent, ClassLoader loader) {
@@ -48,6 +61,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 		fileSystemXmlApplicationContext.setClassLoader(loader);
 		fileSystemXmlApplicationContext.refresh();
 		applicationContext = fileSystemXmlApplicationContext;
+		initNoBeanCaseInfo();
 	}
 
 	public SpringBeanContainer(SpringBeanContainer parent,
@@ -71,12 +85,14 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 		fileSystemXmlApplicationContext.setClassLoader(loader);
 		fileSystemXmlApplicationContext.refresh();
 		applicationContext = fileSystemXmlApplicationContext;
+		initNoBeanCaseInfo();
 	}
 
 	public BeanContainer<?> getSubBeanContainer(List<FileObject> files,
 			ClassLoader loader) {
 		SpringBeanContainer b = new SpringBeanContainer(this, files, loader);
 		subs.put(loader, b);
+		b.setParent(this);
 		return b;
 	}
 
@@ -94,22 +110,27 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	}
 
 	public <T> Collection<T> getBeans(Class<T> type) {
-		return applicationContext.getBeansOfType(type).values();
+		Collection<T> collection = applicationContext.getBeansOfType(type)
+				.values();
+		if (collection.size() == 0 && parent != null) {
+			collection = parent.getBeans(type);
+		}
+		return collection;
 	}
 
 	public <T> T getBean(String name) {
 		try {
 			return (T) applicationContext.getBean(name);
-		} catch (Exception e) {
-			for(BeanContainer<?> sb:subs.values()){
-				try {
-					return sb.getBean(name);
-				} catch (Exception e2) {
-					// TODO: handle exception
+		} catch (NoSuchBeanDefinitionException e) {
+			String message = e.getMessage();
+			if (message.equals(noBeanCaseInfo.replace(hashCode() + "", name))) {
+				if (parent != null) {
+					return (T) parent.getBean(name);
 				}
 			}
+			throw e;
 		}
-		throw new NoSuchBeanDefinitionException(name);
+
 	}
 
 	public <T> T getBean(Class<T> clazz) {
@@ -117,6 +138,8 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 		String[] beanNames = applicationContext.getBeanNamesForType(clazz);
 		if (beanNames.length == 1) {
 			return (T) applicationContext.getBean(beanNames[0], clazz);
+		} else if (beanNames.length == 0 && parent != null) {
+			return parent.getBean(clazz);
 		} else {
 			throw new NoSuchBeanDefinitionException(clazz,
 					"expected single bean but found "
@@ -128,19 +151,31 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	}
 
 	public <T> T getBean(String name, Class<T> clazz) {
-		return (T) applicationContext.getBean(name, clazz);
+		try {
+			return (T) applicationContext.getBean(name, clazz);
+		} catch (NoSuchBeanDefinitionException e) {
+			String message = e.getMessage();
+			if (message.equals(noBeanCaseInfo.replace(hashCode() + "", name))) {
+				if (parent != null) {
+					return (T) parent.getBean(name,clazz);
+				}
+			}
+			throw e;
+		}
+
 	}
 
 	public void regSpringConfigXml(List<FileObject> files) {
 		for (FileObject fileObject : files) {
-			logger.logMessage(LogLevel.INFO,"添加文件:{}",fileObject.getPath());
+			logger.logMessage(LogLevel.INFO, "添加文件:{}", fileObject.getPath());
 			String urlString = fileObject.getURL().toString();
 			addUrl(urlString);
 		}
 	}
 
 	public void regSpringConfigXml(String files) {
-		String urlString = SpringBeanContainer.class.getResource(files).toString();
+		String urlString = SpringBeanContainer.class.getResource(files)
+				.toString();
 		addUrl(urlString);
 	}
 
@@ -151,7 +186,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 					urlString);
 		}
 	}
-	
+
 	public void removeUrl(String urlString) {
 		if (configs.contains(urlString)) {
 			configs.remove(urlString);
@@ -164,6 +199,14 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 		FileSystemXmlApplicationContext app = (FileSystemXmlApplicationContext) applicationContext;
 		app.setConfigLocations(listToArray(configs));
 		app.refresh();
+	}
+
+	public void setParent(BeanContainer<?> container) {
+		this.parent = container;
+	}
+
+	public void removeSubBeanContainer(ClassLoader loader) {
+		subs.remove(loader);
 	}
 
 }

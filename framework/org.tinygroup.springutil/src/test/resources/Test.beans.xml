@@ -5,8 +5,7 @@
                     http://www.springframework.org/schema/context
                     http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	default-autowire="byName" default-lazy-init="true">
-	<bean id="user2" scope="prototype"
-		class="org.tinygroup.springutil.config.User">
+	<bean id="user2" scope="prototype" class="org.tinygroup.springutil.config.User">
 		<property name="name">
 			<value>aa1</value>
 		</property>
@@ -18,8 +17,7 @@
 		</property>
 	</bean>
 
-	<bean id="user"  scope="singleton"
-		class="org.tinygroup.springutil.config.User">
+	<bean id="user" scope="singleton" class="org.tinygroup.springutil.config.User">
 		<property name="name">
 			<value>aa</value>
 		</property>
@@ -61,5 +59,8 @@
 		autowire="byType" />
 	<bean id="ccc" scope="singleton" class="org.tinygroup.springutil.config.Ccc"
 		autowire="byName" />
-
+	<bean id="beanObject" scope="singleton"
+		class="org.tinygroup.springutil.config.BeanObject" autowire="byName" />
+	<bean id="beanObject1" scope="singleton"
+		class="org.tinygroup.springutil.config.BeanObject" autowire="byName" />
 </beans>
