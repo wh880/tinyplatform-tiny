@@ -12,6 +12,7 @@
 
     <script>
         var contextPath = "${TINY_CONTEXT_PATH}";
+        var CKEDITOR_BASEPATH = contextPath+'/ckeditor/';
 
         /*
         jQuery.fn.outerHTML = function(s) {
@@ -22,35 +23,26 @@
 
 
     <link rel="shortcut icon" href="${TINY_CONTEXT_PATH}/icon/logo.png">
-    <script src="${TINY_CONTEXT_PATH}/uiengine.uijs"></script>
     <link href="${TINY_CONTEXT_PATH}/uiengine.uicss" rel="stylesheet" />
-    #foreach($component in $uiengine.getHealthUiComponents())
-        <!--UI component $component.name start -->
-        #if($component.jsCodelet)
-            <script>
-#evaluate($!component.jsCodelet)
-</script>
-        #end
-        #if($component.cssCodelet)
-            <style>
-#evaluate($!component.cssCodelet)
-</style>
-        #end
-        <!--UI component $component.name end -->
-    #end
+    <script src="${TINY_CONTEXT_PATH}/uiengine.uijs"></script>
 
-    <style>
-        body {
-            font: "Trebuchet MS", sans-serif;
-            background: none repeat scroll 0 0 #FFFFFF;
-            margin: 0;
-            padding: 0;
-            z-index: 0;
-        }
-
-    </style>
 </head>
-<body bgcolor="white" class="jquery-ui page page-id-5 page-template-default page-slug-accordion single-author singular">
-    $pageContent
+<body>
+    <table border="1" width="100%">
+   <tr>
+      <td colspan="2">
+                     HelloWorld示例:<a href="${TINY_CONTEXT_PATH}/helloworld/annotation.page">注解方式配置服务</a><br/>
+                     HelloWorld示例:<a href="${TINY_CONTEXT_PATH}/helloworld/xml.page">XML配置服务</a><br/>
+                     HelloWorld示例:<a href="${TINY_CONTEXT_PATH}/helloworld/flow.page">流程组件方式</a><br/>
+                     HelloWorld示例:<a href="${TINY_CONTEXT_PATH}/helloworld/mvc.page">MVC方式</a><br/>
+      </td>
+    </tr>
+    <tr>  
+      <td width="20%">内容展示</td>
+      <td>
+         $pageContent
+      </td>
+   </tr>
+</table>
 </body>
 </html>
