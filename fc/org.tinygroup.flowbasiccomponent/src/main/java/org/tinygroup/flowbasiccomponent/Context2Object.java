@@ -16,11 +16,11 @@
 package org.tinygroup.flowbasiccomponent;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.bundle.loader.LoaderManager;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.flow.ComponentInterface;
+import org.tinygroup.loader.LoaderManager;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;

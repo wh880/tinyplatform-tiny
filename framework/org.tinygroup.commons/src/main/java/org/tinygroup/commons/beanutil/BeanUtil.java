@@ -42,12 +42,23 @@ import javassist.bytecode.MethodInfo;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.tinygroup.commons.tools.ClassUtil;
+import org.tinygroup.loader.LoaderManager;
 
 public class BeanUtil {
 
 	public static String[] getMethodParameterName(Class<?> clazz, Method method) {
 		try {
-			ClassPool pool = ClassPool.getDefault();
+			ClassPool pool = null;
+			if (clazz.getClassLoader() == BeanUtil.class.getClassLoader()) {
+				pool = ClassPool.getDefault();
+			} else {
+				List<String> jars = LoaderManager.getLoaderFiles(clazz
+						.getClassLoader());
+				pool = new ClassPool();
+				for (String jar : jars) {
+					pool.appendClassPath(jar);
+				}
+			}
 			pool.insertClassPath(new ClassClassPath(clazz));
 			CtClass cc = pool.get(clazz.getName());
 			CtMethod cm = cc.getDeclaredMethod(method.getName(),
@@ -63,6 +74,7 @@ public class BeanUtil {
 			for (int i = 0; i < paramNames.length; i++) {
 				paramNames[i] = attr.variableName(i + pos);
 			}
+
 			return paramNames;
 
 		} catch (NotFoundException e) {

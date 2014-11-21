@@ -35,6 +35,7 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.config.util.ConfigurationUtil;
+import org.tinygroup.loader.LoaderManager;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -88,7 +89,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 				logger.logMessage(LogLevel.DEBUG, "找到匹配类名正则[{0}]的类:[{1}]",
 						classMatcher.getClassName(), className);
 				try {
-					Class clazz=getClass().getClassLoader().loadClass(className);
+					Class clazz=LoaderManager.getClass(className);
 					processClassProcessor(clazz, classMatcher);
 					processPropertyProcessor(clazz,
 							classMatcher.getAnnotationPropertyMatchers());

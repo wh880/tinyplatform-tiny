@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javassist.ClassPool;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.bundle.BundleActivator;
 import org.tinygroup.bundle.BundleContext;
@@ -30,10 +32,10 @@ import org.tinygroup.bundle.BundleEvent;
 import org.tinygroup.bundle.BundleException;
 import org.tinygroup.bundle.BundleManager;
 import org.tinygroup.bundle.config.BundleDefine;
-import org.tinygroup.bundle.loader.LoaderManager;
 import org.tinygroup.bundle.loader.TinyClassLoader;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
+import org.tinygroup.loader.LoaderManager;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -201,11 +203,10 @@ public class BundleManagerDefault implements BundleManager {
 		startBundleDepend(bundleDefine, bundle);
 
 		processEvents(beforeStartBundleEvent, bundleContext, bundleDefine);
-
 		TinyClassLoader loader = loadBundleLoader(bundleDefine, bundle);
-
+		
 		resolve(loader, bundle);
-		LoaderManager.addClassLoader(loader);
+		
 		startBundleActivator(bundleDefine, bundle);
 
 		processEvents(afterStartBundleEvent, bundleContext, bundleDefine);
@@ -248,9 +249,10 @@ public class BundleManagerDefault implements BundleManager {
 		List<URL> bundleJars = getJars(bundleDirFile);
 
 		URL[] urls = new URL[jars.length + bundleJars.size()];
-
+		List<String> jarFileList =new ArrayList<String>();
 		for (int i = 0; i < jars.length; i++) {
 			File f = new File(jars[i]);
+			jarFileList.add(f.getPath());
 			try {
 				urls[i] = f.toURI().toURL();
 			} catch (MalformedURLException e) {
@@ -261,12 +263,8 @@ public class BundleManagerDefault implements BundleManager {
 			urls[i] = bundleJars.get(j);
 		}
 
-		// try {
-		// urls[urls.length - 1] = f.toURL();
-		// } catch (MalformedURLException e1) {
-		// logger.errorMessage("为路径{0}生成url时出错", e1, bundleDir);
-		// }
 		TinyClassLoader bundleLoder = new TinyClassLoader(urls, tinyClassLoader);
+		LoaderManager.addClassLoader(bundleLoder,jarFileList);
 		tinyClassLoaderMap.put(bundleDefine, bundleLoder);
 
 		String[] dependens = bundleDefine.getDependencyArray(); // 获取所依赖的bundle项
