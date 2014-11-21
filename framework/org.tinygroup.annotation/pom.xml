@@ -38,7 +38,6 @@
       <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.loader</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
