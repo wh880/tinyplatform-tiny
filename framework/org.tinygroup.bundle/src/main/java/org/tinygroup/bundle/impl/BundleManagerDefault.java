@@ -204,9 +204,9 @@ public class BundleManagerDefault implements BundleManager {
 
 		processEvents(beforeStartBundleEvent, bundleContext, bundleDefine);
 		TinyClassLoader loader = loadBundleLoader(bundleDefine, bundle);
-		
+
 		resolve(loader, bundle);
-		
+
 		startBundleActivator(bundleDefine, bundle);
 
 		processEvents(afterStartBundleEvent, bundleContext, bundleDefine);
@@ -246,10 +246,10 @@ public class BundleManagerDefault implements BundleManager {
 		String[] jars = getBundleComJar(bundleDefine.getCommonJars().split(","));
 		String bundleDir = getBundleDir(bundle);
 		File bundleDirFile = new File(bundleDir);
-		List<URL> bundleJars = getJars(bundleDirFile);
+		List<File> bundleJars = getJars(bundleDirFile);
 
 		URL[] urls = new URL[jars.length + bundleJars.size()];
-		List<String> jarFileList =new ArrayList<String>();
+		List<String> jarFileList = new ArrayList<String>();
 		for (int i = 0; i < jars.length; i++) {
 			File f = new File(jars[i]);
 			jarFileList.add(f.getPath());
@@ -260,11 +260,17 @@ public class BundleManagerDefault implements BundleManager {
 			}
 		}
 		for (int i = jars.length, j = 0; i < urls.length; i++, j++) {
-			urls[i] = bundleJars.get(j);
+			try {
+				urls[i] = bundleJars.get(j).toURI().toURL();
+				jarFileList.add(bundleJars.get(j).getPath());
+			} catch (MalformedURLException e) {
+				logger.errorMessage("为路径{0}生成url时出错", e, bundleJars.get(j));
+			}
+			
 		}
 
 		TinyClassLoader bundleLoder = new TinyClassLoader(urls, tinyClassLoader);
-		LoaderManager.addClassLoader(bundleLoder,jarFileList);
+		LoaderManager.addClassLoader(bundleLoder, jarFileList);
 		tinyClassLoaderMap.put(bundleDefine, bundleLoder);
 
 		String[] dependens = bundleDefine.getDependencyArray(); // 获取所依赖的bundle项
@@ -276,8 +282,8 @@ public class BundleManagerDefault implements BundleManager {
 		return bundleLoder;
 	}
 
-	private List<URL> getJars(File f) {
-		List<URL> list = new ArrayList<URL>();
+	private List<File> getJars(File f) {
+		List<File> list = new ArrayList<File>();
 		File[] subFs = f.listFiles();
 		if (subFs == null) {
 			return list;
@@ -287,12 +293,7 @@ public class BundleManagerDefault implements BundleManager {
 				list.addAll(getJars(subF));
 			} else {
 				if (subF.getName().endsWith(".jar")) {
-					try {
-						list.add(subF.toURI().toURL());
-					} catch (MalformedURLException e) {
-						logger.errorMessage("为路径{0}生成url时出错", e,
-								subF.getAbsolutePath());
-					}
+					list.add(subF);
 				}
 			}
 		}
@@ -360,10 +361,10 @@ public class BundleManagerDefault implements BundleManager {
 		processEvents(beforeStopBundleEvent, bundleContext, bundleDefine);
 		TinyClassLoader loader = tinyClassLoaderMap.get(bundleDefine);
 		tinyClassLoader.removeDependTinyClassLoader(loader);
-		
+
 		LoaderManager.removeClassLoader(loader);
 		BeanContainerFactory.removeBeanContainer(loader);
-		
+
 		tinyClassLoaderMap.remove(bundleDefine);
 		deResolve(bundle);
 
