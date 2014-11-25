@@ -96,9 +96,19 @@ public class ReplaceDeParser implements ItemsListVisitor {
 			}
 		}
 
+        if (replace.getItemsList() != null) {
+			// REPLACE mytab SELECT * FROM mytab2
+			// or VALUES ('as', ?, 565)
+
+			if (replace.isUseValues()) {
+				buffer.append(" VALUES");
+			}
+
+			buffer.append(replace.getItemsList());
+		}
 	}
 
-
+	
 	public void visit(ExpressionList expressionList) {
 		buffer.append(" VALUES (");
 		for (Iterator<Expression> iter = expressionList.getExpressions().iterator(); iter.hasNext();) {
@@ -111,7 +121,7 @@ public class ReplaceDeParser implements ItemsListVisitor {
 		buffer.append(")");
 	}
 
-
+	
 	public void visit(SubSelect subSelect) {
 		subSelect.getSelectBody().accept(selectVisitor);
 	}
@@ -132,7 +142,7 @@ public class ReplaceDeParser implements ItemsListVisitor {
 		selectVisitor = visitor;
 	}
 
-
+	
 	public void visit(MultiExpressionList multiExprList) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

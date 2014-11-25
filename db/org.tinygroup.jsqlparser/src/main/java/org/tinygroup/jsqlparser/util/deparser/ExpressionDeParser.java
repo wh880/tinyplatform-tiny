@@ -20,8 +20,7 @@ import org.tinygroup.jsqlparser.expression.operators.arithmetic.*;
 import org.tinygroup.jsqlparser.expression.operators.conditional.AndExpression;
 import org.tinygroup.jsqlparser.expression.operators.conditional.OrExpression;
 import org.tinygroup.jsqlparser.expression.operators.relational.*;
-import org.tinygroup.jsqlparser.schema.Column;
-import org.tinygroup.jsqlparser.schema.Table;
+import org.tinygroup.jsqlparser.schema.*;
 import org.tinygroup.jsqlparser.statement.select.SelectVisitor;
 import org.tinygroup.jsqlparser.statement.select.SubSelect;
 
@@ -42,17 +41,18 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
 
     /**
      * @param selectVisitor a SelectVisitor to de-parse SubSelects. It has to
-     *                      share the same<br> StringBuilder as this object in order to work, as:
-     *                      <p/>
-     *                      <pre>
-     *                      <code>
-     *                      StringBuilder myBuf = new StringBuilder();
-     *                      MySelectDeparser selectDeparser = new  MySelectDeparser();
-     *                      selectDeparser.setBuffer(myBuf);
-     *                      ExpressionDeParser expressionDeParser = new ExpressionDeParser(selectDeparser, myBuf);
-     *                      </code>
-     *                      </pre>
-     * @param buffer        the buffer that will be filled with the expression
+     * share the same<br> StringBuilder as this object in order to work, as:
+     *
+     * <pre>
+     * <code>
+     * StringBuilder myBuf = new StringBuilder();
+     * MySelectDeparser selectDeparser = new  MySelectDeparser();
+     * selectDeparser.setBuffer(myBuf);
+     * ExpressionDeParser expressionDeParser = new ExpressionDeParser(selectDeparser, myBuf);
+     * </code>
+     * </pre>
+     *
+     * @param buffer the buffer that will be filled with the expression
      */
     public ExpressionDeParser(SelectVisitor selectVisitor, StringBuilder buffer) {
         this.selectVisitor = selectVisitor;
@@ -67,17 +67,17 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         this.buffer = buffer;
     }
 
-
+    
     public void visit(Addition addition) {
         visitBinaryExpression(addition, " + ");
     }
 
-
+    
     public void visit(AndExpression andExpression) {
         visitBinaryExpression(andExpression, " AND ");
     }
 
-
+    
     public void visit(Between between) {
         between.getLeftExpression().accept(this);
         if (between.isNot()) {
@@ -91,18 +91,18 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
 
     }
 
-
+    
     public void visit(EqualsTo equalsTo) {
         visitOldOracleJoinBinaryExpression(equalsTo, " = ");
     }
 
-
+    
     public void visit(Division division) {
         visitBinaryExpression(division, " / ");
 
     }
 
-
+    
     public void visit(DoubleValue doubleValue) {
         buffer.append(doubleValue.toString());
 
@@ -123,18 +123,18 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         }
     }
 
-
+    
     public void visit(GreaterThan greaterThan) {
         visitOldOracleJoinBinaryExpression(greaterThan, " > ");
     }
 
-
+    
     public void visit(GreaterThanEquals greaterThanEquals) {
         visitOldOracleJoinBinaryExpression(greaterThanEquals, " >= ");
 
     }
 
-
+    
     public void visit(InExpression inExpression) {
         if (inExpression.getLeftExpression() == null) {
             inExpression.getLeftItemsList().accept(this);
@@ -152,13 +152,13 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         inExpression.getRightItemsList().accept(this);
     }
 
-
+    
     public void visit(SignedExpression signedExpression) {
         buffer.append(signedExpression.getSign());
         signedExpression.getExpression().accept(this);
     }
 
-
+    
     public void visit(IsNullExpression isNullExpression) {
         isNullExpression.getLeftExpression().accept(this);
         if (isNullExpression.isNot()) {
@@ -168,13 +168,13 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         }
     }
 
-
+    
     public void visit(JdbcParameter jdbcParameter) {
         buffer.append("?");
 
     }
 
-
+    
     public void visit(LikeExpression likeExpression) {
         visitBinaryExpression(likeExpression, " LIKE ");
         String escape = likeExpression.getEscape();
@@ -183,7 +183,7 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         }
     }
 
-
+    
     public void visit(ExistsExpression existsExpression) {
         if (existsExpression.isNot()) {
             buffer.append("NOT EXISTS ");
@@ -193,49 +193,49 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         existsExpression.getRightExpression().accept(this);
     }
 
-
+    
     public void visit(LongValue longValue) {
         buffer.append(longValue.getStringValue());
 
     }
 
-
+    
     public void visit(MinorThan minorThan) {
         visitOldOracleJoinBinaryExpression(minorThan, " < ");
 
     }
 
-
+    
     public void visit(MinorThanEquals minorThanEquals) {
         visitOldOracleJoinBinaryExpression(minorThanEquals, " <= ");
 
     }
 
-
+    
     public void visit(Multiplication multiplication) {
         visitBinaryExpression(multiplication, " * ");
 
     }
 
-
+    
     public void visit(NotEqualsTo notEqualsTo) {
         visitOldOracleJoinBinaryExpression(notEqualsTo, " " + notEqualsTo.getStringExpression() + " ");
 
     }
 
-
+    
     public void visit(NullValue nullValue) {
         buffer.append("NULL");
 
     }
 
-
+    
     public void visit(OrExpression orExpression) {
         visitBinaryExpression(orExpression, " OR ");
 
     }
 
-
+    
     public void visit(Parenthesis parenthesis) {
         if (parenthesis.isNot()) {
             buffer.append(" NOT ");
@@ -247,13 +247,13 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
 
     }
 
-
+    
     public void visit(StringValue stringValue) {
         buffer.append("'").append(stringValue.getValue()).append("'");
 
     }
 
-
+    
     public void visit(Subtraction subtraction) {
         visitBinaryExpression(subtraction, " - ");
 
@@ -269,14 +269,14 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
 
     }
 
-
+    
     public void visit(SubSelect subSelect) {
         buffer.append("(");
         subSelect.getSelectBody().accept(selectVisitor);
         buffer.append(")");
     }
 
-
+    
     public void visit(Column tableColumn) {
         final Table table = tableColumn.getTable();
         String tableName = null;
@@ -294,7 +294,7 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         buffer.append(tableColumn.getColumnName());
     }
 
-
+    
     public void visit(Function function) {
         if (function.isEscaped()) {
             buffer.append("{fn ");
@@ -326,12 +326,12 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         }
     }
 
-
+    
     public void visit(ExpressionList expressionList) {
         if (useBracketsInExprList) {
             buffer.append("(");
         }
-        for (Iterator<Expression> iter = expressionList.getExpressions().iterator(); iter.hasNext(); ) {
+        for (Iterator<Expression> iter = expressionList.getExpressions().iterator(); iter.hasNext();) {
             Expression expression = iter.next();
             expression.accept(this);
             if (iter.hasNext()) {
@@ -351,22 +351,22 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         selectVisitor = visitor;
     }
 
-
+    
     public void visit(DateValue dateValue) {
         buffer.append("{d '").append(dateValue.getValue().toString()).append("'}");
     }
 
-
+    
     public void visit(TimestampValue timestampValue) {
         buffer.append("{ts '").append(timestampValue.getValue().toString()).append("'}");
     }
 
-
+    
     public void visit(TimeValue timeValue) {
         buffer.append("{t '").append(timeValue.getValue().toString()).append("'}");
     }
 
-
+    
     public void visit(CaseExpression caseExpression) {
         buffer.append("CASE ");
         Expression switchExp = caseExpression.getSwitchExpression();
@@ -389,7 +389,7 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         buffer.append("END");
     }
 
-
+    
     public void visit(WhenClause whenClause) {
         buffer.append("WHEN ");
         whenClause.getWhenExpression().accept(this);
@@ -398,44 +398,44 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         buffer.append(" ");
     }
 
-
+    
     public void visit(AllComparisonExpression allComparisonExpression) {
         buffer.append(" ALL ");
         allComparisonExpression.getSubSelect().accept((ExpressionVisitor) this);
     }
 
-
+    
     public void visit(AnyComparisonExpression anyComparisonExpression) {
         buffer.append(" ANY ");
         anyComparisonExpression.getSubSelect().accept((ExpressionVisitor) this);
     }
 
-
+    
     public void visit(Concat concat) {
         visitBinaryExpression(concat, " || ");
     }
 
-
+    
     public void visit(Matches matches) {
         visitOldOracleJoinBinaryExpression(matches, " @@ ");
     }
 
-
+    
     public void visit(BitwiseAnd bitwiseAnd) {
         visitBinaryExpression(bitwiseAnd, " & ");
     }
 
-
+    
     public void visit(BitwiseOr bitwiseOr) {
         visitBinaryExpression(bitwiseOr, " | ");
     }
 
-
+    
     public void visit(BitwiseXor bitwiseXor) {
         visitBinaryExpression(bitwiseXor, " ^ ");
     }
 
-
+    
     public void visit(CastExpression cast) {
         if (cast.isUseCastKeyword()) {
             buffer.append("CAST(");
@@ -450,24 +450,24 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         }
     }
 
-
+    
     public void visit(Modulo modulo) {
         visitBinaryExpression(modulo, " % ");
     }
 
-
+    
     public void visit(AnalyticExpression aexpr) {
         buffer.append(aexpr.toString());
     }
 
-
+    
     public void visit(ExtractExpression eexpr) {
         buffer.append(eexpr.toString());
     }
 
-
+    
     public void visit(MultiExpressionList multiExprList) {
-        for (Iterator<ExpressionList> it = multiExprList.getExprList().iterator(); it.hasNext(); ) {
+        for (Iterator<ExpressionList> it = multiExprList.getExprList().iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
                 buffer.append(", ");
@@ -475,23 +475,35 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         }
     }
 
-
+    
     public void visit(IntervalExpression iexpr) {
         buffer.append(iexpr.toString());
     }
 
-
+    
     public void visit(JdbcNamedParameter jdbcNamedParameter) {
         buffer.append(jdbcNamedParameter.toString());
     }
 
-
+    
     public void visit(OracleHierarchicalExpression oexpr) {
         buffer.append(oexpr.toString());
     }
 
-
+    
     public void visit(RegExpMatchOperator rexpr) {
         visitBinaryExpression(rexpr, " " + rexpr.getStringExpression() + " ");
     }
+
+    
+	public void visit(RegExpMySQLOperator rexpr) {
+    	visitBinaryExpression(rexpr, " " + rexpr.getStringExpression() + " ");
+	}
+    
+    
+    public void visit(JsonExpression jsonExpr) {
+        buffer.append(jsonExpr.toString());
+    }
+
+	
 }

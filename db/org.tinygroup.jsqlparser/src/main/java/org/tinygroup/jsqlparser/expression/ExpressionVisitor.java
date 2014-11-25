@@ -39,6 +39,7 @@ import org.tinygroup.jsqlparser.expression.operators.relational.MinorThan;
 import org.tinygroup.jsqlparser.expression.operators.relational.MinorThanEquals;
 import org.tinygroup.jsqlparser.expression.operators.relational.NotEqualsTo;
 import org.tinygroup.jsqlparser.expression.operators.relational.RegExpMatchOperator;
+import org.tinygroup.jsqlparser.expression.operators.relational.RegExpMySQLOperator;
 import org.tinygroup.jsqlparser.schema.Column;
 import org.tinygroup.jsqlparser.statement.select.SubSelect;
 
@@ -137,4 +138,8 @@ public interface ExpressionVisitor {
 	void visit(OracleHierarchicalExpression oexpr);
 
 	void visit(RegExpMatchOperator rexpr);
+	
+	void visit(JsonExpression jsonExpr);
+
+	void visit(RegExpMySQLOperator regExpMySQLOperator);
 }

@@ -24,34 +24,39 @@ import org.tinygroup.jsqlparser.statement.Statement;
 import org.tinygroup.jsqlparser.statement.StatementVisitor;
 import org.tinygroup.jsqlparser.statement.select.FromItem;
 import org.tinygroup.jsqlparser.statement.select.Join;
+import org.tinygroup.jsqlparser.statement.select.PlainSelect;
+import org.tinygroup.jsqlparser.statement.select.Select;
 
 /**
  * The update statement.
  */
 public class Update implements Statement {
 
-	private Table table;
+	private List<Table> tables;
 	private Expression where;
 	private List<Column> columns;
 	private List<Expression> expressions;
 	private FromItem fromItem;
 	private List<Join> joins;
+	private Select select;
+	private boolean useColumnsBrackets = true;
+	private boolean useSelect = false;
 
-
+	
 	public void accept(StatementVisitor statementVisitor) {
 		statementVisitor.visit(this);
 	}
 
-	public Table getTable() {
-		return table;
+	public List<Table> getTables() {
+		return tables;
 	}
 
 	public Expression getWhere() {
 		return where;
 	}
 
-	public void setTable(Table name) {
-		table = name;
+	public void setTables(List<Table> list) {
+		tables = list;
 	}
 
 	public void setWhere(Expression expression) {
@@ -102,16 +107,58 @@ public class Update implements Statement {
 		this.joins = joins;
 	}
 
+	public Select getSelect() {
+	        return select;
+    	}
+	
+    	public void setSelect(Select select) {
+	        this.select = select;
+    	}
+		
+	public boolean isUseColumnsBrackets() {
+	        return useColumnsBrackets;
+    	}
+	
+    	public void setUseColumnsBrackets(boolean useColumnsBrackets) {
+	        this.useColumnsBrackets = useColumnsBrackets;
+    	}
+		
+	public boolean isUseSelect() {
+	        return useSelect;
+    	}
+	
+    	public void setUseSelect(boolean useSelect) {
+	        this.useSelect = useSelect;
+    	}
 
+	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder("UPDATE ");
-		b.append(getTable()).append(" SET ");
-		for (int i = 0; i < getColumns().size(); i++) {
-			if (i != 0) {
-				b.append(", ");
+		b.append(PlainSelect.getStringList(getTables(), true, false)).append(" SET ");
+		
+		if (!useSelect) {
+			for (int i = 0; i < getColumns().size(); i++) {
+				if (i != 0) {
+					b.append(", ");
+				}
+				b.append(columns.get(i)).append(" = ");
+				b.append(expressions.get(i));
 			}
-			b.append(columns.get(i)).append(" = ");
-			b.append(expressions.get(i));
+		} else {
+			if (useColumnsBrackets) {
+				b.append("(");
+			}
+			for (int i = 0; i < getColumns().size(); i++) {
+				if (i != 0) {
+					b.append(", ");
+				}
+				b.append(columns.get(i));
+			}
+			if (useColumnsBrackets) {
+				b.append(")");
+			}
+			b.append(" = ");
+			b.append("(").append(select).append(")");
 		}
 
 		if (fromItem != null) {

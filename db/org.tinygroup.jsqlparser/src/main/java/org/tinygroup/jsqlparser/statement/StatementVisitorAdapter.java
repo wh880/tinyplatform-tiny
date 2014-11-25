@@ -21,6 +21,7 @@ import org.tinygroup.jsqlparser.statement.create.table.CreateTable;
 import org.tinygroup.jsqlparser.statement.create.view.CreateView;
 import org.tinygroup.jsqlparser.statement.delete.Delete;
 import org.tinygroup.jsqlparser.statement.drop.Drop;
+import org.tinygroup.jsqlparser.statement.execute.Execute;
 import org.tinygroup.jsqlparser.statement.insert.Insert;
 import org.tinygroup.jsqlparser.statement.replace.Replace;
 import org.tinygroup.jsqlparser.statement.select.Select;
@@ -86,5 +87,9 @@ public class StatementVisitorAdapter implements StatementVisitor {
 
     public void visit(Statements stmts) {
 
+    }
+    
+    public void visit(Execute execute) {
+        
     }
 }

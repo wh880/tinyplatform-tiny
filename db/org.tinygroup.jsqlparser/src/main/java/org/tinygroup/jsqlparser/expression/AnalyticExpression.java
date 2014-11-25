@@ -19,6 +19,8 @@ import org.tinygroup.jsqlparser.schema.Column;
 import org.tinygroup.jsqlparser.statement.select.OrderByElement;
 
 import java.util.List;
+import org.tinygroup.jsqlparser.expression.operators.relational.ExpressionList;
+import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 
 /**
  * Analytic function. The name of the function is variable but the parameters
@@ -30,7 +32,8 @@ import java.util.List;
  */
 public class AnalyticExpression implements Expression {
 
-	private List<Column> partitionByColumns;
+	//private List<Column> partitionByColumns;
+    private ExpressionList partitionExpressionList;
 	private List<OrderByElement> orderByElements;
 	private String name;
 	private Expression expression;
@@ -39,7 +42,7 @@ public class AnalyticExpression implements Expression {
 	private boolean allColumns = false;
     private WindowElement windowElement;
 
-
+	
 	public void accept(ExpressionVisitor expressionVisitor) {
 		expressionVisitor.visit(this);
 	}
@@ -52,13 +55,23 @@ public class AnalyticExpression implements Expression {
 		this.orderByElements = orderByElements;
 	}
 
-	public List<Column> getPartitionByColumns() {
-		return partitionByColumns;
-	}
+//	public List<Column> getPartitionByColumns() {
+//		return partitionByColumns;
+//	}
+//
+//	public void setPartitionByColumns(List<Column> partitionByColumns) {
+//		this.partitionByColumns = partitionByColumns;
+//	}
 
-	public void setPartitionByColumns(List<Column> partitionByColumns) {
-		this.partitionByColumns = partitionByColumns;
-	}
+    public ExpressionList getPartitionExpressionList() {
+        return partitionExpressionList;
+    }
+
+    public void setPartitionExpressionList(ExpressionList partitionExpressionList) {
+        this.partitionExpressionList = partitionExpressionList;
+    }
+    
+    
 
 	public String getName() {
 		return name;
@@ -100,7 +113,7 @@ public class AnalyticExpression implements Expression {
         this.windowElement = windowElement;
     }
 
-
+    @Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
 
@@ -135,14 +148,9 @@ public class AnalyticExpression implements Expression {
 	}
 
 	private void toStringPartitionBy(StringBuilder b) {
-		if (partitionByColumns != null && !partitionByColumns.isEmpty()) {
+		if (partitionExpressionList != null && !partitionExpressionList.getExpressions().isEmpty()) {
 			b.append("PARTITION BY ");
-			for (int i = 0; i < partitionByColumns.size(); i++) {
-				if (i > 0) {
-					b.append(", ");
-				}
-				b.append(partitionByColumns.get(i).toString());
-			}
+			b.append(PlainSelect.getStringList(partitionExpressionList.getExpressions(), true, false));
 			b.append(" ");
 		}
 	}

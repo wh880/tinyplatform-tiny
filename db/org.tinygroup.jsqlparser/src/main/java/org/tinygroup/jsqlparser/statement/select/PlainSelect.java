@@ -15,282 +15,330 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
-import org.tinygroup.jsqlparser.expression.Expression;
-import org.tinygroup.jsqlparser.expression.OracleHierarchicalExpression;
-import org.tinygroup.jsqlparser.schema.Table;
-
 import java.util.ArrayList;
 import java.util.Collections;
+import org.tinygroup.jsqlparser.expression.Expression;
+import org.tinygroup.jsqlparser.schema.Table;
+
 import java.util.Iterator;
 import java.util.List;
+import org.tinygroup.jsqlparser.expression.OracleHierarchicalExpression;
 
 /**
  * The core of a "SELECT" statement (no UNION, no ORDER BY)
  */
 public class PlainSelect implements SelectBody {
 
-	private Distinct distinct = null;
-	private List<SelectItem> selectItems;
-	private Table into;
-	private FromItem fromItem;
-	private List<Join> joins;
-	private Expression where;
-	private List<Expression> groupByColumnReferences;
-	private List<OrderByElement> orderByElements;
-	private Expression having;
-	private Limit limit;
-	private Top top;
-	private OracleHierarchicalExpression oracleHierarchical = null;
-	private boolean oracleSiblings = false;
+    private Distinct distinct = null;
+    private List<SelectItem> selectItems;
+    private List<Table> intoTables;
+    private FromItem fromItem;
+    private List<Join> joins;
+    private Expression where;
+    private List<Expression> groupByColumnReferences;
+    private List<OrderByElement> orderByElements;
+    private Expression having;
+    private Limit limit;
+    private Offset offset;
+    private Fetch fetch;
+    private Top top;
+    private OracleHierarchicalExpression oracleHierarchical = null;
+    private boolean oracleSiblings = false;
+    private boolean forUpdate = false;
 
-	/**
-	 * The {@link FromItem} in this query
-	 *
-	 * @return the {@link FromItem}
-	 */
-	public FromItem getFromItem() {
-		return fromItem;
-	}
+    /**
+     * The {@link FromItem} in this query
+     *
+     * @return the {@link FromItem}
+     */
+    public FromItem getFromItem() {
+        return fromItem;
+    }
 
-	public Table getInto() {
-		return into;
-	}
+    public List<Table> getIntoTables() {
+        return intoTables;
+    }
 
-	/**
-	 * The {@link SelectItem}s in this query (for example the A,B,C in "SELECT
-	 * A,B,C")
-	 *
-	 * @return a list of {@link SelectItem}s
-	 */
-	public List<SelectItem> getSelectItems() {
-		return selectItems;
-	}
+    /**
+     * The {@link SelectItem}s in this query (for example the A,B,C in "SELECT
+     * A,B,C")
+     *
+     * @return a list of {@link SelectItem}s
+     */
+    public List<SelectItem> getSelectItems() {
+        return selectItems;
+    }
 
-	public Expression getWhere() {
-		return where;
-	}
+    public Expression getWhere() {
+        return where;
+    }
 
-	public void setFromItem(FromItem item) {
-		fromItem = item;
-	}
+    public void setFromItem(FromItem item) {
+        fromItem = item;
+    }
 
-	public void setInto(Table table) {
-		into = table;
-	}
+    public void setIntoTables(List<Table> intoTables) {
+        this.intoTables = intoTables;
+    }
 
-	public void setSelectItems(List<SelectItem> list) {
-		selectItems = list;
-	}
-	
-	public void addSelectItems(SelectItem ... items) {
-		if (selectItems == null) {
-			selectItems = new ArrayList<SelectItem>();
-		}
-		Collections.addAll(selectItems, items);
-	}
+    public void setSelectItems(List<SelectItem> list) {
+        selectItems = list;
+    }
 
-	public void setWhere(Expression where) {
-		this.where = where;
-	}
+    public void addSelectItems(SelectItem... items) {
+        if (selectItems == null) {
+            selectItems = new ArrayList<SelectItem>();
+        }
+        Collections.addAll(selectItems, items);
+    }
 
-	/**
-	 * The list of {@link Join}s
-	 *
-	 * @return the list of {@link Join}s
-	 */
-	public List<Join> getJoins() {
-		return joins;
-	}
+    public void setWhere(Expression where) {
+        this.where = where;
+    }
 
-	public void setJoins(List<Join> list) {
-		joins = list;
-	}
+    /**
+     * The list of {@link Join}s
+     *
+     * @return the list of {@link Join}s
+     */
+    public List<Join> getJoins() {
+        return joins;
+    }
 
-	public void accept(SelectVisitor selectVisitor) {
-		selectVisitor.visit(this);
-	}
+    public void setJoins(List<Join> list) {
+        joins = list;
+    }
 
-	public List<OrderByElement> getOrderByElements() {
-		return orderByElements;
-	}
+    
+    public void accept(SelectVisitor selectVisitor) {
+        selectVisitor.visit(this);
+    }
 
-	public void setOrderByElements(List<OrderByElement> orderByElements) {
-		this.orderByElements = orderByElements;
-	}
+    public List<OrderByElement> getOrderByElements() {
+        return orderByElements;
+    }
 
-	public Limit getLimit() {
-		return limit;
-	}
+    public void setOrderByElements(List<OrderByElement> orderByElements) {
+        this.orderByElements = orderByElements;
+    }
 
-	public void setLimit(Limit limit) {
-		this.limit = limit;
-	}
+    public Limit getLimit() {
+        return limit;
+    }
 
-	public Top getTop() {
-		return top;
-	}
+    public void setLimit(Limit limit) {
+        this.limit = limit;
+    }
 
-	public void setTop(Top top) {
-		this.top = top;
-	}
+    public Offset getOffset() {
+        return offset;
+    }
 
-	public Distinct getDistinct() {
-		return distinct;
-	}
+    public void setOffset(Offset offset) {
+        this.offset = offset;
+    }
 
-	public void setDistinct(Distinct distinct) {
-		this.distinct = distinct;
-	}
+    public Fetch getFetch() {
+        return fetch;
+    }
 
-	public Expression getHaving() {
-		return having;
-	}
+    public void setFetch(Fetch fetch) {
+        this.fetch = fetch;
+    }
 
-	public void setHaving(Expression expression) {
-		having = expression;
-	}
+    public Top getTop() {
+        return top;
+    }
 
-	/**
-	 * A list of {@link Expression}s of the GROUP BY clause. It is null in case
-	 * there is no GROUP BY clause
-	 *
-	 * @return a list of {@link Expression}s
-	 */
-	public List<Expression> getGroupByColumnReferences() {
-		return groupByColumnReferences;
-	}
+    public void setTop(Top top) {
+        this.top = top;
+    }
 
-	public void setGroupByColumnReferences(List<Expression> list) {
-		groupByColumnReferences = list;
-	}
+    public Distinct getDistinct() {
+        return distinct;
+    }
 
-	public OracleHierarchicalExpression getOracleHierarchical() {
-		return oracleHierarchical;
-	}
+    public void setDistinct(Distinct distinct) {
+        this.distinct = distinct;
+    }
 
-	public void setOracleHierarchical(OracleHierarchicalExpression oracleHierarchical) {
-		this.oracleHierarchical = oracleHierarchical;
-	}
+    public Expression getHaving() {
+        return having;
+    }
 
-	public boolean isOracleSiblings() {
-		return oracleSiblings;
-	}
+    public void setHaving(Expression expression) {
+        having = expression;
+    }
 
-	public void setOracleSiblings(boolean oracleSiblings) {
-		this.oracleSiblings = oracleSiblings;
-	}
+    /**
+     * A list of {@link Expression}s of the GROUP BY clause. It is null in case
+     * there is no GROUP BY clause
+     *
+     * @return a list of {@link Expression}s
+     */
+    public List<Expression> getGroupByColumnReferences() {
+        return groupByColumnReferences;
+    }
 
+    public void setGroupByColumnReferences(List<Expression> list) {
+        groupByColumnReferences = list;
+    }
 
-	public String toString() {
-		StringBuilder sql = new StringBuilder("SELECT ");
-		if (distinct != null) {
-			sql.append(distinct).append(" ");
-		}
-		if (top != null) {
-			sql.append(top).append(" ");
-		}
-		sql.append(getStringList(selectItems));
-		if (fromItem != null) {
-			sql.append(" FROM ").append(fromItem);
-			if (joins != null) {
-				Iterator<Join> it = joins.iterator();
-				while (it.hasNext()) {
-					Join join = it.next();
-					if (join.isSimple()) {
-						sql.append(", ").append(join);
-					} else {
-						sql.append(" ").append(join);
-					}
-				}
-			}
-			// sql += getFormatedList(joins, "", false, false);
-			if (where != null) {
-				sql.append(" WHERE ").append(where);
-			}
-			if (oracleHierarchical != null) {
-				sql.append(oracleHierarchical.toString());
-			}
-			sql.append(getFormatedList(groupByColumnReferences, "GROUP BY"));
-			if (having != null) {
-				sql.append(" HAVING ").append(having);
-			}
-			sql.append(orderByToString(oracleSiblings, orderByElements));
-			if (limit != null) {
-				sql.append(limit);
-			}
-		}
-		return sql.toString();
-	}
+    public OracleHierarchicalExpression getOracleHierarchical() {
+        return oracleHierarchical;
+    }
 
-	public static String orderByToString(List<OrderByElement> orderByElements) {
-		return orderByToString(false, orderByElements);
-	}
-	
-	public static String orderByToString(boolean oracleSiblings, List<OrderByElement> orderByElements) {
-		return getFormatedList(orderByElements, oracleSiblings?"ORDER SIBLINGS BY":"ORDER BY");
-	}
+    public void setOracleHierarchical(OracleHierarchicalExpression oracleHierarchical) {
+        this.oracleHierarchical = oracleHierarchical;
+    }
 
-	public static String getFormatedList(List<?> list, String expression) {
-		return getFormatedList(list, expression, true, false);
-	}
+    public boolean isOracleSiblings() {
+        return oracleSiblings;
+    }
 
-	public static String getFormatedList(List<?> list, String expression, boolean useComma, boolean useBrackets) {
-		String sql = getStringList(list, useComma, useBrackets);
+    public void setOracleSiblings(boolean oracleSiblings) {
+        this.oracleSiblings = oracleSiblings;
+    }
 
-		if (sql.length() > 0) {
-			if (expression.length() > 0) {
-				sql = " " + expression + " " + sql;
-			} else {
-				sql = " " + sql;
-			}
-		}
+    public boolean isForUpdate() {
+        return forUpdate;
+    }
 
-		return sql;
-	}
+    public void setForUpdate(boolean forUpdate) {
+        this.forUpdate = forUpdate;
+    }
 
-	/**
-	 * List the toString out put of the objects in the List comma separated. If
-	 * the List is null or empty an empty string is returned.
-	 *
-	 * The same as getStringList(list, true, false)
-	 *
-	 * @see #getStringList(List, boolean, boolean)
-	 * @param list list of objects with toString methods
-	 * @return comma separated list of the elements in the list
-	 */
-	public static String getStringList(List<?> list) {
-		return getStringList(list, true, false);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sql = new StringBuilder("SELECT ");
+        if (distinct != null) {
+            sql.append(distinct).append(" ");
+        }
+        if (top != null) {
+            sql.append(top).append(" ");
+        }
+        sql.append(getStringList(selectItems));
 
-	/**
-	 * List the toString out put of the objects in the List that can be comma
-	 * separated. If the List is null or empty an empty string is returned.
-	 *
-	 * @param list list of objects with toString methods
-	 * @param useComma true if the list has to be comma separated
-	 * @param useBrackets true if the list has to be enclosed in brackets
-	 * @return comma separated list of the elements in the list
-	 */
-	public static String getStringList(List<?> list, boolean useComma, boolean useBrackets) {
-		String ans = "";
-		String comma = ",";
-		if (!useComma) {
-			comma = "";
-		}
-		if (list != null) {
-			if (useBrackets) {
-				ans += "(";
-			}
+        if (intoTables != null) {
+            sql.append(" INTO ");
+            for (Iterator<Table> iter = intoTables.iterator(); iter.hasNext();) {
+                sql.append(iter.next().toString());
+                if (iter.hasNext()) {
+                    sql.append(", ");
+                }
+            }
+        }
 
-			for (int i = 0; i < list.size(); i++) {
-				ans += "" + list.get(i) + ((i < list.size() - 1) ? comma + " " : "");
-			}
+        if (fromItem != null) {
+            sql.append(" FROM ").append(fromItem);
+            if (joins != null) {
+                Iterator<Join> it = joins.iterator();
+                while (it.hasNext()) {
+                    Join join = it.next();
+                    if (join.isSimple()) {
+                        sql.append(", ").append(join);
+                    } else {
+                        sql.append(" ").append(join);
+                    }
+                }
+            }
+            // sql += getFormatedList(joins, "", false, false);
+            if (where != null) {
+                sql.append(" WHERE ").append(where);
+            }
+            if (oracleHierarchical != null) {
+                sql.append(oracleHierarchical.toString());
+            }
+            sql.append(getFormatedList(groupByColumnReferences, "GROUP BY"));
+            if (having != null) {
+                sql.append(" HAVING ").append(having);
+            }
+            sql.append(orderByToString(oracleSiblings, orderByElements));
+            if (limit != null) {
+                sql.append(limit);
+            }
+            if (offset != null) {
+            	sql.append(offset);
+            }
+            if (fetch != null) {
+            	sql.append(fetch);
+            }
+            if (isForUpdate()) {
+                sql.append(" FOR UPDATE");
+            }
+        }
+        return sql.toString();
+    }
 
-			if (useBrackets) {
-				ans += ")";
-			}
-		}
+    public static String orderByToString(List<OrderByElement> orderByElements) {
+        return orderByToString(false, orderByElements);
+    }
 
-		return ans;
-	}
+    public static String orderByToString(boolean oracleSiblings, List<OrderByElement> orderByElements) {
+        return getFormatedList(orderByElements, oracleSiblings ? "ORDER SIBLINGS BY" : "ORDER BY");
+    }
+
+    public static String getFormatedList(List<?> list, String expression) {
+        return getFormatedList(list, expression, true, false);
+    }
+
+    public static String getFormatedList(List<?> list, String expression, boolean useComma, boolean useBrackets) {
+        String sql = getStringList(list, useComma, useBrackets);
+
+        if (sql.length() > 0) {
+            if (expression.length() > 0) {
+                sql = " " + expression + " " + sql;
+            } else {
+                sql = " " + sql;
+            }
+        }
+
+        return sql;
+    }
+
+    /**
+     * List the toString out put of the objects in the List comma separated. If
+     * the List is null or empty an empty string is returned.
+     *
+     * The same as getStringList(list, true, false)
+     *
+     * @see #getStringList(List, boolean, boolean)
+     * @param list list of objects with toString methods
+     * @return comma separated list of the elements in the list
+     */
+    public static String getStringList(List<?> list) {
+        return getStringList(list, true, false);
+    }
+
+    /**
+     * List the toString out put of the objects in the List that can be comma
+     * separated. If the List is null or empty an empty string is returned.
+     *
+     * @param list list of objects with toString methods
+     * @param useComma true if the list has to be comma separated
+     * @param useBrackets true if the list has to be enclosed in brackets
+     * @return comma separated list of the elements in the list
+     */
+    public static String getStringList(List<?> list, boolean useComma, boolean useBrackets) {
+        String ans = "";
+        String comma = ",";
+        if (!useComma) {
+            comma = "";
+        }
+        if (list != null) {
+            if (useBrackets) {
+                ans += "(";
+            }
+
+            for (int i = 0; i < list.size(); i++) {
+                ans += "" + list.get(i) + ((i < list.size() - 1) ? comma + " " : "");
+            }
+
+            if (useBrackets) {
+                ans += ")";
+            }
+        }
+
+        return ans;
+    }
 }

@@ -296,4 +296,12 @@ public class ExpressionVisitorAdapter implements ExpressionVisitor, ItemsListVis
         expr.getLeftExpression().accept(this);
         expr.getRightExpression().accept(this);
     }
+    
+    public void visit(JsonExpression jsonExpr) {
+        visit(jsonExpr.getColumn());
+    }
+
+	public void visit(RegExpMySQLOperator expr) {
+		visitBinaryExpression(expr);	
+	}
 }

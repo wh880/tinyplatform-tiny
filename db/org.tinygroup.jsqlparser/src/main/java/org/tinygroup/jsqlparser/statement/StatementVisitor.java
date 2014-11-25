@@ -21,6 +21,7 @@ import org.tinygroup.jsqlparser.statement.create.table.CreateTable;
 import org.tinygroup.jsqlparser.statement.create.view.CreateView;
 import org.tinygroup.jsqlparser.statement.delete.Delete;
 import org.tinygroup.jsqlparser.statement.drop.Drop;
+import org.tinygroup.jsqlparser.statement.execute.Execute;
 import org.tinygroup.jsqlparser.statement.insert.Insert;
 import org.tinygroup.jsqlparser.statement.replace.Replace;
 import org.tinygroup.jsqlparser.statement.select.Select;
@@ -52,4 +53,6 @@ public interface StatementVisitor {
 	void visit(Alter alter);
     
     void visit(Statements stmts);
+    
+    void visit(Execute execute);
 }
