@@ -14,10 +14,6 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="nettyCepCoreProcessor" scope="singleton"
-		class="org.tinygroup.cepcorenetty.NettyCepCoreProcessor">
-		
-	</bean>
 	<bean id="fileResolverProcessor" scope="singleton"
 		class="org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor">
 		<property name="fileResolver" ref="fileResolver"></property>
