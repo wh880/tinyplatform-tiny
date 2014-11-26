@@ -44,13 +44,9 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         this.expressionVisitor = expressionVisitor;
     }
 
-
+    
     public void visit(PlainSelect plainSelect) {
         buffer.append("SELECT ");
-        Top top = plainSelect.getTop();
-        if (top != null) {
-            buffer.append(top).append(" ");
-        }
         if (plainSelect.getDistinct() != null) {
             buffer.append("DISTINCT ");
             if (plainSelect.getDistinct().getOnSelectItems() != null) {
@@ -66,12 +62,26 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
             }
 
         }
+        Top top = plainSelect.getTop();
+        if (top != null) {
+            buffer.append(top).append(" ");
+        }
 
         for (Iterator<SelectItem> iter = plainSelect.getSelectItems().iterator(); iter.hasNext();) {
             SelectItem selectItem = iter.next();
             selectItem.accept(this);
             if (iter.hasNext()) {
                 buffer.append(", ");
+            }
+        }
+
+        if (plainSelect.getIntoTables() != null) {
+            buffer.append(" INTO ");
+            for (Iterator<Table> iter = plainSelect.getIntoTables().iterator(); iter.hasNext();) {
+                visit(iter.next());
+                if (iter.hasNext()) {
+                    buffer.append(", ");
+                }
             }
         }
 
@@ -118,10 +128,19 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         if (plainSelect.getLimit() != null) {
             deparseLimit(plainSelect.getLimit());
         }
+        if (plainSelect.getOffset() != null) {
+            deparseOffset(plainSelect.getOffset());
+        }
+        if (plainSelect.getFetch() != null) {
+            deparseFetch(plainSelect.getFetch());
+        }
+        if (plainSelect.isForUpdate()) {
+            buffer.append(" FOR UPDATE");
+        }
 
     }
 
-
+    
     public void visit(OrderByElement orderBy) {
         orderBy.getExpression().accept(expressionVisitor);
         if (!orderBy.isAsc()) {
@@ -139,12 +158,12 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         buffer.append(column.getFullyQualifiedName());
     }
 
-
+    
     public void visit(AllTableColumns allTableColumns) {
         buffer.append(allTableColumns.getTable().getFullyQualifiedName()).append(".*");
     }
 
-
+    
     public void visit(SelectExpressionItem selectExpressionItem) {
         selectExpressionItem.getExpression().accept(expressionVisitor);
         if (selectExpressionItem.getAlias() != null) {
@@ -153,7 +172,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
 
     }
 
-
+    
     public void visit(SubSelect subSelect) {
         buffer.append("(");
         subSelect.getSelectBody().accept(this);
@@ -168,7 +187,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         }
     }
 
-
+    
     public void visit(Table tableName) {
         buffer.append(tableName.getFullyQualifiedName());
         Pivot pivot = tableName.getPivot();
@@ -181,7 +200,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         }
     }
 
-
+    
     public void visit(Pivot pivot) {
         List<Column> forColumns = pivot.getForColumns();
         buffer.append(" PIVOT (")
@@ -193,7 +212,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
                 .append(")");
     }
 
-
+    
     public void visit(PivotXml pivot) {
         List<Column> forColumns = pivot.getForColumns();
         buffer.append(" PIVOT XML (")
@@ -235,9 +254,11 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         if (limit.isRowCountJdbcParameter()) {
             buffer.append(" LIMIT ");
             buffer.append("?");
-        } else if (limit.getRowCount() != 0) {
+        } else if (limit.getRowCount() >= 0) {
             buffer.append(" LIMIT ");
             buffer.append(limit.getRowCount());
+        } else if (limit.isLimitNull()) {
+            buffer.append(" LIMIT NULL");
         }
 
         if (limit.isOffsetJdbcParameter()) {
@@ -245,6 +266,38 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         } else if (limit.getOffset() != 0) {
             buffer.append(" OFFSET ").append(limit.getOffset());
         }
+
+    }
+
+    public void deparseOffset(Offset offset) {
+        // OFFSET offset
+    	// or OFFSET offset (ROW | ROWS)
+        if (offset.isOffsetJdbcParameter()) {
+            buffer.append(" OFFSET ?");
+        } else if (offset.getOffset() != 0) {
+            buffer.append(" OFFSET ");
+            buffer.append(offset.getOffset());
+        }
+        if (offset.getOffsetParam() != null) {
+        	buffer.append(" ").append(offset.getOffsetParam());
+        }
+
+    }
+
+    public void deparseFetch(Fetch fetch) {
+        // FETCH (FIRST | NEXT) row_count (ROW | ROWS) ONLY
+    	buffer.append(" FETCH ");
+    	if (fetch.isFetchParamFirst()) {
+    		buffer.append("FIRST ");
+    	} else {
+    		buffer.append("NEXT ");
+    	}
+    	if (fetch.isFetchJdbcParameter()) {
+    		buffer.append("?");
+    	} else {
+    		buffer.append(fetch.getRowCount());
+    	}
+    	buffer.append(" ").append(fetch.getFetchParam()).append(" ONLY");
 
     }
 
@@ -264,7 +317,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         expressionVisitor = visitor;
     }
 
-
+    
     public void visit(SubJoin subjoin) {
         buffer.append("(");
         subjoin.getLeft().accept(this);
@@ -323,7 +376,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
 
     }
 
-
+    
     public void visit(SetOperationList list) {
         for (int i = 0; i < list.getPlainSelects().size(); i++) {
             if (i != 0) {
@@ -341,23 +394,36 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItem
         if (list.getLimit() != null) {
             deparseLimit(list.getLimit());
         }
+        if (list.getOffset() != null) {
+            deparseOffset(list.getOffset());
+        }
+        if (list.getFetch() != null) {
+            deparseFetch(list.getFetch());
+        }
     }
 
-
+    
     public void visit(WithItem withItem) {
+        buffer.append(withItem.getName());
+        if (withItem.getWithItemList()!=null) {
+            buffer.append(" ").append(PlainSelect.getStringList(withItem.getWithItemList(), true, true));
+        }
+        buffer.append(" AS (");
+        withItem.getSelectBody().accept(this);
+        buffer.append(")");
     }
 
-
+    
     public void visit(LateralSubSelect lateralSubSelect) {
         buffer.append(lateralSubSelect.toString());
     }
 
-
+    
     public void visit(ValuesList valuesList) {
         buffer.append(valuesList.toString());
     }
 
-
+    
     public void visit(AllColumns allColumns) {
         buffer.append('*');
     }

@@ -87,8 +87,13 @@ public class ShardRuleMatchWithId {
 				paramIndex++;
 			}
 		}
-		if (tableName.equalsIgnoreCase(update.getTable().getName())) {
-			return getWhereExpression(paramIndex,update.getWhere(), partition,preparedParams);
+		List<Table> tables = update.getTables();
+		if(tables!=null){
+		  for(Table table:tables){
+			 if(tableName.equalsIgnoreCase(table.getName())) {
+				return getWhereExpression(paramIndex,update.getWhere(), partition,preparedParams);
+			} 
+		  }
 		}
 		return false;
 	}

@@ -91,8 +91,13 @@ public class PartionRuleByTableName implements PartitionRule {
         }
         if (statement instanceof Update) {
             Update update = (Update) statement;
-            if (update.getTable().getName().equalsIgnoreCase(tableName)) {
-                return true;
+            List<Table> tables = update.getTables();
+            if(tables!=null){
+               for(Table table:tables){
+            	  if(table.getName().equalsIgnoreCase(tableName)){
+            		 return true;
+            	  }
+               }
             }
         }
         if (statement instanceof Select) {

@@ -291,9 +291,14 @@ public class ShardRuleByFieldValue implements ShardRule {
 		}
 
 		public boolean isMatch() {
-			if (tableName.equalsIgnoreCase(update.getTable().getName())) {
-				Expression where = update.getWhere();
-				return getWhereExpression(where);
+			List<Table> tables = update.getTables();
+			if(tables!=null){
+			  for(Table table:tables){
+				  if (tableName.equalsIgnoreCase(table.getName())) {
+					 Expression where = update.getWhere();
+					 return getWhereExpression(where);
+				  }
+			  }
 			}
 			return false;
 		}
