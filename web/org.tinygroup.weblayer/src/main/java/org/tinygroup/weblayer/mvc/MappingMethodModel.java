@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 import org.tinygroup.weblayer.mvc.annotation.RequestMapping;
+import org.tinygroup.weblayer.mvc.annotation.ResultKey;
 import org.tinygroup.weblayer.mvc.annotation.View;
 
 public class MappingMethodModel {
@@ -30,6 +31,18 @@ public class MappingMethodModel {
 	private RequestMapping methodMapping;
 	
 	private View view;
+	
+	private ResultKey resultKey;
+
+	public ResultKey getResultKey() {
+		return resultKey;
+	}
+
+
+	public void setResultKey(ResultKey resultKey) {
+		this.resultKey = resultKey;
+	}
+
 
 	public MappingMethodModel(Method mapMethod,
 			RequestMapping methodMapping) {
