@@ -123,10 +123,15 @@ public final class DbRouterUtil {
 	private static String transformUpdateSql(Map<String, String> tableMapping,
 			Statement statement) {
 		Update update = (Update) statement;
-		String tableName = update.getTable().getName();
-		String newTableName = tableMapping.get(tableName);
-		if (!StringUtil.isBlank(newTableName)) {
-			update.getTable().setName(newTableName);
+		List<Table> tables = update.getTables();
+		if(tables!=null){
+		  for(Table table:tables){
+			 String tableName = table.getName();
+			 String newTableName = tableMapping.get(tableName);
+			 if (!StringUtil.isBlank(newTableName)) {
+				 table.setName(newTableName);
+			 }
+		  }
 		}
 		Expression expression = update.getWhere();
 		transformExpression(expression, tableMapping);
