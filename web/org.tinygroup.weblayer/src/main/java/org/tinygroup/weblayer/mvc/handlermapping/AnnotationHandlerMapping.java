@@ -29,6 +29,7 @@ import org.tinygroup.weblayer.mvc.HandlerExecutionChain;
 import org.tinygroup.weblayer.mvc.MappingClassModel;
 import org.tinygroup.weblayer.mvc.MappingMethodModel;
 import org.tinygroup.weblayer.mvc.annotation.RequestMapping;
+import org.tinygroup.weblayer.mvc.annotation.ResultKey;
 import org.tinygroup.weblayer.mvc.annotation.View;
 import org.tinygroup.weblayer.util.TinyPathMatcher;
 
@@ -120,6 +121,10 @@ public class AnnotationHandlerMapping extends AbstractHandlerMapping {
 			View view= AnnotationUtils.findAnnotation(method, View.class);
 			if(view!=null){
 				methodModel.setView(view);
+			}
+			ResultKey resultKey = AnnotationUtils.findAnnotation(method, ResultKey.class);
+			if(resultKey!=null){
+			   methodModel.setResultKey(resultKey);
 			}
 
 		}

@@ -130,7 +130,11 @@ public class HandlerExecutionChain {
 			if (object instanceof WebContextAware) {
 				((WebContextAware) object).setContext(context);
 			}
-			ReflectionUtils.invokeMethod(method, object, args);
+			Object result = ReflectionUtils.invokeMethod(method, object, args);
+			//如果返回值类型void或者用户没有设置ResultKey，则不放置
+			if(result!=null && methodModel.getResultKey()!=null){
+			   context.put(methodModel.getResultKey().value(),result);
+			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

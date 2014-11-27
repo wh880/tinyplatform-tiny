@@ -13,21 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.httpvisit;
+package org.tinygroup.weblayer.mvc.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Created by luoguo on 2014/5/5.
+ * 结果保存名称，Tiny框架会把方法返回值以该名称保存到上下文。
+ * @author yancheng11334
+ *
  */
-public class HttpVisitRuntimeException extends RuntimeException {
-    public HttpVisitRuntimeException(String message) {
-        super(message);
-    }
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ResultKey {
 
-    public HttpVisitRuntimeException(Exception exception) {
-        super(exception);
-    }
-
-    public HttpVisitRuntimeException(String message, Exception e) {
-        super(message, e);
-    }
+	String value() default "resultKey";
 }
