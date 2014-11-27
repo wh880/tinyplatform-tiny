@@ -10,7 +10,7 @@
 	
 
 	<bean id="cepcoreService" scope="singleton"
-		class="org.tinygroup.servicebasicservice.CEPService">
+		class="org.tinygroup.cepcorebasicservice.CEPService">
 		<property name="core" ref="cepcore"></property>
 	</bean>
 
