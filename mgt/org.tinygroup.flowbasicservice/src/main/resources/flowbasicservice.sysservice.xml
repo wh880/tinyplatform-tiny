@@ -5,7 +5,7 @@
 
 		<service-method name="getTinyFlows" local-name="getTinyFlows"
 			service-id="getTinyFlows" version="" description="获取Tiny所有的逻辑流"
-			method-name=getFlows>
+			method-name="getFlows">
 			<service-parameters>
 			</service-parameters>
 			<service-result name="flows" required="true" is-array="false"
