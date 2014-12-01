@@ -27,7 +27,9 @@
 
 	<application-processors>
 		<application-processor bean="fileResolverProcessor"></application-processor>
-		<application-processor bean="PluginMgtProcessor"></application-processor>
+		<!-- <application-processor bean="PluginMgtProcessor"></application-processor> -->
+		<application-processor bean="serviceApplicationProcessor"></application-processor>
+		<application-processor bean="flowApplicationProcessor"></application-processor>
 		<application-processor bean="tinyListenerProcessor"></application-processor>
 		<application-processor bean="fileMonitorProcessor"></application-processor>
 		<application-processor bean="nettyCepCoreProcessor" />
@@ -43,7 +45,7 @@
 		<include-patterns>
 			<include-pattern pattern="org\.tinygroup\.(.)*\.jar" />
 		</include-patterns>
-		<full-context-file-finder>
+		<full-context-file-finder><file ext-name="page" content-type="text/html"/>
 			<file ext-name="evy" content-type="application/envoy" />
 			<file ext-name="fif" content-type="application/fractals" />
 			<file ext-name="spl" content-type="application/futuresplash" />
@@ -500,6 +502,13 @@
 			<init-param name="fork" value="false"></init-param>
 			<init-param name="xpoweredBy" value="false"></init-param>
 		</tiny-processor>
+		<!--  
+		 <tiny-processor id="velocityViewProcessor" class="velocityViewProcessor">
+            <init-param name="templeteWithLayoutExtFileName" value=".page"></init-param>
+            <init-param name="templateExtFileName" value=".pagelet"></init-param>
+            <servlet-mapping url-pattern=".*\.page"></servlet-mapping>
+            <servlet-mapping url-pattern=".*\.pagelet"></servlet-mapping>
+        </tiny-processor>-->
 	</tiny-processors>
 
 	<!--tiny-filters配置 -->
