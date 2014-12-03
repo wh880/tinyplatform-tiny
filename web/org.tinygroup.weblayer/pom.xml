@@ -52,11 +52,7 @@
       <artifactId>org.tinygroup.beancontainer</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.dynamicdatasource</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+    
     <dependency>
       <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.uiengine</artifactId>
