@@ -29,7 +29,7 @@
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.dynamicdatasource</artifactId>
+      <artifactId>org.tinygroup.database</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

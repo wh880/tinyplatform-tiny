@@ -15,7 +15,7 @@
  */
 package org.tinygroup.weblayer.filter;
 
-import org.tinygroup.dynamicdatasource.DataSourceInfo;
+import org.tinygroup.database.util.DataSourceInfo;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
 

@@ -29,9 +29,6 @@ import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.dialectfunction.DialectFunctions;
-import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
-import org.tinygroup.database.dialectfunction.impl.DialectFunctionProcessorImpl;
-import org.tinygroup.dynamicdatasource.DynamicDataSource;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinydb.convert.TableConfigLoad;
@@ -291,13 +288,18 @@ public class ConfigurationBuilder {
 			DataSource newDataSource = newDataSourceInstance(type);
 			String dataSourceId=node.getAttribute(DATA_SOURCE_ID);
 			setProperties(node, newDataSource);
-			DynamicDataSource dynamic=new DynamicDataSource();
-			dynamic.setDataSource(newDataSource);
+//			DynamicDataSource dynamic=new DynamicDataSource();
+//			dynamic.setDataSource(newDataSource);
+//			if(dataSourceId.equals(dataSource)){
+//				configuration.setUseDataSource(dynamic);
+//				isDefault=true;
+//			}
+//			configuration.putDataSource(type, dynamic);
 			if(dataSourceId.equals(dataSource)){
-				configuration.setUseDataSource(dynamic);
+				configuration.setUseDataSource(newDataSource);
 				isDefault=true;
 			}
-			configuration.putDataSource(type, dynamic);
+			configuration.putDataSource(type, newDataSource);
 		} catch (Exception e) {
 			throw new TinyDbRuntimeException("解析数据源配置出错", e);
 		}

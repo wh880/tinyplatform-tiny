@@ -47,7 +47,7 @@ public class TestDbMonitor extends BaseTest{
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
 		}
-		assertEquals(3, operator.queryAllActiveConnection().size());
+		assertEquals(0, operator.queryAllActiveConnection().size());
 		operator.execute("delete from animal");//刪除
 	}
 	

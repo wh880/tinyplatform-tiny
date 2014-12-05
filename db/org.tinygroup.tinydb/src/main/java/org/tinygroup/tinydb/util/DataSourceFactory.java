@@ -18,6 +18,8 @@ package org.tinygroup.tinydb.util;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.tinygroup.beancontainer.BeanContainerFactory;
@@ -51,11 +53,10 @@ public final class DataSourceFactory {
 	}
 
 	public static Connection getConnection(String dataSourceName,ClassLoader loader) {
-		DataSourceProxy dataSource = BeanContainerFactory.getBeanContainer(loader).getBean("dataSourceProxy");
-
+		
 		try {
-			return dataSource.getDatasource().getDataSource(dataSourceName)
-					.getConnection();
+			DataSource dataSource = BeanContainerFactory.getBeanContainer(loader).getBean(dataSourceName);
+			return dataSource.getConnection();
 		} catch (SQLException e) {
 			logger.errorMessage(e.getMessage(), e);
 		}

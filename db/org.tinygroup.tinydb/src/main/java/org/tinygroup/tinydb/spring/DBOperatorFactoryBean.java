@@ -27,7 +27,6 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.database.config.dialectfunction.DialectFunctions;
-import org.tinygroup.dynamicdatasource.DynamicDataSource;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -155,16 +154,17 @@ public class DBOperatorFactoryBean implements FactoryBean, InitializingBean {
 					configLocation.getInputStream());
 			configuration = configBuilder.getConfiguration();
 		}
-		boolean isDynamic = dataSource instanceof DynamicDataSource;
-		DataSource dynamicDataSource = dataSource;
-		if (!isDynamic) {
-			logger.logMessage(LogLevel.DEBUG,
-					"datasource 不是DynamicDataSource类型，需要包装成DynamicDataSource");
-			DynamicDataSource newDynamic = new DynamicDataSource();
-			newDynamic.setDataSource(dataSource);
-			dynamicDataSource = newDynamic;
-		}
-		configuration.setUseDataSource(dynamicDataSource);
+//		boolean isDynamic = dataSource instanceof DynamicDataSource;
+//		DataSource dynamicDataSource = dataSource;
+//		if (!isDynamic) {
+//			logger.logMessage(LogLevel.DEBUG,
+//					"datasource 不是DynamicDataSource类型，需要包装成DynamicDataSource");
+//			DynamicDataSource newDynamic = new DynamicDataSource();
+//			newDynamic.setDataSource(dataSource);
+//			dynamicDataSource = newDynamic;
+//		}
+//		configuration.setUseDataSource(dynamicDataSource);
+		configuration.setUseDataSource(dataSource);
 		if (dialect != null) {
 			logger.logMessage(LogLevel.DEBUG, "设置数据库dialect");
 			configuration.setDialect(dialect);
