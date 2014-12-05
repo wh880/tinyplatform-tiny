@@ -31,12 +31,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.tinygroup</groupId>
-			<artifactId>org.tinygroup.beanmanagerplugin</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.tinygroup</groupId>
 			<artifactId>org.tinygroup.jcscache</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
