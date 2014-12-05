@@ -22,6 +22,10 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
 public class ServiceABC implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2335830028613954176L;
 	private static Logger logger = LoggerFactory.getLogger(ServiceABC.class);
 	public boolean read(boolean a) {
 		logger.logMessage(LogLevel.INFO, "read");
