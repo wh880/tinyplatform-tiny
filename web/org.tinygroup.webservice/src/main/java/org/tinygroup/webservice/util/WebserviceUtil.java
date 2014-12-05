@@ -19,7 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -40,10 +40,13 @@ import javassist.bytecode.annotation.StringMemberValue;
 
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
+import org.tinygroup.loader.LoaderManager;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public class WebserviceUtil {
-
+	private static Logger logger = LoggerFactory.getLogger(WebserviceUtil.class);
 	/**
 	 * 以wsdl形式表示serviceInfo对应的webservice服务，并返回该wsdl字符串
 	 * 
@@ -90,9 +93,9 @@ public class WebserviceUtil {
 			CtMethod cm = getCtMethod(cc, serviceInfo);
 			cc.addMethod(cm);
 		} catch (CannotCompileException e1) {
-			e1.printStackTrace();
+			logger.errorMessage(e1.getMessage(),e1);
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			logger.errorMessage(e1.getMessage(),e1);
 		}
 
 		// 写入字节码
@@ -102,11 +105,11 @@ public class WebserviceUtil {
 			c = cc.toClass();
 			return c;
 		} catch (NotFoundException e) {
-			e.printStackTrace();
+			logger.errorMessage("class:{className} 文件未找到",e,className);
 		} catch (CannotCompileException e) {
-			e.printStackTrace();
+			logger.errorMessage(e.getMessage(),e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.errorMessage(e.getMessage(),e);
 		}
 		return null;
 	}
@@ -143,7 +146,7 @@ public class WebserviceUtil {
 			InputStream is = new ByteArrayInputStream(xml.getBytes("utf-8"));
 			return is;
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			logger.errorMessage(e.getMessage(),e);
 		}
 		return null;
 	}
@@ -213,15 +216,8 @@ public class WebserviceUtil {
 						resultName, cp));
 				attr.addAnnotation(webResult);
 				minfo.addAttribute(attr);
-
-				// /////////////////
-				// CodeAttribute codeAttribute = minfo.getCodeAttribute();
-				// // codeAttribute.set
-				// LocalVariableAttribute attraa = (LocalVariableAttribute)
-				// codeAttribute
-				// .getAttribute(LocalVariableAttribute.tag);
-				// String aname = attraa.variableName(1);
-				// System.out.println(aname);
+				
+				
 			}
 		}
 
@@ -229,28 +225,41 @@ public class WebserviceUtil {
 	}
 
 	private static CtClass getCtMethodParam(Parameter parameter) {
-		String type = getJavassistParamType(parameter);
-		String name = parameter.getName();
+//		String name = parameter.getName();
 		CtClass cc = null;
 		try {
-			ClassClassPath classPath = new ClassClassPath(Class.forName(type));
+			Class<?> type = getJavassistParamType(parameter);
+			ClassClassPath classPath = new ClassClassPath(type);
 			ClassPool.getDefault().insertClassPath(classPath);
-			cc = ClassPool.getDefault().get(type);
+			cc = ClassPool.getDefault().get(type.getName());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.errorMessage(e.getMessage(),e);
 		}
-
-		// 类添加javax.jws.WebParam注解
-		ClassFile cf = cc.getClassFile();
-		java.util.Map<String, String> params = new HashMap<String, String>();
-		params.put("name", name);
-		addAnnotation(cf, "javax.jws.WebParam", params);
-
+//		// 类添加javax.jws.WebParam注解
+//		ClassFile cf = cc.getClassFile();
+//		java.util.Map<String, String> params = new HashMap<String, String>();
+//		params.put("name", parameter.getName());
+//		addAnnotation(cf, "javax.jws.WebParam", params);
+//		ConstPool cp = cf.getConstPool();
+//		AnnotationsAttribute attribute = new AnnotationsAttribute(cp,
+//				AnnotationsAttribute.visibleTag);
+//		Annotation annotation = new Annotation("javax.xml.bind.annotation.XmlAccessorType", cp);
+//		annotation.addMemberValue("value", new ClassMemberValue("javax.xml.bind.annotation.XmlAccessType.FIELD", cp));
+//		Iterator<java.util.Map.Entry<String, String>> iterator = params
+//				.entrySet().iterator();
+//		while (iterator.hasNext()) {
+//			java.util.Map.Entry<String, String> entry = iterator.next();
+//			annotation.addMemberValue(entry.getKey(), new StringMemberValue(
+//					entry.getValue(), cp));
+//		}
+//		attribute.addAnnotation(annotation);
+//		cf.addAttribute(attribute);
+//		cf.setVersionToJava5();
 		return cc;
 	}
 
-	private static Class classLoaded(String className) {
-		Class c = null;
+	private static Class<?> classLoaded(String className) {
+		Class<?> c = null;
 		try {
 			c = Class.forName(className);
 			return c;
@@ -265,50 +274,103 @@ public class WebserviceUtil {
 	 * @param parameter
 	 * @return
 	 */
-	private static String getJavassistParamType(Parameter parameter) {
+//	private static String getJavassistParamType(Parameter parameter) {
+//		if (parameter == null) {
+//			return null;
+//		}
+//		String type = parameter.getType();
+//		if (type == null || type.trim().length() == 0) {
+//			return null;
+//		} else if ("char".equals(type)) {
+//			return "java.lang.Character";
+//		} else if ("byte".equals(type)) {
+//			return "java.lang.Byte";
+//		} else if ("short".equals(type)) {
+//			return "java.lang.Short";
+//		} else if ("int".equals(type)) {
+//			return "java.lang.Integer";
+//		} else if ("long".equals(type)) {
+//			return "java.lang.Long";
+//		} else if ("float".equals(type)) {
+//			return "java.lang.Float";
+//		} else if ("double".equals(type)) {
+//			return "java.lang.Double";
+//		} else if ("boolean".equals(type)) {
+//			return "java.lang.Boolean";
+//		}
+//		return type;
+//	}
+	private static Class<?> getJavassistParamType(Parameter parameter) throws ClassNotFoundException {
 		if (parameter == null) {
 			return null;
 		}
-		String type = parameter.getType();
-		if (type == null || type.trim().length() == 0) {
-			return null;
-		} else if ("char".equals(type)) {
-			return "java.lang.Character";
-		} else if ("byte".equals(type)) {
-			return "java.lang.Byte";
-		} else if ("short".equals(type)) {
-			return "java.lang.Short";
-		} else if ("int".equals(type)) {
-			return "java.lang.Integer";
-		} else if ("long".equals(type)) {
-			return "java.lang.Long";
-		} else if ("float".equals(type)) {
-			return "java.lang.Float";
-		} else if ("double".equals(type)) {
-			return "java.lang.Double";
-		} else if ("boolean".equals(type)) {
-			return "java.lang.Boolean";
-		}
-		return type;
-	}
-
-	private static String getParameterType(Parameter parameter) {
 		if (parameter.getCollectionType() != null
 				&& parameter.getCollectionType().trim().length() > 0) {
-			return parameter.getCollectionType();
+			return LoaderManager.getClass(parameter.getCollectionType());
 		}
-
-		String paramType = parameter.getType();
-		if ("int".equals(paramType) || "char".equals(paramType)
-				|| "byte".equals(paramType) || "short".equals(paramType)
-				|| "long".equals(paramType) || "double".equals(paramType)
-				|| "float".equals(paramType) || "boolean".equals(paramType)
-				|| paramType.startsWith("java.")) {
-			return paramType;
+		String type = parameter.getType();
+		if(parameter.isArray()){
+			return getJavassistParamArray(type);
 		}
-
-		return paramType;
+		if ("char".equals(type)) {
+			return char.class;
+		} else if ("byte".equals(type)) {
+			return byte.class;
+		} else if ("short".equals(type)) {
+			return short.class;
+		} else if ("int".equals(type)) {
+			return int.class;
+		} else if ("long".equals(type)) {
+			return long.class;
+		} else if ("float".equals(type)) {
+			return float.class;
+		} else if ("double".equals(type)) {
+			return double.class;
+		} else if ("boolean".equals(type)) {
+			return boolean.class;
+		}
+		
+		return LoaderManager.getClass(type);
 	}
+	
+	private static Class<?> getJavassistParamArray(String type) throws ClassNotFoundException {
+		if ("char".equals(type)) {
+			return char[].class;
+		} else if ("byte".equals(type)) {
+			return byte[].class;
+		} else if ("short".equals(type)) {
+			return short[].class;
+		} else if ("int".equals(type)) {
+			return int[].class;
+		} else if ("long".equals(type)) {
+			return long[].class;
+		} else if ("float".equals(type)) {
+			return float[].class;
+		} else if ("double".equals(type)) {
+			return double[].class;
+		} else if ("boolean".equals(type)) {
+			return boolean[].class;
+		}
+		return Array.newInstance(LoaderManager.getClass(type),1).getClass();
+	}
+
+//	private static String getParameterType(Parameter parameter) {
+//		if (parameter.getCollectionType() != null
+//				&& parameter.getCollectionType().trim().length() > 0) {
+//			return parameter.getCollectionType();
+//		}
+//
+//		String paramType = parameter.getType();
+//		if ("int".equals(paramType) || "char".equals(paramType)
+//				|| "byte".equals(paramType) || "short".equals(paramType)
+//				|| "long".equals(paramType) || "double".equals(paramType)
+//				|| "float".equals(paramType) || "boolean".equals(paramType)
+//				|| paramType.startsWith("java.")) {
+//			return paramType;
+//		}
+//
+//		return paramType;
+//	}
 
 	/**
 	 * 解析方法返回类型
@@ -327,27 +389,17 @@ public class WebserviceUtil {
 		if (parameter == null) {
 			return "void";
 		}
+		if (parameter.getCollectionType() != null
+				&& parameter.getCollectionType().trim().length() > 0) {
+			return parameter.getCollectionType();
+		}
 		String type = parameter.getType();
 		if (type == null || type.trim().length() == 0 || "void".equals(type)) {
 			return "void";
 		} 
-//		else if ("char".equals(type)) {
-//			return "java.lang.Character";
-//		} else if ("byte".equals(type)) {
-//			return "java.lang.Byte";
-//		} else if ("short".equals(type)) {
-//			return "java.lang.Short";
-//		} else if ("int".equals(type)) {
-//			return "java.lang.Integer";
-//		} else if ("long".equals(type)) {
-//			return "java.lang.Long";
-//		} else if ("float".equals(type)) {
-//			return "java.lang.Float";
-//		} else if ("double".equals(type)) {
-//			return "java.lang.Double";
-//		} else if ("boolean".equals(type)) {
-//			return "java.lang.Boolean";
-//		}
+		if(parameter.isArray()){
+			return type+"[]";
+		}
 		return type;
 	}
 
@@ -357,29 +409,29 @@ public class WebserviceUtil {
 	 * @param returnType
 	 * @return
 	 */
-	private static String getMethodBody(String returnType) {
-		if ("void".equals(returnType)) {
-			return "{}";
-		} else if ("char".equals(returnType)) {
-			return "{return ' ';}";
-		} else if ("byte".equals(returnType)) {
-			return "{return 0;}";
-		} else if ("short".equals(returnType)) {
-			return "{return 0;}";
-		} else if ("int".equals(returnType)) {
-			return "{return 0;}";
-		} else if ("long".equals(returnType)) {
-			return "{return 0L;}";
-		} else if ("float".equals(returnType)) {
-			return "{return 0;}";
-		} else if ("double".equals(returnType)) {
-			return "{return 0.0;}";
-		} else if ("boolean".equals(returnType)) {
-			return "{return true;}";
-		} else {
-			return "{return null;}";
-		}
-	}
+//	private static String getMethodBody(String returnType) {
+//		if ("void".equals(returnType)) {
+//			return "{}";
+//		} else if ("char".equals(returnType)) {
+//			return "{return ' ';}";
+//		} else if ("byte".equals(returnType)) {
+//			return "{return 0;}";
+//		} else if ("short".equals(returnType)) {
+//			return "{return 0;}";
+//		} else if ("int".equals(returnType)) {
+//			return "{return 0;}";
+//		} else if ("long".equals(returnType)) {
+//			return "{return 0L;}";
+//		} else if ("float".equals(returnType)) {
+//			return "{return 0;}";
+//		} else if ("double".equals(returnType)) {
+//			return "{return 0.0;}";
+//		} else if ("boolean".equals(returnType)) {
+//			return "{return true;}";
+//		} else {
+//			return "{return null;}";
+//		}
+//	}
 
 	/**
 	 * 根据函数返回类型，生成空的函数方法体
@@ -390,6 +442,13 @@ public class WebserviceUtil {
 	private static String getMethodBody(Parameter returnType) {
 		if (returnType == null) {
 			return null;
+		}
+		if(returnType.isArray()){
+			return "return null;";
+		}
+		if (returnType.getCollectionType() != null
+				&& returnType.getCollectionType().trim().length() > 0) {
+			return "return null;";
 		}
 		String type = returnType.getType();
 		if (type == null || type.trim().length() == 0 || "void".equals(type)) {
@@ -440,50 +499,50 @@ public class WebserviceUtil {
 
 	/**************************************************************************/
 
-	private static String getMethodDes(ServiceInfo serviceInfo) {
-		String methodName = serviceInfo.getServiceId();
-		if (methodName == null || methodName.trim().length() == 0) {
-		}
-
-		// 定义方法key字符串，用于唯一查找方法的标示符
-		StringBuilder methodKey = new StringBuilder(methodName);
-		// 方法返回值类型描述字符串
-		String returnType = getResultType(serviceInfo.getResults());
-		// 方法体描述字符串
-		String bodyDes = getMethodBody(returnType);
-
-		// 参数内容描述字符�?
-		StringBuilder paramsDes = new StringBuilder("(");
-		List<Parameter> parameters = serviceInfo.getParameters();
-		Parameter parameter = null;
-		String paramType = null;
-		if (parameters == null) {
-			parameters = new ArrayList<Parameter>();
-		}
-		String[] methodNames = new String[parameters.size()];
-		for (int i = 0; i < parameters.size(); i++) {
-			parameter = parameters.get(i);
-			if (i != 0) {
-				paramsDes.append(",");
-			}
-			paramType = getParameterType(parameter);
-
-			paramsDes.append(paramType);
-			paramsDes.append(" ").append(parameter.getName());
-
-			methodKey.append("_").append(paramType);
-			methodNames[i] = parameter.getName();
-		}
-		paramsDes.append(")");
-
-		StringBuilder des = new StringBuilder("public ");
-		des.append(returnType);
-		des.append(" ");
-		des.append(methodName);
-		des.append(paramsDes);
-		des.append(bodyDes);
-
-		return des.toString();
-	}
+//	private static String getMethodDes(ServiceInfo serviceInfo) {
+//		String methodName = serviceInfo.getServiceId();
+//		if (methodName == null || methodName.trim().length() == 0) {
+//		}
+//
+//		// 定义方法key字符串，用于唯一查找方法的标示符
+//		StringBuilder methodKey = new StringBuilder(methodName);
+//		// 方法返回值类型描述字符串
+//		String returnType = getResultType(serviceInfo.getResults());
+//		// 方法体描述字符串
+//		String bodyDes = getMethodBody(returnType);
+//
+//		// 参数内容描述字符�?
+//		StringBuilder paramsDes = new StringBuilder("(");
+//		List<Parameter> parameters = serviceInfo.getParameters();
+//		Parameter parameter = null;
+//		String paramType = null;
+//		if (parameters == null) {
+//			parameters = new ArrayList<Parameter>();
+//		}
+//		String[] methodNames = new String[parameters.size()];
+//		for (int i = 0; i < parameters.size(); i++) {
+//			parameter = parameters.get(i);
+//			if (i != 0) {
+//				paramsDes.append(",");
+//			}
+//			paramType = getParameterType(parameter);
+//
+//			paramsDes.append(paramType);
+//			paramsDes.append(" ").append(parameter.getName());
+//
+//			methodKey.append("_").append(paramType);
+//			methodNames[i] = parameter.getName();
+//		}
+//		paramsDes.append(")");
+//
+//		StringBuilder des = new StringBuilder("public ");
+//		des.append(returnType);
+//		des.append(" ");
+//		des.append(methodName);
+//		des.append(paramsDes);
+//		des.append(bodyDes);
+//
+//		return des.toString();
+//	}
 
 }
