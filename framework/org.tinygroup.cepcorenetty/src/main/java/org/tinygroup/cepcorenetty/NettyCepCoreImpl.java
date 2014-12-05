@@ -439,4 +439,12 @@ public class NettyCepCoreImpl implements CEPCore {
 		}
 	}
 
+	public List<EventProcessor> getEventProcessors() {
+		List<EventProcessor> processors = new ArrayList<EventProcessor>();
+		for(EventProcessor processor:processorMap.values()){
+			processors.add(processor);
+		}
+		return processors;
+	}
+
 }

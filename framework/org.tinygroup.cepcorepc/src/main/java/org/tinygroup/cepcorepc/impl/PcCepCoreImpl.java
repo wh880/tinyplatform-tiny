@@ -381,6 +381,11 @@ public class PcCepCoreImpl implements CEPCore {
 		
 	}
 
+	public List<EventProcessor> getEventProcessors() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 }

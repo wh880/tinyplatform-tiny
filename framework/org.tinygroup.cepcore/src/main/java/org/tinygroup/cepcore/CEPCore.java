@@ -67,6 +67,8 @@ public interface CEPCore extends Remote {
 	 * 停止CEP
 	 */
 	void stop();
+	
+	List<EventProcessor> getEventProcessors();
 
 	/**
 	 * 获取本地服务列表
