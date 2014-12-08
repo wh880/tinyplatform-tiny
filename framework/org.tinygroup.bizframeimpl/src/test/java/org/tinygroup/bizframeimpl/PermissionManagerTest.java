@@ -18,6 +18,7 @@ package org.tinygroup.bizframeimpl;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import junit.framework.TestCase;
 
@@ -26,8 +27,6 @@ import org.tinygroup.bizframe.PermissionManager;
 import org.tinygroup.commons.tools.Resources;
 import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.ConfigurationBuilder;
-import org.tinygroup.tinydb.DbOperatorFactory;
-import org.tinygroup.tinydb.util.DataSourceFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.tinytestutil.script.ScriptRunner;
 
@@ -44,34 +43,41 @@ public class PermissionManagerTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		if (!hasExcuted) {
-			Connection conn = null;
-			try {
-				AbstractTestUtil.init(null, true);
-				DbOperatorFactory factory = BeanContainerFactory.getBeanContainer(
-						getClass().getClassLoader()).getBean("tinyDBOperatorFactory");
-				Configuration configuration=factory.getConfiguration();
-				conn = configuration.getUseDataSource().getConnection();
-				ScriptRunner runner = new ScriptRunner(conn, false, false);
-				Resources.setCharset(Charset.forName("utf-8"));
-				// 加载sql脚本并执行
-				try {
-					runner.runScript(Resources
-							.getResourceAsReader("table_derby.sql"));
-				} catch (Exception e) {
-					// e.printStackTrace();
-				}
-				hasExcuted = true;
-			} finally {
-				if (conn != null) {
-					conn.close();
-				}
-			}
+			AbstractTestUtil.init(null, true);
+			initTable();
 		}
 		manager = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader())
 				.getBean("dbPermissionManager");
 		user = getUser();
 		function = getFunction();
+
+	}
+	
+	private void initTable(){
+		Connection conn = null;
+		try{
+			Reader reader=Resources.getResourceAsReader("tinydb.xml");
+			ConfigurationBuilder builder = new ConfigurationBuilder(reader);
+			Configuration configuration=builder.parser();
+			conn = configuration.getUseDataSource().getConnection();
+			ScriptRunner runner = new ScriptRunner(conn, false, false);
+			// 设置字符集
+			Resources.setCharset(Charset.forName("utf-8"));
+			// 加载sql脚本并执行
+			runner.runScript(Resources
+						.getResourceAsReader("table_derby.sql"));
+		}catch (Exception e) {
+			fail(e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					fail(e.getMessage());
+				}
+			}
+		}
 
 	}
 
