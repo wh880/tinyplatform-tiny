@@ -87,7 +87,7 @@ public class AnnotationHandlerMapping extends AbstractHandlerMapping {
 	}
 
 	public HandlerExecutionChain getHandler(String requestUrl)
-			throws Exception {
+			{
              return   getManager().getMappingModelWithUrl(requestUrl);
 	}
 

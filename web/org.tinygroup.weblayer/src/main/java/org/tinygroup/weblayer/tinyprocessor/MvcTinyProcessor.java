@@ -15,6 +15,9 @@
  */
 package org.tinygroup.weblayer.tinyprocessor;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
@@ -75,22 +78,22 @@ public class MvcTinyProcessor extends AbstractTinyProcessor {
 		handler.init();
 	}
 
-	public void reallyProcess(String urlString, WebContext context) {
+	public void reallyProcess(String urlString, WebContext context) throws ServletException, IOException {
 		HttpServletRequest request = context.getRequest();
 		logger.logMessage(LogLevel.DEBUG,
 				"mvc-tiny-processor processing:[{}] request for [{}]",
 				request.getMethod(), urlString);
-		try {
+//		try {
 			HandlerExecutionChain chain = handler.getHandler(urlString);
 			if (chain != null) {
 				execute.execute(chain, context);
 			} else {
 				logger.logMessage(LogLevel.ERROR, "请求路径:{}找不到处理映射", urlString);
 			}
-		} catch (Exception e) {
-			logger.errorMessage("tiny-mvc执行出错", e);
-			throw new RuntimeException(e);
-		}
+//		} catch (Exception e) {
+//			logger.errorMessage("tiny-mvc执行出错", e);
+//			throw new RuntimeException(e);
+//		}
 	}
 
 }

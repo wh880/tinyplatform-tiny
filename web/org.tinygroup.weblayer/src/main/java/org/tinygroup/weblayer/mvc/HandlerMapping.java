@@ -31,5 +31,5 @@ public interface HandlerMapping {
 	 */
 	void init();
 
-	HandlerExecutionChain getHandler(String requestUrl) throws Exception;
+	HandlerExecutionChain getHandler(String requestUrl);
 }

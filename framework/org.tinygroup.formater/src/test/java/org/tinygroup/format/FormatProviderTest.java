@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
-import org.tinygroup.format.Formater;
 import org.tinygroup.format.exception.FormatException;
 import org.tinygroup.format.impl.DefaultPatternDefine;
 
@@ -31,7 +30,7 @@ public class FormatProviderTest extends TestCase {
 	ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
 			"springbeans.xml");
 	Context context = new ContextImpl();
-	Formater formater = (Formater) applicationContext.getBean("formater");
+	Formatter formatter = (Formatter) applicationContext.getBean("formater");
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -44,7 +43,7 @@ public class FormatProviderTest extends TestCase {
 	 * @throws FormatException
 	 */
 	public void testFormatNotPlaceholder() throws FormatException {
-		assertEquals("this is test", formater.format(context, "this is test"));
+		assertEquals("this is test", formatter.format(context, "this is test"));
 	}
 
 	/**
@@ -55,7 +54,7 @@ public class FormatProviderTest extends TestCase {
 	public void testFormatExistPlaceholderProvider() throws FormatException {
 		Context context = new ContextImpl();
 		assertEquals("this is v1 test",
-				formater.format(context, "this is ${const:1} test"));
+				formatter.format(context, "this is ${const:1} test"));
 	}
 
 	/**
@@ -66,7 +65,7 @@ public class FormatProviderTest extends TestCase {
 
 	public void testFormatExistPlaceholderNoProvider() throws FormatException {
 		assertEquals("this is ${abc:2} test",
-				formater.format(context, "this is ${abc:2} test"));
+				formatter.format(context, "this is ${abc:2} test"));
 	}
 
 	/**
@@ -79,7 +78,7 @@ public class FormatProviderTest extends TestCase {
 		User user = new User("aa", 123);
 		context.put("user", user);
 		assertEquals("this is aa test 123",
-				formater.format(context, "this is ${context:user.name} test ${context:user.age}"));
+				formatter.format(context, "this is ${context:user.name} test ${context:user.age}"));
 
 	}
 	
@@ -89,8 +88,8 @@ public class FormatProviderTest extends TestCase {
 		define.setPrefixPatternString("%{");
 		define.setPostfixPatternString("}");
 		define.setPatternString("([%]+[{]+[a-zA-Z0-9[.[_[:[/[#]]]]]]+[}])");
-		formater.setPatternHandle(define);
+		formatter.setPatternHandle(define);
 		assertEquals("this is v1 test v2",
-				formater.format(context, "this is %{const:1} test %{const:2}"));
+				formatter.format(context, "this is %{const:1} test %{const:2}"));
 	}
 }

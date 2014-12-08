@@ -15,6 +15,10 @@
  */
 package org.tinygroup.weblayer;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.tinygroup.xmlparser.node.XmlNode;
 
 
@@ -40,7 +44,7 @@ public interface TinyProcessor {
      *
      * @param context
      */
-    void process(String urlString, WebContext context);
+    void process(String urlString, WebContext context)throws ServletException, IOException;
 
     /**
      * tinyprocessor的初始化操作

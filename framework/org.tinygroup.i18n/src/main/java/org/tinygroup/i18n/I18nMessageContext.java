@@ -15,10 +15,10 @@
  */
 package org.tinygroup.i18n;
 
-import java.util.Locale;
-
 import org.tinygroup.context.Context;
-import org.tinygroup.format.Formater;
+import org.tinygroup.format.Formatter;
+
+import java.util.Locale;
 
 /**
  * 支持Context的i18n消息访问接口，
@@ -50,16 +50,16 @@ public interface I18nMessageContext extends I18nMessageBase {
 	/**
 	 * 设置格式化器
 	 * 
-	 * @param formater
+	 * @param formatter
 	 */
-	void setFormater(Formater formater);
+	void setFormatter(Formatter formatter);
 
 	/**
 	 * 返回格式化器
 	 * 
 	 * @return
 	 */
-	Formater getFormater();
+	Formatter getFormatter();
 
 	/**
 	 * 对mesasge进行格式化

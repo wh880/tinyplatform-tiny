@@ -15,12 +15,15 @@
  */
 package org.tinygroup.weblayer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.servlet.ServletException;
 
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -131,7 +134,7 @@ public abstract class AbstractTinyProcessor implements TinyProcessor {
 		return patterns;
 	}
 
-	public void process(String urlString, WebContext context) {
+	public void process(String urlString, WebContext context) throws ServletException, IOException{
 		reallyProcess(urlString, context);
 	}
 
@@ -141,5 +144,5 @@ public abstract class AbstractTinyProcessor implements TinyProcessor {
 	 * @param urlString
 	 * @param context
 	 */
-	public abstract void reallyProcess(String urlString, WebContext context);
+	public abstract void reallyProcess(String urlString, WebContext context) throws ServletException, IOException;
 }

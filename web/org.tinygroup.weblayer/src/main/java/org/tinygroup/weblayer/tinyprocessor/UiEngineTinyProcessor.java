@@ -15,6 +15,18 @@
  */
 package org.tinygroup.weblayer.tinyprocessor;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
@@ -25,16 +37,6 @@ import org.tinygroup.uiengine.manager.UIComponentManager;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * UI引擎处理css及js文件的合并并输出
@@ -71,7 +73,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
     }
 
 
-    public void reallyProcess(String servletPath, WebContext context) {
+    public void reallyProcess(String servletPath, WebContext context)  throws ServletException, IOException{
         logger.logMessage(LogLevel.DEBUG, "{}开始处理...", servletPath);
         HttpServletResponse response = context.getResponse();
         HttpServletRequest request = context.getRequest();
@@ -81,7 +83,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
             isDebug = Boolean.parseBoolean(isReleaseMode);
         }
         String contextPath = context.get("TINY_CONTEXT_PATH");
-        try {
+//        try {
             String lastModifiedSign;
             if (servletPath.endsWith("uijs")) {
                 lastModifiedSign = new Date(getJsLastModifiedSign(isDebug)).toGMTString();
@@ -112,10 +114,10 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
             }
 
             logger.logMessage(LogLevel.DEBUG, "{}处理完成。", servletPath);
-        } catch (IOException e) {
-            logger.errorMessage("{}写入响应信息出错", e, servletPath);
-            throw new RuntimeException(e);
-        }
+//        } catch (IOException e) {
+//            logger.errorMessage("{}写入响应信息出错", e, servletPath);
+//            throw new RuntimeException(e);
+//        }
 
     }
 

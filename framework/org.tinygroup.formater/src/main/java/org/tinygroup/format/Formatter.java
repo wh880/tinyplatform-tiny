@@ -23,7 +23,7 @@ import java.util.Map;
  * @author luoguo
  * 
  */
-public interface Formater extends FormatProvider {
+public interface Formatter extends FormatProvider {
 
 	/**
 	 * 设置正则表达式,如果不想用默认正则表达式，可以通过此方法自行定义

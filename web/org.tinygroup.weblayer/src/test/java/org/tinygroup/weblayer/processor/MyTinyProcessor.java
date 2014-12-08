@@ -15,17 +15,21 @@
  */
 package org.tinygroup.weblayer.processor;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
 
 public class MyTinyProcessor extends AbstractTinyProcessor {
 
-	
-	public void reallyProcess(String urlString, WebContext context) {
-	   context.put("url", urlString);
-	   for (String key : getInitParamMap().keySet()) {
-		   context.put(key, getInitParamMap().get(key));
-	   }
+	public void reallyProcess(String urlString, WebContext context)
+			throws ServletException, IOException {
+		context.put("url", urlString);
+		for (String key : getInitParamMap().keySet()) {
+			context.put(key, getInitParamMap().get(key));
+		}
 	}
 
 }
