@@ -15,20 +15,20 @@
  */
 package org.tinygroup.i18n.impl;
 
+import org.tinygroup.commons.i18n.LocaleUtil;
+import org.tinygroup.context.Context;
+import org.tinygroup.format.Formatter;
+import org.tinygroup.i18n.I18nMessage;
+import org.tinygroup.i18n.I18nMessageFactory;
+
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.tinygroup.commons.i18n.LocaleUtil;
-import org.tinygroup.context.Context;
-import org.tinygroup.format.Formater;
-import org.tinygroup.i18n.I18nMessage;
-import org.tinygroup.i18n.I18nMessageFactory;
-
 public class I18nMessageImpl implements I18nMessage {
 	private static final String CONTEXT_LOCALE_KEY = "contextLocale";
 	private static Pattern pattern = Pattern.compile("[{](.)*?[}]");
-	private Formater formater;
+	private Formatter formatter;
 	private String localeKey = CONTEXT_LOCALE_KEY;
 
 	public String getLocaleKey() {
@@ -39,12 +39,12 @@ public class I18nMessageImpl implements I18nMessage {
 		this.localeKey = localeKey;
 	}
 
-	public Formater getFormater() {
-		return formater;
+	public Formatter getFormatter() {
+		return formatter;
 	}
 
-	public void setFormater(Formater formater) {
-		this.formater = formater;
+	public void setFormatter(Formatter formatter) {
+		this.formatter = formatter;
 	}
 
 	private String format(String message, Object... args) {
@@ -86,16 +86,16 @@ public class I18nMessageImpl implements I18nMessage {
 
 	public String getMessage(String code, Context context) {
 		String string = I18nMessageFactory.getMessage(LocaleUtil.getContext().getLocale(), code);
-		return formater.format(context, string);
+		return formatter.format(context, string);
 	}
 
 	public String format(String message, Context context) {
-		return formater.format(context, message);
+		return formatter.format(context, message);
 	}
 
 	public String getMessage(String code, Context context, Locale locale) {
 		String string = I18nMessageFactory.getMessage(locale, code);
-		return formater.format(context, string);
+		return formatter.format(context, string);
 
 	}
 

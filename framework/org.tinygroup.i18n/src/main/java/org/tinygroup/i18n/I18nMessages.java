@@ -15,12 +15,12 @@
  */
 package org.tinygroup.i18n;
 
-import java.util.List;
-import java.util.Locale;
-
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.context.Context;
-import org.tinygroup.format.Formater;
+import org.tinygroup.format.Formatter;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * I18n消息访问类
@@ -31,7 +31,7 @@ import org.tinygroup.format.Formater;
 public final class I18nMessages implements I18nMessage {
 	private List<I18nMessageStandard> i18nMessageStandards;
 	private List<I18nMessageContext> i18nMessageContexts;
-	private Formater formater;
+	private Formatter formatter;
 
 	public List<I18nMessageStandard> getI18nMessageStandards() {
 		return i18nMessageStandards;
@@ -50,8 +50,8 @@ public final class I18nMessages implements I18nMessage {
 			List<I18nMessageContext> i18nMessageContexts) {
 		this.i18nMessageContexts = i18nMessageContexts;
 		for (I18nMessageContext messageContext : i18nMessageContexts) {
-			if (messageContext.getFormater() == null) {
-				messageContext.setFormater(formater);
+			if (messageContext.getFormatter() == null) {
+				messageContext.setFormatter(formatter);
 			}
 		}
 	}
@@ -163,12 +163,12 @@ public final class I18nMessages implements I18nMessage {
 		return message;
 	}
 
-	public void setFormater(Formater formater) {
-		this.formater = formater;
+	public void setFormatter(Formatter formatter) {
+		this.formatter = formatter;
 	}
 
-	public Formater getFormater() {
-		return formater;
+	public Formatter getFormatter() {
+		return formatter;
 	}
 
 	public String getMessage(String code, String defaultMessage, Object... args) {
