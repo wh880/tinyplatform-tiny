@@ -15,14 +15,14 @@
  */
 package org.tinygroup.fileresolver.impl;
 
-import java.util.Locale;
-import java.util.Properties;
-
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.i18n.I18nMessageFactory;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
+
+import java.util.Locale;
+import java.util.Properties;
 
 /**
  * 
@@ -34,6 +34,7 @@ import org.tinygroup.vfs.FileObject;
  */
 public class I18nFileProcessor extends AbstractFileProcessor {
 	private static final String PROPERTIES_FILE_EXTENSION = ".properties";
+	private static final String CUSTOMIZE_PROPERTIES_FILE_EXTENSION = ".cproperties";
 	private static final String I18N_FOLDER_NAME = "i18n";
 	private String i18nFolderName = I18N_FOLDER_NAME;
 
@@ -46,8 +47,9 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 	}
 
 	public boolean isMatch(FileObject fileObject){
-		if (fileObject.getFileName()
-				.endsWith(PROPERTIES_FILE_EXTENSION)
+		if ((fileObject.getFileName()
+				.endsWith(PROPERTIES_FILE_EXTENSION)||fileObject.getFileName()
+				.endsWith(CUSTOMIZE_PROPERTIES_FILE_EXTENSION))
 				&& fileObject.getParent().getFileName()
 						.equals(I18N_FOLDER_NAME)) {
 			return true;
@@ -59,14 +61,22 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 		logger.logMessage(LogLevel.INFO, "找到国际化资源配置文件[{0}]，并开始加载...",
 				fileObject.getAbsolutePath());
 		Locale locale = getLocale(fileObject);
-		Properties oldpProperties=(Properties) caches.get(fileObject.getAbsolutePath());
-		if(oldpProperties!=null){
-			I18nMessageFactory.removeResource(locale, oldpProperties);
+		Properties oldProperties=(Properties) caches.get(fileObject.getAbsolutePath());
+		if(oldProperties!=null){
+			if(fileObject.getFileName().endsWith(PROPERTIES_FILE_EXTENSION)) {
+				I18nMessageFactory.removeResource(locale, oldProperties);
+			}else{
+				I18nMessageFactory.removeCustomizeResource(locale, oldProperties);
+			}
 		}
 		try {
 			Properties properties = new Properties();
 			properties.load(fileObject.getInputStream());
-			I18nMessageFactory.addResource(locale, properties);
+			if(fileObject.getFileName().endsWith(PROPERTIES_FILE_EXTENSION)) {
+				I18nMessageFactory.addResource(locale, properties);
+			}else{
+				I18nMessageFactory.addCustomizeResource(locale, properties);
+			}
 			caches.put(fileObject.getAbsolutePath(), properties);
 			logger.logMessage(LogLevel.INFO, "国际化资源配置文件[{0}]，加载完毕。",
 					fileObject.getAbsolutePath());
@@ -103,7 +113,11 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 			Locale locale = getLocale(fileObject);
 			Properties properties =(Properties) caches.get(fileObject.getAbsolutePath());
 			if(properties!=null){
-				I18nMessageFactory.removeResource(locale, properties);
+				if(fileObject.getFileName().endsWith(PROPERTIES_FILE_EXTENSION)) {
+					I18nMessageFactory.removeResource(locale, properties);
+				}else{
+					I18nMessageFactory.removeCustomizeResource(locale, properties);
+				}
 				caches.remove(fileObject.getAbsolutePath());
 			}
 			logger.logMessage(LogLevel.INFO, "移除国际化资源配置文件[{0}],完成",

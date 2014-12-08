@@ -31,7 +31,7 @@ import org.tinygroup.i18n.impl.I18nMessageContextImpl;
 import java.util.*;
 
 public final class I18nMessageFactory {
-    private static Map<Locale, List<Properties>> globalResourceMap = new HashMap<Locale, List<Properties>>();
+    private static Map<Locale, List<Properties>> customizeResourceMap = new HashMap<Locale, List<Properties>>();
     private static Map<Locale, List<Properties>> resourceMap = new HashMap<Locale, List<Properties>>();
     private static Locale defaultLocale = LocaleUtil.getContext().getLocale();
     private static I18nMessages i18nMessages = new I18nMessages();
@@ -136,17 +136,17 @@ public final class I18nMessageFactory {
         }
     }
 
-    public static void addGlobalResource(Locale locale, Properties properties) {
-        List<Properties> propertiesList = globalResourceMap.get(locale);
+    public static void addCustomizeResource(Locale locale, Properties properties) {
+        List<Properties> propertiesList = customizeResourceMap.get(locale);
         if (propertiesList == null) {
             propertiesList = new ArrayList<Properties>();
-            globalResourceMap.put(locale, propertiesList);
+            customizeResourceMap.put(locale, propertiesList);
         }
         propertiesList.add(properties);
     }
 
-    public static void removeGlobalResource(Locale locale, Properties properties) {
-        List<Properties> propertiesList = globalResourceMap.get(locale);
+    public static void removeCustomizeResource(Locale locale, Properties properties) {
+        List<Properties> propertiesList = customizeResourceMap.get(locale);
         if (!CollectionUtil.isEmpty(propertiesList)) {
             propertiesList.remove(properties);
         }
@@ -158,7 +158,7 @@ public final class I18nMessageFactory {
     }
 
     public static String getMessage(Locale locale, String key) {
-        String message = getMessage(globalResourceMap, locale, key);
+        String message = getMessage(customizeResourceMap, locale, key);
         if (message != null) {
             return message;
         } else {
