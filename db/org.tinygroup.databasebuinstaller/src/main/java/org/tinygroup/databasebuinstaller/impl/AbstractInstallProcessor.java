@@ -23,8 +23,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.database.util.DataSourceInfo;
 import org.tinygroup.databasebuinstaller.InstallProcessor;
-import org.tinygroup.dynamicdatasource.DynamicDataSource;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -53,7 +53,7 @@ public abstract class AbstractInstallProcessor implements InstallProcessor {
 		this.language = language;
 		DataSource dataSource = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
-				DynamicDataSource.DATASOURCE_NAME);
+						DataSourceInfo.DATASOURCE_NAME);
 		// DataSourceUtils.getConnection(dataSource);
 		Connection con = null;
 		try {

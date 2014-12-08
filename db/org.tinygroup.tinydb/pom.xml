@@ -24,11 +24,7 @@
 			<artifactId>org.tinygroup.beancontainer</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.tinygroup</groupId>
-			<artifactId>org.tinygroup.dynamicdatasource</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.tinygroup</groupId>
 			<artifactId>org.tinygroup.testutil</artifactId>
@@ -56,6 +52,7 @@
 			<artifactId>org.tinygroup.fileresolver</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbyclient</artifactId>

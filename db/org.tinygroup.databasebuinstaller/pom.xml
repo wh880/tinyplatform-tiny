@@ -27,10 +27,5 @@
       <artifactId>org.tinygroup.database</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.dynamicdatasource</artifactId>
-      <version>${project.version}</version>
-    </dependency>
   </dependencies>
 </project>

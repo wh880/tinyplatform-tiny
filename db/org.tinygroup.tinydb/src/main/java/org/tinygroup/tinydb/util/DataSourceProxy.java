@@ -15,8 +15,9 @@
  */
 package org.tinygroup.tinydb.util;
 
+import javax.sql.DataSource;
+
 import org.springframework.transaction.support.TransactionTemplate;
-import org.tinygroup.dynamicdatasource.DynamicDataSource;
 
 /**
  * 数据源代理
@@ -24,14 +25,14 @@ import org.tinygroup.dynamicdatasource.DynamicDataSource;
  * @author luoguo
  */
 public class DataSourceProxy {
-    private DynamicDataSource datasource;
+    private DataSource datasource;
     private TransactionTemplate transactionTemplate;
 
-    public DynamicDataSource getDatasource() {
+    public DataSource getDatasource() {
         return datasource;
     }
 
-    public void setDatasource(DynamicDataSource datasource) {
+    public void setDatasource(DataSource datasource) {
         this.datasource = datasource;
     }
 

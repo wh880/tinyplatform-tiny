@@ -15,17 +15,16 @@
  */
 package org.tinygroup.weblayer.webcontext.rewrite;
 
-import java.util.regex.MatchResult;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.tinygroup.commons.tools.MatchResultSubstitution;
-import org.tinygroup.format.Formater;
+import org.tinygroup.format.Formatter;
 import org.tinygroup.format.PatternDefine;
 import org.tinygroup.format.impl.DefaultPatternDefine;
 import org.tinygroup.format.impl.FormaterImpl;
 import org.tinygroup.weblayer.webcontext.parser.ParserWebContext;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.regex.MatchResult;
 
 
 
@@ -35,18 +34,18 @@ import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
  * @author renhui
  */
 public class RewriteUtil {
-   private static Formater formater;
+   private static Formatter formatter;
    private static RewriteFormatProvider provider;
 	static{
-		formater=new FormaterImpl();
+		formatter =new FormaterImpl();
 		provider=new RewriteFormatProvider();
 		PatternDefine define=new  DefaultPatternDefine();
 		define.setPrefixPatternString("%{");
 		define.setPostfixPatternString("}");
 		define.setSplitChar('#');
 		define.setPatternString("([%]+[{]+[a-zA-Z0-9[.[_[:[/[#]]]]]]+[}])");
-		formater.setPatternHandle(define);
-		formater.addFormatProvider("", provider);
+		formatter.setPatternHandle(define);
+		formatter.addFormatProvider("", provider);
 	}
 	
     public static boolean isFullURL(String path) {
@@ -67,7 +66,7 @@ public class RewriteUtil {
 
     public static String format(String testString, HttpServletRequest request) {
     	provider.setRequest(request);
-		return formater.format(null, testString);
+		return formatter.format(null, testString);
 	}
 
     /**

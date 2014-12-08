@@ -28,7 +28,7 @@ import org.tinygroup.database.config.dialectfunction.DialectFunction;
 import org.tinygroup.database.config.dialectfunction.DialectFunctions;
 import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.dialectfunction.DialectReplaceFormater;
-import org.tinygroup.format.Formater;
+import org.tinygroup.format.Formatter;
 import org.tinygroup.format.PatternDefine;
 import org.tinygroup.format.impl.DefaultPatternDefine;
 import org.tinygroup.format.impl.FormaterImpl;
@@ -50,7 +50,7 @@ public class DialectFunctionProcessorImpl implements DialectFunctionProcessor {
 	private Map<String, List<Dialect>> database2Dialects=new HashMap<String, List<Dialect>>();
 	
 	
-	private   Formater formater ;
+	private Formatter formatter;
 	
 
 	public void addDialectFunctions(DialectFunctions functions) {
@@ -89,16 +89,16 @@ public class DialectFunctionProcessorImpl implements DialectFunctionProcessor {
 	}
 
 	public String getFuntionSql(String originalSql, String databaseType) {
-		if(formater==null){
+		if(formatter ==null){
 			initFormater();
 		}
 		Context context= new ContextImpl();
 		context.put(DATABASE_TYPE, databaseType);
 		String beforeFormater=originalSql;
-		String afterFormater= formater.format(context, beforeFormater);
+		String afterFormater= formatter.format(context, beforeFormater);
 		while(!beforeFormater.equals(afterFormater)){
 			beforeFormater=afterFormater;
-			afterFormater= formater.format(context, beforeFormater);
+			afterFormater= formatter.format(context, beforeFormater);
 		}
 		return afterFormater;
 	}
@@ -120,14 +120,14 @@ public class DialectFunctionProcessorImpl implements DialectFunctionProcessor {
 	}
 
 	private void initFormater() {
-		formater=new FormaterImpl();
+		formatter =new FormaterImpl();
 		PatternDefine define=new  DefaultPatternDefine();
 		define.setPrefixPatternString("#{");
 		define.setPostfixPatternString("}");
 		define.setPatternString("([#][{]([^#{}]*)[}])");
-		formater.setPatternHandle(define);
+		formatter.setPatternHandle(define);
 		DialectReplaceFormater replace=new DialectReplaceFormater(this);
-		formater.addFormatProvider("", replace);
+		formatter.addFormatProvider("", replace);
 	}
 	
 }

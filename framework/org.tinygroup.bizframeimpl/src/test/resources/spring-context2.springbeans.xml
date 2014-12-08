@@ -31,7 +31,7 @@
 		</property>
 	</bean>
 
-	<bean id="dataSource1" class="org.apache.commons.dbcp.BasicDataSource">
+	<bean id="dynamicDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName">
 			<value>org.apache.derby.jdbc.EmbeddedDriver</value>
 		</property>
@@ -59,9 +59,7 @@
 			<value>opensource</value>
 		</property>
 	</bean>
-	<bean id="dynamicDataSource" class="org.tinygroup.dynamicdatasource.DynamicDataSource">
-		<property name="dataSource" ref="dataSource1" />
-	</bean>
+	
 
     <bean id="tinyDBOperatorFactory" class="org.tinygroup.tinydb.spring.DBOperatorFactoryBean">
 	         <property name="dataSource" ref="dynamicDataSource" />

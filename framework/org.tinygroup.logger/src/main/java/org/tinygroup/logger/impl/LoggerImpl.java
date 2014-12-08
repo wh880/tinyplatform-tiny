@@ -15,22 +15,25 @@
  */
 package org.tinygroup.logger.impl;
 
-import org.slf4j.MDC;
-import org.slf4j.spi.MDCAdapter;
-import org.tinygroup.context.Context;
-import org.tinygroup.i18n.I18nMessage;
-import org.tinygroup.i18n.I18nMessageFactory;
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
+import static org.tinygroup.logger.LogLevel.ERROR;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.tinygroup.logger.LogLevel.ERROR;
+import org.slf4j.MDC;
+import org.slf4j.spi.MDCAdapter;
+import org.tinygroup.commons.tools.Assert;
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.context.Context;
+import org.tinygroup.i18n.I18nMessage;
+import org.tinygroup.i18n.I18nMessageFactory;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
 /**
  * @author luoguo
@@ -43,6 +46,7 @@ public class LoggerImpl implements Logger {
 	protected MDCAdapter mdc = MDC.getMDCAdapter();
 	private boolean supportTransaction = true;
 	private ThreadLocal<LogBuffer> threadLocal = new ThreadLocal<LogBuffer>();
+	private Map<String, Object> mdcMap = new HashMap<String, Object>();
 	private static I18nMessage i18nMessage = I18nMessageFactory
 			.getI18nMessages();
 	/** 日志缓存默认最大记录条数及最大字节数. */
@@ -91,7 +95,7 @@ public class LoggerImpl implements Logger {
 	 * @see org.tinygroup.logger.ILogger#startTransaction()
 	 */
 	public void startTransaction() {
-		if(supportTransaction){
+		if (supportTransaction) {
 			LogBuffer logBuffer = getLogBuffer();
 			logBuffer.increaseTransactionDepth();
 		}
@@ -103,7 +107,7 @@ public class LoggerImpl implements Logger {
 	 * @see org.tinygroup.logger.ILogger#endTransaction()
 	 */
 	public void endTransaction() {
-		if(supportTransaction){
+		if (supportTransaction) {
 			LogBuffer logBuffer = getLogBuffer();
 			if (logBuffer != null) {
 				logBuffer.decreaseTransactionDepth();
@@ -121,7 +125,7 @@ public class LoggerImpl implements Logger {
 	 * @see org.tinygroup.logger.ILogger#flushTransaction()
 	 */
 	public void flushTransaction() {
-		if(supportTransaction){
+		if (supportTransaction) {
 			LogBuffer logBuffer = getLogBuffer();
 			if (logBuffer != null) {
 				flushLog(logBuffer);
@@ -135,11 +139,11 @@ public class LoggerImpl implements Logger {
 	 * @see org.tinygroup.logger.ILogger#resetTransaction()
 	 */
 	public void resetTransaction() {
-		if(supportTransaction){
+		if (supportTransaction) {
 			LogBuffer logBuffer = getLogBuffer();
 			if (logBuffer != null) {
 				logBuffer.reset();
-				maxBufferRecords=0;
+				maxBufferRecords = 0;
 			}
 		}
 	}
@@ -198,7 +202,7 @@ public class LoggerImpl implements Logger {
 	 * @param message
 	 */
 	private void pLogMessage(LogLevel logLevel, String message) {
-		putThreadVariable();// 在输出日志之前先放入局部线程变量中的mdc值
+		putMdcVariable();// 在输出日志之前先放入局部线程变量中的mdc值
 		switch (logLevel) {
 		case DEBUG:
 			logger.debug(message);
@@ -218,15 +222,19 @@ public class LoggerImpl implements Logger {
 		}
 	}
 
-	private void putThreadVariable() {
+	private void putMdcVariable() {
 		MDC.clear();
-		Map<String, Object> threadVariable = LoggerFactory
-				.getThreadVariableMap();
-		if (threadVariable != null) {
-			for (Entry<String, Object> entry : threadVariable.entrySet()) {
-				putToMDC(entry.getKey(), entry.getValue());
-			}
+		putMdcVariable(mdcMap);
+		putMdcVariable(LoggerFactory.getThreadVariableMap());
+	}
 
+	private void putMdcVariable(Map<String, Object> mdcMap) {
+		if (!CollectionUtil.isEmpty(mdcMap)) {
+			for (Entry<String, Object> entry : mdcMap.entrySet()) {
+				Object value = entry.getValue();
+				Assert.assertNotNull(value, "value must not null");
+				mdc.put(entry.getKey(), entry.getValue().toString());
+			}
 		}
 	}
 
@@ -449,7 +457,7 @@ public class LoggerImpl implements Logger {
 								throwable));
 				checkBufferSize(logBuffer);
 			} else {
-				putThreadVariable();
+				putMdcVariable();
 				logger.error(message, throwable);
 			}
 		}
@@ -457,7 +465,7 @@ public class LoggerImpl implements Logger {
 	}
 
 	public void putToMDC(String key, Object value) {
-		mdc.put(key, value.toString());
+		mdcMap.put(key, value);
 	}
 
 	public void removeFromMDC(String key) {

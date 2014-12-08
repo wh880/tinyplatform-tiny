@@ -44,38 +44,64 @@ public abstract class BaseTest extends TestCase {
 		return operator;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	public void setUp() {
 		if (!hasExcuted) {
-			Connection conn = null;
-			try {
-				Reader reader=Resources.getResourceAsReader("tinydb.xml");
-				ConfigurationBuilder builder = new ConfigurationBuilder(reader);
-				Configuration configuration=builder.parser();
-				conn = configuration.getUseDataSource().getConnection();
-				ScriptRunner runner = new ScriptRunner(conn, false, false);
-				// 设置字符集
-				Resources.setCharset(Charset.forName("utf-8"));
-				// 加载sql脚本并执行
-				runner.runScript(Resources
-							.getResourceAsReader("table_derby.sql"));
-				factory=new DbOperatorFactoryBuilder().build(configuration);
-				operator=factory.getDBOperator();
-				hasExcuted = true;
-			} catch (Exception e) {
-				fail(e.getMessage());
-			} finally {
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						fail(e.getMessage());
-					}
-				}
-			}
-
+			initTable();
+			initFactory();
+			hasExcuted= true;
 		}
 
+	}
+	
+	private void initTable(){
+		Connection conn = null;
+		try{
+			Reader reader=Resources.getResourceAsReader("tinydb.xml");
+			ConfigurationBuilder builder = new ConfigurationBuilder(reader);
+			Configuration configuration=builder.parser();
+			conn = configuration.getUseDataSource().getConnection();
+			ScriptRunner runner = new ScriptRunner(conn, false, false);
+			// 设置字符集
+			Resources.setCharset(Charset.forName("utf-8"));
+			// 加载sql脚本并执行
+			runner.runScript(Resources
+						.getResourceAsReader("table_derby.sql"));
+		}catch (Exception e) {
+			fail(e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					fail(e.getMessage());
+				}
+			}
+		}
+
+	}
+	
+	//第一次初始化，表在执行table_derby.sql之前不存在，此时builder加载数据库信息显然是不完整的，需要等执行sql再次加载。
+	@SuppressWarnings("unchecked")
+	private void initFactory(){
+		Connection conn = null;
+		try{
+			Reader reader=Resources.getResourceAsReader("tinydb.xml");
+			ConfigurationBuilder builder = new ConfigurationBuilder(reader);
+			Configuration configuration=builder.parser();
+			factory=new DbOperatorFactoryBuilder().build(configuration);
+			operator=factory.getDBOperator();
+		}catch (Exception e) {
+			fail(e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					fail(e.getMessage());
+				}
+			}
+		}
 	}
 	
 	protected Bean getBean(String id){

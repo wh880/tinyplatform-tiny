@@ -13,28 +13,32 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.weblayer.filter;
+/**
+ * 
+ */
+package org.tinygroup.database.util;
 
-import org.tinygroup.database.util.DataSourceInfo;
-import org.tinygroup.weblayer.AbstractTinyFilter;
-import org.tinygroup.weblayer.WebContext;
-
-public class DataSouceTinyFilter extends AbstractTinyFilter {
-
-	private static final String DATASOURCE = "TINY_DATASOURCE";
-
+/**
+ * 数据源信息
+ * 
+ * @author chenjiao
+ * 
+ */
+public final class DataSourceInfo {
 	
-	public void preProcess(WebContext context) {
-		String dataSourceName = context.get(DATASOURCE);
-		if (dataSourceName != null && !"".equals(dataSourceName.trim())) {
-			DataSourceInfo.setDataSource(dataSourceName);
-		}
+	public static final String DATASOURCE_NAME = "dynamicDataSource";
+	
+	private static ThreadLocal<String> local = new ThreadLocal<String>();
+
+	private DataSourceInfo() {
 
 	}
 
-	
-	public void postProcess(WebContext context) {
-
+	public static void setDataSource(String dataSource) {
+		local.set(dataSource);
 	}
 
+	public static String getDataSource() {
+		return (String) local.get();
+	}
 }
