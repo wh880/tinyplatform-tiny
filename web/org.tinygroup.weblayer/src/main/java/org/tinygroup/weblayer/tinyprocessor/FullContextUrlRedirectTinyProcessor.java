@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -65,13 +66,13 @@ public class FullContextUrlRedirectTinyProcessor extends AbstractTinyProcessor {
 	}
 
 	
-	public void reallyProcess(String servletPath, WebContext context) {
+	public void reallyProcess(String servletPath, WebContext context) throws ServletException, IOException{
 		logger.logMessage(LogLevel.DEBUG, "{}开始处理...", servletPath);
 		HttpServletResponse response = context.getResponse();
 		HttpServletRequest request = context.getRequest();
 		FileObject fileObject = fullContextFileRepository
 				.getFileObject(servletPath);
-		try {
+//		try {
 			if (fileObject != null && fileObject.isExist()) {
 				String ims = request.getHeader("If-Modified-Since");
 				if (ims != null && ims.length() > 0) {
@@ -101,12 +102,13 @@ public class FullContextUrlRedirectTinyProcessor extends AbstractTinyProcessor {
 				outputStream.close();
 				logger.logMessage(LogLevel.DEBUG, "{}处理完成。", servletPath);
 			} else {
+				logger.logMessage(LogLevel.DEBUG, "{}未找到。", servletPath);
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			}
-		} catch (IOException e) {
-			logger.errorMessage("{}写入响应信息出错", e, servletPath);
-			throw new RuntimeException(e);
-		}
+//		} catch (IOException e) {
+//			logger.errorMessage("{}写入响应信息出错", e, servletPath);
+//			throw new RuntimeException(e);
+//		}
 
 	}
 

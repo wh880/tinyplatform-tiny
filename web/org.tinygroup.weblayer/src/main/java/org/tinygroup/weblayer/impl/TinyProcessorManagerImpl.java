@@ -15,10 +15,13 @@
  */
 package org.tinygroup.weblayer.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletException;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
@@ -56,7 +59,7 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 	 * @see org.tinygroup.weblayer.impl.TinyProcessorManager#execute(java
 	 * .lang.String, org.tinygroup.weblayer.WebContext)
 	 */
-	public boolean execute(String url, WebContext context) {
+	public boolean execute(String url, WebContext context) throws ServletException, IOException{
 		boolean canExecute = false;
 		for (TinyProcessor tinyProcessor : tinyProcessorList) {
 			if (tinyProcessor.isMatch(url)) {

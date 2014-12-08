@@ -15,6 +15,8 @@
  */
 package org.tinygroup.weblayer.tinyprocessor;
 
+import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -62,17 +64,17 @@ public class TinyProcessorWapper extends AbstractTinyProcessor {
 	}
 
 	
-	public void reallyProcess(String urlString, WebContext context) {
+	public void reallyProcess(String urlString, WebContext context) throws ServletException, IOException {
 
 		HttpServletRequest request = context.getRequest();
 		HttpServletResponse response = context.getResponse();
-		try {
+//		try {
 			servlet.service(request, response);
-		} catch (Exception e) {
-			e.printStackTrace();
-//			logger.errorMessage("servlet:{}执行出错", e, servlet.getServletName());
-			throw new RuntimeException("servlet执行出错", e);
-		}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+////			logger.errorMessage("servlet:{}执行出错", e, servlet.getServletName());
+//			throw new RuntimeException("servlet执行出错", e);
+//		}
 
 	}
 

@@ -15,6 +15,10 @@
  */
 package org.tinygroup.weblayer.tinyprocessor;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -41,10 +45,9 @@ public class PageFlowTinyProcessor extends AbstractTinyProcessor {
 		this.executor = executor;
 	}
 
-	public void reallyProcess(String urlString, WebContext context) {
+	public void reallyProcess(String urlString, WebContext context) throws ServletException, IOException{
 		logger.logMessage(LogLevel.INFO, "{}开始处理",urlString);
 		String serviceId = getRequestId(urlString);
-//	    =SpringBeanContainer.getBean(FlowExecutor.PAGE_FLOW_BEAN); 
 	    String nodeId = context.get(NODE_ID);
 	    if(nodeId==null||"".equals(nodeId)){
 	    	executor.execute(serviceId, context);

@@ -15,11 +15,15 @@
  */
 package org.tinygroup.weblayer.tinyprocessor;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.ServletException;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.Context;
+import org.tinygroup.convert.ConvertException;
 import org.tinygroup.convert.objectjson.jackson.ObjectToJson;
 import org.tinygroup.convert.objectxml.xstream.ObjectToXml;
 import org.tinygroup.event.Event;
@@ -73,18 +77,22 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 	}
 
 
-	public void reallyProcess(String urlString, WebContext context) {
+	public void reallyProcess(String urlString, WebContext context) throws ServletException, IOException{
 		int lastSplash = urlString.lastIndexOf('/');
 		int lastDot = urlString.lastIndexOf('.');
-		try {
+//		try {
 			String serviceId = urlString.substring(lastSplash + 1, lastDot);
 			Object result = callService(serviceId, context);
 			if (urlString.endsWith("servicexml") && result != null) {// 返回xml
 				context.getResponse().getWriter()
 						.write(objectToXml.convert(result));
 			} else if (urlString.endsWith(".servicejson") && result != null) {// 返回json
-				context.getResponse().getWriter()
-						.write(objectToJson.convert(result));
+				try {
+					context.getResponse().getWriter()
+							.write(objectToJson.convert(result));
+				} catch (ConvertException e) {
+					throw new RuntimeException(e);
+				}
 			} else if (urlString.endsWith(".servicepage")) {// 返回页面
 				ServiceViewMapping viewMapping=manager.getServiceViewMapping(serviceId);
 				if(viewMapping==null){
@@ -114,9 +122,9 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 				context.getRequest().getRequestDispatcher(path)
 						.forward(context.getRequest(), context.getResponse());
 			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+//		} catch (Exception e) {
+//			throw new RuntimeException(e);
+//		}
 	}
 
 	private void checkPath(String serviceId, String path) {

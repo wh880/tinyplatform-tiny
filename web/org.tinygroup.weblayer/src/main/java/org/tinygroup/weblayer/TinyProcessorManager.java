@@ -15,6 +15,10 @@
  */
 package org.tinygroup.weblayer;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.tinygroup.weblayer.configmanager.TinyProcessorConfigManager;
 
 
@@ -34,7 +38,7 @@ public interface TinyProcessorManager extends TinyWebResourceManager {
      * @param url     请求路径
      * @param context 请求环境对象
      */
-    boolean execute(String url, WebContext context);
+    boolean execute(String url, WebContext context)throws ServletException, IOException;
 
 
     /**
