@@ -15,6 +15,7 @@
  */
 package org.tinygroup.flowbasiccomponent.test.testcase;
 
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -25,6 +26,7 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Resources;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.tinydb.Configuration;
+import org.tinygroup.tinydb.ConfigurationBuilder;
 import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
@@ -46,42 +48,66 @@ public abstract class BaseTest extends TestCase {
 		BaseTest.operator = operator;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void setUp() {
 		if (!hasExcuted) {
-			Connection conn = null;
-			try {
-				AbstractTestUtil.init(null, true);
-				factory=BeanContainerFactory.getBeanContainer(
-						this.getClass().getClassLoader()).getBean(
-						"tinyDBOperatorFactory");
-				Configuration configuration=factory.getConfiguration();
-				conn = configuration.getUseDataSource().getConnection();
-				ScriptRunner runner = new ScriptRunner(conn, false, false);
-				// 设置字符集
-				Resources.setCharset(Charset.forName("utf-8"));
-				// 加载sql脚本并执行
-				runner.runScript(Resources
-							.getResourceAsReader("table_derby.sql"));
-				operator=factory.getDBOperator();
-				flowExecutor = BeanContainerFactory.getBeanContainer(
-						this.getClass().getClassLoader()).getBean(
-						"flowExecutor");
-				hasExcuted = true;
-			} catch (Exception e) {
-				fail(e.getMessage());
-			} finally {
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						fail(e.getMessage());
-					}
-				}
-			}
-
+			AbstractTestUtil.init(null, true);
+			initTable();
+			initFactory();
+			hasExcuted = true;
 		}
 
+	}
+	
+	private void initTable(){
+		Connection conn = null;
+		try{
+			Reader reader=Resources.getResourceAsReader("tinydb.xml");
+			ConfigurationBuilder builder = new ConfigurationBuilder(reader);
+			Configuration configuration=builder.parser();
+			conn = configuration.getUseDataSource().getConnection();
+			ScriptRunner runner = new ScriptRunner(conn, false, false);
+			// 设置字符集
+			Resources.setCharset(Charset.forName("utf-8"));
+			// 加载sql脚本并执行
+			runner.runScript(Resources
+						.getResourceAsReader("table_derby.sql"));
+		}catch (Exception e) {
+			fail(e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					fail(e.getMessage());
+				}
+			}
+		}
+
+	}
+	
+	//第一次初始化，表在执行table_derby.sql之前不存在，此时builder加载数据库信息显然是不完整的，需要等执行sql再次加载。
+	@SuppressWarnings("unchecked")
+	private void initFactory(){
+		Connection conn = null;
+		try{
+			factory=BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					"tinyDBOperatorFactory");
+			operator=factory.getDBOperator();
+			flowExecutor = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					"flowExecutor");
+		}catch (Exception e) {
+			fail(e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					fail(e.getMessage());
+				}
+			}
+		}
 	}
 
 }
