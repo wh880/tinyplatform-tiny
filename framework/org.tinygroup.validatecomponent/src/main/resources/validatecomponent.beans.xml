@@ -77,6 +77,13 @@
 		class="org.tinygroup.validate.fileresolver.ValidateFileProcessor">
 		<property name="validatorManager" ref="xmlValidatorManager"></property>
 	</bean>
+	<!--流程校验组件-->
+	<bean id="validateComponent" name="validateComponent" scope="singleton"
+		class="org.tinygroup.validate.component.ValidateComponent">
+		<property name="validatorManager">
+			<ref bean="complexValidatorManager"/>
+		</property>
+	</bean>
 	<!-- 检验器-->
 	<bean id="enumValidator" name="enumValidator" scope="prototype"
 		 class="org.tinygroup.validate.validator.EnumValidator">

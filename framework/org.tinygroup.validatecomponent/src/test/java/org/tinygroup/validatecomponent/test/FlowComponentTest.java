@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.validate;
+package org.tinygroup.validatecomponent.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +26,10 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.flow.FlowExecutor;
+import org.tinygroup.validate.AbstractValidatorManagerTest;
+import org.tinygroup.validate.Address;
+import org.tinygroup.validate.User;
+import org.tinygroup.validate.ValidatorManager;
 
 /**
  * 流程组件测试

@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.validate.component;
+package org.tinygroup.validatecomponent;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
