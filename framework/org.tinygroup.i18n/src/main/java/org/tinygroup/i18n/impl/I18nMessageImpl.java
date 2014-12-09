@@ -17,7 +17,7 @@ package org.tinygroup.i18n.impl;
 
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.context.Context;
-import org.tinygroup.format.Formatter;
+import org.tinygroup.format.Formater;
 import org.tinygroup.i18n.I18nMessage;
 import org.tinygroup.i18n.I18nMessageFactory;
 
@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 public class I18nMessageImpl implements I18nMessage {
 	private static final String CONTEXT_LOCALE_KEY = "contextLocale";
 	private static Pattern pattern = Pattern.compile("[{](.)*?[}]");
-	private Formatter formatter;
+	private Formater formater;
 	private String localeKey = CONTEXT_LOCALE_KEY;
 
 	public String getLocaleKey() {
@@ -39,12 +39,12 @@ public class I18nMessageImpl implements I18nMessage {
 		this.localeKey = localeKey;
 	}
 
-	public Formatter getFormatter() {
-		return formatter;
+	public Formater getFormater() {
+		return formater;
 	}
 
-	public void setFormatter(Formatter formatter) {
-		this.formatter = formatter;
+	public void setFormater(Formater formatter) {
+		this.formater = formatter;
 	}
 
 	private String format(String message, Object... args) {
@@ -86,16 +86,16 @@ public class I18nMessageImpl implements I18nMessage {
 
 	public String getMessage(String code, Context context) {
 		String string = I18nMessageFactory.getMessage(LocaleUtil.getContext().getLocale(), code);
-		return formatter.format(context, string);
+		return formater.format(context, string);
 	}
 
 	public String format(String message, Context context) {
-		return formatter.format(context, message);
+		return formater.format(context, message);
 	}
 
 	public String getMessage(String code, Context context, Locale locale) {
 		String string = I18nMessageFactory.getMessage(locale, code);
-		return formatter.format(context, string);
+		return formater.format(context, string);
 
 	}
 

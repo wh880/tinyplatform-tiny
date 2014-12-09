@@ -30,7 +30,7 @@ public class FormatProviderTest extends TestCase {
 	ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
 			"springbeans.xml");
 	Context context = new ContextImpl();
-	Formatter formatter = (Formatter) applicationContext.getBean("formater");
+	Formater formatter = (Formater) applicationContext.getBean("formater");
 
 	protected void setUp() throws Exception {
 		super.setUp();

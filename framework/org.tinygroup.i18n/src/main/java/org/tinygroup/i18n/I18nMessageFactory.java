@@ -19,7 +19,7 @@ import com.thoughtworks.xstream.XStream;
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.format.FormatProvider;
-import org.tinygroup.format.Formatter;
+import org.tinygroup.format.Formater;
 import org.tinygroup.format.PatternDefine;
 import org.tinygroup.format.config.FormatPatternDefine;
 import org.tinygroup.format.impl.DefaultPatternDefine;
@@ -56,7 +56,7 @@ public final class I18nMessageFactory {
         }
         List<I18nMessageContext> i18nMessageContexts = new ArrayList<I18nMessageContext>();
         try {
-            Formatter formatter = getObject(configuration.getFormater()
+            Formater formatter = getObject(configuration.getFormater()
                     .getClassName());
             PatternDefine patternHandle = new DefaultPatternDefine();
             FormatPatternDefine formatPatternDefine = configuration
@@ -79,7 +79,7 @@ public final class I18nMessageFactory {
             for (I18nMessage msg : configuration.getI18nMessageContexts()) {
                 I18nMessageContextImpl object = getObject(msg.getClassName());
                 i18nMessageContexts.add(object);
-                object.setFormatter(formatter);
+                object.setFormater(formatter);
             }
         } catch (I18nException e) {
             throw new RuntimeException(e);

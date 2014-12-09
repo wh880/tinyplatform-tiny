@@ -19,7 +19,7 @@ import java.util.Locale;
 
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.context.Context;
-import org.tinygroup.format.Formatter;
+import org.tinygroup.format.Formater;
 import org.tinygroup.i18n.I18nMessageContext;
 import org.tinygroup.i18n.I18nMessageFactory;
 
@@ -35,10 +35,10 @@ public class I18nMessageContextImpl implements I18nMessageContext {
 
 	}
 
-	private Formatter formatter;
+	private Formater formater;
 
-	public void setFormatter(Formatter formatter) {
-		this.formatter = formatter;
+	public void setFormater(Formater formatter) {
+		this.formater = formatter;
 	}
 
 	public String getMessage(String code) {
@@ -55,11 +55,11 @@ public class I18nMessageContextImpl implements I18nMessageContext {
 
 	public String getMessage(String code, Context context, Locale locale) {
 		String string = getMessage(code, locale);
-		return formatter.format(context, string);
+		return formater.format(context, string);
 	}
 
 	public String format(String message, Context context) {
-		return formatter.format(context, message);
+		return formater.format(context, message);
 	}
 
 	public Locale getContextLocale(Context context) {
@@ -70,8 +70,8 @@ public class I18nMessageContextImpl implements I18nMessageContext {
 		return locale;
 	}
 
-	public Formatter getFormatter() {
-		return formatter;
+	public Formater getFormater() {
+		return formater;
 	}
 
 	public String getMessage(String code, String defaultMessage) {
