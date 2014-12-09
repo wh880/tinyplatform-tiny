@@ -233,7 +233,7 @@ public abstract class AbstractFilterImpl<T extends Node<T>> implements NodeFilte
      */
     private boolean existNode(List<T> nodes, String nodeName) {
         for (T node : nodes) {
-            if (node.getCaseSensitiveName(nodeName).equals(node.getCaseSensitiveName(node.getNodeName()))) {
+            if (node.getNodeName() != null && node.getCaseSensitiveName(nodeName).equals(node.getCaseSensitiveName(node.getNodeName()))) {
                 return true;
             }
         }
