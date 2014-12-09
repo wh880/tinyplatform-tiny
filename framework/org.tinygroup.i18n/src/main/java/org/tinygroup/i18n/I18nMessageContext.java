@@ -16,7 +16,7 @@
 package org.tinygroup.i18n;
 
 import org.tinygroup.context.Context;
-import org.tinygroup.format.Formatter;
+import org.tinygroup.format.Formater;
 
 import java.util.Locale;
 
@@ -52,14 +52,14 @@ public interface I18nMessageContext extends I18nMessageBase {
 	 * 
 	 * @param formatter
 	 */
-	void setFormatter(Formatter formatter);
+	void setFormater(Formater formatter);
 
 	/**
 	 * 返回格式化器
 	 * 
 	 * @return
 	 */
-	Formatter getFormatter();
+	Formater getFormater();
 
 	/**
 	 * 对mesasge进行格式化

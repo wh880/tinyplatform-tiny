@@ -16,7 +16,7 @@
 package org.tinygroup.weblayer.webcontext.rewrite;
 
 import org.tinygroup.commons.tools.MatchResultSubstitution;
-import org.tinygroup.format.Formatter;
+import org.tinygroup.format.Formater;
 import org.tinygroup.format.PatternDefine;
 import org.tinygroup.format.impl.DefaultPatternDefine;
 import org.tinygroup.format.impl.FormaterImpl;
@@ -34,7 +34,7 @@ import java.util.regex.MatchResult;
  * @author renhui
  */
 public class RewriteUtil {
-   private static Formatter formatter;
+   private static Formater formatter;
    private static RewriteFormatProvider provider;
 	static{
 		formatter =new FormaterImpl();

@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 
 import org.tinygroup.context.Context;
 import org.tinygroup.format.FormatProvider;
-import org.tinygroup.format.Formatter;
+import org.tinygroup.format.Formater;
 import org.tinygroup.format.PatternDefine;
 import org.tinygroup.format.exception.FormatException;
 
@@ -31,7 +31,7 @@ import org.tinygroup.format.exception.FormatException;
  * @author luoguo
  * 
  */
-public class FormaterImpl implements Formatter {
+public class FormaterImpl implements Formater {
 
 	private Map<String, FormatProvider> formatProviders;
 	private PatternDefine patternDefine = new DefaultPatternDefine();

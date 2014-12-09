@@ -28,7 +28,7 @@ import org.tinygroup.database.config.dialectfunction.DialectFunction;
 import org.tinygroup.database.config.dialectfunction.DialectFunctions;
 import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.dialectfunction.DialectReplaceFormater;
-import org.tinygroup.format.Formatter;
+import org.tinygroup.format.Formater;
 import org.tinygroup.format.PatternDefine;
 import org.tinygroup.format.impl.DefaultPatternDefine;
 import org.tinygroup.format.impl.FormaterImpl;
@@ -50,7 +50,7 @@ public class DialectFunctionProcessorImpl implements DialectFunctionProcessor {
 	private Map<String, List<Dialect>> database2Dialects=new HashMap<String, List<Dialect>>();
 	
 	
-	private Formatter formatter;
+	private Formater formatter;
 	
 
 	public void addDialectFunctions(DialectFunctions functions) {
