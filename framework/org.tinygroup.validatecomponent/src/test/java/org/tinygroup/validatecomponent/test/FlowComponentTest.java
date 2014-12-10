@@ -26,9 +26,6 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.flow.FlowExecutor;
-import org.tinygroup.validate.AbstractValidatorManagerTest;
-import org.tinygroup.validate.Address;
-import org.tinygroup.validate.User;
 import org.tinygroup.validate.ValidatorManager;
 
 /**
@@ -42,7 +39,7 @@ public class FlowComponentTest extends AbstractValidatorManagerTest {
 	private FlowExecutor flowExecutor;
 
 	protected void setUp() throws Exception {
-		super.setUp();
+		init();
 		validatorManager = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 				ValidatorManager.VALIDATOR_MANAGER_BEAN_NAME);
