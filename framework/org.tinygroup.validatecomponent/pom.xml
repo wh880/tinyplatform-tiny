@@ -19,5 +19,10 @@
       <artifactId>org.tinygroup.flow</artifactId>
       <version>${project.version}</version>
     </dependency>
+     <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.testutil</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>
