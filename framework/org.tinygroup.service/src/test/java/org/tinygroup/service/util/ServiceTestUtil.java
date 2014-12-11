@@ -71,7 +71,9 @@ public class ServiceTestUtil {
 		aopManager.addAopAdapter(CEPCoreAopManager.BEFORE_LOCAL, "requestParamValidate",null);
 		CEPCore core = (CEPCore) contaner.getBean(CEPCore.CEP_CORE_BEAN);
 		EventProcessorForValidate ep = new EventProcessorForValidate();
+		
 		ServiceProviderInterface provider = (ServiceProviderInterface) contaner.getBean("service");
+		ep.setProvider(provider);
 		ep.getServiceInfos().addAll(provider.getServiceRegistory().getServiceRegistryItems());
 		core.registerEventProcessor(ep);
 	}

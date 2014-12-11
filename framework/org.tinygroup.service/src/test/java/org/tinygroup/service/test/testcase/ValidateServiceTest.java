@@ -17,9 +17,9 @@ package org.tinygroup.service.test.testcase;
 
 import junit.framework.TestCase;
 
+import org.tinygroup.cepcore.exception.RequestParamValidateException;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
-import org.tinygroup.service.exception.ServiceParamValidateException;
 import org.tinygroup.service.test.validate.ValidateAddress;
 import org.tinygroup.service.test.validate.ValidateUser;
 import org.tinygroup.service.util.ServiceTestUtil;
@@ -42,10 +42,10 @@ public class ValidateServiceTest extends TestCase {
 		context.put("a", a); // 10-2000
 		try {
 			ServiceTestUtil.executeForValidate("validateServiceAdd", context);
-//			assertTrue(false);
+			assertTrue(false);
 		} catch (Exception e) {
-			if (e instanceof ServiceParamValidateException) {
-				ValidateResult result = ((ServiceParamValidateException) e)
+			if (e instanceof RequestParamValidateException) {
+				ValidateResult result = ((RequestParamValidateException) e)
 						.getResult();
 				if (result == null) {
 					System.out
@@ -55,6 +55,8 @@ public class ValidateServiceTest extends TestCase {
 					assertTrue(true);
 					print(result);
 				}
+			} else {
+				assertTrue(false);
 			}
 		}
 
@@ -77,10 +79,10 @@ public class ValidateServiceTest extends TestCase {
 		context.put("a", a); // 10-2000
 		try {
 			ServiceTestUtil.executeForValidate("validateServiceAdd", context);
-//			assertTrue(false);
+			assertTrue(false);
 		} catch (Exception e) {
-			if (e instanceof ServiceParamValidateException) {
-				ValidateResult result = ((ServiceParamValidateException) e)
+			if (e instanceof RequestParamValidateException) {
+				ValidateResult result = ((RequestParamValidateException) e)
 						.getResult();
 				if (result == null) {
 					System.out
@@ -90,6 +92,8 @@ public class ValidateServiceTest extends TestCase {
 					assertTrue(true);
 					print(result);
 				}
+			} else {
+				assertTrue(false);
 			}
 		}
 
@@ -112,10 +116,10 @@ public class ValidateServiceTest extends TestCase {
 		context.put("a", a); // 10-2000
 		try {
 			ServiceTestUtil.executeForValidate("validateServiceAdd", context);
-//			assertTrue(false);
+			assertTrue(false);
 		} catch (Exception e) {
-			if (e instanceof ServiceParamValidateException) {
-				ValidateResult result = ((ServiceParamValidateException) e)
+			if (e instanceof RequestParamValidateException) {
+				ValidateResult result = ((RequestParamValidateException) e)
 						.getResult();
 				if (result == null) {
 					System.out
@@ -125,11 +129,13 @@ public class ValidateServiceTest extends TestCase {
 					assertTrue(true);
 					print(result);
 				}
+			} else {
+				assertTrue(false);
 			}
 		}
 
 	}
-	
+
 	public void testValidateSucess() {
 
 		ValidateUser user = getSuccessUser();
@@ -147,24 +153,22 @@ public class ValidateServiceTest extends TestCase {
 		context.put("a", a); // 10-2000
 		try {
 			ServiceTestUtil.executeForValidate("validateServiceAdd", context);
-//			assertTrue(true);
+			assertTrue(true);
 		} catch (Exception e) {
-			if (e instanceof ServiceParamValidateException) {
-				ValidateResult result = ((ServiceParamValidateException) e)
+			if (e instanceof RequestParamValidateException) {
+				ValidateResult result = ((RequestParamValidateException) e)
 						.getResult();
 				if (result == null) {
 					System.out
 							.println("Validate Failed,But Result IS NULL !!!!!");
-					assertTrue(false);
 				} else {
-					assertTrue(false);
 					print(result);
 				}
 			}
+			assertTrue(false);
 		}
 
 	}
-
 
 	private void print(ValidateResult result) {
 		System.out.println("==========begin==============");

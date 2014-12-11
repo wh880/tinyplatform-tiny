@@ -22,13 +22,23 @@ import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
+import org.tinygroup.service.ServiceProviderInterface;
 
 public class EventProcessorForValidate implements EventProcessor{
+	ServiceProviderInterface provider;
+	
+	
+	public ServiceProviderInterface getProvider() {
+		return provider;
+	}
+
+	public void setProvider(ServiceProviderInterface provider) {
+		this.provider = provider;
+	}
 
 	List<ServiceInfo> list = new ArrayList<ServiceInfo>();
 	public void process(Event event) {
-		// TODO Auto-generated method stub
-		
+		provider.execute(event.getServiceRequest().getServiceId(), event.getServiceRequest().getContext());
 	}
 
 	public void setCepCore(CEPCore cepCore) {
@@ -45,7 +55,7 @@ public class EventProcessorForValidate implements EventProcessor{
 	}
 
 	public int getType() {
-		return 0;
+		return EventProcessor.TYPE_LOCAL;
 	}
 
 	public int getWeight() {

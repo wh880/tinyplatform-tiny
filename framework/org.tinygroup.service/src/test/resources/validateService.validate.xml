@@ -12,7 +12,7 @@
 			<validator bean-name="notNullValidator"/>
 		</property-validator>
 		<property-validator name="age" title="年龄">
-			<validator bean-name="integerRangeValidator" sence="china">
+			<validator bean-name="integerRangeValidator" scene="china">
 				<properties>
 					<property name="min" value="22">
 					</property>
@@ -20,7 +20,7 @@
 					</property>
 				</properties>
 			</validator>
-			<validator bean-name="integerRangeValidator" sence="japan">
+			<validator bean-name="integerRangeValidator" scene="japan">
 				<properties>
 					<property name="min" value="18">
 					</property>
@@ -31,7 +31,7 @@
 		</property-validator>
 
 		<property-validator name="grade" title="年级">
-			<validator bean-name="integerRangeValidator" sence="china">
+			<validator bean-name="integerRangeValidator" scene="china">
 				<properties>
 					<property name="min" value="0">
 					</property>
@@ -57,7 +57,7 @@
 			</validator>
 		</property-validator>
 		<property-validator name="number" title="号码">
-			<validator bean-name="integerRangeValidator" sence="china">
+			<validator bean-name="integerRangeValidator" scene="china">
 				<properties>
 					<property name="min" value="0">
 					</property>
@@ -65,7 +65,7 @@
 					</property>
 				</properties>
 			</validator>
-			<validator bean-name="integerRangeValidator" sence="japan">
+			<validator bean-name="integerRangeValidator" scene="japan">
 				<properties>
 					<property name="min" value="0">
 					</property>
