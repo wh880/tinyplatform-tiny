@@ -27,7 +27,8 @@
 
     <application-processors>
         <application-processor bean="fileResolverProcessor"></application-processor>
-        <application-processor bean="PluginMgtProcessor"></application-processor>
+        <application-processor bean="serviceApplicationProcessor"></application-processor>
+		<application-processor bean="flowApplicationProcessor"></application-processor>
         <application-processor bean="dictLoadProcessor"></application-processor>
         <application-processor bean="tinyListenerProcessor"></application-processor>
         <application-processor bean="fileMonitorProcessor"></application-processor>

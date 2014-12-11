@@ -19,7 +19,7 @@
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.serviceplugin</artifactId>
+      <artifactId>org.tinygroup.serviceprocessor</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>

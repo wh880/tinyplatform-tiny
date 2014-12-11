@@ -42,17 +42,12 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.flowplugin</artifactId>
+            <artifactId>org.tinygroup.flowprocessor</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.monitor</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.serviceplugin</artifactId>
+            <artifactId>org.tinygroup.serviceprocessor</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -62,7 +57,7 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.rpc</artifactId>
+            <artifactId>org.tinygroup.cepcorenetty</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

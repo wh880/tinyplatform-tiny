@@ -32,8 +32,6 @@
 				<!-- pageflow -->
 				<ref bean="pageFlowComponentProcessor" />
 				<ref bean="pageFlowFileProcessor" />
-				<!-- plugin -->
-				<ref bean="tinyPluginFileProcessor" />
 
                 <!--dictload-->
                 <ref bean="dictLoadFileProcessor" />

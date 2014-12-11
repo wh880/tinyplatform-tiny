@@ -37,7 +37,6 @@
 				<ref bean="pageFlowComponentProcessor" />
 				<ref bean="pageFlowFileProcessor" />
 				<!-- plugin -->
-				<ref bean="tinyPluginFileProcessor" />
 				<ref bean="processorFileResolver" />
 				<!--dictload <ref bean="dictLoadFileProcessor" /> <ref bean="velocityMacroFileProcessor" 
 					/> -->
