@@ -96,7 +96,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 				registerServices(object, serviceComponent, serviceRegistry,classLoader);
 
 			} catch (Exception e) {
-				logger.errorMessage("实例化ServiceComponent时出错,类名:", e,
+				logger.errorMessage("实例化ServiceComponent时出现异常,类名:", e,
 						serviceComponent.getType());
 			}
 		}

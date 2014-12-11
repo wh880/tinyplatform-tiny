@@ -84,7 +84,7 @@ public class FileObjectInDisk extends AbstractFileObject implements ItemFileObje
 		try {
 			return fileItem.getInputStream();
 		} catch (IOException e) {
-			throw new RuntimeException("获取上传文件输入流出错",e);
+			throw new RuntimeException("获取上传文件输入流出现异常",e);
 		}
 	}
 
@@ -128,7 +128,7 @@ public class FileObjectInDisk extends AbstractFileObject implements ItemFileObje
 		try {
 			return fileItem.getOutputStream();
 		} catch (IOException e) {
-			throw new RuntimeException("获取上传文件输出流出错" ,e);
+			throw new RuntimeException("获取上传文件输出流出现异常" ,e);
 		}
 	}
 

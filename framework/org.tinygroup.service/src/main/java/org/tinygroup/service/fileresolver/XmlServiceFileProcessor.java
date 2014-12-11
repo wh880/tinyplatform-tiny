@@ -87,7 +87,7 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
                 list.add(components);
                 caches.put(fileObject.getAbsolutePath(), components);
             } catch (Exception e) {
-                logger.errorMessage("读取Service文件[{0}]出错", e, fileObject.getAbsolutePath());
+                logger.errorMessage("读取Service文件[{0}]出现异常", e, fileObject.getAbsolutePath());
             }
 
             logger.logMessage(LogLevel.INFO, "读取Service文件[{0}]结束",
@@ -98,7 +98,7 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
             this.loadService(provider.getServiceRegistory(),getFileResolver().getClassLoader());
             logger.logMessage(LogLevel.INFO, "注册Service结束");
         } catch (ServiceLoadException e) {
-            logger.errorMessage("注册Service时出错", e);
+            logger.errorMessage("注册Service时出现异常", e);
         }
         list.clear();//扫描结束后清空服务列表
 

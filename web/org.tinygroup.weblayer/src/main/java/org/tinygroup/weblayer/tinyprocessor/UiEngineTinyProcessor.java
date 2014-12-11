@@ -115,7 +115,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
 
             logger.logMessage(LogLevel.DEBUG, "{}处理完成。", servletPath);
 //        } catch (IOException e) {
-//            logger.errorMessage("{}写入响应信息出错", e, servletPath);
+//            logger.errorMessage("{}写入响应信息出现异常", e, servletPath);
 //            throw new RuntimeException(e);
 //        }
 

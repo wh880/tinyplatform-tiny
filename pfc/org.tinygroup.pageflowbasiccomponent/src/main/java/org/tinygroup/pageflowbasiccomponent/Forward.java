@@ -48,7 +48,7 @@ public class Forward implements ComponentInterface {
 			request.getRequestDispatcher(path).forward(request,
 					webContext.getResponse());
 		} catch (Exception e) {
-			logger.errorMessage("Forward到地址[{}]出错，错误原因：{}", e, path,
+			logger.errorMessage("Forward到地址[{}]出现异常，错误原因：{}", e, path,
 					e.getMessage());
 		}
 	}

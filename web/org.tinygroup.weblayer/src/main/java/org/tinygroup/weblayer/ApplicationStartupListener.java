@@ -144,7 +144,7 @@ public class ApplicationStartupListener implements ServletContextListener {
 					}
 				}
 			} catch (Exception e) {
-				logger.errorMessage("载入应用配置信息时出错，错误原因：{}！", e, e.getMessage());
+				logger.errorMessage("载入应用配置信息时出现异常，错误原因：{}！", e, e.getMessage());
 			}
 
 			logger.logMessage(LogLevel.INFO, "启动应用开始...");
@@ -173,7 +173,7 @@ public class ApplicationStartupListener implements ServletContextListener {
 			fileResolver.addResolvePath(FileResolverUtil
 					.getWebLibJars(fileResolver));
 		} catch (Exception e) {
-			logger.errorMessage("为文件扫描器添加webLibJars时出错", e);
+			logger.errorMessage("为文件扫描器添加webLibJars时出现异常", e);
 		}
 		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 		fileResolver.addFileProcessor(new ConfigurationFileProcessor());

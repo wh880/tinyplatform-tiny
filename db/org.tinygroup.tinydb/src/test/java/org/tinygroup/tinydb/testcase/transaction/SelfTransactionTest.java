@@ -91,7 +91,7 @@ public class SelfTransactionTest extends BaseTest{
 //	}
 	
 	private void throwException(){
-		throw new RuntimeException("主动抛出错误异常");
+		throw new RuntimeException("主动抛出现异常误异常");
 	}
     
 	public void testNestedTransaction() throws TinyDbException{

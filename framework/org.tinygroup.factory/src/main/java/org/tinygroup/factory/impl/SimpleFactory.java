@@ -190,7 +190,7 @@ public class SimpleFactory implements Factory {
 					}
 				}
 			} catch (Exception e) {
-				logger.errorMessage("为属性{0}赋值时出错", e,
+				logger.errorMessage("为属性{0}赋值时出现异常", e,
 						propertyDescriptor.getName());
 			}
 		}

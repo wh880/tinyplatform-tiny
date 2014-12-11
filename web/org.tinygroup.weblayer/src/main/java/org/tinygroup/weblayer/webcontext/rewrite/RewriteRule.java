@@ -149,7 +149,7 @@ public class RewriteRule implements InitializingBean {
             for (RewriteCondition condition : conditions) {
                 MatchResult result = condition.match(ruleMatchResult, conditionMatchResult, request);
 
-                // 判断ornext标记，但对最后一个condition忽略ornext标记，否则会得出错误结果。
+                // 判断ornext标记，但对最后一个condition忽略ornext标记，否则会得出现异常误结果。
                 boolean ornext = i < conditions.length - 1 && condition.getConditionFlags().hasOR();
 
                 if (result == null) {

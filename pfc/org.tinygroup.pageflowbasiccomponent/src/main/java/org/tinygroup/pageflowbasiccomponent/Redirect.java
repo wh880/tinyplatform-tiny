@@ -46,7 +46,7 @@ public class Redirect implements ComponentInterface {
 			WebContext webContext = (WebContext) context;
 			webContext.getResponse().sendRedirect(path);
 		} catch (Exception e) {
-			logger.errorMessage("Redirect到地址[{}]出错，错误原因：{}", e, path,
+			logger.errorMessage("Redirect到地址[{}]出现异常，错误原因：{}", e, path,
 					e.getMessage());
 		}
 	}

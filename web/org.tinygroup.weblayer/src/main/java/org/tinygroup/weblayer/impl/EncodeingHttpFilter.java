@@ -102,7 +102,7 @@ public class EncodeingHttpFilter implements Filter {
 				}
 			}
 		} catch (UnsupportedEncodingException e) {
-			logger.errorMessage("设置编码时出错。", e);
+			logger.errorMessage("设置编码时出现异常。", e);
 		}
 		chain.doFilter(request, response);
 	}

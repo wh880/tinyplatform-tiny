@@ -192,7 +192,7 @@ public class BufferedResponseImpl extends AbstractResponseWrapper {
     }
 
     /**
-     * 清除所有buffers，常用于显示出错信息。
+     * 清除所有buffers，常用于显示出现异常信息。
      *
      * @throws IllegalStateException 如果response已经commit
      */

@@ -54,8 +54,8 @@ public class TinyProcessorWapper extends AbstractTinyProcessor {
 					servletConfig.setServletConfig(servlet.getServletConfig());
 					servlet.init(servletConfig);
 				} catch (ServletException e) {
-					logger.errorMessage("初始化servlet:{}出错", e, servletBeanName);
-					throw new RuntimeException("初始化servlet出错", e);
+					logger.errorMessage("初始化servlet:{}出现异常", e, servletBeanName);
+					throw new RuntimeException("初始化servlet出现异常", e);
 				}
 			} else {
 				throw new RuntimeException("找不到bean名称：{}对应的servlet");
@@ -72,8 +72,8 @@ public class TinyProcessorWapper extends AbstractTinyProcessor {
 			servlet.service(request, response);
 //		} catch (Exception e) {
 //			e.printStackTrace();
-////			logger.errorMessage("servlet:{}执行出错", e, servlet.getServletName());
-//			throw new RuntimeException("servlet执行出错", e);
+////			logger.errorMessage("servlet:{}执行出现异常", e, servlet.getServletName());
+//			throw new RuntimeException("servlet执行出现异常", e);
 //		}
 
 	}

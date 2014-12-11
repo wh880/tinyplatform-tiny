@@ -159,7 +159,7 @@ public class UploadServiceImpl extends BeanSupport implements UploadService {
 	 *            HTTP请求
 	 * @return <code>FileItem</code>的列表，按其输入的顺序罗列
 	 * @throws UploadException
-	 *             如果解析时出错
+	 *             如果解析时出现异常
 	 */
 	public FileItem[] parseRequest(HttpServletRequest request) {
 		return parseRequest(request, null);
@@ -184,7 +184,7 @@ public class UploadServiceImpl extends BeanSupport implements UploadService {
 	 *            用来解析HTTP header的编码字符集
 	 * @return <code>FileItem</code>的列表，按其输入的顺序罗列
 	 * @throws UploadException
-	 *             如果解析时出错
+	 *             如果解析时出现异常
 	 */
 	public FileItem[] parseRequest(HttpServletRequest request,
 			UploadParameters params) {

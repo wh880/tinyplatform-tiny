@@ -61,7 +61,7 @@ public class ForemanSelectOneWorker extends AbstractForeman {
 			logger.logMessage(LogLevel.DEBUG,"worker:{0}执行完成",worker.getId());
 			return w;
 		} catch (Exception e) {
-			logger.errorMessage("worker:{0}执行时出错", e, work.getId());
+			logger.errorMessage("worker:{0}执行时出现异常", e, work.getId());
 			if (workerList.size() == 0) {
 				throw new PCRuntimeException(String.format("没有对应于work:%s的工人！",
 						work.getType()),e);

@@ -51,7 +51,7 @@ public class ServiceTestUtil {
 //		try {
 //			manager.addHandler(excption, handler);
 //		} catch (ClassNotFoundException e) {
-//			System.out.println(String.format("添加Handler时出错,Exception:%s未找到",
+//			System.out.println(String.format("添加Handler时出现异常,Exception:%s未找到",
 //					excption));
 //		}
 //	}

@@ -306,7 +306,7 @@ public final class CommandSystem {
 				out.write(str.getBytes());
 			}
 		} catch (IOException e) {
-			logger.errorMessage("内容({0})输入时出错：。", e, str);
+			logger.errorMessage("内容({0})输入时出现异常：。", e, str);
 		}
 	}
 

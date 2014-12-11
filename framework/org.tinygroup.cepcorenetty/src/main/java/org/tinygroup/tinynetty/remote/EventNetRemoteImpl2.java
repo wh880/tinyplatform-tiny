@@ -55,7 +55,7 @@ public class EventNetRemoteImpl2 implements CEPCoreRemoteInterface {
 			server.stop();
 			logger.logMessage(LogLevel.INFO, "本地节点服务关闭完成");
 		} catch (Exception e) {
-			logger.errorMessage("本地节点关闭时出错,Node:{0}", e, node);
+			logger.errorMessage("本地节点关闭时出现异常,Node:{0}", e, node);
 		}
 
 	}

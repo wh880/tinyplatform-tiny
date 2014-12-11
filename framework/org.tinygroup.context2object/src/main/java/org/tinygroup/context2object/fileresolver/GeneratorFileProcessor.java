@@ -134,7 +134,7 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 				// return LoaderManagerFactory.getManager()
 				// .getClass(configItem.getClassName()).newInstance();
 			} catch (Exception e) {
-				logger.errorMessage("generator配置文件加载时，创建类:{0}出错", e,
+				logger.errorMessage("generator配置文件加载时，创建类:{0}出现异常", e,
 						configItem.getClassName());
 				throw new RuntimeException(e);
 			}

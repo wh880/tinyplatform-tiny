@@ -105,7 +105,7 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 
 			} catch (Exception e) {
 				logger.errorMessage(
-						"创建tiny-processor处理器：{}出错，由于其类名称：{}不能进行实例化", e,
+						"创建tiny-processor处理器：{}出现异常，由于其类名称：{}不能进行实例化", e,
 						processorId, processorClassName);
 				throw new RuntimeException(e);
 			}

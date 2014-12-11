@@ -1349,7 +1349,7 @@ public class SystemUtil {
      * <code>null</code>。
      *
      * @param name  属性名
-     * @param quiet 安静模式，不将出错信息打在<code>System.err</code>中
+     * @param quiet 安静模式，不将出现异常信息打在<code>System.err</code>中
      * @return 属性值或<code>null</code>
      */
     private static String getSystemProperty(String name, boolean quiet) {

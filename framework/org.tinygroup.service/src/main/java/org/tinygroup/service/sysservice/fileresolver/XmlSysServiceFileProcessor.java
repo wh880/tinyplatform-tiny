@@ -97,7 +97,7 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 				list.add(components);
 				caches.put(fileObject.getAbsolutePath(), components);
 			} catch (Exception e) {
-				logger.errorMessage("读取SysService文件[{0}]出错", e,
+				logger.errorMessage("读取SysService文件[{0}]出现异常", e,
 						fileObject.getAbsolutePath());
 			}
 
@@ -109,7 +109,7 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 			this.loadService(provider.getServiceRegistory(),getFileResolver().getClassLoader());
 			logger.logMessage(LogLevel.INFO, "注册SysService结束");
 		} catch (ServiceLoadException e) {
-			logger.errorMessage("注册SysService时出错", e);
+			logger.errorMessage("注册SysService时出现异常", e);
 		}
 		list.clear();//扫描结束后清空服务列表
 	}

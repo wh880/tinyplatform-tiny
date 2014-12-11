@@ -45,7 +45,7 @@ public class CommandFileProcessor extends AbstractFileProcessor {
 				CommandSystem.getInstance(commands.getPackageName(), commands,
 						System.out);
 			} catch (Exception e) {
-				logger.errorMessage("加载Commands文件[{0}]出错", e,
+				logger.errorMessage("加载Commands文件[{0}]出现异常", e,
 						fileObject.getAbsolutePath());
 			}
 

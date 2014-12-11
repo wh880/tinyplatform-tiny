@@ -29,7 +29,7 @@ public class Parameter {
 	private String shortDescription;
 	private String description;
 	@XStreamAsAttribute
-	private boolean necessary;// 如果默认值为空，且necessary为true，则会出错
+	private boolean necessary;// 如果默认值为空，且necessary为true，则会出现异常
 
 	public String getShortDescription() {
 		return shortDescription;

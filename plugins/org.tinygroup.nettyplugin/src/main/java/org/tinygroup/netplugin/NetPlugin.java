@@ -125,7 +125,7 @@ public class NetPlugin extends AbstractConfiguration implements Plugin {
 				serverMaps.put(serverConfig.getName(), server);
 				server.run();
 			} catch (Exception e) {
-				logger.errorMessage("执行默认服务端启动程序时出错:构造服务端对象实例失败,服务端类型:{0}", e,serverConfig.getType());
+				logger.errorMessage("执行默认服务端启动程序时出现异常:构造服务端对象实例失败,服务端类型:{0}", e,serverConfig.getType());
 			}
 		}
 	}
@@ -138,7 +138,7 @@ public class NetPlugin extends AbstractConfiguration implements Plugin {
 				clientMaps.put(clientConfig.getName(), clientThread);
 				DaemonUtils.daemon(clientConfig.getName(), clientThread);
 			} catch (Exception e) {
-				logger.errorMessage("执行默认客户端启动程序时出错:构造客户端对象实例失败,客户端类型:{0}", e,clientConfig.getType());
+				logger.errorMessage("执行默认客户端启动程序时出现异常:构造客户端对象实例失败,客户端类型:{0}", e,clientConfig.getType());
 			}
 		}
 	}
@@ -148,7 +148,7 @@ public class NetPlugin extends AbstractConfiguration implements Plugin {
 			try {
 				serverMaps.get(name).stop();
 			} catch (Exception e) {
-				logger.errorMessage("执行默认服务端停止程序时出错,服务端名:{0}", e,name);
+				logger.errorMessage("执行默认服务端停止程序时出现异常,服务端名:{0}", e,name);
 			}
 		}
 	}
@@ -158,7 +158,7 @@ public class NetPlugin extends AbstractConfiguration implements Plugin {
 			try {
 				clientMaps.get(name).stop();
 			} catch (Exception e) {
-				logger.errorMessage("执行默客户端停止程序时出错,客户端名:{0}", e,name);
+				logger.errorMessage("执行默客户端停止程序时出现异常,客户端名:{0}", e,name);
 			}
 		}
 	}

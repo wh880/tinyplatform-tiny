@@ -45,7 +45,7 @@ public class BeanWrapperHolder {
 								(PropertyEditor) ((Class) customEditors
 										.get(requiredType)).newInstance());
 					} catch (Exception e) {
-						throw new RuntimeException("注册客户自定义类型转换出错", e);
+						throw new RuntimeException("注册客户自定义类型转换出现异常", e);
 					}
 				}
 				if (customEditors.get(requiredType) instanceof PropertyEditor) {

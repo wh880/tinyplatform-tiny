@@ -53,7 +53,7 @@ public interface ParserWebContext extends WebContext {
     /** 取得用来转换参数类型的propertyEditor注册器。 */
     PropertyEditorRegistrar getPropertyEditorRegistrar();
 
-    /** 类型转换出错时，是否不报错，而是返回默认值。 */
+    /** 类型转换出现异常时，是否不报错，而是返回默认值。 */
     boolean isConverterQuiet();
 
     /** 是否自动执行Upload。 */

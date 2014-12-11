@@ -107,7 +107,7 @@ public class XmlValidatorManagerImpl extends AbstractValidatorManger implements
 					putBasicValidators(name, validator);
 				} catch (Exception e) {
 					logger.errorMessage(
-							"创建Validator时出错 name:{0},bean:{1},class:{2}", e,
+							"创建Validator时出现异常 name:{0},bean:{1},class:{2}", e,
 							name, config.getValidatorBeanName(),
 							config.getValidatorClassName());
 					throw new RuntimeException(e);
@@ -139,7 +139,7 @@ public class XmlValidatorManagerImpl extends AbstractValidatorManger implements
 					removeBasicValidators(name, validator);
 				} catch (Exception e) {
 					logger.errorMessage(
-							"创建Validator时出错 name:{0},bean:{1},class:{2}", e,
+							"创建Validator时出现异常 name:{0},bean:{1},class:{2}", e,
 							name, config.getValidatorBeanName(),
 							config.getValidatorClassName());
 					throw new RuntimeException(e);

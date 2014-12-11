@@ -109,7 +109,7 @@ public class CEPCoreAopManagerImpl implements CEPCoreAopManager{
 		try {
 			adapter = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(bean);
 		} catch (Exception e) {
-			logger.logMessage(LogLevel.ERROR, "初始化AOP处理器{0}出错:{1}",bean,e.getMessage());
+			logger.logMessage(LogLevel.ERROR, "初始化AOP处理器{0}出现异常:{1}",bean,e.getMessage());
 			return;
 		}
 		CEPCoreAopAdapterContainer adapterContainer = new CEPCoreAopAdapterContainer(adapter, servicePattern);

@@ -94,8 +94,8 @@ public class TinyFilterWrapper extends AbstractTinyFilter implements
 				try {
 					filter.init(new TinyFilterConfig(getInitParamMap()));
 				} catch (ServletException e) {
-					logger.errorMessage("初始化filter:{}出错", e, beanName);
-					throw new RuntimeException("初始化filter出错", e);
+					logger.errorMessage("初始化filter:{}出现异常", e, beanName);
+					throw new RuntimeException("初始化filter出现异常", e);
 				}
 				filters.add(filter);
 			}
@@ -120,7 +120,7 @@ public class TinyFilterWrapper extends AbstractTinyFilter implements
 			try {
 				filterChain.doFilter(request, response);
 			} catch (Exception e) {
-				throw new RuntimeException("过滤器链执行出错", e);
+				throw new RuntimeException("过滤器链执行出现异常", e);
 			}
 		}
 	}

@@ -175,7 +175,7 @@ public class ClassNameObjectGenerator implements
 					// }
 					// 以上处理均未进入，则该类型为其他类型，需要进行递归
 				} catch (Exception e) {
-					logger.errorMessage("为属性{0}赋值时出错", e, descriptor.getName());
+					logger.errorMessage("为属性{0}赋值时出现异常", e, descriptor.getName());
 				}
 			}
 
@@ -190,7 +190,7 @@ public class ClassNameObjectGenerator implements
 								typeConverter.getObject(propertyValue));
 						allPropertyNull = false;
 					} catch (Exception e) {
-						logger.errorMessage("为属性{0}赋值时出错", e,
+						logger.errorMessage("为属性{0}赋值时出现异常", e,
 								descriptor.getName());
 					}
 				}
@@ -240,7 +240,7 @@ public class ClassNameObjectGenerator implements
 						}
 					}
 				} catch (Exception e) {
-					logger.errorMessage("为属性{0}赋值时出错", e, descriptor.getName());
+					logger.errorMessage("为属性{0}赋值时出现异常", e, descriptor.getName());
 				}
 			}
 
@@ -375,7 +375,7 @@ public class ClassNameObjectGenerator implements
 				}
 				continue;
 			} catch (Exception e) {
-				logger.errorMessage("为属性{0}赋值时出错", e, descriptor.getName());
+				logger.errorMessage("为属性{0}赋值时出现异常", e, descriptor.getName());
 			}
 		}
 		// objecList的数据放入collection

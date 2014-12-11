@@ -58,7 +58,7 @@ public class ParserTinyFilter extends AbstractTinyFilter {
 	private static final String HTML_FIELD_SUFFIX = "htmlFieldSuffix";
 	private PropertyEditorRegistrarsSupport propertyEditorRegistrars = new PropertyEditorRegistrarsSupport();
 	/**
-	 * 类型转换出错时，是否不报错，而是返回默认值。
+	 * 类型转换出现异常时，是否不报错，而是返回默认值。
 	 */
 	private Boolean converterQuiet;
 	/**
@@ -162,7 +162,7 @@ public class ParserTinyFilter extends AbstractTinyFilter {
 	private void init() {
 
 		if (converterQuiet == null) {
-			// 类型转换出错时，是否不报错，而是返回默认值。
+			// 类型转换出现异常时，是否不报错，而是返回默认值。
 			converterQuiet = ObjectUtil.defaultIfNull(
 					Boolean.parseBoolean(get(CONVERTER_QUIET_PARAM)),
 					CONVERTER_QUIET_DEFAULT);

@@ -23,13 +23,13 @@ package org.tinygroup.bundle;
 interface BatchBundleManager {
 
     /**
-     * 启动所有Bundle，如果有Bundle启动出错，则记录日志，不影响其它Bundle启动
+     * 启动所有Bundle，如果有Bundle启动出现异常，则记录日志，不影响其它Bundle启动
      */
     void start();
 
 
     /**
-     * 停止所有Bundle，如果有Bundle启动出错，则记录日志，不影响其它Bundle停止
+     * 停止所有Bundle，如果有Bundle启动出现异常，则记录日志，不影响其它Bundle停止
      */
     void stop();
 

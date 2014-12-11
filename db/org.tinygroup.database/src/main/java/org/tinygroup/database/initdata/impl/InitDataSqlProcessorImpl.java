@@ -15,9 +15,6 @@
  */
 package org.tinygroup.database.initdata.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.database.config.initdata.InitData;
 import org.tinygroup.database.config.initdata.Record;
 import org.tinygroup.database.config.initdata.ValuePair;
@@ -30,6 +27,9 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 	private Logger logger = LoggerFactory
@@ -136,7 +136,7 @@ public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 		}
 		if (times != keys.size()) {
 			logger.logMessage(LogLevel.ERROR,
-					"解析生成delete语句时出错,主键数不匹配,应有主键数{0},实际{1}", keys.size(), times);
+					"解析生成delete语句时出现异常,主键数不匹配,应有主键数{0},实际{1}", keys.size(), times);
 			return "";
 		}
 		int index = where.indexOf("AND");

@@ -55,7 +55,7 @@ public class CepPlugin extends AbstractConfiguration implements Plugin {
 //			cepcore.setConfig(applicationConfig);
 			cepcore.start();
 		} catch (Exception e) {
-			logger.errorMessage("CEP 启动出错", e);
+			logger.errorMessage("CEP 启动出现异常", e);
 		}
 	}
 
@@ -63,7 +63,7 @@ public class CepPlugin extends AbstractConfiguration implements Plugin {
 		try {
 			cepcore.stop();
 		} catch (Exception e) {
-			logger.errorMessage("CEP 停止出错", e);
+			logger.errorMessage("CEP 停止出现异常", e);
 		}
 	}
 

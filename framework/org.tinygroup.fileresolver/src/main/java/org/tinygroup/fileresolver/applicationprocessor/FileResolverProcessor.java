@@ -64,7 +64,7 @@ public class FileResolverProcessor implements ApplicationProcessor {
 		try {
 			fileResolver.addResolvePath(FileResolverUtil.getWebLibJars(fileResolver));
 		} catch (Exception e) {
-			logger.errorMessage("为文件扫描器添加webLibJars时出错",e);
+			logger.errorMessage("为文件扫描器添加webLibJars时出现异常",e);
 		}
 		fileResolver.resolve();
 	}

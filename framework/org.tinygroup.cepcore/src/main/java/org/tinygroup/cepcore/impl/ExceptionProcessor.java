@@ -55,7 +55,7 @@ public class ExceptionProcessor extends AbstractConfiguration {
 				manager.addHandler(exception, exceptionHandler);
 			} catch (ClassNotFoundException e) {
 				logger.logMessage(LogLevel.INFO,
-						"添加exception-handler出错,Exception类:{0}找不到", exception,
+						"添加exception-handler出现异常,Exception类:{0}找不到", exception,
 						handlerBean);
 				continue;
 			}

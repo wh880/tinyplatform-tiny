@@ -50,7 +50,7 @@ public class ManagerTest extends TestCase {
 					excption,
 					handler);
 		} catch (ClassNotFoundException e) {
-			System.out.println(String.format("添加Handler时出错,Exception:%s未找到",excption));
+			System.out.println(String.format("添加Handler时出现异常,Exception:%s未找到",excption));
 		}
 	}
 	

@@ -104,7 +104,7 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 					installProcessor.process(dbLanguage);
 				} catch (Exception e) {
 					logger.errorMessage(
-							"执行installProcessor时出错,processor:{0},language:{1}",
+							"执行installProcessor时出现异常,processor:{0},language:{1}",
 							e, installProcessor.getClass(), dbLanguage);
 				}
 

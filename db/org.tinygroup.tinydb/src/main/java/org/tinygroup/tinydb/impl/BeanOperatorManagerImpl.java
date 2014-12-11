@@ -74,7 +74,7 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager,Initializing
 			operator.setManager(this);
 			return operator;
 		} catch (Exception e) {
-			throw new TinyDbException("获取dboperator实例出错", e);
+			throw new TinyDbException("获取dboperator实例出现异常", e);
 		}
 	}
 

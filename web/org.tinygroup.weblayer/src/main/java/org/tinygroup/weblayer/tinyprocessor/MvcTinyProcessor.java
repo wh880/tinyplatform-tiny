@@ -91,7 +91,7 @@ public class MvcTinyProcessor extends AbstractTinyProcessor {
 				logger.logMessage(LogLevel.ERROR, "请求路径:{}找不到处理映射", urlString);
 			}
 //		} catch (Exception e) {
-//			logger.errorMessage("tiny-mvc执行出错", e);
+//			logger.errorMessage("tiny-mvc执行出现异常", e);
 //			throw new RuntimeException(e);
 //		}
 	}

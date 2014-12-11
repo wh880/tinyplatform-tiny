@@ -65,7 +65,7 @@ public class TextCell {
         try {
             return s.getBytes("GBK").length;
         } catch (UnsupportedEncodingException e) {
-            logger.errorMessage("获取字符串{0}的gbk编码长度时出错", e, s);
+            logger.errorMessage("获取字符串{0}的gbk编码长度时出现异常", e, s);
         }
         return 0;
     }

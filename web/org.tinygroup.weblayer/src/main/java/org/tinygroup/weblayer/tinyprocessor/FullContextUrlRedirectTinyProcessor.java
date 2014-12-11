@@ -106,7 +106,7 @@ public class FullContextUrlRedirectTinyProcessor extends AbstractTinyProcessor {
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			}
 //		} catch (IOException e) {
-//			logger.errorMessage("{}写入响应信息出错", e, servletPath);
+//			logger.errorMessage("{}写入响应信息出现异常", e, servletPath);
 //			throw new RuntimeException(e);
 //		}
 
