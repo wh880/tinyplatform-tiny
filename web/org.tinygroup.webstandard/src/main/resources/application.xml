@@ -159,8 +159,8 @@
 
         </static-classes>
         <platform-beans>
-            <bean name="pluginManager" type="org.tinygroup.plugin.impl.PluginManagerImpl"></bean>
-            <!--<bean name="user" type="org.tinygroup.usermanager.bean.User"></bean> -->
+           <!-- <bean name="pluginManager" type="org.tinygroup.plugin.impl.PluginManagerImpl"></bean>
+            <bean name="user" type="org.tinygroup.usermanager.bean.User"></bean> -->
         </platform-beans>
         <spring-beans>
             <!--<bean name="object2Json" type="org.tinygroup.usermanager.component.Object2Json"></bean> -->
