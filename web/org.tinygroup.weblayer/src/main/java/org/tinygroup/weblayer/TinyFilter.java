@@ -60,7 +60,7 @@ public interface TinyFilter extends Ordered, WebContextFactory<WebContext> {
     /**
      * 销毁tinyFilter
      */
-    void destoryTinyFilter();
+    void destroyTinyFilter();
 
     /**
      * 是否匹配

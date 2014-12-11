@@ -182,7 +182,7 @@ public class TinyFilterManagerImpl implements TinyFilterManager {
 
 	public void destoryTinyResources() {
 		for (TinyFilter tinyFilter : tinyFilters) {
-			tinyFilter.destoryTinyFilter();
+			tinyFilter.destroyTinyFilter();
 		}
 		configManager = null;
 		processorXmlNodes = null;
