@@ -186,8 +186,8 @@ public class ServiceProxy implements Service {
 		try {
 			return objectInstance.getClass().getMethod(methodName, argsType);
 		} catch (Exception e) {
-			logger.errorMessage("获取方法时出错,方法名:{methodName}", e, methodName);
-			throw new RuntimeException("获取方法时出错,方法名:{" + methodName + "}");
+			logger.errorMessage("获取方法时出现异常,方法名:{methodName}", e, methodName);
+			throw new RuntimeException("获取方法时出现异常,方法名:{" + methodName + "}");
 		}
 
 	}

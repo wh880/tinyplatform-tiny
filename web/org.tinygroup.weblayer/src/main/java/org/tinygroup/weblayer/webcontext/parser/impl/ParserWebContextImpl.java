@@ -80,12 +80,12 @@ public class ParserWebContextImpl extends AbstractWebContextWrapper implements P
         this.propertyEditorRegistrar = propertyEditorRegistrar;
     }
 
-    /** 类型转换出错时，是否不报错，而是返回默认值。 */
+    /** 类型转换出现异常时，是否不报错，而是返回默认值。 */
     public boolean isConverterQuiet() {
         return converterQuiet;
     }
 
-    /** 设置类型转换出错时，是否不报错，而是返回默认值。 */
+    /** 设置类型转换出现异常时，是否不报错，而是返回默认值。 */
     public void setConverterQuiet(boolean converterQuiet) {
         this.converterQuiet = converterQuiet;
     }

@@ -41,9 +41,9 @@ import org.tinygroup.weblayer.webcontext.TwoPhaseCommitWebContext;
  */
 public interface LazyCommitWebContext extends TwoPhaseCommitWebContext {
     /**
-     * 判断当前请求是否已出错。
+     * 判断当前请求是否已出现异常。
      *
-     * @return 如果出错，则返回<code>true</code>
+     * @return 如果出现异常，则返回<code>true</code>
      */
     boolean isError();
 

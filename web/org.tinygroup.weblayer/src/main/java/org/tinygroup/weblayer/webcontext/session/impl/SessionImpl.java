@@ -593,7 +593,7 @@ public class SessionImpl implements HttpSession {
                             unreachableCode();
                     }
                 } catch (Exception e) {
-                    // 避免因listener出错导致应用的退出。
+                    // 避免因listener出现异常导致应用的退出。
                     log.error("Listener \"" + listener.getClass().getSimpleName() + "\" failed", e);
                 }
             }

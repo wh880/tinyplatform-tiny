@@ -139,9 +139,9 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			remoteServer = (RmiServer) remoteRegistry.lookup(getKeyName(
 					remoteHostName, remotePort + ""));
 		} catch (NotBoundException e) {
-			logger.errorMessage("获取远端服务器:" + remoteHostName + "时出错,该对象未曾注册", e);
+			logger.errorMessage("获取远端服务器:" + remoteHostName + "时出现异常,该对象未曾注册", e);
 			throw new RuntimeException("获取远端服务器:" + remoteHostName
-					+ "时出错,该对象未曾注册", e);
+					+ "时出现异常,该对象未曾注册", e);
 		}
 		return remoteRegistry;
 	}
@@ -219,7 +219,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			remoteServer = (RmiServer) remoteRegistry.lookup(getKeyName(
 					remoteHostName, remotePort + ""));
 		} catch (NotBoundException e) {
-			logger.errorMessage("获取远端服务器:" + remoteHostName + "时出错,该对象未曾注册", e);
+			logger.errorMessage("获取远端服务器:" + remoteHostName + "时出现异常,该对象未曾注册", e);
 		} catch (RemoteException e1) {
 			logger.errorMessage("连接远端服务器:" + remoteHostName + "失败", e1);
 		}
@@ -229,14 +229,14 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 				remoteServer.registerRemoteObject(
 						registeredLocalObjectMap.get(name), name);
 			} catch (RemoteException e) {
-				logger.errorMessage("向远端服务器重新注册对象name:{}时出错", e, name);
+				logger.errorMessage("向远端服务器重新注册对象name:{}时出现异常", e, name);
 			}
 		}
 		logger.logMessage(LogLevel.DEBUG, "将本地对象重新注册至远端服务器完成");
 		try {
 			bindThis();
 		} catch (RemoteException e) {
-			logger.errorMessage("向远端服务器重新绑定当前服务器信息时出错", e);
+			logger.errorMessage("向远端服务器重新绑定当前服务器信息时出现异常", e);
 		}
 	}
 
@@ -456,7 +456,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 					return (T) object;
 				}
 			} catch (RemoteException e) {
-				logger.errorMessage("获取对象Name:{}时出错", e, sName);
+				logger.errorMessage("获取对象Name:{}时出现异常", e, sName);
 			}
 		}
 		for (String sName : registeredLocalObjectMap.keySet()) {
@@ -466,7 +466,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 					return (T) object;
 				}
 			} catch (RemoteException e) {
-				logger.errorMessage("获取对象Name:{}时出错", e, sName);
+				logger.errorMessage("获取对象Name:{}时出现异常", e, sName);
 			}
 		}
 		if (remoteServer != null) {
@@ -484,7 +484,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 					result.add((T) object);
 				}
 			} catch (RemoteException e) {
-				logger.errorMessage("获取对象Name:{}时出错", e, sName);
+				logger.errorMessage("获取对象Name:{}时出现异常", e, sName);
 			}
 		}
 	}

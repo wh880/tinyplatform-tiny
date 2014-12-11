@@ -59,7 +59,7 @@ public class BundleFileProcessor extends AbstractFileProcessor {
                     logger.logMessage(LogLevel.INFO, "读取Bundle配置文件:{0}完成",
                             file.getFileName());
                 } catch (BundleException e) {
-                    logger.errorMessage("读取Bundle:{0}时出错", e, oldBundle.getName());
+                    logger.errorMessage("读取Bundle:{0}时出现异常", e, oldBundle.getName());
                 }
             }
             BundleDefine bundle = (BundleDefine) stream.fromXML(file
@@ -82,7 +82,7 @@ public class BundleFileProcessor extends AbstractFileProcessor {
 					logger.logMessage(LogLevel.INFO, "移除Bundle配置文件:{0}完成",
 							file.getFileName());
 				} catch (BundleException e) {
-					logger.errorMessage("移除Bundle:{0}时出错", e, bundle.getName());
+					logger.errorMessage("移除Bundle:{0}时出现异常", e, bundle.getName());
 				}
 				caches.remove(file.getAbsolutePath());
 			}

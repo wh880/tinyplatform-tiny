@@ -94,7 +94,7 @@ public class ObjectToText<T> implements Converter<List<T>, String> {
                 // 将第n列的数据加入列表
                 rows.get(i + 1).addCell(dataCell);
             } catch (Exception e) {
-                logger.errorMessage("读取第{0}列数据的属性{1}时出错", e, i, property);
+                logger.errorMessage("读取第{0}列数据的属性{1}时出现异常", e, i, property);
             }
         }
         return maxLength;

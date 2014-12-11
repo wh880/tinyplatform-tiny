@@ -60,7 +60,7 @@ public class CEPProcessor implements ApplicationProcessor{
 		try {
 			cep.start();
 		} catch (Exception e) {
-			logger.errorMessage("CEP 启动出错", e);
+			logger.errorMessage("CEP 启动出现异常", e);
 		}
 	}
 
@@ -72,7 +72,7 @@ public class CEPProcessor implements ApplicationProcessor{
 		try {
 			cep.stop();
 		} catch (Exception e) {
-			logger.errorMessage("CEP 停止出错", e);
+			logger.errorMessage("CEP 停止出现异常", e);
 		}
 	}
 

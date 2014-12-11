@@ -269,9 +269,9 @@ final class TG_EndpointMethodHandler {
     			logger.logMessage(LogLevel.DEBUG, "结果报文体为:");
     			logger.logMessage(LogLevel.DEBUG, baos.toString());
             } catch (XMLStreamException e1) {
-            	logger.errorMessage("解析结果报文体时出错",e1);
+            	logger.errorMessage("解析结果报文体时出现异常",e1);
     		} catch (FactoryConfigurationError e1) {
-    			logger.errorMessage("解析结果报文体时出错",e1);
+    			logger.errorMessage("解析结果报文体时出现异常",e1);
     		}
 //        } catch (Exception e) {
 //            Throwable cause = e.getCause();

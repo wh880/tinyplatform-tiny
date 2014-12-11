@@ -118,7 +118,7 @@ public abstract class Client implements Netty {
 
         connectFuture.awaitUninterruptibly().getChannel();
 
-        // 等待运行，直接连接关闭或出错
+        // 等待运行，直接连接关闭或出现异常
         connectFuture.getChannel().getCloseFuture().awaitUninterruptibly();
         synchronized (CLOSED) {
             status = CLOSED;

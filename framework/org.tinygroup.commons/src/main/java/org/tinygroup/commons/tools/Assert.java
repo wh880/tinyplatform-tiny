@@ -33,7 +33,7 @@ import org.tinygroup.commons.exceptions.UnreachableCodeException;
  * <li>Assertion是用来明确设置程序中的条件和约定的，它是一种程序员之间交流的工具，而不是和最终用户交流的工具。</li>
  * <li>一个经过完整单元测试的正确程序，不应该使任何一条assertion失败。</li>
  * <li>应避免过于复杂的assertion条件，而占用过多的运行时间。除非Assertion失败。</li>
- * <li>Assertion的出错信息不是给最终用户看的，因此没必要写得过于详细，更没必要考虑国际化的问题，以至于浪费CPU的时间。
+ * <li>Assertion的出现异常信息不是给最终用户看的，因此没必要写得过于详细，更没必要考虑国际化的问题，以至于浪费CPU的时间。
  * 例如下面的语句是要避免的：
  * <p/>
  * <pre>

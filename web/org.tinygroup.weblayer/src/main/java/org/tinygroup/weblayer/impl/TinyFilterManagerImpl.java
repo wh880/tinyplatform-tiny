@@ -114,7 +114,7 @@ public class TinyFilterManagerImpl implements TinyFilterManager {
 		try {
 			filter = instanceFilter(filterClassName);
 		} catch (Exception e) {
-			logger.errorMessage("创建tiny-filter处理器：{}出错，由于其类名称：{}不能进行实例化", e,
+			logger.errorMessage("创建tiny-filter处理器：{}出现异常，由于其类名称：{}不能进行实例化", e,
 					filterId, filterClassName);
 			throw new RuntimeException(e);
 		}
@@ -182,7 +182,7 @@ public class TinyFilterManagerImpl implements TinyFilterManager {
 
 	public void destoryTinyResources() {
 		for (TinyFilter tinyFilter : tinyFilters) {
-			tinyFilter.destoryTinyFilter();
+			tinyFilter.destroyTinyFilter();
 		}
 		configManager = null;
 		processorXmlNodes = null;

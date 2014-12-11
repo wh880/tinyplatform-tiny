@@ -76,7 +76,7 @@ public class CEPCoreRMIRemoteImpl implements CEPCoreRemoteInterface {
 			UnicastRemoteObject.unexportObject(registry, true);
 			// System.exit(0);
 		} catch (Exception e) {
-			logger.errorMessage("本地节点关闭RMI服务时出错,Node:{0}", e, node);
+			logger.errorMessage("本地节点关闭RMI服务时出现异常,Node:{0}", e, node);
 		}
 		logger.logMessage(LogLevel.INFO, "本地节点服务关闭完成");
 

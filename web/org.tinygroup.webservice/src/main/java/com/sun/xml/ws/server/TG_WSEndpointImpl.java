@@ -299,9 +299,9 @@ public final class TG_WSEndpointImpl<T> extends WSEndpoint<T> {
         			tinylogger.logMessage(LogLevel.DEBUG, "请求体为:");
         			tinylogger.logMessage(LogLevel.DEBUG, baos.toString());
                 } catch (XMLStreamException e1) {
-                	tinylogger.errorMessage("解析请求体时出错",e1);
+                	tinylogger.errorMessage("解析请求体时出现异常",e1);
         		} catch (FactoryConfigurationError e1) {
-        			tinylogger.errorMessage("解析请求体时出错",e1);
+        			tinylogger.errorMessage("解析请求体时出现异常",e1);
         		}
                 
                 try {

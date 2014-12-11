@@ -124,7 +124,7 @@ public class CallMethod implements ComponentInterface {
 		try {
 			return method.invoke(obj, args);
 		} catch (Exception e) {
-			String info = String.format("执行bean:%s中方法%s时出错", beanName,
+			String info = String.format("执行bean:%s中方法%s时出现异常", beanName,
 					methodName);
 			logger.logMessage(LogLevel.ERROR, info);
 			throw new RuntimeException(e);
@@ -149,7 +149,7 @@ public class CallMethod implements ComponentInterface {
 		try {
 			return method.invoke(clazz, args);
 		} catch (Exception e) {
-			String info = String.format("执行class:%s中方法%s时出错", className,
+			String info = String.format("执行class:%s中方法%s时出现异常", className,
 					methodName);
 			logger.logMessage(LogLevel.ERROR, info);
 			throw new RuntimeException(e);

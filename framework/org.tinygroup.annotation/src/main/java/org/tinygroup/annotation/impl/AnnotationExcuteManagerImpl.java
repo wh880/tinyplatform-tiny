@@ -248,7 +248,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 			Object instance=Class.forName(processorBean.getType()).newInstance();
 			return instance; 
 		} catch (Exception e) {
-			logger.errorMessage("type:[{0}]实例化出错", e,processorBean.getType());
+			logger.errorMessage("type:[{0}]实例化出现异常", e,processorBean.getType());
 		}
 		return null;
 	}

@@ -81,7 +81,7 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "国际化资源配置文件[{0}]，加载完毕。",
 					fileObject.getAbsolutePath());
 		} catch (Exception e) {
-			logger.errorMessage("载入资源文件[{}]出错！", e, fileObject.getAbsolutePath());
+			logger.errorMessage("载入资源文件[{}]出现异常！", e, fileObject.getAbsolutePath());
 		}
 	}
 

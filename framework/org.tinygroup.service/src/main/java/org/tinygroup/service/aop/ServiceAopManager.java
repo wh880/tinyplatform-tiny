@@ -75,7 +75,7 @@ public class ServiceAopManager {
 				enbaleList.add(adapter);
 			}
 		} catch (Exception e) {
-			logger.errorMessage("添加ServiceAopAdapter时出错,bean:{0},enable:{1}",
+			logger.errorMessage("添加ServiceAopAdapter时出现异常,bean:{0},enable:{1}",
 					e, bean, enable);
 		}
 

@@ -115,7 +115,7 @@ public class FullContextUrlRedirect implements ComponentInterface {
 			init();
 			doExecute(context);
 		} catch (Exception e) {
-			logger.errorMessage("页面跳转出错", e);
+			logger.errorMessage("页面跳转出现异常", e);
 		}
 	}
 

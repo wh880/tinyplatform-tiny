@@ -74,7 +74,7 @@ public class ConfigurationBuilder {
 			String configXml = StreamUtil.readText(inputStream, "UTF-8", true);
 			xmlNode = parser.parse(configXml).getRoot();
 		} catch (IOException e) {
-			logger.errorMessage("载入数据库配置信息时出错，错误原因：{}！", e, e.getMessage());
+			logger.errorMessage("载入数据库配置信息时出现异常，错误原因：{}！", e, e.getMessage());
 		}
 		this.parsed = false;
 		this.dataSource = dataSource;
@@ -91,7 +91,7 @@ public class ConfigurationBuilder {
 			String configXml = StreamUtil.readText(reader, true);
 			xmlNode = parser.parse(configXml).getRoot();
 		} catch (IOException e) {
-			logger.errorMessage("载入数据库配置信息时出错，错误原因：{}！", e, e.getMessage());
+			logger.errorMessage("载入数据库配置信息时出现异常，错误原因：{}！", e, e.getMessage());
 		}
 		this.parsed = false;
 		this.dataSource = dataSource;
@@ -195,7 +195,7 @@ public class ConfigurationBuilder {
 			Class clazz=Class.forName(type);
 			return clazz.newInstance();
 		} catch (Exception e) {
-			throw new TinyDbRuntimeException("对象实例化出错",e);
+			throw new TinyDbRuntimeException("对象实例化出现异常",e);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class ConfigurationBuilder {
 				 setProperties(node, load);
 				 load.loadTable(configuration);
 				} catch (Exception e) {
-					throw new TinyDbRuntimeException("解析表配置出错", e);
+					throw new TinyDbRuntimeException("解析表配置出现异常", e);
 				}
 			}
 		}
@@ -301,7 +301,7 @@ public class ConfigurationBuilder {
 			}
 			configuration.putDataSource(type, newDataSource);
 		} catch (Exception e) {
-			throw new TinyDbRuntimeException("解析数据源配置出错", e);
+			throw new TinyDbRuntimeException("解析数据源配置出现异常", e);
 		}
 		return isDefault;
 

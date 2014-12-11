@@ -122,7 +122,7 @@ public class NetProcessor implements Configuration, ApplicationProcessor {
 				serverMaps.put(serverConfig.getName(), server);
 				server.run();
 			} catch (Exception e) {
-				logger.errorMessage("执行默认服务端启动程序时出错:构造服务端对象实例失败,服务端类型:{0}", e,
+				logger.errorMessage("执行默认服务端启动程序时出现异常:构造服务端对象实例失败,服务端类型:{0}", e,
 						serverConfig.getType());
 			}
 		}
@@ -138,7 +138,7 @@ public class NetProcessor implements Configuration, ApplicationProcessor {
 				clientMaps.put(clientConfig.getName(), clientThread);
 				DaemonUtils.daemon(clientConfig.getName(), clientThread);
 			} catch (Exception e) {
-				logger.errorMessage("执行默认客户端启动程序时出错:构造客户端对象实例失败,客户端类型:{0}", e,
+				logger.errorMessage("执行默认客户端启动程序时出现异常:构造客户端对象实例失败,客户端类型:{0}", e,
 						clientConfig.getType());
 			}
 		}
@@ -158,7 +158,7 @@ public class NetProcessor implements Configuration, ApplicationProcessor {
 			try {
 				serverMaps.get(name).stop();
 			} catch (Exception e) {
-				logger.errorMessage("执行默认服务端停止程序时出错,服务端名:{0}", e, name);
+				logger.errorMessage("执行默认服务端停止程序时出现异常,服务端名:{0}", e, name);
 			}
 		}
 	}
@@ -168,7 +168,7 @@ public class NetProcessor implements Configuration, ApplicationProcessor {
 			try {
 				clientMaps.get(name).stop();
 			} catch (Exception e) {
-				logger.errorMessage("执行默客户端停止程序时出错,客户端名:{0}", e, name);
+				logger.errorMessage("执行默客户端停止程序时出现异常,客户端名:{0}", e, name);
 			}
 		}
 	}

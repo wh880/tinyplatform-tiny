@@ -112,7 +112,7 @@ public class RouterManagerImpl implements RouterManager {
 			logger.errorMessage("dbrouter.xstream.xml文件不存在", e);
 			throw new DbrouterRuntimeException(e);
 		} catch (IOException e) {
-			logger.errorMessage("查找集群配置:dbrouter-config.xml出错", e);
+			logger.errorMessage("查找集群配置:dbrouter-config.xml出现异常", e);
 			throw new DbrouterRuntimeException(e);
 		}
 	}

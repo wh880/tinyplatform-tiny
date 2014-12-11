@@ -234,7 +234,7 @@ public class BundleManagerDefault implements BundleManager {
 			try {
 				activator.start(bundleContext);
 			} catch (BundleException e) {
-				logger.errorMessage("启动Bundle:{0}的Activator:{1}时出错", e, bundle,
+				logger.errorMessage("启动Bundle:{0}的Activator:{1}时出现异常", e, bundle,
 						activatorBean);
 			}
 		}
@@ -256,7 +256,7 @@ public class BundleManagerDefault implements BundleManager {
 			try {
 				urls[i] = f.toURI().toURL();
 			} catch (MalformedURLException e) {
-				logger.errorMessage("为路径{0}生成url时出错", e, jars[i]);
+				logger.errorMessage("为路径{0}生成url时出现异常", e, jars[i]);
 			}
 		}
 		for (int i = jars.length, j = 0; i < urls.length; i++, j++) {
@@ -264,7 +264,7 @@ public class BundleManagerDefault implements BundleManager {
 				urls[i] = bundleJars.get(j).toURI().toURL();
 				jarFileList.add(bundleJars.get(j).getPath());
 			} catch (MalformedURLException e) {
-				logger.errorMessage("为路径{0}生成url时出错", e, bundleJars.get(j));
+				logger.errorMessage("为路径{0}生成url时出现异常", e, bundleJars.get(j));
 			}
 			
 		}
@@ -403,7 +403,7 @@ public class BundleManagerDefault implements BundleManager {
 			try {
 				activator.stop(bundleContext);
 			} catch (BundleException e) {
-				logger.errorMessage("停止Bundle:{0}的Activator:{1}时出错", e, bundle,
+				logger.errorMessage("停止Bundle:{0}的Activator:{1}时出现异常", e, bundle,
 						activatorBean);
 			}
 		}

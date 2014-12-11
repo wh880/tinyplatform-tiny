@@ -379,7 +379,7 @@ public class ParameterParserImpl extends AbstractValueParser implements
 	 * </p>
 	 * 
 	 * @throws UploadException
-	 *             如果解析时出错
+	 *             如果解析时出现异常
 	 */
 	public void parseUpload() throws UploadException {
 		parseUpload(null);
@@ -400,7 +400,7 @@ public class ParameterParserImpl extends AbstractValueParser implements
 	 * @param repositoryPath
 	 *            暂存上载文件的绝对路径
 	 * @throws UploadException
-	 *             如果解析时出错
+	 *             如果解析时出现异常
 	 */
 	public void parseUpload(UploadParameters params) throws UploadException {
 		if (uploadProcessed || upload == null) {

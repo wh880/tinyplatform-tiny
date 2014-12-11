@@ -133,7 +133,7 @@ public class ParserConfiguration extends AbstractConfiguration {
 				String value = properties.get(attribute);
 				beanWrapper.setPropertyValue(attribute, value);
 			} catch (Exception e) {
-				throw new RuntimeException("设置对象属性出错", e);
+				throw new RuntimeException("设置对象属性出现异常", e);
 			}
 		}
 		if (object instanceof InitializingBean) {

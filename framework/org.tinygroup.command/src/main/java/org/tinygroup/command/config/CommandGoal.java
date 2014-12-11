@@ -77,7 +77,7 @@ public class CommandGoal {
 			return (CommandGoalExecutor) Class.forName(className2)
 					.newInstance();
 		} catch (Exception e) {
-			logger.errorMessage("加载类<{0}>时出错!", e, className2);
+			logger.errorMessage("加载类<{0}>时出现异常!", e, className2);
 			throw new RuntimeException(e);
 		}
 	}

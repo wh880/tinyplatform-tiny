@@ -74,7 +74,7 @@ import org.slf4j.LoggerFactory;
  * <li>效率改进：预编译正则表达式patterns。
  * <li>效率改进：避免了同步操作。
  * <li>修改了构造函数，配合service进行配置。
- * <li>修正了输入中包含$时出错的bug。
+ * <li>修正了输入中包含$时出现异常的bug。
  * </ul>
  *
  * @author Joseph O'Connell <joe.oconnell at gmail dot com>

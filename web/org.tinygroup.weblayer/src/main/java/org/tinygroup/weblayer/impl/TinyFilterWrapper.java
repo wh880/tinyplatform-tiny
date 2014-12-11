@@ -15,14 +15,6 @@
  */
 package org.tinygroup.weblayer.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.Filter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
@@ -34,6 +26,13 @@ import org.tinygroup.weblayer.FilterWrapper;
 import org.tinygroup.weblayer.TinyFilterHandler;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import javax.servlet.Filter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * tiny-filter的包装类
@@ -95,8 +94,8 @@ public class TinyFilterWrapper extends AbstractTinyFilter implements
 				try {
 					filter.init(new TinyFilterConfig(getInitParamMap()));
 				} catch (ServletException e) {
-					logger.errorMessage("初始化filter:{}出错", e, beanName);
-					throw new RuntimeException("初始化filter出错", e);
+					logger.errorMessage("初始化filter:{}出现异常", e, beanName);
+					throw new RuntimeException("初始化filter出现异常", e);
 				}
 				filters.add(filter);
 			}
@@ -105,8 +104,8 @@ public class TinyFilterWrapper extends AbstractTinyFilter implements
 
 	}
 
-	public void destoryTinyFilter() {
-		super.destoryTinyFilter();
+	public void destroyTinyFilter() {
+		super.destroyTinyFilter();
 		for (Filter filter : filters) {
 			filter.destroy();
 		}
@@ -121,8 +120,7 @@ public class TinyFilterWrapper extends AbstractTinyFilter implements
 			try {
 				filterChain.doFilter(request, response);
 			} catch (Exception e) {
-				logger.errorMessage(e.getMessage(), e);
-				throw new RuntimeException("过滤器链执行出错", e);
+				throw new RuntimeException("过滤器链执行出现异常", e);
 			}
 		}
 	}
