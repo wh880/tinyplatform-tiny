@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>$!pageTitle</title>
+    <title>${pageTitle}</title>
 
     <script>
         var contextPath = "${TINY_CONTEXT_PATH}";
@@ -28,6 +28,6 @@
 
 </head>
 <body>
-    $pageContent
+    ${pageContent}
 </body>
 </html>
