@@ -17,6 +17,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.tinygroup</groupId>
+			<artifactId>org.tinygroup.dynamicdatasource</artifactId>
+			<version>1.2.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.tinygroup</groupId>
 			<artifactId>org.tinygroup.webservice</artifactId>
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
