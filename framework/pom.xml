@@ -56,12 +56,9 @@
         <module>org.tinygroup.context2object</module>
         <module>org.tinygroup.event</module>
         <module>org.tinygroup.dict</module>
-        <module>org.tinygroup.docgen</module>
-        <module>org.tinygroup.velocity</module>
         <module>org.tinygroup.service</module>
         <module>org.tinygroup.validatecomponent</module>
         <module>org.tinygroup.validate</module>
-        <module>org.tinygroup.codegen</module>
         <module>org.tinygroup.loader</module>
     </modules>
 </project>

@@ -1,4 +1,0 @@
-#macro(bold)
-ddd13
-$!bodyContent
-#end

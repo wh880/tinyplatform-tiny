@@ -8,6 +8,5 @@
   <artifactId>pfc</artifactId>
   <packaging>pom</packaging>
   <modules>
-    <module>org.tinygroup.pageflowbasiccomponent</module>
   </modules>
 </project>
