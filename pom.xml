@@ -347,5 +347,6 @@
         <module>web</module>
         <module>ext</module>
         <module>mvntemplate</module>
+        <module>template</module>
     </modules>
 </project>
