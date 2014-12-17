@@ -348,5 +348,6 @@
         <module>ext</module>
         <module>mvntemplate</module>
         <module>template</module>
+        <module>vfs</module>
     </modules>
 </project>
