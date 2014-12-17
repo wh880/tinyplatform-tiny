@@ -349,5 +349,6 @@
         <module>mvntemplate</module>
         <module>template</module>
         <module>vfs</module>
+        <module>tinyflow</module>
     </modules>
 </project>
