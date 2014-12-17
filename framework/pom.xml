@@ -16,8 +16,6 @@
         <module>org.tinygroup.message</module>
         <module>org.tinygroup.ini</module>
         <module>org.tinygroup.bundle</module>
-        <module>org.tinygroup.bizframe</module>
-        <module>org.tinygroup.bizframeimpl</module>
         <module>org.tinygroup.container</module>
         <module>org.tinygroup.httpvisit</module>
         <module>org.tinygroup.binarytree</module>
