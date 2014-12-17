@@ -16,6 +16,8 @@
 package org.tinygroup.cepcorenetty;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +35,6 @@ import org.tinygroup.cepcore.aop.CEPCoreAopManager;
 import org.tinygroup.cepcore.exception.RequestNotFoundException;
 import org.tinygroup.cepcore.impl.WeightChooser;
 import org.tinygroup.cepcore.util.CEPCoreUtil;
-import org.tinygroup.cepcorenetty.operator.ArOperator;
 import org.tinygroup.context.Context;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
@@ -434,8 +435,27 @@ public class NettyCepCoreImpl implements CEPCore {
 				processor.setRead(true);
 			}
 		}
-		if (operator != null && operator instanceof ArOperator) {
-			((ArOperator) operator).reReg();
+//		if (operator != null && operator instanceof ArOperator) {
+//			((ArOperator) operator).reReg();
+//			operator.getClass().getMethod("reReg");
+//		}
+		if (operator != null ) {
+			try {
+				Method m = operator.getClass().getMethod("reReg");
+				if(m!=null){
+					m.invoke(operator);
+				}
+			} catch (IllegalArgumentException e) {
+				logger.errorMessage(e.getMessage(), e);
+			} catch (IllegalAccessException e) {
+				logger.errorMessage(e.getMessage(), e);
+			} catch (InvocationTargetException e) {
+				logger.errorMessage(e.getMessage(), e);
+			} catch (SecurityException e) {
+				logger.errorMessage(e.getMessage(), e);
+			} catch (NoSuchMethodException e) {
+				
+			}
 		}
 	}
 
