@@ -351,5 +351,6 @@
         <module>vfs</module>
         <module>tinyflow</module>
         <module>xmlparser</module>
+        <module>htmlparser</module>
     </modules>
 </project>
