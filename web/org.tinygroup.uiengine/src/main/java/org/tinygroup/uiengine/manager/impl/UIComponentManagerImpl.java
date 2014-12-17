@@ -87,7 +87,7 @@ public class UIComponentManagerImpl implements UIComponentManager {
         return uiMap.get(name);
     }
 
-    public String[] getComponentJsArray(UIComponent component, boolean isDebug) {
+    public String[] getComponentJsArray(UIComponent component) {
         String path = component.getJsResource();
         if (path != null && path.trim().length() > 0) {
             String[] paths = path.trim().split(",");
@@ -99,7 +99,7 @@ public class UIComponentManagerImpl implements UIComponentManager {
         return null;
     }
 
-    public String[] getComponentCssArray(UIComponent component, boolean isDebug) {
+    public String[] getComponentCssArray(UIComponent component) {
         String path = component.getCssResource();
         if (path != null && path.trim().length() > 0) {
             String[] paths = path.trim().split(",");

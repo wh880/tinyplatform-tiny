@@ -71,18 +71,16 @@ public interface UIComponentManager {
 	 * 返回JSPath
 	 * 
 	 * @param component
-	 * @param isDebug
 	 *            返回JS类型
 	 * @return
 	 */
-	String[] getComponentJsArray(UIComponent component, boolean isDebug);
+	String[] getComponentJsArray(UIComponent component);
 	/**
 	 * 返回CssPath
 	 * @param component
-	 * @param isDebug
 	 * @return
 	 */
-	String[] getComponentCssArray(UIComponent component, boolean isDebug);
+	String[] getComponentCssArray(UIComponent component);
 
 	/**
 	 * 
