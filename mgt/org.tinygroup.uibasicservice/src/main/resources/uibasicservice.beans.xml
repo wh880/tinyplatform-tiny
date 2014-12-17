@@ -9,14 +9,9 @@
 
 	
 
-	<bean id="flowService" scope="singleton"
-		class="org.tinygroup.flowbasicservice.FlowService">
-		<property name="executor" ref="flowExecutor"></property>
-	</bean>
-	
-	<bean id="pageFlowService" scope="singleton"
-		class="org.tinygroup.flowbasicservice.PageFlowService">
-		<property name="executor" ref="pageFlowExecutor"></property>
+	<bean id="serviceBasicService" scope="singleton"
+		class="org.tinygroup.uibasicservice.UIBasicService">
+		<property name="serviceRegistry" ref="serviceRegistry"></property>
 	</bean>
 
 </beans>

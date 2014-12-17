@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.flow.FlowExecutor;
+import org.tinygroup.flow.config.ComponentDefine;
 import org.tinygroup.flow.config.Flow;
 
 public class FlowService {
@@ -44,6 +45,14 @@ public class FlowService {
 	
 	public Flow getFlow(String id){
 		return executor.getFlow(id);
+	}
+	
+	public ComponentDefine getComponentDefine(String componentName){
+		return executor.getComponentDefine(componentName);
+	}
+	
+	public List<ComponentDefine> getComponentDefines(){
+		return executor.getComponentDefines();
 	}
 	
 	
