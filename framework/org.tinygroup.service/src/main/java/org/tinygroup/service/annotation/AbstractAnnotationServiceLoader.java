@@ -220,24 +220,24 @@ public abstract class AbstractAnnotationServiceLoader implements
 				logger.logMessage(LogLevel.INFO, "加载方法{0}为服务完毕",
 						method.getName());
 				// 跳转信息servicemapping
-				ServiceViewMapping serviceViewMapping = method
-						.getAnnotation(ServiceViewMapping.class);
-				if (serviceViewMapping != null) {
-					org.tinygroup.service.config.ServiceViewMapping mapping = new org.tinygroup.service.config.ServiceViewMapping();
-					mapping.setServiceId(serviceId);
-					mapping.setPath(serviceViewMapping.value());
-					mapping.setType(StringUtil.defaultIfBlank(
-							serviceViewMapping.type(), "forward"));
-					serviceMappingManager.addServiceMapping(mapping);
-					if (!StringUtil.isBlank(alias)) {
-						mapping = new org.tinygroup.service.config.ServiceViewMapping();
-						mapping.setServiceId(alias);
-						mapping.setPath(serviceViewMapping.value());
-						mapping.setType(StringUtil.defaultIfBlank(
-								serviceViewMapping.type(), "forward"));
-						serviceMappingManager.addServiceMapping(mapping);
-					}
-				}
+//				ServiceViewMapping serviceViewMapping = method
+//						.getAnnotation(ServiceViewMapping.class);
+//				if (serviceViewMapping != null) {
+//					org.tinygroup.service.config.ServiceViewMapping mapping = new org.tinygroup.service.config.ServiceViewMapping();
+//					mapping.setServiceId(serviceId);
+//					mapping.setPath(serviceViewMapping.value());
+//					mapping.setType(StringUtil.defaultIfBlank(
+//							serviceViewMapping.type(), "forward"));
+//					serviceMappingManager.addServiceMapping(mapping);
+//					if (!StringUtil.isBlank(alias)) {
+//						mapping = new org.tinygroup.service.config.ServiceViewMapping();
+//						mapping.setServiceId(alias);
+//						mapping.setPath(serviceViewMapping.value());
+//						mapping.setType(StringUtil.defaultIfBlank(
+//								serviceViewMapping.type(), "forward"));
+//						serviceMappingManager.addServiceMapping(mapping);
+//					}
+//				}
 			}
 		}
 	}
@@ -273,7 +273,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 	protected Object getServiceInstance(Class<?> clazz) {
 		ServiceComponent serviceComponent = clazz
 				.getAnnotation(ServiceComponent.class);
-		BeanContainer container = BeanContainerFactory.getBeanContainer(this
+		BeanContainer<?> container = BeanContainerFactory.getBeanContainer(this
 				.getClass().getClassLoader());
 		try {
 			if (StringUtil.isBlank(serviceComponent.bean())) {

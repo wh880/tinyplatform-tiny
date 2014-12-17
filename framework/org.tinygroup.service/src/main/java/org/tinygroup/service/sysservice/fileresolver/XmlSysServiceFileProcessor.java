@@ -126,7 +126,7 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 
 	protected Object getServiceInstance(ServiceComponent component)
 			throws Exception {
-		BeanContainer container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
+		BeanContainer<?> container = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
 		if (component.getBean() == null
 				|| "".equals(component.getBean().trim())) {
 			Class<?> clazz = Class.forName(component.getType());

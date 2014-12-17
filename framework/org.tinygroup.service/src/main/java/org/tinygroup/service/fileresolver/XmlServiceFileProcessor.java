@@ -116,7 +116,7 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
 
     protected Object getServiceInstance(ServiceComponent component)
             throws Exception {
-    	BeanContainer container = BeanContainerFactory.getBeanContainer(getFileResolver().getClassLoader());
+    	BeanContainer<?> container = BeanContainerFactory.getBeanContainer(getFileResolver().getClassLoader());
         //如果没有定义bean ID
         if (component.getBean() == null || "".equals(component.getBean())) {
         	//20141023 为bundle修改
