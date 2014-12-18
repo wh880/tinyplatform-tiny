@@ -702,6 +702,18 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
 
+    @Override
+    public CodeBlock visitImport_directive(@NotNull TinyTemplateParser.Import_directiveContext ctx) {
+        pushCodeBlock(initCodeBlock);
+        pushCodeLet();
+        ctx.expression().accept(this);
+        initCodeBlock.subCode(peekCodeLet().codeBefore("addImport(").lineCode(");"));
+        popCodeLet();
+        popCodeBlock();
+
+        return null;
+    }
+
     public CodeBlock visitConstant(@NotNull TinyTemplateParser.ConstantContext ctx) {
         return null;
     }

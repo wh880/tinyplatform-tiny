@@ -316,11 +316,9 @@ public class TemplateEngineDefault implements TemplateEngine {
         if (macro != null) {
             return macro;
         }
-        /**
-         * 查找公共宏，后添加加的优先
-         */
-        for (int i = macroLibraryList.size() - 1; i >= 0; i--) {
-            Template macroLibrary = getMacroLibrary(macroLibraryList.get(i));
+        //先查找import的列表，后添加的优先
+        for (int i = template.getImportPathList().size() - 1; i >= 0; i--) {
+            Template macroLibrary = getMacroLibrary(template.getImportPathList().get(i));
             if (macroLibrary != null) {
                 macro = macroLibrary.getMacroMap().get(macroName);
                 if (macro != null) {
@@ -328,6 +326,24 @@ public class TemplateEngineDefault implements TemplateEngine {
                         macroCache.put(macroName, macro);
                     }
                     return macro;
+                }
+            }
+        }
+        /**
+         * 查找公共宏，后添加的优先
+         */
+        for (int i = macroLibraryList.size() - 1; i >= 0; i--) {
+            String path = macroLibraryList.get(i);
+            if (!template.getImportPathList().contains(path)) {
+                Template macroLibrary = getMacroLibrary(path);
+                if (macroLibrary != null) {
+                    macro = macroLibrary.getMacroMap().get(macroName);
+                    if (macro != null) {
+                        if (cacheEnabled) {
+                            macroCache.put(macroName, macro);
+                        }
+                        return macro;
+                    }
                 }
             }
         }

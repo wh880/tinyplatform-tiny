@@ -21,7 +21,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +33,7 @@ public abstract class AbstractTemplate implements Template {
     private Map<String, Macro> macroMap = new HashMap<String, Macro>();
     private TemplateEngine templateEngine;
     private TemplateContext templateContext = new TemplateContextDefault();
+    private List<String> importPathList = new ArrayList<String>();
 
     public TemplateEngine getTemplateEngine() {
         return templateEngine;
@@ -40,6 +43,14 @@ public abstract class AbstractTemplate implements Template {
         if (object != null) {
             writer.write(object.toString());
         }
+    }
+
+    public void addImport(Object importPath) {
+        importPathList.add(importPath.toString());
+    }
+
+    public List<String> getImportPathList() {
+        return importPathList;
     }
 
     protected void addMacro(Macro macro) {

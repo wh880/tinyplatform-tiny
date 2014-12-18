@@ -16,19 +16,27 @@
 package org.tinygroup.template;
 
 import java.io.Writer;
+import java.util.List;
 import java.util.Map;
 
 /**
  * 模板
  * Created by luoguo on 2014/6/4.
  */
-public interface Template extends TemplateContextOperator{
+public interface Template extends TemplateContextOperator {
     /**
      * 返回宏的内容
      *
      * @return
      */
     Map<String, Macro> getMacroMap();
+
+    /**
+     * 返回宏文件中引入模板的顺序
+     *
+     * @return
+     */
+    List<String> getImportPathList();
 
     /**
      * 进行渲染
@@ -55,6 +63,7 @@ public interface Template extends TemplateContextOperator{
 
     /**
      * 返回模板引擎
+     *
      * @return
      */
     TemplateEngine getTemplateEngine();

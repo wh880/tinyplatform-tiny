@@ -70,6 +70,7 @@ DIRECTIVE_TABS           : '#t'|'#{t}'                 ;
 DIRECTIVE_TABS_INDENT           : '#]'|'#{]}'                 ;
 DIRECTIVE_TABS_DENT           : '#['|'#{[}'                 ;
 DIRECTIVE_BODYCONTENT  : '#bodyContent'|'#{bodyContent}' ;
+DIRECTIVE_IMPORT  : '#import' ARGUMENT_START      -> pushMode(INSIDE) ;
 
 //DIRECTIVE_CALL    : '#' ID      ;
 DIRECTIVE_MACRO_INVOKE    : '#' ID     ARGUMENT_START      -> pushMode(INSIDE) ;

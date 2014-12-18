@@ -44,6 +44,7 @@ directive   :   set_directive
             |   if_directive
             |   for_directive
             |   break_directive
+            |   import_directive
             |   continue_directive
             |   stop_directive
             |   include_directive
@@ -121,9 +122,13 @@ for_expression
             ;
 
 break_directive
-            :   DIRECTIVE_OPEN_BREAK expression? ')'
+            :   DIRECTIVE_OPEN_BREAK expression?')'
             |   DIRECTIVE_BREAK
             ;
+import_directive
+            :   DIRECTIVE_IMPORT expression ')'
+            ;
+
 continue_directive
             :   DIRECTIVE_OPEN_CONTINUE expression? ')'
             |   DIRECTIVE_CONTINUE

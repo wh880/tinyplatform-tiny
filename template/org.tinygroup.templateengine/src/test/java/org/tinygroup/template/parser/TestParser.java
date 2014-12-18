@@ -78,6 +78,12 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("if($context.exist(\"$aaa\")){") > 0);
 
     }
+    public void testImport() throws Exception {
+        String result = execute("#import(\"aa/bb/cc/dd\");");
+        System.out.println(result);
+        assertTrue(result.indexOf("addImport(\"aa/bb/cc/dd\");") > 0);
+
+    }
     public void testPositionImpl() throws Exception {
         String result = execute("#@layout(aaa)hello#end");
         System.out.println(result);
@@ -451,7 +457,7 @@ public class TestParser extends TestCase {
     }
 
     public void testFor() throws Exception {
-        String result = execute("#for(i: [1,2,3,4,5])#if(true)abc${i}#break(true||false)#end#end");
+        String result = execute("#for(i: [1,2,3,4,5]) #if(true)abc${i}#break(true||false)#end #end");
         System.out.println(result);
         assertTrue(result
                 .indexOf("$context.put(\"iFor\",new ForIterator(new Object[]{1,2,3,4,5}));") > 0);
