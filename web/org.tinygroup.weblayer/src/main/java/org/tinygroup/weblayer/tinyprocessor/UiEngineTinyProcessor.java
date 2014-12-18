@@ -107,10 +107,10 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
             response.setHeader("Cache-Control", CACHE_CONTROL);
             response.setHeader("Date", lastModifiedSign);
             if (servletPath.endsWith("uijs")) {
-                writeJs(response, isDebug);
+                writeJs(response);
             }
             if (servletPath.endsWith("uicss")) {
-                writeCss(contextPath, response, servletPath, isDebug);
+                writeCss(contextPath, response, servletPath);
             }
 
             logger.logMessage(LogLevel.DEBUG, "{}处理完成。", servletPath);
@@ -121,10 +121,10 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
 
     }
 
-    private void writeJs(HttpServletResponse response, boolean isDebug) throws IOException {
+    private void writeJs(HttpServletResponse response) throws IOException {
         OutputStream outputStream = response.getOutputStream();
         for (UIComponent component : uiComponentManager.getHealthUiComponents()) {
-            String[] paths = uiComponentManager.getComponentJsArray(component, isDebug);
+            String[] paths = uiComponentManager.getComponentJsArray(component);
             if (paths != null) {
                 for (String path : paths) {
                     logger.logMessage(LogLevel.INFO, "正在处理js文件:<{}>", path);
@@ -144,12 +144,12 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
         outputStream.close();
     }
 
-    private void writeCss(String contextPath, HttpServletResponse response, String servletPath, boolean isDebug)
+    private void writeCss(String contextPath, HttpServletResponse response, String servletPath)
             throws IOException {
         OutputStream outputStream = response.getOutputStream();
         outputStream.write("@charset \"utf-8\";\n".getBytes());
         for (UIComponent component : uiComponentManager.getHealthUiComponents()) {
-            String[] paths = uiComponentManager.getComponentCssArray(component, isDebug);
+            String[] paths = uiComponentManager.getComponentCssArray(component);
             if (paths != null) {
                 for (String path : paths) {
                     logger.logMessage(LogLevel.INFO, "正在处理css文件:<{}>", path);
@@ -216,7 +216,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
     private synchronized long getJsLastModifiedSign(boolean isDebug) {
         long time = 0;
         for (UIComponent component : uiComponentManager.getHealthUiComponents()) {
-            String[] paths = uiComponentManager.getComponentJsArray(component, isDebug);
+            String[] paths = uiComponentManager.getComponentJsArray(component);
             if (paths != null) {
                 for (String path : paths) {
                     FileObject fileObject = fullContextFileRepository.getFileObject(path);
@@ -235,7 +235,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
     private long getCssLastModifiedSign(boolean isDebug) {
         long time = 0;
         for (UIComponent component : uiComponentManager.getHealthUiComponents()) {
-            String[] paths = uiComponentManager.getComponentCssArray(component, isDebug);
+            String[] paths = uiComponentManager.getComponentCssArray(component);
             if (paths != null) {
                 for (String path : paths) {
                     FileObject fileObject = fullContextFileRepository.getFileObject(path);

@@ -98,7 +98,6 @@ public class TinyFilterHandler {
                 giveUpControl(wrapperContext);
                 return;
             }
-            processFlow(wrapperContext);
         } catch (Exception e) {
             logger.errorMessage("执行WebContext处理流程时出现异常，原因：{}", e, e.getMessage());
             handleException(wrapperContext, e, context.getRequest(),
@@ -231,16 +230,6 @@ public class TinyFilterHandler {
         return false;
     }
 
-    private void processFlow(WebContext context) {
-//		TODO 添加此代码
-//		if (contextProcessFlowArray != null) {
-//		FlowExecutor flowExecutor = SpringUtil.getBean(
-//		FlowExecutor.FLOW_BEAN);
-//		for (String flowName : contextProcessFlowArray) {
-//		flowExecutor.execute(flowName, context);
-//		}
-//		}
-    }
 
     private void postProcess(WebContext webContext, List<TinyFilter> tinyFilters) {
         if (webContext == null) {

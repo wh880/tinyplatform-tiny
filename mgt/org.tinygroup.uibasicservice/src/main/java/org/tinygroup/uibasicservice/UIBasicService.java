@@ -28,11 +28,11 @@ public class UIBasicService {
 		return uiManager.getHealthUiComponents();
 	}
 
-	public String[] getComponentJsArray(String name, boolean isDebug) {
-		return uiManager.getComponentJsArray(getUIComponent(name), isDebug);
+	public String[] getComponentJsArray(String name) {
+		return uiManager.getComponentJsArray(getUIComponent(name));
 	}
 
-	public String[] getComponentCssArray(String name, boolean isDebug) {
-		return uiManager.getComponentCssArray(getUIComponent(name), isDebug);
+	public String[] getComponentCssArray(String name) {
+		return uiManager.getComponentCssArray(getUIComponent(name));
 	}
 }
