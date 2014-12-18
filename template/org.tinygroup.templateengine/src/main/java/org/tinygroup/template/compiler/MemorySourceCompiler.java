@@ -39,7 +39,7 @@ import java.util.Map;
 
 
 public class MemorySourceCompiler {
-    private String outputDir = TEMP_DIR + "ttl" + File.separatorChar;
+    private String outputDir = TEMP_DIR + (TEMP_DIR.endsWith(File.separator) ? "" : File.separatorChar) + "ttl" + File.separatorChar;
 
 
     public <T> Class<T> loadClass(MemorySource source) throws TemplateException {
