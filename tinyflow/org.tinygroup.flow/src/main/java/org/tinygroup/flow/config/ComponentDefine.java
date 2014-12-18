@@ -15,6 +15,7 @@
  */
 package org.tinygroup.flow.config;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * 
  */
 @XStreamAlias("component")
-public class ComponentDefine {
+public class ComponentDefine implements Serializable{
 	@XStreamAsAttribute
 	private String category;
 	@XStreamAsAttribute

@@ -15,9 +15,7 @@
  */
 package org.tinygroup.tinytestutil;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.tinygroup.application.Application;
@@ -138,17 +136,17 @@ public abstract class AbstractTestUtil {
 		init = true;
 	}
 
-	public static void initWidthString(String config, boolean classPathResolve) {
-		// init(xmlFile, classPathResolve, null, null);
-		ByteArrayInputStream is = null;
-		try {
-			is = new ByteArrayInputStream(config.getBytes("ISO-8859-1"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		application = new ApplicationDefault();
-		application.start();
-	}
+//	public static void initWidthString(String config, boolean classPathResolve) {
+//		// init(xmlFile, classPathResolve, null, null);
+//		ByteArrayInputStream is = null;
+//		try {
+//			is = new ByteArrayInputStream(config.getBytes("ISO-8859-1"));
+//		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
+//		application = new ApplicationDefault();
+//		application.start();
+//	}
 
 	private static void initSpring(String applicationConfig) {
 		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
