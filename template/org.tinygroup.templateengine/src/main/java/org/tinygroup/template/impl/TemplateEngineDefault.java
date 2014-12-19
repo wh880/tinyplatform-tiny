@@ -312,10 +312,6 @@ public class TemplateEngineDefault implements TemplateEngine {
         if (macro != null) {
             return macro;
         }
-        macro = macroCache.get(macroName);
-        if (macro != null) {
-            return macro;
-        }
         //先查找import的列表，后添加的优先
         for (int i = template.getImportPathList().size() - 1; i >= 0; i--) {
             Template macroLibrary = getMacroLibrary(template.getImportPathList().get(i));
@@ -329,6 +325,12 @@ public class TemplateEngineDefault implements TemplateEngine {
                 }
             }
         }
+
+        macro = macroCache.get(macroName);
+        if (macro != null) {
+            return macro;
+        }
+
         /**
          * 查找公共宏，后添加的优先
          */
