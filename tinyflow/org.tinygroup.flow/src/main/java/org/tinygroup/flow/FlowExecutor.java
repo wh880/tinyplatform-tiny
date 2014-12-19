@@ -47,7 +47,6 @@ public interface FlowExecutor {
 	 */
 	void execute(String flowId, String nodeId, Context context);
 
-	void execute(String flowId, String nodeId, String version, Context context);
 
 	/**
 	 * 表示从开始节点开始执行
@@ -57,7 +56,6 @@ public interface FlowExecutor {
 	 */
 	void execute(String flowId, Context context);
 
-	String getEngineVersion();
 
 	/**
 	 * 执行指定流程的指定节点
@@ -75,11 +73,9 @@ public interface FlowExecutor {
 	 */
 	Map<String, Flow> getFlowIdMap();
 
-	Map<String, Flow> getFlowIdVersionMap();
 
 	Flow getFlow(String flowId);
 
-	Flow getFlow(String flowId, String version);
 
 	Context getInputContext(Flow flow, Context context);
 
@@ -132,7 +128,6 @@ public interface FlowExecutor {
 
 	void removeFlow(Flow flow);
 
-	void removeFlow(String flowId, String version);
 
 	void removeFlow(String flowId);
 	

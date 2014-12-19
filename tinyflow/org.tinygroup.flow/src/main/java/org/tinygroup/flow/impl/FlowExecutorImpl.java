@@ -51,13 +51,11 @@ import org.tinygroup.logger.LoggerFactory;
  * @author luoguo
  */
 public class FlowExecutorImpl implements FlowExecutor {
-	private static final String ENGINE_VERSION = "1.0";
 	private static Logger logger = LoggerFactory
 			.getLogger(FlowExecutorImpl.class);
 	private static Map<String, Class<?>> exceptionMap = new HashMap<String, Class<?>>();
 	private static transient Formater formater = new FormaterImpl();
 	private Map<String, Flow> flowIdMap = new HashMap<String, Flow>();// 包含了name和id两个，所以通过名字和id都可以访问
-	private Map<String, Flow> flowIdVersionMap = new HashMap<String, Flow>();
 	private I18nMessages i18nMessages = I18nMessageFactory.getI18nMessages();
 	private boolean change;
 	// 组件容器
@@ -222,7 +220,6 @@ public class FlowExecutorImpl implements FlowExecutor {
 			}
 			checkOutputParameter(flow, flowContext);
 		} catch (Exception exception) {
-			logger.errorMessage("流程执行异常", exception);
 			/**
 			 * 遍历所有异常节点
 			 */
@@ -485,7 +482,6 @@ public class FlowExecutorImpl implements FlowExecutor {
 					flow.getName());
 			flowIdMap.put(flow.getName(), flow);
 		}
-		flowIdVersionMap.put(getKey(flow), flow);
 		flow.setFlowExecutor(this);
 		setChange(true);
 	}
@@ -495,7 +491,6 @@ public class FlowExecutorImpl implements FlowExecutor {
 		flowIdMap.remove(flow.getId());
 		logger.logMessage(LogLevel.INFO, "移除flow:[name:{0}]", flow.getName());
 		flowIdMap.remove(flow.getName());
-		flowIdVersionMap.remove(getKey(flow));
 		setChange(true);
 	}
 
@@ -504,33 +499,9 @@ public class FlowExecutorImpl implements FlowExecutor {
 		removeFlow(flow);
 	}
 
-	public void removeFlow(String flowId, String version) {
-		Flow flow = getFlow(flowId, version);
-		removeFlow(flow);
-	}
 
 	private String getKey(Flow flow) {
 		return flow.getId();
-	}
-
-	public String getEngineVersion() {
-		return ENGINE_VERSION;
-	}
-
-	public void execute(String flowId, String nodeId, String version,
-			Context context) {
-		Flow flow = flowIdVersionMap.get(flowId);
-		if (nodeId == null) {
-			nodeId = "begin";
-		}
-		if (flow != null) {
-			Node node = flow.getNodeMap().get(nodeId);
-			execute(flow, node, context);
-		}
-	}
-
-	public Map<String, Flow> getFlowIdVersionMap() {
-		return flowIdVersionMap;
 	}
 
 	public Flow getFlow(String flowId) {
@@ -538,12 +509,6 @@ public class FlowExecutorImpl implements FlowExecutor {
 		return flowIdMap.get(flowId);
 	}
 
-	public Flow getFlow(String flowId, String version) {
-		if (version == null || "".equals(version)) {
-			return getFlow(flowId);
-		}
-		return flowIdVersionMap.get(flowId);
-	}
 
 	public void addComponents(ComponentDefines components) {
 		containers.addComponents(components);
