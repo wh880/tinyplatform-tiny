@@ -33,7 +33,7 @@ public class QueryAllFlow implements ComponentInterface {
 	public void execute(Context context) {
 		FlowExecutor flowExecutor = BeanContainerFactory
 		.getBeanContainer(this.getClass().getClassLoader()).getBean(FlowExecutor.FLOW_BEAN);
-		context.put(resultKey, flowExecutor.getFlowIdVersionMap().values() );
+		context.put(resultKey, flowExecutor.getFlowIdMap().values() );
 	}
 
 }

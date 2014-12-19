@@ -21,7 +21,6 @@ import org.tinygroup.flow.FlowExecutor;
 
 public class CallPageFlow implements ComponentInterface {
 	String flowId;
-	String version;
 	FlowExecutor executor;
 	
 	
@@ -41,21 +40,8 @@ public class CallPageFlow implements ComponentInterface {
 		this.flowId = flowId;
 	}
 
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
 	public void execute(Context context) {
-		if (notNull(version)) {
-			executor.execute(flowId, null, version, context);
-		} else {
-			executor.execute(flowId, context);
-		}
-
+			executor.execute(flowId, null,  context);
 	}
 
 	private boolean notNull(String str) {
