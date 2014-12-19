@@ -194,11 +194,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 				String description = getAnnotationStringValue(annotation,
 						ServiceMethod.class, "description");
 				item.setDescription(description);
-				// cacheable
-				boolean cacheable = Boolean
-						.parseBoolean(getAnnotationStringValue(annotation,
-								ServiceMethod.class, "cacheable"));
-				item.setCacheable(cacheable);
+
 				registerService(clazz, method, item);
 
 				ServiceRegistryItem registryItem =  ServiceUtil.copyServiceItem(item);

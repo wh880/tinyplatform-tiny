@@ -47,7 +47,6 @@ public class ServiceUtil {
 	
 	public static ServiceRegistryItem copyServiceItem(ServiceRegistryItem serviceiItem) {
 		ServiceRegistryItem item = new ServiceRegistryItem();
-		item.setCacheable(serviceiItem.isCacheable());
 		item.setCategory(serviceiItem.getCategory());
 		item.setDescription(serviceiItem.getDescription());
 		item.setLocalName(serviceiItem.getLocalName());

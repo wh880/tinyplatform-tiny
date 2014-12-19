@@ -27,7 +27,6 @@ import org.tinygroup.service.Service;
  * 
  * @author luoguo
  * 
- * @param <Service>
  */
 public class ServiceRegistryItem implements ServiceInfo {
 	
@@ -43,10 +42,6 @@ public class ServiceRegistryItem implements ServiceInfo {
 	 * 服务标识，唯一确定一个服务，如果重复，只有组织标识，模块标识，名称全部相同，且版本不同，才可以注册
 	 */
 	private String serviceId;
-	/**
-	 * 版本，可以注册仅版本不同的服务，执行时，如果指定了版本，则执行指定版本，否则执行最新版本
-	 */
-	private boolean cacheable;
 	/**
 	 * 描述
 	 */
@@ -69,14 +64,6 @@ public class ServiceRegistryItem implements ServiceInfo {
 	
 	public void setCategory(String category) {
 		this.category = category;
-	}
-
-	public boolean isCacheable() {
-		return cacheable;
-	}
-
-	public void setCacheable(boolean cacheable) {
-		this.cacheable = cacheable;
 	}
 
 	public String getLocalName() {

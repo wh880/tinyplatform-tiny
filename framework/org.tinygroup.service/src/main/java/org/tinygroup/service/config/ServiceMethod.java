@@ -39,19 +39,9 @@ public class ServiceMethod {
 	@XStreamAlias("method-name")
 	private String methodName;
 	@XStreamAsAttribute
-	private boolean cacheable = false;
-	@XStreamAsAttribute
 	private String category;
 	@XStreamAsAttribute
 	private String alias;
-
-	public boolean isCacheable() {
-		return cacheable;
-	}
-
-	public void setCacheable(boolean cacheable) {
-		this.cacheable = cacheable;
-	}
 
 	public String getMethodName() {
 		return methodName;

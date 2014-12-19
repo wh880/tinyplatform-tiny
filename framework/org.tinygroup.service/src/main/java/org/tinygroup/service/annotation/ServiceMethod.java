@@ -34,6 +34,4 @@ public @interface ServiceMethod {
 	
 	String category() default "";
 
-	boolean cacheable() default false;
-
 }

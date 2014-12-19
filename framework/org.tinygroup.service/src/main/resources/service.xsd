@@ -36,7 +36,6 @@
 		<xs:attribute name="service-id" type="xs:string" />
 		<xs:attribute name="description" type="xs:string" />
 		<xs:attribute name="method-name" type="xs:string" />
-		<xs:attribute name="cacheable" type="xs:boolean" />
 	</xs:complexType>
 
 	<xs:complexType name="serviceParametersType">

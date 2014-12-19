@@ -118,7 +118,6 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 			ServiceRegistryItem item = new ServiceRegistryItem();
 			item.setLocalName(serviceMethod.getLocalName());
 			item.setDescription(serviceMethod.getDescription());
-			item.setCacheable(serviceMethod.isCacheable());
 			item.setCategory(serviceMethod.getCategory());
 			registerService(object, serviceMethod, item,classLoader);
 			String serviceId=serviceMethod.getServiceId();
@@ -143,7 +142,6 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 	 * @param object
 	 * @param serviceMethod
 	 * @param item
-	 * @param serviceRegistry
 	 * @throws ServiceLoadException
 	 * @throws ClassNotFoundException
 	 */
