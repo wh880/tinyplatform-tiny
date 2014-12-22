@@ -18,6 +18,7 @@ package org.tinygroup.flow;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.flow.component.AbstractFlowComponent;
+import org.tinygroup.flow.config.Flow;
 
 public class FlowExceptionTest extends AbstractFlowComponent {
 	
@@ -31,22 +32,22 @@ public class FlowExceptionTest extends AbstractFlowComponent {
 		flowExecutor.execute("flowExceptionTest", "begin", context);
 		Throwable throwable=context.get("throwableObject");
 		assertTrue(throwable!=null);
-//		assertTrue(throwable.getCause() instanceof NoSuchMethodException);
 	}
 	
 	public void testNodeException(){
 		Context context = new ContextImpl();
 		flowExecutor.execute("exceptionWithNode", "begin", context);
-		Throwable throwable=context.get("exceptionWithNode-hello");
+		Flow flow=context.get("exceptionFlow");
 //		assertTrue(throwable.getCause() instanceof NoSuchMethodException);
+//		System.out.println(f);
+		assertEquals("exceptionWithNode",flow.getId());
 	}
 	
 	public void testFlowException(){
 		Context context = new ContextImpl();
 		flowExecutor.execute("exceptionWithFlow", "begin", context);
-		Throwable throwable=context.get("exceptionWithFlow-hello");
-		
-//		assertTrue(throwable.getCause() instanceof NoSuchMethodException);
+		Flow flow=context.get("exceptionFlow");
+		assertEquals("exceptionWithFlow",flow.getId());
 	}
 	
 }

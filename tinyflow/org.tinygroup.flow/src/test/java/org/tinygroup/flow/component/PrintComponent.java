@@ -19,6 +19,15 @@ import org.tinygroup.context.Context;
 import org.tinygroup.flow.ComponentInterface;
 
 public class PrintComponent implements ComponentInterface {
+	private static int count = 0;
+
+	public static void reset() {
+		count = 0;
+	}
+	public static int getCount(){
+		return count;
+	}
+
 	String info;
 
 	public String getInfo() {
@@ -30,8 +39,9 @@ public class PrintComponent implements ComponentInterface {
 	}
 
 	public void execute(Context context) {
+		count++;
 		System.out.println(info);
-		
+
 	}
 
 }
