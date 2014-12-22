@@ -581,7 +581,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             include.subCode(String.format("$newContext.putAll(%s);", map));
         }
         include.subCode("$context.putSubContext(\"$newContext\",$newContext);");
-        include.subCode(String.format("getTemplateEngine().renderTemplate(U.getPath(getPath(),%s),$newContext,$writer);", path));
+        include.subCode(String.format("getTemplateEngine().renderTemplateDetected(U.getPath(getPath(),%s),$newContext,$writer);", path));
         include.subCode("$context.removeSubContext(\"$newContext\");");
         return include;
     }

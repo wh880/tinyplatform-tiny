@@ -158,6 +158,8 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     void renderTemplateWithOutLayout(String path, TemplateContext context, Writer writer) throws TemplateException;
 
+    void renderTemplateDetected(String path, TemplateContext context, Writer writer) throws TemplateException;
+
     /**
      * 采用没有上下文，控制台输出方式进行渲染，如果有布局会同时渲染布局
      *
