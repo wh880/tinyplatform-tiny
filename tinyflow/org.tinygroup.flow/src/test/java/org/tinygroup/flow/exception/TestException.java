@@ -26,6 +26,7 @@ public class TestException  extends AbstractFlowComponent{
 	}
 
 	public void testException(){
+		MyExceptionUtil.clear();
 		Context c = new ContextImpl();
 		flowExecutor.execute("myTestException", c);
 		assertEquals(8, MyExceptionUtil.getValue());
