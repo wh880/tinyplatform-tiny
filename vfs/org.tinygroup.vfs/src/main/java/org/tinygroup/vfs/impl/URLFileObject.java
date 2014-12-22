@@ -139,7 +139,7 @@ public abstract class URLFileObject extends AbstractFileObject {
         try {
             stream = url.openStream();
         } catch (IOException e) {
-            stream = null;
+            throw new VFSRuntimeException(e);
         }
         return stream;
     }
