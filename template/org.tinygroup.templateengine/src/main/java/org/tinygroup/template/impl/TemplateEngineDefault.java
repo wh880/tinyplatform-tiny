@@ -245,14 +245,6 @@ public class TemplateEngineDefault implements TemplateEngine {
         }
     }
 
-    public void renderTemplateDetected(String path, TemplateContext context, Writer writer) throws TemplateException {
-        if (path.endsWith("let")) {
-            renderTemplateWithOutLayout(path.substring(0, path.length() - 3), context, writer);
-        } else {
-            renderTemplate(path, context, writer);
-        }
-    }
-
     private List<Template> getLayoutList(String templatePath) throws TemplateException {
         List<Template> layoutPathList = null;
         if (cacheEnabled) {
