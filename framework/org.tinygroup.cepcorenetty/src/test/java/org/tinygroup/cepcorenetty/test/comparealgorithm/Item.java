@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.cepcorenetty.test;
+package org.tinygroup.cepcorenetty.test.comparealgorithm;
 
 public class Item {
 	private String name;

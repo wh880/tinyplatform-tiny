@@ -13,32 +13,46 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.cepcorenetty.test;
+package org.tinygroup.cepcorenetty.test.comparealgorithm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class CoreInProcessor implements Core{
+/**
+ * 直接通过 服务和Processor的Map 根据服务id获取Processor
+ * @author chenjiao
+ *
+ */
+public class CoreInCore implements Core{
 	private List<Processor> processors = new ArrayList<Processor>();
+	private Map<String, List<Processor>> map = new HashMap<String, List<Processor>>();
 
 	public void addProcessor(Processor processor) {
 		processors.add(processor);
-
+		List<Item> list = processor.get();
+		for (Item i : list) {
+			String name = i.getName();
+			if (map.containsKey(name)) {
+				map.get(name).add(processor);
+			} else {
+				List<Processor> pl = new ArrayList<Processor>();
+				pl.add(processor);
+				map.put(name, pl);
+			}
+		}
 	}
 
 	public Processor getProcessor(String name) {
-		List<Processor> l = new ArrayList<Processor>();
-		for (Processor t : processors) {
-			if (t.contain(name)) {
-				l.add(t);
-			}
-		}
-		return l.get(0);
+		if (map.containsKey(name))
+			return map.get(name).get(0);
+		return null;
 	}
-
-	public String get(String name) {
+	
+	public String get(String name){
 		Processor t = getProcessor(name);
-		if (t != null) {
+		if(t!=null){
 			return t.get(name);
 		}
 		return null;
