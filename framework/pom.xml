@@ -8,6 +8,7 @@
     <artifactId>framework</artifactId>
     <packaging>pom</packaging>
     <modules>
+	<module>org.tinygroup.spring256</module>
 	<module>org.tinygroup.cepcorenetty</module>
 		<module>org.tinygroup.cepcorenettysc</module>
    		<module>org.tinygroup.serviceprocessor</module>
