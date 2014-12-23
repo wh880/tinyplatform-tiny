@@ -245,7 +245,6 @@ public class TemplateEngineDefault implements TemplateEngine {
         }
     }
 
-
     private List<Template> getLayoutList(String templatePath) throws TemplateException {
         List<Template> layoutPathList = null;
         if (cacheEnabled) {

@@ -332,7 +332,7 @@ public class TestParser extends TestCase {
         assertTrue(result
                 .indexOf("$context.putSubContext(\"$newContext\",$newContext);") > 0);
         assertTrue(result
-                .indexOf("getTemplateEngine().renderTemplate(U.getPath(getPath(),\"aaa/bb/cc/dd\"),$newContext,$writer);") > 0);
+                .indexOf("getTemplateEngine().renderTemplateWithOutLayout(U.getPath(getPath(),\"aaa/bb/cc/dd\"),$newContext,$writer);") > 0);
         assertTrue(result
                 .indexOf("$context.removeSubContext(\"$newContext\");") > 0);
 
@@ -341,7 +341,7 @@ public class TestParser extends TestCase {
         assertTrue(result
                 .indexOf("$context.putSubContext(\"$newContext\",$newContext);") > 0);
         assertTrue(result
-                .indexOf("getTemplateEngine().renderTemplate(U.getPath(getPath(),\"aaa/bb/cc/dd\"),$newContext,$writer);") > 0);
+                .indexOf("getTemplateEngine().renderTemplateWithOutLayout(U.getPath(getPath(),\"aaa/bb/cc/dd\"),$newContext,$writer);") > 0);
         assertTrue(result
                 .indexOf("$context.removeSubContext(\"$newContext\");") > 0);
     }

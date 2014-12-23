@@ -29,7 +29,6 @@ public class URLFileObjectTest extends TestCase {
 
 		FileObject fileObject = VFS.resolveFile("http://www.baidu.com/");
 		assertTrue(fileObject instanceof HttpFileObject);
-		FileUtils.printFileObject(fileObject);
 
 	}
 
@@ -37,7 +36,6 @@ public class URLFileObjectTest extends TestCase {
 
 		FileObject fileObject = VFS.resolveFile("https://www.alipay.com/");
 		assertTrue(fileObject instanceof HttpsFileObject);
-		FileUtils.printFileObject(fileObject);
 
 	}
 
