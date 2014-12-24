@@ -560,8 +560,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             peekCodeBlock().subCode(String.format("$newContext.put(\"%s\",%s);", visitParaExpression.getChild(0).getText(), expression));
         } else {
             visitParaExpression.getChild(0).accept(this);
-            peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterNames().get(%d),%s);", i, expression));
-//            peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterNames().get(%d),new EvaluateExpression() {public Object evaluate(TemplateContext $context) {return %s;}});", i, expression));
+            peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterName(%d),%s);", i, expression));
         }
         popCodeLet();
     }

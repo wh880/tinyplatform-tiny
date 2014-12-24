@@ -114,4 +114,10 @@ public abstract class AbstractMacro implements Macro {
         return parameterNames;
     }
 
+    public String getParameterName(int index) {
+        if (index < parameterNames.size()) {
+            return parameterNames.get(index);
+        }
+        return null;
+    }
 }

@@ -93,7 +93,7 @@ public class TestParser extends TestCase {
     public void testPositionBlank() throws Exception {
         String result = execute("#@aaa(aaa bbb)hello#end");
         System.out.println(result);
-        assertTrue(result.indexOf("$newContext.put($macro.getParameterNames().get(1),U.v($context,\"bbb\"));") > 0);
+        assertTrue(result.indexOf("$newContext.put($macro.getParameterName(1),U.v($context,\"bbb\"));") > 0);
 
     }
 
@@ -181,14 +181,14 @@ public class TestParser extends TestCase {
         result = execute("#test(aa)");
         System.out.println(result);
         assertTrue(result
-                .indexOf("$newContext.put($macro.getParameterNames().get(0),U.v($context,\"aa\"));") > 0);
+                .indexOf("$newContext.put($macro.getParameterName(0),U.v($context,\"aa\"));") > 0);
         assertTrue(result
                 .indexOf("$macro=getTemplateEngine().findMacro(\"test\",$template,$context);") > 0);
 
         result = execute("#test(aa=1,bb=2,3)");
         System.out.println(result);
         assertTrue(result
-                .indexOf("$newContext.put($macro.getParameterNames().get(2),3);") > 0);
+                .indexOf("$newContext.put($macro.getParameterName(2),3);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"aa\",1);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"bb\",2);") > 0);
         assertTrue(result
@@ -526,7 +526,7 @@ public class TestParser extends TestCase {
         String result = execute("#call(\"test\" aa=1 bb=2,3)");
         System.out.println(result);
         assertTrue(result
-                .indexOf("$newContext.put($macro.getParameterNames().get(2),3);") > 0);
+                .indexOf("$newContext.put($macro.getParameterName(2),3);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"aa\",1);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"bb\",2);") > 0);
         assertTrue(result
@@ -542,13 +542,13 @@ public class TestParser extends TestCase {
         assertTrue(result
                 .indexOf("$macro=getTemplateEngine().findMacro(\"bbb\",$template,$context);") > 0);
         assertTrue(result
-                .indexOf("$newContext.put($macro.getParameterNames().get(0),1);") > 0);
+                .indexOf("$newContext.put($macro.getParameterName(0),1);") > 0);
     }
     public void testCallDirective() throws Exception {
         String result = execute("#call(\"test\",aa=1,bb=2,3)");
         System.out.println(result);
         assertTrue(result
-                .indexOf("$newContext.put($macro.getParameterNames().get(2),3);") > 0);
+                .indexOf("$newContext.put($macro.getParameterName(2),3);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"aa\",1);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"bb\",2);") > 0);
         assertTrue(result
@@ -564,7 +564,7 @@ public class TestParser extends TestCase {
         assertTrue(result
                 .indexOf("$macro=getTemplateEngine().findMacro(\"bbb\",$template,$context);") > 0);
         assertTrue(result
-                .indexOf("$newContext.put($macro.getParameterNames().get(0),1);") > 0);
+                .indexOf("$newContext.put($macro.getParameterName(0),1);") > 0);
     }
 
     public void testCallBlockDirective() throws Exception {
@@ -580,8 +580,8 @@ public class TestParser extends TestCase {
         String result = execute("#macro test(aaa)ddd#end #@test(aa=1,bb=2,3) aaa #@bbb(9)bb#end  #end");
         System.out.println(result);
         assertTrue(result
-                .indexOf("$newContext.put($macro.getParameterNames().get(0),9);") > 0);
+                .indexOf("$newContext.put($macro.getParameterName(0),9);") > 0);
         assertTrue(result
-                .indexOf("$newContext.put($macro.getParameterNames().get(2),3);") > 0);
+                .indexOf("$newContext.put($macro.getParameterName(2),3);") > 0);
     }
 }
