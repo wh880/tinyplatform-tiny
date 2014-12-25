@@ -45,11 +45,11 @@ public class TinyTemplateExecutor {
         }
         String layoutExtFileName = "layout";
         if (args.length >= 3) {
-            layoutExtFileName = args[1];
+            layoutExtFileName = args[2];
         }
         String componentExtFileName = "component";
         if (args.length >= 4) {
-            componentExtFileName = args[1];
+            componentExtFileName = args[3];
         }
         final TemplateEngine engine = new TemplateEngineDefault();
         //TODO 添加处理，把所有的ClassPath都加入到
