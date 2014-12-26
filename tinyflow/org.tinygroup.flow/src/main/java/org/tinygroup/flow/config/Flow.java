@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 流程，如果节点的名称叫exception，则表示是整个流程的异常处理节点，里面只能添加异常类的nextNode
+ * 流程，如果节点的名称叫eAxception，则表示是整个流程的异常处理节点，里面只能添加异常类的nextNode
  * 在执行时，如果节点没有处理，则异常会由本部分进行处理，本部分没有处理，则由异常管理器进行处理。
  *
  * @author luoguo

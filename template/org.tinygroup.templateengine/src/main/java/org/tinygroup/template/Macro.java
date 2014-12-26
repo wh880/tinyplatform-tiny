@@ -40,6 +40,14 @@ public interface Macro {
     List<String> getParameterNames();
 
     /**
+     * 返回指定索引的参数名，如果越界，则返回null
+     *
+     * @param index
+     * @return
+     */
+    String getParameterName(int index);
+
+    /**
      * 返回宏的参数的默认值
      *
      * @return
