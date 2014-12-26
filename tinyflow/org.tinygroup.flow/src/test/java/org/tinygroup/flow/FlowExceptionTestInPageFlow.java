@@ -35,14 +35,14 @@ public class FlowExceptionTestInPageFlow extends AbstractFlowComponent {
 	
 	public void testNodeException(){
 		Context context = new ContextImpl();
-		pageFlowExecutor.execute("exceptionWithNode", "begin", context);
+		pageFlowExecutor.execute("exceptionProcessFlow", "begin", context);
 		Throwable throwable=context.get("flowExceptionTest-hello");
 //		assertTrue(throwable.getCause() instanceof NoSuchMethodException);
 	}
 	
 	public void testFlowException(){
 		Context context = new ContextImpl();
-		pageFlowExecutor.execute("exceptionWithFlow", "begin", context);
+		pageFlowExecutor.execute("exceptionProcessFlow", "begin", context);
 		Throwable throwable=context.get("flowExceptionTest-hello");
 //		assertTrue(throwable.getCause() instanceof NoSuchMethodException);
 	}

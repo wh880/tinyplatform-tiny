@@ -237,11 +237,11 @@ public class FlowExecutorImpl implements FlowExecutor {
 			}
 
 			// 如果还是没有被处理掉，则交由异常处理流程进行管理
-			Flow exceptionFlow = this.getFlow("ExceptionFlow");
-			if (exceptionFlow != null) {
-				exceptionNode = exceptionFlow.getNodeMap().get("exception");
+			Flow exceptionProcessFlow = this.getFlow("exceptionProcessFlow");
+			if (exceptionProcessFlow != null) {
+				exceptionNode = exceptionProcessFlow.getNodeMap().get("exception");
 				if (exceptionNode != null
-						&& exceptionNodeProcess(exceptionFlow, exceptionNode,
+						&& exceptionNodeProcess(exceptionProcessFlow, exceptionNode,
 								context, flowContext, exception)) {
 					return;
 				}
@@ -358,7 +358,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 			Context newContext, Node node, Flow flow, String exceptionName) {
 		if (getExceptionType(exceptionName).isInstance(exception)) {// 如果异常匹配
 			String nextNode = node.getNextExceptionNodeMap().get(exceptionName);
-			context.put("exceptionFlow", flow);
+			context.put("exceptionProcessFlow", flow);
 			context.put("exceptionNode", node);
 			context.put("throwableObject", exception);
 			executeNextNode(flow, newContext, nextNode);
@@ -376,7 +376,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 				String[] str = nextNodeId.split(":");
 				nextFlow = flowIdMap.get(str[0]);
 				if (str.length == 1) {
-					nextNode = nextFlow.getNodeMap().get("start");
+					nextNode = nextFlow.getNodeMap().get("begin");
 				} else {
 					nextNode = nextFlow.getNodeMap().get(str[1]);
 				}

@@ -36,18 +36,18 @@ public class FlowExceptionTest extends AbstractFlowComponent {
 	
 	public void testNodeException(){
 		Context context = new ContextImpl();
-		flowExecutor.execute("exceptionWithNode", "begin", context);
-		Flow flow=context.get("exceptionFlow");
+		flowExecutor.execute("exceptionProcessFlow", "begin", context);
+		Flow flow=context.get("exceptionProcessFlow");
 //		assertTrue(throwable.getCause() instanceof NoSuchMethodException);
 //		System.out.println(f);
-		assertEquals("exceptionWithNode",flow.getId());
+		assertEquals("exceptionProcessFlow",flow.getId());
 	}
 	
 	public void testFlowException(){
 		Context context = new ContextImpl();
-		flowExecutor.execute("exceptionWithFlow", "begin", context);
-		Flow flow=context.get("exceptionFlow");
-		assertEquals("exceptionWithFlow",flow.getId());
+		flowExecutor.execute("exceptionProcessFlow", "begin", context);
+		Flow flow=context.get("exceptionProcessFlow");
+		assertEquals("exceptionProcessFlow",flow.getId());
 	}
 	
 }
