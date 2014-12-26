@@ -573,7 +573,7 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("$newContext.put(\"aa\",1);") > 0);
         assertTrue(result.indexOf("$newContext.put(\"bb\",2);") > 0);
         assertTrue(result
-                .indexOf("$newContext.put($macro.getParameterNames().get(3),3);") > 0);
+                .indexOf("$newContext.put($macro.getParameterName(3),3);") > 0);
     }
 
     public void testCallMacroBlockDirective() throws Exception {
