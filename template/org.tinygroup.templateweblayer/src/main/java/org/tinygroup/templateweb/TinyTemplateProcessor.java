@@ -1,5 +1,6 @@
 package org.tinygroup.templateweb;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -52,6 +53,11 @@ public class TinyTemplateProcessor extends AbstractTinyProcessor {
 			if (servletPath.endsWith(template)) {
 				isPagelet = true;
 			}
+			context.put(
+					"uiengine",
+					BeanContainerFactory.getBeanContainer(
+							this.getClass().getClassLoader()).getBean(
+							"uiComponentManager"));
             if (isPagelet) {
                 engine.renderTemplateWithOutLayout(servletPath.substring(0, servletPath.length()
 						- template.length())
