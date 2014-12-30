@@ -34,10 +34,15 @@ public class SyntaxErrorException extends RuntimeException {
 
     public SyntaxErrorException(String message, int col, int row, Throwable cause) {
         super(message, cause);
+        this.col=col;
+        this.row=row;
     }
+
 
     public SyntaxErrorException(String message, int col, int row) {
         super(message);
+        this.col=col;
+        this.row=row;
     }
 
     public SyntaxErrorException(Throwable cause) {
