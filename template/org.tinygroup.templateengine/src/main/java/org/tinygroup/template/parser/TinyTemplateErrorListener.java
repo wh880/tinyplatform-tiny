@@ -42,16 +42,16 @@ public final class TinyTemplateErrorListener extends BaseErrorListener {
         sb.append(':');
         sb.append(line);
         sb.append(':');
-        sb.append(line);
+        sb.append(charPositionInLine);
         sb.append("\nmessage: ");
         sb.append(msg);
         sb.append('\n');
         sb.append(MemorySourceCompiler.getPrettyError(sourceLines, line, charPositionInLine + 1, offendingToken.getStartIndex(), offendingToken.getStopIndex(), 5));
 
         if (e != null) {
-            throw new SyntaxErrorException(sb.toString(), e);
+            throw new SyntaxErrorException(sb.toString(), line, charPositionInLine, e);
         } else {
-            throw new SyntaxErrorException(sb.toString());
+            throw new SyntaxErrorException(sb.toString(), line, charPositionInLine);
         }
     }
 }

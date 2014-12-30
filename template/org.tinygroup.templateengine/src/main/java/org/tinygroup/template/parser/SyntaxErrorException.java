@@ -17,16 +17,26 @@ package org.tinygroup.template.parser;
 
 public class SyntaxErrorException extends RuntimeException {
     private static final long serialVersionUID = 1L;
+    int col;
+    int row;
+
+    public int getCol() {
+        return col;
+    }
+
+    public int getRow() {
+        return row;
+    }
 
     public SyntaxErrorException() {
         super();
     }
 
-    public SyntaxErrorException(String message, Throwable cause) {
+    public SyntaxErrorException(String message, int col, int row, Throwable cause) {
         super(message, cause);
     }
 
-    public SyntaxErrorException(String message) {
+    public SyntaxErrorException(String message, int col, int row) {
         super(message);
     }
 
