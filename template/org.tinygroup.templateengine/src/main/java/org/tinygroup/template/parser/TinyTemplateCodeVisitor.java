@@ -66,7 +66,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
     public CodeBlock visitInvalid_directive(@NotNull TinyTemplateParser.Invalid_directiveContext ctx) {
-        throw reportError("Missing arguments for " + ctx.getText() + " directive.", ctx);
+        throw reportError("Missing arguments for " + ctx.getText() + " directive.",ctx.getStart().getLine(),ctx.getStart().getCharPositionInLine(), ctx);
     }
 
 
@@ -813,7 +813,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
 
-    private RuntimeException reportError(String message, Object node) {
+    private RuntimeException reportError(String message,int col, int rol, Object node) {
         if (node instanceof ParserRuleContext) {
             parser.notifyErrorListeners(((ParserRuleContext) node).getStart(), message, null);
         } else if (node instanceof TerminalNode) {
@@ -821,7 +821,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         } else if (node instanceof Token) {
             parser.notifyErrorListeners((Token) node, message, null);
         }
-        return new SyntaxErrorException(message);
+        return new SyntaxErrorException(message,col,rol);
     }
 
     public CodeBlock visitFor_expression(@NotNull TinyTemplateParser.For_expressionContext ctx) {
