@@ -774,13 +774,13 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         positionCodeBlock.subCode("if(!$context.exist(\"" + name + "\")){");
         positionCodeBlock.subCode("    Writer templateWriter = new java.io.CharArrayWriter();");
         positionCodeBlock.subCode("    new AbstractMacro(\"" + name + "\") {");
-        positionCodeBlock.subCode("        protected void renderMacro(Template $template, TemplateContext $context, Writer $writer) throws IOException, TemplateException {");
+        positionCodeBlock.subCode("        protected void renderMacro(Template $template, TemplateContext $context, TemplateContext $newContext,Writer $writer) throws IOException, TemplateException {");
         CodeBlock subCodeBlock = pushPeekCodeBlock();
         ctx.block().accept(this);
         popCodeBlock();
         positionCodeBlock.subCode(subCodeBlock);
         positionCodeBlock.subCode("        }");
-        positionCodeBlock.subCode("    }.renderMacro($template, $context, templateWriter);");
+        positionCodeBlock.subCode("    }.renderMacro($template, $context, $newContext,templateWriter);");
         positionCodeBlock.subCode("    $context.put(\"" + name + "\",templateWriter);");
         positionCodeBlock.subCode("}");
         return positionCodeBlock;
