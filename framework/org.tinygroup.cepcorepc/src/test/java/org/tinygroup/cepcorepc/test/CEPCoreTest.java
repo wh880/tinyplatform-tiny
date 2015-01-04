@@ -29,7 +29,7 @@ public class CEPCoreTest extends TestCase {
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		//cepCore.setManager(new CEPCoreNodeImpl());
+		
 		AopTestUtil.registerEventProcessor(new EventProcessor1());
 		AopTestUtil.registerEventProcessor(new EventProcessor2());
 		AopTestUtil.registerEventProcessor(channel1);

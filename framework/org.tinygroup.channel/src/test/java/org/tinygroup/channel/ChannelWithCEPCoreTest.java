@@ -19,12 +19,9 @@ import junit.framework.TestCase;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcorepc.impl.PcCepCoreImpl;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;
-import org.tinygroup.channel.ChannelInterface;
-import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class ChannelWithCEPCoreTest extends TestCase {
