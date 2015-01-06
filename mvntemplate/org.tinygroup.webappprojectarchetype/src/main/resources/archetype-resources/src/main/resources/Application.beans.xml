@@ -33,18 +33,16 @@
 				<!-- pageflow -->
 				<ref bean="pageFlowComponentProcessor" />
 				<ref bean="pageFlowFileProcessor" />
-				<!-- plugin -->
-				<ref bean="tinyPluginFileProcessor" />
+				
+        <!--dictload-->
+        <ref bean="dictLoadFileProcessor" />
 
-                <!--dictload-->
-                <ref bean="dictLoadFileProcessor" />
-
-				<ref bean="velocityMacroFileProcessor" />
+				<ref bean="tinyMacroFileProcessor" />
 				<ref bean="fullContextFileFinder" />
 				<ref bean="uIComponentFileProcessor" />
 				<!-- context2objects -->
 				<ref bean="generatorFileProcessor"/>
-                <!-- serviceMapping -->
+        <!-- serviceMapping -->
 				<ref bean="serviceMappingFileProcessor"/>
 			</list>
 		</property>

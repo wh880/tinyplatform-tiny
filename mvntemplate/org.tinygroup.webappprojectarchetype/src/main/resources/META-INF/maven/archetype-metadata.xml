@@ -15,6 +15,15 @@
       <includes>
         <include>**/*</include>
       </includes>
+      <excludes>
+        <exclude>default.layout</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet filtered="false" encoding="UTF-8">
+      <directory>src/main/webapp</directory>
+      <includes>
+        <include>default.layout</include>
+      </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
       <directory>src/main/resources</directory>
