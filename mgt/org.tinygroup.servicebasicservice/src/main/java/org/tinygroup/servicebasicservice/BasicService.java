@@ -32,13 +32,32 @@ public class BasicService {
 		List<ServiceRegistryItem> list = new ArrayList<ServiceRegistryItem>();
 		for (ServiceRegistryItem item : serviceRegistry
 				.getServiceRegistryItems()) {
-			list.add(item);
-		}
+			ServiceRegistryItem newItem = new ServiceRegistryItem();
+			newItem.setCategory(item.getCategory());
+			newItem.setDescription(item.getDescription());
+			newItem.setLocalName(item.getLocalName());
+			newItem.setParameters(item.getParameters());
+			newItem.setResults(item.getResults());
+			newItem.setServiceId(item.getServiceId());
+			list.add(newItem);
+		} 
+
 		return list;
 	}
 
 	public ServiceRegistryItem getServiceRegistryItem(String id) {
-		return serviceRegistry.getServiceRegistryItem(id);
+		ServiceRegistryItem item = serviceRegistry.getServiceRegistryItem(id);
+		if (item == null) {
+			return null;
+		}
+		ServiceRegistryItem newItem = new ServiceRegistryItem();
+		newItem.setCategory(item.getCategory());
+		newItem.setDescription(item.getDescription());
+		newItem.setLocalName(item.getLocalName());
+		newItem.setParameters(item.getParameters());
+		newItem.setResults(item.getResults());
+		newItem.setServiceId(item.getServiceId());
+		return newItem;
 	}
 
 	public ServiceRegistry getServiceRegistry() {
