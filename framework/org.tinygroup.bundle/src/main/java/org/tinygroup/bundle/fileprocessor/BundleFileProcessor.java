@@ -45,10 +45,10 @@ public class BundleFileProcessor extends AbstractFileProcessor {
 
 	public void process() {
 		processDeleteBundle();
-		ProcessBundle();
+		processBundle();
 	}
 
-	private void ProcessBundle() {
+	private void processBundle() {
         for (FileObject file : changeList) {
             logger.logMessage(LogLevel.INFO, "开始读取Bundle配置文件:{0}",
                     file.getFileName());

@@ -42,6 +42,11 @@ public interface BundleManager extends SingleBundleManager, BatchBundleManager {
     BundleDefine getBundleDefine(String name) throws BundleException;
 
     /**
+     * 获取所有的bundle
+     * @return
+     */
+    Map<String,BundleDefine> getBundleDefines();
+    /**
      * 删除一个杂物箱定义，删除一个杂物箱定义时，如果其对应的Bundle已经起动则会默认停止之，同时依赖它的其它杂物箱也会被停止
      *
      * @param bundleDefine
@@ -135,4 +140,11 @@ public interface BundleManager extends SingleBundleManager, BatchBundleManager {
     TinyClassLoader getTinyClassLoader(BundleDefine bundleDefine);
     
     Map<BundleDefine, TinyClassLoader> getBundleMap();
+    
+    /**
+     * 判断bundle是否停止
+     * @param bundleName
+     * @return
+     */
+    boolean checkBundleStop(String bundleName);
 }

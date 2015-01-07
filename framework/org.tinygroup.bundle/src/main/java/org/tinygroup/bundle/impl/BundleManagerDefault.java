@@ -384,7 +384,7 @@ public class BundleManagerDefault implements BundleManager {
 			}
 		}
 
-		for (String dependenBy : dependencyByList) { // 启动所有的依赖项
+		for (String dependenBy : dependencyByList) { // 停止所有的依赖项
 			logger.logMessage(LogLevel.DEBUG, "开始停止依赖Bundle:{0}的Bundle:{1}",
 					bundle, dependenBy);
 			stop(dependenBy);
@@ -463,5 +463,17 @@ public class BundleManagerDefault implements BundleManager {
 	public Map<BundleDefine, TinyClassLoader> getBundleMap() {
 		return tinyClassLoaderMap;
 	}
+
+	public Map<String, BundleDefine> getBundleDefines() {
+		return bundleDefineMap;
+	}
+	
+	public boolean checkBundleStop(String bundleName){
+		if (!tinyClassLoaderMap.containsKey(bundleName)){
+			return true;
+		}
+		return false;
+	}
+
 
 }
