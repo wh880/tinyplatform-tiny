@@ -37,9 +37,9 @@ public final class CEPCoreUtil {
 		return manager.handle(e, event);
 	}
 
-	public static boolean isNull(String s) {
-		return s == null || "".equals(s);
-	}
+//	public static boolean isNull(String s) {
+//		return s == null || "".equals(s);
+//	}
 
 	public static String getNodeKey(Node node) {
 		String nodeName = node.getNodeName();

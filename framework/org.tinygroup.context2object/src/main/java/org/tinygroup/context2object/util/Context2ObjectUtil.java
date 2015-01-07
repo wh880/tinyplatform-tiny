@@ -16,6 +16,7 @@
 package org.tinygroup.context2object.util;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
@@ -37,9 +38,6 @@ public final class Context2ObjectUtil {
 		return getObjectByGenerator(p, context, loader);
 	}
 
-	private static boolean isNull(String s) {
-		return s == null || "".equals(s);
-	}
 
 	public static Object getObjectByGenerator(Parameter parameter,
 			Context context, ClassLoader loader) {
@@ -49,7 +47,7 @@ public final class Context2ObjectUtil {
 		ClassNameObjectGenerator generator = BeanContainerFactory
 				.getBeanContainer(Context2ObjectUtil.class.getClassLoader())
 				.getBean(GeneratorFileProcessor.CLASSNAME_OBJECT_GENERATOR_BEAN);
-		if (!isNull(collectionType)) {// 如果集合类型非空
+		if (!StringUtil.isBlank(collectionType)) {// 如果集合类型非空
 			return generator.getObjectCollection(paramName, collectionType,
 					paramType, loader,context);
 		} else if (parameter.isArray()) {// 如果是数组

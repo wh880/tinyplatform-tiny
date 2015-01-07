@@ -30,6 +30,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.helpers.Loader;
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.ObjectGenerator;
 import org.tinygroup.context2object.TypeConverter;
@@ -586,7 +587,7 @@ public class ClassNameObjectGenerator implements
 	}
 
 	private boolean isNull(String str) {
-		if (str == null || "".equals(str.trim())) {
+		if (StringUtil.isBlank(str)) {
 			return true;
 		}
 		return false;

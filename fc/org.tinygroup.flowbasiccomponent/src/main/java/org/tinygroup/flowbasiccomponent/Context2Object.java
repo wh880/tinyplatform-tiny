@@ -16,6 +16,7 @@
 package org.tinygroup.flowbasiccomponent;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
@@ -125,7 +126,7 @@ public class Context2Object implements ComponentInterface {
 	}
 
 	private boolean isNull(String str) {
-		if (str == null || "".equals(str.trim()))
+		if (StringUtil.isBlank(str))
 			return true;
 		return false;
 	}
