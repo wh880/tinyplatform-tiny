@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.weblayerext</artifactId>
+            <artifactId>org.tinygroup.templateweblayer</artifactId>
             <version>${tinyVersion}</version>
             <exclusions>
                 <exclusion>
@@ -34,27 +34,17 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.channel</artifactId>
+            <artifactId>org.tinygroup.serviceprocessor</artifactId>
             <version>${tinyVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.serviceplugin</artifactId>
+            <artifactId>org.tinygroup.flowprocessor</artifactId>
             <version>${tinyVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.simplechannel</artifactId>
-            <version>${tinyVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.rpc</artifactId>
-            <version>${tinyVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.servicebasicservice</artifactId>
+            <artifactId>org.tinygroup.cepcorenetty</artifactId>
             <version>${tinyVersion}</version>
         </dependency>
         <dependency>
