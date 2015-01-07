@@ -18,10 +18,22 @@ package org.tinygroup.bundle.applicationprocessor;
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.bundle.BundleManager;
+import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.xmlparser.node.XmlNode;
 
-public class BundleApplicationProcessor implements ApplicationProcessor{
+public class BundleApplicationProcessor implements ApplicationProcessor {
 	private BundleManager bundleManager;
+	private XmlNode appConfig;
+	private static final String BUNDLE_CONFIG_PATH = "/application/bundle-configuration";
+	private static final String PATH_TAG = "path";
+	private static final String COMMON_ROOT = "common-root";
+	private static final String BUNDLE_ROOT = "bundle-root";
+	private static Logger logger = LoggerFactory
+			.getLogger(BundleApplicationProcessor.class);
+
 	public BundleManager getBundleManager() {
 		return bundleManager;
 	}
@@ -31,8 +43,7 @@ public class BundleApplicationProcessor implements ApplicationProcessor{
 	}
 
 	public String getApplicationNodePath() {
-		// TODO Auto-generated method stub
-		return null;
+		return BUNDLE_CONFIG_PATH;
 	}
 
 	public String getComponentConfigPath() {
@@ -41,8 +52,7 @@ public class BundleApplicationProcessor implements ApplicationProcessor{
 	}
 
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
-		// TODO Auto-generated method stub
-		
+		appConfig = applicationConfig;
 	}
 
 	public XmlNode getComponentConfig() {
@@ -51,8 +61,7 @@ public class BundleApplicationProcessor implements ApplicationProcessor{
 	}
 
 	public XmlNode getApplicationConfig() {
-		// TODO Auto-generated method stub
-		return null;
+		return appConfig;
 	}
 
 	public int getOrder() {
@@ -61,23 +70,43 @@ public class BundleApplicationProcessor implements ApplicationProcessor{
 	}
 
 	public void start() {
-		bundleManager.setCommonRoot(System.getProperty("user.dir"));
-		bundleManager.setBundleRoot(System.getProperty("user.dir"));
+		logger.logMessage(LogLevel.INFO, "开始启动BundleApplicationProcessor");
+		if (appConfig != null) {
+			String commonRoot = appConfig.getSubNode(PATH_TAG).getAttribute(
+					COMMON_ROOT);
+			bundleManager.setCommonRoot(commonRoot);
+			logger.logMessage(LogLevel.INFO, "配置的公共包置路径为:{}", commonRoot);
+			String bundleRoot = appConfig.getSubNode(PATH_TAG).getAttribute(
+					BUNDLE_ROOT);
+			bundleManager.setBundleRoot(bundleRoot);
+			logger.logMessage(LogLevel.INFO, "配置的Bundle放置路径为:{}", bundleRoot);
+		}
+		if (StringUtil.isBlank(bundleManager.getBundleRoot())) {
+			bundleManager.setBundleRoot(System.getProperty("user.dir"));
+		}
+		if (StringUtil.isBlank(bundleManager.getCommonRoot())) {
+			bundleManager.setCommonRoot(System.getProperty("user.dir"));
+		}
+		logger.logMessage(LogLevel.INFO, "Bundle放置路径为:{}",
+				bundleManager.getBundleRoot());
+		logger.logMessage(LogLevel.INFO, "公共包路径为:{}",
+				bundleManager.getCommonRoot());
+		logger.logMessage(LogLevel.INFO, "启动BundleApplicationProcessor完毕");
 	}
 
 	public void init() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void stop() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void setApplication(Application application) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
