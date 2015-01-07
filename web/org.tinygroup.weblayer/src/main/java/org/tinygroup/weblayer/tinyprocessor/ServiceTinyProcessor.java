@@ -24,7 +24,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.Context;
 import org.tinygroup.convert.ConvertException;
-import org.tinygroup.convert.objectjson.jackson.ObjectToJson;
+import org.tinygroup.convert.objectjson.xstream.ObjectToJson;
 import org.tinygroup.convert.objectxml.xstream.ObjectToXml;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.Parameter;
@@ -39,8 +39,7 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 	ServiceMappingManager manager;
 	CEPCore core;
 	ObjectToXml<Object> objectToXml = new ObjectToXml<Object>();
-	ObjectToJson<Object> objectToJson = new ObjectToJson<Object>(
-			JsonSerialize.Inclusion.NON_NULL);
+	ObjectToJson<Object> objectToJson = new ObjectToJson<Object>(Object.class);
 
 	public CEPCore getCore() {
 		return core;
@@ -87,12 +86,10 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 				context.getResponse().getWriter()
 						.write(objectToXml.convert(result));
 			} else if (urlString.endsWith(".servicejson") && result != null) {// 返回json
-				try {
+				
 					context.getResponse().getWriter()
 							.write(objectToJson.convert(result));
-				} catch (ConvertException e) {
-					throw new RuntimeException(e);
-				}
+				
 			} else if (urlString.endsWith(".servicepage")) {// 返回页面
 				ServiceViewMapping viewMapping=manager.getServiceViewMapping(serviceId);
 				if(viewMapping==null){
