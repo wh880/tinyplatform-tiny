@@ -15,6 +15,10 @@
  */
 package org.tinygroup.bundle.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.bundle.BundleException;
 import org.tinygroup.bundle.BundleManager;
 import org.tinygroup.bundle.config.BundleDefine;
@@ -46,4 +50,16 @@ public class BundleService {
 		bundleManager.removeBundle(bundleDefine);
 
 	}
+
+	public List<BundleDefine> getBundleDefines() {
+		Map<String, BundleDefine> map = bundleManager.getBundleDefines();
+		List<BundleDefine> list = new ArrayList<BundleDefine>();
+		list.addAll(map.values());
+		return list;
+	}
+
+	public boolean checkBundleStop(String bundleName) {
+		return bundleManager.checkBundleStop(bundleName);
+	}
+
 }
