@@ -342,10 +342,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         Token token = ((TerminalNode) ctx.getChild(0)).getSymbol();
         String text = token.getText();
         switch (token.getType()) {
-            case TinyTemplateParser.COMMENT_LINE:
-            case TinyTemplateParser.COMMENT_BLOCK1:
-            case TinyTemplateParser.COMMENT_BLOCK2:
-                return null;
             case TinyTemplateParser.TEXT_PLAIN:
                 if (strictFormat) {
                     text = text.trim();
@@ -505,6 +501,10 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitExpression_range(@NotNull TinyTemplateParser.Expression_rangeContext ctx) {
+        return null;
+    }
+
+    public CodeBlock visitComment(@NotNull TinyTemplateParser.CommentContext ctx) {
         return null;
     }
 
