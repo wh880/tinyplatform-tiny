@@ -54,7 +54,7 @@ public interface TinyProcessor {
     /**
      * tinyprocessor的销毁操作
      */
-    void destory();
+    void destroy();
 
     void setConfiguration(XmlNode xmlNode);
 }

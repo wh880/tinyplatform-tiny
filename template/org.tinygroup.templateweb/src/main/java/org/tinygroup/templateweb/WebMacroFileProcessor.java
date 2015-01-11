@@ -1,6 +1,6 @@
 package org.tinygroup.templateweb;
 
-import java.util.Set;
+import java.util.List;
 
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
@@ -81,7 +81,7 @@ public class WebMacroFileProcessor extends AbstractFileProcessor {
 				templateExtFileName, layoutExtFileName, componentExtFileName,
 				getClass().getClassLoader());
 		engine.addResourceLoader(classResourceLoader);
-		Set<String> scanningPaths = fileResolver.getResolveFileObjectSet();
+		List<String> scanningPaths = fileResolver.getResolveFileObjectSet();
 		for (String path : scanningPaths) {
 			FileObjectResourceLoader fileResourceLoader = new FileObjectResourceLoader(
 					templateExtFileName, layoutExtFileName,

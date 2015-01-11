@@ -79,8 +79,8 @@ public class TinyProcessorWapper extends AbstractTinyProcessor {
 	}
 
 	
-	public void destory() {
-		super.destory();
+	public void destroy() {
+		super.destroy();
 		servlet.destroy();
 	}
 

@@ -17,7 +17,6 @@ package org.tinygroup.fileresolver;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.tinygroup.config.Configuration;
@@ -44,7 +43,7 @@ public interface FileResolver extends Configuration {
 	 * 
 	 * @return
 	 */
-	Set<String> getResolveFileObjectSet();
+	List<String> getResolveFileObjectSet();
 
 	/**
 	 * 手工添加扫描的匹配列表，如果有包含列表，则按包含列表

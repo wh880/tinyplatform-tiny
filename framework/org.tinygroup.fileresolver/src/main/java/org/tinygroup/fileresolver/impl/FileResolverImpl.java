@@ -66,7 +66,7 @@ public class FileResolverImpl implements FileResolver {
 	private Map<String, FileObject> fileObjectCaches = new HashMap<String, FileObject>();
 
 	private Map<String, Pattern> includePathPatternMap = new HashMap<String, Pattern>();
-	private Set<String> allScanningPath = new HashSet<String>();
+	private List<String> allScanningPath = new ArrayList<String>();
 
 	private XmlNode componentConfig;
 	private XmlNode applicationConfig;
@@ -80,7 +80,7 @@ public class FileResolverImpl implements FileResolver {
 		this.changeLisenters = changeLisenters;
 	}
 
-	public Set<String> getResolveFileObjectSet() {
+	public List<String> getResolveFileObjectSet() {
 		return allScanningPath;
 	}
 

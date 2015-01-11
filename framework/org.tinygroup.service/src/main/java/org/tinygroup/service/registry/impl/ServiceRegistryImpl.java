@@ -45,6 +45,10 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		if (serviceIdMap.containsKey(serviceRegistryItem.getServiceId())) {
 			logger.logMessage(LogLevel.WARN, "服务号:[{0}]已经存在,之前的服务将被覆盖",
 					serviceRegistryItem.getServiceId());
+			ServiceRegistryItem item = serviceIdMap.get(serviceRegistryItem.getServiceId());
+			if(item!=null){
+				serviceToServiceRegistryItem.remove(item.getService());
+			}
 		}
 		logger.logMessage(LogLevel.INFO, "添加服务[serviceId:{0}]",
 				serviceRegistryItem.getServiceId());

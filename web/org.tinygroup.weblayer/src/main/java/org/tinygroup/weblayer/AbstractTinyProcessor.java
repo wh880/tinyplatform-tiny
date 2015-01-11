@@ -75,7 +75,7 @@ public abstract class AbstractTinyProcessor implements TinyProcessor {
 		}
 	}
 
-	public void destory() {
+	public void destroy() {
 		xmlNode = null;
 		initParamMap = null;
 		patterns = null;

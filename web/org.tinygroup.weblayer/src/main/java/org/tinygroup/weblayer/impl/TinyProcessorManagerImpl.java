@@ -184,7 +184,7 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 
 	public void destoryTinyResources() {
 		for (TinyProcessor tinyProcessor : tinyProcessorList) {
-			tinyProcessor.destory();
+			tinyProcessor.destroy();
 		}
 		configManager = null;
 		processorXmlNodes = null;

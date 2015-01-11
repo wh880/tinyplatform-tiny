@@ -1,5 +1,8 @@
 package org.tinygroup.templateweb;
 
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.bundle.BundleManager;
 import org.tinygroup.bundle.config.BundleDefine;
 import org.tinygroup.bundle.loader.TinyClassLoader;
@@ -13,9 +16,6 @@ import org.tinygroup.template.loader.ClassLoaderResourceLoader;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.Map;
-import java.util.Set;
 
 /**
  * tiny宏文件扫描
@@ -105,7 +105,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
                     componentExtFileName, classLoader);
             engine.addResourceLoader(classResourceLoader);
         }
-        Set<String> scanningPaths = fileResolver.getResolveFileObjectSet();
+        List<String> scanningPaths = fileResolver.getResolveFileObjectSet();
         for (String path : scanningPaths) {
             FileObjectResourceLoader fileResourceLoader = new FileObjectResourceLoader(
                     templateExtFileName, layoutExtFileName,
