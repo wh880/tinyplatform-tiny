@@ -135,7 +135,7 @@ public class EhCache implements Cache {
 		throw new CacheException("ehcache does not support this feature.");
 	}
 
-	public void destory() {
+	public void destroy() {
 		cache.dispose();
 	}
 

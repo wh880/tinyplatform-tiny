@@ -107,5 +107,5 @@ public interface Cache {
 	 */
 	int freeMemoryElements(int numberToFree);
 	
-	void destory();
+	void destroy();
 }

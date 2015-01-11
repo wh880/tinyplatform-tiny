@@ -143,7 +143,7 @@ public class JcsCache implements Cache {
 		}
 	}
 
-	public void destory() {
+	public void destroy() {
 		jcs.dispose();
 		CompositeCache.elementEventQ.destroy();
 	}
