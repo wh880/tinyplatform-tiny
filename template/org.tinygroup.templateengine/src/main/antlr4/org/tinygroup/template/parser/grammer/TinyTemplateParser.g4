@@ -23,15 +23,22 @@ package jetbrick.template.parser.grammer;
 template    :   block
             ;
 
-block       :   (text | value | directive)*
+block       :   (comment | text | value | directive)*
             ;
 
 
 text        :   TEXT_PLAIN
             |   TEXT_CDATA
             |   TEXT_SINGLE_CHAR
+            |    COMMENT_LINE
+            |   COMMENT_BLOCK1
+            |   COMMENT_BLOCK2
             |   TEXT_ESCAPED_CHAR
             |   TEXT_DIRECTIVE_LIKE
+            ;
+comment        :     COMMENT_LINE
+            |   COMMENT_BLOCK1
+            |   COMMENT_BLOCK2
             ;
 value       :   //VALUE_COMPACT_OPEN  identify_list
                VALUE_OPEN         expression '}'
@@ -180,7 +187,6 @@ invalid_directive
             |   DIRECTIVE_FOR
             |   DIRECTIVE_INCLUDE
             |   DIRECTIVE_OPEN_CALL_MACRO
-            |   DIRECTIVE_TAG
             |   DIRECTIVE_BODY_CALL
             |   DIRECTIVE_MACRO
             ;
