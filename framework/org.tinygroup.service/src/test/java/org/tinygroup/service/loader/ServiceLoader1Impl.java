@@ -28,7 +28,7 @@ public class ServiceLoader1Impl implements ServiceLoader {
 			PrintContextService printContextService = new PrintContextService();
 			ServiceRegistryItem serviceRegistryItem = new ServiceRegistryItem();
 			serviceRegistryItem.setService(printContextService);
-			serviceRegistryItem.setServiceId("PrintContextService");
+			serviceRegistryItem.setServiceId("PrintContextService"+index);
 			serviceRegistry.registerService(serviceRegistryItem);
 		}
 	}
