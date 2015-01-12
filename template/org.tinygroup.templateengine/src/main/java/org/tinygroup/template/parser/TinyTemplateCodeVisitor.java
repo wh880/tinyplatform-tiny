@@ -289,6 +289,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         renderMethod.subCode("Macro $macro=null;");
         renderMethod.subCode("Macro $bodyMacro=null;");
         renderMethod.subCode("Template $template=this;");
+        renderMethod.subCode("TemplateContext $pageContext=$context;");
         renderMethod.subCode("TemplateContext $newContext=null;");
 
         return renderMethod;
