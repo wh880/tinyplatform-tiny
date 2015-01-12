@@ -210,6 +210,8 @@ public class BundleManagerDefault implements BundleManager {
 		startBundleActivator(bundleDefine, bundle);
 
 		processEvents(afterStartBundleEvent, bundleContext, bundleDefine);
+		
+		bundleDefine.setStart(true);
 
 	}
 
@@ -371,6 +373,7 @@ public class BundleManagerDefault implements BundleManager {
 		stopBundleActivator(bundleContext, bundleDefine, bundle);
 
 		processEvents(afterStopBundleEvent, bundleContext, bundleDefine);
+		bundleDefine.setStart(false);
 	}
 
 	private void stopBundleDependBy(String bundle) {
@@ -469,10 +472,11 @@ public class BundleManagerDefault implements BundleManager {
 	}
 	
 	public boolean checkBundleStop(String bundleName){
-		if (!tinyClassLoaderMap.containsKey(bundleName)){
-			return true;
+		if(bundleDefineMap.containsKey(bundleName)){
+			BundleDefine bundle = bundleDefineMap.get(bundleName);
+			return !bundle.isStart();
 		}
-		return false;
+		return true;
 	}
 
 

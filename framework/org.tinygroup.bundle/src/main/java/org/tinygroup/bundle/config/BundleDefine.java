@@ -58,8 +58,19 @@ public class BundleDefine implements Serializable{
     @XStreamAsAttribute
     private String bundleActivator;
     private transient String[] dependencyArray = null;
+    private boolean start = false;
+    
+    
 
-    public String getBundleActivator() {
+    public boolean isStart() {
+		return start;
+	}
+
+	public void setStart(boolean start) {
+		this.start = start;
+	}
+
+	public String getBundleActivator() {
         return bundleActivator;
     }
 
