@@ -87,7 +87,9 @@ public class LoaderManager {
 		if (classes == null)
 			return;
 		for (String className : classes) {
-			classes.remove(className);
+			if(classMap.get(className)==loader){
+				loaderMap.remove(className);
+			}
 		}
 	}
 
