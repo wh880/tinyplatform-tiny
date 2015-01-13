@@ -40,7 +40,7 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     private List<ResourceLoader> resourceLoaderList = new ArrayList<ResourceLoader>();
     private String encode = "UTF-8";
-    private I18nVisitor i18nVistor;
+    private I18nVisitor i18nVisitor;
     private boolean cacheEnabled = false;
     private TemplateCache<String, List<Template>> layoutPathListCache = new TemplateCacheDefault<String, List<Template>>();
     private TemplateCache<String, Macro> macroCache = new TemplateCacheDefault<String, Macro>();
@@ -107,13 +107,13 @@ public class TemplateEngineDefault implements TemplateEngine {
 
 
     public TemplateEngine setI18nVistor(I18nVisitor i18nVistor) {
-        this.i18nVistor = i18nVistor;
+        this.i18nVisitor = i18nVistor;
         return this;
     }
 
 
     public I18nVisitor getI18nVisitor() {
-        return i18nVistor;
+        return i18nVisitor;
     }
 
     public void setResourceLoaderList(List<ResourceLoader> resourceLoaderList) {
@@ -131,7 +131,7 @@ public class TemplateEngineDefault implements TemplateEngine {
             String[] types = function.getBindingTypes().split(",");
             for (String type : types) {
                 for (String name : names) {
-                    typeFunctionMap.put(getkeyName(type, name), function);
+                    typeFunctionMap.put(getKeyName(type, name), function);
                 }
             }
         }
@@ -145,10 +145,10 @@ public class TemplateEngineDefault implements TemplateEngine {
 
 
     public TemplateFunction getTemplateFunction(String className, String methodName) {
-        return typeFunctionMap.get(getkeyName(className, methodName));
+        return typeFunctionMap.get(getKeyName(className, methodName));
     }
 
-    private String getkeyName(String className, String methodName) {
+    private String getKeyName(String className, String methodName) {
         return className + ":" + methodName;
     }
 
