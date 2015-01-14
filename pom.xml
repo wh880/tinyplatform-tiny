@@ -22,7 +22,6 @@
             <id>java.net</id>
             <url>http://download.java.net/maven/2/</url>
         </repository>
-<!--
         <repository>
             <id>sonatype-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
@@ -33,30 +32,8 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
--->
-        <repository>
-            <id>tinygroup</id>
-            <url>http://www.tinygroup.org/nexus/content/repositories/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
+
     </repositories>
-    <distributionManagement>
-        <snapshotRepository>
-            <id>tinygroup</id>
-            <name>tinygroup</name>
-            <url>http://www.tinygroup.org/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>sonatype-nexus-staging</id>
-            <name>Nexus Release Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
     <licenses>
         <license>
             <name>GNU GPL 3.0</name>
@@ -134,19 +111,19 @@
     <build>
         <plugins>
             <plugin>
-            <!-- NOTE: We don't need a groupId specification because the group is
-                 org.apache.maven.plugins ...which is assumed by default.
-             -->
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>2.4</version>
-            <configuration>
-                <descriptorRefs>
-                    <descriptorRef>jar-with-dependencies</descriptorRef>
-                </descriptorRefs>
-                <descriptors>
-                    <descriptor>src/main/assembly/bin-release.xml</descriptor>
-                </descriptors>
-            </configuration>
+                <!-- NOTE: We don't need a groupId specification because the group is
+                     org.apache.maven.plugins ...which is assumed by default.
+                 -->
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <descriptors>
+                        <descriptor>src/main/assembly/bin-release.xml</descriptor>
+                    </descriptors>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
