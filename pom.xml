@@ -22,7 +22,7 @@
             <id>java.net</id>
             <url>http://download.java.net/maven/2/</url>
         </repository>
-
+<!--
         <repository>
             <id>sonatype-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
@@ -33,6 +33,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+-->
         <repository>
             <id>tinygroup</id>
             <url>http://www.tinygroup.org/nexus/content/repositories/snapshots/</url>
