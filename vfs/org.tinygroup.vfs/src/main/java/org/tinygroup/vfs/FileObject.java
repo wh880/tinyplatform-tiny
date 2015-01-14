@@ -27,6 +27,10 @@ public interface FileObject extends Serializable{
 
     boolean isModified();
 
+    /**
+     * 重置为未修改状态
+     */
+    void resetModified();
     // 返回url
     URL getURL();
 

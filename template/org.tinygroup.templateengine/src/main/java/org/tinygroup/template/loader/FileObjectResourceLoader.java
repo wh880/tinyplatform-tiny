@@ -55,7 +55,17 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
 
     public boolean isModified(String path) {
         FileObject fileObject = getFileObject(path);
-        return !fileObject.isExist() || fileObject.isModified();
+        if (fileObject == null) {
+            return true;
+        }
+        return fileObject.isModified();
+    }
+
+    public void resetModified(String path) {
+        FileObject fileObject = getFileObject(path);
+        if (fileObject != null) {
+            fileObject.resetModified();
+        }
     }
 
     private FileObject getFileObject(String path) {

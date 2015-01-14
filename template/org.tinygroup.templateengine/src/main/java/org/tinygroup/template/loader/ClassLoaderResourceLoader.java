@@ -54,9 +54,6 @@ public class ClassLoaderResourceLoader extends AbstractResourceLoader<String> {
     }
 
 
-    public boolean isModified(String path) {
-        return false;
-    }
 
     public String getResourceContent(String path, String encode) throws TemplateException {
         try {

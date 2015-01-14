@@ -50,7 +50,9 @@ public abstract class AbstractFileObject implements FileObject {
     public boolean isModified() {
         return false;
     }
+    public   void resetModified(){
 
+    }
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;

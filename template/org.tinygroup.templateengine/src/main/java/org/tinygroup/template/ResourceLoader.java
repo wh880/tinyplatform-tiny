@@ -38,6 +38,11 @@ public interface ResourceLoader<T> {
     boolean isModified(String path);
 
     /**
+     * 清置修改状态
+     * @param path
+     */
+    void resetModified(String path);
+    /**
      * 返回路径
      *
      * @param templatePath
