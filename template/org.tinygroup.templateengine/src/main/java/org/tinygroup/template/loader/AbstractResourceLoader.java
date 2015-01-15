@@ -91,10 +91,21 @@ public abstract class AbstractResourceLoader<T> implements ResourceLoader<T> {
             return null;
         }
         Template template = repositories.get(path);
-        if(template==null||checkModified){
-        	template=loadTemplateItem(path);
-        }	
+        if (template == null || checkModified && isModified(path)) {
+            template = loadTemplateItem(path);
+            if (template != null) {
+                resetModified(path);
+            }
+        }
         return template;
+    }
+
+    public boolean isModified(String path) {
+        return false;
+    }
+
+    public void resetModified(String path) {
+
     }
 
     public Template getLayout(String path) throws TemplateException {

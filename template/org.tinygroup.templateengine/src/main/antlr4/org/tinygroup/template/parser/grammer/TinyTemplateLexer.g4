@@ -41,6 +41,7 @@ DIRECTIVE_OPEN_CONTINUE : '#continue' ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_STOP     : '#stop'     ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_INCLUDE  : '#include'  ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_CALL  : '#call'  ARGUMENT_START      -> pushMode(INSIDE) ;
+DIRECTIVE_OPEN_CALL  : '#@call'  ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_LAYOUT_IMPL  : '#@layout'  ARGUMENT_START      -> pushMode(INSIDE) ;
 
 DIRECTIVE_OPEN_MACRO    : '#macro'    [ \t]+ ID ARGUMENT_START -> pushMode(INSIDE) ;

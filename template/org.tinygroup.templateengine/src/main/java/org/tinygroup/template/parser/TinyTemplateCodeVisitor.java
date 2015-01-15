@@ -289,6 +289,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         renderMethod.subCode("Macro $macro=null;");
         renderMethod.subCode("Macro $bodyMacro=null;");
         renderMethod.subCode("Template $template=this;");
+        renderMethod.subCode("TemplateContext $pageContext=$context;");
         renderMethod.subCode("TemplateContext $newContext=null;");
 
         return renderMethod;
@@ -605,7 +606,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         callMacro.subCode(bodyContentMacro);
         callMacro.subCode("$macro.render($template,$context,$newContext,$writer);");
 
-        bodyContentMacro.header("$newContext.put(\"bodyContent\",new AbstractMacro() {");
+        bodyContentMacro.header("$newContext.put(\"bodyContent\",new AbstractMacro(\"bodyContent\",(Macro)$context.getItemMap().get(\"bodyContent\")) {");
         CodeBlock render = getMacroRenderCodeBlock();
         bodyContentMacro.subCode(render);
 

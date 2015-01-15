@@ -34,163 +34,191 @@ import org.tinygroup.vfs.VFSRuntimeException;
 
 public class FileObjectImpl extends AbstractFileObject {
 
-	private String path;
-	private List<FileObject> children;
-	private File file = null;
-	long lastModifiedTime = 0;
+    private String path;
+    private List<FileObject> children;
+    private File file = null;
+    long lastModifiedTime = 0;
 
-	public FileObjectImpl(SchemaProvider schemaProvider, String resource) {
-		super(schemaProvider);
+    public FileObjectImpl(SchemaProvider schemaProvider, String resource) {
+        super(schemaProvider);
 
-		init(new File(resource));
-	}
+        init(new File(resource));
+    }
 
-	public boolean isModified() {
-		boolean isModified = lastModifiedTime != file.lastModified();
-		lastModifiedTime = file.lastModified();
-		return isModified;
-	}
+    public boolean isModified() {
+        return lastModifiedTime != file.lastModified();
+    }
 
-	private void init(File file) {
-		this.file = file;
-		if (file.exists()) {
-			lastModifiedTime = file.lastModified();
-		}
-	}
+    public void resetModified() {
+        lastModifiedTime = file.lastModified();
+    }
 
-	public String toString() {
-		return file.getAbsolutePath();
-	}
 
-	public FileObjectImpl(SchemaProvider schemaProvider, File file) {
-		super(schemaProvider);
-		init(file);
-	}
+    private void init(File file) {
+        this.file = file;
+    }
 
-	public String getFileName() {
-		return file.getName();
-	}
+    public String toString() {
+        return file.getAbsolutePath();
+    }
 
-	public String getPath() {
-		// 如果没有计算过
-		if (path == null) {
-			// 如果有父亲
-			if (getParent() != null) {
-				path = getParent().getPath() + "/" + getFileName();
-			} else {
-				if (file.isDirectory()) {
-					return "";
-				} else {
-					return "/" + file.getName();
-				}
-			}
-		}
-		return path;
-	}
+    public FileObjectImpl(SchemaProvider schemaProvider, File file) {
+        super(schemaProvider);
+        init(file);
+    }
 
-	public String getAbsolutePath() {
-		return file.getAbsolutePath();
-	}
+    public String getFileName() {
+        return file.getName();
+    }
 
-	public String getExtName() {
-		int lastIndexOfDot = file.getName().lastIndexOf(".");
-		if (lastIndexOfDot == -1) {
-			// 如果不存在
-			return null;
-		}
-		return file.getName().substring(lastIndexOfDot + 1);
-	}
+    public String getPath() {
+        // 如果没有计算过
+        if (path == null) {
+            // 如果有父亲
+            if (getParent() != null) {
+                path = getParent().getPath() + "/" + getFileName();
+            } else {
+                if (file.isDirectory()) {
+                    return "";
+                } else {
+                    return "/" + file.getName();
+                }
+            }
+        }
+        return path;
+    }
 
-	public long getSize() {
-		if (file.exists() && file.isFile()) {
-			return file.length();
-		}
-		return 0;
-	}
+    public String getAbsolutePath() {
+        return file.getAbsolutePath();
+    }
 
-	public InputStream getInputStream() {
-		try {
-			if (file.exists() && file.isFile()) {
-				return new BufferedInputStream(new FileInputStream(file));
-			} else {
-				return null;
-			}
-		} catch (FileNotFoundException e) {
-			throw new VFSRuntimeException(file.getAbsolutePath()
-					+ "获取FileInputStream出错，原因" + e);
-		}
-	}
+    public String getExtName() {
+        int lastIndexOfDot = file.getName().lastIndexOf(".");
+        if (lastIndexOfDot == -1) {
+            // 如果不存在
+            return null;
+        }
+        return file.getName().substring(lastIndexOfDot + 1);
+    }
 
-	public boolean isFolder() {
-		if (file.exists()) {
-			return file.isDirectory();
-		}
-		return false;
-	}
+    public long getSize() {
+        if (file.exists() && file.isFile()) {
+            return file.length();
+        }
+        return 0;
+    }
 
-	public List<FileObject> getChildren() {
-		if (isModified()||children == null) {
-			children = forEachFile();
-		}
-		return children;
-	}
+    public InputStream getInputStream() {
+        try {
+            if (file.exists() && file.isFile()) {
+                return new BufferedInputStream(new FileInputStream(file));
+            } else {
+                return null;
+            }
+        } catch (FileNotFoundException e) {
+            throw new VFSRuntimeException(file.getAbsolutePath()
+                    + "获取FileInputStream出错，原因" + e);
+        }
+    }
 
-	private List<FileObject> forEachFile() {
-		List<FileObject> children = new ArrayList<FileObject>();
-		if (file.exists() && file.isDirectory()) {
-			File[] subFiles = file.listFiles();
-			for (File subfile : subFiles) {
-				FileObject fileObject = null;
-				if (subfile.getName().endsWith(".jar")) {
-					fileObject = VFS.resolveFile(subfile.getAbsolutePath());
-				} else {
-					fileObject = new FileObjectImpl(getSchemaProvider(),
-							subfile);
-					fileObject.setParent(this);
-				}
-				children.add(fileObject);
-			}
-		}
-		return children;
-	}
+    public boolean isFolder() {
+        if (file.exists()) {
+            return file.isDirectory();
+        }
+        return false;
+    }
 
-	public long getLastModifiedTime() {
-		return file.lastModified();
-	}
+    public List<FileObject> getChildren() {
+        if (isModified()) {
+            forEachFile();
+        }
+        return children;
+    }
 
-	public boolean isExist() {
-		return file.exists();
-	}
+    private void forEachFile() {
+        if (children == null) {
+            children = new ArrayList<FileObject>();
+        }
+        if (file.exists() && file.isDirectory()) {
+            File[] subFiles = file.listFiles();
+            removeDeletedFileObject();
+            for (File subFile : subFiles) {
+                 if (subFile.getName().endsWith(".jar")) {
+                     children.add(VFS.resolveFile(subFile.getAbsolutePath()));
+                } else {
+                     if(!contains(file)){//如果不包含文件，则添加之
+                         FileObjectImpl fileObject = new FileObjectImpl(getSchemaProvider(),
+                                 subFile);
+                         fileObject.setParent(this);
+                         children.add(fileObject);
+                     }
+                }
+            }
+        }
+    }
 
-	public boolean isInPackage() {
-		return false;
-	}
+    private void removeDeletedFileObject() {
+        for(int i=children.size()-1;i>=0;i--){
+            FileObject fileObject=children.get(i);
+            if(fileObject instanceof FileObjectImpl){
+                if(!fileObject.isExist()){
+                    children.remove(fileObject);
+                }
+            }else {
+                children.remove(fileObject);
+            }
+        }
+    }
 
-	public FileObject getChild(String fileName) {
-		if (getChildren() != null) {
-			for (FileObject fileObject : getChildren()) {
-				if (fileObject.getFileName().equals(fileName)) {
-					return fileObject;
-				}
-			}
-		}
-		return null;
-	}
+    boolean contains(File file){
+        for(FileObject fileObject:children){
+            if(FileObjectImpl.class.isInstance(fileObject)){
+                FileObjectImpl fileObjectImpl= (FileObjectImpl) fileObject;
+                if(fileObjectImpl.file.equals(file)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	public URL getURL() {
-		try {
-			return new URL(FileSchemaProvider.FILE_PROTOCOL + getAbsolutePath());
-		} catch (MalformedURLException e) {
-			throw new VFSRuntimeException(e);
-		}
-	}
+    public long getLastModifiedTime() {
+        return file.lastModified();
+    }
 
-	public OutputStream getOutputStream() {
-		try {
-			return new FileOutputStream(file);
-		} catch (FileNotFoundException e) {
-			throw new VFSRuntimeException(e);
-		}
-	}
+    public boolean isExist() {
+        return file.exists();
+    }
+
+    public boolean isInPackage() {
+        return false;
+    }
+
+    public FileObject getChild(String fileName) {
+        if (getChildren() != null) {
+            for (FileObject fileObject : getChildren()) {
+                if (fileObject.getFileName().equals(fileName)) {
+                    return fileObject;
+                }
+            }
+        }
+        return null;
+    }
+
+    public URL getURL() {
+        try {
+            return new URL(FileSchemaProvider.FILE_PROTOCOL + getAbsolutePath());
+        } catch (MalformedURLException e) {
+            throw new VFSRuntimeException(e);
+        }
+    }
+
+    public OutputStream getOutputStream() {
+        try {
+            return new FileOutputStream(file);
+        } catch (FileNotFoundException e) {
+            throw new VFSRuntimeException(e);
+        }
+    }
 
 }
