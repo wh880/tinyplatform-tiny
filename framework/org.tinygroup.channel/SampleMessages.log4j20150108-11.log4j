@@ -1,0 +1,1764 @@
+<log4j:event logger="org.springframework.context.support.FileSystemXmlApplicationContext" timestamp="1420686637125" level="INFO" thread="main">
+<log4j:message><![CDATA[Refreshing org.springframework.context.support.FileSystemXmlApplicationContext@536c79d7: display name [org.springframework.context.support.FileSystemXmlApplicationContext@536c79d7]; startup date [Thu Jan 08 11:10:37 CST 2015]; root of context hierarchy]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.context.support.FileSystemXmlApplicationContext" timestamp="1420686637192" level="INFO" thread="main">
+<log4j:message><![CDATA[Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext@536c79d7]: org.springframework.beans.factory.support.DefaultListableBeanFactory@783c342b]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.support.DefaultListableBeanFactory" timestamp="1420686637193" level="INFO" thread="main">
+<log4j:message><![CDATA[Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@783c342b: defining beans []; root of factory hierarchy]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637243" level="INFO" thread="main">
+<log4j:message><![CDATA[查找WEB-INF/classes路径开始...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637243" level="INFO" thread="main">
+<log4j:message><![CDATA[WEB-INF/classes路径是:file:/G:/tiny/tiny/framework/org.tinygroup.channel/target/test-classes/]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637243" level="INFO" thread="main">
+<log4j:message><![CDATA[WEB-INF/lib路径是:file:/G:/tiny/tiny/framework/org.tinygroup.channel/target/test-classes/]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637243" level="INFO" thread="main">
+<log4j:message><![CDATA[查找WEB-INF/classes路径完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637243" level="WARN" thread="main">
+<log4j:message><![CDATA[WEBROOT变量找不到]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637243" level="INFO" thread="main">
+<log4j:message><![CDATA[查找Web工程中的jar文件列表开始...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637259" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:\tiny\tiny\framework\org.tinygroup.channel\target\classes>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637259" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637259" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637259" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.context/target/org.tinygroup.context-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637259" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.context/target/org.tinygroup.context-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637274" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.exception/target/org.tinygroup.exception-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637274" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.exception/target/org.tinygroup.exception-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637274" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.xstream/target/org.tinygroup.xstream-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637274" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.xstream/target/org.tinygroup.xstream-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637274" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637274" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.config/target/org.tinygroup.config-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.config/target/org.tinygroup.config-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.beancontainer/target/org.tinygroup.beancontainer-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.beancontainer/target/org.tinygroup.beancontainer-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.fileresolver/target/org.tinygroup.fileresolver-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.fileresolver/target/org.tinygroup.fileresolver-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.order/target/org.tinygroup.order-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.order/target/org.tinygroup.order-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.threadgroup/target/org.tinygroup.threadgroup-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.threadgroup/target/org.tinygroup.threadgroup-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.exceptionhandler/target/org.tinygroup.exceptionhandler-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637275" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.exceptionhandler/target/org.tinygroup.exceptionhandler-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637279" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637279" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637311" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637311" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637311" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.cepcorepc/target/org.tinygroup.cepcorepc-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637311" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.cepcorepc/target/org.tinygroup.cepcorepc-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637311" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.pc/target/org.tinygroup.pc-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637311" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.pc/target/org.tinygroup.pc-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637311" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.rmi/target/org.tinygroup.rmi-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637311" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.rmi/target/org.tinygroup.rmi-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637311" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637311" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637311" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.queue/target/org.tinygroup.queue-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637311" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.queue/target/org.tinygroup.queue-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637327" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.commons/target/org.tinygroup.commons-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637327" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.commons/target/org.tinygroup.commons-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637327" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.loader/target/org.tinygroup.loader-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637327" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.loader/target/org.tinygroup.loader-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637327" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.logger/target/org.tinygroup.logger-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637327" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.logger/target/org.tinygroup.logger-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637327" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.i18n/target/org.tinygroup.i18n-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637327" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.i18n/target/org.tinygroup.i18n-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637327" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.formater/target/org.tinygroup.formater-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637327" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.formater/target/org.tinygroup.formater-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637343" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/xmlparser/org.tinygroup.xmlparser/target/org.tinygroup.xmlparser-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637343" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/xmlparser/org.tinygroup.xmlparser/target/org.tinygroup.xmlparser-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637343" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.parser/target/org.tinygroup.parser-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637343" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.parser/target/org.tinygroup.parser-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637343" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.binarytree/target/org.tinygroup.binarytree-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637343" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.binarytree/target/org.tinygroup.binarytree-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637343" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/vfs/org.tinygroup.vfs/target/org.tinygroup.vfs-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637343" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/vfs/org.tinygroup.vfs/target/org.tinygroup.vfs-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637358" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.testutil/target/org.tinygroup.testutil-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637358" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.testutil/target/org.tinygroup.testutil-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637358" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.application/target/org.tinygroup.application-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637358" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.application/target/org.tinygroup.application-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637358" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.springutil/target/org.tinygroup.springutil-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637358" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.springutil/target/org.tinygroup.springutil-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637359" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.spring256/target/org.tinygroup.spring256-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637359" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.spring256/target/org.tinygroup.spring256-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686637372" level="INFO" thread="main">
+<log4j:message><![CDATA[查找Web工程中的jar文件列表完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637388" level="INFO" thread="main">
+<log4j:message><![CDATA[正在进行全路径扫描....]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637406" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:\tiny\tiny\framework\org.tinygroup.channel\target\test-classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637411" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:\tiny\tiny\framework\org.tinygroup.channel\target\test-classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637412" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.parser/target/org.tinygroup.parser-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637423" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.parser/target/org.tinygroup.parser-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637424" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.testutil/target/org.tinygroup.testutil-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637428" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.testutil/target/org.tinygroup.testutil-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637428" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.context/target/org.tinygroup.context-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637461" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.context/target/org.tinygroup.context-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637461" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.pc/target/org.tinygroup.pc-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637477" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.pc/target/org.tinygroup.pc-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637477" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.logger/target/org.tinygroup.logger-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637493" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.logger/target/org.tinygroup.logger-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637493" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637508" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637508" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.threadgroup/target/org.tinygroup.threadgroup-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637508" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.threadgroup/target/org.tinygroup.threadgroup-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637508" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.cepcorepc/target/org.tinygroup.cepcorepc-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637508" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.cepcorepc/target/org.tinygroup.cepcorepc-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637508" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.i18n/target/org.tinygroup.i18n-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637524" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.i18n/target/org.tinygroup.i18n-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637524" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.spring256/target/org.tinygroup.spring256-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637524" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.spring256/target/org.tinygroup.spring256-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637524" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.fileresolver/target/org.tinygroup.fileresolver-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637525" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.fileresolver/target/org.tinygroup.fileresolver-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637525" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.config/target/org.tinygroup.config-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637525" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.config/target/org.tinygroup.config-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637525" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637532" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637533" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/vfs/org.tinygroup.vfs/target/org.tinygroup.vfs-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637563" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/vfs/org.tinygroup.vfs/target/org.tinygroup.vfs-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637564" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.application/target/org.tinygroup.application-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637575" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.application/target/org.tinygroup.application-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637576" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.queue/target/org.tinygroup.queue-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637593" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.queue/target/org.tinygroup.queue-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637594" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.commons/target/org.tinygroup.commons-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637672" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.commons/target/org.tinygroup.commons-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637672" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.binarytree/target/org.tinygroup.binarytree-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637680" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.binarytree/target/org.tinygroup.binarytree-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637681" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/xmlparser/org.tinygroup.xmlparser/target/org.tinygroup.xmlparser-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637688" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/xmlparser/org.tinygroup.xmlparser/target/org.tinygroup.xmlparser-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637688" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637695" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637695" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.order/target/org.tinygroup.order-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637702" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.order/target/org.tinygroup.order-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637702" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637724" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637725" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.loader/target/org.tinygroup.loader-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637729" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.loader/target/org.tinygroup.loader-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637730" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637779" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637779" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.springutil/target/org.tinygroup.springutil-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637779" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.springutil/target/org.tinygroup.springutil-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637779" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.formater/target/org.tinygroup.formater-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637779" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.formater/target/org.tinygroup.formater-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637779" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637780" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637780" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.exceptionhandler/target/org.tinygroup.exceptionhandler-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637780" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.exceptionhandler/target/org.tinygroup.exceptionhandler-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637781" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.exception/target/org.tinygroup.exception-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637784" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.exception/target/org.tinygroup.exception-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637785" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.rmi/target/org.tinygroup.rmi-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637789" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.rmi/target/org.tinygroup.rmi-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637790" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.xstream/target/org.tinygroup.xstream-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637794" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.xstream/target/org.tinygroup.xstream-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637794" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:\tiny\tiny\framework\org.tinygroup.channel\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637828" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:\tiny\tiny\framework\org.tinygroup.channel\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637828" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.beancontainer/target/org.tinygroup.beancontainer-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686637828" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.beancontainer/target/org.tinygroup.beancontainer-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.MultiThreadFileProcessor" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[线程组:<file-resolver-threads>执行时间：424]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/Application.springbeans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:file:G:/tiny/tiny/framework/org.tinygroup.channel/target/test-classes/Application.springbeans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/context2object.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar!/context2object.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/cepcore.springbeans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.cepcorepc/target/org.tinygroup.cepcorepc-1.2.0-SNAPSHOT.jar!/cepcore.springbeans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/fileresolver.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.fileresolver/target/org.tinygroup.fileresolver-1.2.0-SNAPSHOT.jar!/fileresolver.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/binarytree.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.binarytree/target/org.tinygroup.binarytree-1.2.0-SNAPSHOT.jar!/binarytree.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/rmi.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar!/rmi.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/order.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.order/target/org.tinygroup.order-1.2.0-SNAPSHOT.jar!/order.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/cepcore.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar!/cepcore.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/validate.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar!/validate.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/springutil.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.springutil/target/org.tinygroup.springutil-1.2.0-SNAPSHOT.jar!/springutil.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637828" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/annotation.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637844" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar!/annotation.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637844" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/exceptionhandler.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637844" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.exceptionhandler/target/org.tinygroup.exceptionhandler-1.2.0-SNAPSHOT.jar!/exceptionhandler.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637844" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/exception.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637844" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.exception/target/org.tinygroup.exception-1.2.0-SNAPSHOT.jar!/exception.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637844" level="INFO" thread="main">
+<log4j:message><![CDATA[添加文件:/xstream.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.springutil.SpringBeanContainer" timestamp="1420686637844" level="INFO" thread="main">
+<log4j:message><![CDATA[添加Spring配置文件:jar:file:G:/tiny/tiny/framework/org.tinygroup.xstream/target/org.tinygroup.xstream-1.2.0-SNAPSHOT.jar!/xstream.beans.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.context.support.FileSystemXmlApplicationContext" timestamp="1420686637844" level="INFO" thread="main">
+<log4j:message><![CDATA[Refreshing org.springframework.context.support.FileSystemXmlApplicationContext@536c79d7: display name [org.springframework.context.support.FileSystemXmlApplicationContext@536c79d7]; startup date [Thu Jan 08 11:10:37 CST 2015]; root of context hierarchy]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.support.DefaultListableBeanFactory" timestamp="1420686637844" level="INFO" thread="main">
+<log4j:message><![CDATA[Destroying singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@783c342b: defining beans []; root of factory hierarchy]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686637844" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [file:G:/tiny/tiny/framework/org.tinygroup.channel/target/test-classes/Application.springbeans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686637989" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar!/context2object.beans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686637998" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.cepcorepc/target/org.tinygroup.cepcorepc-1.2.0-SNAPSHOT.jar!/cepcore.springbeans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686638028" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.fileresolver/target/org.tinygroup.fileresolver-1.2.0-SNAPSHOT.jar!/fileresolver.beans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686638067" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.binarytree/target/org.tinygroup.binarytree-1.2.0-SNAPSHOT.jar!/binarytree.beans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686638098" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar!/rmi.beans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686638114" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.order/target/org.tinygroup.order-1.2.0-SNAPSHOT.jar!/order.beans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686638145" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar!/cepcore.beans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686638176" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar!/validate.beans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686638198" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.springutil/target/org.tinygroup.springutil-1.2.0-SNAPSHOT.jar!/springutil.beans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686638241" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar!/annotation.beans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686638284" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.exceptionhandler/target/org.tinygroup.exceptionhandler-1.2.0-SNAPSHOT.jar!/exceptionhandler.beans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686638317" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.exception/target/org.tinygroup.exception-1.2.0-SNAPSHOT.jar!/exception.beans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" timestamp="1420686638350" level="INFO" thread="main">
+<log4j:message><![CDATA[Loading XML bean definitions from URL [jar:file:G:/tiny/tiny/framework/org.tinygroup.xstream/target/org.tinygroup.xstream-1.2.0-SNAPSHOT.jar!/xstream.beans.xml]]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.context.support.FileSystemXmlApplicationContext" timestamp="1420686638374" level="INFO" thread="main">
+<log4j:message><![CDATA[Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext@536c79d7]: org.springframework.beans.factory.support.DefaultListableBeanFactory@7229c204]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.springframework.beans.factory.support.DefaultListableBeanFactory" timestamp="1420686638428" level="INFO" thread="main">
+<log4j:message><![CDATA[Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@7229c204: defining beans [fileResolver,fileResolverProcessor,classNameObjectGenerator,generatorFileProcessor,cepcore,fullContextFileRepository,fullContextFileFinder,i18nFileProcessor,xStreamFileProcessor,orderFileProcessor,configurationFileProcessor,fileMonitorProcessor,avlTreeImpl,CEPCoreRMIRemoteImpl,orderProcessor,weightChooser,cepcore_aop_bean,requestParamValidate,validatorMapStorage,validatorManagerWrapper,annotationValidatorManager,xmlValidatorManager,complexValidatorManager,validatorClassFieldAction,validatorFieldAnnotaionAction,validateMapFileProcessor,validateFileProcessor,enumValidator,equalsValidator,falseValidator,notEqualsValidator,notNullValidator,nullValidator,trueValidator,integerRangeValidator,doubleRangeValidator,floatRangeValidator,patternValidator,sizeValidator,springBeansFileProcessor,annotationExcuteManager,annotationFileProcessor,annotationClassFileProcessor,exceptionHandlerManager]; root of factory hierarchy]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686638508" level="INFO" thread="main">
+<log4j:message><![CDATA[开始读取组件配置文件:filefind.config.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686638571" level="INFO" thread="main">
+<log4j:message><![CDATA[读取组件配置文件:filefind.config.xml完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686638571" level="INFO" thread="main">
+<log4j:message><![CDATA[开始读取组件配置文件:filemonitor.config.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686638573" level="INFO" thread="main">
+<log4j:message><![CDATA[读取组件配置文件:filemonitor.config.xml完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686638575" level="INFO" thread="main">
+<log4j:message><![CDATA[开始读取组件配置文件:fileresolver.config.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686638577" level="INFO" thread="main">
+<log4j:message><![CDATA[读取组件配置文件:fileresolver.config.xml完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686638577" level="INFO" thread="main">
+<log4j:message><![CDATA[开始读取组件配置文件:cepcoreaop.config.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686638585" level="INFO" thread="main">
+<log4j:message><![CDATA[读取组件配置文件:cepcoreaop.config.xml完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686638586" level="INFO" thread="main">
+<log4j:message><![CDATA[开始读取组件配置文件:exceptionhandler.config.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686638587" level="INFO" thread="main">
+<log4j:message><![CDATA[读取组件配置文件:exceptionhandler.config.xml完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686638592" level="INFO" thread="main">
+<log4j:message><![CDATA[开始读取组件配置文件:annotation.config.xml]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686638596" level="INFO" thread="main">
+<log4j:message><![CDATA[读取组件配置文件:annotation.config.xml完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.config.impl.ConfigurationManagerImpl" timestamp="1420686638692" level="INFO" thread="main">
+<log4j:message><![CDATA[正在分发应用配置信息...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.config.impl.ConfigurationManagerImpl" timestamp="1420686638696" level="INFO" thread="main">
+<log4j:message><![CDATA[应用配置信息分发完毕]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638696" level="INFO" thread="main">
+<log4j:message><![CDATA[全路径扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.config.impl.ConfigurationManagerImpl" timestamp="1420686638696" level="INFO" thread="main">
+<log4j:message><![CDATA[正在分发应用配置信息...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.config.impl.ConfigurationManagerImpl" timestamp="1420686638698" level="INFO" thread="main">
+<log4j:message><![CDATA[应用配置信息分发完毕]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[查找WEB-INF/classes路径开始...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[WEB-INF/classes路径是:file:/G:/tiny/tiny/framework/org.tinygroup.channel/target/test-classes/]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[WEB-INF/lib路径是:file:/G:/tiny/tiny/framework/org.tinygroup.channel/target/test-classes/]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[查找WEB-INF/classes路径完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="WARN" thread="main">
+<log4j:message><![CDATA[WEBROOT变量找不到]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[查找Web工程中的jar文件列表开始...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:\tiny\tiny\framework\org.tinygroup.channel\target\classes>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.context/target/org.tinygroup.context-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.context/target/org.tinygroup.context-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.exception/target/org.tinygroup.exception-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.exception/target/org.tinygroup.exception-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638729" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.xstream/target/org.tinygroup.xstream-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.xstream/target/org.tinygroup.xstream-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.config/target/org.tinygroup.config-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.config/target/org.tinygroup.config-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.beancontainer/target/org.tinygroup.beancontainer-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.beancontainer/target/org.tinygroup.beancontainer-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.fileresolver/target/org.tinygroup.fileresolver-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.fileresolver/target/org.tinygroup.fileresolver-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.order/target/org.tinygroup.order-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.order/target/org.tinygroup.order-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.threadgroup/target/org.tinygroup.threadgroup-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.threadgroup/target/org.tinygroup.threadgroup-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.exceptionhandler/target/org.tinygroup.exceptionhandler-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.exceptionhandler/target/org.tinygroup.exceptionhandler-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638745" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638761" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638761" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638761" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638761" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.cepcorepc/target/org.tinygroup.cepcorepc-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638761" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.cepcorepc/target/org.tinygroup.cepcorepc-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638761" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.pc/target/org.tinygroup.pc-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638761" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.pc/target/org.tinygroup.pc-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638761" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.rmi/target/org.tinygroup.rmi-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638761" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.rmi/target/org.tinygroup.rmi-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638761" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638761" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638776" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.queue/target/org.tinygroup.queue-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638776" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.queue/target/org.tinygroup.queue-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638776" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.commons/target/org.tinygroup.commons-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638776" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.commons/target/org.tinygroup.commons-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638776" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.loader/target/org.tinygroup.loader-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638776" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.loader/target/org.tinygroup.loader-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638776" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.logger/target/org.tinygroup.logger-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638776" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.logger/target/org.tinygroup.logger-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638776" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.i18n/target/org.tinygroup.i18n-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638776" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.i18n/target/org.tinygroup.i18n-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.formater/target/org.tinygroup.formater-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.formater/target/org.tinygroup.formater-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/xmlparser/org.tinygroup.xmlparser/target/org.tinygroup.xmlparser-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/xmlparser/org.tinygroup.xmlparser/target/org.tinygroup.xmlparser-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.parser/target/org.tinygroup.parser-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.parser/target/org.tinygroup.parser-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.binarytree/target/org.tinygroup.binarytree-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.binarytree/target/org.tinygroup.binarytree-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/vfs/org.tinygroup.vfs/target/org.tinygroup.vfs-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/vfs/org.tinygroup.vfs/target/org.tinygroup.vfs-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.testutil/target/org.tinygroup.testutil-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.testutil/target/org.tinygroup.testutil-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.application/target/org.tinygroup.application-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638777" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.application/target/org.tinygroup.application-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638778" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.springutil/target/org.tinygroup.springutil-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638779" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.springutil/target/org.tinygroup.springutil-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638780" level="INFO" thread="main">
+<log4j:message><![CDATA[文件<file:G:/tiny/tiny/framework/org.tinygroup.spring256/target/org.tinygroup.spring256-1.2.0-SNAPSHOT.jar>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638781" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.spring256/target/org.tinygroup.spring256-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638795" level="INFO" thread="main">
+<log4j:message><![CDATA[查找Web工程中的jar文件列表完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.application.impl.ApplicationDefault" timestamp="1420686638798" level="INFO" thread="main">
+<log4j:message><![CDATA[应用处理器class org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor正在启动...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638806" level="INFO" thread="main">
+<log4j:message><![CDATA[查找WEB-INF/classes路径开始...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638807" level="INFO" thread="main">
+<log4j:message><![CDATA[WEB-INF/classes路径是:file:/G:/tiny/tiny/framework/org.tinygroup.channel/target/test-classes/]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638807" level="INFO" thread="main">
+<log4j:message><![CDATA[WEB-INF/lib路径是:file:/G:/tiny/tiny/framework/org.tinygroup.channel/target/test-classes/]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638808" level="INFO" thread="main">
+<log4j:message><![CDATA[查找WEB-INF/classes路径完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638808" level="WARN" thread="main">
+<log4j:message><![CDATA[WEBROOT变量找不到]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638808" level="INFO" thread="main">
+<log4j:message><![CDATA[查找Web工程中的jar文件列表开始...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638811" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:\tiny\tiny\framework\org.tinygroup.channel\target\classes>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638811" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638812" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.context/target/org.tinygroup.context-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638812" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.exception/target/org.tinygroup.exception-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638814" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.xstream/target/org.tinygroup.xstream-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638816" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638817" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.config/target/org.tinygroup.config-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638817" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638818" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.beancontainer/target/org.tinygroup.beancontainer-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638818" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.fileresolver/target/org.tinygroup.fileresolver-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638819" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.order/target/org.tinygroup.order-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638819" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.threadgroup/target/org.tinygroup.threadgroup-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638820" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.exceptionhandler/target/org.tinygroup.exceptionhandler-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638820" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638820" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638821" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.cepcorepc/target/org.tinygroup.cepcorepc-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638821" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.pc/target/org.tinygroup.pc-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638821" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.rmi/target/org.tinygroup.rmi-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638822" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638825" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.queue/target/org.tinygroup.queue-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638826" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.commons/target/org.tinygroup.commons-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638827" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.loader/target/org.tinygroup.loader-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638832" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.logger/target/org.tinygroup.logger-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638832" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.i18n/target/org.tinygroup.i18n-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638833" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.formater/target/org.tinygroup.formater-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638836" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/xmlparser/org.tinygroup.xmlparser/target/org.tinygroup.xmlparser-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638836" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.parser/target/org.tinygroup.parser-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638837" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.binarytree/target/org.tinygroup.binarytree-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638837" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/vfs/org.tinygroup.vfs/target/org.tinygroup.vfs-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638839" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.testutil/target/org.tinygroup.testutil-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638839" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.application/target/org.tinygroup.application-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638840" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.springutil/target/org.tinygroup.springutil-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638840" level="INFO" thread="main">
+<log4j:message><![CDATA[扫描到jar文件<G:/tiny/tiny/framework/org.tinygroup.spring256/target/org.tinygroup.spring256-1.2.0-SNAPSHOT.jar>。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.FileResolverUtil" timestamp="1420686638855" level="INFO" thread="main">
+<log4j:message><![CDATA[查找Web工程中的jar文件列表完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638858" level="INFO" thread="main">
+<log4j:message><![CDATA[正在进行全路径扫描....]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638863" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:\tiny\tiny\framework\org.tinygroup.channel\target\test-classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638869" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:\tiny\tiny\framework\org.tinygroup.channel\target\test-classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638870" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.parser/target/org.tinygroup.parser-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638876" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.parser/target/org.tinygroup.parser-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638876" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.testutil/target/org.tinygroup.testutil-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638879" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.testutil/target/org.tinygroup.testutil-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638879" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.context/target/org.tinygroup.context-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638883" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.context/target/org.tinygroup.context-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638884" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.pc/target/org.tinygroup.pc-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638890" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.pc/target/org.tinygroup.pc-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638891" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.logger/target/org.tinygroup.logger-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638894" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.logger/target/org.tinygroup.logger-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638895" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638900" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638900" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.threadgroup/target/org.tinygroup.threadgroup-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638904" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.threadgroup/target/org.tinygroup.threadgroup-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638904" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.cepcorepc/target/org.tinygroup.cepcorepc-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638907" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.cepcorepc/target/org.tinygroup.cepcorepc-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638907" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.i18n/target/org.tinygroup.i18n-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638911" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.i18n/target/org.tinygroup.i18n-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638911" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.spring256/target/org.tinygroup.spring256-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638913" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.spring256/target/org.tinygroup.spring256-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638913" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.fileresolver/target/org.tinygroup.fileresolver-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638918" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.fileresolver/target/org.tinygroup.fileresolver-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638918" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.config/target/org.tinygroup.config-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638921" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.config/target/org.tinygroup.config-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638921" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638924" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638925" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/vfs/org.tinygroup.vfs/target/org.tinygroup.vfs-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638930" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/vfs/org.tinygroup.vfs/target/org.tinygroup.vfs-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638930" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.application/target/org.tinygroup.application-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638933" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.application/target/org.tinygroup.application-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638933" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.queue/target/org.tinygroup.queue-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638936" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.queue/target/org.tinygroup.queue-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638937" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.commons/target/org.tinygroup.commons-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638952" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.commons/target/org.tinygroup.commons-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638953" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.binarytree/target/org.tinygroup.binarytree-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638955" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.binarytree/target/org.tinygroup.binarytree-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638955" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/xmlparser/org.tinygroup.xmlparser/target/org.tinygroup.xmlparser-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638957" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/xmlparser/org.tinygroup.xmlparser/target/org.tinygroup.xmlparser-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638958" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638960" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638961" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.order/target/org.tinygroup.order-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638964" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.order/target/org.tinygroup.order-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638965" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638970" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638970" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.loader/target/org.tinygroup.loader-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638972" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.loader/target/org.tinygroup.loader-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638972" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638979" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638983" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.springutil/target/org.tinygroup.springutil-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638987" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.springutil/target/org.tinygroup.springutil-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638987" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.formater/target/org.tinygroup.formater-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638990" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.formater/target/org.tinygroup.formater-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638990" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638994" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638995" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.exceptionhandler/target/org.tinygroup.exceptionhandler-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638997" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.exceptionhandler/target/org.tinygroup.exceptionhandler-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686638998" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.exception/target/org.tinygroup.exception-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686639001" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.exception/target/org.tinygroup.exception-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686639001" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.rmi/target/org.tinygroup.rmi-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686639004" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.rmi/target/org.tinygroup.rmi-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686639004" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.xstream/target/org.tinygroup.xstream-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686639008" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.xstream/target/org.tinygroup.xstream-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686639008" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:\tiny\tiny\framework\org.tinygroup.channel\target\classes]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686639014" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:\tiny\tiny\framework\org.tinygroup.channel\target\classes]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686639014" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[正在扫描路径[G:/tiny/tiny/framework/org.tinygroup.beancontainer/target/org.tinygroup.beancontainer-1.2.0-SNAPSHOT.jar]...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686639017" level="INFO" thread="file-resolver-threads-file-processor-thread-0">
+<log4j:message><![CDATA[路径[G:/tiny/tiny/framework/org.tinygroup.beancontainer/target/org.tinygroup.beancontainer-1.2.0-SNAPSHOT.jar]扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.MultiThreadFileProcessor" timestamp="1420686639018" level="INFO" thread="main">
+<log4j:message><![CDATA[线程组:<file-resolver-threads>执行时间：156]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639018" level="INFO" thread="main">
+<log4j:message><![CDATA[找到国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar!/i18n/cepcore_en_US.properties]，并开始加载...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639020" level="INFO" thread="main">
+<log4j:message><![CDATA[国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar!/i18n/cepcore_en_US.properties]，加载完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639022" level="INFO" thread="main">
+<log4j:message><![CDATA[找到国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar!/i18n/cepcore_zh_CN.properties]，并开始加载...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639023" level="INFO" thread="main">
+<log4j:message><![CDATA[国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar!/i18n/cepcore_zh_CN.properties]，加载完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639024" level="INFO" thread="main">
+<log4j:message><![CDATA[找到国际化资源配置文件[G:/tiny/tiny/vfs/org.tinygroup.vfs/target/org.tinygroup.vfs-1.2.0-SNAPSHOT.jar!/i18n/vfs_en_US.properties]，并开始加载...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639025" level="INFO" thread="main">
+<log4j:message><![CDATA[国际化资源配置文件[G:/tiny/tiny/vfs/org.tinygroup.vfs/target/org.tinygroup.vfs-1.2.0-SNAPSHOT.jar!/i18n/vfs_en_US.properties]，加载完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639026" level="INFO" thread="main">
+<log4j:message><![CDATA[找到国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar!/i18n/rmi_zh_CN.properties]，并开始加载...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639028" level="INFO" thread="main">
+<log4j:message><![CDATA[国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.rpc/target/org.tinygroup.rpc-1.2.0-SNAPSHOT.jar!/i18n/rmi_zh_CN.properties]，加载完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639029" level="INFO" thread="main">
+<log4j:message><![CDATA[找到国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar!/i18n/cepcore_en_US.properties]，并开始加载...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639031" level="INFO" thread="main">
+<log4j:message><![CDATA[国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar!/i18n/cepcore_en_US.properties]，加载完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639031" level="INFO" thread="main">
+<log4j:message><![CDATA[找到国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar!/i18n/cepcore_zh_CN.properties]，并开始加载...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639035" level="INFO" thread="main">
+<log4j:message><![CDATA[国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.cepcore/target/org.tinygroup.cepcore-1.2.0-SNAPSHOT.jar!/i18n/cepcore_zh_CN.properties]，加载完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639035" level="INFO" thread="main">
+<log4j:message><![CDATA[找到国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar!/i18n/validate_zh_CN.properties]，并开始加载...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639038" level="INFO" thread="main">
+<log4j:message><![CDATA[国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar!/i18n/validate_zh_CN.properties]，加载完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639038" level="INFO" thread="main">
+<log4j:message><![CDATA[找到国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.rmi/target/org.tinygroup.rmi-1.2.0-SNAPSHOT.jar!/i18n/rmi_zh_CN.properties]，并开始加载...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639040" level="INFO" thread="main">
+<log4j:message><![CDATA[国际化资源配置文件[G:/tiny/tiny/framework/org.tinygroup.rmi/target/org.tinygroup.rmi-1.2.0-SNAPSHOT.jar!/i18n/rmi_zh_CN.properties]，加载完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639041" level="INFO" thread="main">
+<log4j:message><![CDATA[找到XStream配置文件[G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar!/context2object.xstream.xml]，并开始加载...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639086" level="INFO" thread="main">
+<log4j:message><![CDATA[XStream配置文件[G:/tiny/tiny/framework/org.tinygroup.context2object/target/org.tinygroup.context2object-1.2.0-SNAPSHOT.jar!/context2object.xstream.xml]，加载完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639087" level="INFO" thread="main">
+<log4j:message><![CDATA[找到XStream配置文件[G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar!/event.xstream.xml]，并开始加载...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639100" level="INFO" thread="main">
+<log4j:message><![CDATA[XStream配置文件[G:/tiny/tiny/framework/org.tinygroup.event/target/org.tinygroup.event-1.2.0-SNAPSHOT.jar!/event.xstream.xml]，加载完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639100" level="INFO" thread="main">
+<log4j:message><![CDATA[找到XStream配置文件[G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar!/validate.xstream.xml]，并开始加载...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639134" level="INFO" thread="main">
+<log4j:message><![CDATA[XStream配置文件[G:/tiny/tiny/framework/org.tinygroup.validate/target/org.tinygroup.validate-1.2.0-SNAPSHOT.jar!/validate.xstream.xml]，加载完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639134" level="INFO" thread="main">
+<log4j:message><![CDATA[找到XStream配置文件[G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar!/annotation.xstream.xml]，并开始加载...]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.AbstractFileProcessor" timestamp="1420686639157" level="INFO" thread="main">
+<log4j:message><![CDATA[XStream配置文件[G:/tiny/tiny/framework/org.tinygroup.annotation/target/org.tinygroup.annotation-1.2.0-SNAPSHOT.jar!/annotation.xstream.xml]，加载完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.fileresolver.impl.FileResolverImpl" timestamp="1420686639157" level="INFO" thread="main">
+<log4j:message><![CDATA[全路径扫描完成。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.application.impl.ApplicationDefault" timestamp="1420686639158" level="INFO" thread="main">
+<log4j:message><![CDATA[应用处理器class org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor启动完毕。]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639198" level="INFO" thread="main">
+<log4j:message><![CDATA[开始 注册EventProcessor:aa]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639200" level="INFO" thread="main">
+<log4j:message><![CDATA[注册EventProcessor:aa完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639202" level="INFO" thread="main">
+<log4j:message><![CDATA[开始 注册EventProcessor:dd]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639202" level="INFO" thread="main">
+<log4j:message><![CDATA[注册EventProcessor:dd完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639270" level="INFO" thread="main">
+<log4j:message><![CDATA[请求指定的执行节点为:null]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639272" level="INFO" thread="main">
+<log4j:message><![CDATA[开始 注册EventProcessor:aa]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639273" level="INFO" thread="main">
+<log4j:message><![CDATA[注册EventProcessor:aa完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639273" level="INFO" thread="main">
+<log4j:message><![CDATA[开始 注册EventProcessor:dd]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639273" level="INFO" thread="main">
+<log4j:message><![CDATA[注册EventProcessor:dd完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639277" level="INFO" thread="main">
+<log4j:message><![CDATA[开始 注册EventProcessor:null]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639278" level="INFO" thread="main">
+<log4j:message><![CDATA[注册EventProcessor:null完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639278" level="INFO" thread="main">
+<log4j:message><![CDATA[开始 注册EventProcessor:aa]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639278" level="INFO" thread="main">
+<log4j:message><![CDATA[注册EventProcessor:aa完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639278" level="INFO" thread="main">
+<log4j:message><![CDATA[开始 注册EventProcessor:dd]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639278" level="INFO" thread="main">
+<log4j:message><![CDATA[注册EventProcessor:dd完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639279" level="INFO" thread="main">
+<log4j:message><![CDATA[请求指定的执行节点为:null]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639280" level="INFO" thread="main">
+<log4j:message><![CDATA[请求指定的执行节点为:null]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639281" level="INFO" thread="main">
+<log4j:message><![CDATA[开始 注册EventProcessor:null]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639281" level="INFO" thread="main">
+<log4j:message><![CDATA[注册EventProcessor:null完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639282" level="INFO" thread="main">
+<log4j:message><![CDATA[开始 注册EventProcessor:aa]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639282" level="INFO" thread="main">
+<log4j:message><![CDATA[注册EventProcessor:aa完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639282" level="INFO" thread="main">
+<log4j:message><![CDATA[开始 注册EventProcessor:dd]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639282" level="INFO" thread="main">
+<log4j:message><![CDATA[注册EventProcessor:dd完成]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="org.tinygroup.cepcorepc.impl.PcCepCoreImpl" timestamp="1420686639283" level="INFO" thread="main">
+<log4j:message><![CDATA[请求指定的执行节点为:null]]></log4j:message>
+</log4j:event>
+
