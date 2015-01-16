@@ -281,15 +281,15 @@ public class RouterManagerImpl implements RouterManager {
 		if (statement != null) {
 			return statement;
 		}
-		synchronized (parserManager) {
-			try {
-				statement = parserManager.parse(new StringReader(sql));
-			} catch (JSQLParserException e) {
-				throw new DbrouterRuntimeException(e);
-			}
+		//synchronized(parserManager){
+		try {
+			statement = parserManager.parse(new StringReader(sql));
 			cache.put(sql, statement);
-			return statement;
+		} catch (JSQLParserException e) {
+			throw new DbrouterRuntimeException(e);
 		}
+		//}
+		return statement;
 	}
 
 	public ShardBalance getShardBalance() {

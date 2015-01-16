@@ -17,6 +17,14 @@
 			<ref bean="cepcore" />
 		</property>
 	</bean>
+	
+	<bean id="cepCoreAopConfig" name="cepCoreAopConfig"
+		scope="singleton" class="org.tinygroup.cepcore.aop.impl.CepCoreAopConfig">
+		
+		<property name="manager">
+			<ref bean="cepcore_aop_bean" />
+		</property>
+	</bean>
 	<!-- 
 	<bean id="CEPProcessor" name="CEPProcessor"
 		scope="singleton" class="org.tinygroup.cepcore.applicationprocessor.CEPProcessor">
