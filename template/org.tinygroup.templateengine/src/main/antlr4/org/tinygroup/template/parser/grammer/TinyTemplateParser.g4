@@ -23,7 +23,7 @@ package jetbrick.template.parser.grammer;
 template    :   block
             ;
 
-block       :   (comment | text | value | directive)*
+block       :   (comment | directive | text | value)*
             ;
 
 
