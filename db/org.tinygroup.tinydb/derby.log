@@ -1,6 +1,0 @@
-----------------------------------------------------------------
-2015-01-15 01:46:25.637 GMT:
- Booting Derby version The Apache Software Foundation - Apache Derby - 10.6.1.0 - (938214): instance a816c00e-014a-eb45-25d2-000003146bf8 
-on database directory G:\tiny\tiny\db\org.tinygroup.tinydb\TESTDB   with class loader sun.misc.Launcher$AppClassLoader@37b90b39
-
-Database Class Loader started - derby.database.classpath=''
