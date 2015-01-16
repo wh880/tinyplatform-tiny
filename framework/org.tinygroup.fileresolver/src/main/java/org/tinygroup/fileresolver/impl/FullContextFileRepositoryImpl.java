@@ -58,6 +58,9 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 		searchPathMap.put(searchPath,fileObject);
 		addFileObject(fileObject);
 	}
+
+
+
 	synchronized void checkFolderChange(){
 		for(String searchPath:searchPathList){
 			FileObject fileObject=searchPathMap.get(searchPath);
