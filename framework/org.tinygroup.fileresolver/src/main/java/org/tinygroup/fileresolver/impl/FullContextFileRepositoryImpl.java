@@ -28,6 +28,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
+import org.tinygroup.vfs.impl.FileSchemaProvider;
 
 /**
  * 
@@ -47,15 +48,23 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 	private Map<String, FileObject> fileMap = new HashMap<String, FileObject>();
 	private Map<String, String> fileTypeMap;
 	List<String> searchPathList = new ArrayList<String>();
-
+	Map<String,FileObject>searchPathMap=new HashMap<String, FileObject>();
 	// String searchPath;
 
 	public void addSearchPath(String searchPath) {
 
 		searchPathList.add(searchPath);
 		FileObject fileObject = VFS.resolveFile(searchPath);
+		searchPathMap.put(searchPath,fileObject);
 		addFileObject(fileObject);
-
+	}
+	synchronized void checkFolderChange(){
+		for(String searchPath:searchPathList){
+			FileObject fileObject=searchPathMap.get(searchPath);
+			if(fileObject.isExist()&&fileObject.getSchemaProvider().getSchema().equals(FileSchemaProvider.FILE_PROTOCOL)&&fileObject.isModified()){
+				addFileObject(fileObject);
+			}
+		}
 	}
 
 	private void addFileObject(FileObject fileObject) {
@@ -78,6 +87,7 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 	}
 
 	public FileObject getFileObject(String path) {
+		checkFolderChange();
 		FileObject fileObject = fileMap.get(path);
 		if (fileObject == null && searchPathList.size() > 0) {
 			for (String searchPath : searchPathList) {
@@ -108,13 +118,14 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 	}
 
 	public FileObject getRootFileObject(String path) {
-
+		checkFolderChange();
 		String fullPath = getFileObject(path).getAbsolutePath();
 		return VFS.resolveFile(fullPath.substring(0,
 				fullPath.length() - path.length() + 1));
 	}
 
 	public FileObject getFileObjectDetectLocale(String path) {
+		checkFolderChange();
 		StringBuffer sb = new StringBuffer();
 		sb.append(path.substring(0, path.lastIndexOf('.')));
 		sb.append(".");
