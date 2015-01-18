@@ -15,8 +15,13 @@
  */
 package org.tinygroup.convert;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.convert.objectjson.xstream.JsonToObject;
 import org.tinygroup.convert.objectjson.xstream.ObjectToJson;
+
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 public class TestObjectJson extends AbstractConvertTestCase {
 
@@ -58,12 +63,26 @@ public class TestObjectJson extends AbstractConvertTestCase {
 	}
 
 	
+	public void testObject2JsonNoType(){
+		Student student = createStudent();
+	    ObjectToJson<Object> objectToJson=new ObjectToJson<Object>(Object.class);
+		System.out.println(objectToJson.convert(student));
+	}
+	
 	
 	
 	public void testObject2JsonWithList(){
-		Classes classes = createClasses();
-		ObjectToJson<Classes> objectToJson=new ObjectToJson<Classes>(Classes.class);
-		System.out.println(objectToJson.convert(classes));
+		Student student = createStudent();
+		List<Student> list = new ArrayList<Student>();
+		list.add(student);
+		list.add(student);
+		list.add(student);
+		list.add(student);
+		list.add(student);
+		org.tinygroup.convert.objectjson.fastjson.ObjectToJson<Object> f = new org.tinygroup.convert.objectjson.fastjson.ObjectToJson<Object>(SerializerFeature.DisableCircularReferenceDetect);
+		
+		System.out.println(f.convert(student));
+		System.out.println(f.convert(list));
 		
 	}
 

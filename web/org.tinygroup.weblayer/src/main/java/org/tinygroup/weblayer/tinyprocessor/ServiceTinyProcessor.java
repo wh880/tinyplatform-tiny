@@ -20,11 +20,9 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.Context;
-import org.tinygroup.convert.ConvertException;
-import org.tinygroup.convert.objectjson.xstream.ObjectToJson;
+import org.tinygroup.convert.objectjson.fastjson.ObjectToJson;
 import org.tinygroup.convert.objectxml.xstream.ObjectToXml;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.Parameter;
@@ -35,11 +33,13 @@ import org.tinygroup.service.config.ServiceViewMapping;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
+
 public class ServiceTinyProcessor extends AbstractTinyProcessor {
 	ServiceMappingManager manager;
 	CEPCore core;
 	ObjectToXml<Object> objectToXml = new ObjectToXml<Object>();
-	ObjectToJson<Object> objectToJson = new ObjectToJson<Object>(Object.class);
+	ObjectToJson<Object> objectToJson = new ObjectToJson<Object>(SerializerFeature.DisableCircularReferenceDetect);
 
 	public CEPCore getCore() {
 		return core;
