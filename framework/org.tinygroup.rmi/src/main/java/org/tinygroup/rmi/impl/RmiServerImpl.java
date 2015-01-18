@@ -149,6 +149,13 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 	public void stop() throws RemoteException {
 		stopHeart();
 		unexportObjects();
+		stopLocalRegistry();
+	}
+	
+	public void stopLocalRegistry()throws RemoteException{
+		if(registry!=null){
+			UnicastRemoteObject.unexportObject(this, true);
+		}
 	}
 
 	private void stopHeart() {
