@@ -135,7 +135,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
                     componentExtFileName, classLoader);
             engine.addResourceLoader(classResourceLoader);
         }
-        List<String> scanningPaths = fileResolver.getResolveFileObjectSet();
+        List<String> scanningPaths = fileResolver.getScanningPaths();
         for (String path : scanningPaths) {
             FileObjectResourceLoader fileResourceLoader = new FileObjectResourceLoader(
                     templateExtFileName, layoutExtFileName,

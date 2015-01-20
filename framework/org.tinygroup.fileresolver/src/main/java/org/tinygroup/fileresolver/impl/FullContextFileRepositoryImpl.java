@@ -15,10 +15,7 @@
  */
 package org.tinygroup.fileresolver.impl;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.commons.i18n.LocaleUtil;
@@ -39,23 +36,19 @@ import org.tinygroup.vfs.VFS;
  * <br>
  */
 public class FullContextFileRepositoryImpl implements FullContextFileRepository {
-	private static final String SLASH = "\\";
-	private static final String BACKSLASH = "/";
 	private static final Logger logger = LoggerFactory
 			.getLogger(FullContextFileRepositoryImpl.class);
 	// key值为 类型:路径
 	private Map<String, FileObject> fileMap = new HashMap<String, FileObject>();
 	private Map<String, String> fileTypeMap;
-	List<String> searchPathList = new ArrayList<String>();
+    private Map<String, FileObject> searchPathMap=new HashMap<String, FileObject>();
 
 	// String searchPath;
 
 	public void addSearchPath(String searchPath) {
-
-		searchPathList.add(searchPath);
 		FileObject fileObject = VFS.resolveFile(searchPath);
+		searchPathMap.put(searchPath, fileObject);
 		addFileObject(fileObject);
-
 	}
 
 	private void addFileObject(FileObject fileObject) {
@@ -79,11 +72,14 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 
 	public FileObject getFileObject(String path) {
 		FileObject fileObject = fileMap.get(path);
-		if (fileObject == null && searchPathList.size() > 0) {
-			for (String searchPath : searchPathList) {
-				fileObject = VFS.resolveFile(String.format("%s%s", searchPath,
-						path.replaceAll(BACKSLASH, SLASH + File.separator)));
-				if (fileObject.isExist()) {
+		if (fileObject == null && searchPathMap.size() > 0) {
+			for (String searchPath : searchPathMap.keySet()) {
+				FileObject searchPathObject=searchPathMap.get(searchPath);
+				if(searchPathObject==null){
+					throw new RuntimeException(String.format("[searchPath:%s],不是搜索的跟路径", searchPath));
+				}
+				fileObject = searchPathObject.getFileObject(path);
+				if (fileObject!=null&&fileObject.isExist()) {
 					addFileObject(path, fileObject);
 					break;
 				}else{

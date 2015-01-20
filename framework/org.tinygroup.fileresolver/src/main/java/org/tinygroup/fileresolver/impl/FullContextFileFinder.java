@@ -15,16 +15,16 @@
  */
 package org.tinygroup.fileresolver.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.config.Configuration;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 全路径资源提供器实现类
@@ -67,6 +67,10 @@ public class FullContextFileFinder extends AbstractFileProcessor implements
 
 	public void process() {
 		fullContextFileRepository.setFileTypeMap(extFileContentTypeMap);
+		FileResolver fileResolver=getFileResolver();
+		for (String searchPath : fileResolver.getScanningPaths()) {
+			fullContextFileRepository.addSearchPath(searchPath);
+		}
 		for (FileObject fileObject : deleteList) {
 			fullContextFileRepository.removeFileObject(fileObject.getPath());
 		}
@@ -85,9 +89,6 @@ public class FullContextFileFinder extends AbstractFileProcessor implements
 			String contentType = fileNode.getAttribute(CONTENT_TYPE);
 			extFileContentTypeMap.put(extName, contentType);
 		}
-	}
-
-	public void setFileResolver(FileResolver fileResolver) {
 	}
 
 	public String getApplicationNodePath() {
