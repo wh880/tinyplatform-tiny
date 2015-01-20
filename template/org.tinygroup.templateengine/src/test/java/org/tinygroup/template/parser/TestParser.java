@@ -244,7 +244,7 @@ public class TestParser extends TestCase {
         String result = execute("${abc.aa(bb(1))}");
         System.out.println(result);
         assertTrue(result
-                .indexOf("write($writer,U.c($template,$context,U.v($context,\"abc\"),\"aa\",getTemplateEngine().executeFunction(this,$context,\"bb\",1)));") > 0);
+                .indexOf("write($writer,U.c($template,$context,U.v($context,\"abc\"),\"aa\",getTemplateEngine().executeFunction($template,$context,\"bb\",1)));") > 0);
         result = execute("${aa.bb(1,2,bb)}");
         System.out.println(result);
         assertTrue(result
@@ -290,23 +290,23 @@ public class TestParser extends TestCase {
         String result = execute("${abc(2)}");
         System.out.println(result);
         assertTrue(result
-                .indexOf("write($writer,getTemplateEngine().executeFunction(this,$context,\"abc\",2));") > 0);
+                .indexOf("write($writer,getTemplateEngine().executeFunction($template,$context,\"abc\",2));") > 0);
 
         result = execute("${aa()}");
         System.out.println(result);
         assertTrue(result
-                .indexOf("write($writer,getTemplateEngine().executeFunction(this,$context,\"aa\"));") > 0);
+                .indexOf("write($writer,getTemplateEngine().executeFunction($template,$context,\"aa\"));") > 0);
 
         result = execute("${format('this is %s',2)}");
         System.out.println(result);
         assertTrue(result
-                .indexOf("write($writer,getTemplateEngine().executeFunction(this,$context,\"format\",\"this is %s\",2));") > 0);
+                .indexOf("write($writer,getTemplateEngine().executeFunction($template,$context,\"format\",\"this is %s\",2));") > 0);
         ;
 
         result = execute("${a(b+1)}");
         System.out.println(result);
         assertTrue(result
-                .indexOf("write($writer,getTemplateEngine().executeFunction(this,$context,\"a\",O.e(\"+\",U.v($context,\"b\"),1)));") > 0);
+                .indexOf("write($writer,getTemplateEngine().executeFunction($template,$context,\"a\",O.e(\"+\",U.v($context,\"b\"),1)));") > 0);
 
     }
 
