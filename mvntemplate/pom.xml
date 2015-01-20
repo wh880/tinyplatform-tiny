@@ -13,5 +13,6 @@
     <module>org.tinygroup.uicomponentarchetype</module>
     <module>org.tinygroup.plugincomponentarchetype</module>
     <module>org.tinygroup.webappprojectarchetype</module>
+    <module>org.tinygroup.developarchetype</module>
   </modules>
 </project>
