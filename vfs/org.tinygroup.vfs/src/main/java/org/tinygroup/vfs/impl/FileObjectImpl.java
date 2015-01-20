@@ -27,6 +27,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.SchemaProvider;
 import org.tinygroup.vfs.VFS;
@@ -38,6 +39,7 @@ public class FileObjectImpl extends AbstractFileObject {
 	private List<FileObject> children;
 	private File file = null;
 	long lastModifiedTime = 0;
+	private byte[] lockObject = new byte[0];
 
 	public FileObjectImpl(SchemaProvider schemaProvider, String resource) {
 		super(schemaProvider);
@@ -46,9 +48,12 @@ public class FileObjectImpl extends AbstractFileObject {
 	}
 
 	public boolean isModified() {
-		boolean isModified = lastModifiedTime != file.lastModified();
-		lastModifiedTime = file.lastModified();
-		return isModified;
+		return lastModifiedTime != file.lastModified();
+	}
+
+	@Override
+	public void resetModified() {
+		lastModifiedTime=file.lastModified();
 	}
 
 	private void init(File file) {
@@ -129,8 +134,10 @@ public class FileObjectImpl extends AbstractFileObject {
 	}
 
 	public List<FileObject> getChildren() {
-		if (isModified()||children == null) {
-			children = forEachFile();
+		if (isModified() || CollectionUtil.isEmpty(children)) {
+			synchronized (lockObject) {
+				children = forEachFile();
+			}
 		}
 		return children;
 	}

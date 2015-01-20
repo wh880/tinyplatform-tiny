@@ -80,7 +80,7 @@ public class FileResolverImpl implements FileResolver {
 		this.changeLisenters = changeLisenters;
 	}
 
-	public List<String> getResolveFileObjectSet() {
+	public List<String> getScanningPaths() {
 		return allScanningPath;
 	}
 

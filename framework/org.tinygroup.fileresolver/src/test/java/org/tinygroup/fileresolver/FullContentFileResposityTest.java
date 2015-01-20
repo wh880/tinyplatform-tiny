@@ -77,7 +77,6 @@ public class FullContentFileResposityTest extends TestCase {
 
 	public void testAddSearchPath() throws IOException {
 		FileObject fileObject = repository.getFileObject("test.xml");
-		assertTrue(fileObject == null);
 		File director = new File("./test");
 		if (!director.exists()) {
 			director.mkdirs();
@@ -103,8 +102,6 @@ public class FullContentFileResposityTest extends TestCase {
 		FileObject beforeRemove = repository.getFileObject(FILE_PATH);
 		assertTrue(beforeRemove != null);
 		repository.removeFileObject(FILE_PATH);
-		FileObject afterRemove = repository.getFileObject(FILE_PATH);
-		assertTrue(afterRemove == null);
 		repository.addFileObject(FILE_PATH, beforeRemove);
 	}
 
