@@ -60,7 +60,6 @@ public abstract class AbstractInstallProcessor implements InstallProcessor {
 			con = dataSource.getConnection();
 			processWithConn(con);
 		} catch (SQLException ex) {
-			con = null;
 			throw new TinySysRuntimeException(ex);
 		} finally {
 			if (con != null) {
