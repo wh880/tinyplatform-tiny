@@ -186,8 +186,8 @@ invalid_directive
             |   DIRECTIVE_ELSEIF
             |   DIRECTIVE_FOR
             |   DIRECTIVE_INCLUDE
-            |   DIRECTIVE_OPEN_CALL_MACRO
-            |   DIRECTIVE_BODY_CALL
+//            |   DIRECTIVE_OPEN_CALL_MACRO
+//            |   DIRECTIVE_BODY_CALL
             |   DIRECTIVE_MACRO
             ;
 
