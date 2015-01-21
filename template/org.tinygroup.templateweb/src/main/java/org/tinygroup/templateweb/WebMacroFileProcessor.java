@@ -81,7 +81,7 @@ public class WebMacroFileProcessor extends AbstractFileProcessor {
 				templateExtFileName, layoutExtFileName, componentExtFileName,
 				getClass().getClassLoader());
 		engine.addResourceLoader(classResourceLoader);
-		List<String> scanningPaths = fileResolver.getResolveFileObjectSet();
+		List<String> scanningPaths = fileResolver.getScanningPaths();
 		for (String path : scanningPaths) {
 			FileObjectResourceLoader fileResourceLoader = new FileObjectResourceLoader(
 					templateExtFileName, layoutExtFileName,

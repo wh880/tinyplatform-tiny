@@ -151,7 +151,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     public CodeBlock visitExpr_function_call(@NotNull TinyTemplateParser.Expr_function_callContext ctx) {
         String functionName = ctx.getChild(0).getText();
 
-        peekCodeLet().codeBefore("getTemplateEngine().executeFunction(this,$context,\"").code(functionName).code("\"");
+        peekCodeLet().codeBefore("getTemplateEngine().executeFunction($template,$context,\"").code(functionName).code("\"");
         TinyTemplateParser.Expression_listContext list = ctx.expression_list();
         if (list != null) {
             peekCodeLet().code(",");

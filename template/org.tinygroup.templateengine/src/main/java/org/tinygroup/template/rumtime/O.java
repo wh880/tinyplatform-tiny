@@ -154,11 +154,4 @@ public final class O {
         }
         return operator.operation(context,name, value);
     }
-
-    public static void main(String[] args) throws TemplateException {
-        TemplateContext context=new TemplateContextDefault();
-        context.put("a",1);
-        System.out.println(O.ce(context,"l++","a",1));
-        System.out.println(context.get("a"));
-    }
 }

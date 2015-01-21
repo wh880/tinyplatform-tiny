@@ -15,8 +15,7 @@
  */
 package org.tinygroup.template.rumtime;
 
-import org.apache.commons.beanutils.MethodUtils;
-import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.apache.commons.beanutils.*;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Enumerator;
@@ -26,6 +25,7 @@ import org.tinygroup.template.impl.TemplateCacheDefault;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -40,6 +40,7 @@ import java.util.Map;
  */
 public final class U {
     private static TemplateCache<MethodKey, Method> methodCache = new TemplateCacheDefault<MethodKey, Method>();
+    private static TemplateCache<FieldKey, Field> fieldCache = new TemplateCacheDefault<FieldKey, Field>();
     private static PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
     private static String[] tabCache = new String[31];
     private static boolean safeVariable = false;
@@ -75,16 +76,32 @@ public final class U {
             if (object instanceof Map) {
                 return ((Map) object).get(name);
             }
-            MethodKey methodKey = getMethodKey(object, name.toString());
+            String fieldName = name.toString();
+            MethodKey methodKey = getMethodKey(object, fieldName);
             if (methodCache.contains(methodKey)) {
                 return methodCache.get(methodKey).invoke(object);
             } else {
                 PropertyDescriptor descriptor =
-                        propertyUtilsBean.getPropertyDescriptor(object, name.toString());
-                Method method = MethodUtils.getAccessibleMethod(object.getClass(), descriptor.getReadMethod());
-                methodCache.put(methodKey, method);
-                return method.invoke(object);
+                        propertyUtilsBean.getPropertyDescriptor(object, fieldName);
+                if(descriptor!=null) {
+                    Method method = MethodUtils.getAccessibleMethod(object.getClass(), descriptor.getReadMethod());
+                    methodCache.put(methodKey, method);
+                    return method.invoke(object);
+                }
             }
+            FieldKey fieldKey = getFieldKey(object, fieldName);
+            if (fieldCache.contains(fieldKey)) {
+                return fieldCache.get(fieldKey).get(fieldName);
+            } else {
+                Field field=object.getClass().getField(fieldName);
+                if(field!=null) {
+                     field= object.getClass().getField(fieldName);
+                    fieldCache.put(fieldKey, field);
+                    field.setAccessible(true);
+                    return field.get(object);
+                }
+            }
+            throw new TemplateException(object.getClass().getName()+"中不能找到"+fieldName+"的键值、属性。");
         } catch (Exception e) {
             throw new TemplateException(e);
         }
@@ -382,7 +399,30 @@ public final class U {
     private static MethodKey getMethodKey(Object object, String methodName) {
         return new MethodKey(object.getClass(), methodName);
     }
+    private static FieldKey getFieldKey(Object object, String fieldName) {
+        return new FieldKey(object.getClass(), fieldName);
+    }
+    static class FieldKey {
+        FieldKey(Class clazz, String fieldName) {
+            this.clazz = clazz;
+            this.fieldName = fieldName;
+        }
 
+        private Class clazz;
+        private String fieldName;
+
+        public boolean equals(Object object) {
+            if (!FieldKey.class.isInstance(object)) {
+                return false;
+            }
+            FieldKey fieldKey = (FieldKey) object;
+            return fieldKey.clazz.equals(clazz) && fieldKey.fieldName.equals(fieldName);
+        }
+
+        public int hashCode() {
+            return clazz.hashCode() + fieldName.hashCode();
+        }
+    }
     static class MethodKey {
         MethodKey(Class clazz, String methodName) {
             this.clazz = clazz;

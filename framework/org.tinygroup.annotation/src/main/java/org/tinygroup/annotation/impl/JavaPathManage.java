@@ -49,7 +49,7 @@ public class JavaPathManage {
 		fileResolver = BeanContainerFactory
 		.getBeanContainer(this.getClass().getClassLoader()).getBean(FILE_RESOLVER);
 		List<String> paths=new ArrayList<String>();
-		paths.addAll(fileResolver.getResolveFileObjectSet());
+		paths.addAll(fileResolver.getScanningPaths());
 		for (String path : paths) {
 			if(path.indexOf(JAR_SUFFIX)==-1){
 				if(!path.endsWith(SLASH_MARK)){

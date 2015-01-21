@@ -21,8 +21,18 @@ import org.tinygroup.database.config.initdata.InitData;
 
 public interface InitDataSqlProcessor {
 
+	/**
+	 * 根据初始化数据生成插入语句集合
+	 * @param initData
+	 * @return
+	 */
 	List<String> getInitSql(InitData initData);
 	
+	/**
+	 * 根据初始化数据生成删除语句集合
+	 * @param initData
+	 * @return
+	 */
 	List<String> getDeinitSql(InitData initData);
 	
 }

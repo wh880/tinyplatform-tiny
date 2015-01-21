@@ -15,6 +15,9 @@
  */
 package org.tinygroup.template.loader;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateException;
@@ -26,6 +29,8 @@ import org.tinygroup.vfs.VFS;
  */
 public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject> {
     private FileObject root = null;
+    
+    private Map<String, FileObject> caches=new HashMap<String, FileObject>();
 
     public FileObject getRootFileObject() {
         return root;
@@ -43,6 +48,7 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
 
     public Template createTemplate(FileObject fileObject) throws TemplateException {
         if (fileObject != null) {
+        	caches.put(fileObject.getPath(), fileObject);//缓存起来
             return loadTemplate(fileObject, getClassLoader());
         }
         return null;
@@ -54,9 +60,12 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
 
 
     public boolean isModified(String path) {
-        FileObject fileObject = getFileObject(path);
+    	FileObject fileObject=caches.get(path);
+    	if(fileObject==null){
+    		 fileObject = getFileObject(path);
+    	}
         if (fileObject == null) {
-            return true;
+            return true;//还是null,则认为是新增的，返回true
         }
         return fileObject.isModified();
     }

@@ -43,7 +43,7 @@ public interface FileResolver extends Configuration {
 	 * 
 	 * @return
 	 */
-	List<String> getResolveFileObjectSet();
+	List<String> getScanningPaths();
 
 	/**
 	 * 手工添加扫描的匹配列表，如果有包含列表，则按包含列表

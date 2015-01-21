@@ -23,7 +23,7 @@ import org.tinygroup.database.config.initdata.InitDatas;
 public interface InitDataProcessor {
 
 	/**
-	 * 根据指定的包名和表名获取初始化数据sql列表,若该不存在对应的表,则抛出异常
+	 * 根据指定的包名和表名获取初始化数据的插入sql列表,若该不存在对应的表,则抛出异常
 	 * 
 	 * @param packageName
 	 * @param tableName
@@ -33,7 +33,7 @@ public interface InitDataProcessor {
 			String language);
 
 	/**
-	 * 根据表名获取对应的初始化数据sql列表,若不存在,则抛出异常
+	 * 根据表名获取对应的初始化数据的插入sql列表,若不存在,则抛出异常
 	 * 
 	 * @param tableName
 	 * @return
@@ -41,7 +41,7 @@ public interface InitDataProcessor {
 	List<String> getInitSql(String tableName, String language);
 
 	/**
-	 * 根据表Id获取对应的初始化数据sql列表,若不存在,则抛出异常
+	 * 根据表Id获取对应的初始化数据的插入sql列表,若不存在,则抛出异常
 	 * 
 	 * @param tableId
 	 * @return
@@ -49,14 +49,14 @@ public interface InitDataProcessor {
 	List<String> getInitSqlByTableId(String tableId, String language);
 
 	/**
-	 * 获取所有的表初始化数据sql列表
+	 * 获取所有的表初始化数据的插入sql列表
 	 * 
 	 * @return
 	 */
 	List<String> getInitSql(String language);
 
 	/**
-	 * 根据指定的包名和表名获取初始化数据sql列表,若该不存在对应的表,则抛出异常
+	 * 根据指定的包名和表名获取初始化数据的删除sql列表,若该不存在对应的表,则抛出异常
 	 * 
 	 * @param packageName
 	 * @param tableName
@@ -66,7 +66,7 @@ public interface InitDataProcessor {
 			String language);
 
 	/**
-	 * 根据表名获取对应的初始化数据sql列表,若不存在,则抛出异常
+	 * 根据表名获取对应的初始化数据的删除sql列表,若不存在,则抛出异常
 	 * 
 	 * @param tableName
 	 * @return
@@ -74,7 +74,7 @@ public interface InitDataProcessor {
 	List<String> getDeinitSql(String tableName, String language);
 
 	/**
-	 * 根据表id获取对应的初始化数据sql列表,若不存在,则抛出异常
+	 * 根据表id获取对应的初始化数据的删除sql列表,若不存在,则抛出异常
 	 * 
 	 * @param tableId
 	 * @return
@@ -82,7 +82,7 @@ public interface InitDataProcessor {
 	List<String> getDeinitSqlByTableId(String tableId, String language);
 
 	/**
-	 * 获取所有的表初始化数据sql列表
+	 * 获取所有的表初始化数据的删除sql列表
 	 * 
 	 * @return
 	 */
