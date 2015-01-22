@@ -87,7 +87,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template,$context);", name));
         callMacro.subCode("$newContext=new TemplateContextDefault();");
         callMacro.subCode("$paraList=new ArrayList();");
-        callMacro.subCode("$newContext.put(\"parameterList\",$paraList);");
+        callMacro.subCode("$newContext.put(\""+name+"ParameterList\",$paraList);");
         callMacro.subCode("$newContext.setParent($context);");
         if (paraExpressionListContext != null) {
             List<TinyTemplateParser.Para_expressionContext> expList = paraExpressionListContext.para_expression();
@@ -95,7 +95,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                 pushCodeBlock(callMacro);
                 int i = 0;
                 for (TinyTemplateParser.Para_expressionContext visitParaExpression : expList) {
-                    processVisitPara(i, visitParaExpression);
+                    processVisitPara(i, visitParaExpression,name);
                     i++;
                 }
                 popCodeBlock();
@@ -472,8 +472,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         codeBlock.subCode("}");
         codeBlock.subCode("if($macro!=null) {");
         codeBlock.subCode("    $newContext=new TemplateContextDefault();");
-        codeBlock.subCode("$paraList=new ArrayList();");
-        codeBlock.subCode("$newContext.put(\"parameterList\",$paraList);");
         codeBlock.subCode("    $newContext.setParent($context);");
         codeBlock.subCode("    $macro.render($template,$context,$newContext,$writer);");
         codeBlock.subCode("}");
@@ -547,21 +545,21 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(\"%s\",$template,$context);", name));
         callMacro.subCode("$newContext=new TemplateContextDefault();");
         callMacro.subCode("$paraList=new ArrayList();");
-        callMacro.subCode("$newContext.put(\"parameterList\",$paraList);");
+        callMacro.subCode("$newContext.put(\""+name+"ParameterList\",$paraList);");
         callMacro.subCode("$newContext.setParent($context);");
         TinyTemplateParser.Para_expression_listContext expList = listContext;
         if (expList != null) {
             pushCodeBlock(callMacro);
             int i = 0;
             for (TinyTemplateParser.Para_expressionContext paraExpressionContext : expList.para_expression()) {
-                processVisitPara(i, paraExpressionContext);
+                processVisitPara(i, paraExpressionContext,name);
                 i++;
             }
             popCodeBlock();
         }
     }
 
-    private void processVisitPara(int i, TinyTemplateParser.Para_expressionContext visitParaExpression) {
+    private void processVisitPara(int i, TinyTemplateParser.Para_expressionContext visitParaExpression,String name) {
         CodeLet expression = new CodeLet();
         pushCodeLet(expression);
         if (visitParaExpression.getChildCount() == 3) {
@@ -572,7 +570,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             visitParaExpression.getChild(0).accept(this);
             peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterName(%d),%s);", i, expression));
         }
-        peekCodeBlock().subCode(String.format("((List)$newContext.get(\"parameterList\")).add(%s);",expression));
+        peekCodeBlock().subCode(String.format("((List)$newContext.get(\""+name+"ParameterList\")).add(%s);",expression));
         popCodeLet();
     }
 

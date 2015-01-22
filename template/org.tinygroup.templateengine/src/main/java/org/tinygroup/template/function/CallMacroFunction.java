@@ -35,15 +35,12 @@ public class CallMacroFunction extends AbstractTemplateFunction {
     }
 
     public Object execute(Template template, TemplateContext context, Object... parameters) throws TemplateException {
-//        if (parameters.length == 0 || !(parameters[0] instanceof String)) {
-//            notSupported(parameters);
-//        }
         String macroName = parameters[0].toString();
         Macro macro = getTemplateEngine().findMacro(macroName, template, context);
         TemplateContext newTemplateContext = null;
         newTemplateContext = new TemplateContextDefault();
         List paraList = new ArrayList();
-        newTemplateContext.put("parameterList", paraList);
+        newTemplateContext.put(parameters[0]+"ParameterList", paraList);
         for (int i = 1; i < parameters.length; i++) {
             paraList.add(parameters[i]);
         }
