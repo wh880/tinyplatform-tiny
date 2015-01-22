@@ -20,6 +20,16 @@
             <version>${version}</version>
         </dependency>
         <dependency>
+            <groupId>${groupId}</groupId>
+            <artifactId>${rootArtifactId}-business-impl</artifactId>
+            <version>${version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${groupId}</groupId>
+            <artifactId>${rootArtifactId}-dao-impl</artifactId>
+            <version>${version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.tinygroup</groupId>
             <artifactId>org.tinygroup.jspengine</artifactId>
             <version>${tinyVersion}</version>
