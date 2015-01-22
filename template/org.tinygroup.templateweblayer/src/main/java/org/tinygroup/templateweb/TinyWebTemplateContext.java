@@ -28,6 +28,10 @@ public class TinyWebTemplateContext extends ContextImpl implements
 		return (T)webContext.get(name);
 	}
 
+	public WebContext getWebContext() {
+		return webContext;
+	}
+
 	@Override
 	public boolean exist(String name) {
 		boolean exist=super.exist(name);
