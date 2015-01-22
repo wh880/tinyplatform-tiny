@@ -34,14 +34,54 @@ public class InitDataProcessorTest extends TestCase {
 		initDataProcessor = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(DataBaseUtil.INITDATA_BEAN);
 	}
 
-	public void testGetInitSql() {
+	public void testOracleInitSql() {
 		System.out.println(initDataProcessor.getInitSql("oracle").toString());
 		assertEquals(2, initDataProcessor.getInitSql("oracle").size());
 	}
 	
-	public void testGetDeInitSql() {
+	public void testOracleDeInitSql() {
 		System.out.println(initDataProcessor.getDeinitSql("oracle").toString());
 		assertEquals(2, initDataProcessor.getDeinitSql("oracle").size());
+	}
+	
+	public void testDb2InitSql() {
+		System.out.println(initDataProcessor.getInitSql("db2").toString());
+		assertEquals(2, initDataProcessor.getInitSql("db2").size());
+	}
+	
+	public void testDb2DeInitSql() {
+		System.out.println(initDataProcessor.getDeinitSql("db2").toString());
+		assertEquals(2, initDataProcessor.getDeinitSql("db2").size());
+	}
+	
+	public void testMysqlInitSql() {
+		System.out.println(initDataProcessor.getInitSql("mysql").toString());
+		assertEquals(2, initDataProcessor.getInitSql("mysql").size());
+	}
+	
+	public void testMysqlDeInitSql() {
+		System.out.println(initDataProcessor.getDeinitSql("mysql").toString());
+		assertEquals(2, initDataProcessor.getDeinitSql("mysql").size());
+	}
+	
+	public void testH2InitSql() {
+		System.out.println(initDataProcessor.getInitSql("h2").toString());
+		assertEquals(2, initDataProcessor.getInitSql("h2").size());
+	}
+	
+	public void testH2DeInitSql() {
+		System.out.println(initDataProcessor.getDeinitSql("h2").toString());
+		assertEquals(2, initDataProcessor.getDeinitSql("h2").size());
+	}
+	
+	public void testDerbyInitSql() {
+		System.out.println(initDataProcessor.getInitSql("derby").toString());
+		assertEquals(2, initDataProcessor.getInitSql("derby").size());
+	}
+	
+	public void testDerbyDeInitSql() {
+		System.out.println(initDataProcessor.getDeinitSql("derby").toString());
+		assertEquals(2, initDataProcessor.getDeinitSql("derby").size());
 	}
 
 	public void testGetInitSqlByTable(){

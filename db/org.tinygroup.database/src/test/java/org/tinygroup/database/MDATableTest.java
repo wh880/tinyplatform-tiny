@@ -44,23 +44,54 @@ public class MDATableTest extends TestCase {
 		assertNotNull(tableProcessor.getTable("user"));
 		assertNotNull(tableProcessor.getTable("company"));
 	}
-	public void testGetCreateSqlStringStringString() {
-		System.out.println("com.hundsun.user,sql:");
+	
+	public void testOracleCreateSql() {
+		System.out.println("com.hundsun.user,oracle sql:");
 		List<String> tableSql= tableProcessor.getCreateSql( "user","com.hundsun", "oracle");
 		System.out.println(tableSql);
+		assertEquals(2, tableSql.size());
 		
-		System.out.println("com.hundsun.company,sql:");
+		System.out.println("com.hundsun.company,oracle sql:");
 		List<String> tableSql2= tableProcessor.getCreateSql("company", "com.hundsun", "oracle");
 		System.out.println(tableSql2);
+		assertEquals(2, tableSql2.size());
 	}
 	
-	public void testGetCreateMySqlStringStringString() {
-		System.out.println("com.hundsun.user,sql:");
+	public void testDb2CreateSql() {
+		System.out.println("com.hundsun.user,db2 sql:");
+		List<String> tableSql= tableProcessor.getCreateSql( "user","com.hundsun", "db2");
+		System.out.println(tableSql);
+		assertEquals(2, tableSql.size());
+		
+		System.out.println("com.hundsun.company,db2 sql:");
+		List<String> tableSql2= tableProcessor.getCreateSql("company", "com.hundsun", "db2");
+		System.out.println(tableSql2);
+		assertEquals(2, tableSql2.size());
+	}
+	
+	public void testH2CreateSql() {
+		System.out.println("com.hundsun.user,h2 sql:");
+		List<String> tableSql= tableProcessor.getCreateSql( "user","com.hundsun", "h2");
+		System.out.println(tableSql);
+		assertEquals(2, tableSql.size());
+		
+		System.out.println("com.hundsun.company,h2 sql:");
+		List<String> tableSql2= tableProcessor.getCreateSql("company", "com.hundsun", "h2");
+		System.out.println(tableSql2);
+		assertEquals(2, tableSql2.size());
+	}
+	
+	public void testMysqlCreateSql() {
+		System.out.println("com.hundsun.user,mysql sql:");
 		List<String> tableSql= tableProcessor.getCreateSql( "user","com.hundsun", "mysql");
 		System.out.println(tableSql);
+		assertEquals(2, tableSql.size());
 		
-		System.out.println("com.hundsun.company,sql:");
+		System.out.println("com.hundsun.company,mysql sql:");
 		List<String> tableSql2= tableProcessor.getCreateSql("company", "com.hundsun", "mysql");
 		System.out.println(tableSql2);
+		assertEquals(2, tableSql2.size());
 	}
+	
+	
 }

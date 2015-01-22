@@ -119,6 +119,9 @@
 			<dialect-type language="h2" type="VARCHAR(${length})"
 				default-value="">
 			</dialect-type>
+			<dialect-type language="db2" type="VARCHAR(${length})"
+				default-value="">
+			</dialect-type>
 			<dialect-type language="java" type="String"
 				default-value="">
 			</dialect-type>
@@ -280,6 +283,9 @@
 			<dialect-type language="mysql" type="INT" default-value="">
 			</dialect-type>
 			<dialect-type language="h2" type="INT" default-value="">
+			</dialect-type>
+			<dialect-type language="db2" type="INT"
+				default-value="">
 			</dialect-type>
 			<dialect-type language="java" type="Integer"
 				default-value="">
