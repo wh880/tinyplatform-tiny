@@ -22,6 +22,8 @@ import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateContextDefault;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by luoguo on 2014/6/9.
@@ -33,23 +35,23 @@ public class CallMacroFunction extends AbstractTemplateFunction {
     }
 
     public Object execute(Template template, TemplateContext context, Object... parameters) throws TemplateException {
-        if (parameters.length == 0 || !(parameters[0] instanceof String)) {
-            notSupported(parameters);
-        }
+//        if (parameters.length == 0 || !(parameters[0] instanceof String)) {
+//            notSupported(parameters);
+//        }
         String macroName = parameters[0].toString();
         Macro macro = getTemplateEngine().findMacro(macroName, template, context);
         TemplateContext newTemplateContext = null;
-        if (parameters.length >= 2) {
-            newTemplateContext = new TemplateContextDefault();
-            for (int i = 0; i < macro.getParameterNames().size(); i++) {
-                if (i + 1 >= parameters.length) {
-                    break;
-                }
-                newTemplateContext.put(macro.getParameterNames().get(i), parameters[i + 1]);
-            }
+        newTemplateContext = new TemplateContextDefault();
+        List paraList = new ArrayList();
+        newTemplateContext.put("parameterList", paraList);
+        for (int i = 1; i < parameters.length; i++) {
+            paraList.add(parameters[i]);
         }
-        if (newTemplateContext == null) {
-            newTemplateContext = context;
+        for (int i = 0; i < macro.getParameterNames().size(); i++) {
+            if (i + 1 >= parameters.length) {
+                continue;
+            }
+            newTemplateContext.put(macro.getParameterNames().get(i), parameters[i + 1]);
         }
         StringWriter stringWriter = new StringWriter();
         macro.render(template, context, newTemplateContext, stringWriter);
