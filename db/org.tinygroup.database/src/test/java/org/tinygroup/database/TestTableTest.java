@@ -35,19 +35,21 @@ public class TestTableTest extends TestCase {
 		tableProcessor = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(DataBaseUtil.TABLEPROCESSOR_BEAN);
 	}
 
-	public void testGetTableStringString() {
-		assertNotNull(tableProcessor.getTable("org.tinygroup.test",
-				"user"));
-	}
-
-	public void testGetTableString() {
+	public void testGetTable() {
 		assertNotNull(tableProcessor.getTable("user"));
+		assertNotNull(tableProcessor.getTable("org.tinygroup.test","user"));
 	}
 
-	public void testGetCreateSqlStringStringString() {
-		List<String> tableSql = tableProcessor.getCreateSql("user",
-				"org.tinygroup.test", "mysql");
+	public void testMysqlCreateSql() {
+		List<String> tableSql = tableProcessor.getCreateSql("user","org.tinygroup.test", "mysql");
 		System.out.println(tableSql);
-
+		assertEquals(1, tableSql.size());
 	}
+	
+	public void testOracleCreateSql() {
+		List<String> tableSql = tableProcessor.getCreateSql("user","org.tinygroup.test", "oracle");
+		System.out.println(tableSql);
+		assertEquals(1, tableSql.size());
+	}
+	
 }
