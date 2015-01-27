@@ -190,7 +190,7 @@ public class TinyHttpFilter implements Filter {
 		if(path==null){
 			path="";
 		}
-		context.put(WebContextUtil.TINY_CONTEXT_PATH, request.getContextPath());
+		context.put(WebContextUtil.TINY_CONTEXT_PATH, path);
 		context.put(WebContextUtil.TINY_REQUEST_URI, request.getRequestURI());
 		String servletPath = request.getServletPath();
 		if (servletPath == null || servletPath.length() == 0) {
