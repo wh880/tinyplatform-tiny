@@ -105,7 +105,7 @@ public class TinyHttpFilter implements Filter {
 		context.put("context", context);
 		context.putSubContext("applicationproperties", new ContextImpl(
 				ConfigurationUtil.getConfigurationManager().getConfiguration()));
-		putRequstInfo(request, context);
+		putRequestInfo(request, context);
 		context.init(request, response,
 				ServletContextHolder.getServletContext());
 		if (servletPath.endsWith("/")) {
@@ -185,7 +185,11 @@ public class TinyHttpFilter implements Filter {
 		}
 	}
 
-	private void putRequstInfo(HttpServletRequest request, WebContext context) {
+	private void putRequestInfo(HttpServletRequest request, WebContext context) {
+		String path=request.getContextPath();
+		if(path==null){
+			path="";
+		}
 		context.put(WebContextUtil.TINY_CONTEXT_PATH, request.getContextPath());
 		context.put(WebContextUtil.TINY_REQUEST_URI, request.getRequestURI());
 		String servletPath = request.getServletPath();
