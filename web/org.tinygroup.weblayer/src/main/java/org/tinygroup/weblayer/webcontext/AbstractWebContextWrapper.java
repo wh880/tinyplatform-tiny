@@ -80,7 +80,7 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements W
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T findInRequset(String name) {
+    private <T> T findInRequest(String name) {
         if (request != null) {
             T result = (T) request.getAttribute(name);
             if (!ObjectUtil.isEmptyObject(result))
@@ -117,11 +117,11 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements W
     }
 
     @SuppressWarnings("unchecked")
-    private boolean existInRequset(String name) {
+    private boolean existInRequest(String name) {
         if (request != null) {
-        	Enumeration<String> enumer =  request.getAttributeNames();
-        	while(enumer.hasMoreElements()){
-        		if(enumer.nextElement().equals(name)){
+        	Enumeration<String> enumeration =  request.getAttributeNames();
+        	while(enumeration.hasMoreElements()){
+        		if(enumeration.nextElement().equals(name)){
         			return true;
         		}
         	}
@@ -129,9 +129,9 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements W
             if(parameterMap.containsKey(name)){
             	return true;
             }
-            enumer= request.getSession().getAttributeNames();
-            while(enumer.hasMoreElements()){
-        		if(enumer.nextElement().equals(name)){
+            enumeration= request.getSession().getAttributeNames();
+            while(enumeration.hasMoreElements()){
+        		if(enumeration.nextElement().equals(name)){
         			return true;
         		}
         	}
@@ -142,9 +142,9 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements W
                     }
                 }
             }
-            enumer= request.getHeaderNames();
-            while(enumer.hasMoreElements()){
-        		if(enumer.nextElement().equals(name)){
+            enumeration= request.getHeaderNames();
+            while(enumeration.hasMoreElements()){
+        		if(enumeration.nextElement().equals(name)){
         			return true;
         		}
         	}
@@ -162,7 +162,7 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements W
         if (!ObjectUtil.isEmptyObject(result)) {
             return result;
         }
-        result = (T) findInRequset(name);
+        result = (T) findInRequest(name);
         if (!ObjectUtil.isEmptyObject(result)) {
             return result;
         }
@@ -175,7 +175,7 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements W
 		if(exist){
 			return true;
 		}
-		return existInRequset(name);
+		return existInRequest(name);
 	}
 
 	protected <T> T getFromWrapperContext(String name, WebContext webContext) {
