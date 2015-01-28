@@ -22,13 +22,20 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.tinygroup.databasebuinstaller.InstallProcessor;
 import org.tinygroup.dbrouter.RouterKeyGenerator;
+import org.tinygroup.dbrouter.config.DataSourceConfig;
+import org.tinygroup.dbrouter.config.KeyTable;
+import org.tinygroup.dbrouter.config.KeyTables;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
+import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.xstream.XStreamFactory;
 
+import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -57,7 +64,7 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements
 	private static final int DEFAULT_STEP = 100;
 
 	public static final String DEFAULT_KEY_TABLE_NAME = "key_table";
-
+	
 	@XStreamAlias("increment")
 	@XStreamAsAttribute
 	private int increment = 1;
@@ -71,6 +78,10 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements
 	@XStreamAlias("data-source-id")
 	@XStreamAsAttribute
 	private String dataSourceId;
+	
+	@XStreamAlias("auto-create")
+	@XStreamAsAttribute
+	private boolean autoCreate = false;
 
 	public String getKeyTableName() {
 		if (keyTableName == null) {
@@ -111,6 +122,35 @@ public abstract class AbstractRouterKeyGenerator<T extends Number> implements
 
 	public void setDataSourceId(String dataSourceId) {
 		this.dataSourceId = dataSourceId;
+	}
+
+	public boolean isAutoCreate() {
+		return autoCreate;
+	}
+
+	public void setAutoCreate(boolean autoCreate) {
+		this.autoCreate = autoCreate;
+	}
+	
+
+	public void createKeyTable(KeyTables keyTables) {
+		DataSourceConfig dataSourceConfig=router.getDataSourceConfig(getDataSourceId());
+		//解析配置文件
+		String language = DbRouterUtil.getLanguageByUrl(dataSourceConfig.getUrl());
+		KeyTable keyTable = keyTables.getKeyTable(language, getClass().getName());
+		if(keyTable==null){
+			logger.logMessage(LogLevel.ERROR, "router:{0},查找language:{1},类型:{2}的主键表配置失败", router.getId(),language,getClass().getName());
+			return;
+		}
+		
+		//初始化参数
+		KeyTableInstallProcessor tableInstallProcessor = new KeyTableInstallProcessor();
+		tableInstallProcessor.setKeyTable(keyTable);
+		tableInstallProcessor.setTableName(getKeyTableName());
+		tableInstallProcessor.setDataSourceConfig(dataSourceConfig);
+		
+		//执行创建逻辑
+		tableInstallProcessor.process(language);
 	}
 
 	public T getKey(String tableName) {

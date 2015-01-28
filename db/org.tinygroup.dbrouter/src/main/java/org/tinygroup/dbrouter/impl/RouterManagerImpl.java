@@ -35,6 +35,8 @@ import org.tinygroup.dbrouter.ShardRule;
 import org.tinygroup.dbrouter.StatementProcessor;
 import org.tinygroup.dbrouter.balance.ShardBalance;
 import org.tinygroup.dbrouter.balance.ShardBalanceDefault;
+import org.tinygroup.dbrouter.config.KeyTable;
+import org.tinygroup.dbrouter.config.KeyTables;
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.config.Routers;
@@ -90,6 +92,10 @@ public class RouterManagerImpl implements RouterManager {
 	private XStream routerXStream;
 
 	private static final String CLUSTER_CONFIG = "dbrouter-config.xml";
+	
+	private static final String KEY_TABLE_XSTREAM_XML = "/keygenerator.sqlconfig.xml";
+	
+	private KeyTables keyTables;
 
 	public RouterManagerImpl() {
 		XStream loadXStream = XStreamFactory.getXStream();
@@ -99,6 +105,7 @@ public class RouterManagerImpl implements RouterManager {
 		routerXStream = XStreamFactory.getXStream(xstreamConfiguration
 				.getPackageName());
 		try {
+			initKeyTables();
 			loadAnnotationClass(routerXStream, xstreamConfiguration);
 			ClassLoader loader = Thread.currentThread().getContextClassLoader();
 			Enumeration<URL> urls = loader.getResources(CLUSTER_CONFIG);
@@ -170,7 +177,35 @@ public class RouterManagerImpl implements RouterManager {
 	}
 
 	public void addRouter(Router router) {
+		initKeyGenerator(router);
 		routerMap.put(router.getId(), router);
+	}
+	
+	private void initKeyTables(){
+		try{
+			XStream stream = XStreamFactory.getXStream("");
+			stream.processAnnotations(new Class[]{KeyTables.class,KeyTable.class});
+			keyTables = (KeyTables)stream.fromXML(this.getClass().getResourceAsStream(KEY_TABLE_XSTREAM_XML));
+			keyTables.init();
+		}catch(Exception e){
+			logger.errorMessage("加载主键表配置:keygenerator.sqlconfig.xml出现异常", e);
+		}
+		
+	}
+	/**
+	 * 动态创建主键存储表
+	 * @param keyGenerator
+	 */
+	private void initKeyGenerator(Router router){
+		RouterKeyGenerator<?> keyGenerator = router.getKeyGenerator();
+		//判断用户设置是否能动态创建物理表
+		if(keyGenerator==null || !keyGenerator.isAutoCreate()){
+		   return;
+		}
+		logger.logMessage(LogLevel.DEBUG, "router:{0},执行动态创建主键存储表开始", router.getId());
+		keyGenerator.setRouter(router);
+		keyGenerator.createKeyTable(keyTables);
+		logger.logMessage(LogLevel.DEBUG, "router:{0},执行动态创建主键存储表结束", router.getId());
 	}
 
 	/*

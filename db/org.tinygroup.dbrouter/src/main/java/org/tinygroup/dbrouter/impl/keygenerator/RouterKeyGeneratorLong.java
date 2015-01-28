@@ -28,5 +28,7 @@ public class RouterKeyGeneratorLong extends AbstractRouterKeyGenerator<Long> {
 	      return currentNumber;
 	}
 
+
+
 	
 }
