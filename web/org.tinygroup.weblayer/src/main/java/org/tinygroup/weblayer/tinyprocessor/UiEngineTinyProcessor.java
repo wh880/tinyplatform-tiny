@@ -44,6 +44,7 @@ import org.tinygroup.weblayer.WebContext;
  * @author luoguo
  */
 public class UiEngineTinyProcessor extends AbstractTinyProcessor {
+    public static final int CACHE_TIME = 86400;
     static Pattern urlPattern = Pattern.compile("(url[(][\"\']?)(.*?)([\"\']?[)])");
     UIComponentManager uiComponentManager;
     private static final String CACHE_CONTROL = "max-age=315360000";
@@ -73,47 +74,46 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
     }
 
 
-    public void reallyProcess(String servletPath, WebContext context)  throws ServletException, IOException{
+    public void reallyProcess(String servletPath, WebContext context) throws ServletException, IOException {
         logger.logMessage(LogLevel.DEBUG, "{}开始处理...", servletPath);
         HttpServletResponse response = context.getResponse();
         HttpServletRequest request = context.getRequest();
-        boolean isDebug = true;
-        String isReleaseMode = context.get("TINY_IS_RELEASE_MODE");
-        if (isReleaseMode != null && isReleaseMode.length() > 0) {
-            isDebug = Boolean.parseBoolean(isReleaseMode);
-        }
         String contextPath = context.get("TINY_CONTEXT_PATH");
 //        try {
-            String lastModifiedSign;
-            if (servletPath.endsWith("uijs")) {
-                lastModifiedSign = new Date(getJsLastModifiedSign(isDebug)).toGMTString();
-                response.setContentType("text/javascript");
-            } else if (servletPath.endsWith("uicss")) {
-                lastModifiedSign = new Date(getCssLastModifiedSign(isDebug)).toGMTString();
-                response.setContentType("text/css");
-            } else {
-                throw new RuntimeException("UiEngineTinyProcessor不能处理请求：" + servletPath);
+        String lastModifiedSign;
+        long modifiedSign = 0;
+        long now = System.currentTimeMillis();
+        if (servletPath.endsWith("uijs")) {
+            modifiedSign = getJsLastModifiedSign();
+            response.setContentType("text/javascript");
+        } else if (servletPath.endsWith("uicss")) {
+            modifiedSign = getCssLastModifiedSign();
+            response.setContentType("text/css");
+        } else {
+            throw new RuntimeException("UiEngineTinyProcessor不能处理请求：" + servletPath);
+        }
+        lastModifiedSign = new Date(modifiedSign).toGMTString();
+        String ims = request.getHeader("If-Modified-Since");
+        if (ims != null && ims.length() > 0) {
+            if (ims.equals(lastModifiedSign)) {
+                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                return;
             }
-            String ims = request.getHeader("If-Modified-Since");
-            if (ims != null && ims.length() > 0) {
-                if (ims.equals(lastModifiedSign)) {
-                    response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                    return;
-                }
-            }
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.setHeader("Last-modified", lastModifiedSign);
-            response.setHeader("Connection", "keep-alive");
-            response.setHeader("Cache-Control", CACHE_CONTROL);
-            response.setHeader("Date", lastModifiedSign);
-            if (servletPath.endsWith("uijs")) {
-                writeJs(response);
-            }
-            if (servletPath.endsWith("uicss")) {
-                writeCss(contextPath, response, servletPath);
-            }
+        }
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setHeader("Last-modified", lastModifiedSign);
+        response.setHeader("Connection", "keep-alive");
+        response.setHeader("Cache-Control", CACHE_CONTROL);
+        response.setHeader("Expires", new Date(now + CACHE_TIME).toGMTString());
+        response.setHeader("Date", lastModifiedSign);
+        if (servletPath.endsWith("uijs")) {
+            writeJs(response);
+        }
+        if (servletPath.endsWith("uicss")) {
+            writeCss(contextPath, response, servletPath);
+        }
 
-            logger.logMessage(LogLevel.DEBUG, "{}处理完成。", servletPath);
+        logger.logMessage(LogLevel.DEBUG, "{}处理完成。", servletPath);
 //        } catch (IOException e) {
 //            logger.errorMessage("{}写入响应信息出现异常", e, servletPath);
 //            throw new RuntimeException(e);
@@ -213,7 +213,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
         return contextPath + servletPath.substring(0, servletPath.lastIndexOf('/') + 1) + url;
     }
 
-    private synchronized long getJsLastModifiedSign(boolean isDebug) {
+    private synchronized long getJsLastModifiedSign() {
         long time = 0;
         for (UIComponent component : uiComponentManager.getHealthUiComponents()) {
             String[] paths = uiComponentManager.getComponentJsArray(component);
@@ -232,7 +232,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
         return time;
     }
 
-    private long getCssLastModifiedSign(boolean isDebug) {
+    private long getCssLastModifiedSign() {
         long time = 0;
         for (UIComponent component : uiComponentManager.getHealthUiComponents()) {
             String[] paths = uiComponentManager.getComponentCssArray(component);
