@@ -62,7 +62,7 @@
     <table border="1" width="100%">
    <tr>
       <td colspan="2">
-                  
+          本工程提供view层和service-interface依赖<br/>        
       </td>
     </tr>
     <tr>  
