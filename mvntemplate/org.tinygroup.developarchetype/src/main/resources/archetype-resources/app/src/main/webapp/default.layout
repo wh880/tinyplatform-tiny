@@ -62,7 +62,7 @@
     <table border="1" width="100%">
    <tr>
       <td colspan="2">
-                  
+         Service示例:<a href="${TINY_CONTEXT_PATH}/helloworld/helloworld.page">helloworld</a><br/>   
       </td>
     </tr>
     <tr>  
