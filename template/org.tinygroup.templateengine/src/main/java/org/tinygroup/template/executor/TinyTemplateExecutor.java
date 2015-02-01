@@ -15,55 +15,130 @@
  */
 package org.tinygroup.template.executor;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
+import org.tinygroup.vfs.FileObject;
+import org.tinygroup.vfs.FileObjectFilter;
+import org.tinygroup.vfs.FileObjectProcessor;
+import org.tinygroup.vfs.VFS;
 
 /**
  * 用于直接对当前环境下的VM进行执行，并输出结果到控制台
  * Created by luoguo on 2014/6/7.
  */
 public class TinyTemplateExecutor {
-	private static String[] classPaths = {"src/main/resources","src/test/resources"};
+	
+	private static final String DEFALUT_TEMPLATE_EXT_NAME="page";
+	private static final String DEFALUT_LAYOUT_EXT_NAME="layout";
+	private static final String DEFALUT_COMPONENT_EXT_NAME="component";
 	
     public static void main(String[] args) throws TemplateException {
         if (args.length == 0) {
-            System.out.println("Usage:\n\tTinyTemplateExecutor templateFile [tempalteExtFileName] [layoutExtFileName] [componentExtFileName]");
+            System.out.println("Usage:\n\tTinyTemplateExecutor templateFile [relativePath] [absolutePath] [urlParamters]");
             return;
         }
-        //注意传入的参数，只能是“/”开头的相对路径
-        String templateFile = null;
+        String relativePath = null;
+        String absolutePath = null;
+        String urlParamters = null;
+        
+        //解析参数
         if (args.length >= 1) {
-            templateFile = args[0];
+        	relativePath = args[0].replaceAll("\\\\", "/");
         }
-        //模板文件扩展名不能写死，需要根据模板文件动态获取
-        String templateExtFileName = StringUtil.defaultIfEmpty(getExtFileName(templateFile), "vm");
         if (args.length >= 2) {
-            templateExtFileName = args[1];
+        	absolutePath = args[1].replaceAll("\\\\", "/");
         }
-        String layoutExtFileName = "layout";
         if (args.length >= 3) {
-            layoutExtFileName = args[2];
+        	urlParamters = args[2];
         }
-        String componentExtFileName = "component";
-        if (args.length >= 4) {
-            componentExtFileName = args[3];
-        }
+        Map<String,String> maps= parserStringParamter(urlParamters);
+        //System.out.println("relativePath="+relativePath);
+        //System.out.println("absolutePath="+absolutePath);
+        //System.out.println("urlParamters="+urlParamters);
+        String root = getFileRoot(relativePath,absolutePath);
+        
+        //模板文件扩展名不能写死，需要根据模板文件动态获取
+        final String templateExtFileName = StringUtil.defaultIfEmpty(getExtFileName(relativePath), DEFALUT_TEMPLATE_EXT_NAME);
+        final String layoutExtFileName = DEFALUT_LAYOUT_EXT_NAME;
+        final String componentExtFileName = DEFALUT_COMPONENT_EXT_NAME;
+        
+        
+        //初始化模板引擎
         final TemplateEngine engine = new TemplateEngineDefault();
-        //TODO 添加处理，把所有的ClassPath都加入到
-        //for
-        for(String classpath:classPaths){
-        	FileObjectResourceLoader resourceLoader = new FileObjectResourceLoader(templateExtFileName, layoutExtFileName, componentExtFileName, classpath);
-            engine.addResourceLoader(resourceLoader);
+        
+        
+        //配置文件目录资源加载器
+        FileObjectResourceLoader resourceLoader = new FileObjectResourceLoader(templateExtFileName, layoutExtFileName, componentExtFileName, root);
+        engine.addResourceLoader(resourceLoader);
+        
+        //注册文件目录的资源并注册
+        FileObject project = VFS.resolveFile(root);
+        project.foreach(new FileObjectFilter(){
+			@Override
+			public boolean accept(FileObject fileObject) {
+				return fileObject.getFileName().endsWith(".component");
+			}
+		    }, new FileObjectProcessor(){
+			@Override
+			public void process(FileObject fileObject) {
+				try {
+					
+					if(fileObject.isInPackage()){
+						//TODO jar需要特殊处理
+					}
+					
+					engine.registerMacroLibrary(fileObject.getPath());
+					
+				} catch (TemplateException e) {
+					System.out.println(String.format("load %s error: %s", fileObject.getFileName(),e.getMessage()));
+				}
+			}
+		});
+        
+        
+        //如果有用户自定义参数，放入模板上下文
+        if(!CollectionUtil.isEmpty(maps)){
+           for(Entry<String, String> entry:maps.entrySet()){
+        	   engine.getTemplateContext().put(entry.getKey(), entry.getValue());
+           }
         }
         
-        //end
-        if (templateFile != null) {
+        
+        //渲染模板
+        if (relativePath != null) {
             //如果只有一个，则只执行一个
-            engine.renderTemplate(templateFile);
+            engine.renderTemplate(relativePath);
         }
+    }
+    
+    //解析简单的
+    protected static Map<String,String> parserStringParamter(String urlParams){
+    	Map<String,String> maps =new HashMap<String,String>();
+    	if(!StringUtil.isBlank(urlParams)){
+    		String[] ss = urlParams.split("&");
+    		for(String pair:ss){
+    		   int n = pair.indexOf("=");
+    		   if(n!=-1){
+    			   maps.put(pair.substring(0,n), pair.substring(n+1,pair.length()));
+    		   }
+    		}
+    	}
+    	return maps;
+    }
+    
+    protected static String getFileRoot(String relativePath,String absolutePath){
+    	if(relativePath==null || absolutePath==null){
+    		return null;
+    	}
+    	return absolutePath.substring(0, absolutePath.length()-relativePath.length());
     }
     
     protected static String getExtFileName(String path){
