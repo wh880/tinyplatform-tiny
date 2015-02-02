@@ -15,14 +15,17 @@
  */
 package org.tinygroup.template.executor;
 
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateException;
+import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.vfs.FileObject;
@@ -93,6 +96,7 @@ public class TinyTemplateExecutor {
 					
 					if(fileObject.isInPackage()){
 						//TODO jar需要特殊处理
+						
 					}
 					
 					engine.registerMacroLibrary(fileObject.getPath());
@@ -103,11 +107,11 @@ public class TinyTemplateExecutor {
 			}
 		});
         
-        
+        TemplateContext context = new TemplateContextDefault();
         //如果有用户自定义参数，放入模板上下文
         if(!CollectionUtil.isEmpty(maps)){
            for(Entry<String, String> entry:maps.entrySet()){
-        	   engine.getTemplateContext().put(entry.getKey(), entry.getValue());
+        	   context.put(entry.getKey(), entry.getValue());
            }
         }
         
@@ -115,7 +119,7 @@ public class TinyTemplateExecutor {
         //渲染模板
         if (relativePath != null) {
             //如果只有一个，则只执行一个
-            engine.renderTemplate(relativePath);
+            engine.renderTemplate(relativePath, context, new OutputStreamWriter(System.out));
         }
     }
     
