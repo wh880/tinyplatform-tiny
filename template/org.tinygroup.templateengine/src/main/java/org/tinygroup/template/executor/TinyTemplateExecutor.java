@@ -16,7 +16,9 @@
 package org.tinygroup.template.executor;
 
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -84,6 +86,7 @@ public class TinyTemplateExecutor {
         
         //注册文件目录的资源并注册
         FileObject project = VFS.resolveFile(root);
+        final List<String> jarList =new ArrayList<String>();
         project.foreach(new FileObjectFilter(){
 			@Override
 			public boolean accept(FileObject fileObject) {
@@ -95,10 +98,15 @@ public class TinyTemplateExecutor {
 				try {
 					
 					if(fileObject.isInPackage()){
-						//TODO jar需要特殊处理
+						//对jar的处理
+						String jarPath = getJarFileName(fileObject);
+						if(!jarList.contains(jarPath)){
+							jarList.add(jarPath);
+							FileObjectResourceLoader jarLoader = new FileObjectResourceLoader(templateExtFileName, layoutExtFileName, componentExtFileName,jarPath);
+							engine.addResourceLoader(jarLoader);
+						}
 						
 					}
-					
 					engine.registerMacroLibrary(fileObject.getPath());
 					
 				} catch (TemplateException e) {
@@ -138,6 +146,19 @@ public class TinyTemplateExecutor {
     	return maps;
     }
     
+    protected static String getJarFileName(FileObject fileObject){
+    	if(fileObject!=null){
+    	   String path = fileObject.getAbsolutePath();
+    	   int n = path.lastIndexOf("!");
+    	   if(n!=-1){
+    		   return path.substring(0, n);
+    	   }else{
+    		   return path;
+    	   }
+    	}
+    	return null;
+    }
+    
     protected static String getFileRoot(String relativePath,String absolutePath){
     	if(relativePath==null || absolutePath==null){
     		return null;
@@ -155,4 +176,5 @@ public class TinyTemplateExecutor {
     	}
     	return path.substring(lastIndexOfDot + 1);
     }
+    
 }
