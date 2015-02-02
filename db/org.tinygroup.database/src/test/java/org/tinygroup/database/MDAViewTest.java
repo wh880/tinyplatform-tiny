@@ -34,19 +34,38 @@ public class MDAViewTest extends TestCase {
 		viewProcessor = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(DataBaseUtil.VIEW_BEAN);
 	}
 
-	public void testGetTableStringString() {
+	public void testGetViewString() {
 		assertNotNull(viewProcessor.getView("usercompanyview"));
 	}
 
-	public void testGetViewString() {
-		assertNotNull(viewProcessor.getCreateSql("usercompanyview", "oracle"));
+	public void testOracleViewCreateSql() {
+		System.out.println("usercompanyview, oracle sql:");
+		String viewSql= viewProcessor.getCreateSql("usercompanyview", "oracle");
+		System.out.println(viewSql);
 	}
-
-	public void testGetCreateSqlString() {
-		System.out.println("usercompanyview,sql:");
-		String tableSql= viewProcessor.getCreateSql("usercompanyview", "oracle");
-		System.out.println(tableSql);
-		
+	
+	public void testMysqlViewCreateSql() {
+		System.out.println("usercompanyview, mysql sql:");
+		String viewSql= viewProcessor.getCreateSql("usercompanyview", "mysql");
+		System.out.println(viewSql);
+	}
+	
+	public void testH2ViewCreateSql() {
+		System.out.println("usercompanyview, h2 sql:");
+		String viewSql= viewProcessor.getCreateSql("usercompanyview", "h2");
+		System.out.println(viewSql);
+	}
+	
+	public void testDb2ViewCreateSql() {
+		System.out.println("usercompanyview, db2 sql:");
+		String viewSql= viewProcessor.getCreateSql("usercompanyview", "db2");
+		System.out.println(viewSql);
+	}
+	
+	public void testDerbyViewCreateSql() {
+		System.out.println("usercompanyview, derby sql:");
+		String viewSql= viewProcessor.getCreateSql("usercompanyview", "derby");
+		System.out.println(viewSql);
 	}
 	
 }

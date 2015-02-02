@@ -13,22 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.dbrouter.impl.keygenerator;
+package ${package};
 
-
-
-/**
- * Created by luoguo on 13-12-13.
- */
-public class RouterKeyGeneratorLong extends AbstractRouterKeyGenerator<Long> {
-	
-   
-
-	protected synchronized Long generatorNextKey(Long currentNumber) {
-	      return currentNumber;
-	}
-
-
-
-	
+public interface HelloWorldService{
+	public String sayHello(String name);
 }

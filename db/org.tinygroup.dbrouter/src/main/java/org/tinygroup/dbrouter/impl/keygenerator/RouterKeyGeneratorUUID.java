@@ -15,10 +15,11 @@
  */
 package org.tinygroup.dbrouter.impl.keygenerator;
 
-import org.tinygroup.dbrouter.RouterKeyGenerator;
-import org.tinygroup.dbrouter.config.Router;
-
 import java.util.UUID;
+
+import org.tinygroup.dbrouter.RouterKeyGenerator;
+import org.tinygroup.dbrouter.config.KeyTables;
+import org.tinygroup.dbrouter.config.Router;
 
 /**
  * Created by luoguo on 13-12-13.
@@ -49,5 +50,14 @@ public class RouterKeyGeneratorUUID implements RouterKeyGenerator<String> {
 	public void setRouter(Router router) {
 		
 	}
+
+	public boolean isAutoCreate() {
+		return false;
+	}
+
+	public void createKeyTable(KeyTables keyTables) {
+		
+	}
+
 
 }

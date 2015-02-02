@@ -15,6 +15,7 @@
  */
 package org.tinygroup.dbrouter;
 
+import org.tinygroup.dbrouter.config.KeyTables;
 import org.tinygroup.dbrouter.config.Router;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -42,4 +43,15 @@ public interface RouterKeyGenerator<T> {
      * @param router
      */
     void setRouter(Router router);
+    
+    /**
+     * 是否能动态创建数据库存储表
+     * @return
+     */
+    boolean isAutoCreate();
+    
+    /**
+     * 创建动态数据库存储表
+     */
+    void createKeyTable(KeyTables keyTables);
 }

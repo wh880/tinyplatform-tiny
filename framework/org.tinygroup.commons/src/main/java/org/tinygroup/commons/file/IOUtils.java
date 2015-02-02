@@ -29,7 +29,7 @@ public class IOUtils {
         while ((n = inputStream.read(buf)) > 0) {
             outputStream.write(buf, 0, n);
         }
-        return new String(outputStream.toByteArray().getRawBytes(), encode);
+        return new String(outputStream.toByteArray().toByteArray(), encode);
     }
 
     public static void writeToOutputStream(OutputStream outputStream,

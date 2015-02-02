@@ -26,11 +26,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
@@ -79,10 +82,21 @@ import org.tinygroup.jsqlparser.statement.update.Update;
  */
 public final class DbRouterUtil {
 
+
+	private static final Pattern  JDBC_PATTERN = Pattern.compile("jdbc:.*:.*",Pattern.CASE_INSENSITIVE);
+    private static Map<String,String> JDBC_CHANGE_MAP = new HashMap<String,String>();
+    
+    static{
+    	//jdbc:jtds:sqlserver://MyDbComputerNameOrIP:1433/master
+    	JDBC_CHANGE_MAP.put("jtds", DataBaseUtil.DB_TYPE_SQLSERVER);
+    	//jdbc:microsoft:sqlserver://MyDbComputerNameOrIP:1433;databaseName=master
+    	JDBC_CHANGE_MAP.put("microsoft", DataBaseUtil.DB_TYPE_SQLSERVER);
+    }
+
 	private DbRouterUtil() {
 
 	}
-
+	
 	/**
 	 * 
 	 * 替换sql语句中的表名信息，条件语句带表名，暂时不进行替换。
@@ -582,5 +596,24 @@ public final class DbRouterUtil {
 	        ObjectInputStream ois = new ObjectInputStream(bis);
 	        return ois.readObject();
 	}
+	
+	/**
+	 * 根据jdbc的Url解析数据库的语言
+	 * @param url
+	 * @return
+	 */
+	public static String getLanguageByUrl(String url){
+		if(!StringUtil.isBlank(url) && JDBC_PATTERN.matcher(url).matches()){
+		   String language= url.substring(5,url.indexOf(":", 5));
+		   //一般而言，jdbc:数据库类型名，但是不排除一些特殊写法
+		   if(JDBC_CHANGE_MAP.containsKey(language)){
+			  return JDBC_CHANGE_MAP.get(language);
+		   }else{
+			  return language;
+		   }
+		}
+		return null;
+	}
+	
 
 }

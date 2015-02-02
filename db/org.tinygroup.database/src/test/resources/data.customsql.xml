@@ -11,4 +11,28 @@
 	<custom-sql type="after">
 		<sql dialectTypeName="oracle" content="after3"></sql>
 	</custom-sql>
+	<custom-sql type="before">
+		<sql dialectTypeName="mysql" content="before sql"></sql>
+	</custom-sql>
+	<custom-sql type="after">
+		<sql dialectTypeName="mysql" content="after sql"></sql>
+	</custom-sql>
+	<custom-sql type="before">
+		<sql dialectTypeName="h2" content="before sql"></sql>
+	</custom-sql>
+	<custom-sql type="after">
+		<sql dialectTypeName="h2" content="after sql"></sql>
+	</custom-sql>
+	<custom-sql type="before">
+		<sql dialectTypeName="db2" content="before sql"></sql>
+	</custom-sql>
+	<custom-sql type="after">
+		<sql dialectTypeName="db2" content="after sql"></sql>
+	</custom-sql>
+	<custom-sql type="before">
+		<sql dialectTypeName="derby" content="before sql"></sql>
+	</custom-sql>
+	<custom-sql type="after">
+		<sql dialectTypeName="derby" content="after sql"></sql>
+	</custom-sql>
 </custom-sqls>
