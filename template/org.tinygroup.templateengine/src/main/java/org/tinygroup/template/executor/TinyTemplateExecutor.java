@@ -15,14 +15,17 @@
  */
 package org.tinygroup.template.executor;
 
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateException;
+import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.vfs.FileObject;
@@ -36,18 +39,18 @@ import org.tinygroup.vfs.VFS;
  */
 public class TinyTemplateExecutor {
 	
-	private static final String DEFALUT_TEMPLATE_EXT_NAME="page";
-	private static final String DEFALUT_LAYOUT_EXT_NAME="layout";
-	private static final String DEFALUT_COMPONENT_EXT_NAME="component";
+	private static final String DEFAULT_TEMPLATE_EXT_NAME="page";
+	private static final String DEFAULT_LAYOUT_EXT_NAME="layout";
+	private static final String DEFAULT_COMPONENT_EXT_NAME="component";
 	
     public static void main(String[] args) throws TemplateException {
         if (args.length == 0) {
-            System.out.println("Usage:\n\tTinyTemplateExecutor templateFile [relativePath] [absolutePath] [urlParamters]");
+            System.out.println("Usage:\n\tTinyTemplateExecutor templateFile [relativePath] [absolutePath] [urlParameters]");
             return;
         }
         String relativePath = null;
         String absolutePath = null;
-        String urlParamters = null;
+        String urlParameters = null;
         
         //解析参数
         if (args.length >= 1) {
@@ -57,18 +60,18 @@ public class TinyTemplateExecutor {
         	absolutePath = args[1].replaceAll("\\\\", "/");
         }
         if (args.length >= 3) {
-        	urlParamters = args[2];
+        	urlParameters = args[2];
         }
-        Map<String,String> maps= parserStringParamter(urlParamters);
+        Map<String,String> maps= parserStringParameter(urlParameters);
         //System.out.println("relativePath="+relativePath);
         //System.out.println("absolutePath="+absolutePath);
         //System.out.println("urlParamters="+urlParamters);
         String root = getFileRoot(relativePath,absolutePath);
         
         //模板文件扩展名不能写死，需要根据模板文件动态获取
-        final String templateExtFileName = StringUtil.defaultIfEmpty(getExtFileName(relativePath), DEFALUT_TEMPLATE_EXT_NAME);
-        final String layoutExtFileName = DEFALUT_LAYOUT_EXT_NAME;
-        final String componentExtFileName = DEFALUT_COMPONENT_EXT_NAME;
+        final String templateExtFileName = StringUtil.defaultIfEmpty(getExtFileName(relativePath), DEFAULT_TEMPLATE_EXT_NAME);
+        final String layoutExtFileName = DEFAULT_LAYOUT_EXT_NAME;
+        final String componentExtFileName = DEFAULT_COMPONENT_EXT_NAME;
         
         
         //初始化模板引擎
@@ -93,6 +96,7 @@ public class TinyTemplateExecutor {
 					
 					if(fileObject.isInPackage()){
 						//TODO jar需要特殊处理
+						
 					}
 					
 					engine.registerMacroLibrary(fileObject.getPath());
@@ -103,11 +107,11 @@ public class TinyTemplateExecutor {
 			}
 		});
         
-        
+        TemplateContext context = new TemplateContextDefault();
         //如果有用户自定义参数，放入模板上下文
         if(!CollectionUtil.isEmpty(maps)){
            for(Entry<String, String> entry:maps.entrySet()){
-        	   engine.getTemplateContext().put(entry.getKey(), entry.getValue());
+        	   context.put(entry.getKey(), entry.getValue());
            }
         }
         
@@ -115,12 +119,12 @@ public class TinyTemplateExecutor {
         //渲染模板
         if (relativePath != null) {
             //如果只有一个，则只执行一个
-            engine.renderTemplate(relativePath);
+            engine.renderTemplate(relativePath, context, new OutputStreamWriter(System.out));
         }
     }
     
-    //解析简单的
-    protected static Map<String,String> parserStringParamter(String urlParams){
+    //解析简单的String参数
+    protected static Map<String,String> parserStringParameter(String urlParams){
     	Map<String,String> maps =new HashMap<String,String>();
     	if(!StringUtil.isBlank(urlParams)){
     		String[] ss = urlParams.split("&");
