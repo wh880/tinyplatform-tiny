@@ -38,26 +38,23 @@ public class LayoutTest {
 }
 
 class Template1 extends AbstractTemplate {
-    @Override
+   
     protected void renderContent(TemplateContext $context, Writer $writer) throws IOException, TemplateException {
         $writer.write("Hello");
     }
 
-    @Override
     public String getPath() {
         return "/aaa/a.page";
     }
 }
 
 class Layout1 extends AbstractTemplate {
-    @Override
     protected void renderContent(TemplateContext $context, Writer $writer) throws IOException, TemplateException {
         $writer.write("<b>");
         $writer.write($context.get("pageContent").toString());
         $writer.write("</b>");
     }
 
-    @Override
     public String getPath() {
         return "/aaa/a.layout";
     }
@@ -71,7 +68,6 @@ class Layout2 extends AbstractTemplate {
         $writer.write("</div>");
     }
 
-    @Override
     public String getPath() {
         return "/a.layout";
     }
