@@ -91,10 +91,8 @@ public abstract class AbstractMacro implements Macro {
     public void render(Template template, TemplateContext pageContext, TemplateContext context, Writer writer) throws TemplateException {
         try {
             for (int i = 0; i < parameterNames.size(); i++) {
-                if (!context.exist(parameterNames.get(i))) {
-                    if (parameterDefaultValues.get(i) != null) {
-                        context.put(parameterNames.get(i), parameterDefaultValues.get(i).evaluate(context));
-                    }
+                if (parameterDefaultValues.get(i) != null) {
+                    context.put(parameterNames.get(i), parameterDefaultValues.get(i).evaluate(context));
                 }
             }
             renderMacro(template, pageContext, context, writer);
