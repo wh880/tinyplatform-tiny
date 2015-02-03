@@ -28,6 +28,6 @@ public class ValidateTest  extends TestCase{
             System.out.println(errorMsg.getDescription());
         }
 
-        assertTrue(result.hasError());
+        assertFalse(result.hasError());
     }
 }
