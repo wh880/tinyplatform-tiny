@@ -68,8 +68,8 @@ public class TinyTemplateExecutor {
         //System.out.println("relativePath="+relativePath);
         //System.out.println("absolutePath="+absolutePath);
         //System.out.println("urlParamters="+urlParamters);
-        String root = getFileRoot(relativePath,absolutePath);
-        
+        String pagedir = getDir(relativePath,absolutePath);
+        String root = getProjectRoot(pagedir);
         //模板文件扩展名不能写死，需要根据模板文件动态获取
         final String templateExtFileName = StringUtil.defaultIfEmpty(getExtFileName(relativePath), DEFAULT_TEMPLATE_EXT_NAME);
         final String layoutExtFileName = DEFAULT_LAYOUT_EXT_NAME;
@@ -127,7 +127,8 @@ public class TinyTemplateExecutor {
         //渲染模板
         if (relativePath != null) {
             //如果只有一个，则只执行一个
-            engine.renderTemplate(relativePath, context, new OutputStreamWriter(System.out));
+        	String prefix = pagedir.substring(root.length(), pagedir.length());
+            engine.renderTemplate(prefix+relativePath, context, new OutputStreamWriter(System.out));
         }
     }
     
@@ -159,11 +160,23 @@ public class TinyTemplateExecutor {
     	return null;
     }
     
-    protected static String getFileRoot(String relativePath,String absolutePath){
+    protected static String getDir(String relativePath,String absolutePath){
     	if(relativePath==null || absolutePath==null){
     		return null;
     	}
     	return absolutePath.substring(0, absolutePath.length()-relativePath.length());
+    }
+    
+    protected static String getProjectRoot(String dir){
+    	if(dir==null){
+    		return null;
+    	}
+    	int n = dir.indexOf("src");
+    	if(n!=-1){
+    		return dir.substring(0, n);
+    	}else{
+    		return dir;
+    	}
     }
     
     protected static String getExtFileName(String path){
