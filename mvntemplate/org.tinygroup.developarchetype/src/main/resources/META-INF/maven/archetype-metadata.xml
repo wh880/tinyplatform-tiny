@@ -297,6 +297,40 @@
 		    </fileSet>
 	    </fileSets>
     </module>
+    <module id="service-wrapper" dir="service-wrapper" name="service-wrapper">
+  		<fileSets>
+		    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+			    <directory>src/main/java</directory>
+			    <includes>
+				    <include>**/*.java</include>
+			    </includes>
+		    </fileSet>
+		    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+			    <directory>src/test/java</directory>
+			    <includes>
+				    <include>**/*.java</include>
+			    </includes>
+		    </fileSet>
+		    <fileSet filtered="true" packaged="false" encoding="UTF-8">
+			    <directory>src/main/resources</directory>
+			    <includes>
+				    <include>**/*</include>
+			    </includes>
+		    </fileSet>
+		    <fileSet filtered="true" packaged="false" encoding="UTF-8">
+			    <directory>src/test/resources</directory>
+			    <includes>
+				    <include>**/*</include>
+			    </includes>
+		    </fileSet>
+		    <fileSet filtered="true" packaged="false" encoding="UTF-8">
+		      <directory></directory>
+				  <includes>  
+            <include>pom.xml</include>  
+          </includes>  
+		    </fileSet>
+	    </fileSets>
+    </module>
     <module id="view" dir="view" name="view">
   		<fileSets>
 		    <fileSet filtered="true" packaged="true" encoding="UTF-8">
