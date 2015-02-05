@@ -176,7 +176,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
     	XmlNode node = totalConfig.getSubNode(I18N_VISITOR_NAME);
     	try {
     		I18nVisitor i18n = createI18nVisitor(node);
-	    	engine.setI18nVistor(i18n);
+	    	engine.setI18nVisitor(i18n);
 		} catch (Exception e) {
 			logger.errorMessage("加载国际化资源访问器出错", e);
 		}
