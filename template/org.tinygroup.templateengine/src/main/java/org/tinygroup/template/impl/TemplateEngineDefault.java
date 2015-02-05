@@ -17,6 +17,7 @@ package org.tinygroup.template.impl;
 
 import org.tinygroup.template.*;
 import org.tinygroup.template.function.*;
+import org.tinygroup.template.parser.TinyTemplateCodeVisitor;
 import org.tinygroup.template.rumtime.U;
 
 import java.io.CharArrayWriter;
@@ -45,7 +46,6 @@ public class TemplateEngineDefault implements TemplateEngine {
     private TemplateCache<String, List<Template>> layoutPathListCache = new TemplateCacheDefault<String, List<Template>>();
     private TemplateCache<String, Macro> macroCache = new TemplateCacheDefault<String, Macro>();
     private List<String> macroLibraryList = new ArrayList<String>();
-    private boolean compactMode = false;
 
     public boolean isSafeVariable() {
         return U.isSafeVariable();
@@ -56,11 +56,11 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public boolean isCompactMode() {
-        return compactMode;
+        return TinyTemplateCodeVisitor.strictFormat;
     }
 
     public void setCompactMode(boolean compactMode) {
-        this.compactMode = compactMode;
+        TinyTemplateCodeVisitor.strictFormat=compactMode;
     }
 
     public boolean isCacheEnabled() {
@@ -106,7 +106,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public TemplateEngine setI18nVistor(I18nVisitor i18nVistor) {
+    public TemplateEngine setI18nVisitor(I18nVisitor i18nVistor) {
         this.i18nVisitor = i18nVistor;
         return this;
     }
@@ -204,7 +204,7 @@ public class TemplateEngineDefault implements TemplateEngine {
             Template template = findTemplate(path);
             if (template != null) {
                 context.put("$templateContext", context);
-                context.put("$compactMode", compactMode);
+                context.put("$compactMode", TinyTemplateCodeVisitor.strictFormat);
                 List<Template> layoutPaths = getLayoutList(template.getPath());
                 if (layoutPaths.size() > 0) {
                     Writer templateWriter = new CharArrayWriter();

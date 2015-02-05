@@ -63,7 +63,7 @@ public interface TemplateEngine extends TemplateContextOperator {
      *
      * @param i18nVistor
      */
-    TemplateEngine setI18nVistor(I18nVisitor i18nVistor);
+    TemplateEngine setI18nVisitor(I18nVisitor i18nVistor);
 
     /**
      * 返回国际化访问接口实现类

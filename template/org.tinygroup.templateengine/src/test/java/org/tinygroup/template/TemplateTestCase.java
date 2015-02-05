@@ -52,7 +52,7 @@ public class TemplateTestCase {
     public static void main(String[] args) throws TemplateException {
         final TemplateEngine engine = new TemplateEngineDefault();
         engine.addTemplateFunction(new StringBoldFunction());
-        engine.setI18nVistor(new I18nvi());
+        engine.setI18nVisitor(new I18nvi());
         StringResourceLoader resourceLoader = new StringResourceLoader();
         engine.addResourceLoader(resourceLoader);
         Template template = resourceLoader.createTemplate("${getResourceContent()}");
