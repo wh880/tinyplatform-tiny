@@ -348,7 +348,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         String text = token.getText();
         switch (token.getType()) {
             case TinyTemplateParser.TEXT_PLAIN:
-                text = text.trim();
+                //text = text.trim();
                 break;
             case TinyTemplateParser.TEXT_CDATA:
                 text = text.substring(3, text.length() - 3);
