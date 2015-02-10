@@ -22,9 +22,11 @@ package org.tinygroup.template.parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.antlr.v4.runtime.misc.Nullable;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.tinygroup.template.loader.ResourceCompilerUtils;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.parser.grammer.TinyTemplateParserVisitor;
@@ -34,6 +36,7 @@ import java.util.Stack;
 
 // Visitor 模式访问器，用来生成 Java 代码
 public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> implements TinyTemplateParserVisitor<CodeBlock> {
+    private static final String[] RESERVED_WORDS = {"set", "if","elseif","for","foreach","break","continue","stop","include","call","layout","macro","b","eol","t","bodyContent","import"};
     private TinyTemplateParser parser = null;
     private Stack<CodeBlock> codeBlocks = new Stack<CodeBlock>();
     private Stack<CodeLet> codeLets = new Stack<CodeLet>();
@@ -173,6 +176,15 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     public CodeBlock visitMacro_directive(@NotNull TinyTemplateParser.Macro_directiveContext ctx) {
         String name = ctx.getChild(0).getText();
         name = name.substring(6, name.length() - 1).trim();
+        //这里进行保留字检查
+        boolean isReserve=false;
+        for(String word :RESERVED_WORDS){
+            if(name.equals(word)){
+                TerminalNodeImpl terminalNode = (TerminalNodeImpl) ctx.getChild(0);
+                parser.getErrorListenerDispatch().syntaxError(parser, terminalNode.getSymbol(), terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStopIndex() , "Macro name<"+name+"> is reserve word.", null);
+            }
+        }
+
         name = ResourceCompilerUtils.getClassNameGetter().getClassName(name).getSimpleClassName();
         initCodeBlock.subCode(new CodeLet().lineCode("addMacro(new %s());", name));
         CodeBlock macro = new CodeBlock();
@@ -495,7 +507,11 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         String name = ctx.getChild(0).getText();
         name = name.substring(1, name.length());
         if (name.endsWith("(")) {
-            name = name.substring(0, name.length() - 1);
+            name = name.substring(0, name.length() - 1).trim();
+        }
+        if (name.equals("macro")) {
+            TerminalNodeImpl terminalNode = (TerminalNodeImpl) ctx.getChild(0);
+            parser.getErrorListenerDispatch().syntaxError(parser, terminalNode.getSymbol(), terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStopIndex() - 1, "Missing macro name for #macro directive.", null);
         }
         processCallMacro(ctx.para_expression_list(), callMacro, "\"" + name + "\"");
         callMacro.subCode(String.format("$macro.render($template,$context,$newContext,$writer);"));
