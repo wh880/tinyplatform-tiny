@@ -33,6 +33,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.tinygroup.commons.tools.ArrayUtil;
+import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -275,7 +276,7 @@ public class DBSpringBaseOperator implements TransactionOperator {
 			List<Object> parameters) throws TinyDbException {
 		String tempSql = sql;
 		tempSql = getLimitString(sql, start, limit);
-		Object[] params = checkNullParamList(parameters);
+		Object[] params = deleteNullParamList(parameters);
 		try {
 			operatorDebugLog(tempSql, params);
 			List<Bean> beans = (List<Bean>) jdbcTemplate.query(tempSql, params,
@@ -293,7 +294,7 @@ public class DBSpringBaseOperator implements TransactionOperator {
 	protected List<Bean> findBeansByListForCursorPage(String sql,
 			String beanType, String schema, int start, int limit,
 			List<Object> parameters) throws TinyDbException {
-		Object[] params = checkNullParamList(parameters);
+		Object[] params = deleteNullParamList(parameters);
 		try {
 			operatorDebugLog(sql, params);
 			List<Bean> beans = (List<Bean>) jdbcTemplate.query(sql, params,
@@ -723,6 +724,20 @@ public class DBSpringBaseOperator implements TransactionOperator {
 			parameters=new ArrayList<Object>();
 		}
 		Object[] params=parameters.toArray();
+		return params;
+	}
+	
+	//不保留空元素
+	protected Object[] deleteNullParamList(List<Object> parameters) {
+		ArrayList<Object> list=new ArrayList<Object>();
+		if(parameters!=null){
+		   for(Object o:parameters){	
+			 if(!ObjectUtil.isEmptyObject(o)){
+				list.add(o);
+			 }
+		   }
+		}
+		Object[] params=list.toArray();
 		return params;
 	}
 
