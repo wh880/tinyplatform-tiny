@@ -22,7 +22,7 @@ public class TestAnnotationCaseService extends TestCase{
 		assertEquals(true, user2.isMale());
 		
 		ServiceTestUtil.execute("annotationUserObject", context);
-		user2 = context.get("user2");
+		user2 = context.get("result");
 		assertEquals(11, user2.getAge());
 		assertEquals("username",user2.getName());
 		assertEquals(true, user2.isMale());
