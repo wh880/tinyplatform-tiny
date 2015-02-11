@@ -16,7 +16,7 @@ public class TestAnnotationCaseService extends TestCase{
 		context.put("user.age", 11);
 		context.put("user.male", true);
 		ServiceTestUtil.execute("annotationUserObject", context);
-		ServiceUser user2 = context.get("user2");
+		ServiceUser user2 = context.get("result");
 		assertEquals(11, user2.getAge());
 		assertEquals("username",user2.getName());
 		assertEquals(true, user2.isMale());
@@ -41,7 +41,7 @@ public class TestAnnotationCaseService extends TestCase{
 		context.put("users.male", new String[]{"true","false"});
 		
 		ServiceTestUtil.execute("annotationUserList", context);
-		List<ServiceUser> users = context.get("userList");
+		List<ServiceUser> users = context.get("result");
 		
 		assertEquals(3, users.size());
 		
@@ -68,7 +68,7 @@ public class TestAnnotationCaseService extends TestCase{
 		context.put("users.male", new String[]{"true","false"});
 		
 		ServiceTestUtil.execute("annotationUserArray", context);
-		ServiceUser[] users = context.get("userArray");
+		ServiceUser[] users = context.get("result");
 		
 		assertEquals(2, users.length);
 		
