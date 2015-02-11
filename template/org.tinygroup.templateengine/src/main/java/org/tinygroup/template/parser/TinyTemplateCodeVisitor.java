@@ -22,9 +22,11 @@ package org.tinygroup.template.parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.antlr.v4.runtime.misc.Nullable;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.tinygroup.template.loader.ResourceCompilerUtils;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.parser.grammer.TinyTemplateParserVisitor;
@@ -34,6 +36,7 @@ import java.util.Stack;
 
 // Visitor 模式访问器，用来生成 Java 代码
 public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> implements TinyTemplateParserVisitor<CodeBlock> {
+    private static final String[] RESERVED_WORDS = {"set", "if","elseif","for","foreach","break","continue","stop","include","call","layout","macro","b","eol","t","bodyContent","import"};
     private TinyTemplateParser parser = null;
     private Stack<CodeBlock> codeBlocks = new Stack<CodeBlock>();
     private Stack<CodeLet> codeLets = new Stack<CodeLet>();
@@ -66,7 +69,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
     public CodeBlock visitInvalid_directive(@NotNull TinyTemplateParser.Invalid_directiveContext ctx) {
-        throw reportError("Missing arguments for " + ctx.getText() + " directive.",ctx.getStart().getLine(),ctx.getStart().getCharPositionInLine(), ctx);
+        throw reportError("Missing arguments for " + ctx.getText() + " directive.", ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), ctx);
     }
 
 
@@ -86,7 +89,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(%s,$template,$context);", name));
         callMacro.subCode("$newContext=new TemplateContextDefault();");
         callMacro.subCode("$paraList=new ArrayList();");
-        callMacro.subCode("$newContext.put("+name+"+\"ParameterList\",$paraList);");
+        callMacro.subCode("$newContext.put(" + name + "+\"ParameterList\",$paraList);");
         callMacro.subCode("$newContext.setParent($context);");
         if (paraExpressionListContext != null) {
             List<TinyTemplateParser.Para_expressionContext> expList = paraExpressionListContext.para_expression();
@@ -94,7 +97,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
                 pushCodeBlock(callMacro);
                 int i = 0;
                 for (TinyTemplateParser.Para_expressionContext visitParaExpression : expList) {
-                    processVisitPara(i, visitParaExpression,name);
+                    processVisitPara(i, visitParaExpression, name);
                     i++;
                 }
                 popCodeBlock();
@@ -173,6 +176,15 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     public CodeBlock visitMacro_directive(@NotNull TinyTemplateParser.Macro_directiveContext ctx) {
         String name = ctx.getChild(0).getText();
         name = name.substring(6, name.length() - 1).trim();
+        //这里进行保留字检查
+        boolean isReserve=false;
+        for(String word :RESERVED_WORDS){
+            if(name.equals(word)){
+                TerminalNodeImpl terminalNode = (TerminalNodeImpl) ctx.getChild(0);
+                parser.getErrorListenerDispatch().syntaxError(parser, terminalNode.getSymbol(), terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStopIndex() , "Macro name<"+name+"> is reserve word.", null);
+            }
+        }
+
         name = ResourceCompilerUtils.getClassNameGetter().getClassName(name).getSimpleClassName();
         initCodeBlock.subCode(new CodeLet().lineCode("addMacro(new %s());", name));
         CodeBlock macro = new CodeBlock();
@@ -348,9 +360,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         String text = token.getText();
         switch (token.getType()) {
             case TinyTemplateParser.TEXT_PLAIN:
-                if (strictFormat) {
-                    text = text.trim();
-                }
+                if (strictFormat) text = text.trim();
                 break;
             case TinyTemplateParser.TEXT_CDATA:
                 text = text.substring(3, text.length() - 3);
@@ -497,9 +507,13 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         String name = ctx.getChild(0).getText();
         name = name.substring(1, name.length());
         if (name.endsWith("(")) {
-            name = name.substring(0, name.length() - 1);
+            name = name.substring(0, name.length() - 1).trim();
         }
-        processCallMacro(ctx.para_expression_list(), callMacro, "\""+name+"\"");
+        if (name.equals("macro")) {
+            TerminalNodeImpl terminalNode = (TerminalNodeImpl) ctx.getChild(0);
+            parser.getErrorListenerDispatch().syntaxError(parser, terminalNode.getSymbol(), terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStopIndex() - 1, "Missing macro name for #macro directive.", null);
+        }
+        processCallMacro(ctx.para_expression_list(), callMacro, "\"" + name + "\"");
         callMacro.subCode(String.format("$macro.render($template,$context,$newContext,$writer);"));
         return callMacro;
     }
@@ -518,7 +532,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         CodeBlock callMacro = new CodeBlock();
         String name = ctx.getChild(0).getText();
         name = name.substring(2, name.length() - 1).trim();
-        processCallMacro(ctx.para_expression_list(), callMacro,"\""+ name+"\"");
+        processCallMacro(ctx.para_expression_list(), callMacro, "\"" + name + "\"");
         CodeBlock bodyContentMacro = new CodeBlock();
         //callMacro.subCode("$bodyMacro= (Macro) $context.getItemMap().get(\"bodyContent\");");
         //callMacro.subCode("if($bodyMacro==null){");
@@ -544,21 +558,21 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(%s,$template,$context);", name));
         callMacro.subCode("$newContext=new TemplateContextDefault();");
         callMacro.subCode("$paraList=new ArrayList();");
-        callMacro.subCode("$newContext.put("+name+"+\"ParameterList\",$paraList);");
+        callMacro.subCode("$newContext.put(" + name + "+\"ParameterList\",$paraList);");
         callMacro.subCode("$newContext.setParent($context);");
         TinyTemplateParser.Para_expression_listContext expList = listContext;
         if (expList != null) {
             pushCodeBlock(callMacro);
             int i = 0;
             for (TinyTemplateParser.Para_expressionContext paraExpressionContext : expList.para_expression()) {
-                processVisitPara(i, paraExpressionContext,name);
+                processVisitPara(i, paraExpressionContext, name);
                 i++;
             }
             popCodeBlock();
         }
     }
 
-    private void processVisitPara(int i, TinyTemplateParser.Para_expressionContext visitParaExpression,String name) {
+    private void processVisitPara(int i, TinyTemplateParser.Para_expressionContext visitParaExpression, String name) {
         CodeLet expression = new CodeLet();
         pushCodeLet(expression);
         if (visitParaExpression.getChildCount() == 3) {
@@ -569,7 +583,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             visitParaExpression.getChild(0).accept(this);
             peekCodeBlock().subCode(String.format("$newContext.put($macro.getParameterName(%d),%s);", i, expression));
         }
-        peekCodeBlock().subCode(String.format("((List)$newContext.get("+name+"+\"ParameterList\")).add(%s);",expression));
+        peekCodeBlock().subCode(String.format("((List)$newContext.get(" + name + "+\"ParameterList\")).add(%s);", expression));
         popCodeLet();
     }
 
@@ -709,7 +723,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
 
-    
     public CodeBlock visitImport_directive(@NotNull TinyTemplateParser.Import_directiveContext ctx) {
         pushCodeBlock(initCodeBlock);
         pushCodeLet();
@@ -794,7 +807,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         return positionCodeBlock;
     }
 
-    
+
     public CodeBlock visitExpr_single_left(@NotNull TinyTemplateParser.Expr_single_leftContext ctx) {
         peekCodeLet().code("O.ce($context,\"l").code(ctx.getChild(0).getText()).code("\",").code("\"" + ctx.getChild(1).getText() + "\",");
         ctx.expression().accept(this);
@@ -821,7 +834,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
 
-    private RuntimeException reportError(String message,int col, int rol, Object node) {
+    private RuntimeException reportError(String message, int col, int rol, Object node) {
         if (node instanceof ParserRuleContext) {
             parser.notifyErrorListeners(((ParserRuleContext) node).getStart(), message, null);
         } else if (node instanceof TerminalNode) {
@@ -829,7 +842,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         } else if (node instanceof Token) {
             parser.notifyErrorListeners((Token) node, message, null);
         }
-        return new SyntaxErrorException(message,col,rol);
+        return new SyntaxErrorException(message, col, rol);
     }
 
     public CodeBlock visitFor_expression(@NotNull TinyTemplateParser.For_expressionContext ctx) {

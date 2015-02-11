@@ -35,7 +35,7 @@ import org.tinygroup.xmlparser.parser.XmlStringParser;
 
 /**
  * 应用配置工具类，用于把父对象中的配置参数应用到子对象中。
- * 
+ *
  * @author luoguo
  */
 public final class ConfigurationUtil {
@@ -50,7 +50,7 @@ public final class ConfigurationUtil {
 
 	/**
 	 * 获取属性值，应用配置的优先级更高
-	 * 
+	 *
 	 * @param applicationNode
 	 * @param componentNode
 	 * @param attributeName
@@ -72,7 +72,7 @@ public final class ConfigurationUtil {
 	/**
 	 * 获取属性值，应用配置的优先级更高。<br>
 	 * 如果读取的结果为Null或为""，则返回默认值
-	 * 
+	 *
 	 * @param applicationNode
 	 * @param componentNode
 	 * @param attributeName
@@ -105,7 +105,7 @@ public final class ConfigurationUtil {
 
 	/**
 	 * 根据关键属性进行子节点合并
-	 * 
+	 *
 	 * @param applicationNode
 	 * @param componentNode
 	 * @param keyPropertyName
@@ -151,9 +151,11 @@ public final class ConfigurationUtil {
 			}
 		}
 		for (String key : compConfigMap.keySet()) {
-			XmlNode appNode = compConfigMap.get(key);
+		    //判断是否配置了应用级别的信息
+			XmlNode appNode = appConfigMap.get(key);
+			//未配置应用级别的信息，使用默认的组件级别信息
 			if (appNode == null) {
-				result.add(appNode);
+				result.add(compConfigMap.get(key));
 			}
 		}
 		return result;
@@ -161,7 +163,7 @@ public final class ConfigurationUtil {
 
 	/**
 	 * 合并单个节点
-	 * 
+	 *
 	 * @param applicationNode
 	 * @param componentNode
 	 * @return
@@ -208,7 +210,7 @@ public final class ConfigurationUtil {
 
 	/**
 	 * 简单合并
-	 * 
+	 *
 	 * @param applicationNode
 	 * @param componentNode
 	 * @return
@@ -232,7 +234,7 @@ public final class ConfigurationUtil {
 
 	/**
 	 * 简单合并
-	 * 
+	 *
 	 * @param nodeName
 	 * @param applicationNode
 	 * @param componentNode
@@ -258,7 +260,7 @@ public final class ConfigurationUtil {
 
 	/**
 	 * 简单合并
-	 * 
+	 *
 	 * @param nodeName
 	 * @param applicationNode
 	 * @param componentNode
@@ -331,7 +333,7 @@ public final class ConfigurationUtil {
 		applicationConfig = new XmlStringParser().parse(config).getRoot();// 再次解析，出来最终结果
 		return applicationConfig;
 	}
-	
+
 	 private static String replaceProperty(String config,Map<String, String> applicationPropertiesMap) {
 	        if (applicationPropertiesMap.size() > 0) {
 	            for (String name : applicationPropertiesMap.keySet()) {

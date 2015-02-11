@@ -37,7 +37,7 @@ public class UIComponentManagerImpl implements UIComponentManager {
         return uiComponentList;
     }
 
-    public List<UIComponent> getHealthUiComponents() {
+    public synchronized List<UIComponent> getHealthUiComponents() {
         for (UIComponent component : uiComponentList) {
             this.isHealth(component.getName());
         }

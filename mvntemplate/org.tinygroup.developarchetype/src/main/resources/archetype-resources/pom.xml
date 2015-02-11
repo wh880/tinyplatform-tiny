@@ -195,6 +195,7 @@
         <module>dao-impl</module>
         <module>service-interface</module>
         <module>service-impl</module>
+        <module>service-wrapper</module>
         <module>view</module>
         <module>view-uicomponent</module>
         <module>web</module>

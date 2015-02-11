@@ -31,17 +31,12 @@ import org.tinygroup.validate.config.Validators;
  */
 public class ValidatorMapStorageImpl implements ValidatorMapStorage {
 
-	private Map<String, Validator> validateMap = new HashMap<String, Validator>();
+	private Map<String, org.tinygroup.validate.config.Validator> validateMap = new HashMap<String, org.tinygroup.validate.config.Validator>();
 
 	public void addValidators(Validators validators) {
-
 		for (org.tinygroup.validate.config.Validator validator : validators
 				.getValidatorList()) {
-			validateMap.put(
-					validator.getAnnotaionClassName(),
-					(Validator) BeanContainerFactory.getBeanContainer(
-							this.getClass().getClassLoader()).getBean(
-							validator.getValidatorClassName()));
+			validateMap.put(validator.getAnnotaionClassName(),validator);
 		}
 	}
 
@@ -53,7 +48,10 @@ public class ValidatorMapStorageImpl implements ValidatorMapStorage {
 	}
 
 	public Validator getValidator(String mapName) {
-		return validateMap.get(mapName);
+		org.tinygroup.validate.config.Validator validator = validateMap.get(mapName);
+		return validator==null?null:(Validator) BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+						validator.getValidatorClassName());
 	}
 
 }

@@ -16,6 +16,7 @@
 package org.tinygroup.template.rumtime.operator;
 
 import org.tinygroup.template.TemplateException;
+import org.tinygroup.template.rumtime.U;
 
 /**
  * Created by luoguo on 2014/6/8.
@@ -29,10 +30,7 @@ public class LeftLiteralOperator extends SingleOperator {
 
 
     protected Object operation(Object var) throws TemplateException {
-        if (isType(var, Boolean.class)) {
-            return !(Boolean) var;
-        }
-        throw getUnsupportedOperationException(var);
+        return !U.b(var);
     }
 
 }

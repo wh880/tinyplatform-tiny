@@ -16,7 +16,6 @@
 package org.tinygroup.template.rumtime;
 
 import org.apache.commons.beanutils.*;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Enumerator;
@@ -286,7 +285,7 @@ public final class U {
         if (object == null) {
             return null;
         }
-        return StringUtils.replaceEach(object.toString(), new String[]{"&", "\"", "<", ">","\n"}, new String[]{"&amp;", "&quot;", "&lt;", "&gt;","<br />"});
+        return StringUtils.replaceEach(object.toString(), new String[]{"&", "\"", "<", ">"}, new String[]{"&amp;", "&quot;", "&lt;", "&gt;"});
 
     }
 

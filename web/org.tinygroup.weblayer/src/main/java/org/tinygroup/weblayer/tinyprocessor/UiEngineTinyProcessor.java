@@ -235,15 +235,17 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
     private long getCssLastModifiedSign() {
         long time = 0;
         for (UIComponent component : uiComponentManager.getHealthUiComponents()) {
-            String[] paths = uiComponentManager.getComponentCssArray(component);
-            if (paths != null) {
-                for (String path : paths) {
-                    FileObject fileObject = fullContextFileRepository.getFileObject(path);
-                    if (fileObject != null && fileObject.isExist()) {
-                        time += fileObject.getLastModifiedTime();
-                        time += path.hashCode();
-                    } else {
-                        throw new RuntimeException("不能找到资源文件：" + component.getName() + "-" + path);
+            if (component != null) {
+                String[] paths = uiComponentManager.getComponentCssArray(component);
+                if (paths != null) {
+                    for (String path : paths) {
+                        FileObject fileObject = fullContextFileRepository.getFileObject(path);
+                        if (fileObject != null && fileObject.isExist()) {
+                            time += fileObject.getLastModifiedTime();
+                            time += path.hashCode();
+                        } else {
+                            throw new RuntimeException("不能找到资源文件：" + component.getName() + "-" + path);
+                        }
                     }
                 }
             }
