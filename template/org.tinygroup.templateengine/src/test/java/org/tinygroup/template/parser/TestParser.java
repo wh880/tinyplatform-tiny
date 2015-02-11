@@ -18,6 +18,7 @@ package org.tinygroup.template.parser;
 import junit.framework.TestCase;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.junit.internal.runners.statements.Fail;
 import org.tinygroup.template.parser.grammer.TinyTemplateLexer;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
@@ -78,6 +79,23 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("if($context.exist(\"$aaa\")){") > 0);
 
     }
+    public void testMissMacro() throws Exception {
+        try {
+            String result = execute("\n#macro  (aaa)#end");
+            fail();
+        }catch(Exception e){
+
+        }
+    }
+    public void testReserveWordMacro() throws Exception {
+        try {
+            String result = execute("\n#macro  import(aaa)#end");
+            fail();
+        }catch(Exception e){
+
+        }
+    }
+
     public void testImport() throws Exception {
         String result = execute("#import(\"aa/bb/cc/dd\");");
         System.out.println(result);

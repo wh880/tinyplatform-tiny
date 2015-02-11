@@ -31,7 +31,6 @@ I18N_OPEN              : '$${'                            -> pushMode(INSIDE) ;
 VALUE_OPEN              : '${'                            -> pushMode(INSIDE) ;
 VALUE_ESCAPED_OPEN      : '$!{'                           -> pushMode(INSIDE) ;
 
-//DIRECTIVE_OPEN_DEFINE   : '#define'   ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_SET      : ('#set'|'#!set' )     ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_IF       : '#if'       ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_ELSEIF   : '#elseif'   ARGUMENT_START      -> pushMode(INSIDE) ;
@@ -51,9 +50,7 @@ DIRECTIVE_OPEN_LAYOUT   : '#layout' ARGUMENT_START -> pushMode(INSIDE) ;
 fragment ID             : [_a-zA-Z$][_a-zA-Z$0-9]*        ;
 fragment ARGUMENT_START : [ \t]* '('                      ;
 
-//DIRECTIVE_DEFINE        : '#define'                       ;
 DIRECTIVE_SET           : '#set'|'#!set'                          ;
-//DIRECTIVE_PUT           : '#put'                          ;
 DIRECTIVE_IF            : '#if'                           ;
 DIRECTIVE_ELSEIF        : '#elseif'                       ;
 DIRECTIVE_FOR           : '#for'                          ;
