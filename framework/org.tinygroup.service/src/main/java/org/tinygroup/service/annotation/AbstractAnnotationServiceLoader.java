@@ -398,9 +398,13 @@ public abstract class AbstractAnnotationServiceLoader implements
 					throw new ServiceLoadException("服务参数类型:<"
 							+ parameterType.getName() + ">必须实现Serializable接口");
 				}
-				descriptor.setType(parameterType.getName());
+				if(parameterType.isArray()){
+					descriptor.setType(parameterType.getComponentType().getName());
+					descriptor.setArray(true);
+				}else{
+					descriptor.setType(parameterType.getName());
+				}
 			}
-			descriptor.setArray(parameterType.isArray());
 			if (annotation != null) {
 				String name = getAnnotationStringValue(annotation,
 						ServiceParameter.class, "name");
