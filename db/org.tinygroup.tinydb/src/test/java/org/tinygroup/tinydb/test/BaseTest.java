@@ -29,6 +29,7 @@ import org.tinygroup.tinydb.ConfigurationBuilder;
 import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.DbOperatorFactoryBuilder;
 import org.tinygroup.tinydb.operator.DBOperator;
+import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.tinytestutil.script.ScriptRunner;
 
 public abstract class BaseTest extends TestCase {
@@ -46,6 +47,7 @@ public abstract class BaseTest extends TestCase {
 
 	
 	public void setUp() {
+		AbstractTestUtil.init(null, true);
 		if (!hasExcuted) {
 			initTable();
 			initFactory();
