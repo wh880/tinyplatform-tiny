@@ -84,7 +84,7 @@ public class TestParser extends TestCase {
             String result = execute("\n#macro  (aaa)#end");
             fail();
         }catch(Exception e){
-
+            e.printStackTrace();
         }
     }
     public void testReserveWordMacro() throws Exception {
@@ -92,7 +92,7 @@ public class TestParser extends TestCase {
             String result = execute("\n#macro  import(aaa)#end");
             fail();
         }catch(Exception e){
-
+            e.printStackTrace();
         }
     }
 
