@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.dialect.Dialect;

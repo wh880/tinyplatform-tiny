@@ -50,7 +50,7 @@
     </component>
     <component name="tinydbQueryServiceWithId" bean="tinydbQueryServiceWithId"
                title="单记录查询组件" category="数据库" icon="">
-        <short-description>调用tinydb的更新方法来完成修改服务</short-description>
+        <short-description>调用tinydb的主键查询方法来完成查询服务</short-description>
         <long-description>
             beanType：类似数据库表名
             schema:数据库模式 

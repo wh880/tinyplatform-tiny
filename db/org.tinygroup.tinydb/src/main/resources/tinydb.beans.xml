@@ -11,4 +11,7 @@
 	<bean id="beanOperatorManager"  scope="singleton"
 		class="org.tinygroup.tinydb.impl.BeanOperatorManagerImpl">
 	</bean>
+	<bean id="beanStringOperator"  scope="prototype"
+		class="org.tinygroup.tinydb.operator.impl.BeanStringOperator">
+	</bean>
 </beans>

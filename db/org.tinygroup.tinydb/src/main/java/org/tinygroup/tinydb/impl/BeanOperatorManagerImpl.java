@@ -61,7 +61,9 @@ public class BeanOperatorManagerImpl implements BeanOperatorManager,Initializing
 	public DBOperator<?> getDbOperator(String schema) throws TinyDbException {
 		String realSchema = getRealSchema(schema);
 		try {
-			DBOperator operator = (DBOperator) Class.forName(configuration.getOperatorType()).newInstance();
+			//DBOperator operator = (DBOperator) Class.forName(configuration.getOperatorType()).newInstance();
+			Class<?> clazz = Class.forName(configuration.getOperatorType());
+			DBOperator operator = (DBOperator) BeanContainerFactory.getBeanContainer(clazz.getClassLoader()).getBean(clazz);
 			JdbcTemplate jdbcTemplate=configuration.getJdbcTemplate();
 			if(jdbcTemplate==null){
 				jdbcTemplate=new JdbcTemplate(configuration.getUseDataSource());

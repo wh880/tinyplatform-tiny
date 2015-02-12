@@ -23,6 +23,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.SqlParameterValue;
+import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
@@ -203,7 +204,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 			StringBuffer sb = new StringBuffer();
 			String field = getUpdateFieldSegment(table, bean, conditionColumns);
 			// 条件字段计算
-			String condition = getConditionSql(conditionColumns);
+			String condition = getConditionSql(conditionColumns,bean);
 			sb.append("update ").append(getTableName(table)).append(" set ")
 					.append(field.substring(1));
 			if(condition!=null&&condition.length()>0){
@@ -220,7 +221,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 			StringBuffer sb = new StringBuffer(" select * from ");
 			sb.append(getFullTableName(bean.getType()));
 			List<String> conditionColumns = getColumnNames(bean);
-			String condition=getConditionSql(conditionColumns);
+			String condition=getConditionSql(conditionColumns,bean);
 			if(condition!=null&&condition.length()>0){
 				sb.append(" where ").append(condition);
 			}
@@ -231,18 +232,25 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 
 	}
 
-	private String getConditionSql(List<String> conditionColumns) {
+	private String getConditionSql(List<String> conditionColumns,Bean bean) {
 		StringBuffer condition = new StringBuffer();
-		boolean first = true;
 		for (String columnName : conditionColumns) {
-			if (first) {
-				first = false;
-			} else {
-				condition.append(" and ");
+			if(bean==null || !checkBeanPropertyNull(bean,columnName)){
+				//不判断参数是否为空
+				if(condition.length()>0){
+					condition.append(" and ");
+				}
+				condition.append(columnName).append("=?");
 			}
-			condition.append(columnName).append("=?");
 		}
 		return condition.toString();
+	}
+	
+	//判断bean的某个属性是否为空对象
+	private boolean checkBeanPropertyNull(Bean bean,String columnName){
+		String propertyName = beanDbNameConverter.dbFieldNameToPropertyName(columnName);
+		Object value = bean.getProperty(propertyName);
+		return ObjectUtil.isEmptyObject(value);
 	}
 
 	private String getUpdateFieldSegment(TableConfiguration table, Bean bean,
@@ -467,7 +475,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		}
 		StringBuffer sb = new StringBuffer();
 		sb.append("delete from ").append(getFullTableName(beanType));
-		String condition=getConditionSql(conditionColumns);
+		String condition=getConditionSql(conditionColumns,null);
 		if(condition!=null&&condition.length()>0){
 			sb.append(" where ").append(condition);
 		}
