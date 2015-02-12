@@ -181,7 +181,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         for(String word :RESERVED_WORDS){
             if(name.equals(word)){
                 TerminalNodeImpl terminalNode = (TerminalNodeImpl) ctx.getChild(0);
-                parser.getErrorListenerDispatch().syntaxError(parser, terminalNode.getSymbol(), terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStopIndex() , "Macro name<"+name+"> is reserve word.", null);
+                throw new SyntaxErrorException("Missing macro name for #macro directive." ,  terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStartIndex());
             }
         }
 
@@ -511,7 +511,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         }
         if (name.equals("macro")) {
             TerminalNodeImpl terminalNode = (TerminalNodeImpl) ctx.getChild(0);
-            parser.getErrorListenerDispatch().syntaxError(parser, terminalNode.getSymbol(), terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStopIndex() - 1, "Missing macro name for #macro directive.", null);
+            throw new SyntaxErrorException("Missing macro name for #macro directive." ,  terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStartIndex());
         }
         processCallMacro(ctx.para_expression_list(), callMacro, "\"" + name + "\"");
         callMacro.subCode(String.format("$macro.render($template,$context,$newContext,$writer);"));
