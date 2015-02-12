@@ -97,7 +97,6 @@ public class FullContextUrlRedirectTinyProcessor extends AbstractTinyProcessor {
 				byte[] buffer = new byte[stream.available()];
 				stream.read(buffer);
 				stream.close();
-				stream.close();
 				outputStream.write(buffer);
 				outputStream.close();
 				logger.logMessage(LogLevel.DEBUG, "{}处理完成。", servletPath);
