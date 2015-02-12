@@ -181,7 +181,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         for(String word :RESERVED_WORDS){
             if(name.equals(word)){
                 TerminalNodeImpl terminalNode = (TerminalNodeImpl) ctx.getChild(0);
-                throw new SyntaxErrorException("Missing macro name for #macro directive." ,  terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStartIndex());
+                throw new SyntaxErrorException("Macro name<"+name+"> is reserved word.",  terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStartIndex());
             }
         }
 
