@@ -150,8 +150,7 @@ public abstract class NodeFormaterImpl<T extends Document<N>, N extends Node<N>>
      * @return String
      */
     public String format(T doc) {
-        StringBuffer sb = new StringBuffer();
-        formatDocumentSelf(doc);
+        StringBuffer sb = formatDocumentSelf(doc);
         formatNode(sb, doc.getRoot(), 0);
         return sb.toString();
     }
