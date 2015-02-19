@@ -41,6 +41,11 @@ public class XmlFormater extends NodeFormaterImpl<XmlDocument, XmlNode> {
 				formatNode(sb, n, 0);
 			}
 		}
+        if (doc.getProcessingInstructionList() != null) {
+            for (XmlNode n : doc.getProcessingInstructionList()) {
+                formatNode(sb, n, 0);
+            }
+        }
 		if (doc.getCommentList() != null) {
 			for (XmlNode n : doc.getCommentList()) {
 				formatNode(sb, n, 0);
