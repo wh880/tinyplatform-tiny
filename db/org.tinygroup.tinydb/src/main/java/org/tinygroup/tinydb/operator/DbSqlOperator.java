@@ -15,11 +15,12 @@
  */
 package org.tinygroup.tinydb.operator;
 
-import org.tinygroup.tinydb.Bean;
-import org.tinygroup.tinydb.exception.TinyDbException;
-
 import java.util.List;
 import java.util.Map;
+
+import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.Pager;
+import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
  * DB相关的批量操作
@@ -96,4 +97,13 @@ public interface DbSqlOperator<K> {
     int account(String sql, List<Object> parameters)throws TinyDbException;
 
     int account(String sql, Map<String, Object> parameters)throws TinyDbException;
+    
+    //返回分页结果的分页接口
+    Pager getPager(String sql, int start, int limit)throws TinyDbException;
+    
+    Pager getPager(String sql, int start, int limit,Object... parameters)throws TinyDbException;
+    
+    Pager getPager(String sql, int start, int limit,List<Object> parameters)throws TinyDbException;
+    
+    Pager getPager(String sql, int start, int limit,Map<String, Object> parameters)throws TinyDbException;
 }
