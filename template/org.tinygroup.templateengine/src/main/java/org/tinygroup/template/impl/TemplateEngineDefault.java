@@ -273,6 +273,7 @@ public class TemplateEngineDefault implements TemplateEngine {
                     }
                     if (layout != null) {
                         layoutPathList.add(layout);
+                        break;
                     }
                 }
             }
