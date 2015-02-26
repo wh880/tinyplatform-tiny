@@ -22,6 +22,7 @@ import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.Configuration;
+import org.tinygroup.tinydb.Pager;
 import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DbSqlOperator;
@@ -230,4 +231,35 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		return queryForIntByMap(buildSqlFuction(sql), parameters);
 	}
 
+	public Pager getPager(String sql, int start, int limit)
+			throws TinyDbException {
+		int totalCount=account(sql);
+		Bean[] beans=getPageBeans(sql, start, limit);
+		return createPager(totalCount, start, limit, beans);
+	}
+	
+	private Pager createPager(int start, int limit,int totalCount,Bean[] beans){
+		return new Pager(totalCount, start, limit, beans);
+	}
+
+	public Pager getPager(String sql, int start, int limit,
+			Object... parameters) throws TinyDbException {
+		int totalCount=account(sql, parameters);
+		Bean[] beans=getPageBeans(sql, start, limit, parameters);
+		return createPager(totalCount, start, limit, beans);
+	}
+
+	public Pager getPager(String sql, int start, int limit,
+			List<Object> parameters) throws TinyDbException {
+		int totalCount=account(sql, parameters);
+		Bean[] beans=getPageBeans(sql, start, limit, parameters);
+		return createPager(totalCount, start, limit, beans);
+	}
+
+	public Pager getPager(String sql, int start, int limit,
+			Map<String, Object> parameters) throws TinyDbException {
+		int totalCount=account(sql, parameters);
+		Bean[] beans=getPageBeans(sql, start, limit, parameters);
+		return createPager(totalCount, start, limit, beans);
+	}
 }
