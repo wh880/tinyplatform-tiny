@@ -16,10 +16,10 @@
 package org.tinygroup.cepcorenetty;
 
 import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.fileresolver.ChangeLisenter;
+import org.tinygroup.fileresolver.ChangeListener;
 import org.tinygroup.fileresolver.FileResolver;
 
-public class EventProcessorChangeLisenter implements ChangeLisenter{
+public class EventProcessorChangeLisenter implements ChangeListener {
 
 	CEPCore cepcore;
 	

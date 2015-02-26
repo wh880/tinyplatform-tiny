@@ -102,9 +102,9 @@ public interface FileResolver extends Configuration {
 	 */
 	void setFileProcessorThreadNumber(int threadNum);
 
-	void addChangeLisenter(ChangeLisenter lisenter);
+	void addChangeLisenter(ChangeListener lisenter);
 
-	List<ChangeLisenter> getChangeLisenters();
+	List<ChangeListener> getChangeListeners();
 	/**
 	 * 触发 ChangeLisenters
 	 * 
