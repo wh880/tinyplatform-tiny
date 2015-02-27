@@ -21,6 +21,6 @@ package org.tinygroup.fileresolver;
  * @author chenjiao
  * 
  */
-public interface ChangeLisenter {
+public interface ChangeListener {
 	void change(FileResolver resolver);
 }

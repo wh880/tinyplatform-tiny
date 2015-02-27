@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 import org.tinygroup.commons.order.OrderUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
-import org.tinygroup.fileresolver.ChangeLisenter;
+import org.tinygroup.fileresolver.ChangeListener;
 import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverUtil;
@@ -54,7 +54,7 @@ public class FileResolverImpl implements FileResolver {
 	private static Logger logger = LoggerFactory
 			.getLogger(FileResolverImpl.class);
 
-	private List<ChangeLisenter> changeLisenters = new ArrayList<ChangeLisenter>();
+	private List<ChangeListener> changeLisenters = new ArrayList<ChangeListener>();
 
 	// 是否对classPath进行处理，默认为处理
 	private int fileProcessorThreadNum = DEFAULT_THREAD_NUM;
@@ -72,12 +72,12 @@ public class FileResolverImpl implements FileResolver {
 	private XmlNode applicationConfig;
 	private ClassLoader classLoader;
 
-	public List<ChangeLisenter> getChangeLisenters() {
+	public List<ChangeListener> getChangeListeners() {
 		return changeLisenters;
 	}
 
-	public void setChangeLisenters(List<ChangeLisenter> changeLisenters) {
-		this.changeLisenters = changeLisenters;
+	public void setChangeListeners(List<ChangeListener> changeListeners) {
+		this.changeLisenters = changeListeners;
 	}
 
 	public List<String> getScanningPaths() {
@@ -409,12 +409,12 @@ public class FileResolverImpl implements FileResolver {
 		return includePathPatternMap;
 	}
 
-	public void addChangeLisenter(ChangeLisenter lisenter) {
+	public void addChangeLisenter(ChangeListener lisenter) {
 		changeLisenters.add(lisenter);
 	}
 
 	public void change() {
-		for (ChangeLisenter changeLisenter : changeLisenters) {
+		for (ChangeListener changeLisenter : changeLisenters) {
 			changeLisenter.change(this);
 		}
 	}

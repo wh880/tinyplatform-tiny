@@ -45,8 +45,14 @@ public class UIComponentManagerImpl implements UIComponentManager {
     }
 
     public void addUIComponents(UIComponents uiComponents) {
-        uiComponentList.addAll(uiComponents.getComponents());
         for (UIComponent component : uiComponents.getComponents()) {
+            addUiComponent(component);
+        }
+    }
+
+    private void addUiComponent(UIComponent component) {
+        if (uiMap.get(component.getName()) == null) {
+            uiComponentList.add(component);
             uiMap.put(component.getName(), component);
         }
     }

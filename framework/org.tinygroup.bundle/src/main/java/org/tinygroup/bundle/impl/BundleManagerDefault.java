@@ -23,8 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javassist.ClassPool;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.bundle.BundleActivator;
 import org.tinygroup.bundle.BundleContext;
@@ -442,8 +440,8 @@ public class BundleManagerDefault implements BundleManager {
 		for (int i = 0; i < fileResolver.getFileProcessorList().size(); i++) {
 			f.addFileProcessor(fileResolver.getFileProcessorList().get(i));
 		}
-		for (int i = 0; i < fileResolver.getChangeLisenters().size(); i++) {
-			f.addChangeLisenter(fileResolver.getChangeLisenters().get(i));
+		for (int i = 0; i < fileResolver.getChangeListeners().size(); i++) {
+			f.addChangeLisenter(fileResolver.getChangeListeners().get(i));
 		}
 
 		String bundleDir = getBundleDir(bundle);
