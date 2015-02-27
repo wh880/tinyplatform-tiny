@@ -1,10 +1,13 @@
 package org.tinygroup.tinydb;
+
+import java.io.Serializable;
+
 /**
  * 分页对象
  * @author renhui
  *
  */
-public class Pager {
+public class Pager implements Serializable{
 	
 	private Bean[] currentBeans;//当前页的记录
 	
