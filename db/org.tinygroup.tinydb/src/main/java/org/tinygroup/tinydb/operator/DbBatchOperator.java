@@ -59,16 +59,6 @@ public interface DbBatchOperator<K> {
 
 	Bean[] getBeans(Bean bean) throws TinyDbException;
 
-	/**
-	 * 分页查询bean
-	 * 
-	 * @param bean
-	 * @param start
-	 * @param limit
-	 * @return
-	 */
-	Bean[] getBeans(Bean bean, int start, int limit) throws TinyDbException;
-
 	// 下面是根据集合
 	Bean[] batchInsert(Collection<Bean> beans) throws TinyDbException;
 
@@ -121,5 +111,5 @@ public interface DbBatchOperator<K> {
 
 	public int[] executeBatchByMap(String sql,
 			List<Map<String, Object>> parameters) throws TinyDbException;
-
+	
 }

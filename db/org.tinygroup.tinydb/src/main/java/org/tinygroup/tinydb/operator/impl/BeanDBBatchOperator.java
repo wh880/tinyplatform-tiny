@@ -53,16 +53,7 @@ public class BeanDBBatchOperator<K> extends BeanDBSingleOperator<K> implements
 		return relationProcess(bean.getType(), beans);
 	}
 
-	public Bean[] getBeans(Bean bean, int start, int limit)
-			throws TinyDbException {
-		List<Object> params = getConditionParams(bean);
-		String sql = getSelectSql(bean);
-		List<Bean> beans = findBeansByListForPage(sql, bean.getType(),
-				getSchema(), start, limit, params);
-		return relationProcess(bean.getType(), beans);
-	}
-
-	private List<Object> getConditionParams(Bean bean) {
+	protected List<Object> getConditionParams(Bean bean) {
 		TableConfiguration table = manager.getTableConfiguration(
 				bean.getType(), getSchema());
 		List<Object> params = new ArrayList<Object>();
@@ -402,5 +393,4 @@ public class BeanDBBatchOperator<K> extends BeanDBSingleOperator<K> implements
 		}
 		return executeBatchByList(executeSql, paramList);
 	}
-
 }

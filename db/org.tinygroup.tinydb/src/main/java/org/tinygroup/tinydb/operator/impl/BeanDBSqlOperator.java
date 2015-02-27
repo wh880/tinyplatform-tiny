@@ -30,50 +30,52 @@ import org.tinygroup.tinydb.util.TinyDBUtil;
 
 public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		DbSqlOperator<K> {
-	
-	
+
 	public BeanDBSqlOperator() {
 		super();
 	}
 
-	public BeanDBSqlOperator(JdbcTemplate jdbcTemplate,Configuration configuration) {
-		super(jdbcTemplate,configuration);
+	public BeanDBSqlOperator(JdbcTemplate jdbcTemplate,
+			Configuration configuration) {
+		super(jdbcTemplate, configuration);
 	}
 
 	public Bean[] getBeans(String sql) throws TinyDbException {
-			return TinyDBUtil
-					.collectionToArray(queryBean(buildSqlFuction(sql)));
+		return TinyDBUtil.collectionToArray(queryBean(buildSqlFuction(sql)));
 	}
 
-	public Bean[] getBeans(String sql, Map<String, Object> parameters) throws TinyDbException {
-		List<Bean> beans = findBeansByMap(buildSqlFuction(sql), DEFAULT_BEAN_TYPE,
-				getSchema(), parameters, new ArrayList<Integer>());
+	public Bean[] getBeans(String sql, Map<String, Object> parameters)
+			throws TinyDbException {
+		List<Bean> beans = findBeansByMap(buildSqlFuction(sql),
+				DEFAULT_BEAN_TYPE, getSchema(), parameters,
+				new ArrayList<Integer>());
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
-
 	public Bean[] getPageBeans(String sql, int start, int limit,
-			Map<String, Object> parameters)throws TinyDbException {
+			Map<String, Object> parameters) throws TinyDbException {
 		List<Bean> beans = findBeansByMapForPage(buildSqlFuction(sql),
 				DEFAULT_BEAN_TYPE, getSchema(), start, limit, parameters,
 				new ArrayList<Integer>());
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
-	public Bean[] getBeans(String sql, Object... parameters)throws TinyDbException {
+	public Bean[] getBeans(String sql, Object... parameters)
+			throws TinyDbException {
 		List<Bean> beans = findBeans(buildSqlFuction(sql), DEFAULT_BEAN_TYPE,
 				getSchema(), parameters);
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
-	public Bean[] getBeans(String sql, List<Object> parameters) throws TinyDbException{
-		List<Bean> beans = findBeansByList(buildSqlFuction(sql), DEFAULT_BEAN_TYPE,
-				getSchema(), parameters);
+	public Bean[] getBeans(String sql, List<Object> parameters)
+			throws TinyDbException {
+		List<Bean> beans = findBeansByList(buildSqlFuction(sql),
+				DEFAULT_BEAN_TYPE, getSchema(), parameters);
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
 	public Bean[] getPageBeans(String sql, int start, int limit,
-			Object... parameters)throws TinyDbException {
+			Object... parameters) throws TinyDbException {
 		List<Object> params = new ArrayList<Object>();
 		if (parameters != null) {
 			for (Object obj : parameters) {
@@ -85,14 +87,15 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
-	public Bean[] getCursorPageBeans(String sql, int start, int limit) throws TinyDbException{
+	public Bean[] getCursorPageBeans(String sql, int start, int limit)
+			throws TinyDbException {
 		List<Bean> beans = findBeansForCursorPage(buildSqlFuction(sql),
 				DEFAULT_BEAN_TYPE, getSchema(), start, limit);
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
 	public Bean[] getCursorPageBeans(String sql, int start, int limit,
-			Map<String, Object> parameters) throws TinyDbException{
+			Map<String, Object> parameters) throws TinyDbException {
 		List<Bean> beans = findBeansByMapForCursorPage(buildSqlFuction(sql),
 				DEFAULT_BEAN_TYPE, getSchema(), start, limit, parameters,
 				new ArrayList<Integer>());
@@ -100,14 +103,14 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 	}
 
 	public Bean[] getCursorPageBeans(String sql, int start, int limit,
-			List<Object> parameters)throws TinyDbException {
+			List<Object> parameters) throws TinyDbException {
 		List<Bean> beans = findBeansByListForCursorPage(buildSqlFuction(sql),
 				DEFAULT_BEAN_TYPE, getSchema(), start, limit, parameters);
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
 	public Bean[] getCursorPageBeans(String sql, int start, int limit,
-			Object... parameters)throws TinyDbException {
+			Object... parameters) throws TinyDbException {
 		List<Object> params = new ArrayList<Object>();
 		if (parameters != null) {
 			for (Object obj : parameters) {
@@ -119,20 +122,22 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
-	public Bean[] getPageBeans(String sql, int start, int limit) throws TinyDbException {
+	public Bean[] getPageBeans(String sql, int start, int limit)
+			throws TinyDbException {
 		List<Bean> beans = findBeansForPage(buildSqlFuction(sql),
 				DEFAULT_BEAN_TYPE, getSchema(), start, limit);
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
-	public Bean[] getDialectPageBeans(String sql, int start, int limit) throws TinyDbException{
+	public Bean[] getDialectPageBeans(String sql, int start, int limit)
+			throws TinyDbException {
 		List<Bean> beans = findBeansForDialectPage(buildSqlFuction(sql),
 				DEFAULT_BEAN_TYPE, getSchema(), start, limit);
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
 	public Bean[] getDialectPageBeans(String sql, int start, int limit,
-			Object... parameters) throws TinyDbException{
+			Object... parameters) throws TinyDbException {
 		List<Object> params = new ArrayList<Object>();
 		if (parameters != null) {
 			for (Object obj : parameters) {
@@ -145,46 +150,49 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 	}
 
 	public Bean[] getPageBeans(String sql, int start, int limit,
-			List<Object> parameters) throws TinyDbException{
+			List<Object> parameters) throws TinyDbException {
 		List<Bean> beans = findBeansByListForPage(buildSqlFuction(sql),
 				DEFAULT_BEAN_TYPE, getSchema(), start, limit, parameters);
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
 	public Bean[] getDialectPageBeans(String sql, int start, int limit,
-			List<Object> parameters) throws TinyDbException{
+			List<Object> parameters) throws TinyDbException {
 		List<Bean> beans = findBeansByListForDialectPage(buildSqlFuction(sql),
 				DEFAULT_BEAN_TYPE, getSchema(), start, limit, parameters);
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
 	public Bean[] getDialectPageBeans(String sql, int start, int limit,
-			Map<String, Object> parameters)throws TinyDbException {
+			Map<String, Object> parameters) throws TinyDbException {
 		List<Bean> beans = findBeansByMapForDialectPage(buildSqlFuction(sql),
 				DEFAULT_BEAN_TYPE, getSchema(), start, limit, parameters,
 				new ArrayList<Integer>());
 		return TinyDBUtil.collectionToArray(beans);
 	}
 
-	public Bean getSingleValue(String sql)throws TinyDbException {
+	public Bean getSingleValue(String sql) throws TinyDbException {
 		Bean bean = (Bean) queryObject(buildSqlFuction(sql), DEFAULT_BEAN_TYPE,
 				getSchema());
 		return bean;
 	}
 
-	public Bean getSingleValue(String sql, Map<String, Object> parameters) throws TinyDbException{
+	public Bean getSingleValue(String sql, Map<String, Object> parameters)
+			throws TinyDbException {
 		Bean bean = (Bean) queryObjectByMap(buildSqlFuction(sql),
 				DEFAULT_BEAN_TYPE, getSchema(), parameters, null);
 		return bean;
 	}
 
-	public Bean getSingleValue(String sql, Object... parameters) throws TinyDbException{
+	public Bean getSingleValue(String sql, Object... parameters)
+			throws TinyDbException {
 		Bean bean = (Bean) queryObject(buildSqlFuction(sql), DEFAULT_BEAN_TYPE,
 				getSchema(), parameters);
 		return bean;
 	}
 
-	public Bean getSingleValue(String sql, List<Object> parameters)throws TinyDbException {
+	public Bean getSingleValue(String sql, List<Object> parameters)
+			throws TinyDbException {
 		Bean bean = (Bean) queryObject(buildSqlFuction(sql), DEFAULT_BEAN_TYPE,
 				getSchema(), parameters.toArray());
 		return bean;
@@ -197,9 +205,8 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		return beans;
 	}
 
-	
-
-	public int execute(String sql, Map<String, Object> parameters) throws TinyDbException {
+	public int execute(String sql, Map<String, Object> parameters)
+			throws TinyDbException {
 		return executeByMap(buildSqlFuction(sql), parameters, null);
 	}
 
@@ -207,7 +214,8 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		return executeByArray(buildSqlFuction(sql), parameters);
 	}
 
-	public int execute(String sql, List<Object> parameters) throws TinyDbException {
+	public int execute(String sql, List<Object> parameters)
+			throws TinyDbException {
 		return executeByList(buildSqlFuction(sql), parameters, null);
 	}
 
@@ -223,43 +231,63 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 		return queryForInt(buildSqlFuction(sql), parameters);
 	}
 
-	public int account(String sql, List<Object> parameters) throws TinyDbException {
+	public int account(String sql, List<Object> parameters)
+			throws TinyDbException {
 		return queryForIntByList(buildSqlFuction(sql), parameters);
 	}
 
-	public int account(String sql, Map<String, Object> parameters) throws TinyDbException {
+	public int account(String sql, Map<String, Object> parameters)
+			throws TinyDbException {
 		return queryForIntByMap(buildSqlFuction(sql), parameters);
 	}
 
 	public Pager getPager(String sql, int start, int limit)
 			throws TinyDbException {
-		int totalCount=account(sql);
-		Bean[] beans=getPageBeans(sql, start, limit);
+		int totalCount = account(sql);
+		Bean[] beans = getPageBeans(sql, start, limit);
 		return createPager(totalCount, start, limit, beans);
 	}
-	
-	private Pager createPager(int start, int limit,int totalCount,Bean[] beans){
+
+	private Pager createPager(int start, int limit, int totalCount, Bean[] beans) {
 		return new Pager(totalCount, start, limit, beans);
 	}
 
 	public Pager getPager(String sql, int start, int limit,
 			Object... parameters) throws TinyDbException {
-		int totalCount=account(sql, parameters);
-		Bean[] beans=getPageBeans(sql, start, limit, parameters);
+		int totalCount = account(sql, parameters);
+		Bean[] beans = getPageBeans(sql, start, limit, parameters);
 		return createPager(totalCount, start, limit, beans);
 	}
 
 	public Pager getPager(String sql, int start, int limit,
 			List<Object> parameters) throws TinyDbException {
-		int totalCount=account(sql, parameters);
-		Bean[] beans=getPageBeans(sql, start, limit, parameters);
+		int totalCount = account(sql, parameters);
+		Bean[] beans = getPageBeans(sql, start, limit, parameters);
 		return createPager(totalCount, start, limit, beans);
 	}
 
 	public Pager getPager(String sql, int start, int limit,
 			Map<String, Object> parameters) throws TinyDbException {
-		int totalCount=account(sql, parameters);
-		Bean[] beans=getPageBeans(sql, start, limit, parameters);
+		int totalCount = account(sql, parameters);
+		Bean[] beans = getPageBeans(sql, start, limit, parameters);
 		return createPager(totalCount, start, limit, beans);
+	}
+
+	public Bean[] getBeans(Bean bean, int start, int limit)
+			throws TinyDbException {
+		List<Object> params = getConditionParams(bean);
+		String sql = getSelectSql(bean);
+		List<Bean> beans = findBeansByListForPage(sql, bean.getType(),
+				getSchema(), start, limit, params);
+		return relationProcess(bean.getType(), beans);
+	}
+
+	public Pager getPager(Bean bean, int start, int limit)
+			throws TinyDbException {
+		String sql = getSelectSql(bean);
+		List<Object> parameters = getConditionParams(bean);
+		int totalCount = account(sql, parameters);
+		Bean[] beans = getBeans(bean, start, limit);
+		return createPager(start, limit, totalCount, beans);
 	}
 }

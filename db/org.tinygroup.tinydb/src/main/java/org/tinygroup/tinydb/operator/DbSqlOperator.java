@@ -106,4 +106,24 @@ public interface DbSqlOperator<K> {
     Pager getPager(String sql, int start, int limit,List<Object> parameters)throws TinyDbException;
     
     Pager getPager(String sql, int start, int limit,Map<String, Object> parameters)throws TinyDbException;
+    
+    /**
+	 * 分页查询bean
+	 * 
+	 * @param bean
+	 * @param start
+	 * @param limit
+	 * @return
+	 */
+	Bean[] getBeans(Bean bean, int start, int limit) throws TinyDbException;
+    
+    /**
+	 * 分页查询bean
+	 * 
+	 * @param bean
+	 * @param start
+	 * @param limit
+	 * @return
+	 */
+	Pager getPager(Bean bean, int start, int limit) throws TinyDbException;
 }
