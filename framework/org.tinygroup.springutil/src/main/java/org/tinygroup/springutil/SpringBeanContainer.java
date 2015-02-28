@@ -152,7 +152,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 
 		String[] beanNames = applicationContext.getBeanNamesForType(clazz);
 		if (beanNames.length == 1) {
-			return (T) applicationContext.getBean(beanNames[0], clazz);
+			return (T) applicationContext.getBean(beanNames[0]);
 		} else if (beanNames.length == 0 && parent != null) {
 			return parent.getBean(clazz);
 		} else {

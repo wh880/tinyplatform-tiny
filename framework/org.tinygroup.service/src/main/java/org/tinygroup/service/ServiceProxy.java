@@ -19,6 +19,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import org.apache.commons.beanutils.MethodUtils;
 import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.util.Context2ObjectUtil;
@@ -85,6 +86,7 @@ public class ServiceProxy implements Service {
 
 	public void setMethod(Method method) {
 		this.method = method;
+		this.methodName=method.getName();
 	}
 
 	/**
@@ -145,10 +147,10 @@ public class ServiceProxy implements Service {
 			if (outputParameter != null
 					&& !outputParameter.getType().equals("void")
 					&& !outputParameter.getType().equals("")) {
-				Object result = method.invoke(objectInstance, args);
+				Object result =MethodUtils.invokeMethod(objectInstance, methodName, args,method.getParameterTypes());
 				context.put(outputParameter.getName(), result);
 			} else {
-				method.invoke(objectInstance, args);
+				MethodUtils.invokeMethod(objectInstance, methodName, args,method.getParameterTypes());
 			}
 			// } catch (InvocationTargetException e) {
 			// InvocationTargetException realException =
