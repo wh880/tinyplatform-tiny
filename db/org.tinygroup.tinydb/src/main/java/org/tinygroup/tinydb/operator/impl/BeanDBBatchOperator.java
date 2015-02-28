@@ -25,6 +25,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
@@ -61,7 +62,8 @@ public class BeanDBBatchOperator<K> extends BeanDBSingleOperator<K> implements
 			String columnsName = column.getColumnName();
 			String propertyName = getBeanDbNameConverter()
 					.dbFieldNameToPropertyName(columnsName);
-			if (bean.containsKey(propertyName)) {
+			//增加过滤条件
+			if (bean.containsKey(propertyName) && ObjectUtil.isEmptyObject(bean.getProperty(propertyName))) {
 				params.add(bean.get(propertyName));
 			}
 		}
