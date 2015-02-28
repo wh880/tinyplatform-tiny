@@ -63,7 +63,7 @@ public class BeanDBBatchOperator<K> extends BeanDBSingleOperator<K> implements
 			String propertyName = getBeanDbNameConverter()
 					.dbFieldNameToPropertyName(columnsName);
 			//增加过滤条件
-			if (bean.containsKey(propertyName) && ObjectUtil.isEmptyObject(bean.getProperty(propertyName))) {
+			if (bean.containsKey(propertyName) && !ObjectUtil.isEmptyObject(bean.getProperty(propertyName))) {
 				params.add(bean.get(propertyName));
 			}
 		}
