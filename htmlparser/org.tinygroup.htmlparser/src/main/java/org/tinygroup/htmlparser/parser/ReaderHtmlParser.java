@@ -12,7 +12,6 @@ import java.io.Reader;
  * Created by luoguo on 2015/2/28.
  */
 public class ReaderHtmlParser extends HtmlParser<Reader> {
-    @Override
     protected TokenStream getTokenStream(Reader reader) throws IOException {
         ANTLRInputStream is = new ANTLRInputStream(reader);
         return new CommonTokenStream(new HTMLLexer(is));

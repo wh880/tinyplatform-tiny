@@ -166,7 +166,6 @@ public abstract class XmlParser<Source> implements
         }
     }
 
-    @Override
     public XmlDocument parse(Source source) {
         TokenStream tokenStream = null;
         try {

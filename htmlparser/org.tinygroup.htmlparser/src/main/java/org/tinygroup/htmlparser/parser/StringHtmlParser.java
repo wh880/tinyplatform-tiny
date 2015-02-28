@@ -9,7 +9,6 @@ import org.tinygroup.htmlparser.grammer.HTMLLexer;
  * Created by luoguo on 2015/2/28.
  */
 public class StringHtmlParser extends HtmlParser<String> {
-    @Override
     protected TokenStream getTokenStream(String string) {
         char[] source = string.toCharArray();
         ANTLRInputStream is = new ANTLRInputStream(source, source.length);
