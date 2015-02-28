@@ -97,6 +97,12 @@ public interface DbSqlOperator<K> {
     int account(String sql, List<Object> parameters)throws TinyDbException;
 
     int account(String sql, Map<String, Object> parameters)throws TinyDbException;
+    /**
+     * 根据bean对象查询该bean对象的记录数
+     * @param bean
+     * @return
+     */
+    int account(Bean bean)throws TinyDbException;
     
     //返回分页结果的分页接口
     Pager getPager(String sql, int start, int limit)throws TinyDbException;

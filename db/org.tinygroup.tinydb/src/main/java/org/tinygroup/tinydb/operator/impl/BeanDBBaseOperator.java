@@ -231,6 +231,23 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		throw new TinyDbException("不存在beanType："+bean.getType()+"的表格");
 
 	}
+	
+	public String getAccountSql(Bean bean)throws TinyDbException{
+		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
+		if (table != null) {
+			StringBuffer sb = new StringBuffer(" select count(0) from ");
+			sb.append(getFullTableName(bean.getType()));
+			List<String> conditionColumns = getColumnNames(bean);
+			String condition=getConditionSql(conditionColumns,bean);
+			if(condition!=null&&condition.length()>0){
+				sb.append(" where ").append(condition);
+			}
+			return sb.toString();
+
+		}
+		throw new TinyDbException("不存在beanType："+bean.getType()+"的表格");
+
+	}
 
 	private String getConditionSql(List<String> conditionColumns,Bean bean) {
 		StringBuffer condition = new StringBuffer();
