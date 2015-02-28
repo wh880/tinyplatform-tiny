@@ -95,6 +95,9 @@ public abstract class HtmlParser<Source> implements
     }
 
     private boolean processElementContext(HTMLParser.HtmlElementContext elementContext) {
+        if(elementContext.getChildCount()==0){
+            return false;
+        }
         Object p = currentObject;
         HtmlNode htmlNode = new HtmlNode(elementContext.getChild(1).getText());
         //处理属性

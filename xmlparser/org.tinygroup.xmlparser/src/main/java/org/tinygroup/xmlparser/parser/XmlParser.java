@@ -19,6 +19,7 @@ public abstract class XmlParser<Source> implements
         Parser<XmlNode, XmlDocument, Source> {
     XmlDocument document;
     Object currentObject;
+
     protected abstract TokenStream getTokenStream(Source source) throws IOException;
 
     private XmlDocument parse(TokenStream tokenStream) {
@@ -73,7 +74,7 @@ public abstract class XmlParser<Source> implements
             ParseTree child = prologContext.getChild(i);
             if (child instanceof XMLParser.AttributeContext) {
                 XMLParser.AttributeContext attributeContext = (XMLParser.AttributeContext) child;
-                processAttributeContext(attributeContext,xmlNode);
+                processAttributeContext(attributeContext, xmlNode);
             }
         }
         currentObject = document;
@@ -87,7 +88,7 @@ public abstract class XmlParser<Source> implements
             ParseTree child = declareContext.getChild(i);
             if (child instanceof XMLParser.AttributeContext) {
                 XMLParser.AttributeContext attributeContext = (XMLParser.AttributeContext) child;
-                processAttributeContext(attributeContext,xmlNode);
+                processAttributeContext(attributeContext, xmlNode);
             }
         }
         currentObject = document;
@@ -106,9 +107,9 @@ public abstract class XmlParser<Source> implements
 
     private boolean processChardataContext(String text) {
         XmlNode currentNode = ((XmlNode) currentObject);
-        if (currentNode.getSubNodes().size() > 0&&currentNode.getSubNodes().get(currentNode.getSubNodes().size()-1).getNodeType()==XmlNodeType.TEXT) {
+        if (currentNode.getSubNodes().size() > 0 && currentNode.getSubNodes().get(currentNode.getSubNodes().size() - 1).getNodeType() == XmlNodeType.TEXT) {
             XmlNode textNode = currentNode.getSubNodes().get(currentNode.getSubNodes().size() - 1);
-            textNode.setContent(textNode.getContent()+currentNode.decode(text));
+            textNode.setContent(textNode.getContent() + currentNode.decode(text));
         } else {
             XmlNode xmlNode = new XmlNode(XmlNodeType.TEXT);
             xmlNode.setContent(xmlNode.decode(text));
@@ -117,7 +118,7 @@ public abstract class XmlParser<Source> implements
         return false;
     }
 
-    private boolean processAttributeContext(XMLParser.AttributeContext elementContext,XmlNode xmlNode) {
+    private boolean processAttributeContext(XMLParser.AttributeContext elementContext, XmlNode xmlNode) {
         String value = elementContext.getChild(2).getText();
         value = value.substring(1, value.length() - 1);
         xmlNode.setAttribute(elementContext.getChild(0).getText(), xmlNode.decode(value));
@@ -125,20 +126,23 @@ public abstract class XmlParser<Source> implements
     }
 
     private boolean processElementContext(XMLParser.ElementContext elementContext) {
-            Object p = currentObject;
-            XmlNode xmlNode = new XmlNode(elementContext.getChild(1).getText());
-            //处理属性
-            for (XMLParser.AttributeContext attribute : elementContext.attribute()) {
-                processAttributeContext(attribute, xmlNode);
-            }
-            addXmlNode(xmlNode, !xmlNode.isSingleNode());
-            //如果有子节点就去处理
-
-            if (elementContext.content()!= null) {
-                process(elementContext.content());
-            }
-            currentObject = p;
+        if (elementContext.getChildCount() == 0) {
             return false;
+        }
+        Object p = currentObject;
+        XmlNode xmlNode = new XmlNode(elementContext.getChild(1).getText());
+        //处理属性
+        for (XMLParser.AttributeContext attribute : elementContext.attribute()) {
+            processAttributeContext(attribute, xmlNode);
+        }
+        addXmlNode(xmlNode, !xmlNode.isSingleNode());
+        //如果有子节点就去处理
+
+        if (elementContext.content() != null) {
+            process(elementContext.content());
+        }
+        currentObject = p;
+        return false;
     }
 
     private void addXmlNode(XmlNode xmlNode, boolean changeCurrentNode) {
@@ -164,7 +168,7 @@ public abstract class XmlParser<Source> implements
 
     @Override
     public XmlDocument parse(Source source) {
-        TokenStream tokenStream= null;
+        TokenStream tokenStream = null;
         try {
             tokenStream = getTokenStream(source);
             return parse(tokenStream);
@@ -172,7 +176,8 @@ public abstract class XmlParser<Source> implements
             throw new RuntimeException(e);
         }
     }
+
     public XmlNode parseNode(Source source) {
-       return parse(source).getRoot();
+        return parse(source).getRoot();
     }
 }
