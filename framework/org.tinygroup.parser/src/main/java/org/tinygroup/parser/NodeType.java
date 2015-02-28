@@ -18,7 +18,7 @@ package org.tinygroup.parser;
 import org.tinygroup.parser.nodetype.NodeSign;
 
 
-public interface NodeType {
+public interface NodeType<T> {
     /**
      * 是否有头部
      *
@@ -62,7 +62,7 @@ public interface NodeType {
      * @param str
      * @return StringBuffer
      */
-    void getHeader(StringBuffer sb, String str);
+    void getHeader(StringBuffer sb, String str,T node);
 
     /**
      * 获取结尾标签 为输入参数添加结尾标签
@@ -70,6 +70,6 @@ public interface NodeType {
      * @param str
      * @return StringBuffer
      */
-    void getTail(StringBuffer sb, String str);
+    void getTail(StringBuffer sb, String str,T node);
 
 }

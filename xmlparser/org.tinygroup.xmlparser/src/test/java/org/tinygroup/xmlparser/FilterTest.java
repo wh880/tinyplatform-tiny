@@ -15,19 +15,17 @@
  */
 package org.tinygroup.xmlparser;
 
-import java.io.File;
-import java.util.Hashtable;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.parser.filter.NameFilter;
-import org.tinygroup.parser.filter.QuickNameFilter;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.io.File;
+import java.util.Hashtable;
+import java.util.List;
 
 public class FilterTest extends TestCase {
 	XmlDocument doc = null;
