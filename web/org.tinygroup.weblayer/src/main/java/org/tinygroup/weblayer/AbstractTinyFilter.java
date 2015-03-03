@@ -94,15 +94,7 @@ public abstract class AbstractTinyFilter implements TinyFilter {
 		return xmlNode;
 	}
 
-	public void preProcess(WebContext context) {
-		
-
-	}
-
-	public void postProcess(WebContext context) {
-		
-
-	}
+	
 
 	public void initTinyFilter() {
 		//获取
