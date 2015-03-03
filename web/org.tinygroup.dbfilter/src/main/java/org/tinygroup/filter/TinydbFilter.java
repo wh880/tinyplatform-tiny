@@ -53,4 +53,9 @@ public class TinydbFilter extends AbstractTinyFilter {
 		}
 	}
 
+	public void postProcess(WebContext context) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

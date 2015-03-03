@@ -125,4 +125,14 @@ public class TinyFilterWrapper extends AbstractTinyFilter implements
 		}
 	}
 
+	public void preProcess(WebContext context) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void postProcess(WebContext context) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
