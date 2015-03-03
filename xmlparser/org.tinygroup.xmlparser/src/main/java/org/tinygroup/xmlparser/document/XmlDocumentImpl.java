@@ -15,13 +15,13 @@
  */
 package org.tinygroup.xmlparser.document;
 
+import org.tinygroup.xmlparser.XmlDocument;
+import org.tinygroup.xmlparser.node.XmlNode;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.tinygroup.xmlparser.XmlDocument;
-import org.tinygroup.xmlparser.node.XmlNode;
 
 public class XmlDocumentImpl implements XmlDocument {
 	private XmlNode root = null;

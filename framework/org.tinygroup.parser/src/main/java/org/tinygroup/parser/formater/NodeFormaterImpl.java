@@ -82,7 +82,7 @@ public abstract class NodeFormaterImpl<T extends Document<N>, N extends Node<N>>
         if (node.getNodeType().isHasContent() && node.getContent() != null) {
             sb.append(node.getContent());
         } else {
-            if (node.getSubNodes() != null) {
+            if (node.getSubNodes() != null&&node.getSubNodes().size()>0) {
                 if (node.getSubNodes().size() == 1 && node.getSubNodes().get(0).getNodeType().isHasContent()) {
                     sb.append(node.getSubNodes().get(0).getContent().trim());
                 } else {
@@ -92,8 +92,8 @@ public abstract class NodeFormaterImpl<T extends Document<N>, N extends Node<N>>
                         }
                         formatNode(sb, n, node.getNodeName() != null ? tab + 1 : tab);
                     }
-                    sb.append(is);
                 }
+                sb.append(is);
             }
         }
         node.getFooter(sb);

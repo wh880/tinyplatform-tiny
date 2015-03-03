@@ -68,7 +68,7 @@ public class FormaterImpl implements Formater {
 	/**
 	 * 格式化字符串
 	 * 
-	 * @param str
+	 * @param string
 	 *            String
 	 * @return String
 	 * @throws FormatException

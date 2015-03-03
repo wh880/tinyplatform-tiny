@@ -15,11 +15,12 @@
  */
 package org.tinygroup.htmlparser;
 
+import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.parser.NodeType;
 import org.tinygroup.parser.nodetype.NodeSign;
 import org.tinygroup.parser.nodetype.NodeTypeImpl;
 
-public enum HtmlNodeType implements NodeType {
+public enum HtmlNodeType implements NodeType<HtmlNode> {
     DOCTYPE(new NodeSign("<!DOCTYPE ", null), new NodeSign(null, ">"), false, true, false), // DTD验证器标签
     CDATA(new NodeSign("<![CDATA[", null), new NodeSign(null, "]]>"), false, true, false), // CDATA内容标签，只有文本内空
 
@@ -80,7 +81,7 @@ public enum HtmlNodeType implements NodeType {
      * @param str
      * @return StringBuffer
      */
-    public void getHeader(StringBuffer sb, String str) {
+    public void getHeader(StringBuffer sb, String str,HtmlNode node) {
         if (this.equals(ELEMENT) && str.length() == 0) {
             return;
         }
@@ -94,6 +95,9 @@ public enum HtmlNodeType implements NodeType {
                 sb.append(str);
             }
             if (getHead().getEnd() != null) {
+                if(node.isSingleNode()){
+                    sb.append("/");
+                }
                 sb.append(getHead().getEnd());
             }
         }
@@ -105,7 +109,7 @@ public enum HtmlNodeType implements NodeType {
      * @param str
      * @return StringBuffer
      */
-    public void getTail(StringBuffer sb, String str) {
+    public void getTail(StringBuffer sb, String str,HtmlNode node) {
         if (this.equals(ELEMENT) && str.length() == 0) {
             return;
         }

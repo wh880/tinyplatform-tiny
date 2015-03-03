@@ -15,10 +15,10 @@
  */
 package org.tinygroup.xmlparser;
 
-import java.util.List;
-
 import org.tinygroup.parser.Document;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.List;
 
 public interface XmlDocument extends Document<XmlNode> {
 	/**

@@ -1,121 +1,183 @@
-/**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package org.tinygroup.xmlparser.parser;
 
-import org.tinygroup.parser.NodeType;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.tinygroup.parser.Parser;
-import org.tinygroup.xmlparser.XmlNodeType;
 import org.tinygroup.xmlparser.XmlDocument;
+import org.tinygroup.xmlparser.XmlNodeType;
+import org.tinygroup.xmlparser.document.XmlDocumentImpl;
+import org.tinygroup.xmlparser.grammer.XMLParser;
 import org.tinygroup.xmlparser.node.XmlNode;
 
+import java.io.IOException;
+
+/**
+ * Created by luoguo on 2015/2/28.
+ */
 public abstract class XmlParser<Source> implements
-		Parser<XmlNode, XmlDocument, Source> {
+        Parser<XmlNode, XmlDocument, Source> {
+    XmlDocument document;
+    Object currentObject;
 
-	private static String startPattern = null;
+    protected abstract TokenStream getTokenStream(Source source) throws IOException;
 
-	/**
-	 * 获取指定节点类型开始标签的结束标识符的Pattern（正则表达式）
-	 * 
-	 * @param nt
-	 * @return
-	 */
-	static String getHeadEndPattern(NodeType nt) {
-		if (nt.getHead() != null && nt.getHead().getEnd() != null) {
-			return replaceSpecialChar(nt.getHead().getEnd());
-		}
-		return null;
-	}
+    private XmlDocument parse(TokenStream tokenStream) {
+        document = new XmlDocumentImpl();
+        currentObject = document;
+        XMLParser parser = new XMLParser(tokenStream);
+        parser.removeErrorListeners(); // remove ConsoleErrorListener
+        XMLParser.DocumentContext templateParseTree = parser.document();
+        process(templateParseTree);
+        return document;
+    }
 
-	/**
-	 * 获取指定节点类型结尾标签（NodeSign）的开始标识符的Pattern(正则表达式)
-	 * 
-	 * @param nt
-	 * @return
-	 */
-	static String getTailStartPattern(NodeType nt) {
-		if (nt.getTail() != null && nt.getTail().getStart() != null) {
-			return replaceSpecialChar(nt.getTail().getStart());
-		}
-		return null;
-	}
+    private void process(ParseTree parseTree) {
+        if (parseTree instanceof XMLParser.ElementContext) {
+            XMLParser.ElementContext elementContext = (XMLParser.ElementContext) parseTree;
+            processElementContext(elementContext);
+            return;
+        } else if (parseTree instanceof XMLParser.ChardataContext || parseTree instanceof XMLParser.ReferenceContext) {
+            if (!processChardataContext(parseTree.getText())) {
+                return;
+            }
+        } else if (parseTree instanceof XMLParser.PrologContext) {
+            XMLParser.PrologContext prologContext = (XMLParser.PrologContext) parseTree;
+            if (!processPrologContext(prologContext)) {
+                return;
+            }
+        } else if (parseTree instanceof XMLParser.DeclareContext) {
+            XMLParser.DeclareContext declareContext = (XMLParser.DeclareContext) parseTree;
+            if (!processDeclareContext(declareContext)) {
+                return;
+            }
+        } else if (parseTree instanceof TerminalNode) {
+            TerminalNode terminalNode = (TerminalNode) parseTree;
+            if (terminalNode.getSymbol().getType() == XMLParser.CDATA) {
+                processCData(terminalNode.getText());
+                return;
+            } else {
+                return;
+            }
+        }
+        if (parseTree.getChildCount() > 0) {
+            for (int i = 0; i < parseTree.getChildCount(); i++) {
+                process(parseTree.getChild(i));
+            }
+        }
+    }
 
-	/**
-	 * 获取指定节点类型结尾标签的结束标识符的Pattern（正则表达式）
-	 * 
-	 * @param nt
-	 * @return
-	 */
-	static String getTailEndPattern(NodeType nt) {
-		if (nt.getTail() != null && nt.getTail().getEnd() != null) {
-			return replaceSpecialChar(nt.getTail().getEnd());
-		}
-		return null;
-	}
+    private boolean processPrologContext(XMLParser.PrologContext prologContext) {
+        XmlNode xmlNode = new XmlNode(XmlNodeType.XML_DECLARATION);
+        addXmlNode(xmlNode, true);
+        for (int i = 0; i < prologContext.getChildCount(); i++) {
+            ParseTree child = prologContext.getChild(i);
+            if (child instanceof XMLParser.AttributeContext) {
+                XMLParser.AttributeContext attributeContext = (XMLParser.AttributeContext) child;
+                processAttributeContext(attributeContext, xmlNode);
+            }
+        }
+        currentObject = document;
+        return false;
+    }
 
-	/**
-	 * 获取所有可用标记的Pattern(正则表达式)
-	 * 
-	 * @return
-	 */
-	static String getHeadStartPattern() {
-		if (startPattern != null){
-			return startPattern;
-		}
-		StringBuffer pattern = new StringBuffer("<[/]|[/]>");// 正则表达式
-		for (XmlNodeType nt : XmlNodeType.values()) {
-			if (nt.getHead() != null) {
-				String sn = nt.getHead().getStart();
-				if (sn != null) {
-					if (pattern.length() > 0) {
-						pattern.append("|");
-					}
-					pattern.append(replaceSpecialChar(sn));
-				}
-			}
-		}
+    private boolean processDeclareContext(XMLParser.DeclareContext declareContext) {
+        XmlNode xmlNode = new XmlNode(XmlNodeType.PROCESSING_INSTRUCTION);
+        addXmlNode(xmlNode, true);
+        for (int i = 0; i < declareContext.getChildCount(); i++) {
+            ParseTree child = declareContext.getChild(i);
+            if (child instanceof XMLParser.AttributeContext) {
+                XMLParser.AttributeContext attributeContext = (XMLParser.AttributeContext) child;
+                processAttributeContext(attributeContext, xmlNode);
+            }
+        }
+        currentObject = document;
+        return false;
+    }
 
-		startPattern = pattern.toString();
-		return startPattern;
-	}
+    private boolean processCData(String content) {
+        XmlNode xmlNode = new XmlNode(XmlNodeType.CDATA);
+        String cdata = content;
+        cdata = cdata.substring(9, cdata.length() - 3).trim();
+        xmlNode.setContent(cdata);
+        addXmlNode(xmlNode, false);
+        return false;
+    }
 
-	private static String replaceSpecialChar(String sn) {
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < sn.length(); i++) {
-			char c = sn.charAt(i);
-			switch (c) {
-			case '[':
-				sb.append("\\[");
-				break;
-			case ']':
-				sb.append("\\]");
-				break;
-			case '?':
-				sb.append("\\?");
-				break;
-			case '!':
-				sb.append("\\!");
-				break;
-			case '-':
-				sb.append("\\-");
-				break;
-			default:
-				sb.append(c);
-				break;
-			}
-		}
-		return sb.toString();
-	}
+
+    private boolean processChardataContext(String text) {
+        XmlNode currentNode = ((XmlNode) currentObject);
+        if (currentNode.getSubNodes().size() > 0 && currentNode.getSubNodes().get(currentNode.getSubNodes().size() - 1).getNodeType() == XmlNodeType.TEXT) {
+            XmlNode textNode = currentNode.getSubNodes().get(currentNode.getSubNodes().size() - 1);
+            textNode.setContent(textNode.getContent() + currentNode.decode(text));
+        } else {
+            XmlNode xmlNode = new XmlNode(XmlNodeType.TEXT);
+            xmlNode.setContent(xmlNode.decode(text));
+            addXmlNode(xmlNode, false);
+        }
+        return false;
+    }
+
+    private boolean processAttributeContext(XMLParser.AttributeContext elementContext, XmlNode xmlNode) {
+        String value = elementContext.getChild(2).getText();
+        value = value.substring(1, value.length() - 1);
+        xmlNode.setAttribute(elementContext.getChild(0).getText(), xmlNode.decode(value));
+        return false;
+    }
+
+    private boolean processElementContext(XMLParser.ElementContext elementContext) {
+        if (elementContext.getChildCount() == 0) {
+            return false;
+        }
+        Object p = currentObject;
+        XmlNode xmlNode = new XmlNode(elementContext.getChild(1).getText());
+        //处理属性
+        for (XMLParser.AttributeContext attribute : elementContext.attribute()) {
+            processAttributeContext(attribute, xmlNode);
+        }
+        addXmlNode(xmlNode, !xmlNode.isSingleNode());
+        //如果有子节点就去处理
+
+        if (elementContext.content() != null) {
+            process(elementContext.content());
+        }
+        currentObject = p;
+        return false;
+    }
+
+    private void addXmlNode(XmlNode xmlNode, boolean changeCurrentNode) {
+        if (currentObject instanceof XmlNode) {
+            ((XmlNode) currentObject).addNode(xmlNode);
+        } else {
+            if (xmlNode.getNodeType().equals(XmlNodeType.ELEMENT)) {
+                ((XmlDocument) currentObject).setRoot(xmlNode);
+            } else if (xmlNode.getNodeType().equals(XmlNodeType.COMMENT)) {
+                ((XmlDocument) currentObject).addComment(xmlNode);
+            } else if (xmlNode.getNodeType().equals(XmlNodeType.DOCTYPE)) {
+                ((XmlDocument) currentObject).addDoctype(xmlNode);
+            } else if (xmlNode.getNodeType().equals(XmlNodeType.PROCESSING_INSTRUCTION)) {
+                ((XmlDocument) currentObject).addProcessingInstruction(xmlNode);
+            } else if (xmlNode.getNodeType().equals(XmlNodeType.XML_DECLARATION)) {
+                ((XmlDocument) currentObject).setXmlDeclaration(xmlNode);
+            }
+        }
+        if (changeCurrentNode) {
+            currentObject = xmlNode;
+        }
+    }
+
+    @Override
+    public XmlDocument parse(Source source) {
+        TokenStream tokenStream = null;
+        try {
+            tokenStream = getTokenStream(source);
+            return parse(tokenStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public XmlNode parseNode(Source source) {
+        return parse(source).getRoot();
+    }
 }

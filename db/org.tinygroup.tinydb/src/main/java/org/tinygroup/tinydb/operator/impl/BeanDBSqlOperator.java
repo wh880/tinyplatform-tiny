@@ -284,10 +284,15 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 
 	public Pager getPager(Bean bean, int start, int limit)
 			throws TinyDbException {
-		String sql = getSelectSql(bean);
+		String sql = getAccountSql(bean);
 		List<Object> parameters = getConditionParams(bean);
 		int totalCount = account(sql, parameters);
 		Bean[] beans = getBeans(bean, start, limit);
 		return createPager(start, limit, totalCount, beans);
+	}
+
+	public int account(Bean bean)throws TinyDbException {
+		String sql = getAccountSql(bean);
+		return account(sql);
 	}
 }

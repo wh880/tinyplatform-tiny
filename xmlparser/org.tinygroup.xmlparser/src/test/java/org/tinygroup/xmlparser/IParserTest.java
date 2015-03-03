@@ -15,9 +15,8 @@
  */
 package org.tinygroup.xmlparser;
 
-import org.tinygroup.xmlparser.parser.XmlStringParser;
-
 import junit.framework.TestCase;
+import org.tinygroup.xmlparser.parser.XmlStringParser;
 
 public class IParserTest extends TestCase {
 	XmlStringParser parser = new XmlStringParser();
