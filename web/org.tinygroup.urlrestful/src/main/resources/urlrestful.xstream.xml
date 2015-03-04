@@ -1,0 +1,7 @@
+<xstream-configuration package-name="urlrestful">
+	<xstream-annotation-classes>
+		<xstream-annotation-class
+	class-name="org.tinygroup.urlrestful.config.UrlRestfuls" />
+	</xstream-annotation-classes>
+</xstream-configuration>
+
