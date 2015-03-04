@@ -52,7 +52,7 @@ public abstract class AbstractTinyProcessor implements TinyProcessor {
     //存放正则表达式的字符串格式
 	private List<String> patternStrs = new ArrayList<String>();
 
-	private static Logger logger = LoggerFactory.getLogger(AbstractTinyProcessor.class);
+	protected static Logger logger = LoggerFactory.getLogger(AbstractTinyProcessor.class);
 
 	public String getNodeName() {
 		return TINY_PROCESSOR;

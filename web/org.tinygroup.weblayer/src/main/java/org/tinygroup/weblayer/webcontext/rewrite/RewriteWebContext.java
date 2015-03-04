@@ -23,4 +23,9 @@ import org.tinygroup.weblayer.WebContext;
  * @author renhui
  */
 public interface RewriteWebContext extends WebContext {
+	/**
+	 * 设置路径
+	 * @param path
+	 */
+	void setPath(String  path);
 }

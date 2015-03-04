@@ -61,6 +61,7 @@ public class RewriteWebContextImpl extends AbstractWebContextWrapper implements 
     private final RewriteRule[]        rules;
     private       ParserWebContext parserWebContext;
     private       HttpServletRequest   wrappedRequest;
+    private RequestWrapper requestWrapper;
 
     /**
      * 包装一个<code>RequestContext</code>对象。
@@ -79,6 +80,8 @@ public class RewriteWebContextImpl extends AbstractWebContextWrapper implements 
 
         // 保存上一层的request对象，以便取得原来的servletPath、pathInfo之类的信息
         this.wrappedRequest = wrappedContext.getRequest();
+        requestWrapper=new RequestWrapper(wrappedRequest);
+        setRequest(requestWrapper);
     }
 
     /** 开始一个请求。 */
@@ -198,11 +201,7 @@ public class RewriteWebContextImpl extends AbstractWebContextWrapper implements 
                 	 logger.logMessage(LogLevel.WARN,"Redirect to location \"" + uriLocation + "\" failed", e);
                 }
             } else {
-                RequestWrapper requestWrapper = new RequestWrapper(wrappedRequest);
-
                 requestWrapper.setPath(path);
-
-                setRequest(requestWrapper);
             }
         } else {
             if (!parameterSubstituted) {
@@ -335,5 +334,9 @@ public class RewriteWebContextImpl extends AbstractWebContextWrapper implements 
             }
         }
     }
+
+	public void setPath(String path) {
+		 requestWrapper.setPath(path);
+	}
 
 }

@@ -18,6 +18,7 @@ package org.tinygroup.weblayer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.ExceptionUtil;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -93,7 +94,7 @@ public class TinyFilterHandler {
             if (isRequestFinished(tinyFilters.size(), wrapperContext)) {
                 return;
             }
-
+            servletPath=getServletPath(wrapperContext.getRequest());//重新获取路径 可能之前被修改过
             if (!tinyProcessorManager.execute(servletPath, wrapperContext)) {
                 giveUpControl(wrapperContext);
                 return;
@@ -106,6 +107,14 @@ public class TinyFilterHandler {
             postProcess(wrapperContext, tinyFilters);
         }
     }
+    
+    private String getServletPath(HttpServletRequest request) {
+		String servletPath=request.getServletPath();
+		if(StringUtil.isBlank(servletPath)){
+			servletPath=request.getPathInfo();
+		}
+		return servletPath;
+	}
 
     private void giveUpControl(WebContext wrapperContext) throws IOException,
             ServletException {
