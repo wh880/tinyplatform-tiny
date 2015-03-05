@@ -10,34 +10,34 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @author renhui
  *
  */
-@XStreamAlias("url-mapping")
-public class UrlMapping {
+@XStreamAlias("mapping")
+public class Mapping {
 
 	public static final String TEXT_HTML = "text/html";
 
 	@XStreamAsAttribute
-	@XStreamAlias("mapping-url")
-	private String mappingUrl;
+	@XStreamAlias("url")
+	private String url;
 	@XStreamAsAttribute
-	@XStreamAlias("http-method")
-	private String httpMethod;
+	@XStreamAlias("method")
+	private String method;
 	@XStreamAsAttribute
 	private String accept;
 
-	public String getMappingUrl() {
-		return mappingUrl;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setMappingUrl(String mappingUrl) {
-		this.mappingUrl = mappingUrl;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
-	public String getHttpMethod() {
-		return httpMethod;
+	public String getMethod() {
+		return method;
 	}
 
-	public void setHttpMethod(String httpMethod) {
-		this.httpMethod = httpMethod;
+	public void setMethod(String method) {
+		this.method = method;
 	}
 
 	public String getAccept() {

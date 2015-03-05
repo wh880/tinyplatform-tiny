@@ -6,11 +6,11 @@ import java.util.List;
 import org.tinygroup.commons.match.AntPathStringMatcher;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.urlrestful.RestfulContext;
+import org.tinygroup.urlrestful.Context;
 import org.tinygroup.urlrestful.UrlRestfulManager;
-import org.tinygroup.urlrestful.config.UrlMapping;
-import org.tinygroup.urlrestful.config.UrlRestful;
-import org.tinygroup.urlrestful.config.UrlRestfuls;
+import org.tinygroup.urlrestful.config.Mapping;
+import org.tinygroup.urlrestful.config.Rule;
+import org.tinygroup.urlrestful.config.Rules;
 
 /**
  * 
@@ -19,44 +19,44 @@ import org.tinygroup.urlrestful.config.UrlRestfuls;
  */
 public class UrlRestfulManagerImpl implements UrlRestfulManager {
 
-	private List<UrlRestful> restfulContainer = new ArrayList<UrlRestful>();
+	private List<Rule> restfulContainer = new ArrayList<Rule>();
 
-	public void addUrlRestfuls(UrlRestfuls urlRestfuls) {
-		restfulContainer.addAll(urlRestfuls.getUrlRestfuls());
+	public void addRules(Rules Rules) {
+		restfulContainer.addAll(Rules.getRules());
 	}
 
-	public void removeRestfuls(UrlRestfuls urlRestfuls) {
-		restfulContainer.removeAll(urlRestfuls.getUrlRestfuls());
+	public void removeRules(Rules Rules) {
+		restfulContainer.removeAll(Rules.getRules());
 	}
 
-	public RestfulContext getUrlMappingWithRequet(String requestPath,
-			String httpMethod, String accept) {
+	public Context getContext(String requestPath,
+                              String httpMethod, String accept) {
 		String requestAccept = accept;
 		if (StringUtil.isBlank(requestAccept)) {
-			requestAccept = UrlMapping.TEXT_HTML;
+			requestAccept = Mapping.TEXT_HTML;
 		}
-		for (UrlRestful urlRestful : restfulContainer) {
+		for (Rule rule : restfulContainer) {
 			AntPathStringMatcher matcher = new AntPathStringMatcher(
-					urlRestful.getPattern(), requestPath);
-			List<UrlMapping> urlMappings = urlRestful
+					rule.getPattern(), requestPath);
+			List<Mapping> mappings = rule
 					.getUrlMappingsByMethod(httpMethod);
-			UrlMapping urlMapping = getUrlMapping(requestAccept, urlMappings);
-			if (matcher.matches() && urlMapping != null) {
-				return new RestfulContext(urlRestful, urlMapping,
+			Mapping mapping = getUrlMapping(requestAccept, mappings);
+			if (matcher.matches() && mapping != null) {
+				return new Context(rule, mapping,
 						matcher.getUriTemplateVariables());
 			}
 		}
 		return null;
 	}
 
-	private UrlMapping getUrlMapping(String requestContentType,
-			List<UrlMapping> urlMappings) {
-		if (!CollectionUtil.isEmpty(urlMappings)) {
-			for (UrlMapping urlMapping : urlMappings) {
-				String contentType = urlMapping.getAccept();
+	private Mapping getUrlMapping(String requestContentType,
+			List<Mapping> mappings) {
+		if (!CollectionUtil.isEmpty(mappings)) {
+			for (Mapping mapping : mappings) {
+				String contentType = mapping.getAccept();
 				if (requestContentType != null
 						&& requestContentType.indexOf(contentType) != -1) {
-					return urlMapping;
+					return mapping;
 				}
 			}
 		}

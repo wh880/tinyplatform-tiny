@@ -3,7 +3,7 @@ package org.tinygroup.urlrestful.fileresolver;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.urlrestful.UrlRestfulManager;
-import org.tinygroup.urlrestful.config.UrlRestfuls;
+import org.tinygroup.urlrestful.config.Rules;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -32,14 +32,14 @@ public class UrlRestfulFileProcessor extends AbstractFileProcessor {
 
 	public void process() {
 		XStream stream = XStreamFactory
-				.getXStream(UrlRestfulManager.URLREST_XSTREAM);
+				.getXStream(UrlRestfulManager.URL_RESTFUL_XSTREAM);
 		for (FileObject fileObject : deleteList) {
 			logger.logMessage(LogLevel.INFO, "正在移除restful文件[{0}]",
 					fileObject.getAbsolutePath());
-			UrlRestfuls urlRestfuls = (UrlRestfuls) caches.get(fileObject
+			Rules Rules = (Rules) caches.get(fileObject
 					.getAbsolutePath());
-			if (urlRestfuls != null) {
-				urlRestfulManager.removeRestfuls(urlRestfuls);
+			if (Rules != null) {
+				urlRestfulManager.removeRules(Rules);
 				caches.remove(fileObject.getAbsolutePath());
 			}
 			logger.logMessage(LogLevel.INFO, "移除restful文件[{0}]结束",
@@ -48,15 +48,15 @@ public class UrlRestfulFileProcessor extends AbstractFileProcessor {
 		for (FileObject fileObject : changeList) {
 			logger.logMessage(LogLevel.INFO, "正在加载restful文件[{0}]",
 					fileObject.getAbsolutePath());
-			UrlRestfuls urlRestfuls = (UrlRestfuls) stream.fromXML(fileObject
+			Rules Rules = (Rules) stream.fromXML(fileObject
 					.getInputStream());
-			UrlRestfuls oldRestfuls = (UrlRestfuls) caches.get(fileObject
+			Rules oldRules = (Rules) caches.get(fileObject
 					.getAbsolutePath());
-			if (oldRestfuls != null) {
-				urlRestfulManager.removeRestfuls(oldRestfuls);
+			if (oldRules != null) {
+				urlRestfulManager.removeRules(oldRules);
 			}
-			urlRestfulManager.addUrlRestfuls(urlRestfuls);
-			caches.put(fileObject.getAbsolutePath(), urlRestfuls);
+			urlRestfulManager.addRules(Rules);
+			caches.put(fileObject.getAbsolutePath(), Rules);
 			logger.logMessage(LogLevel.INFO, "加载restful文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}

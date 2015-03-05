@@ -1,6 +1,6 @@
 package org.tinygroup.urlrestful;
 
-import org.tinygroup.urlrestful.config.UrlRestfuls;
+import org.tinygroup.urlrestful.config.Rules;
 
 /**
  * restful管理器
@@ -9,18 +9,18 @@ import org.tinygroup.urlrestful.config.UrlRestfuls;
  */
 public interface UrlRestfulManager {
 	
-	String URLREST_XSTREAM="urlrestful";
+	String URL_RESTFUL_XSTREAM ="urlrestful";
 	
 	/**
 	 * 增加restful配置信息
-	 * @param urlRestfuls
+	 * @param Rules
 	 */
-	public void addUrlRestfuls(UrlRestfuls urlRestfuls);
+	public void addRules(Rules Rules);
 	/**
 	 * 移除restful配置信息
-	 * @param urlRestfuls
+	 * @param Rules
 	 */
-	public void removeRestfuls(UrlRestfuls urlRestfuls);
+	public void removeRules(Rules Rules);
 	
 	/**
 	 * 根据请求路径、请求的方法以及请求头的accept 组装此次请求的上下文对象
@@ -29,7 +29,7 @@ public interface UrlRestfulManager {
 	 * @param accept
 	 * @return
 	 */
-	public RestfulContext getUrlMappingWithRequet(String requestPath,String httpMethod,String accept);
+	public Context getContext(String requestPath, String httpMethod, String accept);
 	
 
 }

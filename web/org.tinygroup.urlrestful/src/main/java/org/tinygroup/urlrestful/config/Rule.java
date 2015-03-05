@@ -17,58 +17,58 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * @author renhui
  * 
  */
-@XStreamAlias("url-restful")
-public class UrlRestful {
+@XStreamAlias("rule")
+public class Rule {
 	@XStreamAsAttribute
 	private String pattern;
 
 	@XStreamImplicit
-	private List<UrlMapping> urlMappings;
+	private List<Mapping> mappings;
 
-	private transient Map<String, List<UrlMapping>> method2Mapping;
+	private transient Map<String, List<Mapping>> method2Mapping;
 
-	public UrlRestful(String pattern) {
+	public Rule(String pattern) {
 		this.pattern = pattern;
 	}
 
-	private void addUrlMapping(UrlMapping urlMapping) {
-		List<UrlMapping> mappings = method2Mapping.get(urlMapping
-				.getHttpMethod());
+	private void addUrlMapping(Mapping mapping) {
+		List<Mapping> mappings = method2Mapping.get(mapping
+				.getMethod());
 		if (mappings == null) {
-			mappings = new ArrayList<UrlMapping>();
-			method2Mapping.put(urlMapping.getHttpMethod(), mappings);
+			mappings = new ArrayList<Mapping>();
+			method2Mapping.put(mapping.getMethod(), mappings);
 		}
-		mappings.add(urlMapping);
+		mappings.add(mapping);
 	}
 
 	public String getPattern() {
 		return pattern;
 	}
 
-	public List<UrlMapping> getUrlMappingsByMethod(String method) {
+	public List<Mapping> getUrlMappingsByMethod(String method) {
 		if(method2Mapping==null){
 			init();
 		}
 		return method2Mapping.get(method);
 	}
 
-	public List<UrlMapping> getUrlMappings() {
-		if (urlMappings == null) {
-			urlMappings = new ArrayList<UrlMapping>();
+	public List<Mapping> getMappings() {
+		if (mappings == null) {
+			mappings = new ArrayList<Mapping>();
 		}
-		return urlMappings;
+		return mappings;
 	}
 
-	public void setUrlMappings(List<UrlMapping> urlMappings) {
-		this.urlMappings = urlMappings;
+	public void setMappings(List<Mapping> mappings) {
+		this.mappings = mappings;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void init(){
 		method2Mapping=new CaseInsensitiveMap(); 
-		if (!CollectionUtil.isEmpty(urlMappings)) {
-			for (UrlMapping urlMapping : urlMappings) {
-                   addUrlMapping(urlMapping);
+		if (!CollectionUtil.isEmpty(mappings)) {
+			for (Mapping mapping : mappings) {
+                   addUrlMapping(mapping);
 			}
 		}
 	}
@@ -86,8 +86,8 @@ public class UrlRestful {
 		if (this == obj) {
 			return true;
 		}
-		if (obj instanceof UrlRestful) {
-			UrlRestful other = (UrlRestful) obj;
+		if (obj instanceof Rule) {
+			Rule other = (Rule) obj;
 			return other.pattern.equals(this.pattern);
 		}
 		return false;

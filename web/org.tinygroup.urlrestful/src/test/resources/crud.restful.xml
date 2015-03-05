@@ -1,30 +1,30 @@
 <url-restfuls>
-	<url-restful pattern="/users/{id}">
-		<url-mapping http-method="get" accept="text/html"
-			mapping-url="queryUsersTiny.servicepage"></url-mapping>
-		<url-mapping http-method="post" accept="text/html"
-			mapping-url="addUserTiny.servicepage"></url-mapping>
-		<url-mapping http-method="put" accept="text/html"
-			mapping-url="updateUserTiny.servicepage"></url-mapping>
-		<url-mapping http-method="delete" accept="text/html"
-			mapping-url="deleteUserTiny.servicepage"></url-mapping>
-		<url-mapping http-method="get" accept="text/json"
-			mapping-url="queryUsersTiny.servicejson"></url-mapping>
-	</url-restful>
-	<url-restful pattern="/users/new/">
-		<url-mapping http-method="get" accept="text/html"
-			mapping-url="crud/restful/operate.page"></url-mapping>
-	</url-restful>
-	<url-restful pattern="/users/edit/{id}">
-		<url-mapping http-method="get" accept="text/html"
-			mapping-url="queryUserByIdTiny.servicepage"></url-mapping>
-	</url-restful>
-	<url-restful pattern="/users/{id}/{@beantype}">
-		<url-mapping http-method="post" accept="text/html"
-			mapping-url="addUserTiny.servicepage"></url-mapping>
-	</url-restful>
-	<url-restful pattern="/users/{id}/classes/{name}">
-		<url-mapping http-method="post" accept="text/html"
-			mapping-url="queryclasses.servicepage"></url-mapping>
-	</url-restful>
+    <url-restful pattern="/users/{id}">
+        <url-mapping http-method="get" accept="text/html"
+                     mapping-url="queryUsersTiny.servicepage"></url-mapping>
+        <url-mapping http-method="post" accept="text/html"
+                     mapping-url="addUserTiny.servicepage"></url-mapping>
+        <url-mapping http-method="put" accept="text/html"
+                     mapping-url="updateUserTiny.servicepage"></url-mapping>
+        <url-mapping http-method="delete" accept="text/html"
+                     mapping-url="deleteUserTiny.servicepage"></url-mapping>
+        <url-mapping http-method="get" accept="text/json"
+                     mapping-url="queryUsersTiny.servicejson"></url-mapping>
+    </url-restful>
+    <url-restful pattern="/users/new/">
+        <url-mapping http-method="get" accept="text/html"
+                     mapping-url="crud/restful/operate.page"></url-mapping>
+    </url-restful>
+    <url-restful pattern="/users/edit/{id}">
+        <url-mapping http-method="get" accept="text/html"
+                     mapping-url="queryUserByIdTiny.servicepage"></url-mapping>
+    </url-restful>
+    <url-restful pattern="/users/{id}/{@beantype}">
+        <url-mapping http-method="post" accept="text/html"
+                     mapping-url="addUserTiny.servicepage"></url-mapping>
+    </url-restful>
+    <url-restful pattern="/users/{id}/classes/{name}">
+        <url-mapping http-method="post" accept="text/html"
+                     mapping-url="queryclasses.servicepage"></url-mapping>
+    </url-restful>
 </url-restfuls>
