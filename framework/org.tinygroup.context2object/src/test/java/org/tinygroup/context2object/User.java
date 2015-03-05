@@ -15,7 +15,7 @@
  */
 package org.tinygroup.context2object;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class User {
 	String name;
