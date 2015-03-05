@@ -16,6 +16,10 @@
 package org.tinygroup.context2object.impl;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -43,19 +47,27 @@ public class DateTypeConverter implements TypeConverter<String, Date> {
 	}
 
 	public Date getObject(String value) {
-	    Map<String, String> rexMap = new HashMap<String, String>();
-        rexMap.put("yyyy-MM-dd", "\\d{1,4}[-]\\d{1,2}[-]\\d{1,2}");
-        rexMap.put("yyyy-MM-dd HH:mm:ss", "\\d{1,4}[-]\\d{1,2}[-]\\d{1,2}(\\s)*\\d{1,2}(:)\\d{1,2}(:)\\d{1,2}");
-        rexMap.put("yyyy-MM-dd HH:mm:ss", "\\d{1,4}[-]\\d{1,2}[-]\\d{1,2}(\\s)*\\d{1,2}(:)\\d{1,2}(:)\\d{1,2}");
-        rexMap.put("yyyy年MM月dd日 HH:mm:ss", "\\d{1,4}[年]\\d{1,2}[月]\\d{1,2}[日](\\s)*\\d{1,2}(:)\\d{1,2}(:)\\d{1,2}");
+
+        Pattern patternByEn = Pattern.compile("\\d{1,4}[-]\\d{1,2}[-]\\d{1,2}",
+                Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+        Pattern patternByZh = Pattern.compile("\\d{1,4}[年]\\d{1,2}[月]\\d{1,2}[日]",
+                Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+        Pattern patternByEnTimestamp = Pattern.compile("\\d{1,4}[-]\\d{1,2}[-]\\d{1,2}(\\s)*\\d{1,2}(:)\\d{1,2}(:)\\d{1,2}",
+                Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+        Pattern patternByZhTimestamp = Pattern.compile("\\d{1,4}[年]\\d{1,2}[月]\\d{1,2}[日](\\s)*\\d{1,2}(:)\\d{1,2}(:)\\d{1,2}",
+                Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+
+        Map<String, Pattern> rexMap = new HashMap<String, Pattern>();
+        rexMap.put("yyyy-MM-dd", patternByEn);
+        rexMap.put("yyyy年MM月dd日", patternByZh);
+        rexMap.put("yyyy-MM-dd HH:mm:ss", patternByEnTimestamp);
+        rexMap.put("yyyy年MM月dd日 HH:mm:ss", patternByZhTimestamp);
         if (dateFormat == null) {
             dateFormat = new SimpleDateFormat(format);
         }
         try {
             for (String pattern : rexMap.keySet()) {
-                Pattern patternForcase = Pattern.compile(rexMap.get(pattern),
-                        Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-                Matcher matcher = patternForcase.matcher(value);
+                Matcher matcher = rexMap.get(pattern).matcher(value);
                 if (matcher.matches()) {
                     dateFormat = new SimpleDateFormat(pattern);
                     break ;
