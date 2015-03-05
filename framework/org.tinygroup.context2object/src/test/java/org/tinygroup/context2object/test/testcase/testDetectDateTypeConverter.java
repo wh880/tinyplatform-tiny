@@ -16,7 +16,7 @@ import junit.framework.TestCase;
 
 /**
  * 功能说明：<br/>
- * TODO zhengkk(zhengkk@strongit.com.cn) 这里写明这个文件的功能与使用方式，接口写明的情况下，接口实现类可以不写，版本变更或维护时需要同步修改注释
+ * DetectDateTypeConverter 测试类
  * </br>
  * 开发人员：zhengkk(zhengkk@strongit.com.cn)<br/>
  * 开发时间：2015年3月5日<br/>
