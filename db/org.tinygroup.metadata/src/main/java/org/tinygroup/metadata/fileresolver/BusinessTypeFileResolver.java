@@ -39,7 +39,7 @@ public class BusinessTypeFileResolver extends AbstractFileProcessor {
 	}
 
 	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(BIZDATATYPE_EXTFILENAME);
+		return fileObject.getFileName().endsWith(BIZDATATYPE_EXTFILENAME) || fileObject.getFileName().endsWith(".bizdatatype");
 	}
 
 	public void process() {

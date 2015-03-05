@@ -40,7 +40,7 @@ public class StandardFieldFileResolver extends AbstractFileProcessor {
 	}
 
 	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(STANDARDFIELD_EXTFILENAME);
+		return fileObject.getFileName().endsWith(STANDARDFIELD_EXTFILENAME) || fileObject.getFileName().endsWith(".stdfield");
 	}
 
 	public void process() {

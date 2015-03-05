@@ -39,7 +39,7 @@ public class ErrorMessageFileResolver extends AbstractFileProcessor {
 	}
 
 	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(ERROR_EXTFILENAME);
+		return fileObject.getFileName().endsWith(ERROR_EXTFILENAME) || fileObject.getFileName().endsWith(".error");
 	}
 
 	public void process() {

@@ -40,7 +40,7 @@ public class StandardTypeFileResolver extends AbstractFileProcessor {
 	}
 
 	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(DATATYPE_EXTFILENAME);
+		return fileObject.getFileName().endsWith(DATATYPE_EXTFILENAME) || fileObject.getFileName().endsWith(".datatype");
 	}
 
 	public void process() {

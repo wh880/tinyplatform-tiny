@@ -41,7 +41,7 @@ public class ConstantFileResolver extends AbstractFileProcessor {
 	}
 
 	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(CONSTANT_EXTFILENAME);
+		return fileObject.getFileName().endsWith(CONSTANT_EXTFILENAME) || fileObject.getFileName().endsWith(".const");
 	}
 
 	public void process() {
