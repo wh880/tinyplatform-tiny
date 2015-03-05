@@ -43,13 +43,27 @@ public class DateTypeConverter implements TypeConverter<String, Date> {
 	}
 
 	public Date getObject(String value) {
-		if (dateFormat == null) {
-			dateFormat = new SimpleDateFormat(format);
-		}
-		try {
-			return dateFormat.parse(value);
-		} catch (ParseException e) {
-			throw new RuntimeException(e);
-		}
+	    Map<String, String> rexMap = new HashMap<String, String>();
+        rexMap.put("yyyy-MM-dd", "\\d{1,4}[-]\\d{1,2}[-]\\d{1,2}");
+        rexMap.put("yyyy-MM-dd HH:mm:ss", "\\d{1,4}[-]\\d{1,2}[-]\\d{1,2}(\\s)*\\d{1,2}(:)\\d{1,2}(:)\\d{1,2}");
+        rexMap.put("yyyy-MM-dd HH:mm:ss", "\\d{1,4}[-]\\d{1,2}[-]\\d{1,2}(\\s)*\\d{1,2}(:)\\d{1,2}(:)\\d{1,2}");
+        rexMap.put("yyyy年MM月dd日 HH:mm:ss", "\\d{1,4}[年]\\d{1,2}[月]\\d{1,2}[日](\\s)*\\d{1,2}(:)\\d{1,2}(:)\\d{1,2}");
+        if (dateFormat == null) {
+            dateFormat = new SimpleDateFormat(format);
+        }
+        try {
+            for (String pattern : rexMap.keySet()) {
+                Pattern patternForcase = Pattern.compile(rexMap.get(pattern),
+                        Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+                Matcher matcher = patternForcase.matcher(value);
+                if (matcher.matches()) {
+                    dateFormat = new SimpleDateFormat(pattern);
+                    break ;
+                }
+            }
+            return dateFormat.parse(value);
+        }catch (ParseException e) {
+           throw new RuntimeException(e);
+        }
 	}
 }
