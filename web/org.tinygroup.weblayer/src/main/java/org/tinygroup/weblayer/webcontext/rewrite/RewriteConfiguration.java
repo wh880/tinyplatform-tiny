@@ -107,23 +107,25 @@ public class RewriteConfiguration extends AbstractConfiguration{
 	private  void resolverSubstitution(XmlNode ruleNode,RewriteRule rule){
 		NameFilter<XmlNode> nameFilter = new NameFilter<XmlNode>(ruleNode);
 		XmlNode subNode = nameFilter.findNode("substitution");
-		RewriteSubstitution substitution=new RewriteSubstitution();
-		substitution.setFlags(subNode.getAttribute("flags"));
-		substitution.setUri(subNode.getAttribute("uri"));
-		NameFilter<XmlNode> paramFilter = new NameFilter<XmlNode>(subNode);
-		List<XmlNode> paramNodes = paramFilter.findNodeList("parameter");
-		if(!CollectionUtil.isEmpty(paramNodes)){
-			Parameter[] parameters = (Parameter[]) Array.newInstance(Parameter.class, paramNodes.size());
-			for (int i = 0; i < parameters.length; i++) {
-				XmlNode paramNode=paramNodes.get(i);
-				Parameter parameter=new Parameter();
-				parameter.setKey(paramNode.getAttribute("key"));
-				parameter.setValue(paramNode.getAttribute("value"));//多个值以逗号分隔
-				parameters[i]=parameter;
-			}	
-			substitution.setParameters(parameters);
+		if(subNode!=null){
+			RewriteSubstitution substitution=new RewriteSubstitution();
+			substitution.setFlags(subNode.getAttribute("flags"));
+			substitution.setUri(subNode.getAttribute("uri"));
+			NameFilter<XmlNode> paramFilter = new NameFilter<XmlNode>(subNode);
+			List<XmlNode> paramNodes = paramFilter.findNodeList("parameter");
+			if(!CollectionUtil.isEmpty(paramNodes)){
+				Parameter[] parameters = (Parameter[]) Array.newInstance(Parameter.class, paramNodes.size());
+				for (int i = 0; i < parameters.length; i++) {
+					XmlNode paramNode=paramNodes.get(i);
+					Parameter parameter=new Parameter();
+					parameter.setKey(paramNode.getAttribute("key"));
+					parameter.setValue(paramNode.getAttribute("value"));//多个值以逗号分隔
+					parameters[i]=parameter;
+				}	
+				substitution.setParameters(parameters);
+			}
+			rule.setSubstitution(substitution);
 		}
-		rule.setSubstitution(substitution);
 	}
 	
 }

@@ -102,10 +102,13 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 					context.getRequest().getRequestDispatcher(path)
 					.forward(context.getRequest(), context.getResponse());
 				}else if("redirect".equals(type)){
+					String contextPath=context.get("TINY_CONTEXT_PATH");
 					if(path.startsWith("/")){
-						path=path.substring(1);
+						contextPath=contextPath+path;
+					}else{
+						contextPath=contextPath+"/"+path;
 					}
-					context.getResponse().sendRedirect(path);
+					context.getResponse().sendRedirect(contextPath);
 				}else{
 					throw new RuntimeException(type+"跳转类型不正确，只能是forward或者redirect");
 				}

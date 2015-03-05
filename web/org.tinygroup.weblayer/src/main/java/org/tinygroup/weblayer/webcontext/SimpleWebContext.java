@@ -25,6 +25,8 @@ import org.tinygroup.commons.tools.ToStringBuilder;
 import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
 import org.tinygroup.weblayer.TinyFilterHandler;
 import org.tinygroup.weblayer.WebContext;
+import org.tinygroup.weblayer.webcontext.rewrite.RewriteWebContext;
+import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
 
 /**
  * 
@@ -115,6 +117,8 @@ public class SimpleWebContext extends CommitMonitor implements WebContext {
 		
 		
 		public RequestDispatcher getRequestDispatcher(String path) {
+			RewriteWebContext webContext=WebContextUtil.findWebContext((HttpServletRequest)getRequest(), RewriteWebContext.class);
+			webContext.setPath(path);
 			return super.getRequestDispatcher(path);
 		}
 		
