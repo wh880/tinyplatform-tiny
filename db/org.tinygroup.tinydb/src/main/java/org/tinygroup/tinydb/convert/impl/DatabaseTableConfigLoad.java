@@ -110,7 +110,7 @@ public class DatabaseTableConfigLoad extends AbstractTableConfigLoad {
 		column.setDecimalDigits(MetadataUtil.getPlaceholderValue(
 				standardFieldId, DECIMAL_DIGITS_HOLDER, "0", this.getClass()
 						.getClassLoader()));
-		column.setTypeName(dialectType.getTypeName());
+		column.setTypeName(dialectType.getType());
 		configuration.addColumn(column);
 	}
 
