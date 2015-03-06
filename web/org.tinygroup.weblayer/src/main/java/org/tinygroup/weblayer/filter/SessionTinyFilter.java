@@ -15,6 +15,10 @@
  */
 package org.tinygroup.weblayer.filter;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
@@ -34,21 +38,21 @@ public class SessionTinyFilter extends AbstractTinyFilter {
 
 	private ConfigImpl config ;
 	
-	/** 初始化factory。 */
-	public void initTinyFilter() {
-		super.initTinyFilter();
+	
+	@Override
+	protected void customInit() {
 		SessionConfiguration sessionConfiguration=BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean(
 				SESSION_CONFIGURATION_BEAN_NAME);
 		config=sessionConfiguration.getSessionConfig();
 	}
-
 	
-	public void preProcess(WebContext context) {
+	
+	public void preProcess(WebContext context) throws ServletException, IOException {
 
 	}
 
 	
-	public void postProcess(WebContext context) {
+	public void postProcess(WebContext context) throws ServletException, IOException {
 		SessionWebContextImpl session = (SessionWebContextImpl) context;
 		session.commit();
 	}

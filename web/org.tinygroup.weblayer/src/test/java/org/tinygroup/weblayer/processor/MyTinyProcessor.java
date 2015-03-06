@@ -32,4 +32,9 @@ public class MyTinyProcessor extends AbstractTinyProcessor {
 		}
 	}
 
+	@Override
+	protected void customInit() throws ServletException {
+		
+	}
+
 }

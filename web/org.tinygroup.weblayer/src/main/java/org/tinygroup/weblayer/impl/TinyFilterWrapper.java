@@ -15,24 +15,27 @@
  */
 package org.tinygroup.weblayer.impl;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.parser.filter.NameFilter;
-import org.tinygroup.weblayer.AbstractTinyFilter;
-import org.tinygroup.weblayer.FilterWrapper;
-import org.tinygroup.weblayer.TinyFilterHandler;
-import org.tinygroup.weblayer.WebContext;
-import org.tinygroup.xmlparser.node.XmlNode;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.weblayer.FilterWrapper;
+import org.tinygroup.weblayer.TinyFilterConfig;
+import org.tinygroup.weblayer.TinyFilterHandler;
+import org.tinygroup.weblayer.TinyFilterManager;
+import org.tinygroup.weblayer.WebContext;
+import org.tinygroup.weblayer.config.TinyFilterConfigInfo;
+import org.tinygroup.weblayer.configmanager.TinyFilterConfigManager;
 
 /**
  * tiny-filter的包装类
@@ -40,99 +43,74 @@ import java.util.List;
  * @author renhui
  * 
  */
-public class TinyFilterWrapper extends AbstractTinyFilter implements
-		FilterWrapper {
-
-	private static final String SPLIT_CHAR = ",";
+public class TinyFilterWrapper implements FilterWrapper {
 
 	private List<Filter> filters = new ArrayList<Filter>();
+
+	private Map<String, Filter> filterMap = new HashMap<String, Filter>();
+
+	private TinyFilterConfigManager tinyFilterConfigManager;
+
+	private TinyFilterManager tinyFilterManager;
+
+	public TinyFilterWrapper(TinyFilterConfigManager tinyFilterConfigManager,
+			TinyFilterManager tinyFilterManager) {
+		super();
+		this.tinyFilterConfigManager = tinyFilterConfigManager;
+		this.tinyFilterManager = tinyFilterManager;
+	}
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(TinyFilterWrapper.class);
 
-	private List<String> filterBeanNames = new ArrayList<String>();;
-
-	protected void initParam(XmlNode xmlNode) {
-		NameFilter<XmlNode> nameFilter = new NameFilter<XmlNode>(xmlNode);
-		List<XmlNode> initParamNodes = nameFilter.findNodeList(INIT_PARAM);
-		for (XmlNode initParamNode : initParamNodes) {
-			String name = initParamNode.getAttribute("name");
-			String value = initParamNode.getAttribute("value");
-			if (TinyFilterConfig.FILTER_BEAN_NAMES.equals(name)
-					&& !StringUtil.isBlank(value)) {
-				String[] beanNames = value.split(SPLIT_CHAR);
-				StringBuffer buffer = new StringBuffer();
-				for (String beanName : beanNames) {
-					if (!filterBeanNames.contains(beanName)) {
-						buffer.append(beanName).append(SPLIT_CHAR);
-						filterBeanNames.add(beanName);
-					}
-				}
-				if (buffer.length() > 0) {
-					initParamMap
-							.put(name, buffer.deleteCharAt(buffer.length() - 1)
-									.toString());
-				}
-
-			} else {
-				initParamMap.put(name, value);
-			}
-			logger.logMessage(LogLevel.DEBUG, "<{}>的初始化参数name='{}',value='{}'",
-					this.getClass().getName(), name, value);
-
-		}
-	}
-
-	public void initTinyFilter() {
-		super.initTinyFilter();
-		logger.logMessage(LogLevel.INFO, "filter包装类开始实例化filter");
-		for (String beanName : filterBeanNames) {
-			Filter filter = BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(beanName);
-			if (filter != null) {
-				logger.logMessage(LogLevel.INFO, "实例化filter：<{}>", beanName);
-				try {
-					filter.init(new TinyFilterConfig(getInitParamMap()));
-				} catch (ServletException e) {
-					logger.errorMessage("初始化filter:{}出现异常", e, beanName);
-					throw new RuntimeException("初始化filter出现异常", e);
-				}
-				filters.add(filter);
-			}
-		}
-		logger.logMessage(LogLevel.INFO, "filter包装类实例化filter结束");
-
-	}
-
-	public void destroyTinyFilter() {
-		super.destroyTinyFilter();
-		for (Filter filter : filters) {
-			filter.destroy();
-		}
-	}
-
-	public void filterWrapper(WebContext context, TinyFilterHandler hander) {
+	public void filterWrapper(WebContext context, TinyFilterHandler hander)
+			throws IOException, ServletException {
 		HttpServletRequest request = context.getRequest();
 		HttpServletResponse response = context.getResponse();
 		String servletPath = hander.getServletPath();
-		if (isMatch(servletPath)) {
-			TinyFilterChain filterChain = new TinyFilterChain(filters, hander);
-			try {
-				filterChain.doFilter(request, response);
-			} catch (Exception e) {
-				throw new RuntimeException("过滤器链执行出现异常", e);
+		List<Filter> matchFilters = getMatchFilters(servletPath);
+		logger.logMessage(LogLevel.DEBUG,
+				"the wrapper httpfilters for the requset path:[{0}] is [{1}]",
+				servletPath, matchFilters);
+		TinyFilterChain filterChain = new TinyFilterChain(matchFilters, hander);
+		filterChain.doFilter(request, response);
+	}
+
+	private List<Filter> getMatchFilters(String servletPath) {
+		List<Filter> matchFilters = new ArrayList<Filter>();
+		for (String filterName : filterMap.keySet()) {
+			TinyFilterConfig filterConfig = tinyFilterManager
+					.getTinyFilterConfig(filterName);
+			if (filterConfig.isMatch(servletPath)) {
+				matchFilters.add(filterMap.get(filterName));
 			}
 		}
+		return matchFilters;
 	}
 
-	public void preProcess(WebContext context) {
-		// TODO Auto-generated method stub
-		
+	public void addHttpFilter(String filterName, Filter filter) {
+		filters.add(filter);
+		filterMap.put(filterName, filter);
 	}
 
-	public void postProcess(WebContext context) {
-		// TODO Auto-generated method stub
-		
+	public void init() throws ServletException {
+		logger.logMessage(
+				LogLevel.DEBUG,
+				"TinyFilterWrapper start initialization wrapper httpfilter:[{0}]",
+				filters);
+		for (String filterName : filterMap.keySet()) {
+			Filter filter = filterMap.get(filterName);
+			TinyFilterConfigInfo filterConfigInfo = tinyFilterConfigManager
+					.getFilterConfig(filterName);
+			filter.init(new TinyWrapperFilterConfig(filterConfigInfo));
+		}
+		logger.logMessage(LogLevel.DEBUG,
+				"TinyFilterWrapper initialization end");
+	}
+
+	public void destroy() {
+		filters = null;
+		filterMap = null;
 	}
 
 }

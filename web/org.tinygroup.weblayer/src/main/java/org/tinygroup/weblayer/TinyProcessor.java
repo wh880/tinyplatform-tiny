@@ -47,14 +47,18 @@ public interface TinyProcessor {
     void process(String urlString, WebContext context)throws ServletException, IOException;
 
     /**
-     * tinyprocessor的初始化操作
+     * 初始化操作
+     * @param tinyProcessorConfig
+     * @throws ServletException
      */
-    void init();
+    void init(TinyProcessorConfig tinyProcessorConfig)throws ServletException;
 
     /**
      * tinyprocessor的销毁操作
      */
     void destroy();
 
-    void setConfiguration(XmlNode xmlNode);
+    void setProcessorName(String processorName);
+    
+    String getProcessorName();
 }

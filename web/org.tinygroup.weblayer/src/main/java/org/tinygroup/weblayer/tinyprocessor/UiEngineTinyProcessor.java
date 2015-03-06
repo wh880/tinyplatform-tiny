@@ -66,20 +66,13 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
         this.fullContextFileRepository = fullContextFileRepository;
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(FullContextUrlRedirectTinyProcessor.class);
-
-
-    public void init() {
-        super.init();
-    }
-
+    private static final Logger logger = LoggerFactory.getLogger(UiEngineTinyProcessor.class);
 
     public void reallyProcess(String servletPath, WebContext context) throws ServletException, IOException {
         logger.logMessage(LogLevel.DEBUG, "{}开始处理...", servletPath);
         HttpServletResponse response = context.getResponse();
         HttpServletRequest request = context.getRequest();
         String contextPath = context.get("TINY_CONTEXT_PATH");
-//        try {
         String lastModifiedSign;
         long modifiedSign = 0;
         long now = System.currentTimeMillis();
@@ -114,10 +107,6 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
         }
 
         logger.logMessage(LogLevel.DEBUG, "{}处理完成。", servletPath);
-//        } catch (IOException e) {
-//            logger.errorMessage("{}写入响应信息出现异常", e, servletPath);
-//            throw new RuntimeException(e);
-//        }
 
     }
 
@@ -252,4 +241,9 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
         }
         return time;
     }
+
+	@Override
+	protected void customInit() throws ServletException {
+		
+	}
 }

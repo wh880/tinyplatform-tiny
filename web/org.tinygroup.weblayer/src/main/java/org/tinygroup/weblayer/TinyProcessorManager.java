@@ -48,5 +48,5 @@ public interface TinyProcessorManager extends TinyWebResourceManager {
      */
     void setConfigManager(
             TinyProcessorConfigManager configManager);
-
+    
 }

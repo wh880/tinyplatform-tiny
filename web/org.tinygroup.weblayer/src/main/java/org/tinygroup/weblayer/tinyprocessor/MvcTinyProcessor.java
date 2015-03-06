@@ -63,21 +63,6 @@ public class MvcTinyProcessor extends AbstractTinyProcessor {
 		this.execute = execute;
 	}
 
-	public void init() {
-		super.init();
-		if (handler == null) {
-			handler = BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(
-					"annotationHandlerMapping");
-		}
-		if (execute == null) {
-			execute = BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(
-					"mappingModelExecute");
-		}
-		handler.init();
-	}
-
 	public void reallyProcess(String urlString, WebContext context) throws ServletException, IOException {
 		HttpServletRequest request = context.getRequest();
 		logger.logMessage(LogLevel.DEBUG,
@@ -94,6 +79,21 @@ public class MvcTinyProcessor extends AbstractTinyProcessor {
 //			logger.errorMessage("tiny-mvc执行出现异常", e);
 //			throw new RuntimeException(e);
 //		}
+	}
+
+	@Override
+	protected void customInit() throws ServletException {
+		if (handler == null) {
+			handler = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					"annotationHandlerMapping");
+		}
+		if (execute == null) {
+			execute = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					"mappingModelExecute");
+		}
+		handler.init();
 	}
 
 }

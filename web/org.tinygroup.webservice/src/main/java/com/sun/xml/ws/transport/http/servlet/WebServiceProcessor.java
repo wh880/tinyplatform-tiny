@@ -15,4 +15,9 @@ public class WebServiceProcessor extends AbstractTinyProcessor {
 		servlet.service(context.getRequest(), context.getResponse());
 	}
 
+	@Override
+	protected void customInit() throws ServletException {
+		
+	}
+
 }

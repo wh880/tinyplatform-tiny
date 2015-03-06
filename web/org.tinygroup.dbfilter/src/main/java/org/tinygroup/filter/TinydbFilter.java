@@ -15,13 +15,15 @@
  */
 package org.tinygroup.filter;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinydb.Bean;
-import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.util.TinyDBUtil;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
@@ -37,7 +39,7 @@ public class TinydbFilter extends AbstractTinyFilter {
 	private static final String BEAN_TYPE_KEY = "@beantype";
 	private Logger logger = LoggerFactory.getLogger(TinydbFilter.class);
 
-	public void preProcess(WebContext context) {
+	public void preProcess(WebContext context) throws ServletException, IOException {
 		String beanType = context.get(BEAN_TYPE_KEY);
 		if (!StringUtil.isBlank(beanType)) {
 			String[] types = beanType.split(SPLIT);
@@ -53,8 +55,13 @@ public class TinydbFilter extends AbstractTinyFilter {
 		}
 	}
 
-	public void postProcess(WebContext context) {
+	public void postProcess(WebContext context) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void customInit() {
 		
 	}
 

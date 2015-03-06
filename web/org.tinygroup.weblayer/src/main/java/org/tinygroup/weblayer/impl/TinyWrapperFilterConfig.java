@@ -16,13 +16,12 @@
 package org.tinygroup.weblayer.impl;
 
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
 
 import org.tinygroup.commons.tools.Enumerator;
+import org.tinygroup.weblayer.config.TinyFilterConfigInfo;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
 
 /**
@@ -30,16 +29,16 @@ import org.tinygroup.weblayer.listener.ServletContextHolder;
  * @author renhui
  *
  */
-public class TinyFilterConfig implements FilterConfig {
+public class TinyWrapperFilterConfig implements FilterConfig {
 	
 	public static final String FILTER_BEAN_NAMES="filter_beans";
 	
 	private static final String WRAPPER_FILTER_NAME="wrapper_filter";
 	
-	private Map<String, String> initParams=new HashMap<String, String>();
+	private TinyFilterConfigInfo tinyFilterConfigInfo;
 	
-	public TinyFilterConfig(Map<String, String> initParams){
-		this.initParams=initParams;
+	public TinyWrapperFilterConfig(TinyFilterConfigInfo tinyFilterConfigInfo){
+		this.tinyFilterConfigInfo=tinyFilterConfigInfo;
 	}
 
 	public String getFilterName() {
@@ -51,11 +50,11 @@ public class TinyFilterConfig implements FilterConfig {
 	}
 
 	public String getInitParameter(String name) {
-		return initParams.get(name);
+		return tinyFilterConfigInfo.getParameterValue(name);
 	}
 
 	public Enumeration getInitParameterNames() {
-		return new Enumerator(initParams.keySet());
+		return new Enumerator(tinyFilterConfigInfo.getIterator());
 	}
 
 }

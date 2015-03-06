@@ -15,9 +15,12 @@
  */
 package org.tinygroup.weblayer;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.tinygroup.commons.order.Ordered;
 import org.tinygroup.weblayer.webcontextfactory.WebContextFactory;
-import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * WebContext过滤器，用于根据WebContext进行相关处理
@@ -42,20 +45,26 @@ public interface TinyFilter extends Ordered, WebContextFactory<WebContext> {
      * 前置操作
      *
      * @param context
+     * @throws ServletException TODO
+     * @throws IOException TODO
      */
-    void preProcess(WebContext context);
+    void preProcess(WebContext context) throws ServletException, IOException;
 
     /**
      * 后置操作
      *
      * @param context
+     * @throws ServletException TODO
+     * @throws IOException TODO
      */
-    void postProcess(WebContext context);
+    void postProcess(WebContext context) throws ServletException, IOException;
 
     /**
-     * 初始化tinyFilter
+     * web体系进行初始化filter
+     * @param config
+     * @throws ServletException
      */
-    void initTinyFilter();
+    void initTinyFilter(TinyFilterConfig config)throws ServletException;
 
     /**
      * 销毁tinyFilter
@@ -70,5 +79,8 @@ public interface TinyFilter extends Ordered, WebContextFactory<WebContext> {
      */
     boolean isMatch(String url);
 
-    void setConfiguration(XmlNode xmlNode);
+    void setFilterName(String filterName);
+    
+    String getFilterName();
+    
 }

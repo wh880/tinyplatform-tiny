@@ -43,7 +43,7 @@ public class TinyServlet extends HttpServlet {
 	private static Logger logger = LoggerFactory.getLogger(TinyServlet.class);
 	TinyProcessorManager tinyProcessorManager;
 
-	public void init() {
+	public void init()throws ServletException {
 		tinyProcessorManager = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 				TinyProcessorManager.TINY_PROCESSOR_MANAGER);

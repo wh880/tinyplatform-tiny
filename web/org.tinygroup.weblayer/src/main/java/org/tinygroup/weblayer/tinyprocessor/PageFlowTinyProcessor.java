@@ -28,15 +28,17 @@ import org.tinygroup.weblayer.WebContext;
 
 /**
  * 页面流flow-processor
+ * 
  * @author renhui
- *
+ * 
  */
 public class PageFlowTinyProcessor extends AbstractTinyProcessor {
 
-	private Logger logger = LoggerFactory.getLogger(PageFlowTinyProcessor.class);
+	private Logger logger = LoggerFactory
+			.getLogger(PageFlowTinyProcessor.class);
 	private final static String NODE_ID = "tiny_flow_id";
 	private FlowExecutor executor;
-	
+
 	public FlowExecutor getExecutor() {
 		return executor;
 	}
@@ -45,17 +47,18 @@ public class PageFlowTinyProcessor extends AbstractTinyProcessor {
 		this.executor = executor;
 	}
 
-	public void reallyProcess(String urlString, WebContext context) throws ServletException, IOException{
-		logger.logMessage(LogLevel.INFO, "{}开始处理",urlString);
+	public void reallyProcess(String urlString, WebContext context)
+			throws ServletException, IOException {
+		logger.logMessage(LogLevel.INFO, "{}开始处理", urlString);
 		String serviceId = getRequestId(urlString);
-	    String nodeId = context.get(NODE_ID);
-	    if(nodeId==null||"".equals(nodeId)){
-	    	executor.execute(serviceId, context);
-	    }else{
-	    	executor.execute(serviceId,nodeId, context);
-	    }
-		
-		logger.logMessage(LogLevel.INFO, "{}处理结束",urlString);
+		String nodeId = context.get(NODE_ID);
+		if (nodeId == null || "".equals(nodeId)) {
+			executor.execute(serviceId, context);
+		} else {
+			executor.execute(serviceId, nodeId, context);
+		}
+
+		logger.logMessage(LogLevel.INFO, "{}处理结束", urlString);
 
 	}
 
@@ -65,4 +68,8 @@ public class PageFlowTinyProcessor extends AbstractTinyProcessor {
 		return urlString.substring(lastSlash + 1, lastDot);
 	}
 
+	@Override
+	protected void customInit() throws ServletException {
+
+	}
 }

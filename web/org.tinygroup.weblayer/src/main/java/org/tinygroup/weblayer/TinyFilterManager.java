@@ -15,7 +15,7 @@
  */
 package org.tinygroup.weblayer;
 
-import org.tinygroup.weblayer.configmanager.TinyFiterConfigManager;
+import org.tinygroup.weblayer.configmanager.TinyFilterConfigManager;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public interface TinyFilterManager extends TinyWebResourceManager {
      *
      * @param configManager
      */
-    void setConfigManager(TinyFiterConfigManager configManager);
+    void setConfigManager(TinyFilterConfigManager configManager);
 
     /**
      * 是不是filter包装模式，配置的tiny-filter是否实现了FilterWrapper接口如果是，则采用fiter包装方式来处理
@@ -56,5 +56,11 @@ public interface TinyFilterManager extends TinyWebResourceManager {
      * @return
      */
     FilterWrapper getFilterWrapper();
+    /**
+     * 根据filter名称获取对应的TinyFilterConfig
+     * @param filterBeanName
+     * @return
+     */
+    TinyFilterConfig getTinyFilterConfig(String filterBeanName);
 
 }

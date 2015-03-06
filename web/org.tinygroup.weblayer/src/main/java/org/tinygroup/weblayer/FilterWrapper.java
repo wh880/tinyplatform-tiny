@@ -15,6 +15,11 @@
  */
 package org.tinygroup.weblayer;
 
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.ServletException;
+
 
 /**
  * filter包装接口
@@ -23,6 +28,12 @@ package org.tinygroup.weblayer;
  */
 public interface FilterWrapper {
 	
-	 void filterWrapper(WebContext context, TinyFilterHandler hander);
-
+	 void filterWrapper(WebContext context, TinyFilterHandler hander)throws IOException, ServletException;
+	 
+	 void addHttpFilter(String filterName,Filter filter);
+	 
+	 void init()throws ServletException;
+	 
+	 public void destroy();
+	 
 }

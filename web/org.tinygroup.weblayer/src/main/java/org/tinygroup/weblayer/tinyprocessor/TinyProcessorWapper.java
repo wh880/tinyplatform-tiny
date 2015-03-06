@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
@@ -40,49 +42,37 @@ public class TinyProcessorWapper extends AbstractTinyProcessor {
 	private static final Logger logger = LoggerFactory
 			.getLogger(TinyProcessorWapper.class);
 
-	
-	public void init() {
-		super.init();
-		String servletBeanName = getInitParamMap().get(
-				TinyServletConfig.SERVLET_BEAN);
-		if (servletBeanName != null) {
-			servlet = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(servletBeanName);
-			if (servlet != null) {
-				try {
-					TinyServletConfig servletConfig= new TinyServletConfig();
-					servletConfig.setInitParams(getInitParamMap());
-					servletConfig.setServletConfig(servlet.getServletConfig());
-					servlet.init(servletConfig);
-				} catch (ServletException e) {
-					logger.errorMessage("初始化servlet:{}出现异常", e, servletBeanName);
-					throw new RuntimeException("初始化servlet出现异常", e);
-				}
-			} else {
-				throw new RuntimeException("找不到bean名称：{}对应的servlet");
-			}
-		}
-	}
-
-	
-	public void reallyProcess(String urlString, WebContext context) throws ServletException, IOException {
+	public void reallyProcess(String urlString, WebContext context)
+			throws ServletException, IOException {
 
 		HttpServletRequest request = context.getRequest();
 		HttpServletResponse response = context.getResponse();
-//		try {
-			servlet.service(request, response);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-////			logger.errorMessage("servlet:{}执行出现异常", e, servlet.getServletName());
-//			throw new RuntimeException("servlet执行出现异常", e);
-//		}
-
+		servlet.service(request, response);
 	}
 
-	
 	public void destroy() {
 		super.destroy();
 		servlet.destroy();
 	}
 
-	
+	@Override
+	protected void customInit() throws ServletException {
+		String servletBeanName = get(TinyServletConfig.SERVLET_BEAN);
+		if (!StringUtil.isBlank(servletBeanName)) {
+			servlet = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(servletBeanName);
+			if (servlet != null) {
+				TinyServletConfig servletConfig = new TinyServletConfig();
+				servletConfig.setInitParams(getInitParamMap());
+				servletConfig.setServletConfig(servlet.getServletConfig());
+				servlet.init(servletConfig);
+			} else {
+				logger.logMessage(LogLevel.WARN,
+						"bean name:[{0}] of servlet can't define");
+			}
+		}
+		logger.logMessage(LogLevel.WARN,
+				"can't find servet wrapper in TinyProcessorWapper");
+	}
+
 }

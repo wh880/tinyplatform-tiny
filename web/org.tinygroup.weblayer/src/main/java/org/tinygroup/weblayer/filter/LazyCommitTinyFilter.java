@@ -15,6 +15,10 @@
  */
 package org.tinygroup.weblayer.filter;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.lazycommit.impl.LazyCommitWebContextImpl;
@@ -28,12 +32,12 @@ import org.tinygroup.weblayer.webcontext.lazycommit.impl.LazyCommitWebContextImp
 public class LazyCommitTinyFilter extends AbstractTinyFilter {
 
 	
-	public void preProcess(WebContext context) {
+	public void preProcess(WebContext context) throws ServletException, IOException {
 
 	}
 
 	
-	public void postProcess(WebContext context) {
+	public void postProcess(WebContext context) throws ServletException, IOException {
 		if (context instanceof LazyCommitWebContextImpl) {
 			LazyCommitWebContextImpl lazy = (LazyCommitWebContextImpl) context;
 			lazy.commit();
@@ -48,6 +52,12 @@ public class LazyCommitTinyFilter extends AbstractTinyFilter {
 	
 	public int getOrder() {
 		return LAZY_COMMIT_FILTER_PRECEDENCE;
+	}
+
+
+	@Override
+	protected void customInit() {
+		
 	}
 	
 	

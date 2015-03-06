@@ -15,6 +15,10 @@
  */
 package org.tinygroup.weblayer.filter;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.basic.impl.BasicWebContextImpl;
@@ -41,22 +45,20 @@ public class BasicTinyFilter extends AbstractTinyFilter {
 		this.maxCookieSize = maxCookieSize;
 	}
 
-	
-	public void initTinyFilter() {
-		super.initTinyFilter();
+	protected void customInit(){
 		if (maxCookieSize == null) {
-			maxCookieSize = getInitParamMap().get(MAX_COOKIE_SIZE);
+			maxCookieSize = get(MAX_COOKIE_SIZE);
 		}
 	}
 
 	
-	public void preProcess(WebContext context) {
+	public void preProcess(WebContext context) throws ServletException, IOException {
 		BasicWebContextImpl basic = (BasicWebContextImpl) context;
 		basic.prepareResponse();
 	}
 
 	
-	public void postProcess(WebContext context) {
+	public void postProcess(WebContext context) throws ServletException, IOException {
 		BasicWebContextImpl basic = (BasicWebContextImpl) context;
 		basic.commitResponse();
 	}

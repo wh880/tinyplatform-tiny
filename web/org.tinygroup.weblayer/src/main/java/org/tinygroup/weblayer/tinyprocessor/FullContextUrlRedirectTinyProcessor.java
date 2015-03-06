@@ -58,14 +58,12 @@ public class FullContextUrlRedirectTinyProcessor extends AbstractTinyProcessor {
 		this.fullContextFileRepository = fullContextFileRepository;
 	}
 
-
-	public void init() {
-		super.init();
-//		fullContextFileRepository = SpringBeanContainer
-//				.getBean("fullContextFileRepository");
+	@Override
+	protected void customInit() throws ServletException {
+		
 	}
 
-	
+
 	public void reallyProcess(String servletPath, WebContext context) throws ServletException, IOException{
 		logger.logMessage(LogLevel.DEBUG, "{}开始处理...", servletPath);
 		HttpServletResponse response = context.getResponse();

@@ -132,4 +132,9 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 			throw new RuntimeException(serviceId + "对应的展现视图不存在！");
 		}
 	}
+
+	@Override
+	protected void customInit() throws ServletException {
+		
+	}
 }

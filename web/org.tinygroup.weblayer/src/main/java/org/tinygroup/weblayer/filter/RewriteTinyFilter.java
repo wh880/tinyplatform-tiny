@@ -15,6 +15,10 @@
  */
 package org.tinygroup.weblayer.filter;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
@@ -36,11 +40,6 @@ public class RewriteTinyFilter extends AbstractTinyFilter {
 		this.rules = rules;
 	}
 	
-	public void initTinyFilter() {
-		super.initTinyFilter();
-		parserExtraConfig();
-	}
-
 	protected void parserExtraConfig() {
 		if (rules == null) {
 			RewriteConfiguration rewriteConfiguration=BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean("rewriteConfiguration");
@@ -49,13 +48,13 @@ public class RewriteTinyFilter extends AbstractTinyFilter {
 
 	}
 
-	public void preProcess(WebContext context) {
+	public void preProcess(WebContext context) throws ServletException, IOException {
 		RewriteWebContextImpl rewrite = (RewriteWebContextImpl) context;
 		rewrite.prepare();
 	}
 
 	
-	public void postProcess(WebContext context) {
+	public void postProcess(WebContext context) throws ServletException, IOException {
 
 	}
 
@@ -66,6 +65,11 @@ public class RewriteTinyFilter extends AbstractTinyFilter {
 	
 	public int getOrder() {
 		return REWRITE_FILTER_PRECEDENCE;
+	}
+
+	@Override
+	protected void customInit() {
+		parserExtraConfig();
 	}
 	
 

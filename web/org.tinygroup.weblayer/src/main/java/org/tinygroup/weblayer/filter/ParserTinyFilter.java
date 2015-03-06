@@ -15,6 +15,10 @@
  */
 package org.tinygroup.weblayer.filter;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.ArrayUtil;
@@ -154,8 +158,9 @@ public class ParserTinyFilter extends AbstractTinyFilter {
 		this.uploadService = uploadService;
 	}
 
-	public void initTinyFilter() {
-		super.initTinyFilter();
+	
+	@Override
+	protected void customInit() {
 		init();
 	}
 
@@ -236,11 +241,11 @@ public class ParserTinyFilter extends AbstractTinyFilter {
 		setUploadService(parserConfiguration.getUploadService());
 	}
 
-	public void preProcess(WebContext context) {
+	public void preProcess(WebContext context) throws ServletException, IOException {
 
 	}
 
-	public void postProcess(WebContext context) {
+	public void postProcess(WebContext context) throws ServletException, IOException {
 
 	}
 

@@ -28,12 +28,10 @@
 	<bean id="tinyProcessorFileProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.fileresolver.TinyProcessorFileProcessor">
 		<property name="configManager" ref="tinyProcessorConfigManager"></property>
-		<property name="tinyProcessorManager" ref="tinyProcessorManager"></property>
 	</bean>
 	<bean id="tinyFilterFileProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.fileresolver.TinyFilterFileProcessor">
 		<property name="configManager" ref="tinyFilterConfigManager"></property>
-		<property name="tinyFilterManager" ref="tinyFilterManager"></property>
 	</bean>
 	<bean id="fullContextServlet" scope="singleton"
 		class="org.tinygroup.weblayer.servlet.FullContextUrlRedirectServlet">
@@ -205,7 +203,7 @@
 	</bean>
 
 	<bean id="tinyFilterConfigManager" scope="singleton"
-		class="org.tinygroup.weblayer.configmanager.TinyFiterConfigManager">
+		class="org.tinygroup.weblayer.configmanager.TinyFilterConfigManager">
 	</bean>
 	
 	<bean id="sessionConfiguration" scope="singleton"

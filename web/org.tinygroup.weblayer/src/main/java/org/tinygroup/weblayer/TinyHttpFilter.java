@@ -248,7 +248,7 @@ public class TinyHttpFilter implements Filter {
 		}
 	}
 
-	private void initTinyFilters() {
+	private void initTinyFilters() throws ServletException {
 		tinyFilterManager = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 				TinyFilterManager.TINY_FILTER_MANAGER);
@@ -257,8 +257,10 @@ public class TinyHttpFilter implements Filter {
 
 	/**
 	 * tiny-processors初始化
+	 * @throws IOException 
+	 * @throws ServletException 
 	 */
-	private void initTinyProcessors() {
+	private void initTinyProcessors() throws ServletException{
 		tinyProcessorManager = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 				TinyProcessorManager.TINY_PROCESSOR_MANAGER);

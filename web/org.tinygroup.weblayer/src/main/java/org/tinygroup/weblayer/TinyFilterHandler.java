@@ -142,7 +142,7 @@ public class TinyFilterHandler {
 
     private WebContext getWebContext(WebContext context,
                                      List<TinyFilter> tinyFilters, HttpServletRequest request,
-                                     HttpServletResponse response) {
+                                     HttpServletResponse response) throws ServletException, IOException {
         WebContext webContext = WebContextUtil.getWebContext(context
                 .getRequest());
         if (webContext == null) {
@@ -155,7 +155,7 @@ public class TinyFilterHandler {
 
     private WebContext createWrapperContext(WebContext context,
                                             List<TinyFilter> tinyFilters, HttpServletRequest request,
-                                            HttpServletResponse response) {
+                                            HttpServletResponse response) throws ServletException, IOException {
         SimpleWebContext innerWebContext = new SimpleWebContext(context, this,
                 request, response);
         WebContext wrapperedContext = innerWebContext;
@@ -261,9 +261,11 @@ public class TinyFilterHandler {
      *
      * @param webContext
      * @param tinyFilters
+     * @throws IOException 
+     * @throws ServletException 
      */
     private void commitWebRequest(WebContext webContext,
-                                  List<TinyFilter> tinyFilters) {
+                                  List<TinyFilter> tinyFilters) throws ServletException, IOException {
         logger.logMessage(LogLevel.DEBUG, "tiny-filter开始进行后置处理操作");
         CommitMonitor monitor = getCommitMonitor(webContext);
         synchronized (monitor) {

@@ -23,18 +23,17 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 
+import org.springframework.web.util.NestedServletException;
 import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.weblayer.TinyProcessor;
+import org.tinygroup.weblayer.TinyProcessorConfig;
 import org.tinygroup.weblayer.TinyProcessorManager;
 import org.tinygroup.weblayer.WebContext;
+import org.tinygroup.weblayer.config.TinyProcessorConfigInfo;
 import org.tinygroup.weblayer.configmanager.TinyProcessorConfigManager;
-import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * tiny servlet处理器管理接口的默认实现
@@ -46,9 +45,9 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 
 	private List<TinyProcessor> tinyProcessorList = new ArrayList<TinyProcessor>();
 
-	private TinyProcessorConfigManager configManager;
+	private Map<String, TinyProcessorConfig> processorMap = new HashMap<String, TinyProcessorConfig>();
 
-	private Map<TinyProcessor, List<XmlNode>> processorXmlNodes = new HashMap<TinyProcessor, List<XmlNode>>();
+	private TinyProcessorConfigManager configManager;
 
 	private static Logger logger = LoggerFactory
 			.getLogger(TinyProcessorManagerImpl.class);
@@ -59,7 +58,8 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 	 * @see org.tinygroup.weblayer.impl.TinyProcessorManager#execute(java
 	 * .lang.String, org.tinygroup.weblayer.WebContext)
 	 */
-	public boolean execute(String url, WebContext context) throws ServletException, IOException{
+	public boolean execute(String url, WebContext context)
+			throws ServletException, IOException {
 		boolean canExecute = false;
 		for (TinyProcessor tinyProcessor : tinyProcessorList) {
 			if (tinyProcessor.isMatch(url)) {
@@ -71,111 +71,75 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 		return canExecute;
 	}
 
-	private void nodeProcessor(XmlNode xmlNode) {
-		processXmlNode(xmlNode);
-	}
-
-	/**
-	 * 解析xmlnode节点
-	 * 
-	 * @param xmlNode
-	 */
-	private void processXmlNode(XmlNode xmlNode) {
-		NameFilter<XmlNode> nameFilter = new NameFilter<XmlNode>(xmlNode);
-		List<XmlNode> nodes = nameFilter
-				.findNodeList(TinyProcessor.TINY_PROCESSOR);
-		for (XmlNode node : nodes) {
-			String processorId = node.getAttribute("id");
-			String processorClassName = getProcessorBeanName(node);
-			logger.logMessage(LogLevel.INFO, "tiny-processor:{}开始被加载",
-					processorId);
-			TinyProcessor processor = null;
-			try {
-				processor = instanceProcessor(processorClassName);
-				List<XmlNode> processorNodes = null;
-				if (!processorXmlNodes.containsKey(processor)) {
-					processorNodes = new ArrayList<XmlNode>();
-				} else {
-					processorNodes = processorXmlNodes.get(processor);
-				}
-				if (processorNodes != null) {
-					processorNodes.add(node);
-					processorXmlNodes.put(processor, processorNodes);
-				}
-
-			} catch (Exception e) {
-				logger.errorMessage(
-						"创建tiny-processor处理器：{}出现异常，由于其类名称：{}不能进行实例化", e,
-						processorId, processorClassName);
-				throw new RuntimeException(e);
-			}
-			logger.logMessage(LogLevel.INFO, "tiny-processor:{}加载结束",
-					processorId);
-
-		}
-	}
-
-	private String getProcessorBeanName(XmlNode xmlNode) {
-		String beanName = xmlNode.getAttribute("bean-name");
-		if (StringUtil.isBlank(beanName)) {
-			beanName = xmlNode.getAttribute("class");
-		}
-		return beanName;
-	}
-
-	/**
-	 * 初始化各个processor
-	 */
-	private void initProcessor() {
-		for (TinyProcessor tinyProcessor : processorXmlNodes.keySet()) {
-
-			XmlNode xmlNode = createXmlNode(processorXmlNodes
-					.get(tinyProcessor));
-			tinyProcessor.setConfiguration(xmlNode);
-			tinyProcessor.init();
-			tinyProcessorList.add(tinyProcessor);
-		}
-
-	}
-
-	private XmlNode createXmlNode(List<XmlNode> xmlNodes) {
-		XmlNode newXmlNode = new XmlNode(TinyProcessor.TINY_PROCESSOR);
-		for (XmlNode xmlNode : xmlNodes) {
-			List<XmlNode> subNodes = xmlNode.getSubNodes();
-			for (XmlNode node : subNodes) {
-				newXmlNode.addNode(node);
+	public void initTinyResources() throws ServletException {
+		reset();
+		Throwable failureCause = null;
+		try {
+			addTinyProcessor();
+			initTinyProcessor();
+		} catch (ServletException ex) {
+			failureCause = ex;
+			throw ex;
+		} catch (Throwable ex) {
+			failureCause = ex;
+			throw new NestedServletException("filter init processing failed",
+					ex);
+		} finally {
+			if (failureCause != null) {
+				logger.errorMessage("Could not init processor", failureCause);
+			} else {
+				logger.logMessage(LogLevel.DEBUG,
+						"Successfully completed processor init");
 			}
 		}
-		return newXmlNode;
 	}
 
-	private TinyProcessor instanceProcessor(String servletClassName)
-			throws InstantiationException, IllegalAccessException,
-			ClassNotFoundException {
-		TinyProcessor processor = BeanContainerFactory.getBeanContainer(
-				this.getClass().getClassLoader()).getBean(servletClassName);
-		if (processor == null) {
-			processor = (TinyProcessor) Class.forName(servletClassName)
-					.newInstance();
+	private void initTinyProcessor() throws ServletException {
+		for (TinyProcessor tinyProcessor : tinyProcessorList) {
+			logger.logMessage(LogLevel.DEBUG,
+					"tiny processor name:[{0}] start init",
+					tinyProcessor.getProcessorName());
+			tinyProcessor.init(processorMap.get(tinyProcessor
+					.getProcessorName()));
+			logger.logMessage(LogLevel.DEBUG,
+					"tiny processor name:[{0}] init end",
+					tinyProcessor.getProcessorName());
 		}
+
+	}
+
+	private void addTinyProcessor() {
+		List<TinyProcessorConfigInfo> processorConfigs = configManager
+				.getProcessorConfigs();
+		for (TinyProcessorConfigInfo processorConfig : processorConfigs) {
+			tinyProcessorList.add(createTinyProcessor(processorConfig));
+			processorMap.put(processorConfig.getConfigName(),
+					new DefaultTinyProcessorConfig(processorConfig));
+		}
+
+	}
+
+	private TinyProcessor createTinyProcessor(
+			TinyProcessorConfigInfo processorConfigInfo) {
+		String processorName = processorConfigInfo.getConfigName();
+		logger.logMessage(LogLevel.INFO, "tiny-processor:{}开始被实例化",
+				processorName);
+		TinyProcessor processor = instanceProcessor(processorConfigInfo
+				.getConfigBeanName());
+		processor.setProcessorName(processorName);
+		logger.logMessage(LogLevel.INFO, "tiny-filter:{}实例化结束", processorName);
 		return processor;
 	}
 
-	public void initTinyResources() {
-		tinyProcessorList.clear();// 先清除
-		processorXmlNodes.clear();
-		if (configManager != null) {
-			List<XmlNode> configs = configManager.getConfigs();
-			XmlNode component = configManager.getComponentConfig();
-			XmlNode application = configManager.getApplicationConfig();
-			configs.addAll(ConfigurationUtil.combineSubList(application,
-					component, TinyProcessor.TINY_PROCESSOR, "id"));
-			for (XmlNode config : configs) {
-				nodeProcessor(config);
-			}
-			initProcessor();
-		}
+	private TinyProcessor instanceProcessor(String beanName) {
+		TinyProcessor processor = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(beanName);
+		return processor;
+	}
 
+	public void reset() {
+		tinyProcessorList = new ArrayList<TinyProcessor>();
+		processorMap = new HashMap<String, TinyProcessorConfig>();
 	}
 
 	public void setConfigManager(TinyProcessorConfigManager configManager) {
@@ -186,9 +150,8 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 		for (TinyProcessor tinyProcessor : tinyProcessorList) {
 			tinyProcessor.destroy();
 		}
-		configManager = null;
-		processorXmlNodes = null;
-
+		tinyProcessorList = null;
+		processorMap = null;
 	}
 
 }

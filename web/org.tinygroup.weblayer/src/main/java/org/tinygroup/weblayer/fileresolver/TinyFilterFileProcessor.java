@@ -15,12 +15,14 @@
  */
 package org.tinygroup.weblayer.fileresolver;
 
-import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
-import org.tinygroup.weblayer.TinyFilterManager;
-import org.tinygroup.weblayer.configmanager.TinyFiterConfigManager;
+import org.tinygroup.weblayer.config.TinyFilterConfigInfos;
+import org.tinygroup.weblayer.configmanager.TinyFilterConfigManager;
+import org.tinygroup.xstream.XStreamFactory;
+
+import com.thoughtworks.xstream.XStream;
 
 /**
  * 搜索tinyfilter的文件处理器
@@ -30,22 +32,14 @@ import org.tinygroup.weblayer.configmanager.TinyFiterConfigManager;
 public class TinyFilterFileProcessor extends AbstractFileProcessor {
 
 	private static final String FILTERS_EXT_FILENAMES = ".tinyfilters.xml";
-	private TinyFiterConfigManager configManager;
-	private TinyFilterManager tinyFilterManager;
-	public TinyFiterConfigManager getConfigManager() {
+	private TinyFilterConfigManager configManager;
+
+	public TinyFilterConfigManager getConfigManager() {
 		return configManager;
 	}
 
-	public void setConfigManager(TinyFiterConfigManager configManager) {
+	public void setConfigManager(TinyFilterConfigManager configManager) {
 		this.configManager = configManager;
-	}
-
-	public TinyFilterManager getTinyFilterManager() {
-		return tinyFilterManager;
-	}
-
-	public void setTinyFilterManager(TinyFilterManager tinyFilterManager) {
-		this.tinyFilterManager = tinyFilterManager;
 	}
 
 	public boolean isMatch(FileObject fileObject) {
@@ -53,31 +47,34 @@ public class TinyFilterFileProcessor extends AbstractFileProcessor {
 	}
 
 	public void process() {
-		if(!CollectionUtil.isEmpty(deleteList)||!CollectionUtil.isEmpty(changeList)){
-			for (FileObject fileObject : deleteList) {
-				logger.log(LogLevel.INFO, "正在移除tiny-filter描述文件：<{}>",
-						fileObject.getAbsolutePath());
-				FileObject oldFileObject=(FileObject) caches.get(fileObject.getAbsolutePath());
-				if(oldFileObject!=null){
-					configManager.removeConfig(oldFileObject);
-					caches.remove(fileObject.getAbsolutePath());
-				}
-				logger.log(LogLevel.INFO, "移除tiny-filter描述文件：<{}>结束",
-						fileObject.getAbsolutePath());
+		XStream stream = XStreamFactory.getXStream("weblayer");
+		for (FileObject fileObject : deleteList) {
+			logger.log(LogLevel.INFO, "正在移除tiny-filter描述文件：<{}>",
+					fileObject.getAbsolutePath());
+			TinyFilterConfigInfos oldConfigs = (TinyFilterConfigInfos) caches
+					.get(fileObject.getAbsolutePath());
+			if (oldConfigs != null) {
+				configManager.removeConfig(oldConfigs);
+				caches.remove(fileObject.getAbsolutePath());
 			}
-			
-			for (FileObject fileObject : changeList) {
-				FileObject oldFileObject=(FileObject) caches.get(fileObject.getAbsolutePath());
-				if(oldFileObject!=null){
-					configManager.removeConfig(oldFileObject);
-				}
-				logger.log(LogLevel.INFO, "找到tiny-filter描述文件：<{}>",
-						fileObject.getAbsolutePath());
-				configManager.addConfig(fileObject);
-				caches.put(fileObject.getAbsolutePath(), fileObject);
-			}
-			tinyFilterManager.initTinyResources();
+			logger.log(LogLevel.INFO, "移除tiny-filter描述文件：<{}>结束",
+					fileObject.getAbsolutePath());
 		}
+
+		for (FileObject fileObject : changeList) {
+			TinyFilterConfigInfos oldConfigs = (TinyFilterConfigInfos) caches
+					.get(fileObject.getAbsolutePath());
+			if (oldConfigs != null) {
+				configManager.removeConfig(oldConfigs);
+			}
+			logger.log(LogLevel.INFO, "找到tiny-filter描述文件：<{}>",
+					fileObject.getAbsolutePath());
+			TinyFilterConfigInfos configInfos = (TinyFilterConfigInfos) stream
+					.fromXML(fileObject.getInputStream());
+			configManager.addConfig(configInfos);
+			caches.put(fileObject.getAbsolutePath(), configInfos);
+		}
+		configManager.combineConfig();
 	}
 
 }

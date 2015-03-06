@@ -15,12 +15,14 @@
  */
 package org.tinygroup.weblayer.fileresolver;
 
-import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
-import org.tinygroup.weblayer.TinyProcessorManager;
+import org.tinygroup.weblayer.config.TinyProcessorConfigInfos;
 import org.tinygroup.weblayer.configmanager.TinyProcessorConfigManager;
+import org.tinygroup.xstream.XStreamFactory;
+
+import com.thoughtworks.xstream.XStream;
 
 /**
  * 搜索tinyprocessor的文件处理器
@@ -32,15 +34,6 @@ public class TinyProcessorFileProcessor extends AbstractFileProcessor {
 
 	private static final String SERVLETS_EXT_FILENAMES = ".tinyprocessor.xml";
 	private TinyProcessorConfigManager configManager;
-	private TinyProcessorManager tinyProcessorManager;
-	
-	public TinyProcessorManager getTinyProcessorManager() {
-		return tinyProcessorManager;
-	}
-
-	public void setTinyProcessorManager(TinyProcessorManager tinyProcessorManager) {
-		this.tinyProcessorManager = tinyProcessorManager;
-	}
 
 	public TinyProcessorConfigManager getConfigManager() {
 		return configManager;
@@ -55,31 +48,34 @@ public class TinyProcessorFileProcessor extends AbstractFileProcessor {
 	}
 
 	public void process() {
-		if(!CollectionUtil.isEmpty(deleteList)||!CollectionUtil.isEmpty(changeList)){
-			for (FileObject fileObject : deleteList) {
-				logger.log(LogLevel.INFO, "正在移除tiny-processor描述文件：<{}>",
-						fileObject.getAbsolutePath());
-				FileObject oldFileObject=(FileObject) caches.get(fileObject.getAbsolutePath());
-				if(oldFileObject!=null){
-					configManager.removeConfig(oldFileObject);
-					caches.remove(fileObject.getAbsolutePath());
-				}
-				logger.log(LogLevel.INFO, "移除tiny-processor描述文件：<{}>结束",
-						fileObject.getAbsolutePath());
+		XStream stream = XStreamFactory.getXStream("weblayer");
+		for (FileObject fileObject : deleteList) {
+			logger.log(LogLevel.INFO, "正在移除tiny-processor描述文件：<{}>",
+					fileObject.getAbsolutePath());
+			TinyProcessorConfigInfos oldConfigs = (TinyProcessorConfigInfos) caches
+					.get(fileObject.getAbsolutePath());
+			if (oldConfigs != null) {
+				configManager.removeConfig(oldConfigs);
+				caches.remove(fileObject.getAbsolutePath());
 			}
-			
-			for (FileObject fileObject : changeList) {
-				FileObject oldFileObject=(FileObject) caches.get(fileObject.getAbsolutePath());
-				if(oldFileObject!=null){
-					configManager.removeConfig(oldFileObject);
-				}
-				logger.log(LogLevel.INFO, "找到tiny-processor描述文件：<{}>",
-						fileObject.getAbsolutePath());
-				configManager.addConfig(fileObject);
-				caches.put(fileObject.getAbsolutePath(), fileObject);
-			}
-			tinyProcessorManager.initTinyResources();
+			logger.log(LogLevel.INFO, "移除tiny-processor描述文件：<{}>结束",
+					fileObject.getAbsolutePath());
 		}
+
+		for (FileObject fileObject : changeList) {
+			TinyProcessorConfigInfos oldConfigs = (TinyProcessorConfigInfos) caches
+					.get(fileObject.getAbsolutePath());
+			if (oldConfigs != null) {
+				configManager.removeConfig(oldConfigs);
+			}
+			logger.log(LogLevel.INFO, "找到tiny-processor描述文件：<{}>",
+					fileObject.getAbsolutePath());
+			TinyProcessorConfigInfos configInfos = (TinyProcessorConfigInfos) stream
+					.fromXML(fileObject.getInputStream());
+			configManager.addConfig(configInfos);
+			caches.put(fileObject.getAbsolutePath(), configInfos);
+		}
+		configManager.combineConfig();
 	}
 
 }

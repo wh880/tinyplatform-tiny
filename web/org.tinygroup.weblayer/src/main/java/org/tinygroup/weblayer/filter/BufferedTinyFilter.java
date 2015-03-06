@@ -17,6 +17,8 @@ package org.tinygroup.weblayer.filter;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
+
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.buffered.exception.BufferCommitFailedException;
@@ -31,18 +33,12 @@ import org.tinygroup.weblayer.webcontext.buffered.impl.BufferedWebContextImpl;
 public class BufferedTinyFilter extends AbstractTinyFilter {
 
 	
-	public void initTinyFilter() {
-		super.initTinyFilter();
+	public void preProcess(WebContext context) throws ServletException, IOException {
 
 	}
 
 	
-	public void preProcess(WebContext context) {
-
-	}
-
-	
-	public void postProcess(WebContext context) {
+	public void postProcess(WebContext context) throws ServletException, IOException {
 		if (context instanceof BufferedWebContextImpl) {
 			BufferedWebContextImpl buffered = (BufferedWebContextImpl) context;
 			if (buffered.isBuffering()) {
@@ -63,6 +59,12 @@ public class BufferedTinyFilter extends AbstractTinyFilter {
 	
 	public int getOrder() {
 		return BUFFERED_FILTER_PRECEDENCE;
+	}
+
+
+	@Override
+	protected void customInit() {
+		
 	}
 
 }

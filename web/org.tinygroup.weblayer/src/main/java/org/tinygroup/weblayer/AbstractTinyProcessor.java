@@ -16,20 +16,12 @@
 package org.tinygroup.weblayer;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 
-import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.parser.filter.NameFilter;
-import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * tiny servlet 处理器的抽象实现
@@ -39,103 +31,48 @@ import org.tinygroup.xmlparser.node.XmlNode;
  */
 public abstract class AbstractTinyProcessor implements TinyProcessor {
 
-	private static final String TINY_PROCESSOR = "tiny-processor";
+	protected String processorName;
 
-	private static final String INIT_PARAM = "init-param";
+	protected TinyProcessorConfig tinyProcessorConfig;
 
-	private static final String SERVLET_MAPPING = "servlet-mapping";
-	private XmlNode xmlNode;
-	// 存放初始化参数的map
-	private Map<String, String> initParamMap = new HashMap<String, String>();
-	// 存放映射正则表达式列表
-	private List<Pattern> patterns = new ArrayList<Pattern>();
-    //存放正则表达式的字符串格式
-	private List<String> patternStrs = new ArrayList<String>();
+	protected static Logger logger = LoggerFactory
+			.getLogger(AbstractTinyProcessor.class);
 
-	protected static Logger logger = LoggerFactory.getLogger(AbstractTinyProcessor.class);
-
-	public String getNodeName() {
-		return TINY_PROCESSOR;
+	public void setProcessorName(String processorName) {
+		this.processorName = processorName;
 	}
 
-	public void setConfiguration(XmlNode xmlNode) {
-		this.xmlNode = xmlNode;
-		
+	public String getProcessorName() {
+		return processorName;
 	}
 
-	/**
-	 * 加载节点配置信息，存入对象中
-	 * 
-	 * @param xmlNode
-	 */
-	public void init() {
-		if (xmlNode != null) {
-			initParam(xmlNode);
-			initPattern(xmlNode);
-		}
+	public void init(TinyProcessorConfig tinyProcessorConfig)
+			throws ServletException {
+		this.tinyProcessorConfig = tinyProcessorConfig;
+		customInit();
 	}
+
+	protected abstract void customInit() throws ServletException;
 
 	public void destroy() {
-		xmlNode = null;
-		initParamMap = null;
-		patterns = null;
-		patternStrs = null;
 
-	}
-
-	private void initPattern(XmlNode xmlNode) {
-		NameFilter<XmlNode> nameFilter = new NameFilter<XmlNode>(xmlNode);
-		List<XmlNode> servletMappings = nameFilter
-				.findNodeList(SERVLET_MAPPING);
-		for (XmlNode servletMapping : servletMappings) {
-			String urlPattern = servletMapping.getAttribute("url-pattern");
-			if (!patternStrs.contains(urlPattern)) {
-				patterns.add(Pattern.compile(urlPattern));
-				patternStrs.add(urlPattern);
-			}
-			logger.logMessage(LogLevel.DEBUG, "<{}>的url-pattern:'{}'", this
-					.getClass().getName(), urlPattern);
-		}
-	}
-
-	private void initParam(XmlNode xmlNode) {
-		NameFilter<XmlNode> nameFilter = new NameFilter<XmlNode>(xmlNode);
-		List<XmlNode> initParamNodes = nameFilter.findNodeList(INIT_PARAM);
-		for (XmlNode initParamNode : initParamNodes) {
-			String name = initParamNode.getAttribute("name");
-			String value = initParamNode.getAttribute("value");
-			initParamMap.put(name, value);
-			logger.logMessage(LogLevel.DEBUG, "<{}>的初始化参数name='{}',value='{}'",
-					this.getClass().getName(), name, value);
-
-		}
-	}
-
-	public XmlNode getConfiguration() {
-		return xmlNode;
 	}
 
 	public boolean isMatch(String urlString) {
-		for (Pattern pattern : patterns) {
-			Matcher matcher = pattern.matcher(urlString);
-			if (matcher.matches()) {
-				logger.logMessage(LogLevel.DEBUG, "请求路径：<{}>,匹配的tiny-processor:<{}>",urlString,this.getClass().getSimpleName());
-				return true;
-			}
-		}
-		return false;
+		return tinyProcessorConfig.isMatch(urlString);
 	}
 
-	public Map<String, String> getInitParamMap() {
-		return initParamMap;
-	}
-
-	public List<Pattern> getPatterns() {
-		return patterns;
-	}
-
-	public void process(String urlString, WebContext context) throws ServletException, IOException{
+	public void process(String urlString, WebContext context)
+			throws ServletException, IOException {
 		reallyProcess(urlString, context);
+	}
+	
+	protected String get(String param) {
+		return tinyProcessorConfig.getInitParameter(param);
+	}
+	
+	protected Map<String, String> getInitParamMap() {
+		return tinyProcessorConfig.getParameterMap();
 	}
 
 	/**
@@ -144,5 +81,6 @@ public abstract class AbstractTinyProcessor implements TinyProcessor {
 	 * @param urlString
 	 * @param context
 	 */
-	public abstract void reallyProcess(String urlString, WebContext context) throws ServletException, IOException;
+	public abstract void reallyProcess(String urlString, WebContext context)
+			throws ServletException, IOException;
 }

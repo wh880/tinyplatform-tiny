@@ -16,6 +16,9 @@
 package org.tinygroup.weblayer;
 
 
+import javax.servlet.ServletException;
+
+
 /**
  * tiny web资源管理器
  *
@@ -26,7 +29,7 @@ public interface TinyWebResourceManager {
     /**
      * tiny资源初始化（servlet或filter）
      */
-    void initTinyResources();
+    void initTinyResources()throws ServletException;
 
     /**
      * tiny资源销毁（servlet或filter）

@@ -15,151 +15,79 @@
  */
 package org.tinygroup.weblayer;
 
-import org.tinygroup.logger.LogLevel;
+import javax.servlet.ServletException;
+
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.weblayer.webcontext.DefaultWebContext;
-import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * tinyfilter的抽象实现
+ * 
  * @author renhui
- *
+ * 
  */
 public abstract class AbstractTinyFilter implements TinyFilter {
-	
-	protected static final String TINY_FILTER = "tiny-filter";
-	
-	protected static final String INIT_PARAM = "init-param";
+	protected String filterName;
 
-	protected static final String FILTER_MAPPING = "filter-mapping";
-	
-	private XmlNode xmlNode;
-	
-	// 存放初始化参数的map
-	protected Map<String, String> initParamMap = new HashMap<String, String>();
-	// 存放映射正则表达式列表
-	private List<Pattern> patterns = new ArrayList<Pattern>();
-    //存放正则表达式的字符串格式
-	private List<String> patternStrs = new ArrayList<String>();
+	protected TinyFilterConfig tinyFilterConfig;
 
-	protected static Logger logger = LoggerFactory.getLogger(AbstractTinyFilter.class);
+	protected static Logger logger = LoggerFactory
+			.getLogger(AbstractTinyFilter.class);
 
-	public String getNodeName() {
-		return TINY_FILTER;
+	public void initTinyFilter(TinyFilterConfig config) throws ServletException {
+		this.tinyFilterConfig = config;
+		customInit();
+	}
+    /**
+     * 由客户自定义初始化
+     */
+	protected abstract void customInit();
+
+	public void setFilterName(String filterName) {
+		this.filterName = filterName;
 	}
 
-	public void setConfiguration(XmlNode xmlNode) {
-		this.xmlNode=xmlNode;
-		
-	}
-	
-	protected void initPattern(XmlNode xmlNode) {
-		NameFilter<XmlNode> nameFilter = new NameFilter<XmlNode>(xmlNode);
-		List<XmlNode> filterMappings = nameFilter
-				.findNodeList(FILTER_MAPPING);
-		for (XmlNode filterMapping : filterMappings) {
-			String urlPattern = filterMapping.getAttribute("url-pattern");
-			if (!patternStrs.contains(urlPattern)) {
-				patterns.add(Pattern.compile(urlPattern));
-				patternStrs.add(urlPattern);
-			}
-			logger.logMessage(LogLevel.DEBUG, "<{}>的url-pattern:'{}'", this
-					.getClass().getName(), urlPattern);
-		}
+	public String getFilterName() {
+		return filterName;
 	}
 
-	protected void initParam(XmlNode xmlNode) {
-		NameFilter<XmlNode> nameFilter = new NameFilter<XmlNode>(xmlNode);
-		List<XmlNode> initParamNodes = nameFilter.findNodeList(INIT_PARAM);
-		for (XmlNode initParamNode : initParamNodes) {
-			String name = initParamNode.getAttribute("name");
-			String value = initParamNode.getAttribute("value");
-			initParamMap.put(name, value);
-			logger.logMessage(LogLevel.DEBUG, "<{}>的初始化参数name='{}',value='{}'",
-					this.getClass().getName(), name, value);
-
-		}
-	}
-
-	public XmlNode getConfiguration() {
-		return xmlNode;
-	}
-
-	
-
-	public void initTinyFilter() {
-		//获取
-		if (xmlNode != null) {
-			initParam(xmlNode);
-			initPattern(xmlNode);
-		}
-	}
 
 	public void destroyTinyFilter() {
-		xmlNode = null;
-		initParamMap = null;
-		patterns = null;
-		patternStrs = null;
 
 	}
 
 	public boolean isMatch(String url) {
-		for (Pattern pattern : patterns) {
-			Matcher matcher = pattern.matcher(url);
-			if (matcher.matches()) {
-				logger.logMessage(LogLevel.DEBUG, "请求路径：<{}>,匹配的tiny-filter:<{}>",url,this.getClass().getSimpleName());
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public Map<String, String> getInitParamMap() {
-		return initParamMap;
+		return tinyFilterConfig.isMatch(url);
 	}
 
-	public List<Pattern> getPatterns() {
-		return patterns;
-	}
-	
 	public WebContext wrapContext(WebContext wrappedContext) {
-		WebContext context=getAlreadyWrappedContext(wrappedContext);
+		WebContext context = getAlreadyWrappedContext(wrappedContext);
 		initContext(context);
 		return context;
 	}
-	
+
 	protected void initContext(WebContext context) {
-	
+
 	}
 
-
 	/**
-      * 
-      * 返回已经包装的上下文
-      * @param wrappedContext
-      * @return
-      */
+	 * 
+	 * 返回已经包装的上下文
+	 * 
+	 * @param wrappedContext
+	 * @return
+	 */
 	protected WebContext getAlreadyWrappedContext(WebContext wrappedContext) {
 		return new DefaultWebContext(wrappedContext);
 	}
-	
-	protected  String get(String param) {
-		return getInitParamMap().get(param);  
+
+	protected String get(String param) {
+		return tinyFilterConfig.getInitParameter(param);
 	}
 
 	public int getOrder() {
 		return DEFAULT_PRECEDENCE;
 	}
-	
-	
 
 }
