@@ -71,6 +71,7 @@ public class TinyHttpFilter implements Filter {
 	private FullContextFileRepository fullContextFileRepository;
 	private static String[] defaultFiles = { "index.page", "index.htm",
 			"index.html", "index.jsp" };
+	public static final String DEFAULT_PAGE_KEY="$_default_page";
 
 	public void destroy() {
 		destroyTinyProcessors();
@@ -115,6 +116,7 @@ public class TinyHttpFilter implements Filter {
 						.getFileObject(tmpPath);
 				if (fileObject != null && fileObject.isExist()) {
 					servletPath = tmpPath;
+					request.setAttribute(DEFAULT_PAGE_KEY, servletPath);
 					break;
 				}
 			}
