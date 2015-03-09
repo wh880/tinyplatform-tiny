@@ -43,6 +43,9 @@ public class LoaderManager {
 	 */
 	public static ClassLoader getLoader(String className)
 			throws ClassNotFoundException {
+		if (isSimple(className)) {
+			return LoaderManager.class.getClassLoader();
+		}
 		if (classMap.containsKey(className)) {
 			return classMap.get(className);
 		}
@@ -87,7 +90,7 @@ public class LoaderManager {
 		if (classes == null)
 			return;
 		for (String className : classes) {
-			if(classMap.get(className)==loader){
+			if (classMap.get(className) == loader) {
 				loaderMap.remove(className);
 			}
 		}
@@ -102,6 +105,9 @@ public class LoaderManager {
 	 */
 	public static Class<?> getClass(String className)
 			throws ClassNotFoundException {
+		if (isSimple(className)) {
+			return getSimpleClass(className);
+		}
 		return getLoader(className).loadClass(className);
 	}
 
@@ -110,11 +116,54 @@ public class LoaderManager {
 	 * 
 	 * @param loader
 	 */
-	public static void addClassLoader(ClassLoader loader,List<String> jarFiles) {
+	public static void addClassLoader(ClassLoader loader, List<String> jarFiles) {
 		if (!loaders.containsKey(loader))
-			loaders.put(loader,jarFiles);
+			loaders.put(loader, jarFiles);
 	}
-	public static List<String> getLoaderFiles(ClassLoader loader){
+
+	public static List<String> getLoaderFiles(ClassLoader loader) {
 		return loaders.get(loader);
+	}
+
+	private static boolean isSimple(String className) {
+		if ("int".equals(className)) {
+			return true;
+		} else if ("boolean".equals(className)) {
+			return true;
+		} else if ("float".equals(className)) {
+			return true;
+		} else if ("double".equals(className)) {
+			return true;
+		} else if ("long".equals(className)) {
+			return true;
+		} else if ("short".equals(className)) {
+			return true;
+		} else if ("char".equals(className)) {
+			return true;
+		} else if ("byte".equals(className)) {
+			return true;
+		}
+		return false;
+	}
+
+	private static Class<?> getSimpleClass(String className) {
+		if ("int".equals(className)) {
+			return int.class;
+		} else if ("boolean".equals(className)) {
+			return boolean.class;
+		} else if ("float".equals(className)) {
+			return float.class;
+		} else if ("double".equals(className)) {
+			return double.class;
+		} else if ("long".equals(className)) {
+			return long.class;
+		} else if ("short".equals(className)) {
+			return short.class;
+		} else if ("char".equals(className)) {
+			return char.class;
+		} else if ("byte".equals(className)) {
+			return byte.class;
+		}
+		throw new RuntimeException(className + "不是基本数据类型");
 	}
 }
