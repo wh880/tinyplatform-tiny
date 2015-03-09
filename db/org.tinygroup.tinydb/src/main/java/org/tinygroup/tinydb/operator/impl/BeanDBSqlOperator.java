@@ -243,9 +243,15 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 
 	public Pager getPager(String sql, int start, int limit)
 			throws TinyDbException {
-		int totalCount = account(sql);
+		int totalCount = account(getCountSql(sql));
 		Bean[] beans = getPageBeans(sql, start, limit);
 		return createPager(totalCount, start, limit, beans);
+	}
+	
+	private String getCountSql(String sql){
+		StringBuffer sb = new StringBuffer(" select count(0) from (");
+		sb.append(sql).append(") temp");
+		return sb.toString();
 	}
 
 	private Pager createPager(int start, int limit, int totalCount, Bean[] beans) {
@@ -254,21 +260,21 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 
 	public Pager getPager(String sql, int start, int limit,
 			Object... parameters) throws TinyDbException {
-		int totalCount = account(sql, parameters);
+		int totalCount = account(getCountSql(sql), parameters);
 		Bean[] beans = getPageBeans(sql, start, limit, parameters);
 		return createPager(totalCount, start, limit, beans);
 	}
 
 	public Pager getPager(String sql, int start, int limit,
 			List<Object> parameters) throws TinyDbException {
-		int totalCount = account(sql, parameters);
+		int totalCount = account(getCountSql(sql), parameters);
 		Bean[] beans = getPageBeans(sql, start, limit, parameters);
 		return createPager(totalCount, start, limit, beans);
 	}
 
 	public Pager getPager(String sql, int start, int limit,
 			Map<String, Object> parameters) throws TinyDbException {
-		int totalCount = account(sql, parameters);
+		int totalCount = account(getCountSql(sql), parameters);
 		Bean[] beans = getPageBeans(sql, start, limit, parameters);
 		return createPager(totalCount, start, limit, beans);
 	}
