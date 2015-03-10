@@ -61,5 +61,6 @@
         <module>org.tinygroup.validatecomponent</module>
         <module>org.tinygroup.validate</module>
         <module>org.tinygroup.loader</module>
+		<module>org.tinygroup.tinyrunner</module>
     </modules>
 </project>
