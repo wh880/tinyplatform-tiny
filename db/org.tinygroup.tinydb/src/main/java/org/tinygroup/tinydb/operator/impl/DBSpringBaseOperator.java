@@ -42,25 +42,22 @@ import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.exception.TinyDbException;
-import org.tinygroup.tinydb.impl.DefaultNameConverter;
 import org.tinygroup.tinydb.operator.TransactionCallBack;
 import org.tinygroup.tinydb.operator.TransactionOperator;
 import org.tinygroup.tinydb.spring.BatchPreparedStatementSetterImpl;
 import org.tinygroup.tinydb.spring.SqlParamValuesBatchStatementSetterImpl;
 import org.tinygroup.tinydb.spring.TinydbResultExtractor;
+import org.tinygroup.tinydb.sql.impl.StatementTransformComposite;
 
-public class DBSpringBaseOperator implements TransactionOperator {
+public class DBSpringBaseOperator extends StatementTransformComposite implements TransactionOperator {
 
 	private Dialect dialect;
 	private TransactionStatus status;
 	private PlatformTransactionManager transactionManager;
 	private TransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
-	private Logger logger = LoggerFactory.getLogger(DBSpringBaseOperator.class);
+	private static Logger logger = LoggerFactory.getLogger(DBSpringBaseOperator.class);
 	protected JdbcTemplate jdbcTemplate;
-	protected Configuration configuration;
-
-	protected BeanDbNameConverter beanDbNameConverter = new DefaultNameConverter();
-
+	
 	private UUID uuid;
 	
 	public DBSpringBaseOperator(){
@@ -68,8 +65,8 @@ public class DBSpringBaseOperator implements TransactionOperator {
 	}
 	
 	public DBSpringBaseOperator(JdbcTemplate jdbcTemplate,Configuration configuration) {
+		super(configuration);
 		this.jdbcTemplate = jdbcTemplate;
-		this.configuration=configuration;
 		uuid = UUID.randomUUID();
 	}
 	
@@ -97,9 +94,6 @@ public class DBSpringBaseOperator implements TransactionOperator {
 		this.jdbcTemplate=jdbcTemplate;
 	}
 	
-	public void setConfiguration(Configuration configuration){
-		 this.configuration=configuration;
-	}
 
 	public int account(String sql) throws TinyDbException {
 		try {

@@ -35,12 +35,7 @@ public class RelationTest extends BaseTest {
 	private static final String MORE_TO_ONE2 = "moreToOne2";
 	private static final String MORE_TO_ONE3 = "moreToOne3";
 	private static final String MORE_TO_ONE4 = "moreToOne4";
-
 	
-	public void setUp() {
-		super.setUp();
-	
-	}
 	
 	@SuppressWarnings("unchecked")
 	public void testOneToMore() throws TinyDbException{

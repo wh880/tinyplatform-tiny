@@ -101,7 +101,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 	}
 
 	protected void insertTopBean(Bean bean) throws TinyDbException {
-		String insertSql = getInsertSql(bean);
+		String insertSql = toInsert(bean);
 		SqlParameterValue[] sqlParameterValues = createSqlParameterValue(bean);
 		executeBySqlParameterValues(insertSql, sqlParameterValues);
 	}
@@ -163,8 +163,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 
 	protected int deleteTopBean(Bean bean) throws TinyDbException {
 		SqlParameterValue[] params = getSqlParameterValues(bean);
-		List<String> conditionColumns = getColumnNames(bean);
-		String sql = getDeleteSql(bean.getType(), conditionColumns);
+		String sql = toDelete(bean);
 		return executeBySqlParameterValues(sql, params);
 	}
 
