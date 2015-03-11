@@ -12,7 +12,7 @@ public class IsNotNullConditionGenerater extends AbstractConditionGenerater {
 
 
 	public String generateCondition(String columnName) {
-		return columnName+" is null ";
+		return columnName+" is not null ";
 	}
 
 	public String getConditionMode() {

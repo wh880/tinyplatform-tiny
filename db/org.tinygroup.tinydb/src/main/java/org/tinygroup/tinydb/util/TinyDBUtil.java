@@ -151,7 +151,7 @@ public final class TinyDBUtil {
 				bean.put(property, c.get(property));
 			}
 		}
-		bean.put(Bean.SELECT_ITEM_KEY, c.get(Bean.SELECT_ITEM_KEY));
+		bean.put(Bean.SELECT_ITEMS_KEY, c.get(Bean.SELECT_ITEMS_KEY));
 		bean.put(Bean.CONDITION_FIELD_KEY, c.get(Bean.CONDITION_FIELD_KEY));
 		bean.put(Bean.CONDITION_MODE_KEY, c.get(Bean.CONDITION_MODE_KEY));
 		bean.put(Bean.ORDER_BY_KEY, c.get(Bean.ORDER_BY_KEY));

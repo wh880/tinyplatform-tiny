@@ -29,12 +29,13 @@ public class Bean extends HashMap<String, Object> {
     private Map<String, Boolean> updateMarkMap=new HashMap<String, Boolean>();
     private List<Field> fields=new ArrayList<Field>();
     
-    public static final String SELECT_ITEM_KEY="$_select_item";//查询显示字段
-    public static final String CONDITION_FIELD_KEY="$_codition_field";//条件字段
+    public static final String SELECT_ITEMS_KEY="$_select_items";//查询显示字段
+    public static final String CONDITION_FIELD_KEY="$_codition_fields";//条件字段
     public static final String CONDITION_MODE_KEY="$_codition_mode";//条件模式
     public static final String ORDER_BY_KEY="$_order_by";//排序字段
     public static final String SORT_DIRECTION_KEY="$_sort_direction";//排序方向
     public static final String GROUP_BY_KEY="$_group_by";//分组字段
+    public static final String SKIP_IF_VALUE_EMPTY="$_skip_fields";//如果属性对应的值是null或者"",需要被忽略条件的描述
     
     public Bean() {
 		super();

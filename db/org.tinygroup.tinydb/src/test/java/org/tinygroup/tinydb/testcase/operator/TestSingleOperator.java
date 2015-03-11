@@ -91,17 +91,28 @@ public class TestSingleOperator extends BaseTest {
 		assertEquals(
 				"select * from opensource.animal where ID = ?  and NAME  like  ?  and LENGTH = ?  order by name asc",
 				sqlAndValues.getSql().trim());
-		bean.set(Bean.SELECT_ITEM_KEY, "id,name");
+		bean.set(Bean.SELECT_ITEMS_KEY, "id,name");
 		bean.set(Bean.CONDITION_FIELD_KEY, new String[] { "id", "name" });
 		bean.set(Bean.CONDITION_MODE_KEY, new String[] { "equals",
 				"containsWith" });
 		bean.set(Bean.ORDER_BY_KEY, new String[] { "id", "name" });
 		bean.set(Bean.SORT_DIRECTION_KEY, new String[] { "asc", "desc" });
+		bean.set(Bean.GROUP_BY_KEY, new String[] { "id", "name" });
 		sqlAndValues = statementTransform.toSelect(bean);
 		assertEquals(
-				"select id,name from opensource.animal where ID = ?  and NAME  like  ?  and LENGTH = ?  order by id asc ,name desc",
+				"select id,name from opensource.animal where ID = ?  and NAME  like  ?  and LENGTH = ?  group by id,name order by id asc ,name desc",
 				sqlAndValues.getSql().trim());
-
+		bean.set(Bean.SKIP_IF_VALUE_EMPTY, "name");
+		bean.set("name", null);
+		sqlAndValues = statementTransform.toSelect(bean);
+		assertEquals(
+				"select id,name from opensource.animal where ID = ?  and LENGTH = ?  group by id,name order by id asc ,name desc",
+				sqlAndValues.getSql().trim());
+		bean.remove(Bean.SKIP_IF_VALUE_EMPTY);
+		sqlAndValues = statementTransform.toSelect(bean);
+		assertEquals(
+				"select id,name from opensource.animal where ID = ?  and NAME is null  and LENGTH = ?  group by id,name order by id asc ,name desc",
+				sqlAndValues.getSql().trim());
 	}
 
 }

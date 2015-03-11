@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.commons.tools.ArrayUtil;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.config.BeanQueryConfig;
@@ -17,6 +18,8 @@ import org.tinygroup.tinydb.sql.SelectSqlBuilder;
 import org.tinygroup.tinydb.sql.SqlAndValues;
 import org.tinygroup.tinydb.sql.condition.ConditionGenerater;
 import org.tinygroup.tinydb.sql.condition.impl.EqualsConditionGenerater;
+import org.tinygroup.tinydb.sql.condition.impl.IsEmptyConditionGenerater;
+import org.tinygroup.tinydb.sql.condition.impl.IsNullConditionGenerater;
 import org.tinygroup.tinydb.sql.group.GroupGenerater;
 import org.tinygroup.tinydb.sql.order.OrderGenerater;
 
@@ -56,8 +59,8 @@ public class BeanQueryConfigStatementTransform extends
 
 	public SqlAndValues toSelect(Bean bean) throws TinyDbException {
 		List<Object> params = new ArrayList<Object>();
-		SelectSqlBuilder builder=new SelectSqlBuilder(new StringBuffer());
-		String selectItem=(String) bean.get(Bean.SELECT_ITEM_KEY);
+		SelectSqlBuilder builder = new SelectSqlBuilder(new StringBuffer());
+		String selectItem = getReplaceValue(Bean.SELECT_ITEMS_KEY, bean);
 		builder.appendSelectItem(selectItem);
 		builder.appendTable(getFullTableName(bean.getType()));
 		String conditionSegment = appendCondition(bean, params);
@@ -70,8 +73,9 @@ public class BeanQueryConfigStatementTransform extends
 	}
 
 	private String appendOrderBy(Bean bean) throws TinyDbException {
-		String[] orderFields = (String[]) bean.get(Bean.ORDER_BY_KEY);
-		String[] sortDirections = (String[]) bean.get(Bean.SORT_DIRECTION_KEY);
+		String[] orderFields = getReplaceValues(Bean.ORDER_BY_KEY, bean);
+		String[] sortDirections = getReplaceValues(Bean.SORT_DIRECTION_KEY,
+				bean);
 		check(orderFields, sortDirections);
 		StringBuffer orderSegment = new StringBuffer();
 		List<OrderByConfig> orderByConfigs = null;
@@ -107,7 +111,7 @@ public class BeanQueryConfigStatementTransform extends
 
 	private String appendGroupBY(Bean bean) {
 		StringBuffer groupBySegment = new StringBuffer();
-		String[] groupFields = (String[]) bean.get(Bean.GROUP_BY_KEY);
+		String[] groupFields = getReplaceValues(Bean.GROUP_BY_KEY, bean);
 		List<GroupByConfig> groupByConfigs = null;
 		if (!ArrayUtil.isEmptyArray(groupFields)) {
 			groupByConfigs = new ArrayList<GroupByConfig>();
@@ -132,28 +136,49 @@ public class BeanQueryConfigStatementTransform extends
 	private String appendCondition(Bean bean, List<Object> params)
 			throws TinyDbException {
 		StringBuffer conditionSegment = new StringBuffer();
-		String[] conditionFields = (String[]) bean
-				.get(Bean.CONDITION_FIELD_KEY);
-		String[] conditionModes = (String[]) bean.get(Bean.CONDITION_MODE_KEY);
+		String[] conditionFields = getReplaceValues(Bean.CONDITION_FIELD_KEY,
+				bean);
+		String[] conditionModes = getReplaceValues(Bean.CONDITION_MODE_KEY,
+				bean);
 		check(conditionFields, conditionModes);
 		repalceConfig(conditionFields, conditionModes);
 		List<String> conditionColumns = getColumnNames(bean);
+		String skipFields = getReplaceValue(Bean.SKIP_IF_VALUE_EMPTY, bean);
 		for (String columnName : conditionColumns) {
+			String propertyName = beanDbNameConverter
+					.dbFieldNameToPropertyName(columnName);
+			boolean skip = isSkipCondition(propertyName, skipFields);
+			Object value = bean.get(propertyName);
+			if (skip&&value==null) {//如果条件字段在忽略参数值中,则不加条件子句.
+				continue;
+			}
 			if (conditionSegment.length() > 0) {
 				conditionSegment.append(" and ");
 			}
-			String propertyName = beanDbNameConverter
-					.dbFieldNameToPropertyName(columnName);
 			String conditionMode = conditionModeMap.get(propertyName);
 			ConditionGenerater generater = configuration
 					.getConditionGenerater(conditionMode);
-			if(generater==null){//如果没配就认为是相等比较
-				generater=new EqualsConditionGenerater();
+			if (value == null) {// 如果值是为空或者null,那么使用为空或者null条件
+				generater = new IsNullConditionGenerater();
+			} else if (value instanceof String) {
+				if(StringUtil.isBlank((String) value)){
+					generater = new IsEmptyConditionGenerater();
+				}
+			}
+			if (generater == null) {// 还是为空则用equals
+				generater = new EqualsConditionGenerater();
 			}
 			conditionSegment.append(generater.generateCondition(columnName));
-			generater.paramValueProcess(bean.get(propertyName),params);
+			generater.paramValueProcess(value, params);
 		}
 		return conditionSegment.toString();
+	}
+
+	private boolean isSkipCondition(String propertyName, String skipFields) {
+		if (skipFields != null && skipFields.indexOf(propertyName) != -1) {
+			return true;
+		}
+		return false;
 	}
 
 	private void repalceConfig(String[] conditionFields, String[] conditionModes) {
@@ -163,5 +188,27 @@ public class BeanQueryConfigStatementTransform extends
 				conditionModeMap.put(conditionFields[i], conditionModes[i]);
 			}
 		}
+	}
+
+	private String[] getReplaceValues(String propertyName, Bean bean) {
+		Object value = bean.get(propertyName);
+		if (value == null) {
+			return null;
+		}
+		if (value.getClass().isArray()) {
+			return (String[]) value;
+		}
+		return ((String) value).split(",");
+	}
+
+	private String getReplaceValue(String propertyName, Bean bean) {
+		Object value = bean.get(propertyName);
+		if (value == null) {
+			return null;
+		}
+		if (value.getClass().isArray()) {
+			return StringUtil.join((Object[]) value, ",");
+		}
+		return (String) value;
 	}
 }
