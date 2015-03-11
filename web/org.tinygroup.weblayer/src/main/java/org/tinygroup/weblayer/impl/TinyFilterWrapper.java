@@ -17,9 +17,9 @@ package org.tinygroup.weblayer.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.Filter;
 import javax.servlet.ServletException;
@@ -47,7 +47,7 @@ public class TinyFilterWrapper implements FilterWrapper {
 
 	private List<Filter> filters = new ArrayList<Filter>();
 
-	private Map<String, Filter> filterMap = new HashMap<String, Filter>();
+	private Map<String, Filter> filterMap = new TreeMap<String, Filter>();
 
 	private TinyFilterConfigManager tinyFilterConfigManager;
 
