@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.commons.tools.ArrayUtil;
+import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.Configuration;
@@ -149,7 +150,7 @@ public class BeanQueryConfigStatementTransform extends
 					.dbFieldNameToPropertyName(columnName);
 			boolean skip = isSkipCondition(propertyName, skipFields);
 			Object value = bean.get(propertyName);
-			if (skip&&value==null) {//如果条件字段在忽略参数值中,则不加条件子句.
+			if (skip&&ObjectUtil.isEmptyObject(value)) {//如果条件字段在忽略参数值中,则不加条件子句.
 				continue;
 			}
 			if (conditionSegment.length() > 0) {
