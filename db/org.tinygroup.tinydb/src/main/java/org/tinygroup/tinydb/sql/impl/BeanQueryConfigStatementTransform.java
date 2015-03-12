@@ -144,13 +144,13 @@ public class BeanQueryConfigStatementTransform extends
 		check(conditionFields, conditionModes);
 		repalceConfig(conditionFields, conditionModes);
 		List<String> conditionColumns = getColumnNames(bean);
-		String skipFields = getReplaceValue(Bean.SKIP_IF_VALUE_EMPTY, bean);
+		String emptyFields = getReplaceValue(Bean.EMPTY_CONDITION_KEY, bean);
 		for (String columnName : conditionColumns) {
 			String propertyName = beanDbNameConverter
 					.dbFieldNameToPropertyName(columnName);
-			boolean skip = isSkipCondition(propertyName, skipFields);
+			boolean emptyCondition = isEmptyCondition(propertyName, emptyFields);
 			Object value = bean.get(propertyName);
-			if (skip&&ObjectUtil.isEmptyObject(value)) {//如果条件字段在忽略参数值中,则不加条件子句.
+			if (!emptyCondition&&ObjectUtil.isEmptyObject(value)) {//如果条件字段不在空条件列表中,则不加条件子句.
 				continue;
 			}
 			if (conditionSegment.length() > 0) {
@@ -175,8 +175,8 @@ public class BeanQueryConfigStatementTransform extends
 		return conditionSegment.toString();
 	}
 
-	private boolean isSkipCondition(String propertyName, String skipFields) {
-		if (skipFields != null && skipFields.indexOf(propertyName) != -1) {
+	private boolean isEmptyCondition(String propertyName, String emptyFields) {
+		if (emptyFields != null && emptyFields.indexOf(propertyName) != -1) {
 			return true;
 		}
 		return false;
