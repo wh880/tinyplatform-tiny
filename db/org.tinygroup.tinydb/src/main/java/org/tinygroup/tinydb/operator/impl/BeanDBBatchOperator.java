@@ -25,7 +25,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
@@ -33,41 +32,26 @@ import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DbBatchOperator;
 import org.tinygroup.tinydb.relation.Relation;
+import org.tinygroup.tinydb.sql.SqlAndValues;
 import org.tinygroup.tinydb.util.TinyDBUtil;
 
 public class BeanDBBatchOperator<K> extends BeanDBSingleOperator<K> implements
 		DbBatchOperator<K> {
 
-	public BeanDBBatchOperator(){
+	public BeanDBBatchOperator() {
 		super();
 	}
-	
-	public BeanDBBatchOperator(JdbcTemplate jdbcTemplate,Configuration configuration) {
-		super(jdbcTemplate,configuration);
+
+	public BeanDBBatchOperator(JdbcTemplate jdbcTemplate,
+			Configuration configuration) {
+		super(jdbcTemplate, configuration);
 	}
 
 	public Bean[] getBeans(Bean bean) throws TinyDbException {
-		List<Object> params = getConditionParams(bean);
-		String sql = getSelectSql(bean);
-		List<Bean> beans = findBeansByList(sql, bean.getType(), getSchema(),
-				params);
+		SqlAndValues sqlAndValues = toSelect(bean);
+		List<Bean> beans = findBeansByList(sqlAndValues.getSql(),
+				bean.getType(), getSchema(), sqlAndValues.getValues());
 		return relationProcess(bean.getType(), beans);
-	}
-
-	protected List<Object> getConditionParams(Bean bean) {
-		TableConfiguration table = manager.getTableConfiguration(
-				bean.getType(), getSchema());
-		List<Object> params = new ArrayList<Object>();
-		for (ColumnConfiguration column : table.getColumns()) {
-			String columnsName = column.getColumnName();
-			String propertyName = getBeanDbNameConverter()
-					.dbFieldNameToPropertyName(columnsName);
-			//增加过滤条件
-			if (bean.containsKey(propertyName) && !ObjectUtil.isEmptyObject(bean.getProperty(propertyName))) {
-				params.add(bean.get(propertyName));
-			}
-		}
-		return params;
 	}
 
 	public Bean[] batchInsert(Bean[] beans) throws TinyDbException {
@@ -237,7 +221,7 @@ public class BeanDBBatchOperator<K> extends BeanDBSingleOperator<K> implements
 			throws TinyDbException {
 		String sql = getQueryInSql(beanType, beanIds);
 		List<Object> params = new ArrayList<Object>();
-		if(!ArrayUtil.isEmptyArray(beanIds)){
+		if (!ArrayUtil.isEmptyArray(beanIds)) {
 			for (K beanId : beanIds) {
 				params.add(beanId);
 			}
@@ -253,18 +237,18 @@ public class BeanDBBatchOperator<K> extends BeanDBSingleOperator<K> implements
 		TableConfiguration table = manager.getTableConfiguration(beanType,
 				schema);
 		String primaryKeyName = table.getPrimaryKey().getColumnName();
-		if(!ArrayUtil.isEmptyArray(beanIds)){
+		if (!ArrayUtil.isEmptyArray(beanIds)) {
 			where.append(primaryKeyName).append(" in (");
 			for (int i = 0; i < beanIds.length; i++) {
 				where.append("?");
-				if(i!=beanIds.length-1){
+				if (i != beanIds.length - 1) {
 					where.append(",");
 				}
 			}
 			where.append(")");
 		}
 		sb.append("select * from ").append(getFullTableName(beanType));
-		if(!ArrayUtil.isEmptyArray(beanIds)){
+		if (!ArrayUtil.isEmptyArray(beanIds)) {
 			sb.append(" where ");
 			sb.append(where);
 		}

@@ -25,4 +25,7 @@
 	<dialect-functions>
 		<dialect-function resource="database.dialectfunction.xml" />
 	</dialect-functions>
+	<bean-query-configs>
+	    <bean-query-config resource="test.queryconfig.xml" />
+	</bean-query-configs>
 </db-configuration>

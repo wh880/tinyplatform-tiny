@@ -52,7 +52,6 @@
 			<artifactId>org.tinygroup.fileresolver</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbyclient</artifactId>

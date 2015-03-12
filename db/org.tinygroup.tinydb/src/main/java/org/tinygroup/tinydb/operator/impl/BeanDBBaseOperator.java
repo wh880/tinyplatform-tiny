@@ -23,7 +23,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.SqlParameterValue;
-import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
@@ -33,13 +32,12 @@ import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DbBaseOperator;
 import org.tinygroup.tinydb.relation.Relation;
+import org.tinygroup.tinydb.sql.SqlAndValues;
 
 class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator {
 
 	protected BeanOperatorManager manager;
 
-	protected String schema;
-	
 	public BeanDBBaseOperator(){
 		super();
 	}
@@ -148,148 +146,11 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		return new SqlParameterValue(sqlParameter, value);
 	}
 
-	/**
-	 * 创建新增sql
-	 * 
-	 * @param bean
-	 * @return
-	 * @throws TinyDbException 
-	 */
-	protected String getInsertSql(Bean bean) throws TinyDbException {
-		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
-		if (table != null) {
-			StringBuffer sb = new StringBuffer();
-			StringBuffer field = new StringBuffer();
-			StringBuffer values = new StringBuffer();
-			String tableName=getTableName(table);
-			sb.append("insert into " + tableName + "(");
-			List<ColumnConfiguration> columns = table.getColumns();
-			if (columns != null && columns.size() > 0) {
-				for (ColumnConfiguration column : columns) {
-					String columnName = column.getColumnName();
-					String propertyName = beanDbNameConverter
-							.dbFieldNameToPropertyName(columnName);
-					if (bean.containsKey(propertyName) || column.isPrimaryKey()) {
-						field.append(",").append(columnName);
-						values.append(",?");
-					}
-
-				}
-				sb.append(field.substring(1)).append(")values(")
-						.append(values.substring(1)).append(")");
-				return sb.toString();
-			} else {
-				throw new TinyDbException("表格:"+tableName+"不存在字段");
-			}
-
-		}
-		throw new TinyDbException("不存在beanType："+bean.getType()+"的表格");
-	}
-
-	/**
-	 * @param bean
-	 * @param conditionColumns
-	 *            sql中用到的字段的列表，包括 update table set * where *两个*区域用到的所有字段
-	 *            外部传进来的空列表，由此函数进行填充，字段按在sql中使用的先后顺序放入列表
-	 * @return
-	 * @throws TinyDbException 
-	 */
-	protected String getUpdateSql(Bean bean, List<String> conditionColumns) throws TinyDbException {
-
-		if (conditionColumns == null || conditionColumns.size() == 0) {
-			throw new TinyDbException("beanType为:"+bean.getType()+"的更新操作不存在查询条件");
-		}
-		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
-		if (table != null) {
-			StringBuffer sb = new StringBuffer();
-			String field = getUpdateFieldSegment(table, bean, conditionColumns);
-			// 条件字段计算
-			String condition = getConditionSql(conditionColumns,bean);
-			sb.append("update ").append(getTableName(table)).append(" set ")
-					.append(field.substring(1));
-			if(condition!=null&&condition.length()>0){
-				sb.append(" where ").append(condition);
-			}
-			return sb.toString();
-		}
-		throw new TinyDbException("不存在beanType："+bean.getType()+"的表格");
-	}
-
-	public String getSelectSql(Bean bean) throws TinyDbException {
-		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
-		if (table != null) {
-			StringBuffer sb = new StringBuffer(" select * from ");
-			sb.append(getFullTableName(bean.getType()));
-			List<String> conditionColumns = getColumnNames(bean);
-			String condition=getConditionSql(conditionColumns,bean);
-			if(condition!=null&&condition.length()>0){
-				sb.append(" where ").append(condition);
-			}
-			return sb.toString();
-
-		}
-		throw new TinyDbException("不存在beanType："+bean.getType()+"的表格");
-
-	}
-	
 	public String getAccountSql(Bean bean)throws TinyDbException{
-		TableConfiguration table = manager.getTableConfiguration(bean.getType(), getSchema());
-		if (table != null) {
-			StringBuffer sb = new StringBuffer(" select count(0) from ");
-			sb.append(getFullTableName(bean.getType()));
-			List<String> conditionColumns = getColumnNames(bean);
-			String condition=getConditionSql(conditionColumns,bean);
-			if(condition!=null&&condition.length()>0){
-				sb.append(" where ").append(condition);
-			}
-			return sb.toString();
-
-		}
-		throw new TinyDbException("不存在beanType："+bean.getType()+"的表格");
-
-	}
-
-	private String getConditionSql(List<String> conditionColumns,Bean bean) {
-		StringBuffer condition = new StringBuffer();
-		for (String columnName : conditionColumns) {
-			if(bean==null || !checkBeanPropertyNull(bean,columnName)){
-				//不判断参数是否为空
-				if(condition.length()>0){
-					condition.append(" and ");
-				}
-				condition.append(columnName).append("=?");
-			}
-		}
-		return condition.toString();
-	}
-	
-	//判断bean的某个属性是否为空对象
-	private boolean checkBeanPropertyNull(Bean bean,String columnName){
-		String propertyName = beanDbNameConverter.dbFieldNameToPropertyName(columnName);
-		Object value = bean.getProperty(propertyName);
-		return ObjectUtil.isEmptyObject(value);
-	}
-
-	private String getUpdateFieldSegment(TableConfiguration table, Bean bean,
-			List<String> conditionColumns) {
-		StringBuffer field = new StringBuffer();
-		List<ColumnConfiguration> columns = table.getColumns();
-		// 更新字段计算
-		for (ColumnConfiguration column : columns) {
-			String columnName = column.getColumnName();
-			if (!column.isPrimaryKey()) {
-				// 如果说不是条件字段
-				if (!conditionColumns.contains(columnName)) {
-					String propertyName = beanDbNameConverter
-							.dbFieldNameToPropertyName(columnName);
-					if (bean.containsKey(propertyName)&&bean.getMark(propertyName)) {
-						field.append("," + columnName + "=?");
-					}
-				}
-			}
-
-		}
-		return field.toString();
+		SqlAndValues sqlAndValues=toSelect(bean);
+		StringBuffer sb = new StringBuffer(" select count(0) from (");
+        sb.append(sqlAndValues.getSql()).append(") temp");
+        return sb.toString();
 	}
 
 	protected SqlParameterValue[] getSqlParamterValue(Bean bean,
@@ -452,16 +313,6 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 			params.add(getParams(bean));
 		}
 		return params;
-	}
-
-	protected String getFullTableName(String beanType) {
-		String tempType = beanType;
-		String tableName = beanDbNameConverter.typeNameToDbTableName(tempType);
-		return getTableNameWithSchame(tableName);
-	}
-
-	private String getTableName(TableConfiguration table) {
-		return getTableNameWithSchame(table.getName());
 	}
 
 	protected List<Object> getParams(Bean bean) {

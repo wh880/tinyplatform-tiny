@@ -26,6 +26,7 @@ import org.tinygroup.tinydb.Pager;
 import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DbSqlOperator;
+import org.tinygroup.tinydb.sql.SqlAndValues;
 import org.tinygroup.tinydb.util.TinyDBUtil;
 
 public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
@@ -281,10 +282,9 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 
 	public Bean[] getBeans(Bean bean, int start, int limit)
 			throws TinyDbException {
-		List<Object> params = getConditionParams(bean);
-		String sql = getSelectSql(bean);
-		List<Bean> beans = findBeansByListForPage(sql, bean.getType(),
-				getSchema(), start, limit, params);
+		SqlAndValues sqlAndValues=toSelect(bean);
+		List<Bean> beans = findBeansByListForPage(sqlAndValues.getSql(), bean.getType(),
+				getSchema(), start, limit, sqlAndValues.getValues());
 		return relationProcess(bean.getType(), beans);
 	}
 

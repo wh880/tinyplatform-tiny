@@ -15,6 +15,7 @@
  */
 package org.tinygroup.tinydb.test;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.sql.Connection;
@@ -28,6 +29,7 @@ import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.ConfigurationBuilder;
 import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.DbOperatorFactoryBuilder;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.tinytestutil.script.ScriptRunner;
@@ -41,36 +43,34 @@ public abstract class BaseTest extends TestCase {
 	String mainSchema = "opensource";
 	private static boolean hasExcuted = false;
 
+	protected static Configuration configuration;
+
 	public DBOperator<String> getOperator() {
 		return operator;
 	}
 
-	
-	public void setUp() {
+	public void setUp() throws Exception {
 		AbstractTestUtil.init(null, true);
 		if (!hasExcuted) {
+			Reader reader = Resources.getResourceAsReader("tinydb.xml");
+			ConfigurationBuilder builder = new ConfigurationBuilder(reader);
+			configuration = builder.parser();
 			initTable();
 			initFactory();
-			hasExcuted= true;
+			hasExcuted = true;
 		}
 
 	}
-	
-	private void initTable(){
+
+	private void initTable() throws IOException, Exception {
 		Connection conn = null;
-		try{
-			Reader reader=Resources.getResourceAsReader("tinydb.xml");
-			ConfigurationBuilder builder = new ConfigurationBuilder(reader);
-			Configuration configuration=builder.parser();
+		try {
 			conn = configuration.getUseDataSource().getConnection();
 			ScriptRunner runner = new ScriptRunner(conn, false, false);
 			// 设置字符集
 			Resources.setCharset(Charset.forName("utf-8"));
 			// 加载sql脚本并执行
-			runner.runScript(Resources
-						.getResourceAsReader("table_derby.sql"));
-		}catch (Exception e) {
-			fail(e.getMessage());
+			runner.runScript(Resources.getResourceAsReader("table_derby.sql"));
 		} finally {
 			if (conn != null) {
 				try {
@@ -82,46 +82,30 @@ public abstract class BaseTest extends TestCase {
 		}
 
 	}
-	
-	//第一次初始化，表在执行table_derby.sql之前不存在，此时builder加载数据库信息显然是不完整的，需要等执行sql再次加载。
+
+	// 第一次初始化，表在执行table_derby.sql之前不存在，此时builder加载数据库信息显然是不完整的，需要等执行sql再次加载。
 	@SuppressWarnings("unchecked")
-	private void initFactory(){
-		Connection conn = null;
-		try{
-			Reader reader=Resources.getResourceAsReader("tinydb.xml");
-			ConfigurationBuilder builder = new ConfigurationBuilder(reader);
-			Configuration configuration=builder.parser();
-			factory=new DbOperatorFactoryBuilder().build(configuration);
-			operator=factory.getDBOperator();
-		}catch (Exception e) {
-			fail(e.getMessage());
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					fail(e.getMessage());
-				}
-			}
-		}
+	private void initFactory() throws TinyDbException {
+		factory = new DbOperatorFactoryBuilder().build(configuration);
+		operator = factory.getDBOperator();
 	}
-	
-	protected Bean getBean(String id){
-		return getBean(id,"testSql");
+
+	protected Bean getBean(String id) {
+		return getBean(id, "testSql");
 	}
-	
-	private Bean getBean(String id,String name){
+
+	private Bean getBean(String id, String name) {
 		Bean bean = new Bean(ANIMAL);
-		bean.setProperty("id",id);
-		bean.setProperty("name",name);
-		bean.setProperty("length","1234");
+		bean.setProperty("id", id);
+		bean.setProperty("name", name);
+		bean.setProperty("length", "1234");
 		return bean;
 	}
-	
-	protected Bean[] getBeans(int length){
+
+	protected Bean[] getBeans(int length) {
 		Bean[] insertBeans = new Bean[length];
-		for(int i = 0 ; i < length ; i++ ){
-			insertBeans[i] = getBean(i+"");
+		for (int i = 0; i < length; i++) {
+			insertBeans[i] = getBean(i + "");
 		}
 		return insertBeans;
 	}
