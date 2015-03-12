@@ -4,7 +4,7 @@ import java.util.List;
 
 
 /**
- * 为空比较操作
+ * 非Null比较操作
  * @author renhui
  *
  */
@@ -16,7 +16,7 @@ public class IsNotNullConditionGenerater extends AbstractConditionGenerater {
 	}
 
 	public String getConditionMode() {
-		return "isNull";
+		return "isNotNull";
 	}
 
 	@Override

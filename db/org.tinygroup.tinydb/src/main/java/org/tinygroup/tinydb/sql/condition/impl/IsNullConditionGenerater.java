@@ -16,7 +16,7 @@ public class IsNullConditionGenerater extends AbstractConditionGenerater {
 	}
 
 	public String getConditionMode() {
-		return "isNotNull";
+		return "isNull";
 	}
 
 	@Override
