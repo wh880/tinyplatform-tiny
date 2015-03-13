@@ -31,6 +31,7 @@ import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.dialectfunction.DialectFunctions;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.tinydb.config.BeanQueryConfigs;
 import org.tinygroup.tinydb.convert.TableConfigLoad;
 import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.dialect.impl.AbstractDialect;
@@ -58,6 +59,9 @@ public class ConfigurationBuilder {
 	private static final String TYPE = "type";
 	private static final String DEFAULT = "default";
 	private static final String DATASOURCES = "dataSources";
+	private static final String QUERY_CONFIGS = "bean-query-configs";
+	private static final String QUERY_CONFIG = "bean-query-config";
+	
 	private boolean parsed;
 	private XmlNode xmlNode;
 	private String dataSource;
@@ -117,101 +121,143 @@ public class ConfigurationBuilder {
 		parserDialect();
 		parserRelations();
 		parserDialectFunctions();
+		parserBeanQueryConfig();
 		return configuration;
 	}
 
-	private void parserDialectFunctions() {
-		XmlNode functionsNode=xmlNode.getSubNode(DIALECT_FUNCTIONS);
-		if(functionsNode==null){
+	private void parserBeanQueryConfig() {
+		XmlNode qeuryConfigsNode = xmlNode.getSubNode(QUERY_CONFIGS);
+		if (qeuryConfigsNode == null) {
 			return;
 		}
-		List<XmlNode> functionNodes=functionsNode.getSubNodes(DIALECT_FUNCTION);
-		if(!CollectionUtil.isEmpty(functionNodes)){
-			for (XmlNode node : functionNodes) {
-				String url=node.getAttribute("url");
-				String resource=node.getAttribute("resource");
+		List<XmlNode> queryConfigNodes = qeuryConfigsNode.getSubNodes(QUERY_CONFIG);
+		if (!CollectionUtil.isEmpty(queryConfigNodes)) {
+			for (XmlNode queryConfigNode : queryConfigNodes) {
+				String url = queryConfigNode.getAttribute("url");
+				String resource = queryConfigNode.getAttribute("resource");
 				XStream stream = XStreamFactory.getXStream();
-				stream.processAnnotations(DialectFunctions.class);
-				if(url!=null&&resource==null){
-					FileObject fileObject=VFS.resolveFile(url);
-					DialectFunctions functions=(DialectFunctions) stream.fromXML(fileObject.getInputStream());
-					configuration.addDialectFunctions(functions);
-				}else if(url==null&&resource!=null){
-					InputStream inputStream=getClass().getClassLoader().getResourceAsStream(resource);
-					DialectFunctions functions=(DialectFunctions) stream.fromXML(inputStream);
-					configuration.addDialectFunctions(functions);
-				}else{
-					throw new TinyDbRuntimeException("relation元素的属性只能是url或者是resource");
+				stream.processAnnotations(BeanQueryConfigs.class);
+				if (url != null && resource == null) {
+					FileObject fileObject = VFS.resolveFile(url);
+					BeanQueryConfigs queryConfigs = (BeanQueryConfigs) stream.fromXML(fileObject
+							.getInputStream());
+					configuration.addBeanQueryConfigs(queryConfigs);
+				} else if (url == null && resource != null) {
+					InputStream inputStream = getClass().getClassLoader()
+							.getResourceAsStream(resource);
+					BeanQueryConfigs queryConfigs = (BeanQueryConfigs) stream
+							.fromXML(inputStream);
+					configuration.addBeanQueryConfigs(queryConfigs);
+				} else {
+					throw new TinyDbRuntimeException(
+							"bean-query-config元素的属性只能是url或者是resource");
 				}
 			}
 		}
-		
+	}
+
+	private void parserDialectFunctions() {
+		XmlNode functionsNode = xmlNode.getSubNode(DIALECT_FUNCTIONS);
+		if (functionsNode == null) {
+			return;
+		}
+		List<XmlNode> functionNodes = functionsNode
+				.getSubNodes(DIALECT_FUNCTION);
+		if (!CollectionUtil.isEmpty(functionNodes)) {
+			for (XmlNode node : functionNodes) {
+				String url = node.getAttribute("url");
+				String resource = node.getAttribute("resource");
+				XStream stream = XStreamFactory.getXStream();
+				stream.processAnnotations(DialectFunctions.class);
+				if (url != null && resource == null) {
+					FileObject fileObject = VFS.resolveFile(url);
+					DialectFunctions functions = (DialectFunctions) stream
+							.fromXML(fileObject.getInputStream());
+					configuration.addDialectFunctions(functions);
+				} else if (url == null && resource != null) {
+					InputStream inputStream = getClass().getClassLoader()
+							.getResourceAsStream(resource);
+					DialectFunctions functions = (DialectFunctions) stream
+							.fromXML(inputStream);
+					configuration.addDialectFunctions(functions);
+				} else {
+					throw new TinyDbRuntimeException(
+							"relation元素的属性只能是url或者是resource");
+				}
+			}
+		}
+
 	}
 
 	private void parserRelations() {
-		XmlNode relationsNode=xmlNode.getSubNode(RELATIONS);
-		if(relationsNode==null){
+		XmlNode relationsNode = xmlNode.getSubNode(RELATIONS);
+		if (relationsNode == null) {
 			return;
 		}
-		List<XmlNode> relationNodes=relationsNode.getSubNodes(RELATION);
-		if(!CollectionUtil.isEmpty(relationNodes)){
+		List<XmlNode> relationNodes = relationsNode.getSubNodes(RELATION);
+		if (!CollectionUtil.isEmpty(relationNodes)) {
 			for (XmlNode relationNode : relationNodes) {
-				String url=relationNode.getAttribute("url");
-				String resource=relationNode.getAttribute("resource");
+				String url = relationNode.getAttribute("url");
+				String resource = relationNode.getAttribute("resource");
 				XStream stream = XStreamFactory.getXStream();
 				stream.processAnnotations(Relations.class);
-				if(url!=null&&resource==null){
-					FileObject fileObject=VFS.resolveFile(url);
-					Relations relations=(Relations) stream.fromXML(fileObject.getInputStream());
+				if (url != null && resource == null) {
+					FileObject fileObject = VFS.resolveFile(url);
+					Relations relations = (Relations) stream.fromXML(fileObject
+							.getInputStream());
 					configuration.addRelationConfigs(relations);
-				}else if(url==null&&resource!=null){
-					InputStream inputStream=getClass().getClassLoader().getResourceAsStream(resource);
-					Relations relations=(Relations) stream.fromXML(inputStream);
+				} else if (url == null && resource != null) {
+					InputStream inputStream = getClass().getClassLoader()
+							.getResourceAsStream(resource);
+					Relations relations = (Relations) stream
+							.fromXML(inputStream);
 					configuration.addRelationConfigs(relations);
-				}else{
-					throw new TinyDbRuntimeException("relation元素的属性只能是url或者是resource");
+				} else {
+					throw new TinyDbRuntimeException(
+							"relation元素的属性只能是url或者是resource");
 				}
 			}
 		}
-		
+
 	}
 
 	private void parserDialect() {
-		XmlNode dialectNode=xmlNode.getSubNode(DIALECT);
-		if(dialectNode==null){
+		XmlNode dialectNode = xmlNode.getSubNode(DIALECT);
+		if (dialectNode == null) {
 			return;
 		}
-		String dialectType=dialectNode.getAttribute(TYPE);
-		Dialect dialect=(Dialect) newInstance(dialectType);
+		String dialectType = dialectNode.getAttribute(TYPE);
+		Dialect dialect = (Dialect) newInstance(dialectType);
 		setProperties(dialectNode, dialect);
-		AbstractDialect abstractDialect=(AbstractDialect) dialect;
-		abstractDialect.setFunctionProcessor(configuration.getFunctionProcessor());
+		AbstractDialect abstractDialect = (AbstractDialect) dialect;
+		abstractDialect.setFunctionProcessor(configuration
+				.getFunctionProcessor());
 		abstractDialect.setDataSource(configuration.getUseDataSource());
 		configuration.setDialect(abstractDialect);
 	}
-	
-	private Object newInstance(String type){
+
+	private Object newInstance(String type) {
 		try {
-			Class clazz=Class.forName(type);
+			Class clazz = Class.forName(type);
 			return clazz.newInstance();
 		} catch (Exception e) {
-			throw new TinyDbRuntimeException("对象实例化出现异常",e);
+			throw new TinyDbRuntimeException("对象实例化出现异常", e);
 		}
 	}
 
 	private void parserTableLoad() {
-		XmlNode loadsNode=xmlNode.getSubNode(TABLE_LOADS);
-		if(loadsNode==null){
+		XmlNode loadsNode = xmlNode.getSubNode(TABLE_LOADS);
+		if (loadsNode == null) {
 			return;
 		}
 		setDefaultSchema(loadsNode);
-		List<XmlNode> loadNodes=loadsNode.getSubNodes("table-load");
-		if(!CollectionUtil.isEmpty(loadNodes)){
+		List<XmlNode> loadNodes = loadsNode.getSubNodes("table-load");
+		if (!CollectionUtil.isEmpty(loadNodes)) {
 			for (XmlNode node : loadNodes) {
 				try {
-				 TableConfigLoad load=newTableConfigLoad(node);
-				 setProperties(node, load);
-				 load.loadTable(configuration);
+					TableConfigLoad load = newTableConfigLoad(node);
+					setProperties(node, load);
+					load.loadTable(configuration);
 				} catch (Exception e) {
 					throw new TinyDbRuntimeException("解析表配置出现异常", e);
 				}
@@ -219,35 +265,33 @@ public class ConfigurationBuilder {
 		}
 	}
 
-	private TableConfigLoad newTableConfigLoad(XmlNode node)
-			throws Exception {
-		String type=node.getAttribute(TYPE);
-		TableConfigLoad load=(TableConfigLoad)newInstance(type);
+	private TableConfigLoad newTableConfigLoad(XmlNode node) throws Exception {
+		String type = node.getAttribute(TYPE);
+		TableConfigLoad load = (TableConfigLoad) newInstance(type);
 		return load;
 	}
 
 	private void setDefaultSchema(XmlNode loadsNode) {
-		String defaultSchema=loadsNode.getAttribute(DEFAULT);
-		if(StringUtil.isBlank(defaultSchema)){
+		String defaultSchema = loadsNode.getAttribute(DEFAULT);
+		if (StringUtil.isBlank(defaultSchema)) {
 			throw new TinyDbRuntimeException("未设置默认的schema");
 		}
 		configuration.setDefaultSchema(defaultSchema);
 	}
 
 	private void parserOperator() {
-		String operatorType=xmlNode.getAttribute(TYPE);
+		String operatorType = xmlNode.getAttribute(TYPE);
 		configuration.setOperatorType(operatorType);
-		String convertType=xmlNode.getAttribute(CONVERT_TYPE);
-		if(!StringUtil.isBlank(convertType)){
-			BeanDbNameConverter converter=(BeanDbNameConverter) newInstance(convertType);
-		    configuration.setConverter(converter);
+		String convertType = xmlNode.getAttribute(CONVERT_TYPE);
+		if (!StringUtil.isBlank(convertType)) {
+			BeanDbNameConverter converter = (BeanDbNameConverter) newInstance(convertType);
+			configuration.setConverter(converter);
 		}
-		String increase=xmlNode.getAttribute("is-increase");
-		if(!StringUtil.isBlank(increase)){
+		String increase = xmlNode.getAttribute("is-increase");
+		if (!StringUtil.isBlank(increase)) {
 			configuration.setIncrease(Boolean.parseBoolean(increase));
 		}
 	}
-
 
 	private void parserDataSources() {
 		XmlNode dataSources = xmlNode.getSubNode(DATASOURCES);
@@ -258,22 +302,23 @@ public class ConfigurationBuilder {
 		if (dataSource == null) {
 			dataSource = defaultDataSource;
 		}
-		if(dataSource==null){
+		if (dataSource == null) {
 			throw new TinyDbRuntimeException("默认数据源不能为空");
 		}
 		configuration.setDefaultDataSource(defaultDataSource);
 		List<XmlNode> nodes = dataSources.getSubNodes("dataSource");
 		if (!CollectionUtil.isEmpty(nodes)) {
-			boolean existDefault=false;
+			boolean existDefault = false;
 			for (XmlNode node : nodes) {
-				if(parserDataSource(node)){
-					existDefault=true;
+				if (parserDataSource(node)) {
+					existDefault = true;
 				}
 			}
-			if(!existDefault){
-				throw new TinyDbRuntimeException("默认数据源:"+dataSource+"没有设置");
+			if (!existDefault) {
+				throw new TinyDbRuntimeException("默认数据源:" + dataSource + "没有设置");
 			}
-			JdbcTemplate template=new JdbcTemplate(configuration.getUseDataSource());
+			JdbcTemplate template = new JdbcTemplate(
+					configuration.getUseDataSource());
 			configuration.setJdbcTemplate(template);
 		}
 	}
@@ -282,22 +327,22 @@ public class ConfigurationBuilder {
 		if (node == null) {
 			return false;
 		}
-		boolean isDefault=false;
+		boolean isDefault = false;
 		String type = node.getAttribute(TYPE);
 		try {
 			DataSource newDataSource = newDataSourceInstance(type);
-			String dataSourceId=node.getAttribute(DATA_SOURCE_ID);
+			String dataSourceId = node.getAttribute(DATA_SOURCE_ID);
 			setProperties(node, newDataSource);
-//			DynamicDataSource dynamic=new DynamicDataSource();
-//			dynamic.setDataSource(newDataSource);
-//			if(dataSourceId.equals(dataSource)){
-//				configuration.setUseDataSource(dynamic);
-//				isDefault=true;
-//			}
-//			configuration.putDataSource(type, dynamic);
-			if(dataSourceId.equals(dataSource)){
+			// DynamicDataSource dynamic=new DynamicDataSource();
+			// dynamic.setDataSource(newDataSource);
+			// if(dataSourceId.equals(dataSource)){
+			// configuration.setUseDataSource(dynamic);
+			// isDefault=true;
+			// }
+			// configuration.putDataSource(type, dynamic);
+			if (dataSourceId.equals(dataSource)) {
 				configuration.setUseDataSource(newDataSource);
-				isDefault=true;
+				isDefault = true;
 			}
 			configuration.putDataSource(type, newDataSource);
 		} catch (Exception e) {
@@ -319,16 +364,16 @@ public class ConfigurationBuilder {
 		TinyDBUtil.setProperties(object, properties);
 	}
 
-	private DataSource newDataSourceInstance(String type) throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException {
+	private DataSource newDataSourceInstance(String type)
+			throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException {
 		Class dataSourceType = Class.forName(type);
 		DataSource dataSource = (DataSource) dataSourceType.newInstance();
 		return dataSource;
 	}
-	
-	 public Configuration getConfiguration() {
-		    return configuration;
-		  }
-	
+
+	public Configuration getConfiguration() {
+		return configuration;
+	}
 
 }

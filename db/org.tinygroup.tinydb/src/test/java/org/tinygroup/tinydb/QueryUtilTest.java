@@ -25,7 +25,7 @@ import org.tinygroup.tinydb.test.BaseTest;
 public class QueryUtilTest extends BaseTest {
 	BeanStringOperator queryUtil;
 
-	public void setUp() {
+	public void setUp()throws Exception {
 		super.setUp();
 		queryUtil=(BeanStringOperator) operator;
 	}
