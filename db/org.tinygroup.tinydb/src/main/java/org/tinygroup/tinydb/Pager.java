@@ -39,12 +39,12 @@ public class Pager implements Serializable{
         	limit=DEFAULT_LIMIT;
         }
         this.limit=limit;
-        if(start==0){
-        	start=1;
-        }
         this.start=start;
-        this.currentPage=start/limit+1;
-        this.totalPages=totalCount/limit+1;
+        this.totalPages=totalCount%limit==0?totalCount/limit:totalCount/limit+1;
+        this.currentPage=start%limit==0?start/limit:start/limit+1;
+        if(currentPage>totalPages){
+        	currentPage=totalPages;
+        }
     }
 
 	public Bean[] getCurrentBeans() {

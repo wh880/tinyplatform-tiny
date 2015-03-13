@@ -102,16 +102,16 @@ public class TestSingleOperator extends BaseTest {
 		assertEquals(
 				"select id,name from opensource.animal where ID = ?  and NAME  like  ?  and LENGTH = ?  group by id,name order by id asc ,name desc",
 				sqlAndValues.getSql().trim());
-		bean.set(Bean.SKIP_IF_VALUE_EMPTY, "name");
+		bean.set(Bean.EMPTY_CONDITION_KEY, "name");
 		bean.set("name", null);
 		sqlAndValues = statementTransform.toSelect(bean);
 		assertEquals(
-				"select id,name from opensource.animal where ID = ?  and LENGTH = ?  group by id,name order by id asc ,name desc",
+				"select id,name from opensource.animal where ID = ?  and NAME is null  and LENGTH = ?  group by id,name order by id asc ,name desc",
 				sqlAndValues.getSql().trim());
-		bean.remove(Bean.SKIP_IF_VALUE_EMPTY);
+		bean.remove(Bean.EMPTY_CONDITION_KEY);
 		sqlAndValues = statementTransform.toSelect(bean);
 		assertEquals(
-				"select id,name from opensource.animal where ID = ?  and NAME is null  and LENGTH = ?  group by id,name order by id asc ,name desc",
+				"select id,name from opensource.animal where ID = ?  and LENGTH = ?  group by id,name order by id asc ,name desc",
 				sqlAndValues.getSql().trim());
 	}
 
