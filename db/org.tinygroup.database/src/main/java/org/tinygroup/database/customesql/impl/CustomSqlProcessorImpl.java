@@ -29,27 +29,33 @@ import org.tinygroup.database.customesql.CustomSqlProcessor;
 public class CustomSqlProcessorImpl implements CustomSqlProcessor {
 	//Map<language,Map<type(before,after),sql>>
 	private Map<String,Map<String,List<String>>> sqlsMap = new HashMap<String,Map<String,List<String>>>();
-	
-	public List<String> getCustomSqls(String type, String language) {
 
-		return sqlsMap.get(language).get(type);
+	public List<String> getCustomSqls(String type, String language) {
+	    List<String> customSqls = null;
+	    if(sqlsMap.containsKey(language)){
+	        customSqls = sqlsMap.get(language).get(type);
+	    }else{
+	        customSqls = new ArrayList<String>();
+	    }
+		return customSqls;
 	}
 
 	public void addCustomSqls(CustomSqls customsqls) {
 		if(customsqls==null)
 			return ;
 		if(customsqls.getCustomSqlList()==null)
-			return ; 
+			return ;
 		for(CustomSql sql:customsqls.getCustomSqlList()){
 			String type = sql.getType();
 			for(SqlBody body:sql.getSqlBodyList()){
-				String language = body.getDialectTypeName();
+			    //未填写数据库类型的默认为标准sql
+				String language = null == body.getDialectTypeName()?STANDARD_SQL_TYPE:body.getDialectTypeName();
 				String sqlStr = body.getContent();
 				addSql(language, sqlStr, type);
 			}
 		}
 	}
-	
+
 	private void addSql(String language,String sql,String type){
 		if(!sqlsMap.containsKey(language)){
 			Map<String,List<String>> map = new HashMap<String, List<String>>();
@@ -68,7 +74,7 @@ public class CustomSqlProcessorImpl implements CustomSqlProcessor {
 		if(customsqls==null)
 			return ;
 		if(customsqls.getCustomSqlList()==null)
-			return ; 
+			return ;
 		for(CustomSql sql:customsqls.getCustomSqlList()){
 			String type = sql.getType();
 			for(SqlBody body:sql.getSqlBodyList()){
