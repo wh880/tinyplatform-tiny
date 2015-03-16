@@ -6,8 +6,8 @@
   <table-field standard-field-id="stdidsex" primary="false" unique="false" not-null="false" id="sexuuid"/>
   <table-field standard-field-id="stdidcompanyid" primary="false" unique="false" not-null="false" id="companyiduuid"/>
   <index name="usernameadress" unique="true">
-    <string>addressuuid</string>
-    <string>usernameuuid</string>
+    <index-field field="addressuuid" direction="desc"/>
+    <index-field field="usernameuuid" direction="desc"/>
   </index>
 </table>
 <table id="companyuuid" name="company" title="公司">
@@ -16,8 +16,8 @@
   <table-field standard-field-id="stdidaddress" primary="false" unique="false" not-null="false" id="addressuuid"/>
   <table-field standard-field-id="stdidcontory" primary="false" unique="false" not-null="false" id="contoryuuid"/>
   <index name="companynameadress" unique="true">
-    <string>addressuuid</string>
-    <string>companynameuuid</string>
+    <index-field field="addressuuid" direction="desc"/>
+    <index-field field="companynameuuid" direction="desc"/>
   </index>
 </table>
 </tables>

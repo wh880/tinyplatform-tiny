@@ -31,7 +31,7 @@ public class Index extends BaseObject {
 	@XStreamAsAttribute
 	private Boolean reverse;// 是否反向
 	@XStreamImplicit
-	private List<String> fields;// 字段列表，中间用逗号分隔
+	private List<IndexField> fields;// 字段列表，中间用逗号分隔
 
 	public String getName() {
 		return super.getName();
@@ -53,13 +53,13 @@ public class Index extends BaseObject {
 		this.reverse = reverse;
 	}
 
-	public List<String> getFields() {
+	public List<IndexField> getFields() {
 		if (fields == null)
-			fields = new ArrayList<String>();
+			fields = new ArrayList<IndexField>();
 		return fields;
 	}
 
-	public void setFields(List<String> fields) {
+	public void setFields(List<IndexField> fields) {
 		this.fields = fields;
 	}
 

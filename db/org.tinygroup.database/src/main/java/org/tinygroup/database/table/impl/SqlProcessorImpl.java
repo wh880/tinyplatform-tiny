@@ -26,8 +26,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.ForeignReference;
 import org.tinygroup.database.config.table.Index;
+import org.tinygroup.database.config.table.IndexField;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.table.TableSqlProcessor;
@@ -325,12 +327,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		Boolean notNull = field.getNotNull();
 		if (notNull != null && notNull.booleanValue()) {
 			ddlBuffer.append(" NOT NULL");
-		} else {
-			notNull = standardField.getNotNull();
-			if (notNull != null && notNull.booleanValue()) {
-				ddlBuffer.append(" NOT NULL");
-			}
-		}
+		} 
 
 		Boolean primary = field.getPrimary();
 		if (primary != null && primary.booleanValue()) {
@@ -383,12 +380,16 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		ddlBuffer.append(" ON ");
 		ddlBuffer.append(table.getName());
 		ddlBuffer.append(" ( ");
-		List<String> fields = index.getFields();
+		List<IndexField> fields = index.getFields();
 		String fieldsStr = "";
 		if (fields != null) {
-			for (String fieldId : fields) {
+			for (IndexField field : fields) {
 				fieldsStr = fieldsStr + ","
-						+ getFieldStdFieldName(fieldId, table);
+						+ getFieldStdFieldName(field.getField(), table);
+				
+				if(!StringUtil.isEmpty(field.getDirection())){
+					fieldsStr = fieldsStr+" "+field.getDirection();
+				}
 			}
 			if (fieldsStr.startsWith(",")) {
 				fieldsStr = fieldsStr.substring(1);
