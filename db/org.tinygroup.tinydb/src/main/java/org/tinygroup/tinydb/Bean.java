@@ -35,7 +35,7 @@ public class Bean extends HashMap<String, Object> {
     public static final String ORDER_BY_KEY="$_order_by";//排序字段
     public static final String SORT_DIRECTION_KEY="$_sort_direction";//排序方向
     public static final String GROUP_BY_KEY="$_group_by";//分组字段
-    public static final String SKIP_IF_VALUE_EMPTY="$_skip_fields";//如果属性对应的值是null或者"",需要被忽略条件的描述
+    public static final String EMPTY_CONDITION_KEY="$_empty_fields";//值为属性列表，如果属性对应的值是null或者"",需要进行为空或者null条件处理
     
     public Bean() {
 		super();

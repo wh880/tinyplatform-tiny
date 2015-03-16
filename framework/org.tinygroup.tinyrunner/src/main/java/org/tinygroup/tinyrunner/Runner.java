@@ -32,11 +32,11 @@ public class Runner {
 				.getLogger(Runner.class);
 		private static final String TINY_JAR_PATTERN = "org\\.tinygroup\\.(.)*\\.jar";
 
-		public static void init(String xmlFile, boolean classPathResolve,List<String> includePathPatterns) {
+		public static void init(String xmlFile, List<String> includePathPatterns) {
 			if (init) {
 				return;
 			}
-			initDirect(xmlFile, classPathResolve,includePathPatterns);
+			initDirect(xmlFile,includePathPatterns);
 		}
 		/**
 		 * 初始化
@@ -44,7 +44,7 @@ public class Runner {
 		 * @param classPathResolve
 		 *            是否对classPath进行处理
 		 */
-		public static void initDirect(String xmlFile, boolean classPathResolve,List<String> includePathPatterns) {
+		public static void initDirect(String xmlFile,List<String> includePathPatterns) {
 			
 			// init(xmlFile, classPathResolve, null, null);
 			String configXml = xmlFile;
@@ -172,4 +172,11 @@ public class Runner {
 				fileResolver.addIncludePathPattern(pattern);
 			}
 		}
+
+		public static void stop(){
+			if(init){
+				application.stop();
+			}
+		}
+
 }

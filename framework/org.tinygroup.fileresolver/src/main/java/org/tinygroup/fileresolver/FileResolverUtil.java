@@ -15,6 +15,7 @@
  */
 package org.tinygroup.fileresolver;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -25,12 +26,15 @@ import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
+import org.tinygroup.vfs.FileObjectFilter;
+import org.tinygroup.vfs.FileObjectProcessor;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.vfs.impl.JarSchemaProvider;
 
@@ -68,6 +72,10 @@ public class FileResolverUtil {
 	}
 
 	public static boolean isInclude(FileObject fileObject, FileResolver resolver) {
+		//jboss可能出现解析到根本不存在的jar包，这种情况直接忽略
+		if(fileObject==null || !fileObject.isExist()){
+			return false;
+		}
 		URL url = fileObject.getURL();
 		if (url.getProtocol().equals("file")
 				&& fileObject.getSchemaProvider() instanceof JarSchemaProvider) {
@@ -91,7 +99,7 @@ public class FileResolverUtil {
 
 	public static List<String> getWebLibJars(FileResolver resolver)
 			throws Exception {
-		List<String> classPaths = new ArrayList<String>();
+		final List<String> classPaths = new ArrayList<String>();
 		logger.logMessage(LogLevel.INFO, "查找Web工程中的jar文件列表开始...");
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Enumeration<URL> urls = loader.getResources("META-INF/MANIFEST.MF");
@@ -116,16 +124,53 @@ public class FileResolverUtil {
 					continue;
 				}
 			}
-			Manifest mf = new Manifest(url.openStream());
-			Attributes attributes = mf.getMainAttributes();
-			String isTinyProject = attributes.getValue("IsTinyProject");
-			if ("true".equals(isTinyProject)) {
-				logger.logMessage(LogLevel.INFO,
-						"文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。",
-						fileObject);
-				addJarFile(classPaths, fileObject.getAbsolutePath());
+			if(fileObject.isExist()){
+				Manifest mf = new Manifest(url.openStream());
+				Attributes attributes = mf.getMainAttributes();
+				String isTinyProject = attributes.getValue("IsTinyProject");
+				if ("true".equals(isTinyProject)) {
+					logger.logMessage(LogLevel.INFO,
+							"文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。",
+							fileObject);
+					addJarFile(classPaths, fileObject.getAbsolutePath());
+				}
 			}
+			
 		}
+		//Jboss新版本会将war资源解压到临时目录，需要根据TINY_WEBROOT再查找
+		String webinfPath = ConfigurationUtil.getConfigurationManager()
+		.getConfiguration().get("TINY_WEBROOT");
+        if (!StringUtil.isEmpty(webinfPath)) {
+        	FileObject webroot = VFS.resolveFile(webinfPath);
+        	webroot.foreach(new FileObjectFilter(){
+				public boolean accept(FileObject fileObject) {
+					return fileObject.getFileName().endsWith(".jar");
+				}}
+        	    , new FileObjectProcessor(){
+
+					public void process(FileObject fileObject) {
+						FileObject mfObject = fileObject.getFileObject("META-INF/MANIFEST.MF");
+						if(mfObject==null || !mfObject.isExist()){
+							return;
+						}
+						try{
+							Manifest mf = new Manifest(mfObject.getInputStream());
+							Attributes attributes = mf.getMainAttributes();
+							String isTinyProject = attributes.getValue("IsTinyProject");
+							if ("true".equals(isTinyProject)) {
+								logger.logMessage(LogLevel.INFO,
+										"文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。",
+										fileObject);
+								addJarFile(classPaths, fileObject.getAbsolutePath());
+							}
+						}catch(IOException e){
+							logger.logMessage(LogLevel.WARN, "解析MANIFEST.MF发生异常:{}",mfObject.getAbsolutePath());
+						}
+						
+					}}
+        	    );
+        }
+		
 		logger.logMessage(LogLevel.INFO, "查找Web工程中的jar文件列表完成。");
 		return classPaths;
 	}
@@ -176,7 +221,7 @@ public class FileResolverUtil {
 
 		String webinfPath = ConfigurationUtil.getConfigurationManager()
 				.getConfiguration().get("TINY_WEBROOT");
-		if (webinfPath == null || webinfPath.length() == 0) {
+		if (StringUtil.isEmpty(webinfPath)) {
 			logger.logMessage(LogLevel.WARN, "WEBROOT变量找不到");
 			return allScanningPath;
 		}
