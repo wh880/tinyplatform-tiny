@@ -40,13 +40,14 @@ public class NettyEventProcessor implements EventProcessor {
 	private int timeout = 10;
 	private List<ServiceInfo> list = new ArrayList<ServiceInfo>();
 	private CEPCore core;
- 	public NettyEventProcessor(Node remoteNode,List<ServiceInfo> list) {
- 		this.list = list;
- 		this.remoteNode = remoteNode;
-		
+
+	public NettyEventProcessor(Node remoteNode, List<ServiceInfo> list) {
+		this.list = list;
+		this.remoteNode = remoteNode;
+
 	}
-	
-	private void initClient(){
+
+	private void initClient() {
 		client = getNewClient(remoteNode);
 	}
 
@@ -74,7 +75,11 @@ public class NettyEventProcessor implements EventProcessor {
 					break;
 				}
 			}
-			event = eventClient.sendObject(event);
+			Event newEvent = eventClient.sendObject(event);
+			event.getServiceRequest()
+					.getContext()
+					.putSubContext(newEvent.getEventId(),
+							newEvent.getServiceRequest().getContext());
 
 			logger.logMessage(LogLevel.INFO,
 					"请求成功,目标节点{0}:{1}:{2},请求信息:[serviceId:{3}]", remoteNode
@@ -129,7 +134,8 @@ public class NettyEventProcessor implements EventProcessor {
 	private EventClientDaemonRunnable getNewClient(Node remoteNode) {
 		String nodeInfo = remoteNode.toString();
 		EventClientDaemonRunnable client = new EventClientDaemonRunnable(
-				remoteNode.getIp(), Integer.parseInt(remoteNode.getPort()),false);
+				remoteNode.getIp(), Integer.parseInt(remoteNode.getPort()),
+				false);
 		client.addPostEventTrigger(new ArUnregTrigger(core, this));
 		DaemonUtils.daemon(nodeInfo, client);
 		return client;
@@ -141,6 +147,6 @@ public class NettyEventProcessor implements EventProcessor {
 
 	public void setRead(boolean read) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
