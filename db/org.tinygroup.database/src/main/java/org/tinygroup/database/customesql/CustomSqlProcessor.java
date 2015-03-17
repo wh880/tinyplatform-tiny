@@ -17,11 +17,29 @@ package org.tinygroup.database.customesql;
 
 import java.util.List;
 
+import org.tinygroup.database.config.SqlBody;
 import org.tinygroup.database.config.customsql.CustomSqls;
 
 public interface CustomSqlProcessor {
 
-	List<String> getCustomSqls(String type,String language);
-	void addCustomSqls(CustomSqls customsqls);
-	void removeCustomSqls(CustomSqls customsqls);
+    /**
+     * 通用的标准sql类型,适用于各种数据库，未定义{@link SqlBody#getDialectTypeName()}的自定义sql将默认为此类型
+     */
+    String STANDARD_SQL_TYPE = "STANDARD_SQL_TYPE";
+
+    /**
+     * 优先执行的sql
+     */
+    String BEFORE = "before";
+
+    /**
+     * 后续执行的sql
+     */
+    String AFTER = "after";
+
+    List<String> getCustomSqls(String type,String language);
+
+    void addCustomSqls(CustomSqls customsqls);
+
+    void removeCustomSqls(CustomSqls customsqls);
 }

@@ -36,34 +36,42 @@ public class CustomSqlProcessorTest extends TestCase {
 	public void testBefore() {
 		System.out.println(customSqlProcessor.getCustomSqls("before", "oracle"));
 		assertEquals(1, customSqlProcessor.getCustomSqls("before", "oracle").size());
-		
+
 		System.out.println(customSqlProcessor.getCustomSqls("before", "mysql"));
 		assertEquals(1, customSqlProcessor.getCustomSqls("before", "mysql").size());
-		
+
 		System.out.println(customSqlProcessor.getCustomSqls("before", "h2"));
 		assertEquals(1, customSqlProcessor.getCustomSqls("before", "h2").size());
-		
+
 		System.out.println(customSqlProcessor.getCustomSqls("before", "db2"));
 		assertEquals(1, customSqlProcessor.getCustomSqls("before", "db2").size());
-		
+
 		System.out.println(customSqlProcessor.getCustomSqls("before", "derby"));
 		assertEquals(1, customSqlProcessor.getCustomSqls("before", "derby").size());
 	}
-	
+
 	public void testAfter() {
 		System.out.println(customSqlProcessor.getCustomSqls("after", "oracle"));
 		assertEquals(3, customSqlProcessor.getCustomSqls("after", "oracle").size());
-		
+
 		System.out.println(customSqlProcessor.getCustomSqls("after", "mysql"));
 		assertEquals(1, customSqlProcessor.getCustomSqls("after", "mysql").size());
-		
+
 		System.out.println(customSqlProcessor.getCustomSqls("after", "h2"));
 		assertEquals(1, customSqlProcessor.getCustomSqls("after", "h2").size());
-		
+
 		System.out.println(customSqlProcessor.getCustomSqls("after", "db2"));
 		assertEquals(1, customSqlProcessor.getCustomSqls("after", "db2").size());
-		
+
 		System.out.println(customSqlProcessor.getCustomSqls("after", "derby"));
 		assertEquals(1, customSqlProcessor.getCustomSqls("after", "derby").size());
+	}
+
+	public void testSstandardSql(){
+	    System.out.println(customSqlProcessor.getCustomSqls(CustomSqlProcessor.BEFORE, CustomSqlProcessor.STANDARD_SQL_TYPE));
+        assertEquals(1, customSqlProcessor.getCustomSqls(CustomSqlProcessor.BEFORE, CustomSqlProcessor.STANDARD_SQL_TYPE).size());
+
+        System.out.println(customSqlProcessor.getCustomSqls(CustomSqlProcessor.AFTER, CustomSqlProcessor.STANDARD_SQL_TYPE));
+        assertEquals(2, customSqlProcessor.getCustomSqls(CustomSqlProcessor.AFTER, CustomSqlProcessor.STANDARD_SQL_TYPE).size());
 	}
 }

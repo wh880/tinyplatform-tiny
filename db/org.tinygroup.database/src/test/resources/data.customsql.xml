@@ -35,4 +35,14 @@
 	<custom-sql type="after">
 		<sql dialectTypeName="derby" content="after sql"></sql>
 	</custom-sql>
+
+	<custom-sql type="before">
+		<sql content="before standard sql"></sql>
+	</custom-sql>
+	<custom-sql type="after">
+		<sql content="after standard sql 1"></sql>
+	</custom-sql>
+	<custom-sql type="after">
+		<sql content="after standard sql 2"></sql>
+	</custom-sql>
 </custom-sqls>
