@@ -36,22 +36,22 @@ public class DataBaseUtil {
 	public static String PROCESSOR_XSTREAM = "processor";
 	public static String PROCESSORMANAGER_BEAN = "processorManager";
 	public static String TABLEPROCESSOR_BEAN = "tableProcessor";
-	public static String CUSTOMESQL_BEAN = "customeSqlProcessor";
+	public static String CUSTOMESQL_BEAN = "customSqlProcessor";
 	public static String FUNCTION_BEAN = "dialectFunctionProcessor";
 	public static String INITDATA_BEAN = "initDataProcessor";
 	public static String PROCEDURE_BEAN = "procedureProcessor";
 	public static String VIEW_BEAN = "viewProcessor";
 	public static String TRIGGER_BEAN = "triggerProcessor";
 	public static String SEQUENCE_BEAN = "sequenceProcessor";
-	
+
 	/* 数据库类型 */
 	public static final String DB_TYPE_ORACLE = "oracle";
 	public static final String DB_TYPE_DB2 = "db2";
 	public static final String DB_TYPE_MYSQL = "mysql";
 	public static final String DB_TYPE_SQLSERVER = "sqlserver";
 	public static final String DB_TYPE_INFORMIX = "informix";
-	public static final String DB_TYPE_SYBASE = "sybase"; 
-	public static final String DB_TYPE_DERBY = "derby"; 
+	public static final String DB_TYPE_SYBASE = "sybase";
+	public static final String DB_TYPE_DERBY = "derby";
 
 	public static StandardField getStandardField(String tableFieldId,
 			Table table,ClassLoader loader) {
@@ -69,14 +69,14 @@ public class DataBaseUtil {
 				DataBaseUtil.TABLEPROCESSOR_BEAN);
 		return tableProcessor.getTableById(id);
 	}
-	
+
 	public static View getViewById(String id,ClassLoader loader) {
 		ViewProcessor viewProcessor = BeanContainerFactory.getBeanContainer(loader).getBean(
 				DataBaseUtil.VIEW_BEAN);
 		return viewProcessor.getViewById(id);
 	}
-	
-	
+
+
 	public static TableField getPrimaryField(Table table){
 		for(TableField field:table.getFieldList()){
 			if(field.getPrimary())
@@ -100,7 +100,7 @@ public class DataBaseUtil {
 		}
 		return schema;
 	}
-	
+
 	public static void closeResultSet(ResultSet r){
 		if (r != null) {
 			try {

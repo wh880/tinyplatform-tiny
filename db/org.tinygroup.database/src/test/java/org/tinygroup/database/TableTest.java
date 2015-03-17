@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.database.config.table.Index;
+import org.tinygroup.database.config.table.IndexField;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.config.table.Tables;
@@ -54,8 +55,11 @@ public class TableTest {
 		fieldList.add(field);
 		
 		Index index =new Index();
-		index.getFields().add("aa");
-		index.getFields().add("aa");
+		IndexField aa = new IndexField();
+		aa.setField("aa");
+		aa.setDirection("desc");
+		index.getFields().add(aa);
+		index.getFields().add(aa);
 		table.getIndexList().add(index);
 		table.getIndexList().add(index);
 		System.out.println(stream.toXML(tables));

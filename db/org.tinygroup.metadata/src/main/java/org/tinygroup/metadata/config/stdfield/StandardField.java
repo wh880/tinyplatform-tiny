@@ -28,9 +28,6 @@ public class StandardField extends BaseObject {
 	@XStreamAsAttribute
 	@XStreamAlias("business-type-id")
 	private String  typeId;// 标准数据类型
-	@XStreamAsAttribute
-	@XStreamAlias("not-null")
-	private boolean notNull;// 是否为空
 	@XStreamImplicit
 	private List<NickName> nickNames;// 别名列表
 
@@ -42,16 +39,6 @@ public class StandardField extends BaseObject {
 	public void setTypeId(String typeId) {
 		this.typeId = typeId;
 	}
-
-	public boolean getNotNull() {
-		return notNull;
-	}
-
-	public void setNotNull(boolean notNull) {
-		this.notNull = notNull;
-	}
-
-	
 
 	public List<NickName> getNickNames() {
 		return nickNames;

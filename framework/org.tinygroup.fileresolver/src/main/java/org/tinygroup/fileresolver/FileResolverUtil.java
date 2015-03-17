@@ -124,15 +124,18 @@ public class FileResolverUtil {
 					continue;
 				}
 			}
-			Manifest mf = new Manifest(url.openStream());
-			Attributes attributes = mf.getMainAttributes();
-			String isTinyProject = attributes.getValue("IsTinyProject");
-			if ("true".equals(isTinyProject)) {
-				logger.logMessage(LogLevel.INFO,
-						"文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。",
-						fileObject);
-				addJarFile(classPaths, fileObject.getAbsolutePath());
+			if(fileObject.isExist()){
+				Manifest mf = new Manifest(url.openStream());
+				Attributes attributes = mf.getMainAttributes();
+				String isTinyProject = attributes.getValue("IsTinyProject");
+				if ("true".equals(isTinyProject)) {
+					logger.logMessage(LogLevel.INFO,
+							"文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。",
+							fileObject);
+					addJarFile(classPaths, fileObject.getAbsolutePath());
+				}
 			}
+			
 		}
 		//Jboss新版本会将war资源解压到临时目录，需要根据TINY_WEBROOT再查找
 		String webinfPath = ConfigurationUtil.getConfigurationManager()
