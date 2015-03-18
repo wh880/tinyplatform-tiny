@@ -16,7 +16,7 @@ import org.tinygroup.weblayer.config.TinyProcessorConfigInfo;
  * @author renhui
  * 
  */
-public class DefaultTinyProcessorConfig extends AbstractBasicTinyConfig
+public class DefaultTinyProcessorConfig extends SimpleBasicTinyConfig
 		implements TinyProcessorConfig {
 
 	// 存放映射正则表达式列表
@@ -25,11 +25,11 @@ public class DefaultTinyProcessorConfig extends AbstractBasicTinyConfig
 	private List<String> patternStrs = new ArrayList<String>();
 
 	public DefaultTinyProcessorConfig(TinyProcessorConfigInfo config) {
+		super(config.getConfigName(),config);
 		setProcessorConfig(config);
 	}
 
-	public void setProcessorConfig(TinyProcessorConfigInfo config) {
-		clear();
+	private void setProcessorConfig(TinyProcessorConfigInfo config) {
 		this.parameterMap = config.getParameterMap();
 		List<ServletMapping> filterMappings = config.getServletMappings();
 		for (ServletMapping filterMapping : filterMappings) {
@@ -41,12 +41,6 @@ public class DefaultTinyProcessorConfig extends AbstractBasicTinyConfig
 			logger.logMessage(LogLevel.DEBUG, "<{}>的url-pattern:'{}'",
 					configName, urlPattern);
 		}
-	}
-
-	private void clear() {
-		parameterMap.clear();
-		patternStrs.clear();
-		patterns.clear();
 	}
 
 	public boolean isMatch(String url) {

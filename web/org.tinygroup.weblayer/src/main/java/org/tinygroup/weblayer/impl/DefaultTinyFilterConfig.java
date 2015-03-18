@@ -16,21 +16,19 @@ import org.tinygroup.weblayer.config.TinyFilterConfigInfo;
  * @author renhui
  * 
  */
-public class DefaultTinyFilterConfig extends AbstractBasicTinyConfig implements TinyFilterConfig {
+public class DefaultTinyFilterConfig extends SimpleBasicTinyConfig implements TinyFilterConfig {
 
 	// 存放映射正则表达式列表
 	private List<Pattern> patterns = new ArrayList<Pattern>();
 	// 存放正则表达式的字符串格式
 	private List<String> patternStrs = new ArrayList<String>();
 	
-	
 	public DefaultTinyFilterConfig(TinyFilterConfigInfo config){
+		super(config.getConfigName(),config);
 		setFilterConfig(config);
 	}
 
-	public void setFilterConfig(TinyFilterConfigInfo config) {
-		clear();
-		this.parameterMap = config.getParameterMap();
+	private void setFilterConfig(TinyFilterConfigInfo config) {
 		List<FilterMapping> filterMappings = config.getFilterMappings();
 		for (FilterMapping filterMapping : filterMappings) {
 			String urlPattern = filterMapping.getUrlPattern();
@@ -43,12 +41,6 @@ public class DefaultTinyFilterConfig extends AbstractBasicTinyConfig implements 
 		}
 	}
 
-
-	private void clear() {
-		parameterMap.clear();
-		patternStrs.clear();
-		patterns.clear();
-	}
 
 	public boolean isMatch(String url) {
 		for (Pattern pattern : patterns) {

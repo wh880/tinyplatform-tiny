@@ -15,6 +15,24 @@
  */
 package org.tinygroup.weblayer;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
@@ -27,20 +45,12 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
+import org.tinygroup.weblayer.configmanager.TinyListenerConfigManager;
+import org.tinygroup.weblayer.configmanager.TinyListenerConfigManagerHolder;
 import org.tinygroup.weblayer.impl.WebContextImpl;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 public class TinyHttpFilter implements Filter {
 	private static final String EXCLUDE_PATH = "excludePath";
@@ -71,7 +81,7 @@ public class TinyHttpFilter implements Filter {
 	private FullContextFileRepository fullContextFileRepository;
 	private static String[] defaultFiles = { "index.page", "index.htm",
 			"index.html", "index.jsp" };
-	public static final String DEFAULT_PAGE_KEY="$_default_page";
+	public static final String DEFAULT_PAGE_KEY = "$_default_page";
 
 	public void destroy() {
 		destroyTinyProcessors();
@@ -92,48 +102,90 @@ public class TinyHttpFilter implements Filter {
 	public void doFilter(ServletRequest servletRequest,
 			ServletResponse servletResponse, FilterChain filterChain)
 			throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) servletRequest;
-		HttpServletResponse response = (HttpServletResponse) servletResponse;
-		String servletPath =getServletPath(request);
-		if (isExcluded(servletPath)) {
-			logger.logMessage(LogLevel.DEBUG, "请求路径:<{}>,被拒绝", servletPath);
-			filterChain.doFilter(request, response);
-			return;
-		}
-		WebContext context = new WebContextImpl();
-		context.put("springUtil", BeanContainerFactory.getBeanContainer(getClass().getClassLoader()));
-		postDataProcess(request, context);
-		context.put("context", context);
-		context.putSubContext("applicationproperties", new ContextImpl(
-				ConfigurationUtil.getConfigurationManager().getConfiguration()));
-		putRequestInfo(request, context);
-		context.init(request, response,
-				ServletContextHolder.getServletContext());
-		if (servletPath.endsWith("/")) {
-			for (String defaultFile : defaultFiles) {
-				String tmpPath = servletPath + defaultFile;
-				FileObject fileObject = fullContextFileRepository
-						.getFileObject(tmpPath);
-				if (fileObject != null && fileObject.isExist()) {
-					servletPath = tmpPath;
-					request.setAttribute(DEFAULT_PAGE_KEY, servletPath);
-					break;
+		try {
+			requestInitListener(servletRequest);
+			HttpServletRequest request = (HttpServletRequest) servletRequest;
+			HttpServletResponse response = (HttpServletResponse) servletResponse;
+			String servletPath = getServletPath(request);
+			if (isExcluded(servletPath)) {
+				logger.logMessage(LogLevel.DEBUG, "请求路径:<{}>,被拒绝", servletPath);
+				filterChain.doFilter(request, response);
+				return;
+			}
+			WebContext context = new WebContextImpl();
+			context.put("springUtil", BeanContainerFactory
+					.getBeanContainer(getClass().getClassLoader()));
+			postDataProcess(request, context);
+			context.put("context", context);
+			context.putSubContext("applicationproperties", new ContextImpl(
+					ConfigurationUtil.getConfigurationManager()
+							.getConfiguration()));
+			putRequestInfo(request, context);
+			context.init(request, response,
+					ServletContextHolder.getServletContext());
+			if (servletPath.endsWith("/")) {
+				for (String defaultFile : defaultFiles) {
+					String tmpPath = servletPath + defaultFile;
+					FileObject fileObject = fullContextFileRepository
+							.getFileObject(tmpPath);
+					if (fileObject != null && fileObject.isExist()) {
+						servletPath = tmpPath;
+						request.setAttribute(DEFAULT_PAGE_KEY, servletPath);
+						break;
+					}
 				}
 			}
+			TinyFilterHandler hander = new TinyFilterHandler(servletPath,
+					filterChain, context, tinyFilterManager,
+					tinyProcessorManager);
+			if (wrapper != null) {
+				wrapper.filterWrapper(context, hander);
+			} else {
+				hander.tinyFilterProcessor(request, response);
+			}
+		} finally {
+			requestDestroyListener(servletRequest);//抛出异常也要保证执行
 		}
-		TinyFilterHandler hander = new TinyFilterHandler(servletPath,
-				filterChain, context, tinyFilterManager, tinyProcessorManager);
-		if (wrapper != null) {
-			wrapper.filterWrapper(context, hander);
-		} else {
-			hander.tinyFilterProcessor(request, response);
+	}
+
+	private void requestInitListener(ServletRequest servletRequest) {
+		TinyListenerConfigManager configManager = TinyListenerConfigManagerHolder
+				.getInstance();
+		List<ServletRequestListener> listeners = configManager
+				.getRequestListeners();
+		ServletRequestEvent event = new ServletRequestEvent(
+				ServletContextHolder.getServletContext(), servletRequest);
+		for (ServletRequestListener listener : listeners) {
+			logger.logMessage(LogLevel.DEBUG,
+					"ServletRequestListener:[{0}] will be requestInitialized",
+					listener);
+			listener.requestInitialized(event);
+			logger.logMessage(LogLevel.DEBUG,
+					"ServletRequestListener:[{0}] requestInitialized", listener);
+		}
+	}
+
+	private void requestDestroyListener(ServletRequest servletRequest) {
+		TinyListenerConfigManager configManager = TinyListenerConfigManagerHolder
+				.getInstance();
+		List<ServletRequestListener> listeners = configManager
+				.getRequestListeners();
+		ServletRequestEvent event = new ServletRequestEvent(
+				ServletContextHolder.getServletContext(), servletRequest);
+		for (ServletRequestListener listener : listeners) {
+			logger.logMessage(LogLevel.DEBUG,
+					"ServletRequestListener:[{0}] will be requestDestroyed",
+					listener);
+			listener.requestDestroyed(event);
+			logger.logMessage(LogLevel.DEBUG,
+					"ServletRequestListener:[{0}] requestDestroyed", listener);
 		}
 	}
 
 	private String getServletPath(HttpServletRequest request) {
-		String servletPath=request.getServletPath();
-		if(StringUtil.isBlank(servletPath)){
-			servletPath=request.getPathInfo();
+		String servletPath = request.getServletPath();
+		if (StringUtil.isBlank(servletPath)) {
+			servletPath = request.getPathInfo();
 		}
 		return servletPath;
 	}
@@ -188,9 +240,9 @@ public class TinyHttpFilter implements Filter {
 	}
 
 	private void putRequestInfo(HttpServletRequest request, WebContext context) {
-		String path=request.getContextPath();
-		if(path==null){
-			path="";
+		String path = request.getContextPath();
+		if (path == null) {
+			path = "";
 		}
 		context.put(WebContextUtil.TINY_CONTEXT_PATH, path);
 		context.put(WebContextUtil.TINY_REQUEST_URI, request.getRequestURI());
@@ -259,10 +311,11 @@ public class TinyHttpFilter implements Filter {
 
 	/**
 	 * tiny-processors初始化
-	 * @throws IOException 
-	 * @throws ServletException 
+	 * 
+	 * @throws IOException
+	 * @throws ServletException
 	 */
-	private void initTinyProcessors() throws ServletException{
+	private void initTinyProcessors() throws ServletException {
 		tinyProcessorManager = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 				TinyProcessorManager.TINY_PROCESSOR_MANAGER);

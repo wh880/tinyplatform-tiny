@@ -33,6 +33,9 @@
 		class="org.tinygroup.weblayer.fileresolver.TinyFilterFileProcessor">
 		<property name="configManager" ref="tinyFilterConfigManager"></property>
 	</bean>
+	<bean id="tinyListenerFileProcessor" scope="singleton"
+		class="org.tinygroup.weblayer.fileresolver.TinyListenerFileProcessor">
+	</bean>
 	<bean id="fullContextServlet" scope="singleton"
 		class="org.tinygroup.weblayer.servlet.FullContextUrlRedirectServlet">
 		<property name="fullContextFileRepository" ref="fullContextFileRepository"></property>
