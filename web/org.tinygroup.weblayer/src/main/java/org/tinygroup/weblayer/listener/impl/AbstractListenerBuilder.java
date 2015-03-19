@@ -1,6 +1,8 @@
 package org.tinygroup.weblayer.listener.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.tinygroup.commons.order.Ordered;
@@ -19,6 +21,8 @@ public abstract class AbstractListenerBuilder<INSTANCE> implements
 		ListenerInstanceBuilder<INSTANCE> {
 
 	protected List<INSTANCE> listeners = new ArrayList<INSTANCE>();
+	
+	private boolean ordered;//是否已经进行排序了
 
 	private static Logger logger = LoggerFactory
 			.getLogger(AbstractListenerBuilder.class);
@@ -42,6 +46,20 @@ public abstract class AbstractListenerBuilder<INSTANCE> implements
 	}
 
 	public List<INSTANCE> getInstances() {
+		if(!ordered){
+			Collections.sort(listeners,new Comparator<INSTANCE>() {
+				public int compare(INSTANCE o1, INSTANCE o2) {
+					Ordered order1=(Ordered)o1;
+					Ordered order2=(Ordered)o2;
+					if (order1 != null && order2 != null) {
+						return order1.getOrder() > order2.getOrder() ? 1
+								: (order1.getOrder() == order2.getOrder() ? 0 : -1);
+					}
+					return 0;
+				}
+			});
+			ordered=true;
+		}
 		return listeners;
 	}
 
