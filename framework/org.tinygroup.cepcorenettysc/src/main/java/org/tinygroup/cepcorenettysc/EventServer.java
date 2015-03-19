@@ -26,6 +26,16 @@ public class EventServer extends Server {
 	public EventServer(int port) {
 		super(port);
 	}
+	
+	
+	public void stop(){
+		//停止自己的监听端口及该端口来自外部的连接
+		super.stop();
+		//停止自己对外的连接
+		//对于sc来说，此处是sc向as ar发起的连接 用于发布注册时的数据
+		//对于as ar来说，此处是空
+		((EventServerHandler)getHandler()).stop();
+	}
 
 	public ChannelHandler getHandler() {
 		ServerHandler serverHandler = new EventServerHandler();

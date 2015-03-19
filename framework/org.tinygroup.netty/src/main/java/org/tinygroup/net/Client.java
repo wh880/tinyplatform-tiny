@@ -30,124 +30,127 @@ import org.tinygroup.net.exception.InterruptedRuntimeException;
 
 /**
  * 客户端抽象类
- *
+ * 
  * @author luoguo
  */
 public abstract class Client implements Netty {
 
-    private final String host;
-    private final int port;
-    volatile private boolean ready = false;
-    protected ChannelHandlerContext context;
-    ClientBootstrap bootstrap;
-    ExecutorService pool1;
-    ExecutorService pool2;
-    ChannelFuture connectFuture;
-    protected int timeout = 5000;// ms
-    volatile private String status = "";
-    private static final String RUNNING = "running";
-    static String CONNECINGT = "connecting";
-    static String CLOSED = "closed";
-    static String FIRED_EXCEPTION = "fired_exception";
+	private final String host;
+	private final int port;
+	volatile private boolean ready = false;
+	protected ChannelHandlerContext context;
+	ClientBootstrap bootstrap;
+	ExecutorService pool1;
+	ExecutorService pool2;
+	ChannelFuture connectFuture;
+	protected int timeout = 5000;// ms
+	volatile private String status = "";
+	private static final String RUNNING = "running";
+	static String CONNECINGT = "connecting";
+	static String CLOSED = "closed";
+	static String FIRED_EXCEPTION = "fired_exception";
 
-    /**
-     * 停止方法
-     */
-    public void stop() {
-        if (bootstrap != null)
-            bootstrap.shutdown();
-    }
+	/**
+	 * 停止方法
+	 */
+	public void stop() {
+		if (bootstrap != null)
+			bootstrap.shutdown();
+	}
 
-    /**
-     * 设置超时时间
-     *
-     * @param timeout
-     */
-    public void setTimeout(int timeout) {
-        this.timeout = timeout;
-    }
+	/**
+	 * 设置超时时间
+	 * 
+	 * @param timeout
+	 */
+	public void setTimeout(int timeout) {
+		this.timeout = timeout;
+	}
 
-    public Client(String host, int port) {
-        this.host = host;
-        this.port = port;
-    }
+	public Client(String host, int port) {
+		this.host = host;
+		this.port = port;
+	}
 
-    public boolean isClosed() {
-        return CLOSED.equals(status);
-    }
+	public boolean isClosed() {
+		return CLOSED.equals(status);
+	}
 
-    /**
-     * 发送对象
-     *
-     * @param object
-     * @return
-     */
-    public <T> T sendObject(Object object) {
-        synchronized (status) {
-            if (status.equals(CLOSED)) {
-                status = FIRED_EXCEPTION;
-                throw new InterruptedRuntimeException("网络连接已经关闭！");
-            }
-            if (!isReady()) {
-                throw new RuntimeException("客户端没有就绪，不能发送报文！");
-            }
-        }
-        return (T) sendObjectLocal(object);
-    }
+	/**
+	 * 发送对象
+	 * 
+	 * @param object
+	 * @return
+	 */
+	public <T> T sendObject(Object object) {
+		synchronized (status) {
+			if (status.equals(CLOSED)) {
+				status = FIRED_EXCEPTION;
+				throw new InterruptedRuntimeException("网络连接已经关闭！");
+			}
+			if (!isReady()) {
+				throw new RuntimeException("客户端没有就绪，不能向" + host + ":" + port
+						+ "发送报文！");
+			}
+		}
+		return (T) sendObjectLocal(object);
+	}
 
-    public abstract <T> T sendObjectLocal(Object object);
+	public abstract <T> T sendObjectLocal(Object object);
 
-    /**
-     * 启动方法
-     */
-    public void run() {
-        // 创建线程池
-        status = CONNECINGT;
-        pool1 = Executors.newCachedThreadPool();
-        pool2 = Executors.newCachedThreadPool();
-        bootstrap = new ClientBootstrap(new NioClientSocketChannelFactory(pool1, pool2));
+	/**
+	 * 启动方法
+	 */
+	public void run() {
+		// 创建线程池
+		status = CONNECINGT;
+		pool1 = Executors.newCachedThreadPool();
+		pool2 = Executors.newCachedThreadPool();
+		bootstrap = new ClientBootstrap(new NioClientSocketChannelFactory(
+				pool1, pool2));
 
-        // 设置pipeline工厂.
-        bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
-            public ChannelPipeline getPipeline() throws Exception {
-                return Channels.pipeline(getEncoder(), getDecoder(), getHandler());
-            }
-        });
-        connectFuture = bootstrap.connect(new InetSocketAddress(host, port));
-        status = RUNNING;
+		// 设置pipeline工厂.
+		bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
+			public ChannelPipeline getPipeline() throws Exception {
+				return Channels.pipeline(getEncoder(), getDecoder(),
+						getHandler());
+			}
+		});
+		connectFuture = bootstrap.connect(new InetSocketAddress(host, port));
+		status = RUNNING;
 
-        connectFuture.awaitUninterruptibly().getChannel();
+		connectFuture.awaitUninterruptibly().getChannel();
 
-        // 等待运行，直接连接关闭或出现异常
-        connectFuture.getChannel().getCloseFuture().awaitUninterruptibly();
-        synchronized (CLOSED) {
-            status = CLOSED;
-            ready = false;
-        }
+		// 等待运行，直接连接关闭或出现异常
+		connectFuture.getChannel().getCloseFuture().awaitUninterruptibly();
+		synchronized (CLOSED) {
+			status = CLOSED;
+			ready = false;
+		}
 
-        // 停止线程池并退出
-        bootstrap.releaseExternalResources();
-    }
+		// 停止线程池并退出
+		bootstrap.releaseExternalResources();
+	}
 
-    /**
-     * @param ready
-     */
-    void setReady(boolean ready) {
-        this.ready = ready;
-    }
+	/**
+	 * @param ready
+	 */
+	void setReady(boolean ready) {
+		this.ready = ready;
+	}
 
-    public boolean isReady() {
-        return ready;
-    }
+	public boolean isReady() {
+		return ready;
+	}
 
-    /**
-     * 设置通道上下文
-     *
-     * @param ctx
-     */
-    void setChannelHandlerContext(ChannelHandlerContext ctx) {
-        this.context = ctx;
+	/**
+	 * 设置通道上下文
+	 * 
+	 * @param ctx
+	 */
+	void setChannelHandlerContext(ChannelHandlerContext ctx) {
+		this.context = ctx;
 
-    }
+	}
 
 }

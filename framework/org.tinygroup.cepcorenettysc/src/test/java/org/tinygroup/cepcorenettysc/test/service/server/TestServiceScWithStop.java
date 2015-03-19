@@ -18,12 +18,21 @@ package org.tinygroup.cepcorenettysc.test.service.server;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 
-public class TestServiceSc {
+public class TestServiceScWithStop {
 	public static void main(String[] args) {
 		startSc();
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+		}
+		stopSc();
+		System.out.println(111);
 	}
 
 	public static void startSc() {
 		AbstractTestUtil.init("applicationsc.xml", true);
+	}
+	public static void stopSc() {
+		AbstractTestUtil.stop();
 	}
 }

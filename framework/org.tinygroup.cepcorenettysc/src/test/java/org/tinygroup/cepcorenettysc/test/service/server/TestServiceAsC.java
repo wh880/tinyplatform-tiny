@@ -18,12 +18,15 @@ package org.tinygroup.cepcorenettysc.test.service.server;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 
-public class TestServiceSc {
+public class TestServiceAsC {
 	public static void main(String[] args) {
-		startSc();
+		startAsC();
 	}
-
-	public static void startSc() {
-		AbstractTestUtil.init("applicationsc.xml", true);
+	
+	
+	public static void startAsC(){
+		AbstractTestUtil.init("applicationc.xml", true);
+	
 	}
+	
 }

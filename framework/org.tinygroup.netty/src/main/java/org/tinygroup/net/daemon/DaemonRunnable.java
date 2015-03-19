@@ -38,6 +38,10 @@ public abstract class DaemonRunnable implements Runnable {
 		this.end = true;
 		stopAction();
 	}
+	
+	public boolean isEnd(){
+		return this.end;
+	}
 
 	public int getWaitTime() {
 		return waitTime;

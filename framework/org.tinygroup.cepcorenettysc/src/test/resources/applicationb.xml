@@ -3,7 +3,5 @@
 	<application-processors>
 		<application-processor bean="fileResolverProcessor"></application-processor>
 	</application-processors>
-	<cep-configuration node-name="ar">
-		<operator name="ar"></operator>
-	</cep-configuration>
+	
 </application>

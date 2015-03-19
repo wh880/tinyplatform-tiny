@@ -15,6 +15,7 @@
  */
 package org.tinygroup.cepcorenettysc.test.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.event.Parameter;
@@ -45,8 +46,12 @@ public class ServiceB implements ServiceInfo {
 	}
 
 	public List<Parameter> getResults() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Parameter> list = new ArrayList<Parameter>();
+		Parameter p = new Parameter();
+		p.setArray(false);
+		p.setName("result");
+		p.setType("java.lang.String");
+		return list;
 	}
 	public String getCategory() {
 		// TODO Auto-generated method stub

@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.jboss.netty.channel.ChannelHandlerContext;
+import org.jboss.netty.channel.ExceptionEvent;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcorenettysc.operator.ScUnregTrigger;
@@ -51,6 +52,11 @@ public class EventServerHandler extends ServerHandler {
 	static Map<String, Node> nodes = new HashMap<String, Node>();
 	static Map<String, EventClientDaemonRunnable> clients = new HashMap<String, EventClientDaemonRunnable>();
 
+	public void stop(){
+		for(EventClientDaemonRunnable client:clients.values()){
+			client.stop();
+		}
+	}
 	protected void processObject(Object message, ChannelHandlerContext ctx) {
 		// 先记录
 		Event event = (Event) message;
@@ -89,9 +95,10 @@ public class EventServerHandler extends ServerHandler {
 			event.setType(Event.EVENT_TYPE_RESPONSE);
 			ctx.getChannel().write(event);
 		} else {
+			run(event);
 			// 获取处理器进行处理
-			EventProcessor eventProcessor = new EventProcessor(event);
-			executorService.execute(eventProcessor);
+			// EventProcessor eventProcessor = new EventProcessor(event);
+			// executorService.execute(eventProcessor);
 		}
 
 	}
@@ -198,59 +205,120 @@ public class EventServerHandler extends ServerHandler {
 		channelHandlerContextMap.remove(eventId);
 	}
 
-	class EventProcessor implements Runnable {
-		private Event event;
-
-		public EventProcessor(Event event) {
-			this.event = event;
-		}
-
-		public void run() {
-			ChannelHandlerContext channelHandlerContext = channelHandlerContextMap
-					.get(event.getEventId());
-			try {
-				if (channelHandlerContext != null) {
-					if (event.getMode() == Event.EVENT_MODE_ASYNCHRONOUS) {
-						// 如果是异步模式，先返回结果
-						event.setType(Event.EVENT_TYPE_RESPONSE);
-						channelHandlerContext.getChannel().write(
-								getAsynchronousResponseEvent(event));
-					}
-					CEPCore core = BeanContainerFactory.getBeanContainer(
-							this.getClass().getClassLoader()).getBean(
-							CEPCore.CEP_CORE_BEAN);
-					core.process(event);
-					channelHandlerContext = channelHandlerContextMap.get(event
-							.getEventId());
-					if (event.getMode() == Event.EVENT_MODE_SYNCHRONOUS) {
-						if (channelHandlerContext != null) {
-							event.setType(Event.EVENT_TYPE_RESPONSE);
-							channelHandlerContext.getChannel().write(event);
-						}
-					}
-				}
-			} catch (Throwable e) {
-				logger.error(e);
-				for (String key : channelHandlerContextMap.keySet()) {
-					if (channelHandlerContextMap.get(key) == channelHandlerContext) {
-						clearRequest(key);
-					}
-				}
-			} finally {
-				clearRequest(event.getEventId());
+	public void run(Event event) {
+		ChannelHandlerContext channelHandlerContext = channelHandlerContextMap
+				.get(event.getEventId());
+		// try {
+		if (channelHandlerContext != null) {
+			if (event.getMode() == Event.EVENT_MODE_ASYNCHRONOUS) {
+				// 如果是异步模式，先返回结果
+				event.setType(Event.EVENT_TYPE_RESPONSE);
+				channelHandlerContext.getChannel().write(
+						getAsynchronousResponseEvent(event));
 			}
-
+			CEPCore core = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					CEPCore.CEP_CORE_BEAN);
+			core.process(event);
+			channelHandlerContext = channelHandlerContextMap.get(event
+					.getEventId());
+			if (event.getMode() == Event.EVENT_MODE_SYNCHRONOUS) {
+				if (channelHandlerContext != null) {
+					event.setType(Event.EVENT_TYPE_RESPONSE);
+					channelHandlerContext.getChannel().write(event);
+				}
+			}
 		}
+		// }
+		// catch (Throwable e) {
+		// logger.error(e);
+		// for (String key : channelHandlerContextMap.keySet()) {
+		// if (channelHandlerContextMap.get(key) == channelHandlerContext) {
+		// clearRequest(key);
+		// }
+		// }
+		// } finally {
+		clearRequest(event.getEventId());
+		// }
 
-		private Object getAsynchronousResponseEvent(Event event) {
-			Event response = new Event();
-			response.setEventId(event.getEventId());
-			response.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
-			response.setType(Event.EVENT_TYPE_RESPONSE);
-			return response;
+	}
+
+	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) {
+		logger.errorMessage("发生错误", e.getCause());
+		for (String key : channelHandlerContextMap.keySet()) {
+			if (channelHandlerContextMap.get(key) == ctx) {
+				Event event = eventMap.get(key);
+				event.setType(Event.EVENT_TYPE_RESPONSE);
+				event.setThrowable(e.getCause());
+				ctx.getChannel().write(event);
+				clearRequest(key);
+				
+			}
 		}
 
 	}
+
+	private Event getAsynchronousResponseEvent(Event event) {
+		Event response = new Event();
+		response.setEventId(event.getEventId());
+		response.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
+		response.setType(Event.EVENT_TYPE_RESPONSE);
+		return response;
+	}
+
+	// class EventProcessor implements Runnable {
+	// private Event event;
+	//
+	// public EventProcessor(Event event) {
+	// this.event = event;
+	// }
+	//
+	// public void run() {
+	// ChannelHandlerContext channelHandlerContext = channelHandlerContextMap
+	// .get(event.getEventId());
+	// try {
+	// if (channelHandlerContext != null) {
+	// if (event.getMode() == Event.EVENT_MODE_ASYNCHRONOUS) {
+	// // 如果是异步模式，先返回结果
+	// event.setType(Event.EVENT_TYPE_RESPONSE);
+	// channelHandlerContext.getChannel().write(
+	// getAsynchronousResponseEvent(event));
+	// }
+	// CEPCore core = BeanContainerFactory.getBeanContainer(
+	// this.getClass().getClassLoader()).getBean(
+	// CEPCore.CEP_CORE_BEAN);
+	// core.process(event);
+	// channelHandlerContext = channelHandlerContextMap.get(event
+	// .getEventId());
+	// if (event.getMode() == Event.EVENT_MODE_SYNCHRONOUS) {
+	// if (channelHandlerContext != null) {
+	// event.setType(Event.EVENT_TYPE_RESPONSE);
+	// channelHandlerContext.getChannel().write(event);
+	// }
+	// }
+	// }
+	// } catch (Throwable e) {
+	// logger.error(e);
+	// for (String key : channelHandlerContextMap.keySet()) {
+	// if (channelHandlerContextMap.get(key) == channelHandlerContext) {
+	// clearRequest(key);
+	// }
+	// }
+	// } finally {
+	// clearRequest(event.getEventId());
+	// }
+	//
+	// }
+	//
+	// private Object getAsynchronousResponseEvent(Event event) {
+	// Event response = new Event();
+	// response.setEventId(event.getEventId());
+	// response.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
+	// response.setType(Event.EVENT_TYPE_RESPONSE);
+	// return response;
+	// }
+	//
+	// }
 
 	public static void remove(EventClientDaemonRunnable client) {
 		logger.logMessage(LogLevel.INFO, "开始移除连接");
@@ -261,7 +329,7 @@ public class EventServerHandler extends ServerHandler {
 				break;
 			}
 		}
-		logger.logMessage(LogLevel.INFO, "连接的节点字符串为:{}",removeNodeString);
+		logger.logMessage(LogLevel.INFO, "连接的节点字符串为:{}", removeNodeString);
 		if (removeNodeString == null) {
 			logger.logMessage(LogLevel.INFO, "无需移除");
 			return;

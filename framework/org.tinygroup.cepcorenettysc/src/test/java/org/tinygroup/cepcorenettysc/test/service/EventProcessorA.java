@@ -30,9 +30,13 @@ public class EventProcessorA implements EventProcessor {
 	public void process(Event event) {
 		ServiceRequest r = event.getServiceRequest();
 		String serviceId = r.getServiceId();
+		if("a1".equals(serviceId)){
+			throw new RuntimeException("服务a1执行异常");
+		}
 		for(ServiceInfo s:list){
 			if(s.getServiceId().equals(serviceId)){
 				System.out.println("execute ServiceA id:"+serviceId);
+				event.getServiceRequest().getContext().put("result", serviceId);
 				return;
 			}
 		}
