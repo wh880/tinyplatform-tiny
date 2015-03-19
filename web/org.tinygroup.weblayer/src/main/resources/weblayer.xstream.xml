@@ -3,5 +3,6 @@
 		<xstream-annotation-class class-name="org.tinygroup.weblayer.config.TinyFilterConfigInfos" />
 		<xstream-annotation-class class-name="org.tinygroup.weblayer.config.TinyProcessorConfigInfos" />
 		<xstream-annotation-class class-name="org.tinygroup.weblayer.config.TinyWrapperFilterConfigInfo" />
+		<xstream-annotation-class class-name="org.tinygroup.weblayer.config.TinyListenerConfigInfos" />
 	</xstream-annotation-classes>
 </xstream-configuration>

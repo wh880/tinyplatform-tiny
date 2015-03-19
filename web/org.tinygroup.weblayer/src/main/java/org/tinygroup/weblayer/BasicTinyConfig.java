@@ -5,7 +5,7 @@ import java.util.Map;
 
 
 /**
- * tinyfilter的配置对象
+ * tiny获取配置信息的接口
  * @author renhui
  *
  */
@@ -33,12 +33,6 @@ public interface BasicTinyConfig {
 	
 	public Map<String,String> getParameterMap();
 	
-	/**
-	 * 请求的url是否匹配定义的映射正则表达式
-	 * @param url
-	 * @return
-	 */
-	public boolean isMatch(String url);
 	
    	
 }

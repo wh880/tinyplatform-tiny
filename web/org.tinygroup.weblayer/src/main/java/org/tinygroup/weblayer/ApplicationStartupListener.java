@@ -44,6 +44,8 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.PathFilter;
 import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
+import org.tinygroup.weblayer.configmanager.TinyListenerConfigManager;
+import org.tinygroup.weblayer.configmanager.TinyListenerConfigManagerHolder;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
 import org.tinygroup.weblayer.listener.TinyServletContext;
 import org.tinygroup.xmlparser.node.XmlNode;
@@ -59,6 +61,7 @@ public class ApplicationStartupListener implements ServletContextListener {
 		application.stop();
 		// SpringBeanContainer.destory();// 关闭spring容器
 		logger.logMessage(LogLevel.INFO, "WEB 应用停止完成。");
+		destroyContextListener(servletContextEvent);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -152,11 +155,51 @@ public class ApplicationStartupListener implements ServletContextListener {
 			application.start();
 			FullContextFileRepository fileRepository = BeanContainerFactory
 					.getBeanContainer(this.getClass().getClassLoader())
-					.getBean(FullContextFileRepository.FILE_REPOSITORY_BEAN_NAME);
-			servletContext.setFullContextFileRepository(fileRepository);//设置上下文关联的全文搜索对象
+					.getBean(
+							FullContextFileRepository.FILE_REPOSITORY_BEAN_NAME);
+			servletContext.setFullContextFileRepository(fileRepository);// 设置上下文关联的全文搜索对象
 		}
+		initContextListener(servletContextEvent);
 
 		logger.logMessage(LogLevel.INFO, "WEB 应用启动完成。");
+	}
+
+	/**
+	 * 执行其他ContextListener
+	 */
+	private void initContextListener(ServletContextEvent servletContextEvent) {
+		TinyListenerConfigManager configManager = TinyListenerConfigManagerHolder
+				.getInstance();
+		List<ServletContextListener> contextListeners = configManager
+				.getContextListeners();
+		for (ServletContextListener servletContextListener : contextListeners) {
+			logger.logMessage(LogLevel.DEBUG,
+					"ServletContextListener:[{0}] will be Initialized",
+					servletContextListener);
+			servletContextListener.contextInitialized(servletContextEvent);
+			logger.logMessage(LogLevel.DEBUG,
+					"ServletContextListener:[{0}] Initialized",
+					servletContextListener);
+		}
+	}
+
+	/**
+	 * 执行其他ContextListener
+	 */
+	private void destroyContextListener(ServletContextEvent servletContextEvent) {
+		TinyListenerConfigManager configManager = TinyListenerConfigManagerHolder
+				.getInstance();
+		List<ServletContextListener> contextListeners = configManager
+				.getContextListeners();
+		for (ServletContextListener servletContextListener : contextListeners) {
+			logger.logMessage(LogLevel.DEBUG,
+					"ServletContextListener:[{0}] will be Destroyed",
+					servletContextListener);
+			servletContextListener.contextDestroyed(servletContextEvent);
+			logger.logMessage(LogLevel.DEBUG,
+					"ServletContextListener:[{0}] Destroyed",
+					servletContextListener);
+		}
 	}
 
 	private void loadSpringBeans(String applicationConfig) {

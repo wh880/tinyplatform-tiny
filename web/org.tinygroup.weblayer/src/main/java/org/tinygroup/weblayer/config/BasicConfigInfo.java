@@ -114,4 +114,24 @@ public class BasicConfigInfo {
 		return parameterMap;
 	}
 
+	@Override
+	public int hashCode() {
+		return getConfigName().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (this == obj) {
+			return true;
+		}
+		if (obj instanceof BasicConfigInfo) {
+			BasicConfigInfo other = (BasicConfigInfo) obj;
+			return other.getConfigName().equals(this.getConfigName());
+		}
+		return false;
+
+	}
+
 }
