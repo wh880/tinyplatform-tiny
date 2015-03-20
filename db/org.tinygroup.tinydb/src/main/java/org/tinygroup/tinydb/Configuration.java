@@ -28,7 +28,9 @@ import org.tinygroup.tinydb.config.BeanQueryConfig;
 import org.tinygroup.tinydb.config.BeanQueryConfigs;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.config.TableConfigurationContainer;
+import org.tinygroup.tinydb.convert.impl.MetadataTableConfigLoad;
 import org.tinygroup.tinydb.dialect.Dialect;
+import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.impl.DefaultNameConverter;
 import org.tinygroup.tinydb.operator.impl.BeanStringOperator;
 import org.tinygroup.tinydb.relation.Relation;
@@ -127,6 +129,13 @@ public class Configuration {
 	public void addTableConfiguration(TableConfiguration tableConfiguration) {
 		container.addTableConfiguration(tableConfiguration);
 	}
+	
+	public void addTableConfiguration(String schema) throws TinyDbException {
+		MetadataTableConfigLoad configLoad=new MetadataTableConfigLoad();
+		configLoad.setSchema(schema);
+		configLoad.setTableNamePattern("%");
+		configLoad.loadTable(this);
+	}
 
 	public TableConfigurationContainer getContainer() {
 		return container;
@@ -159,6 +168,7 @@ public class Configuration {
 			beanQueryMap.put(queryConfig.getBeanType(), queryConfig);
 		}
 	}
+	
 
 	public void removeBeanQueryConfigs(BeanQueryConfigs queryConfigs) {
 		for (BeanQueryConfig queryConfig : queryConfigs.getQueryConfigs()) {
