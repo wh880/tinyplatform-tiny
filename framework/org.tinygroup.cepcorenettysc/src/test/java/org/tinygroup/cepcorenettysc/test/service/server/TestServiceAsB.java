@@ -20,28 +20,34 @@ import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcorenetty.NettyCepCoreImpl;
 import org.tinygroup.cepcorenettysc.operator.ArOperator;
-import org.tinygroup.cepcorenettysc.test.service.EventProcessorA;
-import org.tinygroup.cepcorenettysc.test.service.ServiceA;
+import org.tinygroup.cepcorenettysc.test.service.EventProcessorB;
+import org.tinygroup.cepcorenettysc.test.service.ServiceB;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
+
 
 public class TestServiceAsB {
 	public static void main(String[] args) {
+		startAsB();
+	}
+	
+	public static EventProcessor getEventProcessorB(){
+		EventProcessorB b = new EventProcessorB();
+		b.addServiceInfo(new ServiceB("b0"));
+		b.addServiceInfo(new ServiceB("b1"));
+		b.addServiceInfo(new ServiceB("b2"));
+		
+		return b;
+	}
+	
+	public static void startAsB(){
 		AbstractTestUtil.init("applicationb.xml", true);
 		NettyCepCoreImpl p  = BeanContainerFactory.getBeanContainer(
 				TestServiceAsB.class.getClassLoader()).getBean(CEPCore.CEP_CORE_BEAN);
 		p.setNodeName("asb");
-		ArOperator aro = new ArOperator("192.168.84.78","6666","192.168.84.78","8888",10);
+		ArOperator aro = new ArOperator("192.168.232.41","6666","192.168.232.41","8888",10);
 		p.setOperator(aro);
-		p.registerEventProcessor(getEventProcessor());
+		p.registerEventProcessor(getEventProcessorB());
 		p.startCEPCore(p);
 	}
 	
-	public static EventProcessor getEventProcessor(){
-		EventProcessorA a = new EventProcessorA();
-		a.addServiceInfo(new ServiceA("a0"));
-		a.addServiceInfo(new ServiceA("a1"));
-		a.addServiceInfo(new ServiceA("a2"));
-		
-		return a;
-	}
 }

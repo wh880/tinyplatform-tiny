@@ -168,7 +168,7 @@ public class NettyCepCoreImpl implements CEPCore {
 		for (ServiceInfo service : serviceInfos) {
 			String name = service.getServiceId();
 			if (serviceIdMap.containsKey(name)) {
-				localServices.remove(localServices.indexOf(service));
+				localServices.remove(service);//20150318调整代码localServices.remove(localServices。indexOf(service))，旧代码有可能是-1
 				List<EventProcessor> list = serviceIdMap.get(name);
 				if (list.contains(eventProcessor)) {
 					list.remove(eventProcessor);

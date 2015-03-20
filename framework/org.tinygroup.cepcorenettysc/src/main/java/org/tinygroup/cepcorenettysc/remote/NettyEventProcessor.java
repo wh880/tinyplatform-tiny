@@ -96,12 +96,13 @@ public class NettyEventProcessor implements EventProcessor {
 			stopConnect();
 			throw new CEPConnectException(e, remoteNode);
 		} catch (RuntimeException e) {
-			stopConnect();
+			logger.errorMessage(e.getMessage(),e);
+//			stopConnect();
 			throw e;
 		}
 	}
 
-	private void stopConnect() {
+	public void stopConnect() {
 		client.stop();
 		client = null;
 	}

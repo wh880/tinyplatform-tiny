@@ -14,11 +14,14 @@
  *  limitations under the License.
  */
 package org.tinygroup.net;
+
 import java.net.InetSocketAddress;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
+import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
@@ -35,7 +38,8 @@ public abstract class Server implements Netty {
 	ServerBootstrap bootstrap;
 	private final int port;
 	Channel channel;
-
+	ExecutorService pool1;
+	ExecutorService pool2;
 	/**
 	 * 构造方法
 	 * 
@@ -50,8 +54,10 @@ public abstract class Server implements Netty {
 	 */
 	public void stop() {
 		logger.logMessage(LogLevel.INFO, "服务器正在停止中，端口:{} ...", port);
+		channel.disconnect();
 		channel.close();
 		bootstrap.shutdown();
+		bootstrap.releaseExternalResources();
 		logger.logMessage(LogLevel.INFO, "服务器停止完毕，端口:{}。", port);
 	}
 
@@ -61,10 +67,10 @@ public abstract class Server implements Netty {
 	public void run() {
 		logger.logMessage(LogLevel.INFO, "服务器正在启动中，端口:{} ...", port);
 		// 配置服务器
+		pool1 = Executors.newCachedThreadPool();
+		pool2 = Executors.newCachedThreadPool();
 		bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(
-				Executors.newCachedThreadPool(),
-				Executors.newCachedThreadPool()));
-
+				pool1, pool2));
 		// 设置pipeline工厂.
 		bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
 			public ChannelPipeline getPipeline() throws Exception {

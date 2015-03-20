@@ -33,6 +33,7 @@ public class EventProcessorB implements EventProcessor {
 		for(ServiceInfo s:list){
 			if(s.getServiceId().equals(serviceId)){
 				System.out.println("execute ServiceB id:"+serviceId);
+				event.getServiceRequest().getContext().put("result", serviceId);
 				return;
 			}
 		}

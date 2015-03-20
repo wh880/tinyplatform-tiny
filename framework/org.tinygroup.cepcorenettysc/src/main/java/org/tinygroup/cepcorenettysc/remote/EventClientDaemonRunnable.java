@@ -17,6 +17,8 @@ package org.tinygroup.cepcorenettysc.remote;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.tinygroup.cepcorenettysc.EventClient;
 import org.tinygroup.net.daemon.DaemonRunnable;
@@ -28,6 +30,16 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 	List<EventTrigger> preTriggers = new ArrayList<EventTrigger>();
 	List<EventTrigger> postTriggers = new ArrayList<EventTrigger>();
 	boolean triggered = false;
+	int timeout = 1000 * 10;
+	PreTriggerThread preTriggerThread = new PreTriggerThread();
+
+	public int getTimeout() {
+		return timeout;
+	}
+
+	public void setTimeout(int timeout) {
+		this.timeout = timeout;
+	}
 
 	public EventClientDaemonRunnable(String hostName, int port,
 			boolean reconnect) {
@@ -44,7 +56,7 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 	}
 
 	public void run() {
-		if(preTriggers.size()>0){
+		if (preTriggers.size() > 0) {
 			(new PreTriggerThread()).start();
 		}
 		super.run();
@@ -54,11 +66,15 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 		if (flag) {
 			flag = false;
 			client.run();
-			if (reconnect) {
+			if (reconnect&&!isEnd()) {
+				try {
+					Thread.sleep(timeout);
+				} catch (InterruptedException e) {
+				}
 				flag = true;
 				triggered = false;
-				if(preTriggers.size()>0){
-					(new PreTriggerThread()).start();
+				if (preTriggers.size() > 0 && !preTriggerThread.isAlive()) {
+					preTriggerThread.start();
 				}
 			}
 
@@ -79,7 +95,16 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 	}
 
 	protected void stopAction() {
+		
+		//flag主线程
+		flag = false;
 		client.stop();
+		
+		if(preTriggerThread!=null){
+			//关闭触发器线程
+			triggered = true;
+			
+		}
 		for (EventTrigger trigger : postTriggers) {
 			trigger.execute();
 		}
@@ -88,8 +113,8 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 	class PreTriggerThread extends Thread {
 		public void run() {
 			while (!triggered) {
+				
 				if (client.isReady()) {
-					// if (!triggered) {
 					for (EventTrigger trigger : preTriggers) {
 						trigger.execute();
 					}

@@ -55,6 +55,7 @@ public abstract class AbstractTestUtil {
 		}
 		initDirect(xmlFile, classPathResolve);
 	}
+
 	/**
 	 * 初始化
 	 * 
@@ -62,7 +63,7 @@ public abstract class AbstractTestUtil {
 	 *            是否对classPath进行处理
 	 */
 	public static void initDirect(String xmlFile, boolean classPathResolve) {
-		
+
 		// init(xmlFile, classPathResolve, null, null);
 		String configXml = xmlFile;
 		if (null == configXml || "".equals(configXml)) {
@@ -136,20 +137,15 @@ public abstract class AbstractTestUtil {
 		init = true;
 	}
 
-//	public static void initWidthString(String config, boolean classPathResolve) {
-//		// init(xmlFile, classPathResolve, null, null);
-//		ByteArrayInputStream is = null;
-//		try {
-//			is = new ByteArrayInputStream(config.getBytes("ISO-8859-1"));
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
-//		application = new ApplicationDefault();
-//		application.start();
-//	}
+	public static void stop() {
+		if (init && application != null){
+			application.stop();
+		}
+	}
 
 	private static void initSpring(String applicationConfig) {
-		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
+		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class
+				.getName());
 		FileResolver fileResolver = new FileResolverImpl();
 
 		FileResolverUtil.addClassPathPattern(fileResolver);

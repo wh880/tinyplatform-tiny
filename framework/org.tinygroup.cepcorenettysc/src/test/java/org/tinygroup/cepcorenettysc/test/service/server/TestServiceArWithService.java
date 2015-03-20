@@ -22,20 +22,37 @@ import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
-public class TestServiceAr {
-	public static void main(String[] args) {
-		AbstractTestUtil.init("application.xml", true);
-		NettyCepCoreImpl p = BeanContainerFactory.getBeanContainer(
-				TestServiceAr.class.getClassLoader()).getBean(
-				CEPCore.CEP_CORE_BEAN);
-		p.process(getEvent());
-	}
 
-	public static Event getEvent() {
+public class TestServiceArWithService {
+	public static void main(String[] args) {
+		startAr("a0");
+	}
+	public static void startAr(String serviceId){
+		AbstractTestUtil.init("application.xml", true);
+		try {
+			Thread.currentThread().sleep(5000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		NettyCepCoreImpl p = BeanContainerFactory.getBeanContainer(
+				TestServiceArWithService.class.getClassLoader()).getBean(
+				CEPCore.CEP_CORE_BEAN);
+		Event e = getEvent(serviceId);
+		p.process(e);
+		if(!"a0".equals( e.getServiceRequest().getContext().get("result"))){
+			throw new RuntimeException("服务执行失败");
+		}else{
+			System.out.println("服务执行完成");
+		}
+	}
+	public static Event getEvent(String id) {
 		Event e = new Event();
 		ServiceRequest s = new ServiceRequest();
-		s.setServiceId("a0");
+		s.setServiceId(id);
 		e.setServiceRequest(s);
 		return e;
 	}
+	
+	
 }

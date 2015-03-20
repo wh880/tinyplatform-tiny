@@ -38,6 +38,7 @@ public class NettyEventProcessorConatiner {
 		if (map.containsKey(name)) {
 			NettyEventProcessor processor = map.remove(name);
 			map2.remove(processor);
+			processor.stopConnect();
 			core.unregisterEventProcessor(processor);
 		}
 
@@ -50,6 +51,12 @@ public class NettyEventProcessorConatiner {
 			core.unregisterEventProcessor(processor);
 		}
 
+	}
+	
+	public static void stop(){
+		for(NettyEventProcessor processor:map.values()){
+			processor.stopConnect();
+		}
 	}
 
 }

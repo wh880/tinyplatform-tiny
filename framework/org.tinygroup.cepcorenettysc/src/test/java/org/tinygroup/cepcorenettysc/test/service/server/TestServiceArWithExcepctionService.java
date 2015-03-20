@@ -15,15 +15,10 @@
  */
 package org.tinygroup.cepcorenettysc.test.service.server;
 
-import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 
-public class TestServiceSc {
+public class TestServiceArWithExcepctionService extends TestServiceArWithService{
 	public static void main(String[] args) {
-		startSc();
-	}
-
-	public static void startSc() {
-		AbstractTestUtil.init("applicationsc.xml", true);
+		startAr("a1");
 	}
 }

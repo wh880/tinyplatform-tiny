@@ -48,6 +48,15 @@ public class ArOperator implements CEPCoreOperator {
 	private Node localNode;
 	EventServer server;
 	EventClientDaemonRunnable client;
+	int timeout = 5000;
+	
+	public int getTimeout() {
+		return timeout;
+	}
+
+	public void setTimeout(int timeout) {
+		this.timeout = timeout;
+	}
 
 	public ArOperator() {
 		super();
@@ -92,6 +101,7 @@ public class ArOperator implements CEPCoreOperator {
 		server.run();
 		client = new EventClientDaemonRunnable(remoteIp,
 				Integer.parseInt(remotePort),true);
+		client.setTimeout(timeout);
 		client.addPreEventTrigger( new ArRegTrigger(cep, getNode()));
 		DaemonUtils.daemon(getNode().toString(), client);
 		
@@ -122,8 +132,12 @@ public class ArOperator implements CEPCoreOperator {
 
 	public void stopCEPCore(CEPCore cep) {
 		unregToSc(client.getClient());
+		//停止自己的监听端口
 		server.stop();
+		//停止自己向sc发起的连接
 		client.stop();
+		//停止自己向其他ar的连接
+		NettyEventProcessorConatiner.stop();
 	}
 	
 	public void setCEPCore(CEPCore cep) {
