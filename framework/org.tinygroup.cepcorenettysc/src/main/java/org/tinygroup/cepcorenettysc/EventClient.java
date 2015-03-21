@@ -97,7 +97,10 @@ public class EventClient extends Client {
 			if (e == null) {
 				throw new RuntimeException("请求" + eventId + "因为网络中断而无法访问.");
 			}
-			if (e.getType() == Event.EVENT_TYPE_REQUEST) {// 如果超时，则返回请求超时异常
+//			if (e.getType() == Event.EVENT_TYPE_REQUEST) {// 如果超时，则返回请求超时异常
+//				throw new RuntimeException("请求" + eventId + "调用时，超时.");
+//			}
+			if(e==event){
 				throw new RuntimeException("请求" + eventId + "调用时，超时.");
 			}
 			Throwable throwable = e.getThrowable();

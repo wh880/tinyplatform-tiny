@@ -44,7 +44,7 @@ public class TestServiceAsB {
 		NettyCepCoreImpl p  = BeanContainerFactory.getBeanContainer(
 				TestServiceAsB.class.getClassLoader()).getBean(CEPCore.CEP_CORE_BEAN);
 		p.setNodeName("asb");
-		ArOperator aro = new ArOperator("192.168.232.41","6666","192.168.232.41","8888",10);
+		ArOperator aro = new ArOperator(IpUtil.IP,"6666",IpUtil.IP,"8888",10);
 		p.setOperator(aro);
 		p.registerEventProcessor(getEventProcessorB());
 		p.startCEPCore(p);

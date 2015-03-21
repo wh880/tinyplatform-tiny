@@ -17,20 +17,22 @@ package org.tinygroup.cepcorenettysc.remote;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.tinygroup.cepcorenettysc.EventClient;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.net.daemon.DaemonRunnable;
 
 public class EventClientDaemonRunnable extends DaemonRunnable {
+	static Logger logger = LoggerFactory.getLogger(EventClientDaemonRunnable.class);
 	EventClient client;
 	boolean reconnect = true;
 	boolean flag = true;
 	List<EventTrigger> preTriggers = new ArrayList<EventTrigger>();
 	List<EventTrigger> postTriggers = new ArrayList<EventTrigger>();
 	boolean triggered = false;
-	int timeout = 1000 * 10;
+	int timeout = 1000 * 1;
 	PreTriggerThread preTriggerThread = new PreTriggerThread();
 
 	public int getTimeout() {
@@ -73,9 +75,11 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 				}
 				flag = true;
 				triggered = false;
-				if (preTriggers.size() > 0 && !preTriggerThread.isAlive()) {
-					preTriggerThread.start();
-				}
+				
+//				if (preTriggerThread.getState()==Thread.State.NEW) {
+//					logger.logMessage(LogLevel.INFO, "启动重注册触发器线程");
+//					preTriggerThread.start();
+//				}
 			}
 
 		} else {
@@ -102,6 +106,7 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 		
 		if(preTriggerThread!=null){
 			//关闭触发器线程
+			logger.logMessage(LogLevel.INFO, "关闭重注册触发器线程");
 			triggered = true;
 			
 		}
@@ -112,9 +117,8 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 
 	class PreTriggerThread extends Thread {
 		public void run() {
-			while (!triggered) {
-				
-				if (client.isReady()) {
+			while (true) {
+				if (client.isReady()&&!triggered) {
 					for (EventTrigger trigger : preTriggers) {
 						trigger.execute();
 					}

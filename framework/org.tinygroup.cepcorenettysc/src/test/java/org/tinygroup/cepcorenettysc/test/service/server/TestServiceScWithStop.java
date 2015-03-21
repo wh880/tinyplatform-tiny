@@ -22,7 +22,7 @@ public class TestServiceScWithStop {
 	public static void main(String[] args) {
 		startSc();
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(20000);
 		} catch (InterruptedException e) {
 		}
 		stopSc();

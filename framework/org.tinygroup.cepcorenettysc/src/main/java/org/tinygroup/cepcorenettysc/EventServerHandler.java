@@ -40,6 +40,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.net.ServerHandler;
 import org.tinygroup.net.daemon.DaemonUtils;
+import org.tinygroup.net.exception.InterruptedRuntimeException;
 
 public class EventServerHandler extends ServerHandler {
 	static final Logger logger = LoggerFactory
@@ -57,6 +58,21 @@ public class EventServerHandler extends ServerHandler {
 			client.stop();
 		}
 	}
+	
+	private EventClientDaemonRunnable getClient(String nodeString){
+		if(clients.containsKey(nodeString)){
+			return clients.get(nodeString);
+		}
+		Node remoteNode = nodes.get(nodeString);
+		EventClientDaemonRunnable client = new EventClientDaemonRunnable(
+				remoteNode.getIp(), Integer.parseInt(remoteNode.getPort()),
+				false);
+		client.addPostEventTrigger(new ScUnregTrigger());
+		DaemonUtils.daemon(remoteNode.toString(), client);
+		clients.put(nodeString, client);
+		return client;
+	}
+	
 	protected void processObject(Object message, ChannelHandlerContext ctx) {
 		// 先记录
 		Event event = (Event) message;
@@ -66,16 +82,16 @@ public class EventServerHandler extends ServerHandler {
 
 		String serviceId = HandlerUtil.getServiceId(event);
 		logger.logMessage(LogLevel.INFO, "接收到请求服务id:{}", serviceId);
-		if (NettyCepCoreUtil.AR_TO_SC.equals(serviceId)) {
+		if (NettyCepCoreUtil.AR_TO_SC.equals(serviceId)) { //AR向Sc发起
 			logger.logMessage(LogLevel.INFO, "请求{}由普通节点发向服务中心", serviceId);
 			Context c = event.getServiceRequest().getContext();
 			Node remoteNode = c.get(NettyCepCoreUtil.NODE_KEY);
 			logger.logMessage(LogLevel.INFO, "发起节点:{}", remoteNode.toString());
 			String type = c.get(NettyCepCoreUtil.TYPE_KEY);
 			if (NettyCepCoreUtil.REG_KEY.equals(type)) {
-				arRegToSc(c);
+				arRegToSc(c);  //ar向sc注册
 			} else if (NettyCepCoreUtil.UNREG_KEY.equals(type)) {
-				arUnregToSc(c);
+				arUnregToSc(c); //ar向sc注销
 			}
 			clearRequest(event.getEventId());
 			event.setType(Event.EVENT_TYPE_RESPONSE);
@@ -137,36 +153,40 @@ public class EventServerHandler extends ServerHandler {
 			Node containNode = nodes.get(nodeString);
 			nodeServices.remove(containNode);
 			nodes.remove(nodeString);
-
 		}
 
 		logger.logMessage(LogLevel.INFO, "开始将该节点注册至已有节点列表");
 		// 将注册节点信息 发送到 已有节点列表
 		for (String string : nodes.keySet()) {
-			// Node node =nodes.get(string);
 			logger.logMessage(LogLevel.INFO, "开始将该节点注册至已有节点:{}", string);
-			EventClientDaemonRunnable client = clients.get(string);
+			EventClientDaemonRunnable client = getClient(string);//clients.get(string); //20150321 之前此处是直接去clients中获取客户端，会出现空值针异常
 			Context newContext = new ContextImpl();
 			newContext.put(NettyCepCoreUtil.NODE_KEY, remoteNode);
 			newContext.put(NettyCepCoreUtil.TYPE_KEY, NettyCepCoreUtil.REG_KEY);
 			newContext.put(NettyCepCoreUtil.SC_TO_AR_SERVICE_KEY, list);
 			Event newEvent = Event.createEvent(NettyCepCoreUtil.SC_TO_AR,
 					newContext);
-			client.getClient().sendObject(newEvent);
+			//client.getClient().sendObject(newEvent);
+			try{
+				NettyCepCoreUtil.sendEvent(client.getClient(), newEvent);
+			}catch(InterruptedRuntimeException e) {
+				logger.errorMessage("向{0}注册{1}时网络异常",e,string,nodeString);
+			}
 			logger.logMessage(LogLevel.INFO, "将该节点注册至已有节点:{}完成", string);
 		}
 		logger.logMessage(LogLevel.INFO, "将该节点注册至已有节点列表完成");
 
-		// 将已有节点列表 作为结果集 回写回 注册节点
+		// 将已有节点列表放入上下文，后续会被作为结果集 回写回 注册节点
 		c.put(NettyCepCoreUtil.SC_TO_AR_SERVICE_KEY, copy());
 		nodes.put(nodeString, remoteNode);
 		nodeServices.put(remoteNode, list);
-		EventClientDaemonRunnable client = new EventClientDaemonRunnable(
-				remoteNode.getIp(), Integer.parseInt(remoteNode.getPort()),
-				false);
-		client.addPostEventTrigger(new ScUnregTrigger());
-		DaemonUtils.daemon(remoteNode.toString(), client);
-		clients.put(nodeString, client);
+		getClient(nodeString); //创建nodeString对应的client
+//		EventClientDaemonRunnable client = new EventClientDaemonRunnable(
+//				remoteNode.getIp(), Integer.parseInt(remoteNode.getPort()),
+//				false);
+//		client.addPostEventTrigger(new ScUnregTrigger());
+//		DaemonUtils.daemon(remoteNode.toString(), client);
+//		clients.put(nodeString, client);
 		logger.logMessage(LogLevel.INFO, "处理节点向服务中心发起的注册请求完成");
 	}
 
@@ -182,12 +202,18 @@ public class EventServerHandler extends ServerHandler {
 		// 讲注销节点 发送至已有节点列表，在已有节点列表上注销该节点
 		for (String nodeStringVar : clients.keySet()) {
 			Node node = nodes.get(nodeStringVar);
-			EventClient client = clients.get(nodeStringVar).getClient();
+			EventClient client = getClient(nodeStringVar).getClient();
 			Context c2 = new ContextImpl();
 			c2.put(NettyCepCoreUtil.NODE_KEY, node);
 			c2.put(NettyCepCoreUtil.TYPE_KEY, NettyCepCoreUtil.UNREG_KEY);
 			Event e = Event.createEvent(NettyCepCoreUtil.SC_TO_AR, c2);
-			client.sendObject(e);
+			try{
+				NettyCepCoreUtil.sendEvent(client, e);
+			}catch (InterruptedRuntimeException exception) {
+				logger.errorMessage( "向{0}注销{1}时网络异常",exception,nodeStringVar,nodeString);
+			}
+//			
+//			client.sendObject(e);
 		}
 		logger.logMessage(LogLevel.INFO, "处理节点向服务中心发起的注销请求完成");
 	}
@@ -339,4 +365,5 @@ public class EventServerHandler extends ServerHandler {
 		nodeServices.remove(removeNode);
 		logger.logMessage(LogLevel.INFO, "移除连接完成");
 	}
+
 }

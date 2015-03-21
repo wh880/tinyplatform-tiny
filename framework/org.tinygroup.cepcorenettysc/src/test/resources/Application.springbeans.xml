@@ -22,9 +22,9 @@
 	
 	<bean id="ar" scope="singleton"
 		class="org.tinygroup.cepcorenettysc.operator.ArOperator">
-		<property name="ip" value="192.168.232.41"></property>
+		<property name="ip" value="192.168.2.106"></property>
 		<property name="port" value="11111"></property>
-		<property name="remoteIp" value="192.168.232.41"></property>
+		<property name="remoteIp" value="192.168.2.106"></property>
 		<property name="remotePort" value="8888"></property>
 		<property name="timeout" value="20000"></property>
 		<property name="weight" value="20"></property>

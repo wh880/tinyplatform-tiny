@@ -21,7 +21,7 @@ import java.util.List;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcore.exception.CEPConnectException;
-import org.tinygroup.cepcorenettysc.EventClient;
+import org.tinygroup.cepcorenettysc.NettyCepCoreUtil;
 import org.tinygroup.cepcorenettysc.operator.ArUnregTrigger;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
@@ -55,7 +55,7 @@ public class NettyEventProcessor implements EventProcessor {
 		if (client == null) {
 			initClient();
 		}
-		EventClient eventClient = client.getClient();
+//		EventClient eventClient = client.getClient();
 		logger.logMessage(LogLevel.INFO,
 				"发送请求,目标节点{0}:{1}:{2},请求信息:[serviceId:{3}]",
 				remoteNode.getIp(), remoteNode.getPort(), remoteNode
@@ -63,19 +63,20 @@ public class NettyEventProcessor implements EventProcessor {
 						.getServiceId());
 		try {
 
-			int i = 1;
-			while (!eventClient.isReady()) {
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					// 此处无须处理
-				}
-				i++;
-				if (i > timeout) {
-					break;
-				}
-			}
-			Event newEvent = eventClient.sendObject(event);
+//			int i = 1;
+//			while (!eventClient.isReady()) {
+//				try {
+//					Thread.sleep(10);
+//				} catch (InterruptedException e) {
+//					// 此处无须处理
+//				}
+//				i++;
+//				if (i > timeout) {
+//					break;
+//				}
+//			}
+//			Event newEvent = eventClient.sendObject(event);
+			Event newEvent = NettyCepCoreUtil.sendEvent(client.getClient(), event);
 			event.getServiceRequest()
 					.getContext()
 					.putSubContext(newEvent.getEventId(),

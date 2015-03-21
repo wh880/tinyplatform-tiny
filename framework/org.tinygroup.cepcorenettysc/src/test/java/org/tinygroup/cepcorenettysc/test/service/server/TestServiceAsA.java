@@ -35,8 +35,8 @@ public class TestServiceAsA {
 				TestServiceAsA.class.getClassLoader()).getBean(
 				CEPCore.CEP_CORE_BEAN);
 		p.setNodeName("asa");
-		ArOperator aro = new ArOperator("192.168.232.41", "5555",
-				"192.168.232.41", "8888", 10);
+		ArOperator aro = new ArOperator(IpUtil.IP, "5555",
+				IpUtil.IP, "8888", 10);
 
 		p.setOperator(aro);
 		p.registerEventProcessor(getEventProcessorA());
