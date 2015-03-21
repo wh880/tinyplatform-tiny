@@ -59,7 +59,9 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 
 	public void run() {
 		if (preTriggers.size() > 0) {
-			(new PreTriggerThread()).start();
+//			(new PreTriggerThread()).start();
+			preTriggerThread.setDaemon(true);
+			preTriggerThread.start();
 		}
 		super.run();
 	}
@@ -118,6 +120,12 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 	class PreTriggerThread extends Thread {
 		public void run() {
 			while (true) {
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if (client.isReady()&&!triggered) {
 					for (EventTrigger trigger : preTriggers) {
 						trigger.execute();
