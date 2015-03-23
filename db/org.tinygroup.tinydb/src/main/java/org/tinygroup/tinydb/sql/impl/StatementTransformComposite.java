@@ -14,7 +14,7 @@ import org.tinygroup.tinydb.sql.StatementTransform;
  */
 public class StatementTransformComposite extends StatementTransformAdapter implements StatementTransform {
 	
-	private StatementTransform statementTransform;
+	private DefaultStatementTransform statementTransform;
 	
 	public StatementTransformComposite() {
 		super();
@@ -24,10 +24,17 @@ public class StatementTransformComposite extends StatementTransformAdapter imple
 		super(configuration);
 	}
 	
+	
 	@Override
 	public void init(Configuration configuration) {
 		super.init(configuration);
 		statementTransform=new DefaultStatementTransform(configuration);
+	}
+	
+	@Override
+	public void setSchema(String schema) {
+		super.setSchema(schema);
+		statementTransform.setSchema(getSchema());
 	}
 
 	public SqlAndValues toSelect(Bean bean)throws TinyDbException {
@@ -35,7 +42,8 @@ public class StatementTransformComposite extends StatementTransformAdapter imple
 		if(beanQueryConfig==null){
 			return statementTransform.toSelect(bean);
 		}
-		StatementTransform statementTransform=new BeanQueryConfigStatementTransform(configuration,beanQueryConfig);
+		BeanQueryConfigStatementTransform statementTransform=new BeanQueryConfigStatementTransform(configuration,beanQueryConfig);
+		statementTransform.setSchema(getSchema());
 		return statementTransform.toSelect(bean);
 	}
 

@@ -28,15 +28,23 @@ public class StatementTransformAdapter implements StatementTransform {
 	public StatementTransformAdapter(Configuration configuration) {
 		init(configuration);
 	}
-
+	
 	public void setConfiguration(Configuration configuration) {
 		init(configuration);
+	}
+
+	public String getSchema() {
+		return schema;
+	}
+
+	public void setSchema(String schema) {
+		this.schema = schema;
 	}
 
 	public void init(Configuration configuration) {
 		this.configuration = configuration;
 		this.beanDbNameConverter = configuration.getConverter();
-		this.schema = configuration.getDefaultSchema();
+		this.schema=configuration.getDefaultSchema();
 	}
 
 	public SqlAndValues toSelect(Bean bean) throws TinyDbException {

@@ -363,10 +363,6 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		return sb.toString();
 	}
 
-	public void setSchema(String schame) {
-		this.schema = schame;
-	}
-
 	protected String getTableNameWithSchame(String tableName) {
 		if (schema == null || "".equals(schema)) {
 			return tableName;
