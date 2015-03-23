@@ -106,7 +106,7 @@ public class EventClientDaemonRunnable extends DaemonRunnable {
 		flag = false;
 		client.stop();
 		
-		if(preTriggerThread!=null){
+		if(preTriggerThread!=null&&reconnect){
 			//关闭触发器线程
 			logger.logMessage(LogLevel.INFO, "关闭重注册触发器线程");
 			triggered = true;
