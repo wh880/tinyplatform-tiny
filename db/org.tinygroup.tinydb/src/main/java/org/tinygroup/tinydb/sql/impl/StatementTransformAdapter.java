@@ -26,11 +26,15 @@ public class StatementTransformAdapter implements StatementTransform {
 	}
 
 	public StatementTransformAdapter(Configuration configuration) {
-		init(configuration);
+		this.configuration = configuration;
+		this.beanDbNameConverter = configuration.getConverter();
+		this.schema=configuration.getDefaultSchema();
 	}
 	
 	public void setConfiguration(Configuration configuration) {
-		init(configuration);
+		this.configuration = configuration;
+		this.beanDbNameConverter = configuration.getConverter();
+		this.schema=configuration.getDefaultSchema();
 	}
 
 	public String getSchema() {
@@ -39,12 +43,6 @@ public class StatementTransformAdapter implements StatementTransform {
 
 	public void setSchema(String schema) {
 		this.schema = schema;
-	}
-
-	public void init(Configuration configuration) {
-		this.configuration = configuration;
-		this.beanDbNameConverter = configuration.getConverter();
-		this.schema=configuration.getDefaultSchema();
 	}
 
 	public SqlAndValues toSelect(Bean bean) throws TinyDbException {
