@@ -14,7 +14,7 @@ import org.tinygroup.tinydb.sql.StatementTransform;
  */
 public class StatementTransformComposite extends StatementTransformAdapter implements StatementTransform {
 	
-	private DefaultStatementTransform statementTransform;
+	private DefaultStatementTransform statementTransform=new DefaultStatementTransform();
 	
 	public StatementTransformComposite() {
 		super();
@@ -28,7 +28,7 @@ public class StatementTransformComposite extends StatementTransformAdapter imple
 	@Override
 	public void init(Configuration configuration) {
 		super.init(configuration);
-		statementTransform=new DefaultStatementTransform(configuration);
+		statementTransform.setConfiguration(configuration);
 	}
 	
 	@Override
