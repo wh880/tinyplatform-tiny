@@ -15,6 +15,8 @@
  */
 package org.tinygroup.vfs.impl;
 
+import java.io.File;
+
 import org.tinygroup.vfs.FileObject;
 
 /**
@@ -31,7 +33,8 @@ public class ZipSchemaProvider extends AbstractSchemaProvider{
 
     public boolean isMatch(String resource) {
         String lowerCase = resource.toLowerCase();
-        return lowerCase.startsWith(ZIP_PROTOCAL) || lowerCase.endsWith(ZIP);
+        //zip包比较特殊：无法简单根据resource判断，存在D:/lib/a.zip这种用法，和扩展协议oss://file1/a.zip无法从语法上区分。
+        return lowerCase.startsWith(ZIP_PROTOCAL) || (lowerCase.endsWith(ZIP) && new File(resource).exists());
     }
 
     public String getSchema() {
