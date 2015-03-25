@@ -25,6 +25,7 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.beanwrapper.BeanWrapperHolder;
 import org.tinygroup.beanwrapper.BeanWrapperImpl;
 import org.tinygroup.context.Context;
+import org.tinygroup.database.util.DataSourceInfo;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.DbOperatorFactory;
@@ -139,8 +140,9 @@ public final class TinyDBUtil {
 	}
 
 	public static Bean context2Bean(Context c, String beanType,ClassLoader loader) {
-		List<String> properties = getBeanProperties(beanType, null,loader);
-		return context2Bean(c, beanType, properties, null);
+		String schema=DataSourceInfo.getDataSource();
+		List<String> properties = getBeanProperties(beanType, schema,loader);
+		return context2Bean(c, beanType, properties, schema);
 	}
 
 	public static Bean context2Bean(Context c, String beanType,
