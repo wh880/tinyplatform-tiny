@@ -1,40 +1,65 @@
 package org.tinygroup.tinydbdsl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.tinygroup.tinydbdsl.base.Column;
 import org.tinygroup.tinydbdsl.base.Condition;
 import org.tinygroup.tinydbdsl.base.Statement;
 import org.tinygroup.tinydbdsl.base.Table;
 import org.tinygroup.tinydbdsl.base.Value;
+import org.tinygroup.tinydbdsl.expression.Expression;
+import org.tinygroup.tinydbdsl.expression.JdbcParameter;
+import org.tinygroup.tinydbdsl.update.UpdateBody;
 
 /**
  * Created by luoguo on 2015/3/11.
  */
-public class Update  implements Statement {
+public class Update extends StatementParser implements Statement {
 
-    public static Update update(Table table) {
-        return new Update();
-    }
+	private UpdateBody updateBody;
 
-    public Update set(Value... values) {
-        return this;
-    }
+	private Update() {
+		updateBody = new UpdateBody();
+	}
 
-    public Update where(Condition... conditions) {
-        return this;
-    }
+	public static Update update(Table table) {
+		Update update = new Update();
+		update.getUpdateBody().setTables(Collections.singletonList(table));
+		return update;
+	}
 
-    public static Condition and(Condition... conditions) {
-        return null;
-    }
+	public Update set(Value... values) {
+		List<Column> columns = new ArrayList<Column>();
+		List<Expression> expressions = new ArrayList<Expression>();
+		for (Value value : values) {
+			columns.add(value.getColumn());
+			expressions
+					.add(new Condition(new JdbcParameter(), value.getValue()));
+		}
+		updateBody.setColumns(columns);
+		updateBody.setExpressions(expressions);
+		return this;
+	}
 
-    public static Condition or(Condition... conditions) {
-        return null;
-    }
+	public Update where(Condition condition) {
+		updateBody.setWhere(condition);
+		return this;
+	}
 
-    public static Condition not(Condition condition) {
-        return null;
-    }
+	public UpdateBody getUpdateBody() {
+		return updateBody;
+	}
 
-    public String sql() {
-        return null;
-    }
+	@Override
+	protected void parserStatementBody() {
+		parser(updateBody);
+	}
+
+	@Override
+	public String toString() {
+		return sql();
+	}
+
 }

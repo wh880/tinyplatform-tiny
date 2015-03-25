@@ -3,37 +3,42 @@ package org.tinygroup.tinydbdsl;
 import org.tinygroup.tinydbdsl.base.Condition;
 import org.tinygroup.tinydbdsl.base.Statement;
 import org.tinygroup.tinydbdsl.base.Table;
+import org.tinygroup.tinydbdsl.delete.DeleteBody;
 
 /**
  * Created by luoguo on 2015/3/11.
  */
-public class Delete implements Statement {
+public class Delete extends StatementParser implements Statement {
 
-    public static Delete delete(Table table) {
-        return new Delete();
-    }
+	private DeleteBody deleteBody;
 
-    public Delete where(Condition... conditions) {
-        return this;
-    }
+	private Delete() {
+		deleteBody = new DeleteBody();
+	}
 
-    public static Condition and(Condition... conditions) {
-        return null;
-    }
+	public static Delete delete(Table table) {
+		Delete delete = new Delete();
+		delete.getDeleteBody().setTable(table);
+		return delete;
+	}
 
-    public static Condition or(Condition... conditions) {
-        return null;
-    }
+	public Delete where(Condition condition) {
+		deleteBody.setWhere(condition);
+		return this;
+	}
 
-    public static Condition not(Condition condition) {
-        return null;
-    }
+	public DeleteBody getDeleteBody() {
+		return deleteBody;
+	}
 
-    public String sql() {
-        return null;
-    }
+	@Override
+	protected void parserStatementBody() {
+		parser(deleteBody);
+	}
 
-    public int execute() {
-        return 0;
-    }
+	@Override
+	public String toString() {
+		return sql();
+	}
+
 }

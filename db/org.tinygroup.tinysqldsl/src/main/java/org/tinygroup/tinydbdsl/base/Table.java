@@ -1,50 +1,77 @@
 package org.tinygroup.tinydbdsl.base;
 
+import org.tinygroup.tinydbdsl.formitem.FromItem;
+import org.tinygroup.tinydbdsl.visitor.FromItemVisitor;
+
 /**
  * Created by luoguo on 2015/3/11.
  */
-public class Table {
-    private String schema;
-    private String name;
-    private String alias;
+public class Table implements FromItem, MultiPartName {
+	private String schemaName;
+	private String name;
 
-    public Table() {
+	private Alias alias;
 
-    }
+	public Table() {
+	}
 
-    public Table(String name) {
-        this.name = name;
-    }
+	public Table(String name) {
+		this.name = name;
+	}
 
-    public Table as(String alias) {
-        Table table = new Table(schema, name, alias);
-        table.alias=alias;
-        return table;
-    }
+	public Table(String schemaName, String name) {
+		this.schemaName = schemaName;
+		this.name = name;
+	}
 
-    public Table(String name, String alias) {
-        this.name = name;
-        this.alias = alias;
-    }
+	public String getSchemaName() {
+		return schemaName;
+	}
 
-    public Table(String schema, String name, String alias) {
-        this.schema = schema;
-        this.name = name;
-        this.alias = alias;
-    }
+	public void setSchemaName(String string) {
+		schemaName = string;
+	}
 
-    public String getAlias() {
-        return alias;
-    }
+	public String getName() {
+		return name;
+	}
 
+	public void setName(String string) {
+		name = string;
+	}
 
-    public String getSchema() {
-        return schema;
-    }
+	public Alias getAlias() {
+		return alias;
+	}
 
+	public void setAlias(Alias alias) {
+		this.alias = alias;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getFullyQualifiedName() {
+		String fqn = "";
+
+		if (schemaName != null) {
+			fqn += schemaName;
+		}
+		if (!(fqn == null || fqn.length() == 0)) {
+			fqn += ".";
+		}
+
+		if (name != null) {
+			fqn += name;
+		}
+
+		return fqn;
+	}
+
+	public String toString() {
+		return getFullyQualifiedName()
+				+ ((alias != null) ? alias.toString() : "");
+	}
+
+	public void accept(FromItemVisitor fromItemVisitor) {
+		fromItemVisitor.visit(this);
+	}
 
 }

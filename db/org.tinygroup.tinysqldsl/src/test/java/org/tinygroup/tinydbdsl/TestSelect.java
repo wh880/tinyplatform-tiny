@@ -1,69 +1,51 @@
 package org.tinygroup.tinydbdsl;
 
-import static org.tinygroup.tinydbdsl.UserTable.USER;
-import static org.tinygroup.tinydbdsl.Select.*;
+import static org.tinygroup.tinydbdsl.Select.customSelectItem;
+import static org.tinygroup.tinydbdsl.Select.or;
+import static org.tinygroup.tinydbdsl.Select.and;
+import static org.tinygroup.tinydbdsl.Select.select;
+import static org.tinygroup.tinydbdsl.Select.selectFrom;
+import static org.tinygroup.tinydbdsl.CustomTable.CUSTOM;
+import static org.tinygroup.tinydbdsl.ScoreTable.TSCORE;
+import static org.tinygroup.tinydbdsl.select.OrderByElement.desc;
+
+import static org.tinygroup.tinydbdsl.select.Join.*;
+
 /**
  * Created by luoguo on 2015/3/11.
  */
 public class TestSelect {
-    public static void main(String[] args) {
-        selectFrom(USER);
+	public static void main(String[] args) {
+		System.out.println(selectFrom(CUSTOM));
 
-        select(
-                customField("%s-%s"),
-                USER.NAME,USER.AGE
-        ).from(USER);
+		System.out.println(select(customSelectItem("%s-%s", CUSTOM.NAME, CUSTOM.AGE)).from(CUSTOM));
 
-        select(
-                customField("upper(%s)-%s"),
-                USER.NAME,USER.AGE
-        ).from(USER);
+		System.out.println(select(customSelectItem("upper(%s)-%s", CUSTOM.NAME, CUSTOM.AGE))
+				.from(CUSTOM));
 
-        selectFrom(USER).orderBy(USER.NAME.desc());
+		System.out.println(selectFrom(CUSTOM).orderBy(desc(CUSTOM.NAME)));
 
-        selectFrom(USER).where(
-                USER.NAME.eq("abc")
-        );
+		System.out.println(selectFrom(CUSTOM).where(CUSTOM.NAME.eq("abc")));
 
-        selectFrom(USER).where(
-                USER.NAME.like("abc")
-        );
+		System.out.println(selectFrom(CUSTOM).where(CUSTOM.NAME.like("abc")));
 
-        selectFrom(USER).where(
-                or(
-                        USER.NAME.like("abc"),
-                        USER.AGE.gt(20)
-                )
-        );
+		System.out.println(selectFrom(CUSTOM).where(or(CUSTOM.NAME.like("abc"), CUSTOM.AGE.gt(20))));
 
-        selectFrom(USER).where(
-                USER.AGE.gt(20).and(
-                        USER.NAME.like("abc"),
-                        USER.AGE.gt(20)
-                )
-        );
+		System.out.println(selectFrom(CUSTOM).where(and(CUSTOM.NAME.like("abc"), CUSTOM.AGE.gt(20))));
 
-        selectFrom(USER).where(
-                USER.NAME.leftLike("abc")
-        );
+		System.out.println(selectFrom(CUSTOM).where(CUSTOM.NAME.leftLike("abc")));
 
-        selectFrom(USER).where(
-                USER.AGE.between(23, 25)
-        );
+		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.between(23, 25)));
 
-        select(USER.AGE.max()).from(USER).groupBy(USER.NAME,USER.AGE);
-        select(USER.AGE.min()).from(USER);
-        select(USER.AGE.avg()).from(USER);
-        select(USER.AGE.count()).from(USER);
-        select(USER.AGE.sum()).from(USER);
-        select(USER.NAME.distinct()).from(USER);
+		System.out.println(select(CUSTOM.AGE.max()).from(CUSTOM).groupBy(CUSTOM.NAME, CUSTOM.AGE));
+		System.out.println(select(CUSTOM.AGE.min()).from(CUSTOM));
+		System.out.println(select(CUSTOM.AGE.avg()).from(CUSTOM));
+		System.out.println(select(CUSTOM.AGE.count()).from(CUSTOM));
+		System.out.println(select(CUSTOM.AGE.sum()).from(CUSTOM));
+		System.out.println(select(CUSTOM.NAME.distinct()).from(CUSTOM).forUpdate());
 
-        select(USER.AGE.sum()).from(USER).having(
-                USER.AGE.sum().gt(100)
-        ).join(
-                select(USER.AGE.sum()).from(USER).having(
-                        USER.AGE.sum().gt(100)
-                )
-        );
-    }
+		System.out.println(select(CUSTOM.NAME, CUSTOM.AGE, TSCORE.SCORE).from(CUSTOM)
+				.join(leftJoin(TSCORE, CUSTOM.NAME.eq(TSCORE.NAME))).sql());
+
+	}
 }
