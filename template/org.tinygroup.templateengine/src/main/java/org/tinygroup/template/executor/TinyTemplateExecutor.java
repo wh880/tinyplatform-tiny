@@ -88,12 +88,10 @@ public class TinyTemplateExecutor {
         FileObject project = VFS.resolveFile(root);
         final List<String> jarList =new ArrayList<String>();
         project.foreach(new FileObjectFilter(){
-			@Override
 			public boolean accept(FileObject fileObject) {
 				return fileObject.getFileName().endsWith(".component");
 			}
 		    }, new FileObjectProcessor(){
-			@Override
 			public void process(FileObject fileObject) {
 				try {
 					
