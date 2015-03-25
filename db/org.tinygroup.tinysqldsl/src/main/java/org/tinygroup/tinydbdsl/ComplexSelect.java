@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.tinydbdsl.base.Statement;
+import org.tinygroup.tinydbdsl.operator.SetOperationInstaceCallBack;
 import org.tinygroup.tinydbdsl.select.ExceptOp;
 import org.tinygroup.tinydbdsl.select.Fetch;
 import org.tinygroup.tinydbdsl.select.IntersectOp;
@@ -29,64 +30,60 @@ public class ComplexSelect extends StatementParser implements Statement {
 		operationList = new SetOperationList();
 	}
 
-	public ComplexSelect getInstance() {
+	public static ComplexSelect union(Select... selects) {
+		return setOperation(new SetOperationInstaceCallBack() {
+			public SetOperation instanceOperation() {
+				return new UnionOp();
+			}
+		}, selects);
+	}
+
+	public static ComplexSelect unionAll(Select... selects) {
+		return setOperation(new SetOperationInstaceCallBack() {
+			public SetOperation instanceOperation() {
+				return new UnionOp(true);
+			}
+		}, selects);
+	}
+
+	public static ComplexSelect setOperation(
+			SetOperationInstaceCallBack instance, Select... selects) {
 		ComplexSelect complexSelect = new ComplexSelect();
+		List<PlainSelect> plainSelects = new ArrayList<PlainSelect>();
+		List<SetOperation> operations = new ArrayList<SetOperation>();
+		for (int i = 0; i < selects.length; i++) {
+			Select select = selects[0];
+			plainSelects.add(select.getPlainSelect());
+			if (i != 0) {
+				operations.add(instance.instanceOperation());
+			}
+		}
+		complexSelect.operationList.setOpsAndSelects(plainSelects, operations);
 		return complexSelect;
 	}
 
-	public ComplexSelect union(Select... selects) {
-		List<PlainSelect> plainSelects = new ArrayList<PlainSelect>();
-		List<SetOperation> operations = new ArrayList<SetOperation>();
-		for (Select select : selects) {
-			plainSelects.add(select.getPlainSelect());
-			operations.add(new UnionOp());
-		}
-		operationList.setOpsAndSelects(plainSelects, operations);
-		return this;
+	public static ComplexSelect minus(Select... selects) {
+		return setOperation(new SetOperationInstaceCallBack() {
+			public SetOperation instanceOperation() {
+				return new MinusOp();
+			}
+		}, selects);
 	}
 
-	public ComplexSelect unionAll(Select... selects) {
-		List<PlainSelect> plainSelects = new ArrayList<PlainSelect>();
-		List<SetOperation> operations = new ArrayList<SetOperation>();
-		for (Select select : selects) {
-			plainSelects.add(select.getPlainSelect());
-			operations.add(new UnionOp(true));
-		}
-		operationList.setOpsAndSelects(plainSelects, operations);
-		return this;
+	public static ComplexSelect except(Select... selects) {
+		return setOperation(new SetOperationInstaceCallBack() {
+			public SetOperation instanceOperation() {
+				return new ExceptOp();
+			}
+		}, selects);
 	}
 
-	public ComplexSelect minus(Select... selects) {
-		List<PlainSelect> plainSelects = new ArrayList<PlainSelect>();
-		List<SetOperation> operations = new ArrayList<SetOperation>();
-		for (Select select : selects) {
-			plainSelects.add(select.getPlainSelect());
-			operations.add(new MinusOp());
-		}
-		operationList.setOpsAndSelects(plainSelects, operations);
-		return this;
-	}
-
-	public ComplexSelect except(Select... selects) {
-		List<PlainSelect> plainSelects = new ArrayList<PlainSelect>();
-		List<SetOperation> operations = new ArrayList<SetOperation>();
-		for (Select select : selects) {
-			plainSelects.add(select.getPlainSelect());
-			operations.add(new ExceptOp());
-		}
-		operationList.setOpsAndSelects(plainSelects, operations);
-		return this;
-	}
-
-	public ComplexSelect intersect(Select... selects) {
-		List<PlainSelect> plainSelects = new ArrayList<PlainSelect>();
-		List<SetOperation> operations = new ArrayList<SetOperation>();
-		for (Select select : selects) {
-			plainSelects.add(select.getPlainSelect());
-			operations.add(new IntersectOp());
-		}
-		operationList.setOpsAndSelects(plainSelects, operations);
-		return this;
+	public static ComplexSelect intersect(Select... selects) {
+		return setOperation(new SetOperationInstaceCallBack() {
+			public SetOperation instanceOperation() {
+				return new IntersectOp();
+			}
+		}, selects);
 	}
 
 	public ComplexSelect orderBy(OrderByElement... orderByElements) {

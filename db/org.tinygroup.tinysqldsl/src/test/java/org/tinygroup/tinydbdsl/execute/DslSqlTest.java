@@ -1,5 +1,6 @@
 package org.tinygroup.tinydbdsl.execute;
 
+import static org.tinygroup.tinydbdsl.ComplexSelect.union;
 import static org.tinygroup.tinydbdsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinydbdsl.Delete.delete;
 import static org.tinygroup.tinydbdsl.Insert.insertInto;
@@ -12,6 +13,7 @@ import static org.tinygroup.tinydbdsl.select.Join.leftJoin;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.tinygroup.tinydbdsl.ComplexSelect;
 import org.tinygroup.tinydbdsl.Custom;
 import org.tinygroup.tinydbdsl.CustomScore;
 import org.tinygroup.tinydbdsl.Delete;
@@ -72,6 +74,15 @@ public class DslSqlTest extends BaseTest {
 			assertEquals(98, rowSet.getInt("score"));
 			assertEquals(22, rowSet.getInt("age"));
 			assertEquals("shuxue", rowSet.getString("course"));
+		}
+		
+		Select select1=select(CUSTOM.NAME).from(CUSTOM);
+		Select select2=select(TSCORE.NAME).from(TSCORE);
+		ComplexSelect complexSelect=union(select1,select2);
+		query=new SimpleDslSqlQuery(dataSource, complexSelect);
+		rowSet=query.fetchResult();
+		if(rowSet.next()){
+			assertEquals("悠悠然然", rowSet.getString("name"));
 		}
 		
 

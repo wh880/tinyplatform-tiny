@@ -24,7 +24,7 @@ public class SimpleDslSqlQuery extends AbstractDslSqlOperater implements
 		super(dataSource, select);
 	}
 
-	private SimpleDslSqlQuery(DataSource dataSource, ComplexSelect complexSelect) {
+	public SimpleDslSqlQuery(DataSource dataSource, ComplexSelect complexSelect) {
 		super(dataSource, complexSelect);
 	}
 
