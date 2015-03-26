@@ -18,20 +18,48 @@ package org.tinygroup.tinydbdsl.select;
 import org.tinygroup.tinydbdsl.SetOperationList.SetOperationType;
 
 /**
- * Single Set-Operation (name). Placeholder for one specific set operation, e.g.
- * union, intersect.
  *
+ * @author tw
  */
-public abstract class SetOperation{
+public class UnionOperation extends SetOperation {
 
-	private SetOperationType type;
+	private boolean distinct;
+	private boolean all;
 
-	public SetOperation(SetOperationType type) {
-		this.type = type;
+	public UnionOperation() {
+		super(SetOperationType.UNION);
+	}
+	
+
+	public UnionOperation(boolean all) {
+		super(SetOperationType.UNION);
+		this.all = all;
+	}
+
+	public boolean isAll() {
+		return all;
+	}
+
+	public void setAll(boolean all) {
+		this.all = all;
+	}
+
+	public boolean isDistinct() {
+		return distinct;
+	}
+
+	public void setDistinct(boolean distinct) {
+		this.distinct = distinct;
 	}
 
 
 	public String toString() {
-		return type.name();
+		String allDistinct = "";
+		if (isAll()) {
+			allDistinct = " ALL";
+		} else if (isDistinct()) {
+			allDistinct = " DISTINCT";
+		}
+		return super.toString() + allDistinct;
 	}
 }

@@ -13,17 +13,25 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinydbdsl.select;
+package org.tinygroup.tinydbdsl.operator;
 
-import org.tinygroup.tinydbdsl.SetOperationList.SetOperationType;
+import org.tinygroup.tinydbdsl.expression.Function;
 
 /**
+ * 统计操作接口
+ * @author renhui
  *
- * @author tw
  */
-public class ExceptOp extends SetOperation {
+public interface StatisticsOperator {
 
-	public ExceptOp() {
-		super(SetOperationType.EXCEPT);
-	}
+	public Function sum();
+
+	public Function count();
+
+	public Function avg();
+
+	public Function max();
+
+	public Function min();
+
 }

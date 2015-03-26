@@ -15,35 +15,36 @@
  */
 package org.tinygroup.tinydbdsl.impl;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
-import org.tinygroup.tinydbdsl.Delete;
-import org.tinygroup.tinydbdsl.DslSqlExecute;
-import org.tinygroup.tinydbdsl.Insert;
-import org.tinygroup.tinydbdsl.Update;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.tinygroup.tinydbdsl.base.Statement;
 
-/**
- * 简单的sql执行器
- * 
- * @author renhui
- * 
- */
-public class SimpleDslSqlExecute extends AbstractDslSqlOperater implements DslSqlExecute {
+public class AbstractDslSqlOperator {
 
-	public SimpleDslSqlExecute(DataSource dataSource, Insert insert) {
-		super(dataSource, insert);
+	protected JdbcTemplate jdbcTemplate = new JdbcTemplate();
+	
+	protected String sql;
+	
+	protected List<Object> values;
+	
+	public AbstractDslSqlOperator(DataSource dataSource, Statement statement){
+		jdbcTemplate.setDataSource(dataSource);
+		this.sql=statement.sql();
+		this.values=statement.getValues();
 	}
 
-	public SimpleDslSqlExecute(DataSource dataSource, Update update) {
-		super(dataSource, update);
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
 	}
 
-	public SimpleDslSqlExecute(DataSource dataSource, Delete delete) {
-		super(dataSource, delete);
+	public String getSql() {
+		return sql;
 	}
 
-	public int execute() {
-		return jdbcTemplate.update(sql, values.toArray());
+	public List<Object> getValues() {
+		return values;
 	}
-
 }

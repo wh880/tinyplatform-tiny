@@ -21,9 +21,9 @@ import org.tinygroup.tinydbdsl.SetOperationList.SetOperationType;
  *
  * @author tw
  */
-public class IntersectOp extends SetOperation {
+public class IntersectOperation extends SetOperation {
 
-	public IntersectOp() {
+	public IntersectOperation() {
 		super(SetOperationType.INTERSECT);
 	}
 }

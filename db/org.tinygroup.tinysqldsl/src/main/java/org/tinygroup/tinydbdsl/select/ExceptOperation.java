@@ -19,11 +19,10 @@ import org.tinygroup.tinydbdsl.SetOperationList.SetOperationType;
 
 /**
  *
- * @author tw
  */
-public class MinusOp extends SetOperation {
+public class ExceptOperation extends SetOperation {
 
-	public MinusOp() {
-		super(SetOperationType.MINUS);
+	public ExceptOperation() {
+		super(SetOperationType.EXCEPT);
 	}
 }
