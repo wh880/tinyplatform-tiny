@@ -29,6 +29,8 @@ public interface Statement {
      */
     String sql();
 
+    void id(String id);
+
     /**
      * 返回语句中值的列表（对应于?）
      *

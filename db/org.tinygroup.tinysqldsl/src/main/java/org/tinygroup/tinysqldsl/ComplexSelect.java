@@ -32,119 +32,126 @@ import org.tinygroup.tinysqldsl.select.UnionOperation;
 
 /**
  * 复杂查询
- * 
+ *
  * @author renhui
- * 
  */
 public class ComplexSelect extends StatementSqlBuilder implements Statement {
 
-	private SetOperationList operationList;
+    private SetOperationList operationList;
+    private String id;
 
-	private ComplexSelect() {
-		super();
-		operationList = new SetOperationList();
-	}
+    public String getId() {
+        return id;
+    }
 
-	public static ComplexSelect union(Select... selects) {
-		return setOperation(new SetOperationInstanceCallBack() {
-			public SetOperation instanceOperation() {
-				return new UnionOperation();
-			}
-		}, selects);
-	}
+    private ComplexSelect() {
+        super();
+        operationList = new SetOperationList();
+    }
 
-	public static ComplexSelect unionAll(Select... selects) {
-		return setOperation(new SetOperationInstanceCallBack() {
-			public SetOperation instanceOperation() {
-				return new UnionOperation(true);
-			}
-		}, selects);
-	}
+    public static ComplexSelect union(Select... selects) {
+        return setOperation(new SetOperationInstanceCallBack() {
+            public SetOperation instanceOperation() {
+                return new UnionOperation();
+            }
+        }, selects);
+    }
 
-	public static ComplexSelect setOperation(
-			SetOperationInstanceCallBack instance, Select... selects) {
-		ComplexSelect complexSelect = new ComplexSelect();
-		List<PlainSelect> plainSelects = new ArrayList<PlainSelect>();
-		List<SetOperation> operations = new ArrayList<SetOperation>();
-		for (int i = 0; i < selects.length; i++) {
-			Select select = selects[0];
-			plainSelects.add(select.getPlainSelect());
-			if (i != 0) {
-				operations.add(instance.instanceOperation());
-			}
-		}
-		complexSelect.operationList.setOpsAndSelects(plainSelects, operations);
-		return complexSelect;
-	}
+    public static ComplexSelect unionAll(Select... selects) {
+        return setOperation(new SetOperationInstanceCallBack() {
+            public SetOperation instanceOperation() {
+                return new UnionOperation(true);
+            }
+        }, selects);
+    }
 
-	public static ComplexSelect minus(Select... selects) {
-		return setOperation(new SetOperationInstanceCallBack() {
-			public SetOperation instanceOperation() {
-				return new MinusOperation();
-			}
-		}, selects);
-	}
+    public static ComplexSelect setOperation(
+            SetOperationInstanceCallBack instance, Select... selects) {
+        ComplexSelect complexSelect = new ComplexSelect();
+        List<PlainSelect> plainSelects = new ArrayList<PlainSelect>();
+        List<SetOperation> operations = new ArrayList<SetOperation>();
+        for (int i = 0; i < selects.length; i++) {
+            Select select = selects[0];
+            plainSelects.add(select.getPlainSelect());
+            if (i != 0) {
+                operations.add(instance.instanceOperation());
+            }
+        }
+        complexSelect.operationList.setOpsAndSelects(plainSelects, operations);
+        return complexSelect;
+    }
 
-	public static ComplexSelect except(Select... selects) {
-		return setOperation(new SetOperationInstanceCallBack() {
-			public SetOperation instanceOperation() {
-				return new ExceptOperation();
-			}
-		}, selects);
-	}
+    public static ComplexSelect minus(Select... selects) {
+        return setOperation(new SetOperationInstanceCallBack() {
+            public SetOperation instanceOperation() {
+                return new MinusOperation();
+            }
+        }, selects);
+    }
 
-	public static ComplexSelect intersect(Select... selects) {
-		return setOperation(new SetOperationInstanceCallBack() {
-			public SetOperation instanceOperation() {
-				return new IntersectOperation();
-			}
-		}, selects);
-	}
+    public static ComplexSelect except(Select... selects) {
+        return setOperation(new SetOperationInstanceCallBack() {
+            public SetOperation instanceOperation() {
+                return new ExceptOperation();
+            }
+        }, selects);
+    }
 
-	public ComplexSelect orderBy(OrderByElement... orderByElements) {
-		operationList.addOrderByElements(orderByElements);
-		return this;
-	}
+    public static ComplexSelect intersect(Select... selects) {
+        return setOperation(new SetOperationInstanceCallBack() {
+            public SetOperation instanceOperation() {
+                return new IntersectOperation();
+            }
+        }, selects);
+    }
 
-	public ComplexSelect limit(int start, int limit) {
-		operationList.setLimit(new Limit(start, limit, true, true));
-		return this;
-	}
+    public ComplexSelect orderBy(OrderByElement... orderByElements) {
+        operationList.addOrderByElements(orderByElements);
+        return this;
+    }
 
-	/**
-	 * 生成的sql语句 start和limit用？代替
-	 * 
-	 * @param start
-	 * @param limit
-	 * @return
-	 */
-	public ComplexSelect limit(Limit limit) {
-		operationList.setLimit(limit);
-		return this;
-	}
+    public ComplexSelect limit(int start, int limit) {
+        operationList.setLimit(new Limit(start, limit, true, true));
+        return this;
+    }
 
-	public ComplexSelect offset(Offset offset) {
-		operationList.setOffset(offset);
-		return this;
-	}
+    /**
+     * 生成的sql语句 start和limit用？代替
+     *
+     * @param limit
+     * @return
+     */
+    public ComplexSelect limit(Limit limit) {
+        operationList.setLimit(limit);
+        return this;
+    }
 
-	public ComplexSelect fetch(Fetch fetch) {
-		operationList.setFetch(fetch);
-		return this;
-	}
+    public ComplexSelect offset(Offset offset) {
+        operationList.setOffset(offset);
+        return this;
+    }
 
-	public SetOperationList getOperationList() {
-		return operationList;
-	}
+    public ComplexSelect fetch(Fetch fetch) {
+        operationList.setFetch(fetch);
+        return this;
+    }
 
-	@Override
-	public String toString() {
-		return sql();
-	}
+    public SetOperationList getOperationList() {
+        return operationList;
+    }
 
-	@Override
-	protected void parserStatementBody() {
-		build(operationList);
-	}
+    @Override
+    public String toString() {
+        return sql();
+    }
 
+    @Override
+    protected void parserStatementBody() {
+        build(operationList);
+    }
+
+    @Override
+    public void id(String id) {
+        this.id = id;
+    }
 }

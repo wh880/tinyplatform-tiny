@@ -17,12 +17,7 @@ package org.tinygroup.tinysqldsl.visitor;
 
 import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.expression.Function;
-import org.tinygroup.tinysqldsl.selectitem.AllColumns;
-import org.tinygroup.tinysqldsl.selectitem.AllTableColumns;
-import org.tinygroup.tinysqldsl.selectitem.CustomSelectItem;
-import org.tinygroup.tinysqldsl.selectitem.Distinct;
-import org.tinygroup.tinysqldsl.selectitem.SelectExpressionItem;
-import org.tinygroup.tinysqldsl.selectitem.Top;
+import org.tinygroup.tinysqldsl.selectitem.*;
 
 /**
  * selectitem的访问者
@@ -46,4 +41,5 @@ public interface SelectItemVisitor {
 	void visit(Function function);
 
 	void visit(Column column);
+
 }

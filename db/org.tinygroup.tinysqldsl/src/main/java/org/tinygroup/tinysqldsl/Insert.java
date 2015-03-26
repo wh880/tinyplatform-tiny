@@ -33,8 +33,13 @@ import org.tinygroup.tinysqldsl.insert.InsertBody;
 public class Insert extends StatementSqlBuilder implements Statement {
 
 	private InsertBody insertBody;
+    private String id;
 
-	private Insert() {
+    public String getId() {
+        return id;
+    }
+
+    private Insert() {
 		insertBody = new InsertBody();
 	}
 
@@ -71,4 +76,8 @@ public class Insert extends StatementSqlBuilder implements Statement {
 		build(insertBody);
 	}
 
+    @Override
+    public void id(String id) {
+        this.id=id;
+    }
 }

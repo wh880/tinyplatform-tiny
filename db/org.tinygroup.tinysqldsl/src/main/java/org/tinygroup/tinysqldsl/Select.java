@@ -37,8 +37,13 @@ import org.tinygroup.tinysqldsl.selectitem.SelectItem;
 public class Select extends StatementSqlBuilder implements Statement {
 
 	private PlainSelect plainSelect;
+    private String id;
 
-	private Select() {
+    public String getId() {
+        return id;
+    }
+
+    private Select() {
 		super();
 		plainSelect = new PlainSelect();
 	}
@@ -151,4 +156,8 @@ public class Select extends StatementSqlBuilder implements Statement {
 		build(plainSelect);
 	}
 
+    @Override
+    public void id(String id) {
+        this.id=id;
+    }
 }

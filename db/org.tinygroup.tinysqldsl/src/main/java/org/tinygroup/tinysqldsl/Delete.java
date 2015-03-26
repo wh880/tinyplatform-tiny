@@ -26,8 +26,13 @@ import org.tinygroup.tinysqldsl.delete.DeleteBody;
 public class Delete extends StatementSqlBuilder implements Statement {
 
 	private DeleteBody deleteBody;
+    private String id;
 
-	private Delete() {
+    public String getId() {
+        return id;
+    }
+
+    private Delete() {
 		deleteBody = new DeleteBody();
 	}
 
@@ -56,4 +61,8 @@ public class Delete extends StatementSqlBuilder implements Statement {
 		return sql();
 	}
 
+    @Override
+    public void id(String id) {
+        this.id=id;
+    }
 }

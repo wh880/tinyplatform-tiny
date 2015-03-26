@@ -34,8 +34,13 @@ import org.tinygroup.tinysqldsl.update.UpdateBody;
 public class Update extends StatementSqlBuilder implements Statement {
 
 	private UpdateBody updateBody;
+    private String id;
 
-	private Update() {
+    public String getId() {
+        return id;
+    }
+
+    private Update() {
 		updateBody = new UpdateBody();
 	}
 
@@ -77,4 +82,8 @@ public class Update extends StatementSqlBuilder implements Statement {
 		return sql();
 	}
 
+    @Override
+    public void id(String id) {
+        this.id=id;
+    }
 }
