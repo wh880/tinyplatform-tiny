@@ -20,7 +20,7 @@ import org.tinygroup.tinysqldsl.select.SetOperation;
 /**
  * 集合运算实例化回调接口
  */
-public interface SetOperationInstaceCallBack {
+public interface SetOperationInstanceCallBack {
 
 	public SetOperation instanceOperation();
 	

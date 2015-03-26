@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.tinysqldsl.base.Statement;
-import org.tinygroup.tinysqldsl.operator.SetOperationInstaceCallBack;
+import org.tinygroup.tinysqldsl.operator.SetOperationInstanceCallBack;
 import org.tinygroup.tinysqldsl.select.ExceptOperation;
 import org.tinygroup.tinysqldsl.select.Fetch;
 import org.tinygroup.tinysqldsl.select.IntersectOperation;
@@ -46,7 +46,7 @@ public class ComplexSelect extends StatementSqlBuilder implements Statement {
 	}
 
 	public static ComplexSelect union(Select... selects) {
-		return setOperation(new SetOperationInstaceCallBack() {
+		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
 				return new UnionOperation();
 			}
@@ -54,7 +54,7 @@ public class ComplexSelect extends StatementSqlBuilder implements Statement {
 	}
 
 	public static ComplexSelect unionAll(Select... selects) {
-		return setOperation(new SetOperationInstaceCallBack() {
+		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
 				return new UnionOperation(true);
 			}
@@ -62,7 +62,7 @@ public class ComplexSelect extends StatementSqlBuilder implements Statement {
 	}
 
 	public static ComplexSelect setOperation(
-			SetOperationInstaceCallBack instance, Select... selects) {
+			SetOperationInstanceCallBack instance, Select... selects) {
 		ComplexSelect complexSelect = new ComplexSelect();
 		List<PlainSelect> plainSelects = new ArrayList<PlainSelect>();
 		List<SetOperation> operations = new ArrayList<SetOperation>();
@@ -78,7 +78,7 @@ public class ComplexSelect extends StatementSqlBuilder implements Statement {
 	}
 
 	public static ComplexSelect minus(Select... selects) {
-		return setOperation(new SetOperationInstaceCallBack() {
+		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
 				return new MinusOperation();
 			}
@@ -86,7 +86,7 @@ public class ComplexSelect extends StatementSqlBuilder implements Statement {
 	}
 
 	public static ComplexSelect except(Select... selects) {
-		return setOperation(new SetOperationInstaceCallBack() {
+		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
 				return new ExceptOperation();
 			}
@@ -94,7 +94,7 @@ public class ComplexSelect extends StatementSqlBuilder implements Statement {
 	}
 
 	public static ComplexSelect intersect(Select... selects) {
-		return setOperation(new SetOperationInstaceCallBack() {
+		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
 				return new IntersectOperation();
 			}
