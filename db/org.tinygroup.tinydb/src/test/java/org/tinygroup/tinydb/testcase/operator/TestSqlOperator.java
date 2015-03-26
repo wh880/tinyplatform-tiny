@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.tinygroup.tinydb.Bean;
-import org.tinygroup.tinydb.DbOperatorFactory;
+import org.tinygroup.tinydb.Pager;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.test.BaseTest;
@@ -154,5 +154,24 @@ public class TestSqlOperator extends BaseTest{
 		}
 		getOperator().delete(animalBean);
 		operator2.delete(branchBean);
+	}
+	
+	public void testPagingByBean() throws TinyDbException{
+		
+		//getOperator().delete(getPagedBeans());
+		Bean[] insertBeans = getBeans(25);
+		getOperator().batchDelete(insertBeans);
+		getOperator().batchInsert(insertBeans);
+		
+		Bean bean=new Bean(ANIMAL);
+		bean.set("name", "testSql");
+		Pager pager = getOperator().getPager(bean, 0, 10);
+		assertEquals(10, pager.getCurrentBeans().length);
+		pager = getOperator().getPager(bean, 11, 10);
+		assertEquals(10, pager.getCurrentBeans().length);
+		pager = getOperator().getPager(bean, 21, 10);
+		assertEquals(5, pager.getCurrentBeans().length);
+		
+		getOperator().batchDelete(insertBeans);
 	}
 }

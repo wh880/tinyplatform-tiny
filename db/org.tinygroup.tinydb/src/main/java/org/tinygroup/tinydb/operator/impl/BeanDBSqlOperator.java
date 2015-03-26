@@ -246,10 +246,10 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 			throws TinyDbException {
 		int totalCount = account(getCountSql(sql));
 		Bean[] beans = getPageBeans(sql, start, limit);
-		return createPager(start, limit,totalCount, beans);
+		return createPager(start, limit, totalCount, beans);
 	}
-	
-	private String getCountSql(String sql){
+
+	private String getCountSql(String sql) {
 		StringBuffer sb = new StringBuffer(" select count(0) from (");
 		sb.append(sql).append(") temp");
 		return sb.toString();
@@ -263,42 +263,42 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 			Object... parameters) throws TinyDbException {
 		int totalCount = account(getCountSql(sql), parameters);
 		Bean[] beans = getPageBeans(sql, start, limit, parameters);
-		return createPager(start, limit,totalCount, beans);
+		return createPager(start, limit, totalCount, beans);
 	}
 
 	public Pager getPager(String sql, int start, int limit,
 			List<Object> parameters) throws TinyDbException {
 		int totalCount = account(getCountSql(sql), parameters);
 		Bean[] beans = getPageBeans(sql, start, limit, parameters);
-		return createPager(start, limit,totalCount, beans);
+		return createPager(start, limit, totalCount, beans);
 	}
 
 	public Pager getPager(String sql, int start, int limit,
 			Map<String, Object> parameters) throws TinyDbException {
 		int totalCount = account(getCountSql(sql), parameters);
 		Bean[] beans = getPageBeans(sql, start, limit, parameters);
-		return createPager(start, limit,totalCount, beans);
+		return createPager(start, limit, totalCount, beans);
 	}
 
 	public Bean[] getBeans(Bean bean, int start, int limit)
 			throws TinyDbException {
-		SqlAndValues sqlAndValues=toSelect(bean);
-		List<Bean> beans = findBeansByListForPage(sqlAndValues.getSql(), bean.getType(),
-				getSchema(), start, limit, sqlAndValues.getValues());
+		SqlAndValues sqlAndValues = toSelect(bean);
+		List<Bean> beans = findBeansByListForPage(sqlAndValues.getSql(),
+				bean.getType(), getSchema(), start, limit,
+				sqlAndValues.getValues());
 		return relationProcess(bean.getType(), beans);
 	}
 
 	public Pager getPager(Bean bean, int start, int limit)
 			throws TinyDbException {
-		String sql = getAccountSql(bean);
-		List<Object> parameters = getConditionParams(bean);
-		int totalCount = account(sql, parameters);
+		int totalCount = account(bean);
 		Bean[] beans = getBeans(bean, start, limit);
 		return createPager(start, limit, totalCount, beans);
 	}
 
-	public int account(Bean bean)throws TinyDbException {
-		String sql = getAccountSql(bean);
-		return account(sql);
+	public int account(Bean bean) throws TinyDbException {
+		SqlAndValues sqlAndValues = toSelect(bean);
+		String sql = getCountSql(sqlAndValues.getSql());
+		return account(sql, sqlAndValues.getValues());
 	}
 }

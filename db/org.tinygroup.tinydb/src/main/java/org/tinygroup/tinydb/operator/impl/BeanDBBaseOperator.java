@@ -32,7 +32,6 @@ import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DbBaseOperator;
 import org.tinygroup.tinydb.relation.Relation;
-import org.tinygroup.tinydb.sql.SqlAndValues;
 
 class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator {
 
@@ -144,13 +143,6 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		SqlParameter sqlParameter = new SqlParameter(propertyName,
 				primaryColumn.getDataType(), scale);
 		return new SqlParameterValue(sqlParameter, value);
-	}
-
-	public String getAccountSql(Bean bean)throws TinyDbException{
-		SqlAndValues sqlAndValues=toSelect(bean);
-		StringBuffer sb = new StringBuffer(" select count(0) from (");
-        sb.append(sqlAndValues.getSql()).append(") temp");
-        return sb.toString();
 	}
 
 	protected SqlParameterValue[] getSqlParamterValue(Bean bean,
