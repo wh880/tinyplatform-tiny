@@ -19,34 +19,39 @@ import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 /**
+ * 条件
  * Created by luoguo on 2015/3/11.
  */
 public class Condition implements Expression {
-	private Expression expression;
+    /**
+     * 表达式
+     */
+    private Expression expression;
+    /**
+     * 条件中的值
+     */
+    private Object[] values;
 
-	private Object[] values;
+    public Condition(Expression expression, Object... values) {
+        super();
+        this.expression = expression;
+        this.values = values;
+    }
 
-	public Condition(Expression expression, Object... values) {
-		super();
-		this.expression = expression;
-		this.values = values;
-	}
+    public Expression getExpression() {
+        return expression;
+    }
 
-	public Expression getExpression() {
-		return expression;
-	}
+    public Object[] getValues() {
+        return values;
+    }
 
-	public Object[] getValues() {
-		return values;
-	}
+    public String toString() {
+        return expression.toString();
+    }
 
-	@Override
-	public String toString() {
-		return expression.toString();
-	}
-
-	public void accept(ExpressionVisitor expressionVisitor) {
-		expressionVisitor.visit(this);
-	}
+    public void accept(ExpressionVisitor expressionVisitor) {
+        expressionVisitor.visit(this);
+    }
 
 }

@@ -16,10 +16,17 @@
 package org.tinygroup.tinysqldsl.base;
 
 /**
+ * 插入、更新时的值对象
  * Created by luoguo on 2015/3/11.
  */
 public class Value {
+    /**
+     * 列信息
+     */
     private Column column;
+    /**
+     * 对应的值
+     */
     private Object value;
 
     public Value(Column column, Object value) {
@@ -31,8 +38,8 @@ public class Value {
         return value;
     }
 
-	public Column getColumn() {
-		return column;
-	}
+    public Column getColumn() {
+        return column;
+    }
 
 }

@@ -18,9 +18,21 @@ package org.tinygroup.tinysqldsl.base;
 import java.util.List;
 
 /**
+ * 语句接口
  * Created by luoguo on 2015/3/11.
  */
 public interface Statement {
+    /**
+     * 返回语句对应的SQL
+     *
+     * @return
+     */
     String sql();
+
+    /**
+     * 返回语句中值的列表（对应于?）
+     *
+     * @return
+     */
     List<Object> getValues();
 }

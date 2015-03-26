@@ -17,12 +17,18 @@ package org.tinygroup.tinysqldsl.base;
 
 
 /**
+ * 别名
  * @author renhui
  */
 public class Alias {
-
+    /**
+     * 别名
+     */
     private String name;
-    private boolean useAs = true;
+    /**
+     * 是否带as关键字
+     */
+    private boolean withAs = true;
 
     public Alias() {
 
@@ -32,9 +38,9 @@ public class Alias {
         this.name = name;
     }
 
-    public Alias(String name, boolean useAs) {
+    public Alias(String name, boolean withAs) {
         this.name = name;
-        this.useAs = useAs;
+        this.withAs = withAs;
     }
 
     public String getName() {
@@ -45,16 +51,16 @@ public class Alias {
         this.name = name;
     }
 
-    public boolean isUseAs() {
-        return useAs;
+    public boolean isWithAs() {
+        return withAs;
     }
 
-    public void setUseAs(boolean useAs) {
-        this.useAs = useAs;
+    public void setWithAs(boolean withAs) {
+        this.withAs = withAs;
     }
 
 
     public String toString() {
-        return (useAs ? " AS " : " ") + name;
+        return (withAs ? " AS " : " ") + name;
     }
 }
