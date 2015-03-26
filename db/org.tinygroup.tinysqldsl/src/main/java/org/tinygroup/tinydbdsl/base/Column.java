@@ -25,7 +25,7 @@ import org.tinygroup.tinydbdsl.visitor.SelectItemVisitor;
 /**
  * A column. It can have the table name it belongs to.
  */
-public final class Column extends ColumnOperator implements Expression,
+public class Column extends ColumnOperator implements Expression,
 		MultiPartName, SelectItem {
 
 	private Table table;

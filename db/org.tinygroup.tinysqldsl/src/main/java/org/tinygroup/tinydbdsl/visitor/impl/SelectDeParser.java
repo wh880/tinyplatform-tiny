@@ -74,7 +74,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor,
 			SelectItem selectItem = iter.next();
 			selectItem.accept(this);
 			if (iter.hasNext()) {
-				buffer.append(", ");
+				buffer.append(",");
 			}
 		}
 
@@ -84,7 +84,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor,
 					.hasNext();) {
 				visit(iter.next());
 				if (iter.hasNext()) {
-					buffer.append(", ");
+					buffer.append(",");
 				}
 			}
 		}
@@ -116,7 +116,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor,
 				Expression columnReference = iter.next();
 				columnReference.accept(expressionVisitor);
 				if (iter.hasNext()) {
-					buffer.append(", ");
+					buffer.append(",");
 				}
 			}
 		}
@@ -211,7 +211,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor,
 			OrderByElement orderByElement = iter.next();
 			orderByElement.accept(this);
 			if (iter.hasNext()) {
-				buffer.append(", ");
+				buffer.append(",");
 			}
 		}
 	}
@@ -305,7 +305,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor,
 
 	public void deparseJoin(Join join) {
 		if (join.isSimple()) {
-			buffer.append(", ");
+			buffer.append(",");
 		} else {
 
 			if (join.isRight()) {
@@ -341,7 +341,7 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor,
 				Column column = iterator.next();
 				buffer.append(column.getFullyQualifiedName());
 				if (iterator.hasNext()) {
-					buffer.append(", ");
+					buffer.append(",");
 				}
 			}
 			buffer.append(")");
@@ -418,14 +418,13 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor,
 		if (top.isPercentage()) {
 			buffer.append(" PERCENT");
 		}
-		buffer.append(" ");
 	}
 
 	public void visit(CustomSelectItem selectItem) {
-		buffer.append(selectItem).append(" ");
+		buffer.append(selectItem);
 	}
 
 	public void visit(Function function) {
-		buffer.append(function).append(" ");
+		buffer.append(function);
 	}
 }

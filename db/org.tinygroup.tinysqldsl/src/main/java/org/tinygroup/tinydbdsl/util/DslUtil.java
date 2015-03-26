@@ -81,7 +81,7 @@ public class DslUtil {
 
 			for (int i = 0; i < list.size(); i++) {
 				buffer.append(list.get(i)).append(
-						(i < list.size() - 1) ? comma + " " : "");
+						(i < list.size() - 1) ? comma: "");
 			}
 
 			if (useBrackets) {
