@@ -59,6 +59,6 @@ public class TestSelect {
 
 		System.out.println(select(selectFragment("custom.name,custom.age"))
 				.from(fromFragment("custom custom")).where(
-						conditionFragment("custom.name=?")));
+						conditionFragment("custom.name=?","悠悠然然")));
 	}
 }
