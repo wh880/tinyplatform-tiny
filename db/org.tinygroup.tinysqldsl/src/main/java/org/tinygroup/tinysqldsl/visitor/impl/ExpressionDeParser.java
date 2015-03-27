@@ -31,6 +31,7 @@ import org.tinygroup.tinysqldsl.expression.CaseExpression;
 import org.tinygroup.tinysqldsl.expression.DateValue;
 import org.tinygroup.tinysqldsl.expression.DoubleValue;
 import org.tinygroup.tinysqldsl.expression.Expression;
+import org.tinygroup.tinysqldsl.expression.ExpressionFragment;
 import org.tinygroup.tinysqldsl.expression.ExtractExpression;
 import org.tinygroup.tinysqldsl.expression.Function;
 import org.tinygroup.tinysqldsl.expression.IntervalExpression;
@@ -570,6 +571,10 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
 
 	public void visit(ConditionExpressionList expressionList) {
 		buffer.append(expressionList);
+	}
+
+	public void visit(ExpressionFragment fragment) {
+        buffer.append(fragment.getFragment());		
 	}
 
 	

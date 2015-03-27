@@ -61,7 +61,6 @@ public class Delete extends StatementSqlBuilder implements Statement {
 		return sql();
 	}
 
-    @Override
     public void id(String id) {
         this.id=id;
     }

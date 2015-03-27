@@ -16,6 +16,7 @@
 package org.tinygroup.tinysqldsl.visitor;
 
 import org.tinygroup.tinysqldsl.base.Table;
+import org.tinygroup.tinysqldsl.formitem.FromItemFragment;
 import org.tinygroup.tinysqldsl.formitem.FromItemList;
 import org.tinygroup.tinysqldsl.formitem.LateralSubSelect;
 import org.tinygroup.tinysqldsl.formitem.SubJoin;
@@ -40,4 +41,6 @@ public interface FromItemVisitor {
 	void visit(ValuesList valuesList);
 	
 	void visit(FromItemList fromItemList);
+	
+	void visit(FromItemFragment fragment);
 }

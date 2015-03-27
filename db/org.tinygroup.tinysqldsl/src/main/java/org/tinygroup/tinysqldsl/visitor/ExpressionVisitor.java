@@ -23,6 +23,7 @@ import org.tinygroup.tinysqldsl.expression.AnyComparisonExpression;
 import org.tinygroup.tinysqldsl.expression.CaseExpression;
 import org.tinygroup.tinysqldsl.expression.DateValue;
 import org.tinygroup.tinysqldsl.expression.DoubleValue;
+import org.tinygroup.tinysqldsl.expression.ExpressionFragment;
 import org.tinygroup.tinysqldsl.expression.ExtractExpression;
 import org.tinygroup.tinysqldsl.expression.Function;
 import org.tinygroup.tinysqldsl.expression.IntervalExpression;
@@ -172,4 +173,6 @@ public interface ExpressionVisitor {
 	void visit(ConditionExpressionList expressionList);
 	
 	void visit(Condition condition);
+
+	void visit(ExpressionFragment fragment);
 }

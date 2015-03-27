@@ -421,4 +421,12 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor,
     public void visit(Function function) {
         buffer.append(function);
     }
+
+	public void visit(FromItemFragment fragment) {
+        buffer.append(fragment.toString());		
+	}
+
+	public void visit(SelectItemFragment fragment) {
+        buffer.append(fragment.getFragment());        		
+	}
 }
