@@ -6,37 +6,37 @@ import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
 
 /**
  * fromitem的sql片段，允许加入SQL字符串片断
- * @author renhui
  *
+ * @author renhui
  */
 public class FragmentFromItemSql extends FragmentSql implements FromItem {
 
-	private Alias alias;
+    private Alias alias;
 
-	public FragmentFromItemSql(String fragment, Alias alias) {
-		super(fragment);
-		this.alias = alias;
-	}
+    public FragmentFromItemSql(String fragment, Alias alias) {
+        super(fragment);
+        this.alias = alias;
+    }
 
-	public FragmentFromItemSql(String fragment) {
-		super(fragment);
-	}
+    public FragmentFromItemSql(String fragment) {
+        super(fragment);
+    }
 
-	public void accept(FromItemVisitor fromItemVisitor) {
-		fromItemVisitor.visit(this);
-	}
+    public void accept(FromItemVisitor fromItemVisitor) {
+        fromItemVisitor.visit(this);
+    }
 
-	public Alias getAlias() {
-		return alias;
-	}
+    public Alias getAlias() {
+        return alias;
+    }
 
-	public void setAlias(Alias alias) {
-		this.alias = alias;
-	}
+    public void setAlias(Alias alias) {
+        this.alias = alias;
+    }
 
-	@Override
-	public String toString() {
-		return getFragment() + ((alias != null) ? alias.toString() : "");
-	}
+    @Override
+    public String toString() {
+        return getFragment() + ((alias != null) ? alias.toString() : "");
+    }
 
 }

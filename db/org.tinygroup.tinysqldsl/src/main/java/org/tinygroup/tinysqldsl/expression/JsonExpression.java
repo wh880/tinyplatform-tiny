@@ -1,32 +1,32 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.tinysqldsl.expression;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
-public class JsonExpression  implements Expression {
+import java.util.ArrayList;
+import java.util.List;
+
+public class JsonExpression implements Expression {
 
     private Column column;
-    
+
     private List<String> idents = new ArrayList<String>();
-    
+
     public Column getColumn() {
         return column;
     }
@@ -42,11 +42,11 @@ public class JsonExpression  implements Expression {
     public void setIdents(List<String> idents) {
         this.idents = idents;
     }
-    
+
     public void addIdent(String ident) {
         idents.add(ident);
     }
-    
+
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
@@ -57,7 +57,7 @@ public class JsonExpression  implements Expression {
         return b.toString();
     }
 
-	public void accept(ExpressionVisitor expressionVisitor) {
-		expressionVisitor.visit(this);		
-	}
+    public void accept(ExpressionVisitor expressionVisitor) {
+        expressionVisitor.visit(this);
+    }
 }

@@ -15,8 +15,6 @@
  */
 package org.tinygroup.tinysqldsl.insert;
 
-import java.util.List;
-
 import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.base.SelectBody;
 import org.tinygroup.tinysqldsl.base.StatementBody;
@@ -26,12 +24,14 @@ import org.tinygroup.tinysqldsl.selectitem.SelectExpressionItem;
 import org.tinygroup.tinysqldsl.util.DslUtil;
 import org.tinygroup.tinysqldsl.visitor.StatementVisitor;
 
+import java.util.List;
+
 /**
  * Insert语句
  */
 public class InsertBody implements StatementBody {
     /**
-     *  要插入的表
+     * 要插入的表
      */
     private Table table;
     /**
@@ -65,7 +65,7 @@ public class InsertBody implements StatementBody {
         columns = list;
     }
 
-     public ItemsList getItemsList() {
+    public ItemsList getItemsList() {
         return itemsList;
     }
 

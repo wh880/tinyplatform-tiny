@@ -19,15 +19,7 @@ import org.tinygroup.tinysqldsl.base.Condition;
 import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.expression.JdbcParameter;
-import org.tinygroup.tinysqldsl.expression.relational.Between;
-import org.tinygroup.tinysqldsl.expression.relational.EqualsTo;
-import org.tinygroup.tinysqldsl.expression.relational.GreaterThan;
-import org.tinygroup.tinysqldsl.expression.relational.GreaterThanEquals;
-import org.tinygroup.tinysqldsl.expression.relational.IsNullExpression;
-import org.tinygroup.tinysqldsl.expression.relational.LikeExpression;
-import org.tinygroup.tinysqldsl.expression.relational.MinorThan;
-import org.tinygroup.tinysqldsl.expression.relational.MinorThanEquals;
-import org.tinygroup.tinysqldsl.expression.relational.NotEqualsTo;
+import org.tinygroup.tinysqldsl.expression.relational.*;
 import org.tinygroup.tinysqldsl.transform.ExpressionTransform;
 import org.tinygroup.tinysqldsl.transform.JdbcParameterExpressionTransform;
 
@@ -171,7 +163,7 @@ public abstract class SimpleBinaryOperator implements BinaryOperator,
     }
 
     public Condition notLeftLike(String value) {
-        return toCondition( value + "%", new ExpressionInstanceCallBack() {
+        return toCondition(value + "%", new ExpressionInstanceCallBack() {
             public BinaryExpression instance(Expression leExpression,
                                              Expression rightExpression) {
                 return new LikeExpression(leExpression, rightExpression, true);
@@ -180,7 +172,7 @@ public abstract class SimpleBinaryOperator implements BinaryOperator,
     }
 
     public Condition notRightLike(String value) {
-        return toCondition("%" + value , new ExpressionInstanceCallBack() {
+        return toCondition("%" + value, new ExpressionInstanceCallBack() {
             public BinaryExpression instance(Expression leExpression,
                                              Expression rightExpression) {
                 return new LikeExpression(leExpression, rightExpression, true);

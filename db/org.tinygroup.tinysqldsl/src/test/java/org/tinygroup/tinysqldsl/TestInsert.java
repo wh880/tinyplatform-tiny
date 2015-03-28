@@ -1,7 +1,8 @@
 package org.tinygroup.tinysqldsl;
 
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
-import static org.tinygroup.tinysqldsl.Insert.*;
+import static org.tinygroup.tinysqldsl.Insert.insertInto;
+
 /**
  * Created by luoguo on 2015/3/11.
  */

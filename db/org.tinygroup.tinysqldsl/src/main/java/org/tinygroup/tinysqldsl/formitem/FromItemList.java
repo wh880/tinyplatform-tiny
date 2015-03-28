@@ -15,13 +15,13 @@
  */
 package org.tinygroup.tinysqldsl.formitem;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.tinygroup.tinysqldsl.base.Alias;
 import org.tinygroup.tinysqldsl.util.DslUtil;
 import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * FromItem列表
