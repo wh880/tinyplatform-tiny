@@ -1,6 +1,6 @@
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.base.SqlFragment;
+import org.tinygroup.tinysqldsl.base.FragmentSql;
 import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 /**
@@ -8,9 +8,9 @@ import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
  * @author renhui
  *
  */
-public class ExpressionFragment extends SqlFragment implements Expression {
+public class FragmentExpressionSql extends FragmentSql implements Expression {
 
-	public ExpressionFragment(String fragment) {
+	public FragmentExpressionSql(String fragment) {
 		super(fragment);
 	}
 

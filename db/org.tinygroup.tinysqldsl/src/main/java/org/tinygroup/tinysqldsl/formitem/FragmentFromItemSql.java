@@ -1,7 +1,7 @@
 package org.tinygroup.tinysqldsl.formitem;
 
 import org.tinygroup.tinysqldsl.base.Alias;
-import org.tinygroup.tinysqldsl.base.SqlFragment;
+import org.tinygroup.tinysqldsl.base.FragmentSql;
 import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
 
 /**
@@ -9,16 +9,16 @@ import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
  * @author renhui
  *
  */
-public class FromItemFragment extends SqlFragment implements FromItem {
+public class FragmentFromItemSql extends FragmentSql implements FromItem {
 
 	private Alias alias;
 
-	public FromItemFragment(String fragment, Alias alias) {
+	public FragmentFromItemSql(String fragment, Alias alias) {
 		super(fragment);
 		this.alias = alias;
 	}
 
-	public FromItemFragment(String fragment) {
+	public FragmentFromItemSql(String fragment) {
 		super(fragment);
 	}
 

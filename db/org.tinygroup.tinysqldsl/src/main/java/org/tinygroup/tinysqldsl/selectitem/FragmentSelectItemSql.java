@@ -1,6 +1,6 @@
 package org.tinygroup.tinysqldsl.selectitem;
 
-import org.tinygroup.tinysqldsl.base.SqlFragment;
+import org.tinygroup.tinysqldsl.base.FragmentSql;
 import org.tinygroup.tinysqldsl.visitor.SelectItemVisitor;
 
 /**
@@ -8,9 +8,9 @@ import org.tinygroup.tinysqldsl.visitor.SelectItemVisitor;
  * @author renhui
  *
  */
-public class SelectItemFragment extends SqlFragment implements SelectItem {
+public class FragmentSelectItemSql extends FragmentSql implements SelectItem {
 
-	public SelectItemFragment(String fragment) {
+	public FragmentSelectItemSql(String fragment) {
 		super(fragment);
 	}
 	

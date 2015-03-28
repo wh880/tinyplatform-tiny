@@ -42,5 +42,5 @@ public interface SelectItemVisitor {
 
 	void visit(Column column);
 
-	void visit(SelectItemFragment fragment);
+	void visit(FragmentSelectItemSql fragment);
 }

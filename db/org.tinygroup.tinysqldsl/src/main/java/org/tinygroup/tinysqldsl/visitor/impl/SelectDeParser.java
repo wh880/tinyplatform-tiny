@@ -422,11 +422,11 @@ public class SelectDeParser implements SelectVisitor, OrderByVisitor,
         buffer.append(function);
     }
 
-	public void visit(FromItemFragment fragment) {
+	public void visit(FragmentFromItemSql fragment) {
         buffer.append(fragment.toString());		
 	}
 
-	public void visit(SelectItemFragment fragment) {
+	public void visit(FragmentSelectItemSql fragment) {
         buffer.append(fragment.getFragment());        		
 	}
 }
