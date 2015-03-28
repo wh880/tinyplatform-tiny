@@ -24,11 +24,6 @@ import org.tinygroup.tinysqldsl.expression.relational.MultiExpressionList;
 import org.tinygroup.tinysqldsl.util.DslUtil;
 import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
 
-/**
- * This is a container for a values item within a select statement. It holds
- * some syntactical stuff that differs from values within an insert statement.
- *
- */
 public class ValuesList implements FromItem {
 
 	private Alias alias;

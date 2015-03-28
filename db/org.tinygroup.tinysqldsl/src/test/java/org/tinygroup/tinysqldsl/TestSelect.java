@@ -9,7 +9,7 @@ import static org.tinygroup.tinysqldsl.StatementSqlBuilder.and;
 import static org.tinygroup.tinysqldsl.StatementSqlBuilder.or;
 import static org.tinygroup.tinysqldsl.select.Join.leftJoin;
 import static org.tinygroup.tinysqldsl.select.OrderByElement.desc;
-import static org.tinygroup.tinysqldsl.base.SqlFragment.*;
+import static org.tinygroup.tinysqldsl.base.FragmentSql.*;
 
 /**
  * Created by luoguo on 2015/3/11.
@@ -57,8 +57,8 @@ public class TestSelect {
 				.from(CUSTOM)
 				.join(leftJoin(TSCORE, CUSTOM.NAME.eq(TSCORE.NAME))).sql());
 
-		System.out.println(select(selectFragment("custom.name,custom.age"))
-				.from(fromFragment("custom custom")).where(
-						conditionFragment("custom.name=?","悠悠然然")));
+		System.out.println(select(fragmentSelect("custom.name,custom.age"))
+				.from(fragmentFrom("custom custom")).where(
+						fragmentCondition("custom.name=?", "悠悠然然")));
 	}
 }

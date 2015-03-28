@@ -23,9 +23,6 @@ import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
 import org.tinygroup.tinysqldsl.visitor.ItemsListVisitor;
 
-/**
- * A subselect followed by an optional alias.
- */
 public class SubSelect implements FromItem, Expression, ItemsList {
 
 	private SelectBody selectBody;

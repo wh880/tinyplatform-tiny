@@ -19,8 +19,8 @@ import org.tinygroup.tinysqldsl.base.Alias;
 import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
 
 /**
- * A lateral subselect followed by an alias.
- * 
+ * 来自子查询及别名支持
+ *
  */
 public class LateralSubSelect implements FromItem {
 

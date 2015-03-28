@@ -24,14 +24,14 @@ import org.tinygroup.tinysqldsl.expression.Function;
  */
 public interface StatisticsOperator {
 
-	public Function sum();
+	 Function sum();
 
-	public Function count();
+	 Function count();
 
-	public Function avg();
+	 Function avg();
 
-	public Function max();
+	 Function max();
 
-	public Function min();
+	 Function min();
 
 }

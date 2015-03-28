@@ -5,7 +5,7 @@ import org.tinygroup.tinysqldsl.base.FragmentSql;
 import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
 
 /**
- * fromitem的sql片段
+ * fromitem的sql片段，允许加入SQL字符串片断
  * @author renhui
  *
  */

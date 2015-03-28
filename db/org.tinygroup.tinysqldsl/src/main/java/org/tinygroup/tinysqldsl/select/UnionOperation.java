@@ -17,6 +17,9 @@ package org.tinygroup.tinysqldsl.select;
 
 import org.tinygroup.tinysqldsl.SetOperationList.SetOperationType;
 
+/**
+ * UNION操作
+ */
 public class UnionOperation extends SetOperation {
 
 	private boolean distinct;

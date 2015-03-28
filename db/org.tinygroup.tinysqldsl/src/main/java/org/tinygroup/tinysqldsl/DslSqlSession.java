@@ -4,21 +4,21 @@ import java.util.List;
 
 /**
  * dslsql执行操作接口
- * @author renhui
  *
+ * @author renhui
  */
 public interface DslSqlSession {
 
-	public int execute(Insert insert);
-	
-	public int execute(Update update);
-	
-	public int execute(Delete delete);
-	
-	public <T> T fetchOneResult(Select select,Class<T> requiredType);
+    int execute(Insert insert);
 
-	public <T> T[] fetchArray(Select select,Class<T> requiredType) ;
+    int execute(Update update);
 
-	public <T> List<T> fetchList(Select select,Class<T> requiredType) ;
+    int execute(Delete delete);
+
+    <T> T fetchOneResult(Select select, Class<T> requiredType);
+
+    <T> T[] fetchArray(Select select, Class<T> requiredType);
+
+    <T> List<T> fetchList(Select select, Class<T> requiredType);
 
 }

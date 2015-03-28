@@ -20,7 +20,7 @@ import org.tinygroup.tinysqldsl.select.Join;
 import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
 
 /**
- * A table created by "(tab1 join tab2)".
+ * 用来支持join操作
  */
 public class SubJoin implements FromItem {
 
