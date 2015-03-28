@@ -24,6 +24,7 @@ import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.table.TableProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.metadata.config.stddatatype.DialectType;
+import org.tinygroup.metadata.config.stddatatype.StandardType;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.tinydb.BeanOperatorManager;
@@ -99,13 +100,14 @@ public class DatabaseTableConfigLoad extends AbstractTableConfigLoad {
 					standardFieldId);
 			return;
 		}
+		StandardType standardType = MetadataUtil.getStandardType(standardFieldId, this.getClass().getClassLoader());
 		DialectType dialectType = MetadataUtil.getDialectType(standardFieldId,
 				getDatabase(), this.getClass().getClassLoader());
 		column.setColumnName(standardField.getName());
 		column.setAllowNull(Boolean.toString(!tableField.getNotNull()));
 		column.setColumnSize(MetadataUtil.getPlaceholderValue(standardFieldId,
 				COLUMN_SIZE_HOLDER, this.getClass().getClassLoader()));
-		column.setDataType(dialectType.getDataType());
+		column.setDataType(standardType.getDataType());
 		column.setPrimaryKey(tableField.getPrimary());
 		column.setDecimalDigits(MetadataUtil.getPlaceholderValue(
 				standardFieldId, DECIMAL_DIGITS_HOLDER, "0", this.getClass()
