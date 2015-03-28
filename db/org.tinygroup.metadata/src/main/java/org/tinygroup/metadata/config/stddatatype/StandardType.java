@@ -21,6 +21,7 @@ import org.tinygroup.metadata.config.BaseObject;
 import org.tinygroup.metadata.config.Placeholder;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 标准数据类型
@@ -34,7 +35,17 @@ public class StandardType extends BaseObject{
 	@XStreamAlias("dialect-type-list")
 	private List<DialectType> dialectTypeList;// 方言对应的数据类型
 
-	
+	@XStreamAlias("data-type")
+	@XStreamAsAttribute
+	private int dataType;//用于指定java.sql.Types 的 SQL 类型 
+
+	public int getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(int dataType) {
+		this.dataType = dataType;
+	}
 
 	public List<Placeholder> getPlaceholderList() {
 		return placeholderList;
