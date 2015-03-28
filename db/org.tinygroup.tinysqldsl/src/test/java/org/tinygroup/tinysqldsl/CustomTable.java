@@ -8,9 +8,10 @@ import org.tinygroup.tinysqldsl.base.Table;
  */
 public class CustomTable extends Table {
     public static final CustomTable CUSTOM = new CustomTable();
-    public final Column ID =  new Column(this,"id");
-    public final Column NAME =  new Column(this,"name");
-    public final Column AGE =  new Column(this,"age");
+    public final Column ID = new Column(this, "id");
+    public final Column NAME = new Column(this, "name");
+    public final Column AGE = new Column(this, "age");
+
     private CustomTable() {
         super("custom");
     }

@@ -1,17 +1,17 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.tinysqldsl.select;
 
@@ -20,12 +20,11 @@ import org.tinygroup.tinysqldsl.visitor.OrderByVisitor;
 
 
 /**
- * An element (column reference) in an "ORDER BY" clause.
+ * OrderBy元素
  */
 public class OrderByElement {
 
     public enum NullOrdering {
-
         NULLS_FIRST,
         NULLS_LAST
     }
@@ -34,26 +33,26 @@ public class OrderByElement {
     private boolean asc = true;
     private NullOrdering nullOrdering;
     private boolean ascDesc = false;
-    
+
     public OrderByElement() {
-		super();
-	}
-    
+        super();
+    }
+
     public OrderByElement(Expression expression, boolean asc) {
-		super();
-		this.expression = expression;
-		this.asc = asc;
-	}
-
-	public static OrderByElement asc(Expression expression){
-    	return new OrderByElement(expression, true);
-    }
-	
-	public static OrderByElement desc(Expression expression){
-    	return new OrderByElement(expression, false);
+        super();
+        this.expression = expression;
+        this.asc = asc;
     }
 
-	public boolean isAsc() {
+    public static OrderByElement asc(Expression expression) {
+        return new OrderByElement(expression, true);
+    }
+
+    public static OrderByElement desc(Expression expression) {
+        return new OrderByElement(expression, false);
+    }
+
+    public boolean isAsc() {
         return asc;
     }
 
@@ -68,7 +67,7 @@ public class OrderByElement {
     public void setAsc(boolean b) {
         asc = b;
     }
-    
+
     public void setAscDescPresent(boolean b) {
         ascDesc = b;
     }
@@ -89,19 +88,20 @@ public class OrderByElement {
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append(expression.toString());
-        
+
         if (!asc) {
             b.append(" DESC");
         } else if (ascDesc) {
             b.append(" ASC");
         }
-        
+
         if (nullOrdering != null) {
             b.append(' ');
             b.append(nullOrdering == NullOrdering.NULLS_FIRST ? "NULLS FIRST" : "NULLS LAST");
         }
         return b.toString();
     }
+
     public void accept(OrderByVisitor orderByVisitor) {
         orderByVisitor.visit(this);
     }

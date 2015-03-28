@@ -1,24 +1,19 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.tinysqldsl;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.tinysqldsl.base.SelectBody;
@@ -26,14 +21,15 @@ import org.tinygroup.tinysqldsl.base.Table;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.expression.OracleHierarchicalExpression;
 import org.tinygroup.tinysqldsl.formitem.FromItem;
-import org.tinygroup.tinysqldsl.select.Fetch;
-import org.tinygroup.tinysqldsl.select.Join;
-import org.tinygroup.tinysqldsl.select.Limit;
-import org.tinygroup.tinysqldsl.select.Offset;
-import org.tinygroup.tinysqldsl.select.OrderByElement;
+import org.tinygroup.tinysqldsl.select.*;
 import org.tinygroup.tinysqldsl.selectitem.SelectItem;
 import org.tinygroup.tinysqldsl.visitor.SelectVisitor;
 import org.tinygroup.tinysqldsl.visitor.StatementVisitor;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.tinygroup.tinysqldsl.util.DslUtil.*;
 
@@ -43,9 +39,9 @@ import static org.tinygroup.tinysqldsl.util.DslUtil.*;
  *
  */
 public class PlainSelect implements SelectBody {
-	private List<SelectItem> selectItems = new ArrayList<SelectItem>();
-	private List<Table> intoTables=new ArrayList<Table>();
-	private FromItem fromItem;
+    private List<SelectItem> selectItems = new ArrayList<SelectItem>();
+    private List<Table> intoTables = new ArrayList<Table>();
+    private FromItem fromItem;
     private List<Join> joins;
     private Expression where;
     private List<Expression> groupByColumnReferences;
@@ -103,10 +99,10 @@ public class PlainSelect implements SelectBody {
         }
         Collections.addAll(selectItems, items);
     }
-    
+
     public void addIntoTables(Table... tables) {
         if (intoTables == null) {
-        	intoTables = new ArrayList<Table>();
+            intoTables = new ArrayList<Table>();
         }
         Collections.addAll(intoTables, tables);
     }
@@ -127,14 +123,14 @@ public class PlainSelect implements SelectBody {
     public void setJoins(List<Join> list) {
         joins = list;
     }
-    
-    public void addJoins(Join...joinArray){
-    	if(joins==null){
-    		joins=new ArrayList<Join>();
-    	}
-    	Collections.addAll(joins, joinArray);
+
+    public void addJoins(Join... joinArray) {
+        if (joins == null) {
+            joins = new ArrayList<Join>();
+        }
+        Collections.addAll(joins, joinArray);
     }
-    
+
 
     public List<OrderByElement> getOrderByElements() {
         return orderByElements;
@@ -143,12 +139,12 @@ public class PlainSelect implements SelectBody {
     public void setOrderByElements(List<OrderByElement> orderByElements) {
         this.orderByElements = orderByElements;
     }
-    
-    public void addOrderByElements(OrderByElement...orderBys){
-    	if(orderByElements==null){
-    		orderByElements=new ArrayList<OrderByElement>();
-    	}
-    	Collections.addAll(orderByElements, orderBys);
+
+    public void addOrderByElements(OrderByElement... orderBys) {
+        if (orderByElements == null) {
+            orderByElements = new ArrayList<OrderByElement>();
+        }
+        Collections.addAll(orderByElements, orderBys);
     }
 
     public Limit getLimit() {
@@ -196,14 +192,14 @@ public class PlainSelect implements SelectBody {
     public void setGroupByColumnReferences(List<Expression> list) {
         groupByColumnReferences = list;
     }
-    
-    public void addGroupByExpressions(Expression...expressions){
-    	if(groupByColumnReferences==null){
-    		groupByColumnReferences=new ArrayList<Expression>();
-    	}
-    	Collections.addAll(groupByColumnReferences, expressions);
+
+    public void addGroupByExpressions(Expression... expressions) {
+        if (groupByColumnReferences == null) {
+            groupByColumnReferences = new ArrayList<Expression>();
+        }
+        Collections.addAll(groupByColumnReferences, expressions);
     }
-    
+
 
     public OracleHierarchicalExpression getOracleHierarchical() {
         return oracleHierarchical;
@@ -235,7 +231,7 @@ public class PlainSelect implements SelectBody {
         sql.append(getStringList(selectItems));
         if (!CollectionUtil.isEmpty(intoTables)) {
             sql.append(" INTO ");
-            for (Iterator<Table> iter = intoTables.iterator(); iter.hasNext();) {
+            for (Iterator<Table> iter = intoTables.iterator(); iter.hasNext(); ) {
                 sql.append(iter.next().toString());
                 if (iter.hasNext()) {
                     sql.append(", ");
@@ -272,10 +268,10 @@ public class PlainSelect implements SelectBody {
                 sql.append(limit);
             }
             if (offset != null) {
-            	sql.append(offset);
+                sql.append(offset);
             }
             if (fetch != null) {
-            	sql.append(fetch);
+                sql.append(fetch);
             }
             if (isForUpdate()) {
                 sql.append(" FOR UPDATE");
@@ -284,12 +280,12 @@ public class PlainSelect implements SelectBody {
         return sql.toString();
     }
 
-	public void accept(SelectVisitor selectVisitor) {
-		selectVisitor.visit(this);
-	}
+    public void accept(SelectVisitor selectVisitor) {
+        selectVisitor.visit(this);
+    }
 
-	public void accept(StatementVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(StatementVisitor visitor) {
+        visitor.visit(this);
+    }
 
 }
