@@ -207,11 +207,7 @@ public final class U {
      * @return
      */
     public static Object v(Context context, Object key) {
-        String keyName = key.toString();
-        if (context.exist(keyName)) {
-            return context.get(keyName);
-        }
-        return null;
+            return context.get(key.toString());
     }
 
 

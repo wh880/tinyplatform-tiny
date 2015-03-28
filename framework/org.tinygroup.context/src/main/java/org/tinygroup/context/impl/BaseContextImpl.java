@@ -15,11 +15,11 @@
  */
 package org.tinygroup.context.impl;
 
-import java.io.Serializable;
-import java.util.Map;
-
-import org.tinygroup.commons.concurrent.TinyConcurrentHashMap;
 import org.tinygroup.context.BaseContext;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class BaseContextImpl implements BaseContext,Serializable {
@@ -27,7 +27,7 @@ public class BaseContextImpl implements BaseContext,Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -2965722554039526665L;
-    private Map itemMap = new TinyConcurrentHashMap();
+    private Map<String, Object> itemMap = new HashMap<String, Object>();
 
     public void setItemMap(Map<String, Object> itemMap) {
         this.itemMap = itemMap;

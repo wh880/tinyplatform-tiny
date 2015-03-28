@@ -31,8 +31,8 @@ public class TemplateContextDefault extends ContextImpl implements TemplateConte
     public TemplateContextDefault(Map dataMap){
         super(dataMap);
     }
-    
-    
+
+
     public boolean exist(String name) {
     	boolean exist=super.exist(name);
     	if(exist){
@@ -44,7 +44,7 @@ public class TemplateContextDefault extends ContextImpl implements TemplateConte
     	}
     	return false;
     }
-    
+
     public <T> T get(String name) {
     	T result=(T)super.get(name);
     	if(result!=null){
@@ -56,5 +56,5 @@ public class TemplateContextDefault extends ContextImpl implements TemplateConte
     	}
     	return null;
     }
-    
+
 }
