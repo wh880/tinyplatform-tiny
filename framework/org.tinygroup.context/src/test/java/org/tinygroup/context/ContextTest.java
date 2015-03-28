@@ -15,6 +15,8 @@
  */
 package org.tinygroup.context;
 
+import java.lang.ref.SoftReference;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -61,19 +63,19 @@ public class ContextTest extends TestCase {
 		Context.put("aa", 3);
 		assertEquals(true, Context.exist("aa"));
 		assertEquals(false, Context.exist("a1a"));
-		Context context=new ContextImpl();
+		Context context = new ContextImpl();
 		context.put("abc", null);
 		assertEquals(true, context.exist("abc"));
-		Context subContext=new ContextImpl();
+		Context subContext = new ContextImpl();
 		subContext.put("name1", null);
 		context.putSubContext("sub", subContext);
 		assertEquals(true, subContext.exist("abc"));
-        Context parentContext=new ContextImpl();
-        parentContext.putSubContext("aaa3",context);
-        assertEquals(true, parentContext.exist("name1"));
-        assertEquals(true, parentContext.exist("abc"));
+		Context parentContext = new ContextImpl();
+		parentContext.putSubContext("aaa3", context);
+		assertEquals(true, parentContext.exist("name1"));
+		assertEquals(true, parentContext.exist("abc"));
 
-    }
+	}
 
 	public void testClear() {
 		Context.put("aaa", 3);
@@ -138,35 +140,36 @@ public class ContextTest extends TestCase {
 		assertEquals(0, Context.getSubContextMap().size());
 	}
 
-	public void testNotInContext(){
-		Context context=new ContextImpl();
+	public void testNotInContext() {
+		Context context = new ContextImpl();
 		context.put("name1", "value1");
 		context.put("name3", "value3");
-		Context subContext=new ContextImpl();
+		Context subContext = new ContextImpl();
 		subContext.put("name1", "subValue1");
 		subContext.put("name2", "subValue2");
 		context.putSubContext("sub", subContext);
-		context.put("sub","name1","subValue");
+		context.put("sub", "name1", "subValue");
 		context.get("name1");
-		
-		String value=context.get("sub", "name1");
+
+		String value = context.get("sub", "name1");
 		assertEquals("subValue", value);
-		String value1=context.get("sub", "name2");
+		String value1 = context.get("sub", "name2");
 		assertEquals("subValue2", value1);
-		String value2=context.get("sub", "name4");
+		String value2 = context.get("sub", "name4");
 		assertEquals(null, value2);
-		String value3=context.get("name");
+		String value3 = context.get("name");
 		assertEquals(null, value3);
-		String value4=subContext.get("name3");
-		assertEquals("value3", value4);		
+		String value4 = subContext.get("name3");
+		assertEquals("value3", value4);
 	}
-	public void testMutiThreadContext(){
-		
-		ExecutorService pool= Executors.newFixedThreadPool(10);
-		final Context context=new ContextImpl();
+
+	public void testMutiThreadContext() {
+
+		ExecutorService pool = Executors.newFixedThreadPool(10);
+		final Context context = new ContextImpl();
 		context.put("name1", "value1");
 		context.put("name3", "value3");
-		Context subContext=new ContextImpl();
+		Context subContext = new ContextImpl();
 		subContext.put("name1", "subValue1");
 		subContext.put("name2", "subValue2");
 		context.putSubContext("sub", subContext);
@@ -176,76 +179,74 @@ public class ContextTest extends TestCase {
 					myTask(context);
 				}
 			});
-		}	
+		}
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-		    fail(e.getMessage());
+			fail(e.getMessage());
 		}
-		
+
 	}
-	
-	private void myTask(Context context){
-		String value2=context.get("name2");
+
+	private void myTask(Context context) {
+		String value2 = context.get("name2");
 		assertEquals("subValue2", value2);
-		//System.out.println("线程名---"+Thread.currentThread().getName()+"--值："+value2);
-		
+		// System.out.println("线程名---"+Thread.currentThread().getName()+"--值："+value2);
+
 	}
+
 	/**
 	 * 
 	 */
-	public void testMutiThreadContext2(){
-		
+	public void testMutiThreadContext2() {
+
 		final Context context = createContext();
 		for (int i = 0; i < 1; i++) {
-			Thread thread=new Thread(new Task(context));
+			Thread thread = new Thread(new Task(context));
 			thread.start();
 		}
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-		    fail(e.getMessage());
+			fail(e.getMessage());
 		}
-		
-		
+
 	}
 
-	
 	private Context createContext() {
-		final Context context=new ContextImpl();
+		final Context context = new ContextImpl();
 		context.put("name1", "value1");
 		context.put("name3", "value3");
-		Context subContext=new ContextImpl();
+		Context subContext = new ContextImpl();
 		subContext.put("name1", "subValue1");
 		subContext.put("name2", "subValue2");
 		context.putSubContext("sub", subContext);
-		Context parentContext=new ContextImpl();
+		Context parentContext = new ContextImpl();
 		parentContext.put("name2", "parentValue");
 		parentContext.putSubContext("context", context);
 		subContext.putSubContext("parent", parentContext);
 		return context;
 	}
-	
-	class Task implements Runnable{
-		
+
+	class Task implements Runnable {
+
 		private Context context;
-		
-		Task(Context context){
-			this.context=context;
+
+		Task(Context context) {
+			this.context = context;
 		}
 
 		public void run() {
 			myTask(context);
 		}
-		
+
 	}
-	
-	public void testRenameKey(){
-		final Context context=createContext();
-		boolean rename= context.renameKey("name2", "name5");
+
+	public void testRenameKey() {
+		final Context context = createContext();
+		boolean rename = context.renameKey("name2", "name5");
 		assertEquals(true, rename);
 		assertEquals("subValue2", context.get("name5"));
-		
+
 	}
-	
 }
