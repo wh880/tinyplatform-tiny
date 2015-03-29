@@ -99,6 +99,11 @@ public class InsertSqlTransform {
 	}
 	
 	public class ColumnInfo implements Serializable{
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -8427552991960248458L;
 		private Column column;
 		private int dataType;
 		public Column getColumn() {
