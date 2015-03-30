@@ -19,6 +19,11 @@ import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
+/**
+ * 加法表达式
+ * @author renhui
+ *
+ */
 public class Addition extends BinaryExpression {
 
     public Addition(Expression leftExpression, Expression rightExpression) {

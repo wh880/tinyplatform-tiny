@@ -18,7 +18,7 @@ package org.tinygroup.tinysqldsl.select;
 import org.tinygroup.tinysqldsl.SetOperationList.SetOperationType;
 
 /**
- *
+ *差集集合运算
  */
 public class ExceptOperation extends SetOperation {
 

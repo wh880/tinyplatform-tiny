@@ -19,6 +19,11 @@ import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
+/**
+ * and 条件
+ * @author renhui
+ *
+ */
 public class AndExpression extends BinaryExpression {
 
     public AndExpression() {

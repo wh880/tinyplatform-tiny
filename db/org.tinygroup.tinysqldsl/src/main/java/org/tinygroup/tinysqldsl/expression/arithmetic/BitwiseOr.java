@@ -19,6 +19,11 @@ import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
+/**
+ * 或操作表达式
+ * @author renhui
+ *
+ */
 public class BitwiseOr extends BinaryExpression {
 
     public BitwiseOr(Expression leftExpression, Expression rightExpression) {

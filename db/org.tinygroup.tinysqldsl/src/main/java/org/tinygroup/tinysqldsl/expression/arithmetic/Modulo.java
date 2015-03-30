@@ -20,7 +20,7 @@ import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 /**
- * Modulo expression (a % b).
+ * 取余操作
  *
  */
 public class Modulo extends BinaryExpression {

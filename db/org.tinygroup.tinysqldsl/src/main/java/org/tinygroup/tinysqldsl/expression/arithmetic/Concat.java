@@ -19,6 +19,11 @@ import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
+/**
+ * 字符串连接表达式
+ * @author renhui
+ *
+ */
 public class Concat extends BinaryExpression {
 
 

@@ -23,6 +23,11 @@ import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
 import org.tinygroup.tinysqldsl.visitor.ItemsListVisitor;
 
+/**
+ * 子查询
+ * @author renhui
+ *
+ */
 public class SubSelect implements FromItem, Expression, ItemsList {
 
     private SelectBody selectBody;

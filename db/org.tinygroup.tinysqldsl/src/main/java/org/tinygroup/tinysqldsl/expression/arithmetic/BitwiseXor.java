@@ -19,6 +19,11 @@ import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
+/**
+ * 按位异或操作表达式
+ * @author renhui
+ *
+ */
 public class BitwiseXor extends BinaryExpression {
 
 

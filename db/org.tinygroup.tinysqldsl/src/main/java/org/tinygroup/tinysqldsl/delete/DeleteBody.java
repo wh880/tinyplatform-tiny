@@ -20,9 +20,19 @@ import org.tinygroup.tinysqldsl.base.Table;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.visitor.StatementVisitor;
 
+/**
+ * delete语句的对象结构
+ * @author renhui
+ *
+ */
 public class DeleteBody implements StatementBody {
-
+    /**
+     * 删除的表对象
+     */
     private Table table;
+    /**
+     * 删除条件
+     */
     private Expression where;
 
     public Table getTable() {

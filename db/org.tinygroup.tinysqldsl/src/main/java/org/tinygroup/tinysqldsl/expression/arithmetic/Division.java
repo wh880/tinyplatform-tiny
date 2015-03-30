@@ -19,6 +19,11 @@ import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
+/**
+ * 除法
+ * @author renhui
+ *
+ */
 public class Division extends BinaryExpression {
 
     public Division(Expression leftExpression, Expression rightExpression) {

@@ -2,10 +2,14 @@ package org.tinygroup.tinysqldsl;
 
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.ScoreTable.TSCORE;
-import static org.tinygroup.tinysqldsl.Select.*;
+import static org.tinygroup.tinysqldsl.Select.customSelectItem;
+import static org.tinygroup.tinysqldsl.Select.select;
+import static org.tinygroup.tinysqldsl.Select.selectFrom;
 import static org.tinygroup.tinysqldsl.StatementSqlBuilder.and;
 import static org.tinygroup.tinysqldsl.StatementSqlBuilder.or;
-import static org.tinygroup.tinysqldsl.base.FragmentSql.*;
+import static org.tinygroup.tinysqldsl.base.FragmentSql.fragmentCondition;
+import static org.tinygroup.tinysqldsl.base.FragmentSql.fragmentFrom;
+import static org.tinygroup.tinysqldsl.base.FragmentSql.fragmentSelect;
 import static org.tinygroup.tinysqldsl.select.Join.leftJoin;
 import static org.tinygroup.tinysqldsl.select.OrderByElement.desc;
 

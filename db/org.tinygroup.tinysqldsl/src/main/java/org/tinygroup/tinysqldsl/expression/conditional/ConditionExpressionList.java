@@ -24,13 +24,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 多个条件组成的表达式列表
+ * @author renhui
+ *
+ */
 public class ConditionExpressionList implements Expression {
+	/**
+	 * 表达式列表
+	 */
     private List<Expression> expressions;
-
+    /**
+     * 多个表达式之间的连接符，比如and、or
+     */
     private String comma = ",";
 
+    /**
+     * 表达式之间是否包含括号
+     */
     private boolean useBrackets = true;
-
+    /**
+     * 是否用连接符
+     */
     private boolean useComma = true;
 
     public ConditionExpressionList() {

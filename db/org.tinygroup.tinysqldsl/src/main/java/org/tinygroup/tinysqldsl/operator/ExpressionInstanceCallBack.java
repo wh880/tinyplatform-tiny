@@ -19,7 +19,7 @@ import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
 
 /**
- * 实例化BinaryExpression接口
+ * 实例化BinaryExpression的回调接口
  *
  * @author renhui
  *

@@ -17,6 +17,11 @@ package org.tinygroup.tinysqldsl.select;
 
 import org.tinygroup.tinysqldsl.SetOperationList.SetOperationType;
 
+/**
+ * 交集集合运算
+ * @author renhui
+ *
+ */
 public class IntersectOperation extends SetOperation {
 
     public IntersectOperation() {

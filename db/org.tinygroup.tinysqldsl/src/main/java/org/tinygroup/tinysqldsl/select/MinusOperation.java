@@ -17,6 +17,11 @@ package org.tinygroup.tinysqldsl.select;
 
 import org.tinygroup.tinysqldsl.SetOperationList.SetOperationType;
 
+/**
+ * 差集集合运算操作
+ * @author renhui
+ *
+ */
 public class MinusOperation extends SetOperation {
 
     public MinusOperation() {

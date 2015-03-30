@@ -19,6 +19,11 @@ import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
+/**
+ * or 条件
+ * @author renhui
+ *
+ */
 public class OrExpression extends BinaryExpression {
 
     public OrExpression(Expression leftExpression, Expression rightExpression,
