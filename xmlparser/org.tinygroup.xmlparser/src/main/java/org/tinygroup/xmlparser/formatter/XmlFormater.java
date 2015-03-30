@@ -15,12 +15,12 @@
  */
 package org.tinygroup.xmlparser.formatter;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import org.tinygroup.parser.formater.NodeFormaterImpl;
 import org.tinygroup.xmlparser.XmlDocument;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.io.IOException;
-import java.io.OutputStream;
 
 public class XmlFormater extends NodeFormaterImpl<XmlDocument, XmlNode> {
 
@@ -41,11 +41,6 @@ public class XmlFormater extends NodeFormaterImpl<XmlDocument, XmlNode> {
 				formatNode(sb, n, 0);
 			}
 		}
-        if (doc.getProcessingInstructionList() != null) {
-            for (XmlNode n : doc.getProcessingInstructionList()) {
-                formatNode(sb, n, 0);
-            }
-        }
 		if (doc.getCommentList() != null) {
 			for (XmlNode n : doc.getCommentList()) {
 				formatNode(sb, n, 0);

@@ -15,10 +15,9 @@
  */
 package org.tinygroup.parser.nodetype;
 
-import org.tinygroup.parser.Node;
 import org.tinygroup.parser.NodeType;
 
-public class NodeTypeImpl implements NodeType<Node> {
+public class NodeTypeImpl implements NodeType {
 	private NodeSign head = null;
 	private NodeSign tail = null;
 	private boolean hasHeader = true;
@@ -87,15 +86,13 @@ public class NodeTypeImpl implements NodeType<Node> {
 	 * @param str
 	 * @return StringBuffer
 	 */
-	public void getHeader(StringBuffer sb, String str,Node node) {
+	public void getHeader(StringBuffer sb, String str) {
 		if (head != null) {
 			if (head.getStart() != null) {
 				sb.append(head.getStart());
 			}
 			sb.append(str);
-			if(node.isSingleNode()){
-                sb.append("/");
-            }
+			// if (head.getEnd() != null)
 			sb.append(head.getEnd());
 		}
 	}
@@ -107,7 +104,7 @@ public class NodeTypeImpl implements NodeType<Node> {
 	 * @return StringBuffer
 	 * 
 	 */
-	public void getTail(StringBuffer sb, String str,Node node) {
+	public void getTail(StringBuffer sb, String str) {
 		if (tail != null) {
 			if (tail.getStart() != null) {
 				sb.append(tail.getStart());

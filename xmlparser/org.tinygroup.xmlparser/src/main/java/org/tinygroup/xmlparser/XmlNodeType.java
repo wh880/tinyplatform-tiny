@@ -18,9 +18,8 @@ package org.tinygroup.xmlparser;
 import org.tinygroup.parser.NodeType;
 import org.tinygroup.parser.nodetype.NodeSign;
 import org.tinygroup.parser.nodetype.NodeTypeImpl;
-import org.tinygroup.xmlparser.node.XmlNode;
 
-public enum XmlNodeType implements NodeType<XmlNode> {
+public enum XmlNodeType implements NodeType {
 	DOCTYPE(new NodeSign("<!DOCTYPE ", null), new NodeSign(null, ">"), false,
 			true, false), // DTD验证器标签
 	CDATA(new NodeSign("<![CDATA[", null), new NodeSign(null, "]]>"), false,
@@ -94,7 +93,7 @@ public enum XmlNodeType implements NodeType<XmlNode> {
 	 * @return StringBuffer
 	 * 
 	 */
-	public void getHeader(StringBuffer sb, String str,XmlNode node) {
+	public void getHeader(StringBuffer sb, String str) {
         if(this.equals(ELEMENT)&&str.length()==0){
             return;
         }
@@ -117,7 +116,7 @@ public enum XmlNodeType implements NodeType<XmlNode> {
 	 * @param str
 	 * @return StringBuffer
 	 */
-	public void getTail(StringBuffer sb, String str,XmlNode node) {
+	public void getTail(StringBuffer sb, String str) {
         if(this.equals(ELEMENT)&&str.length()==0){
             return;
         }

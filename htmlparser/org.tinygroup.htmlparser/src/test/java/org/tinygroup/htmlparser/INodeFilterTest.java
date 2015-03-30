@@ -15,12 +15,13 @@
  */
 package org.tinygroup.htmlparser;
 
-import junit.framework.TestCase;
+import java.util.Hashtable;
+
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.parser.NodeFilter;
 import org.tinygroup.parser.filter.NameFilter;
 
-import java.util.Hashtable;
+import junit.framework.TestCase;
 
 public class INodeFilterTest extends TestCase {
 	HtmlNode node = null;

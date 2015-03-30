@@ -18,14 +18,13 @@ package org.tinygroup.parser.formater;
 import org.tinygroup.parser.Document;
 import org.tinygroup.parser.Node;
 import org.tinygroup.parser.NodeFormater;
-import org.tinygroup.parser.NodeType;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 public abstract class NodeFormaterImpl<T extends Document<N>, N extends Node<N>> implements NodeFormater<N, T> {
     private String indentString = "  ";
-    static final String NEWLINE = "\n";
+    static final String NEWLINE = "\r\n";
     private String encode = "UTF-8";
 
     public String getEncode() {
@@ -82,22 +81,22 @@ public abstract class NodeFormaterImpl<T extends Document<N>, N extends Node<N>>
         if (node.getNodeType().isHasContent() && node.getContent() != null) {
             sb.append(node.getContent());
         } else {
-            if (node.getSubNodes() != null&&node.getSubNodes().size()>0) {
+            if (node.getSubNodes() != null) {
                 if (node.getSubNodes().size() == 1 && node.getSubNodes().get(0).getNodeType().isHasContent()) {
                     sb.append(node.getSubNodes().get(0).getContent().trim());
                 } else {
+                    if (node.getNodeName() != null) {
+                        sb.append(NEWLINE);
+                    }
                     for (N n : node.getSubNodes()) {
-                        if ((sb.length()>0&&sb.charAt(sb.length()-1)!='\n')) {
-                            sb.append(NEWLINE);
-                        }
                         formatNode(sb, n, node.getNodeName() != null ? tab + 1 : tab);
                     }
+                    sb.append(is);
                 }
-                sb.append(is);
             }
         }
         node.getFooter(sb);
-        if (node.getNodeName() != null||( node.getNodeType().getHead()!=null && node.getNodeType().getHead().getStart() != null)) {
+        if (node.getNodeName() != null || node.getNodeType().getHead().getStart() != null) {
             sb.append(NEWLINE);
         }
     }
@@ -150,7 +149,8 @@ public abstract class NodeFormaterImpl<T extends Document<N>, N extends Node<N>>
      * @return String
      */
     public String format(T doc) {
-        StringBuffer sb = formatDocumentSelf(doc);
+        StringBuffer sb = new StringBuffer();
+        formatDocumentSelf(doc);
         formatNode(sb, doc.getRoot(), 0);
         return sb.toString();
     }

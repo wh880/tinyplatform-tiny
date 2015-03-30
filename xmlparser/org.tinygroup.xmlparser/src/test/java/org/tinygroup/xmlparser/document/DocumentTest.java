@@ -15,12 +15,13 @@
  */
 package org.tinygroup.xmlparser.document;
 
-import junit.framework.TestCase;
+import java.io.IOException;
+
 import org.tinygroup.parser.exception.ParseException;
 import org.tinygroup.xmlparser.XmlDocument;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
-import java.io.IOException;
+import junit.framework.TestCase;
 
 public class DocumentTest extends TestCase {
 	XmlDocument doc = null;
@@ -51,15 +52,15 @@ public class DocumentTest extends TestCase {
 	}
 
 	public void testGetCommentList() {
-		assertEquals(null, doc.getCommentList());
+		assertEquals(2, doc.getCommentList().size());
 	}
 
 	public void testGetDoctypeList() {
-		assertEquals(null, doc.getDoctypeList());
+		assertEquals(3, doc.getDoctypeList().size());
 	}
 
 	public void testGetProcessingInstructionList() {
-		assertEquals(null, doc.getProcessingInstructionList());
+		assertEquals(1, doc.getProcessingInstructionList().size());
 	}
 
 	public void testToString() {

@@ -71,7 +71,7 @@ public class XmlNode extends NodeImpl<XmlNode, XmlNodeType> {
 	}
 
 	
-	public String encode(String string) {
+	protected String encode(String string) {
 		String str = string;
 		str = str.replaceAll("&", "&amp;");
 		str = str.replaceAll("<", "&lt;");
@@ -82,7 +82,7 @@ public class XmlNode extends NodeImpl<XmlNode, XmlNodeType> {
 	}
 
 	
-	public String decode(String string) {
+	protected String decode(String string) {
 		String str = string;
 		str = str.replaceAll("&amp;", "&");
 		str = str.replaceAll("&lt;", "<");

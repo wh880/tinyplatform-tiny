@@ -15,12 +15,12 @@
  */
 package org.tinygroup.xmlparser;
 
+import java.io.File;
+
 import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import java.io.File;
 
 public class MaoHaoTest {
 	public static void main(String[] args) throws Exception {

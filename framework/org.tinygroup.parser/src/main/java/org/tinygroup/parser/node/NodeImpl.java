@@ -68,9 +68,9 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
         this.singleAttribute = singleAttribute;
     }
 
-    public abstract String encode(String str);
+    protected abstract String encode(String str);
 
-    public abstract String decode(String str);
+    protected abstract String decode(String str);
 
     /**
      * 设置结点名称
@@ -369,7 +369,7 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
      * 获取完整的头标签，包括标签标识符、名字、属性
      */
     public void getHeader(StringBuffer sb) {
-        nodeType.getHeader(sb, getHeaderBuffer(),this);
+        nodeType.getHeader(sb, getHeaderBuffer());
     }
 
     /**
@@ -377,7 +377,7 @@ public abstract class NodeImpl<T extends Node<T>, NT extends NodeType> implement
      */
     public void getFooter(StringBuffer sb) {
         if (!isSingleNode()) {
-            nodeType.getTail(sb, getFooterBuffer(),this);
+            nodeType.getTail(sb, getFooterBuffer());
         }
     }
 

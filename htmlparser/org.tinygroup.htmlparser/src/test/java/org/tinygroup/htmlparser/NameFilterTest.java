@@ -15,11 +15,12 @@
  */
 package org.tinygroup.htmlparser;
 
-import junit.framework.TestCase;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.parser.filter.FastNameFilter;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.parser.filter.QuickNameFilter;
+
+import junit.framework.TestCase;
 
 public class NameFilterTest extends TestCase {
 	HtmlNode node = null;

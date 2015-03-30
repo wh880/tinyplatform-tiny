@@ -16,6 +16,7 @@
 package org.tinygroup.xmlparser;
 
 import junit.framework.TestCase;
+import org.tinygroup.xmlparser.XmlDocument;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
 /**
@@ -28,7 +29,7 @@ public class TestEncodingOrder extends TestCase {
         assertEquals("<?xml version=\"1.0\" encoding=\"gb2312\"?><root></root>",document.toString());
     }
     public void testXmlAttributeOrder() {
-        XmlDocument document = new XmlStringParser().parse("<root a='1' b='2' c='3' d='4' " +
+        XmlDocument document = new XmlStringParser().parse("<root a='1' b='2' c='3' 'd=4' " +
                 "a1='7'/>");
         assertEquals("<root a=\"1\" b=\"2\" c=\"3\" d=\"4\" a1=\"7\"></root>",document.toString());
     }

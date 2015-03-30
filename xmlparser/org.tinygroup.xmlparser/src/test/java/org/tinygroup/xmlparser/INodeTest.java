@@ -15,10 +15,11 @@
  */
 package org.tinygroup.xmlparser;
 
-import junit.framework.TestCase;
+import java.io.IOException;
+
 import org.tinygroup.xmlparser.node.XmlNode;
 
-import java.io.IOException;
+import junit.framework.TestCase;
 
 public class INodeTest extends TestCase {
 	XmlNode node = null;

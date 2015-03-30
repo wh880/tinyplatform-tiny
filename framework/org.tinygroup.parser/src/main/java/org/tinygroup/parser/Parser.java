@@ -26,6 +26,4 @@ public interface Parser<T extends Node<T>, D extends Document<T>, Source> {
 	 * @throws ParseException
 	 */
 	Document<T> parse(Source source);
-    Node<T> parseNode(Source source);
-
 }
