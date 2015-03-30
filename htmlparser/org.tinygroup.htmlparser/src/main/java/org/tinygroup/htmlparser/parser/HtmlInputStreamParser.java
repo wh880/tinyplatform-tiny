@@ -6,14 +6,14 @@ import org.antlr.v4.runtime.TokenStream;
 import org.tinygroup.htmlparser.grammer.HTMLLexer;
 
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
 
 /**
  * Created by luoguo on 2015/2/28.
  */
-public class ReaderHtmlParser extends HtmlParser<Reader> {
-    protected TokenStream getTokenStream(Reader reader) throws IOException {
-        ANTLRInputStream is = new ANTLRInputStream(reader);
+public class HtmlInputStreamParser extends HtmlParser<InputStream> {
+    protected TokenStream getTokenStream(InputStream inputStream) throws IOException {
+        ANTLRInputStream is = new ANTLRInputStream(inputStream);
         return new CommonTokenStream(new HTMLLexer(is));
     }
 }

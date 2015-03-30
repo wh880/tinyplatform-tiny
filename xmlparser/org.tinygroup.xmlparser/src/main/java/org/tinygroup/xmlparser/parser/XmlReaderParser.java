@@ -6,14 +6,14 @@ import org.antlr.v4.runtime.TokenStream;
 import org.tinygroup.xmlparser.grammer.XMLLexer;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
 
 /**
  * Created by luoguo on 2015/2/28.
  */
-public class InputStreamXmlParser extends XmlParser<InputStream> {
-    protected TokenStream getTokenStream(InputStream inputStream) throws IOException {
-        ANTLRInputStream is = new ANTLRInputStream(inputStream);
+public class XmlReaderParser extends XmlParser<Reader> {
+    protected TokenStream getTokenStream(Reader reader) throws IOException {
+        ANTLRInputStream is = new ANTLRInputStream(reader);
         return new CommonTokenStream(new XMLLexer(is));
     }
 }
