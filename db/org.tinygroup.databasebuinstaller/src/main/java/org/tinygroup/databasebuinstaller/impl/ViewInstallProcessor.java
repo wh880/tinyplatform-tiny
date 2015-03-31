@@ -17,12 +17,14 @@ package org.tinygroup.databasebuinstaller.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.database.config.view.View;
 import org.tinygroup.database.view.ViewProcessor;
 
 /**
- * 
+ *
  * 功能说明: 数据库视图安装处理器
 
  * 开发人员: renhui <br>
@@ -32,7 +34,7 @@ import org.tinygroup.database.view.ViewProcessor;
 public class ViewInstallProcessor extends AbstractInstallProcessor {
 
 	private ViewProcessor viewProcessor ;
-	
+
 	public ViewProcessor getViewProcessor() {
 		return viewProcessor;
 	}
@@ -40,9 +42,19 @@ public class ViewInstallProcessor extends AbstractInstallProcessor {
 	public void setViewProcessor(ViewProcessor viewProcessor) {
 		this.viewProcessor = viewProcessor;
 	}
-	
+
 	protected List<String> getDealSqls(Connection con) throws SQLException {
-	    return viewProcessor.getCreateSql(language);
+	    List<String> createViewSqls = new ArrayList<String>();
+	    List<View> views = viewProcessor.getViews();
+
+	    for(View view:views){
+	        if(viewProcessor.checkViewExists(view, con, language)){
+	            createViewSqls.add(viewProcessor.getDropSql(view, language));
+	        }
+	        createViewSqls.add(viewProcessor.getCreateSql(view, language));
+	    }
+
+	    return createViewSqls;
 	}
 
 }
