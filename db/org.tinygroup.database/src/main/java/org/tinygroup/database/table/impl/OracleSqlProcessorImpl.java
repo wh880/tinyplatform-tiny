@@ -23,12 +23,12 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 		return "oracle";
 	}
 
-	protected String getQueryForeignSql(Table table) {
+	protected String getQueryForeignSql(Table table,String schema) {
 		String sql = "Select a.constraint_name CONSTRAINT_NAME,"
 				+ "a.column_name  COLUMN_NAME,"
 				+ "b.table_name  REFERENCED_TABLE_NAME,"
 				+ "b.column_name REFERENCED_COLUMN_NAME"
-				+ " From (Select a,owner,a.constraint_name,"
+				+ " From (Select a.owner,a.constraint_name,"
 				+ "b.table_name,b.column_name,a.r_constraint_name"
 				+ " From user_constraints a, user_cons_columns b"
 				+ " Where a.constraint_type = 'R'"
@@ -39,7 +39,7 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 				+ " And a.r_constraint_name = b.constraint_name) b"
 				+ " Where a.r_constraint_name = b.r_constraint_name"
 				+ " and a.table_name ='" + table.getName().toUpperCase()
-				+ "' and a.owner='" + table.getSchema().toUpperCase() + "'";
+				+ "' and a.owner='" + schema.toUpperCase() + "'";
 		return sql;
 	}
 

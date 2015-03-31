@@ -102,7 +102,10 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 
 	private void getForeignUpdate(Table table, Connection connection,
 			List<String> list) throws SQLException {
-		String sql = getQueryForeignSql(table);
+
+	    String schema = DataBaseUtil.getSchema(table, connection.getMetaData());
+
+		String sql = getQueryForeignSql(table,schema);
 		if (sql != null) {
 			List<ForeignReference> foreigns = table.getForeignReferences();
 			List<ForeignReference> newForeigns = cloneReferences(foreigns);
@@ -153,7 +156,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		}
 	}
 
-	protected String getQueryForeignSql(Table table) {
+	protected String getQueryForeignSql(Table table,String schema) {
 		return null;
 	}
 
@@ -327,7 +330,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		Boolean notNull = field.getNotNull();
 		if (notNull != null && notNull.booleanValue()) {
 			ddlBuffer.append(" NOT NULL");
-		} 
+		}
 
 		Boolean primary = field.getPrimary();
 		if (primary != null && primary.booleanValue()) {
@@ -370,12 +373,8 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		} else {
 			ddlBuffer.append("CREATE INDEX ");
 		}
-		if (table.getSchema() == null || "".equals(table.getSchema())) {
-			ddlBuffer.append(index.getName());
-		} else {
-			ddlBuffer.append(String.format("%s.%s", table.getSchema(),
-					index.getName()));
-		}
+
+		ddlBuffer.append(getIndexName(index, table));
 
 		ddlBuffer.append(" ON ");
 		ddlBuffer.append(table.getName());
@@ -386,7 +385,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			for (IndexField field : fields) {
 				fieldsStr = fieldsStr + ","
 						+ getFieldStdFieldName(field.getField(), table);
-				
+
 				if(!StringUtil.isEmpty(field.getDirection())){
 					fieldsStr = fieldsStr+" "+field.getDirection();
 				}
@@ -398,6 +397,18 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		ddlBuffer.append(fieldsStr);
 		ddlBuffer.append(" ) ");
 		return ddlBuffer.toString();
+	}
+
+	protected String getIndexName(Index index, Table table){
+	    String indexName = null;
+
+	    if (table.getSchema() == null || "".equals(table.getSchema())) {
+	        indexName = index.getName();
+        } else {
+            indexName = String.format("%s.%s", table.getSchema(),index.getName());
+        }
+
+	    return indexName;
 	}
 
 	private String getFieldStdFieldName(String fieldId, Table table) {

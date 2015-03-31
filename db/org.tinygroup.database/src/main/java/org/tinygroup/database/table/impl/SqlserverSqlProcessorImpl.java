@@ -15,6 +15,9 @@
  */
 package org.tinygroup.database.table.impl;
 
+import org.tinygroup.database.config.table.Index;
+import org.tinygroup.database.config.table.Table;
+
 
 public class SqlserverSqlProcessorImpl extends SqlProcessorImpl {
 
@@ -43,6 +46,9 @@ public class SqlserverSqlProcessorImpl extends SqlProcessorImpl {
 		return String.format("ALTER TABLE %s ALTER COLUMN %s %s ", tableName,
 				fieldName, tableDataType);
 	}
-	
 
+    @Override
+    protected String getIndexName(Index index, Table table) {
+        return index.getName();
+    }
 }
