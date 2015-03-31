@@ -44,6 +44,7 @@
 
     <bean id="viewSqlProcessor" scope="singleton" class="org.tinygroup.database.view.impl.ViewSqlProcessorImpl">
     </bean>
+    <bean id="sqlserverViewSqlProcessor" class="org.tinygroup.database.view.impl.SqlserverViewSqlProcessorImpl" scope="singleton"/>
 
     <bean id="oracleProcedureSqlProcessor" scope="singleton" class="org.tinygroup.database.procedure.impl.OracleProcedureSqlProcessorImpl">
     </bean>

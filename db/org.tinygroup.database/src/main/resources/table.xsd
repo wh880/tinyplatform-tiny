@@ -32,7 +32,20 @@
 							<xs:element name="index" minOccurs="0" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="string" minOccurs="0" maxOccurs="unbounded" />
+										<!-- <xs:element name="string" minOccurs="0" maxOccurs="unbounded" /> -->
+                                        <xs:element name="index-field" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:attribute name="field" type="xs:string"/>
+                                                <xs:attribute name="direction" use="optional" default="asc">
+                                                    <xs:simpleType>
+                                                        <xs:restriction base="xs:string">
+                                                            <xs:enumeration value="asc"/>
+                                                            <xs:enumeration value="desc"/>
+                                                        </xs:restriction>
+                                                    </xs:simpleType>
+                                                </xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>
 									</xs:sequence>
 									<xs:attributeGroup ref="baseObjectAttributeGroup" />
 									<xs:attribute name="unique" type="xs:string" />

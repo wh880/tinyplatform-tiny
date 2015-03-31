@@ -15,6 +15,8 @@
  */
 package org.tinygroup.database.view.impl;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,7 +36,7 @@ public class ViewProcessorImpl implements ViewProcessor {
 	private Map<String, View> viewMap = new HashMap<String, View>();
 	private Map<String, View> viewIdMap = new HashMap<String, View>();
 	private ProcessorManager processorManager;
-	
+
 	public ProcessorManager getProcessorManager() {
 		return processorManager;
 	}
@@ -84,7 +86,7 @@ public class ViewProcessorImpl implements ViewProcessor {
 
 	public List<String> getCreateSql(String language) {
 		List<String> list = new ArrayList<String>();
-		List<View> views=getViews();
+		List<View> views = getViews();
 		for (View view : views) {
 			list.add(getCreateSql(view, language));
 		}
@@ -153,5 +155,10 @@ public class ViewProcessorImpl implements ViewProcessor {
 			}
 		}
 	}
+
+    public boolean checkViewExists(View view, Connection conn,String language) throws SQLException {
+        ViewSqlProcessor sqlProcessor = (ViewSqlProcessor) processorManager.getProcessor(language, "view");
+        return sqlProcessor.checkViewExists(view, conn);
+    }
 
 }

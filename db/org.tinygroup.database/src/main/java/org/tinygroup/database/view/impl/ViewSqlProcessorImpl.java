@@ -15,6 +15,9 @@
  */
 package org.tinygroup.database.view.impl;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import org.tinygroup.database.config.view.View;
 import org.tinygroup.database.view.ViewSqlProcessor;
 
@@ -28,5 +31,13 @@ public class ViewSqlProcessorImpl implements ViewSqlProcessor {
 	public String getDropSql(View view) {
 		return String.format("DROP VIEW %s", view.getName());
 	}
+
+    public boolean checkViewExists(View view, Connection conn)  throws SQLException{
+        /*
+         * 默认返回false，大部分数据库可以使用create or replace语法，
+         * 不支持的数据库可以重写此方法，然后通过drop->create的步骤来创建view
+         */
+        return false;
+    }
 
 }

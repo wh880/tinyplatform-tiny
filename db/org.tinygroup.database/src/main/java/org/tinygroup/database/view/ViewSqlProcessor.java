@@ -15,12 +15,33 @@
  */
 package org.tinygroup.database.view;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import org.tinygroup.database.config.view.View;
 
 public interface ViewSqlProcessor {
-	
+
+	/**
+	 * 获取构建视图的完整sql语句
+	 * @param view 视图配置信息元数据
+	 * @return
+	 */
 	String getCreateSql(View view);
-		
+
+	/**
+	 * 获取删除视图的语句
+	 * @param view 视图配置信息元数据
+	 * @return
+	 */
 	String getDropSql(View view);
-	
+
+	/**
+	 * 判断视图是否存在
+	 * @param view 视图元数据
+	 * @param conn 当前执行创建view的连接信息
+	 * @return true表示视图存在，false反之
+	 * @throws SQLException
+	 */
+	boolean checkViewExists(View view,Connection conn) throws SQLException;
 }
