@@ -15,26 +15,27 @@
  */
 package org.tinygroup.tinysqldsl.expression.arithmetic;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 /**
  * 除法
+ * 
  * @author renhui
- *
+ * 
  */
 public class Division extends BinaryExpression {
 
-    public Division(Expression leftExpression, Expression rightExpression) {
-        super(leftExpression, rightExpression);
-    }
+	public Division(Expression leftExpression, Expression rightExpression) {
+		super(leftExpression, rightExpression);
+	}
 
-    public String getStringExpression() {
-        return "/";
-    }
+	public String getStringExpression() {
+		return "/";
+	}
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.visitBinaryExpression(this, " / ");
+	}
 }

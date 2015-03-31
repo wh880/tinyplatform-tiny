@@ -15,9 +15,9 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
-
 import java.sql.Timestamp;
+
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 /**
  * A Timestamp in the form {ts 'yyyy-mm-dd hh:mm:ss.f . . .'}
@@ -48,8 +48,8 @@ public class TimestampValue implements Expression {
         return "{ts '" + value + "'}";
     }
 
-
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		StringBuilder buffer = builder.getStringBuilder();
+		buffer.append("{ts '").append(getValue().toString()).append("'}");		
+	}
 }

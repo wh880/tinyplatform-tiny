@@ -15,7 +15,6 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
-import org.tinygroup.tinysqldsl.visitor.SelectVisitor;
 
 
 /**
@@ -24,5 +23,4 @@ import org.tinygroup.tinysqldsl.visitor.SelectVisitor;
  *
  */
 public interface SelectBody extends StatementBody {
-    void accept(SelectVisitor selectVisitor);
 }

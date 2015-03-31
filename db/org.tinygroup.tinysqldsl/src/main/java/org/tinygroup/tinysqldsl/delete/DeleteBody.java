@@ -15,48 +15,56 @@
  */
 package org.tinygroup.tinysqldsl.delete;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.StatementBody;
 import org.tinygroup.tinysqldsl.base.Table;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.StatementVisitor;
 
 /**
  * delete语句的对象结构
+ * 
  * @author renhui
- *
+ * 
  */
 public class DeleteBody implements StatementBody {
-    /**
-     * 删除的表对象
-     */
-    private Table table;
-    /**
-     * 删除条件
-     */
-    private Expression where;
+	/**
+	 * 删除的表对象
+	 */
+	private Table table;
+	/**
+	 * 删除条件
+	 */
+	private Expression where;
 
-    public Table getTable() {
-        return table;
-    }
+	public Table getTable() {
+		return table;
+	}
 
-    public Expression getWhere() {
-        return where;
-    }
+	public Expression getWhere() {
+		return where;
+	}
 
-    public void setTable(Table name) {
-        table = name;
-    }
+	public void setTable(Table name) {
+		table = name;
+	}
 
-    public void setWhere(Expression expression) {
-        where = expression;
-    }
+	public void setWhere(Expression expression) {
+		where = expression;
+	}
 
-    public String toString() {
-        return "DELETE FROM " + table
-                + ((where != null) ? " WHERE " + where : "");
-    }
+	public String toString() {
+		return "DELETE FROM " + table
+				+ ((where != null) ? " WHERE " + where : "");
+	}
 
-    public void accept(StatementVisitor visitor) {
-        visitor.visit(this);
-    }
+
+	public void builder(StatementSqlBuilder builder) {
+		StringBuilder buffer = builder.getStringBuilder();
+		buffer.append("DELETE FROM ")
+				.append(getTable().getFullyQualifiedName());
+		if (getWhere() != null) {
+			buffer.append(" WHERE ");
+			getWhere().builder(builder);
+		}
+	}
 }

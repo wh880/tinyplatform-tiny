@@ -15,9 +15,9 @@
  */
 package org.tinygroup.tinysqldsl.expression.conditional;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 /**
  * or 条件
@@ -39,7 +39,7 @@ public class OrExpression extends BinaryExpression {
         return "OR";
     }
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+    public void builder(StatementSqlBuilder builder) {
+		builder.visitBinaryExpression(this, " OR ");
+	}
 }

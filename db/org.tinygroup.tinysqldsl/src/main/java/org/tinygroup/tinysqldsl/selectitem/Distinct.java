@@ -15,55 +15,62 @@
  */
 package org.tinygroup.tinysqldsl.selectitem;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Column;
-import org.tinygroup.tinysqldsl.visitor.SelectItemVisitor;
 
 /**
  * A DISTINCT [(expression, ...)] clause
  */
 public class Distinct implements SelectItem {
 
-    private SelectItem selectItem;
+	private SelectItem selectItem;
 
-    public Distinct() {
-        this.selectItem = new AllColumns();
-    }
+	public Distinct() {
+		this.selectItem = new AllColumns();
+	}
 
-    public Distinct(String columnName) {
-        this.selectItem = new Column(columnName);
-    }
+	public Distinct(String columnName) {
+		this.selectItem = new Column(columnName);
+	}
 
-    public Distinct(SelectItem selectItem) {
-        this.selectItem = selectItem;
-    }
+	public Distinct(SelectItem selectItem) {
+		this.selectItem = selectItem;
+	}
 
-    public static Distinct distinct(SelectItem selectItem) {
-        return new Distinct(selectItem);
-    }
+	public static Distinct distinct(SelectItem selectItem) {
+		return new Distinct(selectItem);
+	}
 
-    public static Distinct distinct(String columnName) {
-        return new Distinct(columnName);
-    }
+	public static Distinct distinct(String columnName) {
+		return new Distinct(columnName);
+	}
 
-    public static Distinct distinct() {
-        return new Distinct();
-    }
+	public static Distinct distinct() {
+		return new Distinct();
+	}
 
-    public SelectItem getSelectItem() {
-        return selectItem;
-    }
+	public SelectItem getSelectItem() {
+		return selectItem;
+	}
 
-    public void setSelectItem(SelectItem selectItem) {
-        this.selectItem = selectItem;
-    }
+	public void setSelectItem(SelectItem selectItem) {
+		this.selectItem = selectItem;
+	}
 
-    public void accept(SelectItemVisitor selectItemVisitor) {
-        selectItemVisitor.visit(this);
-    }
+	public String toString() {
+		String sql = "DISTINCT";
+		sql += "(" + selectItem + ")";
+		return sql;
+	}
 
-    public String toString() {
-        String sql = "DISTINCT";
-        sql += "(" + selectItem + ")";
-        return sql;
-    }
+	public void builder(StatementSqlBuilder builder) {
+		StringBuilder buffer = builder.getStringBuilder();
+		buffer.append("DISTINCT ");
+		SelectItem selectItem = getSelectItem();
+		if (selectItem != null) {
+			buffer.append("(");
+			selectItem.builder(builder);
+			buffer.append(") ");
+		}
+	}
 }

@@ -15,56 +15,60 @@
  */
 package org.tinygroup.tinysqldsl.formitem;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Alias;
 import org.tinygroup.tinysqldsl.select.Join;
-import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
 
 /**
  * 用来支持join操作
  */
 public class SubJoin implements FromItem {
 
-    private FromItem left;
-    private Join join;
-    private Alias alias;
+	private FromItem left;
+	private Join join;
+	private Alias alias;
 
-    public SubJoin(FromItem left, Join join, Alias alias) {
-        super();
-        this.left = left;
-        this.join = join;
-        this.alias = alias;
-    }
+	public SubJoin(FromItem left, Join join, Alias alias) {
+		super();
+		this.left = left;
+		this.join = join;
+		this.alias = alias;
+	}
 
-    public FromItem getLeft() {
-        return left;
-    }
+	public FromItem getLeft() {
+		return left;
+	}
 
-    public void setLeft(FromItem l) {
-        left = l;
-    }
+	public void setLeft(FromItem l) {
+		left = l;
+	}
 
-    public Join getJoin() {
-        return join;
-    }
+	public Join getJoin() {
+		return join;
+	}
 
-    public void setJoin(Join j) {
-        join = j;
-    }
+	public void setJoin(Join j) {
+		join = j;
+	}
 
-    public Alias getAlias() {
-        return alias;
-    }
+	public Alias getAlias() {
+		return alias;
+	}
 
-    public void setAlias(Alias alias) {
-        this.alias = alias;
-    }
+	public void setAlias(Alias alias) {
+		this.alias = alias;
+	}
 
-    public String toString() {
-        return "(" + left + " " + join + ")"
-                + ((alias != null) ? alias.toString() : "");
-    }
+	public String toString() {
+		return "(" + left + " " + join + ")"
+				+ ((alias != null) ? alias.toString() : "");
+	}
 
-    public void accept(FromItemVisitor fromItemVisitor) {
-        fromItemVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		StringBuilder buffer = builder.getStringBuilder();
+		buffer.append("(");
+		getLeft().builder(builder);
+		builder.deparseJoin(getJoin());
+		buffer.append(")");
+	}
 }

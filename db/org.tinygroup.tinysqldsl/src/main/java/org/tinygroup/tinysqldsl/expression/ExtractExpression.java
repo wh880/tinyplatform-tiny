@@ -15,7 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 /**
  * Extract value from date/time expression. The name stores the part - name to
@@ -49,7 +49,7 @@ public class ExtractExpression implements Expression {
         return "EXTRACT(" + name + " FROM " + expression + ')';
     }
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql(toString());		
+	}
 }

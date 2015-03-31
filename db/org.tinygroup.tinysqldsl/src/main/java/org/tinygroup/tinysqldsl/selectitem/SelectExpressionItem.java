@@ -15,46 +15,49 @@
  */
 package org.tinygroup.tinysqldsl.selectitem;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Alias;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.SelectItemVisitor;
 
 /**
  * An expression as in "SELECT expr1 AS EXPR"
  */
 public class SelectExpressionItem implements SelectItem {
 
-    private Expression expression;
-    private Alias alias;
+	private Expression expression;
+	private Alias alias;
 
-    public SelectExpressionItem() {
-    }
+	public SelectExpressionItem() {
+	}
 
-    public SelectExpressionItem(Expression expression) {
-        this.expression = expression;
-    }
+	public SelectExpressionItem(Expression expression) {
+		this.expression = expression;
+	}
 
-    public Alias getAlias() {
-        return alias;
-    }
+	public Alias getAlias() {
+		return alias;
+	}
 
-    public Expression getExpression() {
-        return expression;
-    }
+	public Expression getExpression() {
+		return expression;
+	}
 
-    public void setAlias(Alias alias) {
-        this.alias = alias;
-    }
+	public void setAlias(Alias alias) {
+		this.alias = alias;
+	}
 
-    public void setExpression(Expression expression) {
-        this.expression = expression;
-    }
+	public void setExpression(Expression expression) {
+		this.expression = expression;
+	}
 
-    public void accept(SelectItemVisitor selectItemVisitor) {
-        selectItemVisitor.visit(this);
-    }
+	public String toString() {
+		return expression + ((alias != null) ? alias.toString() : "");
+	}
 
-    public String toString() {
-        return expression + ((alias != null) ? alias.toString() : "");
-    }
+	public void builder(StatementSqlBuilder builder) {
+		getExpression().builder(builder);
+		if (getAlias() != null) {
+			builder.appendSql(getAlias().toString());
+		}
+	}
 }

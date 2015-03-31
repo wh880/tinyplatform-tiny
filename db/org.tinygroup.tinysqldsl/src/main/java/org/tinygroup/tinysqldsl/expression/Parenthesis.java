@@ -15,43 +15,50 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 /**
  * It represents an expression like "(" expression ")"
  */
 public class Parenthesis implements Expression {
 
-    private Expression expression;
-    private boolean not = false;
+	private Expression expression;
+	private boolean not = false;
 
-    public Parenthesis(Expression expression) {
-        this(expression, false);
-    }
+	public Parenthesis(Expression expression) {
+		this(expression, false);
+	}
 
-    public Parenthesis(Expression expression, boolean not) {
-        super();
-        this.expression = expression;
-        this.not = not;
-    }
+	public Parenthesis(Expression expression, boolean not) {
+		super();
+		this.expression = expression;
+		this.not = not;
+	}
 
-    public Expression getExpression() {
-        return expression;
-    }
+	public Expression getExpression() {
+		return expression;
+	}
 
-    public void setNot() {
-        not = true;
-    }
+	public void setNot() {
+		not = true;
+	}
 
-    public boolean isNot() {
-        return not;
-    }
+	public boolean isNot() {
+		return not;
+	}
 
-    public String toString() {
-        return (not ? "NOT " : "") + "(" + expression + ")";
-    }
+	public String toString() {
+		return (not ? "NOT " : "") + "(" + expression + ")";
+	}
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		StringBuilder buffer = builder.getStringBuilder();
+		if (isNot()) {
+			buffer.append(" NOT ");
+		}
+
+		buffer.append("(");
+		getExpression().builder(builder);
+		buffer.append(")");
+	}
 }

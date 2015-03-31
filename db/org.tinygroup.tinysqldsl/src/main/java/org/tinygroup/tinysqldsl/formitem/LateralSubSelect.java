@@ -15,47 +15,46 @@
  */
 package org.tinygroup.tinysqldsl.formitem;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Alias;
-import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
 
 /**
  * 来自子查询及别名支持
- *
+ * 
  */
 public class LateralSubSelect implements FromItem {
 
-    private SubSelect subSelect;
-    private Alias alias;
+	private SubSelect subSelect;
+	private Alias alias;
 
+	public LateralSubSelect(SubSelect subSelect, Alias alias) {
+		super();
+		this.subSelect = subSelect;
+		this.alias = alias;
+	}
 
-    public LateralSubSelect(SubSelect subSelect, Alias alias) {
-        super();
-        this.subSelect = subSelect;
-        this.alias = alias;
-    }
+	public void setSubSelect(SubSelect subSelect) {
+		this.subSelect = subSelect;
+	}
 
-    public void setSubSelect(SubSelect subSelect) {
-        this.subSelect = subSelect;
-    }
+	public SubSelect getSubSelect() {
+		return subSelect;
+	}
 
-    public SubSelect getSubSelect() {
-        return subSelect;
-    }
+	public Alias getAlias() {
+		return alias;
+	}
 
-    public Alias getAlias() {
-        return alias;
-    }
+	public void setAlias(Alias alias) {
+		this.alias = alias;
+	}
 
-    public void setAlias(Alias alias) {
-        this.alias = alias;
-    }
+	public String toString() {
+		return "LATERAL" + subSelect.toString()
+				+ ((alias != null) ? alias.toString() : "");
+	}
 
-    public String toString() {
-        return "LATERAL" + subSelect.toString()
-                + ((alias != null) ? alias.toString() : "");
-    }
-
-    public void accept(FromItemVisitor fromItemVisitor) {
-        fromItemVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql(toString());
+	}
 }

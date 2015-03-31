@@ -15,25 +15,24 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 public class IntervalExpression implements Expression {
-    private String parameter = null;
+	private String parameter = null;
 
-    public String getParameter() {
-        return parameter;
-    }
+	public String getParameter() {
+		return parameter;
+	}
 
-    public void setParameter(String parameter) {
-        this.parameter = parameter;
-    }
+	public void setParameter(String parameter) {
+		this.parameter = parameter;
+	}
 
+	public String toString() {
+		return "INTERVAL " + parameter;
+	}
 
-    public String toString() {
-        return "INTERVAL " + parameter;
-    }
-
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql(toString());
+	}
 }

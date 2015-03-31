@@ -15,45 +15,48 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 /**
  * It represents a "-" or "+" before an expression
  */
 public class SignedExpression implements Expression {
 
-    private char sign;
-    private Expression expression;
+	private char sign;
+	private Expression expression;
 
-    public SignedExpression(char sign, Expression expression) {
-        setSign(sign);
-        setExpression(expression);
-    }
+	public SignedExpression(char sign, Expression expression) {
+		setSign(sign);
+		setExpression(expression);
+	}
 
-    public char getSign() {
-        return sign;
-    }
+	public char getSign() {
+		return sign;
+	}
 
-    public final void setSign(char sign) {
-        this.sign = sign;
-        if (sign != '+' && sign != '-') {
-            throw new IllegalArgumentException("illegal sign character, only + - allowed");
-        }
-    }
+	public final void setSign(char sign) {
+		this.sign = sign;
+		if (sign != '+' && sign != '-') {
+			throw new IllegalArgumentException(
+					"illegal sign character, only + - allowed");
+		}
+	}
 
-    public Expression getExpression() {
-        return expression;
-    }
+	public Expression getExpression() {
+		return expression;
+	}
 
-    public final void setExpression(Expression expression) {
-        this.expression = expression;
-    }
+	public final void setExpression(Expression expression) {
+		this.expression = expression;
+	}
 
-    public String toString() {
-        return getSign() + expression.toString();
-    }
+	public String toString() {
+		return getSign() + expression.toString();
+	}
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		StringBuilder buffer = builder.getStringBuilder();
+		buffer.append(getSign());
+		getExpression().builder(builder);
+	}
 }

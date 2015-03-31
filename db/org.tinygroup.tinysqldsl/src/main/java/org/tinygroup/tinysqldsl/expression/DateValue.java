@@ -15,38 +15,39 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
-
 import java.sql.Date;
+
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 /**
  * A Date in the form {d 'yyyy-mm-dd'}
  */
 public class DateValue implements Expression {
 
-    private Date value;
+	private Date value;
 
-    public DateValue(String value) {
-        this.value = Date.valueOf(value.substring(1, value.length() - 1));
-    }
+	public DateValue(String value) {
+		this.value = Date.valueOf(value.substring(1, value.length() - 1));
+	}
 
-    public DateValue() {
-        super();
-    }
+	public DateValue() {
+		super();
+	}
 
-    public static DateValue value(String value) {
-        return new DateValue(value);
-    }
+	public static DateValue value(String value) {
+		return new DateValue(value);
+	}
 
-    public Date getValue() {
-        return value;
-    }
+	public Date getValue() {
+		return value;
+	}
 
-    public void setValue(Date d) {
-        value = d;
-    }
+	public void setValue(Date d) {
+		value = d;
+	}
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		StringBuilder buffer = builder.getStringBuilder();
+		buffer.append("{d '").append(getValue().toString()).append("'}");
+	}
 }

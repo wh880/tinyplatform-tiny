@@ -19,10 +19,10 @@ package org.tinygroup.tinysqldsl.selectitem;
  * All the columns of a table (as in "SELECT TableName.* FROM ...")
  */
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Table;
-import org.tinygroup.tinysqldsl.visitor.SelectItemVisitor;
 
-public class AllTableColumns implements SelectItem {
+public class AllTableColumns  implements SelectItem {
 
     private Table table;
 
@@ -30,6 +30,7 @@ public class AllTableColumns implements SelectItem {
     }
 
     public AllTableColumns(Table tableName) {
+    	super();
         this.table = tableName;
     }
 
@@ -41,11 +42,11 @@ public class AllTableColumns implements SelectItem {
         this.table = table;
     }
 
-    public void accept(SelectItemVisitor selectItemVisitor) {
-        selectItemVisitor.visit(this);
-    }
-
     public String toString() {
         return table + ".*";
     }
+
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql(getTable().getFullyQualifiedName()+".*");
+	}
 }

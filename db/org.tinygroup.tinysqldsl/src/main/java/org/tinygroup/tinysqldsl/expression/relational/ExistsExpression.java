@@ -15,39 +15,43 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 public class ExistsExpression implements Expression {
 
-    private Expression rightExpression;
-    private boolean not = false;
+	private Expression rightExpression;
+	private boolean not = false;
 
-    public ExistsExpression(Expression rightExpression, boolean not) {
-        super();
-        this.rightExpression = rightExpression;
-        this.not = not;
-    }
+	public ExistsExpression(Expression rightExpression, boolean not) {
+		super();
+		this.rightExpression = rightExpression;
+		this.not = not;
+	}
 
-    public Expression getRightExpression() {
-        return rightExpression;
-    }
+	public Expression getRightExpression() {
+		return rightExpression;
+	}
 
-    public boolean isNot() {
-        return not;
-    }
+	public boolean isNot() {
+		return not;
+	}
 
+	public String getStringExpression() {
+		return ((not) ? "NOT " : "") + "EXISTS";
+	}
 
-    public String getStringExpression() {
-        return ((not) ? "NOT " : "") + "EXISTS";
-    }
+	public String toString() {
+		return getStringExpression() + " " + rightExpression.toString();
+	}
 
-
-    public String toString() {
-        return getStringExpression() + " " + rightExpression.toString();
-    }
-
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		StringBuilder buffer = builder.getStringBuilder();
+		if (isNot()) {
+			buffer.append("NOT EXISTS ");
+		} else {
+			buffer.append("EXISTS ");
+		}
+		getRightExpression().builder(builder);
+	}
 }

@@ -15,61 +15,61 @@
  */
 package org.tinygroup.tinysqldsl.formitem;
 
-import org.tinygroup.tinysqldsl.base.Alias;
-import org.tinygroup.tinysqldsl.util.DslUtil;
-import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.Alias;
+import org.tinygroup.tinysqldsl.util.DslUtil;
+
 /**
  * FromItem列表
- *
+ * 
  * @author renhui
  */
 public class FromItemList implements FromItem {
-    /**
-     * from对象列表
-     */
-    private List<FromItem> fromItems;
+	/**
+	 * from对象列表
+	 */
+	private List<FromItem> fromItems;
 
-    public FromItemList() {
-        super();
-        fromItems = new ArrayList<FromItem>();
-    }
+	public FromItemList() {
+		super();
+		fromItems = new ArrayList<FromItem>();
+	}
 
-    public FromItemList(List<FromItem> fromItems) {
-        this.fromItems = fromItems;
-    }
+	public FromItemList(List<FromItem> fromItems) {
+		this.fromItems = fromItems;
+	}
 
-    public FromItemList(FromItem... fromItems) {
-        this.fromItems = new ArrayList<FromItem>();
-        Collections.addAll(this.fromItems, fromItems);
-    }
+	public FromItemList(FromItem... fromItems) {
+		this.fromItems = new ArrayList<FromItem>();
+		Collections.addAll(this.fromItems, fromItems);
+	}
 
-    public List<FromItem> getFromItems() {
-        return fromItems;
-    }
+	public List<FromItem> getFromItems() {
+		return fromItems;
+	}
 
-    public void setFromItems(List<FromItem> fromItems) {
-        this.fromItems = fromItems;
-    }
+	public void setFromItems(List<FromItem> fromItems) {
+		this.fromItems = fromItems;
+	}
 
-    public Alias getAlias() {
-        return new Alias();
-    }
+	public Alias getAlias() {
+		return new Alias();
+	}
 
-    public void setAlias(Alias alias) {
+	public void setAlias(Alias alias) {
 
-    }
+	}
 
-    public String toString() {
-        return DslUtil.getStringList(fromItems, true, false);
-    }
+	public String toString() {
+		return DslUtil.getStringList(fromItems, true, false);
+	}
 
-    public void accept(FromItemVisitor fromItemVisitor) {
-        fromItemVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql(toString());
+	}
 
 }

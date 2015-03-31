@@ -15,27 +15,25 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
-
 
 public class Matches extends OldOracleJoinBinaryExpression {
 
+	public Matches(Expression leftExpression, Expression rightExpression,
+			boolean not) {
+		super(leftExpression, rightExpression, not);
+	}
 
-    public Matches(Expression leftExpression, Expression rightExpression,
-                   boolean not) {
-        super(leftExpression, rightExpression, not);
-    }
+	public Matches(Expression leftExpression, Expression rightExpression) {
+		super(leftExpression, rightExpression);
+	}
 
-    public Matches(Expression leftExpression, Expression rightExpression) {
-        super(leftExpression, rightExpression);
-    }
+	public String getStringExpression() {
+		return "@@";
+	}
 
-    public String getStringExpression() {
-        return "@@";
-    }
-
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.visitOldOracleJoinBinaryExpression(this, " @@ ");
+	}
 }

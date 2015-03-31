@@ -15,7 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 /**
  * A '?' in a statement
@@ -27,7 +27,7 @@ public class JdbcParameter implements Expression {
         return "?";
     }
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql(toString());		
+	}
 }

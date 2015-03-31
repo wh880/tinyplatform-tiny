@@ -15,9 +15,9 @@
  */
 package org.tinygroup.tinysqldsl.expression.arithmetic;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 /**
  * 减法操作
@@ -35,7 +35,7 @@ public class Subtraction extends BinaryExpression {
         return "-";
     }
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+    public void builder(StatementSqlBuilder builder) {
+		builder.visitBinaryExpression(this, " - ");
+	}
 }

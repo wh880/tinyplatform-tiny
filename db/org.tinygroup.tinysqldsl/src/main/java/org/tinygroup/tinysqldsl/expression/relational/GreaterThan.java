@@ -15,8 +15,8 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 
 public class GreaterThan extends OldOracleJoinBinaryExpression {
@@ -29,7 +29,7 @@ public class GreaterThan extends OldOracleJoinBinaryExpression {
         return ">";
     }
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.visitOldOracleJoinBinaryExpression(this, " > ");
+	}
 }

@@ -15,54 +15,51 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 /**
  * Every number with a point or a exponential format is a DoubleValue
  */
 public class DoubleValue implements Expression {
 
-    private double value;
-    private String stringValue;
+	private double value;
+	private String stringValue;
 
-    public DoubleValue(final String value) {
-        String val = value;
-        if (val.charAt(0) == '+') {
-            val = val.substring(1);
-        }
-        this.value = Double.parseDouble(val);
-        this.stringValue = val;
-    }
+	public DoubleValue(final String value) {
+		String val = value;
+		if (val.charAt(0) == '+') {
+			val = val.substring(1);
+		}
+		this.value = Double.parseDouble(val);
+		this.stringValue = val;
+	}
 
+	public DoubleValue() {
+		super();
+	}
 
-    public DoubleValue() {
-        super();
-    }
+	public double getValue() {
+		return value;
+	}
 
+	public void setValue(double d) {
+		value = d;
+		stringValue = d + "";
+	}
 
-    public double getValue() {
-        return value;
-    }
+	public String getStringValue() {
+		return stringValue;
+	}
 
-    public void setValue(double d) {
-        value = d;
-        stringValue = d + "";
-    }
+	public void setStringValue(String string) {
+		stringValue = string;
+	}
 
-    public String getStringValue() {
-        return stringValue;
-    }
+	public String toString() {
+		return stringValue;
+	}
 
-    public void setStringValue(String string) {
-        stringValue = string;
-    }
-
-    public String toString() {
-        return stringValue;
-    }
-
-
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql(toString());
+	}
 }

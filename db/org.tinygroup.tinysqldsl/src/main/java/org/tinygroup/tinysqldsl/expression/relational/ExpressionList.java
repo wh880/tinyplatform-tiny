@@ -15,83 +15,99 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
-import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.util.DslUtil;
-import org.tinygroup.tinysqldsl.visitor.ItemsListVisitor;
-
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.expression.Expression;
+import org.tinygroup.tinysqldsl.util.DslUtil;
 
 /**
  * A list of expressions, as in SELECT A FROM TAB WHERE B IN (expr1,expr2,expr3)
  */
 public class ExpressionList implements ItemsList {
 
-    private List<Expression> expressions;
+	private List<Expression> expressions;
 
-    private String comma = ",";
+	private String comma = ",";
 
-    private boolean useBrackets = true;
+	private boolean useBrackets = true;
 
-    private boolean useComma = true;
+	private boolean useComma = true;
 
-    public ExpressionList() {
-        expressions = new ArrayList<Expression>();
-    }
+	public ExpressionList() {
+		expressions = new ArrayList<Expression>();
+	}
 
-    public ExpressionList(List<Expression> expressions) {
-        this.expressions = expressions;
-    }
+	public ExpressionList(List<Expression> expressions) {
+		this.expressions = expressions;
+	}
 
-    public List<Expression> getExpressions() {
-        return expressions;
-    }
+	public List<Expression> getExpressions() {
+		return expressions;
+	}
 
-    public String getComma() {
-        return comma;
-    }
+	public String getComma() {
+		return comma;
+	}
 
-    public void setComma(String comma) {
-        this.comma = comma;
-    }
+	public void setComma(String comma) {
+		this.comma = comma;
+	}
 
-    public boolean isUseBrackets() {
-        return useBrackets;
-    }
+	public boolean isUseBrackets() {
+		return useBrackets;
+	}
 
-    public void setUseBrackets(boolean useBrackets) {
-        this.useBrackets = useBrackets;
-    }
+	public void setUseBrackets(boolean useBrackets) {
+		this.useBrackets = useBrackets;
+	}
 
-    public boolean isUseComma() {
-        return useComma;
-    }
+	public boolean isUseComma() {
+		return useComma;
+	}
 
-    public void setUseComma(boolean useComma) {
-        this.useComma = useComma;
-    }
+	public void setUseComma(boolean useComma) {
+		this.useComma = useComma;
+	}
 
-    public void setExpressions(List<Expression> list) {
-        expressions = list;
-    }
+	public void setExpressions(List<Expression> list) {
+		expressions = list;
+	}
 
-    public void addExpression(Expression expression) {
-        if (expressions == null) {
-            expressions = new ArrayList<Expression>();
-        }
-        expressions.add(expression);
-    }
+	public void addExpression(Expression expression) {
+		if (expressions == null) {
+			expressions = new ArrayList<Expression>();
+		}
+		expressions.add(expression);
+	}
 
-    public static ExpressionList expressionList(Expression expr) {
-        return new ExpressionList(Collections.singletonList(expr));
-    }
+	public static ExpressionList expressionList(Expression expr) {
+		return new ExpressionList(Collections.singletonList(expr));
+	}
 
-    public String toString() {
-        return DslUtil.getStringList(expressions, useComma, useBrackets, comma);
-    }
+	public String toString() {
+		return DslUtil.getStringList(expressions, useComma, useBrackets, comma);
+	}
 
-    public void accept(ItemsListVisitor itemsListVisitor) {
-        itemsListVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		boolean useBracketsInExprList = builder.isUseBracketsInExprList();
+		StringBuilder buffer = builder.getStringBuilder();
+		if (useBracketsInExprList) {
+			buffer.append("(");
+		}
+		for (Iterator<Expression> iter = getExpressions()
+				.iterator(); iter.hasNext();) {
+			Expression expression = iter.next();
+			expression.builder(builder);
+			if (iter.hasNext()) {
+				buffer.append(", ");
+			}
+		}
+		if (useBracketsInExprList) {
+			buffer.append(")");
+		}
+	}
 }
