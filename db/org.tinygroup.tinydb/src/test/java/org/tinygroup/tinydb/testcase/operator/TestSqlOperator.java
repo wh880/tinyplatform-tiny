@@ -174,4 +174,24 @@ public class TestSqlOperator extends BaseTest{
 		
 		getOperator().batchDelete(insertBeans);
 	}
+	
+	public void testRelationQueryBySql() throws TinyDbException{
+		Bean animal=new Bean(ANIMAL);
+		animal.set("name", "test");
+		animal.set("length", 12);
+		Bean branch=new Bean(BRANCH);
+		branch.set("branchName", "test");
+		getOperator().delete(animal);
+		getOperator().delete(branch);
+		getOperator().insert(animal);
+		getOperator().insert(branch);
+		String sql="select a.id,a.name,a.length,b.branch_id,b.branch_name from animal a,A_BRANCH b where a.name=b.branch_name";
+		Bean bean=getOperator().getSingleValue(sql);
+		assertEquals("test",bean.get("name"));
+		assertEquals(12,bean.get("length"));
+		assertEquals("test",bean.get("branchName"));
+		getOperator().delete(animal);
+		getOperator().delete(branch);
+        		
+	}
 }
