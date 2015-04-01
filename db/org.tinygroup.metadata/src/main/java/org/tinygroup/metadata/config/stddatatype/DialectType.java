@@ -17,6 +17,7 @@ package org.tinygroup.metadata.config.stddatatype;
 
 import java.util.List;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.metadata.config.PlaceholderValue;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -32,8 +33,15 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 public class DialectType {
 	@XStreamAsAttribute
 	private String language;// 语言
+	@Deprecated
 	@XStreamAsAttribute
-	private String type;// 类型 带长度或者精度的，例如varchar20
+	private String type; //带精度的类型，不建议使用。采用baseType和extType替代
+	@XStreamAsAttribute
+	@XStreamAlias("base-type")
+	private String baseType;// 基础类型，必填。如varchar
+	@XStreamAsAttribute
+	@XStreamAlias("ext-type")
+	private String extType;// 扩展类型，选填。用于描述基础类型的长度或精度。
 	@XStreamAsAttribute
 	@XStreamAlias("default-value")
 	private String defaultValue;// 默认值
@@ -48,7 +56,14 @@ public class DialectType {
 		this.language = language;
 	}
 
+	/**
+	 * 为了兼容以前配置
+	 * @return
+	 */
 	public String getType() {
+		if(StringUtil.isEmpty(type)){
+		   return StringUtil.isEmpty(extType)?baseType:baseType+extType;
+		}
 		return type;
 	}
 
@@ -71,6 +86,22 @@ public class DialectType {
 	public void setPlaceholderValueList(
 			List<PlaceholderValue> placeholderValueList) {
 		this.placeholderValueList = placeholderValueList;
+	}
+
+	public String getBaseType() {
+		return baseType;
+	}
+
+	public void setBaseType(String baseType) {
+		this.baseType = baseType;
+	}
+
+	public String getExtType() {
+		return extType;
+	}
+
+	public void setExtType(String extType) {
+		this.extType = extType;
 	}
 
 }
