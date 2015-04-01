@@ -40,35 +40,35 @@ public class Fetch {
         this.fetchParam = fetchParam;
     }
 
-    public Fetch fetchWithFirstRow(long rowCount) {
+    public static Fetch fetchWithFirstRow(long rowCount) {
         return new Fetch(rowCount, false, true);
     }
 
-    public Fetch fetchWithFirstRowParam(long rowCount) {
+    public static Fetch fetchWithFirstRowParam(long rowCount) {
         return new Fetch(rowCount, true, true);
     }
 
-    public Fetch fetchWithFirstRows(long rowCount) {
+    public static Fetch fetchWithFirstRows(long rowCount) {
         return new Fetch(rowCount, false, true, "ROWS");
     }
 
-    public Fetch fetchWithFirstRowsParam(long rowCount) {
+    public static Fetch fetchWithFirstRowsParam(long rowCount) {
         return new Fetch(rowCount, true, true, "ROWS");
     }
 
-    public Fetch fetchWithNextRow(long rowCount) {
+    public static Fetch fetchWithNextRow(long rowCount) {
         return new Fetch(rowCount, false, false);
     }
 
-    public Fetch fetchWithNextRowParam(long rowCount) {
+    public static Fetch fetchWithNextRowParam(long rowCount) {
         return new Fetch(rowCount, true, false);
     }
 
-    public Fetch fetchWithNextRows(long rowCount) {
+    public static Fetch fetchWithNextRows(long rowCount) {
         return new Fetch(rowCount, false, false, "ROWS");
     }
 
-    public Fetch fetchWithNextRowsParam(long rowCount) {
+    public static Fetch fetchWithNextRowsParam(long rowCount) {
         return new Fetch(rowCount, true, false, "ROWS");
     }
 
