@@ -21,6 +21,8 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.tinygroup.commons.match.SimpleTypeMatcher;
+import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.context2object.util.Context2ObjectUtil;
@@ -409,7 +411,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 					object = FlowElUtil.execute(value, context, this.getClass()
 							.getClassLoader());
 				} else {// 否则采用原有处理方式
-					object = getObject(value, context);
+					object = getObject(property.getType(),value, context);
 				}
 
 				try {
@@ -421,8 +423,8 @@ public class FlowExecutorImpl implements FlowExecutor {
 		}
 	}
 
-	private Object getObject(String strArgs, Context context) {
-		String str = strArgs;
+	private Object getObject(String type,String value, Context context) {
+		String str = value;
 		if (str instanceof String) {
 			str = formater.format(context, str);
 		}
@@ -431,7 +433,14 @@ public class FlowExecutorImpl implements FlowExecutor {
 		Object o = null;
 		if (str != null) {
 			str = str.trim();
-			o = SimpleTypeMatcher.matchType(str);
+			//type为空，按原先逻辑处理
+			if(StringUtil.isEmpty(type)){
+			   o = SimpleTypeMatcher.matchType(str);
+			}else{
+				//type不为空，则根据设置的type进行处理。可以避免数值型结果和参数类型不一致的问题。
+				o = ValueUtil.getValue(str, type);
+			}
+			
 		}
 		return o;
 	}
