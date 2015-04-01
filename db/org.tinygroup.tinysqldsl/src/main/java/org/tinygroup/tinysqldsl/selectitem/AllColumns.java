@@ -15,19 +15,20 @@
  */
 package org.tinygroup.tinysqldsl.selectitem;
 
-import org.tinygroup.tinysqldsl.visitor.SelectItemVisitor;
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 /**
  * All the columns (as in "SELECT * FROM ...")
  */
-public class AllColumns implements SelectItem {
+public class AllColumns  implements SelectItem {
 
 
     public String toString() {
         return "*";
     }
 
-    public void accept(SelectItemVisitor selectItemVisitor) {
-        selectItemVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql("*");
+	}
+
 }

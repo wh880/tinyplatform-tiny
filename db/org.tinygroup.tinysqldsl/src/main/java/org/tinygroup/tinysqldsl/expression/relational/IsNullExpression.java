@@ -15,45 +15,51 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 public class IsNullExpression implements Expression {
 
-    private Expression leftExpression;
-    private boolean not = false;
+	private Expression leftExpression;
+	private boolean not = false;
 
-    public IsNullExpression(Expression leftExpression) {
-        this(leftExpression, false);
-    }
+	public IsNullExpression(Expression leftExpression) {
+		this(leftExpression, false);
+	}
 
-    public IsNullExpression(Expression leftExpression, boolean not) {
-        super();
-        this.leftExpression = leftExpression;
-        this.not = not;
-    }
+	public IsNullExpression(Expression leftExpression, boolean not) {
+		super();
+		this.leftExpression = leftExpression;
+		this.not = not;
+	}
 
-    public Expression getLeftExpression() {
-        return leftExpression;
-    }
+	public Expression getLeftExpression() {
+		return leftExpression;
+	}
 
-    public boolean isNot() {
-        return not;
-    }
+	public boolean isNot() {
+		return not;
+	}
 
-    public void setLeftExpression(Expression expression) {
-        leftExpression = expression;
-    }
+	public void setLeftExpression(Expression expression) {
+		leftExpression = expression;
+	}
 
-    public void setNot(boolean b) {
-        not = b;
-    }
+	public void setNot(boolean b) {
+		not = b;
+	}
 
-    public String toString() {
-        return leftExpression + " IS " + ((not) ? "NOT " : "") + "NULL";
-    }
+	public String toString() {
+		return leftExpression + " IS " + ((not) ? "NOT " : "") + "NULL";
+	}
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		StringBuilder buffer = builder.getStringBuilder();
+		getLeftExpression().builder(builder);
+		if (isNot()) {
+			buffer.append(" IS NOT NULL");
+		} else {
+			buffer.append(" IS NULL");
+		}
+	}
 }

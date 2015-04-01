@@ -15,72 +15,83 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 /**
  * A "BETWEEN" expr1 expr2 statement
  */
 public class Between implements Expression {
 
-    private Expression leftExpression;
-    private boolean not = false;
-    private Expression betweenExpressionStart;
-    private Expression betweenExpressionEnd;
+	private Expression leftExpression;
+	private boolean not = false;
+	private Expression betweenExpressionStart;
+	private Expression betweenExpressionEnd;
 
-    public Between(Expression leftExpression,
-                   Expression betweenExpressionStart, Expression betweenExpressionEnd) {
-        this(leftExpression, betweenExpressionStart, betweenExpressionEnd, false);
-    }
+	public Between(Expression leftExpression,
+			Expression betweenExpressionStart, Expression betweenExpressionEnd) {
+		this(leftExpression, betweenExpressionStart, betweenExpressionEnd,
+				false);
+	}
 
-    public Between(Expression leftExpression,
-                   Expression betweenExpressionStart, Expression betweenExpressionEnd,
-                   boolean not) {
-        super();
-        this.leftExpression = leftExpression;
-        this.betweenExpressionStart = betweenExpressionStart;
-        this.betweenExpressionEnd = betweenExpressionEnd;
-        this.not = not;
-    }
+	public Between(Expression leftExpression,
+			Expression betweenExpressionStart, Expression betweenExpressionEnd,
+			boolean not) {
+		super();
+		this.leftExpression = leftExpression;
+		this.betweenExpressionStart = betweenExpressionStart;
+		this.betweenExpressionEnd = betweenExpressionEnd;
+		this.not = not;
+	}
 
-    public Expression getBetweenExpressionEnd() {
-        return betweenExpressionEnd;
-    }
+	public Expression getBetweenExpressionEnd() {
+		return betweenExpressionEnd;
+	}
 
-    public Expression getBetweenExpressionStart() {
-        return betweenExpressionStart;
-    }
+	public Expression getBetweenExpressionStart() {
+		return betweenExpressionStart;
+	}
 
-    public Expression getLeftExpression() {
-        return leftExpression;
-    }
+	public Expression getLeftExpression() {
+		return leftExpression;
+	}
 
-    public boolean isNot() {
-        return not;
-    }
+	public boolean isNot() {
+		return not;
+	}
 
-    public void setBetweenExpressionEnd(Expression expression) {
-        betweenExpressionEnd = expression;
-    }
+	public void setBetweenExpressionEnd(Expression expression) {
+		betweenExpressionEnd = expression;
+	}
 
-    public void setBetweenExpressionStart(Expression expression) {
-        betweenExpressionStart = expression;
-    }
+	public void setBetweenExpressionStart(Expression expression) {
+		betweenExpressionStart = expression;
+	}
 
-    public void setLeftExpression(Expression expression) {
-        leftExpression = expression;
-    }
+	public void setLeftExpression(Expression expression) {
+		leftExpression = expression;
+	}
 
-    public void setNot(boolean b) {
-        not = b;
-    }
+	public void setNot(boolean b) {
+		not = b;
+	}
 
-    public String toString() {
-        return leftExpression + " " + (not ? "NOT " : "") + "BETWEEN "
-                + betweenExpressionStart + " AND " + betweenExpressionEnd;
-    }
+	public String toString() {
+		return leftExpression + " " + (not ? "NOT " : "") + "BETWEEN "
+				+ betweenExpressionStart + " AND " + betweenExpressionEnd;
+	}
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+
+	public void builder(StatementSqlBuilder builder) {
+		getLeftExpression().builder(builder);
+		StringBuilder buffer = builder.getStringBuilder();
+		if (isNot()) {
+			buffer.append(" NOT");
+		}
+
+		buffer.append(" BETWEEN ");
+		getBetweenExpressionStart().builder(builder);
+		buffer.append(" AND ");
+		getBetweenExpressionEnd().builder(builder);
+	}
 }

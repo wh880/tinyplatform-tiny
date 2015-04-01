@@ -16,19 +16,12 @@
 package org.tinygroup.tinysqldsl.formitem;
 
 import org.tinygroup.tinysqldsl.base.Alias;
-import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
+import org.tinygroup.tinysqldsl.build.SqlBuildProcessor;
 
 /**
  * From子句
  */
-public interface FromItem {
-    /**
-     * 接受FromItemVisitor对自己进行处理
-     *
-     * @param fromItemVisitor
-     */
-    void accept(FromItemVisitor fromItemVisitor);
-
+public interface FromItem extends SqlBuildProcessor{
     /**
      * 返回别名对象
      *

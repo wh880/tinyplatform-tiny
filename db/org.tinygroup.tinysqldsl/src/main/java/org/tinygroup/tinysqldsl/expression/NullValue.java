@@ -15,19 +15,18 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 /**
  * A "NULL" in a sql statement
  */
 public class NullValue implements Expression {
 
+	public String toString() {
+		return "NULL";
+	}
 
-    public String toString() {
-        return "NULL";
-    }
-
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql("NULL");
+	}
 }

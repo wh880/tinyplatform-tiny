@@ -1,7 +1,7 @@
 package org.tinygroup.tinysqldsl.selectitem;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.FragmentSql;
-import org.tinygroup.tinysqldsl.visitor.SelectItemVisitor;
 
 /**
  * select 与 from 之间的特殊化sql片段
@@ -14,8 +14,7 @@ public class FragmentSelectItemSql extends FragmentSql implements SelectItem {
         super(fragment);
     }
 
-    public void accept(SelectItemVisitor selectItemVisitor) {
-        selectItemVisitor.visit(this);
-    }
-
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql(getFragment());
+	}
 }

@@ -15,96 +15,97 @@
  */
 package org.tinygroup.tinysqldsl.expression.conditional;
 
-import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
-import org.tinygroup.tinysqldsl.util.DslUtil;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.expression.Expression;
+import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
+import org.tinygroup.tinysqldsl.util.DslUtil;
+
 /**
  * 多个条件组成的表达式列表
+ * 
  * @author renhui
- *
+ * 
  */
 public class ConditionExpressionList implements Expression {
 	/**
 	 * 表达式列表
 	 */
-    private List<Expression> expressions;
-    /**
-     * 多个表达式之间的连接符，比如and、or
-     */
-    private String comma = ",";
+	private List<Expression> expressions;
+	/**
+	 * 多个表达式之间的连接符，比如and、or
+	 */
+	private String comma = ",";
 
-    /**
-     * 表达式之间是否包含括号
-     */
-    private boolean useBrackets = true;
-    /**
-     * 是否用连接符
-     */
-    private boolean useComma = true;
+	/**
+	 * 表达式之间是否包含括号
+	 */
+	private boolean useBrackets = true;
+	/**
+	 * 是否用连接符
+	 */
+	private boolean useComma = true;
 
-    public ConditionExpressionList() {
-        expressions = new ArrayList<Expression>();
-    }
+	public ConditionExpressionList() {
+		expressions = new ArrayList<Expression>();
+	}
 
-    public ConditionExpressionList(List<Expression> expressions) {
-        this.expressions = expressions;
-    }
+	public ConditionExpressionList(List<Expression> expressions) {
+		this.expressions = expressions;
+	}
 
-    public List<Expression> getExpressions() {
-        return expressions;
-    }
+	public List<Expression> getExpressions() {
+		return expressions;
+	}
 
-    public String getComma() {
-        return comma;
-    }
+	public String getComma() {
+		return comma;
+	}
 
-    public void setComma(String comma) {
-        this.comma = comma;
-    }
+	public void setComma(String comma) {
+		this.comma = comma;
+	}
 
-    public boolean isUseBrackets() {
-        return useBrackets;
-    }
+	public boolean isUseBrackets() {
+		return useBrackets;
+	}
 
-    public void setUseBrackets(boolean useBrackets) {
-        this.useBrackets = useBrackets;
-    }
+	public void setUseBrackets(boolean useBrackets) {
+		this.useBrackets = useBrackets;
+	}
 
-    public boolean isUseComma() {
-        return useComma;
-    }
+	public boolean isUseComma() {
+		return useComma;
+	}
 
-    public void setUseComma(boolean useComma) {
-        this.useComma = useComma;
-    }
+	public void setUseComma(boolean useComma) {
+		this.useComma = useComma;
+	}
 
-    public void setExpressions(List<Expression> list) {
-        expressions = list;
-    }
+	public void setExpressions(List<Expression> list) {
+		expressions = list;
+	}
 
-    public void addExpression(Expression expression) {
-        if (expressions == null) {
-            expressions = new ArrayList<Expression>();
-        }
-        expressions.add(expression);
-    }
+	public void addExpression(Expression expression) {
+		if (expressions == null) {
+			expressions = new ArrayList<Expression>();
+		}
+		expressions.add(expression);
+	}
 
-    public static ExpressionList expressionList(Expression expr) {
-        return new ExpressionList(Collections.singletonList(expr));
-    }
+	public static ExpressionList expressionList(Expression expr) {
+		return new ExpressionList(Collections.singletonList(expr));
+	}
 
-    public String toString() {
-        return DslUtil.getStringList(expressions, useComma, useBrackets, comma);
-    }
+	public String toString() {
+		return DslUtil.getStringList(expressions, useComma, useBrackets, comma);
+	}
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql(toString());
+	}
 
 }

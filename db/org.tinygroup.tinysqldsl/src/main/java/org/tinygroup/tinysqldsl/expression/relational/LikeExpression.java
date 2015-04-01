@@ -15,47 +15,50 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 public class LikeExpression extends BinaryExpression {
 
-    private String escape = null;
+	private String escape = null;
 
-    public LikeExpression(Expression leftExpression,
-                          Expression rightExpression, boolean not) {
-        super(leftExpression, rightExpression, not);
-    }
+	public LikeExpression(Expression leftExpression,
+			Expression rightExpression, boolean not) {
+		super(leftExpression, rightExpression, not);
+	}
 
-    public LikeExpression(Expression leftExpression, Expression rightExpression) {
-        super(leftExpression, rightExpression);
-    }
+	public LikeExpression(Expression leftExpression, Expression rightExpression) {
+		super(leftExpression, rightExpression);
+	}
 
+	public String getStringExpression() {
+		return ((isNot()) ? "NOT " : "") + "LIKE";
+	}
 
-    public String getStringExpression() {
-        return ((isNot()) ? "NOT " : "") + "LIKE";
-    }
+	public String toString() {
+		String retval = super.toString();
+		if (escape != null) {
+			retval += " ESCAPE " + "'" + escape + "'";
+		}
 
+		return retval;
+	}
 
-    public String toString() {
-        String retval = super.toString();
-        if (escape != null) {
-            retval += " ESCAPE " + "'" + escape + "'";
-        }
+	public String getEscape() {
+		return escape;
+	}
 
-        return retval;
-    }
+	public void setEscape(String escape) {
+		this.escape = escape;
+	}
 
-    public String getEscape() {
-        return escape;
-    }
-
-    public void setEscape(String escape) {
-        this.escape = escape;
-    }
-
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.visitBinaryExpression(this, " LIKE ");
+		StringBuilder buffer = builder.getStringBuilder();
+		String escape = getEscape();
+		if (escape != null) {
+			buffer.append(" ESCAPE '").append(escape).append('\'');
+		}
+	}
 }

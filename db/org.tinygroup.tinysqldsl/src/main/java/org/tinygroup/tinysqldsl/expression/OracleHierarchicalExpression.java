@@ -15,64 +15,64 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 public class OracleHierarchicalExpression implements Expression {
 
-    private Expression startExpression;
-    private Expression connectExpression;
-    private boolean noCycle = false;
+	private Expression startExpression;
+	private Expression connectExpression;
+	private boolean noCycle = false;
 
-    public OracleHierarchicalExpression() {
-        super();
-    }
+	public OracleHierarchicalExpression() {
+		super();
+	}
 
-    public OracleHierarchicalExpression(Expression startExpression,
-                                        Expression connectExpression, boolean noCycle) {
-        super();
-        this.startExpression = startExpression;
-        this.connectExpression = connectExpression;
-        this.noCycle = noCycle;
-    }
+	public OracleHierarchicalExpression(Expression startExpression,
+			Expression connectExpression, boolean noCycle) {
+		super();
+		this.startExpression = startExpression;
+		this.connectExpression = connectExpression;
+		this.noCycle = noCycle;
+	}
 
-    public Expression getStartExpression() {
-        return startExpression;
-    }
+	public Expression getStartExpression() {
+		return startExpression;
+	}
 
-    public void setStartExpression(Expression startExpression) {
-        this.startExpression = startExpression;
-    }
+	public void setStartExpression(Expression startExpression) {
+		this.startExpression = startExpression;
+	}
 
-    public Expression getConnectExpression() {
-        return connectExpression;
-    }
+	public Expression getConnectExpression() {
+		return connectExpression;
+	}
 
-    public void setConnectExpression(Expression connectExpression) {
-        this.connectExpression = connectExpression;
-    }
+	public void setConnectExpression(Expression connectExpression) {
+		this.connectExpression = connectExpression;
+	}
 
-    public boolean isNoCycle() {
-        return noCycle;
-    }
+	public boolean isNoCycle() {
+		return noCycle;
+	}
 
-    public void setNoCycle(boolean noCycle) {
-        this.noCycle = noCycle;
-    }
+	public void setNoCycle(boolean noCycle) {
+		this.noCycle = noCycle;
+	}
 
-    public String toString() {
-        StringBuilder b = new StringBuilder();
-        if (startExpression != null) {
-            b.append(" START WITH ").append(startExpression.toString());
-        }
-        b.append(" CONNECT BY ");
-        if (isNoCycle()) {
-            b.append("NOCYCLE ");
-        }
-        b.append(connectExpression.toString());
-        return b.toString();
-    }
+	public String toString() {
+		StringBuilder b = new StringBuilder();
+		if (startExpression != null) {
+			b.append(" START WITH ").append(startExpression.toString());
+		}
+		b.append(" CONNECT BY ");
+		if (isNoCycle()) {
+			b.append("NOCYCLE ");
+		}
+		b.append(connectExpression.toString());
+		return b.toString();
+	}
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql(toString());
+	}
 }

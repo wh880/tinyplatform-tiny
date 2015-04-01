@@ -15,43 +15,43 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 public class RegExpMatchOperator extends BinaryExpression {
 
-    private RegExpMatchOperatorType operatorType;
+	private RegExpMatchOperatorType operatorType;
 
-    public RegExpMatchOperator(Expression leftExpression,
-                               Expression rightExpression, boolean not,
-                               RegExpMatchOperatorType operatorType) {
-        super(leftExpression, rightExpression, not);
-        if (operatorType == null) {
-            throw new NullPointerException();
-        }
-        this.operatorType = operatorType;
-    }
+	public RegExpMatchOperator(Expression leftExpression,
+			Expression rightExpression, boolean not,
+			RegExpMatchOperatorType operatorType) {
+		super(leftExpression, rightExpression, not);
+		if (operatorType == null) {
+			throw new NullPointerException();
+		}
+		this.operatorType = operatorType;
+	}
 
-    public RegExpMatchOperatorType getOperatorType() {
-        return operatorType;
-    }
+	public RegExpMatchOperatorType getOperatorType() {
+		return operatorType;
+	}
 
-    public String getStringExpression() {
-        switch (operatorType) {
-            case MATCH_CASESENSITIVE:
-                return "~";
-            case MATCH_CASEINSENSITIVE:
-                return "~*";
-            case NOT_MATCH_CASESENSITIVE:
-                return "!~";
-            case NOT_MATCH_CASEINSENSITIVE:
-                return "!~*";
-        }
-        return null;
-    }
+	public String getStringExpression() {
+		switch (operatorType) {
+		case MATCH_CASESENSITIVE:
+			return "~";
+		case MATCH_CASEINSENSITIVE:
+			return "~*";
+		case NOT_MATCH_CASESENSITIVE:
+			return "!~";
+		case NOT_MATCH_CASEINSENSITIVE:
+			return "!~*";
+		}
+		return null;
+	}
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.visitBinaryExpression(this, " " + getStringExpression() + " ");
+	}
 }

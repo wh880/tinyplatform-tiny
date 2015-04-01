@@ -15,30 +15,31 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.formitem.SubSelect;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 public class AllComparisonExpression implements Expression {
 
-    private SubSelect subSelect;
+	private SubSelect subSelect;
 
-    public AllComparisonExpression(SubSelect subSelect) {
-        this.subSelect = subSelect;
-    }
+	public AllComparisonExpression(SubSelect subSelect) {
+		this.subSelect = subSelect;
+	}
 
-    public SubSelect getSubSelect() {
-        return subSelect;
-    }
+	public SubSelect getSubSelect() {
+		return subSelect;
+	}
 
-    @Override
-    public String toString() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(" ALL ").append(subSelect);
-        return buffer.toString();
-    }
+	@Override
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(" ALL ").append(subSelect);
+		return buffer.toString();
+	}
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql(" ALL ");
+		getSubSelect().builder(builder);
+	}
 
 }

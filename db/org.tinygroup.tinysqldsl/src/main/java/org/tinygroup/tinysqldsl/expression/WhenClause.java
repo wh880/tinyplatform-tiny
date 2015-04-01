@@ -15,52 +15,58 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 /**
  * A clause of following syntax: WHEN condition THEN expression. Which is part
  * of a CaseExpression.
- *
+ * 
  */
 public class WhenClause implements Expression {
 
-    private Expression whenExpression;
-    private Expression thenExpression;
+	private Expression whenExpression;
+	private Expression thenExpression;
 
-    /**
-     * @return Returns the thenExpression.
-     */
-    public Expression getThenExpression() {
-        return thenExpression;
-    }
+	/**
+	 * @return Returns the thenExpression.
+	 */
+	public Expression getThenExpression() {
+		return thenExpression;
+	}
 
-    /**
-     * @param thenExpression The thenExpression to set.
-     */
-    public void setThenExpression(Expression thenExpression) {
-        this.thenExpression = thenExpression;
-    }
+	/**
+	 * @param thenExpression
+	 *            The thenExpression to set.
+	 */
+	public void setThenExpression(Expression thenExpression) {
+		this.thenExpression = thenExpression;
+	}
 
-    /**
-     * @return Returns the whenExpression.
-     */
-    public Expression getWhenExpression() {
-        return whenExpression;
-    }
+	/**
+	 * @return Returns the whenExpression.
+	 */
+	public Expression getWhenExpression() {
+		return whenExpression;
+	}
 
-    /**
-     * @param whenExpression The whenExpression to set.
-     */
-    public void setWhenExpression(Expression whenExpression) {
-        this.whenExpression = whenExpression;
-    }
+	/**
+	 * @param whenExpression
+	 *            The whenExpression to set.
+	 */
+	public void setWhenExpression(Expression whenExpression) {
+		this.whenExpression = whenExpression;
+	}
 
+	public String toString() {
+		return "WHEN " + whenExpression + " THEN " + thenExpression;
+	}
 
-    public String toString() {
-        return "WHEN " + whenExpression + " THEN " + thenExpression;
-    }
-
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		StringBuilder buffer = builder.getStringBuilder();
+		buffer.append("WHEN ");
+		getWhenExpression().builder(builder);
+		buffer.append(" THEN ");
+		getThenExpression().builder(builder);
+		buffer.append(" ");
+	}
 }

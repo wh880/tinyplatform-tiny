@@ -15,28 +15,28 @@
  */
 package org.tinygroup.tinysqldsl.expression.arithmetic;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 /**
  * 按位异或操作表达式
+ * 
  * @author renhui
- *
+ * 
  */
 public class BitwiseXor extends BinaryExpression {
 
+	public BitwiseXor(Expression leftExpression, Expression rightExpression) {
+		super(leftExpression, rightExpression);
+		// TODO Auto-generated constructor stub
+	}
 
-    public BitwiseXor(Expression leftExpression, Expression rightExpression) {
-        super(leftExpression, rightExpression);
-        // TODO Auto-generated constructor stub
-    }
+	public String getStringExpression() {
+		return "^";
+	}
 
-    public String getStringExpression() {
-        return "^";
-    }
-
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.visitBinaryExpression(this, " ^ ");
+	}
 }

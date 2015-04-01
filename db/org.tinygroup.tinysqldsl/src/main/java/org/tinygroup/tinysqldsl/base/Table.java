@@ -15,87 +15,91 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.formitem.FromItem;
-import org.tinygroup.tinysqldsl.visitor.FromItemVisitor;
 
 /**
- * 表对象
- * Created by luoguo on 2015/3/11.
+ * 表对象 Created by luoguo on 2015/3/11.
  */
 public class Table implements FromItem, MultiPartName {
-    /**
-     * 模式名
-     */
-    private String schemaName;
-    /**
-     * 表名
-     */
-    private String name;
-    /**
-     * 表的别名
-     */
-    private Alias alias;
+	/**
+	 * 模式名
+	 */
+	private String schemaName;
+	/**
+	 * 表名
+	 */
+	private String name;
+	/**
+	 * 表的别名
+	 */
+	private Alias alias;
 
-    public Table() {
-    }
+	public Table() {
+	}
 
-    public Table(String name) {
-        this.name = name;
-    }
+	public Table(String name) {
+		this.name = name;
+	}
 
-    public Table(String schemaName, String name) {
-        this.schemaName = schemaName;
-        this.name = name;
-    }
+	public Table(String schemaName, String name) {
+		this.schemaName = schemaName;
+		this.name = name;
+	}
 
-    public String getSchemaName() {
-        return schemaName;
-    }
+	public String getSchemaName() {
+		return schemaName;
+	}
 
-    public void setSchemaName(String string) {
-        schemaName = string;
-    }
+	public void setSchemaName(String string) {
+		schemaName = string;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String string) {
-        name = string;
-    }
+	public void setName(String string) {
+		name = string;
+	}
 
-    public Alias getAlias() {
-        return alias;
-    }
+	public Alias getAlias() {
+		return alias;
+	}
 
-    public void setAlias(Alias alias) {
-        this.alias = alias;
-    }
+	public void setAlias(Alias alias) {
+		this.alias = alias;
+	}
 
-    public String getFullyQualifiedName() {
-        String fqn = "";
+	public String getFullyQualifiedName() {
+		String fqn = "";
 
-        if (schemaName != null) {
-            fqn += schemaName;
-        }
-        if (!(fqn == null || fqn.length() == 0)) {
-            fqn += ".";
-        }
+		if (schemaName != null) {
+			fqn += schemaName;
+		}
+		if (!(fqn == null || fqn.length() == 0)) {
+			fqn += ".";
+		}
 
-        if (name != null) {
-            fqn += name;
-        }
+		if (name != null) {
+			fqn += name;
+		}
 
-        return fqn;
-    }
+		return fqn;
+	}
 
-    public String toString() {
-        return getFullyQualifiedName()
-                + ((alias != null) ? alias.toString() : "");
-    }
+	public String toString() {
+		return getFullyQualifiedName()
+				+ ((alias != null) ? alias.toString() : "");
+	}
 
-    public void accept(FromItemVisitor fromItemVisitor) {
-        fromItemVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		StringBuilder buffer = builder.getStringBuilder();
+		buffer.append(getFullyQualifiedName());
+		Alias alias = getAlias();
+		if (alias != null) {
+			buffer.append(alias);
+		}
+	}
 
 }

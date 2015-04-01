@@ -15,7 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
+import org.tinygroup.tinysqldsl.build.SqlBuildProcessor;
 
 /**
  * 表达式
@@ -23,6 +23,5 @@ import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
  * @author renhui
  *
  */
-public interface Expression {
-    void accept(ExpressionVisitor expressionVisitor);
+public interface Expression extends SqlBuildProcessor{
 }

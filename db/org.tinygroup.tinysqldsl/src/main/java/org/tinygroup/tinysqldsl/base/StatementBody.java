@@ -15,12 +15,11 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
-import org.tinygroup.tinysqldsl.visitor.StatementVisitor;
+import org.tinygroup.tinysqldsl.build.SqlBuildProcessor;
 
 
 /**
  * Created by luoguo on 2015/3/11.
  */
-public interface StatementBody {
-    public void accept(StatementVisitor visitor);
+public interface StatementBody extends SqlBuildProcessor {
 }

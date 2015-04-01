@@ -15,7 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.selectitem;
 
-import org.tinygroup.tinysqldsl.visitor.SelectItemVisitor;
+import org.tinygroup.tinysqldsl.build.SqlBuildProcessor;
 
 
 /**
@@ -23,8 +23,6 @@ import org.tinygroup.tinysqldsl.visitor.SelectItemVisitor;
  * @author renhui
  *
  */
-public interface SelectItem {
-
-    public void accept(SelectItemVisitor selectItemVisitor);
+public interface SelectItem extends SqlBuildProcessor {
 
 }

@@ -15,40 +15,40 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 public class RegExpMySQLOperator extends BinaryExpression {
 
-    private RegExpMatchOperatorType operatorType;
+	private RegExpMatchOperatorType operatorType;
 
-    public RegExpMySQLOperator(Expression leftExpression,
-                               Expression rightExpression, boolean not,
-                               RegExpMatchOperatorType operatorType) {
-        super(leftExpression, rightExpression, not);
-        if (operatorType == null) {
-            throw new NullPointerException();
-        }
-        this.operatorType = operatorType;
-    }
+	public RegExpMySQLOperator(Expression leftExpression,
+			Expression rightExpression, boolean not,
+			RegExpMatchOperatorType operatorType) {
+		super(leftExpression, rightExpression, not);
+		if (operatorType == null) {
+			throw new NullPointerException();
+		}
+		this.operatorType = operatorType;
+	}
 
-    public RegExpMatchOperatorType getOperatorType() {
-        return operatorType;
-    }
+	public RegExpMatchOperatorType getOperatorType() {
+		return operatorType;
+	}
 
-    public String getStringExpression() {
-        switch (operatorType) {
-            case MATCH_CASESENSITIVE:
-                return "REGEXP BINARY";
-            case MATCH_CASEINSENSITIVE:
-                return "REGEXP";
-            default:
-        }
-        return null;
-    }
+	public String getStringExpression() {
+		switch (operatorType) {
+		case MATCH_CASESENSITIVE:
+			return "REGEXP BINARY";
+		case MATCH_CASEINSENSITIVE:
+			return "REGEXP";
+		default:
+		}
+		return null;
+	}
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.visitBinaryExpression(this, " " + getStringExpression() + " ");
+	}
 }

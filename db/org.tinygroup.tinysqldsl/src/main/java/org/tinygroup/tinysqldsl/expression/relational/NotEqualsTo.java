@@ -15,8 +15,8 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.ExpressionVisitor;
 
 public class NotEqualsTo extends OldOracleJoinBinaryExpression {
 
@@ -36,11 +36,11 @@ public class NotEqualsTo extends OldOracleJoinBinaryExpression {
         }
     }
 
-    public String getStringExpression() {
+	public String getStringExpression() {
         return operator;
     }
 
-    public void accept(ExpressionVisitor expressionVisitor) {
-        expressionVisitor.visit(this);
-    }
+	public void builder(StatementSqlBuilder builder) {
+		builder.visitOldOracleJoinBinaryExpression(this, " " + getStringExpression() + " ");
+	}
 }

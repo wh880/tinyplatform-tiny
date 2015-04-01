@@ -16,7 +16,6 @@
 package org.tinygroup.tinysqldsl.select;
 
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.visitor.OrderByVisitor;
 
 
 /**
@@ -100,9 +99,5 @@ public class OrderByElement {
             b.append(nullOrdering == NullOrdering.NULLS_FIRST ? "NULLS FIRST" : "NULLS LAST");
         }
         return b.toString();
-    }
-
-    public void accept(OrderByVisitor orderByVisitor) {
-        orderByVisitor.visit(this);
     }
 }

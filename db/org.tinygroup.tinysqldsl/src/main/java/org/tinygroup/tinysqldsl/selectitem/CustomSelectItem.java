@@ -15,44 +15,49 @@
  */
 package org.tinygroup.tinysqldsl.selectitem;
 
-import org.tinygroup.tinysqldsl.visitor.SelectItemVisitor;
+import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 
 /**
  * 格式化的selectItem
+ * 
  * @author renhui
- *
+ * 
  */
 public class CustomSelectItem implements SelectItem {
 
-    private SelectItem[] items;
+	private SelectItem[] items;
 
-    private String format;
+	private String format;
 
-    public CustomSelectItem(String format, SelectItem... items) {
-        super();
-        this.format = format;
-        this.items = items;
-    }
+	public CustomSelectItem(String format, SelectItem... items) {
+		super();
+		this.format = format;
+		this.items = items;
+	}
 
-    public SelectItem[] getItems() {
-        return items;
-    }
+	public SelectItem[] getItems() {
+		return items;
+	}
 
-    public String getFormat() {
-        return format;
-    }
+	public String getFormat() {
+		return format;
+	}
 
-    public void accept(SelectItemVisitor selectItemVisitor) {
-        selectItemVisitor.visit(this);
-    }
+	@Override
+	public String toString() {
+		return segment();
+	}
 
-    @Override
-    public String toString() {
-        Object[] args = new Object[items.length];
-        for (int i = 0; i < args.length; i++) {
-            args[i] = items[i];
-        }
-        return String.format(format, args);
-    }
+	private String segment() {
+		Object[] args = new Object[items.length];
+		for (int i = 0; i < args.length; i++) {
+			args[i] = items[i];
+		}
+		return String.format(format, args);
+	}
+
+	public void builder(StatementSqlBuilder builder) {
+		builder.appendSql(segment());
+	}
 
 }
