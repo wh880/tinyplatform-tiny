@@ -15,7 +15,11 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
-
+/**
+ * 由多个部分组成的名称
+ * @author renhui
+ *
+ */
 public interface MultiPartName {
     String getFullyQualifiedName();
 }
