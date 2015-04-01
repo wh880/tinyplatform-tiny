@@ -24,6 +24,11 @@ import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
 import org.tinygroup.tinysqldsl.expression.relational.MultiExpressionList;
 import org.tinygroup.tinysqldsl.util.DslUtil;
 
+/**
+ * values子句
+ * @author renhui
+ *
+ */
 public class ValuesList implements FromItem {
 
 	private Alias alias;

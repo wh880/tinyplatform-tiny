@@ -43,8 +43,13 @@ public class Table implements FromItem, MultiPartName {
 	}
 
 	public Table(String schemaName, String name) {
+		this(name);
 		this.schemaName = schemaName;
-		this.name = name;
+	}
+
+	public Table(String schemaName, String name, String alias) {
+		this(schemaName, name);
+		this.alias = new Alias(alias);
 	}
 
 	public String getSchemaName() {
