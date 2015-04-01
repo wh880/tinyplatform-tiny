@@ -235,15 +235,17 @@ public abstract class StatementSqlBuilder {
 	public void deparseOffset(Offset offset) {
 		// OFFSET offset
 		// or OFFSET offset (ROW | ROWS)
-		if (offset.isOffsetJdbcParameter()) {
-			stringBuilder.append(" OFFSET ?");
-			values.add(offset.getOffset());
-		} else if (offset.getOffset() != 0) {
-			stringBuilder.append(" OFFSET ");
-			stringBuilder.append(offset.getOffset());
-		}
-		if (offset.getOffsetParam() != null) {
-			stringBuilder.append(" ").append(offset.getOffsetParam());
+		if (offset.getOffset() >= 0) {
+			if (offset.isOffsetJdbcParameter()) {
+				stringBuilder.append(" OFFSET ?");
+				values.add(offset.getOffset());
+			} else {
+				stringBuilder.append(" OFFSET ");
+				stringBuilder.append(offset.getOffset());
+			}
+			if (offset.getOffsetParam() != null) {
+				stringBuilder.append(" ").append(offset.getOffsetParam());
+			}
 		}
 
 	}

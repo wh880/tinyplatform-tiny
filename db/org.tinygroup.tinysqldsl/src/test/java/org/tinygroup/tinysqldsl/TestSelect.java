@@ -13,6 +13,8 @@ import static org.tinygroup.tinysqldsl.base.FragmentSql.fragmentSelect;
 import static org.tinygroup.tinysqldsl.select.Join.leftJoin;
 import static org.tinygroup.tinysqldsl.select.OrderByElement.desc;
 
+import org.tinygroup.tinysqldsl.select.Offset;
+
 /**
  * Created by luoguo on 2015/3/11.
  */
@@ -62,5 +64,7 @@ public class TestSelect {
         System.out.println(select(fragmentSelect("custom.name,custom.age"))
                 .from(fragmentFrom("custom custom")).where(
                         fragmentCondition("custom.name=?", "悠悠然然")));
+        
+        System.out.println(select(CUSTOM.NAME).from(CUSTOM).offset(new Offset(0, false, "ROW")));
     }
 }
