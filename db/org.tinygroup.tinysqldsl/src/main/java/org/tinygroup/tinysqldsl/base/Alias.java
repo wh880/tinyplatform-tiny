@@ -28,7 +28,7 @@ public class Alias {
     /**
      * 是否带as关键字
      */
-    private boolean withAs = true;
+    private boolean withAs = false;
 
     public Alias() {
 

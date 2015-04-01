@@ -29,14 +29,14 @@ import java.util.List;
  */
 public class ComplexSelect extends StatementSqlBuilder implements Statement {
 
-    private SetOperationList operationList;
+    protected SetOperationList operationList;
     private String id;
 
     public String getId() {
         return id;
     }
 
-    private ComplexSelect() {
+    protected ComplexSelect() {
         super();
         operationList = new SetOperationList();
     }
@@ -99,32 +99,6 @@ public class ComplexSelect extends StatementSqlBuilder implements Statement {
 
     public ComplexSelect orderBy(OrderByElement... orderByElements) {
         operationList.addOrderByElements(orderByElements);
-        return this;
-    }
-
-    public ComplexSelect limit(int start, int limit) {
-        operationList.setLimit(new Limit(start, limit, true, true));
-        return this;
-    }
-
-    /**
-     * 生成的sql语句 start和limit用？代替
-     *
-     * @param limit
-     * @return
-     */
-    public ComplexSelect limit(Limit limit) {
-        operationList.setLimit(limit);
-        return this;
-    }
-
-    public ComplexSelect offset(Offset offset) {
-        operationList.setOffset(offset);
-        return this;
-    }
-
-    public ComplexSelect fetch(Fetch fetch) {
-        operationList.setFetch(fetch);
         return this;
     }
 

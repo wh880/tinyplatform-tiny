@@ -15,6 +15,8 @@
  */
 package org.tinygroup.tinysqldsl.formitem;
 
+import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.tinysqldsl.Select;
 import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Alias;
 import org.tinygroup.tinysqldsl.base.SelectBody;
@@ -38,6 +40,23 @@ public class SubSelect implements FromItem, Expression, ItemsList {
 		this.selectBody = selectBody;
 		this.alias = alias;
 		this.useBrackets = useBrackets;
+	}
+	
+	public static SubSelect subSelect(Select select){
+		return subSelect(select, "", true);
+	}
+	
+	public static SubSelect subSelect(Select select,Alias alias, boolean useBrackets){
+		SubSelect subSelect=new SubSelect(select.getPlainSelect(), alias, useBrackets);
+		return subSelect;
+	}
+	
+	public static SubSelect subSelect(Select select,String aliasName, boolean useBrackets){
+		Alias alias=null;
+		if(!StringUtil.isBlank(aliasName)){
+			alias=new Alias(aliasName);
+		}
+		return subSelect(select, alias, useBrackets);
 	}
 
 	public SelectBody getSelectBody() {
@@ -70,7 +89,13 @@ public class SubSelect implements FromItem, Expression, ItemsList {
 	}
 
 	public void builder(StatementSqlBuilder builder) {
-		// TODO Auto-generated method stub
-
+		StringBuilder buffer = builder.getStringBuilder();
+		buffer.append(useBrackets ? "(" : "");
+		getSelectBody().builder(builder);
+		buffer.append(useBrackets ? ")" : "");
+		Alias alias = getAlias();
+		if (alias != null) {
+			buffer.append(alias.toString());
+		}
 	}
 }
