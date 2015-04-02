@@ -7,10 +7,7 @@ import org.tinygroup.tinysqldsl.ComplexSelect;
 import org.tinygroup.tinysqldsl.PlainSelect;
 import org.tinygroup.tinysqldsl.Select;
 import org.tinygroup.tinysqldsl.operator.SetOperationInstanceCallBack;
-import org.tinygroup.tinysqldsl.select.ExceptOperation;
-import org.tinygroup.tinysqldsl.select.IntersectOperation;
 import org.tinygroup.tinysqldsl.select.Limit;
-import org.tinygroup.tinysqldsl.select.MinusOperation;
 import org.tinygroup.tinysqldsl.select.SetOperation;
 import org.tinygroup.tinysqldsl.select.UnionOperation;
 
@@ -58,33 +55,6 @@ public class MysqlComplexSelect extends ComplexSelect<MysqlComplexSelect> {
 		}
 		complexSelect.operationList.setOpsAndSelects(plainSelects, operations);
 		return complexSelect;
-	}
-
-	@SuppressWarnings("rawtypes")
-	public static MysqlComplexSelect minus(Select... selects) {
-		return setOperation(new SetOperationInstanceCallBack() {
-			public SetOperation instanceOperation() {
-				return new MinusOperation();
-			}
-		}, selects);
-	}
-
-	@SuppressWarnings("rawtypes")
-	public static MysqlComplexSelect except(Select... selects) {
-		return setOperation(new SetOperationInstanceCallBack() {
-			public SetOperation instanceOperation() {
-				return new ExceptOperation();
-			}
-		}, selects);
-	}
-
-	@SuppressWarnings("rawtypes")
-	public static MysqlComplexSelect intersect(Select... selects) {
-		return setOperation(new SetOperationInstanceCallBack() {
-			public SetOperation instanceOperation() {
-				return new IntersectOperation();
-			}
-		}, selects);
 	}
 
 	public MysqlComplexSelect limit(int start, int limit) {
