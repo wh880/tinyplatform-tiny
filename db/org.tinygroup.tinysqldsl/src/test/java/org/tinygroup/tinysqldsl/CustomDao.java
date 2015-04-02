@@ -1,5 +1,6 @@
 package org.tinygroup.tinysqldsl;
 
+import static org.tinygroup.tinysqldsl.StatementSqlBuilder.and;
 import static org.tinygroup.tinysqldsl.CustomTable.*;
 import static org.tinygroup.tinysqldsl.Select.*;
 import static org.tinygroup.tinysqldsl.Insert.*;
