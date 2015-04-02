@@ -32,7 +32,7 @@ public class TestSelect {
 
 		System.out.println(selectFrom(CUSTOM).orderBy(desc(CUSTOM.NAME)));
 
-		System.out.println(selectFrom(CUSTOM).where(CUSTOM.NAME.eq("abc")));
+		System.out.println(selectFrom(CUSTOM).where(CUSTOM.NAME.eq(null)));
 
 		System.out.println(selectFrom(CUSTOM).where(CUSTOM.NAME.like("abc")));
 
