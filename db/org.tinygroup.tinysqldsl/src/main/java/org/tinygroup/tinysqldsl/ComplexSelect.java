@@ -15,108 +15,91 @@
  */
 package org.tinygroup.tinysqldsl;
 
-import org.tinygroup.tinysqldsl.base.Statement;
-import org.tinygroup.tinysqldsl.operator.SetOperationInstanceCallBack;
-import org.tinygroup.tinysqldsl.select.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.tinysqldsl.base.Statement;
+import org.tinygroup.tinysqldsl.operator.SetOperationInstanceCallBack;
+import org.tinygroup.tinysqldsl.select.OrderByElement;
+import org.tinygroup.tinysqldsl.select.SetOperation;
+import org.tinygroup.tinysqldsl.select.UnionOperation;
+
 /**
  * 复杂查询
- *
+ * 
  * @author renhui
  */
-public class ComplexSelect extends StatementSqlBuilder implements Statement {
+public class ComplexSelect<T extends ComplexSelect<T>> extends
+		StatementSqlBuilder implements Statement {
 
-    protected SetOperationList operationList;
-    private String id;
+	protected SetOperationList operationList;
+	private String id;
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    protected ComplexSelect() {
-        super();
-        operationList = new SetOperationList();
-    }
+	protected ComplexSelect() {
+		super();
+		operationList = new SetOperationList();
+	}
 
-    public static ComplexSelect union(Select... selects) {
-        return setOperation(new SetOperationInstanceCallBack() {
-            public SetOperation instanceOperation() {
-                return new UnionOperation();
-            }
-        }, selects);
-    }
+	@SuppressWarnings("rawtypes")
+	public static ComplexSelect union(Select... selects) {
+		return setOperation(new SetOperationInstanceCallBack() {
+			public SetOperation instanceOperation() {
+				return new UnionOperation();
+			}
+		}, selects);
+	}
 
-    public static ComplexSelect unionAll(Select... selects) {
-        return setOperation(new SetOperationInstanceCallBack() {
-            public SetOperation instanceOperation() {
-                return new UnionOperation(true);
-            }
-        }, selects);
-    }
+	@SuppressWarnings("rawtypes")
+	public static ComplexSelect unionAll(Select... selects) {
+		return setOperation(new SetOperationInstanceCallBack() {
+			public SetOperation instanceOperation() {
+				return new UnionOperation(true);
+			}
+		}, selects);
+	}
 
-    public static ComplexSelect setOperation(
-            SetOperationInstanceCallBack instance, Select... selects) {
-        ComplexSelect complexSelect = new ComplexSelect();
-        List<PlainSelect> plainSelects = new ArrayList<PlainSelect>();
-        List<SetOperation> operations = new ArrayList<SetOperation>();
-        for (int i = 0; i < selects.length; i++) {
-            Select select = selects[0];
-            plainSelects.add(select.getPlainSelect());
-            if (i != 0) {
-                operations.add(instance.instanceOperation());
-            }
-        }
-        complexSelect.operationList.setOpsAndSelects(plainSelects, operations);
-        return complexSelect;
-    }
+	@SuppressWarnings("rawtypes")
+	public static ComplexSelect setOperation(
+			SetOperationInstanceCallBack instance, Select... selects) {
+		ComplexSelect complexSelect = new ComplexSelect();
+		List<PlainSelect> plainSelects = new ArrayList<PlainSelect>();
+		List<SetOperation> operations = new ArrayList<SetOperation>();
+		for (int i = 0; i < selects.length; i++) {
+			Select select = selects[0];
+			plainSelects.add(select.getPlainSelect());
+			if (i != 0) {
+				operations.add(instance.instanceOperation());
+			}
+		}
+		complexSelect.operationList.setOpsAndSelects(plainSelects, operations);
+		return complexSelect;
+	}
 
-    public static ComplexSelect minus(Select... selects) {
-        return setOperation(new SetOperationInstanceCallBack() {
-            public SetOperation instanceOperation() {
-                return new MinusOperation();
-            }
-        }, selects);
-    }
+	@SuppressWarnings("unchecked")
+	public T orderBy(OrderByElement... orderByElements) {
+		operationList.addOrderByElements(orderByElements);
+		return (T) this;
+	}
 
-    public static ComplexSelect except(Select... selects) {
-        return setOperation(new SetOperationInstanceCallBack() {
-            public SetOperation instanceOperation() {
-                return new ExceptOperation();
-            }
-        }, selects);
-    }
+	public SetOperationList getOperationList() {
+		return operationList;
+	}
 
-    public static ComplexSelect intersect(Select... selects) {
-        return setOperation(new SetOperationInstanceCallBack() {
-            public SetOperation instanceOperation() {
-                return new IntersectOperation();
-            }
-        }, selects);
-    }
+	@Override
+	public String toString() {
+		return sql();
+	}
 
-    public ComplexSelect orderBy(OrderByElement... orderByElements) {
-        operationList.addOrderByElements(orderByElements);
-        return this;
-    }
+	@Override
+	protected void parserStatementBody() {
+		build(operationList);
+	}
 
-    public SetOperationList getOperationList() {
-        return operationList;
-    }
-
-    @Override
-    public String toString() {
-        return sql();
-    }
-
-    @Override
-    protected void parserStatementBody() {
-        build(operationList);
-    }
-
-    public void id(String id) {
-        this.id = id;
-    }
+	public void id(String id) {
+		this.id = id;
+	}
 }

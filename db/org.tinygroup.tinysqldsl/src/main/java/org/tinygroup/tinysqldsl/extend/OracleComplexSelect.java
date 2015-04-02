@@ -7,7 +7,6 @@ import org.tinygroup.tinysqldsl.ComplexSelect;
 import org.tinygroup.tinysqldsl.PlainSelect;
 import org.tinygroup.tinysqldsl.Select;
 import org.tinygroup.tinysqldsl.operator.SetOperationInstanceCallBack;
-import org.tinygroup.tinysqldsl.select.ExceptOperation;
 import org.tinygroup.tinysqldsl.select.IntersectOperation;
 import org.tinygroup.tinysqldsl.select.MinusOperation;
 import org.tinygroup.tinysqldsl.select.SetOperation;
@@ -19,12 +18,13 @@ import org.tinygroup.tinysqldsl.select.UnionOperation;
  * @author renhui
  * 
  */
-public class OracleComplexSelect extends ComplexSelect {
+public class OracleComplexSelect extends ComplexSelect<OracleComplexSelect> {
 
 	private OracleComplexSelect() {
 		super();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static OracleComplexSelect union(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
@@ -33,6 +33,7 @@ public class OracleComplexSelect extends ComplexSelect {
 		}, selects);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static OracleComplexSelect unionAll(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
@@ -41,6 +42,7 @@ public class OracleComplexSelect extends ComplexSelect {
 		}, selects);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static OracleComplexSelect setOperation(
 			SetOperationInstanceCallBack instance, Select... selects) {
 		OracleComplexSelect complexSelect = new OracleComplexSelect();
@@ -57,6 +59,7 @@ public class OracleComplexSelect extends ComplexSelect {
 		return complexSelect;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static OracleComplexSelect minus(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
@@ -65,14 +68,7 @@ public class OracleComplexSelect extends ComplexSelect {
 		}, selects);
 	}
 
-	public static OracleComplexSelect except(Select... selects) {
-		return setOperation(new SetOperationInstanceCallBack() {
-			public SetOperation instanceOperation() {
-				return new ExceptOperation();
-			}
-		}, selects);
-	}
-
+	@SuppressWarnings("rawtypes")
 	public static OracleComplexSelect intersect(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {

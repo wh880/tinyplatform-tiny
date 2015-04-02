@@ -30,7 +30,8 @@ import org.tinygroup.tinysqldsl.selectitem.SelectItem;
 /**
  * Created by luoguo on 2015/3/11.
  */
-public class Select extends StatementSqlBuilder implements Statement {
+public class Select<T extends Select<T>> extends StatementSqlBuilder implements
+		Statement {
 
 	protected PlainSelect plainSelect;
 	private String id;
@@ -48,6 +49,7 @@ public class Select extends StatementSqlBuilder implements Statement {
 		return plainSelect;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static Select select(SelectItem... selectItems) {
 		Select select = new Select();
 		select.getPlainSelect().addSelectItems(selectItems);
@@ -59,6 +61,7 @@ public class Select extends StatementSqlBuilder implements Statement {
 		return new CustomSelectItem(format, selectItems);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static Select selectFrom(Table... tables) {
 		Select select = new Select();
 		select.getPlainSelect().addSelectItems(new AllColumns());
@@ -66,39 +69,46 @@ public class Select extends StatementSqlBuilder implements Statement {
 		return select;
 	}
 
-	public Select from(FromItem fromItems) {
+	@SuppressWarnings("unchecked")
+	public T from(FromItem fromItems) {
 		plainSelect.setFromItem(fromItems);
-		return this;
+		return (T) this;
 	}
 
-	public Select join(Join... joins) {
+	@SuppressWarnings("unchecked")
+	public T join(Join... joins) {
 		plainSelect.addJoins(joins);
-		return this;
+		return (T) this;
 	}
 
-	public Select where(Condition condition) {
+	@SuppressWarnings("unchecked")
+	public T where(Condition condition) {
 		plainSelect.setWhere(condition);
-		return this;
+		return (T) this;
 	}
 
-	public Select groupBy(Expression... expressions) {
+	@SuppressWarnings("unchecked")
+	public T groupBy(Expression... expressions) {
 		plainSelect.addGroupByExpressions(expressions);
-		return this;
+		return (T) this;
 	}
 
-	public Select orderBy(OrderByElement... orderByElements) {
+	@SuppressWarnings("unchecked")
+	public T orderBy(OrderByElement... orderByElements) {
 		plainSelect.addOrderByElements(orderByElements);
-		return this;
+		return (T) this;
 	}
 
-	public Select having(Condition condition) {
+	@SuppressWarnings("unchecked")
+	public T having(Condition condition) {
 		plainSelect.setHaving(condition.getExpression());
-		return this;
+		return (T) this;
 	}
 
-	public Select forUpdate() {
+	@SuppressWarnings("unchecked")
+	public T forUpdate() {
 		plainSelect.setForUpdate(true);
-		return this;
+		return (T) this;
 	}
 
 	@Override

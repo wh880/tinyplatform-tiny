@@ -10,7 +10,6 @@ import org.tinygroup.tinysqldsl.operator.SetOperationInstanceCallBack;
 import org.tinygroup.tinysqldsl.select.ExceptOperation;
 import org.tinygroup.tinysqldsl.select.Fetch;
 import org.tinygroup.tinysqldsl.select.IntersectOperation;
-import org.tinygroup.tinysqldsl.select.MinusOperation;
 import org.tinygroup.tinysqldsl.select.Offset;
 import org.tinygroup.tinysqldsl.select.SetOperation;
 import org.tinygroup.tinysqldsl.select.UnionOperation;
@@ -21,12 +20,13 @@ import org.tinygroup.tinysqldsl.select.UnionOperation;
  * @author renhui
  * 
  */
-public class SqlServerComplexSelect extends ComplexSelect {
+public class SqlServerComplexSelect extends ComplexSelect<SqlServerComplexSelect> {
 
 	private SqlServerComplexSelect() {
 		super();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static SqlServerComplexSelect union(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
@@ -35,6 +35,7 @@ public class SqlServerComplexSelect extends ComplexSelect {
 		}, selects);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static SqlServerComplexSelect unionAll(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
@@ -43,6 +44,7 @@ public class SqlServerComplexSelect extends ComplexSelect {
 		}, selects);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static SqlServerComplexSelect setOperation(
 			SetOperationInstanceCallBack instance, Select... selects) {
 		SqlServerComplexSelect complexSelect = new SqlServerComplexSelect();
@@ -59,14 +61,7 @@ public class SqlServerComplexSelect extends ComplexSelect {
 		return complexSelect;
 	}
 
-	public static SqlServerComplexSelect minus(Select... selects) {
-		return setOperation(new SetOperationInstanceCallBack() {
-			public SetOperation instanceOperation() {
-				return new MinusOperation();
-			}
-		}, selects);
-	}
-
+	@SuppressWarnings("rawtypes")
 	public static SqlServerComplexSelect except(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
@@ -75,6 +70,7 @@ public class SqlServerComplexSelect extends ComplexSelect {
 		}, selects);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static SqlServerComplexSelect intersect(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {

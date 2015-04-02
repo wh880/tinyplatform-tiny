@@ -20,12 +20,13 @@ import org.tinygroup.tinysqldsl.select.UnionOperation;
  * @author renhui
  * 
  */
-public class MysqlComplexSelect extends ComplexSelect {
+public class MysqlComplexSelect extends ComplexSelect<MysqlComplexSelect> {
 
 	private MysqlComplexSelect() {
 		super();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static MysqlComplexSelect union(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
@@ -33,7 +34,7 @@ public class MysqlComplexSelect extends ComplexSelect {
 			}
 		}, selects);
 	}
-
+	@SuppressWarnings("rawtypes")
 	public static MysqlComplexSelect unionAll(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
@@ -42,6 +43,7 @@ public class MysqlComplexSelect extends ComplexSelect {
 		}, selects);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static MysqlComplexSelect setOperation(
 			SetOperationInstanceCallBack instance, Select... selects) {
 		MysqlComplexSelect complexSelect = new MysqlComplexSelect();
@@ -58,6 +60,7 @@ public class MysqlComplexSelect extends ComplexSelect {
 		return complexSelect;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static MysqlComplexSelect minus(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
@@ -66,6 +69,7 @@ public class MysqlComplexSelect extends ComplexSelect {
 		}, selects);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static MysqlComplexSelect except(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
@@ -74,6 +78,7 @@ public class MysqlComplexSelect extends ComplexSelect {
 		}, selects);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static MysqlComplexSelect intersect(Select... selects) {
 		return setOperation(new SetOperationInstanceCallBack() {
 			public SetOperation instanceOperation() {
