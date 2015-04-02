@@ -98,7 +98,7 @@ public class StatementTransformAdapter implements StatementTransform {
 	protected String getConditionSql(List<String> conditionColumns, Bean bean) {
 		StringBuffer condition = new StringBuffer();
 		for (String columnName : conditionColumns) {
-			if (bean == null || !checkBeanPropertyNull(bean, columnName)) {
+			if (bean != null &&!checkBeanPropertyNull(bean, columnName)) {
 				// 不判断参数是否为空
 				if (condition.length() > 0) {
 					condition.append(" and ");
@@ -167,14 +167,15 @@ public class StatementTransformAdapter implements StatementTransform {
 	 * @return
 	 * @throws TinyDbException
 	 */
-	protected String getDeleteSql(String beanType, List<String> conditionColumns)
+	protected String getDeleteSql(Bean bean, List<String> conditionColumns)
 			throws TinyDbException {
+		String beanType=bean.getType();
 		if (conditionColumns == null || conditionColumns.size() == 0) {
 			throw new TinyDbException("beanType为:" + beanType + "的删除操作不存在查询条件");
 		}
 		StringBuffer sb = new StringBuffer();
 		sb.append("delete from ").append(getFullTableName(beanType));
-		String condition = getConditionSql(conditionColumns, null);
+		String condition = getConditionSql(conditionColumns, bean);
 		if (condition != null && condition.length() > 0) {
 			sb.append(" where ").append(condition);
 		}

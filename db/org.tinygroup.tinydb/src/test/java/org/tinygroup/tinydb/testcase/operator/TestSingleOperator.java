@@ -53,6 +53,7 @@ public class TestSingleOperator extends BaseTest {
 		bean.setProperty("length", "123");
 		List<String> conditions = new ArrayList<String>();
 		conditions.add("LENGTH");
+		conditions.add("ID");
 		assertEquals(1, getOperator().update(bean, conditions));
 		getOperator().delete(bean);
 	}

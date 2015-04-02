@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
@@ -113,5 +114,15 @@ public class TableConfiguration implements Serializable {
 		this.keyType = keyType;
 	}
 
+	public ColumnConfiguration getColumn(String columnName){
+		if(!CollectionUtil.isEmpty(columns)){
+			for (ColumnConfiguration column : columns) {
+				if(column.getColumnName().equalsIgnoreCase(columnName)){
+					return column;
+				}
+			}
+		}
+		return null;
+	}
 	
 }

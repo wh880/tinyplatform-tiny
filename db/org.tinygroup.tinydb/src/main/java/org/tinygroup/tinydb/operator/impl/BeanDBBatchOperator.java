@@ -142,7 +142,7 @@ public class BeanDBBatchOperator<K> extends BeanDBSingleOperator<K> implements
 		}
 		checkBeanType(beans);
 		List<String> conditionColumns = getColumnNames(beans[0]);
-		String sql = getDeleteSql(beans[0].getType(), conditionColumns);
+		String sql = getDeleteSql(beans[0], conditionColumns);
 		SqlParameterValue[] values = getSqlParameterValues(beans[0]);
 		List<SqlParameterValue[]> params = getParams(beans, values);
 		return executeBatchBySqlParamterValues(sql, params);

@@ -65,7 +65,7 @@ public class TableConfigurationContainer {
 		return null;
 	}
 	
-	public List<SchemaConfig> getsSchemaConfigs(){
+	public List<SchemaConfig> getSchemaConfigs(){
 		return schemaConfigs;
 	}
 	

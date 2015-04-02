@@ -48,7 +48,7 @@ public class DefaultStatementTransform extends StatementTransformAdapter {
 
 	public String toDelete(Bean bean) throws TinyDbException {
 		List<String> conditionColumns = getColumnNames(bean);
-		return getDeleteSql(bean.getType(), conditionColumns);
+		return getDeleteSql(bean, conditionColumns);
 	}
 
 	public String toUpdate(Bean bean) throws TinyDbException {
