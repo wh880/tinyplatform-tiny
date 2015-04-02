@@ -68,6 +68,16 @@ public class TinydbResultExtractor implements ResultSetExtractor {
 			start = 1;
 		}
 		List<Field> fields = TinyBeanUtil.getFieldsWithResultSet(rs, converter);
+		if(DbBaseOperator.DEFAULT_BEAN_TYPE.equals(beanType)){
+			ResultSetMetaData rsmd = rs.getMetaData();
+			try {
+				String tableName=rsmd.getTableName(1);//只获取第一列对应的表名
+				if(!StringUtil.isBlank(tableName)){
+					beanType=converter.dbTableNameToTypeName(tableName);
+				}
+			} catch (Exception e) {
+			}
+		}
 		RowMapper mapper = new BeanRowMapper(beanType, schema, fields);
 		List results = new ArrayList();
 		if (limit != 0) {// 需要进行游标分页
