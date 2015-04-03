@@ -15,6 +15,8 @@
  */
 package org.tinygroup.database.view;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.tinygroup.database.config.view.View;
@@ -30,15 +32,23 @@ public interface ViewProcessor {
 	String getCreateSql(String name, String language);
 	String getCreateSql(View view, String language);
 	List<String> getCreateSql(String language);
-	
+
 	String getDropSql(String name, String language);
 	String getDropSql(View view, String language);
 	List<String> getDropSql(String language);
-	
+
 	/**
 	 * 视图依赖初始化
 	 */
 	void dependencyInit();
-	
-	
+
+	/**
+     * 判断视图是否存在,根据不同的数据库类型调用对应的实现方法
+     * @param view 视图元数据
+     * @param conn 当前执行创建view的连接信息
+     * @param language 当前数据类型
+     * @return true表示视图存在，false反之
+     * @throws SQLException
+     */
+	boolean checkViewExists(View view,Connection conn,String language) throws SQLException;
 }

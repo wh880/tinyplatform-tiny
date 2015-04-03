@@ -54,7 +54,7 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 	}
 
 
-	protected String getQueryForeignSql(Table table) {
+	protected String getQueryForeignSql(Table table,String schema) {
 		 String sql = "SELECT c.COLUMN_NAME, tc.CONSTRAINT_NAME,fc.REFERENCED_TABLE_NAME,kcu.REFERENCED_COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS c"
 			+ " LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu ON kcu.TABLE_SCHEMA = c.TABLE_SCHEMA"
 			+ " AND kcu.TABLE_NAME = c.TABLE_NAME"
@@ -66,7 +66,7 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 			+ " where tc.CONSTRAINT_TYPE='FOREIGN KEY' and c.table_name='"
 			+ table.getName()
 			+ "' and c.table_schema='"
-			+ table.getSchema() + "'";
+			+ schema + "'";
 		 return sql;
 	}
 
