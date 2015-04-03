@@ -56,7 +56,7 @@ public class FtpFileObjectTest extends TestCase {
 		String pathname = rootDir + fileName;
 		createNewFile(pathname); // 新建文件
 		write(pathname, "内容测试 中文 空格 英文      sdfsfd   数字   1231 "); // 写入内容
-		String resource = "ftp://anonymous:@127.0.0.1:21/" + fileName;
+		String resource = "ftp://anonymous:@127.0.0.1:2299/" + fileName;
 		FileObject fileObject = VFS.resolveFile(resource);
 
 		assertNotNull(fileObject.getSchemaProvider());
@@ -88,7 +88,7 @@ public class FtpFileObjectTest extends TestCase {
 	public void testFolder() throws Exception {
 		String dirName = "目录 11 aaa";
 		mkdirs(rootDir + dirName); // 新建文件夹
-		String resource = "ftp://anonymous:@127.0.0.1:21/" + dirName;
+		String resource = "ftp://anonymous:@127.0.0.1:2299/" + dirName;
 		FileObject fileObject = VFS.resolveFile(resource);
 
 		assertNotNull(fileObject.getSchemaProvider());
@@ -115,7 +115,7 @@ public class FtpFileObjectTest extends TestCase {
 	public void testMultiFolder() throws Exception {
 		String dirName = "目录 22 aaa/目录 12 bbb/目录 123 ccc";
 		mkdirs(rootDir + dirName); // 新建文件夹
-		String resource = "ftp://anonymous:@127.0.0.1:21/" + dirName;
+		String resource = "ftp://anonymous:@127.0.0.1:2299/" + dirName;
 		FileObject fileObject = VFS.resolveFile(resource);
 
 		assertNotNull(fileObject.getSchemaProvider());
@@ -147,7 +147,7 @@ public class FtpFileObjectTest extends TestCase {
 		createNewFile(pathname); // 新建子文件
 		write(pathname, "内容测试 中文 空格 英文      sdfsfd   数字   1231 "); // 写入内容
 
-		String resource = "ftp://anonymous:@127.0.0.1:21/" + dirName;
+		String resource = "ftp://anonymous:@127.0.0.1:2299/" + dirName;
 		FileObject fileObject = VFS.resolveFile(resource);
 
 		assertNotNull(fileObject.getSchemaProvider());
@@ -302,7 +302,7 @@ public class FtpFileObjectTest extends TestCase {
 		// 创建并配置服务工厂
 		FtpServerFactory serverFactory = new FtpServerFactory();
 		ListenerFactory factory = new ListenerFactory();
-		factory.setPort(21);
+		factory.setPort(2299);
 		serverFactory.addListener("default", factory.createListener()); // 添加监听
 		PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
 		userManagerFactory.setFile(file);
