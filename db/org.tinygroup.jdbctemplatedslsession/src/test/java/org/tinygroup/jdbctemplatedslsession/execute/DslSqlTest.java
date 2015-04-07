@@ -1,5 +1,6 @@
 package org.tinygroup.jdbctemplatedslsession.execute;
 
+import static org.tinygroup.tinysqldsl.StatementSqlBuilder.and;
 import static org.tinygroup.jdbctemplatedslsession.CustomTable.CUSTOM;
 import static org.tinygroup.jdbctemplatedslsession.ScoreTable.TSCORE;
 import static org.tinygroup.tinysqldsl.Delete.delete;
@@ -56,17 +57,26 @@ public class DslSqlTest extends BaseTest {
 		assertEquals(98, customScore.getScore());
 		assertEquals(22, customScore.getAge());
 		assertEquals("shuxue", customScore.getCourse());
+		
+		select=select(CUSTOM.AGE.max()).from(CUSTOM);
+        int max =session.fetchOneResult(select, Integer.class);
+        assertEquals(22, max);
 
 		Update update = update(CUSTOM).set(CUSTOM.NAME.value("flank"),
 				CUSTOM.AGE.value(30)).where(CUSTOM.NAME.eq("悠悠然然"));
 		affect = session.execute(update);
 		assertEquals(1, affect);
+		
+		
+		delete=delete(CUSTOM).where(and(CUSTOM.NAME.leftLike("a"), CUSTOM.AGE.between(1, 10)));
+		affect = session.execute(delete);
+		assertEquals(0, affect);
 
 		delete = delete(CUSTOM).where(CUSTOM.NAME.eq("flank"));
 		affect = session.execute(delete);
 		assertEquals(1, affect);
 		delete = delete(TSCORE).where(TSCORE.NAME.eq("悠悠然然"));
 		affect = session.execute(delete);
-		assertEquals(1, affect);
+	
 	}
 }
