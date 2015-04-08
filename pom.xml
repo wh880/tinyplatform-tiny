@@ -340,7 +340,6 @@
     <modules>
         <module>framework</module>
         <module>db</module>
-        <module>plugins</module>
         <module>fc</module>
         <module>pfc</module>
         <module>mgt</module>
