@@ -101,7 +101,7 @@ public class Select<T extends Select<T>> extends StatementSqlBuilder implements
 
 	@SuppressWarnings("unchecked")
 	public T having(Condition condition) {
-		plainSelect.setHaving(condition.getExpression());
+		plainSelect.setHaving(condition);
 		return (T) this;
 	}
 

@@ -114,7 +114,7 @@ public abstract class StatementSqlBuilder {
 			expressionList.addExpression(condition.getExpression());
 			Collections.addAll(values, condition.getValues());
 		}
-		return new Condition(expressionList, values);
+		return new Condition(expressionList, values.toArray());
 	}
 
 	public static Condition or(Condition... conditions) {

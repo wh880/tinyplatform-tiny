@@ -61,5 +61,36 @@ public interface DslSqlSession {
      * @return
      */
     <T> List<T> fetchList(Select select, Class<T> requiredType);
+    
+    /**
+     * 返回一个结果，既然是有多个结果也只返回第一个结果
+     *
+     * @param select
+     * @param requiredType
+     * @param <T>
+     * @return
+     */
+    <T> T fetchOneResult(ComplexSelect complexSelect, Class<T> requiredType);
+
+    
+    /**
+     * 把所有的结果变成一个对象数组返回
+     *
+     * @param select
+     * @param requiredType
+     * @param <T>
+     * @return
+     */
+    <T> T[] fetchArray(ComplexSelect complexSelect, Class<T> requiredType);
+
+    /**
+     * 把所有的结果变成一个对象列表返回
+     *
+     * @param select
+     * @param requiredType
+     * @param <T>
+     * @return
+     */
+    <T> List<T> fetchList(ComplexSelect complexSelect, Class<T> requiredType);
 
 }
