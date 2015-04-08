@@ -143,7 +143,7 @@ public final class U {
      */
     public static Object c(Template template, TemplateContext context, Object object, String methodName, Object... parameters) throws TemplateException {
         try {
-            TemplateFunction function = template.getTemplateEngine().getTemplateFunction(object.getClass().getName(), methodName);
+            TemplateFunction function = template.getTemplateEngine().getTemplateFunction(object, methodName);
             if (function != null) {
                 return executeExtendFunction(template, context, object, function, parameters);
             } else {
@@ -168,7 +168,7 @@ public final class U {
         Object[] newParameters = new Object[(parameters == null ? 1 : parameters.length) + 1];
         newParameters[0] = object;
         if (parameters != null && parameters.length > 0) {
-            System.arraycopy(parameters, 1, newParameters, 0, parameters.length);
+            System.arraycopy(parameters, 0, newParameters, 1, parameters.length);
         }
         return function.execute(template, context, newParameters);
     }

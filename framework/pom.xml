@@ -24,7 +24,6 @@
         <module>org.tinygroup.i18n</module>
         <module>org.tinygroup.queue</module>
         <module>org.tinygroup.command</module>
-        <module>org.tinygroup.plugin</module>
         <module>org.tinygroup.simplechannel</module>
         <module>org.tinygroup.channel</module>
         <module>org.tinygroup.exception</module>
