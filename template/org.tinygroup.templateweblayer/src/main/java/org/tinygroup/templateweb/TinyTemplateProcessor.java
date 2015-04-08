@@ -27,7 +27,7 @@ public class TinyTemplateProcessor extends AbstractTinyProcessor {
 	private static final String PAGELET_EXT_FILE_NAME = ".pagelet";
 	private static final String PAGE_EXT_FILE_NAME = ".page";
 	private static final String TEMPLATE_EXT_FILE_NAME = "templateExtFileName";
-	private static final String TEMPLATE_WITH_LAYOUT_EXT_FILE_NAME = "templeteWithLayoutExtFileName";
+	private static final String TEMPLATE_WITH_LAYOUT_EXT_FILE_NAME = "templateWithLayoutExtFileName";
 	private String templateWithLayout = PAGE_EXT_FILE_NAME;
 	private String template = PAGELET_EXT_FILE_NAME;
 

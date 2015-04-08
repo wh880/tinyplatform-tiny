@@ -131,7 +131,7 @@
             <servlet-mapping url-pattern=".*\.gif"></servlet-mapping>
         </tiny-processor>
         <tiny-processor id="velocityViewProcessor" class="velocityViewProcessor">
-            <init-param name="templeteWithLayoutExtFileName" value=".page"></init-param>
+            <init-param name="templateWithLayoutExtFileName" value=".page"></init-param>
             <init-param name="templateExtFileName" value=".pagelet"></init-param>
             <servlet-mapping url-pattern=".*\.page"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.pagelet"></servlet-mapping>
