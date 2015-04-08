@@ -104,7 +104,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			}
 			return ret;
 		} catch (DataAccessException e) {
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 	}
 
@@ -122,7 +122,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			}
 		} catch (DataAccessException e) {
 			operatorErrorLog(sql, e, params);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 
 	}
@@ -135,7 +135,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			return jdbcTemplate.update(sql, values);
 		} catch (DataAccessException e) {
 			operatorErrorLog(sql, e, params);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 	}
 
@@ -149,7 +149,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			return jdbcTemplate.update(sql, values);
 		} catch (DataAccessException e) {
 			operatorErrorLog(sql, e, params);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 	}
 
@@ -173,7 +173,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 							columnTypes));
 		} catch (DataAccessException e) {
 			operatorErrorLogNoParam(sql, e);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 	}
 
@@ -185,7 +185,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 		} catch (DataAccessException e) {
 			logger.errorMessage("DbOperatorId:[{0}],执行错误的sql列表:{1}", e,
 					uuid.toString(), sqlsToString(sqls));
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 	}
 
@@ -206,7 +206,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 					new SqlParamValuesBatchStatementSetterImpl(parameters));
 		} catch (DataAccessException e) {
 			operatorErrorLogNoParam(sql, e);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 	}
 
@@ -230,7 +230,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			return beans;
 		} catch (DataAccessException e) {
 			operatorErrorLogNoParam(sql, e);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 	}
 
@@ -247,7 +247,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			return beans;
 		} catch (DataAccessException e) {
 			operatorErrorLogNoParam(tempSql, e);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 
 	}
@@ -279,7 +279,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			return beans;
 		} catch (DataAccessException e) {
 			operatorErrorLog(tempSql, e, params);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 
 	}
@@ -297,7 +297,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			return beans;
 		} catch (DataAccessException e) {
 			operatorErrorLog(sql, e, params);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 
 	}
@@ -345,7 +345,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			}
 		} catch (DataAccessException e) {
 			operatorErrorLog(tempSql, e, params);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 	}
 
@@ -359,7 +359,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 							beanDbNameConverter));
 		} catch (DataAccessException e) {
 			operatorErrorLogNoParam(sql, e);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 
 	}
@@ -374,7 +374,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 							beanDbNameConverter));
 		} catch (DataAccessException e) {
 			operatorErrorLog(sql, e, parameters);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 
 	}
@@ -390,7 +390,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 							beanDbNameConverter));
 		} catch (DataAccessException e) {
 			operatorErrorLog(sql, e, params);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 
 	}
@@ -406,7 +406,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			return DataAccessUtils.requiredSingleResult(results);
 		} catch (DataAccessException e) {
 			operatorErrorLog(sql, e, parameters);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 	}
 
@@ -443,7 +443,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			}
 		} catch (DataAccessException e) {
 			operatorErrorLog(tempSql, e, params);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 
 	}
@@ -473,7 +473,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 
 		} catch (DataAccessException e) {
 			operatorErrorLog(tempSql, e, params);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 
 	}
@@ -495,7 +495,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			}
 		} catch (DataAccessException e) {
 			operatorErrorLog(tempSql, e, params);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 
 	}
@@ -507,7 +507,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			return jdbcTemplate.update(sql, parameters);
 		} catch (DataAccessException e) {
 			operatorErrorLog(sql, e, parameters);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 
 	}
@@ -519,7 +519,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			return jdbcTemplate.queryForInt(sql, parameters);
 		} catch (DataAccessException e) {
 			operatorErrorLog(sql, e, parameters);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 	}
 
@@ -531,7 +531,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			return jdbcTemplate.queryForInt(sql, params);
 		} catch (DataAccessException e) {
 			operatorErrorLog(sql, e, params);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 
 	}
@@ -547,7 +547,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 			return jdbcTemplate.queryForInt(tempSql, params);
 		} catch (DataAccessException e) {
 			operatorErrorLog(tempSql, e, params);
-			throw new TinyDbException(e.getRootCause());
+			throw new TinyDbException(e);
 		}
 	}
 
@@ -693,7 +693,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 	protected void operatorErrorLog(String sql, DataAccessException exception,
 			Object... parameters) {
 		logger.errorMessage("DbOperatorId:[{0}],执行的错误sql:[{1}],参数:[{2}]",
-				exception.getRootCause(), uuid.toString(), sql,
+				exception, uuid.toString(), sql,
 				paramsToString(parameters));
 	}
 
@@ -705,7 +705,7 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 
 	protected void operatorErrorLogNoParam(String sql, DataAccessException e) {
 		logger.errorMessage("DbOperatorId:[{0}],批处理执行错误的sql:[{1}]",
-				e.getRootCause(), uuid.toString(), sql);
+				e, uuid.toString(), sql);
 	}
 
 	protected void operatorDebugLogNoParam(String sql) {
