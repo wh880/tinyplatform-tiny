@@ -71,6 +71,11 @@ public class DslSqlTest extends BaseTest {
 		delete=delete(CUSTOM).where(and(CUSTOM.NAME.leftLike("a"), CUSTOM.AGE.between(1, 10)));
 		affect = session.execute(delete);
 		assertEquals(0, affect);
+		
+		
+		delete=delete(CUSTOM).where(and(CUSTOM.NAME.leftLike(null), CUSTOM.AGE.between(1, 10)));
+		affect = session.execute(delete);
+		assertEquals(0, affect);
 
 		delete = delete(CUSTOM).where(CUSTOM.NAME.eq("flank"));
 		affect = session.execute(delete);

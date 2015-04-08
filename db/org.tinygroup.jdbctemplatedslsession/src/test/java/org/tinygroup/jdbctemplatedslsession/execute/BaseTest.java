@@ -23,8 +23,8 @@ public abstract class BaseTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		init();
 		if (!hasExcuted) {
+			init();
 			dataSource = BeanContainerFactory.getBeanContainer(
 					getClass().getClassLoader()).getBean("dataSource");
 			initTable();
