@@ -93,7 +93,7 @@ public class Column extends ColumnOperator implements Expression,
 		StringBuilder fqn = new StringBuilder();
 
 		if (table != null) {
-			fqn.append(table.getFullyQualifiedName());
+			fqn.append(table.getReffenceName());
 		}
 		if (fqn.length() > 0) {
 			fqn.append('.');

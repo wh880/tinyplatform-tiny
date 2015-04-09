@@ -36,7 +36,7 @@ import java.util.Map;
 public class TemplateEngineDefault implements TemplateEngine {
     private static final String DEFAULT = "default";
     private Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
-    private Map<String, TemplateFunction> typeFunctionMap = new HashMap<String, TemplateFunction>();
+    private Map<Class, Map<String,TemplateFunction>> typeFunctionMap = new HashMap<Class, Map<String,TemplateFunction>>();
     private TemplateContext templateEngineContext = new TemplateContextDefault();
 
     private List<ResourceLoader> resourceLoaderList = new ArrayList<ResourceLoader>();
@@ -94,6 +94,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         addTemplateFunction(new GetResourceContentFunction());
         addTemplateFunction(new EvaluateTemplateFunction());
         addTemplateFunction(new CallMacroFunction());
+        addTemplateFunction(new GetFunction());
     }
 
     public TemplateContext getTemplateContext() {
@@ -130,8 +131,18 @@ public class TemplateEngineDefault implements TemplateEngine {
         } else {
             String[] types = function.getBindingTypes().split(",");
             for (String type : types) {
-                for (String name : names) {
-                    typeFunctionMap.put(getKeyName(type, name), function);
+                try {
+                    Class clazz= Class.forName(type);
+                    Map<String,TemplateFunction>nameMap=typeFunctionMap.get(clazz);
+                    if(nameMap==null){
+                        nameMap= new HashMap<String, TemplateFunction>();
+                        typeFunctionMap.put(clazz,nameMap);
+                    }
+                    for (String name : names) {
+                        nameMap.put( name, function);
+                    }
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -144,8 +155,23 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public TemplateFunction getTemplateFunction(String className, String methodName) {
-        return typeFunctionMap.get(getKeyName(className, methodName));
+    public TemplateFunction getTemplateFunction( Object object,String methodName) {
+        Map<String, TemplateFunction> typeMap = typeFunctionMap.get(object.getClass());
+        if(typeMap!=null) {
+            TemplateFunction function = typeMap.get(methodName);
+            if (function != null) {
+                return function;
+            }
+        }
+        for(Class clz:typeFunctionMap.keySet()){
+            if(clz.isInstance(object)){
+                TemplateFunction function=typeFunctionMap.get(clz).get(methodName);
+                if(function!=null){
+                    return function;
+                }
+            }
+        }
+        return null;
     }
 
     private String getKeyName(String className, String methodName) {

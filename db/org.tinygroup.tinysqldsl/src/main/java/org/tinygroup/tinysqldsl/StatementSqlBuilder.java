@@ -111,8 +111,10 @@ public abstract class StatementSqlBuilder {
 		expressionList.setUseBrackets(false);
 		List<Object> values = new ArrayList<Object>();
 		for (Condition condition : conditions) {
-			expressionList.addExpression(condition.getExpression());
-			Collections.addAll(values, condition.getValues());
+			if (condition != null) {
+				expressionList.addExpression(condition.getExpression());
+				Collections.addAll(values, condition.getValues());
+			}
 		}
 		return new Condition(expressionList, values.toArray());
 	}

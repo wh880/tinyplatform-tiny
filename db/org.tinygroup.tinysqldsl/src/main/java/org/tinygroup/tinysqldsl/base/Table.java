@@ -93,6 +93,13 @@ public class Table implements FromItem, MultiPartName {
 		return fqn;
 	}
 
+	public String getReffenceName(){
+		if(alias!=null){
+			return alias.getName();
+		}
+		return getFullyQualifiedName();
+	}
+	
 	public String toString() {
 		return getFullyQualifiedName()
 				+ ((alias != null) ? alias.toString() : "");

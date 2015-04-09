@@ -32,8 +32,6 @@ public class TestSelect {
 
 		System.out.println(selectFrom(CUSTOM).orderBy(desc(CUSTOM.NAME)));
 
-		System.out.println(selectFrom(CUSTOM).where(CUSTOM.NAME.eq(null)));
-
 		System.out.println(selectFrom(CUSTOM).where(CUSTOM.NAME.like("abc")));
 
 		System.out.println(selectFrom(CUSTOM).where(
@@ -68,6 +66,15 @@ public class TestSelect {
 		System.out.println(select(CUSTOM.NAME).from(
 				subSelect(selectFrom(CUSTOM), "custom", true)).where(
 				CUSTOM.ID.eq("2324")));
+		
+		System.out.println(select(CUSTOM.NAME).from(CUSTOM).where(CUSTOM.NAME.isNull()));
+		
+		System.out.println(select(CUSTOM.NAME).from(CUSTOM).where(CUSTOM.NAME.equal(null)));
+		
+		System.out.println(select(CUSTOM.NAME).from(CUSTOM).where(and(CUSTOM.AGE.greaterThan(33),CUSTOM.NAME.equal(null))));
+		
+		System.out.println(select(CUSTOM.NAME).from(CUSTOM).where(or(and(CUSTOM.AGE.greaterThan(33),CUSTOM.NAME.equal(null)),CUSTOM.ID.eq("123"))));
+		
 
 	}
 }
