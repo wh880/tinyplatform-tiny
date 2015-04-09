@@ -117,9 +117,10 @@ public class MemorySourceCompiler {
 
         private final MemorySource[] sources;
         String engineId;
-        public NameEnvironment(String engineId,MemorySource[] sources) {
+
+        public NameEnvironment(String engineId, MemorySource[] sources) {
             this.sources = sources.clone();
-            this.engineId=engineId;
+            this.engineId = engineId;
         }
 
         /**
@@ -163,13 +164,13 @@ public class MemorySourceCompiler {
             return null;
         }
 
-        public boolean isPackage( char[][] parentPackageName, char[] packageName) {
+        public boolean isPackage(char[][] parentPackageName, char[] packageName) {
             String name = new String(packageName);
             if (parentPackageName != null) {
                 name = join(parentPackageName) + "." + name;
             }
 
-            File target = new File(outputDir , name.replace('.', '/'));
+            File target = new File(outputDir, name.replace('.', '/'));
 
             // only return false if it's a file
             // return true even if it doesn't exist
@@ -208,42 +209,11 @@ public class MemorySourceCompiler {
         /**
          * To find types ...
          */
-        INameEnvironment nameEnvironment = new NameEnvironment(engineId,sources);
+        INameEnvironment nameEnvironment = new NameEnvironment(engineId, sources);
         /**
          * Compilation result
          */
-        ICompilerRequestor compilerRequestor = new ICompilerRequestor() {
-
-            public void acceptResult(CompilationResult result) {
-                if (result.hasErrors()) {
-                    MemorySource source = sources[0];
-                    String sourceCode = source.getContent();
-                    String[] sourceCodeLines = sourceCode.split("(\r\n|\r|\n)", -1);
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("Compilation failed.");
-                    sb.append('\n');
-                    for (IProblem p : result.getErrors()) {
-                        sb.append(p.getMessage()).append('\n');
-                        int start = p.getSourceStart();
-                        int column = start;
-                        for (int i = start; i >= 0; i--) {
-                            char c = sourceCode.charAt(i);
-                            if (c == '\n' || c == '\r') {
-                                column = start - i;
-                                break;
-                            }
-                        }
-                        sb.append(MemorySourceCompiler.getPrettyError(sourceCodeLines, p.getSourceLineNumber(), column, p.getSourceStart(), p.getSourceEnd(), 3));
-                    }
-                    sb.append(result.getErrors().length);
-                    sb.append(" error(s)\n");
-                    throw new RuntimeException(sb.toString());
-                } else {
-                    saveClassFile(result.getClassFiles());
-                }
-
-            }
-        };
+        ICompilerRequestor compilerRequestor = new CompilerRequestor(sources[0],engineId);
 
         IProblemFactory problemFactory = new DefaultProblemFactory(Locale.CHINA);
         IErrorHandlingPolicy policy = DefaultErrorHandlingPolicies.exitOnFirstError();
@@ -316,7 +286,7 @@ public class MemorySourceCompiler {
         }
     }
 
-    private void saveClassFile(ClassFile[] classFiles) {
+    private void saveClassFile(String engineId, ClassFile[] classFiles) {
         if (classFiles == null) {
             return;
         }
@@ -324,7 +294,7 @@ public class MemorySourceCompiler {
         for (int i = 0; i < classFiles.length; i++) {
             try {
                 String fileName = new String(classFiles[i].fileName()) + ".class";
-                File javaClassFile = new File(outputDir, fileName);
+                File javaClassFile = new File(outputDir + engineId, fileName);
                 if (javaClassFile.exists()) {
                     javaClassFile.delete();
                 }
@@ -414,5 +384,41 @@ public class MemorySourceCompiler {
         }
         return sb.toString();
     }
+    class CompilerRequestor implements ICompilerRequestor {
+        private final String engineId;
+        private final MemorySource source;
 
+        CompilerRequestor(MemorySource source, String engineId){
+            this.source=source;
+            this.engineId=engineId;
+        }
+        public void acceptResult(CompilationResult result) {
+            if (result.hasErrors()) {
+                String sourceCode = source.getContent();
+                String[] sourceCodeLines = sourceCode.split("(\r\n|\r|\n)", -1);
+                StringBuilder sb = new StringBuilder();
+                sb.append("Compilation failed.");
+                sb.append('\n');
+                for (IProblem p : result.getErrors()) {
+                    sb.append(p.getMessage()).append('\n');
+                    int start = p.getSourceStart();
+                    int column = start;
+                    for (int i = start; i >= 0; i--) {
+                        char c = sourceCode.charAt(i);
+                        if (c == '\n' || c == '\r') {
+                            column = start - i;
+                            break;
+                        }
+                    }
+                    sb.append(MemorySourceCompiler.getPrettyError(sourceCodeLines, p.getSourceLineNumber(), column, p.getSourceStart(), p.getSourceEnd(), 3));
+                }
+                sb.append(result.getErrors().length);
+                sb.append(" error(s)\n");
+                throw new RuntimeException(sb.toString());
+            } else {
+                saveClassFile(engineId, result.getClassFiles());
+            }
+
+        }
+    }
 }
