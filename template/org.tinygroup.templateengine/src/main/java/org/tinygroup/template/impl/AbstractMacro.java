@@ -28,6 +28,10 @@ import java.util.List;
  */
 public abstract class AbstractMacro implements Macro {
     private Macro bodyContentMacro;
+    private String name;
+    private List<String> parameterNames = new ArrayList<String>();
+    private List<EvaluateExpression> parameterDefaultValues = new ArrayList<EvaluateExpression>();
+    private TemplateEngine templateEngine;
 
     public AbstractMacro(String name) {
         this.name = name;
@@ -48,10 +52,6 @@ public abstract class AbstractMacro implements Macro {
         this.parameterDefaultValues = parameterDefaultValues;
     }
 
-    private String name;
-    private List<String> parameterNames = new ArrayList<String>();
-    private List<EvaluateExpression> parameterDefaultValues = new ArrayList<EvaluateExpression>();
-    private TemplateEngine templateEngine;
 
     protected void addParameter(String parameterName, EvaluateExpression defaultValue) {
         parameterNames.add(parameterName);
