@@ -95,7 +95,7 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
 
     private Template loadTemplate(FileObject fileObject, ClassLoader classLoader) throws TemplateException {
         try {
-            Template template = ResourceCompilerUtils.compileResource(classLoader, IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()), fileObject.getPath());
+            Template template = ResourceCompilerUtils.compileResource(classLoader, IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()),getTemplateEngine().getEngineId(), fileObject.getPath());
             addTemplate(template);
             return template;
         } catch (Exception e) {

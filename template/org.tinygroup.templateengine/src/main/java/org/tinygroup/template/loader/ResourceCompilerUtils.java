@@ -47,7 +47,7 @@ public final class ResourceCompilerUtils {
         return classNameGetter;
     }
 
-    public static <T> T compileResource(ClassLoader classLoader, String content, String path) throws TemplateException {
+    public static <T> T compileResource(ClassLoader classLoader, String content, String engineId, String path) throws TemplateException {
         ClassName className = classNameGetter.getClassName(path);
         CodeBlock codeBlock = preCompile(content, path);
         if (className.getPackageName() != null) {
@@ -55,10 +55,10 @@ public final class ResourceCompilerUtils {
         }
         MemorySource memorySource = new MemorySource(className.getClassName(), codeBlock.toString().replace("$TEMPLATE_PATH", path)
                 .replace("$TEMPLATE_CLASS_NAME", className.getSimpleClassName()));
-        if (compiler.isModified(className, memorySource.getContent())) {
-            return (T) compiler.loadClass(classLoader, memorySource);
+        if (compiler.isModified(className,engineId, memorySource.getContent())) {
+            return (T) compiler.loadClass(classLoader,engineId, memorySource);
         } else {
-            return (T) compiler.loadInstance(classLoader, className.getClassName());
+            return (T) compiler.loadInstance(classLoader, engineId,className.getClassName());
         }
 
     }

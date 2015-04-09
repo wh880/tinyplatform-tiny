@@ -1,17 +1,17 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.template.compiler;
 
@@ -42,16 +42,16 @@ public class MemorySourceCompiler {
     private String outputDir = TEMP_DIR + (TEMP_DIR.endsWith(File.separator) ? "" : File.separatorChar) + "ttl" + File.separatorChar;
 
 
-    public <T> Class<T> loadClass(MemorySource source) throws TemplateException {
-        return loadClass(MemorySourceCompiler.class.getClassLoader(), source);
+    public <T> Class<T> loadClass(String engineId, MemorySource source) throws TemplateException {
+        return loadClass(MemorySourceCompiler.class.getClassLoader(), engineId, source);
     }
 
-    public <T> T loadClass(ClassLoader classLoader, MemorySource source) throws TemplateException {
-        compile(source);
-        return (T) loadInstance(classLoader, source.getQualifiedClassName());
+    public <T> T loadClass(ClassLoader classLoader, String engineId, MemorySource source) throws TemplateException {
+        compile(engineId, source);
+        return (T) loadInstance(classLoader, engineId, source.getQualifiedClassName());
     }
 
-    public <T> Class<T> getClass(ClassLoader classLoader, String className) throws TemplateException {
+    public <T> Class<T> getClass(ClassLoader classLoader, String engineId, String className) throws TemplateException {
         try {
             URL[] urls = new URL[1];
             File file = new File(getOutputDir());
@@ -66,12 +66,12 @@ public class MemorySourceCompiler {
         }
     }
 
-    public <T> T loadInstance(MemorySource source) throws TemplateException, InstantiationException, IllegalAccessException {
-        return (T) loadInstance(MemorySourceCompiler.class.getClassLoader(), source);
+    public <T> T loadInstance(String engineId, MemorySource source) throws TemplateException, InstantiationException, IllegalAccessException {
+        return (T) loadInstance(MemorySourceCompiler.class.getClassLoader(), engineId, source);
     }
 
-    public <T> T loadInstance(ClassLoader classLoader, MemorySource source) throws TemplateException {
-        return (T) loadInstance(classLoader, source.getQualifiedClassName());
+    public <T> T loadInstance(ClassLoader classLoader, String engineId, MemorySource source) throws TemplateException {
+        return (T) loadInstance(classLoader, engineId, source.getQualifiedClassName());
     }
 
     public static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
@@ -84,9 +84,9 @@ public class MemorySourceCompiler {
         this.outputDir = outputDir;
     }
 
-    public <T> T loadInstance(ClassLoader classLoader, String className) throws TemplateException {
+    public <T> T loadInstance(ClassLoader classLoader, String engineId, String className) throws TemplateException {
         try {
-            return (T) getClass(classLoader, className).newInstance();
+            return (T) getClass(classLoader, engineId, className).newInstance();
         } catch (InstantiationException e) {
             throw new TemplateException(e);
         } catch (IllegalAccessException e) {
@@ -94,11 +94,11 @@ public class MemorySourceCompiler {
         }
     }
 
-    public boolean isModified(ClassName className, String content) {
+    public boolean isModified(ClassName className, String engineId, String content) {
         String classFileName = className.getClassName().replaceAll("[.]", "\\/") + ".class";
         String javaFileName = className.getClassName().replaceAll("[.]", "\\/") + ".java";
-        File classFile = new File(outputDir, classFileName);
-        File javaFile = new File(outputDir, javaFileName);
+        File classFile = new File(outputDir + engineId + File.separator, classFileName);
+        File javaFile = new File(outputDir + engineId + File.separator, javaFileName);
         try {
             if (javaFile.exists()) {
                 String contentInDisk = IOUtils.readFromInputStream(new FileInputStream(javaFile), "UTF-8");
@@ -116,9 +116,10 @@ public class MemorySourceCompiler {
     class NameEnvironment implements INameEnvironment {
 
         private final MemorySource[] sources;
-
-        public NameEnvironment(MemorySource[] sources) {
+        String engineId;
+        public NameEnvironment(String engineId,MemorySource[] sources) {
             this.sources = sources.clone();
+            this.engineId=engineId;
         }
 
         /**
@@ -162,13 +163,13 @@ public class MemorySourceCompiler {
             return null;
         }
 
-        public boolean isPackage(char[][] parentPackageName, char[] packageName) {
+        public boolean isPackage( char[][] parentPackageName, char[] packageName) {
             String name = new String(packageName);
             if (parentPackageName != null) {
                 name = join(parentPackageName) + "." + name;
             }
 
-            File target = new File(outputDir, name.replace('.', '/'));
+            File target = new File(outputDir , name.replace('.', '/'));
 
             // only return false if it's a file
             // return true even if it doesn't exist
@@ -179,21 +180,21 @@ public class MemorySourceCompiler {
         }
     }
 
-    public void compile(Collection<MemorySource> source) {
-        compile(source.toArray(new MemorySource[0]));
+    public void compile(String engineId, Collection<MemorySource> source) {
+        compile(engineId, source.toArray(new MemorySource[0]));
     }
 
-    public void compile(MemorySource source) {
+    public void compile(String engineId, MemorySource source) {
         MemorySource[] sources = new MemorySource[1];
         sources[0] = source;
-        compile(sources);
+        compile(engineId, sources);
     }
 
-    public void compile(final MemorySource[] sources) {
+    public void compile(String engineId, final MemorySource[] sources) {
         for (MemorySource source : sources) {
             String javaFileName = source.getQualifiedClassName().replaceAll("[.]", "/") + ".java";
             try {
-                File file = new File(outputDir, javaFileName);
+                File file = new File(outputDir + engineId + File.separator, javaFileName);
                 File path = file.getParentFile();
                 if (!path.exists()) {
                     path.mkdirs();
@@ -207,7 +208,7 @@ public class MemorySourceCompiler {
         /**
          * To find types ...
          */
-        INameEnvironment nameEnvironment = new NameEnvironment(sources);
+        INameEnvironment nameEnvironment = new NameEnvironment(engineId,sources);
         /**
          * Compilation result
          */
