@@ -62,7 +62,7 @@ public class DialectType {
 	 */
 	public String getType() {
 		if(StringUtil.isEmpty(type)){
-		   return StringUtil.isEmpty(extType)?baseType:baseType+extType;
+		   return StringUtil.isEmpty(extType)?baseType:baseType+getExtType();
 		}
 		return type;
 	}
@@ -97,7 +97,11 @@ public class DialectType {
 	}
 
 	public String getExtType() {
-		return extType;
+		if(StringUtil.isEmpty(extType) || extType.startsWith("(") || extType.endsWith(")")){
+			return extType;
+		}else{
+			return "("+extType+")";
+		}
 	}
 
 	public void setExtType(String extType) {
