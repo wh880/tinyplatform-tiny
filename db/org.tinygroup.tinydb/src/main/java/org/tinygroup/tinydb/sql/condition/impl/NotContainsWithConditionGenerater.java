@@ -20,7 +20,7 @@ public class NotContainsWithConditionGenerater extends
 	}
 
 	@Override
-	public void paramValueProcess(Object value, List<Object> params) {
+	public void paramValueProcess(List<Object> params) {
 		params.add("%" + value.toString() + "%");
 	}
 

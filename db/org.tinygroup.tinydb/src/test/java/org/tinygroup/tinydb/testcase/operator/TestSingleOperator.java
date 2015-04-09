@@ -114,6 +114,13 @@ public class TestSingleOperator extends BaseTest {
 		assertEquals(
 				"select id,name from opensource.animal where ID = ?  and LENGTH = ?  group by id,name order by id asc ,name desc",
 				sqlAndValues.getSql().trim());
+		bean.set("id", new String[] { "123", "235" });
+		bean.set("name", new String[] { "xuan", "test", "ballack" });
+		bean.set(Bean.CONDITION_MODE_KEY, new String[] { "betweenAnd", "in" });
+		sqlAndValues = statementTransform.toSelect(bean);
+		assertEquals(
+				"select id,name from opensource.animal where ID between ? and ?  and NAME in (?,?,?) and LENGTH = ?  group by id,name order by id asc ,name desc",
+				sqlAndValues.getSql().trim());
 	}
 
 }

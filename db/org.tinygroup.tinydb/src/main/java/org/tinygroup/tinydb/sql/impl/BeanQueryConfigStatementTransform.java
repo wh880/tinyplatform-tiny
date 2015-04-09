@@ -169,8 +169,9 @@ public class BeanQueryConfigStatementTransform extends
 			if (generater == null) {// 还是为空则用equals
 				generater = new EqualsConditionGenerater();
 			}
+			generater.setValue(value);
 			conditionSegment.append(generater.generateCondition(columnName));
-			generater.paramValueProcess(value, params);
+			generater.paramValueProcess(params);
 		}
 		return conditionSegment.toString();
 	}
