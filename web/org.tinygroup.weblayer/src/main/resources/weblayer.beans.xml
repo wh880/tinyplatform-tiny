@@ -209,6 +209,10 @@
 		class="org.tinygroup.weblayer.configmanager.TinyFilterConfigManager">
 	</bean>
 	
+	<bean id="tinyListenerConfigManager" scope="singleton"
+		class="org.tinygroup.weblayer.configmanager.TinyListenerConfigManager">
+	</bean>
+	
 	<bean id="sessionConfiguration" scope="singleton"
 		class="org.tinygroup.weblayer.webcontext.session.SessionConfiguration">
 	</bean>
