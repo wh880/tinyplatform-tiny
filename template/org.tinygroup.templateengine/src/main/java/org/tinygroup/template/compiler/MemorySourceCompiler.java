@@ -54,7 +54,7 @@ public class MemorySourceCompiler {
     public <T> Class<T> getClass(ClassLoader classLoader, String engineId, String className) throws TemplateException {
         try {
             URL[] urls = new URL[1];
-            File file = new File(getOutputDir());
+            File file = new File(getOutputDir()+engineId+File.separator);
             urls[0] = file.toURI().toURL();
             if (classLoader == null) {
                 return (Class<T>) new URLClassLoader(urls).loadClass(className);
