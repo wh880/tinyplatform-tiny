@@ -18,10 +18,11 @@ package org.tinygroup.tinysqldsl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.tinysqldsl.base.Statement;
 import org.tinygroup.tinysqldsl.operator.SetOperationInstanceCallBack;
 import org.tinygroup.tinysqldsl.select.OrderByElement;
+import org.tinygroup.tinysqldsl.select.PlainSelect;
 import org.tinygroup.tinysqldsl.select.SetOperation;
+import org.tinygroup.tinysqldsl.select.SetOperationList;
 import org.tinygroup.tinysqldsl.select.UnionOperation;
 
 /**
