@@ -1,6 +1,5 @@
 package org.tinygroup.weblayer.configmanager;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
 
 /**
  * TinyListenerConfigManager全局单实例
@@ -17,11 +16,6 @@ public class TinyListenerConfigManagerHolder {
 	}
 
 	public static TinyListenerConfigManager getInstance() {
-		if (configManager == null) {
-			configManager = BeanContainerFactory.getBeanContainer(
-					TinyListenerConfigManagerHolder.class.getClassLoader())
-					.getBean("tinyListenerConfigManager");
-		}
 		if (configManager == null) {
 			configManager = new TinyListenerConfigManager();
 		}
