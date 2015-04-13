@@ -1,6 +1,6 @@
 package org.tinygroup.tinysqldsl;
 
-import static org.tinygroup.tinysqldsl.StatementSqlBuilder.and;
+import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
 import static org.tinygroup.tinysqldsl.CustomTable.*;
 import static org.tinygroup.tinysqldsl.Select.*;
 import static org.tinygroup.tinysqldsl.Insert.*;
@@ -9,14 +9,14 @@ import static org.tinygroup.tinysqldsl.Update.*;
 import java.util.List;
 
 public class CustomDao {
-	private DslSqlSession dslSqlSession;
+	private DslSession dslSession;
 
-	public DslSqlSession getDslSqlSession() {
-		return dslSqlSession;
+	public DslSession getDslSession() {
+		return dslSession;
 	}
 
-	public void setDslSqlSession(DslSqlSession dslSqlSession) {
-		this.dslSqlSession = dslSqlSession;
+	public void setDslSession(DslSession dslSession) {
+		this.dslSession = dslSession;
 	}
 
 	public Custom insertCustom(Custom custom) {
@@ -24,7 +24,7 @@ public class CustomDao {
 				CUSTOM.ID.value(custom.getId()),
 				CUSTOM.NAME.value(custom.getName()),
 				CUSTOM.AGE.value(custom.getAge()));
-		dslSqlSession.execute(insert);
+		dslSession.execute(insert);
 		return custom;
 	}
 
@@ -32,17 +32,17 @@ public class CustomDao {
 		Update update = update(CUSTOM).set(CUSTOM.NAME.value(custom.getName()),
 				CUSTOM.AGE.value(custom.getAge())).where(
 				CUSTOM.ID.eq(custom.getId()));
-		dslSqlSession.execute(update);
+		dslSession.execute(update);
 	}
 
 	public void deleteCustom(String id) {
 		Delete delete = delete(CUSTOM).where(CUSTOM.ID.eq(id));
-		dslSqlSession.execute(delete);
+		dslSession.execute(delete);
 	}
 
 	public Custom getCustomById(String id) {
 		Select select = selectFrom(CUSTOM).where(CUSTOM.ID.eq(id));
-		return dslSqlSession.fetchOneResult(select, Custom.class);
+		return dslSession.fetchOneResult(select, Custom.class);
 	}
 
 	public List<Custom> queryCustom(Custom custom) {//如果id作为主键字段，不作为条件出现。
@@ -50,6 +50,6 @@ public class CustomDao {
 				and(CUSTOM.ID.eq(custom.getId()),
 						CUSTOM.NAME.equal(custom.getName()),
 						CUSTOM.AGE.equal(custom.getAge())));
-		return dslSqlSession.fetchList(select, Custom.class);
+		return dslSession.fetchList(select, Custom.class);
 	}
 }

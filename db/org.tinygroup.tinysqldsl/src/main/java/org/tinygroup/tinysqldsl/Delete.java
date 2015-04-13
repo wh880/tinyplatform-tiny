@@ -16,6 +16,7 @@
 package org.tinygroup.tinysqldsl;
 
 import org.tinygroup.tinysqldsl.base.Condition;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Table;
 import org.tinygroup.tinysqldsl.delete.DeleteBody;
 

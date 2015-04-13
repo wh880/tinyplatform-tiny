@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author renhui
  */
-public interface DslSqlSession {
+public interface DslSession {
     /**
      * 执行Insert语句关返回
      *

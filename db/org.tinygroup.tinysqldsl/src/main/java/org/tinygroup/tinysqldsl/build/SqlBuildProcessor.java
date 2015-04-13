@@ -1,6 +1,6 @@
 package org.tinygroup.tinysqldsl.build;
 
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 
 /**
  * sql拼接处理与参数组装

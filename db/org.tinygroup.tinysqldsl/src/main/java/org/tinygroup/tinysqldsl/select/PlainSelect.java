@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.SelectBody;
 import org.tinygroup.tinysqldsl.base.Table;
 import org.tinygroup.tinysqldsl.expression.Expression;
