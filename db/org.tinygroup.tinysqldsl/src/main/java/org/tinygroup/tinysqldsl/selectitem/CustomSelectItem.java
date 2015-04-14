@@ -15,7 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.selectitem;
 
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 
 /**
  * 格式化的selectItem

@@ -29,6 +29,10 @@ public interface Statement {
      */
     String sql();
 
+    /**
+     * 语句的标识，仅用于日志记录时更清晰
+     * @param id
+     */
     void id(String id);
 
     /**

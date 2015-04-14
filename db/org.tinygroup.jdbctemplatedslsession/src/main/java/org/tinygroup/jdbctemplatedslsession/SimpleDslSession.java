@@ -9,7 +9,7 @@ import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.jdbctemplatedslsession.rowmapper.SimpleRowMapperSelector;
 import org.tinygroup.tinysqldsl.ComplexSelect;
 import org.tinygroup.tinysqldsl.Delete;
-import org.tinygroup.tinysqldsl.DslSqlSession;
+import org.tinygroup.tinysqldsl.DslSession;
 import org.tinygroup.tinysqldsl.Insert;
 import org.tinygroup.tinysqldsl.Select;
 import org.tinygroup.tinysqldsl.Update;
@@ -20,12 +20,12 @@ import org.tinygroup.tinysqldsl.Update;
  * @author renhui
  * 
  */
-public class SimpleDslSqlSession implements DslSqlSession {
+public class SimpleDslSession implements DslSession {
 
 	private JdbcTemplate jdbcTemplate = new JdbcTemplate();
 	private RowMapperSelector selector = new SimpleRowMapperSelector();
 
-	public SimpleDslSqlSession(DataSource dataSource) {
+	public SimpleDslSession(DataSource dataSource) {
 		jdbcTemplate.setDataSource(dataSource);
 	}
 

@@ -15,7 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 
 /**
  * A clause of following syntax: WHEN condition THEN expression. Which is part

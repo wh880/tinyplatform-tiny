@@ -19,7 +19,7 @@ package org.tinygroup.tinysqldsl.selectitem;
  * All the columns of a table (as in "SELECT TableName.* FROM ...")
  */
 
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Table;
 
 public class AllTableColumns  implements SelectItem {

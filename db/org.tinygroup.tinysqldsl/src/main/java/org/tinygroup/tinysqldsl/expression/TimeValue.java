@@ -17,7 +17,7 @@ package org.tinygroup.tinysqldsl.expression;
 
 import java.sql.Time;
 
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 
 /**
  * A Time in the form {t 'hh:mm:ss'}

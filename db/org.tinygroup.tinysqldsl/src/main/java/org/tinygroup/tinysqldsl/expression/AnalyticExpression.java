@@ -17,7 +17,7 @@ package org.tinygroup.tinysqldsl.expression;
 
 import java.util.List;
 
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
 import org.tinygroup.tinysqldsl.select.OrderByElement;
 import org.tinygroup.tinysqldsl.util.DslUtil;

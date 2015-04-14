@@ -18,7 +18,6 @@ package org.tinygroup.tinysqldsl.expression;
 public class WindowElement {
 
     public enum Type {
-
         ROWS,
         RANGE
     }

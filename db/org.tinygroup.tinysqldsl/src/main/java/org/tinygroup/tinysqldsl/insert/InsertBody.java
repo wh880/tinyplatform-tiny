@@ -18,7 +18,7 @@ package org.tinygroup.tinysqldsl.insert;
 import java.util.Iterator;
 import java.util.List;
 
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.base.SelectBody;
 import org.tinygroup.tinysqldsl.base.StatementBody;
