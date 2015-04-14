@@ -1,6 +1,5 @@
 package org.tinygroup.jdbctemplatedslsession.execute;
 
-import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
 import static org.tinygroup.jdbctemplatedslsession.CustomTable.CUSTOM;
 import static org.tinygroup.jdbctemplatedslsession.ScoreTable.TSCORE;
 import static org.tinygroup.tinysqldsl.Delete.delete;
@@ -8,6 +7,7 @@ import static org.tinygroup.tinysqldsl.Insert.insertInto;
 import static org.tinygroup.tinysqldsl.Select.select;
 import static org.tinygroup.tinysqldsl.Select.selectFrom;
 import static org.tinygroup.tinysqldsl.Update.update;
+import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
 import static org.tinygroup.tinysqldsl.select.Join.leftJoin;
 
 import java.sql.SQLException;
@@ -61,6 +61,10 @@ public class DslSqlTest extends BaseTest {
 		select=select(CUSTOM.AGE.max()).from(CUSTOM);
         int max =session.fetchOneResult(select, Integer.class);
         assertEquals(22, max);
+        
+        select=selectFrom(CUSTOM).where(CUSTOM.AGE.in(1,5,10,22,25));
+        custom=session.fetchOneResult(select,Custom.class);
+        assertEquals("悠悠然然", custom.getName());
 
 		Update update = update(CUSTOM).set(CUSTOM.NAME.value("flank"),
 				CUSTOM.AGE.value(30)).where(CUSTOM.NAME.eq("悠悠然然"));

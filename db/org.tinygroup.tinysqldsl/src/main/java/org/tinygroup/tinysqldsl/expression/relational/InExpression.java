@@ -26,9 +26,9 @@ public class InExpression implements Expression, SupportsOldOracleJoinSyntax {
 	private boolean not = false;
 
 	private int oldOracleJoinSyntax = NO_ORACLE_JOIN;
-
-	public InExpression(Expression leftExpression, ItemsList itemsList) {
-		this(leftExpression, itemsList, false);
+	
+	public InExpression(Expression leftExpression, ItemsList rightItemsList) {
+		this(leftExpression, rightItemsList, false);
 	}
 
 	public InExpression(Expression leftExpression, ItemsList rightItemsList,
@@ -75,7 +75,19 @@ public class InExpression implements Expression, SupportsOldOracleJoinSyntax {
 	public boolean isNot() {
 		return not;
 	}
-
+	
+	public void setLeftExpression(Expression leftExpression) {
+		this.leftExpression = leftExpression;
+	}
+	public void setLeftItemsList(ItemsList leftItemsList) {
+		this.leftItemsList = leftItemsList;
+	}
+	public void setRightItemsList(ItemsList rightItemsList) {
+		this.rightItemsList = rightItemsList;
+	}
+	public void setNot(boolean not) {
+		this.not = not;
+	}
 	public ItemsList getLeftItemsList() {
 		return leftItemsList;
 	}
