@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tinygroup.tinysqldsl.base;
+package org.tinygroup.tinysqldsl;
 
 import java.util.List;
 
@@ -29,6 +29,10 @@ public interface Statement {
      */
     String sql();
 
+    /**
+     * 语句的标识，仅用于日志记录时更清晰
+     * @param id
+     */
     void id(String id);
 
     /**

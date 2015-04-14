@@ -16,7 +16,6 @@
 package org.tinygroup.tinysqldsl.base;
 
 import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.operator.ColumnOperator;
 import org.tinygroup.tinysqldsl.selectitem.Distinct;

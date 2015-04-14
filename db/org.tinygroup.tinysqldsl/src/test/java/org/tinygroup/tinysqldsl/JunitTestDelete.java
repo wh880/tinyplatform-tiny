@@ -2,7 +2,7 @@ package org.tinygroup.tinysqldsl;
 
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.Delete.delete;
-import static org.tinygroup.tinysqldsl.StatementSqlBuilder.and;
+import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
 import junit.framework.TestCase;
 
 

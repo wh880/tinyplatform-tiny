@@ -18,7 +18,7 @@ package org.tinygroup.tinysqldsl.expression;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Column;
 
 public class JsonExpression implements Expression {

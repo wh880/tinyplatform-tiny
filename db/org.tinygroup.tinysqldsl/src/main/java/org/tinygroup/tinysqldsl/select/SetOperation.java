@@ -15,7 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.select;
 
-import org.tinygroup.tinysqldsl.SetOperationList.SetOperationType;
+import org.tinygroup.tinysqldsl.select.SetOperationList.SetOperationType;
 
 /**
  * Single Set-Operation (name). Placeholder for one specific set operation, e.g.

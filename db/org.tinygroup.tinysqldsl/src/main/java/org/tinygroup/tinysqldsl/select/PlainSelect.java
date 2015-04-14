@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tinygroup.tinysqldsl;
+package org.tinygroup.tinysqldsl.select;
 
 import static org.tinygroup.tinysqldsl.util.DslUtil.getFormattedList;
 import static org.tinygroup.tinysqldsl.util.DslUtil.getStringList;
@@ -25,16 +25,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.SelectBody;
 import org.tinygroup.tinysqldsl.base.Table;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.expression.OracleHierarchicalExpression;
 import org.tinygroup.tinysqldsl.formitem.FromItem;
-import org.tinygroup.tinysqldsl.select.Fetch;
-import org.tinygroup.tinysqldsl.select.Join;
-import org.tinygroup.tinysqldsl.select.Limit;
-import org.tinygroup.tinysqldsl.select.Offset;
-import org.tinygroup.tinysqldsl.select.OrderByElement;
 import org.tinygroup.tinysqldsl.selectitem.SelectItem;
 
 /**

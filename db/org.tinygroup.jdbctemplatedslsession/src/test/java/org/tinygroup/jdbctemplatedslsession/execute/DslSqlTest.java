@@ -1,6 +1,6 @@
 package org.tinygroup.jdbctemplatedslsession.execute;
 
-import static org.tinygroup.tinysqldsl.StatementSqlBuilder.and;
+import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
 import static org.tinygroup.jdbctemplatedslsession.CustomTable.CUSTOM;
 import static org.tinygroup.jdbctemplatedslsession.ScoreTable.TSCORE;
 import static org.tinygroup.tinysqldsl.Delete.delete;
@@ -14,9 +14,9 @@ import java.sql.SQLException;
 
 import org.tinygroup.jdbctemplatedslsession.Custom;
 import org.tinygroup.jdbctemplatedslsession.CustomScore;
-import org.tinygroup.jdbctemplatedslsession.SimpleDslSqlSession;
+import org.tinygroup.jdbctemplatedslsession.SimpleDslSession;
 import org.tinygroup.tinysqldsl.Delete;
-import org.tinygroup.tinysqldsl.DslSqlSession;
+import org.tinygroup.tinysqldsl.DslSession;
 import org.tinygroup.tinysqldsl.Insert;
 import org.tinygroup.tinysqldsl.Select;
 import org.tinygroup.tinysqldsl.Update;
@@ -26,7 +26,7 @@ public class DslSqlTest extends BaseTest {
 	public void testDsl() throws SQLException {
 
 		Delete delete = delete(CUSTOM);
-		DslSqlSession session = new SimpleDslSqlSession(dataSource);
+		DslSession session = new SimpleDslSession(dataSource);
 		int affect = session.execute(delete);
 
 		delete = delete(TSCORE);
