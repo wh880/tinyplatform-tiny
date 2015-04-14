@@ -47,6 +47,15 @@ public interface BinaryOperator {
      * @return
      */
     Condition between(Object start, Object end);
+    
+    /**
+     * 介于两个值中间
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    Condition notBetween(Object start, Object end);
 
     /**
      * 不等于
@@ -172,4 +181,12 @@ public interface BinaryOperator {
     Condition notLeftLike(String value);
 
     Condition notRightLike(String value);
+    /**
+     * 支持in表达式
+     * @param values
+     * @return
+     */
+    Condition in(Object...values);
+    
+    Condition notIn(Object...values);
 }

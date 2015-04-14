@@ -253,8 +253,32 @@ public abstract class SimpleBinaryOperator implements BinaryOperator,
 	public Condition between(Object begin, Object end) {
 		Between between = new Between(this, new JdbcParameter(),
 				new JdbcParameter());
-		Condition condition = new Condition(between, begin, end);
-		return condition;
+		return new Condition(between, begin, end);
+	}
+	
+	
+	public Condition notBetween(Object begin, Object end) {
+		Between between = new Between(this, new JdbcParameter(),
+				new JdbcParameter(),true);
+		return new Condition(between, begin, end);
+	}
+
+	public Condition in(Object... values) {
+		ExpressionList rightItemsList=new ExpressionList();
+		for (int i = 0; i < values.length; i++) {
+			rightItemsList.addExpression(new JdbcParameter());
+		}
+		InExpression inExpression=new InExpression(this, rightItemsList);
+		return new Condition(inExpression, values);
+	}
+
+	public Condition notIn(Object... values) {
+		ExpressionList rightItemsList=new ExpressionList();
+		for (int i = 0; i < values.length; i++) {
+			rightItemsList.addExpression(new JdbcParameter());
+		}
+		InExpression inExpression=new InExpression(this, rightItemsList,true);
+		return new Condition(inExpression, values);
 	}
 
 	public Expression transform(Object value) {
