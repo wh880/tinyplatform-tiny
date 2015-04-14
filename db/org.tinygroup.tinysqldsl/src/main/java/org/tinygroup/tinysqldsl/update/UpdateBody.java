@@ -17,7 +17,7 @@ package org.tinygroup.tinysqldsl.update;
 
 import java.util.List;
 
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.base.SelectBody;
 import org.tinygroup.tinysqldsl.base.StatementBody;
@@ -58,12 +58,6 @@ public class UpdateBody implements StatementBody {
 		where = expression;
 	}
 
-	/**
-	 * The {@link org.tinygroup.jsqlparser.schema.Column}s in this update (as
-	 * col1 and col2 in UPDATE col1='a', col2='b')
-	 * 
-	 * @return a list of {@link org.tinygroup.jsqlparser.schema.Column}s
-	 */
 	public List<Column> getColumns() {
 		return columns;
 	}

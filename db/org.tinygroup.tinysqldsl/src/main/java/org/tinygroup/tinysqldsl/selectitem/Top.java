@@ -15,7 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.selectitem;
 
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 
 /**
  * A top clause in the form [TOP (row_count) or TOP row_count]

@@ -15,7 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.select;
 
-import org.tinygroup.tinysqldsl.SetOperationList.SetOperationType;
+import org.tinygroup.tinysqldsl.select.SetOperationList.SetOperationType;
 
 /**
  * 差集集合运算操作

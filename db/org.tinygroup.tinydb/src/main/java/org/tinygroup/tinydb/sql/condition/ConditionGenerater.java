@@ -19,9 +19,8 @@ public interface ConditionGenerater {
     String generateCondition(String columnName);
     /**
      * 对原有的参数值进行处理，返回处理后的参数信息
-     * @param value
      */
-    void paramValueProcess(Object value,List<Object> params);
+    void paramValueProcess(List<Object> params);
     
     /**
      * 获取条件的名称
@@ -29,4 +28,10 @@ public interface ConditionGenerater {
      * @return
      */
     String getConditionMode(); 
+    
+    /**
+     * 条件比较操作对应的值
+     * @param value
+     */
+    void setValue(Object value);
 }

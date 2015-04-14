@@ -198,6 +198,10 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
         				engine.setSafeVariable(Boolean.parseBoolean(StringUtil.defaultIfBlank(value, "false")));
         			}else if("compactMode".equalsIgnoreCase(name)){
         				engine.setCompactMode(Boolean.parseBoolean(StringUtil.defaultIfBlank(value, "false")));
+        			}else if("engineId".equalsIgnoreCase(name)){
+        				if(!StringUtil.isEmpty(value)){ //指定模板引擎实例Id
+        					engine.setEngineId(value);
+        				}
         			}
         		}catch (Exception e) {
     				logger.errorMessage("设置模板引擎属性[{0}]出错,属性值[{1}]", e ,node.getAttribute("name"),node.getAttribute("value"));

@@ -1,17 +1,17 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.template.impl;
 
@@ -34,9 +34,10 @@ import java.util.Map;
  * Created by luoguo on 2014/6/6.
  */
 public class TemplateEngineDefault implements TemplateEngine {
+
     private static final String DEFAULT = "default";
     private Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
-    private Map<Class, Map<String,TemplateFunction>> typeFunctionMap = new HashMap<Class, Map<String,TemplateFunction>>();
+    private Map<Class, Map<String, TemplateFunction>> typeFunctionMap = new HashMap<Class, Map<String, TemplateFunction>>();
     private TemplateContext templateEngineContext = new TemplateContextDefault();
 
     private List<ResourceLoader> resourceLoaderList = new ArrayList<ResourceLoader>();
@@ -46,6 +47,8 @@ public class TemplateEngineDefault implements TemplateEngine {
     private TemplateCache<String, List<Template>> layoutPathListCache = new TemplateCacheDefault<String, List<Template>>();
     private TemplateCache<String, Macro> macroCache = new TemplateCacheDefault<String, Macro>();
     private List<String> macroLibraryList = new ArrayList<String>();
+    private String engineId;
+
 
     public boolean isSafeVariable() {
         return U.isSafeVariable();
@@ -60,7 +63,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public void setCompactMode(boolean compactMode) {
-        TinyTemplateCodeVisitor.strictFormat=compactMode;
+        TinyTemplateCodeVisitor.strictFormat = compactMode;
     }
 
     public boolean isCacheEnabled() {
@@ -87,8 +90,16 @@ public class TemplateEngineDefault implements TemplateEngine {
         }
     }
 
+    public TemplateEngineDefault(String engineId) {
+        this();
+        if (engineId != null) {
+            this.engineId = engineId;
+        }
+    }
+
     public TemplateEngineDefault() {
         //添加一个默认的加载器
+        this.engineId = "default";
         addTemplateFunction(new FormatterTemplateFunction());
         addTemplateFunction(new InstanceOfTemplateFunction());
         addTemplateFunction(new GetResourceContentFunction());
@@ -117,6 +128,14 @@ public class TemplateEngineDefault implements TemplateEngine {
         return i18nVisitor;
     }
 
+    public String getEngineId() {
+        return engineId;
+    }
+
+    public void setEngineId(String engineId) {
+        this.engineId = engineId;
+    }
+
     public void setResourceLoaderList(List<ResourceLoader> resourceLoaderList) {
         this.resourceLoaderList = resourceLoaderList;
     }
@@ -132,14 +151,14 @@ public class TemplateEngineDefault implements TemplateEngine {
             String[] types = function.getBindingTypes().split(",");
             for (String type : types) {
                 try {
-                    Class clazz= Class.forName(type);
-                    Map<String,TemplateFunction>nameMap=typeFunctionMap.get(clazz);
-                    if(nameMap==null){
-                        nameMap= new HashMap<String, TemplateFunction>();
-                        typeFunctionMap.put(clazz,nameMap);
+                    Class clazz = Class.forName(type);
+                    Map<String, TemplateFunction> nameMap = typeFunctionMap.get(clazz);
+                    if (nameMap == null) {
+                        nameMap = new HashMap<String, TemplateFunction>();
+                        typeFunctionMap.put(clazz, nameMap);
                     }
                     for (String name : names) {
-                        nameMap.put( name, function);
+                        nameMap.put(name, function);
                     }
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException(e);
@@ -155,18 +174,18 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public TemplateFunction getTemplateFunction( Object object,String methodName) {
+    public TemplateFunction getTemplateFunction(Object object, String methodName) {
         Map<String, TemplateFunction> typeMap = typeFunctionMap.get(object.getClass());
-        if(typeMap!=null) {
+        if (typeMap != null) {
             TemplateFunction function = typeMap.get(methodName);
             if (function != null) {
                 return function;
             }
         }
-        for(Class clz:typeFunctionMap.keySet()){
-            if(clz.isInstance(object)){
-                TemplateFunction function=typeFunctionMap.get(clz).get(methodName);
-                if(function!=null){
+        for (Class clz : typeFunctionMap.keySet()) {
+            if (clz.isInstance(object)) {
+                TemplateFunction function = typeFunctionMap.get(clz).get(methodName);
+                if (function != null) {
                     return function;
                 }
             }

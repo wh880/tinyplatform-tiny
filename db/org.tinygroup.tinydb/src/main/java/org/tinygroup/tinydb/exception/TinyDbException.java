@@ -20,7 +20,7 @@ package org.tinygroup.tinydb.exception;
  * @author renhui
  *
  */
-public class TinyDbException extends Exception {
+public class TinyDbException extends RuntimeException {
 
 	public TinyDbException() {
 		super();

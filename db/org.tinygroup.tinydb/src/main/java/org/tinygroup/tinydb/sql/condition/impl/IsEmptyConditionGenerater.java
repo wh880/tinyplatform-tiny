@@ -20,6 +20,6 @@ public class IsEmptyConditionGenerater extends AbstractConditionGenerater {
 	}
 
 	@Override
-	public void paramValueProcess(Object value, List<Object> params) {//不用加入参数
+	public void paramValueProcess(List<Object> params) {//不用加入参数
 	}
 }

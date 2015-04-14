@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Alias;
 import org.tinygroup.tinysqldsl.util.DslUtil;
 

@@ -15,12 +15,16 @@
  */
 package org.tinygroup.commons.tools;
 
+import java.util.List;
+
 
 /**
  * 有关数组处理的工具类。
  * @author renhui
  */
 public class ArrayUtil {
+	
+	private static final Object[] EMPTY_ARRAY=new Object[0];
     // ==========================================================================
     // 取得数组长度。
     // ==========================================================================
@@ -3264,4 +3268,21 @@ public class ArrayUtil {
     public static boolean arrayContains(char[] array, char[] arrayToFind) {
         return arrayIndexOf(array, arrayToFind) != -1;
     }
+
+    @SuppressWarnings("unchecked")
+	public static Object[] toArray(Object value){
+		if(value==null){
+			return EMPTY_ARRAY;
+		}
+		Object[] values;
+		if(value.getClass().isArray()){
+			values=(Object[])value;
+		}else if(List.class.isInstance(value)){
+			List<Object> list=(List<Object>)value;
+			values=list.toArray();
+		}else{
+			values=new Object[]{value};
+		}
+		return values;
+	}
 }

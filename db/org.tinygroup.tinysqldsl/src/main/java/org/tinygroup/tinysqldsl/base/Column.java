@@ -16,7 +16,6 @@
 package org.tinygroup.tinysqldsl.base;
 
 import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.operator.ColumnOperator;
 import org.tinygroup.tinysqldsl.selectitem.Distinct;
@@ -93,7 +92,7 @@ public class Column extends ColumnOperator implements Expression,
 		StringBuilder fqn = new StringBuilder();
 
 		if (table != null) {
-			fqn.append(table.getFullyQualifiedName());
+			fqn.append(table.getReffenceName());
 		}
 		if (fqn.length() > 0) {
 			fqn.append('.');

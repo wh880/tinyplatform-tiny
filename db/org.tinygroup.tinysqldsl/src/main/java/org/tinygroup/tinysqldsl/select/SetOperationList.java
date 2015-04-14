@@ -13,18 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tinygroup.tinysqldsl;
+package org.tinygroup.tinysqldsl.select;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.SelectBody;
-import org.tinygroup.tinysqldsl.select.Fetch;
-import org.tinygroup.tinysqldsl.select.Limit;
-import org.tinygroup.tinysqldsl.select.Offset;
-import org.tinygroup.tinysqldsl.select.OrderByElement;
-import org.tinygroup.tinysqldsl.select.SetOperation;
 import org.tinygroup.tinysqldsl.util.DslUtil;
 
 /**

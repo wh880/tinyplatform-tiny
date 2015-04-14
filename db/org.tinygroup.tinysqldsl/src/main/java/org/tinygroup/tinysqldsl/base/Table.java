@@ -15,7 +15,6 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
-import org.tinygroup.tinysqldsl.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.formitem.FromItem;
 
 /**
@@ -93,6 +92,13 @@ public class Table implements FromItem, MultiPartName {
 		return fqn;
 	}
 
+	public String getReffenceName(){
+		if(alias!=null){
+			return alias.getName();
+		}
+		return getFullyQualifiedName();
+	}
+	
 	public String toString() {
 		return getFullyQualifiedName()
 				+ ((alias != null) ? alias.toString() : "");

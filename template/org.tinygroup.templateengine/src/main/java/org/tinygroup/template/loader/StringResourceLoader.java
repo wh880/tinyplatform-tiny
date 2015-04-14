@@ -63,7 +63,7 @@ public class StringResourceLoader extends AbstractResourceLoader<String> {
     }
 
     public Template createTemplate(String stringTemplateMaterial) throws TemplateException {
-        Template template = ResourceCompilerUtils.compileResource(StringResourceLoader.class.getClassLoader(), stringTemplateMaterial, getRandomPath());
+        Template template = ResourceCompilerUtils.compileResource(StringResourceLoader.class.getClassLoader(), stringTemplateMaterial, getTemplateEngine().getEngineId(),getRandomPath());
         //这里没有调用putTemplate是避免内存泄露
         template.setTemplateEngine(getTemplateEngine());
         return template;

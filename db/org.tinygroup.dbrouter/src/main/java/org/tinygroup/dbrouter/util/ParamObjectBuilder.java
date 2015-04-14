@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.commons.tools.EqualsUtil;
+import org.tinygroup.commons.tools.HashCodeUtil;
 
 /**
  * 
@@ -42,88 +44,96 @@ import org.tinygroup.commons.tools.CollectionUtil;
 public class ParamObjectBuilder {
 
 	private List<ParameterObject> params = new ArrayList<ParameterObject>();
-	
-	private Map<Integer, Object> indexParamValue=new HashMap<Integer, Object>();
-	
+
+	private Map<Integer, Object> indexParamValue = new HashMap<Integer, Object>();
+
 	private Object[] paramsCache;
-	
+
 	private int paramNumber;
-	
+
 	public ParamObjectBuilder(int paramNumber) {
 		super();
 		this.paramNumber = paramNumber;
-		paramsCache=new Object[paramNumber];
+		paramsCache = new Object[paramNumber];
 	}
-	
-	private void checkColumnIndex(int columnIndex)throws SQLException {
+
+	private void checkColumnIndex(int columnIndex) throws SQLException {
 		if (columnIndex < 1 || columnIndex > paramNumber) {
 			throw new SQLException("columnIndex is invalid");
 		}
 	}
-	
-	public void expandParam(){
-		this.paramNumber=paramNumber+1;
-		Object[] newParamCache=new Object[paramNumber];
+
+	public void expandParam() {
+		this.paramNumber = paramNumber + 1;
+		Object[] newParamCache = new Object[paramNumber];
 		for (int i = 0; i < paramsCache.length; i++) {
-			newParamCache[i]=paramsCache[i];
+			newParamCache[i] = paramsCache[i];
 		}
-		paramsCache=newParamCache;
+		paramsCache = newParamCache;
 	}
-	
-	
-	public void addParamterObject(int parameterIndex, Object value) throws SQLException {
+
+	public void addParamterObject(int parameterIndex, Object value)
+			throws SQLException {
 		checkColumnIndex(parameterIndex);
-		paramsCache[parameterIndex-1]=value;
+		paramsCache[parameterIndex - 1] = value;
 		params.add(new ParameterObject(parameterIndex, value));
 		indexParamValue.put(parameterIndex, value);
 	}
 
-	public void addNullParamterObject(int parameterIndex, int sqlType) throws SQLException {
+	public void addNullParamterObject(int parameterIndex, int sqlType)
+			throws SQLException {
 		checkColumnIndex(parameterIndex);
-		paramsCache[parameterIndex-1]=null;
+		paramsCache[parameterIndex - 1] = null;
 		params.add(new ParameterObject(parameterIndex, sqlType, null, true));
 		indexParamValue.put(parameterIndex, null);
 	}
 
-	public void addNullParamterObject(int parameterIndex, int sqlType, String typeName) throws SQLException {
+	public void addNullParamterObject(int parameterIndex, int sqlType,
+			String typeName) throws SQLException {
 		checkColumnIndex(parameterIndex);
-		paramsCache[parameterIndex-1]=null;
+		paramsCache[parameterIndex - 1] = null;
 		params.add(new ParameterObject(parameterIndex, sqlType, typeName, true));
 		indexParamValue.put(parameterIndex, null);
 	}
 
-	public void addParamterObject(int parameterIndex, Object value, int targetSqlType) throws SQLException {
+	public void addParamterObject(int parameterIndex, Object value,
+			int targetSqlType) throws SQLException {
 		checkColumnIndex(parameterIndex);
-		paramsCache[parameterIndex-1]=value;
+		paramsCache[parameterIndex - 1] = value;
 		params.add(new ParameterObject(parameterIndex, value, targetSqlType));
 		indexParamValue.put(parameterIndex, value);
 	}
 
-	public void addInputStreamParamterObject(int parameterIndex, InputStream value,
-			int length,boolean asciiStream) throws SQLException {
+	public void addInputStreamParamterObject(int parameterIndex,
+			InputStream value, int length, boolean asciiStream)
+			throws SQLException {
 		checkColumnIndex(parameterIndex);
-		paramsCache[parameterIndex-1]=value;
-		params.add(new ParameterObject(parameterIndex, value, length,asciiStream));
+		paramsCache[parameterIndex - 1] = value;
+		params.add(new ParameterObject(parameterIndex, value, length,
+				asciiStream));
 		indexParamValue.put(parameterIndex, value);
 	}
 
-	public void addReaderParamterObject(int parameterIndex, Reader value, int length) throws SQLException {
+	public void addReaderParamterObject(int parameterIndex, Reader value,
+			int length) throws SQLException {
 		checkColumnIndex(parameterIndex);
-		paramsCache[parameterIndex-1]=value;
+		paramsCache[parameterIndex - 1] = value;
 		params.add(new ParameterObject(parameterIndex, value, length));
 		indexParamValue.put(parameterIndex, value);
 	}
 
-	public void addDateParamterObject(int parameterIndex, Date value, Calendar cal) throws SQLException {
+	public void addDateParamterObject(int parameterIndex, Date value,
+			Calendar cal) throws SQLException {
 		checkColumnIndex(parameterIndex);
-		paramsCache[parameterIndex-1]=value;
+		paramsCache[parameterIndex - 1] = value;
 		params.add(new ParameterObject(parameterIndex, value, cal));
 		indexParamValue.put(parameterIndex, value);
 	}
 
-	public void addTimeParamterObject(int parameterIndex, Time value, Calendar cal) throws SQLException {
+	public void addTimeParamterObject(int parameterIndex, Time value,
+			Calendar cal) throws SQLException {
 		checkColumnIndex(parameterIndex);
-		paramsCache[parameterIndex-1]=value;
+		paramsCache[parameterIndex - 1] = value;
 		params.add(new ParameterObject(parameterIndex, value, cal));
 		indexParamValue.put(parameterIndex, value);
 	}
@@ -131,20 +141,37 @@ public class ParamObjectBuilder {
 	public void addTimestampParamterObject(int parameterIndex, Timestamp value,
 			Calendar cal) throws SQLException {
 		checkColumnIndex(parameterIndex);
-		paramsCache[parameterIndex-1]=value;
+		paramsCache[parameterIndex - 1] = value;
 		params.add(new ParameterObject(parameterIndex, value, cal));
 		indexParamValue.put(parameterIndex, value);
 	}
 
-	public void addParamterObject(int parameterIndex, Object value, int targetSqlType,
-			int scale) throws SQLException {
+	public void addParamterObject(int parameterIndex, Object value,
+			int targetSqlType, int scale) throws SQLException {
 		checkColumnIndex(parameterIndex);
-		paramsCache[parameterIndex-1]=value;
+		paramsCache[parameterIndex - 1] = value;
 		params.add(new ParameterObject(parameterIndex, value, targetSqlType,
 				scale));
 		indexParamValue.put(parameterIndex, value);
 	}
-	
+
+	public void removeParameterObject(int parameterIndex, Object value)
+			throws SQLException {
+		checkColumnIndex(parameterIndex);
+		reBuildParamsCache(parameterIndex);
+		params.remove(parameterIndex - 1);
+		indexParamValue.remove(parameterIndex);
+	}
+
+	private void reBuildParamsCache(int parameterIndex) {
+		List<Object> values = new ArrayList<Object>();
+		for (int i = 0; i < paramsCache.length; i++) {
+			if (i != parameterIndex - 1) {
+				values.add(paramsCache[i]);
+			}
+		}
+		paramsCache = values.toArray();
+	}
 
 	class ParameterObject {
 		private int index;
@@ -156,8 +183,7 @@ public class ParamObjectBuilder {
 		private int length;
 		private Calendar cal;
 		private boolean nullParam;// setNull方法标识
-		private boolean asciiStream;//区分setAsciiStream与setBinaryStream
-		
+		private boolean asciiStream;// 区分setAsciiStream与setBinaryStream
 
 		public ParameterObject(int index, Object value) {
 			super();
@@ -179,9 +205,10 @@ public class ParamObjectBuilder {
 			this.targetSqlType = targetSqlType;
 		}
 
-		public ParameterObject(int index, InputStream value, int length,boolean asciiStream) {
+		public ParameterObject(int index, InputStream value, int length,
+				boolean asciiStream) {
 			this(index, value);
-			this.asciiStream=asciiStream;
+			this.asciiStream = asciiStream;
 			this.length = length;
 		}
 
@@ -222,14 +249,14 @@ public class ParamObjectBuilder {
 		public void setParamter(PreparedStatement preparedStatement)
 				throws SQLException {
 			if (value instanceof InputStream) {
-				if(asciiStream){
-					preparedStatement.setAsciiStream(index, (InputStream) value,
-							length);
-				}else{
-					preparedStatement.setBinaryStream(index, (InputStream) value,
-							length);
+				if (asciiStream) {
+					preparedStatement.setAsciiStream(index,
+							(InputStream) value, length);
+				} else {
+					preparedStatement.setBinaryStream(index,
+							(InputStream) value, length);
 				}
-				
+
 			} else if (value instanceof Reader) {
 				preparedStatement.setCharacterStream(index, (Reader) value,
 						length);
@@ -271,14 +298,27 @@ public class ParamObjectBuilder {
 
 		}
 
+		// @Override
+		// public int hashCode() {
+		// return HashCodeUtil.reflectionCompareHashCode(this, new String[] {
+		// "index", "value" });
+		// }
+		//
+		// @Override
+		// public boolean equals(Object obj) {
+		// return EqualsUtil.reflectionCompareEquals(this, obj, new String[] {
+		// "index", "value" });
+		// }
+
 	}
 
 	public void clear() {
 		params.clear();
 	}
-	
-	public void setParamters(PreparedStatement preparedStatement) throws SQLException{
-		if(!CollectionUtil.isEmpty(params)){
+
+	public void setParamters(PreparedStatement preparedStatement)
+			throws SQLException {
+		if (!CollectionUtil.isEmpty(params)) {
 			for (ParameterObject param : params) {
 				param.setParamter(preparedStatement);
 			}
@@ -288,17 +328,20 @@ public class ParamObjectBuilder {
 	public Object[] getPreparedParams() {
 		return paramsCache;
 	}
-	
-	public int getParameterCount(){
+
+	public int getParameterCount() {
 		return params.size();
 	}
+
 	/**
 	 * 
 	 * 获取字段对应的参数值
-	 * @param columnIndex 列序号 如1、2、3
+	 * 
+	 * @param columnIndex
+	 *            列序号 如1、2、3
 	 * @return
 	 */
-	public Object getParamValue(int columnIndex){
+	public Object getParamValue(int columnIndex) {
 		return indexParamValue.get(columnIndex);
 	}
 }

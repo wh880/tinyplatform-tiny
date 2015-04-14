@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tinygroup.tinysqldsl;
+package org.tinygroup.tinysqldsl.base;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,8 +111,10 @@ public abstract class StatementSqlBuilder {
 		expressionList.setUseBrackets(false);
 		List<Object> values = new ArrayList<Object>();
 		for (Condition condition : conditions) {
-			expressionList.addExpression(condition.getExpression());
-			Collections.addAll(values, condition.getValues());
+			if (condition != null) {
+				expressionList.addExpression(condition.getExpression());
+				Collections.addAll(values, condition.getValues());
+			}
 		}
 		return new Condition(expressionList, values.toArray());
 	}

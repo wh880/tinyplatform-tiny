@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.tinysqldsl.ComplexSelect;
-import org.tinygroup.tinysqldsl.PlainSelect;
 import org.tinygroup.tinysqldsl.Select;
 import org.tinygroup.tinysqldsl.operator.SetOperationInstanceCallBack;
 import org.tinygroup.tinysqldsl.select.IntersectOperation;
 import org.tinygroup.tinysqldsl.select.MinusOperation;
+import org.tinygroup.tinysqldsl.select.PlainSelect;
 import org.tinygroup.tinysqldsl.select.SetOperation;
 import org.tinygroup.tinysqldsl.select.UnionOperation;
 

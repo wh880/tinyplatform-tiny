@@ -69,5 +69,8 @@
 	<bean id="notEqualsConditionGenerater"  scope="singleton"
 		class="org.tinygroup.tinydb.sql.condition.impl.NotEqualsConditionGenerater">
 	</bean>
+	<bean id="inConditionGenerater"  scope="singleton"
+		class="org.tinygroup.tinydb.sql.condition.impl.InConditionGenerater">
+	</bean>
 	
 </beans>

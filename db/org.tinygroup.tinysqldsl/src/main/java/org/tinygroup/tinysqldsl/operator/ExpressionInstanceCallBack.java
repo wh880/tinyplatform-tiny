@@ -25,6 +25,18 @@ import org.tinygroup.tinysqldsl.expression.Expression;
  *
  */
 public interface ExpressionInstanceCallBack {
+    /**
+     * 是否要对原生值进行格式化
+     * @param value
+     * @return
+     */
+	Object format(Object value);
+	/**
+	 * 根据参数实例化二元表达式
+	 * @param leftExpression
+	 * @param rightExpression
+	 * @return
+	 */
     BinaryExpression instance(Expression leftExpression,
                               Expression rightExpression);
 }

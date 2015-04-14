@@ -17,7 +17,8 @@ package org.tinygroup.dbrouter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+
+import org.tinygroup.dbrouter.context.StatementExecuteContext;
 
 /**
  * 用于对SQL进行特殊处理并进行结果合并等<br>
@@ -32,25 +33,26 @@ public interface StatementProcessor {
      * 返回是否由此SQL处理器进行处理
      *
      * @param sql
+     * @param values TODO
      * @return
      */
-    boolean isMatch(String sql);
+    boolean isMatch(String sql, Object[] values);
 
     /**
      * 返回处理器转换过之后的SQL
      *
      * @param sql
+     * @param context 执行上下文
      * @return
      */
-    String getSql(String sql);
+    String getSql(String sql, StatementExecuteContext context);
 
     /**
      * 对结果进行合并
      * @param sql 
-     * @param results
-     *
+     * @param context
      * @return
      * @throws SQLException
      */
-    ResultSet combineResult(String sql, List<ResultSet> results) throws SQLException;
+    ResultSet combineResult(String sql, StatementExecuteContext context) throws SQLException;
 }

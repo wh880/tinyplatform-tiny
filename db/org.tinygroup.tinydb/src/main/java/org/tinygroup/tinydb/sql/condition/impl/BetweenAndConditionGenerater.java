@@ -15,7 +15,7 @@ public class BetweenAndConditionGenerater extends AbstractConditionGenerater {
 		return columnName+" between ? and ? ";
 	}
 
-	public void paramValueProcess(Object value,List<Object> params) {
+	public void paramValueProcess(List<Object> params) {
 		Object[] values=(Object[])value;
 	    if(!ArrayUtil.isEmptyArray(values)){
 	    	for (Object param : values) {
