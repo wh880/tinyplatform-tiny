@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.tinygroup</groupId>
     <artifactId>mvntemplate</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1-SNAPSHOT</version>
   </parent>
   <artifactId>org.tinygroup.flowcomponentarchetype</artifactId>
   <url>http://maven.apache.org</url>
