@@ -1,4 +1,0 @@
-<plugin-configs>
-	<plugin-config plugin-name="${artifactId}" plugin-bean="${artifactId}"
-		depend-plugins="" plugin-level="10"></plugin-config>
-</plugin-configs>
