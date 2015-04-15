@@ -21,8 +21,11 @@ import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import junit.framework.TestCase;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Resources;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.Configuration;
@@ -52,10 +55,10 @@ public abstract class BaseTest extends TestCase {
 	public void setUp() throws Exception {
 		AbstractTestUtil.init(null, true);
 		if (!hasExcuted) {
+			initTable();
 			Reader reader = Resources.getResourceAsReader("tinydb.xml");
 			ConfigurationBuilder builder = new ConfigurationBuilder(reader);
 			configuration = builder.parser();
-			initTable();
 			initFactory();
 			hasExcuted = true;
 		}
@@ -65,7 +68,9 @@ public abstract class BaseTest extends TestCase {
 	private void initTable() throws IOException, Exception {
 		Connection conn = null;
 		try {
-			conn = configuration.getUseDataSource().getConnection();
+			DataSource dataSource = BeanContainerFactory.getBeanContainer(
+					getClass().getClassLoader()).getBean("derbyDataSource");
+			conn = dataSource.getConnection();
 			ScriptRunner runner = new ScriptRunner(conn, false, false);
 			// 设置字符集
 			Resources.setCharset(Charset.forName("utf-8"));
