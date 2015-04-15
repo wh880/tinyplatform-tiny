@@ -1,7 +1,6 @@
 package org.tinygroup.weblayer.listener.impl;
 
 import javax.servlet.ServletContextAttributeListener;
-import javax.servlet.ServletContextListener;
 
 /**
  * 创建ServletContextAttributeListener
@@ -12,7 +11,7 @@ public class ServletContextAttributeListenerBuilder extends
 		AbstractListenerBuilder<ServletContextAttributeListener> {
 
 	public boolean isTypeMatch(Object object) {
-		return ServletContextListener.class.isInstance(object);
+		return ServletContextAttributeListener.class.isInstance(object);
 	}
 
 	@Override
