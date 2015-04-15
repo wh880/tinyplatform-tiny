@@ -4,6 +4,17 @@
 --set define off
 --First　delete　the　tables　if　they　exist.　
 --Ignore　the　table　does　not　exist　error　if　present　
+drop table ANIMAL;
+drop table A_BRANCH;
+drop table A_PEOPLE;
+drop table incrementer;
+drop table one_to_more1;
+drop table one_to_more2;
+drop table one_to_more3;
+drop table more_to_one1;
+drop table more_to_one2;
+drop table more_to_one3;
+drop table more_to_one4;
 --prompt Creating ANIMAL...
 create table ANIMAL
 (
@@ -80,18 +91,6 @@ create table more_to_one4
   name   VARCHAR(32),
   relation_id VARCHAR(32)
 );
-
-delete from ANIMAL;
-delete from A_BRANCH;
-delete from A_PEOPLE;
-delete from incrementer;
-delete from one_to_more1;
-delete from one_to_more2;
-delete from one_to_more3;
-delete from more_to_one1;
-delete from more_to_one2;
-delete from more_to_one3;
-delete from more_to_one4;
 --prompt Disabling triggers for ANIMAL...
 --alter table ANIMAL disable all triggers;
 --prompt Disabling triggers for A_BRANCH...
