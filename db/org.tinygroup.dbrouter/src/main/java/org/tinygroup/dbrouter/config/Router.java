@@ -74,8 +74,16 @@ public class Router {
 	@XStreamAlias("jta-enabled")
 	@XStreamAsAttribute
 	private boolean jtaEnabled = true;
+	@XStreamAsAttribute
+	private String schema;
+	@XStreamAsAttribute
+	private String catalog;
 
 	private static final int DEFAULT_THREAD_SIZE = 100;
+	
+	public Router() {
+		super();
+	}
 
 	public Router(String id, String userName, String password) {
 		this.id = id;
@@ -174,6 +182,22 @@ public class Router {
 
 	public void setJtaEnabled(boolean jtaEnabled) {
 		this.jtaEnabled = jtaEnabled;
+	}
+
+	public String getSchema() {
+		return schema;
+	}
+
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
+
+	public String getCatalog() {
+		return catalog;
+	}
+
+	public void setCatalog(String catalog) {
+		this.catalog = catalog;
 	}
 
 }
