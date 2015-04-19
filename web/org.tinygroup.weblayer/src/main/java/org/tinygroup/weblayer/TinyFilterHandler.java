@@ -212,7 +212,7 @@ public class TinyFilterHandler {
 		WebExceptionHandlerManager exceptionHandlerManager = BeanContainerFactory
 				.getBeanContainer(this.getClass().getClassLoader()).getBean(
 						WebExceptionHandlerManager.MANAGER_BEAN);
-		exceptionHandlerManager.handler(rootCause, webContext);
+		exceptionHandlerManager.handler(e, webContext);
 	}
 
 	/**

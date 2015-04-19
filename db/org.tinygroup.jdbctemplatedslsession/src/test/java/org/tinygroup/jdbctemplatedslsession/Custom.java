@@ -6,7 +6,7 @@ public class Custom {
 	
 	private String name;
 	
-	private int age;
+	private Integer age;
 
 	public String getId() {
 		return id;
@@ -24,12 +24,12 @@ public class Custom {
 		this.name = name;
 	}
 
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
-	
+
 }
