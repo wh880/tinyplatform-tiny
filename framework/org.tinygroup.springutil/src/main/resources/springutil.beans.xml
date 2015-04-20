@@ -10,11 +10,11 @@
 		class="org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor">
 	</bean>
 
-	<!-- <bean id="applicationPropertyResourceConfigurer" scope="singleton"
+	<bean id="applicationPropertyResourceConfigurer" scope="singleton"
 		class="org.tinygroup.springutil.ApplicationPropertyResourceConfigurer">
 		<property name="application">
 			<value>classpath:/application.xml</value>
 		</property>
-	</bean> -->
+	</bean>
 
 </beans>
