@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:element name="business-types">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="business-type" minOccurs="0" maxOccurs="unbounded">
-					<xs:complexType>
-						<xs:all>
-							<xs:element name="placeholder-value-list" minOccurs="0">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="placeholder-value" minOccurs="0"
-											maxOccurs="unbounded">
-											<xs:complexType>
-												<xs:attribute name="value" type="xs:string" />
-												<xs:attribute name="name" type="xs:string" />
-											</xs:complexType>
-										</xs:element>
-									</xs:sequence>
-								</xs:complexType>
-							</xs:element>
-						</xs:all>
-						<xs:attribute name="id" type="xs:string" />
-						<xs:attribute name="name" type="xs:string" />
-						<xs:attribute name="title" type="xs:string" />
-						<xs:attribute name="description" type="xs:string" />
-						<xs:attribute name="standard-type-id" type="xs:string" />
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-			<xs:attribute name="id" type="xs:string" />
-			<xs:attribute name="name" type="xs:string" />
-			<xs:attribute name="title" type="xs:string" />
-			<xs:attribute name="description" type="xs:string" />
-			<xs:attribute name="package-name" type="xs:string" />
-		</xs:complexType>
-	</xs:element>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="business-types">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="business-type"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="business-type">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="description"/>
+        <xs:element ref="placeholder-value-list"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required"/>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="standard-type-id" use="required"/>
+      <xs:attribute name="title" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="description" type="xs:NCName"/>
+  <xs:element name="placeholder-value-list">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="placeholder-value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="placeholder-value">
+    <xs:complexType>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="value" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>
