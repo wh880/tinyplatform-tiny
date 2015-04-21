@@ -43,7 +43,7 @@ public class ViewInstallProcessor extends AbstractInstallProcessor {
 		this.viewProcessor = viewProcessor;
 	}
 
-	protected List<String> getDealSqls(Connection con) throws SQLException {
+	public List<String> getDealSqls(String language, Connection con) throws SQLException {
 	    List<String> createViewSqls = new ArrayList<String>();
 	    List<View> views = viewProcessor.getViews();
 

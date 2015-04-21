@@ -15,13 +15,22 @@
  */
 package org.tinygroup.databasebuinstaller;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.sql.DataSource;
 
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
+import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.database.util.DataSourceInfo;
+import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -31,35 +40,20 @@ import org.tinygroup.xmlparser.node.XmlNode;
  * 
  * 功能说明:数据库安装类
  * <p>
-
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-8-15 <br>
  * <br>
  */
 public class DatabaseInstallerProcessor implements ApplicationProcessor {
 	public static final String DATABASE_INSTALLER_BEAN_NAME = "databaseInstaller";
-	private Logger logger = LoggerFactory.getLogger(DatabaseInstallerProcessor.class);
+	private Logger logger = LoggerFactory
+			.getLogger(DatabaseInstallerProcessor.class);
 	private String defaultLanuage = "oracle";
 	private String dbLanguage = "";
 	private List<InstallProcessor> installProcessors = new ArrayList<InstallProcessor>();
 	private XmlNode componentConfig;
 	private XmlNode applicationConfig;
-
-	public Logger getLogger() {
-		return logger;
-	}
-
-	public void setLogger(Logger logger) {
-		this.logger = logger;
-	}
-
-	public String getDefaultLanuage() {
-		return defaultLanuage;
-	}
-
-	public void setDefaultLanuage(String defaultLanuage) {
-		this.defaultLanuage = defaultLanuage;
-	}
 
 	public String getDbLanguage() {
 		return dbLanguage;
@@ -87,8 +81,34 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 		return dbLanguage;
 	}
 
-	public void process() {
-		logger.logMessage(LogLevel.INFO, "开始进行{0}数据库安装处理", dbLanguage);
+	public Map<Class, List<String>> getChangeSqls() {
+		installSort();
+		Map<Class, List<String>> processSqls = new HashMap<Class, List<String>>();
+		DataSource dataSource = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				DataSourceInfo.DATASOURCE_NAME);
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			for (InstallProcessor processor : installProcessors) {
+				processSqls.put(processor.getClass(),
+						processor.getDealSqls(dbLanguage, con));
+			}
+		} catch (SQLException ex) {
+			throw new TinySysRuntimeException(ex);
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+
+				}
+			}
+		}
+		return processSqls;
+	}
+
+	private void installSort() {
 		Collections.sort(installProcessors, new Comparator<InstallProcessor>() {
 			public int compare(InstallProcessor o1, InstallProcessor o2) {
 				if (o1 != null && o2 != null) {
@@ -98,6 +118,16 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 				return 0;
 			}
 		});
+	}
+
+	public void process() {
+		logger.logMessage(LogLevel.INFO, "开始进行{0}数据库安装处理", dbLanguage);
+		installSort();
+		installProcess();
+		logger.logMessage(LogLevel.INFO, "{0}数据库安装处理结束", dbLanguage);
+	}
+
+	private void installProcess() {
 		for (InstallProcessor installProcessor : installProcessors) {
 			if (installProcessor != null) {
 				try {
@@ -110,7 +140,6 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 
 			}
 		}
-		logger.logMessage(LogLevel.INFO, "{0}数据库安装处理结束", dbLanguage);
 	}
 
 	public String getApplicationNodePath() {
@@ -162,6 +191,6 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 
 	public void init() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

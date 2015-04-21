@@ -33,7 +33,7 @@ public class SequenceInstallProcessor extends AbstractInstallProcessor {
 	public void setProcessor(SequenceProcessor processor) {
 		this.processor = processor;
 	}
-	protected List<String> getDealSqls(Connection con) throws SQLException {
+	public List<String> getDealSqls(String language, Connection con) throws SQLException {
 		List<String> sqls=new ArrayList<String>();
 		List<Sequence> sequences=processor.getSequences(language);
 		for (Sequence sequence : sequences) {

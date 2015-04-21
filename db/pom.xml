@@ -18,5 +18,6 @@
     <module>org.tinygroup.metadata</module>
     <module>org.tinygroup.databasebuinstaller</module>
     <module>org.tinygroup.jdbctemplatedslsession</module>
+    <module>org.tinygroup.databasechange</module>
   </modules>
 </project>
