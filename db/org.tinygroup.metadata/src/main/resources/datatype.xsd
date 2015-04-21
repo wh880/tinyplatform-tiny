@@ -1,61 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
-	<xs:element name="standard-types">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="standard-type" minOccurs="0" maxOccurs="unbounded"
-					type="standardTypeType" />
-			</xs:sequence>
-			<xs:attribute name="packageName" type="xs:string" />
-		</xs:complexType>
-	</xs:element>
-
-	<xs:complexType name="standardTypeType">
-		<xs:all>
-			<xs:element name="placeholder-list" minOccurs="0"
-				type="placeholderListType" />
-			<xs:element name="dialect-type-list" minOccurs="0"
-				type="dialectTypeListType" />
-		</xs:all>
-	</xs:complexType>
-
-	<xs:complexType name="placeholderListType">
-		<xs:sequence>
-			<xs:element name="placeholder" minOccurs="0" maxOccurs="unbounded">
-				<xs:complexType>
-					<xs:attribute name="id" type="xs:string" />
-					<xs:attribute name="name" type="xs:string" />
-					<xs:attribute name="title" type="xs:string" />
-					<xs:attribute name="description" type="xs:string" />
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="dialectTypeListType">
-		<xs:sequence>
-			<xs:element name="dialect-type" type="dialectTypeType"
-				minOccurs="0" maxOccurs="unbounded">
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="dialectTypeType">
-		<xs:sequence>
-			<xs:element name="placeholder-value" minOccurs="0"
-				maxOccurs="unbounded">
-				<xs:complexType>
-					<xs:attribute name="name" type="xs:string" />
-					<xs:attribute name="value" type="xs:string" />
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-		<xs:attribute name="language" type="xs:string" />
-		<xs:attribute name="type" type="xs:string" />
-		<xs:attribute name="type-name" type="xs:string" />
-		<xs:attribute name="data-type" type="xs:string" />
-		<xs:attribute name="default-value" type="xs:string" />
-	</xs:complexType>
-
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="standard-types">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="standard-type"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="standard-type">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="description">
+          <xs:sequence>
+            <xs:element ref="placeholder-list"/>
+            <xs:element ref="dialect-type-list"/>
+          </xs:sequence>
+          <xs:attribute name="data-type" use="required" type="xs:integer"/>
+          <xs:attribute name="id" use="required"/>
+          <xs:attribute name="name" use="required" type="xs:NCName"/>
+          <xs:attribute name="title" use="required" type="xs:NCName"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="placeholder-list">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="placeholder"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="placeholder">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="description">
+          <xs:attribute name="id" use="required"/>
+          <xs:attribute name="name" use="required" type="xs:NCName"/>
+          <xs:attribute name="title" use="required" type="xs:NCName"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dialect-type-list">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="dialect-type"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dialect-type">
+    <xs:complexType>
+      <xs:attribute name="base-type" use="required" type="xs:NCName"/>
+      <xs:attribute name="default-value" use="required"/>
+      <xs:attribute name="ext-type"/>
+      <xs:attribute name="language" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="description">
+    <xs:sequence>
+      <xs:element ref="description"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="description" type="xs:string"/>
 </xs:schema>
