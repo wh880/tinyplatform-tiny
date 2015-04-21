@@ -15,8 +15,7 @@ public class CustomSqlInstallProcessor extends AbstractInstallProcessor {
         this.customSqlProcessor = customSqlProcessor;
     }
 
-    @Override
-    protected List<String> getDealSqls(Connection con) throws SQLException {
+    public List<String> getDealSqls(String language, Connection con) throws SQLException {
         List<String> customSqls = new ArrayList<String>();
 
         //根据顺序加载自定义sql

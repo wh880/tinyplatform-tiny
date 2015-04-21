@@ -35,7 +35,7 @@ public class TriggerInstallProcessor extends AbstractInstallProcessor {
 		this.processor = processor;
 	}
 
-	protected List<String> getDealSqls(Connection con) throws SQLException {
+	public List<String> getDealSqls(String language, Connection con) throws SQLException {
 		List<String> sqls=new ArrayList<String>();
 		List<Trigger> triggers=processor.getTriggers(language);
 		for (Trigger trigger : triggers) {

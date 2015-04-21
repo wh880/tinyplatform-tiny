@@ -5,6 +5,8 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.tinygroup.databasebuinstaller.InstallProcessor;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
@@ -108,6 +110,13 @@ public class KeyTableInstallProcessor implements InstallProcessor{
 			}
 		}
 		
+	}
+
+	public List<String> getDealSqls(String language, Connection con)
+			throws SQLException {
+		List<String> sqls=new ArrayList<String>();
+		sqls.add(keyTable.getRealSql(tableName));
+		return sqls;
 	}
 
 }

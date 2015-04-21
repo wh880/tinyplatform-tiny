@@ -15,6 +15,10 @@
  */
 package org.tinygroup.databasebuinstaller;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
 import org.tinygroup.commons.order.Ordered;
 
 /**
@@ -38,5 +42,13 @@ public interface InstallProcessor extends Ordered {
     * 对某种数据库语言进行处理
     */
 	void process(String language);
+	
+	/**
+	 * 获取此次处理器相关的sql语句列表
+	 * @param language 
+	 * @param con
+	 * @return
+	 */
+	List<String> getDealSqls(String language, Connection con)throws SQLException;
 
 }

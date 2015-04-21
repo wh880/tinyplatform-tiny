@@ -73,7 +73,7 @@ public abstract class AbstractInstallProcessor implements InstallProcessor {
 	}
 
 	protected void processWithConn(Connection con) throws SQLException {
-		List<String> sqls = getDealSqls(con);
+		List<String> sqls = getDealSqls(null, con);
 		excute(sqls, con);
 
 	}
@@ -98,7 +98,5 @@ public abstract class AbstractInstallProcessor implements InstallProcessor {
 		}
 	}
 
-	protected abstract List<String> getDealSqls(Connection con)
-			throws SQLException;
 
 }

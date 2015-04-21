@@ -79,7 +79,7 @@ public class TableInstallProcessor extends AbstractInstallProcessor {
 	}
 
 	
-	protected List<String> getDealSqls(Connection con) throws SQLException {
+	public List<String> getDealSqls(String language, Connection con) throws SQLException {
 		logger.logMessage(LogLevel.INFO, "开始获取数据库表安装操作执行语句");
 		List<Table> list = tableProcessor.getTables();
 		List<String> sqls = new ArrayList<String>();

@@ -47,7 +47,7 @@ public class InitDataInstallProcessor extends AbstractInstallProcessor {
 
 
 	
-	protected List<String> getDealSqls(Connection con) throws SQLException {
+	public List<String> getDealSqls(String language, Connection con) throws SQLException {
 		List<String> sqls=new ArrayList<String>();
 		sqls.addAll(initDataProcessor.getDeinitSql(language));
 		sqls.addAll(initDataProcessor.getInitSql(language));
