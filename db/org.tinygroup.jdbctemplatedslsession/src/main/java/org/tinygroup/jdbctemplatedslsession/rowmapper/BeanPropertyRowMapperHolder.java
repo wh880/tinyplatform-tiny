@@ -23,7 +23,7 @@ public class BeanPropertyRowMapperHolder implements RowMapperHolder {
 	}
 
 	public RowMapper getRowMapper(Class requiredType) {
-		return new BeanPropertyRowMapper(requiredType);
+		return new TinyBeanPropertyRowMapper(requiredType);
 	}
 
 }
