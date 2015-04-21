@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.metadata.bizdatatype.BusinessTypeProcessor;
 import org.tinygroup.metadata.config.PlaceholderValue;
 import org.tinygroup.metadata.config.bizdatatype.BusinessType;
@@ -51,9 +52,12 @@ public final class MetadataUtil {
 		String result = type;
 		if (placeholderValueList != null) {
 			for (PlaceholderValue placeholderValue : placeholderValueList) {
-				result = result.replaceAll(
-						"[$][{]" + placeholderValue.getName() + "[}]",
-						placeholderValue.getValue());
+				if(!StringUtil.isEmpty(placeholderValue.getName()) && !StringUtil.isEmpty(placeholderValue.getValue())){
+					result = result.replaceAll(
+							"[$][{]" + placeholderValue.getName() + "[}]",
+							placeholderValue.getValue());
+				}
+				
 			}
 		}
 		return result;
