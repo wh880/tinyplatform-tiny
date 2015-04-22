@@ -38,7 +38,7 @@ public class InitDataFileResolver extends AbstractFileProcessor {
 	}
 
 	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(INITDATA_EXTFILENAME);
+		return fileObject.getFileName().endsWith(INITDATA_EXTFILENAME) || fileObject.getFileName().endsWith(".init");
 	}
 
 	public void process() {

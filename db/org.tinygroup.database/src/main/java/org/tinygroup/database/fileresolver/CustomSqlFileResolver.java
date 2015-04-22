@@ -39,7 +39,7 @@ public class CustomSqlFileResolver extends AbstractFileProcessor {
 	}
 
 	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(CUSTOMSQL_EXTFILENAME);
+		return fileObject.getFileName().endsWith(CUSTOMSQL_EXTFILENAME) || fileObject.getFileName().endsWith(".customsql");
 	}
 
 	public void process() {
