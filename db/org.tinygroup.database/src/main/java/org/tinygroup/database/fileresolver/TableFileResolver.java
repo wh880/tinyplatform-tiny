@@ -39,7 +39,7 @@ public class TableFileResolver extends AbstractFileProcessor {
 	}
 
 	public boolean isMatch(org.tinygroup.vfs.FileObject fileObject) {
-		return fileObject.getFileName().endsWith(TABLE_EXTFILENAME);
+		return fileObject.getFileName().endsWith(TABLE_EXTFILENAME) || fileObject.getFileName().endsWith(".table");
 	}
 
 	public void process() {

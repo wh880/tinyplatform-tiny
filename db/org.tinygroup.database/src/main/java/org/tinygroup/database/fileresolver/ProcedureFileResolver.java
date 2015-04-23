@@ -38,7 +38,7 @@ public class ProcedureFileResolver extends AbstractFileProcessor {
 	}
 
 	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(PROCEDURE_EXTFILENAME);
+		return fileObject.getFileName().endsWith(PROCEDURE_EXTFILENAME) || fileObject.getFileName().endsWith(".procedure") ;
 	}
 
 	public void process() {
