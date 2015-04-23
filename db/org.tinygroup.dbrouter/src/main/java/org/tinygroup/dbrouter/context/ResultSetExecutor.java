@@ -97,6 +97,7 @@ public class ResultSetExecutor {
 
 	public boolean next() throws SQLException {
 		if (!isAfterLast) {
+			isBeforeFirst=false;
 			return resultSet.next();
 		}
 		return false;
@@ -105,6 +106,7 @@ public class ResultSetExecutor {
 
 	public boolean previous() throws SQLException {
 		if (!isBeforeFirst) {
+			isAfterLast=false;
 			return resultSet.previous();
 		}
 		return false;
