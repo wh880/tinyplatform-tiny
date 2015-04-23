@@ -60,7 +60,7 @@ public abstract class SimpleBinaryOperator implements BinaryOperator,
 
 	public Condition toCondition(Object value,
 			ExpressionInstanceCallBack callBack) {
-		if (value == null) {
+		if (value == null||value.toString().trim().equals("")) {
 			return null;
 		}
 		Object newValue = callBack.format(value);
@@ -165,12 +165,23 @@ public abstract class SimpleBinaryOperator implements BinaryOperator,
 		Condition condition = new Condition(isNull);
 		return condition;
 	}
-
+	
 	public Condition isNotNull() {
 		IsNullExpression isNotNull = new IsNullExpression(this, true);
 		Condition condition = new Condition(isNotNull);
 		return condition;
 	}
+	
+	public Condition isEmpty() {
+		IsEmptyExpression isEmpty=new IsEmptyExpression(this);
+		return new Condition(isEmpty);
+	}
+
+	public Condition isNotEmpty() {
+		IsEmptyExpression isEmpty=new IsEmptyExpression(this,true);
+		return new Condition(isEmpty);
+	}
+
 
 	public Condition like(String value) {
 		return toCondition(value, new ExpressionInstanceCallBack() {

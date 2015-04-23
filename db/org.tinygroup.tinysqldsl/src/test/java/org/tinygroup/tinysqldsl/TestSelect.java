@@ -148,6 +148,9 @@ public class TestSelect {
 
 		System.out.println(select(CUSTOM.NAME).from(CUSTOM).where(
 				and(CUSTOM.AGE.greaterThan(33), CUSTOM.NAME.equal(null))));
+		
+		System.out.println(select(CUSTOM.NAME).from(CUSTOM).where(
+				and(CUSTOM.AGE.greaterThan(33), CUSTOM.NAME.isNotEmpty())));
 
 		System.out.println(select(CUSTOM.NAME).from(CUSTOM).where(
 				or(and(CUSTOM.AGE.greaterThan(33), CUSTOM.NAME.equal(null)),

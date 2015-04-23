@@ -151,6 +151,20 @@ public interface BinaryOperator {
      * @return
      */
     Condition isNotNull();
+    
+    /**
+     * 是否为空字符串
+     *
+     * @return
+     */
+    Condition isEmpty();
+
+    /**
+     * 是否为非字符串
+     *
+     * @return
+     */
+    Condition isNotEmpty();
 
     /**
      * 包含
