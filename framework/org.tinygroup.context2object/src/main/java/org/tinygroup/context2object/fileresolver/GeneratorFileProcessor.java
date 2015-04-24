@@ -16,6 +16,7 @@
 package org.tinygroup.context2object.fileresolver;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.context2object.ObjectAssembly;
 import org.tinygroup.context2object.TypeConverter;
 import org.tinygroup.context2object.TypeCreator;
 import org.tinygroup.context2object.config.GeneratorConfig;
@@ -123,6 +124,15 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 			generator.addTypeCreator(o);
 		}
 		logger.logMessage(LogLevel.INFO, "读取generator配置TypeCreator完成");
+		logger.logMessage(LogLevel.INFO, "开始读取generator配置ObjectAssembly");
+		for (GeneratorConfigItem item : config.getAssemblies()) {
+			logger.logMessage(LogLevel.INFO,
+					"处理ObjectAssembly,beanName:{0},className:{1}",
+					item.getBeanName(), item.getClassName());
+			ObjectAssembly o = (ObjectAssembly) deal(item);
+			generator.addObjectAssembly(o);
+		}
+		logger.logMessage(LogLevel.INFO, "读取generator配置ObjectAssembly完成");
 	}
 
 	private Object deal(GeneratorConfigItem configItem) {

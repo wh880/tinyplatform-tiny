@@ -26,6 +26,8 @@ public class GeneratorConfig {
 	private List<GeneratorConfigItem> typeConverters;
 	@XStreamAlias("type-creators")
 	private List<GeneratorConfigItem> typeCreators;
+	@XStreamAlias("object-assemblies")
+	private List<GeneratorConfigItem> assemblies;
 
 	public List<GeneratorConfigItem> getTypeConverters() {
 		if (typeConverters == null) {
@@ -49,4 +51,15 @@ public class GeneratorConfig {
 		this.typeCreators = typeCreators;
 	}
 
+	public List<GeneratorConfigItem> getAssemblies() {
+		if(assemblies==null){
+			assemblies=new ArrayList<GeneratorConfigItem>();
+		}
+		return assemblies;
+	}
+
+	public void setAssemblies(List<GeneratorConfigItem> assemblies) {
+		this.assemblies = assemblies;
+	}
+	
 }

@@ -94,7 +94,11 @@ public class Bean extends HashMap<String, Object> {
         return type;
     }
     
-    public void clearMark(){
+    public void setType(String type) {
+		this.type = type;
+	}
+
+	public void clearMark(){
     	updateMarkMap.clear();
     }
 
