@@ -36,6 +36,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.net.daemon.DaemonUtils;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 public class ArOperator implements CEPCoreOperator {
 	protected static Logger logger = LoggerFactory.getLogger(ArOperator.class);
@@ -182,6 +183,11 @@ public class ArOperator implements CEPCoreOperator {
 
 	public void setWeight(int weight) {
 		this.weight = weight;
+	}
+
+	public void setParam(XmlNode node) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

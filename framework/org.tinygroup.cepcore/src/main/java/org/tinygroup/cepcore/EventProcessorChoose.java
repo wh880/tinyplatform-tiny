@@ -17,8 +17,13 @@ package org.tinygroup.cepcore;
 
 import java.util.List;
 
+import org.tinygroup.xmlparser.node.XmlNode;
+
 public interface EventProcessorChoose {
-	
+
 	int DEFAULT_WEIGHT = 10;
+
 	EventProcessor choose(List<EventProcessor> processors);
+
+	void setParam(XmlNode param);
 }

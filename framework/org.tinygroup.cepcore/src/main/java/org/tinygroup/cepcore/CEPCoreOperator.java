@@ -15,9 +15,14 @@
  */
 package org.tinygroup.cepcore;
 
+import org.tinygroup.xmlparser.node.XmlNode;
 
 public interface CEPCoreOperator {
-	void startCEPCore(CEPCore cep) ;
-	void stopCEPCore(CEPCore cep) ;
+	void startCEPCore(CEPCore cep);
+
+	void stopCEPCore(CEPCore cep);
+
 	void setCEPCore(CEPCore cep);
+
+	void setParam(XmlNode node);
 }
