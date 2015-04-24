@@ -357,8 +357,9 @@ public final class U {
         } else if (object instanceof Collection) {
             Collection c = (Collection) object;
             int i = 0;
+            Iterator it= c.iterator();
             while (i < c.size()) {
-                Object o = c.iterator().next();
+                Object o = it.next();
                 if (i == index) {
                     return o;
                 }
