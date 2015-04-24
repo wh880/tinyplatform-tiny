@@ -15,6 +15,16 @@
  */
 package org.tinygroup.weblayer;
 
+import static org.tinygroup.weblayer.webcontext.parser.ParserWebContext.DEFAULT_CHARSET_ENCODING;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.ExceptionUtil;
@@ -27,14 +37,10 @@ import org.tinygroup.weblayer.webcontext.CommitMonitor;
 import org.tinygroup.weblayer.webcontext.SimpleWebContext;
 import org.tinygroup.weblayer.webcontext.TwoPhaseCommitWebContext;
 import org.tinygroup.weblayer.webcontext.buffered.BufferedWebContext;
+import org.tinygroup.weblayer.webcontext.parser.ParserWebContext;
+import org.tinygroup.weblayer.webcontext.parser.valueparser.ParameterParser;
+import org.tinygroup.weblayer.webcontext.util.QueryStringParser;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * 完成filter处理的中间类
@@ -43,6 +49,7 @@ import java.util.List;
  */
 public class TinyFilterHandler {
 
+	private static final String SEARCH_STR = "?";
 	private static final Logger logger = LoggerFactory
 			.getLogger(TinyFilterHandler.class);
 	private TinyFilterManager tinyFilterManager;
@@ -94,8 +101,9 @@ public class TinyFilterHandler {
 			if (isRequestFinished(tinyFilters.size(), wrapperContext)) {
 				return;
 			}
-			servletPath = getServletPath(wrapperContext.getRequest());// 重新获取路径
-																		// 可能之前被修改过
+			servletPath = getServletPath(wrapperContext.getRequest(),
+					wrapperContext);// 重新获取路径
+			// 可能之前被修改过
 			if (!tinyProcessorManager.execute(servletPath, wrapperContext)) {
 				giveUpControl(wrapperContext);
 				return;
@@ -110,7 +118,8 @@ public class TinyFilterHandler {
 		}
 	}
 
-	private String getServletPath(HttpServletRequest request) {
+	private String getServletPath(HttpServletRequest request,
+			WebContext webContext) {
 		String servletPath = (String) request
 				.getAttribute(TinyHttpFilter.DEFAULT_PAGE_KEY);
 		if (StringUtil.isBlank(servletPath)) {
@@ -119,7 +128,31 @@ public class TinyFilterHandler {
 				servletPath = request.getPathInfo();
 			}
 		}
-		return servletPath;
+		if (StringUtil.contains(servletPath, SEARCH_STR)) {
+			parserRequestPath(servletPath, request, webContext);
+		}
+		return StringUtil.substringBefore(servletPath, SEARCH_STR);
+	}
+
+	/**
+	 * 解析请求路径servletPath的参数信息，把参数信息存放在上下文中
+	 * 
+	 * @param request
+	 * @param servletPath
+	 */
+	private void parserRequestPath(String servletPath,
+			HttpServletRequest request, final WebContext webContext) {
+		ParserWebContext requestContext = WebContextUtil.findWebContext(
+				request, ParserWebContext.class);
+		String charset = requestContext.isUseBodyEncodingForURI() ? request
+				.getCharacterEncoding() : requestContext.getURIEncoding();
+		QueryStringParser parser = new QueryStringParser(charset,
+				DEFAULT_CHARSET_ENCODING) {
+			protected void add(String key, String value) {
+				webContext.put(key, value);
+			}
+		};
+		parser.parse(StringUtil.substringAfter(servletPath, SEARCH_STR));
 	}
 
 	private void giveUpControl(WebContext wrapperContext) throws IOException,
