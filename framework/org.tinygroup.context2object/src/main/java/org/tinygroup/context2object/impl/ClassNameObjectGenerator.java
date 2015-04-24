@@ -134,128 +134,124 @@ public class ClassNameObjectGenerator implements
 		Class<?> clazz = object.getClass();
 
 		String objName = varName;
-		// 20130424
-		// 属性是否全部为空，若全部为空，则返回空对象
-		boolean allPropertyNull = true;
 		ObjectAssembly assembly = getObjectAssembly(object.getClass());
 		if (assembly != null) {
 			assembly.assemble(varName, object, context);
-			allPropertyNull = false;
+			return object;
 		}
-		if (allPropertyNull) {// 认为还没有进行对象组装
-			if (isNull(objName)) {
-				objName = getObjName(object);
+		// 20130424
+		// 属性是否全部为空，若全部为空，则返回空对象
+		boolean allPropertyNull = true;
+		if (isNull(objName)) {
+			objName = getObjName(object);
+		}
+		for (PropertyDescriptor descriptor : PropertyUtils
+				.getPropertyDescriptors(object.getClass())) {
+			if (descriptor.getPropertyType().equals(Class.class)) {
+				continue;
 			}
-			for (PropertyDescriptor descriptor : PropertyUtils
-					.getPropertyDescriptors(object.getClass())) {
-				if (descriptor.getPropertyType().equals(Class.class)) {
-					continue;
-				}
-				// 201402025修改此处代码，修改propertyName获取逻辑
-				// String propertyName = getPropertyName(clazz,
-				// descriptor.getName());
-				String propertyName = descriptor.getName();
+			// 201402025修改此处代码，修改propertyName获取逻辑
+			// String propertyName = getPropertyName(clazz,
+			// descriptor.getName());
+			String propertyName = descriptor.getName();
 
-				Object propertyValue = getPerpertyValue(preName, objName,
-						propertyName, context);// user.name,user_name,name
-				if (propertyValue != null) { // 如果值取出来为空，则跳过不处理了
-					try {
-						if (descriptor.getPropertyType().equals( // 如果类型相同，或者值类型继承(实现)属性类型
-								propertyValue.getClass())
-								|| implmentInterface(propertyValue.getClass(),
-										descriptor.getPropertyType())) {
+			Object propertyValue = getPerpertyValue(preName, objName,
+					propertyName, context);// user.name,user_name,name
+			if (propertyValue != null) { // 如果值取出来为空，则跳过不处理了
+				try {
+					if (descriptor.getPropertyType().equals( // 如果类型相同，或者值类型继承(实现)属性类型
+							propertyValue.getClass())
+							|| implmentInterface(propertyValue.getClass(),
+									descriptor.getPropertyType())) {
+						BeanUtils.setProperty(object, descriptor.getName(),
+								propertyValue);
+						allPropertyNull = false;
+						continue;
+					} else if (isSimpleType(descriptor.getPropertyType())) {// 若是简单类型
+						if (isSimpleType(propertyValue.getClass())) { // 若值也是简单类型则赋值，非简单类型，则不处理
 							BeanUtils.setProperty(object, descriptor.getName(),
-									propertyValue);
+									propertyValue.toString());
 							allPropertyNull = false;
-							continue;
-						} else if (isSimpleType(descriptor.getPropertyType())) {// 若是简单类型
-							if (isSimpleType(propertyValue.getClass())) { // 若值也是简单类型则赋值，非简单类型，则不处理
-								BeanUtils.setProperty(object,
-										descriptor.getName(),
-										propertyValue.toString());
-								allPropertyNull = false;
-							} else {
-								logger.logMessage(LogLevel.WARN,
-										"参数{0}.{1}赋值失败,期望类型{3},实际类型{4}",
-										objName, propertyName,
-										descriptor.getPropertyType(),
-										propertyValue.getClass());
-							}
-							continue;
+						} else {
+							logger.logMessage(LogLevel.WARN,
+									"参数{0}.{1}赋值失败,期望类型{3},实际类型{4}", objName,
+									propertyName, descriptor.getPropertyType(),
+									propertyValue.getClass());
 						}
-						// else {
-						// }
-						// 以上处理均未进入，则该类型为其他类型，需要进行递归
+						continue;
+					}
+					// else {
+					// }
+					// 以上处理均未进入，则该类型为其他类型，需要进行递归
+				} catch (Exception e) {
+					logger.errorMessage("为属性{0}赋值时出现异常", e,
+							descriptor.getName());
+				}
+			}
+
+			// 查找转换器，如果存在转换器，但是值为空，则跳出不处理
+			// 若转换器不存在，则继续进行处理
+			TypeConverter typeConverter = getTypeConverter(descriptor
+					.getPropertyType());
+			if (typeConverter != null) {
+				if (propertyValue != null) {
+					try {
+						BeanUtils.setProperty(object, descriptor.getName(),
+								typeConverter.getObject(propertyValue));
+						allPropertyNull = false;
 					} catch (Exception e) {
 						logger.errorMessage("为属性{0}赋值时出现异常", e,
 								descriptor.getName());
 					}
 				}
-
-				// 查找转换器，如果存在转换器，但是值为空，则跳出不处理
-				// 若转换器不存在，则继续进行处理
-				TypeConverter typeConverter = getTypeConverter(descriptor
-						.getPropertyType());
-				if (typeConverter != null) {
-					if (propertyValue != null) {
-						try {
+				continue;
+			}
+			// 对象值为空，且转换器不存在
+			if (!isSimpleType(descriptor.getPropertyType())) {
+				// 如果是共它类型则递归调用
+				try {
+					String newPreName = getReallyPropertyName(preName, objName,
+							propertyName);
+					Class<?> type = clazz
+							.getDeclaredField(descriptor.getName()).getType();
+					if (type.isArray()) {// 如果是数组
+						Object value = getObject(null, null,
+								descriptor.getPropertyType(), context,
+								newPreName);
+						if (value != null) {
 							BeanUtils.setProperty(object, descriptor.getName(),
-									typeConverter.getObject(propertyValue));
+									value);
 							allPropertyNull = false;
-						} catch (Exception e) {
-							logger.errorMessage("为属性{0}赋值时出现异常", e,
-									descriptor.getName());
+						}
+					} else if (implmentInterface(descriptor.getPropertyType(),
+							Collection.class)) {// 如果是集合
+						ParameterizedType pt = (ParameterizedType) clazz
+								.getDeclaredField(descriptor.getName())
+								.getGenericType();
+						Type[] actualTypeArguments = pt
+								.getActualTypeArguments();
+						Collection<Object> collection = (Collection<Object>) getObjectInstance(type);
+						buildCollection(null, collection,
+								(Class) actualTypeArguments[0], context,
+								newPreName);
+						if (collection.size() != 0) {
+							BeanUtils.setProperty(object, descriptor.getName(),
+									collection);
+							allPropertyNull = false;
+						}
+					} else {// 如果是其他类型
+						Object value = getObject(null, null,
+								descriptor.getPropertyType(), context,
+								newPreName);
+						if (value != null) {
+							BeanUtils.setProperty(object, descriptor.getName(),
+									value);
+							allPropertyNull = false;
 						}
 					}
-					continue;
-				}
-				// 对象值为空，且转换器不存在
-				if (!isSimpleType(descriptor.getPropertyType())) {
-					// 如果是共它类型则递归调用
-					try {
-						String newPreName = getReallyPropertyName(preName,
-								objName, propertyName);
-						Class<?> type = clazz.getDeclaredField(
-								descriptor.getName()).getType();
-						if (type.isArray()) {// 如果是数组
-							Object value = getObject(null, null,
-									descriptor.getPropertyType(), context,
-									newPreName);
-							if (value != null) {
-								BeanUtils.setProperty(object,
-										descriptor.getName(), value);
-								allPropertyNull = false;
-							}
-						} else if (implmentInterface(
-								descriptor.getPropertyType(), Collection.class)) {// 如果是集合
-							ParameterizedType pt = (ParameterizedType) clazz
-									.getDeclaredField(descriptor.getName())
-									.getGenericType();
-							Type[] actualTypeArguments = pt
-									.getActualTypeArguments();
-							Collection<Object> collection = (Collection<Object>) getObjectInstance(type);
-							buildCollection(null, collection,
-									(Class) actualTypeArguments[0], context,
-									newPreName);
-							if (collection.size() != 0) {
-								BeanUtils.setProperty(object,
-										descriptor.getName(), collection);
-								allPropertyNull = false;
-							}
-						} else {// 如果是其他类型
-							Object value = getObject(null, null,
-									descriptor.getPropertyType(), context,
-									newPreName);
-							if (value != null) {
-								BeanUtils.setProperty(object,
-										descriptor.getName(), value);
-								allPropertyNull = false;
-							}
-						}
-					} catch (Exception e) {
-						logger.errorMessage("为属性{0}赋值时出现异常", e,
-								descriptor.getName());
-					}
+				} catch (Exception e) {
+					logger.errorMessage("为属性{0}赋值时出现异常", e,
+							descriptor.getName());
 				}
 			}
 		}
