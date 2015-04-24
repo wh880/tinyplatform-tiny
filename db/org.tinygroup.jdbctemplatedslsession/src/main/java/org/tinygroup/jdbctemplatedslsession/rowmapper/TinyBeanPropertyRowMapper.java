@@ -18,17 +18,17 @@ public class TinyBeanPropertyRowMapper extends BeanPropertyRowMapper {
 	@Override
 	protected void initBeanWrapper(BeanWrapper bw) {
 		bw.registerCustomEditor(byte.class, new AllowNullNumberEditor(
-				Integer.class, true));
+				Byte.class, true));
 		bw.registerCustomEditor(short.class, new AllowNullNumberEditor(
-				Integer.class, true));
+				Short.class, true));
 		bw.registerCustomEditor(int.class, new AllowNullNumberEditor(
 				Integer.class, true));
 		bw.registerCustomEditor(long.class, new AllowNullNumberEditor(
-				Integer.class, true));
+				Long.class, true));
 		bw.registerCustomEditor(float.class, new AllowNullNumberEditor(
-				Integer.class, true));
+				Float.class, true));
 		bw.registerCustomEditor(double.class, new AllowNullNumberEditor(
-				Integer.class, true));
+				Double.class, true));
 	}
 
 }

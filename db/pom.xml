@@ -9,7 +9,7 @@
   <packaging>pom</packaging>
   <modules>
   
-  	<module>org.tinygroup.dao</module>
+    <module>org.tinygroup.dao</module>
     <module>org.tinygroup.tinydb</module>
     <module>org.tinygroup.tinysqldsl</module>
     <module>org.tinygroup.dbrouter</module>
@@ -19,5 +19,6 @@
     <module>org.tinygroup.databasebuinstaller</module>
     <module>org.tinygroup.jdbctemplatedslsession</module>
     <module>org.tinygroup.databasechange</module>
+    <module>org.tinygroup.beanconverter</module>
   </modules>
 </project>

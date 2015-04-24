@@ -28,10 +28,10 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.log4j.helpers.Loader;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
+import org.tinygroup.context2object.ObjectAssembly;
 import org.tinygroup.context2object.ObjectGenerator;
 import org.tinygroup.context2object.TypeConverter;
 import org.tinygroup.context2object.TypeCreator;
@@ -45,28 +45,30 @@ public class ClassNameObjectGenerator implements
 			.getLogger(ClassNameObjectGenerator.class);
 	private List<TypeConverter<?, ?>> typeConverterList = new ArrayList<TypeConverter<?, ?>>();
 	private List<TypeCreator<?>> typeCreatorList = new ArrayList<TypeCreator<?>>();
+	private List<ObjectAssembly<?>> assemblies = new ArrayList<ObjectAssembly<?>>();
 
-	public Object getObject(String varName, String bean, String className,ClassLoader loader,
-			Context context) {
+	public Object getObject(String varName, String bean, String className,
+			ClassLoader loader, Context context) {
 		if (className == null || "".equals(className)) {
 			return getObject(varName, bean, null, context, null);
 		}
 		// 20130808注释LoaderManagerFactory
 		// return getObject(varName, bean, LoaderManagerFactory.getManager()
 		// .getClass(className), context, null);
-		return getObject(varName, bean, getClazz(className,loader), context, null);
+		return getObject(varName, bean, getClazz(className, loader), context,
+				null);
 	}
 
-	public Object getObjectArray(String varName, String className,ClassLoader loader,
-			Context context) {
+	public Object getObjectArray(String varName, String className,
+			ClassLoader loader, Context context) {
 		// 20130808注释LoaderManagerFactory
 		// return buildArrayObjectWithObject(varName, LoaderManagerFactory
 		// .getManager().getClass(className), context, null);
-		return buildArrayObjectWithObject(varName, getClazz(className,loader),
+		return buildArrayObjectWithObject(varName, getClazz(className, loader),
 				context, null);
 	}
 
-	private Class<?> getClazz(String className,ClassLoader loader) {
+	private Class<?> getClazz(String className, ClassLoader loader) {
 		try {
 			return loader.loadClass(className);
 		} catch (ClassNotFoundException e) {
@@ -75,15 +77,16 @@ public class ClassNameObjectGenerator implements
 	}
 
 	public Collection<Object> getObjectCollection(String varName,
-			String collectionName, String className,ClassLoader loader, Context context) {
+			String collectionName, String className, ClassLoader loader,
+			Context context) {
 		// 20130808注释LoaderManagerFactory
 		// Class<?> collectionClass =
 		// LoaderManagerFactory.getManager().getClass(
 		// collectionName);
 		// Class<?> clazz =
 		// LoaderManagerFactory.getManager().getClass(className);
-		Class<?> collectionClass = getClazz(collectionName,loader);
-		Class<?> clazz = getClazz(className,loader);
+		Class<?> collectionClass = getClazz(collectionName, loader);
+		Class<?> clazz = getClazz(className, loader);
 		Collection<Object> collection = (Collection<Object>) getObjectInstance(collectionClass);
 		buildCollection(varName, collection, clazz, context, null);
 		if (collection.size() == 0) {
@@ -134,117 +137,127 @@ public class ClassNameObjectGenerator implements
 		// 20130424
 		// 属性是否全部为空，若全部为空，则返回空对象
 		boolean allPropertyNull = true;
-		if (isNull(objName)) {
-			objName = getObjName(object);
+		ObjectAssembly assembly = getObjectAssembly(object.getClass());
+		if (assembly != null) {
+			assembly.assemble(varName, object, context);
+			allPropertyNull = false;
 		}
-		for (PropertyDescriptor descriptor : PropertyUtils
-				.getPropertyDescriptors(object.getClass())) {
-			if (descriptor.getPropertyType().equals(Class.class)) {
-				continue;
+		if (allPropertyNull) {// 认为还没有进行对象组装
+			if (isNull(objName)) {
+				objName = getObjName(object);
 			}
-			// 201402025修改此处代码，修改propertyName获取逻辑
-			// String propertyName = getPropertyName(clazz,
-			// descriptor.getName());
-			String propertyName = descriptor.getName();
-
-			Object propertyValue = getPerpertyValue(preName, objName,
-					propertyName, context);// user.name,user_name,name
-			if (propertyValue != null) { // 如果值取出来为空，则跳过不处理了
-				try {
-					if (descriptor.getPropertyType().equals( // 如果类型相同，或者值类型继承(实现)属性类型
-							propertyValue.getClass())
-							|| implmentInterface(propertyValue.getClass(),
-									descriptor.getPropertyType())) {
-						BeanUtils.setProperty(object, descriptor.getName(),
-								propertyValue);
-						allPropertyNull = false;
-						continue;
-					} else if (isSimpleType(descriptor.getPropertyType())) {// 若是简单类型
-						if (isSimpleType(propertyValue.getClass())) { // 若值也是简单类型则赋值，非简单类型，则不处理
-							BeanUtils.setProperty(object, descriptor.getName(),
-									propertyValue.toString());
-							allPropertyNull = false;
-						} else {
-							logger.logMessage(LogLevel.WARN,
-									"参数{0}.{1}赋值失败,期望类型{3},实际类型{4}", objName,
-									propertyName, descriptor.getPropertyType(),
-									propertyValue.getClass());
-						}
-						continue;
-					}
-					// else {
-					// }
-					// 以上处理均未进入，则该类型为其他类型，需要进行递归
-				} catch (Exception e) {
-					logger.errorMessage("为属性{0}赋值时出现异常", e, descriptor.getName());
+			for (PropertyDescriptor descriptor : PropertyUtils
+					.getPropertyDescriptors(object.getClass())) {
+				if (descriptor.getPropertyType().equals(Class.class)) {
+					continue;
 				}
-			}
+				// 201402025修改此处代码，修改propertyName获取逻辑
+				// String propertyName = getPropertyName(clazz,
+				// descriptor.getName());
+				String propertyName = descriptor.getName();
 
-			// 查找转换器，如果存在转换器，但是值为空，则跳出不处理
-			// 若转换器不存在，则继续进行处理
-			TypeConverter typeConverter = getTypeConverter(descriptor
-					.getPropertyType());
-			if (typeConverter != null) {
-				if (propertyValue != null) {
+				Object propertyValue = getPerpertyValue(preName, objName,
+						propertyName, context);// user.name,user_name,name
+				if (propertyValue != null) { // 如果值取出来为空，则跳过不处理了
 					try {
-						BeanUtils.setProperty(object, descriptor.getName(),
-								typeConverter.getObject(propertyValue));
-						allPropertyNull = false;
+						if (descriptor.getPropertyType().equals( // 如果类型相同，或者值类型继承(实现)属性类型
+								propertyValue.getClass())
+								|| implmentInterface(propertyValue.getClass(),
+										descriptor.getPropertyType())) {
+							BeanUtils.setProperty(object, descriptor.getName(),
+									propertyValue);
+							allPropertyNull = false;
+							continue;
+						} else if (isSimpleType(descriptor.getPropertyType())) {// 若是简单类型
+							if (isSimpleType(propertyValue.getClass())) { // 若值也是简单类型则赋值，非简单类型，则不处理
+								BeanUtils.setProperty(object,
+										descriptor.getName(),
+										propertyValue.toString());
+								allPropertyNull = false;
+							} else {
+								logger.logMessage(LogLevel.WARN,
+										"参数{0}.{1}赋值失败,期望类型{3},实际类型{4}",
+										objName, propertyName,
+										descriptor.getPropertyType(),
+										propertyValue.getClass());
+							}
+							continue;
+						}
+						// else {
+						// }
+						// 以上处理均未进入，则该类型为其他类型，需要进行递归
 					} catch (Exception e) {
 						logger.errorMessage("为属性{0}赋值时出现异常", e,
 								descriptor.getName());
 					}
 				}
-				continue;
-			}
-			// 对象值为空，且转换器不存在
-			if (!isSimpleType(descriptor.getPropertyType())) {
-				// 如果是共它类型则递归调用
-				try {
-					String newPreName = getReallyPropertyName(preName, objName,
-							propertyName);
-					Class<?> type = clazz
-							.getDeclaredField(descriptor.getName()).getType();
-					if (type.isArray()) {// 如果是数组
-						Object value = getObject(null, null,
-								descriptor.getPropertyType(), context,
-								newPreName);
-						if (value != null) {
+
+				// 查找转换器，如果存在转换器，但是值为空，则跳出不处理
+				// 若转换器不存在，则继续进行处理
+				TypeConverter typeConverter = getTypeConverter(descriptor
+						.getPropertyType());
+				if (typeConverter != null) {
+					if (propertyValue != null) {
+						try {
 							BeanUtils.setProperty(object, descriptor.getName(),
-									value);
+									typeConverter.getObject(propertyValue));
 							allPropertyNull = false;
-						}
-					} else if (implmentInterface(descriptor.getPropertyType(),
-							Collection.class)) {// 如果是集合
-						ParameterizedType pt = (ParameterizedType) clazz
-								.getDeclaredField(descriptor.getName())
-								.getGenericType();
-						Type[] actualTypeArguments = pt
-								.getActualTypeArguments();
-						Collection<Object> collection = (Collection<Object>) getObjectInstance(type);
-						buildCollection(null, collection,
-								(Class) actualTypeArguments[0], context,
-								newPreName);
-						if (collection.size() != 0) {
-							BeanUtils.setProperty(object, descriptor.getName(),
-									collection);
-							allPropertyNull = false;
-						}
-					} else {// 如果是其他类型
-						Object value = getObject(null, null,
-								descriptor.getPropertyType(), context,
-								newPreName);
-						if (value != null) {
-							BeanUtils.setProperty(object, descriptor.getName(),
-									value);
-							allPropertyNull = false;
+						} catch (Exception e) {
+							logger.errorMessage("为属性{0}赋值时出现异常", e,
+									descriptor.getName());
 						}
 					}
-				} catch (Exception e) {
-					logger.errorMessage("为属性{0}赋值时出现异常", e, descriptor.getName());
+					continue;
+				}
+				// 对象值为空，且转换器不存在
+				if (!isSimpleType(descriptor.getPropertyType())) {
+					// 如果是共它类型则递归调用
+					try {
+						String newPreName = getReallyPropertyName(preName,
+								objName, propertyName);
+						Class<?> type = clazz.getDeclaredField(
+								descriptor.getName()).getType();
+						if (type.isArray()) {// 如果是数组
+							Object value = getObject(null, null,
+									descriptor.getPropertyType(), context,
+									newPreName);
+							if (value != null) {
+								BeanUtils.setProperty(object,
+										descriptor.getName(), value);
+								allPropertyNull = false;
+							}
+						} else if (implmentInterface(
+								descriptor.getPropertyType(), Collection.class)) {// 如果是集合
+							ParameterizedType pt = (ParameterizedType) clazz
+									.getDeclaredField(descriptor.getName())
+									.getGenericType();
+							Type[] actualTypeArguments = pt
+									.getActualTypeArguments();
+							Collection<Object> collection = (Collection<Object>) getObjectInstance(type);
+							buildCollection(null, collection,
+									(Class) actualTypeArguments[0], context,
+									newPreName);
+							if (collection.size() != 0) {
+								BeanUtils.setProperty(object,
+										descriptor.getName(), collection);
+								allPropertyNull = false;
+							}
+						} else {// 如果是其他类型
+							Object value = getObject(null, null,
+									descriptor.getPropertyType(), context,
+									newPreName);
+							if (value != null) {
+								BeanUtils.setProperty(object,
+										descriptor.getName(), value);
+								allPropertyNull = false;
+							}
+						}
+					} catch (Exception e) {
+						logger.errorMessage("为属性{0}赋值时出现异常", e,
+								descriptor.getName());
+					}
 				}
 			}
-
 		}
 		if (allPropertyNull) {
 			return null;
@@ -432,6 +445,15 @@ public class ClassNameObjectGenerator implements
 		return null;
 	}
 
+	private ObjectAssembly<?> getObjectAssembly(Class<?> type) {
+		for (ObjectAssembly<?> assembly : assemblies) {
+			if (assembly.isMatch(type)) {
+				return assembly;
+			}
+		}
+		return null;
+	}
+
 	boolean isSimpleType(Class<?> clazz) {
 		if (clazz.equals(int.class) || clazz.equals(char.class)
 				|| clazz.equals(byte.class) || clazz.equals(boolean.class)
@@ -546,6 +568,14 @@ public class ClassNameObjectGenerator implements
 
 	public void removeTypeConverter(TypeConverter<?, ?> typeConverter) {
 		typeConverterList.remove(typeConverter);
+	}
+
+	public void addObjectAssembly(ObjectAssembly<?> objectAssembly) {
+		assemblies.add(objectAssembly);
+	}
+
+	public void removeObjectAssembly(ObjectAssembly<?> objectAssembly) {
+		assemblies.remove(objectAssembly);
 	}
 
 	public void addTypeCreator(TypeCreator<?> typeCreator) {

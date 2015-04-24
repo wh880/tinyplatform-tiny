@@ -85,8 +85,9 @@ public final class TinyDBUtil {
 	}
 
 	public static TableConfiguration getTableConfig(String tableName,
-			String schema,ClassLoader loader) {
-		DbOperatorFactory factory=BeanContainerFactory.getBeanContainer(loader).getBean(DbOperatorFactory.class);
+			String schema, ClassLoader loader) {
+		DbOperatorFactory factory = BeanContainerFactory.getBeanContainer(
+				loader).getBean(DbOperatorFactory.class);
 		BeanOperatorManager manager = factory.getBeanOperatorManager();
 		String beanType = manager.getBeanDbNameConverter()
 				.dbTableNameToTypeName(tableName);
@@ -94,8 +95,9 @@ public final class TinyDBUtil {
 	}
 
 	public static TableConfiguration getTableConfigByBean(String beanType,
-			String schema,ClassLoader loader) {
-		DbOperatorFactory factory=BeanContainerFactory.getBeanContainer(loader).getBean(DbOperatorFactory.class);
+			String schema, ClassLoader loader) {
+		DbOperatorFactory factory = BeanContainerFactory.getBeanContainer(
+				loader).getBean(DbOperatorFactory.class);
 		BeanOperatorManager manager = factory.getBeanOperatorManager();
 		return manager.getTableConfiguration(beanType, schema);
 	}
@@ -114,10 +116,13 @@ public final class TinyDBUtil {
 		return null;
 	}
 
-	public static List<String> getBeanProperties(String beanType, String schema,ClassLoader loader) {
-		DbOperatorFactory factory=BeanContainerFactory.getBeanContainer(loader).getBean(DbOperatorFactory.class);
+	public static List<String> getBeanProperties(String beanType,
+			String schema, ClassLoader loader) {
+		DbOperatorFactory factory = BeanContainerFactory.getBeanContainer(
+				loader).getBean(DbOperatorFactory.class);
 		BeanOperatorManager manager = factory.getBeanOperatorManager();
-		TableConfiguration tableConfig = manager.getTableConfiguration(beanType, schema);
+		TableConfiguration tableConfig = manager.getTableConfiguration(
+				beanType, schema);
 		List<String> properties = new ArrayList<String>();
 		if (tableConfig != null) {
 			for (ColumnConfiguration c : tableConfig.getColumns()) {
@@ -134,20 +139,27 @@ public final class TinyDBUtil {
 		return new Bean(beanType);
 	}
 
-	public static Bean context2Bean(Context c, String beanType, String schame,ClassLoader loader) {
-		List<String> properties = getBeanProperties(beanType, schame,loader);
+	public static Bean context2Bean(Context c, String beanType, String schame,
+			ClassLoader loader) {
+		List<String> properties = getBeanProperties(beanType, schame, loader);
 		return context2Bean(c, beanType, properties, schame);
 	}
 
-	public static Bean context2Bean(Context c, String beanType,ClassLoader loader) {
-		String schema=DataSourceInfo.getDataSource();
-		List<String> properties = getBeanProperties(beanType, schema,loader);
+	public static Bean context2Bean(Context c, String beanType,
+			ClassLoader loader) {
+		String schema = DataSourceInfo.getDataSource();
+		List<String> properties = getBeanProperties(beanType, schema, loader);
 		return context2Bean(c, beanType, properties, schema);
 	}
 
 	public static Bean context2Bean(Context c, String beanType,
 			List<String> properties, String schame) {
 		Bean bean = getBeanInstance(beanType, schame);
+		return context2Bean(c, bean, properties);
+	}
+
+	public static Bean context2Bean(Context c, Bean bean,
+			List<String> properties) {
 		for (String property : properties) {
 			if (c.exist(property)) {
 				bean.put(property, c.get(property));
@@ -161,10 +173,11 @@ public final class TinyDBUtil {
 		bean.put(Bean.GROUP_BY_KEY, c.get(Bean.GROUP_BY_KEY));
 		return bean;
 	}
-	
-	public static void setProperties(Object object,Map<String, String> properties){
-		BeanWrapperHolder holder=new BeanWrapperHolder();
-		BeanWrapperImpl wrapperImpl=holder.getBeanWrapper();
+
+	public static void setProperties(Object object,
+			Map<String, String> properties) {
+		BeanWrapperHolder holder = new BeanWrapperHolder();
+		BeanWrapperImpl wrapperImpl = holder.getBeanWrapper();
 		wrapperImpl.setWrappedInstance(object);
 		for (String attribute : properties.keySet()) {
 			try {
