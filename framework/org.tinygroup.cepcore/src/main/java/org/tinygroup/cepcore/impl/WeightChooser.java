@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcore.EventProcessorChoose;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 public class WeightChooser implements EventProcessorChoose {
 
@@ -44,6 +45,11 @@ public class WeightChooser implements EventProcessorChoose {
 		}
 		//不会到达
 		return processors.get(0);
+	}
+
+	public void setParam(XmlNode param) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

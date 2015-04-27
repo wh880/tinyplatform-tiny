@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 
 public class DetectDateTypeConverter implements TypeConverter<String, Date> {
     private static Map<Pattern, SimpleDateFormat> formatMap = new HashMap<Pattern, SimpleDateFormat>();
-
+    private static Map<Pattern, SimpleDateFormat> formatMap2 = new HashMap<Pattern, SimpleDateFormat>();
     static {
         Pattern patternByEn = Pattern.compile("\\d{1,4}[-]\\d{1,2}[-]\\d{1,2}",
                 Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
@@ -37,8 +37,8 @@ public class DetectDateTypeConverter implements TypeConverter<String, Date> {
                 Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
         Pattern patternByZhTimestamp = Pattern.compile("\\d{1,4}[年]\\d{1,2}[月]\\d{1,2}[日](\\s)*\\d{1,2}(:)\\d{1,2}(:)\\d{1,2}",
                 Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-        formatMap.put(patternByEn, new SimpleDateFormat("yyyy-MM-dd"));
-        formatMap.put(patternByZh, new SimpleDateFormat("yyyy年MM月dd日"));
+        formatMap2.put(patternByEn, new SimpleDateFormat("yyyy-MM-dd"));
+        formatMap2.put(patternByZh, new SimpleDateFormat("yyyy年MM月dd日"));
         formatMap.put(patternByEnTimestamp, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         formatMap.put(patternByZhTimestamp, new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss"));
     }
@@ -58,6 +58,12 @@ public class DetectDateTypeConverter implements TypeConverter<String, Date> {
                 Matcher matcher = pattern.matcher(value);
                 if (matcher.find()) {
                     return formatMap.get(pattern).parse(value);
+                }
+            }
+            for (Pattern pattern : formatMap2.keySet()) {
+                Matcher matcher = pattern.matcher(value);
+                if (matcher.find()) {
+                    return formatMap2.get(pattern).parse(value);
                 }
             }
             throw new RuntimeException("不能识别的日期格式：" + value);

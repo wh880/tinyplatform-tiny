@@ -40,6 +40,22 @@ public class TestArray extends BastTestCast{
 			assertEquals("coller2", parts[2].getColler());
 	}
 	
+	public void testObjectArray2() {
+		Context context = new ContextImpl();
+		String[] names = { "tomcat", "name1", "name2" };
+		String[] colors = { "red", "coller" };
+		context.put("smallCat.name", names);
+		context.put("smallCat.coller", colors);
+//		SmallCat[] parts = (SmallCat[]) generator.getObject(null,null, SmallCat[].class.getName(),this.getClass().getClassLoader(), context);
+		SmallCat[] parts = (SmallCat[]) generator.getObjectArray(null, SmallCat.class.getName(),this.getClass().getClassLoader(), context);
+		
+		assertEquals(2, parts.length);
+			assertEquals("tomcat", parts[0].getName());
+			assertEquals("name1", parts[1].getName());
+			assertEquals("red", parts[0].getColler());
+			assertEquals("coller", parts[1].getColler());
+	}
+	
 	public void testObjectArrayWithOneLength() {
 		Context context = new ContextImpl();
 		context.put("smallCat.name", "tomcat");
