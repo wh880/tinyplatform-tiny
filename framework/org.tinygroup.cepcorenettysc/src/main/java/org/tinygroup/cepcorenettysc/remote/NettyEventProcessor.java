@@ -148,7 +148,6 @@ public class NettyEventProcessor implements EventProcessor {
 	}
 
 	public void setRead(boolean read) {
-		// TODO Auto-generated method stub
 
 	}
 }

@@ -17,6 +17,8 @@ public class NodeOperator implements CEPCoreOperator {
 	private CEPCoreServerImpl server;
 	private CEPCoreClientImpl client;
 	private Node node;
+//	private XmlNode param;
+	
 
 	public NodeOperator(int localPort, int remotePort, String localHost,
 			String remoteHost) {
@@ -110,9 +112,8 @@ public class NodeOperator implements CEPCoreOperator {
 		return client;
 	}
 
-	public void setParam(XmlNode node) {
-		// TODO Auto-generated method stub
-		
+	public void setParam(XmlNode param) {
+//		this.param = param;
 	}
 
 }

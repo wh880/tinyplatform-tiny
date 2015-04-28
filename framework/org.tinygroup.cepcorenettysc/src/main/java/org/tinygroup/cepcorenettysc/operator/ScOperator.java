@@ -21,9 +21,10 @@ import org.tinygroup.cepcorenettysc.EventServer;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public class ScOperator implements CEPCoreOperator{
-	private CEPCore core;
+//	private CEPCore core;
 	private String port;
 	EventServer server;
+	XmlNode node;
 	public void startCEPCore(CEPCore cep) {
 		server = new EventServer(Integer.parseInt(port));
 		server.run();
@@ -34,7 +35,7 @@ public class ScOperator implements CEPCoreOperator{
 	}
 
 	public void setCEPCore(CEPCore cep) {
-		this.core = cep;
+//		this.core = cep;
 	}
 
 	public String getPort() {
@@ -46,8 +47,7 @@ public class ScOperator implements CEPCoreOperator{
 	}
 
 	public void setParam(XmlNode node) {
-		// TODO Auto-generated method stub
-		
+		this.node = node;
 	}
 
 }

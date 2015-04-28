@@ -50,7 +50,7 @@ public class ArOperator implements CEPCoreOperator {
 	EventServer server;
 	EventClientDaemonRunnable client;
 	int timeout = 5000;
-	
+	XmlNode node;
 	public int getTimeout() {
 		return timeout;
 	}
@@ -186,8 +186,7 @@ public class ArOperator implements CEPCoreOperator {
 	}
 
 	public void setParam(XmlNode node) {
-		// TODO Auto-generated method stub
-		
+		this.node = node;
 	}
 
 }

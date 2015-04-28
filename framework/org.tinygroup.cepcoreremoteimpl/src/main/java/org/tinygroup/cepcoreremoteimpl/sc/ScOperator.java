@@ -32,12 +32,10 @@ public class ScOperator implements CEPCoreOperator {
 	}
 
 	public void setCEPCore(CEPCore cep) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void setParam(XmlNode node) {
-		// TODO Auto-generated method stub
 		
 	}
 
