@@ -25,7 +25,6 @@ public class MyTestProcessor implements EventProcessor {
 	}
 
 	public void setCepCore(CEPCore cepCore) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -46,22 +45,18 @@ public class MyTestProcessor implements EventProcessor {
 	}
 
 	public int getWeight() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public List<String> getRegex() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public boolean isRead() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public void setRead(boolean read) {
-		// TODO Auto-generated method stub
 
 	}
 

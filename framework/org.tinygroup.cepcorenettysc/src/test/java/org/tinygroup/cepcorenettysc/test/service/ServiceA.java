@@ -33,17 +33,14 @@ public class ServiceA implements ServiceInfo {
 		serviceId = s;
 	}
 	public int compareTo(ServiceInfo o) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public String getServiceId() {
-		// TODO Auto-generated method stub
 		return serviceId;
 	}
 
 	public List<Parameter> getParameters() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -56,7 +53,6 @@ public class ServiceA implements ServiceInfo {
 		return list;
 	}
 	public String getCategory() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -15,7 +15,6 @@ public class TestCepcoreNetty extends TestCase{
 		try {
 			super.setUp();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
