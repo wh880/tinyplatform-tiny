@@ -19,7 +19,6 @@ import java.io.Serializable;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.jsqlparser.schema.Column;
@@ -45,17 +44,16 @@ public class InsertSqlTransform {
 	public ColumnInfo getPrimaryColumn() throws SQLException{
 		Table table = originalInsert.getTable();
 		String tableName = table.getName();
-		String realTableName = getRealTableName(firstShard.getTableMappingMap(), tableName);
-		String queryTableName = realTableName;
+		String queryTableName = tableName;
 		ResultSet rs = null;
 		ColumnInfo columnInfo = null;
 		try {
-			rs = metaData.getPrimaryKeys(null, null, queryTableName);
+			rs = metaData.getPrimaryKeys(null, null, tableName);
 			if (rs.next()) {
 				columnInfo=getPrimaryKeys(rs,table,queryTableName);
 			} else {
 				rs.close();// 先关闭上次查询的resultset
-				queryTableName = realTableName.toUpperCase();
+				queryTableName = tableName.toUpperCase();
 				rs = metaData.getPrimaryKeys(null, null, queryTableName);
 				if (rs.next()) {
 					columnInfo=getPrimaryKeys(rs,table,queryTableName);
@@ -89,14 +87,6 @@ public class InsertSqlTransform {
 	}
 
 
-	private  String getRealTableName(Map<String, String> tableMapping,
-			String tableName) {
-		String realTableName = tableName;// 真正在数据库存在的表名
-		if (tableMapping != null && tableMapping.containsKey(tableName)) {
-			realTableName = tableMapping.get(tableName);
-		}
-		return realTableName;
-	}
 	
 	public class ColumnInfo implements Serializable{
 		
