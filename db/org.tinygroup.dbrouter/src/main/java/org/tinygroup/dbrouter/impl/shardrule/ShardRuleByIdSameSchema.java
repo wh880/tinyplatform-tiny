@@ -18,6 +18,8 @@ package org.tinygroup.dbrouter.impl.shardrule;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
 
 /**
@@ -35,7 +37,7 @@ public class ShardRuleByIdSameSchema extends ShardRuleByIdAbstract {
 	}
 
 
-	public String getReplacedSql(String sql) {
+	public String getReplacedSql(Partition partition, Shard shard, String sql) {
 		Map<String, String> tableMapping = new HashMap<String, String>();
 		tableMapping.put(getTableName(), getTableName() + getRemainder());
 		return DbRouterUtil.transformSqlWithTableName(sql, tableMapping);

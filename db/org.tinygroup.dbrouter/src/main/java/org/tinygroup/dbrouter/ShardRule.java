@@ -17,6 +17,7 @@ package org.tinygroup.dbrouter;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.dbrouter.config.Shard;
 
 /**
  * 分片规则
@@ -30,18 +31,21 @@ public interface ShardRule {
      * 返回是否属于当前分片处理
      *
      * @param partition      所属的分区
+     * @param shard TODO
      * @param sql            要判断的SQL
      * @param preparedParams Prepared Statement的参数
      * @return
      */
-    boolean isMatch(Partition partition, String sql, Object... preparedParams);
+    boolean isMatch(Partition partition, Shard shard, String sql, Object... preparedParams);
 
     /**
      * 返回替换好的SQL语句，对于在同一个schema中的用多个表进行分表的话，就需要替换SQL脚本
-     *
+     * @param partition TODO
+     * @param shard TODO
      * @param sql
+     *
      * @return
      */
-    String getReplacedSql(String sql);
+    String getReplacedSql(Partition partition, Shard shard, String sql);
 
 }

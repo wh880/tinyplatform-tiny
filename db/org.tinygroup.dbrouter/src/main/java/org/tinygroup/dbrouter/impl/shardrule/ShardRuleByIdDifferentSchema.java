@@ -15,6 +15,9 @@
  */
 package org.tinygroup.dbrouter.impl.shardrule;
 
+import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.dbrouter.config.Shard;
+
 
 /**
  * 通过ID进行分片 Created by luoguo on 13-12-15.
@@ -33,7 +36,7 @@ public class ShardRuleByIdDifferentSchema extends ShardRuleByIdAbstract {
 	
 	
 
-	public String getReplacedSql(String sql) {
+	public String getReplacedSql(Partition partition, Shard shard, String sql) {
 		return sql;
 	}
 }

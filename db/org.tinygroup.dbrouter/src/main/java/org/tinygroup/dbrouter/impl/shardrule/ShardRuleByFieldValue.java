@@ -20,6 +20,7 @@ import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.dbrouter.ShardRule;
 import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
 import org.tinygroup.jsqlparser.expression.*;
@@ -49,8 +50,8 @@ public class ShardRuleByFieldValue implements ShardRule {
 	@XStreamImplicit
 	private List<FieldWithValues> fieldWithValues;
 
-	public boolean isMatch(Partition partition, String sql,
-			Object... preparedParams) {
+	public boolean isMatch(Partition partition, Shard shard,
+			String sql, Object... preparedParams) {
 		if (!CollectionUtil.isEmpty(fieldWithValues)) {
 			Statement statement = RouterManagerBeanFactory.getManager()
 					.getSqlStatement(sql);
@@ -81,7 +82,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 
 	}
 
-	public String getReplacedSql(String sql) {
+	public String getReplacedSql(Partition partition, Shard shard, String sql) {
 		return sql;
 	}
 

@@ -141,7 +141,7 @@ public class RouterManagerImpl implements RouterManager {
 		if (partition.getShards() != null) {
 			for (Shard shard : partition.getShards()) {
 				for (ShardRule shardRule : shard.getShardRules()) {
-					if (shardRule.isMatch(partition, sql, preparedParams)) {
+					if (shardRule.isMatch(partition, shard, sql, preparedParams)) {
 						logger.logMessage(LogLevel.DEBUG,
 								"sql:{0},找到处理的shard:{1},shard-rule:{2}", sql,
 								shard.getId(), shardRule.toString());
@@ -238,7 +238,7 @@ public class RouterManagerImpl implements RouterManager {
 			return true;
 		}
 		for (ShardRule rule : rules) {
-			if (rule.isMatch(partition, sql, preparedParams)) {
+			if (rule.isMatch(partition, shard, sql, preparedParams)) {
 				return true;
 			}
 		}
@@ -249,9 +249,9 @@ public class RouterManagerImpl implements RouterManager {
 			Object... preparedParams) {
 		List<ShardRule> rules = shard.getShardRules();
 		for (ShardRule rule : rules) {
-			if (rule.isMatch(partition, sql, preparedParams)) {
+			if (rule.isMatch(partition, shard, sql, preparedParams)) {
 				// 如果有匹配的，则返回匹配的规则处理过的SQL
-				return rule.getReplacedSql(sql);
+				return rule.getReplacedSql(partition, shard, sql);
 			}
 		}
 		if (!CollectionUtil.isEmpty(shard.getTableMappings())) {

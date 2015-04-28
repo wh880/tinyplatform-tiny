@@ -19,6 +19,7 @@ import org.tinygroup.cache.Cache;
 import org.tinygroup.dbrouter.ShardRule;
 import org.tinygroup.dbrouter.cache.CacheKey;
 import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.jsqlparser.statement.Statement;
 import org.tinygroup.jsqlparser.statement.delete.Delete;
@@ -86,8 +87,8 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
 		this.remainder = remainder;
 	}
 
-	public boolean isMatch(Partition partition, String sql,
-			Object... preparedParams) {
+	public boolean isMatch(Partition partition, Shard shard,
+			String sql, Object... preparedParams) {
 		Statement statement = RouterManagerBeanFactory.getManager()
 				.getSqlStatement(sql);
 		Cache cache = RouterManagerBeanFactory.getManager().getCache();

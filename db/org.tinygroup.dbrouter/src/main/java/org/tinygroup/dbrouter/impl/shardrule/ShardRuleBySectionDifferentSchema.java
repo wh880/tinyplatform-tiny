@@ -12,6 +12,7 @@ import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.dbrouter.ShardRule;
 import org.tinygroup.dbrouter.cache.CacheKey;
 import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.config.TableMapping;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
@@ -76,7 +77,7 @@ public class ShardRuleBySectionDifferentSchema implements ShardRule {
 
     }
 
-    public boolean isMatch(Partition partition, String sql,
+    public boolean isMatch(Partition partition, Shard shard,String sql,
                            Object... preparedParams) {
         sort(sections);
         Statement statement = RouterManagerBeanFactory.getManager()
@@ -117,7 +118,7 @@ public class ShardRuleBySectionDifferentSchema implements ShardRule {
         return false;
     }
 
-    public String getReplacedSql(String sql) {
+    public String getReplacedSql(Partition partition,Shard shard,String sql) {
         if (!CollectionUtil.isEmpty(getTableMappings())) {
             return DbRouterUtil.transformSqlWithTableName(sql,
                     getTableMappingMap());
