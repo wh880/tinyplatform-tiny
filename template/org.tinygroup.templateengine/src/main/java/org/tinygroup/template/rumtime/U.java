@@ -91,7 +91,7 @@ public final class U {
             }
             FieldKey fieldKey = getFieldKey(object, fieldName);
             if (fieldCache.contains(fieldKey)) {
-                return fieldCache.get(fieldKey).get(fieldName);
+                return fieldCache.get(fieldKey).get(object);
             } else {
                 Field field=object.getClass().getField(fieldName);
                 if(field!=null) {
