@@ -48,7 +48,6 @@ public class WeightChooser implements EventProcessorChoose {
 	}
 
 	public void setParam(XmlNode param) {
-		// TODO Auto-generated method stub
 		
 	}
 

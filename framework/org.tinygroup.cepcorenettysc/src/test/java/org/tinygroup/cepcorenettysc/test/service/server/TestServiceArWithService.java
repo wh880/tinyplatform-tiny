@@ -32,7 +32,6 @@ public class TestServiceArWithService {
 		try {
 			Thread.currentThread().sleep(5000);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		NettyCepCoreImpl p = BeanContainerFactory.getBeanContainer(

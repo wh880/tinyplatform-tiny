@@ -178,7 +178,6 @@ public class NetProcessor implements Configuration, ApplicationProcessor {
 	}
 
 	public void init() {
-		// TODO Auto-generated method stub
 		
 	}
 }

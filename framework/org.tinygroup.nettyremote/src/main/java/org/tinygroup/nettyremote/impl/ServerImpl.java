@@ -78,6 +78,7 @@ public class ServerImpl implements Server {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					logger.errorMessage("服务端启动失败",e);
 				}
 			}
 
