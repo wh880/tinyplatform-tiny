@@ -33,7 +33,8 @@
 			method-name="helloUserArray" cacheable="false">
 			<service-parameters>
 				<service-parameter name="b"
-					type="org.tinygroup.cepcoreremoteimpl.test.User" required="false" is-array="true" />
+					type="org.tinygroup.cepcoreremoteimpl.test.User" required="false"
+					is-array="true" />
 			</service-parameters>
 			<service-result name="result" required="true"
 				is-array="false" type="java.lang.String" />
@@ -47,6 +48,12 @@
 			<service-result name="void" required="true" is-array="false"
 				type="void" />
 		</service-method>
-
+		<service-method local-name="overtime" service-id="overtime"
+			method-name="overtime" cacheable="overtime">
+			<service-parameters>
+			</service-parameters>
+			<service-result name="void" required="true" is-array="false"
+				type="void" />
+		</service-method>
 	</service-component>
 </service-components>
