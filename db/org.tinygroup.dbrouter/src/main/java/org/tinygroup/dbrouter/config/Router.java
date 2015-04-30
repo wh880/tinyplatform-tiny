@@ -73,7 +73,7 @@ public class Router {
 	 */
 	@XStreamAlias("jta-enabled")
 	@XStreamAsAttribute
-	private boolean jtaEnabled = true;
+	private boolean jtaEnabled;
 	@XStreamAsAttribute
 	private String schema;
 	@XStreamAsAttribute
