@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcore.exception.CEPConnectException;
 import org.tinygroup.cepcoreremoteimpl.node.CEPCoreClientImpl;
+import org.tinygroup.cepcoreremoteimpl.util.ClientGroup;
+import org.tinygroup.cepcoreremoteimpl.util.RemoteCepCoreUtil;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.central.Node;
@@ -41,7 +42,7 @@ public class RemoteEventProcessor implements EventProcessor {
 				remoteNode.getIp(), remoteNode.getPort(), remoteNode
 						.getNodeName(), event.getServiceRequest()
 						.getServiceId());
-		try {
+//		try {
 			CEPCoreClientImpl dealClient = ClientGroup.getClient(remoteNode);
 			Event newEvent = RemoteCepCoreUtil.sendEvent(
 					dealClient, event);
@@ -57,15 +58,15 @@ public class RemoteEventProcessor implements EventProcessor {
 							.getNodeName(), event.getServiceRequest()
 							.getServiceId());
 
-		} catch (Exception e) {
-			logger.logMessage(LogLevel.ERROR,
-					"请求失败,目标节点{0}:{1}:{2},请求信息:[serviceId:{3},信息:{5}",
-					remoteNode.getIp(), remoteNode.getPort(), remoteNode
-							.getNodeName(), event.getServiceRequest()
-							.getServiceId(), e.getMessage());
-			stopConnect();
-			throw new CEPConnectException(e, remoteNode);
-		}
+//		} catch (Exception e) {
+//			logger.logMessage(LogLevel.ERROR,
+//					"请求失败,目标节点{0}:{1}:{2},请求信息:[serviceId:{3},信息:{5}",
+//					remoteNode.getIp(), remoteNode.getPort(), remoteNode
+//							.getNodeName(), event.getServiceRequest()
+//							.getServiceId(), e.getMessage());
+//			stopConnect();
+//			throw new CEPConnectException(e, remoteNode);
+//		}
 	}
 
 	public void stopConnect() {

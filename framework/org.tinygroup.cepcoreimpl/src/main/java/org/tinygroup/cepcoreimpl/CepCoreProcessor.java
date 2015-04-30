@@ -97,7 +97,9 @@ public class CepCoreProcessor implements ApplicationProcessor {
 		if (operator == null) {
 			return;
 		}
-		operator.setParam(param);
+		if(param!=null){
+			operator.setParam(param);
+		}
 		String nodeName = appConfig.getAttribute(NODE_NAME);
 		logger.logMessage(LogLevel.INFO, "NodeName为:{0}", nodeName);
 		cepcore.setOperator(operator);
@@ -121,7 +123,9 @@ public class CepCoreProcessor implements ApplicationProcessor {
 		if (chooser == null) {
 			return;
 		}
-		chooser.setParam(param);
+		if(param!=null){
+			chooser.setParam(param);
+		}
 		cepcore.setEventProcessorChoose(chooser);
 	}
 

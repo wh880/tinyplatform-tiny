@@ -8,8 +8,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 
 import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcoreremoteimpl.ClientGroup;
-import org.tinygroup.cepcoreremoteimpl.RemoteCepCoreUtil;
+import org.tinygroup.cepcoreremoteimpl.util.ClientGroup;
+import org.tinygroup.cepcoreremoteimpl.util.RemoteCepCoreUtil;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.central.Node;
 import org.tinygroup.logger.Logger;

@@ -2,8 +2,9 @@ package org.tinygroup.cepcoreremoteimpl.node;
 
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.CEPCoreOperator;
-import org.tinygroup.cepcoreremoteimpl.RemoteCepCoreUtil;
 import org.tinygroup.cepcoreremoteimpl.sc.CEPCoreServerImpl;
+import org.tinygroup.cepcoreremoteimpl.util.ParamUtil;
+import org.tinygroup.cepcoreremoteimpl.util.RemoteCepCoreUtil;
 import org.tinygroup.event.central.Node;
 import org.tinygroup.xmlparser.node.XmlNode;
 
@@ -17,7 +18,6 @@ public class NodeOperator implements CEPCoreOperator {
 	private CEPCoreServerImpl server;
 	private CEPCoreClientImpl client;
 	private Node node;
-//	private XmlNode param;
 	
 
 	public NodeOperator(int localPort, int remotePort, String localHost,
@@ -113,7 +113,7 @@ public class NodeOperator implements CEPCoreOperator {
 	}
 
 	public void setParam(XmlNode param) {
-//		this.param = param;
+		ParamUtil.parseParam(param);
 	}
 
 }

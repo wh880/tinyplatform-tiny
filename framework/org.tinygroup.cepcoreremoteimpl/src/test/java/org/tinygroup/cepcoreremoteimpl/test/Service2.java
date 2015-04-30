@@ -7,4 +7,14 @@ public class Service2 {
 			i++;
 		}
 	}
+	
+	public void overtime(){
+		System.out.println(System.currentTimeMillis());
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			
+		}
+		System.out.println(System.currentTimeMillis());
+	}
 }
