@@ -1,4 +1,4 @@
-package org.tinygroup.cepcoreremoteimpl;
+package org.tinygroup.cepcoreremoteimpl.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -5,7 +5,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcoreremoteimpl.CEPCoreEventHandler;
-import org.tinygroup.cepcoreremoteimpl.RemoteCepCoreUtil;
+import org.tinygroup.cepcoreremoteimpl.util.RemoteCepCoreUtil;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.central.Node;
 import org.tinygroup.logger.LogLevel;

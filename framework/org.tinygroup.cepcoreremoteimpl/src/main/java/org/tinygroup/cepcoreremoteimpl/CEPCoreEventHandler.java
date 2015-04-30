@@ -25,6 +25,7 @@ public class CEPCoreEventHandler {
 	public static String REG_KEY = "type_reg";
 	public static String UNREG_KEY = "type_unreg";
 
+	
 	private Node node;
 	private CEPCore core;
 

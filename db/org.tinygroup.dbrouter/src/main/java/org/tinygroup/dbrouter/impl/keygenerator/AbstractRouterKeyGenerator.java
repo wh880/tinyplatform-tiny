@@ -22,7 +22,6 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.tinygroup.databasebuinstaller.InstallProcessor;
 import org.tinygroup.dbrouter.RouterKeyGenerator;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
 import org.tinygroup.dbrouter.config.KeyTable;
@@ -33,9 +32,7 @@ import org.tinygroup.dbrouter.util.DbRouterUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 

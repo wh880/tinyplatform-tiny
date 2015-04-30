@@ -2,6 +2,7 @@ package org.tinygroup.cepcoreremoteimpl.sc;
 
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.CEPCoreOperator;
+import org.tinygroup.cepcoreremoteimpl.util.ParamUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public class ScOperator implements CEPCoreOperator {
@@ -36,7 +37,7 @@ public class ScOperator implements CEPCoreOperator {
 	}
 
 	public void setParam(XmlNode node) {
-		
+		ParamUtil.parseParam(node);
 	}
 
 }

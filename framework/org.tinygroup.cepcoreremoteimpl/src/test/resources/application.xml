@@ -8,7 +8,9 @@
 		<operator name="node"></operator>
 		<!-- 
 		<chooser name="xx"></chooser>
-		<params></params>
 		 -->
+		<params>
+			<param name="request-time-out" value="15000"/>
+		</params>
 	</cep-configuration>
 </application>
