@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.databasebuinstaller.InstallProcessor;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
 import org.tinygroup.dbrouter.config.KeyTable;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
@@ -17,7 +16,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
-public class KeyTableInstallProcessor implements InstallProcessor{
+public class KeyTableInstallProcessor {
 
 	private String tableName;
 	

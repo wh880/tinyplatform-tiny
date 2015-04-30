@@ -33,7 +33,6 @@ import java.util.regex.Pattern;
 
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
@@ -88,9 +87,9 @@ public final class DbRouterUtil {
     
     static{
     	//jdbc:jtds:sqlserver://MyDbComputerNameOrIP:1433/master
-    	JDBC_CHANGE_MAP.put("jtds", DataBaseUtil.DB_TYPE_SQLSERVER);
+    	JDBC_CHANGE_MAP.put("jtds", "sqlserver");
     	//jdbc:microsoft:sqlserver://MyDbComputerNameOrIP:1433;databaseName=master
-    	JDBC_CHANGE_MAP.put("microsoft", DataBaseUtil.DB_TYPE_SQLSERVER);
+    	JDBC_CHANGE_MAP.put("microsoft", "sqlserver");
     }
 
 	private DbRouterUtil() {
