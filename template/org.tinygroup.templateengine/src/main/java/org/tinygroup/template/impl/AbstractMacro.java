@@ -15,6 +15,7 @@
  */
 package org.tinygroup.template.impl;
 
+import org.tinygroup.context.Context;
 import org.tinygroup.template.*;
 
 import java.io.IOException;
@@ -41,7 +42,23 @@ public abstract class AbstractMacro implements Macro {
         this.name = name;
         this.bodyContentMacro = bodyContentMacro;
     }
-
+    protected Macro getMacro(TemplateContext $context) {
+        Macro $macro;
+        $macro= getBodyContentMacro();
+        if($macro==null){
+            $macro=(Macro)$context.getItemMap().get("bodyContent");
+        }
+        if($macro==null){
+            Context context=$context;
+            while(context.getParent()!=null){
+                if(context.get("bodyContent")!=null) {
+                    $macro=(Macro)context.getItemMap().get("bodyContent");
+                }
+                context=context.getParent();
+            }
+        }
+        return $macro;
+    }
     public Macro getBodyContentMacro() {
         return bodyContentMacro;
     }
