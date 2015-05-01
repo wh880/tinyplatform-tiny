@@ -88,27 +88,29 @@ public class ShardRuleBySectionAndHashDifferentSchema implements ShardRule {
 		initHash();
 		Statement statement = RouterManagerBeanFactory.getManager()
 				.getSqlStatement(sql);
-		Cache cache = RouterManagerBeanFactory.getManager().getCache();
-		CacheKey cacheKey = new CacheKey();
-		cacheKey.update(fieldName);
-		cacheKey.update(tableName);
-		cacheKey.update(targetTableName);
-		cacheKey.update(sectionArray);
-		cacheKey.update(sql);
-		for (Object param : preparedParams) {
-			cacheKey.update(param);
+		if (DbRouterUtil.isSelect(statement)) {
+			Cache cache = RouterManagerBeanFactory.getManager().getCache();
+			CacheKey cacheKey = new CacheKey();
+			cacheKey.update(fieldName);
+			cacheKey.update(tableName);
+			cacheKey.update(targetTableName);
+			cacheKey.update(sectionArray);
+			cacheKey.update(sql);
+			for (Object param : preparedParams) {
+				cacheKey.update(param);
+			}
+			Boolean match = null;
+			try {
+				match = (Boolean) cache.get(cacheKey.toString());
+			} catch (Exception e) {
+			}
+			if (match == null) {
+				match = shardRuleMatch(statement, partition, preparedParams);
+				cache.put(cacheKey.toString(), match);
+			}
+			return match;
 		}
-		Boolean match = null;
-		try {
-			match = (Boolean) cache.get(cacheKey.toString());
-		} catch (Exception e) {
-		}
-		if (match == null) {
-			match = shardRuleMatch(statement, partition, preparedParams);
-			cache.put(cacheKey.toString(), match);
-		}
-
-		return match;
+		return shardRuleMatch(statement, partition, preparedParams);
 	}
 
 	private void inittargetTable(Shard shard) {
@@ -118,10 +120,9 @@ public class ShardRuleBySectionAndHashDifferentSchema implements ShardRule {
 			targetTableName = (null == targetTableName || ""
 					.equals(targetTableName.trim())) ? tableName
 					: targetTableName;
-		}else{
-			if(null == targetTableName || ""
-					.equals(targetTableName.trim())){
-				targetTableName =  tableName;
+		} else {
+			if (null == targetTableName || "".equals(targetTableName.trim())) {
+				targetTableName = tableName;
 			}
 		}
 	}
@@ -163,11 +164,12 @@ public class ShardRuleBySectionAndHashDifferentSchema implements ShardRule {
 					nodes.add(tableName);
 				}
 			}
-			
-			if(!nodes.contains(targetTableName)){
-					throw new DbrouterRuntimeException("ShardRule["+this.toString()+"] error");
+
+			if (!nodes.contains(targetTableName)) {
+				throw new DbrouterRuntimeException("ShardRule["
+						+ this.toString() + "] error");
 			}
-			
+
 			consistentHash = new ConsistentHash<String>(nodes);
 		}
 	}
@@ -184,7 +186,7 @@ public class ShardRuleBySectionAndHashDifferentSchema implements ShardRule {
 	public String toString() {
 		return "ShardRuleBySectionAndHashDifferentSchema [tableName="
 				+ tableName + ", fieldName=" + fieldName + ", expression="
-				+ expression + ", sections=" + sections +  ", targetTableName="
+				+ expression + ", sections=" + sections + ", targetTableName="
 				+ targetTableName + ", tableParam=" + tableParam + "]";
 	}
 

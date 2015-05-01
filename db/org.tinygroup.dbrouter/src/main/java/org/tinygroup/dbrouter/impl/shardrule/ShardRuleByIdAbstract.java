@@ -21,6 +21,7 @@ import org.tinygroup.dbrouter.cache.CacheKey;
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
+import org.tinygroup.dbrouter.util.DbRouterUtil;
 import org.tinygroup.jsqlparser.statement.Statement;
 import org.tinygroup.jsqlparser.statement.delete.Delete;
 import org.tinygroup.jsqlparser.statement.insert.Insert;
@@ -87,29 +88,33 @@ public abstract class ShardRuleByIdAbstract implements ShardRule {
 		this.remainder = remainder;
 	}
 
-	public boolean isMatch(Partition partition, Shard shard,
-			String sql, Object... preparedParams) {
+	public boolean isMatch(Partition partition, Shard shard, String sql,
+			Object... preparedParams) {
 		Statement statement = RouterManagerBeanFactory.getManager()
 				.getSqlStatement(sql);
-		Cache cache = RouterManagerBeanFactory.getManager().getCache();
-		CacheKey cacheKey = new CacheKey();
-		cacheKey.update(tableName);
-		cacheKey.update(primaryKeyFieldName);
-		cacheKey.update(remainder);
-		cacheKey.update(sql);
-		for (Object param : preparedParams) {
-			cacheKey.update(param);
+		if (DbRouterUtil.isSelect(statement)) {
+			Cache cache = RouterManagerBeanFactory.getManager().getCache();
+			CacheKey cacheKey = new CacheKey();
+			cacheKey.update(tableName);
+			cacheKey.update(primaryKeyFieldName);
+			cacheKey.update(remainder);
+			cacheKey.update(sql);
+			for (Object param : preparedParams) {
+				cacheKey.update(param);
+			}
+			Boolean match = null;
+			try {
+				match = (Boolean) cache.get(cacheKey.toString());
+			} catch (Exception e) {
+			}
+			if (match == null) {
+				match = shardRuleMatch(statement, partition, preparedParams);
+				cache.put(cacheKey.toString(), match);
+			}
+			return match;
 		}
-		Boolean match = null;
-		try {
-			match = (Boolean) cache.get(cacheKey.toString());
-		} catch (Exception e) {
-		}
-		if (match == null) {
-			match = shardRuleMatch(statement, partition, preparedParams);
-			cache.put(cacheKey.toString(), match);
-		}
-		return match;
+		return shardRuleMatch(statement, partition, preparedParams);
+
 	}
 
 	private boolean shardRuleMatch(Statement statement, Partition partition,

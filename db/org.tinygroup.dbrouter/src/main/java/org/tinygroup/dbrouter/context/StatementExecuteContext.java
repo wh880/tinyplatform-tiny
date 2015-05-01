@@ -10,17 +10,19 @@ import org.tinygroup.dbrouter.StatementProcessor;
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
+import org.tinygroup.dbrouter.util.DbRouterUtil;
 import org.tinygroup.dbrouter.util.ParamObjectBuilder;
-import org.tinygroup.jsqlparser.statement.select.Select;
 
 /**
  * statement执行的上下文
+ * 
  * @author renhui
- *
+ * 
  */
 public class StatementExecuteContext {
-	
-	protected RouterManager routerManager = RouterManagerBeanFactory.getManager();
+
+	protected RouterManager routerManager = RouterManagerBeanFactory
+			.getManager();
 	private Connection tinyConnection;
 	private Statement tinyStatement;
 	private String orignalSql;
@@ -31,18 +33,15 @@ public class StatementExecuteContext {
 	private List<RealStatementExecutor> statements;
 	private List<ResultSetExecutor> resultSetExecutors;
 	private StatementProcessor statementProcessor;
-	
-	
+
 	private void readJudge() {
-		if(StringUtil.isBlank(orignalSql)){
-			org.tinygroup.jsqlparser.statement.Statement statement = routerManager
-			.getSqlStatement(orignalSql);
-			if(statement instanceof Select){
-				isRead=true;
+		if (!StringUtil.isBlank(orignalSql)) {
+			if (DbRouterUtil.isQuerySql(orignalSql)) {
+				isRead = true;
 			}
 		}
 	}
-	
+
 	public Connection getTinyConnection() {
 		return tinyConnection;
 	}
@@ -51,9 +50,9 @@ public class StatementExecuteContext {
 		return tinyStatement;
 	}
 
-
 	/**
 	 * 是查询操作
+	 * 
 	 * @return
 	 */
 	public boolean isRead() {
@@ -124,5 +123,5 @@ public class StatementExecuteContext {
 	public void setBuilder(ParamObjectBuilder builder) {
 		this.builder = builder;
 	}
-	
+
 }

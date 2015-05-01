@@ -15,6 +15,8 @@
  */
 package org.tinygroup.dbrouter.factory;
 
+import java.io.InputStream;
+
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.jcs.JcsCache;
 import org.tinygroup.dbrouter.RouterManager;
@@ -30,58 +32,71 @@ import com.thoughtworks.xstream.XStream;
 
 /**
  * 功能说明:创建集群管理对象的类
-
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-12-25 <br>
  * <br>
  */
-public  final class RouterManagerBeanFactory {
-	
-    private static Factory factory;
-    private static RouterManager manager;
-    private static Logger logger = LoggerFactory.getLogger(RouterManagerBeanFactory.class);
-    private static String DEFAULT_REGION="dbrouter";
+public final class RouterManagerBeanFactory {
 
-    public static final String DB_ROUTER_BEANS_XML = "/dbrouterbeans.xml";
-    
-    static {
-        factory = BeanFactory.getFactory();
-        XStream xStream = XStreamFactory.getXStream();
-        logger.logMessage(LogLevel.INFO, "加载Bean配置文件{}开始...", DB_ROUTER_BEANS_XML);
-        try {
-            Beans beans = (Beans) xStream.fromXML(RouterManagerBeanFactory.class.getResourceAsStream(DB_ROUTER_BEANS_XML));
-            factory.addBeans(beans);
-            factory.init();
-            logger.logMessage(LogLevel.INFO, "加载Bean配置文件{}结束。", DB_ROUTER_BEANS_XML);
-        } catch (Exception e) {
-            logger.errorMessage("加载Bean配置文件{}时发生错误", e, DB_ROUTER_BEANS_XML);
-        }
-    }
-    
-    private RouterManagerBeanFactory(){
-    	
-    }
+	public static final String ROUTER_MANAGER = "routerManager";
+	private static Factory factory;
+	private static RouterManager manager;
+	private static Logger logger = LoggerFactory
+			.getLogger(RouterManagerBeanFactory.class);
+	private static String DEFAULT_REGION = "dbrouter";
 
-    public static RouterManager getManager() {
-       return getManager(DEFAULT_REGION);
-    }
-    
-    public static RouterManager getManager(String region){
-    	return getManager(region,null);
-    }
-    
-     public static RouterManager getManager(String region,Cache cache){
-    	  if (manager == null) {
-              manager = factory.getBean("routerManager");
-              if(cache==null){
-            	  cache=new JcsCache();
-              }
-              cache.init(region);
-              manager.setCache(cache);
-          }
-          return manager;
-    }
-    
+	private static final String DEFAULT_ROUTER_BEANS_XML = "/defaultbeans.xml";
 
+	private static final String CUSTOM_ROUTER_BEANS_XML = "/custombeans.xml";
+
+	static {
+		factory = BeanFactory.getFactory();
+		XStream xStream = XStreamFactory.getXStream();
+		String beansFile = CUSTOM_ROUTER_BEANS_XML;
+		InputStream inputStream = RouterManagerBeanFactory.class
+				.getResourceAsStream(CUSTOM_ROUTER_BEANS_XML);
+		if (inputStream == null) {
+			inputStream = RouterManagerBeanFactory.class
+					.getResourceAsStream(DEFAULT_ROUTER_BEANS_XML);
+			beansFile = DEFAULT_ROUTER_BEANS_XML;
+		}
+		logger.logMessage(LogLevel.INFO, "加载Bean配置文件{}开始...", beansFile);
+		try {
+			Beans beans = (Beans) xStream.fromXML(inputStream);
+			factory.addBeans(beans);
+			factory.init();
+			logger.logMessage(LogLevel.INFO, "加载Bean配置文件{}结束。", beansFile);
+		} catch (Exception e) {
+			logger.errorMessage("加载Bean配置文件{}时发生错误", e, beansFile);
+		}
+	}
+
+	private RouterManagerBeanFactory() {
+
+	}
+
+	public static RouterManager getManager() {
+		return getManager(DEFAULT_REGION);
+	}
+
+	public static RouterManager getManager(String region) {
+		return getManager(region, null);
+	}
+
+	public static RouterManager getManager(String region, Cache cache) {
+		if (manager == null) {
+			manager = factory.getBean(ROUTER_MANAGER);
+			Cache orignalCache = manager.getCache();
+			if (cache == null && orignalCache == null) {
+				cache = new JcsCache();
+			} else if (cache == null && orignalCache != null) {
+				cache = orignalCache;
+			}
+			cache.init(region);
+			manager.setCache(cache);
+		}
+		return manager;
+	}
 
 }
