@@ -72,12 +72,15 @@ public class LoggerImpl implements Logger {
 	}
 
 	public synchronized LogBuffer getLogBuffer() {
-		LogBuffer logBuffer = threadLocal.get();
-		if (logBuffer == null) {
-			logBuffer = new LogBuffer();
-			threadLocal.set(logBuffer);
+		if (supportTransaction) {
+			LogBuffer logBuffer = threadLocal.get();
+			if (logBuffer == null) {
+				logBuffer = new LogBuffer();
+				threadLocal.set(logBuffer);
+			}
+			return logBuffer;
 		}
-		return logBuffer;
+		return null;
 	}
 
 	/*
@@ -95,8 +98,8 @@ public class LoggerImpl implements Logger {
 	 * @see org.tinygroup.logger.ILogger#startTransaction()
 	 */
 	public void startTransaction() {
-		if (supportTransaction) {
-			LogBuffer logBuffer = getLogBuffer();
+		LogBuffer logBuffer = getLogBuffer();
+		if (logBuffer != null) {
 			logBuffer.increaseTransactionDepth();
 		}
 	}
@@ -107,14 +110,12 @@ public class LoggerImpl implements Logger {
 	 * @see org.tinygroup.logger.ILogger#endTransaction()
 	 */
 	public void endTransaction() {
-		if (supportTransaction) {
-			LogBuffer logBuffer = getLogBuffer();
-			if (logBuffer != null) {
-				logBuffer.decreaseTransactionDepth();
-				if (logBuffer.getTimes() == 0) {
-					flushLog(logBuffer);
-					removeLogBuffer();
-				}
+		LogBuffer logBuffer = getLogBuffer();
+		if (logBuffer != null) {
+			logBuffer.decreaseTransactionDepth();
+			if (logBuffer.getTimes() == 0) {
+				flushLog(logBuffer);
+				removeLogBuffer();
 			}
 		}
 	}
@@ -125,11 +126,9 @@ public class LoggerImpl implements Logger {
 	 * @see org.tinygroup.logger.ILogger#flushTransaction()
 	 */
 	public void flushTransaction() {
-		if (supportTransaction) {
-			LogBuffer logBuffer = getLogBuffer();
-			if (logBuffer != null) {
-				flushLog(logBuffer);
-			}
+		LogBuffer logBuffer = getLogBuffer();
+		if (logBuffer != null) {
+			flushLog(logBuffer);
 		}
 	}
 
@@ -139,12 +138,10 @@ public class LoggerImpl implements Logger {
 	 * @see org.tinygroup.logger.ILogger#resetTransaction()
 	 */
 	public void resetTransaction() {
-		if (supportTransaction) {
-			LogBuffer logBuffer = getLogBuffer();
-			if (logBuffer != null) {
-				logBuffer.reset();
-				maxBufferRecords = 0;
-			}
+		LogBuffer logBuffer = getLogBuffer();
+		if (logBuffer != null) {
+			logBuffer.reset();
+			maxBufferRecords = 0;
 		}
 	}
 
@@ -157,6 +154,7 @@ public class LoggerImpl implements Logger {
 			}
 		}
 		logBuffer.getLogMessages().clear();
+		removeLogBuffer();
 		bufferRecords = 0;
 	}
 
@@ -258,7 +256,7 @@ public class LoggerImpl implements Logger {
 
 	private void exportLog(LogLevel logLevel, String message) {
 		LogBuffer logBuffer = getLogBuffer();
-		if (supportTransaction && logBuffer != null && logBuffer.getTimes() > 0) {
+		if (logBuffer != null && logBuffer.getTimes() > 0) {
 			logBuffer.getLogMessages().add(
 					new Message(logLevel, message, System.currentTimeMillis()));
 			checkBufferSize(logBuffer);
@@ -450,8 +448,7 @@ public class LoggerImpl implements Logger {
 		if (threadLevel == null || threadLevel != null
 				&& LogLevel.ERROR.toString().equals(threadLevel.toString())) {
 			LogBuffer logBuffer = getLogBuffer();
-			if (supportTransaction && logBuffer != null
-					&& logBuffer.getTimes() > 0) {
+			if (logBuffer != null && logBuffer.getTimes() > 0) {
 				logBuffer.getLogMessages().add(
 						new Message(ERROR, message, System.currentTimeMillis(),
 								throwable));
