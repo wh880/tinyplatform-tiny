@@ -41,7 +41,6 @@ public class ErrorContext implements java.io.Serializable {
     public CommonError fetchCurrentError() {
 
         if (errorStack != null && errorStack.size() > 0) {
-
             return errorStack.get(errorStack.size() - 1);
         }
         return null;

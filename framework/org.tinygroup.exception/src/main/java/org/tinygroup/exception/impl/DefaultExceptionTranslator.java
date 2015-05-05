@@ -1,8 +1,6 @@
 package org.tinygroup.exception.impl;
 
 import org.tinygroup.exception.BaseRuntimeException;
-import org.tinygroup.exception.ErrorCodeTranslator;
-import org.tinygroup.exception.ErrorCodeTranslatorSelector;
 import org.tinygroup.exception.ErrorContext;
 import org.tinygroup.exception.ExceptionTranslator;
 
@@ -13,25 +11,22 @@ import org.tinygroup.exception.ExceptionTranslator;
  * 
  */
 public class DefaultExceptionTranslator implements ExceptionTranslator {
+	SimpleErrorCodeTranslator simpleErrorCodeTranslator;
 
-	private ErrorCodeTranslatorSelector selector = new SimpleErrorCodeTranslatorSelector();
+	public SimpleErrorCodeTranslator getSimpleErrorCodeTranslator() {
+		return simpleErrorCodeTranslator;
+	}
+
+	public void setSimpleErrorCodeTranslator(SimpleErrorCodeTranslator simpleErrorCodeTranslator) {
+		this.simpleErrorCodeTranslator = simpleErrorCodeTranslator;
+	}
+
 
 	public String translateException(BaseRuntimeException exception) {
 		ErrorContext errorContext = BaseRuntimeException
 				.getErrorContext(exception);
-		ErrorCodeTranslator translator = selector.select(errorContext);
-		if (translator != null) {
-			return translator.translate();
-		}
-		return null;
-	}
-
-	public ErrorCodeTranslatorSelector getSelector() {
-		return selector;
-	}
-
-	public void setSelector(ErrorCodeTranslatorSelector selector) {
-		this.selector = selector;
+		//TODO 检查这里的逻辑
+		return simpleErrorCodeTranslator.translate(errorContext.fetchCurrentError());
 	}
 
 }

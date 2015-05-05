@@ -57,7 +57,7 @@ public class ErrorUtil {
 		CommonError error = new CommonError();
 		error.setErrorCode(errorCode);
 		error.setErrorMsg(message);
-		error.setLocation(getAppName());
+		error.setErrorSource(getAppName());
 		return error;
 	}
 
@@ -78,7 +78,7 @@ public class ErrorUtil {
 		CommonError error = new CommonError();
 		error.setErrorCode(errorCode);
 		error.setErrorMsg(message);
-		error.setLocation(location);
+		error.setErrorSource(location);
 		return error;
 	}
 

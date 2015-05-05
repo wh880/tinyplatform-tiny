@@ -60,7 +60,7 @@ package org.tinygroup.exception.constant;
  * </table>
  * 
  */
-public enum ErrorTypes {
+public enum ErrorType {
 	/** 框架级系统错误 */
 	FRAMEWORK(1),
 	/** 框架扩展系统错误 */
@@ -72,7 +72,7 @@ public enum ErrorTypes {
 
 	private int type;
 
-	private ErrorTypes(int type) {
+	private ErrorType(int type) {
 		this.type = type;
 	}
 
@@ -80,8 +80,8 @@ public enum ErrorTypes {
 		return type;
 	}
 
-	public static ErrorTypes find(String code) {
-		for (ErrorTypes types : ErrorTypes.values()) {
+	public static ErrorType find(String code) {
+		for (ErrorType types : ErrorType.values()) {
 			if (code.equals(types.getType()+"")) {
 				return types;
 			}

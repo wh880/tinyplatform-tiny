@@ -1,11 +1,12 @@
 package org.tinygroup.exception;
 
-import org.tinygroup.exception.constant.ReservedErrorCodes;
+import org.tinygroup.exception.constant.ErrorLevel;
+import org.tinygroup.exception.constant.ErrorType;
 
 /**
- * <p>
+ * <p/>
  * 此错误码是全站推行的标准错误码。
- * <p>
+ * <p/>
  * 标准错误码的格式如下：
  * <table border="1">
  * <tr>
@@ -59,52 +60,35 @@ import org.tinygroup.exception.constant.ReservedErrorCodes;
  * 码</td>
  * </tr>
  * </table>
- * 
  */
 public class ErrorCode extends AbstractErrorCode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8398330229603671639L;
+    //这里是定义长度
+    private static final int[] FIELD_LENGTH = {2, 1, 1, 1, 3, 3};
+    /**
+     *
+     */
+    private static final long serialVersionUID = -8398330229603671639L;
 
-	public ErrorCode(String errorCode) {
-		super(errorCode);
-	}
 
-	public ErrorCode(String errorType, String errorLevel, String errorScene,
-			String errorSpecific, String errorPrefix) {
-		super(DEFAULT_VERSION, errorType, errorLevel, errorScene,
-				errorSpecific, errorPrefix);
-	}
+    public ErrorCode(ErrorType errorType, ErrorLevel errorLevel, String errorScene,
+                     int errorNumber, String errorPrefix) {
+        super(DEFAULT_VERSION, errorType, errorLevel, errorScene,
+                errorNumber, errorPrefix);
+    }
 
-	@Override
-	protected void buildErrorCode(String errorCode) {
-		try {
-			checkLength(errorCode, 12);
-			splitErrorCode(errorCode);
-		} catch (Throwable e) {
-			splitErrorCode(ReservedErrorCodes.UNKNOWN_ERROR);
-		}
-	}
+    @Override
+    protected int[] getFieldLength() {
+        return null;
+    }
 
-	private void splitErrorCode(String errorCode) {
-		char[] chars = errorCode.toCharArray();
-		this.version = "" + chars[2];
-		this.errorLevel = "" + chars[3];
-		this.errorType = "" + chars[4];
-		this.errorScene = "" + chars[5] + chars[6] + chars[7] + chars[8];
-		this.errorSpecific = "" + chars[9] + chars[10] + chars[11];
-	}
+    @Override
+    protected String getErrorCodeFormatString() {
+        return null;
+    }
 
-	@Override
-	protected void checkScene(String errorScene) {
-		checkLength(errorScene, 4);
-	}
-
-	@Override
-	protected void checkSpecific(String errorSpecific) {
-		checkLength(errorSpecific, 3);
-	}
-
+    @Override
+    protected AbstractErrorCode getReserveErrorCode(ErrorType errorType) {
+        return null;
+    }
 }

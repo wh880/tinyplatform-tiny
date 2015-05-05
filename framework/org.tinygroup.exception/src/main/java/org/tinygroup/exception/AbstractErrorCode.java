@@ -1,192 +1,160 @@
 package org.tinygroup.exception;
 
-import org.tinygroup.exception.constant.ErrorLevels;
-import org.tinygroup.exception.constant.ErrorTypes;
+import org.tinygroup.exception.constant.ErrorLevel;
+import org.tinygroup.exception.constant.ErrorType;
+import org.tinygroup.exception.constant.ReservedErrorCodeGetter;
+
+import java.io.Serializable;
 
 /**
- * 抽象的错误码规范
- * 
+ * 错误码抽象类
+ *
  * @author renhui
- * 
  */
-public abstract class AbstractErrorCode implements java.io.Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4604190154626896337L;
+public abstract class AbstractErrorCode implements Serializable, ReservedErrorCodeGetter {
+    public static int PREFIX = 0, VERSION = 1, TYPE = 2, LEVEL = 3, SCENE = 4, NUMBER = 5;
 
-	/** 固定标识[第 1-2位] */
-	protected static final String PREFIX = "TE";
+    /**
+     *
+     */
+    private static final long serialVersionUID = 4604190154626896337L;
 
-	/** 统一错误规范默认版本 */
-	protected static final String DEFAULT_VERSION = "0";
+    /**
+     * 默认错误前缀，TE表示TinyError的意思
+     */
+    protected static final String DEFAULT_PREFIX = "TE";
 
-	protected String errorPrefix;
+    /**
+     * 统一错误规范默认版本
+     */
+    protected static final String DEFAULT_VERSION = "1";
+    /**
+     * 错误前缀
+     */
+    protected String errorPrefix = DEFAULT_PREFIX;
 
-	/** 规范版本[第3位] */
-	protected String version = DEFAULT_VERSION;
+    /**
+     * 错误规范版本，错误规范的版本不同，表示某些位数的长度不同
+     */
+    protected String version = DEFAULT_VERSION;
 
-	/** 错误类型[第4位],见<code>ErrorTypes</code>定义 */
-	protected String errorType;
+    /**
+     * 错误类型<code>ErrorTypes</code>定义
+     */
+    protected ErrorType errorType;
 
-	/** 错误级别[第5位],见<code>ErrorLevels</code>定义 */
-	protected String errorLevel;
+    /**
+     * 错误级别,见<code>ErrorLevels</code>定义
+     */
+    protected ErrorLevel errorLevel;
 
-	/** 错误场景[第6-9位] */
-	protected String errorScene;
+    /**
+     * 错误场景
+     */
+    protected String errorScene;
 
-	/** 具体错误码[第10-12位] */
-	protected String errorSpecific;
+    /**
+     * 具体错误码
+     */
+    protected int errorNumber;
 
-	public AbstractErrorCode(String errorCode) {
-		buildErrorCode(errorCode);
-	}
 
-	public AbstractErrorCode(String version, String errorType,
-			String errorLevel, String errorScene, String errorSpecific,
-			String errorPrefix) {
-		super();
-		checkPrefix(errorPrefix);
-		checkVersion(version);
-		checkType(errorType);
-		checkLevel(errorLevel);
-		checkScene(errorScene);
-		checkSpecific(errorSpecific);
-		this.errorPrefix = errorPrefix;
-		this.version = version;
-		this.errorType = errorType;
-		this.errorLevel = errorLevel;
-		this.errorScene = errorScene;
-		this.errorSpecific = errorSpecific;
-	}
+    /**
+     * @return
+     */
+    protected abstract int[] getFieldLength();
 
-	protected abstract void buildErrorCode(String errorCode);
+    protected abstract String getErrorCodeFormatString();
 
-	/**
-	 * 错误场景检查逻辑，该方法需要子类实现
-	 * 
-	 * @param errorScene
-	 */
-	protected abstract void checkScene(String errorScene);
+    protected abstract AbstractErrorCode getReserveErrorCode(ErrorType errorType);
 
-	/**
-	 * 错误码检查逻辑，该方法需要子类实现
-	 * 
-	 * @param errorSpecific
-	 */
-	protected abstract void checkSpecific(String errorSpecific);
+    public String getUnknownErrorCode(ErrorType errorType) {
+        return getReserveErrorCode(errorType).toString();
+    }
 
-	protected void checkLevel(String errorLevel) {
-		checkLength(errorLevel, 1);
-		checkNumber(errorLevel);
-		ErrorLevels levels = ErrorLevels.find(errorLevel);
-		if (levels == null) {
-			throw new IllegalArgumentException("错误级别未在ErrorLevels中定义");
-		}
+    //TODO 按编码顺序来
+    public AbstractErrorCode(String version, ErrorType errorType,
+                             ErrorLevel errorLevel, String errorScene, int errorNumber,
+                             String errorPrefix) {
+        assertLength(PREFIX, errorPrefix);
+        assertLength(VERSION, version);
+        assertLength(SCENE, errorScene);
+        assertLength(NUMBER, errorNumber + "");
+        this.errorPrefix = errorPrefix;
+        this.version = version;
+        this.errorType = errorType;
+        this.errorLevel = errorLevel;
+        this.errorScene = errorScene;
+        this.errorNumber = errorNumber;
+    }
 
-	}
+    public static <T extends AbstractErrorCode> T parseErrorCode(String errorCode) {
+        char[] chars = errorCode.toCharArray();
+        //TODO 根据长度进行分隔
+        return null;
+    }
 
-	protected void checkType(String errorType) {
-		checkLength(errorType, 1);
-		checkNumber(errorType);
-		ErrorTypes types = ErrorTypes.find(errorType);
-		if (types == null) {
-			throw new IllegalArgumentException("错误类型未在ErrorTypes中定义");
-		}
 
-	}
+    protected void assertLength(int field, String errorPrefix) {
+        if (errorPrefix == null || errorPrefix.length() != getFieldLength()[field]) {
+            throw new IllegalArgumentException();
+        }
+    }
 
-	protected void checkVersion(String version) {
-		checkLength(version, 1);
-		checkNumber(version);
-	}
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return String.format(getErrorCodeFormatString(), errorPrefix, version, errorType.getType(), errorLevel.getLevel(), errorScene, errorNumber);
+    }
 
-	protected void checkPrefix(String errorPrefix) {
+    public String getErrorPrefix() {
+        return errorPrefix;
+    }
 
-	}
+    public void setErrorPrefix(String errorPrefix) {
+        this.errorPrefix = errorPrefix;
+    }
 
-	/**
-	 * 字符串长度检查
-	 * 
-	 * @param str
-	 * @param length
-	 */
-	public void checkLength(String str, int length) {
+    public String getVersion() {
+        return version;
+    }
 
-		if (str == null || str.length() != length) {
-			throw new IllegalArgumentException();
-		}
-	}
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-	public void checkNumber(String str) {
-		try {
-			Integer.parseInt(str);
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("必须是数字类型", e);
-		}
-	}
+    public ErrorType getErrorType() {
+        return errorType;
+    }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append(errorPrefix);
-		sb.append(version);
-		sb.append(errorType);
-		sb.append(errorLevel);
-		sb.append(errorScene);
-		sb.append(errorSpecific);
-		return sb.toString();
-	}
+    public void setErrorType(ErrorType errorType) {
+        this.errorType = errorType;
+    }
 
-	public String getErrorPrefix() {
-		return errorPrefix;
-	}
+    public ErrorLevel getErrorLevel() {
+        return errorLevel;
+    }
 
-	public void setErrorPrefix(String errorPrefix) {
-		this.errorPrefix = errorPrefix;
-	}
+    public void setErrorLevel(ErrorLevel errorLevel) {
+        this.errorLevel = errorLevel;
+    }
 
-	public String getVersion() {
-		return version;
-	}
+    public String getErrorScene() {
+        return errorScene;
+    }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public void setErrorScene(String errorScene) {
+        this.errorScene = errorScene;
+    }
 
-	public String getErrorType() {
-		return errorType;
-	}
+    public int getErrorNumber() {
+        return errorNumber;
+    }
 
-	public void setErrorType(String errorType) {
-		this.errorType = errorType;
-	}
-
-	public String getErrorLevel() {
-		return errorLevel;
-	}
-
-	public void setErrorLevel(String errorLevel) {
-		this.errorLevel = errorLevel;
-	}
-
-	public String getErrorScene() {
-		return errorScene;
-	}
-
-	public void setErrorScene(String errorScene) {
-		this.errorScene = errorScene;
-	}
-
-	public String getErrorSpecific() {
-		return errorSpecific;
-	}
-
-	public void setErrorSpecific(String errorSpecific) {
-		this.errorSpecific = errorSpecific;
-	}
+    public void setErrorNumber(int errorNumber) {
+        this.errorNumber = errorNumber;
+    }
 
 }

@@ -17,7 +17,7 @@ package org.tinygroup.exception.constant;
  *          </table>
  * 
  */
-public enum ErrorLevels {
+public enum ErrorLevel {
 	/** INFO级别 */
 	INFO(1),
 	/** WARN级别 */
@@ -29,7 +29,7 @@ public enum ErrorLevels {
 	
 	private int level;
 	
-    private ErrorLevels(int level) {
+    private ErrorLevel(int level) {
 		this.level = level;
 	}
 
@@ -37,8 +37,8 @@ public enum ErrorLevels {
 		return level;
 	}
     
-	public static ErrorLevels find(String code) {
-		for (ErrorLevels level : ErrorLevels.values()) {
+	public static ErrorLevel find(String code) {
+		for (ErrorLevel level : ErrorLevel.values()) {
 			if (code.equals(level.getLevel()+"")) {
 				return level;
 			}
