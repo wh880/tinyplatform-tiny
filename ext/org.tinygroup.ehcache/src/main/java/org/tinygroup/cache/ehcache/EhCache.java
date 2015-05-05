@@ -32,9 +32,9 @@ import org.tinygroup.cache.exception.CacheException;
  * 
  */
 public class EhCache implements Cache {
+	private org.tinygroup.cache.CacheManager cacheManager;
 	private static final String GROUP_MAP = "group_map";
-	private CacheManager manager = new CacheManager(
-			EhCache.class.getResourceAsStream("/ehcache.xml"));
+	private CacheManager manager = CacheManager.getInstance();
 	private net.sf.ehcache.Cache cache;
 
 	public EhCache() {
@@ -42,10 +42,6 @@ public class EhCache implements Cache {
 
 	private String getKey(String group, String key) {
 		return String.format("%s:%s", group, key);
-	}
-
-	public void setCache(net.sf.ehcache.Cache cache) {
-		this.cache = cache;
 	}
 
 	public void init(String region) {
@@ -136,7 +132,11 @@ public class EhCache implements Cache {
 	}
 
 	public void destroy() {
-		cache.dispose();
+		cacheManager.removeCache(this);
+	}
+
+	public void setCacheManager(org.tinygroup.cache.CacheManager manager) {
+		this.cacheManager = manager;
 	}
 
 }

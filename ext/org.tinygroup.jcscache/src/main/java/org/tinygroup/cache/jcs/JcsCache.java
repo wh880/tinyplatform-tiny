@@ -21,10 +21,12 @@ import java.util.Set;
 import org.apache.jcs.JCS;
 import org.apache.jcs.engine.control.CompositeCache;
 import org.tinygroup.cache.Cache;
+import org.tinygroup.cache.CacheManager;
 import org.tinygroup.cache.exception.CacheException;
 
 public class JcsCache implements Cache {
 	private JCS jcs;
+	private CacheManager cacheManager=JcsCacheManager.getInstance();
 
 	public JcsCache() {
 	}
@@ -33,10 +35,6 @@ public class JcsCache implements Cache {
 		if (!(object instanceof Serializable)) {
 			throw new RuntimeException("对象必须实现Serializable接口");
 		}
-	}
-
-	public void setJcs(JCS jcs) {
-		this.jcs = jcs;
 	}
 
 	public Object get(String key) {
@@ -65,8 +63,7 @@ public class JcsCache implements Cache {
 		}
 	}
 
-	public void put(String groupName, String key, Object object)
-			{
+	public void put(String groupName, String key, Object object) {
 		checkSerializable(object);
 		try {
 			jcs.putInGroup(key, groupName, object);
@@ -137,15 +134,18 @@ public class JcsCache implements Cache {
 
 	public void init(String region) {
 		try {
-			jcs= JCS.getInstance(region);
+			jcs = JCS.getInstance(region);
 		} catch (Exception e) {
 			throw new CacheException(e);
 		}
 	}
 
 	public void destroy() {
-		jcs.dispose();
 		CompositeCache.elementEventQ.destroy();
+		cacheManager.removeCache(this);
 	}
 
+	public void setCacheManager(CacheManager manager) {
+		this.cacheManager=manager;
+	}
 }
