@@ -15,14 +15,21 @@
  */
 package org.tinygroup.vfs;
 
-import org.tinygroup.vfs.impl.*;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.tinygroup.vfs.impl.FileSchemaProvider;
+import org.tinygroup.vfs.impl.FtpSchemaProvider;
+import org.tinygroup.vfs.impl.HttpSchemaProvider;
+import org.tinygroup.vfs.impl.HttpsSchemaProvider;
+import org.tinygroup.vfs.impl.JBossVfsSchemaProvider;
+import org.tinygroup.vfs.impl.JarSchemaProvider;
+import org.tinygroup.vfs.impl.WsJarSchemaProvider;
+import org.tinygroup.vfs.impl.ZipSchemaProvider;
 
 /**
  * 虚拟文件系统
@@ -37,6 +44,7 @@ public final class VFS {
 
     static {
         addSchemaProvider(new JarSchemaProvider());
+        addSchemaProvider(new WsJarSchemaProvider());
         addSchemaProvider(new ZipSchemaProvider());
         addSchemaProvider(new FileSchemaProvider());
         addSchemaProvider(new HttpSchemaProvider());
