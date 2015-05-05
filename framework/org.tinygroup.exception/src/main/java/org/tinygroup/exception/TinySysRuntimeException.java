@@ -19,47 +19,72 @@ import java.util.Locale;
 
 import org.tinygroup.context.Context;
 
+/**
+ * 框架系统运行期异常
+ * @author renhui
+ *
+ */
 public class TinySysRuntimeException extends BaseRuntimeException {
+
+	private static final long serialVersionUID = 5006685550353539837L;
+
+	public TinySysRuntimeException(String errorCode, Context context,
+			Locale locale) {
+		super(errorCode, context, locale);
+	}
+
+	public TinySysRuntimeException(String errorCode, Context context) {
+		super(errorCode, context);
+	}
+
+	public TinySysRuntimeException(String errorCode, Object... params) {
+		super(errorCode, params);
+	}
+
+	public TinySysRuntimeException(String errorCode, String defaultErrorMsg,
+			Context context, Locale locale) {
+		super(errorCode, defaultErrorMsg, context, locale);
+	}
+
+	public TinySysRuntimeException(String errorCode, String defaultErrorMsg,
+			Locale locale, Object... params) {
+		super(errorCode, defaultErrorMsg, locale, params);
+	}
+
+	public TinySysRuntimeException(String errorCode, String defaultErrorMsg,
+			Locale locale, Throwable throwable, Object... params) {
+		super(errorCode, defaultErrorMsg, locale, throwable, params);
+	}
+
+	public TinySysRuntimeException(String errorCode, String defaultErrorMsg,
+			Object... params) {
+		super(errorCode, defaultErrorMsg, params);
+	}
 	
+	public TinySysRuntimeException(String errorCode, Throwable throwable,
+			Object... params) {
+		super(errorCode, throwable, params);
+	}
+
+	public TinySysRuntimeException(String errorCode, String defaultErrorMsg,
+			Throwable throwable, Object... params) {
+		super(errorCode, defaultErrorMsg, throwable, params);
+	}
+
+	public TinySysRuntimeException() {
+		super();
+	}
+
+	public TinySysRuntimeException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public TinySysRuntimeException(String message) {
+		super(message);
+	}
+
+	public TinySysRuntimeException(Throwable cause) {
+		super(cause);
+	}
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1694628104824119327L;
-
-	public TinySysRuntimeException(Throwable throwable) {
-		super(throwable);
-	}
-	public TinySysRuntimeException(Throwable throwable, String code) {
-		super(throwable,code);
-	}
-
-	public TinySysRuntimeException(Throwable throwable, String code,Object...args) {
-		super(throwable,code,args);
-	}
-
-	public TinySysRuntimeException(String code, Object... args) {
-		super(code, args);
-	}
-
-	public TinySysRuntimeException(String code) {
-		super(code);
-	}
-
-	public TinySysRuntimeException(String code, Locale locale) {
-		super(code, locale);
-	}
-
-	public TinySysRuntimeException(String code, Locale locale, Object... args) {
-		super(code, locale, args);
-	}
-
-	public TinySysRuntimeException(String code, Context context, Locale locale) {
-		super(code, context, locale);
-	}
-
-	public TinySysRuntimeException(String code, Context context) {
-		super(code, context);
-	}
-
 }

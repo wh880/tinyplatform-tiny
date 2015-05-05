@@ -20,7 +20,7 @@ import org.tinygroup.exception.TinySysRuntimeException;
 public class CEPRunException extends TinySysRuntimeException{
 
 	public CEPRunException(Exception e,String code) {
-		super(e,code);
+		super(code,e);
 	}
 	public CEPRunException(String code) {
 		super(code);

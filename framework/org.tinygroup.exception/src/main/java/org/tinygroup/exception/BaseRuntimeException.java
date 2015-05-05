@@ -15,76 +15,163 @@
  */
 package org.tinygroup.exception;
 
+import java.util.List;
 import java.util.Locale;
 
+import org.tinygroup.commons.i18n.LocaleUtil;
+import org.tinygroup.commons.tools.ExceptionUtil;
 import org.tinygroup.context.Context;
+import org.tinygroup.exception.util.ErrorUtil;
 import org.tinygroup.i18n.I18nMessage;
 import org.tinygroup.i18n.I18nMessageFactory;
 
 public class BaseRuntimeException extends RuntimeException {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1141168272047460629L;
-	private static I18nMessage i18nMessage = I18nMessageFactory.getI18nMessages();// 需要在启动的时候注入进来
-	private String errorCode;
+	private static I18nMessage i18nMessage = I18nMessageFactory
+			.getI18nMessages();// 需要在启动的时候注入进来
 	private String errorMsg;
-	
-	
-	
-	public String getErrorCode() {
-		return errorCode;
-	}
-	public void setErrorCode(String errorCode) {
-		this.errorCode = errorCode;
-	}
-	public String getErrorMsg() {
+
+	private ErrorCode errorCode;
+
+	private Throwable cause;
+
+	@Override
+	public String getMessage() {
 		return errorMsg;
 	}
-	public void setErrorMsg(String errorMsg) {
-		this.errorMsg = errorMsg;
+
+	@Override
+	public Throwable getCause() {
+		return cause;
 	}
-	
+
+	public ErrorCode getErrorCode() {
+		return errorCode;
+	}
+
 	public static void setI18nMessage(I18nMessage i18nMessage) {
 		BaseRuntimeException.i18nMessage = i18nMessage;
 	}
-	
-	
-	public BaseRuntimeException(Throwable throwable) {
-		super(throwable);
-	}
-	public BaseRuntimeException(Throwable throwable, String code) {
-		super(i18nMessage.getMessage(code),throwable);
+
+	public BaseRuntimeException(String errorCode, Object... params) {
+		this(errorCode, "", LocaleUtil.getContext().getLocale(), params);
 	}
 
-	public BaseRuntimeException(Throwable throwable, String code,Object...args) {
-		super(i18nMessage.getMessage(code,args),throwable);
+	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
+			Object... params) {
+		this(errorCode, defaultErrorMsg, LocaleUtil.getContext().getLocale(),
+				params);
+	}
+
+	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
+			Locale locale, Object... params) {
+		String errorMsg = i18nMessage.getMessage(errorCode, locale,
+				defaultErrorMsg, params);
+		this.errorCode = new ErrorCode(errorCode);
+		this.errorMsg = errorMsg;
+	}
+	
+	public BaseRuntimeException(String errorCode,
+			Throwable throwable, Object... params) {
+		this(errorCode, "", LocaleUtil.getContext().getLocale(),
+				throwable, params);
+	}
+
+	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
+			Throwable throwable, Object... params) {
+		this(errorCode, defaultErrorMsg, LocaleUtil.getContext().getLocale(),
+				throwable, params);
+	}
+
+	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
+			Locale locale, Throwable throwable, Object... params) {
+		this(errorCode, defaultErrorMsg, locale, params);
+		this.cause = throwable;
+	}
+
+	public BaseRuntimeException(String errorCode, Context context, Locale locale) {
+		this(errorCode, "", context, locale);
+	}
+
+	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
+			Context context, Locale locale) {
+		String errorMsg = i18nMessage.getMessage(errorCode, defaultErrorMsg,
+				context, locale);
+		this.errorMsg = errorMsg;
+		this.errorCode = new ErrorCode(errorCode);
+	}
+
+	public BaseRuntimeException(String errorCode, Context context) {
+		this(errorCode, "", context, LocaleUtil.getContext().getLocale());
 	}
 	
 	
-	public BaseRuntimeException(String code, Object... args) {
-		super(i18nMessage.getMessage(code, args));
+	public BaseRuntimeException() {
+		super();
+	}
+
+	public BaseRuntimeException(String message, Throwable cause) {
+		super(message, cause);
+		this.cause = cause;
+	}
+
+	public BaseRuntimeException(String message) {
+		super(message);
 		
 	}
 
-	public BaseRuntimeException(String code) {
-		super(i18nMessage.getMessage(code));
+	public BaseRuntimeException(Throwable cause) {
+		super(cause);
+		this.cause = cause;
 	}
 
-	public BaseRuntimeException(String code, Locale locale) {
-		super(i18nMessage.getMessage(code, locale));
+	public static ErrorContext getErrorContext(Throwable throwable) {
+		ErrorContext errorContext = new ErrorContext();
+		List<Throwable> causes = ExceptionUtil.getCauses(throwable, true);
+		for (Throwable cause : causes) {
+			if (cause instanceof BaseRuntimeException) {
+				BaseRuntimeException exception = (BaseRuntimeException) cause;
+				ErrorUtil.makeAndAddError(errorContext,
+						exception.getErrorCode(), exception.getMessage());
+			}
+		}
+		return errorContext;
 	}
 
-	public BaseRuntimeException(String code, Locale locale, Object... args) {
-		super(i18nMessage.getMessage(code, locale, args));
-	}
-
-	public BaseRuntimeException(String code, Context context, Locale locale) {
-		super(i18nMessage.getMessage(code, context, locale));
-	}
-
-	public BaseRuntimeException(String code, Context context) {
-		super(i18nMessage.getMessage(code, context));
+	/**
+	 * Check whether this exception contains an exception of the given type:
+	 * either it is of the given class itself or it contains a nested cause of
+	 * the given type.
+	 * 
+	 * @param exType
+	 *            the exception type to look for
+	 * @return whether there is a nested exception of the specified type
+	 */
+	public boolean contains(Class exType) {
+		if (exType == null) {
+			return false;
+		}
+		if (exType.isInstance(this)) {
+			return true;
+		}
+		Throwable cause = getCause();
+		if (cause == this) {
+			return false;
+		}
+		if (cause instanceof BaseRuntimeException) {
+			return ((BaseRuntimeException) cause).contains(exType);
+		} else {
+			while (cause != null) {
+				if (exType.isInstance(cause)) {
+					return true;
+				}
+				if (cause.getCause() == cause) {
+					break;
+				}
+				cause = cause.getCause();
+			}
+			return false;
+		}
 	}
 
 }

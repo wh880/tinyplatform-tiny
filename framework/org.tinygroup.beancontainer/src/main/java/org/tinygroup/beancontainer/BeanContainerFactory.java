@@ -16,6 +16,7 @@
 package org.tinygroup.beancontainer;
 
 import org.tinygroup.exception.TinyBizRuntimeException;
+import org.tinygroup.exception.constant.ReservedErrorCodes;
 
 public class BeanContainerFactory {
 	public static BeanContainer<?> container;
@@ -25,8 +26,8 @@ public class BeanContainerFactory {
 			container = (BeanContainer) Class.forName(beanClassName)
 					.newInstance();
 		} catch (Exception e) {
-			throw new TinyBizRuntimeException(e, "beancontainer_init_failed",
-					beanClassName);
+			throw new TinyBizRuntimeException(ReservedErrorCodes.UNKNOWN_ERROR,
+					e, beanClassName);
 		}
 	}
 

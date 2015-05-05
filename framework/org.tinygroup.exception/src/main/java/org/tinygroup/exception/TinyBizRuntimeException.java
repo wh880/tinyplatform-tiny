@@ -20,45 +20,66 @@ import java.util.Locale;
 import org.tinygroup.context.Context;
 
 public class TinyBizRuntimeException extends BaseRuntimeException {
-	
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1694628104824119327L;
 
-	public TinyBizRuntimeException(Throwable throwable) {
-		super(throwable);
-	}
-	public TinyBizRuntimeException(Throwable throwable, String code) {
-		super(throwable,code);
+	public TinyBizRuntimeException(String errorCode, Context context,
+			Locale locale) {
+		super(errorCode, context, locale);
 	}
 
-	public TinyBizRuntimeException(Throwable throwable, String code,Object...args) {
-		super(throwable,code,args);
-	}
-	public TinyBizRuntimeException(String code, Object... args) {
-		super(code, args);
+	public TinyBizRuntimeException(String errorCode, Context context) {
+		super(errorCode, context);
 	}
 
-	public TinyBizRuntimeException(String code) {
-		super(code);
+	public TinyBizRuntimeException(String errorCode, Object... params) {
+		super(errorCode, params);
 	}
 
-	public TinyBizRuntimeException(String code, Locale locale) {
-		super(code, locale);
+	public TinyBizRuntimeException(String errorCode, String defaultErrorMsg,
+			Context context, Locale locale) {
+		super(errorCode, defaultErrorMsg, context, locale);
 	}
 
-	public TinyBizRuntimeException(String code, Locale locale, Object... args) {
-		super(code, locale, args);
+	public TinyBizRuntimeException(String errorCode, String defaultErrorMsg,
+			Locale locale, Object... params) {
+		super(errorCode, defaultErrorMsg, locale, params);
 	}
 
-	public TinyBizRuntimeException(String code, Context context, Locale locale) {
-		super(code, context, locale);
+	public TinyBizRuntimeException() {
+		super();
 	}
 
-	public TinyBizRuntimeException(String code, Context context) {
-		super(code, context);
+	public TinyBizRuntimeException(String errorCode, Throwable throwable,
+			Object... params) {
+		super(errorCode, throwable, params);
+	}
+
+	public TinyBizRuntimeException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public TinyBizRuntimeException(String message) {
+		super(message);
+	}
+
+	public TinyBizRuntimeException(Throwable cause) {
+		super(cause);
+	}
+
+	public TinyBizRuntimeException(String errorCode, String defaultErrorMsg,
+			Locale locale, Throwable throwable, Object... params) {
+		super(errorCode, defaultErrorMsg, locale, throwable, params);
+	}
+
+	public TinyBizRuntimeException(String errorCode, String defaultErrorMsg,
+			Object... params) {
+		super(errorCode, defaultErrorMsg, params);
+	}
+
+	public TinyBizRuntimeException(String errorCode, String defaultErrorMsg,
+			Throwable throwable, Object... params) {
+		super(errorCode, defaultErrorMsg, throwable, params);
 	}
 
 }

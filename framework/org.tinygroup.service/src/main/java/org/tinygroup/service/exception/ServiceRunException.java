@@ -30,6 +30,6 @@ public class ServiceRunException extends TinySysRuntimeException {
 		super(s);
 	}
 	public ServiceRunException(Throwable throwable, String code) {
-		super(throwable,code);
+		super(code,throwable);
 	}
 }

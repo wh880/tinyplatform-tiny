@@ -7,7 +7,6 @@
 			<ref bean="formater" />
 		</property>
 	</bean>
-	<bean id="springMessage" class="org.tinygroup.i18n.SpringMessage"></bean>
 	<bean id="i18nMessages" class="org.tinygroup.i18n.I18nMessages">
 		<property name="i18nMessageStandards">
 			<list>
