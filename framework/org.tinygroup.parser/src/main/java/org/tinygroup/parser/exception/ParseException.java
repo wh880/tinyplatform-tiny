@@ -35,11 +35,11 @@ public class ParseException extends TinySysRuntimeException {
 		super(throwable);
 	}
 	public ParseException(Throwable throwable, String code) {
-		super(throwable,code);
+		super(code,throwable);
 	}
 
 	public ParseException(Throwable throwable, String code,Object...args) {
-		super(throwable,code,args);
+		super(code,throwable,args);
 	}
 
 	public ParseException(String code, Object... args) {

@@ -147,13 +147,13 @@ public class TestSelect {
 				CUSTOM.NAME.equal(null)));
 
 		System.out.println(select(CUSTOM.NAME).from(CUSTOM).where(
-				and(CUSTOM.AGE.greaterThan(33), CUSTOM.NAME.equal(null))));
+				and(CUSTOM.AGE.greaterThan(null), CUSTOM.NAME.equal(null))));
 		
 		System.out.println(select(CUSTOM.NAME).from(CUSTOM).where(
 				and(CUSTOM.AGE.greaterThan(33), CUSTOM.NAME.isNotEmpty())));
 
 		System.out.println(select(CUSTOM.NAME).from(CUSTOM).where(
-				or(and(CUSTOM.AGE.greaterThan(33), CUSTOM.NAME.equal(null)),
+				or(and(CUSTOM.AGE.greaterThan(33), CUSTOM.NAME.equal("")),
 						CUSTOM.ID.eq("123"))));
 		
 		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.in(1,5,10)));

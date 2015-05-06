@@ -4,7 +4,7 @@
                     http://www.springframework.org/schema/beans/spring-beans.xsd
                     http://www.springframework.org/schema/context
                     http://www.springframework.org/schema/context/spring-context.xsd"
-	default-autowire="byType" default-lazy-init="true">
+	default-autowire="byName" default-lazy-init="true">
 
 	<bean id="dictLoadFileProcessor" scope="singleton"
 		class="org.tinygroup.dict.fileresolver.DictLoadFileProcessor">

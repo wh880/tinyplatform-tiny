@@ -475,10 +475,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     public CodeBlock visitBodycontent_directive(@NotNull TinyTemplateParser.Bodycontent_directiveContext ctx) {
         CodeBlock codeBlock = new CodeBlock();
-        codeBlock.subCode("$macro= getBodyContentMacro();");
-        codeBlock.subCode("if($macro==null){");
-        codeBlock.subCode("    $macro=(Macro)$context.getItemMap().get(\"bodyContent\");");
-        codeBlock.subCode("}");
+        codeBlock.subCode("$macro= getMacro($context);");
         codeBlock.subCode("if($macro!=null) {");
         codeBlock.subCode("    $newContext=new TemplateContextDefault();");
         codeBlock.subCode("    $newContext.setParent($context);");

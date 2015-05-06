@@ -15,12 +15,13 @@
  */
 package org.tinygroup.vfs.impl;
 
+import java.io.IOException;
 import java.io.InputStream;
+
+import junit.framework.TestCase;
 
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-
-import junit.framework.TestCase;
 
 /**
  * jar fileobject 测试用例
@@ -72,6 +73,18 @@ public class JarFileObjectTest extends TestCase {
 		subFile= fileObject.getFileObject("/org/hundsun/opensource/vfs/VFS.class");
 		assertTrue(subFile!=null);
 		assertEquals("VFS.class", subFile.getFileName());
+	}
+	
+	public void testWasJar() throws IOException{
+		String path="wsjar:file:"+getClass().getResource("/vfs-0.0.1-SNAPSHOT.jar").getFile();
+		FileObject fileObject = VFS.resolveFile(path);
+		FileObject fo = findFileObject(fileObject, "VFS.class");
+		if (fo != null) {
+			InputStream inputStream = fo.getInputStream();
+			byte[] buf = new byte[(int) fo.getSize()];
+			inputStream.close();
+			assertTrue(buf!=null);
+		}
 	}
 
 	

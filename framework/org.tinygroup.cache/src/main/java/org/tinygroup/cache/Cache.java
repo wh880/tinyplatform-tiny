@@ -21,7 +21,7 @@ import java.util.Set;
  * 
  * 功能说明: 缓存通用接口
  * <p>
-
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-5-22 <br>
  * <br>
@@ -31,6 +31,8 @@ public interface Cache {
 	 * 
 	 * 缓存区域初始化
 	 * 
+	 * 参考{@link
+	 *             org.tinygroup.cache.CacheManager.createCache(region)}
 	 * @param region
 	 */
 	void init(String region);
@@ -106,6 +108,12 @@ public interface Cache {
 	 * @return @
 	 */
 	int freeMemoryElements(int numberToFree);
-	
+
 	void destroy();
+	
+	/**
+	 * 
+	 * @param manager
+	 */
+	void setCacheManager(CacheManager manager);
 }

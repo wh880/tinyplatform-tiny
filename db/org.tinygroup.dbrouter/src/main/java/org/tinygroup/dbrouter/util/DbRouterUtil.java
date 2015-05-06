@@ -33,7 +33,6 @@ import java.util.regex.Pattern;
 
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
@@ -82,21 +81,21 @@ import org.tinygroup.jsqlparser.statement.update.Update;
  */
 public final class DbRouterUtil {
 
+	private static final Pattern JDBC_PATTERN = Pattern.compile("jdbc:.*:.*",
+			Pattern.CASE_INSENSITIVE);
+	private static Map<String, String> JDBC_CHANGE_MAP = new HashMap<String, String>();
 
-	private static final Pattern  JDBC_PATTERN = Pattern.compile("jdbc:.*:.*",Pattern.CASE_INSENSITIVE);
-    private static Map<String,String> JDBC_CHANGE_MAP = new HashMap<String,String>();
-    
-    static{
-    	//jdbc:jtds:sqlserver://MyDbComputerNameOrIP:1433/master
-    	JDBC_CHANGE_MAP.put("jtds", DataBaseUtil.DB_TYPE_SQLSERVER);
-    	//jdbc:microsoft:sqlserver://MyDbComputerNameOrIP:1433;databaseName=master
-    	JDBC_CHANGE_MAP.put("microsoft", DataBaseUtil.DB_TYPE_SQLSERVER);
-    }
+	static {
+		// jdbc:jtds:sqlserver://MyDbComputerNameOrIP:1433/master
+		JDBC_CHANGE_MAP.put("jtds", "sqlserver");
+		// jdbc:microsoft:sqlserver://MyDbComputerNameOrIP:1433;databaseName=master
+		JDBC_CHANGE_MAP.put("microsoft", "sqlserver");
+	}
 
 	private DbRouterUtil() {
 
 	}
-	
+
 	/**
 	 * 
 	 * 替换sql语句中的表名信息，条件语句带表名，暂时不进行替换。
@@ -138,14 +137,14 @@ public final class DbRouterUtil {
 			Statement statement) {
 		Update update = (Update) statement;
 		List<Table> tables = update.getTables();
-		if(tables!=null){
-		  for(Table table:tables){
-			 String tableName = table.getName();
-			 String newTableName = tableMapping.get(tableName);
-			 if (!StringUtil.isBlank(newTableName)) {
-				 table.setName(newTableName);
-			 }
-		  }
+		if (tables != null) {
+			for (Table table : tables) {
+				String tableName = table.getName();
+				String newTableName = tableMapping.get(tableName);
+				if (!StringUtil.isBlank(newTableName)) {
+					table.setName(newTableName);
+				}
+			}
 		}
 		Expression expression = update.getWhere();
 		transformExpression(expression, tableMapping);
@@ -303,7 +302,6 @@ public final class DbRouterUtil {
 		return paramSize;
 	}
 
-
 	private static String getRealTableName(Map<String, String> tableMapping,
 			String tableName) {
 		String realTableName = tableName;// 真正在数据库存在的表名
@@ -349,7 +347,6 @@ public final class DbRouterUtil {
 		}
 		expressions.add(expression);
 	}
-
 
 	/**
 	 * 检测查询语句选择项是否包含order by\group by字段，不存在则创建order by\group by字段
@@ -585,35 +582,48 @@ public final class DbRouterUtil {
 		}
 		return paramIndex;
 	}
-	
-	public static Object deepCopy(Statement statement) throws IOException, ClassNotFoundException{
-		
-		    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-	        ObjectOutputStream oos = new ObjectOutputStream(bos);
-	        oos.writeObject(statement);
-	        // 反序列化
-	        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
-	        ObjectInputStream ois = new ObjectInputStream(bis);
-	        return ois.readObject();
+
+	public static Object deepCopy(Statement statement) throws IOException,
+			ClassNotFoundException {
+
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(bos);
+		oos.writeObject(statement);
+		// 反序列化
+		ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+		ObjectInputStream ois = new ObjectInputStream(bis);
+		return ois.readObject();
 	}
-	
+
 	/**
 	 * 根据jdbc的Url解析数据库的语言
+	 * 
 	 * @param url
 	 * @return
 	 */
-	public static String getLanguageByUrl(String url){
-		if(!StringUtil.isBlank(url) && JDBC_PATTERN.matcher(url).matches()){
-		   String language= url.substring(5,url.indexOf(":", 5));
-		   //一般而言，jdbc:数据库类型名，但是不排除一些特殊写法
-		   if(JDBC_CHANGE_MAP.containsKey(language)){
-			  return JDBC_CHANGE_MAP.get(language);
-		   }else{
-			  return language;
-		   }
+	public static String getLanguageByUrl(String url) {
+		if (!StringUtil.isBlank(url) && JDBC_PATTERN.matcher(url).matches()) {
+			String language = url.substring(5, url.indexOf(":", 5));
+			// 一般而言，jdbc:数据库类型名，但是不排除一些特殊写法
+			if (JDBC_CHANGE_MAP.containsKey(language)) {
+				return JDBC_CHANGE_MAP.get(language);
+			} else {
+				return language;
+			}
 		}
 		return null;
 	}
-	
 
+	public static boolean isQuerySql(String sql) {
+		Statement statement = RouterManagerBeanFactory.getManager()
+				.getSqlStatement(sql);
+		return isSelect(statement);
+	}
+
+	public static boolean isSelect(Statement statement) {
+		if (statement instanceof Select) {
+			return true;
+		}
+		return false;
+	}
 }

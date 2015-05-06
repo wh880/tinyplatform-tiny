@@ -26,15 +26,14 @@ import org.tinygroup.logger.LogLevel;
 
 /**
  * 
- * 功能说明:数据库表新建、字段更新、删除操作 
-
+ * 功能说明:数据库表新建、字段更新、删除操作
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-8-15 <br>
  * <br>
  */
 public class TableInstallProcessor extends AbstractInstallProcessor {
 
-	
 	private List<Table> tableList = new ArrayList<Table>();
 	private TableProcessor tableProcessor;
 
@@ -45,51 +44,52 @@ public class TableInstallProcessor extends AbstractInstallProcessor {
 	public void setTableProcessor(TableProcessor tableProcessor) {
 		this.tableProcessor = tableProcessor;
 	}
-	
-	
-	private void deal(String language,Table table, List<String> sqls, Connection connect)throws SQLException  {
+
+	private void deal(String language, Table table, List<String> sqls,
+			Connection connect) throws SQLException {
 		if (tableList.contains(table))
 			return;
 		tableList.add(table);
-		installTable(language,table, sqls, connect);
+		installTable(language, table, sqls, connect);
 	}
 
-	private void installTable(String language,Table table, List<String> sqls, Connection connect)throws SQLException  {
+	private void installTable(String language, Table table, List<String> sqls,
+			Connection connect) throws SQLException {
 		logger.logMessage(LogLevel.INFO, "开始生成表格语句,表格 包:{0},名:{1}",
 				table.getPackageName(), table.getName());
-			List<String> tableSqls = null;
-			if (tableProcessor.checkTableExist(table, language, connect)) {
-				tableSqls = tableProcessor.getUpdateSql(table, table.getPackageName(), language, connect);
-			} else {
-				tableSqls = tableProcessor.getCreateSql(table,
-						table.getPackageName(), language);
-			}
-			if (tableSqls.size() != 0) {
-				logger.logMessage(LogLevel.INFO, "生成sql:{0}", tableSqls);
-			} else {
-				logger.logMessage(LogLevel.INFO, "无需生成Sql");
-			}
-			sqls.addAll(tableSqls);
-			logger.logMessage(LogLevel.INFO, "生成表格语句完成,表格 包:{0},名:{1}",
-					table.getPackageName(), table.getName());
+		List<String> tableSqls = null;
+		if (tableProcessor.checkTableExist(table, language, connect)) {
+			tableSqls = tableProcessor.getUpdateSql(table,
+					table.getPackageName(), language, connect);
+		} else {
+			tableSqls = tableProcessor.getCreateSql(table,
+					table.getPackageName(), language);
+		}
+		if (tableSqls.size() != 0) {
+			logger.logMessage(LogLevel.INFO, "生成sql:{0}", tableSqls);
+		} else {
+			logger.logMessage(LogLevel.INFO, "无需生成Sql");
+		}
+		sqls.addAll(tableSqls);
+		logger.logMessage(LogLevel.INFO, "生成表格语句完成,表格 包:{0},名:{1}",
+				table.getPackageName(), table.getName());
 	}
 
 	public int getOrder() {
 		return HIGHEST_PRECEDENCE;
 	}
 
-	
-	public List<String> getDealSqls(String language, Connection con) throws SQLException {
+	public List<String> getDealSqls(String language, Connection con)
+			throws SQLException {
 		logger.logMessage(LogLevel.INFO, "开始获取数据库表安装操作执行语句");
 		List<Table> list = tableProcessor.getTables();
 		List<String> sqls = new ArrayList<String>();
 		for (Table table : list) {
-			deal(language,table, sqls, con);
+			deal(language, table, sqls, con);
 		}
-		logger.logMessage(LogLevel.INFO, "获取数据库表安装操作执行语句");
+		logger.logMessage(LogLevel.INFO, "获取数据库表安装操作执行语句结束");
 		return sqls;
-		
-	}
 
+	}
 
 }

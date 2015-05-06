@@ -28,14 +28,13 @@ import org.tinygroup.logger.impl.LoggerImpl;
  * 
  */
 public final class LoggerFactory {
-	
-	private static ThreadLocal<Map<String, Object>> threadVariableMap=new ThreadLocal<Map<String,Object>>();
-	
-	private static ThreadLocal<LogLevel> threadLogLevel=new ThreadLocal<LogLevel>();
-   
-	private static Map<String, Logger> loggers=new HashMap<String, Logger>();
-	
-	
+
+	private static ThreadLocal<Map<String, Object>> threadVariableMap = new ThreadLocal<Map<String, Object>>();
+
+	private static ThreadLocal<LogLevel> threadLogLevel = new ThreadLocal<LogLevel>();
+
+	private static Map<String, Logger> loggers = new HashMap<String, Logger>();
+
 	private LoggerFactory() {
 	}
 
@@ -44,11 +43,11 @@ public final class LoggerFactory {
 	}
 
 	public static Logger getLogger(Class<?> clazz) {
-         return getLogger(clazz.getName());
+		return getLogger(clazz.getName());
 	}
 
 	public static Logger getLogger(String name) {
-		if(loggers.containsKey(name)){
+		if (loggers.containsKey(name)) {
 			return loggers.get(name);
 		}
 		LoggerImpl loggerImpl = new LoggerImpl(
@@ -56,27 +55,36 @@ public final class LoggerFactory {
 		loggers.put(name, loggerImpl);
 		return loggerImpl;
 	}
-	
-	public synchronized static void putThreadVariable(String key,String value){
-		Map<String,Object> valueMap = threadVariableMap.get();
+
+	public synchronized static void putThreadVariable(String key, String value) {
+		Map<String, Object> valueMap = threadVariableMap.get();
 		if (valueMap == null) {
-			valueMap = new HashMap<String,Object>();
+			valueMap = new HashMap<String, Object>();
 			threadVariableMap.set(valueMap);
 		}
-		if (valueMap.size() <= 10000){
+		if (valueMap.size() <= 10000) {
 			valueMap.put(key, value);
 		}
 	}
-	
-	public synchronized static  Map<String, Object> getThreadVariableMap(){
+
+	public synchronized static Map<String, Object> getThreadVariableMap() {
 		return threadVariableMap.get();
 	}
-	
-	public synchronized static LogLevel getThreadLogLevel(){
+
+	public synchronized static LogLevel getThreadLogLevel() {
 		return threadLogLevel.get();
 	}
-	
-	public synchronized static void setThreadLogLevel(LogLevel logLevel){
+
+	public synchronized static void setThreadLogLevel(LogLevel logLevel) {
 		threadLogLevel.set(logLevel);
+	}
+
+	/**
+	 * 移除保存在日志工厂类中的日志对象
+	 */
+	public static void clearAllLoggers() {
+		loggers.clear();
+		threadVariableMap.set(null);
+		threadLogLevel.set(null);
 	}
 }

@@ -17,14 +17,15 @@ package org.tinygroup.cepcore.exception;
 
 import org.tinygroup.event.central.Node;
 import org.tinygroup.exception.TinySysRuntimeException;
+import org.tinygroup.exception.constant.ReservedErrorCodes;
 
-public class CEPConnectException extends TinySysRuntimeException{
+public class CEPConnectException extends TinySysRuntimeException {
 	private Node node;
 	private Exception exception;
-	
-	
-	public CEPConnectException(Exception e,Node node){
-		super(e, "cepcore.cepConnectFaild", node.toString(),e.getMessage());
+
+	public CEPConnectException(Exception e, Node node) {
+		super(ReservedErrorCodes.UNKNOWN_ERROR, e, node.toString(), e
+				.getMessage());
 		this.node = node;
 		this.exception = e;
 	}
@@ -33,17 +34,13 @@ public class CEPConnectException extends TinySysRuntimeException{
 		return node;
 	}
 
-
 	public Exception getException() {
 		return exception;
 	}
-
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6589362229300815033L;
-	
-	
 
 }
