@@ -15,7 +15,13 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.tinygroup.tinysqldsl.expression.Expression;
+import org.tinygroup.tinysqldsl.expression.conditional.AndExpression;
+import org.tinygroup.tinysqldsl.expression.conditional.OrExpression;
 
 /**
  * 条件 Created by luoguo on 2015/3/11.
@@ -25,15 +31,25 @@ public class Condition implements Expression {
 	 * 表达式
 	 */
 	private Expression expression;
-	/**
-	 * 条件中的值
-	 */
-	private Object[] values;
+
+	private List<Object> extendParams = new ArrayList<Object>();
 
 	public Condition(Expression expression, Object... values) {
 		super();
 		this.expression = expression;
-		this.values = values;
+		Collections.addAll(extendParams, values);
+	}
+
+	public Condition and(Condition condition) {
+		this.expression = new AndExpression(this.getExpression(), condition.getExpression());
+		Collections.addAll(extendParams, condition.getValues());
+		return this;
+	}
+
+	public Condition or(Condition condition) {
+		this.expression = new OrExpression(this.getExpression(), condition.getExpression());
+		Collections.addAll(extendParams, condition.getValues());
+		return this;
 	}
 
 	public Expression getExpression() {
@@ -41,18 +57,17 @@ public class Condition implements Expression {
 	}
 
 	public Object[] getValues() {
-		return values;
+		return extendParams.toArray();
 	}
 
 	public String toString() {
 		return expression.toString();
 	}
 
-
 	public void builder(StatementSqlBuilder builder) {
 		Expression expression = getExpression();
 		expression.builder(builder);
-		builder.addParamValue(values);
+		builder.addParamValue(extendParams.toArray());
 	}
 
 }
