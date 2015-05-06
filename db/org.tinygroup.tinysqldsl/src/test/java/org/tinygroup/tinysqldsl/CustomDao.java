@@ -1,11 +1,12 @@
 package org.tinygroup.tinysqldsl;
 
+import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
+import static org.tinygroup.tinysqldsl.Delete.delete;
+import static org.tinygroup.tinysqldsl.Insert.insertInto;
+import static org.tinygroup.tinysqldsl.Select.selectFrom;
+import static org.tinygroup.tinysqldsl.Update.update;
 import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
-import static org.tinygroup.tinysqldsl.CustomTable.*;
-import static org.tinygroup.tinysqldsl.Select.*;
-import static org.tinygroup.tinysqldsl.Insert.*;
-import static org.tinygroup.tinysqldsl.Delete.*;
-import static org.tinygroup.tinysqldsl.Update.*;
+
 import java.util.List;
 
 public class CustomDao {
@@ -37,6 +38,11 @@ public class CustomDao {
 
 	public void deleteCustom(String id) {
 		Delete delete = delete(CUSTOM).where(CUSTOM.ID.eq(id));
+		dslSession.execute(delete);
+	}
+	
+	public void deleteCustoms(Object... ids) {
+		Delete delete = delete(CUSTOM).where(CUSTOM.ID.in(ids));
 		dslSession.execute(delete);
 	}
 
