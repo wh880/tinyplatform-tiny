@@ -94,7 +94,7 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 				processSqls.put(processor.getClass(),
 						processor.getDealSqls(dbLanguage, con));
 			}
-		} catch (SQLException ex) {
+		} catch (Exception ex) {
 			logger.errorMessage(ex.getMessage(), ex);
 			throw new TinySysRuntimeException(ex);
 		} finally {
