@@ -215,7 +215,7 @@ public class ScEventHandler extends CEPCoreEventHandler {
 		if (targetToRemoveNode != null) {
 			Node targetNode = nodes.remove(targetToRemoveNode);
 			ctxs.remove(targetToRemoveNode);
-			nodeServices.remove(targetToRemoveNode);
+			nodeServices.remove(targetNode);
 			scUnregCurrentNodeToNodes(targetToRemoveNode, targetNode);
 		}
 

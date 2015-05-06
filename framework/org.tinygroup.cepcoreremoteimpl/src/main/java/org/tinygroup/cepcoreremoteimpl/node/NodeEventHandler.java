@@ -48,7 +48,7 @@ public class NodeEventHandler extends CEPCoreEventHandler {
 	 */
 	public void reRegToSc(CEPCoreClientImpl client){
 		logger.logMessage(LogLevel.INFO, "重新向服务中心发起注册");
-		Event request = getNodeRegRequestEvent();
+		Event request = getNodeReRegRequestEvent();
 		client.sentEvent(request);
 		logger.logMessage(LogLevel.INFO, "向服务中心重新注册完成");
 	}
@@ -58,6 +58,18 @@ public class NodeEventHandler extends CEPCoreEventHandler {
 	 * 
 	 * @return
 	 */
+	public Event getNodeReRegRequestEvent() {
+		Context c = new ContextImpl();
+		List<ServiceInfo> list = getCore().getServiceInfos();
+		if(logger.isEnabled(LogLevel.INFO)){
+			logger.logMessage(LogLevel.INFO, "当前节点服务数{}", list.size());
+		}
+		c.put(NODE_REG_TO_SC_SERVICE_KEY, list);
+		c.put(NODE_KEY, getNode());
+		Event e = Event.createEvent(NODE_RE_REG_TO_SC_REQUEST, c);
+		return e;
+	}
+	
 	public Event getNodeRegRequestEvent() {
 		Context c = new ContextImpl();
 		List<ServiceInfo> list = getCore().getServiceInfos();

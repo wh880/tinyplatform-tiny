@@ -8,6 +8,7 @@ public class CEPCoreEventHandler {
 	// 由AR发向SC的服务的服务ID
 	public static String NODE_REG_TO_SC_SERVICE_KEY = "node_regto_sc_services";
 	public static String NODE_REG_TO_SC_REQUEST = "node_to_sc_request";
+	public static String NODE_RE_REG_TO_SC_REQUEST = "node_re_to_sc_request";
 	public static String NODE_UNREG_TO_SC_REQUEST = "node_to_sc_request";
 	public static String SC_REG_NODE_TO_NODE_REQUEST = "sc_reg_node_to_node_request";
 	public static String SC_UNREG_NODE_TO_NODE_REQUEST = "sc_unreg_node_to_node_request";
