@@ -21,7 +21,7 @@ public class CommonError implements java.io.Serializable {
     /**
      * 错误编码
      */
-    private ErrorCode errorCode;
+    private AbstractErrorCode errorCode;
 
     /**
      * 错误描述
@@ -47,7 +47,7 @@ public class CommonError implements java.io.Serializable {
      * @param code
      * @param msg
      */
-    public CommonError(ErrorCode code, String msg, String location) {
+    public CommonError(AbstractErrorCode code, String msg, String location) {
         this.errorCode = code;
         this.errorMsg = msg;
         this.errorSource = location;
@@ -82,7 +82,7 @@ public class CommonError implements java.io.Serializable {
      *
      * @return property value of errorCode
      */
-    public ErrorCode getErrorCode() {
+    public AbstractErrorCode getErrorCode() {
         return errorCode;
     }
 
@@ -91,7 +91,7 @@ public class CommonError implements java.io.Serializable {
      *
      * @param errorCode value to be assigned to property errorCode
      */
-    public void setErrorCode(ErrorCode errorCode) {
+    public void setErrorCode(AbstractErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 

@@ -31,7 +31,7 @@ public class BaseRuntimeException extends RuntimeException {
 			.getI18nMessages();// 需要在启动的时候注入进来
 	private String errorMsg;
 
-	private ErrorCode errorCode;
+	private AbstractErrorCode errorCode;
 
 	private Throwable cause;
 
@@ -45,7 +45,7 @@ public class BaseRuntimeException extends RuntimeException {
 		return cause;
 	}
 
-	public ErrorCode getErrorCode() {
+	public AbstractErrorCode getErrorCode() {
 		return errorCode;
 	}
 
@@ -67,7 +67,7 @@ public class BaseRuntimeException extends RuntimeException {
 			Locale locale, Object... params) {
 		String errorMsg = i18nMessage.getMessage(errorCode, locale,
 				defaultErrorMsg, params);
-		this.errorCode = AbstractErrorCode.parseErrorCode(errorCode);
+		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode);
 		this.errorMsg = errorMsg;
 	}
 	
@@ -98,7 +98,7 @@ public class BaseRuntimeException extends RuntimeException {
 		String errorMsg = i18nMessage.getMessage(errorCode, defaultErrorMsg,
 				context, locale);
 		this.errorMsg = errorMsg;
-		this.errorCode = AbstractErrorCode.parseErrorCode(errorCode);
+		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode);
 	}
 
 	public BaseRuntimeException(String errorCode, Context context) {
