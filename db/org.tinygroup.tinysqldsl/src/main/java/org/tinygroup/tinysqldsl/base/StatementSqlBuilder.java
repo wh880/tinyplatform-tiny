@@ -116,6 +116,9 @@ public abstract class StatementSqlBuilder {
 				Collections.addAll(values, condition.getValues());
 			}
 		}
+		if(values.size()==0){//conditions中条件对象都为空，则返回null
+			return null;
+		}
 		return new Condition(expressionList, values.toArray());
 	}
 
