@@ -1,8 +1,11 @@
 package org.tinygroup.exception.util;
 
+import org.tinygroup.exception.AbstractErrorCode;
 import org.tinygroup.exception.CommonError;
 import org.tinygroup.exception.ErrorCode;
 import org.tinygroup.exception.ErrorContext;
+import org.tinygroup.exception.constant.ErrorLevel;
+import org.tinygroup.exception.constant.ErrorType;
 
 /**
  * 标准错误码工具类。
@@ -37,8 +40,8 @@ public class ErrorUtil {
 	 * @return 错误码实例。
 	 */
 	public static ErrorCode makeErrorCode(String errorType, String errorLevel,
-			String errorScene, String errorSpecific, String errorPrefix) {
-		return new ErrorCode(errorType, errorLevel, errorScene, errorSpecific,
+			int errorScene, int errorSpecific, String errorPrefix) {
+		return new ErrorCode(ErrorType.find(errorType), ErrorLevel.find(errorLevel), errorScene, errorSpecific,
 				errorPrefix);
 	}
 
@@ -52,7 +55,7 @@ public class ErrorUtil {
 	 * @param message
 	 * @return
 	 */
-	public static CommonError makeError(ErrorCode errorCode, String message) {
+	public static CommonError makeError(AbstractErrorCode errorCode, String message) {
 
 		CommonError error = new CommonError();
 		error.setErrorCode(errorCode);
@@ -72,7 +75,7 @@ public class ErrorUtil {
 	 * @param location
 	 * @return
 	 */
-	public static CommonError makeError(ErrorCode errorCode, String message,
+	public static CommonError makeError(AbstractErrorCode errorCode, String message,
 			String location) {
 
 		CommonError error = new CommonError();
@@ -123,7 +126,7 @@ public class ErrorUtil {
 	 * @return
 	 */
 	public static ErrorContext makeAndAddError(ErrorContext context,
-			ErrorCode errorCode, String message) {
+			AbstractErrorCode errorCode, String message) {
 
 		CommonError error = makeError(errorCode, message);
 		context = addError(context, error);
@@ -138,7 +141,7 @@ public class ErrorUtil {
 	 * @param message
 	 * @return
 	 */
-	public static ErrorContext makeAndAddError(ErrorCode errorCode,
+	public static ErrorContext makeAndAddError(AbstractErrorCode errorCode,
 			String message) {
 
 		CommonError error = makeError(errorCode, message);

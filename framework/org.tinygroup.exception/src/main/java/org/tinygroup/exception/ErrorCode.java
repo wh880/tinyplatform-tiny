@@ -63,32 +63,54 @@ import org.tinygroup.exception.constant.ErrorType;
  */
 public class ErrorCode extends AbstractErrorCode {
 
-    //这里是定义长度
-    private static final int[] FIELD_LENGTH = {2, 1, 1, 1, 3, 3};
-    /**
+	// 这里是定义长度
+	private static final int[] FIELD_LENGTH = { 2, 1, 1, 1, 4, 3 };
+	/**
      *
      */
-    private static final long serialVersionUID = -8398330229603671639L;
+	private static final long serialVersionUID = -8398330229603671639L;
+	
 
+	public ErrorCode() {
+		super();
+	}
 
-    public ErrorCode(ErrorType errorType, ErrorLevel errorLevel, String errorScene,
-                     int errorNumber, String errorPrefix) {
-        super(DEFAULT_VERSION, errorType, errorLevel, errorScene,
-                errorNumber, errorPrefix);
-    }
+	public ErrorCode(String errorCode) {
+		super(errorCode);
+	}
 
-    @Override
-    protected int[] getFieldLength() {
-        return null;
-    }
+	public ErrorCode(ErrorType errorType, ErrorLevel errorLevel,
+			int errorScene, int errorNumber, String errorPrefix) {
+		super(DEFAULT_VERSION, errorType, errorLevel, errorScene, errorNumber,
+				errorPrefix);
+	}
 
-    @Override
-    protected String getErrorCodeFormatString() {
-        return null;
-    }
+	@Override
+	protected int[] getFieldLength() {
+		return FIELD_LENGTH;
+	}
 
-    @Override
-    protected AbstractErrorCode getReserveErrorCode(ErrorType errorType) {
-        return null;
-    }
+	@Override
+	protected String getErrorCodeFormatString() {
+		return "%2s%1s%1d%1d%04d%03d";
+	}
+
+	@Override
+	protected AbstractErrorCode getReserveErrorCode(ErrorType errorType) {
+		if (errorType == null) {
+			errorType = ErrorType.FRAMEWORK;
+		}
+		AbstractErrorCode errorCode = new ErrorCode(errorType,
+				ErrorLevel.ERROR, 9999, 999, errorPrefix);
+		return errorCode;
+	}
+
+	@Override
+	protected void internalParse(char[] chars) {
+		this.errorScene = Integer.valueOf("" + chars[5] + chars[6] + chars[7]
+				+ chars[8]);
+		this.errorNumber = Integer.valueOf("" + chars[9] + chars[10]
+				+ chars[11]);
+	}
+	
 }
