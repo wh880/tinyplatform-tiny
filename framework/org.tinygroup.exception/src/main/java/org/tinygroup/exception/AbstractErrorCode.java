@@ -1,19 +1,16 @@
 package org.tinygroup.exception;
 
+import java.io.Serializable;
+
 import org.tinygroup.exception.constant.ErrorLevel;
 import org.tinygroup.exception.constant.ErrorType;
-import org.tinygroup.exception.constant.ReservedErrorCodeGetter;
-
-import java.io.Serializable;
-import java.util.Map;
 
 /**
  * 错误码抽象类
  * 
  * @author renhui
  */
-public abstract class AbstractErrorCode implements Serializable,
-		ReservedErrorCodeGetter {
+public abstract class AbstractErrorCode implements Serializable,ErrorCodeParse {
 	public static int PREFIX = 0, VERSION = 1, TYPE = 2, LEVEL = 3, SCENE = 4,
 			NUMBER = 5;
 
@@ -68,20 +65,10 @@ public abstract class AbstractErrorCode implements Serializable,
 
 	protected abstract String getErrorCodeFormatString();
 
-	protected abstract AbstractErrorCode getReserveErrorCode(ErrorType errorType);
-	
-	protected  abstract void internalParse(char[] chars);
-	
-	public String getUnknownErrorCode(ErrorType errorType) {
-		return getReserveErrorCode(errorType).toString();
-	}
+	protected  abstract AbstractErrorCode internalParse(char[] chars);
 	
 	public AbstractErrorCode() {
 		super();
-	}
-
-	public AbstractErrorCode(String errorCode){
-		parseCode(errorCode);
 	}
 
 	// TODO 按编码顺序来
@@ -100,13 +87,13 @@ public abstract class AbstractErrorCode implements Serializable,
 		this.errorNumber = errorNumber;
 	}
 
-	public void parseCode(String errorCode) {
+	public AbstractErrorCode parse(String errorCode) {
 		char[] chars = errorCode.toCharArray();
 		this.errorPrefix = "" + chars[0] + chars[1];
 		this.version = "" + chars[2];
 		this.errorType = ErrorType.find(chars[3] + "");
 		this.errorLevel = ErrorLevel.find(chars[4] + "");
-		internalParse(chars);
+		return internalParse(chars);
 	}
 
 	protected void assertLength(int field, String errorPrefix) {
@@ -173,5 +160,5 @@ public abstract class AbstractErrorCode implements Serializable,
 	public void setErrorNumber(int errorNumber) {
 		this.errorNumber = errorNumber;
 	}
-
+	
 }

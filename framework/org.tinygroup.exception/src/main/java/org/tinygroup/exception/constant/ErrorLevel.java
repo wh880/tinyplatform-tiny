@@ -43,7 +43,7 @@ public enum ErrorLevel {
 				return level;
 			}
 		}
-		return null;
+		throw new RuntimeException(String.format("未找到code:%s，对应的错误级别", code));
 	}
 }
 	

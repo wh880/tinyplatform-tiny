@@ -1,5 +1,8 @@
 package org.tinygroup.exception;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.commons.tools.Assert;
 
 /**
@@ -10,29 +13,32 @@ import org.tinygroup.commons.tools.Assert;
  */
 public class ErrorCodeFactory {
 
-	private static Class type = ErrorCode.class;
+	private static List<AbstractErrorCode> errorCodes = new ArrayList<AbstractErrorCode>();
 
-	public static void setErrorCodeType(Class type) {
-		ErrorCodeFactory.type = type;
+	static {
+		errorCodes.add(new ErrorCode());
+		errorCodes.add(new ErrorCodeLength16());
 	}
 
-	public static AbstractErrorCode createErrorCode() {
-		if (type.equals(ErrorCode.class)) {
-			return new ErrorCode();
-		} else if (type.equals(ErrorCodeLength16.class)) {
-			return new ErrorCodeLength16();
-		}
-		return null;
+	public static void addErrorCodes(AbstractErrorCode errorCode) {
+		errorCodes.add(errorCode);
 	}
 
 	public static AbstractErrorCode parseErrorCode(String errorCode) {
 		Assert.assertNotNull(errorCode, "errorCode must not be null");
-		if (type.equals(ErrorCode.class)) {
-			return new ErrorCode(errorCode);
-		} else if (type.equals(ErrorCodeLength16.class)) {
-			return new ErrorCodeLength16(errorCode);
+		ErrorCodeParse creator = findCreator(errorCode);
+		if (creator != null) {
+			return creator.parse(errorCode);
+		}
+		throw new IllegalArgumentException(String.format("未找到错误码:%s,对应的错误码对象",errorCode));
+	}
+
+	private static ErrorCodeParse findCreator(String errorCodeStr) {
+		for (AbstractErrorCode errorCode : errorCodes) {
+			if (errorCode.isLengthMatch(errorCodeStr.length())) {
+				return errorCode;
+			}
 		}
 		return null;
 	}
-
 }

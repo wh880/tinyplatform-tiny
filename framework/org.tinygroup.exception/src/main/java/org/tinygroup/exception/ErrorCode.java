@@ -62,6 +62,21 @@ import org.tinygroup.exception.constant.ErrorType;
  * </table>
  */
 public class ErrorCode extends AbstractErrorCode {
+	
+	
+	/** 未知系统异常 */
+	public static final String UNKNOWN_ERROR = "TE1139999999";
+
+	/** 未知系统异常 */
+	public static final String UNKNOWN_SYSTEM_ERROR = "TE1139999999";
+
+	/** 未知扩展系统异常 */
+	public static final String UNKNOWN_EXT_ERROR =  "TE1239999999";
+	/** 未知业务异常 */
+	public static final String UNKNOWN_BIZ_ERROR =  "TE1339999999";
+
+	/** 未知第三方异常 */
+	public static final String UNKNOWN_THIRD_PARTY_ERROR = "TE1439999999";
 
 	// 这里是定义长度
 	private static final int[] FIELD_LENGTH = { 2, 1, 1, 1, 4, 3 };
@@ -73,10 +88,6 @@ public class ErrorCode extends AbstractErrorCode {
 
 	public ErrorCode() {
 		super();
-	}
-
-	public ErrorCode(String errorCode) {
-		super(errorCode);
 	}
 
 	public ErrorCode(ErrorType errorType, ErrorLevel errorLevel,
@@ -96,21 +107,16 @@ public class ErrorCode extends AbstractErrorCode {
 	}
 
 	@Override
-	protected AbstractErrorCode getReserveErrorCode(ErrorType errorType) {
-		if (errorType == null) {
-			errorType = ErrorType.FRAMEWORK;
-		}
-		AbstractErrorCode errorCode = new ErrorCode(errorType,
-				ErrorLevel.ERROR, 9999, 999, errorPrefix);
-		return errorCode;
-	}
-
-	@Override
-	protected void internalParse(char[] chars) {
+	protected AbstractErrorCode internalParse(char[] chars) {
 		this.errorScene = Integer.valueOf("" + chars[5] + chars[6] + chars[7]
 				+ chars[8]);
 		this.errorNumber = Integer.valueOf("" + chars[9] + chars[10]
 				+ chars[11]);
+		return new ErrorCode(errorType, errorLevel, errorScene, errorNumber, errorPrefix);
 	}
-	
+
+	public boolean isLengthMatch(int errorCodeLength) {
+		return 12==errorCodeLength;
+	}
+
 }
