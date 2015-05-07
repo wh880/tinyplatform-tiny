@@ -74,6 +74,9 @@ public abstract class AbstractTemplate implements Template {
             context.removeSubContext("$currentTemplateContext");
         }
     }
+    public void render(TemplateContext context) throws TemplateException {
+        render(context, new OutputStreamWriter(System.out));
+    }
 
     public void render() throws TemplateException {
         render(new TemplateContextDefault(), new OutputStreamWriter(System.out));
