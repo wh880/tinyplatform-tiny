@@ -19,6 +19,12 @@ import org.tinygroup.context.Context;
 
 import java.util.Locale;
 
+/**
+ * 建议直接使用BaseRuntimeException
+ * @author renhui
+ *
+ */
+@Deprecated
 public class TinyBizRuntimeException extends BaseRuntimeException {
 
 	private static final long serialVersionUID = 1694628104824119327L;

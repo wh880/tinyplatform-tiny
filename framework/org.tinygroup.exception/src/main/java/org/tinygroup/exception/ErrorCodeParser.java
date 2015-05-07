@@ -1,11 +1,11 @@
 package org.tinygroup.exception;
 
 /**
- * 错误码持有接口
+ * 错误码解析接口
  * @author renhui
  *
  */
-public interface ErrorCodeParse {
+public interface ErrorCodeParser {
    /**
     * 错误码长度匹配
     * @param errorCodeLength

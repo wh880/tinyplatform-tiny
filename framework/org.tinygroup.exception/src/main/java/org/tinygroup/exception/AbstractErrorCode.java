@@ -10,7 +10,7 @@ import org.tinygroup.exception.constant.ErrorType;
  * 
  * @author renhui
  */
-public abstract class AbstractErrorCode implements Serializable,ErrorCodeParse {
+public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser {
 	public static int PREFIX = 0, VERSION = 1, TYPE = 2, LEVEL = 3, SCENE = 4,
 			NUMBER = 5;
 
@@ -71,7 +71,6 @@ public abstract class AbstractErrorCode implements Serializable,ErrorCodeParse {
 		super();
 	}
 
-	// TODO 按编码顺序来
 	public AbstractErrorCode(String version, ErrorType errorType,
 			ErrorLevel errorLevel, int errorScene, int errorNumber,
 			String errorPrefix) {

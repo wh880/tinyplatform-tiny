@@ -33,16 +33,9 @@ public class BaseRuntimeException extends RuntimeException {
 
 	private AbstractErrorCode errorCode;
 
-	private Throwable cause;
-
 	@Override
 	public String getMessage() {
 		return errorMsg;
-	}
-
-	@Override
-	public Throwable getCause() {
-		return cause;
 	}
 
 	public AbstractErrorCode getErrorCode() {
@@ -70,11 +63,11 @@ public class BaseRuntimeException extends RuntimeException {
 		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode);
 		this.errorMsg = errorMsg;
 	}
-	
-	public BaseRuntimeException(String errorCode,
-			Throwable throwable, Object... params) {
-		this(errorCode, "", LocaleUtil.getContext().getLocale(),
-				throwable, params);
+
+	public BaseRuntimeException(String errorCode, Throwable throwable,
+			Object... params) {
+		this(errorCode, "", LocaleUtil.getContext().getLocale(), throwable,
+				params);
 	}
 
 	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
@@ -85,8 +78,11 @@ public class BaseRuntimeException extends RuntimeException {
 
 	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
 			Locale locale, Throwable throwable, Object... params) {
-		this(errorCode, defaultErrorMsg, locale, params);
-		this.cause = throwable;
+		super(throwable);
+		String errorMsg = i18nMessage.getMessage(errorCode, locale,
+				defaultErrorMsg, params);
+		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode);
+		this.errorMsg = errorMsg;
 	}
 
 	public BaseRuntimeException(String errorCode, Context context, Locale locale) {
@@ -104,25 +100,22 @@ public class BaseRuntimeException extends RuntimeException {
 	public BaseRuntimeException(String errorCode, Context context) {
 		this(errorCode, "", context, LocaleUtil.getContext().getLocale());
 	}
-	
-	
+
 	public BaseRuntimeException() {
 		super();
 	}
 
 	public BaseRuntimeException(String message, Throwable cause) {
 		super(message, cause);
-		this.cause = cause;
 	}
 
 	public BaseRuntimeException(String message) {
 		super(message);
-		
+
 	}
 
 	public BaseRuntimeException(Throwable cause) {
 		super(cause);
-		this.cause = cause;
 	}
 
 	public static ErrorContext getErrorContext(Throwable throwable) {
