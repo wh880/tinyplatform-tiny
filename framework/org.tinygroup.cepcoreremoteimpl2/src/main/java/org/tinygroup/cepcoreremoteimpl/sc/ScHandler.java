@@ -25,11 +25,11 @@ public class ScHandler extends SimpleChannelInboundHandler<Event> {
 		String serviceId = event.getServiceRequest().getServiceId();
 		logger.logMessage(LogLevel.INFO, "接收到请求,id:{},type:", serviceId,
 				event.getType());
-		// Node向SC发起的注册请求
+		
 		if (CEPCoreEventHandler.NODE_RE_REG_TO_SC_REQUEST.equals(serviceId)) {
-			scEventHandler.dealNodeRegToSc(event, ctx);
+			scEventHandler.dealNodeRegToSc(event, ctx);// Node向SC发起的重新注册请求
 		} else if (CEPCoreEventHandler.NODE_REG_TO_SC_REQUEST.equals(serviceId)) {
-			scEventHandler.dealNodeRegToSc(event, ctx);
+			scEventHandler.dealNodeRegToSc(event, ctx);// Node向SC发起的注册请求
 		} else if (CEPCoreEventHandler.NODE_UNREG_TO_SC_REQUEST
 				.equals(serviceId)) {// Node向SC发起的注销请求
 			scEventHandler.dealNodeUnregToSc(event, ctx);
@@ -38,6 +38,7 @@ public class ScHandler extends SimpleChannelInboundHandler<Event> {
 		}
 	}
 
+	//SC和客户端断开，移出该客户端，并向其他客户端发送注销
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		if (server.isStart()) {
 			scEventHandler.removeNodeByCtx(ctx);

@@ -737,6 +737,8 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitExpr_member_function_call(@NotNull TinyTemplateParser.Expr_member_function_callContext ctx) {
+        CodeLet codeLet=new CodeLet();
+        pushCodeLet(codeLet);
         ctx.expression().accept(this);
         String functionName = ctx.IDENTIFIER().getText();
         peekCodeLet().codeBefore(ctx.getChild(1).getText().equals(".") ? "U.c($template,$context," : "U.sc($template,$context,").code(",\"").code(functionName).code("\"");
@@ -746,6 +748,8 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             list.accept(this);
         }
         peekCodeLet().code(")");
+        popCodeLet();
+        peekCodeLet().code(codeLet);
         return null;
     }
 

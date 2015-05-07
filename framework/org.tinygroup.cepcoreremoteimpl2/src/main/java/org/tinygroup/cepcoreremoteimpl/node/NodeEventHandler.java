@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcoreremoteimpl.CEPCoreEventHandler;
-import org.tinygroup.cepcoreremoteimpl.RemoteEventProcessor;
 import org.tinygroup.cepcoreremoteimpl.RemoteEventProcessorConatiner;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
@@ -120,9 +119,7 @@ public class NodeEventHandler extends CEPCoreEventHandler {
 				nodeServices.size());
 		for (Node node : nodeServices.keySet()) {
 			logger.logMessage(LogLevel.INFO, "为节点:{}创建服务处理器", node.toString());
-			RemoteEventProcessor ne = new RemoteEventProcessor(node,
-					nodeServices.get(node));
-			RemoteEventProcessorConatiner.add(node.toString(), ne, getCore());
+			RemoteEventProcessorConatiner.add(node, nodeServices.get(node), getCore());
 			logger.logMessage(LogLevel.INFO, "为节点:{}创建服务处理器完成", node.toString());
 		}
 		logger.logMessage(LogLevel.INFO, "处理服务中心返回的注册响应完毕");
@@ -146,8 +143,7 @@ public class NodeEventHandler extends CEPCoreEventHandler {
 		List<ServiceInfo> list = c.get(SC_TO_NODE_SERVICE_KEY);
 		logger.logMessage(LogLevel.INFO, "开始注册节点:{},为节点创建服务处理器",
 				remoteNode.toString());
-		RemoteEventProcessor ne = new RemoteEventProcessor(remoteNode, list);
-		RemoteEventProcessorConatiner.add(remoteNode.toString(), ne, getCore());
+		RemoteEventProcessorConatiner.add(remoteNode, list, getCore());
 		logger.logMessage(LogLevel.INFO, "为节点:{}创建服务处理器完成",
 				remoteNode.toString());
 		logger.logMessage(LogLevel.INFO, "处理服务中心发来的其它节点注册请求完成");

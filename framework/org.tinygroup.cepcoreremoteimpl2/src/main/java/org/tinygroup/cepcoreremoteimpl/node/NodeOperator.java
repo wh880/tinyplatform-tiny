@@ -42,6 +42,7 @@ public class NodeOperator implements CEPCoreOperator {
 	public void startCEPCore(CEPCore cep) {
 		server = new NodeServerImpl(localPort,cep);
 		server.start();
+		startClient(cep);
 
 	}
 
@@ -49,7 +50,7 @@ public class NodeOperator implements CEPCoreOperator {
 		//连接各个SC
 		for (String remoteString : RemoteCepCoreUtil.getScs()) {
 			String[] remoteInfo = remoteString.split(RemoteCepCoreUtil.SEPARATOR);
-			client = new CEPCoreClientImpl(Integer.parseInt(remoteInfo[0]), remoteInfo[1], getNode(cep),
+			client = new CEPCoreClientImpl(Integer.parseInt(remoteInfo[1]), remoteInfo[0], getNode(cep),
 					cep);
 			client.start();
 		}

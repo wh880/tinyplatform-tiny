@@ -8,10 +8,10 @@
     <artifactId>framework</artifactId>
     <packaging>pom</packaging>
     <modules>
-	<module>org.tinygroup.spring256</module>
-	<module>org.tinygroup.cepcorenetty</module>
-		<module>org.tinygroup.cepcorenettysc</module>
-   		<module>org.tinygroup.serviceprocessor</module>
+	      <module>org.tinygroup.spring256</module>
+	      <module>org.tinygroup.cepcorenetty</module>
+		    <module>org.tinygroup.cepcorenettysc</module>
+   		  <module>org.tinygroup.serviceprocessor</module>
         <module>org.tinygroup.beancontainer</module>
         <module>org.tinygroup.dbf</module>
         <module>org.tinygroup.message</module>
@@ -60,6 +60,8 @@
         <module>org.tinygroup.validatecomponent</module>
         <module>org.tinygroup.validate</module>
         <module>org.tinygroup.loader</module>
-		<module>org.tinygroup.tinyrunner</module>
+		    <module>org.tinygroup.tinyrunner</module>
+		    <module>org.tinygroup.codegen</module>
+		    <module>org.tinygroup.docgen</module>
     </modules>
 </project>
