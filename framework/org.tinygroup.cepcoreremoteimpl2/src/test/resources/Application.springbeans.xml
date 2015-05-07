@@ -27,26 +27,20 @@
 	
 	<bean id="node" scope="singleton"
 		class="org.tinygroup.cepcoreremoteimpl.node.NodeOperator">
-		<property name="localHost" value="192.168.232.51"></property>
+		<property name="localHost" value="192.168.232.37"></property>
 		<property name="localPort" value="8181"></property>
-		<property name="remoteHost" value="192.168.232.51"></property>
-		<property name="remotePort" value="9191"></property>
 		<property name="weight" value="20"></property>
 	</bean>
 	<bean id="node2" scope="singleton"
 		class="org.tinygroup.cepcoreremoteimpl.node.NodeOperator">
-		<property name="localHost" value="192.168.232.51"></property>
+		<property name="localHost" value="192.168.232.37"></property>
 		<property name="localPort" value="8282"></property>
-		<property name="remoteHost" value="192.168.232.51"></property>
-		<property name="remotePort" value="9191"></property>
 		<property name="weight" value="20"></property>
 	</bean>
 	<bean id="node3" scope="singleton"
 		class="org.tinygroup.cepcoreremoteimpl.node.NodeOperator">
-		<property name="localHost" value="192.168.232.51"></property>
+		<property name="localHost" value="192.168.232.37"></property>
 		<property name="localPort" value="8383"></property>
-		<property name="remoteHost" value="192.168.232.51"></property>
-		<property name="remotePort" value="9191"></property>
 		<property name="weight" value="20"></property>
 	</bean>
 </beans>

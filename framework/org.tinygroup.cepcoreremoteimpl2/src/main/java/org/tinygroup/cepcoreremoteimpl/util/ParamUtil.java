@@ -53,7 +53,10 @@ public class ParamUtil {
 	}
 
 	public static void parseParam(XmlNode paramNode) {
-		List<XmlNode> params = paramNode.getSubNodes(PARAM_TAG);
+		List<XmlNode> params = paramNode.getSubNodesRecursively(PARAM_TAG);
+		if(params==null||params.size()==0){
+			return;
+		}
 		for (XmlNode param : params) {
 			paramsMap.put(param.getAttribute("name"),
 					param.getAttribute("value"));
@@ -61,7 +64,7 @@ public class ParamUtil {
 	}
 
 	public static void parseScs(XmlNode node) {
-		List<XmlNode> scs = node.getSubNodes(SC_TAG);
+		List<XmlNode> scs = node.getSubNodesRecursively(SC_TAG);
 		for (XmlNode sc : scs) {
 			String host = sc.getAttribute(SC_HOST_KEY);
 			String port = sc.getAttribute(SC_PORT_KEY);

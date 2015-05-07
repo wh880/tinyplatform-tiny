@@ -1,46 +1,78 @@
 package org.tinygroup.cepcoreremoteimpl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.cepcore.CEPCore;
+import org.tinygroup.event.ServiceInfo;
+import org.tinygroup.event.central.Node;
 
 public class RemoteEventProcessorConatiner {
-	private static Map<String, RemoteEventProcessor> map = new HashMap<String, RemoteEventProcessor>();
-	private static Map<RemoteEventProcessor, String> map2 = new HashMap<RemoteEventProcessor, String>();
+	private static Map<String, ProcessorInfo> map = new HashMap<String, ProcessorInfo>();
 
-	public static void add(String name, RemoteEventProcessor processor,
-			CEPCore core) {
+	public static void add(Node node, List<ServiceInfo> services, CEPCore core) {
+		String name = node.toString();
 		if (map.containsKey(name)) {
-			remove(name, core);
+			map.get(name).increase();
+			// TODO:如果之前有，则进行其他处理
+		} else {
+			// 如果之前没有这个处理器，则创建并存储、注册
+			RemoteEventProcessor processor = new RemoteEventProcessor(node,
+					services);
+			map.put(name, new ProcessorInfo(processor));
+			core.registerEventProcessor(processor);
 		}
-		map.put(name, processor);
-		map2.put(processor, name);
-		core.registerEventProcessor(processor);
 	}
 
 	public static void remove(String name, CEPCore core) {
 		if (map.containsKey(name)) {
-			RemoteEventProcessor processor = map.remove(name);
-			map2.remove(processor);
-			processor.stopConnect();
-			core.unregisterEventProcessor(processor);
-		}
+			if (map.get(name).decrease() == 0) {
+				RemoteEventProcessor processor = map.get(name).getProcessor();
+				core.unregisterEventProcessor(processor);
+				processor.stopConnect();
+			}
 
-	}
-	
-	public static void remove(RemoteEventProcessor processor, CEPCore core) {
-		if (map2.containsKey(processor)) {
-			String s = map2.remove(processor);
-			map.remove(s);
-			core.unregisterEventProcessor(processor);
 		}
-
 	}
-	
-	public static void stop(){
-		for(RemoteEventProcessor processor:map.values()){
+
+	public static void stop() {
+		for (ProcessorInfo processorInfo : map.values()) {
+			RemoteEventProcessor processor = processorInfo.getProcessor();
 			processor.stopConnect();
 		}
 	}
+
+}
+
+/**
+ * @author chenjiao
+ * 
+ */
+class ProcessorInfo {
+	volatile int counter = 1;
+	RemoteEventProcessor processor;
+
+	public int getCounter() {
+		return counter;
+	}
+
+	public RemoteEventProcessor getProcessor() {
+		return processor;
+	}
+
+	public ProcessorInfo(RemoteEventProcessor processor) {
+		super();
+		this.processor = processor;
+	}
+
+	public synchronized void increase() {
+		counter++;
+	}
+
+	public synchronized int decrease() {
+		counter--;
+		return counter;
+	}
+
 }

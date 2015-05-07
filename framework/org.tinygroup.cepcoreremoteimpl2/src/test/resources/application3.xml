@@ -7,5 +7,8 @@
 	</application-processors>
 	<cep-configuration node-name="node3">
 		<operator name="node3"></operator>
+		<scs>
+			<sc host="192.168.232.37" port="9191"></sc>
+		</scs>
 	</cep-configuration>
 </application>

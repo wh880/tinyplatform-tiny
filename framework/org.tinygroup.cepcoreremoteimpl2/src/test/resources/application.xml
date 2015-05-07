@@ -6,9 +6,9 @@
 	</application-processors>
 	<cep-configuration node-name="node">
 		<operator name="node"></operator>
-		<!-- 
-		<chooser name="xx"></chooser>
-		 -->
+		<scs>
+			<sc host="192.168.232.37" port="9191"></sc>
+		</scs>
 		<params>
 			<param name="request-time-out" value="15000"/>
 		</params>

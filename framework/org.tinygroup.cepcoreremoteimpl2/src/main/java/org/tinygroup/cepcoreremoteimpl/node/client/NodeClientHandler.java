@@ -20,44 +20,21 @@ public class NodeClientHandler extends SimpleChannelInboundHandler<Event> {
 	public NodeClientHandler(NodeClientImpl client, Node node, CEPCore core) {
 		this.client = client;
 	}
-
+	
+	//当前连接的是另一个Node,无需做额外处理
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		// 设置客户端为就绪状态
 		client.doReady();
-		// 20150506当前连接的是另一个Node
-		// // 如果当前客户端连接的目标是SC，则发起注册
-		// if (RemoteCepCoreUtil.checkSc(client.getRemotePort(),
-		// client.getRemoteHost())) {
-		// nodeEventHandler.regToSc(ctx);
-		// }
-
 	}
 
+	//接收到的肯定是请求响应
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
 		Event event = (Event) msg;
 		String serviceId = event.getServiceRequest().getServiceId();
-		logger.logMessage(LogLevel.INFO, "接收到请求,id:{},type:", serviceId,
+		logger.logMessage(LogLevel.INFO, "接收到请求,id:{},type:{}", serviceId,
 				event.getType());
 		boolean isResponse = (Event.EVENT_TYPE_RESPONSE == event.getType());
-		// if (CEPCoreEventHandler.NODE_RE_REG_TO_SC_REQUEST.equals(serviceId)
-		// && isResponse) {// 向SC重新注册时SC的返回
-		// nodeEventHandler.dealNodeRegResponse(event);
-		// ResponseManager.updateResponse(event.getEventId(), event);
-		// } else if
-		// (CEPCoreEventHandler.NODE_REG_TO_SC_REQUEST.equals(serviceId)
-		// && isResponse) {// 向SC注册时SC的返回
-		// nodeEventHandler.dealNodeRegResponse(event);
-		// } else if (CEPCoreEventHandler.NODE_UNREG_TO_SC_REQUEST
-		// .equals(serviceId) && isResponse) {// 向SC注销时SC的返回
-		// nodeEventHandler.dealNodeUnregResponse(event);
-		// } else if (CEPCoreEventHandler.SC_REG_NODE_TO_NODE_REQUEST
-		// .equals(serviceId)) {// SC向AR发起的注册AR请求
-		// nodeEventHandler.dealScRegNodeToNode(event, ctx);
-		// } else if (CEPCoreEventHandler.SC_UNREG_NODE_TO_NODE_REQUEST
-		// .equals(serviceId)) {// SC向AR发起的注销AR请求
-		// nodeEventHandler.dealScUnregNodeToNode(event, ctx);
-		// } else
 		if (isResponse) {
 			processResult(event, ctx); // 处理服务的返回结果
 		} else {
@@ -75,11 +52,10 @@ public class NodeClientHandler extends SimpleChannelInboundHandler<Event> {
 		ResponseManager.updateResponse(eventId, event);
 	}
 
+	//连接的是Node服务端，无需作额外处理
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		// if (!NettyCepCoreUtil.checkSc(client.getRemotePort(),
-		// client.getRemoteHost())) {
-		// nodeEventHandler.unregToSc(ctx);
-		// }
+		client.setReady(false);
+		ctx.fireChannelInactive();
 	}
 
 	protected void channelRead0(ChannelHandlerContext ctx, Event msg)
