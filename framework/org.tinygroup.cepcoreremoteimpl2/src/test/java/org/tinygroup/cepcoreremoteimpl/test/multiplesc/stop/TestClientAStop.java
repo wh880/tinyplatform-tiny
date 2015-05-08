@@ -7,6 +7,12 @@ import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcoreremoteimpl.node.NodeOperator;
 import org.tinygroup.tinyrunner.Runner;
 
+/**
+ * 顺序无关启动TestServerA\TestClientC\TestClientAStop
+ * 如果jvm能在stop后停止，则无问题
+ * @author chenjiao
+ *
+ */
 public class TestClientAStop {
 	public static void main(String[] args) throws Exception {
 
