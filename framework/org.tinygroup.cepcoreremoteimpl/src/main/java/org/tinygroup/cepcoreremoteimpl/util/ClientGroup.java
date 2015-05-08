@@ -21,7 +21,7 @@ public class ClientGroup {
 	}
 	
 	private static void unRegRemoteNode(String nodeString){
-		List<ClientInfo> infos = clients.get(nodeString);
+		List<ClientInfo> infos = clients.remove(nodeString);
 		for (ClientInfo info : infos) {
 			info.getClient().stop();
 		}

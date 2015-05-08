@@ -54,12 +54,7 @@ public class RemoteEventProcessorConatiner {
 
 	
 
-	public static void stop() {
-		for (ProcessorInfo processorInfo : map.values()) {
-			RemoteEventProcessor processor = processorInfo.getProcessor();
-			processor.stopConnect();
-		}
-	}
+	
 	
 	
 }

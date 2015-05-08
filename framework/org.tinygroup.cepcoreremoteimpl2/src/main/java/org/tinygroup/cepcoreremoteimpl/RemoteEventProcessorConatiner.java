@@ -47,21 +47,19 @@ public class RemoteEventProcessorConatiner {
 
 	public static void remove(String name, CEPCore core) {
 		if (map.containsKey(name)) {
-			if (map.get(name).decrease() == 0) {
-				RemoteEventProcessor processor = map.get(name).getProcessor();
+			ProcessorInfo info  = map.get(name);
+			info.decrease() ;
+			if (info.getCounter()== 0) {
+				RemoteEventProcessor processor = info.getProcessor();
 				core.unregisterEventProcessor(processor);
 				processor.stopConnect();
+				map.remove(name);
 			}
 
 		}
 	}
 
-	public static void stop() {
-		for (ProcessorInfo processorInfo : map.values()) {
-			RemoteEventProcessor processor = processorInfo.getProcessor();
-			processor.stopConnect();
-		}
-	}
+	
 
 }
 
@@ -70,7 +68,7 @@ public class RemoteEventProcessorConatiner {
  * 
  */
 class ProcessorInfo {
-	volatile int counter = 1;
+	volatile int counter = 0;
 	RemoteEventProcessor processor;
 	int version;
 
