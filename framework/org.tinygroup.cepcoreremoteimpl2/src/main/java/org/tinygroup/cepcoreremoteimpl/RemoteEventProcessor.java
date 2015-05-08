@@ -27,10 +27,10 @@ public class RemoteEventProcessor implements EventProcessor {
 		this.remoteNode = remoteNode;
 
 	}
+	
 
 	private void initClient() {
-		client = RemoteCepCoreUtil.getClient(remoteNode);
-		ClientGroup.regRemoteNode(remoteNode, client);
+		client = ClientGroup.getClient(remoteNode);
 	}
 
 	public void process(Event event) {
@@ -82,6 +82,9 @@ public class RemoteEventProcessor implements EventProcessor {
 		return list;
 	}
 
+	public void setServiceInfos(List<ServiceInfo> list) {
+		this.list = list;
+	}
 	public String getId() {
 		return remoteNode.toString();
 	}

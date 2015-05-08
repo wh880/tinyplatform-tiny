@@ -49,7 +49,10 @@ public class ParamUtil {
 	}
 
 	public static void parseParam(XmlNode paramNode) {
+		
 		List<XmlNode> params = paramNode.getSubNodes(PARAM_KEY);
+		if(params==null)
+			return;
 		for (XmlNode param : params) {
 			paramsMap.put(param.getAttribute("name"),
 					param.getAttribute("value"));

@@ -31,7 +31,7 @@ public class CepCoreProcessor implements ApplicationProcessor {
 	private static final String CEP_CONFIG_PATH = "/application/cep-configuration";
 	private static final String OPERATOR_TAG = "operator";
 	private static final String CHOOSER_TAG = "chooser";
-	private static final String PARAMS_TAG = "params";
+//	private static final String PARAMS_TAG = "params";
 	private static final String OPERATOR_ATTRIBUTE = "name";
 	private static final String CHOOSER_ATTRIBUTE = "name";
 	private static final String NODE_NAME = "node-name";

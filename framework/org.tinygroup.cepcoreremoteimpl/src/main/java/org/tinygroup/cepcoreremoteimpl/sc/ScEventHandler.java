@@ -22,6 +22,7 @@ public class ScEventHandler extends CEPCoreEventHandler {
 			.getLogger(ScEventHandler.class);
 	private static Map<String, Node> nodes = new ConcurrentHashMap<String, Node>();
 	private static Map<Node, List<ServiceInfo>> nodeServices = new ConcurrentHashMap<Node, List<ServiceInfo>>();
+	private static Map<String,Integer> versions = new ConcurrentHashMap<String, Integer>();
 	//此列表，只会在SC节点时，会有数据存放
 	private static Map<String, ChannelHandlerContext> ctxs = new ConcurrentHashMap<String, ChannelHandlerContext>();
 
@@ -37,34 +38,39 @@ public class ScEventHandler extends CEPCoreEventHandler {
 		Context c = event.getServiceRequest().getContext();
 		List<ServiceInfo> list = c.get(NODE_REG_TO_SC_SERVICE_KEY);
 		Node remoteNode = c.get(NODE_KEY);
+		int version = c.get(NODE_REG_TO_SC_SERVICE_VERSION_KEY);
+		
 		String nodeString = remoteNode.toString();
 		ctxs.put(nodeString, ctx);
+		
 		// 判断注册节点是否已存在，若存在则清理
-		checkCurrentNode(nodeString);
+//		checkCurrentNode(nodeString);
+		// 将节点注册信息放入静态存储中
+		versions.put(nodeString, version);
+		nodes.put(nodeString, remoteNode);
+		nodeServices.put(remoteNode, list);
+		logger.logMessage(LogLevel.INFO, "节点{}服务版本{}",nodeString,version);
 		// 将该节点注册至已有节点列表
 		scRegCurrentNodeToNodes(nodeString, remoteNode, list);
 		// 将已有节点列表注册至该节点
 		scRegNodesToCurrentNode(c, event, ctx, nodeString);
-		// 将节点注册信息放入静态存储中
-		nodes.put(nodeString, remoteNode);
-		nodeServices.put(remoteNode, list);
 		logger.logMessage(LogLevel.INFO, "处理节点向服务中心发起的注册请求完成");
 	}
 
-	/**
-	 * 判断当前注册的Node节点是否已存在，若存在则清理
-	 * 
-	 * @param nodeString
-	 */
-	private void checkCurrentNode(String nodeString) {
-		if (nodes.containsKey(nodeString)) {
-			logger.logMessage(LogLevel.INFO, "{0}节点已存在,开始清理", nodeString);
-			Node containNode = nodes.get(nodeString);
-			nodeServices.remove(containNode);
-			nodes.remove(nodeString);
-			logger.logMessage(LogLevel.INFO, "{0}节点已存在,开始清理结束", nodeString);
-		}
-	}
+//	/**
+//	 * 判断当前注册的Node节点是否已存在，若存在则清理
+//	 * 
+//	 * @param nodeString
+//	 */
+//	private void checkCurrentNode(String nodeString) {
+//		if (nodes.containsKey(nodeString)) {
+//			logger.logMessage(LogLevel.INFO, "{0}节点已存在,开始清理", nodeString);
+//			Node containNode = nodes.get(nodeString);
+//			nodeServices.remove(containNode);
+//			nodes.remove(nodeString);
+//			logger.logMessage(LogLevel.INFO, "{0}节点已存在,开始清理结束", nodeString);
+//		}
+//	}
 
 	/**
 	 * 将当前注册的Node节点发送到SC上已有的Node节点列表
@@ -78,12 +84,16 @@ public class ScEventHandler extends CEPCoreEventHandler {
 		logger.logMessage(LogLevel.INFO, "开始将{0}节点注册至已有节点列表", nodeString);
 		// 将注册节点信息 发送到 已有节点列表
 		for (String string : nodes.keySet()) {
+			if(nodeString.equals(string)){
+				continue;
+			}
 			logger.logMessage(LogLevel.INFO, "开始将{0}节点注册至已有节点:{1}", nodeString,
 					string);
 			Context newContext = new ContextImpl();
 			newContext.put(NODE_KEY, node);
 			newContext.put(TYPE_KEY, REG_KEY);
 			newContext.put(SC_TO_NODE_SERVICE_KEY, list);
+			newContext.put(SC_TO_NODE_SERVICE_VERSIONS_KEY, versions.get(nodeString));
 			Event newEvent = Event.createEvent(SC_REG_NODE_TO_NODE_REQUEST,
 					newContext);
 			ctxs.get(string).writeAndFlush(newEvent);
@@ -105,6 +115,7 @@ public class ScEventHandler extends CEPCoreEventHandler {
 		// 将已有节点列表放入上下文，作为结果集回写回注册节点
 		logger.logMessage(LogLevel.INFO, "开始将已有节点列表注册至{0}节点", nodeString);
 		c.put(SC_TO_NODE_SERVICE_KEY, copy());
+		c.put(SC_TO_NODE_SERVICE_VERSIONS_KEY, versions);
 		event.setType(Event.EVENT_TYPE_RESPONSE);
 		ctx.writeAndFlush(event);
 		logger.logMessage(LogLevel.INFO, "将已有节点列表注册至{0}节点完成", nodeString);

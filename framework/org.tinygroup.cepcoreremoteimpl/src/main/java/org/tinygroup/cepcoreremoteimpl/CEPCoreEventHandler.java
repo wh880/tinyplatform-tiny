@@ -7,6 +7,8 @@ import org.tinygroup.event.central.Node;
 public class CEPCoreEventHandler {
 	// 由AR发向SC的服务的服务ID
 	public static String NODE_REG_TO_SC_SERVICE_KEY = "node_regto_sc_services";
+	public static String NODE_REG_TO_SC_SERVICE_VERSION_KEY = "node_regto_sc_version_services";
+	
 	public static String NODE_REG_TO_SC_REQUEST = "node_to_sc_request";
 	public static String NODE_RE_REG_TO_SC_REQUEST = "node_re_to_sc_request";
 	public static String NODE_UNREG_TO_SC_REQUEST = "node_to_sc_request";
@@ -15,7 +17,7 @@ public class CEPCoreEventHandler {
 	// 由SC发向AR的服务的服务ID
 	public static String SC_TO_NODE = "sc_to_node";
 	public static String SC_TO_NODE_SERVICE_KEY = "sc_regto_node_services";
-
+	public static String SC_TO_NODE_SERVICE_VERSIONS_KEY = "sc_regto_node_services_versions";
 	// 存放请求传递中的节点列表
 	public static String NODES_KEY = "nodes_key";
 	// 存放请求传递中的单个节点

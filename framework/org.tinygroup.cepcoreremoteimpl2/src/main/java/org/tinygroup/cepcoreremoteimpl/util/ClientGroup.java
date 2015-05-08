@@ -48,8 +48,14 @@ public class ClientGroup {
 	public static NodeClientImpl getClient(Node remoteNode) {
 		String nodeString = remoteNode.toString();
 		List<ClientInfo> list = clients.get(nodeString);
-		NodeClientImpl client = choose(list, remoteNode);
-		return client;
+		if(list==null){
+			NodeClientImpl client = RemoteCepCoreUtil.getClient(remoteNode);
+			regRemoteNode(remoteNode, client);
+			return client;
+		}else{
+			return choose(list, remoteNode);
+		}
+		
 	}
 
 	private static NodeClientImpl choose(List<ClientInfo> list,

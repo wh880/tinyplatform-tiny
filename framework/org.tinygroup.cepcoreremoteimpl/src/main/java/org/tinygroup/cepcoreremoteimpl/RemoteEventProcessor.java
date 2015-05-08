@@ -22,15 +22,14 @@ public class RemoteEventProcessor implements EventProcessor {
 	private List<ServiceInfo> list = new ArrayList<ServiceInfo>();
 	private CEPCoreClientImpl client;
 
-	public RemoteEventProcessor(Node remoteNode, List<ServiceInfo> list) {
+	public RemoteEventProcessor(Node remoteNode, List<ServiceInfo> list
+			) {
 		this.list = list;
 		this.remoteNode = remoteNode;
-
 	}
 
 	private void initClient() {
-		client = RemoteCepCoreUtil.getClient(remoteNode);
-		ClientGroup.regRemoteNode(remoteNode, client);
+		client = ClientGroup.getClient(remoteNode);
 	}
 
 	public void process(Event event) {
@@ -42,31 +41,30 @@ public class RemoteEventProcessor implements EventProcessor {
 				remoteNode.getIp(), remoteNode.getPort(), remoteNode
 						.getNodeName(), event.getServiceRequest()
 						.getServiceId());
-//		try {
-			CEPCoreClientImpl dealClient = ClientGroup.getClient(remoteNode);
-			Event newEvent = RemoteCepCoreUtil.sendEvent(
-					dealClient, event);
-			ClientGroup.back(dealClient, remoteNode);
-			event.getServiceRequest()
-					.getContext()
-					.putSubContext(newEvent.getEventId(),
-							newEvent.getServiceRequest().getContext());
-			
-			logger.logMessage(LogLevel.INFO,
-					"请求成功,目标节点{0}:{1}:{2},请求信息:[serviceId:{3}]", remoteNode
-							.getIp(), remoteNode.getPort(), remoteNode
-							.getNodeName(), event.getServiceRequest()
-							.getServiceId());
+		// try {
+		CEPCoreClientImpl dealClient = ClientGroup.getClient(remoteNode);
+		Event newEvent = RemoteCepCoreUtil.sendEvent(dealClient, event);
+		ClientGroup.back(dealClient, remoteNode);
+		event.getServiceRequest()
+				.getContext()
+				.putSubContext(newEvent.getEventId(),
+						newEvent.getServiceRequest().getContext());
 
-//		} catch (Exception e) {
-//			logger.logMessage(LogLevel.ERROR,
-//					"请求失败,目标节点{0}:{1}:{2},请求信息:[serviceId:{3},信息:{5}",
-//					remoteNode.getIp(), remoteNode.getPort(), remoteNode
-//							.getNodeName(), event.getServiceRequest()
-//							.getServiceId(), e.getMessage());
-//			stopConnect();
-//			throw new CEPConnectException(e, remoteNode);
-//		}
+		logger.logMessage(LogLevel.INFO,
+				"请求成功,目标节点{0}:{1}:{2},请求信息:[serviceId:{3}]",
+				remoteNode.getIp(), remoteNode.getPort(), remoteNode
+						.getNodeName(), event.getServiceRequest()
+						.getServiceId());
+
+		// } catch (Exception e) {
+		// logger.logMessage(LogLevel.ERROR,
+		// "请求失败,目标节点{0}:{1}:{2},请求信息:[serviceId:{3},信息:{5}",
+		// remoteNode.getIp(), remoteNode.getPort(), remoteNode
+		// .getNodeName(), event.getServiceRequest()
+		// .getServiceId(), e.getMessage());
+		// stopConnect();
+		// throw new CEPConnectException(e, remoteNode);
+		// }
 	}
 
 	public void stopConnect() {
@@ -104,5 +102,9 @@ public class RemoteEventProcessor implements EventProcessor {
 
 	public void setRead(boolean read) {
 
+	}
+
+	public void setServiceInfos(List<ServiceInfo> services) {
+		this.list = services;
 	}
 }
