@@ -42,6 +42,11 @@ public class NodeHandler extends SimpleChannelInboundHandler<Event> {
 		nodeEventHandler.reRegToSc(client);
 	}
 
+	public void unRegToSc(CEPCoreClientImpl client) {
+		nodeEventHandler.unRegToSc(client);
+	}
+
+	
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
 		Event event = (Event) msg;
@@ -50,15 +55,16 @@ public class NodeHandler extends SimpleChannelInboundHandler<Event> {
 				event.getType());
 		boolean isResponse = (Event.EVENT_TYPE_RESPONSE == event.getType());
 		if (CEPCoreEventHandler.NODE_RE_REG_TO_SC_REQUEST.equals(serviceId)
-				&& isResponse) {// 向SC重新注册时SC的返回
+				&& isResponse) {// 向SC重新注册时 SC的返回
 			nodeEventHandler.dealNodeRegResponse(event);
 			ResponseManager.updateResponse(event.getEventId(), event);
 		} else if (CEPCoreEventHandler.NODE_REG_TO_SC_REQUEST.equals(serviceId)
 				&& isResponse) {// 向SC注册时SC的返回
 			nodeEventHandler.dealNodeRegResponse(event);
 		} else if (CEPCoreEventHandler.NODE_UNREG_TO_SC_REQUEST
-				.equals(serviceId) && isResponse) {// 向SC注销时SC的返回
+				.equals(serviceId) && isResponse) {// 向SC注销时 SC的返回
 			nodeEventHandler.dealNodeUnregResponse(event);
+			ResponseManager.updateResponse(event.getEventId(), event);
 		} else if (CEPCoreEventHandler.SC_REG_NODE_TO_NODE_REQUEST
 				.equals(serviceId)) {// SC向AR发起的注册AR请求
 			nodeEventHandler.dealScRegNodeToNode(event, ctx);

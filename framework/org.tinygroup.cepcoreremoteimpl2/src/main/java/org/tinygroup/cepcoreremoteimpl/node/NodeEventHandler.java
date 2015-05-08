@@ -93,10 +93,10 @@ public class NodeEventHandler extends CEPCoreEventHandler {
 	 * 
 	 * @param ctx
 	 */
-	public void unregToSc(ChannelHandlerContext ctx) {
+	public void unRegToSc(CEPCoreClientImpl client) {
 		logger.logMessage(LogLevel.INFO, "开始向服务中心发起注销");
 		Event request = getNodeUnregRequestEvent();
-		ctx.writeAndFlush(request);
+		client.sentEvent(request);
 		logger.logMessage(LogLevel.INFO, "向服务中心发起注销完成");
 	}
 

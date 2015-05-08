@@ -27,13 +27,8 @@ public class ClientGroup {
 		}
 	}
 	
-	public static void stop(){
-		for(String nodeString:clients.keySet()){
-			unRegRemoteNode(nodeString);
-		}
-	}
 
-	public static void regRemoteNode(Node remoteNode, NodeClientImpl client) {
+	private static void regRemoteNode(Node remoteNode, NodeClientImpl client) {
 		String nodeString = remoteNode.toString();
 		if (!clients.containsKey(nodeString)) {
 			clients.put(nodeString, new ArrayList<ClientInfo>());

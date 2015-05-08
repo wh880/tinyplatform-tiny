@@ -8,8 +8,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 
 import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcoreremoteimpl.util.ClientGroup;
-import org.tinygroup.cepcoreremoteimpl.util.RemoteCepCoreUtil;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.central.Node;
 import org.tinygroup.logger.Logger;
@@ -42,14 +40,14 @@ public class CEPCoreClientImpl extends ClientImpl {
 	public void reReg() {
 		nodeHandler.reRegToSc(this);
 	}
+	public void unReg() {
+		nodeHandler.unRegToSc(this);
+	}
 
 	public void stop() {
 		// 关闭和客户端的连接
+		unReg();
 		super.stop();
-		//如果当前关闭的是向SC发起的连接，则关闭所有连接
-		if (RemoteCepCoreUtil.checkSc(getRemotePort(), getRemoteHost())) {
-			ClientGroup.stop();
-		}
 	}
 
 	/**

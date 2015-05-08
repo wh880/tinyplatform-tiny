@@ -140,6 +140,7 @@ public class ScEventHandler extends CEPCoreEventHandler {
 		// 将该注销消息推送至其它节点
 		scUnregCurrentNodeToNodes(nodeString, currentNode);
 		// 返回SC上其它的节点信息
+		event.setType(Event.EVENT_TYPE_RESPONSE);
 		c.put(NODES_KEY, nodes);
 		ctx.writeAndFlush(event);
 		ctx.close();
