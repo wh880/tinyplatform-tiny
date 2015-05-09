@@ -76,6 +76,8 @@ public interface CEPCore extends Remote {
 	 * @return
 	 */
 	List<ServiceInfo> getServiceInfos();
+	
+	int getServiceInfosVersion();
 
 	ServiceInfo getServiceInfo(String serviceId);
 	

@@ -31,21 +31,14 @@ public class BaseRuntimeException extends RuntimeException {
 			.getI18nMessages();// 需要在启动的时候注入进来
 	private String errorMsg;
 
-	private ErrorCode errorCode;
-
-	private Throwable cause;
+	private AbstractErrorCode errorCode;
 
 	@Override
 	public String getMessage() {
 		return errorMsg;
 	}
 
-	@Override
-	public Throwable getCause() {
-		return cause;
-	}
-
-	public ErrorCode getErrorCode() {
+	public AbstractErrorCode getErrorCode() {
 		return errorCode;
 	}
 
@@ -67,14 +60,14 @@ public class BaseRuntimeException extends RuntimeException {
 			Locale locale, Object... params) {
 		String errorMsg = i18nMessage.getMessage(errorCode, locale,
 				defaultErrorMsg, params);
-		this.errorCode = AbstractErrorCode.parseErrorCode(errorCode);
+		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode);
 		this.errorMsg = errorMsg;
 	}
-	
-	public BaseRuntimeException(String errorCode,
-			Throwable throwable, Object... params) {
-		this(errorCode, "", LocaleUtil.getContext().getLocale(),
-				throwable, params);
+
+	public BaseRuntimeException(String errorCode, Throwable throwable,
+			Object... params) {
+		this(errorCode, "", LocaleUtil.getContext().getLocale(), throwable,
+				params);
 	}
 
 	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
@@ -85,8 +78,11 @@ public class BaseRuntimeException extends RuntimeException {
 
 	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
 			Locale locale, Throwable throwable, Object... params) {
-		this(errorCode, defaultErrorMsg, locale, params);
-		this.cause = throwable;
+		super(throwable);
+		String errorMsg = i18nMessage.getMessage(errorCode, locale,
+				defaultErrorMsg, params);
+		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode);
+		this.errorMsg = errorMsg;
 	}
 
 	public BaseRuntimeException(String errorCode, Context context, Locale locale) {
@@ -98,31 +94,28 @@ public class BaseRuntimeException extends RuntimeException {
 		String errorMsg = i18nMessage.getMessage(errorCode, defaultErrorMsg,
 				context, locale);
 		this.errorMsg = errorMsg;
-		this.errorCode = AbstractErrorCode.parseErrorCode(errorCode);
+		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode);
 	}
 
 	public BaseRuntimeException(String errorCode, Context context) {
 		this(errorCode, "", context, LocaleUtil.getContext().getLocale());
 	}
-	
-	
+
 	public BaseRuntimeException() {
 		super();
 	}
 
 	public BaseRuntimeException(String message, Throwable cause) {
 		super(message, cause);
-		this.cause = cause;
 	}
 
 	public BaseRuntimeException(String message) {
 		super(message);
-		
+
 	}
 
 	public BaseRuntimeException(Throwable cause) {
 		super(cause);
-		this.cause = cause;
 	}
 
 	public static ErrorContext getErrorContext(Throwable throwable) {

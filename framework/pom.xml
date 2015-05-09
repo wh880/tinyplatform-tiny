@@ -8,8 +8,13 @@
     <artifactId>framework</artifactId>
     <packaging>pom</packaging>
     <modules>
-	<module>org.tinygroup.spring256</module>
-	<module>org.tinygroup.cepcorenetty</module>
+		<module>org.tinygroup.nettyremote</module>
+		<module>org.tinygroup.cepcoreimpl</module>
+		<module>org.tinygroup.cepcoreremoteimpl</module>
+		<module>org.tinygroup.cepcoreremoteimpl2</module>
+
+	    <module>org.tinygroup.spring256</module>
+	    <module>org.tinygroup.cepcorenetty</module>
 		<module>org.tinygroup.cepcorenettysc</module>
    		<module>org.tinygroup.serviceprocessor</module>
         <module>org.tinygroup.beancontainer</module>
@@ -35,7 +40,6 @@
         <module>org.tinygroup.commons</module>
         <module>org.tinygroup.el</module>
         <module>org.tinygroup.cepcore</module>
-        <module>org.tinygroup.cepcorepc</module>
         <module>org.tinygroup.logger</module>
         <module>org.tinygroup.pc</module>
         <module>org.tinygroup.ioc</module>
@@ -61,5 +65,7 @@
         <module>org.tinygroup.validate</module>
         <module>org.tinygroup.loader</module>
 		<module>org.tinygroup.tinyrunner</module>
+		<module>org.tinygroup.codegen</module>
+		<module>org.tinygroup.docgen</module>
     </modules>
 </project>

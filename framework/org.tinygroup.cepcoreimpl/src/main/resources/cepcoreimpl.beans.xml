@@ -12,5 +12,8 @@
 		class="org.tinygroup.cepcoreimpl.CepCoreProcessor">
 		<property name="cepcore" ref="cepcore"></property>
 	</bean>
-
+<bean id="eventProcessorChangeLisenter" scope="singleton"
+		class="org.tinygroup.cepcoreimpl.EventProcessorChangeLisenter">
+		<property name="cepcore" ref="cepcore"></property>
+	</bean>
 </beans>

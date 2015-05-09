@@ -26,7 +26,9 @@ public class ScHandler extends SimpleChannelInboundHandler<Event> {
 		logger.logMessage(LogLevel.INFO, "接收到请求,id:{},type:", serviceId,
 				event.getType());
 		// Node向SC发起的注册请求
-		if (CEPCoreEventHandler.NODE_REG_TO_SC_REQUEST.equals(serviceId)) {
+		if (CEPCoreEventHandler.NODE_RE_REG_TO_SC_REQUEST.equals(serviceId)) {
+			scEventHandler.dealNodeRegToSc(event, ctx);
+		} else if (CEPCoreEventHandler.NODE_REG_TO_SC_REQUEST.equals(serviceId)) {
 			scEventHandler.dealNodeRegToSc(event, ctx);
 		} else if (CEPCoreEventHandler.NODE_UNREG_TO_SC_REQUEST
 				.equals(serviceId)) {// Node向SC发起的注销请求

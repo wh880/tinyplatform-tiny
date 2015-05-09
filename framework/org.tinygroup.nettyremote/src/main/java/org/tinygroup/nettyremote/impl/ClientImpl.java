@@ -56,6 +56,9 @@ public class ClientImpl implements Client {
 	}
 
 	private void reConnect() {
+		if(executor.isShutdown()){
+			return;
+		}
 		// 所有资源释放完成之后，清空资源，再次发起重连操作
 		executor.execute(new Runnable() {
 			public void run() {

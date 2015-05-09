@@ -86,6 +86,6 @@ public enum ErrorType {
 				return types;
 			}
 		}
-		return null;
+		throw new RuntimeException(String.format("未找到code:%s，对应的错误类型", code));
 	}
 }

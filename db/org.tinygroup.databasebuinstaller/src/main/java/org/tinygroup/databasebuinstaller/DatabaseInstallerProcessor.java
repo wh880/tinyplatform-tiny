@@ -91,8 +91,12 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 		try {
 			con = dataSource.getConnection();
 			for (InstallProcessor processor : installProcessors) {
+				long startTime = System.currentTimeMillis();
 				processSqls.put(processor.getClass(),
 						processor.getDealSqls(dbLanguage, con));
+				logger.logMessage(LogLevel.INFO, "processor:[{0}]的处理时间：[{1}]",
+						processor.getClass().getSimpleName(),
+						System.currentTimeMillis() - startTime);
 			}
 		} catch (Exception ex) {
 			logger.errorMessage(ex.getMessage(), ex);

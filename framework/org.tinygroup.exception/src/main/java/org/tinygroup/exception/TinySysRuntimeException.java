@@ -20,10 +20,11 @@ import org.tinygroup.context.Context;
 import java.util.Locale;
 
 /**
- * 框架系统运行期异常
+ * 框架系统运行期异常,建议直接使用BaseRuntimeException
  * @author renhui
  *
  */
+@Deprecated
 public class TinySysRuntimeException extends BaseRuntimeException {
 
 	private static final long serialVersionUID = 5006685550353539837L;

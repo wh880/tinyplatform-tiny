@@ -21,7 +21,7 @@ public class ClientGroup {
 	}
 	
 	private static void unRegRemoteNode(String nodeString){
-		List<ClientInfo> infos = clients.get(nodeString);
+		List<ClientInfo> infos = clients.remove(nodeString);
 		for (ClientInfo info : infos) {
 			info.getClient().stop();
 		}
@@ -48,8 +48,14 @@ public class ClientGroup {
 	public static CEPCoreClientImpl getClient(Node remoteNode) {
 		String nodeString = remoteNode.toString();
 		List<ClientInfo> list = clients.get(nodeString);
-		CEPCoreClientImpl client = choose(list, remoteNode);
-		return client;
+		if(list==null){
+			CEPCoreClientImpl client = RemoteCepCoreUtil.getClient(remoteNode);
+			ClientGroup.regRemoteNode(remoteNode, client);
+			return client;
+		}else{
+			return choose(list, remoteNode);
+		}
+		
 	}
 
 	private static CEPCoreClientImpl choose(List<ClientInfo> list,

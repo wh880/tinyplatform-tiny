@@ -31,7 +31,7 @@ public class CepCoreProcessor implements ApplicationProcessor {
 	private static final String CEP_CONFIG_PATH = "/application/cep-configuration";
 	private static final String OPERATOR_TAG = "operator";
 	private static final String CHOOSER_TAG = "chooser";
-	private static final String PARAMS_TAG = "params";
+//	private static final String PARAMS_TAG = "params";
 	private static final String OPERATOR_ATTRIBUTE = "name";
 	private static final String CHOOSER_ATTRIBUTE = "name";
 	private static final String NODE_NAME = "node-name";
@@ -80,13 +80,15 @@ public class CepCoreProcessor implements ApplicationProcessor {
 			logger.logMessage(LogLevel.INFO, "配置为空，启动CEPCoreProcessor完毕");
 			return;
 		}
-		XmlNode param = appConfig.getSubNode(PARAMS_TAG);
-		parseChooser(param);
-		parseNode(param);
+		parseChooser();
+		parseNode();
 		logger.logMessage(LogLevel.INFO, "启动CEPCoreProcessor完毕");
 	}
 
-	private void parseNode(XmlNode param) {
+	private void parseNode() {
+		if(appConfig.getSubNode(OPERATOR_TAG)==null){
+			return;
+		}
 		String operatorName = appConfig.getSubNode(OPERATOR_TAG).getAttribute(
 				OPERATOR_ATTRIBUTE);
 		if (StringUtil.isBlank(operatorName)) {
@@ -97,9 +99,7 @@ public class CepCoreProcessor implements ApplicationProcessor {
 		if (operator == null) {
 			return;
 		}
-		if(param!=null){
-			operator.setParam(param);
-		}
+		operator.setParam(appConfig);
 		String nodeName = appConfig.getAttribute(NODE_NAME);
 		logger.logMessage(LogLevel.INFO, "NodeName为:{0}", nodeName);
 		cepcore.setOperator(operator);
@@ -108,7 +108,7 @@ public class CepCoreProcessor implements ApplicationProcessor {
 
 	}
 
-	private void parseChooser(XmlNode param) {
+	private void parseChooser() {
 		if (appConfig.getSubNode(CHOOSER_TAG) == null) {
 			return;
 		}
@@ -123,9 +123,7 @@ public class CepCoreProcessor implements ApplicationProcessor {
 		if (chooser == null) {
 			return;
 		}
-		if(param!=null){
-			chooser.setParam(param);
-		}
+		chooser.setParam(appConfig);
 		cepcore.setEventProcessorChoose(chooser);
 	}
 

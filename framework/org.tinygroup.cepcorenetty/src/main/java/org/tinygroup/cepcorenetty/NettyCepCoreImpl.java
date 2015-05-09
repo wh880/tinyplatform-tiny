@@ -467,4 +467,9 @@ public class NettyCepCoreImpl implements CEPCore {
 		return processors;
 	}
 
+	public int getServiceInfosVersion() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

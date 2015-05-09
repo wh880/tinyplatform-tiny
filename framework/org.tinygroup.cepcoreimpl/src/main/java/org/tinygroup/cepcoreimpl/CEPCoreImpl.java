@@ -39,6 +39,8 @@ public class CEPCoreImpl implements CEPCore{
 	private static Logger logger = LoggerFactory
 			.getLogger(CEPCoreImpl.class);
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
+	//服务版本，每次注册注销都会使其+1;
+	private static int serviceVersion = 0;
 	/**
 	 * 存放所有的EventProcessor
 	 */
@@ -103,6 +105,7 @@ public class CEPCoreImpl implements CEPCore{
 	private void addEventProcessorInfo(EventProcessor eventProcessor){
 		processorMap.put(eventProcessor.getId(), eventProcessor);
 		eventProcessor.setCepCore(this);
+	
 
 		List<ServiceInfo> servicelist = eventProcessor.getServiceInfos();
 		eventProcessorServices.put(eventProcessor.getId(), servicelist);
@@ -142,8 +145,10 @@ public class CEPCoreImpl implements CEPCore{
 	}
 
 	public void registerEventProcessor(EventProcessor eventProcessor) {
+		
 		logger.logMessage(LogLevel.INFO, "开始 注册EventProcessor:{}",
 				eventProcessor.getId());
+		changeVersion(eventProcessor);
 		if(processorMap.containsKey(eventProcessor.getId())){
 			removeEventProcessorInfo(eventProcessor);
 		}
@@ -183,12 +188,21 @@ public class CEPCoreImpl implements CEPCore{
 	}
 
 	public void unregisterEventProcessor(EventProcessor eventProcessor) {
+		
 		logger.logMessage(LogLevel.INFO, "开始 注销EventProcessor:{}",
 				eventProcessor.getId());
+		changeVersion(eventProcessor);
 		processorMap.remove(eventProcessor.getId());
 		removeEventProcessorInfo(eventProcessor);
 		logger.logMessage(LogLevel.INFO, "注销EventProcessor:{}完成",
 				eventProcessor.getId());
+	}
+
+	private void changeVersion(EventProcessor eventProcessor) {
+		if(eventProcessor.getType()==EventProcessor.TYPE_LOCAL){
+			logger.logMessage(LogLevel.INFO, "本地EventProcessor变动,对CEPCORE服务版本进行变更");
+			serviceVersion++;//如果发生了本地EventProcessor变动，则改变版本
+		}
 	}
 
 	public void process(Event event) {
@@ -457,5 +471,9 @@ public class CEPCoreImpl implements CEPCore{
 			processors.add(processor);
 		}
 		return processors;
+	}
+
+	public int getServiceInfosVersion() {
+		return serviceVersion;
 	}
 }

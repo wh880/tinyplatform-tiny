@@ -62,33 +62,61 @@ import org.tinygroup.exception.constant.ErrorType;
  * </table>
  */
 public class ErrorCode extends AbstractErrorCode {
+	
+	
+	/** 未知系统异常 */
+	public static final String UNKNOWN_ERROR = "TE1139999999";
 
-    //这里是定义长度
-    private static final int[] FIELD_LENGTH = {2, 1, 1, 1, 3, 3};
-    /**
+	/** 未知系统异常 */
+	public static final String UNKNOWN_SYSTEM_ERROR = "TE1139999999";
+
+	/** 未知扩展系统异常 */
+	public static final String UNKNOWN_EXT_ERROR =  "TE1239999999";
+	/** 未知业务异常 */
+	public static final String UNKNOWN_BIZ_ERROR =  "TE1339999999";
+
+	/** 未知第三方异常 */
+	public static final String UNKNOWN_THIRD_PARTY_ERROR = "TE1439999999";
+
+	// 这里是定义长度
+	private static final int[] FIELD_LENGTH = { 2, 1, 1, 1, 4, 3 };
+	/**
      *
      */
-    private static final long serialVersionUID = -8398330229603671639L;
+	private static final long serialVersionUID = -8398330229603671639L;
+	
 
+	public ErrorCode() {
+		super();
+	}
 
-    public ErrorCode(ErrorType errorType, ErrorLevel errorLevel, String errorScene,
-                     int errorNumber, String errorPrefix) {
-        super(DEFAULT_VERSION, errorType, errorLevel, errorScene,
-                errorNumber, errorPrefix);
-    }
+	public ErrorCode(ErrorType errorType, ErrorLevel errorLevel,
+			int errorScene, int errorNumber, String errorPrefix) {
+		super(DEFAULT_VERSION, errorType, errorLevel, errorScene, errorNumber,
+				errorPrefix);
+	}
 
-    @Override
-    protected int[] getFieldLength() {
-        return null;
-    }
+	@Override
+	protected int[] getFieldLength() {
+		return FIELD_LENGTH;
+	}
 
-    @Override
-    protected String getErrorCodeFormatString() {
-        return null;
-    }
+	@Override
+	protected String getErrorCodeFormatString() {
+		return "%2s%1s%1d%1d%04d%03d";
+	}
 
-    @Override
-    protected AbstractErrorCode getReserveErrorCode(ErrorType errorType) {
-        return null;
-    }
+	@Override
+	protected AbstractErrorCode internalParse(char[] chars) {
+		this.errorScene = Integer.valueOf("" + chars[5] + chars[6] + chars[7]
+				+ chars[8]);
+		this.errorNumber = Integer.valueOf("" + chars[9] + chars[10]
+				+ chars[11]);
+		return new ErrorCode(errorType, errorLevel, errorScene, errorNumber, errorPrefix);
+	}
+
+	public boolean isLengthMatch(int errorCodeLength) {
+		return 12==errorCodeLength;
+	}
+
 }
