@@ -52,7 +52,6 @@ public class NameFilter<T extends Node<T>> extends AbstractFilterImpl<T> {
 		String caseSensitiveName = node.getCaseSensitiveName(nodeName);
 		if (caseSensitiveName.equals(node.getNodeName())) {
 			if (isRightNode(node)) {
-				isRightNode(node);
 				result.add(node);
 			}
 		}
