@@ -38,7 +38,7 @@ public class ScEventHandler extends CEPCoreEventHandler {
 		Context c = event.getServiceRequest().getContext();
 		List<ServiceInfo> list = c.get(NODE_REG_TO_SC_SERVICE_KEY);
 		Node remoteNode = c.get(NODE_KEY);
-		int version = c.get(NODE_REG_TO_SC_SERVICE_VERSION_KEY);
+		int version = (Integer)c.get(NODE_REG_TO_SC_SERVICE_VERSION_KEY);
 		String nodeString = remoteNode.toString();
 		ctxs.put(nodeString, ctx);
 		// // 判断注册节点是否已存在，若存在则清理

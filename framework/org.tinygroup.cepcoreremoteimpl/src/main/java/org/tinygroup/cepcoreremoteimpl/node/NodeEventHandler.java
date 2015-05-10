@@ -155,7 +155,7 @@ public class NodeEventHandler extends CEPCoreEventHandler {
 		Context c = event.getServiceRequest().getContext();
 		Node remoteNode = c.get(NODE_KEY);
 		List<ServiceInfo> list = c.get(SC_TO_NODE_SERVICE_KEY);
-		int version = c.get(SC_TO_NODE_SERVICE_VERSIONS_KEY);
+		int version = (Integer)c.get(SC_TO_NODE_SERVICE_VERSIONS_KEY);
 		logger.logMessage(LogLevel.INFO, "为节点{}创建服务处理器,服务版本{}",
 				remoteNode.toString(),version);
 		RemoteEventProcessorConatiner.add(remoteNode, list, getCore(),version);
