@@ -159,6 +159,6 @@ public class TestSelect {
 		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.in(1,5,10)));
 		
 		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.notIn(1,5,10)));
-
+		
 	}
 }
