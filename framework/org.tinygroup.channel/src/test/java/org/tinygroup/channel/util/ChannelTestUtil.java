@@ -15,12 +15,11 @@
  */
 package org.tinygroup.channel.util;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcore.aop.CEPCoreAopManager;
+import org.tinygroup.channel.CEPCoreForTest;
 import org.tinygroup.event.Event;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class ChannelTestUtil {
 	static CEPCoreAopManager manager = null;
@@ -34,9 +33,7 @@ public class ChannelTestUtil {
 	public static CEPCore getCep() {
 		init();
 		if (cep == null)
-			cep = BeanContainerFactory.getBeanContainer(
-					ChannelTestUtil.class.getClassLoader()).getBean(
-					CEPCore.CEP_CORE_BEAN);
+			cep = new CEPCoreForTest();
 		return cep;
 	}
 
@@ -44,7 +41,6 @@ public class ChannelTestUtil {
 		if (init)
 			return;
 		init = true;
-		AbstractTestUtil.init("application.xml", true);
 
 	}
 

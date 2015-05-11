@@ -41,8 +41,9 @@ public class FileNameFileObjectFilter implements FileObjectFilter {
     }
 
     public boolean accept(FileObject fileObject) {
-        String fileName = fileObject.getFileName();
+        String fileName = fileObject.getFileName();//取得文件名
         if (fullMatch) {
+        	//完全匹配，不仅对文件名进行匹配，还要对匹配组(group)进行对比。
             Matcher matcher = pattern.matcher(fileName);
             if (matcher.find()) {
                 return matcher.group().equals(fileName);
@@ -50,6 +51,7 @@ public class FileNameFileObjectFilter implements FileObjectFilter {
                 return false;
             }
         } else {
+        	//局部匹配，直接用设置的正则表达式对文件名进行匹配
             Matcher matcher = pattern.matcher(fileName);
             return matcher.find();
         }

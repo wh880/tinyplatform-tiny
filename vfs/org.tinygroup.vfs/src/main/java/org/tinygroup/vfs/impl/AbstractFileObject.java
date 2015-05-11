@@ -73,14 +73,18 @@ public abstract class AbstractFileObject implements FileObject {
      */
     public void foreach(FileObjectFilter fileObjectFilter, FileObjectProcessor fileObjectProcessor,
                         boolean parentFirst) {
+    	//先处理父对象，后处理子对象
         if (parentFirst && fileObjectFilter.accept(this)) {
             fileObjectProcessor.process(this);
         }
+        //如果是目录，递归调用子对象的查询
         if (isFolder()) {
+        	//遍历当前文件对象的子文件列表
             for (FileObject subFileObject : getChildren()) {
                 subFileObject.foreach(fileObjectFilter, fileObjectProcessor, parentFirst);
             }
         }
+        //先处理子对象，后处理父对象
         if (!parentFirst && fileObjectFilter.accept(this)) {
             fileObjectProcessor.process(this);
         }
