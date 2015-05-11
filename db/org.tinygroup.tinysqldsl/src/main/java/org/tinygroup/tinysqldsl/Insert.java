@@ -15,13 +15,18 @@
  */
 package org.tinygroup.tinysqldsl;
 
-import org.tinygroup.tinysqldsl.base.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.tinygroup.tinysqldsl.base.Column;
+import org.tinygroup.tinysqldsl.base.Condition;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.Table;
+import org.tinygroup.tinysqldsl.base.Value;
 import org.tinygroup.tinysqldsl.expression.JdbcParameter;
 import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
 import org.tinygroup.tinysqldsl.insert.InsertBody;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Insert语句
@@ -60,6 +65,18 @@ public class Insert extends StatementSqlBuilder implements Statement {
         insertBody.setColumns(columns);
         insertBody.setItemsList(itemsList);
         return this;
+    }
+    
+    public Insert columns(Column... columns){
+    	insertBody.setColumns(Arrays.asList(columns));
+    	insertBody.setUseValues(false);
+    	return this;
+    }
+    
+    public Insert selectBody(Select select){
+        insertBody.setItemsList(null);
+    	insertBody.setSelectBody(select.getPlainSelect());
+    	return this;
     }
 
     public InsertBody getInsertBody() {

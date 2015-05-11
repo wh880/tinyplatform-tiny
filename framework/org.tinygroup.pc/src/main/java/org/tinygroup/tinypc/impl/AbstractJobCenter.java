@@ -142,7 +142,11 @@ public class AbstractJobCenter implements JobCenter {
             // 检查是否有子任务
             Work nextWork = work.getNextWork();
             if (nextWork != null) {
-                nextWork.setInputWarehouse(outputWarehouse);
+                if(nextWork.getInputWarehouse()!=null) {
+                    nextWork.getInputWarehouse().putSubWarehouse(outputWarehouse);
+                }else {
+                    nextWork.setInputWarehouse(outputWarehouse);
+                }
                 outputWarehouse = doWork(nextWork);
             }
             return outputWarehouse;
