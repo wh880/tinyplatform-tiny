@@ -43,14 +43,14 @@ public final class VFS {
     private static String defaultSchema = "file:";
 
     static {
-        addSchemaProvider(new JarSchemaProvider());
-        addSchemaProvider(new WsJarSchemaProvider());
-        addSchemaProvider(new ZipSchemaProvider());
-        addSchemaProvider(new FileSchemaProvider());
-        addSchemaProvider(new HttpSchemaProvider());
-        addSchemaProvider(new HttpsSchemaProvider());
-        addSchemaProvider(new JBossVfsSchemaProvider());
-        addSchemaProvider(new FtpSchemaProvider());
+        addSchemaProvider(new JarSchemaProvider());//注册本地jar模式提供者
+        addSchemaProvider(new WsJarSchemaProvider());//注册wsjar协议的模式提供者
+        addSchemaProvider(new ZipSchemaProvider());//注册本地zip模式提供者
+        addSchemaProvider(new FileSchemaProvider());//注册file协议的模式提供者
+        addSchemaProvider(new HttpSchemaProvider());//注册http协议的模式提供者
+        addSchemaProvider(new HttpsSchemaProvider());//注册https协议的模式提供者
+        addSchemaProvider(new JBossVfsSchemaProvider());//注册vfs虚拟协议的模式提供者
+        addSchemaProvider(new FtpSchemaProvider());//注册ftp协议的模式提供者
     }
 
     /**
@@ -103,8 +103,10 @@ public final class VFS {
      */
     public static FileObject resolveFile(String resourceResolve) {
         String resource=resourceResolve;
+        //根据协议地址从缓存中查询FileObject
         FileObject fileObject = fileObjectCacheMap.get(resource);
         if (fileObject != null && fileObject.isInPackage()) {
+        	//检查FileObject的最近修改时间戳和缓存中的是否一致，如果一致的话就直接返回结果
             long oldTime = fileModifyTimeMap.get(resource);
             long newTime = fileObject.getLastModifiedTime();
             if (oldTime == newTime) {
@@ -112,18 +114,23 @@ public final class VFS {
             }
         }
         try {
+        	//采用utf-8编码对协议地址进行解码
             resource = URLDecoder.decode(resource, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             // 如果出错也不用管，忽略之
         }
+        //取得默认的模式提供者FileSchemaProvider
         SchemaProvider schemaProvider = schemaProviderMap.get(defaultSchema);
         for (SchemaProvider provider : schemaProviderMap.values()) {
+        	//遍历模式提供者，判断协议地址是否匹配当前模式提供者
             if (provider.isMatch(resource)) {
                 schemaProvider = provider;
                 break;
             }
         }
+        //返回解析结果
         fileObject = schemaProvider.resolver(resource);
+        //如果fileObject是包资源，则更新fileObject缓存和时间戳信息
         if (fileObject != null && fileObject.isInPackage()) {
             fileObjectCacheMap.put(resource, fileObject);
             fileModifyTimeMap.put(resource, fileObject.getLastModifiedTime());

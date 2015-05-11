@@ -41,8 +41,9 @@ public class FilePathFileObjectFilter implements FileObjectFilter {
     }
 
     public boolean accept(FileObject fileObject) {
-        String filePath = fileObject.getPath();
+        String filePath = fileObject.getPath();//取得文件路径
         if (fullMatch) {
+        	//完全匹配，不仅对文件路径进行匹配，还要对匹配组(group)进行对比。
             Matcher matcher = pattern.matcher(filePath);
             if (matcher.find()) {
                 return matcher.group().equals(filePath);
@@ -50,6 +51,7 @@ public class FilePathFileObjectFilter implements FileObjectFilter {
                 return false;
             }
         } else {
+        	//局部匹配，直接用设置的正则表达式对文件路径进行匹配
             Matcher matcher = pattern.matcher(filePath);
             return matcher.find();
         }
