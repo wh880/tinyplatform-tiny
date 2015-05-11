@@ -17,24 +17,24 @@ package org.tinygroup.channel;
 
 import junit.framework.TestCase;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class ChannelWithCEPCoreTest extends TestCase {
 	ChannelInterface channelSample;
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		AbstractTestUtil.init(null, true);
 		// BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
-		CEPCore cepCore = BeanContainerFactory.getBeanContainer(
-				this.getClass().getClassLoader())
-				.getBean(CEPCore.CEP_CORE_BEAN);
+//		CEPCore cepCore = BeanContainerFactory.getBeanContainer(
+//				this.getClass().getClassLoader())
+//				.getBean(CEPCore.CEP_CORE_BEAN);
+		CEPCore cepCore = new CEPCoreForTest();
 		channelSample = new ChannelSample();
+		channelSample.setCepCore(cepCore
+				);
 		EventFilter eventFilter = new EventFilter() {
 			public Event filter(Event event) {
 				Event e = event;
