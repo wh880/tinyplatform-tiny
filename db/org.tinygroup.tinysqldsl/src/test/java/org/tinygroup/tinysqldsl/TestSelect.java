@@ -21,6 +21,7 @@ import static org.tinygroup.tinysqldsl.select.OrderByElement.desc;
 import static org.tinygroup.tinysqldsl.selectitem.Top.top;
 
 import org.tinygroup.tinysqldsl.expression.FragmentExpressionSql;
+import org.tinygroup.tinysqldsl.formitem.FromItemList;
 import org.tinygroup.tinysqldsl.formitem.SubSelect;
 import org.tinygroup.tinysqldsl.selectitem.Top;
 
@@ -159,6 +160,8 @@ public class TestSelect {
 		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.in(1,5,10)));
 		
 		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.notIn(1,5,10)));
+		
+		System.out.println(select(CUSTOM.all()).from(FromItemList.fromItems(CUSTOM,TSCORE)));
 		
 	}
 }

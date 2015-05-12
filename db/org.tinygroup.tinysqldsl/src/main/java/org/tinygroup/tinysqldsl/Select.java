@@ -71,8 +71,14 @@ public class Select<T extends Select<T>> extends StatementSqlBuilder implements
 	}
 
 	@SuppressWarnings("unchecked")
-	public T from(FromItem fromItems) {
-		plainSelect.setFromItem(fromItems);
+	public T from(FromItem fromItem) {
+		plainSelect.setFromItem(fromItem);
+		return (T) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T from(FromItem... fromItems) {
+		plainSelect.setFromItem(FromItemList.fromItems(fromItems));
 		return (T) this;
 	}
 
