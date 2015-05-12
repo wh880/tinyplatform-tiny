@@ -15,6 +15,10 @@
  */
 package org.tinygroup.weblayer.mvc;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.tinygroup.weblayer.WebContext;
 
 
@@ -34,6 +38,6 @@ public interface MappingModelExecute {
 	 * @param chain
 	 * @param context
 	 */
-	void execute(HandlerExecutionChain chain,WebContext context);
+	void execute(HandlerExecutionChain chain,WebContext context)throws ServletException, IOException;
 	
 }

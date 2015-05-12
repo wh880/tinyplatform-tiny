@@ -15,6 +15,10 @@
  */
 package org.tinygroup.weblayer.mvc.impl;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.mvc.HandlerExecutionChain;
 import org.tinygroup.weblayer.mvc.MappingModelExecute;
@@ -30,7 +34,7 @@ import org.tinygroup.weblayer.mvc.MappingModelExecute;
 public class MappingModelExecuteImpl implements MappingModelExecute {
 
 	
-	public void execute(HandlerExecutionChain chain, WebContext context) {
+	public void execute(HandlerExecutionChain chain, WebContext context) throws ServletException, IOException {
 		chain.setContext(context);
 		try {
 			chain.execute();
