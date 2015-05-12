@@ -17,5 +17,6 @@
 	<bean id="dictLoadProcessor" scope="singleton"
 		class="org.tinygroup.dict.applicationprocessor.DictLoadProcessor">
 		<property name="config" ref="cacheInitConfig"></property>
+		<property name="manager" ref="dictManager"></property>
 	</bean>
 </beans>
