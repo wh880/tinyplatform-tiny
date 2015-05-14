@@ -1,0 +1,21 @@
+<flow id="dataRest" enable="true" private-context="false">
+  <nodes>
+    <node id="start" name="start" title="开始">
+      <next-nodes>
+        <next-node next-node-id="resetComponent"/>
+      </next-nodes>
+    </node>
+    <node id="resetComponent" name="resetComponent" title="清零new">
+      <component name="resetComponent" title="清零new">
+        <description></description>
+        <properties/>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+    <node id="end" name="end" title="结束">
+      <next-nodes/>
+    </node>
+  </nodes>
+</flow>

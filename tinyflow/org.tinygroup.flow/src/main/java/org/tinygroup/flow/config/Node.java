@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.flow.util.FlowElUtil;
 
@@ -149,22 +150,24 @@ public class Node {
 	}
 
 	public String getNextNodeId(Context context) {
-		if (nextNodes == null)
-			return null;
+		if (nextNodes == null){
+			return getDefaultNodeId();
+		}
 		for (NextNode node : nextNodes) {
 			String exception = node.getExceptionType();
-			if (!(exception == null || "".equals(exception))) {
+			if (!StringUtil.isBlank( exception)) {
 				continue;
 			}
 			String el = node.getEl();
-			if (el == null || "".equals(el)) {// 如果表达式为空或者未配，则认为是true
+			if (StringUtil.isBlank( el)) {// 如果表达式为空或者未配，则认为是true
 				return node.getNextNodeId();
 			}
 			if (FlowElUtil.executeCondition(el, context, this.getClass()
-					.getClassLoader()))
+					.getClassLoader())){
 				return node.getNextNodeId();
+			}
 		}
-		return null;
+		return getDefaultNodeId();
 	}
 
 	public void combine(Node parentNode) {
@@ -195,13 +198,14 @@ public class Node {
 		if (parentNode.getNextNodes() != null) {
 			if (nextNodes == null) {
 				nextNodes = parentNode.getNextNodes();
-			} else {
-				for (NextNode nextNode : parentNode.getNextNodes()) {
-					if (!nextNodes.contains(nextNode)) {
-						nextNodes.add(nextNode);
-					}
-				}
 			}
+//			else {
+//				for (NextNode nextNode : parentNode.getNextNodes()) {
+//					if (!nextNodes.contains(nextNode)) {
+//						nextNodes.add(nextNode);
+//					}
+//				}
+//			}
 		}
 	}
 }

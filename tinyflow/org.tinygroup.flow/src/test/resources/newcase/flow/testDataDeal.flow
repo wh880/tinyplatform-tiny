@@ -1,0 +1,34 @@
+<flow id="testDataDeal" enable="true" private-context="false">
+  <nodes>
+    <node id="start" name="start" title="开始">
+      <next-nodes>
+        <next-node next-node-id="plusComponent"/>
+      </next-nodes>
+    </node>
+    <node id="plusComponent" name="plusComponent" title="加法计算组件new">
+      <component name="plusComponent" title="加法计算组件new">
+        <description></description>
+        <properties>
+          <flow-property name="ii" value="11" required="true"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="imsubComponent"/>
+      </next-nodes>
+    </node>
+    <node id="imsubComponent" name="imsubComponent" title="减法计算组件new">
+      <component name="imsubComponent" title="减法计算组件new">
+        <description></description>
+        <properties>
+          <flow-property name="jj" value="11" required="true"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+    <node id="end" name="end" title="结束">
+      <next-nodes/>
+    </node>
+  </nodes>
+</flow>

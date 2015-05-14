@@ -1,0 +1,67 @@
+<flow id="testExceptionNew" enable="true" private-context="false">
+  <parameters/>
+  <nodes>
+    <node id="start" name="start" title="开始">
+      <next-nodes>
+        <next-node next-node-id="createExceptionComponent"/>
+      </next-nodes>
+    </node>
+    <node id="createExceptionComponent" name="createExceptionComponent" title="异常生成new">
+      <component name="createExceptionComponent" title="异常生成new">
+        <description></description>
+        <properties>
+          <flow-property name="exceptionNo" value="${exceptionNo}" required="true" type="int"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node exception-type="org.tinygroup.flow.test.Exception.ExceptionNew1" next-node-id="plusComponent"/>
+        <next-node exception-type="org.tinygroup.flow.test.Exception.ExceptionNew2" next-node-id="plusComponent_1"/>
+      </next-nodes>
+    </node>
+    <node id="plusComponent" name="plusComponent" title="+1 Exception1">
+      <component name="plusComponent" title="加法计算组件new">
+        <description></description>
+        <properties>
+          <flow-property name="ii" value="1" required="true" type="int"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+    <node id="plusComponent_1" name="plusComponent" title="+2 Exception2">
+      <component name="plusComponent" title="加法计算组件new">
+        <description></description>
+        <properties>
+          <flow-property name="ii" value="2" required="true" type="int"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+    <node id="exception" name="resetComponent" title="Exception">
+      <component name="resetComponent" title="清零new">
+        <description></description>
+        <properties/>
+      </component>
+      <next-nodes>
+        <next-node exception-type="org.tinygroup.flow.test.Exception.ExceptionNew3InOtherNode" next-node-id="plusComponent_2"/>
+      </next-nodes>
+    </node>
+    <node id="plusComponent_2" name="plusComponent" title="+3 Exception3">
+      <component name="plusComponent" title="加法计算组件new">
+        <description></description>
+        <properties>
+          <flow-property name="ii" value="3" required="true" type="int"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+    <node id="end" name="end" title="结束">
+      <next-nodes/>
+    </node>
+  </nodes>
+</flow>

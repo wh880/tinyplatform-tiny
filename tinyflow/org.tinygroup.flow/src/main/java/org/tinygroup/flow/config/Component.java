@@ -96,7 +96,7 @@ public class Component {
 		}
 		List<FlowProperty> parentProperties = component.getProperties();
 		if (parentProperties != null) {
-			if (properties == null) {
+			if (properties == null) { //TODO:此处有问题，合并不全， if中没有改map，else没有改properties
 				properties = parentProperties;
 			} else {
 				for (FlowProperty pProperty : parentProperties) {

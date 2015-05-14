@@ -1,0 +1,26 @@
+<components>
+	<component name="plusComponent" bean="plusComponent"
+		title="加法计算组件new" icon="">
+		<short-description></short-description>
+		<long-description></long-description>
+		<parameter name="ii" title="加法参数" type="int"></parameter>
+	</component>
+	<component name="imsubComponent" bean="imsubComponent"
+		title="减法计算组件new" icon="">
+		<short-description></short-description>
+		<long-description></long-description>
+		<parameter name="jj" title="加法参数" type="int"></parameter>
+	</component>
+	<component name="resetComponent" bean="resetComponent"
+		title="清零new" icon="">
+		<short-description></short-description>
+		<long-description></long-description>
+	</component>
+	<component name="createExceptionComponent" bean="createExceptionComponent"
+		title="异常生成new" icon="">
+		<short-description></short-description>
+		<long-description></long-description>
+		<parameter name="exceptionNo" title="异常号" type="int"></parameter>
+	</component>
+</components>
+

@@ -1,4 +1,4 @@
-<flow id="exceptionProcessFlow" name="exceptionProcessFlow">
+<flow id="exceptionProcessFlow1" name="exceptionProcessFlow1">
 	<nodes>
 		<node id="begin">
 			<next-nodes>

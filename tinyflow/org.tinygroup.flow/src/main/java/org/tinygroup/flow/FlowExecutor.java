@@ -22,7 +22,6 @@ import org.tinygroup.context.Context;
 import org.tinygroup.flow.config.ComponentDefine;
 import org.tinygroup.flow.config.ComponentDefines;
 import org.tinygroup.flow.config.Flow;
-import org.tinygroup.flow.config.Node;
 
 /**
  * 流程执行器
@@ -34,7 +33,12 @@ public interface FlowExecutor {
 	String FLOW_XSTREAM_PACKAGENAME = "flow";
 	String FLOW_BEAN = "flowExecutor";
 	String PAGE_FLOW_BEAN = "pageFlowExecutor";
-
+	String DEFAULT_BEGIN_NODE = "begin";
+	String DEFAULT_END_NODE = "end";
+	String EXCEPTION_DEAL_NODE = "exception";
+	String EXCEPTION_DEAL_NODE_KEY ="exceptionNode";
+	String EXCEPTION_KEY ="throwableObject";
+	String EXCEPTION_DEAL_FLOW = "exceptionProcessFlow";
 	/**
 	 * 流程执行接口方法
 	 * 
@@ -56,15 +60,6 @@ public interface FlowExecutor {
 	 */
 	void execute(String flowId, Context context);
 
-
-	/**
-	 * 执行指定流程的指定节点
-	 * 
-	 * @param flow
-	 * @param node
-	 * @param context
-	 */
-	void execute(Flow flow, Node node, Context context);
 
 	/**
 	 * 返回流程Map

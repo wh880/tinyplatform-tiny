@@ -79,40 +79,60 @@ public class FlowExecutorImpl implements FlowExecutor {
 	}
 
 	public void execute(String flowId, String nodeId, Context context) {
-		String executorNodeId = nodeId;
-		if (executorNodeId == null) {
-			logger.logMessage(LogLevel.DEBUG, "开始执行流程[flowId: {0}]", flowId,
-					executorNodeId);
-		} else {
-			logger.logMessage(LogLevel.DEBUG,
-					"开始执行流程[flowId: {0}], nodeId: {1}", flowId, executorNodeId);
-
-		}
-		logContext(context);
-		Flow flow = getFlowIdMap().get(flowId);
-		if (flow == null) {
+		logger.logMessage(LogLevel.INFO, "开始执行流程[flowId:{0},nodeId:{1}]执行",
+				flowId, nodeId);
+		if (!getFlowIdMap().containsKey(flowId)) {
 			logger.log(LogLevel.ERROR, "flow.flowNotExist", flowId);
 			throw new FlowRuntimeException("flow.flowNotExist", flowId);
 		}
-
-		if (executorNodeId == null) {
-			executorNodeId = "begin";
+		Flow flow = getFlowIdMap().get(flowId);
+		Node node = getNode(flow, nodeId);
+		if (node != null) {
+			logContext(context);
+			checkInputParameter(flow, context);
+			execute(flow, node, context);
+			checkOutputParameter(flow, context);
+			logContext(context);
 		}
-		Node node = flow.getNodeMap().get(executorNodeId);
-		if (node == null && flow.getNodes().size() > 0) {
+		logger.logMessage(LogLevel.INFO, "流程[flowId:{0},nodeId:{1}]执行完毕",
+				flowId, nodeId);
+	}
+
+	/**
+	 * 如果nodeId为空，则为其赋值Begin 如果begin不存在,分两种情况 1、节点数大于0，则执行第一个节点 2、节点数等于0，无需执行
+	 * 如果nodeId为end，则无需执行 无需执行的两种情况下，返回的结果集为null 除以上情况外,若节点不存在，则抛出节点不存在的异常
+	 * 
+	 * @param flow
+	 * @param nodeId
+	 * @return
+	 */
+	private Node getNode(Flow flow, String nodeId) {
+		if (DEFAULT_END_NODE.equals(nodeId)) { // 如果执行的是end，则无需执行
+			logger.logMessage(LogLevel.INFO,
+					"流程[flowId:{0},nodeId:{1}]为结束节点,无需执行", flow.getId(),
+					DEFAULT_END_NODE);
+			return null;
+		}
+		if (nodeId == null) { // 如果节点为空，则赋值为begin
+			nodeId = DEFAULT_BEGIN_NODE;
+		}
+		if (DEFAULT_BEGIN_NODE.equals(nodeId) && flow.getNodes().size() == 0) {
+			logger.logMessage(LogLevel.INFO,
+					"流程无节点,流程[flowId:{0},nodeId:{1}]执行完毕。", flow.getId(),
+					DEFAULT_BEGIN_NODE);
+			return null;
+		}
+		Node node = flow.getNodeMap().get(nodeId);
+		// 如果begin节点不存在，且节点数大于0，则从第一个节点开始执行
+		if (node == null && DEFAULT_BEGIN_NODE.equals(nodeId)) {
 			node = flow.getNodes().get(0);
-		}
-		if (node == null) {
-			logger.log(LogLevel.ERROR, "flow.flowNodeNotExist", flowId,
-					executorNodeId);
+		} else if (node == null) {// 节点不存在，且节点名不为begin
+			logger.log(LogLevel.ERROR, "flow.flowNodeNotExist", flow.getId(),
+					nodeId);
 			throw new FlowRuntimeException(i18nMessages.getMessage(
-					"flow.flowNodeNotExist", flowId, executorNodeId));
+					"flow.flowNodeNotExist", flow.getId(), nodeId));
 		}
-
-		execute(flow, node, context);
-		logContext(context);
-		logger.logMessage(LogLevel.DEBUG, "流程[flowId: {0}], nodeId: {1}执行完毕。",
-				flowId, executorNodeId);
+		return node;
 	}
 
 	private void logContext(Context context) {
@@ -135,17 +155,17 @@ public class FlowExecutorImpl implements FlowExecutor {
 	}
 
 	private void logItemMap(Map<String, Object> itemMap) {
-		// for (String key : itemMap.keySet()) {
-		// logger.logMessage(LogLevel.DEBUG, "key: {0}, value: {1}",
-		// XStreamFactory.getXStream().toXML(itemMap.get(key)));
-		// }
+		for (String key : itemMap.keySet()) {
+			logger.logMessage(LogLevel.DEBUG, "key: {0}, value: {1}", key,
+					itemMap.get(key));
+		}
 	}
 
 	private static Class<?> getExceptionType(String name) {
 		Class<?> exceptionType = exceptionMap.get(name);
 		if (exceptionType == null) {
 			try {
-				exceptionType = (Class<?>) Class.forName(name);
+				exceptionType = (Class<?>) Class.forName(name);// TODO:通过Loader进行获取
 				exceptionMap.put(name, exceptionType);
 			} catch (ClassNotFoundException e) {
 				throw new FlowRuntimeException(e);
@@ -173,82 +193,85 @@ public class FlowExecutorImpl implements FlowExecutor {
 		return flowContext;
 	}
 
-	public void execute(Flow flow, Node node, Context context) {
+	/**
+	 * 执行具体节点，并继续往下执行
+	 * 
+	 * @param flow
+	 *            当前执行的流程
+	 * @param node
+	 *            非end节点的任意合法节点
+	 * @param context
+	 */
+	private void execute(Flow flow, Node node, Context context) {
+
+		String nodeId = node.getId(); // 当前节点id
 		Context flowContext = context;
 		try {
-			checkInputParameter(flow, context);
-			Component component = node.getComponent();
-			String nodeId = node.getId(); // 当前节点id
-			if (flow != null) {
-				if (flow.isPrivateContext()) { // 是否context私有
-					flowContext = getNewContext(flow, context);
-					if (flowContext == null) {
-						flowContext = new ContextImpl();
-						context.putSubContext(flow.getId(), flowContext);
-					}
+			logger.logMessage(LogLevel.INFO, "开始执行节点:{}", nodeId);
+			if (flow.isPrivateContext()) { // 是否context私有
+				flowContext = getNewContext(flow, context);
+				if (flowContext == null) {
+					flowContext = new ContextImpl();
+					context.putSubContext(flow.getId(), flowContext);
 				}
 			}
+			Component component = node.getComponent();
 			if (component != null) {
 				ComponentInterface componentInstance = getComponentInstance(component
 						.getName());
 				setProperties(node, componentInstance, flowContext);
-				if (!nodeId.equals("end")) { // 如果当前节点不是最终节点
+				if (!nodeId.equals(DEFAULT_END_NODE)) { // 如果当前节点不是最终节点
 					componentInstance.execute(flowContext);
 				}
+				logger.logMessage(LogLevel.INFO, "节点:{}执行完毕", nodeId);
+			} else {
+				logger.logMessage(LogLevel.INFO, "节点:{}未配置组件，无需执行", nodeId);
 			}
-			if (nodeId != null && !nodeId.equals("end")) {
-				// 先直接取，如果取到就执行，如果取不到，则用正则去匹配，效率方面的考虑
-				String nextNodeId = node.getNextNodeId(context);
-				if (nextNodeId == null) {
-					nextNodeId = node.getDefaultNodeId();
-				}
-				if (nextNodeId == null) {
-					int index = flow.getNodes().indexOf(node);
-					if (index != flow.getNodes().size() - 1) {
-						nextNodeId = flow.getNodes().get(index + 1).getId();
-					} else {
-						nextNodeId = "end";
-					}
-				}
-				if (nextNodeId != null) {
-					executeNextNode(flow, flowContext, nextNodeId);
-				} else {
-					logger.log(LogLevel.ERROR, "flow.flowNodeNotExist",
-							flow.getId(), node.getId(), nodeId);
-					throw new FlowRuntimeException("flow.flowNodeNotExist",
-							flow.getId(), node.getId(), nodeId);
-				}
 
-			}
-			checkOutputParameter(flow, flowContext);
-		} catch (Exception exception) {
+		} catch (RuntimeException exception) {
 			/**
 			 * 遍历所有异常节点
 			 */
+			logger.errorMessage("流程执行[flow:{},node:{}]发生异常", exception,
+					flow.getId(), node.getId());
 			if (exceptionNodeProcess(flow, node, context, flowContext,
 					exception)) {
 				return;
 			}
 			// 如果节点中没有处理掉，则由流程的异常处理节点进行处理
-			Node exceptionNode = flow.getNodeMap().get("exception");
+			Node exceptionNode = flow.getNodeMap().get(EXCEPTION_DEAL_NODE);
 			if (exceptionNode != null
 					&& exceptionNodeProcess(flow, exceptionNode, context,
 							flowContext, exception)) {
 				return;
 				// executeNextNode(flow, newContext, exceptionNode.getId());
 			}
-
 			// 如果还是没有被处理掉，则交由异常处理流程进行管理
-			Flow exceptionProcessFlow = this.getFlow("exceptionProcessFlow");
+			Flow exceptionProcessFlow = this.getFlow(EXCEPTION_DEAL_FLOW);
 			if (exceptionProcessFlow != null) {
-				exceptionNode = exceptionProcessFlow.getNodeMap().get("exception");
+				exceptionNode = exceptionProcessFlow.getNodeMap().get(
+						EXCEPTION_DEAL_NODE);
 				if (exceptionNode != null
-						&& exceptionNodeProcess(exceptionProcessFlow, exceptionNode,
-								context, flowContext, exception)) {
+						&& exceptionNodeProcess(exceptionProcessFlow,
+								exceptionNode, context, flowContext, exception)) {
 					return;
 				}
 			}
-			throw new FlowRuntimeException(exception);
+			throw exception;
+		}
+		if (nodeId != null && !nodeId.equals(DEFAULT_END_NODE)) {
+			// 先直接取，如果取到就执行，如果取不到，则用正则去匹配，效率方面的考虑
+			String nextNodeId = node.getNextNodeId(context);
+			if (nextNodeId == null) {
+				int index = flow.getNodes().indexOf(node);
+				if (index != flow.getNodes().size() - 1) {
+					nextNodeId = flow.getNodes().get(index + 1).getId();
+				} else {
+					nextNodeId = DEFAULT_END_NODE;
+				}
+			}
+			logger.logMessage(LogLevel.INFO, "下一节点:{}", nextNodeId);
+			executeNextNode(flow, flowContext, nextNodeId);
 		}
 	}
 
@@ -360,34 +383,32 @@ public class FlowExecutorImpl implements FlowExecutor {
 			Context newContext, Node node, Flow flow, String exceptionName) {
 		if (getExceptionType(exceptionName).isInstance(exception)) {// 如果异常匹配
 			String nextNode = node.getNextExceptionNodeMap().get(exceptionName);
-			context.put("exceptionProcessFlow", flow);
-			context.put("exceptionNode", node);
-			context.put("throwableObject", exception);
+			context.put(EXCEPTION_DEAL_FLOW, flow);
+			context.put(EXCEPTION_DEAL_NODE_KEY, node);
+			context.put(EXCEPTION_KEY, exception);
 			executeNextNode(flow, newContext, nextNode);
+			logger.errorMessage("处理流程异常:flow:{},node:{}", exception,
+					flow.getId(), nextNode);
 			return true;
 		}
 		return false;
 	}
 
 	private void executeNextNode(Flow flow, Context context, String nextNodeId) {
-		if (nextNodeId != null && !nextNodeId.equals("end")) {
-			int index = nextNodeId.indexOf(':');
-			Flow nextFlow = flow;
-			Node nextNode = null;
-			if (index > 0) {
-				String[] str = nextNodeId.split(":");
-				nextFlow = flowIdMap.get(str[0]);
-				if (str.length == 1) {
-					nextNode = nextFlow.getNodeMap().get("begin");
-				} else {
-					nextNode = nextFlow.getNodeMap().get(str[1]);
-				}
+		String nextExecuteNodeId = nextNodeId;
+		int index = nextNodeId.indexOf(':');
+		if (index > 0) { // newflowId:newnodeId
+			String[] str = nextNodeId.split(":");
+			if (str.length > 1) {
+				nextExecuteNodeId = str[1];
 			} else {
-				nextNode = flow.getNodeMap().get(nextNodeId);
+				nextExecuteNodeId = DEFAULT_BEGIN_NODE;
 			}
-			if (nextNode != null) {
-				execute(nextFlow, nextNode, context);
-			}
+			// 从另一个流程的节点开始执行
+			execute(str[0], nextExecuteNodeId, context);
+		} else if (!DEFAULT_END_NODE.equals(nextNodeId)) {
+			Node nextNode = flow.getNodeMap().get(nextNodeId);
+			execute(flow, nextNode, context);
 		}
 	}
 
@@ -411,7 +432,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 					object = FlowElUtil.execute(value, context, this.getClass()
 							.getClassLoader());
 				} else {// 否则采用原有处理方式
-					object = getObject(property.getType(),value, context);
+					object = getObject(property.getType(), value, context);
 				}
 
 				try {
@@ -423,7 +444,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 		}
 	}
 
-	private Object getObject(String type,String value, Context context) {
+	private Object getObject(String type, String value, Context context) {
 		String str = value;
 		if (str instanceof String) {
 			str = formater.format(context, str);
@@ -433,39 +454,39 @@ public class FlowExecutorImpl implements FlowExecutor {
 		Object o = null;
 		if (str != null) {
 			str = str.trim();
-			//type为空，按原先逻辑处理
-			if(StringUtil.isEmpty(type)){
-			   o = SimpleTypeMatcher.matchType(str);
-			}else{
-				//type不为空，则根据设置的type进行处理。可以避免数值型结果和参数类型不一致的问题。
+			// type为空，按原先逻辑处理
+			if (StringUtil.isEmpty(type)) {
+				o = SimpleTypeMatcher.matchType(str);
+			} else {
+				// type不为空，则根据设置的type进行处理。可以避免数值型结果和参数类型不一致的问题。
 				o = ValueUtil.getValue(str, type);
 			}
-			
+
 		}
 		return o;
 	}
 
-//	protected Object getObjectByName(String name, Context context) {
-//		Object object = getObject(name, context);
-//		if (object == null) {
-//			int index = name.indexOf('.');
-//			if (index == -1) {
-//				object = context.get(name);
-//			} else {
-//				String k = name.substring(0, index);
-//				String p = name.substring(index + 1);
-//				object = context.get(k);
-//				if (object != null) {
-//					try {
-//						object = PropertyUtils.getProperty(object, p);
-//					} catch (Exception e) {
-//						throw new FlowRuntimeException(e);
-//					}
-//				}
-//			}
-//		}
-//		return object;
-//	}
+	// protected Object getObjectByName(String name, Context context) {
+	// Object object = getObject(name, context);
+	// if (object == null) {
+	// int index = name.indexOf('.');
+	// if (index == -1) {
+	// object = context.get(name);
+	// } else {
+	// String k = name.substring(0, index);
+	// String p = name.substring(index + 1);
+	// object = context.get(k);
+	// if (object != null) {
+	// try {
+	// object = PropertyUtils.getProperty(object, p);
+	// } catch (Exception e) {
+	// throw new FlowRuntimeException(e);
+	// }
+	// }
+	// }
+	// }
+	// return object;
+	// }
 
 	public void assemble() {
 		for (Flow flow : flowIdMap.values()) {
@@ -508,16 +529,10 @@ public class FlowExecutorImpl implements FlowExecutor {
 		removeFlow(flow);
 	}
 
-
-	private String getKey(Flow flow) {
-		return flow.getId();
-	}
-
 	public Flow getFlow(String flowId) {
 
 		return flowIdMap.get(flowId);
 	}
-
 
 	public void addComponents(ComponentDefines components) {
 		containers.addComponents(components);
@@ -536,7 +551,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 	 */
 	public ComponentInterface getComponentInstance(String componentName) {
 		ComponentInterface componentInstance = null;
-		if (componentName != null && !"".equals(componentName)) {
+		if (!StringUtil.isBlank(componentName)) {
 			componentInstance = containers.getComponentInstance(componentName);
 			return componentInstance;
 		}
