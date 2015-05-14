@@ -22,15 +22,15 @@ import org.tinygroup.vfs.FileObjectFilter;
  * Created by luoguo on 14-2-26.
  */
 public class EqualsPathFileObjectFilter implements FileObjectFilter {
-    private final String path;
-    private boolean fullMatch = false;
+    private final String path; //匹配路径
+    private boolean fullMatch = false; //是否全匹配
 
-
+    //设置匹配的路径
     public EqualsPathFileObjectFilter(String path) {
         this.path = path;
     }
 
     public boolean accept(FileObject fileObject) {
-        return path.equals(fileObject.getPath());
+        return path.equals(fileObject.getPath()); //判断fileObject的相对路径是否匹配
     }
 }

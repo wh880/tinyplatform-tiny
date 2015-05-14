@@ -127,7 +127,7 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 		TinyProcessor processor = instanceProcessor(processorConfigInfo
 				.getConfigBeanName());
 		processor.setProcessorName(processorName);
-		logger.logMessage(LogLevel.INFO, "tiny-filter:{}实例化结束", processorName);
+		logger.logMessage(LogLevel.INFO, "tiny-processor:{}实例化结束", processorName);
 		return processor;
 	}
 

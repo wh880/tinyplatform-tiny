@@ -79,6 +79,21 @@ public class TestParser extends TestCase {
         assertTrue(result.indexOf("if($context.exist(\"$aaa\")){") > 0);
 
     }
+    public void testMacroCallNoBody() throws Exception {
+        String result = execute("#abc(124)");
+        System.out.println(result);
+        assertTrue(result.indexOf("callMacro1($context, $writer, $template);") > 0);
+        assertTrue(result.indexOf("((List)$newContext.get(\"abc\"+\"ParameterList\")).add(124);") > 0);
+
+    }
+    public void testMacroCallWithBody() throws Exception {
+        String result = execute("#@abc(124)def#end");
+        System.out.println(result);
+        assertTrue(result.indexOf("callMacro1($context, $writer, $template);") > 0);
+        assertTrue(result.indexOf("((List)$newContext.get(\"abc\"+\"ParameterList\")).add(124);") > 0);
+
+    }
+
     public void testMissMacro() throws Exception {
         try {
             String result = execute("\n#macro  (aaa)#end");

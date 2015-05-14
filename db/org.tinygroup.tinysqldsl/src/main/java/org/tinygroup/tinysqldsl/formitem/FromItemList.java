@@ -59,6 +59,10 @@ public class FromItemList implements FromItem {
 	public Alias getAlias() {
 		return new Alias();
 	}
+	
+	public static FromItem fromItems(FromItem...items){
+		return new FromItemList(items);
+	}
 
 	public void setAlias(Alias alias) {
 

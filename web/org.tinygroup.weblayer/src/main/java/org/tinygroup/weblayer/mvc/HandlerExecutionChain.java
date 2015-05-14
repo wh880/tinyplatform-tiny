@@ -15,11 +15,13 @@
  */
 package org.tinygroup.weblayer.mvc;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
@@ -29,7 +31,6 @@ import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.loader.LoaderManager;
-import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.mvc.annotation.View;
 
@@ -81,7 +82,7 @@ public class HandlerExecutionChain {
 		this.context = context;
 	}
 
-	public void execute() throws ClassNotFoundException {
+	public void execute() throws ServletException, IOException, ClassNotFoundException {
 		Method method = methodModel.getMapMethod();
 		Class[] paramTypes = method.getParameterTypes();
 		Object[] args = new Object[paramTypes.length];
@@ -98,7 +99,7 @@ public class HandlerExecutionChain {
 							.getBeanContainer(this.getClass().getClassLoader())
 							.getBean(
 									GeneratorFileProcessor.CLASSNAME_OBJECT_GENERATOR_BEAN);
-					//TODO:此处应该还要考虑数据的情况
+					// TODO:此处应该还要考虑数据的情况
 					if (Collection.class.isAssignableFrom(type)) {
 						ParameterizedType pt = (ParameterizedType) (method
 								.getGenericParameterTypes()[i]);
@@ -125,40 +126,36 @@ public class HandlerExecutionChain {
 			context.put(parameterNames[i], args[i]);
 
 		}
-		try {
-			Object object = getInstance(model.getMapClass());
-			if (object instanceof WebContextAware) {
-				((WebContextAware) object).setContext(context);
-			}
-			Object result = ReflectionUtils.invokeMethod(method, object, args);
-			//如果返回值类型void或者用户没有设置ResultKey，则不放置
-			if(result!=null && methodModel.getResultKey()!=null){
-			   context.put(methodModel.getResultKey().value(),result);
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		Object object = getInstance(model.getMapClass());
+		if (object instanceof WebContextAware) {
+			((WebContextAware) object).setContext(context);
+		}
+		Object result = ReflectionUtils.invokeMethod(method, object, args);
+		// 如果返回值类型void或者用户没有设置ResultKey，则不放置
+		if (result != null && methodModel.getResultKey() != null) {
+			context.put(methodModel.getResultKey().value(), result);
 		}
 		View view = methodModel.getView();
 		if (view != null) {
 			String pathInfo = view.value();
 			HttpServletRequest request = context.getRequest();
-			try {
-				request.getRequestDispatcher(pathInfo).forward(request,
-						context.getResponse());
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+			request.getRequestDispatcher(pathInfo).forward(request,
+					context.getResponse());
 		}
 	}
 
-	private Object getInstance(Class mapClass) throws Exception {
+	private Object getInstance(Class mapClass) {
 		Object object = null;
 		try {
 			object = BeanContainerFactory.getBeanContainer(
 					this.getClass().getClassLoader()).getBean(mapClass);
 		} catch (Exception e) {
 			if (object == null) {
-				object = model.getMapClass().newInstance();
+				try {
+					object = model.getMapClass().newInstance();
+				} catch (Exception e1) {
+					throw new IllegalStateException("实例化出错", e1);
+				}
 			}
 		}
 		return object;

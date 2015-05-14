@@ -16,11 +16,13 @@
 package org.tinygroup.tinysqldsl.base;
 
 import org.tinygroup.tinysqldsl.formitem.FromItem;
+import org.tinygroup.tinysqldsl.selectitem.AllTableColumns;
 
 /**
  * 表对象 Created by luoguo on 2015/3/11.
  */
 public class Table implements FromItem, MultiPartName {
+	public final AllTableColumns ALL=new AllTableColumns(this); 
 	/**
 	 * 模式名
 	 */
@@ -50,7 +52,7 @@ public class Table implements FromItem, MultiPartName {
 		this(schemaName, name);
 		this.alias = new Alias(alias);
 	}
-
+	
 	public String getSchemaName() {
 		return schemaName;
 	}

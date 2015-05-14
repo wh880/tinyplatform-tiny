@@ -39,14 +39,17 @@ public class FileExtNameFileObjectFilter implements FileObjectFilter {
     }
 
     public boolean accept(FileObject fileObject) {
-        String extName = fileObject.getExtName();
+        String extName = fileObject.getExtName();//获取文件扩展名
         if (extName != null) {
             if (caseSensitive) {
+            	//大小写敏感，进行精确匹配
                 return extName.equals(fileExtName);
             } else {
+            	//大小写不敏感，进行忽略大小写匹配
                 return extName.equalsIgnoreCase(fileExtName);
             }
         }
+        //如果扩展名为空值，默认返回不匹配
         return false;
     }
 }

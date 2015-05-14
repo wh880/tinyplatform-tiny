@@ -42,6 +42,8 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     private Stack<CodeLet> codeLets = new Stack<CodeLet>();
     private CodeBlock initCodeBlock = null;
     private CodeBlock macroCodeBlock = null;
+    private int callMacroIndex=1;
+    private CodeBlock templateClass;
     /**
      * 是否是严格格式，如果是严格格式会进行trim()
      */
@@ -328,7 +330,8 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
     private CodeBlock getClassCodeBlock() {
-        CodeBlock templateClass = new CodeBlock();
+        callMacroIndex=1;
+        templateClass = new CodeBlock();
         initCodeBlock = new CodeBlock().header(new CodeLet("{").endLine()).footer(new CodeLet("}").endLine());
         templateClass.header(new CodeLet().lineCode("public class $TEMPLATE_CLASS_NAME extends AbstractTemplate{"));
         templateClass.subCode(initCodeBlock);
@@ -500,7 +503,12 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitCall_macro_directive(@NotNull TinyTemplateParser.Call_macro_directiveContext ctx) {
-        CodeBlock callMacro = new CodeBlock();
+        int index=callMacroIndex++;
+        CodeBlock callMacro=new CodeBlock();
+        CodeBlock callMacroFunctionDeclare=new CodeBlock();
+        callMacroFunctionDeclare.header("private void callMacro"+index+"(TemplateContext $context, Writer $writer, Template $template) throws TemplateException {");
+        callMacroFunctionDeclare.footer("}");
+        CodeBlock callMacroFunctionBody = new CodeBlock();
         String name = ctx.getChild(0).getText();
         name = name.substring(1, name.length());
         if (name.endsWith("(")) {
@@ -510,8 +518,11 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
             TerminalNodeImpl terminalNode = (TerminalNodeImpl) ctx.getChild(0);
             throw new SyntaxErrorException("Missing macro name for #macro directive." ,  terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStartIndex());
         }
-        processCallMacro(ctx.para_expression_list(), callMacro, "\"" + name + "\"");
-        callMacro.subCode(String.format("$macro.render($template,$context,$newContext,$writer);"));
+        processCallMacro(ctx.para_expression_list(), callMacroFunctionBody, "\"" + name + "\"");
+        callMacroFunctionBody.subCode(String.format("$macro.render($template,$context,$newContext,$writer);"));
+        templateClass.subCode(callMacroFunctionDeclare);
+        callMacroFunctionDeclare.subCode(callMacroFunctionBody);
+        callMacro.subCode("callMacro"+index+"($context, $writer, $template);");
         return callMacro;
     }
 
@@ -526,15 +537,21 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitCall_macro_block_directive(@NotNull TinyTemplateParser.Call_macro_block_directiveContext ctx) {
-        CodeBlock callMacro = new CodeBlock();
+        int index=callMacroIndex++;
+
+        CodeBlock callMacro=new CodeBlock();
+        CodeBlock callMacroFunctionDeclare=new CodeBlock();
+        callMacroFunctionDeclare.header("private void callMacro"+index+"(TemplateContext $context, Writer $writer, Template $template) throws TemplateException {");
+        callMacroFunctionDeclare.footer("}");
+        CodeBlock callMacroFunctionBody = new CodeBlock();
         String name = ctx.getChild(0).getText();
         name = name.substring(2, name.length() - 1).trim();
-        processCallMacro(ctx.para_expression_list(), callMacro, "\"" + name + "\"");
+        processCallMacro(ctx.para_expression_list(), callMacroFunctionBody, "\"" + name + "\"");
         CodeBlock bodyContentMacro = new CodeBlock();
         //callMacro.subCode("$bodyMacro= (Macro) $context.getItemMap().get(\"bodyContent\");");
         //callMacro.subCode("if($bodyMacro==null){");
-        callMacro.subCode(bodyContentMacro);
-        bodyContentMacro.header("$bodyMacro=new AbstractMacro(\"bodyContent\",(Macro)$context.getItemMap().get(\"bodyContent\")) {");
+        callMacroFunctionBody.subCode(bodyContentMacro);
+        bodyContentMacro.header("Macro $bodyMacro=new AbstractMacro(\"bodyContent\",(Macro)$context.getItemMap().get(\"bodyContent\")) {");
         CodeBlock render = getMacroRenderCodeBlock();
         bodyContentMacro.subCode(render);
 
@@ -543,18 +560,21 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
         popCodeBlock();
         bodyContentMacro.footer("};");
-        callMacro.subCode("$newContext.put(\"bodyContent\",$bodyMacro);");
+        callMacroFunctionBody.subCode("$newContext.put(\"bodyContent\",$bodyMacro);");
         //callMacro.subCode("}");
-        callMacro.subCode("$bodyMacro.setTemplateEngine(this.getTemplateEngine());");
-        callMacro.subCode("$macro.render($template,$context,$newContext,$writer);");
-        //Body部分创建新的类，然后传入要调用的宏
+        callMacroFunctionBody.subCode("$bodyMacro.setTemplateEngine(this.getTemplateEngine());");
+        callMacroFunctionBody.subCode("$macro.render($template,$context,$newContext,$writer);");
+        templateClass.subCode(callMacroFunctionDeclare);
+        callMacroFunctionDeclare.subCode(callMacroFunctionBody);
+        callMacro.subCode("callMacro"+index+"($context, $writer, $template);");
         return callMacro;
     }
 
     private void processCallMacro(TinyTemplateParser.Para_expression_listContext listContext, CodeBlock callMacro, String name) {
-        callMacro.subCode(String.format("$macro=getTemplateEngine().findMacro(%s,$template,$context);", name));
-        callMacro.subCode("$newContext=new TemplateContextDefault();");
-        callMacro.subCode("$paraList=new ArrayList();");
+
+        callMacro.subCode(String.format("Macro $macro=getTemplateEngine().findMacro(%s,$template,$context);", name));
+        callMacro.subCode("TemplateContext $newContext=new TemplateContextDefault();");
+        callMacro.subCode("List $paraList=new ArrayList();");
         callMacro.subCode("$newContext.put(" + name + "+\"ParameterList\",$paraList);");
         callMacro.subCode("$newContext.setParent($context);");
         TinyTemplateParser.Para_expression_listContext expList = listContext;
