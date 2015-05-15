@@ -22,5 +22,18 @@
 		<long-description></long-description>
 		<parameter name="exceptionNo" title="异常号" type="int"></parameter>
 	</component>
+	<component name="abcImsubComponent" bean="abcImsubComponent"
+		title="对c进行减法new" icon="">
+		<short-description></short-description>
+		<long-description></long-description>
+		<parameter name="num" title="减数" type="int"></parameter>
+	</component>
+	<component name="abcPlusComponent" bean="abcPlusComponent"
+		title="c=aa+bb new" icon="">
+		<short-description></short-description>
+		<long-description></long-description>
+		<parameter name="aa" title="aa" type="int"></parameter>
+		<parameter name="bb" title="bb" type="int"></parameter>
+	</component>
 </components>
 

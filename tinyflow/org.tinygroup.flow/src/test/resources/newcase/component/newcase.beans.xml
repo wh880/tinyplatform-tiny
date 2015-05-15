@@ -22,4 +22,10 @@
 	<bean id="createExceptionComponent" name="createExceptionComponent" scope="prototype"
 		class="org.tinygroup.flow.test.CreateExceptionComponent">
 	</bean>
+	<bean id="abcImsubComponent" name="abcImsubComponent" scope="prototype"
+		class="org.tinygroup.flow.test.AbcImsubComponent">
+	</bean>
+	<bean id="abcPlusComponent" name="abcPlusComponent" scope="prototype"
+		class="org.tinygroup.flow.test.AbcPlusComponent">
+	</bean>
 </beans>
