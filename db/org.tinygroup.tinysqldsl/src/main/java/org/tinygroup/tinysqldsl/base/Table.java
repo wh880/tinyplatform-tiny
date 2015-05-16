@@ -22,97 +22,117 @@ import org.tinygroup.tinysqldsl.selectitem.AllTableColumns;
  * 表对象 Created by luoguo on 2015/3/11.
  */
 public class Table implements FromItem, MultiPartName {
-	public final AllTableColumns ALL=new AllTableColumns(this); 
-	/**
-	 * 模式名
-	 */
-	private String schemaName;
-	/**
-	 * 表名
-	 */
-	private String name;
-	/**
-	 * 表的别名
-	 */
-	private Alias alias;
+    public final AllTableColumns ALL = new AllTableColumns(this);
+    /**
+     * 模式名
+     */
+    private String schemaName;
+    /**
+     * 表名
+     */
+    private String name;
+    /**
+     * 表的别名
+     */
+    private Alias alias;
 
-	public Table() {
-	}
+    public Table() {
+    }
 
-	public Table(String name) {
-		this.name = name;
-	}
+    public <T extends Table> T as(String aliasName) {
+        try {
+            T table = (T) this.clone();
+            table.setAlias(new Alias(aliasName));
+            return table;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public Table(String schemaName, String name) {
-		this(name);
-		this.schemaName = schemaName;
-	}
+    public <T extends Table> T as(String aliasName, boolean withAs) throws CloneNotSupportedException {
+        try {
+            T table = (T) this.clone();
+            table.setAlias(new Alias(aliasName, withAs));
+            return table;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public Table(String schemaName, String name, String alias) {
-		this(schemaName, name);
-		this.alias = new Alias(alias);
-	}
-	
-	public String getSchemaName() {
-		return schemaName;
-	}
+    public Table(String name) {
+        this.name = name;
+    }
 
-	public void setSchemaName(String string) {
-		schemaName = string;
-	}
+    public Table(String schemaName, String name) {
+        this(name);
+        this.schemaName = schemaName;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Table(String schemaName, String name, String alias) {
+        this(schemaName, name);
+        this.alias = new Alias(alias);
+    }
 
-	public void setName(String string) {
-		name = string;
-	}
+    public String getSchemaName() {
+        return schemaName;
+    }
 
-	public Alias getAlias() {
-		return alias;
-	}
+    public void setSchemaName(String string) {
+        schemaName = string;
+    }
 
-	public void setAlias(Alias alias) {
-		this.alias = alias;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getFullyQualifiedName() {
-		String fqn = "";
+    public void setName(String string) {
+        name = string;
+    }
 
-		if (schemaName != null) {
-			fqn += schemaName;
-		}
-		if (!(fqn == null || fqn.length() == 0)) {
-			fqn += ".";
-		}
+    public Alias getAlias() {
+        return alias;
+    }
 
-		if (name != null) {
-			fqn += name;
-		}
+    public void setAlias(Alias alias) {
+        this.alias = alias;
+    }
 
-		return fqn;
-	}
+    public String getFullyQualifiedName() {
+        String fqn = "";
 
-	public String getReffenceName(){
-		if(alias!=null){
-			return alias.getName();
-		}
-		return getFullyQualifiedName();
-	}
-	
-	public String toString() {
-		return getFullyQualifiedName()
-				+ ((alias != null) ? alias.toString() : "");
-	}
+        if (schemaName != null) {
+            fqn += schemaName;
+        }
+        if (!(fqn == null || fqn.length() == 0)) {
+            fqn += ".";
+        }
 
-	public void builder(StatementSqlBuilder builder) {
-		StringBuilder buffer = builder.getStringBuilder();
-		buffer.append(getFullyQualifiedName());
-		Alias alias = getAlias();
-		if (alias != null) {
-			buffer.append(alias);
-		}
-	}
+        if (name != null) {
+            fqn += name;
+        }
+
+        return fqn;
+    }
+
+    public String getReferenceName() {
+        if (alias != null) {
+            return alias.getName();
+        }
+        return getFullyQualifiedName();
+    }
+
+    public String toString() {
+        return getFullyQualifiedName()
+                + ((alias != null) ? alias.toString() : "");
+    }
+
+    public void builder(StatementSqlBuilder builder) {
+        StringBuilder buffer = builder.getStringBuilder();
+        buffer.append(getFullyQualifiedName());
+        Alias alias = getAlias();
+        if (alias != null) {
+            buffer.append(alias);
+        }
+    }
 
 }

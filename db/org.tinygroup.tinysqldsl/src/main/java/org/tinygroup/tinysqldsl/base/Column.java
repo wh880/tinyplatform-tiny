@@ -25,110 +25,120 @@ import org.tinygroup.tinysqldsl.selectitem.SelectItem;
  * 列
  */
 public class Column extends ColumnOperator implements Expression,
-		MultiPartName, SelectItem {
-	/**
-	 * 表名
-	 */
-	private Table table;
-	/**
-	 * 列名
-	 */
-	private String columnName;
-	/**
-	 * 别名
-	 */
-	private Alias alias;
+        MultiPartName, SelectItem {
+    /**
+     * 表名
+     */
+    private Table table;
+    /**
+     * 列名
+     */
+    private String columnName;
+    /**
+     * 别名
+     */
+    private Alias alias;
 
-	public Column() {
-	}
+    public Column() {
+    }
 
-	public Column(Table table, String columnName) {
-		this.table = table;
-		this.columnName = columnName;
-	}
+    public Column(Table table, String columnName) {
+        this.table = table;
+        this.columnName = columnName;
+    }
 
-	public Column(Table table, String columnName, String alias) {
-		this(table, columnName);
-		this.alias = new Alias(alias);
-	}
+    public Column as(String aliasName) {
+        try {
+            Column column = (Column) this.clone();
+            column.setAlias(new Alias(aliasName));
+            return column;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public Column(String columnName) {
-		this(null, columnName);
-	}
+    public Column(Table table, String columnName, String alias) {
+        this(table, columnName);
+        this.alias = new Alias(alias);
+    }
 
-	public Distinct distinct() {
-		return new Distinct(this);
-	}
+    public Column(String columnName) {
+        this(null, columnName);
+    }
 
-	public Value value(Object value) {
-		return new Value(this, value);
-	}
+    public Distinct distinct() {
+        return new Distinct(this);
+    }
 
-	public Table getTable() {
-		return table;
-	}
+    public Value value(Object value) {
+        return new Value(this, value);
+    }
 
-	public void setTable(Table table) {
-		this.table = table;
-	}
+    public Table getTable() {
+        return table;
+    }
 
-	public String getColumnName() {
-		return columnName;
-	}
+    public void setTable(Table table) {
+        this.table = table;
+    }
 
-	public void setColumnName(String string) {
-		columnName = string;
-	}
+    public String getColumnName() {
+        return columnName;
+    }
 
-	public Alias getAlias() {
-		return alias;
-	}
+    public void setColumnName(String string) {
+        columnName = string;
+    }
 
-	public void setAlias(Alias alias) {
-		this.alias = alias;
-	}
+    public Alias getAlias() {
+        return alias;
+    }
 
-	public String getFullyQualifiedName() {
-		StringBuilder fqn = new StringBuilder();
+    public void setAlias(Alias alias) {
+        this.alias = alias;
+    }
 
-		if (table != null) {
-			fqn.append(table.getReffenceName());
-		}
-		if (fqn.length() > 0) {
-			fqn.append('.');
-		}
-		if (columnName != null) {
-			fqn.append(columnName);
-		}
-		return fqn.toString();
-	}
+    public String getFullyQualifiedName() {
+        StringBuilder fqn = new StringBuilder();
 
-	public String toString() {
-		return getFullyQualifiedName()
-				+ ((alias != null) ? alias.toString() : "");
-	}
+        if (table != null) {
+            fqn.append(table.getReferenceName());
+        }
+        if (fqn.length() > 0) {
+            fqn.append('.');
+        }
+        if (columnName != null) {
+            fqn.append(columnName);
+        }
+        return fqn.toString();
+    }
+
+    public String toString() {
+        return getFullyQualifiedName()
+                + ((alias != null) ? alias.toString() : "");
+    }
 
 
-	public void builder(StatementSqlBuilder builder) {
-		String tableName = getTableName();
-		String result = "";
-		if (!StringUtil.isBlank(tableName)) {
-			result += tableName + ".";
-		}
-		result += columnName;
-		builder.appendSql(result);
-	}
+    public void builder(StatementSqlBuilder builder) {
+        String tableName = getTableName();
+        String result = "";
+        if (!StringUtil.isBlank(tableName)) {
+            result += tableName + ".";
+        }
+        result += columnName;
+        builder.appendSql(result);
+    }
 
-	private String getTableName() {
-		String tableName = null;
-		if (table != null) {
-			if (table.getAlias() != null) {
-				tableName = table.getAlias().getName();
-			} else {
-				tableName = table.getFullyQualifiedName();
-			}
-		}
-		return tableName;
-	}
+    private String getTableName() {
+        String tableName = null;
+        if (table != null) {
+            if (table.getAlias() != null) {
+                tableName = table.getAlias().getName();
+            } else {
+                tableName = table.getFullyQualifiedName();
+            }
+        }
+        return tableName;
+    }
 
 }
