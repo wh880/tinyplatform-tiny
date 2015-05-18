@@ -36,7 +36,8 @@ public interface BeanContainer<C> {
     /**
      * 获取子容器
      *
-     * @param subBeanContainer
+     * @param files
+     * @param loader
      */
     BeanContainer<?> getSubBeanContainer(List<FileObject> files,ClassLoader loader);
     

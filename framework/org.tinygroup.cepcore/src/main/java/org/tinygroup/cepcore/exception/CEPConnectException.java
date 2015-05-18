@@ -16,15 +16,15 @@
 package org.tinygroup.cepcore.exception;
 
 import org.tinygroup.event.central.Node;
-import org.tinygroup.exception.ErrorCode;
 import org.tinygroup.exception.TinySysRuntimeException;
+import org.tinygroup.exception.errorcode.ErrorCodeDefault;
 
 public class CEPConnectException extends TinySysRuntimeException {
 	private Node node;
 	private Exception exception;
 
 	public CEPConnectException(Exception e, Node node) {
-		super(ErrorCode.UNKNOWN_ERROR, e, node.toString(), e
+		super(ErrorCodeDefault.UNKNOWN_ERROR, e, node.toString(), e
 				.getMessage());
 		this.node = node;
 		this.exception = e;

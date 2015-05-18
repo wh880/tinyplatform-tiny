@@ -15,8 +15,8 @@
  */
 package org.tinygroup.cepcore.exception;
 
-import org.tinygroup.exception.ErrorCode;
 import org.tinygroup.exception.TinySysRuntimeException;
+import org.tinygroup.exception.errorcode.ErrorCodeDefault;
 
 public class RequestNotFoundException extends TinySysRuntimeException {
 	/**
@@ -30,7 +30,7 @@ public class RequestNotFoundException extends TinySysRuntimeException {
 	}
 
 	public RequestNotFoundException(String serviceId) {
-		super(ErrorCode.UNKNOWN_SYSTEM_ERROR, serviceId);
+		super(ErrorCodeDefault.UNKNOWN_SYSTEM_ERROR, serviceId);
 		this.serviceId = serviceId;
 	}
 
