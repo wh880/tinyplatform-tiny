@@ -90,7 +90,7 @@ public class ErrorCodeDefault extends AbstractErrorCode {
     public static final String UNKNOWN_THIRD_PARTY_ERROR = "0TE439999999";
 
     // 这里是定义长度
-    private static final int[] FIELD_LENGTH = {2, 1, 1, 1, 4, 3};
+    private static final int[] FIELD_LENGTH = {1, 2, 1, 1, 4, 3};
     /**
      *
      */

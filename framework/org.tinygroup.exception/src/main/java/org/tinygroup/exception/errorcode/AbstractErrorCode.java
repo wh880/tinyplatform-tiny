@@ -94,13 +94,13 @@ public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser,
 			int position=0;
 			code.setVersion( errorCode.substring(position,getFieldLength()[0]));
 			position+=getFieldLength()[0];
-			code.setErrorPrefix( errorCode.substring(position,getFieldLength()[1]));
+			code.setErrorPrefix( errorCode.substring(position,position+getFieldLength()[1]));
 			position+=getFieldLength()[1];
 			code.setErrorType(ErrorType.find(chars[position++] + ""));
 			code.setErrorLevel(ErrorLevel.find(chars[position++] + ""));
-			code.setErrorScene(Integer.parseInt(errorCode.substring(position, getFieldLength()[4])));
+			code.setErrorScene(Integer.parseInt(errorCode.substring(position, position+getFieldLength()[4])));
 			position+=getFieldLength()[4];
-			code.setErrorNumber(Integer.parseInt(errorCode.substring(position, getFieldLength()[5])));
+			code.setErrorNumber(Integer.parseInt(errorCode.substring(position, position+getFieldLength()[5])));
 			return code;
 		} catch (CloneNotSupportedException e) {
 			throw new RuntimeException(e);
