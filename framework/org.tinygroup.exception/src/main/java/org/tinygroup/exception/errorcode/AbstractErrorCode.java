@@ -12,7 +12,7 @@ import org.tinygroup.exception.constant.ErrorType;
  * 
  * @author renhui
  */
-public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser, ErrorCode {
+public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser, ErrorCode,Cloneable {
 	public static int PREFIX = 0, VERSION = 1, TYPE = 2, LEVEL = 3, SCENE = 4,
 			NUMBER = 5;
 
