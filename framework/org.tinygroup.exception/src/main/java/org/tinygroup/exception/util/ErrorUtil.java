@@ -49,10 +49,7 @@ public class ErrorUtil {
 	/**
 	 * 创建一个CommonError
 	 * 
-	 * @param errorLevel
-	 * @param errorType
-	 * @param errorScene
-	 * @param errorSpecific
+	 * @param errorCode
 	 * @param message
 	 * @return
 	 */
@@ -68,10 +65,7 @@ public class ErrorUtil {
 	/**
 	 * 创建一个CommonError
 	 * 
-	 * @param errorLevel
-	 * @param errorType
-	 * @param errorScene
-	 * @param errorSpecific
+	 * @param errorCode
 	 * @param message
 	 * @param location
 	 * @return
