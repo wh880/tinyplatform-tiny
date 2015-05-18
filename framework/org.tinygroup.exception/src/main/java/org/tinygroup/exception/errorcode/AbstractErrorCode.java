@@ -67,8 +67,6 @@ public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser,
 
 	protected abstract String getErrorCodeFormatString();
 
-	protected  abstract ErrorCode internalParse(char[] chars);
-	
 	public AbstractErrorCode() {
 		super();
 	}
@@ -76,12 +74,13 @@ public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser,
 	public AbstractErrorCode(String version, ErrorType errorType,
 			ErrorLevel errorLevel, int errorScene, int errorNumber,
 			String errorPrefix) {
-		assertLength(PREFIX, errorPrefix);
+
 		assertLength(VERSION, version);
+		assertLength(PREFIX, errorPrefix);
 		assertLength(SCENE, errorScene + "");
 		assertLength(NUMBER, errorNumber + "");
-		this.errorPrefix = errorPrefix;
 		this.version = version;
+		this.errorPrefix = errorPrefix;
 		this.errorType = errorType;
 		this.errorLevel = errorLevel;
 		this.errorScene = errorScene;
@@ -90,11 +89,22 @@ public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser,
 
 	public ErrorCode parse(String errorCode) {
 		char[] chars = errorCode.toCharArray();
-		this.errorPrefix = "" + chars[0] + chars[1];
-		this.version = "" + chars[2];
-		this.errorType = ErrorType.find(chars[3] + "");
-		this.errorLevel = ErrorLevel.find(chars[4] + "");
-		return internalParse(chars);
+		try {
+			ErrorCode code= (ErrorCode) this.clone();
+			int position=0;
+			code.setVersion( errorCode.substring(position,getFieldLength()[0]));
+			position+=getFieldLength()[0];
+			code.setErrorPrefix( errorCode.substring(position,getFieldLength()[1]));
+			position+=getFieldLength()[1];
+			code.setErrorType(ErrorType.find(chars[position++] + ""));
+			code.setErrorLevel(ErrorLevel.find(chars[position++] + ""));
+			code.setErrorScene(Integer.parseInt(errorCode.substring(position, getFieldLength()[4])));
+			position+=getFieldLength()[4];
+			code.setErrorNumber(Integer.parseInt(errorCode.substring(position, getFieldLength()[5])));
+			return code;
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	protected void assertLength(int field, String errorPrefix) {
@@ -109,7 +119,7 @@ public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser,
 	 */
 	@Override
 	public String toString() {
-		return String.format(getErrorCodeFormatString(), errorPrefix, version,
+		return String.format(getErrorCodeFormatString(), version,errorPrefix,
 				errorType.getType(), errorLevel.getLevel(), errorScene,
 				errorNumber);
 	}

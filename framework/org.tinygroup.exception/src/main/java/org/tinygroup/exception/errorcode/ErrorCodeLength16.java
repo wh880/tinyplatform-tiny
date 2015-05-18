@@ -11,25 +11,24 @@ import org.tinygroup.exception.constant.ErrorType;
  * 
  */
 public class ErrorCodeLength16 extends AbstractErrorCode {
+	/** 未知系统异常 */
+	public static final String UNKNOWN_ERROR = "1TE1399999999999";
 
 	/** 未知系统异常 */
-	public static final String UNKNOWN_ERROR = "TE11399999999999";
-
-	/** 未知系统异常 */
-	public static final String UNKNOWN_SYSTEM_ERROR = "TE11399999999999";
+	public static final String UNKNOWN_SYSTEM_ERROR = "1TE1399999999999";
 
 	/** 未知扩展系统异常 */
-	public static final String UNKNOWN_EXT_ERROR = "TE12399999999999";
+	public static final String UNKNOWN_EXT_ERROR = "1TE2399999999999";
 	/** 未知业务异常 */
-	public static final String UNKNOWN_BIZ_ERROR = "TE13399999999999";
+	public static final String UNKNOWN_BIZ_ERROR = "1TE3399999999999";
 
 	/** 未知第三方异常 */
-	public static final String UNKNOWN_THIRD_PARTY_ERROR = "TE14399999999999";
+	public static final String UNKNOWN_THIRD_PARTY_ERROR = "1TE4399999999999";
 
 	// 这里是定义长度
-	private static final int[] FIELD_LENGTH = { 2, 1, 1, 1, 8, 3 };
+	private static final int[] FIELD_LENGTH = { 1, 2, 1, 1, 8, 3 };
 
-	private static final String VERSION = "2";
+	private static final String VERSION = "1";
 	/**
 	 * 
 	 */
@@ -55,16 +54,9 @@ public class ErrorCodeLength16 extends AbstractErrorCode {
 		return "%2s%1s%1d%1d%08d%03d";
 	}
 
-	protected ErrorCode internalParse(char[] chars) {
-		this.errorScene = Integer.valueOf("" + chars[5] + chars[6] + chars[7]
-				+ chars[8] + chars[9] + chars[10] + chars[11] + chars[12]);
-		this.errorNumber = Integer.valueOf("" + chars[13] + chars[14]
-				+ chars[15]);
-		return new ErrorCodeLength16(errorType, errorLevel, errorScene, errorNumber, errorPrefix);
-	}
 
-	public boolean isLengthMatch(int errorCodeLength) {
-		return 16==errorCodeLength;
+	public boolean isMatch(String errorCodeStr) {
+		return errorCodeStr.startsWith(VERSION);
 	}
 
 }

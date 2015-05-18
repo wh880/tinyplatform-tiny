@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.exception.errorcode.AbstractErrorCode;
 import org.tinygroup.exception.errorcode.ErrorCodeDefault;
 import org.tinygroup.exception.errorcode.ErrorCodeLength16;
 
@@ -34,9 +33,9 @@ public class ErrorCodeFactory {
 	}
 
 	private static ErrorCodeParser findParser(String errorCodeStr) {
-		for (ErrorCodeParser errorCode : codeParsers) {
-			if (errorCode.isLengthMatch(errorCodeStr.length())) {
-				return errorCode;
+		for (ErrorCodeParser errorCodeParser : codeParsers) {
+			if (errorCodeParser.isMatch(errorCodeStr)) {
+				return errorCodeParser;
 			}
 		}
 		throw new IllegalArgumentException(String.format(

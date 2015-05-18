@@ -8,10 +8,10 @@ package org.tinygroup.exception;
 public interface ErrorCodeParser {
    /**
     * 错误码长度匹配
-    * @param errorCodeLength
+    * @param errorNumber
     * @return
     */
-	boolean isLengthMatch(int errorCodeLength);
+	boolean isMatch(String errorNumber);
 	
 	/**
 	 * 通过错误码字符串实例化真正的错误码对象

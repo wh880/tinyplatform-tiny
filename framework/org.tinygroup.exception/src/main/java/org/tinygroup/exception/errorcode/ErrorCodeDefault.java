@@ -63,61 +63,62 @@ import org.tinygroup.exception.constant.ErrorType;
  * </table>
  */
 public class ErrorCodeDefault extends AbstractErrorCode {
-	
-	
-	/** 未知系统异常 */
-	public static final String UNKNOWN_ERROR = "TE1139999999";
+    public static final String VERSION = "0";
 
-	/** 未知系统异常 */
-	public static final String UNKNOWN_SYSTEM_ERROR = "TE1139999999";
+    /**
+     * 未知系统异常
+     */
+    public static final String UNKNOWN_ERROR = "0TE139999999";
 
-	/** 未知扩展系统异常 */
-	public static final String UNKNOWN_EXT_ERROR =  "TE1239999999";
-	/** 未知业务异常 */
-	public static final String UNKNOWN_BIZ_ERROR =  "TE1339999999";
+    /**
+     * 未知系统异常
+     */
+    public static final String UNKNOWN_SYSTEM_ERROR = "0TE139999999";
 
-	/** 未知第三方异常 */
-	public static final String UNKNOWN_THIRD_PARTY_ERROR = "TE1439999999";
+    /**
+     * 未知扩展系统异常
+     */
+    public static final String UNKNOWN_EXT_ERROR = "0TE239999999";
+    /**
+     * 未知业务异常
+     */
+    public static final String UNKNOWN_BIZ_ERROR = "0TE339999999";
 
-	// 这里是定义长度
-	private static final int[] FIELD_LENGTH = { 2, 1, 1, 1, 4, 3 };
-	/**
+    /**
+     * 未知第三方异常
+     */
+    public static final String UNKNOWN_THIRD_PARTY_ERROR = "0TE439999999";
+
+    // 这里是定义长度
+    private static final int[] FIELD_LENGTH = {2, 1, 1, 1, 4, 3};
+    /**
      *
      */
-	private static final long serialVersionUID = -8398330229603671639L;
-	
+    private static final long serialVersionUID = -8398330229603671639L;
 
-	public ErrorCodeDefault() {
-		super();
-	}
 
-	public ErrorCodeDefault(ErrorType errorType, ErrorLevel errorLevel,
-							int errorScene, int errorNumber, String errorPrefix) {
-		super(DEFAULT_VERSION, errorType, errorLevel, errorScene, errorNumber,
-				errorPrefix);
-	}
+    public ErrorCodeDefault() {
+        super();
+    }
 
-	@Override
-	protected int[] getFieldLength() {
-		return FIELD_LENGTH;
-	}
+    public ErrorCodeDefault(ErrorType errorType, ErrorLevel errorLevel,
+                            int errorScene, int errorNumber, String errorPrefix) {
+        super(DEFAULT_VERSION, errorType, errorLevel, errorScene, errorNumber,
+                errorPrefix);
+    }
 
-	@Override
-	protected String getErrorCodeFormatString() {
-		return "%2s%1s%1d%1d%04d%03d";
-	}
+    @Override
+    protected int[] getFieldLength() {
+        return FIELD_LENGTH;
+    }
 
-	@Override
-	protected ErrorCode internalParse(char[] chars) {
-		this.errorScene = Integer.valueOf("" + chars[5] + chars[6] + chars[7]
-				+ chars[8]);
-		this.errorNumber = Integer.valueOf("" + chars[9] + chars[10]
-				+ chars[11]);
-		return new ErrorCodeDefault(errorType, errorLevel, errorScene, errorNumber, errorPrefix);
-	}
+    @Override
+    protected String getErrorCodeFormatString() {
+        return "%2s%1s%1d%1d%04d%03d";
+    }
 
-	public boolean isLengthMatch(int errorCodeLength) {
-		return 12==errorCodeLength;
-	}
+    public boolean isMatch(String errorCodeStr) {
+        return errorCodeStr.startsWith(VERSION);
+    }
 
 }
