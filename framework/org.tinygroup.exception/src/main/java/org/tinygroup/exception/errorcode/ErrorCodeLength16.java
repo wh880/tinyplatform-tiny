@@ -1,5 +1,6 @@
-package org.tinygroup.exception;
+package org.tinygroup.exception.errorcode;
 
+import org.tinygroup.exception.ErrorCode;
 import org.tinygroup.exception.constant.ErrorLevel;
 import org.tinygroup.exception.constant.ErrorType;
 
@@ -54,7 +55,7 @@ public class ErrorCodeLength16 extends AbstractErrorCode {
 		return "%2s%1s%1d%1d%08d%03d";
 	}
 
-	protected AbstractErrorCode internalParse(char[] chars) {
+	protected ErrorCode internalParse(char[] chars) {
 		this.errorScene = Integer.valueOf("" + chars[5] + chars[6] + chars[7]
 				+ chars[8] + chars[9] + chars[10] + chars[11] + chars[12]);
 		this.errorNumber = Integer.valueOf("" + chars[13] + chars[14]

@@ -17,5 +17,5 @@ public interface ErrorCodeParser {
 	 * 通过错误码字符串实例化真正的错误码对象
 	 * @param errorCode
 	 */
-	AbstractErrorCode parse(String errorCode);
+	ErrorCode parse(String errorCode);
 }

@@ -1,7 +1,9 @@
-package org.tinygroup.exception;
+package org.tinygroup.exception.errorcode;
 
 import java.io.Serializable;
 
+import org.tinygroup.exception.ErrorCode;
+import org.tinygroup.exception.ErrorCodeParser;
 import org.tinygroup.exception.constant.ErrorLevel;
 import org.tinygroup.exception.constant.ErrorType;
 
@@ -10,7 +12,7 @@ import org.tinygroup.exception.constant.ErrorType;
  * 
  * @author renhui
  */
-public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser {
+public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser, ErrorCode {
 	public static int PREFIX = 0, VERSION = 1, TYPE = 2, LEVEL = 3, SCENE = 4,
 			NUMBER = 5;
 
@@ -65,7 +67,7 @@ public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser 
 
 	protected abstract String getErrorCodeFormatString();
 
-	protected  abstract AbstractErrorCode internalParse(char[] chars);
+	protected  abstract ErrorCode internalParse(char[] chars);
 	
 	public AbstractErrorCode() {
 		super();
@@ -86,7 +88,7 @@ public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser 
 		this.errorNumber = errorNumber;
 	}
 
-	public AbstractErrorCode parse(String errorCode) {
+	public ErrorCode parse(String errorCode) {
 		char[] chars = errorCode.toCharArray();
 		this.errorPrefix = "" + chars[0] + chars[1];
 		this.version = "" + chars[2];

@@ -1,8 +1,9 @@
 package org.tinygroup.exception.util;
 
-import org.tinygroup.exception.AbstractErrorCode;
-import org.tinygroup.exception.CommonError;
 import org.tinygroup.exception.ErrorCode;
+import org.tinygroup.exception.errorcode.AbstractErrorCode;
+import org.tinygroup.exception.CommonError;
+import org.tinygroup.exception.errorcode.ErrorCodeDefault;
 import org.tinygroup.exception.ErrorContext;
 import org.tinygroup.exception.constant.ErrorLevel;
 import org.tinygroup.exception.constant.ErrorType;
@@ -39,9 +40,9 @@ public class ErrorUtil {
 	 *            错误码前缀。（按厂商分配）
 	 * @return 错误码实例。
 	 */
-	public static ErrorCode makeErrorCode(String errorType, String errorLevel,
+	public static ErrorCodeDefault makeErrorCode(String errorType, String errorLevel,
 			int errorScene, int errorSpecific, String errorPrefix) {
-		return new ErrorCode(ErrorType.find(errorType), ErrorLevel.find(errorLevel), errorScene, errorSpecific,
+		return new ErrorCodeDefault(ErrorType.find(errorType), ErrorLevel.find(errorLevel), errorScene, errorSpecific,
 				errorPrefix);
 	}
 
@@ -55,7 +56,7 @@ public class ErrorUtil {
 	 * @param message
 	 * @return
 	 */
-	public static CommonError makeError(AbstractErrorCode errorCode, String message) {
+	public static CommonError makeError(ErrorCode errorCode, String message) {
 
 		CommonError error = new CommonError();
 		error.setErrorCode(errorCode);
@@ -75,7 +76,7 @@ public class ErrorUtil {
 	 * @param location
 	 * @return
 	 */
-	public static CommonError makeError(AbstractErrorCode errorCode, String message,
+	public static CommonError makeError(ErrorCode errorCode, String message,
 			String location) {
 
 		CommonError error = new CommonError();
@@ -126,7 +127,7 @@ public class ErrorUtil {
 	 * @return
 	 */
 	public static ErrorContext makeAndAddError(ErrorContext context,
-			AbstractErrorCode errorCode, String message) {
+											   ErrorCode errorCode, String message) {
 
 		CommonError error = makeError(errorCode, message);
 		context = addError(context, error);

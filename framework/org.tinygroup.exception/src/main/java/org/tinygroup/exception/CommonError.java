@@ -1,5 +1,7 @@
 package org.tinygroup.exception;
 
+import org.tinygroup.exception.errorcode.AbstractErrorCode;
+
 /**
  * 标准错误对象。
  * <p/>
@@ -21,7 +23,7 @@ public class CommonError implements java.io.Serializable {
     /**
      * 错误编码
      */
-    private AbstractErrorCode errorCode;
+    private ErrorCode errorCode;
 
     /**
      * 错误描述
@@ -82,7 +84,7 @@ public class CommonError implements java.io.Serializable {
      *
      * @return property value of errorCode
      */
-    public AbstractErrorCode getErrorCode() {
+    public ErrorCode getErrorCode() {
         return errorCode;
     }
 
@@ -91,7 +93,7 @@ public class CommonError implements java.io.Serializable {
      *
      * @param errorCode value to be assigned to property errorCode
      */
-    public void setErrorCode(AbstractErrorCode errorCode) {
+    public void setErrorCode(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 

@@ -18,6 +18,7 @@ package org.tinygroup.exception;
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.commons.tools.ExceptionUtil;
 import org.tinygroup.context.Context;
+import org.tinygroup.exception.errorcode.AbstractErrorCode;
 import org.tinygroup.exception.util.ErrorUtil;
 import org.tinygroup.i18n.I18nMessage;
 import org.tinygroup.i18n.I18nMessageFactory;
@@ -31,14 +32,14 @@ public class BaseRuntimeException extends RuntimeException {
 			.getI18nMessages();// 需要在启动的时候注入进来
 	private String errorMsg;
 
-	private AbstractErrorCode errorCode;
+	private ErrorCode errorCode;
 
 	@Override
 	public String getMessage() {
 		return errorMsg;
 	}
 
-	public AbstractErrorCode getErrorCode() {
+	public ErrorCode getErrorCode() {
 		return errorCode;
 	}
 
