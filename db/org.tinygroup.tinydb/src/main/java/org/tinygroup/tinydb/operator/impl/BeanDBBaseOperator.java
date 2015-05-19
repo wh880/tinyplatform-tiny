@@ -23,6 +23,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.SqlParameterValue;
+import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanOperatorManager;
@@ -118,9 +119,9 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 			String columnsName = column.getColumnName();
 			String propertyName = beanDbNameConverter
 					.dbFieldNameToPropertyName(columnsName);
-			if (bean.containsKey(propertyName)) {
-				params.add(createSqlParamter(bean.getProperty(propertyName),
-						column));
+			Object value = bean.getProperty(propertyName);
+			if (!ObjectUtil.isEmptyObject(value)) {
+				params.add(createSqlParamter(value, column));
 			}
 		}
 		return params.toArray(new SqlParameterValue[0]);
