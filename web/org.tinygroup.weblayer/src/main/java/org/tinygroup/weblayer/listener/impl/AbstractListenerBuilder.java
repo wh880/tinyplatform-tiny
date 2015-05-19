@@ -20,9 +20,10 @@ import org.tinygroup.weblayer.listener.ListenerInstanceBuilder;
 public abstract class AbstractListenerBuilder<INSTANCE> implements
 		ListenerInstanceBuilder<INSTANCE> {
 
-	protected List<INSTANCE> listeners = new ArrayList<INSTANCE>();
-	
-	private boolean ordered;//是否已经进行排序了
+	protected List<INSTANCE> listeners = Collections
+			.synchronizedList(new ArrayList<INSTANCE>());
+
+	private boolean ordered;// 是否已经进行排序了
 
 	private static Logger logger = LoggerFactory
 			.getLogger(AbstractListenerBuilder.class);
@@ -36,7 +37,9 @@ public abstract class AbstractListenerBuilder<INSTANCE> implements
 					object.getClass().getSimpleName(), listener.getClass()
 							.getSimpleName());
 		}
-		listeners.add(listener);
+		synchronized (listeners) {
+			listeners.add(listener);
+		}
 	}
 
 	protected abstract INSTANCE replaceListener(INSTANCE listener);
@@ -46,19 +49,22 @@ public abstract class AbstractListenerBuilder<INSTANCE> implements
 	}
 
 	public List<INSTANCE> getInstances() {
-		if(!ordered){
-			Collections.sort(listeners,new Comparator<INSTANCE>() {
-				public int compare(INSTANCE o1, INSTANCE o2) {
-					Ordered order1=(Ordered)o1;
-					Ordered order2=(Ordered)o2;
-					if (order1 != null && order2 != null) {
-						return order1.getOrder() > order2.getOrder() ? 1
-								: (order1.getOrder() == order2.getOrder() ? 0 : -1);
+		synchronized (listeners) {
+			if (!ordered) {
+				Collections.sort(listeners, new Comparator<INSTANCE>() {
+					public int compare(INSTANCE o1, INSTANCE o2) {
+						Ordered order1 = (Ordered) o1;
+						Ordered order2 = (Ordered) o2;
+						if (order1 != null && order2 != null) {
+							return order1.getOrder() > order2.getOrder() ? 1
+									: (order1.getOrder() == order2.getOrder() ? 0
+											: -1);
+						}
+						return 0;
 					}
-					return 0;
-				}
-			});
-			ordered=true;
+				});
+				ordered = true;
+			}
 		}
 		return listeners;
 	}

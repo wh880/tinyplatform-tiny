@@ -53,7 +53,8 @@ public class TinyListenerConfigManager implements Configuration {
 
 	private Map<String, BasicConfigInfo> basicConfigMap = new HashMap<String, BasicConfigInfo>();
 	private Map<String, List<BasicConfigInfo>> configMap = new HashMap<String, List<BasicConfigInfo>>();
-	private ListenerBuilderSupport support=new ListenerBuilderSupport();
+	private ListenerBuilderSupport support = ListenerBuilderSupport
+			.getSupportInstance();
 	private XmlNode applicationConfig;
 	private XmlNode componentConfig;
 

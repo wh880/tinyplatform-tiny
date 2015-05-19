@@ -32,7 +32,7 @@ public class ListenerBuilderSupport {
 	private ListenerInstanceBuilder<ServletRequestListener> requestListenerBuilder = new RequestListenerBuilder();
 	private ListenerInstanceBuilder<ServletRequestAttributeListener> requestAttributeListenerBuilder = new RequestAttributeListenerBuilder();
 
-	public ListenerBuilderSupport() {
+	private ListenerBuilderSupport() {
 		builders.add(contextListenerBuilder);
 		builders.add(contextAttributeListenerBuilder);
 		builders.add(sessionListenerBuilder);
@@ -43,8 +43,13 @@ public class ListenerBuilderSupport {
 		builders.add(requestAttributeListenerBuilder);
 	}
 
+	public static ListenerBuilderSupport getSupportInstance() {
+		return new ListenerBuilderSupport();
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void listenerInstanceBuilder(Map<String, List<BasicConfigInfo>> configMap) {
+	public void listenerInstanceBuilder(
+			Map<String, List<BasicConfigInfo>> configMap) {
 		for (String beanName : configMap.keySet()) {
 			List<BasicConfigInfo> configInfos = configMap.get(beanName);
 			Object listener = BeanContainerFactory.getBeanContainer(
@@ -60,7 +65,7 @@ public class ListenerBuilderSupport {
 			}
 		}
 	}
-	
+
 	public List<ServletContextListener> getContextListeners() {
 		return contextListenerBuilder.getInstances();
 	}
