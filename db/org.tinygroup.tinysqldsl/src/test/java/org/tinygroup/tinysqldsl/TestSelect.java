@@ -162,5 +162,8 @@ public class TestSelect {
 		
 		System.out.println(select(CUSTOM.ALL).from(CUSTOM,TSCORE));
 		
+		System.out.println(select(CUSTOM.NAME).from(CUSTOM,TSCORE).where(
+				and(CUSTOM.AGE.greaterThan(null), CUSTOM.NAME.equal(null),CUSTOM.ID.eq(TSCORE.ID))));
+		
 	}
 }
