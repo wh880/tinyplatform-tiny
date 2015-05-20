@@ -30,7 +30,7 @@ import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.database.util.DataSourceInfo;
-import org.tinygroup.exception.TinySysRuntimeException;
+import org.tinygroup.exception.BaseRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -100,7 +100,7 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 			}
 		} catch (Exception ex) {
 			logger.errorMessage(ex.getMessage(), ex);
-			throw new TinySysRuntimeException(ex);
+			throw new BaseRuntimeException(ex);
 		} finally {
 			if (con != null) {
 				try {

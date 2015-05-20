@@ -25,7 +25,7 @@ import javax.sql.DataSource;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.database.util.DataSourceInfo;
 import org.tinygroup.databasebuinstaller.InstallProcessor;
-import org.tinygroup.exception.TinySysRuntimeException;
+import org.tinygroup.exception.BaseRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -40,8 +40,6 @@ import org.tinygroup.logger.LoggerFactory;
  */
 public abstract class AbstractInstallProcessor implements InstallProcessor {
 
-	protected String language;
-
 	protected Logger logger = LoggerFactory
 			.getLogger(AbstractInstallProcessor.class);
 
@@ -50,30 +48,27 @@ public abstract class AbstractInstallProcessor implements InstallProcessor {
 	}
 
 	public void process(String language) {
-		this.language = language;
 		DataSource dataSource = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 						DataSourceInfo.DATASOURCE_NAME);
-		// DataSourceUtils.getConnection(dataSource);
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			processWithConn(con);
+			processWithConn(language,con);
 		} catch (SQLException ex) {
-			throw new TinySysRuntimeException(ex);
+			throw new BaseRuntimeException(ex);
 		} finally {
 			if (con != null) {
 				try {
 					con.close();
 				} catch (SQLException e) {
-					
 				}
 			}
 		}
 	}
 
-	protected void processWithConn(Connection con) throws SQLException {
-		List<String> sqls = getDealSqls(null, con);
+	protected void processWithConn(String language,Connection con) throws SQLException {
+		List<String> sqls = getDealSqls(language, con);
 		excute(sqls, con);
 
 	}
