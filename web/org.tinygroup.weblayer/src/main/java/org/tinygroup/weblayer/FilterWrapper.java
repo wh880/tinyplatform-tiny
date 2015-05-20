@@ -30,7 +30,7 @@ public interface FilterWrapper {
 	
 	 void filterWrapper(WebContext context, TinyFilterHandler hander)throws IOException, ServletException;
 	 
-	 void addHttpFilter(String filterName,Filter filter);
+	 void addHttpFilter(String filterName,String filterBeanName, Filter filter);
 	 
 	 void init()throws ServletException;
 	 

@@ -17,6 +17,7 @@ package org.tinygroup.weblayer.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -49,6 +50,8 @@ public class TinyFilterWrapper implements FilterWrapper {
 
 	private Map<String, Filter> filterMap = new TreeMap<String, Filter>();
 
+	private Map<String, String> bean2Config = new HashMap<String, String>();
+
 	private TinyFilterConfigManager tinyFilterConfigManager;
 
 	private TinyFilterManager tinyFilterManager;
@@ -78,19 +81,21 @@ public class TinyFilterWrapper implements FilterWrapper {
 
 	private List<Filter> getMatchFilters(String servletPath) {
 		List<Filter> matchFilters = new ArrayList<Filter>();
-		for (String filterName : filterMap.keySet()) {
+		for (String filterBeanName : filterMap.keySet()) {
 			TinyFilterConfig filterConfig = tinyFilterManager
-					.getTinyFilterConfig(filterName);
+					.getTinyFilterConfig(bean2Config.get(filterBeanName));
 			if (filterConfig.isMatch(servletPath)) {
-				matchFilters.add(filterMap.get(filterName));
+				matchFilters.add(filterMap.get(filterBeanName));
 			}
 		}
 		return matchFilters;
 	}
 
-	public void addHttpFilter(String filterName, Filter filter) {
+	public void addHttpFilter(String filterName, String filterBeanName,
+			Filter filter) {
 		filters.add(filter);
-		filterMap.put(filterName, filter);
+		filterMap.put(filterBeanName, filter);
+		bean2Config.put(filterBeanName, filterName);
 	}
 
 	public void init() throws ServletException {
@@ -98,10 +103,10 @@ public class TinyFilterWrapper implements FilterWrapper {
 				LogLevel.DEBUG,
 				"TinyFilterWrapper start initialization wrapper httpfilter:[{0}]",
 				filters);
-		for (String filterName : filterMap.keySet()) {
-			Filter filter = filterMap.get(filterName);
+		for (String filterBeanName : filterMap.keySet()) {
+			Filter filter = filterMap.get(filterBeanName);
 			TinyFilterConfigInfo filterConfigInfo = tinyFilterConfigManager
-					.getFilterConfig(filterName);
+					.getFilterConfig(bean2Config.get(filterBeanName));
 			filter.init(new TinyWrapperFilterConfig(filterConfigInfo));
 		}
 		logger.logMessage(LogLevel.DEBUG,

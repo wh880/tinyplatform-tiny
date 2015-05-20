@@ -58,9 +58,9 @@ public interface TinyFilterManager extends TinyWebResourceManager {
     FilterWrapper getFilterWrapper();
     /**
      * 根据filter名称获取对应的TinyFilterConfig
-     * @param filterBeanName
+     * @param filterName
      * @return
      */
-    TinyFilterConfig getTinyFilterConfig(String filterBeanName);
+    TinyFilterConfig getTinyFilterConfig(String filterName);
 
 }
