@@ -39,7 +39,8 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 	ServiceMappingManager manager;
 	CEPCore core;
 	ObjectToXml<Object> objectToXml = new ObjectToXml<Object>();
-	ObjectToJson<Object> objectToJson = new ObjectToJson<Object>(SerializerFeature.DisableCircularReferenceDetect);
+	ObjectToJson<Object> objectToJson = new ObjectToJson<Object>(
+			SerializerFeature.DisableCircularReferenceDetect);
 
 	public CEPCore getCore() {
 		return core;
@@ -58,7 +59,7 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 	}
 
 	private Object callService(String serviceId, Context context) {
-//		CEPCore core = SpringBeanContainer.getBean(CEPCore.CEP_CORE_BEAN);
+		// CEPCore core = SpringBeanContainer.getBean(CEPCore.CEP_CORE_BEAN);
 		Event event = new Event();
 		ServiceRequest sq = new ServiceRequest();
 		sq.setServiceId(serviceId);
@@ -68,63 +69,66 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 
 		ServiceInfo info = core.getServiceInfo(serviceId);
 		List<Parameter> resultsParam = info.getResults();
-		if (resultsParam==null||resultsParam.size() == 0) {
+		if (resultsParam == null || resultsParam.size() == 0) {
 			return null;
 		}
 		return event.getServiceRequest().getContext()
 				.get(resultsParam.get(0).getName());
 	}
 
-
-	public void reallyProcess(String urlString, WebContext context) throws ServletException, IOException{
+	public void reallyProcess(String urlString, WebContext context)
+			throws ServletException, IOException {
 		int lastSplash = urlString.lastIndexOf('/');
 		int lastDot = urlString.lastIndexOf('.');
-//		try {
-			String serviceId = urlString.substring(lastSplash + 1, lastDot);
-			Object result = callService(serviceId, context);
-			if (urlString.endsWith("servicexml") && result != null) {// 返回xml
-				context.getResponse().getWriter()
-						.write(objectToXml.convert(result));
-			} else if (urlString.endsWith(".servicejson") && result != null) {// 返回json
-				
-					context.getResponse().getWriter()
-							.write(objectToJson.convert(result));
-				
-			} else if (urlString.endsWith(".servicepage")) {// 返回页面
-				ServiceViewMapping viewMapping=manager.getServiceViewMapping(serviceId);
-				if(viewMapping==null){
-					throw new RuntimeException(serviceId + "对应的展现视图不存在！");
-				}
-				String path = viewMapping.getPath();
-				checkPath(serviceId, path);
-				String type=viewMapping.getType();
-				if("forward".equals(type)){
-					context.getRequest().getRequestDispatcher(path)
-					.forward(context.getRequest(), context.getResponse());
-				}else if("redirect".equals(type)){
-					String contextPath=context.get("TINY_CONTEXT_PATH");
-					if(path.startsWith("/")){
-						contextPath=contextPath+path;
-					}else{
-						contextPath=contextPath+"/"+path;
-					}
-					context.getResponse().sendRedirect(contextPath);
-				}else{
-					throw new RuntimeException(type+"跳转类型不正确，只能是forward或者redirect");
-				}
-				
-			} else if (urlString.endsWith(".servicepagelet")) {// 返回页面片断
-				String path = manager.getUrl(serviceId);
-				checkPath(serviceId, path);
-				if (path.endsWith(".page")) {
-					path = path + "let";
-				}
-				context.getRequest().getRequestDispatcher(path)
-						.forward(context.getRequest(), context.getResponse());
+		String serviceId = urlString.substring(lastSplash + 1, lastDot);
+		Object result = callService(serviceId, context);
+		if (urlString.endsWith("servicexml") && result != null) {// 返回xml
+			context.getResponse().getWriter()
+					.write(objectToXml.convert(result));
+		} else if (urlString.endsWith(".servicejson") && result != null) {// 返回json
+			context.getResponse().getWriter()
+					.write(objectToJson.convert(result));
+
+		} else if (urlString.endsWith(".servicepage")) {// 返回页面
+			ServiceViewMapping viewMapping = manager
+					.getServiceViewMapping(serviceId);
+			if (viewMapping == null) {
+				throw new RuntimeException(serviceId + "对应的展现视图不存在！");
 			}
-//		} catch (Exception e) {
-//			throw new RuntimeException(e);
-//		}
+			String path = viewMapping.getPath();
+			checkPath(serviceId, path);
+			pageJump(path, viewMapping.getType(), context);
+		} else if (urlString.endsWith(".servicepagelet")) {// 返回页面片断
+			ServiceViewMapping viewMapping = manager
+					.getServiceViewMapping(serviceId);
+			if (viewMapping == null) {
+				throw new RuntimeException(serviceId + "对应的展现视图不存在！");
+			}
+			String path = viewMapping.getPath();
+			checkPath(serviceId, path);
+			if (path.endsWith(".page")) {
+				path = path + "let";
+			}
+			pageJump(path, viewMapping.getType(), context);
+		}
+	}
+
+	private void pageJump(String path, String type, WebContext context)
+			throws ServletException, IOException {
+		if ("forward".equals(type)) {
+			context.getRequest().getRequestDispatcher(path)
+					.forward(context.getRequest(), context.getResponse());
+		} else if ("redirect".equals(type)) {
+			String contextPath = context.get("TINY_CONTEXT_PATH");
+			if (path.startsWith("/")) {
+				contextPath = contextPath + path;
+			} else {
+				contextPath = contextPath + "/" + path;
+			}
+			context.getResponse().sendRedirect(contextPath);
+		} else {
+			throw new RuntimeException(type + "跳转类型不正确，只能是forward或者redirect");
+		}
 	}
 
 	private void checkPath(String serviceId, String path) {
@@ -135,6 +139,6 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 
 	@Override
 	protected void customInit() throws ServletException {
-		
+
 	}
 }
