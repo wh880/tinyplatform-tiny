@@ -142,10 +142,10 @@ public class TinyFilterManagerImpl implements TinyFilterManager {
 			for (String beanName : beanNameArray) {
 				Filter filter = BeanContainerFactory.getBeanContainer(
 						this.getClass().getClassLoader()).getBean(beanName);
-				wrapper.addHttpFilter(wrapperConfig.getConfigName(), filter);
-				filterConfigMap.put(wrapperConfig.getConfigName(),
-						new DefaultTinyFilterConfig(wrapperConfig));
+				wrapper.addHttpFilter(wrapperConfig.getConfigName(), beanName, filter);
 			}
+			filterConfigMap.put(wrapperConfig.getConfigName(),
+					new DefaultTinyFilterConfig(wrapperConfig));
 		}
 	}
 
@@ -184,8 +184,8 @@ public class TinyFilterManagerImpl implements TinyFilterManager {
 		return wrapper;
 	}
 
-	public TinyFilterConfig getTinyFilterConfig(String filterBeanName) {
-		return filterConfigMap.get(filterBeanName);
+	public TinyFilterConfig getTinyFilterConfig(String filterName) {
+		return filterConfigMap.get(filterName);
 	}
 
 }
