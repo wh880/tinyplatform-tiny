@@ -1,6 +1,5 @@
 package org.tinygroup.exception.errorcode;
 
-import org.tinygroup.exception.ErrorCode;
 import org.tinygroup.exception.constant.ErrorLevel;
 import org.tinygroup.exception.constant.ErrorType;
 
@@ -114,7 +113,7 @@ public class ErrorCodeDefault extends AbstractErrorCode {
 
     @Override
     protected String getErrorCodeFormatString() {
-        return "%2s%1s%1d%1d%04d%03d";
+        return "%1s%2s%1d%1d%04d%03d";
     }
 
     public boolean isMatch(String errorCodeStr) {

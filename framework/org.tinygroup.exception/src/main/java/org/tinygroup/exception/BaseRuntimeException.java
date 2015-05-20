@@ -15,16 +15,15 @@
  */
 package org.tinygroup.exception;
 
+import java.util.List;
+import java.util.Locale;
+
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.commons.tools.ExceptionUtil;
 import org.tinygroup.context.Context;
-import org.tinygroup.exception.errorcode.AbstractErrorCode;
 import org.tinygroup.exception.util.ErrorUtil;
 import org.tinygroup.i18n.I18nMessage;
 import org.tinygroup.i18n.I18nMessageFactory;
-
-import java.util.List;
-import java.util.Locale;
 
 public class BaseRuntimeException extends RuntimeException {
 	private static final long serialVersionUID = -1141168272047460629L;
