@@ -73,6 +73,10 @@ public class Column extends ColumnOperator implements Expression,
     public Value value(Object value) {
         return new Value(this, value);
     }
+    
+    public Value value(Expression expression) {
+        return new Value(this, expression);
+    }
 
     public Table getTable() {
         return table;

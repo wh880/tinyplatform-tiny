@@ -20,80 +20,89 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.tinygroup.tinysqldsl.base.Column;
-import org.tinygroup.tinysqldsl.base.Condition;
+import org.tinygroup.tinysqldsl.base.InsertContext;
 import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Table;
 import org.tinygroup.tinysqldsl.base.Value;
-import org.tinygroup.tinysqldsl.expression.JdbcParameter;
 import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
 import org.tinygroup.tinysqldsl.insert.InsertBody;
 
 /**
- * Insert语句
- * Created by luoguo on 2015/3/11.
+ * Insert语句 Created by luoguo on 2015/3/11.
  */
 public class Insert extends StatementSqlBuilder implements Statement {
 
-    private InsertBody insertBody;
-    /**
-     * SQL语句的标识，只是用于方便的识别是哪个SQL，没有其它意义，可以不设置
-     */
-    private String id;
+	private InsertBody insertBody;
 
-    public String getId() {
-        return id;
-    }
+	private InsertContext context;
+	/**
+	 * SQL语句的标识，只是用于方便的识别是哪个SQL，没有其它意义，可以不设置
+	 */
+	private String id;
 
-    private Insert() {
-        insertBody = new InsertBody();
-    }
+	public String getId() {
+		return id;
+	}
 
-    public static Insert insertInto(Table table) {
-        Insert insert = new Insert();
-        insert.getInsertBody().setTable(table);
-        return insert;
-    }
+	private Insert() {
+		insertBody = new InsertBody();
+		context = new InsertContext();
+	}
 
-    public Insert values(Value... values) {
-        List<Column> columns = new ArrayList<Column>();
-        ExpressionList itemsList = new ExpressionList();
-        for (Value value : values) {
-            columns.add(value.getColumn());
-            itemsList.addExpression(new Condition(new JdbcParameter(), value
-                    .getValue()));
-        }
-        insertBody.setColumns(columns);
-        insertBody.setItemsList(itemsList);
-        return this;
-    }
-    
-    public Insert columns(Column... columns){
-    	insertBody.setColumns(Arrays.asList(columns));
-    	insertBody.setUseValues(false);
-    	return this;
-    }
-    
-    public Insert selectBody(Select select){
-        insertBody.setItemsList(null);
-    	insertBody.setSelectBody(select.getPlainSelect());
-    	return this;
-    }
+	public InsertContext getContext() {
+		return context;
+	}
 
-    public InsertBody getInsertBody() {
-        return insertBody;
-    }
+	public static Insert insertInto(Table table) {
+		Insert insert = new Insert();
+		insert.getInsertBody().setTable(table);
+		insert.getContext().setSchema(table.getSchemaName());
+		insert.getContext().setTableName(table.getName());
+		return insert;
+	}
 
-    @Override
-    public String toString() {
-        return sql();
-    }
+	public Insert values(Value... values) {
+		List<Column> columns = new ArrayList<Column>();
+		ExpressionList itemsList = new ExpressionList();
+		for (Value value : values) {
+			Column column = value.getColumn();
+			columns.add(column);
+			context.addColumnName(column.getColumnName());
+			context.putParam(column.getColumnName(), value.getValue());
+			itemsList.addExpression(value.getExpression());
+		}
+		insertBody.setColumns(columns);
+		insertBody.setItemsList(itemsList);
+		return this;
+	}
 
-    @Override
-    protected void parserStatementBody() {
-        build(insertBody);
-    }
+	public Insert columns(Column... columns) {
+		insertBody.setColumns(Arrays.asList(columns));
+		insertBody.setUseValues(false);
+		return this;
+	}
 
-    public void id(String id) {
-        this.id = id;
-    }
+	public Insert selectBody(Select select) {
+		insertBody.setItemsList(null);
+		insertBody.setSelectBody(select.getPlainSelect());
+		return this;
+	}
+
+	public InsertBody getInsertBody() {
+		return insertBody;
+	}
+
+	@Override
+	public String toString() {
+		return sql();
+	}
+
+	@Override
+	protected void parserStatementBody() {
+		build(insertBody);
+	}
+
+	public void id(String id) {
+		this.id = id;
+	}
 }

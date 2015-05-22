@@ -5,7 +5,9 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.jdbctemplatedslsession.provider.DefaultPrimaryKeyProvider;
 import org.tinygroup.jdbctemplatedslsession.rowmapper.SimpleRowMapperSelector;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -25,13 +27,17 @@ import org.tinygroup.tinysqldsl.Update;
  */
 public class SimpleDslSession implements DslSession {
 
-	private JdbcTemplate jdbcTemplate = new JdbcTemplate();
+	private JdbcTemplate jdbcTemplate;
+	private SimpleJdbcInsert jdbcInsert;
 	private RowMapperSelector selector = new SimpleRowMapperSelector();
+	private PrimaryKeyProvider provider;
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(SimpleDslSession.class);
 
 	public SimpleDslSession(DataSource dataSource) {
-		jdbcTemplate.setDataSource(dataSource);
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		jdbcInsert = new SimpleJdbcInsert(dataSource);
+		provider = new DefaultPrimaryKeyProvider();
 	}
 
 	public RowMapperSelector getSelector() {
@@ -51,10 +57,20 @@ public class SimpleDslSession implements DslSession {
 		return jdbcTemplate.update(insert.sql(), insert.getValues().toArray());
 	}
 
+	public Number executeAndReturnKey(Insert insert) {
+		jdbcInsert.setSchemaName(insert.getContext().getSchema());
+		jdbcInsert.setTableName(insert.getContext().getTableName());
+		jdbcInsert.setColumnNames(insert.getContext().getColumnNames());
+		jdbcInsert.setGeneratedKeyNames(provider.generatedKeyNamesWithMetaData(
+				jdbcTemplate.getDataSource(), null, insert.getContext()
+						.getSchema(), insert.getContext().getTableName()));
+		logMessage(insert.sql(), insert.getValues());
+		return jdbcInsert.executeAndReturnKey(insert.getContext().getParams());
+	}
+
 	private void logMessage(String sql, List<Object> values) {
-		LOGGER.logMessage(LogLevel.DEBUG,
-				"Executing SQL:[{0}],values:{1}", sql,
-				values);
+		LOGGER.logMessage(LogLevel.DEBUG, "Executing SQL:[{0}],values:{1}",
+				sql, values);
 	}
 
 	public int execute(Update update) {

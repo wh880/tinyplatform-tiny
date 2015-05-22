@@ -37,7 +37,7 @@ public class DslSqlTest extends BaseTest {
 				CUSTOM.AGE.value(22));
 		affect = session.execute(customInsert);
 		assertEquals(1, affect);
-
+		
 		Insert scoreInsert = insertInto(TSCORE).values(
 				TSCORE.ID.value("10002"), TSCORE.NAME.value("悠悠然然"),
 				TSCORE.SCORE.value(98), TSCORE.COURSE.value("shuxue"));

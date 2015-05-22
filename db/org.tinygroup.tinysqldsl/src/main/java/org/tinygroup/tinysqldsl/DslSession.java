@@ -1,5 +1,6 @@
 package org.tinygroup.tinysqldsl;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,12 +10,21 @@ import java.util.List;
  */
 public interface DslSession {
     /**
-     * 执行Insert语句关返回
+     * 执行Insert语句,返回值为受影响记录数
      *
      * @param insert
      * @return
      */
     int execute(Insert insert);
+    
+    /**
+     * 执行Insert语句，返回值为自增长的主键值。注意不要在创建insert对象的时候，自行设置主键值
+     *
+     * @param insert
+     * @return
+     */
+    Number executeAndReturnKey(Insert insert);
+
 
     /**
      * 执行更新语句
