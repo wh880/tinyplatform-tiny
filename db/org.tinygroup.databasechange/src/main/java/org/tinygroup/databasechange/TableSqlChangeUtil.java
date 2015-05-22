@@ -3,6 +3,7 @@ package org.tinygroup.databasechange;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -28,20 +29,23 @@ public class TableSqlChangeUtil {
 		DatabaseInstallerProcessor processor = BeanContainerFactory
 				.getBeanContainer(TableSqlChangeUtil.class.getClassLoader())
 				.getBean("databaseInstallerProcessor");
-		Map<Class, List<String>> processSqls = processor.getChangeSqls();
 		StringBuilder builder = new StringBuilder();
-		for (Class clazz : processSqls.keySet()) {
-			builder.append("//-----").append(clazz.getSimpleName())
-					.append("-----").append("\n\r");
-			List<String> sqls = processSqls.get(clazz);
-			for (String sql : sqls) {
-				builder.append(sql).append("\n\r");
+		try {
+			Map<Class, List<String>> processSqls = processor.getChangeSqls();
+			for (Class clazz : processSqls.keySet()) {
+				builder.append("//-----").append(clazz.getSimpleName())
+						.append("-----").append("\n\r");
+				List<String> sqls = processSqls.get(clazz);
+				for (String sql : sqls) {
+					builder.append(sql).append("\n\r");
+				}
+				builder.append("//-----").append(clazz.getSimpleName())
+						.append("-----").append("\n\r");
+				builder.append("\n\r");
 			}
-			builder.append("//-----").append(clazz.getSimpleName())
-					.append("-----").append("\n\r");
-			builder.append("\n\r");
+			StreamUtil.writeText(builder, new FileWriter(new File(fileName)), true);
+		} catch (Exception e) {
+			e.printStackTrace(new PrintWriter(new FileWriter(new File(fileName)),true));
 		}
-		StreamUtil.writeText(builder, new FileWriter(new File(fileName)), true);
 	}
-
 }
