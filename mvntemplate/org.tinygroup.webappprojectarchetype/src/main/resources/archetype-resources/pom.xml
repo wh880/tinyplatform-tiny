@@ -44,21 +44,6 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.flowbasicservice</artifactId>
-            <version>${tinyVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.cepcorebasicservice</artifactId>
-            <version>${tinyVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.flowplugin</artifactId>
-            <version>${tinyVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.tinygroup</groupId>
             <artifactId>org.tinygroup.flowservicecomponent</artifactId>
             <version>${tinyVersion}</version>
         </dependency>
