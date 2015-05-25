@@ -21,11 +21,11 @@ public class BeanField {
 	public void setField(BeanNoField field) {
 		this.field = field;
 	}
-//	public BeanNoField getFieldNoExist() {
-//		return field;
-//	}
-//	public void setFieldNoExist(BeanNoField field) {
-//		this.field = field;
-//	}
+	public BeanNoField getFieldNoExist() {
+		return field;
+	}
+	public void setFieldNoExist(BeanNoField field) {
+		this.field = field;
+	}
 	
 }
