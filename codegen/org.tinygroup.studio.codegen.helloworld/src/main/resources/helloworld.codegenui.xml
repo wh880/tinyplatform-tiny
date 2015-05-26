@@ -1,0 +1,7 @@
+<ui columns-per-line="5">
+    <group title="属性配置">
+        <!-- 可选类型text ,textarea, combo , checkbox ,openType, space-->
+        <control name="beanPackageName" title="包名" type="text" default-value="" columns="5" required="true"/>
+        <control name="className" title="类名" type="text" default-value="HelloWorld" columns="5" required="true"/>
+    </group>
+</ui>
