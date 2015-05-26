@@ -110,23 +110,23 @@ public class CaseExpression implements Expression {
 						: "") + "END";
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("CASE ");
 		Expression switchExp = getSwitchExpression();
 		if (switchExp != null) {
-			switchExp.builder(builder);
+			switchExp.builderExpression(builder);
 			buffer.append(" ");
 		}
 
 		for (Expression exp : getWhenClauses()) {
-			exp.builder(builder);
+			exp.builderExpression(builder);
 		}
 
 		Expression elseExp = getElseExpression();
 		if (elseExp != null) {
 			buffer.append("ELSE ");
-			elseExp.builder(builder);
+			elseExp.builderExpression(builder);
 			buffer.append(" ");
 		}
 

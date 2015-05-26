@@ -39,7 +39,7 @@ public class OrExpression extends BinaryExpression {
         return "OR";
     }
 
-    public void builder(StatementSqlBuilder builder) {
+    public void builderExpression(StatementSqlBuilder builder) {
 		builder.visitBinaryExpression(this, " OR ");
 	}
 }

@@ -57,7 +57,7 @@ public class JsonExpression implements Expression {
 		return b.toString();
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		StringBuilder b = builder.getStringBuilder();
 		b.append(column.toString());
 		for (String ident : idents) {

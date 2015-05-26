@@ -51,14 +51,14 @@ public class Parenthesis implements Expression {
 		return (not ? "NOT " : "") + "(" + expression + ")";
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		if (isNot()) {
 			buffer.append(" NOT ");
 		}
 
 		buffer.append("(");
-		getExpression().builder(builder);
+		getExpression().builderExpression(builder);
 		buffer.append(")");
 	}
 }

@@ -64,10 +64,10 @@ public class SubJoin implements FromItem {
 				+ ((alias != null) ? alias.toString() : "");
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderFromItem(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("(");
-		getLeft().builder(builder);
+		getLeft().builderFromItem(builder);
 		builder.deparseJoin(getJoin());
 		buffer.append(")");
 	}

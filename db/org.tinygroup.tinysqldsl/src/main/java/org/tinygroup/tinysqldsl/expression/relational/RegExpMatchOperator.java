@@ -51,7 +51,7 @@ public class RegExpMatchOperator extends BinaryExpression {
 		return null;
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.visitBinaryExpression(this, " " + getStringExpression() + " ");
 	}
 }

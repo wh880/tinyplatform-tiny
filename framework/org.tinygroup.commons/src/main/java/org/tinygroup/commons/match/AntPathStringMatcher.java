@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.tinygroup.commons.tools.StringEscapeUtil;
+
 /**
  * Package-protected helper class for {@link AntPathMatcher}. Tests whether or not a string matches against a pattern
  * using a regular expression.
@@ -90,7 +92,7 @@ public class AntPathStringMatcher {
 			if (uriTemplateVariables != null) {
 				for (int i = 1; i <= matcher.groupCount(); i++) {
 					String name = this.variableNames.get(i - 1);
-					String value = matcher.group(i);
+					String value = StringEscapeUtil.unescapeURL(matcher.group(i));
 					uriTemplateVariables.put(name, value);
 				}
 			}
@@ -107,21 +109,5 @@ public class AntPathStringMatcher {
 
 	public Map<String, String> getUriTemplateVariables() {
 		return uriTemplateVariables;
-	}
-	
-	public static void main(String[] args) {
-		String str0="/users/";
-		String str1="/users/sdfdf";
-		String str2="/users/new/sdfdf";
-		String str3="/users/new/sfdsd/sdfdf";
-		
-		AntPathStringMatcher matcher1=new AntPathStringMatcher("/users/{id}",str1 );
-		AntPathStringMatcher matcher2=new AntPathStringMatcher("/users/new/{name}",str1 );
-		AntPathStringMatcher matcher3=new AntPathStringMatcher("/users/{id}/{name}/{age}",str3 );
-		
-		System.out.println(matcher1.matches());
-		System.out.println(matcher2.matches());
-		System.out.println(matcher3.matches());
-		
 	}
 }

@@ -98,7 +98,7 @@ public class Top implements SelectItem {
 		return result;
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderSelectItem(StatementSqlBuilder builder) {
 		String result = "TOP ";
 		if (hasParenthesis) {
 			result += "(";

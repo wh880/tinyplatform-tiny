@@ -45,13 +45,13 @@ public class ExistsExpression implements Expression {
 		return getStringExpression() + " " + rightExpression.toString();
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		if (isNot()) {
 			buffer.append("NOT EXISTS ");
 		} else {
 			buffer.append("EXISTS ");
 		}
-		getRightExpression().builder(builder);
+		getRightExpression().builderExpression(builder);
 	}
 }

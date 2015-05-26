@@ -29,7 +29,7 @@ public class GreaterThan extends OldOracleJoinBinaryExpression {
         return ">";
     }
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.visitOldOracleJoinBinaryExpression(this, " > ");
 	}
 }

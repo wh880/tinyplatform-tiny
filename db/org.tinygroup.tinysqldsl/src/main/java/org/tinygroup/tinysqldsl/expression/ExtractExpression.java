@@ -49,7 +49,7 @@ public class ExtractExpression implements Expression {
         return "EXTRACT(" + name + " FROM " + expression + ')';
     }
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql(toString());		
 	}
 }

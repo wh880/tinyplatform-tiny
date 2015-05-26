@@ -35,7 +35,7 @@ public class Concat extends BinaryExpression {
 		return "||";
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.visitBinaryExpression(this, " || ");
 	}
 }

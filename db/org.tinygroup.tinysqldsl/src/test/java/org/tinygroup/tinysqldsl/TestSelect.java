@@ -20,6 +20,7 @@ import static org.tinygroup.tinysqldsl.select.OrderByElement.asc;
 import static org.tinygroup.tinysqldsl.select.OrderByElement.desc;
 import static org.tinygroup.tinysqldsl.selectitem.Top.top;
 
+import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.expression.FragmentExpressionSql;
 import org.tinygroup.tinysqldsl.formitem.SubSelect;
 import org.tinygroup.tinysqldsl.selectitem.Top;
@@ -164,6 +165,13 @@ public class TestSelect {
 		
 		System.out.println(select(CUSTOM.NAME).from(CUSTOM,TSCORE).where(
 				and(CUSTOM.AGE.greaterThan(null), CUSTOM.NAME.equal(null),CUSTOM.ID.eq(TSCORE.ID))));
+		
+		CustomTable man=CUSTOM.as("man");
+		CustomTable womon=CUSTOM.as("womon");
+		System.out.println(select(man.NAME,womon.NAME).from(man,womon));
+		Column manName=man.NAME.as("manName");
+		Column womonName=womon.NAME.as("womonName");
+		System.out.println(select(manName,womonName).from(man,womon).where(manName.eq("test")));
 		
 	}
 }

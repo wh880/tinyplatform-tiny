@@ -66,7 +66,7 @@ public class LongValue implements Expression {
         return getStringValue();
     }
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql(stringValue);
 	}
 }

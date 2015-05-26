@@ -27,7 +27,7 @@ public class AllColumns  implements SelectItem {
         return "*";
     }
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderSelectItem(StatementSqlBuilder builder) {
 		builder.appendSql("*");
 	}
 

@@ -15,7 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.selectitem;
 
-import org.tinygroup.tinysqldsl.build.SqlBuildProcessor;
+import org.tinygroup.tinysqldsl.build.SelectItemBuildProcessor;
 
 
 /**
@@ -23,6 +23,6 @@ import org.tinygroup.tinysqldsl.build.SqlBuildProcessor;
  * @author renhui
  *
  */
-public interface SelectItem extends SqlBuildProcessor {
+public interface SelectItem extends SelectItemBuildProcessor {
 
 }

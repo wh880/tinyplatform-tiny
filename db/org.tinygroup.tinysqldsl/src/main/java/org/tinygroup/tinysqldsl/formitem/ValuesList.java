@@ -105,7 +105,7 @@ public class ValuesList implements FromItem {
 		this.columnNames = columnNames;
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderFromItem(StatementSqlBuilder builder) {
 		builder.appendSql(toString());
 	}
 }

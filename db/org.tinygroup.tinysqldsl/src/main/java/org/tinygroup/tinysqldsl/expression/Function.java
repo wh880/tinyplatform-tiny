@@ -194,7 +194,11 @@ public class Function extends SimpleBinaryOperator implements Expression,
 		return ans;
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
+		internalBuilder(builder);
+	}
+
+	private void internalBuilder(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		if (isEscaped()) {
 			buffer.append("{fn ");
@@ -214,7 +218,7 @@ public class Function extends SimpleBinaryOperator implements Expression,
 				buffer.append("(ALL ");
 				builder.setUseBracketsInExprList(false);
 			}
-			getParameters().builder(builder);
+			getParameters().builderItemList(builder);
 			builder.setUseBracketsInExprList(oldUseBracketsInExprList);
 			if (isDistinct() || isAllColumns()) {
 				buffer.append(")");
@@ -223,5 +227,9 @@ public class Function extends SimpleBinaryOperator implements Expression,
 		if (isEscaped()) {
 			buffer.append("}");
 		}
+	}
+
+	public void builderSelectItem(StatementSqlBuilder builder) {
+		internalBuilder(builder);
 	}
 }

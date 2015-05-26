@@ -38,7 +38,7 @@ public class JdbcNamedParameter implements Expression {
 		return ":" + name;
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql(toString());
 	}
 }

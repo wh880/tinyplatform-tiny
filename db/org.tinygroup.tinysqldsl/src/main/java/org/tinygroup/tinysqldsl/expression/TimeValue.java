@@ -46,7 +46,7 @@ public class TimeValue implements Expression {
 		return "{t '" + value + "'}";
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("{t '").append(getValue().toString()).append("'}");
 	}

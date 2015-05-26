@@ -46,7 +46,7 @@ public class AllTableColumns  implements SelectItem {
         return table + ".*";
     }
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderSelectItem(StatementSqlBuilder builder) {
 		builder.appendSql(getTable().getFullyQualifiedName()+".*");
 	}
 }

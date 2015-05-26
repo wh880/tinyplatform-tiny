@@ -72,7 +72,7 @@ public class OracleHierarchicalExpression implements Expression {
 		return b.toString();
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql(toString());
 	}
 }

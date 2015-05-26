@@ -59,7 +59,7 @@ public class StringValue implements Expression {
         return "'" + value + "'";
     }
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("'").append(getValue()).append("'");
 	}

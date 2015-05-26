@@ -48,7 +48,7 @@ public class TimestampValue implements Expression {
         return "{ts '" + value + "'}";
     }
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("{ts '").append(getValue().toString()).append("'}");		
 	}

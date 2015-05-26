@@ -40,7 +40,7 @@ public class NotEqualsTo extends OldOracleJoinBinaryExpression {
         return operator;
     }
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.visitOldOracleJoinBinaryExpression(this, " " + getStringExpression() + " ");
 	}
 }

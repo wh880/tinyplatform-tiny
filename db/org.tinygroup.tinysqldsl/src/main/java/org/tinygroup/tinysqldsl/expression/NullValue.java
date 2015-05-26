@@ -26,7 +26,7 @@ public class NullValue implements Expression {
 		return "NULL";
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql("NULL");
 	}
 }

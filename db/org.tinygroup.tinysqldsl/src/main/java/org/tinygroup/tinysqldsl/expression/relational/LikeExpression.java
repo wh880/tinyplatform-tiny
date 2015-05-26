@@ -53,7 +53,7 @@ public class LikeExpression extends BinaryExpression {
 		this.escape = escape;
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.visitBinaryExpression(this, " LIKE ");
 		StringBuilder buffer = builder.getStringBuilder();
 		String escape = getEscape();

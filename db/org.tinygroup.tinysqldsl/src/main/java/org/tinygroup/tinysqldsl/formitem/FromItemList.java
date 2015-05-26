@@ -72,7 +72,7 @@ public class FromItemList implements FromItem {
 		return DslUtil.getStringList(fromItems, true, false);
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderFromItem(StatementSqlBuilder builder) {
 		builder.appendSql(toString());
 	}
 
