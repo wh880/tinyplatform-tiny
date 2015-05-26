@@ -54,7 +54,7 @@ public class LateralSubSelect implements FromItem {
 				+ ((alias != null) ? alias.toString() : "");
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderFromItem(StatementSqlBuilder builder) {
 		builder.appendSql(toString());
 	}
 }

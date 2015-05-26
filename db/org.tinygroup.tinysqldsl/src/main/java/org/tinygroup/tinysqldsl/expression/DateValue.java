@@ -46,7 +46,7 @@ public class DateValue implements Expression {
 		value = d;
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("{d '").append(getValue().toString()).append("'}");
 	}

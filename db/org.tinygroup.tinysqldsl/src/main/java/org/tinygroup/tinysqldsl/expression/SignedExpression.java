@@ -54,9 +54,9 @@ public class SignedExpression implements Expression {
 		return getSign() + expression.toString();
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append(getSign());
-		getExpression().builder(builder);
+		getExpression().builderExpression(builder);
 	}
 }

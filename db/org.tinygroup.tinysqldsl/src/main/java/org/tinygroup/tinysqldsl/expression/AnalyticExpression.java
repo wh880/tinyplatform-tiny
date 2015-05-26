@@ -156,7 +156,7 @@ public class AnalyticExpression implements Expression {
 	}
 
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql(toString());
 	}
 }

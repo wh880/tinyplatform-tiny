@@ -15,7 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.build.SqlBuildProcessor;
+import org.tinygroup.tinysqldsl.build.ExpressionBuildProcessor;
 
 /**
  * 表达式
@@ -23,5 +23,5 @@ import org.tinygroup.tinysqldsl.build.SqlBuildProcessor;
  * @author renhui
  *
  */
-public interface Expression extends SqlBuildProcessor{
+public interface Expression extends ExpressionBuildProcessor{
 }

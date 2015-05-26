@@ -27,7 +27,7 @@ public class JdbcParameter implements Expression {
         return "?";
     }
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql(toString());		
 	}
 }

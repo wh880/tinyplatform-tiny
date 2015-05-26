@@ -171,7 +171,7 @@ public class UpdateBody implements StatementBody {
 		return b.toString();
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderStatement(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("UPDATE ")
 				.append(DslUtil.getStringList(getTables(), true, false))
@@ -183,7 +183,7 @@ public class UpdateBody implements StatementBody {
 				buffer.append(column.getFullyQualifiedName()).append(" = ");
 
 				Expression expression = getExpressions().get(i);
-				expression.builder(builder);
+				expression.builderExpression(builder);
 				if (i < getColumns().size() - 1) {
 					buffer.append(", ");
 				}
@@ -205,7 +205,7 @@ public class UpdateBody implements StatementBody {
 			buffer.append(" = ");
 			buffer.append("(");
 			SelectBody selectBody = getSelectBody();
-			selectBody.builder(builder);
+			selectBody.builderStatement(builder);
 			buffer.append(")");
 		}
 
@@ -224,7 +224,7 @@ public class UpdateBody implements StatementBody {
 
 		if (getWhere() != null) {
 			buffer.append(" WHERE ");
-			getWhere().builder(builder);
+			getWhere().builderExpression(builder);
 		}
 
 	}

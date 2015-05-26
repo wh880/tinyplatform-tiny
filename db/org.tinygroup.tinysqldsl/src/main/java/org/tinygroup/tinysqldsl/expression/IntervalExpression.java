@@ -32,7 +32,7 @@ public class IntervalExpression implements Expression {
 		return "INTERVAL " + parameter;
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql(toString());
 	}
 }

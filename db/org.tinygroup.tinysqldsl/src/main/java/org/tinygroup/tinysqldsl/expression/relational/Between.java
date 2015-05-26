@@ -82,16 +82,16 @@ public class Between implements Expression {
 	}
 
 
-	public void builder(StatementSqlBuilder builder) {
-		getLeftExpression().builder(builder);
+	public void builderExpression(StatementSqlBuilder builder) {
+		getLeftExpression().builderExpression(builder);
 		StringBuilder buffer = builder.getStringBuilder();
 		if (isNot()) {
 			buffer.append(" NOT");
 		}
 
 		buffer.append(" BETWEEN ");
-		getBetweenExpressionStart().builder(builder);
+		getBetweenExpressionStart().builderExpression(builder);
 		buffer.append(" AND ");
-		getBetweenExpressionEnd().builder(builder);
+		getBetweenExpressionEnd().builderExpression(builder);
 	}
 }

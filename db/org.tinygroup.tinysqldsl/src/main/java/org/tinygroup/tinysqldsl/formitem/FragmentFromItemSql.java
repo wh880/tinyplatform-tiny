@@ -35,7 +35,7 @@ public class FragmentFromItemSql extends FragmentSql implements FromItem {
 		return getFragment() + ((alias != null) ? alias.toString() : "");
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderFromItem(StatementSqlBuilder builder) {
 		builder.appendSql(toString());
 	}
 

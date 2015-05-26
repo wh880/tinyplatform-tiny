@@ -68,10 +68,10 @@ public class MultiExpressionList implements ItemsList {
 		return b.toString();
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderItemList(StatementSqlBuilder builder) {
 		for (Iterator<ExpressionList> it = getExprList().iterator(); it
 				.hasNext();) {
-			it.next().builder(builder);
+			it.next().builderItemList(builder);
 			if (it.hasNext()) {
 				builder.appendSql(", ");
 			}

@@ -58,13 +58,13 @@ public class DeleteBody implements StatementBody {
 	}
 
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderStatement(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("DELETE FROM ")
 				.append(getTable().getFullyQualifiedName());
 		if (getWhere() != null) {
 			buffer.append(" WHERE ");
-			getWhere().builder(builder);
+			getWhere().builderExpression(builder);
 		}
 	}
 }

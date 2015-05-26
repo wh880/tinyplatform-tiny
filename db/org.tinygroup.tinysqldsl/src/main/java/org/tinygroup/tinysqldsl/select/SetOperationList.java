@@ -131,7 +131,7 @@ public class SetOperationList implements SelectBody {
 		INTERSECT, EXCEPT, MINUS, UNION
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderStatement(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		for (int i = 0; i < getPlainSelects().size(); i++) {
 			if (i != 0) {
@@ -140,7 +140,7 @@ public class SetOperationList implements SelectBody {
 			}
 			buffer.append("(");
 			PlainSelect plainSelect = getPlainSelects().get(i);
-			plainSelect.builder(builder);
+			plainSelect.builderStatement(builder);
 			buffer.append(")");
 		}
 		if (getOrderByElements() != null) {

@@ -64,9 +64,9 @@ public class Condition implements Expression {
 		return expression.toString();
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		Expression expression = getExpression();
-		expression.builder(builder);
+		expression.builderExpression(builder);
 		builder.addParamValue(extendParams.toArray());
 	}
 

@@ -15,12 +15,12 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
-import org.tinygroup.tinysqldsl.build.SqlBuildProcessor;
+import org.tinygroup.tinysqldsl.build.ItemListBuildProcessor;
 
 /**
  * Values of an "INSERT" statement (for example a SELECT or a list of
  * expressions)
  */
-public interface ItemsList extends SqlBuildProcessor {
+public interface ItemsList extends ItemListBuildProcessor {
 
 }

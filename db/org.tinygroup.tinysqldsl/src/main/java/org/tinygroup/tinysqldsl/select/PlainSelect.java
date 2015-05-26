@@ -280,13 +280,13 @@ public class PlainSelect implements SelectBody {
 		return sql.toString();
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderStatement(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("SELECT ");
 		for (Iterator<SelectItem> iter = getSelectItems().iterator(); iter
 				.hasNext();) {
 			SelectItem selectItem = iter.next();
-			selectItem.builder(builder);
+			selectItem.builderSelectItem(builder);
 			if (iter.hasNext()) {
 				buffer.append(",");
 			}
@@ -296,7 +296,7 @@ public class PlainSelect implements SelectBody {
 			buffer.append(" INTO ");
 			for (Iterator<Table> iter = getIntoTables().iterator(); iter
 					.hasNext();) {
-				iter.next().builder(builder);
+				iter.next().builderFromItem(builder);
 				if (iter.hasNext()) {
 					buffer.append(",");
 				}
@@ -305,7 +305,7 @@ public class PlainSelect implements SelectBody {
 
 		if (getFromItem() != null) {
 			buffer.append(" FROM ");
-			getFromItem().builder(builder);
+			getFromItem().builderFromItem(builder);
 		}
 
 		if (getJoins() != null) {
@@ -316,11 +316,11 @@ public class PlainSelect implements SelectBody {
 
 		if (getWhere() != null) {
 			buffer.append(" WHERE ");
-			getWhere().builder(builder);
+			getWhere().builderExpression(builder);
 		}
 
 		if (getOracleHierarchical() != null) {
-			getOracleHierarchical().builder(builder);
+			getOracleHierarchical().builderExpression(builder);
 		}
 
 		if (getGroupByColumnReferences() != null) {
@@ -328,7 +328,7 @@ public class PlainSelect implements SelectBody {
 			for (Iterator<Expression> iter = getGroupByColumnReferences()
 					.iterator(); iter.hasNext();) {
 				Expression columnReference = iter.next();
-				columnReference.builder(builder);
+				columnReference.builderExpression(builder);
 				if (iter.hasNext()) {
 					buffer.append(",");
 				}
@@ -337,7 +337,7 @@ public class PlainSelect implements SelectBody {
 
 		if (getHaving() != null) {
 			buffer.append(" HAVING ");
-			getHaving().builder(builder);
+			getHaving().builderExpression(builder);
 		}
 
 		if (getOrderByElements() != null) {
