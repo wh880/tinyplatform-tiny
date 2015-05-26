@@ -2,7 +2,7 @@ package org.tinygroup.exception.util;
 
 import org.tinygroup.exception.ErrorCode;
 import org.tinygroup.exception.errorcode.AbstractErrorCode;
-import org.tinygroup.exception.CommonError;
+import org.tinygroup.exception.Error;
 import org.tinygroup.exception.errorcode.ErrorCodeDefault;
 import org.tinygroup.exception.ErrorContext;
 import org.tinygroup.exception.constant.ErrorLevel;
@@ -53,9 +53,9 @@ public class ErrorUtil {
 	 * @param message
 	 * @return
 	 */
-	public static CommonError makeError(ErrorCode errorCode, String message) {
+	public static Error makeError(ErrorCode errorCode, String message) {
 
-		CommonError error = new CommonError();
+		Error error = new Error();
 		error.setErrorCode(errorCode);
 		error.setErrorMsg(message);
 		error.setErrorSource(getAppName());
@@ -70,10 +70,10 @@ public class ErrorUtil {
 	 * @param location
 	 * @return
 	 */
-	public static CommonError makeError(ErrorCode errorCode, String message,
+	public static Error makeError(ErrorCode errorCode, String message,
 			String location) {
 
-		CommonError error = new CommonError();
+		Error error = new Error();
 		error.setErrorCode(errorCode);
 		error.setErrorMsg(message);
 		error.setErrorSource(location);
@@ -86,7 +86,7 @@ public class ErrorUtil {
 	 * @param error
 	 * @return
 	 */
-	public static ErrorContext addError(CommonError error) {
+	public static ErrorContext addError(Error error) {
 		return addError(null, error);
 	}
 
@@ -97,7 +97,7 @@ public class ErrorUtil {
 	 * @param error
 	 * @return
 	 */
-	public static ErrorContext addError(ErrorContext context, CommonError error) {
+	public static ErrorContext addError(ErrorContext context, Error error) {
 
 		if (context == null) {
 			context = new ErrorContext();
@@ -123,7 +123,7 @@ public class ErrorUtil {
 	public static ErrorContext makeAndAddError(ErrorContext context,
 											   ErrorCode errorCode, String message) {
 
-		CommonError error = makeError(errorCode, message);
+		Error error = makeError(errorCode, message);
 		context = addError(context, error);
 
 		return context;
@@ -139,7 +139,7 @@ public class ErrorUtil {
 	public static ErrorContext makeAndAddError(AbstractErrorCode errorCode,
 			String message) {
 
-		CommonError error = makeError(errorCode, message);
+		Error error = makeError(errorCode, message);
 		ErrorContext context = addError(error);
 
 		return context;

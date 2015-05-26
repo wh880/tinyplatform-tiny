@@ -104,7 +104,7 @@ public class ConditionExpressionList implements Expression {
 		return DslUtil.getStringList(expressions, useComma, useBrackets, comma);
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql(toString());
 	}
 

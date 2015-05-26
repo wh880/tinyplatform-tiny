@@ -69,7 +69,7 @@ public abstract class StatementSqlBuilder {
 	}
 
 	public void build(StatementBody statementBody) {
-		statementBody.builder(this);
+		statementBody.builderStatement(this);
 	}
 
 	public void appendSql(String segment) {
@@ -131,9 +131,9 @@ public abstract class StatementSqlBuilder {
 		if (binaryExpression.isNot()) {
 			stringBuilder.append(" NOT ");
 		}
-		binaryExpression.getLeftExpression().builder(this);
+		binaryExpression.getLeftExpression().builderExpression(this);
 		stringBuilder.append(operator);
-		binaryExpression.getRightExpression().builder(this);
+		binaryExpression.getRightExpression().builderExpression(this);
 	}
 
 	public void visitOldOracleJoinBinaryExpression(
@@ -141,12 +141,12 @@ public abstract class StatementSqlBuilder {
 		if (expression.isNot()) {
 			stringBuilder.append(" NOT ");
 		}
-		expression.getLeftExpression().builder(this);
+		expression.getLeftExpression().builderExpression(this);
 		if (expression.getOldOracleJoinSyntax() == EqualsTo.ORACLE_JOIN_RIGHT) {
 			stringBuilder.append("(+)");
 		}
 		stringBuilder.append(operator);
-		expression.getRightExpression().builder(this);
+		expression.getRightExpression().builderExpression(this);
 		if (expression.getOldOracleJoinSyntax() == EqualsTo.ORACLE_JOIN_LEFT) {
 			stringBuilder.append("(+)");
 		}
@@ -174,10 +174,10 @@ public abstract class StatementSqlBuilder {
 		}
 
 		FromItem fromItem = join.getRightItem();
-		fromItem.builder(this);
+		fromItem.builderFromItem(this);
 		if (join.getOnExpression() != null) {
 			stringBuilder.append(" ON ");
-			join.getOnExpression().builder(this);
+			join.getOnExpression().builderExpression(this);
 		}
 		if (join.getUsingColumns() != null) {
 			stringBuilder.append(" USING (");

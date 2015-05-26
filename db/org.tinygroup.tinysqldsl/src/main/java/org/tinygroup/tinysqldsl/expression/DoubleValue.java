@@ -59,7 +59,7 @@ public class DoubleValue implements Expression {
 		return stringValue;
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql(toString());
 	}
 }

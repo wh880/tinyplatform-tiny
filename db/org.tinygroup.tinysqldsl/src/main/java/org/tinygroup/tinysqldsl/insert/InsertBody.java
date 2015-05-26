@@ -153,7 +153,7 @@ public class InsertBody implements StatementBody {
 		return sql.toString();
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderStatement(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("INSERT INTO ");
 		buffer.append(getTable().getFullyQualifiedName());
@@ -173,7 +173,7 @@ public class InsertBody implements StatementBody {
 			buffer.append(" VALUES");
 		}
 		if (getItemsList() != null) {
-			getItemsList().builder(builder);
+			getItemsList().builderItemList(builder);
 		}
 
 		if (getSelectBody() != null) {
@@ -181,7 +181,7 @@ public class InsertBody implements StatementBody {
 			if (isUseSelectBrackets()) {
 				buffer.append("(");
 			}
-			getSelectBody().builder(builder);
+			getSelectBody().builderStatement(builder);
 			if (isUseSelectBrackets()) {
 				buffer.append(")");
 			}

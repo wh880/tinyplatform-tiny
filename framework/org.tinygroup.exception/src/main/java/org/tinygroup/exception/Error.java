@@ -13,7 +13,7 @@ import org.tinygroup.exception.errorcode.AbstractErrorCode;
  * </ul>
  * <p>标准错误对象是一次错误处理结果的描述。
  */
-public class CommonError implements java.io.Serializable {
+public class Error implements java.io.Serializable {
 
     /**
      * 序列ID
@@ -40,7 +40,7 @@ public class CommonError implements java.io.Serializable {
     /**
      * 默认构造方法
      */
-    public CommonError() {
+    public Error() {
     }
 
     /**
@@ -49,7 +49,7 @@ public class CommonError implements java.io.Serializable {
      * @param code
      * @param msg
      */
-    public CommonError(AbstractErrorCode code, String msg, String location) {
+    public Error(AbstractErrorCode code, String msg, String location) {
         this.errorCode = code;
         this.errorMsg = msg;
         this.errorSource = location;

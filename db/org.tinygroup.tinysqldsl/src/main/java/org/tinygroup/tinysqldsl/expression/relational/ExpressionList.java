@@ -92,7 +92,7 @@ public class ExpressionList implements ItemsList {
 		return DslUtil.getStringList(expressions, useComma, useBrackets, comma);
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderItemList(StatementSqlBuilder builder) {
 		boolean useBracketsInExprList = builder.isUseBracketsInExprList();
 		StringBuilder buffer = builder.getStringBuilder();
 		if (useBracketsInExprList) {
@@ -101,7 +101,7 @@ public class ExpressionList implements ItemsList {
 		for (Iterator<Expression> iter = getExpressions()
 				.iterator(); iter.hasNext();) {
 			Expression expression = iter.next();
-			expression.builder(builder);
+			expression.builderExpression(builder);
 			if (iter.hasNext()) {
 				buffer.append(", ");
 			}

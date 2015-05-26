@@ -37,9 +37,9 @@ public class AnyComparisonExpression implements Expression {
 		return buffer.toString();
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql(" ANY ");
-		getSubSelect().builder(builder);
+		getSubSelect().builderExpression(builder);
 	}
 
 }

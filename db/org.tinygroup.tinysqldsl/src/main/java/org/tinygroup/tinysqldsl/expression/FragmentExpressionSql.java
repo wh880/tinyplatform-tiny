@@ -14,7 +14,7 @@ public class FragmentExpressionSql extends FragmentSql implements Expression {
 		super(fragment);
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql(getFragment());
 	}
 

@@ -56,7 +56,7 @@ public class CustomSelectItem implements SelectItem {
 		return String.format(format, args);
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderSelectItem(StatementSqlBuilder builder) {
 		builder.appendSql(segment());
 	}
 

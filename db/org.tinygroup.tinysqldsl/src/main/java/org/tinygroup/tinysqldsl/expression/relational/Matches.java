@@ -33,7 +33,7 @@ public class Matches extends OldOracleJoinBinaryExpression {
 		return "@@";
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		builder.visitOldOracleJoinBinaryExpression(this, " @@ ");
 	}
 }

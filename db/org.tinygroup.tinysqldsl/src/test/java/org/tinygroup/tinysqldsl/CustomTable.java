@@ -12,7 +12,15 @@ public class CustomTable extends Table {
     public final Column NAME = new Column(this, "name");
     public final Column AGE = new Column(this, "age");
 
-    private CustomTable() {
+    public CustomTable() {
         super("custom");
+    }
+    
+    public CustomTable(String schemaName,String alias) {
+        super(schemaName, "custom", alias);
+    }
+    
+    public CustomTable(String schemaName,String alias,boolean withAs) {
+        super(schemaName, "custom", alias, withAs);
     }
 }

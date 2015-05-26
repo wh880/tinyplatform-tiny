@@ -8,7 +8,7 @@ import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
  * @author renhui
  * 
  */
-public interface SqlBuildProcessor {
+public interface FromItemBuildProcessor {
 
 	/**
 	 * 实现接口的sql片段通过builder.appendSql(String
@@ -17,6 +17,6 @@ public interface SqlBuildProcessor {
 	 * 
 	 * @param builder
 	 */
-	public void builder(StatementSqlBuilder builder);
+	public void builderFromItem(StatementSqlBuilder builder);
 
 }

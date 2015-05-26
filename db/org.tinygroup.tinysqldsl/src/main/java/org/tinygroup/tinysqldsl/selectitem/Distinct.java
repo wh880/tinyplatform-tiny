@@ -63,13 +63,13 @@ public class Distinct implements SelectItem {
 		return sql;
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderSelectItem(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("DISTINCT ");
 		SelectItem selectItem = getSelectItem();
 		if (selectItem != null) {
 			buffer.append("(");
-			selectItem.builder(builder);
+			selectItem.builderSelectItem(builder);
 			buffer.append(") ");
 		}
 	}

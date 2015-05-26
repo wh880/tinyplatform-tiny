@@ -14,7 +14,7 @@ public class FragmentSelectItemSql extends FragmentSql implements SelectItem {
         super(fragment);
     }
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderSelectItem(StatementSqlBuilder builder) {
 		builder.appendSql(getFragment());
 	}
 }

@@ -15,13 +15,14 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
+import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.tinysqldsl.formitem.FromItem;
 import org.tinygroup.tinysqldsl.selectitem.AllTableColumns;
 
 /**
  * 表对象 Created by luoguo on 2015/3/11.
  */
-public class Table implements FromItem, MultiPartName {
+public class Table implements FromItem, MultiPartName{
     public final AllTableColumns ALL = new AllTableColumns(this);
     /**
      * 模式名
@@ -40,21 +41,15 @@ public class Table implements FromItem, MultiPartName {
     }
 
     public <T extends Table> T as(String aliasName) {
-        try {
-            T table = (T) this.clone();
-            table.setAlias(new Alias(aliasName));
-            return table;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
+       return as(aliasName,false);
     }
 
-    public <T extends Table> T as(String aliasName, boolean withAs) throws CloneNotSupportedException {
+    public <T extends Table> T as(String aliasName, boolean withAs){
         try {
-            T table = (T) this.clone();
+            T table = (T) BeanUtil.deepCopy(this);
             table.setAlias(new Alias(aliasName, withAs));
             return table;
-        } catch (CloneNotSupportedException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -71,6 +66,11 @@ public class Table implements FromItem, MultiPartName {
     public Table(String schemaName, String name, String alias) {
         this(schemaName, name);
         this.alias = new Alias(alias);
+    }
+    
+    public Table(String schemaName, String name, String alias,boolean withAs) {
+        this(schemaName, name);
+        this.alias = new Alias(alias,withAs);
     }
 
     public String getSchemaName() {
@@ -126,7 +126,7 @@ public class Table implements FromItem, MultiPartName {
                 + ((alias != null) ? alias.toString() : "");
     }
 
-    public void builder(StatementSqlBuilder builder) {
+    public void builderFromItem(StatementSqlBuilder builder) {
         StringBuilder buffer = builder.getStringBuilder();
         buffer.append(getFullyQualifiedName());
         Alias alias = getAlias();
@@ -134,5 +134,4 @@ public class Table implements FromItem, MultiPartName {
             buffer.append(alias);
         }
     }
-
 }

@@ -116,12 +116,12 @@ public class InExpression implements Expression, SupportsOldOracleJoinSyntax {
 		}
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		if (getLeftExpression() == null) {
-			getLeftItemsList().builder(builder);
+			getLeftItemsList().builderItemList(builder);
 		} else {
-			getLeftExpression().builder(builder);
+			getLeftExpression().builderExpression(builder);
 			if (getOldOracleJoinSyntax() == SupportsOldOracleJoinSyntax.ORACLE_JOIN_RIGHT) {
 				buffer.append("(+)");
 			}
@@ -130,6 +130,6 @@ public class InExpression implements Expression, SupportsOldOracleJoinSyntax {
 			buffer.append(" NOT");
 		}
 		buffer.append(" IN ");
-		getRightItemsList().builder(builder);
+		getRightItemsList().builderItemList(builder);
 	}
 }

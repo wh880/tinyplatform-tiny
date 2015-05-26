@@ -54,8 +54,8 @@ public class SelectExpressionItem implements SelectItem {
 		return expression + ((alias != null) ? alias.toString() : "");
 	}
 
-	public void builder(StatementSqlBuilder builder) {
-		getExpression().builder(builder);
+	public void builderSelectItem(StatementSqlBuilder builder) {
+		getExpression().builderExpression(builder);
 		if (getAlias() != null) {
 			builder.appendSql(getAlias().toString());
 		}

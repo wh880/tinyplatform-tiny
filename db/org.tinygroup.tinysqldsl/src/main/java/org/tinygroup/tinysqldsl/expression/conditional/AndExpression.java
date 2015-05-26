@@ -43,7 +43,7 @@ public class AndExpression extends BinaryExpression {
         return "AND";
     }
 
-    public void builder(StatementSqlBuilder builder) {
+    public void builderExpression(StatementSqlBuilder builder) {
 		builder.visitBinaryExpression(this, " AND ");
 	}
 }

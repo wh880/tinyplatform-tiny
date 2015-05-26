@@ -53,9 +53,9 @@ public class IsNullExpression implements Expression {
 		return leftExpression + " IS " + ((not) ? "NOT " : "") + "NULL";
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
-		getLeftExpression().builder(builder);
+		getLeftExpression().builderExpression(builder);
 		if (isNot()) {
 			buffer.append(" IS NOT NULL");
 		} else {

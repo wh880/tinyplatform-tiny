@@ -61,12 +61,12 @@ public class WhenClause implements Expression {
 		return "WHEN " + whenExpression + " THEN " + thenExpression;
 	}
 
-	public void builder(StatementSqlBuilder builder) {
+	public void builderExpression(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("WHEN ");
-		getWhenExpression().builder(builder);
+		getWhenExpression().builderExpression(builder);
 		buffer.append(" THEN ");
-		getThenExpression().builder(builder);
+		getThenExpression().builderExpression(builder);
 		buffer.append(" ");
 	}
 }

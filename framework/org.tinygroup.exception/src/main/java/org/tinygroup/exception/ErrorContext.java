@@ -15,7 +15,7 @@ public class ErrorContext implements java.io.Serializable {
     private static final long   serialVersionUID = 6436061876740168390L;
 
     /** 错误堆栈集合 */
-    private List<CommonError>   errorStack       = new ArrayList<CommonError>();
+    private List<Error>   errorStack       = new ArrayList<Error>();
 
     /** 第三方错误原始信息 */
     private String              thirdPartyError;
@@ -38,7 +38,7 @@ public class ErrorContext implements java.io.Serializable {
      * 
      * @return
      */
-    public CommonError fetchCurrentError() {
+    public Error fetchCurrentError() {
 
         if (errorStack != null && errorStack.size() > 0) {
             return errorStack.get(errorStack.size() - 1);
@@ -65,7 +65,7 @@ public class ErrorContext implements java.io.Serializable {
      * 
      * @return
      */
-    public CommonError fetchRootError() {
+    public Error fetchRootError() {
 
         if (errorStack != null && errorStack.size() > 0) {
             return errorStack.get(0);
@@ -78,11 +78,11 @@ public class ErrorContext implements java.io.Serializable {
      * 
      * @param error
      */
-    public void addError(CommonError error) {
+    public void addError(Error error) {
 
         if (errorStack == null) {
 
-            errorStack = new ArrayList<CommonError>();
+            errorStack = new ArrayList<Error>();
         }
         errorStack.add(error);
     }
@@ -137,17 +137,17 @@ public class ErrorContext implements java.io.Serializable {
     /**
      * 获取错误对象简单表示
      * 
-     * @param commonError
+     * @param error
      * @return
      */
-    private String digest(CommonError commonError) {
+    private String digest(Error error) {
 
-        if (null == commonError) {
+        if (null == error) {
 
             return null;
         }
 
-        return commonError.toDigest();
+        return error.toDigest();
     }
 
     // ~~~ bean方法
@@ -157,7 +157,7 @@ public class ErrorContext implements java.io.Serializable {
      * 
      * @return property value of errorStack
      */
-    public List<CommonError> getErrorStack() {
+    public List<Error> getErrorStack() {
         return errorStack;
     }
 
@@ -166,7 +166,7 @@ public class ErrorContext implements java.io.Serializable {
      * 
      * @param errorStack value to be assigned to property errorStack
      */
-    public void setErrorStack(List<CommonError> errorStack) {
+    public void setErrorStack(List<Error> errorStack) {
         this.errorStack = errorStack;
     }
 

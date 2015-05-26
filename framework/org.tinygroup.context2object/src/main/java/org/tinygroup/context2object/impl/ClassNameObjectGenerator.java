@@ -150,11 +150,11 @@ public class ClassNameObjectGenerator implements
 			if (descriptor.getPropertyType().equals(Class.class)) {
 				continue;
 			}
+			
 			// 201402025修改此处代码，修改propertyName获取逻辑
 			// String propertyName = getPropertyName(clazz,
 			// descriptor.getName());
 			String propertyName = descriptor.getName();
-
 			Object propertyValue = getPerpertyValue(preName, objName,
 					propertyName, context);// user.name,user_name,name
 			if (propertyValue != null) { // 如果值取出来为空，则跳过不处理了
@@ -212,8 +212,15 @@ public class ClassNameObjectGenerator implements
 				try {
 					String newPreName = getReallyPropertyName(preName, objName,
 							propertyName);
-					Class<?> type = clazz
-							.getDeclaredField(descriptor.getName()).getType();
+					Class<?> type = null;
+					try{
+						type = clazz
+								.getDeclaredField(descriptor.getName()).getType();
+					}catch (NoSuchFieldException e) {
+						logger.logMessage(LogLevel.WARN,"{}不存在字段{}",clazz.getName(),propertyName);
+						continue;
+					}
+					
 					if (type.isArray()) {// 如果是数组
 						Object value = getObject(null, null,
 								descriptor.getPropertyType(), context,
