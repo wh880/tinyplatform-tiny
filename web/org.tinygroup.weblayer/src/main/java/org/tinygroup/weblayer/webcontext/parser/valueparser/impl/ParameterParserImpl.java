@@ -172,7 +172,7 @@ public class ParameterParserImpl extends AbstractValueParser implements
 
 		QueryStringParser parser = new QueryStringParser(charset,
 				DEFAULT_CHARSET_ENCODING) {
-			
+
 			protected void add(String key, String value) {
 				ParameterParserImpl.this.add(key, value);
 			}
@@ -285,21 +285,13 @@ public class ParameterParserImpl extends AbstractValueParser implements
 
 			values[i] = value;
 		}
-		if(tempFiles.size()>0){//表单是文件上传
+		if (tempFiles.size() > 0) {// 表单是文件上传
 			if (tempFiles.size() == 1) {
 				webContext.put(key, tempFiles.get(0));
 			} else {
 				webContext.put(key, tempFiles.toArray());
 			}
-		}else{//普通表单
-			if(values.length==1){
-				webContext.put(key, values[0]);
-			}else if(values.length>1){
-				webContext.put(key, values);
-			}
 		}
-		
-
 		return values;
 	}
 
@@ -357,7 +349,7 @@ public class ParameterParserImpl extends AbstractValueParser implements
 	 * @param value
 	 *            参数值
 	 */
-	
+
 	public void add(String key, Object value) {
 		if (value == null) {
 			value = EMPTY_STRING;
@@ -436,7 +428,7 @@ public class ParameterParserImpl extends AbstractValueParser implements
 	 * 
 	 * @return 编码字符集
 	 */
-	
+
 	protected String getCharacterEncoding() {
 		String charset = webContext.getRequest().getCharacterEncoding();
 
