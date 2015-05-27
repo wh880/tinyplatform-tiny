@@ -11,6 +11,7 @@
 			<list>
 				<ref bean="i18nFileProcessor" />
 				<ref bean="xStreamFileProcessor" />
+				<ref bean="generatorFileProcessor"/>
 			</list>
 		</property>
 	</bean>

@@ -3,6 +3,7 @@ package org.tinygroup.context2object.config;
 import java.lang.reflect.Array;
 import java.util.Collection;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context2object.util.Context2ObjectUtil;
 
 public class BasicTypeConverter {
@@ -10,15 +11,15 @@ public class BasicTypeConverter {
 		if("Character".equals(className)||"java.lang.Character".equals(className)){
 			return (T[]) convertToCharacter(stringArray);
 		}else if("Integer".equals(className)||"java.lang.Integer".equals(className)){
-			return (T[]) convertToCharacter(stringArray);
+			return (T[]) convertToInteger(stringArray);
 		}else if("Long".equals(className)||"java.lang.Long".equals(className)){
-			return (T[]) convertToCharacter(stringArray);
+			return (T[]) convertToLongObject(stringArray);
 		}else if("Double".equals(className)||"java.lang.Double".equals(className)){
-			return (T[]) convertToCharacter(stringArray);
+			return (T[]) convertToDoubleObject(stringArray);
 		}else if("Float".equals(className)||"java.lang.Float".equals(className)){
-			return (T[]) convertToCharacter(stringArray);
+			return (T[]) convertToFloatObject(stringArray);
 		}else if("Short".equals(className)||"java.lang.Short".equals(className)){
-			return (T[]) convertToCharacter(stringArray);
+			return (T[]) convertToShortObject(stringArray);
 		}else if("String".equals(className)||"java.lang.String".equals(className)){
 			return (T[]) stringArray;
 		}else {
@@ -26,20 +27,20 @@ public class BasicTypeConverter {
 		}  
 	}
 	
-	public <T> Collection<T> convertBasicTypeCollection(String[] stringArray,String collectionClass,String className,ClassLoader loader) {
+	public Object convertBasicTypeCollection(String[] stringArray,String collectionClass,String className,ClassLoader loader) {
 		Collection<Object> collection = Context2ObjectUtil.getCollectionInstance(collectionClass, loader);
-		T[] tArray = convertBasicTypeArray(stringArray, className);
-		for(T t:tArray){
+		Object[] tArray = convertBasicTypeArray(stringArray, className);
+		for(Object t:tArray){
 			collection.add(t);
 		}
-		return (Collection<T>) collection;
+		return  collection;
 	}
 	
 	public char[] convertToChar(String[] stringArray) {
 		char[] array = (char[]) Array.newInstance(char.class,
 				stringArray.length);
 		for (int i = 0; i < array.length; i++) {
-			if (stringArray[i] == null) {
+			if (StringUtil.isBlank(stringArray[i])) {
 				array[i] = 0;
 				continue;
 			}
@@ -52,7 +53,7 @@ public class BasicTypeConverter {
 		Character[] array =  (Character[]) Array.newInstance(Character.class,
 				stringArray.length);
 		for (int i = 0; i < array.length; i++) {
-			if (stringArray[i] == null) {
+			if (StringUtil.isBlank(stringArray[i])) {
 				array[i] = null;
 				continue;
 			}
@@ -65,7 +66,7 @@ public class BasicTypeConverter {
 		int[] array = (int[]) Array.newInstance(int.class,
 				stringArray.length);
 		for (int i = 0; i < array.length; i++) {
-			if (stringArray[i] == null) {
+			if (StringUtil.isBlank(stringArray[i])) {
 				array[i] = 0;
 				continue;
 			}
@@ -78,7 +79,7 @@ public class BasicTypeConverter {
 		Integer[] array = (Integer[]) Array.newInstance(Integer.class,
 				stringArray.length);
 		for (int i = 0; i < array.length; i++) {
-			if (stringArray[i] == null) {
+			if (StringUtil.isBlank(stringArray[i])) {
 				array[i] = null;
 				continue;
 			}
@@ -92,7 +93,7 @@ public class BasicTypeConverter {
 		long[] array = (long[]) Array.newInstance(long.class,
 				stringArray.length);
 		for (int i = 0; i < array.length; i++) {
-			if (stringArray[i] == null) {
+			if (StringUtil.isBlank(stringArray[i])) {
 				array[i] = 0;
 				continue;
 			}
@@ -104,7 +105,7 @@ public class BasicTypeConverter {
 		Long[] array = (Long[]) Array.newInstance(Long.class,
 				stringArray.length);
 		for (int i = 0; i < array.length; i++) {
-			if (stringArray[i] == null) {
+			if (StringUtil.isBlank(stringArray[i])) {
 				array[i] = null;
 				continue;
 			}
@@ -117,7 +118,7 @@ public class BasicTypeConverter {
 		double[] array = (double[]) Array.newInstance(double.class,
 				stringArray.length);
 		for (int i = 0; i < array.length; i++) {
-			if (stringArray[i] == null) {
+			if (StringUtil.isBlank(stringArray[i])) {
 				array[i] = 0;
 				continue;
 			}
@@ -129,7 +130,7 @@ public class BasicTypeConverter {
 		Double[] array = (Double[]) Array.newInstance(Double.class,
 				stringArray.length);
 		for (int i = 0; i < array.length; i++) {
-			if (stringArray[i] == null) {
+			if (StringUtil.isBlank(stringArray[i])) {
 				array[i] = null;
 				continue;
 			}
@@ -142,7 +143,7 @@ public class BasicTypeConverter {
 		float[] array = (float[]) Array.newInstance(float.class,
 				stringArray.length);
 		for (int i = 0; i < array.length; i++) {
-			if (stringArray[i] == null) {
+			if (StringUtil.isBlank(stringArray[i])) {
 				array[i] = 0;
 				continue;
 			}
@@ -154,7 +155,7 @@ public class BasicTypeConverter {
 		Float[] array = (Float[]) Array.newInstance(Float.class,
 				stringArray.length);
 		for (int i = 0; i < array.length; i++) {
-			if (stringArray[i] == null) {
+			if (StringUtil.isBlank(stringArray[i])) {
 				array[i] = null;
 				continue;
 			}
@@ -167,7 +168,7 @@ public class BasicTypeConverter {
 		short[] array = (short[]) Array.newInstance(short.class,
 				stringArray.length);
 		for (int i = 0; i < array.length; i++) {
-			if (stringArray[i] == null) {
+			if (StringUtil.isBlank(stringArray[i])) {
 				array[i] = 0;
 				continue;
 			}
@@ -179,7 +180,7 @@ public class BasicTypeConverter {
 		Short[] array = (Short[]) Array.newInstance(Short.class,
 				stringArray.length);
 		for (int i = 0; i < array.length; i++) {
-			if (stringArray[i] == null) {
+			if (StringUtil.isBlank(stringArray[i])) {
 				array[i] = null;
 				continue;
 			}
