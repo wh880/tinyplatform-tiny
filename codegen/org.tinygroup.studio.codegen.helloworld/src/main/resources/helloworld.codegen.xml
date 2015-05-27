@@ -1,0 +1,10 @@
+<code-gen-metadata category="代码生成" icon="icons/helloworld.png" name="helloworld" title="helloworld代码生成" ui-define-file="/helloworld.codegenui.xml" >
+	<description><![CDATA[HelloWorld的元数据文件]]></description>
+	<template-define template-path="/helloworld.javapage"
+		file-name-template="${JAVA_ROOT}${codeGenUtil('packageToPath',beanPackageName)}${className}.java">
+	</template-define>
+	<template-define template-path="/helloworld.beanpage"
+     file-name-template="${JAVA_RES_ROOT}${templateFilePath}${className}.beans.xml">
+  </template-define>
+	<macro-define macro-path="/helloworld.macropage" />
+</code-gen-metadata>
