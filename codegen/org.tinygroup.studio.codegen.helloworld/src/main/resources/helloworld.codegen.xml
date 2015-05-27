@@ -4,7 +4,7 @@
 		file-name-template="${JAVA_ROOT}${codeGenUtil('packageToPath',beanPackageName)}${className}.java">
 	</template-define>
 	<template-define template-path="/helloworld.beanpage"
-     file-name-template="${JAVA_ROOT}${templateFilePath}${className}.beans.xml">
+     file-name-template="${JAVA_RES_ROOT}${templateFilePath}${className}.beans.xml">
   </template-define>
 	<macro-define macro-path="/helloworld.macropage" />
 </code-gen-metadata>
