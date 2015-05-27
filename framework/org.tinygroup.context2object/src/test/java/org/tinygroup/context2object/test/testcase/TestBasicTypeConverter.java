@@ -7,7 +7,12 @@ import org.tinygroup.context2object.config.BasicTypeConverter;
 public class TestBasicTypeConverter extends BastTestCast {
 	private BasicTypeConverter basicConverter = new BasicTypeConverter();
 	private String[] array = new String[] { "1", "", null, "15" };
+	private Object[] oarray = new Object[] { "1", "", null, "15" };
 
+	public void testInstanceof() {
+		assertTrue( array instanceof String[] );
+		assertFalse( oarray instanceof String[] );
+	}
 	public void testCharArray() {
 		char[] result = basicConverter.convertToChar(array);
 		assertEquals(result[0], '1');

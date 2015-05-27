@@ -29,17 +29,16 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
 /**
- * 当服务执行远程调用时
- * 如果有多个远程处理器可用，则根据配置的EventProcessorChoose choose进行调用
+ * 当服务执行远程调用时 如果有多个远程处理器可用，则根据配置的EventProcessorChoose choose进行调用
  * 如果未曾配置，则默认为chooser生成权重chooser进行处理
+ * 
  * @author chenjiao
- *
+ * 
  */
-public class CEPCoreImpl implements CEPCore{
-	private static Logger logger = LoggerFactory
-			.getLogger(CEPCoreImpl.class);
+public class CEPCoreImpl implements CEPCore {
+	private static Logger logger = LoggerFactory.getLogger(CEPCoreImpl.class);
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
-	//服务版本，每次注册注销都会使其+1;
+	// 服务版本，每次注册注销都会使其+1;
 	private static int serviceVersion = 0;
 	/**
 	 * 存放所有的EventProcessor
@@ -58,10 +57,9 @@ public class CEPCoreImpl implements CEPCore{
 	 */
 	private List<ServiceInfo> localServices = new ArrayList<ServiceInfo>();
 	/**
-	 * 为eventProcessor每次注册时所拥有的service信息 
-	 * key为eventProcessor的id
+	 * 为eventProcessor每次注册时所拥有的service信息 key为eventProcessor的id
 	 */
-	private Map<String,List<ServiceInfo>> eventProcessorServices = new HashMap<String, List<ServiceInfo>>();
+	private Map<String, List<ServiceInfo>> eventProcessorServices = new HashMap<String, List<ServiceInfo>>();
 
 	/**
 	 * 
@@ -101,11 +99,10 @@ public class CEPCoreImpl implements CEPCore{
 	public void setNodeName(String nodeName) {
 		this.nodeName = nodeName;
 	}
-	
-	private void addEventProcessorInfo(EventProcessor eventProcessor){
+
+	private void addEventProcessorInfo(EventProcessor eventProcessor) {
 		processorMap.put(eventProcessor.getId(), eventProcessor);
 		eventProcessor.setCepCore(this);
-	
 
 		List<ServiceInfo> servicelist = eventProcessor.getServiceInfos();
 		eventProcessorServices.put(eventProcessor.getId(), servicelist);
@@ -145,27 +142,28 @@ public class CEPCoreImpl implements CEPCore{
 	}
 
 	public void registerEventProcessor(EventProcessor eventProcessor) {
-		
+
 		logger.logMessage(LogLevel.INFO, "开始 注册EventProcessor:{}",
 				eventProcessor.getId());
 		changeVersion(eventProcessor);
-		if(processorMap.containsKey(eventProcessor.getId())){
+		if (processorMap.containsKey(eventProcessor.getId())) {
 			removeEventProcessorInfo(eventProcessor);
 		}
 		addEventProcessorInfo(eventProcessor);
 		logger.logMessage(LogLevel.INFO, "注册EventProcessor:{}完成",
 				eventProcessor.getId());
 	}
-	
-	private void removeEventProcessorInfo(EventProcessor eventProcessor){
-		if(!eventProcessorServices.containsKey(eventProcessor.getId())){
+
+	private void removeEventProcessorInfo(EventProcessor eventProcessor) {
+		if (!eventProcessorServices.containsKey(eventProcessor.getId())) {
 			return;
 		}
-		List<ServiceInfo> serviceInfos = eventProcessorServices.get(eventProcessor.getId());
+		List<ServiceInfo> serviceInfos = eventProcessorServices
+				.get(eventProcessor.getId());
 		for (ServiceInfo service : serviceInfos) {
 			String name = service.getServiceId();
 			if (serviceIdMap.containsKey(name)) {
-				localServices.remove(service);//20150318调整代码localServices.remove(localServices。indexOf(service))，旧代码有可能是-1
+				localServices.remove(service);// 20150318调整代码localServices.remove(localServices。indexOf(service))，旧代码有可能是-1
 				List<EventProcessor> list = serviceIdMap.get(name);
 				if (list.contains(eventProcessor)) {
 					list.remove(eventProcessor);
@@ -188,7 +186,7 @@ public class CEPCoreImpl implements CEPCore{
 	}
 
 	public void unregisterEventProcessor(EventProcessor eventProcessor) {
-		
+
 		logger.logMessage(LogLevel.INFO, "开始 注销EventProcessor:{}",
 				eventProcessor.getId());
 		changeVersion(eventProcessor);
@@ -199,9 +197,10 @@ public class CEPCoreImpl implements CEPCore{
 	}
 
 	private void changeVersion(EventProcessor eventProcessor) {
-		if(eventProcessor.getType()==EventProcessor.TYPE_LOCAL){
-			logger.logMessage(LogLevel.INFO, "本地EventProcessor变动,对CEPCORE服务版本进行变更");
-			serviceVersion++;//如果发生了本地EventProcessor变动，则改变版本
+		if (eventProcessor.getType() == EventProcessor.TYPE_LOCAL) {
+			logger.logMessage(LogLevel.INFO,
+					"本地EventProcessor变动,对CEPCORE服务版本进行变更");
+			serviceVersion++;// 如果发生了本地EventProcessor变动，则改变版本
 		}
 	}
 
@@ -233,19 +232,20 @@ public class CEPCoreImpl implements CEPCore{
 			// local后置Aop
 			aopMananger.afterLocalHandle(event);
 		} else {
-			ServiceInfo sinfo = null;
-			List<ServiceInfo> list = eventProcessor.getServiceInfos();
-			for (ServiceInfo info : list) {
-				if (info.getServiceId().equals(request.getServiceId())) {
-					sinfo = info;
-				}
-			}
-			Context newContext = CEPCoreUtil.getContext(event, sinfo, this
-					.getClass().getClassLoader());
-
+			//20150527注释此代码，在deal中统一为所有执行生成new context,无论是本地还是远程
+//			ServiceInfo sinfo = null;
+//			List<ServiceInfo> list = eventProcessor.getServiceInfos();
+//			for (ServiceInfo info : list) {
+//				if (info.getServiceId().equals(request.getServiceId())) {
+//					sinfo = info;
+//				}
+//			}
+//			Context newContext = CEPCoreUtil.getContext(event, sinfo, this
+//					.getClass().getClassLoader());
+//			event.getServiceRequest().setContext(newContext);
 			// remote前置Aop
 			aopMananger.beforeRemoteHandle(event);
-			event.getServiceRequest().setContext(newContext);
+			
 			try {
 				// remote处理
 				// eventProcessor.process(event);
@@ -265,15 +265,20 @@ public class CEPCoreImpl implements CEPCore{
 	}
 
 	private void deal(EventProcessor eventProcessor, Event event) {
+		Context oldContext = event.getServiceRequest().getContext();
+		ServiceParamUtil.changeEventContext(event, this, Thread.currentThread()
+				.getContextClassLoader());
 		if (event.getMode() == Event.EVENT_MODE_ASYNCHRONOUS) {
 			Event e = getEventClone(event);
 			event.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
 			event.setType(Event.EVENT_TYPE_RESPONSE);
 			SynchronousDeal thread = new SynchronousDeal(eventProcessor, e);
 			thread.start();
+
 		} else {
 			eventProcessor.process(event);
 		}
+		ServiceParamUtil.resetEventContext(event, this, oldContext);
 	}
 
 	private Event getEventClone(Event event) {
@@ -441,14 +446,14 @@ public class CEPCoreImpl implements CEPCore{
 				processor.setRead(true);
 			}
 		}
-//		if (operator != null && operator instanceof ArOperator) {
-//			((ArOperator) operator).reReg();
-//			operator.getClass().getMethod("reReg");
-//		}
-		if (operator != null ) {
+		// if (operator != null && operator instanceof ArOperator) {
+		// ((ArOperator) operator).reReg();
+		// operator.getClass().getMethod("reReg");
+		// }
+		if (operator != null) {
 			try {
 				Method m = operator.getClass().getMethod("reReg");
-				if(m!=null){
+				if (m != null) {
 					m.invoke(operator);
 				}
 			} catch (IllegalArgumentException e) {
@@ -460,14 +465,14 @@ public class CEPCoreImpl implements CEPCore{
 			} catch (SecurityException e) {
 				logger.errorMessage(e.getMessage(), e);
 			} catch (NoSuchMethodException e) {
-				
+
 			}
 		}
 	}
 
 	public List<EventProcessor> getEventProcessors() {
 		List<EventProcessor> processors = new ArrayList<EventProcessor>();
-		for(EventProcessor processor:processorMap.values()){
+		for (EventProcessor processor : processorMap.values()) {
 			processors.add(processor);
 		}
 		return processors;
