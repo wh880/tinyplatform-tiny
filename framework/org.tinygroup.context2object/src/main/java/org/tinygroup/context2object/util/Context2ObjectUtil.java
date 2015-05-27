@@ -15,6 +15,8 @@
  */
 package org.tinygroup.context2object.util;
 
+import java.util.Collection;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
@@ -56,4 +58,13 @@ public final class Context2ObjectUtil {
 		// 否则就是对象
 		return generator.getObject(paramName, paramName, paramType,loader, context);
 	}
+
+	public static Collection<Object> getCollectionInstance(String collectionClass,ClassLoader loader){
+		ClassNameObjectGenerator generator = BeanContainerFactory
+				.getBeanContainer(Context2ObjectUtil.class.getClassLoader())
+				.getBean(GeneratorFileProcessor.CLASSNAME_OBJECT_GENERATOR_BEAN);
+		return generator.getObjectCollection(collectionClass,loader);
+	}
+
+
 }

@@ -75,6 +75,11 @@ public class ClassNameObjectGenerator implements
 			throw new RuntimeException(e.getMessage());
 		}
 	}
+	public Collection<Object> getObjectCollection(String collectionClassName,ClassLoader loader){
+		Class<?> collectionClass = getClazz(collectionClassName, loader);
+		Collection<Object> collection = (Collection<Object>) getObjectInstance(collectionClass);
+		return collection;
+	}
 
 	public Collection<Object> getObjectCollection(String varName,
 			String collectionName, String className, ClassLoader loader,
