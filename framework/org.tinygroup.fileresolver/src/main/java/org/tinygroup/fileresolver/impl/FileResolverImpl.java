@@ -324,9 +324,12 @@ public class FileResolverImpl implements FileResolver {
 			return;
 		} else {
 			logger.logMessage(LogLevel.INFO, "正在进行全路径刷新....");
-			for (FileProcessor fileProcessor : fileProcessorList) {
-				fileProcessor.clean();// 清空文件列表
-			}
+			
+//			for (FileProcessor fileProcessor : fileProcessorList) {
+//				fileProcessor.clean();// 清空文件列表
+//			}
+			//20150528注释以上代码，改为调用cleanProcessor()
+			cleanProcessor();
 			resolveDeletedFile();// 删除不存在的文件
 			refreshScanPath();// 重新扫描
 			for (FileProcessor fileProcessor : fileProcessorList) {
