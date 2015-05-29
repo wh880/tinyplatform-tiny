@@ -21,6 +21,14 @@ public class TestEl extends AbstractFlowComponent {
 		assertEquals(0, DataUtil.getData());
 	}
 	
+	public void testEL1() {
+		Context context = new ContextImpl();
+		context.put("aa", "3");
+		context.put("bb", 4);
+		flowExecutor.execute("testEl", "begin", context);
+		assertEquals(0, DataUtil.getData());
+	}
+	
 	// c = aa+bb-5 = 4
 	// c>a
 	public void testEL2() {  
