@@ -10,6 +10,7 @@ public class TestExtendFlow extends AbstractFlowComponent {
 		super.setUp();
 		DataUtil.reset();
 	}
+	//执行父流程
 	public void testExtendFlowParent() {
 		Context context = new ContextImpl();
 		try{
@@ -19,6 +20,8 @@ public class TestExtendFlow extends AbstractFlowComponent {
 			assertTrue(true);
 		}
 	}
+	//执行子流程，子流程仅仅覆盖了父流程的节点2
+	//但子流程的节点2无后续节点，直接采用父流程的节点2的后续节点执行
 	public void testExtendFlowChild() {
 		Context context = new ContextImpl();
 		try{
@@ -28,7 +31,8 @@ public class TestExtendFlow extends AbstractFlowComponent {
 			assertTrue(true);
 		}
 	}
-	
+	//执行子流程，子流程仅仅覆盖父流程的节点2
+	//节点2有自己的后续节点，后续节点为结束节点
 	public void testExtendFlowChild2() {
 		Context context = new ContextImpl();
 		try{

@@ -30,7 +30,7 @@ public class TestExceptionNew extends AbstractFlowComponent {
 
 	}
 	
-
+	//由发生异常的后续节点执行
 	public void testExceptionNew1() {
 		Context context = new ContextImpl();
 		context.put("exceptionNo", 1);
@@ -42,7 +42,7 @@ public class TestExceptionNew extends AbstractFlowComponent {
 		assertEquals("testExceptionNew",flow.getId());
 
 	}
-
+	//由发生异常的后续节点执行
 	public void testExceptionNew2() {
 		Context context = new ContextImpl();
 		context.put("exceptionNo", 2);
@@ -54,7 +54,7 @@ public class TestExceptionNew extends AbstractFlowComponent {
 		assertEquals("testExceptionNew",flow.getId());
 
 	}
-	
+	//由发生异常的节点所在流程的 exception节点的续节点执行
 	public void testExceptionNew3() {
 		Context context = new ContextImpl();
 		context.put("exceptionNo", 3);
@@ -78,7 +78,7 @@ public class TestExceptionNew extends AbstractFlowComponent {
 		assertEquals("testExceptionNew",flow.getId());
 
 	}
-	
+	//由exceptionProcessFlow流程的 exception节点的续节点执行
 	public void testExceptionNew4() {
 		Context context = new ContextImpl();
 		context.put("exceptionNo", 4);

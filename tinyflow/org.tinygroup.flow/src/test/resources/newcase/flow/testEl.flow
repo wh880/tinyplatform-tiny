@@ -17,7 +17,7 @@
         <next-node next-node-id="abcImsubComponent"/>
       </next-nodes>
     </node>
-    <node id="abcImsubComponent" name="abcImsubComponent" title="对c进行减法new">
+    <node id="abcImsubComponent" name="abcImsubComponent" title="-5 对c进行减法new">
       <component name="abcImsubComponent" title="对c进行减法new">
         <description></description>
         <properties>
@@ -43,9 +43,6 @@
       <next-nodes>
         <next-node next-node-id="end"/>
       </next-nodes>
-    </node>
-    <node id="end" name="end" title="结束">
-      <next-nodes/>
     </node>
   </nodes>
 </flow>

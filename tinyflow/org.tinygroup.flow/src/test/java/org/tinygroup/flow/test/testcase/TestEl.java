@@ -10,19 +10,21 @@ public class TestEl extends AbstractFlowComponent {
 		super.setUp();
 		DataUtil.reset();
 	}
-
+	
+	// c = aa+bb-5 = 2
+	// c<a
 	public void testEL() {
 		Context context = new ContextImpl();
-
 		context.put("aa", 3);
 		context.put("bb", 4);
 		flowExecutor.execute("testEl", "begin", context);
 		assertEquals(0, DataUtil.getData());
 	}
 	
-	public void testEL2() {
+	// c = aa+bb-5 = 4
+	// c>a
+	public void testEL2() {  
 		Context context = new ContextImpl();
-
 		context.put("aa", 3);
 		context.put("bb", 6);
 		flowExecutor.execute("testEl", "begin", context);
