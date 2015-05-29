@@ -1,5 +1,6 @@
 package org.tinygroup.flow.test.testcase;
 
+
 public class DataUtil {
 	public static final int defaultValue = 0;
 	private static int i = defaultValue;

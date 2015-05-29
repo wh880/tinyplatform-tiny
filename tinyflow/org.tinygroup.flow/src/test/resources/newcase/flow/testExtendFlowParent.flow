@@ -1,4 +1,4 @@
-<flow id="parentFlow" enable="true" private-context="false">
+<flow id="testExtendFlowParent" enable="true" private-context="false">
   <nodes>
     <node id="start" name="start" title="开始">
       <next-nodes>

@@ -196,7 +196,7 @@ public class Node {
 
 	private void combineNextNode(Node parentNode) {
 		if (parentNode.getNextNodes() != null) {
-			if (nextNodes == null) {
+			if (nextNodes == null||nextNodes.size()==0) {
 				nextNodes = parentNode.getNextNodes();
 			}
 //			else {

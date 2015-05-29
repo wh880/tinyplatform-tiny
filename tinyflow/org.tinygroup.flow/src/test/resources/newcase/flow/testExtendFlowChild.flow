@@ -1,0 +1,14 @@
+<flow id="testExtendFlowChild" extend-flow-id="testExtendFlowParent" enable="true" private-context="false">
+  <parameters/>
+  <nodes>
+    <node id="node2" name="plusComponent" title="+22 node2">
+      <component name="plusComponent" title="加法计算组件new">
+        <description></description>
+        <properties>
+          <flow-property name="ii" value="22" required="true" type="int"/>
+        </properties>
+      </component>
+      <next-nodes/>
+    </node>
+  </nodes>
+</flow>
