@@ -12,7 +12,7 @@
 		<module>org.tinygroup.cepcoreimpl</module>
 		<module>org.tinygroup.cepcoreremoteimpl</module>
 		<module>org.tinygroup.cepcoreremoteimpl2</module>
-
+		<module>org.tinygroup.spring305</module>
 	    <module>org.tinygroup.spring256</module>
 	    <module>org.tinygroup.cepcorenetty</module>
 		<module>org.tinygroup.cepcorenettysc</module>
