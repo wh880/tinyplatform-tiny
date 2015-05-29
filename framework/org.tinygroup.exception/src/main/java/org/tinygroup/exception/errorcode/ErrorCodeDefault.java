@@ -26,9 +26,9 @@ import org.tinygroup.exception.constant.ErrorType;
  * </tr>
  * <tr>
  * <td><b>示例</b></td>
+ * <td>0</td>
  * <td>T</td>
  * <td>E</td>
- * <td>0</td>
  * <td>1</td>
  * <td>1</td>
  * <td>1</td>
@@ -41,12 +41,12 @@ import org.tinygroup.exception.constant.ErrorType;
  * </tr>
  * <tr>
  * <td><b>说明</b></td>
- * <td colspan=2>固定<br>
- * 标识</td>
  * <td>规<br>
  * 范<br>
  * 版<br>
  * 本</td>
+ * <td colspan=2>固定<br>
+ * 标识</td>
  * <td>错<br>
  * 误<br>
  * 类<br>

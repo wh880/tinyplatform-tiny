@@ -60,7 +60,7 @@ public class BaseRuntimeException extends RuntimeException {
 			Locale locale, Object... params) {
 		String errorMsg = i18nMessage.getMessage(errorCode, locale,
 				defaultErrorMsg, params);
-		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode);
+		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
 		this.errorMsg = errorMsg;
 	}
 
@@ -81,7 +81,7 @@ public class BaseRuntimeException extends RuntimeException {
 		super(throwable);
 		String errorMsg = i18nMessage.getMessage(errorCode, locale,
 				defaultErrorMsg, params);
-		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode);
+		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
 		this.errorMsg = errorMsg;
 	}
 
@@ -94,7 +94,7 @@ public class BaseRuntimeException extends RuntimeException {
 		String errorMsg = i18nMessage.getMessage(errorCode, defaultErrorMsg,
 				context, locale);
 		this.errorMsg = errorMsg;
-		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode);
+		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
 	}
 
 	public BaseRuntimeException(String errorCode, Context context) {
