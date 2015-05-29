@@ -1,17 +1,17 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.application.impl;
 
@@ -40,13 +40,14 @@ public class ApplicationDefault implements Application {
     private ApplicationContext applicationContext;
 
     public void init() {
-    	OrderUtil.order(applicationProcessors);
+        OrderUtil.order(applicationProcessors);
         for (ApplicationProcessor applicationProcessor : applicationProcessors) {
             applicationProcessor.init();
         }
     }
 
     public void start() {
+        logger.logMessage(LogLevel.INFO, "临时目录：" + System.getProperty("java.io.tmpdir"));
         if (applicationProcessors != null) {
             // 对ApplicationProcessor列表进行排序
             for (ApplicationProcessor applicationProcessor : applicationProcessors) {
