@@ -26,19 +26,19 @@ public class ErrorCodeFactory {
 		codeParsers.add(errorCodeParser);
 	}
 
-	public static ErrorCode parseErrorCode(String errorCode) {
+	public static ErrorCode parseErrorCode(String errorCode,Throwable cause) {
 		Assert.assertNotNull(errorCode, "errorCode must not be null");
-		ErrorCodeParser parser = findParser(errorCode);
+		ErrorCodeParser parser = findParser(errorCode,cause);
 		return parser.parse(errorCode);
 	}
 
-	private static ErrorCodeParser findParser(String errorCodeStr) {
+	private static ErrorCodeParser findParser(String errorCodeStr,Throwable cause) {
 		for (ErrorCodeParser errorCodeParser : codeParsers) {
 			if (errorCodeParser.isMatch(errorCodeStr)) {
 				return errorCodeParser;
 			}
 		}
 		throw new IllegalArgumentException(String.format(
-				"未找到错误码:%s,对应的错误码解析对象", errorCodeStr));
+				"未找到错误码:%s,对应的错误码解析规范", errorCodeStr),cause);
 	}
 }
