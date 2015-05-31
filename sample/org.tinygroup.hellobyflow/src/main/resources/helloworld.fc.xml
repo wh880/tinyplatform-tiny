@@ -1,0 +1,10 @@
+<components>
+	<component name="helloworld" bean="helloworld"
+		title="HelloWorld组件" category="逻辑组件" icon="/icon/component.gif">
+		<short-description>逻辑组件</short-description>
+		<long-description>helloworld组件，根据名字展示hello</long-description>
+		<parameter name="name" title="名字" type="java.lang.String"></parameter>
+		<parameter name="result" title="结果" type="java.lang.String"></parameter>
+	</component>
+</components>
+
