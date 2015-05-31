@@ -31,11 +31,6 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.jspengine</artifactId>
-            <version>${tinyVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.tinygroup</groupId>
             <artifactId>org.tinygroup.validate</artifactId>
             <version>${tinyVersion}</version>
         </dependency>
