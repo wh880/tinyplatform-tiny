@@ -1,0 +1,16 @@
+<annotation-class-matchers>
+	<annotation-class-matcher class-name="(.)*Action" annotation-type="org\.tinygroup\.weblayer\.mvc\.annotation\.Controller">
+		<processor-beans>
+			<processor-bean enable="true" name="controllerAnnotationAction">
+			</processor-bean>
+		</processor-beans>
+		<annotation-method-matchers>
+			<annotation-method-matcher method-name="(.)*Method"  annotation-type="org\.tinygroup\.weblayer\.mvc\.annotation\.RequestMapping">
+			  <processor-beans>
+			    <processor-bean enable="true" name="controllerAnnotationAction">
+			    </processor-bean>
+		      </processor-beans>
+			</annotation-method-matcher>
+		</annotation-method-matchers>
+	</annotation-class-matcher>
+</annotation-class-matchers>
