@@ -348,5 +348,6 @@
         <module>xmlparser</module>
         <module>htmlparser</module>
         <module>codegen</module>
+        <module>sample</module>
     </modules>
 </project>
