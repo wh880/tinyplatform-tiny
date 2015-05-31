@@ -1,0 +1,11 @@
+<service-components>
+  <service-component type="org.tinygroup.helloworld.service.HelloWorldXmlService" bean="helloWorldXmlService">
+    <service-method local-name="sayHello" service-id="helloByXml" method-name="sayHello" cacheable="false" category="测试服务">
+      <description>演示例子</description>
+      <service-parameters>
+        <service-parameter name="name" type="java.lang.String" required="false" is-array="false"/>
+      </service-parameters>
+      <service-result name="result" required="false" is-array="false" type="java.lang.String"/>
+    </service-method>
+  </service-component>
+</service-components>

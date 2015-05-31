@@ -1,0 +1,5 @@
+XML方式：
+<form action="${TINY_CONTEXT_PATH}/helloByXml.servicepage">
+ 输入名称：<input type="text" name="name"/>
+ <input type="submit" value="提交"/>
+</form>
