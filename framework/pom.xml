@@ -10,6 +10,7 @@
     <modules>
 		<module>org.tinygroup.nettyremote</module>
 		<module>org.tinygroup.cepcoreimpl</module>
+		<module>org.tinygroup.cepcoremutiremoteimpl</module>
 		<module>org.tinygroup.cepcoreremoteimpl</module>
 		<module>org.tinygroup.cepcoreremoteimpl2</module>
 		<module>org.tinygroup.spring305</module>
