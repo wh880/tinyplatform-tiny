@@ -23,24 +23,24 @@ public class DerbySqlProcessorImpl extends SqlProcessorImpl {
 	}
 
 	protected String appendIncrease() {
-		return " GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) ";
+		return " GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) ;";
 	}
 	
 	protected String createNotNullSql(String tableName, String fieldName,
 			String tableDataType) {
-		return String.format("ALTER TABLE %s ALTER  %s NOT NULL",
+		return String.format("ALTER TABLE %s ALTER  %s NOT NULL;",
 				tableName, fieldName);
 	}
 
 	protected String createNullSql(String tableName, String fieldName,
 			String tableDataType) {
-		return String.format("ALTER TABLE %s ALTER  %s NULL",
+		return String.format("ALTER TABLE %s ALTER  %s NULL;",
 				tableName, fieldName);
 	}
 
 	protected String createAlterTypeSql(String tableName, String fieldName,
 			String tableDataType) {
-		return String.format("ALTER TABLE %s ALTER %s SET DATA TYPE %s", tableName,fieldName,tableDataType);
+		return String.format("ALTER TABLE %s ALTER %s SET DATA TYPE %s ;", tableName,fieldName,tableDataType);
 	}
 	
 }

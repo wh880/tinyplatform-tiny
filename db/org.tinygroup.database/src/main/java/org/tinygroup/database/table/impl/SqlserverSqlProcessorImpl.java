@@ -31,19 +31,19 @@ public class SqlserverSqlProcessorImpl extends SqlProcessorImpl {
 
 	protected String createNotNullSql(String tableName, String fieldName,
 			String tableDataType) {
-		return String.format("ALTER TABLE %s ALTER COLUMN %s %s NOT NULL",
+		return String.format("ALTER TABLE %s ALTER COLUMN %s %s NOT NULL;",
 				tableName, fieldName,tableDataType);
 	}
 
 	protected String createNullSql(String tableName, String fieldName,
 			String tableDataType) {
-		return String.format("ALTER TABLE %s ALTER COLUMN %s %s NULL",
+		return String.format("ALTER TABLE %s ALTER COLUMN %s %s NULL;",
 				tableName, fieldName,tableDataType);
 	}
 
 	protected String createAlterTypeSql(String tableName, String fieldName,
 			String tableDataType) {
-		return String.format("ALTER TABLE %s ALTER COLUMN %s %s ", tableName,
+		return String.format("ALTER TABLE %s ALTER COLUMN %s %s ;", tableName,
 				fieldName, tableDataType);
 	}
 

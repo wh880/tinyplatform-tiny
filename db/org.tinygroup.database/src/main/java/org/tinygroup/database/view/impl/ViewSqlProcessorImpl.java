@@ -29,7 +29,7 @@ public class ViewSqlProcessorImpl implements ViewSqlProcessor {
 	}
 
 	public String getDropSql(View view) {
-		return String.format("DROP VIEW %s", view.getName());
+		return String.format("DROP VIEW %s ;", view.getName());
 	}
 
     public boolean checkViewExists(View view, Connection conn)  throws SQLException{

@@ -44,18 +44,18 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 	}
 
 	protected String createNotNullSql(String tableName, String fieldName,String tableDataType) {
-		return String.format("ALTER TABLE %s MODIFY %s NOT NULL", tableName,
+		return String.format("ALTER TABLE %s MODIFY %s NOT NULL;", tableName,
 				fieldName);
 	}
 
 	protected String createNullSql(String tableName, String fieldName,String tableDataType) {
-		return String.format("ALTER TABLE %s MODIFY %s NULL", tableName,
+		return String.format("ALTER TABLE %s MODIFY %s NULL;", tableName,
 				fieldName);
 	}
 
 	protected String createAlterTypeSql(String tableName, String fieldName,
 			String tableDataType) {
-		return String.format("ALTER TABLE %s MODIFY %s %s ", tableName,
+		return String.format("ALTER TABLE %s MODIFY %s %s ;", tableName,
 				fieldName, tableDataType);
 	}
 }

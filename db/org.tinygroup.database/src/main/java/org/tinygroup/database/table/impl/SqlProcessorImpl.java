@@ -72,7 +72,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 				Table foreignTable = tableProcessor
 						.getTableById(foreignReference.getMainTable());
 				String sql = String
-						.format("ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s(%s)",
+						.format("ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s(%s);",
 								table.getName(),
 								foreignReference.getName(),
 								getFieldStdFieldName(
@@ -252,7 +252,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		List<String> droplist = new ArrayList<String>();
 		for (String colum : dropFields) {
 			StringBuffer ddlBuffer = new StringBuffer();
-			ddlBuffer.append(String.format("ALTER TABLE %s DROP COLUMN %s",
+			ddlBuffer.append(String.format("ALTER TABLE %s DROP COLUMN %s ;",
 					table.getName(), colum));
 			droplist.add(ddlBuffer.toString());
 
@@ -265,7 +265,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		List<String> addList = new ArrayList<String>();
 		for (TableField field : fieldDbNames.values()) {
 			StringBuffer ddlBuffer = new StringBuffer();
-			ddlBuffer.append(String.format("ALTER TABLE %s ADD ",
+			ddlBuffer.append(String.format("ALTER TABLE %s ADD ;",
 					table.getName()));
 			appendField(ddlBuffer, field);
 			addList.add(ddlBuffer.toString());
@@ -413,7 +413,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			}
 		}
 		ddlBuffer.append(fieldsStr);
-		ddlBuffer.append(" ) ");
+		ddlBuffer.append(" ); ");
 		return ddlBuffer.toString();
 	}
 
@@ -444,7 +444,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	}
 
 	private void appendFooter(StringBuffer ddlBuffer) {
-		ddlBuffer.append(")");
+		ddlBuffer.append(");");
 		// ddlBuffer.append("\n");
 	}
 
@@ -466,7 +466,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	}
 
 	public String getDropSql(Table table, String packageName) {
-		return String.format("DROP TABLE %s", table.getName());
+		return String.format("DROP TABLE %s ;", table.getName());
 	}
 
 	protected Map<String, Map<String, String>> getColumns(
