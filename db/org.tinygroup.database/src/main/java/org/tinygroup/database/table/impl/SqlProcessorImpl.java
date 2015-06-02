@@ -32,6 +32,7 @@ import org.tinygroup.database.config.table.Index;
 import org.tinygroup.database.config.table.IndexField;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
+import org.tinygroup.database.table.TableProcessor;
 import org.tinygroup.database.table.TableSqlProcessor;
 import org.tinygroup.database.util.DataBaseNameUtil;
 import org.tinygroup.database.util.DataBaseUtil;
@@ -39,6 +40,16 @@ import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
 
 public abstract class SqlProcessorImpl implements TableSqlProcessor {
+
+	private TableProcessor tableProcessor;
+
+	public TableProcessor getTableProcessor() {
+		return tableProcessor;
+	}
+
+	public void setTableProcessor(TableProcessor tableProcessor) {
+		this.tableProcessor = tableProcessor;
+	}
 
 	protected abstract String getDatabaseType();
 
@@ -58,12 +69,19 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		List<String> foreignSqls = new ArrayList<String>();
 		if (!CollectionUtil.isEmpty(foreigns)) {
 			for (ForeignReference foreignReference : foreigns) {
+				Table foreignTable = tableProcessor
+						.getTableById(foreignReference.getMainTable());
 				String sql = String
 						.format("ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s(%s)",
-								table.getName(), foreignReference.getName(),
-								foreignReference.getForeignField(),
-								foreignReference.getMainTable(),
-								foreignReference.getReferenceField());
+								table.getName(),
+								foreignReference.getName(),
+								getFieldStdFieldName(
+										foreignReference.getForeignField(),
+										table),
+								foreignTable.getName(),
+								getFieldStdFieldName(
+										foreignReference.getReferenceField(),
+										foreignTable));
 				foreignSqls.add(sql);
 			}
 		}
@@ -103,9 +121,9 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	private void getForeignUpdate(Table table, Connection connection,
 			List<String> list) throws SQLException {
 
-	    String schema = DataBaseUtil.getSchema(table, connection.getMetaData());
+		String schema = DataBaseUtil.getSchema(table, connection.getMetaData());
 
-		String sql = getQueryForeignSql(table,schema);
+		String sql = getQueryForeignSql(table, schema);
 		if (sql != null) {
 			List<ForeignReference> foreigns = table.getForeignReferences();
 			List<ForeignReference> newForeigns = cloneReferences(foreigns);
@@ -156,7 +174,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		}
 	}
 
-	protected String getQueryForeignSql(Table table,String schema) {
+	protected String getQueryForeignSql(Table table, String schema) {
 		return null;
 	}
 
@@ -386,8 +404,8 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 				fieldsStr = fieldsStr + ","
 						+ getFieldStdFieldName(field.getField(), table);
 
-				if(!StringUtil.isEmpty(field.getDirection())){
-					fieldsStr = fieldsStr+" "+field.getDirection();
+				if (!StringUtil.isEmpty(field.getDirection())) {
+					fieldsStr = fieldsStr + " " + field.getDirection();
 				}
 			}
 			if (fieldsStr.startsWith(",")) {
@@ -399,16 +417,17 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		return ddlBuffer.toString();
 	}
 
-	protected String getIndexName(Index index, Table table){
-	    String indexName = null;
+	protected String getIndexName(Index index, Table table) {
+		String indexName = null;
 
-	    if (table.getSchema() == null || "".equals(table.getSchema())) {
-	        indexName = index.getName();
-        } else {
-            indexName = String.format("%s.%s", table.getSchema(),index.getName());
-        }
+		if (table.getSchema() == null || "".equals(table.getSchema())) {
+			indexName = index.getName();
+		} else {
+			indexName = String.format("%s.%s", table.getSchema(),
+					index.getName());
+		}
 
-	    return indexName;
+		return indexName;
 	}
 
 	private String getFieldStdFieldName(String fieldId, Table table) {

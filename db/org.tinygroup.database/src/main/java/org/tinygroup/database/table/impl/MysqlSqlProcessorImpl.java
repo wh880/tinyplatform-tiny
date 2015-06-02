@@ -19,6 +19,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.tinygroup.database.config.table.Index;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.util.DataBaseUtil;
 
@@ -88,6 +89,11 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 				"ALTER TABLE %s CHANGE %s %s %s", tableName,
 				fieldName, fieldName, tableDataType);
 	}
+	
+	@Override
+    protected String getIndexName(Index index, Table table) {
+        return index.getName();
+    }
 
 
 }
