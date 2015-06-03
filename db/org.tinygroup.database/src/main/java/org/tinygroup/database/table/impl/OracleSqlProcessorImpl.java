@@ -15,7 +15,11 @@
  */
 package org.tinygroup.database.table.impl;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.Table;
+import org.tinygroup.database.config.table.TableField;
+import org.tinygroup.metadata.config.stdfield.StandardField;
+import org.tinygroup.metadata.util.MetadataUtil;
 
 public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 
@@ -23,7 +27,7 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 		return "oracle";
 	}
 
-	protected String getQueryForeignSql(Table table,String schema) {
+	protected String getQueryForeignSql(Table table, String schema) {
 		String sql = "Select a.constraint_name CONSTRAINT_NAME,"
 				+ "a.column_name  COLUMN_NAME,"
 				+ "b.table_name  REFERENCED_TABLE_NAME,"
@@ -43,12 +47,14 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 		return sql;
 	}
 
-	protected String createNotNullSql(String tableName, String fieldName,String tableDataType) {
+	protected String createNotNullSql(String tableName, String fieldName,
+			String tableDataType) {
 		return String.format("ALTER TABLE %s MODIFY %s NOT NULL;", tableName,
 				fieldName);
 	}
 
-	protected String createNullSql(String tableName, String fieldName,String tableDataType) {
+	protected String createNullSql(String tableName, String fieldName,
+			String tableDataType) {
 		return String.format("ALTER TABLE %s MODIFY %s NULL;", tableName,
 				fieldName);
 	}
@@ -57,5 +63,35 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 			String tableDataType) {
 		return String.format("ALTER TABLE %s MODIFY %s %s;", tableName,
 				fieldName, tableDataType);
+	}
+
+	protected void appendComment(String comment, StringBuffer ddlBuffer) {
+	}
+
+	protected void appendFooter(StringBuffer ddlBuffer, Table table) {
+		super.appendFooter(ddlBuffer, table);
+        appendComment(ddlBuffer, table);
+	}
+
+	/**
+	 * 添加oracle的字段备注信息
+	 * @param ddlBuffer
+	 * @param table
+	 */
+	private void appendComment(StringBuffer ddlBuffer, Table table) {
+		for (TableField field : table.getFieldList()) {
+			StandardField standardField = MetadataUtil.getStandardField(field
+					.getStandardFieldId(), this.getClass().getClassLoader());
+			String columnName = null;
+			if (StringUtil.isBlank(table.getSchema())) {
+				columnName = standardField.getName();
+			} else {
+				columnName = String.format("%s.%s", table.getSchema(),
+						standardField.getName());
+			}
+			ddlBuffer.append(" COMMENT ON COLUMN ").append(columnName)
+					.append(" is ").append("'").append(field.getComment())
+					.append("'");
+		}
 	}
 }
