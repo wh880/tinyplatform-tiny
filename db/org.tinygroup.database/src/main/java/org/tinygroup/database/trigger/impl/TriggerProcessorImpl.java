@@ -71,7 +71,11 @@ public class TriggerProcessorImpl implements TriggerProcessor {
 		List<SqlBody> sqls=trigger.getTriggerSqls(); 
 		for (SqlBody sqlBody : sqls) {
 			if(sqlBody.getDialectTypeName().equals(language)){
-				return sqlBody.getContent();
+				String sql=sqlBody.getContent();
+				if(!sql.endsWith(";")){
+					sql=sql+";";
+				}
+				return sql;
 			}
 		}
 		throw new RuntimeException(String.format("[language:%s]对应的trigger不存在,",language));

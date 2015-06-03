@@ -72,7 +72,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 				Table foreignTable = tableProcessor
 						.getTableById(foreignReference.getMainTable());
 				String sql = String
-						.format("ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s(%s)",
+						.format("ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s(%s);",
 								table.getName(),
 								foreignReference.getName(),
 								getFieldStdFieldName(
@@ -93,8 +93,8 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		List<String> list = new ArrayList<String>();
 		// 生成表格主体
 		appendHeader(ddlBuffer, table);
-		appendBody(ddlBuffer, packageName, table, list);
-		appendFooter(ddlBuffer);
+		appendBody(ddlBuffer, table);
+		appendFooter(ddlBuffer,table);
 		list.add(0, ddlBuffer.toString());
 		return list;
 	}
@@ -252,7 +252,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		List<String> droplist = new ArrayList<String>();
 		for (String colum : dropFields) {
 			StringBuffer ddlBuffer = new StringBuffer();
-			ddlBuffer.append(String.format("ALTER TABLE %s DROP COLUMN %s",
+			ddlBuffer.append(String.format("ALTER TABLE %s DROP COLUMN %s ;",
 					table.getName(), colum));
 			droplist.add(ddlBuffer.toString());
 
@@ -268,6 +268,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			ddlBuffer.append(String.format("ALTER TABLE %s ADD ",
 					table.getName()));
 			appendField(ddlBuffer, field);
+			ddlBuffer.append(";");
 			addList.add(ddlBuffer.toString());
 		}
 		return addList;
@@ -322,8 +323,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	protected abstract String createAlterTypeSql(String tableName,
 			String fieldName, String tableDataType);
 
-	protected void appendBody(StringBuffer ddlBuffer, String packageName,
-			Table table, List<String> list) {
+	protected void appendBody(StringBuffer ddlBuffer,Table table) {
 		boolean isFirst = true;
 		for (TableField field : table.getFieldList()) {
 			if (!isFirst) {
@@ -332,8 +332,6 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 				isFirst = false;
 			}
 			appendField(ddlBuffer, field);
-			// 外键FOREIGN KEY REFERENCES Persons(Id_P)
-			// 目前的设定好象是不进行设置？
 		}
 	}
 
@@ -362,6 +360,23 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		// 处理自增
 		if (field.isAutoIncrease() && field.getPrimary()) {// 如果是自增而且是主键
 			ddlBuffer.append(appendIncrease());
+		}
+		//设置字段默认值
+		appendDefaultValue(field.getDefaultValue(),ddlBuffer);
+        //设置字段备注信息
+		appendComment(field.getComment(),ddlBuffer);
+	}
+
+	protected void appendComment(String comment, StringBuffer ddlBuffer) {
+		if(!StringUtil.isBlank(comment)){
+			ddlBuffer.append(" COMMENT ").append("'").append(comment).append("'");
+		}
+	}
+
+	//如果是字符串类型，defaultValue必须是'XXX'格式
+	protected void appendDefaultValue(String defaultValue, StringBuffer ddlBuffer) {
+        if(!StringUtil.isBlank(defaultValue)){
+			ddlBuffer.append(" DEFAULT ").append(defaultValue);
 		}
 	}
 
@@ -413,7 +428,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			}
 		}
 		ddlBuffer.append(fieldsStr);
-		ddlBuffer.append(" ) ");
+		ddlBuffer.append(" ); ");
 		return ddlBuffer.toString();
 	}
 
@@ -443,9 +458,8 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 				"未找到ID：%s的表格字段(或该表格字段对应的标准字段)", fieldId));
 	}
 
-	private void appendFooter(StringBuffer ddlBuffer) {
-		ddlBuffer.append(")");
-		// ddlBuffer.append("\n");
+	protected void appendFooter(StringBuffer ddlBuffer, Table table) {
+		ddlBuffer.append(");");
 	}
 
 	private void appendHeader(StringBuffer ddlBuffer, Table table) {
@@ -466,7 +480,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	}
 
 	public String getDropSql(Table table, String packageName) {
-		return String.format("DROP TABLE %s", table.getName());
+		return String.format("DROP TABLE %s;", table.getName());
 	}
 
 	protected Map<String, Map<String, String>> getColumns(

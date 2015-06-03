@@ -49,7 +49,7 @@ public class OracleSequenceSqlProcessor extends AbstractSequenceSqlProcessor {
 		} else {
 			seqBuffer.append(" NOORDER ");
 		}
-		return seqBuffer.toString();
+		return seqBuffer.append(";").toString();
 	}
 
 	protected String getQuerySql(Sequence sequence) {

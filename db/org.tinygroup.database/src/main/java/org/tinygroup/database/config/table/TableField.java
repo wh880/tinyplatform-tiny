@@ -31,7 +31,20 @@ public class TableField extends Field {
 	@XStreamAsAttribute
 	@XStreamAlias("auto-increase")
 	private boolean autoIncrease ;
+	
+	/**
+	 * 备注
+	 */
+	@XStreamAsAttribute
+	private String comment;
 
+	/**
+	 * 默认值
+	 */
+	@XStreamAsAttribute
+	@XStreamAlias("default")
+	private String defaultValue;
+	
 	public boolean isAutoIncrease() {
 		return autoIncrease;
 	}
@@ -39,6 +52,21 @@ public class TableField extends Field {
 	public void setAutoIncrease(boolean autoIncrease) {
 		this.autoIncrease = autoIncrease;
 	}
-	
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
 	
 }

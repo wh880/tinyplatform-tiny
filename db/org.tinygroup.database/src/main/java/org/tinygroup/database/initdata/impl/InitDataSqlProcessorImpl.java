@@ -75,7 +75,7 @@ public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 						.append("'");
 			}
 
-			return String.format("INSERT INTO %s (%s) VALUES (%s)",
+			return String.format("INSERT INTO %s (%s) VALUES (%s);",
 					table.getNameWithOutSchema(), keys.substring(1), values.substring(1));
 		}
 	}
@@ -141,7 +141,7 @@ public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 		}
 		int index = where.indexOf("AND");
 		where = where.substring(index + 3);
-		return String.format("DELETE FROM %s WHERE %s", table.getNameWithOutSchema(), where);
+		return String.format("DELETE FROM %s WHERE %s ;", table.getNameWithOutSchema(), where);
 	}
 
 }

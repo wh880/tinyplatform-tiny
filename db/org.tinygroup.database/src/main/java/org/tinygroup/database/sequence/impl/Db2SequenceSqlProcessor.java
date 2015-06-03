@@ -73,7 +73,7 @@ public class Db2SequenceSqlProcessor extends AbstractSequenceSqlProcessor {
 		}else {
 			seqBuffer.append(" NO ORDER ");
 		}
-		return seqBuffer.toString();
+		return seqBuffer.append(";").toString();
 	}
 
 	protected String getQuerySql(Sequence sequence) {

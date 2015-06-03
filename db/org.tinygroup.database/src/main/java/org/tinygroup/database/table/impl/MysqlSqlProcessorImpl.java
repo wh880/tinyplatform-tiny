@@ -73,20 +73,20 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 
 	protected String createNotNullSql(String tableName, String fieldName,String tableDataType) {
 		return String.format(
-				"ALTER TABLE %s CHANGE %s %s %s NOT NULL",
+				"ALTER TABLE %s CHANGE %s %s %s NOT NULL;",
 				tableName, fieldName, fieldName, tableDataType);
 	}
 
 	protected String createNullSql(String tableName, String fieldName,String tableDataType) {
 		return String.format(
-				"ALTER TABLE %s CHANGE %s %s %s NULL", tableName,
+				"ALTER TABLE %s CHANGE %s %s %s NULL;", tableName,
 				fieldName, fieldName, tableDataType);
 	}
 
 	protected String createAlterTypeSql(String tableName, String fieldName,
 			String tableDataType) {
 		return String.format(
-				"ALTER TABLE %s CHANGE %s %s %s", tableName,
+				"ALTER TABLE %s CHANGE %s %s %s;", tableName,
 				fieldName, fieldName, tableDataType);
 	}
 	
