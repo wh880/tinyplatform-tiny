@@ -265,9 +265,10 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		List<String> addList = new ArrayList<String>();
 		for (TableField field : fieldDbNames.values()) {
 			StringBuffer ddlBuffer = new StringBuffer();
-			ddlBuffer.append(String.format("ALTER TABLE %s ADD ;",
+			ddlBuffer.append(String.format("ALTER TABLE %s ADD ",
 					table.getName()));
 			appendField(ddlBuffer, field);
+			ddlBuffer.append(";");
 			addList.add(ddlBuffer.toString());
 		}
 		return addList;
@@ -466,7 +467,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	}
 
 	public String getDropSql(Table table, String packageName) {
-		return String.format("DROP TABLE %s ;", table.getName());
+		return String.format("DROP TABLE %s;", table.getName());
 	}
 
 	protected Map<String, Map<String, String>> getColumns(

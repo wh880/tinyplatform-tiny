@@ -43,7 +43,7 @@ public class SqlserverSqlProcessorImpl extends SqlProcessorImpl {
 
 	protected String createAlterTypeSql(String tableName, String fieldName,
 			String tableDataType) {
-		return String.format("ALTER TABLE %s ALTER COLUMN %s %s ;", tableName,
+		return String.format("ALTER TABLE %s ALTER COLUMN %s %s;", tableName,
 				fieldName, tableDataType);
 	}
 

@@ -24,7 +24,7 @@ public class Db2SqlProcessorImpl extends SqlProcessorImpl {
 	}
 
 	protected String appendIncrease() {
-		return " GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1 ) ;";
+		return " GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1 );";
 	}
 
 
@@ -42,7 +42,7 @@ public class Db2SqlProcessorImpl extends SqlProcessorImpl {
 
 	protected String createAlterTypeSql(String tableName, String fieldName,
 			String tableDataType) {
-		 return String.format("ALTER TABLE %s ALTER COLUMN %s SET DATA TYPE %s ;", tableName,fieldName,tableDataType);
+		 return String.format("ALTER TABLE %s ALTER COLUMN %s SET DATA TYPE %s;", tableName,fieldName,tableDataType);
 	}
 
 }

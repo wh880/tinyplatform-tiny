@@ -55,7 +55,7 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 
 	protected String createAlterTypeSql(String tableName, String fieldName,
 			String tableDataType) {
-		return String.format("ALTER TABLE %s MODIFY %s %s ;", tableName,
+		return String.format("ALTER TABLE %s MODIFY %s %s;", tableName,
 				fieldName, tableDataType);
 	}
 }
