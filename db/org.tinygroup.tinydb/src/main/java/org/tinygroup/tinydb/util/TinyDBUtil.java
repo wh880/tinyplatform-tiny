@@ -21,9 +21,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeanWrapper;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.beanwrapper.BeanWrapperHolder;
-import org.tinygroup.beanwrapper.BeanWrapperImpl;
 import org.tinygroup.context.Context;
 import org.tinygroup.database.util.DataSourceInfo;
 import org.tinygroup.tinydb.Bean;
@@ -176,9 +176,8 @@ public final class TinyDBUtil {
 
 	public static void setProperties(Object object,
 			Map<String, String> properties) {
-		BeanWrapperHolder holder = new BeanWrapperHolder();
-		BeanWrapperImpl wrapperImpl = holder.getBeanWrapper();
-		wrapperImpl.setWrappedInstance(object);
+		BeanWrapper wrapperImpl = BeanWrapperHolder.getInstance()
+				.getBeanWrapper(object);
 		for (String attribute : properties.keySet()) {
 			try {
 				String value = properties.get(attribute);
