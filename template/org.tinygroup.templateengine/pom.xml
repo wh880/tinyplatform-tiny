@@ -27,6 +27,11 @@
 			<artifactId>org.tinygroup.fileresolver</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		 <dependency>
+            <groupId>org.tinygroup</groupId>
+            <artifactId>org.tinygroup.bundle</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.jdt.core.compiler</groupId>
             <artifactId>ecj</artifactId>

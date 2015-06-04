@@ -1,4 +1,4 @@
-package org.tinygroup.templateweb;
+package org.tinygroup.template.fileresolver;
 
 import java.util.List;
 import java.util.Map;
