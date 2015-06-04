@@ -16,16 +16,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.logger</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.vfs</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
       <version>3.0.5.RELEASE</version>
@@ -63,40 +53,14 @@
       <version>3.0.5.RELEASE</version>
     </dependency>
     <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.exception</artifactId>
-      <version>${project.version}</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>3.0.5.RELEASE</version>
     </dependency>
     <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.beancontainer</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>commons-pool</groupId>
-      <artifactId>commons-pool</artifactId>
-      <version>1.4</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>
-      <version>3.1</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-dbcp</groupId>
-      <artifactId>commons-dbcp</artifactId>
-      <version>1.2.2</version>
-    </dependency>
-    <dependency>
-      <groupId>c3p0</groupId>
-      <artifactId>c3p0</artifactId>
-      <version>0.9.1.2</version>
-    </dependency>
-    <dependency>
-      <groupId>cglib</groupId>
-      <artifactId>cglib</artifactId>
-      <version>2.1_3</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>3.0.5.RELEASE</version>
     </dependency>
   </dependencies>
 </project>

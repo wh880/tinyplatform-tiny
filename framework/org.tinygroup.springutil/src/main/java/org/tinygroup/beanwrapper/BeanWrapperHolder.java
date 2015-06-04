@@ -16,47 +16,100 @@
 package org.tinygroup.beanwrapper;
 
 import java.beans.PropertyEditor;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.PropertyEditorRegistrar;
+import org.springframework.beans.PropertyEditorRegistry;
+import org.springframework.beans.factory.support.AbstractBeanFactory;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.springutil.SpringBeanContainer;
 
 public class BeanWrapperHolder {
+	private static BeanWrapperHolder holder;
 
-	private BeanWrapperImpl beanWrapper;
+	private BeanWrapperHolder() {
+	}
 
-	public BeanWrapperHolder() {
-		beanWrapper = new BeanWrapperImpl();
-		SpringBeanContainer container = (SpringBeanContainer) BeanContainerFactory
-				.getBeanContainer(getClass().getClassLoader());
-		if(container!=null){
-			DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) ((FileSystemXmlApplicationContext) container
-					.getBeanContainerPrototype()).getBeanFactory();
-			Map customEditors = beanFactory.getCustomEditors(); 
-			Set keySet = customEditors.keySet();
-			for (Object key : keySet) {
-				Class requiredType = (Class) key;
-				if (customEditors.get(requiredType) instanceof Class) {
-					try {
-						beanWrapper.registerCustomEditor(requiredType,
-								(PropertyEditor) ((Class) customEditors
-										.get(requiredType)).newInstance());
-					} catch (Exception e) {
-						throw new RuntimeException("注册客户自定义类型转换出现异常", e);
-					}
-				}
-				if (customEditors.get(requiredType) instanceof PropertyEditor) {
-					beanWrapper.registerCustomEditor(requiredType,
-							(PropertyEditor) customEditors.get(requiredType));
+	public static BeanWrapperHolder getInstance() {
+		if (holder == null) {
+			holder = new BeanWrapperHolder();
+		}
+		return holder;
+	}
+
+	private void registerPropertyEditor(AbstractBeanFactory beanFactory,
+			PropertyEditorRegistry registry) {
+		Set propertyEditorRegistrars = beanFactory
+				.getPropertyEditorRegistrars();
+		if (!CollectionUtil.isEmpty(propertyEditorRegistrars)) {
+			for (Iterator it = propertyEditorRegistrars.iterator(); it
+					.hasNext();) {
+				PropertyEditorRegistrar registrar = (PropertyEditorRegistrar) it
+						.next();
+				registrar.registerCustomEditors(registry);
+			}
+		}
+	}
+
+	private void registerCustomEditor(AbstractBeanFactory beanFactory,
+			PropertyEditorRegistry registry) {
+		Map customEditors = beanFactory.getCustomEditors();
+		if (!CollectionUtil.isEmpty(customEditors)) {
+			for (Iterator it = customEditors.entrySet().iterator(); it
+					.hasNext();) {
+				Map.Entry entry = (Map.Entry) it.next();
+				Class requiredType = (Class) entry.getKey();
+				Object value = entry.getValue();
+				if (value instanceof PropertyEditor) {
+					PropertyEditor editor = (PropertyEditor) value;
+					registry.registerCustomEditor(requiredType, editor);
+				} else if (value instanceof Class) {
+					Class editorClass = (Class) value;
+					registry.registerCustomEditor(requiredType,
+							(PropertyEditor) BeanUtils
+									.instantiateClass(editorClass));
+				} else {
+					throw new IllegalStateException(
+							"Illegal custom editor value type: "
+									+ value.getClass().getName());
 				}
 			}
 		}
 	}
-	
-	public BeanWrapperImpl getBeanWrapper(){
+
+	public BeanWrapper getBeanWrapper() {
+		BeanWrapper beanWrapper = new BeanWrapperImpl();
+		registerEditor(beanWrapper);
+		return beanWrapper;
+	}
+
+	private void registerEditor(BeanWrapper beanWrapper) {
+		SpringBeanContainer container = (SpringBeanContainer) BeanContainerFactory
+				.getBeanContainer(getClass().getClassLoader());
+		if (container != null) {
+			AbstractBeanFactory beanFactory = (AbstractBeanFactory) ((ConfigurableApplicationContext) container
+					.getBeanContainerPrototype()).getBeanFactory();
+			registerPropertyEditor(beanFactory, beanWrapper);
+			registerCustomEditor(beanFactory, beanWrapper);
+		}
+	}
+
+	public BeanWrapper getBeanWrapper(Object instance) {
+		BeanWrapper beanWrapper = new BeanWrapperImpl(instance);
+		registerEditor(beanWrapper);
+		return beanWrapper;
+	}
+
+	public BeanWrapper getBeanWrapper(Class clazz) {
+		BeanWrapper beanWrapper = new BeanWrapperImpl(clazz);
+		registerEditor(beanWrapper);
 		return beanWrapper;
 	}
 
