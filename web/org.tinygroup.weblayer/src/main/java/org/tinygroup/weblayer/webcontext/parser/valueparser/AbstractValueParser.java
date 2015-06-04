@@ -30,10 +30,11 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.SimpleTypeConverter;
 import org.springframework.beans.TypeConverter;
 import org.springframework.core.MethodParameter;
-import org.tinygroup.beanwrapper.BeanWrapperImpl;
+import org.tinygroup.beanwrapper.BeanWrapperHolder;
 import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
@@ -529,8 +530,7 @@ public abstract class AbstractValueParser implements ValueParser {
             return;
         }
         logger.logMessage(LogLevel.DEBUG,"Set HTTP request parameters to object {}" , ObjectUtil.identityToString(object));
-        BeanWrapperImpl bean = new BeanWrapperImpl(object);
-        bean.setAutoGrowNestedPaths(true);
+        BeanWrapper bean = BeanWrapperHolder.getInstance().getBeanWrapper(object);
         webContext.getPropertyEditorRegistrar().registerCustomEditors(bean);
 
         for (String key : keySet()) {

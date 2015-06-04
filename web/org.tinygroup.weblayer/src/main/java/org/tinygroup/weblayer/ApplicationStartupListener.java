@@ -34,10 +34,10 @@ import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
+import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
-import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -206,7 +206,7 @@ public class ApplicationStartupListener implements ServletContextListener {
 		logger.logMessage(LogLevel.INFO, "加载Spring Bean文件开始...");
 		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class
 				.getName());
-		FileResolver fileResolver = new FileResolverImpl();
+		FileResolver fileResolver = FileResolverFactory.getFileResolver();
 		FileResolverUtil.addClassPathPattern(fileResolver);
 		loadFileResolverConfig(fileResolver, applicationConfig);
 		fileResolver

@@ -18,7 +18,10 @@ package org.tinygroup.weblayer.listener;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +56,7 @@ public class TinyServletContext implements ServletContext {
 
 	private FullContextFileRepository fullContextFileRepository;
 
-	private Map<String, String> parameters = CollectionUtil.createHashMap();
+	private Map<String, String> parameters = new HashMap<String, String>();
 
 	private TinyListenerConfigManager configManager = TinyListenerConfigManagerHolder
 			.getInstance();
@@ -175,7 +178,8 @@ public class TinyServletContext implements ServletContext {
 
 	public Enumeration getInitParameterNames() {
 		Enumeration enumeration = originalContext.getInitParameterNames();
-		Set<String> parameterSet = parameters.keySet();
+		Set<String> parameterSet = new HashSet<String>();
+		parameterSet.addAll(parameters.keySet());
 		while (enumeration.hasMoreElements()) {
 			String name = (String) enumeration.nextElement();
 			parameterSet.add(name);

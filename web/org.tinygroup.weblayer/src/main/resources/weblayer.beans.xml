@@ -45,7 +45,7 @@
 		class="org.tinygroup.weblayer.mvc.impl.MappingModelManagerImpl">
 	</bean>
 
-	<bean id="handlerMapping" scope="singleton"
+	<bean id="annotationHandlerMapping" scope="singleton"
 		class="org.tinygroup.weblayer.mvc.handlermapping.AnnotationHandlerMapping">
 		<property name="manager">
 			<ref bean="mappingModelManager" />
@@ -63,7 +63,7 @@
 	<bean id="mvcTinyProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.tinyprocessor.MvcTinyProcessor">
 		<property name="handler">
-			<ref bean="handlerMapping" />
+			<ref bean="annotationHandlerMapping" />
 		</property>
 		<property name="execute">
 			<ref bean="mappingModelExecute" />
@@ -134,9 +134,6 @@
 	</bean>
 	<bean id="uploadedFileExtensionWhitelist" scope="singleton"
 		class="org.tinygroup.weblayer.webcontext.parser.impl.UploadedFileExtensionWhitelist">
-	</bean>
-	<bean id="tinyFilterWrapper" scope="singleton"
-		class="org.tinygroup.weblayer.impl.TinyFilterWrapper">
 	</bean>
 	<!--http filter -->
 	<bean id="encondingHttpFilter" scope="singleton"

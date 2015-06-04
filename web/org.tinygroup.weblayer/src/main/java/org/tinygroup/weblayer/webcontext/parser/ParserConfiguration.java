@@ -19,11 +19,12 @@ import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.factory.InitializingBean;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.beanwrapper.BeanWrapperHolder;
-import org.tinygroup.beanwrapper.BeanWrapperImpl;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.parser.filter.NameFilter;
@@ -55,8 +56,7 @@ public class ParserConfiguration extends AbstractConfiguration {
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 		super.config(applicationConfig, componentConfig);
 		if(applicationConfig!=null){
-			BeanWrapperHolder holder=new BeanWrapperHolder();
-			beanWrapper=holder.getBeanWrapper();
+			beanWrapper=(BeanWrapperImpl) BeanWrapperHolder.getInstance().getBeanWrapper();
 			resolvePropertyEditors(applicationConfig);
 			resolverParserFilters(applicationConfig);
 			resolverUploadService(applicationConfig);

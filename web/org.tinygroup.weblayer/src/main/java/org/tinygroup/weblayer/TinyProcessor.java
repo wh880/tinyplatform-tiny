@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
+import org.tinygroup.commons.order.Ordered;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 
@@ -27,7 +28,7 @@ import org.tinygroup.xmlparser.node.XmlNode;
  *
  * @author luoguo
  */
-public interface TinyProcessor {
+public interface TinyProcessor extends Ordered{
 
     String TINY_PROCESSOR = "tiny-processor";
 

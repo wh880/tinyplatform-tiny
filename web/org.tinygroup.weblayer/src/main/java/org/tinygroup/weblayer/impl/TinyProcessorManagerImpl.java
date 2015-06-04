@@ -25,6 +25,7 @@ import javax.servlet.ServletException;
 
 import org.springframework.web.util.NestedServletException;
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.commons.order.OrderUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -76,6 +77,8 @@ public class TinyProcessorManagerImpl implements TinyProcessorManager {
 		Throwable failureCause = null;
 		try {
 			addTinyProcessor();
+			// 对tiny-processor列表进行排序
+			OrderUtil.order(tinyProcessorList);
 			initTinyProcessor();
 		} catch (ServletException ex) {
 			failureCause = ex;

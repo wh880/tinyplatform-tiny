@@ -173,7 +173,6 @@
             <servlet-mapping url-pattern=".*\.nws"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.css"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.323"></servlet-mapping>
-            <servlet-mapping url-pattern=".*\.htm"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.html"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.stm"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.uls"></servlet-mapping>

@@ -20,6 +20,7 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 
+import org.tinygroup.commons.order.Ordered;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
@@ -73,6 +74,10 @@ public abstract class AbstractTinyProcessor implements TinyProcessor {
 	
 	protected Map<String, String> getInitParamMap() {
 		return tinyProcessorConfig.getParameterMap();
+	}
+
+	public int getOrder() {
+		return Ordered.DEFAULT_PRECEDENCE;
 	}
 
 	/**

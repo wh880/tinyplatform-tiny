@@ -1,0 +1,163 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context.xsd"
+	default-autowire="byName" default-lazy-init="false">
+
+
+	<bean id="mediaTypeRegistrarSupport"
+		class="org.tinygroup.springmvc.extension.impl.MediaTypeRegistrarSupport" />
+
+	<bean id="mediaTypeRespository"
+		class="org.tinygroup.springmvc.extension.impl.MediaTypeRespository" />
+
+	<bean id="urlPathHelper" class="org.springframework.web.util.UrlPathHelper" />
+
+	<bean name="multipartResolver"
+		class="org.tinygroup.springmvc.multipart.TinyMultipartResolver" />
+
+	<bean name="localeResolver" class="org.tinygroup.springmvc.local.TinyLocaleResolver" />
+
+	<bean name="themeResolver" class="org.tinygroup.springmvc.theme.TinyThemeResolver" />
+
+	<bean name="handlerMapping"
+		class="org.tinygroup.springmvc.handlermapping.TinyHandlerMapping" />
+
+	<bean name="handlerAdapter"
+		class="org.tinygroup.springmvc.handleradapter.TinyHandlerAdapter" />
+
+	<bean name="handlerExceptionResolver"
+		class="org.tinygroup.springmvc.exceptionresolver.TinyHandlerExceptionResolver" />
+
+	<bean name="viewNameTranslator"
+		class="org.tinygroup.springmvc.viewtranslator.TinyRequestToViewNameTranslator" />
+
+	<bean name="viewResolver" class="org.tinygroup.springmvc.view.TinyViewResolver" />
+
+	<bean name="springMVCAdapter" class="org.tinygroup.springmvc.adapter.SpringMVCAdapter" />
+
+
+	<!-- content negotiation common function [car] -->
+	<bean id="extensionMappingInstanceResolver"
+		class="org.tinygroup.springmvc.extension.impl.ContentNegotiationEMIResolver">
+		<property name="favorParameter" value="true" />
+		<!-- <property name="parameterName" value="format" /> -->
+		<property name="ignoreAcceptHeader" value="false" />
+	</bean>
+
+	<!-- *.shtm mapping -->
+	<bean name="extension.shtm"
+		class="org.tinygroup.springmvc.extension.ExtensionMappingInstance">
+		<property name="extension" value="shtm" />
+		<property name="mediaTypes" value="text/html" />
+		<property name="commonLocaleResolver" ref="commonLocaleResolver" />
+		<property name="commonThemeResolver" ref="commonThemeResolver" />
+		<property name="commonsMultipartResolver" ref="commonsMultipartResolver" />
+		<property name="handlerMappings">
+			<list>
+				<ref bean="defaultAnnotationHandlerMapping" />
+			</list>
+		</property>
+		<property name="handlerAdapters">
+			<list>
+				<ref bean="annotationMethodHandlerAdapter" />
+			</list>
+		</property>
+		<property name="viewResolvers">
+			<list>
+				<ref bean="templateViewResolver" />
+			</list>
+		</property>
+		<property name="handlerExceptionResolvers">
+			<list>
+				<ref bean="commonExceptionResolver" />
+			</list>
+		</property>
+		<property name="viewNameTranslator" ref="restfulConventionRequestToViewNameTranslator" />
+	</bean>
+
+	<bean id="commonsMultipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+	<bean id="commonLocaleResolver" class="org.tinygroup.springmvc.local.CommonLocaleResolver"></bean>
+	<bean id="commonThemeResolver" class="org.tinygroup.springmvc.theme.CommonThemeResolver"></bean>
+
+	<bean id="restfulConventionRequestToViewNameTranslator"
+		class="org.tinygroup.springmvc.viewtranslator.RestfulConventionRequestToViewNameTranslator">
+	</bean>
+
+
+	<bean name="defaultAnnotationHandlerMapping"
+		class="org.tinygroup.springmvc.handlermapping.DefaultCOCUrlHandlerMapping">
+		<property name="detectHandlersInAncestorContexts" value="true"></property>
+	</bean>
+
+	<bean id="abstractHandlerAdapter" abstract="true">
+		<property name="supportedMethods">
+			<value>GET,POST,PUT,HEAD,DELETE</value>
+		</property>
+		<property name="customArgumentResolvers">
+			<array>
+				<ref bean="conventionRestfulWebArgumentResolver" />
+			</array>
+		</property>
+		<property name="customModelAndViewResolvers">
+			<array>
+				<ref bean="conventionModelAndViewResolver" />
+			</array>
+		</property>
+	</bean>
+
+	<bean id="conventionRestfulWebArgumentResolver"
+		class="org.tinygroup.springmvc.support.ConventionRestfulWebArgumentResolver" />
+
+	<bean id="conventionModelAndViewResolver"
+		class="org.tinygroup.springmvc.support.ConventionModelAndViewResolver" />
+
+	<bean id="annotationMethodHandlerAdapter"
+		class="org.tinygroup.springmvc.handleradapter.DefaultAnnotationMethodHandlerAdapter"
+		parent="abstractHandlerAdapter">
+		<property name="webBindingInitializer" ref="delegateWebBindingInitializer" />
+	</bean>
+	<bean id="delegateWebBindingInitializer"
+		class="org.tinygroup.springmvc.support.WebBindingInitializerComposite" />
+
+	<bean name="templateViewResolver"
+		class="org.tinygroup.springmvc.view.TinyTemplateLayoutViewResolver">
+	</bean>
+
+
+	<bean id="conventionHelper" class="org.tinygroup.springmvc.coc.ConventionHelper">
+		<property name="conventionComponentIdentifier" ref="conventionControllerIdentifier" />
+	</bean>
+	<bean id="conventionControllerIdentifier"
+		class="org.tinygroup.springmvc.coc.impl.ConventionControllerIdentifier" />
+
+	<bean id="conventionBeanDefinitionRegistryPostProcessor"
+		class="org.tinygroup.springmvc.coc.ConventionBeanDefinitionRegistryPostProcessor" />
+
+	<bean name="commonExceptionResolver"
+		class="org.tinygroup.springmvc.exceptionresolver.HandlerExceptionResolverComposite">
+	</bean>
+
+	<!--httpMessageConverter paricipants -->
+	<bean id="stringHttpMessageConverter"
+		class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="writeAcceptCharset" value="false" />
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/plain;charset=utf-8</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="byteArrayHttpMessageConverter"
+		class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+
+	<bean id="sourceHttpMessageConverter"
+		class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />
+
+	<bean id="xmlAwareFormHttpMessageConverter"
+		class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+</beans>
