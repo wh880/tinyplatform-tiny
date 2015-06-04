@@ -57,31 +57,6 @@
         </database-installer>
     </database-install-processor>
 
-    <plugin-management>
-        <plugin-configs>
-            <plugin-config plugin-id="service" plugin-version="1.0">
-                <aop-config position="before" bean="serviceParamValidate"
-                            enable="false"/>
-            </plugin-config>
-        </plugin-configs>
-    </plugin-management>
-    <!-- cep远程调用配置 -->
-    <cep-node-config>
-        <node-config ip="192.168.84.73" port="8888" name="chenjiaopmclient"
-                     enable-remote="false"></node-config>
-        <node-sc-breath interval="4000"/>
-        <node-sc-check interval="2000"/>
-        <remote-bean bean="CEPCoreRMIRemoteImpl"/>
-        <!-- mananger-bean="cepCoreManagerCentral" -->
-        <node-strategy bean="nodeWeightPloyStrategy"/>
-        <sc ip="192.168.84.57" port="8808" name="chenjiaocentral"/>
-    </cep-node-config>
-
-    <!-- aop配置 -->
-    <cepcore-aop-config>
-        <!-- <aop-config position="before-local" bean="requestParamValidate"></aop-config> -->
-    </cepcore-aop-config>
-
     <!-- 异常处理配置 -->
     <exception-config>
         <exception-handlers>
