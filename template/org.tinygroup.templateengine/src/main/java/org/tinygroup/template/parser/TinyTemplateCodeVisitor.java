@@ -1,16 +1,16 @@
 /**
  * jetbrick-template
  * http://subchen.github.io/jetbrick-template/
- *
+ * <p/>
  * Copyright 2010-2014 Guoqiang Chen. All rights reserved.
  * Email: subchen@gmail.com
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,13 +36,13 @@ import java.util.Stack;
 
 // Visitor 模式访问器，用来生成 Java 代码
 public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock> implements TinyTemplateParserVisitor<CodeBlock> {
-    private static final String[] RESERVED_WORDS = {"set", "if","elseif","for","foreach","break","continue","stop","include","call","layout","macro","b","eol","t","bodyContent","import"};
+    private static final String[] RESERVED_WORDS = {"set", "if", "elseif", "for", "foreach", "break", "continue", "stop", "include", "call", "layout", "macro", "b", "eol", "t", "bodyContent", "import"};
     private TinyTemplateParser parser = null;
     private Stack<CodeBlock> codeBlocks = new Stack<CodeBlock>();
     private Stack<CodeLet> codeLets = new Stack<CodeLet>();
     private CodeBlock initCodeBlock = null;
     private CodeBlock macroCodeBlock = null;
-    private int callMacroIndex=1;
+    private int callMacroIndex = 1;
     private CodeBlock templateClass;
     /**
      * 是否是严格格式，如果是严格格式会进行trim()
@@ -179,11 +179,11 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         String name = ctx.getChild(0).getText();
         name = name.substring(6, name.length() - 1).trim();
         //这里进行保留字检查
-        boolean isReserve=false;
-        for(String word :RESERVED_WORDS){
-            if(name.equals(word)){
+        boolean isReserve = false;
+        for (String word : RESERVED_WORDS) {
+            if (name.equals(word)) {
                 TerminalNodeImpl terminalNode = (TerminalNodeImpl) ctx.getChild(0);
-                throw new SyntaxErrorException("Macro name<"+name+"> is reserved word.",  terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStartIndex());
+                throw new SyntaxErrorException("Macro name<" + name + "> is reserved word.", terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStartIndex());
             }
         }
 
@@ -199,7 +199,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         macro.footer(new CodeLet().lineCode("}"));
         macro.subCode(constructMethod(name));
         popCodeLet();
-        CodeBlock render = getMacroRenderCodeBlock();
+        CodeBlock render = getMacroRenderCodeBlock(false);
         pushCodeBlock(render);
         macro.subCode(render);
         ctx.block().accept(this);
@@ -311,9 +311,12 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         return renderMethod;
     }
 
-    private CodeBlock getMacroRenderCodeBlock() {
+    private CodeBlock getMacroRenderCodeBlock(boolean hasChild) {
         CodeBlock renderMethod = new CodeBlock();
         renderMethod.header(new CodeLet().lineCode("protected void renderMacro(Template $template,TemplateContext $pageContext, TemplateContext $context, Writer $writer) throws IOException, TemplateException{")).footer(new CodeLet().lineCode("}"));
+        if (hasChild) {
+            renderMethod.subCode("$context.getParent().getItemMap().put(\"isCalled\", true);");
+        }
         renderMethod.subCode("Macro $macro=null;");
         renderMethod.subCode("Macro $bodyMacro=null;");
         renderMethod.subCode("TemplateContext $newContext=null;");
@@ -330,7 +333,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
     private CodeBlock getClassCodeBlock() {
-        callMacroIndex=1;
+        callMacroIndex = 1;
         templateClass = new CodeBlock();
         initCodeBlock = new CodeBlock().header(new CodeLet("{").endLine()).footer(new CodeLet("}").endLine());
         templateClass.header(new CodeLet().lineCode("public class $TEMPLATE_CLASS_NAME extends AbstractTemplate{"));
@@ -503,10 +506,10 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitCall_macro_directive(@NotNull TinyTemplateParser.Call_macro_directiveContext ctx) {
-        int index=callMacroIndex++;
-        CodeBlock callMacro=new CodeBlock();
-        CodeBlock callMacroFunctionDeclare=new CodeBlock();
-        callMacroFunctionDeclare.header("private void callMacro"+index+"(TemplateContext $context, Writer $writer, Template $template) throws TemplateException {");
+        int index = callMacroIndex++;
+        CodeBlock callMacro = new CodeBlock();
+        CodeBlock callMacroFunctionDeclare = new CodeBlock();
+        callMacroFunctionDeclare.header("private void callMacro" + index + "(TemplateContext $context, Writer $writer, Template $template) throws TemplateException {");
         callMacroFunctionDeclare.footer("}");
         CodeBlock callMacroFunctionBody = new CodeBlock();
         String name = ctx.getChild(0).getText();
@@ -516,13 +519,13 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         }
         if (name.equals("macro")) {
             TerminalNodeImpl terminalNode = (TerminalNodeImpl) ctx.getChild(0);
-            throw new SyntaxErrorException("Missing macro name for #macro directive." ,  terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStartIndex());
+            throw new SyntaxErrorException("Missing macro name for #macro directive.", terminalNode.getSymbol().getLine(), terminalNode.getSymbol().getStartIndex());
         }
         processCallMacro(ctx.para_expression_list(), callMacroFunctionBody, "\"" + name + "\"");
         callMacroFunctionBody.subCode(String.format("$macro.render($template,$context,$newContext,$writer);"));
         templateClass.subCode(callMacroFunctionDeclare);
         callMacroFunctionDeclare.subCode(callMacroFunctionBody);
-        callMacro.subCode("callMacro"+index+"($context, $writer, $template);");
+        callMacro.subCode("callMacro" + index + "($context, $writer, $template);");
         return callMacro;
     }
 
@@ -537,11 +540,11 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitCall_macro_block_directive(@NotNull TinyTemplateParser.Call_macro_block_directiveContext ctx) {
-        int index=callMacroIndex++;
+        int index = callMacroIndex++;
 
-        CodeBlock callMacro=new CodeBlock();
-        CodeBlock callMacroFunctionDeclare=new CodeBlock();
-        callMacroFunctionDeclare.header("private void callMacro"+index+"(TemplateContext $context, Writer $writer, Template $template) throws TemplateException {");
+        CodeBlock callMacro = new CodeBlock();
+        CodeBlock callMacroFunctionDeclare = new CodeBlock();
+        callMacroFunctionDeclare.header("private void callMacro" + index + "(TemplateContext $context, Writer $writer, Template $template) throws TemplateException {");
         callMacroFunctionDeclare.footer("}");
         CodeBlock callMacroFunctionBody = new CodeBlock();
         String name = ctx.getChild(0).getText();
@@ -552,7 +555,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         //callMacro.subCode("if($bodyMacro==null){");
         callMacroFunctionBody.subCode(bodyContentMacro);
         bodyContentMacro.header("Macro $bodyMacro=new AbstractMacro(\"bodyContent\",(Macro)$context.getItemMap().get(\"bodyContent\")) {");
-        CodeBlock render = getMacroRenderCodeBlock();
+        CodeBlock render = getMacroRenderCodeBlock(true);
         bodyContentMacro.subCode(render);
 
         pushCodeBlock(render);
@@ -566,7 +569,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         callMacroFunctionBody.subCode("$macro.render($template,$context,$newContext,$writer);");
         templateClass.subCode(callMacroFunctionDeclare);
         callMacroFunctionDeclare.subCode(callMacroFunctionBody);
-        callMacro.subCode("callMacro"+index+"($context, $writer, $template);");
+        callMacro.subCode("callMacro" + index + "($context, $writer, $template);");
         return callMacro;
     }
 
@@ -645,7 +648,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         callMacro.subCode("$macro.render($template,$context,$newContext,$writer);");
 
         bodyContentMacro.header("$newContext.put(\"bodyContent\",new AbstractMacro(\"bodyContent\",(Macro)$context.getItemMap().get(\"bodyContent\")) {");
-        CodeBlock render = getMacroRenderCodeBlock();
+        CodeBlock render = getMacroRenderCodeBlock(false);
         bodyContentMacro.subCode(render);
 
         pushCodeBlock(render);
@@ -757,7 +760,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
 
     public CodeBlock visitExpr_member_function_call(@NotNull TinyTemplateParser.Expr_member_function_callContext ctx) {
-        CodeLet codeLet=new CodeLet();
+        CodeLet codeLet = new CodeLet();
         pushCodeLet(codeLet);
         ctx.expression().accept(this);
         String functionName = ctx.IDENTIFIER().getText();
