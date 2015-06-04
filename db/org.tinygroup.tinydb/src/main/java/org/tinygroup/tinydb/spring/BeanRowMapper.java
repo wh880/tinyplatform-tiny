@@ -60,8 +60,8 @@ public class BeanRowMapper implements RowMapper {
 				if (scale != 0 && scale != -127) {// 认为是double类型数据
 					double data = round(rs.getDouble(index), scale);
                     bean.put(name, data);
+                    break;
 				}
-				break;
 			default:
 				bean.put(name, rs.getObject(index));
 			}
