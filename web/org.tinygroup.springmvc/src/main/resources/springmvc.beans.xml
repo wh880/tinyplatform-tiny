@@ -9,4 +9,8 @@
 	<bean id="springMvcTinyProcessor"
 		class="org.tinygroup.springmvc.tinyprocessor.SpringMvcTinyProcessor">
 	</bean>
+	
+	<bean id="hiddenHttpMethodFilter"
+		class="org.tinygroup.springmvc.filter.HiddenHttpMethodFilter">
+	</bean>
 </beans>
