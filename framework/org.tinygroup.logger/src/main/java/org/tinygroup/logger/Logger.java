@@ -102,6 +102,8 @@ public interface Logger {
      * @param message
      */
     void logMessage(LogLevel logLevel, String message);
+    
+    void logMessage(LogLevel logLevel, String message,Throwable t);
 
     /**
      * 不对message进行格式化直接输出
@@ -112,6 +114,8 @@ public interface Logger {
      */
     void logMessage(LogLevel logLevel, String message, Object... args);
 
+    void logMessage(LogLevel logLevel, String message, Throwable t, Object... args);
+    
     /**
      * 不对message进行格式化直接输出
      *
@@ -120,6 +124,8 @@ public interface Logger {
      * @param context
      */
     void logMessage(LogLevel logLevel, String message, Context context);
+    
+    void logMessage(LogLevel logLevel, String message, Throwable t, Context context);
 
     /**
      * 通过国际化方式进行记录

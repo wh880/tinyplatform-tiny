@@ -147,9 +147,11 @@ public class LoggerImpl implements Logger {
 
 	private void flushLog(LogBuffer logBuffer) {
 		for (Message message : logBuffer.getLogMessages()) {
-			if (message.getThrowable() != null) {
+			if (message.getThrowable() != null&&LogLevel.ERROR==message.getLevel()) {
 				logError(message.getMessage(), message.getThrowable());
-			} else {
+			} else if (message.getThrowable() != null&&LogLevel.ERROR!=message.getLevel()) {
+				pLogMessage(message.getLevel(),message.getMessage(), message.getThrowable());
+			} else{
 				pLogMessage(message.getLevel(), message.getMessage());
 			}
 		}
@@ -254,6 +256,7 @@ public class LoggerImpl implements Logger {
 		}
 	}
 
+	
 	private void exportLog(LogLevel logLevel, String message) {
 		LogBuffer logBuffer = getLogBuffer();
 		if (logBuffer != null && logBuffer.getTimes() > 0) {
@@ -264,7 +267,51 @@ public class LoggerImpl implements Logger {
 			pLogMessage(logLevel, message);
 		}
 	}
+	
+	public void logMessage(LogLevel logLevel, String message,Throwable t) {
+		if (!isEnabled(logLevel)) {
+			return;
+		}
+		LogLevel threadLevel = LoggerFactory.getThreadLogLevel();
+		if (threadLevel == null || threadLevel != null
+				&& logLevel.toString().equals(threadLevel.toString())) {
+			exportLog(logLevel, message,t);
+		}
+	}
+	
+	private void exportLog(LogLevel logLevel, String message,Throwable t) {
+		LogBuffer logBuffer = getLogBuffer();
+		if (logBuffer != null && logBuffer.getTimes() > 0) {
+			logBuffer.getLogMessages().add(
+					new Message(logLevel, message, System.currentTimeMillis(),t));
+			checkBufferSize(logBuffer);
+		} else {
+			pLogMessage(logLevel, message,t);
+		}
+	}
+	
+	private void pLogMessage(LogLevel logLevel, String message,Throwable t) {
+		putMdcVariable();// 在输出日志之前先放入局部线程变量中的mdc值
+		switch (logLevel) {
+		case DEBUG:
+			logger.debug(message,t);
+			break;
+		case INFO:
+			logger.info(message,t);
+			break;
+		case WARN:
+			logger.warn(message,t);
+			break;
+		case TRACE:
+			logger.trace(message,t);
+			break;
+		case ERROR:
+			logger.error(message,t);
+			break;
+		}
+	}
 
+	
 	/**
 	 * 检测日志缓存列表，如果超过了最大限制条数或最大限制记录数，<br>
 	 * 则强制执行刷新操作。<br>
@@ -353,6 +400,13 @@ public class LoggerImpl implements Logger {
 		logMessage(logLevel, format(message, args));
 
 	}
+	public void logMessage(LogLevel logLevel, String message,Throwable t, Object... args) {
+		if (!isEnabled(logLevel)) {
+			return;
+		}
+		logMessage(logLevel, format(message, args),t);
+
+	}
 
 	private String format(String message, Object... args) {
 		Matcher matcher = pattern.matcher(message);
@@ -376,6 +430,12 @@ public class LoggerImpl implements Logger {
 			return;
 		}
 		logMessage(logLevel, i18nMessage.format(message, context));
+	}
+	public void logMessage(LogLevel logLevel, String message,Throwable t, Context context) {
+		if (!isEnabled(logLevel)) {
+			return;
+		}
+		logMessage(logLevel, i18nMessage.format(message, context),t);
 	}
 
 	public void error(String code) {
