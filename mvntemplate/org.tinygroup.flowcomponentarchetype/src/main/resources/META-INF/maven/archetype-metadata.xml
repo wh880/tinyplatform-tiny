@@ -7,7 +7,7 @@
 
    <requiredProperties>  
         <requiredProperty key="tinyVersion">  
-            <defaultValue>1.2.2</defaultValue>
+            <defaultValue>1.2.3</defaultValue>
         </requiredProperty>  
     </requiredProperties>  
 
