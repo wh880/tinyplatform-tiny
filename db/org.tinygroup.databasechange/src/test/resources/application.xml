@@ -42,7 +42,7 @@
     <!-- 数据库安装处理器 -->
     <database-install-processor>
         <database-installer>
-            <database type="mysql"/>
+            <database type="derby"/>
         </database-installer>
     </database-install-processor>
 

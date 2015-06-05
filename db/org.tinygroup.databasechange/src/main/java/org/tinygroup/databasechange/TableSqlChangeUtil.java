@@ -37,7 +37,7 @@ public class TableSqlChangeUtil {
 						.append("-----").append("\n\r");
 				List<String> sqls = processSqls.get(clazz);
 				for (String sql : sqls) {
-					builder.append(sql).append("\n\r");
+					builder.append(sql).append(";").append("\n\r");
 				}
 				builder.append("//-----").append(clazz.getSimpleName())
 						.append("-----").append("\n\r");

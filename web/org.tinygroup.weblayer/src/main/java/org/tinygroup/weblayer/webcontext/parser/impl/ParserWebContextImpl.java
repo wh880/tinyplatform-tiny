@@ -264,7 +264,11 @@ public class ParserWebContextImpl extends AbstractWebContextWrapper implements P
 
         
         public Enumeration<String> getParameterNames() {
-            return new IteratorEnumeration<String>(getParameters().keySet().iterator());
+        	Set<String> keySet=getParameters().keySet();
+        	if(keySet.isEmpty()){
+        		return super.getParameterNames();
+        	}
+            return new IteratorEnumeration<String>(keySet.iterator());
         }
 
         
