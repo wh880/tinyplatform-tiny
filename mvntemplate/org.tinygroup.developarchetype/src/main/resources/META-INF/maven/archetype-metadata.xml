@@ -5,7 +5,7 @@
   
   <requiredProperties>  
       <requiredProperty key="tinyVersion">  
-          <defaultValue>1.2.3</defaultValue>
+          <defaultValue>${project.version}</defaultValue>
       </requiredProperty>  
   </requiredProperties>
     
