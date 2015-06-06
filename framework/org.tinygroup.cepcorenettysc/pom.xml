@@ -3,11 +3,11 @@
   <parent>
     <groupId>org.tinygroup</groupId>
     <artifactId>framework</artifactId>
-    <version>1.2.4</version>
+    <version>1.2.5-SNAPSHOT</version>
   </parent>
   <groupId>org.tinygroup</groupId>
   <artifactId>org.tinygroup.cepcorenettysc</artifactId>
-  <version>1.2.4</version>
+  <version>1.2.5-SNAPSHOT</version>
   <dependencies>
   	<dependency>
       <groupId>org.tinygroup</groupId>
