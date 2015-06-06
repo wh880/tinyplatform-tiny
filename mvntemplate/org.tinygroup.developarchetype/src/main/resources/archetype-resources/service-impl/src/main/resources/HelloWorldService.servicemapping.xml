@@ -1,3 +1,0 @@
-<service-view-mappings>
-	<service-view-mapping service-id="sayHello" path="/helloworld/helloresult.page" type="forward"></service-view-mapping>
-</service-view-mappings>

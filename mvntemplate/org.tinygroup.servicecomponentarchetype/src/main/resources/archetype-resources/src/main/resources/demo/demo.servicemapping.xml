@@ -1,4 +1,0 @@
-<service-view-mappings>
-	<service-view-mapping service-id="sayHello" path="/demo/demo.page"></service-view-mapping>
-	<service-view-mapping service-id="sayHelloA" path="/demo/demo.page"></service-view-mapping>
-</service-view-mappings>
