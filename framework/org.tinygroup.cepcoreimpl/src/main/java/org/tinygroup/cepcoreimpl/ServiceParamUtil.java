@@ -27,9 +27,11 @@ public class ServiceParamUtil {
 		String serviceId = event.getServiceRequest().getServiceId();
 		ServiceInfo service = core.getServiceInfo(serviceId);
 		List<Parameter> inputs = service.getParameters();
-		for (Parameter input : inputs) {
-			Object value = getParameterValue(loader, oldContext, input);
-			newContext.put(input.getName(), value);
+		if(inputs!=null){
+			for (Parameter input : inputs) {
+				Object value = getParameterValue(loader, oldContext, input);
+				newContext.put(input.getName(), value);
+			}
 		}
 		event.getServiceRequest().setContext(newContext);
 	}
@@ -97,10 +99,12 @@ public class ServiceParamUtil {
 		Context context = event.getServiceRequest().getContext();
 		ServiceInfo service = core.getServiceInfo(serviceId);
 		List<Parameter> outputs = service.getResults();
-		for (Parameter output : outputs) {
-			String name = output.getName();
-			if (context.exist(name)) {
-				oldContext.put(name, context.get(name));
+		if(outputs!=null){
+			for (Parameter output : outputs) {
+				String name = output.getName();
+				if (context.exist(name)) {
+					oldContext.put(name, context.get(name));
+				}
 			}
 		}
 		event.getServiceRequest().setContext(oldContext);
