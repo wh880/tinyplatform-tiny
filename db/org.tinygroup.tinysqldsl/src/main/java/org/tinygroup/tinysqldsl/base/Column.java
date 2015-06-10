@@ -17,6 +17,7 @@ package org.tinygroup.tinysqldsl.base;
 
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.tinysqldsl.expression.Expression;
+import org.tinygroup.tinysqldsl.expression.FragmentExpressionSql;
 import org.tinygroup.tinysqldsl.operator.ColumnOperator;
 import org.tinygroup.tinysqldsl.selectitem.Distinct;
 import org.tinygroup.tinysqldsl.selectitem.SelectItem;
@@ -80,6 +81,10 @@ public class Column extends ColumnOperator implements Expression,
 
 	public Value value(Expression expression) {
 		return new Value(this, expression);
+	}
+	
+	public Value fragmentValue(String fragmentSql) {
+		return new Value(this, new FragmentExpressionSql(fragmentSql));
 	}
 
 	public Table getTable() {

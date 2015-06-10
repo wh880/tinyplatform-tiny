@@ -15,24 +15,18 @@
  */
 package org.tinygroup.tinysqldsl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.base.InsertContext;
 import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Table;
 import org.tinygroup.tinysqldsl.base.Value;
-import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
-import org.tinygroup.tinysqldsl.insert.InsertBody;
 
 /**
  * Insert语句 Created by luoguo on 2015/3/11.
  */
 public class Insert extends StatementSqlBuilder implements Statement {
-
-	private InsertBody insertBody;
 
 	private InsertContext context;
 	/**
@@ -45,7 +39,6 @@ public class Insert extends StatementSqlBuilder implements Statement {
 	}
 
 	private Insert() {
-		insertBody = new InsertBody();
 		context = new InsertContext();
 	}
 
@@ -55,41 +48,27 @@ public class Insert extends StatementSqlBuilder implements Statement {
 
 	public static Insert insertInto(Table table) {
 		Insert insert = new Insert();
-		insert.getInsertBody().setTable(table);
+		insert.getContext().setTable(table);
 		insert.getContext().setSchema(table.getSchemaName());
 		insert.getContext().setTableName(table.getName());
 		return insert;
 	}
 
 	public Insert values(Value... values) {
-		List<Column> columns = new ArrayList<Column>();
-		ExpressionList itemsList = new ExpressionList();
-		for (Value value : values) {
-			Column column = value.getColumn();
-			columns.add(column);
-			context.addColumnName(column.getColumnName());
-			context.putParam(column.getColumnName(), value.getValue());
-			itemsList.addExpression(value.getExpression());
-		}
-		insertBody.setColumns(columns);
-		insertBody.setItemsList(itemsList);
+		context.addValues(values);
 		return this;
 	}
 
 	public Insert columns(Column... columns) {
-		insertBody.setColumns(Arrays.asList(columns));
-		insertBody.setUseValues(false);
+		context.setColumns(Arrays.asList(columns));
+		context.setUseValues(false);
 		return this;
 	}
 
 	public Insert selectBody(Select select) {
-		insertBody.setItemsList(null);
-		insertBody.setSelectBody(select.getPlainSelect());
+		context.setItemsList(null);
+		context.setSelectBody(select.getPlainSelect());
 		return this;
-	}
-
-	public InsertBody getInsertBody() {
-		return insertBody;
 	}
 
 	@Override
@@ -99,7 +78,7 @@ public class Insert extends StatementSqlBuilder implements Statement {
 
 	@Override
 	protected void parserStatementBody() {
-		build(insertBody);
+		build(context.createInsert());
 	}
 
 	public void id(String id) {
