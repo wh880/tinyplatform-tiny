@@ -52,9 +52,8 @@ public abstract class AbstractMacro implements Macro {
         if ($macro == null) {
             Context context = $context;
             while (context.getParent() != null) {
-                if (context.get("bodyContent") != null && !context.getItemMap().containsKey("isCalled") &&context.getItemMap().size()>0) {
+                if (context.get("bodyContent") != null && context.getItemMap().size()>0 && !context.getItemMap().containsKey("isCalled")) {
                     $macro = (Macro) context.getItemMap().get("bodyContent");
-                    System.out.println("itemMap="+context.getItemMap().size());
                     return $macro;
                 }
                 context = context.getParent();
