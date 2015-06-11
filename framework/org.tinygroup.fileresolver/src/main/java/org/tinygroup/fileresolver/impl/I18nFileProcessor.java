@@ -46,7 +46,7 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 		this.i18nFolderName = i18nFolderName;
 	}
 
-	public boolean isMatch(FileObject fileObject){
+	public boolean checkMatch(FileObject fileObject){
 		if ((fileObject.getFileName()
 				.endsWith(PROPERTIES_FILE_EXTENSION)||fileObject.getFileName()
 				.endsWith(CUSTOMIZE_PROPERTIES_FILE_EXTENSION))

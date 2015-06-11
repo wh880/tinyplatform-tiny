@@ -30,7 +30,7 @@ public class ConfigurationFileProcessor extends AbstractFileProcessor {
 
 	private static final String CONFIG_EXT_FILENAME = ".config.xml";
 
-	public boolean isMatch(FileObject fileObject) {
+	public boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().toLowerCase()
 				.endsWith(CONFIG_EXT_FILENAME);
 	}

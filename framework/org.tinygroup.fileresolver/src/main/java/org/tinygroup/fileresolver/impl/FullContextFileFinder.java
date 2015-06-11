@@ -53,7 +53,7 @@ public class FullContextFileFinder extends AbstractFileProcessor implements
 		this.fullContextFileRepository = fullContextFileRepository;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
+	public boolean checkMatch(FileObject fileObject) {
 		if (extFileContentTypeMap.containsKey(fileObject.getExtName())) {
 			return true;
 		}

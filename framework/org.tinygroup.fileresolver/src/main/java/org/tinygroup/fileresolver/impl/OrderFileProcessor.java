@@ -32,7 +32,7 @@ public class OrderFileProcessor extends AbstractFileProcessor {
 	private OrderProcessor<?> orderProcessor;
 	private static final String ORDER_FILE_NAME = ".order.xml";
 
-	public boolean isMatch(FileObject fileObject) {
+	public boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(ORDER_FILE_NAME);
 	}
 
