@@ -39,7 +39,7 @@ public class ViewFileResolver extends AbstractFileProcessor {
 	}
 
 	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(VIEW_EXTFILENAME) || fileObject.getFileName().endsWith(".view");
+		return !fileObject.isFolder()&&(fileObject.getFileName().endsWith(VIEW_EXTFILENAME) || fileObject.getFileName().endsWith(".view"));
 	}
 
 	public void process() {
