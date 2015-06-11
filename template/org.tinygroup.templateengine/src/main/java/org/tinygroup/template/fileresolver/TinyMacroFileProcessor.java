@@ -68,7 +68,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
         this.bundleManager = bundleManager;
     }
 
-	public boolean isMatch(FileObject fileObject) {
+	public boolean checkMatch(FileObject fileObject) {
         if (!fileObject.isFolder() && fileObject.getFileName().endsWith(COMPONENT_FILE_NAME)) {
             return true;
         }
