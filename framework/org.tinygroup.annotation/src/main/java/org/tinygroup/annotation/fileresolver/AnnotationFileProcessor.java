@@ -34,7 +34,7 @@ public class AnnotationFileProcessor extends AbstractFileProcessor {
 
 	private static final String ANNOTATION_EXT_FILENAME = ".annotation.xml";
 	private AnnotationExcuteManager manager;
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 
 		return fileObject.getFileName().endsWith(ANNOTATION_EXT_FILENAME);
 	}

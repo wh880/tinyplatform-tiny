@@ -48,7 +48,7 @@ public class PageFlowComponentProcessor extends AbstractFileProcessor {
 		this.flowExecutor = flowExecutor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(
 				PAGE_FLOW_COMPONENT_EXT_FILENAME);
 	}

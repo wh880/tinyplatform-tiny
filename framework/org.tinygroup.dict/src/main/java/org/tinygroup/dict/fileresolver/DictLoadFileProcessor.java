@@ -47,7 +47,7 @@ public class DictLoadFileProcessor extends AbstractFileProcessor {
 		this.manager = manager;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(DICT_LOAND_EXT_NAME);
 	}
 

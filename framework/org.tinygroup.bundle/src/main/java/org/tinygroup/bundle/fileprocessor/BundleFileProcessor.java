@@ -39,7 +39,7 @@ public class BundleFileProcessor extends AbstractFileProcessor {
 		this.bundleManager = bundleManager;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(BUNDLE_EXT_FILENAME);
 	}
 

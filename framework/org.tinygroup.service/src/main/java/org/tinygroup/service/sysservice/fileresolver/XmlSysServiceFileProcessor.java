@@ -62,7 +62,7 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 		this.reg = reg;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(SERVICE_EXT_FILENAME);
 	}
 

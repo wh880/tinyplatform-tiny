@@ -75,7 +75,7 @@ public class TemplateFileProcessor extends AbstractFileProcessor {
 		this.generate = generate;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(fileExtName);
 	}
 

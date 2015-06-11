@@ -52,6 +52,15 @@ public abstract class AbstractFileProcessor implements FileProcessor {
 
 	protected Map<String, Object> caches=new HashMap<String, Object>();
 	
+	public boolean isMatch(FileObject fileObject) {
+		if(fileObject.isFolder()){
+			return false;
+		}
+		return checkMatch(fileObject);
+	}
+	
+	protected abstract boolean checkMatch(FileObject fileObject);
+	
 	public FileResolver getFileResolver() {
 		return fileResolver;
 	}

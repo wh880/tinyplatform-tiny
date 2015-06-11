@@ -44,7 +44,7 @@ public class PageFlowFileProcessor extends AbstractFileProcessor {
 		return fileObjects;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return !fileObject.isFolder()&&fileObject.getFileName().endsWith(PAGE_FLOW_EXT_FILENAME);
 	}
 

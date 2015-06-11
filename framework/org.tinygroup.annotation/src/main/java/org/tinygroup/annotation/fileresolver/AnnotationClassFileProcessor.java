@@ -31,7 +31,7 @@ public class AnnotationClassFileProcessor extends AbstractFileProcessor {
 	private AnnotationExcuteManager manager;
 	private static final String CLASS_EXT_FILENAME = ".class";
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		boolean isMatch = false;
 		if (fileObject.getFileName().endsWith(CLASS_EXT_FILENAME)) {
 			isMatch = true;

@@ -44,7 +44,7 @@ public class ValidateFileProcessor extends AbstractFileProcessor {
 		this.validatorManager = validatorManager;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(VALIDATE_FILE_SUFFIX);
 	}
 

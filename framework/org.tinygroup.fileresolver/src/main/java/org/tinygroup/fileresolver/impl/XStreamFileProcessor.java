@@ -53,7 +53,7 @@ public class XStreamFileProcessor extends AbstractFileProcessor {
 		this.xstreamFileExtension = xstreamFileExtension;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		if (fileObject.getFileName().endsWith(XSTREAM_FILE_EXTENSION)) {
 			return true;
 		}

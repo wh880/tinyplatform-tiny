@@ -47,7 +47,7 @@ public class FlowComponentRemoveProcessor extends AbstractFileProcessor {
 		this.flowExecutor = flowExecutor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(FLOW_COMPONENT_EXT_FILENAME);
 	}
 

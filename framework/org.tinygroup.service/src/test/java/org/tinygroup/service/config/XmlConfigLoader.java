@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.tinygroup.beancontainer.BeanContainer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.vfs.FileObject;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -75,6 +76,11 @@ public class XmlConfigLoader extends XmlConfigServiceLoader {
 			return container.getBean(clazz);
 		}
 		return container.getBean(component.getBean());
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return false;
 	}
 
 }

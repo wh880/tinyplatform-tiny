@@ -28,7 +28,7 @@ public class ServiceMappingFileProcessor extends AbstractFileProcessor {
 
 	private static final String SERVICEMAPPING_EXT_FILENAMES = ".servicemapping.xml";
 	private ServiceMappingManager manager;
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(SERVICEMAPPING_EXT_FILENAMES);
 	}
 
