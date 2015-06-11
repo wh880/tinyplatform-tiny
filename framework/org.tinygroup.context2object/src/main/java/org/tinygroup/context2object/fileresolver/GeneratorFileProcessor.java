@@ -47,7 +47,7 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 		this.generator = generator;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(GENERATOR_EXT_FILENAME);
 	}
 

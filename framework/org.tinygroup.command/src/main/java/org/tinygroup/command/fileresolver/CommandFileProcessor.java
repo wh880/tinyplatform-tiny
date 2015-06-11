@@ -28,7 +28,7 @@ public class CommandFileProcessor extends AbstractFileProcessor {
 
 	private static final String COMMAND_EXT_FILENAME = ".commands.xml";
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(COMMAND_EXT_FILENAME);
 	}
 

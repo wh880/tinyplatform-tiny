@@ -273,9 +273,6 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 		return applicationConfig;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return false;
-	}
 
 	public void process() {
 

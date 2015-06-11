@@ -43,7 +43,7 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
 	private ServiceProviderInterface provider;
 	private List<ServiceComponents> list = new ArrayList<ServiceComponents>();
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(SERVICE_EXT_FILENAME);
 	}
 

@@ -23,7 +23,7 @@ import org.tinygroup.vfs.FileObject;
 
 public class SpringBeansFileProcessor extends AbstractFileProcessor {
 
-	public boolean isMatch(FileObject fileObject) {
+	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(".springbeans.xml")
 				|| fileObject.getFileName().endsWith(".beans.xml");
 	}
