@@ -59,7 +59,7 @@ public abstract class AbstractFileProcessor implements FileProcessor {
 		return checkMatch(fileObject);
 	}
 	
-	abstract boolean checkMatch(FileObject fileObject);
+	public abstract boolean checkMatch(FileObject fileObject);
 	
 	public FileResolver getFileResolver() {
 		return fileResolver;
