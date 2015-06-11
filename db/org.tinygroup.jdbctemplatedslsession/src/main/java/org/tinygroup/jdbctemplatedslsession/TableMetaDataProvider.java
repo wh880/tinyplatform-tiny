@@ -3,13 +3,13 @@ package org.tinygroup.jdbctemplatedslsession;
 import javax.sql.DataSource;
 
 /**
- *根据metadata获取表格相关的主键信息 
+ *根据metadata获取表格相关的元数据信息
  * @author renhui
  *
  */
-public interface PrimaryKeyProvider {
+public interface TableMetaDataProvider {
 
-	String[] generatedKeyNamesWithMetaData(DataSource dataSource,
+	TableMetaData generatedKeyNamesWithMetaData(DataSource dataSource,
 			String catalogName, String schemaName, String tableName);
 
 }

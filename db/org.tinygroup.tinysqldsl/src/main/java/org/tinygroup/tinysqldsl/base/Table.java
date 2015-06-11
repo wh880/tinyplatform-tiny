@@ -15,7 +15,11 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
+import java.util.Map;
+
+import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.tinygroup.commons.beanutil.BeanUtil;
+import org.tinygroup.tinysqldsl.KeyGenerator;
 import org.tinygroup.tinysqldsl.formitem.FromItem;
 import org.tinygroup.tinysqldsl.selectitem.AllTableColumns;
 
@@ -36,6 +40,10 @@ public class Table implements FromItem, MultiPartName{
      * 表的别名
      */
     private Alias alias;
+    
+    private Map<String,KeyGenerator> generatorMap=new CaseInsensitiveMap(); 
+    
+    private Class pojoType;
 
     public Table() {
     }
@@ -134,4 +142,13 @@ public class Table implements FromItem, MultiPartName{
             buffer.append(alias);
         }
     }
+
+	public Map<String, KeyGenerator> getGeneratorMap() {
+		return generatorMap;
+	}
+
+	public  Class getPojoType() {
+		return pojoType;
+	}
+
 }
