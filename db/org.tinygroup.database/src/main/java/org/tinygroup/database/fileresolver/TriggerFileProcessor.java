@@ -44,10 +44,6 @@ public class TriggerFileProcessor extends AbstractFileProcessor {
 		this.processor = processor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(TRIGGER_EXTFILENAME);
-	}
-
 	public void process() {
 
 		XStream stream = XStreamFactory
@@ -80,6 +76,11 @@ public class TriggerFileProcessor extends AbstractFileProcessor {
 					fileObject.getAbsolutePath());
 		}
 
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(TRIGGER_EXTFILENAME);
 	}
 
 }

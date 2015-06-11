@@ -140,7 +140,19 @@
 	<bean name="commonExceptionResolver"
 		class="org.tinygroup.springmvc.exceptionresolver.HandlerExceptionResolverComposite">
 	</bean>
-
+	
+	<bean name="annotationMethodHandlerExceptionResolver"
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver">
+	</bean>
+	
+	<bean name="responseStatusExceptionResolver"
+		class="org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver">
+	</bean>
+	
+	<bean name="defaultHandlerExceptionResolver"
+		class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver">
+	</bean>
+	
 	<!--httpMessageConverter paricipants -->
 	<bean id="stringHttpMessageConverter"
 		class="org.springframework.http.converter.StringHttpMessageConverter">

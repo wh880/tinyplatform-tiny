@@ -39,10 +39,6 @@ public class StandardFieldFileResolver extends AbstractFileProcessor {
 		this.standardFieldProcessor = standardFieldProcessor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(STANDARDFIELD_EXTFILENAME) || fileObject.getFileName().endsWith(".stdfield");
-	}
-
 	public void process() {
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
@@ -71,6 +67,11 @@ public class StandardFieldFileResolver extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载stdfield文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(STANDARDFIELD_EXTFILENAME) || fileObject.getFileName().endsWith(".stdfield");
 	}
 
 }

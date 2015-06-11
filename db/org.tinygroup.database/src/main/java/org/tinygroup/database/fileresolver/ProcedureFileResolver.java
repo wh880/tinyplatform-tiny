@@ -37,10 +37,6 @@ public class ProcedureFileResolver extends AbstractFileProcessor {
 		this.procedureProcessor = procedureProcessor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(PROCEDURE_EXTFILENAME) || fileObject.getFileName().endsWith(".procedure") ;
-	}
-
 	public void process() {
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.DATABASE_XSTREAM);
@@ -69,6 +65,11 @@ public class ProcedureFileResolver extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载procedure文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(PROCEDURE_EXTFILENAME) || fileObject.getFileName().endsWith(".procedure") ;
 	}
 
 }

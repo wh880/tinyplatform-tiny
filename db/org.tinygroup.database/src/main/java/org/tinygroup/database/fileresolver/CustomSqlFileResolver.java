@@ -29,7 +29,7 @@ public class CustomSqlFileResolver extends AbstractFileProcessor {
 
 	private static final String CUSTOMSQL_EXTFILENAME = ".customsql.xml";
 	CustomSqlProcessor customSqlProcessor;
-	
+
 	public CustomSqlProcessor getCustomSqlProcessor() {
 		return customSqlProcessor;
 	}
@@ -38,18 +38,15 @@ public class CustomSqlFileResolver extends AbstractFileProcessor {
 		this.customSqlProcessor = customSqlProcessor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(CUSTOMSQL_EXTFILENAME) || fileObject.getFileName().endsWith(".customsql");
-	}
-
 	public void process() {
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.DATABASE_XSTREAM);
 		for (FileObject fileObject : deleteList) {
 			logger.logMessage(LogLevel.INFO, "正在移除customsql文件[{0}]",
 					fileObject.getAbsolutePath());
-			CustomSqls customsqls = (CustomSqls)caches.get(fileObject.getAbsolutePath());
-			if(customsqls!=null){
+			CustomSqls customsqls = (CustomSqls) caches.get(fileObject
+					.getAbsolutePath());
+			if (customsqls != null) {
 				customSqlProcessor.removeCustomSqls(customsqls);
 				caches.remove(fileObject.getAbsolutePath());
 			}
@@ -61,8 +58,9 @@ public class CustomSqlFileResolver extends AbstractFileProcessor {
 					fileObject.getAbsolutePath());
 			CustomSqls customsqls = (CustomSqls) stream.fromXML(fileObject
 					.getInputStream());
-			CustomSqls oldCustomsqls = (CustomSqls)caches.get(fileObject.getAbsolutePath());
-			if(oldCustomsqls!=null){
+			CustomSqls oldCustomsqls = (CustomSqls) caches.get(fileObject
+					.getAbsolutePath());
+			if (oldCustomsqls != null) {
 				customSqlProcessor.removeCustomSqls(oldCustomsqls);
 			}
 			customSqlProcessor.addCustomSqls(customsqls);
@@ -70,6 +68,12 @@ public class CustomSqlFileResolver extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载customsql文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(CUSTOMSQL_EXTFILENAME)
+				|| fileObject.getFileName().endsWith(".customsql");
 	}
 
 }

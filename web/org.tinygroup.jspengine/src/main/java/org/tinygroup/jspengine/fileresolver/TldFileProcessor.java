@@ -23,10 +23,6 @@ public class TldFileProcessor extends AbstractFileProcessor {
 	
 	private static final String TLD_FILE_EXT_NAME=".tld";
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(TLD_FILE_EXT_NAME);
-	}
-
 	public void process() {
 		//设置符合的tld文件列表对象
 		TldFileManager manager=TldFileManager.getInstance();
@@ -44,6 +40,11 @@ public class TldFileProcessor extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载tld文件：<{}>结束",
 					fileObject.getAbsolutePath());
 		}
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(TLD_FILE_EXT_NAME);
 	}
 
 }

@@ -40,10 +40,6 @@ public class ConstantFileResolver extends AbstractFileProcessor {
 		this.constantProcessor = constantProcessor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(CONSTANT_EXTFILENAME) || fileObject.getFileName().endsWith(".const");
-	}
-
 	public void process() {
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
@@ -74,6 +70,11 @@ public class ConstantFileResolver extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载const文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(CONSTANT_EXTFILENAME) || fileObject.getFileName().endsWith(".const");
 	}
 
 }

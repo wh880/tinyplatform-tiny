@@ -39,10 +39,6 @@ public class StandardTypeFileResolver extends AbstractFileProcessor {
 		this.standardDataTypeProcessor = standardDataTypeProcessor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(DATATYPE_EXTFILENAME) || fileObject.getFileName().endsWith(".datatype");
-	}
-
 	public void process() {
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
@@ -71,6 +67,11 @@ public class StandardTypeFileResolver extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载datatype文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(DATATYPE_EXTFILENAME) || fileObject.getFileName().endsWith(".datatype");
 	}
 
 }

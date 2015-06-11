@@ -38,9 +38,6 @@ public class ViewFileResolver extends AbstractFileProcessor {
 		this.viewProcessor = viewProcessor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return !fileObject.isFolder()&&(fileObject.getFileName().endsWith(VIEW_EXTFILENAME) || fileObject.getFileName().endsWith(".view"));
-	}
 
 	public void process() {
 		XStream stream = XStreamFactory
@@ -70,6 +67,11 @@ public class ViewFileResolver extends AbstractFileProcessor {
 					fileObject.getAbsolutePath());
 		}
 		viewProcessor.dependencyInit();
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(VIEW_EXTFILENAME) || fileObject.getFileName().endsWith(".view");
 	}
 
 }

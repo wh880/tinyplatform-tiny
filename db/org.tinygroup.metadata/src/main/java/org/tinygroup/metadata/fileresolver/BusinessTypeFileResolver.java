@@ -38,10 +38,6 @@ public class BusinessTypeFileResolver extends AbstractFileProcessor {
 		this.businessTypeProcessor = businessTypeProcessor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(BIZDATATYPE_EXTFILENAME) || fileObject.getFileName().endsWith(".bizdatatype");
-	}
-
 	public void process() {
 //		BusinessTypeProcessor businessTypeProcessor = SpringBeanContainer
 //				.getBean(MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
@@ -73,6 +69,11 @@ public class BusinessTypeFileResolver extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载bizdatatype文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(BIZDATATYPE_EXTFILENAME) || fileObject.getFileName().endsWith(".bizdatatype");
 	}
 
 }

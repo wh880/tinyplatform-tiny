@@ -34,10 +34,6 @@ public class TinyListenerFileProcessor extends AbstractFileProcessor {
 
 	private static final String LISTENER_EXT_FILENAMES = ".tinylisteners.xml";
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(LISTENER_EXT_FILENAMES);
-	}
-
 	public void process() {
 		XStream stream = XStreamFactory.getXStream("weblayer");
 		TinyListenerConfigManager configManager = TinyListenerConfigManagerHolder
@@ -70,6 +66,11 @@ public class TinyListenerFileProcessor extends AbstractFileProcessor {
 		}
 		configManager.combineConfig();// 混合组件与应用配置
 		configManager.newInstance();// 监听器实例化
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(LISTENER_EXT_FILENAMES);
 	}
 
 }
