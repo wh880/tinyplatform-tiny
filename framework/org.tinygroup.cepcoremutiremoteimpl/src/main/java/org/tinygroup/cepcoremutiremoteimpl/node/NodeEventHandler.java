@@ -123,8 +123,14 @@ public class NodeEventHandler extends CEPCoreEventHandler {
 		Map<Node, List<ServiceInfo>> nodeServices = c2
 				.get(SC_TO_NODE_SERVICE_KEY);
 		Map<String, Integer> versions = c2.get(SC_TO_NODE_SERVICE_VERSION_KEY);
-		logger.logMessage(LogLevel.INFO, "接收到服务中心发送的其他节点数{}",
-				nodeServices.size() - 1);
+		if(nodeServices.size()>1){
+			logger.logMessage(LogLevel.INFO, "接收到服务中心发送的其他节点数{}",
+					nodeServices.size() - 1);
+		}else{
+			logger.logMessage(LogLevel.INFO, "接收到服务中心发送的其他节点数{}",
+					1);
+		}
+		
 		for (Node node : nodeServices.keySet()) {
 			if (getNode().toString().equals(node.toString())) {
 				continue;
