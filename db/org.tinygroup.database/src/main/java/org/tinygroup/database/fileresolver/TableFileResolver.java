@@ -38,10 +38,6 @@ public class TableFileResolver extends AbstractFileProcessor {
 		this.tableProcessor = tableProcessor;
 	}
 
-	public boolean isMatch(org.tinygroup.vfs.FileObject fileObject) {
-		return fileObject.getFileName().endsWith(TABLE_EXTFILENAME) || fileObject.getFileName().endsWith(".table");
-	}
-
 	public void process() {
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.DATABASE_XSTREAM);
@@ -70,6 +66,11 @@ public class TableFileResolver extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载table文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(TABLE_EXTFILENAME) || fileObject.getFileName().endsWith(".table");
 	}
 
 }

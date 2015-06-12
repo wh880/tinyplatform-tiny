@@ -29,13 +29,6 @@ public class WebMacroFileProcessor extends AbstractFileProcessor {
 		this.engine = engine;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		if (fileObject.getFileName().endsWith(COMPONENT_FILE_NAME)) {
-			return true;
-		}
-		return false;
-	}
-
 	public void process() {
 		if(!hasResouceLoader){
 			addResourceLoaders();
@@ -92,6 +85,14 @@ public class WebMacroFileProcessor extends AbstractFileProcessor {
 	
 	public String getApplicationNodePath() {
 		return TINY_TEMPLATE_CONFIG;
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		if (fileObject.getFileName().endsWith(COMPONENT_FILE_NAME)) {
+			return true;
+		}
+		return false;
 	}
 
 }

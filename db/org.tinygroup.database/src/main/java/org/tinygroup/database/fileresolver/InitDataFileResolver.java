@@ -37,10 +37,6 @@ public class InitDataFileResolver extends AbstractFileProcessor {
 		this.initDataProcessor = initDataProcessor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(INITDATA_EXTFILENAME) || fileObject.getFileName().endsWith(".init");
-	}
-
 	public void process() {
 		logger.logMessage(LogLevel.INFO, "开始处理表格初始化数据init文件");
 		XStream stream = XStreamFactory
@@ -72,6 +68,11 @@ public class InitDataFileResolver extends AbstractFileProcessor {
 		}
 		logger.logMessage(LogLevel.INFO, "处理表格初始化数据init文件读取完毕");
 
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(INITDATA_EXTFILENAME) || fileObject.getFileName().endsWith(".init");
 	}
 
 }

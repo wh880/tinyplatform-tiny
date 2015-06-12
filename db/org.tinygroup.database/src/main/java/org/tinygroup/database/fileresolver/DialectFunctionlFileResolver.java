@@ -39,10 +39,6 @@ public class DialectFunctionlFileResolver extends AbstractFileProcessor {
 		this.functionProcessor = functionProcessor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(FUNCTION_EXTFILENAME);
-	}
-
 	public void process() {
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.DATABASE_XSTREAM);
@@ -71,6 +67,11 @@ public class DialectFunctionlFileResolver extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载function文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(FUNCTION_EXTFILENAME);
 	}
 
 }

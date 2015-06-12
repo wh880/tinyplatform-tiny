@@ -24,7 +24,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.BeanExpressionResolver;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpEntity;
@@ -54,7 +53,6 @@ import org.springframework.web.bind.annotation.support.HandlerMethodResolver;
 import org.springframework.web.bind.support.SessionAttributeStore;
 import org.springframework.web.bind.support.WebArgumentResolver;
 import org.springframework.web.bind.support.WebBindingInitializer;
-import org.springframework.web.bind.support.WebRequestDataBinder;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.multipart.MultipartRequest;
@@ -199,21 +197,6 @@ public class TinyServletHandlerMethodInvoker extends HandlerMethodInvoker {
 			throws Exception {
 		ServletRequestDataBinder servletBinder = (ServletRequestDataBinder) binder;
 		servletBinder.bind(webRequest.getNativeRequest(ServletRequest.class));
-	}
-
-	protected Object resolveCommonArgument(MethodParameter methodParameter,
-			NativeWebRequest webRequest) throws Exception {
-		Object value=super.resolveCommonArgument(methodParameter, webRequest);
-		if (value != WebArgumentResolver.UNRESOLVED) {
-			return value;
-		}
-		HttpServletRequest request = webRequest
-		.getNativeRequest(HttpServletRequest.class);
-		WebContext webContext=WebContextUtil.getWebContext(request);
-		if(webContext.exist(methodParameter.getParameterName())){
-			return webContext.get(methodParameter.getParameterName());
-		}
-		return WebArgumentResolver.UNRESOLVED;
 	}
 
 	@Override

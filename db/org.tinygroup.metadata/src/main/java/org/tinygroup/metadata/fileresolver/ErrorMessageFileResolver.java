@@ -38,10 +38,6 @@ public class ErrorMessageFileResolver extends AbstractFileProcessor {
 		this.errorMessageProcessor = errorMessageProcessor;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(ERROR_EXTFILENAME) || fileObject.getFileName().endsWith(".error");
-	}
-
 	public void process() {
 		XStream stream = XStreamFactory
 				.getXStream(MetadataUtil.METADATA_XSTREAM);
@@ -71,6 +67,11 @@ public class ErrorMessageFileResolver extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载error文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(ERROR_EXTFILENAME) || fileObject.getFileName().endsWith(".error");
 	}
 
 }

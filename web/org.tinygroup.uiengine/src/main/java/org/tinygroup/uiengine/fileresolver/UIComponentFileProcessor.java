@@ -44,14 +44,6 @@ public class UIComponentFileProcessor extends AbstractFileProcessor {
 	}
 
 
-	public boolean isMatch(FileObject fileObject) {
-		if (fileObject.getFileName().endsWith(".ui.xml")) {
-			return true;
-		}
-		return false;
-	}
-
-
 	public void process() {
 		XStream stream = XStreamFactory
 				.getXStream(UIComponentManager.UIComponentManager_XSTREAM);
@@ -80,6 +72,15 @@ public class UIComponentFileProcessor extends AbstractFileProcessor {
 			logger.logMessage(LogLevel.INFO, "加载uicomponent文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
+	}
+
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		if (fileObject.getFileName().endsWith(".ui.xml")) {
+			return true;
+		}
+		return false;
 	}
 
 }

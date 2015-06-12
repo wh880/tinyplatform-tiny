@@ -38,10 +38,6 @@ public class ProcessorFileResolver extends AbstractFileProcessor {
 		this.processorManager = processorManager;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(PROCESSOR_EXTFILENAME);
-	}
-
 	public void process() {
 		logger.logMessage(LogLevel.INFO, "开始读取database.processor文件");
 		XStream stream = XStreamFactory
@@ -73,6 +69,11 @@ public class ProcessorFileResolver extends AbstractFileProcessor {
 		}
 		logger.logMessage(LogLevel.INFO, "database.processor文件读取完毕");
 
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(PROCESSOR_EXTFILENAME);
 	}
 
 }

@@ -42,10 +42,6 @@ public class TinyFilterFileProcessor extends AbstractFileProcessor {
 		this.configManager = configManager;
 	}
 
-	public boolean isMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(FILTERS_EXT_FILENAMES);
-	}
-
 	public void process() {
 		XStream stream = XStreamFactory.getXStream("weblayer");
 		for (FileObject fileObject : deleteList) {
@@ -75,6 +71,11 @@ public class TinyFilterFileProcessor extends AbstractFileProcessor {
 			caches.put(fileObject.getAbsolutePath(), configInfos);
 		}
 		configManager.combineConfig();
+	}
+
+	@Override
+	protected boolean checkMatch(FileObject fileObject) {
+		return fileObject.getFileName().endsWith(FILTERS_EXT_FILENAMES);
 	}
 
 }
