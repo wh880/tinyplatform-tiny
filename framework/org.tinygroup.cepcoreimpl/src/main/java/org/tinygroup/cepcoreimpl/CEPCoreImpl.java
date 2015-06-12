@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +42,7 @@ public class CEPCoreImpl implements CEPCore {
 	private static Logger logger = LoggerFactory.getLogger(CEPCoreImpl.class);
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
 	// 服务版本，每次注册注销都会使其+1;
+	ExecutorService executor = Executors.newCachedThreadPool();
 	private static int serviceVersion = 0;
 	/**
 	 * 存放所有的EventProcessor
@@ -272,8 +276,10 @@ public class CEPCoreImpl implements CEPCore {
 			Event e = getEventClone(event);
 			event.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
 			event.setType(Event.EVENT_TYPE_RESPONSE);
+			//TODO:调整为线程池
 			SynchronousDeal thread = new SynchronousDeal(eventProcessor, e);
-			thread.start();
+//			thread.start();
+			executor.execute(thread);
 
 		} else {
 			eventProcessor.process(event);
