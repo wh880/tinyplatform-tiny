@@ -134,7 +134,7 @@ public class ScEventHandler extends CEPCoreEventHandler {
 		String nodeString = remoteNode.toString();
 		// 从节点缓存中移出当前节点
 		Node currentNode = nodes.remove(nodeString);
-		nodeServices.remove(nodeString);
+		nodeServices.remove(currentNode);
 		// 从链接缓存中移出当前链接，避免后续循环会向自己发送自己
 		ctxs.remove(nodeString);
 		// 将该注销消息推送至其它节点
