@@ -8,7 +8,7 @@
 	<cep-configuration node-name="node2">
 		<operator name="node2"></operator>
 		<scs>
-			<sc host="192.168.232.37" port="9191"></sc>
+			<sc host="127.0.0.1" port="9191"></sc>
 		</scs>
 	</cep-configuration>
 </application>

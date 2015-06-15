@@ -7,8 +7,8 @@
 	<cep-configuration node-name="noded">
 		<operator name="noded"></operator>
 		<scs>
-			<sc host="192.168.232.37" port="9191"></sc>
-			<sc host="192.168.232.37" port="9292"></sc>
+			<sc host="127.0.0.1" port="9191"></sc>
+			<sc host="127.0.0.1" port="9292"></sc>
 		</scs>
 		<params>
 			<param name="request-time-out" value="15000"/>
