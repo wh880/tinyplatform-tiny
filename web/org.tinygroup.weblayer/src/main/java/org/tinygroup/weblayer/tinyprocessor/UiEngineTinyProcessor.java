@@ -122,7 +122,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
                     StreamUtil.io(stream, outputStream, true, false);
                     stream.close();
                     outputStream.flush();
-                    outputStream.write('\n');
+                    outputStream.write("\n;\n".getBytes());
                     logger.logMessage(LogLevel.INFO, "js文件:<{}>处理完毕", path);
                 }
             }
