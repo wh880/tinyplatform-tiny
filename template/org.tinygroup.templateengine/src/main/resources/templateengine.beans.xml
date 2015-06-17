@@ -8,7 +8,6 @@
 	<bean id="tinyMacroFileProcessor" scope="singleton"
 		class="org.tinygroup.template.fileresolver.TinyMacroFileProcessor">
 		<property name="engine" ref="templateEngine"></property>
-		<property name="bundleManager" ref="bundleManager"></property>
 	</bean>
 	<bean id="templateEngine" scope="singleton"
 		class="org.tinygroup.template.impl.TemplateEngineDefault">
