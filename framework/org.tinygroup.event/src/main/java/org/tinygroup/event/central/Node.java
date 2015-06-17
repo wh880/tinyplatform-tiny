@@ -131,7 +131,7 @@ public final class Node implements Comparable<Node>, Serializable {
     public boolean equals(Object object) {
         if (object instanceof Node) {
             Node n = (Node) object;
-            return nodeName.equals(n.nodeName);
+            return this.toString().equals(n.toString());
         }
         return false;
     }
