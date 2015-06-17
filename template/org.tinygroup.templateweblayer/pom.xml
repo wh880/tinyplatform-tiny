@@ -17,11 +17,6 @@
             <artifactId>org.tinygroup.weblayer</artifactId>
             <version>${project.version}</version>
         </dependency>
-         <dependency>
-            <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.bundle</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
          <groupId>org.tinygroup</groupId>
          <artifactId>org.tinygroup.dict</artifactId>
