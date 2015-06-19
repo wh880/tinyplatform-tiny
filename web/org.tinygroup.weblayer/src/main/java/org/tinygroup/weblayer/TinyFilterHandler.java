@@ -111,6 +111,9 @@ public class TinyFilterHandler {
 		} catch (Exception e) {
 			logger.errorMessage("执行WebContext处理流程时出现异常，原因：{}", e,
 					e.getMessage());
+			if (wrapperContext == null) {
+				wrapperContext = WebContextUtil.getWebContext(request);
+			}
 			handleException(wrapperContext, e, context.getRequest(),
 					context.getResponse());
 		} finally {
@@ -200,16 +203,20 @@ public class TinyFilterHandler {
 		WebContext wrapperedContext = innerWebContext;
 		WebContextUtil.setWebContext(wrapperedContext);
 		logger.logMessage(LogLevel.DEBUG, "tiny-filter开始进行前置处理操作");
-		for (TinyFilter filter : tinyFilters) {
-			wrapperedContext = filter.wrapContext(wrapperedContext);
-			if (filter != null) {
-				logger.logMessage(LogLevel.DEBUG, "tiny-filter<{}>进行前置处理",
-						filter.getClass().getName());
-				filter.preProcess(wrapperedContext);
-				WebContextUtil.setWebContext(wrapperedContext);
+		try {
+			for (TinyFilter filter : tinyFilters) {
+				wrapperedContext = filter.wrapContext(wrapperedContext);
+				if (filter != null) {
+					logger.logMessage(LogLevel.DEBUG, "tiny-filter<{}>进行前置处理",
+							filter.getClass().getName());
+					filter.preProcess(wrapperedContext);
+					WebContextUtil.setWebContext(wrapperedContext);
+				}
 			}
+		} finally {
+			wrapperedContext = WebContextUtil.getWebContext(request);
+			innerWebContext.setTopWebContext(wrapperedContext);
 		}
-		innerWebContext.setTopWebContext(wrapperedContext);
 		logger.logMessage(LogLevel.DEBUG, "tiny-filter前置处理操作结束");
 		logger.logMessage(LogLevel.DEBUG, "Created a new web context: {}",
 				wrapperedContext);
