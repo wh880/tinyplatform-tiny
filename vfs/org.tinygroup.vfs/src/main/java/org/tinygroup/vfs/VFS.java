@@ -96,8 +96,9 @@ public final class VFS {
     }
 
     /**
-     * 解析文件
-     *
+     * 解析文件，
+     * 如果是在压缩包类型的文件内，则判断是否存在，如果存在，判断修改时间
+     * 如果不是包内文件，则直接读取
      * @param resourceResolve
      * @return
      */

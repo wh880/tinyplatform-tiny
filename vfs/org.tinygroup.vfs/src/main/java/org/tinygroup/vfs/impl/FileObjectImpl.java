@@ -148,6 +148,7 @@ public class FileObjectImpl extends AbstractFileObject {
 			File[] subFiles = file.listFiles();
 			for (File subfile : subFiles) {
 				FileObject fileObject = null;
+				//TODO:也许需要判断"zip"
 				if (subfile.getName().endsWith(".jar")) {
 					fileObject = VFS.resolveFile(subfile.getAbsolutePath());
 				} else {
