@@ -49,6 +49,15 @@ public class UIComponent {
     private Macros macros;
     private transient boolean health;
     private transient boolean computed = false;
+    CompatibilityResources compatibilityResources;
+
+    public CompatibilityResources getCompatibilityResources() {
+        return compatibilityResources;
+    }
+
+    public void setCompatibilityResources(CompatibilityResources compatibilityResources) {
+        this.compatibilityResources = compatibilityResources;
+    }
 
     public Macros getMacros() {
         return macros;
