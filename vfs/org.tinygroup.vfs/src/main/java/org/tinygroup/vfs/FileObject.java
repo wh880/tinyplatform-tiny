@@ -21,6 +21,11 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * @author luoguo
+ *
+ * 文件路径必须是Linux规范	
+ */
 public interface FileObject extends Serializable{
     // 返回模式提供者
     SchemaProvider getSchemaProvider();
@@ -49,7 +54,7 @@ public interface FileObject extends Serializable{
     // 返回是否是目录，如果是目录，则getInputStream无效。
     boolean isFolder();
 
-    // 是否是包文件
+    // 是否是在压缩包内的文件
     boolean isInPackage();
 
     // 是否存在

@@ -15,6 +15,7 @@
  */
 package org.tinygroup.vfs.impl;
 
+import java.io.File;
 import java.util.List;
 
 import org.tinygroup.vfs.FileObject;
@@ -105,7 +106,8 @@ public abstract class AbstractFileObject implements FileObject {
     }
 
     public FileObject getFileObject(String path) {
-
+    	//此处不用File.separator
+    	//@luoguo path必须是linux规范
         if (path.equals("/")) {
             return this;
         }
