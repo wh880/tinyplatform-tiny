@@ -61,7 +61,7 @@ public class ConfigurationBuilder {
 	private static final String DATASOURCES = "dataSources";
 	private static final String QUERY_CONFIGS = "bean-query-configs";
 	private static final String QUERY_CONFIG = "bean-query-config";
-	
+
 	private boolean parsed;
 	private XmlNode xmlNode;
 	private String dataSource;
@@ -130,7 +130,8 @@ public class ConfigurationBuilder {
 		if (qeuryConfigsNode == null) {
 			return;
 		}
-		List<XmlNode> queryConfigNodes = qeuryConfigsNode.getSubNodes(QUERY_CONFIG);
+		List<XmlNode> queryConfigNodes = qeuryConfigsNode
+				.getSubNodes(QUERY_CONFIG);
 		if (!CollectionUtil.isEmpty(queryConfigNodes)) {
 			for (XmlNode queryConfigNode : queryConfigNodes) {
 				String url = queryConfigNode.getAttribute("url");
@@ -139,8 +140,8 @@ public class ConfigurationBuilder {
 				stream.processAnnotations(BeanQueryConfigs.class);
 				if (url != null && resource == null) {
 					FileObject fileObject = VFS.resolveFile(url);
-					BeanQueryConfigs queryConfigs = (BeanQueryConfigs) stream.fromXML(fileObject
-							.getInputStream());
+					BeanQueryConfigs queryConfigs = (BeanQueryConfigs) stream
+							.fromXML(fileObject.getInputStream());
 					configuration.addBeanQueryConfigs(queryConfigs);
 				} else if (url == null && resource != null) {
 					InputStream inputStream = getClass().getClassLoader()
@@ -259,6 +260,7 @@ public class ConfigurationBuilder {
 					setProperties(node, load);
 					load.loadTable(configuration);
 				} catch (Exception e) {
+					logger.errorMessage("解析表配置出现异常", e);
 					throw new TinyDbRuntimeException("解析表配置出现异常", e);
 				}
 			}
