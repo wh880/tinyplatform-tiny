@@ -50,23 +50,16 @@ import org.mvel.MVEL;
 
 /**
  * 默认基于MVEL实现
- * 
+ *
  * @author luoguo
- * 
+ *
  */
 public class MvelImpl implements EL {
 	private static Map<String, Serializable> cache = new HashMap<String, Serializable>();
 
 	@SuppressWarnings("unchecked")
 	public Object execute(String expression, Context context) {
-		Map<String, Object> vars = new Context2Map(context);
-		Serializable compiled = cache.get(expression);
-		if (compiled == null) {
-			compiled = MVEL.compileExpression(expression);
-			cache.put(expression, compiled);
-		}
-
-		return MVEL.eval(expression, vars);
+		return MVEL.eval(expression, new Context2Map(context));
 	}
 
 }
