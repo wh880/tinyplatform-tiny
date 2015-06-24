@@ -118,17 +118,17 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
 		BeanContainer<?> container = BeanContainerFactory
 				.getBeanContainer(getFileResolver().getClassLoader());
 		// 如果没有定义bean ID
-		if (component.getBean() == null || "".equals(component.getBean())) {
-			// 20141023 为bundle修改
-			Class<?> clazz = getFileResolver().getClassLoader().loadClass(
-					component.getType());
-			// Class<?> clazz = Class.forName(component.getType());
-			return container.getBean(clazz);
-		}
 		try {
+			if (component.getBean() == null || "".equals(component.getBean())) {
+				// 20141023 为bundle修改
+				Class<?> clazz = getFileResolver().getClassLoader().loadClass(
+						component.getType());
+				// Class<?> clazz = Class.forName(component.getType());
+				return container.getBean(clazz);
+			}
 			return container.getBean(component.getBean());
 		} catch (Exception e) {
-			logger.errorMessage("查找Bean {}时发生异常：", e, component.getBean());
+			logger.logMessage(LogLevel.WARN, "查找Bean {}时发生异常", e, component.getBean());
 			Class<?> clazz = Class.forName(component.getType());
 			if (!clazz.isInterface()) {
 				return clazz.newInstance();
