@@ -15,11 +15,11 @@
  */
 package org.tinygroup.cepcore;
 
-import java.rmi.Remote;
-import java.util.List;
-
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
+
+import java.rmi.Remote;
+import java.util.List;
 
 public interface CEPCore extends Remote {
 	String CEP_CORE_BEAN = "cepcore";

@@ -15,13 +15,13 @@
  */
 package org.tinygroup.database.dialectfunction;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.database.config.dialectfunction.Dialect;
 import org.tinygroup.format.FormatProvider;
 import org.tinygroup.format.exception.FormatException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

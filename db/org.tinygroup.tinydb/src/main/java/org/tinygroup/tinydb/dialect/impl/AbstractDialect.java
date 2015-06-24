@@ -15,12 +15,12 @@
  */
 package org.tinygroup.tinydb.dialect.impl;
 
-import javax.sql.DataSource;
-
 import org.springframework.dao.DataAccessException;
 import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.dialectfunction.impl.DialectFunctionProcessorImpl;
 import org.tinygroup.tinydb.dialect.Dialect;
+
+import javax.sql.DataSource;
 
 public abstract class AbstractDialect implements Dialect {
 	

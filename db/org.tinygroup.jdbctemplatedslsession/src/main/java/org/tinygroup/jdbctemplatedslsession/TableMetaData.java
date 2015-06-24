@@ -1,10 +1,10 @@
 package org.tinygroup.jdbctemplatedslsession;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 表格元数据对象

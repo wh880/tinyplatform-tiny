@@ -15,8 +15,7 @@
  */
 package org.tinygroup.dbrouter.factory;
 
-import java.io.InputStream;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.jcs.JcsCache;
 import org.tinygroup.dbrouter.RouterManager;
@@ -28,7 +27,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.InputStream;
 
 /**
  * 功能说明:创建集群管理对象的类

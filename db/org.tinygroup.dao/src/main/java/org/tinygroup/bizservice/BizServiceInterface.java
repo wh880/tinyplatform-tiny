@@ -15,9 +15,9 @@
  */
 package org.tinygroup.bizservice;
 
-import java.util.Collection;
-
 import org.tinygroup.dao.query.PagingObject;
+
+import java.util.Collection;
 
 public interface BizServiceInterface <T, KeyType, QueryObjectType> {
 

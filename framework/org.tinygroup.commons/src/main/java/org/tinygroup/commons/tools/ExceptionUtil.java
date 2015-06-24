@@ -15,17 +15,17 @@
  */
 package org.tinygroup.commons.tools;
 
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
-import static org.tinygroup.commons.tools.CollectionUtil.createHashSet;
-import static org.tinygroup.commons.tools.CollectionUtil.createLinkedList;
-import static org.tinygroup.commons.tools.Entities.HTML40_MODIFIED;
-import static org.tinygroup.commons.tools.StringEscapeUtil.escapeEntities;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import static org.tinygroup.commons.tools.CollectionUtil.createHashSet;
+import static org.tinygroup.commons.tools.CollectionUtil.createLinkedList;
+import static org.tinygroup.commons.tools.Entities.HTML40_MODIFIED;
+import static org.tinygroup.commons.tools.StringEscapeUtil.escapeEntities;
 
 
 /**

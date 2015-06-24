@@ -1,11 +1,11 @@
 package org.tinygroup.service.test.service;
 
-import java.util.List;
-
 import org.tinygroup.service.annotation.ServiceComponent;
 import org.tinygroup.service.annotation.ServiceMethod;
 import org.tinygroup.service.annotation.ServiceResult;
 import org.tinygroup.service.test.base.ServiceUser;
+
+import java.util.List;
 
 @ServiceComponent()
 public class AnnotationCaseService {

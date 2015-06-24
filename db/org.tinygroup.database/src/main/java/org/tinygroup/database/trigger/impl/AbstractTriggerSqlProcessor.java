@@ -15,13 +15,13 @@
  */
 package org.tinygroup.database.trigger.impl;
 
+import org.tinygroup.database.config.trigger.Trigger;
+import org.tinygroup.database.trigger.TriggerSqlProcessor;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import org.tinygroup.database.config.trigger.Trigger;
-import org.tinygroup.database.trigger.TriggerSqlProcessor;
 
 public  abstract class AbstractTriggerSqlProcessor implements TriggerSqlProcessor {
 

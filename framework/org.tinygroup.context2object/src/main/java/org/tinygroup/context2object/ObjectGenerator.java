@@ -15,9 +15,9 @@
  */
 package org.tinygroup.context2object;
 
-import java.util.Collection;
-
 import org.tinygroup.context.Context;
+
+import java.util.Collection;
 
 /**
  * 对象生成器

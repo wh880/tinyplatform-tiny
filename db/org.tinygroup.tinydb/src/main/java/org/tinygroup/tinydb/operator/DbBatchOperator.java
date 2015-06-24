@@ -15,12 +15,12 @@
  */
 package org.tinygroup.tinydb.operator;
 
+import org.tinygroup.tinydb.Bean;
+import org.tinygroup.tinydb.exception.TinyDbException;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import org.tinygroup.tinydb.Bean;
-import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
  * DB相关的批量操作

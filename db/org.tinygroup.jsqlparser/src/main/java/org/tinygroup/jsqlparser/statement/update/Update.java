@@ -15,8 +15,6 @@
  */
 package org.tinygroup.jsqlparser.statement.update;
 
-import java.util.List;
-
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.schema.Column;
 import org.tinygroup.jsqlparser.schema.Table;
@@ -26,6 +24,8 @@ import org.tinygroup.jsqlparser.statement.select.FromItem;
 import org.tinygroup.jsqlparser.statement.select.Join;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 import org.tinygroup.jsqlparser.statement.select.Select;
+
+import java.util.List;
 
 /**
  * The update statement.

@@ -15,12 +15,10 @@
  */
 package org.tinygroup.weblayer;
 
-import java.io.IOException;
+import org.tinygroup.commons.order.Ordered;
 
 import javax.servlet.ServletException;
-
-import org.tinygroup.commons.order.Ordered;
-import org.tinygroup.xmlparser.node.XmlNode;
+import java.io.IOException;
 
 
 /**

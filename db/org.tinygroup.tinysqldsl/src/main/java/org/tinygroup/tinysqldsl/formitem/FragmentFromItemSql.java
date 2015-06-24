@@ -1,8 +1,8 @@
 package org.tinygroup.tinysqldsl.formitem;
 
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Alias;
 import org.tinygroup.tinysqldsl.base.FragmentSql;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 
 /**
  * fromitem的sql片段，允许加入SQL字符串片断

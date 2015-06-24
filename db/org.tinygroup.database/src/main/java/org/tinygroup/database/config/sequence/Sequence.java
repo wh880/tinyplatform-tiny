@@ -15,10 +15,9 @@
  */
 package org.tinygroup.database.config.sequence;
 
-import org.tinygroup.metadata.config.BaseObject;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.metadata.config.BaseObject;
 
 @XStreamAlias("sequence")
 public class Sequence extends BaseObject {

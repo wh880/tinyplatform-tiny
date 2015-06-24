@@ -15,11 +15,11 @@
  */
 package org.tinygroup.dbrouter.impl.keygenerator;
 
-import java.util.UUID;
-
 import org.tinygroup.dbrouter.RouterKeyGenerator;
 import org.tinygroup.dbrouter.config.KeyTables;
 import org.tinygroup.dbrouter.config.Router;
+
+import java.util.UUID;
 
 /**
  * Created by luoguo on 13-12-13.

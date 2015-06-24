@@ -15,14 +15,14 @@
  */
 package org.tinygroup.databasebuinstaller.impl;
 
+import org.tinygroup.database.config.table.Table;
+import org.tinygroup.database.table.TableProcessor;
+import org.tinygroup.logger.LogLevel;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.table.TableProcessor;
-import org.tinygroup.logger.LogLevel;
 
 /**
  * 

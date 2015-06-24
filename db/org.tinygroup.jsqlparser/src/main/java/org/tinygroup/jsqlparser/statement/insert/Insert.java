@@ -15,8 +15,6 @@
  */
 package org.tinygroup.jsqlparser.statement.insert;
 
-import java.util.List;
-
 import org.tinygroup.jsqlparser.expression.operators.relational.ItemsList;
 import org.tinygroup.jsqlparser.schema.Column;
 import org.tinygroup.jsqlparser.schema.Table;
@@ -25,6 +23,8 @@ import org.tinygroup.jsqlparser.statement.StatementVisitor;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.SelectExpressionItem;
+
+import java.util.List;
 
 /**
  * The insert statement. Every column name in <code>columnNames</code> matches

@@ -15,13 +15,7 @@
  */
 package org.tinygroup.flowbasiccomponent.test.testcase;
 
-import java.io.Reader;
-import java.nio.charset.Charset;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Resources;
 import org.tinygroup.flow.FlowExecutor;
@@ -31,6 +25,11 @@ import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.tinytestutil.script.ScriptRunner;
+
+import java.io.Reader;
+import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public abstract class BaseTest extends TestCase {
 	protected static DbOperatorFactory factory;

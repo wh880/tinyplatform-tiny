@@ -15,11 +15,10 @@
  */
 package org.tinygroup.database.config.table;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.tinygroup.commons.tools.EqualsUtil;
 import org.tinygroup.commons.tools.HashCodeUtil;
 import org.tinygroup.metadata.config.BaseObject;
-
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 外键引用关系

@@ -1,10 +1,9 @@
 package org.tinygroup.springmvc.extension;
 
-import java.util.List;
+import org.tinygroup.springmvc.http.MediaType;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.tinygroup.springmvc.http.MediaType;
+import java.util.List;
 
 /**
  * 根据请求得到希望响应的内容类型

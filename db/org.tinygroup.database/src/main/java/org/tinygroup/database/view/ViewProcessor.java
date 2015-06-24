@@ -15,12 +15,12 @@
  */
 package org.tinygroup.database.view;
 
+import org.tinygroup.database.config.view.View;
+import org.tinygroup.database.config.view.Views;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
-import org.tinygroup.database.config.view.View;
-import org.tinygroup.database.config.view.Views;
 
 public interface ViewProcessor {
 

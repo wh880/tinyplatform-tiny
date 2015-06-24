@@ -15,12 +15,12 @@
  */
 package org.tinygroup.metadata.config.bizdatatype;
 
-import java.util.List;
-
-import org.tinygroup.metadata.config.BaseObject;
-import org.tinygroup.metadata.config.PlaceholderValue;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.metadata.config.BaseObject;
+import org.tinygroup.metadata.config.PlaceholderValue;
+
+import java.util.List;
 
 /**
  * 业务类型

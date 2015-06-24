@@ -15,13 +15,13 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.expression.conditional.AndExpression;
 import org.tinygroup.tinysqldsl.expression.conditional.OrExpression;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 条件 Created by luoguo on 2015/3/11.

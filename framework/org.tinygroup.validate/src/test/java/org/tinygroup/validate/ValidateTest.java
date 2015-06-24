@@ -1,10 +1,9 @@
 package org.tinygroup.validate;
 
+import junit.framework.TestCase;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.validate.impl.ValidateResultImpl;
-
-import junit.framework.TestCase;
 
 public class ValidateTest  extends TestCase{
     static{

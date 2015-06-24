@@ -16,7 +16,6 @@
 package org.tinygroup.cache;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.exception.CacheException;
 import org.tinygroup.fileresolver.FileResolverFactory;

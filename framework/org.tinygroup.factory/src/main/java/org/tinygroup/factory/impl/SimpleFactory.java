@@ -15,28 +15,20 @@
  */
 package org.tinygroup.factory.impl;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.tinygroup.factory.Factory;
 import org.tinygroup.factory.FactoryAware;
-import org.tinygroup.factory.config.Bean;
-import org.tinygroup.factory.config.Beans;
-import org.tinygroup.factory.config.Entry;
-import org.tinygroup.factory.config.Property;
-import org.tinygroup.factory.config.Ref;
+import org.tinygroup.factory.config.*;
 import org.tinygroup.factory.exception.BeanFactoryRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.Map;
 
 /**
  * 

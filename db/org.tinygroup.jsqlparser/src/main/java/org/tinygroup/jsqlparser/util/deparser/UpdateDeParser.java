@@ -20,9 +20,9 @@ import org.tinygroup.jsqlparser.expression.ExpressionVisitor;
 import org.tinygroup.jsqlparser.schema.Column;
 import org.tinygroup.jsqlparser.statement.select.Join;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
-import org.tinygroup.jsqlparser.statement.update.Update;
 import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.SelectVisitor;
+import org.tinygroup.jsqlparser.statement.update.Update;
 
 /**
  * A class to de-parse (that is, tranform from JSqlParser hierarchy into a

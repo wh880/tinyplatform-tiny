@@ -15,10 +15,7 @@
  */
 package org.tinygroup.tinydb.spring;
 
-import java.io.IOException;
-
-import javax.sql.DataSource;
-
+import com.thoughtworks.xstream.XStream;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;
@@ -39,7 +36,8 @@ import org.tinygroup.tinydb.dialect.impl.AbstractDialect;
 import org.tinygroup.tinydb.relation.Relations;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import javax.sql.DataSource;
+import java.io.IOException;
 
 /**
  * 创建DbOperatorFactory的spring factory bean

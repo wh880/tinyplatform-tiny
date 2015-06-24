@@ -15,8 +15,6 @@
  */
 package org.tinygroup.cepcore.util;
 
-import java.util.List;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.Context;
@@ -25,6 +23,8 @@ import org.tinygroup.event.Event;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.ServiceRequest;
+
+import java.util.List;
 
 public class CEPCoreExecuteUtil {
 	public static Object execute(String serviceId, Object[] paramArray,

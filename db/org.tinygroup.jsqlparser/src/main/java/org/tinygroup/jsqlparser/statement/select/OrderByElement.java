@@ -15,9 +15,9 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
-import java.io.Serializable;
-
 import org.tinygroup.jsqlparser.expression.Expression;
+
+import java.io.Serializable;
 
 /**
  * An element (column reference) in an "ORDER BY" clause.

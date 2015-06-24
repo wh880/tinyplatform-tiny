@@ -16,7 +16,6 @@
 package org.tinygroup.service.test.testcase;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.cepcore.exception.RequestParamValidateException;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;

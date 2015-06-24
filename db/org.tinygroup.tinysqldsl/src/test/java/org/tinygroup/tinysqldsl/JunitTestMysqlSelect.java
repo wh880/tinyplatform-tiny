@@ -1,12 +1,13 @@
 package org.tinygroup.tinysqldsl;
 
+import junit.framework.TestCase;
+
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.ScoreTable.TSCORE;
 import static org.tinygroup.tinysqldsl.extend.MysqlComplexSelect.union;
 import static org.tinygroup.tinysqldsl.extend.MysqlComplexSelect.unionAll;
 import static org.tinygroup.tinysqldsl.extend.MysqlSelect.selectFrom;
 import static org.tinygroup.tinysqldsl.select.Limit.limitWithParam;
-import junit.framework.TestCase;
 public class JunitTestMysqlSelect extends TestCase {
 
 	

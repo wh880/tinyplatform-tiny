@@ -15,10 +15,6 @@
  */
 package org.tinygroup.cepcore.aop.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.aop.CEPCoreAopAdapter;
 import org.tinygroup.cepcore.aop.CEPCoreAopManager;
@@ -28,6 +24,10 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class CEPCoreAopManagerImpl implements CEPCoreAopManager{
 	private static Logger logger = LoggerFactory.getLogger(CEPCoreAopManagerImpl.class);

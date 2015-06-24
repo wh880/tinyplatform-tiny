@@ -15,14 +15,14 @@
  */
 package org.tinygroup.database.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.processor.Processor;
 import org.tinygroup.database.config.processor.Processors;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProcessorManagerImpl implements ProcessorManager {
 	Map<String, Map<String, Object>> processorsMap = new HashMap<String, Map<String, Object>>();

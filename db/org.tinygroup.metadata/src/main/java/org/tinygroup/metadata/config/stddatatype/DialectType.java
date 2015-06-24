@@ -15,14 +15,13 @@
  */
 package org.tinygroup.metadata.config.stddatatype;
 
-import java.util.List;
-
-import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.metadata.config.PlaceholderValue;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.metadata.config.PlaceholderValue;
+
+import java.util.List;
 
 /**
  * 方言类型

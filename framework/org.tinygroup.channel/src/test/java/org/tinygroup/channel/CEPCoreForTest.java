@@ -1,15 +1,11 @@
 package org.tinygroup.channel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcore.CEPCoreOperator;
-import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcore.EventProcessorChoose;
-import org.tinygroup.cepcore.EventProcessorRegisterTrigger;
+import org.tinygroup.cepcore.*;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CEPCoreForTest implements CEPCore{
 	List<EventProcessor> list = new ArrayList<EventProcessor>();

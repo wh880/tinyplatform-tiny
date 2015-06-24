@@ -15,14 +15,14 @@
  */
 package org.tinygroup.jsqlparser.test.delete;
 
-import java.io.StringReader;
-import static junit.framework.Assert.assertEquals;
-
 import junit.framework.TestCase;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.statement.delete.Delete;
-import static org.tinygroup.jsqlparser.test.TestUtils.*;
+
+import java.io.StringReader;
+
+import static org.tinygroup.jsqlparser.test.TestUtils.assertSqlCanBeParsedAndDeparsed;
 
 public class DeleteTest extends TestCase {
 

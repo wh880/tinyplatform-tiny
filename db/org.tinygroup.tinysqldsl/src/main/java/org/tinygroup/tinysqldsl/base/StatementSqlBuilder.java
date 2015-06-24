@@ -15,25 +15,18 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.tinysqldsl.base.Column;
-import org.tinygroup.tinysqldsl.base.Condition;
-import org.tinygroup.tinysqldsl.base.StatementBody;
 import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.conditional.ConditionExpressionList;
 import org.tinygroup.tinysqldsl.expression.relational.EqualsTo;
 import org.tinygroup.tinysqldsl.expression.relational.OldOracleJoinBinaryExpression;
 import org.tinygroup.tinysqldsl.formitem.FromItem;
-import org.tinygroup.tinysqldsl.select.Fetch;
-import org.tinygroup.tinysqldsl.select.Join;
-import org.tinygroup.tinysqldsl.select.Limit;
-import org.tinygroup.tinysqldsl.select.Offset;
-import org.tinygroup.tinysqldsl.select.OrderByElement;
+import org.tinygroup.tinysqldsl.select.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * select结构的解析器

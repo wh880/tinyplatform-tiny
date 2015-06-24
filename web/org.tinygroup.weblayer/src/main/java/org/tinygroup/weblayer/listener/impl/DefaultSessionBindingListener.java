@@ -1,9 +1,9 @@
 package org.tinygroup.weblayer.listener.impl;
 
+import org.tinygroup.weblayer.listener.TinySessionBindingListener;
+
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
-
-import org.tinygroup.weblayer.listener.TinySessionBindingListener;
 
 public class DefaultSessionBindingListener extends SimpleBasicTinyConfigAware
 		implements TinySessionBindingListener {

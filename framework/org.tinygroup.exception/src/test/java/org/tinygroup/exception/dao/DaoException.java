@@ -1,9 +1,9 @@
 package org.tinygroup.exception.dao;
 
-import java.util.Locale;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.exception.TinyBizRuntimeException;
+
+import java.util.Locale;
 
 /**
  * 

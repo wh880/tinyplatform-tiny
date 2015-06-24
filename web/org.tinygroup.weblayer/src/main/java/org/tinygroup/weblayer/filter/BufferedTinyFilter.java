@@ -15,14 +15,13 @@
  */
 package org.tinygroup.weblayer.filter;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.buffered.exception.BufferCommitFailedException;
 import org.tinygroup.weblayer.webcontext.buffered.impl.BufferedWebContextImpl;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * 对写入response中的数据进行缓存，以便于实现嵌套的页面。

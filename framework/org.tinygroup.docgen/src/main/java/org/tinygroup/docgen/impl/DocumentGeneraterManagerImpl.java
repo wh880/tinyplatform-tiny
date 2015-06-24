@@ -15,11 +15,11 @@
  */
 package org.tinygroup.docgen.impl;
 
+import org.tinygroup.docgen.DocumentGenerater;
+import org.tinygroup.docgen.DocumentGeneraterManager;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.tinygroup.docgen.DocumentGeneraterManager;
-import org.tinygroup.docgen.DocumentGenerater;
 
 /**
  * 

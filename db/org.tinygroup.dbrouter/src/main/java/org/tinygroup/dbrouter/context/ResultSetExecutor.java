@@ -1,8 +1,5 @@
 package org.tinygroup.dbrouter.context;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.config.DataSourceConfig;
 import org.tinygroup.dbrouter.config.Partition;
@@ -15,6 +12,9 @@ import org.tinygroup.dbrouter.util.SortOrder;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.SelectBody;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * ResultSet的执行上下文

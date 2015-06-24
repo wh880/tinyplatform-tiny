@@ -1,7 +1,7 @@
 package org.tinygroup.tinysqldsl.selectitem;
 
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.FragmentSql;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 
 /**
  * select 与 from 之间的特殊化sql片段

@@ -15,14 +15,14 @@
  */
 package org.tinygroup.tinysqldsl.expression.conditional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
 import org.tinygroup.tinysqldsl.util.DslUtil;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 多个条件组成的表达式列表

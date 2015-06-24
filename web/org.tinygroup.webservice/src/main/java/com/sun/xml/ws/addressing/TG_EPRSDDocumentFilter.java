@@ -15,30 +15,25 @@
  */
 package com.sun.xml.ws.addressing;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 import com.sun.xml.ws.api.addressing.AddressingVersion;
 import com.sun.xml.ws.api.addressing.WSEndpointReference;
-import com.sun.xml.ws.api.server.BoundEndpoint;
-import com.sun.xml.ws.api.server.Module;
-import com.sun.xml.ws.api.server.SDDocument;
-import com.sun.xml.ws.api.server.SDDocumentFilter;
-import com.sun.xml.ws.api.server.WSEndpoint;
+import com.sun.xml.ws.api.server.*;
 import com.sun.xml.ws.api.streaming.XMLStreamReaderFactory;
 import com.sun.xml.ws.server.TG_WSEndpointImpl;
 import com.sun.xml.ws.util.xml.XMLStreamReaderToXMLStreamWriter;
 import com.sun.xml.ws.util.xml.XMLStreamWriterFilter;
 import com.sun.xml.ws.wsdl.parser.WSDLConstants;
+
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This class acts as a filter for the Extension elements in the wsa:EndpointReference in the wsdl.

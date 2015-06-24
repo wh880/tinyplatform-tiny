@@ -15,11 +15,6 @@
  */
 package org.tinygroup.flow.containers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.flow.ComponentInterface;
 import org.tinygroup.flow.config.ComponentDefine;
@@ -28,6 +23,11 @@ import org.tinygroup.flow.exception.FlowRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 组件容器

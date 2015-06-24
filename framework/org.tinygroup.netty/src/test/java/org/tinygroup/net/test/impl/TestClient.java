@@ -15,9 +15,6 @@
  */
 package org.tinygroup.net.test.impl;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.tinygroup.event.Event;
@@ -25,6 +22,9 @@ import org.tinygroup.net.Client;
 import org.tinygroup.net.coder.hessian.HessianDecoder;
 import org.tinygroup.net.coder.hessian.HessianEncoder;
 import org.tinygroup.net.exception.InterruptedRuntimeException;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TestClient extends Client{
 	Map<String, Thread> threadMap = new ConcurrentHashMap<String, Thread>();

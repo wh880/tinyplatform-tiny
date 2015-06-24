@@ -15,13 +15,13 @@
  */
 package org.tinygroup.databasebuinstaller.impl;
 
+import org.tinygroup.database.config.sequence.Sequence;
+import org.tinygroup.database.sequence.SequenceProcessor;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.tinygroup.database.config.sequence.Sequence;
-import org.tinygroup.database.sequence.SequenceProcessor;
 
 public class SequenceInstallProcessor extends AbstractInstallProcessor {
 	

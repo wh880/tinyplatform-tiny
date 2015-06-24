@@ -15,9 +15,9 @@
  */
 package org.tinygroup.annotation.action;
 
-import java.lang.annotation.Annotation;
-
 import org.tinygroup.annotation.AnnotationClassAction;
+
+import java.lang.annotation.Annotation;
 
 public class AnnotationClassActionDemo implements AnnotationClassAction {
 

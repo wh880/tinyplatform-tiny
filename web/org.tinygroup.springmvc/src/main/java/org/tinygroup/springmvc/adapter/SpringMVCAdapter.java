@@ -1,13 +1,7 @@
 package org.tinygroup.springmvc.adapter;
 
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.servlet.HandlerAdapter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.HandlerMapping;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.RequestToViewNameTranslator;
-import org.springframework.web.servlet.ThemeResolver;
-import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.*;
 
 
 /**

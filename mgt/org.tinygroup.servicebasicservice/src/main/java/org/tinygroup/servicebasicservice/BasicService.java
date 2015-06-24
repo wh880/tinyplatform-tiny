@@ -15,11 +15,11 @@
  */
 package org.tinygroup.servicebasicservice;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BasicService {
 	private ServiceRegistry serviceRegistry;

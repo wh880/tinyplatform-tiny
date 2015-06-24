@@ -15,20 +15,16 @@
  */
 package org.tinygroup.validate.impl;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.i18n.I18nMessageFactory;
 import org.tinygroup.i18n.I18nMessages;
 import org.tinygroup.validate.ValidateResult;
 import org.tinygroup.validate.Validator;
 import org.tinygroup.validate.ValidatorManager;
+
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * 字段与对应的校验器映射类

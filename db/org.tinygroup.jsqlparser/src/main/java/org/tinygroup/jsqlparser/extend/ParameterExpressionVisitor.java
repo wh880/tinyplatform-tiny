@@ -1,10 +1,5 @@
 package org.tinygroup.jsqlparser.extend;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.expression.ExpressionVisitorAdapter;
 import org.tinygroup.jsqlparser.expression.JdbcParameter;
@@ -12,6 +7,10 @@ import org.tinygroup.jsqlparser.expression.operators.relational.ExpressionList;
 import org.tinygroup.jsqlparser.expression.operators.relational.MultiExpressionList;
 import org.tinygroup.jsqlparser.statement.select.SelectVisitor;
 import org.tinygroup.jsqlparser.statement.select.SubSelect;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 

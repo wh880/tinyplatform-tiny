@@ -1,6 +1,5 @@
 package org.tinygroup.jdbctemplatedslsession.keygenerator;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.tinysqldsl.KeyGenerator;

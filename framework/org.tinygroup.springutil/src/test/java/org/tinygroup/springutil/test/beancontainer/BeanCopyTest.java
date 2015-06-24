@@ -1,10 +1,6 @@
 package org.tinygroup.springutil.test.beancontainer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -14,6 +10,9 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BeanCopyTest extends TestCase {
 

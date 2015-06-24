@@ -15,33 +15,20 @@
  */
 package org.tinygroup.jspengine.compiler;
 
+import org.tinygroup.jspengine.Constants;
+import org.tinygroup.jspengine.JasperException;
+import org.tinygroup.jspengine.JspCompilationContext;
+import org.tinygroup.jspengine.runtime.JspRuntimeLibrary;
+import org.xml.sax.Attributes;
+
+import javax.servlet.jsp.tagext.*;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-
-import javax.servlet.jsp.tagext.JspIdConsumer;
-import javax.servlet.jsp.tagext.TagAttributeInfo;
-import javax.servlet.jsp.tagext.TagInfo;
-import javax.servlet.jsp.tagext.TagVariableInfo;
-import javax.servlet.jsp.tagext.VariableInfo;
-
-import org.tinygroup.jspengine.Constants;
-import org.tinygroup.jspengine.JasperException;
-import org.tinygroup.jspengine.JspCompilationContext;
-import org.tinygroup.jspengine.runtime.JspRuntimeLibrary;
-import org.xml.sax.Attributes;
+import java.util.*;
 
 /**
  * Generate Java source from Nodes

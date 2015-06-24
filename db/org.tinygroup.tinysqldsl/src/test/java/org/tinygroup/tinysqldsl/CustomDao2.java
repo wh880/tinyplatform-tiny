@@ -6,8 +6,8 @@ import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.Delete.delete;
 import static org.tinygroup.tinysqldsl.Insert.insertInto;
 import static org.tinygroup.tinysqldsl.Select.selectFrom;
-import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
 import static org.tinygroup.tinysqldsl.Update.update;
+import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
 
 public class CustomDao2 {
 	private DslSession dslSession;

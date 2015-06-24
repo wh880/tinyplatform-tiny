@@ -15,11 +15,7 @@
  */
 package org.tinygroup.weblayer.tinyprocessor;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.ServletException;
-
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.Context;
 import org.tinygroup.convert.objectjson.fastjson.ObjectToJson;
@@ -33,7 +29,9 @@ import org.tinygroup.exception.Result;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
 
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import javax.servlet.ServletException;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * 

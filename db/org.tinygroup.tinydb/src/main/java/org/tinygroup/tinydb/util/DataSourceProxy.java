@@ -15,9 +15,9 @@
  */
 package org.tinygroup.tinydb.util;
 
-import javax.sql.DataSource;
-
 import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.sql.DataSource;
 
 /**
  * 数据源代理

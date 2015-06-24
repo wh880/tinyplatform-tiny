@@ -1,9 +1,5 @@
 package org.tinygroup.tinydb.sql;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.tinydb.sql.condition.ConditionGenerater;
@@ -13,6 +9,10 @@ import org.tinygroup.tinydb.sql.group.impl.DefaultGroupGenerater;
 import org.tinygroup.tinydb.sql.order.OrderGenerater;
 import org.tinygroup.tinydb.sql.order.impl.AscOrderGenerater;
 import org.tinygroup.tinydb.sql.order.impl.DescOrderGenerater;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 存放sql生成片段的实例的容器，例如条件、分组、排序的片段

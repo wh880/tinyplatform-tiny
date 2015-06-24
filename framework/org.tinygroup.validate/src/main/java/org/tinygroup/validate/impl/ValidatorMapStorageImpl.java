@@ -15,13 +15,13 @@
  */
 package org.tinygroup.validate.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.validate.Validator;
 import org.tinygroup.validate.ValidatorMapStorage;
 import org.tinygroup.validate.config.Validators;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 校验映射信息存储接口的实现

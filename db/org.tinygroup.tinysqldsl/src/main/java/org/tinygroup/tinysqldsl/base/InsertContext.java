@@ -1,12 +1,12 @@
 package org.tinygroup.tinysqldsl.base;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
 import org.tinygroup.tinysqldsl.insert.InsertBody;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 插入操作的上下文

@@ -15,11 +15,6 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import java.io.File;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUpload;
@@ -34,6 +29,10 @@ import org.tinygroup.weblayer.webcontext.parser.exception.UploadSizeLimitExceede
 import org.tinygroup.weblayer.webcontext.parser.upload.FileUploadReName;
 import org.tinygroup.weblayer.webcontext.parser.upload.UploadParameters;
 import org.tinygroup.weblayer.webcontext.parser.upload.UploadService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.List;
 
 /**
  * 这个service可以处理<code>multipart/form-data</code>格式的HTTP

@@ -15,11 +15,11 @@
  */
 package org.tinygroup.beancontainer;
 
+import org.tinygroup.vfs.FileObject;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import org.tinygroup.vfs.FileObject;
 
 
 /**

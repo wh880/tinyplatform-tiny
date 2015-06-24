@@ -1,8 +1,8 @@
 package org.tinygroup.context2object.test.testcase;
 
-import java.util.List;
-
 import org.tinygroup.context2object.config.BasicTypeConverter;
+
+import java.util.List;
 
 public class TestBasicTypeConverter extends BastTestCast {
 	private BasicTypeConverter basicConverter = new BasicTypeConverter();

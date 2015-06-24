@@ -15,11 +15,11 @@
  */
 package org.tinygroup.database.config.trigger;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @XStreamAlias("triggers")
 public class Triggers {

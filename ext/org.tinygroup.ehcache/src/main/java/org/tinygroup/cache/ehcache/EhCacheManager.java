@@ -1,7 +1,6 @@
 package org.tinygroup.cache.ehcache;
 
 import net.sf.ehcache.CacheManager;
-
 import org.tinygroup.cache.AbstractCacheManager;
 import org.tinygroup.cache.Cache;
 

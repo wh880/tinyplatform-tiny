@@ -1,12 +1,7 @@
 package org.tinygroup.dbrouter.impl.shardrule;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.dbrouter.ShardRule;
@@ -22,8 +17,7 @@ import org.tinygroup.jsqlparser.statement.insert.Insert;
 import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.update.Update;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.*;
 
 /**
  * 区间 shard

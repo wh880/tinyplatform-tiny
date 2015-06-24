@@ -15,11 +15,10 @@
  */
 package org.tinygroup.tinydb.test;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.tinydb.relation.Relation;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 public class MapTests {
 	public static void main(String[] args) {

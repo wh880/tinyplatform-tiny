@@ -1,19 +1,5 @@
 package org.tinygroup.springmvc.tinyprocessor;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -36,13 +22,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.servlet.HandlerAdapter;
-import org.springframework.web.servlet.HandlerExecutionChain;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.ModelAndViewDefiningException;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.*;
 import org.springframework.web.util.NestedServletException;
 import org.springframework.web.util.UrlPathHelper;
 import org.springframework.web.util.WebUtils;
@@ -57,6 +37,14 @@ import org.tinygroup.springmvc.extension.RequestInstanceHolder;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.*;
 
 /**
  * tiny框架方式的springmvc

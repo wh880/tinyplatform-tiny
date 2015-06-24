@@ -15,18 +15,13 @@
  */
 package org.tinygroup.validatecomponent.test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.validate.ValidatorManager;
+
+import java.util.*;
 
 /**
  * 流程组件测试

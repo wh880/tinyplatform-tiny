@@ -15,27 +15,21 @@
  */
 package org.tinygroup.tinydb.test;
 
+import junit.framework.TestCase;
+import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.commons.tools.Resources;
+import org.tinygroup.tinydb.*;
+import org.tinygroup.tinydb.exception.TinyDbException;
+import org.tinygroup.tinydb.operator.DBOperator;
+import org.tinygroup.tinytestutil.AbstractTestUtil;
+import org.tinygroup.tinytestutil.script.ScriptRunner;
+
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
-import junit.framework.TestCase;
-
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.commons.tools.Resources;
-import org.tinygroup.tinydb.Bean;
-import org.tinygroup.tinydb.Configuration;
-import org.tinygroup.tinydb.ConfigurationBuilder;
-import org.tinygroup.tinydb.DbOperatorFactory;
-import org.tinygroup.tinydb.DbOperatorFactoryBuilder;
-import org.tinygroup.tinydb.exception.TinyDbException;
-import org.tinygroup.tinydb.operator.DBOperator;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
-import org.tinygroup.tinytestutil.script.ScriptRunner;
 
 public abstract class BaseTest extends TestCase {
 	protected static DbOperatorFactory factory;

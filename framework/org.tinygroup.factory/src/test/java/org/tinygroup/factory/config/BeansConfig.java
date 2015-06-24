@@ -15,10 +15,10 @@
  */
 package org.tinygroup.factory.config;
 
+import com.thoughtworks.xstream.XStream;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.thoughtworks.xstream.XStream;
 
 public class BeansConfig {
 

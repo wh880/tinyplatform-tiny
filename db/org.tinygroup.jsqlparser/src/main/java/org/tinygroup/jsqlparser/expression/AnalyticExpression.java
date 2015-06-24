@@ -15,12 +15,11 @@
  */
 package org.tinygroup.jsqlparser.expression;
 
-import org.tinygroup.jsqlparser.schema.Column;
+import org.tinygroup.jsqlparser.expression.operators.relational.ExpressionList;
 import org.tinygroup.jsqlparser.statement.select.OrderByElement;
+import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 
 import java.util.List;
-import org.tinygroup.jsqlparser.expression.operators.relational.ExpressionList;
-import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 
 /**
  * Analytic function. The name of the function is variable but the parameters

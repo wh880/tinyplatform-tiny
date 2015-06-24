@@ -15,9 +15,9 @@
  */
 package org.tinygroup.jspengine.appserv;
 
-import java.security.cert.X509Certificate;
-import java.security.cert.CertificateException;
 import javax.servlet.http.HttpServletRequest;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 /**
  * Abstract class allowing a backend appserver instance to retrieve information

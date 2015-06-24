@@ -1,14 +1,14 @@
 package org.tinygroup.jsqlparser.extend;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.tinygroup.jsqlparser.expression.ExpressionVisitorAdapter;
 import org.tinygroup.jsqlparser.statement.StatementVisitorAdapter;
 import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.WithItem;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 查找参数信息

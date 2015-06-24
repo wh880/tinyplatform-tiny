@@ -1,9 +1,8 @@
 package org.tinygroup.vfs.cache;
 
+import junit.framework.TestCase;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-
-import junit.framework.TestCase;
 
 /**
  * @Description:  

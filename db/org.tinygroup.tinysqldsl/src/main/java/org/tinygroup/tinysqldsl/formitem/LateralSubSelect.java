@@ -15,8 +15,8 @@
  */
 package org.tinygroup.tinysqldsl.formitem;
 
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Alias;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 
 /**
  * 来自子查询及别名支持

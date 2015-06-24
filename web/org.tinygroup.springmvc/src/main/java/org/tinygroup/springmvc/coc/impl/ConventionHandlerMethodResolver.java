@@ -1,19 +1,13 @@
 package org.tinygroup.springmvc.coc.impl;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.springmvc.coc.ConventionHelper;
 import org.tinygroup.springmvc.coc.CustomHandlerMethodResolver;
 import org.tinygroup.springmvc.coc.Qualifier;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * 组合使用所有约定的解析器

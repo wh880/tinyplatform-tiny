@@ -1,8 +1,9 @@
 package org.tinygroup.tinysqldsl;
 
+import junit.framework.TestCase;
+
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.Insert.insertInto;
-import junit.framework.TestCase;
 
 public class JunitTestInsert extends TestCase{
 

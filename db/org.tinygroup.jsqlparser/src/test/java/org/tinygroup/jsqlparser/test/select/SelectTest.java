@@ -15,21 +15,26 @@
  */
 package org.tinygroup.jsqlparser.test.select;
 
-import junit.framework.*;
-import org.tinygroup.jsqlparser.*;
+import junit.framework.TestCase;
+import org.apache.commons.io.IOUtils;
+import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.expression.*;
-import org.tinygroup.jsqlparser.expression.operators.arithmetic.*;
-import org.tinygroup.jsqlparser.expression.operators.relational.*;
-import org.tinygroup.jsqlparser.parser.*;
-import org.tinygroup.jsqlparser.schema.*;
-import org.tinygroup.jsqlparser.statement.*;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Multiplication;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Subtraction;
+import org.tinygroup.jsqlparser.expression.operators.relational.EqualsTo;
+import org.tinygroup.jsqlparser.expression.operators.relational.GreaterThan;
+import org.tinygroup.jsqlparser.expression.operators.relational.InExpression;
+import org.tinygroup.jsqlparser.expression.operators.relational.LikeExpression;
+import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
+import org.tinygroup.jsqlparser.parser.CCJSqlParserUtil;
+import org.tinygroup.jsqlparser.schema.Column;
+import org.tinygroup.jsqlparser.schema.Table;
+import org.tinygroup.jsqlparser.statement.Statement;
 import org.tinygroup.jsqlparser.statement.select.*;
-import org.apache.commons.io.*;
 
-import java.io.*;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
 
 import static org.tinygroup.jsqlparser.test.TestUtils.*;
 

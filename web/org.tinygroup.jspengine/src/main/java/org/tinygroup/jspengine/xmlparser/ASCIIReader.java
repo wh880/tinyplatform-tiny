@@ -15,11 +15,11 @@
  */
 package org.tinygroup.jspengine.xmlparser;
 
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.Reader;
-
 import org.tinygroup.jspengine.compiler.Localizer;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 
 /**
  * A simple ASCII byte reader. This is an optimized reader for reading

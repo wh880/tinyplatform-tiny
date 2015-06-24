@@ -15,17 +15,13 @@
  */
 package org.tinygroup.tinysqldsl.update;
 
-import java.util.List;
-
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
-import org.tinygroup.tinysqldsl.base.Column;
-import org.tinygroup.tinysqldsl.base.SelectBody;
-import org.tinygroup.tinysqldsl.base.StatementBody;
-import org.tinygroup.tinysqldsl.base.Table;
+import org.tinygroup.tinysqldsl.base.*;
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.formitem.FromItem;
 import org.tinygroup.tinysqldsl.select.Join;
 import org.tinygroup.tinysqldsl.util.DslUtil;
+
+import java.util.List;
 
 /**
  * The update statement.

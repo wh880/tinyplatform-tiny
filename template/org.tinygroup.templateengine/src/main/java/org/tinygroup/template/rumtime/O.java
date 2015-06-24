@@ -17,7 +17,6 @@ package org.tinygroup.template.rumtime;
 
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.rumtime.convert.*;
 import org.tinygroup.template.rumtime.operator.*;
 

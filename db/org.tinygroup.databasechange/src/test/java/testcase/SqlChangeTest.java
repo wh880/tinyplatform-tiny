@@ -1,11 +1,10 @@
 package testcase;
 
-import java.io.IOException;
-import java.net.URL;
-
+import junit.framework.TestCase;
 import org.tinygroup.databasechange.TableSqlChangeUtil;
 
-import junit.framework.TestCase;
+import java.io.IOException;
+import java.net.URL;
 
 public class SqlChangeTest extends TestCase {
 

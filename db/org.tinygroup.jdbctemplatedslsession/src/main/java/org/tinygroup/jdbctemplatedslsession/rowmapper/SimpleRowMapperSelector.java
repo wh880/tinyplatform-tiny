@@ -1,11 +1,11 @@
 package org.tinygroup.jdbctemplatedslsession.rowmapper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.jdbc.core.RowMapper;
 import org.tinygroup.jdbctemplatedslsession.RowMapperHolder;
 import org.tinygroup.jdbctemplatedslsession.RowMapperSelector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 简单的RowMapper选择器

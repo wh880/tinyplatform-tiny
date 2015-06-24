@@ -1,38 +1,14 @@
 package org.tinygroup.jsqlparser.extend;
 
+import org.tinygroup.jsqlparser.expression.Expression;
+import org.tinygroup.jsqlparser.expression.ExpressionVisitorAdapter;
+import org.tinygroup.jsqlparser.schema.Table;
+import org.tinygroup.jsqlparser.statement.select.*;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.tinygroup.jsqlparser.expression.Expression;
-import org.tinygroup.jsqlparser.expression.ExpressionVisitorAdapter;
-import org.tinygroup.jsqlparser.schema.Table;
-import org.tinygroup.jsqlparser.statement.select.AllColumns;
-import org.tinygroup.jsqlparser.statement.select.AllTableColumns;
-import org.tinygroup.jsqlparser.statement.select.Fetch;
-import org.tinygroup.jsqlparser.statement.select.FromItem;
-import org.tinygroup.jsqlparser.statement.select.FromItemVisitor;
-import org.tinygroup.jsqlparser.statement.select.Join;
-import org.tinygroup.jsqlparser.statement.select.LateralSubSelect;
-import org.tinygroup.jsqlparser.statement.select.Limit;
-import org.tinygroup.jsqlparser.statement.select.Offset;
-import org.tinygroup.jsqlparser.statement.select.OrderByElement;
-import org.tinygroup.jsqlparser.statement.select.OrderByVisitor;
-import org.tinygroup.jsqlparser.statement.select.Pivot;
-import org.tinygroup.jsqlparser.statement.select.PivotVisitor;
-import org.tinygroup.jsqlparser.statement.select.PivotXml;
-import org.tinygroup.jsqlparser.statement.select.PlainSelect;
-import org.tinygroup.jsqlparser.statement.select.SelectExpressionItem;
-import org.tinygroup.jsqlparser.statement.select.SelectItem;
-import org.tinygroup.jsqlparser.statement.select.SelectItemVisitor;
-import org.tinygroup.jsqlparser.statement.select.SelectVisitor;
-import org.tinygroup.jsqlparser.statement.select.SetOperationList;
-import org.tinygroup.jsqlparser.statement.select.SubJoin;
-import org.tinygroup.jsqlparser.statement.select.SubSelect;
-import org.tinygroup.jsqlparser.statement.select.Top;
-import org.tinygroup.jsqlparser.statement.select.ValuesList;
-import org.tinygroup.jsqlparser.statement.select.WithItem;
 
 /**
  * 

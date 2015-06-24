@@ -15,11 +15,9 @@
  */
 package org.tinygroup.format;
 
+import junit.framework.TestCase;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import junit.framework.TestCase;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.format.exception.FormatException;

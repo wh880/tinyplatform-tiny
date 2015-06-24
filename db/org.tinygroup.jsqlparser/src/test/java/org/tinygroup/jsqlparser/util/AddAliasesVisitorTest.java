@@ -15,16 +15,14 @@
  */
 package org.tinygroup.jsqlparser.util;
 
-import java.io.StringReader;
+import org.junit.*;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.statement.select.Select;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+
+import java.io.StringReader;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *

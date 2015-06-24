@@ -15,16 +15,12 @@
  */
 package org.tinygroup.tinysqldsl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.operator.SetOperationInstanceCallBack;
-import org.tinygroup.tinysqldsl.select.OrderByElement;
-import org.tinygroup.tinysqldsl.select.PlainSelect;
-import org.tinygroup.tinysqldsl.select.SetOperation;
-import org.tinygroup.tinysqldsl.select.SetOperationList;
-import org.tinygroup.tinysqldsl.select.UnionOperation;
+import org.tinygroup.tinysqldsl.select.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 复杂查询

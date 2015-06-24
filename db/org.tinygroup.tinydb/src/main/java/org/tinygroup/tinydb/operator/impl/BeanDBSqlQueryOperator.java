@@ -15,9 +15,6 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.Configuration;
@@ -26,6 +23,9 @@ import org.tinygroup.tinydb.operator.DbSqlQueryOperator;
 import org.tinygroup.tinydb.order.OrderBean;
 import org.tinygroup.tinydb.query.Conditions;
 import org.tinygroup.tinydb.select.SelectBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BeanDBSqlQueryOperator<K> extends  BeanDBSqlOperator<K> implements DbSqlQueryOperator<K>{
 

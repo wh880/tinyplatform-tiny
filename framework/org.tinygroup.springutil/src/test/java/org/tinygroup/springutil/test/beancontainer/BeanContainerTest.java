@@ -15,15 +15,13 @@
  */
 package org.tinygroup.springutil.test.beancontainer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-import org.tinygroup.springutil.test.beancontainer.ContainerBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BeanContainerTest extends TestCase {
 

@@ -15,10 +15,6 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
@@ -33,6 +29,10 @@ import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DbBaseOperator;
 import org.tinygroup.tinydb.relation.Relation;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator {
 

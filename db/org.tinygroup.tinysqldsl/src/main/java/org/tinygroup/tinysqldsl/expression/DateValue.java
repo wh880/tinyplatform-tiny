@@ -15,9 +15,9 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import java.sql.Date;
-
 import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
+
+import java.sql.Date;
 
 /**
  * A Date in the form {d 'yyyy-mm-dd'}

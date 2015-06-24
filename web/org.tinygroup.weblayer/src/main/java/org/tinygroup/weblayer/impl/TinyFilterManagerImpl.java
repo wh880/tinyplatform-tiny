@@ -15,14 +15,6 @@
  */
 package org.tinygroup.weblayer.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.Filter;
-import javax.servlet.ServletException;
-
 import org.springframework.web.util.NestedServletException;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.order.OrderUtil;
@@ -36,6 +28,13 @@ import org.tinygroup.weblayer.TinyFilterManager;
 import org.tinygroup.weblayer.config.TinyFilterConfigInfo;
 import org.tinygroup.weblayer.config.TinyWrapperFilterConfigInfo;
 import org.tinygroup.weblayer.configmanager.TinyFilterConfigManager;
+
+import javax.servlet.Filter;
+import javax.servlet.ServletException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * tiny-filter的管理类

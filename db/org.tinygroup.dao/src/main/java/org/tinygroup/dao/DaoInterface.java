@@ -15,9 +15,9 @@
  */
 package org.tinygroup.dao;
 
-import java.util.Collection;
-
 import org.tinygroup.dao.query.PagingObject;
+
+import java.util.Collection;
 
 /**
  * Dao通用接口

@@ -15,28 +15,16 @@
  */
 package org.tinygroup.jspengine.el;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-
-import javax.el.ELContext;
-import javax.el.ELException;
-import javax.el.ELResolver;
-import javax.el.Expression;
-import javax.el.ExpressionFactory;
-import javax.el.FunctionMapper;
-import javax.el.MethodExpression;
-import javax.el.MethodInfo;
-import javax.el.MethodNotFoundException;
-import javax.el.PropertyNotFoundException;
-import javax.el.VariableMapper;
-
-import org.tinygroup.jspengine.el.lang.ELSupport;
 import org.tinygroup.jspengine.el.lang.EvaluationContext;
 import org.tinygroup.jspengine.el.lang.ExpressionBuilder;
 import org.tinygroup.jspengine.el.parser.Node;
 import org.tinygroup.jspengine.el.util.ReflectionUtil;
+
+import javax.el.*;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 
 /**

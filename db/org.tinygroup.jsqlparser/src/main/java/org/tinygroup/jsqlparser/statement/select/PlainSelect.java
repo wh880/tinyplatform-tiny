@@ -15,14 +15,14 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import org.tinygroup.jsqlparser.expression.Expression;
+import org.tinygroup.jsqlparser.expression.OracleHierarchicalExpression;
 import org.tinygroup.jsqlparser.schema.Table;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import org.tinygroup.jsqlparser.expression.OracleHierarchicalExpression;
 
 /**
  * The core of a "SELECT" statement (no UNION, no ORDER BY)

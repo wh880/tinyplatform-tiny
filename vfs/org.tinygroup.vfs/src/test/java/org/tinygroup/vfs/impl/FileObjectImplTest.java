@@ -15,14 +15,13 @@
  */
 package org.tinygroup.vfs.impl;
 
-import java.io.File;
-import java.io.IOException;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.FileUtils;
 import org.tinygroup.vfs.VFS;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * fileObject的测试用例

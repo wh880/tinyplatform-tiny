@@ -15,29 +15,21 @@
  */
 package org.tinygroup.database.view.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
-import org.tinygroup.database.config.view.GroupByField;
-import org.tinygroup.database.config.view.Having;
-import org.tinygroup.database.config.view.OrderByField;
-import org.tinygroup.database.config.view.View;
-import org.tinygroup.database.config.view.ViewCondition;
-import org.tinygroup.database.config.view.ViewField;
-import org.tinygroup.database.config.view.ViewFieldRef;
-import org.tinygroup.database.config.view.ViewHaving;
-import org.tinygroup.database.config.view.ViewTable;
+import org.tinygroup.database.config.view.*;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 生成view 创建、删除语句

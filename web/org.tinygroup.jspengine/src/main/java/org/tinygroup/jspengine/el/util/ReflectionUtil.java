@@ -15,6 +15,11 @@
  */
 package org.tinygroup.jspengine.el.util;
 
+import org.tinygroup.jspengine.el.lang.ELSupport;
+
+import javax.el.ELException;
+import javax.el.MethodNotFoundException;
+import javax.el.PropertyNotFoundException;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -22,12 +27,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-
-import javax.el.ELException;
-import javax.el.MethodNotFoundException;
-import javax.el.PropertyNotFoundException;
-
-import org.tinygroup.jspengine.el.lang.ELSupport;
 
 
 /**

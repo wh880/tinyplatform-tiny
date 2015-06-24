@@ -1,10 +1,5 @@
 package org.tinygroup.springmvc.coc;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
@@ -27,6 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.springmvc.support.AnnotationScopeMetadataResolver;
 import org.tinygroup.springmvc.util.PathMatchingInJarResourcePatternResolver;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 自动注册符合合约规范的类到容器中

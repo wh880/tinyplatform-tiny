@@ -1,8 +1,8 @@
 package org.tinygroup.exception.dao;
 
-import java.util.List;
-
 import org.tinygroup.exception.pojo.Custom;
+
+import java.util.List;
 
 public interface CustomDao {
 

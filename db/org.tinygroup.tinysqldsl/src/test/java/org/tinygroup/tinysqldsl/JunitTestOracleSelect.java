@@ -1,21 +1,16 @@
 package org.tinygroup.tinysqldsl;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.tinysqldsl.base.Table;
 import org.tinygroup.tinysqldsl.operator.SetOperationInstanceCallBack;
 import org.tinygroup.tinysqldsl.select.SetOperation;
 import org.tinygroup.tinysqldsl.select.UnionOperation;
 
-import static org.tinygroup.tinysqldsl.base.FragmentSql.fragmentCondition;
-import static org.tinygroup.tinysqldsl.extend.OracleSelect.selectFrom;
-import static org.tinygroup.tinysqldsl.extend.OracleComplexSelect.intersect;
-import static org.tinygroup.tinysqldsl.extend.OracleComplexSelect.minus;
-import static org.tinygroup.tinysqldsl.extend.OracleComplexSelect.setOperation;
-import static org.tinygroup.tinysqldsl.extend.OracleComplexSelect.union;
-import static org.tinygroup.tinysqldsl.extend.OracleComplexSelect.unionAll;
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.ScoreTable.TSCORE;
+import static org.tinygroup.tinysqldsl.base.FragmentSql.fragmentCondition;
+import static org.tinygroup.tinysqldsl.extend.OracleComplexSelect.*;
+import static org.tinygroup.tinysqldsl.extend.OracleSelect.selectFrom;
 
 public class JunitTestOracleSelect extends TestCase{
 

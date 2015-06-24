@@ -15,13 +15,13 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
-import java.util.Map;
-
 import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.tinygroup.commons.beanutil.BeanUtil;
 import org.tinygroup.tinysqldsl.KeyGenerator;
 import org.tinygroup.tinysqldsl.formitem.FromItem;
 import org.tinygroup.tinysqldsl.selectitem.AllTableColumns;
+
+import java.util.Map;
 
 /**
  * 表对象 Created by luoguo on 2015/3/11.

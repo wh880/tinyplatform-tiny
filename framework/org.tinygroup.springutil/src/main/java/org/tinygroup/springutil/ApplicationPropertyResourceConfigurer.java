@@ -1,9 +1,5 @@
 package org.tinygroup.springutil;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
-
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.core.io.Resource;
 import org.tinygroup.commons.io.StreamUtil;
@@ -11,6 +7,10 @@ import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.parser.filter.PathFilter;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
 
 public class ApplicationPropertyResourceConfigurer extends
 		PropertyPlaceholderConfigurer {

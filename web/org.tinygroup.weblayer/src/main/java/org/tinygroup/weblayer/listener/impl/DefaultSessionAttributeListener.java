@@ -1,9 +1,9 @@
 package org.tinygroup.weblayer.listener.impl;
 
+import org.tinygroup.weblayer.listener.TinySessionAttributeListener;
+
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
-
-import org.tinygroup.weblayer.listener.TinySessionAttributeListener;
 
 public class DefaultSessionAttributeListener extends SimpleBasicTinyConfigAware implements
 		TinySessionAttributeListener {

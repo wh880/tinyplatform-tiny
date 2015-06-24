@@ -10,13 +10,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
-
-import java.io.IOException;
-
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.nettyremote.Server;
+
+import java.io.IOException;
 
 public class ServerImpl implements Server {
 	private Logger logger = LoggerFactory.getLogger(ServerImpl.class);

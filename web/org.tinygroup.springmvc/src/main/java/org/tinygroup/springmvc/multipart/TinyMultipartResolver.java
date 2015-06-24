@@ -4,8 +4,6 @@
  */
 package org.tinygroup.springmvc.multipart;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
@@ -14,6 +12,8 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springmvc.extension.RequestInstanceHolder;
 import org.tinygroup.springmvc.util.Profiler;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 

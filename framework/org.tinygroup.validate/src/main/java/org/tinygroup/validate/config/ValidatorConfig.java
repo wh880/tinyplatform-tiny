@@ -15,11 +15,11 @@
  */
 package org.tinygroup.validate.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
+import java.util.ArrayList;
+import java.util.List;
 @XStreamAlias("validator")
 public class ValidatorConfig {
 	@XStreamAsAttribute

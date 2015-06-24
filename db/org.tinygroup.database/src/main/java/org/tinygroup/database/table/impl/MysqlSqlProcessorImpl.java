@@ -15,13 +15,13 @@
  */
 package org.tinygroup.database.table.impl;
 
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.tinygroup.database.config.table.Index;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.util.DataBaseUtil;
+
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 

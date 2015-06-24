@@ -15,14 +15,14 @@
  */
 package com.sun.xml.ws.server;
 
-import com.sun.xml.ws.api.server.PortAddressResolver;
-import com.sun.xml.ws.api.server.WSEndpoint;
+import com.sun.istack.Nullable;
+import com.sun.xml.ws.addressing.W3CAddressingConstants;
 import com.sun.xml.ws.api.server.DocumentAddressResolver;
+import com.sun.xml.ws.api.server.PortAddressResolver;
 import com.sun.xml.ws.api.server.SDDocument;
+import com.sun.xml.ws.api.server.WSEndpoint;
 import com.sun.xml.ws.util.xml.XMLStreamReaderToXMLStreamWriter;
 import com.sun.xml.ws.wsdl.parser.WSDLConstants;
-import com.sun.xml.ws.addressing.W3CAddressingConstants;
-import com.sun.istack.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;

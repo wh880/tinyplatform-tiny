@@ -15,6 +15,7 @@
  */
 package org.tinygroup.metadata.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.metadata.config.stddatatype.StandardTypes;
@@ -22,8 +23,6 @@ import org.tinygroup.metadata.stddatatype.StandardTypeProcessor;
 import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 public class StandardTypeFileResolver extends AbstractFileProcessor {
 

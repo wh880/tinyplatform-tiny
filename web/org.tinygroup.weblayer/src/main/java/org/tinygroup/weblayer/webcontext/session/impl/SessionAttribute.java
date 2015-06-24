@@ -15,18 +15,8 @@
  */
 package org.tinygroup.weblayer.webcontext.session.impl;
 
-import java.util.List;
-
-import javax.servlet.http.HttpSessionActivationListener;
-import javax.servlet.http.HttpSessionEvent;
-
 import org.tinygroup.commons.tools.ToStringBuilder;
 import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.weblayer.configmanager.TinyListenerConfigManager;
-import org.tinygroup.weblayer.configmanager.TinyListenerConfigManagerHolder;
 import org.tinygroup.weblayer.webcontext.session.SessionStore;
 import org.tinygroup.weblayer.webcontext.session.SessionStore.StoreContext;
 

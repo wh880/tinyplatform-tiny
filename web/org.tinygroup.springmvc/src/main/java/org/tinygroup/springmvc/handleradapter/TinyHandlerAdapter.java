@@ -1,11 +1,5 @@
 package org.tinygroup.springmvc.handleradapter;
 
-import java.util.Iterator;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +8,11 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springmvc.extension.RequestInstanceHolder;
 import org.tinygroup.springmvc.util.Profiler;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Iterator;
+import java.util.List;
 
 public class TinyHandlerAdapter implements HandlerAdapter {
 

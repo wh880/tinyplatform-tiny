@@ -15,10 +15,10 @@
  */
 package org.tinygroup.database.sequence;
 
+import org.tinygroup.database.config.sequence.Sequence;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import org.tinygroup.database.config.sequence.Sequence;
 
 /**
  * 序列sql处理

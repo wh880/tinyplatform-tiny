@@ -1,8 +1,8 @@
 package org.tinygroup.tinysqldsl;
 
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
-import static org.tinygroup.tinysqldsl.ScoreTable.TSCORE;
 import static org.tinygroup.tinysqldsl.Insert.insertInto;
+import static org.tinygroup.tinysqldsl.ScoreTable.TSCORE;
 import static org.tinygroup.tinysqldsl.Select.select;
 
 /**

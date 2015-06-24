@@ -17,8 +17,8 @@ package org.tinygroup.xmlparser.parser;
 
 import org.tinygroup.parser.NodeType;
 import org.tinygroup.parser.Parser;
-import org.tinygroup.xmlparser.XmlNodeType;
 import org.tinygroup.xmlparser.XmlDocument;
+import org.tinygroup.xmlparser.XmlNodeType;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public abstract class XmlParser<Source> implements

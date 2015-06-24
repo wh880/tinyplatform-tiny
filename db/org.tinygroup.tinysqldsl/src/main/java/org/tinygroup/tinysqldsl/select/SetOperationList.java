@@ -15,13 +15,13 @@
  */
 package org.tinygroup.tinysqldsl.select;
 
+import org.tinygroup.tinysqldsl.base.SelectBody;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.util.DslUtil;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
-import org.tinygroup.tinysqldsl.base.SelectBody;
-import org.tinygroup.tinysqldsl.util.DslUtil;
 
 /**
  * A database set operation. This operation consists of a list of plainSelects

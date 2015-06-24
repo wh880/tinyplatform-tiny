@@ -15,11 +15,10 @@
  */
 package org.tinygroup.jspengine.util;
 
-import java.util.Date;
-
 import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
+import java.util.Date;
 
 /**
  * Fast date formatter that caches recently formatted date information

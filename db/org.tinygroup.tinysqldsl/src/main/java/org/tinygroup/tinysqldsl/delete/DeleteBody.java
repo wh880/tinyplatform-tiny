@@ -15,8 +15,8 @@
  */
 package org.tinygroup.tinysqldsl.delete;
 
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.StatementBody;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Table;
 import org.tinygroup.tinysqldsl.expression.Expression;
 

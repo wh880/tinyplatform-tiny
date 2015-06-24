@@ -15,15 +15,14 @@
  */
 package org.tinygroup.flow.config;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.tinygroup.event.Parameter;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import org.tinygroup.event.Parameter;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 组件定义节点

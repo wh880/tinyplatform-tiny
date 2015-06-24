@@ -15,9 +15,9 @@
  */
 package org.tinygroup.format.impl;
 
-import java.util.regex.Pattern;
-
 import org.tinygroup.format.PatternDefine;
+
+import java.util.regex.Pattern;
 
 /**
  * 默认的正则表达式

@@ -15,11 +15,11 @@
  */
 package org.tinygroup.jsqlparser.statement.drop;
 
-import java.util.List;
-
 import org.tinygroup.jsqlparser.statement.Statement;
 import org.tinygroup.jsqlparser.statement.StatementVisitor;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
+
+import java.util.List;
 
 public class Drop implements Statement {
 

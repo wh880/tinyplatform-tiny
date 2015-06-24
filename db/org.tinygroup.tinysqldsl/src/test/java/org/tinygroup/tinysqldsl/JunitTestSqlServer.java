@@ -1,17 +1,11 @@
 package org.tinygroup.tinysqldsl;
 
 import junit.framework.TestCase;
-import static org.tinygroup.tinysqldsl.extend.SqlServerSelect.selectFrom;
+
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
+import static org.tinygroup.tinysqldsl.extend.SqlServerSelect.selectFrom;
+import static org.tinygroup.tinysqldsl.select.Fetch.*;
 import static org.tinygroup.tinysqldsl.select.Offset.offsetRow;
-import static org.tinygroup.tinysqldsl.select.Fetch.fetchWithFirstRow;
-import static org.tinygroup.tinysqldsl.select.Fetch.fetchWithFirstRowParam;
-import static org.tinygroup.tinysqldsl.select.Fetch.fetchWithFirstRows;
-import static org.tinygroup.tinysqldsl.select.Fetch.fetchWithFirstRowsParam;
-import static org.tinygroup.tinysqldsl.select.Fetch.fetchWithNextRow;
-import static org.tinygroup.tinysqldsl.select.Fetch.fetchWithNextRowParam;
-import static org.tinygroup.tinysqldsl.select.Fetch.fetchWithNextRows;
-import static org.tinygroup.tinysqldsl.select.Fetch.fetchWithNextRowsParam;
 
 public class JunitTestSqlServer extends TestCase{
 

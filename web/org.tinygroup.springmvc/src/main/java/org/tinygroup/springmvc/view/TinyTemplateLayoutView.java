@@ -1,11 +1,5 @@
 package org.tinygroup.springmvc.view;
 
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.web.servlet.view.AbstractTemplateView;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -13,6 +7,11 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springmvc.support.TinyWebTemplateContext;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * tiny模板类的view对象

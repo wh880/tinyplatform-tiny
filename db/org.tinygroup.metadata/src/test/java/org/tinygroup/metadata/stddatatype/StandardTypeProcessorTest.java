@@ -16,7 +16,6 @@
 package org.tinygroup.metadata.stddatatype;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.metadata.TestInit;
 import org.tinygroup.metadata.util.MetadataUtil;

@@ -15,13 +15,6 @@
  */
 package org.tinygroup.databasebuinstaller.impl;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.database.util.DataSourceInfo;
 import org.tinygroup.databasebuinstaller.InstallProcessor;
@@ -29,6 +22,12 @@ import org.tinygroup.exception.BaseRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 /**
  * 

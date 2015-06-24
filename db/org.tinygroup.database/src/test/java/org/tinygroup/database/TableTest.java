@@ -15,18 +15,13 @@
  */
 package org.tinygroup.database;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.tinygroup.database.config.table.Index;
-import org.tinygroup.database.config.table.IndexField;
-import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.config.table.TableField;
-import org.tinygroup.database.config.table.Tables;
+import com.thoughtworks.xstream.XStream;
+import org.tinygroup.database.config.table.*;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TableTest {
 

@@ -15,13 +15,13 @@
  */
 package org.tinygroup.flowbasicservice;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.flow.config.ComponentDefine;
 import org.tinygroup.flow.config.Flow;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class FlowBasicService {
 	private FlowExecutor executor;

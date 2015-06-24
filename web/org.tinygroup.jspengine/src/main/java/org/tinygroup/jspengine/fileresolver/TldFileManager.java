@@ -15,10 +15,10 @@
  */
 package org.tinygroup.jspengine.fileresolver;
 
+import org.tinygroup.vfs.FileObject;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.tinygroup.vfs.FileObject;
 
 /**
  * 

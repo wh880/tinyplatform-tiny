@@ -15,23 +15,21 @@
  */
 package org.tinygroup.docgen.impl;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.docgen.DocumentGenerater;
-import org.tinygroup.template.ResourceLoader;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateEngine;
-import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.template.loader.StringResourceLoader;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 
 /**
  * 

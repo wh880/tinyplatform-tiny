@@ -1,14 +1,14 @@
 
 package org.tinygroup.commons.match;
 
+import org.tinygroup.commons.tools.StringEscapeUtil;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.tinygroup.commons.tools.StringEscapeUtil;
 
 /**
  * Package-protected helper class for {@link AntPathMatcher}. Tests whether or not a string matches against a pattern

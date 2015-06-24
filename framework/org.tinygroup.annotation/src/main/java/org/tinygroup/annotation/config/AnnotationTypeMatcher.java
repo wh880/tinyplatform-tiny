@@ -15,13 +15,13 @@
  */
 package org.tinygroup.annotation.config;
 
+import org.tinygroup.commons.tools.StringUtil;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.tinygroup.commons.tools.StringUtil;
 
 /**
  * 封装classname和annotationType正则表达式的类

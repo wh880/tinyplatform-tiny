@@ -15,27 +15,6 @@
  */
 package com.sun.xml.ws.server;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import javax.jws.WebService;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.ws.Provider;
-import javax.xml.ws.WebServiceException;
-import javax.xml.ws.WebServiceFeature;
-import javax.xml.ws.WebServiceProvider;
-import javax.xml.ws.soap.SOAPBinding;
-
-import org.xml.sax.EntityResolver;
-import org.xml.sax.SAXException;
-
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 import com.sun.xml.ws.api.BindingID;
@@ -43,14 +22,7 @@ import com.sun.xml.ws.api.WSBinding;
 import com.sun.xml.ws.api.model.wsdl.WSDLPort;
 import com.sun.xml.ws.api.policy.PolicyResolver;
 import com.sun.xml.ws.api.policy.PolicyResolverFactory;
-import com.sun.xml.ws.api.server.AsyncProvider;
-import com.sun.xml.ws.api.server.Container;
-import com.sun.xml.ws.api.server.ContainerResolver;
-import com.sun.xml.ws.api.server.InstanceResolver;
-import com.sun.xml.ws.api.server.Invoker;
-import com.sun.xml.ws.api.server.SDDocument;
-import com.sun.xml.ws.api.server.SDDocumentSource;
-import com.sun.xml.ws.api.server.WSEndpoint;
+import com.sun.xml.ws.api.server.*;
 import com.sun.xml.ws.api.wsdl.parser.WSDLParserExtension;
 import com.sun.xml.ws.api.wsdl.parser.XMLEntityResolver;
 import com.sun.xml.ws.api.wsdl.parser.XMLEntityResolver.Parser;
@@ -76,6 +48,21 @@ import com.sun.xml.ws.util.ServiceFinder;
 import com.sun.xml.ws.wsdl.parser.RuntimeWSDLParser;
 import com.sun.xml.ws.wsdl.writer.WSDLGenerator;
 import com.sun.xml.ws.wsdl.writer.WSDLResolver;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.SAXException;
+
+import javax.jws.WebService;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.ws.Provider;
+import javax.xml.ws.WebServiceException;
+import javax.xml.ws.WebServiceFeature;
+import javax.xml.ws.WebServiceProvider;
+import javax.xml.ws.soap.SOAPBinding;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Entry point to the JAX-WS RI server-side runtime.

@@ -15,12 +15,12 @@
  */
 package org.tinygroup.tinydb.config;
 
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.tinydb.exception.TinyDbException;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
  * 表信息

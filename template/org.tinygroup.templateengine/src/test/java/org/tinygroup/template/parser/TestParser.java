@@ -18,7 +18,6 @@ package org.tinygroup.template.parser;
 import junit.framework.TestCase;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.junit.internal.runners.statements.Fail;
 import org.tinygroup.template.parser.grammer.TinyTemplateLexer;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 

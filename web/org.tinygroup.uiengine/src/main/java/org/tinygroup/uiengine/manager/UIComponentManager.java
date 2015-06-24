@@ -15,10 +15,10 @@
  */
 package org.tinygroup.uiengine.manager;
 
-import java.util.List;
-
 import org.tinygroup.uiengine.config.UIComponent;
 import org.tinygroup.uiengine.config.UIComponents;
+
+import java.util.List;
 
 /**
  * 界面组件管理器

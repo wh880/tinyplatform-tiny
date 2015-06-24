@@ -15,8 +15,6 @@
  */
 package org.tinygroup.jsqlparser.util.deparser;
 
-import java.util.Iterator;
-
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.expression.ExpressionVisitor;
 import org.tinygroup.jsqlparser.expression.operators.relational.ExpressionList;
@@ -26,6 +24,8 @@ import org.tinygroup.jsqlparser.schema.Column;
 import org.tinygroup.jsqlparser.statement.replace.Replace;
 import org.tinygroup.jsqlparser.statement.select.SelectVisitor;
 import org.tinygroup.jsqlparser.statement.select.SubSelect;
+
+import java.util.Iterator;
 
 /**
  * A class to de-parse (that is, tranform from JSqlParser hierarchy into a

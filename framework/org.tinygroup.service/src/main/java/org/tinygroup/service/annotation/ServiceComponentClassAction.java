@@ -15,12 +15,12 @@
  */
 package org.tinygroup.service.annotation;
 
-import java.lang.annotation.Annotation;
-
 import org.tinygroup.annotation.AnnotationClassAction;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.service.loader.AnnotationServiceLoader;
 import org.tinygroup.service.registry.ServiceRegistry;
+
+import java.lang.annotation.Annotation;
 
 /**
  * 符合@ServiceComponent注解配置的处理器

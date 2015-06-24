@@ -16,7 +16,6 @@
 package org.tinygroup.fileresolver;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.commons.tools.FileUtil;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.fileresolver.impl.FullContextFileFinder;

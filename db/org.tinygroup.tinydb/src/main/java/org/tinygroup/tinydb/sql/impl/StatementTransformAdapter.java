@@ -1,8 +1,5 @@
 package org.tinygroup.tinydb.sql.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.BeanDbNameConverter;
@@ -13,6 +10,9 @@ import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.impl.DefaultNameConverter;
 import org.tinygroup.tinydb.sql.SqlAndValues;
 import org.tinygroup.tinydb.sql.StatementTransform;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StatementTransformAdapter implements StatementTransform {
 	protected Configuration configuration;

@@ -15,19 +15,13 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.tinygroup.commons.tools.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tinygroup.commons.tools.StringUtil;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * HTML filtering utility for protecting against XSS (Cross Site Scripting).

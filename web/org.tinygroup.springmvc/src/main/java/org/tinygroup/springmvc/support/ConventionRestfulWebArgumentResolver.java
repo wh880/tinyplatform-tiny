@@ -1,8 +1,5 @@
 package org.tinygroup.springmvc.support;
 
-import java.beans.PropertyEditor;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.PropertyEditorRegistrySupport;
@@ -12,6 +9,9 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.HandlerMapping;
 import org.tinygroup.springmvc.coc.impl.RestfulConventionHandlerMethodResolver;
+
+import java.beans.PropertyEditor;
+import java.util.Map;
 
 /**
  * 针对性解决约定Restful开发时，参数绑定问题；

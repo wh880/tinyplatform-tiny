@@ -15,17 +15,16 @@
  */
 package org.tinygroup.docgen;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.docgen.util.ImageUtil;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 public class DocGenTest extends TestCase {
 

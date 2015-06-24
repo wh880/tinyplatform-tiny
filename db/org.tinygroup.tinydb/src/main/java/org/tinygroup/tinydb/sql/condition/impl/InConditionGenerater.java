@@ -1,9 +1,9 @@
 package org.tinygroup.tinydb.sql.condition.impl;
 
+import org.tinygroup.commons.tools.ArrayUtil;
+
 import java.util.Collections;
 import java.util.List;
-
-import org.tinygroup.commons.tools.ArrayUtil;
 
 
 /**

@@ -15,10 +15,9 @@
  */
 package org.tinygroup.weblayer.filter.gzip;
 
+import javax.servlet.ServletOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import javax.servlet.ServletOutputStream;
 
 public class GZIPResponseStream extends ServletOutputStream {
   protected ByteArrayOutputStream baos = null;

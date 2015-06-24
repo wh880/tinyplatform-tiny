@@ -1,18 +1,16 @@
 package org.tinygroup.jdbctemplatedslsession.execute;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Resources;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.tinytestutil.script.ScriptRunner;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public abstract class BaseTest extends TestCase {
 	private boolean hasExcuted;

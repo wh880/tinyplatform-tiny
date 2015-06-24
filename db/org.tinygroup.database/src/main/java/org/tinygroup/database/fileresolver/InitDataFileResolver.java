@@ -15,6 +15,7 @@
  */
 package org.tinygroup.database.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.database.config.initdata.InitDatas;
 import org.tinygroup.database.initdata.InitDataProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
@@ -22,8 +23,6 @@ import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 public class InitDataFileResolver extends AbstractFileProcessor {
 	private static final String INITDATA_EXTFILENAME = ".init.xml";

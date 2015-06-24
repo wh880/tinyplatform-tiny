@@ -20,7 +20,8 @@ import org.tinygroup.jsqlparser.expression.operators.arithmetic.*;
 import org.tinygroup.jsqlparser.expression.operators.conditional.AndExpression;
 import org.tinygroup.jsqlparser.expression.operators.conditional.OrExpression;
 import org.tinygroup.jsqlparser.expression.operators.relational.*;
-import org.tinygroup.jsqlparser.schema.*;
+import org.tinygroup.jsqlparser.schema.Column;
+import org.tinygroup.jsqlparser.schema.Table;
 import org.tinygroup.jsqlparser.statement.select.SelectVisitor;
 import org.tinygroup.jsqlparser.statement.select.SubSelect;
 

@@ -15,14 +15,14 @@
  */
 package org.tinygroup.tinypc.test.foreman;
 
-import java.io.IOException;
-
 import org.tinygroup.tinypc.Foreman;
 import org.tinygroup.tinypc.JobCenter;
 import org.tinygroup.tinypc.TestUtil;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.impl.ForemanSelectAllWorker;
 import org.tinygroup.tinypc.impl.JobCenterRemote;
+
+import java.io.IOException;
 
 public class TestSelectAll {
 	public static void main(String[] args) {

@@ -15,11 +15,10 @@
  */
 package org.tinygroup.weblayer.mvc;
 
-import java.io.IOException;
+import org.tinygroup.weblayer.WebContext;
 
 import javax.servlet.ServletException;
-
-import org.tinygroup.weblayer.WebContext;
+import java.io.IOException;
 
 
 /**

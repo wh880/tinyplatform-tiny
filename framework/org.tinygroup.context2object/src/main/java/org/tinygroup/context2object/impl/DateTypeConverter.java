@@ -23,11 +23,11 @@
  */
 package org.tinygroup.context2object.impl;
 
-import java.util.Date;
+import org.tinygroup.context2object.TypeConverter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
-import org.tinygroup.context2object.TypeConverter;
+import java.util.Date;
 
 public class DateTypeConverter implements TypeConverter<String, Date> {
     String format = "yyyy-MM-dd HH:mm:ss";

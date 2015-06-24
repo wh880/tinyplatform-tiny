@@ -1,10 +1,5 @@
 package org.tinygroup.springmvc.extension.impl;
 
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UrlPathHelper;
 import org.tinygroup.commons.tools.CollectionUtil;
@@ -13,6 +8,10 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springmvc.extension.FileExtensionResolver;
 import org.tinygroup.springmvc.http.MediaType;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * 内容协商解析对象,先根据请求路径的后缀查找请求的扩展名,再根据请求参数format对应的值,最后根据请求头Accept的mediaType

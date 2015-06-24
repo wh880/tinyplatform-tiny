@@ -15,11 +15,6 @@
  */
 package org.tinygroup.pageflowbasiccomponent;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.tinygroup.beancontainer.BeanContainer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
@@ -34,6 +29,10 @@ import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.WebContext;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class FullContextUrlRedirect implements ComponentInterface {
 	private final static Logger logger = LoggerFactory

@@ -15,11 +15,11 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
-import java.io.Serializable;
-import java.util.List;
-
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.schema.Column;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * A join clause

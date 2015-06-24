@@ -15,15 +15,14 @@
  */
 package org.tinygroup.net.coder.hessian;
 
-import java.io.InputStream;
-
+import com.caucho.hessian.io.HessianInput;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.frame.LengthFieldBasedFrameDecoder;
 
-import com.caucho.hessian.io.HessianInput;
+import java.io.InputStream;
 
 public class HessianDecoder extends LengthFieldBasedFrameDecoder {
 

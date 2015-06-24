@@ -15,10 +15,6 @@
  */
 package org.tinygroup.weblayer.filter;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.ArrayUtil;
@@ -32,6 +28,9 @@ import org.tinygroup.weblayer.webcontext.parser.impl.ParserWebContextImpl;
 import org.tinygroup.weblayer.webcontext.parser.impl.PropertyEditorRegistrarsSupport;
 import org.tinygroup.weblayer.webcontext.parser.upload.ParameterParserFilter;
 import org.tinygroup.weblayer.webcontext.parser.upload.UploadService;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * 解析用户提交的参数，无论是普通的请求，还是multipart/form-data这样的用于上传文件的 请求。

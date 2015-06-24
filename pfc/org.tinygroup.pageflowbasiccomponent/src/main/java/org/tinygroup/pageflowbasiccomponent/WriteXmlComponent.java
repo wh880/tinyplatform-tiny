@@ -15,11 +15,11 @@
  */
 package org.tinygroup.pageflowbasiccomponent;
 
-import java.io.IOException;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.convert.objectxml.xstream.ObjectToXml;
 import org.tinygroup.weblayer.WebContext;
+
+import java.io.IOException;
 
 public class WriteXmlComponent extends AbstractWriteComponent {
 	private ObjectToXml<Object> objectToXml = new ObjectToXml<Object>();

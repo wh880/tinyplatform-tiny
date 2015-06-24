@@ -15,7 +15,8 @@
  */
 package org.tinygroup.template.rumtime;
 
-import org.apache.commons.beanutils.*;
+import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang.StringUtils;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Enumerator;

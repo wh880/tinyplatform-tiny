@@ -15,9 +15,9 @@
  */
 package org.tinygroup.codegen.util;
 
-import java.io.File;
-
 import org.tinygroup.commons.tools.StringUtil;
+
+import java.io.File;
 
 public  class CodeGenUtil {
 

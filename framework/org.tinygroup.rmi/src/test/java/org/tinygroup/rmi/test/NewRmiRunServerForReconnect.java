@@ -15,10 +15,10 @@
  */
 package org.tinygroup.rmi.test;
 
-import java.rmi.RemoteException;
-
 import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerImpl;
+
+import java.rmi.RemoteException;
 
 public class NewRmiRunServerForReconnect {
 	

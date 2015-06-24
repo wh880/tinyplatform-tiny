@@ -15,9 +15,9 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import java.sql.Timestamp;
-
 import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
+
+import java.sql.Timestamp;
 
 /**
  * A Timestamp in the form {ts 'yyyy-mm-dd hh:mm:ss.f . . .'}

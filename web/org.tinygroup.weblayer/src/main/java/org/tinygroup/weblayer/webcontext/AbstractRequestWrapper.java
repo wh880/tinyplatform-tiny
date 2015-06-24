@@ -15,13 +15,13 @@
  */
 package org.tinygroup.weblayer.webcontext;
 
-import static org.tinygroup.commons.tools.Assert.*;
+import org.tinygroup.weblayer.WebContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import org.tinygroup.weblayer.WebContext;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
 
 
 /**

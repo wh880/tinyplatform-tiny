@@ -15,11 +15,6 @@
  */
 package org.tinygroup.weblayer.webcontext.parser;
 
-import java.lang.reflect.Array;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.factory.InitializingBean;
@@ -31,6 +26,10 @@ import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.weblayer.webcontext.parser.upload.ParameterParserFilter;
 import org.tinygroup.weblayer.webcontext.parser.upload.UploadService;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.lang.reflect.Array;
+import java.util.List;
+import java.util.Map;
 
 public class ParserConfiguration extends AbstractConfiguration {
 

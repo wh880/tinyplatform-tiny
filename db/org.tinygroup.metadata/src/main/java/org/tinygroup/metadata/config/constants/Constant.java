@@ -15,10 +15,9 @@
  */
 package org.tinygroup.metadata.config.constants;
 
-import org.tinygroup.metadata.config.BaseObject;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.metadata.config.BaseObject;
 
 @XStreamAlias("constant")
 public class Constant extends BaseObject {

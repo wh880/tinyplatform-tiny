@@ -15,17 +15,13 @@
  */
 package org.tinygroup.tinysqldsl.insert;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
-import org.tinygroup.tinysqldsl.base.Column;
-import org.tinygroup.tinysqldsl.base.SelectBody;
-import org.tinygroup.tinysqldsl.base.StatementBody;
-import org.tinygroup.tinysqldsl.base.Table;
+import org.tinygroup.tinysqldsl.base.*;
 import org.tinygroup.tinysqldsl.expression.relational.ItemsList;
 import org.tinygroup.tinysqldsl.selectitem.SelectExpressionItem;
 import org.tinygroup.tinysqldsl.util.DslUtil;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Insert语句

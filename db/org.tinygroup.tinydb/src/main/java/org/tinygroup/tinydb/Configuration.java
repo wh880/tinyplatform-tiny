@@ -15,11 +15,6 @@
  */
 package org.tinygroup.tinydb;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.tinygroup.database.config.dialectfunction.DialectFunctions;
 import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
@@ -39,6 +34,10 @@ import org.tinygroup.tinydb.sql.SQLGenerateContainer;
 import org.tinygroup.tinydb.sql.condition.ConditionGenerater;
 import org.tinygroup.tinydb.sql.group.GroupGenerater;
 import org.tinygroup.tinydb.sql.order.OrderGenerater;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 配置对象

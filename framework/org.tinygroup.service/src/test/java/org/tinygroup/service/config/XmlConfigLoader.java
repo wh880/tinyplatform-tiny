@@ -15,14 +15,13 @@
  */
 package org.tinygroup.service.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.beancontainer.BeanContainer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.vfs.FileObject;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class XmlConfigLoader extends XmlConfigServiceLoader {
 

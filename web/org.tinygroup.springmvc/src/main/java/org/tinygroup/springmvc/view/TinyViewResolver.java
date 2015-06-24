@@ -1,9 +1,5 @@
 package org.tinygroup.springmvc.view;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.tinygroup.logger.LogLevel;
@@ -11,6 +7,10 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springmvc.extension.RequestInstanceHolder;
 import org.tinygroup.springmvc.util.Profiler;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 public class TinyViewResolver implements ViewResolver {
 

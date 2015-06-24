@@ -15,14 +15,10 @@
  */
 package org.tinygroup.weblayer.util;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.*;
 
 /**
  * 配置解析工具类

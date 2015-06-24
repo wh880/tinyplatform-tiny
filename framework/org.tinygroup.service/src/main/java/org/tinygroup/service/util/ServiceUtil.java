@@ -15,10 +15,10 @@
  */
 package org.tinygroup.service.util;
 
+import org.tinygroup.service.registry.ServiceRegistryItem;
+
 import java.io.Serializable;
 import java.util.Map;
-
-import org.tinygroup.service.registry.ServiceRegistryItem;
 
 public class ServiceUtil {
 

@@ -15,9 +15,9 @@
  */
 package org.tinygroup.command;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.apache.commons.beanutils.BeanUtils;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class SetPropertyTest {
 	boolean a;

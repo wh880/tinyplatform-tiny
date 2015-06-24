@@ -1,10 +1,10 @@
 package org.tinygroup.context2object.config;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
-
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context2object.util.Context2ObjectUtil;
+
+import java.lang.reflect.Array;
+import java.util.Collection;
 
 public class BasicTypeConverter {
 	public static Object convertBasicTypeArray(String[] stringArray,String className) {

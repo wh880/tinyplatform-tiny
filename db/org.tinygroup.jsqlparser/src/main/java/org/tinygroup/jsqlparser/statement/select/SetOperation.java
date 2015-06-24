@@ -15,9 +15,9 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
-import java.io.Serializable;
-
 import org.tinygroup.jsqlparser.statement.select.SetOperationList.SetOperationType;
+
+import java.io.Serializable;
 
 /**
  * Single Set-Operation (name). Placeholder for one specific set operation, e.g.

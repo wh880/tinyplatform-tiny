@@ -15,14 +15,13 @@
  */
 package org.tinygroup.dbrouter.config;
 
-import java.util.List;
-
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.dbrouter.RouterKeyGenerator;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.List;
 
 /**
  * 集群<br>

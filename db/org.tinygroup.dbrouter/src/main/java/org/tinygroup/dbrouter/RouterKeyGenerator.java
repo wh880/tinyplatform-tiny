@@ -15,10 +15,9 @@
  */
 package org.tinygroup.dbrouter;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.tinygroup.dbrouter.config.KeyTables;
 import org.tinygroup.dbrouter.config.Router;
-
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 分布式Key获取器

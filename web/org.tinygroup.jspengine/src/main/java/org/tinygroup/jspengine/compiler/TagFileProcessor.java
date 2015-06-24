@@ -15,27 +15,20 @@
  */
 package org.tinygroup.jspengine.compiler;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Iterator;
-import java.util.Vector;
-import java.util.HashMap;
-
-import javax.servlet.jsp.tagext.TagAttributeInfo;
-import javax.servlet.jsp.tagext.TagExtraInfo;
-import javax.servlet.jsp.tagext.TagFileInfo;
-import javax.servlet.jsp.tagext.TagInfo;
-import javax.servlet.jsp.tagext.TagLibraryInfo;
-import javax.servlet.jsp.tagext.TagVariableInfo;
-import javax.servlet.jsp.tagext.VariableInfo;
-
 import org.tinygroup.jspengine.Constants;
 import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.JspCompilationContext;
 import org.tinygroup.jspengine.runtime.JspSourceDependent;
 import org.tinygroup.jspengine.servlet.JspServletWrapper;
+
+import javax.servlet.jsp.tagext.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Vector;
 
 /**
  * 1. Processes and extracts the directive info in a tag file.

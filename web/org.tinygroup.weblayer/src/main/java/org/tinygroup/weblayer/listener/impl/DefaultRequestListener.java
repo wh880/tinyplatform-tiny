@@ -1,9 +1,9 @@
 package org.tinygroup.weblayer.listener.impl;
 
+import org.tinygroup.weblayer.listener.TinyRequestListener;
+
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
-
-import org.tinygroup.weblayer.listener.TinyRequestListener;
 
 public class DefaultRequestListener extends SimpleBasicTinyConfigAware implements TinyRequestListener {
 

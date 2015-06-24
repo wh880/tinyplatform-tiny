@@ -15,16 +15,7 @@
  */
 package org.tinygroup.vfs.impl;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
 import org.apache.ftpserver.ftplet.FtpException;
@@ -33,6 +24,9 @@ import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.vfs.VFSRuntimeException;
+
+import java.io.*;
+import java.util.List;
 
 public class FtpFileObjectTest extends TestCase {
 

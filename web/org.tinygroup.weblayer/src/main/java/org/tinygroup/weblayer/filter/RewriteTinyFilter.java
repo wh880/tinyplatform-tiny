@@ -15,16 +15,15 @@
  */
 package org.tinygroup.weblayer.filter;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.rewrite.RewriteConfiguration;
 import org.tinygroup.weblayer.webcontext.rewrite.RewriteRule;
 import org.tinygroup.weblayer.webcontext.rewrite.impl.RewriteWebContextImpl;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * 改写URL及参数，类似于Apache HTTPD Server中的rewrite模块。

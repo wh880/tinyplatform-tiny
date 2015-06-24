@@ -1,14 +1,13 @@
 package org.tinygroup.springmvc.util;
 
-import java.util.Iterator;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.util.WebUtils;
 import org.tinygroup.springmvc.http.MediaType;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Helper class for annotation-based request mapping. 基于注解的ServletMapping工具类

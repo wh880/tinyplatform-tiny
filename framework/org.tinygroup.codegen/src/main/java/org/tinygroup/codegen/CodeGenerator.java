@@ -1,9 +1,9 @@
 package org.tinygroup.codegen;
 
+import org.tinygroup.context.Context;
+
 import java.io.IOException;
 import java.util.List;
-
-import org.tinygroup.context.Context;
 
 /**
  * 代码生成器

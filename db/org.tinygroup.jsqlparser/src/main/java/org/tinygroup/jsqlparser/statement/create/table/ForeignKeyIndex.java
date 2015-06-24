@@ -15,9 +15,10 @@
  */
 package org.tinygroup.jsqlparser.statement.create.table;
 
-import java.util.List;
 import org.tinygroup.jsqlparser.schema.Table;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
+
+import java.util.List;
 
 /**
  * Foreign Key Index

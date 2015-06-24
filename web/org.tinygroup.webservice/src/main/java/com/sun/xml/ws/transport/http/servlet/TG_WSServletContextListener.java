@@ -15,23 +15,10 @@
  */
 package com.sun.xml.ws.transport.http.servlet;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextAttributeEvent;
-import javax.servlet.ServletContextAttributeListener;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.xml.ws.WebServiceException;
-
+import com.sun.istack.NotNull;
+import com.sun.xml.ws.api.server.Container;
+import com.sun.xml.ws.resources.WsservletMessages;
+import com.sun.xml.ws.transport.http.TG_DeploymentDescriptorParser;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.event.ServiceInfo;
@@ -44,10 +31,17 @@ import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlParser;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
-import com.sun.istack.NotNull;
-import com.sun.xml.ws.api.server.Container;
-import com.sun.xml.ws.resources.WsservletMessages;
-import com.sun.xml.ws.transport.http.TG_DeploymentDescriptorParser;
+import javax.servlet.*;
+import javax.xml.ws.WebServiceException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TG_WSServletContextListener implements
 		ServletContextAttributeListener, ServletContextListener {

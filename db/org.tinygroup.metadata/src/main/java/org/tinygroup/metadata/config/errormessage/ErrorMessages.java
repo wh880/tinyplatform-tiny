@@ -15,13 +15,13 @@
  */
 package org.tinygroup.metadata.config.errormessage;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @XStreamAlias("error-messages")
 public class ErrorMessages {

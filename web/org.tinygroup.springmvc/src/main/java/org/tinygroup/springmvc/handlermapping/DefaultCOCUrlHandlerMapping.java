@@ -1,14 +1,5 @@
 package org.tinygroup.springmvc.handlermapping;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +9,9 @@ import org.tinygroup.springmvc.util.WebUtil;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.mvc.WebContextAware;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * 

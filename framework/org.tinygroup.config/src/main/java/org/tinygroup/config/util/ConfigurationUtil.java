@@ -15,14 +15,6 @@
  */
 package org.tinygroup.config.util;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.config.ConfigurationManager;
@@ -32,6 +24,14 @@ import org.tinygroup.parser.filter.PathFilter;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 应用配置工具类，用于把父对象中的配置参数应用到子对象中。

@@ -15,8 +15,6 @@
  */
 package org.tinygroup.metadata.util;
 
-import java.util.List;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
@@ -28,6 +26,8 @@ import org.tinygroup.metadata.config.stddatatype.StandardType;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.stddatatype.StandardTypeProcessor;
 import org.tinygroup.metadata.stdfield.StandardFieldProcessor;
+
+import java.util.List;
 
 public final class MetadataUtil {
 	public static final String METADATA_XSTREAM = "metadata";

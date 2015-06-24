@@ -15,9 +15,6 @@
  */
 package org.tinygroup.channel.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.channel.ChannelInterface;
 import org.tinygroup.channel.EventFilter;
@@ -25,6 +22,9 @@ import org.tinygroup.channel.EventListener;
 import org.tinygroup.event.Event;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 抽象通道，实现了事件相关，日志

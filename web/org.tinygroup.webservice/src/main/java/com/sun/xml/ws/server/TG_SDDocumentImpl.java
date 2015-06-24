@@ -15,32 +15,22 @@
  */
 package com.sun.xml.ws.server;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.ws.WebServiceException;
-
-import com.sun.xml.ws.api.server.DocumentAddressResolver;
-import com.sun.xml.ws.api.server.PortAddressResolver;
-import com.sun.xml.ws.api.server.SDDocument;
-import com.sun.xml.ws.api.server.SDDocumentFilter;
-import com.sun.xml.ws.api.server.SDDocumentSource;
-import com.sun.xml.ws.api.server.WSEndpoint;
+import com.sun.xml.ws.api.server.*;
 import com.sun.xml.ws.api.streaming.XMLStreamWriterFactory;
 import com.sun.xml.ws.streaming.XMLStreamReaderUtil;
 import com.sun.xml.ws.util.RuntimeVersion;
 import com.sun.xml.ws.util.xml.XMLStreamReaderToXMLStreamWriter;
 import com.sun.xml.ws.wsdl.parser.ParserUtil;
 import com.sun.xml.ws.wsdl.parser.WSDLConstants;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.*;
+import javax.xml.ws.WebServiceException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * {@link SDDocument} implmentation.

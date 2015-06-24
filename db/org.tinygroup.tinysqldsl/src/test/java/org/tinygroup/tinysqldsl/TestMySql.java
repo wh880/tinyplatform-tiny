@@ -1,9 +1,10 @@
 package org.tinygroup.tinysqldsl;
 
+import junit.framework.TestCase;
+
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.extend.MysqlSelect.selectFrom;
 import static org.tinygroup.tinysqldsl.select.OrderByElement.desc;
-import junit.framework.TestCase;
 
 public class TestMySql extends TestCase {
 

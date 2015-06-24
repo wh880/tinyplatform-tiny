@@ -1,8 +1,10 @@
 package org.tinygroup.weblayer.listener.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.weblayer.BasicTinyConfigAware;
+import org.tinygroup.weblayer.config.BasicConfigInfo;
+import org.tinygroup.weblayer.impl.SimpleBasicTinyConfig;
+import org.tinygroup.weblayer.listener.ListenerInstanceBuilder;
 
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextListener;
@@ -12,12 +14,9 @@ import javax.servlet.http.HttpSessionActivationListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionListener;
-
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.weblayer.BasicTinyConfigAware;
-import org.tinygroup.weblayer.config.BasicConfigInfo;
-import org.tinygroup.weblayer.impl.SimpleBasicTinyConfig;
-import org.tinygroup.weblayer.listener.ListenerInstanceBuilder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ListenerBuilderSupport {
 

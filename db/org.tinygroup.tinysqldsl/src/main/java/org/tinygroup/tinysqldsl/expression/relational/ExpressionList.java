@@ -15,14 +15,14 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.expression.Expression;
+import org.tinygroup.tinysqldsl.util.DslUtil;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
-import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.util.DslUtil;
 
 /**
  * A list of expressions, as in SELECT A FROM TAB WHERE B IN (expr1,expr2,expr3)

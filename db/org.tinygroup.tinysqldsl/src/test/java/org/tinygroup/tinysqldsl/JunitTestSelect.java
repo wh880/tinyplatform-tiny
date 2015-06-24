@@ -1,25 +1,21 @@
 package org.tinygroup.tinysqldsl;
 
+import junit.framework.TestCase;
+
 import static org.tinygroup.tinysqldsl.ComplexSelect.union;
 import static org.tinygroup.tinysqldsl.ComplexSelect.unionAll;
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.ScoreTable.TSCORE;
 import static org.tinygroup.tinysqldsl.Select.customSelectItem;
 import static org.tinygroup.tinysqldsl.Select.select;
+import static org.tinygroup.tinysqldsl.base.FragmentSql.*;
 import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
 import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.or;
-import static org.tinygroup.tinysqldsl.base.FragmentSql.fragmentCondition;
-import static org.tinygroup.tinysqldsl.base.FragmentSql.fragmentFrom;
-import static org.tinygroup.tinysqldsl.base.FragmentSql.fragmentSelect;
 import static org.tinygroup.tinysqldsl.extend.MysqlSelect.selectFrom;
-import static org.tinygroup.tinysqldsl.select.Join.fullJoin;
-import static org.tinygroup.tinysqldsl.select.Join.leftJoin;
-import static org.tinygroup.tinysqldsl.select.Join.newJoin;
-import static org.tinygroup.tinysqldsl.select.Join.rightJoin;
+import static org.tinygroup.tinysqldsl.select.Join.*;
 import static org.tinygroup.tinysqldsl.select.OrderByElement.asc;
 import static org.tinygroup.tinysqldsl.select.OrderByElement.desc;
 import static org.tinygroup.tinysqldsl.selectitem.Top.top;
-import junit.framework.TestCase;
 
 public class JunitTestSelect extends TestCase {
 

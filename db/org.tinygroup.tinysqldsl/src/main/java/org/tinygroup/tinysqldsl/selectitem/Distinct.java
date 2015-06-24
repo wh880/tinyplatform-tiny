@@ -15,8 +15,8 @@
  */
 package org.tinygroup.tinysqldsl.selectitem;
 
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Column;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 
 /**
  * A DISTINCT [(expression, ...)] clause

@@ -15,13 +15,6 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -48,6 +41,13 @@ import org.tinygroup.tinydb.spring.BatchPreparedStatementSetterImpl;
 import org.tinygroup.tinydb.spring.SqlParamValuesBatchStatementSetterImpl;
 import org.tinygroup.tinydb.spring.TinydbResultExtractor;
 import org.tinygroup.tinydb.sql.impl.StatementTransformComposite;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DBSpringBaseOperator extends StatementTransformComposite implements TransactionOperator {
 

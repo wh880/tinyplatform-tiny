@@ -1,13 +1,12 @@
 package org.tinygroup.service.test.testcase;
 
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.service.test.base.ServiceUser;
 import org.tinygroup.service.util.ServiceTestUtil;
+
+import java.util.List;
 
 public class TestAnnotationCaseService extends TestCase{
 	public void testUserObject() {

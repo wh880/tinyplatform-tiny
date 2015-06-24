@@ -1,5 +1,6 @@
 package org.tinygroup.nettyremote.codec.serialization;
 
+import com.caucho.hessian.io.HessianInput;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.channel.ChannelHandlerContext;
@@ -7,8 +8,6 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.serialization.ClassResolver;
 
 import java.io.StreamCorruptedException;
-
-import com.caucho.hessian.io.HessianInput;
 
 public class HessianDecoder extends LengthFieldBasedFrameDecoder {
 

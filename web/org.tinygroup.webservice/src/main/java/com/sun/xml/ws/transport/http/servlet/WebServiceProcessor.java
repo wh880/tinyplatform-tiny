@@ -1,11 +1,10 @@
 package com.sun.xml.ws.transport.http.servlet;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 public class WebServiceProcessor extends AbstractTinyProcessor {
 	

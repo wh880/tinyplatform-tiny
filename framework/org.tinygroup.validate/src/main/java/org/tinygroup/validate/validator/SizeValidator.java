@@ -15,12 +15,12 @@
  */
 package org.tinygroup.validate.validator;
 
+import org.tinygroup.validate.ValidateResult;
+import org.tinygroup.validate.impl.AbstractValidator;
+
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
-
-import org.tinygroup.validate.ValidateResult;
-import org.tinygroup.validate.impl.AbstractValidator;
 
 public class SizeValidator extends  AbstractValidator {
 	

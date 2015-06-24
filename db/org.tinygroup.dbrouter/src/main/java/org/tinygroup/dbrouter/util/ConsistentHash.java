@@ -2,16 +2,8 @@ package org.tinygroup.dbrouter.util;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.UUID;
 
 public class ConsistentHash<T> {
 

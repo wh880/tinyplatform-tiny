@@ -3,14 +3,14 @@
  */
 package org.tinygroup.springmvc.coc.impl;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.util.StringUtils;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.springmvc.coc.ConventionComponentIdentifier;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 

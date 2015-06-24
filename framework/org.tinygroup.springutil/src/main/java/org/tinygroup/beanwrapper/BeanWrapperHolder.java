@@ -15,21 +15,17 @@
  */
 package org.tinygroup.beanwrapper;
 
-import java.beans.PropertyEditor;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.PropertyEditorRegistrar;
-import org.springframework.beans.PropertyEditorRegistry;
+import org.springframework.beans.*;
 import org.springframework.beans.factory.support.AbstractBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.springutil.SpringBeanContainer;
+
+import java.beans.PropertyEditor;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class BeanWrapperHolder {
 	private static BeanWrapperHolder holder;

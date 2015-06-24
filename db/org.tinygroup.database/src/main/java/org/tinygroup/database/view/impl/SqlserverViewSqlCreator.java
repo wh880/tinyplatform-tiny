@@ -15,11 +15,11 @@
  */
 package org.tinygroup.database.view.impl;
 
-import java.util.List;
-
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.view.View;
 import org.tinygroup.database.config.view.ViewField;
+
+import java.util.List;
 
 
 public class SqlserverViewSqlCreator extends ViewSqlCreator{

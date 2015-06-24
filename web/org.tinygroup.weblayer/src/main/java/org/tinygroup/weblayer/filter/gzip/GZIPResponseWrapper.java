@@ -15,17 +15,16 @@
  */
 package org.tinygroup.weblayer.filter.gzip;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 public class GZIPResponseWrapper extends HttpServletResponseWrapper {
 	protected ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -15,13 +15,13 @@
  */
 package com.sun.xml.ws.transport.http.servlet;
 
+import com.sun.istack.Nullable;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.sun.istack.Nullable;
 
 /**
  * The JAX-WS dispatcher servlet.

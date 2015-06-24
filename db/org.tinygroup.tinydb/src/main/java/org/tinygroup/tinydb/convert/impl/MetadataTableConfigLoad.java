@@ -15,18 +15,17 @@
  */
 package org.tinygroup.tinydb.convert.impl;
 
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.tinydb.config.ColumnConfiguration;
+import org.tinygroup.tinydb.config.TableConfiguration;
+import org.tinygroup.tinydb.exception.TinyDbException;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
-
-import javax.sql.DataSource;
-
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.tinydb.config.ColumnConfiguration;
-import org.tinygroup.tinydb.config.TableConfiguration;
-import org.tinygroup.tinydb.exception.TinyDbException;
 
 /**
  * 通过数据库databsemeta元数据来获取表配置信息

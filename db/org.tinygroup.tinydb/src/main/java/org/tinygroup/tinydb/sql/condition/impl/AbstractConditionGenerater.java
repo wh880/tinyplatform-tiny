@@ -1,8 +1,8 @@
 package org.tinygroup.tinydb.sql.condition.impl;
 
-import java.util.List;
-
 import org.tinygroup.tinydb.sql.condition.ConditionGenerater;
+
+import java.util.List;
 
 /**
  * 抽象的条件比较操作

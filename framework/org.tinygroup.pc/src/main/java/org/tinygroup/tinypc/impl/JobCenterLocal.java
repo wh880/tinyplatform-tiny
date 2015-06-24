@@ -15,11 +15,11 @@
  */
 package org.tinygroup.tinypc.impl;
 
-import java.io.IOException;
-
 import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerImpl;
 import org.tinygroup.tinypc.WorkQueue;
+
+import java.io.IOException;
 
 /**
  * Created by luoguo on 14-1-23.

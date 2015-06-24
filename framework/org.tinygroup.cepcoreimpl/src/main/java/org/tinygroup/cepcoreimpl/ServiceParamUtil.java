@@ -1,7 +1,5 @@
 package org.tinygroup.cepcoreimpl;
 
-import java.util.List;
-
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
@@ -11,6 +9,8 @@ import org.tinygroup.context2object.util.Context2ObjectUtil;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
+
+import java.util.List;
 
 public class ServiceParamUtil {
 	private final static String IS_CHANGED = "TINY_IS_EVENT_HAS_CHANGED";

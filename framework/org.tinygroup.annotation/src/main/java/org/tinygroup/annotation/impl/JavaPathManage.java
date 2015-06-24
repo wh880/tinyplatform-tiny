@@ -15,11 +15,11 @@
  */
 package org.tinygroup.annotation.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.fileresolver.FileResolver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 类路径管理

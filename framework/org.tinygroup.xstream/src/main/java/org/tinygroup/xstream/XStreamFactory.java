@@ -15,12 +15,11 @@
  */
 package org.tinygroup.xstream;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.xstream.config.XStreamConfiguration;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 

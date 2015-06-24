@@ -15,9 +15,9 @@
  */
 package org.tinygroup.cepcore;
 
-import java.util.List;
-
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.List;
 
 public interface EventProcessorChoose {
 

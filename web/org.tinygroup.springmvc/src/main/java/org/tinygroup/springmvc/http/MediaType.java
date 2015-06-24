@@ -1,24 +1,14 @@
 package org.tinygroup.springmvc.http;
 
-import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TreeSet;
-
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.comparator.CompoundComparator;
 import org.tinygroup.springmvc.util.LinkedCaseInsensitiveMap;
+
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
+import java.util.*;
 
 /**
  * 该类是在spring3版本以上才有，为了在2.5.6版本也支持，因此把此类放在本地进行管理。

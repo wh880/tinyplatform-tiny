@@ -1,7 +1,5 @@
 package org.tinygroup.templateweb;
 
-import java.io.IOException;
-
 import org.springframework.web.util.NestedServletException;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
@@ -15,6 +13,7 @@ import org.tinygroup.weblayer.WebContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 添加url处理器 Created by luoguo on 2014/7/14.

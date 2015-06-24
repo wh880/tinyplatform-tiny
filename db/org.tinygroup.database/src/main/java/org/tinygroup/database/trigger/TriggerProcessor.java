@@ -15,12 +15,12 @@
  */
 package org.tinygroup.database.trigger;
 
+import org.tinygroup.database.config.trigger.Trigger;
+import org.tinygroup.database.config.trigger.Triggers;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
-import org.tinygroup.database.config.trigger.Trigger;
-import org.tinygroup.database.config.trigger.Triggers;
 
 /**
  * 触发器处理

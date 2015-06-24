@@ -1,8 +1,8 @@
 package org.tinygroup.tinydb.sql.condition.impl;
 
-import java.util.List;
-
 import org.tinygroup.commons.tools.ArrayUtil;
+
+import java.util.List;
 
 /**
  * not between and 操作

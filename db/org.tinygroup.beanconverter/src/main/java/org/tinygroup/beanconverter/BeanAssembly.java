@@ -1,7 +1,5 @@
 package org.tinygroup.beanconverter;
 
-import java.util.List;
-
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.ObjectAssembly;
@@ -10,6 +8,8 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.util.TinyDBUtil;
+
+import java.util.List;
 
 /**
  * bean对象的组装实现

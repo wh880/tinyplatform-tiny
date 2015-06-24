@@ -2,7 +2,6 @@ package org.tinygroup.jdbctemplatedslsession.rowmapper;
 
 import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.BeanUtils;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.tinygroup.jdbctemplatedslsession.RowMapperHolder;
 

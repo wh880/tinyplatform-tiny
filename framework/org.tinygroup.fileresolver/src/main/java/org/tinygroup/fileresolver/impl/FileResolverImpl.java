@@ -15,28 +15,19 @@
  */
 package org.tinygroup.fileresolver.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import org.tinygroup.commons.order.OrderUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
-import org.tinygroup.fileresolver.ChangeListener;
-import org.tinygroup.fileresolver.FileProcessor;
-import org.tinygroup.fileresolver.FileResolver;
-import org.tinygroup.fileresolver.FileResolverUtil;
-import org.tinygroup.fileresolver.ProcessorCallBack;
+import org.tinygroup.fileresolver.*;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * 功能说明: 文件搜索器默认实现

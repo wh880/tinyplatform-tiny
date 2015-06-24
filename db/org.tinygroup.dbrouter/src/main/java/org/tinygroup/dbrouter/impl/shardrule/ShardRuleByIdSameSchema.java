@@ -15,12 +15,12 @@
  */
 package org.tinygroup.dbrouter.impl.shardrule;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by luoguo on 13-12-15.

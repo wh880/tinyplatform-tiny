@@ -15,8 +15,14 @@
  */
 package org.tinygroup.weblayer.webcontext.session.encode;
 
-import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import org.apache.commons.codec.binary.Base64;
+import org.tinygroup.commons.io.ByteArrayOutputStream;
+import org.tinygroup.support.BeanSupport;
+import org.tinygroup.weblayer.webcontext.session.SessionStore.StoreContext;
+import org.tinygroup.weblayer.webcontext.session.encrypter.Encrypter;
+import org.tinygroup.weblayer.webcontext.session.exception.SessionEncoderException;
+import org.tinygroup.weblayer.webcontext.session.serializer.Serializer;
+import org.tinygroup.weblayer.webcontext.session.serializer.impl.JsonConvertSerializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -29,14 +35,8 @@ import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import org.apache.commons.codec.binary.Base64;
-import org.tinygroup.commons.io.ByteArrayOutputStream;
-import org.tinygroup.support.BeanSupport;
-import org.tinygroup.weblayer.webcontext.session.SessionStore.StoreContext;
-import org.tinygroup.weblayer.webcontext.session.encrypter.Encrypter;
-import org.tinygroup.weblayer.webcontext.session.exception.SessionEncoderException;
-import org.tinygroup.weblayer.webcontext.session.serializer.Serializer;
-import org.tinygroup.weblayer.webcontext.session.serializer.impl.JsonConvertSerializer;
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
 
 /**
  * 通过<code>Serializer</code>提供的序列化机制来编码对象，以及解码字符串。

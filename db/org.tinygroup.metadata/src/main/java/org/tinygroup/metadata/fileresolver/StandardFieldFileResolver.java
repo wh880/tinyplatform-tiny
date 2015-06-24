@@ -15,6 +15,7 @@
  */
 package org.tinygroup.metadata.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.metadata.config.stdfield.StandardFields;
@@ -22,8 +23,6 @@ import org.tinygroup.metadata.stdfield.StandardFieldProcessor;
 import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 public class StandardFieldFileResolver extends AbstractFileProcessor {
 

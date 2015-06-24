@@ -15,13 +15,12 @@
  */
 package org.tinygroup.convert;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.tinygroup.convert.objectjson.xstream.JsonToObject;
 import org.tinygroup.convert.objectjson.xstream.ObjectToJson;
 
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestObjectJson extends AbstractConvertTestCase {
 

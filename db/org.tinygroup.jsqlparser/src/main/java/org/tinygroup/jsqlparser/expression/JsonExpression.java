@@ -15,9 +15,10 @@
  */
 package org.tinygroup.jsqlparser.expression;
 
+import org.tinygroup.jsqlparser.schema.Column;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.tinygroup.jsqlparser.schema.Column;
 
 /**
  *

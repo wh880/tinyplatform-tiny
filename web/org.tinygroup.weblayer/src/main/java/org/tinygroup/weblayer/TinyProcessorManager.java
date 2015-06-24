@@ -15,11 +15,10 @@
  */
 package org.tinygroup.weblayer;
 
-import java.io.IOException;
+import org.tinygroup.weblayer.configmanager.TinyProcessorConfigManager;
 
 import javax.servlet.ServletException;
-
-import org.tinygroup.weblayer.configmanager.TinyProcessorConfigManager;
+import java.io.IOException;
 
 
 /**

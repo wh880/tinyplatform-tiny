@@ -15,13 +15,13 @@
  */
 package org.tinygroup.tinypc.dlock;
 
-import java.rmi.RemoteException;
-
 import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerImpl;
 import org.tinygroup.threadgroup.AbstractProcessor;
 import org.tinygroup.threadgroup.MultiThreadProcessor;
 import org.tinygroup.tinypc.TestUtil;
+
+import java.rmi.RemoteException;
 
 /**
  * Created by luoguo on 14-1-13.

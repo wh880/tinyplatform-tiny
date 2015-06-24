@@ -15,6 +15,9 @@
  */
 package org.tinygroup.commons.collection;
 
+import org.tinygroup.commons.tools.Assert;
+import org.tinygroup.commons.tools.ClassUtil;
+
 import java.io.Externalizable;
 import java.io.Serializable;
 import java.lang.reflect.Proxy;
@@ -22,9 +25,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.commons.tools.ClassUtil;
 
 /**
  * Provides methods to support various naming and other conventions used

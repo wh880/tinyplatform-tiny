@@ -16,7 +16,6 @@
 package org.tinygroup.database;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.database.view.ViewProcessor;

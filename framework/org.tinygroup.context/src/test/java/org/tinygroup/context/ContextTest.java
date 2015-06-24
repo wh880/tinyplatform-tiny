@@ -15,14 +15,11 @@
  */
 package org.tinygroup.context;
 
-import java.lang.ref.SoftReference;
-import java.util.concurrent.ConcurrentHashMap;
+import junit.framework.TestCase;
+import org.tinygroup.context.impl.ContextImpl;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import junit.framework.TestCase;
-
-import org.tinygroup.context.impl.ContextImpl;
 
 public class ContextTest extends TestCase {
 	Context Context = new ContextImpl();

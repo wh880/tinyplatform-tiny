@@ -15,13 +15,11 @@
  */
 package org.tinygroup.vfs.impl;
 
-import java.io.IOException;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.vfs.FileObject;
-import org.tinygroup.vfs.FileUtils;
 import org.tinygroup.vfs.VFS;
+
+import java.io.IOException;
 
 public class URLFileObjectTest extends TestCase {
 

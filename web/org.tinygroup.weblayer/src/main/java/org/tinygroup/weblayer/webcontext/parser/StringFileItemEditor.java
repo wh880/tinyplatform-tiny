@@ -15,9 +15,9 @@
  */
 package org.tinygroup.weblayer.webcontext.parser;
 
-import java.beans.PropertyEditorSupport;
-
 import org.apache.commons.fileupload.FileItem;
+
+import java.beans.PropertyEditorSupport;
 
 /**
  * 将<code>FileItem</code>转换成字符串。

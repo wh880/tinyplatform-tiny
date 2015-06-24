@@ -15,11 +15,11 @@
  */
 package org.tinygroup.weblayer;
 
-import javax.servlet.ServletException;
-
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.weblayer.webcontext.DefaultWebContext;
+
+import javax.servlet.ServletException;
 
 /**
  * tinyfilter的抽象实现

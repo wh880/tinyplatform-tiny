@@ -1,8 +1,9 @@
 package org.tinygroup.tinysqldsl;
 
+import junit.framework.TestCase;
+
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.Update.update;
-import junit.framework.TestCase;
 
 
 public class JunitTestUpdate extends TestCase{

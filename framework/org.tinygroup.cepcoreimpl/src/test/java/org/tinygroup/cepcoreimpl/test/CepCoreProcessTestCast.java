@@ -1,9 +1,6 @@
 package org.tinygroup.cepcoreimpl.test;
 
-import java.util.ArrayList;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
@@ -11,6 +8,8 @@ import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;
 import org.tinygroup.tinyrunner.Runner;
+
+import java.util.ArrayList;
 
 public class CepCoreProcessTestCast extends TestCase {
 	private CEPCore core;

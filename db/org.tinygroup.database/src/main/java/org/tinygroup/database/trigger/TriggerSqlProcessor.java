@@ -15,10 +15,10 @@
  */
 package org.tinygroup.database.trigger;
 
+import org.tinygroup.database.config.trigger.Trigger;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import org.tinygroup.database.config.trigger.Trigger;
 
 public interface TriggerSqlProcessor {
 	

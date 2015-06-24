@@ -1,7 +1,5 @@
 package org.tinygroup.dbrouter.impl.shardrule;
 
-import java.util.List;
-
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.expression.JdbcParameter;
@@ -19,6 +17,8 @@ import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.SelectBody;
 import org.tinygroup.jsqlparser.statement.update.Update;
+
+import java.util.List;
 
 
 public class ShardRuleMatchWithSections {

@@ -15,11 +15,11 @@
  */
 package org.tinygroup.cepcore.impl;
 
-import java.util.List;
-
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcore.EventProcessorChoose;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.List;
 
 public class WeightChooser implements EventProcessorChoose {
 

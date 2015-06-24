@@ -15,20 +15,19 @@
  */
 package org.tinygroup.jspengine.compiler;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.util.*;
-import javax.servlet.ServletContext;
-import javax.servlet.jsp.tagext.FunctionInfo;
-import javax.servlet.jsp.tagext.TagLibraryInfo;
-import javax.servlet.jsp.tagext.TagInfo;
-import javax.servlet.jsp.tagext.TagFileInfo;
-
 import org.tinygroup.jspengine.Constants;
 import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.JspCompilationContext;
 import org.tinygroup.jspengine.xmlparser.ParserUtils;
 import org.tinygroup.jspengine.xmlparser.TreeNode;
+
+import javax.servlet.jsp.tagext.FunctionInfo;
+import javax.servlet.jsp.tagext.TagFileInfo;
+import javax.servlet.jsp.tagext.TagInfo;
+import javax.servlet.jsp.tagext.TagLibraryInfo;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.*;
 
 /**
  * Class responsible for generating an implicit tag library containing tag

@@ -15,17 +15,6 @@
  */
 package org.tinygroup.jspengine.compiler;
 
-import java.io.InputStream;
-import java.util.Iterator;
-import java.util.Vector;
-import java.net.URL;
-
-import javax.servlet.ServletContext;
-
-// START GlassFish 740
-// END GlassFish 740
-// START SJSAS 6384538
-// END SJSAS 6384538
 import org.tinygroup.jspengine.Constants;
 import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.Options;
@@ -34,6 +23,17 @@ import org.tinygroup.jspengine.org.apache.commons.logging.LogFactory;
 import org.tinygroup.jspengine.xmlparser.ParserUtils;
 import org.tinygroup.jspengine.xmlparser.TreeNode;
 import org.xml.sax.InputSource;
+
+import javax.servlet.ServletContext;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Vector;
+
+// START GlassFish 740
+// END GlassFish 740
+// START SJSAS 6384538
+// END SJSAS 6384538
 
 /**
  * Handles the jsp-config element in WEB_INF/web.xml.  This is used

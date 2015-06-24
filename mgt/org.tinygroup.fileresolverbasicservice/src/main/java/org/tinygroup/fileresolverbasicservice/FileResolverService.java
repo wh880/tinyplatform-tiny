@@ -1,9 +1,9 @@
 package org.tinygroup.fileresolverbasicservice;
 
-import java.util.List;
-
 import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
+
+import java.util.List;
 
 public class FileResolverService {
 	private FileResolver resolver;

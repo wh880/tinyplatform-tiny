@@ -1,9 +1,8 @@
 package org.tinygroup.springmvc.coc;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 

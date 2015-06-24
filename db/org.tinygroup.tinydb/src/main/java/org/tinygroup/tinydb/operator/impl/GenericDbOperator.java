@@ -15,12 +15,6 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlRowSetResultSetExtractor;
@@ -31,6 +25,11 @@ import org.tinygroup.database.connect.ConnectionTraceProvider;
 import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
+
+import javax.sql.DataSource;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class GenericDbOperator<K> extends BeanDBSqlQueryOperator<K> implements
 		DBOperator<K> {

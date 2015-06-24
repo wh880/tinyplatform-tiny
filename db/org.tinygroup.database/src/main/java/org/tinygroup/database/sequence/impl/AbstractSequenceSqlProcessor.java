@@ -15,13 +15,13 @@
  */
 package org.tinygroup.database.sequence.impl;
 
+import org.tinygroup.database.config.sequence.Sequence;
+import org.tinygroup.database.sequence.SequenceSqlProcessor;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import org.tinygroup.database.config.sequence.Sequence;
-import org.tinygroup.database.sequence.SequenceSqlProcessor;
 
 public abstract class AbstractSequenceSqlProcessor implements
 		SequenceSqlProcessor {

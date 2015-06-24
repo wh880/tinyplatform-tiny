@@ -15,8 +15,6 @@
  */
 package org.tinygroup.cepcore.aop.impl;
 
-import java.util.List;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.exception.RequestParamValidateException;
 import org.tinygroup.event.Parameter;
@@ -24,6 +22,8 @@ import org.tinygroup.validate.ValidateResult;
 import org.tinygroup.validate.ValidatorManager;
 import org.tinygroup.validate.XmlValidatorManager;
 import org.tinygroup.validate.impl.ValidateResultImpl;
+
+import java.util.List;
 
 public class ParameterValidator {
 

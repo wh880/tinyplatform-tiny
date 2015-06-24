@@ -1,10 +1,5 @@
 package org.tinygroup.tinydb.sql.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.commons.tools.StringUtil;
@@ -23,6 +18,11 @@ import org.tinygroup.tinydb.sql.condition.impl.IsEmptyConditionGenerater;
 import org.tinygroup.tinydb.sql.condition.impl.IsNullConditionGenerater;
 import org.tinygroup.tinydb.sql.group.GroupGenerater;
 import org.tinygroup.tinydb.sql.order.OrderGenerater;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 根据bean查询配置信息来转换bean

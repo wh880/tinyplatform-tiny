@@ -4,10 +4,6 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
-
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.util.ConsistentHash;
 import org.tinygroup.jsqlparser.expression.Expression;
@@ -26,6 +22,9 @@ import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.SelectBody;
 import org.tinygroup.jsqlparser.statement.update.Update;
+
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class ShardRuleMatchWithSectionAndHash   {

@@ -15,15 +15,15 @@
  */
 package org.tinygroup.tinydb.testcase.operator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.test.BaseTest;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TestSqlRowSet extends BaseTest{
 	

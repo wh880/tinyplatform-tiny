@@ -1,12 +1,7 @@
 package org.tinygroup.springmvc.util;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Simple implementation of {@link MultiValueMap} that wraps a {@link LinkedHashMap},

@@ -15,11 +15,11 @@
  */
 package org.tinygroup.commons.tools;
 
-import static org.tinygroup.commons.tools.CollectionUtil.*;
+import org.tinygroup.commons.collection.IntHashMap;
 
 import java.util.Map;
 
-import org.tinygroup.commons.collection.IntHashMap;
+import static org.tinygroup.commons.tools.CollectionUtil.createHashMap;
 
 
 

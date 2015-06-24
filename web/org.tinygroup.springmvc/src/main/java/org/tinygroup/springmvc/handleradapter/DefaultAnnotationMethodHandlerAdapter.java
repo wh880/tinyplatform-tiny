@@ -1,10 +1,10 @@
 package org.tinygroup.springmvc.handleradapter;
 
-import java.lang.annotation.Annotation;
-
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.lang.annotation.Annotation;
 
 /**
  * 基于注解的方法处理适配器

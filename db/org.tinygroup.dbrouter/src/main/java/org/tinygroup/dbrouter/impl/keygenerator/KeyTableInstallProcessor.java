@@ -1,13 +1,5 @@
 package org.tinygroup.dbrouter.impl.keygenerator;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.dbrouter.config.DataSourceConfig;
 import org.tinygroup.dbrouter.config.KeyTable;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
@@ -15,6 +7,10 @@ import org.tinygroup.dbrouter.util.DbRouterUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KeyTableInstallProcessor {
 

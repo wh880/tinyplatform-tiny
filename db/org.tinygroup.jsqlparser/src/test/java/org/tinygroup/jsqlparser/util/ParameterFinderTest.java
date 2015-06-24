@@ -1,13 +1,12 @@
 package org.tinygroup.jsqlparser.util;
 
-import java.io.StringReader;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.jsqlparser.extend.ParameterFinder;
 import org.tinygroup.jsqlparser.extend.ParameterFinder.ParameterEntry;
 import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.statement.select.Select;
+
+import java.io.StringReader;
 
 public class ParameterFinderTest extends TestCase {
 	

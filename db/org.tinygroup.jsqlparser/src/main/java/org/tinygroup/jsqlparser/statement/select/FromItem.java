@@ -15,9 +15,9 @@
  */
 package org.tinygroup.jsqlparser.statement.select;
 
-import java.io.Serializable;
-
 import org.tinygroup.jsqlparser.expression.Alias;
+
+import java.io.Serializable;
 
 /**
  * An item in a "SELECT [...] FROM item1" statement. (for example a table or a

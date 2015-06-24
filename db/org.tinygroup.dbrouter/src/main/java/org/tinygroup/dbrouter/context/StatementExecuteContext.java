@@ -1,9 +1,5 @@
 package org.tinygroup.dbrouter.context;
 
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.List;
-
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.dbrouter.RouterManager;
 import org.tinygroup.dbrouter.StatementProcessor;
@@ -12,6 +8,10 @@ import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.factory.RouterManagerBeanFactory;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
 import org.tinygroup.dbrouter.util.ParamObjectBuilder;
+
+import java.sql.Connection;
+import java.sql.Statement;
+import java.util.List;
 
 /**
  * statement执行的上下文

@@ -15,11 +15,11 @@
  */
 package org.tinygroup.logger;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.slf4j.ILoggerFactory;
 import org.tinygroup.logger.impl.LoggerImpl;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 日志工厂，用于获取Logger实例。

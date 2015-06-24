@@ -15,6 +15,7 @@
  */
 package org.tinygroup.flow.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.flow.FlowExecutor;
@@ -22,8 +23,6 @@ import org.tinygroup.flow.config.ComponentDefines;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 /**
  * 扫描组件的文件处理器

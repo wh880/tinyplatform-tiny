@@ -1,12 +1,12 @@
 package org.tinygroup.springmvc.coc.impl;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.springmvc.coc.ConventionHelper;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 基础路径+方法名作为注册的url

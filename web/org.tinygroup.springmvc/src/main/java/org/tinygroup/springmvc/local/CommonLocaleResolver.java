@@ -1,12 +1,11 @@
 package org.tinygroup.springmvc.local;
 
-import java.util.Locale;
+import org.springframework.web.servlet.i18n.AbstractLocaleResolver;
+import org.tinygroup.commons.i18n.LocaleUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.servlet.i18n.AbstractLocaleResolver;
-import org.tinygroup.commons.i18n.LocaleUtil;
+import java.util.Locale;
 
 /**
  * 

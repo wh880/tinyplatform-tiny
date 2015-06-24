@@ -1,9 +1,9 @@
 package org.tinygroup.uibasicservice;
 
-import java.util.List;
-
 import org.tinygroup.uiengine.config.UIComponent;
 import org.tinygroup.uiengine.manager.UIComponentManager;
+
+import java.util.List;
 
 public class UIBasicService {
 	private UIComponentManager uiManager;

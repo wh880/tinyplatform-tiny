@@ -1,9 +1,6 @@
 
 package org.tinygroup.springmvc.support;
 
-import java.lang.annotation.Annotation;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -11,6 +8,9 @@ import org.springframework.context.annotation.ScopeMetadata;
 import org.springframework.context.annotation.ScopeMetadataResolver;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.util.Assert;
+
+import java.lang.annotation.Annotation;
+import java.util.Map;
 
 /**
  * 默认是多实例

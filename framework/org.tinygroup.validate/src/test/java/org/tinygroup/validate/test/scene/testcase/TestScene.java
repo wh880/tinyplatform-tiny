@@ -16,7 +16,6 @@
 package org.tinygroup.validate.test.scene.testcase;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.validate.ErrorDescription;

@@ -1,9 +1,9 @@
 package org.tinygroup.weblayer.listener;
 
-import javax.servlet.http.HttpSessionAttributeListener;
-
 import org.tinygroup.commons.order.Ordered;
 import org.tinygroup.weblayer.BasicTinyConfigAware;
+
+import javax.servlet.http.HttpSessionAttributeListener;
 
 /**
  * 实现顺序接口的HttpSessionAttributeListener

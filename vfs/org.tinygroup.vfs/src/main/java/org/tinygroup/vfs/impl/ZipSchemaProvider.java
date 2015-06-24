@@ -15,9 +15,9 @@
  */
 package org.tinygroup.vfs.impl;
 
-import java.io.File;
-
 import org.tinygroup.vfs.FileObject;
+
+import java.io.File;
 
 /**
  * 功能说明: zip协议

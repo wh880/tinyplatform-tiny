@@ -15,13 +15,12 @@
  */
 package org.tinygroup.database;
 
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.database.table.TableProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
+
+import java.util.List;
 
 public class MDATableTest extends TestCase {
 	static {

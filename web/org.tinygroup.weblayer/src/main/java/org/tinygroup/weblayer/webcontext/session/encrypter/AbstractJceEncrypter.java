@@ -14,14 +14,14 @@
  *  limitations under the License.
  */
 package org.tinygroup.weblayer.webcontext.session.encrypter;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.crypto.Cipher;
 
 import org.tinygroup.support.BeanSupport;
 import org.tinygroup.weblayer.webcontext.session.exception.SessionEncoderException;
 import org.tinygroup.weblayer.webcontext.session.exception.SessionEncrypterException;
+
+import javax.crypto.Cipher;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 public abstract class AbstractJceEncrypter extends BeanSupport implements Encrypter {

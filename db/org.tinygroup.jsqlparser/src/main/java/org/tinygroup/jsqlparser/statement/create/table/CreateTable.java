@@ -15,14 +15,13 @@
  */
 package org.tinygroup.jsqlparser.statement.create.table;
 
-import java.util.List;
-
 import org.tinygroup.jsqlparser.schema.Table;
 import org.tinygroup.jsqlparser.statement.Statement;
 import org.tinygroup.jsqlparser.statement.StatementVisitor;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 import org.tinygroup.jsqlparser.statement.select.Select;
-import org.tinygroup.jsqlparser.statement.select.SelectBody;
+
+import java.util.List;
 
 /**
  * A "CREATE TABLE" statement

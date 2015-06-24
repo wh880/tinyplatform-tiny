@@ -15,12 +15,12 @@
  */
 package org.tinygroup.fileresolver;
 
+import org.tinygroup.config.Configuration;
+import org.tinygroup.vfs.FileObject;
+
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.tinygroup.config.Configuration;
-import org.tinygroup.vfs.FileObject;
 
 /**
  * 文件查找器

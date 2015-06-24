@@ -23,7 +23,6 @@ import org.tinygroup.context.Context;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.service.ServiceProviderInterface;
-import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class ServiceTestUtil {

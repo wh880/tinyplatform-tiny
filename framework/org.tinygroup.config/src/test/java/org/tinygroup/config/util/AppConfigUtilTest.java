@@ -15,11 +15,10 @@
  */
 package org.tinygroup.config.util;
 
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.List;
 
 public class AppConfigUtilTest extends TestCase {
 

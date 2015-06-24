@@ -1,7 +1,5 @@
 package org.tinygroup.templateweb;
 
-import java.util.List;
-
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
@@ -10,6 +8,8 @@ import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.loader.ClassLoaderResourceLoader;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.vfs.FileObject;
+
+import java.util.List;
 
 public class WebMacroFileProcessor extends AbstractFileProcessor {
 

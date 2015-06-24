@@ -15,12 +15,12 @@
  */
 package org.tinygroup.database.table;
 
+import org.tinygroup.database.config.table.ForeignReference;
+import org.tinygroup.database.config.table.Table;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-import org.tinygroup.database.config.table.ForeignReference;
-import org.tinygroup.database.config.table.Table;
 
 public class TableSort implements Comparator<Table> {
 

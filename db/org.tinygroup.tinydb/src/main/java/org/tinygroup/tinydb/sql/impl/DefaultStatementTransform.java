@@ -1,13 +1,13 @@
 package org.tinygroup.tinydb.sql.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.config.TableConfiguration;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.sql.SqlAndValues;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 把bean对象转换成对应的sql语句

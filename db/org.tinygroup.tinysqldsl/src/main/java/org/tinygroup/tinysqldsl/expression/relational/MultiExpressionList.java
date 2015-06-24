@@ -15,13 +15,13 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.expression.Expression;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
-import org.tinygroup.tinysqldsl.expression.Expression;
 
 /**
  * A list of ExpressionList items. e.g. multi values of insert statements. This

@@ -15,11 +15,11 @@
  */
 package org.tinygroup.validate.action;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-
 import org.tinygroup.annotation.AnnotationPropertyAction;
 import org.tinygroup.validate.AnnotationValidatorManager;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 
 /**
  * 符合@Validation注解类的处理器

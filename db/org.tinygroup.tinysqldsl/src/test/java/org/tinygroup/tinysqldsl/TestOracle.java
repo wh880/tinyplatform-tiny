@@ -1,8 +1,8 @@
 package org.tinygroup.tinysqldsl;
 
 import junit.framework.TestCase;
+
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
-import static org.tinygroup.tinysqldsl.Select.selectFrom;
 import static org.tinygroup.tinysqldsl.extend.OracleSelect.selectFrom;
 import static org.tinygroup.tinysqldsl.select.OrderByElement.desc;
 

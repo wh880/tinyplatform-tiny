@@ -37,7 +37,8 @@ package org.tinygroup.jsqlparser.schema;
  * #L%
  */
 
-import junit.framework.*;
+import junit.framework.Assert;
+import junit.framework.TestCase;
 
 public class ServerTest extends TestCase {
 

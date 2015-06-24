@@ -15,20 +15,12 @@
  */
 package org.tinygroup.dbrouter.value;
 
-import java.math.BigDecimal;
-import java.sql.Array;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
+
+import java.math.BigDecimal;
+import java.sql.*;
+import java.sql.Date;
+import java.util.*;
 
 /**
  * This class contains meta data information about data types,

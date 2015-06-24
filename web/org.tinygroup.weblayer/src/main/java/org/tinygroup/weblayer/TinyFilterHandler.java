@@ -15,16 +15,6 @@
  */
 package org.tinygroup.weblayer;
 
-import static org.tinygroup.weblayer.webcontext.parser.ParserWebContext.DEFAULT_CHARSET_ENCODING;
-
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.ExceptionUtil;
@@ -38,9 +28,17 @@ import org.tinygroup.weblayer.webcontext.SimpleWebContext;
 import org.tinygroup.weblayer.webcontext.TwoPhaseCommitWebContext;
 import org.tinygroup.weblayer.webcontext.buffered.BufferedWebContext;
 import org.tinygroup.weblayer.webcontext.parser.ParserWebContext;
-import org.tinygroup.weblayer.webcontext.parser.valueparser.ParameterParser;
 import org.tinygroup.weblayer.webcontext.util.QueryStringParser;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+import static org.tinygroup.weblayer.webcontext.parser.ParserWebContext.DEFAULT_CHARSET_ENCODING;
 
 /**
  * 完成filter处理的中间类

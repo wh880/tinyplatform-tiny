@@ -15,12 +15,12 @@
  */
 package org.tinygroup.database.sequence;
 
+import org.tinygroup.database.config.sequence.Sequence;
+import org.tinygroup.database.config.sequence.Sequences;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
-import org.tinygroup.database.config.sequence.Sequence;
-import org.tinygroup.database.config.sequence.Sequences;
 
 
 /**

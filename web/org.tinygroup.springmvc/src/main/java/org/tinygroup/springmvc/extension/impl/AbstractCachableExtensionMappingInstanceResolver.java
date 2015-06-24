@@ -1,10 +1,5 @@
 package org.tinygroup.springmvc.extension.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.util.Assert;
 import org.springframework.web.util.UrlPathHelper;
 import org.tinygroup.logger.LogLevel;
@@ -12,6 +7,10 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springmvc.extension.ExtensionMappingInstance;
 import org.tinygroup.springmvc.extension.ExtensionMappingInstanceResolver;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 

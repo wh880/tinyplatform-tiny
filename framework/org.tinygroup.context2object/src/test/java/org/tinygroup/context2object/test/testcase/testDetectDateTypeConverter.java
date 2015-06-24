@@ -1,18 +1,16 @@
 package org.tinygroup.context2object.test.testcase;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
+import junit.framework.TestCase;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.context2object.ObjectGenerator;
 import org.tinygroup.context2object.User;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
-import org.tinygroup.context2object.impl.DateTypeConverter;
 import org.tinygroup.context2object.impl.DetectDateTypeConverter;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
-import junit.framework.TestCase;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * 功能说明：<br/>

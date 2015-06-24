@@ -15,8 +15,8 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.Column;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
 import org.tinygroup.tinysqldsl.operator.SimpleBinaryOperator;
 import org.tinygroup.tinysqldsl.selectitem.SelectItem;

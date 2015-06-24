@@ -18,7 +18,6 @@ package org.tinygroup.jspengine.appserv.util.cache;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 /**
  * LRUCache

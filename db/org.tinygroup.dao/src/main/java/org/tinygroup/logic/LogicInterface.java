@@ -15,9 +15,9 @@
  */
 package org.tinygroup.logic;
 
-import java.util.Collection;
-
 import org.tinygroup.dao.query.PagingObject;
+
+import java.util.Collection;
 
 public interface LogicInterface<T, KeyType, QueryObjectType> {
 

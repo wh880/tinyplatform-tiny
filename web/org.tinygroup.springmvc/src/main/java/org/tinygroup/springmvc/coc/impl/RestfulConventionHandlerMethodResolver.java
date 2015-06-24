@@ -1,16 +1,15 @@
 package org.tinygroup.springmvc.coc.impl;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpMethod;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.springmvc.coc.ConventionHelper;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class RestfulConventionHandlerMethodResolver extends AbstractConventionHandlerMethodResolver {
     //    private static final Log   logger                       = LogFactory

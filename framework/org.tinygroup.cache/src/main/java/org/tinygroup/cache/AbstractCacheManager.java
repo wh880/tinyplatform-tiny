@@ -1,9 +1,8 @@
 package org.tinygroup.cache;
 
-import org.tinygroup.cache.exception.CacheException;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import org.tinygroup.cache.exception.CacheException;
 
 /**
  * 

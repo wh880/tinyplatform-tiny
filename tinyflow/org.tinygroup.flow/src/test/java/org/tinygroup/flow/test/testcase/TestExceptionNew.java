@@ -5,11 +5,7 @@ import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.flow.component.AbstractFlowComponent;
 import org.tinygroup.flow.config.Flow;
-import org.tinygroup.flow.test.Exception.ExceptionNew0;
-import org.tinygroup.flow.test.Exception.ExceptionNew1;
-import org.tinygroup.flow.test.Exception.ExceptionNew2;
-import org.tinygroup.flow.test.Exception.ExceptionNew3InOtherNode;
-import org.tinygroup.flow.test.Exception.ExceptionNew4InOtherFlow;
+import org.tinygroup.flow.test.Exception.*;
 
 public class TestExceptionNew extends AbstractFlowComponent {
 	

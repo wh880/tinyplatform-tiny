@@ -15,16 +15,15 @@
  */
 package org.tinygroup.weblayer.servlet;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import org.tinygroup.fileresolver.FullContextFileRepository;
+import org.tinygroup.vfs.FileObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.tinygroup.fileresolver.FullContextFileRepository;
-import org.tinygroup.vfs.FileObject;
+import java.io.IOException;
+import java.io.OutputStream;
 /**
  * 
  * @author luoguo

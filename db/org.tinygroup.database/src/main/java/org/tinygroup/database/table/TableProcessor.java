@@ -15,12 +15,12 @@
  */
 package org.tinygroup.database.table;
 
+import org.tinygroup.database.config.table.Table;
+import org.tinygroup.database.config.table.Tables;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
-import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.config.table.Tables;
 
 /**
  * 与数据表相关的处理

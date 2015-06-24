@@ -1,12 +1,12 @@
 package org.tinygroup.springmvc.support;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.WebBindingInitializer;
 import org.springframework.web.context.request.WebRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * WebBindingInitializer的复合对象

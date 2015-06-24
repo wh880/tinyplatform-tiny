@@ -15,32 +15,13 @@
  */
 package org.tinygroup.dbrouter.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.dbrouter.PartitionRule;
-import org.tinygroup.dbrouter.RouterKeyGenerator;
-import org.tinygroup.dbrouter.RouterManager;
-import org.tinygroup.dbrouter.ShardRule;
-import org.tinygroup.dbrouter.StatementProcessor;
+import org.tinygroup.dbrouter.*;
 import org.tinygroup.dbrouter.balance.ShardBalance;
 import org.tinygroup.dbrouter.balance.ShardBalanceDefault;
-import org.tinygroup.dbrouter.config.KeyTable;
-import org.tinygroup.dbrouter.config.KeyTables;
-import org.tinygroup.dbrouter.config.Partition;
-import org.tinygroup.dbrouter.config.Router;
-import org.tinygroup.dbrouter.config.Routers;
-import org.tinygroup.dbrouter.config.Shard;
+import org.tinygroup.dbrouter.config.*;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
 import org.tinygroup.jsqlparser.JSQLParserException;
@@ -53,7 +34,12 @@ import org.tinygroup.xstream.XStreamFactory;
 import org.tinygroup.xstream.config.XStreamAnnotationClass;
 import org.tinygroup.xstream.config.XStreamConfiguration;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.URL;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 分区管理器实现类

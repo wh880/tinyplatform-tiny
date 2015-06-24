@@ -15,12 +15,6 @@
  */
 package org.tinygroup.tinydb.util;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.BeanWrapper;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.beanwrapper.BeanWrapperHolder;
@@ -31,6 +25,12 @@ import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.DbOperatorFactory;
 import org.tinygroup.tinydb.config.ColumnConfiguration;
 import org.tinygroup.tinydb.config.TableConfiguration;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 工具方法

@@ -16,7 +16,6 @@
 package org.tinygroup.flow.component;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.tinytestutil.AbstractTestUtil;

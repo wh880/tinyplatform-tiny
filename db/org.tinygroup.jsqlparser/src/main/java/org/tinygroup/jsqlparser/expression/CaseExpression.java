@@ -15,9 +15,9 @@
  */
 package org.tinygroup.jsqlparser.expression;
 
-import java.util.List;
-
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
+
+import java.util.List;
 
 /**
  * CASE/WHEN expression.

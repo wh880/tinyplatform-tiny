@@ -15,17 +15,17 @@
  */
 package org.tinygroup.weblayer.webcontext.util;
 
-import static org.tinygroup.commons.tools.Assert.*;
-import static org.tinygroup.commons.tools.BasicConstant.*;
-import static org.tinygroup.commons.tools.ObjectUtil.*;
-import static org.tinygroup.commons.tools.StringUtil.*;
+import org.tinygroup.commons.i18n.LocaleUtil;
+import org.tinygroup.commons.tools.StringEscapeUtil;
+import org.tinygroup.commons.tools.StringUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-import org.tinygroup.commons.i18n.LocaleUtil;
-import org.tinygroup.commons.tools.StringEscapeUtil;
-import org.tinygroup.commons.tools.StringUtil;
+import static org.tinygroup.commons.tools.Assert.unsupportedOperation;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
+import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
 
 
 /**

@@ -1,8 +1,5 @@
 package org.tinygroup.flowprocessor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.impl.AbstractEventProcessor;
 import org.tinygroup.context.Context;
@@ -13,6 +10,9 @@ import org.tinygroup.flow.config.Flow;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FlowEventProcessor extends AbstractEventProcessor {
 	/**

@@ -15,11 +15,11 @@
  */
 package org.tinygroup.database.table;
 
+import org.tinygroup.database.config.table.Table;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
-import org.tinygroup.database.config.table.Table;
 
 
 public interface TableSqlProcessor {

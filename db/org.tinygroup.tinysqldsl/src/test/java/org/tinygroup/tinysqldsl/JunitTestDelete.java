@@ -1,9 +1,10 @@
 package org.tinygroup.tinysqldsl;
 
+import junit.framework.TestCase;
+
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.Delete.delete;
 import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
-import junit.framework.TestCase;
 
 
 public class JunitTestDelete extends TestCase {

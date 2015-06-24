@@ -15,12 +15,11 @@
  */
 package org.tinygroup.vfs.impl;
 
-import java.io.InputStream;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
+
+import java.io.InputStream;
 
 /**
  * zip fileobject 测试用例

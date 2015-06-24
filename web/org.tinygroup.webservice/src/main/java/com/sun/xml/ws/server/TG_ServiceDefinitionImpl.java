@@ -15,17 +15,13 @@
  */
 package com.sun.xml.ws.server;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import com.sun.istack.NotNull;
 import com.sun.xml.ws.api.server.SDDocument;
 import com.sun.xml.ws.api.server.SDDocumentFilter;
 import com.sun.xml.ws.api.server.ServiceDefinition;
+
+import java.net.URL;
+import java.util.*;
 
 /**
  * {@link ServiceDefinition} implementation.

@@ -15,8 +15,8 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import org.tinygroup.vfs.FileObject;
 import org.apache.commons.fileupload.FileItem;
+import org.tinygroup.vfs.FileObject;
 
 /**
  * 

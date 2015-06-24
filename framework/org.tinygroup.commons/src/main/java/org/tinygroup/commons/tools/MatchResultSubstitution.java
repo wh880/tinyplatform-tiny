@@ -15,14 +15,14 @@
  */
 package org.tinygroup.commons.tools;
 
-import static org.tinygroup.commons.tools.ArrayUtil.*;
-import static org.tinygroup.commons.tools.Assert.*;
+import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
 
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.Assert.assertTrue;
 
 
 /**

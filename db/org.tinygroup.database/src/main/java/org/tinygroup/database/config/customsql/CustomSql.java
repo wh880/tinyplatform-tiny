@@ -15,15 +15,14 @@
  */
 package org.tinygroup.database.config.customsql;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.tinygroup.database.config.SqlBody;
-import org.tinygroup.metadata.config.BaseObject;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import org.tinygroup.database.config.SqlBody;
+import org.tinygroup.metadata.config.BaseObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 自定义SQL片段

@@ -15,13 +15,12 @@
  */
 package org.tinygroup.database.config.trigger;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.tinygroup.database.config.SqlBody;
 import org.tinygroup.metadata.config.BaseObject;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 

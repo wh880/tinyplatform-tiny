@@ -1,11 +1,11 @@
 package org.tinygroup.springmvc.extension.impl;
 
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.tinygroup.springmvc.http.MediaType;
 import org.tinygroup.springmvc.util.LinkedMultiValueMap;
 import org.tinygroup.springmvc.util.MultiValueMap;
+
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * mediatype注册器

@@ -1,12 +1,5 @@
 package org.tinygroup.jdbctemplatedslsession.keygenerator;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,6 +12,13 @@ import org.tinygroup.jdbctemplatedslsession.TableMetaData;
 import org.tinygroup.tinysqldsl.Insert;
 import org.tinygroup.tinysqldsl.KeyGenerator;
 import org.tinygroup.tinysqldsl.base.InsertContext;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 由数据库自己来生成主键值,mysql为主键自增长,oracle为序列方式

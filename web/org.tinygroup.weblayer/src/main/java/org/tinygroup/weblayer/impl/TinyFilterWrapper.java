@@ -15,28 +15,19 @@
  */
 package org.tinygroup.weblayer.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.weblayer.*;
+import org.tinygroup.weblayer.config.TinyFilterConfigInfo;
+import org.tinygroup.weblayer.configmanager.TinyFilterConfigManager;
 
 import javax.servlet.Filter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.weblayer.FilterWrapper;
-import org.tinygroup.weblayer.TinyFilterConfig;
-import org.tinygroup.weblayer.TinyFilterHandler;
-import org.tinygroup.weblayer.TinyFilterManager;
-import org.tinygroup.weblayer.WebContext;
-import org.tinygroup.weblayer.config.TinyFilterConfigInfo;
-import org.tinygroup.weblayer.configmanager.TinyFilterConfigManager;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * tiny-filter的包装类

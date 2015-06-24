@@ -15,18 +15,18 @@
  */
 package org.tinygroup.database.sequence.impl;
 
+import org.tinygroup.database.ProcessorManager;
+import org.tinygroup.database.config.sequence.Sequence;
+import org.tinygroup.database.config.sequence.Sequences;
+import org.tinygroup.database.sequence.SequenceProcessor;
+import org.tinygroup.database.sequence.SequenceSqlProcessor;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.tinygroup.database.ProcessorManager;
-import org.tinygroup.database.config.sequence.Sequence;
-import org.tinygroup.database.config.sequence.Sequences;
-import org.tinygroup.database.sequence.SequenceProcessor;
-import org.tinygroup.database.sequence.SequenceSqlProcessor;
 
 public class SequenceProcessorImpl implements SequenceProcessor {
 

@@ -1,13 +1,13 @@
 package org.tinygroup.springmvc.viewtranslator;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.web.servlet.RequestToViewNameTranslator;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springmvc.extension.RequestInstanceHolder;
 import org.tinygroup.springmvc.util.Profiler;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class TinyRequestToViewNameTranslator implements
 		RequestToViewNameTranslator {

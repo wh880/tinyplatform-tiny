@@ -15,13 +15,13 @@
  */
 package org.tinygroup.weblayer.exceptionhandler;
 
-import java.util.List;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.List;
 
 /**
  * 

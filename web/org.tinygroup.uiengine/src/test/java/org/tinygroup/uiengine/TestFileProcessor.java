@@ -16,7 +16,6 @@
 package org.tinygroup.uiengine;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.uiengine.config.UIComponent;

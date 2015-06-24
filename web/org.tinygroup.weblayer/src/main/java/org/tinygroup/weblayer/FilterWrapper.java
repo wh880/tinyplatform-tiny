@@ -15,10 +15,9 @@
  */
 package org.tinygroup.weblayer;
 
-import java.io.IOException;
-
 import javax.servlet.Filter;
 import javax.servlet.ServletException;
+import java.io.IOException;
 
 
 /**

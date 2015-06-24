@@ -16,7 +16,6 @@
 package org.tinygroup.service;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.service.exception.ServiceExecuteException;

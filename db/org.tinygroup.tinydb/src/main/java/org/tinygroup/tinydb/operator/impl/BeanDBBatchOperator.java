@@ -15,12 +15,6 @@
  */
 package org.tinygroup.tinydb.operator.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.tinygroup.commons.tools.ArrayUtil;
@@ -34,6 +28,8 @@ import org.tinygroup.tinydb.operator.DbBatchOperator;
 import org.tinygroup.tinydb.relation.Relation;
 import org.tinygroup.tinydb.sql.SqlAndValues;
 import org.tinygroup.tinydb.util.TinyDBUtil;
+
+import java.util.*;
 
 public class BeanDBBatchOperator<K> extends BeanDBSingleOperator<K> implements
 		DbBatchOperator<K> {

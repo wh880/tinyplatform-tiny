@@ -14,8 +14,6 @@
  *  limitations under the License.
  */
 package org.tinygroup.jspengine.el.parser;
-import java.io.StringReader;
-import javax.el.ELException;
 
 public class ELParserTokenManager implements ELParserConstants
 {

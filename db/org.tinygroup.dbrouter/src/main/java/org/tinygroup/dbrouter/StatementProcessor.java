@@ -15,10 +15,10 @@
  */
 package org.tinygroup.dbrouter;
 
+import org.tinygroup.dbrouter.context.StatementExecuteContext;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.tinygroup.dbrouter.context.StatementExecuteContext;
 
 /**
  * 用于对SQL进行特殊处理并进行结果合并等<br>

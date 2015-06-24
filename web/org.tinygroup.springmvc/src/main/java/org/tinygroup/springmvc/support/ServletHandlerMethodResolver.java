@@ -1,20 +1,5 @@
 package org.tinygroup.springmvc.support;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -33,6 +18,11 @@ import org.springframework.web.util.UrlPathHelper;
 import org.tinygroup.springmvc.coc.ConventionHelper;
 import org.tinygroup.springmvc.coc.CustomHandlerMethodResolver;
 import org.tinygroup.springmvc.util.ServletAnnotationMappingUtils;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * 类方法解析类

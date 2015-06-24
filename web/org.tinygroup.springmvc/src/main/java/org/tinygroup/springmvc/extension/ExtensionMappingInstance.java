@@ -1,24 +1,18 @@
 package org.tinygroup.springmvc.extension;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.servlet.HandlerAdapter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.HandlerMapping;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.RequestToViewNameTranslator;
-import org.springframework.web.servlet.ThemeResolver;
-import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.*;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springmvc.extension.impl.AbstractCachableExtensionMappingInstanceResolver;
 import org.tinygroup.springmvc.extension.impl.MediaTypeRegistrarSupport;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * 扩展名对应的Spring mvc 模型对象。

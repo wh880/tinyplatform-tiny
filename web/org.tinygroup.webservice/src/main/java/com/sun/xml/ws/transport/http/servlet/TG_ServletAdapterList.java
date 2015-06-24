@@ -15,11 +15,11 @@
  */
 package com.sun.xml.ws.transport.http.servlet;
 
-import javax.servlet.ServletContext;
-
 import com.sun.xml.ws.api.server.WSEndpoint;
 import com.sun.xml.ws.transport.http.HttpAdapterList;
 import com.sun.xml.ws.transport.http.TG_DeploymentDescriptorParser.AdapterFactory;
+
+import javax.servlet.ServletContext;
 
 /**
  * List (and a factory) of {@link ServletAdapter}.

@@ -15,11 +15,11 @@
  */
 package org.tinygroup.tinydb.operator;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.tinygroup.tinydb.exception.TinyDbException;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 返回结果集的操作

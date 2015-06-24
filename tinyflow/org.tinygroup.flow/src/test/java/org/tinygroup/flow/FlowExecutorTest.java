@@ -15,19 +15,14 @@
  */
 package org.tinygroup.flow;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.flow.component.AbstractFlowComponent;
-import org.tinygroup.flow.config.Component;
-import org.tinygroup.flow.config.Flow;
-import org.tinygroup.flow.config.FlowProperty;
-import org.tinygroup.flow.config.NextNode;
-import org.tinygroup.flow.config.Node;
+import org.tinygroup.flow.config.*;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FlowExecutorTest extends AbstractFlowComponent {
 	

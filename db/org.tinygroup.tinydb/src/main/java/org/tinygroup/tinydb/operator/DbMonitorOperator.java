@@ -15,9 +15,9 @@
  */
 package org.tinygroup.tinydb.operator;
 
-import java.util.Collection;
-
 import org.tinygroup.database.connect.ConnectionTrace;
+
+import java.util.Collection;
 
 /**
  * db 监控信息接口

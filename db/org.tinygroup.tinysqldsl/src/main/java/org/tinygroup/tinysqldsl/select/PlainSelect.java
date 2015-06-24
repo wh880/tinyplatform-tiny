@@ -15,23 +15,21 @@
  */
 package org.tinygroup.tinysqldsl.select;
 
-import static org.tinygroup.tinysqldsl.util.DslUtil.getFormattedList;
-import static org.tinygroup.tinysqldsl.util.DslUtil.getStringList;
-import static org.tinygroup.tinysqldsl.util.DslUtil.orderByToString;
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.tinysqldsl.base.SelectBody;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.base.Table;
+import org.tinygroup.tinysqldsl.expression.Expression;
+import org.tinygroup.tinysqldsl.expression.OracleHierarchicalExpression;
+import org.tinygroup.tinysqldsl.formitem.FromItem;
+import org.tinygroup.tinysqldsl.selectitem.SelectItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
-import org.tinygroup.tinysqldsl.base.SelectBody;
-import org.tinygroup.tinysqldsl.base.Table;
-import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.expression.OracleHierarchicalExpression;
-import org.tinygroup.tinysqldsl.formitem.FromItem;
-import org.tinygroup.tinysqldsl.selectitem.SelectItem;
+import static org.tinygroup.tinysqldsl.util.DslUtil.*;
 
 /**
  * 普通的select对象

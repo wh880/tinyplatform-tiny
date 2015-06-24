@@ -15,12 +15,12 @@
  */
 package org.tinygroup.annotation.impl;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import org.tinygroup.annotation.config.AnnotationClassMatcher;
 import org.tinygroup.annotation.config.AnnotationMethodMatcher;
 import org.tinygroup.annotation.config.AnnotationPropertyMatcher;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 
 

@@ -15,11 +15,10 @@
  */
 package org.tinygroup.database;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.database.config.view.Having;
 import org.tinygroup.database.config.view.ViewFieldRef;
 import org.tinygroup.database.config.view.ViewHaving;
-
-import com.thoughtworks.xstream.XStream;
 
 public class TestViewHaving {
 	public static void main(String[] args) {

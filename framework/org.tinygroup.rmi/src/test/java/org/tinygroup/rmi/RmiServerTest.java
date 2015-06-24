@@ -16,8 +16,6 @@
 package org.tinygroup.rmi;
 
 import junit.framework.TestCase;
-
-import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerImpl;
 
 /**

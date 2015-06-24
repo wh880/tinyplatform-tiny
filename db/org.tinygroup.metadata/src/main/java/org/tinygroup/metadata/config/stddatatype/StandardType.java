@@ -15,13 +15,12 @@
  */
 package org.tinygroup.metadata.config.stddatatype;
 
-import java.util.List;
-
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import org.tinygroup.metadata.config.BaseObject;
 import org.tinygroup.metadata.config.Placeholder;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.List;
 
 /**
  * 标准数据类型

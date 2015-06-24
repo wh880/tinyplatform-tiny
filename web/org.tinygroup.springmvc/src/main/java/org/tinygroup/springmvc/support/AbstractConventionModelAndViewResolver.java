@@ -1,9 +1,5 @@
 package org.tinygroup.springmvc.support;
 
-import java.lang.reflect.Method;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
@@ -12,6 +8,9 @@ import org.springframework.web.servlet.mvc.annotation.ModelAndViewResolver;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UrlPathHelper;
 import org.tinygroup.springmvc.coc.ConventionHelper;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 
 /**
  * 普通约定的mv方案

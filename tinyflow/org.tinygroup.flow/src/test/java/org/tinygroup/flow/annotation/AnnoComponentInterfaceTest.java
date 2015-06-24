@@ -16,7 +16,6 @@
 package org.tinygroup.flow.annotation;
 
 import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;

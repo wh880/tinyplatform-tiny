@@ -15,12 +15,12 @@
  */
 package org.tinygroup.database.view.impl;
 
+import org.tinygroup.database.config.view.View;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import org.tinygroup.database.config.view.View;
 
 public class SqlserverViewSqlProcessorImpl extends ViewSqlProcessorImpl {
 

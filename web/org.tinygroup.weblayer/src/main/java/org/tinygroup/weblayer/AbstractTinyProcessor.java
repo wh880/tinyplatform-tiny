@@ -15,14 +15,13 @@
  */
 package org.tinygroup.weblayer;
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-
 import org.tinygroup.commons.order.Ordered;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * tiny servlet 处理器的抽象实现

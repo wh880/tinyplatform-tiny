@@ -15,13 +15,13 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.fileupload;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.io.output.ThresholdingOutputStream;
 import org.tinygroup.commons.io.ByteArrayInputStream;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * 

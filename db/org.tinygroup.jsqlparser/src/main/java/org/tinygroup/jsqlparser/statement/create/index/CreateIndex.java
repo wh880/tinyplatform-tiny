@@ -15,11 +15,12 @@
  */
 package org.tinygroup.jsqlparser.statement.create.index;
 
-import org.tinygroup.jsqlparser.schema.*;
-import org.tinygroup.jsqlparser.statement.*;
-import org.tinygroup.jsqlparser.statement.create.table.*;
+import org.tinygroup.jsqlparser.schema.Table;
+import org.tinygroup.jsqlparser.statement.Statement;
+import org.tinygroup.jsqlparser.statement.StatementVisitor;
+import org.tinygroup.jsqlparser.statement.create.table.Index;
 
-import java.util.*;
+import java.util.Iterator;
 
 /**
  * A "CREATE INDEX" statement

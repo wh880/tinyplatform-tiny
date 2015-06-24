@@ -15,16 +15,15 @@
  */
 package org.tinygroup.weblayer.filter;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.session.SessionConfiguration;
 import org.tinygroup.weblayer.webcontext.session.SessionConfiguration.ConfigImpl;
 import org.tinygroup.weblayer.webcontext.session.impl.SessionWebContextImpl;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * 增强的Session框架，可将session中的对象保存到cookie、数据库或其它存储中。

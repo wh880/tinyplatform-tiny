@@ -1,13 +1,13 @@
 package org.tinygroup.springmvc.theme;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.web.servlet.ThemeResolver;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springmvc.extension.RequestInstanceHolder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class TinyThemeResolver implements ThemeResolver {
 	protected static final Logger logger = LoggerFactory

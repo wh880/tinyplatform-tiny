@@ -15,10 +15,10 @@
  */
 package org.tinygroup.jsqlparser.schema;
 
-import java.io.Serializable;
-
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.expression.ExpressionVisitor;
+
+import java.io.Serializable;
 
 /**
  * A column. It can have the table name it belongs to.

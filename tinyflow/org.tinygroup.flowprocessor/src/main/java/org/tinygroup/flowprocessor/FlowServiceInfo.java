@@ -15,11 +15,11 @@
  */
 package org.tinygroup.flowprocessor;
 
-import java.util.List;
-
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.flow.config.Flow;
+
+import java.util.List;
 
 /**
  * Created by luoguo on 14-4-9.

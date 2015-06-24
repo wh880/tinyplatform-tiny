@@ -15,16 +15,15 @@
  */
 package org.tinygroup.jsqlparser.test.simpleparsing;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.test.TestException;
 import org.tinygroup.jsqlparser.test.create.CreateTableTest;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 
 public class CCJSqlParserManagerTest extends TestCase {
 

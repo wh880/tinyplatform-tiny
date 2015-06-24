@@ -15,13 +15,13 @@
  */
 package org.tinygroup.springutil;
 
-import java.util.Collection;
-
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.SimpleTypeConverter;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+
+import java.util.Collection;
 
 /**
  * 

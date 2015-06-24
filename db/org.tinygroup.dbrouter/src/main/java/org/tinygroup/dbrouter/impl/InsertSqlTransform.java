@@ -15,15 +15,15 @@
  */
 package org.tinygroup.dbrouter.impl;
 
-import java.io.Serializable;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.jsqlparser.schema.Column;
 import org.tinygroup.jsqlparser.schema.Table;
 import org.tinygroup.jsqlparser.statement.insert.Insert;
+
+import java.io.Serializable;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class InsertSqlTransform {
 	

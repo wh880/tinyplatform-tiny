@@ -15,14 +15,13 @@
  */
 package org.tinygroup.ini.impl;
 
+import junit.framework.TestCase;
+import org.tinygroup.ini.IniOperator;
+import org.tinygroup.ini.ValuePair;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-
-import junit.framework.TestCase;
-
-import org.tinygroup.ini.IniOperator;
-import org.tinygroup.ini.ValuePair;
 
 public class IniOperatorDefaultFileTest extends TestCase {
 

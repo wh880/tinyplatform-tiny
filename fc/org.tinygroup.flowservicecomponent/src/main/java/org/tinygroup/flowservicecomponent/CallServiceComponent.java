@@ -15,13 +15,13 @@
  */
 package org.tinygroup.flowservicecomponent;
 
-import java.util.UUID;
-
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.context.Context;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.flow.ComponentInterface;
+
+import java.util.UUID;
 
 public class CallServiceComponent implements ComponentInterface {
 

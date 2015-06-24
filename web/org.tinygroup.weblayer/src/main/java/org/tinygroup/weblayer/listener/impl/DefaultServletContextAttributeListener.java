@@ -1,9 +1,9 @@
 package org.tinygroup.weblayer.listener.impl;
 
+import org.tinygroup.weblayer.listener.TinyServletContextAttributeListener;
+
 import javax.servlet.ServletContextAttributeEvent;
 import javax.servlet.ServletContextAttributeListener;
-
-import org.tinygroup.weblayer.listener.TinyServletContextAttributeListener;
 
 public class DefaultServletContextAttributeListener extends SimpleBasicTinyConfigAware implements
 		TinyServletContextAttributeListener {

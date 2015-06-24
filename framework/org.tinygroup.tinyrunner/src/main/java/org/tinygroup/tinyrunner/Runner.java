@@ -1,8 +1,5 @@
 package org.tinygroup.tinyrunner;
 
-import java.io.InputStream;
-import java.util.List;
-
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.application.impl.ApplicationDefault;
@@ -21,6 +18,9 @@ import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.io.InputStream;
+import java.util.List;
 
 public class Runner {
 	

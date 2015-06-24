@@ -15,10 +15,10 @@
  */
 package org.tinygroup.context2object.test.testcase;
 
+import org.tinygroup.context2object.TypeCreator;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.tinygroup.context2object.TypeCreator;
 
 public class ListCreator implements TypeCreator<List> {
 

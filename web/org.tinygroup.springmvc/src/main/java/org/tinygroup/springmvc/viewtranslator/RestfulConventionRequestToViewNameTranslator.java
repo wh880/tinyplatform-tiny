@@ -1,10 +1,10 @@
 package org.tinygroup.springmvc.viewtranslator;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator;
 import org.tinygroup.springmvc.coc.ConventionHelper;
 import org.tinygroup.springmvc.coc.impl.RestfulConventionHandlerMethodResolver;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * restful约定开发 默认页面布局处理

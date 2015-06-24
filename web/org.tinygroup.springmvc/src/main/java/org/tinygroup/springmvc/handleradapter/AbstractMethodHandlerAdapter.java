@@ -1,14 +1,5 @@
 package org.tinygroup.springmvc.handleradapter;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.xml.transform.Source;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.BeanExpressionContext;
@@ -48,6 +39,14 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springmvc.coc.ConventionHelper;
 import org.tinygroup.springmvc.support.ServletHandlerMethodResolver;
 import org.tinygroup.springmvc.support.TinyServletHandlerMethodInvoker;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.xml.transform.Source;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 抽像的MethodHandlerAdapter。

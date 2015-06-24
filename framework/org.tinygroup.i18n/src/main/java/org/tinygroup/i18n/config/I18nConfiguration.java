@@ -15,11 +15,10 @@
  */
 package org.tinygroup.i18n.config;
 
-import java.util.List;
-
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.tinygroup.format.config.Formater;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import java.util.List;
 
 /**
  * i18n配置

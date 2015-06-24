@@ -15,13 +15,12 @@
  */
 package org.tinygroup.weblayer.filter;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.basic.impl.BasicWebContextImpl;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * 

@@ -1,9 +1,9 @@
 package org.tinygroup.weblayer.listener.impl;
 
+import org.tinygroup.weblayer.listener.TinyServletContextListener;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import org.tinygroup.weblayer.listener.TinyServletContextListener;
 
 /**
  * 默认的TinyServletContextListener接口实现类，对原生ServletContextListener接口的包装

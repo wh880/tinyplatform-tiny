@@ -15,9 +15,9 @@
  */
 package org.tinygroup.vfs.impl;
 
-import java.io.File;
-
 import org.tinygroup.vfs.FileObject;
+
+import java.io.File;
 
 public class JarSchemaProvider extends AbstractSchemaProvider {
 

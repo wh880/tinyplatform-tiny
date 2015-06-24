@@ -1,16 +1,5 @@
 package org.tinygroup.springmvc.coc.impl;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.util.PathMatcher;
 import org.springframework.util.ReflectionUtils;
@@ -24,6 +13,11 @@ import org.tinygroup.springmvc.coc.ConventionHelper;
 import org.tinygroup.springmvc.coc.CustomHandlerMethodResolver;
 import org.tinygroup.springmvc.coc.Qualifier;
 import org.tinygroup.springmvc.util.WebUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 /**
  * 

@@ -15,11 +15,6 @@
  */
 package org.tinygroup.weblayer.mvc.handlermapping;
 
-import java.lang.reflect.Method;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.tinygroup.commons.tools.AnnotationUtils;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
@@ -32,6 +27,11 @@ import org.tinygroup.weblayer.mvc.annotation.RequestMapping;
 import org.tinygroup.weblayer.mvc.annotation.ResultKey;
 import org.tinygroup.weblayer.mvc.annotation.View;
 import org.tinygroup.weblayer.util.TinyPathMatcher;
+
+import java.lang.reflect.Method;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 

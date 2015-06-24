@@ -15,10 +15,6 @@
  */
 package org.tinygroup.filter;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -27,6 +23,9 @@ import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.util.TinyDBUtil;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * 

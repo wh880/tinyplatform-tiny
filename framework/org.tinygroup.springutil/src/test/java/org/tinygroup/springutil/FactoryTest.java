@@ -15,14 +15,13 @@
  */
 package org.tinygroup.springutil;
 
-import java.util.Collection;
-
 import junit.framework.TestCase;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.springutil.config.BeanObject;
 import org.tinygroup.springutil.config.User;
+
+import java.util.Collection;
 
 public class FactoryTest extends TestCase {
 

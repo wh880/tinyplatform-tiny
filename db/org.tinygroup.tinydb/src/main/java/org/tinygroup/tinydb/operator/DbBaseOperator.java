@@ -15,14 +15,14 @@
  */
 package org.tinygroup.tinydb.operator;
 
-import java.util.UUID;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.tinygroup.tinydb.BeanDbNameConverter;
 import org.tinygroup.tinydb.BeanOperatorManager;
 import org.tinygroup.tinydb.Configuration;
 import org.tinygroup.tinydb.dialect.Dialect;
 import org.tinygroup.tinydb.exception.TinyDbException;
+
+import java.util.UUID;
 
 
 public interface DbBaseOperator extends DbRelationOperator {

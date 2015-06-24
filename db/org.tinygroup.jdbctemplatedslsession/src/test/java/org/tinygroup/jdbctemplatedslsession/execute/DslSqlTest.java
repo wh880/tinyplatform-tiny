@@ -1,5 +1,12 @@
 package org.tinygroup.jdbctemplatedslsession.execute;
 
+import org.tinygroup.jdbctemplatedslsession.Custom;
+import org.tinygroup.jdbctemplatedslsession.CustomScore;
+import org.tinygroup.jdbctemplatedslsession.SimpleDslSession;
+import org.tinygroup.tinysqldsl.*;
+
+import java.sql.SQLException;
+
 import static org.tinygroup.jdbctemplatedslsession.CustomTable.CUSTOM;
 import static org.tinygroup.jdbctemplatedslsession.ScoreTable.TSCORE;
 import static org.tinygroup.tinysqldsl.Delete.delete;
@@ -9,17 +16,6 @@ import static org.tinygroup.tinysqldsl.Select.selectFrom;
 import static org.tinygroup.tinysqldsl.Update.update;
 import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
 import static org.tinygroup.tinysqldsl.select.Join.leftJoin;
-
-import java.sql.SQLException;
-
-import org.tinygroup.jdbctemplatedslsession.Custom;
-import org.tinygroup.jdbctemplatedslsession.CustomScore;
-import org.tinygroup.jdbctemplatedslsession.SimpleDslSession;
-import org.tinygroup.tinysqldsl.Delete;
-import org.tinygroup.tinysqldsl.DslSession;
-import org.tinygroup.tinysqldsl.Insert;
-import org.tinygroup.tinysqldsl.Select;
-import org.tinygroup.tinysqldsl.Update;
 
 public class DslSqlTest extends BaseTest {
 

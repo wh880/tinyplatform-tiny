@@ -1,10 +1,10 @@
 package org.tinygroup.cepcoreimpl.test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceInfoForTest implements ServiceInfo{
 	

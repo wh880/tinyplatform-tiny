@@ -15,6 +15,7 @@
  */
 package org.tinygroup.database.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.processor.Processors;
 import org.tinygroup.database.util.DataBaseUtil;
@@ -22,8 +23,6 @@ import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 public class ProcessorFileResolver extends AbstractFileProcessor {
 	private static final String PROCESSOR_EXTFILENAME = ".database.processor.xml";

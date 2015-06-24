@@ -1,13 +1,12 @@
 package org.tinygroup.nettyremote.codec.serialization;
 
+import com.caucho.hessian.io.HessianOutput;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
 import java.io.Serializable;
-
-import com.caucho.hessian.io.HessianOutput;
 
 public class HessianEncoder extends MessageToByteEncoder<Serializable> {
     private static final byte[] LENGTH_PLACEHOLDER = new byte[4];

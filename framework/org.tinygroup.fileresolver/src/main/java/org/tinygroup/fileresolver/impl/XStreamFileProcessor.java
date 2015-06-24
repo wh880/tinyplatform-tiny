@@ -15,22 +15,15 @@
  */
 package org.tinygroup.fileresolver.impl;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-import org.tinygroup.xstream.config.XStreamAnnotationClass;
-import org.tinygroup.xstream.config.XStreamClassAlias;
-import org.tinygroup.xstream.config.XStreamClassAliases;
-import org.tinygroup.xstream.config.XStreamConfiguration;
-import org.tinygroup.xstream.config.XStreamPropertyAlias;
-import org.tinygroup.xstream.config.XStreamPropertyImplicit;
-import org.tinygroup.xstream.config.XStreamPropertyOmit;
+import org.tinygroup.xstream.config.*;
 
-import com.thoughtworks.xstream.XStream;
+import java.lang.reflect.Array;
+import java.util.Collection;
 
 /**
  * 

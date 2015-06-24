@@ -1,7 +1,7 @@
 package org.tinygroup.tinysqldsl.expression;
 
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.base.FragmentSql;
+import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 
 /**
  * 表达式的sql片段

@@ -15,10 +15,6 @@
  */
 package org.tinygroup.serviceprocessor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.impl.AbstractEventProcessor;
 import org.tinygroup.context.Context;
@@ -32,6 +28,10 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.service.Service;
 import org.tinygroup.service.ServiceProviderInterface;
 import org.tinygroup.service.registry.ServiceRegistryItem;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class ServiceEventProcessorImpl extends AbstractEventProcessor{
 	private static Logger logger = LoggerFactory

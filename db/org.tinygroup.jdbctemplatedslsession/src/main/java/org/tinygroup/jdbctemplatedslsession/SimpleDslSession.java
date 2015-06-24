@@ -1,9 +1,5 @@
 package org.tinygroup.jdbctemplatedslsession;
 
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 import org.tinygroup.commons.tools.CollectionUtil;
@@ -12,13 +8,11 @@ import org.tinygroup.jdbctemplatedslsession.rowmapper.SimpleRowMapperSelector;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.tinysqldsl.ComplexSelect;
-import org.tinygroup.tinysqldsl.Delete;
-import org.tinygroup.tinysqldsl.DslSession;
-import org.tinygroup.tinysqldsl.Insert;
-import org.tinygroup.tinysqldsl.Select;
-import org.tinygroup.tinysqldsl.Update;
+import org.tinygroup.tinysqldsl.*;
 import org.tinygroup.tinysqldsl.base.InsertContext;
+
+import javax.sql.DataSource;
+import java.util.List;
 
 /**
  * DslSqlSession接口的jdbctemplate版实现

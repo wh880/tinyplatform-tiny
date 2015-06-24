@@ -15,12 +15,11 @@
  */
 package org.tinygroup.tinydb.datasource.unpooled;
 
-import java.util.Map;
-
-import javax.sql.DataSource;
-
 import org.tinygroup.tinydb.datasource.DataSourceFactory;
 import org.tinygroup.tinydb.util.TinyDBUtil;
+
+import javax.sql.DataSource;
+import java.util.Map;
 
 public class UnpooledDataSourceFactory implements DataSourceFactory {
 

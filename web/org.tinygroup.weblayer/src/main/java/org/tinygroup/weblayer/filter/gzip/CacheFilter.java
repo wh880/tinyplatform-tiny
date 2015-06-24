@@ -15,10 +15,13 @@
  */
 package org.tinygroup.weblayer.filter.gzip;
 
-import java.io.*;
 import javax.servlet.*;
-import javax.servlet.http.*;
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.Calendar;
+import java.util.Enumeration;
+import java.util.Locale;
 
 public class CacheFilter implements Filter {
 	ServletContext sc;

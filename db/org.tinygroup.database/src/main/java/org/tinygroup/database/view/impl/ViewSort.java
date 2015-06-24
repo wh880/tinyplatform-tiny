@@ -15,12 +15,12 @@
  */
 package org.tinygroup.database.view.impl;
 
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.database.config.view.View;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
-import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.database.config.view.View;
 
 public class ViewSort implements Comparator<View> {
 	

@@ -15,10 +15,11 @@
  */
 package org.tinygroup.jsqlparser.util;
 
-import org.tinygroup.jsqlparser.expression.*;
+import org.tinygroup.jsqlparser.expression.Alias;
 import org.tinygroup.jsqlparser.statement.select.*;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Add aliases to every column and expression selected by a select - statement.

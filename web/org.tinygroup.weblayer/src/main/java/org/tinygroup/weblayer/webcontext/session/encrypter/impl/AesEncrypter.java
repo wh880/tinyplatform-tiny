@@ -15,14 +15,14 @@
  */
 package org.tinygroup.weblayer.webcontext.session.encrypter.impl;
 
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
-import static org.tinygroup.commons.tools.Assert.assertTrue;
-import static org.tinygroup.commons.tools.StringUtil.trimToNull;
+import org.tinygroup.weblayer.webcontext.session.encrypter.AbstractJceEncrypter;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.tinygroup.weblayer.webcontext.session.encrypter.AbstractJceEncrypter;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import static org.tinygroup.commons.tools.Assert.assertTrue;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
 
 public class AesEncrypter extends AbstractJceEncrypter {
     public final static String ALG_NAME         = "AES";

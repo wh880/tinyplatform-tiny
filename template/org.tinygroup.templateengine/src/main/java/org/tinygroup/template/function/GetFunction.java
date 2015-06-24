@@ -15,18 +15,10 @@
  */
 package org.tinygroup.template.function;
 
-import org.tinygroup.template.Macro;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.rumtime.U;
-import org.tinygroup.threadgroup.ExceptionCallBack;
-
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by luoguo on 2014/6/9.

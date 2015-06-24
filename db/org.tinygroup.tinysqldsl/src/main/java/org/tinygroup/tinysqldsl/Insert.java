@@ -15,13 +15,9 @@
  */
 package org.tinygroup.tinysqldsl;
 
-import java.util.Arrays;
+import org.tinygroup.tinysqldsl.base.*;
 
-import org.tinygroup.tinysqldsl.base.Column;
-import org.tinygroup.tinysqldsl.base.InsertContext;
-import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
-import org.tinygroup.tinysqldsl.base.Table;
-import org.tinygroup.tinysqldsl.base.Value;
+import java.util.Arrays;
 
 /**
  * Insert语句 Created by luoguo on 2015/3/11.

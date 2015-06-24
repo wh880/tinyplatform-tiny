@@ -15,9 +15,7 @@
  */
 package org.tinygroup.service.sysservice.fileresolver;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.beancontainer.BeanContainer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.fileresolver.FileProcessor;
@@ -34,7 +32,8 @@ import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 		implements FileProcessor {

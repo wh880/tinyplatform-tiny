@@ -15,12 +15,9 @@
  */
 package org.tinygroup.jspengine.compiler;
 
-import java.util.*;
-import java.io.*;
 import java.text.MessageFormat;
-
-import org.tinygroup.jspengine.JasperException;
-import org.xml.sax.*;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 /**
  * Class responsible for converting error codes to corresponding localized

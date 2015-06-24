@@ -15,19 +15,19 @@
  */
 package org.tinygroup.commons.tools;
 
-import static org.tinygroup.commons.tools.ArrayUtil.arrayReverse;
-import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
-import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
-import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING_ARRAY;
-import static org.tinygroup.commons.tools.CollectionUtil.createLinkedList;
-import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
-
 import java.util.Collection;
 import java.util.Formatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static org.tinygroup.commons.tools.ArrayUtil.arrayReverse;
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING_ARRAY;
+import static org.tinygroup.commons.tools.CollectionUtil.createLinkedList;
+import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
 
 /**
  * 有关字符串处理的工具类。

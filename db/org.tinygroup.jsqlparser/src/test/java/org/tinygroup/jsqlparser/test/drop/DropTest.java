@@ -15,12 +15,12 @@
  */
 package org.tinygroup.jsqlparser.test.drop;
 
-import java.io.StringReader;
-
 import junit.framework.TestCase;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.statement.drop.Drop;
+
+import java.io.StringReader;
 
 public class DropTest extends TestCase {
 

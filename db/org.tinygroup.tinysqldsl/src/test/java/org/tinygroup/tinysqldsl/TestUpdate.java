@@ -1,10 +1,10 @@
 package org.tinygroup.tinysqldsl;
 
-import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
-import static org.tinygroup.tinysqldsl.Update.update;
-
 import org.tinygroup.tinysqldsl.expression.LongValue;
 import org.tinygroup.tinysqldsl.expression.arithmetic.Addition;
+
+import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
+import static org.tinygroup.tinysqldsl.Update.update;
 
 /**
  * Created by luoguo on 2015/3/11.

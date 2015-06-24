@@ -15,15 +15,13 @@
  */
 package org.tinygroup.jspengine.runtime;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Vector;
+import org.tinygroup.jspengine.Constants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
-
-import org.tinygroup.jspengine.Constants;
+import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  * Thread-local based pool of tag handlers that can be reused.

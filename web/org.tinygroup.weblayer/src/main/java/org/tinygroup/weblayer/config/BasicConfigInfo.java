@@ -1,17 +1,12 @@
 package org.tinygroup.weblayer.config;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.commons.tools.StringUtil;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.commons.tools.StringUtil;
+
+import java.util.*;
 
 public class BasicConfigInfo {
 

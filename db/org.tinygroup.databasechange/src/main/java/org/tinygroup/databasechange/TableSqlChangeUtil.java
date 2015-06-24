@@ -1,16 +1,16 @@
 package org.tinygroup.databasechange;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.commons.io.StreamUtil;
+import org.tinygroup.databasebuinstaller.DatabaseInstallerProcessor;
+import org.tinygroup.tinytestutil.AbstractTestUtil;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
-
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.commons.io.StreamUtil;
-import org.tinygroup.databasebuinstaller.DatabaseInstallerProcessor;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 /**
  * 表格结果变更信息记录的工具类

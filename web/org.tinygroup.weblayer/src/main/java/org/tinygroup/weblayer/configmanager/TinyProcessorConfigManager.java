@@ -15,11 +15,7 @@
  */
 package org.tinygroup.weblayer.configmanager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.logger.LogLevel;
@@ -30,7 +26,10 @@ import org.tinygroup.weblayer.config.TinyProcessorConfigInfos;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * tiny processor处理器配置管理对象

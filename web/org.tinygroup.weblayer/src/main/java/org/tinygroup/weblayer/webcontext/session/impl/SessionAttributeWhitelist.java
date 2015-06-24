@@ -15,12 +15,14 @@
  */
 package org.tinygroup.weblayer.webcontext.session.impl;
 
-import java.util.Map;
-import static org.tinygroup.commons.tools.CollectionUtil.*;
 import org.tinygroup.commons.tools.ClassUtil;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.weblayer.webcontext.session.SessionConfig;
+
+import java.util.Map;
+
+import static org.tinygroup.commons.tools.CollectionUtil.createHashMap;
 
 /**
  * 用来控制session attributes的使用。

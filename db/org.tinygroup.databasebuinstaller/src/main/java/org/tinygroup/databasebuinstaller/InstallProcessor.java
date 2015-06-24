@@ -15,11 +15,11 @@
  */
 package org.tinygroup.databasebuinstaller;
 
+import org.tinygroup.commons.order.Ordered;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
-import org.tinygroup.commons.order.Ordered;
 
 /**
  * 

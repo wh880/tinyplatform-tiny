@@ -1,11 +1,11 @@
 package org.tinygroup.exception.errorcode;
 
-import java.io.Serializable;
-
 import org.tinygroup.exception.ErrorCode;
 import org.tinygroup.exception.ErrorCodeParser;
 import org.tinygroup.exception.constant.ErrorLevel;
 import org.tinygroup.exception.constant.ErrorType;
+
+import java.io.Serializable;
 
 /**
  * 错误码抽象类
