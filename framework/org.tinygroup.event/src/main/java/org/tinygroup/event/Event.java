@@ -40,19 +40,20 @@ public final class Event implements Serializable {
     public static final int EVENT_MODE_ASYNCHRONOUS = 2;
     // 类型，用于标示是请求还是返回事件
     private int type = EVENT_TYPE_REQUEST;
-    // EventID唯一标识一个服务
+    // EventID唯一标识
     private String eventId;
-    // 服务请求
+    // 服务请求信息描述
     private ServiceRequest serviceRequest;
-    // 异常
+    // 如果服务发生异常，此处存放异常信息
     private Throwable throwable;
     // 优先级
     private int priority;
-    //调用方式
+    //调用模式(同步/异步)
     private int mode = EVENT_MODE_SYNCHRONOUS;
     // 是否分组方式，如果是分组模式，则所有服务提供者都将被调用，默认是非分组方式
     private boolean groupMode = false;
 
+    
     public boolean getGroupMode() {
         return groupMode;
     }
