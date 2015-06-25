@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,7 +20,8 @@ import org.tinygroup.jsqlparser.expression.operators.arithmetic.*;
 import org.tinygroup.jsqlparser.expression.operators.conditional.AndExpression;
 import org.tinygroup.jsqlparser.expression.operators.conditional.OrExpression;
 import org.tinygroup.jsqlparser.expression.operators.relational.*;
-import org.tinygroup.jsqlparser.schema.*;
+import org.tinygroup.jsqlparser.schema.Column;
+import org.tinygroup.jsqlparser.schema.Table;
 import org.tinygroup.jsqlparser.statement.select.SelectVisitor;
 import org.tinygroup.jsqlparser.statement.select.SubSelect;
 

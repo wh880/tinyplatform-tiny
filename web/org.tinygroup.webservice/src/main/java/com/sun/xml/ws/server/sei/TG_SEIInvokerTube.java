@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 package com.sun.xml.ws.server.sei;
 
-import javax.xml.namespace.QName;
-
 import com.sun.istack.NotNull;
 import com.sun.xml.ws.api.WSBinding;
 import com.sun.xml.ws.api.message.Message;
@@ -29,6 +27,8 @@ import com.sun.xml.ws.model.JavaMethodImpl;
 import com.sun.xml.ws.server.TG_WSEndpointImpl;
 import com.sun.xml.ws.util.QNameMap;
 import com.sun.xml.ws.wsdl.DispatchException;
+
+import javax.xml.namespace.QName;
 
 /**
  * This pipe is used to invoke SEI based endpoints.

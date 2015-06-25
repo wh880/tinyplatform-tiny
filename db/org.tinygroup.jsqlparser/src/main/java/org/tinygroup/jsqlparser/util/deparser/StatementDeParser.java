@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
  *  limitations under the License.
  */
 package org.tinygroup.jsqlparser.util.deparser;
-
-import java.util.Iterator;
 
 import org.tinygroup.jsqlparser.statement.StatementVisitor;
 import org.tinygroup.jsqlparser.statement.Statements;
@@ -32,6 +30,8 @@ import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.WithItem;
 import org.tinygroup.jsqlparser.statement.truncate.Truncate;
 import org.tinygroup.jsqlparser.statement.update.Update;
+
+import java.util.Iterator;
 
 public class StatementDeParser implements StatementVisitor {
 

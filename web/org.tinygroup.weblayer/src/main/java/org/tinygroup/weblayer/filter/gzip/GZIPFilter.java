@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,25 +15,19 @@
  */
 package org.tinygroup.weblayer.filter.gzip;
 
+import org.tinygroup.commons.tools.Assert;
+import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.config.Configuration;
+import org.tinygroup.xmlparser.node.XmlNode;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.GZIPOutputStream;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.config.Configuration;
-import org.tinygroup.xmlparser.node.XmlNode;
 
 //TODO增加跳过文件过滤
 public class GZIPFilter implements Filter, Configuration {

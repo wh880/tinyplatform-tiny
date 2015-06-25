@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,16 +15,16 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.valueparser.impl;
 
-import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
-import static org.tinygroup.commons.tools.StringUtil.defaultIfEmpty;
-import static org.tinygroup.commons.tools.StringUtil.split;
-
-import javax.servlet.http.Cookie;
-
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.weblayer.webcontext.parser.ParserWebContext;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.AbstractValueParser;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.CookieParser;
+
+import javax.servlet.http.Cookie;
+
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
+import static org.tinygroup.commons.tools.StringUtil.defaultIfEmpty;
+import static org.tinygroup.commons.tools.StringUtil.split;
 
 /**
  * <code>CookieParser</code>是用来解析和添加HTTP请求中的cookies的接口。

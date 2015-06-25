@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  */
 package org.tinygroup.database.trigger.impl;
 
+import org.tinygroup.database.config.trigger.Trigger;
+import org.tinygroup.database.trigger.TriggerSqlProcessor;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import org.tinygroup.database.config.trigger.Trigger;
-import org.tinygroup.database.trigger.TriggerSqlProcessor;
 
 public  abstract class AbstractTriggerSqlProcessor implements TriggerSqlProcessor {
 

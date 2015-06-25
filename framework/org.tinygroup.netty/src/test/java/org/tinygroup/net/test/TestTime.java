@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,18 +15,17 @@
  */
 package org.tinygroup.net.test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ObjectOutputStream;
-
-import org.jboss.netty.handler.codec.serialization.ClassResolvers;
-import org.objenesis.strategy.StdInstantiatorStrategy;
-import org.tinygroup.commons.io.ByteArrayOutputStream;
-
 import com.caucho.hessian.io.HessianInput;
 import com.caucho.hessian.io.HessianOutput;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import org.jboss.netty.handler.codec.serialization.ClassResolvers;
+import org.objenesis.strategy.StdInstantiatorStrategy;
+import org.tinygroup.commons.io.ByteArrayOutputStream;
+
+import java.io.ByteArrayInputStream;
+import java.io.ObjectOutputStream;
 
 public class TestTime {
 	public static void main(String[] args) throws Exception {

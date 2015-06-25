@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,10 @@
  */
 package org.tinygroup.context2object.test.testcase;
 
-import java.math.BigDecimal;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.context2object.impl.BigDecimalConverter;
+
+import java.math.BigDecimal;
 
 public class TestConverter extends TestCase{
 	public void testBigDecial(){

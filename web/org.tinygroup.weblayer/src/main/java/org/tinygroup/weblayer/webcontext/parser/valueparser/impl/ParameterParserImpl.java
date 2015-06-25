@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,19 +15,6 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.valueparser.impl;
 
-import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
-import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
-import static org.tinygroup.commons.tools.CollectionUtil.createLinkedList;
-import static org.tinygroup.commons.tools.StringUtil.trimToEmpty;
-import static org.tinygroup.weblayer.webcontext.parser.ParserWebContext.DEFAULT_CHARSET_ENCODING;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-
 import org.apache.commons.fileupload.FileItem;
 import org.tinygroup.commons.tools.StringEscapeUtil;
 import org.tinygroup.commons.tools.StringUtil;
@@ -37,21 +24,24 @@ import org.tinygroup.weblayer.webcontext.parser.exception.UploadException;
 import org.tinygroup.weblayer.webcontext.parser.exception.UploadSizeLimitExceededException;
 import org.tinygroup.weblayer.webcontext.parser.fileupload.TinyFileItem;
 import org.tinygroup.weblayer.webcontext.parser.fileupload.TinyItemFileObject;
-import org.tinygroup.weblayer.webcontext.parser.impl.DiskFileItem;
-import org.tinygroup.weblayer.webcontext.parser.impl.FileObjectInDisk;
-import org.tinygroup.weblayer.webcontext.parser.impl.FileObjectInMemory;
-import org.tinygroup.weblayer.webcontext.parser.impl.InMemoryFormFieldItem;
-import org.tinygroup.weblayer.webcontext.parser.impl.ItemFileObject;
-import org.tinygroup.weblayer.webcontext.parser.upload.ParamValueFilter;
-import org.tinygroup.weblayer.webcontext.parser.upload.ParameterParserFilter;
-import org.tinygroup.weblayer.webcontext.parser.upload.ParameterValueFilter;
-import org.tinygroup.weblayer.webcontext.parser.upload.UploadParameters;
-import org.tinygroup.weblayer.webcontext.parser.upload.UploadService;
-import org.tinygroup.weblayer.webcontext.parser.upload.UploadedFileFilter;
+import org.tinygroup.weblayer.webcontext.parser.impl.*;
+import org.tinygroup.weblayer.webcontext.parser.upload.*;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.AbstractValueParser;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.ParameterParser;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.ValueList;
 import org.tinygroup.weblayer.webcontext.util.QueryStringParser;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
+import static org.tinygroup.commons.tools.CollectionUtil.createLinkedList;
+import static org.tinygroup.commons.tools.StringUtil.trimToEmpty;
+import static org.tinygroup.weblayer.webcontext.parser.ParserWebContext.DEFAULT_CHARSET_ENCODING;
 
 /**
  * 用来解析HTTP请求中GET或POST的参数的接口<code>ParameterParser</code>的默认实现。

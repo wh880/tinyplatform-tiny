@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,16 +15,15 @@
  */
 package org.tinygroup.cache.ehcache;
 
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+import org.tinygroup.cache.Cache;
+import org.tinygroup.cache.exception.CacheException;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-
-import org.tinygroup.cache.Cache;
-import org.tinygroup.cache.exception.CacheException;
 
 /**
  * 

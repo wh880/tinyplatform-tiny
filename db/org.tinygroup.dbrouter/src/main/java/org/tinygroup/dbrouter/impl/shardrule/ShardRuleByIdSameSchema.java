@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  */
 package org.tinygroup.dbrouter.impl.shardrule;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.util.DbRouterUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by luoguo on 13-12-15.

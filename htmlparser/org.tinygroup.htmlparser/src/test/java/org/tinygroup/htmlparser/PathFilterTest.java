@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,11 @@
  */
 package org.tinygroup.htmlparser;
 
+import junit.framework.TestCase;
 import org.tinygroup.htmlparser.node.HtmlNode;
 import org.tinygroup.htmlparser.parser.HtmlStringParser;
 import org.tinygroup.parser.NodeFilter;
 import org.tinygroup.parser.filter.PathFilter;
-
-import junit.framework.TestCase;
 
 public class PathFilterTest extends TestCase {
 	NodeFilter filter;

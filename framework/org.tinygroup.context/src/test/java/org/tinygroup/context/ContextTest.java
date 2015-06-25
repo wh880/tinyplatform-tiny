@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,14 +15,11 @@
  */
 package org.tinygroup.context;
 
-import java.lang.ref.SoftReference;
-import java.util.concurrent.ConcurrentHashMap;
+import junit.framework.TestCase;
+import org.tinygroup.context.impl.ContextImpl;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import junit.framework.TestCase;
-
-import org.tinygroup.context.impl.ContextImpl;
 
 public class ContextTest extends TestCase {
 	Context Context = new ContextImpl();

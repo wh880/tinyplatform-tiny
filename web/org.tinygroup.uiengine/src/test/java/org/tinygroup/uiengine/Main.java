@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,17 +15,11 @@
  */
 package org.tinygroup.uiengine;
 
+import com.thoughtworks.xstream.XStream;
+import org.tinygroup.uiengine.config.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.tinygroup.uiengine.config.Macro;
-import org.tinygroup.uiengine.config.MacroParameter;
-import org.tinygroup.uiengine.config.Macros;
-import org.tinygroup.uiengine.config.SubMacro;
-import org.tinygroup.uiengine.config.UIComponent;
-import org.tinygroup.uiengine.config.UIComponents;
-
-import com.thoughtworks.xstream.XStream;
 
 public class Main {
 

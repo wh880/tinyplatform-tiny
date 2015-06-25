@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,11 +18,6 @@ package org.tinygroup.ini.impl;
 import junit.framework.TestCase;
 import org.tinygroup.ini.IniOperator;
 import org.tinygroup.ini.Sections;
-import org.tinygroup.ini.ValuePair;
-
-import java.io.StringBufferInputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by luoguo on 14-3-29.

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,34 +15,6 @@
  */
 package com.sun.xml.ws.server;
 
-import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Executor;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.annotation.PreDestroy;
-import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.ws.EndpointReference;
-import javax.xml.ws.WebServiceException;
-import javax.xml.ws.handler.Handler;
-
-import org.glassfish.gmbal.ManagedObjectManager;
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.LoggerFactory;
-import org.w3c.dom.Element;
-
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 import com.sun.xml.stream.buffer.XMLStreamBuffer;
@@ -56,25 +28,8 @@ import com.sun.xml.ws.api.message.Message;
 import com.sun.xml.ws.api.message.Packet;
 import com.sun.xml.ws.api.model.SEIModel;
 import com.sun.xml.ws.api.model.wsdl.WSDLPort;
-import com.sun.xml.ws.api.pipe.Codec;
-import com.sun.xml.ws.api.pipe.Engine;
-import com.sun.xml.ws.api.pipe.Fiber;
-import com.sun.xml.ws.api.pipe.FiberContextSwitchInterceptor;
-import com.sun.xml.ws.api.pipe.ServerPipeAssemblerContext;
-import com.sun.xml.ws.api.pipe.ServerTubeAssemblerContext;
-import com.sun.xml.ws.api.pipe.TG_Engine;
-import com.sun.xml.ws.api.pipe.TG_Fiber;
-import com.sun.xml.ws.api.pipe.Tube;
-import com.sun.xml.ws.api.pipe.TubeCloner;
-import com.sun.xml.ws.api.pipe.TubelineAssembler;
-import com.sun.xml.ws.api.pipe.TubelineAssemblerFactory;
-import com.sun.xml.ws.api.server.Container;
-import com.sun.xml.ws.api.server.EndpointAwareCodec;
-import com.sun.xml.ws.api.server.EndpointComponent;
-import com.sun.xml.ws.api.server.EndpointReferenceExtensionContributor;
-import com.sun.xml.ws.api.server.TransportBackChannel;
-import com.sun.xml.ws.api.server.WSEndpoint;
-import com.sun.xml.ws.api.server.WebServiceContextDelegate;
+import com.sun.xml.ws.api.pipe.*;
+import com.sun.xml.ws.api.server.*;
 import com.sun.xml.ws.fault.SOAPFaultBuilder;
 import com.sun.xml.ws.model.wsdl.WSDLPortImpl;
 import com.sun.xml.ws.model.wsdl.WSDLProperties;
@@ -84,6 +39,26 @@ import com.sun.xml.ws.util.Pool;
 import com.sun.xml.ws.util.Pool.TubePool;
 import com.sun.xml.ws.util.ServiceFinder;
 import com.sun.xml.ws.wsdl.OperationDispatcher;
+import org.glassfish.gmbal.ManagedObjectManager;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.LoggerFactory;
+import org.w3c.dom.Element;
+
+import javax.annotation.PreDestroy;
+import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.ws.EndpointReference;
+import javax.xml.ws.WebServiceException;
+import javax.xml.ws.handler.Handler;
+import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * {@link WSEndpoint} implementation.

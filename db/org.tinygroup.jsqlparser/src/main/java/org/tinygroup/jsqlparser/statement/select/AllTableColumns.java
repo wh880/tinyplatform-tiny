@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,7 +18,8 @@ package org.tinygroup.jsqlparser.statement.select;
 /**
  * All the columns of a table (as in "SELECT TableName.* FROM ...")
  */
-import org.tinygroup.jsqlparser.schema.*;
+
+import org.tinygroup.jsqlparser.schema.Table;
 
 public class AllTableColumns implements SelectItem {
 

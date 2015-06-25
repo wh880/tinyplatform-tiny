@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.fileupload.FileItem;
 import org.tinygroup.commons.tools.BasicConstant;
 import org.tinygroup.commons.tools.FileUtil;
@@ -26,6 +24,8 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.support.BeanSupport;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.webcontext.parser.upload.UploadedFileFilter;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 根据文件名后缀过滤上传文件。

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,10 +15,6 @@
  */
 package org.tinygroup.database.util;
 
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.namestrategy.NameStrategy;
 import org.tinygroup.commons.namestrategy.impl.NormalCaseStrategy;
@@ -29,6 +25,10 @@ import org.tinygroup.database.table.TableProcessor;
 import org.tinygroup.database.view.ViewProcessor;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
+
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class DataBaseUtil {
 	public static String DATABASE_XSTREAM = "database";

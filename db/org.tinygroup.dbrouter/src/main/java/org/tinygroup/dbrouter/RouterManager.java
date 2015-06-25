@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@ package org.tinygroup.dbrouter;
 
 import org.tinygroup.cache.Cache;
 import org.tinygroup.dbrouter.balance.ShardBalance;
+import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Router;
 import org.tinygroup.dbrouter.config.Routers;
-import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.jsqlparser.statement.Statement;
 

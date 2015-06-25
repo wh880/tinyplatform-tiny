@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package org.tinygroup.commons.tools;
 
-import static org.tinygroup.commons.tools.ArrayUtil.*;
-import static org.tinygroup.commons.tools.Assert.*;
+import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
 
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.Assert.assertTrue;
 
 
 /**

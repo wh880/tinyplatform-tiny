@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package org.tinygroup.weblayer.webcontext.session.valueencode.impl;
 
-import static org.tinygroup.commons.tools.Assert.assertTrue;
-import static org.tinygroup.commons.tools.CollectionUtil.createLinkedHashMap;
+import org.springframework.beans.TypeConverter;
+import org.tinygroup.weblayer.webcontext.session.valueencode.AbstractSessionValueEncoder;
+import org.tinygroup.weblayer.webcontext.util.QueryStringParser;
 
 import java.util.Map;
 
-import org.tinygroup.weblayer.webcontext.session.valueencode.AbstractSessionValueEncoder;
-import org.tinygroup.weblayer.webcontext.util.QueryStringParser;
-import org.springframework.beans.TypeConverter;
+import static org.tinygroup.commons.tools.Assert.assertTrue;
+import static org.tinygroup.commons.tools.CollectionUtil.createLinkedHashMap;
 
 /**
  * 将一个<code>Map</code>编码成字符串，或反之。支持加密。

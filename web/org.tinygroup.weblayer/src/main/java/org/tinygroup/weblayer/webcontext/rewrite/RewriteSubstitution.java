@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,27 +15,21 @@
  */
 package org.tinygroup.weblayer.webcontext.rewrite;
 
-import static org.tinygroup.weblayer.webcontext.rewrite.RewriteUtil.*;
-import static org.tinygroup.commons.tools.ArrayUtil.*;
-import static org.tinygroup.commons.tools.Assert.*;
-import static org.tinygroup.commons.tools.BasicConstant.*;
-import static org.tinygroup.commons.tools.StringUtil.*;
-
-import java.util.regex.MatchResult;
-import javax.servlet.http.HttpServletResponse;
-
-
-import org.tinygroup.commons.tools.ArrayUtil;
-import org.tinygroup.commons.tools.MatchResultSubstitution;
-import org.tinygroup.commons.tools.ObjectUtil;
-import org.tinygroup.commons.tools.StringEscapeUtil;
-import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.commons.tools.ToStringBuilder;
-import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
-import org.tinygroup.weblayer.webcontext.parser.valueparser.ParameterParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.tinygroup.commons.tools.*;
+import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
+import org.tinygroup.weblayer.webcontext.parser.valueparser.ParameterParser;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.regex.MatchResult;
+
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING_ARRAY;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
+import static org.tinygroup.weblayer.webcontext.rewrite.RewriteUtil.isFullURL;
 
 public class RewriteSubstitution implements InitializingBean {
     private static final Logger log = LoggerFactory.getLogger(RewriteSubstitution.class);

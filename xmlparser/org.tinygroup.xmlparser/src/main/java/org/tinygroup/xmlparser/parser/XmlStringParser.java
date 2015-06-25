@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
  */
 package org.tinygroup.xmlparser.parser;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.tinygroup.xmlparser.XmlDocument;
 import org.tinygroup.xmlparser.XmlNodeType;
 import org.tinygroup.xmlparser.document.XmlDocumentImpl;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class XmlStringParser extends XmlParser<String> {
     private static final String TAIL_END_PATTERN = "TailEndPattern";

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,24 +15,6 @@
  */
 package org.tinygroup.weblayer.webcontext.buffered.response;
 
-import static org.tinygroup.commons.tools.BasicConstant.EMPTY_BYTE_ARRAY;
-import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
-import static org.tinygroup.commons.tools.CollectionUtil.createLinkedList;
-import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.EmptyStackException;
-import java.util.LinkedList;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
 import org.tinygroup.commons.io.ByteArray;
 import org.tinygroup.commons.io.ByteArrayInputStream;
 import org.tinygroup.commons.io.ByteArrayOutputStream;
@@ -43,6 +25,17 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.AbstractResponseWrapper;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.EmptyStackException;
+import java.util.LinkedList;
+
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_BYTE_ARRAY;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
+import static org.tinygroup.commons.tools.CollectionUtil.createLinkedList;
+import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
 
 /**
  * 包裹<code>HttpServletResponse</code>，使之输出到内存中。

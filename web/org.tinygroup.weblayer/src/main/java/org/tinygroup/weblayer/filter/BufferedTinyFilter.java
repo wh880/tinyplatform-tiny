@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,14 +15,13 @@
  */
 package org.tinygroup.weblayer.filter;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import org.tinygroup.weblayer.AbstractTinyFilter;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.buffered.exception.BufferCommitFailedException;
 import org.tinygroup.weblayer.webcontext.buffered.impl.BufferedWebContextImpl;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * 对写入response中的数据进行缓存，以便于实现嵌套的页面。

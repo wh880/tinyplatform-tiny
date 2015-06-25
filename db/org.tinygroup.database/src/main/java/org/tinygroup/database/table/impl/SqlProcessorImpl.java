@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,29 +15,21 @@
  */
 package org.tinygroup.database.table.impl;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.database.config.table.ForeignReference;
-import org.tinygroup.database.config.table.Index;
-import org.tinygroup.database.config.table.IndexField;
-import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.config.table.TableField;
+import org.tinygroup.database.config.table.*;
 import org.tinygroup.database.table.TableProcessor;
 import org.tinygroup.database.table.TableSqlProcessor;
 import org.tinygroup.database.util.DataBaseNameUtil;
 import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class SqlProcessorImpl implements TableSqlProcessor {
 

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@ package org.tinygroup.logger;
  * 日志事务，表示，从startTransaction开始到endTransaction中间记录的所有日志都会拼成一个完整的日志块，连续输出
  */
 
-import java.util.Locale;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.logger.impl.LogBuffer;
+
+import java.util.Locale;
 
 /**
  * 日志接口

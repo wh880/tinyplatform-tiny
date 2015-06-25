@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.tinygroup.metadata.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.metadata.bizdatatype.BusinessTypeProcessor;
@@ -22,8 +23,6 @@ import org.tinygroup.metadata.config.bizdatatype.BusinessTypes;
 import org.tinygroup.metadata.util.MetadataUtil;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 public class BusinessTypeFileResolver extends AbstractFileProcessor {
 	private static final String BIZDATATYPE_EXTFILENAME = ".bizdatatype.xml";

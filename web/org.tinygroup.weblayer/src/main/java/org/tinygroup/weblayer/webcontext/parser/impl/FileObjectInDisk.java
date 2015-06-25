@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,6 +15,11 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
+import org.apache.commons.fileupload.FileItem;
+import org.tinygroup.commons.tools.FileUtil;
+import org.tinygroup.vfs.FileObject;
+import org.tinygroup.vfs.impl.AbstractFileObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,12 +27,6 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
-import org.apache.commons.fileupload.FileItem;
-import org.tinygroup.commons.tools.FileUtil;
-import org.tinygroup.vfs.FileObject;
-import org.tinygroup.vfs.SchemaProvider;
-import org.tinygroup.vfs.impl.AbstractFileObject;
 
 public class FileObjectInDisk extends AbstractFileObject implements ItemFileObject {
 	

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package org.tinygroup.logger;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.slf4j.ILoggerFactory;
 import org.tinygroup.logger.impl.LoggerImpl;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 日志工厂，用于获取Logger实例。

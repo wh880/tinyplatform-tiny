@@ -1,8 +1,19 @@
+/**
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
+ *
+ *  Licensed under the GPL, Version 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.gnu.org/licenses/gpl.html
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package org.tinygroup.tinydb.sql;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
@@ -13,6 +24,10 @@ import org.tinygroup.tinydb.sql.group.impl.DefaultGroupGenerater;
 import org.tinygroup.tinydb.sql.order.OrderGenerater;
 import org.tinygroup.tinydb.sql.order.impl.AscOrderGenerater;
 import org.tinygroup.tinydb.sql.order.impl.DescOrderGenerater;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 存放sql生成片段的实例的容器，例如条件、分组、排序的片段

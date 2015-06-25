@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,13 +14,6 @@
  *  limitations under the License.
  */
 package org.tinygroup.tinydb.operator.impl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
@@ -48,6 +41,13 @@ import org.tinygroup.tinydb.spring.BatchPreparedStatementSetterImpl;
 import org.tinygroup.tinydb.spring.SqlParamValuesBatchStatementSetterImpl;
 import org.tinygroup.tinydb.spring.TinydbResultExtractor;
 import org.tinygroup.tinydb.sql.impl.StatementTransformComposite;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DBSpringBaseOperator extends StatementTransformComposite implements TransactionOperator {
 

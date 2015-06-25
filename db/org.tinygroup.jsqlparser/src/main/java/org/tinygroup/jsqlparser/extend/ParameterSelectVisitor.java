@@ -1,38 +1,29 @@
+/**
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
+ *
+ *  Licensed under the GPL, Version 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.gnu.org/licenses/gpl.html
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package org.tinygroup.jsqlparser.extend;
+
+import org.tinygroup.jsqlparser.expression.Expression;
+import org.tinygroup.jsqlparser.expression.ExpressionVisitorAdapter;
+import org.tinygroup.jsqlparser.schema.Table;
+import org.tinygroup.jsqlparser.statement.select.*;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.tinygroup.jsqlparser.expression.Expression;
-import org.tinygroup.jsqlparser.expression.ExpressionVisitorAdapter;
-import org.tinygroup.jsqlparser.schema.Table;
-import org.tinygroup.jsqlparser.statement.select.AllColumns;
-import org.tinygroup.jsqlparser.statement.select.AllTableColumns;
-import org.tinygroup.jsqlparser.statement.select.Fetch;
-import org.tinygroup.jsqlparser.statement.select.FromItem;
-import org.tinygroup.jsqlparser.statement.select.FromItemVisitor;
-import org.tinygroup.jsqlparser.statement.select.Join;
-import org.tinygroup.jsqlparser.statement.select.LateralSubSelect;
-import org.tinygroup.jsqlparser.statement.select.Limit;
-import org.tinygroup.jsqlparser.statement.select.Offset;
-import org.tinygroup.jsqlparser.statement.select.OrderByElement;
-import org.tinygroup.jsqlparser.statement.select.OrderByVisitor;
-import org.tinygroup.jsqlparser.statement.select.Pivot;
-import org.tinygroup.jsqlparser.statement.select.PivotVisitor;
-import org.tinygroup.jsqlparser.statement.select.PivotXml;
-import org.tinygroup.jsqlparser.statement.select.PlainSelect;
-import org.tinygroup.jsqlparser.statement.select.SelectExpressionItem;
-import org.tinygroup.jsqlparser.statement.select.SelectItem;
-import org.tinygroup.jsqlparser.statement.select.SelectItemVisitor;
-import org.tinygroup.jsqlparser.statement.select.SelectVisitor;
-import org.tinygroup.jsqlparser.statement.select.SetOperationList;
-import org.tinygroup.jsqlparser.statement.select.SubJoin;
-import org.tinygroup.jsqlparser.statement.select.SubSelect;
-import org.tinygroup.jsqlparser.statement.select.Top;
-import org.tinygroup.jsqlparser.statement.select.ValuesList;
-import org.tinygroup.jsqlparser.statement.select.WithItem;
 
 /**
  * 

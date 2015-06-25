@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package org.tinygroup.bizservice;
 
-import java.util.Collection;
-
 import org.tinygroup.dao.query.PagingObject;
 import org.tinygroup.dao.query.QueryObject;
 import org.tinygroup.logic.LogicInterface;
+
+import java.util.Collection;
 
 public class AbstractBizService<T, KeyType> implements
 		BizServiceInterface<T, KeyType, QueryObject> {

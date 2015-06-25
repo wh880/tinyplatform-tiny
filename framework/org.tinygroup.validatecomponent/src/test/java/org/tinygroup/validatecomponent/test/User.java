@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,18 +15,12 @@
  */
 package org.tinygroup.validatecomponent.test;
 
+import org.tinygroup.validate.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.tinygroup.validate.annotation.AssertEquals;
-import org.tinygroup.validate.annotation.AssertNotNull;
-import org.tinygroup.validate.annotation.Field;
-import org.tinygroup.validate.annotation.IntegerRange;
-import org.tinygroup.validate.annotation.Pattern;
-import org.tinygroup.validate.annotation.Size;
-import org.tinygroup.validate.annotation.Validation;
 
 @Validation(name = "user")
 public class User {

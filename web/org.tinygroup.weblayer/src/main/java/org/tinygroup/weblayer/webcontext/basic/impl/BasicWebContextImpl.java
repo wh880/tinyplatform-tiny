@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 package org.tinygroup.weblayer.webcontext.basic.impl;
 
-import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
-
 import org.tinygroup.commons.tools.HumanReadableSize;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.AbstractWebContextWrapper;
@@ -24,6 +22,8 @@ import org.tinygroup.weblayer.webcontext.WebContextException;
 import org.tinygroup.weblayer.webcontext.basic.BasicWebContext;
 import org.tinygroup.weblayer.webcontext.basic.interceptor.ResponseHeaderSecurityFilter;
 import org.tinygroup.weblayer.webcontext.basic.response.BasicResponseImpl;
+
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
 
 /**
  * 过滤header中的crlf，将status message用HTML entities转义，限制cookie的总大小。

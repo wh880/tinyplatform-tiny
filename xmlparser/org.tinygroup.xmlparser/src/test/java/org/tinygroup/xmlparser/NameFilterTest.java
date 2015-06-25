@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,11 @@
  */
 package org.tinygroup.xmlparser;
 
+import junit.framework.TestCase;
 import org.tinygroup.parser.filter.FastNameFilter;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.parser.filter.QuickNameFilter;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import junit.framework.TestCase;
 
 //TODO 增加个数时，会内存堆栈不够
 public class NameFilterTest extends TestCase {

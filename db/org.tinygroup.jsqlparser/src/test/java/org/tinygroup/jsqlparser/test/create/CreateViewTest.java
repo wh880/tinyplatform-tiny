@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,17 +15,16 @@
  */
 package org.tinygroup.jsqlparser.test.create;
 
-import java.io.StringReader;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-
 import junit.framework.TestCase;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.parser.CCJSqlParserManager;
 import org.tinygroup.jsqlparser.schema.Table;
 import org.tinygroup.jsqlparser.statement.create.view.CreateView;
 import org.tinygroup.jsqlparser.statement.select.PlainSelect;
-import static org.tinygroup.jsqlparser.test.TestUtils.*;
+
+import java.io.StringReader;
+
+import static org.tinygroup.jsqlparser.test.TestUtils.assertSqlCanBeParsedAndDeparsed;
 
 public class CreateViewTest extends TestCase {
 

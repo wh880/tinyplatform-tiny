@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,31 +16,6 @@
 package org.tinygroup.jspengine.servlet;
 
 // START PWC 6300204
-import java.io.FileNotFoundException;
-// END PWC 6300204
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
-// START GlassFish 750
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-// END GlassFish 750
-// START SJSWS 6232180
-import java.util.HashSet;
-import java.util.StringTokenizer;
-// END SJSWS 6232180
-// START GlassFish 747
-import java.util.HashMap;
-// END GlassFish 747
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-// START GlassFish 750
-import javax.servlet.jsp.tagext.TagLibraryInfo;
-// END GlassFish 750
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.jspengine.Constants;
@@ -52,8 +27,32 @@ import org.tinygroup.jspengine.org.apache.commons.logging.Log;
 import org.tinygroup.jspengine.org.apache.commons.logging.LogFactory;
 import org.tinygroup.jspengine.runtime.JspApplicationContextImpl;
 import org.tinygroup.jspengine.runtime.ResourceInjector;
-import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.weblayer.impl.TinyServletConfig;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.tagext.TagLibraryInfo;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.StringTokenizer;
+import java.util.concurrent.ConcurrentHashMap;
+
+// END PWC 6300204
+// START GlassFish 750
+// END GlassFish 750
+// START SJSWS 6232180
+// END SJSWS 6232180
+// START GlassFish 747
+// END GlassFish 747
+// START GlassFish 750
+// END GlassFish 750
 
 /**
  * The JSP engine (a.k.a Jasper).

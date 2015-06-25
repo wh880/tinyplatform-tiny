@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,10 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import java.io.File;
+import org.tinygroup.weblayer.webcontext.parser.upload.FileUploadReName;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.tinygroup.weblayer.webcontext.parser.upload.FileUploadReName;
+import java.io.File;
 
 public class DiskFileItem extends AbstractFileItem {
     private static final long serialVersionUID = 4225039123863446602L;

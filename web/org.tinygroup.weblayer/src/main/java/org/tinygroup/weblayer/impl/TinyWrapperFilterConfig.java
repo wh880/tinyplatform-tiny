@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,14 +15,13 @@
  */
 package org.tinygroup.weblayer.impl;
 
-import java.util.Enumeration;
-
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
-
 import org.tinygroup.commons.tools.Enumerator;
 import org.tinygroup.weblayer.config.TinyFilterConfigInfo;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
+
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
+import java.util.Enumeration;
 
 /**
  * FilterConfig的tiny实现

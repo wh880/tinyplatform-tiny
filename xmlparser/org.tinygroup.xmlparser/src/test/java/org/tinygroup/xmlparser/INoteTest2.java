@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,9 +15,8 @@
  */
 package org.tinygroup.xmlparser;
 
-import org.tinygroup.xmlparser.node.XmlNode;
-
 import junit.framework.TestCase;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 public class INoteTest2 extends TestCase {
 	XmlNode node = null;

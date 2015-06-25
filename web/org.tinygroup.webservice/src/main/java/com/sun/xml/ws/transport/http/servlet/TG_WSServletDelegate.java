@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,15 +15,13 @@
  */
 package com.sun.xml.ws.transport.http.servlet;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.sun.xml.ws.resources.WsservletMessages;
+import com.sun.xml.ws.transport.http.HttpAdapter;
+import com.sun.xml.ws.util.exception.JAXWSExceptionBase;
+import com.sun.xml.ws.util.localization.Localizable;
+import com.sun.xml.ws.util.localization.Localizer;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -32,15 +30,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.Binding;
 import javax.xml.ws.http.HTTPBinding;
-
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.LoggerFactory;
-
-import com.sun.xml.ws.resources.WsservletMessages;
-import com.sun.xml.ws.transport.http.HttpAdapter;
-import com.sun.xml.ws.util.exception.JAXWSExceptionBase;
-import com.sun.xml.ws.util.localization.Localizable;
-import com.sun.xml.ws.util.localization.Localizer;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Called by {@link WSServlet} to choose {@link HttpAdapter} and sends a request

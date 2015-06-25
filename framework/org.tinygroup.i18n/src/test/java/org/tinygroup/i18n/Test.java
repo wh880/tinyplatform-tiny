@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,16 +15,15 @@
  */
 package org.tinygroup.i18n;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.format.config.FormatPatternDefine;
 import org.tinygroup.format.config.FormatProvider;
 import org.tinygroup.format.config.Formater;
 import org.tinygroup.i18n.config.I18nConfiguration;
 import org.tinygroup.i18n.config.I18nMessage;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Test {
 

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,19 +15,19 @@
  */
 package org.tinygroup.database.trigger.impl;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.SqlBody;
 import org.tinygroup.database.config.trigger.Trigger;
 import org.tinygroup.database.config.trigger.Triggers;
 import org.tinygroup.database.trigger.TriggerProcessor;
 import org.tinygroup.database.trigger.TriggerSqlProcessor;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TriggerProcessorImpl implements TriggerProcessor {
 	

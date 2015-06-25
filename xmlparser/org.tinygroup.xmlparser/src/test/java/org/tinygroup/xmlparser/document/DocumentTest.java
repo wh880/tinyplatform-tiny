@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,13 +15,12 @@
  */
 package org.tinygroup.xmlparser.document;
 
-import java.io.IOException;
-
+import junit.framework.TestCase;
 import org.tinygroup.parser.exception.ParseException;
 import org.tinygroup.xmlparser.XmlDocument;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
-import junit.framework.TestCase;
+import java.io.IOException;
 
 public class DocumentTest extends TestCase {
 	XmlDocument doc = null;

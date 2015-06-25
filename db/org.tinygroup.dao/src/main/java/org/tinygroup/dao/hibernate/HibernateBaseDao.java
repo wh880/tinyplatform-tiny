@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,17 +15,17 @@
  */
 package org.tinygroup.dao.hibernate;
 
-import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.List;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.tinygroup.dao.query.PagingObject;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.tinygroup.dao.query.PagingObject;
+
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.List;
 
 public abstract class HibernateBaseDao extends HibernateDaoSupport {
 

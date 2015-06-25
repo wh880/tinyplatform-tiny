@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package org.tinygroup.dbrouter.impl.keygenerator;
 
-import java.util.UUID;
-
 import org.tinygroup.dbrouter.RouterKeyGenerator;
 import org.tinygroup.dbrouter.config.KeyTables;
 import org.tinygroup.dbrouter.config.Router;
+
+import java.util.UUID;
 
 /**
  * Created by luoguo on 13-12-13.

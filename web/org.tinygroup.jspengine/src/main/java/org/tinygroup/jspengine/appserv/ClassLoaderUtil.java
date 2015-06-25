@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,22 +15,20 @@
  */
 package org.tinygroup.jspengine.appserv;
 
+import org.tinygroup.jspengine.common.util.logging.LogDomains;
+import sun.misc.URLClassPath;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URLClassLoader;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
 import java.util.jar.JarFile;
-import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.text.MessageFormat;
-
-import org.tinygroup.jspengine.common.util.logging.LogDomains;
-
-import sun.misc.URLClassPath;
 
 
 /**

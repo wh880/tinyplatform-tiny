@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,16 +15,16 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import static org.tinygroup.commons.tools.BasicConstant.*;
-import static org.tinygroup.commons.tools.ObjectUtil.*;
-import static org.tinygroup.commons.tools.CollectionUtil.*;
+import org.tinygroup.support.BeanSupport;
+import org.tinygroup.weblayer.webcontext.parser.upload.ParameterValueFilter;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.tinygroup.support.BeanSupport;
-import org.tinygroup.weblayer.webcontext.parser.upload.ParameterValueFilter;
+import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING_ARRAY;
+import static org.tinygroup.commons.tools.CollectionUtil.createHashMap;
+import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
 
 /**
  * 过滤参数。

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,32 +15,6 @@
  */
 package org.tinygroup.jspengine.compiler;
 
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.JarURLConnection;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.net.URLConnection;
-import java.util.Enumeration;
-/* GlassFish 747
- import java.util.Hashtable;
- */
-// START GlassFish 747
-import java.util.HashMap;
-// END GlassFish 747
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-
-import javax.servlet.ServletContext;
-
-// START SJSAS 6384538
-// END SJSAS 6384538
 import org.tinygroup.jspengine.Constants;
 import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.Options;
@@ -50,6 +24,26 @@ import org.tinygroup.jspengine.org.apache.commons.logging.LogFactory;
 import org.tinygroup.jspengine.xmlparser.ParserUtils;
 import org.tinygroup.jspengine.xmlparser.TreeNode;
 import org.tinygroup.vfs.FileObject;
+
+import javax.servlet.ServletContext;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.URLConnection;
+import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+/* GlassFish 747
+ import java.util.Hashtable;
+ */
+// START GlassFish 747
+// END GlassFish 747
+// START SJSAS 6384538
+// END SJSAS 6384538
 
 /**
  * A container for all tag libraries that are defined "globally" for the web

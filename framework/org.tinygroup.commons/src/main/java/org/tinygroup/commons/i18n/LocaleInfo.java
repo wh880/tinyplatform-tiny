@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,10 +15,7 @@
  */
 package org.tinygroup.commons.i18n;
 
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
-import static org.tinygroup.commons.tools.Assert.unexpectedException;
-import static org.tinygroup.commons.tools.Assert.unsupportedOperation;
-import static org.tinygroup.commons.tools.StringUtil.trimToNull;
+import org.tinygroup.commons.tools.StringUtil;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,7 +27,8 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Locale;
 
-import org.tinygroup.commons.tools.StringUtil;
+import static org.tinygroup.commons.tools.Assert.*;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
 
 /**
  * 代表一个locale信息。

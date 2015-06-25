@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,22 +15,18 @@
  */
 package org.tinygroup.jspengine.compiler;
 
+import org.tinygroup.jspengine.JasperException;
+import org.tinygroup.jspengine.JspCompilationContext;
+import org.tinygroup.jspengine.Options;
+import org.tinygroup.jspengine.servlet.JspServletWrapper;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import org.tinygroup.jspengine.JasperException;
-import org.tinygroup.jspengine.JspCompilationContext;
-import org.tinygroup.jspengine.Options;
-import org.tinygroup.jspengine.servlet.JspServletWrapper;
+import java.util.*;
 
 /**
  * Main JSP compiler class.

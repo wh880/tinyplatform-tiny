@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,11 +14,6 @@
  *  limitations under the License.
  */
 package org.tinygroup.tinydb;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.tinygroup.database.config.dialectfunction.DialectFunctions;
@@ -39,6 +34,10 @@ import org.tinygroup.tinydb.sql.SQLGenerateContainer;
 import org.tinygroup.tinydb.sql.condition.ConditionGenerater;
 import org.tinygroup.tinydb.sql.group.GroupGenerater;
 import org.tinygroup.tinydb.sql.order.OrderGenerater;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 配置对象

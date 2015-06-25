@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,25 +15,20 @@
  */
 package org.tinygroup.jspengine.compiler;
 
-import java.io.CharArrayWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.Vector;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
-
-import javax.el.ELException;
-import javax.el.FunctionMapper;
-import javax.el.ExpressionFactory;
-
 import org.tinygroup.jspengine.Constants;
 import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.JspCompilationContext;
 import org.tinygroup.jspengine.el.ExpressionFactoryImpl;
 import org.tinygroup.jspengine.runtime.ELContextImpl;
 import org.xml.sax.Attributes;
+
+import javax.el.ELException;
+import javax.el.ExpressionFactory;
+import javax.el.FunctionMapper;
+import java.io.*;
+import java.util.Vector;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 /** 
  * This class has all the utility method(s).

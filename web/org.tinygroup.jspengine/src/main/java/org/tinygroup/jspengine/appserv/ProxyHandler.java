@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 package org.tinygroup.jspengine.appserv;
 
-import java.security.cert.X509Certificate;
-import java.security.cert.CertificateException;
 import javax.servlet.http.HttpServletRequest;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 /**
  * Abstract class allowing a backend appserver instance to retrieve information

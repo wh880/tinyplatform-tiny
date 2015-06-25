@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,7 @@
  */
 package org.tinygroup.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Parameter;
@@ -29,6 +25,9 @@ import org.tinygroup.service.impl.ServiceProviderImpl;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
 import org.tinygroup.service.registry.impl.ServiceRegistryImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceExecutorTest extends TestCase {
 	ServiceProviderInterface serviceExecutor = new ServiceProviderImpl();

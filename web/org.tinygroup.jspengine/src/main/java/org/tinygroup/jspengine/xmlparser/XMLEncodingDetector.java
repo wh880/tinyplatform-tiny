@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,18 +15,14 @@
  */
 package org.tinygroup.jspengine.xmlparser;
 
-import java.io.EOFException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Locale;
-import java.util.jar.JarFile;
-
 import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.JspCompilationContext;
 import org.tinygroup.jspengine.compiler.ErrorDispatcher;
 import org.tinygroup.jspengine.compiler.JspUtil;
+
+import java.io.*;
+import java.util.Locale;
+import java.util.jar.JarFile;
 
 public class XMLEncodingDetector {
     

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
  */
 package org.tinygroup.weblayer.webcontext.rewrite;
 
-import java.lang.reflect.Array;
-import java.util.List;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.weblayer.webcontext.rewrite.RewriteSubstitution.Parameter;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.lang.reflect.Array;
+import java.util.List;
 
 public class RewriteConfiguration extends AbstractConfiguration{
 	

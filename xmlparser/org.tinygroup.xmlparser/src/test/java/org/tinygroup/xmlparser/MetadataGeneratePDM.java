@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,14 +15,6 @@
  */
 package org.tinygroup.xmlparser;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
 import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.commons.namestrategy.impl.CamelCaseStrategy;
 import org.tinygroup.commons.tools.CollectionUtil;
@@ -35,6 +27,13 @@ import org.tinygroup.vfs.VFS;
 import org.tinygroup.xmlparser.formatter.XmlFormater;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 按模块导出

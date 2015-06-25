@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,10 +15,6 @@
  */
 package org.tinygroup.weblayer.webcontext.lazycommit.impl;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -28,7 +24,9 @@ import org.tinygroup.weblayer.webcontext.AbstractResponseWrapper;
 import org.tinygroup.weblayer.webcontext.AbstractWebContextWrapper;
 import org.tinygroup.weblayer.webcontext.lazycommit.LazyCommitWebContext;
 import org.tinygroup.weblayer.webcontext.lazycommit.exception.LazyCommitFailedException;
-import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 /**

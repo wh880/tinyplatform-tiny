@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ package org.tinygroup.binarytree.impl;
  * 平衡二叉树
  */
 
-import java.util.Iterator;
-
 import org.tinygroup.binarytree.AVLTree;
+
+import java.util.Iterator;
 
 /**
  * 平衡二叉搜索（排序）树 此程序部分代码来自网上

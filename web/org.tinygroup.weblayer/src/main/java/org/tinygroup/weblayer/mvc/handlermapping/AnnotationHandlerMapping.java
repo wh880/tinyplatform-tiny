@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,6 @@
  */
 package org.tinygroup.weblayer.mvc.handlermapping;
 
-import java.lang.reflect.Method;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.tinygroup.commons.tools.AnnotationUtils;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
@@ -32,6 +27,11 @@ import org.tinygroup.weblayer.mvc.annotation.RequestMapping;
 import org.tinygroup.weblayer.mvc.annotation.ResultKey;
 import org.tinygroup.weblayer.mvc.annotation.View;
 import org.tinygroup.weblayer.util.TinyPathMatcher;
+
+import java.lang.reflect.Method;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 

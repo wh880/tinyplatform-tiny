@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,8 @@
  */
 package org.tinygroup.codegen;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.thoughtworks.xstream.XStream;
 import junit.framework.TestCase;
-
 import org.tinygroup.codegen.config.CodeGenMetaData;
 import org.tinygroup.codegen.impl.CodeGeneratorDefault;
 import org.tinygroup.codegen.util.CodeGenUtil;
@@ -27,7 +24,7 @@ import org.tinygroup.context.Context;
 import org.tinygroup.context.util.ContextFactory;
 import org.tinygroup.xstream.XStreamFactory;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.File;
 
 public class CodeGenTest extends TestCase {
 	String testJavaPath;

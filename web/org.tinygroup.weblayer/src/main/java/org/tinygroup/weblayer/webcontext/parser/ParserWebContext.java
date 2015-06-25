@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 package org.tinygroup.weblayer.webcontext.parser;
 
+import org.springframework.beans.PropertyEditorRegistrar;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.CookieParser;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.ParameterParser;
-import org.springframework.beans.PropertyEditorRegistrar;
 
 /**
  * 自动解析request parameters和cookie parameters，并透明地处理upload请求的web context实现。

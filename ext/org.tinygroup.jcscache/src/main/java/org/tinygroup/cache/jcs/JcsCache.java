@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package org.tinygroup.cache.jcs;
 
-import java.io.Serializable;
-import java.util.Set;
-
 import org.apache.jcs.JCS;
 import org.apache.jcs.engine.control.CompositeCache;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.CacheManager;
 import org.tinygroup.cache.exception.CacheException;
+
+import java.io.Serializable;
+import java.util.Set;
 
 public class JcsCache implements Cache {
 	private JCS jcs;

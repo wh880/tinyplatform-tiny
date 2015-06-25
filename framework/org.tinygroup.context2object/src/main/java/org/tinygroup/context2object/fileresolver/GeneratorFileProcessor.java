@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.tinygroup.context2object.fileresolver;
 
+import com.thoughtworks.xstream.XStream;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context2object.ObjectAssembly;
 import org.tinygroup.context2object.TypeConverter;
@@ -28,8 +29,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
-
-import com.thoughtworks.xstream.XStream;
 
 public class GeneratorFileProcessor extends AbstractFileProcessor {
 	private static Logger logger = LoggerFactory

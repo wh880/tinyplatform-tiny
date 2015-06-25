@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,10 +15,13 @@
  */
 package org.tinygroup.jsqlparser.schema;
 
-import java.io.Serializable;
+import org.tinygroup.jsqlparser.expression.Alias;
+import org.tinygroup.jsqlparser.statement.select.FromItem;
+import org.tinygroup.jsqlparser.statement.select.FromItemVisitor;
+import org.tinygroup.jsqlparser.statement.select.IntoTableVisitor;
+import org.tinygroup.jsqlparser.statement.select.Pivot;
 
-import org.tinygroup.jsqlparser.expression.*;
-import org.tinygroup.jsqlparser.statement.select.*;
+import java.io.Serializable;
 
 /**
  * A table. It can have an alias and the schema name it belongs to.

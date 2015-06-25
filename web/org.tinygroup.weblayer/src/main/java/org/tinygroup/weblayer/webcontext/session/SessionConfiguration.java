@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,24 +15,6 @@
  */
 package org.tinygroup.weblayer.webcontext.session;
 
-import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
-import static org.tinygroup.commons.tools.CollectionUtil.createArrayList;
-import static org.tinygroup.commons.tools.CollectionUtil.createLinkedHashSet;
-import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
-import static org.tinygroup.commons.tools.StringUtil.defaultIfEmpty;
-import static org.tinygroup.commons.tools.StringUtil.trimToNull;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.CollectionUtil;
@@ -42,15 +24,23 @@ import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.parser.filter.NameFilter;
-import org.tinygroup.weblayer.webcontext.session.SessionConfig.CookieConfig;
-import org.tinygroup.weblayer.webcontext.session.SessionConfig.IdConfig;
-import org.tinygroup.weblayer.webcontext.session.SessionConfig.StoreMappingsConfig;
-import org.tinygroup.weblayer.webcontext.session.SessionConfig.StoresConfig;
-import org.tinygroup.weblayer.webcontext.session.SessionConfig.UrlEncodeConfig;
+import org.tinygroup.weblayer.webcontext.session.SessionConfig.*;
 import org.tinygroup.weblayer.webcontext.session.exception.SessionFrameworkException;
 import org.tinygroup.weblayer.webcontext.session.impl.SessionModelEncoderImpl;
 import org.tinygroup.weblayer.webcontext.session.impl.UUIDGenerator;
 import org.tinygroup.xmlparser.node.XmlNode;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import static org.tinygroup.commons.tools.CollectionUtil.createArrayList;
+import static org.tinygroup.commons.tools.CollectionUtil.createLinkedHashSet;
+import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
+import static org.tinygroup.commons.tools.StringUtil.defaultIfEmpty;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
 
 public class SessionConfiguration extends AbstractConfiguration {
 

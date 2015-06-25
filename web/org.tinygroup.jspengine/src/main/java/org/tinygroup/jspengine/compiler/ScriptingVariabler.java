@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,10 +15,12 @@
  */
 package org.tinygroup.jspengine.compiler;
 
-import java.util.*;
-import javax.servlet.jsp.tagext.*;
-
 import org.tinygroup.jspengine.JasperException;
+
+import javax.servlet.jsp.tagext.TagVariableInfo;
+import javax.servlet.jsp.tagext.VariableInfo;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * Class responsible for determining the scripting variables that every

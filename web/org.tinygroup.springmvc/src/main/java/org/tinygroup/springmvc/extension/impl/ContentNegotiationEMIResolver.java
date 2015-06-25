@@ -1,9 +1,19 @@
+/**
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
+ *
+ *  Licensed under the GPL, Version 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.gnu.org/licenses/gpl.html
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package org.tinygroup.springmvc.extension.impl;
-
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UrlPathHelper;
@@ -13,6 +23,10 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springmvc.extension.FileExtensionResolver;
 import org.tinygroup.springmvc.http.MediaType;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * 内容协商解析对象,先根据请求路径的后缀查找请求的扩展名,再根据请求参数format对应的值,最后根据请求头Accept的mediaType

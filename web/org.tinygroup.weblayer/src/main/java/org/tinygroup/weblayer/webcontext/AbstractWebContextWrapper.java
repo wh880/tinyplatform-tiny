@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,24 +15,18 @@
  */
 package org.tinygroup.weblayer.webcontext;
 
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.tinygroup.context.Context;
+import org.tinygroup.context.impl.ContextImpl;
+import org.tinygroup.weblayer.WebContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.*;
 
-import org.tinygroup.commons.tools.ObjectUtil;
-import org.tinygroup.context.Context;
-import org.tinygroup.context.impl.ContextImpl;
-import org.tinygroup.weblayer.WebContext;
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
 
 /**
  * 功能说明:抽象的包装上下文,类属性值都是从被包装的上下文对象中获得

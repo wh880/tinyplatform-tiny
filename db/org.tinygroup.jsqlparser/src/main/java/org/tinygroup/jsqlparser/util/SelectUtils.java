@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,21 +15,14 @@
  */
 package org.tinygroup.jsqlparser.util;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.parser.CCJSqlParserUtil;
 import org.tinygroup.jsqlparser.schema.Table;
-import org.tinygroup.jsqlparser.statement.select.AllColumns;
-import org.tinygroup.jsqlparser.statement.select.Join;
-import org.tinygroup.jsqlparser.statement.select.PlainSelect;
-import org.tinygroup.jsqlparser.statement.select.Select;
-import org.tinygroup.jsqlparser.statement.select.SelectExpressionItem;
-import org.tinygroup.jsqlparser.statement.select.SelectItem;
-import org.tinygroup.jsqlparser.statement.select.SelectVisitor;
-import org.tinygroup.jsqlparser.statement.select.SetOperationList;
-import org.tinygroup.jsqlparser.statement.select.WithItem;
+import org.tinygroup.jsqlparser.statement.select.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility function for select statements.

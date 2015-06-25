@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package org.tinygroup.context2object.test.testcase;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.context2object.test.bean.CatInterface;
 import org.tinygroup.context2object.test.bean.SmallCat;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 public class TestListWithVarName extends BastTestCast{
 

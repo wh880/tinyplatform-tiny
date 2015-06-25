@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 package org.tinygroup.weblayer.webcontext.setlocacle.impl;
 
-import static org.tinygroup.commons.tools.StringUtil.*;
-import static org.tinygroup.commons.tools.PathNameWildcardCompiler.*;
-
 import java.util.regex.Pattern;
+
+import static org.tinygroup.commons.tools.PathNameWildcardCompiler.compilePathName;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
 
 /**
  * 根据request uri来设置输入、输出charset。

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  */
 package org.tinygroup.jspengine.compiler;
 
+import org.tinygroup.jspengine.JasperException;
+import org.tinygroup.jspengine.JspCompilationContext;
+
 import java.io.File;
 import java.io.Writer;
 import java.util.List;
-
-import org.tinygroup.jspengine.JasperException;
-import org.tinygroup.jspengine.JspCompilationContext;
 
 interface JavaCompiler {
 

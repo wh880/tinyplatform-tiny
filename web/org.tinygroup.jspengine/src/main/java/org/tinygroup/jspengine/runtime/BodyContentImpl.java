@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,16 +15,11 @@
  */
 package org.tinygroup.jspengine.runtime;
 
-import java.io.CharArrayReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Writer;
-import javax.servlet.ServletResponse;
+import org.tinygroup.jspengine.Constants;
+
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyContent;
-
-import org.tinygroup.jspengine.Constants;
+import java.io.*;
 
 /**
  * Write text to a character-output stream, buffering characters so as

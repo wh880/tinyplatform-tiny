@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package org.tinygroup.docgen;
 
-import java.io.File;
-import java.io.Writer;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.vfs.FileObject;
+
+import java.io.File;
+import java.io.Writer;
 
 /**
  * 

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,19 +15,17 @@
  */
 package org.tinygroup.xmlparser;
 
-import java.io.File;
-import java.util.Hashtable;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.parser.filter.NameFilter;
-import org.tinygroup.parser.filter.QuickNameFilter;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.io.File;
+import java.util.Hashtable;
+import java.util.List;
 
 public class FilterTest extends TestCase {
 	XmlDocument doc = null;

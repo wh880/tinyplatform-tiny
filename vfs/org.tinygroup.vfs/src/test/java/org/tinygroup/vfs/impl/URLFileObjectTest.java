@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,13 +15,11 @@
  */
 package org.tinygroup.vfs.impl;
 
-import java.io.IOException;
-
 import junit.framework.TestCase;
-
 import org.tinygroup.vfs.FileObject;
-import org.tinygroup.vfs.FileUtils;
 import org.tinygroup.vfs.VFS;
+
+import java.io.IOException;
 
 public class URLFileObjectTest extends TestCase {
 

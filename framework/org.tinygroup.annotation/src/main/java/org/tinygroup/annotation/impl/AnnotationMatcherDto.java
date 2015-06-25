@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  */
 package org.tinygroup.annotation.impl;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import org.tinygroup.annotation.config.AnnotationClassMatcher;
 import org.tinygroup.annotation.config.AnnotationMethodMatcher;
 import org.tinygroup.annotation.config.AnnotationPropertyMatcher;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 
 

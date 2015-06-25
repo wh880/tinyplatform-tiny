@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package org.tinygroup.pageflowbasiccomponent;
 
-import java.io.IOException;
-
 import org.tinygroup.context.Context;
 import org.tinygroup.convert.objectxml.xstream.ObjectToXml;
 import org.tinygroup.weblayer.WebContext;
+
+import java.io.IOException;
 
 public class WriteXmlComponent extends AbstractWriteComponent {
 	private ObjectToXml<Object> objectToXml = new ObjectToXml<Object>();

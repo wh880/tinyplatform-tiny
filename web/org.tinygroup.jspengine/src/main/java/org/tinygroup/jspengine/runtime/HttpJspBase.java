@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,20 +15,15 @@
  */
 package org.tinygroup.jspengine.runtime;
 
-import java.io.IOException;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.util.List;
-
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.jsp.*;
-
-import org.tinygroup.jspengine.JasperException;
 import org.tinygroup.jspengine.compiler.Localizer;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.HttpJspPage;
+import java.io.IOException;
 
 /**
  * This is the super class of all JSP-generated servlets.

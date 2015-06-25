@@ -1,8 +1,25 @@
+/**
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
+ *
+ *  Licensed under the GPL, Version 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.gnu.org/licenses/gpl.html
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package org.tinygroup.weblayer.listener.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.weblayer.BasicTinyConfigAware;
+import org.tinygroup.weblayer.config.BasicConfigInfo;
+import org.tinygroup.weblayer.impl.SimpleBasicTinyConfig;
+import org.tinygroup.weblayer.listener.ListenerInstanceBuilder;
 
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextListener;
@@ -12,12 +29,9 @@ import javax.servlet.http.HttpSessionActivationListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionListener;
-
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.weblayer.BasicTinyConfigAware;
-import org.tinygroup.weblayer.config.BasicConfigInfo;
-import org.tinygroup.weblayer.impl.SimpleBasicTinyConfig;
-import org.tinygroup.weblayer.listener.ListenerInstanceBuilder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ListenerBuilderSupport {
 

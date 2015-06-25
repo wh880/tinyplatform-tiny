@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package org.tinygroup.cepcore;
 
-import java.rmi.Remote;
-import java.util.List;
-
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
+
+import java.rmi.Remote;
+import java.util.List;
 
 public interface CEPCore extends Remote {
 	String CEP_CORE_BEAN = "cepcore";

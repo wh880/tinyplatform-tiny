@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,13 +15,12 @@
  */
 package org.tinygroup.convert;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.tinygroup.convert.objectjson.xstream.JsonToObject;
 import org.tinygroup.convert.objectjson.xstream.ObjectToJson;
 
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestObjectJson extends AbstractConvertTestCase {
 

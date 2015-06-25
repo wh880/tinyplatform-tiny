@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  */
 package org.tinygroup.weblayer.webcontext.session;
 
-import java.util.Map;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * 用来持久化存储session attribute的机制。

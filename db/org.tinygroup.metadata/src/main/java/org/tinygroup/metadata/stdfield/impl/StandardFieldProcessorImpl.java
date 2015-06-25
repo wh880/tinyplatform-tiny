@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package org.tinygroup.metadata.stdfield.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.metadata.bizdatatype.BusinessTypeProcessor;
 import org.tinygroup.metadata.config.stdfield.NickName;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.config.stdfield.StandardFields;
 import org.tinygroup.metadata.stdfield.StandardFieldProcessor;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class StandardFieldProcessorImpl implements StandardFieldProcessor {
 	// private static Map<String, Map<String, StandardField>> standardFieldMap =

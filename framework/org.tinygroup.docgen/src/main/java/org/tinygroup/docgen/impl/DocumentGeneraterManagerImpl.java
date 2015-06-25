@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package org.tinygroup.docgen.impl;
 
+import org.tinygroup.docgen.DocumentGenerater;
+import org.tinygroup.docgen.DocumentGeneraterManager;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.tinygroup.docgen.DocumentGeneraterManager;
-import org.tinygroup.docgen.DocumentGenerater;
 
 /**
  * 

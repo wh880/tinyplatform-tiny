@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,16 +15,15 @@
  */
 package org.tinygroup.dao.util;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
-import javax.persistence.Entity;
-
 import org.tinygroup.commons.namestrategy.NameStrategy;
 import org.tinygroup.commons.namestrategy.impl.CamelCaseStrategy;
 import org.tinygroup.dao.query.QueryCondition;
 import org.tinygroup.dao.query.QueryObject;
+
+import javax.persistence.Entity;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public class DaoUtil {
 	public static String QueryObjectToHql(QueryObject obj,List<Object> params) {

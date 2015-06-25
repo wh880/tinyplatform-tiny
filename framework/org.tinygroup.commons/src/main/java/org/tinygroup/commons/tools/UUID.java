@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package org.tinygroup.commons.tools;
 
+import org.tinygroup.commons.io.ByteArrayOutputStream;
+
 import java.io.DataOutputStream;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.security.SecureRandom;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.tinygroup.commons.io.ByteArrayOutputStream;
 
 /**
  * 生成唯一ID。

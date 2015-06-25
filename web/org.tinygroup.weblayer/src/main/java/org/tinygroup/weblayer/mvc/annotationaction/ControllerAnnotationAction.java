@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
  */
 package org.tinygroup.weblayer.mvc.annotationaction;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
 import org.tinygroup.annotation.AnnotationClassAction;
 import org.tinygroup.annotation.AnnotationMethodAction;
 import org.tinygroup.commons.tools.AnnotationUtils;
@@ -25,6 +22,9 @@ import org.tinygroup.weblayer.mvc.MappingClassModel;
 import org.tinygroup.weblayer.mvc.MappingMethodModel;
 import org.tinygroup.weblayer.mvc.MappingModelManager;
 import org.tinygroup.weblayer.mvc.annotation.RequestMapping;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
  * 

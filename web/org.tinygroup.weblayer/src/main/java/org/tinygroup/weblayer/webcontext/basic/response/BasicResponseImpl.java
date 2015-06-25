@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,30 +15,23 @@
  */
 package org.tinygroup.weblayer.webcontext.basic.response;
 
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
-import static org.tinygroup.commons.tools.StringUtil.trimToNull;
-
-import java.io.IOException;
-import java.net.URI;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.tinygroup.commons.tools.StringEscapeUtil;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.webcontext.AbstractResponseWrapper;
 import org.tinygroup.weblayer.webcontext.basic.exception.CookieRejectedException;
 import org.tinygroup.weblayer.webcontext.basic.exception.RedirectLocationRejectedException;
 import org.tinygroup.weblayer.webcontext.basic.exception.ResponseHeaderRejectedException;
-import org.tinygroup.weblayer.webcontext.basic.interceptor.CookieHeaderValueInterceptor;
-import org.tinygroup.weblayer.webcontext.basic.interceptor.CookieInterceptor;
-import org.tinygroup.weblayer.webcontext.basic.interceptor.HeaderNameInterceptor;
-import org.tinygroup.weblayer.webcontext.basic.interceptor.HeaderValueInterceptor;
-import org.tinygroup.weblayer.webcontext.basic.interceptor.RedirectLocationInterceptor;
-import org.tinygroup.weblayer.webcontext.basic.interceptor.StatusMessageInterceptor;
-import org.tinygroup.weblayer.webcontext.basic.interceptor.WebContextLifecycleInterceptor;
+import org.tinygroup.weblayer.webcontext.basic.interceptor.*;
 import org.tinygroup.weblayer.webcontext.util.CookieSupport;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URI;
+
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
 
 
 

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
  */
 package org.tinygroup.commons.tools;
 
-import static org.tinygroup.commons.tools.Assert.assertNotNull;
-import static org.tinygroup.commons.tools.Assert.assertTrue;
-import static org.tinygroup.commons.tools.CollectionUtil.createHashMap;
-import static org.tinygroup.commons.tools.StringUtil.trimToNull;
-
 import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static org.tinygroup.commons.tools.Assert.assertNotNull;
+import static org.tinygroup.commons.tools.Assert.assertTrue;
+import static org.tinygroup.commons.tools.CollectionUtil.createHashMap;
+import static org.tinygroup.commons.tools.StringUtil.trimToNull;
 
 /**
  * 以易读的方式来解析和显示字节数。

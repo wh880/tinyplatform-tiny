@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
  */
 package org.tinygroup.weblayer.webcontext.session.store.impl;
 
-import static java.util.Collections.emptyList;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
-
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.weblayer.webcontext.session.SessionConfig;
 import org.tinygroup.weblayer.webcontext.session.SessionStore;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
+
+import static java.util.Collections.emptyList;
 
 /**
  * 存放在内存中的session attribute的机制。

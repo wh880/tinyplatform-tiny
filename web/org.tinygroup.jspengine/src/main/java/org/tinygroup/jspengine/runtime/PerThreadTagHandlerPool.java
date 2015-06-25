@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,15 +15,13 @@
  */
 package org.tinygroup.jspengine.runtime;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Vector;
+import org.tinygroup.jspengine.Constants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
-
-import org.tinygroup.jspengine.Constants;
+import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  * Thread-local based pool of tag handlers that can be reused.

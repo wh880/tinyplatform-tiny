@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,6 @@
  */
 package org.tinygroup.weblayer.webcontext.session.impl;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -33,6 +28,11 @@ import org.tinygroup.weblayer.webcontext.session.SessionConfig;
 import org.tinygroup.weblayer.webcontext.session.SessionConfig.CookieConfig;
 import org.tinygroup.weblayer.webcontext.session.SessionWebContext;
 import org.tinygroup.weblayer.webcontext.util.CookieSupport;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 /** 支持session的<code>HttpRequestContext</code>实现。 */

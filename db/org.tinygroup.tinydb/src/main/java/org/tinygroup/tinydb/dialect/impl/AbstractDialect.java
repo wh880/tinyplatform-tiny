@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  */
 package org.tinygroup.tinydb.dialect.impl;
 
-import javax.sql.DataSource;
-
 import org.springframework.dao.DataAccessException;
 import org.tinygroup.database.dialectfunction.DialectFunctionProcessor;
 import org.tinygroup.database.dialectfunction.impl.DialectFunctionProcessorImpl;
 import org.tinygroup.tinydb.dialect.Dialect;
+
+import javax.sql.DataSource;
 
 public abstract class AbstractDialect implements Dialect {
 	

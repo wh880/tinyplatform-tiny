@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package org.tinygroup.tinydb.testcase.operator;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.tinygroup.tinydb.Bean;
 import org.tinygroup.tinydb.Pager;
 import org.tinygroup.tinydb.exception.TinyDbException;
 import org.tinygroup.tinydb.operator.DBOperator;
 import org.tinygroup.tinydb.test.BaseTest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TestSqlOperator extends BaseTest{
 	

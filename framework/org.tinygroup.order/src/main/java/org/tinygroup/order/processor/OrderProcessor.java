@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,6 @@
  */
 package org.tinygroup.order.processor;
 
-import static org.tinygroup.logger.LogLevel.INFO;
-
-import java.io.BufferedInputStream;
-import java.util.List;
-
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.logger.Logger;
@@ -27,6 +22,11 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.io.BufferedInputStream;
+import java.util.List;
+
+import static org.tinygroup.logger.LogLevel.INFO;
 
 /**
  * 

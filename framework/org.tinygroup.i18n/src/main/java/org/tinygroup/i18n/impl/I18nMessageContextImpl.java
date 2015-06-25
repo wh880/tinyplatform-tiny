@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  */
 package org.tinygroup.i18n.impl;
 
-import java.util.Locale;
-
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.format.Formater;
 import org.tinygroup.i18n.I18nMessageContext;
 import org.tinygroup.i18n.I18nMessageFactory;
+
+import java.util.Locale;
 
 /**
  * 支持通过Context和Map来取数据的实现

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,21 +15,14 @@
  */
 package org.tinygroup.vfs;
 
+import org.tinygroup.vfs.impl.*;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.tinygroup.vfs.impl.FileSchemaProvider;
-import org.tinygroup.vfs.impl.FtpSchemaProvider;
-import org.tinygroup.vfs.impl.HttpSchemaProvider;
-import org.tinygroup.vfs.impl.HttpsSchemaProvider;
-import org.tinygroup.vfs.impl.JBossVfsSchemaProvider;
-import org.tinygroup.vfs.impl.JarSchemaProvider;
-import org.tinygroup.vfs.impl.WsJarSchemaProvider;
-import org.tinygroup.vfs.impl.ZipSchemaProvider;
 
 /**
  * 虚拟文件系统

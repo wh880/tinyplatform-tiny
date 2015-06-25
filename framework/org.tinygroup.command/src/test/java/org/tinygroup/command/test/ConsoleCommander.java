@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
  */
 package org.tinygroup.command.test;
 
+import com.thoughtworks.xstream.XStream;
+import org.tinygroup.command.CommandSystem;
+import org.tinygroup.command.config.Commands;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import org.tinygroup.command.CommandSystem;
-import org.tinygroup.command.config.Commands;
-
-import com.thoughtworks.xstream.XStream;
 
 public class ConsoleCommander extends Thread {
 	CommandSystem commandSystem;

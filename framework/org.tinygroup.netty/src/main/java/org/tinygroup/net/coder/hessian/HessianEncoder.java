@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
  */
 package org.tinygroup.net.coder.hessian;
 
-import static org.jboss.netty.buffer.ChannelBuffers.dynamicBuffer;
-
+import com.caucho.hessian.io.HessianOutput;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferOutputStream;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
 
-import com.caucho.hessian.io.HessianOutput;
+import static org.jboss.netty.buffer.ChannelBuffers.dynamicBuffer;
 
 public class HessianEncoder extends OneToOneEncoder{
 

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package org.tinygroup.jspengine.xmlparser;
 
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.Reader;
-
 import org.tinygroup.jspengine.compiler.Localizer;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 
 /**
  * A simple ASCII byte reader. This is an optimized reader for reading

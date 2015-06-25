@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,25 +15,24 @@
  */
 package org.tinygroup.jspengine.compiler;
 
-import java.io.CharArrayWriter;
-import java.io.FileNotFoundException;
-import java.net.URL;
-// START GlassFish 750
-import java.util.concurrent.ConcurrentHashMap;
-// START GlassFish 750
-import java.util.Iterator;
-import java.util.List;
+import org.tinygroup.jspengine.JasperException;
+import org.tinygroup.jspengine.JspCompilationContext;
+import org.xml.sax.Attributes;
+import org.xml.sax.helpers.AttributesImpl;
 
 import javax.servlet.jsp.tagext.TagAttributeInfo;
 import javax.servlet.jsp.tagext.TagFileInfo;
 import javax.servlet.jsp.tagext.TagInfo;
 import javax.servlet.jsp.tagext.TagLibraryInfo;
+import java.io.CharArrayWriter;
+import java.io.FileNotFoundException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.tinygroup.jspengine.Constants;
-import org.tinygroup.jspengine.JasperException;
-import org.tinygroup.jspengine.JspCompilationContext;
-import org.xml.sax.Attributes;
-import org.xml.sax.helpers.AttributesImpl;
+// START GlassFish 750
+// START GlassFish 750
 
 /**
  * This class implements a parser for a JSP page (non-xml view).

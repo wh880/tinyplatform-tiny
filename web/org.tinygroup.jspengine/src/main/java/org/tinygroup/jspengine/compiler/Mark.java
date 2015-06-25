@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package org.tinygroup.jspengine.compiler;
 
-import java.util.Stack;
-import java.net.URL;
-import java.net.MalformedURLException;
-
 import org.tinygroup.jspengine.JspCompilationContext;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Stack;
 
 /**
  * Mark represents a point in the JSP input. 
