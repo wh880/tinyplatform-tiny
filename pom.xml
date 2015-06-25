@@ -139,8 +139,8 @@
                 <artifactId>maven-license-plugin</artifactId>
                 <version>1.10.b1</version>
                 <configuration>
-                    <header>D:/git/tiny/license.txt</header>
-                    <strictCheck>true</strictCheck>
+                    <header>http://www.tinygroup.org/license.txt</header>
+                    <strictCheck>false</strictCheck>
                     <encoding>UTF-8</encoding>
                     <excludes>
                         <exclude>target/**</exclude>
