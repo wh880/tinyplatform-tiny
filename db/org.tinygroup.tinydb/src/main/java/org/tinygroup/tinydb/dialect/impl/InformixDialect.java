@@ -13,17 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-/*
- * 系统名称: JRES 应用快速开发企业套件
- * 模块名称: JRES
- * 文件名称: InformixDialect.java
- * 软件版权: 恒生电子股份有限公司
- * 修改记录:
- * 修改日期      修改人员                     修改说明
- * ========    =======  ============================================
- *             
- * ========    =======  ============================================
- */
+
 package org.tinygroup.tinydb.dialect.impl;
 
 import org.tinygroup.database.util.DataBaseUtil;
