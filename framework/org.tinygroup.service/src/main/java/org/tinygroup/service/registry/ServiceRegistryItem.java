@@ -30,9 +30,6 @@ import java.util.List;
  */
 public class ServiceRegistryItem implements ServiceInfo {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6526088933543577083L;
 	/**
 	 * 服务本地名称，仅用于显示

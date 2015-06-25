@@ -28,47 +28,49 @@ import java.util.List;
 public interface EventProcessor {
 	int TYPE_REMOTE = 1;
 	int TYPE_LOCAL = 2;
-
 	/**
 	 * 处理事件
 	 * @param event
 	 */
 	void process(Event event);
-
 	/**
 	 * 设置CEPCore
 	 * @param cepCore
 	 */
 	void setCepCore(CEPCore cepCore);
-
+	/**
+	 * 返回当前处理器中的所有服务
+	 * @return
+	 */
 	List<ServiceInfo> getServiceInfos();
 	/**
 	 * 返回处理器ID，ID必须唯一
 	 * @return
 	 */
 	String getId();
-
 	/**
 	 * 返回处理器类型
 	 * @return
 	 */
 	int getType();
-	
 	/**
 	 * 返回处理权重
 	 * @return
 	 */
 	int getWeight();
-	
-	
-	
 	/**
 	 * 返回正则
 	 * @return
 	 */
-	List<String> getRegex();
-	
+	List<String> getRegex();	
+	/**
+	 * 获取是否已被读取状态
+	 * @return
+	 */
 	boolean isRead();
-	
+	/**
+	 * 设置读取状态，当刷新时，将此状态设置为false,当注册完成后，设置为true
+	 * @param read
+	 */
 	void setRead(boolean read);
 }
