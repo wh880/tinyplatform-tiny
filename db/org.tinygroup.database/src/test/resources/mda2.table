@@ -1,4 +1,4 @@
-<tables name="jres" title="jres" package-name="com.hundsun">
+<tables name="jres" title="jres" package-name="org.tinygroup">
 <table id="useruuid" name="user" title="用户">
   <table-field standard-field-id="stdiduserid" primary="true" unique="true" not-null="false" id="useriduuid" auto-increase="true"/>
   <table-field standard-field-id="stdidusername" primary="false" unique="false" not-null="false" id="usernameuuid"/>

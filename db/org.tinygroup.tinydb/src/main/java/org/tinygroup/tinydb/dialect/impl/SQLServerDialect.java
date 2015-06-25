@@ -84,7 +84,6 @@ public class SQLServerDialect extends AbstractColumnDialcet {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.hundsun.jres.interfaces.db.dialect.IDialect#getAutoIncreaseKeySql()
 	 */
 	public int getNextKey() {
 		if (this.nextValueIndex < 0 || this.nextValueIndex >= getCacheSize()) {
@@ -132,7 +131,6 @@ public class SQLServerDialect extends AbstractColumnDialcet {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.hundsun.jres.interfaces.db.dialect.IDialect#getCurrentDate()
 	 */
 	public String getCurrentDate() {
 		return "select current_timestamp";

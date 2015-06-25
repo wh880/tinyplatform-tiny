@@ -64,7 +64,6 @@ public class InformixDialect extends AbstractSequenceDialcet {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.hundsun.jres.interfaces.db.dialect.IDialect#getCurrentDate()
 	 */
 	public String getCurrentDate() {
 		return "SELECT current FROM sysmaster:sysshmvals";

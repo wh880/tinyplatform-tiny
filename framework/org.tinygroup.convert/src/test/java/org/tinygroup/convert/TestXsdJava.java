@@ -77,7 +77,7 @@ public class TestXsdJava extends TestCase {
 					SchemaToClass schemaToClass = new SchemaToClass(
 							"test",
 							"src/test/resources/xjb",
-							"com.hundsun."
+							"com.abc."
 									+ subFile.getName().replaceAll("[.]", "_"));
 					xsdFiles.add(subFile.getAbsolutePath());
 					schemaToClass.convert(xsdFiles);

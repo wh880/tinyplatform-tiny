@@ -38,7 +38,7 @@ public abstract class AbstractValidatorManagerTest extends TestCase {
 	public void testValidator() {
 		User user = new User();
 		user.setAge(10);
-		user.setEmail("renhui@hundsun.com");
+		user.setEmail("abc@ad.com");
 		user.setName("renhui");
 		Address address = new Address();
 		address.setName("武林门新村");

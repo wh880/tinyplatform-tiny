@@ -80,7 +80,6 @@ public class MySQLDialect extends AbstractColumnDialcet {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.hundsun.jres.interfaces.db.dialect.IDialect#getAutoIncreaseKeySql()
 	 */
 	public int getNextKey() {
 		if (this.maxId == this.nextId) {
@@ -129,7 +128,6 @@ public class MySQLDialect extends AbstractColumnDialcet {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.hundsun.jres.interfaces.db.dialect.IDialect#getCurrentDate()
 	 */
 	public String getCurrentDate() {
 		return "select now()";

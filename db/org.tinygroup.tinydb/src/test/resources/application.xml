@@ -2,7 +2,7 @@
 <!-- 测试 -->
 <application>
 	<application-properties>
-		<property name="BASE_PACKAGE" value="org.hundsun" />
+		<property name="BASE_PACKAGE" value="org.tinygroup" />
 		<property name="TINY_IS_RELEASE_MODE" value="false" />
 		<property name="TINY_THEME" value="default" />
 		<property name="wholeWidth" value="200pt" />
@@ -20,7 +20,7 @@
 		* 欢迎进入Tiny
 		Server *
 		* *
-		* 如果有任何问题，请联系luoguo@hundsun.com *
+		* 如果有任何问题，请联系tinygroup@126.com *
 		**********************************************
 
 	</greetings>

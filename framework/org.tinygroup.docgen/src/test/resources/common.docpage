@@ -21,7 +21,7 @@
 #end
  
 
-#set($url="http://www.hundsun.com")
+#set($url="http://www.tinygroup.org")
 #set($text="点击这里可以跳转到悠然首页")
 #@link($url)
 #h($text,

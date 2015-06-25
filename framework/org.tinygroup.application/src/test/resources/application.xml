@@ -2,7 +2,7 @@
 <!-- 测试 -->
 <application>
 	<application-properties>
-		<property name="BASE_PACKAGE" value="org.hundsun" />
+		<property name="BASE_PACKAGE" value="org.tinygroup" />
 		<property name="TINY_THEME" value="default" />
 		<!-- 如果没有指定语言或指定语言的内容找不到，则从默认语言查找 -->
 		<property name="TINY_DEFAULT_LOCALE" value="zh_CN" />
