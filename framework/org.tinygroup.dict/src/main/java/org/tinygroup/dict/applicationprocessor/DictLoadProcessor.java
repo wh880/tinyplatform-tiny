@@ -20,6 +20,7 @@ import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.CacheInitConfig;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.impl.AbstractConfiguration;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.dict.DictManager;
@@ -37,7 +38,7 @@ import org.tinygroup.xmlparser.node.XmlNode;
 public class DictLoadProcessor extends AbstractConfiguration implements
 		ApplicationProcessor {
 
-	private static final String DEFAULT_CACHE_NAME = "jcsCache";
+//	private static final String DEFAULT_CACHE_NAME = "jcsCache";
 	private static final String DICT_NODE_PATH = "/application/dict-load-config";
 	private static final String BEAN_NAME = "bean_name";
 	private String cacheBeanName;
@@ -96,7 +97,10 @@ public class DictLoadProcessor extends AbstractConfiguration implements
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 		super.config(applicationConfig, componentConfig);
 		cacheBeanName = ConfigurationUtil.getPropertyName(applicationConfig,
-				componentConfig, BEAN_NAME, DEFAULT_CACHE_NAME);
+				componentConfig, BEAN_NAME);
+		if(StringUtil.isBlank(cacheBeanName)){
+			throw new RuntimeException("未配置必须的Cache Bean");
+		}
 	}
 
 	public int getOrder() {
