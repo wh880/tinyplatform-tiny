@@ -22,6 +22,7 @@ import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.loader.LoaderManager;
+import org.tinygroup.springutil.MethodNameAccessTool;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.mvc.annotation.View;
 
@@ -85,8 +86,7 @@ public class HandlerExecutionChain {
 		Method method = methodModel.getMapMethod();
 		Class[] paramTypes = method.getParameterTypes();
 		Object[] args = new Object[paramTypes.length];
-		String[] parameterNames = BeanUtil.getMethodParameterName(
-				method.getDeclaringClass(), method);
+		String[] parameterNames = MethodNameAccessTool.getMethodParameterName(method);
 		for (int i = 0; i < paramTypes.length; i++) {
 			args[i] = context.get(parameterNames[i]);
 			Class type = paramTypes[i];
