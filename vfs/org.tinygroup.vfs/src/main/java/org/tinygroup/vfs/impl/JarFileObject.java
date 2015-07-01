@@ -277,10 +277,7 @@ public class JarFileObject extends AbstractFileObject {
 		tempPath = tempPath + getExtName() + File.separator;
 		File tempPathFile = new File(tempPath);
 		if (!tempPathFile.exists()) {
-			boolean created = tempPathFile.mkdirs();
-			if (!created) {
-				throw new VFSRuntimeException("创建临时目录" + tempPath + "失败！");
-			}
+			tempPathFile.mkdirs();
 		}
 		cacheFile = new File(tempPath + getFileName() + "_"
 				+ getLastModifiedTime());
