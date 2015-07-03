@@ -1,0 +1,15 @@
+<flow id="testSumFlowChild2" extend-flow-id="testSumFlow" enable="true" private-context="false">
+  <parameters/>
+  <nodes>
+    <node id="sumComponent_1" name="sumComponent" title="求和组件">
+      <component name="sumComponent" title="求和组件">
+        <description>求a+b的和</description>
+        <properties>
+          <flow-property name="a" value="${b}" required="true" type="int"/>
+          <flow-property name="b" value="${sum}" required="true" type="int"/>
+        </properties>
+      </component>
+      <next-nodes/>
+    </node>
+  </nodes>
+</flow>

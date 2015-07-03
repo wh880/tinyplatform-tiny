@@ -25,17 +25,19 @@ import java.lang.annotation.Target;
 public @interface ComponentResult {
 
 	String name();
-	
+
 	String type();
-	
+
 	String title() default "";
-	
+
 	String scope() default "";
-	
+
+	String collectionType() default "";
+
 	boolean array() default false;
-	
+
 	boolean required() default true;
-	
+
 	String description() default "";
-	
+
 }

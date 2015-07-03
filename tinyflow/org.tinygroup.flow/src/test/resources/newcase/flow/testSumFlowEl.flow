@@ -1,0 +1,51 @@
+<flow id="testSumFlowEl" enable="true" private-context="false">
+  <parameters/>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="sumComponent"/>
+      </next-nodes>
+    </node>
+    <node id="sumComponent" name="sumComponent" title="求和组件">
+      <component name="sumComponent" title="求和组件">
+        <description>求a+b的和</description>
+        <properties>
+          <flow-property name="a" value="${a}" required="true" type="int"/>
+          <flow-property name="b" value="${b}" required="true" type="int"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="sumComponent_1">
+          <el>sum&gt;(2*a)</el>
+        </next-node>
+        <next-node next-node-id="sumComponent_2">
+          <el>sum&lt;=(2*a)</el>
+        </next-node>
+      </next-nodes>
+    </node>
+    <node id="sumComponent_1" name="sumComponent" title="求和组件">
+      <component name="sumComponent" title="求和组件">
+        <description>求a+b的和</description>
+        <properties>
+          <flow-property name="a" value="${b}" required="true" type="int"/>
+          <flow-property name="b" value="${sum}" required="true" type="int"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+    <node id="sumComponent_2" name="sumComponent" title="求和组件">
+      <component name="sumComponent" title="求和组件">
+        <description>求a+b的和</description>
+        <properties>
+          <flow-property name="a" value="${a}" required="true" type="int"/>
+          <flow-property name="b" value="${sum}" required="true" type="int"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

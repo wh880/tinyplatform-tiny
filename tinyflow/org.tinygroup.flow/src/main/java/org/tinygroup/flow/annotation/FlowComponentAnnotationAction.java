@@ -124,6 +124,7 @@ public class FlowComponentAnnotationAction implements AnnotationClassAction,
 	private Result createResult(ComponentResult componentResult) {
 		Result result = new Result();
 		result.setArray(componentResult.array());
+		result.setCollectionType(componentResult.collectionType());
 		result.setDescription(componentResult.description());
 		result.setName(componentResult.name());
 		result.setRequired(componentResult.required());

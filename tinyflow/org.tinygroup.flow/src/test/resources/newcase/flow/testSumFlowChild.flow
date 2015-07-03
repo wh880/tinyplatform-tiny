@@ -1,0 +1,4 @@
+<flow id="testSumFlowChild" extend-flow-id="testSumFlow" enable="true" private-context="false">
+  <nodes>
+  </nodes>
+</flow>

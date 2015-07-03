@@ -37,10 +37,22 @@ public class Result {
 	private Boolean array;// 是否是数组，默认是false
 	@XStreamAsAttribute
 	private Boolean required;// 是否是必须，默认是true
+	@XStreamAlias("collection-type")
+	@XStreamAsAttribute
+    // 参数类型
+	private String collectionType;
 	private String description;// 描述
 
 	public String getName() {
 		return name;
+	}
+
+	public String getCollectionType() {
+		return collectionType;
+	}
+
+	public void setCollectionType(String collectionType) {
+		this.collectionType = collectionType;
 	}
 
 	public void setName(String name) {

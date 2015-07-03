@@ -1,4 +1,13 @@
 <components>
+
+	<component name="sumComponent" bean="sumComponent"
+		title="求和组件"  icon="">
+		<short-description>求a+b的和</short-description>
+		<long-description>求a+b的和，返回值为sum</long-description>
+		<parameter name="a" title="求和参数a" type="int"></parameter>
+		<parameter name="b" title="求和参数b" type="int"></parameter>
+		<result  name="sum" title="求和结果" type="int"></result>
+	</component>
 	<component name="plusComponent" bean="plusComponent"
 		title="加法计算组件new" icon="">
 		<short-description></short-description>

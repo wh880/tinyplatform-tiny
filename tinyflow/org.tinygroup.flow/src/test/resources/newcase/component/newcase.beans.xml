@@ -8,6 +8,9 @@
 	<bean id="plusComponent" name="plusComponent" scope="prototype"
 		class="org.tinygroup.flow.test.PlusComponent">
 	</bean>
+	<bean id="sumComponent"  scope="prototype"
+		class="org.tinygroup.flow.test.SumComponent">
+	</bean>
 	<bean id="imsubComponent" name="imsubComponent" scope="prototype"
 		class="org.tinygroup.flow.test.ImsubComponent">
 	</bean>
