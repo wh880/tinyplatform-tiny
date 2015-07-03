@@ -62,7 +62,7 @@
      #set(resources=component.compatibilityResources.getCompatibilityResources())
      #foreach(compatibilityResource in resources)
        #if(compatibilityResource.condition)
-         <!--[${compatibilityResource.condition}]>
+         <!--[if ${compatibilityResource.condition}]>
          #if(compatibilityResource.cssResource)
            #set(csslist=compatibilityResource.cssResource.split(","))
            #foreach(path in csslist)

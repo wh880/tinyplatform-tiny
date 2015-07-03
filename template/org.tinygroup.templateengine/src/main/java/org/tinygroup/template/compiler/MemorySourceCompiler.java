@@ -106,7 +106,7 @@ public class MemorySourceCompiler {
                     return false;
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             //只要出错就认为不存在
         }
         return true;
