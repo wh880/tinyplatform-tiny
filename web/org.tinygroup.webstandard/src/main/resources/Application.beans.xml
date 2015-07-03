@@ -33,9 +33,6 @@
 				<ref bean="pageFlowFileProcessor" />
 				
 
-                <!--dictload-->
-                <ref bean="dictLoadFileProcessor" />
-
 				<ref bean="processorFileResolver" />
 				<ref bean="tinyMacroFileProcessor" />
 				<ref bean="fullContextFileFinder" />
