@@ -30,6 +30,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.nettyremote.Client;
+import org.tinygroup.nettyremote.DisconnectCallBack;
 import org.tinygroup.nettyremote.Exception.TinyRemoteConnectException;
 
 import java.util.concurrent.Executors;
@@ -47,6 +48,7 @@ public class ClientImpl implements Client {
 	private boolean start = false;// 是否已开始启动
 	private boolean reConnect = false;// 连接断开后,是否需要进行重连
 	private int reConnectInterval = 10; // 单位:秒
+	private DisconnectCallBack callBack;
 
 	private ClientThread clientThread = new ClientThread();
 	private ChannelFuture future;
@@ -107,7 +109,9 @@ public class ClientImpl implements Client {
 			if (reConnect&start) {
 				reConnect();
 			}
-
+		}
+		if(callBack!=null){
+			callBack.call();
 		}
 	}
 
@@ -182,4 +186,10 @@ public class ClientImpl implements Client {
 		this.remoteHost = remoteHost;
 	}
 
+	
+	public void setCallBack(DisconnectCallBack callBack) {
+		this.callBack = callBack;
+	}
+	
+	
 }
