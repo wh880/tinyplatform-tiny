@@ -44,6 +44,17 @@
       <groupId>jotm</groupId>
       <artifactId>jotm</artifactId>
       <version>2.0.10</version>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.transaction</groupId>
+          <artifactId>jta</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>javax.transaction</groupId>
+      <artifactId>jta</artifactId>
+      <version>1.1</version>
     </dependency>
     <dependency>
       <groupId>com.experlog</groupId>
