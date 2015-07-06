@@ -128,7 +128,7 @@ public class CepCoreProcessor implements ApplicationProcessor {
 	}
 
 	public void init() {
-
+		//do nothing
 	}
 
 	public void stop() {
@@ -141,7 +141,7 @@ public class CepCoreProcessor implements ApplicationProcessor {
 	}
 
 	public void setApplication(Application application) {
-
+		//do nothing
 	}
 
 }

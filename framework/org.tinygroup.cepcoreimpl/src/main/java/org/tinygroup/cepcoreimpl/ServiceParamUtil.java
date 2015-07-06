@@ -28,7 +28,11 @@ import org.tinygroup.event.ServiceInfo;
 import java.util.List;
 
 public class ServiceParamUtil {
-	private final static String IS_CHANGED = "TINY_IS_EVENT_HAS_CHANGED";
+	private static final String IS_CHANGED = "TINY_IS_EVENT_HAS_CHANGED";
+
+	private ServiceParamUtil() {
+
+	}
 
 	public static void changeEventContext(Event event, CEPCore core,
 			ClassLoader loader) {
@@ -42,7 +46,7 @@ public class ServiceParamUtil {
 		String serviceId = event.getServiceRequest().getServiceId();
 		ServiceInfo service = core.getServiceInfo(serviceId);
 		List<Parameter> inputs = service.getParameters();
-		if(inputs!=null){
+		if (inputs != null) {
 			for (Parameter input : inputs) {
 				Object value = getParameterValue(loader, oldContext, input);
 				newContext.put(input.getName(), value);
@@ -51,8 +55,8 @@ public class ServiceParamUtil {
 		event.getServiceRequest().setContext(newContext);
 	}
 
-	private static Object getParameterValue(ClassLoader loader, Context oldContext,
-			Parameter input) {
+	private static Object getParameterValue(ClassLoader loader,
+			Context oldContext, Parameter input) {
 		String inputName = input.getName();
 		if (!oldContext.exist(inputName)) {
 			// 如果context中不存在该参数，则进行组装
@@ -82,7 +86,7 @@ public class ServiceParamUtil {
 				return BasicTypeConverter.getValue((String) paramValue,
 						input.getType());
 			}
-			return paramValue; //既不是String[]也不是String，则直接返回
+			return paramValue; // 既不是String[]也不是String，则直接返回
 		}
 	}
 
@@ -114,7 +118,7 @@ public class ServiceParamUtil {
 		Context context = event.getServiceRequest().getContext();
 		ServiceInfo service = core.getServiceInfo(serviceId);
 		List<Parameter> outputs = service.getResults();
-		if(outputs!=null){
+		if (outputs != null) {
 			for (Parameter output : outputs) {
 				String name = output.getName();
 				if (context.exist(name)) {

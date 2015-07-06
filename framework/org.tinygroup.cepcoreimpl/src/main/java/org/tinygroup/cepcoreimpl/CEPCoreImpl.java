@@ -15,8 +15,23 @@
  */
 package org.tinygroup.cepcoreimpl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.cepcore.*;
+import org.tinygroup.cepcore.CEPCore;
+import org.tinygroup.cepcore.CEPCoreOperator;
+import org.tinygroup.cepcore.EventProcessor;
+import org.tinygroup.cepcore.EventProcessorChoose;
+import org.tinygroup.cepcore.EventProcessorRegisterTrigger;
 import org.tinygroup.cepcore.aop.CEPCoreAopManager;
 import org.tinygroup.cepcore.exception.RequestNotFoundException;
 import org.tinygroup.cepcore.impl.WeightChooser;
@@ -28,18 +43,6 @@ import org.tinygroup.event.ServiceRequest;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 当服务执行远程调用时 如果有多个远程处理器可用，则根据配置的EventProcessorChoose choose进行调用
@@ -326,10 +329,8 @@ public class CEPCoreImpl implements CEPCore {
 				.equals(eventNodeName);
 		for (EventProcessor p : processorList) {
 			List<String> regex = regexMap.get(p);
-			if (!hasNotNodeName) {
-				if (!eventNodeName.equals(p.getId())) {
-					continue;// 如果指定了节点，则先判断节点名是否对应，再做服务判断
-				}
+			if (!hasNotNodeName&&!eventNodeName.equals(p.getId())) {
+				continue;// 如果指定了节点，则先判断节点名是否对应，再做服务判断
 			}
 			for (String s : regex) {
 				Pattern pattern = Pattern.compile(s);
@@ -344,15 +345,9 @@ public class CEPCoreImpl implements CEPCore {
 				throw new RuntimeException("指定的服务处理器：" + eventNodeName
 						+ "上不存在服务:" + serviceRequest.getServiceId());
 			}
-
 		}
-		// if (hasNotNodeName){
 		throw new RuntimeException("没有找到合适的服务处理器");
-		// }else{
-		// throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
-		// + serviceRequest.getServiceId());
-		// }
-		//
+		
 	}
 
 	private EventProcessor getEventProcessor(ServiceRequest serviceRequest,
@@ -362,8 +357,8 @@ public class CEPCoreImpl implements CEPCore {
 		if (list == null || list.isEmpty()) {
 			return getEventProcessorByRegx(serviceRequest, eventNodeName);
 		}
-		boolean hasNotNodeName = (eventNodeName == null || ""
-				.equals(eventNodeName));
+		boolean hasNotNodeName = eventNodeName == null || ""
+				.equals(eventNodeName)	;
 		if (!hasNotNodeName) {
 			for (EventProcessor e : list) {
 				if (eventNodeName.equals(e.getId())) {
@@ -434,11 +429,7 @@ public class CEPCoreImpl implements CEPCore {
 		return chooser;
 	}
 
-	class SynchronousDeal extends Thread implements Serializable {
-		/**
-			 * 
-			 */
-		private static final long serialVersionUID = 1L;
+	class SynchronousDeal implements Runnable  {
 		Event e;
 		EventProcessor eventProcessor;
 
