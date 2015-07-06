@@ -33,7 +33,7 @@ import java.util.Map;
 public class RequestTemplateContext extends ContextImpl implements
 		TemplateContext {
 
-	private HttpServletRequest request;
+	private transient HttpServletRequest request;
 
 	public RequestTemplateContext(HttpServletRequest request) {
 		this.request = request;
