@@ -15,6 +15,8 @@
  */
 package org.tinygroup.flow.config;
 
+import java.io.Serializable;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -24,7 +26,11 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  *
  */
 @XStreamAlias("next-node")
-public class NextNode {
+public class NextNode implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1443588374203359350L;
 	/**
 	 * @XStreamAsAttribute
 	  @XStreamAlias("el-condition")
@@ -41,7 +47,6 @@ public class NextNode {
 
 	@XStreamAsAttribute
 	@XStreamAlias("next-node-id")
-
 	private String nextNodeId;// 下一步要执行的节点标识，可以用a:b的形式引用调用外部的流程,a为flowId,b为NodeId
 
     public String getName() {

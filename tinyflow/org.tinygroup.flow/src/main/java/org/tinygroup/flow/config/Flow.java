@@ -89,7 +89,7 @@ public class Flow implements Serializable{
 
     public List<Parameter> getOutputParameters() {
         if (parameters == null) {
-            return null;
+            return parameters;
         }
         List<Parameter> result = new ArrayList<Parameter>();
         for (Parameter parameter : parameters) {

@@ -46,7 +46,7 @@ public class FlowComponentAnnotationAction implements AnnotationClassAction,
 
 	private FlowExecutor pageflowExecutor;
 
-	private Logger logger = LoggerFactory
+	private static Logger logger = LoggerFactory
 			.getLogger(FlowComponentAnnotationAction.class);
 
 	public <T> void process(Class<T> clazz, Annotation annotation) {
@@ -70,7 +70,7 @@ public class FlowComponentAnnotationAction implements AnnotationClassAction,
 			pageflowExecutor.addComponent(componentDefine);
 		} else if (type.equals(ComponentType.FLOW)) {
 			executor.addComponent(componentDefine);
-		} else if (type.equals(ComponentType.FLOW)) {
+		} else if (type.equals(ComponentType.PAGEFLOW)) {
 			pageflowExecutor.addComponent(componentDefine);
 		}
 	}

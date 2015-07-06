@@ -18,6 +18,7 @@ package org.tinygroup.flow.config;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +31,11 @@ import java.util.Map;
  * 
  */
 @XStreamAlias("component")
-public class Component {
+public class Component implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4678446337219023016L;
 	/**
 	 * className对应的类的属性配置
 	 */
@@ -95,18 +100,23 @@ public class Component {
 			title = component.getTitle();
 		}
 		List<FlowProperty> parentProperties = component.getProperties();
+		if (properties == null ) { 
+			properties = parentProperties;
+			return;
+		}
 		if (parentProperties != null) {
-			if (properties == null) { //TODO:此处有问题，合并不全， if中没有改map，else没有改properties
-				properties = parentProperties;
-			} else {
-				for (FlowProperty pProperty : parentProperties) {
-					FlowProperty myProperty = getPropertyMap().get(
-							pProperty.getName());
-					if (myProperty == null) {
-						getPropertyMap().put(pProperty.getName(), pProperty);
-					}
+			// if (properties == null) { //此处有问题，合并不全，
+			// if中没有改map，else没有改properties
+			// properties = parentProperties;
+			// } else {
+			for (FlowProperty pProperty : parentProperties) {
+				FlowProperty myProperty = getPropertyMap().get(
+						pProperty.getName());
+				if (myProperty == null) {
+					getPropertyMap().put(pProperty.getName(), pProperty);
 				}
 			}
+			// }
 		}
 	}
 

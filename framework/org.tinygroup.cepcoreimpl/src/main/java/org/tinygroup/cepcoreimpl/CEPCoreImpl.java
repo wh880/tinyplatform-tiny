@@ -49,7 +49,7 @@ import java.util.regex.Pattern;
  * 
  */
 public class CEPCoreImpl implements CEPCore {
-	private static Logger logger = LoggerFactory.getLogger(CEPCoreImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CEPCoreImpl.class);
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
 	// 服务版本，每次注册注销都会使其+1;
 	ExecutorService executor = Executors.newCachedThreadPool();
@@ -120,7 +120,7 @@ public class CEPCoreImpl implements CEPCore {
 
 		List<ServiceInfo> servicelist = eventProcessor.getServiceInfos();
 		eventProcessorServices.put(eventProcessor.getId(), servicelist);
-		if (servicelist != null && servicelist.size() > 0) {
+		if (servicelist != null && !servicelist.isEmpty()) {
 			if (EventProcessor.TYPE_REMOTE != eventProcessor.getType()) {
 				for (ServiceInfo service : servicelist) {
 					if (!localServiceMap.containsKey(service.getServiceId())) {
@@ -149,7 +149,7 @@ public class CEPCoreImpl implements CEPCore {
 		}
 
 		if (eventProcessor.getRegex() != null
-				&& eventProcessor.getRegex().size() > 0) {
+				&& !eventProcessor.getRegex().isEmpty()) {
 			regexMap.put(eventProcessor, eventProcessor.getRegex());
 			processorList.add(eventProcessor);
 		}
@@ -157,14 +157,14 @@ public class CEPCoreImpl implements CEPCore {
 
 	public void registerEventProcessor(EventProcessor eventProcessor) {
 
-		logger.logMessage(LogLevel.INFO, "开始 注册EventProcessor:{}",
+		LOGGER.logMessage(LogLevel.INFO, "开始 注册EventProcessor:{}",
 				eventProcessor.getId());
 		changeVersion(eventProcessor);
 		if (processorMap.containsKey(eventProcessor.getId())) {
 			removeEventProcessorInfo(eventProcessor);
 		}
 		addEventProcessorInfo(eventProcessor);
-		logger.logMessage(LogLevel.INFO, "注册EventProcessor:{}完成",
+		LOGGER.logMessage(LogLevel.INFO, "注册EventProcessor:{}完成",
 				eventProcessor.getId());
 	}
 
@@ -181,38 +181,38 @@ public class CEPCoreImpl implements CEPCore {
 				List<EventProcessor> list = serviceIdMap.get(name);
 				if (list.contains(eventProcessor)) {
 					list.remove(eventProcessor);
-					if (list.size() == 0) {
+					if (list.isEmpty()) {
 						serviceIdMap.remove(name);
 						localServiceMap.remove(name);
 					}
 				}
 
 			} else {
-
+				//do nothing
 			}
 
 		}
 
 		if (eventProcessor.getRegex() != null
-				&& eventProcessor.getRegex().size() > 0) {
+				&& !eventProcessor.getRegex().isEmpty()) {
 			regexMap.remove(eventProcessor);
 		}
 	}
 
 	public void unregisterEventProcessor(EventProcessor eventProcessor) {
 
-		logger.logMessage(LogLevel.INFO, "开始 注销EventProcessor:{}",
+		LOGGER.logMessage(LogLevel.INFO, "开始 注销EventProcessor:{}",
 				eventProcessor.getId());
 		changeVersion(eventProcessor);
 		processorMap.remove(eventProcessor.getId());
 		removeEventProcessorInfo(eventProcessor);
-		logger.logMessage(LogLevel.INFO, "注销EventProcessor:{}完成",
+		LOGGER.logMessage(LogLevel.INFO, "注销EventProcessor:{}完成",
 				eventProcessor.getId());
 	}
 
 	private void changeVersion(EventProcessor eventProcessor) {
 		if (eventProcessor.getType() == EventProcessor.TYPE_LOCAL) {
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"本地EventProcessor变动,对CEPCORE服务版本进行变更");
 			serviceVersion++;// 如果发生了本地EventProcessor变动，则改变版本
 		}
@@ -226,7 +226,7 @@ public class CEPCoreImpl implements CEPCore {
 		aopMananger.beforeHandle(event);
 		ServiceRequest request = event.getServiceRequest();
 		String eventNodeName = event.getServiceRequest().getNodeName();
-		logger.logMessage(LogLevel.INFO, "请求指定的执行节点为:{0}", eventNodeName);
+		LOGGER.logMessage(LogLevel.INFO, "请求指定的执行节点为:{0}", eventNodeName);
 		EventProcessor eventProcessor = getEventProcessor(request,
 				eventNodeName);
 		if (EventProcessor.TYPE_LOCAL == eventProcessor.getType()) {
@@ -239,10 +239,11 @@ public class CEPCoreImpl implements CEPCore {
 			} catch (RuntimeException e) {
 				dealException(e, event);
 				throw e;
-			} catch (java.lang.Error e) {
-				dealException(e, event);
-				throw e;
-			}
+			} 
+//			catch (java.lang.Error e) {
+//				dealException(e, event);
+//				throw e;
+//			}
 			// local后置Aop
 			aopMananger.afterLocalHandle(event);
 		} else {
@@ -267,10 +268,11 @@ public class CEPCoreImpl implements CEPCore {
 			} catch (RuntimeException e) {
 				dealException(e, event);
 				throw e;
-			} catch (java.lang.Error e) {
-				dealException(e, event);
-				throw e;
-			}
+			} 
+//			catch (java.lang.Error e) {
+//				dealException(e, event);
+//				throw e;
+//			}
 			// remote后置Aop
 			aopMananger.afterRemoteHandle(event);
 		}
@@ -286,7 +288,7 @@ public class CEPCoreImpl implements CEPCore {
 			Event e = getEventClone(event);
 			event.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
 			event.setType(Event.EVENT_TYPE_RESPONSE);
-			//TODO:调整为线程池
+			// 	q调整为线程池
 			SynchronousDeal thread = new SynchronousDeal(eventProcessor, e);
 //			thread.start();
 			executor.execute(thread);
@@ -320,8 +322,8 @@ public class CEPCoreImpl implements CEPCore {
 	private EventProcessor getEventProcessorByRegx(
 			ServiceRequest serviceRequest, String eventNodeName) {
 		String serviceId = serviceRequest.getServiceId();
-		boolean hasNotNodeName = (eventNodeName == null || ""
-				.equals(eventNodeName));
+		boolean hasNotNodeName = eventNodeName == null || ""
+				.equals(eventNodeName);
 		for (EventProcessor p : processorList) {
 			List<String> regex = regexMap.get(p);
 			if (!hasNotNodeName) {
@@ -357,7 +359,7 @@ public class CEPCoreImpl implements CEPCore {
 			String eventNodeName) {
 		List<EventProcessor> list = serviceIdMap.get(serviceRequest
 				.getServiceId());
-		if (list == null || list.size() == 0) {
+		if (list == null || list.isEmpty()) {
 			return getEventProcessorByRegx(serviceRequest, eventNodeName);
 		}
 		boolean hasNotNodeName = (eventNodeName == null || ""
@@ -473,15 +475,15 @@ public class CEPCoreImpl implements CEPCore {
 					m.invoke(operator);
 				}
 			} catch (IllegalArgumentException e) {
-				logger.errorMessage(e.getMessage(), e);
+				LOGGER.errorMessage(e.getMessage(), e);
 			} catch (IllegalAccessException e) {
-				logger.errorMessage(e.getMessage(), e);
+				LOGGER.errorMessage(e.getMessage(), e);
 			} catch (InvocationTargetException e) {
-				logger.errorMessage(e.getMessage(), e);
+				LOGGER.errorMessage(e.getMessage(), e);
 			} catch (SecurityException e) {
-				logger.errorMessage(e.getMessage(), e);
+				LOGGER.errorMessage(e.getMessage(), e);
 			} catch (NoSuchMethodException e) {
-
+				LOGGER.errorMessage(e.getMessage(), e);
 			}
 		}
 	}

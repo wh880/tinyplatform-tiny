@@ -32,6 +32,10 @@ import java.util.List;
  */
 @XStreamAlias("component")
 public class ComponentDefine implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2588642108176302076L;
 	@XStreamAsAttribute
 	private String category;
 	@XStreamAsAttribute
