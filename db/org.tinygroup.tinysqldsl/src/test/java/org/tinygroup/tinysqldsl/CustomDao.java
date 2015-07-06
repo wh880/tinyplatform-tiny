@@ -17,6 +17,8 @@ package org.tinygroup.tinysqldsl;
 
 import java.util.List;
 
+import org.tinygroup.tinysqldsl.extend.MysqlSelect;
+
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.Delete.delete;
 import static org.tinygroup.tinysqldsl.Insert.insertInto;
@@ -55,7 +57,7 @@ public class CustomDao {
 		Delete delete = delete(CUSTOM).where(CUSTOM.ID.eq(id));
 		dslSession.execute(delete);
 	}
-	
+
 	public void deleteCustoms(Object... ids) {
 		Delete delete = delete(CUSTOM).where(CUSTOM.ID.in(ids));
 		dslSession.execute(delete);
@@ -66,11 +68,18 @@ public class CustomDao {
 		return dslSession.fetchOneResult(select, Custom.class);
 	}
 
-	public List<Custom> queryCustom(Custom custom) {//如果id作为主键字段，不作为条件出现。
+	public List<Custom> queryCustom(Custom custom) {// 如果id作为主键字段，不作为条件出现。
 		Select select = selectFrom(CUSTOM).where(
 				and(CUSTOM.ID.eq(custom.getId()),
 						CUSTOM.NAME.equal(custom.getName()),
 						CUSTOM.AGE.equal(custom.getAge())));
 		return dslSession.fetchList(select, Custom.class);
+	}
+
+	public Pager<Custom> queryCustomForPage(int start,int limit,Custom custom){
+		Select select=MysqlSelect.selectFrom(CUSTOM).where(and(CUSTOM.ID.eq(custom.getId()),
+						CUSTOM.NAME.equal(custom.getName()),
+						CUSTOM.AGE.equal(custom.getAge())));
+		return dslSession.fetchPage(select, start, limit, false, Custom.class);
 	}
 }
