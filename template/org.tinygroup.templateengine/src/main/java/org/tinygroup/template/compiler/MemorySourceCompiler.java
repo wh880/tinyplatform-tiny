@@ -326,6 +326,8 @@ public class MemorySourceCompiler {
             javaVersion = CompilerOptions.VERSION_1_6;
         } else if (System.getProperty("java.version").startsWith("1.7")) {
             javaVersion = CompilerOptions.VERSION_1_7;
+        } else if (System.getProperty("java.version").startsWith("1.8")) {
+        	javaVersion = CompilerOptions.VERSION_1_8;
         }
         settings.put(CompilerOptions.OPTION_Source, javaVersion);
         settings.put(CompilerOptions.OPTION_TargetPlatform, javaVersion);
