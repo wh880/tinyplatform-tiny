@@ -15,6 +15,17 @@
  */
 package org.tinygroup.jdbctemplatedslsession.provider;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -25,27 +36,17 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * 
  * @author renhui
  * 
  */
 public class DefaultTableMetaDataProvider implements TableMetaDataProvider {
-	
-	private static final String DEFAULT_CATALOG_KEY="CATALOG_KEY";
-	
-	private static final String DEFAULT_SCHEMA_KEY="SCHEMA_KEY";
-	
+
+	private static final String DEFAULT_CATALOG_KEY = "CATALOG_KEY";
+
+	private static final String DEFAULT_SCHEMA_KEY = "SCHEMA_KEY";
+
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(DefaultTableMetaDataProvider.class);
 
@@ -110,15 +111,15 @@ public class DefaultTableMetaDataProvider implements TableMetaDataProvider {
 
 	private String buildCacheKey(String catalogName, String schemaName,
 			String tableName) {
-		StringBuilder cacheKey=new StringBuilder();
-		String catalogKey=catalogName;
-		if(catalogKey==null){
-			catalogKey=DEFAULT_CATALOG_KEY;
+		StringBuilder cacheKey = new StringBuilder();
+		String catalogKey = catalogName;
+		if (catalogKey == null) {
+			catalogKey = DEFAULT_CATALOG_KEY;
 		}
 		cacheKey.append(catalogKey).append("-");
-		String schemaKey=schemaName;
-		if(schemaKey==null){
-			schemaKey=DEFAULT_SCHEMA_KEY;
+		String schemaKey = schemaName;
+		if (schemaKey == null) {
+			schemaKey = DEFAULT_SCHEMA_KEY;
 		}
 		cacheKey.append(schemaKey).append("-").append(tableName);
 		return cacheKey.toString();
@@ -227,6 +228,34 @@ public class DefaultTableMetaDataProvider implements TableMetaDataProvider {
 			return name.toLowerCase();
 		else
 			return name;
+	}
+
+	public String getDbType(DataSource dataSource) {
+		Connection con = null;
+		try {
+			con = DataSourceUtils.getConnection(dataSource);
+			if (con == null) {
+				// should only happen in test environments
+				throw new DataAccessResourceFailureException(
+						"Connection returned by DataSource [" + dataSource
+								+ "] was null");
+			}
+			DatabaseMetaData databaseMetaData = con.getMetaData();
+			if (databaseMetaData == null) {
+				// should only happen in test environments
+				throw new DataAccessResourceFailureException(
+						"DatabaseMetaData returned by Connection [" + con
+								+ "] was null");
+			}
+			return databaseMetaData.getDatabaseProductName();
+		} catch (SQLException e) {
+			LOGGER.logMessage(LogLevel.WARN,
+					"Error while extracting DatabaseMetaData", e);
+			throw new DataAccessResourceFailureException(
+					"Error while extracting DatabaseMetaData", e);
+		} finally {
+			DataSourceUtils.releaseConnection(con, dataSource);
+		}
 	}
 
 }

@@ -75,4 +75,9 @@ public class OracleSelect extends Select<OracleSelect> {
 		plainSelect.setOracleHierarchical(expression);
 		return this;
 	}
+	
+	@Override
+	protected Select newSelect() {
+		return new OracleSelect();
+	}
 }

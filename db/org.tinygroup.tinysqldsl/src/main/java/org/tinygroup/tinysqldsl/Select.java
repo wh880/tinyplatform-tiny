@@ -131,4 +131,14 @@ public class Select<T extends Select<T>> extends StatementSqlBuilder implements
 	public void id(String id) {
 		this.id = id;
 	}
+	
+	public Select copy(){
+		Select select=newSelect();
+		select.plainSelect=this.plainSelect;
+		return select;
+	}
+	
+	protected Select newSelect(){
+		return new Select();
+	}
 }
