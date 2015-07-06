@@ -34,11 +34,10 @@ import java.io.IOException;
  */
 public class TinyTemplateServlet extends HttpServlet {
 
-	private TemplateEngine engine;
+	private static  transient TemplateEngine engine;
 	private static final Logger logger = LoggerFactory
 			.getLogger(TinyTemplateServlet.class);
 
-	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		engine = BeanContainerFactory.getBeanContainer(
@@ -46,7 +45,6 @@ public class TinyTemplateServlet extends HttpServlet {
 				"templateEngine");
 	}
 
-	@Override
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		try {

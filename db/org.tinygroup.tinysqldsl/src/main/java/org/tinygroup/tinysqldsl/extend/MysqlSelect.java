@@ -62,4 +62,10 @@ public class MysqlSelect extends Select<MysqlSelect> {
 		return this;
 	}
 
+	@Override
+	protected Select newSelect() {
+		return new MysqlSelect();
+	}
+
+	
 }

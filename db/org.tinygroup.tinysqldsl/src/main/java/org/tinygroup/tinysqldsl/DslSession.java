@@ -133,5 +133,42 @@ public interface DslSession {
 	 * @return
 	 */
 	<T> List<T> fetchList(ComplexSelect complexSelect, Class<T> requiredType);
-
+	
+	/**
+	 * 分页处理
+	 * @param <T>
+	 * @param pageSelect
+	 * @param start
+	 * @param limit
+	 * @param isCursor
+	 * @param requiredType
+	 * @return
+	 */
+	<T> Pager<T> fetchPage(Select pageSelect,int start,int limit,boolean isCursor,Class<T> requiredType);
+	/**
+	 * 	基于游标的分页方式，select对象生成的sql语句是不包含分页信息的
+	 * @param <T>
+	 * @param pageSelect
+	 * @param start
+	 * @param limit
+	 * @param requiredType
+	 * @return
+	 */
+	<T> Pager<T> fetchCursorPage(Select pageSelect,int start,int limit,Class<T> requiredType);
+	/**
+	 * 基于方言的分页方式，select对象生成的sql语句是包含分页信息的
+	 * @param <T>
+	 * @param pageSelect
+	 * @param start
+	 * @param limit
+	 * @param requiredType
+	 * @return
+	 */
+	<T> Pager<T> fetchDialectPage(Select pageSelect,int start,int limit,Class<T> requiredType);
+	/**
+	 * 查询总记录数
+	 * @param select
+	 * @return
+	 */
+	int count(Select select);
 }

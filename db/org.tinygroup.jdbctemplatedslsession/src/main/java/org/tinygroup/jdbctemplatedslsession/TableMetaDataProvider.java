@@ -26,5 +26,10 @@ public interface TableMetaDataProvider {
 
 	TableMetaData generatedKeyNamesWithMetaData(DataSource dataSource,
 			String catalogName, String schemaName, String tableName);
+	/**
+	 * 获取数据库类型
+	 * @return
+	 */
+	String getDbType(DataSource dataSource);
 
 }
