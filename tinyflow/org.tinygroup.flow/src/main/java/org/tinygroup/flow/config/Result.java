@@ -15,6 +15,8 @@
  */
 package org.tinygroup.flow.config;
 
+import java.io.Serializable;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -26,7 +28,11 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  *
  */
 @XStreamAlias("result")
-public class Result {
+public class Result implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8169256692971248803L;
 	@XStreamAsAttribute
 	private String name;// 参数名称
 	@XStreamAsAttribute

@@ -15,6 +15,8 @@
  */
 package org.tinygroup.flow.config;
 
+import java.io.Serializable;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -25,8 +27,12 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * 
  */
 @XStreamAlias("flow-property")
-public class FlowProperty {
-	public static transient String EL_TYPE = "el";
+public class FlowProperty implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6042709010105727442L;
+	public static final String EL_TYPE = "el";
 	@XStreamAsAttribute
 	private String name;
 	@XStreamAsAttribute

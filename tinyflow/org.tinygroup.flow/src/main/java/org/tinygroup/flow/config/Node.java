@@ -21,6 +21,7 @@ import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.flow.util.FlowElUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,11 @@ import java.util.Map;
  * 
  */
 @XStreamAlias("node")
-public class Node {
+public class Node implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6987481042476758848L;
 	@XStreamAsAttribute
 	private String id;// 唯一ID
 	@XStreamAsAttribute
@@ -47,10 +52,7 @@ public class Node {
 	@XStreamAlias("default-node-id")
 	@XStreamAsAttribute
 	private String defaultNodeId;
-	// elConditions与nextElNodes一一对应，由于elCondtions可能为空，而nextElNodeMap中可能存在相同的值
-	// 所以此处未用map，而用了两个数组，索引相同的值相对应
-	// private transient List<String> elConditions = new ArrayList<String>();
-	// private transient List<String> nextElNodes = new ArrayList<String>();
+	
 	private transient Map<String, String> nextExceptionNodeMap = new HashMap<String, String>();
 	private transient List<String> nextExceptionList = new ArrayList<String>();
 	private transient boolean exceptionMapComputed = false;
