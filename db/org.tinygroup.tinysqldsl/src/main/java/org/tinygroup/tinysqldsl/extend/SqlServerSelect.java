@@ -62,4 +62,10 @@ public class SqlServerSelect extends Select<SqlServerSelect> {
 		plainSelect.setFetch(fetch);
 		return this;
 	}
+
+	@Override
+	protected Select newSelect() {
+		return new SqlServerSelect();
+	}
+	
 }

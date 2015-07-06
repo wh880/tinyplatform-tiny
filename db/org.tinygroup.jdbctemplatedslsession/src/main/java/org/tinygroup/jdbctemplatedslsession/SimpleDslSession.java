@@ -15,19 +15,29 @@
  */
 package org.tinygroup.jdbctemplatedslsession;
 
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
+import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.jdbctemplatedslsession.extractor.PageResultSetExtractor;
+import org.tinygroup.jdbctemplatedslsession.pageprocess.SimplePageSqlProcessSelector;
 import org.tinygroup.jdbctemplatedslsession.provider.DefaultTableMetaDataProvider;
 import org.tinygroup.jdbctemplatedslsession.rowmapper.SimpleRowMapperSelector;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.tinysqldsl.*;
+import org.tinygroup.tinysqldsl.ComplexSelect;
+import org.tinygroup.tinysqldsl.Delete;
+import org.tinygroup.tinysqldsl.DslSession;
+import org.tinygroup.tinysqldsl.Insert;
+import org.tinygroup.tinysqldsl.Pager;
+import org.tinygroup.tinysqldsl.Select;
+import org.tinygroup.tinysqldsl.Update;
 import org.tinygroup.tinysqldsl.base.InsertContext;
-
-import javax.sql.DataSource;
-import java.util.List;
 
 /**
  * DslSqlSession接口的jdbctemplate版实现
@@ -41,12 +51,15 @@ public class SimpleDslSession implements DslSession {
 	private TableMetaDataProvider provider;
 	private DataFieldMaxValueIncrementer incrementer;
 	private RowMapperSelector selector = new SimpleRowMapperSelector();
+	private PageSqlProcessSelector pageSelector=new SimplePageSqlProcessSelector();
+	private String dbType;
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(SimpleDslSession.class);
 
 	public SimpleDslSession(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		provider = new DefaultTableMetaDataProvider();
+		dbType=provider.getDbType(dataSource);
 	}
 
 	public SimpleDslSession(DataSource dataSource,
@@ -70,10 +83,20 @@ public class SimpleDslSession implements DslSession {
 	public void setSelector(RowMapperSelector selector) {
 		this.selector = selector;
 	}
+	
+	public PageSqlProcessSelector getPageSelector() {
+		return pageSelector;
+	}
+
+	public void setPageSelector(PageSqlProcessSelector pageSelector) {
+		this.pageSelector = pageSelector;
+	}
 
 	public JdbcTemplate getJdbcTemplate() {
 		return jdbcTemplate;
 	}
+	
+	
 
 	public int execute(Insert insert) {
 		logMessage(insert.sql(), insert.getValues());
@@ -168,5 +191,44 @@ public class SimpleDslSession implements DslSession {
 		return (T) jdbcTemplate.queryForObject(complexSelect.sql(),
 				complexSelect.getValues().toArray(),
 				selector.rowMapperSelector(requiredType));
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> Pager<T> fetchPage(Select pageSelect, int start, int limit,
+			boolean isCursor, Class<T> requiredType) {
+		int totalCount=count(pageSelect);
+		String processSql=pageSelect.sql();
+		if(!isCursor){
+			PageSqlMatchProcess process=pageSelector.pageSqlProcessSelect(dbType);
+			Select select=pageSelect.copy();//复制新的查询对象
+			processSql=process.sqlProcess(select, start, limit);
+		}
+		logMessage(processSql, pageSelect.getValues());
+		List<T> records = (List<T>) jdbcTemplate.query(processSql, ArrayUtil.toArray(pageSelect
+				.getValues()), new PageResultSetExtractor(start, limit,
+				isCursor, requiredType));
+		return new Pager(totalCount, start, limit, records);
+	}
+
+	public <T> Pager<T> fetchCursorPage(Select pageSelect, int start,
+			int limit, Class<T> requiredType) {
+		return fetchPage(pageSelect, start, limit, true, requiredType);
+	}
+
+	public <T> Pager<T> fetchDialectPage(Select pageSelect, int start,
+			int limit, Class<T> requiredType) {
+		return fetchPage(pageSelect, start, limit, false, requiredType);
+	}
+
+	public int count(Select select) {
+		String countSql=getCountSql(select.sql());
+		logMessage(countSql, select.getValues());
+		return jdbcTemplate.queryForInt(countSql, ArrayUtil.toArray(select.getValues()));
+	}
+	
+	private String getCountSql(String sql) {
+		StringBuffer sb = new StringBuffer(" select count(0) from (");
+		sb.append(sql).append(") temp");
+		return sb.toString();
 	}
 }

@@ -91,7 +91,7 @@ public abstract class StatementSqlBuilder {
 	}
 
 	protected abstract void parserStatementBody();
-
+	
 	public static Condition and(Condition... conditions) {
 		return conditional(" and ", conditions);
 	}
