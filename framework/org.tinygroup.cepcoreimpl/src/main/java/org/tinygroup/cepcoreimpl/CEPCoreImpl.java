@@ -52,7 +52,8 @@ import org.tinygroup.logger.LoggerFactory;
  * 
  */
 public class CEPCoreImpl implements CEPCore {
-	private static final Logger LOGGER = LoggerFactory.getLogger(CEPCoreImpl.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(CEPCoreImpl.class);
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
 	// 服务版本，每次注册注销都会使其+1;
 	ExecutorService executor = Executors.newCachedThreadPool();
@@ -117,7 +118,7 @@ public class CEPCoreImpl implements CEPCore {
 		this.nodeName = nodeName;
 	}
 
-	private void addEventProcessorInfo(EventProcessor eventProcessor) {
+	private void dealAddEventProcessor(EventProcessor eventProcessor) {
 		processorMap.put(eventProcessor.getId(), eventProcessor);
 		eventProcessor.setCepCore(this);
 
@@ -125,32 +126,45 @@ public class CEPCoreImpl implements CEPCore {
 		eventProcessorServices.put(eventProcessor.getId(), servicelist);
 		if (servicelist != null && !servicelist.isEmpty()) {
 			if (EventProcessor.TYPE_REMOTE != eventProcessor.getType()) {
-				for (ServiceInfo service : servicelist) {
-					if (!localServiceMap.containsKey(service.getServiceId())) {
-						localServiceMap.put(service.getServiceId(), service);
-						localServices.add(service);
-					}
-				}
+				addLocalServiceInfo(servicelist);
 			} else {
 				for (ServiceInfo service : servicelist) {
 					remoteServiceMap.put(service.getServiceId(), service);
 				}
 			}
-			for (ServiceInfo service : servicelist) {
-				String name = service.getServiceId();
-				if (serviceIdMap.containsKey(name)) {
-					List<EventProcessor> list = serviceIdMap.get(name);
-					if (!list.contains(eventProcessor)) {
-						list.add(eventProcessor);
-					}
-				} else {
-					List<EventProcessor> list = new ArrayList<EventProcessor>();
-					serviceIdMap.put(name, list);
-					list.add(eventProcessor);
-				}
-			}
+			addServiceInfos(eventProcessor, servicelist);
 		}
 
+		addRegex(eventProcessor);
+	}
+
+	private void addLocalServiceInfo(List<ServiceInfo> servicelist) {
+		for (ServiceInfo service : servicelist) {
+			if (!localServiceMap.containsKey(service.getServiceId())) {
+				localServiceMap.put(service.getServiceId(), service);
+				localServices.add(service);
+			}
+		}
+	}
+
+	private void addServiceInfos(EventProcessor eventProcessor,
+			List<ServiceInfo> servicelist) {
+		for (ServiceInfo service : servicelist) {
+			String name = service.getServiceId();
+			if (serviceIdMap.containsKey(name)) {
+				List<EventProcessor> list = serviceIdMap.get(name);
+				if (!list.contains(eventProcessor)) {
+					list.add(eventProcessor);
+				}
+			} else {
+				List<EventProcessor> list = new ArrayList<EventProcessor>();
+				serviceIdMap.put(name, list);
+				list.add(eventProcessor);
+			}
+		}
+	}
+
+	private void addRegex(EventProcessor eventProcessor) {
 		if (eventProcessor.getRegex() != null
 				&& !eventProcessor.getRegex().isEmpty()) {
 			regexMap.put(eventProcessor, eventProcessor.getRegex());
@@ -166,7 +180,7 @@ public class CEPCoreImpl implements CEPCore {
 		if (processorMap.containsKey(eventProcessor.getId())) {
 			removeEventProcessorInfo(eventProcessor);
 		}
-		addEventProcessorInfo(eventProcessor);
+		dealAddEventProcessor(eventProcessor);
 		LOGGER.logMessage(LogLevel.INFO, "注册EventProcessor:{}完成",
 				eventProcessor.getId());
 	}
@@ -178,27 +192,31 @@ public class CEPCoreImpl implements CEPCore {
 		List<ServiceInfo> serviceInfos = eventProcessorServices
 				.get(eventProcessor.getId());
 		for (ServiceInfo service : serviceInfos) {
-			String name = service.getServiceId();
-			if (serviceIdMap.containsKey(name)) {
-				localServices.remove(service);// 20150318调整代码localServices.remove(localServices。indexOf(service))，旧代码有可能是-1
-				List<EventProcessor> list = serviceIdMap.get(name);
-				if (list.contains(eventProcessor)) {
-					list.remove(eventProcessor);
-					if (list.isEmpty()) {
-						serviceIdMap.remove(name);
-						localServiceMap.remove(name);
-					}
-				}
-
-			} else {
-				//do nothing
-			}
-
+			removeServiceInfo(eventProcessor, service);
 		}
 
 		if (eventProcessor.getRegex() != null
 				&& !eventProcessor.getRegex().isEmpty()) {
 			regexMap.remove(eventProcessor);
+		}
+	}
+
+	private void removeServiceInfo(EventProcessor eventProcessor,
+			ServiceInfo service) {
+		String name = service.getServiceId();
+		if (serviceIdMap.containsKey(name)) {
+			localServices.remove(service);// 20150318调整代码localServices.remove(localServices。indexOf(service))，旧代码有可能是-1
+			List<EventProcessor> list = serviceIdMap.get(name);
+			if (list.contains(eventProcessor)) {
+				list.remove(eventProcessor);
+				if (list.isEmpty()) {
+					serviceIdMap.remove(name);
+					localServiceMap.remove(name);
+				}
+			}
+
+		} else {
+			// do nothing
 		}
 	}
 
@@ -242,28 +260,28 @@ public class CEPCoreImpl implements CEPCore {
 			} catch (RuntimeException e) {
 				dealException(e, event);
 				throw e;
-			} 
-//			catch (java.lang.Error e) {
-//				dealException(e, event);
-//				throw e;
-//			}
+			}
+			// catch (java.lang.Error e) {
+			// dealException(e, event);
+			// throw e;
+			// }
 			// local后置Aop
 			aopMananger.afterLocalHandle(event);
 		} else {
-			//20150527注释此代码，在deal中统一为所有执行生成new context,无论是本地还是远程
-//			ServiceInfo sinfo = null;
-//			List<ServiceInfo> list = eventProcessor.getServiceInfos();
-//			for (ServiceInfo info : list) {
-//				if (info.getServiceId().equals(request.getServiceId())) {
-//					sinfo = info;
-//				}
-//			}
-//			Context newContext = CEPCoreUtil.getContext(event, sinfo, this
-//					.getClass().getClassLoader());
-//			event.getServiceRequest().setContext(newContext);
+			// 20150527注释此代码，在deal中统一为所有执行生成new context,无论是本地还是远程
+			// ServiceInfo sinfo = null;
+			// List<ServiceInfo> list = eventProcessor.getServiceInfos();
+			// for (ServiceInfo info : list) {
+			// if (info.getServiceId().equals(request.getServiceId())) {
+			// sinfo = info;
+			// }
+			// }
+			// Context newContext = CEPCoreUtil.getContext(event, sinfo, this
+			// .getClass().getClassLoader());
+			// event.getServiceRequest().setContext(newContext);
 			// remote前置Aop
 			aopMananger.beforeRemoteHandle(event);
-			
+
 			try {
 				// remote处理
 				// eventProcessor.process(event);
@@ -271,11 +289,11 @@ public class CEPCoreImpl implements CEPCore {
 			} catch (RuntimeException e) {
 				dealException(e, event);
 				throw e;
-			} 
-//			catch (java.lang.Error e) {
-//				dealException(e, event);
-//				throw e;
-//			}
+			}
+			// catch (java.lang.Error e) {
+			// dealException(e, event);
+			// throw e;
+			// }
 			// remote后置Aop
 			aopMananger.afterRemoteHandle(event);
 		}
@@ -291,9 +309,9 @@ public class CEPCoreImpl implements CEPCore {
 			Event e = getEventClone(event);
 			event.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
 			event.setType(Event.EVENT_TYPE_RESPONSE);
-			// 	q调整为线程池
+			// q调整为线程池
 			SynchronousDeal thread = new SynchronousDeal(eventProcessor, e);
-//			thread.start();
+			// thread.start();
 			executor.execute(thread);
 
 		} else {
@@ -322,32 +340,45 @@ public class CEPCoreImpl implements CEPCore {
 		}
 	}
 
-	private EventProcessor getEventProcessorByRegx(
+	private EventProcessor getEventProcessorByRegex(
 			ServiceRequest serviceRequest, String eventNodeName) {
 		String serviceId = serviceRequest.getServiceId();
-		boolean hasNotNodeName = eventNodeName == null || ""
-				.equals(eventNodeName);
+		boolean hasNotNodeName = eventNodeName == null
+				|| "".equals(eventNodeName);
 		for (EventProcessor p : processorList) {
 			List<String> regex = regexMap.get(p);
-			if (!hasNotNodeName&&!eventNodeName.equals(p.getId())) {
+			if (!hasNotNodeName && !eventNodeName.equals(p.getId())) {
 				continue;// 如果指定了节点，则先判断节点名是否对应，再做服务判断
 			}
-			for (String s : regex) {
-				Pattern pattern = Pattern.compile(s);
-				Matcher matcher = pattern.matcher(serviceId);
-				boolean b = matcher.matches(); // 满足时，将返回true，否则返回false
-				if (b) {
-					return p;
-				}
+			// for (String s : regex) {
+			// Pattern pattern = Pattern.compile(s);
+			// Matcher matcher = pattern.matcher(serviceId);
+			// boolean b = matcher.matches(); // 满足时，将返回true，否则返回false
+			// if (b) {
+			// return p;
+			// }
+			// }
+			if (checkRegex(regex, serviceId)) {
+				return p;
 			}
-
 			if (!hasNotNodeName) {
 				throw new RuntimeException("指定的服务处理器：" + eventNodeName
 						+ "上不存在服务:" + serviceRequest.getServiceId());
 			}
 		}
 		throw new RuntimeException("没有找到合适的服务处理器");
-		
+	}
+
+	private boolean checkRegex(List<String> regex, String serviceId) {
+		for (String s : regex) {
+			Pattern pattern = Pattern.compile(s);
+			Matcher matcher = pattern.matcher(serviceId);
+			boolean b = matcher.matches(); // 满足时，将返回true，否则返回false
+			if (b) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private EventProcessor getEventProcessor(ServiceRequest serviceRequest,
@@ -355,18 +386,27 @@ public class CEPCoreImpl implements CEPCore {
 		List<EventProcessor> list = serviceIdMap.get(serviceRequest
 				.getServiceId());
 		if (list == null || list.isEmpty()) {
-			return getEventProcessorByRegx(serviceRequest, eventNodeName);
+			return getEventProcessorByRegex(serviceRequest, eventNodeName);
 		}
-		boolean hasNotNodeName = eventNodeName == null || ""
-				.equals(eventNodeName)	;
-		if (!hasNotNodeName) {
-			for (EventProcessor e : list) {
-				if (eventNodeName.equals(e.getId())) {
-					return e;
-				}
-			}
-			throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
-					+ serviceRequest.getServiceId());
+		return getEventProcessor(serviceRequest, eventNodeName, list);
+	}
+
+	private EventProcessor getEventProcessor(ServiceRequest serviceRequest,
+			String eventNodeName, List<EventProcessor> list) {
+//		boolean hasNotNodeName = eventNodeName == null
+//				|| "".equals(eventNodeName);
+//		if (!hasNotNodeName) {
+//			for (EventProcessor e : list) {
+//				if (eventNodeName.equals(e.getId())) {
+//					return e;
+//				}
+//			}
+//			throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
+//					+ serviceRequest.getServiceId());
+//		}
+		EventProcessor eventProcessor = findByNodeName(serviceRequest, eventNodeName, list);
+		if(eventProcessor!=null){
+			return eventProcessor;
 		}
 		if (list.size() == 1) {
 			return list.get(0);
@@ -380,6 +420,21 @@ public class CEPCoreImpl implements CEPCore {
 		}
 		// 如果全是远程EventProcessor,那么需要根据负载均衡机制计算
 		return getEventProcessorChoose().choose(list);
+	}
+	
+	private EventProcessor findByNodeName(ServiceRequest serviceRequest,String eventNodeName,List<EventProcessor> list){
+		boolean hasNotNodeName = eventNodeName == null
+				|| "".equals(eventNodeName);
+		if (!hasNotNodeName) {
+			for (EventProcessor e : list) {
+				if (eventNodeName.equals(e.getId())) {
+					return e;
+				}
+			}
+			throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
+					+ serviceRequest.getServiceId());
+		}
+		return null;
 	}
 
 	public void start() {
@@ -429,7 +484,7 @@ public class CEPCoreImpl implements CEPCore {
 		return chooser;
 	}
 
-	class SynchronousDeal implements Runnable  {
+	class SynchronousDeal implements Runnable {
 		Event e;
 		EventProcessor eventProcessor;
 
