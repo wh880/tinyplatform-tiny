@@ -28,7 +28,7 @@ import org.tinygroup.weblayer.WebContext;
 public class TinyWebTemplateContext extends ContextImpl implements
 		TemplateContext {
 
-	private WebContext webContext;
+	private transient WebContext webContext;
 
 	public TinyWebTemplateContext(WebContext webContext) {
 		this.webContext = webContext;
