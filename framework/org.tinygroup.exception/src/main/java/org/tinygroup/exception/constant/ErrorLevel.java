@@ -33,14 +33,12 @@ package org.tinygroup.exception.constant;
  * 
  */
 public enum ErrorLevel {
-	/** INFO级别 */
-	INFO(1),
-	/** WARN级别 */
-	WARN(2),
-	 /** ERROR级别 */
-	ERROR(3),
 	   /** FATAL级别 */
-	FATAL(4);
+	FATAL(1),
+
+	 /** ERROR级别 */
+	ERROR(2);
+	
 	
 	private int level;
 	

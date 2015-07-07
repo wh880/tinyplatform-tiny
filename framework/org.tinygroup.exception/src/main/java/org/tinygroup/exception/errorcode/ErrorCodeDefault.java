@@ -82,26 +82,26 @@ public class ErrorCodeDefault extends AbstractErrorCode {
     /**
      * 未知系统异常
      */
-    public static final String UNKNOWN_ERROR = "0TE139999999";
+    public static final String UNKNOWN_ERROR = "0TE129999999";
 
     /**
      * 未知系统异常
      */
-    public static final String UNKNOWN_SYSTEM_ERROR = "0TE139999999";
+    public static final String UNKNOWN_SYSTEM_ERROR = "0TE129999999";
 
     /**
      * 未知扩展系统异常
      */
-    public static final String UNKNOWN_EXT_ERROR = "0TE239999999";
+    public static final String UNKNOWN_EXT_ERROR = "0TE229999999";
     /**
      * 未知业务异常
      */
-    public static final String UNKNOWN_BIZ_ERROR = "0TE339999999";
+    public static final String UNKNOWN_BIZ_ERROR = "0TE329999999";
 
     /**
      * 未知第三方异常
      */
-    public static final String UNKNOWN_THIRD_PARTY_ERROR = "0TE439999999";
+    public static final String UNKNOWN_THIRD_PARTY_ERROR = "0TE429999999";
 
     // 这里是定义长度
     private static final int[] FIELD_LENGTH = {1, 2, 1, 1, 4, 3};

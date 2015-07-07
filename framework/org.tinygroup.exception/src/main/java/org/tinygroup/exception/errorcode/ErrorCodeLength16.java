@@ -26,18 +26,18 @@ import org.tinygroup.exception.constant.ErrorType;
  */
 public class ErrorCodeLength16 extends AbstractErrorCode {
 	/** 未知系统异常 */
-	public static final String UNKNOWN_ERROR = "1TE1399999999999";
+	public static final String UNKNOWN_ERROR = "1TE1299999999999";
 
 	/** 未知系统异常 */
-	public static final String UNKNOWN_SYSTEM_ERROR = "1TE1399999999999";
+	public static final String UNKNOWN_SYSTEM_ERROR = "1TE1299999999999";
 
 	/** 未知扩展系统异常 */
-	public static final String UNKNOWN_EXT_ERROR = "1TE2399999999999";
+	public static final String UNKNOWN_EXT_ERROR = "1TE2299999999999";
 	/** 未知业务异常 */
-	public static final String UNKNOWN_BIZ_ERROR = "1TE3399999999999";
+	public static final String UNKNOWN_BIZ_ERROR = "1TE3299999999999";
 
 	/** 未知第三方异常 */
-	public static final String UNKNOWN_THIRD_PARTY_ERROR = "1TE4399999999999";
+	public static final String UNKNOWN_THIRD_PARTY_ERROR = "1TE4299999999999";
 
 	// 这里是定义长度
 	private static final int[] FIELD_LENGTH = { 1, 2, 1, 1, 8, 3 };
