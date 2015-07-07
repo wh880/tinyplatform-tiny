@@ -15,22 +15,35 @@
  */
 package org.tinygroup.tinypc.impl;
 
-import org.tinygroup.tinypc.ObjectStorage;
-import org.tinygroup.tinypc.PCRuntimeException;
-
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.tinypc.ObjectStorage;
+import org.tinygroup.tinypc.PCRuntimeException;
 
 /**
  * Created by luoguo on 14-1-14.
  */
 public class ObjectStorageImpl implements ObjectStorage {
-    private String rootFolder;
+    
     private Map<Serializable, String> fileObjectMapping = new HashMap<Serializable, String>();
     private SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectStorageImpl.class);
+    private String rootFolder;
     public ObjectStorageImpl() {
 
     }
@@ -131,11 +144,11 @@ public class ObjectStorageImpl implements ObjectStorage {
     }
 
     public void clearObject(Serializable object) {
-        String fileName = fileObjectMapping.get(object);
+        String fileName = fileObjectMapping.remove(object);
         if (fileName != null) {
             File file = new File(fileName);
             if (file.exists()) {
-                file.delete();
+            	file.delete();
             }
         }
     }
@@ -160,11 +173,16 @@ public class ObjectStorageImpl implements ObjectStorage {
                 removeFile(f, typeName);
             }
         }
-        if (file.isDirectory() && file.list().length == 0) {
-            file.delete();
-        } else if (typeName == null || isWithExtFileName(file, typeName)) {
-            file.delete();
-        }
+        try {
+        	if (file.isDirectory() && file.list().length == 0) {
+                file.delete();
+            } else if (typeName == null || isWithExtFileName(file, typeName)) {
+                file.delete();
+            }
+		} catch (Exception e) {
+			LOGGER.errorMessage("删除文件{}失败.",e,file.getAbsolutePath());
+		}
+        
     }
 
     private boolean isWithExtFileName(File file, String typeName) {

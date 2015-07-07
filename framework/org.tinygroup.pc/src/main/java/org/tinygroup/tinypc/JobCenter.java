@@ -25,9 +25,7 @@ import java.util.List;
  * 职介所 职介所是分布式处理的核心场所，所有工作相关的元素都要通过职介所进行关联 Created by luoguo on 14-1-8.
  */
 public interface JobCenter {
-	String WORK_QUEUE = "WorkQueue";
-	String FOREMAN = "Foreman";
-	String WORKER = "Worker";
+
 	int DEFAULT_PORT = 3333;
 
 	RmiServer getRmiServer();

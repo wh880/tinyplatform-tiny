@@ -16,9 +16,10 @@
 package org.tinygroup.tinypc.impl;
 
 import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.threadgroup.MultiThreadProcessor;
 import org.tinygroup.tinypc.*;
-
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class ForemanSelectAllWorker extends AbstractForeman {
 	 * 
 	 */
 	private static final long serialVersionUID = -8936491160583306823L;
-
+	private transient static final Logger LOGGER = LoggerFactory.getLogger(ForemanSelectAllWorker.class);
 	public ForemanSelectAllWorker(String type) throws RemoteException {
 		super(type);
 	}
@@ -74,9 +75,10 @@ public class ForemanSelectAllWorker extends AbstractForeman {
 		if (getWorkSplitter() != null) {
 			List<Warehouse> splitWarehouseList = getWorkSplitter().split(work,
 					workerList);
-			logger.logMessage(LogLevel.INFO, "任务[type:{0},id:{1}]被分割为{2}份",
+			LOGGER.logMessage(LogLevel.INFO, "任务[type:{0},id:{1}]被分割为{2}份",
 					work.getType(), work.getId(), splitWarehouseList.size());
-			for (int i = 0, j = 0; i < splitWarehouseList.size(); i++, j++) {
+			int j = 0;
+			for (int i = 0 ; i < splitWarehouseList.size(); i++) {
 				Work subWork = new WorkDefault(work.getType());
 				subWork.setInputWarehouse(splitWarehouseList.get(i));
 				if (j >= workerList.size()) {
@@ -85,6 +87,7 @@ public class ForemanSelectAllWorker extends AbstractForeman {
 				Worker worker = workerList.get(j);
 				processors.addProcessor(new WorkExecutor(subWork, worker,
 						warehouseList, workerList));
+				j++;
 			}
 		} else {
 			for (int i = 0; i < workerList.size(); i++) {

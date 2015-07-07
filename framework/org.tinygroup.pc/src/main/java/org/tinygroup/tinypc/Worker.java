@@ -22,6 +22,7 @@ import java.rmi.RemoteException;
  * Created by luoguo on 14-1-8.
  */
 public interface Worker extends ParallelObject {
+	String WORKER_TYPE = "Worker";
     /**
      * 执行工作
      *

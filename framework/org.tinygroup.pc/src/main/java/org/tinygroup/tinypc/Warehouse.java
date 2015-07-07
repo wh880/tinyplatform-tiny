@@ -15,12 +15,14 @@
  */
 package org.tinygroup.tinypc;
 
+import java.io.Serializable;
+
 import org.tinygroup.context.Context;
 
 /**
  * 仓库，用于存放加工所用的材料或加工输出的产品
  * Created by luoguo on 14-1-8.
  */
-public interface Warehouse extends Context {
+public interface Warehouse extends Context,Serializable{
     void putSubWarehouse(Warehouse warehouse);
 }

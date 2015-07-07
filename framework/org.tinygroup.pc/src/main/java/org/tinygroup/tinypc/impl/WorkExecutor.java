@@ -23,7 +23,6 @@ import org.tinygroup.tinypc.PCRuntimeException;
 import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.Worker;
-
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class WorkExecutor extends AbstractProcessor {
     private final Work work;
     private final List<Warehouse> warehouseList;
     private final List<Worker> workers;
-    private static transient  Logger logger = LoggerFactory.getLogger(WorkExecutor.class);
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(WorkExecutor.class);
 
     public WorkExecutor(Work work, Worker worker, List<Warehouse> warehouseList, List<Worker> workers)
             throws RemoteException {
@@ -48,7 +47,7 @@ public class WorkExecutor extends AbstractProcessor {
         this.workers = cloneWorkers(workers);
     }
 
-    public List<Worker> cloneWorkers(List<Worker> acceptWorkers) {
+    private List<Worker> cloneWorkers(List<Worker> acceptWorkers) {
         List<Worker> workerList = new ArrayList<Worker>();
         for (Worker woker : acceptWorkers) {
             workerList.add(woker);
@@ -67,11 +66,11 @@ public class WorkExecutor extends AbstractProcessor {
     private void doWork(Worker w, List<Worker> workersActived) throws RemoteException {
         Warehouse warehouse = null;
         try {
-            logger.logMessage(LogLevel.DEBUG, "worker:{0}开始执行", w.getId());
+            LOGGER.logMessage(LogLevel.DEBUG, "worker:{0}开始执行", w.getId());
             warehouse = w.work(work);
-            logger.logMessage(LogLevel.DEBUG, "worker:{0}执行完成", w.getId());
+            LOGGER.logMessage(LogLevel.DEBUG, "worker:{0}执行完成", w.getId());
         } catch (Exception e) {
-            logger.errorMessage("worker:{0}工作时发生异常", e, w.getId());
+            LOGGER.errorMessage("worker:{0}工作时发生异常", e, w.getId());
             redoWork(workersActived);
         }
         synchronized (warehouseList) {
@@ -80,11 +79,11 @@ public class WorkExecutor extends AbstractProcessor {
     }
 
     private void redoWork(List<Worker> workersActived) throws RemoteException {
-        logger.logMessage(LogLevel.DEBUG, "开始重新查找worker");
+        LOGGER.logMessage(LogLevel.DEBUG, "开始重新查找worker");
         Worker redoWorker = null;
         for (Worker wker : workers) {
             if (wker.acceptWork(work)) {
-                logger.logMessage(LogLevel.DEBUG, "查找到worker:{0}", wker.getId());
+                LOGGER.logMessage(LogLevel.DEBUG, "查找到worker:{0}", wker.getId());
                 redoWorker = wker;
                 workersActived.add(wker);
             }

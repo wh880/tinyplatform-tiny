@@ -37,6 +37,10 @@ public abstract class AbstractWorker implements Worker {
     private String type;
     protected volatile boolean cancel = false;
 
+    public AbstractWorker(String type) throws RemoteException {
+        this.type = type;
+        id = Util.getUuid();
+    }
 
     public void reset() {
         cancel = false;
@@ -56,10 +60,7 @@ public abstract class AbstractWorker implements Worker {
         return true;
     }
 
-    public AbstractWorker(String type) throws RemoteException {
-        this.type = type;
-        id = Util.getUuid();
-    }
+   
 
 
     public Warehouse work(Work work) throws RemoteException {
@@ -67,7 +68,7 @@ public abstract class AbstractWorker implements Worker {
             throw new PCRuntimeException("任务为空！");
         }
         if (!work.getType().equalsIgnoreCase(type)) {
-            throw new PCRuntimeException((String.format("[%s]类型的工人不可以做[%s]类型的工作", type, work.getType())));
+            throw new PCRuntimeException(String.format("[%s]类型的工人不可以做[%s]类型的工作", type, work.getType()));
         }
         return doWork(work);
     }
