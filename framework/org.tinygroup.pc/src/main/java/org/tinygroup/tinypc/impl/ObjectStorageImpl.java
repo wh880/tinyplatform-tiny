@@ -29,7 +29,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinypc.ObjectStorage;
@@ -39,154 +38,160 @@ import org.tinygroup.tinypc.PCRuntimeException;
  * Created by luoguo on 14-1-14.
  */
 public class ObjectStorageImpl implements ObjectStorage {
-    
-    private Map<Serializable, String> fileObjectMapping = new HashMap<Serializable, String>();
-    private SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectStorageImpl.class);
-    private String rootFolder;
-    public ObjectStorageImpl() {
 
-    }
+	private Map<Serializable, String> fileObjectMapping = new HashMap<Serializable, String>();
+	private SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ObjectStorageImpl.class);
+	private String rootFolder;
 
-    public ObjectStorageImpl(String rootFolder) {
-        setRootFolder(rootFolder);
-    }
+	public ObjectStorageImpl() {
 
+	}
 
-    public void setRootFolder(String rootFolder) {
-        if (!rootFolder.endsWith(File.separator)) {
-            this.rootFolder = rootFolder + File.separator;
-        } else {
-            this.rootFolder = rootFolder;
-        }
-    }
+	public ObjectStorageImpl(String rootFolder) {
+		setRootFolder(rootFolder);
+	}
 
-    public String getRootFolder() {
-        return rootFolder;
-    }
-
-    public List<Serializable> loadObjects() throws IOException, ClassNotFoundException {
-        return loadObjects(null);
-    }
-
-    public <T> List<T> loadObjects(String typeName) throws IOException, ClassNotFoundException {
-        List<Serializable> objectList = new ArrayList<Serializable>();
-        checkFolder();
-        File root = new File(rootFolder);
-        loadObjects(root, objectList, typeName);
-        return (List<T>) objectList;
-    }
-
-    private void loadObjects(File root, List<Serializable> objectList, String typeName)
-            throws IOException, ClassNotFoundException {
-        File[] files = root.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                loadObjects(file, objectList, typeName);
-            } else {
-                if (file.getName().endsWith(getEndofFileName(typeName))) {
-                    objectList.add(loadObject(file));
-                }
-            }
-        }
-    }
-
-    private Serializable loadObject(File file) throws IOException, ClassNotFoundException {
-        ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
-        Serializable object = (Serializable) inputStream.readObject();
-        inputStream.close();
-        return object;
-    }
-
-    private void checkFolder() {
-        if (rootFolder == null) {
-            throw new PCRuntimeException("存储位置没有设置！");
-        }
-        File file = new File(rootFolder);
-
-        if (!file.exists()) {
-            //如果目录不存在，则创建目录
-            file.mkdirs();
-        }
-        if (!file.isDirectory()) {
-            //如果不是文件夹
-            throw new PCRuntimeException("存储位置" + rootFolder + "不是目录，是文件！");
-        }
-    }
-
-    public void saveObject(Serializable object) throws IOException {
-        saveObject(object, null);
-    }
-
-    public void saveObject(Serializable object, String typeName) throws IOException {
-        String fileName = getFileName(typeName);
-        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(fileName));
-        outputStream.writeObject(object);
-        outputStream.close();
-        fileObjectMapping.put(object, fileName);
-
-    }
-
-    private String getFileName(String typeName) throws RemoteException {
-        String currentDate = format.format(new Date());
-        File folder = new File(rootFolder + currentDate);
-        if (!folder.exists()) {
-            //检查路径是否存在，如果不存在，则创建之
-            folder.mkdirs();
-        }
-        return rootFolder + currentDate + File.separatorChar + Util.getUuid()
-                + getEndofFileName(typeName);
-    }
-
-    private String getEndofFileName(String typeName) {
-        return "_" + (typeName == null ? "" : typeName) + "" +
-                ".object";
-    }
-
-    public void clearObject(Serializable object) {
-        String fileName = fileObjectMapping.remove(object);
-        if (fileName != null) {
-            File file = new File(fileName);
-            if (file.exists()) {
-            	file.delete();
-            }
-        }
-    }
-
-    public void clearObjects() throws IOException {
-        clearObjects(null);
-    }
-
-    public void clearObjects(String typeName) throws IOException {
-        checkFolder();
-        File root = new File(rootFolder);
-        File[] files = root.listFiles();
-        for (File file : files) {
-            removeFile(file, typeName);
-        }
-    }
-
-    private void removeFile(File file, String typeName) {
-        if (file.isDirectory()) {
-            File[] files = file.listFiles();
-            for (File f : files) {
-                removeFile(f, typeName);
-            }
-        }
-        try {
-        	if (file.isDirectory() && file.list().length == 0) {
-                file.delete();
-            } else if (typeName == null || isWithExtFileName(file, typeName)) {
-                file.delete();
-            }
-		} catch (Exception e) {
-			LOGGER.errorMessage("删除文件{}失败.",e,file.getAbsolutePath());
+	public void setRootFolder(String rootFolder) {
+		if (!rootFolder.endsWith(File.separator)) {
+			this.rootFolder = rootFolder + File.separator;
+		} else {
+			this.rootFolder = rootFolder;
 		}
-        
-    }
+	}
 
-    private boolean isWithExtFileName(File file, String typeName) {
-        return file.isFile() && file.getName().endsWith("_" + typeName + "" +
-                ".object");
-    }
+	public String getRootFolder() {
+		return rootFolder;
+	}
+
+	public List<Serializable> loadObjects() throws IOException,
+			ClassNotFoundException {
+		return loadObjects(null);
+	}
+
+	public <T> List<T> loadObjects(String typeName) throws IOException,
+			ClassNotFoundException {
+		List<Serializable> objectList = new ArrayList<Serializable>();
+		checkFolder();
+		File root = new File(rootFolder);
+		loadObjects(root, objectList, typeName);
+		return (List<T>) objectList;
+	}
+
+	private void loadObjects(File root, List<Serializable> objectList,
+			String typeName) throws IOException, ClassNotFoundException {
+		File[] files = root.listFiles();
+		for (File file : files) {
+			if (file.isDirectory()) {
+				loadObjects(file, objectList, typeName);
+			} else {
+				if (file.getName().endsWith(getEndofFileName(typeName))) {
+					objectList.add(loadObject(file));
+				}
+			}
+		}
+	}
+
+	private Serializable loadObject(File file) throws IOException,
+			ClassNotFoundException {
+		ObjectInputStream inputStream = new ObjectInputStream(
+				new FileInputStream(file));
+		Serializable object = (Serializable) inputStream.readObject();
+		inputStream.close();
+		return object;
+	}
+
+	private void checkFolder() {
+		if (rootFolder == null) {
+			throw new PCRuntimeException("存储位置没有设置！");
+		}
+		File file = new File(rootFolder);
+
+		if (!file.exists()) {
+			// 如果目录不存在，则创建目录
+			file.mkdirs();
+		}
+		if (!file.isDirectory()) {
+			// 如果不是文件夹
+			throw new PCRuntimeException("存储位置" + rootFolder + "不是目录，是文件！");
+		}
+	}
+
+	public void saveObject(Serializable object) throws IOException {
+		saveObject(object, null);
+	}
+
+	public void saveObject(Serializable object, String typeName)
+			throws IOException {
+		String fileName = getFileName(typeName);
+		ObjectOutputStream outputStream = new ObjectOutputStream(
+				new FileOutputStream(fileName));
+		outputStream.writeObject(object);
+		outputStream.close();
+		fileObjectMapping.put(object, fileName);
+
+	}
+
+	private String getFileName(String typeName) throws RemoteException {
+		String currentDate = format.format(new Date());
+		File folder = new File(rootFolder + currentDate);
+		if (!folder.exists()) {
+			// 检查路径是否存在，如果不存在，则创建之
+			folder.mkdirs();
+		}
+		return rootFolder + currentDate + File.separatorChar + Util.getUuid()
+				+ getEndofFileName(typeName);
+	}
+
+	private String getEndofFileName(String typeName) {
+		return "_" + (typeName == null ? "" : typeName) + "" + ".object";
+	}
+
+	public void clearObject(Serializable object) {
+		String fileName = fileObjectMapping.remove(object);
+		if (fileName != null) {
+			File file = new File(fileName);
+			if (file.exists()) {
+				file.delete();
+			}
+		}
+	}
+
+	public void clearObjects() throws IOException {
+		clearObjects(null);
+	}
+
+	public void clearObjects(String typeName) throws IOException {
+		checkFolder();
+		File root = new File(rootFolder);
+		File[] files = root.listFiles();
+		for (File file : files) {
+			removeFile(file, typeName);
+		}
+	}
+
+	private void removeFile(File file, String typeName) {
+		if (file.isDirectory()) {
+			File[] files = file.listFiles();
+			for (File f : files) {
+				removeFile(f, typeName);
+			}
+		}
+		try {
+			if (file.isDirectory() && file.list().length == 0) {
+				file.delete();
+			} else if (typeName == null || isWithExtFileName(file, typeName)) {
+				file.delete();
+			}
+		} catch (Exception e) {
+			LOGGER.errorMessage("删除文件{}失败.", e, file.getAbsolutePath());
+		}
+
+	}
+
+	private boolean isWithExtFileName(File file, String typeName) {
+		return file.isFile()
+				&& file.getName().endsWith("_" + typeName + "" + ".object");
+	}
 }

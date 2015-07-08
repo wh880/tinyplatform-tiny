@@ -22,7 +22,6 @@ import org.tinygroup.tinypc.PCRuntimeException;
 import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.Worker;
-
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,22 +55,22 @@ public class ForemanSelectOneWorker extends AbstractForeman {
 			List<Worker> workerList, List<Worker> workersActived)
 			throws RemoteException {
 		try {
-			LOGGER.logMessage(LogLevel.DEBUG,"worker:{0}开始执行",worker.getId());
-			Warehouse  w = worker.work(work);
-			LOGGER.logMessage(LogLevel.DEBUG,"worker:{0}执行完成",worker.getId());
+			LOGGER.logMessage(LogLevel.DEBUG, "worker:{0}开始执行", worker.getId());
+			Warehouse w = worker.work(work);
+			LOGGER.logMessage(LogLevel.DEBUG, "worker:{0}执行完成", worker.getId());
 			return w;
 		} catch (Exception e) {
 			LOGGER.errorMessage("worker:{0}执行时出现异常", e, work.getId());
 			if (workerList.isEmpty()) {
-				throw new PCRuntimeException(String.format("没有对应于work:%s的可用工人！",
-						work.getType()),e);
+				throw new PCRuntimeException(String.format(
+						"没有对应于work:%s的可用工人！", work.getType()), e);
 			}
 			return reAction(work, workerList, workersActived);
 		}
 	}
 
-	private Warehouse reAction(Work work,List<Worker> workers, List<Worker> workersActived)
-			throws RemoteException {
+	private Warehouse reAction(Work work, List<Worker> workers,
+			List<Worker> workersActived) throws RemoteException {
 		LOGGER.logMessage(LogLevel.DEBUG, "开始重新查找worker");
 		Worker redoWorker = null;
 		for (Worker worker : workers) {

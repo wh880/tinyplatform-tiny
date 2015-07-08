@@ -23,12 +23,12 @@ import org.tinygroup.tinypc.Warehouse;
  */
 public class WarehouseDefault extends ContextImpl implements Warehouse {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3551570264489045287L;
 
 	public void putSubWarehouse(Warehouse warehouse) {
-        this.putSubContext(Util.getUuid(), warehouse);
-    }
+		this.putSubContext(Util.getUuid(), warehouse);
+	}
 }

@@ -27,19 +27,19 @@ import java.util.concurrent.TimeoutException;
 public class DistributedLockImpl extends UnicastRemoteObject implements
 		DistributedLock {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -909469494489599236L;
-    public static final int HOUR = 3600;
-    /**
+	public static final int HOUR = 3600;
+	/**
 	 * 锁的令牌
 	 */
 	private volatile long token = 0;
 	/**
 	 * 同步对象
 	 */
-    private byte[] lock = new byte[0];
+	private byte[] lock = new byte[0];
 	/**
 	 * 超时单位
 	 */
@@ -47,9 +47,9 @@ public class DistributedLockImpl extends UnicastRemoteObject implements
 	/**
 	 * 默认永不超时，默认超时3600秒,超过该时间后认为锁已解
 	 */
-    private long lockTimeout = HOUR;
-    // 获取令牌时间，单位毫秒
-    private long beginLockTime;
+	private long lockTimeout = HOUR;
+	// 获取令牌时间，单位毫秒
+	private long beginLockTime;
 
 	public DistributedLockImpl() throws RemoteException {
 		super();
@@ -93,15 +93,15 @@ public class DistributedLockImpl extends UnicastRemoteObject implements
 			while (token != 0 && isLockTimeout()) {
 				try {
 					if (time <= 0) {
-						lock.wait(1); 
+						lock.wait(1);
 						continue;
 					}
 					long endTime = System.nanoTime();
 					if (endTime - startTime >= unit.toMillis(time)) {
 						throw new TimeoutException();
 					}
-//					Thread.sleep(1);
-					lock.wait(1); 
+					// Thread.sleep(1);
+					lock.wait(1);
 				} catch (InterruptedException e) {
 					// DO Noting
 				}
