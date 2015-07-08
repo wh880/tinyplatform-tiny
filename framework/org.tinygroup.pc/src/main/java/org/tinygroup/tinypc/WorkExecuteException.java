@@ -16,24 +16,23 @@
 package org.tinygroup.tinypc;
 
 /**
- * 工作过程中的异常
- * Created by luoguo on 14-1-9.
+ * 工作过程中的异常 Created by luoguo on 14-1-9.
  */
 public class WorkExecuteException extends RuntimeException {
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -821877035919955321L;
 
 	public WorkExecuteException(String message) {
-        super(message);
-    }
+		super(message);
+	}
 
-    public WorkExecuteException(String message, Throwable e) {
-        super(message, e);
-    }
+	public WorkExecuteException(String message, Throwable e) {
+		super(message, e);
+	}
 
-    public WorkExecuteException(Throwable e) {
-        super(e);
-    }
+	public WorkExecuteException(Throwable e) {
+		super(e);
+	}
 }

@@ -31,12 +31,12 @@ import java.util.List;
  * Created by luoguo on 14-1-8.
  */
 public class WorkExecutor extends AbstractProcessor {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(WorkExecutor.class);
     private final Worker worker;
     private final Work work;
     private final List<Warehouse> warehouseList;
     private final List<Worker> workers;
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(WorkExecutor.class);
+    
 
     public WorkExecutor(Work work, Worker worker, List<Warehouse> warehouseList, List<Worker> workers)
             throws RemoteException {

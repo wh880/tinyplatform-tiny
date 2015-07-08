@@ -33,7 +33,9 @@ public class ForemanSelectAllWorker extends AbstractForeman {
 	 * 
 	 */
 	private static final long serialVersionUID = -8936491160583306823L;
-	private transient static final Logger LOGGER = LoggerFactory.getLogger(ForemanSelectAllWorker.class);
+	private static final transient Logger LOGGER = LoggerFactory
+			.getLogger(ForemanSelectAllWorker.class);
+
 	public ForemanSelectAllWorker(String type) throws RemoteException {
 		super(type);
 	}
@@ -64,7 +66,6 @@ public class ForemanSelectAllWorker extends AbstractForeman {
 		setWorkCombiner(workSplitterCombiner);
 	}
 
-
 	public Warehouse work(Work work, List<Worker> workerList)
 			throws RemoteException {
 		MultiThreadProcessor processors = new MultiThreadProcessor(
@@ -78,7 +79,7 @@ public class ForemanSelectAllWorker extends AbstractForeman {
 			LOGGER.logMessage(LogLevel.INFO, "任务[type:{0},id:{1}]被分割为{2}份",
 					work.getType(), work.getId(), splitWarehouseList.size());
 			int j = 0;
-			for (int i = 0 ; i < splitWarehouseList.size(); i++) {
+			for (int i = 0; i < splitWarehouseList.size(); i++) {
 				Work subWork = new WorkDefault(work.getType());
 				subWork.setInputWarehouse(splitWarehouseList.get(i));
 				if (j >= workerList.size()) {

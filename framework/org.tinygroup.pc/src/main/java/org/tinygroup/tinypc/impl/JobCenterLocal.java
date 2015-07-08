@@ -18,30 +18,29 @@ package org.tinygroup.tinypc.impl;
 import org.tinygroup.rmi.RmiServer;
 import org.tinygroup.rmi.impl.RmiServerImpl;
 import org.tinygroup.tinypc.WorkQueue;
-
 import java.io.IOException;
 
 /**
  * Created by luoguo on 14-1-23.
  */
 public class JobCenterLocal extends AbstractJobCenter {
-    public JobCenterLocal() throws IOException {
-        this(DEFAULT_PORT);
-    }
+	public JobCenterLocal() throws IOException {
+		this(DEFAULT_PORT);
+	}
 
-    public JobCenterLocal(int port) throws IOException {
-        RmiServer rmiServer = new RmiServerImpl(port);
-        WorkQueue workQueue = new WorkQueueImpl();
-        setWorkQueue(workQueue);
-        rmiServer.registerLocalObject(workQueue, "WorkQueue");
-        setRmiServer(rmiServer);
-    }
-    
-    public JobCenterLocal(String host,int port) throws IOException {
-    	RmiServer rmiServer = new RmiServerImpl(host,port);
-        WorkQueue workQueue = new WorkQueueImpl();
-        setWorkQueue(workQueue);
-        rmiServer.registerLocalObject(workQueue, "WorkQueue");
-        setRmiServer(rmiServer);
-    }
+	public JobCenterLocal(int port) throws IOException {
+		RmiServer rmiServer = new RmiServerImpl(port);
+		WorkQueue workQueue = new WorkQueueImpl();
+		setWorkQueue(workQueue);
+		rmiServer.registerLocalObject(workQueue, "WorkQueue");
+		setRmiServer(rmiServer);
+	}
+
+	public JobCenterLocal(String host, int port) throws IOException {
+		RmiServer rmiServer = new RmiServerImpl(host, port);
+		WorkQueue workQueue = new WorkQueueImpl();
+		setWorkQueue(workQueue);
+		rmiServer.registerLocalObject(workQueue, "WorkQueue");
+		setRmiServer(rmiServer);
+	}
 }

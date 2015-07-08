@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
 public class FunctionWrapper extends AbstractFunctionWrapper {
     private Method method;
 
-    public FunctionWrapper(String functionName, Class clazz, Method method) {
+    public FunctionWrapper(String functionName, Method method) {
         super(functionName);
         try {
             this.method = method;

@@ -22,25 +22,26 @@ import java.util.UUID;
  * Created by luoguo on 14-1-8.
  */
 public final class Util {
-    private Util() {
-    }
 
-    private static Random random = new Random(System.currentTimeMillis());
+	private static Random random = new Random(System.currentTimeMillis());
 
-    public static String getUuid() {
-        return UUID.randomUUID().toString().replaceAll("-", "");
-    }
+	private Util() {
+	}
 
-    public static String getRemoteName(String type, String id) {
-        return String.format("%s|%s", type, id);
-    }
+	public static String getUuid() {
+		return UUID.randomUUID().toString().replaceAll("-", "");
+	}
 
-    public static int randomIndex(int size) {
-        int index = random.nextInt();
-        if (index < 0) {
-            index = -index;
-        }
-        index = (index % size);
-        return index;
-    }
+	// public static String getRemoteName(String type, String id) {
+	// return String.format("%s|%s", type, id);
+	// }
+
+	public static int randomIndex(int size) {
+		int index = random.nextInt();
+		if (index < 0) {
+			index = -index;
+		}
+		index = (index % size);
+		return index;
+	}
 }

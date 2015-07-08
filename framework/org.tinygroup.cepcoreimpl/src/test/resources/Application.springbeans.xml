@@ -13,5 +13,8 @@
 		</property>
 	</bean>
  -->
-	
+	<bean id="handler1" 
+		class="org.tinygroup.cepcoreimpl.test.NullPointHandler">
+		
+	</bean>
 </beans>

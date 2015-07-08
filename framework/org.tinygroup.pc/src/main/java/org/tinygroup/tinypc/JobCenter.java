@@ -16,7 +16,6 @@
 package org.tinygroup.tinypc;
 
 import org.tinygroup.rmi.RmiServer;
-
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;

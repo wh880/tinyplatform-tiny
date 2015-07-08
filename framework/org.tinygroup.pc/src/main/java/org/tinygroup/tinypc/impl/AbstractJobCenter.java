@@ -100,7 +100,8 @@ public class AbstractJobCenter implements JobCenter {
 	}
 
 	public List<Worker> getWorkerList(Work work) throws RemoteException {
-		return rmiServer.getObjectList(getTypeName(Worker.WORKER_TYPE, work.getType()));
+		return rmiServer.getObjectList(getTypeName(Worker.WORKER_TYPE,
+				work.getType()));
 	}
 
 	private String getTypeName(String type, String workType) {
@@ -122,7 +123,7 @@ public class AbstractJobCenter implements JobCenter {
 		List<Foreman> foremans = new ArrayList<Foreman>();
 		for (Foreman foreman : foremanList) {
 			try {
-				foreman.getId();//通过调用此方法查看此远程对象是否可用
+				foreman.getId();// 通过调用此方法查看此远程对象是否可用
 				foremans.add(foreman);
 			} catch (RemoteException e) {
 				try {
@@ -138,8 +139,8 @@ public class AbstractJobCenter implements JobCenter {
 
 	public Warehouse doWork(Work work) throws IOException {
 		String foremanType = work.getForemanType();
-//		List<Foreman> foremanList = null;
-//		foremanList = getForemans(work, foremanType);
+		// List<Foreman> foremanList = null;
+		// foremanList = getForemans(work, foremanType);
 		List<Foreman> foremanList = getForemans(work, foremanType);
 		// 如果存在空闲的工头
 		Foreman foreman = getForeman(foremanType, foremanList);
@@ -187,14 +188,14 @@ public class AbstractJobCenter implements JobCenter {
 
 	private Foreman getForeman(String foremanType, List<Foreman> foremanList)
 			throws RemoteException {
-//		Foreman foreman;
+		// Foreman foreman;
 		if (foremanList != null && !foremanList.isEmpty()) {
 			// 选择一个工头来处理
 			return foremanList.get(Util.randomIndex(foremanList.size()));
 		} else {
 			return new ForemanSelectOneWorker(foremanType);
 		}
-//		return foreman;
+		// return foreman;
 	}
 
 	private List<Foreman> getForemans(Work work, String foremanType)
@@ -214,7 +215,7 @@ public class AbstractJobCenter implements JobCenter {
 		return workers;
 	}
 
-	//如果发生异常怎么办？
+	// 如果发生异常怎么办？
 	public void autoMatch() throws IOException {
 		Work work = workQueue.getIdleWork();
 		if (work != null) {
@@ -229,9 +230,9 @@ public class AbstractJobCenter implements JobCenter {
 	private void matchWork(Work work) throws IOException {
 		List<Foreman> foremans = getForeman(work.getType());
 		List<Worker> workers = getWorkerList(work);
-		//这里是否要判断worker的长度
-		//如果没有worker是否直接抛出异常
-		//如果有worker才进行处理
+		// 这里是否要判断worker的长度
+		// 如果没有worker是否直接抛出异常
+		// 如果有worker才进行处理
 		if (!foremans.isEmpty() && !workers.isEmpty()) {
 			new Thread(new DoWorker(foremans.get(Util.randomIndex(foremans
 					.size())), work, workers)).start();

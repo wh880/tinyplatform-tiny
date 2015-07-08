@@ -16,7 +16,6 @@
 package org.tinygroup.tinypc;
 
 import org.tinygroup.rmi.RemoteObject;
-
 import java.rmi.RemoteException;
 import java.util.List;
 
@@ -25,6 +24,7 @@ import java.util.List;
  */
 public interface WorkQueue extends RemoteObject {
 	String WORKQUEUE_TYPE = "WorkQueue";
+
 	/**
 	 * 设置对象仓库
 	 * 

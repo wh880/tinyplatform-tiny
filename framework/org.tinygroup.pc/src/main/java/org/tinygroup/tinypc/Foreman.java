@@ -20,36 +20,35 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * 包工头
- * 包工头用于带着一组工人并完成对应的任务
- * Created by luoguo on 14-1-8.
+ * 包工头 包工头用于带着一组工人并完成对应的任务 Created by luoguo on 14-1-8.
  */
 public interface Foreman extends ParallelObject {
 	String FOREMAN_TYPE = "Foreman";
-    /**
-     * 返回执行哪种类型的工作任务
-     *
-     * @return
-     */
-    String getType() throws RemoteException;
 
-    /**
-     * 开始干活以完成工作
-     */
-    Warehouse work(Work work, List<Worker> workerList) throws IOException;
+	/**
+	 * 返回执行哪种类型的工作任务
+	 * 
+	 * @return
+	 */
+	String getType() throws RemoteException;
 
-    /**
-     * 设置工作合并器
-     *
-     * @param workCombiner
-     */
-    void setWorkCombiner(WorkCombiner workCombiner) throws RemoteException;
+	/**
+	 * 开始干活以完成工作
+	 */
+	Warehouse work(Work work, List<Worker> workerList) throws IOException;
 
-    /**
-     * 设置工作分解器
-     *
-     * @param workSplitter
-     */
-    void setWorkSplitter(WorkSplitter workSplitter) throws RemoteException;
+	/**
+	 * 设置工作合并器
+	 * 
+	 * @param workCombiner
+	 */
+	void setWorkCombiner(WorkCombiner workCombiner) throws RemoteException;
+
+	/**
+	 * 设置工作分解器
+	 * 
+	 * @param workSplitter
+	 */
+	void setWorkSplitter(WorkSplitter workSplitter) throws RemoteException;
 
 }

@@ -18,7 +18,6 @@ package org.tinygroup.tinypc.impl;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinypc.*;
-
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -32,9 +31,10 @@ public class WorkQueueImpl implements WorkQueue {
      *
      */
     private static final long serialVersionUID = -6270528078815279562L;
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(WorkQueueImpl.class);
     private List<Work> workList = new ArrayList<Work>();
     private transient ObjectStorage objectStorage = null;
-    private static transient Logger logger = LoggerFactory.getLogger(WorkQueueImpl.class);
+  
 
     public WorkQueueImpl() throws RemoteException {
 
@@ -50,7 +50,7 @@ public class WorkQueueImpl implements WorkQueue {
             List<Work> works = objectStorage.loadObjects("Work");
             this.workList.addAll(works);
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
     }
 
@@ -62,7 +62,7 @@ public class WorkQueueImpl implements WorkQueue {
             try {
                 objectStorage.saveObject(work, "Work");
             } catch (IOException e) {
-                logger.error(e);
+                LOGGER.error(e);
                 throw new PCRuntimeException(String.format("序列化Work:%s %s时出现异常", work.getType(), work.getId()), e);
             }
         }
