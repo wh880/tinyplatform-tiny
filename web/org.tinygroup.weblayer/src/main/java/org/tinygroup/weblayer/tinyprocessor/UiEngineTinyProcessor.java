@@ -116,12 +116,13 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
             if (paths != null) {
                 for (String path : paths) {
                     logger.logMessage(LogLevel.INFO, "正在处理js文件:<{}>", path);
+                    outputStream.write("try{\n".getBytes());
                     FileObject fileObject = fullContextFileRepository.getFileObject(path);
                     InputStream stream = new BufferedInputStream(fileObject.getInputStream());
                     StreamUtil.io(stream, outputStream, true, false);
                     stream.close();
                     outputStream.flush();
-                    outputStream.write("\n;\n".getBytes());
+                    outputStream.write("\n;}catch(e){}\n".getBytes());
                     logger.logMessage(LogLevel.INFO, "js文件:<{}>处理完毕", path);
                 }
             }
