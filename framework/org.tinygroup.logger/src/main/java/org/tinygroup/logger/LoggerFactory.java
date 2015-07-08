@@ -53,7 +53,7 @@ public final class LoggerFactory {
 		}
 		LoggerImpl loggerImpl = new LoggerImpl(
 				org.slf4j.LoggerFactory.getLogger(name));
-		loggers.put(name, loggerImpl);
+		loggers.putIfAbsent(name, loggerImpl);
 		return loggerImpl;
 	}
 
