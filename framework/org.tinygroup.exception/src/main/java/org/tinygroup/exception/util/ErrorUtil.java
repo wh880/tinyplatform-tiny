@@ -44,9 +44,9 @@ public class ErrorUtil {
 	 * V1版本错误码构造函数。
 	 * 
 	 * @param errorType
-	 *            错误类型。（1：框架级系统错误 、2:框架扩展系统错误,3：业务错误、4：第三方错误） 
+	 *            错误类型。（1：框架级系统错误 、2:框架业务扩展错误,3：业务错误、4：第三方错误） 
 	 * @param
-	 *            errorLevel 错误级别。（1：信息、2：警告、3：错误、4：严重错误）
+	 *            errorLevel 错误级别。（1：错误、2：严重错误）
 	 * @param errorScene
 	 *            错误场景。（业务事件码）
 	 * @param errorSpecific

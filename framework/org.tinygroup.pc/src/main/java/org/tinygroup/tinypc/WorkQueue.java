@@ -24,7 +24,7 @@ import java.util.List;
  * Created by luoguo on 14-1-23.
  */
 public interface WorkQueue extends RemoteObject {
-
+	String WORKQUEUE_TYPE = "WorkQueue";
 	/**
 	 * 设置对象仓库
 	 * 

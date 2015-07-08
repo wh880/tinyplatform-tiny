@@ -19,7 +19,12 @@ package org.tinygroup.tinypc;
  * Created by luoguo on 2014/5/5.
  */
 public class PCRuntimeException extends RuntimeException {
-    public PCRuntimeException(String message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -411785131226608764L;
+
+	public PCRuntimeException(String message) {
         super(message);
     }
 

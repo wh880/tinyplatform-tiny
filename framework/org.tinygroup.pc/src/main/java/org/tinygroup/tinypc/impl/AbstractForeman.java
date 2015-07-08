@@ -15,11 +15,12 @@
  */
 package org.tinygroup.tinypc.impl;
 
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.tinypc.*;
-
 import java.rmi.RemoteException;
+import org.tinygroup.tinypc.Foreman;
+import org.tinygroup.tinypc.WorkCombiner;
+import org.tinygroup.tinypc.WorkQueue;
+import org.tinygroup.tinypc.WorkSplitter;
+import org.tinygroup.tinypc.WorkStatus;
 
 /**
  * 本地包工头
@@ -30,15 +31,19 @@ public abstract class AbstractForeman implements Foreman {
      *
      */
     private static final long serialVersionUID = -8812858260392860166L;
-    private WorkQueue workQueue;
+    protected volatile boolean cancel = false;
     private final String type;
     private String id;
     private WorkStatus workStatus = WorkStatus.WAITING;
-    protected volatile boolean cancel = false;
-    protected transient static Logger logger = LoggerFactory.getLogger(AbstractForeman.class);
+    private WorkQueue workQueue;
     private WorkCombiner workCombiner;
     private WorkSplitter workSplitter;
 
+    public AbstractForeman(String type) throws RemoteException {
+        this.id = Util.getUuid();
+        this.type = type;
+    }
+    
     public WorkCombiner getWorkCombiner() {
         return workCombiner;
     }
@@ -63,16 +68,9 @@ public abstract class AbstractForeman implements Foreman {
         this.workQueue = workQueue;
     }
 
-
-    public AbstractForeman(String type) throws RemoteException {
-        this.id = Util.getUuid();
-        this.type = type;
-    }
-
     public String getType() {
         return type;
     }
-
 
     public WorkStatus getWorkStatus() {
         return workStatus;

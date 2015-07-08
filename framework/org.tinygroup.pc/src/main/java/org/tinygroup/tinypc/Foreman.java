@@ -25,13 +25,13 @@ import java.util.List;
  * Created by luoguo on 14-1-8.
  */
 public interface Foreman extends ParallelObject {
+	String FOREMAN_TYPE = "Foreman";
     /**
      * 返回执行哪种类型的工作任务
      *
      * @return
      */
     String getType() throws RemoteException;
-
 
     /**
      * 开始干活以完成工作

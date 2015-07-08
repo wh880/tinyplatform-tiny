@@ -15,12 +15,11 @@
  */
 package org.tinygroup.tinypc.impl;
 
+import java.rmi.RemoteException;
+
 import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.WorkStatus;
-
-import java.rmi.RemoteException;
-import java.util.UUID;
 
 /**
  * Created by luoguo on 14-1-8.
@@ -40,7 +39,7 @@ public class WorkDefault implements Work {
 
 
     private WorkDefault() throws RemoteException {
-        this.id = UUID.randomUUID().toString().replaceAll("-", "");
+        this.id = Util.getUuid();
     }
 
     public WorkDefault(String type) throws RemoteException {

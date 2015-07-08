@@ -16,7 +16,6 @@
 package org.tinygroup.tinypc.dlock;
 
 import org.tinygroup.tinypc.PCRuntimeException;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.TimeUnit;
@@ -93,13 +92,16 @@ public class DistributedLockImpl extends UnicastRemoteObject implements
 			long startTime = System.nanoTime();
 			while (token != 0 && isLockTimeout()) {
 				try {
-					if (time > 0) {
-						long endTime = System.nanoTime();
-						if (endTime - startTime >= unit.toMillis(time)) {
-							throw new TimeoutException();
-						}
+					if (time <= 0) {
+						lock.wait(1); 
+						continue;
 					}
-					Thread.sleep(1);
+					long endTime = System.nanoTime();
+					if (endTime - startTime >= unit.toMillis(time)) {
+						throw new TimeoutException();
+					}
+//					Thread.sleep(1);
+					lock.wait(1); 
 				} catch (InterruptedException e) {
 					// DO Noting
 				}

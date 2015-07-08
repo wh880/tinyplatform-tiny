@@ -35,7 +35,7 @@ public class ForemanSelectOneWorker extends AbstractForeman {
 	 * 
 	 */
 	private static final long serialVersionUID = -848878926324050616L;
-	private static transient Logger logger = LoggerFactory
+	private static final transient Logger LOGGER = LoggerFactory
 			.getLogger(ForemanSelectOneWorker.class);
 
 	public ForemanSelectOneWorker(String type) throws RemoteException {
@@ -56,14 +56,14 @@ public class ForemanSelectOneWorker extends AbstractForeman {
 			List<Worker> workerList, List<Worker> workersActived)
 			throws RemoteException {
 		try {
-			logger.logMessage(LogLevel.DEBUG,"worker:{0}开始执行",worker.getId());
+			LOGGER.logMessage(LogLevel.DEBUG,"worker:{0}开始执行",worker.getId());
 			Warehouse  w = worker.work(work);
-			logger.logMessage(LogLevel.DEBUG,"worker:{0}执行完成",worker.getId());
+			LOGGER.logMessage(LogLevel.DEBUG,"worker:{0}执行完成",worker.getId());
 			return w;
 		} catch (Exception e) {
-			logger.errorMessage("worker:{0}执行时出现异常", e, work.getId());
-			if (workerList.size() == 0) {
-				throw new PCRuntimeException(String.format("没有对应于work:%s的工人！",
+			LOGGER.errorMessage("worker:{0}执行时出现异常", e, work.getId());
+			if (workerList.isEmpty()) {
+				throw new PCRuntimeException(String.format("没有对应于work:%s的可用工人！",
 						work.getType()),e);
 			}
 			return reAction(work, workerList, workersActived);
@@ -72,11 +72,11 @@ public class ForemanSelectOneWorker extends AbstractForeman {
 
 	private Warehouse reAction(Work work,List<Worker> workers, List<Worker> workersActived)
 			throws RemoteException {
-		logger.logMessage(LogLevel.DEBUG, "开始重新查找worker");
+		LOGGER.logMessage(LogLevel.DEBUG, "开始重新查找worker");
 		Worker redoWorker = null;
 		for (Worker worker : workers) {
 			if (worker.acceptWork(work)) {
-				logger.logMessage(LogLevel.DEBUG, "查找到worker:{0}",
+				LOGGER.logMessage(LogLevel.DEBUG, "查找到worker:{0}",
 						worker.getId());
 				redoWorker = worker;
 				workersActived.add(worker);
