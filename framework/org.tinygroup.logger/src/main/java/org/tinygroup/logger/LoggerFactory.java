@@ -15,11 +15,12 @@
  */
 package org.tinygroup.logger;
 
-import org.slf4j.ILoggerFactory;
-import org.tinygroup.logger.impl.LoggerImpl;
-
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.slf4j.ILoggerFactory;
+import org.tinygroup.logger.impl.LoggerImpl;
 
 /**
  * 日志工厂，用于获取Logger实例。
@@ -33,7 +34,7 @@ public final class LoggerFactory {
 
 	private static ThreadLocal<LogLevel> threadLogLevel = new ThreadLocal<LogLevel>();
 
-	private static Map<String, Logger> loggers = new HashMap<String, Logger>();
+	private static Map<String, Logger> loggers = new ConcurrentHashMap<String, Logger>();
 
 	private LoggerFactory() {
 	}
