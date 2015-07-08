@@ -52,7 +52,7 @@ public class MediaTypeRegistrarSupport implements MediaTypeRegistrar {
 					}
 				}
 			}
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			throw new MalformedMediaTypeException("FileExtension ["
 					+ fileExtension + "]--mediaTypes [" + mediaTypes
 					+ "] are invalid!", e);

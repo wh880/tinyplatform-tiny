@@ -100,7 +100,7 @@ public abstract class AbstractCachableExtensionMappingInstanceResolver
 		String ext = null;
 		try {
 			ext = this.doGetExtension(request);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			logger.logMessage(LogLevel.WARN,
 					"find fileExtension from the request fail!", e);
 		}

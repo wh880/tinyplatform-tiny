@@ -738,10 +738,10 @@ public class SessionImpl implements HttpSession {
 					switch (event) {
 					case RECREATED:
 						listener.sessionInvalidated(this);
-
+						break;
 					case CREATED:
 						listener.sessionCreated(this);
-
+						break;
 					case VISITED:
 						listener.sessionVisited(this);
 						break;

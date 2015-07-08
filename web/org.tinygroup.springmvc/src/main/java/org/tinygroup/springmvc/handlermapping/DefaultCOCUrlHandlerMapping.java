@@ -53,7 +53,7 @@ public class DefaultCOCUrlHandlerMapping extends
 				// desicide url
 				urls = conventionHelper.determineUrl(obj);
 			}
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			if (logger.isWarnEnabled()) {
 				logger.warn("resolve the uris mapping for handler err!", e);
 			}
