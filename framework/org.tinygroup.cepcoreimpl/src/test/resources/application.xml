@@ -3,4 +3,10 @@
 	<application-processors>
 	
 	</application-processors>
+	
+	<exception-config>
+    <exception-handlers>
+         <exception-handler handler="handler1" exception="java.lang.NullPointerException"/>
+     </exception-handlers>
+</exception-config>
 </application>
