@@ -79,10 +79,10 @@ public class ServiceOutPutTinyProcessor extends AbstractTinyProcessor {
 			Object objectResult = callService(serviceId, context);
 			result.setResultObj(objectResult);
 			result.setSuccess(true);
-		} catch (Throwable throwable) {
+		} catch (Exception exception) {
 			result.setSuccess(false);
 			result.setErrorContext(BaseRuntimeException
-					.getErrorContext(throwable));
+					.getErrorContext(exception));
 		}
 		if (urlString.endsWith(".sxml")) {// 返回xml
 			context.getResponse().getWriter()

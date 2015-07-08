@@ -173,8 +173,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     public CodeBlock visitMacro_directive(@NotNull TinyTemplateParser.Macro_directiveContext ctx) {
         String name = ctx.getChild(0).getText();
         name = name.substring(6, name.length() - 1).trim();
-        //这里进行保留字检查
-        boolean isReserve = false;
+        
         for (String word : RESERVED_WORDS) {
             if (name.equals(word)) {
                 TerminalNodeImpl terminalNode = (TerminalNodeImpl) ctx.getChild(0);
@@ -466,14 +465,6 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
     }
 
 
-//    public CodeBlock visitExpr_math_unary_suffix(@NotNull TinyTemplateParser.Expr_math_unary_suffixContext ctx) {
-//        peekCodeLet().code("O.e(\"l").code(ctx.getChild(1).getText()).code("\",");
-//        ctx.expression().accept(this);
-//        peekCodeLet().code(")");
-//        return null;
-//    }
-
-
     public CodeBlock visitBodycontent_directive(@NotNull TinyTemplateParser.Bodycontent_directiveContext ctx) {
         CodeBlock codeBlock = new CodeBlock();
         codeBlock.subCode("$macro= getMacro($context);");
@@ -546,8 +537,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         name = name.substring(2, name.length() - 1).trim();
         processCallMacro(ctx.para_expression_list(), callMacroFunctionBody, "\"" + name + "\"");
         CodeBlock bodyContentMacro = new CodeBlock();
-        //callMacro.subCode("$bodyMacro= (Macro) $context.getItemMap().get(\"bodyContent\");");
-        //callMacro.subCode("if($bodyMacro==null){");
+        
         callMacroFunctionBody.subCode(bodyContentMacro);
         bodyContentMacro.header("Macro $bodyMacro=new AbstractMacro(\"bodyContent\",(Macro)$context.getItemMap().get(\"bodyContent\")) {");
         CodeBlock render = getMacroRenderCodeBlock(true);
@@ -559,7 +549,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
         popCodeBlock();
         bodyContentMacro.footer("};");
         callMacroFunctionBody.subCode("$newContext.put(\"bodyContent\",$bodyMacro);");
-        //callMacro.subCode("}");
+      
         callMacroFunctionBody.subCode("$bodyMacro.setTemplateEngine(this.getTemplateEngine());");
         callMacroFunctionBody.subCode("$macro.render($template,$context,$newContext,$writer);");
         templateClass.subCode(callMacroFunctionDeclare);

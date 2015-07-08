@@ -70,7 +70,7 @@ public class WebExceptionProcessor extends AbstractConfiguration {
 			} catch (ClassNotFoundException e) {
 				logger.logMessage(LogLevel.INFO,
 						"添加web-exception-handler出现异常,Exception类:{0}找不到",
-						exception, handlerBean);
+						e, handlerBean);
 				continue;
 			}
 			logger.logMessage(LogLevel.INFO,

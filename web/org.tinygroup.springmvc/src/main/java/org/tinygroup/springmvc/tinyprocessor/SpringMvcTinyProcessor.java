@@ -594,7 +594,7 @@ public class SpringMvcTinyProcessor extends AbstractTinyProcessor implements
 					try {
 						interceptor.afterCompletion(request, response,
 								mappedHandler.getHandler(), ex);
-					} catch (Throwable ex2) {
+					} catch (Exception ex2) {
 						logger.errorMessage(
 								"HandlerInterceptor.afterCompletion threw exception",
 								ex2);

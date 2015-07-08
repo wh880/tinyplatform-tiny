@@ -78,7 +78,7 @@ package org.tinygroup.exception.constant;
 public enum ErrorType {
 	/** 框架级系统错误 */
 	FRAMEWORK(1),
-	/** 框架扩展系统错误 */
+	/** 框架业务扩展错误 */
 	EXT(2),
 	/** 业务错误 */
 	BIZ(3),

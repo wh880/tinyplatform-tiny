@@ -193,10 +193,6 @@ public class TemplateEngineDefault implements TemplateEngine {
         return null;
     }
 
-    private String getKeyName(String className, String methodName) {
-        return className + ":" + methodName;
-    }
-
     public String getEncode() {
         return encode;
     }
