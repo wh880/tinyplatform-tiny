@@ -34,7 +34,7 @@ public final class LoggerFactory {
 
 	private static ThreadLocal<LogLevel> threadLogLevel = new ThreadLocal<LogLevel>();
 
-	private static Map<String, Logger> loggers = new ConcurrentHashMap<String, Logger>();
+	private static ConcurrentHashMap<String, Logger> loggers = new ConcurrentHashMap<String, Logger>();
 
 	private LoggerFactory() {
 	}
