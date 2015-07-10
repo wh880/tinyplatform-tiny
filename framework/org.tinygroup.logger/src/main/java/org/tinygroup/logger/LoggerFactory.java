@@ -51,10 +51,12 @@ public final class LoggerFactory {
 		if (loggers.containsKey(name)) {
 			return loggers.get(name);
 		}
-		LoggerImpl loggerImpl = new LoggerImpl(
-				org.slf4j.LoggerFactory.getLogger(name));
-		loggers.putIfAbsent(name, loggerImpl);
-		return loggerImpl;
+		Logger logger = new LoggerImpl(org.slf4j.LoggerFactory.getLogger(name));
+		Logger oldLogger = loggers.putIfAbsent(name, logger);
+		if (null != oldLogger) {
+			logger = oldLogger;
+		}
+		return logger;
 	}
 
 	public synchronized static void putThreadVariable(String key, String value) {
