@@ -1,6 +1,5 @@
 package org.tinygroup.tinysqldsl;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,10 +7,8 @@ import java.util.List;
  * @author renhui
  *
  */
-public class Pager<T> implements Serializable{
+public class Pager<T>{
 	
-	private static final long serialVersionUID = 7671925869710965221L;
-
 	private List<T> records;//当前页的记录
 	
 	private int totalCount;//总记录数

@@ -18,9 +18,7 @@ package org.tinygroup.jdbctemplatedslsession.keygenerator;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.tinysqldsl.KeyGenerator;
-import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.base.InsertContext;
-import org.tinygroup.tinysqldsl.insert.InsertBody;
 
 /**
  * 
@@ -41,13 +39,4 @@ public class AppKeyGenerator implements KeyGenerator {
 		return (T) incrementer.nextStringValue();
 	}
 	
-	private Object appGeneratedKey(String keyName, InsertContext context) {
-		Assert.assertNotNull(incrementer, "incrementer must not be null");
-		Object value = incrementer.nextStringValue();
-		Column primaryColumn = new Column(context.getTable(), keyName);
-		context.addValues(primaryColumn.value(value));
-		InsertBody insertBody = context.createInsert();
-		return value;
-	}
-
 }
