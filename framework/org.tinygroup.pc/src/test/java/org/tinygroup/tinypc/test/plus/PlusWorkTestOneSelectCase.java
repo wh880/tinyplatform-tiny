@@ -30,7 +30,7 @@ public class PlusWorkTestOneSelectCase {
 			Warehouse resultWarehouse = jobCenter.doWork(work);
 			jobCenter.unregisterForeMan(f);
 			unregWorker(jobCenter, list);
-			int result = resultWarehouse.get(PlusWork.RESULT);
+			Integer result = resultWarehouse.get(PlusWork.RESULT);
 			System.out.println("result:" + result);
 			System.out.println("if not 55 ,failure");
 
