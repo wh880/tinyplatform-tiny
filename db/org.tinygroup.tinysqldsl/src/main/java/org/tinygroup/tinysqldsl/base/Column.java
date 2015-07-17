@@ -26,7 +26,7 @@ import org.tinygroup.tinysqldsl.selectitem.SelectItem;
  * 列
  */
 public class Column extends ColumnOperator implements Expression,
-		MultiPartName, SelectItem, Cloneable {
+		MultiPartName, SelectItem {
 	/**
 	 * 表名
 	 */

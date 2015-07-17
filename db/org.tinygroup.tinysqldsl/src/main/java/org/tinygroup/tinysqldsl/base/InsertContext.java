@@ -95,6 +95,10 @@ public class InsertContext {
 	public List<String> getColumnNames() {
 		return columnNames;
 	}
+	
+	public String[] getColumnNameArray() {
+		return columnNames.toArray(new String[0]);
+	}
 
 	private void addColumnName(String columnName){
 		columnNames.add(columnName);

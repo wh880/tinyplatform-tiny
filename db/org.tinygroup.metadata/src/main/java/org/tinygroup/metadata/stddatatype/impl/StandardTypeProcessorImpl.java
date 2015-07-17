@@ -40,7 +40,7 @@ public class StandardTypeProcessorImpl implements StandardTypeProcessor {
 		StandardType standardType = standardMap.get(id);
 		if (standardType == null) {
 			throw new RuntimeException(String.format(
-					"不存在, 标准类型ID:[%s],对应的标准数据类型", id, language));
+					"不存在, 标准类型ID:[%s],语言:[%s]对应的标准数据类型", id, language));
 		}
 		if (standardType.getDialectTypeList() != null) {
 			for (DialectType dialectType : standardType.getDialectTypeList()) {
