@@ -28,12 +28,11 @@ public class RmiServerTest extends TestCase {
 	static int CP = 7777;
     RmiServer localServer;
     RmiServer remoteServer;
-
     public void setUp() throws Exception {
         super.setUp();
         localServer = new RmiServerImpl(SIP,SP);
         remoteServer = new RmiServerImpl(CIP,CP,SIP,SP);
-
+      
     }
 
     public void tearDown() throws Exception {
@@ -58,63 +57,5 @@ public class RmiServerTest extends TestCase {
         assertEquals(info, "Hello,def");
     }
 
-    public void testRegisterRemoteObject() throws Exception {
-
-    }
-
-    public void testRegisterRemoteObject1() throws Exception {
-
-    }
-
-    public void testRegisterRemoteObject2() throws Exception {
-
-    }
-
-    public void testRegisterRemoteObject3() throws Exception {
-
-    }
-
-    public void testUnregisterRemoteObject() throws Exception {
-
-    }
-
-    public void testUnregisterRemoteObjectByType() throws Exception {
-
-    }
-
-    public void testUnregisterRemoteObjectByType1() throws Exception {
-
-    }
-
-    public void testUnregisterRemoteObject1() throws Exception {
-
-    }
-
-    public void testUnregisterRemoteObject2() throws Exception {
-
-    }
-
-    public void testGetRemoteObject() throws Exception {
-
-    }
-
-    public void testGetRemoteObject1() throws Exception {
-
-    }
-
-    public void testGetRemoteObjectList() throws Exception {
-
-    }
-
-    public void testGetRemoteObjectListInstanceOf() throws Exception {
-
-    }
-
-    public void testGetRemoteObjectList1() throws Exception {
-
-    }
-
-    public void testUnexportObjects() throws Exception {
-
-    }
+   
 }

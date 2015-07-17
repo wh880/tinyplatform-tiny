@@ -34,7 +34,7 @@ public class NewRmiRunServer {
 		}
 //		RmiUtil.start((Runnable)localServer);
 		try {
-			localServer.registerLocalObject(new HelloImpl(), "hello");
+			localServer.registerLocalObject(new MyHelloImpl(), "hello");
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -61,7 +61,7 @@ public class NewRmiRunServer {
 					sleep(1000);
 					System.out.println(localServer.getObject("hello1"));
 					if(localServer.getObject("hello1")!=null){
-						Hello hello = localServer.getObject("hello1");
+						MyHello hello = localServer.getObject("hello1");
 						String info = hello.sayHello("abc111111");
 					}
 				} catch (Exception e) {

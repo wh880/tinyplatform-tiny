@@ -34,7 +34,7 @@ public class NewRmiRunServerForReconnect {
 		}
 //		RmiUtil.start((Runnable)localServer);
 		try {
-			localServer.registerLocalObject(new HelloImpl(), "hello");
+			localServer.registerLocalObject(new MyHelloImpl(), "hello");
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

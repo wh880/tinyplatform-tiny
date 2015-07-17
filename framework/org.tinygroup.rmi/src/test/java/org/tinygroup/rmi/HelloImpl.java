@@ -17,12 +17,18 @@ package org.tinygroup.rmi;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Created by luoguo on 14-1-24.
  */
-public class HelloImpl implements Hello, Serializable {
-    public HelloImpl() throws RemoteException {
+public class HelloImpl extends UnicastRemoteObject implements Hello, Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5104610922441066578L;
+
+	public HelloImpl() throws RemoteException {
         System.out.println("创建：" + HelloImpl.class + "实例");
     }
 

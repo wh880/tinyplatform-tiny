@@ -35,7 +35,7 @@ public class NewRmiRunClient {
 			e1.printStackTrace();
 		}
 		try {
-			remoteServer.registerLocalObject(new HelloImpl(), "hello1");
+			remoteServer.registerLocalObject(new MyHelloImpl(), "hello1");
 			
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -74,7 +74,7 @@ public class NewRmiRunClient {
 		}
 
 		public void hello() {
-			Hello hello = null;
+			MyHello hello = null;
 			try {
 				hello = remoteServer.getObject("hello1");
 			} catch (Exception e) {

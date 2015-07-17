@@ -23,6 +23,6 @@ import java.rmi.RemoteException;
 /**
  * Created by luoguo on 14-1-24.
  */
-public interface Hello extends Remote,Verifiable {
+public interface MyHello extends Remote,Verifiable {
     String sayHello(String name) throws RemoteException;
 }
