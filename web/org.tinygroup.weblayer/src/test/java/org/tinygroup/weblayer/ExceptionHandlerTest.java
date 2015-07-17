@@ -13,69 +13,89 @@ import org.tinygroup.weblayer.impl.WebContextImpl;
 
 public class ExceptionHandlerTest extends TestCase {
 
-	public void handlerTest() throws Exception {
+	public void testHandler() throws Exception {
 
 		WebExceptionHandlerManager webExceptionHandlerManager = new WebExceptionHandlerManagerImpl();
-         
-		final State state=new State(true);
-		
+
+		final State state = new State(true);
+
 		webExceptionHandlerManager.setDefaultHandler(new WebExceptionHandler() {
-			
+
 			public void handler(Throwable throwable, WebContext webContext)
 					throws IOException, ServletException {
 				state.setDefault(true);
 				System.out.println("defaultHandler be treated");
 			}
 		});
-		
-		
-		webExceptionHandlerManager.addHandler(IllegalArgumentException.class.getName(), new WebExceptionHandler() {
-			
-			public void handler(Throwable throwable, WebContext webContext)
-					throws IOException, ServletException {
-				state.setDefault(false);
-				System.out.println("IllegalArgumentException be treated");
-			}
-		});
-		
-        webExceptionHandlerManager.addHandler(ArrayIndexOutOfBoundsException.class.getName(), new WebExceptionHandler() {
-			
-			public void handler(Throwable throwable, WebContext webContext)
-					throws IOException, ServletException {
-				state.setDefault(false);
-				System.out.println("ArrayIndexOutOfBoundsException be treated");
-			}
-		});
-        
-        webExceptionHandlerManager.addHandler(ClassNotFoundException.class.getName(), new WebExceptionHandler() {
-			
-			public void handler(Throwable throwable, WebContext webContext)
-					throws IOException, ServletException {
-				state.setDefault(false);
-				System.out.println("ClassNotFoundException be treated");
-			}
-		});
-		
-        WebContext webContext=new WebContextImpl();
-		webExceptionHandlerManager.handler(new IllegalArgumentException("sdsff"), webContext);
-		
+
+		webExceptionHandlerManager.addHandler(
+				IllegalArgumentException.class.getName(),
+				new WebExceptionHandler() {
+
+					public void handler(Throwable throwable,
+							WebContext webContext) throws IOException,
+							ServletException {
+						state.setDefault(false);
+						System.out
+								.println("IllegalArgumentException be treated");
+					}
+				});
+
+		webExceptionHandlerManager.addHandler(
+				ArrayIndexOutOfBoundsException.class.getName(),
+				new WebExceptionHandler() {
+
+					public void handler(Throwable throwable,
+							WebContext webContext) throws IOException,
+							ServletException {
+						state.setDefault(false);
+						System.out
+								.println("ArrayIndexOutOfBoundsException be treated");
+					}
+				});
+
+		webExceptionHandlerManager.addHandler(
+				ClassNotFoundException.class.getName(),
+				new WebExceptionHandler() {
+
+					public void handler(Throwable throwable,
+							WebContext webContext) throws IOException,
+							ServletException {
+						state.setDefault(false);
+						System.out.println("ClassNotFoundException be treated");
+					}
+				});
+
+		WebContext webContext = new WebContextImpl();
+		webExceptionHandlerManager.handler(
+				new IllegalArgumentException("sdsff"), webContext);
+
 		assertEquals(false, state.isDefault());
-		
-		webExceptionHandlerManager.handler(new ArrayIndexOutOfBoundsException("sfdsf"), webContext);
-		
+
+		webExceptionHandlerManager.handler(new ArrayIndexOutOfBoundsException(
+				"sfdsf"), webContext);
+
 		assertEquals(false, state.isDefault());
-		
-		webExceptionHandlerManager.handler(new TestException("sfdsf"), webContext);
-		
+
+		webExceptionHandlerManager.handler(new TestException("sfdsf"),
+				webContext);
+
 		assertEquals(false, state.isDefault());
-		
-		webExceptionHandlerManager.handler(new IllegalAccessException("sfdsf"), webContext);
-		
+
+		webExceptionHandlerManager.handler(new IllegalAccessException("sfdsf"),
+				webContext);
+
 		assertEquals(true, state.isDefault());
+
+		webExceptionHandlerManager.handler(new IllegalStateException(
+				new IllegalArgumentException(new TestException("ssff"))),
+				webContext);
+
+		assertEquals(false, state.isDefault());
 
 	}
 
-	class State {
+	private class State {
 		private boolean isDefault;
 
 		public State(boolean isDefault) {
@@ -92,8 +112,8 @@ public class ExceptionHandlerTest extends TestCase {
 		}
 
 	}
-	
-	class TestException extends ClassNotFoundException{
+
+	private class TestException extends ClassNotFoundException {
 
 		public TestException() {
 			super();
@@ -106,7 +126,7 @@ public class ExceptionHandlerTest extends TestCase {
 		public TestException(String s) {
 			super(s);
 		}
-		
+
 	}
 
 }
