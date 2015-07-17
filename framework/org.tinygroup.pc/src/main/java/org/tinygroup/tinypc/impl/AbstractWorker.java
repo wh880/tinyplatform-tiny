@@ -21,6 +21,7 @@ import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.Worker;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 
 /**
