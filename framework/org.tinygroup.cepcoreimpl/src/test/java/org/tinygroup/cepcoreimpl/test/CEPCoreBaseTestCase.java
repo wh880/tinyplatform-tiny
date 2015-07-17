@@ -11,7 +11,7 @@ import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;
 import org.tinygroup.tinyrunner.Runner;
 
-public class CEPCoreBaseTestCase extends TestCase {
+public abstract class CEPCoreBaseTestCase extends TestCase {
 	private CEPCore core;
 	
 
@@ -37,4 +37,6 @@ public class CEPCoreBaseTestCase extends TestCase {
 				this.getClass().getClassLoader())
 				.getBean(CEPCore.CEP_CORE_BEAN);
 	}
+	
+	
 }
