@@ -14,7 +14,7 @@ public class OraclePageSqlMatchProcess extends AbstractPageSqlMatchProcess {
 	protected String internalSqlProcess(Select select, int start, int limit) {
 		OracleSelect oracleSelect=(OracleSelect)select;
 		oracleSelect.page(start, limit);
-		return oracleSelect.sql();
+		return oracleSelect.parsedSql();
 	}
 
 	@Override

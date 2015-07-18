@@ -62,7 +62,7 @@ public class DatabaseKeyGenerator implements KeyGenerator {
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection con)
 					throws SQLException {
-				PreparedStatement ps = con.prepareStatement(insert.sql(),
+				PreparedStatement ps = con.prepareStatement(insert.parsedSql(),
 						tableMetaData.getKeyNames());
 				setParameterValues(ps, insert.getValues(), null);
 				return ps;

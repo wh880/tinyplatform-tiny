@@ -202,6 +202,10 @@ public interface DslSession {
 	
 	public int[] batchUpdate(Update update,List<List<Object>> params);
 	
+	public int[] batchUpdate(Update update,Map<String, Object>[] params);
+	
+	public <T> int[] batchUpdate(Update update,Class<T> requiredType,List<T> params);
+	
 	/**
 	 * 批量更新
 	 * @param update 生成update 语句
@@ -211,8 +215,15 @@ public interface DslSession {
 	 */
 	public int[] batchUpdate(Update update,List<List<Object>> params,int batchSize);
 	
+    public int[] batchUpdate(Update update,Map<String, Object>[] params,int batchSize);
+	
+	public <T> int[] batchUpdate(Update update,Class<T> requiredType,List<T> params,int batchSize);
     
 	public int[] batchDelete(Delete delete,List<List<Object>> params);
+	
+	public int[] batchDelete(Delete delete,Map<String, Object>[] params);
+	
+	public <T> int[] batchDelete(Delete delete,Class<T> requiredType,List<T> params);
 	/**
 	 * 批量删除
 	 * @param delete 生成delete语句
@@ -221,5 +232,9 @@ public interface DslSession {
 	 * @return
 	 */
 	public int[] batchDelete(Delete delete,List<List<Object>> params,int batchSize);
+	
+    public int[] batchDelete(Delete delete,Map<String, Object>[] params,int batchSize);
+	
+	public <T> int[] batchDelete(Delete delete,Class<T> requiredType,List<T> params,int batchSize);
 	
 }

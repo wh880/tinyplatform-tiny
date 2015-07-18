@@ -19,7 +19,7 @@ public class MysqlPageSqlMatchProcess extends AbstractPageSqlMatchProcess{
 	protected String internalSqlProcess(Select select,int start, int limit) {
 		MysqlSelect mysqlSelect=(MysqlSelect)select;
 		mysqlSelect.limit(start, limit);
-		return mysqlSelect.sql();
+		return mysqlSelect.parsedSql();
 	}
 
 	@Override

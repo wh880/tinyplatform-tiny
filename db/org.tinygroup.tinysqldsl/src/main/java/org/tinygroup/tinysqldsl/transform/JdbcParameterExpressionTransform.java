@@ -16,7 +16,6 @@
 package org.tinygroup.tinysqldsl.transform;
 
 import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.expression.JdbcNamedParameter;
 import org.tinygroup.tinysqldsl.expression.JdbcParameter;
 
 /**
@@ -27,12 +26,6 @@ import org.tinygroup.tinysqldsl.expression.JdbcParameter;
 public class JdbcParameterExpressionTransform implements ExpressionTransform {
 
     public Expression transform(Object value) {
-        if (value instanceof JdbcNamedParameter) {
-            return new JdbcParameter();
-        }
-        if (value instanceof JdbcParameter) {
-            return (JdbcParameter) value;
-        }
         if (value instanceof Expression) {
             return (Expression) value;
         }

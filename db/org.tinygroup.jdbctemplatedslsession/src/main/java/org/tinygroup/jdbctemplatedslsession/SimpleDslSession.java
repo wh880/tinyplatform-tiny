@@ -28,6 +28,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 import org.tinygroup.commons.namestrategy.NameStrategy;
 import org.tinygroup.commons.namestrategy.impl.CamelCaseStrategy;
@@ -61,17 +62,19 @@ import org.tinygroup.tinysqldsl.base.InsertContext;
 public class SimpleDslSession implements DslSession {
 
 	private JdbcTemplate jdbcTemplate;
+	private SimpleJdbcTemplate simpleJdbcTemplate;
 	private TableMetaDataProvider provider;
 	private DataFieldMaxValueIncrementer incrementer;
 	private RowMapperSelector selector = new SimpleRowMapperSelector();
 	private PageSqlProcessSelector pageSelector = new SimplePageSqlProcessSelector();
 	private String dbType;
-	private NameStrategy nameStrategy=new CamelCaseStrategy();
+	private NameStrategy nameStrategy = new CamelCaseStrategy();
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(SimpleDslSession.class);
 
 	public SimpleDslSession(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
+		simpleJdbcTemplate = new SimpleJdbcTemplate(jdbcTemplate);
 		provider = new DefaultTableMetaDataProvider();
 		dbType = provider.getDbType(dataSource);
 	}
@@ -111,8 +114,9 @@ public class SimpleDslSession implements DslSession {
 	}
 
 	public int execute(Insert insert) {
-		logMessage(insert.sql(), insert.getValues());
-		return jdbcTemplate.update(insert.sql(), insert.getValues().toArray());
+		String sql = insert.parsedSql();
+		logMessage(sql, insert.getValues());
+		return jdbcTemplate.update(sql, insert.getValues().toArray());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -146,19 +150,22 @@ public class SimpleDslSession implements DslSession {
 	}
 
 	public int execute(Update update) {
-		logMessage(update.sql(), update.getValues());
-		return jdbcTemplate.update(update.sql(), update.getValues().toArray());
+		String sql = update.parsedSql();
+		logMessage(sql, update.getValues());
+		return jdbcTemplate.update(sql, update.getValues().toArray());
 	}
 
 	public int execute(Delete delete) {
-		logMessage(delete.sql(), delete.getValues());
-		return jdbcTemplate.update(delete.sql(), delete.getValues().toArray());
+		String sql = delete.parsedSql();
+		logMessage(sql, delete.getValues());
+		return jdbcTemplate.update(sql, delete.getValues().toArray());
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> T fetchOneResult(Select select, Class<T> requiredType) {
-		logMessage(select.sql(), select.getValues());
-		return (T) jdbcTemplate.queryForObject(select.sql(), select.getValues()
+		String sql = select.parsedSql();
+		logMessage(sql, select.getValues());
+		return (T) jdbcTemplate.queryForObject(sql, select.getValues()
 				.toArray(), selector.rowMapperSelector(requiredType));
 	}
 
@@ -173,9 +180,10 @@ public class SimpleDslSession implements DslSession {
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> fetchList(Select select, Class<T> requiredType) {
-		logMessage(select.sql(), select.getValues());
-		return jdbcTemplate.query(select.toString(), select.getValues()
-				.toArray(), selector.rowMapperSelector(requiredType));
+		String sql = select.parsedSql();
+		logMessage(sql, select.getValues());
+		return jdbcTemplate.query(sql, select.getValues().toArray(),
+				selector.rowMapperSelector(requiredType));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -190,26 +198,26 @@ public class SimpleDslSession implements DslSession {
 	@SuppressWarnings("unchecked")
 	public <T> List<T> fetchList(ComplexSelect complexSelect,
 			Class<T> requiredType) {
-		logMessage(complexSelect.sql(), complexSelect.getValues());
-		return jdbcTemplate.query(complexSelect.toString(), complexSelect
-				.getValues().toArray(), selector
-				.rowMapperSelector(requiredType));
+		String sql = complexSelect.parsedSql();
+		logMessage(sql, complexSelect.getValues());
+		return jdbcTemplate.query(sql, complexSelect.getValues().toArray(),
+				selector.rowMapperSelector(requiredType));
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> T fetchOneResult(ComplexSelect complexSelect,
 			Class<T> requiredType) {
-		logMessage(complexSelect.sql(), complexSelect.getValues());
-		return (T) jdbcTemplate.queryForObject(complexSelect.sql(),
-				complexSelect.getValues().toArray(),
-				selector.rowMapperSelector(requiredType));
+		String sql = complexSelect.parsedSql();
+		logMessage(sql, complexSelect.getValues());
+		return (T) jdbcTemplate.queryForObject(sql, complexSelect.getValues()
+				.toArray(), selector.rowMapperSelector(requiredType));
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> Pager<T> fetchPage(Select pageSelect, int start, int limit,
 			boolean isCursor, Class<T> requiredType) {
 		int totalCount = count(pageSelect);
-		String processSql = pageSelect.sql();
+		String processSql = pageSelect.parsedSql();
 		if (!isCursor) {
 			PageSqlMatchProcess process = pageSelector
 					.pageSqlProcessSelect(dbType);
@@ -235,7 +243,7 @@ public class SimpleDslSession implements DslSession {
 	}
 
 	public int count(Select select) {
-		String countSql = getCountSql(select.sql());
+		String countSql = getCountSql(select.parsedSql());
 		logMessage(countSql, select.getValues());
 		return jdbcTemplate.queryForInt(countSql,
 				ArrayUtil.toArray(select.getValues()));
@@ -271,6 +279,10 @@ public class SimpleDslSession implements DslSession {
 				}
 
 				public int[] callbackList(List<List<Object>> params) {
+					return null;
+				}
+
+				public int[] callback(Map<String, Object>[] params) {
 					return null;
 				}
 			});
@@ -327,7 +339,7 @@ public class SimpleDslSession implements DslSession {
 		return batchInsert(insert, batchArgs, batchSize, autoGeneratedKeys);
 	}
 
-	public <T> List<Map<String, Object>> convertMap(List<T> params) {
+	private <T> List<Map<String, Object>> convertMap(List<T> params) {
 		List<Map<String, Object>> batchArgs = new ArrayList<Map<String, Object>>();
 		for (T param : params) {
 			try {
@@ -339,26 +351,37 @@ public class SimpleDslSession implements DslSession {
 		}
 		return batchArgs;
 	}
-	
-	
-	private <T> Map<String, Object> convertMap(T param) throws Exception{
-		Map<String, Object> description=new HashMap<String, Object>();
+
+	private <T> Map<String, Object>[] convertBeanToArray(List<T> params) {
+		Map<String, Object>[] batchArgs = new Map[params.size()];
+		for (int j = 0; j < params.size(); j++) {
+			try {
+				batchArgs[j] = convertMap(params.get(j));
+			} catch (Exception e) {
+				LOGGER.errorMessage("pojo对象转换Map出错", e);
+				throw new DslRuntimeException(e);
+			}
+		}
+		return batchArgs;
+	}
+
+	private <T> Map<String, Object> convertMap(T param) throws Exception {
+		Map<String, Object> description = new HashMap<String, Object>();
 		PropertyDescriptor[] descriptors = PropertyUtils
 				.getPropertyDescriptors(param);
-		 for (int i = 0; i < descriptors.length; i++) {
-			 String name = descriptors[i].getName();
-			 if (PropertyUtils.isReadable(param, name)
-						&& PropertyUtils.isWriteable(param, name)) {
-	             if (descriptors[i].getReadMethod() != null) {
-	            	 Object value=PropertyUtils.getProperty(param, name);
-	                 description.put(name,value);
-	                 description.put(nameStrategy.getFieldName(name),value);
-	             }
-			 }
-         }
+		for (int i = 0; i < descriptors.length; i++) {
+			String name = descriptors[i].getName();
+			if (PropertyUtils.isReadable(param, name)
+					&& PropertyUtils.isWriteable(param, name)) {
+				if (descriptors[i].getReadMethod() != null) {
+					Object value = PropertyUtils.getProperty(param, name);
+					description.put(name, value);
+					description.put(nameStrategy.getFieldName(name), value);
+				}
+			}
+		}
 		return description;
 	}
-	
 
 	public int[] batchUpdate(Update update, List<List<Object>> params) {
 		return batchUpdate(update, params, Integer.MAX_VALUE);
@@ -385,6 +408,10 @@ public class SimpleDslSession implements DslSession {
 				}
 
 				public int[] callback(List<Map<String, Object>> params) {
+					return null;
+				}
+
+				public int[] callback(Map<String, Object>[] params) {
 					return null;
 				}
 			});
@@ -423,5 +450,92 @@ public class SimpleDslSession implements DslSession {
 	public int[] batchDelete(Delete delete, List<List<Object>> params,
 			int batchSize) {
 		return executeBatch(delete.sql(), params, batchSize);
+	}
+
+	public int[] batchUpdate(Update update, Map<String, Object>[] params) {
+		return batchUpdate(update, params, Integer.MAX_VALUE);
+	}
+
+	public <T> int[] batchUpdate(Update update, Class<T> requiredType,
+			List<T> params) {
+		return batchUpdate(update, requiredType, params, Integer.MAX_VALUE);
+	}
+
+	public int[] batchUpdate(final Update update, Map<String, Object>[] params,
+			int batchSize) {
+		return executeBatchUpdate(update.sql(), params, batchSize);
+	}
+
+	private int[] executeBatchUpdate(final String sql,
+			Map<String, Object>[] params, int batchSize) {
+		final List<Integer> records = new ArrayList<Integer>();
+		if (params.length > batchSize) {
+			batchProcess(batchSize, params, new BatchOperateCallback() {
+				public int[] callback(List<Map<String, Object>> params) {
+					return null;
+				}
+
+				public int[] callbackList(List<List<Object>> params) {
+					return null;
+				}
+
+				public int[] callback(Map<String, Object>[] params) {
+					int[] affecctNums = simpleJdbcTemplate.batchUpdate(sql,
+							params);
+					Collections.addAll(records,
+							ArrayUtils.toObject(affecctNums));
+					return affecctNums;
+				}
+			});
+			return ArrayUtils.toPrimitive(records.toArray(new Integer[0]));
+		}
+		return simpleJdbcTemplate.batchUpdate(sql, params);
+	}
+
+	private void batchProcess(int batchSize, Map<String, Object>[] params,
+			BatchOperateCallback callback) {
+		int totalSize = params.length;
+		int times = totalSize % batchSize == 0 ? totalSize / batchSize
+				: totalSize / batchSize + 1;
+		int numOfEach = totalSize % times == 0 ? totalSize / times : totalSize
+				/ times + 1;
+		int fromIndex = 0;
+
+		for (int i = 0; i < times; i++) {
+			int endIndex = fromIndex + numOfEach;
+			if (endIndex > totalSize) {
+				endIndex = totalSize;
+			}
+			Map<String, Object>[] processParams = (Map<String, Object>[]) ArrayUtils
+					.subarray(params, fromIndex, endIndex);
+			fromIndex += numOfEach;
+			callback.callback(processParams);
+		}
+	}
+
+	public <T> int[] batchUpdate(Update update, Class<T> requiredType,
+			List<T> params, int batchSize) {
+		Map<String, Object>[] mapParams = convertBeanToArray(params);
+		return batchUpdate(update, mapParams, batchSize);
+	}
+
+	public int[] batchDelete(Delete delete, Map<String, Object>[] params) {
+		return batchDelete(delete, params, Integer.MAX_VALUE);
+	}
+
+	public <T> int[] batchDelete(Delete delete, Class<T> requiredType,
+			List<T> params) {
+		return batchDelete(delete, requiredType, params, Integer.MAX_VALUE);
+	}
+
+	public int[] batchDelete(Delete delete, Map<String, Object>[] params,
+			int batchSize) {
+		return executeBatchUpdate(delete.sql(), params, batchSize);
+	}
+
+	public <T> int[] batchDelete(Delete delete, Class<T> requiredType,
+			List<T> params, int batchSize) {
+		Map<String, Object>[] mapParams = convertBeanToArray(params);
+		return batchDelete(delete, mapParams, batchSize);
 	}
 }
