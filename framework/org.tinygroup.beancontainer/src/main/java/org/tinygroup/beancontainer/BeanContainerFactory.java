@@ -14,12 +14,11 @@
  *  limitations under the License.
  */
 package org.tinygroup.beancontainer;
-
 import org.tinygroup.exception.TinyBizRuntimeException;
 import org.tinygroup.exception.errorcode.ErrorCodeDefault;
 
 public class BeanContainerFactory {
-	public static BeanContainer<?> container;
+	private static BeanContainer<?> container;
 
 	public static void setBeanContainer(String beanClassName) {
 		try {

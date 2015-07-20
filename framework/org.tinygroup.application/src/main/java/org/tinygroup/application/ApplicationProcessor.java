@@ -33,12 +33,13 @@ public interface ApplicationProcessor extends Configuration, Ordered {
 	 * 应用程序处理器关闭方法
 	 */
 	void stop();
-
-	void setApplication(Application application);
+	
 	/**
 	 * 设置本应用处理器所属的应用程序
 	 * 
 	 * @param application
 	 */
+	void setApplication(Application application);
+	
 
 }
