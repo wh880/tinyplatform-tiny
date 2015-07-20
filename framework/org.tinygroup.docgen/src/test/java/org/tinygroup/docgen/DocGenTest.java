@@ -19,7 +19,9 @@ import junit.framework.TestCase;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
+import org.tinygroup.docgen.function.StaticClassFunction;
 import org.tinygroup.docgen.util.ImageUtil;
+import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 import java.io.File;
@@ -38,6 +40,8 @@ public class DocGenTest extends TestCase {
 					this.getClass().getClassLoader()).getBean(
 					DocumentGeneraterManager.MANAGER_BEAN_NAME);
 		}
+		TemplateEngine templateEngine = (TemplateEngine) manager.getFileGenerater("doc").getTemplateGenerater();
+		templateEngine.addTemplateFunction(new StaticClassFunction("imageUtil",ImageUtil.class));
 	}
 
 	protected void tearDown() throws Exception {
@@ -116,7 +120,7 @@ public class DocGenTest extends TestCase {
 		FileOutputStream outputStream = new FileOutputStream(file);
 		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 		Context context = new ContextImpl();
-		context.put("imageUtil", ImageUtil.class);
+		//context.put("imageUtil", ImageUtil.class);
 		manager.getFileGenerater("doc").generate("src/test/resources/picture.docpage", context,
 				writer);
 		outputStream.close();

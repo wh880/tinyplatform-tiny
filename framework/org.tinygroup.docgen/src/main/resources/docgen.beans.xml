@@ -40,6 +40,7 @@
 	
 	<bean id="docDocumentTemplateGenerater" scope="singleton"
 		class="org.tinygroup.template.impl.TemplateEngineDefault">
+		 <property name="compactMode"><value>false</value></property>
 	</bean>
 	
 	<bean id="xlsDocumentTemplateGenerater" scope="singleton"

@@ -1,8 +1,7 @@
 #*
 	Word文档，所有的Word文档都由此包含
 *#
-#macro wordDocument()
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+#macro wordDocument()<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <?mso-application progid="Word.Document"?>
 <w:wordDocument xml:space="preserve" w:ocxPresent="no"
 	w:embeddedObjPresent="no" w:macrosPresent="no"
@@ -1722,6 +1721,6 @@
 <wsp:rsid wsp:val="00FD72A1"/>
 </wsp:rsids>
 </w:docPr>
-$bodyContent
+#bodyContent
 </w:wordDocument>
 #end
