@@ -757,12 +757,13 @@ public class AVLTreeImpl<T extends Comparable<T>> implements AVLTree<T> {
 	public int heightIter() {
 
 		int height = -1;
-		for (Entry<T> temp = root; temp != null; height++) {
+		for (Entry<T> temp = root; temp != null; ) {
 			if (temp.balanceFactor == 'L') {
 				temp = temp.left;
 			} else {
 				temp = temp.right;
 			}
+			height++;
 		}
 		return height;
 	}
