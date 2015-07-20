@@ -35,7 +35,7 @@ public class ParameterValidator {
 			String scene = p.getValidatorSence();
 			if (scene != null && !"".equals(scene)) {
 				ValidatorManager xmlValidatorManager = BeanContainerFactory.getBeanContainer(loader)
-						.getBean(XmlValidatorManager.class);
+						.getBean(ValidatorManager.VALIDATOR_MANAGER_BEAN_NAME);
 				if (p.isArray()) {// 如果是数组
 					Object[] array = (Object[]) value;
 					validateArray(scene, array, result, xmlValidatorManager);
