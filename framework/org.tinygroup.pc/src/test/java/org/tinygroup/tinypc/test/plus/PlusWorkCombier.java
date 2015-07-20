@@ -9,11 +9,6 @@ import org.tinygroup.tinypc.impl.WarehouseDefault;
 
 public class PlusWorkCombier implements WorkCombiner {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5309465021491118836L;
-
 	public Warehouse combine(List<Warehouse> warehouseList)
 			throws RemoteException {
 		Warehouse w = new WarehouseDefault();
