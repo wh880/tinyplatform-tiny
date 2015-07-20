@@ -4,7 +4,7 @@
 
 #macro documentProperties()
 <o:DocumentProperties>
-	$bodyContent
+	#bodyContent
 </o:DocumentProperties>
 #end
 
@@ -29,7 +29,7 @@
 *#
 #macro body()
 <w:body>
-	$bodyContent
+	#bodyContent
 </w:body>
 #end
 

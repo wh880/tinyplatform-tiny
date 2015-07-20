@@ -40,6 +40,11 @@ public class StaticClassFunction extends AbstractTemplateFunction {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public StaticClassFunction(String names,Class<?> clazz) {
+		super(names);
+		this.clazz= clazz;
+	}
 
 	public Object execute(Template template, TemplateContext context,
 			Object... parameters) throws TemplateException {
@@ -50,13 +55,34 @@ public class StaticClassFunction extends AbstractTemplateFunction {
 		
 		String methodName = parameters[0].toString();
 		try {
-			Method method = clazz.getMethod(methodName, U.getParameterTypes(clazz, methodName));
 			Object[] objects = Arrays.copyOfRange(parameters, 1, parameters.length);
+			Method method = findMethod(methodName,objects);
 			return method.invoke(null, objects);
 		} catch (Exception e) {
 			throw new TemplateException(e);
 		}
 	}
 	
+	private Method findMethod(String methodName,Object[] objects) throws Exception{
+	    for(Method method : clazz.getDeclaredMethods()){
+	    	Class<?>[] parameterTypes =  method.getParameterTypes();
+	    	if(method.getName().equals(methodName) && checkParameter(objects,parameterTypes)){
+	    	   return method;
+	    	}
+	    }
+	    throw new TemplateException("没有找到匹配的方法名:"+methodName);
+	}
 
+	private boolean checkParameter(Object[] objects,Class<?>[] parameterTypes){
+		if(parameterTypes.length!=objects.length){
+		   return false;
+		}
+		for(int i=0;i<objects.length;i++){
+		   if(!parameterTypes[i].isInstance(objects[i])){
+			  return false;
+		   }
+		}
+		return true;
+	}
+	
 }
