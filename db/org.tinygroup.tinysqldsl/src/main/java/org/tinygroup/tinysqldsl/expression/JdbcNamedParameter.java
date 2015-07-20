@@ -21,6 +21,14 @@ public class JdbcNamedParameter implements Expression {
 
 	private String name;
 
+	public JdbcNamedParameter() {
+		super();
+	}
+
+	public JdbcNamedParameter(String name) {
+		this.name = name;
+	}
+
 	/**
 	 * The name of the parameter
 	 * 
@@ -40,5 +48,6 @@ public class JdbcNamedParameter implements Expression {
 
 	public void builderExpression(StatementSqlBuilder builder) {
 		builder.appendSql(toString());
+		builder.addParamName(name);
 	}
 }

@@ -14,7 +14,7 @@ public class PlusWorkCombier implements WorkCombiner {
 		Warehouse w = new WarehouseDefault();
 		int total = 0;
 		for (Warehouse wsub : warehouseList) {
-			int sub = wsub.get(PlusWork.RESULT);
+			Integer sub = wsub.get(PlusWork.RESULT);
 			total += sub;
 		}
 		w.put(PlusWork.RESULT, total);

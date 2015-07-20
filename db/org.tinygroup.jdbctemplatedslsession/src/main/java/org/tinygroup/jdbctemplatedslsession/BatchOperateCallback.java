@@ -18,6 +18,13 @@ public interface BatchOperateCallback {
      */
 	public int[] callback(List<Map<String, Object>> params);
 	
+	/**
+     * 批量处理回调方法	  
+     * @param params
+     * @return
+     */
+	public int[] callback(Map<String, Object>[] params);
+	
 	
 	  /**
      * 批量处理回调方法	  

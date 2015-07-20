@@ -15,18 +15,25 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.conditional.ConditionExpressionList;
 import org.tinygroup.tinysqldsl.expression.relational.EqualsTo;
 import org.tinygroup.tinysqldsl.expression.relational.OldOracleJoinBinaryExpression;
 import org.tinygroup.tinysqldsl.formitem.FromItem;
-import org.tinygroup.tinysqldsl.select.*;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import org.tinygroup.tinysqldsl.select.Fetch;
+import org.tinygroup.tinysqldsl.select.Join;
+import org.tinygroup.tinysqldsl.select.Limit;
+import org.tinygroup.tinysqldsl.select.Offset;
+import org.tinygroup.tinysqldsl.select.OrderByElement;
+import org.tinygroup.tinysqldsl.util.NamedParameterUtils;
 
 /**
  * select结构的解析器
@@ -40,12 +47,16 @@ public abstract class StatementSqlBuilder {
 	 * 存储参数值
 	 */
 	private List<Object> values;
+	
+	private List<String> namedList=new ArrayList<String>();
 	/**
 	 * 生成的sql语句
 	 */
 	protected StringBuilder stringBuilder;
-
+	
 	private transient boolean hasBuild;
+	
+	private boolean isNamedSql=false;
 	/**
 	 * 表达式之间是否用括号
 	 */
@@ -72,6 +83,20 @@ public abstract class StatementSqlBuilder {
 	public void addParamValue(Object... values) {
 		Collections.addAll(this.values, values);
 	}
+	
+	public void addParamName(String name){
+		isNamedSql=true;//认为sql中存在命名参数
+		 namedList.add(name);
+	}
+	
+	
+	public Map<String, Object> mapValue(){
+		 Map<String, Object> mapValues=new HashMap<String, Object>();
+         for (int i = 0; i < namedList.size(); i++) {
+			mapValues.put(namedList.get(i), values.get(i));
+		}
+         return mapValues;
+	}
 
 	public List<Object> getValues() {
 		return values;
@@ -79,6 +104,15 @@ public abstract class StatementSqlBuilder {
 
 	public StringBuilder getStringBuilder() {
 		return stringBuilder;
+	}
+	
+	
+	public boolean isNamedSql() {
+		return isNamedSql;
+	}
+
+	public List<String> getNamedList() {
+		return namedList;
 	}
 
 	public String sql() {
@@ -88,6 +122,16 @@ public abstract class StatementSqlBuilder {
 		parserStatementBody();
 		hasBuild = true;
 		return stringBuilder.toString();
+	}
+	
+	public String parsedSql(){
+		String parsedSql=sql();
+		if(isNamedSql){
+			Map<String, Object> mapValue=mapValue();
+			parsedSql=NamedParameterUtils.substituteNamedParameters(parsedSql,mapValue);	
+		}
+		return parsedSql;
+		
 	}
 
 	protected abstract void parserStatementBody();

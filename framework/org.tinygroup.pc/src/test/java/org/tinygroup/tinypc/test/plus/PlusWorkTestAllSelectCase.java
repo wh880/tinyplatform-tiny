@@ -9,13 +9,11 @@ import junit.framework.TestCase;
 
 import org.tinygroup.tinypc.Foreman;
 import org.tinygroup.tinypc.JobCenter;
-import org.tinygroup.tinypc.TestUtil;
 import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.Work;
 import org.tinygroup.tinypc.Worker;
 import org.tinygroup.tinypc.impl.ForemanSelectAllWorker;
 import org.tinygroup.tinypc.impl.JobCenterLocal;
-import org.tinygroup.tinypc.impl.JobCenterRemote;
 import org.tinygroup.tinypc.impl.WarehouseDefault;
 
 public class PlusWorkTestAllSelectCase extends TestCase {
@@ -29,8 +27,10 @@ public class PlusWorkTestAllSelectCase extends TestCase {
 			Warehouse resultWarehouse = jobCenter.doWork(work);
 			jobCenter.unregisterForeMan(f);
 			unregWorker(jobCenter, list);
-			int result = resultWarehouse.get(PlusWork.RESULT);
-			assertEquals(55, result);
+			Integer result = resultWarehouse.get(PlusWork.RESULT);
+			assertTrue( 55==result);
+			System.out.println("result:" + result);
+			System.out.println("if not 55 ,failure");
 		} catch (IOException e) {
 			assertFalse(true);
 			e.printStackTrace();

@@ -24,7 +24,7 @@ public class NotEqualsTo extends OldOracleJoinBinaryExpression {
 
 
     public NotEqualsTo(Expression leftExpression, Expression rightExpression) {
-        this(leftExpression, rightExpression, true, "<>");
+        this(leftExpression, rightExpression, false, "<>");
     }
 
     public NotEqualsTo(Expression leftExpression, Expression rightExpression,

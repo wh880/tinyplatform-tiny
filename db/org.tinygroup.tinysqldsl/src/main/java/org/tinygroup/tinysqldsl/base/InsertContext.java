@@ -16,6 +16,7 @@
 package org.tinygroup.tinysqldsl.base;
 
 import org.apache.commons.collections.map.CaseInsensitiveMap;
+import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
 import org.tinygroup.tinysqldsl.insert.InsertBody;
 
@@ -69,8 +70,13 @@ public class InsertContext {
 			Column column = value.getColumn();
 			columns.add(column);
 			addColumnName(column.getColumnName());
-			putParam(column.getColumnName(), value.getValue());
-			itemsList.addExpression(value.getExpression());
+			Expression expression=value.getExpression();
+			Object paramValue=value.getValue();
+			if(expression instanceof NamedCondition){
+				 paramValue=((NamedCondition)expression).getValue();
+			}
+			putParam(column.getColumnName(), paramValue);
+			itemsList.addExpression(expression);
 			this.values.add(value);
 		}
 	}

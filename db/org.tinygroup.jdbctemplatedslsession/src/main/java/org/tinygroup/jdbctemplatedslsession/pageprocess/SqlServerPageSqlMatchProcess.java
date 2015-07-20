@@ -21,7 +21,7 @@ public class SqlServerPageSqlMatchProcess extends AbstractPageSqlMatchProcess {
 	protected String internalSqlProcess(Select select, int start, int limit) {
 		SqlServerSelect sqlServerSelect=(SqlServerSelect)select;
 		sqlServerSelect.offset(Offset.offsetRow(start)).fetch(Fetch.fetchWithNextRow(limit));
-		return sqlServerSelect.sql();
+		return sqlServerSelect.parsedSql();
 	}
 
 }
