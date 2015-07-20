@@ -4,7 +4,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.tinypc.Warehouse;
@@ -14,12 +13,6 @@ import org.tinygroup.tinypc.Worker;
 import org.tinygroup.tinypc.impl.WarehouseDefault;
 
 public class PlusWorkSplitter implements WorkSplitter {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7586550309287462029L;
-	private static final Logger logger = LoggerFactory
-			.getLogger(PlusWorkSplitter.class);
 
 	public List<Warehouse> split(Work work, List<Worker> workers)
 			throws RemoteException {
@@ -30,7 +23,6 @@ public class PlusWorkSplitter implements WorkSplitter {
 
 	private List<Warehouse> deal(int[] params, int workerSize) {
 		List<Warehouse> list = new ArrayList<Warehouse>();
-
 		int length = params.length;
 		int eachLength = length / workerSize;
 		int moreLength = length % workerSize;
@@ -41,29 +33,12 @@ public class PlusWorkSplitter implements WorkSplitter {
 			if (i < moreLength) {
 				thisLength++;
 			}
-			logger.logMessage(LogLevel.INFO, "position{},{}begin,length{}", i,
-					begin, thisLength);
 			warehouse.put(PlusWork.PARAM,
 					getIntArray2(params, begin, thisLength));
 			begin += thisLength;
-			logger.logMessage(LogLevel.INFO, "position{},warehouse:{}", i,
-					warehouse);
-			logger.logMessage(LogLevel.INFO, "position{},warehouse param:{}",
-					i, getString((int[]) warehouse.get(PlusWork.PARAM)));
 			list.add(warehouse);
 		}
 		return list;
-	}
-
-	private int[] getIntArray(int[] params, int begin, int end) {
-		if (end <= begin) {
-			throw new IndexOutOfBoundsException("end必须大于begin");
-		}
-		int[] newArray = new int[end - begin];
-		for (int i = 0; i < end - begin; i++) {
-			newArray[i] = params[begin + i];
-		}
-		return newArray;
 	}
 
 	private int[] getIntArray2(int[] params, int begin, int length) {
@@ -75,14 +50,6 @@ public class PlusWorkSplitter implements WorkSplitter {
 			newArray[i] = params[begin + i];
 		}
 		return newArray;
-	}
-
-	private String getString(int[] array) {
-		String s = "";
-		for (int i : array) {
-			s = s + i + ",";
-		}
-		return s;
 	}
 
 }

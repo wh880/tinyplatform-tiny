@@ -8,11 +8,6 @@ import org.tinygroup.tinypc.impl.AbstractWorker;
 
 public class PlusWorker extends AbstractWorker {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5953305634939020548L;
-
 	public PlusWorker() throws RemoteException {
 		super(PlusWork.TYPE);
 	}

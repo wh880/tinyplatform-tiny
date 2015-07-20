@@ -21,13 +21,7 @@ import java.util.List;
  * 不管是Web应用还是其它类型的应用，都可以看成是一个Application
  */
 public interface Application {
-    /**
-     * 返回应用上下文
-     *
-     * @return
-     */
-    ApplicationContext getApplicationContext();
-
+   
     void addApplicationProcessor(ApplicationProcessor applicationProcessor);
 
     List<ApplicationProcessor> getApplicationProcessors();

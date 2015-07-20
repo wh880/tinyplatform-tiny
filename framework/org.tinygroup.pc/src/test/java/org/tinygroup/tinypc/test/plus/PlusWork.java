@@ -6,17 +6,16 @@ import org.tinygroup.tinypc.Warehouse;
 import org.tinygroup.tinypc.impl.WorkDefault;
 
 public class PlusWork extends WorkDefault {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2455954240812679366L;
+	//加法参数在上下文中的key
+	public static final String PARAM = "param";
+	//加法结果在上下文中的key
+	public static final String RESULT = "result";
+	//任务类型
+	public static final String TYPE = "plus";
+
 	public PlusWork(String type, String id, Warehouse inputWarehouse)
 			throws RemoteException {
 		super(type, id, inputWarehouse);
 	}
-	public static final String PARAM = "param";
-	public static final String RESULT = "result";
-	public static final String TYPE = "plus";
 
 }
