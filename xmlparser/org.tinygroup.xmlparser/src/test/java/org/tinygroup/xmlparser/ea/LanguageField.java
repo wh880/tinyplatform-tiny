@@ -13,20 +13,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.template;
+package org.tinygroup.xmlparser.ea;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * Created by luoguo on 2014/6/4.
+ * 具体语言支持的字段类型
+ * @author yancheng11334
+ *
  */
-public class TemplateException extends Exception {
-    public TemplateException(){
+@XStreamAlias("language-field")
+public class LanguageField extends BaseObject{
 
-    }
-    public TemplateException(String msg) {
-        super(msg);
-    }
-
-    public TemplateException(Exception e) {
-        super(e);
-    }
 }

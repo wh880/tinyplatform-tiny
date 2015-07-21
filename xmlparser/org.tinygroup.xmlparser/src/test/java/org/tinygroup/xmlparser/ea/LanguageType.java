@@ -13,20 +13,29 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.template;
+package org.tinygroup.xmlparser.ea;
+
+import java.util.List;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 /**
- * Created by luoguo on 2014/6/4.
+ * 数据库语言
+ * @author yancheng11334
+ *
  */
-public class TemplateException extends Exception {
-    public TemplateException(){
+@XStreamAlias("language-type")
+public class LanguageType extends BaseObject{
 
-    }
-    public TemplateException(String msg) {
-        super(msg);
-    }
+	@XStreamImplicit
+	private List<LanguageField> languageFieldList;
 
-    public TemplateException(Exception e) {
-        super(e);
-    }
+	public List<LanguageField> getLanguageFieldList() {
+		return languageFieldList;
+	}
+
+	public void setLanguageFieldList(List<LanguageField> languageFieldList) {
+		this.languageFieldList = languageFieldList;
+	}
 }

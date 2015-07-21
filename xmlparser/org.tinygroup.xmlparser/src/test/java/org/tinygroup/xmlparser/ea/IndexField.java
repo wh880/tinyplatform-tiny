@@ -13,20 +13,34 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.template;
+package org.tinygroup.xmlparser.ea;
 
-/**
- * Created by luoguo on 2014/6/4.
- */
-public class TemplateException extends Exception {
-    public TemplateException(){
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-    }
-    public TemplateException(String msg) {
-        super(msg);
-    }
+@XStreamAlias("index-field")
+public class IndexField {
 
-    public TemplateException(Exception e) {
-        super(e);
-    }
+	@XStreamAsAttribute
+	private String field;  //字段名
+	
+	@XStreamAsAttribute
+	private String direction;  //asc,desc
+
+	public String getField() {
+		return field;
+	}
+
+	public void setField(String field) {
+		this.field = field;
+	}
+
+	public String getDirection() {
+		return direction;
+	}
+
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+	
 }

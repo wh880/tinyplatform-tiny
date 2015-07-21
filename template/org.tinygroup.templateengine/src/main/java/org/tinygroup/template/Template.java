@@ -38,6 +38,7 @@ public interface Template extends TemplateContextOperator {
      */
     List<String> getImportPathList();
 
+    void addImport(Object importPath);
     /**
      * 进行渲染
      *

@@ -53,7 +53,7 @@ public abstract class AbstractTemplate implements Template {
         return importPathList;
     }
 
-    protected void addMacro(Macro macro) {
+    public void addMacro(Macro macro) {
         macroMap.put(macro.getName(), macro);
         macro.setTemplateEngine(getTemplateEngine());
     }

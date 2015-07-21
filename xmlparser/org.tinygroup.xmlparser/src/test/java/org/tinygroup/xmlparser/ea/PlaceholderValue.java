@@ -13,20 +13,37 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.template;
+package org.tinygroup.xmlparser.ea;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
- * Created by luoguo on 2014/6/4.
+ *占位符对应的值
+ * @author luoguo
+ *
  */
-public class TemplateException extends Exception {
-    public TemplateException(){
+@XStreamAlias("placeholder-value")
+public class PlaceholderValue {
+	@XStreamAsAttribute
+	private String name;
+	@XStreamAsAttribute
+	private String value;
 
-    }
-    public TemplateException(String msg) {
-        super(msg);
-    }
+	public String getName() {
+		return name;
+	}
 
-    public TemplateException(Exception e) {
-        super(e);
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
 }

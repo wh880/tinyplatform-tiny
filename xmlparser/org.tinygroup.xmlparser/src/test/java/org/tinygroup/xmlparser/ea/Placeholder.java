@@ -13,20 +13,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.template;
+package org.tinygroup.xmlparser.ea;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * Created by luoguo on 2014/6/4.
+ * 占位符
+ * @author luoguo
+ *
  */
-public class TemplateException extends Exception {
-    public TemplateException(){
-
-    }
-    public TemplateException(String msg) {
-        super(msg);
-    }
-
-    public TemplateException(Exception e) {
-        super(e);
-    }
+@XStreamAlias("placeholder")
+public class Placeholder extends BaseObject {
 }
