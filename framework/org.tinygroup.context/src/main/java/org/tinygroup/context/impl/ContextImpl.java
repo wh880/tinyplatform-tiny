@@ -15,12 +15,12 @@
  */
 package org.tinygroup.context.impl;
 
-import org.tinygroup.context.Context;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.tinygroup.context.Context;
 
 public class ContextImpl extends BaseContextImpl implements Context,
 		Serializable {
@@ -30,6 +30,7 @@ public class ContextImpl extends BaseContextImpl implements Context,
 	private static final long serialVersionUID = -6522200746253638309L;
 
 	private Map<String, Context> subContextMap = new ConcurrentHashMap<String, Context>();
+	private Context parent = null;
 
 	public ContextImpl() {
 
@@ -38,8 +39,6 @@ public class ContextImpl extends BaseContextImpl implements Context,
 	public ContextImpl(Map map) {
 		super.setItemMap(map);
 	}
-
-	private Context parent = null;
 
 	public Context getParent() {
 		return parent;
@@ -150,7 +149,7 @@ public class ContextImpl extends BaseContextImpl implements Context,
 		} else {
 			nodeMap.put(contextNode, "");
 		}
-		if (contextNode.getSubContextMap().size() > 0) {
+		if (!contextNode.getSubContextMap().isEmpty()) {
 			for (Context context : contextNode.getSubContextMap().values()) {
 				if (nodeMap.get(context) == null) {
 					T subResult = (T) findNodeMap(name, context, nodeMap);
@@ -178,7 +177,7 @@ public class ContextImpl extends BaseContextImpl implements Context,
 			nodeMap.put(contextNode, "");
 		}
 
-		if (contextNode.getSubContextMap().size() > 0) {
+		if (!contextNode.getSubContextMap().isEmpty()) {
 			for (Context context : contextNode.getSubContextMap().values()) {
 				if (nodeMap.get(context) == null) {
 					boolean exist = existNodeMap(name, context, nodeMap);
@@ -212,7 +211,7 @@ public class ContextImpl extends BaseContextImpl implements Context,
 		} else {
 			nodeMap.put(contextNode, "");
 		}
-		if (contextNode.getSubContextMap().size() > 0) {
+		if (!contextNode.getSubContextMap().isEmpty()) {
 			for (Context context : contextNode.getSubContextMap().values()) {
 				if (nodeMap.get(context) == null) {
 					renamed = renameKeyNodeMap(key, newKey, context, nodeMap);

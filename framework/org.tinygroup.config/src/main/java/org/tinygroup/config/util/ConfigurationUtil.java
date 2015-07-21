@@ -15,6 +15,14 @@
  */
 package org.tinygroup.config.util;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.config.ConfigurationManager;
@@ -24,14 +32,6 @@ import org.tinygroup.parser.filter.PathFilter;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 应用配置工具类，用于把父对象中的配置参数应用到子对象中。
@@ -118,25 +118,34 @@ public final class ConfigurationUtil {
 		if (applicationNode == null && componentNode == null) {
 			return result;
 		}
-		List<XmlNode> applicationNodeList = null;
-		if (applicationNode != null) {
-			applicationNodeList = applicationNode.getSubNodes(nodeName);
-		}
-		List<XmlNode> componentNodeList = null;
-		if (componentNode != null) {
-			componentNodeList = componentNode.getSubNodes(nodeName);
-		}
-		if (componentNodeList == null && applicationNodeList == null) {
+		List<XmlNode> applicationNodeList = getNodeList(applicationNode,
+				nodeName);
+		List<XmlNode> componentNodeList = getNodeList(componentNode, nodeName);
+		if (componentNodeList.isEmpty()) {// 如果组件配置为空
+			result.addAll(applicationNodeList);
 			return result;
 		}
-		if (componentNodeList == null || componentNodeList.size() == 0) {// 如果组件配置为空
-			result.addAll(applicationNode.getSubNodes(nodeName));
+		if (applicationNodeList.isEmpty()) {// 如果应用配置为空
+			result.addAll(componentNodeList);
 			return result;
 		}
-		if (applicationNodeList == null || applicationNodeList.size() == 0) {// 如果应用配置为空
-			result.addAll(componentNode.getSubNodes(nodeName));
-			return result;
+		combineSubList(keyPropertyName, result, applicationNodeList,
+				componentNodeList);
+		return result;
+	}
+
+	private static List<XmlNode> getNodeList(XmlNode node,
+			String nodeName) {
+		List<XmlNode> nodeList = new ArrayList<XmlNode>();
+		if (node != null) {
+			nodeList = node.getSubNodes(nodeName);
 		}
+		return nodeList;
+	}
+
+	private static void combineSubList(String keyPropertyName,
+			List<XmlNode> result, List<XmlNode> applicationNodeList,
+			List<XmlNode> componentNodeList) {
 		Map<String, XmlNode> appConfigMap = nodeListToMap(applicationNodeList,
 				keyPropertyName);
 		Map<String, XmlNode> compConfigMap = nodeListToMap(componentNodeList,
@@ -158,7 +167,6 @@ public final class ConfigurationUtil {
 				result.add(compConfigMap.get(key));
 			}
 		}
-		return result;
 	}
 
 	/**
@@ -296,7 +304,7 @@ public final class ConfigurationUtil {
 
 		Pattern pattern = Pattern.compile("[{]" + name + "[}]");
 		Matcher matcher = pattern.matcher(content);
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		int curpos = 0;
 		while (matcher.find()) {
 			buf.append(content.substring(curpos, matcher.start()));
@@ -312,8 +320,7 @@ public final class ConfigurationUtil {
 			throws IOException {
 		String config = StreamUtil.readText(fileObject.getInputStream(),
 				"UTF-8", true);
-		XmlNode xmlNode = new XmlStringParser().parse(config).getRoot();
-		return xmlNode;
+		return new XmlStringParser().parse(config).getRoot();
 	}
 
 	public static XmlNode loadApplicationConfig(String config) {
@@ -329,18 +336,18 @@ public final class ConfigurationUtil {
 			applicationPropertiesMap.put(name, value);
 			getConfigurationManager().setConfiguration(name, value);
 		}
-		config = replaceProperty(config,applicationPropertiesMap);// 替换里面的全局变量
-		applicationConfig = new XmlStringParser().parse(config).getRoot();// 再次解析，出来最终结果
-		return applicationConfig;
+		String newConfig = replaceProperty(config,applicationPropertiesMap);// 替换里面的全局变量
+		return new XmlStringParser().parse(newConfig).getRoot();// 再次解析，出来最终结果
 	}
 
 	 private static String replaceProperty(String config,Map<String, String> applicationPropertiesMap) {
-	        if (applicationPropertiesMap.size() > 0) {
+		 	String result = config;
+	        if (!applicationPropertiesMap.isEmpty()) {
 	            for (String name : applicationPropertiesMap.keySet()) {
 	                String value = applicationPropertiesMap.get(name);
-	                config = replace(config, name, value);
+	                result = replace(config, name, value);
 	            }
 	        }
-	        return config;
+	        return result;
 	    }
 }
