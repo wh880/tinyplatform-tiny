@@ -5,6 +5,8 @@ import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpretEngine;
 import org.tinygroup.template.interpret.TemplateInterpreter;
+import org.tinygroup.template.interpret.terminal.ForBreakException;
+import org.tinygroup.template.interpret.terminal.ForContinueException;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.rumtime.U;
 
@@ -30,7 +32,7 @@ public class ForBreakProcessor implements ContextProcessor<TinyTemplateParser.Br
             breakFor = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), context, writer));
         }
         if (breakFor) {
-            //TODO 真正退出For
+            throw new ForBreakException();
         }
         return null;
     }

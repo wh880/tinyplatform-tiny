@@ -5,6 +5,7 @@ import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpretEngine;
 import org.tinygroup.template.interpret.TemplateInterpreter;
+import org.tinygroup.template.interpret.terminal.ForContinueException;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.rumtime.U;
 
@@ -30,7 +31,7 @@ public class ForContinueProcessor implements ContextProcessor<TinyTemplateParser
             continueFor = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), context, writer));
         }
         if (continueFor) {
-            //TODO 真正继续下一个For
+            throw new ForContinueException();
         }
         return null;
     }

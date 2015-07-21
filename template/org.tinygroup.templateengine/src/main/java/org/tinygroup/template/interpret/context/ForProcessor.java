@@ -5,6 +5,8 @@ import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpretEngine;
 import org.tinygroup.template.interpret.TemplateInterpreter;
+import org.tinygroup.template.interpret.terminal.ForBreakException;
+import org.tinygroup.template.interpret.terminal.ForContinueException;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.rumtime.ForIterator;
 
@@ -30,11 +32,16 @@ public class ForProcessor implements ContextProcessor<TinyTemplateParser.For_dir
         context.put(name + "For", forIterator);
         boolean hasItem = false;
         while (forIterator.hasNext()) {
-            //TODO continue, break check
+            hasItem = true;
             Object value = forIterator.next();
             context.put(name, value);
-            interpreter.interpretTree(engine, templateFromContext, parseTree.block(), context, writer);
-            hasItem = true;
+            try {
+                interpreter.interpretTree(engine, templateFromContext, parseTree.block(), context, writer);
+            } catch (ForBreakException be) {
+                break;
+            } catch (ForContinueException ce) {
+                continue;
+            }
         }
         if (!hasItem) {
             TinyTemplateParser.Else_directiveContext elseDirectiveContext = parseTree.else_directive();

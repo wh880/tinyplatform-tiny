@@ -26,59 +26,6 @@ public class TemplateInterpreter {
     Map<Class<ParserRuleContext>, ContextProcessor> contextProcessorMap = new HashMap<Class<ParserRuleContext>, ContextProcessor>();
     OtherTerminalNodeProcessor otherNodeProcessor = new OtherTerminalNodeProcessor();
 
-    {
-/*
-        addTerminalNodeProcessor(new DoubleNodeProcessor());
-        addTerminalNodeProcessor(new EscapeTextNodeProcessor());
-        addTerminalNodeProcessor(new FalseNodeProcessor());
-        addTerminalNodeProcessor(new IntegerNodeProcessor());
-        addTerminalNodeProcessor(new NullNodeProcessor());
-        addTerminalNodeProcessor(new StringDoubleNodeProcessor());
-        addTerminalNodeProcessor(new StringSingleNodeProcessor());
-        addTerminalNodeProcessor(new TextCdataNodeProcessor());
-        addTerminalNodeProcessor(new TextPlainNodeProcessor());
-        addTerminalNodeProcessor(new TrueNodeProcessor());
-        addTerminalNodeProcessor(new FloatProcessor());
-*/
-    }
-
-    {
-/*        addContextProcessor(new ValueProcessor());
-        addContextProcessor(new ForProcessor());
-        addContextProcessor(new SetProcessor());
-        addContextProcessor(new IfProcessor());
-        addContextProcessor(new ElseIfProcessor());
-        addContextProcessor(new RangeProcessor());
-        addContextProcessor(new ArrayProcessor());
-        addContextProcessor(new MathBinaryProcessor());
-        addContextProcessor(new MathCompareProcessor());
-        addContextProcessor(new MathSingleRightProcessor());
-        addContextProcessor(new MathSingleLeftProcessor());
-        addContextProcessor(new BlankProcessor());
-        addContextProcessor(new TabProcessor());
-        addContextProcessor(new EolProcessor());
-        addContextProcessor(new CommentProcessor());
-        addContextProcessor(new MathIdentifierProcessor());
-        addContextProcessor(new ForBreakProcessor());
-        addContextProcessor(new ForContinueProcessor());
-        addContextProcessor(new MapProcessor());
-        addContextProcessor(new MathUnaryProcessor());
-        addContextProcessor(new MathConditionProcessor());
-        addContextProcessor(new MathConditionSimpleProcessor());
-        addContextProcessor(new MathCompareConditionProcessor());
-        addContextProcessor(new MathCompareRalationProcessor());
-        addContextProcessor(new MathBinaryShiftProcessor());
-        addContextProcessor(new MathBitwiseProcessor());
-        addContextProcessor(new ArrayGetProcessor());
-        addContextProcessor(new ImportProcessor());
-        addContextProcessor(new MacroDefineProcessor());
-        addContextProcessor(new CallProcessor());
-        addContextProcessor(new CallWithBodyProcessor());
-        addContextProcessor(new LayoutDefineProcessor());
-        addContextProcessor(new LayoutImplementProcessor());
-        addContextProcessor(new DentProcessor());
-        addContextProcessor(new IndentProcessor());*/
-    }
 
     public void addTerminalNodeProcessor(TerminalNodeProcessor processor) {
         terminalNodeProcessors[processor.getType()] = processor;
@@ -150,7 +97,7 @@ public class TemplateInterpreter {
     }
 
     public void callMacro(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext context, Writer writer) throws Exception {
-        Macro macro = null;//TODO 获取真正的macro
+        Macro macro = engine.findMacro(name,templateFromContext,context);
         TemplateContext newContext = new TemplateContextDefault();
         newContext.setParent(context);
         TinyTemplateParser.Para_expression_listContext expList = paraList;
@@ -170,7 +117,7 @@ public class TemplateInterpreter {
     }
 
     public void callBlockMacro(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.BlockContext block, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext context, Writer writer) throws Exception {
-        Macro macro = null;//TODO 获取真正的macro
+        Macro macro = engine.findMacro(name,templateFromContext,context);
         TemplateContext newContext = new TemplateContextDefault();
         newContext.setParent(context);
         if (paraList != null) {

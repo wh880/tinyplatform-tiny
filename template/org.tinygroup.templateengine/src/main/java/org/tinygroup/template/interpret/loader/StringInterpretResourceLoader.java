@@ -96,7 +96,7 @@ public class StringInterpretResourceLoader extends AbstractResourceLoader<String
         StringInterpretResourceLoader loader = new StringInterpretResourceLoader();
         TemplateInterpretEngine engine =new TemplateInterpretEngine();
         engine.addResourceLoader(loader);
-        Template template = loader.createTemplate("abc#for(abc:[1..5])${abc}#end");
+        Template template = loader.createTemplate("#macro abc()abc111#end #abc()");
         template.render(context,new OutputStreamWriter(System.out));
         System.out.flush();
     }
