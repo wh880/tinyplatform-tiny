@@ -13,33 +13,37 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.application;
+package org.tinygroup.xmlparser.ea;
 
-import org.tinygroup.commons.order.Ordered;
-import org.tinygroup.config.Configuration;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-public interface ApplicationProcessor extends Configuration, Ordered {
-	/**
-	 * 应用程序处理器开启方法
-	 */
-	void start();
+/**
+ *占位符对应的值
+ * @author luoguo
+ *
+ */
+@XStreamAlias("placeholder-value")
+public class PlaceholderValue {
+	@XStreamAsAttribute
+	private String name;
+	@XStreamAsAttribute
+	private String value;
 
-	/**
-	 * 应用程序处理器初始化方法
-	 */
-	void init();
+	public String getName() {
+		return name;
+	}
 
-	/**
-	 * 应用程序处理器关闭方法
-	 */
-	void stop();
-	
-	/**
-	 * 设置本应用处理器所属的应用程序
-	 * 
-	 * @param application
-	 */
-	void setApplication(Application application);
-	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
 
 }

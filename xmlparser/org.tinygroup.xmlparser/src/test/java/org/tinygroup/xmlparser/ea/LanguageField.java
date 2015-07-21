@@ -13,33 +13,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.application;
+package org.tinygroup.xmlparser.ea;
 
-import org.tinygroup.commons.order.Ordered;
-import org.tinygroup.config.Configuration;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-public interface ApplicationProcessor extends Configuration, Ordered {
-	/**
-	 * 应用程序处理器开启方法
-	 */
-	void start();
-
-	/**
-	 * 应用程序处理器初始化方法
-	 */
-	void init();
-
-	/**
-	 * 应用程序处理器关闭方法
-	 */
-	void stop();
-	
-	/**
-	 * 设置本应用处理器所属的应用程序
-	 * 
-	 * @param application
-	 */
-	void setApplication(Application application);
-	
+/**
+ * 具体语言支持的字段类型
+ * @author yancheng11334
+ *
+ */
+@XStreamAlias("language-field")
+public class LanguageField extends BaseObject{
 
 }

@@ -13,33 +13,30 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.application;
+package org.tinygroup.xmlparser.ea;
 
-import org.tinygroup.commons.order.Ordered;
-import org.tinygroup.config.Configuration;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-public interface ApplicationProcessor extends Configuration, Ordered {
-	/**
-	 * 应用程序处理器开启方法
-	 */
-	void start();
+import java.util.List;
 
-	/**
-	 * 应用程序处理器初始化方法
-	 */
-	void init();
+/**
+ * 数据库语言列表
+ * @author yancheng11334
+ *
+ */
+@XStreamAlias("language-types")
+public class LanguageTypes {
 
-	/**
-	 * 应用程序处理器关闭方法
-	 */
-	void stop();
+	@XStreamImplicit
+	private List<LanguageType> languageTypeList;
+
+	public List<LanguageType> getLanguageTypeList() {
+		return languageTypeList;
+	}
+
+	public void setLanguageTypeList(List<LanguageType> languageTypeList) {
+		this.languageTypeList = languageTypeList;
+	}
 	
-	/**
-	 * 设置本应用处理器所属的应用程序
-	 * 
-	 * @param application
-	 */
-	void setApplication(Application application);
-	
-
 }

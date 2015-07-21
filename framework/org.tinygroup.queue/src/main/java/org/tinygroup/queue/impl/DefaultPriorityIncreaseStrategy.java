@@ -29,6 +29,7 @@ public class DefaultPriorityIncreaseStrategy<E> implements PriorityIncreaseStrat
             synchronized (priorityQueue.dateQueueListArray) {
                 for (int i = priorityQueue.getReverseLevel(); i < priorityQueue.dateQueueListArray.length - 1; i++) {
                     priorityQueue.dateQueueListArray[i].addAll(priorityQueue.dateQueueListArray[i + 1]);
+                    priorityQueue.dateQueueListArray[i + 1].clear();
                 }
             }
         }
