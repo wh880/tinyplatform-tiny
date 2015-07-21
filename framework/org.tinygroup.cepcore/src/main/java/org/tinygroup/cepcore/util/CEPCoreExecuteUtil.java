@@ -27,6 +27,10 @@ import org.tinygroup.event.ServiceRequest;
 import java.util.List;
 
 public class CEPCoreExecuteUtil {
+	
+	private CEPCoreExecuteUtil() {
+	}
+
 	public static Object execute(String serviceId, Object[] paramArray,
 			ClassLoader loader) {
 		CEPCore cepcore = BeanContainerFactory.getBeanContainer(loader)
@@ -48,14 +52,14 @@ public class CEPCoreExecuteUtil {
 		cepcore.process(event);
 
 		List<Parameter> result = serviceInfo.getResults();
-		if (result==null||result.size() == 0)
+		if (result.isEmpty())
 			return null;
 		return event.getServiceRequest().getContext()
 				.get(result.get(0).getName());
 	}
-	
-	public static Object execute(String serviceId, Object[] paramArray
-			) {
-		return execute(serviceId,paramArray,CEPCoreExecuteUtil.class.getClassLoader());
+
+	public static Object execute(String serviceId, Object[] paramArray) {
+		return execute(serviceId, paramArray,
+				CEPCoreExecuteUtil.class.getClassLoader());
 	}
 }

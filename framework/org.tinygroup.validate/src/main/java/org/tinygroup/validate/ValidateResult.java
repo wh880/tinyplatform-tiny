@@ -15,6 +15,7 @@
  */
 package org.tinygroup.validate;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ import java.util.List;
  * @author luoguo
  *
  */
-public interface ValidateResult {
+public interface ValidateResult extends Serializable{
 	/**
 	 *  添加错误
 	 * @param field

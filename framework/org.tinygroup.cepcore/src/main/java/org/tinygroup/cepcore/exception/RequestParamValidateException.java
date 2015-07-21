@@ -22,7 +22,7 @@ public class RequestParamValidateException extends CEPRunException {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ValidateResult result;
+	private final ValidateResult result;
 
 	public RequestParamValidateException(ValidateResult result) {
 		super("参数校验时发生异常");

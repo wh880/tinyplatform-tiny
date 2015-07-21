@@ -38,7 +38,7 @@ public class CacheShutDownApplicationProcessor extends
 	}
 
 	public void start() {
-
+		//do nothing
 	}
 
 	public void stop() {
@@ -56,7 +56,7 @@ public class CacheShutDownApplicationProcessor extends
 	}
 
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
-
+		//do nothing
 	}
 
 	public XmlNode getComponentConfig() {

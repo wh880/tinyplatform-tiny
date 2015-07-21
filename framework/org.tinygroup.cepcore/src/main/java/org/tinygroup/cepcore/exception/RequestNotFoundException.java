@@ -23,7 +23,7 @@ public class RequestNotFoundException extends TinySysRuntimeException {
 	 * 
 	 */
 	private static final long serialVersionUID = 9094597551672712176L;
-	private String serviceId;
+	private final String serviceId;
 
 	public String getServiceId() {
 		return serviceId;

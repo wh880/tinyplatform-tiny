@@ -70,7 +70,7 @@ private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorDefaul
 		if(metaData==null){
 			throw new RuntimeException("代码生成器的元数据不存在");
 		}
-		addUtilClass(generater.getTemplateGenerater());
+		addUtilClass();
 		List<MacroDefine> macroDefines=metaData.getMacroDefines();
 		for (MacroDefine macroDefine : macroDefines) {
 		   LOGGER.logMessage(LogLevel.INFO, "开始加载宏文件路径：{0}",macroDefine.getMacroPath());
@@ -93,10 +93,10 @@ private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorDefaul
 //			}
 			FileObject templateDirObject=VFS.resolveFile(String.valueOf(context.get(ABSOLUTE_PATH)));
 			LOGGER.logMessage(LogLevel.INFO, "模板文件路径：{0}，加载完毕",templatePath);
-			String filePath = templatePath;
-			if (!StringUtils.startsWith(templatePath, "/")) {
-				filePath = "/"+templatePath;
-			}
+//			String filePath = templatePath;
+//			if (!StringUtils.startsWith(templatePath, "/")) {
+//				filePath = "/"+templatePath;
+//			}
 			//repository.addFileObject(templatePath, templateFileObject.getFileObject(filePath));
 			FileObject templateFileObject = templateDirObject.getFileObject(templatePath);
 			String generateFile=generater.evaluteString(newContext, templateDefine.getFileNameTemplate());
@@ -117,7 +117,7 @@ private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorDefaul
 		
 	}
 	
-	private void addUtilClass(TemplateEngine templateEngine) {
+	private void addUtilClass() {
 		XStream stream = new XStream();
 		stream.setClassLoader(getClass().getClassLoader());
 		stream.autodetectAnnotations(true);

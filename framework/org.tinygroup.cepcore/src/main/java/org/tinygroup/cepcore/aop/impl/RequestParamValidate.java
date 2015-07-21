@@ -15,6 +15,8 @@
  */
 package org.tinygroup.cepcore.aop.impl;
 
+import java.util.List;
+
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.aop.CEPCoreAopAdapter;
 import org.tinygroup.cepcore.exception.RequestNotFoundException;
@@ -31,10 +33,8 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
-import java.util.List;
-
 public class RequestParamValidate implements CEPCoreAopAdapter {
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(RequestParamValidate.class);
 
 	private CEPCore cepCore;
@@ -50,9 +50,16 @@ public class RequestParamValidate implements CEPCoreAopAdapter {
 	public void handle(Event event) {
 		ServiceRequest request = event.getServiceRequest();
 		ServiceInfo info = find(request);
-		Object[] args = getArguments(request.getContext(), info);
-		ParameterValidator.validate(args, info.getParameters(), this.getClass()
-				.getClassLoader());
+		List<Parameter> params = info.getParameters();
+		if (!params.isEmpty()) {
+			Object args[] = new Object[params.size()];
+			for (int i = 0; i < params.size(); i++) {
+				args[i] = getArgument(request.getContext(), params.get(i));
+			}
+			ParameterValidator.validate(args, info.getParameters(), this
+					.getClass().getClassLoader());
+		}
+
 	}
 
 	private ServiceInfo find(ServiceRequest request) {
@@ -78,24 +85,13 @@ public class RequestParamValidate implements CEPCoreAopAdapter {
 
 	}
 
-	private Object[] getArguments(Context context, ServiceInfo info) {
-		Object args[] = null;
-		List<Parameter> params = info.getParameters();
-		if (params != null && params.size() > 0) {
-			args = new Object[params.size()];
-			for (int i = 0; i < params.size(); i++) {
-				args[i] = getArgument(context, params.get(i));
-			}
-		}
-		return args;
-	}
-
 	private Object getArgument(Context context, Parameter param) {
 		String paramName = param.getName();
-		Object obj = Context2ObjectUtil.getObject(param, context,this.getClass().getClassLoader());
+		Object obj = Context2ObjectUtil.getObject(param, context, this
+				.getClass().getClassLoader());
 		if (obj == null) {
 			if (param.isRequired()) { // 如果输入参数是必须的,则抛出异常
-				logger.logMessage(LogLevel.ERROR, "参数{paramName}未传递", paramName);
+				LOGGER.logMessage(LogLevel.ERROR, "参数{paramName}未传递", paramName);
 				throw new ParamIsNullException(paramName);
 			} else { // 如果输出参数非必须，直接返回null
 				return null;

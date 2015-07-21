@@ -71,7 +71,7 @@ public class CommandProcessor extends AbstractConfiguration implements Applicati
 	}
 
 	public void setApplication(Application application) {
-		
+		//do nothing
 	}
 
 	public int getOrder() {
