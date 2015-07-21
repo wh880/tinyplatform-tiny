@@ -95,16 +95,16 @@ public class FileMonitorProcessor extends AbstractConfiguration implements
 					synchronized (synObject) {
 						synObject.wait(interval * MILLISECOND_PER_SECOND);// 没有线程唤醒，那么等待这么多时间
 						if (!stop) {// 唤醒时，或者等待时间后，发现stop=false时去执行重新搜索。 
-							logger.logMessage(LogLevel.INFO, "定时扫描文件变化......");
+							LOGGER.logMessage(LogLevel.INFO, "定时扫描文件变化......");
 							resolver = BeanContainerFactory.getBeanContainer(
 									this.getClass().getClassLoader()).getBean(
 									"fileResolver");
 							resolver.refresh();
-							logger.logMessage(LogLevel.INFO, "定时扫描文件结束.");
+							LOGGER.logMessage(LogLevel.INFO, "定时扫描文件结束.");
 						}
 					}
 				} catch (InterruptedException e) {
-					logger.errorMessage(e.getMessage(), e);
+					LOGGER.errorMessage(e.getMessage(), e);
 				}
 			}
 		}

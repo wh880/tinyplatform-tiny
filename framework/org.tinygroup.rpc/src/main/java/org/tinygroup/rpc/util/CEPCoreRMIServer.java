@@ -29,7 +29,7 @@ import java.rmi.server.UnicastRemoteObject;
 public class CEPCoreRMIServer extends UnicastRemoteObject implements CEPCoreRMI {
 
 	private static final long serialVersionUID = -8595995795665087127L;
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CEPCoreRMIServer.class);
 
 	public CEPCoreRMIServer() throws RemoteException {
@@ -37,14 +37,14 @@ public class CEPCoreRMIServer extends UnicastRemoteObject implements CEPCoreRMI 
 	}
 
 	public Event processFromRemote(Event event) throws RemoteException {
-		logger.logMessage(LogLevel.DEBUG, "接收到远程请求,serivceId:{0}", event
+		LOGGER.logMessage(LogLevel.DEBUG, "接收到远程请求,serivceId:{0}", event
 				.getServiceRequest().getServiceId());
 		CEPCore cep = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader())
 				.getBean(CEPCore.CEP_CORE_BEAN);
 		cep.process(event);
 
-		logger.logMessage(LogLevel.DEBUG, "处理远程请求完毕,serivceId:{0}", event
+		LOGGER.logMessage(LogLevel.DEBUG, "处理远程请求完毕,serivceId:{0}", event
 				.getServiceRequest().getServiceId());
 		return event;
 	}

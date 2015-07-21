@@ -45,7 +45,7 @@ public abstract class AbstractTestUtil {
 	private static boolean init = false;
 	private static Application application;
 	private static String DEFAULT_CONFIG = "application.xml";
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AbstractTestUtil.class);
 	private static final String TINY_JAR_PATTERN = "org\\.tinygroup\\.(.)*\\.jar";
 
@@ -105,7 +105,7 @@ public abstract class AbstractTestUtil {
 					fileResolver.addResolvePath(FileResolverUtil
 							.getWebLibJars(fileResolver));
 				} catch (Exception e) {
-					logger.errorMessage("为文件扫描器添加webLibJars时出现异常", e);
+					LOGGER.errorMessage("为文件扫描器添加webLibJars时出现异常", e);
 				}
 				fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
 				XmlNode applicationXml = ConfigurationUtil
@@ -128,7 +128,7 @@ public abstract class AbstractTestUtil {
 					}
 				}
 			} catch (Exception e) {
-				logger.errorMessage("载入应用配置信息时出现异常，错误原因：{}！", e, e.getMessage());
+				LOGGER.errorMessage("载入应用配置信息时出现异常，错误原因：{}！", e, e.getMessage());
 			}
 		}
 
@@ -156,7 +156,7 @@ public abstract class AbstractTestUtil {
 			fileResolver.addResolvePath(FileResolverUtil
 					.getWebLibJars(fileResolver));
 		} catch (Exception e) {
-			logger.errorMessage("为文件扫描器添加webLibJars时出现异常", e);
+			LOGGER.errorMessage("为文件扫描器添加webLibJars时出现异常", e);
 		}
 		fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
 		loadFileResolverConfig(fileResolver, applicationConfig);

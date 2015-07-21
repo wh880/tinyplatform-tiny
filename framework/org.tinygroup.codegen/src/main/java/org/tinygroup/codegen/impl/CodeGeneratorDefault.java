@@ -46,7 +46,7 @@ import java.util.List;
 
 public class CodeGeneratorDefault implements CodeGenerator{
 
-private static Logger logger = LoggerFactory.getLogger(CodeGeneratorDefault.class);
+private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorDefault.class);
 
 	//public static FullContextFileRepository repository;//暂时定为静态
 	private DocumentGenerater<TemplateEngine> generater;
@@ -73,26 +73,26 @@ private static Logger logger = LoggerFactory.getLogger(CodeGeneratorDefault.clas
 		addUtilClass(generater.getTemplateGenerater());
 		List<MacroDefine> macroDefines=metaData.getMacroDefines();
 		for (MacroDefine macroDefine : macroDefines) {
-		   logger.logMessage(LogLevel.INFO, "开始加载宏文件路径：{0}",macroDefine.getMacroPath());
+		   LOGGER.logMessage(LogLevel.INFO, "开始加载宏文件路径：{0}",macroDefine.getMacroPath());
 		   String macroPath=macroDefine.getMacroPath();
 		   if (!StringUtils.startsWith(macroPath, "/")) {
 			   macroPath = "/"+macroPath;
 		   }
 		   FileObject fileObject=VFS.resolveFile(String.valueOf(context.get(ABSOLUTE_PATH)));
 		   generater.addMacroFile(fileObject.getFileObject(macroPath));
-		   logger.logMessage(LogLevel.INFO, "宏文件路径：{0}，加载完毕",macroDefine.getMacroPath());
+		   LOGGER.logMessage(LogLevel.INFO, "宏文件路径：{0}，加载完毕",macroDefine.getMacroPath());
 		}
 		List<TemplateDefine> templateDefines=metaData.getTemplateDefines();
 		List<String> fileList=new ArrayList<String>();
 		for (TemplateDefine templateDefine : templateDefines) {
 			Context newContext=createNewContext(context, templateDefine);
 			String templatePath=templateDefine.getTemplatePath();
-			logger.logMessage(LogLevel.INFO, "开始加载模板文件路径：{0}",templatePath);
+			LOGGER.logMessage(LogLevel.INFO, "开始加载模板文件路径：{0}",templatePath);
 //			if(templatePath.startsWith("/")){
 //				templatePath=CodeGenerator.class.getResource(templatePath).getPath();
 //			}
 			FileObject templateDirObject=VFS.resolveFile(String.valueOf(context.get(ABSOLUTE_PATH)));
-			logger.logMessage(LogLevel.INFO, "模板文件路径：{0}，加载完毕",templatePath);
+			LOGGER.logMessage(LogLevel.INFO, "模板文件路径：{0}，加载完毕",templatePath);
 			String filePath = templatePath;
 			if (!StringUtils.startsWith(templatePath, "/")) {
 				filePath = "/"+templatePath;
@@ -129,7 +129,7 @@ private static Logger logger = LoggerFactory.getLogger(CodeGeneratorDefault.clas
 				   StaticClassFunction function = new StaticClassFunction(staticClass.getName(),staticClass.getClassName());
 				   generater.getTemplateGenerater().addTemplateFunction(function);
 			   } catch (Exception e) {
-				   logger.logMessage(LogLevel.ERROR, "静态方法类：{0}，实例化失败",staticClass.getClassName());
+				   LOGGER.logMessage(LogLevel.ERROR, "静态方法类：{0}，实例化失败",staticClass.getClassName());
 			   }
 		   }
 		}

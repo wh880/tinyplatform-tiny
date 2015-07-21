@@ -50,15 +50,15 @@ public class WebMacroFileProcessor extends AbstractFileProcessor {
 			hasResouceLoader=true;
 		}
 		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "宏模板配置文件[{0}]开始加载",
+			LOGGER.logMessage(LogLevel.INFO, "宏模板配置文件[{0}]开始加载",
 					fileObject.getAbsolutePath());
 			try {
 				engine.registerMacroLibrary(fileObject.getPath());
 			} catch (TemplateException e) {
-				logger.errorMessage("加载宏模板配置文件[{0}]出错", e,
+				LOGGER.errorMessage("加载宏模板配置文件[{0}]出错", e,
 						fileObject.getAbsolutePath());
 			}
-			logger.logMessage(LogLevel.INFO, "宏模板配置文件[{0}]加载完毕",
+			LOGGER.logMessage(LogLevel.INFO, "宏模板配置文件[{0}]加载完毕",
 					fileObject.getAbsolutePath());
 		}
 

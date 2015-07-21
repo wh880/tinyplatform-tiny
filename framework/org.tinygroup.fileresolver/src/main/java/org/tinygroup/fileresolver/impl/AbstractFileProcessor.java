@@ -41,7 +41,7 @@ public abstract class AbstractFileProcessor implements FileProcessor {
 	
 	protected List<FileObject> deleteList=new ArrayList<FileObject>();
 
-	protected static Logger logger = LoggerFactory
+	protected static final Logger LOGGER = LoggerFactory
 			.getLogger(AbstractFileProcessor.class);
 
 	protected FileResolver fileResolver;

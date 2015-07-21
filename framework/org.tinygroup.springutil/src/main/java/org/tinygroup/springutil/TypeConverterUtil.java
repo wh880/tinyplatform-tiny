@@ -34,7 +34,7 @@ import java.util.Collection;
 public class TypeConverterUtil {
 
 	private static SimpleTypeConverter converter = new SimpleTypeConverter();
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(TypeConverterUtil.class);
 
 	static {
@@ -52,7 +52,7 @@ public class TypeConverterUtil {
 			Class clazz = Class.forName(className);
 			return converter.convertIfNecessary(value, clazz);
 		} catch (ClassNotFoundException e) {
-			logger.errorMessage("get Class error with className:" + className,
+			LOGGER.errorMessage("get Class error with className:" + className,
 					e);
 			throw new RuntimeException(e);
 		}

@@ -48,17 +48,17 @@ public class CommandProcessor extends AbstractConfiguration implements Applicati
 	}
 
 	public void start() {
-		logger.logMessage(LogLevel.DEBUG, "启动插件命令行管理器");
+		LOGGER.logMessage(LogLevel.DEBUG, "启动插件命令行管理器");
 		init();
-		logger.logMessage(LogLevel.DEBUG, "启动插件命令行管理器成功");
+		LOGGER.logMessage(LogLevel.DEBUG, "启动插件命令行管理器成功");
 	}
 	
 	public void init() {
-		logger.logMessage(LogLevel.DEBUG, "初始化插件命令行管理器");
+		LOGGER.logMessage(LogLevel.DEBUG, "初始化插件命令行管理器");
 		command = CommandSystem.getInstance(PLUGIN_INSTANCE_NAME);
 		consoleCommander = new ConsoleCommander(command);
 		consoleCommander.start();
-		logger.logMessage(LogLevel.DEBUG, "初始化插件命令行管理器成功");
+		LOGGER.logMessage(LogLevel.DEBUG, "初始化插件命令行管理器成功");
 	}
 
 	public void stop() {

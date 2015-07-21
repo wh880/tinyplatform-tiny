@@ -36,7 +36,7 @@ import java.util.Map;
  * 
  */
 public class ComponentContainers {
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ComponentContainers.class);
 	/**
 	 * 用于存储所有组件信息列表
@@ -75,7 +75,7 @@ public class ComponentContainers {
 	public void removeComponent(ComponentDefine component) {
 		if (component == null)
 			return;
-		logger.logMessage(LogLevel.INFO, "移除组件Component[name:{0},bean:{1}]",
+		LOGGER.logMessage(LogLevel.INFO, "移除组件Component[name:{0},bean:{1}]",
 				component.getName(), component.getBean());
 		beanIdMap.remove(component.getBean());
 		nameMap.remove(component.getName());
@@ -102,7 +102,7 @@ public class ComponentContainers {
 	public void addComponent(ComponentDefine component) {
 		if (component == null)
 			return;
-		logger.logMessage(LogLevel.INFO, "添加组件Component[name:{0},bean:{1}]",
+		LOGGER.logMessage(LogLevel.INFO, "添加组件Component[name:{0},bean:{1}]",
 				component.getName(), component.getBean());
 		beanIdMap.put(component.getBean(), component);
 		nameMap.put(component.getName(), component);

@@ -46,7 +46,7 @@ public class FlowComponentAnnotationAction implements AnnotationClassAction,
 
 	private FlowExecutor pageflowExecutor;
 
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(FlowComponentAnnotationAction.class);
 
 	public <T> void process(Class<T> clazz, Annotation annotation) {
@@ -100,7 +100,7 @@ public class FlowComponentAnnotationAction implements AnnotationClassAction,
 			propertiesProcess(componentDefine, annotation);
 		}
 		if (componentDefine == null) {
-			logger.logMessage(LogLevel.WARN, "不存在组件名称为：[{0}]的组件信息",
+			LOGGER.logMessage(LogLevel.WARN, "不存在组件名称为：[{0}]的组件信息",
 					componentName);
 		}
 	}

@@ -56,7 +56,7 @@ public class ValidateMapFileProcessor extends AbstractFileProcessor {
 				.getXStream(ValidatorManager.XSTEAM_PACKAGE_NAME);
 
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除校验映射配置文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在移除校验映射配置文件[{0}]",
 					fileObject.getAbsolutePath());
 			Validators validators = (Validators) caches.get(fileObject
 					.getAbsolutePath());
@@ -64,13 +64,13 @@ public class ValidateMapFileProcessor extends AbstractFileProcessor {
 				validatorManager.removeValidators(validators);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			logger.logMessage(LogLevel.INFO, "移除校验映射配置文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "移除校验映射配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 
 		for (FileObject fileObject : changeList) {
 
-			logger.logMessage(LogLevel.INFO, "正在加载校验映射配置文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在加载校验映射配置文件[{0}]",
 					fileObject.getAbsolutePath());
 			Validators oldValidators = (Validators) caches.get(fileObject
 					.getAbsolutePath());
@@ -82,7 +82,7 @@ public class ValidateMapFileProcessor extends AbstractFileProcessor {
 			validatorManager.addValidators(validators);
 			caches.put(fileObject.getAbsolutePath(), validators);
 
-			logger.logMessage(LogLevel.INFO, "加载校验映射配置文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "加载校验映射配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 
 		}

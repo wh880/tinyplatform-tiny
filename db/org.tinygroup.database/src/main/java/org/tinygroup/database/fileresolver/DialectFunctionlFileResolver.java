@@ -42,18 +42,18 @@ public class DialectFunctionlFileResolver extends AbstractFileProcessor {
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.DATABASE_XSTREAM);
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除function文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在移除function文件[{0}]",
 					fileObject.getAbsolutePath());
 			DialectFunctions functions = (DialectFunctions)caches.get(fileObject.getAbsolutePath());
             if(functions!=null){
             	functionProcessor.removeDialectFunctions(functions);
             	caches.remove(fileObject.getAbsolutePath());
             }
-			logger.logMessage(LogLevel.INFO, "移除function文件[{0}]结束",
+            LOGGER.logMessage(LogLevel.INFO, "移除function文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在加载function文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在加载function文件[{0}]",
 					fileObject.getAbsolutePath());
 			DialectFunctions oldFunctions=(DialectFunctions)caches.get(fileObject.getAbsolutePath());
 			if(oldFunctions!=null){
@@ -63,7 +63,7 @@ public class DialectFunctionlFileResolver extends AbstractFileProcessor {
 					.getInputStream());
 			functionProcessor.addDialectFunctions(functions);
 			caches.put(fileObject.getAbsolutePath(), functions);
-			logger.logMessage(LogLevel.INFO, "加载function文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "加载function文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 	}

@@ -29,7 +29,7 @@ public class FlowApplicationProcessor implements ApplicationProcessor {
 	private FlowEventProcessor flowprocessor;
 	private CEPCore cepcore;
 	private FlowExecutor executor;
-	private static Logger logger = LoggerFactory.getLogger(FlowApplicationProcessor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FlowApplicationProcessor.class);
 
 	public String getApplicationNodePath() {
 		return null;
@@ -55,15 +55,15 @@ public class FlowApplicationProcessor implements ApplicationProcessor {
 	}
 
 	public void start() {
-		logger.logMessage(LogLevel.INFO, "启动FlowApplicationProcessor");
+		LOGGER.logMessage(LogLevel.INFO, "启动FlowApplicationProcessor");
 		cepcore.registerEventProcessor(flowprocessor);
-		logger.logMessage(LogLevel.INFO, "启动FlowApplicationProcessor完成");
+		LOGGER.logMessage(LogLevel.INFO, "启动FlowApplicationProcessor完成");
 	}
 
 	public void init() {
-		logger.logMessage(LogLevel.INFO, "初始化FlowApplicationProcessor");
+		LOGGER.logMessage(LogLevel.INFO, "初始化FlowApplicationProcessor");
 		initProcessors();
-		logger.logMessage(LogLevel.INFO, "初始化FlowApplicationProcessor完成");
+		LOGGER.logMessage(LogLevel.INFO, "初始化FlowApplicationProcessor完成");
 	}
 
 	private void initProcessors() {
@@ -72,9 +72,9 @@ public class FlowApplicationProcessor implements ApplicationProcessor {
 	}
 
 	public void stop() {
-		logger.logMessage(LogLevel.INFO, "停止FlowApplicationProcessor");
+		LOGGER.logMessage(LogLevel.INFO, "停止FlowApplicationProcessor");
 		cepcore.unregisterEventProcessor(flowprocessor);
-		logger.logMessage(LogLevel.INFO, "停止FlowApplicationProcessor完成");
+		LOGGER.logMessage(LogLevel.INFO, "停止FlowApplicationProcessor完成");
 	}
 
 	public void setApplication(Application application) {

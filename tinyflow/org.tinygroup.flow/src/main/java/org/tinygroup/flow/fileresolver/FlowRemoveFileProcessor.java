@@ -52,11 +52,11 @@ public class FlowRemoveFileProcessor extends AbstractFileProcessor {
 		XStream stream = XStreamFactory
 				.getXStream(FlowExecutor.FLOW_XSTREAM_PACKAGENAME);
 		for (FileObject fileObject : fileObjects) {
-			logger.logMessage(LogLevel.INFO, "正在删除逻辑流程flow文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在删除逻辑流程flow文件[{0}]",
 					fileObject.getAbsolutePath());
 			Flow flow = (Flow) stream.fromXML(fileObject.getInputStream());
 			flowExecutor.removeFlow(flow);
-			logger.logMessage(LogLevel.INFO, "删除逻辑流程flow文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "删除逻辑流程flow文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 	}

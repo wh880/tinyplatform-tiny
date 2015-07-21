@@ -59,7 +59,7 @@ public class WebExceptionProcessor extends AbstractConfiguration {
 		for (XmlNode handler : webHandlerList) {
 			String exception = handler.getAttribute("exception");
 			String handlerBean = handler.getAttribute("handler");
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"添加web-exception-handler,Exception:{0},handerBean:{1}",
 					exception, handlerBean);
 			WebExceptionHandler exceptionHandler = BeanContainerFactory
@@ -68,12 +68,12 @@ public class WebExceptionProcessor extends AbstractConfiguration {
 			try {
 				webHandlerManager.addHandler(exception, exceptionHandler);
 			} catch (ClassNotFoundException e) {
-				logger.logMessage(LogLevel.INFO,
+				LOGGER.logMessage(LogLevel.INFO,
 						"添加web-exception-handler出现异常,Exception类:{0}找不到",
 						e, handlerBean);
 				continue;
 			}
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"添加web-exception-handler,Exception:{0},handerBean:{1}完成",
 					exception, handlerBean);
 		}

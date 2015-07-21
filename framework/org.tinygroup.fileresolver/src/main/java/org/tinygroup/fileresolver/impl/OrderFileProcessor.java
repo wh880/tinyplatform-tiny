@@ -46,17 +46,17 @@ public class OrderFileProcessor extends AbstractFileProcessor {
 
 	public void process() {
 
-		logger.logMessage(LogLevel.INFO, "处理对象顺序文件开始");
+		LOGGER.logMessage(LogLevel.INFO, "处理对象顺序文件开始");
 //		OrderProcessor<?> orderProcessor = SpringBeanContainer
 //				.getBean(OrderProcessor.ORDER_NAME);
 		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "加载对象顺序文件：[{}]",
+			LOGGER.logMessage(LogLevel.INFO, "加载对象顺序文件：[{}]",
 					fileObject.getAbsolutePath());
 			orderProcessor.loadOrderFile(fileObject);
-			logger.logMessage(LogLevel.INFO, "加载对象顺序文件：[{}]完毕",
+			LOGGER.logMessage(LogLevel.INFO, "加载对象顺序文件：[{}]完毕",
 					fileObject.getAbsolutePath());
 		}
-		logger.logMessage(LogLevel.INFO, "处理对象顺序文件结束");
+		LOGGER.logMessage(LogLevel.INFO, "处理对象顺序文件结束");
 	}
 
 }

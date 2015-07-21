@@ -717,7 +717,7 @@ public class SessionConfiguration extends AbstractConfiguration {
 				}
 				buf.format("Attribute \"%s\" ", attrName);
 
-				logger.logMessage(LogLevel.DEBUG, buf.toString());
+				LOGGER.logMessage(LogLevel.DEBUG, buf.toString());
 
 				if (!matches.isEmpty()) {
 					matchedStoreName = matches.get(0).pattern.getStoreName();
@@ -729,7 +729,7 @@ public class SessionConfiguration extends AbstractConfiguration {
 			}
 
 			if (matchedStoreName != null) {
-				logger.logMessage(LogLevel.DEBUG,
+				LOGGER.logMessage(LogLevel.DEBUG,
 						"Session attribute {} is handled by session store: {}",
 						attrName, matchedStoreName);
 			}

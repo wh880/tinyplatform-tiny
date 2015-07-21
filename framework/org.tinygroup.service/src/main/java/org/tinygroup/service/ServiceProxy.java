@@ -32,7 +32,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 public class ServiceProxy implements Service {
-	private Logger logger = LoggerFactory.getLogger(ServiceProxy.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceProxy.class);
 	private Object objectInstance;
 	private Method method;
 	private List<Parameter> inputParameters;
@@ -188,7 +188,7 @@ public class ServiceProxy implements Service {
 		try {
 			return objectInstance.getClass().getMethod(methodName, argsType);
 		} catch (Exception e) {
-			logger.errorMessage("获取方法时出现异常,方法名:{methodName}", e, methodName);
+			LOGGER.errorMessage("获取方法时出现异常,方法名:{methodName}", e, methodName);
 			throw new RuntimeException("获取方法时出现异常,方法名:{" + methodName + "}",e);
 		}
 
@@ -219,7 +219,7 @@ public class ServiceProxy implements Service {
 		// =============20130619修改end================
 		if (obj == null) {
 			if (des.isRequired()) { // 如果输入参数是必须的,则抛出异常
-				logger.logMessage(LogLevel.ERROR, "参数{paramName}未传递", paramName);
+				LOGGER.logMessage(LogLevel.ERROR, "参数{paramName}未传递", paramName);
 				throw new ParamIsNullException(paramName);
 			} else { // 如果输出参数非必须，直接返回null
 				return null;

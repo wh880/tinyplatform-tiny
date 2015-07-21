@@ -41,25 +41,25 @@ public class ConfigurationFileProcessor extends AbstractFileProcessor {
 		if (!CollectionUtil.isEmpty(deleteList)
 				|| !CollectionUtil.isEmpty(changeList)) {
 			for (FileObject fileObject : deleteList) {
-				logger.logMessage(LogLevel.INFO, "正在移除组件配置文件[{0}]",
+				LOGGER.logMessage(LogLevel.INFO, "正在移除组件配置文件[{0}]",
 						fileObject.getAbsolutePath());
 				configurationManager.getComponentConfigurationMap().remove(
 						fileObject.getPath());
-				logger.logMessage(LogLevel.INFO, "移除组件配置文件[{0}]结束",
+				LOGGER.logMessage(LogLevel.INFO, "移除组件配置文件[{0}]结束",
 						fileObject.getAbsolutePath());
 			}
 			for (FileObject fileObject : changeList) {
-				logger.logMessage(LogLevel.INFO, "开始读取组件配置文件:{0}",
+				LOGGER.logMessage(LogLevel.INFO, "开始读取组件配置文件:{0}",
 						fileObject.getFileName());
 				try {
 					XmlNode xmlNode = ConfigurationUtil
 							.parseXmlFromFileObject(fileObject);
 					configurationManager.setComponentConfiguration(
 							fileObject.getPath(), xmlNode);
-					logger.logMessage(LogLevel.INFO, "读取组件配置文件:{0}完成",
+					LOGGER.logMessage(LogLevel.INFO, "读取组件配置文件:{0}完成",
 							fileObject.getFileName());
 				} catch (IOException e) {
-					logger.errorMessage("读取组件配置文件:{0}时出现异常！", e,
+					LOGGER.errorMessage("读取组件配置文件:{0}时出现异常！", e,
 							fileObject.getFileName());
 				}
 			}

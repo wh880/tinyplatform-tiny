@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public class ValidatorManagerWrapper {
 
-	protected static Logger logger = LoggerFactory
+	protected static final Logger LOGGER = LoggerFactory
 			.getLogger(AnnotationValidatorManagerImpl.class);
 
 	private Map<Class<?>, FieldValidatorMap> classFieldValidators = new HashMap<Class<?>, FieldValidatorMap>();
@@ -43,13 +43,13 @@ public class ValidatorManagerWrapper {
 
 	void validator(String name, Object value, ValidateResult result) {
 		if(name==null||"".equals(name)){
-			logger.logMessage(LogLevel.WARN,"简单类型验证规则名不可为空" , name);
+			LOGGER.logMessage(LogLevel.WARN,"简单类型验证规则名不可为空" , name);
 			result.addError(name, "简单类型验证规则名不可为空");
 			return;
 		}
 		List<Validator> list = basicValidatorMap.get(name);
 		if (list == null) {
-			logger.logMessage(LogLevel.WARN, "不存在简单类型验证规则:{0}", name);
+			LOGGER.logMessage(LogLevel.WARN, "不存在简单类型验证规则:{0}", name);
 			result.addError(name, "不存在简单类型验证规则:"+name);
 			return;
 		}
@@ -70,7 +70,7 @@ public class ValidatorManagerWrapper {
 				validatorMap.validator(className, scene, value, result,
 						validatedObjects);
 			} catch (Exception e) {
-				logger.errorMessage(e.getMessage(), e);
+				LOGGER.errorMessage(e.getMessage(), e);
 			}
 		}
 

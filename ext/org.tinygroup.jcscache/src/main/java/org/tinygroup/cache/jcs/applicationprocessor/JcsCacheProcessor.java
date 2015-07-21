@@ -50,9 +50,9 @@ public class JcsCacheProcessor extends AbstractConfiguration implements Applicat
 			}
 		}
 		if (enable) {
-			logger.logMessage(LogLevel.INFO, "jcscacheplugin is starting...");
+			LOGGER.logMessage(LogLevel.INFO, "jcscacheplugin is starting...");
 			startCluster();
-			logger.logMessage(LogLevel.INFO, "jcscacheplugin is started");
+			LOGGER.logMessage(LogLevel.INFO, "jcscacheplugin is started");
 		}
 	}
 	private void startCluster() {
@@ -67,23 +67,23 @@ public class JcsCacheProcessor extends AbstractConfiguration implements Applicat
 				try {
 					registryPort = Integer.parseInt(portS);
 				} catch (NumberFormatException e) {
-					logger.errorMessage("Problem converting port to an int.", e);
+					LOGGER.errorMessage("Problem converting port to an int.", e);
 				}
 			}
 		} catch (Exception e) {
-			logger.errorMessage("Problem loading props.", e);
+			LOGGER.errorMessage("Problem loading props.", e);
 		}
 
 		// we will always use the local machine for the registry
 		String registryHost;
 		try {
 			registryHost = InetAddress.getLocalHost().getHostAddress();
-			logger.logMessage(LogLevel.DEBUG, "registryHost =[{}]",
+			LOGGER.logMessage(LogLevel.DEBUG, "registryHost =[{}]",
 					registryHost);
 
 			if ("localhost".equals(registryHost)
 					|| "127.0.0.1".equals(registryHost)) {
-				logger.logMessage(
+				LOGGER.logMessage(
 						LogLevel.WARN,
 						"The local address [{}] is INVALID.  Other machines must be able to use the address to reach this server.",
 						registryHost);
@@ -92,35 +92,35 @@ public class JcsCacheProcessor extends AbstractConfiguration implements Applicat
 			try {
 				LocateRegistry.createRegistry(registryPort);
 			} catch (RemoteException e) {
-				logger.errorMessage(
+				LOGGER.errorMessage(
 						"Problem creating registry.  It may already be started. {}",
 						e, e.getMessage());
 			} catch (Exception t) {
-				logger.errorMessage("Problem creating registry.", t);
+				LOGGER.errorMessage("Problem creating registry.", t);
 			}
 
 			try {
 				RemoteCacheServerFactory.startup(registryHost, registryPort,
 						"/" + DEFAULT_PROPS_FILE_NAME);
 			} catch (IOException e) {
-				logger.errorMessage("Problem starting remote cache server.", e);
+				LOGGER.errorMessage("Problem starting remote cache server.", e);
 			}
 
 			catch (Exception t) {
-				logger.errorMessage("Problem starting remote cache server.", t);
+				LOGGER.errorMessage("Problem starting remote cache server.", t);
 			}
 		} catch (UnknownHostException e) {
-			logger.errorMessage(
+			LOGGER.errorMessage(
 					"Could not get local address to use for the registry!", e);
 		}
 	}
 
 	public void stop() {
 		if (enable) {
-			logger.logMessage(LogLevel.INFO, "Shutting down remote cache ");
+			LOGGER.logMessage(LogLevel.INFO, "Shutting down remote cache ");
 			CompositeCacheManager.getInstance().shutDown();
 			CompositeCache.elementEventQ.destroy();//关闭jcs开启的后台线程
-		    logger.logMessage(LogLevel.INFO, "jcscacheplugin is stopped");
+			LOGGER.logMessage(LogLevel.INFO, "jcscacheplugin is stopped");
 		}
 	}
 

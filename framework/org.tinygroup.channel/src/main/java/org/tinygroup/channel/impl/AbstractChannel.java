@@ -38,7 +38,7 @@ public abstract class AbstractChannel  implements ChannelInterface {
 	private List<EventListener> receiveEventListeners = new ArrayList<EventListener>();
 	private String id;
 	private CEPCore cepCore;
-	private Logger logger = LoggerFactory.getLogger(AbstractChannel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractChannel.class);
 	public CEPCore getCepCore() {
 		return cepCore;
 	}
@@ -122,7 +122,7 @@ public abstract class AbstractChannel  implements ChannelInterface {
 	}
 
 	private void error(RuntimeException e) {
-		logger.errorMessage("通道处理错误", e);
+		LOGGER.errorMessage("通道处理错误", e);
 		throw e;
 	}
 

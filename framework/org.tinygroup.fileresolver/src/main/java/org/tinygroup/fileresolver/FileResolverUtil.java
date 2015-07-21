@@ -39,7 +39,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileResolverUtil {
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(FileResolverUtil.class);
 
 	public static void addClassPathPattern(FileResolver resolver) {
@@ -100,7 +100,7 @@ public class FileResolverUtil {
 	public static List<String> getWebLibJars(FileResolver resolver)
 			throws Exception {
 		final List<String> classPaths = new ArrayList<String>();
-		logger.logMessage(LogLevel.INFO, "查找Web工程中的jar文件列表开始...");
+		LOGGER.logMessage(LogLevel.INFO, "查找Web工程中的jar文件列表开始...");
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Enumeration<URL> urls = loader.getResources("META-INF/MANIFEST.MF");
 		Map<String, Pattern> includePathPatternMap = resolver
@@ -129,7 +129,7 @@ public class FileResolverUtil {
 				Attributes attributes = mf.getMainAttributes();
 				String isTinyProject = attributes.getValue("IsTinyProject");
 				if ("true".equals(isTinyProject)) {
-					logger.logMessage(LogLevel.INFO,
+					LOGGER.logMessage(LogLevel.INFO,
 							"文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。",
 							fileObject);
 					addJarFile(classPaths, fileObject.getAbsolutePath());
@@ -158,42 +158,42 @@ public class FileResolverUtil {
 							Attributes attributes = mf.getMainAttributes();
 							String isTinyProject = attributes.getValue("IsTinyProject");
 							if ("true".equals(isTinyProject)) {
-								logger.logMessage(LogLevel.INFO,
+								LOGGER.logMessage(LogLevel.INFO,
 										"文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。",
 										fileObject);
 								addJarFile(classPaths, fileObject.getAbsolutePath());
 							}
 						}catch(IOException e){
-							logger.logMessage(LogLevel.WARN, "解析MANIFEST.MF发生异常:{}",mfObject.getAbsolutePath());
+							LOGGER.logMessage(LogLevel.WARN, "解析MANIFEST.MF发生异常:{}",mfObject.getAbsolutePath());
 						}
 						
 					}}
         	    );
         }
 		
-		logger.logMessage(LogLevel.INFO, "查找Web工程中的jar文件列表完成。");
+		LOGGER.logMessage(LogLevel.INFO, "查找Web工程中的jar文件列表完成。");
 		return classPaths;
 	}
 
 	private static void addJarFile(List<String> classPaths, String path) {
-		logger.logMessage(LogLevel.INFO, "扫描到jar文件<{}>。", path);
+		LOGGER.logMessage(LogLevel.INFO, "扫描到jar文件<{}>。", path);
 		classPaths.add(path);
 	}
 
 	public static List<String> getWebClasses() {
 		List<String> allScanningPath = new ArrayList<String>();
-		logger.logMessage(LogLevel.INFO, "查找WEB-INF/classes路径开始...");
+		LOGGER.logMessage(LogLevel.INFO, "查找WEB-INF/classes路径开始...");
 		URL url = FileResolverImpl.class.getResource("/");
 		if(url==null){
 			url = FileResolverImpl.class.getResource("");
 		}
 		String path = url.toString();
-		logger.logMessage(LogLevel.INFO, "WEB-INF/classes路径是:{}", path);
+		LOGGER.logMessage(LogLevel.INFO, "WEB-INF/classes路径是:{}", path);
 		if (path.indexOf("!") < 0) {// 如果在目录中
 			FileObject fileObject = VFS.resolveFile(path);
 			allScanningPath.add(fileObject.getAbsolutePath());
 			String libPath = path.replaceAll("/classes", "/lib");
-			logger.logMessage(LogLevel.INFO, "WEB-INF/lib路径是:{}", libPath);
+			LOGGER.logMessage(LogLevel.INFO, "WEB-INF/lib路径是:{}", libPath);
 			FileObject libFileObject = VFS.resolveFile(libPath);
 
 			allScanningPath.add(libFileObject.getAbsolutePath());
@@ -201,7 +201,7 @@ public class FileResolverUtil {
 			if (index > 0) {
 				String webInfPath = path.substring(0, index);
 				if (webInfPath.endsWith("WEB-INF")) {
-					logger.logMessage(LogLevel.INFO, "WEB-INF路径是:{}",
+					LOGGER.logMessage(LogLevel.INFO, "WEB-INF路径是:{}",
 							webInfPath);
 					FileObject webInfoFileObject = VFS.resolveFile(webInfPath);
 					allScanningPath.add(webInfoFileObject.getAbsolutePath());
@@ -213,16 +213,16 @@ public class FileResolverUtil {
 			FileObject fileObject = VFS.resolveFile(path);
 			allScanningPath.add(fileObject.getAbsolutePath());
 			String libPath = path.substring(0, path.lastIndexOf('/'));
-			logger.logMessage(LogLevel.INFO, "WEB-INF/lib路径是:{}", libPath);
+			LOGGER.logMessage(LogLevel.INFO, "WEB-INF/lib路径是:{}", libPath);
 			FileObject libFileObject = VFS.resolveFile(libPath);
 			allScanningPath.add(libFileObject.getAbsolutePath());
 		}
-		logger.logMessage(LogLevel.INFO, "查找WEB-INF/classes路径完成。");
+		LOGGER.logMessage(LogLevel.INFO, "查找WEB-INF/classes路径完成。");
 
 		String webinfPath = ConfigurationUtil.getConfigurationManager()
 				.getConfiguration().get("TINY_WEBROOT");
 		if (StringUtil.isEmpty(webinfPath)) {
-			logger.logMessage(LogLevel.WARN, "WEBROOT变量找不到");
+			LOGGER.logMessage(LogLevel.WARN, "WEBROOT变量找不到");
 			return allScanningPath;
 		}
 		FileObject fileObject = VFS.resolveFile(webinfPath);

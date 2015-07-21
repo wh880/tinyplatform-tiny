@@ -78,15 +78,15 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
             hasResourceLoader = true;
         }
         for (FileObject fileObject : changeList) {
-            logger.logMessage(LogLevel.INFO, "模板配置文件[{0}]开始加载",
+        	LOGGER.logMessage(LogLevel.INFO, "模板配置文件[{0}]开始加载",
                     fileObject.getAbsolutePath());
             try {
                 engine.registerMacroLibrary(fileObject.getPath());
             } catch (TemplateException e) {
-                logger.errorMessage("加载模板配置文件[{0}]出错", e,
+            	LOGGER.errorMessage("加载模板配置文件[{0}]出错", e,
                         fileObject.getAbsolutePath());
             }
-            logger.logMessage(LogLevel.INFO, "模板配置文件[{0}]加载完毕",
+            LOGGER.logMessage(LogLevel.INFO, "模板配置文件[{0}]加载完毕",
                     fileObject.getAbsolutePath());
         }
 
@@ -140,7 +140,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
     				ResourceLoader<?> loader = createResourceLoader(node);
     				engine.addResourceLoader(loader);
     			} catch (Exception e) {
-    				logger.errorMessage("加载用户扩展的资源加载器出错", e);
+    				LOGGER.errorMessage("加载用户扩展的资源加载器出错", e);
     			}
             }
         }
@@ -155,7 +155,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
         			TemplateFunction function = createFunction(node);
     				engine.addTemplateFunction(function);
     			} catch (Exception e) {
-    				logger.errorMessage("加载模板函数出错", e);
+    				LOGGER.errorMessage("加载模板函数出错", e);
     			}
         	}
     	}
@@ -168,7 +168,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
     		I18nVisitor i18n = createI18nVisitor(node);
 	    	engine.setI18nVisitor(i18n);
 		} catch (Exception e) {
-			logger.errorMessage("加载国际化资源访问器出错", e);
+			LOGGER.errorMessage("加载国际化资源访问器出错", e);
 		}
     }
     
@@ -194,7 +194,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
         				}
         			}
         		}catch (Exception e) {
-    				logger.errorMessage("设置模板引擎属性[{0}]出错,属性值[{1}]", e ,node.getAttribute("name"),node.getAttribute("value"));
+        			LOGGER.errorMessage("设置模板引擎属性[{0}]出错,属性值[{1}]", e ,node.getAttribute("name"),node.getAttribute("value"));
     			}
         	}
     	}
@@ -206,7 +206,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
   		   return null;
   		}
     	String beanName = node.getAttribute("name");
-    	logger.logMessage(LogLevel.INFO, "正在加载用户扩展的资源加载器[{0}]",beanName);
+    	LOGGER.logMessage(LogLevel.INFO, "正在加载用户扩展的资源加载器[{0}]",beanName);
     	ClassLoader loader = this.getClass().getClassLoader();
     	return BeanContainerFactory.getBeanContainer(loader).getBean(beanName);
     }
@@ -216,7 +216,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
  		   return null;
  		}
     	String beanName = node.getAttribute("name");
-    	logger.logMessage(LogLevel.INFO, "正在加载国际化资源访问器[{0}]",beanName);
+    	LOGGER.logMessage(LogLevel.INFO, "正在加载国际化资源访问器[{0}]",beanName);
     	ClassLoader loader = this.getClass().getClassLoader();
     	return BeanContainerFactory.getBeanContainer(loader).getBean(beanName);
     }
@@ -226,7 +226,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
  		   return null;
  		}
     	String beanName = node.getAttribute("name");
-    	logger.logMessage(LogLevel.INFO, "正在加载模板函数[{0}]",beanName);
+    	LOGGER.logMessage(LogLevel.INFO, "正在加载模板函数[{0}]",beanName);
     	ClassLoader loader = this.getClass().getClassLoader();
     	return BeanContainerFactory.getBeanContainer(loader).getBean(beanName);
     }

@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ObjectToText<T> implements Converter<List<T>, String> {
-    private static Logger logger = LoggerFactory.getLogger(ObjectToText.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectToText.class);
     private Map<String, String> propertyNames;
     private List<String> properties;
     private String fieldSplit = " ";
@@ -94,7 +94,7 @@ public class ObjectToText<T> implements Converter<List<T>, String> {
                 // 将第n列的数据加入列表
                 rows.get(i + 1).addCell(dataCell);
             } catch (Exception e) {
-                logger.errorMessage("读取第{0}列数据的属性{1}时出现异常", e, i, property);
+                LOGGER.errorMessage("读取第{0}列数据的属性{1}时出现异常", e, i, property);
             }
         }
         return maxLength;

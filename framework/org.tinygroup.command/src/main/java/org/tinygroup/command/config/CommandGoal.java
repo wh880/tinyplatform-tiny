@@ -31,7 +31,7 @@ import java.util.List;
  */
 @XStreamAlias("command-goal")
 public class CommandGoal {
-	private static Logger logger = LoggerFactory.getLogger(CommandGoal.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CommandGoal.class);
 	@XStreamAsAttribute
 	private String name;
 	@XStreamAlias("default-parameter")
@@ -76,7 +76,7 @@ public class CommandGoal {
 			return (CommandGoalExecutor) Class.forName(className2)
 					.newInstance();
 		} catch (Exception e) {
-			logger.errorMessage("加载类<{0}>时出现异常!", e, className2);
+			LOGGER.errorMessage("加载类<{0}>时出现异常!", e, className2);
 			throw new RuntimeException(e);
 		}
 	}

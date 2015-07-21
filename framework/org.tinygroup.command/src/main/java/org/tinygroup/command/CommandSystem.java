@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
  */
 public final class CommandSystem {
 
-	public static String COMMANDS_XSTREAM = "commands";
+	public static final String COMMANDS_XSTREAM = "commands";
 	private Logger logger = LoggerFactory.getLogger(CommandSystem.class);
 	private static final int ASCII_MAX = 256;
 	private static final int MAX_LINE_LENGTH = 80;

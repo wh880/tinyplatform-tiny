@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 public class HttpVisitorImpl implements HttpVisitor {
-    private static final Logger logger = LoggerFactory.getLogger(HttpVisitorImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpVisitorImpl.class);
     HttpClient client;
     private String responseCharset = "UTF-8";
     private String requestCharset = "ISO-8859-1";
@@ -184,14 +184,14 @@ public class HttpVisitorImpl implements HttpVisitor {
             if (client == null) {
                 init();
             }
-            logger.logMessage(LogLevel.DEBUG, "正在访问地址:{}", method.getURI().toString());
+            LOGGER.logMessage(LogLevel.DEBUG, "正在访问地址:{}", method.getURI().toString());
             if (!requestCharset.equals("ISO-8859-1")) {
                 method.addRequestHeader("Content-Type", "text/html; charset=" + requestCharset);
             }
             method.setDoAuthentication(authEnabled);
             int iGetResultCode = client.executeMethod(method);
             if (iGetResultCode == HttpStatus.SC_OK) {
-                logger.logMessage(LogLevel.DEBUG, "结果成功返回。");
+                LOGGER.logMessage(LogLevel.DEBUG, "结果成功返回。");
                 Header responseHeader = method.getResponseHeader("Content-Encoding");
                 if (responseHeader != null) {
                     String acceptEncoding = responseHeader.getValue();
@@ -204,10 +204,10 @@ public class HttpVisitorImpl implements HttpVisitor {
                 }
                 return new String(method.getResponseBody(), responseCharset);
             }
-            logger.logMessage(LogLevel.ERROR, "结果返回失败，原因：{}", method.getStatusLine().toString());
+            LOGGER.logMessage(LogLevel.ERROR, "结果返回失败，原因：{}", method.getStatusLine().toString());
             throw new RuntimeException(method.getStatusLine().toString());
         } catch (Exception e) {
-            logger.logMessage(LogLevel.DEBUG, "结果返回失败，原因：{}", e.getMessage());
+            LOGGER.logMessage(LogLevel.DEBUG, "结果返回失败，原因：{}", e.getMessage());
             throw new RuntimeException(e);
         } finally {
             method.releaseConnection();

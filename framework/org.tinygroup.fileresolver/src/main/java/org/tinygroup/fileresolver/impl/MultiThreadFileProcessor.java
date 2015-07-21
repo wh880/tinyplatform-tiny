@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class MultiThreadFileProcessor {
 
-	private static Logger logger = LoggerFactory.getLogger(MultiThreadFileProcessor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MultiThreadFileProcessor.class);
 
 
 	public static void mutiProcessor(int threadNum,String mutiThreadName, List<FileObject> fileObjects,ProcessorCallBack callBack) {
@@ -58,7 +58,7 @@ public class MultiThreadFileProcessor {
 		long startTime = System.currentTimeMillis();
 		processors.start();
 		long endTime = System.currentTimeMillis();
-		logger.logMessage(LogLevel.INFO, "线程组:<{}>执行时间：{}", mutiThreadName,endTime
+		LOGGER.logMessage(LogLevel.INFO, "线程组:<{}>执行时间：{}", mutiThreadName,endTime
 				- startTime);
 
 	}

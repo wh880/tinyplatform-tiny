@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class CEPCoreAopManagerImpl implements CEPCoreAopManager{
-	private static Logger logger = LoggerFactory.getLogger(CEPCoreAopManagerImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CEPCoreAopManagerImpl.class);
 	private List<CEPCoreAopAdapterContainer> beforeList = new ArrayList<CEPCoreAopAdapterContainer>();
 	private List<CEPCoreAopAdapterContainer> afterList = new ArrayList<CEPCoreAopAdapterContainer>();
 	private List<CEPCoreAopAdapterContainer> beforeLocalList = new ArrayList<CEPCoreAopAdapterContainer>();
@@ -42,10 +42,10 @@ public class CEPCoreAopManagerImpl implements CEPCoreAopManager{
 	
 	public void init(XmlNode config) {
 		if(config==null){
-			logger.logMessage(LogLevel.INFO, "AOP配置信息为空");
+			LOGGER.logMessage(LogLevel.INFO, "AOP配置信息为空");
 			return;
 		}
-		logger.logMessage(LogLevel.INFO, "开始初始化AOP配置");
+		LOGGER.logMessage(LogLevel.INFO, "开始初始化AOP配置");
 		NameFilter<XmlNode> nameFilter = new NameFilter<XmlNode>(config);
 		List<XmlNode> aopList = nameFilter.findNodeList("aop-config");
 		for (XmlNode node : aopList) {
@@ -54,53 +54,53 @@ public class CEPCoreAopManagerImpl implements CEPCoreAopManager{
 			String patternString = node.getAttribute("service-id");
 			addAopAdapter(position, bean,patternString);
 		}
-		logger.logMessage(LogLevel.INFO, "初始化AOP配置完成");
+		LOGGER.logMessage(LogLevel.INFO, "初始化AOP配置完成");
 		
 	}
 	public void beforeLocalHandle(Event event) {
-		logger.logMessage(LogLevel.DEBUG, "本地前置AOP开始处理");
+		LOGGER.logMessage(LogLevel.DEBUG, "本地前置AOP开始处理");
 		for(CEPCoreAopAdapterContainer adapterContainer:beforeLocalList){
 			adapterContainer.handle(event);
 		}
-		logger.logMessage(LogLevel.DEBUG, "本地前置AOP处理完成");
+		LOGGER.logMessage(LogLevel.DEBUG, "本地前置AOP处理完成");
 	}
 	public void afterLocalHandle(Event event) {
-		logger.logMessage(LogLevel.DEBUG, "本地后置AOP开始处理");
+		LOGGER.logMessage(LogLevel.DEBUG, "本地后置AOP开始处理");
 		for(CEPCoreAopAdapterContainer adapterContainer:afterLocalList){
 			adapterContainer.handle(event);
 		}
-		logger.logMessage(LogLevel.DEBUG, "本地后置AOP处理完成");
+		LOGGER.logMessage(LogLevel.DEBUG, "本地后置AOP处理完成");
 	}
 	public void beforeRemoteHandle(Event event) {
-		logger.logMessage(LogLevel.DEBUG, "远程前置AOP开始处理");
+		LOGGER.logMessage(LogLevel.DEBUG, "远程前置AOP开始处理");
 		for(CEPCoreAopAdapterContainer adapterContainer:beforeRemoteList){
 			adapterContainer.handle(event);
 		}
-		logger.logMessage(LogLevel.DEBUG, "远程前置AOP处理完成");
+		LOGGER.logMessage(LogLevel.DEBUG, "远程前置AOP处理完成");
 	}
 	public void afterRemoteHandle(Event event) {
-		logger.logMessage(LogLevel.DEBUG, "远程后置AOP开始处理");
+		LOGGER.logMessage(LogLevel.DEBUG, "远程后置AOP开始处理");
 		for(CEPCoreAopAdapterContainer adapterContainer:afterRemoteList){
 			adapterContainer.handle(event);
 		}
-		logger.logMessage(LogLevel.DEBUG, "远程后置AOP处理完成");
+		LOGGER.logMessage(LogLevel.DEBUG, "远程后置AOP处理完成");
 	}
 	public void beforeHandle(Event event) {
-		logger.logMessage(LogLevel.DEBUG, "请求前置AOP开始处理");
+		LOGGER.logMessage(LogLevel.DEBUG, "请求前置AOP开始处理");
 		for(CEPCoreAopAdapterContainer adapterContainer:beforeList){
 			adapterContainer.handle(event);
 		}
-		logger.logMessage(LogLevel.DEBUG, "请求前置AOP处理完成");
+		LOGGER.logMessage(LogLevel.DEBUG, "请求前置AOP处理完成");
 	}
 	public void afterHandle(Event event) {
-		logger.logMessage(LogLevel.DEBUG, "请求后置AOP开始处理");
+		LOGGER.logMessage(LogLevel.DEBUG, "请求后置AOP开始处理");
 		for(CEPCoreAopAdapterContainer adapterContainer:afterList){
 			adapterContainer.handle(event);
 		}
-		logger.logMessage(LogLevel.DEBUG, "请求后置AOP处理完成");
+		LOGGER.logMessage(LogLevel.DEBUG, "请求后置AOP处理完成");
 	}
 	public void addAopAdapter(String position, String bean,String patternString) {
-		logger.logMessage(LogLevel.INFO, "初始化AOP,bean:{0},position:{1}",bean,position);
+		LOGGER.logMessage(LogLevel.INFO, "初始化AOP,bean:{0},position:{1}",bean,position);
 		CEPCoreAopAdapter adapter = null;
 		Pattern servicePattern = null;
 		if(patternString!=null && !"".equals(patternString)){
@@ -109,7 +109,7 @@ public class CEPCoreAopManagerImpl implements CEPCoreAopManager{
 		try {
 			adapter = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(bean);
 		} catch (Exception e) {
-			logger.logMessage(LogLevel.ERROR, "初始化AOP处理器{0}出现异常:{1}",bean,e.getMessage());
+			LOGGER.errorMessage("初始化AOP处理器{0}出现异常", e,bean);
 			return;
 		}
 		CEPCoreAopAdapterContainer adapterContainer = new CEPCoreAopAdapterContainer(adapter, servicePattern);
@@ -126,7 +126,7 @@ public class CEPCoreAopManagerImpl implements CEPCoreAopManager{
 		}else if(AFTER_REMOTE.equals(position)){
 			afterRemoteList.add(adapterContainer);
 		}  
-		logger.logMessage(LogLevel.INFO, "初始化AOP,bean:{0},position:{1}完成",bean,position);
+		LOGGER.logMessage(LogLevel.INFO, "初始化AOP,bean:{0},position:{1}完成",bean,position);
 	}
 	
 }

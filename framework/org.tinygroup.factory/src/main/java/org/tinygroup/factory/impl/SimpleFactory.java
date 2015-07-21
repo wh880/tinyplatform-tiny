@@ -43,7 +43,7 @@ public class SimpleFactory implements Factory {
 	private static final String BY_TYPE = "byType";
 	private static final String BY_NAME = "byName";
 	private static final String SINGLETON = "singleton";
-	private static Logger logger = LoggerFactory.getLogger(SimpleFactory.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleFactory.class);
 	private Map<String, Object> idMap = new HashMap<String, Object>();
 	private Map<String, Object> nameMap = new HashMap<String, Object>();
 	private Map<String, Object> nameClassMap = new HashMap<String, Object>();
@@ -78,7 +78,7 @@ public class SimpleFactory implements Factory {
 		try {
 			classMap.put(Class.forName(bean.getType()), object);
 		} catch (ClassNotFoundException e) {
-			logger.errorMessage("查找[{0}]类失败， 原因：{0}", e, e.getMessage());
+			LOGGER.errorMessage("查找[{0}]类失败， 原因：{0}", e, e.getMessage());
 		}
 	}
 
@@ -98,7 +98,7 @@ public class SimpleFactory implements Factory {
 		if (bean.getId() != null && bean.getId().length() > 0) {
 			Bean oldBean = objectBeanMap.get(bean.getId());
 			if (oldBean != null) {
-				logger.logMessage(LogLevel.ERROR,
+				LOGGER.logMessage(LogLevel.ERROR,
 						"[{}] 类型 bean id [{}] 已经存在，类型为[{}，原有Bean将被覆盖]！",
 						bean.getClassName(), bean.getId(),
 						oldBean.getClassName());
@@ -182,7 +182,7 @@ public class SimpleFactory implements Factory {
 					}
 				}
 			} catch (Exception e) {
-				logger.errorMessage("为属性{0}赋值时出现异常", e,
+				LOGGER.errorMessage("为属性{0}赋值时出现异常", e,
 						propertyDescriptor.getName());
 			}
 		}
@@ -213,7 +213,7 @@ public class SimpleFactory implements Factory {
 			readyMap.put(object, true);
 		} catch (Exception e) {
 			readyMap.put(object, false);
-			logger.errorMessage(e.getMessage(), e);
+			LOGGER.errorMessage(e.getMessage(), e);
 		}
 	}
 
@@ -337,7 +337,7 @@ public class SimpleFactory implements Factory {
 			}
 			addBean(bean, object);
 		} catch (Exception e) {
-			logger.errorMessage("初始化[{0}]类失败， 原因：{1}", e, bean.getType(),
+			LOGGER.errorMessage("初始化[{0}]类失败， 原因：{1}", e, bean.getType(),
 					e.getMessage());
 		}
 	}
@@ -377,7 +377,7 @@ public class SimpleFactory implements Factory {
 				if (b.getPackageName() != null
 						&& beans.getPackageName().equals(b.getPackageName())) {
 					beansList.remove(b);
-					logger.logMessage(LogLevel.INFO,
+					LOGGER.logMessage(LogLevel.INFO,
 							"从beansList移除Beans[package-name:{0}]",
 							beans.getPackageName());
 					break;

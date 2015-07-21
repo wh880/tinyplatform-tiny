@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public abstract class AbstractValidatorManger implements ValidatorManager {
 
-	protected static Logger logger = LoggerFactory
+	protected static final Logger LOGGER = LoggerFactory
 			.getLogger(AnnotationValidatorManagerImpl.class);
 
 	private ValidatorMapStorage validatorMapStorage;

@@ -35,7 +35,7 @@ public class FlowEventProcessor extends AbstractEventProcessor {
 	 */
 	private FlowExecutor executor;
 
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(FlowEventProcessor.class);
 
 	public void process(Event event) {
@@ -54,7 +54,7 @@ public class FlowEventProcessor extends AbstractEventProcessor {
 			executor.execute(flowId, nodeId, (Context) event
 					.getServiceRequest().getContext());
 		} else {
-			logger.logMessage(LogLevel.ERROR, "[Flow:{0}]不存在或无合适的Flow流程执行器",
+			LOGGER.logMessage(LogLevel.ERROR, "[Flow:{0}]不存在或无合适的Flow流程执行器",
 					flowId);
 			throw new RuntimeException("[Flow:" + flowId + "]不存在或无合适的Flow流程执行器");
 		}

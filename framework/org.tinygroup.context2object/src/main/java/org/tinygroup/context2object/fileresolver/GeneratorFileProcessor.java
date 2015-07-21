@@ -31,7 +31,7 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
 public class GeneratorFileProcessor extends AbstractFileProcessor {
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(GeneratorFileProcessor.class);
 	private static final String GENERATOR_EXT_FILENAME = ".generatorconfig.xml";
 	public static final String CLASSNAME_OBJECT_GENERATOR_BEAN = "classNameObjectGenerator";
@@ -55,7 +55,7 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 		// .getBean(CLASSNAME_OBJECT_GENERATOR_BEAN);
 		XStream stream = XStreamFactory.getXStream(CONTEXT2OBJECT_XSTREAM);
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "开始移除generator配置文件:{0}",
+			LOGGER.logMessage(LogLevel.INFO, "开始移除generator配置文件:{0}",
 					fileObject.getFileName());
 			GeneratorConfig config = (GeneratorConfig) caches.get(fileObject
 					.getAbsolutePath());
@@ -63,12 +63,12 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 				removeConfig(config, generator);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			logger.logMessage(LogLevel.INFO, "移除generator配置文件:{0}完成",
+			LOGGER.logMessage(LogLevel.INFO, "移除generator配置文件:{0}完成",
 					fileObject.getFileName());
 
 		}
 		for (FileObject file : changeList) {
-			logger.logMessage(LogLevel.INFO, "开始读取generator配置文件:{0}",
+			LOGGER.logMessage(LogLevel.INFO, "开始读取generator配置文件:{0}",
 					file.getFileName());
 			GeneratorConfig oldConfig = (GeneratorConfig) caches.get(file
 					.getAbsolutePath());
@@ -79,7 +79,7 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 					.getInputStream());
 			deal(config, generator);
 			caches.put(file.getAbsolutePath(), config);
-			logger.logMessage(LogLevel.INFO, "读取generator配置文件:{0}完成",
+			LOGGER.logMessage(LogLevel.INFO, "读取generator配置文件:{0}完成",
 					file.getFileName());
 
 		}
@@ -88,14 +88,14 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 	private void removeConfig(GeneratorConfig config,
 			ClassNameObjectGenerator generator) {
 		for (GeneratorConfigItem item : config.getTypeConverters()) {
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"处理TypeConverter,beanName:{0},className:{1}",
 					item.getBeanName(), item.getClassName());
 			TypeConverter o = (TypeConverter) deal(item);
 			generator.removeTypeConverter(o);
 		}
 		for (GeneratorConfigItem item : config.getTypeCreators()) {
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"处理TypeCreator,beanName:{0},className:{1}",
 					item.getBeanName(), item.getClassName());
 			TypeCreator o = (TypeCreator) deal(item);
@@ -105,33 +105,33 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 	}
 
 	private void deal(GeneratorConfig config, ClassNameObjectGenerator generator) {
-		logger.logMessage(LogLevel.INFO, "开始读取generator配置TypeConverter");
+		LOGGER.logMessage(LogLevel.INFO, "开始读取generator配置TypeConverter");
 		for (GeneratorConfigItem item : config.getTypeConverters()) {
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"处理TypeConverter,beanName:{0},className:{1}",
 					item.getBeanName(), item.getClassName());
 			TypeConverter o = (TypeConverter) deal(item);
 			generator.addTypeConverter(o);
 		}
-		logger.logMessage(LogLevel.INFO, "读取generator配置TypeConverter完成");
-		logger.logMessage(LogLevel.INFO, "开始读取generator配置TypeCreator");
+		LOGGER.logMessage(LogLevel.INFO, "读取generator配置TypeConverter完成");
+		LOGGER.logMessage(LogLevel.INFO, "开始读取generator配置TypeCreator");
 		for (GeneratorConfigItem item : config.getTypeCreators()) {
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"处理TypeCreator,beanName:{0},className:{1}",
 					item.getBeanName(), item.getClassName());
 			TypeCreator o = (TypeCreator) deal(item);
 			generator.addTypeCreator(o);
 		}
-		logger.logMessage(LogLevel.INFO, "读取generator配置TypeCreator完成");
-		logger.logMessage(LogLevel.INFO, "开始读取generator配置ObjectAssembly");
+		LOGGER.logMessage(LogLevel.INFO, "读取generator配置TypeCreator完成");
+		LOGGER.logMessage(LogLevel.INFO, "开始读取generator配置ObjectAssembly");
 		for (GeneratorConfigItem item : config.getAssemblies()) {
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"处理ObjectAssembly,beanName:{0},className:{1}",
 					item.getBeanName(), item.getClassName());
 			ObjectAssembly o = (ObjectAssembly) deal(item);
 			generator.addObjectAssembly(o);
 		}
-		logger.logMessage(LogLevel.INFO, "读取generator配置ObjectAssembly完成");
+		LOGGER.logMessage(LogLevel.INFO, "读取generator配置ObjectAssembly完成");
 	}
 
 	private Object deal(GeneratorConfigItem configItem) {
@@ -143,7 +143,7 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 				// return LoaderManagerFactory.getManager()
 				// .getClass(configItem.getClassName()).newInstance();
 			} catch (Exception e) {
-				logger.errorMessage("generator配置文件加载时，创建类:{0}出现异常", e,
+				LOGGER.errorMessage("generator配置文件加载时，创建类:{0}出现异常", e,
 						configItem.getClassName());
 				throw new RuntimeException(e);
 			}

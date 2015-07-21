@@ -43,7 +43,7 @@ public class OrderGroup<T> {
 
 	private static final String ORDER_OBJECT = "order-object";
 
-	private static Logger logger = LoggerFactory.getLogger(OrderGroup.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(OrderGroup.class);
 
 	private Map<Class<T>, String> groupMap = CollectionUtil.createHashMap();
 
@@ -76,7 +76,7 @@ public class OrderGroup<T> {
 
 	public List<T> initProcessorOrder(List<T> processorList) {
 
-		logger.logMessage(LogLevel.INFO, "文件处理器加载顺序处理开始");
+		LOGGER.logMessage(LogLevel.INFO, "文件处理器加载顺序处理开始");
 		Map<Integer, T> processorMap = CollectionUtil.createLinkedHashMap();
 		Set<Integer> processorSet = CollectionUtil.createHashSet();
 		for (int i = 0; i < processorList.size(); i++) {
@@ -108,7 +108,7 @@ public class OrderGroup<T> {
 				}
 			}
 		}
-		logger.logMessage(LogLevel.INFO, "文件处理器加载顺序处理结束");
+		LOGGER.logMessage(LogLevel.INFO, "文件处理器加载顺序处理结束");
 		return newProcessorList;
 
 	}

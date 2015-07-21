@@ -58,7 +58,7 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 	}
 
 	private void process(FileObject fileObject) {
-		logger.logMessage(LogLevel.INFO, "找到国际化资源配置文件[{0}]，并开始加载...",
+		LOGGER.logMessage(LogLevel.INFO, "找到国际化资源配置文件[{0}]，并开始加载...",
 				fileObject.getAbsolutePath());
 		Locale locale = getLocale(fileObject);
 		Properties oldProperties=(Properties) caches.get(fileObject.getAbsolutePath());
@@ -78,10 +78,10 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 				I18nMessageFactory.addCustomizeResource(locale, properties);
 			}
 			caches.put(fileObject.getAbsolutePath(), properties);
-			logger.logMessage(LogLevel.INFO, "国际化资源配置文件[{0}]，加载完毕。",
+			LOGGER.logMessage(LogLevel.INFO, "国际化资源配置文件[{0}]，加载完毕。",
 					fileObject.getAbsolutePath());
 		} catch (Exception e) {
-			logger.errorMessage("载入资源文件[{}]出现异常！", e, fileObject.getAbsolutePath());
+			LOGGER.errorMessage("载入资源文件[{}]出现异常！", e, fileObject.getAbsolutePath());
 		}
 	}
 
@@ -108,7 +108,7 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 	public void process() {
 		
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "开始移除国际化资源配置文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "开始移除国际化资源配置文件[{0}]",
 					fileObject.getAbsolutePath());
 			Locale locale = getLocale(fileObject);
 			Properties properties =(Properties) caches.get(fileObject.getAbsolutePath());
@@ -120,7 +120,7 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 				}
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			logger.logMessage(LogLevel.INFO, "移除国际化资源配置文件[{0}],完成",
+			LOGGER.logMessage(LogLevel.INFO, "移除国际化资源配置文件[{0}],完成",
 					fileObject.getAbsolutePath());
 		}
 		for (FileObject fileObject : changeList) {

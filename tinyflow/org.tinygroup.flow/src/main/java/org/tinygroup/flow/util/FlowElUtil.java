@@ -22,7 +22,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
 public class FlowElUtil {
-	private static Logger logger = LoggerFactory.getLogger(FlowElUtil.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FlowElUtil.class);
 	
 
 	public static boolean executeCondition(String condition, Context context,ClassLoader loader) {
@@ -35,7 +35,7 @@ public class FlowElUtil {
 			EL el = BeanContainerFactory.getBeanContainer(loader).getBean(EL.EL_BEAN);
 			return el.execute(expression, context);
 		} catch (Exception e) {
-			logger.errorMessage("执行el表达式时出错", e,expression);
+			LOGGER.errorMessage("执行el表达式时出错", e,expression);
 			return null;
 		}
 	}

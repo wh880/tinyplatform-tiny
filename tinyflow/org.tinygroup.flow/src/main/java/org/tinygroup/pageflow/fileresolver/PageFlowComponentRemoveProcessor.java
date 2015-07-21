@@ -56,12 +56,12 @@ public class PageFlowComponentRemoveProcessor extends AbstractFileProcessor {
 		XStream stream = XStreamFactory
 				.getXStream(FlowExecutor.FLOW_XSTREAM_PACKAGENAME);
 		for (FileObject fileObject : fileObjects) {
-			logger.logMessage(LogLevel.INFO, "正在删除页面组件pagefc文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在删除页面组件pagefc文件[{0}]",
 					fileObject.getAbsolutePath());
 			ComponentDefines components = (ComponentDefines) stream
 					.fromXML(fileObject.getInputStream());
 			flowExecutor.removeComponents(components);
-			logger.logMessage(LogLevel.INFO, "删除页面组件pagefc文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "删除页面组件pagefc文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 

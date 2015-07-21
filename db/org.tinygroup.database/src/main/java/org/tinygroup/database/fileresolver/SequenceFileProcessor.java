@@ -47,7 +47,7 @@ public class SequenceFileProcessor extends AbstractFileProcessor {
 		XStream stream = XStreamFactory
 				.getXStream(DataBaseUtil.DATABASE_XSTREAM);
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除sequence文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在移除sequence文件[{0}]",
 					fileObject.getAbsolutePath());
 			Sequences sequences = (Sequences) caches
 					.get(fileObject.getAbsolutePath());
@@ -55,11 +55,11 @@ public class SequenceFileProcessor extends AbstractFileProcessor {
 				processor.removeSequences(sequences);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			logger.logMessage(LogLevel.INFO, "移除sequence文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "移除sequence文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在加载sequence文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在加载sequence文件[{0}]",
 					fileObject.getAbsolutePath());
 			Sequences oldSequences = (Sequences) caches
 					.get(fileObject.getAbsolutePath());
@@ -70,7 +70,7 @@ public class SequenceFileProcessor extends AbstractFileProcessor {
 					.fromXML(fileObject.getInputStream());
 			processor.addSequences(sequences);
 			caches.put(fileObject.getAbsolutePath(), sequences);
-			logger.logMessage(LogLevel.INFO, "加载sequence文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "加载sequence文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 

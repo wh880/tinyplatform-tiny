@@ -36,7 +36,7 @@ import java.util.Map;
  * <br>
  */
 public class FullContextFileRepositoryImpl implements FullContextFileRepository {
-	private static final Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(FullContextFileRepositoryImpl.class);
 	// key值为 类型:路径
 	private Map<String, FileObject> fileMap = new HashMap<String, FileObject>();
@@ -65,7 +65,7 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 	}
 
 	public void addFileObject(String path, FileObject fileObject) {
-		logger.logMessage(LogLevel.DEBUG, "添加文件：{}-[{}]", path,
+		LOGGER.logMessage(LogLevel.DEBUG, "添加文件：{}-[{}]", path,
 				fileObject.getAbsolutePath());
 		fileMap.put(path, fileObject);
 	}
@@ -119,7 +119,7 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 		sb.append(path.substring(path.lastIndexOf('.')));
 		FileObject fileObject = getFileObject(sb.toString());
 		if (fileObject != null&&fileObject.isExist()) {
-			logger.logMessage(LogLevel.DEBUG, "找到并使用[{}]的[{}]语言文件:{}",path,locale,fileObject.getPath());
+			LOGGER.logMessage(LogLevel.DEBUG, "找到并使用[{}]的[{}]语言文件:{}",path,locale,fileObject.getPath());
 			return fileObject;
 		}
 		return getFileObject(path);

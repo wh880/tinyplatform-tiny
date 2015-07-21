@@ -39,7 +39,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 
 	private static final long serialVersionUID = -8847587819458611248L;
 
-	private final static Logger logger = LoggerFactory
+	private final static Logger LOGGER = LoggerFactory
 			.getLogger(RmiServerImpl.class);
 
 	int port = DEFAULT_RMI_PORT;
@@ -85,7 +85,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			}
 
 		} catch (RemoteException e) {
-			logger.errorMessage("连接远端服务器时发生异常", e);
+			LOGGER.errorMessage("连接远端服务器时发生异常", e);
 			startHeart();
 		}
 		getRegistry();
@@ -139,7 +139,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			remoteServer = (RmiServer) remoteRegistry.lookup(getKeyName(
 					remoteHostName, remotePort + ""));
 		} catch (NotBoundException e) {
-			logger.errorMessage("获取远端服务器:" + remoteHostName + "时出现异常,该对象未曾注册", e);
+			LOGGER.errorMessage("获取远端服务器:" + remoteHostName + "时出现异常,该对象未曾注册", e);
 			throw new RuntimeException("获取远端服务器:" + remoteHostName
 					+ "时出现异常,该对象未曾注册", e);
 		}
@@ -190,23 +190,23 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 				} catch (InterruptedException e) {
 					continue;
 				}
-				logger.logMessage(LogLevel.DEBUG, "开始检测远端服务器的可用性");
+				LOGGER.logMessage(LogLevel.DEBUG, "开始检测远端服务器的可用性");
 				try {
 					remoteRegistry.list();
-					logger.logMessage(LogLevel.DEBUG, "远端服务器正常");
+					LOGGER.logMessage(LogLevel.DEBUG, "远端服务器正常");
 				} catch (Exception e) {
-					logger.logMessage(LogLevel.DEBUG, "远端服务器不可用，开始尝试重新获取");
+					LOGGER.logMessage(LogLevel.DEBUG, "远端服务器不可用，开始尝试重新获取");
 					try {
 						getRemoteRegistry();
-						logger.logMessage(LogLevel.DEBUG, "远端服务器尝试重新获取成功");
+						LOGGER.logMessage(LogLevel.DEBUG, "远端服务器尝试重新获取成功");
 					} catch (Exception e2) {
-						logger.logMessage(LogLevel.DEBUG, "远端服务器尝试重新获取失败");
+						LOGGER.logMessage(LogLevel.DEBUG, "远端服务器尝试重新获取失败");
 						continue;
 					}
 
 				}
 				if (!checkRemoteHasThis()) {
-					logger.logMessage(LogLevel.DEBUG, "远端服务器上不存在本地服务器信息");
+					LOGGER.logMessage(LogLevel.DEBUG, "远端服务器上不存在本地服务器信息");
 					reReg();
 					List<ConnectTrigger> list = triggers
 							.get(ConnectTrigger.REREG);
@@ -215,7 +215,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 					}
 
 				}
-				logger.logMessage(LogLevel.DEBUG, "检测远端服务器的可用性完成");
+				LOGGER.logMessage(LogLevel.DEBUG, "检测远端服务器的可用性完成");
 			}
 		}
 	}
@@ -226,9 +226,9 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			remoteServer = (RmiServer) remoteRegistry.lookup(getKeyName(
 					remoteHostName, remotePort + ""));
 		} catch (NotBoundException e) {
-			logger.errorMessage("获取远端服务器:" + remoteHostName + "时出现异常,该对象未曾注册", e);
+			LOGGER.errorMessage("获取远端服务器:" + remoteHostName + "时出现异常,该对象未曾注册", e);
 		} catch (RemoteException e1) {
-			logger.errorMessage("连接远端服务器:" + remoteHostName + "失败", e1);
+			LOGGER.errorMessage("连接远端服务器:" + remoteHostName + "失败", e1);
 		}
 
 		for (String name : registeredLocalObjectMap.keySet()) {
@@ -236,14 +236,14 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 				remoteServer.registerRemoteObject(
 						registeredLocalObjectMap.get(name), name);
 			} catch (RemoteException e) {
-				logger.errorMessage("向远端服务器重新注册对象name:{}时出现异常", e, name);
+				LOGGER.errorMessage("向远端服务器重新注册对象name:{}时出现异常", e, name);
 			}
 		}
-		logger.logMessage(LogLevel.DEBUG, "将本地对象重新注册至远端服务器完成");
+		LOGGER.logMessage(LogLevel.DEBUG, "将本地对象重新注册至远端服务器完成");
 		try {
 			bindThis();
 		} catch (RemoteException e) {
-			logger.errorMessage("向远端服务器重新绑定当前服务器信息时出现异常", e);
+			LOGGER.errorMessage("向远端服务器重新绑定当前服务器信息时出现异常", e);
 		}
 	}
 
@@ -262,7 +262,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 	public void registerLocalObject(Remote object, String name)
 			throws RemoteException {
 		try {
-			logger.logMessage(LogLevel.DEBUG, "开始注册本地对象:{}", name);
+			LOGGER.logMessage(LogLevel.DEBUG, "开始注册本地对象:{}", name);
 			System.setProperty("java.rmi.server.hostname", hostName);
 			registeredLocalObjectMap.put(name, object);
 			if (object instanceof UnicastRemoteObject) {
@@ -279,9 +279,9 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			}
 			
 
-			logger.logMessage(LogLevel.DEBUG, "结束注册本地对象:{}", name);
+			LOGGER.logMessage(LogLevel.DEBUG, "结束注册本地对象:{}", name);
 		} catch (RemoteException e) {
-			logger.errorMessage("注册本地对象:{}时发生异常:{}！", e, name, e.getMessage());
+			LOGGER.errorMessage("注册本地对象:{}时发生异常:{}！", e, name, e.getMessage());
 			registeredLocalObjectMap.remove(name);
 			throw new RuntimeException(e);
 		}
@@ -314,9 +314,9 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 
 	public void registerRemoteObject(Remote object, String name)
 			throws RemoteException {
-		logger.logMessage(LogLevel.DEBUG, "开始注册远程对象:{}", name);
+		LOGGER.logMessage(LogLevel.DEBUG, "开始注册远程对象:{}", name);
 		registeredRemoteObjectMap.put(name, object);
-		logger.logMessage(LogLevel.DEBUG, "注册远程对象:{}结束", name);
+		LOGGER.logMessage(LogLevel.DEBUG, "注册远程对象:{}结束", name);
 	}
 
 	public void registerRemoteObject(Remote object, Class type)
@@ -325,7 +325,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 	}
 
 	public void unregisterObject(Remote object) throws RemoteException {
-		logger.logMessage(LogLevel.DEBUG, "开始注销对象object:{}", object);
+		LOGGER.logMessage(LogLevel.DEBUG, "开始注销对象object:{}", object);
 		boolean flag = false;
 		for (String name : registeredLocalObjectMap.keySet()) {
 			Remote r = registeredLocalObjectMap.get(name);
@@ -346,14 +346,14 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			}
 		}
 		if (!flag) {
-			logger.logMessage(LogLevel.ERROR, "需要注销的对象object:{}不存在", object);
+			LOGGER.logMessage(LogLevel.ERROR, "需要注销的对象object:{}不存在", object);
 		}
-		logger.logMessage(LogLevel.DEBUG, "注销对象object:{}完成", object);
+		LOGGER.logMessage(LogLevel.DEBUG, "注销对象object:{}完成", object);
 	}
 
 	private void unregisterLocalObject(String name) throws RemoteException {
 		try {
-			logger.logMessage(LogLevel.DEBUG, "开始注销本地对象:{}", name);
+			LOGGER.logMessage(LogLevel.DEBUG, "开始注销本地对象:{}", name);
 			registry.unbind(name);
 			if (registeredLocalObjectMap.get(name) != null) {
 				UnicastRemoteObject.unexportObject(
@@ -363,35 +363,35 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			if (remoteServer != null) {
 				remoteServer.unregisterObject(name);
 			}
-			logger.logMessage(LogLevel.DEBUG, "注销本地对象:{}完成", name);
+			LOGGER.logMessage(LogLevel.DEBUG, "注销本地对象:{}完成", name);
 		} catch (Exception e) {
-			logger.errorMessage("注销对象:{}时发生异常:{}！", e, name, e.getMessage());
+			LOGGER.errorMessage("注销对象:{}时发生异常:{}！", e, name, e.getMessage());
 		}
 	}
 
 	private void unregisterRemoteObject(String name) throws RemoteException {
-		logger.logMessage(LogLevel.DEBUG, "开始注销远程对象:{}", name);
+		LOGGER.logMessage(LogLevel.DEBUG, "开始注销远程对象:{}", name);
 		registeredRemoteObjectMap.remove(name);
-		logger.logMessage(LogLevel.DEBUG, "注销远程对象:{}完成", name);
+		LOGGER.logMessage(LogLevel.DEBUG, "注销远程对象:{}完成", name);
 	}
 
 	public void unregisterObject(String name) throws RemoteException {
-		logger.logMessage(LogLevel.DEBUG, "开始注销对象:{}", name);
+		LOGGER.logMessage(LogLevel.DEBUG, "开始注销对象:{}", name);
 		if (registeredLocalObjectMap.containsKey(name)) {
 			unregisterLocalObject(name);
 		} else if (registeredRemoteObjectMap.containsKey(name)) {
 			unregisterRemoteObject(name);
 		} else {
-			logger.logMessage(LogLevel.ERROR, "需要注销的对象name:{}不存在", name);
+			LOGGER.logMessage(LogLevel.ERROR, "需要注销的对象name:{}不存在", name);
 		}
-		logger.logMessage(LogLevel.DEBUG, "结束注销对象:{}", name);
+		LOGGER.logMessage(LogLevel.DEBUG, "结束注销对象:{}", name);
 	}
 
 	public void unregisterObjectByType(Class type) throws RemoteException {
-		logger.logMessage(LogLevel.DEBUG, "开始注销对象type:{}", type.getName());
+		LOGGER.logMessage(LogLevel.DEBUG, "开始注销对象type:{}", type.getName());
 		unregisterLocalObjectByType(type);
 		unregisterRemoteObjecttByType(type);
-		logger.logMessage(LogLevel.DEBUG, "注销对象type:{}完成", type.getName());
+		LOGGER.logMessage(LogLevel.DEBUG, "注销对象type:{}完成", type.getName());
 	}
 
 	private void unregisterLocalObjectByType(Class type) throws RemoteException {
@@ -428,7 +428,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 		try {
 			unregisterObjectByType(Class.forName(type));
 		} catch (ClassNotFoundException e) {
-			logger.errorMessage("注销类型为:{}的对象时发生异常:{}!", e, type, e.getMessage());
+			LOGGER.errorMessage("注销类型为:{}的对象时发生异常:{}!", e, type, e.getMessage());
 		}
 
 	}
@@ -463,7 +463,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 					return (T) object;
 				}
 			} catch (RemoteException e) {
-				logger.errorMessage("获取对象Name:{}时出现异常", e, sName);
+				LOGGER.errorMessage("获取对象Name:{}时出现异常", e, sName);
 			}
 		}
 		for (String sName : registeredLocalObjectMap.keySet()) {
@@ -473,7 +473,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 					return (T) object;
 				}
 			} catch (RemoteException e) {
-				logger.errorMessage("获取对象Name:{}时出现异常", e, sName);
+				LOGGER.errorMessage("获取对象Name:{}时出现异常", e, sName);
 			}
 		}
 		if (remoteServer != null) {
@@ -491,7 +491,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 					result.add((T) object);
 				}
 			} catch (RemoteException e) {
-				logger.errorMessage("获取对象Name:{}时出现异常", e, sName);
+				LOGGER.errorMessage("获取对象Name:{}时出现异常", e, sName);
 			}
 		}
 	}
@@ -555,7 +555,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			try {
 				unregisterLocalObject(name);
 			} catch (Exception e) {
-				logger.errorMessage("注销对象name:{}时失败", e, name);
+				LOGGER.errorMessage("注销对象name:{}时失败", e, name);
 			}
 		}
 		names.clear();
@@ -567,7 +567,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 			try {
 				unregisterRemoteObject(name);
 			} catch (Exception e) {
-				logger.errorMessage("注销对象name:{}时失败", e, name);
+				LOGGER.errorMessage("注销对象name:{}时失败", e, name);
 			}
 		}
 	}

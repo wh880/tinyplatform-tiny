@@ -27,7 +27,7 @@ import org.tinygroup.xstream.XStreamFactory;
 
 public class FlowLoader {
 
-	private static Logger logger = LoggerFactory.getLogger(FlowLoader.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FlowLoader.class);
 
 	/**
 	 * flow文件的文件扩展名
@@ -41,10 +41,10 @@ public class FlowLoader {
 	 * @param executor
 	 */
 	public void load(String path, FlowExecutor executor) {
-		logger.logMessage(LogLevel.DEBUG, "扫描路径{0}查找Flow文件", path);
+		LOGGER.logMessage(LogLevel.DEBUG, "扫描路径{0}查找Flow文件", path);
 		FileObject file = VFS.resolveFile(path);
 		load(file, executor);
-		logger.logMessage(LogLevel.DEBUG, "路径{0}扫描结束", path);
+		LOGGER.logMessage(LogLevel.DEBUG, "路径{0}扫描结束", path);
 	}
 
 	/**
@@ -68,16 +68,16 @@ public class FlowLoader {
 	 * @param executor
 	 */
 	private void loadFile(FileObject file, FlowExecutor executor) {
-		logger.logMessage(LogLevel.DEBUG, "开始扫描文件{0}", file.getAbsolutePath());
+		LOGGER.logMessage(LogLevel.DEBUG, "开始扫描文件{0}", file.getAbsolutePath());
 		if (file.getFileName().endsWith(FLOW_FILE_EXTENSION)) {
 			XStream xStream = XStreamFactory
 					.getXStream(FlowExecutor.FLOW_XSTREAM_PACKAGENAME);
 			Flow flow = null;
 			flow = (Flow) xStream.fromXML(file.getInputStream());
 			executor.addFlow(flow);
-			logger.logMessage(LogLevel.DEBUG, "添加Flow[id:{0}]", flow.getId());
+			LOGGER.logMessage(LogLevel.DEBUG, "添加Flow[id:{0}]", flow.getId());
 		}
-		logger.logMessage(LogLevel.DEBUG, "扫描文件{0}结束", file.getAbsolutePath());
+		LOGGER.logMessage(LogLevel.DEBUG, "扫描文件{0}结束", file.getAbsolutePath());
 	}
 
 	/**
@@ -87,11 +87,11 @@ public class FlowLoader {
 	 * @param executor
 	 */
 	private void loadDir(FileObject file, FlowExecutor executor) {
-		logger.logMessage(LogLevel.DEBUG, "开始扫描目录{0}", file.getAbsolutePath());
+		LOGGER.logMessage(LogLevel.DEBUG, "开始扫描目录{0}", file.getAbsolutePath());
 		for (FileObject o : file.getChildren()) {
 			load(o, executor);
 		}
-		logger.logMessage(LogLevel.DEBUG, "扫描目录{0}结束", file.getAbsolutePath());
+		LOGGER.logMessage(LogLevel.DEBUG, "扫描目录{0}结束", file.getAbsolutePath());
 	}
 
 }

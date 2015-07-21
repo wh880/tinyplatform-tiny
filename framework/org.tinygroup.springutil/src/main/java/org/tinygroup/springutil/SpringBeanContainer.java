@@ -28,7 +28,7 @@ import org.tinygroup.vfs.FileObject;
 import java.util.*;
 
 public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(SpringBeanContainer.class);
 	private ApplicationContext applicationContext = null;
 	private List<String> configs = new ArrayList<String>();
@@ -85,7 +85,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 			String urlString = fileObject.getURL().toString();
 			if (!configLocations.contains(urlString)) {
 				configLocations.add(urlString);
-				logger.logMessage(LogLevel.INFO, "添加Spring配置文件:{urlString}",
+				LOGGER.logMessage(LogLevel.INFO, "添加Spring配置文件:{urlString}",
 						urlString);
 			}
 		}
@@ -178,7 +178,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 
 	public void regSpringConfigXml(List<FileObject> files) {
 		for (FileObject fileObject : files) {
-			logger.logMessage(LogLevel.INFO, "添加文件:{}", fileObject.getPath());
+			LOGGER.logMessage(LogLevel.INFO, "添加文件:{}", fileObject.getPath());
 			String urlString = fileObject.getURL().toString();
 			addUrl(urlString);
 		}
@@ -193,7 +193,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	private void addUrl(String urlString) {
 		if (!configs.contains(urlString)) {
 			configs.add(urlString);
-			logger.logMessage(LogLevel.INFO, "添加Spring配置文件:{urlString}",
+			LOGGER.logMessage(LogLevel.INFO, "添加Spring配置文件:{urlString}",
 					urlString);
 		}
 	}
@@ -201,7 +201,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	public void removeUrl(String urlString) {
 		if (configs.contains(urlString)) {
 			configs.remove(urlString);
-			logger.logMessage(LogLevel.INFO, "删除Spring配置文件:{urlString}",
+			LOGGER.logMessage(LogLevel.INFO, "删除Spring配置文件:{urlString}",
 					urlString);
 		}
 	}

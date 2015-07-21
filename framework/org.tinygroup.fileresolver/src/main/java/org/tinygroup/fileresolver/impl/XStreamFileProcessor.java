@@ -55,7 +55,7 @@ public class XStreamFileProcessor extends AbstractFileProcessor {
 
 	private void process(FileObject fileObject) {
 		try {
-			logger.logMessage(LogLevel.INFO, "找到XStream配置文件[{0}]，并开始加载...",
+			LOGGER.logMessage(LogLevel.INFO, "找到XStream配置文件[{0}]，并开始加载...",
 					fileObject.getAbsolutePath());
 			XStream loadXStream = XStreamFactory.getXStream();
 			XStreamConfiguration xstreamConfiguration = (XStreamConfiguration) loadXStream
@@ -68,10 +68,10 @@ public class XStreamFileProcessor extends AbstractFileProcessor {
 				processClassAliases(xStream,
 						xstreamConfiguration.getxStreamClassAliases());
 			}
-			logger.logMessage(LogLevel.INFO, "XStream配置文件[{0}]，加载完毕。",
+			LOGGER.logMessage(LogLevel.INFO, "XStream配置文件[{0}]，加载完毕。",
 					fileObject.getAbsolutePath());
 		} catch (Exception e) {
-			logger.errorMessage(
+			LOGGER.errorMessage(
 					String.format("processing file <%s>",
 							fileObject.getAbsolutePath()), e);
 		}

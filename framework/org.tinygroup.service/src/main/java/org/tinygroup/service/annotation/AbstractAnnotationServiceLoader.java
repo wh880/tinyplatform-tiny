@@ -42,7 +42,7 @@ import java.util.List;
 
 public abstract class AbstractAnnotationServiceLoader implements
 		AnnotationServiceLoader {
-	private Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AbstractAnnotationServiceLoader.class);
 
 	private ServiceMappingManager serviceMappingManager;
@@ -64,7 +64,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 		List<String> classNames = getClassNames();// 这个由子类提供
 		for (String className : classNames) {
 			try {
-				logger.logMessage(LogLevel.INFO,
+				LOGGER.logMessage(LogLevel.INFO,
 						"从{className}中查找ServiceAnnotation", className);
 				Class<?> clazz = classLoader.loadClass(className);
 				Annotation annotation = clazz
@@ -72,14 +72,14 @@ public abstract class AbstractAnnotationServiceLoader implements
 				if (annotation != null) {
 					registerServices(clazz, annotation, serviceRegistry);
 				} else {
-					logger.logMessage(LogLevel.INFO,
+					LOGGER.logMessage(LogLevel.INFO,
 							"{className}中无ServiceAnnotation", className);
 				}
-				logger.logMessage(LogLevel.INFO,
+				LOGGER.logMessage(LogLevel.INFO,
 						"从{className}中查找ServiceAnnotation完成", className);
 
 			} catch (Exception e) {
-				logger.error("service.loadServiceException", e, className);
+				LOGGER.error("service.loadServiceException", e, className);
 			}
 		}
 	}
@@ -94,11 +94,11 @@ public abstract class AbstractAnnotationServiceLoader implements
 	public void loadService(Class<?> clazz, Annotation annotation,
 			ServiceRegistry serviceRegistry) {
 		String className = clazz.getName();
-		logger.logMessage(LogLevel.INFO, "从{}中查找ServiceAnnotation", className);
+		LOGGER.logMessage(LogLevel.INFO, "从{}中查找ServiceAnnotation", className);
 		try {
 			registerServices(clazz, annotation, serviceRegistry);
 		} catch (Exception e) {
-			logger.error("service.loadServiceException", e, className);
+			LOGGER.error("service.loadServiceException", e, className);
 		}
 	}
 
@@ -114,7 +114,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 				}
 
 			} catch (Exception e) {
-				logger.log(LogLevel.ERROR, "service.loadServiceException",
+				LOGGER.log(LogLevel.ERROR, "service.loadServiceException",
 						className);
 			}
 		}
@@ -152,7 +152,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 			InvocationTargetException, NoSuchMethodException,
 			InstantiationException, ServiceLoadException {
 		ServiceRegistryItem item = new ServiceRegistryItem();
-		logger.logMessage(LogLevel.INFO, "读取ServiceComponent: {}",
+		LOGGER.logMessage(LogLevel.INFO, "读取ServiceComponent: {}",
 				clazz.getName());
 		registerServices(clazz, item, serviceRegistry);
 
@@ -178,7 +178,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 		for (Method method : clazz.getMethods()) {
 			Annotation annotation = method.getAnnotation(ServiceMethod.class);
 			if (annotation != null) {
-				logger.logMessage(LogLevel.INFO, "开始加载方法{0}为服务",
+				LOGGER.logMessage(LogLevel.INFO, "开始加载方法{0}为服务",
 						method.getName());
 				ServiceRegistryItem item = new ServiceRegistryItem();
 				// serviceId
@@ -213,7 +213,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 					registryItem.setServiceId(alias);
 					serviceRegistry.registerService(registryItem);
 				}
-				logger.logMessage(LogLevel.INFO, "加载方法{0}为服务完毕",
+				LOGGER.logMessage(LogLevel.INFO, "加载方法{0}为服务完毕",
 						method.getName());
 				// 跳转信息servicemapping
 //				ServiceViewMapping serviceViewMapping = method
@@ -277,7 +277,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 			}
 			return container.getBean(serviceComponent.bean());
 		} catch (RuntimeException e) {
-			logger.logMessage(LogLevel.WARN, "查找Bean:{0}时发生异常：{1}",
+			LOGGER.logMessage(LogLevel.WARN, "查找Bean:{0}时发生异常：{1}",
 					serviceComponent.bean(), e.getMessage());
 			if (!clazz.isInterface()) {
 				try {
@@ -294,7 +294,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 			Class<?> clazz, Method method, ServiceProxy serviceProxy)
 			throws IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException, ServiceLoadException {
-		logger.logMessage(LogLevel.INFO, "开始加载方法对应的服务出参,方法{0},服务:{1}",
+		LOGGER.logMessage(LogLevel.INFO, "开始加载方法对应的服务出参,方法{0},服务:{1}",
 				method.getName(), item.getServiceId());
 		Class<?> parameterType = method.getReturnType();
 		List<Parameter> outputParameterDescriptors = new ArrayList<Parameter>();
@@ -318,7 +318,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 			}
 			descriptor.setType(parameterType.getName());
 		}
-		logger.logMessage(LogLevel.INFO, "服务出参type:{name}",
+		LOGGER.logMessage(LogLevel.INFO, "服务出参type:{name}",
 				descriptor.getType());
 		descriptor.setArray(parameterType.isArray());
 		String name = null;
@@ -340,9 +340,9 @@ public abstract class AbstractAnnotationServiceLoader implements
 			boolean isArray = Boolean.valueOf(getAnnotationStringValue(
 					annotation, ServiceResult.class, "isArray"));
 			descriptor.setArray(isArray);
-			logger.logMessage(LogLevel.INFO, "服务出参name:{name}", name);
+			LOGGER.logMessage(LogLevel.INFO, "服务出参name:{name}", name);
 		} else {
-			logger.logMessage(LogLevel.INFO, "服务出参未配置");
+			LOGGER.logMessage(LogLevel.INFO, "服务出参未配置");
 		}
 		if (StringUtil.isBlank(name)) {
 			name = StringUtil.toCamelCase(clazz.getSimpleName()) + "_"
@@ -352,7 +352,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 		serviceProxy.setOutputParameter(descriptor);
 		outputParameterDescriptors.add(descriptor);
 		item.setResults(outputParameterDescriptors);
-		logger.logMessage(LogLevel.INFO, "加载方法对应的服务出参完毕,方法{0},服务:{1}",
+		LOGGER.logMessage(LogLevel.INFO, "加载方法对应的服务出参完毕,方法{0},服务:{1}",
 				method.getName(), item.getServiceId());
 
 	}
@@ -371,7 +371,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 			Method method, ServiceProxy serviceProxy)
 			throws IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException, ServiceLoadException {
-		logger.logMessage(LogLevel.INFO, "开始加载方法对应的服务入参,方法{0}",
+		LOGGER.logMessage(LogLevel.INFO, "开始加载方法对应的服务入参,方法{0}",
 				method.getName());
 		String[] parameterNames = BeanUtil.getMethodParameterName(
 				method.getDeclaringClass(), method);
@@ -437,7 +437,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 		}
 		item.setParameters(inputParameterDescriptors);
 		serviceProxy.setInputParameters(inputParameterDescriptors);
-		logger.logMessage(LogLevel.INFO, "加载方法对应的服务入参完毕,方法{0}",
+		LOGGER.logMessage(LogLevel.INFO, "加载方法对应的服务入参完毕,方法{0}",
 				method.getName());
 
 	}
