@@ -51,7 +51,7 @@ public class TextToXml extends TextBaseParse implements Converter<String, String
 
 	public String convert(String inputData) throws ConvertException {
 		Text text = computeFixWidthText(inputData, lineSplit);
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		XmlUtils.appendHeader(sb, rootNodeName);
 		List<TextRow> rows = text.getRows();
 		List<String> nodeTags = getFisrtRowRealNames(text);

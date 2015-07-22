@@ -34,7 +34,7 @@ public class TextRow {
 	}
 
 	public String toString(String cellSplit, String rowSplit,boolean checkLength) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		for(int i = 0 ; i < cells.size() - 1 ; i ++ ){
 			buffer.append(cells.get(i).toString(checkLength)).append(cellSplit);
 		}

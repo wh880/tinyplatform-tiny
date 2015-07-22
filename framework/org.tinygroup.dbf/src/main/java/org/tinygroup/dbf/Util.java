@@ -61,10 +61,10 @@ public final class Util {
 
     public static Boolean getBooleanValue(String stringValue) {
         String value = stringValue.toLowerCase();
-        if (value.equals("t") || value.equals("y")) {
+        if (("t").equals(value) || ("y").equals(value)) {
             return true;
         }
-        if (value.equals("f") || value.equals("n")) {
+        if (("f").equals(value) || ("n").equals(value)) {
             return false;
         }
         return null;
