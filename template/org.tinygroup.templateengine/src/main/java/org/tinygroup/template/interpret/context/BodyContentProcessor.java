@@ -9,6 +9,7 @@ import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 import java.io.Writer;
+import java.util.Stack;
 
 /**
  * Created by luog on 15/7/17.
@@ -25,12 +26,11 @@ public class BodyContentProcessor implements ContextProcessor<TinyTemplateParser
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Bodycontent_directiveContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Bodycontent_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
         //从上下文获得BODY中传入的内容,然后进行渲染
-
-        ParseTree $bodyContent = (ParseTree) context.get("$bodyContent");
-        context.remove("$bodyContent");
-        interpreter.interpretTree(engine,templateFromContext, $bodyContent,context,writer);
+        Stack<TinyTemplateParser.BlockContext> stack=context.get("$bodyContent");
+        TinyTemplateParser.BlockContext bodyContent=stack.pop();
+        interpreter.interpretTree(engine,templateFromContext, bodyContent,pageContext,context,writer);
         return null;
     }
 }

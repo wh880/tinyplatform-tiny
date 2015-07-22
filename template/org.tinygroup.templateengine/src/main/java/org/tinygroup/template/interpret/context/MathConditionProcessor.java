@@ -25,10 +25,10 @@ public class MathConditionProcessor implements ContextProcessor<TinyTemplatePars
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_conditional_ternaryContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
-        boolean condition = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(0), context, writer));
-        Object left = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(1), context, writer);
-        Object right = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(2), context, writer);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_conditional_ternaryContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+        boolean condition = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(0), pageContext,context, writer));
+        Object left = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(1),pageContext, context, writer);
+        Object right = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(2), pageContext,context, writer);
         return condition ? left : right;
     }
 }

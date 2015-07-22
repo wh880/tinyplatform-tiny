@@ -25,9 +25,9 @@ public class RangeProcessor implements ContextProcessor<TinyTemplateParser.Expre
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expression_rangeContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
-        int start = (Integer) interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(0), context, writer);
-        int end = (Integer) interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(2), context, writer);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expression_rangeContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+        int start = (Integer) interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(0), pageContext, context, writer);
+        int end = (Integer) interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(2), pageContext,context, writer);
         return new RangeList(start, end, 1);
     }
 }

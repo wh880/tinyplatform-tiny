@@ -24,7 +24,7 @@ public class IncludeProcessor implements ContextProcessor<TinyTemplateParser.Inc
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Include_directiveContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Include_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
         //        String key=interpreter.interpretTree(engine,templateFromContext,parseTree.IDENTIFIER(),context,writer).toString();
         //        Object value=interpreter.interpretTree(engine,templateFromContext,parseTree.expression(),context,writer);
         //        context.put(key,value);

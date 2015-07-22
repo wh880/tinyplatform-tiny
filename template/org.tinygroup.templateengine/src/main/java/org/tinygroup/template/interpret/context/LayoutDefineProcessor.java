@@ -22,12 +22,12 @@ public class LayoutDefineProcessor implements ContextProcessor<TinyTemplateParse
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Layout_directiveContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Layout_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
         String name = "$" + parseTree.IDENTIFIER().getText();
         if (context.exist(name)) {
-            interpreter.interpretTree(engine, templateFromContext, (TinyTemplateParser.BlockContext) context.get(name), context, writer);
+            interpreter.interpretTree(engine, templateFromContext, (TinyTemplateParser.BlockContext) context.get(name), pageContext,context, writer);
         } else {
-            interpreter.interpretTree(engine, templateFromContext, parseTree.block(), context, writer);
+            interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, context, writer);
         }
         return null;
     }

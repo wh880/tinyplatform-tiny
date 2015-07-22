@@ -1,4 +1,4 @@
-package org.tinygroup.template.interpret.context;
+package org.tinygroup.template.interpret;
 
 import org.tinygroup.template.*;
 import org.tinygroup.template.impl.EvaluateExpression;
@@ -10,6 +10,7 @@ import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by luog on 15/7/19.
@@ -59,7 +60,7 @@ public class MacroFromContext implements Macro {
 
     public void render(Template templateFromContext, TemplateContext pageContext, TemplateContext context, Writer writer) throws TemplateException {
         try {
-            interpreter.interpretTree(templateInterpretEngine, (TemplateFromContext) templateFromContext, blockContext, context, writer);
+            interpreter.interpretTree(templateInterpretEngine, (TemplateFromContext) templateFromContext, blockContext,pageContext, context, writer);
         } catch (Exception e) {
             throw new TemplateException(e);
         }

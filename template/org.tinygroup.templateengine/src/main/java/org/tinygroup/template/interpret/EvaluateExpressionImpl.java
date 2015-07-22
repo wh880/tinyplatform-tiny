@@ -26,7 +26,7 @@ public class EvaluateExpressionImpl implements EvaluateExpression {
 
     public Object evaluate(TemplateContext context) throws TemplateException {
         try {
-            return interpreter.interpretTree(engine, templateFromContext, expressionContext, context, null);
+            return interpreter.interpretTree(engine, templateFromContext, expressionContext,context, context, null);
         } catch (Exception e) {
             throw new TemplateException(e);
         }

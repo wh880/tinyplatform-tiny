@@ -24,9 +24,8 @@ public final class TemplateInterpretLoadUtil {
 
     public static Template loadComponent(TemplateInterpretEngine engine, String path, String content) throws Exception {
         TinyTemplateParser.TemplateContext tree = interpreter.parserTemplateTree(path, content);
-        TemplateContext context = new TemplateContextDefault();
         TemplateFromContext template = new TemplateFromContext(interpreter, path, tree);
-        interpreter.interpretTree(engine, template, tree, context, null);
+        interpreter.interpretTree(engine, template, tree, null, null, null);
         return template;
     }
 }

@@ -22,7 +22,7 @@ public class LayoutImplementProcessor implements ContextProcessor<TinyTemplatePa
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Layout_impl_directiveContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Layout_impl_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
         String name = "$" + parseTree.IDENTIFIER().getText();
         if (!context.exist(name)) {
             //只有前面没有实现的时候才添加进去
