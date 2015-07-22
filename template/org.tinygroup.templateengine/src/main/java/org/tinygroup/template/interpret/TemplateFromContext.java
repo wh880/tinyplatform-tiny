@@ -25,10 +25,9 @@ public class TemplateFromContext extends AbstractTemplate {
     protected void renderContent(TemplateContext context, Writer writer) throws IOException, TemplateException {
         try {
             TemplateInterpretEngine templateEngine = (TemplateInterpretEngine) getTemplateEngine();
-            TemplateContextDefault subContext = new TemplateContextDefault();
-            subContext.setParent(context);
-            templateEngine.interpreter.interpret(templateEngine,this,templateContext, context, subContext,writer);
+            templateEngine.interpreter.interpret(templateEngine,this,templateContext, context, context,writer);
         } catch (StopException e) {
+            //Do Nothing
         } catch (Exception e) {
             throw new TemplateException(e);
         }
