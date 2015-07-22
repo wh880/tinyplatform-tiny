@@ -136,13 +136,4 @@ public class TemplateInterpreter {
         macro.render(null, null, newContext, writer);
     }
 
-    public static void main(String[] args) throws Exception {
-        TemplateInterpreter interpreter = new TemplateInterpreter();
-        TemplateContext context = new TemplateContextDefault();
-        context.put("a", false);
-        Writer writer = new OutputStreamWriter(System.out);
-        interpreter.interpret(null, null, "#macro abc() abc #end", "abc", context, writer);
-//        System.out.println(context.get("abc"));
-//        System.out.println(context.get("def"));
-    }
 }

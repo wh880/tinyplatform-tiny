@@ -83,15 +83,18 @@ public class TemplateInterpretEngine implements TemplateEngine {
         interpreter.addContextProcessor(new MathBinaryShiftProcessor());
         interpreter.addContextProcessor(new MathBitwiseProcessor());
         interpreter.addContextProcessor(new ArrayGetProcessor());
-//        interpreter.addContextProcessor(new ImportProcessor());
-//        interpreter.addContextProcessor(new MacroDefineProcessor());
+        interpreter.addContextProcessor(new ImportIgnoreProcessor());
+        interpreter.addContextProcessor(new MacroDefineIgnoreProcessor());
         interpreter.addContextProcessor(new CallProcessor());
         interpreter.addContextProcessor(new CallWithBodyProcessor());
+        interpreter.addContextProcessor(new CallMacroProcessor());
+        interpreter.addContextProcessor(new CallMacroWithBodyProcessor());
         interpreter.addContextProcessor(new LayoutDefineProcessor());
         interpreter.addContextProcessor(new LayoutImplementProcessor());
         interpreter.addContextProcessor(new DentProcessor());
         interpreter.addContextProcessor(new IndentProcessor());
         interpreter.addContextProcessor(new TextProcessor());
+        interpreter.addContextProcessor(new BodyContentProcessor());
     }
 
     public boolean isSafeVariable() {

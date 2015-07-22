@@ -16,15 +16,15 @@ import java.util.List;
  */
 public class MacroFromContext implements Macro {
     private final String name;
-    private final TinyTemplateParser.Macro_directiveContext macroContext;
     private final TemplateInterpreter interpreter;
+    private final TinyTemplateParser.BlockContext blockContext;
     private List<String> parameterNames = new ArrayList<String>();
     private List<EvaluateExpression> parameterDefaultValues = new ArrayList<EvaluateExpression>();
     private TemplateInterpretEngine templateInterpretEngine;
 
-    public MacroFromContext(TemplateInterpreter interpreter, String name, TinyTemplateParser.Macro_directiveContext macroContext) {
+    public MacroFromContext(TemplateInterpreter interpreter, String name, TinyTemplateParser.BlockContext blockContext) {
         this.name = name;
-        this.macroContext = macroContext;
+        this.blockContext = blockContext;
         this.interpreter = interpreter;
     }
 
@@ -59,7 +59,7 @@ public class MacroFromContext implements Macro {
 
     public void render(Template templateFromContext, TemplateContext pageContext, TemplateContext context, Writer writer) throws TemplateException {
         try {
-            interpreter.interpretTree(templateInterpretEngine, (TemplateFromContext) templateFromContext, macroContext, context, writer);
+            interpreter.interpretTree(templateInterpretEngine, (TemplateFromContext) templateFromContext, blockContext, context, writer);
         } catch (Exception e) {
             throw new TemplateException(e);
         }
