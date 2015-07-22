@@ -96,6 +96,7 @@ public class TemplateInterpretEngine implements TemplateEngine {
         interpreter.addContextProcessor(new TextProcessor());
         interpreter.addContextProcessor(new BodyContentProcessor());
         interpreter.addContextProcessor(new FieldProcessor());
+        interpreter.addContextProcessor(new StopProcessor());
     }
 
     public boolean isSafeVariable() {

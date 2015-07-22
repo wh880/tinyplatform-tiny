@@ -28,6 +28,7 @@ public class TemplateFromContext extends AbstractTemplate {
             TemplateContextDefault subContext = new TemplateContextDefault();
             subContext.setParent(context);
             templateEngine.interpreter.interpret(templateEngine,this,templateContext, context, subContext,writer);
+        } catch (StopException e) {
         } catch (Exception e) {
             throw new TemplateException(e);
         }
