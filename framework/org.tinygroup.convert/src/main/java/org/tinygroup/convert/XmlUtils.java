@@ -19,13 +19,13 @@ public final class XmlUtils {
     private XmlUtils() {
     }
 
-    public static void appendHeader(StringBuffer sb, String nodeName) {
+    public static void appendHeader(StringBuilder sb, String nodeName) {
         sb.append("<");
         sb.append(nodeName);
         sb.append(">");
     }
 
-    public static void appendFooter(StringBuffer sb, String nodeName) {
+    public static void appendFooter(StringBuilder sb, String nodeName) {
         sb.append("</");
         sb.append(nodeName);
         sb.append(">");

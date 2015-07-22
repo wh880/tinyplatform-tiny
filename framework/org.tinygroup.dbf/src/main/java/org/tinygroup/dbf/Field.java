@@ -103,21 +103,21 @@ public class Field {
     }
 
     public Integer getIntValue() throws UnsupportedEncodingException {
-        if (getStringValue().equals("-")) {
+        if (("-").equals(getStringValue())) {
             return null;
         }
         return Integer.parseInt(getStringValue());
     }
 
     public Double getDoubleValue() throws UnsupportedEncodingException {
-        if (getStringValue().equals("-")) {
+        if (("-").equals(getStringValue())) {
             return null;
         }
         return Double.parseDouble(getStringValue());
     }
 
     public Float getFloatValue() throws UnsupportedEncodingException {
-        if (getStringValue().equals("-")) {
+        if (("-").endsWith(getStringValue())) {
             return null;
         }
         return Float.parseFloat(getStringValue());

@@ -65,7 +65,6 @@ public class FoxproDBaseWriter extends DbfWriter {
 	
 	public void writeRecord(String... values) throws  IOException , NullPointerException {
 		if(fields==null) {
-			
 			throw new NullPointerException("字段表为空指针,请先调用writeFields方法");
 		}
 		boolean removed = false;
@@ -73,8 +72,8 @@ public class FoxproDBaseWriter extends DbfWriter {
 		int valueLength = values.length;
 		if(valueLength!=fieldsLength) {
 			if(valueLength-fieldsLength==1) {
-				if(!values[0].equals("*")) {
-					System.out.println("here");
+				if(!("*").equals(values[0])) {
+					//System.out.println("here");
 					throw new IOException(String.format("字段长度为:%d,但该条数据长度为:%d,游标:%d",
 							fieldsLength,values.length,getPostion()));
 				}
