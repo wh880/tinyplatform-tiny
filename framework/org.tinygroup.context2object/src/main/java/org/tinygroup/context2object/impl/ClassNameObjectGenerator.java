@@ -72,8 +72,7 @@ public class ClassNameObjectGenerator implements
 	}
 	public Collection<Object> getObjectCollection(String collectionClassName,ClassLoader loader){
 		Class<?> collectionClass = getClazz(collectionClassName, loader);
-		Collection<Object> collection = (Collection<Object>) getObjectInstance(collectionClass);
-		return collection;
+		return (Collection<Object>) getObjectInstance(collectionClass);
 	}
 
 	public Collection<Object> getObjectCollection(String varName,
@@ -89,7 +88,7 @@ public class ClassNameObjectGenerator implements
 		Class<?> clazz = getClazz(className, loader);
 		Collection<Object> collection = (Collection<Object>) getObjectInstance(collectionClass);
 		buildCollection(varName, collection, clazz, context, null);
-		if (collection.size() == 0) {
+		if (collection.isEmpty()) {
 			return null;
 		}
 		return collection;
@@ -241,7 +240,7 @@ public class ClassNameObjectGenerator implements
 						buildCollection(null, collection,
 								(Class) actualTypeArguments[0], context,
 								newPreName);
-						if (collection.size() != 0) {
+						if (!collection.isEmpty()) {
 							BeanUtils.setProperty(object, descriptor.getName(),
 									collection);
 							allPropertyNull = false;
@@ -415,7 +414,7 @@ public class ClassNameObjectGenerator implements
 		}
 		Collection<Object> collection = new ArrayList<Object>();
 		buildCollection(varName, collection, objectClass, context, preName);
-		if (collection.size() == 0) {
+		if (collection.isEmpty()) {
 			return null;
 		} else {
 			Object array = Array.newInstance(objectClass, collection.size());
@@ -428,16 +427,16 @@ public class ClassNameObjectGenerator implements
 		}
 	}
 
-	private TypeConverter<?, ?> getTypeConverter(Class<?> destType,
-			Class<? extends Object> sourceType) {
-		for (TypeConverter<?, ?> typeConverter : typeConverterList) {
-			if (typeConverter.getSourceType().equals(sourceType)
-					&& typeConverter.getDestinationType().equals(destType)) {
-				return typeConverter;
-			}
-		}
-		return null;
-	}
+//	private TypeConverter<?, ?> getTypeConverter(Class<?> destType,
+//			Class<? extends Object> sourceType) {
+//		for (TypeConverter<?, ?> typeConverter : typeConverterList) {
+//			if (typeConverter.getSourceType().equals(sourceType)
+//					&& typeConverter.getDestinationType().equals(destType)) {
+//				return typeConverter;
+//			}
+//		}
+//		return null;
+//	}
 
 	private TypeConverter<?, ?> getTypeConverter(Class<?> destType) {
 		for (TypeConverter<?, ?> typeConverter : typeConverterList) {

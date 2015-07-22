@@ -148,10 +148,10 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 				throw new RuntimeException(e);
 			}
 		}
-		{
-			return BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(beanName);
-		}
+
+		return BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(beanName);
+
 	}
 
 }
