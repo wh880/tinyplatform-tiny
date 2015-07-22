@@ -91,13 +91,5 @@ public class StringInterpretResourceLoader extends AbstractResourceLoader<String
         return "C" + System.nanoTime();
     }
 
-    public static void main(String[] args) throws TemplateException {
-        TemplateContext context=new TemplateContextDefault();
-        StringInterpretResourceLoader loader = new StringInterpretResourceLoader();
-        TemplateInterpretEngine engine =new TemplateInterpretEngine();
-        engine.addResourceLoader(loader);
-        Template template = loader.createTemplate("#macro abc()abc111#end #abc()");
-        template.render(context,new OutputStreamWriter(System.out));
-        System.out.flush();
-    }
+
 }

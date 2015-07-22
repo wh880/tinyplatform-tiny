@@ -17,7 +17,7 @@ import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 public final class TemplateInterpretLoadUtil {
     static TemplateInterpreter interpreter = new TemplateInterpreter();
 
-    {
+    static {
         interpreter.addContextProcessor(new MacroDefineProcessor());
         interpreter.addContextProcessor(new ImportProcessor());
     }
