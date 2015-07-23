@@ -13,10 +13,10 @@ import org.tinygroup.template.parser.grammer.TinyTemplateLexer;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * Created by luog on 15/7/17.
@@ -44,18 +44,18 @@ public class TemplateInterpreter {
         return parser.template();
     }
 
-    public void interpret(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String templateString, String sourceName, TemplateContext context, Writer writer) throws Exception {
-        interpret(engine, templateFromContext, parserTemplateTree(sourceName, templateString), context, writer);
+    public void interpret(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String templateString, String sourceName, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
+        interpret(engine, templateFromContext, parserTemplateTree(sourceName, templateString), pageContext, context, writer);
         writer.flush();
     }
 
-    public void interpret(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, TinyTemplateParser.TemplateContext templateParseTree, TemplateContext context, Writer writer) throws Exception {
+    public void interpret(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, TinyTemplateParser.TemplateContext templateParseTree, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
         for (int i = 0; i < templateParseTree.getChildCount(); i++) {
-            interpretTree(engine, templateFromContext, templateParseTree.getChild(i), context, writer);
+            interpretTree(engine, templateFromContext, templateParseTree.getChild(i), pageContext, context, writer);
         }
     }
 
-    public Object interpretTree(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, ParseTree tree, TemplateContext context, Writer writer) throws Exception {
+    public Object interpretTree(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, ParseTree tree, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
         Object returnValue = null;
         if (tree instanceof TerminalNode) {
             TerminalNode terminalNode = (TerminalNode) tree;
@@ -68,11 +68,11 @@ public class TemplateInterpreter {
         } else if (tree instanceof ParserRuleContext) {
             ContextProcessor processor = contextProcessorMap.get(tree.getClass());
             if (processor != null) {
-                returnValue = processor.process(this, templateFromContext, (ParserRuleContext) tree, context, writer, engine);
+                returnValue = processor.process(this, templateFromContext, (ParserRuleContext) tree, pageContext, context, engine, writer);
             }
             if (processor == null || processor != null && processor.processChildren()) {
                 for (int i = 0; i < tree.getChildCount(); i++) {
-                    Object value = interpretTree(engine, templateFromContext, tree.getChild(i), context, writer);
+                    Object value = interpretTree(engine, templateFromContext, tree.getChild(i), pageContext, context, writer);
                     if (value != null) {
                         returnValue = value;
                     }
@@ -81,7 +81,7 @@ public class TemplateInterpreter {
 
         } else {
             for (int i = 0; i < tree.getChildCount(); i++) {
-                Object value = interpretTree(engine, templateFromContext, tree.getChild(i), context, writer);
+                Object value = interpretTree(engine, templateFromContext, tree.getChild(i), pageContext, context, writer);
                 if (returnValue == null && value != null) {
                     returnValue = value;
                 }
@@ -93,11 +93,12 @@ public class TemplateInterpreter {
     public static void write(Writer writer, Object object) throws IOException {
         if (object != null) {
             writer.write(object.toString());
+            writer.flush();
         }
     }
 
-    public void callMacro(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext context, Writer writer) throws Exception {
-        Macro macro = engine.findMacro(name,templateFromContext,context);
+    public void callMacro(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
+        Macro macro = engine.findMacro(name, templateFromContext, context);
         TemplateContext newContext = new TemplateContextDefault();
         newContext.setParent(context);
         TinyTemplateParser.Para_expression_listContext expList = paraList;
@@ -106,9 +107,9 @@ public class TemplateInterpreter {
             for (TinyTemplateParser.Para_expressionContext para : expList.para_expression()) {
                 if (para.getChildCount() == 3) {
                     //如果是带参数的
-                    newContext.put(para.IDENTIFIER().getText(), interpretTree(engine, templateFromContext, para.expression(), context, writer));
+                    newContext.put(para.IDENTIFIER().getText(), interpretTree(engine, templateFromContext, para.expression(), pageContext, context, writer));
                 } else {
-                    newContext.put(macro.getParameterName(i), interpretTree(engine, templateFromContext, para.expression(), context, writer));
+                    newContext.put(macro.getParameterName(i), interpretTree(engine, templateFromContext, para.expression(), pageContext, context, writer));
                 }
                 i++;
             }
@@ -116,8 +117,8 @@ public class TemplateInterpreter {
         macro.render(null, null, newContext, writer);
     }
 
-    public void callBlockMacro(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.BlockContext block, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext context, Writer writer) throws Exception {
-        Macro macro = engine.findMacro(name,templateFromContext,context);
+    public void callBlockMacro(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.BlockContext block, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, Writer writer, TemplateContext context) throws Exception {
+        Macro macro = engine.findMacro(name, templateFromContext, context);
         TemplateContext newContext = new TemplateContextDefault();
         newContext.setParent(context);
         if (paraList != null) {
@@ -125,15 +126,20 @@ public class TemplateInterpreter {
             for (TinyTemplateParser.Para_expressionContext para : paraList.para_expression()) {
                 if (para.getChildCount() == 3) {
                     //如果是带参数的
-                    newContext.put(para.IDENTIFIER().getText(), interpretTree(engine, templateFromContext, para.expression(), context, writer));
+                    newContext.put(para.IDENTIFIER().getText(), interpretTree(engine, templateFromContext, para.expression(), pageContext, context, writer));
                 } else {
-                    newContext.put(macro.getParameterName(i), interpretTree(engine, templateFromContext, para.expression(), context, writer));
+                    newContext.put(macro.getParameterName(i), interpretTree(engine, templateFromContext, para.expression(), pageContext, context, writer));
                 }
                 i++;
             }
         }
-        newContext.put("$bodyContent", block);
-        macro.render(null, null, newContext, writer);
+        Stack<TinyTemplateParser.BlockContext> stack = context.get("$bodyContent");
+        if (stack == null) {
+            stack = new Stack<TinyTemplateParser.BlockContext>();
+            newContext.put("$bodyContent", stack);
+        }
+        stack.push(block);
+        macro.render(templateFromContext, pageContext, newContext, writer);
     }
 
 }

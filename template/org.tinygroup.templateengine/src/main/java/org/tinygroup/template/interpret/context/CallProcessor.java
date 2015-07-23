@@ -22,9 +22,9 @@ public class CallProcessor implements ContextProcessor<TinyTemplateParser.Call_d
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_directiveContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
-        String name = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), context, writer).toString();
-        interpreter.callMacro(engine, templateFromContext, name, parseTree.para_expression_list(), context, writer);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+        String name = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer).toString();
+        interpreter.callMacro(engine, templateFromContext, name, parseTree.para_expression_list(),pageContext, context, writer);
         return null;
     }
 }

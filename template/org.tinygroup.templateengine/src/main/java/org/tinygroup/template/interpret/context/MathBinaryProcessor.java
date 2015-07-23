@@ -25,9 +25,9 @@ public class MathBinaryProcessor implements ContextProcessor<TinyTemplateParser.
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_math_binary_basicContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
-        Object a = interpreter.interpretTree(engine, templateFromContext, parseTree.expression().get(0), context, writer);
-        Object b = interpreter.interpretTree(engine, templateFromContext, parseTree.expression().get(1), context, writer);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_math_binary_basicContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+        Object a = interpreter.interpretTree(engine, templateFromContext, parseTree.expression().get(0),pageContext, context, writer);
+        Object b = interpreter.interpretTree(engine, templateFromContext, parseTree.expression().get(1),pageContext, context, writer);
         return O.e(parseTree.getChild(1).getText(), a, b);
     }
 }

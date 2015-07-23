@@ -3,6 +3,7 @@ package org.tinygroup.template.interpret;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.AbstractTemplate;
+import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 import java.io.IOException;
@@ -24,7 +25,9 @@ public class TemplateFromContext extends AbstractTemplate {
     protected void renderContent(TemplateContext context, Writer writer) throws IOException, TemplateException {
         try {
             TemplateInterpretEngine templateEngine = (TemplateInterpretEngine) getTemplateEngine();
-            templateEngine.interpreter.interpret(templateEngine,this,templateContext, context, writer);
+            templateEngine.interpreter.interpret(templateEngine,this,templateContext, context, context,writer);
+        } catch (StopException e) {
+            //Do Nothing
         } catch (Exception e) {
             throw new TemplateException(e);
         }

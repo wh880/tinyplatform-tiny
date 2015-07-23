@@ -26,14 +26,14 @@ public class MapProcessor implements ContextProcessor<TinyTemplateParser.Expr_ha
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_hash_mapContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_hash_mapContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
         List<TinyTemplateParser.ExpressionContext> expressions = parseTree.hash_map_entry_list().expression();
         List<TinyTemplateParser.ExpressionContext> expressionContexts = expressions;
         Map<String, Object> map = new HashMap<String, Object>();
         if (expressions != null) {
             for (int i = 0; i < expressions.size(); i += 2) {
-                String key = interpreter.interpretTree(engine, templateFromContext, expressions.get(i), context, writer).toString();
-                String value = interpreter.interpretTree(engine, templateFromContext, expressions.get(i + 1), context, writer).toString();
+                String key = interpreter.interpretTree(engine, templateFromContext, expressions.get(i), pageContext,context, writer).toString();
+                String value = interpreter.interpretTree(engine, templateFromContext, expressions.get(i + 1),pageContext, context, writer).toString();
                 map.put(key, value);
             }
         }

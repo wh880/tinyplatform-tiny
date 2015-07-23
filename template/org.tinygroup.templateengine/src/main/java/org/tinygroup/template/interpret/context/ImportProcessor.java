@@ -22,8 +22,8 @@ public class ImportProcessor implements ContextProcessor<TinyTemplateParser.Impo
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Import_directiveContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
-        Object path = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), context, writer);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Import_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+        Object path = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext,context, writer);
         templateFromContext.addImport(path);
         return null;
     }

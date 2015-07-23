@@ -14,6 +14,6 @@ public interface ContextProcessor<T extends ParserRuleContext> {
 
     boolean processChildren();
 
-    Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, T parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception;
+    Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, T parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception;
 
 }

@@ -24,9 +24,9 @@ public class SetProcessor implements ContextProcessor<TinyTemplateParser.Set_exp
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Set_expressionContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
-        String key = interpreter.interpretTree(engine, template, parseTree.IDENTIFIER(), context, writer).toString();
-        Object value = interpreter.interpretTree(engine, template, parseTree.expression(), context, writer);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Set_expressionContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+        String key = interpreter.interpretTree(engine, template, parseTree.IDENTIFIER(),pageContext, context, writer).toString();
+        Object value = interpreter.interpretTree(engine, template, parseTree.expression(),pageContext, context, writer);
         context.put(key, value);
         return null;
     }

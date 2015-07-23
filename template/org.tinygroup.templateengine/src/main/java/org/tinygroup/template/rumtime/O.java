@@ -93,6 +93,8 @@ public final class O {
         addOperator(new ComplementOperator());
         addOperator(new LeftNotOperator());
         //逻辑比较符
+        addOperator(new AndLogicOperator());
+        addOperator(new OrLogicOperator());
         addOperator(new EqualsOperator());
         addOperator(new NotEqualsOperator());
         addOperator(new LessEqualsOperator());

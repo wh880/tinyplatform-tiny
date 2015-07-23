@@ -25,8 +25,8 @@ public class MathIdentifierProcessor implements ContextProcessor<TinyTemplatePar
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_identifierContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
-        Object a = interpreter.interpretTree(engine, templateFromContext, parseTree.IDENTIFIER(), context, writer);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_identifierContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+        Object a = interpreter.interpretTree(engine, templateFromContext, parseTree.IDENTIFIER(), pageContext,context, writer);
         return U.v(context, a);
     }
 }

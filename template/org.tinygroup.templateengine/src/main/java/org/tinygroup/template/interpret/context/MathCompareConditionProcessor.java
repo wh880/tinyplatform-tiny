@@ -26,9 +26,9 @@ public class MathCompareConditionProcessor implements ContextProcessor<TinyTempl
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_compare_conditionContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
-        boolean a = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression().get(0), context, writer));
-        boolean b = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression().get(1), context, writer));
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_compare_conditionContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+        boolean a = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression().get(0),pageContext, context, writer));
+        boolean b = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression().get(1),pageContext, context, writer));
         return O.e(parseTree.getChild(1).getText(), a, b);
     }
 }

@@ -24,15 +24,15 @@ public class IfProcessor implements ContextProcessor<TinyTemplateParser.If_direc
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.If_directiveContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.If_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
         //如果条件成立
-        if (U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), context, writer))) {
-            interpreter.interpretTree(engine, templateFromContext, parseTree.block(), context, writer);
+        if (U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer))) {
+            interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, context, writer);
         } else {
             boolean processed = false;
             List<TinyTemplateParser.Elseif_directiveContext> elseifDirectiveContexts = parseTree.elseif_directive();
             for (TinyTemplateParser.Elseif_directiveContext elseifDirectiveContext : elseifDirectiveContexts) {
-                processed = (Boolean) interpreter.interpretTree(engine, templateFromContext, elseifDirectiveContext, context, writer);
+                processed = (Boolean) interpreter.interpretTree(engine, templateFromContext, elseifDirectiveContext,pageContext, context, writer);
                 if (processed) {
                     return null;
                 }
@@ -40,7 +40,7 @@ public class IfProcessor implements ContextProcessor<TinyTemplateParser.If_direc
             if (!processed) {
                 TinyTemplateParser.Else_directiveContext elseDirectiveContext = parseTree.else_directive();
                 if (elseDirectiveContext != null) {
-                    interpreter.interpretTree(engine, templateFromContext, elseDirectiveContext, context, writer);
+                    interpreter.interpretTree(engine, templateFromContext, elseDirectiveContext,pageContext, context, writer);
                 }
             }
         }

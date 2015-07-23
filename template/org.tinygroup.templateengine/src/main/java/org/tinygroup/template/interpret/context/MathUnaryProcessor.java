@@ -25,8 +25,8 @@ public class MathUnaryProcessor implements ContextProcessor<TinyTemplateParser.E
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_math_unary_prefixContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
-        return O.e("l" + parseTree.getChild(0).getText(), interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), context, writer));
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_math_unary_prefixContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+        return O.e("l" + parseTree.getChild(0).getText(), interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext,context, writer));
     }
 }
 

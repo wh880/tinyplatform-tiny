@@ -6,7 +6,6 @@ import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpretEngine;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-import org.tinygroup.template.rumtime.U;
 
 import java.io.Writer;
 
@@ -23,8 +22,8 @@ public class TextProcessor implements ContextProcessor<TinyTemplateParser.TextCo
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.TextContext parseTree, TemplateContext context, Writer writer, TemplateInterpretEngine engine) throws Exception {
-        TemplateInterpreter.write(writer,interpreter.interpretTree(engine,templateFromContext,parseTree.getChild(0),context,writer));
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.TextContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+        TemplateInterpreter.write(writer,interpreter.interpretTree(engine,templateFromContext,parseTree.getChild(0),pageContext,context,writer));
         return null;
     }
 
