@@ -55,7 +55,7 @@ public class ErrorContext implements java.io.Serializable {
      */
     public Error fetchCurrentError() {
 
-        if (errorStack != null && errorStack.size() > 0) {
+        if (!errorStack.isEmpty()) {
             return errorStack.get(errorStack.size() - 1);
         }
         return null;
@@ -68,7 +68,7 @@ public class ErrorContext implements java.io.Serializable {
      */
     public String fetchCurrentErrorCode() {
 
-        if (errorStack != null && errorStack.size() > 0) {
+        if (!errorStack.isEmpty()) {
 
             return errorStack.get(errorStack.size() - 1).getErrorCode().toString();
         }
@@ -82,7 +82,7 @@ public class ErrorContext implements java.io.Serializable {
      */
     public Error fetchRootError() {
 
-        if (errorStack != null && errorStack.size() > 0) {
+        if (!errorStack.isEmpty()) {
             return errorStack.get(0);
         }
         return null;
@@ -109,7 +109,7 @@ public class ErrorContext implements java.io.Serializable {
      */
     public String toDigest() {
 
-        StringBuffer sb = new StringBuffer();
+    	StringBuilder sb = new StringBuilder();
 
         for (int i = errorStack.size(); i > 0; i--) {
 
@@ -132,7 +132,7 @@ public class ErrorContext implements java.io.Serializable {
     @Override
     public String toString() {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for (int i = errorStack.size(); i > 0; i--) {
 

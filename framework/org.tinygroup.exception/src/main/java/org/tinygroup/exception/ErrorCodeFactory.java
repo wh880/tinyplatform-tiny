@@ -37,23 +37,27 @@ public class ErrorCodeFactory {
 		codeParsers.add(new ErrorCodeLength16());
 	}
 
+	private ErrorCodeFactory() {
+	}
+
 	public static void addCodeParser(ErrorCodeParser errorCodeParser) {
 		codeParsers.add(errorCodeParser);
 	}
 
-	public static ErrorCode parseErrorCode(String errorCode,Throwable cause) {
+	public static ErrorCode parseErrorCode(String errorCode, Throwable cause) {
 		Assert.assertNotNull(errorCode, "errorCode must not be null");
-		ErrorCodeParser parser = findParser(errorCode,cause);
+		ErrorCodeParser parser = findParser(errorCode, cause);
 		return parser.parse(errorCode);
 	}
 
-	private static ErrorCodeParser findParser(String errorCodeStr,Throwable cause) {
+	private static ErrorCodeParser findParser(String errorCodeStr,
+			Throwable cause) {
 		for (ErrorCodeParser errorCodeParser : codeParsers) {
 			if (errorCodeParser.isMatch(errorCodeStr)) {
 				return errorCodeParser;
 			}
 		}
 		throw new IllegalArgumentException(String.format(
-				"未找到错误码:%s,对应的错误码解析规范", errorCodeStr),cause);
+				"未找到错误码:%s,对应的错误码解析规范", errorCodeStr), cause);
 	}
 }

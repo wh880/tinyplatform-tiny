@@ -27,7 +27,7 @@ import java.util.Locale;
 
 public class BaseRuntimeException extends RuntimeException {
 	private static final long serialVersionUID = -1141168272047460629L;
-	private static I18nMessage i18nMessage = I18nMessageFactory
+	private static final I18nMessage i18nMessage = I18nMessageFactory
 			.getI18nMessages();// 需要在启动的时候注入进来
 	private String errorMsg;
 
@@ -42,10 +42,6 @@ public class BaseRuntimeException extends RuntimeException {
 		return errorCode;
 	}
 
-	public static void setI18nMessage(I18nMessage i18nMessage) {
-		BaseRuntimeException.i18nMessage = i18nMessage;
-	}
-
 	public BaseRuntimeException(String errorCode, Object... params) {
 		this(errorCode, "", LocaleUtil.getContext().getLocale(), params);
 	}
@@ -58,10 +54,10 @@ public class BaseRuntimeException extends RuntimeException {
 
 	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
 			Locale locale, Object... params) {
-		String errorMsg = i18nMessage.getMessage(errorCode, locale,
+		String errorI18nMsg = i18nMessage.getMessage(errorCode, locale,
 				defaultErrorMsg, params);
 		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
-		this.errorMsg = errorMsg;
+		this.errorMsg = errorI18nMsg;
 	}
 
 	public BaseRuntimeException(String errorCode, Throwable throwable,
@@ -79,10 +75,10 @@ public class BaseRuntimeException extends RuntimeException {
 	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
 			Locale locale, Throwable throwable, Object... params) {
 		super(throwable);
-		String errorMsg = i18nMessage.getMessage(errorCode, locale,
+		String errorI18nMsg = i18nMessage.getMessage(errorCode, locale,
 				defaultErrorMsg, params);
 		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
-		this.errorMsg = errorMsg;
+		this.errorMsg = errorI18nMsg;
 	}
 
 	public BaseRuntimeException(String errorCode, Context context, Locale locale) {
@@ -91,9 +87,9 @@ public class BaseRuntimeException extends RuntimeException {
 
 	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
 			Context context, Locale locale) {
-		String errorMsg = i18nMessage.getMessage(errorCode, defaultErrorMsg,
+		String errorI18nMsg = i18nMessage.getMessage(errorCode, defaultErrorMsg,
 				context, locale);
-		this.errorMsg = errorMsg;
+		this.errorMsg = errorI18nMsg;
 		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
 	}
 

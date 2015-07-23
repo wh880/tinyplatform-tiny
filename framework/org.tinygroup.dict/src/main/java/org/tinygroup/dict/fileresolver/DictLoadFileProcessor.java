@@ -73,7 +73,7 @@ public class DictLoadFileProcessor extends AbstractFileProcessor {
 	}
 
 	public void setFileResolver(FileResolver fileResolver) {
-
+		//do nothing
 	}
 
 }
