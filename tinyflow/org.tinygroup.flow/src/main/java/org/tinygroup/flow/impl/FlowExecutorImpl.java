@@ -48,7 +48,7 @@ import java.util.Map;
  * @author luoguo
  */
 public class FlowExecutorImpl implements FlowExecutor {
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(FlowExecutorImpl.class);
 	private static Map<String, Class<?>> exceptionMap = new HashMap<String, Class<?>>();
 	private static transient Formater formater = new FormaterImpl();
@@ -74,10 +74,10 @@ public class FlowExecutorImpl implements FlowExecutor {
 	}
 
 	public void execute(String flowId, String nodeId, Context context) {
-		logger.logMessage(LogLevel.INFO, "开始执行流程[flowId:{0},nodeId:{1}]执行",
+		LOGGER.logMessage(LogLevel.INFO, "开始执行流程[flowId:{0},nodeId:{1}]执行",
 				flowId, nodeId);
 		if (!getFlowIdMap().containsKey(flowId)) {
-			logger.log(LogLevel.ERROR, "flow.flowNotExist", flowId);
+			LOGGER.log(LogLevel.ERROR, "flow.flowNotExist", flowId);
 			throw new FlowRuntimeException("flow.flowNotExist", flowId);
 		}
 		Flow flow = getFlowIdMap().get(flowId);
@@ -89,7 +89,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 			checkOutputParameter(flow, context);
 			logContext(context);
 		}
-		logger.logMessage(LogLevel.INFO, "流程[flowId:{0},nodeId:{1}]执行完毕",
+		LOGGER.logMessage(LogLevel.INFO, "流程[flowId:{0},nodeId:{1}]执行完毕",
 				flowId, nodeId);
 	}
 
@@ -103,7 +103,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 	 */
 	private Node getNode(Flow flow, String nodeId) {
 		if (DEFAULT_END_NODE.equals(nodeId)) { // 如果执行的是end，则无需执行
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"流程[flowId:{0},nodeId:{1}]为结束节点,无需执行", flow.getId(),
 					DEFAULT_END_NODE);
 			return null;
@@ -112,7 +112,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 			nodeId = DEFAULT_BEGIN_NODE;
 		}
 		if (DEFAULT_BEGIN_NODE.equals(nodeId) && flow.getNodes().size() == 0) {
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"流程无节点,流程[flowId:{0},nodeId:{1}]执行完毕。", flow.getId(),
 					DEFAULT_BEGIN_NODE);
 			return null;
@@ -122,7 +122,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 		if (node == null && DEFAULT_BEGIN_NODE.equals(nodeId)) {
 			node = flow.getNodes().get(0);
 		} else if (node == null) {// 节点不存在，且节点名不为begin
-			logger.log(LogLevel.ERROR, "flow.flowNodeNotExist", flow.getId(),
+			LOGGER.log(LogLevel.ERROR, "flow.flowNodeNotExist", flow.getId(),
 					nodeId);
 			throw new FlowRuntimeException(i18nMessages.getMessage(
 					"flow.flowNodeNotExist", flow.getId(), nodeId));
@@ -131,27 +131,27 @@ public class FlowExecutorImpl implements FlowExecutor {
 	}
 
 	private void logContext(Context context) {
-		if (logger.isEnabled(LogLevel.DEBUG)) {
-			logger.logMessage(LogLevel.DEBUG, "环境内容开始：");
+		if (LOGGER.isEnabled(LogLevel.DEBUG)) {
+			LOGGER.logMessage(LogLevel.DEBUG, "环境内容开始：");
 			logItemMap(context.getItemMap());
 			logSubContext(context.getSubContextMap());
-			logger.logMessage(LogLevel.DEBUG, "环境内容结束");
+			LOGGER.logMessage(LogLevel.DEBUG, "环境内容结束");
 		}
 	}
 
 	private void logSubContext(Map<String, Context> subContextMap) {
-		logger.logMessage(LogLevel.DEBUG, "子环境[{0}]的内容开始：");
+		LOGGER.logMessage(LogLevel.DEBUG, "子环境[{0}]的内容开始：");
 		if (subContextMap != null) {
 			for (String key : subContextMap.keySet()) {
 				logContext(subContextMap.get(key));
 			}
 		}
-		logger.logMessage(LogLevel.DEBUG, "子环境[{0}]的内容结束：");
+		LOGGER.logMessage(LogLevel.DEBUG, "子环境[{0}]的内容结束：");
 	}
 
 	private void logItemMap(Map<String, Object> itemMap) {
 		for (String key : itemMap.keySet()) {
-			logger.logMessage(LogLevel.DEBUG, "key: {0}, value: {1}", key,
+			LOGGER.logMessage(LogLevel.DEBUG, "key: {0}, value: {1}", key,
 					itemMap.get(key));
 		}
 	}
@@ -202,7 +202,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 		String nodeId = node.getId(); // 当前节点id
 		Context flowContext = context;
 		try {
-			logger.logMessage(LogLevel.INFO, "开始执行节点:{}", nodeId);
+			LOGGER.logMessage(LogLevel.INFO, "开始执行节点:{}", nodeId);
 			if (flow.isPrivateContext()) { // 是否context私有
 				flowContext = getNewContext(flow, context);
 				if (flowContext == null) {
@@ -218,16 +218,16 @@ public class FlowExecutorImpl implements FlowExecutor {
 				if (!nodeId.equals(DEFAULT_END_NODE)) { // 如果当前节点不是最终节点
 					componentInstance.execute(flowContext);
 				}
-				logger.logMessage(LogLevel.INFO, "节点:{}执行完毕", nodeId);
+				LOGGER.logMessage(LogLevel.INFO, "节点:{}执行完毕", nodeId);
 			} else {
-				logger.logMessage(LogLevel.INFO, "节点:{}未配置组件，无需执行", nodeId);
+				LOGGER.logMessage(LogLevel.INFO, "节点:{}未配置组件，无需执行", nodeId);
 			}
 
 		} catch (RuntimeException exception) {
 			/**
 			 * 遍历所有异常节点
 			 */
-			logger.errorMessage("流程执行[flow:{},node:{}]发生异常", exception,
+			LOGGER.errorMessage("流程执行[flow:{},node:{}]发生异常", exception,
 					flow.getId(), node.getId());
 			if (exceptionNodeProcess(flow, node, context, flowContext,
 					exception)) {
@@ -265,7 +265,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 					nextNodeId = DEFAULT_END_NODE;
 				}
 			}
-			logger.logMessage(LogLevel.INFO, "下一节点:{}", nextNodeId);
+			LOGGER.logMessage(LogLevel.INFO, "下一节点:{}", nextNodeId);
 			executeNextNode(flow, flowContext, nextNodeId);
 		}
 	}
@@ -382,7 +382,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 			context.put(EXCEPTION_DEAL_NODE_KEY, node);
 			context.put(EXCEPTION_KEY, exception);
 			executeNextNode(flow, newContext, nextNode);
-			logger.errorMessage("处理流程异常:flow:{},node:{}", exception,
+			LOGGER.errorMessage("处理流程异常:flow:{},node:{}", exception,
 					flow.getId(), nextNode);
 			return true;
 		}
@@ -491,19 +491,19 @@ public class FlowExecutorImpl implements FlowExecutor {
 
 	public void addFlow(Flow flow) {
 		if (flow.getId() != null && flowIdMap.get(flow.getId()) != null) {
-			logger.logMessage(LogLevel.ERROR, "flow:[id:{0}]已经存在！",
+			LOGGER.logMessage(LogLevel.ERROR, "flow:[id:{0}]已经存在！",
 					flow.getId());
 		}
 		if (flow.getName() != null && flowIdMap.get(flow.getName()) != null) {
-			logger.logMessage(LogLevel.ERROR, "flow:[name:{0}]已经存在！",
+			LOGGER.logMessage(LogLevel.ERROR, "flow:[name:{0}]已经存在！",
 					flow.getName());
 		}
 		if (flow.getId() != null) {
-			logger.logMessage(LogLevel.INFO, "添加flow:[id:{0}]", flow.getId());
+			LOGGER.logMessage(LogLevel.INFO, "添加flow:[id:{0}]", flow.getId());
 			flowIdMap.put(flow.getId(), flow);
 		}
 		if (flow.getName() != null) {
-			logger.logMessage(LogLevel.INFO, "添加flow:[Name:{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "添加flow:[Name:{0}]",
 					flow.getName());
 			flowIdMap.put(flow.getName(), flow);
 		}
@@ -512,9 +512,9 @@ public class FlowExecutorImpl implements FlowExecutor {
 	}
 
 	public void removeFlow(Flow flow) {
-		logger.logMessage(LogLevel.INFO, "移除flow:[id:{0}]", flow.getId());
+		LOGGER.logMessage(LogLevel.INFO, "移除flow:[id:{0}]", flow.getId());
 		flowIdMap.remove(flow.getId());
-		logger.logMessage(LogLevel.INFO, "移除flow:[name:{0}]", flow.getName());
+		LOGGER.logMessage(LogLevel.INFO, "移除flow:[name:{0}]", flow.getName());
 		flowIdMap.remove(flow.getName());
 		setChange(true);
 	}

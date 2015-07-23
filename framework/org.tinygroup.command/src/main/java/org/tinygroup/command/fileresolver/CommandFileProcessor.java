@@ -36,7 +36,7 @@ public class CommandFileProcessor extends AbstractFileProcessor {
 		XStream stream = XStreamFactory
 				.getXStream(CommandSystem.COMMANDS_XSTREAM);
 		for (FileObject fileObject : fileObjects) {
-			logger.logMessage(LogLevel.INFO, "正在加载Commands文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在加载Commands文件[{0}]",
 					fileObject.getAbsolutePath());
 			try {
 				Commands commands = (Commands) stream.fromXML(fileObject
@@ -44,11 +44,11 @@ public class CommandFileProcessor extends AbstractFileProcessor {
 				CommandSystem.getInstance(commands.getPackageName(), commands,
 						System.out);
 			} catch (Exception e) {
-				logger.errorMessage("加载Commands文件[{0}]出现异常", e,
+				LOGGER.errorMessage("加载Commands文件[{0}]出现异常", e,
 						fileObject.getAbsolutePath());
 			}
 
-			logger.logMessage(LogLevel.INFO, "加载Commands文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "加载Commands文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 

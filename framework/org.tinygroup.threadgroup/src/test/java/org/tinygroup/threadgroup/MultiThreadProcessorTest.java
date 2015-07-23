@@ -21,7 +21,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
 public class MultiThreadProcessorTest extends TestCase {
-	Logger logger = LoggerFactory.getLogger(MultiThreadProcessorTest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MultiThreadProcessorTest.class);
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -35,7 +35,7 @@ public class MultiThreadProcessorTest extends TestCase {
 		long startTime = System.currentTimeMillis();
 		processors.start();
 		long endTime = System.currentTimeMillis();
-		logger.log(LogLevel.INFO, "执行时间：{}", endTime - startTime);
+		LOGGER.log(LogLevel.INFO, "执行时间：{}", endTime - startTime);
 		assertEquals(10000, NumberAdd.sumValue);
 	}
 

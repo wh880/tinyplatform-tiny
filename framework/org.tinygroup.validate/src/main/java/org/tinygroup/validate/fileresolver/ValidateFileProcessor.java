@@ -54,7 +54,7 @@ public class ValidateFileProcessor extends AbstractFileProcessor {
 				.getXStream(ValidatorManager.XSTEAM_PACKAGE_NAME);
 		
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除xml校验配置文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在移除xml校验配置文件[{0}]",
 					fileObject.getAbsolutePath());
 			ObjectValidators objectValidatorConfigs = (ObjectValidators) caches.get(fileObject
 					.getAbsolutePath());
@@ -62,12 +62,12 @@ public class ValidateFileProcessor extends AbstractFileProcessor {
 				validatorManager.removeObjectValidatorConfigs(objectValidatorConfigs);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			logger.logMessage(LogLevel.INFO, "移除const文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "移除const文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		
 		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.DEBUG, "正在加载xml校验配置文件[{0}]",
+			LOGGER.logMessage(LogLevel.DEBUG, "正在加载xml校验配置文件[{0}]",
 					fileObject.getAbsolutePath());
 			ObjectValidators oldObjectValidatorConfigs = (ObjectValidators) caches.get(fileObject
 					.getAbsolutePath());
@@ -79,7 +79,7 @@ public class ValidateFileProcessor extends AbstractFileProcessor {
 			validatorManager
 						.addObjectValidatorConfigs(objectValidatorConfigs);
 			caches.put(fileObject.getAbsolutePath(), objectValidatorConfigs);
-			logger.logMessage(LogLevel.DEBUG, "加载xml校验配置文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.DEBUG, "加载xml校验配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 

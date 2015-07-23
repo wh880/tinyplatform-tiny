@@ -20,8 +20,8 @@ import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.exception.errorcode.ErrorCodeDefault;
 
 public class CEPConnectException extends TinySysRuntimeException {
-	private Node node;
-	private Exception exception;
+	private final Node node;
+	private final Exception exception;
 
 	public CEPConnectException(Exception e, Node node) {
 		super(ErrorCodeDefault.UNKNOWN_ERROR, e, node.toString(), e

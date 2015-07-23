@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class CEPCoreRMIRemoteImpl implements CEPCoreRemoteInterface {
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CEPCoreRMIRemoteImpl.class);
 	private ConcurrentMap<String, CEPCoreRMI> rmiMap = new ConcurrentHashMap<String, CEPCoreRMI>();
 	// private static CEPCoreRMIServer server;
@@ -43,8 +43,8 @@ public class CEPCoreRMIRemoteImpl implements CEPCoreRemoteInterface {
 
 	public void startCEPCore(CEPCore cep, Node node) {
 		try {
-			logger.logMessage(LogLevel.INFO, "本地节点服务开始启动");
-			logger.logMessage(LogLevel.INFO, "IP:{0},PORT:{1},NAME:{2}",
+			LOGGER.logMessage(LogLevel.INFO, "本地节点服务开始启动");
+			LOGGER.logMessage(LogLevel.INFO, "IP:{0},PORT:{1},NAME:{2}",
 					node.getIp(), node.getPort(), node.getNodeName());
 			System.setProperty("java.rmi.server.hostname", node.getIp());
 			int port = Integer.parseInt(node.getPort());
@@ -61,24 +61,24 @@ public class CEPCoreRMIRemoteImpl implements CEPCoreRemoteInterface {
 			String url = RMIRemoteUtil.getURL(node);// 地址
 			// server = new CEPCoreRMIServer();
 			Naming.rebind(url, new CEPCoreRMIServer());// 绑定
-			logger.logMessage(LogLevel.INFO, "本地节点服务启动成功");
+			LOGGER.logMessage(LogLevel.INFO, "本地节点服务启动成功");
 		} catch (Exception e) {
-			logger.errorMessage("本地节点RMI服务启动失败,ip:{0},port:{1},nodeName:{2}",
+			LOGGER.errorMessage("本地节点RMI服务启动失败,ip:{0},port:{1},nodeName:{2}",
 					e, node.getIp(), node.getPort(), node.getNodeName());
 		}
 
 	}
 
 	public void stopCEPCore(CEPCore cep, Node node) {
-		logger.logMessage(LogLevel.INFO, "本地节点服务开始关闭");
+		LOGGER.logMessage(LogLevel.INFO, "本地节点服务开始关闭");
 		try {
 			registry.unbind(node.getNodeName());
 			UnicastRemoteObject.unexportObject(registry, true);
 			// System.exit(0);
 		} catch (Exception e) {
-			logger.errorMessage("本地节点关闭RMI服务时出现异常,Node:{0}", e, node);
+			LOGGER.errorMessage("本地节点关闭RMI服务时出现异常,Node:{0}", e, node);
 		}
-		logger.logMessage(LogLevel.INFO, "本地节点服务关闭完成");
+		LOGGER.logMessage(LogLevel.INFO, "本地节点服务关闭完成");
 
 	}
 
@@ -88,7 +88,7 @@ public class CEPCoreRMIRemoteImpl implements CEPCoreRemoteInterface {
 		try {
 			rmi = (CEPCoreRMI) Naming.lookup(url);
 		} catch (Exception e) {
-			logger.logMessage(LogLevel.ERROR, "获取连接失败,目标节点{0}:{1}:{2},{3}",
+			LOGGER.logMessage(LogLevel.ERROR, "获取连接失败,目标节点{0}:{1}:{2},{3}",
 					node.getIp(), node.getPort(), node.getNodeName(),
 					e.getMessage());
 			throw new CEPConnectException(e, node);
@@ -108,11 +108,11 @@ public class CEPCoreRMIRemoteImpl implements CEPCoreRemoteInterface {
 	}
 
 	public void removeConnect(Node remoteNode) {
-		logger.logMessage(LogLevel.INFO, "移除远端节点的连接,IP:{0},PORT:{1}",
+		LOGGER.logMessage(LogLevel.INFO, "移除远端节点的连接,IP:{0},PORT:{1}",
 				remoteNode.getIp(), remoteNode.getPort());
 		String url = RMIRemoteUtil.getURL(remoteNode);
 		rmiMap.remove(url);
-		logger.logMessage(LogLevel.INFO, "移除远端节点的连接完成,IP:{0},PORT:{1}",
+		LOGGER.logMessage(LogLevel.INFO, "移除远端节点的连接完成,IP:{0},PORT:{1}",
 				remoteNode.getIp(), remoteNode.getPort());
 	}
 
@@ -122,7 +122,7 @@ public class CEPCoreRMIRemoteImpl implements CEPCoreRemoteInterface {
 		CEPCoreRMI rmiCep = getConnect(remoteNode);
 		// logger.logMessage(LogLevel.ERROR,
 		// "=======after getConnect====="+System.currentTimeMillis());
-		logger.logMessage(LogLevel.INFO,
+		LOGGER.logMessage(LogLevel.INFO,
 				"发送请求,目标节点{0}:{1}:{2},请求信息:[serviceId:{3}]",
 				remoteNode.getIp(), remoteNode.getPort(), remoteNode
 						.getNodeName(), event.getServiceRequest()
@@ -135,13 +135,13 @@ public class CEPCoreRMIRemoteImpl implements CEPCoreRemoteInterface {
 			result = rmiCep.processFromRemote(event);
 			// logger.logMessage(LogLevel.ERROR,
 			// "=======after deal====="+System.currentTimeMillis());
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"请求成功,目标节点{0}:{1}:{2},请求信息:[serviceId:{3}]", remoteNode
 							.getIp(), remoteNode.getPort(), remoteNode
 							.getNodeName(), event.getServiceRequest()
 							.getServiceId());
 		} catch (RemoteException e) {
-			logger.logMessage(LogLevel.ERROR,
+			LOGGER.logMessage(LogLevel.ERROR,
 					"请求失败,目标节点{0}:{1}:{2},请求信息:[serviceId:{3}],信息:{5}",
 					remoteNode.getIp(), remoteNode.getPort(), remoteNode
 							.getNodeName(), event.getServiceRequest()

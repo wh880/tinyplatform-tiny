@@ -33,7 +33,7 @@ import org.tinygroup.nettyremote.Server;
 import java.io.IOException;
 
 public class ServerImpl implements Server {
-	private Logger logger = LoggerFactory.getLogger(ServerImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServerImpl.class);
 	private ServerThread serverThread = new ServerThread();
 	private boolean start = false;
 	private EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -46,7 +46,7 @@ public class ServerImpl implements Server {
 	}
 
 	public void start() {
-		logger.logMessage(LogLevel.INFO, "启动服务端线程,端口:{1}",
+		LOGGER.logMessage(LogLevel.INFO, "启动服务端线程,端口:{1}",
 				localPort);
 		setStart(false);
 		serverThread.start();
@@ -77,7 +77,7 @@ public class ServerImpl implements Server {
 	}
 
 	public void stop() {
-		logger.logMessage(LogLevel.INFO, "关闭服务端");
+		LOGGER.logMessage(LogLevel.INFO, "关闭服务端");
 		setStart(false);
 		bossGroup.shutdownGracefully();
 		workerGroup.shutdownGracefully();
@@ -92,7 +92,7 @@ public class ServerImpl implements Server {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					logger.errorMessage("服务端启动失败",e);
+					LOGGER.errorMessage("服务端启动失败",e);
 				}
 			}
 

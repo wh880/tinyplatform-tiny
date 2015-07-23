@@ -15,12 +15,14 @@
  */
 package org.tinygroup.codegen.util;
 
-import org.tinygroup.commons.tools.StringUtil;
-
 import java.io.File;
 
-public  class CodeGenUtil {
+import org.tinygroup.commons.tools.StringUtil;
 
+public  class CodeGenUtil {
+	private CodeGenUtil(){
+		
+	}
 	public static String packageToPath(String text){
 		String str= StringUtil.replace(text, ".", File.separator);
 		if(!str.endsWith(File.separator)){

@@ -38,7 +38,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ClientImpl implements Client {
-	private Logger logger = LoggerFactory.getLogger(ClientImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClientImpl.class);
 	private ScheduledExecutorService executor = Executors
 			.newScheduledThreadPool(1);
 	private EventLoopGroup group = new NioEventLoopGroup();
@@ -60,7 +60,7 @@ public class ClientImpl implements Client {
 	}
 
 	public void start() {
-		logger.logMessage(LogLevel.INFO, "启动客户端线程连接服务端{0}:{1}", remoteHost,
+		LOGGER.logMessage(LogLevel.INFO, "启动客户端线程连接服务端{0}:{1}", remoteHost,
 				remotePort);
 		start = false;
 		clientThread.start();
@@ -80,7 +80,7 @@ public class ClientImpl implements Client {
 			public void run() {
 				try {
 					TimeUnit.SECONDS.sleep(reConnectInterval);
-					logger.logMessage(LogLevel.INFO, "开始重连服务端{0}:{1}",
+					LOGGER.logMessage(LogLevel.INFO, "开始重连服务端{0}:{1}",
 							remoteHost, remotePort);
 					connect(remotePort, remoteHost);// 发起重连操作
 				} catch (InterruptedException e) {
@@ -100,7 +100,7 @@ public class ClientImpl implements Client {
 			future = b.connect(host, port).sync();
 			future.channel().closeFuture().sync();
 		} catch (Exception e) {
-			logger.errorMessage("连接服务端{0}:{1}发生异常", e, remoteHost, remotePort);
+			LOGGER.errorMessage("连接服务端{0}:{1}发生异常", e, remoteHost, remotePort);
 			if (!reConnect) {
 				throw new TinyRemoteConnectException("连接服务端" + remoteHost + ":"
 						+ remotePort + "发生异常", e);
@@ -135,7 +135,7 @@ public class ClientImpl implements Client {
 		public void run() {
 			if (!start) {
 				start = true;
-				logger.logMessage(LogLevel.INFO, "开始连接服务端{0}:{1}", remoteHost,
+				LOGGER.logMessage(LogLevel.INFO, "开始连接服务端{0}:{1}", remoteHost,
 						remotePort);
 				connect(remotePort, remoteHost);
 			}
@@ -144,7 +144,7 @@ public class ClientImpl implements Client {
 	}
 
 	public void stop() {
-		logger.logMessage(LogLevel.INFO, "关闭客户端");
+		LOGGER.logMessage(LogLevel.INFO, "关闭客户端");
 		if (reConnect == true) {
 			executor.shutdown();
 		}
@@ -155,7 +155,7 @@ public class ClientImpl implements Client {
 
 	public void doReady() {
 		setReady(true);
-		logger.logMessage(LogLevel.INFO, "服务端{0}:{1}已连接", remoteHost,
+		LOGGER.logMessage(LogLevel.INFO, "服务端{0}:{1}已连接", remoteHost,
 				remotePort);
 	}
 

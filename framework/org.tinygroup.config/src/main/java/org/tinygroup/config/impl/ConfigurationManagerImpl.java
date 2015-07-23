@@ -32,7 +32,7 @@ import java.util.Map;
  * Created by luoguo on 2014/5/14.
  */
 public class ConfigurationManagerImpl implements org.tinygroup.config.ConfigurationManager {
-    private static Logger logger = LoggerFactory.getLogger(ConfigurationManagerImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationManagerImpl.class);
     private ConfigurationLoader configurationLoader;
     private XmlNode applicationConfiguration;
     private Map<String, XmlNode> componentConfigurationMap = new HashMap<String, XmlNode>();
@@ -69,17 +69,17 @@ public class ConfigurationManagerImpl implements org.tinygroup.config.Configurat
 
     public void distributeConfiguration() {
         if (configurationList != null) {
-            logger.logMessage(LogLevel.INFO, "正在分发应用配置信息...");
+            LOGGER.logMessage(LogLevel.INFO, "正在分发应用配置信息...");
             PathFilter<XmlNode> pathFilter = new PathFilter<XmlNode>(applicationConfiguration);
-            for (Configuration configuration : configurationList) {
-                XmlNode componentConfig = componentConfigurationMap.get(configuration.getComponentConfigPath());
+            for (Configuration configurationItem : configurationList) {
+                XmlNode componentConfig = componentConfigurationMap.get(configurationItem.getComponentConfigPath());
                 XmlNode appConfig = null;
-                if (configuration.getApplicationNodePath() != null) {
-                    appConfig = pathFilter.findNode(configuration.getApplicationNodePath());
+                if (configurationItem.getApplicationNodePath() != null) {
+                    appConfig = pathFilter.findNode(configurationItem.getApplicationNodePath());
                 }
-                configuration.config(appConfig, componentConfig);
+                configurationItem.config(appConfig, componentConfig);
             }
-            logger.logMessage(LogLevel.INFO, "应用配置信息分发完毕");
+            LOGGER.logMessage(LogLevel.INFO, "应用配置信息分发完毕");
         }
 
     }
@@ -88,7 +88,7 @@ public class ConfigurationManagerImpl implements org.tinygroup.config.Configurat
         this.configurationList = configurationList;
     }
 
-    public <T> void setConfiguration(String key, String value) {
+    public void setConfiguration(String key, String value) {
         configuration.put(key, value);
     }
 

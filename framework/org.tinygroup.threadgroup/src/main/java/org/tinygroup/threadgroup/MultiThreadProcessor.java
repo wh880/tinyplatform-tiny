@@ -30,7 +30,7 @@ import java.util.concurrent.CountDownLatch;
  * @author luoguo
  */
 public final class MultiThreadProcessor {
-    private static Logger logger = LoggerFactory.getLogger(MultiThreadProcessor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MultiThreadProcessor.class);
     private CountDownLatch downLatch = null;
     private List<Processor> processors = new ArrayList<Processor>();
     private String name;
@@ -66,7 +66,7 @@ public final class MultiThreadProcessor {
 
     public void start() {
         this.downLatch = new CountDownLatch(processors.size());
-        logger.logMessage(LogLevel.DEBUG, "线程组<{}>运行开始,线程数{}...", name, processors.size());
+        LOGGER.logMessage(LogLevel.DEBUG, "线程组<{}>运行开始,线程数{}...", name, processors.size());
         long start = System.currentTimeMillis();
 
         for (Processor processor : processors) {
@@ -78,10 +78,10 @@ public final class MultiThreadProcessor {
         try {
             downLatch.await(); // 等待所有工作线程完成.
         } catch (InterruptedException e) {
-            logger.errorMessage("缓程组<{}运行出现问题：{}>", e, name, e.getMessage());
+            LOGGER.errorMessage("缓程组<{}运行出现问题：{}>", e, name, e.getMessage());
         }
         long end = System.currentTimeMillis();
-        logger.logMessage(LogLevel.DEBUG, "线程组<{}>运行结束, 用时:{}ms", name, (end - start));
+        LOGGER.logMessage(LogLevel.DEBUG, "线程组<{}>运行结束, 用时:{}ms", name, (end - start));
     }
 
 }

@@ -18,6 +18,7 @@ package org.tinygroup.dbf;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by luoguo on 2014/4/25.
@@ -43,7 +44,7 @@ public class FoxproDBaseReader extends DbfReader {
     public static final int MONTO_POS = 100;
 
     protected void readFields() throws IOException {
-        ArrayList<Field> fields = new ArrayList<Field>();
+        List<Field> fields = new ArrayList<Field>();
         setFields(fields);
         for (int i = 0; i < (getHeader().getHeaderLength() - HEADER_LENGTH - 1) / FIELD_LENGTH; i++) {
             fields.add(readField());

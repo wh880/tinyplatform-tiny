@@ -81,17 +81,17 @@ public class DictLoadProcessor extends AbstractConfiguration implements
 	}
 
 	public void init() {
-
+		//do nothing
 	}
 
 	public void stop() {
-		logger.logMessage(LogLevel.INFO, "开始清除字典缓存");
+		LOGGER.logMessage(LogLevel.INFO, "开始清除字典缓存");
 		manager.clear();
-		logger.logMessage(LogLevel.INFO, "清除字典缓存结束");
+		LOGGER.logMessage(LogLevel.INFO, "清除字典缓存结束");
 	}
 
 	public void setApplication(Application application) {
-
+		//do nothing
 	}
 
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {

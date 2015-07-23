@@ -28,7 +28,7 @@ import java.io.Serializable;
  * @author renhui
  */
 public abstract class AbstractErrorCode implements Serializable,ErrorCodeParser, ErrorCode,Cloneable {
-	public static int VERSION = 0, PREFIX = 1, TYPE = 2, LEVEL = 3, SCENE = 4,
+	public static final int VERSION = 0, PREFIX = 1, TYPE = 2, LEVEL = 3, SCENE = 4,
 			NUMBER = 5;
 
 	/**

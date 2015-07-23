@@ -38,7 +38,7 @@ import java.util.Map;
 
 public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 		implements ServiceLoader, Configuration {
-	private Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(XmlConfigServiceLoader.class);
 	private XmlNode applicationConfig;
 	private XmlNode componentConfig;
@@ -95,7 +95,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 				registerServices(object, serviceComponent, serviceRegistry,classLoader);
 
 			} catch (Exception e) {
-				logger.errorMessage("实例化ServiceComponent时出现异常,类名:", e,
+				LOGGER.errorMessage("实例化ServiceComponent时出现异常,类名:", e,
 						serviceComponent.getType());
 			}
 		}

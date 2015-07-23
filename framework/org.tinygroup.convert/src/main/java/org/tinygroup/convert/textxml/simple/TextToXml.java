@@ -51,7 +51,7 @@ public class TextToXml implements Converter<String, String> {
         for (int i = 0; i < fieldNames.length; i++) {
             fieldNames[i] = fieldNames[i].trim();
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         XmlUtils.appendHeader(sb, rootNodeName);
         for (int i = 1; i < lines.length; i++) {
             String[] values = lines[i].split(fieldSplit);
@@ -68,11 +68,11 @@ public class TextToXml implements Converter<String, String> {
         return sb.toString();
     }
 
-    private void checkFieldCount(String[] fieldNames, int i, String[] values) throws ConvertException {
-        if (fieldNames.length != values.length) {
-            throw new ConvertException("标题个数(" + fieldNames.length + ")与第【" + i
-                    + "】行的数据个数(" + values.length + ")不相等");
-        }
-    }
+//    private void checkFieldCount(String[] fieldNames, int i, String[] values) throws ConvertException {
+//        if (fieldNames.length != values.length) {
+//            throw new ConvertException("标题个数(" + fieldNames.length + ")与第【" + i
+//                    + "】行的数据个数(" + values.length + ")不相等");
+//        }
+//    }
 
 }

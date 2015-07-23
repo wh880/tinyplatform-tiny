@@ -15,6 +15,9 @@
  */
 package org.tinygroup.channel.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.channel.ChannelInterface;
 import org.tinygroup.channel.EventFilter;
@@ -22,9 +25,6 @@ import org.tinygroup.channel.EventListener;
 import org.tinygroup.event.Event;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 抽象通道，实现了事件相关，日志
@@ -38,7 +38,7 @@ public abstract class AbstractChannel  implements ChannelInterface {
 	private List<EventListener> receiveEventListeners = new ArrayList<EventListener>();
 	private String id;
 	private CEPCore cepCore;
-	private Logger logger = LoggerFactory.getLogger(AbstractChannel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractChannel.class);
 	public CEPCore getCepCore() {
 		return cepCore;
 	}
@@ -94,7 +94,7 @@ public abstract class AbstractChannel  implements ChannelInterface {
 //		event.setEventReceiver(getId());
 		processEventListener(event, sendEventListeners);
 		try {
-			cepCore.process((filterEvent(event, sendEventFilters)));
+			cepCore.process(filterEvent(event, sendEventFilters));
 		} catch (RuntimeException e) {
 			error(e);
 		}
@@ -122,7 +122,7 @@ public abstract class AbstractChannel  implements ChannelInterface {
 	}
 
 	private void error(RuntimeException e) {
-		logger.errorMessage("通道处理错误", e);
+		LOGGER.errorMessage("通道处理错误", e);
 		throw e;
 	}
 
@@ -135,7 +135,7 @@ public abstract class AbstractChannel  implements ChannelInterface {
 	 */
 	private void processEventListener(final Event event,
 			List<EventListener> eventListeners) {
-		if (eventListeners.size() > 0) {
+		if (!eventListeners.isEmpty()) {
 			for (EventListener eventListener : eventListeners) {
 				try {
 					eventListener.process(event);

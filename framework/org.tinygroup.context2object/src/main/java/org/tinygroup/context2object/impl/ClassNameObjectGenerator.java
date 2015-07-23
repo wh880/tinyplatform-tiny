@@ -36,7 +36,7 @@ import java.util.*;
 
 public class ClassNameObjectGenerator implements
 		ObjectGenerator<Object, String> {
-	private Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ClassNameObjectGenerator.class);
 	private List<TypeConverter<?, ?>> typeConverterList = new ArrayList<TypeConverter<?, ?>>();
 	private List<TypeCreator<?>> typeCreatorList = new ArrayList<TypeCreator<?>>();
@@ -72,8 +72,7 @@ public class ClassNameObjectGenerator implements
 	}
 	public Collection<Object> getObjectCollection(String collectionClassName,ClassLoader loader){
 		Class<?> collectionClass = getClazz(collectionClassName, loader);
-		Collection<Object> collection = (Collection<Object>) getObjectInstance(collectionClass);
-		return collection;
+		return (Collection<Object>) getObjectInstance(collectionClass);
 	}
 
 	public Collection<Object> getObjectCollection(String varName,
@@ -89,7 +88,7 @@ public class ClassNameObjectGenerator implements
 		Class<?> clazz = getClazz(className, loader);
 		Collection<Object> collection = (Collection<Object>) getObjectInstance(collectionClass);
 		buildCollection(varName, collection, clazz, context, null);
-		if (collection.size() == 0) {
+		if (collection.isEmpty()) {
 			return null;
 		}
 		return collection;
@@ -173,7 +172,7 @@ public class ClassNameObjectGenerator implements
 									propertyValue.toString());
 							allPropertyNull = false;
 						} else {
-							logger.logMessage(LogLevel.WARN,
+							LOGGER.logMessage(LogLevel.WARN,
 									"参数{0}.{1}赋值失败,期望类型{3},实际类型{4}", objName,
 									propertyName, descriptor.getPropertyType(),
 									propertyValue.getClass());
@@ -184,7 +183,7 @@ public class ClassNameObjectGenerator implements
 					// }
 					// 以上处理均未进入，则该类型为其他类型，需要进行递归
 				} catch (Exception e) {
-					logger.errorMessage("为属性{0}赋值时出现异常", e,
+					LOGGER.errorMessage("为属性{0}赋值时出现异常", e,
 							descriptor.getName());
 				}
 			}
@@ -200,7 +199,7 @@ public class ClassNameObjectGenerator implements
 								typeConverter.getObject(propertyValue));
 						allPropertyNull = false;
 					} catch (Exception e) {
-						logger.errorMessage("为属性{0}赋值时出现异常", e,
+						LOGGER.errorMessage("为属性{0}赋值时出现异常", e,
 								descriptor.getName());
 					}
 				}
@@ -217,7 +216,7 @@ public class ClassNameObjectGenerator implements
 						type = clazz
 								.getDeclaredField(descriptor.getName()).getType();
 					}catch (NoSuchFieldException e) {
-						logger.logMessage(LogLevel.WARN,"{}不存在字段{}",clazz.getName(),propertyName);
+						LOGGER.logMessage(LogLevel.WARN,"{}不存在字段{}",clazz.getName(),propertyName);
 						continue;
 					}
 					
@@ -241,7 +240,7 @@ public class ClassNameObjectGenerator implements
 						buildCollection(null, collection,
 								(Class) actualTypeArguments[0], context,
 								newPreName);
-						if (collection.size() != 0) {
+						if (!collection.isEmpty()) {
 							BeanUtils.setProperty(object, descriptor.getName(),
 									collection);
 							allPropertyNull = false;
@@ -257,7 +256,7 @@ public class ClassNameObjectGenerator implements
 						}
 					}
 				} catch (Exception e) {
-					logger.errorMessage("为属性{0}赋值时出现异常", e,
+					LOGGER.errorMessage("为属性{0}赋值时出现异常", e,
 							descriptor.getName());
 				}
 			}
@@ -392,7 +391,7 @@ public class ClassNameObjectGenerator implements
 				}
 				continue;
 			} catch (Exception e) {
-				logger.errorMessage("为属性{0}赋值时出现异常", e, descriptor.getName());
+				LOGGER.errorMessage("为属性{0}赋值时出现异常", e, descriptor.getName());
 			}
 		}
 		// objecList的数据放入collection
@@ -415,7 +414,7 @@ public class ClassNameObjectGenerator implements
 		}
 		Collection<Object> collection = new ArrayList<Object>();
 		buildCollection(varName, collection, objectClass, context, preName);
-		if (collection.size() == 0) {
+		if (collection.isEmpty()) {
 			return null;
 		} else {
 			Object array = Array.newInstance(objectClass, collection.size());
@@ -428,16 +427,16 @@ public class ClassNameObjectGenerator implements
 		}
 	}
 
-	private TypeConverter<?, ?> getTypeConverter(Class<?> destType,
-			Class<? extends Object> sourceType) {
-		for (TypeConverter<?, ?> typeConverter : typeConverterList) {
-			if (typeConverter.getSourceType().equals(sourceType)
-					&& typeConverter.getDestinationType().equals(destType)) {
-				return typeConverter;
-			}
-		}
-		return null;
-	}
+//	private TypeConverter<?, ?> getTypeConverter(Class<?> destType,
+//			Class<? extends Object> sourceType) {
+//		for (TypeConverter<?, ?> typeConverter : typeConverterList) {
+//			if (typeConverter.getSourceType().equals(sourceType)
+//					&& typeConverter.getDestinationType().equals(destType)) {
+//				return typeConverter;
+//			}
+//		}
+//		return null;
+//	}
 
 	private TypeConverter<?, ?> getTypeConverter(Class<?> destType) {
 		for (TypeConverter<?, ?> typeConverter : typeConverterList) {
@@ -516,7 +515,7 @@ public class ClassNameObjectGenerator implements
 			return BeanContainerFactory.getBeanContainer(
 					this.getClass().getClassLoader()).getBean(bean);
 		} catch (Exception e) {
-			logger.logMessage(LogLevel.WARN, e.getMessage());
+			LOGGER.logMessage(LogLevel.WARN, e.getMessage());
 			return null;
 		}
 
@@ -530,7 +529,7 @@ public class ClassNameObjectGenerator implements
 			return BeanContainerFactory.getBeanContainer(
 					this.getClass().getClassLoader()).getBean(clazz);
 		} catch (Exception e) {
-			logger.logMessage(LogLevel.WARN, e.getMessage());
+			LOGGER.logMessage(LogLevel.WARN, e.getMessage());
 			try {
 				return clazz.newInstance();
 			} catch (Exception e1) {

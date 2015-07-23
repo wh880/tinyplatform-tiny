@@ -173,52 +173,41 @@ public final class I18nMessages implements I18nMessage {
 
 	public String getMessage(String code, String defaultMessage, Object... args) {
 		String message = getMessage(code, args);
-		if (message == null) {
-			message = defaultMessage;
-		}
-		return message;
+		return getRealMessage(defaultMessage, message);
 	}
 
 	public String getMessage(String code, Locale locale, String defaultMessage,
 			Object... args) {
 		String message = getMessage(code, locale, args);
-		if (message == null) {
-			message = defaultMessage;
-		}
-		return message;
+		return getRealMessage(defaultMessage, message);
 	}
 
 	public String getMessage(String code, String defaultMessage) {
 		String message = getMessage(code);
-		if (message == null) {
-			message = defaultMessage;
-		}
-		return message;
+		return getRealMessage(defaultMessage, message);
 	}
 
 	public String getMessage(String code, Locale locale, String defaultMessage) {
 		String message = getMessage(code, locale);
+		return getRealMessage(defaultMessage, message);
+	}
+
+	private String getRealMessage(String defaultMessage, String message) {
 		if (message == null) {
-			message = defaultMessage;
+			return defaultMessage;
 		}
 		return message;
 	}
 
 	public String getMessage(String code, String defaultMessage, Context context) {
 		String message = getMessage(code, context);
-		if (message == null) {
-			message = defaultMessage;
-		}
-		return message;
+		return getRealMessage(defaultMessage, message);
 	}
 
 	public String getMessage(String code, String defaultMessage,
 			Context context, Locale locale) {
 		String message = getMessage(code, context, locale);
-		if (message == null) {
-			message = defaultMessage;
-		}
-		return message;
+		return getRealMessage(defaultMessage, message);
 	}
 
 }

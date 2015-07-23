@@ -410,7 +410,7 @@ public class LoggerImpl implements Logger {
 
 	private String format(String message, Object... args) {
 		Matcher matcher = pattern.matcher(message);
-		StringBuffer stringBuffer = new StringBuffer();
+		StringBuilder stringBuffer = new StringBuilder();
 		int start = 0;
 		int count = 0;
 		while (matcher.find(start)) {

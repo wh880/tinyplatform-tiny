@@ -139,9 +139,7 @@ public class ErrorUtil {
 											   ErrorCode errorCode, String message) {
 
 		Error error = makeError(errorCode, message);
-		context = addError(context, error);
-
-		return context;
+		return addError(context, error);
 	}
 
 	/**
@@ -155,9 +153,7 @@ public class ErrorUtil {
 			String message) {
 
 		Error error = makeError(errorCode, message);
-		ErrorContext context = addError(error);
-
-		return context;
+		return  addError(error);
 	}
 
 	/**

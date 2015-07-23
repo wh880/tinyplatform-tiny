@@ -42,8 +42,9 @@ import java.util.regex.Pattern;
  */
 public final class CommandSystem {
 
-	public static String COMMANDS_XSTREAM = "commands";
-	private Logger logger = LoggerFactory.getLogger(CommandSystem.class);
+	public static final String COMMANDS_XSTREAM = "commands";
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(CommandSystem.class);
 	private static final int ASCII_MAX = 256;
 	private static final int MAX_LINE_LENGTH = 80;
 
@@ -57,6 +58,17 @@ public final class CommandSystem {
 	private static Pattern parameterPattern = Pattern
 			.compile("(\\b(\\w|[\u4e00-\u9fa5]|[/]|[.]|[-])+\\s*=\"[^\"]*\")|(\\b(\\w|[\u4e00-\u9fa5]|[/]|[.]|[-])+='[^\']*')|(\\b(\\w|[\u4e00-\u9fa5]|[/]|[.]|[-])+=(\\w|[\u4e00-\u9fa5]|[.]|[*]|[%]|[-]|[\\\\]|[/])+)|(\"[^\"]*\"|'[^\']*'|(\\w|[\u4e00-\u9fa5]|[.]|[*]|[%]|[-]|[\\\\]|[/])+)");
 	private OutputStream out;
+
+	/**
+	 * 构造函数
+	 * 
+	 * @param type
+	 */
+	private CommandSystem(Commands commands) {
+		for (Command cmd : commands.getCommandList()) {
+			addCommand(cmd);
+		}
+	}
 
 	/**
 	 * 获得输入流
@@ -95,17 +107,6 @@ public final class CommandSystem {
 
 	public static CommandSystem getInstance(String name) {
 		return commandHelperTable.get(name);
-	}
-
-	/**
-	 * 构造函数
-	 * 
-	 * @param type
-	 */
-	private CommandSystem(Commands commands) {
-		for (Command cmd : commands.getCommandList()) {
-			addCommand(cmd);
-		}
 	}
 
 	public Map<String, Command> getCommands() {
@@ -147,7 +148,7 @@ public final class CommandSystem {
 	public void execute(String cmd) {
 		// 分解命令为命令和参数
 		List<String> cmds = parseCmd(cmd);
-		if (cmds.size() == 0) {
+		if (cmds.isEmpty()) {
 			println("请输入有效的命令及goal！ 获取帮助为： h|help");
 			return;
 		}
@@ -253,7 +254,7 @@ public final class CommandSystem {
 								parameter.get(property));
 					}
 				} catch (Exception e1) {
-					logger.errorMessage("属性设置错误！属性名:{0}，属性值:{1}。", e1,
+					LOGGER.errorMessage("属性设置错误！属性名:{0}，属性值:{1}。", e1,
 							property, v);
 				}
 			}
@@ -306,7 +307,7 @@ public final class CommandSystem {
 				out.write(str.getBytes());
 			}
 		} catch (IOException e) {
-			logger.errorMessage("内容({0})输入时出现异常：。", e, str);
+			LOGGER.errorMessage("内容({0})输入时出现异常：。", e, str);
 		}
 	}
 

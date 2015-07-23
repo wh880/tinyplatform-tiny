@@ -42,7 +42,7 @@ public class FileResolverImpl implements FileResolver {
 	private static final int DEFAULT_THREAD_NUM = 1;
 	ConfigurationManager configurationManager = ConfigurationUtil
 			.getConfigurationManager();
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(FileResolverImpl.class);
 
 	private List<ChangeListener> changeListeners = new ArrayList<ChangeListener>();
@@ -111,19 +111,19 @@ public class FileResolverImpl implements FileResolver {
 	}
 
 	public void resolve() {
-		if (fileProcessorList.size() > 0) {
+		if (!fileProcessorList.isEmpty()) {
 			for (FileProcessor fileProcessor : fileProcessorList) {
 				fileProcessor.setFileResolver(this);
 			}
 			OrderUtil.order(fileProcessorList);
 			cleanProcessor();
 			// 移动日志信息，文件搜索器中存在处理器时，才会进行全路径扫描，并打印日志信息
-			logger.logMessage(LogLevel.INFO, "正在进行全路径扫描....");
+			LOGGER.logMessage(LogLevel.INFO, "正在进行全路径扫描....");
 			resolverScanPath();
 			for (FileProcessor fileProcessor : fileProcessorList) {
 				fileProcessor.process();
 			}
-			logger.logMessage(LogLevel.INFO, "全路径扫描完成。");
+			LOGGER.logMessage(LogLevel.INFO, "全路径扫描完成。");
 		}
 	}
 
@@ -180,10 +180,10 @@ public class FileResolverImpl implements FileResolver {
 				new ProcessorCallBack() {
 					public void callBack(FileObject fileObject) {
 
-						logger.logMessage(LogLevel.INFO, "正在扫描路径[{0}]...",
+						LOGGER.logMessage(LogLevel.INFO, "正在扫描路径[{0}]...",
 								fileObject.getAbsolutePath());
 						resolveFileObject(fileObject);
-						logger.logMessage(LogLevel.INFO, "路径[{0}]扫描完成。",
+						LOGGER.logMessage(LogLevel.INFO, "路径[{0}]扫描完成。",
 								fileObject.getAbsolutePath());
 					}
 				});
@@ -191,7 +191,7 @@ public class FileResolverImpl implements FileResolver {
 
 	private void resolveFileObject(FileObject fileObject) {
 
-		logger.logMessage(LogLevel.DEBUG, "找到文件：{}", fileObject
+		LOGGER.logMessage(LogLevel.DEBUG, "找到文件：{}", fileObject
 				.getAbsolutePath().toString());
 		processFile(fileObject);
 		if (fileObject.isFolder() && fileObject.getChildren() != null) {
@@ -201,7 +201,7 @@ public class FileResolverImpl implements FileResolver {
 						resolveFileObject(f);
 					}
 				} else {
-					logger.logMessage(LogLevel.INFO,
+					LOGGER.logMessage(LogLevel.INFO,
 							"文件:[{}]在扫描根路径列表中存在，将作为根路径进行扫描",
 							f.getAbsolutePath());
 				}
@@ -311,10 +311,10 @@ public class FileResolverImpl implements FileResolver {
 		if (classLoader == null) {
 			classLoader = this.getClass().getClassLoader();
 		}
-		if (fileProcessorList.size() == 0) {
+		if (fileProcessorList.isEmpty()) {
 			return;
 		} else {
-			logger.logMessage(LogLevel.INFO, "正在进行全路径刷新....");
+			LOGGER.logMessage(LogLevel.INFO, "正在进行全路径刷新....");
 			
 //			for (FileProcessor fileProcessor : fileProcessorList) {
 //				fileProcessor.clean();// 清空文件列表
@@ -328,7 +328,7 @@ public class FileResolverImpl implements FileResolver {
 					fileProcessor.process();
 				}
 			}
-			logger.logMessage(LogLevel.INFO, "全路径刷新结束....");
+			LOGGER.logMessage(LogLevel.INFO, "全路径刷新结束....");
 		}
 
 	}
@@ -356,7 +356,7 @@ public class FileResolverImpl implements FileResolver {
 		for (XmlNode classPath : classPaths) {
 			String path = classPath.getAttribute("path");
 			if (path != null && path.length() > 0) {
-				logger.logMessage(LogLevel.INFO, "添加手工配置classpath: [{0}]...",
+				LOGGER.logMessage(LogLevel.INFO, "添加手工配置classpath: [{0}]...",
 						path);
 				addResolvePath(path);
 			}
@@ -366,7 +366,7 @@ public class FileResolverImpl implements FileResolver {
 		for (XmlNode includePatter : includePatterns) {
 			String pattern = includePatter.getAttribute("pattern");
 			if (pattern != null && pattern.length() > 0) {
-				logger.logMessage(LogLevel.INFO, "添加包含文件正则表达式: [{0}]...",
+				LOGGER.logMessage(LogLevel.INFO, "添加包含文件正则表达式: [{0}]...",
 						pattern);
 				this.addIncludePathPattern(pattern);
 			}
@@ -382,20 +382,20 @@ public class FileResolverImpl implements FileResolver {
 	}
 
 	private int getThreadNumber(String threadNumber) {
-		int fileProcessorThreadNum = 1;
+		int threadNum = 1;
 		if (threadNumber != null) {
 			try {
-				fileProcessorThreadNum = Integer.parseInt(threadNumber);
-				if (fileProcessorThreadNum <= 0) {
-					fileProcessorThreadNum = 1;
+				threadNum = Integer.parseInt(threadNumber);
+				if (threadNum <= 0) {
+					threadNum = 1;
 				}
 			} catch (Exception e) {
 				// 传入非int值
-				fileProcessorThreadNum = 1;
+				threadNum = 1;
 			}
 
 		}
-		return fileProcessorThreadNum;
+		return threadNum;
 
 	}
 

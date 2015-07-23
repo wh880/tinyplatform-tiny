@@ -38,7 +38,7 @@ public class ConsoleCommander extends Thread {
 				try {
 					System.out.print(">");
 					str = in.readLine();
-					if (str.equals("exit") || str.equals("quit")) {
+					if ("exit".equals(str) || "quit".equals(str)) {
 						commandSystem.println("Byebye");
 						return;
 					}

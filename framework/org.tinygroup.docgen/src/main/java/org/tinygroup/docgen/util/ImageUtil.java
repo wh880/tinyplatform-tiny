@@ -22,6 +22,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 public class ImageUtil {
+	
+	private ImageUtil() {
+	}
 
 	public static String streamToBase64(InputStream inputStream)
 			throws Exception {

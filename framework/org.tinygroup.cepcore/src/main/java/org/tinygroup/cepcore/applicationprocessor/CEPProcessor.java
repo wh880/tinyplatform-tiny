@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 package org.tinygroup.cepcore.applicationprocessor;
+
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.cepcore.CEPCore;
@@ -21,12 +22,12 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.xmlparser.node.XmlNode;
 
-public class CEPProcessor implements ApplicationProcessor{
-	private static Logger logger = LoggerFactory.getLogger(CEPProcessor.class);
-	private static final String CEPCOREPLUGIN_NODE_PATH = "/application/cep-node-config"; 
-	private CEPCore cep ;
+public class CEPProcessor implements ApplicationProcessor {
+	private static final Logger LOGGER = LoggerFactory.getLogger(CEPProcessor.class);
+	private static final String CEPCOREPLUGIN_NODE_PATH = "/application/cep-node-config";
+	private CEPCore cep;
 	private XmlNode xmlNode;
-	
+
 	public CEPCore getCep() {
 		return cep;
 	}
@@ -45,7 +46,7 @@ public class CEPProcessor implements ApplicationProcessor{
 
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
 		xmlNode = applicationConfig;
-//		cep.setConfig(xmlNode);
+		// cep.setConfig(xmlNode);
 	}
 
 	public XmlNode getComponentConfig() {
@@ -60,23 +61,24 @@ public class CEPProcessor implements ApplicationProcessor{
 		try {
 			cep.start();
 		} catch (Exception e) {
-			logger.errorMessage("CEP 启动出现异常", e);
+			LOGGER.errorMessage("CEP 启动出现异常", e);
 		}
 	}
 
-    public void init() {
+	public void init() {
+		//do nothing
+	}
 
-    }
-
-    public void stop() {
+	public void stop() {
 		try {
 			cep.stop();
 		} catch (Exception e) {
-			logger.errorMessage("CEP 停止出现异常", e);
+			LOGGER.errorMessage("CEP 停止出现异常", e);
 		}
 	}
 
 	public void setApplication(Application application) {
+		//do nothing
 	}
 
 	public int getOrder() {

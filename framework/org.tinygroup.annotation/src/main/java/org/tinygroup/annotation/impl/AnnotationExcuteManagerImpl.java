@@ -46,7 +46,7 @@ import java.util.List;
  */
 public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 		Configuration {
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AnnotationFileProcessor.class);
 
 	private static final int CLASS_SUFFIX_LENGTH = 6;
@@ -82,7 +82,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 		for (AnnotationClassMatcher classMatcher : classMatchers) {
 			String className = getFullClassName(fileObject);
 			if (classMatcher.isClassMatch(className)) {
-				logger.logMessage(LogLevel.DEBUG, "找到匹配类名正则[{0}]的类:[{1}]",
+				LOGGER.logMessage(LogLevel.DEBUG, "找到匹配类名正则[{0}]的类:[{1}]",
 						classMatcher.getClassName(), className);
 				try {
 					Class clazz=LoaderManager.getClass(className);
@@ -92,9 +92,9 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 					processMethodProcessor(clazz,
 							classMatcher.getAnnotationMethodMatchers());
 				} catch (ClassNotFoundException e) {
-					logger.errorMessage("加载器加载的类[{0}]不存在", e, className);
+					LOGGER.errorMessage("加载器加载的类[{0}]不存在", e, className);
 				} catch (Exception e) {
-					logger.errorMessage("加载器加载的类[{0}]时出现错误：[{1}]", e,
+					LOGGER.errorMessage("加载器加载的类[{0}]时出现错误：[{1}]", e,
 							className, e.getMessage());
 
 				}
@@ -112,7 +112,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 		Annotation[] annotations = clazz.getDeclaredAnnotations();
 		for (Annotation annotation : annotations) {
 			if (classMatcher.isAnnotationTypeMatch(annotation)) {
-				logger.logMessage(LogLevel.DEBUG, "类上存在符合正则[{0}]的注解",
+				LOGGER.logMessage(LogLevel.DEBUG, "类上存在符合正则[{0}]的注解",
 						classMatcher.getAnnotationType());
 				processClassBean(clazz, annotation, new AnnotationMatcherDto(
 						classMatcher));
@@ -130,7 +130,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 		for (AnnotationMethodMatcher annotationMethodMatcher : annotationMethodMatchers) {
 			for (Method method : declaredMethods) {
 				if (annotationMethodMatcher.isMethodMatch(method.getName())) {
-					logger.logMessage(LogLevel.DEBUG,
+					LOGGER.logMessage(LogLevel.DEBUG,
 							"找到匹配方法名正则[{0}]的方法:[{1}]",
 							annotationMethodMatcher.getMethodName(),
 							method.getName());
@@ -138,7 +138,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 					for (Annotation annotation : annotations) {
 						if (annotationMethodMatcher
 								.isAnnotationTypeMatch(annotation)) {
-							logger.logMessage(LogLevel.DEBUG,
+							LOGGER.logMessage(LogLevel.DEBUG,
 									"方法上存在符合正则[{0}]的注解",
 									annotationMethodMatcher.getAnnotationType());
 							processMethodBean(clazz, annotation,
@@ -162,7 +162,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 		for (AnnotationPropertyMatcher annotationPropertyMatcher : annotationPropertyMatchers) {
 			for (Field field : declaredFields) {
 				if (annotationPropertyMatcher.isPropertyMatch(field.getName())) {
-					logger.logMessage(LogLevel.DEBUG,
+					LOGGER.logMessage(LogLevel.DEBUG,
 							"找到匹配属性名正则[{0}]的属性:[{1}]",
 							annotationPropertyMatcher.getPropertyName(),
 							field.getName());
@@ -170,7 +170,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 					for (Annotation annotation : annotations) {
 						if (annotationPropertyMatcher
 								.isAnnotationTypeMatch(annotation)) {
-							logger.logMessage(LogLevel.DEBUG,
+							LOGGER.logMessage(LogLevel.DEBUG,
 									"属性上存在符合正则[{0}]的注解",
 									annotationPropertyMatcher
 											.getAnnotationType());
@@ -244,7 +244,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 			Object instance=Class.forName(processorBean.getType()).newInstance();
 			return instance; 
 		} catch (Exception e) {
-			logger.errorMessage("type:[{0}]实例化出现异常", e,processorBean.getType());
+			LOGGER.errorMessage("type:[{0}]实例化出现异常", e,processorBean.getType());
 		}
 		return null;
 	}

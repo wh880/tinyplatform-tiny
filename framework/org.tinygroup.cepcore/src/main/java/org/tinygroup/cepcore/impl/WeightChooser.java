@@ -48,7 +48,7 @@ public class WeightChooser implements EventProcessorChoose {
 	}
 
 	public void setParam(XmlNode param) {
-		
+		//do nothing
 	}
 
 }

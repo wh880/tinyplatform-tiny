@@ -37,7 +37,7 @@ import java.util.List;
 
 public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 		implements FileProcessor {
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(XmlSysServiceFileProcessor.class);
 	private static final String SERVICE_EXT_FILENAME = ".sysservice.xml";
 	private ServiceProviderInterface provider;
@@ -74,7 +74,7 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 		XStream stream = XStreamFactory
 				.getXStream(Service.SERVICE_XSTREAM_PACKAGENAME);
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除SysService文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在移除SysService文件[{0}]",
 					fileObject.getAbsolutePath());
 			ServiceComponents components = (ServiceComponents) caches
 					.get(fileObject.getAbsolutePath());
@@ -82,11 +82,11 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 				list.remove(components);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			logger.logMessage(LogLevel.INFO, "移除SysService文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "移除SysService文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在读取SysService文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在读取SysService文件[{0}]",
 					fileObject.getAbsolutePath());
 			try {
 				ServiceComponents oldComponents = (ServiceComponents) caches
@@ -99,20 +99,20 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 				list.add(components);
 				caches.put(fileObject.getAbsolutePath(), components);
 			} catch (Exception e) {
-				logger.errorMessage("读取SysService文件[{0}]出现异常", e,
+				LOGGER.errorMessage("读取SysService文件[{0}]出现异常", e,
 						fileObject.getAbsolutePath());
 			}
 
-			logger.logMessage(LogLevel.INFO, "读取SysService文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "读取SysService文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		try {
-			logger.logMessage(LogLevel.INFO, "正在注册SysService");
+			LOGGER.logMessage(LogLevel.INFO, "正在注册SysService");
 			this.loadService(provider.getServiceRegistory(), getFileResolver()
 					.getClassLoader());
-			logger.logMessage(LogLevel.INFO, "注册SysService结束");
+			LOGGER.logMessage(LogLevel.INFO, "注册SysService结束");
 		} catch (ServiceLoadException e) {
-			logger.errorMessage("注册SysService时出现异常", e);
+			LOGGER.errorMessage("注册SysService时出现异常", e);
 		}
 		list.clear();// 扫描结束后清空服务列表
 	}
@@ -137,7 +137,7 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 			}
 			return container.getBean(component.getBean());
 		} catch (Exception e) {
-			logger.logMessage(LogLevel.WARN, "查找Bean {}时发生异常", e,
+			LOGGER.logMessage(LogLevel.WARN, "查找Bean {}时发生异常", e,
 					component.getBean());
 			Class<?> clazz = Class.forName(component.getType());
 			if (!clazz.isInterface()) {

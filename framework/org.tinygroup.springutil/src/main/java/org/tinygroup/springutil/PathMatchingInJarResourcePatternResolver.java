@@ -27,7 +27,7 @@ import java.util.Set;
  */
 public class PathMatchingInJarResourcePatternResolver extends
 		PathMatchingResourcePatternResolver {
-	private static final Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(PathMatchingInJarResourcePatternResolver.class);
 
 	public PathMatchingInJarResourcePatternResolver() {
@@ -49,7 +49,7 @@ public class PathMatchingInJarResourcePatternResolver extends
 		try {
 			rootDir = rootDirResource.getFile().getAbsoluteFile();
 		} catch (IOException ex) {
-			logger.logMessage(
+			LOGGER.logMessage(
 					LogLevel.WARN,
 					"Cannot search for matching files underneath "
 							+ rootDirResource
@@ -59,20 +59,20 @@ public class PathMatchingInJarResourcePatternResolver extends
 		}
 		if (!rootDir.exists()) {
 			// Silently skip non-existing directories.
-			logger.logMessage(LogLevel.DEBUG,
+			LOGGER.logMessage(LogLevel.DEBUG,
 					"Skipping [" + rootDir.getAbsolutePath()
 							+ "] because it does not exist");
 			return Collections.emptySet();
 		}
 		if (!rootDir.isDirectory()) {
 			// Complain louder if it exists but is no directory.
-			logger.logMessage(LogLevel.WARN,
+			LOGGER.logMessage(LogLevel.WARN,
 					"Skipping [" + rootDir.getAbsolutePath()
 							+ "] because it does not denote a directory");
 			return Collections.emptySet();
 		}
 		if (!rootDir.canRead()) {
-			logger.logMessage(
+			LOGGER.logMessage(
 					LogLevel.WARN,
 					"Cannot search for matching files underneath directory ["
 							+ rootDir.getAbsolutePath()
@@ -90,19 +90,19 @@ public class PathMatchingInJarResourcePatternResolver extends
 		try {
 			doRetrieveMatchingFiles(fullPattern, subPattern, rootDir, result);
 		} catch (IOException e) {
-			logger.errorMessage(e.getMessage(), e);
+			LOGGER.errorMessage(e.getMessage(), e);
 		}
 		return result;
 	}
 
 	private void doRetrieveMatchingFiles(String fullPattern, String subPattern,
 			File dir, Set<Resource> result) throws IOException {
-		logger.logMessage(LogLevel.DEBUG,
+		LOGGER.logMessage(LogLevel.DEBUG,
 				"Searching directory [" + dir.getAbsolutePath()
 						+ "] for files matching pattern [" + fullPattern + "]");
 		File[] dirContents = dir.listFiles();
 		if (dirContents == null) {
-			logger.logMessage(
+			LOGGER.logMessage(
 					LogLevel.WARN,
 					"Could not retrieve contents of directory ["
 							+ dir.getAbsolutePath() + "]");
@@ -114,7 +114,7 @@ public class PathMatchingInJarResourcePatternResolver extends
 			if (content.isDirectory()
 					&& getPathMatcher().matchStart(fullPattern, currPath + "/")) {
 				if (!content.canRead()) {
-					logger.logMessage(
+					LOGGER.logMessage(
 							LogLevel.DEBUG,
 							"Skipping subdirectory ["
 									+ dir.getAbsolutePath()
@@ -129,7 +129,7 @@ public class PathMatchingInJarResourcePatternResolver extends
 			if (content.isFile() && content.getName().endsWith(".jar")) {
 				// JarFile jarFile= new JarFile(content);
 				URL jarFileUrl = new URL("jar:" + content.toURI() + "!/");
-				logger.logMessage(LogLevel.INFO,
+				LOGGER.logMessage(LogLevel.INFO,
 						"find match jar resource [{0}]", jarFileUrl.toString());
 				Resource dirRes = new UrlResource(jarFileUrl);
 				Set<Resource> resources = doFindPathMatchingJarResources(
@@ -167,7 +167,7 @@ public class PathMatchingInJarResourcePatternResolver extends
 				Resource resource = null;
 				if (path.endsWith(".jar")) {
 					URL jarFileUrl = new URL("jar:" + file.toURI() + "!/");
-					logger.logMessage(LogLevel.INFO,
+					LOGGER.logMessage(LogLevel.INFO,
 							"find match jar resource [{0}]",
 							jarFileUrl.toString());
 					resource = new UrlResource(jarFileUrl);

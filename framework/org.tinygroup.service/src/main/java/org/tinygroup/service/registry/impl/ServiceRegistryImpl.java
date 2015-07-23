@@ -31,7 +31,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	private final Map<String, ServiceRegistryItem> serviceIdMap = new HashMap<String, ServiceRegistryItem>();
 
 	private final Map<Service, ServiceRegistryItem> serviceToServiceRegistryItem = new HashMap<Service, ServiceRegistryItem>();
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ServiceRegistryImpl.class);
 
 	private boolean change = true;
@@ -39,14 +39,14 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	public void registerService(ServiceRegistryItem serviceRegistryItem) {
 		change = true;
 		if (serviceIdMap.containsKey(serviceRegistryItem.getServiceId())) {
-			logger.logMessage(LogLevel.WARN, "服务号:[{0}]已经存在,之前的服务将被覆盖",
+			LOGGER.logMessage(LogLevel.WARN, "服务号:[{0}]已经存在,之前的服务将被覆盖",
 					serviceRegistryItem.getServiceId());
 			ServiceRegistryItem item = serviceIdMap.get(serviceRegistryItem.getServiceId());
 			if(item!=null){
 				serviceToServiceRegistryItem.remove(item.getService());
 			}
 		}
-		logger.logMessage(LogLevel.INFO, "添加服务[serviceId:{0}]",
+		LOGGER.logMessage(LogLevel.INFO, "添加服务[serviceId:{0}]",
 				serviceRegistryItem.getServiceId());
 		serviceIdMap.put(serviceRegistryItem.getServiceId(),
 				serviceRegistryItem);
@@ -83,7 +83,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 			return;
 		}
 		change = true;
-		logger.logMessage(LogLevel.INFO, "删除服务[serviceId:{0}]",
+		LOGGER.logMessage(LogLevel.INFO, "删除服务[serviceId:{0}]",
 				serviceRegistryItem.getServiceId());
 		ServiceRegistryItem removedItem = serviceIdMap
 				.remove(serviceRegistryItem.getServiceId());

@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class ServiceEventProcessorImpl extends AbstractEventProcessor{
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ServiceEventProcessorImpl.class);
 //	private boolean read = false;
 	private ServiceProviderInterface provider;
@@ -60,7 +60,7 @@ public class ServiceEventProcessorImpl extends AbstractEventProcessor{
 			}
 			event.getServiceRequest().setContext(c);
 		} else {
-			logger.logMessage(LogLevel.ERROR, "未找到合适的Service[id:{0}]",
+			LOGGER.logMessage(LogLevel.ERROR, "未找到合适的Service[id:{0}]",
 					serviceId);
 		}
 	}

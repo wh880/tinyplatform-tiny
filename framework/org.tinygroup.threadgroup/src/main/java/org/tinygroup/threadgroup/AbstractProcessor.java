@@ -25,7 +25,7 @@ import org.tinygroup.logger.LoggerFactory;
  * @author luoguo
  */
 public abstract class AbstractProcessor implements Processor {
-    private static Logger logger = LoggerFactory.getLogger(AbstractProcessor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractProcessor.class);
     private String name;
     private MultiThreadProcessor multiThreadProcess;
     private ExceptionCallBack exceptionCallBack = null;
@@ -46,11 +46,11 @@ public abstract class AbstractProcessor implements Processor {
 
     public void run() {
         try {
-            logger.logMessage(LogLevel.DEBUG, "线程<{}-{}>运行开始...", multiThreadProcess.getName(), name);
+            LOGGER.logMessage(LogLevel.DEBUG, "线程<{}-{}>运行开始...", multiThreadProcess.getName(), name);
             action();
-            logger.logMessage(LogLevel.DEBUG, "线程<{}-{}>运行结束", multiThreadProcess.getName(), name);
+            LOGGER.logMessage(LogLevel.DEBUG, "线程<{}-{}>运行结束", multiThreadProcess.getName(), name);
         } catch (Exception e) {
-            logger.errorMessage(e.getMessage(), e);
+            LOGGER.errorMessage(e.getMessage(), e);
             if (exceptionCallBack != null) {
                 exceptionCallBack.callBack(this, e);
             }

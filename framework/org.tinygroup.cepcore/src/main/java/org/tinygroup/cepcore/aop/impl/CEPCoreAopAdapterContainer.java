@@ -15,10 +15,10 @@
  */
 package org.tinygroup.cepcore.aop.impl;
 
+import java.util.regex.Pattern;
+
 import org.tinygroup.cepcore.aop.CEPCoreAopAdapter;
 import org.tinygroup.event.Event;
-
-import java.util.regex.Pattern;
 
 public class CEPCoreAopAdapterContainer {
 

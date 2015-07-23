@@ -29,7 +29,7 @@ import java.util.List;
 @ServiceComponent()
 public class UserManagerAnnotationService {
 
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(UserManagerAnnotationService.class);
 
 	@ServiceMethod(serviceId = "serviceAddServiceUserAnnotation",alias="addServiceUserAnnotation")
@@ -42,11 +42,11 @@ public class UserManagerAnnotationService {
 			user2.setName("user2");
 			String info1 = String.format("参数未传递,自行创建新用户%s", user2.getName());
 			String info2 = String.format("添加了一名新用户%s(对象添加)", user2.getName());
-			logger.logMessage(LogLevel.INFO, info1);
-			logger.logMessage(LogLevel.INFO, info2);
+			LOGGER.logMessage(LogLevel.INFO, info1);
+			LOGGER.logMessage(LogLevel.INFO, info2);
 		} else {
 			String info = String.format("添加了一名新用户%s(对象添加)", user2.getName());
-			logger.logMessage(LogLevel.INFO, info);
+			LOGGER.logMessage(LogLevel.INFO, info);
 		}
 		return user2;
 	}
@@ -62,7 +62,7 @@ public class UserManagerAnnotationService {
 	public ServiceUser addServiceUser(
 			@ServiceParameter(name = "name") String name) {
 		String info = String.format("添加了一名新用户%s(名称添加)", name);
-		logger.logMessage(LogLevel.INFO, "", info);
+		LOGGER.logMessage(LogLevel.INFO, "", info);
 		ServiceUser user2 = new ServiceUser();
 		user2.setName(name);
 		return user2;
@@ -73,7 +73,7 @@ public class UserManagerAnnotationService {
 	public ServiceUser addServiceUserNoResultName(
 			@ServiceParameter(name = "name") String name) {
 		String info = String.format("添加了一名新用户%s(名称添加)", name);
-		logger.logMessage(LogLevel.INFO, "", info);
+		LOGGER.logMessage(LogLevel.INFO, "", info);
 		ServiceUser user2 = new ServiceUser();
 		user2.setName(name);
 		return user2;
@@ -82,7 +82,7 @@ public class UserManagerAnnotationService {
 	
 	public int getServiceUserAge(String name) {
 		String info = String.format("查询用户%s的年龄", name);
-		logger.logMessage(LogLevel.INFO, info);
+		LOGGER.logMessage(LogLevel.INFO, info);
 		return 5;
 	}
 	
@@ -92,7 +92,7 @@ public class UserManagerAnnotationService {
 			@ServiceParameter(name = "name")String name, 
 			@ServiceParameter(name = "age")Integer i) {
 		String info = String.format("设置用户%s的年龄为%d(Integer调用)", name, i);
-		logger.logMessage(LogLevel.INFO, info);
+		LOGGER.logMessage(LogLevel.INFO, info);
 		return i;
 	}
 	@ServiceMethod( serviceId = "serviceSetServiceUserAgeIntAnnotation")
@@ -100,7 +100,7 @@ public class UserManagerAnnotationService {
 			@ServiceParameter(name = "name")String name, 
 			@ServiceParameter(name = "age")int i) {
 		String info = String.format("设置用户%s的年龄为%d(Integer调用)", name, i);
-		logger.logMessage(LogLevel.INFO, info);
+		LOGGER.logMessage(LogLevel.INFO, info);
 	}
 	@ServiceMethod( serviceId = "serviceSetServiceUserAgeArrayAnnotation")
 	@ServiceResult(name = "length")
@@ -109,7 +109,7 @@ public class UserManagerAnnotationService {
 			@ServiceParameter(name = "ages")int[] i) {
 
 		String info = String.format("设置用户%s的年龄为%d(Integer调用)", name[0], i[0]);
-		logger.logMessage(LogLevel.INFO, info);
+		LOGGER.logMessage(LogLevel.INFO, info);
 		return name.length;
 	}
 }

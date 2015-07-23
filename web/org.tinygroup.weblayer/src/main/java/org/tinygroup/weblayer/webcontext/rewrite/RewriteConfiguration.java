@@ -59,7 +59,7 @@ public class RewriteConfiguration extends AbstractConfiguration{
 					try {
 						rule.afterPropertiesSet();
 					} catch (Exception e) {
-						logger.errorMessage("initializingBean error", e);
+						LOGGER.errorMessage("initializingBean error", e);
 						throw new RuntimeException("initializingBean error", e);
 					}
 				}

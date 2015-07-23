@@ -56,7 +56,7 @@ public class PageFlowComponentProcessor extends AbstractFileProcessor {
 		XStream stream = XStreamFactory
 				.getXStream(FlowExecutor.FLOW_XSTREAM_PACKAGENAME);
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在删除页面组件fc文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在删除页面组件fc文件[{0}]",
 					fileObject.getAbsolutePath());
 			ComponentDefines components = (ComponentDefines) caches
 					.get(fileObject.getAbsolutePath());
@@ -64,11 +64,11 @@ public class PageFlowComponentProcessor extends AbstractFileProcessor {
 				flowExecutor.removeComponents(components);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			logger.logMessage(LogLevel.INFO, "删除页面组件fc文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "删除页面组件fc文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在读取页面组件pagefc文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在读取页面组件pagefc文件[{0}]",
 					fileObject.getAbsolutePath());
 			ComponentDefines oldComponents = (ComponentDefines) caches
 					.get(fileObject.getAbsolutePath());
@@ -79,7 +79,7 @@ public class PageFlowComponentProcessor extends AbstractFileProcessor {
 					.fromXML(fileObject.getInputStream());
 			flowExecutor.addComponents(components);
 			caches.put(fileObject.getAbsolutePath(), components);
-			logger.logMessage(LogLevel.INFO, "读取页面组件pagefc文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "读取页面组件pagefc文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 

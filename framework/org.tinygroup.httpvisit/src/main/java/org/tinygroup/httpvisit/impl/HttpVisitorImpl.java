@@ -38,14 +38,14 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 public class HttpVisitorImpl implements HttpVisitor {
-    private static final Logger logger = LoggerFactory.getLogger(HttpVisitorImpl.class);
-    HttpClient client;
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpVisitorImpl.class);
+    private HttpClient client;
     private String responseCharset = "UTF-8";
     private String requestCharset = "ISO-8859-1";
-    int timeout = 30000;
-    HttpState httpState = new HttpState();
-    boolean authEnabled = false;
-    List<String> authPrefs = null;
+    private int timeout = 30000;
+    private HttpState httpState = new HttpState();
+    private boolean authEnabled = false;
+    private List<String> authPrefs = null;
     private String proxyHost;
     private int proxyPort;
     private UsernamePasswordCredentials proxyUserPassword;
@@ -127,7 +127,7 @@ public class HttpVisitorImpl implements HttpVisitor {
 
     public String getUrl(String url, Map<String, ?> parameter) {
         try {
-            StringBuffer sb = new StringBuffer(url);
+            StringBuilder sb = new StringBuilder(url);
             if (parameter != null) {
                 if (url.indexOf('?') < 0) {
                     sb.append("?");
@@ -153,7 +153,7 @@ public class HttpVisitorImpl implements HttpVisitor {
 
     }
 
-    private void appendParameter(StringBuffer sb, String key, Object value) throws UnsupportedEncodingException {
+    private void appendParameter(StringBuilder sb, String key, Object value) throws UnsupportedEncodingException {
         sb.append("&");
         sb.append(URLEncoder.encode(key, requestCharset));
         sb.append("=");
@@ -184,18 +184,18 @@ public class HttpVisitorImpl implements HttpVisitor {
             if (client == null) {
                 init();
             }
-            logger.logMessage(LogLevel.DEBUG, "正在访问地址:{}", method.getURI().toString());
-            if (!requestCharset.equals("ISO-8859-1")) {
+            LOGGER.logMessage(LogLevel.DEBUG, "正在访问地址:{}", method.getURI().toString());
+            if (!("ISO-8859-1").equals(requestCharset)) {
                 method.addRequestHeader("Content-Type", "text/html; charset=" + requestCharset);
             }
             method.setDoAuthentication(authEnabled);
             int iGetResultCode = client.executeMethod(method);
             if (iGetResultCode == HttpStatus.SC_OK) {
-                logger.logMessage(LogLevel.DEBUG, "结果成功返回。");
+                LOGGER.logMessage(LogLevel.DEBUG, "结果成功返回。");
                 Header responseHeader = method.getResponseHeader("Content-Encoding");
                 if (responseHeader != null) {
                     String acceptEncoding = responseHeader.getValue();
-                    if (acceptEncoding != null && acceptEncoding.equals("gzip")) {
+                    if (acceptEncoding != null && ("gzip").equals(acceptEncoding)) {
                         //如果是gzip压缩方式
                         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(method.getResponseBody());
                         GZIPInputStream gzipInputStream = new GZIPInputStream(byteArrayInputStream);
@@ -204,10 +204,10 @@ public class HttpVisitorImpl implements HttpVisitor {
                 }
                 return new String(method.getResponseBody(), responseCharset);
             }
-            logger.logMessage(LogLevel.ERROR, "结果返回失败，原因：{}", method.getStatusLine().toString());
+            LOGGER.logMessage(LogLevel.ERROR, "结果返回失败，原因：{}", method.getStatusLine().toString());
             throw new RuntimeException(method.getStatusLine().toString());
         } catch (Exception e) {
-            logger.logMessage(LogLevel.DEBUG, "结果返回失败，原因：{}", e.getMessage());
+            LOGGER.logMessage(LogLevel.DEBUG, "结果返回失败，原因：{}", e.getMessage());
             throw new RuntimeException(e);
         } finally {
             method.releaseConnection();

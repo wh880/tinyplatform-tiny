@@ -58,7 +58,7 @@ public class IniOperatorDefault implements IniOperator {
         while (string != null) {
             string = string.trim();
             if (string.length() == 0) {
-
+            	//do nothing
             } else if (string.startsWith(commentChar)) {
                 addComment(sectionName, string);
             } else if (string.startsWith("[")) { //如果是Section

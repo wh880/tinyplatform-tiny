@@ -36,7 +36,7 @@ public class ObjectToXml<T> implements Converter<List<T>, String> {
 	}
 
 	public String convert(List<T> inputData) throws ConvertException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		XmlUtils.appendHeader(sb, rootNodeName);
 		if (inputData != null) {
 			for (T object : inputData) {

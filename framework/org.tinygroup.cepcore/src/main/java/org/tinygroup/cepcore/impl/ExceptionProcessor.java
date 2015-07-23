@@ -45,7 +45,7 @@ public class ExceptionProcessor extends AbstractConfiguration {
 		for (XmlNode handler : handlerList) {
 			String exception = handler.getAttribute("exception");
 			String handlerBean = handler.getAttribute("handler");
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"添加exception-handler,Exception:{0},handerBean:{1}",
 					exception, handlerBean);
 			ExceptionHandler<?> exceptionHandler = BeanContainerFactory
@@ -54,12 +54,13 @@ public class ExceptionProcessor extends AbstractConfiguration {
 			try {
 				manager.addHandler(exception, exceptionHandler);
 			} catch (ClassNotFoundException e) {
-				logger.logMessage(LogLevel.INFO,
-						"添加exception-handler出现异常,Exception类:{0}找不到", exception,
-						handlerBean);
+//				logger.logMessage(LogLevel.INFO,
+//						"添加exception-handler出现异常,Exception类:{0}找不到", exception,
+//						handlerBean);
+				LOGGER.errorMessage("添加exception-handler出现异常,Exception类:{0}找不到", e, exception);
 				continue;
 			}
-			logger.logMessage(LogLevel.INFO,
+			LOGGER.logMessage(LogLevel.INFO,
 					"添加exception-handler,Exception:{0},handerBean:{1}完成",
 					exception, handlerBean);
 		}

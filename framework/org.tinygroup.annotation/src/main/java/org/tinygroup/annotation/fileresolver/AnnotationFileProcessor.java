@@ -50,18 +50,18 @@ public class AnnotationFileProcessor extends AbstractFileProcessor {
 		XStream stream = XStreamFactory
 				.getXStream(AnnotationExcuteManager.XSTEAM_PACKAGE_NAME);
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除注解配置文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在移除注解配置文件[{0}]",
 					fileObject.getAbsolutePath());
 			AnnotationClassMatchers annotationClassMatchers = (AnnotationClassMatchers) caches.get(fileObject.getAbsolutePath());
 			if(annotationClassMatchers!=null){
 				manager.removeAnnotationClassMatchers(annotationClassMatchers);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			logger.logMessage(LogLevel.INFO, "移除注解配置文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "移除注解配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在加载注解配置文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在加载注解配置文件[{0}]",
 					fileObject.getAbsolutePath());
 			AnnotationClassMatchers oldMatchers = (AnnotationClassMatchers)caches.get(fileObject.getAbsolutePath());
 			if(oldMatchers!=null){
@@ -71,7 +71,7 @@ public class AnnotationFileProcessor extends AbstractFileProcessor {
 					.fromXML(fileObject.getInputStream());
 			manager.addAnnotationClassMatchers(matchers);
 			caches.put(fileObject.getAbsolutePath(), matchers);
-			logger.logMessage(LogLevel.INFO, "加载注解配置文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "加载注解配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 

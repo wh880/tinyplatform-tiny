@@ -41,7 +41,7 @@ public class Result<T> implements Serializable {
     private ErrorContext errorContext;
 
     /**
-     * 对象实例。
+     * 请求执行结果。
      */
     private T resultObj;
 

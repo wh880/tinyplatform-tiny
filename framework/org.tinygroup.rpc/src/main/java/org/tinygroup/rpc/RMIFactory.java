@@ -26,7 +26,7 @@ import org.tinygroup.rpc.util.RMIRemoteUtil;
 import java.rmi.Naming;
 
 public class RMIFactory extends BasePoolableObjectFactory {
-	private static Logger logger = LoggerFactory.getLogger(RMIFactory.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RMIFactory.class);
 	private Node node;
 
 	public RMIFactory(Node node) {
@@ -40,7 +40,7 @@ public class RMIFactory extends BasePoolableObjectFactory {
 		try {
 			rmi = (CEPCoreRMI) Naming.lookup(url);
 		} catch (Exception e) {
-			logger.logMessage(LogLevel.ERROR, "获取连接失败,目标节点{0}:{1}:{2},{3}",
+			LOGGER.logMessage(LogLevel.ERROR, "获取连接失败,目标节点{0}:{1}:{2},{3}",
 					node.getIp(), node.getPort(), node.getNodeName(),
 					e.getMessage());
 			throw new CEPConnectException(e, node);

@@ -48,7 +48,7 @@ public class AnnotationValidatorManagerImpl extends AbstractValidatorManger
 			return;
 		}
 
-		logger.logMessage(LogLevel.DEBUG, "类名:[{0}],字段名:[{1}],找到校验器注解:[{2}]",
+		LOGGER.logMessage(LogLevel.DEBUG, "类名:[{0}],字段名:[{1}],找到校验器注解:[{2}]",
 				clazz.getName(), field.getName(), annotation.annotationType()
 						.getName());
 		if (hasFiledAnnotationList.contains(field)) {
@@ -73,7 +73,7 @@ public class AnnotationValidatorManagerImpl extends AbstractValidatorManger
 				map.addValidator(fieldWapper, "",
 						getValidatorFromAnnotation(field, annotation));
 			} catch (Exception e) {
-				logger.errorMessage(e.getMessage(), e);
+				LOGGER.errorMessage(e.getMessage(), e);
 			}
 			putClassFieldValidators(clazz, map);
 
@@ -102,7 +102,7 @@ public class AnnotationValidatorManagerImpl extends AbstractValidatorManger
 
 	public <T> void addFieldAnnotation(Class<T> clazz, Field field,
 			Annotation annotation) {
-		logger.logMessage(LogLevel.DEBUG,
+		LOGGER.logMessage(LogLevel.DEBUG,
 				"类名:[{0}],字段名:[{1}],找到标识校验字段的注解:[{2}]", clazz.getName(),
 				field.getName(), annotation.annotationType().getName());
 		hasFiledAnnotationList.add(field);

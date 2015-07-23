@@ -40,6 +40,7 @@ public interface CEPCoreAopManager {
 	void beforeHandle(Event event);
 
 	void afterHandle(Event event);
-	
-	void addAopAdapter(String position,String beanName,String servicePatternString);
+
+	void addAopAdapter(String position, String beanName,
+			String servicePatternString);
 }

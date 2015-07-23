@@ -40,7 +40,7 @@ public class OrderProcessor<T> {
 	
 	public static final String ORDER_NAME="orderProcessor";
 
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(OrderProcessor.class);
 	
 	private List<OrderGroups<T>> groupList=CollectionUtil.createArrayList();
@@ -63,7 +63,7 @@ public class OrderProcessor<T> {
 		 Assert.assertNotNull(fileObject, "fileObject must not null");
 		 String filePath=fileObject.getAbsolutePath();
 		 if(!fileNameCaches.contains(filePath)){
-		 logger.logMessage(INFO, "读取对象加载顺序配置文件:<{}>开始",filePath);
+		 LOGGER.logMessage(INFO, "读取对象加载顺序配置文件:<{}>开始",filePath);
 		 BufferedInputStream inputStream = null;
 			try {
 				inputStream = new BufferedInputStream(fileObject.getInputStream());
@@ -71,7 +71,7 @@ public class OrderProcessor<T> {
 				inputStream.read(bytes);
 				inputStream.close();
 				String content = new String(bytes, "UTF-8");
-				logger.logMessage(INFO, "读取对象加载顺序配置文件：<{}>",
+				LOGGER.logMessage(INFO, "读取对象加载顺序配置文件：<{}>",
 						filePath);
 				XmlNode root = new XmlStringParser().parse(content)
 						.getRoot();
@@ -79,7 +79,7 @@ public class OrderProcessor<T> {
 				groups.load();
 				groupList.add(groups);
 			} catch (Exception e) {
-				logger.errorMessage("读取对象加载顺序配置文件：<{}>", e,
+				LOGGER.errorMessage("读取对象加载顺序配置文件：<{}>", e,
 						filePath);
 				throw new RuntimeException(e);
 			}

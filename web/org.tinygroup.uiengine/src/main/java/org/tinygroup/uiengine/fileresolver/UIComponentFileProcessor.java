@@ -47,18 +47,18 @@ public class UIComponentFileProcessor extends AbstractFileProcessor {
 		XStream stream = XStreamFactory
 				.getXStream(UIComponentManager.UIComponentManager_XSTREAM);
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除uicomponent文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在移除uicomponent文件[{0}]",
 					fileObject.getAbsolutePath());
 			UIComponents uiComponents = (UIComponents) caches.get(fileObject.getAbsolutePath());
 			if(uiComponents!=null){
 				manager.removeUIComponents(uiComponents);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			logger.logMessage(LogLevel.INFO, "移除uicomponent文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "移除uicomponent文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在加载uicomponent文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在加载uicomponent文件[{0}]",
 					fileObject.getAbsolutePath());
 			UIComponents oldUiComponents = (UIComponents) caches.get(fileObject.getAbsolutePath());
 			if(oldUiComponents!=null){
@@ -68,7 +68,7 @@ public class UIComponentFileProcessor extends AbstractFileProcessor {
 					.fromXML(fileObject.getInputStream());
 			manager.addUIComponents(uiComponents);
 			caches.put(fileObject.getAbsolutePath(), uiComponents);
-			logger.logMessage(LogLevel.INFO, "加载uicomponent文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "加载uicomponent文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 	}

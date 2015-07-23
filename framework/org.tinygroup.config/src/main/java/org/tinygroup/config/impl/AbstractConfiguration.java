@@ -21,7 +21,7 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public abstract class AbstractConfiguration implements Configuration {
-	protected static Logger logger = LoggerFactory.getLogger(AbstractConfiguration.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractConfiguration.class);
 	protected XmlNode applicationConfig;
 	protected XmlNode componentConfig;
 

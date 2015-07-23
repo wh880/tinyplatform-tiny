@@ -81,15 +81,15 @@ public class TemplateFileProcessor extends AbstractFileProcessor {
 
 	public void process() {
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在移除文档模板宏配置文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在移除文档模板宏配置文件[{0}]",
 					fileObject.getAbsolutePath());
 			generate.removeMacroFile(fileObject);
 			caches.remove(fileObject.getAbsolutePath());
-			logger.logMessage(LogLevel.INFO, "移除文档模板宏配置文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "移除文档模板宏配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在加载文档模板宏配置文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在加载文档模板宏配置文件[{0}]",
 					fileObject.getAbsolutePath());
 			FileObject oldFileObject=(FileObject) caches.get(fileObject.getAbsolutePath());
 			if(oldFileObject!=null){
@@ -97,7 +97,7 @@ public class TemplateFileProcessor extends AbstractFileProcessor {
 			}
 			generate.addMacroFile(fileObject);
 			caches.put(fileObject.getAbsolutePath(), fileObject);
-			logger.logMessage(LogLevel.INFO, "加载文档模板宏配置文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "加载文档模板宏配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		manager.putDocumentGenerater(documentType, generate);

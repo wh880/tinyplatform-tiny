@@ -51,18 +51,18 @@ public class PageFlowFileProcessor extends AbstractFileProcessor {
 		XStream stream = XStreamFactory
 				.getXStream(FlowExecutor.FLOW_XSTREAM_PACKAGENAME);
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在删除页面流程flow文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在删除页面流程flow文件[{0}]",
 					fileObject.getAbsolutePath());
 			Flow flow = (Flow) caches.get(fileObject.getAbsolutePath());
 			if (flow != null) {
 				flowExecutor.removeFlow(flow);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			logger.logMessage(LogLevel.INFO, "删除页面流程flow文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "删除页面流程flow文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		for (FileObject fileObject : fileObjects) {
-			logger.logMessage(LogLevel.INFO, "正在读取页面流程pageflow文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在读取页面流程pageflow文件[{0}]",
 					fileObject.getAbsolutePath());
 			Flow oldFlow = (Flow) caches.get(fileObject.getAbsolutePath());
 			if (oldFlow != null) {
@@ -71,7 +71,7 @@ public class PageFlowFileProcessor extends AbstractFileProcessor {
 			Flow flow = (Flow) stream.fromXML(fileObject.getInputStream());
 			flowExecutor.addFlow(flow);
 			caches.put(fileObject.getAbsolutePath(), flow);
-			logger.logMessage(LogLevel.INFO, "读取页面流程pageflow文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "读取页面流程pageflow文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		flowExecutor.assemble();

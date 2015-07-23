@@ -53,9 +53,9 @@ public class DictLoadFileProcessor extends AbstractFileProcessor {
 	public void process() {
 		XStream stream = XStreamFactory
 				.getXStream(DictManager.XSTEAM_PACKAGE_NAME);
-		logger.logMessage(LogLevel.INFO, "字典加载器配置文件处理开始");
+		LOGGER.logMessage(LogLevel.INFO, "字典加载器配置文件处理开始");
 		for (FileObject fileObject : fileObjects) {
-			logger.logMessage(LogLevel.INFO, "找到字典加载配置文件:[{}]",
+			LOGGER.logMessage(LogLevel.INFO, "找到字典加载配置文件:[{}]",
 					fileObject.getAbsolutePath());
 			DictLoaderConfigs configs = (DictLoaderConfigs) stream
 					.fromXML(fileObject.getInputStream());
@@ -69,11 +69,11 @@ public class DictLoadFileProcessor extends AbstractFileProcessor {
 			}
 		}
 		// manager.load();
-		logger.logMessage(LogLevel.INFO, "字典加载器配置文件处理结束");
+		LOGGER.logMessage(LogLevel.INFO, "字典加载器配置文件处理结束");
 	}
 
 	public void setFileResolver(FileResolver fileResolver) {
-
+		//do nothing
 	}
 
 }

@@ -15,15 +15,17 @@
  */
 package org.tinygroup.cepcore;
 
-import org.tinygroup.event.Event;
-import org.tinygroup.event.ServiceInfo;
-
 import java.rmi.Remote;
 import java.util.List;
 
+import org.tinygroup.event.Event;
+import org.tinygroup.event.ServiceInfo;
+
 public interface CEPCore extends Remote {
 	String CEP_CORE_BEAN = "cepcore";
+
 	void setEventProcessorChoose(EventProcessorChoose chooser);
+
 	/**
 	 * 获取结点名称
 	 * 
@@ -34,11 +36,11 @@ public interface CEPCore extends Remote {
 	void setNodeName(String nodeName);
 
 	CEPCoreOperator getOperator();
-	
+
 	void setOperator(CEPCoreOperator operator);
 
 	/**
-	 * 注册一个事件处理器	
+	 * 注册一个事件处理器
 	 * 
 	 * @param eventProcessor
 	 */
@@ -67,7 +69,7 @@ public interface CEPCore extends Remote {
 	 * 停止CEP
 	 */
 	void stop();
-	
+
 	List<EventProcessor> getEventProcessors();
 
 	/**
@@ -76,13 +78,13 @@ public interface CEPCore extends Remote {
 	 * @return
 	 */
 	List<ServiceInfo> getServiceInfos();
-	
+
 	int getServiceInfosVersion();
 
 	ServiceInfo getServiceInfo(String serviceId);
-	
+
 	void addEventProcessorRegisterTrigger(EventProcessorRegisterTrigger trigger);
-	
+
 	void refreshEventProcessors();
 
 }

@@ -44,7 +44,7 @@ public class ServiceMappingFileProcessor extends AbstractFileProcessor {
 		XStream stream = XStreamFactory
 				.getXStream(ServiceMappingManager.XSTREAM_PACKAGE_NAME);
 		for (FileObject fileObject : deleteList) {
-			logger.logMessage(LogLevel.INFO, "正在ServiceMappings文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在ServiceMappings文件[{0}]",
 					fileObject.getAbsolutePath());
 			ServiceViewMappings mappings = (ServiceViewMappings) caches
 					.get(fileObject.getAbsolutePath());
@@ -52,11 +52,11 @@ public class ServiceMappingFileProcessor extends AbstractFileProcessor {
 				manager.removeServiceMappings(mappings);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			logger.logMessage(LogLevel.INFO, "读取ServiceMappings文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "读取ServiceMappings文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		for (FileObject fileObject : changeList) {
-			logger.logMessage(LogLevel.INFO, "正在ServiceMappings文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在ServiceMappings文件[{0}]",
 					fileObject.getAbsolutePath());
 			ServiceViewMappings oldMappings = (ServiceViewMappings) caches
 					.get(fileObject.getAbsolutePath());
@@ -67,7 +67,7 @@ public class ServiceMappingFileProcessor extends AbstractFileProcessor {
 					.fromXML(fileObject.getInputStream());
 			manager.addServiceMappings(mappings);
 			caches.put(fileObject.getAbsolutePath(), mappings);
-			logger.logMessage(LogLevel.INFO, "读取ServiceMappings文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "读取ServiceMappings文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 	}

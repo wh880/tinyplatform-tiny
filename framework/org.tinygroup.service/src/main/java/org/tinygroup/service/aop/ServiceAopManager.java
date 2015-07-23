@@ -29,7 +29,7 @@ import java.util.List;
 public class ServiceAopManager {
 	public static final String SERVICE_AOP_BEFORE = "before";
 	public static final String SERVICE_AOP_AFTER = "after";
-	private static Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ServiceAopManager.class);
 	private List<ServiceAopAdapter> beforeList = new ArrayList<ServiceAopAdapter>();
 	private List<ServiceAopAdapter> beforeEnableList = new ArrayList<ServiceAopAdapter>();
@@ -75,36 +75,36 @@ public class ServiceAopManager {
 				enbaleList.add(adapter);
 			}
 		} catch (Exception e) {
-			logger.errorMessage("添加ServiceAopAdapter时出现异常,bean:{0},enable:{1}",
+			LOGGER.errorMessage("添加ServiceAopAdapter时出现异常,bean:{0},enable:{1}",
 					e, bean, enable);
 		}
 
 	}
 
 	public void beforeHandle(Object[] args, ServiceProxy sp) {
-		logger.logMessage(LogLevel.INFO, "开始执行SerciveAop前置处理器");
+		LOGGER.logMessage(LogLevel.INFO, "开始执行SerciveAop前置处理器");
 		for (int i = 0; i < beforeEnableList.size(); i++) {
 			ServiceAopAdapter adapter = beforeEnableList.get(i);
-			logger.logMessage(LogLevel.INFO, "开始执行SerciveAop前置处理器{0}", adapter
+			LOGGER.logMessage(LogLevel.INFO, "开始执行SerciveAop前置处理器{0}", adapter
 					.getClass().toString());
 			adapter.handle(args, sp);
-			logger.logMessage(LogLevel.INFO, "执行SerciveAop前置处理器{0}完成", adapter
+			LOGGER.logMessage(LogLevel.INFO, "执行SerciveAop前置处理器{0}完成", adapter
 					.getClass().toString());
 		}
-		logger.logMessage(LogLevel.INFO, "执行SerciveAop前置处理器完成");
+		LOGGER.logMessage(LogLevel.INFO, "执行SerciveAop前置处理器完成");
 	}
 
 	public void afterHandle(Object[] args, ServiceProxy sp) {
-		logger.logMessage(LogLevel.INFO, "开始执行SerciveAop后置处理器");
+		LOGGER.logMessage(LogLevel.INFO, "开始执行SerciveAop后置处理器");
 		for (int i = 0; i < afterEnableList.size(); i++) {
 			ServiceAopAdapter adapter = afterEnableList.get(i);
-			logger.logMessage(LogLevel.INFO, "开始执行SerciveAop后置处理器{0}", adapter
+			LOGGER.logMessage(LogLevel.INFO, "开始执行SerciveAop后置处理器{0}", adapter
 					.getClass().toString());
 			adapter.handle(args, sp);
-			logger.logMessage(LogLevel.INFO, "执行SerciveAop后置处理器{0}完成", adapter
+			LOGGER.logMessage(LogLevel.INFO, "执行SerciveAop后置处理器{0}完成", adapter
 					.getClass().toString());
 		}
-		logger.logMessage(LogLevel.INFO, "执行SerciveAop后置处理器完成");
+		LOGGER.logMessage(LogLevel.INFO, "执行SerciveAop后置处理器完成");
 	}
 
 	public List<ServiceAopAdapter> getBeforeList() {
