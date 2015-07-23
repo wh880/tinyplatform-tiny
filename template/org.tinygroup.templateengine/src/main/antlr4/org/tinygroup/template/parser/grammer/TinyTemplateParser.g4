@@ -56,9 +56,9 @@ directive   :   set_directive
             |   stop_directive
             |   include_directive
             |   macro_directive
-            |   call_block_directive
             |   layout_directive
             |   layout_impl_directive
+            |   call_block_directive
             |   call_directive
             |   endofline_directive
             |   blank_directive
@@ -201,9 +201,9 @@ expression  :   '(' expression ')'                                           # e
             |   IDENTIFIER '(' expression_list? ')'                          # expr_function_call
 
             |   expression ('?')? '[' expression ']'                         # expr_array_get
-            |   expression ('++'|'--')                                       # expr_single_right
+            |   IDENTIFIER ('++'|'--')                                       # expr_single_right
             |   ('+' <assoc=right> |'-' <assoc=right>)  expression           # expr_math_unary_prefix
-            |   ('++'|'--')       expression                                 # expr_single_left
+            |   ('++'|'--')       IDENTIFIER                                 # expr_single_left
             |   '~' <assoc=right> expression                                 # expr_math_unary_prefix
             |   '!' <assoc=right> expression                                 # expr_math_unary_prefix
             |   expression ('*'|'/'|'%')  expression                         # expr_math_binary_basic

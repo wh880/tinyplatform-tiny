@@ -763,7 +763,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     public CodeBlock visitExpr_single_right(@NotNull TinyTemplateParser.Expr_single_rightContext ctx) {
         peekCodeLet().code("O.ce($context,\"").code(ctx.getChild(1).getText()).code("\",").code("\"" + ctx.getChild(0).getText() + "\",");
-        ctx.expression().accept(this);
+        ctx.IDENTIFIER().accept(this);
         peekCodeLet().code(")");
         return null;
     }
@@ -819,7 +819,7 @@ public class TinyTemplateCodeVisitor extends AbstractParseTreeVisitor<CodeBlock>
 
     public CodeBlock visitExpr_single_left(@NotNull TinyTemplateParser.Expr_single_leftContext ctx) {
         peekCodeLet().code("O.ce($context,\"l").code(ctx.getChild(0).getText()).code("\",").code("\"" + ctx.getChild(1).getText() + "\",");
-        ctx.expression().accept(this);
+        ctx.IDENTIFIER().accept(this);
         peekCodeLet().code(")");
         return null;
     }
