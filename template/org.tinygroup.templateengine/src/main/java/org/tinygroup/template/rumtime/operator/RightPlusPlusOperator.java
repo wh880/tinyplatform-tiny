@@ -27,7 +27,7 @@ public class RightPlusPlusOperator implements OperatorWithContext {
 
 
     public Object operation(TemplateContext context, String name, Object value) throws TemplateException {
-        Object v = context.get(name.toString());
+        Object v = context.get(name);
         if (v != null) {
             context.put(name.toString(), O.e("+", v, 1));
             return v;

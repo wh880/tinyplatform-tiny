@@ -26,10 +26,10 @@ import org.tinygroup.template.rumtime.OperatorWithContext;
 public class LeftPlusPlusOperator implements OperatorWithContext {
 
     public Object operation(TemplateContext context, String name, Object value) throws TemplateException {
-        Object v = context.get(name.toString());
+        Object v = context.get(name);
         if (v != null) {
             v=O.e("+", v, 1);
-            context.put(name.toString(), v);
+            context.put(name, v);
             return v;
         } else {
             return name;

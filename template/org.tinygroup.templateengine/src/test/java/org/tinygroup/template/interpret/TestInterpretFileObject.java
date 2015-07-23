@@ -21,9 +21,10 @@ public class TestInterpretFileObject {
         TemplateInterpretEngine engine =new TemplateInterpretEngine();
         engine.addResourceLoader(loader);
         engine.registerMacroLibrary("/a.component");
+        engine.registerMacroLibrary("/b.component");
 //        Template template = loader.createTemplate(VFS.resolveFile("/Users/luoguo/resourceroot/b.page"));
 //        template.render(context,new OutputStreamWriter(System.out));
-        engine.renderTemplate("/b.page");
+        engine.renderTemplate("/c.page");
         System.out.flush();
     }
 }
