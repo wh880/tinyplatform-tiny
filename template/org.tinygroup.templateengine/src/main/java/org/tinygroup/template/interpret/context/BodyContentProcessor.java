@@ -28,9 +28,11 @@ public class BodyContentProcessor implements ContextProcessor<TinyTemplateParser
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Bodycontent_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
         //从上下文获得BODY中传入的内容,然后进行渲染
-        Stack<TinyTemplateParser.BlockContext> stack=context.get("$bodyContent");
-        TinyTemplateParser.BlockContext bodyContent=stack.pop();
-        interpreter.interpretTree(engine,templateFromContext, bodyContent,pageContext,context,writer);
+        Stack<TinyTemplateParser.BlockContext> stack = context.get("$bodyContent");
+        TinyTemplateParser.BlockContext bodyContent = stack.pop();
+        if (bodyContent != null) {
+            interpreter.interpretTree(engine, templateFromContext, bodyContent, pageContext, context, writer);
+        }
         return null;
     }
 }
