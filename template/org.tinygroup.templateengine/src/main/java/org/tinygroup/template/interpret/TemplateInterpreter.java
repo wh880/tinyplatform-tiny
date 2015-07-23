@@ -98,23 +98,7 @@ public class TemplateInterpreter {
     }
 
     public void callMacro(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
-        Macro macro = engine.findMacro(name, templateFromContext, context);
-        TemplateContext newContext = new TemplateContextDefault();
-        newContext.setParent(context);
-        TinyTemplateParser.Para_expression_listContext expList = paraList;
-        if (expList != null) {
-            int i = 0;
-            for (TinyTemplateParser.Para_expressionContext para : expList.para_expression()) {
-                if (para.getChildCount() == 3) {
-                    //如果是带参数的
-                    newContext.put(para.IDENTIFIER().getText(), interpretTree(engine, templateFromContext, para.expression(), pageContext, context, writer));
-                } else {
-                    newContext.put(macro.getParameterName(i), interpretTree(engine, templateFromContext, para.expression(), pageContext, context, writer));
-                }
-                i++;
-            }
-        }
-        macro.render(null, null, newContext, writer);
+        callBlockMacro(engine,templateFromContext,name,null,paraList,pageContext,writer,context);
     }
 
     public void callBlockMacro(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.BlockContext block, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, Writer writer, TemplateContext context) throws Exception {

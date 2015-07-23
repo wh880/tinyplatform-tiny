@@ -97,6 +97,9 @@ public class TemplateInterpretEngine implements TemplateEngine {
         interpreter.addContextProcessor(new BodyContentProcessor());
         interpreter.addContextProcessor(new FieldProcessor());
         interpreter.addContextProcessor(new StopProcessor());
+        interpreter.addContextProcessor(new IncludeProcessor());
+        interpreter.addContextProcessor(new MemberFunctionCallProcessor());
+        interpreter.addContextProcessor(new FunctionCallProcessor());
     }
 
     public boolean isSafeVariable() {
@@ -390,7 +393,7 @@ public class TemplateInterpretEngine implements TemplateEngine {
         Template.render(context, writer);
     }
 
-    public Macro findMacro(Object macroNameObject, Template Template, TemplateContext context) throws TemplateException {
+    public Macro findMacro(Object macroNameObject, Template template, TemplateContext context) throws TemplateException {
         //上下文中的宏优先处理，主要是考虑bodyContent宏
         String macroName = macroNameObject.toString();
         Object obj = context.getItemMap().get(macroName);
@@ -398,13 +401,13 @@ public class TemplateInterpretEngine implements TemplateEngine {
             return (Macro) obj;
         }
         //查找私有宏
-        Macro macro = Template.getMacroMap().get(macroName);
+        Macro macro = template.getMacroMap().get(macroName);
         if (macro != null) {
             return macro;
         }
         //先查找import的列表，后添加的优先
-        for (int i = Template.getImportPathList().size() - 1; i >= 0; i--) {
-            Template macroLibrary = getMacroLibrary(Template.getImportPathList().get(i));
+        for (int i = template.getImportPathList().size() - 1; i >= 0; i--) {
+            Template macroLibrary = getMacroLibrary(template.getImportPathList().get(i));
             if (macroLibrary != null) {
                 macro = macroLibrary.getMacroMap().get(macroName);
                 if (macro != null) {
@@ -426,7 +429,7 @@ public class TemplateInterpretEngine implements TemplateEngine {
          */
         for (int i = macroLibraryList.size() - 1; i >= 0; i--) {
             String path = macroLibraryList.get(i);
-            if (!Template.getImportPathList().contains(path)) {
+            if (!template.getImportPathList().contains(path)) {
                 Template macroLibrary = getMacroLibrary(path);
                 if (macroLibrary != null) {
                     macro = macroLibrary.getMacroMap().get(macroName);

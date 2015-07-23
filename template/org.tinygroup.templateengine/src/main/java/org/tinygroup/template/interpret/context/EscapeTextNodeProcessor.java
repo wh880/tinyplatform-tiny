@@ -24,7 +24,7 @@ public class EscapeTextNodeProcessor implements TerminalNodeProcessor<TerminalNo
     }
 
     public Object process(TerminalNode terminalNode, TemplateContext context, Writer writer) throws IOException {
-        TemplateInterpreter.write(writer, terminalNode.getText());
+        TemplateInterpreter.write(writer, terminalNode.getText().substring(1));
         return null;
     }
 
