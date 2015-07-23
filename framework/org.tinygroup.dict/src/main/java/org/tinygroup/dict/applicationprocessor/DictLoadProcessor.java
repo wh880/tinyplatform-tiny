@@ -81,7 +81,7 @@ public class DictLoadProcessor extends AbstractConfiguration implements
 	}
 
 	public void init() {
-
+		//do nothing
 	}
 
 	public void stop() {
@@ -91,7 +91,7 @@ public class DictLoadProcessor extends AbstractConfiguration implements
 	}
 
 	public void setApplication(Application application) {
-
+		//do nothing
 	}
 
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {

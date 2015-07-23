@@ -15,6 +15,8 @@
  */
 package org.tinygroup.exception;
 
+import java.io.Serializable;
+
 import org.tinygroup.exception.constant.ErrorLevel;
 import org.tinygroup.exception.constant.ErrorType;
 
@@ -22,7 +24,7 @@ import org.tinygroup.exception.constant.ErrorType;
  *
  * Created by luog on 15/5/18.
  */
-public interface ErrorCode {
+public interface ErrorCode extends Serializable{
 
     String getErrorPrefix();
 
