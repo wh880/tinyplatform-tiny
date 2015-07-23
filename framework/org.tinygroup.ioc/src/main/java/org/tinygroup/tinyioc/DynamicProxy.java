@@ -34,11 +34,11 @@ public class DynamicProxy implements MethodInterceptor {
         aopDefineList.add(aopDefine);
     }
 
-    public <T> boolean isMatchClassName(String className) {
-        className = className.split("[$][$]")[0];
+    public boolean isMatchClassName(String className) {
+        String className2 = className.split("[$][$]")[0];
         for (AopDefine aopDefine : aopDefineList) {
-            Matcher matcher = aopDefine.getClassPattern().matcher(className);
-            if (matcher.find() && matcher.group().length() == className.length()) {
+            Matcher matcher = aopDefine.getClassPattern().matcher(className2);
+            if (matcher.find() && matcher.group().length() == className2.length()) {
                 return true;
             }
         }

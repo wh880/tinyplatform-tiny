@@ -129,7 +129,7 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 	}
 
 	public void setFileResolver(FileResolver fileResolver) {
-		
+		//do nothing
 	}
 
 	

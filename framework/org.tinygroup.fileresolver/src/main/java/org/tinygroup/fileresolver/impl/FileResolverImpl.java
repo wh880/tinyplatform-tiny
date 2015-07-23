@@ -111,7 +111,7 @@ public class FileResolverImpl implements FileResolver {
 	}
 
 	public void resolve() {
-		if (fileProcessorList.size() > 0) {
+		if (!fileProcessorList.isEmpty()) {
 			for (FileProcessor fileProcessor : fileProcessorList) {
 				fileProcessor.setFileResolver(this);
 			}
@@ -311,7 +311,7 @@ public class FileResolverImpl implements FileResolver {
 		if (classLoader == null) {
 			classLoader = this.getClass().getClassLoader();
 		}
-		if (fileProcessorList.size() == 0) {
+		if (fileProcessorList.isEmpty()) {
 			return;
 		} else {
 			LOGGER.logMessage(LogLevel.INFO, "正在进行全路径刷新....");
@@ -382,20 +382,20 @@ public class FileResolverImpl implements FileResolver {
 	}
 
 	private int getThreadNumber(String threadNumber) {
-		int fileProcessorThreadNum = 1;
+		int threadNum = 1;
 		if (threadNumber != null) {
 			try {
-				fileProcessorThreadNum = Integer.parseInt(threadNumber);
-				if (fileProcessorThreadNum <= 0) {
-					fileProcessorThreadNum = 1;
+				threadNum = Integer.parseInt(threadNumber);
+				if (threadNum <= 0) {
+					threadNum = 1;
 				}
 			} catch (Exception e) {
 				// 传入非int值
-				fileProcessorThreadNum = 1;
+				threadNum = 1;
 			}
 
 		}
-		return fileProcessorThreadNum;
+		return threadNum;
 
 	}
 

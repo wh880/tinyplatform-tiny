@@ -49,7 +49,7 @@ public class FormaterImpl implements Formater {
 	 */
 	public String format(Context context, String source) throws FormatException {
 		Matcher matcher = patternDefine.getPattern().matcher(source);
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		int curpos = 0;
 		while (matcher.find()) {
 			String replaceStr = patternDefine.getPureMatchText(matcher.group());

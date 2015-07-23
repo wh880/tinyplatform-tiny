@@ -52,7 +52,7 @@ public class CEPCoreExecuteUtil {
 		cepcore.process(event);
 
 		List<Parameter> result = serviceInfo.getResults();
-		if (result.isEmpty())
+		if (result==null||result.isEmpty())
 			return null;
 		return event.getServiceRequest().getContext()
 				.get(result.get(0).getName());

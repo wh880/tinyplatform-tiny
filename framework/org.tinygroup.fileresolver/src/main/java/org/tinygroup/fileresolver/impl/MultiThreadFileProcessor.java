@@ -34,6 +34,9 @@ public class MultiThreadFileProcessor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MultiThreadFileProcessor.class);
 
+	private MultiThreadFileProcessor(){
+		
+	}
 
 	public static void mutiProcessor(int threadNum,String mutiThreadName, List<FileObject> fileObjects,ProcessorCallBack callBack) {
 
