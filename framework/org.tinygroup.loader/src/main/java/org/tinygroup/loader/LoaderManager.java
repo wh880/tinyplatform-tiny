@@ -34,6 +34,9 @@ public class LoaderManager {
 	 */
 	private static Map<ClassLoader, List<String>> loaderMap = new HashMap<ClassLoader, List<String>>();
 
+	private LoaderManager(){
+		
+	}
 	/**
 	 * 根据class名获取该class的classloader
 	 * 
