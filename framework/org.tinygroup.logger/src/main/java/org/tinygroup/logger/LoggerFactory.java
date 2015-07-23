@@ -18,6 +18,7 @@ package org.tinygroup.logger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.ILoggerFactory;
 import org.tinygroup.logger.impl.LoggerImpl;
@@ -34,7 +35,7 @@ public final class LoggerFactory {
 
 	private static ThreadLocal<LogLevel> threadLogLevel = new ThreadLocal<LogLevel>();
 
-	private static ConcurrentHashMap<String, Logger> loggers = new ConcurrentHashMap<String, Logger>();
+	private static ConcurrentMap<String, Logger> loggers = new ConcurrentHashMap<String, Logger>();
 
 	private LoggerFactory() {
 	}
