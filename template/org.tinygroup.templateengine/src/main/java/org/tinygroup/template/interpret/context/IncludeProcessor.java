@@ -4,7 +4,7 @@ import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
-import org.tinygroup.template.interpret.TemplateInterpretEngine;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
@@ -26,7 +26,7 @@ public class IncludeProcessor implements ContextProcessor<TinyTemplateParser.Inc
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Include_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Include_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
         String path = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext, context, writer).toString();
 
         if (parseTree.hash_map_entry_list() != null) {

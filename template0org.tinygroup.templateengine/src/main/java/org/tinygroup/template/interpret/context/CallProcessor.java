@@ -12,21 +12,19 @@ import java.io.Writer;
 /**
  * Created by luog on 15/7/17.
  */
-public class CallWithBodyProcessor implements ContextProcessor<TinyTemplateParser.Call_block_directiveContext> {
+public class CallProcessor implements ContextProcessor<TinyTemplateParser.Call_directiveContext> {
 
-
-    public Class<TinyTemplateParser.Call_block_directiveContext> getType() {
-        return TinyTemplateParser.Call_block_directiveContext.class;
+    public Class<TinyTemplateParser.Call_directiveContext> getType() {
+        return TinyTemplateParser.Call_directiveContext.class;
     }
 
     public boolean processChildren() {
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_block_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
         String name = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer).toString();
-        interpreter.callBlockMacro(engine, templateFromContext, name, parseTree.block(), parseTree.para_expression_list(),pageContext, writer, context);
+        interpreter.callMacro(engine, templateFromContext, name, parseTree.para_expression_list(),pageContext, context, writer);
         return null;
     }
-
 }

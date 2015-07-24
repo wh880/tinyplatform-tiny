@@ -13,11 +13,11 @@ import java.io.Writer;
 /**
  * Created by luog on 15/7/17.
  */
-public class IndentProcessor implements ContextProcessor<TinyTemplateParser.Indent_directiveContext> {
+public class DentProcessor implements ContextProcessor<TinyTemplateParser.Dent_directiveContext> {
 
 
-    public Class<TinyTemplateParser.Indent_directiveContext> getType() {
-        return TinyTemplateParser.Indent_directiveContext.class;
+    public Class<TinyTemplateParser.Dent_directiveContext> getType() {
+        return TinyTemplateParser.Dent_directiveContext.class;
     }
 
     public boolean processChildren() {
@@ -25,8 +25,8 @@ public class IndentProcessor implements ContextProcessor<TinyTemplateParser.Inde
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Indent_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
-        U.indent(context);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Dent_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+        U.dent(context);
         return null;
     }
 }
