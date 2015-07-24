@@ -84,7 +84,7 @@ public class ClientImpl implements Client {
 							remoteHost, remotePort);
 					connect(remotePort, remoteHost);// 发起重连操作
 				} catch (InterruptedException e) {
-
+					//do nothing
 				}
 			}
 		});
