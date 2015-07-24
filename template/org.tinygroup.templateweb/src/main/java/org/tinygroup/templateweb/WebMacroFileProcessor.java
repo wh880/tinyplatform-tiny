@@ -20,7 +20,6 @@ import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.loader.ClassLoaderResourceLoader;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.vfs.FileObject;
 
@@ -85,10 +84,7 @@ public class WebMacroFileProcessor extends AbstractFileProcessor {
 		if (StringUtil.isBlank(componentExtFileName)) {
 			componentExtFileName = "component";
 		}
-		ClassLoaderResourceLoader classResourceLoader = new ClassLoaderResourceLoader(
-				templateExtFileName, layoutExtFileName, componentExtFileName,
-				getClass().getClassLoader());
-		engine.addResourceLoader(classResourceLoader);
+
 		List<String> scanningPaths = fileResolver.getScanningPaths();
 		for (String path : scanningPaths) {
 			FileObjectResourceLoader fileResourceLoader = new FileObjectResourceLoader(

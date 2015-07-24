@@ -7,7 +7,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.tinygroup.template.Macro;
 import org.tinygroup.template.TemplateContext;
+import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateContextDefault;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.terminal.OtherTerminalNodeProcessor;
 import org.tinygroup.template.parser.grammer.TinyTemplateLexer;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
@@ -44,18 +46,18 @@ public class TemplateInterpreter {
         return parser.template();
     }
 
-    public void interpret(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String templateString, String sourceName, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
+    public void interpret(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String templateString, String sourceName, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
         interpret(engine, templateFromContext, parserTemplateTree(sourceName, templateString), pageContext, context, writer);
         writer.flush();
     }
 
-    public void interpret(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, TinyTemplateParser.TemplateContext templateParseTree, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
+    public void interpret(TemplateEngineDefault engine, TemplateFromContext templateFromContext, TinyTemplateParser.TemplateContext templateParseTree, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
         for (int i = 0; i < templateParseTree.getChildCount(); i++) {
             interpretTree(engine, templateFromContext, templateParseTree.getChild(i), pageContext, context, writer);
         }
     }
 
-    public Object interpretTree(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, ParseTree tree, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
+    public Object interpretTree(TemplateEngineDefault engine, TemplateFromContext templateFromContext, ParseTree tree, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
         Object returnValue = null;
         if (tree instanceof TerminalNode) {
             TerminalNode terminalNode = (TerminalNode) tree;
@@ -97,11 +99,11 @@ public class TemplateInterpreter {
         }
     }
 
-    public void callMacro(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
+    public void callMacro(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
         callBlockMacro(engine,templateFromContext,name,null,paraList,pageContext,writer,context);
     }
 
-    public void callBlockMacro(TemplateInterpretEngine engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.BlockContext block, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, Writer writer, TemplateContext context) throws Exception {
+    public void callBlockMacro(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.BlockContext block, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, Writer writer, TemplateContext context) throws Exception {
         Macro macro = engine.findMacro(name, templateFromContext, context);
         TemplateContext newContext = new TemplateContextDefault();
         newContext.setParent(context);
@@ -112,6 +114,9 @@ public class TemplateInterpreter {
                     //如果是带参数的
                     newContext.put(para.IDENTIFIER().getText(), interpretTree(engine, templateFromContext, para.expression(), pageContext, context, writer));
                 } else {
+                    if(i>=macro.getParameterNames().size()){
+                        throw new TemplateException("参数数量超过宏<"+macro.getName()+">允许接受的数量",paraList);
+                    }
                     newContext.put(macro.getParameterName(i), interpretTree(engine, templateFromContext, para.expression(), pageContext, context, writer));
                 }
                 i++;

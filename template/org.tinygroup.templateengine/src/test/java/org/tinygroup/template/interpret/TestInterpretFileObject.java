@@ -1,15 +1,10 @@
 package org.tinygroup.template.interpret;
 
-import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateContextDefault;
-import org.tinygroup.template.interpret.loader.FileObjectInterpretResourceLoader;
-import org.tinygroup.template.interpret.loader.StringInterpretResourceLoader;
-import org.tinygroup.vfs.VFS;
-import org.tinygroup.vfs.impl.FileObjectImpl;
-
-import java.io.OutputStreamWriter;
+import org.tinygroup.template.impl.TemplateEngineDefault;
+import org.tinygroup.template.loader.FileObjectResourceLoader;
 
 /**
  * Created by luoguo on 15/7/22.
@@ -17,8 +12,8 @@ import java.io.OutputStreamWriter;
 public class TestInterpretFileObject {
     public static void main(String[] args) throws TemplateException {
         TemplateContext context=new TemplateContextDefault();
-        FileObjectInterpretResourceLoader loader = new FileObjectInterpretResourceLoader("page","layout","component","/Users/luoguo/resourceroot/");
-        TemplateInterpretEngine engine =new TemplateInterpretEngine();
+        FileObjectResourceLoader loader = new FileObjectResourceLoader("page","layout","component","/Users/luoguo/resourceroot/");
+        TemplateEngineDefault engine =new TemplateEngineDefault();
         engine.addResourceLoader(loader);
         engine.registerMacroLibrary("/a.component");
         engine.registerMacroLibrary("/b.component");

@@ -107,8 +107,6 @@ public class TinyFilterHandler {
 				return;
 			}
 		} catch (Exception e) {
-			logger.errorMessage("执行WebContext处理流程时出现异常，原因：{}", e,
-					e.getMessage());
 			if (wrapperContext == null) {
 				wrapperContext = WebContextUtil.getWebContext(request);
 			}
@@ -244,8 +242,6 @@ public class TinyFilterHandler {
 		Throwable rootCause = ExceptionUtil.getRootCause(e);
 		String originalExceptionMessage = rootCause.getClass().getSimpleName()
 				+ ": " + rootCause.getMessage();
-		logger.errorMessage("Full stack trace of the error "
-				+ originalExceptionMessage, e);
 		// 进行自定义异常处理
 		WebExceptionHandlerManager exceptionHandlerManager = BeanContainerFactory
 				.getBeanContainer(this.getClass().getClassLoader()).getBean(

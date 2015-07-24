@@ -1,23 +1,10 @@
-/**
- *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package org.tinygroup.template.impl;
 
 import org.tinygroup.template.*;
 import org.tinygroup.template.function.*;
-import org.tinygroup.template.parser.TinyTemplateCodeVisitor;
+import org.tinygroup.template.interpret.TemplateInterpreter;
+import org.tinygroup.template.interpret.context.*;
+import org.tinygroup.template.interpret.terminal.*;
 import org.tinygroup.template.rumtime.U;
 
 import java.io.CharArrayWriter;
@@ -49,6 +36,71 @@ public class TemplateEngineDefault implements TemplateEngine {
     private List<String> macroLibraryList = new ArrayList<String>();
     private String engineId;
 
+    public static TemplateInterpreter interpreter = new TemplateInterpreter();
+
+    static {
+
+        interpreter.addTerminalNodeProcessor(new DoubleNodeProcessor());
+        interpreter.addTerminalNodeProcessor(new EscapeTextNodeProcessor());
+        interpreter.addTerminalNodeProcessor(new FalseNodeProcessor());
+        interpreter.addTerminalNodeProcessor(new IntegerNodeProcessor());
+        interpreter.addTerminalNodeProcessor(new NullNodeProcessor());
+        interpreter.addTerminalNodeProcessor(new StringDoubleNodeProcessor());
+        interpreter.addTerminalNodeProcessor(new StringSingleNodeProcessor());
+        interpreter.addTerminalNodeProcessor(new TextCdataNodeProcessor());
+        interpreter.addTerminalNodeProcessor(new TextPlainNodeProcessor());
+        interpreter.addTerminalNodeProcessor(new TrueNodeProcessor());
+        interpreter.addTerminalNodeProcessor(new FloatProcessor());
+    }
+
+    static {
+        interpreter.addContextProcessor(new ValueProcessor());
+        interpreter.addContextProcessor(new ForProcessor());
+        interpreter.addContextProcessor(new SetProcessor());
+        interpreter.addContextProcessor(new IfProcessor());
+        interpreter.addContextProcessor(new ElseIfProcessor());
+        interpreter.addContextProcessor(new RangeProcessor());
+        interpreter.addContextProcessor(new ArrayProcessor());
+        interpreter.addContextProcessor(new MathBinaryProcessor());
+        interpreter.addContextProcessor(new MathCompareProcessor());
+        interpreter.addContextProcessor(new MathSingleRightProcessor());
+        interpreter.addContextProcessor(new MathSingleLeftProcessor());
+        interpreter.addContextProcessor(new BlankProcessor());
+        interpreter.addContextProcessor(new TabProcessor());
+        interpreter.addContextProcessor(new EolProcessor());
+        interpreter.addContextProcessor(new CommentProcessor());
+        interpreter.addContextProcessor(new MathIdentifierProcessor());
+        interpreter.addContextProcessor(new ForBreakProcessor());
+        interpreter.addContextProcessor(new ForContinueProcessor());
+        interpreter.addContextProcessor(new MapProcessor());
+        interpreter.addContextProcessor(new MathUnaryProcessor());
+        interpreter.addContextProcessor(new MathConditionProcessor());
+        interpreter.addContextProcessor(new MathConditionSimpleProcessor());
+        interpreter.addContextProcessor(new MathCompareConditionProcessor());
+        interpreter.addContextProcessor(new MathCompareRalationProcessor());
+        interpreter.addContextProcessor(new MathBinaryShiftProcessor());
+        interpreter.addContextProcessor(new MathBitwiseProcessor());
+        interpreter.addContextProcessor(new ArrayGetProcessor());
+        interpreter.addContextProcessor(new ImportIgnoreProcessor());
+        interpreter.addContextProcessor(new MacroDefineIgnoreProcessor());
+        interpreter.addContextProcessor(new CallProcessor());
+        interpreter.addContextProcessor(new CallWithBodyProcessor());
+        interpreter.addContextProcessor(new CallMacroProcessor());
+        interpreter.addContextProcessor(new CallMacroWithBodyProcessor());
+        interpreter.addContextProcessor(new LayoutDefineProcessor());
+        interpreter.addContextProcessor(new LayoutImplementProcessor());
+        interpreter.addContextProcessor(new DentProcessor());
+        interpreter.addContextProcessor(new IndentProcessor());
+        interpreter.addContextProcessor(new TextProcessor());
+        interpreter.addContextProcessor(new BodyContentProcessor());
+        interpreter.addContextProcessor(new FieldProcessor());
+        interpreter.addContextProcessor(new StopProcessor());
+        interpreter.addContextProcessor(new IncludeProcessor());
+        interpreter.addContextProcessor(new MemberFunctionCallProcessor());
+        interpreter.addContextProcessor(new FunctionCallProcessor());
+    }
+
+    private boolean compactMode;
 
     public boolean isSafeVariable() {
         return U.isSafeVariable();
@@ -59,18 +111,18 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public boolean isCompactMode() {
-        return TinyTemplateCodeVisitor.strictFormat;
+        return compactMode;
     }
 
     public void setCompactMode(boolean compactMode) {
-        TinyTemplateCodeVisitor.strictFormat = compactMode;
+        this.compactMode = compactMode;
     }
 
     public boolean isCacheEnabled() {
         return cacheEnabled;
     }
 
-    public TemplateEngine setCacheEnabled(boolean cacheEnabled) {
+    public TemplateEngineDefault setCacheEnabled(boolean cacheEnabled) {
         this.cacheEnabled = cacheEnabled;
         return this;
     }
@@ -84,8 +136,8 @@ public class TemplateEngineDefault implements TemplateEngine {
         macroCache.put(macro.getName(), macro);
     }
 
-    public void registerMacroLibrary(Template template) throws TemplateException {
-        for (Map.Entry<String, Macro> entry : template.getMacroMap().entrySet()) {
+    public void registerMacroLibrary(Template Template) throws TemplateException {
+        for (Map.Entry<String, Macro> entry : Template.getMacroMap().entrySet()) {
             registerMacro(entry.getValue());
         }
     }
@@ -112,13 +164,13 @@ public class TemplateEngineDefault implements TemplateEngine {
         return templateEngineContext;
     }
 
-    public TemplateEngine setEncode(String encode) {
+    public TemplateEngineDefault setEncode(String encode) {
         this.encode = encode;
         return this;
     }
 
 
-    public TemplateEngine setI18nVisitor(I18nVisitor i18nVistor) {
+    public TemplateEngineDefault setI18nVisitor(I18nVisitor i18nVistor) {
         this.i18nVisitor = i18nVistor;
         return this;
     }
@@ -140,7 +192,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         this.resourceLoaderList = resourceLoaderList;
     }
 
-    public TemplateEngine addTemplateFunction(TemplateFunction function) {
+    public TemplateEngineDefault addTemplateFunction(TemplateFunction function) {
         function.setTemplateEngine(this);
         String[] names = function.getNames().split(",");
         if (function.getBindingTypes() == null) {
@@ -198,7 +250,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public TemplateEngine addResourceLoader(ResourceLoader resourceLoader) {
+    public TemplateEngineDefault addResourceLoader(ResourceLoader resourceLoader) {
         resourceLoader.setTemplateEngine(this);
         resourceLoaderList.add(resourceLoader);
         return this;
@@ -207,9 +259,9 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public Template findTemplate(String path) throws TemplateException {
         for (ResourceLoader loader : resourceLoaderList) {
-            Template template = loader.getTemplate(path);
-            if (template != null) {
-                return template;
+            Template Template = loader.getTemplate(path);
+            if (Template != null) {
+                return Template;
             }
         }
         throw new TemplateException("找不到模板：" + path);
@@ -217,39 +269,38 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     private Template getMacroLibrary(String path) throws TemplateException {
         for (ResourceLoader loader : resourceLoaderList) {
-            Template template = loader.getMacroLibrary(path);
-            if (template != null) {
-                return template;
+            Template Template = loader.getMacroLibrary(path);
+            if (Template != null) {
+                return Template;
             }
         }
         throw new TemplateException("找不到模板：" + path);
     }
 
-    public TemplateEngine put(String key, Object value) {
+    public TemplateEngineDefault put(String key, Object value) {
         templateEngineContext.put(key, value);
         return this;
     }
 
 
-    public void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws TemplateException {
-        findMacro(macroName, template, context).render(template, context, context, writer);
+    public void renderMacro(String macroName, Template Template, TemplateContext context, Writer writer) throws TemplateException {
+        findMacro(macroName, Template, context).render(Template, context, context, writer);
     }
 
 
-    public void renderMacro(Macro macro, Template template, TemplateContext context, Writer writer) throws TemplateException {
-        macro.render(template, context, context, writer);
+    public void renderMacro(Macro macro, Template Template, TemplateContext context, Writer writer) throws TemplateException {
+        macro.render(Template, context, context, writer);
     }
 
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
         try {
-            Template template = findTemplate(path);
-            if (template != null) {
+            Template Template = findTemplate(path);
+            if (Template != null) {
                 context.put("$templateContext", context);
-                context.put("$compactMode", TinyTemplateCodeVisitor.strictFormat);
-                List<Template> layoutPaths = getLayoutList(template.getPath());
+                List<Template> layoutPaths = getLayoutList(Template.getPath());
                 if (layoutPaths.size() > 0) {
                     Writer templateWriter = new CharArrayWriter();
-                    template.render(context, templateWriter);
+                    Template.render(context, templateWriter);
                     context.put("pageContent", templateWriter.toString());
                     Writer layoutWriter = null;
                     TemplateContext layoutContext = context;
@@ -266,7 +317,7 @@ public class TemplateEngineDefault implements TemplateEngine {
                     }
                     writer.write(layoutWriter.toString());
                 } else {
-                    renderTemplate(template, context, writer);
+                    renderTemplate(Template, context, writer);
                 }
                 writer.flush();
             } else {
@@ -278,9 +329,9 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public void renderTemplateWithOutLayout(String path, TemplateContext context, Writer writer) throws TemplateException {
-        Template template = findTemplate(path);
-        if (template != null) {
-            renderTemplate(template, context, writer);
+        Template Template = findTemplate(path);
+        if (Template != null) {
+            renderTemplate(Template, context, writer);
         } else {
             throw new TemplateException("找不到模板：" + path);
         }
@@ -332,13 +383,13 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public void renderTemplate(Template template) throws TemplateException {
-        renderTemplate(template, new TemplateContextDefault(), new OutputStreamWriter(System.out));
+    public void renderTemplate(Template Template) throws TemplateException {
+        renderTemplate(Template, new TemplateContextDefault(), new OutputStreamWriter(System.out));
     }
 
 
-    public void renderTemplate(Template template, TemplateContext context, Writer writer) throws TemplateException {
-        template.render(context, writer);
+    public void renderTemplate(Template Template, TemplateContext context, Writer writer) throws TemplateException {
+        Template.render(context, writer);
     }
 
     public Macro findMacro(Object macroNameObject, Template template, TemplateContext context) throws TemplateException {
@@ -394,10 +445,10 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public Object executeFunction(Template template, TemplateContext context, String functionName, Object... parameters) throws TemplateException {
+    public Object executeFunction(Template Template, TemplateContext context, String functionName, Object... parameters) throws TemplateException {
         TemplateFunction function = functionMap.get(functionName);
         if (function != null) {
-            return function.execute(template, context, parameters);
+            return function.execute(Template, context, parameters);
         }
         throw new TemplateException("找不到函数：" + functionName);
     }

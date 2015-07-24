@@ -1,9 +1,10 @@
 package org.tinygroup.template.interpret.context;
 
 import org.tinygroup.template.TemplateContext;
+import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
-import org.tinygroup.template.interpret.TemplateInterpretEngine;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.rumtime.U;
@@ -24,8 +25,8 @@ public class MemberFunctionCallProcessor implements ContextProcessor<TinyTemplat
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_member_function_callContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
-        Object object=interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext, context, writer);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_member_function_callContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+        Object object = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext, context, writer);
         String name = parseTree.IDENTIFIER().getText();
         Object[] paraList = null;
         if (parseTree.expression_list() != null) {
@@ -35,10 +36,13 @@ public class MemberFunctionCallProcessor implements ContextProcessor<TinyTemplat
                 paraList[i++] = interpreter.interpretTree(engine, templateFromContext, expr, pageContext, context, writer);
             }
         }
-        if(parseTree.getChild(1).getText().equals(".")){
-            return U.c(templateFromContext,context,object,name,paraList);
-        }else{
-            return U.sc(templateFromContext,context,object,name,paraList);
+        if (parseTree.getChild(1).getText().equals(".")) {
+            if (object == null) {
+                throw new TemplateException("调用成员函数["+name + "]的对象不能为空", parseTree);
+            }
+            return U.c(templateFromContext, context, object, name, paraList);
+        } else {
+            return U.sc(templateFromContext, context, object, name, paraList);
         }
     }
 }

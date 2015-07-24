@@ -1,6 +1,7 @@
 package org.tinygroup.template.interpret.context;
 
 import org.tinygroup.template.TemplateContext;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.*;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
@@ -20,7 +21,7 @@ public class CallMacroWithBodyProcessor implements ContextProcessor<TinyTemplate
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_macro_block_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_macro_block_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
         String name = parseTree.getChild(0).getText();
         name = name.substring(2, name.length() - 1).trim();
 //        MacroFromContext macro= (MacroFromContext) engine.findMacro(name,templateFromContext,context);

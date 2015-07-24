@@ -3,7 +3,7 @@ package org.tinygroup.template.interpret.context;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
-import org.tinygroup.template.interpret.TemplateInterpretEngine;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.rumtime.U;
@@ -23,7 +23,7 @@ public class ValueProcessor implements ContextProcessor<TinyTemplateParser.Value
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.ValueContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.ValueContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
         Object value = interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(1), pageContext,context, writer);
         if (parseTree.getChild(0).getText().equals("${")) {
             TemplateInterpreter.write(writer, value);

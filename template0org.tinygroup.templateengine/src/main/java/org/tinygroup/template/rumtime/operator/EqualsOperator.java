@@ -13,26 +13,27 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.template.parser;
+package org.tinygroup.template.rumtime.operator;
 
-import org.antlr.v4.runtime.DefaultErrorStrategy;
-import org.antlr.v4.runtime.Parser;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Token;
+/**
+ * Created by luoguo on 2014/6/5.
+ */
+public class EqualsOperator extends TwoConvertOperator {
 
-public class TinyTemplateErrorStrategy extends DefaultErrorStrategy {
 
-    public void recover(Parser recognizer, RecognitionException e) {
-        throw new SyntaxErrorException(e);
+    protected Object operation(Object left, Object right) {
+        if(left==null&&right==null){
+            return true;
+        }
+        if(left==null||right==null){
+            return false;
+        }
+        return left.equals(right);
     }
 
 
-    public Token recoverInline(Parser recognizer)  {
-        reportMissingToken(recognizer);
-        return null;
+    public String getOperation() {
+        return "==";
     }
 
-
-    public void sync(Parser recognizer) {
-    }
 }

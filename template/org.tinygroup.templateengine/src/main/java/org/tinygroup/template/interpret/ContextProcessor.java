@@ -1,8 +1,8 @@
 package org.tinygroup.template.interpret;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 
 import java.io.Writer;
 
@@ -14,6 +14,6 @@ public interface ContextProcessor<T extends ParserRuleContext> {
 
     boolean processChildren();
 
-    Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, T parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception;
+    Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, T parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception;
 
 }

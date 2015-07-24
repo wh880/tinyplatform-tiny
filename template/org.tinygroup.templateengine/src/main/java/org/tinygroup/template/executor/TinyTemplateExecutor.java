@@ -81,7 +81,7 @@ public class TinyTemplateExecutor {
         
         
         //配置文件目录资源加载器
-        FileObjectResourceLoader resourceLoader = new FileObjectResourceLoader(templateExtFileName, layoutExtFileName, componentExtFileName, root);
+		FileObjectResourceLoader resourceLoader = new FileObjectResourceLoader(templateExtFileName, layoutExtFileName, componentExtFileName, root);
         engine.addResourceLoader(resourceLoader);
         
         //注册文件目录的资源并注册

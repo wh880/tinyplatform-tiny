@@ -22,6 +22,12 @@ public class EqualsOperator extends TwoConvertOperator {
 
 
     protected Object operation(Object left, Object right) {
+        if(left==null&&right==null){
+            return true;
+        }
+        if(left==null||right==null){
+            return false;
+        }
         return left.equals(right);
     }
 
