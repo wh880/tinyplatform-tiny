@@ -122,13 +122,15 @@ public class TemplateInterpreter {
                 i++;
             }
         }
-        Stack<TinyTemplateParser.BlockContext> stack = context.get("$bodyContent");
-        if (stack == null) {
-            stack = new Stack<TinyTemplateParser.BlockContext>();
-            newContext.put("$bodyContent", stack);
+        if(block!=null) {
+            Stack<TinyTemplateParser.BlockContext> stack = context.get("$bodyContent");
+            if (stack == null) {
+                stack = new Stack<TinyTemplateParser.BlockContext>();
+                newContext.put("$bodyContent", stack);
+            }
+            stack.push(block);
+            macro.render(templateFromContext, pageContext, newContext, writer);
         }
-        stack.push(block);
-        macro.render(templateFromContext, pageContext, newContext, writer);
     }
 
 }
