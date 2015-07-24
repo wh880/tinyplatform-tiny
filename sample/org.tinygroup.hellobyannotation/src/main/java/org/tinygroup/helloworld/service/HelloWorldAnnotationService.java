@@ -17,13 +17,14 @@ package org.tinygroup.helloworld.service;
 
 import org.tinygroup.service.annotation.ServiceComponent;
 import org.tinygroup.service.annotation.ServiceMethod;
+import org.tinygroup.service.annotation.ServiceParameter;
 import org.tinygroup.service.annotation.ServiceResult;
 
 @ServiceComponent()
 public class HelloWorldAnnotationService{
 	@ServiceMethod(serviceId = "helloByAnnotation")
 	@ServiceResult(name = "result")
-	public String sayHello(String name) {
+	public String sayHello(@ServiceParameter String name) {
 		if (name == null) {
 			name = "world";
 		}
