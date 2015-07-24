@@ -28,11 +28,12 @@ public class ServerHandler extends SimpleChannelInboundHandler<Object> {
 	}
 
 	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-		
+		//do nothing
 	}
 
 
 	protected void channelRead0(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
+		//do nothing
 	}
 }

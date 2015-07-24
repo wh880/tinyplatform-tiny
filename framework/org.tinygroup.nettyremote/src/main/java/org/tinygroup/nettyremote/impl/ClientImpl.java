@@ -106,7 +106,7 @@ public class ClientImpl implements Client {
 						+ remotePort + "发生异常", e);
 			}
 		} finally {
-			if (reConnect&start) {
+			if (reConnect&&start) {
 				reConnect();
 			}
 		}

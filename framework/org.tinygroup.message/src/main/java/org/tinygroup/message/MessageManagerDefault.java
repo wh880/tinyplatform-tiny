@@ -47,7 +47,7 @@ public class MessageManagerDefault<Account extends MessageAccount, Sender extend
     }
 
     public void addMessageReceiveProcessor(MessageReceiveProcessor<Msg> messageReceiveProcessor) {
-
+    	//do nothing
     }
 
     public void setMessageSendProcessors(List<MessageSendProcessor<Sender, Receiver, Msg>> messageSendProcessors) {
@@ -55,12 +55,12 @@ public class MessageManagerDefault<Account extends MessageAccount, Sender extend
     }
 
     public void addMessageSendProcessor(MessageSendProcessor<Sender, Receiver, Msg> messageSendProcessor) {
-
+    	//do nothing
     }
 
     public Collection<Msg> getMessages() throws MessageException {
         Collection<Msg> messages = messageReceiveService.getMessages(messageAccount);
-        if (messageReceiveProcessors != null && messageReceiveProcessors.size() > 0) {
+        if (messageReceiveProcessors != null && !messageReceiveProcessors.isEmpty()) {
             for (Message message : messages) {
                 for (MessageReceiveProcessor processor : messageReceiveProcessors) {
                     if (processor.isMatch(message)) {
