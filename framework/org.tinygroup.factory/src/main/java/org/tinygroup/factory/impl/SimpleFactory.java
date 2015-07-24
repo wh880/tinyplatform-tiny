@@ -140,7 +140,7 @@ public class SimpleFactory implements Factory {
 				String scope = bean.getScope();
 				if (scope.equals(SINGLETON)) {
 					return object;
-				} else if (scope.equals("prototype")) {
+				} else if (("prototype").equals(scope)) {
 					T newObject = (T) retriveClass(bean.getClassName())
 							.newInstance();
 					BeanUtils.copyProperties(newObject, object);// 如果属性是Prototype是不是也创建一个新的？

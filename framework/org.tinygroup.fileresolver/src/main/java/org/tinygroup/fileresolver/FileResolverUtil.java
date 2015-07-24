@@ -42,6 +42,10 @@ public class FileResolverUtil {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(FileResolverUtil.class);
 
+	private FileResolverUtil() {
+
+	}
+
 	public static void addClassPathPattern(FileResolver resolver) {
 		resolver.addIncludePathPattern("[\\/]classes\\b");
 		resolver.addIncludePathPattern("[\\/]test-classes\\b");
@@ -58,26 +62,29 @@ public class FileResolverUtil {
 		} else {
 			classPaths = classPathProperty.split(":");
 		}
-		if (classPaths != null) {
-			for (String classPath : classPaths) {
-				if (classPath.length() > 0) {
-					FileObject fileObject = VFS.resolveFile(classPath);
-					if (isInclude(fileObject, resolver)) {
-						classPathFileObjects.add(fileObject.getAbsolutePath());
-					}
+		if (classPaths == null) {
+			return classPathFileObjects;
+		}
+		// if (classPaths != null) {
+		for (String classPath : classPaths) {
+			if (classPath.length() > 0) {
+				FileObject fileObject = VFS.resolveFile(classPath);
+				if (isInclude(fileObject, resolver)) {
+					classPathFileObjects.add(fileObject.getAbsolutePath());
 				}
 			}
 		}
+		// }
 		return classPathFileObjects;
 	}
 
 	public static boolean isInclude(FileObject fileObject, FileResolver resolver) {
-		//jboss可能出现解析到根本不存在的jar包，这种情况直接忽略
-		if(fileObject==null || !fileObject.isExist()){
+		// jboss可能出现解析到根本不存在的jar包，这种情况直接忽略
+		if (fileObject == null || !fileObject.isExist()) {
 			return false;
 		}
 		URL url = fileObject.getURL();
-		if (url.getProtocol().equals("file")
+		if (("file").equals(url.getProtocol())
 				&& fileObject.getSchemaProvider() instanceof JarSchemaProvider) {
 			Map<String, Pattern> includePathPatternMap = resolver
 					.getIncludePathPatternMap();
@@ -92,7 +99,7 @@ public class FileResolverUtil {
 				}
 			}
 			return false;
-		}else{
+		} else {
 			return true;
 		}
 	}
@@ -118,59 +125,65 @@ public class FileResolverUtil {
 			}
 			FileObject fileObject = VFS.resolveFile(path);
 			if (includePathPatternMap != null
-					&& includePathPatternMap.size() > 0) {
+					&& !includePathPatternMap.isEmpty()) {
 				if (isInclude(fileObject, resolver)) {
 					addJarFile(classPaths, fileObject.getAbsolutePath());
 					continue;
 				}
 			}
-			if(fileObject.isExist()){
+			if (fileObject.isExist()) {
 				Manifest mf = new Manifest(url.openStream());
 				Attributes attributes = mf.getMainAttributes();
 				String isTinyProject = attributes.getValue("IsTinyProject");
 				if ("true".equals(isTinyProject)) {
-					LOGGER.logMessage(LogLevel.INFO,
+					LOGGER.logMessage(
+							LogLevel.INFO,
 							"文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。",
 							fileObject);
 					addJarFile(classPaths, fileObject.getAbsolutePath());
 				}
 			}
-			
+
 		}
-		//Jboss新版本会将war资源解压到临时目录，需要根据TINY_WEBROOT再查找
+		// Jboss新版本会将war资源解压到临时目录，需要根据TINY_WEBROOT再查找
 		String webinfPath = ConfigurationUtil.getConfigurationManager()
-		.getConfiguration().get("TINY_WEBROOT");
-        if (!StringUtil.isEmpty(webinfPath)) {
-        	FileObject webroot = VFS.resolveFile(webinfPath);
-        	webroot.foreach(new FileObjectFilter(){
+				.getConfiguration().get("TINY_WEBROOT");
+		if (!StringUtil.isEmpty(webinfPath)) {
+			FileObject webroot = VFS.resolveFile(webinfPath);
+			webroot.foreach(new FileObjectFilter() {
 				public boolean accept(FileObject fileObject) {
 					return fileObject.getFileName().endsWith(".jar");
-				}}
-        	    , new FileObjectProcessor(){
+				}
+			}, new FileObjectProcessor() {
 
-					public void process(FileObject fileObject) {
-						FileObject mfObject = fileObject.getFileObject("META-INF/MANIFEST.MF");
-						if(mfObject==null || !mfObject.isExist()){
-							return;
+				public void process(FileObject fileObject) {
+					FileObject mfObject = fileObject
+							.getFileObject("META-INF/MANIFEST.MF");
+					if (mfObject == null || !mfObject.isExist()) {
+						return;
+					}
+					try {
+						Manifest mf = new Manifest(mfObject.getInputStream());
+						Attributes attributes = mf.getMainAttributes();
+						String isTinyProject = attributes
+								.getValue("IsTinyProject");
+						if ("true".equals(isTinyProject)) {
+							LOGGER.logMessage(
+									LogLevel.INFO,
+									"文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。",
+									fileObject);
+							addJarFile(classPaths, fileObject.getAbsolutePath());
 						}
-						try{
-							Manifest mf = new Manifest(mfObject.getInputStream());
-							Attributes attributes = mf.getMainAttributes();
-							String isTinyProject = attributes.getValue("IsTinyProject");
-							if ("true".equals(isTinyProject)) {
-								LOGGER.logMessage(LogLevel.INFO,
-										"文件<{}>由于在MANIFEST.MF文件中声明了IsTinyProject: true而被扫描。",
-										fileObject);
-								addJarFile(classPaths, fileObject.getAbsolutePath());
-							}
-						}catch(IOException e){
-							LOGGER.logMessage(LogLevel.WARN, "解析MANIFEST.MF发生异常:{}",mfObject.getAbsolutePath());
-						}
-						
-					}}
-        	    );
-        }
-		
+					} catch (IOException e) {
+						LOGGER.logMessage(LogLevel.WARN,
+								"解析MANIFEST.MF发生异常:{}",
+								mfObject.getAbsolutePath());
+					}
+
+				}
+			});
+		}
+
 		LOGGER.logMessage(LogLevel.INFO, "查找Web工程中的jar文件列表完成。");
 		return classPaths;
 	}
@@ -184,7 +197,7 @@ public class FileResolverUtil {
 		List<String> allScanningPath = new ArrayList<String>();
 		LOGGER.logMessage(LogLevel.INFO, "查找WEB-INF/classes路径开始...");
 		URL url = FileResolverImpl.class.getResource("/");
-		if(url==null){
+		if (url == null) {
 			url = FileResolverImpl.class.getResource("");
 		}
 		String path = url.toString();

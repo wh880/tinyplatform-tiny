@@ -153,7 +153,7 @@ public class XStreamFileProcessor extends AbstractFileProcessor {
 	}
 
 	public void setFileResolver(FileResolver fileResolver) {
-
+		//do nothing
 	}
 
 	

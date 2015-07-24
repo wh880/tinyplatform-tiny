@@ -111,7 +111,7 @@ public class FileMonitorProcessor extends AbstractConfiguration implements
 	}
 
 	public void setApplication(Application application) {
-
+		//do nothing
 	}
 
 	public int getOrder() {

@@ -72,7 +72,7 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 
 	public FileObject getFileObject(String path) {
 		FileObject fileObject = fileMap.get(path);
-		if (fileObject == null && searchPathMap.size() > 0) {
+		if (fileObject == null && !searchPathMap.isEmpty()) {
 			for (String searchPath : searchPathMap.keySet()) {
 				FileObject searchPathObject=searchPathMap.get(searchPath);
 				if(searchPathObject==null){
@@ -111,7 +111,7 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 	}
 
 	public FileObject getFileObjectDetectLocale(String path) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(path.substring(0, path.lastIndexOf('.')));
 		sb.append(".");
 		String locale = LocaleUtil.getContext().getLocale().toString();

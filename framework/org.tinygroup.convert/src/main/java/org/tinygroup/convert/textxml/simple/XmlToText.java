@@ -62,7 +62,7 @@ public class XmlToText implements Converter<String, String> {
 		checkRootNodeName(root);
 		List<XmlNode> rowList = root.getSubNodes(rowNodeName);
 		StringBuilder sb = new StringBuilder();
-		if (!rowList.isEmpty()) {
+		if (rowList!=null&&!rowList.isEmpty()) {
 			for (int i = 0; i < fieldList.size(); i++) {
 				if (i > 0) {
 					sb.append(fieldSplit);

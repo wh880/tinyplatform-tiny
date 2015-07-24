@@ -28,12 +28,12 @@ import java.util.*;
  * Created by luoguo on 13-12-27.
  */
 public class BeanContainerImpl implements BeanContainer {
-    DynamicProxy proxy = new DynamicProxy();
-    ThreadLocal threadLocal = new ThreadLocal();
-    Map<String, Class> nameMap = new HashMap<String, Class>();
-    Map<Class, String> scopeMap = new HashMap<Class, String>();
-    List<Class> classList = new ArrayList<Class>();
-    Map<Class, Object> objectMap = new HashMap<Class, Object>();
+	private DynamicProxy proxy = new DynamicProxy();
+    private ThreadLocal threadLocal = new ThreadLocal();
+    private Map<String, Class> nameMap = new HashMap<String, Class>();
+    private Map<Class, String> scopeMap = new HashMap<Class, String>();
+    private List<Class> classList = new ArrayList<Class>();
+    private Map<Class, Object> objectMap = new HashMap<Class, Object>();
     private Map<Class, TypeConverter> typeConverterMap = new HashMap<Class, TypeConverter>();
     private BeanContainer parent = null;
     private List<BeanContainer> beanContainerList = new ArrayList<BeanContainer>();
@@ -102,11 +102,11 @@ public class BeanContainerImpl implements BeanContainer {
         T object = null;
 
         if (scope != null) {
-            if (scope.equalsIgnoreCase("singleton")) {
+            if (("singleton").equalsIgnoreCase(scope)) {
                 object = (T) getSingletonObject(clazz);
-            } else if (scope.equalsIgnoreCase("prototype")) {
+            } else if (("prototype").equalsIgnoreCase(scope)) {
                 object = (T) getPrototypeObject(clazz);
-            } else if (scope.equalsIgnoreCase("request")) {
+            } else if (("request").equalsIgnoreCase(scope)) {
                 object = (T) getThreadObject(clazz);
             }
         } else {
@@ -131,11 +131,11 @@ public class BeanContainerImpl implements BeanContainer {
             Inject inject = field.getAnnotation(Inject.class);
             //如果属性上有注解
             if (inject != null) {
-                String name = null;
+//                String name = null;
                 Named named = field.getAnnotation(Named.class);
                 Value valueAnnotation = field.getAnnotation(Value.class);
                 if (named != null && named.value().length() > 0) {
-                    name = named.value();
+//                    name = named.value();
                 }
                 Object value = null;
                 Type fc = field.getGenericType();

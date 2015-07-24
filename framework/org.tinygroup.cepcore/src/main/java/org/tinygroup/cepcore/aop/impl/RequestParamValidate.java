@@ -51,7 +51,7 @@ public class RequestParamValidate implements CEPCoreAopAdapter {
 		ServiceRequest request = event.getServiceRequest();
 		ServiceInfo info = find(request);
 		List<Parameter> params = info.getParameters();
-		if (!params.isEmpty()) {
+		if (params!=null&&!params.isEmpty()) {
 			Object args[] = new Object[params.size()];
 			for (int i = 0; i < params.size(); i++) {
 				args[i] = getArgument(request.getContext(), params.get(i));

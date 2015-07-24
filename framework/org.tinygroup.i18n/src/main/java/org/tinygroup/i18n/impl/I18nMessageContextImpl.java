@@ -76,33 +76,28 @@ public class I18nMessageContextImpl implements I18nMessageContext {
 
 	public String getMessage(String code, String defaultMessage) {
 		String message=getMessage(code);
-		if(message==null){
-			message=defaultMessage;
-		}
-		return message;
+		return getRealMessage(defaultMessage, message);
 	}
 
 	public String getMessage(String code, Locale locale, String defaultMessage) {
 		String message=getMessage(code, locale);
-		if(message==null){
-			message=defaultMessage;
-		}
-		return message;
+		return getRealMessage(defaultMessage, message);
 	}
 
 	public String getMessage(String code, String defaultMessage, Context context) {
 		String message=getMessage(code, context);
-		if(message==null){
-			message=defaultMessage;
-		}
-		return message;
+		return getRealMessage(defaultMessage, message);
 	}
 
 	public String getMessage(String code, String defaultMessage,
 			Context context, Locale locale) {
 		String message=getMessage(code, context, locale);
+		return getRealMessage(defaultMessage, message);
+	}
+
+	private String getRealMessage(String defaultMessage, String message) {
 		if(message==null){
-			message=defaultMessage;
+			return defaultMessage;
 		}
 		return message;
 	}
