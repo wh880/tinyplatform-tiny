@@ -83,7 +83,6 @@ public class TinyTemplateProcessor extends AbstractTinyProcessor {
 			logger.logMessage(LogLevel.DEBUG, "路径<{}>处理时间：{}ms", servletPath,
 					endTime - startTime);
 		} catch (Exception e) {
-			logger.errorMessage(e.getMessage(), e);
 			throw new NestedServletException("tiny template render error", e);
 		}
 	}
