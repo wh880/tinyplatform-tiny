@@ -4,7 +4,7 @@ import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
-import org.tinygroup.template.interpret.TemplateInterpretEngine;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.terminal.ForBreakException;
 import org.tinygroup.template.interpret.terminal.ForContinueException;
@@ -26,7 +26,7 @@ public class ForProcessor implements ContextProcessor<TinyTemplateParser.For_dir
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.For_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.For_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
         String name = parseTree.for_expression().IDENTIFIER().getText();
         Object values = interpreter.interpretTree(engine, templateFromContext, parseTree.for_expression().expression(),pageContext, context, writer);
         ForIterator forIterator = new ForIterator(values);

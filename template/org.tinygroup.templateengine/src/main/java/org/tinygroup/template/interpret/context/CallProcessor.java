@@ -3,7 +3,7 @@ package org.tinygroup.template.interpret.context;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
-import org.tinygroup.template.interpret.TemplateInterpretEngine;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
@@ -22,7 +22,7 @@ public class CallProcessor implements ContextProcessor<TinyTemplateParser.Call_d
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
         String name = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer).toString();
         interpreter.callMacro(engine, templateFromContext, name, parseTree.para_expression_list(),pageContext, context, writer);
         return null;

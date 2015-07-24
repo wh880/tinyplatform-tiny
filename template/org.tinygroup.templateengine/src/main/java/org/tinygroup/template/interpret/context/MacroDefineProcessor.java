@@ -1,6 +1,7 @@
 package org.tinygroup.template.interpret.context;
 
 import org.tinygroup.template.TemplateContext;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.*;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
@@ -19,7 +20,7 @@ public class MacroDefineProcessor implements ContextProcessor<TinyTemplateParser
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Macro_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateInterpretEngine engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Macro_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
         String name =parseTree.getChild(0).getText();
         name=name.substring(6,name.length()-1).trim();
         MacroFromContext macroFromContext = new MacroFromContext(engine.interpreter, name, parseTree.block());
