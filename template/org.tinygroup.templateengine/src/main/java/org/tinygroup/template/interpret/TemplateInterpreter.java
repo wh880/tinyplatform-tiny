@@ -122,13 +122,19 @@ public class TemplateInterpreter {
                 i++;
             }
         }
+
         Stack<TinyTemplateParser.BlockContext> stack = context.get("$bodyContent");
         if (stack == null) {
             stack = new Stack<TinyTemplateParser.BlockContext>();
             newContext.put("$bodyContent", stack);
         }
         stack.push(block);
+        int stackSize=stack.size();
         macro.render(templateFromContext, pageContext, newContext, writer);
-    }
+        if(stack.size()==stackSize){
+            //检查是否有#bodyContent,如果没有,主要主动弹出刚才放的空bodyContent
+            stack.pop();
+        }
 
+    }
 }
