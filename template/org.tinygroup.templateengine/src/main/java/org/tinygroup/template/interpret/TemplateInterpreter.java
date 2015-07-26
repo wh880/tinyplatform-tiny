@@ -135,6 +135,5 @@ public class TemplateInterpreter {
             //检查是否有#bodyContent,如果没有,主要主动弹出刚才放的空bodyContent
             stack.pop();
         }
-
     }
 }

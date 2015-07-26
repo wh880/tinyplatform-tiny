@@ -22,7 +22,6 @@ import java.util.Map;
  */
 public class TemplateEngineDefault implements TemplateEngine {
 
-    private static final String DEFAULT = "default";
     private Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
     private Map<Class, Map<String, TemplateFunction>> typeFunctionMap = new HashMap<Class, Map<String, TemplateFunction>>();
     private TemplateContext templateEngineContext = new TemplateContextDefault();
@@ -359,10 +358,6 @@ public class TemplateEngineDefault implements TemplateEngine {
                 String layoutPath = loader.getLayoutPath(template);
                 if (layoutPath != null) {
                     Template layout = loader.getLayout(layoutPath);
-                    if (layout == null) {
-                        String defaultTemplateName = path + DEFAULT + layoutPath.substring(layoutPath.lastIndexOf('.'));
-                        layout = loader.getLayout(defaultTemplateName);
-                    }
                     if (layout != null) {
                         layoutPathList.add(layout);
                         break;
