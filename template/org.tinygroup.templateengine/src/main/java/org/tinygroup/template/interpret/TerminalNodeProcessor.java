@@ -10,6 +10,5 @@ import java.io.Writer;
  */
 public interface TerminalNodeProcessor<T extends ParseTree> {
     int getType();
-    boolean processChildren();
     Object process(T parseTree, TemplateContext context, Writer writer) throws Exception;
 }

@@ -23,8 +23,8 @@ public class StringDoubleNodeProcessor implements TerminalNodeProcessor<Terminal
 
     public Object process(TerminalNode terminalNode, TemplateContext context, Writer writer) {
         String text=terminalNode.getText();
-        text=text.replaceAll("[\\\\][\\\\]","\\\\");
         text=text.replaceAll("\\\\\"","\"");
+        text=text.replaceAll("[\\\\][\\\\]","\\\\");
         return text.substring(1, text.length() - 1);
     }
 

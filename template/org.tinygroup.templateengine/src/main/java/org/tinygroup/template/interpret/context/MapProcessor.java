@@ -1,5 +1,6 @@
 package org.tinygroup.template.interpret.context;
 
+import org.tinygroup.order.order.ObjectOrder;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
@@ -33,7 +34,7 @@ public class MapProcessor implements ContextProcessor<TinyTemplateParser.Expr_ha
         if (expressions != null) {
             for (int i = 0; i < expressions.size(); i += 2) {
                 String key = interpreter.interpretTree(engine, templateFromContext, expressions.get(i), pageContext,context, writer).toString();
-                String value = interpreter.interpretTree(engine, templateFromContext, expressions.get(i + 1),pageContext, context, writer).toString();
+                Object value = interpreter.interpretTree(engine, templateFromContext, expressions.get(i + 1),pageContext, context, writer);
                 map.put(key, value);
             }
         }
