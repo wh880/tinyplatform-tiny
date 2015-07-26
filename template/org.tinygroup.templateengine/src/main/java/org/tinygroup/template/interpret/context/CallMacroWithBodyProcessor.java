@@ -10,7 +10,7 @@ import java.io.Writer;
 /**
  * Created by luog on 15/7/17.
  */
-public class CallMacroWithBodyProcessor implements ContextProcessor<TinyTemplateParser.Call_macro_block_directiveContext> {
+public class CallMacroWithBodyProcessor extends AbstractCallMacroProcessor<TinyTemplateParser.Call_macro_block_directiveContext> {
 
 
     public Class<TinyTemplateParser.Call_macro_block_directiveContext> getType() {
@@ -24,9 +24,7 @@ public class CallMacroWithBodyProcessor implements ContextProcessor<TinyTemplate
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_macro_block_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
         String name = parseTree.getChild(0).getText();
         name = name.substring(2, name.length() - 1).trim();
-//        MacroFromContext macro= (MacroFromContext) engine.findMacro(name,templateFromContext,context);
-        interpreter.callBlockMacro(engine,templateFromContext,name,parseTree.block(),parseTree.para_expression_list(),pageContext , writer, context);
-//        macro.render(templateFromContext,context,context,writer);
+        callBlockMacro(engine,templateFromContext,name,parseTree.block(),parseTree.para_expression_list(),pageContext , writer, context);
         return null;
     }
 

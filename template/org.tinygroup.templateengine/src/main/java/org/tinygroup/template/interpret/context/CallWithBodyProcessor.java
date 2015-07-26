@@ -12,7 +12,7 @@ import java.io.Writer;
 /**
  * Created by luog on 15/7/17.
  */
-public class CallWithBodyProcessor implements ContextProcessor<TinyTemplateParser.Call_block_directiveContext> {
+public class CallWithBodyProcessor extends  AbstractCallMacroProcessor<TinyTemplateParser.Call_block_directiveContext> {
 
 
     public Class<TinyTemplateParser.Call_block_directiveContext> getType() {
@@ -25,7 +25,7 @@ public class CallWithBodyProcessor implements ContextProcessor<TinyTemplateParse
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_block_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
         String name = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer).toString();
-        interpreter.callBlockMacro(engine, templateFromContext, name, parseTree.block(), parseTree.para_expression_list(),pageContext, writer, context);
+        callBlockMacro(engine, templateFromContext, name, parseTree.block(), parseTree.para_expression_list(),pageContext, writer, context);
         return null;
     }
 
