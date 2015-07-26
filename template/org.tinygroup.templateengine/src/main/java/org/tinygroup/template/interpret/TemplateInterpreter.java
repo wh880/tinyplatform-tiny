@@ -5,10 +5,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.tinygroup.template.Macro;
 import org.tinygroup.template.TemplateContext;
-import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.terminal.OtherTerminalNodeProcessor;
 import org.tinygroup.template.parser.grammer.TinyTemplateLexer;
@@ -18,7 +15,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 /**
  * Created by luog on 15/7/17.

@@ -16,7 +16,6 @@
 package org.tinygroup.template;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 /**
  * Created by luoguo on 2014/6/4.

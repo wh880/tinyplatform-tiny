@@ -19,7 +19,7 @@ public class TestInterpretFileObject {
         engine.registerMacroLibrary("/b.component");
 //        Template template = loader.createTemplate(VFS.resolveFile("/Users/luoguo/resourceroot/b.page"));
 //        template.render(context,new OutputStreamWriter(System.out));
-        engine.renderTemplate("/c.page");
+        engine.renderTemplate("/b.page");
         System.out.flush();
     }
 }

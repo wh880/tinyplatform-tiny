@@ -1,17 +1,12 @@
 package org.tinygroup.template.interpret.context;
 
-import org.tinygroup.template.Macro;
 import org.tinygroup.template.TemplateContext;
-import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.impl.TemplateContextDefault;
-import org.tinygroup.template.interpret.ContextProcessor;
-import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.impl.TemplateEngineDefault;
+import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 import java.io.Writer;
-import java.util.Stack;
 
 /**
  * Created by luog on 15/7/17.

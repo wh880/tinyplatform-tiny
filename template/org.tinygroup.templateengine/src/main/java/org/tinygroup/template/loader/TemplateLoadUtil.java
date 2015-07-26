@@ -1,8 +1,8 @@
 package org.tinygroup.template.loader;
 
 import org.tinygroup.template.Template;
-import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.impl.TemplateEngineDefault;
+import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.context.ImportProcessor;
 import org.tinygroup.template.interpret.context.MacroDefineProcessor;

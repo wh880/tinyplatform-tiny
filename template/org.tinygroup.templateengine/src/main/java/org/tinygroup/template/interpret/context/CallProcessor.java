@@ -1,9 +1,8 @@
 package org.tinygroup.template.interpret.context;
 
 import org.tinygroup.template.TemplateContext;
-import org.tinygroup.template.interpret.ContextProcessor;
-import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.impl.TemplateEngineDefault;
+import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 

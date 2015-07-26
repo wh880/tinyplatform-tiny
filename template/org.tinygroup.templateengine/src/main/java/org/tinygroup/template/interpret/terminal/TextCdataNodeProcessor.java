@@ -2,8 +2,8 @@ package org.tinygroup.template.interpret.terminal;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.tinygroup.template.TemplateContext;
-import org.tinygroup.template.interpret.TerminalNodeProcessor;
 import org.tinygroup.template.interpret.TemplateInterpreter;
+import org.tinygroup.template.interpret.TerminalNodeProcessor;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 import java.io.IOException;
