@@ -53,9 +53,7 @@ public class DocumentGeneraterImpl implements DocumentGenerater<TemplateEngine> 
 
 	public void generate(FileObject fileObject, Context context, Writer writer) {
 		try {
-			FileObjectResourceLoader resourceLoader = new FileObjectResourceLoader(fileObject.getExtName(),null,null,fileObject);
-			resourceLoader.setTemplateEngine(templateGenerater);
-			Template template =resourceLoader.createTemplate(fileObject);
+			Template template =templateGenerater.findTemplate(fileObject.getPath());
 			generate(template,context,writer);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
