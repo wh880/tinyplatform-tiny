@@ -45,7 +45,7 @@ public class ForProcessor implements ContextProcessor<TinyTemplateParser.For_dir
         String name = parseTree.for_expression().IDENTIFIER().getText();
         Object values = interpreter.interpretTree(engine, templateFromContext, parseTree.for_expression().expression(),pageContext, context, writer);
         ForIterator forIterator = new ForIterator(values);
-        context.put("$"+name + "For", forIterator);
+        context.put(name + "For", forIterator);
         boolean hasItem = false;
         while (forIterator.hasNext()) {
             TemplateContext forContext=new TemplateContextDefault();
