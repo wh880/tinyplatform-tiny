@@ -33,7 +33,7 @@ public class TestInterpret {
         StringResourceLoader loader = new StringResourceLoader();
         TemplateEngineDefault engine =new TemplateEngineDefault();
         engine.addResourceLoader(loader);
-        Template template = loader.createTemplate("${++3} ");
+        Template template = loader.createTemplate("#for(a:[1..8l])${a}#end ");
         template.render(context, new OutputStreamWriter(System.out));
         System.out.flush();
     }
