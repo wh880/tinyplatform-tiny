@@ -98,6 +98,8 @@ public class TemplateInterpreter {
                     te.setContext((ParserRuleContext) tree);
                 }
                 throw te;
+            } catch (Exception e) {
+                throw new TemplateException(e, (ParserRuleContext) tree);
             }
         } else {
             for (int i = 0; i < tree.getChildCount(); i++) {

@@ -33,10 +33,8 @@ public class TestInterpret {
         StringResourceLoader loader = new StringResourceLoader();
         TemplateEngineDefault engine =new TemplateEngineDefault();
         engine.addResourceLoader(loader);
-        Template template = loader.createTemplate("#set(abc=0xFl)");
+        Template template = loader.createTemplate("${++3} ");
         template.render(context, new OutputStreamWriter(System.out));
-        System.out.println(context.get("abc"));
-        System.out.println(context.get("abc").getClass().getName());
         System.out.flush();
     }
 }

@@ -16,6 +16,7 @@
 package org.tinygroup.template;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 /**
  * Created by luoguo on 2014/6/4.
@@ -25,6 +26,11 @@ public class TemplateException extends Exception {
 
     public TemplateException() {
 
+    }
+
+    public TemplateException(Exception e, ParserRuleContext tree) {
+        super(e);
+        this.context=tree;
     }
 
     public ParserRuleContext getContext() {
