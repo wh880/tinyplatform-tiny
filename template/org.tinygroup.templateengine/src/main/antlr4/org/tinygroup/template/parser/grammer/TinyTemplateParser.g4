@@ -224,6 +224,7 @@ constant    :   STRING_DOUBLE
             |   STRING_SINGLE
             |   INTEGER
             |   INTEGER_HEX
+            |   INTEGER_OCT
             |   FLOATING_POINT
             |   KEYWORD_TRUE
             |   KEYWORD_FALSE

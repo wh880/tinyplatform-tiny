@@ -144,6 +144,7 @@ IDENTIFIER              : [_a-zA-Z][_a-zA-Z0-9]*         ;
 
 INTEGER                 : INT [lLfFdD]?                    ;
 INTEGER_HEX             : '0x' HEX+ [lL]?                  ;
+INTEGER_OCT             : '0' INT+ [lL]?                  ;
 FLOATING_POINT          : INT ('.' FRAC)? EXP? [fFdD]?     ;
 fragment INT            : '0' | [1-9] [0-9]*               ;
 fragment FRAC           : [0-9]+                           ;
