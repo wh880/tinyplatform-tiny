@@ -15,23 +15,26 @@
  */
 package org.tinygroup.codegen;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.File;
+
 import junit.framework.TestCase;
+
 import org.tinygroup.codegen.config.CodeGenMetaData;
 import org.tinygroup.codegen.impl.CodeGeneratorDefault;
 import org.tinygroup.codegen.util.CodeGenUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.util.ContextFactory;
+import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.xstream.XStreamFactory;
 
-import java.io.File;
+import com.thoughtworks.xstream.XStream;
 
 public class CodeGenTest extends TestCase {
 	String testJavaPath;
 	String testResourcePath;
 	protected void setUp() throws Exception {
 		super.setUp();
-//		AbstractTestUtil.init(null, true);
+		AbstractTestUtil.init(null, true);
 	}
 
 	protected void tearDown() throws Exception {
