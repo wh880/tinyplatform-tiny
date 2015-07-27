@@ -25,9 +25,11 @@ import java.io.Writer;
 /**
  * Created by luog on 15/7/17.
  */
-public class DoubleNodeProcessor implements TerminalNodeProcessor<TerminalNode> {
+public class IntegerOctNodeProcessor implements TerminalNodeProcessor<TerminalNode> {
+
+
     public int getType() {
-        return TinyTemplateParser.FLOATING_POINT;
+        return TinyTemplateParser.INTEGER_OCT;
     }
 
     public boolean processChildren() {
@@ -35,7 +37,13 @@ public class DoubleNodeProcessor implements TerminalNodeProcessor<TerminalNode> 
     }
 
     public Object process(TerminalNode terminalNode, TemplateContext context, Writer writer) {
-        String text=terminalNode.getText();
-        return Double.parseDouble(text);
+        String text = terminalNode.getText().toLowerCase().substring(1);
+            if (text.endsWith("l")) {
+                //十六进制长整
+                return Long.parseLong(text.substring(0, text.length() - 1), 8);
+            } else {
+                //十六进制整数
+                return Integer.parseInt(text.substring(0), 8);
+            }
     }
 }

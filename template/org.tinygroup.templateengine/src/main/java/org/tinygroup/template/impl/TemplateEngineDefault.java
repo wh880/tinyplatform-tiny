@@ -40,7 +40,7 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     static {
 
-        interpreter.addTerminalNodeProcessor(new DoubleNodeProcessor());
+        interpreter.addTerminalNodeProcessor(new IntegerOctNodeProcessor());
         interpreter.addTerminalNodeProcessor(new EscapeTextNodeProcessor());
         interpreter.addTerminalNodeProcessor(new FalseNodeProcessor());
         interpreter.addTerminalNodeProcessor(new IntegerNodeProcessor());
@@ -51,6 +51,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         interpreter.addTerminalNodeProcessor(new TextPlainNodeProcessor());
         interpreter.addTerminalNodeProcessor(new TrueNodeProcessor());
         interpreter.addTerminalNodeProcessor(new FloatProcessor());
+        interpreter.addTerminalNodeProcessor(new IntegerHexNodeProcessor());
     }
 
     static {
