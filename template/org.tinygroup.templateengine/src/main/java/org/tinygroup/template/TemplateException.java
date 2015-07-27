@@ -51,8 +51,8 @@ public class TemplateException extends Exception {
     public String getMessage() {
         String message = super.getMessage();
         if(context!=null){
-            String contextMsg = "\n位置[" +context.getStart().getLine() + "," + context.getStart().getStartIndex() + "]-[" + context.getStop().getLine() + ","
-                    + context.getStop().getStartIndex() + "]\n"
+            String contextMsg = "\n位置[" +context.getStart().getLine() + "行" + context.getStart().getStartIndex() + "列]-[" + context.getStop().getLine() + "行"
+                    + context.getStop().getStartIndex() + "列]\n"
                     +"===================================================================\n"
                     +context.getText()+"\n===================================================================\n";
             if(message!=null){
