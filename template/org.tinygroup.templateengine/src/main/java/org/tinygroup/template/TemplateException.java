@@ -27,6 +27,14 @@ public class TemplateException extends Exception {
 
     }
 
+    public ParserRuleContext getContext() {
+        return context;
+    }
+
+    public void setContext(ParserRuleContext context) {
+        this.context = context;
+    }
+
     public TemplateException(String msg, ParserRuleContext context) {
         super(msg);
         this.context = context;
