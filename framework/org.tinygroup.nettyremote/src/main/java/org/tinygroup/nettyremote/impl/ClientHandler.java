@@ -22,14 +22,16 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
 
 	protected void channelRead0(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
+		//do nothing
 	}
 
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
+		//do nothing
 	}
 
 	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-
+		//do nothing
 	}
 
 }

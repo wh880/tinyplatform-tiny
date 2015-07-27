@@ -91,7 +91,7 @@ public class ServerImpl implements Server {
 					bind();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 					LOGGER.errorMessage("服务端启动失败",e);
 				}
 			}

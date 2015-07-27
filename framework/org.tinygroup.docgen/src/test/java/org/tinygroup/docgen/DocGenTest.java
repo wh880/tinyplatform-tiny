@@ -15,18 +15,20 @@
  */
 package org.tinygroup.docgen;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+
 import junit.framework.TestCase;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.docgen.function.StaticClassFunction;
 import org.tinygroup.docgen.util.ImageUtil;
 import org.tinygroup.template.TemplateEngine;
+import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 
 public class DocGenTest extends TestCase {
 
@@ -42,6 +44,8 @@ public class DocGenTest extends TestCase {
 		}
 		TemplateEngine templateEngine = (TemplateEngine) manager.getFileGenerater("doc").getTemplateGenerater();
 		templateEngine.addTemplateFunction(new StaticClassFunction("imageUtil",ImageUtil.class));
+		templateEngine.addResourceLoader(new FileObjectResourceLoader("doctemplate",null,null,"src/main/resources/"));
+		templateEngine.addResourceLoader(new FileObjectResourceLoader("docpage",null,null,"src/test/resources/"));
 	}
 
 	protected void tearDown() throws Exception {

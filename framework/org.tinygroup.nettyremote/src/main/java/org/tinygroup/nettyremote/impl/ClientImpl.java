@@ -84,7 +84,7 @@ public class ClientImpl implements Client {
 							remoteHost, remotePort);
 					connect(remotePort, remoteHost);// 发起重连操作
 				} catch (InterruptedException e) {
-
+					//do nothing
 				}
 			}
 		});
@@ -106,7 +106,7 @@ public class ClientImpl implements Client {
 						+ remotePort + "发生异常", e);
 			}
 		} finally {
-			if (reConnect&start) {
+			if (reConnect&&start) {
 				reConnect();
 			}
 		}

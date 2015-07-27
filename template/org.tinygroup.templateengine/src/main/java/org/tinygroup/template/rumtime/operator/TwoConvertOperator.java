@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,6 +26,9 @@ public abstract class TwoConvertOperator extends TwoOperator {
     public Object operation(Object... parameter) throws TemplateException {
         Object left = parameter[0];
         Object right = parameter[1];
+        if (left == null || right == null) {
+            return operation(left, right);
+        }
         if (O.isNumber(left.getClass()) && O.isNumber(right.getClass())) {
             //如果两个都是数字类型
             return operateNumber(left, right, left.getClass(), right.getClass());

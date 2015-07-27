@@ -53,7 +53,26 @@
 	#end
 	#end
  #else
+  <!--[if lt ie 9]>
+    #foreach(component in uiengine.getHealthUiComponents())
+	  #if(component.cssResource)
+	  #set(resources=component.cssResource.split(","))
+	  #foreach(path in resources)
+	  #set(path=path.trim())
+	  #set(newPath=path.replaceAll("[$][{]TINY_THEME[}]","${TINY_THEME}"))
+	  <link href="${TINY_CONTEXT_PATH}${newPath}" rel="stylesheet" />
+	  #end
+	  #end
+	  #if(component.cssCodelet)
+	  <style>
+	  $!{component.cssCodelet}
+	  </style>
+	  #end
+	  #end
+  <![endif]-->
+  <!--[if (gt IE 9)|!(IE)]><!-->
   <link href="${TINY_CONTEXT_PATH}/uiengine.uicss" rel="stylesheet" />
+  <!--<![endif]-->
   <script src="${TINY_CONTEXT_PATH}/uiengine.uijs"></script>
  #end
  

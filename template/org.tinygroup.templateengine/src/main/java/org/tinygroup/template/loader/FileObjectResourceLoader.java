@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.tinygroup.template.loader;
 import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateException;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 
@@ -95,9 +96,9 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
 
     private Template loadTemplate(FileObject fileObject, ClassLoader classLoader) throws TemplateException {
         try {
-            Template template = ResourceCompilerUtils.compileResource(classLoader, IOUtils.readFromInputStream(fileObject.getInputStream(), getTemplateEngine().getEncode()),getTemplateEngine().getEngineId(), fileObject.getPath());
-            addTemplate(template);
-            return template;
+            Template templateFromContext = TemplateLoadUtil.loadComponent((TemplateEngineDefault) getTemplateEngine(), fileObject.getPath(), getResourceContent(fileObject.getPath(),getTemplateEngine().getEncode()));
+            addTemplate(templateFromContext);
+            return templateFromContext;
         } catch (Exception e) {
             throw new TemplateException(e);
         }

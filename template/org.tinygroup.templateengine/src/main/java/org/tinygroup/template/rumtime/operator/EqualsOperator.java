@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,6 +22,12 @@ public class EqualsOperator extends TwoConvertOperator {
 
 
     protected Object operation(Object left, Object right) {
+        if(left==null&&right==null){
+            return true;
+        }
+        if(left==null||right==null){
+            return false;
+        }
         return left.equals(right);
     }
 

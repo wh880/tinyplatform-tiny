@@ -15,7 +15,13 @@
  */
 package org.tinygroup.codegen.impl;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.tinygroup.codegen.CodeGenerator;
 import org.tinygroup.codegen.config.CodeGenMetaData;
@@ -34,15 +40,11 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.impl.TemplateEngineDefault;
+import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.XStream;
 
 public class CodeGeneratorDefault implements CodeGenerator{
 
@@ -99,6 +101,7 @@ private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorDefaul
 //			}
 			//repository.addFileObject(templatePath, templateFileObject.getFileObject(filePath));
 			FileObject templateFileObject = templateDirObject.getFileObject(templatePath);
+			generater.getTemplateGenerater().addResourceLoader(new FileObjectResourceLoader(templateFileObject.getExtName(),null,null,templateDirObject));
 			String generateFile=generater.evaluteString(newContext, templateDefine.getFileNameTemplate());
 			File file=new File(generateFile);
 			if(!file.exists()){

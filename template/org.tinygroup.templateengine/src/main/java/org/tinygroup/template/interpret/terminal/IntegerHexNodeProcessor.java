@@ -17,29 +17,33 @@ package org.tinygroup.template.interpret.terminal;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.tinygroup.template.TemplateContext;
-import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.TerminalNodeProcessor;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.IOException;
 import java.io.Writer;
 
 /**
  * Created by luog on 15/7/17.
  */
-public class TextPlainNodeProcessor implements TerminalNodeProcessor<TerminalNode> {
+public class IntegerHexNodeProcessor implements TerminalNodeProcessor<TerminalNode> {
 
 
     public int getType() {
-        return TinyTemplateParser.TEXT_PLAIN;
+        return TinyTemplateParser.INTEGER_HEX;
     }
 
     public boolean processChildren() {
         return false;
     }
 
-    public Object process(TerminalNode terminalNode, TemplateContext context, Writer writer) throws IOException {
-        TemplateInterpreter.write(writer, terminalNode.getText());
-        return null;
+    public Object process(TerminalNode terminalNode, TemplateContext context, Writer writer) {
+        String text = terminalNode.getText().toLowerCase().substring(2);
+            if (text.endsWith("l")) {
+                //十六进制长整
+                return Long.parseLong(text.substring(0, text.length() - 1), 16);
+            } else {
+                //十六进制整数
+                return Integer.parseInt(text.substring(0), 16);
+            }
     }
 }

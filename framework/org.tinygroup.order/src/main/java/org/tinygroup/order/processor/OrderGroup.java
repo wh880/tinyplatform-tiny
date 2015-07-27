@@ -15,6 +15,10 @@
  */
 package org.tinygroup.order.processor;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.ObjectUtil;
@@ -27,11 +31,6 @@ import org.tinygroup.order.order.FeatureOrder;
 import org.tinygroup.order.order.RequiresFeature;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 排序组信息
@@ -87,7 +86,7 @@ public class OrderGroup<T> {
 			}
 
 		}
-		ArrayList<T> newProcessorList = CollectionUtil
+		List<T> newProcessorList = CollectionUtil
 				.createArrayList(processorMap.values());
 
 		// 检查缺失的features

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,18 +15,62 @@
  */
 package org.tinygroup.template;
 
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.ParseTree;
+
 /**
  * Created by luoguo on 2014/6/4.
  */
 public class TemplateException extends Exception {
-    public TemplateException(){
+    private ParserRuleContext context;
+
+    public TemplateException() {
 
     }
+
+    public TemplateException(Exception e, ParserRuleContext tree) {
+        super(e);
+        this.context=tree;
+    }
+
+    public ParserRuleContext getContext() {
+        return context;
+    }
+
+    public void setContext(ParserRuleContext context) {
+        this.context = context;
+    }
+
+    public TemplateException(String msg, ParserRuleContext context) {
+        super(msg);
+        this.context = context;
+    }
+    public String getLocalizedMessage(){
+        return getMessage();
+    }
+    public String getMessage() {
+        String message = super.getMessage();
+        if(context!=null){
+            String contextMsg = "\n位置[" +context.getStart().getLine() + "行" + context.getStart().getStartIndex() + "列]-[" + context.getStop().getLine() + "行"
+                    + context.getStop().getStartIndex() + "列]\n"
+                    +"===================================================================\n"
+                    +context.getText()+"\n===================================================================\n";
+            if(message!=null){
+                return message+"\n"+contextMsg;
+            }else{
+                return contextMsg;
+            }
+        }
+        return message==null?"":message;
+    }
+
     public TemplateException(String msg) {
         super(msg);
+        System.out.println();
     }
 
     public TemplateException(Exception e) {
         super(e);
     }
+
 }

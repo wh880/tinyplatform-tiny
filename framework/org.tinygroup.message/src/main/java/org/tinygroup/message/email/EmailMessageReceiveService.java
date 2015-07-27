@@ -123,7 +123,7 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
         int nameIndex = contentType.indexOf("name");
         if (nameIndex != -1) {
             processBodyPart(emailMessage, part);
-        } else if ((part.isMimeType("text/plain") || part.isMimeType("text/html"))) {
+        } else if (part.isMimeType("text/plain") || part.isMimeType("text/html")) {
             emailMessage.setContent(part.getContent().toString());
         } else if (part.isMimeType("multipart/*")) {
             processMultipart(emailMessage, part);
