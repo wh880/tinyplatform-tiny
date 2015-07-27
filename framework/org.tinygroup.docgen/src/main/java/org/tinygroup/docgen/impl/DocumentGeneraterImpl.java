@@ -15,6 +15,11 @@
  */
 package org.tinygroup.docgen.impl;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+
 import org.tinygroup.context.Context;
 import org.tinygroup.docgen.DocumentGenerater;
 import org.tinygroup.template.Template;
@@ -25,11 +30,6 @@ import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.template.loader.StringResourceLoader;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 
 /**
  * 
@@ -42,7 +42,7 @@ import java.io.Writer;
  */
 public class DocumentGeneraterImpl implements DocumentGenerater<TemplateEngine> {
 	private TemplateEngine templateGenerater;
-
+    private StringResourceLoader stringResourceLoader;
 	public TemplateEngine getTemplateGenerater() {
 		return templateGenerater;
 	}
@@ -107,19 +107,23 @@ public class DocumentGeneraterImpl implements DocumentGenerater<TemplateEngine> 
 	}
 
 	public String evaluteString(Context context, String inputString) {
+		if(stringResourceLoader==null){
+			initStringResourceLoader();
+		}
 		StringWriter writer=new StringWriter();
-		
-		//查询StringResourceLoader
-		StringResourceLoader resourceLoader = new StringResourceLoader();
-		resourceLoader.setTemplateEngine(templateGenerater);
 		try {
-			Template template =resourceLoader.createTemplate(inputString);
+			Template template =stringResourceLoader.createTemplate(inputString);
 			generate(template,context,writer);
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		return writer.toString();
+	}
+	
+	private void initStringResourceLoader(){
+		stringResourceLoader = new StringResourceLoader();
+		stringResourceLoader.setTemplateEngine(templateGenerater);
 	}
 
 }
