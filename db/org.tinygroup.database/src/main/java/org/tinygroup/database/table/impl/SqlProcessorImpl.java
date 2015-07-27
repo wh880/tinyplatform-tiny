@@ -86,7 +86,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		// 生成表格主体
 		appendHeader(ddlBuffer, table);
 		appendBody(ddlBuffer, table);
-		appendFooter(ddlBuffer,table);
+		appendFooter(ddlBuffer, table);
 		list.add(0, ddlBuffer.toString());
 		return list;
 	}
@@ -101,17 +101,17 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		DatabaseMetaData metadata = connection.getMetaData();
 		String catalog = connection.getCatalog();
 		getTableColumnUpdate(table, packageName, metadata, catalog, list);
-		getOtherUpdate(table, connection, list);
+		getOtherUpdate(table, packageName, connection, list);
 		return list;
 	}
 
-	protected void getOtherUpdate(Table table, Connection connection,
-			List<String> list) throws SQLException {
-		getForeignUpdate(table, connection, list);
+	protected void getOtherUpdate(Table table, String packageName,
+			Connection connection, List<String> list) throws SQLException {
+		getForeignUpdate(table, packageName, connection, list);
 	}
 
-	private void getForeignUpdate(Table table, Connection connection,
-			List<String> list) throws SQLException {
+	private void getForeignUpdate(Table table, String packageName,
+			Connection connection, List<String> list) throws SQLException {
 
 		String schema = DataBaseUtil.getSchema(table, connection.getMetaData());
 
@@ -146,15 +146,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 							"ALTER TABLE %s DROP FOREIGN KEY %s",
 							table.getName(), dropConstraint));
 				}
-				for (ForeignReference foreignReference : newForeigns) {
-					list.add(String
-							.format("ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY %s REFERENCES %s (%s)",
-									table.getName(),
-									foreignReference.getName(),
-									foreignReference.getForeignField(),
-									foreignReference.getMainTable(),
-									foreignReference.getReferenceField()));
-				}
+				list.addAll(getForeignKeySqls(table, packageName));
 			} finally {
 				if (statement != null) {
 					statement.close();
@@ -314,7 +306,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	protected abstract String createAlterTypeSql(String tableName,
 			String fieldName, String tableDataType);
 
-	protected void appendBody(StringBuffer ddlBuffer,Table table) {
+	protected void appendBody(StringBuffer ddlBuffer, Table table) {
 		boolean isFirst = true;
 		for (TableField field : table.getFieldList()) {
 			if (!isFirst) {
@@ -352,21 +344,23 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		if (field.isAutoIncrease() && field.getPrimary()) {// 如果是自增而且是主键
 			ddlBuffer.append(appendIncrease());
 		}
-		//设置字段默认值
-		appendDefaultValue(field.getDefaultValue(),ddlBuffer);
-        //设置字段备注信息
-		appendComment(field.getComment(),ddlBuffer);
+		// 设置字段默认值
+		appendDefaultValue(field.getDefaultValue(), ddlBuffer);
+		// 设置字段备注信息
+		appendComment(field.getComment(), ddlBuffer);
 	}
 
 	protected void appendComment(String comment, StringBuffer ddlBuffer) {
-		if(!StringUtil.isBlank(comment)){
-			ddlBuffer.append(" COMMENT ").append("'").append(comment).append("'");
+		if (!StringUtil.isBlank(comment)) {
+			ddlBuffer.append(" COMMENT ").append("'").append(comment)
+					.append("'");
 		}
 	}
 
-	//如果是字符串类型，defaultValue必须是'XXX'格式
-	protected void appendDefaultValue(String defaultValue, StringBuffer ddlBuffer) {
-        if(!StringUtil.isBlank(defaultValue)){
+	// 如果是字符串类型，defaultValue必须是'XXX'格式
+	protected void appendDefaultValue(String defaultValue,
+			StringBuffer ddlBuffer) {
+		if (!StringUtil.isBlank(defaultValue)) {
 			ddlBuffer.append(" DEFAULT ").append(defaultValue);
 		}
 	}
