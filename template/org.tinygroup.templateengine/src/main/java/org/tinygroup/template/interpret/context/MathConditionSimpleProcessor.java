@@ -41,9 +41,9 @@ public class MathConditionSimpleProcessor implements ContextProcessor<TinyTempla
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_simple_condition_ternaryContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
-        boolean condition = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(0),pageContext, context, writer));
+        Object object = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(0),pageContext, context, writer);
         Object right = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(1),pageContext, context, writer);
-        return condition ? null : right;
+        return U.b(object) ? object : right;
     }
 }
 
