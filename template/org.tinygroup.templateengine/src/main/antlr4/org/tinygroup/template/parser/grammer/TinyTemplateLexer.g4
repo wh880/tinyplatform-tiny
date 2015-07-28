@@ -35,9 +35,10 @@ DIRECTIVE_OPEN_SET      : ('#set'|'#!set' )     ARGUMENT_START      -> pushMode(
 DIRECTIVE_OPEN_IF       : '#if'       ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_ELSEIF   : '#elseif'   ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_FOR      : ('#for'|'#foreach')      ARGUMENT_START      -> pushMode(INSIDE) ;
+DIRECTIVE_OPEN_WHILE      : ('#while')      ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_BREAK    : '#break'    ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_CONTINUE : '#continue' ARGUMENT_START      -> pushMode(INSIDE) ;
-DIRECTIVE_OPEN_STOP     : '#stop'     ARGUMENT_START      -> pushMode(INSIDE) ;
+DIRECTIVE_OPEN_STOP     : ('#stop'|'#return')     ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_INCLUDE  : '#include'  ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_CALL  : '#call'  ARGUMENT_START      -> pushMode(INSIDE) ;
 DIRECTIVE_OPEN_CALL  : '#@call'  ARGUMENT_START      -> pushMode(INSIDE) ;
@@ -57,7 +58,7 @@ DIRECTIVE_FOR           : '#for'                          ;
 DIRECTIVE_INCLUDE       : '#include'                      ;
 DIRECTIVE_BREAK         : '#break'                        ;
 DIRECTIVE_CONTINUE      : '#continue'                     ;
-DIRECTIVE_STOP          : '#stop'                         ;
+DIRECTIVE_STOP          : ('#stop'|'#return')                         ;
 DIRECTIVE_MACRO         : '#macro'                        ;
 
 DIRECTIVE_ELSE          : '#else'|'#{else}'                   ;

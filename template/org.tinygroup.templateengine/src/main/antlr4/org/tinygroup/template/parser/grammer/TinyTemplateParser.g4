@@ -50,6 +50,7 @@ value       :   //VALUE_COMPACT_OPEN  identify_list
 directive   :   set_directive
             |   if_directive
             |   for_directive
+            |   while_directive
             |   break_directive
             |   import_directive
             |   continue_directive
@@ -126,6 +127,9 @@ for_directive
             ;
 for_expression
             :    IDENTIFIER (':'|'in') expression
+            ;
+while_directive
+            :   DIRECTIVE_OPEN_WHILE expression ')' block else_directive? DIRECTIVE_END
             ;
 
 break_directive

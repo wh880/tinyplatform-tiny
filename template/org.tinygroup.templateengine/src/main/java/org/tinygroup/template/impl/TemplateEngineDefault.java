@@ -101,6 +101,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         interpreter.addContextProcessor(new IncludeProcessor());
         interpreter.addContextProcessor(new MemberFunctionCallProcessor());
         interpreter.addContextProcessor(new FunctionCallProcessor());
+        interpreter.addContextProcessor(new WhileProcessor());
     }
 
     private boolean compactMode;
