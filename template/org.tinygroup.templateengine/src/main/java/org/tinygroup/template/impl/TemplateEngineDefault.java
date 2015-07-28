@@ -55,6 +55,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     static {
+        interpreter.addContextProcessor(new ExpressionGroupProcessor());
         interpreter.addContextProcessor(new ValueProcessor());
         interpreter.addContextProcessor(new ForProcessor());
         interpreter.addContextProcessor(new SetProcessor());
