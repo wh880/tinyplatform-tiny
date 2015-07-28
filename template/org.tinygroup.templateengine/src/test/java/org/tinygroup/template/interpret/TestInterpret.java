@@ -33,7 +33,7 @@ public class TestInterpret {
         StringResourceLoader loader = new StringResourceLoader();
         TemplateEngineDefault engine =new TemplateEngineDefault();
         engine.addResourceLoader(loader);
-        Template template = loader.createTemplate("${a?:2} ");
+        Template template = loader.createTemplate("${(false ?: 2)}");
         template.render(context, new OutputStreamWriter(System.out));
         System.out.flush();
     }
