@@ -19,31 +19,6 @@
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.event</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.formater</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.commons</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.beancontainer</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.context</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.testutil</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
@@ -54,14 +29,8 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.thoughtworks.xstream</groupId>
-      <artifactId>xstream</artifactId>
-      <version>1.4.3</version>
-    </dependency>
-    <dependency>
       <groupId>org.mortbay.jetty</groupId>
       <artifactId>servlet-api-2.5</artifactId>
-      <version>6.1.14</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -69,11 +38,6 @@
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.exception</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>

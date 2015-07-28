@@ -20,19 +20,9 @@
       <artifactId>org.tinygroup.flow</artifactId>
       <version>${project.version}</version>
     </dependency>
-     <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.application</artifactId>
-      <version>${project.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.cepcore</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.xmlparser</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

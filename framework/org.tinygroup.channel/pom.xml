@@ -23,15 +23,5 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.logger</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.xmlparser</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 </project>

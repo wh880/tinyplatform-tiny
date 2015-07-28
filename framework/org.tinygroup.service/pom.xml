@@ -26,23 +26,8 @@
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.event</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.context2object</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.context</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.thoughtworks.xstream</groupId>
-      <artifactId>xstream</artifactId>
-      <version>1.4.3</version>
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
@@ -67,16 +52,6 @@
     <dependency>
       <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.annotation</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.commons</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.beancontainer</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
