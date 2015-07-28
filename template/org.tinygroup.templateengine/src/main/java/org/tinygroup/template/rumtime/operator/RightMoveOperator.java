@@ -18,11 +18,11 @@ package org.tinygroup.template.rumtime.operator;
 /**
  * Created by luoguo on 2014/6/8.
  */
-public class MoveOperator extends SingleOperator {
+public class RightMoveOperator extends SingleOperator {
 
 
     public String getOperation() {
-        return "<<";
+        return ">>";
     }
 
 

@@ -88,6 +88,9 @@ public final class O {
         addOperator(new LeftPlusPlusOperator());
         addOperator(new LeftSubtractSubtractOperator());
         addOperator(new RightPlusPlusOperator());
+        addOperator(new RightMoveOperator());
+        addOperator(new LeftMoveOperator());
+        addOperator(new ThreeRightMoveOperator());
         addOperator(new RightSubtractSubtractOperator());
         addOperator(new LeftLiteralOperator());
         addOperator(new ComplementOperator());
