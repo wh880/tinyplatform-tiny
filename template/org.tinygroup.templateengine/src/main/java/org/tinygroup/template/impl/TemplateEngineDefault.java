@@ -55,6 +55,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     static {
+        interpreter.addContextProcessor(new MapProcessor());
         interpreter.addContextProcessor(new ExpressionGroupProcessor());
         interpreter.addContextProcessor(new ValueProcessor());
         interpreter.addContextProcessor(new ForProcessor());
@@ -74,7 +75,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         interpreter.addContextProcessor(new MathIdentifierProcessor());
         interpreter.addContextProcessor(new ForBreakProcessor());
         interpreter.addContextProcessor(new ForContinueProcessor());
-        interpreter.addContextProcessor(new MapProcessor());
+        interpreter.addContextProcessor(new MapListProcessor());
         interpreter.addContextProcessor(new MathUnaryProcessor());
         interpreter.addContextProcessor(new MathConditionProcessor());
         interpreter.addContextProcessor(new MathConditionSimpleProcessor());

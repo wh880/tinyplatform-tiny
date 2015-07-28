@@ -1,20 +1,21 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.template.interpret.context;
 
+import com.sun.jndi.toolkit.url.Uri;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
@@ -24,6 +25,8 @@ import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 import java.io.Writer;
+import java.net.URI;
+import java.net.URL;
 import java.util.Map;
 
 /**
@@ -43,9 +46,14 @@ public class IncludeProcessor implements ContextProcessor<TinyTemplateParser.Inc
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Include_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
         String path = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext, context, writer).toString();
-
+        if (!path.startsWith("/")) {
+            //如果不是绝对路径
+            URL url=new URL("file:"+templateFromContext.getPath());
+            URL newUrl=new URL(url,path);
+            path=newUrl.getPath();
+        }
         if (parseTree.hash_map_entry_list() != null) {
-            Map map = (Map) interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext, context, writer);
+            Map map = (Map) interpreter.interpretTree(engine, templateFromContext, parseTree.hash_map_entry_list(), pageContext, context, writer);
             TemplateContext newContext = new TemplateContextDefault(map);
             engine.renderTemplateWithOutLayout(path, newContext, writer);
         } else {

@@ -15,6 +15,7 @@
  */
 package org.tinygroup.template.interpret.context;
 
+import org.tinygroup.order.order.ObjectOrder;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
@@ -30,22 +31,30 @@ import java.util.Map;
 /**
  * Created by luog on 15/7/17.
  */
-public class MapProcessor implements ContextProcessor<TinyTemplateParser.Expr_hash_mapContext> {
+public class MapListProcessor implements ContextProcessor<TinyTemplateParser.Hash_map_entry_listContext> {
 
 
-    public Class<TinyTemplateParser.Expr_hash_mapContext> getType() {
-        return TinyTemplateParser.Expr_hash_mapContext.class;
+    public Class<TinyTemplateParser.Hash_map_entry_listContext> getType() {
+        return TinyTemplateParser.Hash_map_entry_listContext.class;
     }
 
     public boolean processChildren() {
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_hash_mapContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
-        if(parseTree==null|| parseTree.hash_map_entry_list()==null){
-            return new HashMap();
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Hash_map_entry_listContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if(parseTree!=null) {
+            List<TinyTemplateParser.ExpressionContext> expressions = parseTree.expression();
+            if (expressions != null) {
+                for (int i = 0; i < expressions.size(); i += 2) {
+                    String key = interpreter.interpretTree(engine, templateFromContext, expressions.get(i), pageContext, context, writer).toString();
+                    Object value = interpreter.interpretTree(engine, templateFromContext, expressions.get(i + 1), pageContext, context, writer);
+                    map.put(key, value);
+                }
+            }
         }
-        return interpreter.interpretTree(engine, templateFromContext, parseTree.hash_map_entry_list(), pageContext, context, writer);
+        return map;
     }
 
 }

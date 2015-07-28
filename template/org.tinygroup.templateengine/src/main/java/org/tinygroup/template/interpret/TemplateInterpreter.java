@@ -93,6 +93,8 @@ public class TemplateInterpreter {
                         }
                     }
                 }
+            } catch (StopException se) {
+                throw se;
             } catch (TemplateException te) {
                 if (te.getContext() == null) {
                     te.setContext((ParserRuleContext) tree);
