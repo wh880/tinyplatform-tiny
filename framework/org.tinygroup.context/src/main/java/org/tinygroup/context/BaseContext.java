@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.tinygroup.context;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -23,7 +24,7 @@ import java.util.Map;
  * @author luoguo
  * 
  */
-public interface BaseContext {
+public interface BaseContext extends Serializable{
 	/**
 	 * 添加到环境
 	 * 
@@ -77,6 +78,7 @@ public interface BaseContext {
 	 */
 	boolean exist(String name);
 
+	BaseContext contain(String name);
 	/**
 	 * 删除环境中的所有内容
 	 */

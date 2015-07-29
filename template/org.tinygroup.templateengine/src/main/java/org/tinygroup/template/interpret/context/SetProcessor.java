@@ -15,6 +15,8 @@
  */
 package org.tinygroup.template.interpret.context;
 
+import org.tinygroup.context.BaseContext;
+import org.tinygroup.context.Context;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
@@ -45,7 +47,12 @@ public class SetProcessor implements ContextProcessor<TinyTemplateParser.Set_dir
             String key = interpreter.interpretTree(engine, template, exp.IDENTIFIER(), pageContext, context, writer).toString();
             Object value = interpreter.interpretTree(engine, template, exp.expression(), pageContext, context, writer);
             if (localVar) {
-                context.put(key, value);
+                BaseContext con=context.contain(key);
+                if(con!=null){
+                    con.put(key,value);
+                }else {
+                    context.put(key, value);
+                }
             } else {
                 pageContext.put(key, value);
             }
