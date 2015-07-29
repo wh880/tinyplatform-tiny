@@ -1,20 +1,21 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.template.rumtime.operator;
 
+import org.tinygroup.context.BaseContext;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.rumtime.O;
@@ -25,10 +26,16 @@ import org.tinygroup.template.rumtime.OperatorWithContext;
  */
 public class RightSubtractSubtractOperator implements OperatorWithContext {
 
-    public Object operation(TemplateContext context,  String name, Object value) throws TemplateException {
+    public Object operation(TemplateContext context, String name, Object value) throws TemplateException {
         Object v = context.get(name.toString());
+        Object newValue = O.e("-", v, 1);
         if (v != null) {
-            context.put(name.toString(), O.e("-", v, 1));
+            BaseContext con = context.contain(name);
+            if (con != null) {
+                con.put(name, newValue);
+            } else {
+                context.put(name, newValue);
+            }
             return v;
         } else {
             return name;
