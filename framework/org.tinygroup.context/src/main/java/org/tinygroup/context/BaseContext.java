@@ -15,6 +15,7 @@
  */
 package org.tinygroup.context;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -23,7 +24,7 @@ import java.util.Map;
  * @author luoguo
  * 
  */
-public interface BaseContext {
+public interface BaseContext extends Serializable{
 	/**
 	 * 添加到环境
 	 * 

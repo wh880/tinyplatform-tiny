@@ -51,7 +51,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     private List<String> macroLibraryList = new ArrayList<String>();
     private String engineId;
 
-    public static TemplateInterpreter interpreter = new TemplateInterpreter();
+    public static final TemplateInterpreter interpreter = new TemplateInterpreter();
 
     static {
 
