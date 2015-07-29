@@ -90,7 +90,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 			}
 		}
 		FileSystemXmlApplicationContext fileSystemXmlApplicationContext = new FileSystemXmlApplicationContext(
-				listToArray(configLocations),
+				listToArray(configLocations),false,
 				parent.getBeanContainerPrototype());
 		fileSystemXmlApplicationContext.setAllowBeanDefinitionOverriding(true);
 		fileSystemXmlApplicationContext.setClassLoader(loader);
