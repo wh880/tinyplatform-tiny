@@ -32,6 +32,17 @@
 				is-array="false" type="org.tinygroup.event.ServiceInfo" />
 		</service-method>
 
+		<service-method name="getEventProcessors" local-name="getEventProcessors"
+			service-id="getEventProcessors" version="" description="获取所有的服务处理器"
+			method-name="getEventProcessors">
+			<service-parameters>
+				
+			</service-parameters>
+			<service-result name="result" required="true"
+				is-array="false" type="org.tinygroup.cepcore.EventProcessor"
+				collection-type="java.util.ArrayList" />
+		</service-method>
+
 	</service-component>
 	<!-- <service-component type="org.tinygroup.cepcore.CEPCore" group-id="org.tinygroup.cepcore.impl" 
 		artifact-id="CEPcoreImpl"> <service-method name="serviceGetNodeName" local-name="serviceGetNodeName" 

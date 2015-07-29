@@ -15,10 +15,12 @@
  */
 package org.tinygroup.cepcorebasicservice;
 
-import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.event.ServiceInfo;
-
+import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.cepcore.CEPCore;
+import org.tinygroup.cepcore.EventProcessor;
+import org.tinygroup.event.ServiceInfo;
 
 public class CEPService {
 
@@ -42,6 +44,16 @@ public class CEPService {
 	
 	public ServiceInfo getServiceInfo(String serviceId){
 		return core.getServiceInfo(serviceId);
+	}
+	
+	public List<EventProcessor> getEventProcessors(){
+		List<EventProcessor> list = new ArrayList<EventProcessor>();
+		for(EventProcessor e:getCore().getEventProcessors()){
+			if(EventProcessor.TYPE_REMOTE==e.getType()){
+				list.add(e);
+			}
+		}
+		return list;
 	}
 	
 }
