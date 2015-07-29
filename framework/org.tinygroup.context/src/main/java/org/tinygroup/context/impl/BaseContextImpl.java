@@ -16,6 +16,7 @@
 package org.tinygroup.context.impl;
 
 import org.tinygroup.context.BaseContext;
+import org.tinygroup.context.Context;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -60,6 +61,13 @@ public class BaseContextImpl implements BaseContext,Serializable {
 	public boolean exist(String name) {
 		return itemMap.containsKey(name);
 	}
+	public BaseContext contain(String name) {
+		if( itemMap.containsKey(name)){
+			return this;
+		}
+		return null;
+	}
+
 
 	public void clear() {
 		itemMap.clear();

@@ -77,6 +77,7 @@ public interface BaseContext {
 	 */
 	boolean exist(String name);
 
+	BaseContext contain(String name);
 	/**
 	 * 删除环境中的所有内容
 	 */

@@ -193,6 +193,33 @@ public class ContextImpl extends BaseContextImpl implements Context,
 		}
 		return false;
 	}
+	protected Context containNodeMap(String name, Context contextNode,
+								   Map<Context, String> nodeMap) {
+
+		// 如果当前不存在，则查找父亲中有没有
+		// 如果已经存在，则返回之
+		if (contextNode.getItemMap().containsKey(name)) {
+			return contextNode;
+		} else {
+			nodeMap.put(contextNode, "");
+		}
+
+		if (!contextNode.getSubContextMap().isEmpty()) {
+			for (Context context : contextNode.getSubContextMap().values()) {
+				if (nodeMap.get(context) == null) {
+					Context con = containNodeMap(name, context, nodeMap);
+					if (con!=null) {
+						return con;
+					}
+				}
+			}
+		}
+		Context theParent = contextNode.getParent();
+		if (theParent != null && nodeMap.get(theParent) == null) {
+			return containNodeMap(name, theParent, nodeMap);
+		}
+		return null;
+	}
 
 	public boolean renameKey(String key, String newKey) {
 		Map<Context, String> nodeMap = new HashMap<Context, String>();
@@ -243,6 +270,12 @@ public class ContextImpl extends BaseContextImpl implements Context,
 	public boolean exist(String name) {
 		Map<Context, String> nodeMap = new HashMap<Context, String>();
 		return existNodeMap(name, this, nodeMap);
+
+	}
+
+	public Context contain(String name) {
+		Map<Context, String> nodeMap = new HashMap<Context, String>();
+		return containNodeMap(name, this, nodeMap);
 
 	}
 
