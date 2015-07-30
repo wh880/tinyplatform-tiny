@@ -70,6 +70,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     static {
+        interpreter.addContextProcessor(new PageContentProcessor());
         interpreter.addContextProcessor(new MapProcessor());
         interpreter.addContextProcessor(new ExpressionGroupProcessor());
         interpreter.addContextProcessor(new ValueProcessor());
