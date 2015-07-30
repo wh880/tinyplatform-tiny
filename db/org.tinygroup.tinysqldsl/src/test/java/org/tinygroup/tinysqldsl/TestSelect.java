@@ -18,6 +18,7 @@ package org.tinygroup.tinysqldsl;
 import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.expression.FragmentExpressionSql;
 import org.tinygroup.tinysqldsl.formitem.SubSelect;
+import org.tinygroup.tinysqldsl.select.Join;
 import org.tinygroup.tinysqldsl.selectitem.Top;
 
 import static org.tinygroup.tinysqldsl.ComplexSelect.union;
@@ -182,5 +183,7 @@ public class TestSelect {
 		Column womonName=womon.NAME.as("womonName");
 		System.out.println(select(manName,womonName).from(man,womon).where(manName.eq("test")));
 		
+		System.out.println(select(CUSTOM.ALL,TSCORE.ALL).from(CUSTOM).join(simpleJoin(TSCORE)).where(CUSTOM.ID.eq(1)));
+
 	}
 }
