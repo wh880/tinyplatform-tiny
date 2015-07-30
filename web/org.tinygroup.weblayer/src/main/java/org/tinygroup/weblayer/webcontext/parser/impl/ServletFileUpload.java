@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -65,8 +65,10 @@ public class ServletFileUpload extends org.apache.commons.fileupload.servlet.Ser
     
     public List<?/* FileItem */> parseRequest(RequestContext ctx) throws FileUploadException {
     	FileItemFactory itemFactory=getFileItemFactory();
-    	if(itemFactory instanceof DiskFileItemFactory){//绑定此次请求对象
-    		DiskFileItemFactory factory= (DiskFileItemFactory) itemFactory;
+    	FileItemFactoryWrapper wrapper=(FileItemFactoryWrapper)itemFactory;
+    	FileItemFactory itemWrapperFactory=wrapper.getFileItemFactory();
+    	if(itemWrapperFactory instanceof DiskFileItemFactory){//绑定此次请求对象
+    		DiskFileItemFactory factory= (DiskFileItemFactory) itemWrapperFactory;
             factory.setRequest(((ServletRequestContext)ctx).getRequest());
     	}
     	@SuppressWarnings("unchecked")

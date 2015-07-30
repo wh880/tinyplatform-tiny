@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,8 +15,12 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.weblayer.webcontext.parser.exception.UploadException;
@@ -70,6 +74,15 @@ public class FileItemFactoryWrapper implements FileItemFactory {
 					fileName);
 		}
 		throw new UploadException("can not found fileItemFactory");
+	}
+	
+	public FileItemFactory getFileItemFactory(){
+		return itemFactory;
+	}
+	
+	public static void main(String[] args) throws UnsupportedEncodingException {
+		String test="%2Flock";
+		System.out.println(URLDecoder.decode(test, "UTF-8"));
 	}
 
 }

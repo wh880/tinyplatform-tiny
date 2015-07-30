@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,9 +15,18 @@
  */
 package org.tinygroup.weblayer;
 
+import static org.tinygroup.weblayer.webcontext.parser.ParserWebContext.DEFAULT_CHARSET_ENCODING;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.commons.tools.ExceptionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -30,15 +39,6 @@ import org.tinygroup.weblayer.webcontext.buffered.BufferedWebContext;
 import org.tinygroup.weblayer.webcontext.parser.ParserWebContext;
 import org.tinygroup.weblayer.webcontext.util.QueryStringParser;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
-
-import static org.tinygroup.weblayer.webcontext.parser.ParserWebContext.DEFAULT_CHARSET_ENCODING;
 
 /**
  * 完成filter处理的中间类
@@ -238,10 +238,6 @@ public class TinyFilterHandler {
 			// ignore this exception
 		}
 		clearBuffer(response);
-		// 记录异常日志信息
-		Throwable rootCause = ExceptionUtil.getRootCause(e);
-		String originalExceptionMessage = rootCause.getClass().getSimpleName()
-				+ ": " + rootCause.getMessage();
 		// 进行自定义异常处理
 		WebExceptionHandlerManager exceptionHandlerManager = BeanContainerFactory
 				.getBeanContainer(this.getClass().getClassLoader()).getBean(
