@@ -28,7 +28,6 @@ public class StandardFieldProcessorImpl implements StandardFieldProcessor {
 	// private static Map<String, Map<String, StandardField>> standardFieldMap =
 	// new HashMap<String, Map<String, StandardField>>();
 	private static Map<String, StandardField> standardFieldMap = new HashMap<String, StandardField>();
-	private static Map<String,String> nickIdMap = new HashMap<String, String>();
 	BusinessTypeProcessor businessTypeProcessor;
 
 	public BusinessTypeProcessor getBusinessTypeProcessor() {
@@ -44,12 +43,6 @@ public class StandardFieldProcessorImpl implements StandardFieldProcessor {
 		if (standardFieldMap.containsKey(id)) {
 			return standardFieldMap.get(id);
 		}
-		if(nickIdMap.containsKey(id)){
-			String realId = nickIdMap.get(id);
-			if (standardFieldMap.containsKey(realId)) {
-				return standardFieldMap.get(realId);
-			}
-		}
 		throw new RuntimeException(String.format("找不到ID：[%s]的标准字段。", id));
 	}
 
@@ -60,7 +53,11 @@ public class StandardFieldProcessorImpl implements StandardFieldProcessor {
 				standardFieldMap.put(field.getId(), field);
 				if(field.getNickNames()!=null){
 					for(NickName name:field.getNickNames()){
-						nickIdMap.put(name.getId(), field.getId());
+						StandardField newStandardField=new StandardField();
+						newStandardField.setId(name.getId());
+						newStandardField.setName(name.getName());
+						newStandardField.setTitle(name.getTitle());
+						standardFieldMap.put(name.getId(), newStandardField);
 					}
 				}
 			}
@@ -74,7 +71,7 @@ public class StandardFieldProcessorImpl implements StandardFieldProcessor {
 				standardFieldMap.remove(field.getId());
 				if(field.getNickNames()!=null){
 					for(NickName name:field.getNickNames()){
-						nickIdMap.remove(name.getId());
+						standardFieldMap.remove(name.getId());
 					}
 				}
 			}
@@ -92,73 +89,5 @@ public class StandardFieldProcessorImpl implements StandardFieldProcessor {
 				"找不到ID：[%s]的标准字段对应的Language:[%s]类型。", id, language));
 	}
 
-	
 
-	// public void addStandardFields(StandardFields standardFields) {
-	// Map<String, StandardField> nameMap = new HashMap<String,
-	// StandardField>();
-	// String pkgName = MetadataUtil.passNull(standardFields.getPackageName());
-	// standardFieldMap.put(pkgName, nameMap);
-	// if (standardFields.getStandardFieldList() != null) {
-	// for (StandardField standardField : standardFields
-	// .getStandardFieldList()) {
-	// nameMap.put(standardField.getName(), standardField);
-	// if (standardField.getNickNames() != null) {
-	// for (NickName nickName : standardField.getNickNames()) {
-	// nameMap.put(nickName.getName(), standardField);
-	// }
-	// }
-	// }
-	// }
-	// }
-	//
-	// public String getType(String packageName, String name, String language) {
-	// if (packageName != null
-	// && standardFieldMap.containsKey(MetadataUtil
-	// .passNull(packageName))) {
-	// StandardField standardField = standardFieldMap.get(
-	// MetadataUtil.passNull(packageName)).get(name);
-	// String type = businessTypeProcessor.getType(packageName,
-	// standardField.getTypeName(), language);
-	// if (type != null) {
-	// return type;
-	// }
-	// }
-	// for (String pkgName : standardFieldMap.keySet()) {
-	// StandardField standardField = standardFieldMap.get(
-	// MetadataUtil.passNull(pkgName)).get(name);
-	// String type = businessTypeProcessor.getType(packageName,
-	// standardField.getTypeName(), language);
-	// if (type != null) {
-	// return type;
-	// }
-	// }
-	// throw new RuntimeException(String.format("找不到包名：[%s],名字：[%s]的标准字段。",
-	// packageName, name));
-	// }
-	//
-	// public String getType(String name, String language) {
-	// return getType(null, name, language);
-	// }
-	// public StandardField getStandardField(String packageName, String name) {
-	// if (packageName != null
-	// && standardFieldMap.containsKey(MetadataUtil
-	// .passNull(packageName))) {
-	// StandardField standardField = standardFieldMap.get(
-	// MetadataUtil.passNull(packageName)).get(name);
-	// if (standardField != null) {
-	// return standardField;
-	// }
-	//
-	// }
-	// for (String pkgName : standardFieldMap.keySet()) {
-	// StandardField standardField = standardFieldMap.get(
-	// MetadataUtil.passNull(pkgName)).get(name);
-	// if (standardField != null) {
-	// return standardField;
-	// }
-	// }
-	// throw new RuntimeException(String.format("找不到包名：[%s],名字：[%s]的标准字段。",
-	// packageName, name));
-	// }
 }
