@@ -15,8 +15,26 @@
  */
 package org.tinygroup.weblayer.listener;
 
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.Servlet;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextAttributeEvent;
+import javax.servlet.ServletContextAttributeListener;
+import javax.servlet.ServletException;
+
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.Enumerator;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -24,12 +42,6 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.weblayer.configmanager.TinyListenerConfigManager;
 import org.tinygroup.weblayer.configmanager.TinyListenerConfigManagerHolder;
-
-import javax.servlet.*;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.*;
 
 /**
  * tiny框架 ServletContext实现
@@ -141,14 +153,17 @@ public class TinyServletContext implements ServletContext {
 	}
 
 	public String getRealPath(String path) {
-		if (fullContextFileRepository != null) {
-			FileObject fileObject = fullContextFileRepository
-					.getFileObject(path);
-			if (fileObject != null && fileObject.isExist()) {
-				return fileObject.getAbsolutePath();
+		String realPath=originalContext.getRealPath(path);
+		if(StringUtil.isBlank(realPath)){
+			if (fullContextFileRepository != null) {
+				FileObject fileObject = fullContextFileRepository
+						.getFileObject(path);
+				if (fileObject != null && fileObject.isExist()) {
+					return fileObject.getAbsolutePath();
+				}
 			}
 		}
-		return originalContext.getRealPath(path);
+		return realPath;
 	}
 
 	public String getServerInfo() {

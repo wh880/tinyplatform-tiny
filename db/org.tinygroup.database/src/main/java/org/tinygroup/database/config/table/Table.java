@@ -32,6 +32,7 @@ public class Table extends BaseObject {
 	@XStreamImplicit
 	private List<Index> indexList;
 	@XStreamAsAttribute
+	@XStreamAlias("package-name")
 	private String packageName;
 	@XStreamImplicit
 	private List<ForeignReference> foreignReferences;

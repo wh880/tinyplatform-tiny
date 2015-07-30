@@ -45,8 +45,8 @@ public class Join {
         this.onExpression = onExpression;
     }
 
-    public static Join simpleJoin(FromItem rightItem, Expression onExpression) {
-        Join join = newJoin(rightItem, onExpression);
+    public static Join simpleJoin(FromItem rightItem) {
+        Join join = newJoin(rightItem, null);
         join.simple = true;
         return join;
     }
