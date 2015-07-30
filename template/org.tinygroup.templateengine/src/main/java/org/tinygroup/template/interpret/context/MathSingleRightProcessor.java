@@ -40,7 +40,7 @@ public class MathSingleRightProcessor implements ContextProcessor<TinyTemplatePa
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_single_rightContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_single_rightContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         String name = parseTree.IDENTIFIER().getText();
         String op =  parseTree.getChild(1).getText();
         return O.ce(context, op, name, null);

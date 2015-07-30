@@ -16,7 +16,6 @@
 package org.tinygroup.template.interpret.context;
 
 import org.tinygroup.context.BaseContext;
-import org.tinygroup.context.Context;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
@@ -41,11 +40,11 @@ public class SetProcessor implements ContextProcessor<TinyTemplateParser.Set_dir
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Set_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Set_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         boolean localVar = parseTree.getChild(0).getText().startsWith("#set");
         for (TinyTemplateParser.Set_expressionContext exp : parseTree.set_expression()) {
-            String key = interpreter.interpretTree(engine, template, exp.IDENTIFIER(), pageContext, context, writer).toString();
-            Object value = interpreter.interpretTree(engine, template, exp.expression(), pageContext, context, writer);
+            String key = interpreter.interpretTree(engine, template, exp.IDENTIFIER(), pageContext, context, writer,fileName).toString();
+            Object value = interpreter.interpretTree(engine, template, exp.expression(), pageContext, context, writer,fileName);
             if (localVar) {
                 BaseContext con=context.contain(key);
                 if(con!=null){

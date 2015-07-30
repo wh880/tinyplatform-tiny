@@ -24,8 +24,6 @@ import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by luog on 15/7/17.
@@ -41,11 +39,11 @@ public class MapProcessor implements ContextProcessor<TinyTemplateParser.Expr_ha
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_hash_mapContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_hash_mapContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         if(parseTree==null|| parseTree.hash_map_entry_list()==null){
             return new HashMap();
         }
-        return interpreter.interpretTree(engine, templateFromContext, parseTree.hash_map_entry_list(), pageContext, context, writer);
+        return interpreter.interpretTree(engine, templateFromContext, parseTree.hash_map_entry_list(), pageContext, context, writer,fileName);
     }
 
 }

@@ -37,12 +37,12 @@ public class LayoutDefineProcessor implements ContextProcessor<TinyTemplateParse
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Layout_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Layout_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         String name = "$" + parseTree.IDENTIFIER().getText();
         if (context.exist(name)) {
-            interpreter.interpretTree(engine, templateFromContext, (TinyTemplateParser.BlockContext) context.get(name), pageContext,context, writer);
+            interpreter.interpretTree(engine, templateFromContext, (TinyTemplateParser.BlockContext) context.get(name), pageContext,context, writer,fileName);
         } else {
-            interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, context, writer);
+            interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, context, writer,fileName);
         }
         return null;
     }

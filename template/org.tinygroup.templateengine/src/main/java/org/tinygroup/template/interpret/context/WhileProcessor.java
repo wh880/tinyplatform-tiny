@@ -17,7 +17,6 @@ package org.tinygroup.template.interpret.context;
 
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
@@ -25,7 +24,6 @@ import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.terminal.ForBreakException;
 import org.tinygroup.template.interpret.terminal.ForContinueException;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-import org.tinygroup.template.rumtime.ForIterator;
 import org.tinygroup.template.rumtime.U;
 
 import java.io.Writer;
@@ -45,17 +43,17 @@ public class WhileProcessor implements ContextProcessor<TinyTemplateParser.While
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.While_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.While_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         boolean hasItem = false;
         int count=0;
-        while (U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer))) {
+        while (U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName))) {
             count++;
             hasItem = true;
             if(count>MAX_LOOPS){
-                throw new TemplateException("循环次数太多!",parseTree);
+                throw new TemplateException("循环次数太多!",parseTree,fileName);
             }
             try {
-                interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, context, writer);
+                interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, context, writer,fileName);
             } catch (ForBreakException be) {
                 break;
             } catch (ForContinueException ce) {
@@ -65,7 +63,7 @@ public class WhileProcessor implements ContextProcessor<TinyTemplateParser.While
         if (!hasItem) {
             TinyTemplateParser.Else_directiveContext elseDirectiveContext = parseTree.else_directive();
             if (elseDirectiveContext != null) {
-                interpreter.interpretTree(engine, templateFromContext, elseDirectiveContext.block(), pageContext,context, writer);
+                interpreter.interpretTree(engine, templateFromContext, elseDirectiveContext.block(), pageContext,context, writer,fileName);
             }
         }
         return null;

@@ -35,10 +35,10 @@ public class MacroDefineProcessor implements ContextProcessor<TinyTemplateParser
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Macro_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Macro_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         String name =parseTree.getChild(0).getText();
         name=name.substring(6,name.length()-1).trim();
-        MacroFromContext macroFromContext = new MacroFromContext(engine.interpreter, name, parseTree.block());
+        MacroFromContext macroFromContext = new MacroFromContext(engine.interpreter, name, parseTree.block(),templateFromContext);
         if (parseTree.define_expression_list() != null) {
             for (TinyTemplateParser.Define_expressionContext exp : parseTree.define_expression_list().define_expression()) {
                 if (exp.expression() == null) {

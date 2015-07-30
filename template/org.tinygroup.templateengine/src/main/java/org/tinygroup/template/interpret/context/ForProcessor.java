@@ -41,9 +41,9 @@ public class ForProcessor implements ContextProcessor<TinyTemplateParser.For_dir
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.For_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.For_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         String name = parseTree.for_expression().IDENTIFIER().getText();
-        Object values = interpreter.interpretTree(engine, templateFromContext, parseTree.for_expression().expression(),pageContext, context, writer);
+        Object values = interpreter.interpretTree(engine, templateFromContext, parseTree.for_expression().expression(),pageContext, context, writer,fileName);
         ForIterator forIterator = new ForIterator(values);
         context.put(name + "For", forIterator);
         boolean hasItem = false;
@@ -54,7 +54,7 @@ public class ForProcessor implements ContextProcessor<TinyTemplateParser.For_dir
             Object value = forIterator.next();
             forContext.put(name, value);
             try {
-                interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, forContext, writer);
+                interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, forContext, writer,fileName );
             } catch (ForBreakException be) {
                 break;
             } catch (ForContinueException ce) {
@@ -64,7 +64,7 @@ public class ForProcessor implements ContextProcessor<TinyTemplateParser.For_dir
         if (!hasItem) {
             TinyTemplateParser.Else_directiveContext elseDirectiveContext = parseTree.else_directive();
             if (elseDirectiveContext != null) {
-                interpreter.interpretTree(engine, templateFromContext, elseDirectiveContext.block(), pageContext,context, writer);
+                interpreter.interpretTree(engine, templateFromContext, elseDirectiveContext.block(), pageContext,context, writer,fileName);
             }
         }
         return null;

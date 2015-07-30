@@ -40,9 +40,9 @@ public class MathConditionSimpleProcessor implements ContextProcessor<TinyTempla
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_simple_condition_ternaryContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
-        Object object = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(0),pageContext, context, writer);
-        Object right = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(1),pageContext, context, writer);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_simple_condition_ternaryContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+        Object object = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(0),pageContext, context, writer,fileName);
+        Object right = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(1),pageContext, context, writer,fileName);
         return U.b(object) ? object : right;
     }
 }

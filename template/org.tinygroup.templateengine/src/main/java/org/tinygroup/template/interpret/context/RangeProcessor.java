@@ -40,9 +40,9 @@ public class RangeProcessor implements ContextProcessor<TinyTemplateParser.Expre
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expression_rangeContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
-        Number start = (Number) interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(0), pageContext, context, writer);
-        Number end = (Number) interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(2), pageContext,context, writer);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expression_rangeContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+        Number start = (Number) interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(0), pageContext, context, writer,fileName);
+        Number end = (Number) interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(2), pageContext,context, writer,fileName);
         return new RangeList(start.intValue(), end.intValue(), 1);
     }
 }

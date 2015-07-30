@@ -31,14 +31,16 @@ public class MacroFromContext implements Macro {
     private final String name;
     private final TemplateInterpreter interpreter;
     private final TinyTemplateParser.BlockContext blockContext;
+    private final TemplateFromContext templateFromContext;
     private List<String> parameterNames = new ArrayList<String>();
     private List<EvaluateExpression> parameterDefaultValues = new ArrayList<EvaluateExpression>();
     private TemplateEngineDefault templateEngineDefault;
 
-    public MacroFromContext(TemplateInterpreter interpreter, String name, TinyTemplateParser.BlockContext blockContext) {
+    public MacroFromContext(TemplateInterpreter interpreter, String name, TinyTemplateParser.BlockContext blockContext,TemplateFromContext templateFromContext) {
         this.name = name;
         this.blockContext = blockContext;
         this.interpreter = interpreter;
+        this.templateFromContext=templateFromContext;
     }
 
     public String getName() {
@@ -72,7 +74,7 @@ public class MacroFromContext implements Macro {
 
     public void render(Template templateFromContext, TemplateContext pageContext, TemplateContext context, Writer writer) throws TemplateException {
         try {
-            interpreter.interpretTree(templateEngineDefault, (TemplateFromContext) templateFromContext, blockContext, pageContext, context, writer);
+            interpreter.interpretTree(templateEngineDefault, (TemplateFromContext) templateFromContext, blockContext, pageContext, context, writer,this.templateFromContext.getPath());
         } catch (TemplateException te) {
             throw te;
         } catch (Exception e) {

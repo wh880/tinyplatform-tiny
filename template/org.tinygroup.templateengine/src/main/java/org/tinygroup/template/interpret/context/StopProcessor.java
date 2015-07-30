@@ -40,10 +40,10 @@ public class StopProcessor implements ContextProcessor<TinyTemplateParser.Stop_d
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Stop_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Stop_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         boolean stop = true;
         if (parseTree.expression() != null) {
-            stop = U.b(interpreter.interpretTree(engine, template, parseTree.expression(),pageContext, context, writer));
+            stop = U.b(interpreter.interpretTree(engine, template, parseTree.expression(),pageContext, context, writer,fileName));
         }
         if (stop) {
             throw new StopException();

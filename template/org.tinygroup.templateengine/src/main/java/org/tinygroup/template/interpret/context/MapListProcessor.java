@@ -15,7 +15,6 @@
  */
 package org.tinygroup.template.interpret.context;
 
-import org.tinygroup.order.order.ObjectOrder;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
@@ -42,14 +41,14 @@ public class MapListProcessor implements ContextProcessor<TinyTemplateParser.Has
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Hash_map_entry_listContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Hash_map_entry_listContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         if(parseTree!=null) {
             List<TinyTemplateParser.ExpressionContext> expressions = parseTree.expression();
             if (expressions != null) {
                 for (int i = 0; i < expressions.size(); i += 2) {
-                    String key = interpreter.interpretTree(engine, templateFromContext, expressions.get(i), pageContext, context, writer).toString();
-                    Object value = interpreter.interpretTree(engine, templateFromContext, expressions.get(i + 1), pageContext, context, writer);
+                    String key = interpreter.interpretTree(engine, templateFromContext, expressions.get(i), pageContext, context, writer,fileName).toString();
+                    Object value = interpreter.interpretTree(engine, templateFromContext, expressions.get(i + 1), pageContext, context, writer,fileName);
                     map.put(key, value);
                 }
             }

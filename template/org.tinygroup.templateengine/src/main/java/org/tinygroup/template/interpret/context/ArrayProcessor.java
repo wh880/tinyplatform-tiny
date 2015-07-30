@@ -37,16 +37,16 @@ public class ArrayProcessor implements ContextProcessor<TinyTemplateParser.Expr_
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_array_listContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_array_listContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         if (parseTree.expression_list() != null) {
             Object[] objects = new Object[parseTree.expression_list().expression().size()];
             for (int i = 0; i < parseTree.expression_list().expression().size(); i++) {
-                objects[i] = interpreter.interpretTree(engine, templateFromContext, parseTree.expression_list().expression().get(i), pageContext,context, writer);
+                objects[i] = interpreter.interpretTree(engine, templateFromContext, parseTree.expression_list().expression().get(i), pageContext,context, writer,fileName);
             }
             return objects;
         }
         if (parseTree.expression_range() != null) {
-            return interpreter.interpretTree(engine, templateFromContext, parseTree.expression_range(),pageContext, context, writer);
+            return interpreter.interpretTree(engine, templateFromContext, parseTree.expression_range(),pageContext, context, writer,fileName);
         }
         return null;
     }

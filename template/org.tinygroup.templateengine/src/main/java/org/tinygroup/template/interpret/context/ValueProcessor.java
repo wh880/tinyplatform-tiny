@@ -38,8 +38,8 @@ public class ValueProcessor implements ContextProcessor<TinyTemplateParser.Value
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.ValueContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
-        Object value = interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(1), pageContext,context, writer);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.ValueContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+        Object value = interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(1), pageContext,context, writer,fileName);
         if (parseTree.getChild(0).getText().equals("${")) {
             TemplateInterpreter.write(writer, value);
         } else if (parseTree.getChild(0).getText().equals("$!{")) {

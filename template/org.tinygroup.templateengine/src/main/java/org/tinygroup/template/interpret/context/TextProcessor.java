@@ -37,8 +37,8 @@ public class TextProcessor implements ContextProcessor<TinyTemplateParser.TextCo
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.TextContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
-        TemplateInterpreter.write(writer,interpreter.interpretTree(engine,templateFromContext,parseTree.getChild(0),pageContext,context,writer));
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.TextContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+        TemplateInterpreter.write(writer,interpreter.interpretTree(engine,templateFromContext,parseTree.getChild(0),pageContext,context,writer,fileName));
         return null;
     }
 

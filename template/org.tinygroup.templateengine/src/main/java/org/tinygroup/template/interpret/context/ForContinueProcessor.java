@@ -40,10 +40,10 @@ public class ForContinueProcessor implements ContextProcessor<TinyTemplateParser
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Continue_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Continue_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         boolean continueFor = true;
         if (parseTree.expression() != null) {
-            continueFor = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer));
+            continueFor = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName));
         }
         if (continueFor) {
             throw new ForContinueException();

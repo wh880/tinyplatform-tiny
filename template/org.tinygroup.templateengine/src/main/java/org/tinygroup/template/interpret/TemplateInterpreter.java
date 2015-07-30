@@ -58,18 +58,18 @@ public class TemplateInterpreter {
         return parser.template();
     }
 
-    public void interpret(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String templateString, String sourceName, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
-        interpret(engine, templateFromContext, parserTemplateTree(sourceName, templateString), pageContext, context, writer);
+    public void interpret(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String templateString, String sourceName, TemplateContext pageContext, TemplateContext context, Writer writer, String fileName) throws Exception {
+        interpret(engine, templateFromContext, parserTemplateTree(sourceName, templateString), pageContext, context, writer,fileName );
         writer.flush();
     }
 
-    public void interpret(TemplateEngineDefault engine, TemplateFromContext templateFromContext, TinyTemplateParser.TemplateContext templateParseTree, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
+    public void interpret(TemplateEngineDefault engine, TemplateFromContext templateFromContext, TinyTemplateParser.TemplateContext templateParseTree, TemplateContext pageContext, TemplateContext context, Writer writer, String fileName) throws Exception {
         for (int i = 0; i < templateParseTree.getChildCount(); i++) {
-            interpretTree(engine, templateFromContext, templateParseTree.getChild(i), pageContext, context, writer);
+            interpretTree(engine, templateFromContext, templateParseTree.getChild(i), pageContext, context, writer,fileName );
         }
     }
 
-    public Object interpretTree(TemplateEngineDefault engine, TemplateFromContext templateFromContext, ParseTree tree, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
+    public Object interpretTree(TemplateEngineDefault engine, TemplateFromContext templateFromContext, ParseTree tree, TemplateContext pageContext, TemplateContext context, Writer writer, String fileName) throws Exception {
         Object returnValue = null;
         if (tree instanceof TerminalNode) {
             TerminalNode terminalNode = (TerminalNode) tree;
@@ -83,11 +83,11 @@ public class TemplateInterpreter {
             try {
                 ContextProcessor processor = contextProcessorMap.get(tree.getClass());
                 if (processor != null) {
-                    returnValue = processor.process(this, templateFromContext, (ParserRuleContext) tree, pageContext, context, engine, writer);
+                    returnValue = processor.process(this, templateFromContext, (ParserRuleContext) tree, pageContext, context, engine, writer,fileName);
                 }
                 if (processor == null || processor != null && processor.processChildren()) {
                     for (int i = 0; i < tree.getChildCount(); i++) {
-                        Object value = interpretTree(engine, templateFromContext, tree.getChild(i), pageContext, context, writer);
+                        Object value = interpretTree(engine, templateFromContext, tree.getChild(i), pageContext, context, writer,fileName );
                         if (value != null) {
                             returnValue = value;
                         }
@@ -97,15 +97,15 @@ public class TemplateInterpreter {
                 throw se;
             } catch (TemplateException te) {
                 if (te.getContext() == null) {
-                    te.setContext((ParserRuleContext) tree);
+                    te.setContext((ParserRuleContext) tree,fileName);
                 }
                 throw te;
             } catch (Exception e) {
-                throw new TemplateException(e, (ParserRuleContext) tree);
+                throw new TemplateException(e, (ParserRuleContext) tree,fileName);
             }
         } else {
             for (int i = 0; i < tree.getChildCount(); i++) {
-                Object value = interpretTree(engine, templateFromContext, tree.getChild(i), pageContext, context, writer);
+                Object value = interpretTree(engine, templateFromContext, tree.getChild(i), pageContext, context, writer,fileName );
                 if (returnValue == null && value != null) {
                     returnValue = value;
                 }

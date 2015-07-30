@@ -39,10 +39,10 @@ public class ElseIfProcessor implements ContextProcessor<TinyTemplateParser.Else
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Elseif_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Elseif_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         //如果条件成立
-        if (U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer))) {
-            interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, context, writer);
+        if (U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName))) {
+            interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, context, writer,fileName);
             return true;
         }
         return false;

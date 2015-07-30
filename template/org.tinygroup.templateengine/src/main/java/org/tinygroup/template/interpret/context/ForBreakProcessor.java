@@ -40,10 +40,10 @@ public class ForBreakProcessor implements ContextProcessor<TinyTemplateParser.Br
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Break_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Break_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         boolean breakFor = true;
         if (parseTree.expression() != null) {
-            breakFor = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext,context, writer));
+            breakFor = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext,context, writer,fileName));
         }
         if (breakFor) {
             throw new ForBreakException();

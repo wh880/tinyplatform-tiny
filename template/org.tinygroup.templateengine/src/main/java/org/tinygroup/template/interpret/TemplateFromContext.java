@@ -40,7 +40,7 @@ public class TemplateFromContext extends AbstractTemplate {
     protected void renderContent(TemplateContext context, Writer writer) throws IOException, TemplateException {
         try {
             TemplateEngineDefault templateEngine = (TemplateEngineDefault) getTemplateEngine();
-            templateEngine.interpreter.interpret(templateEngine, this, templateContext, context, context, writer);
+            templateEngine.interpreter.interpret(templateEngine, this, templateContext, context, context, writer,path);
         } catch (StopException e) {
             //Do Nothing
         } catch (TemplateException e) {

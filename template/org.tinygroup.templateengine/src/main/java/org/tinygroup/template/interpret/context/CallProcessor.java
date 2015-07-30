@@ -36,8 +36,8 @@ public class CallProcessor extends AbstractCallMacroProcessor<TinyTemplateParser
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
-        String name = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer).toString();
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+        String name = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName).toString();
         callMacro(engine, templateFromContext, name, parseTree.para_expression_list(),pageContext, context, writer);
         return null;
     }

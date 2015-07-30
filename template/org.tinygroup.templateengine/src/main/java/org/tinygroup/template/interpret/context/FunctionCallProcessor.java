@@ -38,14 +38,14 @@ public class FunctionCallProcessor implements ContextProcessor<TinyTemplateParse
         return false;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_function_callContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_function_callContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         String name = parseTree.IDENTIFIER().getText();
         Object[] paraList = null;
         if (parseTree.expression_list() != null) {
             paraList = new Object[parseTree.expression_list().expression().size()];
             int i = 0;
             for (TinyTemplateParser.ExpressionContext expr : parseTree.expression_list().expression()) {
-                paraList[i++] = interpreter.interpretTree(engine, templateFromContext, expr, pageContext, context, writer);
+                paraList[i++] = interpreter.interpretTree(engine, templateFromContext, expr, pageContext, context, writer,fileName);
             }
         }
         return engine.executeFunction(templateFromContext, context, name, paraList);
