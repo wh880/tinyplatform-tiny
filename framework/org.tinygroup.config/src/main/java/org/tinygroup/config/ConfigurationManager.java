@@ -63,6 +63,8 @@ public interface ConfigurationManager {
     void setConfiguration(String key, String value);
 
     Map<String,String> getConfiguration();
+    
+    String getConfiguration(String key);
     /**
      * @param type
      * @param key

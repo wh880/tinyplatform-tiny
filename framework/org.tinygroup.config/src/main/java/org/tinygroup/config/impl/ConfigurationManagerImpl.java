@@ -110,4 +110,8 @@ public class ConfigurationManagerImpl implements org.tinygroup.config.Configurat
 	public Map<String, String> getConfiguration() {
 		return configuration;
 	}
+
+	public String getConfiguration(String key) {
+		return configuration.get(key);
+	}
 }
