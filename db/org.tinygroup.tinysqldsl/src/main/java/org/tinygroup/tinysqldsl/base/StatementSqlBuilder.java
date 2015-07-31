@@ -91,6 +91,7 @@ public abstract class StatementSqlBuilder {
 	
 	
 	public Map<String, Object> mapValue(){
+		 Assert.assertTrue(namedList.size()==values.size(),"命名参数名称列表与值列表长度不一样");
 		 Map<String, Object> mapValues=new HashMap<String, Object>();
          for (int i = 0; i < namedList.size(); i++) {
 			mapValues.put(namedList.get(i), values.get(i));
