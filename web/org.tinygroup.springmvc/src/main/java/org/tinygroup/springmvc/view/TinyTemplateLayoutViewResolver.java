@@ -72,7 +72,8 @@ public class TinyTemplateLayoutViewResolver extends
 		Assert.assertNotNull(templateEngine,"templateEngine must not be null");
 		layoutView.setTemplateEngine(templateEngine);
 		layoutView.setUrl("/template"+generateUrl(viewName));
-//		layoutView.set
+		layoutView.setNoLayoutExtFileName(noLayoutExtFileName);
+		layoutView.setViewExtFileName(viewExtFileName);
 
 		return layoutView;
 	}

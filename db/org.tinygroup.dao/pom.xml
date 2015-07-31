@@ -36,12 +36,10 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-commons-annotations</artifactId>
-      <version>3.3.0.ga</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
-      <version>3.4.0.GA</version>
         <exclusions>
             <exclusion>
                 <groupId>org.slf4j</groupId>
@@ -52,7 +50,6 @@
       <dependency>
           <groupId>javax.annotation</groupId>
           <artifactId>jsr250-api</artifactId>
-          <version>1.0</version>
       </dependency>
   </dependencies>
 </project>

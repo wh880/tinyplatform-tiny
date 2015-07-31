@@ -77,15 +77,16 @@ public class TinyTemplateLayoutView extends AbstractTemplateView {
 				getApplicationContext().getBean("uiComponentManager"));
 		TemplateContext templateContext = new TinyWebTemplateContext(model,
 				WebContextUtil.getWebContext(request));
-		String path = getExtFileName(getUrl());
+		String path = getUrl();
+		String extFileName=getExtFileName(path);
 		if (isPagelet(path)) {
-			templateEngine.renderTemplateWithOutLayout(path, templateContext,
+			templateEngine.renderTemplateWithOutLayout(extFileName, templateContext,
 					response.getWriter());
 		} else {
-			templateEngine.renderTemplate(path, templateContext,
+			templateEngine.renderTemplate(extFileName, templateContext,
 					response.getWriter());
 		}
-		logger.logMessage(LogLevel.DEBUG, "路径<{}>处理时间：{}ms", getUrl(),
+		logger.logMessage(LogLevel.DEBUG, "路径<{}>处理时间：{}ms", path,
 				System.currentTimeMillis() - startTime);
 
 	}
