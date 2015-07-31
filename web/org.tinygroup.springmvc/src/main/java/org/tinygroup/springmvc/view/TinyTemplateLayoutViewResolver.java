@@ -30,10 +30,12 @@ public class TinyTemplateLayoutViewResolver extends
 		AbstractTemplateViewResolver {
 
 	private static final String VIEW_EXT_FILENAME = "page";// 视图扩展名
-	private static final String LAYOUT_EXT_FILENAME = "layout";// 布局扩展名
+	
+	private static final String PAGELET_EXT_FILE_NAME = "pagelet";
 
 	private String viewExtFileName = VIEW_EXT_FILENAME;
-	private String layoutExtFileName = LAYOUT_EXT_FILENAME;
+	
+	private String noLayoutExtFileName=PAGELET_EXT_FILE_NAME;
 	
 	private TemplateEngine templateEngine;
 	
@@ -49,9 +51,18 @@ public class TinyTemplateLayoutViewResolver extends
 	public void setViewExtFileName(String viewExtFileName) {
 		this.viewExtFileName = viewExtFileName;
 	}
+	
 
-	public void setLayoutExtFileName(String layoutExtFileName) {
-		this.layoutExtFileName = layoutExtFileName;
+	public String getViewExtFileName() {
+		return viewExtFileName;
+	}
+
+	public String getNoLayoutExtFileName() {
+		return noLayoutExtFileName;
+	}
+
+	public void setNoLayoutExtFileName(String noLayoutExtFileName) {
+		this.noLayoutExtFileName = noLayoutExtFileName;
 	}
 
 	@Override
@@ -61,6 +72,7 @@ public class TinyTemplateLayoutViewResolver extends
 		Assert.assertNotNull(templateEngine,"templateEngine must not be null");
 		layoutView.setTemplateEngine(templateEngine);
 		layoutView.setUrl("/template"+generateUrl(viewName));
+//		layoutView.set
 
 		return layoutView;
 	}
