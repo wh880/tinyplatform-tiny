@@ -349,9 +349,9 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public void renderTemplateWithOutLayout(String path, TemplateContext context, Writer writer) throws TemplateException {
-        Template Template = findTemplate(path);
-        if (Template != null) {
-            renderTemplate(Template, context, writer);
+        Template template = findTemplate(path);
+        if (template != null) {
+            renderTemplate(template, context, writer);
         } else {
             throw new TemplateException("找不到模板：" + path);
         }
