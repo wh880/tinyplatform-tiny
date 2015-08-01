@@ -15,6 +15,7 @@
  */
 package org.tinygroup.tinysqldsl;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ import java.util.List;
  * @author renhui
  *
  */
-public class Pager<T>{
+public class Pager<T> implements Serializable{
 	
 	private List<T> records;//当前页的记录
 	
