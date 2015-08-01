@@ -15,18 +15,19 @@
  */
 package org.tinygroup.springmvc.exceptionresolver;
 
-import org.springframework.beans.factory.BeanFactoryUtils;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.tinygroup.assembly.AssemblyService;
+import org.tinygroup.assembly.DefaultAssemblyService;
 import org.tinygroup.commons.tools.CollectionUtil;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 异常解析的复合类
@@ -38,6 +39,13 @@ public class HandlerExceptionResolverComposite extends ApplicationObjectSupport
 		implements HandlerExceptionResolver, InitializingBean {
 
 	private List<HandlerExceptionResolver> composite;
+	
+	private AssemblyService<HandlerExceptionResolver> assemblyService=new DefaultAssemblyService<HandlerExceptionResolver>();
+	
+	public void setAssemblyService(
+			AssemblyService<HandlerExceptionResolver> assemblyService) {
+		this.assemblyService = assemblyService;
+	}
 
 	public void setComposite(List<HandlerExceptionResolver> composite) {
 		this.composite = composite;
@@ -57,12 +65,12 @@ public class HandlerExceptionResolverComposite extends ApplicationObjectSupport
 
 	public void afterPropertiesSet() throws Exception {
 		if (CollectionUtil.isEmpty(composite)) {
-			Map<String, HandlerExceptionResolver> resolverMap = BeanFactoryUtils
-					.beansOfTypeIncludingAncestors(
-							this.getApplicationContext(),
-							HandlerExceptionResolver.class);
-			composite = new ArrayList<HandlerExceptionResolver>();
-			composite.addAll(resolverMap.values());
+			List<HandlerExceptionResolver> exclusions=new ArrayList<HandlerExceptionResolver>();
+			exclusions.add(this.getApplicationContext().getBean(TinyHandlerExceptionResolver.class));
+			exclusions.add(this);
+			assemblyService.setApplicationContext(getApplicationContext());
+			assemblyService.setExclusions(exclusions);
+			composite = assemblyService.findParticipants(HandlerExceptionResolver.class);
 		}
 	}
 
