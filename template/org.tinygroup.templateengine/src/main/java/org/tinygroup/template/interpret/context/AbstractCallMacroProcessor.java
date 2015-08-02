@@ -45,7 +45,7 @@ public abstract class AbstractCallMacroProcessor<T extends ParserRuleContext> im
             for (TinyTemplateParser.Para_expressionContext para : paraList.para_expression()) {
                 if (para.getChildCount() == 3) {
                     //如果是带参数的
-                    newContext.put(para.IDENTIFIER().getText(), engine.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, writer,templateFromContext.getPath()));
+                    newContext.put(para.IDENTIFIER().getSymbol().getText(), engine.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, writer,templateFromContext.getPath()));
                 } else {
                     if(i>=macro.getParameterNames().size()){
                         throw new TemplateException("参数数量超过宏<"+macro.getName()+">允许接受的数量",paraList,templateFromContext.getPath());

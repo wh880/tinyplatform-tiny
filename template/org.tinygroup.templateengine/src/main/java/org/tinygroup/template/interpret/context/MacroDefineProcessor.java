@@ -42,9 +42,9 @@ public class MacroDefineProcessor implements ContextProcessor<TinyTemplateParser
         if (parseTree.define_expression_list() != null) {
             for (TinyTemplateParser.Define_expressionContext exp : parseTree.define_expression_list().define_expression()) {
                 if (exp.expression() == null) {
-                    macroFromContext.addParameter(exp.IDENTIFIER().getText(), null);
+                    macroFromContext.addParameter(exp.IDENTIFIER().getSymbol().getText(), null);
                 } else {
-                    macroFromContext.addParameter(exp.IDENTIFIER().getText(), new EvaluateExpressionImpl(interpreter, engine, templateFromContext, exp.expression()));
+                    macroFromContext.addParameter(exp.IDENTIFIER().getSymbol().getText(), new EvaluateExpressionImpl(interpreter, engine, templateFromContext, exp.expression()));
                 }
             }
         }

@@ -39,7 +39,7 @@ public class FunctionCallProcessor implements ContextProcessor<TinyTemplateParse
     }
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_function_callContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
-        String name = parseTree.IDENTIFIER().getText();
+        String name = parseTree.IDENTIFIER().getSymbol().getText();
         Object[] paraList = null;
         if (parseTree.expression_list() != null) {
             paraList = new Object[parseTree.expression_list().expression().size()];

@@ -40,7 +40,7 @@ public class FieldProcessor implements ContextProcessor<TinyTemplateParser.Expr_
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_field_accessContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         Object a = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext,context, writer,fileName);
-        String fieldName=parseTree.IDENTIFIER().getText();
+        String fieldName=parseTree.IDENTIFIER().getSymbol().getText();
         if(parseTree.getChild(1).getText().startsWith("?")){
             return U.sp(a,fieldName);
         }else{

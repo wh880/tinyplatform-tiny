@@ -38,7 +38,7 @@ public class LayoutDefineProcessor implements ContextProcessor<TinyTemplateParse
     }
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Layout_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
-        String name = "$" + parseTree.IDENTIFIER().getText();
+        String name = "$" + parseTree.IDENTIFIER().getSymbol().getText();
         if (context.exist(name)) {
             interpreter.interpretTree(engine, templateFromContext, (TinyTemplateParser.BlockContext) context.get(name), pageContext,context, writer,fileName);
         } else {

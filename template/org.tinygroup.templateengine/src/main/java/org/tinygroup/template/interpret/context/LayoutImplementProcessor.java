@@ -38,7 +38,7 @@ public class LayoutImplementProcessor implements ContextProcessor<TinyTemplatePa
     }
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Layout_impl_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
-        String name = "$" + parseTree.IDENTIFIER().getText();
+        String name = "$" + parseTree.IDENTIFIER().getSymbol().getText();
         if (!context.exist(name)) {
             //只有前面没有实现的时候才添加进去
             context.put(name, parseTree.block());
