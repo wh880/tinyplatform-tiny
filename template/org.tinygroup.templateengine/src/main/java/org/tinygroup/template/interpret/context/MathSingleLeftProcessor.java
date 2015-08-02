@@ -35,9 +35,7 @@ public class MathSingleLeftProcessor implements ContextProcessor<TinyTemplatePar
         return TinyTemplateParser.Expr_single_leftContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_single_leftContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {

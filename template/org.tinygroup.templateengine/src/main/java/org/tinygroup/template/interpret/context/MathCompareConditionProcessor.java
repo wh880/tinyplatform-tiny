@@ -36,9 +36,7 @@ public class MathCompareConditionProcessor implements ContextProcessor<TinyTempl
         return TinyTemplateParser.Expr_compare_conditionContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_compare_conditionContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {

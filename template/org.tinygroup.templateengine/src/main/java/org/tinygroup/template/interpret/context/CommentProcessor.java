@@ -33,9 +33,7 @@ public class CommentProcessor implements ContextProcessor<TinyTemplateParser.Com
         return TinyTemplateParser.CommentContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.CommentContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         return null;

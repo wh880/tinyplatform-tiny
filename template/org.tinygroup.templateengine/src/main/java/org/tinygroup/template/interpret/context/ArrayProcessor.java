@@ -33,9 +33,6 @@ public class ArrayProcessor implements ContextProcessor<TinyTemplateParser.Expr_
         return TinyTemplateParser.Expr_array_listContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_array_listContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         if (parseTree.expression_list() != null) {

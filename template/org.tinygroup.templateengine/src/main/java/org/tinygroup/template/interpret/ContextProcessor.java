@@ -27,8 +27,6 @@ import java.io.Writer;
 public interface ContextProcessor<T extends ParserRuleContext> {
     Class<T> getType();
 
-    boolean processChildren();
-
     Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, T parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception;
 
 }

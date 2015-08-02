@@ -35,9 +35,7 @@ public class SetProcessor implements ContextProcessor<TinyTemplateParser.Set_dir
         return TinyTemplateParser.Set_directiveContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Set_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {

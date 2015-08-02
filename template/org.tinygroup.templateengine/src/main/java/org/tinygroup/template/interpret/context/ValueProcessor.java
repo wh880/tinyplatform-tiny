@@ -34,9 +34,7 @@ public class ValueProcessor implements ContextProcessor<TinyTemplateParser.Value
         return TinyTemplateParser.ValueContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.ValueContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         Object value = interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(1), pageContext, context, writer, fileName);

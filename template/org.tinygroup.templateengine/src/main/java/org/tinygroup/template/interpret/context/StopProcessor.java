@@ -36,9 +36,7 @@ public class StopProcessor implements ContextProcessor<TinyTemplateParser.Stop_d
     }
 
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Stop_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         boolean stop = true;

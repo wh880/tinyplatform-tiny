@@ -33,9 +33,7 @@ public class CallWithBodyProcessor extends  AbstractCallMacroProcessor<TinyTempl
         return TinyTemplateParser.Call_block_directiveContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_block_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         String name = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName).toString();

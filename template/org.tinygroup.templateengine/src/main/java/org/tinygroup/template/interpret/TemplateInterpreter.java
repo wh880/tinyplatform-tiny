@@ -75,9 +75,9 @@ public class TemplateInterpreter {
             TerminalNode terminalNode = (TerminalNode) tree;
             TerminalNodeProcessor processor = terminalNodeProcessors[terminalNode.getSymbol().getType()];
             if (processor != null) {
-                returnValue = processor.process(terminalNode, context, writer);
+                return processor.process(terminalNode, context, writer);
             } else {
-                returnValue = otherNodeProcessor.process(terminalNode, context, writer);
+                return otherNodeProcessor.process(terminalNode, context, writer);
             }
         } else if (tree instanceof ParserRuleContext) {
             try {
@@ -85,7 +85,7 @@ public class TemplateInterpreter {
                 if (processor != null) {
                     returnValue = processor.process(this, templateFromContext, (ParserRuleContext) tree, pageContext, context, engine, writer,fileName);
                 }
-                if (processor == null || processor != null && processor.processChildren()) {
+                if (processor == null ) {
                     for (int i = 0; i < tree.getChildCount(); i++) {
                         Object value = interpretTree(engine, templateFromContext, tree.getChild(i), pageContext, context, writer,fileName );
                         if (value != null) {
@@ -104,6 +104,7 @@ public class TemplateInterpreter {
                 throw new TemplateException(e, (ParserRuleContext) tree,fileName);
             }
         } else {
+            //这段应该是没有用的
             for (int i = 0; i < tree.getChildCount(); i++) {
                 Object value = interpretTree(engine, templateFromContext, tree.getChild(i), pageContext, context, writer,fileName );
                 if (returnValue == null && value != null) {

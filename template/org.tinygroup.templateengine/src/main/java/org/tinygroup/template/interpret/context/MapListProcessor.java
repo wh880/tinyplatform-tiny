@@ -37,9 +37,7 @@ public class MapListProcessor implements ContextProcessor<TinyTemplateParser.Has
         return TinyTemplateParser.Hash_map_entry_listContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Hash_map_entry_listContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();

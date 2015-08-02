@@ -35,9 +35,7 @@ public class MapProcessor implements ContextProcessor<TinyTemplateParser.Expr_ha
         return TinyTemplateParser.Expr_hash_mapContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_hash_mapContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         if(parseTree==null|| parseTree.hash_map_entry_list()==null){

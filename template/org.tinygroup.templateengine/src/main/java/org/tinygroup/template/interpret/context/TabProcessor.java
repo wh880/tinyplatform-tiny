@@ -34,9 +34,7 @@ public class TabProcessor implements ContextProcessor<TinyTemplateParser.Tabs_di
         return TinyTemplateParser.Tabs_directiveContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Tabs_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {

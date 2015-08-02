@@ -35,9 +35,7 @@ public class DentProcessor implements ContextProcessor<TinyTemplateParser.Dent_d
         return TinyTemplateParser.Dent_directiveContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Dent_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {

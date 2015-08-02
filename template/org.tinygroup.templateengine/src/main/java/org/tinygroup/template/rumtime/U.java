@@ -322,9 +322,9 @@ public final class U {
         if (o == null) {
             return false;
         }
-        if (o instanceof Boolean) {
+        if (o.getClass()==Boolean.class) {
             return ((Boolean) o).booleanValue();
-        } else if (o instanceof String) {
+        } else if (o.getClass()==String.class) {
             return ((String) o).length() > 0;
         } else if (o instanceof Collection) {
             return ((Collection) o).size() > 0;

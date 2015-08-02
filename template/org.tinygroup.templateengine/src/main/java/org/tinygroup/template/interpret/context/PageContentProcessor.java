@@ -23,7 +23,6 @@ import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 import java.io.Writer;
-import java.util.Stack;
 
 /**
  * Created by luog on 15/7/17.
@@ -35,9 +34,7 @@ public class PageContentProcessor implements ContextProcessor<TinyTemplateParser
         return TinyTemplateParser.Pagecontent_directiveContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Pagecontent_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {

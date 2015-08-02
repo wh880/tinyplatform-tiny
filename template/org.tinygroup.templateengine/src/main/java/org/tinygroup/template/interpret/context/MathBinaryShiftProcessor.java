@@ -35,9 +35,7 @@ public class MathBinaryShiftProcessor implements ContextProcessor<TinyTemplatePa
         return TinyTemplateParser.Expr_math_binary_shiftContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_math_binary_shiftContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {

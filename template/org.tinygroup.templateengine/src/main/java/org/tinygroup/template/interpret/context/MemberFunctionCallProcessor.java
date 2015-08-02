@@ -36,9 +36,7 @@ public class MemberFunctionCallProcessor implements ContextProcessor<TinyTemplat
         return TinyTemplateParser.Expr_member_function_callContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_member_function_callContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         Object object = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext, context, writer,fileName);

@@ -33,9 +33,7 @@ public class CallMacroWithBodyProcessor extends AbstractCallMacroProcessor<TinyT
         return TinyTemplateParser.Call_macro_block_directiveContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_macro_block_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         String name = parseTree.getChild(0).getText();

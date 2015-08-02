@@ -34,9 +34,7 @@ public class FieldProcessor implements ContextProcessor<TinyTemplateParser.Expr_
         return TinyTemplateParser.Expr_field_accessContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_field_accessContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         Object a = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext,context, writer,fileName);

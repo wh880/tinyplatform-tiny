@@ -39,9 +39,7 @@ public class WhileProcessor implements ContextProcessor<TinyTemplateParser.While
         return TinyTemplateParser.While_directiveContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.While_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         boolean hasItem = false;

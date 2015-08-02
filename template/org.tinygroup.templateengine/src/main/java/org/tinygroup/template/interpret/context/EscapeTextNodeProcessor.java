@@ -34,9 +34,7 @@ public class EscapeTextNodeProcessor implements TerminalNodeProcessor<TerminalNo
         return TinyTemplateParser.TEXT_ESCAPED_CHAR;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TerminalNode terminalNode, TemplateContext context, Writer writer) throws IOException {
         TemplateInterpreter.write(writer, terminalNode.getText().substring(1));

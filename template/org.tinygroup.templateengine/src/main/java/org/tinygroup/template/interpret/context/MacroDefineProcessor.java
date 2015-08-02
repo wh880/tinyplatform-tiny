@@ -31,9 +31,7 @@ public class MacroDefineProcessor implements ContextProcessor<TinyTemplateParser
         return TinyTemplateParser.Macro_directiveContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Macro_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         String name =parseTree.getChild(0).getText();

@@ -64,10 +64,8 @@ public abstract class AbstractTemplate implements Template {
 
     public void render(TemplateContext context, Writer writer) throws TemplateException {
         try {
-            context.putSubContext("$currentTemplateContext", getTemplateContext());
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            renderContent(context, bufferedWriter);
-            bufferedWriter.flush();
+            renderContent(context, writer);
+            writer.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
         } finally {

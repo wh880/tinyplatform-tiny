@@ -35,9 +35,7 @@ public class MathCompareRalationProcessor implements ContextProcessor<TinyTempla
         return TinyTemplateParser.Expr_compare_relationalContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_compare_relationalContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {

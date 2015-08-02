@@ -34,9 +34,7 @@ public class EolProcessor implements ContextProcessor<TinyTemplateParser.Endofli
         return TinyTemplateParser.Endofline_directiveContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Endofline_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {

@@ -16,7 +16,6 @@
 package org.tinygroup.template.interpret.context;
 
 import org.tinygroup.template.TemplateContext;
-import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
@@ -37,11 +36,13 @@ public class ForProcessor implements ContextProcessor<TinyTemplateParser.For_dir
         return TinyTemplateParser.For_directiveContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.For_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+        if(true){
+            return null;
+        }
+
         String name = parseTree.for_expression().IDENTIFIER().getSymbol().getText();
         Object values = interpreter.interpretTree(engine, templateFromContext, parseTree.for_expression().expression(), pageContext, context, writer, fileName);
         ForIterator forIterator = new ForIterator(values);
@@ -67,6 +68,4 @@ public class ForProcessor implements ContextProcessor<TinyTemplateParser.For_dir
         }
         return null;
     }
-
-
 }

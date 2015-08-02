@@ -39,14 +39,17 @@ public final class ForIterator implements Iterator, ForStatus {
 
     public ForIterator(Object object) {
         if (null == object) {
-        } else if (object instanceof Map) {
-            Map map = (Map) object;
-            iterator = map.entrySet().iterator();
-            size = map.size();
+        } else if (object.getClass().isArray()) {
+            iterator = new ArrayIterator(object);
+            size = ArrayUtil.arrayLength(object);
         } else if (object instanceof Collection) {
             Collection collection = (Collection) object;
             iterator = collection.iterator();
             size = collection.size();
+        } else if (object instanceof Map) {
+            Map map = (Map) object;
+            iterator = map.entrySet().iterator();
+            size = map.size();
         } else if (object instanceof Enumeration) {
             Enumeration enumeration = (Enumeration) object;
             ArrayList<?> list = Collections.list(enumeration);
@@ -56,9 +59,6 @@ public final class ForIterator implements Iterator, ForStatus {
             List<?> itemList = Arrays.asList(((Class<?>) object).getEnumConstants());
             iterator = itemList.iterator();
             size = itemList.size();
-        } else if (object.getClass().isArray()) {
-            iterator = new ArrayIterator(object);
-            size = ArrayUtil.arrayLength(object);
         } else {
             iterator = new SingletonIterator(object);
             size = 1;

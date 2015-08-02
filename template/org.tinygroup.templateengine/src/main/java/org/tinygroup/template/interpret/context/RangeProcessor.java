@@ -35,9 +35,7 @@ public class RangeProcessor implements ContextProcessor<TinyTemplateParser.Expre
         return TinyTemplateParser.Expression_rangeContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expression_rangeContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {

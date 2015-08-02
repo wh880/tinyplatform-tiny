@@ -34,9 +34,6 @@ public class ArrayGetProcessor implements ContextProcessor<TinyTemplateParser.Ex
         return TinyTemplateParser.Expr_array_getContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_array_getContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         Object a = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(0),pageContext, context, writer,fileName);

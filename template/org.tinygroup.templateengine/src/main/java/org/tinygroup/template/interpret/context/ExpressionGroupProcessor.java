@@ -33,9 +33,7 @@ public class ExpressionGroupProcessor implements ContextProcessor<TinyTemplatePa
         return TinyTemplateParser.Expr_groupContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_groupContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         return interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName);

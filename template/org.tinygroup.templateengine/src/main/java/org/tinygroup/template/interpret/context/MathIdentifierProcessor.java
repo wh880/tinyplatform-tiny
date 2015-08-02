@@ -35,9 +35,7 @@ public class MathIdentifierProcessor implements ContextProcessor<TinyTemplatePar
         return TinyTemplateParser.Expr_identifierContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_identifierContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {

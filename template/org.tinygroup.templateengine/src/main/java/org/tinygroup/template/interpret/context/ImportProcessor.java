@@ -33,9 +33,7 @@ public class ImportProcessor implements ContextProcessor<TinyTemplateParser.Impo
         return TinyTemplateParser.Import_directiveContext.class;
     }
 
-    public boolean processChildren() {
-        return false;
-    }
+
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Import_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         String path = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext,context, writer,fileName).toString();
