@@ -39,7 +39,7 @@ public class TestInterpretFileObject {
 //        Template template = loader.createTemplate(VFS.resolveFile("/Users/luoguo/resourceroot/b.page"));
 //        template.render(context,new OutputStreamWriter(System.out));
         long start = System.currentTimeMillis();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200000; i++) {
             engine.renderTemplate("/tiny.tpl", context, new EmptyWriter());
         }
         long end = System.currentTimeMillis();

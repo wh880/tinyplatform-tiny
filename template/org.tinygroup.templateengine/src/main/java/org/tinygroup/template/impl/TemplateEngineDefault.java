@@ -48,6 +48,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     private boolean cacheEnabled = false;
     private TemplateCache<String, List<Template>> layoutPathListCache = new TemplateCacheDefault<String, List<Template>>();
     private TemplateCache<String, Macro> macroCache = new TemplateCacheDefault<String, Macro>();
+    private TemplateCache<String, Template> templateCache = new TemplateCacheDefault<String, Template>();
     private List<String> macroLibraryList = new ArrayList<String>();
     private String engineId;
 
@@ -124,6 +125,10 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public boolean isSafeVariable() {
         return U.isSafeVariable();
+    }
+
+    public TemplateInterpreter getTemplateInterpreter() {
+        return interpreter;
     }
 
     public void setSafeVariable(boolean safeVariable) {
@@ -278,10 +283,26 @@ public class TemplateEngineDefault implements TemplateEngine {
 
 
     public Template findTemplate(String path) throws TemplateException {
-        for (ResourceLoader loader : resourceLoaderList) {
-            Template Template = loader.getTemplate(path);
-            if (Template != null) {
-                return Template;
+        Template template = null;
+        if (cacheEnabled) {
+            template = templateCache.get(path);
+            if (template == null) {
+                for (ResourceLoader loader : resourceLoaderList) {
+                    template = loader.getTemplate(path);
+                    if (template != null) {
+                        templateCache.put(path, template);
+                        return template;
+                    }
+                }
+            } else {
+                return template;
+            }
+        } else {
+            for (ResourceLoader loader : resourceLoaderList) {
+                template = loader.getTemplate(path);
+                if (template != null) {
+                    return template;
+                }
             }
         }
         throw new TemplateException("找不到模板：" + path);
@@ -314,14 +335,14 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
         try {
-            Template Template = findTemplate(path);
-            if (Template != null) {
-                context.put("$templateContext", context);
-                List<Template> layoutPaths = getLayoutList(Template.getPath());
+            Template template = findTemplate(path);
+            if (template != null) {
+                List<Template> layoutPaths = getLayoutList(template.getPath());
                 if (layoutPaths.size() > 0) {
                     Writer templateWriter = new CharArrayWriter();
-                    Template.render(context, templateWriter);
+                    template.render(context, templateWriter);
                     context.put("pageContent", templateWriter.toString());
+                    context.put("$pageContent", templateWriter.toString());
                     Writer layoutWriter = null;
                     TemplateContext layoutContext = context;
                     for (int i = layoutPaths.size() - 1; i >= 0; i--) {
@@ -337,7 +358,7 @@ public class TemplateEngineDefault implements TemplateEngine {
                     }
                     writer.write(layoutWriter.toString());
                 } else {
-                    renderTemplate(Template, context, writer);
+                    renderTemplate(template, context, writer);
                 }
                 writer.flush();
             } else {
@@ -408,8 +429,8 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public void renderTemplate(Template Template, TemplateContext context, Writer writer) throws TemplateException {
-        Template.render(context, writer);
+    public void renderTemplate(Template template, TemplateContext context, Writer writer) throws TemplateException {
+        template.render(context, writer);
     }
 
     public Macro findMacro(Object macroNameObject, Template template, TemplateContext context) throws TemplateException {

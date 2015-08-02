@@ -31,7 +31,7 @@ import java.util.Map;
  */
 public abstract class AbstractTemplate implements Template {
     private Map<String, Macro> macroMap = new HashMap<String, Macro>();
-    private TemplateEngine templateEngine;
+    protected TemplateEngine templateEngine;
     private TemplateContext templateContext = new TemplateContextDefault();
     private List<String> importPathList = new ArrayList<String>();
 

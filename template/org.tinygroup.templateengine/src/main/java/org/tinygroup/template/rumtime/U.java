@@ -22,7 +22,6 @@ import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Enumerator;
 import org.tinygroup.context.Context;
 import org.tinygroup.template.*;
-import org.tinygroup.template.impl.TemplateCacheDefault;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
@@ -32,6 +31,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -40,8 +40,8 @@ import java.util.Map;
  * Created by luoguo on 2014/6/4.
  */
 public final class U {
-    private static TemplateCache<MethodKey, Method> methodCache = new TemplateCacheDefault<MethodKey, Method>();
-    private static TemplateCache<FieldKey, Field> fieldCache = new TemplateCacheDefault<FieldKey, Field>();
+    private static Map<Class, Map<String, Method>> methodCache = new HashMap<Class, Map<String, Method>>();
+    private static Map<Class, Map<String, Field>> fieldCache = new HashMap<Class, Map<String, Field>>();
     private static PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
     private static String[] tabCache = new String[31];
     private static boolean safeVariable = false;
@@ -75,34 +75,51 @@ public final class U {
     public static Object p(Object object, Object name) throws TemplateException {
         try {
             if (object instanceof Map) {
-                return ((Map) object).get(name);
+                Object value = ((Map) object).get(name);
+                if (value != null) {
+                    return value;
+                }
             }
             String fieldName = name.toString();
-            MethodKey methodKey = getMethodKey(object, fieldName);
-            if (methodCache.contains(methodKey)) {
-                return methodCache.get(methodKey).invoke(object);
-            } else {
+            Map<String, Method> stringMethodMap = methodCache.get(object.getClass());
+            Method method = null;
+            if (stringMethodMap != null) {
+                method = stringMethodMap.get(name);
+            }
+            if (method == null) {
                 PropertyDescriptor descriptor =
                         propertyUtilsBean.getPropertyDescriptor(object, fieldName);
-                if(descriptor!=null) {
-                    Method method = MethodUtils.getAccessibleMethod(object.getClass(), descriptor.getReadMethod());
-                    methodCache.put(methodKey, method);
-                    return method.invoke(object);
+                if (descriptor != null) {
+                    method = MethodUtils.getAccessibleMethod(object.getClass(), descriptor.getReadMethod());
+                    if (stringMethodMap == null) {
+                        stringMethodMap = new HashMap<String, Method>();
+                        methodCache.put(object.getClass(), stringMethodMap);
+                    }
+                    stringMethodMap.put(fieldName, method);
                 }
             }
-            FieldKey fieldKey = getFieldKey(object, fieldName);
-            if (fieldCache.contains(fieldKey)) {
-                return fieldCache.get(fieldKey).get(object);
-            } else {
-                Field field=object.getClass().getField(fieldName);
-                if(field!=null) {
-                     field= object.getClass().getField(fieldName);
-                    fieldCache.put(fieldKey, field);
-                    field.setAccessible(true);
-                    return field.get(object);
+            if (method != null) {
+                return method.invoke(object);
+            }
+            Map<String, Field> stringFieldMap = fieldCache.get(object.getClass());
+            Field field = null;
+            if (stringFieldMap != null) {
+                field = stringFieldMap.get(name);
+            }
+            if (field == null) {
+                field = object.getClass().getField(fieldName);
+                if (field != null) {
+                    if (stringFieldMap == null) {
+                        stringFieldMap = new HashMap<String, Field>();
+                        fieldCache.put(object.getClass(), stringFieldMap);
+                    }
+                    stringFieldMap.put(fieldName, field);
                 }
             }
-            throw new TemplateException(object.getClass().getName()+"中不能找到"+fieldName+"的键值、属性。");
+            if (field != null) {
+                return field.get(object);
+            }
+            throw new TemplateException(object.getClass().getName() + "中不能找到" + fieldName + "的键值、属性。");
         } catch (Exception e) {
             throw new TemplateException(e);
         }
@@ -157,12 +174,21 @@ public final class U {
     }
 
     private static Object executeClassMethod(Object object, String methodName, Object[] parameters) throws TemplateException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        Method method = methodCache.get(getMethodKey(object, methodName));
+        Method method = getMethodByName(object, methodName);
         //如果有缓冲，则用缓冲方式调用
         if (method != null) {
             return method.invoke(object, parameters);
         }
         return MethodUtils.invokeMethod(object, methodName, parameters);
+    }
+
+    private static Method getMethodByName(Object object, String methodName) {
+        Method method = null;
+        Map<String, Method> stringMethodMap = methodCache.get(object.getClass());
+        if (stringMethodMap != null) {
+            method = stringMethodMap.get(methodName);
+        }
+        return method;
     }
 
     private static Object executeExtendFunction(Template template, TemplateContext context, Object object, TemplateFunction function, Object[] parameters) throws TemplateException {
@@ -372,76 +398,6 @@ public final class U {
         }
 
         throw new TemplateException(object.getClass().getName() + "不可以用下标方式取值。");
-    }
-
-    Method getMethod(Object object, String methodName) {
-        MethodKey key = getMethodKey(object, methodName);
-        if (methodCache.contains(key)) {
-            return methodCache.get(key);
-        }
-        Method method = null;
-        for (Method m : object.getClass().getMethods()) {
-            if (m.getName().equals(methodName)) {
-                if (method != null) {
-                    //如果多次出现，则返回空，表示无法缓冲
-                    method = null;
-                    break;
-                } else {
-                    method = m;
-                }
-            }
-        }
-        methodCache.put(key, method);
-        return method;
-    }
-
-    private static MethodKey getMethodKey(Object object, String methodName) {
-        return new MethodKey(object.getClass(), methodName);
-    }
-    private static FieldKey getFieldKey(Object object, String fieldName) {
-        return new FieldKey(object.getClass(), fieldName);
-    }
-    static class FieldKey {
-        FieldKey(Class clazz, String fieldName) {
-            this.clazz = clazz;
-            this.fieldName = fieldName;
-        }
-
-        private Class clazz;
-        private String fieldName;
-
-        public boolean equals(Object object) {
-            if (!FieldKey.class.isInstance(object)) {
-                return false;
-            }
-            FieldKey fieldKey = (FieldKey) object;
-            return fieldKey.clazz.equals(clazz) && fieldKey.fieldName.equals(fieldName);
-        }
-
-        public int hashCode() {
-            return clazz.hashCode() + fieldName.hashCode();
-        }
-    }
-    static class MethodKey {
-        MethodKey(Class clazz, String methodName) {
-            this.clazz = clazz;
-            this.methodName = methodName;
-        }
-
-        private Class clazz;
-        private String methodName;
-
-        public boolean equals(Object object) {
-            if (!MethodKey.class.isInstance(object)) {
-                return false;
-            }
-            MethodKey methodKey = (MethodKey) object;
-            return methodKey.clazz.equals(clazz) && methodKey.methodName.equals(methodName);
-        }
-
-        public int hashCode() {
-            return clazz.hashCode() + methodName.hashCode();
-        }
     }
 }
 

@@ -42,7 +42,7 @@ public class PageContentProcessor implements ContextProcessor<TinyTemplateParser
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Pagecontent_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         //从上下文获得BODY中传入的内容,然后进行渲染
-        interpreter.write(writer,context.get("pageContent"));
+        interpreter.write(writer,context.get("$pageContent"));
         return null;
     }
 }
