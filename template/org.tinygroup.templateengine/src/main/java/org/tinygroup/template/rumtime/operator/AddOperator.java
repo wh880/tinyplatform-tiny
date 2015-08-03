@@ -44,7 +44,7 @@ public class AddOperator extends TwoConvertOperator {
             BigDecimal b2 = (BigDecimal) right;
             return b1.add(b2);
         }
-        return (left == null ? left.toString() : "") + (right == null ? right.toString() : "");
+        return (left != null ? left.toString() : "") + (right != null ? right.toString() : "");
     }
 
 
