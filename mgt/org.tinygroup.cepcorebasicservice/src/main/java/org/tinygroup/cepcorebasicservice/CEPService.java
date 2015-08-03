@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.event.ServiceInfo;
 
 public class CEPService {
@@ -54,6 +55,20 @@ public class CEPService {
 			}
 		}
 		return list;
+	}
+	
+	
+	public EventProcessor getEventProcessor(String eventProcessorId){
+		if(StringUtil.isBlank(eventProcessorId)){
+			throw new RuntimeException("EventProcessorId不可为空");
+		}
+		List<EventProcessor> list = getEventProcessors();
+		for(EventProcessor e:list){
+			if (eventProcessorId.equals(e.getId())) {
+				return e;
+			}
+		}
+		throw new RuntimeException("不存在EventProcessor:"+eventProcessorId);
 	}
 	
 }

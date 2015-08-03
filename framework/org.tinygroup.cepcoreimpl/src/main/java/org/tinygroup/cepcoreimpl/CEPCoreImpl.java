@@ -36,6 +36,7 @@ import org.tinygroup.cepcore.aop.CEPCoreAopManager;
 import org.tinygroup.cepcore.exception.RequestNotFoundException;
 import org.tinygroup.cepcore.impl.WeightChooser;
 import org.tinygroup.cepcore.util.CEPCoreUtil;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
@@ -248,6 +249,13 @@ public class CEPCoreImpl implements CEPCore {
 		ServiceRequest request = event.getServiceRequest();
 		String eventNodeName = event.getServiceRequest().getNodeName();
 		LOGGER.logMessage(LogLevel.INFO, "请求指定的执行节点为:{0}", eventNodeName);
+		if(!StringUtil.isBlank(eventNodeName)){
+			LOGGER.logMessage(LogLevel.INFO, "当前节点NodeName:{}",eventNodeName);
+			if(eventNodeName.endsWith(":"+getNodeName())){
+				eventNodeName = null;
+				LOGGER.logMessage(LogLevel.INFO, "请求指定的执行节点即当前节点");
+			}
+		}
 		EventProcessor eventProcessor = getEventProcessor(request,
 				eventNodeName);
 		if (EventProcessor.TYPE_LOCAL == eventProcessor.getType()) {
