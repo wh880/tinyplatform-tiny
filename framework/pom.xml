@@ -37,7 +37,6 @@
         <module>org.tinygroup.logger</module>
         <module>org.tinygroup.pc</module>
         <module>org.tinygroup.ioc</module>
-        <module>org.tinygroup.rpc</module>
         <module>org.tinygroup.rmi</module>
         <module>org.tinygroup.threadgroup</module>
         <module>org.tinygroup.convert</module>
