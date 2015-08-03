@@ -41,6 +41,7 @@ import org.tinygroup.context.Context;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.ServiceRequest;
+import org.tinygroup.event.central.Node;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -249,9 +250,10 @@ public class CEPCoreImpl implements CEPCore {
 		ServiceRequest request = event.getServiceRequest();
 		String eventNodeName = event.getServiceRequest().getNodeName();
 		LOGGER.logMessage(LogLevel.INFO, "请求指定的执行节点为:{0}", eventNodeName);
+		//如果指定了执行节点，则判断执行节点是否是当前节点，如果是，则将执行节点变量置空
 		if(!StringUtil.isBlank(eventNodeName)){
-			LOGGER.logMessage(LogLevel.INFO, "当前节点NodeName:{}",eventNodeName);
-			if(eventNodeName.endsWith(":"+getNodeName())){
+			LOGGER.logMessage(LogLevel.INFO, "当前节点NodeName:{}",nodeName);
+			if(Node.checkEquals(eventNodeName, nodeName)){
 				eventNodeName = null;
 				LOGGER.logMessage(LogLevel.INFO, "请求指定的执行节点即当前节点");
 			}
@@ -349,29 +351,12 @@ public class CEPCoreImpl implements CEPCore {
 	}
 
 	private EventProcessor getEventProcessorByRegex(
-			ServiceRequest serviceRequest, String eventNodeName) {
+			ServiceRequest serviceRequest) {
 		String serviceId = serviceRequest.getServiceId();
-		boolean hasNotNodeName = eventNodeName == null
-				|| "".equals(eventNodeName);
 		for (EventProcessor p : processorList) {
 			List<String> regex = regexMap.get(p);
-			if (!hasNotNodeName && !eventNodeName.equals(p.getId())) {
-				continue;// 如果指定了节点，则先判断节点名是否对应，再做服务判断
-			}
-			// for (String s : regex) {
-			// Pattern pattern = Pattern.compile(s);
-			// Matcher matcher = pattern.matcher(serviceId);
-			// boolean b = matcher.matches(); // 满足时，将返回true，否则返回false
-			// if (b) {
-			// return p;
-			// }
-			// }
 			if (checkRegex(regex, serviceId)) {
 				return p;
-			}
-			if (!hasNotNodeName) {
-				throw new RuntimeException("指定的服务处理器：" + eventNodeName
-						+ "上不存在服务:" + serviceRequest.getServiceId());
 			}
 		}
 		throw new RuntimeException("没有找到合适的服务处理器");
@@ -393,29 +378,39 @@ public class CEPCoreImpl implements CEPCore {
 			String eventNodeName) {
 		List<EventProcessor> list = serviceIdMap.get(serviceRequest
 				.getServiceId());
-		if (list == null || list.isEmpty()) {
-			return getEventProcessorByRegex(serviceRequest, eventNodeName);
+		if(!StringUtil.isBlank(eventNodeName)){
+			return findEventProcessor(serviceRequest,eventNodeName,list);
 		}
-		return getEventProcessor(serviceRequest, eventNodeName, list);
+		
+		if (list == null || list.isEmpty()) {
+			return getEventProcessorByRegex(serviceRequest);
+		}
+		return getEventProcessor(serviceRequest, list);
+	}
+	private EventProcessor findEventProcessor(ServiceRequest serviceRequest,
+			String eventNodeName,List<EventProcessor> list){
+		String serviceId = serviceRequest.getServiceId();
+		for(String key:processorMap.keySet()){
+			if(Node.checkEquals(key, eventNodeName)){
+				EventProcessor e = processorMap.get(key);
+				//如果包含该服务的EventProcessor列表中存在该处理器，则返回
+				if(list.contains(e)){
+					return e;
+				}
+				if(processorList.contains(e)){
+					List<String> regex = regexMap.get(e);
+					if (checkRegex(regex, serviceId)) {
+						return e;
+					}
+				}
+				throw new RuntimeException("节点"+eventNodeName+"对应的事件处理器上不存在服务:"+serviceId);
+			}
+		}
+		throw new RuntimeException("当前服务器上不存在节点:"+eventNodeName+"对应的事件处理器");
 	}
 
 	private EventProcessor getEventProcessor(ServiceRequest serviceRequest,
-			String eventNodeName, List<EventProcessor> list) {
-//		boolean hasNotNodeName = eventNodeName == null
-//				|| "".equals(eventNodeName);
-//		if (!hasNotNodeName) {
-//			for (EventProcessor e : list) {
-//				if (eventNodeName.equals(e.getId())) {
-//					return e;
-//				}
-//			}
-//			throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
-//					+ serviceRequest.getServiceId());
-//		}
-		EventProcessor eventProcessor = findByNodeName(serviceRequest, eventNodeName, list);
-		if(eventProcessor!=null){
-			return eventProcessor;
-		}
+			 List<EventProcessor> list) {
 		if (list.size() == 1) {
 			return list.get(0);
 		}
@@ -430,21 +425,7 @@ public class CEPCoreImpl implements CEPCore {
 		return getEventProcessorChoose().choose(list);
 	}
 	
-	private EventProcessor findByNodeName(ServiceRequest serviceRequest,String eventNodeName,List<EventProcessor> list){
-		boolean hasNotNodeName = eventNodeName == null
-				|| "".equals(eventNodeName);
-		if (!hasNotNodeName) {
-			for (EventProcessor e : list) {
-				if (eventNodeName.equals(e.getId())) {
-					return e;
-				}
-			}
-			throw new RuntimeException("指定的服务处理器：" + eventNodeName + "上不存在服务:"
-					+ serviceRequest.getServiceId());
-		}
-		return null;
-	}
-
+	
 	public void start() {
 		if (operator != null) {
 			operator.startCEPCore(this);
