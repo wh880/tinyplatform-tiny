@@ -111,7 +111,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         interpreter.addContextProcessor(new LayoutImplementProcessor());
         interpreter.addContextProcessor(new DentProcessor());
         interpreter.addContextProcessor(new IndentProcessor());
-//        interpreter.addContextProcessor(new TextProcessor());
+        interpreter.addContextProcessor(new TextProcessor());
         interpreter.addContextProcessor(new BodyContentProcessor());
         interpreter.addContextProcessor(new FieldProcessor());
         interpreter.addContextProcessor(new StopProcessor());

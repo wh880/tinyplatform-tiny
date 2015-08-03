@@ -36,6 +36,6 @@ public class OtherTerminalNodeProcessor implements TerminalNodeProcessor<Termina
     }
 
     public Object process(TerminalNode terminalNode, TemplateContext context, Writer writer) {
-        return terminalNode.getText();
+        return terminalNode.getSymbol().getText();
     }
 }
