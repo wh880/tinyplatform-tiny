@@ -32,7 +32,6 @@ import java.io.OutputStreamWriter;
 public class TestInterpretFileObject {
     public static void main(String[] args) throws TemplateException {
         TemplateContext context = new TemplateContextDefault();
-        context.put("models", TebModelGen.dummyModels(20));
         FileObjectResourceLoader loader = new FileObjectResourceLoader("page", "layout", "component", "d:/aaa/");
         TemplateEngineDefault engine = new TemplateEngineDefault();
         engine.setCacheEnabled(true);
