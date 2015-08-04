@@ -133,7 +133,7 @@ public final class U {
             try {
                 return p(object, name);
             } catch (TemplateException e) {
-                if (e.getMessage().indexOf("中不能找到") > 0) {
+                if (e.getCause().getClass()==NoSuchFieldException.class||e.getMessage().indexOf("中不能找到") > 0) {
                     return null;
                 } else {
                     throw e;
