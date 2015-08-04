@@ -15,18 +15,20 @@
  */
 package org.tinygroup.springmvc.handleradapter;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
-import org.springframework.http.converter.ByteArrayHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.http.converter.xml.SourceHttpMessageConverter;
-import org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.Assert;
@@ -53,17 +55,9 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.springmvc.coc.ConventionHelper;
+import org.tinygroup.springmvc.support.HttpMessageConverterComposite;
 import org.tinygroup.springmvc.support.ServletHandlerMethodResolver;
 import org.tinygroup.springmvc.support.TinyServletHandlerMethodInvoker;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.xml.transform.Source;
-
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 抽像的MethodHandlerAdapter。
@@ -107,7 +101,7 @@ public abstract class AbstractMethodHandlerAdapter extends WebContentGenerator
 
 	private ModelAndViewResolver[] customModelAndViewResolvers;
 
-	private HttpMessageConverter<?>[] messageConverters;
+	private HttpMessageConverterComposite httpMessageConverterComposite;
 
 	private ConfigurableBeanFactory beanFactory;
 
@@ -135,6 +129,15 @@ public abstract class AbstractMethodHandlerAdapter extends WebContentGenerator
 		return pathMatcher;
 	}
 
+	public HttpMessageConverterComposite getHttpMessageConverterComposite() {
+		return httpMessageConverterComposite;
+	}
+
+	public void setHttpMessageConverterComposite(
+			HttpMessageConverterComposite httpMessageConverterComposite) {
+		this.httpMessageConverterComposite = httpMessageConverterComposite;
+	}
+
 	public void setBeanFactory(BeanFactory beanFactory) {
 		if (beanFactory instanceof ConfigurableBeanFactory) {
 			this.beanFactory = (ConfigurableBeanFactory) beanFactory;
@@ -145,14 +148,6 @@ public abstract class AbstractMethodHandlerAdapter extends WebContentGenerator
 
 	public AbstractMethodHandlerAdapter() {
 		super(false);
-		// See SPR-7316
-		StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter();
-		stringHttpMessageConverter.setWriteAcceptCharset(false);
-		this.messageConverters = new HttpMessageConverter[] {
-				new ByteArrayHttpMessageConverter(),
-				stringHttpMessageConverter,
-				new SourceHttpMessageConverter<Source>(),
-				new XmlAwareFormHttpMessageConverter(),new MappingJacksonHttpMessageConverter()};
 	}
 
 	public void setCustomModelAndViewResolver(
@@ -355,7 +350,8 @@ public abstract class AbstractMethodHandlerAdapter extends WebContentGenerator
 			TinyServletHandlerMethodInvoker methodInvoker = new TinyServletHandlerMethodInvoker(
 					methodResolver, webBindingInitializer,
 					sessionAttributeStore, parameterNameDiscoverer,
-					customArgumentResolvers, this, messageConverters);
+					customArgumentResolvers, this,
+					httpMessageConverterComposite.getMessageConverters());
 			ServletWebRequest webRequest = new ServletWebRequest(request,
 					response);
 			ExtendedModelMap implicitModel = new ExtendedModelMap();
