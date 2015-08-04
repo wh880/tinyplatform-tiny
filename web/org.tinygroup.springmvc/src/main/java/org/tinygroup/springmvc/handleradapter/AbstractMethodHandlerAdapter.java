@@ -24,6 +24,7 @@ import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter;
 import org.springframework.ui.ExtendedModelMap;
@@ -59,6 +60,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.transform.Source;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -150,7 +152,7 @@ public abstract class AbstractMethodHandlerAdapter extends WebContentGenerator
 				new ByteArrayHttpMessageConverter(),
 				stringHttpMessageConverter,
 				new SourceHttpMessageConverter<Source>(),
-				new XmlAwareFormHttpMessageConverter() };
+				new XmlAwareFormHttpMessageConverter(),new MappingJacksonHttpMessageConverter()};
 	}
 
 	public void setCustomModelAndViewResolver(
