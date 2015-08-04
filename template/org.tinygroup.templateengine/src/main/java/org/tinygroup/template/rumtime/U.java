@@ -1,17 +1,17 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.template.rumtime;
 
@@ -24,10 +24,7 @@ import org.tinygroup.context.Context;
 import org.tinygroup.template.*;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Collection;
@@ -84,13 +81,14 @@ public final class U {
             Map<String, Method> stringMethodMap = methodCache.get(object.getClass());
             Method method = null;
             if (stringMethodMap != null) {
-                method = stringMethodMap.get(name);
+                method = stringMethodMap.get(fieldName);
             }
             if (method == null) {
                 PropertyDescriptor descriptor =
                         propertyUtilsBean.getPropertyDescriptor(object, fieldName);
-                if (descriptor != null) {
-                    method = MethodUtils.getAccessibleMethod(object.getClass(), descriptor.getReadMethod());
+                if (descriptor != null && descriptor.getReadMethod() != null) {
+                    method = object.getClass().getDeclaredMethod(descriptor.getReadMethod().getName());
+                    method.setAccessible(true);
                     if (stringMethodMap == null) {
                         stringMethodMap = new HashMap<String, Method>();
                         methodCache.put(object.getClass(), stringMethodMap);
@@ -101,19 +99,24 @@ public final class U {
             if (method != null) {
                 return method.invoke(object);
             }
-            Map<String, Field> stringFieldMap = fieldCache.get(object.getClass());
+            Map<String, Field> stringFieldMap = fieldCache.get(fieldName);
             Field field = null;
             if (stringFieldMap != null) {
-                field = stringFieldMap.get(name);
+                field = stringFieldMap.get(fieldName);
             }
             if (field == null) {
-                field = object.getClass().getField(fieldName);
+                field = object.getClass().getDeclaredField(fieldName);
                 if (field != null) {
-                    if (stringFieldMap == null) {
-                        stringFieldMap = new HashMap<String, Field>();
-                        fieldCache.put(object.getClass(), stringFieldMap);
+                    if ((field.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC) {
+                        field.setAccessible(true);
+                        if (stringFieldMap == null) {
+                            stringFieldMap = new HashMap<String, Field>();
+                            fieldCache.put(object.getClass(), stringFieldMap);
+                        }
+                        stringFieldMap.put(fieldName, field);
+                    } else {
+                        field = null;
                     }
-                    stringFieldMap.put(fieldName, field);
                 }
             }
             if (field != null) {
@@ -234,7 +237,7 @@ public final class U {
      * @return
      */
     public static Object v(Context context, Object key) {
-            return context.get(key.toString());
+        return context.get(key.toString());
     }
 
 
@@ -322,9 +325,9 @@ public final class U {
         if (o == null) {
             return false;
         }
-        if (o.getClass()==Boolean.class) {
+        if (o.getClass() == Boolean.class) {
             return ((Boolean) o).booleanValue();
-        } else if (o.getClass()==String.class) {
+        } else if (o.getClass() == String.class) {
             return ((String) o).length() > 0;
         } else if (o instanceof Collection) {
             return ((Collection) o).size() > 0;
@@ -384,7 +387,7 @@ public final class U {
         } else if (object instanceof Collection) {
             Collection c = (Collection) object;
             int i = 0;
-            Iterator it= c.iterator();
+            Iterator it = c.iterator();
             while (i < c.size()) {
                 Object o = it.next();
                 if (i == index) {
