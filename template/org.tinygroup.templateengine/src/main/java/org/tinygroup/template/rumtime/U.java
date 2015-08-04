@@ -130,7 +130,15 @@ public final class U {
 
     public static Object sp(Object object, Object name) throws TemplateException {
         if (object != null) {
-            return p(object, name);
+            try {
+                return p(object, name);
+            } catch (TemplateException e) {
+                if (e.getMessage().indexOf("中不能找到") > 0) {
+                    return null;
+                } else {
+                    throw e;
+                }
+            }
         }
         return null;
     }
@@ -214,7 +222,15 @@ public final class U {
      */
     public static Object sc(Template template, TemplateContext context, Object object, String methodName, Object... parameters) throws TemplateException {
         if (object != null) {
-            return c(template, context, object, methodName, parameters);
+            try {
+                return c(template, context, object, methodName, parameters);
+            } catch (TemplateException e) {
+                if (e.getCause().getClass() == NoSuchMethodException.class) {
+                    return null;
+                } else {
+                    throw e;
+                }
+            }
         }
         return null;
     }
@@ -357,7 +373,11 @@ public final class U {
         if (object == null) {
             return null;
         } else {
-            return a(object, indexObject);
+            try {
+                return a(object, indexObject);
+            } catch (Exception e) {
+                return null;
+            }
         }
     }
 
