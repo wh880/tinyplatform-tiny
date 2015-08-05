@@ -52,7 +52,7 @@
 		<property name="mediaTypes" value="text/html" />
 		<property name="commonLocaleResolver" ref="commonLocaleResolver" />
 		<property name="commonThemeResolver" ref="commonThemeResolver" />
-		<property name="commonsMultipartResolver" ref="commonsMultipartResolver" />
+		<property name="commonsMultipartResolver" ref="tinyDelegateMultipartResolver" />
 		<property name="handlerMappings">
 			<list>
 				<ref bean="defaultAnnotationHandlerMapping" />
@@ -76,8 +76,8 @@
 		<property name="viewNameTranslator" ref="restfulConventionRequestToViewNameTranslator" />
 	</bean>
 
-	<bean id="commonsMultipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+	<bean id="tinyDelegateMultipartResolver"
+		class="org.tinygroup.springmvc.multipart.TinyDelegateMultipartResolver"></bean>
 	<bean id="commonLocaleResolver" class="org.tinygroup.springmvc.local.CommonLocaleResolver"></bean>
 	<bean id="commonThemeResolver" class="org.tinygroup.springmvc.theme.CommonThemeResolver"></bean>
 

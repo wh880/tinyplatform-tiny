@@ -365,4 +365,8 @@ public class ParserWebContextImpl extends AbstractWebContextWrapper implements P
             return null;
         }
     }
+
+	public UploadService getUploadService() {
+		return upload;
+	}
 }
