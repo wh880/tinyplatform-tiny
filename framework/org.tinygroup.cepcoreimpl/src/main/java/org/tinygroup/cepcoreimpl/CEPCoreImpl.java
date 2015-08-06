@@ -251,7 +251,7 @@ public class CEPCoreImpl implements CEPCore {
 		String eventNodeName = event.getServiceRequest().getNodeName();
 		LOGGER.logMessage(LogLevel.INFO, "请求指定的执行节点为:{0}", eventNodeName);
 		//如果指定了执行节点，则判断执行节点是否是当前节点，如果是，则将执行节点变量置空
-		if(!StringUtil.isBlank(eventNodeName)){
+		if(!StringUtil.isBlank(eventNodeName)&&!StringUtil.isBlank(nodeName)){
 			LOGGER.logMessage(LogLevel.INFO, "当前节点NodeName:{}",nodeName);
 			if(Node.checkEquals(eventNodeName, nodeName)){
 				eventNodeName = null;
