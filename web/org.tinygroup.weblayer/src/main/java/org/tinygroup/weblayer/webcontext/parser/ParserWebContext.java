@@ -17,6 +17,7 @@ package org.tinygroup.weblayer.webcontext.parser;
 
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.tinygroup.weblayer.WebContext;
+import org.tinygroup.weblayer.webcontext.parser.upload.UploadService;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.CookieParser;
 import org.tinygroup.weblayer.webcontext.parser.valueparser.ParameterParser;
 
@@ -109,4 +110,9 @@ public interface ParserWebContext extends WebContext {
      * @return 转换后的字符串
      */
     String convertCase(String str);
+    /**
+     * 返回上传服务
+     * @return
+     */
+    UploadService getUploadService();
 }
