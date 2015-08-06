@@ -87,7 +87,7 @@ public final class U {
                 PropertyDescriptor descriptor =
                         propertyUtilsBean.getPropertyDescriptor(object, fieldName);
                 if (descriptor != null && descriptor.getReadMethod() != null) {
-                    method = object.getClass().getDeclaredMethod(descriptor.getReadMethod().getName());
+                    method = object.getClass().getMethod(descriptor.getReadMethod().getName());
                     method.setAccessible(true);
                     if (stringMethodMap == null) {
                         stringMethodMap = new HashMap<String, Method>();
@@ -105,7 +105,7 @@ public final class U {
                 field = stringFieldMap.get(fieldName);
             }
             if (field == null) {
-                field = object.getClass().getDeclaredField(fieldName);
+                field = object.getClass().getField(fieldName);
                 if (field != null) {
                     if ((field.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC) {
                         field.setAccessible(true);
