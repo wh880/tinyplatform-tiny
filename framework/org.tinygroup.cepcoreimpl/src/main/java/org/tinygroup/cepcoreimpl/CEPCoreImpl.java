@@ -250,14 +250,8 @@ public class CEPCoreImpl implements CEPCore {
 		ServiceRequest request = event.getServiceRequest();
 		String eventNodeName = event.getServiceRequest().getNodeName();
 		LOGGER.logMessage(LogLevel.INFO, "请求指定的执行节点为:{0}", eventNodeName);
-		//如果指定了执行节点，则判断执行节点是否是当前节点，如果是，则将执行节点变量置空
-		if(!StringUtil.isBlank(eventNodeName)){
-			LOGGER.logMessage(LogLevel.INFO, "当前节点NodeName:{}",nodeName);
-			if(Node.checkEquals(eventNodeName, nodeName)){
-				eventNodeName = null;
-				LOGGER.logMessage(LogLevel.INFO, "请求指定的执行节点即当前节点");
-			}
-		}
+		
+		
 		EventProcessor eventProcessor = getEventProcessor(request,
 				eventNodeName);
 		if (EventProcessor.TYPE_LOCAL == eventProcessor.getType()) {
@@ -271,24 +265,9 @@ public class CEPCoreImpl implements CEPCore {
 				dealException(e, event);
 				throw e;
 			}
-			// catch (java.lang.Error e) {
-			// dealException(e, event);
-			// throw e;
-			// }
 			// local后置Aop
 			aopMananger.afterLocalHandle(event);
 		} else {
-			// 20150527注释此代码，在deal中统一为所有执行生成new context,无论是本地还是远程
-			// ServiceInfo sinfo = null;
-			// List<ServiceInfo> list = eventProcessor.getServiceInfos();
-			// for (ServiceInfo info : list) {
-			// if (info.getServiceId().equals(request.getServiceId())) {
-			// sinfo = info;
-			// }
-			// }
-			// Context newContext = CEPCoreUtil.getContext(event, sinfo, this
-			// .getClass().getClassLoader());
-			// event.getServiceRequest().setContext(newContext);
 			// remote前置Aop
 			aopMananger.beforeRemoteHandle(event);
 
@@ -300,10 +279,6 @@ public class CEPCoreImpl implements CEPCore {
 				dealException(e, event);
 				throw e;
 			}
-			// catch (java.lang.Error e) {
-			// dealException(e, event);
-			// throw e;
-			// }
 			// remote后置Aop
 			aopMananger.afterRemoteHandle(event);
 		}
@@ -376,9 +351,14 @@ public class CEPCoreImpl implements CEPCore {
 
 	private EventProcessor getEventProcessor(ServiceRequest serviceRequest,
 			String eventNodeName) {
+		//查找出所有包含该服务的EventProcessor
 		List<EventProcessor> list = serviceIdMap.get(serviceRequest
 				.getServiceId());
+		//如果指定了执行节点名，则根据执行节点查找处理器
 		if(!StringUtil.isBlank(eventNodeName)){
+			if(list ==null){ //如果为空，则将其设置为空列表，便于后续处理
+				list = new ArrayList<EventProcessor>();
+			}
 			return findEventProcessor(serviceRequest,eventNodeName,list);
 		}
 		
@@ -389,7 +369,38 @@ public class CEPCoreImpl implements CEPCore {
 	}
 	private EventProcessor findEventProcessor(ServiceRequest serviceRequest,
 			String eventNodeName,List<EventProcessor> list){
+		boolean isCurrentNode = false;
+		//如果指定了执行节点，则判断执行节点是否是当前节点
+		if(!StringUtil.isBlank(eventNodeName)&&!StringUtil.isBlank(nodeName)){
+			LOGGER.logMessage(LogLevel.INFO, "当前节点NodeName:{}",nodeName);
+			if(Node.checkEquals(eventNodeName, nodeName)){
+				isCurrentNode = true;
+				LOGGER.logMessage(LogLevel.INFO, "请求指定的执行节点即当前节点");
+			}
+		}
 		String serviceId = serviceRequest.getServiceId();
+		if(!isCurrentNode){
+			return notCurrentNode(eventNodeName, list, serviceId);
+		}
+		return isCurrentNode(eventNodeName, list,serviceId);
+	}
+
+	private EventProcessor isCurrentNode(String eventNodeName,
+			List<EventProcessor> list,String serviceId) {
+		//如果是当前节点，则判断查找出来的EventProcessor是否是本地处理器，如果是，则返回
+		for(EventProcessor e:list){
+			if(EventProcessor.TYPE_LOCAL==e.getType()){
+				return e;
+			}
+		}
+		throw new RuntimeException("当前服务器上不存在请求"+serviceId+"对应的事件处理器");
+	}
+
+	private EventProcessor notCurrentNode(String eventNodeName,
+			List<EventProcessor> list, String serviceId) {
+		//如果不是当前节点，则根据节点名查找到指定节点
+		//首先判断该节点是否是存在于已查找到的包含该服务的list之中，如果包含则返回
+		//如果不包含，则读取该节点的正则表达式信息，如果匹配则返回
 		for(String key:processorMap.keySet()){
 			if(Node.checkEquals(key, eventNodeName)){
 				EventProcessor e = processorMap.get(key);

@@ -457,7 +457,7 @@ final class FilterRunner {
                 if (isHtml && StringUtil.isEmpty(s)) {
                     return "";
                 } else {
-                    return "<" + s + ">";
+                    return "<" + name + ">";
                 }
             }
         }

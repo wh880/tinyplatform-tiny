@@ -15,6 +15,8 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.upload;
 
+import java.util.List;
+
 import org.apache.commons.fileupload.FileItem;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,4 +59,8 @@ public interface UploadService extends UploadConfiguration {
      * @throws UploadException 如果解析时出现异常
      */
     FileItem[] parseRequest(HttpServletRequest request, UploadParameters params);
+    
+    
+    public FileItem[] getFileItems();
+    
 }

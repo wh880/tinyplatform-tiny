@@ -15,6 +15,11 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
+import java.io.File;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUpload;
@@ -30,10 +35,6 @@ import org.tinygroup.weblayer.webcontext.parser.upload.FileUploadReName;
 import org.tinygroup.weblayer.webcontext.parser.upload.UploadParameters;
 import org.tinygroup.weblayer.webcontext.parser.upload.UploadService;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.util.List;
-
 /**
  * 这个service可以处理<code>multipart/form-data</code>格式的HTTP
  * POST请求，并将它们转换成form字段或是文件。
@@ -45,6 +46,7 @@ public class UploadServiceImpl extends BeanSupport implements UploadService {
 			.getLogger(UploadServiceImpl.class);
 	private final UploadParameters params = new UploadParameters();
 	private ServletFileUpload fileUpload;
+	private FileItem[] items;
 	/**
 	 * 上传文件重命名接口
 	 */
@@ -209,7 +211,8 @@ public class UploadServiceImpl extends BeanSupport implements UploadService {
 			throw new UploadException(e);
 		}
 
-		return fileItems.toArray(new FileItem[fileItems.size()]);
+		items=fileItems.toArray(new FileItem[fileItems.size()]);
+		return items;
 	}
 
 	/** 根据参数创建<code>FileUpload</code>对象。 */
@@ -229,6 +232,10 @@ public class UploadServiceImpl extends BeanSupport implements UploadService {
 		fileUpload.setFileNameKey(params.getFileNameKey());
 
 		return fileUpload;
+	}
+
+	public FileItem[] getFileItems() {
+		return items;
 	}
 
 }
