@@ -34,6 +34,8 @@ public class DiskFileItemFactory extends org.apache.commons.fileupload.disk.Disk
     
     private boolean saveInFile;
     
+    private boolean temporary;
+    
     private HttpServletRequest request;
     
     private FileUploadReName rename;
@@ -63,16 +65,23 @@ public class DiskFileItemFactory extends org.apache.commons.fileupload.disk.Disk
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
 	}
-
 	
-    public FileItem createItem(String fieldName, String contentType, boolean isFormField, String fileName) {
+    public boolean isTemporary() {
+		return temporary;
+	}
+
+	public void setTemporary(boolean temporary) {
+		this.temporary = temporary;
+	}
+
+	public FileItem createItem(String fieldName, String contentType, boolean isFormField, String fileName) {
         int sizeThreshold = getSizeThreshold();
         boolean saveInFile=isSaveInFile();
         if (isFormField && (sizeThreshold == 0 || keepFormFieldInMemory)) {
             return new InMemoryFormFieldItem(fieldName, contentType, isFormField,saveInFile ,fileName, sizeThreshold,
                                              keepFormFieldInMemory, getRepository(),request,rename);
         } else {
-            return new DiskFileItem(fieldName, contentType, isFormField, saveInFile,fileName, sizeThreshold,
+            return new DiskFileItem(fieldName, contentType, isFormField, saveInFile,temporary,fileName, sizeThreshold,
                                     keepFormFieldInMemory, getRepository(),request,rename);
         }
     }

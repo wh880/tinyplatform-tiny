@@ -41,6 +41,7 @@ public class UploadParameters implements UploadConfiguration {
     private String fileNameKey[];
     private boolean diskItemFactory = true;//是否是文件介质存储,默认是
     private String itemStorageBeanName;//如果是其他存储介质，那么给定存储介质的beanname
+    private boolean isTemporary=true;//是否为临时文件
 
     public boolean isDiskItemFactory() {
         return diskItemFactory;
@@ -125,6 +126,7 @@ public class UploadParameters implements UploadConfiguration {
     public void setFileNameKey(String[] fileNameKey) {
         this.fileNameKey = fileNameKey;
     }
+    
 
     /**
      * 设置默认值。
@@ -207,4 +209,13 @@ public class UploadParameters implements UploadConfiguration {
 
         return mb.toString();
     }
+
+	public boolean isTemporary() {
+		return isTemporary;
+	}
+
+	public void setTemporary(boolean isTemporary) {
+		this.isTemporary = isTemporary;
+	}
+
 }

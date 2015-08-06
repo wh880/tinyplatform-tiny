@@ -52,6 +52,7 @@ public class FileItemFactoryWrapper implements FileItemFactory {
 			diskFileItemFactory.setKeepFormFieldInMemory(parameters
 					.isKeepFormFieldInMemory());
 			diskFileItemFactory.setSaveInFile(parameters.isSaveInFile());
+			diskFileItemFactory.setTemporary(parameters.isTemporary());
 			itemFactory = diskFileItemFactory;
 		} else {
 			String stotageBeanName = parameters.getItemStorageBeanName();
