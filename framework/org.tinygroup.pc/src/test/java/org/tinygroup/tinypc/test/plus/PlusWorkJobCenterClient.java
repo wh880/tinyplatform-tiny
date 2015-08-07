@@ -23,7 +23,7 @@ public class PlusWorkJobCenterClient {
 					TestUtil.CP, TestUtil.SIP, TestUtil.SP);
 			Work work = createWork();
 			Warehouse resultWarehouse = jobCenter.doWork(work);
-			int result = resultWarehouse.get(PlusWork.RESULT);
+			Integer result = resultWarehouse.get(PlusWork.RESULT);
 			System.out.println("result is "+result);
 		} catch (IOException e) {
 			e.printStackTrace();
