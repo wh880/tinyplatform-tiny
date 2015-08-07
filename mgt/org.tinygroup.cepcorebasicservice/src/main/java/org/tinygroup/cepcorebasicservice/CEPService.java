@@ -47,12 +47,31 @@ public class CEPService {
 		return core.getServiceInfo(serviceId);
 	}
 	
-	public List<EventProcessor> getEventProcessors(){
+	public List<EventProcessor> getRemoteEventProcessors(){
 		List<EventProcessor> list = new ArrayList<EventProcessor>();
 		for(EventProcessor e:getCore().getEventProcessors()){
 			if(EventProcessor.TYPE_REMOTE==e.getType()){
 				list.add(e);
 			}
+		}
+		return list;
+	}
+	
+	public List<EventProcessor> getLocalEventProcessors(){
+		List<EventProcessor> list = new ArrayList<EventProcessor>();
+		for(EventProcessor e:getCore().getEventProcessors()){
+			if(EventProcessor.TYPE_LOCAL==e.getType()){
+				list.add(e);
+			}
+		}
+		return list;
+	}
+	
+	public List<EventProcessor> getEventProcessors(){
+		List<EventProcessor> list = new ArrayList<EventProcessor>();
+		for(EventProcessor e:getCore().getEventProcessors()){
+			
+				list.add(e);
 		}
 		return list;
 	}
