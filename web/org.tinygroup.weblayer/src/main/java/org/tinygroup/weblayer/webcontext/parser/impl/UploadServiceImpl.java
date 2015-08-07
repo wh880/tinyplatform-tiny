@@ -131,6 +131,14 @@ public class UploadServiceImpl extends BeanSupport implements UploadService {
 	public void setFileNameKey(String[] fileNameKey) {
 		params.setFileNameKey(fileNameKey);
 	}
+	
+	public boolean isTemporary() {
+		return params.isTemporary();
+	}
+
+	public void setTemporary(boolean isTemporary) {
+		params.setTemporary(isTemporary);
+	}
 
 	protected void init() {
 		params.applyDefaultValues();

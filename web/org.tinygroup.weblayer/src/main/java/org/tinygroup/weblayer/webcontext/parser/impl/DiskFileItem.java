@@ -22,23 +22,35 @@ import java.io.File;
 
 public class DiskFileItem extends AbstractFileItem {
     private static final long serialVersionUID = 4225039123863446602L;
+    private boolean temporary;
 
-    public DiskFileItem(String fieldName, String contentType, boolean isFormField, boolean saveInFile,String fileName, int sizeThreshold,
+    public DiskFileItem(String fieldName, String contentType, boolean isFormField, boolean saveInFile,boolean temporary,String fileName, int sizeThreshold,
                         boolean keepFormFieldInMemory, File repository,HttpServletRequest request,FileUploadReName rename) {
         super(fieldName, contentType, isFormField,saveInFile, fileName, sizeThreshold, keepFormFieldInMemory, repository,request,rename);
+        this.temporary=temporary;
     }
 
     /** Removes the file contents from the temporary storage. */
     
     protected void finalize() throws Throwable {
-        try {
-            File outputFile = dfos.getFile();
-
-            if (outputFile != null && outputFile.exists()) {
-                outputFile.delete();
-            }
-        } finally {
-            super.finalize();
-        }
+    	if(temporary){
+    		 try {
+				File outputFile = dfos.getFile();
+				if (outputFile != null && outputFile.exists()) {
+					outputFile.delete();
+				}
+			} finally {
+				super.finalize();
+			}
+    	}
     }
+
+	public boolean isTemporary() {
+		return temporary;
+	}
+
+	public void setTemporary(boolean temporary) {
+		this.temporary = temporary;
+	}
+    
 }
