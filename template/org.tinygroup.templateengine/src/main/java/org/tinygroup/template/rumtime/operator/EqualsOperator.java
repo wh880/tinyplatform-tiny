@@ -28,7 +28,11 @@ public class EqualsOperator extends TwoConvertOperator {
         if(left==null||right==null){
             return false;
         }
-        return left.equals(right);
+        if(left.getClass()==right.getClass()) {
+            return left.equals(right);
+        }else{
+            return left.toString().equals(right.toString());
+        }
     }
 
 

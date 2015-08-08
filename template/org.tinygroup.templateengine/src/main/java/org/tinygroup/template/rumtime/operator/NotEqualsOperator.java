@@ -15,14 +15,17 @@
  */
 package org.tinygroup.template.rumtime.operator;
 
+import org.tinygroup.template.rumtime.O;
+
 /**
  * Created by luoguo on 2014/6/5.
  */
 public class NotEqualsOperator extends TwoOperator {
-
+    EqualsOperator equalsOperator=new EqualsOperator();
 
     protected Object operation(Object left, Object right) {
-        return !left.equals(right);
+        Boolean result= (Boolean) equalsOperator.operation(left,right);
+        return !result;
     }
 
 
