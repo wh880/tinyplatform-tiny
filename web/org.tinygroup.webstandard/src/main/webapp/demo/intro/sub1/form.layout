@@ -1,4 +1,4 @@
-<h3>form布局下面是详细内容$name</h3>
+<h3>form布局下面是详细内容${name}</h3>
 <hr />
-$pageContent
+#pageContent
 <h4>上面是详细内容</h4>

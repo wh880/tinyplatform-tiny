@@ -342,7 +342,6 @@ public class TemplateEngineDefault implements TemplateEngine {
                     Writer templateWriter = new CharArrayWriter();
                     template.render(context, templateWriter);
                     context.put("pageContent", templateWriter.toString());
-                    context.put("$pageContent", templateWriter.toString());
                     Writer layoutWriter = null;
                     TemplateContext layoutContext = context;
                     for (int i = layoutPaths.size() - 1; i >= 0; i--) {

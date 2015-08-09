@@ -1,11 +1,11 @@
 <table border="1" width="100%">
 <tr>
-<td colspan="2"><font color="red">白鑫标题1111111111111Header$name</font></td>
+<td colspan="2"><font color="red">标题Header-{$name}</font></td>
 </tr>
 <tr>
 <td width="30%">MenuBar</td>
 <td>
-$pageContent
+#pageContent
 </td>
 </tr>
 <tr>

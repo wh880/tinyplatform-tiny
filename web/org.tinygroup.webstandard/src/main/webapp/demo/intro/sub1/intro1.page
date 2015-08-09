@@ -1,2 +1,2 @@
 Tinygroup<br />
-你好，$name
+你好，${name}

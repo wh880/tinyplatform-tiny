@@ -1,11 +1,11 @@
 <table border="1" width="100%">
 <tr>
-<td colspan="2"><font color="red">form专有：Header$name</font></td>
+<td colspan="2"><font color="red">form专有：Header${name}</font></td>
 </tr>
 <tr>
 <td width="30%">MenuBar</td>
 <td>
-$pageContent
+#pageContent
 </td>
 </tr>
 <tr>

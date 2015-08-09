@@ -105,6 +105,6 @@
 
 </head>
 <body>
-    ${pageContent}
+    #{pageContent}
 </body>
 </html>
