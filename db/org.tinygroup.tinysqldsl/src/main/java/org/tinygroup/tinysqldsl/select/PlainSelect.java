@@ -277,6 +277,27 @@ public class PlainSelect implements SelectBody {
 		}
 		return sql.toString();
 	}
+	
+	
+	public static PlainSelect copy(PlainSelect plainSelect){
+		PlainSelect newSelect=new PlainSelect();
+		newSelect.setFetch(plainSelect.getFetch());
+		newSelect.setForUpdate(plainSelect.isForUpdate());
+		newSelect.setFromItem(plainSelect.getFromItem());
+		newSelect.setGroupByColumnReferences(plainSelect.getGroupByColumnReferences());
+		newSelect.setHaving(plainSelect.getHaving());
+		newSelect.setIntoTables(plainSelect.getIntoTables());
+		newSelect.setLimit(plainSelect.getLimit());
+		newSelect.setJoins(plainSelect.getJoins());
+		newSelect.setOffset(plainSelect.getOffset());
+		newSelect.setOracleHierarchical(plainSelect.getOracleHierarchical());
+		newSelect.setOracleSiblings(plainSelect.isOracleSiblings());
+		newSelect.setOrderByElements(plainSelect.getOrderByElements());
+		newSelect.setSelectItems(plainSelect.getSelectItems());
+		newSelect.setWhere(plainSelect.getWhere());
+		return newSelect;
+	}
+	
 
 	public void builderStatement(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
