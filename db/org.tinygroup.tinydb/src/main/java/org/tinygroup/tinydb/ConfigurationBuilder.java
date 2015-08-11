@@ -344,7 +344,7 @@ public class ConfigurationBuilder {
 				configuration.setUseDataSource(newDataSource);
 				isDefault = true;
 			}
-			configuration.putDataSource(type, newDataSource);
+			configuration.putDataSource(dataSourceId, newDataSource);
 		} catch (Exception e) {
 			throw new TinyDbRuntimeException("解析数据源配置出现异常", e);
 		}
