@@ -1,5 +1,5 @@
 Hello, Tinygroup
-#if($abc)
+#if(abc)
 hhahaahahahaha
 #else
 hehehehehehehe
