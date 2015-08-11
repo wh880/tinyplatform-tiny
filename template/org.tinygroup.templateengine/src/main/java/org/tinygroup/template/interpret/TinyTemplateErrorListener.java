@@ -25,14 +25,14 @@ public class TinyTemplateErrorListener implements org.antlr.v4.runtime.ANTLRErro
     }
 
     public void reportAmbiguity(@NotNull Parser parser, @NotNull DFA dfa, int i, int i1, boolean b, @Nullable BitSet bitSet, @NotNull ATNConfigSet atnConfigSet) {
-        exception=new TemplateException("",parser.getRuleContext(),fileName);
+        //exception=new TemplateException("",parser.getRuleContext(),fileName);
     }
 
     public void reportAttemptingFullContext(@NotNull Parser parser, @NotNull DFA dfa, int i, int i1, @Nullable BitSet bitSet, @NotNull ATNConfigSet atnConfigSet) {
-        exception=new TemplateException("",parser.getRuleContext(),fileName);
+//        exception=new TemplateException("",parser.getRuleContext(),fileName);
     }
 
     public void reportContextSensitivity(@NotNull Parser parser, @NotNull DFA dfa, int i, int i1, int i2, @NotNull ATNConfigSet atnConfigSet) {
-        exception=new TemplateException("",parser.getRuleContext(),fileName);
+//        exception=new TemplateException("",parser.getRuleContext(),fileName);
     }
 }
