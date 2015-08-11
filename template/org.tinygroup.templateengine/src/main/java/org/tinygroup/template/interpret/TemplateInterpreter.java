@@ -49,13 +49,19 @@ public class TemplateInterpreter {
         contextProcessorMap.put(contextProcessor.getType(), contextProcessor);
     }
 
-    public TinyTemplateParser.TemplateContext parserTemplateTree(String sourceName, String templateString) {
+    public TinyTemplateParser.TemplateContext parserTemplateTree(String sourceName, String templateString) throws TemplateException {
         char[] source = templateString.toCharArray();
         ANTLRInputStream is = new ANTLRInputStream(source, source.length);
         // set source file name, it will be displayed in error report.
         is.name = sourceName;
         TinyTemplateParser parser = new TinyTemplateParser(new CommonTokenStream(new TinyTemplateLexer(is)));
-        return parser.template();
+        TinyTemplateErrorListener listener = new TinyTemplateErrorListener(sourceName);
+        parser.addErrorListener(listener);
+        TinyTemplateParser.TemplateContext context= parser.template();
+        if(listener.exception!=null){
+            throw listener.exception;
+        }
+        return context;
     }
 
     public void interpret(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String templateString, String sourceName, TemplateContext pageContext, TemplateContext context, Writer writer, String fileName) throws Exception {
