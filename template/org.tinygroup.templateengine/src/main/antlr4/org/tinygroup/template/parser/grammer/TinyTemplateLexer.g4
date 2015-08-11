@@ -48,7 +48,7 @@ DIRECTIVE_OPEN_MACRO    : '#macro'    [ \t]+ ID ARGUMENT_START -> pushMode(INSID
 
 DIRECTIVE_OPEN_LAYOUT   : '#layout' ARGUMENT_START -> pushMode(INSIDE) ;
 
-fragment ID             : [_a-zA-Z$][_a-zA-Z$0-9]*        ;
+fragment ID             : [_a-zA-Z][_a-zA-Z0-9]*        ;
 fragment ARGUMENT_START : [ \t]* '('                      ;
 
 DIRECTIVE_SET           : '#set'|'#!set'                          ;
