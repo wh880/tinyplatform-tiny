@@ -52,6 +52,9 @@ import org.tinygroup.tinysqldsl.Pager;
 import org.tinygroup.tinysqldsl.Select;
 import org.tinygroup.tinysqldsl.Update;
 import org.tinygroup.tinysqldsl.base.InsertContext;
+import org.tinygroup.tinysqldsl.select.PlainSelect;
+import org.tinygroup.tinysqldsl.selectitem.FragmentSelectItemSql;
+import org.tinygroup.tinysqldsl.selectitem.SelectItem;
 
 /**
  * DslSqlSession接口的jdbctemplate版实现
@@ -243,16 +246,20 @@ public class SimpleDslSession implements DslSession {
 	}
 
 	public int count(Select select) {
-		String countSql = getCountSql(select.parsedSql());
+		String countSql = getCountSql(select);
 		logMessage(countSql, select.getValues());
 		return jdbcTemplate.queryForInt(countSql,
 				ArrayUtil.toArray(select.getValues()));
 	}
 
-	private String getCountSql(String sql) {
-		StringBuffer sb = new StringBuffer(" select count(0) from (");
-		sb.append(sql).append(") temp");
-		return sb.toString();
+	private String getCountSql(Select select) {
+		PlainSelect originalSelect=select.getPlainSelect();
+		PlainSelect newSelect=PlainSelect.copy(originalSelect);
+		List<SelectItem> selectItems=new ArrayList<SelectItem>();
+		SelectItem selectItem=new FragmentSelectItemSql("count(0)");
+		selectItems.add(selectItem);
+		newSelect.setSelectItems(selectItems);
+		return newSelect.toString();
 	}
 
 	public int[] batchInsert(Insert insert, List<Map<String, Object>> params) {
