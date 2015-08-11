@@ -55,6 +55,7 @@ directive   :   set_directive
             |   import_directive
             |   continue_directive
             |   stop_directive
+            |   return_directive
             |   include_directive
             |   macro_directive
             |   layout_directive
@@ -148,6 +149,10 @@ continue_directive
 stop_directive
             :   DIRECTIVE_OPEN_STOP expression? ')'
             |   DIRECTIVE_STOP
+            ;
+return_directive
+            :   DIRECTIVE_OPEN_RETURN expression? ')'
+            |   DIRECTIVE_RETURN
             ;
 
 include_directive

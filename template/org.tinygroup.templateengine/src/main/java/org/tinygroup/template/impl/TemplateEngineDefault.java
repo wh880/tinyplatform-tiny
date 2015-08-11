@@ -115,6 +115,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         interpreter.addContextProcessor(new BodyContentProcessor());
         interpreter.addContextProcessor(new FieldProcessor());
         interpreter.addContextProcessor(new StopProcessor());
+        interpreter.addContextProcessor(new ReturnProcessor());
         interpreter.addContextProcessor(new IncludeProcessor());
         interpreter.addContextProcessor(new MemberFunctionCallProcessor());
         interpreter.addContextProcessor(new FunctionCallProcessor());
