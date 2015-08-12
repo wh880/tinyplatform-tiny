@@ -184,6 +184,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         addTemplateFunction(new EvaluateTemplateFunction());
         addTemplateFunction(new CallMacroFunction());
         addTemplateFunction(new GetFunction());
+        addTemplateFunction(new RandomFunction());
     }
 
     public TemplateContext getTemplateContext() {

@@ -55,8 +55,7 @@ public class TemplateTestCase {
         engine.setI18nVisitor(new I18nvi());
         StringResourceLoader resourceLoader = new StringResourceLoader();
         engine.addResourceLoader(resourceLoader);
-        Template template = resourceLoader.createTemplate("${getResourceContent()}");
-        template.render();
+        Template template = null;
         template = resourceLoader.createTemplate("${'abc'.equals('a')}");
         template.render();
         template = resourceLoader.createTemplate("${fmt('add%sinfo',3)}");
