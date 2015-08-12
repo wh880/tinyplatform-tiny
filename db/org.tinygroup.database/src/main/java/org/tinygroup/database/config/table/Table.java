@@ -34,6 +34,9 @@ public class Table extends BaseObject {
 	@XStreamAsAttribute
 	@XStreamAlias("package-name")
 	private String packageName;
+	@XStreamAsAttribute
+	@XStreamAlias("interface-package-name")
+	private String interfacePackageName;
 	@XStreamImplicit
 	private List<ForeignReference> foreignReferences;
 	
@@ -94,4 +97,12 @@ public class Table extends BaseObject {
 		this.foreignReferences = foreignReferences;
 	}
 
+	public String getInterfacePackageName() {
+		return interfacePackageName;
+	}
+
+	public void setInterfacePackageName(String interfacePackageName) {
+		this.interfacePackageName = interfacePackageName;
+	}
+	
 }
