@@ -246,6 +246,7 @@ public class SimpleDslSession implements DslSession {
 	}
 
 	public int count(Select select) {
+		select.sql();//进行sql解析处理，这样才有参数值。
 		String countSql = getCountSql(select);
 		logMessage(countSql, select.getValues());
 		return jdbcTemplate.queryForInt(countSql,
