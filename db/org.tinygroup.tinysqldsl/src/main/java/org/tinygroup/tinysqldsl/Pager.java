@@ -54,10 +54,13 @@ public class Pager<T> implements Serializable{
         if(limit==0){
         	limit=DEFAULT_LIMIT;
         }
+        if(start<0){//如果传人参数是小于0，那么设置为0
+        	start=0;
+        }
         this.limit=limit;
         this.start=start;
         this.totalPages=totalCount%limit==0?totalCount/limit:totalCount/limit+1;
-        this.currentPage=start%limit==0?start/limit:start/limit+1;
+        this.currentPage=start/limit==0?1:start/limit+1;
         if(currentPage>totalPages){
         	currentPage=totalPages;
         }
