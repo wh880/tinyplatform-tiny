@@ -5,43 +5,43 @@
       <placeholder id="9c84935ae99f4b1f9d7ed53a2f9340e9" name="length" title="长度"/>
     </placeholder-list>
     <dialect-type-list>
+      <dialect-type language="java" base-type="String" default-value=""/>
       <dialect-type language="oracle" base-type="VARCHAR2" ext-type="(${length})" default-value="">
         <placeholder-value name="length"/>
       </dialect-type>
       <dialect-type language="mysql" base-type="TINYTEXT" default-value=""/>
-      <dialect-type language="java" base-type="String" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_text" name="Text" data-type="12">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="String" default-value=""/>
       <dialect-type language="oracle" base-type="CLOB" default-value=""/>
       <dialect-type language="mysql" base-type="TEXT" default-value=""/>
-      <dialect-type language="java" base-type="String" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_medium_text" name="MediumText" data-type="12">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="String" default-value=""/>
       <dialect-type language="oracle" base-type="CLOB" default-value=""/>
       <dialect-type language="mysql" base-type="MEDIUMTEXT" default-value=""/>
-      <dialect-type language="java" base-type="String" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_long_text" name="LongText" data-type="12">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="String" default-value=""/>
       <dialect-type language="oracle" base-type="CLOB" default-value=""/>
       <dialect-type language="mysql" base-type="LONGTEXT" default-value=""/>
-      <dialect-type language="java" base-type="String" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_blob" name="Blob" data-type="2004">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="String" default-value=""/>
       <dialect-type language="oracle" base-type="BLOB" default-value=""/>
       <dialect-type language="mysql" base-type="BLOB" default-value=""/>
-      <dialect-type language="java" base-type="String" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_char" name="Char" data-type="12">
@@ -51,9 +51,9 @@
       </placeholder>
     </placeholder-list>
     <dialect-type-list>
+      <dialect-type language="java" base-type="String" default-value=""/>
       <dialect-type language="oracle" base-type="CHAR" default-value=""/>
       <dialect-type language="mysql" base-type="CHAR" default-value=""/>
-      <dialect-type language="java" base-type="String" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_varchar" name="Varchar" title="VARCHAR" data-type="12">
@@ -63,57 +63,57 @@
       </placeholder>
     </placeholder-list>
     <dialect-type-list>
-      <dialect-type language="oracle" base-type="VARCHAR2(${length})" default-value=""/>
-      <dialect-type language="mysql" base-type="VARCHAR(${length})" default-value=""/>
       <dialect-type language="java" base-type="String" default-value=""/>
+      <dialect-type language="oracle" base-type="VARCHAR2" default-value=""/>
+      <dialect-type language="mysql" base-type="VARCHAR" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_tiny_int" name="TinyInt" title="" data-type="4">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="Boolean" ext-type="" default-value=""/>
       <dialect-type language="oracle" base-type="INTEGER" default-value=""/>
       <dialect-type language="mysql" base-type="TINYINT" default-value=""/>
-      <dialect-type language="java" base-type="Boolean" ext-type="" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_small_int" name="SmallInt" title="SMALLINT" data-type="5">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="Integer" default-value=""/>
       <dialect-type language="oracle" base-type="INTEGER" default-value=""/>
       <dialect-type language="mysql" base-type="SMALLINT" default-value=""/>
-      <dialect-type language="java" base-type="Integer" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_medium_int" name="MediumInt" title="" data-type="4">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="Integer" default-value=""/>
       <dialect-type language="oracle" base-type="INTEGER" default-value=""/>
       <dialect-type language="mysql" base-type="MEDIUMINT" default-value=""/>
-      <dialect-type language="java" base-type="Integer" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_big_int" name="BigInt" title="BIGINT" data-type="-5">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="Long" default-value=""/>
       <dialect-type language="oracle" base-type="INTEGER" default-value=""/>
       <dialect-type language="mysql" base-type="BIGINT" default-value=""/>
-      <dialect-type language="java" base-type="Long" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_date" name="Date" title="" data-type="91">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="Date" default-value=""/>
       <dialect-type language="oracle" base-type="DATE" default-value=""/>
       <dialect-type language="mysql" base-type="DATE" default-value=""/>
-      <dialect-type language="java" base-type="Date" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_datetime" name="Datatime" title="DATATIME" data-type="91">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="Date" default-value=""/>
       <dialect-type language="oracle" base-type="DATE" default-value=""/>
       <dialect-type language="mysql" base-type="DATETIME" default-value=""/>
-      <dialect-type language="java" base-type="Date" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_decimal" name="Decimal" title="" data-type="3">
@@ -126,49 +126,49 @@
       </placeholder>
     </placeholder-list>
     <dialect-type-list>
+      <dialect-type language="java" base-type="BigDecimal" default-value=""/>
       <dialect-type language="oracle" base-type="DECIMAL" default-value=""/>
       <dialect-type language="mysql" base-type="DECIMAL" default-value=""/>
-      <dialect-type language="java" base-type="BigDecimal" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_double" name="Double" data-type="8">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="Double1" default-value=""/>
       <dialect-type language="oracle" base-type="DECIMAL" default-value=""/>
       <dialect-type language="mysql" base-type="DOUBLE" default-value=""/>
-      <dialect-type language="java" base-type="Double1" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_float" name="Float" data-type="6">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="Float" default-value=""/>
       <dialect-type language="oracle" base-type="FLOAT" default-value=""/>
       <dialect-type language="mysql" base-type="FLOAT" default-value=""/>
-      <dialect-type language="java" base-type="Float" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_int" name="Int" title="INT" data-type="4">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="Integer" default-value=""/>
       <dialect-type language="oracle" base-type="INTEGER" default-value=""/>
       <dialect-type language="mysql" base-type="INT" default-value=""/>
-      <dialect-type language="java" base-type="Integer" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_integer" name="Integer" title="" data-type="4">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="Integer" default-value=""/>
       <dialect-type language="oracle" base-type="INTEGER" default-value=""/>
       <dialect-type language="mysql" base-type="INT" default-value=""/>
-      <dialect-type language="java" base-type="Integer" default-value=""/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_long" name="Long" data-type="4">
     <placeholder-list/>
     <dialect-type-list>
+      <dialect-type language="java" base-type="Long" default-value=""/>
       <dialect-type language="oracle" base-type="LONG" default-value=""/>
       <dialect-type language="mysql" base-type="BIGINT" default-value=""/>
-      <dialect-type language="java" base-type="Long" default-value=""/>
     </dialect-type-list>
   </standard-type>
 </standard-types>
