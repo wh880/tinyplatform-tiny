@@ -16,6 +16,8 @@
 package org.tinygroup.nettyremote.codec.serialization;
 
 import com.caucho.hessian.io.HessianOutput;
+import com.caucho.hessian.io.SerializerFactory;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.channel.ChannelHandlerContext;
@@ -24,6 +26,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import java.io.Serializable;
 
 public class HessianEncoder extends MessageToByteEncoder<Serializable> {
+	
     private static final byte[] LENGTH_PLACEHOLDER = new byte[4];
 
     @Override
@@ -36,7 +39,10 @@ public class HessianEncoder extends MessageToByteEncoder<Serializable> {
 //        oout.writeObject(msg);
 //        oout.flush();
 //        oout.close();
+        SerializerFactory serializerFactory = new SerializerFactory();
+		serializerFactory.addFactory(new BigDecimalSerializerFactory());
         HessianOutput hout1 = new HessianOutput(bout);
+        hout1.setSerializerFactory(serializerFactory);
         hout1.writeObject(msg);
         int endIdx = out.writerIndex();
 
