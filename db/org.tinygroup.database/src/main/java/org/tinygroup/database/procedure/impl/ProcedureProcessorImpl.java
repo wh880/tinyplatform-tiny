@@ -29,7 +29,11 @@ import java.util.Map;
 public class ProcedureProcessorImpl implements ProcedureProcessor {
 	Map<String,Procedure> procedureMap = new HashMap<String,Procedure>();
 	ProcessorManager processorManager;
+	private static ProcedureProcessor procedureProcessor=new ProcedureProcessorImpl();
 	
+	public static ProcedureProcessor getProcedureProcessor(){
+		return procedureProcessor;
+	}
 	
 	
 	public ProcessorManager getProcessorManager() {

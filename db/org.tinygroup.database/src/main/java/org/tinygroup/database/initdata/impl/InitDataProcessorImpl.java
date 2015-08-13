@@ -47,7 +47,11 @@ public class InitDataProcessorImpl implements InitDataProcessor {
 	private static Map<String, Map<String, InitData>> initDatasNameMap = new HashMap<String, Map<String, InitData>>();
 	private static Map<String, InitData> initDatasIdMap = new HashMap<String, InitData>();
 	private ProcessorManager processorManager;
+	private  static InitDataProcessor initDataProcessor=new InitDataProcessorImpl();
 	
+	public static InitDataProcessor getInitDataProcessor(){
+		return initDataProcessor;
+	}
 	
 	public ProcessorManager getProcessorManager() {
 		return processorManager;

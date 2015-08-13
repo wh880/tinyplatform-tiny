@@ -19,13 +19,16 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.metadata.bizdatatype.BusinessTypeProcessor;
+import org.tinygroup.metadata.bizdatatype.impl.BusinessTypeProcessorImpl;
 import org.tinygroup.metadata.config.PlaceholderValue;
 import org.tinygroup.metadata.config.bizdatatype.BusinessType;
 import org.tinygroup.metadata.config.stddatatype.DialectType;
 import org.tinygroup.metadata.config.stddatatype.StandardType;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.stddatatype.StandardTypeProcessor;
+import org.tinygroup.metadata.stddatatype.impl.StandardTypeProcessorImpl;
 import org.tinygroup.metadata.stdfield.StandardFieldProcessor;
+import org.tinygroup.metadata.stdfield.impl.StandardFieldProcessorImpl;
 
 import java.util.List;
 
@@ -52,12 +55,13 @@ public final class MetadataUtil {
 		String result = type;
 		if (placeholderValueList != null) {
 			for (PlaceholderValue placeholderValue : placeholderValueList) {
-				if(!StringUtil.isEmpty(placeholderValue.getName()) && !StringUtil.isEmpty(placeholderValue.getValue())){
+				if (!StringUtil.isEmpty(placeholderValue.getName())
+						&& !StringUtil.isEmpty(placeholderValue.getValue())) {
 					result = result.replaceAll(
 							"[$][{]" + placeholderValue.getName() + "[}]",
 							placeholderValue.getValue());
 				}
-				
+
 			}
 		}
 		return result;
@@ -65,19 +69,25 @@ public final class MetadataUtil {
 
 	public static StandardField getStandardField(String fieldId,
 			ClassLoader loader) {
-		StandardFieldProcessor standardFieldProcessor = BeanContainerFactory
-				.getBeanContainer(loader).getBean(
-						MetadataUtil.STDFIELDPROCESSOR_BEAN);
+		StandardFieldProcessor standardFieldProcessor = getStandardFieldProcessor(loader);
 		return standardFieldProcessor.getStandardField(fieldId);
 	}
 
 	public static String getStandardFieldType(String stdFieldId, String type,
 			ClassLoader loader) {
-		StandardFieldProcessor standardFieldProcessor = BeanContainerFactory
-				.getBeanContainer(loader).getBean(
-						MetadataUtil.STDFIELDPROCESSOR_BEAN);
+		StandardFieldProcessor standardFieldProcessor = getStandardFieldProcessor(loader);
 		String datatype = standardFieldProcessor.getType(stdFieldId, type);
 		return datatype;
+	}
+
+	public static StandardFieldProcessor getStandardFieldProcessor(
+			ClassLoader loader) {
+		try {
+			return BeanContainerFactory.getBeanContainer(loader).getBean(
+					MetadataUtil.STDFIELDPROCESSOR_BEAN);
+		} catch (Exception e) {
+		}
+		return StandardFieldProcessorImpl.getStandardFieldProcessor();
 	}
 
 	public static DialectType getDialectType(String stdFieldId, String type,
@@ -95,8 +105,8 @@ public final class MetadataUtil {
 	}
 
 	public static String getPlaceholderValue(String stdFieldId,
-			String holderName,ClassLoader loader) {
-		return getPlaceholderValue(stdFieldId, holderName, null,loader);
+			String holderName, ClassLoader loader) {
+		return getPlaceholderValue(stdFieldId, holderName, null, loader);
 	}
 
 	public static String getPlaceholderValue(String stdFieldId,
@@ -119,23 +129,38 @@ public final class MetadataUtil {
 	public static StandardType getStandardType(String fieldId,
 			ClassLoader loader) {
 		StandardField field = getStandardField(fieldId, loader);
-		BusinessTypeProcessor businessTypeProcessor = BeanContainerFactory
-				.getBeanContainer(loader).getBean(
-						MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
+		BusinessTypeProcessor businessTypeProcessor = getBusinessTypeProcessor(loader);
 		BusinessType businessType = businessTypeProcessor
 				.getBusinessTypes(field.getTypeId());
-		StandardTypeProcessor standardTypeProcessor = BeanContainerFactory
-				.getBeanContainer(loader).getBean(
-						MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
+		StandardTypeProcessor standardTypeProcessor = getStandardTypeProcessor(loader);
 		return standardTypeProcessor.getStandardType(businessType.getTypeId());
+	}
+
+	public static BusinessTypeProcessor getBusinessTypeProcessor(
+			ClassLoader loader) {
+		try {
+			return BeanContainerFactory.getBeanContainer(loader).getBean(
+					MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
+		} catch (Exception e) {
+		}
+		return BusinessTypeProcessorImpl.getBusinessTypeProcessor();
+	}
+
+	public static StandardTypeProcessor getStandardTypeProcessor(
+			ClassLoader loader) {
+		try {
+			return BeanContainerFactory.getBeanContainer(loader).getBean(
+					MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
+		} catch (Exception e) {
+		}
+		return StandardTypeProcessorImpl.getStandardTypeProcessor();
+
 	}
 
 	public static BusinessType getBusinessType(String fieldId,
 			ClassLoader loader) {
 		StandardField field = getStandardField(fieldId, loader);
-		BusinessTypeProcessor businessTypeProcessor = BeanContainerFactory
-				.getBeanContainer(loader).getBean(
-						MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
+		BusinessTypeProcessor businessTypeProcessor = getBusinessTypeProcessor(loader);
 		Thread.currentThread().getContextClassLoader();
 		BusinessType businessType = businessTypeProcessor
 				.getBusinessTypes(field.getTypeId());
@@ -144,14 +169,10 @@ public final class MetadataUtil {
 
 	public static StandardType getStandardType(StandardField field,
 			ClassLoader loader) {
-		BusinessTypeProcessor businessTypeProcessor = BeanContainerFactory
-				.getBeanContainer(loader).getBean(
-						MetadataUtil.BUSINESSTYPEPROCESSOR_BEAN);
+		BusinessTypeProcessor businessTypeProcessor = getBusinessTypeProcessor(loader);
 		BusinessType businessType = businessTypeProcessor
 				.getBusinessTypes(field.getTypeId());
-		StandardTypeProcessor standardTypeProcessor = BeanContainerFactory
-				.getBeanContainer(loader).getBean(
-						MetadataUtil.STANDARDTYPEPROCESSOR_BEAN);
+		StandardTypeProcessor standardTypeProcessor = getStandardTypeProcessor(loader);
 		return standardTypeProcessor.getStandardType(businessType.getTypeId());
 	}
 }

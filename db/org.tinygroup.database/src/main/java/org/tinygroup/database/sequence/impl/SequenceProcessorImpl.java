@@ -33,6 +33,12 @@ public class SequenceProcessorImpl implements SequenceProcessor {
 	private Map<String, Sequence> sequenceMap = new HashMap<String, Sequence>();
 	private ProcessorManager processorManager;
 	
+	private static SequenceProcessor sequenceProcessor=new SequenceProcessorImpl();
+	
+	public static SequenceProcessor getSequenceProcessor(){
+		  return sequenceProcessor;
+	}
+	
 	
 	public ProcessorManager getProcessorManager() {
 		return processorManager;

@@ -34,6 +34,13 @@ public class StandardTypeProcessorImpl implements StandardTypeProcessor {
 	// private static Map<String, Map<String, StandardType>> standardMap = new
 	// HashMap<String, Map<String, StandardType>>();
 	private static Map<String, StandardType> standardMap = new HashMap<String, StandardType>();
+	
+	private static StandardTypeProcessor standardTypeProcessor=new StandardTypeProcessorImpl();
+	
+	public static StandardTypeProcessor getStandardTypeProcessor(){
+		return standardTypeProcessor;
+	}
+	
 
 	public String getType(String id, String language) {
 		// return getType(null, language, id);

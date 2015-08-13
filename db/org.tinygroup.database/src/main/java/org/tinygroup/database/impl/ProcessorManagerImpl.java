@@ -15,17 +15,36 @@
  */
 package org.tinygroup.database.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.processor.Processor;
 import org.tinygroup.database.config.processor.Processors;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.tinygroup.database.initdata.InitDataSqlProcessor;
+import org.tinygroup.database.initdata.impl.InitDataSqlProcessorImpl;
+import org.tinygroup.database.procedure.impl.MySqlProcedureSqlProcessorImpl;
+import org.tinygroup.database.procedure.impl.OracleProcedureSqlProcessorImpl;
+import org.tinygroup.database.sequence.impl.Db2SequenceSqlProcessor;
+import org.tinygroup.database.sequence.impl.OracleSequenceSqlProcessor;
+import org.tinygroup.database.table.impl.Db2SqlProcessorImpl;
+import org.tinygroup.database.table.impl.DerbySqlProcessorImpl;
+import org.tinygroup.database.table.impl.H2SqlProcessorImpl;
+import org.tinygroup.database.table.impl.MysqlSqlProcessorImpl;
+import org.tinygroup.database.table.impl.OracleSqlProcessorImpl;
+import org.tinygroup.database.table.impl.SqlserverSqlProcessorImpl;
+import org.tinygroup.database.trigger.impl.MysqlTriggerSqlProcessor;
+import org.tinygroup.database.trigger.impl.OracleTriggerSqlProcessor;
+import org.tinygroup.database.trigger.impl.SqlServerTriggerSqlProcessor;
+import org.tinygroup.database.view.ViewSqlProcessor;
+import org.tinygroup.database.view.impl.SqlserverViewSqlProcessorImpl;
+import org.tinygroup.database.view.impl.ViewSqlProcessorImpl;
 
 public class ProcessorManagerImpl implements ProcessorManager {
-	Map<String, Map<String, Object>> processorsMap = new HashMap<String, Map<String, Object>>();
+	private Map<String, Map<String, Object>> processorsMap = new HashMap<String, Map<String, Object>>();
+	private static ProcessorManager processorManager = new ProcessorManagerImpl();
 
 	public void addPocessors(Processors processors) {
 		String language = processors.getLanguage();
@@ -60,6 +79,63 @@ public class ProcessorManagerImpl implements ProcessorManager {
 			return processorsMap.get(language).get(name);
 		}
 		return null;
+	}
+
+	public static ProcessorManager getProcessorManager() {
+		managerInit((ProcessorManagerImpl) processorManager);
+		return processorManager;
+	}
+
+	private static void managerInit(ProcessorManagerImpl processorManager) {
+		InitDataSqlProcessor initDataSqlProcessor = new InitDataSqlProcessorImpl();
+		ViewSqlProcessor viewSqlProcessor = new ViewSqlProcessorImpl();
+		Map<String, Map<String, Object>> processorsMap = processorManager.processorsMap;
+
+		Map<String, Object> db2ProcessMap = new HashMap<String, Object>();
+		db2ProcessMap.put("table", new Db2SqlProcessorImpl());
+		db2ProcessMap.put("initData", initDataSqlProcessor);
+		db2ProcessMap.put("view", viewSqlProcessor);
+		db2ProcessMap.put("sequence", new Db2SequenceSqlProcessor());
+		processorsMap.put("db2", db2ProcessMap);
+
+		Map<String, Object> derbyProcessMap = new HashMap<String, Object>();
+		derbyProcessMap.put("table", new DerbySqlProcessorImpl());
+		derbyProcessMap.put("initData", initDataSqlProcessor);
+		derbyProcessMap.put("view", viewSqlProcessor);
+		processorsMap.put("derby", derbyProcessMap);
+
+		Map<String, Object> h2ProcessMap = new HashMap<String, Object>();
+		h2ProcessMap.put("table", new H2SqlProcessorImpl());
+		h2ProcessMap.put("initData", initDataSqlProcessor);
+		h2ProcessMap.put("view", viewSqlProcessor);
+		processorsMap.put("h2", h2ProcessMap);
+
+		Map<String, Object> mysqlProcessMap = new HashMap<String, Object>();
+		mysqlProcessMap.put("table", new MysqlSqlProcessorImpl());
+		mysqlProcessMap.put("initData", initDataSqlProcessor);
+		mysqlProcessMap.put("view", viewSqlProcessor);
+		mysqlProcessMap.put("procedure", new MySqlProcedureSqlProcessorImpl());
+		mysqlProcessMap.put("trigger", new MysqlTriggerSqlProcessor());
+		processorsMap.put("mysql", mysqlProcessMap);
+
+		Map<String, Object> oracleProcessMap = new HashMap<String, Object>();
+		oracleProcessMap.put("table", new OracleSqlProcessorImpl());
+		oracleProcessMap.put("initData", initDataSqlProcessor);
+		oracleProcessMap.put("view", viewSqlProcessor);
+		oracleProcessMap
+				.put("procedure", new OracleProcedureSqlProcessorImpl());
+		oracleProcessMap.put("sequence", new OracleSequenceSqlProcessor());
+		oracleProcessMap.put("trigger", new OracleTriggerSqlProcessor());
+		processorsMap.put("oracle", oracleProcessMap);
+
+		Map<String, Object> sqlserverSqlProcessMap = new HashMap<String, Object>();
+		sqlserverSqlProcessMap.put("table", new SqlserverSqlProcessorImpl());
+		sqlserverSqlProcessMap.put("initData", initDataSqlProcessor);
+		sqlserverSqlProcessMap.put("view", new SqlserverViewSqlProcessorImpl());
+		sqlserverSqlProcessMap.put("trigger",
+				new SqlServerTriggerSqlProcessor());
+		processorsMap.put("sqlserver", sqlserverSqlProcessMap);
+
 	}
 
 }

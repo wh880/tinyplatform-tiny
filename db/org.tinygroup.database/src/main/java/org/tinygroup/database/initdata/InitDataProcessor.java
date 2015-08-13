@@ -15,6 +15,7 @@
  */
 package org.tinygroup.database.initdata;
 
+import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.initdata.InitData;
 import org.tinygroup.database.config.initdata.InitDatas;
 
@@ -133,4 +134,8 @@ public interface InitDataProcessor {
 	 * @return
 	 */
 	List<InitData> getInitDatas();
+	
+	public ProcessorManager getProcessorManager() ;
+
+	public void setProcessorManager(ProcessorManager processorManager) ;
 }

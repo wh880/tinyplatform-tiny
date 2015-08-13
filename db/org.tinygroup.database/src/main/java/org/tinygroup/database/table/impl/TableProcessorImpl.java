@@ -38,6 +38,7 @@ public class TableProcessorImpl implements TableProcessor {
 	private List<Table> orderTables = new ArrayList<Table>();
 	private Map<String, Table> idMap = new HashMap<String, Table>();
 	private Map<String, Boolean> tableInited = new HashMap<String, Boolean>();
+	private static TableProcessor tableProcessor=new TableProcessorImpl();
 
 	public ProcessorManager getProcessorManager() {
 		return processorManager;
@@ -45,6 +46,10 @@ public class TableProcessorImpl implements TableProcessor {
 
 	public void setProcessorManager(ProcessorManager processorManager) {
 		this.processorManager = processorManager;
+	}
+	
+	public static TableProcessor getTableProcessor(){
+		return tableProcessor;
 	}
 
 	public void addTables(Tables tables) {

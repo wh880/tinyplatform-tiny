@@ -25,6 +25,12 @@ import java.util.Map;
 
 public class ErrorMessageProcessorImpl implements ErrorMessageProcessor {
 	Map<String, ErrorMessages> errorMessageMap = new HashMap<String, ErrorMessages>();
+	
+	private static ErrorMessageProcessor errorMessageProcessor=new ErrorMessageProcessorImpl();
+	
+	public static ErrorMessageProcessor getErrorMessageProcessor(){
+		return errorMessageProcessor;
+	}
 
 	public ErrorMessage getErrorMessage(String packageName, String name) {
 		if (packageName != null) {

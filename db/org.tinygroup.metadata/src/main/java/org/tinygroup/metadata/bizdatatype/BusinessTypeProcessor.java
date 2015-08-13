@@ -17,11 +17,20 @@ package org.tinygroup.metadata.bizdatatype;
 
 import org.tinygroup.metadata.config.bizdatatype.BusinessType;
 import org.tinygroup.metadata.config.bizdatatype.BusinessTypes;
+import org.tinygroup.metadata.stddatatype.StandardTypeProcessor;
 
 public interface BusinessTypeProcessor {
 
 	String getType(String id, String language);
+
 	void addBusinessTypes(BusinessTypes businessTypes);
+
 	BusinessType getBusinessTypes(String id);
+
 	void removeBusinessTypes(BusinessTypes businessTypes);
+
+	public StandardTypeProcessor getStandardTypeProcessor();
+
+	public void setStandardTypeProcessor(
+			StandardTypeProcessor standardDataTypeProcessor);
 }

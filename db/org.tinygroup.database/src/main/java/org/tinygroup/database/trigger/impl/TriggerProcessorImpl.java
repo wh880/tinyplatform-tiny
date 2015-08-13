@@ -33,7 +33,11 @@ public class TriggerProcessorImpl implements TriggerProcessor {
 	
 	private Map<String, Trigger> triggerMap=new HashMap<String, Trigger>();
 	private ProcessorManager processorManager;
+	private static TriggerProcessor triggerProcessor=new TriggerProcessorImpl();
 	
+	public static TriggerProcessor getTriggerProcessor(){
+		return triggerProcessor;
+	}
 	
 	public ProcessorManager getProcessorManager() {
 		return processorManager;

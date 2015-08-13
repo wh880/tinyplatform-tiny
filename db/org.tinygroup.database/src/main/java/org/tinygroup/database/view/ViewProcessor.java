@@ -15,6 +15,7 @@
  */
 package org.tinygroup.database.view;
 
+import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.view.View;
 import org.tinygroup.database.config.view.Views;
 
@@ -51,4 +52,8 @@ public interface ViewProcessor {
      * @throws SQLException
      */
 	boolean checkViewExists(View view,Connection conn,String language) throws SQLException;
+	
+	public ProcessorManager getProcessorManager();
+
+	public void setProcessorManager(ProcessorManager processorManager) ;
 }

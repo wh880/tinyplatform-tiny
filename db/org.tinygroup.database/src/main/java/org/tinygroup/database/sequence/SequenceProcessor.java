@@ -15,6 +15,7 @@
  */
 package org.tinygroup.database.sequence;
 
+import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.sequence.Sequence;
 import org.tinygroup.database.config.sequence.Sequences;
 
@@ -47,4 +48,8 @@ public interface SequenceProcessor {
 	public List<Sequence> getSequences(String language);
 	
 	public  boolean checkSequenceExist(String language,Sequence sequence,Connection connection)throws SQLException;
+
+	public ProcessorManager getProcessorManager();
+	
+	public void setProcessorManager(ProcessorManager processorManager) ;
 }

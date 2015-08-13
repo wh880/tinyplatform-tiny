@@ -27,42 +27,48 @@ import java.util.List;
 import java.util.Map;
 
 public class CustomSqlProcessorImpl implements CustomSqlProcessor {
-	//Map<language,Map<type(before,after),sql>>
-	private Map<String,Map<String,List<String>>> sqlsMap = new HashMap<String,Map<String,List<String>>>();
+	// Map<language,Map<type(before,after),sql>>
+	private Map<String, Map<String, List<String>>> sqlsMap = new HashMap<String, Map<String, List<String>>>();
+	private static CustomSqlProcessor customSqlProcessor = new CustomSqlProcessorImpl();
+
+	public static CustomSqlProcessor getCustomSqlProcessor() {
+		return customSqlProcessor;
+	}
 
 	public List<String> getCustomSqls(String type, String language) {
-	    List<String> customSqls = null;
-	    if(sqlsMap.containsKey(language)){
-	        customSqls = sqlsMap.get(language).get(type);
-	    }else{
-	        customSqls = new ArrayList<String>();
-	    }
+		List<String> customSqls = null;
+		if (sqlsMap.containsKey(language)) {
+			customSqls = sqlsMap.get(language).get(type);
+		} else {
+			customSqls = new ArrayList<String>();
+		}
 		return customSqls;
 	}
 
 	public void addCustomSqls(CustomSqls customsqls) {
-		if(customsqls==null)
-			return ;
-		if(customsqls.getCustomSqlList()==null)
-			return ;
-		for(CustomSql sql:customsqls.getCustomSqlList()){
+		if (customsqls == null)
+			return;
+		if (customsqls.getCustomSqlList() == null)
+			return;
+		for (CustomSql sql : customsqls.getCustomSqlList()) {
 			String type = sql.getType();
-			for(SqlBody body:sql.getSqlBodyList()){
-			    //未填写数据库类型的默认为标准sql
-				String language = null == body.getDialectTypeName()?STANDARD_SQL_TYPE:body.getDialectTypeName();
+			for (SqlBody body : sql.getSqlBodyList()) {
+				// 未填写数据库类型的默认为标准sql
+				String language = null == body.getDialectTypeName() ? STANDARD_SQL_TYPE
+						: body.getDialectTypeName();
 				String sqlStr = body.getContent();
 				addSql(language, sqlStr, type);
 			}
 		}
 	}
 
-	private void addSql(String language,String sql,String type){
-		if(!sqlsMap.containsKey(language)){
-			Map<String,List<String>> map = new HashMap<String, List<String>>();
-			sqlsMap.put(language,map);
+	private void addSql(String language, String sql, String type) {
+		if (!sqlsMap.containsKey(language)) {
+			Map<String, List<String>> map = new HashMap<String, List<String>>();
+			sqlsMap.put(language, map);
 		}
-		Map<String,List<String>> map = sqlsMap.get(language);
-		if(!map.containsKey(type)){
+		Map<String, List<String>> map = sqlsMap.get(language);
+		if (!map.containsKey(type)) {
 			List<String> sqlList = new ArrayList<String>();
 			map.put(type, sqlList);
 		}
@@ -71,13 +77,13 @@ public class CustomSqlProcessorImpl implements CustomSqlProcessor {
 	}
 
 	public void removeCustomSqls(CustomSqls customsqls) {
-		if(customsqls==null)
-			return ;
-		if(customsqls.getCustomSqlList()==null)
-			return ;
-		for(CustomSql sql:customsqls.getCustomSqlList()){
+		if (customsqls == null)
+			return;
+		if (customsqls.getCustomSqlList() == null)
+			return;
+		for (CustomSql sql : customsqls.getCustomSqlList()) {
 			String type = sql.getType();
-			for(SqlBody body:sql.getSqlBodyList()){
+			for (SqlBody body : sql.getSqlBodyList()) {
 				String language = body.getDialectTypeName();
 				String sqlStr = body.getContent();
 				removeSql(language, sqlStr, type);
@@ -85,11 +91,11 @@ public class CustomSqlProcessorImpl implements CustomSqlProcessor {
 		}
 	}
 
-	private void removeSql(String language,String sql,String type){
-		Map<String,List<String>> map = sqlsMap.get(language);
-		if(!CollectionUtil.isEmpty(map)){
-			List<String> sqlList=map.get(type);
-			if(!CollectionUtil.isEmpty(sqlList)){
+	private void removeSql(String language, String sql, String type) {
+		Map<String, List<String>> map = sqlsMap.get(language);
+		if (!CollectionUtil.isEmpty(map)) {
+			List<String> sqlList = map.get(type);
+			if (!CollectionUtil.isEmpty(sqlList)) {
 				sqlList.remove(sql);
 			}
 		}

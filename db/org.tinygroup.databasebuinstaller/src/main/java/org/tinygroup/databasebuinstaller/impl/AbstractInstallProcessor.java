@@ -17,6 +17,7 @@ package org.tinygroup.databasebuinstaller.impl;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.database.util.DataSourceInfo;
+import org.tinygroup.databasebuinstaller.DataSourceHolder;
 import org.tinygroup.databasebuinstaller.InstallProcessor;
 import org.tinygroup.exception.BaseRuntimeException;
 import org.tinygroup.logger.LogLevel;
@@ -24,6 +25,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
 import javax.sql.DataSource;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -47,9 +49,7 @@ public abstract class AbstractInstallProcessor implements InstallProcessor {
 	}
 
 	public void process(String language) {
-		DataSource dataSource = BeanContainerFactory.getBeanContainer(
-				this.getClass().getClassLoader()).getBean(
-						DataSourceInfo.DATASOURCE_NAME);
+		DataSource dataSource = DataSourceHolder.getDataSource();
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();

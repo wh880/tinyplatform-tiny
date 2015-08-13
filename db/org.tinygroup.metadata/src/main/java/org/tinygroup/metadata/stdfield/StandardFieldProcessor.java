@@ -15,15 +15,22 @@
  */
 package org.tinygroup.metadata.stdfield;
 
+import org.tinygroup.metadata.bizdatatype.BusinessTypeProcessor;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.config.stdfield.StandardFields;
 
 public interface StandardFieldProcessor {
 	void addStandardFields(StandardFields standardFields);
-	
+
 	void removeStandardFields(StandardFields standardFields);
 
 	String getType(String id, String language);
 
 	StandardField getStandardField(String id);
+
+	public BusinessTypeProcessor getBusinessTypeProcessor();
+
+	public void setBusinessTypeProcessor(
+			BusinessTypeProcessor businessTypeProcessor);
+
 }

@@ -16,6 +16,8 @@
 package testcase;
 
 import junit.framework.TestCase;
+
+import org.tinygroup.databasechange.DatabaseInstallerStart;
 import org.tinygroup.databasechange.TableSqlChangeUtil;
 
 import java.io.IOException;
@@ -31,6 +33,14 @@ public class SqlChangeTest extends TestCase {
 		}
 		String filePath=url.getFile()+"test.sql";
 		TableSqlChangeUtil.main(new String[]{filePath});
+		
+	}
+	
+	
+	public void testInstaller(){
+		
+		DatabaseInstallerStart installerStart = new DatabaseInstallerStart();
+		installerStart.installer();
 		
 	}
 	
