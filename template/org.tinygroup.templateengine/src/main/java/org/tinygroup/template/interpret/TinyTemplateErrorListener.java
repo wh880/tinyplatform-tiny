@@ -1,6 +1,7 @@
 package org.tinygroup.template.interpret;
 
 import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
@@ -21,7 +22,7 @@ public class TinyTemplateErrorListener implements org.antlr.v4.runtime.ANTLRErro
         this.fileName=fileName;
     }
     public void syntaxError(@NotNull Recognizer<?, ?> recognizer, @Nullable Object o, int i, int i1, @NotNull String s, @Nullable RecognitionException e) {
-        exception=new TemplateException(s);
+        exception=new TemplateException(e, null,fileName);
     }
 
     public void reportAmbiguity(@NotNull Parser parser, @NotNull DFA dfa, int i, int i1, boolean b, @Nullable BitSet bitSet, @NotNull ATNConfigSet atnConfigSet) {

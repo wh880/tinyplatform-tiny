@@ -68,7 +68,7 @@ public class TemplateException extends Exception {
                 return contextMsg;
             }
         }
-        return message == null ? "" : message;
+        return message == null ? "\n路径:"+fileName : message;
     }
 
     public TemplateException(String msg) {

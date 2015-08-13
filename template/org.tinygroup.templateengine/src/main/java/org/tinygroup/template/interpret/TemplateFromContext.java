@@ -43,6 +43,8 @@ public class TemplateFromContext extends AbstractTemplate {
             templateEngine.interpreter.interpret(templateEngine, this, templateContext, context, context, writer,path);
         } catch (StopException e) {
             //Do Nothing
+        } catch (ReturnException e) {
+            //Do Nothing
         } catch (TemplateException e) {
             throw e;
         } catch (Exception e) {
