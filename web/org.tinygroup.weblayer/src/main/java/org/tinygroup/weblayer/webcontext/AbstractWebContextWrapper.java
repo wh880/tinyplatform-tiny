@@ -328,6 +328,8 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements
 			verifications.add(new SessionAttributeParamNameVerification(request));
 			verifications.add(new CookieParamNameVerification(request));
 			verifications.add(new HeaderNameVerification(request));
+			verifications.add(new ApplicationAttributeParamNameVerification(
+					request));
 		}
 		
 		public Object getValue(String name) {
@@ -421,6 +423,30 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements
 			return false;
 		}
 	}
+	
+	
+	class ApplicationAttributeParamNameVerification implements ParamNameVerification {
+		ServletContext servletContext;
+
+		ApplicationAttributeParamNameVerification(HttpServletRequest request) {
+			this.servletContext = request.getSession().getServletContext();
+		}
+
+		public Object getValue(String name) {
+			return servletContext.getAttribute(name);
+		}
+
+		public boolean isExist(String name) {
+			Enumeration enumeration = servletContext.getAttributeNames();
+			while (enumeration.hasMoreElements()) {
+				if (enumeration.nextElement().equals(name)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	
 	class CookieParamNameVerification implements ParamNameVerification {
 		HttpServletRequest request;
 
