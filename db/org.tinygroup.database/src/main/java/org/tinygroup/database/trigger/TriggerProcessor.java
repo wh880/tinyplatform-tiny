@@ -15,6 +15,7 @@
  */
 package org.tinygroup.database.trigger;
 
+import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.trigger.Trigger;
 import org.tinygroup.database.config.trigger.Triggers;
 
@@ -47,5 +48,6 @@ public interface TriggerProcessor {
 	
 	public  boolean checkTriggerExist(String language,Trigger trigger,Connection connection)throws SQLException;
 	
-	
+	public ProcessorManager getProcessorManager();
+	public void setProcessorManager(ProcessorManager processorManager) ;
 }

@@ -49,6 +49,7 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 	private XmlNode componentConfig;
 	private XmlNode applicationConfig;
 
+
 	public String getDbLanguage() {
 		return dbLanguage;
 	}
@@ -78,12 +79,9 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 	public Map<Class, List<String>> getChangeSqls() {
 		installSort();
 		Map<Class, List<String>> processSqls = new HashMap<Class, List<String>>();
-		DataSource dataSource = BeanContainerFactory.getBeanContainer(
-				this.getClass().getClassLoader()).getBean(
-				DataSourceInfo.DATASOURCE_NAME);
 		Connection con = null;
 		try {
-			con = dataSource.getConnection();
+			con = DataSourceHolder.getDataSource().getConnection();
 			for (InstallProcessor processor : installProcessors) {
 				long startTime = System.currentTimeMillis();
 				processSqls.put(processor.getClass(),

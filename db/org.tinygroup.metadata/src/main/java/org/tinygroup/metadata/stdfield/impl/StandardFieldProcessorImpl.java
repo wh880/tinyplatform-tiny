@@ -16,6 +16,7 @@
 package org.tinygroup.metadata.stdfield.impl;
 
 import org.tinygroup.metadata.bizdatatype.BusinessTypeProcessor;
+import org.tinygroup.metadata.bizdatatype.impl.BusinessTypeProcessorImpl;
 import org.tinygroup.metadata.config.stdfield.NickName;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.config.stdfield.StandardFields;
@@ -30,6 +31,13 @@ public class StandardFieldProcessorImpl implements StandardFieldProcessor {
 	private static Map<String, StandardField> standardFieldMap = new HashMap<String, StandardField>();
 	BusinessTypeProcessor businessTypeProcessor;
 
+	private static StandardFieldProcessor standardFieldProcessor=new StandardFieldProcessorImpl();
+	
+	public static StandardFieldProcessor getStandardFieldProcessor(){
+		standardFieldProcessor.setBusinessTypeProcessor(BusinessTypeProcessorImpl.getBusinessTypeProcessor());
+		return standardFieldProcessor;
+	}
+	
 	public BusinessTypeProcessor getBusinessTypeProcessor() {
 		return businessTypeProcessor;
 	}

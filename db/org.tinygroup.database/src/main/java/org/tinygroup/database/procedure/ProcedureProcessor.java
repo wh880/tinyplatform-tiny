@@ -15,6 +15,7 @@
  */
 package org.tinygroup.database.procedure;
 
+import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.procedure.Procedure;
 import org.tinygroup.database.config.procedure.Procedures;
 
@@ -29,4 +30,6 @@ public interface ProcedureProcessor {
 	List<String> getDropSql(String language);
 	void addProcedures(Procedures procedures);
 	void removeProcedures(Procedures procedures);
+	public ProcessorManager getProcessorManager();
+	public void setProcessorManager(ProcessorManager processorManager) ;
 }

@@ -15,6 +15,7 @@
  */
 package org.tinygroup.database.table;
 
+import org.tinygroup.database.ProcessorManager;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.Tables;
 
@@ -66,5 +67,9 @@ public interface TableProcessor {
 	String getDropSql(Table table, String packageName, String language);
 
 	boolean checkTableExist(Table table,String language,Connection connection)throws SQLException;
+	
+	public ProcessorManager getProcessorManager() ;
+
+	public void setProcessorManager(ProcessorManager processorManager) ;
 
 }

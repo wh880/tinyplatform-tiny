@@ -19,6 +19,7 @@ import org.tinygroup.metadata.bizdatatype.BusinessTypeProcessor;
 import org.tinygroup.metadata.config.bizdatatype.BusinessType;
 import org.tinygroup.metadata.config.bizdatatype.BusinessTypes;
 import org.tinygroup.metadata.stddatatype.StandardTypeProcessor;
+import org.tinygroup.metadata.stddatatype.impl.StandardTypeProcessorImpl;
 import org.tinygroup.metadata.util.MetadataUtil;
 
 import java.util.HashMap;
@@ -30,6 +31,13 @@ public class BusinessTypeProcessorImpl implements BusinessTypeProcessor {
 	private static Map<String, BusinessType> businessTypeMap = new HashMap<String, BusinessType>();
 
 	private StandardTypeProcessor standardTypeProcessor;
+	
+	private static BusinessTypeProcessor businessTypeProcessor=new BusinessTypeProcessorImpl();
+	
+	public static BusinessTypeProcessor getBusinessTypeProcessor(){
+		businessTypeProcessor.setStandardTypeProcessor(StandardTypeProcessorImpl.getStandardTypeProcessor());
+		return businessTypeProcessor;
+	}
 
 	public StandardTypeProcessor getStandardTypeProcessor() {
 		return standardTypeProcessor;

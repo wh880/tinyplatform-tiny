@@ -32,6 +32,7 @@ public class ViewProcessorImpl implements ViewProcessor {
 	private Map<String, View> viewMap = new HashMap<String, View>();
 	private Map<String, View> viewIdMap = new HashMap<String, View>();
 	private ProcessorManager processorManager;
+	private static ViewProcessor viewProcessor=new ViewProcessorImpl();
 
 	public ProcessorManager getProcessorManager() {
 		return processorManager;
@@ -39,6 +40,9 @@ public class ViewProcessorImpl implements ViewProcessor {
 
 	public void setProcessorManager(ProcessorManager processorManager) {
 		this.processorManager = processorManager;
+	}
+	public static ViewProcessor getViewProcessor(){
+		return viewProcessor;
 	}
 
 	// 视图依赖关系

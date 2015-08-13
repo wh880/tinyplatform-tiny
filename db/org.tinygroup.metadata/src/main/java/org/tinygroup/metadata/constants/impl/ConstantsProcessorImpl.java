@@ -26,6 +26,10 @@ public class ConstantsProcessorImpl implements ConstantProcessor {
 	// private Map<String, Map<String, String>> constantsMap = new
 	// HashMap<String, Map<String, String>>();
 	private Map<String, Constant> constantsMap = new HashMap<String, Constant>();
+	private static ConstantProcessor constantProcessor=new ConstantsProcessorImpl();
+	public static ConstantProcessor getConstantProcessor(){
+		return constantProcessor;
+	}
 
 	public boolean getBooleanValue(String name) {
 		String value = getValue(name);
