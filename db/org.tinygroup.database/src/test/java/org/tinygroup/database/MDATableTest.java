@@ -56,30 +56,6 @@ public class MDATableTest extends TestCase {
 		assertEquals(2, tableSql2.size());
 	}
 	
-	public void testDb2CreateSql() {
-		System.out.println("org.tinygroup.user,db2 sql:");
-		List<String> tableSql= tableProcessor.getCreateSql( "user","org.tinygroup", "db2");
-		System.out.println(tableSql);
-		assertEquals(2, tableSql.size());
-		
-		System.out.println("org.tinygroup.company,db2 sql:");
-		List<String> tableSql2= tableProcessor.getCreateSql("company", "org.tinygroup", "db2");
-		System.out.println(tableSql2);
-		assertEquals(2, tableSql2.size());
-	}
-	
-	public void testH2CreateSql() {
-		System.out.println("org.tinygroup.user,h2 sql:");
-		List<String> tableSql= tableProcessor.getCreateSql( "user","org.tinygroup", "h2");
-		System.out.println(tableSql);
-		assertEquals(2, tableSql.size());
-		
-		System.out.println("org.tinygroup.company,h2 sql:");
-		List<String> tableSql2= tableProcessor.getCreateSql("company", "org.tinygroup", "h2");
-		System.out.println(tableSql2);
-		assertEquals(2, tableSql2.size());
-	}
-	
 	public void testMysqlCreateSql() {
 		System.out.println("org.tinygroup.user,mysql sql:");
 		List<String> tableSql= tableProcessor.getCreateSql( "user","org.tinygroup", "mysql");
