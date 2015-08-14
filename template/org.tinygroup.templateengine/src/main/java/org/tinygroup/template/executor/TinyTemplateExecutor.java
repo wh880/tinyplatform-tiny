@@ -44,14 +44,16 @@ public class TinyTemplateExecutor {
 	private static final String DEFAULT_TEMPLATE_EXT_NAME="page";
 	private static final String DEFAULT_LAYOUT_EXT_NAME="layout";
 	private static final String DEFAULT_COMPONENT_EXT_NAME="component";
+	private static final String SPLIT_TAG=";";
 	
     public static void main(String[] args) throws TemplateException {
         if (args.length == 0) {
-            System.out.println("Usage:\n\tTinyTemplateExecutor templateFile [relativePath] [absolutePath] [urlParameters]");
+            System.out.println("Usage:\n\tTinyTemplateExecutor templateFile [relativePath] [absolutePath] [resources] [urlParameters]");
             return;
         }
         String relativePath = null;
         String absolutePath = null;
+        String resources = null;
         String urlParameters = null;
         
         //解析参数
@@ -62,7 +64,10 @@ public class TinyTemplateExecutor {
         	absolutePath = args[1].replaceAll("\\\\", "/");
         }
         if (args.length >= 3) {
-        	urlParameters = args[2];
+        	resources = args[2].replaceAll("\\\\", "/");
+        }
+        if (args.length >= 4) {
+        	urlParameters = args[3];
         }
         Map<String,String> maps= parserStringParameter(urlParameters);
         //System.out.println("relativePath="+relativePath);
@@ -87,10 +92,11 @@ public class TinyTemplateExecutor {
         //注册文件目录的资源并注册
         resolveFile(engine,root,templateExtFileName, layoutExtFileName, componentExtFileName);
         
-        if(args.length >= 4){
-           //第4位以后的字符串全部是需要扫描的资源
-           for(int i=3;i<args.length;i++){
-        	   resolveFile(engine,args[i],templateExtFileName, layoutExtFileName, componentExtFileName);
+        if(resources!=null){
+           String[] ss = resources.split(SPLIT_TAG);
+           //遍历resource目录的资源并注册
+           for(String resource:ss){
+        	   resolveFile(engine,resource,templateExtFileName, layoutExtFileName, componentExtFileName);
            }
         }
         
