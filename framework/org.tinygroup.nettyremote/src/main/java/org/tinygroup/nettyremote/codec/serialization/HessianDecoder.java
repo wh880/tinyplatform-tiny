@@ -16,6 +16,8 @@
 package org.tinygroup.nettyremote.codec.serialization;
 
 import com.caucho.hessian.io.HessianInput;
+import com.caucho.hessian.io.SerializerFactory;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.channel.ChannelHandlerContext;
@@ -25,6 +27,7 @@ import io.netty.handler.codec.serialization.ClassResolver;
 import java.io.StreamCorruptedException;
 
 public class HessianDecoder extends LengthFieldBasedFrameDecoder {
+	
 
 	private final ClassResolver classResolver;
 
@@ -63,8 +66,10 @@ public class HessianDecoder extends LengthFieldBasedFrameDecoder {
 		if (frame == null) {
 			return null;
 		}
-
-		HessianInput hin = new HessianInput(new ByteBufInputStream( frame));
+		SerializerFactory serializerFactory = new SerializerFactory();
+		serializerFactory.addFactory(new BigDecimalSerializerFactory());
+		HessianInput hin = new HessianInput(new ByteBufInputStream(frame));
+		hin.setSerializerFactory(serializerFactory);
 		return hin.readObject();
 		// ObjectInputStream is = new CompactObjectInputStream(new
 		// ByteBufInputStream(frame), classResolver);
