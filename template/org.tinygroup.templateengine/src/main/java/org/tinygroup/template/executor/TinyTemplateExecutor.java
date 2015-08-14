@@ -85,7 +85,42 @@ public class TinyTemplateExecutor {
         engine.addResourceLoader(resourceLoader);
         
         //注册文件目录的资源并注册
-        FileObject project = VFS.resolveFile(root);
+        resolveFile(engine,root,templateExtFileName, layoutExtFileName, componentExtFileName);
+        
+        if(args.length >= 4){
+           //第4位以后的字符串全部是需要扫描的资源
+           for(int i=3;i<args.length;i++){
+        	   resolveFile(engine,args[i],templateExtFileName, layoutExtFileName, componentExtFileName);
+           }
+        }
+        
+        TemplateContext context = new TemplateContextDefault();
+        //如果有用户自定义参数，放入模板上下文
+        if(!CollectionUtil.isEmpty(maps)){
+           for(Entry<String, String> entry:maps.entrySet()){
+        	   context.put(entry.getKey(), entry.getValue());
+           }
+        }
+        
+        
+        //渲染模板
+        if (relativePath != null) {
+            //如果只有一个，则只执行一个
+        	String prefix = pagedir.substring(root.length(), pagedir.length());
+            engine.renderTemplate(prefix+relativePath, context, new OutputStreamWriter(System.out));
+        }
+    }
+    
+    /**
+     * 扫描文件资源
+     * @param engine
+     * @param root
+     * @param templateExtFileName
+     * @param layoutExtFileName
+     * @param componentExtFileName
+     */
+    protected static void resolveFile(final TemplateEngine engine,String root,final String templateExtFileName,final String layoutExtFileName,final String componentExtFileName){
+    	FileObject project = VFS.resolveFile(root);
         final List<String> jarList =new ArrayList<String>();
         project.foreach(new FileObjectFilter(){
 			public boolean accept(FileObject fileObject) {
@@ -112,22 +147,6 @@ public class TinyTemplateExecutor {
 				}
 			}
 		});
-        
-        TemplateContext context = new TemplateContextDefault();
-        //如果有用户自定义参数，放入模板上下文
-        if(!CollectionUtil.isEmpty(maps)){
-           for(Entry<String, String> entry:maps.entrySet()){
-        	   context.put(entry.getKey(), entry.getValue());
-           }
-        }
-        
-        
-        //渲染模板
-        if (relativePath != null) {
-            //如果只有一个，则只执行一个
-        	String prefix = pagedir.substring(root.length(), pagedir.length());
-            engine.renderTemplate(prefix+relativePath, context, new OutputStreamWriter(System.out));
-        }
     }
     
     //解析简单的String参数
