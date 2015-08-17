@@ -18,6 +18,8 @@ package org.tinygroup.database.config.table;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.metadata.config.BaseObject;
 
 import java.util.ArrayList;
@@ -45,7 +47,9 @@ public class Tables extends BaseObject {
 
 		}
 		for (Table table : tableList) {
-			table.setPackageName(packageName);
+			if (StringUtil.isBlank(table.getPackageName())) {
+				table.setPackageName(packageName);
+			}
 		}
 		return tableList;
 	}
