@@ -17,6 +17,8 @@ package org.tinygroup.template.executor;
 
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateException;
@@ -45,6 +47,9 @@ public class TinyTemplateExecutor {
 	private static final String DEFAULT_LAYOUT_EXT_NAME="layout";
 	private static final String DEFAULT_COMPONENT_EXT_NAME="component";
 	private static final String SPLIT_TAG=";";
+	
+	protected static final Logger LOGGER = LoggerFactory
+	.getLogger(TinyTemplateExecutor.class);
 	
     public static void main(String[] args) throws TemplateException {
         if (args.length == 0) {
@@ -149,7 +154,7 @@ public class TinyTemplateExecutor {
 					engine.registerMacroLibrary(fileObject.getPath());
 					
 				} catch (TemplateException e) {
-					System.out.println(String.format("load %s error: %s", fileObject.getFileName(),e.getMessage()));
+					LOGGER.error(String.format("load %s error: %s", fileObject.getFileName(),e.getMessage()), e);
 				}
 			}
 		});
