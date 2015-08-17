@@ -42,6 +42,7 @@ import org.tinygroup.xmlparser.parser.XmlStringParser;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -147,6 +148,7 @@ public class ApplicationStartupListener implements ServletContextListener {
 				}
 			} catch (Exception e) {
 				logger.errorMessage("载入应用配置信息时出现异常，错误原因：{}！", e, e.getMessage());
+				throw new RuntimeException(e);
 			}
 
 			logger.logMessage(LogLevel.INFO, "启动应用开始...");

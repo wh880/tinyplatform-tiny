@@ -153,17 +153,14 @@ public class TinyServletContext implements ServletContext {
 	}
 
 	public String getRealPath(String path) {
-		String realPath=originalContext.getRealPath(path);
-		if(StringUtil.isBlank(realPath)){
-			if (fullContextFileRepository != null) {
-				FileObject fileObject = fullContextFileRepository
-						.getFileObject(path);
-				if (fileObject != null && fileObject.isExist()) {
-					return fileObject.getAbsolutePath();
-				}
+		if (fullContextFileRepository != null) {
+			FileObject fileObject = fullContextFileRepository
+					.getFileObject(path);
+			if (fileObject != null && fileObject.isExist()) {
+				return fileObject.getAbsolutePath();
 			}
 		}
-		return realPath;
+		return originalContext.getRealPath(path);
 	}
 
 	public String getServerInfo() {
@@ -200,10 +197,11 @@ public class TinyServletContext implements ServletContext {
 	public void setAttribute(String name, Object object) {
 		Object oldValue = getAttribute(name);
 		originalContext.setAttribute(name, object);// 如果有注册到web.xml的，也会触发ServletContextAttributeListener
-		setAttributeListener(name, object,oldValue);
+		setAttributeListener(name, object, oldValue);
 	}
 
-	private void setAttributeListener(String name, Object object,Object oldValue) {
+	private void setAttributeListener(String name, Object object,
+			Object oldValue) {
 		List<ServletContextAttributeListener> contextAttributeListeners = configManager
 				.getContextAttributeListeners();
 		ServletContextAttributeEvent event = new ServletContextAttributeEvent(
@@ -224,7 +222,7 @@ public class TinyServletContext implements ServletContext {
 				LOGGER.logMessage(
 						LogLevel.DEBUG,
 						"ServletContextAttributeListener:[{0}] will be attributeReplaced,the oldValue:[{1}]",
-						listener,oldValue);
+						listener, oldValue);
 				listener.attributeReplaced(event);
 				LOGGER.logMessage(
 						LogLevel.DEBUG,

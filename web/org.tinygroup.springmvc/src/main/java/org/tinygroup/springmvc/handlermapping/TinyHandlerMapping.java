@@ -15,16 +15,18 @@
  */
 package org.tinygroup.springmvc.handlermapping;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.web.servlet.HandlerExecutionChain;
-import org.springframework.web.servlet.HandlerMapping;
-import org.tinygroup.springmvc.extension.RequestInstanceHolder;
-import org.tinygroup.springmvc.util.Profiler;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.servlet.HandlerExecutionChain;
+import org.springframework.web.servlet.HandlerMapping;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.springmvc.extension.RequestInstanceHolder;
+import org.tinygroup.springmvc.util.Profiler;
 
 /**
  * 
@@ -33,8 +35,8 @@ import java.util.List;
  */
 public class TinyHandlerMapping implements HandlerMapping {
 
-	protected static final Log logger = LogFactory
-			.getLog(TinyHandlerMapping.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(TinyHandlerMapping.class);
 
 	/*
 	 * (non-Javadoc)
@@ -53,10 +55,8 @@ public class TinyHandlerMapping implements HandlerMapping {
 			Iterator<HandlerMapping> it = handlerMappings.iterator();
 			while (it.hasNext()) {
 				HandlerMapping hm = (HandlerMapping) it.next();
-				if (logger.isDebugEnabled()) {
-					logger.debug("Testing handler map [" + hm
-							+ "] in DispatcherServlet");
-				}
+				logger.logMessage(LogLevel.DEBUG,
+						"Testing handler map [{0}] in SpringMvcTinyProcessor", hm);
 				handler = hm.getHandler(request);
 				// TODO 是否需要缓存handler对象
 				if (handler != null) {
