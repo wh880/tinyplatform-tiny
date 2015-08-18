@@ -66,4 +66,8 @@ public interface TableSqlProcessor {
 	String getDropSql(Table table, String packageName);
 	
 	boolean checkTableExist(Table table,Connection connection)throws SQLException;
+	
+	public TableProcessor getTableProcessor() ;
+
+	public void setTableProcessor(TableProcessor tableProcessor);
 }

@@ -73,7 +73,7 @@ public class TinyHandlerAdapter implements HandlerAdapter {
 
 			if (handlerAdapter != null) {
 				logger.logMessage(LogLevel.DEBUG,
-						" invoke car handerAdapter.handle() method that will proxy ["
+						" invoke  handerAdapter.handle() method that will proxy ["
 								+ handlerAdapter + "]");
 				return handlerAdapter.handle(request, response, handler);
 			}
@@ -100,7 +100,7 @@ public class TinyHandlerAdapter implements HandlerAdapter {
 
 			if (handlerAdapter != null) {
 				logger.logMessage(LogLevel.DEBUG,
-						" invoke car handerAdapter.supports() method that will proxy ["
+						" invoke  handerAdapter.supports() method that will proxy ["
 								+ handlerAdapter + "]");
 				return handlerAdapter.supports(handler);
 			}

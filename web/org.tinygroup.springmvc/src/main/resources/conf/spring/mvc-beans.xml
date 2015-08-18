@@ -55,22 +55,22 @@
 		<property name="commonsMultipartResolver" ref="tinyDelegateMultipartResolver" />
 		<property name="handlerMappings">
 			<list>
-				<ref bean="defaultAnnotationHandlerMapping" />
+				<ref bean="tinyHandlerMappingComposite" />
 			</list>
 		</property>
 		<property name="handlerAdapters">
 			<list>
-				<ref bean="annotationMethodHandlerAdapter" />
+				<ref bean="tinyHandlerAdapterComposite" />
 			</list>
 		</property>
 		<property name="viewResolvers">
 			<list>
-				<ref bean="templateViewResolver" />
+				<ref bean="tinyContentNegotiatingViewResolver" />
 			</list>
 		</property>
 		<property name="handlerExceptionResolvers">
 			<list>
-				<ref bean="commonExceptionResolver" />
+				<ref bean="handlerExceptionResolverComposite" />
 			</list>
 		</property>
 		<property name="viewNameTranslator" ref="restfulConventionRequestToViewNameTranslator" />
@@ -89,6 +89,7 @@
 	<bean name="defaultAnnotationHandlerMapping"
 		class="org.tinygroup.springmvc.handlermapping.DefaultCOCUrlHandlerMapping">
 		<property name="detectHandlersInAncestorContexts" value="true"></property>
+		<property name="order" value="1"></property>
 	</bean>
 
 	<bean id="abstractHandlerAdapter" abstract="true">
@@ -135,7 +136,7 @@
 	<bean id="conventionBeanDefinitionRegistryPostProcessor"
 		class="org.tinygroup.springmvc.coc.ConventionBeanDefinitionRegistryPostProcessor" />
 
-	<bean name="commonExceptionResolver"
+	<bean name="handlerExceptionResolverComposite"
 		class="org.tinygroup.springmvc.exceptionresolver.HandlerExceptionResolverComposite">
 	</bean>
 
@@ -182,4 +183,19 @@
 
 	<bean id="xmlAwareFormHttpMessageConverter"
 		class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+		
+	<bean id="tinyHandlerMappingComposite"
+		class="org.tinygroup.springmvc.handlermapping.TinyHandlerMappingComposite" />
+		
+	<bean id="tinyHandlerAdapterComposite"
+		class="org.tinygroup.springmvc.handleradapter.TinyHandlerAdapterComposite" />
+	
+	<bean id="tinyContentNegotiatingViewResolver"
+		class="org.tinygroup.springmvc.view.TinyContentNegotiatingViewResolver">
+		<property name="mediaTypes">
+		   <map>
+		       <entry key="shtm" value="text/html"></entry>
+		   </map>
+		</property>
+	</bean>				
 </beans>

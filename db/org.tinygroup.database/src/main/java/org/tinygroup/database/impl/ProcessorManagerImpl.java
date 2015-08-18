@@ -92,26 +92,28 @@ public class ProcessorManagerImpl implements ProcessorManager {
 		Map<String, Map<String, Object>> processorsMap = processorManager.processorsMap;
 
 		Map<String, Object> db2ProcessMap = new HashMap<String, Object>();
-		db2ProcessMap.put("table", new Db2SqlProcessorImpl());
+		db2ProcessMap.put("table", Db2SqlProcessorImpl.getTableSqlProcessor());
 		db2ProcessMap.put("initData", initDataSqlProcessor);
 		db2ProcessMap.put("view", viewSqlProcessor);
 		db2ProcessMap.put("sequence", new Db2SequenceSqlProcessor());
 		processorsMap.put("db2", db2ProcessMap);
 
 		Map<String, Object> derbyProcessMap = new HashMap<String, Object>();
-		derbyProcessMap.put("table", new DerbySqlProcessorImpl());
+		derbyProcessMap.put("table",
+				DerbySqlProcessorImpl.getTableSqlProcessor());
 		derbyProcessMap.put("initData", initDataSqlProcessor);
 		derbyProcessMap.put("view", viewSqlProcessor);
 		processorsMap.put("derby", derbyProcessMap);
 
 		Map<String, Object> h2ProcessMap = new HashMap<String, Object>();
-		h2ProcessMap.put("table", new H2SqlProcessorImpl());
+		h2ProcessMap.put("table", H2SqlProcessorImpl.getTableSqlProcessor());
 		h2ProcessMap.put("initData", initDataSqlProcessor);
 		h2ProcessMap.put("view", viewSqlProcessor);
 		processorsMap.put("h2", h2ProcessMap);
 
 		Map<String, Object> mysqlProcessMap = new HashMap<String, Object>();
-		mysqlProcessMap.put("table", new MysqlSqlProcessorImpl());
+		mysqlProcessMap.put("table",
+				MysqlSqlProcessorImpl.getTableSqlProcessor());
 		mysqlProcessMap.put("initData", initDataSqlProcessor);
 		mysqlProcessMap.put("view", viewSqlProcessor);
 		mysqlProcessMap.put("procedure", new MySqlProcedureSqlProcessorImpl());
@@ -119,7 +121,8 @@ public class ProcessorManagerImpl implements ProcessorManager {
 		processorsMap.put("mysql", mysqlProcessMap);
 
 		Map<String, Object> oracleProcessMap = new HashMap<String, Object>();
-		oracleProcessMap.put("table", new OracleSqlProcessorImpl());
+		oracleProcessMap.put("table",
+				OracleSqlProcessorImpl.getTableSqlProcessor());
 		oracleProcessMap.put("initData", initDataSqlProcessor);
 		oracleProcessMap.put("view", viewSqlProcessor);
 		oracleProcessMap
@@ -129,7 +132,8 @@ public class ProcessorManagerImpl implements ProcessorManager {
 		processorsMap.put("oracle", oracleProcessMap);
 
 		Map<String, Object> sqlserverSqlProcessMap = new HashMap<String, Object>();
-		sqlserverSqlProcessMap.put("table", new SqlserverSqlProcessorImpl());
+		sqlserverSqlProcessMap.put("table",
+				SqlserverSqlProcessorImpl.getTableSqlProcessor());
 		sqlserverSqlProcessMap.put("initData", initDataSqlProcessor);
 		sqlserverSqlProcessMap.put("view", new SqlserverViewSqlProcessorImpl());
 		sqlserverSqlProcessMap.put("trigger",

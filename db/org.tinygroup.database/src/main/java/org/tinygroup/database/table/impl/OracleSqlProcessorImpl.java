@@ -18,10 +18,18 @@ package org.tinygroup.database.table.impl;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
+import org.tinygroup.database.table.TableSqlProcessor;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
 
 public class OracleSqlProcessorImpl extends SqlProcessorImpl {
+	
+	private static TableSqlProcessor tableSqlProcessor=new OracleSqlProcessorImpl();
+	
+	public static TableSqlProcessor getTableSqlProcessor(){
+		tableSqlProcessor.setTableProcessor(TableProcessorImpl.getTableProcessor());
+		return tableSqlProcessor;
+	}
 
 	protected String getDatabaseType() {
 		return "oracle";

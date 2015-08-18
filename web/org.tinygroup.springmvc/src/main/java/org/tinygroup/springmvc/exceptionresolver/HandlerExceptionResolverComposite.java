@@ -53,11 +53,13 @@ public class HandlerExceptionResolverComposite extends ApplicationObjectSupport
 
 	public ModelAndView resolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex) {
-		for (HandlerExceptionResolver resolver : composite) {
-			ModelAndView modelAndView = resolver.resolveException(request,
-					response, handler, ex);
-			if (modelAndView != null) {
-				return modelAndView;
+		if (!CollectionUtil.isEmpty(composite)) {
+			for (HandlerExceptionResolver resolver : composite) {
+				ModelAndView modelAndView = resolver.resolveException(request,
+						response, handler, ex);
+				if (modelAndView != null) {
+					return modelAndView;
+				}
 			}
 		}
 		return null;

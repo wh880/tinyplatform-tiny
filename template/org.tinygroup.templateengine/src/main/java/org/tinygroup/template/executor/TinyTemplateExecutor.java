@@ -17,6 +17,8 @@ package org.tinygroup.template.executor;
 
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateException;
@@ -44,14 +46,19 @@ public class TinyTemplateExecutor {
 	private static final String DEFAULT_TEMPLATE_EXT_NAME="page";
 	private static final String DEFAULT_LAYOUT_EXT_NAME="layout";
 	private static final String DEFAULT_COMPONENT_EXT_NAME="component";
+	private static final String SPLIT_TAG=";";
+	
+	protected static final Logger LOGGER = LoggerFactory
+	.getLogger(TinyTemplateExecutor.class);
 	
     public static void main(String[] args) throws TemplateException {
         if (args.length == 0) {
-            System.out.println("Usage:\n\tTinyTemplateExecutor templateFile [relativePath] [absolutePath] [urlParameters]");
+            System.out.println("Usage:\n\tTinyTemplateExecutor templateFile [relativePath] [absolutePath] [resources] [urlParameters]");
             return;
         }
         String relativePath = null;
         String absolutePath = null;
+        String resources = null;
         String urlParameters = null;
         
         //解析参数
@@ -62,7 +69,10 @@ public class TinyTemplateExecutor {
         	absolutePath = args[1].replaceAll("\\\\", "/");
         }
         if (args.length >= 3) {
-        	urlParameters = args[2];
+        	resources = args[2].replaceAll("\\\\", "/");
+        }
+        if (args.length >= 4) {
+        	urlParameters = args[3];
         }
         Map<String,String> maps= parserStringParameter(urlParameters);
         //System.out.println("relativePath="+relativePath);
@@ -85,7 +95,43 @@ public class TinyTemplateExecutor {
         engine.addResourceLoader(resourceLoader);
         
         //注册文件目录的资源并注册
-        FileObject project = VFS.resolveFile(root);
+        resolveFile(engine,root,templateExtFileName, layoutExtFileName, componentExtFileName);
+        
+        if(resources!=null){
+           String[] ss = resources.split(SPLIT_TAG);
+           //遍历resource目录的资源并注册
+           for(String resource:ss){
+        	   resolveFile(engine,resource,templateExtFileName, layoutExtFileName, componentExtFileName);
+           }
+        }
+        
+        TemplateContext context = new TemplateContextDefault();
+        //如果有用户自定义参数，放入模板上下文
+        if(!CollectionUtil.isEmpty(maps)){
+           for(Entry<String, String> entry:maps.entrySet()){
+        	   context.put(entry.getKey(), entry.getValue());
+           }
+        }
+        
+        
+        //渲染模板
+        if (relativePath != null) {
+            //如果只有一个，则只执行一个
+        	String prefix = pagedir.substring(root.length(), pagedir.length());
+            engine.renderTemplate(prefix+relativePath, context, new OutputStreamWriter(System.out));
+        }
+    }
+    
+    /**
+     * 扫描文件资源
+     * @param engine
+     * @param root
+     * @param templateExtFileName
+     * @param layoutExtFileName
+     * @param componentExtFileName
+     */
+    protected static void resolveFile(final TemplateEngine engine,String root,final String templateExtFileName,final String layoutExtFileName,final String componentExtFileName){
+    	FileObject project = VFS.resolveFile(root);
         final List<String> jarList =new ArrayList<String>();
         project.foreach(new FileObjectFilter(){
 			public boolean accept(FileObject fileObject) {
@@ -108,26 +154,10 @@ public class TinyTemplateExecutor {
 					engine.registerMacroLibrary(fileObject.getPath());
 					
 				} catch (TemplateException e) {
-					System.out.println(String.format("load %s error: %s", fileObject.getFileName(),e.getMessage()));
+					LOGGER.error(String.format("load %s error: %s", fileObject.getFileName(),e.getMessage()), e);
 				}
 			}
 		});
-        
-        TemplateContext context = new TemplateContextDefault();
-        //如果有用户自定义参数，放入模板上下文
-        if(!CollectionUtil.isEmpty(maps)){
-           for(Entry<String, String> entry:maps.entrySet()){
-        	   context.put(entry.getKey(), entry.getValue());
-           }
-        }
-        
-        
-        //渲染模板
-        if (relativePath != null) {
-            //如果只有一个，则只执行一个
-        	String prefix = pagedir.substring(root.length(), pagedir.length());
-            engine.renderTemplate(prefix+relativePath, context, new OutputStreamWriter(System.out));
-        }
     }
     
     //解析简单的String参数
