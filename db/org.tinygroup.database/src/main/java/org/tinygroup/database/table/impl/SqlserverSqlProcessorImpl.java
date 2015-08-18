@@ -17,10 +17,18 @@ package org.tinygroup.database.table.impl;
 
 import org.tinygroup.database.config.table.Index;
 import org.tinygroup.database.config.table.Table;
+import org.tinygroup.database.table.TableSqlProcessor;
 
 
 public class SqlserverSqlProcessorImpl extends SqlProcessorImpl {
 
+	private static TableSqlProcessor tableSqlProcessor=new SqlserverSqlProcessorImpl();
+	
+	public static TableSqlProcessor getTableSqlProcessor(){
+		tableSqlProcessor.setTableProcessor(TableProcessorImpl.getTableProcessor());
+		return tableSqlProcessor;
+	}
+	
 	protected String getDatabaseType() {
 		return "sqlserver";
 	}

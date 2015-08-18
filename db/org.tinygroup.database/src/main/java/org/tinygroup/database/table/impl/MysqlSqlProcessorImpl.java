@@ -17,6 +17,7 @@ package org.tinygroup.database.table.impl;
 
 import org.tinygroup.database.config.table.Index;
 import org.tinygroup.database.config.table.Table;
+import org.tinygroup.database.table.TableSqlProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
 
 import java.sql.DatabaseMetaData;
@@ -24,6 +25,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
+	
+	private static TableSqlProcessor tableSqlProcessor=new MysqlSqlProcessorImpl();
+	
+	public static TableSqlProcessor getTableSqlProcessor(){
+		tableSqlProcessor.setTableProcessor(TableProcessorImpl.getTableProcessor());
+		return tableSqlProcessor;
+	}
 
 	protected String getDatabaseType() {
 		return "mysql";
