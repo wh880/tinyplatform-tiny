@@ -274,7 +274,7 @@ public class CEPCoreImpl implements CEPCore {
 			try {
 				// remote处理
 				// eventProcessor.process(event);
-				deal(eventProcessor, event);
+				dealRemote(eventProcessor, event);
 			} catch (RuntimeException e) {
 				dealException(e, event);
 				throw e;
@@ -285,12 +285,20 @@ public class CEPCoreImpl implements CEPCore {
 		// 后置Aop
 		aopMananger.afterHandle(event);
 	}
+	private void dealRemote(EventProcessor eventProcessor, Event event) {
+		Context oldContext = event.getServiceRequest().getContext();
+		ServiceParamUtil.changeEventContext(event, this, Thread.currentThread()
+				.getContextClassLoader());
+		eventProcessor.process(event);
+		ServiceParamUtil.resetEventContext(event, this, oldContext);
+	}
 
 	private void deal(EventProcessor eventProcessor, Event event) {
 		Context oldContext = event.getServiceRequest().getContext();
 		ServiceParamUtil.changeEventContext(event, this, Thread.currentThread()
 				.getContextClassLoader());
 		if (event.getMode() == Event.EVENT_MODE_ASYNCHRONOUS) {
+			LOGGER.logMessage(LogLevel.INFO, "请求{}为异步请求",event.getEventId());
 			Event e = getEventClone(event);
 			event.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
 			event.setType(Event.EVENT_TYPE_RESPONSE);
@@ -298,6 +306,7 @@ public class CEPCoreImpl implements CEPCore {
 			SynchronousDeal thread = new SynchronousDeal(eventProcessor, e);
 			// thread.start();
 			executor.execute(thread);
+			LOGGER.logMessage(LogLevel.INFO, "已开启异步请求{}执行线程",event.getEventId());
 
 		} else {
 			eventProcessor.process(event);

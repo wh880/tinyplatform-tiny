@@ -1,5 +1,6 @@
 package org.tinygroup.jdbctemplatedslsession.daosupport;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DaoSupport;
 import org.tinygroup.jdbctemplatedslsession.template.DslTemplate;
 import org.tinygroup.jdbctemplatedslsession.template.DslTemplateImpl;
@@ -21,7 +22,7 @@ public abstract class TinyDslDaoSupport extends DaoSupport{
 			throw new IllegalArgumentException("'DslSession' or 'DslTemplate' is required");
 		}
 	}
-
+	@Autowired(required = false)
 	public final void setDslSession(DslSession dslSession) {
 		if (this.dslTemplate == null || dslSession != this.dslTemplate.getDslSession()) {
 			this.dslTemplate = createDslTemplate(dslSession);
@@ -35,7 +36,7 @@ public abstract class TinyDslDaoSupport extends DaoSupport{
 	public final DslTemplate getDslTemplate() {
 		return dslTemplate;
 	}
-
+	@Autowired(required = false)
 	public final void setDslTemplate(DslTemplate dslTemplate) {
 		this.dslTemplate = dslTemplate;
 	}

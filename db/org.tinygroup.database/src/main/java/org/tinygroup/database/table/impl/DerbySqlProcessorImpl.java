@@ -15,8 +15,17 @@
  */
 package org.tinygroup.database.table.impl;
 
+import org.tinygroup.database.table.TableSqlProcessor;
+
 
 public class DerbySqlProcessorImpl extends SqlProcessorImpl {
+	
+	private static TableSqlProcessor tableSqlProcessor=new DerbySqlProcessorImpl();
+	
+	public static TableSqlProcessor getTableSqlProcessor(){
+		tableSqlProcessor.setTableProcessor(TableProcessorImpl.getTableProcessor());
+		return tableSqlProcessor;
+	}
 
 	protected String getDatabaseType() {
 		return "derby";
