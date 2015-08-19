@@ -15,9 +15,18 @@
  */
 package org.tinygroup.database.table.impl;
 
+import org.tinygroup.database.table.TableSqlProcessor;
+
 
 
 public class Db2SqlProcessorImpl extends SqlProcessorImpl {
+	
+	private static TableSqlProcessor tableSqlProcessor=new Db2SqlProcessorImpl();
+	
+	public static TableSqlProcessor getTableSqlProcessor(){
+		tableSqlProcessor.setTableProcessor(TableProcessorImpl.getTableProcessor());
+		return tableSqlProcessor;
+	}
 
 	protected String getDatabaseType() {
 		return "db2";

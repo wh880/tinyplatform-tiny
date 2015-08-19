@@ -1,6 +1,6 @@
 <!--tiny-processor实现 -->
 <tiny-processors>
-        <tiny-processor id="uiEngineTinyProcessor" class="uiEngineTinyProcessor">
+       <!-- <tiny-processor id="uiEngineTinyProcessor" class="uiEngineTinyProcessor">
             <servlet-mapping url-pattern=".*/uiengine\.uijs"></servlet-mapping>
             <servlet-mapping url-pattern=".*/uiengine\.uicss"></servlet-mapping>
         </tiny-processor>
@@ -208,5 +208,5 @@
             <servlet-mapping url-pattern=".*\.wrz"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.xaf"></servlet-mapping>
             <servlet-mapping url-pattern=".*\.xof"></servlet-mapping>
-        </tiny-processor>
+        </tiny-processor> --> 
     </tiny-processors>

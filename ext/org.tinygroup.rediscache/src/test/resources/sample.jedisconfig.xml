@@ -1,0 +1,4 @@
+<jedis-configs>
+  <jedis-config id="server01" host="192.168.51.29" port="6380"></jedis-config>
+  <jedis-config id="server02" host="192.168.51.29" port="6381"></jedis-config>
+</jedis-configs>

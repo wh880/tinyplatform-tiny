@@ -1,0 +1,6 @@
+<xstream-configuration package-name="jedisconfig">
+	<xstream-annotation-classes>
+		<xstream-annotation-class class-name="org.tinygroup.cache.redis.config.JedisConfigs" />
+		<xstream-annotation-class class-name="org.tinygroup.cache.redis.config.JedisConfig" />
+	</xstream-annotation-classes>
+</xstream-configuration>
