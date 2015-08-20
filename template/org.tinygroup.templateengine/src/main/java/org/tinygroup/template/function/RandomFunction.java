@@ -18,7 +18,6 @@ public class RandomFunction extends AbstractTemplateFunction {
 		super("rand,random");
 	}
 
-	@Override
 	public Object execute(Template template, TemplateContext context,
 			Object... parameters) throws TemplateException {
 		if(parameters==null || parameters.length<1){
