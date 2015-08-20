@@ -15,5 +15,6 @@
     <module>org.tinygroup.dbfilter</module>
     <module>org.tinygroup.uiengine</module>
     <module>org.tinygroup.springmvc</module>
+    <module>org.tinygroup.sessionstore</module>
   </modules>
 </project>

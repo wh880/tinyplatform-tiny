@@ -3,12 +3,13 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd"
 	   default-autowire="byName" default-lazy-init="true">
-	
-	<bean id="ehCache"  scope="singleton"
-		class="org.tinygroup.cache.ehcache.EhCache">
+	   
+	<bean id="cacheBean" scope="singleton"
+		class="org.tinygroup.cachefactory.CacheFactoryBean">
+		<property name="cacheRegion">
+			<value>${cache_region}</value>
+		</property>
+		<property name="cacheManager" ref="${cache_manager}"></property>
 	</bean>
 	
-	<bean id="ehCacheManager"  scope="singleton"
-		class="org.tinygroup.cache.ehcache.EhCacheManager">
-	</bean>
 </beans>

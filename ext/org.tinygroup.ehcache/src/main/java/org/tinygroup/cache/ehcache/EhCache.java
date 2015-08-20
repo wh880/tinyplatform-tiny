@@ -15,15 +15,16 @@
  */
 package org.tinygroup.cache.ehcache;
 
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-import org.tinygroup.cache.Cache;
-import org.tinygroup.cache.exception.CacheException;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+
+import org.tinygroup.cache.Cache;
+import org.tinygroup.cache.exception.CacheException;
 
 /**
  * 
@@ -49,10 +50,8 @@ public class EhCache implements Cache {
 
 	public Object get(String key) {
 		Element element = cache.get(key);
-		if (element == null) {
-			throw new CacheException(String.format("key:<%s> not found.", key));
-		}
-		return element.getObjectValue();
+		Object value=element!=null?element.getObjectValue():null;
+		return value;
 	}
 
 	public void put(String key, Object object) {
@@ -115,11 +114,9 @@ public class EhCache implements Cache {
 
 	public void remove(String group, String key) {
 		Set<String> groupKeys = getGroupKeys(group);
-		if (groupKeys == null) {
-			throw new CacheException(String.format("group <%s> not found.",
-					group));
+		if (groupKeys != null) {
+			cache.remove(getKey(group, key));
 		}
-		cache.remove(getKey(group, key));
 	}
 
 	public String getStats() {
