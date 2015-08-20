@@ -133,7 +133,7 @@ public final class U {
             try {
                 return p(object, name);
             } catch (TemplateException e) {
-                if (e.getCause().getClass()==NoSuchFieldException.class||e.getMessage().indexOf("中不能找到") > 0) {
+                if (e.getCause().getClass() == NoSuchFieldException.class || e.getMessage().indexOf("中不能找到") > 0) {
                     return null;
                 } else {
                     throw e;
@@ -190,7 +190,11 @@ public final class U {
         if (method != null) {
             return method.invoke(object, parameters);
         }
-        return MethodUtils.invokeMethod(object, methodName, parameters);
+        if (object instanceof Class) {
+            return MethodUtils.invokeStaticMethod((Class) object, methodName, parameters);
+        } else {
+            return MethodUtils.invokeMethod(object, methodName, parameters);
+        }
     }
 
     private static Method getMethodByName(Object object, String methodName) {
