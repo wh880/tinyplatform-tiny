@@ -48,6 +48,9 @@ public class DictManagerImpl implements DictManager {
 
 	public Dict getDict(String dictTypeName, Context context) {
 		String lang = LocaleUtil.getContext().getLocale().toString();
+		if(!dictLoaderMap.containsKey(lang)){
+			throw new RuntimeException("Locale:{}" + lang + "不存在对应的DictLoader");
+		}
 		for (DictLoader dictLoader : dictLoaderMap.get(lang)) {
 			Dict dict = dictLoader.getDict(dictTypeName, this, context);
 			if (dict != null) {
