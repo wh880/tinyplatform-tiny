@@ -14,7 +14,7 @@ import org.tinygroup.template.TemplateException;
 public class TodayFunction extends AbstractTemplateFunction {
 
 	public TodayFunction() {
-		super("today");
+		super("now");
 	}
 
 	public Object execute(Template template, TemplateContext context,
