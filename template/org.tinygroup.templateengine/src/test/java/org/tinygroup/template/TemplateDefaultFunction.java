@@ -76,5 +76,16 @@ public class TemplateDefaultFunction {
         template =resourceLoader.createTemplate("${toDouble('1.234567890123')}");
         engine.renderTemplate(template, context, writer);
         System.out.println(writer.toString());
+        
+        writer = new StringWriter();
+        template =resourceLoader.createTemplate("${formatDate(now())}");
+        engine.renderTemplate(template, context, writer);
+        System.out.println(writer.toString());
+        
+        writer = new StringWriter();
+        template =resourceLoader.createTemplate("${formatDate(now(),'yyyy年MM月dd日 HH:mm:ss')}");
+        engine.renderTemplate(template, context, writer);
+        System.out.println(writer.toString());
 	}
+	
 }

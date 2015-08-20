@@ -20,7 +20,7 @@ import org.tinygroup.cache.CacheManager;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
- * 关闭缓存的应用处理器
+ * 关闭缓存的应用处理器,清除內存中的缓存,并把内存中的缓存保存到辅助性缓存中
  * @author renhui
  *
  */
@@ -42,8 +42,6 @@ public class CacheShutDownApplicationProcessor extends
 	}
 
 	public void stop() {
-		cacheManager.clearCaches();//清除缓存中的内容
-		cacheManager.removeCaches();//把缓存从管理器中移除
 		cacheManager.shutDown();//关闭缓存管理器
 	}
 

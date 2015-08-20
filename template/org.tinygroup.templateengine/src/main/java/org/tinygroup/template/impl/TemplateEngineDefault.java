@@ -190,6 +190,8 @@ public class TemplateEngineDefault implements TemplateEngine {
         addTemplateFunction(new ToBoolFunction());
         addTemplateFunction(new ToFloatFunction());
         addTemplateFunction(new ToDoubleFunction());
+        addTemplateFunction(new FormatDateFunction());
+        addTemplateFunction(new TodayFunction());
     }
 
     public TemplateContext getTemplateContext() {

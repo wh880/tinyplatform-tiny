@@ -28,6 +28,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 /**
@@ -57,21 +58,20 @@ public class TinyProcessorWapper extends AbstractTinyProcessor {
 	@Override
 	protected void customInit() throws ServletException {
 		String servletBeanName = get(TinyServletConfig.SERVLET_BEAN);
-		if (!StringUtil.isBlank(servletBeanName)) {
-			servlet = BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(servletBeanName);
-			if (servlet != null) {
-				TinyServletConfig servletConfig = new TinyServletConfig();
-				servletConfig.setInitParams(getInitParamMap());
-				servletConfig.setServletConfig(servlet.getServletConfig());
-				servlet.init(servletConfig);
-			} else {
-				logger.logMessage(LogLevel.WARN,
-						"bean name:[{0}] of servlet can't define");
-			}
+		if (StringUtil.isBlank(servletBeanName)) {
+			logger.logMessage(LogLevel.ERROR,
+					"servlet_bean attribute value must not  be empty");
+			throw new RuntimeException(
+					"servlet_bean attribute value must not be empty");
 		}
-		logger.logMessage(LogLevel.WARN,
-				"can't find servet wrapper in TinyProcessorWapper");
+		servlet = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(servletBeanName);
+		if (servlet != null) {
+			TinyServletConfig servletConfig = new TinyServletConfig();
+			servletConfig.setInitParams(getInitParamMap());
+			servletConfig.setServletConfig(servlet.getServletConfig());
+			servlet.init(servletConfig);
+		}
 	}
 
 }

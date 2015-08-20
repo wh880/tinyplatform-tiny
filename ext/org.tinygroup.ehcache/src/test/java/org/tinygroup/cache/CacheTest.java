@@ -88,49 +88,28 @@ public class CacheTest extends TestCase {
 		cache.put("group", "aa2", "123");
 		cache.put("group", "aa3", "123");
 		cache.cleanGroup("group");
-		try {
-			cache.get("group", "aa1");
-			fail();
-		} catch (Exception e) {
-
-		}
+		cache.get("group", "aa1");
 	}
 
 	public void testClear() throws CacheException {
 		cache.put("bb", "123");
 		assertEquals("123", cache.get("bb"));
 		cache.clear();
-		try {
-			cache.get("bb");
-			fail();
-		} catch (Exception e) {
-
-		}
-
+		cache.get("bb");
 	}
 
 	public void testRemoveStringString() throws CacheException {
 		cache.put("group", "bb", "123");
 		assertEquals("123", cache.get("group", "bb"));
 		cache.remove("group", "bb");
-		try {
-			cache.get("group", "bb");
-			fail();
-		} catch (Exception e) {
-
-		}
+		cache.get("group", "bb");
 	}
 
 	public void testRemove() throws CacheException {
 		cache.put("bb", "123");
 		assertEquals("123", cache.get("bb"));
 		cache.remove("bb");
-		try {
-			cache.get("bb");
-			fail();
-		} catch (Exception e) {
-
-		}
+		cache.get("bb");
 	}
 
 	public void testGetStats() {
