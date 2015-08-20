@@ -7,9 +7,4 @@
 		class="org.tinygroup.cache.CacheInitConfig">
 	</bean>
 
-	<bean id="cacheShutDownApplicationProcessor" scope="singleton"
-		class="org.tinygroup.cache.application.CacheShutDownApplicationProcessor">
-		<property name="cacheManager" ref="${cache_manager}"></property>
-	</bean>
-
 </beans>
