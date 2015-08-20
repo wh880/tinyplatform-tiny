@@ -11,4 +11,8 @@
 		autowire="byType">
 	</bean>
 	
+	<bean id="jcsCacheManager"  scope="singleton"
+		class="org.tinygroup.cache.jcs.JcsCacheManager">
+	</bean>
+	
 </beans>

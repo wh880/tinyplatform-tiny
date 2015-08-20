@@ -51,5 +51,41 @@ public class TemplateDefaultFunction {
         template =resourceLoader.createTemplate("${rand('double')}");
         engine.renderTemplate(template, context, writer);
         System.out.println(writer.toString());
+        
+        writer = new StringWriter();
+        template =resourceLoader.createTemplate("${toInt('87')}");
+        engine.renderTemplate(template, context, writer);
+        System.out.println(writer.toString());
+        
+        writer = new StringWriter();
+        template =resourceLoader.createTemplate("${toLong('1230000000')}");
+        engine.renderTemplate(template, context, writer);
+        System.out.println(writer.toString());
+        
+        writer = new StringWriter();
+        template =resourceLoader.createTemplate("${toBool('true')}");
+        engine.renderTemplate(template, context, writer);
+        System.out.println(writer.toString());
+        
+        writer = new StringWriter();
+        template =resourceLoader.createTemplate("${toFloat('-9.01')}");
+        engine.renderTemplate(template, context, writer);
+        System.out.println(writer.toString());
+        
+        writer = new StringWriter();
+        template =resourceLoader.createTemplate("${toDouble('1.234567890123')}");
+        engine.renderTemplate(template, context, writer);
+        System.out.println(writer.toString());
+        
+        writer = new StringWriter();
+        template =resourceLoader.createTemplate("${formatDate(now())}");
+        engine.renderTemplate(template, context, writer);
+        System.out.println(writer.toString());
+        
+        writer = new StringWriter();
+        template =resourceLoader.createTemplate("${formatDate(now(),'yyyy年MM月dd日 HH:mm:ss')}");
+        engine.renderTemplate(template, context, writer);
+        System.out.println(writer.toString());
 	}
+	
 }

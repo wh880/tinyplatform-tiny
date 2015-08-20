@@ -195,6 +195,8 @@
 		<property name="mediaTypes">
 		   <map>
 		       <entry key="shtm" value="text/html"></entry>
+		       <entry key="page" value="text/html"></entry>
+		       <entry key="pagelet" value="text/html"></entry>
 		   </map>
 		</property>
 	</bean>				

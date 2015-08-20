@@ -43,7 +43,7 @@ public class ValueProcessor implements ContextProcessor<TinyTemplateParser.Value
         } else if (parseTree.VALUE_ESCAPED_OPEN() != null) {
             TemplateInterpreter.write(writer, U.escapeHtml(value));
         } else if (parseTree.I18N_OPEN() != null) {
-            TemplateInterpreter.write(writer, U.getI18n(null, context, value.toString()));
+            TemplateInterpreter.write(writer, U.getI18n(engine.getI18nVisitor(), context, value.toString()));
         }
         return null;
     }

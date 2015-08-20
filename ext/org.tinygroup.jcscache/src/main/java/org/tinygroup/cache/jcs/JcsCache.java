@@ -38,11 +38,7 @@ public class JcsCache implements Cache {
 	}
 
 	public Object get(String key) {
-		Object object = jcs.get(key);
-		if (object == null) {
-			throw new CacheException(String.format("key <%s> not found.", key));
-		}
-		return object;
+		return jcs.get(key);
 	}
 
 	public void put(String key, Object object) {
@@ -74,12 +70,7 @@ public class JcsCache implements Cache {
 
 	public Object get(String groupName, String key) {
 		try {
-			Object object = jcs.getFromGroup(key, groupName);
-			if (object == null) {
-				throw new CacheException(String.format("key <%s> not found.",
-						key));
-			}
-			return object;
+			return jcs.getFromGroup(key, groupName);
 		} catch (Exception e) {
 			throw new CacheException(e);
 		}
