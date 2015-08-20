@@ -39,6 +39,7 @@ public class CallMacroFunction extends AbstractTemplateFunction {
         Macro macro = getTemplateEngine().findMacro(macroName, template, context);
         TemplateContext newTemplateContext = null;
         newTemplateContext = new TemplateContextDefault();
+        newTemplateContext.setParent(context);
         List paraList = new ArrayList();
         newTemplateContext.put(parameters[0]+"ParameterList", paraList);
         for (int i = 1; i < parameters.length; i++) {
