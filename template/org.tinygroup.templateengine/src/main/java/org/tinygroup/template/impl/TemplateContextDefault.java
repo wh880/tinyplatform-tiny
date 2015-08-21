@@ -37,7 +37,7 @@ public class TemplateContextDefault extends ContextImpl implements TemplateConte
         put("Number", Number.class);
         put("Character", Character.class);
         put("Math", Math.class);
-        put("System", Math.class);
+        put("System", System.class);
     }
 
     public TemplateContextDefault() {
