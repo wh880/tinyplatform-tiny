@@ -15,12 +15,11 @@
  */
 package org.tinygroup.template.interpret.context;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.*;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.io.Writer;
 
@@ -36,7 +35,7 @@ public class ReturnProcessor implements ContextProcessor<TinyTemplateParser.Retu
     public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Return_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         boolean isReturn = true;
         if (parseTree.expression() != null) {
-            isReturn = U.b(interpreter.interpretTree(engine, template, parseTree.expression(),pageContext, context, writer,fileName));
+            isReturn = TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, template, parseTree.expression(),pageContext, context, writer,fileName));
         }
         if (isReturn) {
             throw new ReturnException();

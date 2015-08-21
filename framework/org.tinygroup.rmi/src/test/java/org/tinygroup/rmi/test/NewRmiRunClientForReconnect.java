@@ -28,7 +28,7 @@ public class NewRmiRunClientForReconnect {
 		RmiServer remoteServer = null;
 		
 		try {
-			remoteServer = new RmiServerImpl(LOCALIP, 7777,SERVERIP,8888);
+			remoteServer = new RmiServerImpl(LOCALIP, 17777,SERVERIP,18888);
 		
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block

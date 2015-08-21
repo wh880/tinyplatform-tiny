@@ -18,7 +18,7 @@ package org.tinygroup.template.function;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 /**
  * Created by luoguo on 2014/6/9.
@@ -37,9 +37,9 @@ public class GetFunction extends AbstractTemplateFunction {
         Object object = parameters[0];
         Object indexObject = parameters[1];
         try {
-            return U.a(object, indexObject);
+            return TemplateUtil.getArrayValue(object, indexObject);
         }catch (Exception e) {
-            return U.c(template, context, object, "get", object, indexObject);
+            return TemplateUtil.callMethod(template, context, object, "get", object, indexObject);
         }
     }
 }

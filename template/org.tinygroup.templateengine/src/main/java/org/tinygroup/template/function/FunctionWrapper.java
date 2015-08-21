@@ -18,7 +18,7 @@ package org.tinygroup.template.function;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.lang.reflect.Method;
 
@@ -41,7 +41,7 @@ public class FunctionWrapper extends AbstractFunctionWrapper {
     public FunctionWrapper(String functionName, Class clazz, String methodName) {
         super(functionName);
         try {
-            this.method = clazz.getMethod(methodName, U.getParameterTypes(clazz, methodName));
+            this.method = clazz.getMethod(methodName, TemplateUtil.getParameterTypes(clazz, methodName));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -51,7 +51,7 @@ public class FunctionWrapper extends AbstractFunctionWrapper {
         super(functionName);
         try {
             Class<?> clazz = Class.forName(className);
-            this.method = clazz.getMethod(methodName, U.getParameterTypes(clazz, methodName));
+            this.method = clazz.getMethod(methodName, TemplateUtil.getParameterTypes(clazz, methodName));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -60,7 +60,7 @@ public class FunctionWrapper extends AbstractFunctionWrapper {
     public FunctionWrapper(String functionName, Object object, String methodName) {
         super(functionName);
         try {
-            method = object.getClass().getMethod(methodName, U.getParameterTypes(object.getClass(), methodName));
+            method = object.getClass().getMethod(methodName, TemplateUtil.getParameterTypes(object.getClass(), methodName));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

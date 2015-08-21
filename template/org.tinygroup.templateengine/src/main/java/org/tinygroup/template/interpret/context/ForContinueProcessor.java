@@ -22,7 +22,7 @@ import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.terminal.ForContinueException;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.io.Writer;
 
@@ -41,7 +41,7 @@ public class ForContinueProcessor implements ContextProcessor<TinyTemplateParser
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Continue_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         boolean continueFor = true;
         if (parseTree.expression() != null) {
-            continueFor = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName));
+            continueFor = TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName));
         }
         if (continueFor) {
             throw new ForContinueException();

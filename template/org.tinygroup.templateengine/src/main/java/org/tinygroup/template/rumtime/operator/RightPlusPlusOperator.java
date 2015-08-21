@@ -18,7 +18,7 @@ package org.tinygroup.template.rumtime.operator;
 import org.tinygroup.context.BaseContext;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.rumtime.O;
+import org.tinygroup.template.rumtime.OperationUtil;
 import org.tinygroup.template.rumtime.OperatorWithContext;
 
 /**
@@ -29,7 +29,7 @@ public class RightPlusPlusOperator implements OperatorWithContext {
 
     public Object operation(TemplateContext context, String name, Object value) throws TemplateException {
         Object v = context.get(name);
-        Object newValue=O.e("+", v, 1);
+        Object newValue= OperationUtil.executeOperation("+", v, 1);
         if (v != null) {
             BaseContext con=context.contain(name);
             if(con!=null){

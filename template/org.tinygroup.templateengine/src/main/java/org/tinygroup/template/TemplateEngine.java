@@ -25,8 +25,7 @@ import java.util.List;
  */
 
 public interface TemplateEngine extends TemplateContextOperator {
-    String getEngineId();
-    void setEngineId(String engineId);
+
     /**
      * 设置模板加载器列表
      *

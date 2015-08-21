@@ -36,7 +36,7 @@ import java.util.Map;
  * 工具类，之所以起这么短是为了生成的代码短一些
  * Created by luoguo on 2014/6/4.
  */
-public final class U {
+public final class TemplateUtil {
     private static Map<Class, Map<String, Method>> methodCache = new HashMap<Class, Map<String, Method>>();
     private static Map<Class, Map<String, Field>> fieldCache = new HashMap<Class, Map<String, Field>>();
     private static PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
@@ -50,7 +50,7 @@ public final class U {
         }
     }
 
-    private U() {
+    private TemplateUtil() {
     }
 
     public static boolean isSafeVariable() {
@@ -58,7 +58,7 @@ public final class U {
     }
 
     public static void setSafeVariable(boolean safeVariable) {
-        U.safeVariable = safeVariable;
+        TemplateUtil.safeVariable = safeVariable;
     }
 
     /**
@@ -69,7 +69,7 @@ public final class U {
      * @return
      * @throws TemplateException
      */
-    public static Object p(Object object, Object name) throws TemplateException {
+    public static Object getAttribute(Object object, Object name) throws TemplateException {
         try {
             if (object instanceof Map) {
                 Object value = ((Map) object).get(name);
@@ -131,7 +131,7 @@ public final class U {
     public static Object sp(Object object, Object name) throws TemplateException {
         if (object != null) {
             try {
-                return p(object, name);
+                return getAttribute(object, name);
             } catch (TemplateException e) {
                 if (e.getCause().getClass() == NoSuchFieldException.class || e.getMessage().indexOf("中不能找到") > 0) {
                     return null;
@@ -170,7 +170,7 @@ public final class U {
      * @return
      * @throws TemplateException
      */
-    public static Object c(Template template, TemplateContext context, Object object, String methodName, Object... parameters) throws TemplateException {
+    public static Object callMethod(Template template, TemplateContext context, Object object, String methodName, Object... parameters) throws TemplateException {
         try {
             TemplateFunction function = template.getTemplateEngine().getTemplateFunction(object, methodName);
             if (function != null) {
@@ -224,10 +224,10 @@ public final class U {
      * @return
      * @throws TemplateException
      */
-    public static Object sc(Template template, TemplateContext context, Object object, String methodName, Object... parameters) throws TemplateException {
+    public static Object safeCallMethod(Template template, TemplateContext context, Object object, String methodName, Object... parameters) throws TemplateException {
         if (object != null) {
             try {
-                return c(template, context, object, methodName, parameters);
+                return callMethod(template, context, object, methodName, parameters);
             } catch (TemplateException e) {
                 if (e.getCause().getClass() == NoSuchMethodException.class) {
                     return null;
@@ -256,7 +256,7 @@ public final class U {
      * @param key
      * @return
      */
-    public static Object v(Context context, Object key) {
+    public static Object getValueFromContext(Context context, Object key) {
         return context.get(key.toString());
     }
 
@@ -338,28 +338,28 @@ public final class U {
     /**
      * 判断布尔值是否成立
      *
-     * @param o
+     * @param object
      * @return
      */
-    public static boolean b(Object o) {
-        if (o == null) {
+    public static boolean getBooleanValue(Object object) {
+        if (object == null) {
             return false;
         }
-        if (o.getClass() == Boolean.class) {
-            return ((Boolean) o).booleanValue();
-        } else if (o.getClass() == String.class) {
-            return ((String) o).length() > 0;
-        } else if (o instanceof Collection) {
-            return ((Collection) o).size() > 0;
-        } else if (o.getClass().isArray()) {
-            return ArrayUtil.arrayLength(o) > 0;
-        } else if (o instanceof Iterator) {
-            return ((Iterator) o).hasNext();
-        } else if (o instanceof Enumerator) {
-            Enumerator e = (Enumerator) o;
+        if (object.getClass() == Boolean.class) {
+            return ((Boolean) object).booleanValue();
+        } else if (object.getClass() == String.class) {
+            return ((String) object).length() > 0;
+        } else if (object instanceof Collection) {
+            return ((Collection) object).size() > 0;
+        } else if (object.getClass().isArray()) {
+            return ArrayUtil.arrayLength(object) > 0;
+        } else if (object instanceof Iterator) {
+            return ((Iterator) object).hasNext();
+        } else if (object instanceof Enumerator) {
+            Enumerator e = (Enumerator) object;
             return e.hasMoreElements();
-        } else if (o instanceof Map) {
-            Map e = (Map) o;
+        } else if (object instanceof Map) {
+            Map e = (Map) object;
             return e.size() > 0;
         }
         return true;
@@ -373,19 +373,19 @@ public final class U {
      * @return
      * @throws Exception
      */
-    public static Object sa(Object object, Object indexObject) throws TemplateException {
+    public static Object getSafeArrayValue(Object object, Object indexObject) throws TemplateException {
         if (object == null) {
             return null;
         } else {
             try {
-                return a(object, indexObject);
+                return getArrayValue(object, indexObject);
             } catch (Exception e) {
                 return null;
             }
         }
     }
 
-    public static Object a(Object object, Object indexObject) throws TemplateException {
+    public static Object getArrayValue(Object object, Object indexObject) throws TemplateException {
         int index;
         if (object instanceof Map) {
             Map map = (Map) object;

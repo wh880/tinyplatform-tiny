@@ -21,8 +21,8 @@ import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-import org.tinygroup.template.rumtime.O;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.OperationUtil;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.io.Writer;
 
@@ -40,9 +40,9 @@ public class MathCompareConditionProcessor implements ContextProcessor<TinyTempl
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_compare_conditionContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
-        boolean a = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression().get(0),pageContext, context, writer,fileName));
-        boolean b = U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression().get(1),pageContext, context, writer,fileName));
-        return O.e(parseTree.getChild(1).getText(), a, b);
+        boolean a = TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, templateFromContext, parseTree.expression().get(0),pageContext, context, writer,fileName));
+        boolean b = TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, templateFromContext, parseTree.expression().get(1),pageContext, context, writer,fileName));
+        return OperationUtil.executeOperation(parseTree.getChild(1).getText(), a, b);
     }
 }
 

@@ -20,7 +20,7 @@ import org.tinygroup.template.function.*;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.context.*;
 import org.tinygroup.template.interpret.terminal.*;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.io.CharArrayWriter;
 import java.io.IOException;
@@ -50,7 +50,6 @@ public class TemplateEngineDefault implements TemplateEngine {
     private TemplateCache<String, Macro> macroCache = new TemplateCacheDefault<String, Macro>();
     private TemplateCache<String, Template> templateCache = new TemplateCacheDefault<String, Template>();
     private List<String> macroLibraryList = new ArrayList<String>();
-    private String engineId;
 
     public static final TemplateInterpreter interpreter = new TemplateInterpreter();
 
@@ -125,7 +124,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     private boolean compactMode;
 
     public boolean isSafeVariable() {
-        return U.isSafeVariable();
+        return TemplateUtil.isSafeVariable();
     }
 
     public TemplateInterpreter getTemplateInterpreter() {
@@ -133,7 +132,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public void setSafeVariable(boolean safeVariable) {
-        U.setSafeVariable(safeVariable);
+        TemplateUtil.setSafeVariable(safeVariable);
     }
 
     public boolean isCompactMode() {
@@ -168,16 +167,9 @@ public class TemplateEngineDefault implements TemplateEngine {
         }
     }
 
-    public TemplateEngineDefault(String engineId) {
-        this();
-        if (engineId != null) {
-            this.engineId = engineId;
-        }
-    }
 
     public TemplateEngineDefault() {
         //添加一个默认的加载器
-        this.engineId = "default";
         addTemplateFunction(new FormatterTemplateFunction());
         addTemplateFunction(new InstanceOfTemplateFunction());
         addTemplateFunction(new GetResourceContentFunction());
@@ -212,14 +204,6 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public I18nVisitor getI18nVisitor() {
         return i18nVisitor;
-    }
-
-    public String getEngineId() {
-        return engineId;
-    }
-
-    public void setEngineId(String engineId) {
-        this.engineId = engineId;
     }
 
     public void setResourceLoaderList(List<ResourceLoader> resourceLoaderList) {

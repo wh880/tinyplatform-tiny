@@ -19,13 +19,12 @@ import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
-import org.tinygroup.template.interpret.ReturnException;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.terminal.ForBreakException;
 import org.tinygroup.template.interpret.terminal.ForContinueException;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.io.Writer;
 
@@ -45,7 +44,7 @@ public class WhileProcessor implements ContextProcessor<TinyTemplateParser.While
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.While_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         boolean hasItem = false;
         int count=0;
-        while (U.b(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName))) {
+        while (TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName))) {
             count++;
             hasItem = true;
             if(count>MAX_LOOPS){

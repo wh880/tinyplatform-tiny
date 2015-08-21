@@ -24,8 +24,8 @@ import org.tinygroup.rmi.impl.RmiServerImpl;
 public class RmiServerTest extends TestCase {
 	static String SIP = "127.0.0.1";
 	static String CIP = "127.0.0.1";
-	static int SP = 8888;
-	static int CP = 7777;
+	static int SP = 18888;
+	static int CP = 17777;
     RmiServer localServer;
     RmiServer remoteServer;
     public void setUp() throws Exception {
