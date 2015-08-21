@@ -456,6 +456,12 @@ public class CEPCoreImpl implements CEPCore {
 		if (operator != null) {
 			operator.stopCEPCore(this);
 		}
+		try {
+			executor.shutdown();
+		} catch (Exception e) {
+			LOGGER.errorMessage("关闭CEPCore异步线程池时发生异常",e);
+		}
+		
 	}
 
 	public List<ServiceInfo> getServiceInfos() {
