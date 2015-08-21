@@ -17,7 +17,7 @@ package org.tinygroup.template.rumtime.operator;
 
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.rumtime.O;
+import org.tinygroup.template.rumtime.OperationUtil;
 import org.tinygroup.template.rumtime.OperatorWithContext;
 
 /**
@@ -28,7 +28,7 @@ public class LeftSubtractSubtractOperator implements OperatorWithContext {
     public Object operation(TemplateContext context,  String name, Object value) throws TemplateException {
         Object v = context.get(name.toString());
         if (v != null) {
-            v=O.e("-", v, 1);
+            v= OperationUtil.executeOperation("-", v, 1);
             context.put(name.toString(), v);
             return v;
         } else {

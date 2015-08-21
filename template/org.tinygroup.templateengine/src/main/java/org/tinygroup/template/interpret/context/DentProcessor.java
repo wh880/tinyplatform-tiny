@@ -21,7 +21,7 @@ import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.io.Writer;
 
@@ -39,7 +39,7 @@ public class DentProcessor implements ContextProcessor<TinyTemplateParser.Dent_d
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Dent_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
-        U.dent(context);
+        TemplateUtil.dent(context);
         return null;
     }
 }

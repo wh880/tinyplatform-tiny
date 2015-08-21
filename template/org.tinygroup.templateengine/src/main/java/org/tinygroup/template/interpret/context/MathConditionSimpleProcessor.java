@@ -21,7 +21,7 @@ import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.io.Writer;
 
@@ -41,7 +41,7 @@ public class MathConditionSimpleProcessor implements ContextProcessor<TinyTempla
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_simple_condition_ternaryContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
         Object object = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(0),pageContext, context, writer,fileName);
         Object right = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(1),pageContext, context, writer,fileName);
-        return U.b(object) ? object : right;
+        return TemplateUtil.getBooleanValue(object) ? object : right;
     }
 }
 

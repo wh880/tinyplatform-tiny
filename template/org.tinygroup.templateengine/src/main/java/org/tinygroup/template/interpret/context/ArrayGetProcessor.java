@@ -21,7 +21,7 @@ import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.io.Writer;
 
@@ -39,9 +39,9 @@ public class ArrayGetProcessor implements ContextProcessor<TinyTemplateParser.Ex
         Object a = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(0),pageContext, context, writer,fileName);
         Object b = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(1), pageContext,context, writer,fileName);
         if (parseTree.getChild(1).getText().equals("?")) {
-            return U.sa(a, b);
+            return TemplateUtil.getSafeArrayValue(a, b);
         } else {
-            return U.a(a, b);
+            return TemplateUtil.getArrayValue(a, b);
         }
     }
 

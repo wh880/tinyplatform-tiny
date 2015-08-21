@@ -57,7 +57,6 @@ private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorDefaul
 	public CodeGeneratorDefault(){
 		generater=new DocumentGeneraterImpl();
 		TemplateEngine templateEngine = new TemplateEngineDefault();
-		templateEngine.setEngineId("tiny_code");
 		generater.setTemplateGenerater(templateEngine);
 	}
 	

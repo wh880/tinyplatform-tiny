@@ -29,8 +29,8 @@ import java.util.Map;
  * 之所以起一个字母，是为了生成的代码短一些
  * Created by luoguo on 2014/6/5.
  */
-public final class O {
-    private O() {
+public final class OperationUtil {
+    private OperationUtil() {
     }
 
     private static Map<String, Operator> operationMap = new HashMap<String, Operator>();
@@ -143,7 +143,7 @@ public final class O {
         operationWithContextMap.put(operator.getOperation(), operator);
     }
 
-    public static Object e(String op, Object... parameters) throws TemplateException {
+    public static Object executeOperation(String op, Object... parameters) throws TemplateException {
         Operator operator = operationMap.get(op);
         if (operator == null) {
             throw new TemplateException("找不对对应于：" + op + "的处理器。");
@@ -151,7 +151,7 @@ public final class O {
         return operator.operation(parameters);
     }
 
-    public static Object ce(TemplateContext context, String op,String name, Object value) throws TemplateException {
+    public static Object executeOperationWithContext(TemplateContext context, String op, String name, Object value) throws TemplateException {
         OperatorWithContext operator = operationWithContextMap.get(op);
         if (operator == null) {
             throw new TemplateException("找不对对应于：" + op + "的处理器。");

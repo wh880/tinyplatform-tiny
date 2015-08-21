@@ -22,6 +22,7 @@ import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.StringResourceLoader;
 
+import java.io.InterruptedIOException;
 import java.io.OutputStreamWriter;
 
 /**
@@ -30,10 +31,11 @@ import java.io.OutputStreamWriter;
 public class TestInterpret {
     public static void main(String[] args) throws TemplateException {
         TemplateContext context=new TemplateContextDefault();
+        context.put("i",1);
         StringResourceLoader loader = new StringResourceLoader();
         TemplateEngineDefault engine =new TemplateEngineDefault();
         engine.addResourceLoader(loader);
-        Template template = loader.createTemplate("#set(abc=[1..5])${abc[1]}");
+        Template template = loader.createTemplate("#macro a()aaa${i}#end ${call('a')}");
         template.render(context, new OutputStreamWriter(System.out));
         System.out.flush();
     }

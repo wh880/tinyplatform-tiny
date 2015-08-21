@@ -16,7 +16,7 @@
 package org.tinygroup.template.rumtime.operator;
 
 import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.rumtime.O;
+import org.tinygroup.template.rumtime.OperationUtil;
 
 /**
  * Created by luoguo on 2014/6/8.
@@ -31,6 +31,6 @@ public class LeftSubtractOperator extends SingleOperator {
 
 
     protected Object operation(Object var) throws TemplateException {
-        return O.e("*", -1, var);
+        return OperationUtil.executeOperation("*", -1, var);
     }
 }

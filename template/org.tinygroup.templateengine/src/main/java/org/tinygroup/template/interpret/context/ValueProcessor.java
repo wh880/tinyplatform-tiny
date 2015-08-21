@@ -21,7 +21,7 @@ import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.io.Writer;
 
@@ -41,9 +41,9 @@ public class ValueProcessor implements ContextProcessor<TinyTemplateParser.Value
         if (parseTree.VALUE_OPEN() != null) {
             TemplateInterpreter.write(writer, value);
         } else if (parseTree.VALUE_ESCAPED_OPEN() != null) {
-            TemplateInterpreter.write(writer, U.escapeHtml(value));
+            TemplateInterpreter.write(writer, TemplateUtil.escapeHtml(value));
         } else if (parseTree.I18N_OPEN() != null) {
-            TemplateInterpreter.write(writer, U.getI18n(engine.getI18nVisitor(), context, value.toString()));
+            TemplateInterpreter.write(writer, TemplateUtil.getI18n(engine.getI18nVisitor(), context, value.toString()));
         }
         return null;
     }

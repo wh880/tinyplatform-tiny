@@ -21,7 +21,7 @@ import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.io.Writer;
 
@@ -40,9 +40,9 @@ public class FieldProcessor implements ContextProcessor<TinyTemplateParser.Expr_
         Object a = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext,context, writer,fileName);
         String fieldName=parseTree.IDENTIFIER().getSymbol().getText();
         if(parseTree.getChild(1).getText().startsWith("?")){
-            return U.sp(a,fieldName);
+            return TemplateUtil.sp(a,fieldName);
         }else{
-            return U.p(a,fieldName);
+            return TemplateUtil.getAttribute(a,fieldName);
         }
     }
 

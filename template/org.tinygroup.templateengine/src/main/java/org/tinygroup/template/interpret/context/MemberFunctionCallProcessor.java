@@ -22,7 +22,7 @@ import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-import org.tinygroup.template.rumtime.U;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.io.Writer;
 
@@ -53,9 +53,9 @@ public class MemberFunctionCallProcessor implements ContextProcessor<TinyTemplat
             if (object == null) {
                 throw new TemplateException("调用成员函数["+name + "]的对象不能为空", parseTree,templateFromContext.getPath());
             }
-            return U.c(templateFromContext, context, object, name, paraList);
+            return TemplateUtil.callMethod(templateFromContext, context, object, name, paraList);
         } else {
-            return U.sc(templateFromContext, context, object, name, paraList);
+            return TemplateUtil.safeCallMethod(templateFromContext, context, object, name, paraList);
         }
     }
 }
