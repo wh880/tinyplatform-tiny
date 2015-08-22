@@ -66,7 +66,7 @@ public interface DslTemplate {
 	 * @param callback
 	 * @return
 	 */
-	public int delete(Serializable pk, DeleteGenerateCallback<Serializable> callback);
+	public int deleteByKey(Serializable pk, DeleteGenerateCallback<Serializable> callback);
 
 	/**
 	 * 根据主键查询记录

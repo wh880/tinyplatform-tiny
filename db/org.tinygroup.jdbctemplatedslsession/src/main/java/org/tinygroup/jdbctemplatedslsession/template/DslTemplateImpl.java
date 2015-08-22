@@ -60,7 +60,7 @@ public class DslTemplateImpl extends DslAccessor implements DslTemplate{
 		return dslSession.execute(update);
 	}
 
-	public int delete(Serializable pk, DeleteGenerateCallback<Serializable> callback) {
+	public int deleteByKey(Serializable pk, DeleteGenerateCallback<Serializable> callback) {
 		Delete delete=callback.generate(pk);
 		return dslSession.execute(delete);
 	}

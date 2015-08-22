@@ -14,11 +14,11 @@ import org.tinygroup.tinysqldsl.Pager;
  */
 public interface BaseDao <T,KeyType extends Serializable>{
 
-	public T insert(T t);
+	public T add(T t);
 
-	public int update(T t);
+	public int edit(T t);
 
-	public int delete(KeyType pk);
+	public int deleteByKey(KeyType pk);
 
 	public T getByKey(KeyType pk);
 
