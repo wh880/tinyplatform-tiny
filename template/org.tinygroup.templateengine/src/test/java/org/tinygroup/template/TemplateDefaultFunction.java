@@ -1,12 +1,11 @@
 package org.tinygroup.template;
 
-import java.io.OutputStream;
-import java.io.StringWriter;
-
 import org.tinygroup.commons.io.ByteArrayOutputStream;
 import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.StringResourceLoader;
+
+import java.io.OutputStream;
 
 /**
  * 模板引擎内置函数测试用例

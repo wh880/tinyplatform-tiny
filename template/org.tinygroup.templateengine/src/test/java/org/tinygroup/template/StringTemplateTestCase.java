@@ -19,8 +19,6 @@ import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.StringResourceLoader;
 
-import java.io.OutputStreamWriter;
-
 /**
  * Created by luoguo on 2014/6/7.
  */

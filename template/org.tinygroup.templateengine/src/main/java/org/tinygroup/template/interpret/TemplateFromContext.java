@@ -15,7 +15,6 @@
  */
 package org.tinygroup.template.interpret;
 
-import org.antlr.v4.runtime.misc.ObjectEqualityComparator;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.tinygroup.template.TemplateContext;
@@ -29,7 +28,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * Created by luog on 15/7/19.

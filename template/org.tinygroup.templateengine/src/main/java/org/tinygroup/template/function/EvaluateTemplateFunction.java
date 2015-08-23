@@ -21,7 +21,6 @@ import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.loader.StringResourceLoader;
 
 import java.io.ByteArrayOutputStream;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 
 /**

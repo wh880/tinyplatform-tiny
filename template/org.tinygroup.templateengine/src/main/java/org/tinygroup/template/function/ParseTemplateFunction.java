@@ -20,7 +20,6 @@ import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 
 /**

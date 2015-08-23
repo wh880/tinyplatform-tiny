@@ -15,16 +15,11 @@
  */
 package org.tinygroup.template.interpret;
 
-import org.tinygroup.commons.io.ByteArrayOutputStream;
-import org.tinygroup.commons.tools.SystemUtil;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
-
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
 
 /**
  * Created by luoguo on 15/7/22.

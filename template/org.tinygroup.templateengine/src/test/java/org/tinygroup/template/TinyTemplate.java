@@ -21,7 +21,6 @@ import org.tinygroup.template.loader.FileObjectResourceLoader;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 
 /**
  * @author Boilit

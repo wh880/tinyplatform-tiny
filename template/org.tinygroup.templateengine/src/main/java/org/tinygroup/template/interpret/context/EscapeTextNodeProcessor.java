@@ -19,11 +19,9 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.interpret.TemplateFromContext;
-import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.TerminalNodeProcessor;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.IOException;
 import java.io.OutputStream;
 
 /**

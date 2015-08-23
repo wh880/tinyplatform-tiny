@@ -30,7 +30,6 @@ import org.tinygroup.vfs.FileObjectFilter;
 import org.tinygroup.vfs.FileObjectProcessor;
 import org.tinygroup.vfs.VFS;
 
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
