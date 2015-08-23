@@ -38,6 +38,15 @@ public class TemplateFromContext extends AbstractTemplate {
     private String path;
     TinyTemplateParser.TemplateContext templateContext;
 
+    public String getText(ParseTree parseTree) {
+        String result = (String) objectMap.get(parseTree);
+        if (result == null) {
+            result = parseTree.getText();
+            objectMap.put(parseTree, result);
+        }
+        return result;
+    }
+
     public void putObject(ParseTree parseTree, Object object) {
         objectMap.put(parseTree, object);
     }

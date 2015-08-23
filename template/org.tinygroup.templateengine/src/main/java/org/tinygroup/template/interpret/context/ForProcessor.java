@@ -39,7 +39,7 @@ public class ForProcessor implements ContextProcessor<TinyTemplateParser.For_dir
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.For_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
-        String name = parseTree.for_expression().IDENTIFIER().getSymbol().getText();
+        String name = templateFromContext.getText( parseTree.for_expression().IDENTIFIER());
         Object values = interpreter.interpretTree(engine, templateFromContext, parseTree.for_expression().expression(), pageContext, context, outputStream, fileName);
         ForIterator forIterator = new ForIterator(values);
         context.put(name + "For", forIterator);
