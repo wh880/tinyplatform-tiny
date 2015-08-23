@@ -84,9 +84,9 @@ public class FullContextUrlRedirect implements ComponentInterface {
 			
 			TemplateContext templateContext = new TemplateContextDefault(context.getItemMap());
 			if (isPagelet) {
-				engine.renderTemplateWithOutLayout(path, templateContext, webContent.getResponse().getWriter());
+				engine.renderTemplateWithOutLayout(path, templateContext, webContent.getResponse().getOutputStream());
 			} else {
-				engine.renderTemplate(path, templateContext, webContent.getResponse().getWriter());
+				engine.renderTemplate(path, templateContext, webContent.getResponse().getOutputStream());
 			}
 			return;
 		} else {

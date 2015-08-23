@@ -19,7 +19,7 @@ import org.tinygroup.context.Context;
 import org.tinygroup.vfs.FileObject;
 
 import java.io.File;
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * 
@@ -41,10 +41,10 @@ public interface DocumentGenerater<T> {
 	 *            tinyTemplate模板文件
 	 * @param context
 	 *            默认文件需要用到的上下文环境
-	 * @param writer
+	 * @param outputStream
 	 *            输出的流
 	 */
-	void generate(FileObject fileObject, Context context, Writer writer);
+	void generate(FileObject fileObject, Context context, OutputStream outputStream);
 	
 	/**
 	 * 
@@ -54,10 +54,10 @@ public interface DocumentGenerater<T> {
 	 *            tinyTemplate模板文件
 	 * @param context
 	 *            默认文件需要用到的上下文环境
-	 * @param writer
+	 * @param outputStream
 	 *            输出的流
 	 */
-	void generate(String path, Context context, Writer writer);
+	void generate(String path, Context context, OutputStream outputStream);
 
 	/**
 	 * 
@@ -105,7 +105,7 @@ public interface DocumentGenerater<T> {
 	/**
 	 * 转化输入的字符串
 	 * @param context
-	 * @param string
+	 * @param inputString
 	 */
 	String evaluteString(Context context, String inputString);
 }

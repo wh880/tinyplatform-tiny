@@ -25,18 +25,18 @@ import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.Stack;
 
 /**
  * Created by luoguo on 15/7/26.
  */
 public abstract class AbstractCallMacroProcessor<T extends ParserRuleContext> implements ContextProcessor<T> {
-    public void callMacro(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, TemplateContext context, Writer writer) throws Exception {
-        callBlockMacro(engine,templateFromContext,name,null,paraList,pageContext,writer,context);
+    public void callMacro(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, TemplateContext context, OutputStream outputStream) throws Exception {
+        callBlockMacro(engine,templateFromContext,name,null,paraList,pageContext,outputStream,context);
     }
 
-    public void callBlockMacro(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.BlockContext block, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, Writer writer, TemplateContext context) throws Exception {
+    public void callBlockMacro(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.BlockContext block, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, OutputStream outputStream, TemplateContext context) throws Exception {
         Macro macro = engine.findMacro(name, templateFromContext, context);
         TemplateContext newContext = new TemplateContextDefault();
         newContext.setParent(context);
@@ -45,12 +45,12 @@ public abstract class AbstractCallMacroProcessor<T extends ParserRuleContext> im
             for (TinyTemplateParser.Para_expressionContext para : paraList.para_expression()) {
                 if (para.getChildCount() == 3) {
                     //如果是带参数的
-                    newContext.put(para.IDENTIFIER().getSymbol().getText(), engine.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, writer,templateFromContext.getPath()));
+                    newContext.put(para.IDENTIFIER().getSymbol().getText(), engine.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, outputStream,templateFromContext.getPath()));
                 } else {
                     if(i>=macro.getParameterNames().size()){
                         throw new TemplateException("参数数量超过宏<"+macro.getName()+">允许接受的数量",paraList,templateFromContext.getPath());
                     }
-                    newContext.put(macro.getParameterName(i), engine.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, writer,templateFromContext.getPath()));
+                    newContext.put(macro.getParameterName(i), engine.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, outputStream,templateFromContext.getPath()));
                 }
                 i++;
             }
@@ -63,7 +63,7 @@ public abstract class AbstractCallMacroProcessor<T extends ParserRuleContext> im
         }
         stack.push(block);
         int stackSize=stack.size();
-        macro.render(templateFromContext, pageContext, newContext, writer);
+        macro.render(templateFromContext, pageContext, newContext, outputStream);
         if(stack.size()==stackSize){
             //检查是否有#bodyContent,如果没有,主要主动弹出刚才放的空bodyContent
             stack.pop();

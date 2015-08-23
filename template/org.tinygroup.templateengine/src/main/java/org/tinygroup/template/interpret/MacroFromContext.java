@@ -20,7 +20,7 @@ import org.tinygroup.template.impl.EvaluateExpression;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,9 +72,9 @@ public class MacroFromContext implements Macro {
         this.templateEngineDefault = (TemplateEngineDefault) engine;
     }
 
-    public void render(Template templateFromContext, TemplateContext pageContext, TemplateContext context, Writer writer) throws TemplateException {
+    public void render(Template templateFromContext, TemplateContext pageContext, TemplateContext context, OutputStream outputStream) throws TemplateException {
         try {
-            interpreter.interpretTree(templateEngineDefault, (TemplateFromContext) templateFromContext, blockContext, pageContext, context, writer, this.templateFromContext.getPath());
+            interpreter.interpretTree(templateEngineDefault, (TemplateFromContext) templateFromContext, blockContext, pageContext, context, outputStream, this.templateFromContext.getPath());
         } catch (ReturnException te) {
             //接收到退出
         } catch (TemplateException te) {

@@ -20,6 +20,7 @@ import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.StringResourceLoader;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Writer;
 
 /**
@@ -32,12 +33,12 @@ public final class TinyTemplateBoldMacro {
             super("bold");
         }
 
-        protected void renderHeader(Template template, TemplateContext context, Writer writer) throws IOException, TemplateException {
-            writer.write("<b>");
+        protected void renderHeader(Template template, TemplateContext context, OutputStream writer) throws IOException, TemplateException {
+            writer.write("<b>".getBytes());
         }
 
-        protected void renderFooter(Template template, TemplateContext context, Writer writer) throws IOException, TemplateException {
-            writer.write("</b>");
+        protected void renderFooter(Template template, TemplateContext context, OutputStream writer) throws IOException, TemplateException {
+            writer.write("</b>".getBytes());
         }
     }
     public static void main(String[] args) throws TemplateException {

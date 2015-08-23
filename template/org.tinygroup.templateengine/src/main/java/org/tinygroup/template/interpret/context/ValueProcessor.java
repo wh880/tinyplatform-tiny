@@ -23,7 +23,7 @@ import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.rumtime.TemplateUtil;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -36,14 +36,14 @@ public class ValueProcessor implements ContextProcessor<TinyTemplateParser.Value
 
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.ValueContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
-        Object value = interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(1), pageContext, context, writer, fileName);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.ValueContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
+        Object value = interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(1), pageContext, context, outputStream, fileName);
         if (parseTree.VALUE_OPEN() != null) {
-            TemplateInterpreter.write(writer, value);
+            templateFromContext.getTemplateEngine().write(outputStream, value);
         } else if (parseTree.VALUE_ESCAPED_OPEN() != null) {
-            TemplateInterpreter.write(writer, TemplateUtil.escapeHtml(value));
+            templateFromContext.getTemplateEngine().write(outputStream, TemplateUtil.escapeHtml(value));
         } else if (parseTree.I18N_OPEN() != null) {
-            TemplateInterpreter.write(writer, TemplateUtil.getI18n(engine.getI18nVisitor(), context, value.toString()));
+            templateFromContext.getTemplateEngine().write(outputStream, TemplateUtil.getI18n(engine.getI18nVisitor(), context, value.toString()));
         }
         return null;
     }

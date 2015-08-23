@@ -81,10 +81,10 @@ public class TinyTemplateLayoutView extends AbstractTemplateView {
 		String extFileName=getExtFileName(path);
 		if (isPagelet(path)) {
 			templateEngine.renderTemplateWithOutLayout(extFileName, templateContext,
-					response.getWriter());
+					response.getOutputStream());
 		} else {
 			templateEngine.renderTemplate(extFileName, templateContext,
-					response.getWriter());
+					response.getOutputStream());
 		}
 		logger.logMessage(LogLevel.DEBUG, "路径<{}>处理时间：{}ms", path,
 				System.currentTimeMillis() - startTime);

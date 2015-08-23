@@ -19,7 +19,7 @@ import org.tinygroup.context.Context;
 import org.tinygroup.template.*;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,13 +102,7 @@ public abstract class AbstractMacro implements Macro {
         this.name = name;
     }
 
-    protected void write(Writer writer, Object object) throws IOException {
-        if (object != null) {
-            writer.write(object.toString());
-        }
-    }
-
-    public void render(Template template, TemplateContext pageContext, TemplateContext context, Writer writer) throws TemplateException {
+    public void render(Template template, TemplateContext pageContext, TemplateContext context, OutputStream outputStream) throws TemplateException {
         try {
             for (int i = 0; i < parameterNames.size(); i++) {
                 Object value = context.get(parameterNames.get(i));
@@ -117,13 +111,13 @@ public abstract class AbstractMacro implements Macro {
                     context.put(parameterNames.get(i), parameterDefaultValues.get(i).evaluate(context));
                 }
             }
-            renderMacro(template, pageContext, context, writer);
+            renderMacro(template, pageContext, context, outputStream);
         } catch (IOException e) {
             throw new TemplateException(e);
         }
     }
 
-    protected abstract void renderMacro(Template template, TemplateContext pageContext, TemplateContext context, Writer writer) throws IOException, TemplateException;
+    protected abstract void renderMacro(Template template, TemplateContext pageContext, TemplateContext context, OutputStream outputStream) throws IOException, TemplateException;
 
 
     public String getName() {

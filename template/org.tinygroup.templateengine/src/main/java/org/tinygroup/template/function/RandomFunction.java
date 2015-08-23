@@ -1,11 +1,11 @@
 package org.tinygroup.template.function;
 
-import java.util.Random;
-import java.util.UUID;
-
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
+
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * 生成随机值的函数

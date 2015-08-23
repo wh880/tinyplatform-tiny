@@ -64,7 +64,7 @@ public class DocGenTest extends TestCase {
 		String picData = ImageUtil.fileToBase64("src/test/resources/pic.jpg");
 		context.put("picData", picData);
 		manager.getFileGenerater("doc").generate("src/test/resources/test.docpage", context,
-				new OutputStreamWriter(outputStream));
+				outputStream);
 		outputStream.close();
 		file.delete();
 	}
@@ -77,9 +77,8 @@ public class DocGenTest extends TestCase {
 	public void testCommon() throws Exception {
 		File file = new File("常用.xml");
 		FileOutputStream outputStream = new FileOutputStream(file);
-		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 		manager.getFileGenerater("doc").generate("src/test/resources/common.docpage",
-				new ContextImpl(), writer);
+				new ContextImpl(), outputStream);
 		outputStream.close();
 		file.delete();
 	}
@@ -92,9 +91,8 @@ public class DocGenTest extends TestCase {
 	public void testParagraph() throws Exception {
 		File file = new File("段落.xml");
 		FileOutputStream outputStream = new FileOutputStream(file);
-		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 		manager.getFileGenerater("doc").generate("src/test/resources/paragraph.docpage",
-				new ContextImpl(), writer);
+				new ContextImpl(), outputStream);
 		outputStream.close();
 		file.delete();
 	}
@@ -107,9 +105,8 @@ public class DocGenTest extends TestCase {
 	public void testCatalogue() throws Exception {
 		File file = new File("目录.xml");
 		FileOutputStream outputStream = new FileOutputStream(file);
-		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 		manager.getFileGenerater("doc").generate("src/test/resources/catalogue.docpage",
-				new ContextImpl(), writer);
+				new ContextImpl(), outputStream);
 		outputStream.close();
 		file.delete();
 	}
@@ -122,11 +119,10 @@ public class DocGenTest extends TestCase {
 	public void testPicture() throws Exception {
 		File file = new File("图片.xml");
 		FileOutputStream outputStream = new FileOutputStream(file);
-		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 		Context context = new ContextImpl();
 		//context.put("imageUtil", ImageUtil.class);
 		manager.getFileGenerater("doc").generate("src/test/resources/picture.docpage", context,
-				writer);
+				outputStream);
 		outputStream.close();
 		file.delete();
 	}
@@ -139,9 +135,8 @@ public class DocGenTest extends TestCase {
 	public void testTable() throws Exception {
 		File file = new File("表格.xml");
 		FileOutputStream outputStream = new FileOutputStream(file);
-		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 		manager.getFileGenerater("doc").generate("src/test/resources/table.docpage",
-				new ContextImpl(), writer);
+				new ContextImpl(), outputStream);
 		outputStream.close();
 		file.delete();
 	}
@@ -154,9 +149,8 @@ public class DocGenTest extends TestCase {
 	public void testBullets() throws Exception {
 		File file = new File("项目标号.xml");
 		FileOutputStream outputStream = new FileOutputStream(file);
-		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 		manager.getFileGenerater("doc").generate("src/test/resources/bullets.docpage",
-				new ContextImpl(), writer);
+				new ContextImpl(), outputStream);
 		outputStream.close();
 		file.delete();
 	}
@@ -169,9 +163,8 @@ public class DocGenTest extends TestCase {
 	public void testPageHeader() throws Exception {
 		File file = new File("页眉页脚.xml");
 		FileOutputStream outputStream = new FileOutputStream(file);
-		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 		manager.getFileGenerater("doc").generate("src/test/resources/pageHeaderTail.docpage",
-				new ContextImpl(), writer);
+				new ContextImpl(), outputStream);
 		outputStream.close();
 		file.delete();
 	}

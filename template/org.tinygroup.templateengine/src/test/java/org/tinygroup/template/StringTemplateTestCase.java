@@ -32,6 +32,6 @@ public class StringTemplateTestCase {
 		Template template = resourceLoader.createTemplate("Hello:${name}");
 		TemplateContext context = new TemplateContextDefault();
 		context.put("name", "abc111");
-		template.render(context, new OutputStreamWriter(System.out));
+		template.render(context, System.out);
 	}
 }

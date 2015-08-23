@@ -18,9 +18,10 @@ package org.tinygroup.template.function;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.loader.StringResourceLoader;
 
+import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by luoguo on 2014/6/9.
@@ -35,9 +36,13 @@ public class ParseTemplateFunction extends AbstractTemplateFunction{
         if(parameters.length==0||!(parameters[0] instanceof String)){
             notSupported(parameters);
         }
-        StringWriter writer =new StringWriter();
-        template.getTemplateEngine().renderTemplateWithOutLayout(parameters[0].toString(),context,writer);
-        return writer.toString();
+        ByteArrayOutputStream outputStream =new ByteArrayOutputStream();
+        template.getTemplateEngine().renderTemplateWithOutLayout(parameters[0].toString(),context,outputStream);
+        try {
+            return new String(outputStream.toByteArray(), template.getTemplateEngine().getEncode());
+        } catch (UnsupportedEncodingException e) {
+            throw new TemplateException(e);
+        }
     }
 }
 

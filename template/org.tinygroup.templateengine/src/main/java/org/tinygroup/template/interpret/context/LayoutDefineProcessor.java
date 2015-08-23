@@ -23,7 +23,7 @@ import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -35,13 +35,13 @@ public class LayoutDefineProcessor implements ContextProcessor<TinyTemplateParse
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Layout_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Layout_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         String name = "$" + parseTree.IDENTIFIER().getSymbol().getText();
         try {
             if (context.exist(name)) {
-                interpreter.interpretTree(engine, templateFromContext, (TinyTemplateParser.BlockContext) context.get(name), pageContext, context, writer, fileName);
+                interpreter.interpretTree(engine, templateFromContext, (TinyTemplateParser.BlockContext) context.get(name), pageContext, context, outputStream, fileName);
             } else {
-                interpreter.interpretTree(engine, templateFromContext, parseTree.block(), pageContext, context, writer, fileName);
+                interpreter.interpretTree(engine, templateFromContext, parseTree.block(), pageContext, context, outputStream, fileName);
             }
         } catch (ReturnException e) {
             //接收退出指令

@@ -21,7 +21,7 @@ import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -35,9 +35,9 @@ public class CallWithBodyProcessor extends  AbstractCallMacroProcessor<TinyTempl
 
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_block_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
-        String name = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName).toString();
-        callBlockMacro(engine, templateFromContext, name, parseTree.block(), parseTree.para_expression_list(),pageContext, writer, context);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Call_block_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
+        String name = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, outputStream,fileName).toString();
+        callBlockMacro(engine, templateFromContext, name, parseTree.block(), parseTree.para_expression_list(),pageContext, outputStream, context);
         return null;
     }
 

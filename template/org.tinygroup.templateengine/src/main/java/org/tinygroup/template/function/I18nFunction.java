@@ -18,7 +18,6 @@ package org.tinygroup.template.function;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
-import org.tinygroup.template.rumtime.TemplateUtil;
 
 /**
  * Created by luoguo on 2014/6/9.

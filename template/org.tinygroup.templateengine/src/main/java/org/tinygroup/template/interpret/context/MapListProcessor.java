@@ -22,7 +22,7 @@ import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +39,14 @@ public class MapListProcessor implements ContextProcessor<TinyTemplateParser.Has
 
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Hash_map_entry_listContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Hash_map_entry_listContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         if(parseTree!=null) {
             List<TinyTemplateParser.ExpressionContext> expressions = parseTree.expression();
             if (expressions != null) {
                 for (int i = 0; i < expressions.size(); i += 2) {
-                    String key = interpreter.interpretTree(engine, templateFromContext, expressions.get(i), pageContext, context, writer,fileName).toString();
-                    Object value = interpreter.interpretTree(engine, templateFromContext, expressions.get(i + 1), pageContext, context, writer,fileName);
+                    String key = interpreter.interpretTree(engine, templateFromContext, expressions.get(i), pageContext, context, outputStream,fileName).toString();
+                    Object value = interpreter.interpretTree(engine, templateFromContext, expressions.get(i + 1), pageContext, context, outputStream,fileName);
                     map.put(key, value);
                 }
             }

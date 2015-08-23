@@ -118,7 +118,7 @@ public class TinyTemplateExecutor {
         if (relativePath != null) {
             //如果只有一个，则只执行一个
         	String prefix = pagedir.substring(root.length(), pagedir.length());
-            engine.renderTemplate(prefix+relativePath, context, new OutputStreamWriter(System.out));
+            engine.renderTemplate(prefix+relativePath, context, System.out);
         }
     }
     

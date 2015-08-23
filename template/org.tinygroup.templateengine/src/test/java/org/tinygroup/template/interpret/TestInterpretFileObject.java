@@ -44,7 +44,7 @@ public class TestInterpretFileObject {
 //        for (int i = 0; i < 1; i++) {
 //            engine.renderTemplate("/tiny.tpl", context, new EmptyWriter());
 //        }
-            engine.renderTemplate("/a.page", context,new OutputStreamWriter(System.out));
+            engine.renderTemplate("/a.page", context,System.out);
         long end = System.currentTimeMillis();
         System.out.println(end - start);
 //            System.out.flush();

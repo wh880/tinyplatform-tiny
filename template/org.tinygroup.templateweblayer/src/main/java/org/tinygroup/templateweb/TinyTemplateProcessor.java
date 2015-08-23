@@ -74,10 +74,10 @@ public class TinyTemplateProcessor extends AbstractTinyProcessor {
 						servletPath.substring(0, servletPath.length()
 								- template.length())
 								+ templateWithLayout, templateContext,
-						response.getWriter());
+						response.getOutputStream());
 			} else {
 				engine.renderTemplate(servletPath, templateContext,
-						response.getWriter());
+						response.getOutputStream());
 			}
 			long endTime = System.currentTimeMillis();
 			logger.logMessage(LogLevel.DEBUG, "路径<{}>处理时间：{}ms", servletPath,

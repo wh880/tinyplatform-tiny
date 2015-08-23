@@ -26,7 +26,7 @@ import org.tinygroup.template.interpret.terminal.ForContinueException;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.rumtime.TemplateUtil;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -41,17 +41,17 @@ public class WhileProcessor implements ContextProcessor<TinyTemplateParser.While
 
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.While_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.While_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         boolean hasItem = false;
         int count=0;
-        while (TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName))) {
+        while (TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, outputStream,fileName))) {
             count++;
             hasItem = true;
             if(count>MAX_LOOPS){
                 throw new TemplateException("循环次数太多!",parseTree,fileName);
             }
             try {
-                interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, context, writer,fileName);
+                interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, context, outputStream,fileName);
             } catch (ForBreakException be) {
                 break;
             } catch (ForContinueException ce) {
@@ -61,7 +61,7 @@ public class WhileProcessor implements ContextProcessor<TinyTemplateParser.While
         if (!hasItem) {
             TinyTemplateParser.Else_directiveContext elseDirectiveContext = parseTree.else_directive();
             if (elseDirectiveContext != null) {
-                interpreter.interpretTree(engine, templateFromContext, elseDirectiveContext.block(), pageContext,context, writer,fileName);
+                interpreter.interpretTree(engine, templateFromContext, elseDirectiveContext.block(), pageContext,context, outputStream,fileName);
             }
         }
         return null;

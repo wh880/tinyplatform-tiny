@@ -1,10 +1,10 @@
 package org.tinygroup.template.function;
 
-import java.util.Date;
-
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
+
+import java.util.Date;
 
 /**
  * 返回当前日期

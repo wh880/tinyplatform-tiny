@@ -16,7 +16,6 @@
 package org.tinygroup.template;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ParseTree;
 
 /**
  * Created by luoguo on 2014/6/4.
@@ -58,8 +57,8 @@ public class TemplateException extends Exception {
         String message = super.getMessage();
         if (context != null) {
             String contextMsg = "\n路径:" + fileName
-                    + "\n位置[" + context.getStart().getLine() + "行" + context.getStart().getCharPositionInLine() + "列]-[" + context.getStop().getLine() + "行"
-                    + context.getStop().getCharPositionInLine() + "列]\n"
+                    + "\n位置[" + context.getStart().getLine() + "," + context.getStart().getCharPositionInLine() + "]-[" + context.getStop().getLine() + ","
+                    + context.getStop().getCharPositionInLine() + "]\n"
                     + "===================================================================\n"
                     + context.getText() + "\n===================================================================\n";
             if (message != null) {

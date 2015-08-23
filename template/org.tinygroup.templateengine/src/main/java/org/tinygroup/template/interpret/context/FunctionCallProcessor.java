@@ -22,7 +22,7 @@ import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -36,14 +36,14 @@ public class FunctionCallProcessor implements ContextProcessor<TinyTemplateParse
 
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_function_callContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_function_callContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         String name = parseTree.IDENTIFIER().getSymbol().getText();
         Object[] paraList = null;
         if (parseTree.expression_list() != null) {
             paraList = new Object[parseTree.expression_list().expression().size()];
             int i = 0;
             for (TinyTemplateParser.ExpressionContext expr : parseTree.expression_list().expression()) {
-                paraList[i++] = interpreter.interpretTree(engine, templateFromContext, expr, pageContext, context, writer,fileName);
+                paraList[i++] = interpreter.interpretTree(engine, templateFromContext, expr, pageContext, context, outputStream,fileName);
             }
         }
         return engine.executeFunction(templateFromContext, context, name, paraList);

@@ -1,31 +1,30 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.template.impl;
 
 import org.tinygroup.template.*;
 import org.tinygroup.template.function.*;
+import org.tinygroup.template.interpret.BytesUtil;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.context.*;
 import org.tinygroup.template.interpret.terminal.*;
 import org.tinygroup.template.rumtime.TemplateUtil;
+import org.tinygroup.template.rumtime.convert.DoubleBigDecimal;
 
-import java.io.CharArrayWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +53,6 @@ public class TemplateEngineDefault implements TemplateEngine {
     public static final TemplateInterpreter interpreter = new TemplateInterpreter();
 
     static {
-
         interpreter.addTerminalNodeProcessor(new IntegerOctNodeProcessor());
         interpreter.addTerminalNodeProcessor(new EscapeTextNodeProcessor());
         interpreter.addTerminalNodeProcessor(new FalseNodeProcessor());
@@ -164,6 +162,30 @@ public class TemplateEngineDefault implements TemplateEngine {
     public void registerMacroLibrary(Template Template) throws TemplateException {
         for (Map.Entry<String, Macro> entry : Template.getMacroMap().entrySet()) {
             registerMacro(entry.getValue());
+        }
+    }
+
+    public void write(OutputStream outputStream, Object data) throws TemplateException {
+        try {
+            if (data != null) {
+                if (data instanceof byte[]) {
+                    outputStream.write((byte[]) data);
+                } else if (data instanceof Integer) {
+                    outputStream.write(BytesUtil.intToBytes(((Integer) data).intValue()));
+                } else if (data instanceof Long) {
+                    outputStream.write(BytesUtil.longToBytes(((Long) data).longValue()));
+                } else if (data instanceof Double) {
+                    outputStream.write(BytesUtil.longToBytes(((Double) data).longValue()));
+                } else if (data instanceof Float) {
+                    outputStream.write(BytesUtil.floatToBytes(((Float) data).floatValue()));
+                } else if (data instanceof ByteArrayOutputStream) {
+                    outputStream.write(((ByteArrayOutputStream) data).toByteArray());
+                } else {
+                    outputStream.write(data.toString().getBytes(getEncode()));
+                }
+            }
+        } catch (IOException e) {
+            throw new TemplateException(e);
         }
     }
 
@@ -319,42 +341,41 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
 
-    public void renderMacro(String macroName, Template Template, TemplateContext context, Writer writer) throws TemplateException {
-        findMacro(macroName, Template, context).render(Template, context, context, writer);
+    public void renderMacro(String macroName, Template Template, TemplateContext context, OutputStream outputStream) throws TemplateException {
+        findMacro(macroName, Template, context).render(Template, context, context, outputStream);
     }
 
 
-    public void renderMacro(Macro macro, Template Template, TemplateContext context, Writer writer) throws TemplateException {
-        macro.render(Template, context, context, writer);
+    public void renderMacro(Macro macro, Template Template, TemplateContext context, OutputStream outputStream) throws TemplateException {
+        macro.render(Template, context, context, outputStream);
     }
 
-    public void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException {
+    public void renderTemplate(String path, TemplateContext context, OutputStream outputStream) throws TemplateException {
         try {
             Template template = findTemplate(path);
             if (template != null) {
                 List<Template> layoutPaths = getLayoutList(template.getPath());
                 if (layoutPaths.size() > 0) {
-                    Writer templateWriter = new CharArrayWriter();
-                    template.render(context, templateWriter);
-                    context.put("pageContent", templateWriter.toString());
-                    Writer layoutWriter = null;
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    template.render(context, byteArrayOutputStream);
+                    context.put("pageContent", byteArrayOutputStream);
+                    ByteArrayOutputStream layoutWriter = null;
                     TemplateContext layoutContext = context;
                     for (int i = layoutPaths.size() - 1; i >= 0; i--) {
                         //每次都构建新的Writer和Context来执行
                         TemplateContext tempContext = new TemplateContextDefault();
                         tempContext.setParent(layoutContext);
                         layoutContext = tempContext;
-                        layoutWriter = new CharArrayWriter();
+                        layoutWriter = new ByteArrayOutputStream();
                         layoutPaths.get(i).render(layoutContext, layoutWriter);
                         if (i > 0) {
                             layoutContext.put("pageContent", layoutWriter);
                         }
                     }
-                    writer.write(layoutWriter.toString());
+                    outputStream.write(layoutWriter.toByteArray());
                 } else {
-                    renderTemplate(template, context, writer);
+                    renderTemplate(template, context, outputStream);
                 }
-                writer.flush();
             } else {
                 throw new TemplateException("找不到模板：" + path);
             }
@@ -363,10 +384,10 @@ public class TemplateEngineDefault implements TemplateEngine {
         }
     }
 
-    public void renderTemplateWithOutLayout(String path, TemplateContext context, Writer writer) throws TemplateException {
+    public void renderTemplateWithOutLayout(String path, TemplateContext context, OutputStream outputStream) throws TemplateException {
         Template template = findTemplate(path);
         if (template != null) {
-            renderTemplate(template, context, writer);
+            renderTemplate(template, context, outputStream);
         } else {
             throw new TemplateException("找不到模板：" + path);
         }
@@ -414,17 +435,17 @@ public class TemplateEngineDefault implements TemplateEngine {
 
 
     public void renderTemplate(String path) throws TemplateException {
-        renderTemplate(path, new TemplateContextDefault(), new OutputStreamWriter(System.out));
+        renderTemplate(path, new TemplateContextDefault(), System.out);
     }
 
 
     public void renderTemplate(Template Template) throws TemplateException {
-        renderTemplate(Template, new TemplateContextDefault(), new OutputStreamWriter(System.out));
+        renderTemplate(Template, new TemplateContextDefault(), System.out);
     }
 
 
-    public void renderTemplate(Template template, TemplateContext context, Writer writer) throws TemplateException {
-        template.render(context, writer);
+    public void renderTemplate(Template template, TemplateContext context, OutputStream outputStream) throws TemplateException {
+        template.render(context, outputStream);
     }
 
     public Macro findMacro(Object macroNameObject, Template template, TemplateContext context) throws TemplateException {

@@ -15,6 +15,9 @@
  */
 package org.tinygroup.template.interpret;
 
+import org.antlr.v4.runtime.misc.ObjectEqualityComparator;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.AbstractTemplate;
@@ -22,14 +25,45 @@ import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Created by luog on 15/7/19.
  */
 public class TemplateFromContext extends AbstractTemplate {
+    Map<ParseTree, byte[]> terminalNodeMap = new ConcurrentHashMap<ParseTree, byte[]>();
+    Map<ParseTree, Object> objectMap = new ConcurrentHashMap<ParseTree, Object>();
     private String path;
     TinyTemplateParser.TemplateContext templateContext;
+
+    public void putObject(ParseTree parseTree, Object object) {
+        objectMap.put(parseTree, object);
+    }
+
+    public <T> T getObject(ParseTree parseTree) {
+        return (T) objectMap.get(parseTree);
+    }
+
+    public byte[] getTerminalNodeBytes(TerminalNode terminalNode, TemplateFromContext templateFromContext, int left, int right) throws TemplateException {
+        byte[] bytes = terminalNodeMap.get(terminalNode);
+        if (bytes == null) {
+            try {
+                String text = terminalNode.getSymbol().getText();
+                if (left > 0 || right > 0) {
+                    text = text.substring(left, text.length() - right);
+                }
+                bytes = text.getBytes(getTemplateEngine().getEncode());
+                terminalNodeMap.put(terminalNode, bytes);
+            } catch (UnsupportedEncodingException e) {
+                throw new TemplateException(e);
+            }
+        }
+        return bytes;
+    }
 
     public TemplateFromContext(String path, TinyTemplateParser.TemplateContext templateContext) {
         this.path = path;
@@ -37,10 +71,10 @@ public class TemplateFromContext extends AbstractTemplate {
     }
 
     @Override
-    protected void renderContent(TemplateContext context, Writer writer) throws IOException, TemplateException {
+    protected void renderContent(TemplateContext context, OutputStream outputStream) throws IOException, TemplateException {
         try {
             TemplateEngineDefault templateEngine = (TemplateEngineDefault) getTemplateEngine();
-            templateEngine.interpreter.interpret(templateEngine, this, templateContext, context, context, writer,path);
+            templateEngine.interpreter.interpret(templateEngine, this, templateContext, context, context, outputStream, path);
         } catch (StopException e) {
             //Do Nothing
         } catch (ReturnException e) {
