@@ -17,7 +17,6 @@ package org.tinygroup.template.impl;
 
 import org.tinygroup.template.*;
 import org.tinygroup.template.function.*;
-import org.tinygroup.template.interpret.BytesUtil;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.context.*;
 import org.tinygroup.template.interpret.terminal.*;
@@ -171,14 +170,6 @@ public class TemplateEngineDefault implements TemplateEngine {
             if (data != null) {
                 if (data instanceof byte[]) {
                     outputStream.write((byte[]) data);
-                } else if (data instanceof Integer) {
-                    outputStream.write(BytesUtil.intToBytes(((Integer) data).intValue()));
-                } else if (data instanceof Long) {
-                    outputStream.write(BytesUtil.longToBytes(((Long) data).longValue()));
-                } else if (data instanceof Double) {
-                    outputStream.write(BytesUtil.longToBytes(((Double) data).longValue()));
-                } else if (data instanceof Float) {
-                    outputStream.write(BytesUtil.floatToBytes(((Float) data).floatValue()));
                 } else if (data instanceof ByteArrayOutputStream) {
                     outputStream.write(((ByteArrayOutputStream) data).toByteArray());
                 } else {
