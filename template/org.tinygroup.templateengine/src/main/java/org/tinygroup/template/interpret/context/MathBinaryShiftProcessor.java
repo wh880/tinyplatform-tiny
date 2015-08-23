@@ -35,9 +35,6 @@ public class MathBinaryShiftProcessor implements ContextProcessor<TinyTemplatePa
         return TinyTemplateParser.Expr_math_binary_shiftContext.class;
     }
 
-
-
-
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_math_binary_shiftContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         Object a = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(0), pageContext,context, outputStream,fileName);
         Object b = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(1), pageContext,context, outputStream,fileName);

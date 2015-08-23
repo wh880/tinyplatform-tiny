@@ -36,8 +36,6 @@ public class MathConditionProcessor implements ContextProcessor<TinyTemplatePars
     }
 
 
-
-
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_conditional_ternaryContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         boolean condition = TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(0), pageContext,context, outputStream,fileName));
         Object left = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(1),pageContext, context, outputStream,fileName);

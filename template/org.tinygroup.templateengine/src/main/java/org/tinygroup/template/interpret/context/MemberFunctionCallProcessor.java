@@ -40,7 +40,11 @@ public class MemberFunctionCallProcessor implements ContextProcessor<TinyTemplat
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_member_function_callContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         try {
             Object object = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext, context, outputStream, fileName);
-            String name = parseTree.IDENTIFIER().getSymbol().getText();
+            String name = templateFromContext.getObject(parseTree);
+            if (name == null) {
+                name = parseTree.IDENTIFIER().getSymbol().getText();
+                templateFromContext.putObject(parseTree, name);
+            }
             Object[] paraList = null;
             if (parseTree.expression_list() != null) {
                 paraList = new Object[parseTree.expression_list().expression().size()];
@@ -58,7 +62,7 @@ public class MemberFunctionCallProcessor implements ContextProcessor<TinyTemplat
                 return TemplateUtil.safeCallMethod(templateFromContext, context, object, name, paraList);
             }
         } catch (TemplateException e) {
-            e.setContext(parseTree,fileName);
+            e.setContext(parseTree, fileName);
             throw e;
         }
     }

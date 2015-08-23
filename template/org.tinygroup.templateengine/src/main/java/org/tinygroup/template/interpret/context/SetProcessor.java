@@ -41,8 +41,8 @@ public class SetProcessor implements ContextProcessor<TinyTemplateParser.Set_dir
     public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Set_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         boolean localVar = parseTree.getChild(0).getText().startsWith("#set");
         for (TinyTemplateParser.Set_expressionContext exp : parseTree.set_expression()) {
-            String key = interpreter.interpretTree(engine, template, exp.IDENTIFIER(), pageContext, context, outputStream,fileName).toString();
-            Object value = interpreter.interpretTree(engine, template, exp.expression(), pageContext, context, outputStream,fileName);
+            String key = interpreter.interpretTree(engine, template, exp.getChild(0), pageContext, context, outputStream,fileName).toString();
+            Object value = interpreter.interpretTree(engine, template, exp.getChild(2), pageContext, context, outputStream,fileName);
             if (localVar) {
                 BaseContext con=context.contain(key);
                 if(con!=null){

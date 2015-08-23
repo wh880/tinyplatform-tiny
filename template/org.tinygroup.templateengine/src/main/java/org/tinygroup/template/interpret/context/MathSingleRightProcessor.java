@@ -37,7 +37,7 @@ public class MathSingleRightProcessor implements ContextProcessor<TinyTemplatePa
 
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_single_rightContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
-        String name = templateFromContext.getText(parseTree.IDENTIFIER());
+        String name = templateFromContext.getText(parseTree.getChild(0));
         String op = templateFromContext.getText(parseTree.getChild(1));
         return OperationUtil.executeOperationWithContext(context, op, name, null);
     }

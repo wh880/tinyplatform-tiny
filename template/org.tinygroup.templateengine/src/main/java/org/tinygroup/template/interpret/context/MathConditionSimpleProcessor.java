@@ -35,9 +35,6 @@ public class MathConditionSimpleProcessor implements ContextProcessor<TinyTempla
         return TinyTemplateParser.Expr_simple_condition_ternaryContext.class;
     }
 
-
-
-
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_simple_condition_ternaryContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         Object object = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(0),pageContext, context, outputStream,fileName);
         Object right = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(1),pageContext, context, outputStream,fileName);
