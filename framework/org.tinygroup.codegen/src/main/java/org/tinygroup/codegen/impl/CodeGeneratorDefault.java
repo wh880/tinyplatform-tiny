@@ -15,10 +15,7 @@
  */
 package org.tinygroup.codegen.impl;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,11 +104,11 @@ private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorDefaul
 				file.getParentFile().mkdirs();
 				file.createNewFile();
 			}
-			OutputStreamWriter writer=new OutputStreamWriter(new FileOutputStream(file),"UTF-8");
+			OutputStream outputStream=new FileOutputStream(file);
 			try {
-				generater.generate(templateFileObject, newContext,writer);
+				generater.generate(templateFileObject, newContext,new FileOutputStream(file));
 			}finally{
-				writer.close();
+				outputStream.close();
 			}
 			fileList.add(file.getPath());
 		}

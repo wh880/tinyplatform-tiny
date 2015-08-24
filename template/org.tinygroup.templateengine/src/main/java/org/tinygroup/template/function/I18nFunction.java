@@ -13,12 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tinygroup.template.interpret.terminal;
+package org.tinygroup.template.function;
 
+import org.tinygroup.template.Template;
+import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 
 /**
- * Created by luog on 15/7/17.
+ * Created by luoguo on 2014/6/9.
  */
-public class ForContinueException extends TemplateException {
+public class I18nFunction extends AbstractTemplateFunction {
+
+    public I18nFunction() {
+        super("i18n");
+    }
+
+    public Object execute(Template template, TemplateContext context, Object... parameters) throws TemplateException {
+        String key = parameters[0].toString();
+        return template.getTemplateEngine().getI18nVisitor().getI18nMessage(context, key);
+    }
 }
+

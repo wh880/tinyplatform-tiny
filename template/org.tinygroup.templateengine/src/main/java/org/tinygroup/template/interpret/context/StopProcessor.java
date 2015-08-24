@@ -24,7 +24,7 @@ import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.rumtime.TemplateUtil;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -38,10 +38,10 @@ public class StopProcessor implements ContextProcessor<TinyTemplateParser.Stop_d
 
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Stop_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Stop_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         boolean stop = true;
         if (parseTree.expression() != null) {
-            stop = TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, template, parseTree.expression(),pageContext, context, writer,fileName));
+            stop = TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, template, parseTree.expression(),pageContext, context, outputStream,fileName));
         }
         if (stop) {
             throw new StopException();

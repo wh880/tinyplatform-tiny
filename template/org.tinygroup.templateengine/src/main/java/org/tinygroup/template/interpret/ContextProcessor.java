@@ -19,7 +19,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -27,6 +27,6 @@ import java.io.Writer;
 public interface ContextProcessor<T extends ParserRuleContext> {
     Class<T> getType();
 
-    Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, T parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception;
+    Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, T parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception;
 
 }

@@ -22,7 +22,7 @@ import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -35,7 +35,7 @@ public class LayoutImplementProcessor implements ContextProcessor<TinyTemplatePa
 
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Layout_impl_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Layout_impl_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         String name = "$" + parseTree.IDENTIFIER().getSymbol().getText();
         if (!context.exist(name)) {
             //只有前面没有实现的时候才添加进去

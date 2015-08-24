@@ -22,7 +22,7 @@ import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -34,16 +34,16 @@ public class ArrayProcessor implements ContextProcessor<TinyTemplateParser.Expr_
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_array_listContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_array_listContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         if (parseTree.expression_list() != null) {
             Object[] objects = new Object[parseTree.expression_list().expression().size()];
             for (int i = 0; i < parseTree.expression_list().expression().size(); i++) {
-                objects[i] = interpreter.interpretTree(engine, templateFromContext, parseTree.expression_list().expression().get(i), pageContext,context, writer,fileName);
+                objects[i] = interpreter.interpretTree(engine, templateFromContext, parseTree.expression_list().expression().get(i), pageContext,context, outputStream,fileName);
             }
             return objects;
         }
         if (parseTree.expression_range() != null) {
-            return interpreter.interpretTree(engine, templateFromContext, parseTree.expression_range(),pageContext, context, writer,fileName);
+            return interpreter.interpretTree(engine, templateFromContext, parseTree.expression_range(),pageContext, context, outputStream,fileName);
         }
         return null;
     }

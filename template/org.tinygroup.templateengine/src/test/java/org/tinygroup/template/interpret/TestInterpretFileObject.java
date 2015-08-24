@@ -15,16 +15,11 @@
  */
 package org.tinygroup.template.interpret;
 
-import org.tinygroup.commons.io.ByteArrayOutputStream;
-import org.tinygroup.commons.tools.SystemUtil;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
-
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
 
 /**
  * Created by luoguo on 15/7/22.
@@ -44,7 +39,7 @@ public class TestInterpretFileObject {
 //        for (int i = 0; i < 1; i++) {
 //            engine.renderTemplate("/tiny.tpl", context, new EmptyWriter());
 //        }
-            engine.renderTemplate("/a.page", context,new OutputStreamWriter(System.out));
+            engine.renderTemplate("/a.page", context,System.out);
         long end = System.currentTimeMillis();
         System.out.println(end - start);
 //            System.out.flush();

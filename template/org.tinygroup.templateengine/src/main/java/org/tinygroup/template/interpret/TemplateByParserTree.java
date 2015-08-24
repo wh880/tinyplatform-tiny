@@ -21,7 +21,7 @@ import org.tinygroup.template.impl.AbstractTemplate;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/18.
@@ -34,7 +34,7 @@ public class TemplateByParserTree extends AbstractTemplate {
     }
 
     @Override
-    protected void renderContent(TemplateContext context, Writer writer) throws IOException, TemplateException {
+    protected void renderContent(TemplateContext context, OutputStream outputStream) throws IOException, TemplateException {
 
     }
 

@@ -20,7 +20,7 @@ import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * @author Boilit
@@ -37,19 +37,10 @@ public final class TinyTemplate {
         html.setCheckModified(false);
         engine.addResourceLoader(html);
         long start = System.currentTimeMillis();
-        Writer writer = new Writer() {
-            @Override
-            public void write(char[] cbuf, int off, int len) throws IOException {
-
-            }
+        OutputStream writer = new OutputStream() {
 
             @Override
-            public void flush() throws IOException {
-
-            }
-
-            @Override
-            public void close() throws IOException {
+            public void write(int b) throws IOException {
 
             }
         };

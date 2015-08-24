@@ -22,7 +22,7 @@ import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.Stack;
 
 /**
@@ -36,12 +36,12 @@ public class BodyContentProcessor implements ContextProcessor<TinyTemplateParser
     }
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Bodycontent_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Bodycontent_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         //从上下文获得BODY中传入的内容,然后进行渲染
         Stack<TinyTemplateParser.BlockContext> stack = context.get("$bodyContent");
         TinyTemplateParser.BlockContext bodyContent = stack.pop();
         if (bodyContent != null) {
-            interpreter.interpretTree(engine, templateFromContext, bodyContent, pageContext, context, writer,fileName);
+            interpreter.interpretTree(engine, templateFromContext, bodyContent, pageContext, context, outputStream,fileName);
         }
         return null;
     }

@@ -17,11 +17,14 @@ package org.tinygroup.template.interpret.context;
 
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateEngineDefault;
-import org.tinygroup.template.interpret.*;
+import org.tinygroup.template.interpret.ContextProcessor;
+import org.tinygroup.template.interpret.ReturnException;
+import org.tinygroup.template.interpret.TemplateFromContext;
+import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.rumtime.TemplateUtil;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -32,10 +35,10 @@ public class ReturnProcessor implements ContextProcessor<TinyTemplateParser.Retu
         return TinyTemplateParser.Return_directiveContext.class;
     }
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Return_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Return_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         boolean isReturn = true;
         if (parseTree.expression() != null) {
-            isReturn = TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, template, parseTree.expression(),pageContext, context, writer,fileName));
+            isReturn = TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, template, parseTree.expression(),pageContext, context, outputStream,fileName));
         }
         if (isReturn) {
             throw new ReturnException();

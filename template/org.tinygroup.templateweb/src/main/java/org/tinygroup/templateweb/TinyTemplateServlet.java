@@ -54,7 +54,7 @@ public class TinyTemplateServlet extends HttpServlet {
 				servletPath = request.getPathInfo();
 			}
 			TemplateContext context = new RequestTemplateContext(request);
-			engine.renderTemplate(servletPath, context, response.getWriter());
+			engine.renderTemplate(servletPath, context, response.getOutputStream());
 			long endTime = System.currentTimeMillis();
 			logger.logMessage(LogLevel.INFO, "模板路径<{0}>的处理时间：{1}ms",
 					servletPath, endTime - startTime);

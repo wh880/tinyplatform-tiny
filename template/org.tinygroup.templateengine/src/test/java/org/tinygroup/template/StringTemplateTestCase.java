@@ -19,8 +19,6 @@ import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.StringResourceLoader;
 
-import java.io.OutputStreamWriter;
-
 /**
  * Created by luoguo on 2014/6/7.
  */
@@ -32,6 +30,6 @@ public class StringTemplateTestCase {
 		Template template = resourceLoader.createTemplate("Hello:${name}");
 		TemplateContext context = new TemplateContextDefault();
 		context.put("name", "abc111");
-		template.render(context, new OutputStreamWriter(System.out));
+		template.render(context, System.out);
 	}
 }

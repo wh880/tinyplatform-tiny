@@ -15,11 +15,12 @@
  */
 package org.tinygroup.docgen.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
+import org.tinygroup.commons.io.ByteArray;
 import org.tinygroup.context.Context;
 import org.tinygroup.docgen.DocumentGenerater;
 import org.tinygroup.template.Template;
@@ -51,7 +52,7 @@ public class DocumentGeneraterImpl implements DocumentGenerater<TemplateEngine> 
 		this.templateGenerater = generater;
 	}
 
-	public void generate(FileObject fileObject, Context context, Writer writer) {
+	public void generate(FileObject fileObject, Context context, OutputStream writer) {
 		try {
 			Template template =templateGenerater.findTemplate(fileObject.getPath());
 			generate(template,context,writer);
@@ -60,7 +61,7 @@ public class DocumentGeneraterImpl implements DocumentGenerater<TemplateEngine> 
 		}
 	}
 	
-	public void generate(String path, Context context, Writer writer) {
+	public void generate(String path, Context context, OutputStream writer) {
 		try {
 			FileObject fileObject = VFS.resolveFile(path);
 			generate(fileObject,context,writer);
@@ -69,7 +70,7 @@ public class DocumentGeneraterImpl implements DocumentGenerater<TemplateEngine> 
 		}
 	}
 	
-	private void generate(Template template, Context context, Writer writer){
+	private void generate(Template template, Context context, OutputStream writer){
 		try {
 			if(context instanceof TemplateContext){
 			   templateGenerater.renderTemplate(template, (TemplateContext)context, writer);
@@ -100,7 +101,7 @@ public class DocumentGeneraterImpl implements DocumentGenerater<TemplateEngine> 
 
 	public void generate(String path, Context context, File outputFile) {
 		try {
-			generate(path,context,new FileWriter(outputFile));
+			generate(path,context,new FileOutputStream(outputFile));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -110,7 +111,7 @@ public class DocumentGeneraterImpl implements DocumentGenerater<TemplateEngine> 
 		if(stringResourceLoader==null){
 			initStringResourceLoader();
 		}
-		StringWriter writer=new StringWriter();
+		ByteArrayOutputStream writer=new ByteArrayOutputStream();
 		try {
 			Template template =stringResourceLoader.createTemplate(inputString);
 			generate(template,context,writer);

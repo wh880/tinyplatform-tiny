@@ -23,7 +23,7 @@ import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -38,11 +38,11 @@ public class SetProcessor implements ContextProcessor<TinyTemplateParser.Set_dir
 
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Set_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext template, TinyTemplateParser.Set_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         boolean localVar = parseTree.getChild(0).getText().startsWith("#set");
         for (TinyTemplateParser.Set_expressionContext exp : parseTree.set_expression()) {
-            String key = interpreter.interpretTree(engine, template, exp.IDENTIFIER(), pageContext, context, writer,fileName).toString();
-            Object value = interpreter.interpretTree(engine, template, exp.expression(), pageContext, context, writer,fileName);
+            String key = interpreter.interpretTree(engine, template, exp.getChild(0), pageContext, context, outputStream,fileName).toString();
+            Object value = interpreter.interpretTree(engine, template, exp.getChild(2), pageContext, context, outputStream,fileName);
             if (localVar) {
                 BaseContext con=context.contain(key);
                 if(con!=null){

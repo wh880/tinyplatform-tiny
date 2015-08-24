@@ -1,22 +1,22 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.template;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -120,43 +120,44 @@ public interface TemplateEngine extends TemplateContextOperator {
     /**
      * 渲染宏
      *
-     * @param macroName 要执行的宏名称
-     * @param template  调用宏的模板
-     * @param context   上下文
-     * @param writer    输出器
+     * @param macroName    要执行的宏名称
+     * @param template     调用宏的模板
+     * @param context      上下文
+     * @param outputStream 输出器
      */
-    void renderMacro(String macroName, Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
+    void renderMacro(String macroName, Template template, TemplateContext context, OutputStream outputStream) throws IOException, TemplateException;
 
     /**
      * 渲染指定的宏
      *
-     * @param macro    要执行的宏
-     * @param template 调用宏的模板
-     * @param context  上下文
-     * @param writer   输出器
+     * @param macro        要执行的宏
+     * @param template     调用宏的模板
+     * @param context      上下文
+     * @param outputStream 输出器
      * @throws IOException
      * @throws TemplateException
      */
-    void renderMacro(Macro macro, Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
+    void renderMacro(Macro macro, Template template, TemplateContext context, OutputStream outputStream) throws IOException, TemplateException;
 
 
     /**
      * 根据路径渲染一个模板文件，如果有布局会同时渲染布局
      *
-     * @param path    模板对应的路径
-     * @param context 上下文
-     * @param writer  输出器
+     * @param path         模板对应的路径
+     * @param context      上下文
+     * @param outputStream 输出器
      */
-    void renderTemplate(String path, TemplateContext context, Writer writer) throws TemplateException;
+    void renderTemplate(String path, TemplateContext context, OutputStream outputStream) throws TemplateException;
 
     /**
      * 根据路径渲染一个模板文件，但不会渲染布局
+     *
      * @param path
      * @param context
-     * @param writer
+     * @param outputStream
      * @throws TemplateException
      */
-    void renderTemplateWithOutLayout(String path, TemplateContext context, Writer writer) throws TemplateException;
+    void renderTemplateWithOutLayout(String path, TemplateContext context, OutputStream outputStream) throws TemplateException;
 
 
     /**
@@ -178,12 +179,12 @@ public interface TemplateEngine extends TemplateContextOperator {
     /**
      * 直接渲染一个模板，不会应用布局
      *
-     * @param template 要渲染的模板
-     * @param context  上下文
-     * @param writer   输出器
+     * @param template     要渲染的模板
+     * @param context      上下文
+     * @param outputStream 输出器
      * @throws TemplateException
      */
-    void renderTemplate(Template template, TemplateContext context, Writer writer) throws TemplateException;
+    void renderTemplate(Template template, TemplateContext context, OutputStream outputStream) throws TemplateException;
 
     /**
      * 根据宏名查找要调用的宏
@@ -270,4 +271,5 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     void registerMacroLibrary(Template template) throws TemplateException;
 
+    void write(OutputStream outputStream, Object data) throws TemplateException;
 }

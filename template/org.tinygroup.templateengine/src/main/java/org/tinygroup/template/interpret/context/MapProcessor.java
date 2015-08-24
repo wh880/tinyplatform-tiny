@@ -22,7 +22,7 @@ import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.HashMap;
 
 /**
@@ -37,11 +37,11 @@ public class MapProcessor implements ContextProcessor<TinyTemplateParser.Expr_ha
 
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_hash_mapContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_hash_mapContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         if(parseTree==null|| parseTree.hash_map_entry_list()==null){
             return new HashMap();
         }
-        return interpreter.interpretTree(engine, templateFromContext, parseTree.hash_map_entry_list(), pageContext, context, writer,fileName);
+        return interpreter.interpretTree(engine, templateFromContext, parseTree.hash_map_entry_list(), pageContext, context, outputStream,fileName);
     }
 
 }

@@ -1,17 +1,17 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.template.function;
 
@@ -21,7 +21,8 @@ import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateContextDefault;
 
-import java.io.StringWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class CallMacroFunction extends AbstractTemplateFunction {
         newTemplateContext = new TemplateContextDefault();
         newTemplateContext.setParent(context);
         List paraList = new ArrayList();
-        newTemplateContext.put(parameters[0]+"ParameterList", paraList);
+        newTemplateContext.put(parameters[0] + "ParameterList", paraList);
         for (int i = 1; i < parameters.length; i++) {
             paraList.add(parameters[i]);
         }
@@ -51,9 +52,13 @@ public class CallMacroFunction extends AbstractTemplateFunction {
             }
             newTemplateContext.put(macro.getParameterNames().get(i), parameters[i + 1]);
         }
-        StringWriter stringWriter = new StringWriter();
-        macro.render(template, context, newTemplateContext, stringWriter);
-        return stringWriter.toString();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        macro.render(template, context, newTemplateContext, byteArrayOutputStream);
+        try {
+            return new String(byteArrayOutputStream.toByteArray(), template.getTemplateEngine().getEncode());
+        } catch (UnsupportedEncodingException e) {
+            throw new TemplateException(e);
+        }
     }
 }
 

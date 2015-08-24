@@ -22,7 +22,7 @@ import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -35,8 +35,8 @@ public class TextProcessor implements ContextProcessor<TinyTemplateParser.TextCo
 
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.TextContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
-        TemplateInterpreter.write(writer,interpreter.interpretTree(engine,templateFromContext,parseTree.getChild(0),pageContext,context,writer,fileName));
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.TextContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
+        templateFromContext.getTemplateEngine().write(outputStream,interpreter.interpretTree(engine,templateFromContext,parseTree.getChild(0),pageContext,context,outputStream,fileName));
         return null;
     }
 

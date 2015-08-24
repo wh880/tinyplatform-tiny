@@ -23,7 +23,7 @@ import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.rumtime.RangeList;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -38,9 +38,9 @@ public class RangeProcessor implements ContextProcessor<TinyTemplateParser.Expre
 
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expression_rangeContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
-        Number start = (Number) interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(0), pageContext, context, writer,fileName);
-        Number end = (Number) interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(2), pageContext,context, writer,fileName);
-        return new RangeList(start.intValue(), end.intValue(), 1);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expression_rangeContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
+        Number start = (Number) interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(0), pageContext, context, outputStream,fileName);
+        Number end = (Number) interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(2), pageContext,context, outputStream,fileName);
+        return new RangeList(start.intValue(), end.intValue());
     }
 }

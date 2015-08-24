@@ -18,7 +18,6 @@ package org.tinygroup.template.interpret.context;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
-import org.tinygroup.template.interpret.ReturnException;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.terminal.ForBreakException;
@@ -26,7 +25,7 @@ import org.tinygroup.template.interpret.terminal.ForContinueException;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.rumtime.ForIterator;
 
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * Created by luog on 15/7/17.
@@ -38,10 +37,13 @@ public class ForProcessor implements ContextProcessor<TinyTemplateParser.For_dir
     }
 
 
-
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.For_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
-        String name = parseTree.for_expression().IDENTIFIER().getSymbol().getText();
-        Object values = interpreter.interpretTree(engine, templateFromContext, parseTree.for_expression().expression(), pageContext, context, writer, fileName);
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.For_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
+        String name = templateFromContext.getObject(parseTree);
+        if (name == null) {
+            name = parseTree.for_expression().IDENTIFIER().getText();
+            templateFromContext.putObject(parseTree, name);
+        }
+        Object values = interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(1).getChild(2), pageContext, context, outputStream, fileName);
         ForIterator forIterator = new ForIterator(values);
         context.put(name + "For", forIterator);
         boolean hasItem = false;
@@ -50,7 +52,7 @@ public class ForProcessor implements ContextProcessor<TinyTemplateParser.For_dir
             Object value = forIterator.next();
             context.put(name, value);
             try {
-                interpreter.interpretTree(engine, templateFromContext, parseTree.block(), pageContext, context, writer, fileName);
+                interpreter.interpretTree(engine, templateFromContext, parseTree.getChild(3), pageContext, context, outputStream, fileName);
             } catch (ForBreakException be) {
                 break;
             } catch (ForContinueException ce) {
@@ -60,7 +62,7 @@ public class ForProcessor implements ContextProcessor<TinyTemplateParser.For_dir
         if (!hasItem) {
             TinyTemplateParser.Else_directiveContext elseDirectiveContext = parseTree.else_directive();
             if (elseDirectiveContext != null) {
-                interpreter.interpretTree(engine, templateFromContext, elseDirectiveContext.block(), pageContext, context, writer, fileName);
+                interpreter.interpretTree(engine, templateFromContext, elseDirectiveContext.block(), pageContext, context, outputStream, fileName);
             }
         }
         return null;

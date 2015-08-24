@@ -1,17 +1,17 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p/>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.template.interpret;
 
@@ -27,8 +27,7 @@ import org.tinygroup.template.interpret.terminal.OtherTerminalNodeProcessor;
 import org.tinygroup.template.parser.grammer.TinyTemplateLexer;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
-import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +39,13 @@ public class TemplateInterpreter {
     Map<Class<ParserRuleContext>, ContextProcessor> contextProcessorMap = new HashMap<Class<ParserRuleContext>, ContextProcessor>();
     OtherTerminalNodeProcessor otherNodeProcessor = new OtherTerminalNodeProcessor();
 
+    public OtherTerminalNodeProcessor getOtherNodeProcessor() {
+        return otherNodeProcessor;
+    }
+
+    public void setOtherNodeProcessor(OtherTerminalNodeProcessor otherNodeProcessor) {
+        this.otherNodeProcessor = otherNodeProcessor;
+    }
 
     public void addTerminalNodeProcessor(TerminalNodeProcessor processor) {
         terminalNodeProcessors[processor.getType()] = processor;
@@ -57,43 +63,42 @@ public class TemplateInterpreter {
         TinyTemplateParser parser = new TinyTemplateParser(new CommonTokenStream(new TinyTemplateLexer(is)));
         TinyTemplateErrorListener listener = new TinyTemplateErrorListener(sourceName);
         parser.addErrorListener(listener);
-        TinyTemplateParser.TemplateContext context= parser.template();
-        if(listener.exception!=null){
+        TinyTemplateParser.TemplateContext context = parser.template();
+        if (listener.exception != null) {
             throw listener.exception;
         }
         return context;
     }
 
-    public void interpret(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String templateString, String sourceName, TemplateContext pageContext, TemplateContext context, Writer writer, String fileName) throws Exception {
-        interpret(engine, templateFromContext, parserTemplateTree(sourceName, templateString), pageContext, context, writer,fileName );
-        writer.flush();
+    public void interpret(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String templateString, String sourceName, TemplateContext pageContext, TemplateContext context, OutputStream outputStream, String fileName) throws Exception {
+        interpret(engine, templateFromContext, parserTemplateTree(sourceName, templateString), pageContext, context, outputStream, fileName);
     }
 
-    public void interpret(TemplateEngineDefault engine, TemplateFromContext templateFromContext, TinyTemplateParser.TemplateContext templateParseTree, TemplateContext pageContext, TemplateContext context, Writer writer, String fileName) throws Exception {
+    public void interpret(TemplateEngineDefault engine, TemplateFromContext templateFromContext, TinyTemplateParser.TemplateContext templateParseTree, TemplateContext pageContext, TemplateContext context, OutputStream outputStream, String fileName) throws Exception {
         for (int i = 0; i < templateParseTree.getChildCount(); i++) {
-            interpretTree(engine, templateFromContext, templateParseTree.getChild(i), pageContext, context, writer,fileName );
+            interpretTree(engine, templateFromContext, templateParseTree.getChild(i), pageContext, context, outputStream, fileName);
         }
     }
 
-    public Object interpretTree(TemplateEngineDefault engine, TemplateFromContext templateFromContext, ParseTree tree, TemplateContext pageContext, TemplateContext context, Writer writer, String fileName) throws Exception {
+    public Object interpretTree(TemplateEngineDefault engine, TemplateFromContext templateFromContext, ParseTree tree, TemplateContext pageContext, TemplateContext context, OutputStream outputStream, String fileName) throws Exception {
         Object returnValue = null;
         if (tree instanceof TerminalNode) {
             TerminalNode terminalNode = (TerminalNode) tree;
             TerminalNodeProcessor processor = terminalNodeProcessors[terminalNode.getSymbol().getType()];
             if (processor != null) {
-                return processor.process(terminalNode, context, writer);
+                return processor.process(terminalNode, context, outputStream, templateFromContext);
             } else {
-                return otherNodeProcessor.process(terminalNode, context, writer);
+                return otherNodeProcessor.process(terminalNode, context, outputStream,templateFromContext );
             }
         } else if (tree instanceof ParserRuleContext) {
             try {
                 ContextProcessor processor = contextProcessorMap.get(tree.getClass());
                 if (processor != null) {
-                    returnValue = processor.process(this, templateFromContext, (ParserRuleContext) tree, pageContext, context, engine, writer,fileName);
+                    returnValue = processor.process(this, templateFromContext, (ParserRuleContext) tree, pageContext, context, engine, outputStream, fileName);
                 }
-                if (processor == null ) {
+                if (processor == null) {
                     for (int i = 0; i < tree.getChildCount(); i++) {
-                        Object value = interpretTree(engine, templateFromContext, tree.getChild(i), pageContext, context, writer,fileName );
+                        Object value = interpretTree(engine, templateFromContext, tree.getChild(i), pageContext, context, outputStream, fileName);
                         if (value != null) {
                             returnValue = value;
                         }
@@ -105,16 +110,16 @@ public class TemplateInterpreter {
                 throw se;
             } catch (TemplateException te) {
                 if (te.getContext() == null) {
-                    te.setContext((ParserRuleContext) tree,fileName);
+                    te.setContext((ParserRuleContext) tree, fileName);
                 }
                 throw te;
             } catch (Exception e) {
-                throw new TemplateException(e, (ParserRuleContext) tree,fileName);
+                throw new TemplateException(e, (ParserRuleContext) tree, fileName);
             }
         } else {
             //这段应该是没有用的
             for (int i = 0; i < tree.getChildCount(); i++) {
-                Object value = interpretTree(engine, templateFromContext, tree.getChild(i), pageContext, context, writer,fileName );
+                Object value = interpretTree(engine, templateFromContext, tree.getChild(i), pageContext, context, outputStream, fileName);
                 if (returnValue == null && value != null) {
                     returnValue = value;
                 }
@@ -122,12 +127,5 @@ public class TemplateInterpreter {
         }
         return returnValue;
     }
-
-    public static void write(Writer writer, Object object) throws IOException {
-        if (object != null) {
-            writer.write(object.toString());
-        }
-    }
-
 
 }

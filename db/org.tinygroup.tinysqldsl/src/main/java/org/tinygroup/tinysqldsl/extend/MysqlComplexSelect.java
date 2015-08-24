@@ -62,7 +62,7 @@ public class MysqlComplexSelect extends ComplexSelect<MysqlComplexSelect> {
 		List<PlainSelect> plainSelects = new ArrayList<PlainSelect>();
 		List<SetOperation> operations = new ArrayList<SetOperation>();
 		for (int i = 0; i < selects.length; i++) {
-			Select select = selects[0];
+			Select select = selects[i];
 			plainSelects.add(select.getPlainSelect());
 			if (i != 0) {
 				operations.add(instance.instanceOperation());

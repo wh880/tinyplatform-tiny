@@ -21,7 +21,7 @@ import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * 抽象宏
@@ -33,17 +33,17 @@ public abstract class AbstractBlockMacro extends AbstractMacro {
     }
 
 
-    protected void renderMacro(Template template, TemplateContext pageContext, TemplateContext context, Writer writer) throws IOException, TemplateException {
-        renderHeader(template, context, writer);
+    protected void renderMacro(Template template, TemplateContext pageContext, TemplateContext context, OutputStream outputStream) throws IOException, TemplateException {
+        renderHeader(template, context, outputStream);
         Macro macro = (Macro) context.getItemMap().get("bodyContent");
         if (macro != null) {
-            macro.render(template,pageContext, context, writer);
+            macro.render(template,pageContext, context, outputStream);
         }
-        renderFooter(template, context, writer);
+        renderFooter(template, context, outputStream);
     }
 
-    protected abstract void renderHeader(Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
+    protected abstract void renderHeader(Template template, TemplateContext context, OutputStream outputStream) throws IOException, TemplateException;
 
-    protected abstract void renderFooter(Template template, TemplateContext context, Writer writer) throws IOException, TemplateException;
+    protected abstract void renderFooter(Template template, TemplateContext context, OutputStream outputStream) throws IOException, TemplateException;
 
 }

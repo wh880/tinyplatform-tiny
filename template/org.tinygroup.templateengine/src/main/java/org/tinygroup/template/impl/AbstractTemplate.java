@@ -17,10 +17,8 @@ package org.tinygroup.template.impl;
 
 import org.tinygroup.template.*;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,11 +37,6 @@ public abstract class AbstractTemplate implements Template {
         return templateEngine;
     }
 
-    protected void write(Writer writer, Object object) throws IOException {
-        if (object != null) {
-            writer.write(object.toString());
-        }
-    }
 
     public void addImport(Object importPath) {
         importPathList.add(importPath.toString());
@@ -62,10 +55,10 @@ public abstract class AbstractTemplate implements Template {
         return macroMap;
     }
 
-    public void render(TemplateContext context, Writer writer) throws TemplateException {
+    public void render(TemplateContext context, OutputStream outputStream) throws TemplateException {
         try {
-            renderContent(context, writer);
-            writer.flush();
+            renderContent(context, outputStream);
+            outputStream.flush();
         } catch (IOException e) {
             throw new TemplateException(e);
         } finally {
@@ -73,14 +66,14 @@ public abstract class AbstractTemplate implements Template {
         }
     }
     public void render(TemplateContext context) throws TemplateException {
-        render(context, new OutputStreamWriter(System.out));
+        render(context, System.out);
     }
 
     public void render() throws TemplateException {
-        render(new TemplateContextDefault(), new OutputStreamWriter(System.out));
+        render(new TemplateContextDefault(), System.out);
     }
 
-    protected abstract void renderContent(TemplateContext context, Writer writer) throws IOException, TemplateException;
+    protected abstract void renderContent(TemplateContext context, OutputStream outputStream) throws IOException, TemplateException;
 
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;

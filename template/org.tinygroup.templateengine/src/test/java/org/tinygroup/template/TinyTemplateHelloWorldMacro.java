@@ -20,7 +20,7 @@ import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.StringResourceLoader;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * @author Boilit
@@ -32,8 +32,8 @@ public final class TinyTemplateHelloWorldMacro {
             super("helloWorld");
         }
 
-        protected void renderMacro(Template template,TemplateContext pageContext, TemplateContext context, Writer writer) throws IOException, TemplateException {
-            writer.write("Hello, World.");
+        protected void renderMacro(Template template,TemplateContext pageContext, TemplateContext context, OutputStream OutputStream) throws IOException, TemplateException {
+            OutputStream.write("Hello, World.".getBytes());
         }
     }
     public static void main(String[] args) throws TemplateException {

@@ -17,7 +17,7 @@ package org.tinygroup.template;
 
 import org.tinygroup.template.impl.EvaluateExpression;
 
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -72,7 +72,7 @@ public interface Macro {
      * 进行渲染
      *
      * @param context
-     * @param writer
+     * @param outputStream
      */
-    void render(Template template, TemplateContext pageContext, TemplateContext context, Writer writer) throws TemplateException;
+    void render(Template template, TemplateContext pageContext, TemplateContext context, OutputStream outputStream) throws TemplateException;
 }

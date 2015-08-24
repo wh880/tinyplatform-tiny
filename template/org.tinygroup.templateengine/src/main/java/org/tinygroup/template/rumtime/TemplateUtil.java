@@ -426,5 +426,6 @@ public final class TemplateUtil {
 
         throw new TemplateException(object.getClass().getName() + "不可以用下标方式取值。");
     }
+
 }
 

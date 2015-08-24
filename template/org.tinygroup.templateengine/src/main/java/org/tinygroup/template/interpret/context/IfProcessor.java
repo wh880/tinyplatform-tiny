@@ -23,7 +23,7 @@ import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 import org.tinygroup.template.rumtime.TemplateUtil;
 
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -37,15 +37,15 @@ public class IfProcessor implements ContextProcessor<TinyTemplateParser.If_direc
 
 
 
-    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.If_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, Writer writer, String fileName) throws Exception {
+    public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.If_directiveContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         //如果条件成立
-        if (TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, writer,fileName))) {
-            interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, context, writer,fileName);
+        if (TemplateUtil.getBooleanValue(interpreter.interpretTree(engine, templateFromContext, parseTree.expression(),pageContext, context, outputStream,fileName))) {
+            interpreter.interpretTree(engine, templateFromContext, parseTree.block(),pageContext, context, outputStream,fileName);
         } else {
             boolean processed = false;
             List<TinyTemplateParser.Elseif_directiveContext> elseifDirectiveContexts = parseTree.elseif_directive();
             for (TinyTemplateParser.Elseif_directiveContext elseifDirectiveContext : elseifDirectiveContexts) {
-                processed = (Boolean) interpreter.interpretTree(engine, templateFromContext, elseifDirectiveContext,pageContext, context, writer,fileName);
+                processed = (Boolean) interpreter.interpretTree(engine, templateFromContext, elseifDirectiveContext,pageContext, context, outputStream,fileName);
                 if (processed) {
                     return null;
                 }
@@ -53,7 +53,7 @@ public class IfProcessor implements ContextProcessor<TinyTemplateParser.If_direc
             if (!processed) {
                 TinyTemplateParser.Else_directiveContext elseDirectiveContext = parseTree.else_directive();
                 if (elseDirectiveContext != null) {
-                    interpreter.interpretTree(engine, templateFromContext, elseDirectiveContext,pageContext, context, writer,fileName);
+                    interpreter.interpretTree(engine, templateFromContext, elseDirectiveContext,pageContext, context, outputStream,fileName);
                 }
             }
         }
