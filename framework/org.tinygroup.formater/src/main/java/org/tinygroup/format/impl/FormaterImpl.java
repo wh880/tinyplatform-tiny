@@ -33,7 +33,7 @@ import java.util.regex.Matcher;
  */
 public class FormaterImpl implements Formater {
 
-	private Map<String, FormatProvider> formatProviders;
+	private Map<String, FormatProvider> formatProviders = new HashMap<String, FormatProvider>();
 	private PatternDefine patternDefine = new DefaultPatternDefine();
 
 	/**
