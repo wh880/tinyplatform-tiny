@@ -26,11 +26,11 @@ public class NameFilterTest extends TestCase {
 
 	public NameFilterTest() {
 		node = new HtmlNode("root");
-		for (int i = 0; i < 60; i++) {
+		for (int i = 0; i < 10; i++) {
 			HtmlNode a = node.addNode(new HtmlNode("a" + i));
-			for (int j = 0; j < 60; j++) {
+			for (int j = 0; j < 10; j++) {
 				HtmlNode b = a.addNode(new HtmlNode("b" + j));
-				for (int k = 0; k < 60; k++) {
+				for (int k = 0; k < 10; k++) {
 					b.addNode(new HtmlNode("c" + k));
 				}
 			}
@@ -54,7 +54,7 @@ public class NameFilterTest extends TestCase {
 		System.out.println("quick用时" + (t22 - t21));
 		long t1 = System.currentTimeMillis();
 		String nodeName = null;
-		for (int x = 0; x < 10000; x++) {
+		for (int x = 0; x < 1; x++) {
 			nodeName = quick.findNode("b6").toString();
 		}
 		// System.out.println(nodeName);
@@ -69,7 +69,7 @@ public class NameFilterTest extends TestCase {
 		System.out.println("fast用时" + (t22 - t21));
 		long t1 = System.currentTimeMillis();
 		String nodeName = null;
-		for (int x = 0; x < 10000; x++) {
+		for (int x = 0; x < 1; x++) {
 			nodeName = fast.findNode("b6").getNodeName();
 		}
 		// System.out.println(nodeName);

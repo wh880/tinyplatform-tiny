@@ -27,11 +27,11 @@ public class NameFilterTest extends TestCase {
 
 	public NameFilterTest() {
 		node = new XmlNode("root");
-		for (int i = 0; i < 60; i++) {
+		for (int i = 0; i < 10; i++) {
 			XmlNode a = node.addNode(new XmlNode("a" + i));
-			for (int j = 0; j < 60; j++) {
+			for (int j = 0; j < 10; j++) {
 				XmlNode b = a.addNode(new XmlNode("b" + j));
-				for (int k = 0; k < 60; k++) {
+				for (int k = 0; k < 10; k++) {
 					b.addNode(new XmlNode("c" + k));
 				}
 			}
@@ -54,7 +54,7 @@ public class NameFilterTest extends TestCase {
 		long t22 = System.currentTimeMillis();
 		System.out.println("quick用时" + (t22 - t21));
 		long t1 = System.currentTimeMillis();
-		for (int x = 0; x < 10000; x++) {
+		for (int x = 0; x < 1; x++) {
 			XmlNode node = quick.findNode("b6");
 		}
 		// System.out.println(nodeName);
@@ -68,7 +68,7 @@ FastNameFilter<XmlNode> fast = new FastNameFilter(node);
 long t22 = System.currentTimeMillis();
 System.out.println("fast用时" + (t22 - t21));
 long t1 = System.currentTimeMillis();
-for (int x = 0; x < 10000; x++) {
+for (int x = 0; x < 1; x++) {
     XmlNode node = fast.findNode("b6");
 }
 // System.out.println(nodeName);
