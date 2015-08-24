@@ -31,18 +31,16 @@ import java.io.OutputStream;
 public class TestInterpret {
     public static void main(String[] args) throws TemplateException {
         TemplateContext context = new TemplateContextDefault();
-        context.put("i", 1);
         StringResourceLoader loader = new StringResourceLoader();
         TemplateEngineDefault engine = new TemplateEngineDefault();
         engine.addResourceLoader(loader);
-        Template template = loader.createTemplate("#set(abc=1) ${\"abc\"}HelloWorld#for(i:[1..20])${i}#end HelloWorld");
+        Template template = loader.createTemplate("${\"abc\"}HelloWorld#for(i:[1..20])${i}#end HelloWorld");
         long start = System.currentTimeMillis();
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 2000000; i++) {
             template.render(context, new EmptyOutputStream());
         }
         long end = System.currentTimeMillis();
         System.out.println(end - start);
-        System.out.flush();
     }
 
 }
