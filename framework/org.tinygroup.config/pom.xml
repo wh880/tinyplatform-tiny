@@ -22,6 +22,11 @@
       <artifactId>org.tinygroup.commons</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.ini</artifactId>
+      <version>${project.version}</version>
+    </dependency>
      <dependency>
       <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.vfs</artifactId>

@@ -15,11 +15,15 @@
  */
 package org.tinygroup.config.util;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +31,10 @@ import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.impl.ConfigurationManagerImpl;
+import org.tinygroup.ini.IniOperator;
+import org.tinygroup.ini.Section;
+import org.tinygroup.ini.ValuePair;
+import org.tinygroup.ini.impl.IniOperatorDefault;
 import org.tinygroup.parser.filter.NameFilter;
 import org.tinygroup.parser.filter.PathFilter;
 import org.tinygroup.vfs.FileObject;
@@ -35,11 +43,16 @@ import org.tinygroup.xmlparser.parser.XmlStringParser;
 
 /**
  * 应用配置工具类，用于把父对象中的配置参数应用到子对象中。
- *
+ * 
  * @author luoguo
  */
 public final class ConfigurationUtil {
+	private static final String APPLICATION_PROPERTIES_PROPERTY = "/application/application-properties/property";
+	private static final String APPLICATION_PROPERTIES_FILE = "/application/application-properties/file";
 	private static ConfigurationManager configurationManager = new ConfigurationManagerImpl();
+
+	// private static Logger logger =
+	// LoggerFactory.getLogger(ConfigurationUtil.class);
 
 	private ConfigurationUtil() {
 	}
@@ -50,7 +63,7 @@ public final class ConfigurationUtil {
 
 	/**
 	 * 获取属性值，应用配置的优先级更高
-	 *
+	 * 
 	 * @param applicationNode
 	 * @param componentNode
 	 * @param attributeName
@@ -72,7 +85,7 @@ public final class ConfigurationUtil {
 	/**
 	 * 获取属性值，应用配置的优先级更高。<br>
 	 * 如果读取的结果为Null或为""，则返回默认值
-	 *
+	 * 
 	 * @param applicationNode
 	 * @param componentNode
 	 * @param attributeName
@@ -105,7 +118,7 @@ public final class ConfigurationUtil {
 
 	/**
 	 * 根据关键属性进行子节点合并
-	 *
+	 * 
 	 * @param applicationNode
 	 * @param componentNode
 	 * @param keyPropertyName
@@ -134,8 +147,7 @@ public final class ConfigurationUtil {
 		return result;
 	}
 
-	private static List<XmlNode> getNodeList(XmlNode node,
-			String nodeName) {
+	private static List<XmlNode> getNodeList(XmlNode node, String nodeName) {
 		List<XmlNode> nodeList = new ArrayList<XmlNode>();
 		if (node != null) {
 			nodeList = node.getSubNodes(nodeName);
@@ -160,9 +172,9 @@ public final class ConfigurationUtil {
 			}
 		}
 		for (String key : compConfigMap.keySet()) {
-		    //判断是否配置了应用级别的信息
+			// 判断是否配置了应用级别的信息
 			XmlNode appNode = appConfigMap.get(key);
-			//未配置应用级别的信息，使用默认的组件级别信息
+			// 未配置应用级别的信息，使用默认的组件级别信息
 			if (appNode == null) {
 				result.add(compConfigMap.get(key));
 			}
@@ -171,7 +183,7 @@ public final class ConfigurationUtil {
 
 	/**
 	 * 合并单个节点
-	 *
+	 * 
 	 * @param applicationNode
 	 * @param componentNode
 	 * @return
@@ -218,7 +230,7 @@ public final class ConfigurationUtil {
 
 	/**
 	 * 简单合并
-	 *
+	 * 
 	 * @param applicationNode
 	 * @param componentNode
 	 * @return
@@ -242,7 +254,7 @@ public final class ConfigurationUtil {
 
 	/**
 	 * 简单合并
-	 *
+	 * 
 	 * @param nodeName
 	 * @param applicationNode
 	 * @param componentNode
@@ -268,7 +280,7 @@ public final class ConfigurationUtil {
 
 	/**
 	 * 简单合并
-	 *
+	 * 
 	 * @param nodeName
 	 * @param applicationNode
 	 * @param componentNode
@@ -327,27 +339,95 @@ public final class ConfigurationUtil {
 		XmlNode applicationConfig = new XmlStringParser().parse(config)
 				.getRoot();// 第一次解出
 		Map<String, String> applicationPropertiesMap = new HashMap<String, String>();
+		loadApplicationProperties(applicationConfig, applicationPropertiesMap);
+		loadApplicationPropertyFiles(applicationConfig,
+				applicationPropertiesMap);
+		String newConfig = replaceProperty(config, applicationPropertiesMap);// 替换里面的全局变量
+		return new XmlStringParser().parse(newConfig).getRoot();// 再次解析，出来最终结果
+	}
+
+	private static void loadApplicationProperties(XmlNode applicationConfig,
+			Map<String, String> applicationPropertiesMap) {
 		PathFilter<XmlNode> filter = new PathFilter<XmlNode>(applicationConfig);
 		List<XmlNode> propertyList = filter
-				.findNodeList("/application/application-properties/property");
+				.findNodeList(APPLICATION_PROPERTIES_PROPERTY);
 		for (XmlNode property : propertyList) {
 			String name = property.getAttribute("name");
 			String value = property.getAttribute("value");
 			applicationPropertiesMap.put(name, value);
 			getConfigurationManager().setConfiguration(name, value);
 		}
-		String newConfig = replaceProperty(config,applicationPropertiesMap);// 替换里面的全局变量
-		return new XmlStringParser().parse(newConfig).getRoot();// 再次解析，出来最终结果
 	}
 
-	 private static String replaceProperty(String config,Map<String, String> applicationPropertiesMap) {
-		 	String result = config;
-	        if (!applicationPropertiesMap.isEmpty()) {
-	            for (String name : applicationPropertiesMap.keySet()) {
-	                String value = applicationPropertiesMap.get(name);
-	                result = replace(config, name, value);
-	            }
-	        }
-	        return result;
-	    }
+	private static void loadApplicationPropertyFiles(XmlNode applicationConfig,
+			Map<String, String> applicationPropertiesMap) {
+		PathFilter<XmlNode> filter = new PathFilter<XmlNode>(applicationConfig);
+		List<XmlNode> propertyList = filter
+				.findNodeList(APPLICATION_PROPERTIES_FILE);
+		for (XmlNode property : propertyList) {
+			String path = property.getAttribute("path");
+			if (path.endsWith(".ini")) {
+				loadApplicationPropertyIniFile(path, applicationPropertiesMap);
+			} else if (path.endsWith(".properties")) {
+				loadApplicationPropertyPropertiesFile(path,
+						applicationPropertiesMap);
+			}
+
+		}
+	}
+
+	private static void loadApplicationPropertyPropertiesFile(String path,
+			Map<String, String> applicationPropertiesMap) {
+		Properties p = new Properties();
+		InputStream in = ConfigurationUtil.class.getResourceAsStream(path);
+		try {
+			p.load(in);
+			in.close();
+		} catch (IOException e) {
+			throw new RuntimeException("读取配置文件:" + path + "时出错", e);
+		}
+		if (p.size() <= 0) {
+			return;
+		}
+		for (Object key : p.keySet()) {
+			String value = p.getProperty(key.toString());
+			applicationPropertiesMap.put(key.toString(), value);
+			getConfigurationManager().setConfiguration(key.toString(), value);
+		}
+
+	}
+
+	private static void loadApplicationPropertyIniFile(String path,
+			Map<String, String> applicationPropertiesMap) {
+		IniOperator operator = new IniOperatorDefault();
+		try {
+			File file = new File(ConfigurationUtil.class.getClassLoader()
+					.getResource(path).toURI());
+			operator.read(new FileInputStream(file), "UTF-8");
+		} catch (Exception e) {
+			throw new RuntimeException("读取配置文件:" + path + "时出错", e);
+		}
+		List<Section> sectionList = operator.getSections().getSectionList();
+		for (Section section : sectionList) {
+			List<ValuePair> valuePairs = section.getValuePairList();
+			for (ValuePair valuePair : valuePairs) {
+				String key = valuePair.getKey();
+				String value = valuePair.getValue();
+				applicationPropertiesMap.put(key, value);
+				getConfigurationManager().setConfiguration(key, value);
+			}
+		}
+	}
+
+	private static String replaceProperty(String config,
+			Map<String, String> applicationPropertiesMap) {
+		String result = config;
+		if (!applicationPropertiesMap.isEmpty()) {
+			for (String name : applicationPropertiesMap.keySet()) {
+				String value = applicationPropertiesMap.get(name);
+				result = replace(result, name, value);
+			}
+		}
+		return result;
+	}
 }
