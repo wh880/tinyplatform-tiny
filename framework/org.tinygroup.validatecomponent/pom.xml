@@ -3,11 +3,11 @@
   <parent>
     <groupId>org.tinygroup</groupId>
     <artifactId>framework</artifactId>
-    <version>2.0.18-SNAPSHOT</version>
+    <version>2.0.18</version>
   </parent>
   <groupId>org.tinygroup</groupId>
   <artifactId>org.tinygroup.validatecomponent</artifactId>
-  <version>2.0.18-SNAPSHOT</version>
+  <version>2.0.18</version>
   <dependencies>
   <dependency>
       <groupId>org.tinygroup</groupId>

@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.tinygroup</groupId>
     <artifactId>codegen</artifactId>
-    <version>2.0.18-SNAPSHOT</version>
+    <version>2.0.18</version>
   </parent>
   <artifactId>org.tinygroup.studio.codegen.helloworld</artifactId>
   <name>org.tinygroup.studio.codegen.helloworld</name>
