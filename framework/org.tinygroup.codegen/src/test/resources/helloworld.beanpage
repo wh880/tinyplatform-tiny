@@ -6,7 +6,7 @@
                     http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
-	<bean id="$stringUtil.toCamelCase($className)" scope="prototype"
-		class="$beanPackageName.$className">
+	<bean id="${stringUtil('toCamelCase',className)}" scope="prototype"
+		class="${beanPackageName}.${className}">
 	</bean>
 </beans>
