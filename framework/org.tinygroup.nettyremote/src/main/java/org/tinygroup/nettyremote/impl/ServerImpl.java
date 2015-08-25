@@ -93,6 +93,7 @@ public class ServerImpl implements Server {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
 					LOGGER.errorMessage("服务端启动失败",e);
+					throw new RuntimeException("服务端启动失败",e);
 				}
 			}
 
