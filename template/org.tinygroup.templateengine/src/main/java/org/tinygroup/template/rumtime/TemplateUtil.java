@@ -88,7 +88,6 @@ public final class TemplateUtil {
                         propertyUtilsBean.getPropertyDescriptor(object, fieldName);
                 if (descriptor != null && descriptor.getReadMethod() != null) {
                     method = object.getClass().getMethod(descriptor.getReadMethod().getName());
-                    method.setAccessible(true);
                     if (stringMethodMap == null) {
                         stringMethodMap = new HashMap<String, Method>();
                         methodCache.put(object.getClass(), stringMethodMap);
@@ -202,6 +201,18 @@ public final class TemplateUtil {
         Map<String, Method> stringMethodMap = methodCache.get(object.getClass());
         if (stringMethodMap != null) {
             method = stringMethodMap.get(methodName);
+        }
+        if (method == null) {
+            try {
+                method = object.getClass().getMethod(methodName);
+                if (stringMethodMap == null) {
+                    stringMethodMap = new HashMap<String, Method>();
+                    methodCache.put(object.getClass(), stringMethodMap);
+                }
+                stringMethodMap.put(methodName, method);
+            } catch (NoSuchMethodException e) {
+                //do nothing
+            }
         }
         return method;
     }
