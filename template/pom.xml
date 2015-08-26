@@ -11,5 +11,7 @@
     <module>org.tinygroup.templateengine</module>
     <module>org.tinygroup.templateweb</module>
     <module>org.tinygroup.templateweblayer</module>
+    <module>org.tinygroup.templatespringext</module>
+    <module>org.tinygroup.templateservletext</module>
   </modules>
 </project>
