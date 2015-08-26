@@ -27,10 +27,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 工具类，之所以起这么短是为了生成的代码短一些
@@ -184,7 +181,7 @@ public final class TemplateUtil {
     }
 
     private static Object executeClassMethod(Object object, String methodName, Object[] parameters) throws TemplateException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        Method method = getMethodByName(object, methodName);
+        Method method = getMethodByName(object, methodName, parameters);
         //如果有缓冲，则用缓冲方式调用
         if (method != null) {
             return method.invoke(object, parameters);
@@ -196,25 +193,49 @@ public final class TemplateUtil {
         }
     }
 
-    private static Method getMethodByName(Object object, String methodName) {
+    private static Method getMethodByName(Object object, String methodName, Object[] parameters) {
         Method method = null;
         Map<String, Method> stringMethodMap = methodCache.get(object.getClass());
         if (stringMethodMap != null) {
             method = stringMethodMap.get(methodName);
         }
         if (method == null) {
-            try {
-                method = object.getClass().getMethod(methodName);
+            List<Method> methods = getMethodList(object.getClass(), methodName);
+            if (methods.size() == 1) {
+                method = methods.get(0);
                 if (stringMethodMap == null) {
                     stringMethodMap = new HashMap<String, Method>();
                     methodCache.put(object.getClass(), stringMethodMap);
                 }
                 stringMethodMap.put(methodName, method);
-            } catch (NoSuchMethodException e) {
-                //do nothing
+            } else {
+                for (Method method1 : methods) {
+                    if (method1.getParameterTypes().length != parameters.length) {
+                        continue;
+                    }
+                    int count = 0;
+                    for (int i = 0; i < method1.getParameterTypes().length; i++) {
+                        if (parameters[i] == null || parameters[i].getClass().equals(method1.getParameterTypes()[i].getClass())) {
+                            count++;
+                        }
+                    }
+                    if (count == method1.getParameterTypes().length) {
+                        return method1;
+                    }
+                }
             }
         }
         return method;
+    }
+
+    private static List<Method> getMethodList(Class clz, String methodName) {
+        List<Method> methods = new ArrayList<Method>();
+        for (Method method : clz.getMethods()) {
+            if (method.getName().equals(methodName)) {
+                methods.add(method);
+            }
+        }
+        return methods;
     }
 
     private static Object executeExtendFunction(Template template, TemplateContext context, Object object, TemplateFunction function, Object[] parameters) throws TemplateException {
