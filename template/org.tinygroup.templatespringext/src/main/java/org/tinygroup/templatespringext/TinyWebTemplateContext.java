@@ -17,12 +17,11 @@ package org.tinygroup.templatespringext;
 
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateContextDefault;
-import org.tinygroup.weblayer.WebContext;
 
 import java.util.Map;
 
 /**
- * tinywebcontext��װ��ģ��������
+ * tinywebcontext模板包装
  * 
  * @author wll
  * 

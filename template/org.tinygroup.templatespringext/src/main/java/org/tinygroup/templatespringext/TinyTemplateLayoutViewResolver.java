@@ -30,7 +30,7 @@ import java.util.Map;
 
 /**
  * tinytemplate视图解析器
- * @author renhui
+ * @author wll
  * 
  */
 public class TinyTemplateLayoutViewResolver extends
