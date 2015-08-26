@@ -88,9 +88,8 @@ public class TinyTemplateLayoutView extends AbstractTemplateView {
 		return path;
 	}
 
-	// 不设置字符集编码，由过滤器进行设�?	@Override
-	protected void applyContentType(HttpServletResponse response) {
 
+	protected void applyContentType(HttpServletResponse response) {
 	}
 
 	@Override
