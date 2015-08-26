@@ -25,7 +25,7 @@ public class JedisConfig {
 	private String host;
 	
 	/**
-	 * redis服务器地址，必填项
+	 * redis服务器端口，必填项
 	 */
 	@XStreamAsAttribute
 	private int port;

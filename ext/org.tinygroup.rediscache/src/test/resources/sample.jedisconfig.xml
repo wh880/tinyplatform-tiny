@@ -1,4 +1,15 @@
 <jedis-configs>
+  <!-- 
+        jedis-config属性：
+         id 唯一标识,必填项
+         charset redis转换编码，默认utf-8，选填项
+         host redis服务器地址，必填项
+         port redis服务器端口，必填项
+         timeout 客户端超时时间，非必填项
+         password  连接密码，有密码必填；无密码不填
+         database 数据库物理序号，默认是0，非必填项
+         client-name 客户端名称，非必填项
+   -->
   <jedis-config id="server01" host="192.168.51.29" port="6380"></jedis-config>
   <jedis-config id="server02" host="192.168.51.29" port="6381"></jedis-config>
 </jedis-configs>

@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.tinygroup</groupId>
     <artifactId>tiny</artifactId>
-    <version>2.0.19-SNAPSHOT</version>
+    <version>2.0.20-SNAPSHOT</version>
   </parent>
   <artifactId>template</artifactId>
   <packaging>pom</packaging>
@@ -11,5 +11,7 @@
     <module>org.tinygroup.templateengine</module>
     <module>org.tinygroup.templateweb</module>
     <module>org.tinygroup.templateweblayer</module>
+    <module>org.tinygroup.templatespringext</module>
+    <module>org.tinygroup.templateservletext</module>
   </modules>
 </project>

@@ -7,13 +7,10 @@ import java.util.Set;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.CacheManager;
 import org.tinygroup.cache.exception.CacheException;
-import org.tinygroup.cache.redis.config.JedisConfig;
 import org.tinygroup.cache.redis.util.SerializeUtil;
-import org.tinygroup.commons.tools.StringUtil;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.Protocol;
 
 /**
  * 基于redis的缓存实现方案
@@ -25,33 +22,15 @@ public class RedisCache implements Cache {
 
 	private RedisCacheManager redisCacheManager;
 	private JedisPool jedisPool;
-	private JedisConfig jedisConfig;
+	private JedisClient jedisClient;
 
 	public void init(String region) {
 
 		try {
-			jedisConfig = redisCacheManager.getJedisManager().getJedisConfig(
-					region);
-			
-			if(jedisConfig==null){
-			   throw new NullPointerException(String.format("根据region:[%s]没有找到匹配的JedisConfig配置对象", region));	
-			}
-
-			// 设置默认参数
-			String host = StringUtil.isBlank(jedisConfig.getHost()) ? Protocol.DEFAULT_HOST
-					: jedisConfig.getHost();
-			int port = jedisConfig.getPort() <= 0 ? Protocol.DEFAULT_PORT
-					: jedisConfig.getPort();
-			int timeout = jedisConfig.getTimeout() < 0 ? Protocol.DEFAULT_TIMEOUT
-					: jedisConfig.getTimeout();
-			int database = jedisConfig.getDatabase() < 0 ? Protocol.DEFAULT_DATABASE
-					: jedisConfig.getDatabase();
-
-			// 实例化jedis连接池
-			jedisPool = new JedisPool(redisCacheManager.getJedisManager()
-					.getJedisPoolConfig(region), host, port, timeout,
-					jedisConfig.getPassword(), database,
-					jedisConfig.getClientName());
+			//目前tiny的框架机制不能保证初始化时，redis的配置文件一定能加载完成，init需要考虑这种场景
+			//比如Session缓存配置这种场景：最高优先级的ConfigurationFileProcessor会调用cache的init接口，而此时JedisConfigsFileProcessor尚未完成加载。
+			jedisClient = new JedisClient(region);
+			jedisClient.setRedisCacheManager(redisCacheManager);
 		} catch (Exception e) {
 			throw new CacheException(e);
 		}
@@ -228,14 +207,17 @@ public class RedisCache implements Cache {
 
 	private byte[] getByteKey(String key) {
 		try {
-			return key.getBytes(jedisConfig.getCharset()==null?"utf-8":jedisConfig.getCharset());
+			return key.getBytes(jedisClient.getCharset());
 		} catch (UnsupportedEncodingException e) {
 			throw new CacheException(e);
 		}
 	}
 
 	private void checkJedisPool() {
-		if (jedisPool == null || jedisPool.isClosed()) {
+		if(jedisPool==null){
+		   jedisPool = jedisClient.createJedisPool();
+		}
+		if (jedisPool.isClosed()) {
 			throw new CacheException("JedisPool没有初始化或者已经关闭.");
 		}
 	}
