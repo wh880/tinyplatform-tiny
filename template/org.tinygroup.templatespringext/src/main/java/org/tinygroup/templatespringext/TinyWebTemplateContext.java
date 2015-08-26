@@ -22,7 +22,7 @@ import org.tinygroup.weblayer.WebContext;
 import java.util.Map;
 
 /**
- * tinywebcontext°ü×°µÄÄ£°åÉÏÏÂÎÄ
+ * tinywebcontextï¿½ï¿½×°ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  * 
  * @author wll
  * 
@@ -30,33 +30,20 @@ import java.util.Map;
 public class TinyWebTemplateContext extends TemplateContextDefault implements
 		TemplateContext {
 
-	private TemplateContext templatecontext;
-
-	public TinyWebTemplateContext(Map dataMap, TemplateContext templatecontext) {
+	public TinyWebTemplateContext(Map dataMap) {
 		super(dataMap);
-		this.templatecontext = templatecontext;
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> T get(String name) {
-		T value=(T)super.get(name);
-		if(value!=null){
-			return value;
-		}
-		return (T)templatecontext.get(name);
-	}
+		return (T)super.get(name);
 
-	public TemplateContext getTemplatecontext() {
-		return templatecontext;
 	}
 
 	@Override
 	public boolean exist(String name) {
-		boolean exist=super.exist(name);
-		if(exist){
-			return true;
-		}
-		return templatecontext.exist(name);
+		return super.exist(name);
+
 	}
 
 

@@ -97,7 +97,7 @@ public class TinyTemplateLayoutView extends AbstractTemplateView {
 	protected void renderMergedTemplateModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		long startTime = System.currentTimeMillis();
 
-		TemplateContext templateContext = new TinyWebTemplateContext(model,templateEngine.getTemplateContext());
+		TemplateContext templateContext = new TinyWebTemplateContext(model);
 		String path = getUrl();
 		String extFileName=getExtFileName(path);
 		if (isPagelet(path)) {
