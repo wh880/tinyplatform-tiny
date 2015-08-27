@@ -33,7 +33,8 @@ import org.tinygroup.nettyremote.Server;
 import java.io.IOException;
 
 public class ServerImpl implements Server {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ServerImpl.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ServerImpl.class);
 	private ServerThread serverThread = new ServerThread();
 	private boolean start = false;
 	private EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -46,8 +47,7 @@ public class ServerImpl implements Server {
 	}
 
 	public void start() {
-		LOGGER.logMessage(LogLevel.INFO, "启动服务端线程,端口:{1}",
-				localPort);
+		LOGGER.logMessage(LogLevel.INFO, "启动服务端线程,端口:{1}", localPort);
 		setStart(false);
 		serverThread.start();
 	}
@@ -79,8 +79,16 @@ public class ServerImpl implements Server {
 	public void stop() {
 		LOGGER.logMessage(LogLevel.INFO, "关闭服务端");
 		setStart(false);
-		bossGroup.shutdownGracefully();
-		workerGroup.shutdownGracefully();
+		try {
+			bossGroup.shutdownGracefully();
+		} catch (Exception e) {
+			LOGGER.errorMessage("关闭服务端时发生异常", e);
+		}
+		try {
+			workerGroup.shutdownGracefully();
+		} catch (Exception e) {
+			LOGGER.errorMessage("关闭服务端时发生异常", e);
+		}
 	}
 
 	class ServerThread extends Thread {
@@ -91,9 +99,9 @@ public class ServerImpl implements Server {
 					bind();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					//e.printStackTrace();
-					LOGGER.errorMessage("服务端启动失败",e);
-					throw new RuntimeException("服务端启动失败",e);
+					// e.printStackTrace();
+					LOGGER.errorMessage("服务端启动失败", e);
+					throw new RuntimeException("服务端启动失败", e);
 				}
 			}
 
