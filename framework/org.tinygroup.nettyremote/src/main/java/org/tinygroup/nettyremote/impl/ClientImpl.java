@@ -72,22 +72,22 @@ public class ClientImpl implements Client {
 	}
 
 	private void reConnect() {
-		if(executor.isShutdown()){
-			return;
-		}
-		// 所有资源释放完成之后，清空资源，再次发起重连操作
-		executor.execute(new Runnable() {
-			public void run() {
-				try {
-					TimeUnit.SECONDS.sleep(reConnectInterval);
-					LOGGER.logMessage(LogLevel.INFO, "开始重连服务端{0}:{1}",
-							remoteHost, remotePort);
-					connect(remotePort, remoteHost);// 发起重连操作
-				} catch (InterruptedException e) {
-					//do nothing
+		if(!executor.isShutdown()){
+			// 所有资源释放完成之后，清空资源，再次发起重连操作
+			executor.execute(new Runnable() {
+				public void run() {
+					try {
+						TimeUnit.SECONDS.sleep(reConnectInterval);
+						LOGGER.logMessage(LogLevel.INFO, "开始重连服务端{0}:{1}",
+								remoteHost, remotePort);
+						connect(remotePort, remoteHost);// 发起重连操作
+					} catch (InterruptedException e) {
+						//do nothing
+					}
 				}
-			}
-		});
+			});
+		}
+		
 	}
 
 	private void connect(int port, String host) {
