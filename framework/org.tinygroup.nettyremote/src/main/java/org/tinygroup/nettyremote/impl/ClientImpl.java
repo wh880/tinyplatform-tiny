@@ -149,7 +149,12 @@ public class ClientImpl implements Client {
 			executor.shutdown();
 		}
 		start = false;
-		group.shutdownGracefully();
+		try {
+			group.shutdownGracefully();
+		} catch (Exception e) {
+			LOGGER.errorMessage("关闭Client时出错",e);
+		}
+		
 		setReady(false);
 	}
 
