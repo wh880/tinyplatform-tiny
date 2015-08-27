@@ -23,20 +23,12 @@ import java.util.Map;
  */
 public interface ResourceLoader<T> {
     /**
-     * 是否检查模板是否被修改过
-     *
-     * @param checkModified
-     */
-    void setCheckModified(boolean checkModified);
-
-    /**
      * 确定某个路径对应的文件是否被修改
      *
      * @param path
      * @return
      */
     boolean isModified(String path);
-
     /**
      * 清置修改状态
      * @param path
@@ -144,10 +136,4 @@ public interface ResourceLoader<T> {
      */
     String getLayoutExtName();
 
-    /**
-     * 返回仓库中的所有资源
-     *
-     * @return
-     */
-    Map<String, Template> getRepositories();
 }

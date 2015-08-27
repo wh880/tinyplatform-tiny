@@ -18,6 +18,7 @@ package org.tinygroup.template;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 模板引擎
@@ -36,6 +37,17 @@ public interface TemplateEngine extends TemplateContextOperator {
     void setSafeVariable(boolean safeVariable);
 
     boolean isSafeVariable();
+
+    Map<String, Template> getRepositories();
+
+    /**
+     * 是否检查模板是否被修改过
+     *
+     * @param checkModified
+     */
+    void setCheckModified(boolean checkModified);
+
+    boolean isCheckModified();
 
     /**
      * 返回是否是紧凑模式

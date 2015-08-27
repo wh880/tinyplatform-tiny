@@ -44,7 +44,6 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
     public FileObjectResourceLoader(String templateExtName, String layoutExtName, String macroLibraryExtName, FileObject root) {
         super(templateExtName, layoutExtName, macroLibraryExtName);
         this.root = root;
-        setCheckModified(true);
     }
 
     public Template createTemplate(FileObject fileObject) throws TemplateException {

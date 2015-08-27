@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 模板引擎实现类
@@ -49,6 +50,24 @@ public class TemplateEngineDefault implements TemplateEngine {
     private TemplateCache<String, Macro> macroCache = new TemplateCacheDefault<String, Macro>();
     private TemplateCache<String, Template> templateCache = new TemplateCacheDefault<String, Template>();
     private List<String> macroLibraryList = new ArrayList<String>();
+    private Map<String, Template> repositories = new ConcurrentHashMap<String, Template>();
+    private boolean checkModified = false;
+
+    public void setCheckModified(boolean checkModified) {
+        this.checkModified = checkModified;
+    }
+
+    public boolean isCheckModified() {
+        return checkModified;
+    }
+
+    public Map<String, Template> getRepositories() {
+        return repositories;
+    }
+
+    public void setRepositories(Map<String, Template> repositories) {
+        this.repositories = repositories;
+    }
 
     public static final TemplateInterpreter interpreter = new TemplateInterpreter();
 
@@ -318,10 +337,18 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     private Template getMacroLibrary(String path) throws TemplateException {
+        Template template = null;
+        if (!checkModified) {
+            template = repositories.get(path);
+            if (template != null) {
+                return template;
+            }
+        }
         for (ResourceLoader loader : resourceLoaderList) {
-            Template Template = loader.getMacroLibrary(path);
-            if (Template != null) {
-                return Template;
+            template = loader.getMacroLibrary(path);
+            if (template != null) {
+                repositories.put(path, template);
+                return template;
             }
         }
         throw new TemplateException("找不到模板：" + path);

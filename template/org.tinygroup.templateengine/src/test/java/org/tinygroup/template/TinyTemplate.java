@@ -34,7 +34,7 @@ public final class TinyTemplate {
         context.put("outputEncoding", "GBK");
         context.put("items", StockModel.dummyItems());
         FileObjectResourceLoader html = new FileObjectResourceLoader("html", null,null, "D:\\gitpart3\\ebm\\src\\main\\resources\\templates");
-        html.setCheckModified(false);
+        engine.setCheckModified(false);
         engine.addResourceLoader(html);
         long start = System.currentTimeMillis();
         OutputStream writer = new OutputStream() {
