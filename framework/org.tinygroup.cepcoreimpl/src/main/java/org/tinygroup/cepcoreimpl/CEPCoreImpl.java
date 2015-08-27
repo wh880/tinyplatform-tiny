@@ -305,8 +305,13 @@ public class CEPCoreImpl implements CEPCore {
 			// q调整为线程池
 			SynchronousDeal thread = new SynchronousDeal(eventProcessor, e);
 			// thread.start();
-			executor.execute(thread);
-			LOGGER.logMessage(LogLevel.INFO, "已开启异步请求{}执行线程",event.getEventId());
+			if(!executor.isShutdown()){
+				executor.execute(thread);
+				LOGGER.logMessage(LogLevel.INFO, "已开启异步请求{}执行线程",event.getEventId());
+			}else{
+				LOGGER.logMessage(LogLevel.INFO, "异步请求{}线程池已关闭，直接返回");
+				return;
+			}
 
 		} else {
 			eventProcessor.process(event);
