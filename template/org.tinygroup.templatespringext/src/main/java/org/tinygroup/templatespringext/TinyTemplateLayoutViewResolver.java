@@ -36,7 +36,7 @@ import java.util.Map;
 public class TinyTemplateLayoutViewResolver extends
 		AbstractTemplateViewResolver {
 
-	private static final String VIEW_EXT_FILENAME = "page";// 视图扩展�?	
+	private static final String VIEW_EXT_FILENAME = "page";// 视图扩展后缀
 	private static final String PAGELET_EXT_FILE_NAME = "pagelet";
 
 	private String viewExtFileName = VIEW_EXT_FILENAME;
