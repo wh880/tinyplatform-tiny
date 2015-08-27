@@ -15,17 +15,17 @@
  */
 package org.tinygroup.template.fileresolver;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
+import java.util.List;
+
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.template.*;
+import org.tinygroup.template.TemplateEngine;
+import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.List;
 
 /**
  * tiny宏文件扫描
@@ -46,11 +46,6 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
     private static final String TEMPLATE_EXT_DEFALUT = "page";
     private static final String LAYOUT_EXT_DEFALUT = "layout";
     private static final String COMPONENT_EXT_DEFALUT = "component";
-    
-    private static final String RESOURCE_CONFIG_NAME = "resource-loader";
-    private static final String INIT_PARAM_NAME = "init-param";
-    private static final String I18N_VISITOR_NAME = "i18n-visitor";
-    private static final String TEMPLATE_FUNCTION_NAME = "template-function";
 
     private TemplateEngine engine;
 
@@ -98,22 +93,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
     private void reloadTemplateConfig(){
     	//合并节点
         XmlNode totalConfig = ConfigurationUtil.combineXmlNode(applicationConfig, componentConfig);
-        
-       //设置模板引擎的参数
-        configEngineProperties(totalConfig);
-        
-        //设置国际化访问接口
-        configI18nVisitor(totalConfig);
-        
-        //加载资源加载器
-        addResourceLoaders(totalConfig);
-        
-        //加载模板函数
-        addFunction(totalConfig);
-        
-    }
 
-    private void addResourceLoaders(XmlNode totalConfig) {
         String templateExtFileName = TEMPLATE_EXT_DEFALUT;
         String layoutExtFileName = LAYOUT_EXT_DEFALUT;
         String componentExtFileName = COMPONENT_EXT_DEFALUT;
@@ -123,6 +103,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
             layoutExtFileName = StringUtil.defaultIfBlank(totalConfig.getAttribute(LAYOUT_EXT_FILE_NAME), LAYOUT_EXT_DEFALUT);
             componentExtFileName = StringUtil.defaultIfBlank(totalConfig.getAttribute(COMPONENT_EXT_FILE_NAME), COMPONENT_EXT_DEFALUT);
         }
+     
         //系统内置资源加载器
 
         List<String> scanningPaths = fileResolver.getScanningPaths();
@@ -132,99 +113,6 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
                     componentExtFileName, path);
             engine.addResourceLoader(fileResourceLoader);
         }
-        //用户扩展的第三方资源加载器
-        List<XmlNode> list = totalConfig.getSubNodes(RESOURCE_CONFIG_NAME);
-        if(list!=null){
-        	for(XmlNode node:list){
-            	try {
-    				ResourceLoader<?> loader = createResourceLoader(node);
-    				engine.addResourceLoader(loader);
-    			} catch (Exception e) {
-    				LOGGER.errorMessage("加载用户扩展的资源加载器出错", e);
-    			}
-            }
-        }
-        
-    }
-    
-    private void addFunction(XmlNode totalConfig){
-    	List<XmlNode> list = totalConfig.getSubNodes(TEMPLATE_FUNCTION_NAME);
-    	if(list!=null){
-    		for(XmlNode node:list){
-        		try {
-        			TemplateFunction function = createFunction(node);
-    				engine.addTemplateFunction(function);
-    			} catch (Exception e) {
-    				LOGGER.errorMessage("加载模板函数出错", e);
-    			}
-        	}
-    	}
-    	
-    }
-    
-    private void configI18nVisitor(XmlNode totalConfig){
-    	XmlNode node = totalConfig.getSubNode(I18N_VISITOR_NAME);
-    	try {
-    		I18nVisitor i18n = createI18nVisitor(node);
-	    	engine.setI18nVisitor(i18n);
-		} catch (Exception e) {
-			LOGGER.errorMessage("加载国际化资源访问器出错", e);
-		}
-    }
-    
-    private void configEngineProperties(XmlNode totalConfig){
-    	List<XmlNode> list = totalConfig.getSubNodes(INIT_PARAM_NAME);
-    	if(list!=null){
-    		for(XmlNode node:list){
-        		try{
-        			String name = node.getAttribute("name");
-        			String value = node.getAttribute("value");
-        			
-        			if("encode".equalsIgnoreCase(name)){
-        			   engine.setEncode(StringUtil.defaultIfBlank(value, "UTF-8"));
-        			}else if("cacheEnabled".equalsIgnoreCase(name)){
-        				engine.setCacheEnabled(Boolean.parseBoolean(StringUtil.defaultIfBlank(value, "false")));
-        			}else if("safeVariable".equalsIgnoreCase(name)){
-        				engine.setSafeVariable(Boolean.parseBoolean(StringUtil.defaultIfBlank(value, "false")));
-        			}else if("compactMode".equalsIgnoreCase(name)){
-        				engine.setCompactMode(Boolean.parseBoolean(StringUtil.defaultIfBlank(value, "false")));
-        			}
-        		}catch (Exception e) {
-        			LOGGER.errorMessage("设置模板引擎属性[{0}]出错,属性值[{1}]", e ,node.getAttribute("name"),node.getAttribute("value"));
-    			}
-        	}
-    	}
-    	
-    }
-    
-    private ResourceLoader<?> createResourceLoader(XmlNode node) throws Exception{
-    	if(node==null){
-  		   return null;
-  		}
-    	String beanName = node.getAttribute("name");
-    	LOGGER.logMessage(LogLevel.INFO, "正在加载用户扩展的资源加载器[{0}]",beanName);
-    	ClassLoader loader = this.getClass().getClassLoader();
-    	return BeanContainerFactory.getBeanContainer(loader).getBean(beanName);
-    }
-    
-    private I18nVisitor createI18nVisitor(XmlNode node) throws Exception{
-    	if(node==null){
- 		   return null;
- 		}
-    	String beanName = node.getAttribute("name");
-    	LOGGER.logMessage(LogLevel.INFO, "正在加载国际化资源访问器[{0}]",beanName);
-    	ClassLoader loader = this.getClass().getClassLoader();
-    	return BeanContainerFactory.getBeanContainer(loader).getBean(beanName);
-    }
-    
-    private TemplateFunction createFunction(XmlNode node) throws Exception{
-    	if(node==null){
- 		   return null;
- 		}
-    	String beanName = node.getAttribute("name");
-    	LOGGER.logMessage(LogLevel.INFO, "正在加载模板函数[{0}]",beanName);
-    	ClassLoader loader = this.getClass().getClassLoader();
-    	return BeanContainerFactory.getBeanContainer(loader).getBean(beanName);
     }
 
     public void config(XmlNode applicationConfig, XmlNode componentConfig) {

@@ -7,6 +7,10 @@
 		class="org.tinygroup.template.fileresolver.TinyMacroFileProcessor">
 		<property name="engine" ref="templateEngine"></property>
 	</bean>
+	<bean id="tinyTemplateConfigProcessor" scope="singleton"
+		class="org.tinygroup.template.application.TinyTemplateConfigProcessor">
+		<property name="templateEngine" ref="templateEngine"></property>
+	</bean>
 	<bean id="templateEngine" scope="singleton"
 		class="org.tinygroup.template.impl.TemplateEngineDefault">
 	</bean>
