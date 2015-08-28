@@ -80,7 +80,7 @@ public class TinyContentNegotiatingViewResolver extends
 		}
 		contentNegotiatingViewResolver.setFavorParameter(true);
 		contentNegotiatingViewResolver.setFavorPathExtension(true);
-		contentNegotiatingViewResolver.setIgnoreAcceptHeader(true);
+		contentNegotiatingViewResolver.setIgnoreAcceptHeader(false);
 		contentNegotiatingViewResolver.setServletContext(servletContext);
 		contentNegotiatingViewResolver.setUseJaf(true);
 		contentNegotiatingViewResolver.setUseNotAcceptableStatusCode(false);
