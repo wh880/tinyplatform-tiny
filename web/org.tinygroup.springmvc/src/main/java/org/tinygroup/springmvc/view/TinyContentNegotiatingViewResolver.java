@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletContext;
 
+import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.core.OrderComparator;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.support.WebApplicationObjectSupport;
@@ -27,45 +28,68 @@ public class TinyContentNegotiatingViewResolver extends
 		WebApplicationObjectSupport implements ViewResolver {
 
 	private ContentNegotiatingViewResolver contentNegotiatingViewResolver;
-	
+
 	private Map<String, String> mediaTypes = new ConcurrentHashMap<String, String>();
 
 	private AssemblyService<ViewResolver> assemblyService = new DefaultAssemblyService<ViewResolver>();
 
-	public void setAssemblyService(
-			AssemblyService<ViewResolver> assemblyService) {
+	public void setAssemblyService(AssemblyService<ViewResolver> assemblyService) {
 		this.assemblyService = assemblyService;
 	}
 
 	@Override
 	protected void initServletContext(ServletContext servletContext) {
-		List<ViewResolver> exclusions=new ArrayList<ViewResolver>();
-		exclusions.add(this.getApplicationContext().getBean(TinyViewResolver.class));
+		List<ViewResolver> exclusions = new ArrayList<ViewResolver>();
+		exclusions.add(this.getApplicationContext().getBean(
+				TinyViewResolver.class));
 		try {
-			exclusions.add(this.getApplicationContext().getBean(ContentNegotiatingViewResolver.class));
+			Map<String, ContentNegotiatingViewResolver> contentNegotiatingViewResolvers = BeanFactoryUtils
+					.beansOfTypeIncludingAncestors(
+							this.getApplicationContext(),
+							ContentNegotiatingViewResolver.class);
+			if (!contentNegotiatingViewResolvers.isEmpty()) {
+				exclusions.addAll(contentNegotiatingViewResolvers.values());
+			}
 		} catch (Exception e) {
 		}
 		exclusions.add(this);
 		assemblyService.setApplicationContext(getApplicationContext());
 		assemblyService.setExclusions(exclusions);
-		List<ViewResolver> viewResolvers = assemblyService.findParticipants(ViewResolver.class);
+		List<ViewResolver> viewResolvers = assemblyService
+				.findParticipants(ViewResolver.class);
 		OrderComparator.sort(viewResolvers);
-		contentNegotiatingViewResolver=new ContentNegotiatingViewResolver();
-		contentNegotiatingViewResolver.setApplicationContext(getApplicationContext());
-		contentNegotiatingViewResolver.setDefaultContentType(MediaType.TEXT_HTML);
-//		contentNegotiatingViewResolver.setDefaultViews(defaultViews);
+		contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
+		contentNegotiatingViewResolver
+				.setApplicationContext(getApplicationContext());
+		contentNegotiatingViewResolver
+				.setDefaultContentType(MediaType.TEXT_HTML);
+		try {
+			List<View> defaultViews = new ArrayList<View>();
+			Map<String, DefaultViewsStorage> defaultViewsStorages = BeanFactoryUtils
+					.beansOfTypeIncludingAncestors(
+							this.getApplicationContext(),
+							DefaultViewsStorage.class);
+			if (!defaultViewsStorages.isEmpty()) {
+				for (DefaultViewsStorage defaultViewsStorage : defaultViewsStorages
+						.values()) {
+					defaultViews.addAll(defaultViewsStorage.getDefaultViews());
+				}
+			}
+			contentNegotiatingViewResolver.setDefaultViews(defaultViews);
+		} catch (Exception e) {
+		}
 		contentNegotiatingViewResolver.setFavorParameter(true);
 		contentNegotiatingViewResolver.setFavorPathExtension(true);
-		contentNegotiatingViewResolver.setIgnoreAcceptHeader(false);
-        contentNegotiatingViewResolver.setServletContext(servletContext);
-        contentNegotiatingViewResolver.setUseJaf(true);
-        contentNegotiatingViewResolver.setUseNotAcceptableStatusCode(false);
-        contentNegotiatingViewResolver.setMediaTypes(mediaTypes);
-        contentNegotiatingViewResolver.setViewResolvers(viewResolvers);
+		contentNegotiatingViewResolver.setIgnoreAcceptHeader(true);
+		contentNegotiatingViewResolver.setServletContext(servletContext);
+		contentNegotiatingViewResolver.setUseJaf(true);
+		contentNegotiatingViewResolver.setUseNotAcceptableStatusCode(false);
+		contentNegotiatingViewResolver.setMediaTypes(mediaTypes);
+		contentNegotiatingViewResolver.setViewResolvers(viewResolvers);
 	}
-	
+
 	public void setMediaTypes(Map<String, String> mediaTypes) {
-		this.mediaTypes=mediaTypes;
+		this.mediaTypes = mediaTypes;
 	}
 
 	public View resolveViewName(String viewName, Locale locale)
