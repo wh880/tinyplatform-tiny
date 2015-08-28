@@ -156,7 +156,7 @@ public class TinyServletContext implements ServletContext {
 		if (fullContextFileRepository != null) {
 			FileObject fileObject = fullContextFileRepository
 					.getFileObject(path);
-			if (fileObject != null && fileObject.isExist()) {
+			if (fileObject != null && fileObject.isExist()&&fileObject.isInPackage()) {
 				return fileObject.getAbsolutePath();
 			}
 		}
@@ -265,6 +265,10 @@ public class TinyServletContext implements ServletContext {
 	public void setFullContextFileRepository(
 			FullContextFileRepository fullContextFileRepository) {
 		this.fullContextFileRepository = fullContextFileRepository;
+	}
+
+	public ServletContext getOriginalContext() {
+		return originalContext;
 	}
 
 }

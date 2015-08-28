@@ -93,7 +93,6 @@ public class ContentNegotiationEMIResolver extends
 
 	@Override
 	protected String doGetExtension(HttpServletRequest request) {
-		String extension = null;
 		// request url
 		List<String> exts = uriFileExtensionResolver
 				.resolveFileExtensions(request);
@@ -106,7 +105,7 @@ public class ContentNegotiationEMIResolver extends
 			if (request.getParameter(this.parameterName) != null) {
 				String parameterValue = request
 						.getParameter(this.parameterName);
-				extension = getMediaTypeFromParameter(parameterValue);
+				String extension = getMediaTypeFromParameter(parameterValue);
 				if (extension != null) {
 					logger.logMessage(
 							LogLevel.DEBUG,
@@ -148,7 +147,7 @@ public class ContentNegotiationEMIResolver extends
 
 			}
 		}
-		return extension;
+		return null;
 	}
 
 	private String getMediaTypeFromParameter(String parameterValue) {

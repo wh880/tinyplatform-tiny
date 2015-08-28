@@ -98,7 +98,7 @@ public class TinyTemplateLayoutView extends AbstractTemplateView {
 			return true;
 		} catch (Exception e) {
 			logger.logMessage(LogLevel.DEBUG,
-					"Could not load tiny template for URL [{0}]", e, path);
+					"Could not load tiny template for URL [{0}]", path);
 		}
 		return false;
 	}
