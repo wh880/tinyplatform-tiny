@@ -45,7 +45,6 @@ public class TemplateEngineDefault implements TemplateEngine {
     private List<ResourceLoader> resourceLoaderList = new ArrayList<ResourceLoader>();
     private String encode = "UTF-8";
     private I18nVisitor i18nVisitor;
-    private boolean cacheEnabled = false;
     private TemplateCache<String, List<Template>> layoutPathListCache = new TemplateCacheDefault<String, List<Template>>();
     private TemplateCache<String, Macro> macroCache = new TemplateCacheDefault<String, Macro>();
     private TemplateCache<String, Template> templateCache = new TemplateCacheDefault<String, Template>();
@@ -160,14 +159,6 @@ public class TemplateEngineDefault implements TemplateEngine {
         this.compactMode = compactMode;
     }
 
-    public boolean isCacheEnabled() {
-        return cacheEnabled;
-    }
-
-    public TemplateEngineDefault setCacheEnabled(boolean cacheEnabled) {
-        this.cacheEnabled = cacheEnabled;
-        return this;
-    }
 
     public void registerMacroLibrary(String path) throws TemplateException {
         registerMacroLibrary(getMacroLibrary(path));
@@ -312,23 +303,17 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public Template findTemplate(String path) throws TemplateException {
         Template template = null;
-        if (cacheEnabled) {
-            template = templateCache.get(path);
-            if (template == null) {
-                for (ResourceLoader loader : resourceLoaderList) {
-                    template = loader.getTemplate(path);
-                    if (template != null) {
-                        templateCache.put(path, template);
-                        return template;
-                    }
-                }
-            } else {
+        if (!checkModified) {
+            template = repositories.get(path);
+            if (template != null) {
                 return template;
             }
-        } else {
+        }
+        if (template == null) {
             for (ResourceLoader loader : resourceLoaderList) {
                 template = loader.getTemplate(path);
                 if (template != null) {
+                    templateCache.put(path, template);
                     return template;
                 }
             }
@@ -414,7 +399,7 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     private List<Template> getLayoutList(String templatePath) throws TemplateException {
         List<Template> layoutPathList = null;
-        if (cacheEnabled) {
+        if (!checkModified) {
             layoutPathList = layoutPathListCache.get(templatePath);
             if (layoutPathList != null) {
                 return layoutPathList;
@@ -445,7 +430,7 @@ public class TemplateEngineDefault implements TemplateEngine {
                 }
             }
         }
-        if (cacheEnabled) {
+        if (!checkModified) {
             layoutPathListCache.put(templatePath, layoutPathList);
         }
 
@@ -485,7 +470,7 @@ public class TemplateEngineDefault implements TemplateEngine {
             if (macroLibrary != null) {
                 macro = macroLibrary.getMacroMap().get(macroName);
                 if (macro != null) {
-                    if (cacheEnabled) {
+                    if (!checkModified) {
                         macroCache.put(macroName, macro);
                     }
                     return macro;
@@ -508,7 +493,7 @@ public class TemplateEngineDefault implements TemplateEngine {
                 if (macroLibrary != null) {
                     macro = macroLibrary.getMacroMap().get(macroName);
                     if (macro != null) {
-                        if (cacheEnabled) {
+                        if (!checkModified) {
                             macroCache.put(macroName, macro);
                         }
                         return macro;

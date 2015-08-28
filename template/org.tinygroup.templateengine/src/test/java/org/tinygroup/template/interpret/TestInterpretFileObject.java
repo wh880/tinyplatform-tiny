@@ -29,7 +29,6 @@ public class TestInterpretFileObject {
         TemplateContext context = new TemplateContextDefault();
         FileObjectResourceLoader loader = new FileObjectResourceLoader("page", "layout", "component", "d:/aaa/");
         TemplateEngineDefault engine = new TemplateEngineDefault();
-        engine.setCacheEnabled(true);
         engine.addResourceLoader(loader);
 //        Template template = loader.createTemplate(VFS.resolveFile("/Users/luoguo/resourceroot/b.page"));
 //        template.render(context,new OutputStreamWriter(System.out));

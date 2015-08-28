@@ -84,9 +84,6 @@ public class TinyTemplateConfigProcessor extends AbstractApplicationProcessor{
         			if("encode".equalsIgnoreCase(name)){
         				templateEngine.setEncode(StringUtil.defaultIfBlank(value, "UTF-8"));
         				LOGGER.logMessage(LogLevel.INFO, "设置模板引擎参数encode={0}",templateEngine.getEncode());
-        			}else if("cacheEnabled".equalsIgnoreCase(name)){
-        				templateEngine.setCacheEnabled(Boolean.parseBoolean(StringUtil.defaultIfBlank(value, "false")));
-        				LOGGER.logMessage(LogLevel.INFO, "设置模板引擎参数cacheEnabled={0}",templateEngine.isCacheEnabled());
         			}else if("safeVariable".equalsIgnoreCase(name)){
         				templateEngine.setSafeVariable(Boolean.parseBoolean(StringUtil.defaultIfBlank(value, "false")));
         				LOGGER.logMessage(LogLevel.INFO, "设置模板引擎参数safeVariable={0}",templateEngine.isSafeVariable());

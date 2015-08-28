@@ -245,20 +245,6 @@ public interface TemplateEngine extends TemplateContextOperator {
      */
     String getResourceContent(String path) throws TemplateException;
 
-    /**
-     * 返回是否允许缓冲
-     *
-     * @return
-     */
-    boolean isCacheEnabled();
-
-    /**
-     * 设置是否允许缓冲
-     *
-     * @param cacheEnabled
-     * @return
-     */
-    TemplateEngine setCacheEnabled(boolean cacheEnabled);
 
     /**
      * 注册库文件中所有的宏

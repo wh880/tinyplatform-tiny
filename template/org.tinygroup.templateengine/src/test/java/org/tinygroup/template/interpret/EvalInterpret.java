@@ -22,6 +22,8 @@ import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.loader.StringResourceLoader;
 
+import java.util.HashMap;
+
 /**
  * Created by luoguo on 15/7/22.
  */
@@ -30,8 +32,9 @@ public class EvalInterpret {
         TemplateContext context = new TemplateContextDefault();
         StringResourceLoader loader = new StringResourceLoader();
         TemplateEngineDefault engine = new TemplateEngineDefault();
+        HashMap map;
         engine.addResourceLoader(loader);
-        Template template = loader.createTemplate("#macro abc(name)hello,${name} #bodyContent#end #@abc('aaa')00000#end");
+        Template template = loader.createTemplate("#set(map={'a':1}) #for(var:map)${var.key}: ${var.value}#end");
         template.render(context, System.out);
     }
 

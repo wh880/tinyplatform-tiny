@@ -85,6 +85,7 @@ public final class TemplateUtil {
                         propertyUtilsBean.getPropertyDescriptor(object, fieldName);
                 if (descriptor != null && descriptor.getReadMethod() != null) {
                     method = object.getClass().getMethod(descriptor.getReadMethod().getName());
+                    method.setAccessible(true);
                     if (stringMethodMap == null) {
                         stringMethodMap = new HashMap<String, Method>();
                         methodCache.put(object.getClass(), stringMethodMap);

@@ -29,7 +29,7 @@ import java.io.OutputStream;
 public final class TinyTemplate {
     public static void main(String[] args) throws TemplateException {
         TemplateEngine engine = new TemplateEngineDefault();
-        engine.setCacheEnabled(true);
+        engine.setCheckModified(false);
         TemplateContext context = new TemplateContextDefault();
         context.put("outputEncoding", "GBK");
         context.put("items", StockModel.dummyItems());
