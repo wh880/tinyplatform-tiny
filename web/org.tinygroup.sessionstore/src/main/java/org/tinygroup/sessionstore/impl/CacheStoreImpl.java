@@ -52,7 +52,7 @@ public class CacheStoreImpl implements CacheStore {
 	            Object attrValue = entry.getValue();
 
 	            if (attrValue == null) {
-	                cache.remove(attrName);
+	                cache.remove(sessionID,attrName);
 	            } else {
 	                cache.put(sessionID,attrName, attrValue);
 	            }
