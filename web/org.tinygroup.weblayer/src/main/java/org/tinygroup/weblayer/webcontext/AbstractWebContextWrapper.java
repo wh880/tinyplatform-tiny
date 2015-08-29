@@ -188,7 +188,7 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements
 		this.put("tinyRequestLocalName", request.getLocalName());
 		this.put("tinyRequestLocalPort", request.getLocalPort());
 		this.put("tinyRequestPathInfo", request.getPathInfo());
-		this.put("tinyRequestLocalName", request.getPathTranslated());
+		this.put("tinyRequestPathTranslated", request.getPathTranslated());
 		this.put("tinyRequestProtocol", request.getProtocol());
 		this.put("tinyRequestQueryString", request.getQueryString());
 		this.put("tinyRequestRequestURI", request.getRequestURI());
