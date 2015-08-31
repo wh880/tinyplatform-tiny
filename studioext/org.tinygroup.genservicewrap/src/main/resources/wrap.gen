@@ -1,0 +1,4 @@
+<wrap-gen title="服务包装代码生成">
+	<field key="wrap_project" title="目标工程" editType="project_tree"></field>
+	<field key="wrap_package" title="包路径" editType="project_package_tree"></field>
+</wrap-gen>

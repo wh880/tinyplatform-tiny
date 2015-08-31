@@ -350,6 +350,7 @@
         <module>htmlparser</module>
         <module>codegen</module>
         <module>sample</module>
+        <module>studioext</module>
     </modules>
 	<dependencyManagement>
 		<dependencies>

@@ -1,0 +1,3 @@
+<sql-gen title="数据库SQL生成">
+	<field key="file_dir" title="生成位置" editType="openfile"></field>
+</sql-gen>

@@ -1,0 +1,5 @@
+<dsl-gen title="DSL代码生成">
+	<field key="interface_project" title="接口工程" editType="project_tree"></field>
+	<field key="" title="" editType="space"></field>
+	<field key="impl_project" title="实现工程" editable="false" editType="project_tree"></field>
+</dsl-gen>
