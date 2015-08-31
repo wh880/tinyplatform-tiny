@@ -63,6 +63,9 @@ public class TemplateFromContext extends AbstractTemplate {
                 if (left > 0 || right > 0) {
                     text = text.substring(left, text.length() - right);
                 }
+                if(getTemplateEngine().isCompactMode()){
+                    text.trim();
+                }
                 bytes = text.getBytes(getTemplateEngine().getEncode());
                 terminalNodeMap.put(terminalNode, bytes);
             } catch (UnsupportedEncodingException e) {
