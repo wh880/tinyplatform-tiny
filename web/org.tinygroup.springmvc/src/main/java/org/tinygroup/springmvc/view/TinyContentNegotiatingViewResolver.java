@@ -78,13 +78,27 @@ public class TinyContentNegotiatingViewResolver extends
 			contentNegotiatingViewResolver.setDefaultViews(defaultViews);
 		} catch (Exception e) {
 		}
+		contentNegotiatingViewResolver.setMediaTypes(mediaTypes);
+		try {
+			Map<String, MediaTypeMapping> mappings = BeanFactoryUtils
+					.beansOfTypeIncludingAncestors(
+							this.getApplicationContext(),
+							MediaTypeMapping.class);
+			if (!mappings.isEmpty()) {
+				for (MediaTypeMapping mediaTypeMapping : mappings.values()) {
+					contentNegotiatingViewResolver
+							.setMediaTypes(mediaTypeMapping.getMediaTypes());
+				}
+			}
+		} catch (Exception e) {
+
+		}
 		contentNegotiatingViewResolver.setFavorParameter(true);
 		contentNegotiatingViewResolver.setFavorPathExtension(true);
 		contentNegotiatingViewResolver.setIgnoreAcceptHeader(false);
 		contentNegotiatingViewResolver.setServletContext(servletContext);
 		contentNegotiatingViewResolver.setUseJaf(true);
 		contentNegotiatingViewResolver.setUseNotAcceptableStatusCode(false);
-		contentNegotiatingViewResolver.setMediaTypes(mediaTypes);
 		contentNegotiatingViewResolver.setViewResolvers(viewResolvers);
 	}
 
