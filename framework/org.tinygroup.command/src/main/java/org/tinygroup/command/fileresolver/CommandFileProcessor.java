@@ -15,6 +15,8 @@
  */
 package org.tinygroup.command.fileresolver;
 
+import java.io.InputStream;
+
 import com.thoughtworks.xstream.XStream;
 import org.tinygroup.command.CommandSystem;
 import org.tinygroup.command.config.Commands;
@@ -39,8 +41,10 @@ public class CommandFileProcessor extends AbstractFileProcessor {
 			LOGGER.logMessage(LogLevel.INFO, "正在加载Commands文件[{0}]",
 					fileObject.getAbsolutePath());
 			try {
-				Commands commands = (Commands) stream.fromXML(fileObject
-						.getInputStream());
+				InputStream inputStream = fileObject
+						.getInputStream();
+				Commands commands = (Commands) stream.fromXML(inputStream);				
+				inputStream.close();
 				CommandSystem.getInstance(commands.getPackageName(), commands,
 						System.out);
 			} catch (Exception e) {

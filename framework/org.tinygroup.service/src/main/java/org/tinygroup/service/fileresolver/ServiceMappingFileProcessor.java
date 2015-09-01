@@ -15,6 +15,8 @@
  */
 package org.tinygroup.service.fileresolver;
 
+import java.io.InputStream;
+
 import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
@@ -63,8 +65,14 @@ public class ServiceMappingFileProcessor extends AbstractFileProcessor {
 			if (oldMappings != null) {
 				manager.removeServiceMappings(oldMappings);
 			}
+			InputStream inputStream = fileObject.getInputStream();
 			ServiceViewMappings mappings = (ServiceViewMappings) stream
-					.fromXML(fileObject.getInputStream());
+					.fromXML(inputStream);
+			try {
+				inputStream.close();
+			} catch (Exception e) {
+				LOGGER.errorMessage("关闭文件流时出错,文件路径:{}",e, fileObject.getAbsolutePath());
+			}
 			manager.addServiceMappings(mappings);
 			caches.put(fileObject.getAbsolutePath(), mappings);
 			LOGGER.logMessage(LogLevel.INFO, "读取ServiceMappings文件[{0}]结束",

@@ -22,6 +22,7 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 import org.tinygroup.xstream.config.*;
 
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.Collection;
 
@@ -58,8 +59,14 @@ public class XStreamFileProcessor extends AbstractFileProcessor {
 			LOGGER.logMessage(LogLevel.INFO, "找到XStream配置文件[{0}]，并开始加载...",
 					fileObject.getAbsolutePath());
 			XStream loadXStream = XStreamFactory.getXStream();
+			InputStream inputStream = fileObject.getInputStream();
 			XStreamConfiguration xstreamConfiguration = (XStreamConfiguration) loadXStream
-					.fromXML(fileObject.getInputStream());
+					.fromXML(inputStream);
+			try {
+				inputStream.close();
+			} catch (Exception e) {
+				LOGGER.errorMessage("关闭文件流时出错,文件路径:{}",e, fileObject.getAbsolutePath());
+			}
 			XStream xStream = XStreamFactory.getXStream(xstreamConfiguration
 					.getPackageName());
 
