@@ -24,6 +24,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class PageFlowFileProcessor extends AbstractFileProcessor {
@@ -68,7 +69,13 @@ public class PageFlowFileProcessor extends AbstractFileProcessor {
 			if (oldFlow != null) {
 				flowExecutor.removeFlow(oldFlow);
 			}	
-			Flow flow = (Flow) stream.fromXML(fileObject.getInputStream());
+			InputStream inputStream = fileObject.getInputStream();
+			Flow flow = (Flow) stream.fromXML(inputStream);
+			try {
+				inputStream.close();
+			} catch (Exception e) {
+				LOGGER.errorMessage("关闭文件流时出错,文件路径:{}",e, fileObject.getAbsolutePath());
+			}
 			flowExecutor.addFlow(flow);
 			caches.put(fileObject.getAbsolutePath(), flow);
 			LOGGER.logMessage(LogLevel.INFO, "读取页面流程pageflow文件[{0}]结束",
