@@ -9,6 +9,8 @@
     <packaging>pom</packaging>
     <modules>
 		<module>org.tinygroup.cepcoreimpl</module>
+		<module>org.tinygroup.cepcoregovernance</module>
+		<module>org.tinygroup.spring421</module>
 		<module>org.tinygroup.spring305</module>
 	    <module>org.tinygroup.spring256</module>
         <module>org.tinygroup.nettyremote</module>
