@@ -15,10 +15,10 @@
  */
 package org.tinygroup.parser.filter;
 
-import org.tinygroup.parser.Node;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.parser.Node;
 
 /**
  * 根据名字进行过滤
@@ -49,6 +49,12 @@ public class NameFilter<T extends Node<T>> extends AbstractFilterImpl<T> {
 	}
 
 	private void findNodeListWithName(List<T> result, T node, String nodeName) {
+//		if(StringUtil.isBlank(nodeName)){
+//			if (isRightNode(node)) {
+//				result.add(node);
+//			}
+//			return;
+//		}
 		String caseSensitiveName = node.getCaseSensitiveName(nodeName);
 		if (caseSensitiveName.equals(node.getNodeName())) {
 			if (isRightNode(node)) {
