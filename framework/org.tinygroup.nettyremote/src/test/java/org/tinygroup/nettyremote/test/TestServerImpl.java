@@ -19,7 +19,7 @@ import org.tinygroup.nettyremote.impl.ServerImpl;
 
 public class TestServerImpl {
 	public static void main(String[] args) {
-		ServerImpl serverImpl = new ServerImpl(9090);
+		ServerImpl serverImpl = new ServerImpl(9090,true);
 		serverImpl.start();
 		System.out.println("start");
 //		try {
