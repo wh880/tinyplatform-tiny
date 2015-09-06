@@ -36,13 +36,11 @@ public class TinyWebTemplateContext extends TemplateContextDefault implements
 	@SuppressWarnings("unchecked")
 	public <T> T get(String name) {
 		return (T)super.get(name);
-
 	}
 
 	@Override
 	public boolean exist(String name) {
 		return super.exist(name);
-
 	}
 
 

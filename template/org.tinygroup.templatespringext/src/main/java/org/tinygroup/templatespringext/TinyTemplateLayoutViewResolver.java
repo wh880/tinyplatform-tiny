@@ -38,13 +38,9 @@ public class TinyTemplateLayoutViewResolver extends
 
 	private static final String VIEW_EXT_FILENAME = "page";// 视图扩展后缀
 	private static final String PAGELET_EXT_FILE_NAME = "pagelet";
-
 	private String viewExtFileName = VIEW_EXT_FILENAME;
-	
 	private String noLayoutExtFileName=PAGELET_EXT_FILE_NAME;
-	
 	private static final String MacroExt = "component";
-	
 	private TemplateEngine templateEngine;
 
 	public TinyTemplateLayoutViewResolver() {
@@ -55,7 +51,6 @@ public class TinyTemplateLayoutViewResolver extends
 	public void setTemplateEngine(TemplateEngine templateEngine) {
 		this.templateEngine = templateEngine;
 	}
-
 
 	@Override
 	protected void initApplicationContext(){
@@ -110,34 +105,33 @@ public class TinyTemplateLayoutViewResolver extends
 	}
 
 	private void registerMacroFile(ResourceLoader rl){
-		FileObjectResourceLoader resourceloader= (FileObjectResourceLoader)rl;
-		FileObject file = resourceloader.getRootFileObject();
-		resolveFileDir(file ,resourceloader.getRootFileObject().getFileName());
+		FileObjectResourceLoader resourceLoader= (FileObjectResourceLoader)rl;
+		FileObject file = resourceLoader.getRootFileObject();
+		resolveFileDir(file ,resourceLoader.getRootFileObject().getFileName());
 		
 	}
 	
-	private void resolveFileDir(FileObject file, String rootname){
+	private void resolveFileDir(FileObject file, String rootName){
 		if(file.isFolder()){
 			for(FileObject f:file.getChildren()){
-				resolveFileDir(f ,rootname);
+				resolveFileDir(f ,rootName);
 			}
 		}else{
 			String name = file.getFileName();
 			int n = name.lastIndexOf(".");
-			String fileext = name.substring(n+1);
-			String parent = rootname;
-			if(MacroExt.equals(fileext)){
+			String fileExt = name.substring(n+1);
+			String parent = rootName;
+			if(MacroExt.equals(fileExt)){
 				try {
 					String path =getFilePath(file,parent).substring(1);
 					templateEngine.registerMacroLibrary(path);
 				} catch (TemplateException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
-		
 	}
+
 	private void initFunctions(){
 		Map<String,TemplateFunction> functions = BeanFactoryUtils.beansOfTypeIncludingAncestors(getApplicationContext(), TemplateFunction.class, true, false);
 		for(TemplateFunction f : functions.values()){
@@ -150,6 +144,5 @@ public class TinyTemplateLayoutViewResolver extends
 			return getFilePath(file.getParent(), parent)+"/"+file.getFileName();
 		}
 		return "";
-
 	}
 }
