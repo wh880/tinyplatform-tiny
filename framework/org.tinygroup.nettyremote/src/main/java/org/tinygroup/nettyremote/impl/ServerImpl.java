@@ -35,21 +35,23 @@ import java.io.IOException;
 public class ServerImpl implements Server {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ServerImpl.class);
-	private ServerThread serverThread = new ServerThread();
+//	private ServerThread serverThread = new ServerThread();
 	private boolean start = false;
+	private boolean startFailStop = false;
 	private EventLoopGroup bossGroup = new NioEventLoopGroup();
 	private EventLoopGroup workerGroup = new NioEventLoopGroup();
 	private int localPort;
 
-	public ServerImpl(int localPort) {
+	public ServerImpl(int localPort,boolean startFailStop) {
 		this.localPort = localPort;
+		this.startFailStop = startFailStop;
 
 	}
 
 	public void start() {
 		LOGGER.logMessage(LogLevel.INFO, "启动服务端线程,端口:{1}", localPort);
 		setStart(false);
-		serverThread.start();
+		startRun();
 	}
 
 	protected void init(ServerBootstrap b) {
@@ -91,21 +93,20 @@ public class ServerImpl implements Server {
 		}
 	}
 
-	class ServerThread extends Thread {
-		public void run() {
-			if (!start) {
-				setStart(true);
-				try {
-					bind();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					// e.printStackTrace();
-					LOGGER.errorMessage("服务端启动失败", e);
+	public void startRun() {
+		if (!start) {
+			setStart(true);
+			try {
+				bind();
+			} catch (Exception e) {
+				LOGGER.errorMessage("服务端启动失败", e);
+				stop();
+				if(startFailStop){
 					throw new RuntimeException("服务端启动失败", e);
 				}
 			}
-
 		}
+
 	}
 
 	public boolean isStart() {
