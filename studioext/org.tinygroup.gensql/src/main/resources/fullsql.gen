@@ -1,3 +1,3 @@
-<sql-gen title="数据库增量SQL生成">
+<full-sql-gen title="数据库全量SQL生成">
 	<field key="file_dir" title="生成位置" editType="openfile"></field>
-</sql-gen>
+</full-sql-gen>
