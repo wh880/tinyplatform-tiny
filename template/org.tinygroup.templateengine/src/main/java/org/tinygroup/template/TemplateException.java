@@ -39,8 +39,12 @@ public class TemplateException extends Exception {
     }
 
     public void setContext(ParserRuleContext context, String fileName) {
-        this.context = context;
-        this.fileName = fileName;
+        if(context==null) {
+            this.context = context;
+        }
+        if(fileName==null) {
+            this.fileName = fileName;
+        }
     }
 
     public TemplateException(String msg, ParserRuleContext context, String fileName) {
