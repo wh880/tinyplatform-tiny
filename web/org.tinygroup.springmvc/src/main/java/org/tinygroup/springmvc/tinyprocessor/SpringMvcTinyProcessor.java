@@ -49,6 +49,7 @@ import org.tinygroup.springmvc.adapter.SpringMVCAdapter;
 import org.tinygroup.springmvc.extension.ExtensionMappingInstance;
 import org.tinygroup.springmvc.extension.ExtensionMappingInstanceResolver;
 import org.tinygroup.springmvc.extension.RequestInstanceHolder;
+import org.tinygroup.springmvc.util.WebUtil;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
@@ -57,6 +58,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -143,6 +145,9 @@ public class SpringMvcTinyProcessor extends AbstractTinyProcessor implements
 	 */
 	public static final String THEME_SOURCE_ATTRIBUTE = SpringMvcTinyProcessor.class
 			.getName() + ".THEME_SOURCE";
+	
+	public static final String REQUEST_URI = SpringMvcTinyProcessor.class
+			.getName() + "REQUEST_URI";
 
 	public void setExtensionMappingInstanceResolver(
 			ExtensionMappingInstanceResolver extensionMappingInstanceResolver) {
@@ -287,6 +292,7 @@ public class SpringMvcTinyProcessor extends AbstractTinyProcessor implements
 		RequestInstanceHolder.setMappingInstance(mappingInstance);
 		RequestInstanceHolder.setServletWebRequest(new ServletWebRequest(
 				request, response));
+		RequestInstanceHolder.setExtension(WebUtil.getExtension(requestUri));
 		// // Make framework objects available to handlers and view objects.
 		request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE,
 				applicationContext);
@@ -298,6 +304,7 @@ public class SpringMvcTinyProcessor extends AbstractTinyProcessor implements
 		try {
 			doDispatch(request, response);
 		} finally {
+			RequestInstanceHolder.clearThreadLocal();
 			// Restore the original attribute snapshot, in case of an include.
 			if (attributesSnapshot != null) {
 				restoreAttributesAfterInclude(request, attributesSnapshot);

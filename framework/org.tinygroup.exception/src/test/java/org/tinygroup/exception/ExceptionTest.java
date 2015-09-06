@@ -15,11 +15,12 @@
  */
 package org.tinygroup.exception;
 
+
+
 import junit.framework.TestCase;
 
 public class ExceptionTest extends TestCase {
 
-	
 	private  ExceptionTranslator translator;
 	
 	@Override
@@ -31,11 +32,6 @@ public class ExceptionTest extends TestCase {
 
 
 	public void testException(){
-		
-		
-		
-		
-		
 	}
 	
 	
