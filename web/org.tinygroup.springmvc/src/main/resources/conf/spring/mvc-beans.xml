@@ -124,6 +124,7 @@
 
 	<bean name="templateViewResolver"
 		class="org.tinygroup.springmvc.view.TinyTemplateLayoutViewResolver">
+		<property name="contentType" value="text/html;charset=utf-8"></property>
 	</bean>
 
 

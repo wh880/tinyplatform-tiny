@@ -15,9 +15,13 @@
  */
 package org.tinygroup.springmvc.view;
 
+import java.util.Locale;
+
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 import org.springframework.web.servlet.view.AbstractUrlBasedView;
 import org.tinygroup.commons.tools.Assert;
+import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.springmvc.extension.RequestInstanceHolder;
 import org.tinygroup.template.TemplateEngine;
 
 /**
@@ -87,9 +91,35 @@ public class TinyTemplateLayoutViewResolver extends
 		}
 		int sepIndex = viewName.lastIndexOf(".");
 		if(sepIndex==-1){
-			url.append(".").append(viewExtFileName);
+			url.append(".").append(getExtension());
 		}
 		return url.toString();
+	}
+	
+	private String getExtension(){
+		String extension = RequestInstanceHolder.getExtension();
+		if(StringUtil.isBlank(extension)||!isExtFit(extension)){
+			return viewExtFileName;
+		}
+		return extension;
+	}
+	
+	private boolean isExtFit(String extension){
+		return  viewExtFileName.equals(extension)||noLayoutExtFileName.equals(extension);
+	}
+	
+	
+	protected Object getCacheKey(String viewName, Locale locale) {
+		String extension = RequestInstanceHolder.getExtension();
+		if(StringUtil.isBlank(extension)){
+			return super.getCacheKey(viewName, locale);
+		}
+		return newViewName(viewName,extension)+"_"+locale;
+	}
+	
+	
+	private String newViewName(String viewName, String extension) {
+		return viewName+"."+extension;
 	}
 
 	@Override

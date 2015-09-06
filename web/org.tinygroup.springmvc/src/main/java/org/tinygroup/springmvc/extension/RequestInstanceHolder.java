@@ -24,44 +24,55 @@ import org.springframework.web.context.request.ServletWebRequest;
  * 
  */
 public class RequestInstanceHolder {
-	
-	
-	private static final ThreadLocal<ExtensionMappingInstance> extensionLocal=new InheritableThreadLocal<ExtensionMappingInstance>();
 
-	  /**
-     * request local
-     */
+	private static final ThreadLocal<ExtensionMappingInstance> extensionLocal = new InheritableThreadLocal<ExtensionMappingInstance>();
+
+	/**
+	 * request local
+	 */
 	private static final ThreadLocal<ServletWebRequest> reqLocal = new InheritableThreadLocal<ServletWebRequest>();
-	
-	public static ExtensionMappingInstance getMappingInstance(){
+
+	private static final ThreadLocal<String> extension = new InheritableThreadLocal<String>();
+
+	public static ExtensionMappingInstance getMappingInstance() {
 		return extensionLocal.get();
 	}
-	
-	public static void setMappingInstance(ExtensionMappingInstance mappingInstance){
+
+	public static void setMappingInstance(
+			ExtensionMappingInstance mappingInstance) {
 		extensionLocal.set(mappingInstance);
 	}
-	
-	 /**
-     * 从本地线程中取得{@link ServletWebRequest}对象。
-     *
-     * @return
-     */
-    public static ServletWebRequest getServletWebRequest() {
-        return reqLocal.get();
-    }
 
-    /**
-     * 在本地线程中设置{@link ServletWebRequest}对象。
-     *
-     * @param servletWebRequest
-     */
-    public static void setServletWebRequest(ServletWebRequest servletWebRequest) {
-        reqLocal.set(servletWebRequest);
-    }
-	
-	public static void  clearMappingInstance(){
+	/**
+	 * 从本地线程中取得{@link ServletWebRequest}对象。
+	 *
+	 * @return
+	 */
+	public static ServletWebRequest getServletWebRequest() {
+		return reqLocal.get();
+	}
+
+	/**
+	 * 在本地线程中设置{@link ServletWebRequest}对象。
+	 *
+	 * @param servletWebRequest
+	 */
+	public static void setServletWebRequest(ServletWebRequest servletWebRequest) {
+		reqLocal.set(servletWebRequest);
+	}
+
+	public static String getExtension() {
+		return extension.get();
+	}
+
+	public static void setExtension(String ext) {
+		extension.set(ext);
+	}
+
+	public static void clearThreadLocal() {
 		extensionLocal.set(null);
 		reqLocal.set(null);
+		extension.set(null);
 	}
-	
+
 }
