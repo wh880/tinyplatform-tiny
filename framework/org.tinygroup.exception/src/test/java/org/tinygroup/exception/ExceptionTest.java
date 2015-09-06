@@ -16,7 +16,6 @@
 package org.tinygroup.exception;
 
 
-import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 import junit.framework.TestCase;
 
@@ -33,19 +32,6 @@ public class ExceptionTest extends TestCase {
 
 
 	public void testException(){
-		AbstractTestUtil.init(null, true);
-		BizExecute biz = new BizExecute();
-		try{
-			biz.execute();
-		}catch(BizRuntimeException e){
-			assertEquals(e.getMessage(), "错误1");
-		}
-		try{
-			biz.executeWithMsg();
-		}catch(BizRuntimeException e){
-			assertEquals(e.getMessage(),"hello error");
-		}
-//		throw new BizRuntimeException("0TE111011027","haha");
 	}
 	
 	
