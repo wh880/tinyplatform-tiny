@@ -45,13 +45,25 @@ public class InitDataInstallProcessor extends AbstractInstallProcessor {
 		this.initDataProcessor = initDataProcessor;
 	}
 
-
-	
 	public List<String> getDealSqls(String language, Connection con) throws SQLException {
 		List<String> sqls=new ArrayList<String>();
 		sqls.addAll(initDataProcessor.getDeinitSql(language));
 		sqls.addAll(initDataProcessor.getInitSql(language));
 		return sqls;
+	}
+
+
+
+	public List<String> getFullSqls(String language, Connection con)
+			throws SQLException {
+		return getDealSqls(language, con);
+	}
+
+
+
+	public List<String> getUpdateSqls(String language, Connection con)
+			throws SQLException {
+		return getDealSqls(language, con);
 	}
 
 

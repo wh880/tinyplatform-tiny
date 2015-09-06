@@ -33,6 +33,9 @@
       <dialect-type language="mysql" base-type="VARCHAR" ext-type="(${length})" default-value="">
         <placeholder-value name="length"/>
       </dialect-type>
+      <dialect-type language="oracle" base-type="VARCHAR2" ext-type="(${length})" default-value="">
+        <placeholder-value name="length"/>
+      </dialect-type>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_varchar">
@@ -47,6 +50,9 @@
         <placeholder-value name="length"/>
       </dialect-type>
       <dialect-type language="mysql" base-type="VARCHAR" ext-type="(${length})" default-value="">
+        <placeholder-value name="length"/>
+      </dialect-type>
+      <dialect-type language="oracle" base-type="VARCHAR2" ext-type="(${length})" default-value="">
         <placeholder-value name="length"/>
       </dialect-type>
     </dialect-type-list>
@@ -88,6 +94,7 @@
       <dialect-type language="java" base-type="Integer"/>
       <dialect-type language="derby" base-type="INT" ext-type=""/>
       <dialect-type language="mysql" base-type="INT"/>
+      <dialect-type language="oracle" base-type="NUMBER"/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_integer">

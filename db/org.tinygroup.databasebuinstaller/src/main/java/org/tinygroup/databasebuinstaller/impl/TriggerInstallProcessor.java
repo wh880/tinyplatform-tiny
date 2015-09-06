@@ -35,15 +35,30 @@ public class TriggerInstallProcessor extends AbstractInstallProcessor {
 		this.processor = processor;
 	}
 
-	public List<String> getDealSqls(String language, Connection con) throws SQLException {
+	private List<String> getSqls(String language, Connection con,boolean isFull) throws SQLException {
 		List<String> sqls=new ArrayList<String>();
 		List<Trigger> triggers=processor.getTriggers(language);
 		for (Trigger trigger : triggers) {
-			if(!processor.checkTriggerExist(language, trigger, con)){
+			//全量或者不存在
+			if(isFull || !processor.checkTriggerExist(language, trigger, con)){
 				sqls.add(processor.getCreateSql(trigger.getName(), language));
 			}
 		}
 		return sqls;
+	}
+	
+	public List<String> getDealSqls(String language, Connection con) throws SQLException {
+		return getUpdateSqls(language, con);
+	}
+
+	public List<String> getFullSqls(String language, Connection con)
+			throws SQLException {
+		return getSqls(language, con,true);
+	}
+
+	public List<String> getUpdateSqls(String language, Connection con)
+			throws SQLException {
+		return getSqls(language, con,false);
 	}
 
 }

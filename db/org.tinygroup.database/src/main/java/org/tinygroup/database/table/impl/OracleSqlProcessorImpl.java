@@ -15,6 +15,8 @@
  */
 package org.tinygroup.database.table.impl;
 
+import java.util.List;
+
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.table.TableField;
@@ -76,9 +78,9 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 	protected void appendComment(String comment, StringBuffer ddlBuffer) {
 	}
 
-	protected void appendFooter(StringBuffer ddlBuffer, Table table) {
-		super.appendFooter(ddlBuffer, table);
-        appendComment(ddlBuffer, table);
+	protected void appendFooter(StringBuffer ddlBuffer, Table table,List<String> list) {
+		super.appendFooter(ddlBuffer, table,list);
+		appendComment(ddlBuffer, table,list);
 	}
 
 	/**
@@ -86,20 +88,32 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 	 * @param ddlBuffer
 	 * @param table
 	 */
-	private void appendComment(StringBuffer ddlBuffer, Table table) {
+	protected void appendComment(String comment, StringBuffer ddlBuffer,List<String> list){
+		//do nothing
+	}
+	/**
+	 * 添加oracle的字段备注信息
+	 * @param ddlBuffer
+	 * @param table
+	 */
+	private void appendComment(StringBuffer ddlBuffer, Table table, List<String> list) {
 		for (TableField field : table.getFieldList()) {
+
 			StandardField standardField = MetadataUtil.getStandardField(field
 					.getStandardFieldId(), this.getClass().getClassLoader());
+			if (standardField.getDescription() == null)	continue;
 			String columnName = null;
 			if (StringUtil.isBlank(table.getSchema())) {
-				columnName = standardField.getName();
+				columnName = String.format("%s.%s", table.getName(),
+						standardField.getName());
 			} else {
-				columnName = String.format("%s.%s", table.getSchema(),
+				columnName = String.format("%s.%s.%s", table.getSchema(),table.getName(),
 						standardField.getName());
 			}
-			ddlBuffer.append(" COMMENT ON COLUMN ").append(columnName)
-					.append(" is ").append("'").append(field.getComment())
-					.append("'");
+			StringBuffer commentBuffer = new StringBuffer();
+			commentBuffer.append("COMMENT ON COLUMN ").append(columnName)
+					.append(" IS ").append("'").append(standardField.getDescription()).append("'");
+			list.add(commentBuffer.toString());
 		}
 	}
 }

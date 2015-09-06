@@ -166,6 +166,13 @@ public class DatabaseInstallerStart {
 		LOGGER.logMessage(LogLevel.INFO, "检测数据库变化过程结束");
 		return sqls;
 	}
+	
+	public Map<Class, List<String>> getFullSqls() {
+		LOGGER.logMessage(LogLevel.INFO, "开始生成全量sql");
+		Map<Class, List<String>> sqls = installer.getFullSqls();
+		LOGGER.logMessage(LogLevel.INFO, "生成全量sql结束");
+		return sqls;
+	}
 
 	private void initFileResolver() {
 		FileResolver fileResolver = createFileResolver();
