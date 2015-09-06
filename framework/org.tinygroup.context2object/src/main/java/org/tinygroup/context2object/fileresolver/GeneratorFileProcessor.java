@@ -15,6 +15,8 @@
  */
 package org.tinygroup.context2object.fileresolver;
 
+import java.io.InputStream;
+
 import com.thoughtworks.xstream.XStream;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context2object.ObjectAssembly;
@@ -75,8 +77,14 @@ public class GeneratorFileProcessor extends AbstractFileProcessor {
 			if (oldConfig != null) {
 				removeConfig(oldConfig, generator);
 			}
-			GeneratorConfig config = (GeneratorConfig) stream.fromXML(file
-					.getInputStream());
+			InputStream inputStream = file
+					.getInputStream();
+			GeneratorConfig config = (GeneratorConfig) stream.fromXML(inputStream);
+			try {
+				inputStream.close();
+			} catch (Exception e) {
+				LOGGER.errorMessage("关闭文件流时出错,文件路径:{}",e, file.getAbsolutePath());
+			}
 			deal(config, generator);
 			caches.put(file.getAbsolutePath(), config);
 			LOGGER.logMessage(LogLevel.INFO, "读取generator配置文件:{0}完成",

@@ -15,6 +15,8 @@
  */
 package org.tinygroup.pageflow.fileresolver;
 
+import java.io.InputStream;
+
 import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
@@ -58,8 +60,14 @@ public class PageFlowComponentRemoveProcessor extends AbstractFileProcessor {
 		for (FileObject fileObject : fileObjects) {
 			LOGGER.logMessage(LogLevel.INFO, "正在删除页面组件pagefc文件[{0}]",
 					fileObject.getAbsolutePath());
+			InputStream inputStream = fileObject.getInputStream();
 			ComponentDefines components = (ComponentDefines) stream
-					.fromXML(fileObject.getInputStream());
+					.fromXML(inputStream);
+			try {
+				inputStream.close();
+			} catch (Exception e) {
+				LOGGER.errorMessage("关闭文件流时出错,文件路径:{}",e, fileObject.getAbsolutePath());
+			}
 			flowExecutor.removeComponents(components);
 			LOGGER.logMessage(LogLevel.INFO, "删除页面组件pagefc文件[{0}]结束",
 					fileObject.getAbsolutePath());

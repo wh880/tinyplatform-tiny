@@ -32,6 +32,7 @@ import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,8 +95,14 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 				if (oldComponents != null) {
 					list.remove(oldComponents);
 				}
+				InputStream inputStream = fileObject.getInputStream();
 				ServiceComponents components = (ServiceComponents) stream
-						.fromXML(fileObject.getInputStream());
+						.fromXML(inputStream);
+				try {
+					inputStream.close();
+				} catch (Exception e) {
+					LOGGER.errorMessage("关闭文件流时出错,文件路径:{}",e, fileObject.getAbsolutePath());
+				}
 				list.add(components);
 				caches.put(fileObject.getAbsolutePath(), components);
 			} catch (Exception e) {

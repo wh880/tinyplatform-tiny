@@ -15,13 +15,12 @@
  */
 package org.tinygroup.cepcore;
 
-import java.rmi.Remote;
 import java.util.List;
 
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
 
-public interface CEPCore extends Remote {
+public interface CEPCore  {
 	String CEP_CORE_BEAN = "cepcore";
 
 	void setEventProcessorChoose(EventProcessorChoose chooser);

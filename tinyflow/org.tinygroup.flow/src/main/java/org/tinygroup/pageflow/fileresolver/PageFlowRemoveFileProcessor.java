@@ -24,6 +24,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class PageFlowRemoveFileProcessor extends AbstractFileProcessor {
@@ -54,7 +55,13 @@ public class PageFlowRemoveFileProcessor extends AbstractFileProcessor {
 		for (FileObject fileObject : fileObjects) {
 			LOGGER.logMessage(LogLevel.INFO, "正在删除页面流程pageflow文件[{0}]",
 					fileObject.getAbsolutePath());
-			Flow flow = (Flow) stream.fromXML(fileObject.getInputStream());
+			InputStream inputStream = fileObject.getInputStream();
+			Flow flow = (Flow) stream.fromXML(inputStream);
+			try {
+				inputStream.close();
+			} catch (Exception e) {
+				LOGGER.errorMessage("关闭文件流时出错,文件路径:{}",e, fileObject.getAbsolutePath());
+			}
 			flowExecutor.removeFlow(flow);
 			LOGGER.logMessage(LogLevel.INFO, "删除加载页面流程pageflow文件[{0}]结束",
 					fileObject.getAbsolutePath());
