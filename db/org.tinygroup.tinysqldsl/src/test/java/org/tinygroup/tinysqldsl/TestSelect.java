@@ -47,12 +47,18 @@ public class TestSelect {
 				.from(CUSTOM));
 
 		System.out.println(select(
+				customSelectItem("%s-%s as remainder", CUSTOM.NAME, CUSTOM.AGE))
+				.from(CUSTOM));
+		
+		System.out.println(select(
 				customSelectItem("upper(%s)-%s", CUSTOM.NAME, CUSTOM.AGE))
 				.from(CUSTOM));
 
 		System.out.println(selectFrom(CUSTOM).orderBy(desc(CUSTOM.NAME)));
 
 		System.out.println(selectFrom(CUSTOM).orderBy(asc(CUSTOM.ID)));
+		
+		System.out.println(selectFrom(CUSTOM).orderBy(asc(CUSTOM.ID),desc(CUSTOM.NAME)));
 
 		System.out.println(selectFrom(CUSTOM).where(CUSTOM.NAME.eq("abc")));
 

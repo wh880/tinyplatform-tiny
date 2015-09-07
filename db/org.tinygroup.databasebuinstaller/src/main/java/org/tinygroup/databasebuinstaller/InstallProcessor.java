@@ -50,5 +50,24 @@ public interface InstallProcessor extends Ordered {
 	 * @return
 	 */
 	List<String> getDealSqls(String language, Connection con)throws SQLException;
+	
+	/**
+	 * 获取全量sql
+	 * @param language
+	 * @param con
+	 * @return
+	 * @throws SQLException
+	 */
+	List<String> getFullSqls(String language, Connection con)throws SQLException;
+
+	/**
+	 * 获取增量sql
+	 * @param language
+	 * @param con
+	 * @return
+	 * @throws SQLException
+	 */
+	List<String> getUpdateSqls(String language, Connection con)throws SQLException;
+
 
 }

@@ -33,15 +33,29 @@ public class SequenceInstallProcessor extends AbstractInstallProcessor {
 	public void setProcessor(SequenceProcessor processor) {
 		this.processor = processor;
 	}
-	public List<String> getDealSqls(String language, Connection con) throws SQLException {
+	
+	private List<String> getSqls(String language, Connection con,boolean isFull) throws SQLException {
 		List<String> sqls=new ArrayList<String>();
 		List<Sequence> sequences=processor.getSequences(language);
 		for (Sequence sequence : sequences) {
-			if(!processor.checkSequenceExist(language, sequence, con)){
+			//全量或者不存在
+			if(isFull || !processor.checkSequenceExist(language, sequence, con)){
 				sqls.add(processor.getCreateSql(sequence.getName(), language));
 			}
 		}
 		return sqls;
+	}
+	
+	public List<String> getDealSqls(String language, Connection con) throws SQLException {
+		return getUpdateSqls(language, con);
+	}
+	public List<String> getFullSqls(String language, Connection con)
+			throws SQLException {
+		return getSqls(language, con,true);
+	}
+	public List<String> getUpdateSqls(String language, Connection con)
+			throws SQLException {
+		return getSqls(language, con,false);
 	}
 
 }

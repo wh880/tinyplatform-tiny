@@ -21,6 +21,7 @@ import org.tinygroup.jdbctemplatedslsession.SimpleDslSession;
 import org.tinygroup.tinysqldsl.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.tinygroup.jdbctemplatedslsession.CustomTable.CUSTOM;
 import static org.tinygroup.jdbctemplatedslsession.ScoreTable.TSCORE;
@@ -68,6 +69,16 @@ public class DslSqlTest extends BaseTest {
 		assertEquals(98, customScore.getScore());
 		assertEquals(22, customScore.getAge());
 		assertEquals("shuxue", customScore.getCourse());
+		
+		select = select(CUSTOM.NAME, CUSTOM.AGE, TSCORE.SCORE, TSCORE.COURSE)
+				.from(CUSTOM).where(CUSTOM.NAME.eq("悠悠然然")).join(
+						leftJoin(TSCORE, CUSTOM.NAME.eq(TSCORE.NAME)));
+		CustomScore customScore2 = session.fetchOneResult(select,
+				CustomScore.class);
+		assertEquals("悠悠然然", customScore2.getName());
+		assertEquals(98, customScore2.getScore());
+		assertEquals(22, customScore2.getAge());
+		assertEquals("shuxue", customScore2.getCourse());
 		
 		select=select(CUSTOM.AGE.max()).from(CUSTOM);
         int max =session.fetchOneResult(select, Integer.class);
