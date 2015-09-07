@@ -18,6 +18,7 @@ package org.tinygroup.parser.filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.parser.Node;
 
 /**
@@ -49,12 +50,13 @@ public class NameFilter<T extends Node<T>> extends AbstractFilterImpl<T> {
 	}
 
 	private void findNodeListWithName(List<T> result, T node, String nodeName) {
-//		if(StringUtil.isBlank(nodeName)){
+		if(StringUtil.isBlank(nodeName)){
+			throw new RuntimeException("节点名不可为空");
 //			if (isRightNode(node)) {
 //				result.add(node);
 //			}
 //			return;
-//		}
+		}
 		String caseSensitiveName = node.getCaseSensitiveName(nodeName);
 		if (caseSensitiveName.equals(node.getNodeName())) {
 			if (isRightNode(node)) {
