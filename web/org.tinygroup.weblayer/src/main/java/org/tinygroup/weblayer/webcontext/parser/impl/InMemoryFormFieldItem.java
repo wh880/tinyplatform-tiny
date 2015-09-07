@@ -15,10 +15,9 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import org.tinygroup.weblayer.webcontext.parser.upload.FileUploadReName;
+import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 
 /**
  * 用来存储form field的<code>FileItem</code>实现。
@@ -32,7 +31,7 @@ public class InMemoryFormFieldItem extends AbstractFileItem {
     private static final long serialVersionUID = -103002370072467461L;
 
     public InMemoryFormFieldItem(String fieldName, String contentType, boolean isFormField, boolean saveInFile,String fileName,
-                                 int sizeThreshold, boolean keepFormFieldInMemory, File repository,HttpServletRequest request,FileUploadReName rename) {
-        super(fieldName, contentType, isFormField, saveInFile,fileName, sizeThreshold, keepFormFieldInMemory, repository,request,rename);
+                                 int sizeThreshold, boolean keepFormFieldInMemory, File repository,HttpServletRequest request) {
+        super(fieldName, contentType, isFormField, saveInFile,fileName, sizeThreshold, keepFormFieldInMemory, repository,request);
     }
 }

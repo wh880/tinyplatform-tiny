@@ -79,7 +79,7 @@ public class DiskFileItemFactory extends org.apache.commons.fileupload.disk.Disk
         boolean saveInFile=isSaveInFile();
         if (isFormField && (sizeThreshold == 0 || keepFormFieldInMemory)) {
             return new InMemoryFormFieldItem(fieldName, contentType, isFormField,saveInFile ,fileName, sizeThreshold,
-                                             keepFormFieldInMemory, getRepository(),request,rename);
+                                             keepFormFieldInMemory, getRepository(),request);
         } else {
             return new DiskFileItem(fieldName, contentType, isFormField, saveInFile,temporary,fileName, sizeThreshold,
                                     keepFormFieldInMemory, getRepository(),request,rename);

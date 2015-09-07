@@ -15,6 +15,21 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemHeaders;
 import org.apache.commons.fileupload.FileItemHeadersSupport;
@@ -23,9 +38,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.DeferredFileOutputStream;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.weblayer.webcontext.parser.upload.FileUploadReName;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.*;
 
 /**
  * 改进自<code>commons-fileupload-1.2.1</code>的同名类。
@@ -174,11 +186,7 @@ public abstract class AbstractFileItem implements FileItem,
 		this(fieldName, contentType, isFormField, saveInFile, fileName,
 				sizeThreshold, keepFormFieldInMemory, repository, request);
 		this.rename = fileUploadRename;
-		if (this.rename == null) {
-			this.rename = new FileUploadRenameImpl();
-			FileUploadRenameImpl fileRename = (FileUploadRenameImpl) rename;
-			fileRename.setRepository(repository);
-		}
+		rename.setRepository(repository);
 	}
 
 	public AbstractFileItem(String fieldName, String contentType,
@@ -549,7 +557,7 @@ public abstract class AbstractFileItem implements FileItem,
 		}
 		if (dfos == null) {
 			int sizeThreshold;
-
+			File outputFile = null;
 			if (keepFormFieldInMemory && isFormField()) {
 				sizeThreshold = Integer.MAX_VALUE;
 			} else {
@@ -558,10 +566,9 @@ public abstract class AbstractFileItem implements FileItem,
 				} else {
 					sizeThreshold = this.sizeThreshold;
 				}
+				outputFile = new File(serverFileName);
 			}
-
-			dfos = new DeferredFileOutputStream(sizeThreshold, new File(
-					serverFileName));
+			dfos = new DeferredFileOutputStream(sizeThreshold, outputFile);
 		}
 		return dfos;
 	}
