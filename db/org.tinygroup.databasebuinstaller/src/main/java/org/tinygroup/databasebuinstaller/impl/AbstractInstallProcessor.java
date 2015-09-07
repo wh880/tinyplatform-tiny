@@ -15,8 +15,6 @@
  */
 package org.tinygroup.databasebuinstaller.impl;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.database.util.DataSourceInfo;
 import org.tinygroup.databasebuinstaller.DataSourceHolder;
 import org.tinygroup.databasebuinstaller.InstallProcessor;
 import org.tinygroup.exception.BaseRuntimeException;

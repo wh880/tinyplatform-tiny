@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 
 import org.tinygroup.databasechange.DatabaseInstallerStart;
 import org.tinygroup.databasechange.TableSqlChangeUtil;
+import org.tinygroup.databasechange.TableSqlFullUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,6 +37,14 @@ public class SqlChangeTest extends TestCase {
 		
 	}
 	
+	public void testFullSql() throws IOException{
+		URL url=getClass().getResource("/");
+		if(url==null){
+			url=getClass().getClassLoader().getResource("");
+		}
+		String filePath=url.getFile()+"full.sql";
+		TableSqlFullUtil.main(new String[]{filePath});
+	}
 	
 	public void testInstaller(){
 		

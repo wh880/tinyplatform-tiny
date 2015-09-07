@@ -51,4 +51,16 @@ public class ProcedureInstallProcessor extends AbstractInstallProcessor {
 		return sqls;
 	}
 
+
+	public List<String> getFullSqls(String language, Connection con)
+			throws SQLException {
+		return getDealSqls(language, con);
+	}
+
+
+	public List<String> getUpdateSqls(String language, Connection con)
+			throws SQLException {
+		return getDealSqls(language, con);
+	}
+
 }

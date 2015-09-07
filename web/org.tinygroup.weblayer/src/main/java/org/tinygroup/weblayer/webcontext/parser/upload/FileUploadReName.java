@@ -15,6 +15,8 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.upload;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -36,5 +38,15 @@ public interface FileUploadReName {
 	 * @return
 	 */
 	String reName(String localFileName,HttpServletRequest request);
+	/**
+	 * 设置文件上传的临时目录
+	 * @param repository
+	 */
+	public void setRepository(File repository);
+	/**
+	 * 获取文件上传的临时目录
+	 * @return
+	 */
+	public File getRepository();
 	
 }

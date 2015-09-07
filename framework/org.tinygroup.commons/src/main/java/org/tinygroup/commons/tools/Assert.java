@@ -15,10 +15,15 @@
  */
 package org.tinygroup.commons.tools;
 
+import static org.tinygroup.commons.tools.Assert.ExceptionType.ILLEGAL_ARGUMENT;
+import static org.tinygroup.commons.tools.Assert.ExceptionType.UNEXPECTED_FAILURE;
+import static org.tinygroup.commons.tools.Assert.ExceptionType.UNREACHABLE_CODE;
+import static org.tinygroup.commons.tools.Assert.ExceptionType.UNSUPPORTED_OPERATION;
+
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.tinygroup.commons.exceptions.UnexpectedFailureException;
 import org.tinygroup.commons.exceptions.UnreachableCodeException;
-
-import static org.tinygroup.commons.tools.Assert.ExceptionType.*;
 
 /**
  * 断言工具，用来实现<a
@@ -89,6 +94,12 @@ public final class Assert {
 
         return object;
     }
+    
+	public static void notEmpty(Object[] array, String message) {
+		if (ObjectUtil.isEmptyObject(array)) {
+			throw new IllegalArgumentException(message);
+		}
+	}
 
     /** 确保对象为空，否则抛出<code>IllegalArgumentException</code>。 */
     public static <T> T assertNull(T object) {

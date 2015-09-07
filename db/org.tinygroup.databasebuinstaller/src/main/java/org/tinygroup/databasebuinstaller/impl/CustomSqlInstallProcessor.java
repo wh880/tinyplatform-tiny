@@ -31,7 +31,7 @@ public class CustomSqlInstallProcessor extends AbstractInstallProcessor {
     }
 
     public List<String> getDealSqls(String language, Connection con) throws SQLException {
-        List<String> customSqls = new ArrayList<String>();
+    	List<String> customSqls = new ArrayList<String>();
 
         //根据顺序加载自定义sql
         customSqls.addAll(customSqlProcessor.getCustomSqls(CustomSqlProcessor.BEFORE, CustomSqlProcessor.STANDARD_SQL_TYPE));
@@ -42,5 +42,16 @@ public class CustomSqlInstallProcessor extends AbstractInstallProcessor {
 
         return customSqls;
     }
+
+	public List<String> getFullSqls(String language, Connection con)
+			throws SQLException {
+		return getDealSqls(language, con);
+	}
+
+	public List<String> getUpdateSqls(String language, Connection con)
+			throws SQLException {
+		return getDealSqls(language, con);
+	}
+	
 
 }

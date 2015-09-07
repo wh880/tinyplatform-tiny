@@ -15,11 +15,6 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import org.apache.commons.fileupload.FileItem;
-import org.tinygroup.commons.tools.FileUtil;
-import org.tinygroup.vfs.FileObject;
-import org.tinygroup.vfs.impl.AbstractFileObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +22,12 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+
+import org.apache.commons.fileupload.FileItem;
+import org.tinygroup.commons.tools.FileUtil;
+import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.vfs.FileObject;
+import org.tinygroup.vfs.impl.AbstractFileObject;
 
 public class FileObjectInDisk extends AbstractFileObject implements ItemFileObject {
 	
@@ -48,9 +49,19 @@ public class FileObjectInDisk extends AbstractFileObject implements ItemFileObje
 	}
 
 	public String getPath() {
+		String repository=fileItem.getRepository().getAbsolutePath();
+		String filePath=getAbsolutePath();
+		if(filePath!=null&&filePath.startsWith(repository)){
+             return resolverFilePath(filePath, repository);		
+		}
 		return "/";
 	}
-
+	
+	private String resolverFilePath(String filePath, String separator) {
+		String path = StringUtil.substringAfterLast(filePath, separator);
+		return StringUtil.replace(path, "\\", "/");
+	}
+	
 	public String getAbsolutePath() {
 		File file= fileItem.getStoreLocation();
 		if(file!=null){

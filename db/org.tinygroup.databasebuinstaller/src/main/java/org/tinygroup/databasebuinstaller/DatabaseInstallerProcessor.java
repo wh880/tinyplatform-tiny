@@ -77,6 +77,14 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 	}
 
 	public Map<Class, List<String>> getChangeSqls() {
+		return getSqls(false);
+	}
+	
+	public Map<Class, List<String>> getFullSqls() {
+		return getSqls(true);
+	}
+	
+	private Map<Class, List<String>> getSqls(boolean isFull){
 		installSort();
 		Map<Class, List<String>> processSqls = new HashMap<Class, List<String>>();
 		Connection con = null;
@@ -84,8 +92,13 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 			con = DataSourceHolder.getDataSource().getConnection();
 			for (InstallProcessor processor : installProcessors) {
 				long startTime = System.currentTimeMillis();
-				processSqls.put(processor.getClass(),
-						processor.getDealSqls(dbLanguage, con));
+				List<String> sqls = null;
+				if(isFull){
+					sqls = processor.getFullSqls(dbLanguage, con);
+				}else{
+					sqls = processor.getDealSqls(dbLanguage, con);
+				}
+				processSqls.put(processor.getClass(),sqls);
 				logger.logMessage(LogLevel.INFO, "processor:[{0}]的处理时间：[{1}]",
 						processor.getClass().getSimpleName(),
 						System.currentTimeMillis() - startTime);

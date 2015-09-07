@@ -46,19 +46,20 @@ public class TableInstallProcessor extends AbstractInstallProcessor {
 	}
 
 	private void deal(String language, Table table, List<String> sqls,
-			Connection connect) throws SQLException {
+			Connection connect,boolean isFull) throws SQLException {
 		if (tableList.contains(table))
 			return;
 		tableList.add(table);
-		installTable(language, table, sqls, connect);
+		installTable(language, table, sqls, connect,isFull);
 	}
 
 	private void installTable(String language, Table table, List<String> sqls,
-			Connection connect) throws SQLException {
+			Connection connect,boolean isFull) throws SQLException {
 		logger.logMessage(LogLevel.INFO, "开始生成表格语句,表格 包:{0},名:{1}",
 				table.getPackageName(), table.getName());
 		List<String> tableSqls = null;
-		if (tableProcessor.checkTableExist(table, language, connect)) {
+		//非全量且表格已经存在,需要生成增量sql
+		if(!isFull && tableProcessor.checkTableExist(table, language, connect)) {
 			tableSqls = tableProcessor.getUpdateSql(table,
 					table.getPackageName(), language, connect);
 		} else {
@@ -74,6 +75,18 @@ public class TableInstallProcessor extends AbstractInstallProcessor {
 		logger.logMessage(LogLevel.INFO, "生成表格语句完成,表格 包:{0},名:{1}",
 				table.getPackageName(), table.getName());
 	}
+	
+	private List<String> getSqls(String language, Connection con,boolean isFull)
+			throws SQLException {
+		logger.logMessage(LogLevel.INFO, "开始获取数据库表安装操作执行语句");
+		List<Table> list = tableProcessor.getTables();
+		List<String> sqls = new ArrayList<String>();
+		for (Table table : list) {
+			deal(language, table, sqls, con,isFull);
+		}
+		logger.logMessage(LogLevel.INFO, "获取数据库表安装操作执行语句结束");
+		return sqls;
+	}
 
 	public int getOrder() {
 		return HIGHEST_PRECEDENCE;
@@ -81,15 +94,16 @@ public class TableInstallProcessor extends AbstractInstallProcessor {
 
 	public List<String> getDealSqls(String language, Connection con)
 			throws SQLException {
-		logger.logMessage(LogLevel.INFO, "开始获取数据库表安装操作执行语句");
-		List<Table> list = tableProcessor.getTables();
-		List<String> sqls = new ArrayList<String>();
-		for (Table table : list) {
-			deal(language, table, sqls, con);
-		}
-		logger.logMessage(LogLevel.INFO, "获取数据库表安装操作执行语句结束");
-		return sqls;
-
+		return getUpdateSqls(language, con);
+	}
+	
+	public List<String> getFullSqls(String language, Connection con) throws SQLException{
+		return getSqls(language, con,true);
 	}
 
+	public List<String> getUpdateSqls(String language, Connection con)
+			throws SQLException {
+		return getSqls(language, con,false);
+	}
+	
 }
