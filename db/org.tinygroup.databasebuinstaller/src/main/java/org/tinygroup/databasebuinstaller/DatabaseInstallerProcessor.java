@@ -89,7 +89,7 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 		Map<Class, List<String>> processSqls = new HashMap<Class, List<String>>();
 		Connection con = null;
 		try {
-			con = DataSourceHolder.getDataSource().getConnection();
+			if(!isFull) con = DataSourceHolder.getDataSource().getConnection();
 			for (InstallProcessor processor : installProcessors) {
 				long startTime = System.currentTimeMillis();
 				List<String> sqls = null;
