@@ -15,14 +15,42 @@
  */
 package org.tinygroup.cepcore;
 
+import java.util.List;
+
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public interface CEPCoreOperator {
+	
+	/**
+	 * 启动节点
+	 * @param cep
+	 */
 	void startCEPCore(CEPCore cep);
 
+	/**
+	 * 停止节点
+	 * @param cep
+	 */
 	void stopCEPCore(CEPCore cep);
 
+	/**
+	 * 设置CEPCore
+	 * @param cep
+	 */
 	void setCEPCore(CEPCore cep);
 
+	/**
+	 * 设置参数
+	 * @param cep
+	 */
 	void setParam(XmlNode node);
+	
+	/**
+	 * 查询与SC之间的链接情况的状态
+	 * @return 结果状态列表,单条状态数据为SCIp:SCPort:status,status为ture或者false
+	 * Node Operator返回的为List<String>
+	 * SC   Operator返回为null
+	 */
+	List<String> getConnectStatus();
+	
 }
