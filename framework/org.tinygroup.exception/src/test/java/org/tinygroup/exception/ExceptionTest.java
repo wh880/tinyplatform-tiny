@@ -17,8 +17,10 @@ package org.tinygroup.exception;
 
 
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -44,7 +46,7 @@ public class ExceptionTest extends TestCase {
 		try{
 			biz.execute();
 		}catch(BizRuntimeException e){
-			assertEquals(e.getMessage(), "错误1");
+			assertEquals(e.getMessage(), "error1");
 		}
 		try{
 			biz.executeWithMsg();
@@ -58,9 +60,9 @@ public class ExceptionTest extends TestCase {
 
 
 	private void init() throws IOException {
-		System.out.println("开始加载国际化文件");
 		loadI18n("zh", "CN");
-		System.out.println("完成加载国际化文件");
+		loadI18n("en", "US");
+		loadI18n("zh", "TW");
 	}
 	
 	private void loadI18n(String language,String country) throws IOException{
@@ -69,7 +71,8 @@ public class ExceptionTest extends TestCase {
 		InputStream inputStream = getClass().getResourceAsStream(
 				"/i18n/info_" + locale.getLanguage() + "_"
 						+ locale.getCountry() + ".properties");
-		properties.load(inputStream);
+		BufferedReader bf = new BufferedReader(new   InputStreamReader(inputStream));
+		properties.load(bf);
 		I18nMessageFactory.addResource(locale, properties);
 	}
 }
