@@ -12,4 +12,7 @@
 	<bean id="sceneUser" name="sceneUser" scope="singleton"
 		class="org.tinygroup.validate.test.scene.SceneUser">
 	</bean>
+	<bean id="companyUser" name="companyUser" scope="singleton"
+		class="org.tinygroup.validate.test.property.CompanyUser">
+	</bean>
 </beans>
