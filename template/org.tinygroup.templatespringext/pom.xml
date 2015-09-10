@@ -29,7 +29,7 @@
         </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
-            <artifactId>org.tinygroup.spring305</artifactId>
+            <artifactId>org.tinygroup.spring421</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
