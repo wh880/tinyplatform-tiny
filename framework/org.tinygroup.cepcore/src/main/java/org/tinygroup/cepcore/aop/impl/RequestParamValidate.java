@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.aop.CEPCoreAopAdapter;
-import org.tinygroup.cepcore.exception.RequestNotFoundException;
+import org.tinygroup.cepcore.exception.ServiceNotFoundException;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.context.Context;
@@ -70,7 +70,7 @@ public class RequestParamValidate implements CEPCoreAopAdapter {
 			info = findById(requestId, list);
 		}
 		if (info == null) {
-			throw new RequestNotFoundException(requestId);
+			throw new ServiceNotFoundException(requestId);
 		}
 		return info;
 	}

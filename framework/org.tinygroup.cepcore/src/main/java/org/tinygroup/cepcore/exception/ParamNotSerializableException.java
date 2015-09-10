@@ -15,23 +15,19 @@
  */
 package org.tinygroup.cepcore.exception;
 
-import org.tinygroup.exception.TinySysRuntimeException;
-import org.tinygroup.exception.errorcode.ErrorCodeDefault;
+import org.tinygroup.cepcoreexceptioncode.CEPCoreExceptionCode;
+import org.tinygroup.exception.BaseRuntimeException;
 
-public class RequestNotFoundException extends TinySysRuntimeException {
+public class ParamNotSerializableException extends BaseRuntimeException{
+
+	public ParamNotSerializableException(String serviceId,String paramName){
+		super(CEPCoreExceptionCode.PARAM_NOT_SERIALIZABLE_EXCEPTION_CODE, serviceId,paramName);
+	}
+	
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 9094597551672712176L;
-	private final String serviceId;
-
-	public String getServiceId() {
-		return serviceId;
-	}
-
-	public RequestNotFoundException(String serviceId) {
-		super(ErrorCodeDefault.UNKNOWN_SYSTEM_ERROR, serviceId);
-		this.serviceId = serviceId;
-	}
+	private static final long serialVersionUID = 5136744538649261870L;
 
 }

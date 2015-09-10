@@ -2,17 +2,15 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-<!-- 
+
 	<bean id="fileResolver" scope="singleton"
 		class="org.tinygroup.fileresolver.impl.FileResolverImpl">
 		<property name="fileProcessorList">
 			<list>
 				<ref bean="i18nFileProcessor" />
-				
 			</list>
 		</property>
 	</bean>
- -->
 	<bean id="handler1" 
 		class="org.tinygroup.cepcoreimpl.test.NullPointHandler">
 		

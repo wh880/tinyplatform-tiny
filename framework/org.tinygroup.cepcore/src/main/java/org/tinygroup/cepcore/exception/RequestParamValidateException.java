@@ -15,9 +15,11 @@
  */
 package org.tinygroup.cepcore.exception;
 
+import org.tinygroup.cepcoreexceptioncode.CEPCoreExceptionCode;
+import org.tinygroup.exception.BaseRuntimeException;
 import org.tinygroup.validate.ValidateResult;
 
-public class RequestParamValidateException extends CEPRunException {
+public class RequestParamValidateException extends BaseRuntimeException {
 	/**
 	 * 
 	 */
@@ -25,7 +27,7 @@ public class RequestParamValidateException extends CEPRunException {
 	private final ValidateResult result;
 
 	public RequestParamValidateException(ValidateResult result) {
-		super("参数校验时发生异常");
+		super(CEPCoreExceptionCode.PARAM_VALIDATE_EXCEPTION_CODE);
 		this.result = result;
 	}
 

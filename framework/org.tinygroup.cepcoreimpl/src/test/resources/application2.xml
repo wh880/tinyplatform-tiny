@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+	<application-processors>
+		<application-processor bean="cepCoreProcessor"/>
+	</application-processors>
+	<cep-configuration node-name="">
+		<operator name=""></operator>
+	</cep-configuration>
+	<exception-config>
+    <exception-handlers>
+         <exception-handler handler="handler1" exception="java.lang.NullPointerException"/>
+     </exception-handlers>
+</exception-config>
+</application>

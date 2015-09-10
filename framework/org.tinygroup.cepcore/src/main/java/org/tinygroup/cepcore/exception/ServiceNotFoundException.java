@@ -15,32 +15,23 @@
  */
 package org.tinygroup.cepcore.exception;
 
-import org.tinygroup.event.central.Node;
-import org.tinygroup.exception.TinySysRuntimeException;
-import org.tinygroup.exception.errorcode.ErrorCodeDefault;
+import org.tinygroup.cepcoreexceptioncode.CEPCoreExceptionCode;
+import org.tinygroup.exception.BaseRuntimeException;
 
-public class CEPConnectException extends TinySysRuntimeException {
-	private final Node node;
-	private final Exception exception;
-
-	public CEPConnectException(Exception e, Node node) {
-		super(ErrorCodeDefault.UNKNOWN_ERROR, e, node.toString(), e
-				.getMessage());
-		this.node = node;
-		this.exception = e;
-	}
-
-	public Node getNode() {
-		return node;
-	}
-
-	public Exception getException() {
-		return exception;
-	}
-
+public class ServiceNotFoundException extends BaseRuntimeException {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6589362229300815033L;
+	private static final long serialVersionUID = 9094597551672712176L;
+	private final String serviceId;
+
+	public String getServiceId() {
+		return serviceId;
+	}
+
+	public ServiceNotFoundException(String serviceId) {
+		super(CEPCoreExceptionCode.SERVICE_NOT_FOUND_EXCETPION_CODE,serviceId);
+		this.serviceId = serviceId;
+	}
 
 }
