@@ -13,9 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.cepcoreimpl.test;
+package org.tinygroup.cepcoreimpl.test.testcase;
 
 import org.tinygroup.cepcore.EventProcessor;
+import org.tinygroup.cepcoreimpl.test.EventProcessorForTest;
 import org.tinygroup.event.Event;
 
 public class CepCoreProcessTestCast extends CEPCoreBaseTestCase {
@@ -36,13 +37,23 @@ public class CepCoreProcessTestCast extends CEPCoreBaseTestCase {
 	public void testAy() {
 		Event e = getEvent("a");
 		e.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
-		getCore().process(e);
+		try {
+			getCore().process(e);
+			assertTrue(true);
+		} catch (Exception e2) {
+			assertTrue(false);
+		}
 	}
 
 	public void testy() {
 		Event e = getEvent("a");
 		e.setMode(Event.EVENT_MODE_SYNCHRONOUS);
-		getCore().process(e);
+		try {
+			getCore().process(e);
+			assertTrue(true);
+		} catch (Exception e2) {
+			assertTrue(false);
+		}
 	}
 	
 	public void testException() {

@@ -16,7 +16,7 @@
 package org.tinygroup.cepcore.util;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.cepcore.exception.CEPRunException;
+import org.tinygroup.cepcore.exception.ParamNotSerializableException;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.context2object.util.Context2ObjectUtil;
@@ -59,7 +59,7 @@ public final class CEPCoreUtil {
 		for (Parameter p : info.getParameters()) {
 			Object value = Context2ObjectUtil.getObject(p, oldContext,loder);
 			if (value != null && !(value instanceof java.io.Serializable)) {
-				throw new CEPRunException("cepcore.paramNotSerializable", event
+				throw new ParamNotSerializableException(event
 						.getServiceRequest().getServiceId(), p.getName());
 			}
 			c.put(p.getName(), value);

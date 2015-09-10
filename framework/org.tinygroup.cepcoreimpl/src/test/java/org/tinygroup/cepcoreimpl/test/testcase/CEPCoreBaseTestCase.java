@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.cepcoreimpl.test;
+package org.tinygroup.cepcoreimpl.test.testcase;
 
 import java.util.ArrayList;
 
@@ -21,6 +21,7 @@ import junit.framework.TestCase;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
+import org.tinygroup.cepcoreimpl.test.ServiceInfoForTest;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;

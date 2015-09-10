@@ -33,7 +33,7 @@ import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcore.EventProcessorChoose;
 import org.tinygroup.cepcore.EventProcessorRegisterTrigger;
 import org.tinygroup.cepcore.aop.CEPCoreAopManager;
-import org.tinygroup.cepcore.exception.RequestNotFoundException;
+import org.tinygroup.cepcore.exception.ServiceNotFoundException;
 import org.tinygroup.cepcore.impl.WeightChooser;
 import org.tinygroup.cepcore.util.CEPCoreUtil;
 import org.tinygroup.commons.tools.StringUtil;
@@ -487,7 +487,7 @@ public class CEPCoreImpl implements CEPCore {
 			info = getRemoteServiceInfo(serviceId);
 		}
 		if (info == null) {
-			throw new RequestNotFoundException(serviceId);
+			throw new ServiceNotFoundException(serviceId);
 		}
 		return info;
 

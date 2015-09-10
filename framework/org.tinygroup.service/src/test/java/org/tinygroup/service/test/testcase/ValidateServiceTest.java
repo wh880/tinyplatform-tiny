@@ -43,6 +43,7 @@ public class ValidateServiceTest extends TestCase {
 			ServiceTestUtil.executeForValidate("validateServiceAdd", context);
 			assertTrue(false);
 		} catch (Exception e) {
+			e.printStackTrace();
 			if (e instanceof RequestParamValidateException) {
 				ValidateResult result = ((RequestParamValidateException) e)
 						.getResult();

@@ -44,7 +44,7 @@ public class TestThreadGroup{
 	}
 
 	private void startServer() {
-		ServerImpl serverImpl = new ServerImpl(serverPort);
+		ServerImpl serverImpl = new ServerImpl(serverPort,true);
 		serverImpl.start();
 	}
 

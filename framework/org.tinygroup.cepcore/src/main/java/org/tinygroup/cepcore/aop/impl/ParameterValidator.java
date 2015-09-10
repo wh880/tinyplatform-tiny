@@ -20,11 +20,14 @@ import java.util.List;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.exception.RequestParamValidateException;
 import org.tinygroup.event.Parameter;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.validate.ValidateResult;
 import org.tinygroup.validate.ValidatorManager;
 import org.tinygroup.validate.impl.ValidateResultImpl;
 
 public class ParameterValidator {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterValidator.class);
 	private ParameterValidator() {
 
 	}
@@ -52,6 +55,7 @@ public class ParameterValidator {
 			}
 		}
 		if (result.hasError()) {
+			LOGGER.errorMessage("参数验证失败");
 			throw new RequestParamValidateException(result);
 		}
 	}

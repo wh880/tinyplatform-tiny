@@ -20,7 +20,6 @@ import java.net.URLDecoder;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.weblayer.webcontext.parser.exception.UploadException;

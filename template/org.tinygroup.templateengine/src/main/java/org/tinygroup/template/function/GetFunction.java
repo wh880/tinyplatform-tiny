@@ -39,6 +39,9 @@ public class GetFunction extends AbstractTemplateFunction {
         try {
             return TemplateUtil.getArrayValue(object, indexObject);
         }catch (Exception e) {
+        	if(e instanceof NullPointerException){
+        	    throw new TemplateException("get函数参数格式不对");
+        	}
             return TemplateUtil.callMethod(template, context, object, "get", object, indexObject);
         }
     }

@@ -15,10 +15,10 @@
  */
 package org.tinygroup.cepcore.exception;
 
-import org.tinygroup.exception.TinySysRuntimeException;
-import org.tinygroup.exception.errorcode.ErrorCodeDefault;
+import org.tinygroup.cepcoreexceptioncode.CEPCoreExceptionCode;
+import org.tinygroup.exception.BaseRuntimeException;
 
-public class RequestNotFoundException extends TinySysRuntimeException {
+public class ServiceNotFoundException extends BaseRuntimeException {
 	/**
 	 * 
 	 */
@@ -29,8 +29,9 @@ public class RequestNotFoundException extends TinySysRuntimeException {
 		return serviceId;
 	}
 
-	public RequestNotFoundException(String serviceId) {
-		super(ErrorCodeDefault.UNKNOWN_SYSTEM_ERROR, serviceId);
+	public ServiceNotFoundException(String serviceId) {
+		//TODO:此处serviceID被当成了defaultMessage
+		super(CEPCoreExceptionCode.SERVICE_NOT_FOUND_EXCETPION_CODE,serviceId);
 		this.serviceId = serviceId;
 	}
 

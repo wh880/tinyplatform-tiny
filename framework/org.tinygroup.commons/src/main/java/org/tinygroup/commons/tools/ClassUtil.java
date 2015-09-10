@@ -16,16 +16,6 @@
 package org.tinygroup.commons.tools;
 
 
-import java.beans.Introspector;
-import java.lang.reflect.Array;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.net.URL;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-
 import static org.tinygroup.commons.tools.ArrayUtil.isArraySameLength;
 import static org.tinygroup.commons.tools.ArrayUtil.isEmptyArray;
 import static org.tinygroup.commons.tools.Assert.assertNotNull;
@@ -35,6 +25,16 @@ import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING;
 import static org.tinygroup.commons.tools.CollectionUtil.createHashMap;
 import static org.tinygroup.commons.tools.CollectionUtil.createHashSet;
 import static org.tinygroup.commons.tools.StringUtil.trimToNull;
+
+import java.beans.Introspector;
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.net.URL;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 

@@ -73,6 +73,7 @@ public class TinyTemplateLayoutView extends AbstractTemplateView {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		long startTime = System.currentTimeMillis();
+		response.setContentType(getContentType());
 		model.put("uiengine",
 				getApplicationContext().getBean("uiComponentManager"));
 		TemplateContext templateContext = new TinyWebTemplateContext(model,

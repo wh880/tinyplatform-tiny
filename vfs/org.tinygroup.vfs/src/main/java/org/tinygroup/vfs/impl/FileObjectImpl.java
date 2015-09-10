@@ -143,7 +143,8 @@ public class FileObjectImpl extends AbstractFileObject {
 			for (File subfile : subFiles) {
 				FileObject fileObject = null;
 				//TODO:也许需要判断"zip"
-				if (subfile.getName().endsWith(".jar")) {
+				//20150907先判断是否是目录，如果不是目录才会去读取，有可能是一个以.jar结尾的目录
+				if (subfile.getName().endsWith(".jar")&&!subfile.isDirectory()) {
 					fileObject = VFS.resolveFile(subfile.getAbsolutePath());
 				} else {
 					fileObject = new FileObjectImpl(getSchemaProvider(),

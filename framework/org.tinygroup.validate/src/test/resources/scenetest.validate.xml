@@ -1,4 +1,17 @@
 <object-validators>
+	<object-validator bean-name="companyUser">
+		<property-validator name="name" title="用户名称">
+			<validator bean-name="sizeValidator">
+				<properties>
+					<property name="min" value="10">
+					</property>
+					<property name="max" value="20">
+					</property>
+				</properties>
+			</validator>
+			<validator bean-name="notNullValidator"/>
+		</property-validator>
+	</object-validator>
 	<object-validator bean-name="sceneUser">
 		<property-validator name="name" title="用户名称">
 			<validator bean-name="sizeValidator">

@@ -50,7 +50,7 @@ public class UploadServiceImpl extends BeanSupport implements UploadService {
 	/**
 	 * 上传文件重命名接口
 	 */
-	private FileUploadReName rename;
+	private FileUploadReName rename=new FileUploadRenameImpl();
 
 	public FileUploadReName getRename() {
 		return rename;

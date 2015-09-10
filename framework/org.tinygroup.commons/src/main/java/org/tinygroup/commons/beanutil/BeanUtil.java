@@ -15,67 +15,41 @@
  */
 package org.tinygroup.commons.beanutil;
 
-import javassist.*;
-import javassist.bytecode.CodeAttribute;
-import javassist.bytecode.LocalVariableAttribute;
-import javassist.bytecode.MethodInfo;
-import org.apache.commons.beanutils.PropertyUtils;
-import org.tinygroup.commons.tools.ClassUtil;
-import org.tinygroup.loader.LoaderManager;
-
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.tinygroup.commons.namediscover.LocalVariableTableParameterNameDiscoverer;
+import org.tinygroup.commons.namediscover.ParameterNameDiscoverer;
+import org.tinygroup.commons.tools.ClassUtil;
 
 public class BeanUtil {
 
+	private static ParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
+
 	public static String[] getMethodParameterName(Class<?> clazz, Method method) {
-		try {
-			ClassPool pool = null;
-			if (clazz.getClassLoader() == BeanUtil.class.getClassLoader()) {
-				pool = ClassPool.getDefault();
-			} else {
-				List<String> jars = LoaderManager.getLoaderFiles(clazz
-						.getClassLoader());
-				pool = new ClassPool();
-				for (String jar : jars) {
-					pool.appendClassPath(jar);
-				}
-			}
-			pool.insertClassPath(new ClassClassPath(clazz));
-			CtClass cc = pool.get(clazz.getName());
-			CtMethod cm = cc.getDeclaredMethod(method.getName(),
-					getParaClasses(pool, cc, method));
-
-			// 使用javaassist的反射方法获取方法的参数名
-			MethodInfo methodInfo = cm.getMethodInfo();
-			CodeAttribute codeAttribute = methodInfo.getCodeAttribute();
-			LocalVariableAttribute attr = (LocalVariableAttribute) codeAttribute
-					.getAttribute(LocalVariableAttribute.tag);
-			String[] paramNames = new String[cm.getParameterTypes().length];
-			int pos = Modifier.isStatic(cm.getModifiers()) ? 0 : 1;
-			for (int i = 0; i < paramNames.length; i++) {
-				paramNames[i] = attr.variableName(i + pos);
-			}
-
-			return paramNames;
-
-		} catch (NotFoundException e) {
-			throw new RuntimeException(e);
-		}
+		return discoverer.getParameterNames(method);
 	}
 
-	private static CtClass[] getParaClasses(ClassPool pool, CtClass cc,
-			Method method) throws NotFoundException {
-		CtClass[] paType = null;
-		Class<?>[] parameterTypes = method.getParameterTypes();
-		if (parameterTypes != null && parameterTypes.length > 0) {
-			paType = new CtClass[parameterTypes.length];
-			for (int i = 0; i < parameterTypes.length; i++) {
-				paType[i] = pool.get(parameterTypes[i].getName());
-			}
-		}
-		return paType;
+	public static String[] getMethodParameterName(Method method) {
+		return discoverer.getParameterNames(method);
+	}
+
+	public static String[] getMethodParameterName(Constructor ctor) {
+		return discoverer.getParameterNames(ctor);
 	}
 
 	public static Object deepCopy(Object orig) throws Exception {

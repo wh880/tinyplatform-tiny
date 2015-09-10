@@ -15,17 +15,22 @@
  */
 package org.tinygroup.validate.impl;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.exception.TinySysRuntimeException;
 import org.tinygroup.validate.Validator;
 import org.tinygroup.validate.XmlValidatorManager;
-import org.tinygroup.validate.config.*;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
+import org.tinygroup.validate.config.BasicValidator;
+import org.tinygroup.validate.config.ObjectValidator;
+import org.tinygroup.validate.config.ObjectValidators;
+import org.tinygroup.validate.config.Property;
+import org.tinygroup.validate.config.PropertyValidatorConfig;
+import org.tinygroup.validate.config.ValidatorConfig;
 
 /**
  * xml校验管理器
@@ -39,6 +44,17 @@ public class XmlValidatorManagerImpl extends AbstractValidatorManger implements
 
 	List<ObjectValidator> objectValidatorConfigs = new ArrayList<ObjectValidator>();
 
+	private Field getFiled(String fieldName,Class exactlyClazz,Class clazz, boolean includeParentClass){
+		try {
+			Field field = clazz.getDeclaredField(fieldName);
+			return field;
+		} catch (Exception e) {
+			if(clazz.getSuperclass()==null){
+				throw new RuntimeException("未从"+exactlyClazz.getClass()+"中找到属性"+fieldName);
+			}
+			return getFiled(fieldName, exactlyClazz,clazz.getSuperclass(), true);
+		}
+	}
 	public void addObjectValidatorConfigs(ObjectValidators validatorConfigs) {
 		for (ObjectValidator objectValidatorConfig : validatorConfigs
 				.getValidatorConfigList()) {
@@ -57,9 +73,11 @@ public class XmlValidatorManagerImpl extends AbstractValidatorManger implements
 			for (PropertyValidatorConfig propertyValidatorConfig : objectValidatorConfig
 					.getValidatorConfigList()) {
 				try {
-					Field field = clazz
-							.getDeclaredField(propertyValidatorConfig
-									.getPropertyName());
+					Field field = getFiled(propertyValidatorConfig
+									.getPropertyName(), clazz, clazz, true);
+//					Field field = clazz
+//							.getDeclaredField(propertyValidatorConfig
+//									.getPropertyName());
 					String wrapperKey = getWrapperKey(clazz, field);
 					FieldWapper fieldWapper = fieldWrapperMap.get(wrapperKey);
 					if (fieldWapper == null) {

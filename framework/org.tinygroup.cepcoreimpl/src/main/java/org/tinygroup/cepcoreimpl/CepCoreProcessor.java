@@ -21,6 +21,7 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.CEPCoreOperator;
 import org.tinygroup.cepcore.EventProcessorChoose;
+import org.tinygroup.cepcoreimpl.exception.CEPConfigException;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -92,14 +93,14 @@ public class CepCoreProcessor implements ApplicationProcessor {
 		String operatorName = appConfig.getSubNode(OPERATOR_TAG).getAttribute(
 				OPERATOR_ATTRIBUTE);
 		if (StringUtil.isBlank(operatorName)) {
-			throw new RuntimeException("配置的"+OPERATOR_TAG+"为空");
+			throw new CEPConfigException("配置的"+OPERATOR_TAG+"为空");
 		}
 		CEPCoreOperator operator = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(operatorName);
 		operator.setParam(appConfig);
 		String nodeName = appConfig.getAttribute(NODE_NAME);
 		if(StringUtil.isBlank(nodeName)){
-			throw new RuntimeException("配置的"+NODE_NAME+"为空");
+			throw new CEPConfigException("配置的"+NODE_NAME+"为空");
 		}
 		logger.logMessage(LogLevel.INFO, "NodeName为:{0}", nodeName);
 		cepcore.setOperator(operator);

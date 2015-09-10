@@ -15,32 +15,20 @@
  */
 package org.tinygroup.cepcore.exception;
 
-import org.tinygroup.event.central.Node;
-import org.tinygroup.exception.TinySysRuntimeException;
-import org.tinygroup.exception.errorcode.ErrorCodeDefault;
+import org.tinygroup.cepcoreexceptioncode.CEPCoreExceptionCode;
+import org.tinygroup.exception.BaseRuntimeException;
 
-public class CEPConnectException extends TinySysRuntimeException {
-	private final Node node;
-	private final Exception exception;
+public class ParamNotSerializableException extends BaseRuntimeException{
 
-	public CEPConnectException(Exception e, Node node) {
-		super(ErrorCodeDefault.UNKNOWN_ERROR, e, node.toString(), e
-				.getMessage());
-		this.node = node;
-		this.exception = e;
+	public ParamNotSerializableException(String serviceId,String paramName){
+		//TODO:此处第二个参数被当成了defaultMessage，需要重构父类解决
+		super(CEPCoreExceptionCode.PARAM_NOT_SERIALIZABLE_EXCEPTION_CODE, serviceId,paramName);
 	}
-
-	public Node getNode() {
-		return node;
-	}
-
-	public Exception getException() {
-		return exception;
-	}
+	
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6589362229300815033L;
+	private static final long serialVersionUID = 5136744538649261870L;
 
 }

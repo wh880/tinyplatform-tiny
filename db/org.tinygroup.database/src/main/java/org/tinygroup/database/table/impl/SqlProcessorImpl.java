@@ -84,9 +84,9 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		StringBuffer ddlBuffer = new StringBuffer();
 		List<String> list = new ArrayList<String>();
 		// 生成表格主体
-		appendHeader(ddlBuffer, table);
-		appendBody(ddlBuffer, table);
-		appendFooter(ddlBuffer, table);
+		appendHeader(ddlBuffer, table,list);
+		appendBody(ddlBuffer, table,list);
+		appendFooter(ddlBuffer, table,list);
 		list.add(0, ddlBuffer.toString());
 		return list;
 	}
@@ -251,7 +251,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			StringBuffer ddlBuffer = new StringBuffer();
 			ddlBuffer.append(String.format("ALTER TABLE %s ADD ",
 					table.getName()));
-			appendField(ddlBuffer, field);
+			appendField(ddlBuffer, field,addList);
 			addList.add(ddlBuffer.toString());
 		}
 		return addList;
@@ -306,7 +306,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	protected abstract String createAlterTypeSql(String tableName,
 			String fieldName, String tableDataType);
 
-	protected void appendBody(StringBuffer ddlBuffer, Table table) {
+	protected void appendBody(StringBuffer ddlBuffer, Table table,List<String> list) {
 		boolean isFirst = true;
 		for (TableField field : table.getFieldList()) {
 			if (!isFirst) {
@@ -314,11 +314,11 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			} else {
 				isFirst = false;
 			}
-			appendField(ddlBuffer, field);
+			appendField(ddlBuffer, field,list);
 		}
 	}
 
-	protected void appendField(StringBuffer ddlBuffer, TableField field) {
+	protected void appendField(StringBuffer ddlBuffer, TableField field,List<String> list) {
 		StandardField standardField = MetadataUtil.getStandardField(
 				field.getStandardFieldId(), this.getClass().getClassLoader());
 		ddlBuffer.append(String.format(" %s ",
@@ -347,10 +347,10 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		// 设置字段默认值
 		appendDefaultValue(field.getDefaultValue(), ddlBuffer);
 		// 设置字段备注信息
-		appendComment(field.getComment(), ddlBuffer);
+		appendComment(standardField.getDescription(), ddlBuffer,list);
 	}
 
-	protected void appendComment(String comment, StringBuffer ddlBuffer) {
+	protected void appendComment(String comment, StringBuffer ddlBuffer,List<String> list) {
 		if (!StringUtil.isBlank(comment)) {
 			ddlBuffer.append(" COMMENT ").append("'").append(comment)
 					.append("'");
@@ -374,13 +374,13 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		List<Index> list = table.getIndexList();
 		if (list != null) {
 			for (Index index : list) {
-				indexSqlList.add(appendIndex(index, table));
+				indexSqlList.add(appendIndex(index, table,list));
 			}
 		}
 		return indexSqlList;
 	}
 
-	private String appendIndex(Index index, Table table) {
+	private String appendIndex(Index index, Table table,List<Index> list) {
 		// DROP INDEX index_name ON table_name
 		// DROP INDEX table_name.index_name
 		// DROP INDEX index_name
@@ -443,11 +443,11 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 				"未找到ID：%s的表格字段(或该表格字段对应的标准字段)", fieldId));
 	}
 
-	protected void appendFooter(StringBuffer ddlBuffer, Table table) {
+	protected void appendFooter(StringBuffer ddlBuffer, Table table,List<String> list) {
 		ddlBuffer.append(")");
 	}
 
-	private void appendHeader(StringBuffer ddlBuffer, Table table) {
+	private void appendHeader(StringBuffer ddlBuffer, Table table,List<String> list) {
 		ddlBuffer.append(String.format("CREATE TABLE %s (", table.getName()));
 	}
 
