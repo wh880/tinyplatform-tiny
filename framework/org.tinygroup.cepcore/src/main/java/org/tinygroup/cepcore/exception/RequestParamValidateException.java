@@ -27,6 +27,7 @@ public class RequestParamValidateException extends BaseRuntimeException {
 	private final ValidateResult result;
 
 	public RequestParamValidateException(ValidateResult result) {
+		//TODO:目前此errorCode被当成了message
 		super(CEPCoreExceptionCode.PARAM_VALIDATE_EXCEPTION_CODE);
 		this.result = result;
 	}

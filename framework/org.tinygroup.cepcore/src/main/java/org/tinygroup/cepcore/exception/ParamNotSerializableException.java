@@ -21,6 +21,7 @@ import org.tinygroup.exception.BaseRuntimeException;
 public class ParamNotSerializableException extends BaseRuntimeException{
 
 	public ParamNotSerializableException(String serviceId,String paramName){
+		//TODO:此处第二个参数被当成了defaultMessage，需要重构父类解决
 		super(CEPCoreExceptionCode.PARAM_NOT_SERIALIZABLE_EXCEPTION_CODE, serviceId,paramName);
 	}
 	
