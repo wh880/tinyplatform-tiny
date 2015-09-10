@@ -13,19 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.templatespringext;
+package org.tinygroup.templatespringext.springext;
 
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 import org.springframework.web.servlet.view.AbstractUrlBasedView;
 import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.template.ResourceLoader;
 import org.tinygroup.template.TemplateEngine;
-import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.TemplateFunction;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
-import org.tinygroup.vfs.FileObject;
+import org.tinygroup.templatespringext.processor.TinyJarFileProcessor;
+import org.tinygroup.templatespringext.processor.TinyMacroProcessor;
+import org.tinygroup.vfs.VFS;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,6 +44,25 @@ public class TinyTemplateLayoutViewResolver extends
 	private String noLayoutExtFileName=PAGELET_EXT_FILE_NAME;
 	private static final String MacroExt = "component";
 	private TemplateEngine templateEngine;
+	private TinyMacroProcessor macroProcessor;
+	private TinyJarFileProcessor jarFileProcessor;
+	private  List<String> classPathList = new ArrayList<String>();
+
+	public TinyJarFileProcessor getJarFileProcessor() {
+		return jarFileProcessor;
+	}
+
+	public void setJarFileProcessor(TinyJarFileProcessor jarFileProcessor) {
+		this.jarFileProcessor = jarFileProcessor;
+	}
+
+	public  List<String> getClassPathList() {
+		return classPathList;
+	}
+
+	public  void setClassPathList(List<String> classPathList) {
+		this.classPathList = classPathList;
+	}
 
 	public TinyTemplateLayoutViewResolver() {
 		super();
@@ -55,7 +76,7 @@ public class TinyTemplateLayoutViewResolver extends
 	@Override
 	protected void initApplicationContext(){
 		super.initApplicationContext();
-		initMacro();
+		initEngine();
 		initFunctions();
 	}
 
@@ -68,8 +89,25 @@ public class TinyTemplateLayoutViewResolver extends
 		layoutView.setUrl(getPrefix()+generateUrl(viewName));
 		layoutView.setNoLayoutExtFileName(noLayoutExtFileName);
 		layoutView.setViewExtFileName(viewExtFileName);
-
 		return layoutView;
+	}
+
+	private void initEngine(){
+		macroProcessor = new TinyMacroProcessor();
+		macroProcessor.setEngine(templateEngine);
+		templateEngine.addResourceLoader(new FileObjectResourceLoader("page","layout","component","src/main/resources"));
+		macroProcessor.resolverFile(VFS.resolveFile("src/main/resources"));
+		for(String classPath:classPathList){
+			templateEngine.addResourceLoader(new FileObjectResourceLoader("page","layout","component",classPath));
+			macroProcessor.resolverFile(VFS.resolveFile(classPath));
+		}
+		jarFileProcessor = jarFileProcessor==null?new TinyJarFileProcessor():jarFileProcessor;
+		jarFileProcessor.setEngine(templateEngine);
+		jarFileProcessor.setMacroProcessor(macroProcessor);
+		jarFileProcessor.resolverFile(VFS.resolveFile("./"));
+		jarFileProcessor.fileProcess();
+		macroProcessor.fileProcess();
+
 	}
 
 	private String generateUrl(String viewName) {
@@ -95,42 +133,7 @@ public class TinyTemplateLayoutViewResolver extends
 	protected Class requiredViewClass() {
 		return TinyTemplateLayoutView.class;
 	}
-	
-	private void initMacro(){
-		for(ResourceLoader resourceloader : templateEngine.getResourceLoaderList()){
-			if(resourceloader instanceof FileObjectResourceLoader){
-				registerMacroFile(resourceloader);
-			}
-		}
-	}
 
-	private void registerMacroFile(ResourceLoader rl){
-		FileObjectResourceLoader resourceLoader= (FileObjectResourceLoader)rl;
-		FileObject file = resourceLoader.getRootFileObject();
-		resolveFileDir(file ,resourceLoader.getRootFileObject().getFileName());
-		
-	}
-	
-	private void resolveFileDir(FileObject file, String rootName){
-		if(file.isFolder()){
-			for(FileObject f:file.getChildren()){
-				resolveFileDir(f ,rootName);
-			}
-		}else{
-			String name = file.getFileName();
-			int n = name.lastIndexOf(".");
-			String fileExt = name.substring(n+1);
-			String parent = rootName;
-			if(MacroExt.equals(fileExt)){
-				try {
-					String path =getFilePath(file,parent).substring(1);
-					templateEngine.registerMacroLibrary(path);
-				} catch (TemplateException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
 
 	private void initFunctions(){
 		Map<String,TemplateFunction> functions = BeanFactoryUtils.beansOfTypeIncludingAncestors(getApplicationContext(), TemplateFunction.class, true, false);
@@ -138,11 +141,5 @@ public class TinyTemplateLayoutViewResolver extends
 			templateEngine.addTemplateFunction(f);
 		}
 	}
-	
-	private String getFilePath(FileObject file, String parent){
-		if(!parent.equals(file.getFileName())){
-			return getFilePath(file.getParent(), parent)+"/"+file.getFileName();
-		}
-		return "";
-	}
+
 }
