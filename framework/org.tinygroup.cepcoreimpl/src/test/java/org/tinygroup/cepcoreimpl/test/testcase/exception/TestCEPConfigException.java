@@ -1,15 +1,15 @@
-package org.tinygroup.cepcoreimpl.test.testcase;
+package org.tinygroup.cepcoreimpl.test.testcase.exception;
 
 import java.util.ArrayList;
+
+import junit.framework.TestCase;
 
 import org.tinygroup.cepcoreexceptioncode.CEPCoreImplExceptionCode;
 import org.tinygroup.exception.BaseRuntimeException;
 import org.tinygroup.tinyrunner.Runner;
 
-import junit.framework.TestCase;
-
 public class TestCEPConfigException extends TestCase {
-
+	
 	public void testConfigException() {
 		try {
 			Runner.init("application2.xml", new ArrayList<String>());
