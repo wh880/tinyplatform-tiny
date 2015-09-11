@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.templatespringext;
+package org.tinygroup.templatespringext.springext;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.view.AbstractTemplateView;

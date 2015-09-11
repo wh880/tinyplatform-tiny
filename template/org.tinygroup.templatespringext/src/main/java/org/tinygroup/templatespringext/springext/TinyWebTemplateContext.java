@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.templatespringext;
+package org.tinygroup.templatespringext.springext;
 
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.impl.TemplateContextDefault;
@@ -21,7 +21,7 @@ import org.tinygroup.template.impl.TemplateContextDefault;
 import java.util.Map;
 
 /**
- * tinywebcontext模板包装
+ * 模板上下文包装类
  * 
  * @author wll
  * 
