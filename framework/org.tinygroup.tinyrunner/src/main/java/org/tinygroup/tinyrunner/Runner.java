@@ -87,9 +87,6 @@ public class Runner {
 					application = new ApplicationDefault();
 					initSpring(applicationConfig,includePathPatterns);
 
-					ConfigurationUtil.getConfigurationManager()
-							.distributeConfiguration();
-
 					FileResolver fileResolver = BeanContainerFactory
 							.getBeanContainer(
 									Runner.class.getClassLoader())

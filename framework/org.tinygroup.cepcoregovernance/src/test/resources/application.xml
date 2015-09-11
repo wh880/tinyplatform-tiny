@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+	<application-processors>
+		<application-processor bean="fileResolverProcessor"></application-processor>
+		<application-processor bean="serviceApplicationProcessor"></application-processor>
+	</application-processors>
+	<exception-config>
+		<exception-handlers>
+			<exception-handler exception="java.lang.Exception"
+				handler="serviceExceptionHanlder" />
+		</exception-handlers>
+	</exception-config>
+	<cepcore-aop-config>
+		<aop-config position="before-local" bean="serviceBeforeLocalExecuteCounter"></aop-config>
+		<aop-config position="before-remote" bean="serviceBeforeRemoteExecuteCounter"></aop-config>
+		<aop-config position="after-local" bean="serviceAfterLocalExecuteCounter"></aop-config>
+		<aop-config position="after-remote" bean="serviceAfterRemoteExecuteCounter"></aop-config>
+	</cepcore-aop-config>
+</application>

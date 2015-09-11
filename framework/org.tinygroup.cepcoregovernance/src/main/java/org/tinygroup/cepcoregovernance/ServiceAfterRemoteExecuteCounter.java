@@ -6,7 +6,7 @@ import org.tinygroup.event.Event;
 public class ServiceAfterRemoteExecuteCounter implements CEPCoreAopAdapter{
 
 	public void handle(Event event) {
-		
+		CommonServiceExecuteContainer.addRemoteExecuteAfter(event);
 	}
 
 }

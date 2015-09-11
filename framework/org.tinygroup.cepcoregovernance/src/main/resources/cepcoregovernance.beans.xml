@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
-	   default-autowire="byName" default-lazy-init="true">
-	
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName" default-lazy-init="true">
+	<bean id="serviceAfterLocalExecuteCounter" scope="singleton"
+		class="org.tinygroup.cepcoregovernance.ServiceAfterLocalExecuteCounter">
+	</bean>
+	<bean id="serviceAfterRemoteExecuteCounter" scope="singleton"
+		class="org.tinygroup.cepcoregovernance.ServiceAfterRemoteExecuteCounter">
+	</bean>
+	<bean id="serviceBeforeLocalExecuteCounter" scope="singleton"
+		class="org.tinygroup.cepcoregovernance.ServiceBeforeLocalExecuteCounter">
+	</bean>
+	<bean id="serviceBeforeRemoteExecuteCounter" scope="singleton"
+		class="org.tinygroup.cepcoregovernance.ServiceBeforeRemoteExecuteCounter">
+	</bean>
+	<bean id="serviceExceptionHanlder" scope="singleton"
+		class="org.tinygroup.cepcoregovernance.ServiceExceptionHanlder">
+	</bean>
 </beans>
