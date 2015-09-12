@@ -35,6 +35,7 @@ public class FileScannerImpl extends AbstractFileScanner{
     }
 
     public void init(){
+        classPathProcess();
         jarFileProcessor = jarFileProcessor == null?new TinyJarFileProcessor():jarFileProcessor;
         macroFileProcessor = new TinyMacroProcessor();
         localPathProcessor = new TinyLocalPathProcessor();
@@ -89,7 +90,6 @@ public class FileScannerImpl extends AbstractFileScanner{
             });
         }
         for(String classPath:getClassPathList()){
-            engine.addResourceLoader(new FileObjectResourceLoader("page","layout","component",classPath));
             resolverFile(VFS.resolveFile(classPath), new CallBackFunction() {
                 public void process(FileObject fileObject) {
                     if(macroFileProcessor.isMatch(fileObject.getFileName())){
@@ -110,4 +110,10 @@ public class FileScannerImpl extends AbstractFileScanner{
         macroFileProcessor.process();
     }
 
+    public void classPathProcess() {
+        for(String classPath : getClassPathList()){
+            engine.addResourceLoader(new FileObjectResourceLoader("page","layout","component",classPath));
+
+        }
+    }
 }

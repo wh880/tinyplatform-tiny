@@ -1,6 +1,7 @@
 package org.tinygroup.templatespringext.impl;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.templatespringext.FileScanner;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;

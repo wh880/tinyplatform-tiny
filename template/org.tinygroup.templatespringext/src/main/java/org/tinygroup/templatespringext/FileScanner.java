@@ -31,4 +31,6 @@ public interface FileScanner {
 
     public void init();
 
+    public void classPathProcess();
+
 }
