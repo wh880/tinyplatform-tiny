@@ -3,6 +3,7 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.templatespringext.FileScanner;
 import org.tinygroup.vfs.FileObject;
+import org.tinygroup.vfs.VFS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,22 +14,26 @@ import java.util.List;
  */
 public abstract class AbstractFileScanner implements FileScanner {
 
-    protected List<FileObject> fileList = new ArrayList<FileObject>();
-
     protected static final Logger LOGGER = LoggerFactory
             .getLogger(AbstractFileScanner.class);
+
+    private List<String> classPathList;
+
+    public void setClassPathList(List<String> classPathList) {
+        this.classPathList = classPathList;
+    }
+
+    protected List<String> getClassPathList(){
+        return classPathList;
+    }
 
     public void addFile(FileObject file) {
 
     }
 
-    public void resolverFile(FileObject file) {
-        if(file.isFolder()&&!isMatch(file.getFileName())){
-            for(FileObject f:file.getChildren()){
-                resolverFile(f);
-            }
-        }else if(isMatch(file.getFileName())){
-            fileList.add(file);
-        }
+    public boolean isMatch(String fileName) {
+        return!(fileName.endsWith(".jar")||classPathList.contains(fileName)||fileName.equals("classes")||fileName.equals("resources"));
     }
+
+
 }

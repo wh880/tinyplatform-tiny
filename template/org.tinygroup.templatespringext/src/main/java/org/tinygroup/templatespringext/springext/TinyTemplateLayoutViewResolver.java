@@ -22,6 +22,8 @@ import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateFunction;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
+import org.tinygroup.templatespringext.FileScanner;
+import org.tinygroup.templatespringext.impl.FileScannerImpl;
 import org.tinygroup.templatespringext.processor.TinyJarFileProcessor;
 import org.tinygroup.templatespringext.processor.TinyMacroProcessor;
 import org.tinygroup.vfs.VFS;
@@ -44,16 +46,15 @@ public class TinyTemplateLayoutViewResolver extends
 	private String noLayoutExtFileName=PAGELET_EXT_FILE_NAME;
 	private static final String MacroExt = "component";
 	private TemplateEngine templateEngine;
-	private TinyMacroProcessor macroProcessor;
-	private TinyJarFileProcessor jarFileProcessor;
+	private FileScanner fileScanner;
 	private  List<String> classPathList = new ArrayList<String>();
 
-	public TinyJarFileProcessor getJarFileProcessor() {
-		return jarFileProcessor;
+	public FileScanner getFileScanner() {
+		return fileScanner;
 	}
 
-	public void setJarFileProcessor(TinyJarFileProcessor jarFileProcessor) {
-		this.jarFileProcessor = jarFileProcessor;
+	public void setFileScanner(FileScanner fileScanner) {
+		this.fileScanner = fileScanner;
 	}
 
 	public  List<String> getClassPathList() {
@@ -93,21 +94,11 @@ public class TinyTemplateLayoutViewResolver extends
 	}
 
 	private void initEngine(){
-		macroProcessor = new TinyMacroProcessor();
-		macroProcessor.setEngine(templateEngine);
-		templateEngine.addResourceLoader(new FileObjectResourceLoader("page","layout","component","src/main/resources"));
-		macroProcessor.resolverFile(VFS.resolveFile("src/main/resources"));
-		for(String classPath:classPathList){
-			templateEngine.addResourceLoader(new FileObjectResourceLoader("page","layout","component",classPath));
-			macroProcessor.resolverFile(VFS.resolveFile(classPath));
-		}
-		jarFileProcessor = jarFileProcessor==null?new TinyJarFileProcessor():jarFileProcessor;
-		jarFileProcessor.setEngine(templateEngine);
-		jarFileProcessor.setMacroProcessor(macroProcessor);
-		jarFileProcessor.resolverFile(VFS.resolveFile("./"));
-		jarFileProcessor.fileProcess();
-		macroProcessor.fileProcess();
-
+//		fileScanner.setClassPathList(classPathList);
+		fileScanner.setEngine(templateEngine);
+		fileScanner.init();
+		fileScanner.scanFile();
+		fileScanner.fileProcess();
 	}
 
 	private String generateUrl(String viewName) {
