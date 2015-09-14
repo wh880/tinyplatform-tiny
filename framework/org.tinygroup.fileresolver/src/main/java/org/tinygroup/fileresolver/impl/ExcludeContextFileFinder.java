@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
@@ -33,20 +32,18 @@ import org.tinygroup.xmlparser.node.XmlNode;
  * @author luoguo
  * 
  */
-public class FullContextFileFinder extends AbstractFileProcessor implements
+public class ExcludeContextFileFinder extends AbstractFileProcessor implements
 		Configuration {
 	private static final String FILE = "file";
 	private static final String CONTENT_TYPE = "content-type";
 	private static final String EXT_NAME = "ext-name";
 	// application.xml full-context-file-finder节点名
-	private static final String FULL_CONTEXT_FILE_FINDER_PATH = "/application/file-resolver-configuration/full-context-file-finder";
+	private static final String EXCLUDE_FULL_CONTEXT_FILE_FINDER_PATH = "/application/file-resolver-configuration/exclude-full-context-file-finder";
 
 	// 保存文件类型列表
-	private Map<String, String> extFileContentTypeMap = new HashMap<String, String>();
+	private Map<String, String> excludeFileExtensionMap = new HashMap<String, String>();
 	FullContextFileRepository fullContextFileRepository;
 
-	ExcludeContextFileFinder excluderFinder;
-	
 	public FullContextFileRepository getFullContextFileRepository() {
 		return fullContextFileRepository;
 	}
@@ -56,22 +53,11 @@ public class FullContextFileFinder extends AbstractFileProcessor implements
 		this.fullContextFileRepository = fullContextFileRepository;
 	}
 
-	protected boolean checkMatch(FileObject fileObject) {
-		//初始化黑名单配置
-		if (excluderFinder == null) {
-			excluderFinder = BeanContainerFactory
-					.getBeanContainer(this.getClass().getClassLoader())
-					.getBean(ExcludeContextFileFinder.class);
+	public boolean checkMatch(FileObject fileObject) {
+		if (excludeFileExtensionMap.containsKey(fileObject.getExtName())) {
+			return false;
 		}
-		//如果黑名单存在，则优先使用黑名单
-		if (excluderFinder.getExcludeFileExtensionMap().size() > 0) {
-			return excluderFinder.checkMatch(fileObject);
-		}
-		//反之，使用白名单
-		if (extFileContentTypeMap.containsKey(fileObject.getExtName())) {
-			return true;
-		}
-		return false;
+		return true;
 	}
 
 	private void process(FileObject fileObject) {
@@ -80,7 +66,7 @@ public class FullContextFileFinder extends AbstractFileProcessor implements
 	}
 
 	public void process() {
-		fullContextFileRepository.setFileTypeMap(extFileContentTypeMap);
+		fullContextFileRepository.setFileTypeMap(excludeFileExtensionMap);
 		FileResolver fileResolver=getFileResolver();
 		for (String searchPath : fileResolver.getScanningPaths()) {
 			fullContextFileRepository.addSearchPath(searchPath);
@@ -101,17 +87,18 @@ public class FullContextFileFinder extends AbstractFileProcessor implements
 		for (XmlNode fileNode : fileNodes) {
 			String extName = fileNode.getAttribute(EXT_NAME);
 			String contentType = fileNode.getAttribute(CONTENT_TYPE);
-			extFileContentTypeMap.put(extName, contentType);
+			excludeFileExtensionMap.put(extName, contentType);
 		}
 	}
 
 	public String getApplicationNodePath() {
-		return FULL_CONTEXT_FILE_FINDER_PATH;
+		return EXCLUDE_FULL_CONTEXT_FILE_FINDER_PATH;
+	}
+
+	public Map<String, String> getExcludeFileExtensionMap() {
+		return excludeFileExtensionMap;
 	}
 
 	
-	public String getComponentConfigPath() {
-		return "/filefind.config.xml";
-	}
 	
 }

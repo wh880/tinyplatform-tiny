@@ -7,6 +7,12 @@
 	<bean id="fullContextFileRepository" scope="singleton"
 		class="org.tinygroup.fileresolver.impl.FullContextFileRepositoryImpl">
 	</bean>
+	<bean id="excludeContextFileRepository" scope="singleton"
+		class="org.tinygroup.fileresolver.impl.ExcludeContextFileFinder">
+		<property name="fullContextFileRepository">
+			<ref bean="fullContextFileRepository" />
+		</property>
+	</bean>
 	<bean id="fullContextFileFinder" scope="singleton"
 		class="org.tinygroup.fileresolver.impl.FullContextFileFinder">
 		<property name="fullContextFileRepository">
