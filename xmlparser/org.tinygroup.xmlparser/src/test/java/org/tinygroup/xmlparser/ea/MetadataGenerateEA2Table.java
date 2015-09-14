@@ -154,6 +154,7 @@ public class MetadataGenerateEA2Table {
 		Table table = new Table();
 		if (properties != null && properties.getAttribute("stereotype") != null
 				&& properties.getAttribute("stereotype").equals("table")) {
+			table.setId(Guid.createGUID());
 			table.setName(element.getAttribute("name"));
 			table.setTitle(properties.getAttribute("alias") == null ? ""
 					: properties.getAttribute("alias"));
