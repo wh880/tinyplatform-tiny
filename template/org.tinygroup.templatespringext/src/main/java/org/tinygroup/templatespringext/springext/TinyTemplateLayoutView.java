@@ -100,7 +100,7 @@ public class TinyTemplateLayoutView extends AbstractTemplateView {
 		String path = getUrl();
 		String extFileName=getExtFileName(path);
 		if (isPagelet(path)) {
-			templateEngine.renderTemplate(extFileName, templateContext,response.getOutputStream());
+			templateEngine.renderTemplateWithOutLayout(extFileName, templateContext,response.getOutputStream());
 		} else {
 			templateEngine.renderTemplate(extFileName, templateContext,response.getOutputStream());
 		}
