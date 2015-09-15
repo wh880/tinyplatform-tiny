@@ -18,6 +18,7 @@ package org.tinygroup.metadata.config.stdfield;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
 import org.tinygroup.metadata.config.BaseObject;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public class StandardField extends BaseObject {
 	@XStreamAsAttribute
 	@XStreamAlias("business-type-id")
 	private String  typeId;// 标准数据类型
+	@XStreamAsAttribute
+	@XStreamAlias("default")
+	private String defaultValue;
 	@XStreamImplicit
 	private List<NickName> nickNames;// 别名列表
 
@@ -45,6 +49,14 @@ public class StandardField extends BaseObject {
 
 	public void setNickNames(List<NickName> nickNames) {
 		this.nickNames = nickNames;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 
 }

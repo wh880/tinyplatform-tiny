@@ -2,7 +2,7 @@
 	<table id="t_user" name="t_user" title="用户表">
 		<description>用户表</description>
 		<table-field standard-field-id="id" primary="true"
-			unique="true" not-null="true" auto-increase="false" id="id" />
+			unique="true" not-null="true" auto-increase="false" id="id" default="1111"/>
 		<table-field standard-field-id="name" primary="false"
 			unique="false" not-null="true" id="name" />
 		<table-field standard-field-id="age" primary="false"
