@@ -1,6 +1,7 @@
 package org.tinygroup.cepcoregovernance;
 
 import org.tinygroup.cepcoregovernance.container.CommonExecuteInfoContainer;
+import org.tinygroup.cepcoregovernance.container.ExecuteTimeInfo;
 import org.tinygroup.event.Event;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -57,5 +58,13 @@ public class CommonServiceExecuteContainer {
 	public static Long getRemoteExceptionTimes(){
 		return remoteContainer.getExceptionTimes();
 	}
+	public static ExecuteTimeInfo getRemoteServiceExecuteTimeInfo(String serviceId){
+		return remoteContainer.getServiceExecuteTimeInfo(serviceId);
+	}
+	public static ExecuteTimeInfo getLocalServiceExecuteTimeInfo(String serviceId){
+		return localContainer.getServiceExecuteTimeInfo(serviceId);
+	}
+
+
 }
 

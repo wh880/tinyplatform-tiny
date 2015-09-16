@@ -3,14 +3,15 @@ package org.tinygroup.cepcoregovernance.test.testcase;
 
 import java.util.ArrayList;
 
+import junit.framework.TestCase;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcoregovernance.CommonServiceExecuteContainer;
+import org.tinygroup.cepcoregovernance.container.ExecuteTimeInfo;
 import org.tinygroup.context.util.ContextFactory;
 import org.tinygroup.event.Event;
 import org.tinygroup.tinyrunner.Runner;
-
-import junit.framework.TestCase;
 
 public class LocalServiceTestCase extends TestCase {
 	private CEPCore core;
@@ -28,8 +29,13 @@ public class LocalServiceTestCase extends TestCase {
 			executeService("localService");
 		}
 		assertEquals(2000,CommonServiceExecuteContainer.getLocalTotalTimes().longValue());
-		assertEquals(1000,CommonServiceExecuteContainer.getLocalSucessTimes().longValue());
 		assertEquals(1000,CommonServiceExecuteContainer.getLocalExceptionTimes().longValue());
+		assertEquals(1000,CommonServiceExecuteContainer.getLocalSucessTimes().longValue());
+		ExecuteTimeInfo info = CommonServiceExecuteContainer.getLocalServiceExecuteTimeInfo("localService");
+		System.out.println("maxTime:"+info.getMaxTime());
+		System.out.println("minTime:"+info.getMinTime());
+		System.out.println("times:"+info.getTimes());
+		System.out.println("totalTime:"+info.getTotalTime());
 	}
 
 	private void executeService(String serviceId ) {

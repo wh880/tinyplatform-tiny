@@ -326,6 +326,13 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		ddlBuffer.append(" ");
 		ddlBuffer.append(MetadataUtil.getStandardFieldType(standardField
 				.getId(), getDatabaseType(), this.getClass().getClassLoader()));
+		String fieldDefaultValue = field.getDefaultValue();
+		if(StringUtil.isBlank(fieldDefaultValue)){
+			fieldDefaultValue = standardField.getDefaultValue();
+		}
+		
+		// 设置字段默认值
+		appendDefaultValue(fieldDefaultValue, ddlBuffer);
 		Boolean notNull = field.getNotNull();
 		if (notNull != null && notNull.booleanValue()) {
 			ddlBuffer.append(" NOT NULL");
@@ -344,8 +351,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		if (field.isAutoIncrease() && field.getPrimary()) {// 如果是自增而且是主键
 			ddlBuffer.append(appendIncrease());
 		}
-		// 设置字段默认值
-		appendDefaultValue(field.getDefaultValue(), ddlBuffer);
+
 		// 设置字段备注信息
 		appendComment(standardField.getDescription(), ddlBuffer,list);
 	}
