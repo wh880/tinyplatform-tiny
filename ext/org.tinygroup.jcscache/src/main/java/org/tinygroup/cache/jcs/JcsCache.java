@@ -26,7 +26,7 @@ import java.util.Set;
 
 public class JcsCache implements Cache {
 	private JCS jcs;
-	private CacheManager cacheManager=JcsCacheManager.getInstance();
+	private CacheManager cacheManager;
 
 	public JcsCache() {
 	}

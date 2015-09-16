@@ -40,8 +40,8 @@ jcs.auxiliary.DC.attributes.ShutdownSpoolTimeLimit=60
 
 jcs.auxiliary.LTCP=org.apache.jcs.auxiliary.lateral.socket.tcp.LateralTCPCacheFactory
 jcs.auxiliary.LTCP.attributes=org.apache.jcs.auxiliary.lateral.socket.tcp.TCPLateralCacheAttributes
-jcs.auxiliary.LTCP.attributes.TcpServers=localhost:1101
-jcs.auxiliary.LTCP.attributes.TcpListenerPort=1102
+jcs.auxiliary.LTCP.attributes.TcpServers=localhost:1102
+jcs.auxiliary.LTCP.attributes.TcpListenerPort=1101
 jcs.auxiliary.LTCP.attributes.Receive=true
 jcs.auxiliary.LTCP.attributes.AllowGet=true
 jcs.auxiliary.LTCP.attributes.PutOnlyMode=false
