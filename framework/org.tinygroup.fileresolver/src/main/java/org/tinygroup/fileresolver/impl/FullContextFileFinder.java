@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
@@ -45,10 +44,14 @@ public class FullContextFileFinder extends AbstractFileProcessor implements
 	private Map<String, String> extFileContentTypeMap = new HashMap<String, String>();
 	FullContextFileRepository fullContextFileRepository;
 
-	ExcludeContextFileFinder excluderFinder;
+	ExcludeContextFileFinder excludeContextFileFinder;
 	
 	public FullContextFileRepository getFullContextFileRepository() {
 		return fullContextFileRepository;
+	}
+
+	public void setExtFileContentTypeMap(Map<String, String> extFileContentTypeMap) {
+		this.extFileContentTypeMap = extFileContentTypeMap;
 	}
 
 	public void setFullContextFileRepository(
@@ -56,22 +59,25 @@ public class FullContextFileFinder extends AbstractFileProcessor implements
 		this.fullContextFileRepository = fullContextFileRepository;
 	}
 
+	public void setExcludeContextFileFinder(
+			ExcludeContextFileFinder excludeContextFileFinder) {
+		this.excludeContextFileFinder = excludeContextFileFinder;
+	}
+
 	protected boolean checkMatch(FileObject fileObject) {
-		//初始化黑名单配置
-		if (excluderFinder == null) {
-			excluderFinder = BeanContainerFactory
-					.getBeanContainer(this.getClass().getClassLoader())
-					.getBean(ExcludeContextFileFinder.class);
-		}
 		//如果黑名单存在，则优先使用黑名单
-		if (excluderFinder.getExcludeFileExtensionMap().size() > 0) {
-			return excluderFinder.checkMatch(fileObject);
+		if (excludeContextFileFinder.getExcludeFileExtensionMap().size() > 0) {
+			return excludeContextFileFinder.checkMatch(fileObject);
 		}
 		//反之，使用白名单
-		if (extFileContentTypeMap.containsKey(fileObject.getExtName())) {
-			return true;
+		if (extFileContentTypeMap.size() > 0) {
+			if (extFileContentTypeMap.containsKey(fileObject.getExtName())) {
+				return true;
+			}else {
+				return false;
+			}
 		}
-		return false;
+		return true;
 	}
 
 	private void process(FileObject fileObject) {

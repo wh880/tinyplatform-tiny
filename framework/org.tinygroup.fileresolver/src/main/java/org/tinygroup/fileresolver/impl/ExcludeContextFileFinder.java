@@ -21,8 +21,6 @@ import java.util.Map;
 
 import org.tinygroup.config.Configuration;
 import org.tinygroup.config.util.ConfigurationUtil;
-import org.tinygroup.fileresolver.FileResolver;
-import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 
@@ -42,41 +40,15 @@ public class ExcludeContextFileFinder extends AbstractFileProcessor implements
 
 	// 保存文件类型列表
 	private Map<String, String> excludeFileExtensionMap = new HashMap<String, String>();
-	FullContextFileRepository fullContextFileRepository;
-
-	public FullContextFileRepository getFullContextFileRepository() {
-		return fullContextFileRepository;
-	}
-
-	public void setFullContextFileRepository(
-			FullContextFileRepository fullContextFileRepository) {
-		this.fullContextFileRepository = fullContextFileRepository;
-	}
 
 	public boolean checkMatch(FileObject fileObject) {
-		if (excludeFileExtensionMap.containsKey(fileObject.getExtName())) {
+		if (fileObject != null && excludeFileExtensionMap.containsKey(fileObject.getExtName())) {
 			return false;
 		}
 		return true;
 	}
 
-	private void process(FileObject fileObject) {
-		fullContextFileRepository.addFileObject(fileObject.getPath(),
-				fileObject);
-	}
-
 	public void process() {
-		fullContextFileRepository.setFileTypeMap(excludeFileExtensionMap);
-		FileResolver fileResolver=getFileResolver();
-		for (String searchPath : fileResolver.getScanningPaths()) {
-			fullContextFileRepository.addSearchPath(searchPath);
-		}
-		for (FileObject fileObject : deleteList) {
-			fullContextFileRepository.removeFileObject(fileObject.getPath());
-		}
-		for (FileObject fileObject : changeList) {
-			process(fileObject);
-		}
 	}
 
 	

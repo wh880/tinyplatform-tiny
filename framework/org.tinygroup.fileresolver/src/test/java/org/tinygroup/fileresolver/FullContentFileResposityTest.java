@@ -15,8 +15,13 @@
  */
 package org.tinygroup.fileresolver;
 
+import java.io.File;
+import java.io.IOException;
+
 import junit.framework.TestCase;
+
 import org.tinygroup.commons.tools.FileUtil;
+import org.tinygroup.fileresolver.impl.ExcludeContextFileFinder;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.fileresolver.impl.FullContextFileFinder;
 import org.tinygroup.fileresolver.impl.FullContextFileRepositoryImpl;
@@ -25,9 +30,6 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlParser;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * 
@@ -41,7 +43,7 @@ public class FullContentFileResposityTest extends TestCase {
 
 	private static final String FILE_PATH = "/org/tinygroup/fileresolver/FileResolver.class";
 
-	private static FullContextFileRepository repository;
+	private static FullContextFileRepositoryImpl repository;
 
 	private static boolean hasInited;
 
@@ -49,11 +51,18 @@ public class FullContentFileResposityTest extends TestCase {
 		repository = new FullContextFileRepositoryImpl();
 		FileResolver fileResolver =  new FileResolverImpl();
 		FullContextFileFinder finder = new FullContextFileFinder();
+		ExcludeContextFileFinder exFinder = new ExcludeContextFileFinder();
 		XmlParser<String> parse = new XmlStringParser();
 		Document<XmlNode> document = parse
 				.parse("<full-context-file-finder>"
 						+ "<file ext-name=\"class\" content-type=\"application/test\" />"
 						+ "</full-context-file-finder>");
+		Document<XmlNode> exDocument = parse
+				.parse("<exclude-full-context-file-finder>"
+						+ "</exclude-full-context-file-finder>");
+		exFinder.config(exDocument.getRoot(), null);
+		repository.setExcludeContextFileFinder(exFinder);
+		finder.setExcludeContextFileFinder(exFinder);
 		finder.config(document.getRoot(), null);
 		finder.setFullContextFileRepository(repository);
 		fileResolver.addFileProcessor(finder);

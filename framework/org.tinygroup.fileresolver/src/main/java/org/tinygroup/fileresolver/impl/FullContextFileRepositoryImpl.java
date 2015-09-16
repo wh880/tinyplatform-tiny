@@ -15,6 +15,9 @@
  */
 package org.tinygroup.fileresolver.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
@@ -22,9 +25,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 
@@ -43,7 +43,14 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 	private Map<String, String> fileTypeMap;
     private Map<String, FileObject> searchPathMap=new HashMap<String, FileObject>();
 
+    private ExcludeContextFileFinder excludeContextFileFinder;
+    
 	// String searchPath;
+
+	public void setExcludeContextFileFinder(
+			ExcludeContextFileFinder excludeContextFileFinder) {
+		this.excludeContextFileFinder = excludeContextFileFinder;
+	}
 
 	public void addSearchPath(String searchPath) {
 		FileObject fileObject = VFS.resolveFile(searchPath);
@@ -65,9 +72,11 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 	}
 
 	public void addFileObject(String path, FileObject fileObject) {
-		LOGGER.logMessage(LogLevel.DEBUG, "添加文件：{}-[{}]", path,
-				fileObject.getAbsolutePath());
-		fileMap.put(path, fileObject);
+		if (excludeContextFileFinder.checkMatch(fileObject)) {
+			LOGGER.logMessage(LogLevel.DEBUG, "添加文件：{}-[{}]", path,
+					fileObject.getAbsolutePath());
+			fileMap.put(path, fileObject);
+		}
 	}
 
 	public FileObject getFileObject(String path) {
@@ -87,7 +96,10 @@ public class FullContextFileRepositoryImpl implements FullContextFileRepository 
 				}
 			}
 		}
-		return fileObject;
+		if (fileObject !=null && excludeContextFileFinder.checkMatch(fileObject)) {
+			return fileObject;
+		}
+		return null;
 	}
 
 	public void removeFileObject(String path) {
