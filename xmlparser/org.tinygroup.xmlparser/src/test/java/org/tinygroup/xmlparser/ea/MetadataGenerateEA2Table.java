@@ -51,10 +51,8 @@ public class MetadataGenerateEA2Table {
 	static String basePackagePath = "org.tinygroup.alm";
 
 	public static void main(String[] args) throws Exception {
-		File file1 = new File("src/test/java/schema.xml");
 		URL resourceURl = MetadataGenerateEA2Table.class.getResource("/schema.xml");
 		
-		System.out.println(file1.getAbsolutePath());
 		XmlStringParser parser = new XmlStringParser();
 		doc = parser.parse(IOUtils.readFromInputStream(resourceURl.openStream(), "UTF-8"));
 

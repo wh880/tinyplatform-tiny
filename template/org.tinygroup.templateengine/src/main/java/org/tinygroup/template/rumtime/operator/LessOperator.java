@@ -22,6 +22,9 @@ public class LessOperator extends TwoConvertOperator {
 
 
     protected Object operation(Object left, Object right) {
+        if(left==null||right==null){
+            return false;
+        }
 
         if(left instanceof Comparable&&right instanceof Comparable){
             return ((Comparable) left).compareTo(right)<0;

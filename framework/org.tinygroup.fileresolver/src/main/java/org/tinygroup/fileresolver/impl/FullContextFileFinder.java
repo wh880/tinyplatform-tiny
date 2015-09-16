@@ -15,16 +15,16 @@
  */
 package org.tinygroup.fileresolver.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.config.Configuration;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 全路径资源提供器实现类
@@ -44,8 +44,14 @@ public class FullContextFileFinder extends AbstractFileProcessor implements
 	private Map<String, String> extFileContentTypeMap = new HashMap<String, String>();
 	FullContextFileRepository fullContextFileRepository;
 
+	ExcludeContextFileFinder excludeContextFileFinder;
+	
 	public FullContextFileRepository getFullContextFileRepository() {
 		return fullContextFileRepository;
+	}
+
+	public void setExtFileContentTypeMap(Map<String, String> extFileContentTypeMap) {
+		this.extFileContentTypeMap = extFileContentTypeMap;
 	}
 
 	public void setFullContextFileRepository(
@@ -53,11 +59,25 @@ public class FullContextFileFinder extends AbstractFileProcessor implements
 		this.fullContextFileRepository = fullContextFileRepository;
 	}
 
+	public void setExcludeContextFileFinder(
+			ExcludeContextFileFinder excludeContextFileFinder) {
+		this.excludeContextFileFinder = excludeContextFileFinder;
+	}
+
 	protected boolean checkMatch(FileObject fileObject) {
-		if (extFileContentTypeMap.containsKey(fileObject.getExtName())) {
-			return true;
+		//如果黑名单存在，则优先使用黑名单
+		if (excludeContextFileFinder.getExcludeFileExtensionMap().size() > 0) {
+			return excludeContextFileFinder.checkMatch(fileObject);
 		}
-		return false;
+		//反之，使用白名单
+		if (extFileContentTypeMap.size() > 0) {
+			if (extFileContentTypeMap.containsKey(fileObject.getExtName())) {
+				return true;
+			}else {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private void process(FileObject fileObject) {
