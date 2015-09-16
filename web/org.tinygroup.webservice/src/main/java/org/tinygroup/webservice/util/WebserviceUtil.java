@@ -15,20 +15,6 @@
  */
 package org.tinygroup.webservice.util;
 
-import javassist.*;
-import javassist.bytecode.AnnotationsAttribute;
-import javassist.bytecode.ClassFile;
-import javassist.bytecode.ConstPool;
-import javassist.bytecode.MethodInfo;
-import javassist.bytecode.annotation.Annotation;
-import javassist.bytecode.annotation.StringMemberValue;
-import org.tinygroup.event.Parameter;
-import org.tinygroup.event.ServiceInfo;
-import org.tinygroup.loader.LoaderManager;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.xmlparser.node.XmlNode;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +23,27 @@ import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import javassist.CannotCompileException;
+import javassist.ClassClassPath;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMethod;
+import javassist.Modifier;
+import javassist.NotFoundException;
+import javassist.bytecode.AnnotationsAttribute;
+import javassist.bytecode.ClassFile;
+import javassist.bytecode.ConstPool;
+import javassist.bytecode.MethodInfo;
+import javassist.bytecode.annotation.Annotation;
+import javassist.bytecode.annotation.StringMemberValue;
+
+import org.tinygroup.event.Parameter;
+import org.tinygroup.event.ServiceInfo;
+import org.tinygroup.loader.LoaderManager;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 public class WebserviceUtil {
 	private static Logger logger = LoggerFactory.getLogger(WebserviceUtil.class);
@@ -64,10 +71,10 @@ public class WebserviceUtil {
 		className = PACKAGE_NAME + "." + className;
 
 		// 判断类是否已经加载
-		Class c = classLoaded(className);
-		if (c != null) {
-			return c;
-		}
+//		Class c = classLoaded(className);
+//		if (c != null) {
+//			return c;
+//		}
 
 		// 新建类CtClass对象
 		ClassPool pool = ClassPool.getDefault();
@@ -77,10 +84,14 @@ public class WebserviceUtil {
 
 		// 类添加javax.jws.WebService注解
 		ClassFile cf = cc.getClassFile();
+		AnnotationsAttribute attribute = new AnnotationsAttribute(cf.getConstPool(),
+				AnnotationsAttribute.visibleTag);
 		java.util.Map<String, String> params = new HashMap<String, String>();
 		params.put("targetNamespace", PACKAGE_NAME);
-		addAnnotation(cf, "javax.jws.WebService", params);
-
+		addAnnotation(cf, "javax.jws.WebService", attribute,params);
+		addTinyWebserviceAnnotation(cf, "org.tinygroup.webservice.annotation.TinyWebService",attribute);
+		cf.addAttribute(attribute);
+		cf.setVersionToJava5();
 		// 类添加方法
 		try {
 			CtMethod cm = getCtMethod(cc, serviceInfo);
@@ -95,8 +106,7 @@ public class WebserviceUtil {
 		try {
 			cc.writeFile();
 			cc.defrost();
-			c = cc.toClass();
-			return c;
+			return cc.toClass();
 		} catch (NotFoundException e) {
 			logger.errorMessage("class:{className} 文件未找到",e,className);
 		} catch (CannotCompileException e) {
@@ -145,11 +155,9 @@ public class WebserviceUtil {
 	}
 
 
-	private static void addAnnotation(ClassFile cf, String name,
+	private static void addAnnotation(ClassFile cf, String name,AnnotationsAttribute attribute,
 			java.util.Map<String, String> params) {
 		ConstPool cp = cf.getConstPool();
-		AnnotationsAttribute attribute = new AnnotationsAttribute(cp,
-				AnnotationsAttribute.visibleTag);
 		Annotation annotation = new Annotation(name, cp);
 		Iterator<java.util.Map.Entry<String, String>> iterator = params
 				.entrySet().iterator();
@@ -157,11 +165,19 @@ public class WebserviceUtil {
 			java.util.Map.Entry<String, String> entry = iterator.next();
 			annotation.addMemberValue(entry.getKey(), new StringMemberValue(
 					entry.getValue(), cp));
+			
 		}
 		attribute.addAnnotation(annotation);
-		cf.addAttribute(attribute);
-		cf.setVersionToJava5();
 	}
+	
+	
+	private static void addTinyWebserviceAnnotation(ClassFile cf, String name,
+	       AnnotationsAttribute attribute) {
+		ConstPool cp = cf.getConstPool();
+		Annotation annotation = new Annotation(name, cp);
+		attribute.addAnnotation(annotation);
+	}
+	
 
 	private static CtMethod getCtMethod(CtClass cc, ServiceInfo serviceInfo)
 			throws NotFoundException, CannotCompileException {

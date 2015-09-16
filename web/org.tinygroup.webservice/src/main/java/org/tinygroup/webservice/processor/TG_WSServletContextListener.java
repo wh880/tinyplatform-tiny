@@ -13,12 +13,25 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.sun.xml.ws.transport.http.servlet;
+package org.tinygroup.webservice.processor;
 
-import com.sun.istack.NotNull;
-import com.sun.xml.ws.api.server.Container;
-import com.sun.xml.ws.resources.WsservletMessages;
-import com.sun.xml.ws.transport.http.TG_DeploymentDescriptorParser;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextAttributeEvent;
+import javax.servlet.ServletContextAttributeListener;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.xml.ws.WebServiceException;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.event.ServiceInfo;
@@ -31,17 +44,14 @@ import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlParser;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
 
-import javax.servlet.*;
-import javax.xml.ws.WebServiceException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.sun.istack.NotNull;
+import com.sun.xml.ws.api.server.Container;
+import com.sun.xml.ws.resources.WsservletMessages;
+import com.sun.xml.ws.transport.http.DeploymentDescriptorParser;
+import com.sun.xml.ws.transport.http.servlet.ServletAdapter;
+import com.sun.xml.ws.transport.http.servlet.ServletAdapterList;
+import com.sun.xml.ws.transport.http.servlet.WSServlet;
+import com.sun.xml.ws.transport.http.servlet.WSServletDelegate;
 
 public class TG_WSServletContextListener implements
 		ServletContextAttributeListener, ServletContextListener {
@@ -55,9 +65,8 @@ public class TG_WSServletContextListener implements
 		this.core = core;
 	}
 
-	private TG_WSServletDelegate delegate;
-	private List<TG_ServletAdapter> adapters;
-	private final TG_JAXWSRIDeploymentProbeProvider probe = new TG_JAXWSRIDeploymentProbeProvider();
+	private WSServletDelegate delegate;
+	private List<ServletAdapter> adapters;
 
 	public void attributeAdded(ServletContextAttributeEvent event) {
 	}
@@ -72,21 +81,6 @@ public class TG_WSServletContextListener implements
 		if (delegate != null) { // the deployment might have failed.
 			delegate.destroy();
 		}
-
-		if (adapters != null) {
-
-			for (TG_ServletAdapter a : adapters) {
-				try {
-					a.getEndpoint().dispose();
-				} catch (Throwable e) {
-					logger.errorMessage(e.getMessage(), e);
-				}
-
-				// Emit undeployment probe event for each endpoint
-				probe.undeploy(a);
-			}
-		}
-
 		// if (logger.isLoggable(Level.INFO)) {
 		logger.logMessage(LogLevel.INFO,
 				WsservletMessages.LISTENER_INFO_DESTROY());
@@ -207,25 +201,19 @@ public class TG_WSServletContextListener implements
 			}
 		}
 		if(adapters==null){
-			adapters=new ArrayList<TG_ServletAdapter>();
+			adapters=new ArrayList<ServletAdapter>();
 		}
 		delegate = createDelegate(adapters, context);
-		context.setAttribute(TG_WSServlet.JAXWS_RI_RUNTIME_INFO, delegate);
-
-		// Emit deployment probe event for each endpoint
-		for (TG_ServletAdapter adapter : adapters) {
-			probe.deploy(adapter);
-		}
-
+		context.setAttribute(WSServlet.JAXWS_RI_RUNTIME_INFO, delegate);
 	}
 
 	private void createService(ServiceInfo serviceInfo,
 			ClassLoader classLoader, ServletContext context) throws IOException {
 		WebserviceUtil.genWSDL(serviceInfo);
 		// Parse the descriptor file and build endpoint infos
-		TG_DeploymentDescriptorParser<TG_ServletAdapter> parser = new TG_DeploymentDescriptorParser<TG_ServletAdapter>(
+		DeploymentDescriptorParser<ServletAdapter> parser = new DeploymentDescriptorParser<ServletAdapter>(
 				classLoader, new ServletResourceLoader(context),
-				createContainer(context), new TG_ServletAdapterList(context));
+				createContainer(context), new ServletAdapterList());
 
 		/**
 		 * 将serviceInfos 写成 JAXWS_RI_RUNTIME
@@ -255,9 +243,9 @@ public class TG_WSServletContextListener implements
 	 * Creates {@link WSServletDelegate} that does the real work.
 	 */
 	protected @NotNull
-	TG_WSServletDelegate createDelegate(List<TG_ServletAdapter> adapters,
+	WSServletDelegate createDelegate(List<ServletAdapter> adapters,
 			ServletContext context) {
-		return new TG_WSServletDelegate(adapters, context);
+		return new WSServletDelegate(adapters, context);
 	}
 
 	private static final String JAXWS_RI_RUNTIME = "/WEB-INF/sun-jaxws.xml";

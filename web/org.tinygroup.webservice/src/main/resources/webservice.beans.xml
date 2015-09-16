@@ -3,6 +3,6 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans.xsd"
 	   default-autowire="byName" default-lazy-init="true">
-	<bean id="TG_WSServletContextListener" name="TG_WSServletContextListener" class="com.sun.xml.ws.transport.http.servlet.TG_WSServletContextListener"></bean>
+	<bean id="TG_WSServletContextListener" name="TG_WSServletContextListener" class="org.tinygroup.webservice.processor.TG_WSServletContextListener"></bean>
 	
 </beans>
