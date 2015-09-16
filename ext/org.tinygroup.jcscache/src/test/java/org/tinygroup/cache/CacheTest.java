@@ -15,9 +15,15 @@
  */
 package org.tinygroup.cache;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import junit.framework.TestCase;
+
+import org.apache.jcs.engine.control.CompositeCacheManager;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.exception.CacheException;
+import org.tinygroup.cache.jcs.JcsCacheManager;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.I18nFileProcessor;
@@ -139,4 +145,44 @@ public class CacheTest extends TestCase {
 
 	}
 
+	public static void main(String[] args) throws InterruptedException {
+		final byte[] lock = new byte[0];
+
+		Thread thread = new Thread(new Runnable() {
+			public void run() {
+				CompositeCacheManager cacheManager = CompositeCacheManager
+						.getInstance("/cache1.ccf");
+				CacheManager manager2 = JcsCacheManager
+						.getInstance(cacheManager);
+				Cache cache = manager2.createCache("testCache1");
+				System.out.println(cache.get("test"));
+				while (true) {
+					synchronized (lock) {
+						try {
+							lock.wait(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						System.out.println(cache.get("test"));
+						lock.notifyAll();
+					}
+				}
+			}
+		});
+		thread.start();
+
+		CacheManager manager1 = JcsCacheManager.getInstance();
+		Cache cache = manager1.createCache("testCache1");
+		for (int i = 0; i < 10; i++) {
+			synchronized (lock) {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("key", "changeValue" + i);
+				cache.remove("test");
+				cache.put("test", map);
+				lock.notifyAll();
+				lock.wait(100);
+			}
+		}
+		System.exit(0);
+	}
 }
