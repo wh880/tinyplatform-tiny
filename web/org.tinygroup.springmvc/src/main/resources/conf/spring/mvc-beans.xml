@@ -163,42 +163,48 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="httpMessageConverterComposite"
 		class="org.tinygroup.springmvc.support.HttpMessageConverterComposite" />
 
 	<bean id="byteArrayHttpMessageConverter"
 		class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
 
-	<bean id="mappingJacksonHttpMessageConverter"
-		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-		<property name="supportedMediaTypes">
-			<list>
-				<value>application/json;charset=UTF-8</value>
-			</list>
+	<bean id="jacksonHttpMessageConverterAdapter"
+		class="org.tinygroup.springmvc.support.HttpMessageConverterAdapter">
+		<property name="messageConverter">
+			<bean id="mappingJacksonHttpMessageConverter"
+				class="org.tinygroup.springmvc.support.MappingJacksonHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
 		</property>
 	</bean>
+
 
 	<bean id="sourceHttpMessageConverter"
 		class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />
 
 	<bean id="xmlAwareFormHttpMessageConverter"
 		class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
-		
+
 	<bean id="tinyHandlerMappingComposite"
 		class="org.tinygroup.springmvc.handlermapping.TinyHandlerMappingComposite" />
-		
+
 	<bean id="tinyHandlerAdapterComposite"
 		class="org.tinygroup.springmvc.handleradapter.TinyHandlerAdapterComposite" />
-	
+
 	<bean id="tinyContentNegotiatingViewResolver"
 		class="org.tinygroup.springmvc.view.TinyContentNegotiatingViewResolver">
 		<property name="mediaTypes">
-		   <map>
-		       <entry key="shtm" value="text/html"></entry>
-		       <entry key="page" value="text/html"></entry>
-		       <entry key="pagelet" value="text/html"></entry>
-		   </map>
+			<map>
+				<entry key="shtm" value="text/html"></entry>
+				<entry key="page" value="text/html"></entry>
+				<entry key="pagelet" value="text/html"></entry>
+			</map>
 		</property>
-	</bean>				
+	</bean>
 </beans>
