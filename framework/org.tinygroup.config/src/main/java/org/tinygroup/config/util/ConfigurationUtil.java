@@ -339,10 +339,14 @@ public final class ConfigurationUtil {
 		XmlNode applicationConfig = new XmlStringParser().parse(config)
 				.getRoot();// 第一次解出
 		Map<String, String> applicationPropertiesMap = new HashMap<String, String>();
-		loadApplicationProperties(applicationConfig, applicationPropertiesMap);
 		loadApplicationPropertyFiles(applicationConfig,
-				applicationPropertiesMap);
-		String newConfig = replaceProperty(config, applicationPropertiesMap);// 替换里面的全局变量
+				applicationPropertiesMap);//加载.ini.properties文件中的key-value到map中
+		if(applicationPropertiesMap.size()>0){
+			String newConfig = replaceProperty(config, applicationPropertiesMap); //替换config中的引用的文件中的变量
+			applicationConfig = new XmlStringParser().parse(newConfig).getRoot();
+		}
+		loadApplicationProperties(applicationConfig, applicationPropertiesMap);//读取替换后的APPLICATION_PROPERTIES_PROPERTY
+		String newConfig = replaceProperty(config, applicationPropertiesMap);// 替换里面引用的APPLICATION_PROPERTIES_PROPERTY
 		return new XmlStringParser().parse(newConfig).getRoot();// 再次解析，出来最终结果
 	}
 
@@ -430,4 +434,5 @@ public final class ConfigurationUtil {
 		}
 		return result;
 	}
+	
 }
