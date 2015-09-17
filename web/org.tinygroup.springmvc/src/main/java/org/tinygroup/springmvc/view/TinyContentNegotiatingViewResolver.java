@@ -61,8 +61,8 @@ public class TinyContentNegotiatingViewResolver extends
 		contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
 		contentNegotiatingViewResolver
 				.setApplicationContext(getApplicationContext());
-//		contentNegotiatingViewResolver
-//				.setDefaultContentType(MediaType.TEXT_HTML);
+		contentNegotiatingViewResolver
+				.setDefaultContentType(MediaType.TEXT_HTML);
 		try {
 			List<View> defaultViews = new ArrayList<View>();
 			Map<String, DefaultViewsStorage> defaultViewsStorages = BeanFactoryUtils
