@@ -15,6 +15,7 @@
  */
 package org.tinygroup.metadata.stdfield.impl;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.metadata.bizdatatype.BusinessTypeProcessor;
 import org.tinygroup.metadata.bizdatatype.impl.BusinessTypeProcessorImpl;
 import org.tinygroup.metadata.config.stdfield.NickName;
@@ -65,6 +66,10 @@ public class StandardFieldProcessorImpl implements StandardFieldProcessor {
 						newStandardField.setId(name.getId());
 						newStandardField.setName(name.getName());
 						newStandardField.setTitle(name.getTitle());
+						newStandardField.setDefaultValue(field.getDefaultValue());
+						newStandardField.setDescription(field.getDescription());
+						newStandardField.setTypeId(field.getTypeId());
+						
 						standardFieldMap.put(name.getId(), newStandardField);
 					}
 				}
@@ -88,6 +93,8 @@ public class StandardFieldProcessorImpl implements StandardFieldProcessor {
 
 	public String getType(String id, String language) {
 		StandardField standardField = getStandardField(id);
+		System.out.println(id);
+		System.out.println(standardField.getTypeId());
 		String type = businessTypeProcessor.getType(standardField.getTypeId(),
 				language);
 		if (type != null) {
