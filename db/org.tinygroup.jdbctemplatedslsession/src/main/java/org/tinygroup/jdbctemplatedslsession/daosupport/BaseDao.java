@@ -24,9 +24,9 @@ public interface BaseDao <T,KeyType extends Serializable>{
 
 	public int deleteByKeys(KeyType... pks);
 
-	public List<T> query(T t);
+	public List<T> query(T t,OrderBy... orderBies);
 
-	public Pager<T> queryPager (int start ,int limit ,T t);
+	public Pager<T> queryPager (int start ,int limit ,T t,OrderBy... orderBies);
 
 	public int[] batchInsert(List<T> objs);
 
