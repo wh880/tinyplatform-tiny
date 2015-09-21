@@ -15,15 +15,15 @@
  */
 package org.tinygroup.exception;
 
+import java.util.List;
+import java.util.Locale;
+
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.commons.tools.ExceptionUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.exception.util.ErrorUtil;
 import org.tinygroup.i18n.I18nMessage;
 import org.tinygroup.i18n.I18nMessageFactory;
-
-import java.util.List;
-import java.util.Locale;
 
 public class BaseRuntimeException extends RuntimeException {
 	private static final long serialVersionUID = -1141168272047460629L;
@@ -35,7 +35,7 @@ public class BaseRuntimeException extends RuntimeException {
 
 	@Override
 	public String getMessage() {
-		return errorMsg;
+		return String.format("[%s] :", errorCode) + errorMsg;
 	}
 
 	public ErrorCode getErrorCode() {
@@ -103,11 +103,12 @@ public class BaseRuntimeException extends RuntimeException {
 
 	public BaseRuntimeException(String message, Throwable cause) {
 		super(message, cause);
+		this.errorMsg = message;
 	}
 
 	public BaseRuntimeException(String message) {
 		super(message);
-
+		this.errorMsg = message;
 	}
 
 	public BaseRuntimeException(Throwable cause) {

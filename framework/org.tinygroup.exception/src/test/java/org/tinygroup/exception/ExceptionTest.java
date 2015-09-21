@@ -24,9 +24,9 @@ import java.io.InputStreamReader;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.tinygroup.i18n.I18nMessageFactory;
-
 import junit.framework.TestCase;
+
+import org.tinygroup.i18n.I18nMessageFactory;
 
 public class ExceptionTest extends TestCase {
 
@@ -46,12 +46,14 @@ public class ExceptionTest extends TestCase {
 		try{
 			biz.execute();
 		}catch(BizRuntimeException e){
-			assertEquals(e.getMessage(), "error1");
+			assertEquals(e.getErrorCode().toString(), "0TE111011027");
+			assertEquals(e.getMessage(), "[0TE111011027] :error1");
 		}
 		try{
 			biz.executeWithMsg();
 		}catch(BizRuntimeException e){
-			assertEquals(e.getMessage(),"hello error");
+			assertEquals(e.getErrorCode().toString(),"0TE111011028");
+			assertEquals(e.getMessage(),"[0TE111011028] :hello error");
 		}
 //		throw new BizRuntimeException("0TE111011027","haha");
 	}
