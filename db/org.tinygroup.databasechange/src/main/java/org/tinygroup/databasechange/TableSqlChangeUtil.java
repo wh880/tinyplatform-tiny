@@ -51,17 +51,7 @@ public class TableSqlChangeUtil {
 		try {
 			Map<Class, List<String>> processSqls = installerStart
 					.getChangeSqls();
-			for (Class clazz : processSqls.keySet()) {
-				builder.append("//-----").append(clazz.getSimpleName())
-						.append("-----").append("\n\r");
-				List<String> sqls = processSqls.get(clazz);
-				for (String sql : sqls) {
-					builder.append(sql).append(";").append("\n\r");
-				}
-				builder.append("//-----").append(clazz.getSimpleName())
-						.append("-----").append("\n\r");
-				builder.append("\n\r");
-			}
+			TableSqlUtil.appendSqlText(builder, processSqls);
 			StreamUtil.writeText(builder, new FileWriter(new File(fileName)),
 					true);
 		} catch (Exception e) {

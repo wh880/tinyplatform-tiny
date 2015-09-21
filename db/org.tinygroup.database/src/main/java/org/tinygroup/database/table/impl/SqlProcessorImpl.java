@@ -357,7 +357,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 
 	protected void appendComment(String comment, StringBuffer ddlBuffer,List<String> list) {
 		if (!StringUtil.isBlank(comment)) {
-			ddlBuffer.append(" COMMENT ").append("'").append(comment)
+			ddlBuffer.append(" COMMENT ").append("'").append(comment.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\""))
 					.append("'");
 		}
 	}
@@ -578,7 +578,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		if(StringUtil.isBlank(fieldDefaultValue)){
 			fieldDefaultValue = standardField.getDefaultValue();
 		}
-		return fieldDefaultValue;
+		return fieldDefaultValue==null?null:fieldDefaultValue.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"");
 	}
 
 }
