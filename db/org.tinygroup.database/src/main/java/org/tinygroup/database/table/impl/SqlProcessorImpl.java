@@ -314,6 +314,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			} else {
 				isFirst = false;
 			}
+//			if(StringUtil.isBlank(field.getStandardFieldId()))	throw new RuntimeException(String.format("表[%s]中字段[%s]中的标准字段为空",table.getId(), field.getId()));
 			appendField(ddlBuffer, field,list);
 		}
 	}
@@ -326,13 +327,11 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		ddlBuffer.append(" ");
 		ddlBuffer.append(MetadataUtil.getStandardFieldType(standardField
 				.getId(), getDatabaseType(), this.getClass().getClassLoader()));
-		String fieldDefaultValue = field.getDefaultValue();
-		if(StringUtil.isBlank(fieldDefaultValue)){
-			fieldDefaultValue = standardField.getDefaultValue();
-		}
 		
-		// 设置字段默认值
-		appendDefaultValue(fieldDefaultValue, ddlBuffer);
+		String fieldDefaultValue = getDefaultValue(field,standardField);
+		
+		// 非自增的字段设置字段默认值
+		if(!field.isAutoIncrease())	appendDefaultValue(fieldDefaultValue, ddlBuffer);
 		Boolean notNull = field.getNotNull();
 		if (notNull != null && notNull.booleanValue()) {
 			ddlBuffer.append(" NOT NULL");
@@ -572,6 +571,14 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			lengthInfo = lengthInfo + "," + attributes.get(DECIMAL_DIGITS);
 		}
 		return String.format("%s(%s)", attributes.get(TYPE_NAME), lengthInfo);
+	}
+	
+	private String getDefaultValue(TableField field,StandardField standardField){
+		String fieldDefaultValue = field.getDefaultValue();
+		if(StringUtil.isBlank(fieldDefaultValue)){
+			fieldDefaultValue = standardField.getDefaultValue();
+		}
+		return fieldDefaultValue;
 	}
 
 }

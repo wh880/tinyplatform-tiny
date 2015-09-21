@@ -65,6 +65,10 @@ public class StandardFieldProcessorImpl implements StandardFieldProcessor {
 						newStandardField.setId(name.getId());
 						newStandardField.setName(name.getName());
 						newStandardField.setTitle(name.getTitle());
+						newStandardField.setDefaultValue(field.getDefaultValue());
+						newStandardField.setDescription(field.getDescription());
+						newStandardField.setTypeId(field.getTypeId());
+						
 						standardFieldMap.put(name.getId(), newStandardField);
 					}
 				}

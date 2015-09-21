@@ -13,5 +13,6 @@
     <module>org.tinygroup.elmvel</module>
     <module>org.tinygroup.rediscache</module>
     <module>org.tinygroup.cachefactory</module>
+    <module>org.tinygroup.jcscache2</module>
   </modules>
 </project>
