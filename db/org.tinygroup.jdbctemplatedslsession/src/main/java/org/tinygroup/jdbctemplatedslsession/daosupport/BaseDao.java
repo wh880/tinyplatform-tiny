@@ -1,10 +1,10 @@
 
 package org.tinygroup.jdbctemplatedslsession.daosupport;
 
+import org.tinygroup.tinysqldsl.Pager;
+
 import java.io.Serializable;
 import java.util.List;
-
-import org.tinygroup.tinysqldsl.Pager;
 
 /**
  * 基础dao类
@@ -24,14 +24,14 @@ public interface BaseDao <T,KeyType extends Serializable>{
 
 	public int deleteByKeys(KeyType... pks);
 
-	public List<T> query(T t,OrderBy... orderBies);
+	public List<T> query(T t, OrderBy... orderArgs);
 
-	public Pager<T> queryPager (int start ,int limit ,T t,OrderBy... orderBies);
+	public Pager<T> queryPager(int start, int limit, T t, OrderBy... orderArgs);
 
-	public int[] batchInsert(List<T> objs);
+	public int[] batchInsert(List<T> objects);
 
-	public int[] batchUpdate(List<T> objs);
+	public int[] batchUpdate(List<T> objects);
 
-	public int[] batchDelete(List<T> objs);
+	public int[] batchDelete(List<T> objects);
 
 }

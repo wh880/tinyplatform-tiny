@@ -107,8 +107,8 @@ public interface DslSession {
 
 	/**
 	 * 返回一个结果，既然是有多个结果也只返回第一个结果
-	 * 
-	 * @param select
+	 *
+	 * @param complexSelect
 	 * @param requiredType
 	 * @param <T>
 	 * @return
@@ -117,8 +117,8 @@ public interface DslSession {
 
 	/**
 	 * 把所有的结果变成一个对象数组返回
-	 * 
-	 * @param select
+	 *
+	 * @param complexSelect
 	 * @param requiredType
 	 * @param <T>
 	 * @return
@@ -127,8 +127,8 @@ public interface DslSession {
 
 	/**
 	 * 把所有的结果变成一个对象列表返回
-	 * 
-	 * @param select
+	 *
+	 * @param complexSelect
 	 * @param requiredType
 	 * @param <T>
 	 * @return
