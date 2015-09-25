@@ -578,7 +578,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		if(StringUtil.isBlank(fieldDefaultValue)){
 			fieldDefaultValue = standardField.getDefaultValue();
 		}
-		return fieldDefaultValue==null?null:fieldDefaultValue.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"");
+		return fieldDefaultValue;
 	}
 
 }
