@@ -72,6 +72,7 @@ public abstract class AbstractInstallProcessor implements InstallProcessor {
 
 	private void excute(List<String> sqls, Connection con) throws SQLException {
 		Statement statement = null;
+		con.setAutoCommit(false);
 		try {
 			statement = con.createStatement();
 			logger.logMessage(LogLevel.INFO, "开始执行sql,共{0}句sql", sqls.size());
@@ -79,8 +80,11 @@ public abstract class AbstractInstallProcessor implements InstallProcessor {
 				logger.logMessage(LogLevel.INFO, "执行sql:{0}", sql);
 				statement.execute(sql);
 			}
+			con.commit();
 			logger.logMessage(LogLevel.INFO, "执行sql处理完成");
 		} catch (SQLException ex) {
+			con.rollback();
+			logger.errorMessage("执行sql处理异常，已回滚!");
 			throw ex;
 		} finally {
 			if (statement != null) {
