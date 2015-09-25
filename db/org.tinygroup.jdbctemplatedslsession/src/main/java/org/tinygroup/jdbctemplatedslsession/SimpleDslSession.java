@@ -55,6 +55,7 @@ import org.tinygroup.tinysqldsl.base.InsertContext;
 import org.tinygroup.tinysqldsl.select.PlainSelect;
 import org.tinygroup.tinysqldsl.selectitem.FragmentSelectItemSql;
 import org.tinygroup.tinysqldsl.selectitem.SelectItem;
+import org.tinygroup.tinysqldsl.update.UpdateBody;
 
 /**
  * DslSqlSession接口的jdbctemplate版实现
@@ -154,8 +155,24 @@ public class SimpleDslSession implements DslSession {
 	}
 
 	public int execute(Update update) {
-		String sql = update.parsedSql();
-		logMessage(sql, update.getValues());
+		return execute(update, false);
+	}
+	
+	public int execute(Update update, boolean ignoreNull) {
+	    String	sql= update.parsedSql();
+		if(ignoreNull){
+			List<Object> values=update.getValues();
+			UpdateBody updateBody=update.getUpdateBody();
+			for (int i = 0; i < values.size(); i++) {
+				if(values.get(i)==null){
+					updateBody.removeColumn(i);
+					updateBody.removeExpression(i);
+					values.remove(i);
+				}
+			}
+			sql=update.newSql();
+		}
+		logMessage(sql,update.getValues());
 		return jdbcTemplate.update(sql, update.getValues().toArray());
 	}
 
@@ -547,4 +564,5 @@ public class SimpleDslSession implements DslSession {
 		Map<String, Object>[] mapParams = convertBeanToArray(params);
 		return batchDelete(delete, mapParams, batchSize);
 	}
+
 }

@@ -17,6 +17,7 @@ package org.tinygroup.tinysqldsl.base;
 
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.expression.JdbcParameter;
+import org.tinygroup.tinysqldsl.expression.NullValue;
 
 /**
  * 插入、更新时的值对象
@@ -41,6 +42,9 @@ public class Value {
     public Value(Column column, Expression expression) {
 		super();
 		this.column = column;
+		if(expression==null){
+			expression=new Condition(new JdbcParameter(), new Object[]{null});
+		}
 		this.expression = expression;
 	}
 

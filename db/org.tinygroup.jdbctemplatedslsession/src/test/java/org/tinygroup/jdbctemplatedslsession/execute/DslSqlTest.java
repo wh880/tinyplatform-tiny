@@ -93,6 +93,29 @@ public class DslSqlTest extends BaseTest {
 		affect = session.execute(update);
 		assertEquals(1, affect);
 		
+		update=update(CUSTOM).set(CUSTOM.NAME.value(null),
+				CUSTOM.AGE.value(30)).where(CUSTOM.NAME.eq("flank"));
+		affect = session.execute(update,true);
+		assertEquals(1, affect);
+		
+		select = selectFrom(CUSTOM).where(CUSTOM.NAME.eq("flank"));
+		custom=session.fetchOneResult(select, Custom.class);
+		assertNotNull(custom);
+        assertEquals("flank", custom.getName());
+        
+        update=update(CUSTOM).set(CUSTOM.NAME.value(null),
+				CUSTOM.AGE.value(30)).where(CUSTOM.NAME.eq("flank"));
+        affect = session.execute(update);
+		assertEquals(1, affect);
+		select=select(CUSTOM.AGE.count()).from(CUSTOM).where(CUSTOM.NAME.eq("flank"));
+		int count=session.count(select);
+		assertEquals(0, count);
+		
+		
+		update=update(CUSTOM).set(CUSTOM.NAME.value("flank")).where(CUSTOM.AGE.eq(30));
+		affect = session.execute(update);
+		assertEquals(1, affect);
+        
 		
 		delete=delete(CUSTOM).where(and(CUSTOM.NAME.leftLike("a"), CUSTOM.AGE.between(1, 10)));
 		affect = session.execute(delete);

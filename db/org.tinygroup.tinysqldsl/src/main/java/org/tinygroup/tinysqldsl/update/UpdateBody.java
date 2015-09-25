@@ -17,6 +17,7 @@ package org.tinygroup.tinysqldsl.update;
 
 import org.tinygroup.tinysqldsl.base.*;
 import org.tinygroup.tinysqldsl.expression.Expression;
+import org.tinygroup.tinysqldsl.expression.NullValue;
 import org.tinygroup.tinysqldsl.formitem.FromItem;
 import org.tinygroup.tinysqldsl.select.Join;
 import org.tinygroup.tinysqldsl.util.DslUtil;
@@ -115,7 +116,15 @@ public class UpdateBody implements StatementBody {
 	public void setUseSelect(boolean useSelect) {
 		this.useSelect = useSelect;
 	}
-
+	
+	public void removeColumn(int index){
+		  columns.remove(index);
+	}
+	
+	public void removeExpression(int index){
+		  expressions.remove(index);
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder("UPDATE ");
@@ -179,6 +188,9 @@ public class UpdateBody implements StatementBody {
 				buffer.append(column.getFullyQualifiedName()).append(" = ");
 
 				Expression expression = getExpressions().get(i);
+				if(expression==null){
+					expression=new NullValue();
+				}
 				expression.builderExpression(builder);
 				if (i < getColumns().size() - 1) {
 					buffer.append(", ");

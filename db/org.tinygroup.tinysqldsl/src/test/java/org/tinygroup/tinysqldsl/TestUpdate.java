@@ -15,11 +15,11 @@
  */
 package org.tinygroup.tinysqldsl;
 
-import org.tinygroup.tinysqldsl.expression.LongValue;
-import org.tinygroup.tinysqldsl.expression.arithmetic.Addition;
-
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.Update.update;
+
+import org.tinygroup.tinysqldsl.expression.LongValue;
+import org.tinygroup.tinysqldsl.expression.arithmetic.Addition;
 
 /**
  * Created by luoguo on 2015/3/11.
@@ -31,6 +31,8 @@ public class TestUpdate {
 		System.out.println(update(CUSTOM).set(
 				CUSTOM.AGE.value(new Addition(CUSTOM.AGE, new LongValue(3))))
 				.where(CUSTOM.NAME.eq("悠然")));
+		System.out.println(update(CUSTOM).set(CUSTOM.NAME.value(null),
+				CUSTOM.AGE.value(30)).where(CUSTOM.NAME.eq("flank")));
 	}
 
 }

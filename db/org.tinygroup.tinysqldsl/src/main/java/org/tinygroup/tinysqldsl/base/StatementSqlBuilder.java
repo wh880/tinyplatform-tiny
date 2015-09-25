@@ -132,7 +132,19 @@ public abstract class StatementSqlBuilder {
 			parsedSql=NamedParameterUtils.substituteNamedParameters(parsedSql,mapValue);	
 		}
 		return parsedSql;
-		
+	}
+	
+	public String newSql(){
+		reset();
+		return parsedSql();
+	}
+	
+	public void reset(){
+		hasBuild=false;
+		isNamedSql=false;
+		values.clear();
+		namedList.clear();
+		stringBuilder=new StringBuilder();
 	}
 
 	protected abstract void parserStatementBody();
