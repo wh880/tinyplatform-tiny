@@ -34,17 +34,24 @@ public class GetFunction extends AbstractTemplateFunction {
     }
 
     public Object execute(Template template, TemplateContext context, Object... parameters) throws TemplateException {
-        Object object = parameters[0];
+    	Object object = parameters[0];
         Object indexObject = parameters[1];
         try {
+        	//先尝试从集合取值
             return TemplateUtil.getArrayValue(object, indexObject);
         }catch (TemplateException e) {
             throw e;
         }catch (Exception e) {
-        	if(e instanceof NullPointerException){
-        	    throw new TemplateException("get函数参数格式不对");
-        	}
-            return TemplateUtil.callMethod(template, context, object, "get", object, indexObject);
+        	try{
+        		//再尝试从对象属性取值
+        		return TemplateUtil.executeClassMethod(object, "get", parameters);
+        	}catch(Exception e1){
+        		if(getTemplateEngine().isSafeVariable()){
+        		   return null;
+        		}else{
+        		   throw new TemplateException(object.getClass().getName() + "get方法取值失败"); 	
+        		}
+        	}   
         }
     }
 }

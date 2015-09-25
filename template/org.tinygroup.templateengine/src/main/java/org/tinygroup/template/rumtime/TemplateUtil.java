@@ -181,7 +181,7 @@ public final class TemplateUtil {
         }
     }
 
-    private static Object executeClassMethod(Object object, String methodName, Object[] parameters) throws TemplateException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public static Object executeClassMethod(Object object, String methodName, Object[] parameters) throws TemplateException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Method method = getMethodByName(object, methodName, parameters);
         //如果有缓冲，则用缓冲方式调用
         if (method != null) {
