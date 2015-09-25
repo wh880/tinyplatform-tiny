@@ -38,6 +38,8 @@ public class GetFunction extends AbstractTemplateFunction {
         Object indexObject = parameters[1];
         try {
             return TemplateUtil.getArrayValue(object, indexObject);
+        }catch (TemplateException e) {
+            throw e;
         }catch (Exception e) {
         	if(e instanceof NullPointerException){
         	    throw new TemplateException("get函数参数格式不对");
