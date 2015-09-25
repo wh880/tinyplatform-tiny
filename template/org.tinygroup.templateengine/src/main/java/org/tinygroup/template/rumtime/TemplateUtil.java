@@ -177,6 +177,11 @@ public final class TemplateUtil {
                 return executeClassMethod(object, methodName, parameters);
             }
         } catch (Exception e) {
+        	//反射异常返回真实的目标异常
+        	if(e instanceof InvocationTargetException){
+        		InvocationTargetException e1 =(InvocationTargetException) e;
+        		throw new TemplateException(e1.getTargetException());
+        	}
             throw new TemplateException(e);
         }
     }

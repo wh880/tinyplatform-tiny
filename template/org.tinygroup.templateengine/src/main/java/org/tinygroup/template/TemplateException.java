@@ -82,5 +82,9 @@ public class TemplateException extends Exception {
     public TemplateException(Exception e) {
         super(e);
     }
+    
+    public TemplateException(Throwable cause) {
+        super(cause);
+    }
 
 }
