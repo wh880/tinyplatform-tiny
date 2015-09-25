@@ -23,7 +23,7 @@ public class FormatDateFunction extends AbstractTemplateFunction {
 			Object... parameters) throws TemplateException {
 		if (parameters == null || parameters.length < 1
 				|| parameters[0] == null) {
-			throw new TemplateException("formatDate函数必须输入转换的日期");
+			return "";
 		} else {
 			String patten = parameters.length>1?(String)parameters[1]:DEFAULT_PATTEN;
 			SimpleDateFormat format = new SimpleDateFormat(patten);
