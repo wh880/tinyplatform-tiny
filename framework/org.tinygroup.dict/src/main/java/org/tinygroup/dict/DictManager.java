@@ -81,5 +81,12 @@ public interface DictManager {
 	 * @return
 	 */
 	Dict getDict(String dictTypeName, Context context);
+	/**
+	 * 获取字典
+	 * 
+	 * @param context
+	 * @return
+	 */
+	Dict getDict(String lang,String dictTypeName, Context context);
 
 }

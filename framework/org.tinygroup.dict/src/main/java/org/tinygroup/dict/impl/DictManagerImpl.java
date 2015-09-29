@@ -48,6 +48,20 @@ public class DictManagerImpl implements DictManager {
 
 	public Dict getDict(String dictTypeName, Context context) {
 		String lang = LocaleUtil.getContext().getLocale().toString();
+		return getDict(lang, dictTypeName, context);
+//		if(!dictLoaderMap.containsKey(lang)){
+//			throw new RuntimeException("Locale:{}" + lang + "不存在对应的DictLoader");
+//		}
+//		for (DictLoader dictLoader : dictLoaderMap.get(lang)) {
+//			Dict dict = dictLoader.getDict(dictTypeName, this, context);
+//			if (dict != null) {
+//				return dict;
+//			}
+//		}
+//		throw new RuntimeException("没有找到<" + dictTypeName + ">的字典类型");
+	}
+	
+	public Dict getDict(String lang,String dictTypeName, Context context) {
 		if(!dictLoaderMap.containsKey(lang)){
 			throw new RuntimeException("Locale:{}" + lang + "不存在对应的DictLoader");
 		}
@@ -59,6 +73,7 @@ public class DictManagerImpl implements DictManager {
 		}
 		throw new RuntimeException("没有找到<" + dictTypeName + ">的字典类型");
 	}
+
 
 	public void setCache(Cache cache) {
 		this.cache = cache;
