@@ -274,21 +274,22 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 							.getClassLoader());
 			String dbColumnType = getDbColumnType(attribute)
 					.replaceAll(" ", "").toLowerCase();
+			String standardFieldName = standardField.getName();
 			if (dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
 					.toLowerCase()) == -1) {
 				String alterType = createAlterTypeSql(table.getName(),
-						fieldName, tableDataType);
+						standardFieldName, tableDataType);
 				existUpdateList.add(alterType);
 			}
 			// 如果数据库中字段允许为空，但table中不允许为空
 			if (field.getNotNull()
 					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNullable) {
 				String notNullSql = createNotNullSql(table.getName(),
-						fieldName, tableDataType);
+						standardFieldName, tableDataType);
 				existUpdateList.add(notNullSql);
 			} else if (!field.getNotNull()
 					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNoNulls) {
-				String nullSql = createNullSql(table.getName(), fieldName,
+				String nullSql = createNullSql(table.getName(), standardFieldName,
 						tableDataType);
 				existUpdateList.add(nullSql);
 			}
