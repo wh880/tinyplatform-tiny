@@ -130,7 +130,7 @@ public final class TemplateUtil {
             try {
                 return getAttribute(object, name);
             } catch (TemplateException e) {
-                if (e.getCause().getClass() == NoSuchFieldException.class || e.getMessage().indexOf("中不能找到") > 0) {
+                if (e.getCause().getClass() == NullPointerException.class || e.getCause().getClass() == NoSuchFieldException.class || e.getMessage().indexOf("中不能找到") > 0) {
                     return null;
                 } else {
                     throw e;
