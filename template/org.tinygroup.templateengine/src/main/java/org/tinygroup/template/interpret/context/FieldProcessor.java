@@ -16,6 +16,7 @@
 package org.tinygroup.template.interpret.context;
 
 import org.tinygroup.template.TemplateContext;
+import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
 import org.tinygroup.template.interpret.TemplateFromContext;
@@ -39,6 +40,9 @@ public class FieldProcessor implements ContextProcessor<TinyTemplateParser.Expr_
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_field_accessContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         Object a = interpreter.interpretTree(engine, templateFromContext, parseTree.expression(), pageContext,context, outputStream,fileName);
         String fieldName=parseTree.IDENTIFIER().getSymbol().getText();
+        if(a==null || fieldName==null){
+           throw new TemplateException(String.format("参数取值失败：对象[%s]为空或者字段名[%s]为空", a,fieldName),parseTree,fileName);
+        }
         if(parseTree.getChild(1).getText().startsWith("?")){
             return TemplateUtil.sp(a,fieldName);
         }else{
