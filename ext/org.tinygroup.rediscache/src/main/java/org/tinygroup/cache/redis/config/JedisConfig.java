@@ -55,7 +55,20 @@ public class JedisConfig {
 	@XStreamAlias("client-name")
 	private String clientName;
 	
+	/**
+	 * 连接池配置
+	 */
+	@XStreamAlias("pool-config")
+	private PoolConfig poolConfig;
 	
+	public PoolConfig getPoolConfig() {
+		return poolConfig;
+	}
+
+	public void setPoolConfig(PoolConfig poolConfig) {
+		this.poolConfig = poolConfig;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -125,7 +138,7 @@ public class JedisConfig {
 		return "JedisConfig [id=" + id + ", charset=" + charset + ", host="
 				+ host + ", port=" + port + ", timeout=" + timeout
 				+ ", password=" + password + ", database=" + database
-				+ ", clientName=" + clientName + "]";
+				+ ", clientName=" + clientName + "] "+poolConfig;
 	}
 
 }
