@@ -1,6 +1,6 @@
 <jedis-configs>
   <!-- 
-        jedis-config属性：
+        jedis-config节点属性：
          id 唯一标识,必填项
          charset redis转换编码，默认utf-8，选填项
          host redis服务器地址，必填项
@@ -10,6 +10,26 @@
          database 数据库物理序号，默认是0，非必填项
          client-name 客户端名称，非必填项
    -->
-  <jedis-config id="server01" host="192.168.51.29" port="6380"></jedis-config>
+  <jedis-config id="server01" host="192.168.51.29" port="6380">
+    <!-- pool-config节点属性（如果不配置均采用默认值）：
+         block-when-exhausted      连接耗尽时是否阻塞,默认true
+         eviction-policy-classname 设置的逐出策略类名，默认DefaultEvictionPolicy
+         lifo                      是否启用后进先出, 默认true
+         max-idle                  连接池最大空闲连接数，默认8个
+         max-total                 连接池最大连接数，默认8个
+         min-idle                  连接池最小空闲连接数, 默认0
+         max-wait-millis           获取连接时的最大等待毫秒数，默认-1
+         min-evictable-idle-millis 逐出连接的最小空闲时间 ，默认60000毫秒
+         max-evictable-num         每次逐出检查时，逐出的最大数目，默认是-1
+         min-evictable-soft-millis 对象空闲多久后逐出毫秒数，默认是-1
+         evictable-period          逐出扫描的时间间隔(毫秒)，默认30000ms
+         test-on-borrow            是否在获取连接时检查有效性, 默认false
+         test-on-create            是否在创建连接时检查有效性，默认false
+         test-on-return            是否在返回连接时检查有效性，默认false
+         test-while-idle           是否在空闲时检查有效性, 默认true
+     -->
+    <pool-config max-idle="10" max-total="10" >
+    </pool-config>
+  </jedis-config>
   <jedis-config id="server02" host="192.168.51.29" port="6381"></jedis-config>
 </jedis-configs>

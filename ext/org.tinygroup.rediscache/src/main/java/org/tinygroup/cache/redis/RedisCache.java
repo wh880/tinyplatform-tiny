@@ -204,6 +204,23 @@ public class RedisCache implements Cache {
 		}
 		redisCacheManager = (RedisCacheManager) manager;
 	}
+	
+	/**
+	 * 从jedis连接池获得Jedis客户端
+	 * @return
+	 */
+	public Jedis getJedis(){
+		checkJedisPool();
+		return jedisPool.getResource();
+	}
+	
+	/**
+	 * 获得当前jedis的配置资源
+	 * @return
+	 */
+	public JedisClient getJedisClient(){
+		return jedisClient;
+	}
 
 	private byte[] getByteKey(String key) {
 		try {

@@ -71,7 +71,14 @@ public class TemplateException extends Exception {
                 return contextMsg;
             }
         }
-        return message == null ? "\n路径:"+fileName : message;
+        
+        if(message==null){
+        	return "\n路径:"+fileName;
+        }else if(message.startsWith("\n路径:")){
+        	return message;
+        }else{
+        	return "\n路径:"+fileName+" "+message;
+        }
     }
 
     public TemplateException(String msg) {
