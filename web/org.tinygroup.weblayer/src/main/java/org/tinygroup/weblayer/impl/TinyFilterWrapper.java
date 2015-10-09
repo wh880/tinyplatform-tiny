@@ -57,16 +57,16 @@ public class TinyFilterWrapper implements FilterWrapper {
 	private static final Logger logger = LoggerFactory
 			.getLogger(TinyFilterWrapper.class);
 
-	public void filterWrapper(WebContext context, TinyFilterHandler hander)
+	public void filterWrapper(WebContext context, TinyFilterHandler handler)
 			throws IOException, ServletException {
 		HttpServletRequest request = context.getRequest();
 		HttpServletResponse response = context.getResponse();
-		String servletPath = hander.getServletPath();
+		String servletPath = handler.getServletPath();
 		List<Filter> matchFilters = getMatchFilters(servletPath);
 		logger.logMessage(LogLevel.DEBUG,
-				"the wrapper httpfilters for the requset path:[{0}] is [{1}]",
+				"the wrapper httpFilters for the request path:[{0}] is [{1}]",
 				servletPath, matchFilters);
-		TinyFilterChain filterChain = new TinyFilterChain(matchFilters, hander);
+		TinyFilterChain filterChain = new TinyFilterChain(matchFilters, handler);
 		filterChain.doFilter(request, response);
 	}
 
