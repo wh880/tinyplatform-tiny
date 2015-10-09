@@ -47,7 +47,7 @@ public interface Context extends BaseContext {
 	 * @param name 上下文变量名称
 	 * @return @
 	 */
-	<T> T get(String contextName, String name);
+	<T> T getInSubContext(String contextName, String name);
 
 	/**
 	 * 添加到子环境

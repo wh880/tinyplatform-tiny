@@ -101,7 +101,7 @@ public class ContextImpl extends BaseContextImpl implements Context,
 		return null;
 	}
 
-	public <T> T get(String contextName, String name) {
+	public <T> T getInSubContext(String contextName, String name) {
 		Context subContext = subContextMap.get(contextName);
 		if (subContext != null) {
 			return (T) subContext.get(name);
