@@ -26,8 +26,8 @@ import java.io.IOException;
  *
  */
 public interface FilterWrapper {
-	
-	 void filterWrapper(WebContext context, TinyFilterHandler hander)throws IOException, ServletException;
+
+	void filterWrapper(WebContext context, TinyFilterHandler handler) throws IOException, ServletException;
 	 
 	 void addHttpFilter(String filterName,String filterBeanName, Filter filter);
 	 
