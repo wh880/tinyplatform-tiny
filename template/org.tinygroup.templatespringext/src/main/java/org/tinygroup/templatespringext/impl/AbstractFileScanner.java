@@ -2,6 +2,7 @@ package org.tinygroup.templatespringext.impl;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
+import org.tinygroup.templatespringext.CallBackFunction;
 import org.tinygroup.templatespringext.FileScanner;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
@@ -30,6 +31,26 @@ public abstract class AbstractFileScanner implements FileScanner {
 
     public void addFile(FileObject file) {
 
+    }
+
+    public void resolverFloder(FileObject file, CallBackFunction callBackFunction) {
+        if(file.isFolder()&&isMatch(file.getFileName())){
+            for(FileObject f:file.getChildren()){
+                resolverFloder(f,callBackFunction);
+            }
+        }else {
+            callBackFunction.process(file);
+        }
+    }
+
+    public void resolverFile(FileObject file, CallBackFunction callBackFunction) {
+        if(file.isFolder()){
+            for(FileObject f:file.getChildren()){
+                resolverFile(f,callBackFunction);
+            }
+        }else {
+            callBackFunction.process(file);
+        }
     }
 
     public boolean isMatch(String fileName) {

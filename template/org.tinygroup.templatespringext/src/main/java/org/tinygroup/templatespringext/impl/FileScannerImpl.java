@@ -35,33 +35,12 @@ public class FileScannerImpl extends AbstractFileScanner{
     }
 
     public void init(){
-        classPathProcess();
         jarFileProcessor = jarFileProcessor == null?new TinyJarFileProcessor():jarFileProcessor;
         macroFileProcessor = new TinyMacroProcessor();
         localPathProcessor = new TinyLocalPathProcessor();
         jarFileProcessor.setEngine(engine);
         macroFileProcessor.setEngine(engine);
         localPathProcessor.setEngine(engine);
-    }
-
-    public void resolverFile(FileObject file, CallBackFunction callBackFunction) {
-        if(file.isFolder()){
-            for(FileObject f:file.getChildren()){
-                resolverFile(f,callBackFunction);
-            }
-        }else {
-            callBackFunction.process(file);
-        }
-    }
-
-    public void resolverFloder(FileObject file, CallBackFunction callBackFunction) {
-        if(file.isFolder()&&isMatch(file.getFileName())){
-            for(FileObject f:file.getChildren()){
-                resolverFloder(f,callBackFunction);
-            }
-        }else {
-            callBackFunction.process(file);
-        }
     }
 
     public void scanFile() {
@@ -79,6 +58,7 @@ public class FileScannerImpl extends AbstractFileScanner{
 
     public void fileProcess() {
         localPathProcessor.process();
+        classPathProcess();
         jarFileProcessor.process();
         for (FileObject file:jarFileProcessor.getFileObjectList()){
             resolverFile(file, new CallBackFunction() {

@@ -48,6 +48,15 @@ public class TinyTemplateLayoutViewResolver extends
 	private TemplateEngine templateEngine;
 	private FileScanner fileScanner;
 	private  List<String> classPathList = new ArrayList<String>();
+	private boolean isModify;
+
+	public boolean isModify() {
+		return isModify;
+	}
+
+	public void setModify(boolean modify) {
+		isModify = modify;
+	}
 
 	public FileScanner getFileScanner() {
 		return fileScanner;
@@ -95,6 +104,7 @@ public class TinyTemplateLayoutViewResolver extends
 
 	private void initEngine(){
 //		fileScanner.setClassPathList(classPathList);
+		templateEngine.setCheckModified(isModify);
 		fileScanner.setEngine(templateEngine);
 		fileScanner.init();
 		fileScanner.scanFile();
