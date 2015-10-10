@@ -1,0 +1,29 @@
+1 - 6: 1
+    true - false
+ 	是否奇数：true
+	是否偶数：false
+
+    2 - 6: 2
+    false - false
+ 	是否奇数：false
+	是否偶数：true
+
+    3 - 6: 3
+    false - false
+ 	是否奇数：true
+	是否偶数：false
+
+    4 - 6: 4
+    false - false
+ 	是否奇数：false
+	是否偶数：true
+
+    5 - 6: 5
+    false - false
+ 	是否奇数：true
+	是否偶数：false
+
+    6 - 6: 6
+    false - true
+ 	是否奇数：false
+	是否偶数：true
