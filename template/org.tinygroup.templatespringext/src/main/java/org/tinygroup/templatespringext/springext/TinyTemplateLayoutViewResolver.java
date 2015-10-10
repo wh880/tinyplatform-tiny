@@ -48,7 +48,7 @@ public class TinyTemplateLayoutViewResolver extends
 	private TemplateEngine templateEngine;
 	private FileScanner fileScanner;
 	private  List<String> classPathList = new ArrayList<String>();
-	private boolean checkModify;
+	private boolean checkModify = true;
 
 	public boolean isCheckModify() {
 		return checkModify;
