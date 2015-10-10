@@ -105,12 +105,12 @@ public final class ForIterator implements Iterator, ForStatus {
 
 
     public boolean isOdd() {
-        return (index & 2) != 0;
+        return (index & 1) != 0;
     }
 
 
     public boolean isEven() {
-        return (index % 2) == 0;
+        return (index & 1) == 0;
     }
 
 

@@ -45,14 +45,12 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class TinyHttpFilter implements Filter {
+	public static final String DEFAULT_POST_DATA_KEY = "$_post_data_key";
+	public static final String DEFAULT_POST_NODE_NAME = "$_post_node_name";
+	public static final String DEFAULT_PAGE_KEY = "$_default_page";
 	private static final String EXCLUDE_PATH = "excludePath";
 	private static final Logger logger = LoggerFactory
 			.getLogger(TinyHttpFilter.class);
-	private TinyProcessorManager tinyProcessorManager;
-	private TinyFilterManager tinyFilterManager;
-
-	private List<Pattern> excludePatterns = new ArrayList<Pattern>();
-
 	private static final String POST_DATA_PROCESS = "post-data-process";
 
 	private static final String DATA_MAPPING = "data-mapping";
@@ -60,20 +58,15 @@ public class TinyHttpFilter implements Filter {
 	private static final String HOST_PATTERN = "host-pattern";
 
 	private static final String POST_DATA_KEY = "post-data-key";
-
-	public static final String DEFAULT_POST_DATA_KEY = "$_post_data_key";
-
-	public static final String DEFAULT_POST_NODE_NAME = "$_post_node_name";
-
+	private static String[] defaultFiles = {"index.page", "index.htm",
+			"index.html", "index.jsp"};
+	private TinyProcessorManager tinyProcessorManager;
+	private TinyFilterManager tinyFilterManager;
+	private List<Pattern> excludePatterns = new ArrayList<Pattern>();
 	private Map<String, String> mapping = new HashMap<String, String>();
-
 	private String postDataKey;
-
 	private FilterWrapper wrapper;
 	private FullContextFileRepository fullContextFileRepository;
-	private static String[] defaultFiles = { "index.page", "index.htm",
-			"index.html", "index.jsp" };
-	public static final String DEFAULT_PAGE_KEY = "$_default_page";
 
 	public void destroy() {
 		destroyTinyProcessors();
@@ -127,13 +120,13 @@ public class TinyHttpFilter implements Filter {
 					}
 				}
 			}
-			TinyFilterHandler hander = new TinyFilterHandler(servletPath,
+			TinyFilterHandler handler = new TinyFilterHandler(servletPath,
 					filterChain, context, tinyFilterManager,
 					tinyProcessorManager);
 			if (wrapper != null) {
-				wrapper.filterWrapper(context, hander);
+				wrapper.filterWrapper(context, handler);
 			} else {
-				hander.tinyFilterProcessor(request, response);
+				handler.tinyFilterProcessor(request, response);
 			}
 		} finally {
 			requestDestroyListener(servletRequest);//抛出异常也要保证执行

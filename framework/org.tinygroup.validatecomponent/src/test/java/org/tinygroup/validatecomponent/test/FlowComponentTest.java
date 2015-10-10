@@ -19,7 +19,10 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.flow.FlowExecutor;
+import org.tinygroup.validate.ValidateResult;
 import org.tinygroup.validate.ValidatorManager;
+import org.tinygroup.validate.config.ValidatorConfig;
+import org.tinygroup.validatecomponent.ValidateComponent;
 
 import java.util.*;
 
@@ -49,7 +52,7 @@ public class FlowComponentTest extends AbstractValidatorManagerTest {
 		context.putSubContext("validate", new ContextImpl());
 		context.put("userdemo", user);
 		flowExecutor.execute("validateFlow", "validateNode", context);
-		System.out.println(context.get("validate", "userdemo.validateMessage"));
+		assertTrue(context.getInSubContext("validate", "validateMessage") instanceof ValidateResult);
 	}
 
 	private User createUser() {

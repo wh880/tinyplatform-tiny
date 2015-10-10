@@ -89,19 +89,19 @@ public class ContextTest extends TestCase {
 	public void testRemoveStringString() {
 		Context.createSubContext("aa");
 		Context.put("aa", "a", 1);
-		assertEquals(1, Context.get("aa", "a"));
+		assertEquals(1, Context.getInSubContext("aa", "a"));
 	}
 
 	public void testGetStringString() {
 		Context.createSubContext("aa");
 		Context.put("aa", "a", 1);
-		assertEquals(1, Context.get("aa", "a"));
+		assertEquals(1, Context.getInSubContext("aa", "a"));
 	}
 
 	public void testPutStringStringT() {
 		Context.createSubContext("aa");
 		Context.put("aa", "a", 1);
-		assertEquals(1, Context.get("aa", "a"));
+		assertEquals(1, Context.getInSubContext("aa", "a"));
 	}
 
 	public void testAddSubContext() {
@@ -148,11 +148,11 @@ public class ContextTest extends TestCase {
 		context.put("sub", "name1", "subValue");
 		context.get("name1");
 
-		String value = context.get("sub", "name1");
+		String value = context.getInSubContext("sub", "name1");
 		assertEquals("subValue", value);
-		String value1 = context.get("sub", "name2");
+		String value1 = context.getInSubContext("sub", "name2");
 		assertEquals("subValue2", value1);
-		String value2 = context.get("sub", "name4");
+		String value2 = context.getInSubContext("sub", "name4");
 		assertEquals(null, value2);
 		String value3 = context.get("name");
 		assertEquals(null, value3);
