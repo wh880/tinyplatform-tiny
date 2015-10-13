@@ -15,6 +15,20 @@
  */
 package org.tinygroup.weblayer;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.Enumeration;
+import java.util.List;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.support.AbstractRefreshableConfigApplicationContext;
+import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.application.impl.ApplicationDefault;
@@ -31,7 +45,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.PathFilter;
-import org.tinygroup.springutil.SpringBeanContainer;
+import org.tinygroup.springutil.ExtendsSpringBeanContainer;
 import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 import org.tinygroup.weblayer.configmanager.TinyListenerConfigManager;
 import org.tinygroup.weblayer.configmanager.TinyListenerConfigManagerHolder;
@@ -39,17 +53,6 @@ import org.tinygroup.weblayer.listener.ServletContextHolder;
 import org.tinygroup.weblayer.listener.TinyServletContext;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.Enumeration;
-import java.util.List;
 
 public class ApplicationStartupListener implements ServletContextListener {
 	private static Logger logger = LoggerFactory
@@ -141,7 +144,7 @@ public class ApplicationStartupListener implements ServletContextListener {
 							ApplicationProcessor processor = BeanContainerFactory
 									.getBeanContainer(
 											this.getClass().getClassLoader())
-									.getBean(processorBean);// TODO
+									.getBean(processorBean);
 							application.addApplicationProcessor(processor);
 						}
 					}
@@ -205,8 +208,11 @@ public class ApplicationStartupListener implements ServletContextListener {
 
 	private void loadSpringBeans(String applicationConfig) {
 		logger.logMessage(LogLevel.INFO, "加载Spring Bean文件开始...");
-		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class
+		BeanContainerFactory.setBeanContainer(ExtendsSpringBeanContainer.class
 				.getName());
+		ExtendsSpringBeanContainer beanContainer = (ExtendsSpringBeanContainer) BeanContainerFactory
+				.getBeanContainer(getClass().getClassLoader());
+		beanContainer.setApplicationContext(createWebApplicationContext());
 		FileResolver fileResolver = FileResolverFactory.getFileResolver();
 		FileResolverUtil.addClassPathPattern(fileResolver);
 		loadFileResolverConfig(fileResolver, applicationConfig);
@@ -223,6 +229,14 @@ public class ApplicationStartupListener implements ServletContextListener {
 		fileResolver.addFileProcessor(new ConfigurationFileProcessor());
 		fileResolver.resolve();
 		logger.logMessage(LogLevel.INFO, "加载Spring Bean文件结束。");
+	}
+
+	protected AbstractRefreshableConfigApplicationContext createWebApplicationContext() {
+		XmlWebApplicationContext wac = (XmlWebApplicationContext) BeanUtils
+				.instantiateClass(XmlWebApplicationContext.class);
+		// Assign the best possible id value.
+		wac.setServletContext(ServletContextHolder.getServletContext());
+		return wac;
 	}
 
 	private void loadFileResolverConfig(FileResolver fileResolver,
