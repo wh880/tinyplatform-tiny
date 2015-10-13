@@ -15,6 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.expression;
 
+import org.tinygroup.tinysqldsl.base.Alias;
 import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
@@ -25,13 +26,18 @@ import org.tinygroup.tinysqldsl.selectitem.SelectItem;
  * A function as MAX,COUNT...
  */
 public class Function extends SimpleBinaryOperator implements Expression,
-		SelectItem {
+		SelectItem,Cloneable {
 
 	private String name;
 	private ExpressionList parameters;
 	private boolean allColumns = false;
 	private boolean distinct = false;
 	private boolean isEscaped = false;
+	
+	/**
+	 * 别名
+	 */
+	private Alias alias;
 
 	public Function() {
 		super();
@@ -58,6 +64,21 @@ public class Function extends SimpleBinaryOperator implements Expression,
 		this.isEscaped = isEscaped;
 	}
 
+	
+	public Function as(String aliasName) {
+		return as(aliasName, false);
+	}
+
+	public Function as(String aliasName, boolean withAs) {
+		try {
+			Function function = (Function) this.clone();
+			function.setAlias(new Alias(aliasName, withAs));
+			return function;
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	public static Function sum() {
 		return new Function("sum", true);
 	}
@@ -127,6 +148,14 @@ public class Function extends SimpleBinaryOperator implements Expression,
 
 	public void setAllColumns(boolean b) {
 		allColumns = b;
+	}
+
+	public Alias getAlias() {
+		return alias;
+	}
+
+	public void setAlias(Alias alias) {
+		this.alias = alias;
 	}
 
 	/**
@@ -231,5 +260,8 @@ public class Function extends SimpleBinaryOperator implements Expression,
 
 	public void builderSelectItem(StatementSqlBuilder builder) {
 		internalBuilder(builder);
+		if (alias != null) {
+			builder.appendSql(alias.toString());
+		}
 	}
 }
