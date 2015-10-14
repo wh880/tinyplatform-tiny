@@ -275,10 +275,10 @@ public class SimpleDslSession implements DslSession {
 		PlainSelect originalSelect=select.getPlainSelect();
 		PlainSelect newSelect=PlainSelect.copy(originalSelect);
 		List<SelectItem> selectItems=new ArrayList<SelectItem>();
-		SelectItem selectItem=new FragmentSelectItemSql("count(0)");
+		SelectItem selectItem=new FragmentSelectItemSql("1");
 		selectItems.add(selectItem);
 		newSelect.setSelectItems(selectItems);
-		return newSelect.toString();
+		return "select count(0) from ("+newSelect.toString()+") as temp";
 	}
 
 	public int[] batchInsert(Insert insert, List<Map<String, Object>> params) {
