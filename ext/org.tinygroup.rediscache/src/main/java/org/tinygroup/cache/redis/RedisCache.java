@@ -29,8 +29,7 @@ public class RedisCache implements Cache {
 		try {
 			//目前tiny的框架机制不能保证初始化时，redis的配置文件一定能加载完成，init需要考虑这种场景
 			//比如Session缓存配置这种场景：最高优先级的ConfigurationFileProcessor会调用cache的init接口，而此时JedisConfigsFileProcessor尚未完成加载。
-			jedisClient = new JedisClient(region);
-			jedisClient.setRedisCacheManager(redisCacheManager);
+			jedisClient = new JedisClient(region,redisCacheManager);
 		} catch (Exception e) {
 			throw new CacheException(e);
 		}
@@ -232,7 +231,7 @@ public class RedisCache implements Cache {
 
 	private void checkJedisPool() {
 		if(jedisPool==null){
-		   jedisPool = jedisClient.createJedisPool();
+		   jedisPool = jedisClient.getJedisPool();
 		}
 		if (jedisPool.isClosed()) {
 			throw new CacheException("JedisPool没有初始化或者已经关闭.");

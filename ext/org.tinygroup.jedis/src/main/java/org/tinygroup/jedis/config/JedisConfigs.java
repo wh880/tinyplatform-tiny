@@ -1,4 +1,4 @@
-package org.tinygroup.cache.redis.config;
+package org.tinygroup.jedis.config;
 
 import java.util.ArrayList;
 import java.util.List;
