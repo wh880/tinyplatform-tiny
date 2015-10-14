@@ -1,27 +1,28 @@
 package org.tinygroup.cache.redis;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import junit.framework.TestCase;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.CacheManager;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
+import org.tinygroup.tinyrunner.Runner;
 
 /**
  * 验证RedisCache的性能<br>
  * 具体的redis配置地址请修改sample.jedisconfig.xml
  */
-public class RedisCachePerformanceTest {
+public class RedisCachePerformanceTest extends TestCase{
 
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-        AbstractTestUtil.init(null, true);
-		
+	public void testGetSet() {
+        Runner.init(null, new ArrayList<String>());
 		CacheManager manager = BeanContainerFactory.getBeanContainer(RedisCacheTest.class.getClassLoader()).getBean("redisCacheManager");
-		
 		Cache cache = manager.createCache("server01");
 		Map<String,Food> foods = new HashMap<String,Food>();
 		foods.put("food1", new Food("大蒜","蔬菜",7.0));
@@ -31,6 +32,7 @@ public class RedisCachePerformanceTest {
 		long time = System.currentTimeMillis();
 		for(int i=0;i<10000;i++){
 		    cache.put("food", foods.get("food1"));
+		    assertEquals(cache.get("food"),foods.get("food1"));
 		    cache.remove("food");
 		}
 		System.out.println("cost time:"+(System.currentTimeMillis()-time)+"ms");

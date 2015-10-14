@@ -1,4 +1,4 @@
-package org.tinygroup.cache.redis.config;
+package org.tinygroup.jedis.config;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -58,14 +58,15 @@ public class JedisConfig {
 	/**
 	 * 连接池配置
 	 */
+	@XStreamAsAttribute
 	@XStreamAlias("pool-config")
-	private PoolConfig poolConfig;
+	private String poolConfig;
 	
-	public PoolConfig getPoolConfig() {
+	public String getPoolConfig() {
 		return poolConfig;
 	}
 
-	public void setPoolConfig(PoolConfig poolConfig) {
+	public void setPoolConfig(String poolConfig) {
 		this.poolConfig = poolConfig;
 	}
 
