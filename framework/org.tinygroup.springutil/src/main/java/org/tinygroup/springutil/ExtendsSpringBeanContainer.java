@@ -243,9 +243,8 @@ public class ExtendsSpringBeanContainer extends SpringBeanContainer {
 	}
 
 	public void refresh() {
-		FileSystemXmlApplicationContext app = (FileSystemXmlApplicationContext) applicationContext;
-		app.setConfigLocations(listToArray(configs));
-		app.refresh();
+		applicationContext.setConfigLocations(listToArray(configs));
+		applicationContext.refresh();
 	}
 
 	public void setParent(BeanContainer<?> container) {
