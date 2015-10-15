@@ -17,8 +17,6 @@ package org.tinygroup.codegen;
 
 import java.io.File;
 
-import junit.framework.TestCase;
-
 import org.tinygroup.codegen.config.CodeGenMetaData;
 import org.tinygroup.codegen.impl.CodeGeneratorDefault;
 import org.tinygroup.codegen.util.CodeGenUtil;
@@ -28,6 +26,8 @@ import org.tinygroup.tinytestutil.AbstractTestUtil;
 import org.tinygroup.xstream.XStreamFactory;
 
 import com.thoughtworks.xstream.XStream;
+
+import junit.framework.TestCase;
 
 public class CodeGenTest extends TestCase {
 	String testJavaPath;
