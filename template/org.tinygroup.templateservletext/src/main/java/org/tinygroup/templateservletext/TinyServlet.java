@@ -103,7 +103,7 @@ public class TinyServlet extends HttpServlet {
             String path = handleRequest(request, response, context);
 
             if (path == null) {
-                return;
+                throw new Exception("handleRequest(request, response, context) returned null - no template selected!");
             }
 
             mergeTemplate(path, context, response);
