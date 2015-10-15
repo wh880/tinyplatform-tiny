@@ -1,0 +1,5 @@
+<jedis-configs>
+  
+  <jedis-config id="server01" host="192.168.51.29" port="6379" pool-config="jedisConfig">
+  </jedis-config>
+</jedis-configs>

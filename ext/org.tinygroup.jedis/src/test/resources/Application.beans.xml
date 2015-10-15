@@ -20,7 +20,7 @@
 		class="org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor">
 		<property name="fileResolver" ref="fileResolver"></property>
 	</bean>
-
+	<!-- 连接池的配置信息 -->
 	<bean id="jedisConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<!-- 说明一个pool可以有多少个Jedis实例 -->
 		<property name="maxTotal" value="10" />

@@ -2,6 +2,7 @@ package org.tinygroup.cache.redis;
 
 import org.tinygroup.cache.AbstractCacheManager;
 import org.tinygroup.cache.Cache;
+import org.tinygroup.jedis.JedisManager;
 
 public class RedisCacheManager extends AbstractCacheManager{
 

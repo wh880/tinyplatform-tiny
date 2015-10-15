@@ -76,6 +76,10 @@ public class TemplateDefaultFunction {
         template =resourceLoader.createTemplate("#set(numberArray=[1,2,3,4,5]) ${numberArray.get(6)}");
         engine.renderTemplate(template, context, System.out);
         System.out.println();
+        
+        template =resourceLoader.createTemplate("${instance(10,\"java.lang.Integer\")}");
+        engine.renderTemplate(template, context, System.out);
+        System.out.println();
 	}
 	
 }

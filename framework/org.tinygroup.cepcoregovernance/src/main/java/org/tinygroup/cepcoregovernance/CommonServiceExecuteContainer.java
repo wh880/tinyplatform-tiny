@@ -40,27 +40,61 @@ public class CommonServiceExecuteContainer {
 		}
 	}
 
+	/**
+	 * 返回本地服务调用次数
+	 * @return
+	 */
 	public static Long getLocalTotalTimes(){
 		return localContainer.getTotalTimes();
 	}
+	/**
+	 * 返回本地服务调用成功次数(发生业务异常也算调用失败)
+	 * @return
+	 */
 	public static Long getLocalSucessTimes(){
 		return localContainer.getSucessTimes();
 	}
+	/**
+	 * 返回本地服务调用发生异常次数(发生业务异常也算调用失败)
+	 * @return
+	 */
 	public static Long getLocalExceptionTimes(){
 		return localContainer.getExceptionTimes();
 	}
+	/**
+	 * 返回远程
+	 * @return
+	 */
 	public static Long getRemoteTotalTimes(){
 		return remoteContainer.getTotalTimes();
 	}
+	/**
+	 * 返回调用远程服务成功次数(发生业务异常也算调用失败)
+	 * @return
+	 */
 	public static Long getRemoteSucessTimes(){
 		return remoteContainer.getSucessTimes();
 	}
+	/**
+	 * 返回调用远程服务发生异常次数(发生业务异常也算调用失败)
+	 * @return
+	 */
 	public static Long getRemoteExceptionTimes(){
 		return remoteContainer.getExceptionTimes();
 	}
+	/**
+	 * 返回具体的远程服务调用时间统计数据
+	 * @param serviceId 服务id
+	 * @return
+	 */
 	public static ExecuteTimeInfo getRemoteServiceExecuteTimeInfo(String serviceId){
 		return remoteContainer.getServiceExecuteTimeInfo(serviceId);
 	}
+	/**
+	 * 返回具体的本地服务调用时间统计数据
+	 * @param serviceId 服务id
+	 * @return
+	 */
 	public static ExecuteTimeInfo getLocalServiceExecuteTimeInfo(String serviceId){
 		return localContainer.getServiceExecuteTimeInfo(serviceId);
 	}

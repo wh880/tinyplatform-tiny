@@ -1,8 +1,8 @@
-package org.tinygroup.cache.redis.fileresolver;
+package org.tinygroup.jedis.fileresolver;
 
-import org.tinygroup.cache.redis.JedisManager;
-import org.tinygroup.cache.redis.config.JedisConfigs;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
+import org.tinygroup.jedis.JedisManager;
+import org.tinygroup.jedis.config.JedisConfigs;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
@@ -19,7 +19,7 @@ public class JedisConfigsFileProcessor extends AbstractFileProcessor {
 
 	private static final String JEDIS_CONFIG_EXT_NAME = ".jedisconfig.xml";
 
-	private static final String JEDIS_CACHE_NAME = "jedisconfig";
+	private static final String JEDIS_XSTREAM_NAME = "jedis";
 
 	private JedisManager jedisManager;
 
@@ -32,7 +32,7 @@ public class JedisConfigsFileProcessor extends AbstractFileProcessor {
 	}
 
 	public void process() {
-		XStream stream = XStreamFactory.getXStream(JEDIS_CACHE_NAME);
+		XStream stream = XStreamFactory.getXStream(JEDIS_XSTREAM_NAME);
 		for (FileObject fileObject : deleteList) {
 			LOGGER.logMessage(LogLevel.INFO, "正在移除Redis缓存配置文件[{0}]",
 					fileObject.getAbsolutePath());

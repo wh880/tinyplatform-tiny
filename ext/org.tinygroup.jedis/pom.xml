@@ -5,23 +5,14 @@
     <artifactId>ext</artifactId>
     <version>2.0.26-SNAPSHOT</version>
   </parent>
-  <artifactId>org.tinygroup.rediscache</artifactId>
-  <name>org.tinygroup.redsicache</name>
+  <artifactId>org.tinygroup.jedis</artifactId>
+  <name>org.tinygroup.jedis</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.cache</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.jedis</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+  
     <dependency>
       <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.fileresolver</artifactId>
