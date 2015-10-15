@@ -103,6 +103,8 @@ public class TinyServlet extends HttpServlet {
             String path = handleRequest(request, response, context);
 
             if (path == null) {
+                logger.logMessage(LogLevel.ERROR,
+                        "view path can not be null!");
                 return;
             }
 
