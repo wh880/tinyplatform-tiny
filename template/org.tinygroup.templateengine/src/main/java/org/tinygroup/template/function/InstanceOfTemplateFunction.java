@@ -33,20 +33,20 @@ public class InstanceOfTemplateFunction extends AbstractTemplateFunction {
     public Object execute(Template template, TemplateContext context, Object... parameters) throws TemplateException {
         Object object = parameters[0];
 
-        for (int i = 1; i < parameters.length - 1; i++) {
+        for (int i = 1; i < parameters.length; i++) {
             Object parameter = parameters[i];
             if (parameter instanceof Class) {
                 //如果后面是类型
                 Class clazz = (Class) parameter;
-                if (!clazz.isInstance(object)) {
-                    return false;
+                if (clazz.isInstance(object)) {
+                    return true;
                 }
             } else if (parameter instanceof String) {
                 //如果是字符串
                 try {
                     Class clazz = Class.forName((String) parameter);
-                    if (!clazz.isInstance(object)) {
-                        return false;
+                    if (clazz.isInstance(object)) {
+                        return true;
                     }
                 } catch (ClassNotFoundException e) {
                     throw new TemplateException(e);
@@ -55,7 +55,7 @@ public class InstanceOfTemplateFunction extends AbstractTemplateFunction {
                 notSupported(parameters);
             }
         }
-        return true;
+        return false;
     }
 
 }

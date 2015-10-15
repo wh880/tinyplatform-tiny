@@ -15,25 +15,31 @@
  */
 package org.tinygroup.tinysqldsl;
 
-import org.tinygroup.tinysqldsl.base.Column;
-import org.tinygroup.tinysqldsl.expression.FragmentExpressionSql;
-import org.tinygroup.tinysqldsl.formitem.SubSelect;
-import org.tinygroup.tinysqldsl.select.Join;
-import org.tinygroup.tinysqldsl.selectitem.Top;
-
 import static org.tinygroup.tinysqldsl.ComplexSelect.union;
 import static org.tinygroup.tinysqldsl.ComplexSelect.unionAll;
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.ScoreTable.TSCORE;
-import static org.tinygroup.tinysqldsl.Select.*;
-import static org.tinygroup.tinysqldsl.base.FragmentSql.*;
+import static org.tinygroup.tinysqldsl.Select.customSelectItem;
+import static org.tinygroup.tinysqldsl.Select.select;
+import static org.tinygroup.tinysqldsl.Select.selectFrom;
+import static org.tinygroup.tinysqldsl.base.FragmentSql.fragmentCondition;
+import static org.tinygroup.tinysqldsl.base.FragmentSql.fragmentFrom;
+import static org.tinygroup.tinysqldsl.base.FragmentSql.fragmentSelect;
 import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
 import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.or;
 import static org.tinygroup.tinysqldsl.formitem.SubSelect.subSelect;
-import static org.tinygroup.tinysqldsl.select.Join.*;
+import static org.tinygroup.tinysqldsl.select.Join.fullJoin;
+import static org.tinygroup.tinysqldsl.select.Join.leftJoin;
+import static org.tinygroup.tinysqldsl.select.Join.rightJoin;
+import static org.tinygroup.tinysqldsl.select.Join.simpleJoin;
 import static org.tinygroup.tinysqldsl.select.OrderByElement.asc;
 import static org.tinygroup.tinysqldsl.select.OrderByElement.desc;
 import static org.tinygroup.tinysqldsl.selectitem.Top.top;
+
+import org.tinygroup.tinysqldsl.base.Column;
+import org.tinygroup.tinysqldsl.expression.FragmentExpressionSql;
+import org.tinygroup.tinysqldsl.formitem.SubSelect;
+import org.tinygroup.tinysqldsl.selectitem.Top;
 
 /**
  * Created by luoguo on 2015/3/11.
@@ -87,7 +93,8 @@ public class TestSelect {
 				CUSTOM.NAME, CUSTOM.AGE));
 		System.out.println(select(CUSTOM.AGE.min()).from(CUSTOM));
 		System.out.println(select(CUSTOM.AGE.avg()).from(CUSTOM));
-		System.out.println(select(CUSTOM.AGE.count()).from(CUSTOM));
+		System.out.println(select(CUSTOM.AGE.count().as("num")).from(CUSTOM));
+		System.out.println(select(CUSTOM.AGE.count().as("num",true)).from(CUSTOM));
 		System.out.println(select(CUSTOM.AGE.sum()).from(CUSTOM));
 		System.out.println(select(CUSTOM.NAME.distinct()).from(CUSTOM)
 				.forUpdate());

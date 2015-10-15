@@ -38,7 +38,7 @@ import static org.tinygroup.commons.tools.Assert.assertNotNull;
  */
 public abstract class AbstractWebContextWrapper extends ContextImpl implements
 		WebContext {
-
+	private static final String ARRAY_EXTENDS = "_array";
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private ServletContext servletContext;
@@ -387,7 +387,9 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements
 
 		public Object getValue(String name) {
 			String[] values = request.getParameterValues(name);
-			if (values != null&&values.length == 1) {
+			if(values==null){
+				values = request.getParameterValues(name+ARRAY_EXTENDS);
+			}else if (values != null && values.length == 1){
 					return values[0];
 			}
 			return values;
@@ -395,10 +397,7 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements
 
 		public boolean isExist(String name) {
 			Map parameterMap = request.getParameterMap();
-			if (parameterMap.containsKey(name)) {
-				return true;
-			}
-			return false;
+			return (parameterMap.containsKey(name) || parameterMap.containsKey(name+ARRAY_EXTENDS))?true:false;
 		}
 	}
 	
