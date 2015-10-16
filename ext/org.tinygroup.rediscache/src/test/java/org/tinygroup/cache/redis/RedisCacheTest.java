@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.CacheManager;
 import org.tinygroup.tinyrunner.Runner;
+
+import junit.framework.TestCase;
 
 /**
  * 验证基本的Cache接口<br>
@@ -59,6 +59,31 @@ public class RedisCacheTest extends TestCase{
 		assertTrue(cache1.getGroupKeys("food").size()==0);
 		cache2.remove("food");
 		assertTrue(cache2.getGroupKeys("food").size()==0);
+		
+		cache1.put("aa", "123");
+		cache1.put("bb", "456");
+		assertEquals(2, cache1.get(new String[]{"aa" ,"bb"}).length);
+		
+		cache1.put("group" ,"aa", "111");
+		cache1.put("group", "bb", "222");
+		cache1.put("group1", "cc", "333");
+		cache1.put("group1", "dd", "444");
+		assertEquals(2, cache1.get("group" ,new String[]{"aa" ,"bb"}).length);
+		assertEquals(2, cache1.get("group1" ,new String[]{"cc" ,"dd"}).length);
+		
+		cache1.put("aa", "111");
+		cache1.put("bb", "222");
+		cache1.remove(new String[]{"aa" ,"bb"});
+		assertNull(cache1.get(new String[]{"aa" ,"bb"})[0]);
+		assertNull(cache1.get(new String[]{"aa" ,"bb"})[1]);
+		
+		cache1.put("group" ,"aa", "111");
+		cache1.put("group", "bb", "222");
+		cache1.put("group1", "cc", "333");
+		cache1.put("group1", "dd", "444");
+		cache1.remove("group", new String[]{"aa" ,"bb"});
+		assertNull(cache1.get("group", new String[]{"aa" ,"bb"})[0]);
+		assertNull(cache1.get("group", new String[]{"aa" ,"bb"})[1]);
 		
 		System.out.println(cache1.getStats());
 		

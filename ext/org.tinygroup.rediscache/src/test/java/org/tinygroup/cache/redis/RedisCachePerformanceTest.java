@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.CacheManager;
 import org.tinygroup.tinyrunner.Runner;
+
+import junit.framework.TestCase;
 
 /**
  * 验证RedisCache的性能<br>
@@ -36,7 +36,6 @@ public class RedisCachePerformanceTest extends TestCase{
 		    cache.remove("food");
 		}
 		System.out.println("cost time:"+(System.currentTimeMillis()-time)+"ms");
-		
 	}
 
 }

@@ -15,14 +15,16 @@
  */
 package org.tinygroup.cache.jcs;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.jcs.JCS;
 import org.apache.jcs.engine.control.CompositeCache;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.CacheManager;
 import org.tinygroup.cache.exception.CacheException;
-
-import java.io.Serializable;
-import java.util.Set;
 
 public class JcsCache implements Cache {
 	private JCS jcs;
@@ -137,6 +139,43 @@ public class JcsCache implements Cache {
 	}
 
 	public void setCacheManager(CacheManager manager) {
-		this.cacheManager=manager;
+		this.cacheManager = manager;
 	}
+
+	public Object[] get(String[] keys) {
+		List<Object> objs = new ArrayList<Object>();
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				objs.add(get(keys[i]));
+			}
+		}
+		return objs.toArray();
+	}
+
+	public Object[] get(String group, String[] keys) {
+		List<Object> objs = new ArrayList<Object>();
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				objs.add(get(group ,keys[i]));
+			}
+		}
+		return objs.toArray();
+	}
+
+	public void remove(String[] keys) {
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				remove(keys[i]);
+			}
+		}
+	}
+
+	public void remove(String group, String[] keys) {
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				remove(group ,keys[i]);
+			}
+		}	
+	}
+	
 }
