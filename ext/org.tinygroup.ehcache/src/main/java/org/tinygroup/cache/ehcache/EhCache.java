@@ -61,7 +61,7 @@ public class EhCache implements Cache {
 
 	public void putSafe(String key, Object object) {
 		if (cache.get(key) != null) {
-			throw new CacheException("");
+			throw new CacheException("key:"+key+"已存在缓存中");
 		}
 		Element element = new Element(key, object);
 		cache.put(element);
@@ -90,8 +90,11 @@ public class EhCache implements Cache {
 	}
 
 	public Set<String> getGroupKeys(String group) {
-		Map<String, Set<String>> groupMap = (Map<String, Set<String>>) cache
-				.get(GROUP_MAP).getObjectValue();
+		Element element = cache.get(GROUP_MAP);
+		if(element==null){
+			return null;
+		}
+		Map<String, Set<String>> groupMap = (Map<String, Set<String>>) element.getObjectValue();
 		return groupMap.get(group);
 	}
 
