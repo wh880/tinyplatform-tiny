@@ -2,5 +2,7 @@
 	<xstream-annotation-classes>
 		<xstream-annotation-class class-name="org.tinygroup.jedis.config.JedisConfigs" />
 		<xstream-annotation-class class-name="org.tinygroup.jedis.config.JedisConfig" />
+		<xstream-annotation-class class-name="org.tinygroup.jedis.config.JedisSentinelConfigs" />
+		<xstream-annotation-class class-name="org.tinygroup.jedis.config.JedisSentinelConfig" />
 	</xstream-annotation-classes>
 </xstream-configuration>
