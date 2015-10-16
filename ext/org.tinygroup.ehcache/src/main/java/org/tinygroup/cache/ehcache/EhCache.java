@@ -15,16 +15,18 @@
  */
 package org.tinygroup.cache.ehcache;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.exception.CacheException;
+
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 
 /**
  * 
@@ -61,7 +63,7 @@ public class EhCache implements Cache {
 
 	public void putSafe(String key, Object object) {
 		if (cache.get(key) != null) {
-			throw new CacheException("");
+			throw new CacheException("key:"+key+"已存在缓存中");
 		}
 		Element element = new Element(key, object);
 		cache.put(element);
@@ -90,8 +92,11 @@ public class EhCache implements Cache {
 	}
 
 	public Set<String> getGroupKeys(String group) {
-		Map<String, Set<String>> groupMap = (Map<String, Set<String>>) cache
-				.get(GROUP_MAP).getObjectValue();
+		Element element = cache.get(GROUP_MAP);
+		if(element==null){
+			return null;
+		}
+		Map<String, Set<String>> groupMap = (Map<String, Set<String>>) element.getObjectValue();
 		return groupMap.get(group);
 	}
 
@@ -133,6 +138,42 @@ public class EhCache implements Cache {
 
 	public void setCacheManager(org.tinygroup.cache.CacheManager manager) {
 		this.cacheManager = manager;
+	}
+
+	public Object[] get(String[] keys) {
+		List<Object> objs = new ArrayList<Object>();
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				objs.add(get(keys[i]));
+			}
+		}
+		return objs.toArray();
+	}
+
+	public Object[] get(String group, String[] keys) {
+		List<Object> objs = new ArrayList<Object>();
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				objs.add(get(group ,keys[i]));
+			}
+		}
+		return objs.toArray();
+	}
+
+	public void remove(String[] keys) {
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				remove(keys[i]);
+			}
+		}
+	}
+
+	public void remove(String group, String[] keys) {
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				remove(group ,keys[i]);
+			}
+		}	
 	}
 
 }

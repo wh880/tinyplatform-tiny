@@ -38,11 +38,37 @@ public interface Cache {
 	void init(String region);
 
 	/**
+	 * 
+	 * @param key
 	 * @
 	 * 
 	 */
 	Object get(String key);
 
+	/**
+	 * 
+	 * @param groupName
+	 * @param keys
+	 * @return
+	 */
+	Object get(String group, String key);
+	
+	/**
+	 * 
+	 * @param keys
+	 * @return
+	 */
+	Object[] get(String[] keys);
+	
+	/**
+	 * 
+	 * @param groupName
+	 * @param keys
+	 * @return
+	 */
+	Object[] get(String group, String[] keys);
+	
+	
 	/**
 	 * @param key
 	 * @param Object
@@ -64,10 +90,6 @@ public interface Cache {
 	 *            @
 	 */
 	void put(String groupName, String key, Object object);
-
-	/*
-	 */
-	Object get(String groupName, String key);
 
 	/**
 	 * @param group
@@ -97,6 +119,19 @@ public interface Cache {
 	 *            @
 	 */
 	void remove(String group, String key);
+	
+	/**
+	 * @param key
+	 *            @
+	 */
+	void remove(String[] keys);
+	
+	/**
+	 * @param group
+	 * @param keys
+	 *            @
+	 */
+	void remove(String group ,String[] keys);
 
 	/**
 	 * @return

@@ -72,7 +72,6 @@ public class ClassNameObjectGeneratorTest extends BastTestCast {
 		String[] nickName = { "tom", "tom1" };
 		context.put("nickName", nickName);
 		context.put("name", "luog");
-		context.put("birthday", "1999-3-3");
 		context.put("age", 33);
 		User user = (User) generator.getObject(null,null,User.class.getName(),this.getClass().getClassLoader(), context);
 		assertEquals(user.getName(), "luog");
