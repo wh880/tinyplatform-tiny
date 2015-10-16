@@ -5,63 +5,62 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @XStreamAlias("jedis-config")
 public class JedisConfig {
-
-    /**
-     * 唯一标识,必填项
-     */
+	/**
+	 * 唯一标识,必填项
+	 */
 	@XStreamAsAttribute
 	private String id;
-	
+
 	/**
 	 * redis转换编码，默认utf-8，选填项
 	 */
 	@XStreamAsAttribute
 	private String charset;
-	
+
 	/**
 	 * redis服务器地址，必填项
 	 */
 	@XStreamAsAttribute
 	private String host;
-	
+
 	/**
 	 * redis服务器端口，必填项
 	 */
 	@XStreamAsAttribute
 	private int port;
-	
+
 	/**
 	 * 客户端超时时间，非必填项
 	 */
 	@XStreamAsAttribute
 	private int timeout;
-	
+
 	/**
 	 * 连接密码，有密码必填；无密码不填
 	 */
 	@XStreamAsAttribute
 	private String password;
-	
+
 	/**
 	 * 数据库物理序号，默认是0，非必填项
 	 */
 	@XStreamAsAttribute
 	private int database;
-	
+
 	/**
 	 * 客户端名称，非必填项
 	 */
 	@XStreamAsAttribute
 	@XStreamAlias("client-name")
 	private String clientName;
-	
+
 	/**
 	 * 连接池配置
 	 */
 	@XStreamAsAttribute
 	@XStreamAlias("pool-config")
 	private String poolConfig;
-	
+
 	public String getPoolConfig() {
 		return poolConfig;
 	}
@@ -139,7 +138,7 @@ public class JedisConfig {
 		return "JedisConfig [id=" + id + ", charset=" + charset + ", host="
 				+ host + ", port=" + port + ", timeout=" + timeout
 				+ ", password=" + password + ", database=" + database
-				+ ", clientName=" + clientName + "] "+poolConfig;
+				+ ", clientName=" + clientName + "] " + poolConfig;
 	}
 
 }
