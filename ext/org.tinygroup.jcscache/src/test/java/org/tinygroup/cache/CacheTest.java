@@ -18,8 +18,6 @@ package org.tinygroup.cache;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.apache.jcs.engine.control.CompositeCacheManager;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.exception.CacheException;
@@ -30,6 +28,8 @@ import org.tinygroup.fileresolver.impl.I18nFileProcessor;
 import org.tinygroup.fileresolver.impl.XStreamFileProcessor;
 import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
+
+import junit.framework.TestCase;
 
 public class CacheTest extends TestCase {
 	Cache cache;
@@ -70,6 +70,21 @@ public class CacheTest extends TestCase {
 		assertEquals("123", cache.get("aa"));
 	}
 
+	public void testGetStrings() throws CacheException {
+		cache.put("aa", "123");
+		cache.put("bb", "456");
+		assertEquals(2, cache.get(new String[]{"aa" ,"bb"}).length);
+	}
+	
+	public void testGetGroupStrings() throws CacheException {
+		cache.put("group" ,"aa", "111");
+		cache.put("group", "bb", "222");
+		cache.put("group1", "cc", "333");
+		cache.put("group1", "dd", "444");
+		assertEquals(2, cache.get("group" ,new String[]{"aa" ,"bb"}).length);
+		assertEquals(2, cache.get("group1" ,new String[]{"cc" ,"dd"}).length);
+	}
+	
 	public void testPutSafe() {
 		try {
 			cache.putSafe("aa", 123);
@@ -97,30 +112,49 @@ public class CacheTest extends TestCase {
 		cache.put("group", "aa2", "123");
 		cache.put("group", "aa3", "123");
 		cache.cleanGroup("group");
-		cache.get("group", "aa1");
+		assertNull(cache.get("group", "aa1"));
+		assertEquals(cache.get("bb"), "123");
 	}
 
 	public void testClear() throws CacheException {
 		cache.put("bb", "123");
 		assertEquals("123", cache.get("bb"));
 		cache.clear();
-		cache.get("bb");
+		assertNull(cache.get("bb"));
 	}
 
 	public void testRemoveStringString() throws CacheException {
 		cache.put("group", "bb", "123");
 		assertEquals("123", cache.get("group", "bb"));
 		cache.remove("group", "bb");
-		cache.get("group", "bb");
+		assertNull(cache.get("group", "bb"));
 	}
 
 	public void testRemove() throws CacheException {
 		cache.put("bb", "123");
 		assertEquals("123", cache.get("bb"));
 		cache.remove("bb");
-		cache.get("bb");
+		assertNull(cache.get("bb"));
 	}
 
+	public void testRemoveStrings() throws CacheException {
+		cache.put("aa", "111");
+		cache.put("bb", "222");
+		cache.remove(new String[]{"aa" ,"bb"});
+		assertNull(cache.get(new String[]{"aa" ,"bb"})[0]);
+		assertNull(cache.get(new String[]{"aa" ,"bb"})[1]);
+	}
+	
+	public void testRemoveGroupStrings() throws CacheException {
+		cache.put("group" ,"aa", "111");
+		cache.put("group", "bb", "222");
+		cache.put("group1", "cc", "333");
+		cache.put("group1", "dd", "444");
+		cache.remove("group", new String[]{"aa" ,"bb"});
+		assertNull(cache.get("group", new String[]{"aa" ,"bb"})[0]);
+		assertNull(cache.get("group", new String[]{"aa" ,"bb"})[1]);
+	}
+	
 	public void testGetStats() {
 		System.out.println(System.getProperty("user.dir"));
 		System.out.println(cache.getStats());

@@ -19,7 +19,7 @@ public abstract class AbstractFileScanner implements FileScanner {
     protected static final Logger LOGGER = LoggerFactory
             .getLogger(AbstractFileScanner.class);
 
-    private List<String> classPathList;
+    private List<String> classPathList = new ArrayList<String>();
 
     public void setClassPathList(List<String> classPathList) {
         this.classPathList = classPathList;

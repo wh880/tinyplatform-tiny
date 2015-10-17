@@ -15,16 +15,18 @@
  */
 package org.tinygroup.cache.ehcache;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.exception.CacheException;
+
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 
 /**
  * 
@@ -136,6 +138,42 @@ public class EhCache implements Cache {
 
 	public void setCacheManager(org.tinygroup.cache.CacheManager manager) {
 		this.cacheManager = manager;
+	}
+
+	public Object[] get(String[] keys) {
+		List<Object> objs = new ArrayList<Object>();
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				objs.add(get(keys[i]));
+			}
+		}
+		return objs.toArray();
+	}
+
+	public Object[] get(String group, String[] keys) {
+		List<Object> objs = new ArrayList<Object>();
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				objs.add(get(group ,keys[i]));
+			}
+		}
+		return objs.toArray();
+	}
+
+	public void remove(String[] keys) {
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				remove(keys[i]);
+			}
+		}
+	}
+
+	public void remove(String group, String[] keys) {
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				remove(group ,keys[i]);
+			}
+		}	
 	}
 
 }
