@@ -15,6 +15,10 @@
  */
 package org.tinygroup.template.executor;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.Logger;
@@ -29,12 +33,6 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.FileObjectFilter;
 import org.tinygroup.vfs.FileObjectProcessor;
 import org.tinygroup.vfs.VFS;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * 用于直接对当前环境下的VM进行执行，并输出结果到控制台
@@ -74,9 +72,7 @@ public class TinyTemplateExecutor {
         	urlParameters = args[3];
         }
         Map<String,String> maps= parserStringParameter(urlParameters);
-        //System.out.println("relativePath="+relativePath);
-        //System.out.println("absolutePath="+absolutePath);
-        //System.out.println("urlParamters="+urlParamters);
+       
         String pagedir = getDir(relativePath,absolutePath);
         String root = getProjectRoot(pagedir);
         //模板文件扩展名不能写死，需要根据模板文件动态获取
@@ -92,9 +88,7 @@ public class TinyTemplateExecutor {
         //配置文件目录资源加载器
 		FileObjectResourceLoader resourceLoader = new FileObjectResourceLoader(templateExtFileName, layoutExtFileName, componentExtFileName, root);
         engine.addResourceLoader(resourceLoader);
-        
-        //注册文件目录的资源并注册
-        resolveFile(engine,root,templateExtFileName, layoutExtFileName, componentExtFileName);
+      
         
         if(resources!=null){
            String[] ss = resources.split(SPLIT_TAG);
@@ -131,28 +125,19 @@ public class TinyTemplateExecutor {
      */
     protected static void resolveFile(final TemplateEngine engine,String root,final String templateExtFileName,final String layoutExtFileName,final String componentExtFileName){
     	FileObject project = VFS.resolveFile(root);
-        final List<String> jarList =new ArrayList<String>();
+        FileObjectResourceLoader resourceLoader = new FileObjectResourceLoader(templateExtFileName, layoutExtFileName, componentExtFileName,root);
+		engine.addResourceLoader(resourceLoader);
+		
         project.foreach(new FileObjectFilter(){
 			public boolean accept(FileObject fileObject) {
-				return fileObject.getFileName().endsWith(".component");
+				return fileObject.getFileName().endsWith("."+componentExtFileName);
 			}
 		    }, new FileObjectProcessor(){
 			public void process(FileObject fileObject) {
 				try {
-					
-					if(fileObject.isInPackage()){
-						//对jar的处理
-						String jarPath = getJarFileName(fileObject);
-						if(!jarList.contains(jarPath)){
-							jarList.add(jarPath);
-							FileObjectResourceLoader jarLoader = new FileObjectResourceLoader(templateExtFileName, layoutExtFileName, componentExtFileName,jarPath);
-							engine.addResourceLoader(jarLoader);
-						}
-						
-					}
 					engine.registerMacroLibrary(fileObject.getPath());
 					
-				} catch (TemplateException e) {
+				} catch (Exception e) {
 					LOGGER.error(String.format("load %s error: %s", fileObject.getFileName(),e.getMessage()), e);
 				}
 			}
