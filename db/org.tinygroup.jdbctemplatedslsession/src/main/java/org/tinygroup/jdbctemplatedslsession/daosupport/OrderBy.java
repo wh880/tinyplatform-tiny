@@ -31,6 +31,15 @@ public class OrderBy {
 			orderByElement=OrderByElement.desc(new Column(columnName));
 		}
 	}
+	
+	public OrderBy(Column column,boolean asc){
+		super();
+		if(asc){
+			orderByElement=OrderByElement.asc(column);
+		}else{
+			orderByElement=OrderByElement.desc(column);
+		}
+	}
 
 	public OrderByElement getOrderByElement() {
 		return orderByElement;
