@@ -21,27 +21,41 @@ import org.tinygroup.template.TemplateException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by luoguo on 2014/6/9.
  */
-public class ParseTemplateFunction extends AbstractTemplateFunction{
+public class ParseTemplateFunction extends AbstractTemplateFunction {
 
-    public ParseTemplateFunction() {
-        super("parse");
-    }
+	public ParseTemplateFunction() {
+		super("parse");
+	}
 
-    public Object execute(Template template,TemplateContext context,Object... parameters) throws TemplateException {
-        if(parameters.length==0||!(parameters[0] instanceof String)){
-            notSupported(parameters);
-        }
-        ByteArrayOutputStream outputStream =new ByteArrayOutputStream();
-        template.getTemplateEngine().renderTemplateWithOutLayout(parameters[0].toString(),context,outputStream);
-        try {
-            return new String(outputStream.toByteArray(), template.getTemplateEngine().getEncode());
-        } catch (UnsupportedEncodingException e) {
-            throw new TemplateException(e);
-        }
-    }
+	public Object execute(Template template, TemplateContext context,
+			Object... parameters) throws TemplateException {
+		if (parameters.length == 0 || !(parameters[0] instanceof String)) {
+			notSupported(parameters);
+		}
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		String path = parameters[0].toString();
+		try {
+			if (!path.startsWith("/")) {
+				URL url = new URL("file:" + template.getPath());
+				URL newUrl = new URL(url, path);
+				path = newUrl.getPath();
+			}
+			template.getTemplateEngine().renderTemplateWithOutLayout(path,
+					context, outputStream);
+
+			return new String(outputStream.toByteArray(), template
+					.getTemplateEngine().getEncode());
+		} catch (UnsupportedEncodingException e) {
+			throw new TemplateException(e);
+		} catch (MalformedURLException e) {
+			throw new TemplateException(e);
+		}
+
+	}
 }
-
