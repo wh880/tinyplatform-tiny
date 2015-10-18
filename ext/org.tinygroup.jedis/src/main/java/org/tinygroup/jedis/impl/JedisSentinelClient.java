@@ -1,6 +1,5 @@
 package org.tinygroup.jedis.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,7 @@ import org.tinygroup.jedis.util.JedisUtil;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
+import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -20,8 +20,10 @@ import redis.clients.jedis.JedisSentinelPool;
 import redis.clients.util.Pool;
 
 public class JedisSentinelClient {
-	private List<JedisPool> jedisPools = new ArrayList<JedisPool>();
-	private List<String> poolKeys = new ArrayList<String>();
+	// private List<JedisPool> jedisPools = new ArrayList<JedisPool>();
+	// private List<String> poolKeys = new ArrayList<String>();
+	private Map<String, JedisPool> jedisPoolsMap = new HashMap<String, JedisPool>();
+	Map<String, HostAndPort> jedisPoolsHostAndPortMap = new HashMap<String, HostAndPort>();
 	private JedisSentinelPool jedisSentinelPool;
 	private String masterNamel;
 	private static final Logger logger = LoggerFactory
@@ -36,13 +38,20 @@ public class JedisSentinelClient {
 	private void initJedisPools(JedisSentinelConfig config) {
 		List<JedisConfig> configs = config.getJedisConfigList();
 		for (JedisConfig jedisConfig : configs) {
-			if (!poolKeys.contains(jedisConfig.getId())) {
+			if (!jedisPoolsMap.containsKey(jedisConfig.getId())) {
 				JedisPool pool = JedisUtil.createJedisPool(jedisConfig, this
 						.getClass().getClassLoader());
-				jedisPools.add(pool);
+				jedisPoolsMap.put(jedisConfig.getId(), pool);
+
+				jedisPoolsHostAndPortMap.put(jedisConfig.getId(),
+						getHostAndPort(jedisConfig));
 			}
 
 		}
+	}
+
+	private HostAndPort getHostAndPort(JedisConfig config) {
+		return new HostAndPort(config.getHost(), config.getPort());
 	}
 
 	private void initJedisSentinelPool(JedisSentinelConfig config) {
@@ -78,9 +87,10 @@ public class JedisSentinelClient {
 
 	public void destroy() {
 		destroy(jedisSentinelPool);
-		for (JedisPool pool : jedisPools) {
+		for (JedisPool pool : jedisPoolsMap.values()) {
 			destroy(pool);
 		}
+		jedisPoolsMap.clear();
 	}
 
 	private void destroy(Pool<Jedis> pool) {
@@ -106,8 +116,25 @@ public class JedisSentinelClient {
 	}
 
 	public JedisPool getReadJedisPool() {
-		// TODO:负载均衡
-		return jedisPools.get(0);
+		// get from jedisPoolsMap.values() except
+		// jedisSentinelPool.getCurrentHostMaster()
+		return getReadJedisPool(jedisSentinelPool.getCurrentHostMaster());
+	}
+
+	private JedisPool getReadJedisPool(HostAndPort except) {
+		String key = getJedisPool(jedisPoolsMap);
+		if(except.toString().equals(jedisPoolsHostAndPortMap.get(key).toString())){
+			return getReadJedisPool(except);//这里要考虑读写共用一个的情况，即判断列表可用性是否只有1个
+		}
+		
+		return jedisPoolsMap.get(key);
+	}
+
+	private String getJedisPool(Map<String, JedisPool> pools) {
+		for(String s : pools.keySet()){
+			return s;
+		}
+		throw new RuntimeException("未找到合适的jedisPool");
 	}
 
 }
