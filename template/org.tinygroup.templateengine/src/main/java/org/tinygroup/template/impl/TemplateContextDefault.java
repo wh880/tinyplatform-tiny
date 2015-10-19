@@ -25,21 +25,7 @@ import java.util.Map;
  * Created by luoguo on 2014/6/6.
  */
 public class TemplateContextDefault extends ContextImpl implements TemplateContext {
-    {
-        put("Integer", Integer.class);
-        put("Long", Long.class);
-        put("Short", Short.class);
-        put("Double", Double.class);
-        put("Float", Float.class);
-        put("Boolean", Boolean.class);
-        put("String", String.class);
-        put("Byte", Byte.class);
-        put("Number", Number.class);
-        put("Character", Character.class);
-        put("Math", Math.class);
-        put("System", System.class);
-    }
-
+   
     public TemplateContextDefault() {
 
     }

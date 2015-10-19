@@ -40,7 +40,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     private static final String DEFAULT = "default";
     private Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
     private Map<Class, Map<String, TemplateFunction>> typeFunctionMap = new HashMap<Class, Map<String, TemplateFunction>>();
-    private TemplateContext templateEngineContext = new TemplateContextDefault();
+    private TemplateContext templateEngineContext;
 
     private List<ResourceLoader> resourceLoaderList = new ArrayList<ResourceLoader>();
     private String encode = "UTF-8";
@@ -69,6 +69,9 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public static final TemplateInterpreter interpreter = new TemplateInterpreter();
+    
+    //提供模板引擎渲染的静态类
+    private static Map<String,Class<?>> staticClassMaps = new HashMap<String,Class<?>>();
 
     static {
         interpreter.addTerminalNodeProcessor(new IntegerOctNodeProcessor());
@@ -135,6 +138,21 @@ public class TemplateEngineDefault implements TemplateEngine {
         interpreter.addContextProcessor(new MemberFunctionCallProcessor());
         interpreter.addContextProcessor(new FunctionCallProcessor());
         interpreter.addContextProcessor(new WhileProcessor());
+    }
+    
+    static{
+    	staticClassMaps.put("Integer", Integer.class);
+    	staticClassMaps.put("Long", Long.class);
+    	staticClassMaps.put("Short", Short.class);
+    	staticClassMaps.put("Double", Double.class);
+    	staticClassMaps.put("Float", Float.class);
+    	staticClassMaps.put("Boolean", Boolean.class);
+    	staticClassMaps.put("String", String.class);
+    	staticClassMaps.put("Byte", Byte.class);
+    	staticClassMaps.put("Number", Number.class);
+    	staticClassMaps.put("Character", Character.class);
+    	staticClassMaps.put("Math", Math.class);
+    	staticClassMaps.put("System", System.class);
     }
 
     private boolean compactMode;
@@ -213,6 +231,9 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public TemplateContext getTemplateContext() {
+    	if(templateEngineContext==null){
+    		templateEngineContext = new TemplateContextDefault(staticClassMaps);
+    	}
         return templateEngineContext;
     }
 
@@ -530,5 +551,10 @@ public class TemplateEngineDefault implements TemplateEngine {
     public String getResourceContent(String path) throws TemplateException {
         return getResourceContent(path, getEncode());
     }
+
+	public void registerStaticClass(String name, Class<?> clazz)
+			throws TemplateException {
+		staticClassMaps.put(name, clazz);
+	}
 
 }
