@@ -30,13 +30,12 @@ import static org.tinygroup.commons.tools.Assert.assertNotNull;
 /**
  * 代表一个session本身的信息。该对象是可序列化的。
  *
- * @author Michael Zhou
  */
 public class SessionModelImpl implements SessionModel {
     private transient SessionConfig sessionConfig;
     private           String        sessionID;
     private           long          creationTime;
-    private           long          lastAccessedTime;
+    private volatile  long          lastAccessedTime;
     private           int           maxInactiveInterval;
 
     public SessionModelImpl(SessionImpl session) {

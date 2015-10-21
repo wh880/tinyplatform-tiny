@@ -61,14 +61,4 @@ public abstract class AbstractRequestWrapper extends HttpServletRequestWrapper {
     protected WebContext getWebContext() {
         return context;
     }
-
-    /**
-     * 取得字符串表示。
-     *
-     * @return 字符串表示
-     */
-    
-    public String toString() {
-        return "Http request within request context: " + getWebContext().toString();
-    }
 }
