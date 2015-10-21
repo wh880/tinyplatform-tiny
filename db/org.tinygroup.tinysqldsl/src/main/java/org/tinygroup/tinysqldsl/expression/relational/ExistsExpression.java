@@ -22,11 +22,19 @@ public class ExistsExpression implements Expression {
 
 	private Expression rightExpression;
 	private boolean not = false;
+	
+	public ExistsExpression(Expression rightExpression){
+		this(rightExpression, false);
+	}
 
 	public ExistsExpression(Expression rightExpression, boolean not) {
 		super();
 		this.rightExpression = rightExpression;
 		this.not = not;
+	}
+	
+	public static ExistsExpression exists(Expression rightExpression){
+		return new ExistsExpression(rightExpression);
 	}
 
 	public Expression getRightExpression() {
