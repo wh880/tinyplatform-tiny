@@ -36,6 +36,7 @@ import static org.tinygroup.tinysqldsl.select.OrderByElement.asc;
 import static org.tinygroup.tinysqldsl.select.OrderByElement.desc;
 import static org.tinygroup.tinysqldsl.selectitem.Top.top;
 
+import org.tinygroup.tinysqldsl.expression.relational.ExistsExpression;
 import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.expression.FragmentExpressionSql;
 import org.tinygroup.tinysqldsl.formitem.SubSelect;
@@ -184,6 +185,13 @@ public class TestSelect {
 		
 		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.notIn(1,5,10)));
 		
+		System.out.println(selectFrom(CUSTOM).where(ExistsExpression.existsCondition(
+				subSelect(selectFrom(CUSTOM).where(CUSTOM.AGE.in(10000,100001))))));
+		
+		System.out.println(selectFrom(CUSTOM).where(ExistsExpression.notExistsCondition(
+				subSelect(selectFrom(CUSTOM).where(CUSTOM.AGE.in(10000,100001))))));
+		
+		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.eq(subSelect(select(CUSTOM.ID).from(CUSTOM).where(CUSTOM.AGE.in(10000,100001))))));
 		System.out.println(select(CUSTOM.ALL).from(CUSTOM,TSCORE));
 		
 		System.out.println(select(CUSTOM.NAME).from(CUSTOM,TSCORE).where(
