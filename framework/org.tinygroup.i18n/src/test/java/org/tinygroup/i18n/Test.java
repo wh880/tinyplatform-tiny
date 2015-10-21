@@ -15,15 +15,16 @@
  */
 package org.tinygroup.i18n;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.format.config.FormatPatternDefine;
 import org.tinygroup.format.config.FormatProvider;
 import org.tinygroup.format.config.Formater;
 import org.tinygroup.i18n.config.I18nConfiguration;
 import org.tinygroup.i18n.config.I18nMessage;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.XStream;
 
 public class Test {
 

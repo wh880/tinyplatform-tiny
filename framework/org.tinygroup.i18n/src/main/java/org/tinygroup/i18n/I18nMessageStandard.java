@@ -24,16 +24,7 @@ import java.util.Locale;
  * 
  */
 public interface I18nMessageStandard extends I18nMessageBase {
-	/**
-	 * 采用默认区域获取信息
-	 * 
-	 * @param code
-	 *            信息代码
-	 * @param args
-	 *            参数列表
-	 * @return
-	 */
-	String getMessage(String code, Object... args);
+	
 	/**
 	 * 采用默认区域获取信息,不存在则返回默认值
 	 * 
@@ -47,16 +38,6 @@ public interface I18nMessageStandard extends I18nMessageBase {
 	 */
 	String getMessage(String code,String defaultMessage, Object... args);
 
-	/**
-	 * 采用指定区域获取信息
-	 * 
-	 * @param code 信息代码
-	 * @param args 参数
-	 * @param locale 区域
-	 * @return
-	 */
-	String getMessage(String code, Locale locale, Object... args);
-	
 	/**
 	 * 采用指定区域获取信息
 	 * 

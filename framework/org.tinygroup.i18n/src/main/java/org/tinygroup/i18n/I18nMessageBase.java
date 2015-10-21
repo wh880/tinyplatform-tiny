@@ -33,29 +33,13 @@ interface I18nMessageBase {
 	String getMessage(String code);
 
 	/**
-	 * 根据代码和位置获取
+	 * 采用指定区域获取信息
 	 * 
-	 * @param code
-	 * @param locale
+	 * @param code 信息代码
+	 * @param args 参数
+	 * @param locale 区域
 	 * @return
 	 */
-	String getMessage(String code, Locale locale);
-
-	/**
-	 * 根据代码获取，如果获取不到，则返回默认信息
-	 * 
-	 * @param code
-	 * @param defaultMessage
-	 * @return
-	 */
-	String getMessage(String code, String defaultMessage);
-	/**
-	 * 根据代码和位置获取，如果获取不到，则返回默认信息
-	 * @param code
-	 * @param locale
-	 * @param defaultMessage
-	 * @return
-	 */
-	String getMessage(String code, Locale locale, String defaultMessage);
-
+	String getMessage(String code, Locale locale, Object... args);
+	
 }
