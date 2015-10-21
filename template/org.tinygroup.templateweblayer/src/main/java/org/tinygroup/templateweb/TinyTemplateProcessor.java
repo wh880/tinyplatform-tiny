@@ -69,6 +69,13 @@ public class TinyTemplateProcessor extends AbstractTinyProcessor {
 					BeanContainerFactory.getBeanContainer(
 							this.getClass().getClassLoader()).getBean(
 							"uiComponentManager"));
+			
+			//设置templateContext的内置对象
+			templateContext.put("request", context.getRequest());
+			templateContext.put("response", context.getResponse());
+			templateContext.put("session", context.getRequest().getSession());
+			templateContext.put("application", context.getServletContext());
+			
 			if (isPagelet) {
 				engine.renderTemplateWithOutLayout(
 						servletPath.substring(0, servletPath.length()
