@@ -15,6 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
+import org.tinygroup.tinysqldsl.base.Condition;
 import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
 import org.tinygroup.tinysqldsl.expression.Expression;
 
@@ -22,8 +23,8 @@ public class ExistsExpression implements Expression {
 
 	private Expression rightExpression;
 	private boolean not = false;
-	
-	public ExistsExpression(Expression rightExpression){
+
+	public ExistsExpression(Expression rightExpression) {
 		this(rightExpression, false);
 	}
 
@@ -32,9 +33,15 @@ public class ExistsExpression implements Expression {
 		this.rightExpression = rightExpression;
 		this.not = not;
 	}
+
+	public static Condition existsCondition(Expression rightExpression,
+			Object... values) {
+		return new Condition(new ExistsExpression(rightExpression), values);
+	}
 	
-	public static ExistsExpression exists(Expression rightExpression){
-		return new ExistsExpression(rightExpression);
+	public static Condition notExistsCondition(Expression rightExpression,
+			Object... values) {
+		return new Condition(new ExistsExpression(rightExpression,true), values);
 	}
 
 	public Expression getRightExpression() {
