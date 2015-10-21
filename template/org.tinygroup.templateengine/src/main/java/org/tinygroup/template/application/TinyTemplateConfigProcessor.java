@@ -28,6 +28,7 @@ public class TinyTemplateConfigProcessor extends AbstractApplicationProcessor{
     private static final String INIT_PARAM_NAME = "init-param";
     private static final String I18N_VISITOR_NAME = "i18n-visitor";
     private static final String TEMPLATE_FUNCTION_NAME = "template-function";
+    private static final String STATIC_CLASS_NAME = "static-class";
     
 	private XmlNode applicationConfig;
 	private XmlNode componentConfig;
@@ -57,6 +58,9 @@ public class TinyTemplateConfigProcessor extends AbstractApplicationProcessor{
          
         //加载模板函数
         addFunction(totalConfig);
+        
+        //加载自定义的静态类
+        addStaticClass(totalConfig);
          
 		LOGGER.logMessage(LogLevel.INFO, "加载Tiny模板引擎基本配置结束");
 	}
@@ -116,6 +120,21 @@ public class TinyTemplateConfigProcessor extends AbstractApplicationProcessor{
     	}
     	
     }
+	
+	private void addStaticClass(XmlNode totalConfig){
+		List<XmlNode> list = totalConfig.getSubNodes(STATIC_CLASS_NAME);
+		if(list!=null){
+			for(XmlNode node:list){
+				try {
+					String alias = node.getAttribute("name");
+					Class<?>  clazz =  getClass().getClassLoader().loadClass(node.getAttribute("class"));
+    				templateEngine.registerStaticClass(alias, clazz);
+    			} catch (Exception e) {
+    				LOGGER.errorMessage("加载用户注册的静态类出错", e);
+    			}
+			}
+		}
+	}
 	
 	private void configI18nVisitor(XmlNode totalConfig){
     	XmlNode node = totalConfig.getSubNode(I18N_VISITOR_NAME);

@@ -15,13 +15,13 @@
  */
 package org.tinygroup.i18n.impl;
 
+import java.util.Locale;
+
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.format.Formater;
 import org.tinygroup.i18n.I18nMessageContext;
 import org.tinygroup.i18n.I18nMessageFactory;
-
-import java.util.Locale;
 
 /**
  * 支持通过Context和Map来取数据的实现
@@ -45,7 +45,7 @@ public class I18nMessageContextImpl implements I18nMessageContext {
 		return getMessage(code, LocaleUtil.getContext().getLocale());
 	}
 
-	public String getMessage(String code, Locale locale) {
+	public String getMessage(String code, Locale locale ,Object...args) {
 		return I18nMessageFactory.getMessage(locale, code);
 	}
 

@@ -44,7 +44,9 @@ public class GetFunction extends AbstractTemplateFunction {
         }catch (Exception e) {
         	try{
         		//再尝试从对象属性取值
-        		return TemplateUtil.executeClassMethod(object, "get", parameters);
+        		Object[] newParameters = new Object[parameters.length-1];
+        		System.arraycopy(parameters, 1, newParameters, 0, newParameters.length);
+        		return TemplateUtil.executeClassMethod(object, "get", newParameters);
         	}catch(Exception e1){
         		if(getTemplateEngine().isSafeVariable()){
         		   return null;

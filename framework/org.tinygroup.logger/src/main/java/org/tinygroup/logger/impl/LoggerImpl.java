@@ -15,16 +15,7 @@
  */
 package org.tinygroup.logger.impl;
 
-import org.slf4j.MDC;
-import org.slf4j.spi.MDCAdapter;
-import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.context.Context;
-import org.tinygroup.i18n.I18nMessage;
-import org.tinygroup.i18n.I18nMessageFactory;
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
+import static org.tinygroup.logger.LogLevel.ERROR;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -33,7 +24,17 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.tinygroup.logger.LogLevel.ERROR;
+import org.slf4j.MDC;
+import org.slf4j.spi.MDCAdapter;
+import org.tinygroup.commons.i18n.LocaleUtil;
+import org.tinygroup.commons.tools.Assert;
+import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.context.Context;
+import org.tinygroup.i18n.I18nMessage;
+import org.tinygroup.i18n.I18nMessageFactory;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
 /**
  * @author luoguo
@@ -350,7 +351,7 @@ public class LoggerImpl implements Logger {
 		if (!isEnabled(logLevel)) {
 			return;
 		}
-		logMessage(logLevel, i18nMessage.getMessage(code, locale, args));
+		logMessage(logLevel, i18nMessage.getMessage(code, locale,null , args));
 	}
 
 	/*
@@ -363,7 +364,7 @@ public class LoggerImpl implements Logger {
 		if (!isEnabled(logLevel)) {
 			return;
 		}
-		logMessage(logLevel, i18nMessage.getMessage(code, args));
+		logMessage(logLevel, i18nMessage.getMessage(code,LocaleUtil.getContext().getLocale() ,null , args));
 	}
 
 	/*
@@ -456,7 +457,7 @@ public class LoggerImpl implements Logger {
 		if (!isEnabled(LogLevel.ERROR)) {
 			return;
 		}
-		logError(i18nMessage.getMessage(code, args), throwable);
+		logError(i18nMessage.getMessage(code,LocaleUtil.getContext().getLocale(),null , args), throwable);
 	}
 
 	public void error(String code, Throwable throwable, Context context) {

@@ -15,12 +15,12 @@
  */
 package org.tinygroup.i18n;
 
+import java.util.List;
+import java.util.Locale;
+
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.format.Formater;
-
-import java.util.List;
-import java.util.Locale;
 
 /**
  * I18n消息访问类
@@ -37,8 +37,7 @@ public final class I18nMessages implements I18nMessage {
 		return i18nMessageStandards;
 	}
 
-	public void setI18nMessageStandards(
-			List<I18nMessageStandard> i18nMessageStandards) {
+	public void setI18nMessageStandards(List<I18nMessageStandard> i18nMessageStandards) {
 		this.i18nMessageStandards = i18nMessageStandards;
 	}
 
@@ -46,31 +45,13 @@ public final class I18nMessages implements I18nMessage {
 		return i18nMessageContexts;
 	}
 
-	public void setI18nMessageContexts(
-			List<I18nMessageContext> i18nMessageContexts) {
+	public void setI18nMessageContexts(List<I18nMessageContext> i18nMessageContexts) {
 		this.i18nMessageContexts = i18nMessageContexts;
 		for (I18nMessageContext messageContext : i18nMessageContexts) {
 			if (messageContext.getFormater() == null) {
 				messageContext.setFormater(formater);
 			}
 		}
-	}
-
-	public String getMessage(String code, Locale locale, Object... args) {
-		String message = null;
-		if (i18nMessageStandards != null) {
-			for (I18nMessageStandard m : i18nMessageStandards) {
-				message = m.getMessage(code, locale, args);
-				if (message != null) {
-					break;
-				}
-			}
-		}
-		return message;
-	}
-
-	public String getMessage(String code, Object... args) {
-		return getMessage(code, LocaleUtil.getContext().getLocale(), args);
 	}
 
 	public String getMessage(String code, Context context) {
@@ -94,28 +75,24 @@ public final class I18nMessages implements I18nMessage {
 		return getMessage(code, LocaleUtil.getContext().getLocale());
 	}
 
-	public String getMessage(String code, Locale locale) {
+	public String getMessage(String code, Locale locale, Object... args) {
 		String message = null;
-		message = getStandardMessage(code, locale);
+		message = getStandardMessage(code, locale, args);
 		if (message != null) {
 			return message;
 		}
-		message = getMapMessage(code, locale);
-		if (message != null) {
-			return message;
-		}
-		message = getContextMessage(code, locale);
+		message = getContextMessage(code, locale, args);
 		if (message != null) {
 			return message;
 		}
 		return null;
 	}
 
-	private String getStandardMessage(String code, Locale locale) {
+	private String getStandardMessage(String code, Locale locale, Object... args) {
 		String message = null;
 		if (i18nMessageStandards != null) {
 			for (I18nMessageBase m : i18nMessageStandards) {
-				message = m.getMessage(code, locale);
+				message = m.getMessage(code, locale, args);
 				if (message != null) {
 					break;
 				}
@@ -124,24 +101,11 @@ public final class I18nMessages implements I18nMessage {
 		return message;
 	}
 
-	private String getMapMessage(String code, Locale locale) {
-		String message = null;
-		if (i18nMessageStandards != null) {
-			for (I18nMessageBase m : i18nMessageStandards) {
-				message = m.getMessage(code, locale);
-				if (message != null) {
-					break;
-				}
-			}
-		}
-		return message;
-	}
-
-	private String getContextMessage(String code, Locale locale) {
+	private String getContextMessage(String code, Locale locale, Object... args) {
 		String message = null;
 		if (i18nMessageContexts != null) {
 			for (I18nMessageBase m : i18nMessageContexts) {
-				message = m.getMessage(code, locale);
+				message = m.getMessage(code, locale, args);
 				if (message != null) {
 					break;
 				}
@@ -172,23 +136,12 @@ public final class I18nMessages implements I18nMessage {
 	}
 
 	public String getMessage(String code, String defaultMessage, Object... args) {
-		String message = getMessage(code, args);
+		String message = getMessage(code, LocaleUtil.getContext().getLocale(), null, args);
 		return getRealMessage(defaultMessage, message);
 	}
 
-	public String getMessage(String code, Locale locale, String defaultMessage,
-			Object... args) {
-		String message = getMessage(code, locale, args);
-		return getRealMessage(defaultMessage, message);
-	}
-
-	public String getMessage(String code, String defaultMessage) {
-		String message = getMessage(code);
-		return getRealMessage(defaultMessage, message);
-	}
-
-	public String getMessage(String code, Locale locale, String defaultMessage) {
-		String message = getMessage(code, locale);
+	public String getMessage(String code, Locale locale, String defaultMessage, Object... args) {
+		String message = getMessage(code, locale, null, args);
 		return getRealMessage(defaultMessage, message);
 	}
 
@@ -204,8 +157,7 @@ public final class I18nMessages implements I18nMessage {
 		return getRealMessage(defaultMessage, message);
 	}
 
-	public String getMessage(String code, String defaultMessage,
-			Context context, Locale locale) {
+	public String getMessage(String code, String defaultMessage, Context context, Locale locale) {
 		String message = getMessage(code, context, locale);
 		return getRealMessage(defaultMessage, message);
 	}

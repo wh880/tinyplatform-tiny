@@ -2,6 +2,8 @@ package org.tinygroup.cache.redis;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.tinygroup.cache.Cache;
@@ -250,4 +252,40 @@ public class RedisCache implements Cache {
 		}
 	}
 
+	public Object[] get(String[] keys) {
+		List<Object> objs = new ArrayList<Object>();
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				objs.add(get(keys[i]));
+			}
+		}
+		return objs.toArray();
+	}
+
+	public Object[] get(String group, String[] keys) {
+		List<Object> objs = new ArrayList<Object>();
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				objs.add(get(group ,keys[i]));
+			}
+		}
+		return objs.toArray();
+	}
+
+	public void remove(String[] keys) {
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				remove(keys[i]);
+			}
+		}
+	}
+
+	public void remove(String group, String[] keys) {
+		if (keys != null && keys.length > 0) {
+			for (int i = 0; i < keys.length; i++) {
+				remove(group ,keys[i]);
+			}
+		}	
+	}
+	
 }

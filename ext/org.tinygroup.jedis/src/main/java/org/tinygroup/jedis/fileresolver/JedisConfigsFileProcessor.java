@@ -34,7 +34,7 @@ public class JedisConfigsFileProcessor extends AbstractFileProcessor {
 	public void process() {
 		XStream stream = XStreamFactory.getXStream(JEDIS_XSTREAM_NAME);
 		for (FileObject fileObject : deleteList) {
-			LOGGER.logMessage(LogLevel.INFO, "正在移除Redis缓存配置文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在移除Redis配置文件[{0}]",
 					fileObject.getAbsolutePath());
 			JedisConfigs jedisConfigs = (JedisConfigs) caches.get(fileObject
 					.getAbsolutePath());
@@ -42,11 +42,11 @@ public class JedisConfigsFileProcessor extends AbstractFileProcessor {
 				jedisManager.removeJedisConfigs(jedisConfigs);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			LOGGER.logMessage(LogLevel.INFO, "移除Redis缓存配置文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "移除Redis配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 		for (FileObject fileObject : changeList) {
-			LOGGER.logMessage(LogLevel.INFO, "正在加载Redis缓存配置文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在加载Redis配置文件[{0}]",
 					fileObject.getAbsolutePath());
 			JedisConfigs oldJedisConfigs = (JedisConfigs) caches.get(fileObject
 					.getAbsolutePath());
@@ -57,7 +57,7 @@ public class JedisConfigsFileProcessor extends AbstractFileProcessor {
 					.fromXML(fileObject.getInputStream());
 			jedisManager.addJedisConfigs(jedisConfigs);
 			caches.put(fileObject.getAbsolutePath(), jedisConfigs);
-			LOGGER.logMessage(LogLevel.INFO, "加载Redis缓存配置文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "加载Redis配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 	}

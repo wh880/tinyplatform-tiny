@@ -270,4 +270,11 @@ public interface TemplateEngine extends TemplateContextOperator {
     void registerMacroLibrary(Template template) throws TemplateException;
 
     void write(OutputStream outputStream, Object data) throws TemplateException;
+    
+    /**
+     * 注册静态类
+     * @throws TemplateException
+     */
+    void registerStaticClass(String name,Class<?> clazz) throws TemplateException;
+   
 }
