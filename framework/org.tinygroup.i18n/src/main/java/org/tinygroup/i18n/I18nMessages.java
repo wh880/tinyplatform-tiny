@@ -141,7 +141,7 @@ public final class I18nMessages implements I18nMessage {
 	}
 
 	public String getMessage(String code, Locale locale, String defaultMessage, Object... args) {
-		String message = getMessage(code, locale, null, args);
+		String message = getMessage(code, locale, args);
 		return getRealMessage(defaultMessage, message);
 	}
 
