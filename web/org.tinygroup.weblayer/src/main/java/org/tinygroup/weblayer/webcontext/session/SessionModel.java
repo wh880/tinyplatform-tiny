@@ -15,12 +15,14 @@
  */
 package org.tinygroup.weblayer.webcontext.session;
 
+import java.io.Serializable;
+
 /**
  * 描述session模型的接口
  * @author renhui
  *
  */
-public interface SessionModel {
+public interface SessionModel extends Serializable {
     /**
      * 取得session ID。
      *

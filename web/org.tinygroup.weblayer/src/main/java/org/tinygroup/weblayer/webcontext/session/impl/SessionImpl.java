@@ -27,6 +27,8 @@ import org.tinygroup.weblayer.webcontext.session.SessionStore.StoreContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.*;
+
+import java.io.Serializable;
 import java.util.*;
 
 import static java.util.Collections.emptyMap;
@@ -43,7 +45,7 @@ import static org.tinygroup.commons.tools.StringUtil.trimToNull;
  * store是线程安全的。
  * </p>
  */
-public class SessionImpl implements HttpSession {
+public class SessionImpl implements HttpSession,Serializable,Session {
 	private final static Logger log = LoggerFactory
 			.getLogger(SessionImpl.class);
 	private final HttpSessionInternal sessionInternal = new HttpSessionInternal();
@@ -218,6 +220,16 @@ public class SessionImpl implements HttpSession {
 	public int getMaxInactiveInterval() {
 		assertModel("getMaxInactiveInterval");
 		return model.getMaxInactiveInterval();
+	}
+	
+	public String getSessionID() {
+		assertModel("getSessionID");
+		return model.getSessionID();
+	}
+
+	public boolean isExpired() {
+		assertModel("isExpired");
+		return model.isExpired();
 	}
 
 	/**
@@ -1051,4 +1063,5 @@ public class SessionImpl implements HttpSession {
 			SessionImpl.this.removeValue(name);
 		}
 	}
+
 }

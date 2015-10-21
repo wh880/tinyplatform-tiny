@@ -89,8 +89,10 @@ public class SessionConfiguration extends AbstractConfiguration {
 		private static final String FORCE_EXPIRATION_PERIOD = "forceExpirationPeriod";
 		private static final String MODEL_KEY = "modelKey";
 		private static final String KEEP_IN_TOUCH = "keepInTouch";
+		private static final String SESSION_MANANGER_BEAN_ID = "sessionManagerBeanId";
 		private static final String SESSION_MODEL_ENCODERS = "session-model-encoders";
 		private static final String SESSION_MODEL_ENCODER = "session-model-encoder";
+		private static final String BACKGROUD_PROCESSOR_DELAY = "backgroundProcessorDelay";
 		private final IdConfigImpl id = new IdConfigImpl();
 		private final StoresConfigImpl stores = new StoresConfigImpl();
 		private final StoreMappingsConfigImpl storeMappings = new StoreMappingsConfigImpl();
@@ -98,6 +100,8 @@ public class SessionConfiguration extends AbstractConfiguration {
 		private Long forceExpirationPeriod;
 		private String modelKey;
 		private Boolean keepInTouch;
+		private String sessionManagerBeanId;
+		private Integer backgroundProcessorDelay ;//默认一分钟
 		private SessionModelEncoder[] sessionModelEncoders;
 		private SessionInterceptor[] sessionInterceptors;
 
@@ -131,6 +135,14 @@ public class SessionConfiguration extends AbstractConfiguration {
 
 		public void setKeepInTouch(boolean keepInTouch) {
 			this.keepInTouch = keepInTouch;
+		}
+		
+		public String getSessionManagerBeanId() {
+			return sessionManagerBeanId;
+		}
+		
+		public int getBackgroundProcessorDelay() {
+			return backgroundProcessorDelay;
 		}
 
 		public IdConfig getId() {
@@ -187,6 +199,18 @@ public class SessionConfiguration extends AbstractConfiguration {
 			if (modelKey == null) {
 				modelKey = defaultIfEmpty(sessionNode.getAttribute(MODEL_KEY),
 						MODEL_KEY_DEFAULT);
+			}
+			if(sessionManagerBeanId == null){
+				sessionManagerBeanId=defaultIfEmpty(sessionNode.getAttribute(SESSION_MANANGER_BEAN_ID),
+						"");
+			}
+			if(backgroundProcessorDelay==null){
+				String delay=sessionNode.getAttribute(BACKGROUD_PROCESSOR_DELAY);
+				if(delay==null){
+					backgroundProcessorDelay=BACKGROUD_PROCESSOR_DELAY_DEFAULT;
+				}else{
+					backgroundProcessorDelay=Integer.parseInt(delay);
+				}
 			}
 			if (keepInTouch == null) {
 				String touch = sessionNode.getAttribute(KEEP_IN_TOUCH);
@@ -293,6 +317,7 @@ public class SessionConfiguration extends AbstractConfiguration {
 			return new ToStringBuilder().append("SessionConfig").append(mb)
 					.toString();
 		}
+
 	}
 
 	@SuppressWarnings("unused")

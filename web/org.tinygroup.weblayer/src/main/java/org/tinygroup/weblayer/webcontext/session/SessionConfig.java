@@ -23,6 +23,7 @@ package org.tinygroup.weblayer.webcontext.session;
 public interface SessionConfig {
     Integer MAX_INACTIVE_INTERVAL_DEFAULT   = 0;
     Long    FORCE_EXPIRATION_PERIOD_DEFAULT = 0L;
+    Integer BACKGROUD_PROCESSOR_DELAY_DEFAULT   = 0;
     String  MODEL_KEY_DEFAULT               = "SESSION_MODEL";
     Boolean KEEP_IN_TOUCH_DEFAULT           = false;
 
@@ -47,6 +48,16 @@ public interface SessionConfig {
      * model保存在cookie store中时，这样做可以减少流量。
      */
     boolean isKeepInTouch();
+    /**
+     * sessionmanager的beanid
+     * @return
+     */
+    String  getSessionManagerBeanId();
+    /**
+     * 监控session的后台线程休眠时间，单位为秒
+     * @return
+     */
+    int getBackgroundProcessorDelay();
 
     /** 取得session ID的配置。 */
     IdConfig getId();
