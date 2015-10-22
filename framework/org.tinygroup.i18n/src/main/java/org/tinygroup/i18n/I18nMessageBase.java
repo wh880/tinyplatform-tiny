@@ -40,6 +40,5 @@ interface I18nMessageBase {
 	 * @param locale 区域
 	 * @return
 	 */
-	String getMessage(String code, Locale locale, Object... args);
-	
+	String getMessage(String code, Locale locale);
 }

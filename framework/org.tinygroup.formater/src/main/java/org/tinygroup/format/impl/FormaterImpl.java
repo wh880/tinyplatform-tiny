@@ -15,15 +15,16 @@
  */
 package org.tinygroup.format.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+
+import org.apache.commons.lang.StringUtils;
 import org.tinygroup.context.Context;
 import org.tinygroup.format.FormatProvider;
 import org.tinygroup.format.Formater;
 import org.tinygroup.format.PatternDefine;
 import org.tinygroup.format.exception.FormatException;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
 
 /**
  * Formater的默认实现
@@ -48,6 +49,9 @@ public class FormaterImpl implements Formater {
 	 * @throws FormatException
 	 */
 	public String format(Context context, String source) throws FormatException {
+		if (StringUtils.isBlank(source)) {
+			return StringUtils.EMPTY;
+		}
 		Matcher matcher = patternDefine.getPattern().matcher(source);
 		StringBuilder buf = new StringBuilder();
 		int curpos = 0;

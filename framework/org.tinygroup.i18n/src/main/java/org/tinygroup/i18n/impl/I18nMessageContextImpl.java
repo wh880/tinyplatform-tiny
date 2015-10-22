@@ -45,7 +45,7 @@ public class I18nMessageContextImpl implements I18nMessageContext {
 		return getMessage(code, LocaleUtil.getContext().getLocale());
 	}
 
-	public String getMessage(String code, Locale locale ,Object...args) {
+	public String getMessage(String code, Locale locale) {
 		return I18nMessageFactory.getMessage(locale, code);
 	}
 
