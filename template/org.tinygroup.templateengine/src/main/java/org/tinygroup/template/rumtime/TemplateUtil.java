@@ -425,44 +425,49 @@ public final class TemplateUtil {
 
     public static Object getArrayValue(Object object, Object indexObject) throws TemplateException {
         int index;
-        if (object instanceof Map) {
-            Map map = (Map) object;
-            return map.get(indexObject.toString());
-        }
-        if (indexObject instanceof Integer) {
-            index = ((Integer) indexObject).intValue();
-        } else if (indexObject instanceof Long) {
-            index = ((Long) indexObject).intValue();
-        } else if (indexObject instanceof Double) {
-            index = ((Double) indexObject).intValue();
-        } else if (indexObject instanceof Float) {
-            index = ((Float) indexObject).intValue();
-        } else if (indexObject instanceof Byte) {
-            index = ((Byte) indexObject).intValue();
-        } else if (indexObject instanceof BigDecimal) {
-            index = ((BigDecimal) indexObject).intValue();
-        } else {
-            index = Integer.parseInt(indexObject.toString());
-        }
-        if (object.getClass().isArray()) {
-            return Array.get(object, index);
-        } else if (object instanceof Collection) {
-            Collection c = (Collection) object;
-            int i = 0;
-            Iterator it = c.iterator();
-            while (i < c.size()) {
-                Object o = it.next();
-                if (i == index) {
-                    return o;
-                }
-                i++;
+        try{
+        	if (object instanceof Map) {
+                Map map = (Map) object;
+                return map.get(indexObject.toString());
             }
-        } else {
-            String o = object.toString();
-            return o.charAt(index);
+            if (indexObject instanceof Integer) {
+                index = ((Integer) indexObject).intValue();
+            } else if (indexObject instanceof Long) {
+                index = ((Long) indexObject).intValue();
+            } else if (indexObject instanceof Double) {
+                index = ((Double) indexObject).intValue();
+            } else if (indexObject instanceof Float) {
+                index = ((Float) indexObject).intValue();
+            } else if (indexObject instanceof Byte) {
+                index = ((Byte) indexObject).intValue();
+            } else if (indexObject instanceof BigDecimal) {
+                index = ((BigDecimal) indexObject).intValue();
+            } else {
+                index = Integer.parseInt(indexObject.toString());
+            }
+            if (object.getClass().isArray()) {
+                return Array.get(object, index);
+            } else if (object instanceof Collection) {
+                Collection c = (Collection) object;
+                int i = 0;
+                Iterator it = c.iterator();
+                while (i < c.size()) {
+                    Object o = it.next();
+                    if (i == index) {
+                        return o;
+                    }
+                    i++;
+                }
+                return null;
+            } else {
+                String o = object.toString();
+                return o.charAt(index);
+            }
+        }catch(Exception e){
+        	throw new IllegalArgumentException(String.format("%s通过下标%s取值发生异常：",object.getClass().getName(),indexObject.toString()),e);
         }
-
-        throw new TemplateException(object.getClass().getName() + "不可以用下标方式取值。");
+        
+        //throw new TemplateException(object.getClass().getName() + "用下标方式取值失败。");
     }
 
 }
