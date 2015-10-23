@@ -51,7 +51,7 @@ public class GetFunction extends AbstractTemplateFunction {
         		if(getTemplateEngine().isSafeVariable()){
         		   return null;
         		}else{
-        		   throw new TemplateException(object.getClass().getName() + "get方法取值失败"); 	
+        		   throw new TemplateException(object.getClass().getName() + "的get方法取值失败"); 	
         		}
         	}   
         }
