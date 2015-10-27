@@ -39,10 +39,10 @@ public class TemplateException extends Exception {
     }
 
     public void setContext(ParserRuleContext context, String fileName) {
-        if(context==null) {
+        if(this.context==null) {
             this.context = context;
         }
-        if(fileName==null) {
+        if(this.fileName==null) {
             this.fileName = fileName;
         }
     }
@@ -59,8 +59,11 @@ public class TemplateException extends Exception {
 
     public String getMessage() {
         String message = super.getMessage();
+        
+        String pathInfo = fileName==null?"":"\n路径:" + fileName;
+        
         if (context != null) {
-            String contextMsg = "\n路径:" + fileName
+            String contextMsg = pathInfo
                     + "\n位置[" + context.getStart().getLine() + "," + context.getStart().getCharPositionInLine() + "]-[" + context.getStop().getLine() + ","
                     + context.getStop().getCharPositionInLine() + "]\n"
                     + "===================================================================\n"
@@ -73,11 +76,11 @@ public class TemplateException extends Exception {
         }
         
         if(message==null){
-        	return "\n路径:"+fileName;
+        	return pathInfo;
         }else if(message.startsWith("\n路径:")){
         	return message;
         }else{
-        	return "\n路径:"+fileName+" "+message;
+        	return pathInfo+" "+message;
         }
     }
 

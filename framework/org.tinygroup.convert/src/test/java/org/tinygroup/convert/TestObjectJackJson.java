@@ -15,12 +15,12 @@
  */
 package org.tinygroup.convert;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.tinygroup.convert.objectjson.jackson.JsonToObject;
 import org.tinygroup.convert.objectjson.jackson.ObjectToJson;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class TestObjectJackJson extends AbstractConvertTestCase {
@@ -49,8 +49,7 @@ public class TestObjectJackJson extends AbstractConvertTestCase {
     public void testObject2Json() throws ConvertException {
         Student student = createStudent();
         ObjectToJson<Student> objectToJson = new ObjectToJson<Student>();
-        System.out.println(objectToJson.convert(student));
-
+        assertEquals(objectToJson.convert(student), "{\"id\":1,\"name\":\"haha\",\"email\":\"email\",\"address\":\"address\",\"birthday\":{\"birthday\":\"2010-11-22\"}}");
     }
 
     public void testMap2Json() throws ConvertException {
@@ -59,8 +58,7 @@ public class TestObjectJackJson extends AbstractConvertTestCase {
         maps.put("student", student);
         maps.put("id", 1234);
         ObjectToJson objectToXml = new ObjectToJson(JsonSerialize.Inclusion.NON_NULL);
-        System.out.println(objectToXml.convert(maps));
-
+        assertEquals(objectToXml.convert(maps), "{\"id\":1234,\"student\":{\"id\":1,\"name\":\"haha\",\"email\":\"email\",\"address\":\"address\",\"birthday\":{\"birthday\":\"2010-11-22\"}}}");
     }
 
     public void testJson2Map() throws ConvertException {

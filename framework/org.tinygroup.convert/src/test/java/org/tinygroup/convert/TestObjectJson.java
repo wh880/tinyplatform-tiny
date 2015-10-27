@@ -15,12 +15,13 @@
  */
 package org.tinygroup.convert;
 
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.convert.objectjson.xstream.JsonToObject;
 import org.tinygroup.convert.objectjson.xstream.ObjectToJson;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 public class TestObjectJson extends AbstractConvertTestCase {
 
@@ -57,15 +58,14 @@ public class TestObjectJson extends AbstractConvertTestCase {
 	public void testObject2Json(){
 		Student student = createStudent();
 	    ObjectToJson<Student> objectToJson=new ObjectToJson<Student>(Student.class);
-		System.out.println(objectToJson.convert(student));
-		
+		assertEquals(objectToJson.convert(student), "{\"student\":{\"id\":1,\"name\":\"haha\",\"email\":\"email\",\"address\":\"address\",\"birthday\":{\"birthday\":\"2010-11-22\"}}}");
 	}
 
 	
 	public void testObject2JsonNoType(){
 		Student student = createStudent();
 	    ObjectToJson<Object> objectToJson=new ObjectToJson<Object>(Object.class);
-		System.out.println(objectToJson.convert(student));
+		assertEquals(objectToJson.convert(student), "{\"org.tinygroup.convert.Student\":{\"id\":1,\"name\":\"haha\",\"email\":\"email\",\"address\":\"address\",\"birthday\":{\"birthday\":\"2010-11-22\"}}}");
 	}
 	
 	
@@ -80,9 +80,8 @@ public class TestObjectJson extends AbstractConvertTestCase {
 		list.add(student);
 		org.tinygroup.convert.objectjson.fastjson.ObjectToJson<Object> f = new org.tinygroup.convert.objectjson.fastjson.ObjectToJson<Object>(SerializerFeature.DisableCircularReferenceDetect);
 		
-		System.out.println(f.convert(student));
-		System.out.println(f.convert(list));
-		
+		assertEquals(f.convert(student), "{\"address\":\"address\",\"birthday\":{\"birthday\":\"2010-11-22\"},\"email\":\"email\",\"id\":1,\"name\":\"haha\"}");
+		assertEquals(f.convert(list), "[{\"address\":\"address\",\"birthday\":{\"birthday\":\"2010-11-22\"},\"email\":\"email\",\"id\":1,\"name\":\"haha\"},{\"address\":\"address\",\"birthday\":{\"birthday\":\"2010-11-22\"},\"email\":\"email\",\"id\":1,\"name\":\"haha\"},{\"address\":\"address\",\"birthday\":{\"birthday\":\"2010-11-22\"},\"email\":\"email\",\"id\":1,\"name\":\"haha\"},{\"address\":\"address\",\"birthday\":{\"birthday\":\"2010-11-22\"},\"email\":\"email\",\"id\":1,\"name\":\"haha\"},{\"address\":\"address\",\"birthday\":{\"birthday\":\"2010-11-22\"},\"email\":\"email\",\"id\":1,\"name\":\"haha\"}]");
 	}
 
 	

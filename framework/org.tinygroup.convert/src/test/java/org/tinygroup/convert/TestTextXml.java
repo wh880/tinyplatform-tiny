@@ -36,7 +36,6 @@ public class TestTextXml extends TestCase {
 		titleMap.put("邮箱", "email");
 		TextToXml textToXml = new TextToXml(titleMap, "students", "student",
 				",");
-		System.out.println(textToXml.convert(TEXT));
 		assertEquals(XML, textToXml.convert(TEXT));
 	}
 
@@ -53,7 +52,6 @@ public class TestTextXml extends TestCase {
 		fieldList.add("Email");
 		XmlToText xmlToText = new XmlToText(titleMap, fieldList, "students",
 				"student", ",");
-		System.out.println(xmlToText.convert(XML));
 		assertEquals(TEXT, xmlToText.convert(XML));
 	}
 

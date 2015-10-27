@@ -48,17 +48,17 @@ import static org.tinygroup.commons.tools.StringUtil.trimToNull;
 public class SessionImpl implements HttpSession,Serializable,Session {
 	private final static Logger log = LoggerFactory
 			.getLogger(SessionImpl.class);
-	private final HttpSessionInternal sessionInternal = new HttpSessionInternal();
+	private transient final HttpSessionInternal sessionInternal = new HttpSessionInternal();
 	private String sessionID;
-	private SessionWebContext webContext;
+	private transient SessionWebContext webContext;
 	private String modelKey;
 	private SessionModelImpl model;
 	private boolean isNew;
-	private Map<String, SessionAttribute> attrs = createHashMap();
-	private Map<String, Object> storeStates = createHashMap();
+	private transient Map<String, SessionAttribute> attrs = createHashMap();
+	private transient Map<String, Object> storeStates = createHashMap();
 	private boolean invalidated = false;
 	private boolean cleared = false;
-	private Set<String> clearingStores = createHashSet();
+	private transient Set<String> clearingStores = createHashSet();
 
 	/** 创建一个session对象。 */
 	public SessionImpl(String sessionID, SessionWebContext webContext,
