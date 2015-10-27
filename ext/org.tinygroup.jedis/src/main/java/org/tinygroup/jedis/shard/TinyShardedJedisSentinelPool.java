@@ -16,13 +16,13 @@ import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.tinygroup.jedis.config.JedisConfig;
+import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.jedis.config.ShardSentinelConfig;
 
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
 import redis.clients.jedis.JedisShardInfo;
-import redis.clients.jedis.Protocol;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.util.Hashing;
 import redis.clients.util.Pool;
@@ -35,72 +35,50 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 
 	protected GenericObjectPoolConfig poolConfig;
 
-	protected int timeout = Protocol.DEFAULT_TIMEOUT;
-
 	private int sentinelRetry = 0;
-
-	protected String password;
-
-	protected int database = Protocol.DEFAULT_DATABASE;
-
+	
+	Map<String, ShardSentinelConfig> totalMasterConfig = new HashMap<String, ShardSentinelConfig>();
+	
 	protected Set<MasterListener> masterListeners = new HashSet<MasterListener>();
-
+	
+	// <hostAndPort.toString,masterName>
+	private Map<String, String> masterInfoMap = new HashMap<String, String>();
+	
+	
 	private volatile List<HostAndPort> currentHostMasters;
-	Map<String, List<JedisConfig>> jedisConfigsMap;
-	public TinyShardedJedisSentinelPool(List<String> masters,
-			Set<String> sentinels, Map<String, List<JedisConfig>> jedisConfigsMap) {
-		this(masters, sentinels, new GenericObjectPoolConfig(),
-				Protocol.DEFAULT_TIMEOUT, null, Protocol.DEFAULT_DATABASE,
-				jedisConfigsMap);
-	}
-
-	public TinyShardedJedisSentinelPool(List<String> masters,
-			Set<String> sentinels, String password,
-			Map<String, List<JedisConfig>> jedisConfigsMap) {
-		this(masters, sentinels, new GenericObjectPoolConfig(),
-				Protocol.DEFAULT_TIMEOUT, password, jedisConfigsMap);
-	}
 
 	public TinyShardedJedisSentinelPool(
-			final GenericObjectPoolConfig poolConfig, List<String> masters,
-			Set<String> sentinels, Map<String, List<JedisConfig>> jedisConfigsMap) {
-		this(masters, sentinels, poolConfig, Protocol.DEFAULT_TIMEOUT, null,
-				Protocol.DEFAULT_DATABASE, jedisConfigsMap);
-	}
-
-	public TinyShardedJedisSentinelPool(List<String> masters,
-			Set<String> sentinels, final GenericObjectPoolConfig poolConfig,
-			int timeout, final String password,
-			Map<String, List<JedisConfig>> jedisConfigsMap) {
-		this(masters, sentinels, poolConfig, timeout, password,
-				Protocol.DEFAULT_DATABASE, jedisConfigsMap);
-	}
-
-	public TinyShardedJedisSentinelPool(List<String> masters,
-			Set<String> sentinels, final GenericObjectPoolConfig poolConfig,
-			final int timeout, Map<String, List<JedisConfig>> jedisConfigsMap) {
-		this(masters, sentinels, poolConfig, timeout, null,
-				Protocol.DEFAULT_DATABASE, jedisConfigsMap);
-	}
-
-	public TinyShardedJedisSentinelPool(List<String> masters,
-			Set<String> sentinels, final GenericObjectPoolConfig poolConfig,
-			final String password, Map<String, List<JedisConfig>> jedisConfigsMap) {
-		this(masters, sentinels, poolConfig, Protocol.DEFAULT_TIMEOUT,
-				password, jedisConfigsMap);
-	}
-
-	public TinyShardedJedisSentinelPool(List<String> masters,
-			Set<String> sentinels, final GenericObjectPoolConfig poolConfig,
-			int timeout, final String password, final int database,
-			Map<String, List<JedisConfig>> jedisConfigsMap) {
+			Map<String, Map<String, ShardSentinelConfig>> map,
+			final GenericObjectPoolConfig poolConfig) {
 		this.poolConfig = poolConfig;
-		this.timeout = timeout;
-		this.password = password;
-		this.database = database;
-		this.jedisConfigsMap = jedisConfigsMap;
-		List<HostAndPort> masterList = initSentinels(sentinels, masters);
+		if (map.size() == 0) {
+			throw new RuntimeException("redis配置为空");
+		}
+		List<HostAndPort> masterList = new ArrayList<HostAndPort>();
+		for (String sentinels : map.keySet()) {
+			Map<String, ShardSentinelConfig> shardSentinelConfigConfig = map
+					.get(sentinels);
+			totalMasterConfig.putAll(shardSentinelConfigConfig);
+			masterList.addAll(initSentinels(sentinels,
+					shardSentinelConfigConfig));
+		}
 		initPool(masterList);
+	}
+
+	private List<HostAndPort> initSentinels(String sentinels,
+			Map<String, ShardSentinelConfig> map) {
+
+		String[] sentinelArray = sentinels.split(",");
+		Map<String, String> sentinelMap = new HashMap<String, String>();
+		for (String sentinel : sentinelArray) {
+			sentinelMap.put(sentinel, sentinel);
+		}
+		List<String> masters = new ArrayList<String>();
+		for (ShardSentinelConfig shardSentinelConfig : map.values()) {
+			String masterName = shardSentinelConfig.getMasterName();
+			masters.add(masterName);
+		}
+		return initSentinels(sentinelMap.keySet(), masters, map);
 	}
 
 	public void destroy() {
@@ -147,18 +125,27 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 
 	private List<JedisShardInfo> makeShardInfoList(List<HostAndPort> masters) {
 		List<JedisShardInfo> shardMasters = new ArrayList<JedisShardInfo>();
+
 		for (HostAndPort master : masters) {
+			String masterName = masterInfoMap.get(master.toString());
+			if (StringUtil.isBlank(masterName)) {
+				throw new RuntimeException("没有找到" + master.toString()
+						+ "对应的主备masterName");
+			}
+			ShardSentinelConfig shardSentinelConfig = totalMasterConfig
+					.get(masterName);
+			
 			TinyJedisShardInfo jedisShardInfo = new TinyJedisShardInfo(
-					master.getHost(), master.getPort(), timeout,
-					jedisConfigsMap.get(master.toString()));
-			jedisShardInfo.setPassword(password);
+					master.getHost(), master.getPort(),
+					shardSentinelConfig.getTimeout(),shardSentinelConfig.getJedisConfigList());
+			jedisShardInfo.setPassword(shardSentinelConfig.getPassword());
 			shardMasters.add(jedisShardInfo);
 		}
 		return shardMasters;
 	}
 
 	private List<HostAndPort> initSentinels(Set<String> sentinels,
-			final List<String> masters) {
+			final List<String> masters, Map<String, ShardSentinelConfig> map) {
 
 		Map<String, HostAndPort> masterMap = new HashMap<String, HostAndPort>();
 		List<HostAndPort> shardMasters = new ArrayList<HostAndPort>();
@@ -187,6 +174,8 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 								log.fine("Found Redis master at " + master);
 								shardMasters.add(master);
 								masterMap.put(masterName, master);
+								masterInfoMap
+										.put(master.toString(), masterName);
 								fetched = true;
 								jedis.disconnect();
 								break;
@@ -262,13 +251,11 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 		}
 
 		public PooledObject<TinyShardJedis> makeObject() throws Exception {
-			TinyShardJedis jedis = new TinyShardJedis(shards, algo,
-					keyTagPattern);
+			TinyShardJedis jedis = new TinyShardJedis(shards, algo, keyTagPattern);
 			return new DefaultPooledObject<TinyShardJedis>(jedis);
 		}
 
-		public void destroyObject(
-				PooledObject<TinyShardJedis> pooledShardedJedis)
+		public void destroyObject(PooledObject<TinyShardJedis> pooledShardedJedis)
 				throws Exception {
 			final TinyShardJedis shardedJedis = pooledShardedJedis.getObject();
 			for (Jedis jedis : shardedJedis.getAllShards()) {
@@ -392,6 +379,8 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 									Collections.copy(newHostMasters,
 											currentHostMasters);
 									newHostMasters.set(index, newHostMaster);
+									masterInfoMap.put(newHostMaster.toString(),
+											switchMasterMsg[0]);
 
 									initPool(newHostMasters);
 								} else {

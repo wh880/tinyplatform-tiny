@@ -10,6 +10,7 @@ import org.tinygroup.jedis.config.ShardJedisSentinelConfig;
 import org.tinygroup.jedis.config.ShardJedisSentinelConfigs;
 import org.tinygroup.jedis.config.ShardSentinelConfig;
 import org.tinygroup.jedis.config.ShardSentinelConfigs;
+import org.tinygroup.jedis.shard.TinyShardedJedisSentinelPool;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ShardedJedis;
@@ -18,7 +19,7 @@ import redis.clients.jedis.ShardedJedis;
 public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager {
 
 	private Map<String, Map<String, ShardSentinelConfig>> map = new HashMap<String, Map<String, ShardSentinelConfig>>();
-	private ShardedJedisSentinelPool pool;
+	private TinyShardedJedisSentinelPool pool;
 	public void addJedisSentinelConfigs(ShardJedisSentinelConfigs configs) {
 		for (ShardJedisSentinelConfig config : configs
 				.getJedisShardSentinelConfigsList()) {
@@ -62,7 +63,7 @@ public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager 
 
 	public void init(GenericObjectPoolConfig poolConfig){
 		destroy();
-		pool = new ShardedJedisSentinelPool(map, poolConfig);
+		pool = new TinyShardedJedisSentinelPool(map, poolConfig);
 	}
 	
 	public void destroy(){
