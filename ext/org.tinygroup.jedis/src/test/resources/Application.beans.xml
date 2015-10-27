@@ -12,6 +12,8 @@
 				<ref bean="i18nFileProcessor" />
 				<ref bean="xStreamFileProcessor" />
 				<ref bean="jedisConfigsFileProcessor" />
+				<ref bean="jedisSentinelConfigsFileProcessor" />
+				<ref bean="jedisShardSentinelConfigsFileProcessor"/>
 			</list>
 		</property>
 	</bean>

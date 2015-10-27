@@ -12,11 +12,13 @@ import redis.clients.jedis.JedisSentinelPool;
 public class JedisSentinelPoolTestFailOver {
 	public static void main(String[] args) {
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("192.168.51.29:33333", "192.168.51.29:33333");
+		String sentinel = "192.168.51.29:33333";
+		map.put(sentinel, sentinel);
 		JedisSentinelPool pool = new JedisSentinelPool("master1", map.keySet());
 		Jedis jedis = pool.getResource();
 		jedis.set("a", "aaaaaaaaaaaaaaaaaaa");
-		JedisPool jPool = new JedisPool("192.168.51.29", 11111);
+		String host = "192.168.51.29";
+		JedisPool jPool = new JedisPool(host, 11111);
 		System.out.println(jPool.getResource().get("a"));
 		Assert.assertEquals("aaaaaaaaaaaaaaaaaaa", jPool.getResource().get("a"));
 	}

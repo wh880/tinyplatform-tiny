@@ -1,5 +1,7 @@
 package org.tinygroup.jedis.config;
 
+import org.tinygroup.jedis.util.JedisUtil;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -139,6 +141,10 @@ public class JedisConfig {
 				+ host + ", port=" + port + ", timeout=" + timeout
 				+ ", password=" + password + ", database=" + database
 				+ ", clientName=" + clientName + "] " + poolConfig;
+	}
+
+	public String toSimpleString() {
+		return JedisUtil.toSimpleString(host , port);
 	}
 
 }

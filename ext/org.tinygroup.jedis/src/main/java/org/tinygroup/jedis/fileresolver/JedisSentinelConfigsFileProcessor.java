@@ -19,7 +19,7 @@ public class JedisSentinelConfigsFileProcessor extends AbstractFileProcessor {
 
 	private static final String JEDIS_SENTRINEL_CONFIG_EXT_NAME = ".jedissentrinelconfig.xml";
 
-	private static final String JEDIS_SENTRINEL_XSTREAM_NAME = "jedissentrinel";
+	private static final String JEDIS_SENTRINEL_XSTREAM_NAME = "jedis";
 
 	private JedisSentinelManager jedisSentinelManager;
 

@@ -11,19 +11,16 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-@XStreamAlias("jedis-sentinel-config")
-public class JedisSentinelConfig {
+@XStreamAlias("shard-sentinel-config")
+public class ShardSentinelConfig {
+	@XStreamAsAttribute
+	private String pattern;
 	/**
 	 * 所监听的主从集群配置的mastername
 	 */
 	@XStreamAsAttribute
 	@XStreamAlias("master-name")
 	private String masterName;
-	/**
-	 * sentinel服务器信息,结构为 ip:port 可以填写多个，多条信息以逗号分隔
-	 */
-	@XStreamAsAttribute
-	private String sentinels;
 
 	@XStreamAsAttribute
 	@XStreamAlias("pool-config")
@@ -43,23 +40,13 @@ public class JedisSentinelConfig {
 	 */
 	@XStreamAsAttribute
 	private int timeout;
-//	/**
-//	 * 读端列表，实际是该集群中的从服务器
-//	 */
+	/**
+	 * 该集群中的所有服务器
+	 */
 	@XStreamImplicit
 	private List<JedisConfig> jedisConfigList;
-//	@XStreamAlias("jedis-config")
-//	private JedisConfig readJedisConfig;
 
-	public JedisConfig getReadJedisConfig() {
-//		return readJedisConfig;
-		return null;
-	}
-
-	public void setReadJedisConfig(JedisConfig readJedisConfig) {
-//		this.readJedisConfig = readJedisConfig;
-	}
-
+	
 	public List<JedisConfig> getJedisConfigList() {
 		if (jedisConfigList == null) {
 			this.jedisConfigList = new ArrayList<JedisConfig>();
@@ -77,42 +64,29 @@ public class JedisSentinelConfig {
 
 	public int getDatabase() {
 		if (database == 0) {
-
+			this.database = Protocol.DEFAULT_DATABASE;
 		}
 		return database;
 	}
 
 	public void setDatabase(int database) {
-		if (database == 0) {
-			this.database = Protocol.DEFAULT_DATABASE;
-		} else {
 			this.database = database;
 		}
 
-	}
-
 	public int getTimeout() {
+		if (timeout == 0) {
+			this.timeout = Protocol.DEFAULT_TIMEOUT;
+		}
 		return timeout;
 	}
 
 	public void setTimeout(int timeout) {
-		if (timeout == 0) {
-			this.timeout = Protocol.DEFAULT_TIMEOUT;
-		} else {
-			this.timeout = timeout;
-		}
+
+		this.timeout = timeout;
 	}
 
 	public void setMasterName(String masterName) {
 		this.masterName = masterName;
-	}
-
-	public String getSentinels() {
-		return sentinels;
-	}
-
-	public void setSentinels(String sentinels) {
-		this.sentinels = sentinels;
 	}
 
 	public String getPoolConfig() {
@@ -133,6 +107,14 @@ public class JedisSentinelConfig {
 		} else {
 			this.password = password;
 		}
+	}
+
+	public String getPattern() {
+		return pattern;
+	}
+
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
 	}
 
 }

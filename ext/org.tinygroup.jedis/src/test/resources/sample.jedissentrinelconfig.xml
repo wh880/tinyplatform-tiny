@@ -1,0 +1,8 @@
+<jedis-sentinel-configs>
+
+	<jedis-sentinel-config master-name="master1"
+		sentinels="192.168.51.29:33333" pool-config="jedisConfig">
+		<jedis-config id="server01" host="192.168.51.29" port="6300"
+			pool-config="jedisConfig"></jedis-config>
+	</jedis-sentinel-config>
+</jedis-sentinel-configs>

@@ -1,0 +1,13 @@
+<shard-jedis-sentinel-configs>
+	<shard-jedis-sentinel-config>
+		<shard-sentinel-configs sentinels="192.168.51.29:33333">
+			<shard-sentinel-config master-name="master1">
+				<jedis-config id="server01" host="192.168.51.29" port="11111"></jedis-config>
+				<jedis-config id="server02" host="192.168.51.29" port="11112"></jedis-config>
+				<jedis-config id="server03" host="192.168.51.29" port="11113"></jedis-config>
+				<jedis-config id="server04" host="192.168.51.29" port="6379"></jedis-config>
+			</shard-sentinel-config>
+		</shard-sentinel-configs>
+	</shard-jedis-sentinel-config>
+</shard-jedis-sentinel-configs>
+
