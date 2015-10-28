@@ -25,7 +25,9 @@ public class RedisTest {
 		jedis.set("name", "aaa");
 		String value = jedis.get("name");
 		Assert.assertEquals("aaa", value);
-
+		jedis.clientGetname();
+		jedis.clientList();
+		jedis.clusterInfo();
 	}
 
 }

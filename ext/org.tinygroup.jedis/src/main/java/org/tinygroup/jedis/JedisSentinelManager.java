@@ -2,6 +2,7 @@ package org.tinygroup.jedis;
 
 import org.tinygroup.jedis.config.JedisSentinelConfig;
 import org.tinygroup.jedis.config.JedisSentinelConfigs;
+import org.tinygroup.jedis.impl.JedisSentinelClient2;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -20,28 +21,28 @@ public interface JedisSentinelManager {
 	 * 
 	 * @param configs
 	 */
-	public void addJedisSentinelConfigs(JedisSentinelConfigs configs);
+	void addJedisSentinelConfigs(JedisSentinelConfigs configs);
 
 	/**
 	 * 添加JedisSentinel配置
 	 * 
 	 * @param config
 	 */
-	public void addJedisSentinelConfig(JedisSentinelConfig config);
+	 void addJedisSentinelConfig(JedisSentinelConfig config);
 
 	/**
 	 * 移除JedisSentinel配置
 	 * 
 	 * @param configs
 	 */
-	public void removeJedisSentinelConfigs(JedisSentinelConfigs configs);
+	 void removeJedisSentinelConfigs(JedisSentinelConfigs configs);
 
 	/**
 	 * 移除JedisSentinel配置,并移除、销毁相关的连接池
 	 * 
 	 * @param config
 	 */
-	public void removeJedisSentinelConfig(JedisSentinelConfig config);
+	 void removeJedisSentinelConfig(JedisSentinelConfig config);
 
 	
 
@@ -51,7 +52,7 @@ public interface JedisSentinelManager {
 	 * @param destory 是否销毁，true为销毁
 	 * @return
 	 */
-	public JedisSentinelPool removeJedisSentinelPool(String masterName,boolean destory);
+	 JedisSentinelPool removeJedisSentinelPool(String masterName,boolean destory);
 	
 	/**
 	 * 获取JedisSentinel连接池，也是写连接池
@@ -60,7 +61,7 @@ public interface JedisSentinelManager {
 	 *            masterName
 	 * @return
 	 */
-	public JedisSentinelPool getJedisSentinelPool(String masterName);
+	 JedisSentinelPool getJedisSentinelPool(String masterName);
 	
 	/**
 	 * 获取jedis写连接
@@ -69,7 +70,7 @@ public interface JedisSentinelManager {
 	 *            masterName
 	 * @return
 	 */
-	public Jedis getWriteJedis(String masterName);
+	 Jedis getWriteJedis(String masterName);
 	
 	/**
 	 * 获取jedis读连接
@@ -78,7 +79,7 @@ public interface JedisSentinelManager {
 	 *            masterName
 	 * @return
 	 */
-	public Jedis getReadJedis(String masterName);
+	 Jedis getReadJedis(String masterName);
 	
 	/**
 	 * 获取jedis读连接池 
@@ -87,8 +88,8 @@ public interface JedisSentinelManager {
 	 *            masterName
 	 * @return
 	 */
-	public JedisPool getReadJedisPool(String masterName);
+	 JedisPool getReadJedisPool(String masterName);
 
-	
+	 JedisSentinelClient2 getJedisSentinelClient2(String masterName);
 
 }

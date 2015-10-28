@@ -11,10 +11,10 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisSentinelPool;
 
-public class JedisSentinelManagerImpl implements JedisSentinelManager {
+public class JedisSentinelManagerImpl2 implements JedisSentinelManager {
 
 	private Map<String, JedisSentinelConfig> jedisSentinelConfigMap = new HashMap<String, JedisSentinelConfig>();
-	private Map<String, JedisSentinelClient> jedisSentinelClientMap = new HashMap<String, JedisSentinelClient>();
+	private Map<String, JedisSentinelClient2> JedisSentinelClient2Map = new HashMap<String, JedisSentinelClient2>();
 
 	public void addJedisSentinelConfigs(JedisSentinelConfigs configs) {
 		for (JedisSentinelConfig config : configs.getJedisSentinelConfigsList()) {
@@ -53,42 +53,38 @@ public class JedisSentinelManagerImpl implements JedisSentinelManager {
 	}
 
 	public JedisSentinelPool getJedisSentinelPool(String masterName) {
-		return getJedisSentinelClient(masterName).getJedisSentinelPool();
+		return getJedisSentinelClient2(masterName).getJedisSentinelPool();
 	}
 
-	private JedisSentinelClient getJedisSentinelClient(String masterName) {
-		if (!jedisSentinelClientMap.containsKey(masterName)) {
-			jedisSentinelClientMap.put(masterName,
-					createJedisSentinelClient(masterName));
+	public JedisSentinelClient2 getJedisSentinelClient2(String masterName) {
+		if (!JedisSentinelClient2Map.containsKey(masterName)) {
+			JedisSentinelClient2Map.put(masterName,
+					createJedisSentinelClient2(masterName));
 
 		}
-		return jedisSentinelClientMap.get(masterName);
+		return JedisSentinelClient2Map.get(masterName);
 	}
 
-	private JedisSentinelClient createJedisSentinelClient(String masterName) {
+	private JedisSentinelClient2 createJedisSentinelClient2(String masterName) {
 		if (!jedisSentinelConfigMap.containsKey(masterName)) {
 			throw new RuntimeException("未找到" + masterName
 					+ "对应的JedisSentinel配置");
 		}
-		return new JedisSentinelClient(jedisSentinelConfigMap.get(masterName));
+		return new JedisSentinelClient2(jedisSentinelConfigMap.get(masterName));
 
 	}
 
 	public Jedis getWriteJedis(String masterName) {
-		return getJedisSentinelClient(masterName).getWriteJedis();
+		return getJedisSentinelClient2(masterName).getWriteJedis();
 	}
 
 	public Jedis getReadJedis(String masterName) {
-		return getJedisSentinelClient(masterName).getReadJedis();
+		return getJedisSentinelClient2(masterName).getReadJedis();
 	}
 
 	public JedisPool getReadJedisPool(String masterName) {
-		return getJedisSentinelClient(masterName).getReadJedisPool();
+		return getJedisSentinelClient2(masterName).getReadJedisPool();
 	}
 
-	public JedisSentinelClient2 getJedisSentinelClient2(String masterName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 }

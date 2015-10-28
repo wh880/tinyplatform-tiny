@@ -13,4 +13,22 @@
 		<property name="jedisManager" ref="jedisManager"></property>
 	</bean>
 	
+	<bean id="jedisSentinelManager" name="jedisSentinelManager" scope="singleton"
+		class="org.tinygroup.jedis.impl.JedisSentinelManagerImpl">
+	</bean>
+	
+	<bean id="jedisSentinelConfigsFileProcessor" name="jedisSentinelConfigsFileProcessor" scope="singleton"
+		class="org.tinygroup.jedis.fileresolver.JedisSentinelConfigsFileProcessor">
+		<property name="jedisSentinelManager" ref="jedisSentinelManager"></property>
+	</bean>
+	
+	<bean id="shardJedisSentinelManager" name="shardJedisSentinelManager" scope="singleton"
+		class="org.tinygroup.jedis.impl.ShardJedisSentinelManagerImpl">
+	</bean>
+	
+	<bean id="jedisShardSentinelConfigsFileProcessor" name="jedisShardSentinelConfigsFileProcessor" scope="singleton"
+		class="org.tinygroup.jedis.fileresolver.JedisShardSentinelConfigsFileProcessor">
+		<property name="shardJedisSentinelManager" ref="shardJedisSentinelManager"></property>
+	</bean>
+	
 </beans>
