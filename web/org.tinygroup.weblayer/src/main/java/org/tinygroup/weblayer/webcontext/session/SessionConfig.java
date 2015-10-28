@@ -23,7 +23,7 @@ package org.tinygroup.weblayer.webcontext.session;
 public interface SessionConfig {
     Integer MAX_INACTIVE_INTERVAL_DEFAULT   = 0;
     Long    FORCE_EXPIRATION_PERIOD_DEFAULT = 0L;
-    Integer BACKGROUD_PROCESSOR_DELAY_DEFAULT   = 0;
+    Integer BACKGROUD_PROCESSOR_DELAY_DEFAULT   = 60;
     String  MODEL_KEY_DEFAULT               = "SESSION_MODEL";
     Boolean KEEP_IN_TOUCH_DEFAULT           = false;
 

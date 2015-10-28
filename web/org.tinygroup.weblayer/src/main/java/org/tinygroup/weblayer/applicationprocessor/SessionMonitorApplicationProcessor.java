@@ -118,7 +118,6 @@ public class SessionMonitorApplicationProcessor extends
 					sessions.length);
 			for (int i = 0; i < sessions.length; i++) {
 				if (sessions[i] != null && sessions[i].isExpired()) {
-					sessionManager.expireSession(sessions[i]);
 					sessions[i].invalidate();
 					expireHere++;
 				}
