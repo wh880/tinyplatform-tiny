@@ -15,6 +15,9 @@
  */
 package org.tinygroup.template.loader;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateEngineDefault;
@@ -23,6 +26,12 @@ import org.tinygroup.template.impl.TemplateEngineDefault;
  * Created by luoguo on 2014/6/9.
  */
 public class StringResourceLoader extends AbstractResourceLoader<String> {
+	
+	/**
+	 * 字符串的模板资源
+	 */
+	private Map<String, Template> repositories = new ConcurrentHashMap<String, Template>();
+	
     public StringResourceLoader() {
         super(null, null, null);
     }
@@ -62,7 +71,27 @@ public class StringResourceLoader extends AbstractResourceLoader<String> {
     public String getResourceContent(String path, String encode) {
         return null;
     }
+    
+    /**
+     * 根据字符串创建并缓存模板
+     * @param stringTemplateMaterial
+     * @return
+     * @throws TemplateException
+     */
+    public Template loadTemplate(String stringTemplateMaterial) throws TemplateException {
+    	if(repositories.containsKey(stringTemplateMaterial)){
+    	   return repositories.get(stringTemplateMaterial);
+    	}
+    	Template template = createTemplate(stringTemplateMaterial);
+	    if(template!=null){
+	       repositories.put(stringTemplateMaterial, template);
+    	}
+    	return template;
+    }
 
+    /**
+     * 根据字符串创建模板(不缓存)
+     */
     public Template createTemplate(String stringTemplateMaterial) throws TemplateException {
         try {
             Template template = TemplateLoadUtil.loadComponent((TemplateEngineDefault) getTemplateEngine(), getRandomPath(), stringTemplateMaterial);
