@@ -292,6 +292,16 @@ public abstract class SimpleBinaryOperator implements BinaryOperator,
 		return new Condition(inExpression, values);
 	}
 
+	public Condition inExpression(ItemsList itemsList) {
+		InExpression inExpression=new InExpression(this, itemsList);
+		return new Condition(inExpression);
+	}
+
+	public Condition notInExpression(ItemsList itemsList) {
+		InExpression inExpression=new InExpression(this, itemsList,true);
+		return new Condition(inExpression);
+	}
+
 	public Expression transform(Object value) {
 		return transform.transform(value);
 	}

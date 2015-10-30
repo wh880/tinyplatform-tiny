@@ -191,7 +191,7 @@ public class TestSelect {
 		System.out.println(selectFrom(CUSTOM).where(ExistsExpression.notExistsCondition(
 				subSelect(selectFrom(CUSTOM).where(CUSTOM.AGE.in(10000,100001))))));
 		
-		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.eq(subSelect(select(CUSTOM.ID).from(CUSTOM).where(CUSTOM.AGE.in(10000,100001))))));
+		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.inExpression(subSelect(select(CUSTOM.ID).from(CUSTOM).where(CUSTOM.AGE.in(10000,100001))))));
 		System.out.println(select(CUSTOM.ALL).from(CUSTOM,TSCORE));
 		
 		System.out.println(select(CUSTOM.NAME).from(CUSTOM,TSCORE).where(

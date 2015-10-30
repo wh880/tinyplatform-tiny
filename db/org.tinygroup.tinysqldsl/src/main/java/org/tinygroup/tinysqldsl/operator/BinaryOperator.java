@@ -16,6 +16,7 @@
 package org.tinygroup.tinysqldsl.operator;
 
 import org.tinygroup.tinysqldsl.base.Condition;
+import org.tinygroup.tinysqldsl.expression.relational.ItemsList;
 
 /**
  * 二元操作接口
@@ -203,4 +204,14 @@ public interface BinaryOperator {
     Condition in(Object...values);
     
     Condition notIn(Object...values);
+    
+    /**
+     * 创建基于子查询的in条件
+     * @param itemsList
+     * @return
+     */
+    Condition inExpression(ItemsList itemsList);
+
+    Condition notInExpression(ItemsList itemsList);
+    
 }
