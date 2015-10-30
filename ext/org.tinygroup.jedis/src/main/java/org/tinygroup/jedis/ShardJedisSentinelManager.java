@@ -1,9 +1,8 @@
 package org.tinygroup.jedis;
 
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.tinygroup.jedis.config.ShardJedisSentinelConfigs;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.ShardedJedis;
+import org.tinygroup.jedis.shard.TinyShardJedis;
 
 /**
  * JedisManager
@@ -19,12 +18,14 @@ public interface ShardJedisSentinelManager {
 	 * @param configs
 	 */
 	void addJedisSentinelConfigs(ShardJedisSentinelConfigs configs);
+
 	/**
 	 * 移除JedisSentinel配置
 	 * 
 	 * @param configs
 	 */
-	 void removeJedisSentinelConfigs(ShardJedisSentinelConfigs configs);
+	void removeJedisSentinelConfigs(ShardJedisSentinelConfigs configs);
+
 	/**
 	 * 获取jedis写连接
 	 * 
@@ -32,10 +33,8 @@ public interface ShardJedisSentinelManager {
 	 *            masterName
 	 * @return
 	 */
-	 ShardedJedis getWriteShardedJedis();
-	 
-	 Jedis getWriteJedis(String key);
-	
+	TinyShardJedis getWriteShardedJedis();
+	void init(GenericObjectPoolConfig poolConfig);
 	/**
 	 * 获取jedis读连接
 	 * 
@@ -43,13 +42,16 @@ public interface ShardJedisSentinelManager {
 	 *            masterName
 	 * @return
 	 */
-	 ShardedJedis getReadShardedJedis();
-	 
-	 
-	 Jedis getReadJedis(String key);
-	 
-	 void destroy();
+	TinyShardJedis getReadShardedJedis();
 	
-	
+	TinyShardJedis getShardedJedis();
+
+	void destroy();
+
+	void returnResourceObject(TinyShardJedis resource);
+
+	void returnResource(TinyShardJedis resource);
+
+	void returnBrokenResource(TinyShardJedis resource);
 
 }

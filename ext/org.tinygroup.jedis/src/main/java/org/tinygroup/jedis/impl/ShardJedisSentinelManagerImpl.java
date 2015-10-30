@@ -10,10 +10,10 @@ import org.tinygroup.jedis.config.ShardJedisSentinelConfig;
 import org.tinygroup.jedis.config.ShardJedisSentinelConfigs;
 import org.tinygroup.jedis.config.ShardSentinelConfig;
 import org.tinygroup.jedis.config.ShardSentinelConfigs;
+import org.tinygroup.jedis.shard.TinyShardJedis;
 import org.tinygroup.jedis.shard.TinyShardedJedisSentinelPool;
 
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.ShardedJedis;
 
 
 public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager {
@@ -72,12 +72,16 @@ public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager 
 		}
 	}
 	
-	public ShardedJedis getWriteShardedJedis() {
+	public TinyShardJedis getWriteShardedJedis() {
+		return pool.getResource();
+	}
+	
+	public TinyShardJedis getShardedJedis() {
 		return pool.getResource();
 	}
 	
 
-	public ShardedJedis getReadShardedJedis() {
+	public TinyShardJedis getReadShardedJedis() {
 		return pool.getResource();
 	}
 
@@ -89,6 +93,16 @@ public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager 
 	public Jedis getReadJedis(String key) {
 		// TODO Auto-generated method stub
 		return pool.getResource().getReadShard(key);
+	}
+	
+	public void returnResourceObject(TinyShardJedis resource){
+		pool.returnResourceObject(resource);
+	}
+	public void returnResource(TinyShardJedis resource){
+		pool.returnResource(resource);
+	}
+	public void returnBrokenResource(TinyShardJedis resource){
+		pool.returnBrokenResource(resource);
 	}
 
 }

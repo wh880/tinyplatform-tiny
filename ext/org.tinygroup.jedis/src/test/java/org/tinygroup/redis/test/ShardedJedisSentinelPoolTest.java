@@ -1,4 +1,4 @@
-package org.tinygroup.cache.redis;
+package org.tinygroup.redis.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;

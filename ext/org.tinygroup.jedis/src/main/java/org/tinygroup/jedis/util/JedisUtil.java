@@ -1,19 +1,32 @@
 package org.tinygroup.jedis.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tinygroup.beancontainer.BeanContainer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.jedis.config.JedisConfig;
 
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.Protocol;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 public class JedisUtil {
 	private JedisUtil() {
 	}
 
+	static int i = 0;
+	
+	public static void plusForTest(){
+		i++;
+	}
+	public static int getForTest(){
+		return i;
+	}
 	public static JedisPool createJedisPool(JedisConfig jedisConfig,
 			ClassLoader loader) {
 		// 设置默认参数
@@ -55,5 +68,32 @@ public class JedisUtil {
 	
 	public static String toSimpleString(String host,int port) {
 		return host + ":" + port;
+	}
+	
+	public static Jedis choose(List<Jedis> list) {
+		if (list.size() == 0) {
+			return null;
+		}
+		int totalWeight = list.size();
+		int random = (int) (Math.random() * totalWeight);
+		Jedis j = list.get(random);
+		try {
+			j.connect();
+			return j;
+		} catch (JedisConnectionException ex) {
+			List<Jedis> newList = newList(list, j);
+			return choose(newList);
+		}
+	}
+
+	private static List<Jedis> newList(List<Jedis> jedises, Jedis jedis) {
+		List<Jedis> list = new ArrayList<Jedis>();
+		for (Jedis j : jedises) {
+			if (j == jedis) {
+				continue;
+			}
+			list.add(j);
+		}
+		return list;
 	}
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.tinygroup.jedis.util.JedisUtil;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedis;
@@ -43,7 +45,7 @@ public class TinyShardJedis extends ShardedJedis {
 	public Jedis getReadShard(String key) {
 		TinyJedisShardInfo info = (TinyJedisShardInfo) super.getShardInfo(key);
 		List<Jedis> list = readMap.get(info);
-		return list.get(0);
+		return JedisUtil.choose(list);
 	}
 
 	public void close() {

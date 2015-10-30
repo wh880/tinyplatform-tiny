@@ -16,6 +16,7 @@ import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.tinygroup.jedis.util.JedisUtil;
 
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;

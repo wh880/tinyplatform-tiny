@@ -1,4 +1,4 @@
-package org.tinygroup.cache.redis;
+package org.tinygroup.redis.test;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

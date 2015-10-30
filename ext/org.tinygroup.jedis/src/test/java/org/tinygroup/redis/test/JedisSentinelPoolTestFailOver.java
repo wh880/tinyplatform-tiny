@@ -1,4 +1,4 @@
-package org.tinygroup.cache.redis;
+package org.tinygroup.redis.test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisSentinelPool;
 
-public class JedisSentinelPoolTest {
+public class JedisSentinelPoolTestFailOver {
 	public static void main(String[] args) {
 		Map<String,String> map = new HashMap<String,String>();
 		String sentinel = "192.168.51.29:33333";
@@ -21,11 +21,5 @@ public class JedisSentinelPoolTest {
 		JedisPool jPool = new JedisPool(host, 11111);
 		System.out.println(jPool.getResource().get("a"));
 		Assert.assertEquals("aaaaaaaaaaaaaaaaaaa", jPool.getResource().get("a"));
-		JedisPool jPoolHaproxy = new JedisPool(host, 6300);
-		System.out.println(jPoolHaproxy.getResource().get("a"));
-		Assert.assertEquals("aaaaaaaaaaaaaaaaaaa", jPoolHaproxy.getResource().get("a"));
-		jPoolHaproxy.destroy();
-		pool.destroy();
-		jPool.destroy();
 	}
 }

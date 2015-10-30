@@ -35,11 +35,6 @@ public class TinyJedisShardInfo extends JedisShardInfo {
 					JedisUtil.createJedisShardInfo(config));
 		}
 	}
-
-	public Jedis createReadResource() {
-		 return new Jedis(map.get("a"));
-	}
-	
 	
 	public List<Jedis> createAllReadResource(){
 		List<Jedis> list =new ArrayList<Jedis>();
