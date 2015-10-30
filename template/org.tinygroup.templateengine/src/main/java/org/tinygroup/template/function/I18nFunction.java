@@ -18,6 +18,7 @@ package org.tinygroup.template.function;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 /**
  * Created by luoguo on 2014/6/9.
@@ -30,7 +31,7 @@ public class I18nFunction extends AbstractTemplateFunction {
 
     public Object execute(Template template, TemplateContext context, Object... parameters) throws TemplateException {
         String key = parameters[0].toString();
-        return template.getTemplateEngine().getI18nVisitor().getI18nMessage(context, key);
+        return TemplateUtil.getI18n(template.getTemplateEngine().getI18nVisitor(), context, key);
     }
 }
 
