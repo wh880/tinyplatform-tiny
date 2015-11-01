@@ -15,7 +15,9 @@
  */
 package org.tinygroup.template.impl;
 
+
 import org.tinygroup.template.*;
+import org.tinygroup.template.application.*;
 import org.tinygroup.template.function.*;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.context.*;
@@ -71,7 +73,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     public static final TemplateInterpreter interpreter = new TemplateInterpreter();
     
     //提供模板引擎渲染的静态类
-    private static Map<String,Class<?>> staticClassMaps = new HashMap<String,Class<?>>();
+    private static Map<String,StaticClassOperator> staticClassOperatorMap = new HashMap<String,StaticClassOperator>();
 
     static {
         interpreter.addTerminalNodeProcessor(new IntegerOctNodeProcessor());
@@ -141,18 +143,21 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
     
     static{
-    	staticClassMaps.put("Integer", Integer.class);
-    	staticClassMaps.put("Long", Long.class);
-    	staticClassMaps.put("Short", Short.class);
-    	staticClassMaps.put("Double", Double.class);
-    	staticClassMaps.put("Float", Float.class);
-    	staticClassMaps.put("Boolean", Boolean.class);
-    	staticClassMaps.put("String", String.class);
-    	staticClassMaps.put("Byte", Byte.class);
-    	staticClassMaps.put("Number", Number.class);
-    	staticClassMaps.put("Character", Character.class);
-    	staticClassMaps.put("Math", Math.class);
-    	staticClassMaps.put("System", System.class);
+    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Integer", Integer.class));
+    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Long", Long.class));
+    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Short", Short.class));
+    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Double", Double.class));
+    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Float", Float.class));
+    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Boolean", Boolean.class));
+    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("String", String.class));
+    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Byte", Byte.class));
+    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Number", Number.class));
+    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Math", Math.class));
+    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("System", System.class));
+    }
+    
+    private static void addDefaultStaticClassOperator(StaticClassOperator operator){
+    	staticClassOperatorMap.put(operator.getName(), operator);
     }
 
     private boolean compactMode;
@@ -232,7 +237,7 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public TemplateContext getTemplateContext() {
     	if(templateEngineContext==null){
-    		templateEngineContext = new TemplateContextDefault(staticClassMaps);
+    		templateEngineContext = new TemplateContextDefault(staticClassOperatorMap);
     	}
         return templateEngineContext;
     }
@@ -552,9 +557,14 @@ public class TemplateEngineDefault implements TemplateEngine {
         return getResourceContent(path, getEncode());
     }
 
-	public void registerStaticClass(String name, Class<?> clazz)
+	public void registerStaticClassOperator(StaticClassOperator operator)
 			throws TemplateException {
-		staticClassMaps.put(name, clazz);
+		staticClassOperatorMap.put(operator.getName(), operator);
+	}
+
+	public StaticClassOperator getStaticClassOperator(String name)
+			throws TemplateException {
+		return staticClassOperatorMap.get(name);
 	}
 
 }

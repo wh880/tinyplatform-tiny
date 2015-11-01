@@ -272,9 +272,17 @@ public interface TemplateEngine extends TemplateContextOperator {
     void write(OutputStream outputStream, Object data) throws TemplateException;
     
     /**
-     * 注册静态类
+     * 注册静态类操作
      * @throws TemplateException
      */
-    void registerStaticClass(String name,Class<?> clazz) throws TemplateException;
+    void registerStaticClassOperator(StaticClassOperator operator) throws TemplateException;
+    
+    /**
+     * 获得静态类操作
+     * @param name
+     * @return
+     * @throws TemplateException
+     */
+    StaticClassOperator getStaticClassOperator(String name) throws TemplateException;
    
 }

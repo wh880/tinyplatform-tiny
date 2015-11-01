@@ -186,14 +186,14 @@ public final class TemplateUtil {
         }
     }
 
-    public static Object executeClassMethod(Object object, String methodName, Object[] parameters) throws TemplateException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public static Object executeClassMethod(Object object, String methodName, Object[] parameters) throws TemplateException,Exception {
         Method method = getMethodByName(object, methodName, parameters);
         //如果有缓冲，则用缓冲方式调用
         if (method != null) {
             return method.invoke(object, parameters);
         }
-        if (object instanceof Class) {
-            return MethodUtils.invokeStaticMethod((Class) object, methodName, parameters);
+        if (object instanceof StaticClassOperator) {
+            return ((StaticClassOperator)object).invokeStaticMethod(methodName, parameters);
         } else {
             return MethodUtils.invokeMethod(object, methodName, parameters);
         }
