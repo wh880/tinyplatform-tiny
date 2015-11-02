@@ -28,9 +28,9 @@ import org.tinygroup.vfs.impl.filter.FileNameFileObjectFilter;
 public class JetTemplateTestCase {
     public static void main(String[] args) throws TemplateException {
         final TemplateEngine engine = new TemplateEngineDefault();
-        FileObjectResourceLoader jetSample = new FileObjectResourceLoader("jetx", null, null, "src/test/resources");
+        FileObjectResourceLoader jetSample = new FileObjectResourceLoader("jetx", null, null, "src/test/resources/template");
         engine.addResourceLoader(jetSample);
-        FileObject fileObject = VFS.resolveFile("src/test/resources");
+        FileObject fileObject = VFS.resolveFile("src/test/resources/template");
         fileObject.foreach(new FileNameFileObjectFilter(".*\\.jetx", true), new FileObjectProcessor() {
 
             public void process(FileObject fileObject) {
