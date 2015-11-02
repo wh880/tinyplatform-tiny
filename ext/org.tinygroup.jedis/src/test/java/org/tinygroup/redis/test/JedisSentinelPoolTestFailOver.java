@@ -1,10 +1,11 @@
 package org.tinygroup.redis.test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisSentinelPool;
@@ -21,5 +22,6 @@ public class JedisSentinelPoolTestFailOver {
 		JedisPool jPool = new JedisPool(host, 11111);
 		System.out.println(jPool.getResource().get("a"));
 		Assert.assertEquals("aaaaaaaaaaaaaaaaaaa", jPool.getResource().get("a"));
+		
 	}
 }

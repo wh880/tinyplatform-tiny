@@ -42,8 +42,7 @@ public class ShardJedisSentinelManagerConcurrentTest2 {
 			e.printStackTrace();
 		}
 		manager.destroy();
-		System.out.println("===================");
-		System.out.println("===================");
+		System.out.println("======FINAL END=============");
 	}
 	private static void testReadAndWrite(ShardJedisSentinelManager manager,
 			String key) {

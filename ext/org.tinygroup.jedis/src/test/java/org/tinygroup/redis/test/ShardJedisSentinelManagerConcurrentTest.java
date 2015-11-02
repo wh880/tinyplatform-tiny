@@ -34,8 +34,14 @@ public class ShardJedisSentinelManagerConcurrentTest {
 			}
 			
 		}
-		
-
+		try {
+			Thread.sleep(15*1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		manager.destroy();
+		System.out.println("======FINAL END=============");
 	}
 	private static void testReadAndWrite(ShardJedisSentinelManager manager,
 			String key) {

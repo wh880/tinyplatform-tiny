@@ -101,7 +101,8 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 				try {
 					inputStream.close();
 				} catch (Exception e) {
-					LOGGER.errorMessage("关闭文件流时出错,文件路径:{}",e, fileObject.getAbsolutePath());
+					LOGGER.errorMessage("关闭文件流时出错,文件路径:{}", e,
+							fileObject.getAbsolutePath());
 				}
 				list.add(components);
 				caches.put(fileObject.getAbsolutePath(), components);
@@ -144,7 +145,7 @@ public class XmlSysServiceFileProcessor extends XmlConfigServiceLoader
 			}
 			return container.getBean(component.getBean());
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.WARN, "查找Bean {}时发生异常", e,
+			LOGGER.logMessage(LogLevel.WARN, "查找Bean {}时发生异常",
 					component.getBean());
 			Class<?> clazz = Class.forName(component.getType());
 			if (!clazz.isInterface()) {
