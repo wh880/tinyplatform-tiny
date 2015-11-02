@@ -61,7 +61,5 @@
         <module>org.tinygroup.validate</module>
         <module>org.tinygroup.loader</module>
 		<module>org.tinygroup.tinyrunner</module>
-		<module>org.tinygroup.codegen</module>
-		<module>org.tinygroup.docgen</module>
     </modules>
 </project>
