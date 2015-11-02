@@ -126,9 +126,7 @@ public class TinyTemplateConfigProcessor extends AbstractApplicationProcessor{
 		if(list!=null){
 			for(XmlNode node:list){
 				try {
-					String alias = node.getAttribute("name");
-					Class<?>  clazz =  getClass().getClassLoader().loadClass(node.getAttribute("class"));
-    				templateEngine.registerStaticClass(alias, clazz);
+    				templateEngine.registerStaticClassOperator(new XmlNodeStaticClassOperator(node));
     			} catch (Exception e) {
     				LOGGER.errorMessage("加载用户注册的静态类出错", e);
     			}
