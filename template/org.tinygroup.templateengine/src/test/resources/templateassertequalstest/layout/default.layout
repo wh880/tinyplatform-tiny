@@ -1,0 +1,6 @@
+this is default layout start.
+#layout(weblayout)
+this is default(currentDirectory2).
+   #pageContent
+#end
+this is default layout end.

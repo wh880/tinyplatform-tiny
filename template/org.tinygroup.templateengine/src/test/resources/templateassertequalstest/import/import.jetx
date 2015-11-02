@@ -1,0 +1,7 @@
+##import("/aa/aa/aa.component") ##不存在的宏文件
+##import("macroHello.component")  ##已存在的宏文件
+##import("/templateJunitRight/import/macroHello2.component")  ##已存在的宏文件
+#import("/import/macroHello.component")  ##已存在的宏文件
+#@hello(1,2) 
+	helloWorld!!! 
+#end

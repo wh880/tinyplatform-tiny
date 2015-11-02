@@ -1,0 +1,9 @@
+
+************************
+a.layout start
+#layout(aLayout)
+this is default(a.layout)
+#pageContent
+#end
+a.layout end
+************************

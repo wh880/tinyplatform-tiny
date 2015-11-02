@@ -1,0 +1,23 @@
+#macro bb()
+bb-Content
+#end
+
+#macro aa()
+aa-Content
+#bb()
+#end
+
+##以下等价内部类写法已经不支持，注释掉了**************************
+#*
+#macro aa1()
+  aa1-Content
+    #macro bb1()
+       bb1-Content
+    #end
+  #bb1()
+#end
+*#
+
+##调用：
+#aa()
+##aa1()

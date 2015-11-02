@@ -1,0 +1,14 @@
+##1、无参数定义，使用#bodyContent
+#macro bold()
+    <b>#bodyContent</b>
+#end
+##调用：
+#@bold()HelloWorld.#end
+
+******************************************
+##2、无参数定义，直接里面写内容
+#macro helloWorld()
+	Hello, World.
+#end
+##调用：
+#helloWorld()

@@ -1,0 +1,6 @@
+\
+#if
+${a}
+#macro abc() #bodyContent #end
+${abc}
+\${abc}

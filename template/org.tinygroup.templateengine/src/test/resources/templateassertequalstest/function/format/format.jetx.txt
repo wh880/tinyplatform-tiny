@@ -1,0 +1,6 @@
+total:234.29
+a:         1 b: 2 c:   3
+d c b a
+
+d c b a d c b a
+a b b b

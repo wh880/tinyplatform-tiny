@@ -1,0 +1,19 @@
+##宏定义中调用宏
+#macro firstMacro()
+<div>
+    #@secondMacro()
+        #bodyContent
+    #end
+</div>
+#end
+
+#macro secondMacro()
+<b>
+    #bodyContent
+</b>
+#end
+
+##调用：
+#@firstMacro()
+    Information
+#end

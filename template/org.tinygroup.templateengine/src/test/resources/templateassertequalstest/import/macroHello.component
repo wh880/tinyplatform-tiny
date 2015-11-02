@@ -1,0 +1,7 @@
+#macro hello(a,b,c,d)
+   #bodyContent
+   a=${a}
+   b=${b}
+   c=${c}
+   d=${d}      
+#end

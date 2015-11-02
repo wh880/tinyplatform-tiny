@@ -1,0 +1,15 @@
+first#-- This is comment block --#
+1#-- ##aa --#
+2#-- #-- #--dd --#--#
+3#--ee ----#
+4#--${abc} #abc() \n \t \b \r "" '' , ; ++ -- && || /**/ //--#
+5cc--#
+6#--bb
+
+Second#* This is comment block *#
+1#* ##aa *#
+2#* #* #*dd *# *#
+3#*ee **#
+4#*${abc} #abc() \n \t \b \r "" '' , ; ++ -- && || /**/ //*#
+5cc*#
+6#*bb
