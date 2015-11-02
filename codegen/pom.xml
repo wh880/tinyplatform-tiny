@@ -9,5 +9,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>org.tinygroup.studio.codegen.helloworld</module>
+    <module>org.tinygroup.codegen</module>
+		<module>org.tinygroup.docgen</module>
   </modules>
 </project>
