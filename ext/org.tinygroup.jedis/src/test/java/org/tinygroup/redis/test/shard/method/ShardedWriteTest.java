@@ -2,6 +2,8 @@ package org.tinygroup.redis.test.shard.method;
 
 import java.util.ArrayList;
 
+import junit.framework.Assert;
+
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.jedis.ShardJedisSentinelManager;
 import org.tinygroup.jedis.shard.TinyShardJedis;
@@ -9,6 +11,7 @@ import org.tinygroup.redis.test.RedisTest;
 import org.tinygroup.redis.test.shard.ShardJedisSentinelManagerImplTest;
 import org.tinygroup.tinyrunner.Runner;
 
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPoolConfig;
 
 public class ShardedWriteTest {
@@ -23,13 +26,27 @@ public class ShardedWriteTest {
 		manager.init(jedisConfig);
 		TinyShardJedis jedis = manager.getShardedJedis();
 		System.out.println("读从:");
-		jedis.getReadShard("aaa").get("a");
+		// 因为写过一次，所以写状态被改为了true，于是此jedis从此以后不能在获得读连接，永远是写连接了
+		jedis.set("aaa", "aaa");
+		//因此获取的读和写链接从此以后都是写连接了
+		Assert.assertEquals(jedis.getShard("aaa"), jedis.getReadShard("aaa"));
+		//此处后面先删，再读
+		//如果不采用前面提到的方案，有可能主从数据尚未同步，导致读出来的数据和期望不同
+		jedis.del("aaa");
+		Assert.assertTrue(!jedis.exists("aaa"));
+		
+		
+		manager.returnResource(jedis);
+		jedis = manager.getShardedJedis();
+		Jedis readShard = jedis.getReadShard("aaa");
 		System.out.println("写从:");
 		try {
-			jedis.getReadShard("aaa").set("a", "b");
-			System.out.println("写从未发生异常:错误！");
+			readShard.set("aaa", "aaa");
+			System.out.println("写从无异常:错误");
+			Assert.assertTrue(false);
 		} catch (Exception e) {
-			System.out.println("写从发生异常:正确");
+			System.out.println("写从异常:正确");
+			Assert.assertTrue(true);
 		}
 		manager.returnResource(jedis);
 		manager.destroy();

@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.tinygroup.jedis.util.JedisUtil;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisShardInfo;
@@ -20,8 +22,10 @@ import redis.clients.jedis.Tuple;
 import redis.clients.util.Hashing;
 
 public class TinyShardJedis extends ShardedJedis {
-
-	Map<JedisShardInfo, List<Jedis>> readMap = new HashMap<JedisShardInfo, List<Jedis>>();
+	private final static Logger LOGGER = LoggerFactory
+			.getLogger(TinyShardJedis.class);
+	private Map<JedisShardInfo, List<Jedis>> readMap = new HashMap<JedisShardInfo, List<Jedis>>();
+	private boolean writeState = false;
 
 	/**
 	 * 
@@ -46,25 +50,54 @@ public class TinyShardJedis extends ShardedJedis {
 	}
 
 	public Jedis getShard(String key) {
+		writeState = true;
 		return super.getShard(key);
 	}
 
 	public Jedis getReadShard(String key) {
+		if (writeState) {
+			return getShard(key);
+		}
 		TinyJedisShardInfo info = (TinyJedisShardInfo) super.getShardInfo(key);
 		List<Jedis> list = readMap.get(info);
 		return JedisUtil.choose(list);
 	}
 
-	public Collection<Jedis> getAllShards() {
-		
-		Collection<Jedis> jedis = super.getAllShards();
- 		List<Jedis> totalList = new ArrayList<Jedis>();
- 		totalList.addAll(jedis);
+	public void resetWriteState() {
+		writeState = false;
+	}
+
+	public Collection<Jedis> getAllReadShards() {
+		List<Jedis> totalList = new ArrayList<Jedis>();
 		for (List<Jedis> list : readMap.values()) {
 			totalList.addAll(list);
 		}
 		return totalList;
 	}
+
+	public Collection<Jedis> getAllShards() {
+		return super.getAllShards();
+		// Collection<Jedis> jedis = super.getAllShards();
+		// List<Jedis> totalList = new ArrayList<Jedis>();
+		// totalList.addAll(jedis);
+		// for (List<Jedis> list : readMap.values()) {
+		// totalList.addAll(getValiableJedis(list));
+		// }
+		// return totalList;
+	}
+
+	// private List<Jedis> getValiableJedis(List<Jedis> list){
+	// List<Jedis> newList = new ArrayList<Jedis>();
+	// for(Jedis j:list){
+	// try {
+	// j.connect();
+	// newList.add(j);
+	// } catch (JedisConnectionException ex) {
+	// LOGGER.logMessage(LogLevel.WARN, "jedis连接失败:{}",j.clientGetname());
+	// }
+	// }
+	// return newList;
+	// }
 
 	public void close() {
 		super.close();
@@ -463,5 +496,9 @@ public class TinyShardJedis extends ShardedJedis {
 	public long pfcount(String key) {
 		Jedis j = getReadShard(key);
 		return j.pfcount(key);
+	}
+
+	public void resetState() {
+		super.resetState();
 	}
 }

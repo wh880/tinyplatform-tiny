@@ -270,6 +270,18 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 
 				}
 			}
+			for (Jedis jedis : shardedJedis.getAllReadShards()) {
+				try {
+					try {
+						jedis.quit();
+					} catch (Exception e) {
+
+					}
+					jedis.disconnect();
+				} catch (Exception e) {
+
+				}
+			}
 		}
 
 		public boolean validateObject(
@@ -372,13 +384,24 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 									HostAndPort newHostMaster = toHostAndPort(Arrays
 											.asList(switchMasterMsg[3],
 													switchMasterMsg[4]));
+									HostAndPort oldHostMaster = toHostAndPort(Arrays
+											.asList(switchMasterMsg[2],
+													switchMasterMsg[3]));
 									List<HostAndPort> newHostMasters = new ArrayList<HostAndPort>();
-									for (int i = 0; i < masters.size(); i++) {
+									for (int i = 0; i < currentHostMasters.size(); i++) {
 										newHostMasters.add(null);
 									}
 									Collections.copy(newHostMasters,
 											currentHostMasters);
-									newHostMasters.set(index, newHostMaster);
+									int oldIndex = 0;
+									for(int i = 0 ; i < currentHostMasters.size();i++){
+										HostAndPort hp = currentHostMasters.get(i);
+										if(hp.toString().equals(oldHostMaster.toString())){
+											oldIndex = i;
+											break;
+										}
+									}
+									newHostMasters.set(oldIndex, newHostMaster);
 									masterInfoMap.put(newHostMaster.toString(),
 											switchMasterMsg[0]);
 

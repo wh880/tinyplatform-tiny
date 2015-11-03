@@ -79,12 +79,15 @@ public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager 
 
 
 	public void returnResourceObject(TinyShardJedis resource){
+		resource.resetWriteState();
 		pool.returnResourceObject(resource);
 	}
 	public void returnResource(TinyShardJedis resource){
+		resource.resetWriteState();
 		pool.returnResource(resource);
 	}
 	public void returnBrokenResource(TinyShardJedis resource){
+		resource.resetWriteState();
 		pool.returnBrokenResource(resource);
 	}
 
