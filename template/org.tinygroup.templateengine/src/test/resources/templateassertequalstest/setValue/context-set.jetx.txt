@@ -2,15 +2,17 @@
 
 
 
+
 a=0
 b=0
 c=0000
 x=0
 y=abc
 z=false
-d=0
+d=<i>abc</i>
 key1=hao
 n1=0.001
 n2=1.0E-4
 n3=1.1
 n4=-9.9999999E14
+&lt;i&gt;abc&lt;/i&gt;
