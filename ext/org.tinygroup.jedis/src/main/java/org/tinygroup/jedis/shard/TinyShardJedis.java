@@ -501,4 +501,41 @@ public class TinyShardJedis extends ShardedJedis {
 	public void resetState() {
 		super.resetState();
 	}
+
+	public Set<String> keys(String keyPattern){
+		Set<String> set = null;
+		for(List<Jedis> list:readMap.values()){
+			Jedis jedis = JedisUtil.choose(list);
+			if(set==null){
+				set = jedis.keys(keyPattern);
+			}else{
+				set.addAll(jedis.keys(keyPattern));
+			}
+		}
+		return set;
+	}
+	public void flushAll(){
+		Collection<Jedis> jedisSet= getAllShards();
+		for(Jedis jedis:jedisSet){
+			jedis.flushAll();
+		}
+	}
+	
+	public void flushDB(){
+		Collection<Jedis> jedisSet= getAllShards();
+		for(Jedis jedis:jedisSet){
+			jedis.flushDB();
+		}
+	}
+	
+	public int deleteMatchKey(String keyPattern){
+		Set<String> keySet = this.keys(keyPattern);
+		int delCount = 0;
+		if(keySet !=null && keySet.size()>0){
+			for(String key : keySet){
+				delCount += this.del(key);
+			}
+		}
+		return delCount;
+	}
 }
