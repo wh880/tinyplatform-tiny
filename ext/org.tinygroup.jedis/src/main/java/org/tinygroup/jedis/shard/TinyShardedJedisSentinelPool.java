@@ -385,8 +385,8 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 											.asList(switchMasterMsg[3],
 													switchMasterMsg[4]));
 									HostAndPort oldHostMaster = toHostAndPort(Arrays
-											.asList(switchMasterMsg[2],
-													switchMasterMsg[3]));
+											.asList(switchMasterMsg[1],
+													switchMasterMsg[2]));
 									List<HostAndPort> newHostMasters = new ArrayList<HostAndPort>();
 									for (int i = 0; i < currentHostMasters.size(); i++) {
 										newHostMasters.add(null);
