@@ -13,8 +13,6 @@ import org.tinygroup.jedis.config.ShardSentinelConfigs;
 import org.tinygroup.jedis.shard.TinyShardJedis;
 import org.tinygroup.jedis.shard.TinyShardedJedisSentinelPool;
 
-import redis.clients.jedis.Jedis;
-
 
 public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager {
 
@@ -72,29 +70,14 @@ public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager 
 		}
 	}
 	
-	public TinyShardJedis getWriteShardedJedis() {
-		return pool.getResource();
-	}
+	
 	
 	public TinyShardJedis getShardedJedis() {
 		return pool.getResource();
 	}
 	
 
-	public TinyShardJedis getReadShardedJedis() {
-		return pool.getResource();
-	}
 
-	public Jedis getWriteJedis(String key) {
-		// TODO Auto-generated method stub
-		return pool.getResource().getShard(key);
-	}
-
-	public Jedis getReadJedis(String key) {
-		// TODO Auto-generated method stub
-		return pool.getResource().getReadShard(key);
-	}
-	
 	public void returnResourceObject(TinyShardJedis resource){
 		pool.returnResourceObject(resource);
 	}
