@@ -13,5 +13,6 @@
     <module>org.tinygroup.templateweblayer</module>
     <module>org.tinygroup.templatespringext</module>
     <module>org.tinygroup.templateservletext</module>
+    <module>org.tinygroup.templatei18n</module>
   </modules>
 </project>

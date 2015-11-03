@@ -1,0 +1,19 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd"
+	   default-lazy-init="true">
+	   
+	<bean id="defaultLocaleI18nVisitor" scope="singleton"
+		class="org.tinygroup.templatei18n.DefaultLocaleI18nVisitor">
+	</bean>
+	
+	<bean id="systemLocaleI18nVisitor" scope="singleton"
+		class="org.tinygroup.templatei18n.SystemLocaleI18nVisitor">
+	</bean>
+	
+	<bean id="threadLocaleI18nVisitor" scope="singleton"
+		class="org.tinygroup.templatei18n.ThreadLocaleI18nVisitor">
+	</bean>
+	
+</beans>
