@@ -26,23 +26,7 @@ public interface ShardJedisSentinelManager {
 	 */
 	void removeJedisSentinelConfigs(ShardJedisSentinelConfigs configs);
 
-	/**
-	 * 获取jedis写连接
-	 * 
-	 * @param masterName
-	 *            masterName
-	 * @return
-	 */
-	TinyShardJedis getWriteShardedJedis();
 	void init(GenericObjectPoolConfig poolConfig);
-	/**
-	 * 获取jedis读连接
-	 * 
-	 * @param masterName
-	 *            masterName
-	 * @return
-	 */
-	TinyShardJedis getReadShardedJedis();
 	
 	TinyShardJedis getShardedJedis();
 

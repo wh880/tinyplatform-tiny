@@ -1,4 +1,4 @@
-package org.tinygroup.redis.test;
+package org.tinygroup.redis.test.shard;
 
 import java.util.ArrayList;
 
@@ -7,12 +7,13 @@ import junit.framework.Assert;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.jedis.ShardJedisSentinelManager;
 import org.tinygroup.jedis.shard.TinyShardJedis;
+import org.tinygroup.redis.test.RedisTest;
 import org.tinygroup.tinyrunner.Runner;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPoolConfig;
 
-public class ShardJedisSentinelManagerConcurrentTest {
+public class ShardJedisSentinelManagerConcurrentTest2 {
 	public static void main(String[] args) {
 		Runner.init("application.xml", new ArrayList<String>());
 		JedisPoolConfig jedisConfig = BeanContainerFactory.getBeanContainer(
@@ -25,15 +26,16 @@ public class ShardJedisSentinelManagerConcurrentTest {
 			testReadAndWrite(manager, "WriteAndRead" + i + i + i);
 		}
 		System.out.println("||||||||||||||||||||||||||||||||||||||||||、");
-		for(int i = 0 ; i < 11;i++){
+		for(int i = 0 ; i < 50;i++){
 			try {
-				Thread t = new Thread( new ThreadNew(manager,100));
+				Thread t = new Thread( new ThreadNew2(manager,100));
 				t.start();
 			} catch (Exception e) {
 				System.out.println("=========================================================");
 			}
 			
 		}
+		
 		try {
 			Thread.sleep(15*1000);
 		} catch (InterruptedException e) {

@@ -1,4 +1,4 @@
-package org.tinygroup.redis.test;
+package org.tinygroup.redis.test.shard;
 
 import java.util.ArrayList;
 
@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.jedis.ShardJedisSentinelManager;
 import org.tinygroup.jedis.shard.TinyShardJedis;
+import org.tinygroup.redis.test.RedisTest;
 import org.tinygroup.tinyrunner.Runner;
 
 import redis.clients.jedis.Jedis;
@@ -16,7 +17,7 @@ public class ShardJedisSentinelManagerImplTest {
 	public static void main(String[] args) {
 		Runner.init("application.xml", new ArrayList<String>());
 		JedisPoolConfig jedisConfig = BeanContainerFactory.getBeanContainer(
-				RedisTest.class.getClassLoader()).getBean("jedisConfig");
+				ShardJedisSentinelManagerImplTest.class.getClassLoader()).getBean("jedisConfig");
 		ShardJedisSentinelManager manager = BeanContainerFactory
 				.getBeanContainer(RedisTest.class.getClassLoader()).getBean(
 						"shardJedisSentinelManager");
@@ -40,11 +41,11 @@ public class ShardJedisSentinelManagerImplTest {
 		System.out.println("===================");
 		//直接通过TinyShardJedis操作的话，实际是对主从数据库中的主服务器进行操作(即对写服务器进行操作)
 		TinyShardJedis jedis = manager.getShardedJedis();
-		TinyShardJedis jedis2 = manager.getReadShardedJedis();
+		TinyShardJedis jedis2 = manager.getShardedJedis();
 		jedis.del(key);
 		jedis.set(key, key);
 		System.out.println(jedis.get(key));
-		System.out.println("manager.getReadShardedJedis():" + jedis2);
+		System.out.println("manager.getShardedJedis():" + jedis2);
 		Assert.assertEquals(key, jedis.get(key));
 		manager.returnResource(jedis);
 		manager.returnResource(jedis2);
