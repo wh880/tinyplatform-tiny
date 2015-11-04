@@ -18,6 +18,8 @@ package org.tinygroup.template.rumtime;
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang.StringUtils;
+import org.tinygroup.beancontainer.BeanContainer;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.Enumerator;
 import org.tinygroup.context.Context;
@@ -39,7 +41,8 @@ public final class TemplateUtil {
     private static PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
     private static String[] tabCache = new String[31];
     private static boolean safeVariable = false;
-
+    private static BeanContainer<?> container = BeanContainerFactory.getBeanContainer(TemplateUtil.class.getClassLoader());
+    
     static {
         tabCache[0] = "";
         for (int i = 1; i < tabCache.length; i++) {
@@ -296,6 +299,33 @@ public final class TemplateUtil {
      */
     public static Object getValueFromContext(Context context, Object key) {
         return context.get(key.toString());
+    }
+    
+    /**
+     * 从Bean容器获得对应的值
+     * @param key
+     * @return
+     */
+    public static Object getValueFromBean(Object key){
+    	try{
+    		return container.getBean(key.toString());
+    	}catch(Exception e){
+    		return null;
+    	}
+    }
+    
+    /**
+     * 获得标识变量的值
+     * @param context
+     * @param key
+     * @return
+     */
+    public static Object getVariableValue(Context context, Object key){
+    	Object value = getValueFromContext(context,key);
+    	if(value==null){
+    	   value = getValueFromBean(key);
+    	}
+    	return value;
     }
 
 
