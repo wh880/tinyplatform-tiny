@@ -18,8 +18,6 @@ package org.tinygroup.fileresolver;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
-
 import org.tinygroup.commons.tools.FileUtil;
 import org.tinygroup.fileresolver.impl.ExcludeContextFileFinder;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
@@ -30,6 +28,8 @@ import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlParser;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import junit.framework.TestCase;
 
 /**
  * 
@@ -59,6 +59,7 @@ public class FullContentFileResposityTest extends TestCase {
 						+ "</full-context-file-finder>");
 		Document<XmlNode> exDocument = parse
 				.parse("<exclude-full-context-file-finder>"
+						+ "<file ext-name=\"xml\" content-type=\"application/test\" />"
 						+ "</exclude-full-context-file-finder>");
 		exFinder.config(exDocument.getRoot(), null);
 		repository.setExcludeContextFileFinder(exFinder);
@@ -84,19 +85,29 @@ public class FullContentFileResposityTest extends TestCase {
 	}
 
 	public void testAddSearchPath() throws IOException {
-		FileObject fileObject = repository.getFileObject("test.xml");
 		File director = new File("./test");
 		if (!director.exists()) {
 			director.mkdirs();
 		}
-		File testFile = new File("./test/test.xml");
+		repository.addSearchPath("./test");
+		
+		File testFile = new File("./test/test.xml1");
 		if (!testFile.exists()) {
 			testFile.createNewFile();
 		}
-		repository.addSearchPath("./test");
 
-		fileObject = repository.getFileObject("/test.xml");
+		FileObject fileObject = repository.getFileObject("/test.xml1");
 		assertTrue(fileObject != null);
+		
+		
+		testFile = new File("./test/test.xml");
+		if (!testFile.exists()) {
+			testFile.createNewFile();
+		}
+		
+		fileObject = repository.getFileObject("/test.xml");
+		assertTrue(fileObject == null);
+		
 		FileUtil.delete(director);
 
 	}
