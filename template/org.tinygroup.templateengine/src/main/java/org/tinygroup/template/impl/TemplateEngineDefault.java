@@ -49,6 +49,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     private TemplateCache<String, Template> templateCache = new TemplateCacheDefault<String, Template>();
     private List<String> macroLibraryList = new ArrayList<String>();
     private Map<String, Template> repositories = new ConcurrentHashMap<String, Template>();
+    private TemplateCache<String,Object> localeSearchResults = new TemplateCacheDefault<String,Object>();
     private boolean checkModified = false;
 
     public void setCheckModified(boolean checkModified) {
@@ -327,13 +328,19 @@ public class TemplateEngineDefault implements TemplateEngine {
         Locale locale = context.get("defaultLocale");
         if (locale != null) {
             String localePath = TemplateUtil.getLocalePath(path, locale);
+            if(localeSearchResults.contains(localePath)){
+         	   return findTemplate(path);
+         	}
             try{
             	Template template = findTemplate(localePath);
             	if(template!=null){
             	   return template;
+            	}else{
+            		localeSearchResults.put(localePath, "");
             	}
             }catch(TemplateException e){
                //findTemplate查找不到国际化模板资源可能会抛出异常，这时候再找默认模板资源
+               localeSearchResults.put(localePath, "");
                return findTemplate(path);
             }
         }
@@ -344,13 +351,19 @@ public class TemplateEngineDefault implements TemplateEngine {
         Locale locale = context.get("defaultLocale");
         if (locale != null) {
         	String localePath = TemplateUtil.getLocalePath(path, locale);
+        	if(localeSearchResults.contains(localePath)){
+        	   return findLayout(path,false);
+        	}
             try{
             	Template template = findLayout(localePath,false);
             	if(template!=null){
             	   return template;
+            	}else{
+            		localeSearchResults.put(localePath, "");
             	}
             }catch(TemplateException e){
                //findLayout查找不到国际化模板资源可能会抛出异常，这时候再找默认模板资源
+               localeSearchResults.put(localePath, "");
                return findLayout(path,false);
             }
         }
