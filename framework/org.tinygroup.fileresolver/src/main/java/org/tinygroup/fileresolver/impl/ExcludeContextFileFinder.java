@@ -27,15 +27,19 @@ import org.tinygroup.xmlparser.node.XmlNode;
 /**
  * 全路径资源提供器实现类
  * 
- * @author luoguo
+ * @author yanwj06282
  * 
  */
-public class ExcludeContextFileFinder extends AbstractFileProcessor implements
+public class ExcludeContextFileFinder implements
 		Configuration {
 	private static final String FILE = "file";
 	private static final String CONTENT_TYPE = "content-type";
 	private static final String EXT_NAME = "ext-name";
-	// application.xml full-context-file-finder节点名
+	
+	protected XmlNode applicationConfig;
+
+	protected XmlNode componentConfig;
+	
 	private static final String EXCLUDE_FULL_CONTEXT_FILE_FINDER_PATH = "/application/file-resolver-configuration/exclude-full-context-file-finder";
 
 	// 保存文件类型列表
@@ -48,12 +52,10 @@ public class ExcludeContextFileFinder extends AbstractFileProcessor implements
 		return true;
 	}
 
-	public void process() {
-	}
-
 	
 	public void config(XmlNode applicationConfig, XmlNode componentConfig) {
-		super.config(applicationConfig, componentConfig);
+		this.applicationConfig = applicationConfig;
+		this.componentConfig = componentConfig;
 		List<XmlNode> fileNodes = ConfigurationUtil.combineSubList(FILE,
 				applicationConfig, componentConfig);
 		for (XmlNode fileNode : fileNodes) {
@@ -69,6 +71,19 @@ public class ExcludeContextFileFinder extends AbstractFileProcessor implements
 
 	public Map<String, String> getExcludeFileExtensionMap() {
 		return excludeFileExtensionMap;
+	}
+
+
+	public String getComponentConfigPath() {
+		return null;
+	}
+
+	public XmlNode getComponentConfig() {
+		return componentConfig;
+	}
+
+	public XmlNode getApplicationConfig() {
+		return applicationConfig;
 	}
 
 	

@@ -38,7 +38,7 @@ public class MathIdentifierProcessor implements ContextProcessor<TinyTemplatePar
 
     public Object process(TemplateInterpreter interpreter, TemplateFromContext templateFromContext, TinyTemplateParser.Expr_identifierContext parseTree, TemplateContext pageContext, TemplateContext context, TemplateEngineDefault engine, OutputStream outputStream, String fileName) throws Exception {
         String name = templateFromContext.getText(parseTree.getChild(0));
-        return TemplateUtil.getValueFromContext(context, name);
+        return TemplateUtil.getVariableValue(context, name);
     }
 }
 

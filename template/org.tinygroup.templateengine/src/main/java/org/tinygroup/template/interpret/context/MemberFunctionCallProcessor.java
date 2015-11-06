@@ -56,7 +56,7 @@ public class MemberFunctionCallProcessor implements ContextProcessor<TinyTemplat
             if (parseTree.getChild(1).getText().equals(".")) {
             	if(object==null){
             		//增加静态类逻辑
-                	object = TemplateUtil.getValueFromContext(templateFromContext.getTemplateEngine().getTemplateContext(), parseTree.getChild(0).getText());
+                	object = TemplateUtil.getVariableValue(templateFromContext.getTemplateEngine().getTemplateContext(), parseTree.getChild(0).getText());
             	}
                 if (object == null) {
                     throw new TemplateException("调用成员函数[" + name + "]的对象不能为空", parseTree, templateFromContext.getPath());
