@@ -27,10 +27,7 @@ import org.tinygroup.template.rumtime.TemplateUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -71,9 +68,9 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public static final TemplateInterpreter interpreter = new TemplateInterpreter();
-    
+
     //提供模板引擎渲染的静态类
-    private static Map<String,StaticClassOperator> staticClassOperatorMap = new HashMap<String,StaticClassOperator>();
+    private static Map<String, StaticClassOperator> staticClassOperatorMap = new HashMap<String, StaticClassOperator>();
 
     static {
         interpreter.addTerminalNodeProcessor(new IntegerOctNodeProcessor());
@@ -141,23 +138,23 @@ public class TemplateEngineDefault implements TemplateEngine {
         interpreter.addContextProcessor(new FunctionCallProcessor());
         interpreter.addContextProcessor(new WhileProcessor());
     }
-    
-    static{
-    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Integer", Integer.class));
-    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Long", Long.class));
-    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Short", Short.class));
-    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Double", Double.class));
-    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Float", Float.class));
-    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Boolean", Boolean.class));
-    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("String", String.class));
-    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Byte", Byte.class));
-    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Number", Number.class));
-    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("Math", Math.class));
-    	addDefaultStaticClassOperator(new DefaultStaticClassOperator("System", System.class));
+
+    static {
+        addDefaultStaticClassOperator(new DefaultStaticClassOperator("Integer", Integer.class));
+        addDefaultStaticClassOperator(new DefaultStaticClassOperator("Long", Long.class));
+        addDefaultStaticClassOperator(new DefaultStaticClassOperator("Short", Short.class));
+        addDefaultStaticClassOperator(new DefaultStaticClassOperator("Double", Double.class));
+        addDefaultStaticClassOperator(new DefaultStaticClassOperator("Float", Float.class));
+        addDefaultStaticClassOperator(new DefaultStaticClassOperator("Boolean", Boolean.class));
+        addDefaultStaticClassOperator(new DefaultStaticClassOperator("String", String.class));
+        addDefaultStaticClassOperator(new DefaultStaticClassOperator("Byte", Byte.class));
+        addDefaultStaticClassOperator(new DefaultStaticClassOperator("Number", Number.class));
+        addDefaultStaticClassOperator(new DefaultStaticClassOperator("Math", Math.class));
+        addDefaultStaticClassOperator(new DefaultStaticClassOperator("System", System.class));
     }
-    
-    private static void addDefaultStaticClassOperator(StaticClassOperator operator){
-    	staticClassOperatorMap.put(operator.getName(), operator);
+
+    private static void addDefaultStaticClassOperator(StaticClassOperator operator) {
+        staticClassOperatorMap.put(operator.getName(), operator);
     }
 
     private boolean compactMode;
@@ -236,9 +233,9 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public TemplateContext getTemplateContext() {
-    	if(templateEngineContext==null){
-    		templateEngineContext = new TemplateContextDefault(staticClassOperatorMap);
-    	}
+        if (templateEngineContext == null) {
+            templateEngineContext = new TemplateContextDefault(staticClassOperatorMap);
+        }
         return templateEngineContext;
     }
 
@@ -326,6 +323,31 @@ public class TemplateEngineDefault implements TemplateEngine {
         return this;
     }
 
+    private Template findTemplate(TemplateContext context, String path) throws TemplateException {
+        Locale locale = context.get("defaultLocale");
+        if (locale != null) {
+            int pos = path.lastIndexOf(".");
+            String localePath = path.substring(0, pos) + "_" + locale.getLanguage() + "_" + locale.getCountry() + path.substring(pos);
+            Template template = findTemplate(localePath);
+            if (template != null) {
+                return template;
+            }
+        }
+        return findTemplate(path);
+    }
+
+    private Template findLayout(TemplateContext context, String path) throws TemplateException {
+        Locale locale = context.get("defaultLocale");
+        if (locale != null) {
+            int pos = path.lastIndexOf(".");
+            String localePath = path.substring(0, pos) + "_" + locale.getLanguage() + "_" + locale.getCountry() + path.substring(pos);
+            Template template = findLayout(localePath);
+            if (template != null) {
+                return template;
+            }
+        }
+        return findLayout(path);
+    }
 
     public Template findTemplate(String path) throws TemplateException {
         Template template = null;
@@ -338,6 +360,26 @@ public class TemplateEngineDefault implements TemplateEngine {
         if (template == null) {
             for (ResourceLoader loader : resourceLoaderList) {
                 template = loader.getTemplate(path);
+                if (template != null) {
+                    templateCache.put(path, template);
+                    return template;
+                }
+            }
+        }
+        throw new TemplateException("找不到模板：" + path);
+    }
+
+    public Template findLayout(String path) throws TemplateException {
+        Template template = null;
+        if (!checkModified) {
+            template = repositories.get(path);
+            if (template != null) {
+                return template;
+            }
+        }
+        if (template == null) {
+            for (ResourceLoader loader : resourceLoaderList) {
+                template = loader.getLayout(path);
                 if (template != null) {
                     templateCache.put(path, template);
                     return template;
@@ -382,9 +424,9 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public void renderTemplate(String path, TemplateContext context, OutputStream outputStream) throws TemplateException {
         try {
-            Template template = findTemplate(path);
+            Template template = findTemplate(context, path);
             if (template != null) {
-                List<Template> layoutPaths = getLayoutList(template.getPath());
+                List<Template> layoutPaths = getLayoutList(context,template.getPath());
                 if (layoutPaths.size() > 0) {
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     template.render(context, byteArrayOutputStream);
@@ -415,7 +457,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public void renderTemplateWithOutLayout(String path, TemplateContext context, OutputStream outputStream) throws TemplateException {
-        Template template = findTemplate(path);
+        Template template = findTemplate(context, path);
         if (template != null) {
             renderTemplate(template, context, outputStream);
         } else {
@@ -423,7 +465,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         }
     }
 
-    private List<Template> getLayoutList(String templatePath) throws TemplateException {
+    private List<Template> getLayoutList(TemplateContext context, String templatePath) throws TemplateException {
         List<Template> layoutPathList = null;
         if (!checkModified) {
             layoutPathList = layoutPathListCache.get(templatePath);
@@ -441,17 +483,29 @@ public class TemplateEngineDefault implements TemplateEngine {
         for (int i = 0; i < paths.length - 1; i++) {
             path += paths[i] + "/";
             String template = path + templateFileName;
+            Template layout = null;
+            //先找同名的看有没有
             for (ResourceLoader loader : resourceLoaderList) {
                 String layoutPath = loader.getLayoutPath(template);
                 if (layoutPath != null) {
-                    Template layout = loader.getLayout(layoutPath);
-                    if (layout == null) {
-                        String defaultTemplateName = path + DEFAULT + layoutPath.substring(layoutPath.lastIndexOf('.'));
-                        layout = loader.getLayout(defaultTemplateName);
-                    }
+                    layout = findLayout(context, layoutPath);
                     if (layout != null) {
                         layoutPathList.add(layout);
                         break;
+                    }
+                }
+            }
+            //如果没有找到,则看看默认的有没有
+            if (layout == null) {
+                for (ResourceLoader loader : resourceLoaderList) {
+                    String layoutPath = loader.getLayoutPath(template);
+                    if (layoutPath != null) {
+                        String defaultTemplateName = path + DEFAULT + layoutPath.substring(layoutPath.lastIndexOf('.'));
+                        layout = findLayout(context, defaultTemplateName);
+                        if (layout != null) {
+                            layoutPathList.add(layout);
+                            break;
+                        }
                     }
                 }
             }
@@ -557,14 +611,14 @@ public class TemplateEngineDefault implements TemplateEngine {
         return getResourceContent(path, getEncode());
     }
 
-	public void registerStaticClassOperator(StaticClassOperator operator)
-			throws TemplateException {
-		staticClassOperatorMap.put(operator.getName(), operator);
-	}
+    public void registerStaticClassOperator(StaticClassOperator operator)
+            throws TemplateException {
+        staticClassOperatorMap.put(operator.getName(), operator);
+    }
 
-	public StaticClassOperator getStaticClassOperator(String name)
-			throws TemplateException {
-		return staticClassOperatorMap.get(name);
-	}
+    public StaticClassOperator getStaticClassOperator(String name)
+            throws TemplateException {
+        return staticClassOperatorMap.get(name);
+    }
 
 }
