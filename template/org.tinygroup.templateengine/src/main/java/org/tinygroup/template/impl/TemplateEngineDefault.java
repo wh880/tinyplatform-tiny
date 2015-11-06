@@ -326,11 +326,15 @@ public class TemplateEngineDefault implements TemplateEngine {
     private Template findTemplate(TemplateContext context, String path) throws TemplateException {
         Locale locale = context.get("defaultLocale");
         if (locale != null) {
-            int pos = path.lastIndexOf(".");
-            String localePath = path.substring(0, pos) + "_" + locale.getLanguage() + "_" + locale.getCountry() + path.substring(pos);
-            Template template = findTemplate(localePath);
-            if (template != null) {
-                return template;
+            String localePath = TemplateUtil.getLocalePath(path, locale);
+            try{
+            	Template template = findTemplate(localePath);
+            	if(template!=null){
+            	   return template;
+            	}
+            }catch(TemplateException e){
+               //findTemplate查找不到国际化模板资源可能会抛出异常，这时候再找默认模板资源
+               return findTemplate(path);
             }
         }
         return findTemplate(path);
@@ -339,11 +343,15 @@ public class TemplateEngineDefault implements TemplateEngine {
     private Template findLayout(TemplateContext context, String path) throws TemplateException {
         Locale locale = context.get("defaultLocale");
         if (locale != null) {
-            int pos = path.lastIndexOf(".");
-            String localePath = path.substring(0, pos) + "_" + locale.getLanguage() + "_" + locale.getCountry() + path.substring(pos);
-            Template template = findLayout(localePath);
-            if (template != null) {
-                return template;
+        	String localePath = TemplateUtil.getLocalePath(path, locale);
+            try{
+            	Template template = findLayout(localePath);
+            	if(template!=null){
+            	   return template;
+            	}
+            }catch(TemplateException e){
+               //findLayout查找不到国际化模板资源可能会抛出异常，这时候再找默认模板资源
+               return findLayout(path);
             }
         }
         return findLayout(path);

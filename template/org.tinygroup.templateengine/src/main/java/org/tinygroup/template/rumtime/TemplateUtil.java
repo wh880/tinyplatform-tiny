@@ -500,5 +500,19 @@ public final class TemplateUtil {
         //throw new TemplateException(object.getClass().getName() + "用下标方式取值失败。");
     }
 
+    /**
+     * 返回国际化资源的路径
+     * @param path
+     * @param locale
+     * @return
+     */
+    public static String getLocalePath(String path,Locale locale){
+    	if(locale!=null){
+    		int pos = path.lastIndexOf(".");
+            String localePath = path.substring(0, pos) + "_" + locale.getLanguage() + "_" + locale.getCountry() + path.substring(pos);
+            return localePath;
+    	}
+    	return path;
+    }
 }
 
