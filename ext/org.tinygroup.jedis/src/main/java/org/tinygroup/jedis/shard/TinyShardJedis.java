@@ -17,7 +17,6 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ScanResult;
 import redis.clients.jedis.ShardedJedis;
-import redis.clients.jedis.SortingParams;
 import redis.clients.jedis.Tuple;
 import redis.clients.util.Hashing;
 
@@ -294,16 +293,6 @@ public class TinyShardJedis extends ShardedJedis {
 	public Double zscore(String key, String member) {
 		Jedis j = getReadShard(key);
 		return j.zscore(key, member);
-	}
-
-	public List<String> sort(String key) {
-		Jedis j = getReadShard(key);
-		return j.sort(key);
-	}
-
-	public List<String> sort(String key, SortingParams sortingParameters) {
-		Jedis j = getReadShard(key);
-		return j.sort(key, sortingParameters);
 	}
 
 	public Long zcount(String key, double min, double max) {
