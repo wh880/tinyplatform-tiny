@@ -345,16 +345,16 @@ public class TemplateEngineDefault implements TemplateEngine {
         if (locale != null) {
         	String localePath = TemplateUtil.getLocalePath(path, locale);
             try{
-            	Template template = findLayout(localePath);
+            	Template template = findLayout(localePath,false);
             	if(template!=null){
             	   return template;
             	}
             }catch(TemplateException e){
                //findLayout查找不到国际化模板资源可能会抛出异常，这时候再找默认模板资源
-               return findLayout(path);
+               return findLayout(path,false);
             }
         }
-        return findLayout(path);
+        return findLayout(path,false);
     }
 
     public Template findTemplate(String path) throws TemplateException {
@@ -378,6 +378,10 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     public Template findLayout(String path) throws TemplateException {
+        return findLayout(path,true);
+    }
+    
+    private Template findLayout(String path,boolean throwException) throws TemplateException {
         Template template = null;
         if (!checkModified) {
             template = repositories.get(path);
@@ -394,7 +398,11 @@ public class TemplateEngineDefault implements TemplateEngine {
                 }
             }
         }
-        throw new TemplateException("找不到模板：" + path);
+        if(throwException){
+        	throw new TemplateException("找不到模板：" + path);
+        }else{
+        	return null;
+        }
     }
 
     private Template getMacroLibrary(String path) throws TemplateException {
