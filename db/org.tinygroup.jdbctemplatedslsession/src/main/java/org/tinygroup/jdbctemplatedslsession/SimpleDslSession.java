@@ -168,7 +168,6 @@ public class SimpleDslSession implements DslSession {
 				if (values.get(i) == null) {
 					updateBody.removeColumn(i);
 					updateBody.removeExpression(i);
-					values.remove(i);
 				}
 			}
 			sql = update.newSql();
