@@ -22,13 +22,35 @@ public class TinyTemplateErrorListener implements org.antlr.v4.runtime.ANTLRErro
     public TinyTemplateErrorListener(String fileName){
         this.fileName=fileName;
     }
-    public void syntaxError(@NotNull Recognizer<?, ?> recognizer, @Nullable Object o, int i, int i1, @NotNull String s, @Nullable RecognitionException e) {
-    	RuleContext ruleContext=e.getCtx();
-    	if(ruleContext!=null && ruleContext instanceof ParserRuleContext){
-    		exception=new TemplateException(e,(ParserRuleContext)ruleContext,fileName);
-    	}else{
-    		exception=new TemplateException(e, null,fileName);
+    public void syntaxError(@NotNull Recognizer<?, ?> recognizer, @Nullable Object offendingSymbol, int line, int charPositionInLine, @NotNull String msg, @Nullable RecognitionException e) {
+    	ParserRuleContext parserRuleContext = null;
+    	if(e!=null){
+    		RuleContext ruleContext=e.getCtx();
+        	if(ruleContext!=null && ruleContext instanceof ParserRuleContext){
+        		parserRuleContext = (ParserRuleContext)ruleContext;
+        	}
     	}
+    	
+    	if(parserRuleContext!=null){
+    		//通过RecognitionException获取错误信息
+    		exception=new TemplateException(e,parserRuleContext,fileName);
+    	}else{
+    		//通过Recognizer获取错误信息
+            StringBuilder sb = new StringBuilder(128);
+            sb.append("Template parse failed.\n");
+            sb.append(recognizer.getInputStream().getSourceName());
+            sb.append(':');
+            sb.append(line);
+            sb.append(':');
+            sb.append(charPositionInLine);
+            sb.append("\nmessage: ");
+            sb.append(msg);
+            sb.append('\n');
+            
+    		exception=new TemplateException(sb.toString());
+    		exception.setContext(null, fileName);
+    	}
+    	
         
     }
 
