@@ -1,0 +1,11 @@
+#for ( x : ["a","b","c","d"])
+    ${xFor.index} - ${xFor.size}: ${x}
+    ${xFor.first} - ${xFor.last}
+ 	是否奇数：${xFor.odd}
+	是否偶数：${xFor.even}
+#end
+********************************************
+#for (x : {})
+    ${xFor.index} - ${xFor.size}: ${x}
+    ${xFor.first} - ${xFor.last}
+#end

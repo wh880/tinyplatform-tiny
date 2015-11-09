@@ -1,0 +1,9 @@
+##fmt,format,formatter
+##see java.util.Formatter
+${fmt("total:%(,.2f",234.289f)}
+${format("a:%10s b:%2s c:%4s",1,2,3)}
+${formatter("%4$1s %3$1s %2$1s %1$1s", "a", "b", "c", "d")}
+
+##参数索引(第一个参数由 "1$" 引用，第二个参数由 "2$" 引用，依此类推。)
+${format("%4$s %3$s %2$s %1$s %4$s %3$s %2$s %1$s","a", "b", "c", "d")}
+${format("%s %s %<s %<s", "a", "b", "c", "d")}

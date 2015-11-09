@@ -1,0 +1,11 @@
+#set( list = ["a","b","c","d"])
+#set(i=2)
+#set(map = {"id":list[i+1], "name":"chen","ccc":list})
+#set( list2 = [list,"b","c","d",map])
+${list[0]}
+${list[i]}
+${map["id"]}
+${list2[0][1]}
+${map["ccc"][3]}
+${list2[4]["name"]}
+${list2[4].get("ccc")[1]}

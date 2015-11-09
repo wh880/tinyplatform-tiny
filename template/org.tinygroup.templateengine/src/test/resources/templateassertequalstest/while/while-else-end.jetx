@@ -1,0 +1,7 @@
+#set(i=0)
+#while(i>5)
+  #set(i=i+2)
+  ${i}
+  #else
+  ${i} bbbbbbbbbbbbbbb
+#end

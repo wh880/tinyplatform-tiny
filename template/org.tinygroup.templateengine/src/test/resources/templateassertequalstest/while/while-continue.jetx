@@ -1,0 +1,10 @@
+##continue在满足条件为true时，它后面的语句不执行而已，执行下一次循环。
+#set(i=1)
+#set(j=1)
+#while(i<=4)
+	i=${i}
+	#set(i=i+1)
+	#continue(i==3)
+	#t j=${j}
+	#set(j=j+1)
+#end

@@ -1,0 +1,10 @@
+##is,instanceOf,instance是等效的
+${instanceOf(10,"java.lang.Integer")}
+${instanceOf(10,"java.lang.String")}
+${is(10,"java.lang.Integer")}
+${is(10,"java.lang.String")}
+${instance(10,"java.lang.Integer")}
+${instance(10,"java.lang.String")}
+##依次判断，只要有符合就是true，除非一个都不符合才会是false
+${instance("abc","java.lang.Byte","java.lang.String")}
+${instance("abc","java.lang.Byte","java.lang.Integer")}

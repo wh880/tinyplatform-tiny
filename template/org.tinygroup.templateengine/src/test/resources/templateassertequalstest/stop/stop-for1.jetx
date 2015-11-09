@@ -1,0 +1,5 @@
+##与stop-for2.jetx的写法等价
+#for(num:[1,2,3])
+    ${num}
+    #stop(num==2)
+#end

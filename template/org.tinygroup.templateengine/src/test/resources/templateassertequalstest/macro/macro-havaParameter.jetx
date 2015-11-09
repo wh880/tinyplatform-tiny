@@ -1,0 +1,32 @@
+##1、有参数定义，使用#bodyContent
+#macro hello(a,b,c,d)
+   #bodyContent
+#end
+##调用：
+#@hello()hello world!!!  #end
+#hello()
+#hello(1,2,3,4)
+
+**********************************
+##2、有参数定义，直接里面写参数引用
+#macro hello22(a,b,c,d)
+   a=${a}
+   b=${b}
+   c=${c}
+#end
+##调用：
+#@hello22()hello world!!!  #end
+#hello22()
+#hello22(1,2,3,4)
+
+**********************************
+##3、有参数定义，直接里面写参数引用,及#bodyContent
+#macro hello33(a,b,c,d)
+   a=${a}
+   b=${b}
+   c=${c}
+   #bodyContent
+#end
+##调用：
+#@hello33(b=2,1)hello world!!!  #end 表示调用hello33的时候，b先等于2，然后b又被覆盖，最后b=1其他值未设定
+#@hello33(c=2,1)hello world!!!  #end 表示调用hello33的时候，b=1，c=2其他值未设定

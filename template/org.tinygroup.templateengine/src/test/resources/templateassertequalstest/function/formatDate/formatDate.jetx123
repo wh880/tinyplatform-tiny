@@ -1,0 +1,12 @@
+##手工测试，在formatDate.jetx.txt中暂不写预期值，以免自动测试不通过
+${formatDate(now())}
+${formatDate(now(),"yyyy年MM月dd日 HH:mm:ss")}
+${formatDate(now(),"yyyy-MM-dd HH:mm:ss")}
+${formatDate(now(),"yyyy-MM-dd")}
+
+#*示例：
+${formatDate(now())}
+输出格式：2015-08-20 16:03:17
+${formatDate(now(),'yyyy年MM月dd日 HH:mm:ss')}
+输出格式：2015年08月20日 16:03:17
+*#

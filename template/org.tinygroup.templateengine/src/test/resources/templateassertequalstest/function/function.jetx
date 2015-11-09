@@ -1,0 +1,8 @@
+##other function
+${"info".length()}
+
+$(function() {
+    $('#form1').add();
+    $(document).add();
+    $.post();
+})

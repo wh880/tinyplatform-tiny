@@ -1,0 +1,20 @@
+##四则运算及取余
+#set(bar=10)
+#set( foo = bar + 3 )
+${foo}
+#set( foo = bar - 4 )
+${foo}
+#set( foo = bar * 6 )
+${foo}
+#set( foo = bar / 2 )
+${foo}
+#set( foo = bar % 2 )
+${foo}
+
+${1.000f-1.002f}
+${1.000d+1.002d}
+${1+1.002d}
+${1.0+1.2}
+
+${toFloat("1")+toFloat("1.002")}
+${toDouble("1.001")+toDouble("1.002")}

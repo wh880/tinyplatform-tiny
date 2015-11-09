@@ -1,0 +1,5 @@
+#set(name="cying")
+#set(result=eval("hello,${name}"))
+${eval("hello,${name}")}
+${result}
+${evaluate("hello,${name}")}

@@ -1,0 +1,8 @@
+#set( list = ["a","b","c","d"])
+#set( list2 = ["aa","bb","cc","dd"])
+#set(map = {"id":list[i+1], "name":"chen","address":list2})
+${map["id"]}
+${map["name"]}
+${map?["age"]}
+${map?.age}
+${map?["address"][3]}

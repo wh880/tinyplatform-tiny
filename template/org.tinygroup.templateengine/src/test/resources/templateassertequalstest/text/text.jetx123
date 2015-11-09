@@ -1,0 +1,15 @@
+##test #b
+hello#{b}world
+hello#bworld
+hello#b world
+
+##test #t
+hello#{t}world
+hello#tworld
+hello#t world
+
+##test #eol
+#set(a="abcdef")
+----${a}${a}${a}
+----${a}${a}#eol${a}
+----${a}${a}#{eol}${a}

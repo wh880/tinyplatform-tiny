@@ -1,0 +1,24 @@
+This is common file!
+This is common file!
+
+************************
+a.layout start
+#layout(aLayout)
+this is default(a.layout)
+#pageContent
+#end
+a.layout end
+************************
+##调用a.layout中存在的布局名称
+#@layout(aLayout)
+a.page this is layout of aLayout.
+	#pageContent
+#end
+this is a.page
+#macro hello(a,b,c,d)
+   #bodyContent
+   a=${a}
+   b=${b}
+   c=${c}
+   d=${d}      
+#end

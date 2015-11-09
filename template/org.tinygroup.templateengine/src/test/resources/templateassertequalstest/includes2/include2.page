@@ -1,0 +1,7 @@
+#include("./include-sub1.jetx")  ##同级目录
+#include("include-sub1.jetx")   ##同级目录
+#include("include-sub1.jetx", {"myvar":"hello from parent!!!!"})
+#include("includesSubdirectory/include-sub3.jetx") ##下一级目录
+#include("../include-sub2.jetx")  ##上一级目录
+#include("/includes2/include-sub1.jetx")  ##classpath路径支持
+##include("F:/workProject/tiny/template/org.tinygroup.templateengine/src/test/resources/templateJunitRight/includes2/include-sub1.jetx")  ##绝对路径（不支持）
