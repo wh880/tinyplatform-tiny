@@ -19,9 +19,15 @@ import org.tinygroup.template.TemplateException;
 public class TinyTemplateErrorListener implements org.antlr.v4.runtime.ANTLRErrorListener {
     private final String fileName;
     TemplateException exception=null;
+    
     public TinyTemplateErrorListener(String fileName){
         this.fileName=fileName;
     }
+    
+    public TemplateException getTemplateException(){
+    	return this.exception;
+    }
+    
     public void syntaxError(@NotNull Recognizer<?, ?> recognizer, @Nullable Object offendingSymbol, int line, int charPositionInLine, @NotNull String msg, @Nullable RecognitionException e) {
     	ParserRuleContext parserRuleContext = null;
     	if(e!=null){
