@@ -22,6 +22,7 @@ import org.tinygroup.tinysqldsl.formitem.FromItem;
 import org.tinygroup.tinysqldsl.select.Join;
 import org.tinygroup.tinysqldsl.util.DslUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,6 +59,14 @@ public class UpdateBody implements StatementBody {
 	public List<Column> getColumns() {
 		return columns;
 	}
+	
+	public List<Column> getCopyColumns() {
+		List<Column> copyColumns=new ArrayList<Column>();
+		for (Column column : columns) {
+			copyColumns.add(column);
+		}
+		return copyColumns;
+	}
 
 	/**
 	 * The {@link Expression}s in this update (as 'a' and 'b' in UPDATE
@@ -67,6 +76,14 @@ public class UpdateBody implements StatementBody {
 	 */
 	public List<Expression> getExpressions() {
 		return expressions;
+	}
+	
+	public List<Expression> getCopyExpressions() {
+		List<Expression> copyExpressions=new ArrayList<Expression>();
+		for (Expression expression : expressions) {
+			copyExpressions.add(expression);
+		}
+		return copyExpressions;
 	}
 
 	public void setColumns(List<Column> list) {
@@ -121,8 +138,16 @@ public class UpdateBody implements StatementBody {
 		  columns.remove(index);
 	}
 	
+	public void removeColumn(Column column){
+		  columns.remove(column);
+	}
+	
 	public void removeExpression(int index){
 		  expressions.remove(index);
+	}
+	
+	public void removeExpression(Expression expression){
+		  expressions.remove(expression);
 	}
 	
 	@Override
