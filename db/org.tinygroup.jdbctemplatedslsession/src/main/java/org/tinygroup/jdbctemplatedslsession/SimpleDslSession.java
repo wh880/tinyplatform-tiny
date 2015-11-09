@@ -168,7 +168,7 @@ public class SimpleDslSession implements DslSession {
 			UpdateBody updateBody = update.getUpdateBody();
 			List<Column> columns=updateBody.getCopyColumns();
 			List<Expression> expressions=updateBody.getCopyExpressions();
-			for (int i = 0; i < values.size(); i++) {
+			for (int i = 0; i < columns.size(); i++) {
 				if (values.get(i) == null) {
 					updateBody.removeColumn(columns.get(i));
 					updateBody.removeExpression(expressions.get(i));
