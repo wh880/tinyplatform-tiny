@@ -51,7 +51,9 @@ import org.tinygroup.tinysqldsl.Insert;
 import org.tinygroup.tinysqldsl.Pager;
 import org.tinygroup.tinysqldsl.Select;
 import org.tinygroup.tinysqldsl.Update;
+import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.base.InsertContext;
+import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.select.PlainSelect;
 import org.tinygroup.tinysqldsl.selectitem.FragmentSelectItemSql;
 import org.tinygroup.tinysqldsl.selectitem.SelectItem;
@@ -164,10 +166,12 @@ public class SimpleDslSession implements DslSession {
 		if (ignoreNull) {
 			List<Object> values = update.getValues();
 			UpdateBody updateBody = update.getUpdateBody();
-			for (int i = 0; i < values.size(); i++) {
+			List<Column> columns=updateBody.getCopyColumns();
+			List<Expression> expressions=updateBody.getCopyExpressions();
+			for (int i = 0; i < columns.size(); i++) {
 				if (values.get(i) == null) {
-					updateBody.removeColumn(i);
-					updateBody.removeExpression(i);
+					updateBody.removeColumn(columns.get(i));
+					updateBody.removeExpression(expressions.get(i));
 				}
 			}
 			sql = update.newSql();

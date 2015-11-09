@@ -94,7 +94,7 @@ public class DslSqlTest extends BaseTest {
 		assertEquals(1, affect);
 		
 		update=update(CUSTOM).set(CUSTOM.NAME.value(null),
-				CUSTOM.AGE.value(30)).where(CUSTOM.NAME.eq("flank"));
+				CUSTOM.ID.value(223),CUSTOM.AGE.value(null)).where(CUSTOM.NAME.eq("flank"));
 		affect = session.execute(update,true);
 		assertEquals(1, affect);
 		
