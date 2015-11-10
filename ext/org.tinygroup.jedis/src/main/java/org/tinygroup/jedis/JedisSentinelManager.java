@@ -2,7 +2,6 @@ package org.tinygroup.jedis;
 
 import org.tinygroup.jedis.config.JedisSentinelConfig;
 import org.tinygroup.jedis.config.JedisSentinelConfigs;
-import org.tinygroup.jedis.impl.JedisSentinelClient2;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -90,6 +89,5 @@ public interface JedisSentinelManager {
 	 */
 	 JedisPool getReadJedisPool(String masterName);
 
-	 JedisSentinelClient2 getJedisSentinelClient2(String masterName);
 
 }
