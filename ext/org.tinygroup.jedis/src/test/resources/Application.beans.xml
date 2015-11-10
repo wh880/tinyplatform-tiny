@@ -25,9 +25,9 @@
 	<!-- 连接池的配置信息 -->
 	<bean id="jedisConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<!-- 说明一个pool可以有多少个Jedis实例 -->
-		<property name="maxTotal" value="10" />
+		<property name="maxTotal" value="100" />
 		<!-- 最大Idle -->
-		<property name="maxIdle" value="5" />
+		<property name="maxIdle" value="80" />
 		<!-- 最小Idle -->
 		<property name="minIdle" value="1" />
 		<!-- 获得一个jedis实例的时候是否检查连接可用性（ping()） -->
