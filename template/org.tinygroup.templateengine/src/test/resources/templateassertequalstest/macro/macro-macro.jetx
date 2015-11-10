@@ -1,0 +1,16 @@
+##宏定义时嵌套调用了另一个宏
+#macro subMacroName1()
+	abcdefg
+#end
+
+#macro macroName()
+ 	#@subMacroName1()
+		#@subMacroName1()
+			#bodyContent
+		#end
+	#end
+#end
+
+##调用**************
+#@macroName()HelloWorld. #end
+#macroName()

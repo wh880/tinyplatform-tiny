@@ -1,0 +1,6 @@
+#@layout(weblayout2)
+this is layout of weblayout2
+	##其中 “weblayout2” 名称布局是不存在的
+    #pageContent
+#end
+this is a2.page

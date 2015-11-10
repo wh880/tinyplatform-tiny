@@ -1,0 +1,5 @@
+${read("function/read/test.txt")}
+${readContent("function/read/test.txt")}
+${read("layout/a.layout")}
+${read("layout/a.page")}
+${read("import/macroHello.component")}

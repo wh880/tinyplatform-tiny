@@ -1,0 +1,6 @@
+##调用a.layout中存在的布局名称
+#@layout(aLayout)
+a.page this is layout of aLayout.
+	#pageContent
+#end
+this is a.page

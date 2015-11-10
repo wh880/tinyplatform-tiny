@@ -1,0 +1,7 @@
+${parse("/function/parse/ptest2.jetx")} ##同级目录
+${parse("/ptest1.jetx")} ##上一级的上一级目录
+${parse("/function/parse/parseFile/ptest3.jetx")} ##下一级目录
+${parse("ptest2.jetx")}  ##同级目录
+${parse("./ptest2.jetx")} ##同级目录
+${parse("parseFile/ptest3.jetx")} ##下一级目录
+${parse("../../ptest1.jetx")}  ##上一级的上一级目录

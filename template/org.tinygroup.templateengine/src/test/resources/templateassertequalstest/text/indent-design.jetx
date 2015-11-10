@@ -1,0 +1,34 @@
+##test #[
+hello
+#[hello
+#{[}hello
+
+##test #],空两个空格的基础上取消缩进
+  hello
+#]  hello
+#{]}  hello
+
+##test indent
+#for(i:[1..2])
+    ${i}
+    #for(j:[1..2])
+        ${i}*${j}=${i*j}
+    #end
+#end
+
+#for(i:[1..2])
+    ${i}
+    #[
+    #for(j:[1..2])
+        ${i}*${j}=${i*j}
+    #end
+    #]
+#end
+
+000000000000000000000000000000
+XXXXXXXX
+#[#t 1234567890
+aaaaaaaaaaaa
+#[#t#t  AAAAAAAAAA
+YYYYYYYY
+111111111111111111111111111111

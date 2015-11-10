@@ -1,0 +1,17 @@
+#*
+随机数函数每次产生的值不一样，所以需要手工测试，在rand.jetx.txt文件中暂不设置预期值，
+不然自动测试通不过
+*#
+${rand()}
+${random()}
+${rand("int")}
+${random("int")}
+${rand(long)}
+${random("long")}
+${rand("float")}
+${random("float")}
+${rand("double")}
+${random("double")}
+${rand("uuid")}
+${random("uuid")}
+${rand("byte")}##指定不符合的类型，返回结果无值

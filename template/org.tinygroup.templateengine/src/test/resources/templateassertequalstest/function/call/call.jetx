@@ -1,0 +1,33 @@
+## 示例1： call函数方式   单行调用
+#macro hello(a,b,c)
+this a macro call
+         a=${a}
+         b=${b}
+         c=${c}
+#end
+##调用
+${call("hello",1,2)}
+等价于#call("hello",1,2)
+等价于#hello(1,2)
+****************
+${call("hello")}
+${callMacro("hello")}
+${callMacro("hello",1,2)}
+****************
+#call("hello")
+#callMacro("hello")
+#callMacro("hello",1,2)
+
+******************************************************
+## 示例2： call函数方式   带内容调用
+#macro html123(a,b,c)
+    <div> #bodyContent </div>
+    <i><b>a=${a},b=${b},c=${c}</b></i>
+#end
+##调用：
+#@call("html123",1,"bbbb")
+      hello world!
+#end
+#@callMacro("html123",1,"bbbb")
+      hello world!
+#end

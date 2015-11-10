@@ -1,0 +1,14 @@
+hello world
+hello#bworld
+hello  world
+
+hello	world
+hello#tworld
+hello	 world
+
+
+----abcdefabcdefabcdef
+----abcdefabcdef
+abcdef
+----abcdefabcdef
+abcdef

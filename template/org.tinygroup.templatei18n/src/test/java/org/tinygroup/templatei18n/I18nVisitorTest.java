@@ -83,16 +83,10 @@ public class I18nVisitorTest extends TestCase{
     	TemplateContext context = new TemplateContextDefault();
     	ThreadLocaleI18nVisitor i18nVisitor = new ThreadLocaleI18nVisitor();
     	
-		String result=i18nVisitor.getI18nMessage(context, "sex");
-		Assert.assertEquals("性别", result);
-		
-		
-		context.put("name", "虎子");
-		result=i18nVisitor.getI18nMessage(context, "loginInfoContext");
-		Assert.assertEquals("用户虎子登录失败", result);
+    	Assert.assertNotNull(i18nVisitor.getLocale(context));
 		
 		//测试不存在的键值
-		result=i18nVisitor.getI18nMessage(context, "aaa");
+		String result=i18nVisitor.getI18nMessage(context, "aaa");
 		Assert.assertEquals("", result);
 		
 	}

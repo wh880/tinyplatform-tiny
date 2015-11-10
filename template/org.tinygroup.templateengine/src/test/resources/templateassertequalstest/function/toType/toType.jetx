@@ -1,0 +1,8 @@
+${toInt("8")+toInt("2")}
+${toDouble("2")}
+${toLong("2353333333333334")}
+${toFloat("20.4")+toFloat("20.8")}
+${toBool("true")?1:2}
+
+#set(sex=1)
+${toBool(sex==1)?"男":"女"}

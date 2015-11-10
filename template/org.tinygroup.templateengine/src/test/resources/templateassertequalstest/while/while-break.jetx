@@ -1,0 +1,13 @@
+#set(i=0)
+#while(true)
+  #break(i>6)
+  #set(i=i+1)
+  ${i}
+#end
+**************************************************
+#set(i=0)
+#while(true)
+  #set(i=i+1)
+  ${i}
+  #break(i>6)
+#end

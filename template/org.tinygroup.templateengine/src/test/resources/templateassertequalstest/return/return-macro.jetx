@@ -1,0 +1,14 @@
+#macro log(level, info)
+  #if(level=='debug')
+    <debug>${info}</debug>
+  #else
+    #return
+  #end
+#end
+
+##调用:
+#log("debug")
+*****************
+#log("abc")
+*****************
+#log("debug")

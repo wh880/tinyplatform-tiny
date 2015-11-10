@@ -1,0 +1,9 @@
+#set(aa=1,bb=2,cc=3)
+#set(map1={aa:1,bb:"2",cc:1+2})
+#set(map2={'aa':1,'bb':"2",'cc':1+2})
+${map2.get("aa")}
+${map2?.get("aa")}
+${map2?["aa"]}
+${map2["aa"]}
+${map2.aa}
+${map1["aa"]}

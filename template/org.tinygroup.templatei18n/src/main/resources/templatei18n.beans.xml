@@ -3,7 +3,12 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans.xsd"
 	   default-lazy-init="true">
-	   
+	
+	<bean id="contextLocaleI18nVisitor" scope="singleton"
+		class="org.tinygroup.templatei18n.ContextLocaleI18nVisitor">
+		<property name="localeName" value="defaultLocale" ></property>
+	</bean>
+	
 	<bean id="defaultLocaleI18nVisitor" scope="singleton"
 		class="org.tinygroup.templatei18n.DefaultLocaleI18nVisitor">
 	</bean>
