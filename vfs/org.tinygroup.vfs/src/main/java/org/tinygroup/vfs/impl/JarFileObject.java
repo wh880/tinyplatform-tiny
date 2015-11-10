@@ -156,43 +156,44 @@ public class JarFileObject extends AbstractFileObject {
 		if (jarEntry != null) {
 			return jarEntry.isDirectory();
 		}
-		if (file.exists()) {
-			return true;
-		}
-		return false;
+		return true;
 	}
 
 	public List<FileObject> getChildren() {
-		if (!file.exists()) {
-			return null;
-		}
 		if (children == null) {
-			children = new ArrayList<FileObject>();
-			Enumeration<JarEntry> e = (Enumeration<JarEntry>) jarFile.entries();
-			while (e.hasMoreElements()) {
-				JarEntry entry = (JarEntry) e.nextElement();
-				if (getParent() == null) {
-					String[] names = entry.getName().split("/");
-					// 如果当前是jar文件，如果
+			if (!file.exists()) {
+				return null;
+			}
+			createJarEntry();
+		}
+		return children;
+	}
+	
+	private void createJarEntry(){
+		children = new ArrayList<FileObject>();
+		Enumeration<JarEntry> e = (Enumeration<JarEntry>) jarFile.entries();
+		while (e.hasMoreElements()) {
+			JarEntry entry = (JarEntry) e.nextElement();
+			if (getParent() == null) {
+				String[] names = entry.getName().split("/");
+				// 如果当前是jar文件，如果
+				if (names.length == 1) {
+					addSubItem(entry);
+				}
+			} else {
+				// 如果不是根目录
+				String parentName = jarEntry.getName();
+				if (!entry.getName().equals(jarEntry.getName())
+						&& entry.getName().startsWith(parentName)) {
+					String fn = entry.getName().substring(
+							parentName.length());
+					String[] names = fn.split("/");
 					if (names.length == 1) {
 						addSubItem(entry);
-					}
-				} else {
-					// 如果不是根目录
-					String parentName = jarEntry.getName();
-					if (!entry.getName().equals(jarEntry.getName())
-							&& entry.getName().startsWith(parentName)) {
-						String fn = entry.getName().substring(
-								parentName.length());
-						String[] names = fn.split("/");
-						if (names.length == 1) {
-							addSubItem(entry);
-						}
 					}
 				}
 			}
 		}
-		return children;
 	}
 
 	private void addSubItem(JarEntry entry) {

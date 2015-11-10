@@ -55,6 +55,8 @@ public class TinyTemplateErrorListener implements org.antlr.v4.runtime.ANTLRErro
             
     		exception=new TemplateException(sb.toString());
     		exception.setContext(null, fileName);
+    		exception.setLine(line);
+    		exception.setCharPositionInLine(charPositionInLine);
     	}
     	
         

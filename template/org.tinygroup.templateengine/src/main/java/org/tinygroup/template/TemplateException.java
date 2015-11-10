@@ -23,8 +23,33 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public class TemplateException extends Exception {
     private ParserRuleContext context;
     private String fileName;
+    
+    private int line; //仅供Eclipse插件解析调用
+    private int charPositionInLine; //仅供Eclipse插件解析调用
 
-    public TemplateException() {
+    public int getLine() {
+    	if(context!=null && context.getStart()!=null){
+    	   return context.getStart().getLine();
+    	}
+		return line;
+	}
+
+	public void setLine(int line) {
+		this.line = line;
+	}
+
+	public int getCharPositionInLine() {
+		if(context!=null && context.getStart()!=null){
+	    	   return context.getStart().getCharPositionInLine();
+	    }
+		return charPositionInLine;
+	}
+
+	public void setCharPositionInLine(int charPositionInLine) {
+		this.charPositionInLine = charPositionInLine;
+	}
+
+	public TemplateException() {
 
     }
 
