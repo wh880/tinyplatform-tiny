@@ -74,6 +74,10 @@ public class TinyShardJedis extends ShardedJedis {
 		}
 		return totalList;
 	}
+	
+	public Map<JedisShardInfo, List<Jedis>> getReadShardsMap(){
+		return readMap;
+	}
 
 	public Collection<Jedis> getAllShards() {
 		return super.getAllShards();
@@ -492,7 +496,7 @@ public class TinyShardJedis extends ShardedJedis {
 		return j.zscan(key, cursor);
 	}
 
-	@Override
+	
 	public long pfcount(String key) {
 		Jedis j = getReadShard(key);
 		return j.pfcount(key);
@@ -514,6 +518,7 @@ public class TinyShardJedis extends ShardedJedis {
 		}
 		return set;
 	}
+	
 	public void flushAll(){
 		Collection<Jedis> jedisSet= getAllShards();
 		for(Jedis jedis:jedisSet){
