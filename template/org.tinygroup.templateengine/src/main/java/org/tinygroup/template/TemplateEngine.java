@@ -114,6 +114,18 @@ public interface TemplateEngine extends TemplateContextOperator {
      * @return
      */
     String getEncode();
+    
+    /**
+     * 是否支持国际化模板
+     * @return
+     */
+    boolean isLocaleTemplateEnable();
+    
+    /**
+     * 设置是否支持国际化模板
+     * @param localeTemplateEnable
+     */
+    void setLocaleTemplateEnable(boolean localeTemplateEnable);
 
     /**
      * 添加类型加载器

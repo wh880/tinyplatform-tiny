@@ -97,6 +97,9 @@ public class TinyTemplateConfigProcessor extends AbstractApplicationProcessor{
         			}else if("checkModified".equalsIgnoreCase(name)){
         				templateEngine.setCheckModified(Boolean.parseBoolean(StringUtil.defaultIfBlank(value, "false")));
         				LOGGER.logMessage(LogLevel.INFO, "设置模板引擎参数checkModified={0}",templateEngine.isCheckModified());
+        			}else if("localeTemplateEnable".equalsIgnoreCase(name)){
+        				templateEngine.setLocaleTemplateEnable(Boolean.parseBoolean(StringUtil.defaultIfBlank(value, "false")));
+        				LOGGER.logMessage(LogLevel.INFO, "设置模板引擎参数localeTemplateEnable={0}",templateEngine.isLocaleTemplateEnable());
         			}
         		}catch (Exception e) {
         			LOGGER.errorMessage("设置模板引擎属性[{0}]出错,属性值[{1}]", e ,node.getAttribute("name"),node.getAttribute("value"));
