@@ -1,12 +1,12 @@
 <shard-jedis-sentinel-configs>
 	<shard-jedis-sentinel-config>
-		<!--sentinelsÎªredisÖ÷±¸µÄsentinel·þÎñÆ÷£¬µ¥¸ö·þÎñÆ÷µØÖ·Îª ip:port,Ö§³Ö¶à¸ö£¬¶à¸öÖ®¼ä¶ººÅ·Ö¸ô-->
-		<!--sentinel·þÎñÆ÷¼ÜÉèÅäÖÃÇë²Î¼ûredisÏà¹ØËµÃ÷-->
+		<!--sentinelsä¸ºredisä¸»å¤‡çš„sentinelæœåŠ¡å™¨ï¼Œå•ä¸ªæœåŠ¡å™¨åœ°å€ä¸º ip:port,æ”¯æŒå¤šä¸ªï¼Œå¤šä¸ªä¹‹é—´é€—å·åˆ†éš”-->
+		<!--sentinelæœåŠ¡å™¨æž¶è®¾é…ç½®è¯·å‚è§redisç›¸å…³è¯´æ˜Ž-->
 		<shard-sentinel-configs sentinels="192.168.51.29:33333">
-			<!-- sentinelµÄÒ»¸öÖ÷±¸ÖÐËùÓÐµÄ·þÎñÆ÷µÄÐÅÏ¢  master-nameÎª¸ÃÖ÷±¸¼¯ÈºÔÚsentinelÖÐµÄ±êÊ¶ -->
-			<!-- ×¢:´Ë´¦ÒªÇóËùÓÐ*.jedisshardsentrinelconfig.xmlÖÐ£¬master-nameÈ«¾ÖÎ¨Ò» -->
+			<!-- sentinelçš„ä¸€ä¸ªä¸»å¤‡ä¸­æ‰€æœ‰çš„æœåŠ¡å™¨çš„ä¿¡æ¯  master-nameä¸ºè¯¥ä¸»å¤‡é›†ç¾¤åœ¨sentinelä¸­çš„æ ‡è¯† -->
+			<!-- æ³¨:æ­¤å¤„è¦æ±‚æ‰€æœ‰*.jedisshardsentrinelconfig.xmlä¸­ï¼Œmaster-nameå…¨å±€å”¯ä¸€ -->
 			<shard-sentinel-config master-name="master1">  
-				<!-- idÎª¼¯ÈºÄÚ·þÎñÆ÷±êÖ¾£¬Ä¿Ç°ÎÞÊµ¼Êº¬Òå,hostÎª·þÎñÆ÷ip£¬portÎª·þÎñÆ÷µØÖ·-->
+				<!-- idä¸ºé›†ç¾¤å†…æœåŠ¡å™¨æ ‡å¿—ï¼Œç›®å‰æ— å®žé™…å«ä¹‰,hostä¸ºæœåŠ¡å™¨ipï¼Œportä¸ºæœåŠ¡å™¨åœ°å€-->
 				<jedis-config id="server01" host="192.168.51.29" port="11111"></jedis-config>
 				<jedis-config id="server02" host="192.168.51.29" port="11112"></jedis-config>
 				<jedis-config id="server03" host="192.168.51.29" port="11113"></jedis-config>
