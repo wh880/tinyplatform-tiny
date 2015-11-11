@@ -15,7 +15,6 @@
  */
 package org.tinygroup.template.impl;
 
-
 import org.tinygroup.template.*;
 import org.tinygroup.template.application.*;
 import org.tinygroup.template.function.*;
@@ -51,8 +50,17 @@ public class TemplateEngineDefault implements TemplateEngine {
     private Map<String, Template> repositories = new ConcurrentHashMap<String, Template>();
     private TemplateCache<String,Object> localeSearchResults = new TemplateCacheDefault<String,Object>();
     private boolean checkModified = false;
+    private boolean localeTemplateEnable = false;
 
-    public void setCheckModified(boolean checkModified) {
+    public boolean isLocaleTemplateEnable() {
+		return localeTemplateEnable;
+	}
+
+	public void setLocaleTemplateEnable(boolean localeTemplateEnable) {
+		this.localeTemplateEnable = localeTemplateEnable;
+	}
+
+	public void setCheckModified(boolean checkModified) {
         this.checkModified = checkModified;
     }
 
@@ -325,48 +333,56 @@ public class TemplateEngineDefault implements TemplateEngine {
     }
 
     private Template findTemplate(TemplateContext context, String path) throws TemplateException {
-        Locale locale = context.get("defaultLocale");
-        if (locale != null) {
-            String localePath = TemplateUtil.getLocalePath(path, locale);
-            if(localeSearchResults.contains(localePath)){
-         	   return findTemplate(path);
-         	}
-            try{
-            	Template template = findTemplate(localePath);
-            	if(template!=null){
-            	   return template;
-            	}else{
-            		localeSearchResults.put(localePath, "");
-            	}
-            }catch(TemplateException e){
-               //findTemplate查找不到国际化模板资源可能会抛出异常，这时候再找默认模板资源
-               localeSearchResults.put(localePath, "");
-               return findTemplate(path);
+    	if(localeTemplateEnable){
+    		//查询国际化模板
+    		Locale locale = context.get("defaultLocale");
+            if (locale != null) {
+                String localePath = TemplateUtil.getLocalePath(path, locale);
+                if(localeSearchResults.contains(localePath)){
+             	   return findTemplate(path);
+             	}
+                try{
+                	Template template = findTemplate(localePath);
+                	if(template!=null){
+                	   return template;
+                	}else{
+                		localeSearchResults.put(localePath, "");
+                	}
+                }catch(TemplateException e){
+                   //findTemplate查找不到国际化模板资源可能会抛出异常，这时候再找默认模板资源
+                   localeSearchResults.put(localePath, "");
+                   return findTemplate(path);
+                }
             }
-        }
+    	}
+        //查询默认模板
         return findTemplate(path);
     }
 
     private Template findLayout(TemplateContext context, String path) throws TemplateException {
-        Locale locale = context.get("defaultLocale");
-        if (locale != null) {
-        	String localePath = TemplateUtil.getLocalePath(path, locale);
-        	if(localeSearchResults.contains(localePath)){
-        	   return findLayout(path,false);
-        	}
-            try{
-            	Template template = findLayout(localePath,false);
-            	if(template!=null){
-            	   return template;
-            	}else{
-            		localeSearchResults.put(localePath, "");
+    	if(localeTemplateEnable){
+    		//查询国际化模板
+    		Locale locale = context.get("defaultLocale");
+            if (locale != null) {
+            	String localePath = TemplateUtil.getLocalePath(path, locale);
+            	if(localeSearchResults.contains(localePath)){
+            	   return findLayout(path,false);
             	}
-            }catch(TemplateException e){
-               //findLayout查找不到国际化模板资源可能会抛出异常，这时候再找默认模板资源
-               localeSearchResults.put(localePath, "");
-               return findLayout(path,false);
+                try{
+                	Template template = findLayout(localePath,false);
+                	if(template!=null){
+                	   return template;
+                	}else{
+                		localeSearchResults.put(localePath, "");
+                	}
+                }catch(TemplateException e){
+                   //findLayout查找不到国际化模板资源可能会抛出异常，这时候再找默认模板资源
+                   localeSearchResults.put(localePath, "");
+                   return findLayout(path,false);
+                }
             }
-        }
+    	}
+    	//查询原始模板
         return findLayout(path,false);
     }
 
