@@ -458,7 +458,7 @@ public final class TemplateUtil {
         try{
         	if (object instanceof Map) {
                 Map map = (Map) object;
-                return map.get(indexObject.toString());
+                return map.get(indexObject);
             }
             if (indexObject instanceof Integer) {
                 index = ((Integer) indexObject).intValue();

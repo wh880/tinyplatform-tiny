@@ -1,7 +1,12 @@
 <shard-jedis-sentinel-configs>
 	<shard-jedis-sentinel-config>
+		<!--sentinels为redis主备的sentinel服务器，单个服务器地址为 ip:port,支持多个，多个之间逗号分隔-->
+		<!--sentinel服务器架设配置请参见redis相关说明-->
 		<shard-sentinel-configs sentinels="192.168.51.29:33333">
-			<shard-sentinel-config master-name="master1">
+			<!-- sentinel的一个主备中所有的服务器的信息  master-name为该主备集群在sentinel中的标识 -->
+			<!-- 注:此处要求所有*.jedisshardsentrinelconfig.xml中，master-name全局唯一 -->
+			<shard-sentinel-config master-name="master1">  
+				<!-- id为集群内服务器标志，目前无实际含义,host为服务器ip，port为服务器地址-->
 				<jedis-config id="server01" host="192.168.51.29" port="11111"></jedis-config>
 				<jedis-config id="server02" host="192.168.51.29" port="11112"></jedis-config>
 				<jedis-config id="server03" host="192.168.51.29" port="11113"></jedis-config>

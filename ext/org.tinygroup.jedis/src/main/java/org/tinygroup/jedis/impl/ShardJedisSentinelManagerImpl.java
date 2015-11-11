@@ -60,6 +60,9 @@ public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager 
 	}
 
 	public void init(GenericObjectPoolConfig poolConfig){
+		if(poolConfig==null){
+			throw new RuntimeException("初始化连接池不可为空");
+		}
 		destroy();
 		pool = new TinyShardedJedisSentinelPool(map, poolConfig);
 	}
