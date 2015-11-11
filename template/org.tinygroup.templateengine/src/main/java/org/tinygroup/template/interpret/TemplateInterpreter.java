@@ -15,6 +15,10 @@
  */
 package org.tinygroup.template.interpret;
 
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -26,10 +30,6 @@ import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.terminal.OtherTerminalNodeProcessor;
 import org.tinygroup.template.parser.grammer.TinyTemplateLexer;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by luog on 15/7/17.
@@ -64,8 +64,9 @@ public class TemplateInterpreter {
         TinyTemplateErrorListener listener = new TinyTemplateErrorListener(sourceName);
         parser.addErrorListener(listener);
         TinyTemplateParser.TemplateContext context = parser.template();
-        if (listener.exception != null) {
-            throw listener.exception;
+        if (listener.getTemplateException().size() > 0) {
+        	//TODO：yanwj临时修改，yancheng有时间重构下
+            throw listener.getTemplateException().get(0);
         }
         return context;
     }
