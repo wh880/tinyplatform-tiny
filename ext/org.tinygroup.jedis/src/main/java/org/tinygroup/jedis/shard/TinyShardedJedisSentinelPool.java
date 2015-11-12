@@ -286,6 +286,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 
 				}
 			}
+			shardedJedis.close();
 		}
 
 		public boolean validateObject(

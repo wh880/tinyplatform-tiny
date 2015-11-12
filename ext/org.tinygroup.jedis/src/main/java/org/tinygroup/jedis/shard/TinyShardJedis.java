@@ -94,13 +94,6 @@ public class TinyShardJedis extends ShardedJedis {
 
 	public Collection<Jedis> getAllShards() {
 		return super.getAllShards();
-		// Collection<Jedis> jedis = super.getAllShards();
-		// List<Jedis> totalList = new ArrayList<Jedis>();
-		// totalList.addAll(jedis);
-		// for (List<Jedis> list : readMap.values()) {
-		// totalList.addAll(getValiableJedis(list));
-		// }
-		// return totalList;
 	}
 
 	// private List<Jedis> getValiableJedis(List<Jedis> list){
@@ -118,6 +111,7 @@ public class TinyShardJedis extends ShardedJedis {
 
 	public void close() {
 		super.close();
+		failTestThread.stopTry();
 		for (List<Jedis> list : readMap.values()) {
 			for (Jedis jedis : list) {
 				jedis.close();
@@ -553,8 +547,13 @@ public class TinyShardJedis extends ShardedJedis {
 	 * 
 	 */
 	class FailOverThread extends Thread {
+		boolean stop = false;
+		
+		public void stopTry(){
+			stop = true;
+		}
 		public void run() {
-			while (true) {
+			while (!stop) {
 				try {
 					sleep(JedisUtil.getFailOverTime());
 				} catch (Exception e) {
@@ -569,14 +568,14 @@ public class TinyShardJedis extends ShardedJedis {
 		for (List<Jedis> list : failReadMap.values()) {
 			List<Jedis> newList = JedisUtil.copy(list);
 			for (Jedis j : newList) {
-				LOGGER.logMessage(LogLevel.DEBUG, "轮询连接失败的服务器:{}:{}", j
+				LOGGER.logMessage(LogLevel.DEBUG, "开始尝试连接的服务器:{}:{}", j
 						.getClient().getHost(), j.getClient().getPort());
 				boolean sucess = testFailJedis(j);
 				if (sucess) {
 					LOGGER.logMessage(LogLevel.DEBUG, "连接成功,从fail列表中删除");
 					list.remove(j);
 				}
-				LOGGER.logMessage(LogLevel.DEBUG, "轮询连接失败的服务器:{}:{}", j
+				LOGGER.logMessage(LogLevel.DEBUG, "连接服务器:{}:{}结束", j
 						.getClient().getHost(), j.getClient().getPort());
 			}
 		}
