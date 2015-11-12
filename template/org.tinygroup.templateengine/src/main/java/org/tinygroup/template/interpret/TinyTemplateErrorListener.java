@@ -1,6 +1,8 @@
 package org.tinygroup.template.interpret;
 
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -18,14 +20,14 @@ import org.tinygroup.template.TemplateException;
  */
 public class TinyTemplateErrorListener implements org.antlr.v4.runtime.ANTLRErrorListener {
     private final String fileName;
-    TemplateException exception=null;
+    List<TemplateException> exceptions = new ArrayList<TemplateException>();
     
     public TinyTemplateErrorListener(String fileName){
         this.fileName=fileName;
     }
     
-    public TemplateException getTemplateException(){
-    	return this.exception;
+    public List<TemplateException> getTemplateException(){
+    	return this.exceptions;
     }
     
     public void syntaxError(@NotNull Recognizer<?, ?> recognizer, @Nullable Object offendingSymbol, int line, int charPositionInLine, @NotNull String msg, @Nullable RecognitionException e) {
@@ -36,7 +38,7 @@ public class TinyTemplateErrorListener implements org.antlr.v4.runtime.ANTLRErro
         		parserRuleContext = (ParserRuleContext)ruleContext;
         	}
     	}
-    	
+    	TemplateException exception=null;
     	if(parserRuleContext!=null){
     		//通过RecognitionException获取错误信息
     		exception=new TemplateException(e,parserRuleContext,fileName);
@@ -58,6 +60,9 @@ public class TinyTemplateErrorListener implements org.antlr.v4.runtime.ANTLRErro
     		exception.setLine(line);
     		exception.setCharPositionInLine(charPositionInLine);
     	}
+    	if (exception != null) {
+    		exceptions.add(exception);
+		}
     	
         
     }
