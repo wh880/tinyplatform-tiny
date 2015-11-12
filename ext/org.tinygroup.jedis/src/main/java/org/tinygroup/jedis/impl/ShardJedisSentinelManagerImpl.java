@@ -12,6 +12,7 @@ import org.tinygroup.jedis.config.ShardSentinelConfig;
 import org.tinygroup.jedis.config.ShardSentinelConfigs;
 import org.tinygroup.jedis.shard.TinyShardJedis;
 import org.tinygroup.jedis.shard.TinyShardedJedisSentinelPool;
+import org.tinygroup.jedis.util.JedisUtil;
 
 
 public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager {
@@ -92,6 +93,10 @@ public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager 
 	public void returnBrokenResource(TinyShardJedis resource){
 		resource.resetWriteState();
 		pool.returnBrokenResource(resource);
+	}
+
+	public void setFailOverTime(int failOverTime) {
+		JedisUtil.setFailOverTime(failOverTime);
 	}
 
 }

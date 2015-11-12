@@ -16,17 +16,20 @@ import redis.clients.jedis.Protocol;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 public class JedisUtil {
+	// 若有服务器fail，定时轮询间隔时间
+	private static int FAILOVERTIME = 10000;
+
+	public static int getFailOverTime() {
+		return FAILOVERTIME;
+	}
+
+	public static void setFailOverTime(int failOverTime) {
+		JedisUtil.FAILOVERTIME = failOverTime;
+	}
+
 	private JedisUtil() {
 	}
 
-	static int i = 0;
-	
-	public static void plusForTest(){
-		i++;
-	}
-	public static int getForTest(){
-		return i;
-	}
 	public static JedisPool createJedisPool(JedisConfig jedisConfig,
 			ClassLoader loader) {
 		// 设置默认参数
@@ -65,12 +68,31 @@ public class JedisUtil {
 		info.setPassword(jedisConfig.getPassword());
 		return info;
 	}
-	
-	public static String toSimpleString(String host,int port) {
+
+	public static String toSimpleString(String host, int port) {
 		return host + ":" + port;
 	}
-	
-	public static Jedis choose(List<Jedis> list) {
+
+	// public static Jedis choose(List<Jedis> currentlist,List<Jedis> skipList)
+	// {
+	// List<Jedis> list = newList(currentlist, skipList);
+	// if (list.size() == 0) {
+	// return null;
+	// }
+	// int totalWeight = list.size();
+	// int random = (int) (Math.random() * totalWeight);
+	// Jedis j = list.get(random);
+	// try {
+	// j.connect();
+	// return j;
+	// } catch (JedisConnectionException ex) {
+	// skipList.add(j);
+	// List<Jedis> newList = newList(list, j);
+	// return chooseWithRemove(newList,skipList);
+	// }
+	// }
+
+	public static Jedis choose(List<Jedis> list, List<Jedis> skipList) {
 		if (list.size() == 0) {
 			return null;
 		}
@@ -78,20 +100,64 @@ public class JedisUtil {
 		int random = (int) (Math.random() * totalWeight);
 		Jedis j = list.get(random);
 		try {
-			j.connect();
-			return j;
+			j.ping();
+			if (j.ping().equals("PONG")) {
+				return j;
+			}
+			return chooseAgain(list, skipList, j);
 		} catch (JedisConnectionException ex) {
-			List<Jedis> newList = newList(list, j);
-			return choose(newList);
+			return chooseAgain(list, skipList, j);
 		}
 	}
 
-	private static List<Jedis> newList(List<Jedis> jedises, Jedis jedis) {
+	private static Jedis chooseAgain(List<Jedis> list, List<Jedis> skipList,
+			Jedis j) {
+		skipList.add(j);
+		list.remove(j);
+		return choose(list, skipList);
+	}
+
+	// public static Jedis choose(List<Jedis> list) {
+	// if (list.size() == 0) {
+	// return null;
+	// }
+	// int totalWeight = list.size();
+	// int random = (int) (Math.random() * totalWeight);
+	// Jedis j = list.get(random);
+	// try {
+	// j.connect();
+	// return j;
+	// } catch (JedisConnectionException ex) {
+	// List<Jedis> newList = newList(list, j);
+	// return choose(newList);
+	// }
+	// }
+	//
+	// private static List<Jedis> newList(List<Jedis> jedises, Jedis jedis) {
+	// List<Jedis> list = new ArrayList<Jedis>();
+	// for (Jedis j : jedises) {
+	// if (j == jedis) {
+	// continue;
+	// }
+	// list.add(j);
+	// }
+	// return list;
+	// }
+
+	public static List<Jedis> newList(List<Jedis> jedises, List<Jedis> skipJedis) {
 		List<Jedis> list = new ArrayList<Jedis>();
 		for (Jedis j : jedises) {
-			if (j == jedis) {
+			if (skipJedis.contains(j)) {
 				continue;
 			}
+			list.add(j);
+		}
+		return list;
+	}
+
+	public static List<Jedis> copy(List<Jedis> jedises) {
+		List<Jedis> list = new ArrayList<Jedis>();
+		for (Jedis j : jedises) {
 			list.add(j);
 		}
 		return list;

@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.tinygroup.jedis.util.JedisUtil;
+import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
@@ -24,6 +25,8 @@ public class TinyShardJedis extends ShardedJedis {
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(TinyShardJedis.class);
 	private Map<JedisShardInfo, List<Jedis>> readMap = new HashMap<JedisShardInfo, List<Jedis>>();
+	private Map<JedisShardInfo, List<Jedis>> failReadMap = new HashMap<JedisShardInfo, List<Jedis>>();
+	private FailOverThread failTestThread = new FailOverThread();
 	private boolean writeState = false;
 
 	/**
@@ -36,6 +39,8 @@ public class TinyShardJedis extends ShardedJedis {
 	public TinyShardJedis(List<JedisShardInfo> shards, Hashing algo,
 			Pattern keyTagPattern) {
 		super(shards, algo, keyTagPattern);
+		LOGGER.logMessage(LogLevel.DEBUG,
+				"创建TinyShardJedis:JedisShardInfo长度为:{}", shards.size());
 		for (JedisShardInfo info : shards) {
 			if (info instanceof TinyJedisShardInfo) {
 				TinyJedisShardInfo tinyJedis = (TinyJedisShardInfo) info;
@@ -45,6 +50,8 @@ public class TinyShardJedis extends ShardedJedis {
 						"TinyShardJedis构造函数传入的JedisShardInfo必须是TinyJedisShardInfo");
 			}
 		}
+		failTestThread.setDaemon(true);
+		failTestThread.start();
 
 	}
 
@@ -58,8 +65,15 @@ public class TinyShardJedis extends ShardedJedis {
 			return getShard(key);
 		}
 		TinyJedisShardInfo info = (TinyJedisShardInfo) super.getShardInfo(key);
-		List<Jedis> list = readMap.get(info);
-		return JedisUtil.choose(list);
+		List<Jedis> currentlist = readMap.get(info);
+		List<Jedis> failList = new ArrayList<Jedis>();
+		if (failReadMap.containsKey(info)) {
+			failList = failReadMap.get(info);
+		} else {
+			failReadMap.put(info, failList);
+		}
+		List<Jedis> list = JedisUtil.newList(currentlist, failList);
+		return JedisUtil.choose(list, failList);
 	}
 
 	public void resetWriteState() {
@@ -73,8 +87,8 @@ public class TinyShardJedis extends ShardedJedis {
 		}
 		return totalList;
 	}
-	
-	public Map<JedisShardInfo, List<Jedis>> getReadShardsMap(){
+
+	public Map<JedisShardInfo, List<Jedis>> getReadShardsMap() {
 		return readMap;
 	}
 
@@ -485,7 +499,6 @@ public class TinyShardJedis extends ShardedJedis {
 		return j.zscan(key, cursor);
 	}
 
-	
 	public long pfcount(String key) {
 		Jedis j = getReadShard(key);
 		return j.pfcount(key);
@@ -495,41 +508,91 @@ public class TinyShardJedis extends ShardedJedis {
 		super.resetState();
 	}
 
-	public Set<String> keys(String keyPattern){
+	public Set<String> keys(String keyPattern) {
 		Set<String> set = null;
-		for(List<Jedis> list:readMap.values()){
-			Jedis jedis = JedisUtil.choose(list);
-			if(set==null){
+		for (JedisShardInfo info : readMap.keySet()) {
+			List<Jedis> list = readMap.get(info);
+			List<Jedis> failList = failReadMap.get(info);
+			Jedis jedis = JedisUtil.choose(list, failList);
+			if (set == null) {
 				set = jedis.keys(keyPattern);
-			}else{
+			} else {
 				set.addAll(jedis.keys(keyPattern));
 			}
 		}
 		return set;
 	}
-	
-	public void flushAll(){
-		Collection<Jedis> jedisSet= getAllShards();
-		for(Jedis jedis:jedisSet){
+
+	public void flushAll() {
+		Collection<Jedis> jedisSet = getAllShards();
+		for (Jedis jedis : jedisSet) {
 			jedis.flushAll();
 		}
 	}
-	
-	public void flushDB(){
-		Collection<Jedis> jedisSet= getAllShards();
-		for(Jedis jedis:jedisSet){
+
+	public void flushDB() {
+		Collection<Jedis> jedisSet = getAllShards();
+		for (Jedis jedis : jedisSet) {
 			jedis.flushDB();
 		}
 	}
-	
-	public int deleteMatchKey(String keyPattern){
+
+	public int deleteMatchKey(String keyPattern) {
 		Set<String> keySet = this.keys(keyPattern);
 		int delCount = 0;
-		if(keySet !=null && keySet.size()>0){
-			for(String key : keySet){
+		if (keySet != null && keySet.size() > 0) {
+			for (String key : keySet) {
 				delCount += this.del(key);
 			}
 		}
 		return delCount;
+	}
+
+	/**
+	 * 轮询失败的服务器
+	 * 
+	 */
+	class FailOverThread extends Thread {
+		public void run() {
+			while (true) {
+				try {
+					sleep(JedisUtil.getFailOverTime());
+				} catch (Exception e) {
+				}
+				testFailJedisMap();
+			}
+		}
+	}
+
+	private void testFailJedisMap() {
+		LOGGER.logMessage(LogLevel.DEBUG, "开始轮询连接失败的服务器列表");
+		for (List<Jedis> list : failReadMap.values()) {
+			List<Jedis> newList = JedisUtil.copy(list);
+			for (Jedis j : newList) {
+				LOGGER.logMessage(LogLevel.DEBUG, "轮询连接失败的服务器:{}:{}", j
+						.getClient().getHost(), j.getClient().getPort());
+				boolean sucess = testFailJedis(j);
+				if (sucess) {
+					LOGGER.logMessage(LogLevel.DEBUG, "连接成功,从fail列表中删除");
+					list.remove(j);
+				}
+				LOGGER.logMessage(LogLevel.DEBUG, "轮询连接失败的服务器:{}:{}", j
+						.getClient().getHost(), j.getClient().getPort());
+			}
+		}
+		LOGGER.logMessage(LogLevel.DEBUG, "轮询连接失败的服务器列表结束");
+	}
+
+	private boolean testFailJedis(Jedis j) {
+
+		try {
+			j.disconnect();
+			j.connect();
+			if (j.ping().equals("PONG")) {
+				return true;
+			}
+		} catch (Exception e) {
+		}
+		return false;
 	}
 }

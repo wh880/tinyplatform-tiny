@@ -28,6 +28,8 @@ public interface ShardJedisSentinelManager {
 
 	void init(GenericObjectPoolConfig poolConfig);
 	
+	void setFailOverTime(int failOverTime);
+	
 	TinyShardJedis getShardedJedis();
 
 	void destroy();

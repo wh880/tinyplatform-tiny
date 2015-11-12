@@ -36,15 +36,15 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 	protected GenericObjectPoolConfig poolConfig;
 
 	private int sentinelRetry = 0;
-	
+
 	Map<String, ShardSentinelConfig> totalMasterConfig = new HashMap<String, ShardSentinelConfig>();
-	
+
 	protected Set<MasterListener> masterListeners = new HashSet<MasterListener>();
-	
+
 	// <hostAndPort.toString,masterName>
 	private Map<String, String> masterInfoMap = new HashMap<String, String>();
 	
-	
+
 	private volatile List<HostAndPort> currentHostMasters;
 
 	public TinyShardedJedisSentinelPool(
@@ -64,6 +64,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 		}
 		initPool(masterList);
 	}
+
 
 	private List<HostAndPort> initSentinels(String sentinels,
 			Map<String, ShardSentinelConfig> map) {
@@ -134,10 +135,11 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 			}
 			ShardSentinelConfig shardSentinelConfig = totalMasterConfig
 					.get(masterName);
-			
+
 			TinyJedisShardInfo jedisShardInfo = new TinyJedisShardInfo(
 					master.getHost(), master.getPort(),
-					shardSentinelConfig.getTimeout(),shardSentinelConfig.getJedisConfigList());
+					shardSentinelConfig.getTimeout(),
+					shardSentinelConfig.getJedisConfigList());
 			jedisShardInfo.setPassword(shardSentinelConfig.getPassword());
 			shardMasters.add(jedisShardInfo);
 		}
@@ -251,11 +253,13 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 		}
 
 		public PooledObject<TinyShardJedis> makeObject() throws Exception {
-			TinyShardJedis jedis = new TinyShardJedis(shards, algo, keyTagPattern);
+			TinyShardJedis jedis = new TinyShardJedis(shards, algo,
+					keyTagPattern);
 			return new DefaultPooledObject<TinyShardJedis>(jedis);
 		}
 
-		public void destroyObject(PooledObject<TinyShardJedis> pooledShardedJedis)
+		public void destroyObject(
+				PooledObject<TinyShardJedis> pooledShardedJedis)
 				throws Exception {
 			final TinyShardJedis shardedJedis = pooledShardedJedis.getObject();
 			for (Jedis jedis : shardedJedis.getAllShards()) {
@@ -388,15 +392,19 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 											.asList(switchMasterMsg[1],
 													switchMasterMsg[2]));
 									List<HostAndPort> newHostMasters = new ArrayList<HostAndPort>();
-									for (int i = 0; i < currentHostMasters.size(); i++) {
+									for (int i = 0; i < currentHostMasters
+											.size(); i++) {
 										newHostMasters.add(null);
 									}
 									Collections.copy(newHostMasters,
 											currentHostMasters);
 									int oldIndex = 0;
-									for(int i = 0 ; i < currentHostMasters.size();i++){
-										HostAndPort hp = currentHostMasters.get(i);
-										if(hp.toString().equals(oldHostMaster.toString())){
+									for (int i = 0; i < currentHostMasters
+											.size(); i++) {
+										HostAndPort hp = currentHostMasters
+												.get(i);
+										if (hp.toString().equals(
+												oldHostMaster.toString())) {
 											oldIndex = i;
 											break;
 										}
@@ -460,4 +468,5 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 			}
 		}
 	}
+
 }
