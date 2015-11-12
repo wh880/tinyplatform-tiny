@@ -25,8 +25,8 @@ public class TinyShardJedis extends ShardedJedis {
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(TinyShardJedis.class);
 	private Map<JedisShardInfo, List<Jedis>> readMap = new HashMap<JedisShardInfo, List<Jedis>>();
-	private Map<JedisShardInfo, List<Jedis>> failReadMap = new HashMap<JedisShardInfo, List<Jedis>>();
-	private FailOverThread failTestThread = new FailOverThread();
+	
+	
 	private boolean writeState = false;
 
 	/**
@@ -50,8 +50,7 @@ public class TinyShardJedis extends ShardedJedis {
 						"TinyShardJedis构造函数传入的JedisShardInfo必须是TinyJedisShardInfo");
 			}
 		}
-		failTestThread.setDaemon(true);
-		failTestThread.start();
+		
 
 	}
 
@@ -66,12 +65,7 @@ public class TinyShardJedis extends ShardedJedis {
 		}
 		TinyJedisShardInfo info = (TinyJedisShardInfo) super.getShardInfo(key);
 		List<Jedis> currentlist = readMap.get(info);
-		List<Jedis> failList = new ArrayList<Jedis>();
-		if (failReadMap.containsKey(info)) {
-			failList = failReadMap.get(info);
-		} else {
-			failReadMap.put(info, failList);
-		}
+		List<Jedis> failList = JedisCheck.getFailList(info);
 		List<Jedis> list = JedisUtil.newList(currentlist, failList);
 		return JedisUtil.choose(list, failList);
 	}
@@ -111,7 +105,7 @@ public class TinyShardJedis extends ShardedJedis {
 
 	public void close() {
 		super.close();
-		failTestThread.stopTry();
+		
 		for (List<Jedis> list : readMap.values()) {
 			for (Jedis jedis : list) {
 				jedis.close();
@@ -506,7 +500,7 @@ public class TinyShardJedis extends ShardedJedis {
 		Set<String> set = null;
 		for (JedisShardInfo info : readMap.keySet()) {
 			List<Jedis> list = readMap.get(info);
-			List<Jedis> failList = failReadMap.get(info);
+			List<Jedis> failList = JedisCheck.getFailList(info);
 			Jedis jedis = JedisUtil.choose(list, failList);
 			if (set == null) {
 				set = jedis.keys(keyPattern);
@@ -542,56 +536,5 @@ public class TinyShardJedis extends ShardedJedis {
 		return delCount;
 	}
 
-	/**
-	 * 轮询失败的服务器
-	 * 
-	 */
-	class FailOverThread extends Thread {
-		boolean stop = false;
-		
-		public void stopTry(){
-			stop = true;
-		}
-		public void run() {
-			while (!stop) {
-				try {
-					sleep(JedisUtil.getFailOverTime());
-				} catch (Exception e) {
-				}
-				testFailJedisMap();
-			}
-		}
-	}
-
-	private void testFailJedisMap() {
-		LOGGER.logMessage(LogLevel.DEBUG, "开始轮询连接失败的服务器列表");
-		for (List<Jedis> list : failReadMap.values()) {
-			List<Jedis> newList = JedisUtil.copy(list);
-			for (Jedis j : newList) {
-				LOGGER.logMessage(LogLevel.DEBUG, "开始尝试连接的服务器:{}:{}", j
-						.getClient().getHost(), j.getClient().getPort());
-				boolean sucess = testFailJedis(j);
-				if (sucess) {
-					LOGGER.logMessage(LogLevel.DEBUG, "连接成功,从fail列表中删除");
-					list.remove(j);
-				}
-				LOGGER.logMessage(LogLevel.DEBUG, "连接服务器:{}:{}结束", j
-						.getClient().getHost(), j.getClient().getPort());
-			}
-		}
-		LOGGER.logMessage(LogLevel.DEBUG, "轮询连接失败的服务器列表结束");
-	}
-
-	private boolean testFailJedis(Jedis j) {
-
-		try {
-			j.disconnect();
-			j.connect();
-			if (j.ping().equals("PONG")) {
-				return true;
-			}
-		} catch (Exception e) {
-		}
-		return false;
-	}
+	
 }

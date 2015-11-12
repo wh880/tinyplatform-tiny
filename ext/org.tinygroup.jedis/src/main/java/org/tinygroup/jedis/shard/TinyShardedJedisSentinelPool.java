@@ -63,6 +63,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 					shardSentinelConfigConfig));
 		}
 		initPool(masterList);
+		JedisCheck.start();
 	}
 
 
@@ -83,10 +84,11 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 	}
 
 	public void destroy() {
+		JedisCheck.stop();
 		for (MasterListener m : masterListeners) {
 			m.shutdown();
 		}
-
+		
 		super.destroy();
 	}
 
