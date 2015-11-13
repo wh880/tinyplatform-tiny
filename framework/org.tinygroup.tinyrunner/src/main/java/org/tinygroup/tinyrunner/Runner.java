@@ -124,6 +124,7 @@ public class Runner {
 					}
 				} catch (Exception e) {
 					LOGGER.errorMessage("载入应用配置信息时出现异常，错误原因：{}！", e, e.getMessage());
+					throw new RuntimeException(e);
 				}
 			}
 
