@@ -17,6 +17,7 @@ package org.tinygroup.templateweb;
 
 import org.springframework.web.util.NestedServletException;
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -75,7 +76,7 @@ public class TinyTemplateProcessor extends AbstractTinyProcessor {
 			templateContext.put("response", context.getResponse());
 			templateContext.put("session", context.getRequest().getSession());
 			templateContext.put("application", context.getServletContext());
-			
+			templateContext.put("defaultLocale", LocaleUtil.getContext().getLocale());
 			if (isPagelet) {
 				engine.renderTemplateWithOutLayout(
 						servletPath.substring(0, servletPath.length()
