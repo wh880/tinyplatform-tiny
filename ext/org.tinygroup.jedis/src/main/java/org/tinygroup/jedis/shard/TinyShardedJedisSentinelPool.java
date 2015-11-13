@@ -17,6 +17,7 @@ import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.jedis.config.JedisConfig;
 import org.tinygroup.jedis.config.ShardSentinelConfig;
 
 import redis.clients.jedis.HostAndPort;
@@ -65,8 +66,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 		initPool(masterList);
 		JedisCheck.start();
 	}
-
-
+	
 	private List<HostAndPort> initSentinels(String sentinels,
 			Map<String, ShardSentinelConfig> map) {
 
@@ -137,15 +137,27 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 			}
 			ShardSentinelConfig shardSentinelConfig = totalMasterConfig
 					.get(masterName);
-
+			//读出主服务器对应的配置项
+			JedisConfig jedisConfig = getJedisConfig(shardSentinelConfig, master.getHost(), master.getPort());
+			//根据主服务器的配置项和主从所有服务器列表创建
 			TinyJedisShardInfo jedisShardInfo = new TinyJedisShardInfo(
-					master.getHost(), master.getPort(),
-					shardSentinelConfig.getTimeout(),
+					jedisConfig.getHost(), jedisConfig.getPort(),
+					jedisConfig.getTimeout(),
 					shardSentinelConfig.getJedisConfigList());
-			jedisShardInfo.setPassword(shardSentinelConfig.getPassword());
+			//设置主服务器密码
+			jedisShardInfo.setPassword(jedisConfig.getPassword());
 			shardMasters.add(jedisShardInfo);
 		}
 		return shardMasters;
+	}
+	
+	private JedisConfig getJedisConfig(ShardSentinelConfig config,String ip,int port){
+		for(JedisConfig jedisConfig:config.getJedisConfigList()){
+			if(jedisConfig.getPort()==port && jedisConfig.getHost().equals(ip)){
+				return jedisConfig;
+			}
+		}
+		throw new RuntimeException("找不到"+ip+":"+port+"对应的JedisConfig配置信息");
 	}
 
 	private List<HostAndPort> initSentinels(Set<String> sentinels,
@@ -168,6 +180,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 					log.fine("Connecting to Sentinel " + hap);
 
 					try {
+						//此处连接哨兵服务器
 						Jedis jedis = new Jedis(hap.getHost(), hap.getPort());
 						master = masterMap.get(masterName);
 						if (master == null) {
