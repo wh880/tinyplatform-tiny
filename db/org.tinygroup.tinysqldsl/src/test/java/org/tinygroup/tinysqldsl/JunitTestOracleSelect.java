@@ -36,13 +36,13 @@ public class JunitTestOracleSelect extends TestCase{
 		
 		assertEquals(selectFrom(TSCORE).startWith(fragmentCondition("score.name=?", "aa"), fragmentCondition("score.custom_id=?", "bb"), false).sql(), "SELECT * FROM score START WITH score.name=? CONNECT BY score.custom_id=?");
 	
-		assertEquals(union(selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) UNION (SELECT * FROM custom)");
+		assertEquals(union(selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) UNION (SELECT * FROM score)");
 		
-		assertEquals(unionAll(selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) UNION ALL (SELECT * FROM custom)");
+		assertEquals(unionAll(selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) UNION ALL (SELECT * FROM score)");
 		
-		assertEquals(minus(selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) MINUS (SELECT * FROM custom)");
+		assertEquals(minus(selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) MINUS (SELECT * FROM score)");
 		
-		assertEquals(intersect(selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) INTERSECT (SELECT * FROM custom)");
+		assertEquals(intersect(selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) INTERSECT (SELECT * FROM score)");
 		
 		
 		assertEquals(setOperation(new SetOperationInstanceCallBack() {
@@ -51,7 +51,7 @@ public class JunitTestOracleSelect extends TestCase{
 				// TODO Auto-generated method stub
 				return new UnionOperation();
 			}
-		},selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) UNION (SELECT * FROM custom)");
+		},selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) UNION (SELECT * FROM score)");
 	}
 
 }

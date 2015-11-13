@@ -103,8 +103,12 @@ public class SessionMonitorApplicationProcessor extends
 					Thread.sleep(backgroundProcessorDelay * 1000L);
 				} catch (InterruptedException e) {
 				}
-				if (!threadDone) {
-					processExpires(sessionManager);
+				try {
+					if (!threadDone) {
+						processExpires(sessionManager);
+					}
+				} catch (Exception e) {
+					LOGGER.errorMessage("监控session失效操作出现异常", e);
 				}
 			}
 		}

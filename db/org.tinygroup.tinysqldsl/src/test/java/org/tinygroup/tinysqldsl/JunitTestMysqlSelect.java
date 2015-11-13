@@ -31,9 +31,9 @@ public class JunitTestMysqlSelect extends TestCase {
 		
 		assertEquals(selectFrom(CUSTOM).limit(limitWithParam()).sql(), "SELECT * FROM custom LIMIT ? OFFSET ?");
 		
-		assertEquals(union(selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) UNION (SELECT * FROM custom)");
+		assertEquals(union(selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) UNION (SELECT * FROM score)");
 		
-		assertEquals(unionAll(selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) UNION ALL (SELECT * FROM custom)");
+		assertEquals(unionAll(selectFrom(CUSTOM),selectFrom(TSCORE)).sql(), "(SELECT * FROM custom) UNION ALL (SELECT * FROM score)");
 
 	}
 
