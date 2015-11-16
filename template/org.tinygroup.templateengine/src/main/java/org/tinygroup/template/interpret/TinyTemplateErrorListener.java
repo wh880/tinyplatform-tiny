@@ -1,9 +1,6 @@
 package org.tinygroup.template.interpret;
 
-import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.List;
-
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
@@ -20,14 +17,14 @@ import org.tinygroup.template.TemplateException;
  */
 public class TinyTemplateErrorListener implements org.antlr.v4.runtime.ANTLRErrorListener {
     private final String fileName;
-    List<TemplateException> exceptions = new ArrayList<TemplateException>();
+    TemplateException exception ;
     
     public TinyTemplateErrorListener(String fileName){
         this.fileName=fileName;
     }
     
-    public List<TemplateException> getTemplateException(){
-    	return this.exceptions;
+    public TemplateException getTemplateException(){
+    	return this.exception;
     }
     
     public void syntaxError(@NotNull Recognizer<?, ?> recognizer, @Nullable Object offendingSymbol, int line, int charPositionInLine, @NotNull String msg, @Nullable RecognitionException e) {
@@ -60,10 +57,7 @@ public class TinyTemplateErrorListener implements org.antlr.v4.runtime.ANTLRErro
     		exception.setLine(line);
     		exception.setCharPositionInLine(charPositionInLine);
     	}
-    	if (exception != null) {
-    		exceptions.add(exception);
-		}
-    	
+    	this.exception = exception;
         
     }
 

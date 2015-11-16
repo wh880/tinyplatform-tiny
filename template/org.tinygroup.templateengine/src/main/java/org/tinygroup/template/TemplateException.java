@@ -48,6 +48,22 @@ public class TemplateException extends Exception {
 	public void setCharPositionInLine(int charPositionInLine) {
 		this.charPositionInLine = charPositionInLine;
 	}
+	
+	/**
+	 * 获得模板文件的路径
+	 * @return
+	 */
+	public String getFileName(){
+		return this.fileName;
+	}
+	
+	/**
+	 * 获得模板错误的字符串
+	 * @return
+	 */
+	public String getTemplateText(){
+		return this.context==null?null:this.context.getText();
+	}
 
 	public TemplateException() {
 
