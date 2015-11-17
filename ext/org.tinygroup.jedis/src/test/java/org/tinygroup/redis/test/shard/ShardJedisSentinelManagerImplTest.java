@@ -4,25 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
+import junit.framework.Assert;
+
 import org.tinygroup.jedis.ShardJedisSentinelManager;
+import org.tinygroup.jedis.impl.ShardJedisSentinelManagerFactory;
 import org.tinygroup.jedis.shard.TinyShardJedis;
-import org.tinygroup.redis.test.RedisTest;
 import org.tinygroup.tinyrunner.Runner;
 
-import junit.framework.Assert;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPoolConfig;
 
 public class ShardJedisSentinelManagerImplTest {
 	public static void main(String[] args) {
 		Runner.init("application.xml", new ArrayList<String>());
-		JedisPoolConfig jedisConfig = BeanContainerFactory.getBeanContainer(
-				ShardJedisSentinelManagerImplTest.class.getClassLoader()).getBean("jedisConfig");
-		ShardJedisSentinelManager manager = BeanContainerFactory
-				.getBeanContainer(RedisTest.class.getClassLoader()).getBean(
-						"shardJedisSentinelManager");
-		manager.init(jedisConfig);
+		
+		ShardJedisSentinelManager manager = ShardJedisSentinelManagerFactory.getManager();
 		for(int i = 0 ; i < 1000 ; i ++){
 			// ===================
 			test(manager, "ShardJedisSentinelManagerImplTest"+i+i+i);

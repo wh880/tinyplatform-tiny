@@ -4,26 +4,17 @@ import java.util.ArrayList;
 
 import junit.framework.Assert;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.jedis.ShardJedisSentinelManager;
+import org.tinygroup.jedis.impl.ShardJedisSentinelManagerFactory;
 import org.tinygroup.jedis.shard.TinyShardJedis;
-import org.tinygroup.redis.test.RedisTest;
-import org.tinygroup.redis.test.shard.ShardJedisSentinelManagerImplTest;
 import org.tinygroup.tinyrunner.Runner;
 
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPoolConfig;
 
 public class ShardedWriteTest {
 	public static void main(String[] args) {
 		Runner.init("application.xml", new ArrayList<String>());
-		JedisPoolConfig jedisConfig = BeanContainerFactory.getBeanContainer(
-				ShardJedisSentinelManagerImplTest.class.getClassLoader())
-				.getBean("jedisConfig");
-		ShardJedisSentinelManager manager = BeanContainerFactory
-				.getBeanContainer(RedisTest.class.getClassLoader()).getBean(
-						"shardJedisSentinelManager");
-		manager.init(jedisConfig);
+		ShardJedisSentinelManager manager = ShardJedisSentinelManagerFactory.getManager();
 		TinyShardJedis jedis = manager.getShardedJedis();
 		System.out.println("读从:");
 		// 因为写过一次，所以写状态被改为了true，于是此jedis从此以后不能在获得读连接，永远是写连接了

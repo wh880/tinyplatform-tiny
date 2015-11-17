@@ -1,34 +1,34 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd"
-	   default-autowire="byName" default-lazy-init="true">
-	
-	<bean id="jedisManager" name="jedisManager" scope="singleton"
-		class="org.tinygroup.jedis.impl.JedisManagerImpl">
-	</bean>
-	
-	<bean id="jedisConfigsFileProcessor" name="jedisConfigsFileProcessor" scope="singleton"
-		class="org.tinygroup.jedis.fileresolver.JedisConfigsFileProcessor">
+	default-autowire="byName" default-lazy-init="true">
+
+	<bean id="jedisManager" name="jedisManager" scope="singleton" class="org.tinygroup.jedis.impl.JedisManagerImpl"> 
+		</bean> 
+
+	<bean id="jedisConfigsFileProcessor" name="jedisConfigsFileProcessor"
+		scope="singleton" class="org.tinygroup.jedis.fileresolver.JedisConfigsFileProcessor">
 		<property name="jedisManager" ref="jedisManager"></property>
 	</bean>
-	
+
 	<bean id="jedisSentinelManager" name="jedisSentinelManager" scope="singleton"
 		class="org.tinygroup.jedis.impl.JedisSentinelManagerImpl">
 	</bean>
-	
-	<bean id="jedisSentinelConfigsFileProcessor" name="jedisSentinelConfigsFileProcessor" scope="singleton"
+
+	<bean id="jedisSentinelConfigsFileProcessor" name="jedisSentinelConfigsFileProcessor"
+		scope="singleton"
 		class="org.tinygroup.jedis.fileresolver.JedisSentinelConfigsFileProcessor">
 		<property name="jedisSentinelManager" ref="jedisSentinelManager"></property>
 	</bean>
-	
-	<bean id="shardJedisSentinelManager" name="shardJedisSentinelManager" scope="singleton"
-		class="org.tinygroup.jedis.impl.ShardJedisSentinelManagerImpl">
-	</bean>
-	
-	<bean id="jedisShardSentinelConfigsFileProcessor" name="jedisShardSentinelConfigsFileProcessor" scope="singleton"
-		class="org.tinygroup.jedis.fileresolver.JedisShardSentinelConfigsFileProcessor">
-		<property name="shardJedisSentinelManager" ref="shardJedisSentinelManager"></property>
-	</bean>
-	
+<!-- 
+	<bean id="shardJedisSentinelManager" name="shardJedisSentinelManager"
+		scope="singleton" class="org.tinygroup.jedis.impl.ShardJedisSentinelManagerImpl">
+	</bean> -->
+
+	<!-- <bean id="jedisShardSentinelConfigsFileProcessor" name="jedisShardSentinelConfigsFileProcessor" 
+		scope="singleton" class="org.tinygroup.jedis.fileresolver.JedisShardSentinelConfigsFileProcessor"> 
+		<property name="shardJedisSentinelManager" ref="shardJedisSentinelManager"></property> 
+		</bean> -->
+
 </beans>
