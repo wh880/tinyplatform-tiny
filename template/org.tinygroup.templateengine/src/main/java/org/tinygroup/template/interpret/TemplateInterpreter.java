@@ -64,8 +64,9 @@ public class TemplateInterpreter {
         TinyTemplateErrorListener listener = new TinyTemplateErrorListener(sourceName);
         parser.addErrorListener(listener);
         TinyTemplateParser.TemplateContext context = parser.template();
-        if (listener.getTemplateException()!=null) {
-            throw listener.getTemplateException();
+        if (listener.getTemplateException().size() > 0) {
+        	//TODO：yanwj临时修改，yancheng有时间重构下
+            throw listener.getTemplateException().get(0);
         }
         return context;
     }
