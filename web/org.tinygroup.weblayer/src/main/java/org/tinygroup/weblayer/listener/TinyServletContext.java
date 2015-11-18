@@ -156,7 +156,7 @@ public class TinyServletContext implements ServletContext {
 		if (fullContextFileRepository != null) {
 			FileObject fileObject = fullContextFileRepository
 					.getFileObject(path);
-			if (fileObject != null && fileObject.isExist()&&fileObject.isInPackage()) {
+			if (fileObject != null && fileObject.isExist()) {
 				return fileObject.getAbsolutePath();
 			}
 		}
