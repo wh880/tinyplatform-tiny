@@ -14,7 +14,6 @@ import org.tinygroup.jedis.config.ShardSentinelConfigs;
 import org.tinygroup.jedis.shard.TinyShardJedis;
 import org.tinygroup.jedis.shard.TinyShardedJedisSentinelPool;
 import org.tinygroup.jedis.util.JedisUtil;
-import org.tinygroup.redis.test.shard.ShardJedisSentinelManagerImplTest;
 
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -28,7 +27,7 @@ public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager 
 		addJedisSentinelConfigs(configs);
 		String pool = configs.getPool();
 		JedisPoolConfig jedisConfig = BeanContainerFactory.getBeanContainer(
-				ShardJedisSentinelManagerImplTest.class.getClassLoader())
+				ShardJedisSentinelManagerImpl.class.getClassLoader())
 				.getBean(pool);
 		init(jedisConfig);
 	}
