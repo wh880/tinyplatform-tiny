@@ -1,4 +1,4 @@
-package org.tinygroup.template.interpret;
+package org.tinygroup.template.listener;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -56,10 +56,10 @@ public class TinyTemplateErrorListener implements org.antlr.v4.runtime.ANTLRErro
             sb.append('\n');
             
     		exception=new TemplateException(sb.toString());
-    		exception.setContext(null, fileName);
-    		exception.setLine(line);
-    		exception.setCharPositionInLine(charPositionInLine);
     	}
+    	exception.setOriginalMsg(msg);
+    	exception.setContext(null, fileName);
+    	exception.setStartPoint(new Point(line ,charPositionInLine));
     	if (exception != null) {
     		exceptions.add(exception);
 		}

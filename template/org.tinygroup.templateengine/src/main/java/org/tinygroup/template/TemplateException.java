@@ -16,6 +16,7 @@
 package org.tinygroup.template;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.tinygroup.template.listener.Point;
 
 /**
  * Created by luoguo on 2014/6/4.
@@ -23,32 +24,66 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public class TemplateException extends Exception {
     private ParserRuleContext context;
     private String fileName;
+    private String originalMsg;
     
-    private int line; //仅供Eclipse插件解析调用
-    private int charPositionInLine; //仅供Eclipse插件解析调用
+    /**
+     * 异常语法块起点
+     */
+    private Point startPoint;
+    /**
+     * 异常语法块终点
+     */
+    private Point endPoint;
 
-    public int getLine() {
+    public TemplateException() {
+
+    }
+
+    public TemplateException(Exception e, ParserRuleContext tree, String fileName) {
+        super(e);
+        this.fileName = fileName;
+        this.context = tree;
+    }
+    
+    public TemplateException(String msg) {
+        super(msg);
+    }
+
+    public TemplateException(Exception e) {
+        super(e);
+    }
+    
+    public TemplateException(Throwable cause) {
+        super(cause);
+    }
+
+    
+    public Point getStartPoint() {
     	if(context!=null && context.getStart()!=null){
-    	   return context.getStart().getLine();
+    	   return new Point(context.getStart().getLine() ,context.getStart().getCharPositionInLine());
     	}
-		return line;
+		return startPoint;
 	}
 
-	public void setLine(int line) {
-		this.line = line;
+    public Point getEndPoint() {
+    	if(context!=null && context.getStart()!=null){
+    	   return new Point(context.getStop().getLine() ,context.getStop().getCharPositionInLine());
+    	}
+		return endPoint;
 	}
 
-	public int getCharPositionInLine() {
-		if(context!=null && context.getStart()!=null){
-	    	   return context.getStart().getCharPositionInLine();
-	    }
-		return charPositionInLine;
+    public String getOriginalMsg(){
+    	return originalMsg;
+    }
+    
+	public void setStartPoint(Point startPoint) {
+		this.startPoint = startPoint;
 	}
 
-	public void setCharPositionInLine(int charPositionInLine) {
-		this.charPositionInLine = charPositionInLine;
+	public void setEndPoint(Point endPoint) {
+		this.endPoint = endPoint;
 	}
-	
+
 	/**
 	 * 获得模板文件的路径
 	 * @return
@@ -65,16 +100,6 @@ public class TemplateException extends Exception {
 		return this.context==null?null:this.context.getText();
 	}
 
-	public TemplateException() {
-
-    }
-
-    public TemplateException(Exception e, ParserRuleContext tree, String fileName) {
-        super(e);
-        this.fileName = fileName;
-        this.context = tree;
-    }
-
     public ParserRuleContext getContext() {
         return context;
     }
@@ -88,16 +113,17 @@ public class TemplateException extends Exception {
         }
     }
 
-    public TemplateException(String msg, ParserRuleContext context, String fileName) {
+    public void setOriginalMsg(String originalMsg) {
+		this.originalMsg = originalMsg;
+	}
+
+	public TemplateException(String msg, ParserRuleContext context, String fileName) {
         super(msg);
         this.context = context;
         this.fileName = fileName;
     }
 
-    public String getLocalizedMessage() {
-        return getMessage();
-    }
-
+    @Override
     public String getMessage() {
         String message = super.getMessage();
         
@@ -124,18 +150,5 @@ public class TemplateException extends Exception {
         	return pathInfo+" "+message;
         }
     }
-
-    public TemplateException(String msg) {
-        super(msg);
-        System.out.println();
-    }
-
-    public TemplateException(Exception e) {
-        super(e);
-    }
     
-    public TemplateException(Throwable cause) {
-        super(cause);
-    }
-
 }
