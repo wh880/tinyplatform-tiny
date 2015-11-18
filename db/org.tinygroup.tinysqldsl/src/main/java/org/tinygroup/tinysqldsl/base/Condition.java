@@ -17,6 +17,7 @@ package org.tinygroup.tinysqldsl.base;
 
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.expression.conditional.AndExpression;
+import org.tinygroup.tinysqldsl.expression.conditional.ConditionExpressionList;
 import org.tinygroup.tinysqldsl.expression.conditional.OrExpression;
 
 import java.util.ArrayList;
@@ -52,6 +53,14 @@ public class Condition implements Expression {
 		return this;
 	}
 
+	public static Condition orWithBrackets(Expression... expression){
+		return new Condition(ConditionExpressionList.orExpression(expression));
+	}
+
+	public static Condition andWithBrackets(Expression... expression){
+		return new Condition(ConditionExpressionList.andExpression(expression));
+	}
+
 	public Expression getExpression() {
 		return expression;
 	}
@@ -66,8 +75,8 @@ public class Condition implements Expression {
 
 	public void builderExpression(StatementSqlBuilder builder) {
 		Expression expression = getExpression();
+		builder.addParamValue(extendParams.toArray());//组装参数
 		expression.builderExpression(builder);
-		builder.addParamValue(extendParams.toArray());
 	}
 
 }

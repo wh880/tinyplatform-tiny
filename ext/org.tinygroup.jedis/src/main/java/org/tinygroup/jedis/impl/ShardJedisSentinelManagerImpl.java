@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.jedis.ShardJedisSentinelManager;
 import org.tinygroup.jedis.config.ShardJedisSentinelConfig;
 import org.tinygroup.jedis.config.ShardJedisSentinelConfigs;
@@ -14,12 +15,24 @@ import org.tinygroup.jedis.shard.TinyShardJedis;
 import org.tinygroup.jedis.shard.TinyShardedJedisSentinelPool;
 import org.tinygroup.jedis.util.JedisUtil;
 
+import redis.clients.jedis.JedisPoolConfig;
+
 
 public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager {
 
 	private Map<String, Map<String, ShardSentinelConfig>> map = new HashMap<String, Map<String, ShardSentinelConfig>>();
 	private TinyShardedJedisSentinelPool pool;
-	public void addJedisSentinelConfigs(ShardJedisSentinelConfigs configs) {
+	
+	public ShardJedisSentinelManagerImpl(ShardJedisSentinelConfigs configs){
+		addJedisSentinelConfigs(configs);
+		String pool = configs.getPool();
+		JedisPoolConfig jedisConfig = BeanContainerFactory.getBeanContainer(
+				ShardJedisSentinelManagerImpl.class.getClassLoader())
+				.getBean(pool);
+		init(jedisConfig);
+	}
+	
+	private void addJedisSentinelConfigs(ShardJedisSentinelConfigs configs) {
 		for (ShardJedisSentinelConfig config : configs
 				.getJedisShardSentinelConfigsList()) {
 			addJedisSentinelConfig(config);
@@ -55,12 +68,7 @@ public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager 
 		}
 	}
 
-	public void removeJedisSentinelConfigs(ShardJedisSentinelConfigs configs) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void init(GenericObjectPoolConfig poolConfig){
+	private void init(GenericObjectPoolConfig poolConfig){
 		if(poolConfig==null){
 			throw new RuntimeException("初始化连接池不可为空");
 		}
@@ -75,13 +83,10 @@ public class ShardJedisSentinelManagerImpl implements ShardJedisSentinelManager 
 	}
 	
 	
-	
 	public TinyShardJedis getShardedJedis() {
 		return pool.getResource();
 	}
 	
-
-
 	public void returnResourceObject(TinyShardJedis resource){
 		resource.resetWriteState();
 		pool.returnResourceObject(resource);

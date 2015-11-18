@@ -19,14 +19,11 @@ public class JedisShardSentinelConfigsFileProcessor extends AbstractFileProcesso
 
 	private static final String JEDIS_SHARD_SENTRINEL_CONFIG_EXT_NAME = ".jedisshardsentrinelconfig.xml";
 
-	private static final String JEDIS_SHARD_SENTRINEL_XSTREAM_NAME = "jedis";
+	public static final String JEDIS_SHARD_SENTRINEL_XSTREAM_NAME = "jedis";
 
 	private ShardJedisSentinelManager shardJedisSentinelManager;
 
 	
-
-
-
 	public ShardJedisSentinelManager getShardJedisSentinelManager() {
 		return shardJedisSentinelManager;
 	}
@@ -38,33 +35,7 @@ public class JedisShardSentinelConfigsFileProcessor extends AbstractFileProcesso
 
 	public void process() {
 		XStream stream = XStreamFactory.getXStream(JEDIS_SHARD_SENTRINEL_XSTREAM_NAME);
-		for (FileObject fileObject : deleteList) {
-			LOGGER.logMessage(LogLevel.INFO, "正在移除Redis分片主从集群配置文件[{0}]",
-					fileObject.getAbsolutePath());
-			ShardJedisSentinelConfigs shardJedisSentinelConfigs = (ShardJedisSentinelConfigs) caches.get(fileObject
-					.getAbsolutePath());
-			if (shardJedisSentinelConfigs != null) {
-				shardJedisSentinelManager.removeJedisSentinelConfigs(shardJedisSentinelConfigs);
-				caches.remove(fileObject.getAbsolutePath());
-			}
-			LOGGER.logMessage(LogLevel.INFO, "移除Redis分片主从集群配置文件[{0}]结束",
-					fileObject.getAbsolutePath());
-		}
-		for (FileObject fileObject : changeList) {
-			LOGGER.logMessage(LogLevel.INFO, "正在加载Redis分片主从集群配置文件[{0}]",
-					fileObject.getAbsolutePath());
-			ShardJedisSentinelConfigs oldShardJedisSentinelConfigs = (ShardJedisSentinelConfigs) caches.get(fileObject
-					.getAbsolutePath());
-			if (oldShardJedisSentinelConfigs != null) {
-				shardJedisSentinelManager.removeJedisSentinelConfigs(oldShardJedisSentinelConfigs);
-			}
-			ShardJedisSentinelConfigs shardJedisSentinelConfigs = (ShardJedisSentinelConfigs) stream
-					.fromXML(fileObject.getInputStream());
-			shardJedisSentinelManager.addJedisSentinelConfigs(shardJedisSentinelConfigs);
-			caches.put(fileObject.getAbsolutePath(), shardJedisSentinelConfigs);
-			LOGGER.logMessage(LogLevel.INFO, "加载Redis分片主从集群配置文件[{0}]结束",
-					fileObject.getAbsolutePath());
-		}
+		
 	}
 
 	@Override

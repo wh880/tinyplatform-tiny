@@ -18,8 +18,13 @@ public class JedisCheck {
 			.getLogger(JedisCheck.class);
 	private static Map<String, List<Jedis>> failReadMap = new HashMap<String, List<Jedis>>();
 	private static FailOverThread failTestThread = new FailOverThread();
+	private static boolean flag = false;
 	
-	public static void start(){
+	public static synchronized void start(){
+		if(flag){
+			return;
+		}
+		flag = true;
 		failTestThread.setDaemon(true);
 		failTestThread.start();
 	}

@@ -13,7 +13,6 @@
 				<ref bean="xStreamFileProcessor" />
 				<ref bean="jedisConfigsFileProcessor" />
 				<ref bean="jedisSentinelConfigsFileProcessor" />
-				<ref bean="jedisShardSentinelConfigsFileProcessor"/>
 			</list>
 		</property>
 	</bean>
@@ -25,11 +24,11 @@
 	<!-- 连接池的配置信息 -->
 	<bean id="jedisConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<!-- 说明一个pool可以有多少个Jedis实例 -->
-		<property name="maxTotal" value="100" />
+		<property name="maxTotal" value="101" />
 		<!-- 最大Idle -->
 		<property name="maxIdle" value="80" />
 		<!-- 最小Idle -->
-		<property name="minIdle" value="1" />
+		<property name="minIdle" value="50" />
 		<!-- 获得一个jedis实例的时候是否检查连接可用性（ping()） -->
 		<property name="testOnBorrow" value="true" />
 		<!-- return 一个jedis实例给pool时，是否检查连接可用性（ping()） -->

@@ -28,6 +28,7 @@ import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.terminal.OtherTerminalNodeProcessor;
+import org.tinygroup.template.listener.TinyTemplateErrorListener;
 import org.tinygroup.template.parser.grammer.TinyTemplateLexer;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
 
@@ -64,8 +65,9 @@ public class TemplateInterpreter {
         TinyTemplateErrorListener listener = new TinyTemplateErrorListener(sourceName);
         parser.addErrorListener(listener);
         TinyTemplateParser.TemplateContext context = parser.template();
-        if (listener.getTemplateException()!=null) {
-            throw listener.getTemplateException();
+        if (listener.getTemplateException().size() > 0) {
+        	//TODO：yanwj临时修改，yancheng有时间重构下
+            throw listener.getTemplateException().get(0);
         }
         return context;
     }
