@@ -14,4 +14,8 @@
 	<bean id="templateEngine" scope="singleton"
 		class="org.tinygroup.template.impl.TemplateEngineDefault">
 	</bean>
+	<bean id="templateRender" scope="singleton"
+		class="org.tinygroup.template.impl.TemplateRenderDefault">
+		<property name="templateEngine" ref="templateEngine"></property>
+	</bean>
 </beans>
