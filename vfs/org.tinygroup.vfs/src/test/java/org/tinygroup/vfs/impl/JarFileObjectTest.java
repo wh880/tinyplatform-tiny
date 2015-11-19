@@ -15,12 +15,13 @@
  */
 package org.tinygroup.vfs.impl;
 
-import junit.framework.TestCase;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 
-import java.io.IOException;
-import java.io.InputStream;
+import junit.framework.TestCase;
 
 /**
  * jar fileobject 测试用例
@@ -39,7 +40,7 @@ public class JarFileObjectTest extends TestCase {
 			InputStream inputStream = fo.getInputStream();
 			byte[] buf = new byte[(int) fo.getSize()];
 			inputStream.close();
-			assertTrue(buf!=null);
+			assertTrue(buf.length > 0);
 		}
 	}
 
