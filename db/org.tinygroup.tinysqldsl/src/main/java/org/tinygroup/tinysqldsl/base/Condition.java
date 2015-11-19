@@ -42,14 +42,12 @@ public class Condition implements Expression {
 	}
 
 	public Condition and(Condition condition) {
-		this.expression = new AndExpression(this.getExpression(), condition.getExpression());
-		Collections.addAll(extendParams, condition.getValues());
+		this.expression = new AndExpression(this.getExpression(), condition);
 		return this;
 	}
 
 	public Condition or(Condition condition) {
-		this.expression = new OrExpression(this.getExpression(), condition.getExpression());
-		Collections.addAll(extendParams, condition.getValues());
+		this.expression = new OrExpression(this.getExpression(), condition);
 		return this;
 	}
 

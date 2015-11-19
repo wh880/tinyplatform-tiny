@@ -158,18 +158,16 @@ public abstract class StatementSqlBuilder {
 		Assert.assertTrue(conditions.length >= 2, "conditions 长度必须大于等于2");
 		ConditionExpressionList expressionList = new ConditionExpressionList();
 		expressionList.setComma(comma);
-		expressionList.setUseBrackets(false);
-		List<Object> values = new ArrayList<Object>();
+		expressionList.setUseBrackets(true);
 		for (Condition condition : conditions) {
 			if (condition != null) {
-				expressionList.addExpression(condition.getExpression());
-				Collections.addAll(values, condition.getValues());
+				expressionList.addExpression(condition);
 			}
 		}
 		if(expressionList.getExpressions().isEmpty()){//conditions中条件对象都为空，则返回null
 			return null;
 		}
-		return new Condition(expressionList, values.toArray());
+		return new Condition(expressionList);
 	}
 
 	public static Condition or(Condition... conditions) {

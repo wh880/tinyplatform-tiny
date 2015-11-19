@@ -67,17 +67,19 @@ public class InsertContext {
 
 	public void addValues(Value... values){
 		for (Value value : values) {
-			Column column = value.getColumn();
-			columns.add(column);
-			addColumnName(column.getColumnName());
-			Expression expression=value.getExpression();
 			Object paramValue=value.getValue();
+			Expression expression=value.getExpression();
 			if(expression instanceof NamedCondition){
 				 paramValue=((NamedCondition)expression).getValue();
 			}
-			putParam(column.getColumnName(), paramValue);
-			itemsList.addExpression(expression);
-			this.values.add(value);
+			if(paramValue!=null){
+				Column column = value.getColumn();
+				columns.add(column);
+				addColumnName(column.getColumnName());
+				putParam(column.getColumnName(), paramValue);
+				itemsList.addExpression(expression);
+				this.values.add(value);
+			}
 		}
 	}
 	
