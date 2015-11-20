@@ -160,7 +160,7 @@ public class RouterManagerImpl implements RouterManager {
 			generator.setRouter(router);
 			return (T) generator.getKey(tableName);
 		}
-		logger.log(LogLevel.ERROR, "router:{0},不存在key获取器:{0}", router.getId());
+		logger.logMessage(LogLevel.ERROR, "router:{0},不存在key获取器:{0}", router.getId());
 		throw new DbrouterRuntimeException("不存在key获取器");
 	}
 

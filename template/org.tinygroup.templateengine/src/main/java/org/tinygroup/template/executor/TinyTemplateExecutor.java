@@ -138,7 +138,7 @@ public class TinyTemplateExecutor {
 					engine.registerMacroLibrary(fileObject.getPath());
 					
 				} catch (Exception e) {
-					LOGGER.error(String.format("load %s error: %s", fileObject.getFileName(),e.getMessage()), e);
+					LOGGER.errorMessage(String.format("load %s error: %s", fileObject.getFileName(),e.getMessage()), e);
 				}
 			}
 		});

@@ -85,10 +85,10 @@ public class ParameterParserImpl extends AbstractValueParser implements
 					add(ParserWebContext.UPLOAD_FAILED, Boolean.TRUE);
 					add(ParserWebContext.UPLOAD_SIZE_LIMIT_EXCEEDED,
 							Boolean.TRUE);
-					logger.error("File upload exceeds the size limit", e);
+					logger.errorMessage("File upload exceeds the size limit", e);
 				} catch (UploadException e) {
 					add(ParserWebContext.UPLOAD_FAILED, Boolean.TRUE);
-					logger.error("Upload failed", e);
+					logger.errorMessage("Upload failed", e);
 				}
 			}
 		}

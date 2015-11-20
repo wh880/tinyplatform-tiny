@@ -44,7 +44,7 @@ public class TinyFilterFileProcessor extends AbstractFileProcessor {
 	public void process() {
 		XStream stream = XStreamFactory.getXStream("weblayer");
 		for (FileObject fileObject : deleteList) {
-			LOGGER.log(LogLevel.INFO, "正在移除tiny-filter描述文件：<{}>",
+			LOGGER.logMessage(LogLevel.INFO, "正在移除tiny-filter描述文件：<{}>",
 					fileObject.getAbsolutePath());
 			TinyFilterConfigInfos oldConfigs = (TinyFilterConfigInfos) caches
 					.get(fileObject.getAbsolutePath());
@@ -52,7 +52,7 @@ public class TinyFilterFileProcessor extends AbstractFileProcessor {
 				configManager.removeConfig(oldConfigs);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			LOGGER.log(LogLevel.INFO, "移除tiny-filter描述文件：<{}>结束",
+			LOGGER.logMessage(LogLevel.INFO, "移除tiny-filter描述文件：<{}>结束",
 					fileObject.getAbsolutePath());
 		}
 
@@ -62,7 +62,7 @@ public class TinyFilterFileProcessor extends AbstractFileProcessor {
 			if (oldConfigs != null) {
 				configManager.removeConfig(oldConfigs);
 			}
-			LOGGER.log(LogLevel.INFO, "找到tiny-filter描述文件：<{}>",
+			LOGGER.logMessage(LogLevel.INFO, "找到tiny-filter描述文件：<{}>",
 					fileObject.getAbsolutePath());
 			TinyFilterConfigInfos configInfos = (TinyFilterConfigInfos) stream
 					.fromXML(fileObject.getInputStream());

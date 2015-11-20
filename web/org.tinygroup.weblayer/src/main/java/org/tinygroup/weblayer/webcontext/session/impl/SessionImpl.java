@@ -685,7 +685,7 @@ public class SessionImpl implements HttpSession,Serializable,Session {
 							storeName));
 					i.remove(); // 清除clearing标记，以防重复clear
 				} else if (!commitHeaders) {
-					log.log(LogLevel.WARN,
+					log.logMessage(LogLevel.WARN,
 							"Session was cleared, but the data in {}[id={}] may not be cleared, "
 									+ "because the response has already been committed.",
 							store.getClass().getSimpleName(), storeName);
@@ -804,7 +804,7 @@ public class SessionImpl implements HttpSession,Serializable,Session {
 					}
 				} catch (Exception e) {
 					// 避免因listener出现异常导致应用的退出。
-					log.error(
+					log.errorMessage(
 							"Listener \"" + listener.getClass().getSimpleName()
 									+ "\" failed", e);
 				}

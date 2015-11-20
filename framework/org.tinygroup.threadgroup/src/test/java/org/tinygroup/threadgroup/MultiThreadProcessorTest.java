@@ -35,7 +35,7 @@ public class MultiThreadProcessorTest extends TestCase {
 		long startTime = System.currentTimeMillis();
 		processors.start();
 		long endTime = System.currentTimeMillis();
-		LOGGER.log(LogLevel.INFO, "执行时间：{}", endTime - startTime);
+		LOGGER.logMessage(LogLevel.INFO, "执行时间：{}", endTime - startTime);
 		assertEquals(10000, NumberAdd.sumValue);
 	}
 

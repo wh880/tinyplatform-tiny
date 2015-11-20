@@ -38,7 +38,7 @@ public class TinyListenerFileProcessor extends AbstractFileProcessor {
 		TinyListenerConfigManager configManager = TinyListenerConfigManagerHolder
 				.getInstance();
 		for (FileObject fileObject : deleteList) {
-			LOGGER.log(LogLevel.INFO, "正在移除tiny-listener描述文件：<{}>",
+			LOGGER.logMessage(LogLevel.INFO, "正在移除tiny-listener描述文件：<{}>",
 					fileObject.getAbsolutePath());
 			TinyListenerConfigInfos oldConfigs = (TinyListenerConfigInfos) caches
 					.get(fileObject.getAbsolutePath());
@@ -46,7 +46,7 @@ public class TinyListenerFileProcessor extends AbstractFileProcessor {
 				configManager.removeConfig(oldConfigs);
 				caches.remove(fileObject.getAbsolutePath());
 			}
-			LOGGER.log(LogLevel.INFO, "移除tiny-listener描述文件：<{}>结束",
+			LOGGER.logMessage(LogLevel.INFO, "移除tiny-listener描述文件：<{}>结束",
 					fileObject.getAbsolutePath());
 		}
 
@@ -56,7 +56,7 @@ public class TinyListenerFileProcessor extends AbstractFileProcessor {
 			if (oldConfigs != null) {
 				configManager.removeConfig(oldConfigs);
 			}
-			LOGGER.log(LogLevel.INFO, "找到tiny-listener描述文件：<{}>",
+			LOGGER.logMessage(LogLevel.INFO, "找到tiny-listener描述文件：<{}>",
 					fileObject.getAbsolutePath());
 			TinyListenerConfigInfos configInfos = (TinyListenerConfigInfos) stream
 					.fromXML(fileObject.getInputStream());
