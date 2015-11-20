@@ -30,5 +30,13 @@ public class TestInsert {
 
 		System.out.println(insertInto(CUSTOM).columns(CUSTOM.NAME, CUSTOM.AGE)
 				.selectBody(select(TSCORE.NAME, TSCORE.SCORE).from(TSCORE)));
+		System.out.println(insertInto(CUSTOM).values(
+				CUSTOM.AGE.value(10),
+				CUSTOM.NAME.value("悠然")
+		));
+		System.out.println(insertInto(CUSTOM).values(
+				CUSTOM.AGE.value(10),
+				CUSTOM.NAME.value(null)
+		));
 	}
 }

@@ -24,8 +24,18 @@ public class JunitTestInsert extends TestCase{
 
 	
 	public void testInsert() {
-		assertEquals(insertInto(CUSTOM).values(CUSTOM.NAME.value("悠然"),CUSTOM.AGE.value(22)
-        ).sql(), "INSERT INTO custom (name, age) VALUES(?, ?)");
+		Insert insert = insertInto(CUSTOM).values(CUSTOM.NAME.value("悠然"), CUSTOM.AGE.value(22));
+		assertEquals(insert.sql(), "INSERT INTO custom (name, age) VALUES(?, ?)");
+		assertEquals(insert.getValues().size(), 2);
+		assertEquals(insert.getValues().get(1),22);
+
+		insert = insertInto(CUSTOM).values(
+				CUSTOM.AGE.value(10),
+				CUSTOM.NAME.value(null)
+		);
+		assertEquals(insert.sql(),"INSERT INTO custom (age) VALUES(?)");
+		assertEquals(insert.getValues().size(), 1);
+		assertEquals(insert.getValues().get(0),10);
 	}
 
 }
