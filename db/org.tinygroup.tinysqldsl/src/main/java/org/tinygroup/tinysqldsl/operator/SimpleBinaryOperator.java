@@ -15,6 +15,7 @@
  */
 package org.tinygroup.tinysqldsl.operator;
 
+import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.tinysqldsl.base.Condition;
 import org.tinygroup.tinysqldsl.expression.BinaryExpression;
 import org.tinygroup.tinysqldsl.expression.Expression;
@@ -275,21 +276,27 @@ public abstract class SimpleBinaryOperator implements BinaryOperator,
 	}
 
 	public Condition in(Object... values) {
-		ExpressionList rightItemsList=new ExpressionList();
-		for (int i = 0; i < values.length; i++) {
-			rightItemsList.addExpression(new JdbcParameter());
+		if(!ObjectUtil.isEmptyObject(values)){
+			ExpressionList rightItemsList=new ExpressionList();
+			for (int i = 0; i < values.length; i++) {
+				rightItemsList.addExpression(new JdbcParameter());
+			}
+			InExpression inExpression=new InExpression(this, rightItemsList);
+			return new Condition(inExpression, values);
 		}
-		InExpression inExpression=new InExpression(this, rightItemsList);
-		return new Condition(inExpression, values);
+		return null;
 	}
 
 	public Condition notIn(Object... values) {
-		ExpressionList rightItemsList=new ExpressionList();
-		for (int i = 0; i < values.length; i++) {
-			rightItemsList.addExpression(new JdbcParameter());
+		if(!ObjectUtil.isEmptyObject(values)){
+			ExpressionList rightItemsList=new ExpressionList();
+			for (int i = 0; i < values.length; i++) {
+				rightItemsList.addExpression(new JdbcParameter());
+			}
+			InExpression inExpression=new InExpression(this, rightItemsList,true);
+			return new Condition(inExpression, values);
 		}
-		InExpression inExpression=new InExpression(this, rightItemsList,true);
-		return new Condition(inExpression, values);
+		return null;
 	}
 
 	public Condition inExpression(ItemsList itemsList) {
