@@ -186,6 +186,8 @@ public class TestSelect {
 		
 		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.notIn(1,5,10)));
 		
+		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.notIn(1,null,10)));
+		
 		System.out.println(selectFrom(CUSTOM).where(ExistsExpression.existsCondition(
 				subSelect(selectFrom(CUSTOM).where(CUSTOM.AGE.in(10000,100001))))));
 		

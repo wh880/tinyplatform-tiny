@@ -16,13 +16,13 @@
 package org.tinygroup.tinysqldsl;
 
 import junit.framework.TestCase;
-
 import static org.tinygroup.tinysqldsl.ComplexSelect.union;
 import static org.tinygroup.tinysqldsl.ComplexSelect.unionAll;
 import static org.tinygroup.tinysqldsl.CustomTable.CUSTOM;
 import static org.tinygroup.tinysqldsl.ScoreTable.TSCORE;
 import static org.tinygroup.tinysqldsl.Select.customSelectItem;
 import static org.tinygroup.tinysqldsl.Select.select;
+import static org.tinygroup.tinysqldsl.Select.selectFrom;
 import static org.tinygroup.tinysqldsl.base.FragmentSql.*;
 import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
 import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.or;
@@ -62,12 +62,12 @@ public class JunitTestSelect extends TestCase {
 		assertEquals(
 				selectFrom(CUSTOM).where(
 						or(CUSTOM.NAME.like("abc"), CUSTOM.AGE.gt(20))).sql(),
-				"SELECT * FROM custom WHERE custom.name LIKE ? or custom.age > ?");
+				"SELECT * FROM custom WHERE (custom.name LIKE ? or custom.age > ?)");
 
 		assertEquals(
 				selectFrom(CUSTOM).where(
 						and(CUSTOM.NAME.like("abc"), CUSTOM.AGE.gt(20))).sql(),
-				"SELECT * FROM custom WHERE custom.name LIKE ? and custom.age > ?");
+				"SELECT * FROM custom WHERE (custom.name LIKE ? and custom.age > ?)");
 
 		assertEquals(selectFrom(CUSTOM).where(CUSTOM.NAME.leftLike("abc"))
 				.sql(), "SELECT * FROM custom WHERE custom.name LIKE ?");
@@ -187,6 +187,9 @@ public class JunitTestSelect extends TestCase {
 						CUSTOM.NAME.eq("abc").and(CUSTOM.AGE.greaterThan(30))
 								.or(CUSTOM.ID.in(1, 3, 6))).sql(),
 				"SELECT * FROM custom WHERE custom.name = ? AND custom.age > ? OR custom.id IN (?, ?, ?)");
+		
+		assertEquals(selectFrom(CUSTOM).where(CUSTOM.AGE.notIn(1, null, 10))
+				.sql(), "SELECT * FROM custom WHERE custom.age NOT IN (?, ?)");
 	}
 
 }
