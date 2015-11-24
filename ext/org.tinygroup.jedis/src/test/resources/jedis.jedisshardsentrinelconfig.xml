@@ -5,21 +5,21 @@
 		<shard-sentinel-configs sentinels="192.168.51.29:33333">
 			<!-- sentinel的一个主备中所有的服务器的信息 master-name为该主备集群在sentinel中的标识 -->
 			<!-- 注:此处要求所有*.jedisshardsentrinelconfig.xml中，master-name全局唯一 -->
-			<shard-sentinel-config master-name="master1">
+			<shard-sentinel-config master-name="master1" password="www.tinygroup.org">
 				<!-- id为集群内服务器标志，目前无实际含义,host为服务器ip，port为服务器地址 -->
-				<jedis-config id="server01" host="192.168.51.29" port="11111"></jedis-config>
-				<jedis-config id="server02" host="192.168.51.29" port="11112"></jedis-config>
-				<jedis-config id="server03" host="192.168.51.29" port="11113"></jedis-config>
-				<jedis-config id="server04" host="192.168.51.29" port="6379"></jedis-config>
+				<jedis-config id="server01" host="192.168.51.29" port="11111" password="www.tinygroup.org"></jedis-config>
+				<jedis-config id="server02" host="192.168.51.29" port="11112" password="www.tinygroup.org"></jedis-config>
+				<jedis-config id="server03" host="192.168.51.29" port="11113" password="www.tinygroup.org"></jedis-config>
+				<jedis-config id="server04" host="192.168.51.29" port="6379" password="www.tinygroup.org"></jedis-config>
 			</shard-sentinel-config>
 		</shard-sentinel-configs>
 
 		<shard-sentinel-configs sentinels="192.168.51.29:43333">
-			<shard-sentinel-config master-name="mymaster">
-				<jedis-config id="server01" host="192.168.51.29" port="41111"></jedis-config>
-				<jedis-config id="server02" host="192.168.51.29" port="41112"></jedis-config>
-				<jedis-config id="server03" host="192.168.51.29" port="41113"></jedis-config>
-				<jedis-config id="server04" host="192.168.51.29" port="46379"></jedis-config>
+			<shard-sentinel-config master-name="mymaster" password="www.tinygroup.org">
+				<jedis-config id="server01" host="192.168.51.29" port="41111" password="www.tinygroup.org"></jedis-config>
+				<jedis-config id="server02" host="192.168.51.29" port="41112" password="www.tinygroup.org"></jedis-config>
+				<jedis-config id="server03" host="192.168.51.29" port="41113" password="www.tinygroup.org"></jedis-config>
+				<jedis-config id="server04" host="192.168.51.29" port="46379" password="www.tinygroup.org"></jedis-config>
 			</shard-sentinel-config>
 		</shard-sentinel-configs>
 	</shard-jedis-sentinel-config>
