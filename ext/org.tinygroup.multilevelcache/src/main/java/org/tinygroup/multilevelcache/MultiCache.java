@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.tinygroup.cache.Cache;
 import org.tinygroup.cache.CacheManager;
+import org.tinygroup.cache.exception.CacheException;
 
 /**
  * @author Administrator
@@ -20,6 +21,17 @@ public class MultiCache implements Cache{
 	
 	Cache cache2;
 	
+	private CacheManager cacheManager;
+	
+	public MultiCache() {
+	}
+	
+	public MultiCache(Cache cache1, Cache cache2) {
+		super();
+		this.cache1 = cache1;
+		this.cache2 = cache2;
+	}
+
 	public void setCache1(Cache cache1) {
 		this.cache1 = cache1;
 	}
@@ -126,23 +138,24 @@ public class MultiCache implements Cache{
 	}
 
 	public String getStats() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuffer sb = new StringBuffer();
+		sb.append("cache1:" + cache1.getStats() + "\r\n");
+		sb.append("cache2:" + cache2.getStats() + "\r\n");
+		return sb.toString();
 	}
 
 	public int freeMemoryElements(int numberToFree) {
-		// TODO Auto-generated method stub
-		return 0;
+		throw new CacheException("multicache does not support this feature.");
 	}
 
 	public void destroy() {
-		// TODO Auto-generated method stub
-		
+		cache1.destroy();
+		cache2.destroy();
+		cacheManager.removeCache(this);
 	}
 
 	public void setCacheManager(CacheManager manager) {
-		// TODO Auto-generated method stub
-		
+		this.cacheManager = manager;
 	}
 
 }

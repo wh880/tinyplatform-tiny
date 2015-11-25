@@ -17,6 +17,7 @@ package org.tinygroup.multilevelcache;
 
 import org.tinygroup.cache.AbstractCacheManager;
 import org.tinygroup.cache.Cache;
+import org.tinygroup.cache.CacheManager;
 
 /**
  * 
@@ -25,13 +26,26 @@ import org.tinygroup.cache.Cache;
  */
 public class MultiCacheManager extends AbstractCacheManager {
 
-	MultiCacheManager multiCacheManager;
+	private CacheManager cacheManager1;
+	private CacheManager cacheManager2;
+	static MultiCacheManager multiCacheManager;
 	
 	private MultiCacheManager() {
 	}
 
+	public void setCacheManager1(CacheManager cacheManager1) {
+		this.cacheManager1 = cacheManager1;
+	}
+
+	public void setCacheManager2(CacheManager cacheManager2) {
+		this.cacheManager2 = cacheManager2;
+	}
+
 	public static MultiCacheManager getInstance() {
-		return new MultiCacheManager();
+		if (multiCacheManager == null) {
+			multiCacheManager = new MultiCacheManager();
+		}
+		return multiCacheManager;
 	}
 
 	public void shutDown() {
@@ -40,8 +54,14 @@ public class MultiCacheManager extends AbstractCacheManager {
 	}
 
 	@Override
-	protected Cache newCache(String region) {
+	protected MultiCache newCache(String region) {
 		MultiCache cache = new MultiCache();
+		Cache cache1 = cacheManager1.createCache(region);
+		Cache cache2 = cacheManager2.createCache(region);
+		cache1.setCacheManager(cacheManager1);
+		cache2.setCacheManager(cacheManager2);
+		cache.setCache1(cache1);
+		cache.setCache2(cache2);
         cache.init(region);
 		return cache;
 	}
