@@ -1,5 +1,6 @@
 package org.tinygroup.template;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -34,7 +35,7 @@ public interface TemplateRender {
      * @return
      * @throws TemplateException
      */
-    String renderTemplate(String path, TemplateContext context) throws TemplateException;
+    String renderTemplate(String path, TemplateContext context) throws TemplateException, IOException;
 
     /**
      * 根据路径渲染一个模板文件，但不会渲染布局
@@ -53,7 +54,7 @@ public interface TemplateRender {
      * @return
      * @throws TemplateException
      */
-    String renderTemplateWithOutLayout(String path, TemplateContext context) throws TemplateException;
+    String renderTemplateWithOutLayout(String path, TemplateContext context) throws TemplateException, IOException;
     
     /**
      * 根据文本内容渲染
@@ -71,5 +72,5 @@ public interface TemplateRender {
      * @return
      * @throws TemplateException
      */
-    String renderTemplateContent(String content, TemplateContext context) throws TemplateException;
+    String renderTemplateContent(String content, TemplateContext context) throws TemplateException, IOException;
 }
