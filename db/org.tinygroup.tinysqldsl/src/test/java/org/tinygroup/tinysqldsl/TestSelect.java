@@ -180,10 +180,13 @@ public class TestSelect {
 		System.out.println(select(CUSTOM.NAME).from(CUSTOM).where(
 				or(and(CUSTOM.AGE.greaterThan(33), CUSTOM.NAME.equal("")),
 						CUSTOM.ID.eq("123"))));
-		
 		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.in(1,5,10)));
 		
+		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.in(new Object[0])));
+		
 		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.notIn(1,5,10)));
+		
+		System.out.println(selectFrom(CUSTOM).where(CUSTOM.AGE.notIn(1,null,10)));
 		
 		System.out.println(selectFrom(CUSTOM).where(ExistsExpression.existsCondition(
 				subSelect(selectFrom(CUSTOM).where(CUSTOM.AGE.in(10000,100001))))));

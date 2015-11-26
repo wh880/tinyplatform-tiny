@@ -15,5 +15,6 @@
     <module>org.tinygroup.rediscache</module>
     <module>org.tinygroup.cachefactory</module>
     <module>org.tinygroup.jcscache2</module>
+	<module>org.tinygroup.multilevelcache</module>
   </modules>
 </project>
