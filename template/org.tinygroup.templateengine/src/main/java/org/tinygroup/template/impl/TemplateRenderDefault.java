@@ -55,7 +55,7 @@ public class TemplateRenderDefault implements TemplateRender {
 	}
 
 	public String renderTemplate(String path, TemplateContext context)
-            throws TemplateException, IOException {
+            throws TemplateException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		try {
 			renderTemplate(path, context, outputStream);
@@ -63,7 +63,11 @@ public class TemplateRenderDefault implements TemplateRender {
 		} catch (UnsupportedEncodingException e) {
 			throw new TemplateException(e);
 		} finally {
-			outputStream.close();
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				throw new TemplateException(e);
+			}
 		}
 	}
 
