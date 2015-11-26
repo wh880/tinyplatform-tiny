@@ -54,7 +54,7 @@ public interface TemplateRender {
      * @return
      * @throws TemplateException
      */
-    String renderTemplateWithOutLayout(String path, TemplateContext context) throws TemplateException, IOException;
+    String renderTemplateWithOutLayout(String path, TemplateContext context) throws TemplateException;
     
     /**
      * 根据文本内容渲染
@@ -72,5 +72,5 @@ public interface TemplateRender {
      * @return
      * @throws TemplateException
      */
-    String renderTemplateContent(String content, TemplateContext context) throws TemplateException, IOException;
+    String renderTemplateContent(String content, TemplateContext context) throws TemplateException;
 }

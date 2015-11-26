@@ -75,7 +75,7 @@ public class TemplateRenderDefault implements TemplateRender {
 	}
 
 	public String renderTemplateWithOutLayout(String path,
-			TemplateContext context) throws TemplateException, IOException {
+			TemplateContext context) throws TemplateException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		try {
 			renderTemplateWithOutLayout(path, context, outputStream);
@@ -83,7 +83,11 @@ public class TemplateRenderDefault implements TemplateRender {
 		} catch (UnsupportedEncodingException e) {
 			throw new TemplateException(e);
 		} finally {
-			outputStream.close();
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				throw new TemplateException(e);
+			}
 		}
 	}
 
@@ -95,7 +99,7 @@ public class TemplateRenderDefault implements TemplateRender {
 	}
 
 	public String renderTemplateContent(String content, TemplateContext context)
-            throws TemplateException, IOException {
+            throws TemplateException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		try {
 			renderTemplateContent(content, context, outputStream);
@@ -103,7 +107,11 @@ public class TemplateRenderDefault implements TemplateRender {
 		} catch (UnsupportedEncodingException e) {
 			throw new TemplateException(e);
 		} finally {
-			outputStream.close();
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				throw new TemplateException(e);
+			}
 		}
 	}
 
