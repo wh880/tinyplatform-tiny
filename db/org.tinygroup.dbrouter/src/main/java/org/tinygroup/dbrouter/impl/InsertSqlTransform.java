@@ -15,29 +15,24 @@
  */
 package org.tinygroup.dbrouter.impl;
 
-import org.tinygroup.dbrouter.config.Shard;
-import org.tinygroup.jsqlparser.schema.Column;
-import org.tinygroup.jsqlparser.schema.Table;
-import org.tinygroup.jsqlparser.statement.insert.Insert;
-
 import java.io.Serializable;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.tinygroup.jsqlparser.schema.Column;
+import org.tinygroup.jsqlparser.schema.Table;
+import org.tinygroup.jsqlparser.statement.insert.Insert;
+
 public class InsertSqlTransform {
 	
 	private Insert originalInsert;
 	
-	private Shard firstShard;
-	
 	private DatabaseMetaData metaData;
 	
-	public InsertSqlTransform(Insert originalInsert,
-			Shard firstShard, DatabaseMetaData metaData) {
+	public InsertSqlTransform(Insert originalInsert, DatabaseMetaData metaData) {
 		super();
 		this.originalInsert = originalInsert;
-		this.firstShard = firstShard;
 		this.metaData = metaData;
 	}
 	

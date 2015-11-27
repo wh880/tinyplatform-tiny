@@ -128,6 +128,9 @@ public class Partition {
     }
 
     public List<Shard> getShards() {
+    	if(shards==null){
+    		shards=new ArrayList<Shard>();
+    	}
         return shards;
     }
 

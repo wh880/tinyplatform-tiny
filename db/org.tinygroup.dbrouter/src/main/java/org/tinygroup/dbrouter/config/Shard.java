@@ -90,6 +90,9 @@ public class Shard {
 	}
 
 	public List<TableMapping> getTableMappings() {
+		if(tableMappings==null){
+			tableMappings=new ArrayList<TableMapping>();
+		}
 		return tableMappings;
 	}
 
