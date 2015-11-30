@@ -1,11 +1,12 @@
 package org.tinygroup.template.impl;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import org.tinygroup.beancontainer.BeanContainer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.commons.io.ByteArrayOutputStream;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateEngine;
@@ -54,15 +55,19 @@ public class TemplateRenderDefault implements TemplateRender {
 	}
 
 	public String renderTemplate(String path, TemplateContext context)
-			throws TemplateException {
+            throws TemplateException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		try {
 			renderTemplate(path, context, outputStream);
-			return new String(outputStream.toByteArray().toByteArray(), "UTF-8");
+			return new String(outputStream.toByteArray(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new TemplateException(e);
 		} finally {
-			outputStream.close();
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				throw new TemplateException(e);
+			}
 		}
 	}
 
@@ -78,11 +83,15 @@ public class TemplateRenderDefault implements TemplateRender {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		try {
 			renderTemplateWithOutLayout(path, context, outputStream);
-			return new String(outputStream.toByteArray().toByteArray(), "UTF-8");
+			return new String(outputStream.toByteArray(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new TemplateException(e);
 		} finally {
-			outputStream.close();
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				throw new TemplateException(e);
+			}
 		}
 	}
 
@@ -94,15 +103,19 @@ public class TemplateRenderDefault implements TemplateRender {
 	}
 
 	public String renderTemplateContent(String content, TemplateContext context)
-			throws TemplateException {
+            throws TemplateException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		try {
 			renderTemplateContent(content, context, outputStream);
-			return new String(outputStream.toByteArray().toByteArray(), "UTF-8");
+			return new String(outputStream.toByteArray(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new TemplateException(e);
 		} finally {
-			outputStream.close();
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				throw new TemplateException(e);
+			}
 		}
 	}
 

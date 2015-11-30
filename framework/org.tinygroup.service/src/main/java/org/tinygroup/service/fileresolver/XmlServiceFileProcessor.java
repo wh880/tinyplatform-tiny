@@ -134,7 +134,12 @@ public class XmlServiceFileProcessor extends XmlConfigServiceLoader implements
 			}
 			return container.getBean(component.getBean());
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.WARN, "查找Bean {}时发生异常", e, component.getBean());
+			if (component.getBean() == null || "".equals(component.getBean())) {
+				LOGGER.logMessage(LogLevel.WARN, "查找Bean：{}时发生异常", e, component.getType());
+			}else{
+				LOGGER.logMessage(LogLevel.WARN, "查找Bean：{}时发生异常", e, component.getBean());
+			}
+			
 			Class<?> clazz = Class.forName(component.getType());
 			if (!clazz.isInterface()) {
 				return clazz.newInstance();
