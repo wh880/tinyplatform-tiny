@@ -256,7 +256,7 @@ public abstract class StatementSqlBuilder {
 		for (Iterator<OrderByElement> iter = orderByElements.iterator(); iter
 				.hasNext();) {
 			OrderByElement orderByElement = iter.next();
-			appendSql(orderByElement.toString());
+			orderByElement.getExpression().builderExpression(this);
 			if (iter.hasNext()) {
 				stringBuilder.append(",");
 			}
