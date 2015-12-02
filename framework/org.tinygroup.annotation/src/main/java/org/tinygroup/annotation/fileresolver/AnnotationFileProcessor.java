@@ -18,7 +18,7 @@ package org.tinygroup.annotation.fileresolver;
 import java.io.InputStream;
 
 import com.thoughtworks.xstream.XStream;
-import org.tinygroup.annotation.AnnotationExcuteManager;
+import org.tinygroup.annotation.AnnotationExecuteManager;
 import org.tinygroup.annotation.config.AnnotationClassMatchers;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
@@ -34,23 +34,23 @@ import org.tinygroup.xstream.XStreamFactory;
 public class AnnotationFileProcessor extends AbstractFileProcessor {
 
 	private static final String ANNOTATION_EXT_FILENAME = ".annotation.xml";
-	private AnnotationExcuteManager manager;
+	private AnnotationExecuteManager manager;
 	protected boolean checkMatch(FileObject fileObject) {
 
 		return fileObject.getFileName().endsWith(ANNOTATION_EXT_FILENAME);
 	}
-	public AnnotationExcuteManager getManager() {
+	public AnnotationExecuteManager getManager() {
 		return manager;
 	}
 
-	public void setManager(AnnotationExcuteManager manager) {
+	public void setManager(AnnotationExecuteManager manager) {
 		this.manager = manager;
 	}
 	public void process() {
 
 		
 		XStream stream = XStreamFactory
-				.getXStream(AnnotationExcuteManager.XSTEAM_PACKAGE_NAME);
+				.getXStream(AnnotationExecuteManager.XSTEAM_PACKAGE_NAME);
 		for (FileObject fileObject : deleteList) {
 			LOGGER.logMessage(LogLevel.INFO, "正在移除注解配置文件[{0}]",
 					fileObject.getAbsolutePath());

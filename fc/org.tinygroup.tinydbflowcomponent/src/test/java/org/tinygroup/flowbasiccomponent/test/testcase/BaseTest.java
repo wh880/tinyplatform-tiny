@@ -37,7 +37,7 @@ public abstract class BaseTest extends TestCase {
 	static FlowExecutor flowExecutor;
 	protected static String ANIMAL = "animal";
 	String mainSchema = "opensource";
-	private static boolean hasExcuted = false;
+	private static boolean hasExecuted = false;
 
 	public DBOperator<String> getOperator() {
 		return operator;
@@ -48,11 +48,11 @@ public abstract class BaseTest extends TestCase {
 	}
 
 	public void setUp() {
-		if (!hasExcuted) {
+		if (!hasExecuted) {
 			AbstractTestUtil.init(null, true);
 			initTable();
 			initFactory();
-			hasExcuted = true;
+			hasExecuted = true;
 		}
 
 	}
