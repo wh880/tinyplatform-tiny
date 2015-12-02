@@ -208,6 +208,10 @@ public class TestSelect {
 		System.out.println(select(manName,womonName).from(man,womon).where(manName.eq("test")));
 		
 		System.out.println(select(CUSTOM.ALL,TSCORE.ALL).from(CUSTOM).join(simpleJoin(TSCORE)).where(CUSTOM.ID.eq(1)));
+		
+		System.out.println(select(CUSTOM.AGE.distinct().count().as("sffs")).from(CUSTOM));
+		
+		System.out.println(select(CUSTOM.AGE.distinct().as("sffs")).from(CUSTOM));
 
 	}
 }
