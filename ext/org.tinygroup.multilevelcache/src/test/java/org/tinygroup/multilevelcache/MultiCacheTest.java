@@ -72,7 +72,7 @@ public class MultiCacheTest extends TestCase {
 		cahce_f.put("a" ,"a1", "aaa1");
 		cahce_s.put("a" ,"a2", "aaa2");
 		cahce_s.put("a" ,"a3", "aaa3");
-		assertSame(3, cache.getGroupKeys("a").size());
+		assertSame(1, cache.getGroupKeys("a").size());
 		cache.clear();
 	}
 	

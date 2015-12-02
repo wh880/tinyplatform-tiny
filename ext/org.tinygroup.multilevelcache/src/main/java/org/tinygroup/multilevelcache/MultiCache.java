@@ -20,39 +20,45 @@ public class MultiCache implements Cache{
 	/**
 	 * 1级缓存
 	 */
-	Cache cache_first;
+	Cache cacheFirst;
 	
 	/**
 	 * 2级缓存
 	 */
-	Cache cache_second;
+	Cache cacheSecond;
+	
+	CacheManager manager;
 	
 	public MultiCache() {
 	}
 	
-	public MultiCache(Cache cache_first, Cache cache2_second) {
+	public MultiCache(Cache cacheFirst, Cache cacheSecond) {
 		super();
-		this.cache_first = cache_first;
-		this.cache_second = cache2_second;
+		this.cacheFirst = cacheFirst;
+		this.cacheSecond = cacheSecond;
 	}
 
+	/**
+	 * 1，2级缓存，分别自己初始化，防止缓存重复
+	 */
 	public void init(String region) {
+		
 	}
 
 	public Object get(String key) {
-		Object obj = cache_first.get(key);
+		Object obj = cacheFirst.get(key);
 		if (obj == null) {
-			obj = cache_second.get(key);
-			cache_first.put(key, obj);
+			obj = cacheSecond.get(key);
+			cacheFirst.put(key, obj);
 		}
 		return obj;
 	}
 
 	public Object get(String group, String key) {
-		Object obj = cache_first.get(group ,key);
+		Object obj = cacheFirst.get(group ,key);
 		if (obj == null) {
-			obj = cache_second.get(group ,key);
-			cache_first.put(group,key, obj);
+			obj = cacheSecond.get(group ,key);
+			cacheFirst.put(group,key, obj);
 		}
 		return obj;
 	}
@@ -78,93 +84,100 @@ public class MultiCache implements Cache{
 	}
 
 	public void put(String key, Object object) {
-		cache_first.put(key ,object);
-		cache_second.put(key ,object);
+		cacheFirst.put(key ,object);
+		cacheSecond.put(key ,object);
 	}
 
 	public void putSafe(String key, Object object) {
-		cache_first.putSafe(key ,object);
-		cache_second.putSafe(key ,object);
+		cacheFirst.putSafe(key ,object);
+		cacheSecond.putSafe(key ,object);
 	}
 
 	public void put(String groupName, String key, Object object) {
-		cache_first.put(groupName ,key ,object);
-		cache_second.put(groupName ,key ,object);
+		cacheFirst.put(groupName ,key ,object);
+		cacheSecond.put(groupName ,key ,object);
 	}
 
 	public Set<String> getGroupKeys(String group) {
-		Set<String> keys = new HashSet<String>();
-		Set<String> fkeys = cache_first.getGroupKeys(group);
-		if (fkeys != null) {
-			keys.addAll(fkeys);
+		Set<String> firstKeys = cacheFirst.getGroupKeys(group);
+		if (firstKeys != null && firstKeys.size() > 0) {
+			return firstKeys;
 		}
-		Set<String> skeys = cache_second.getGroupKeys(group);
-		if (skeys != null) {
-			keys.addAll(skeys);
+		Set<String> secondKeys = cacheSecond.getGroupKeys(group);
+		if (secondKeys != null && secondKeys.size() > 0) {
+			return secondKeys;
 		}
-		return keys;
+		return new HashSet<String>();
 	}
 
 	public void cleanGroup(String group) {
-		cache_first.cleanGroup(group);
-		cache_second.cleanGroup(group);
+		cacheFirst.cleanGroup(group);
+		cacheSecond.cleanGroup(group);
 	}
 
 	public void clear() {
-		cache_first.clear();
-		cache_second.clear();
+		cacheFirst.clear();
+		cacheSecond.clear();
 	}
 
 	public void remove(String key) {
-		cache_first.remove(key);
-		cache_second.remove(key);
+		cacheFirst.remove(key);
+		cacheSecond.remove(key);
 	}
 
 	public void remove(String group, String key) {
-		cache_first.remove(group ,key);
-		cache_second.remove(group ,key);
+		cacheFirst.remove(group ,key);
+		cacheSecond.remove(group ,key);
 		
 	}
 
 	public void remove(String[] keys) {
-		cache_first.remove(keys);
-		cache_second.remove(keys);
+		cacheFirst.remove(keys);
+		cacheSecond.remove(keys);
 	}
 
 	public void remove(String group, String[] keys) {
-		cache_first.remove(group ,keys);
-		cache_second.remove(group ,keys);
+		cacheFirst.remove(group ,keys);
+		cacheSecond.remove(group ,keys);
 	}
 
 	public String getStats() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("cache1:" + cache_first.getStats() + "\r\n");
-		sb.append("cache2:" + cache_second.getStats() + "\r\n");
+		sb.append("first cache:" + cacheFirst.getStats() + "\r\n");
+		sb.append("second cache:" + cacheSecond.getStats() + "\r\n");
 		return sb.toString();
 	}
 
-	
+	/**
+	 * 同时释放1，2级缓存内存空间
+	 * 只返回两者释放最大值
+	 */
 	public int freeMemoryElements(int numberToFree) {
-		int fnum = 0;
-		int snum = 0;
+		int firstNum = 0;
+		int secondNum = 0;
 		try {
-			fnum = cache_first.freeMemoryElements(numberToFree);
+			firstNum = cacheFirst.freeMemoryElements(numberToFree);
 		} catch (Exception e) {
-			
+			//异常内存，异常不处理
 		}
 		try {
-			snum = cache_second.freeMemoryElements(numberToFree);
+			secondNum = cacheSecond.freeMemoryElements(numberToFree);
 		} catch (Exception e) {
+			//
 		}
 		
-		return fnum > snum ? fnum :snum;
+		return firstNum > secondNum ? firstNum :secondNum;
 	}
 
+	/**
+	 * 外部处理，不在这里处理，原因和init方法同理，本类只使用缓存，不涉及初始化和销毁
+	 */
 	public void destroy() {
+		
 	}
 
 	public void setCacheManager(CacheManager manager) {
-		
+		this.manager = manager;
 	}
 
 }

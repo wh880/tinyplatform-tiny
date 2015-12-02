@@ -15,7 +15,7 @@
  */
 package org.tinygroup.annotation.fileresolver;
 
-import org.tinygroup.annotation.AnnotationExcuteManager;
+import org.tinygroup.annotation.AnnotationExecuteManager;
 import org.tinygroup.fileresolver.ProcessorCallBack;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.fileresolver.impl.MultiThreadFileProcessor;
@@ -28,7 +28,7 @@ import org.tinygroup.vfs.FileObject;
  * 
  */
 public class AnnotationClassFileProcessor extends AbstractFileProcessor {
-	private AnnotationExcuteManager manager;
+	private AnnotationExecuteManager manager;
 	private static final String CLASS_EXT_FILENAME = ".class";
 
 	protected boolean checkMatch(FileObject fileObject) {
@@ -40,11 +40,11 @@ public class AnnotationClassFileProcessor extends AbstractFileProcessor {
 
 	}
 
-	public AnnotationExcuteManager getManager() {
+	public AnnotationExecuteManager getManager() {
 		return manager;
 	}
 
-	public void setManager(AnnotationExcuteManager manager) {
+	public void setManager(AnnotationExecuteManager manager) {
 		this.manager = manager;
 	}
 

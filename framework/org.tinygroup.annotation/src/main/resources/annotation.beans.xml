@@ -5,16 +5,16 @@
                     http://www.springframework.org/schema/beans/spring-beans.xsd"
 	   default-autowire="byName" default-lazy-init="true">
 
-		<bean id="annotationExcuteManager" scope="singleton"
-			class="org.tinygroup.annotation.impl.AnnotationExcuteManagerImpl">
+		<bean id="annotationExecuteManager" scope="singleton"
+			class="org.tinygroup.annotation.impl.AnnotationExecuteManagerImpl">
 		</bean>
 		<bean id="annotationFileProcessor" scope="singleton"
 			class="org.tinygroup.annotation.fileresolver.AnnotationFileProcessor">
-			<property name="manager" ref="annotationExcuteManager"></property>
+			<property name="manager" ref="annotationExecuteManager"></property>
 		</bean>
 		<bean id="annotationClassFileProcessor" scope="singleton"
 			class="org.tinygroup.annotation.fileresolver.AnnotationClassFileProcessor">
-			<property name="manager" ref="annotationExcuteManager"></property>
+			<property name="manager" ref="annotationExecuteManager"></property>
 		</bean>
 
 	</beans>

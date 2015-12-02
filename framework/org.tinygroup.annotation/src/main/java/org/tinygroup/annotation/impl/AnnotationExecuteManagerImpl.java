@@ -16,7 +16,7 @@
 package org.tinygroup.annotation.impl;
 
 import org.tinygroup.annotation.AnnotationClassAction;
-import org.tinygroup.annotation.AnnotationExcuteManager;
+import org.tinygroup.annotation.AnnotationExecuteManager;
 import org.tinygroup.annotation.AnnotationMethodAction;
 import org.tinygroup.annotation.AnnotationPropertyAction;
 import org.tinygroup.annotation.config.*;
@@ -44,7 +44,7 @@ import java.util.List;
  * @author luoguo
  * 
  */
-public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
+public class AnnotationExecuteManagerImpl implements AnnotationExecuteManager,
 		Configuration {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AnnotationFileProcessor.class);
@@ -53,7 +53,7 @@ public class AnnotationExcuteManagerImpl implements AnnotationExcuteManager,
 	// 类匹配定义
 	private List<AnnotationClassMatcher> classMatchers = new ArrayList<AnnotationClassMatcher>();
 
-	public AnnotationExcuteManagerImpl() {
+	public AnnotationExecuteManagerImpl() {
 
 	}
 
