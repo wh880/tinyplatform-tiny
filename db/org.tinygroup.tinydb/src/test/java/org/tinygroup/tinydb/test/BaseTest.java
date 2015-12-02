@@ -38,7 +38,7 @@ public abstract class BaseTest extends TestCase {
 	protected static String PEOPLE = "aPeople";
 	protected static String BRANCH = "aBranch";
 	String mainSchema = "opensource";
-	private static boolean hasExcuted = false;
+	private static boolean hasExecuted = false;
 
 	protected static Configuration configuration;
 
@@ -48,13 +48,13 @@ public abstract class BaseTest extends TestCase {
 
 	public void setUp() throws Exception {
 		AbstractTestUtil.init(null, true);
-		if (!hasExcuted) {
+		if (!hasExecuted) {
 			initTable();
 			Reader reader = Resources.getResourceAsReader("tinydb.xml");
 			ConfigurationBuilder builder = new ConfigurationBuilder(reader);
 			configuration = builder.parser();
 			initFactory();
-			hasExcuted = true;
+			hasExecuted = true;
 		}
 
 	}

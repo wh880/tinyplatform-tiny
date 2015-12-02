@@ -66,11 +66,11 @@ public abstract class AbstractInstallProcessor implements InstallProcessor {
 
 	protected void processWithConn(String language,Connection con) throws SQLException {
 		List<String> sqls = getDealSqls(language, con);
-		excute(sqls, con);
+		execute(sqls, con);
 
 	}
-
-	private void excute(List<String> sqls, Connection con) throws SQLException {
+	
+	private void execute(List<String> sqls, Connection con) throws SQLException {
 		Statement statement = null;
 		con.setAutoCommit(false);
 		try {

@@ -15,15 +15,19 @@
  */
 package org.tinygroup.tinysqldsl.selectitem;
 
+import org.tinygroup.tinysqldsl.base.Alias;
 import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.base.StatementSqlBuilder;
+import org.tinygroup.tinysqldsl.operator.SimpleStatisticsOperator;
 
 /**
  * A DISTINCT [(expression, ...)] clause
  */
-public class Distinct implements SelectItem {
+public class Distinct extends SimpleStatisticsOperator implements SelectItem,Cloneable{
 
 	private SelectItem selectItem;
+	
+	private Alias alias;
 
 	public Distinct() {
 		this.selectItem = new AllColumns();
@@ -35,6 +39,28 @@ public class Distinct implements SelectItem {
 
 	public Distinct(SelectItem selectItem) {
 		this.selectItem = selectItem;
+	}
+
+	public Distinct as(String aliasName) {
+		return as(aliasName, false);
+	}
+
+	public Distinct as(String aliasName, boolean withAs) {
+		try {
+			Distinct distinct = (Distinct) this.clone();
+			distinct.setAlias(new Alias(aliasName, withAs));
+			return distinct;
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public Alias getAlias() {
+		return alias;
+	}
+
+	public void setAlias(Alias alias) {
+		this.alias = alias;
 	}
 
 	public static Distinct distinct(SelectItem selectItem) {
@@ -56,7 +82,7 @@ public class Distinct implements SelectItem {
 	public void setSelectItem(SelectItem selectItem) {
 		this.selectItem = selectItem;
 	}
-
+	
 	public String toString() {
 		String sql = "DISTINCT";
 		sql += "(" + selectItem + ")";
@@ -64,6 +90,13 @@ public class Distinct implements SelectItem {
 	}
 
 	public void builderSelectItem(StatementSqlBuilder builder) {
+		internalBuilder(builder);
+		if (alias != null) {
+			builder.appendSql(alias.toString());
+		}
+	}
+
+	private void internalBuilder(StatementSqlBuilder builder) {
 		StringBuilder buffer = builder.getStringBuilder();
 		buffer.append("DISTINCT ");
 		SelectItem selectItem = getSelectItem();
@@ -73,4 +106,9 @@ public class Distinct implements SelectItem {
 			buffer.append(") ");
 		}
 	}
+
+	public void builderExpression(StatementSqlBuilder builder) {
+		internalBuilder(builder);
+	}
+
 }

@@ -28,7 +28,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public abstract class BaseTest extends TestCase {
-	private boolean hasExcuted;
+	private boolean hasExecuted;
 	protected DataSource dataSource;
 	void init() {
 		AbstractTestUtil.init(null, true);
@@ -36,12 +36,12 @@ public abstract class BaseTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		if (!hasExcuted) {
+		if (!hasExecuted) {
 			init();
 			dataSource = BeanContainerFactory.getBeanContainer(
 					getClass().getClassLoader()).getBean("dataSource");
 			initTable();
-			hasExcuted = true;
+			hasExecuted = true;
 		}
 	}
 
