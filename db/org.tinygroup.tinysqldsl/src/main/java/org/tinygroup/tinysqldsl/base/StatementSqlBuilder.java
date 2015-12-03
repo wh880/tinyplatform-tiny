@@ -33,6 +33,7 @@ import org.tinygroup.tinysqldsl.select.Join;
 import org.tinygroup.tinysqldsl.select.Limit;
 import org.tinygroup.tinysqldsl.select.Offset;
 import org.tinygroup.tinysqldsl.select.OrderByElement;
+import org.tinygroup.tinysqldsl.select.OrderByElement.NullOrdering;
 import org.tinygroup.tinysqldsl.util.NamedParameterUtils;
 
 /**
@@ -257,6 +258,16 @@ public abstract class StatementSqlBuilder {
 				.hasNext();) {
 			OrderByElement orderByElement = iter.next();
 			orderByElement.getExpression().builderExpression(this);
+			if (!orderByElement.isAsc()) {
+				stringBuilder.append(" DESC");
+	        }else if(orderByElement.isAscDescPresent()){
+	        	stringBuilder.append(" ASC");
+	        }
+
+	        if (orderByElement.getNullOrdering() != null) {
+	        	stringBuilder.append(' ');
+	        	stringBuilder.append(orderByElement.getNullOrdering() == NullOrdering.NULLS_FIRST ? "NULLS FIRST" : "NULLS LAST");
+	        }
 			if (iter.hasNext()) {
 				stringBuilder.append(",");
 			}
