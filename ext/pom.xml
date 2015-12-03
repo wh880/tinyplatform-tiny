@@ -11,10 +11,12 @@
     <module>org.tinygroup.jcscache</module>
     <module>org.tinygroup.ehcache</module>
     <module>org.tinygroup.elmvel</module>
-	<module>org.tinygroup.jedis</module>
+	  <module>org.tinygroup.jedis</module>
     <module>org.tinygroup.rediscache</module>
     <module>org.tinygroup.cachefactory</module>
     <module>org.tinygroup.jcscache2</module>
-	<module>org.tinygroup.multilevelcache</module>
+	  <module>org.tinygroup.multilevelcache</module>
+		<module>org.tinygroup.aopcache</module>
+		<module>org.tinygroup.servicewrapper</module>
   </modules>
 </project>

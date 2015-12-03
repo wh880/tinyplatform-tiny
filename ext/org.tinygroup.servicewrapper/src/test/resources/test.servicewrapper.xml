@@ -1,0 +1,8 @@
+<method-configs>
+	<method-config type="org.tinygroup.servicewrapper.GeneratorServiceIn"
+		method-name="userObject">
+		<parameter-type type="org.tinygroup.servicewrapper.ServiceUser"></parameter-type>
+		<parameter-type type="org.tinygroup.servicewrapper.ServiceOrg"></parameter-type>
+		<service-id>serviceUserObject</service-id>
+	</method-config>
+</method-configs>

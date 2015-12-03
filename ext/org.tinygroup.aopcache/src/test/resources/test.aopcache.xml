@@ -1,0 +1,39 @@
+<aop-caches>
+	<aop-cache class-name="org.tinygroup.aopcache.XmlUserDao">
+		<method-config method-name="updateUser">
+			<parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
+			<cache-actions>
+				<cache-put class="org.tinygroup.aopcache.config.CachePut"
+				    keys="${user.id}" parameter-names="user"
+					group="singleGroup" remove-keys="users" remove-groups="multiGroup">
+				</cache-put>
+			</cache-actions>
+		</method-config>
+		<method-config method-name="insertUser">
+			<parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
+			<cache-actions>
+				<cache-put class="org.tinygroup.aopcache.config.CachePut" keys="${user.id}" parameter-names="user" group="singleGroup"
+					remove-keys="users" remove-groups="multiGroup"></cache-put>
+			</cache-actions>
+		</method-config>
+		<method-config method-name="deleteUser">
+			<parameter-type type="int"></parameter-type>
+			<cache-actions>
+				<cache-remove class="org.tinygroup.aopcache.config.CacheRemove" 
+				 group = "singleGroup" remove-keys = "${userId},users"  remove-groups="multiGroup">
+				</cache-remove>
+			</cache-actions>
+		</method-config>
+		<method-config method-name="getUser">
+			<parameter-type type="int"></parameter-type>
+			<cache-actions>
+				<cache-get class="org.tinygroup.aopcache.config.CacheGet" key = "${userId}" group = "singleGroup"></cache-get>
+			</cache-actions>
+		</method-config>
+		<method-config method-name="getUsers">
+			<cache-actions>
+				<cache-get class="org.tinygroup.aopcache.config.CacheGet" key = "users"  group = "multiGroup"></cache-get>
+			</cache-actions>
+		</method-config>
+	</aop-cache>
+</aop-caches>
