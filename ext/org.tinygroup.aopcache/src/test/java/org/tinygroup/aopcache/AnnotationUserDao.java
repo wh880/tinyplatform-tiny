@@ -45,7 +45,7 @@ public class AnnotationUserDao {
 		container.put(user.id, user);
 	}
 
-	@CachePut( keys = {"${user.id}","${user.name}"},parameterNames = {"user","user"}, group = "singleGroup", removeKeys = "users",removeGroups = "multiGroup")
+	@CachePut( keys = {"${user.id}","${user.name}"},parameterNames = {"user","user"}, group = "singleGroup", removeKeys = {"users","users"},removeGroups = {"multiGroup","multiGroup"})
 	public void insertUserTwoCache(User user) {
 		System.out.println("insert user two cache");
 		container.put(user.id, user);
@@ -64,7 +64,7 @@ public class AnnotationUserDao {
 		return resultUser;
 	}
 
-	@CacheRemove(group = "singleGroup", removeKeys = "${userId},users", removeGroups ="multiGroup")
+	@CacheRemove(group = "singleGroup", removeKeys = {"${userId}","users"}, removeGroups ={"multiGroup","multiGroup"})
 	public void deleteUser(int userId) {
 		System.out.println("delete user");
 		container.remove(userId);
