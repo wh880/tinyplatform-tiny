@@ -32,53 +32,54 @@ import org.tinygroup.aopcache.annotation.CacheRemove;
 public class AnnotationUserDao {
 	Map<Integer, User> container = new HashMap<Integer, User>();
 	
-	private String testDbOperatorLog = "";//仅用于测试日志，记录从数据库获取的测试结果
-	
-	
-	public String getTestDbOperatorLog() {
-		return testDbOperatorLog;
-	}
 
+	
 	@CachePut(keys = "${user.id}", parameterNames = "user", group = "singleGroup", removeKeys = "users",removeGroups = "multiGroup")
 	public void updateUser(User user) {
-		testDbOperatorLog+="update user;";
-//		System.out.println("update user");
+		System.out.println("update user");
 	}
 
 	@CachePut( keys = "${user.id}",parameterNames = "user", group = "singleGroup", removeKeys = "users",removeGroups = "multiGroup")
 	public void insertUser(User user) {
-		testDbOperatorLog+="insert user;";
-//		System.out.println("insert user");
+		System.out.println("insert user");
 		container.put(user.id, user);
 	}
 
-	@CachePut( keys = "${user.id}",parameterNames = "", group = "singleGroup", removeKeys = "users",removeGroups = "multiGroup")
+	@CachePut( keys = "${user.id}",parameterNames = "user", group = "singleGroup", removeKeys = "users",removeGroups = "multiGroup")
 	public User insertUserNoParam(User user) {
-		testDbOperatorLog+="insert user;";
-//		System.out.println("insert user");
+		System.out.println("insert user");
 		container.put(user.id, user);
 		user.setId(100);
-		return user;
+		User resultUser = new User();
+		resultUser.setId(user.getId());
+		resultUser.setName(user.getName());
+		resultUser.setAge(user.getAge());
+		resultUser.setBirth(user.getBirth());
+		return resultUser;
 	}
 
 	@CacheRemove(group = "singleGroup", removeKeys = "${userId},users", removeGroups ="multiGroup")
 	public void deleteUser(int userId) {
-		testDbOperatorLog+="delete user;";
-//		System.out.println("delete user");
+		System.out.println("delete user");
 		container.remove(userId);
 	}
 
 	@CacheGet(key = "${userId}", group = "singleGroup")
 	public User getUser(int userId) {
-		testDbOperatorLog+="get user;";
-//		System.out.println("get user");
+		System.out.println("get user");
 		return container.get(userId);
+	}
+
+	//可配置多个key,用逗号分隔.第一次get时这些key会依次放入缓存,对应同一个value.当然也支持单个key
+	@CacheGet(key = "${user.name},${user.id}", group = "singleGroup")
+	public User getUser(User user) {
+		System.out.println("get user by user");
+		return container.get(user.id);
 	}
 
 	@CacheGet(key = "users", group = "multiGroup")
 	public List<User> getUsers() {
-//		System.out.println("get users");
-		testDbOperatorLog+="get users;";
+		System.out.println("get users");
 		List<User> users=new ArrayList<User>();
 		users.addAll(container.values());
 		return users;

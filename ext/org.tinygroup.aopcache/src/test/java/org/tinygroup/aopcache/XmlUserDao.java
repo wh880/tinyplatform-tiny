@@ -42,6 +42,18 @@ public class XmlUserDao {
 		container.put(user.id, user);
 	}
 
+	public User insertUserNoParam(User user) {
+		System.out.println("insert user");
+		container.put(user.id, user);
+		user.setId(100);
+		User resultUser = new User();
+		resultUser.setId(user.getId());
+		resultUser.setName(user.getName());
+		resultUser.setAge(user.getAge());
+		resultUser.setBirth(user.getBirth());
+		return resultUser;
+	}
+
 	public void deleteUser(int userId) {
 //		System.out.println("delete user");
 		testDbOperatorLog+="delete user;";
@@ -52,6 +64,11 @@ public class XmlUserDao {
 //		System.out.println("get user");
 		testDbOperatorLog+="get user;";
 		return container.get(userId);
+	}
+
+	public User getUser(User user) {
+		System.out.println("get user by user");
+		return container.get(user.id);
 	}
 
 	public List<User> getUsers() {

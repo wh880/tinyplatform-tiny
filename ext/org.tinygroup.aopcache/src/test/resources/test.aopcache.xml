@@ -16,6 +16,13 @@
 					remove-keys="users" remove-groups="multiGroup"></cache-put>
 			</cache-actions>
 		</method-config>
+		<method-config method-name="insertUserNoParam">
+			<parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
+			<cache-actions>
+				<cache-put class="org.tinygroup.aopcache.config.CachePut" keys="${user.id}" parameter-names="" group="singleGroup"
+						   remove-keys="users" remove-groups="multiGroup"></cache-put>
+			</cache-actions>
+		</method-config>
 		<method-config method-name="deleteUser">
 			<parameter-type type="int"></parameter-type>
 			<cache-actions>
@@ -28,6 +35,13 @@
 			<parameter-type type="int"></parameter-type>
 			<cache-actions>
 				<cache-get class="org.tinygroup.aopcache.config.CacheGet" key = "${userId}" group = "singleGroup"></cache-get>
+			</cache-actions>
+		</method-config>
+		<method-config method-name="getUser">
+			<parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
+			<cache-actions>
+				<!--可配置多个key,用逗号分隔.第一次get时这些key会依次放入缓存,对应同一个value.当然也支持单个key-->
+				<cache-get class="org.tinygroup.aopcache.config.CacheGet" key = "${user.id},${user.name}" group = "singleGroup"></cache-get>
 			</cache-actions>
 		</method-config>
 		<method-config method-name="getUsers">
