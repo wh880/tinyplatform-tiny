@@ -45,6 +45,12 @@ public class AnnotationUserDao {
 		container.put(user.id, user);
 	}
 
+	@CachePut( keys = "${user.id},${user.name}",parameterNames = "user,user", group = "singleGroup", removeKeys = "users",removeGroups = "multiGroup")
+	public void insertUserTwoCache(User user) {
+		System.out.println("insert user two cache");
+		container.put(user.id, user);
+	}
+
 	@CachePut( keys = "${user.id}",parameterNames = "user", group = "singleGroup", removeKeys = "users",removeGroups = "multiGroup")
 	public User insertUserNoParam(User user) {
 		System.out.println("insert user");

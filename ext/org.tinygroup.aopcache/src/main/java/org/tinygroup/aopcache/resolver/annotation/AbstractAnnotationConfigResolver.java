@@ -7,6 +7,7 @@ import org.tinygroup.commons.tools.Assert;
 
 public abstract class AbstractAnnotationConfigResolver implements
 		AnnotationConfigResolver, InitializingBean {
+	protected static final String SPLIT_KEY = ",";
 
 	private AnnotationCacheActionResolver actionResolver;
 

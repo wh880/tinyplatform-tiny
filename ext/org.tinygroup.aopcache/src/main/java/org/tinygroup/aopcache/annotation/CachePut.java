@@ -14,14 +14,14 @@ public @interface CachePut {
      *
      * @return
      */
-    String parameterNames() default "";
+    String[] parameterNames() default {};
 
     /**
-     * 缓存的key,多个key以逗号分隔
+     * 缓存的keys
      *
      * @return
      */
-    String keys();
+    String[] keys() default {};
     
     String group() default "";
     
@@ -29,13 +29,13 @@ public @interface CachePut {
      * 要从缓存移除的key,多个key以逗号分隔开
      * @return
      */
-    String removeKeys() default "";
+    String[] removeKeys() default {};
     
     /**
      * 从缓存移除group,多个组以逗号分隔开
      * @return
      */
-    String removeGroups() default "";
+    String[] removeGroups() default {};
     /**
      * 设置缓存过期时间，默认不过期
      * @return

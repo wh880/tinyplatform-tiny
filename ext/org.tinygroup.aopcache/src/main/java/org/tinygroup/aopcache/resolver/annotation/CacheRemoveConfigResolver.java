@@ -7,6 +7,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.tinygroup.aopcache.annotation.CacheRemove;
 import org.tinygroup.aopcache.config.CacheAction;
 import org.tinygroup.aopcache.exception.AopCacheException;
+import org.tinygroup.commons.tools.StringUtil;
 
 public class CacheRemoveConfigResolver extends AbstractAnnotationConfigResolver {
 
@@ -23,8 +24,8 @@ public class CacheRemoveConfigResolver extends AbstractAnnotationConfigResolver 
 		}
 		org.tinygroup.aopcache.config.CacheRemove cacheRemoveAction=new org.tinygroup.aopcache.config.CacheRemove();
 		cacheRemoveAction.setGroup(cacheRemove.group());
-		cacheRemoveAction.setRemoveKeys(cacheRemove.removeKeys());
-		cacheRemoveAction.setRemoveGroups(cacheRemove.removeGroups());
+		cacheRemoveAction.setRemoveKeys(StringUtil.join(cacheRemove.removeKeys(),SPLIT_KEY));
+		cacheRemoveAction.setRemoveGroups(StringUtil.join(cacheRemove.removeGroups(), SPLIT_KEY));
 		return cacheRemoveAction;
 	}
 

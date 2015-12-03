@@ -13,7 +13,7 @@ public @interface CacheGet {
      *
      * @return
      */
-    String key();
+    String[] key() default {};
     /**
      * 缓存项所在的组
      * @return

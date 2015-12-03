@@ -17,10 +17,10 @@ public @interface CacheRemove {
      * 从缓存移除key,多个key以逗号分隔开
      * @return
      */
-    String removeKeys() default "";
+    String[] removeKeys() default {};
     /**
      * 从缓存移除group,多个组以逗号分隔开
      * @return
      */
-    String removeGroups() default "";
+    String[] removeGroups() default {};
 }

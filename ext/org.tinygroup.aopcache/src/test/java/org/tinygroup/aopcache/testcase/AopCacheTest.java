@@ -55,8 +55,9 @@ public class AopCacheTest extends TestCase {
 
 		userDao.insertUser(user1);
 		assertEquals(cache.get(FIRST_GROUP, "1"),user1);
-		userDao.insertUser(user2);
+		userDao.insertUserTwoCache(user2);
 		assertEquals(cache.get(FIRST_GROUP, "2"),user2);
+		assertEquals(cache.get(FIRST_GROUP, "xuanxuan"),user2);
 		userDao.insertUser(user3);
 		assertEquals(cache.get(FIRST_GROUP, "3"),user3);
 		userDao.insertUserNoParam(user4);

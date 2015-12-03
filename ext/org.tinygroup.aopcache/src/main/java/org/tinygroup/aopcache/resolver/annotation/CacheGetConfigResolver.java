@@ -7,6 +7,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.tinygroup.aopcache.annotation.CacheGet;
 import org.tinygroup.aopcache.config.CacheAction;
 import org.tinygroup.aopcache.exception.AopCacheException;
+import org.tinygroup.commons.tools.StringUtil;
 
 public class CacheGetConfigResolver extends AbstractAnnotationConfigResolver {
 
@@ -22,7 +23,7 @@ public class CacheGetConfigResolver extends AbstractAnnotationConfigResolver {
 					method.getName(), CacheGet.class.getName()));
 		}
 		org.tinygroup.aopcache.config.CacheGet cacheGetAction=new org.tinygroup.aopcache.config.CacheGet();
-		cacheGetAction.setKey(cacheGet.key());
+		cacheGetAction.setKey(StringUtil.join(cacheGet.key(), SPLIT_KEY));
 		cacheGetAction.setGroup(cacheGet.group());
 		return cacheGetAction;
 	}
