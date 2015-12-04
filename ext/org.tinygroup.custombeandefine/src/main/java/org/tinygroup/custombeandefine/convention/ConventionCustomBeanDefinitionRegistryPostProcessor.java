@@ -14,6 +14,7 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionDefaults;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.beans.factory.support.DefaultBeanNameGenerator;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -47,6 +48,8 @@ public class ConventionCustomBeanDefinitionRegistryPostProcessor extends
 	private List<ConventionComponentIdentifier> conventionComponentIdentifierComposite;
 	
     private BeanDefineCreate beanDefineCreate;
+    
+    private BeanNameGenerator beanNameGenerator=new DefaultBeanNameGenerator();
 
 	public BeanDefineCreate getBeanDefineCreate() {
 		return beanDefineCreate;
@@ -56,6 +59,13 @@ public class ConventionCustomBeanDefinitionRegistryPostProcessor extends
 		this.beanDefineCreate = beanDefineCreate;
 	}
 
+	public BeanNameGenerator getBeanNameGenerator() {
+		return beanNameGenerator;
+	}
+
+	public void setBeanNameGenerator(BeanNameGenerator beanNameGenerator) {
+		this.beanNameGenerator = beanNameGenerator;
+	}
 
 	public void setConventionComponentIdentifierComposite(
 			List<ConventionComponentIdentifier> conventionComponentIdentifierComposite) {
@@ -104,7 +114,7 @@ public class ConventionCustomBeanDefinitionRegistryPostProcessor extends
 		scaner.setBeanDefinitionDefaults(defaults);
 		scaner.setScopeMetadataResolver(new AnnotationScopeMetadataResolver());
 		scaner.setResourceLoader(new PathMatchingInJarResourcePatternResolver());
-		scaner.setBeanNameGenerator(new DefaultBeanNameGenerator());
+		scaner.setBeanNameGenerator(beanNameGenerator);
 		addTypeFilters(scaner);
 		return scaner;
 	}

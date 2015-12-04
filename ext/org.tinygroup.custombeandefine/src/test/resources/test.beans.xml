@@ -11,6 +11,11 @@
 	<bean id="conventionFactoryBeanDefinitionRegistryPostProcessor" scope="singleton"
 		class="org.tinygroup.custombeandefine.convention.ConventionCustomBeanDefinitionRegistryPostProcessor">
 		<property name="beanDefineCreate" ref="proxyFactoryBeanDefineCreate"></property>
+		<property name="beanNameGenerator" ref="proxyFactoryBeanNameGenerater"></property>
+	</bean>
+	
+	<bean id="proxyFactoryBeanNameGenerater" scope="singleton"
+		class="org.tinygroup.custombeandefine.namegenerator.ProxyFactoryBeanNameGenerater">
 	</bean>
 	
 	<bean id="proxyFactoryBeanDefineCreate" scope="singleton"
