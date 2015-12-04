@@ -67,6 +67,18 @@ public interface Macro {
      * @return
      */
     TemplateEngine getTemplateEngine();
+    
+    /**
+     * 获得宏文件路径
+     * @return
+     */
+    String getMacroPath();
+    
+    /**
+     * 设置宏文件路径
+     * @param macroPath
+     */
+    void setMacroPath(String macroPath);
 
     /**
      * 进行渲染

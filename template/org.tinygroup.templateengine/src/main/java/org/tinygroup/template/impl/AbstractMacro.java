@@ -33,6 +33,7 @@ public abstract class AbstractMacro implements Macro {
     private List<String> parameterNames = new ArrayList<String>();
     private List<EvaluateExpression> parameterDefaultValues = new ArrayList<EvaluateExpression>();
     private TemplateEngine templateEngine;
+    private String macroPath;
 
     public AbstractMacro(String name) {
         this.name = name;
@@ -134,4 +135,13 @@ public abstract class AbstractMacro implements Macro {
         }
         return null;
     }
+
+	public String getMacroPath() {
+		return macroPath;
+	}
+
+	public void setMacroPath(String macroPath) {
+		this.macroPath = macroPath;
+	}
+    
 }

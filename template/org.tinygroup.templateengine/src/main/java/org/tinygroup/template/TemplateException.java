@@ -25,7 +25,7 @@ public class TemplateException extends Exception {
     private ParserRuleContext context;
     private String fileName;
     private String originalMsg;
-    
+    private boolean showUpperMessage = true;
     /**
      * 异常语法块起点
      */
@@ -125,8 +125,10 @@ public class TemplateException extends Exception {
 
     @Override
     public String getMessage() {
-        String message = super.getMessage();
-        
+        String message = null;
+    	if(showUpperMessage){
+    	   message = super.getMessage();
+    	}
         String pathInfo = fileName==null?"":"\n路径:" + fileName;
         
         if (context != null) {
@@ -150,5 +152,13 @@ public class TemplateException extends Exception {
         	return pathInfo+" "+message;
         }
     }
+
+	public boolean isShowUpperMessage() {
+		return showUpperMessage;
+	}
+
+	public void setShowUpperMessage(boolean showUpperMessage) {
+		this.showUpperMessage = showUpperMessage;
+	}
     
 }

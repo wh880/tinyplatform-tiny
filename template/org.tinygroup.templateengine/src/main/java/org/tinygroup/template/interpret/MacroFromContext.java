@@ -35,7 +35,8 @@ public class MacroFromContext implements Macro {
     private List<String> parameterNames = new ArrayList<String>();
     private List<EvaluateExpression> parameterDefaultValues = new ArrayList<EvaluateExpression>();
     private TemplateEngineDefault templateEngineDefault;
-
+    private String macroPath;
+  
     public MacroFromContext(TemplateInterpreter interpreter, String name, TinyTemplateParser.BlockContext blockContext, TemplateFromContext templateFromContext) {
         this.name = name;
         this.blockContext = blockContext;
@@ -77,11 +78,23 @@ public class MacroFromContext implements Macro {
             interpreter.interpretTree(templateEngineDefault, (TemplateFromContext) templateFromContext, blockContext, pageContext, context, outputStream, this.templateFromContext.getPath());
         } catch (ReturnException te) {
             //接收到退出
-        } catch (TemplateException te) {
+        } catch (MacroException e) {
+            throw e;
+        }catch (TemplateException te) {
             throw te;
         } catch (Exception e) {
             throw new TemplateException(e);
         }
     }
+
+	public String getMacroPath() {
+		return macroPath;
+	}
+
+	public void setMacroPath(String macroPath) {
+		this.macroPath = macroPath;
+	}
+    
+    
 }
 
