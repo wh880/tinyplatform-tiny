@@ -1,0 +1,29 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd"
+	   default-autowire="byName" default-lazy-init="true">
+	   
+	<bean id="conventionServiceIdentifier" scope="singleton"
+		class="org.tinygroup.custombeandefine.identifier.impl.ConventionServiceIdentifier">
+	</bean>
+	
+	<bean id="conventionFactoryBeanDefinitionRegistryPostProcessor" scope="singleton"
+		class="org.tinygroup.custombeandefine.convention.ConventionCustomBeanDefinitionRegistryPostProcessor">
+		<property name="beanDefineCreate" ref="proxyFactoryBeanDefineCreate"></property>
+	</bean>
+	
+	<bean id="proxyFactoryBeanDefineCreate" scope="singleton"
+		class="org.tinygroup.custombeandefine.impl.ProxyFactoryBeanDefineCreate">
+		<property name="interceptorNames">
+		   <list>
+		      <value>interceptorSample</value>
+		   </list>
+		</property>
+	</bean>
+	
+	<bean id="interceptorSample" scope="singleton"
+		class="org.tinygroup.custombeandefine.interceptor.InterceptorSample">
+	</bean>
+	
+</beans>

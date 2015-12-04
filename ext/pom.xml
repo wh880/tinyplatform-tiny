@@ -18,5 +18,6 @@
 	  <module>org.tinygroup.multilevelcache</module>
 		<module>org.tinygroup.aopcache</module>
 		<module>org.tinygroup.servicewrapper</module>
+		<module>org.tinygroup.custombeandefine</module>
   </modules>
 </project>
