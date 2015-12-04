@@ -12,7 +12,7 @@ import org.tinygroup.commons.tools.StringUtil;
  * @author renhui
  *
  */
-public class ProxyFactoryBeanNameGenerater implements BeanNameGenerator {
+public class ProxyFactoryBeanNameGenerator implements BeanNameGenerator {
 
 	public String generateBeanName(BeanDefinition definition,
 			BeanDefinitionRegistry registry) {
