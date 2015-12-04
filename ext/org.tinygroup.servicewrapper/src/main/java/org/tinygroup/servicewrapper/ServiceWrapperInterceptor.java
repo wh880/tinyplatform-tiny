@@ -45,7 +45,11 @@ public class ServiceWrapperInterceptor implements MethodInterceptor {
 		if(serviceId==null){
 			ServiceWrapper serviceWrapper = AnnotationUtils.findAnnotation(method,
 					ServiceWrapper.class);
-			serviceId = serviceWrapper.serviceId();
+			if(serviceWrapper==null){
+				serviceId=method.getName();//如果不存在ServiceWrapper注解，那么serviceId取自方法名
+			}else{
+				serviceId = serviceWrapper.serviceId();
+			}
 			if(serviceId!=null){
 				MethodConfig methodConfig = createMethodConfig(method);
 				methodConfig.setServiceId(serviceId);
