@@ -176,6 +176,9 @@ public class PathMatchingInJarResourcePatternResolver extends
 			throws IOException {
 		Set<Resource> result = new LinkedHashSet<Resource>(16);
 		List<String> scanPaths = getScanPaths();
+		if(CollectionUtil.isEmpty(scanPaths)){
+			return super.findAllClassPathResources(location);
+		}
 		for (String path : scanPaths) {
 			File file = new File(path);
 			if (file.exists()) {
