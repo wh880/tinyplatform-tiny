@@ -9,20 +9,19 @@ import org.tinygroup.commons.tools.StringUtil;
 
 /**
  * ProxyFactoryBean 名称生成器
- * @author renhui
  *
+ * @author renhui
  */
 public class ProxyFactoryBeanNameGenerator implements BeanNameGenerator {
 
-	public String generateBeanName(BeanDefinition definition,
-			BeanDefinitionRegistry registry) {
-		PropertyValues propertyValues=definition.getPropertyValues();
-		String interfaceName= StringUtil.substringAfterLast((String) propertyValues.getPropertyValue("proxyInterfaces").getValue(), ".");
-		if(registry.containsBeanDefinition(interfaceName)){
-			throw new BeanDefinitionStoreException("beanName:"+interfaceName+"已经在容器中存在,请确保生成的bean名称唯一");
-		}
-		return interfaceName;
-	}
-	
+    public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
+        PropertyValues propertyValues = definition.getPropertyValues();
+        String interfaceName = StringUtil.substringAfterLast((String) propertyValues.getPropertyValue("proxyInterfaces").getValue(), ".");
+        if (registry.containsBeanDefinition(interfaceName)) {
+            throw new BeanDefinitionStoreException("beanName:" + interfaceName + "已经在容器中存在,请确保生成的bean名称唯一");
+        }
+        return StringUtil.uncapitalize(interfaceName);
+    }
+
 
 }
