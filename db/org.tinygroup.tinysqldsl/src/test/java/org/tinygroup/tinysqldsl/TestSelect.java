@@ -37,6 +37,7 @@ import static org.tinygroup.tinysqldsl.select.OrderByElement.desc;
 import static org.tinygroup.tinysqldsl.selectitem.Top.top;
 
 import org.tinygroup.tinysqldsl.expression.relational.ExistsExpression;
+import org.tinygroup.tinysqldsl.base.Alias;
 import org.tinygroup.tinysqldsl.base.Column;
 import org.tinygroup.tinysqldsl.expression.FragmentExpressionSql;
 import org.tinygroup.tinysqldsl.formitem.SubSelect;
@@ -108,8 +109,10 @@ public class TestSelect {
 				.from(fragmentFrom("custom custom")).where(
 						fragmentCondition("custom.name=?", "悠悠然然")));
 
+		CustomTable alias=CUSTOM.as("sdsf");
+//		CUSTOM.setAlias(new Alias("dsff"));
 		System.out.println(select(CUSTOM.NAME).from(
-				subSelect(selectFrom(CUSTOM), "custom", true)).where(
+				subSelect(select(alias.ALL).from(alias), "custom", true)).where(
 				CUSTOM.ID.eq("2324")));
 		System.out.println(select(CUSTOM.ID.count()).from(CUSTOM).groupBy(
 				CUSTOM.AGE));
@@ -208,6 +211,14 @@ public class TestSelect {
 		System.out.println(select(manName,womonName).from(man,womon).where(manName.eq("test")));
 		
 		System.out.println(select(CUSTOM.ALL,TSCORE.ALL).from(CUSTOM).join(simpleJoin(TSCORE)).where(CUSTOM.ID.eq(1)));
+		
+		System.out.println(select(CUSTOM.AGE.distinct().count().as("sffs")).from(CUSTOM));
+		
+		System.out.println(select(CUSTOM.AGE.distinct().as("sffs")).from(CUSTOM));
+		
+		CUSTOM.ID.setAlias(new Alias("dsds"));
+		
+		System.out.println(select(CUSTOM.ID).from(CUSTOM).where(CUSTOM.ID.equal(111)).orderBy(asc(CUSTOM.ID),desc(CUSTOM.NAME)));
 
 	}
 }

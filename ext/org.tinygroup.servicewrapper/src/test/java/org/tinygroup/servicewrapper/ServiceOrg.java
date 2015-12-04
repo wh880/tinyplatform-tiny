@@ -13,26 +13,20 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.annotation;
+package org.tinygroup.servicewrapper;
 
-import junit.framework.TestCase;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
+import java.io.Serializable;
 
-public class AnnotationExcuteManagerTest extends TestCase {
+public class ServiceOrg implements Serializable {
+	private String name;
 
-
-	void init() {
-          AbstractTestUtil.init(null, true);
+	public String getName() {
+		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
 	
-	protected void setUp() throws Exception {
-		super.setUp();
-			init();
-	}
-
-	public void testAnnotation() {
-
-	}
-
+	
 }

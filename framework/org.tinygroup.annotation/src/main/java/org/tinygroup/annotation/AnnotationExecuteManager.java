@@ -23,9 +23,9 @@ import org.tinygroup.vfs.FileObject;
  * @author renhui
  *
  */
-public interface AnnotationExcuteManager {
+public interface AnnotationExecuteManager {
 	
-   String ANNOTATION_MANAGER_BEAN_NAME="annotationExcuteManager";
+   String ANNOTATION_MANAGER_BEAN_NAME="annotationExecuteManager";
 
     String XSTEAM_PACKAGE_NAME = "annotation";
 
