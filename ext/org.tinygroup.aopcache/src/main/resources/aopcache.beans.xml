@@ -1,0 +1,74 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName" default-lazy-init="false">
+	
+	<bean id="aopCacheInterceptor" scope="singleton"
+		class="org.tinygroup.aopcache.interceptor.AopCacheInterceptor">
+		<property name="cache" ref="aopCache"></property>
+	</bean>
+	
+	<bean id="aopCacheGetProcessor" scope="singleton"
+		class="org.tinygroup.aopcache.processor.AopCacheGetProcessor">
+		<property name="interceptor" ref="aopCacheInterceptor"></property>
+	</bean>
+	
+	<bean id="aopCachePutProcessor" scope="singleton"
+		class="org.tinygroup.aopcache.processor.AopCachePutProcessor">
+		<property name="interceptor" ref="aopCacheInterceptor"></property>
+	</bean>
+	
+	<bean id="aopCacheRemoveProcessor" scope="singleton"
+		class="org.tinygroup.aopcache.processor.AopCacheRemoveProcessor">
+		<property name="interceptor" ref="aopCacheInterceptor"></property>
+	</bean>
+	
+	
+	<bean id="xmlCacheMetadataResolver" scope="singleton"
+		class="org.tinygroup.aopcache.resolver.XmlCacheMetadataResolver">
+		<property name="manager" ref="aopCacheConfigManager"></property>
+		<property name="interceptor" ref="aopCacheInterceptor"></property>
+	</bean>
+	
+	<bean id="aopCacheConfigManager" scope="singleton"
+		class="org.tinygroup.aopcache.impl.AopCacheConfigManagerImpl">
+	</bean>
+	
+	<bean id="cacheActionFileProcessor" scope="singleton"
+		class="org.tinygroup.aopcache.fileresolver.CacheActionFileProcessor">
+		<property name="manager" ref="aopCacheConfigManager"></property>
+	</bean>
+	
+	<bean id="annotationCacheActionResolver" scope="singleton"
+		class="org.tinygroup.aopcache.resolver.AnnotationCacheActionResolver">
+		<property name="interceptor" ref="aopCacheInterceptor"></property>
+	</bean>
+	
+	<bean id="cacheGetConfigResolver" scope="singleton"
+		class="org.tinygroup.aopcache.resolver.annotation.CacheGetConfigResolver">
+		<property name="actionResolver" ref="annotationCacheActionResolver"></property>
+	</bean>
+	
+	<bean id="cachePutConfigResolver" scope="singleton"
+		class="org.tinygroup.aopcache.resolver.annotation.CachePutConfigResolver">
+		<property name="actionResolver" ref="annotationCacheActionResolver"></property>
+	</bean>
+	
+	<bean id="cacheRemoveConfigResolver" scope="singleton"
+		class="org.tinygroup.aopcache.resolver.annotation.CacheRemoveConfigResolver">
+		<property name="actionResolver" ref="annotationCacheActionResolver"></property>
+	</bean>
+	
+	
+	<bean id="aopCache" scope="singleton"
+		class="org.tinygroup.cachefactory.CacheFactoryBean">
+		<property name="cacheRegion">
+			<value>${aop_cache_region}</value>
+		</property>
+		<property name="cacheManager" ref="${cache_manager}"></property>
+	</bean>
+	
+</beans>

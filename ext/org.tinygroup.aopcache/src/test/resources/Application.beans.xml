@@ -1,0 +1,42 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd"
+	   default-autowire="byName" default-lazy-init="true">
+	<bean id="fileResolver" scope="singleton"
+		class="org.tinygroup.fileresolver.impl.FileResolverImpl">
+		<property name="fileProcessorList">
+			<list>
+				<ref bean="i18nFileProcessor" />
+				<ref bean="xStreamFileProcessor" />
+				<ref bean="cacheActionFileProcessor" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="fileResolverProcessor" scope="singleton"
+		class="org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor">
+		<property name="fileResolver" ref="fileResolver"></property>
+	</bean>
+	
+	<bean id="customerAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="patterns">
+            <list>
+                <value>.*Dao.*</value>
+            </list>
+        </property>
+        <property name="advice" ref="aopCacheInterceptor" />
+    </bean>
+	
+	
+	<bean id="annotationUserDao" scope="singleton"
+		class="org.tinygroup.aopcache.AnnotationUserDao">
+	</bean>
+	
+	<bean id="xmlUserDao" scope="singleton"
+		class="org.tinygroup.aopcache.XmlUserDao">
+	</bean>
+	
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
+	
+</beans>
