@@ -39,7 +39,7 @@ public class TemplateInterpreter {
     TerminalNodeProcessor[] terminalNodeProcessors = new TerminalNodeProcessor[200];
     Map<Class<ParserRuleContext>, ContextProcessor> contextProcessorMap = new HashMap<Class<ParserRuleContext>, ContextProcessor>();
     OtherTerminalNodeProcessor otherNodeProcessor = new OtherTerminalNodeProcessor();
-
+    
     public OtherTerminalNodeProcessor getOtherNodeProcessor() {
         return otherNodeProcessor;
     }
@@ -110,11 +110,17 @@ public class TemplateInterpreter {
                 throw se;
             } catch (ReturnException se) {
                 throw se;
+            }catch (MacroException me) {
+            	ParserRuleContext parserRuleContext = (ParserRuleContext) tree;
+                if(checkMacroContext(me,tree)){
+                   me.setContext(parserRuleContext, null);
+                }
+                throw me;
             } catch (TemplateException te) {
-                if (te.getContext() == null) {
+            	if (te.getContext() == null) {
                     te.setContext((ParserRuleContext) tree, fileName);
                 }
-                throw te;
+            	throw te;
             } catch (Exception e) {
                 throw new TemplateException(e, (ParserRuleContext) tree, fileName);
             }
@@ -128,6 +134,22 @@ public class TemplateInterpreter {
             }
         }
         return returnValue;
+    }
+    
+    /**
+     * 是否更新MacroException上下文
+     * @param me
+     * @param tree
+     * @return
+     */
+    private boolean checkMacroContext(MacroException me,ParseTree tree){
+    	if(me.getContext()!=null){
+    	   return false;
+    	}
+    	if(tree.getClass()==TinyTemplateParser.Call_macro_block_directiveContext.class || tree.getClass()==TinyTemplateParser.BlockContext.class){
+    	   return true;
+    	}
+    	return false;
     }
 
 }

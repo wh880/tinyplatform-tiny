@@ -89,6 +89,8 @@ public class TemplateFromContext extends AbstractTemplate {
             //Do Nothing
         } catch (ReturnException e) {
             //Do Nothing
+        } catch (MacroException e) {
+            throw e;
         } catch (TemplateException e) {
             throw e;
         } catch (Exception e) {

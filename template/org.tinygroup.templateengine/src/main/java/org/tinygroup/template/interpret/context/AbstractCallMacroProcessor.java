@@ -15,6 +15,9 @@
  */
 package org.tinygroup.template.interpret.context;
 
+import java.io.OutputStream;
+import java.util.Stack;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tinygroup.template.Macro;
 import org.tinygroup.template.TemplateContext;
@@ -22,51 +25,61 @@ import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.TemplateContextDefault;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.interpret.ContextProcessor;
+import org.tinygroup.template.interpret.MacroException;
 import org.tinygroup.template.interpret.TemplateFromContext;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
-
-import java.io.OutputStream;
-import java.util.Stack;
 
 /**
  * Created by luoguo on 15/7/26.
  */
 public abstract class AbstractCallMacroProcessor<T extends ParserRuleContext> implements ContextProcessor<T> {
+	
     public void callMacro(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, TemplateContext context, OutputStream outputStream) throws Exception {
         callBlockMacro(engine,templateFromContext,name,null,paraList,pageContext,outputStream,context);
     }
 
     public void callBlockMacro(TemplateEngineDefault engine, TemplateFromContext templateFromContext, String name, TinyTemplateParser.BlockContext block, TinyTemplateParser.Para_expression_listContext paraList, TemplateContext pageContext, OutputStream outputStream, TemplateContext context) throws Exception {
-        Macro macro = engine.findMacro(name, templateFromContext, context);
-        TemplateContext newContext = new TemplateContextDefault();
-        newContext.setParent(context);
-        if (paraList != null) {
-            int i = 0;
-            for (TinyTemplateParser.Para_expressionContext para : paraList.para_expression()) {
-                if (para.getChildCount() == 3) {
-                    //如果是带参数的
-                    newContext.put(para.IDENTIFIER().getSymbol().getText(), engine.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, outputStream,templateFromContext.getPath()));
-                } else {
-                    if(i>=macro.getParameterNames().size()){
-                        throw new TemplateException("参数数量超过宏<"+macro.getName()+">允许接受的数量",paraList,templateFromContext.getPath());
-                    }
-                    newContext.put(macro.getParameterName(i), engine.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, outputStream,templateFromContext.getPath()));
-                }
-                i++;
-            }
-        }
+    	Macro macro = engine.findMacro(name, templateFromContext, context);
+    	try{
+    	        TemplateContext newContext = new TemplateContextDefault();
+    	        newContext.setParent(context);
+    	        if (paraList != null) {
+    	            int i = 0;
+    	            for (TinyTemplateParser.Para_expressionContext para : paraList.para_expression()) {
+    	                if (para.getChildCount() == 3) {
+    	                    //如果是带参数的
+    	                    newContext.put(para.IDENTIFIER().getSymbol().getText(), engine.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, outputStream,templateFromContext.getPath()));
+    	                } else {
+    	                    if(i>=macro.getParameterNames().size()){
+    	                        throw new TemplateException("参数数量超过宏<"+macro.getName()+">允许接受的数量",paraList,templateFromContext.getPath());
+    	                    }
+    	                    newContext.put(macro.getParameterName(i), engine.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, outputStream,templateFromContext.getPath()));
+    	                }
+    	                i++;
+    	            }
+    	        }
 
-        Stack<TinyTemplateParser.BlockContext> stack = context.get("$bodyContent");
-        if (stack == null) {
-            stack = new Stack<TinyTemplateParser.BlockContext>();
-            newContext.put("$bodyContent", stack);
-        }
-        stack.push(block);
-        int stackSize=stack.size();
-        macro.render(templateFromContext, pageContext, newContext, outputStream);
-        if(stack.size()==stackSize){
-            //检查是否有#bodyContent,如果没有,主要主动弹出刚才放的空bodyContent
-            stack.pop();
-        }
+    	        Stack<TinyTemplateParser.BlockContext> stack = context.get("$bodyContent");
+    	        if (stack == null) {
+    	            stack = new Stack<TinyTemplateParser.BlockContext>();
+    	            newContext.put("$bodyContent", stack);
+    	        }
+    	        stack.push(block);
+    	        int stackSize=stack.size();
+    	        macro.render(templateFromContext, pageContext, newContext, outputStream);
+    	        if(stack.size()==stackSize){
+    	            //检查是否有#bodyContent,如果没有,主要主动弹出刚才放的空bodyContent
+    	            stack.pop();
+    	        }
+    	}catch(MacroException me){
+    		throw new MacroException(macro,me);
+    	}catch(TemplateException te){
+    		te.setShowUpperMessage(false);
+    		throw new MacroException(macro,te);
+    	}catch(Exception e){
+    		throw new MacroException(macro,e);
+    	}
+       
     }
+    
 }

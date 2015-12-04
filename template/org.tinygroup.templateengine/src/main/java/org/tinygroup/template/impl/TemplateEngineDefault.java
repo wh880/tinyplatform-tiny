@@ -15,6 +15,7 @@
  */
 package org.tinygroup.template.impl;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.template.*;
 import org.tinygroup.template.application.*;
 import org.tinygroup.template.function.*;
@@ -200,6 +201,10 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     public void registerMacroLibrary(Template Template) throws TemplateException {
         for (Map.Entry<String, Macro> entry : Template.getMacroMap().entrySet()) {
+        	Macro macro = entry.getValue();
+        	if(macro.getMacroPath()==null){
+         	   macro.setMacroPath(Template.getPath());
+         	}
             registerMacro(entry.getValue());
         }
     }
@@ -595,6 +600,9 @@ public class TemplateEngineDefault implements TemplateEngine {
             if (macroLibrary != null) {
                 macro = macroLibrary.getMacroMap().get(macroName);
                 if (macro != null) {
+                	if(macro.getMacroPath()==null){
+                	   macro.setMacroPath(macroLibrary.getPath());
+                	}
                     if (!checkModified) {
                         macroCache.put(macroName, macro);
                     }
@@ -618,6 +626,9 @@ public class TemplateEngineDefault implements TemplateEngine {
                 if (macroLibrary != null) {
                     macro = macroLibrary.getMacroMap().get(macroName);
                     if (macro != null) {
+                    	if(macro.getMacroPath()==null){
+                     	   macro.setMacroPath(macroLibrary.getPath());
+                     	}
                         if (!checkModified) {
                             macroCache.put(macroName, macro);
                         }
