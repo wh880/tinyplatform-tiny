@@ -16,5 +16,13 @@
 			<value>classpath:/application.xml</value>
 		</property>
 	</bean>
+	
+	<bean id="compositeParameterNameDiscoverer" scope="singleton"
+		class="org.tinygroup.springutil.CompositeParameterNameDiscoverer">
+	</bean>
+	
+	<bean id="localVariableTableParameterNameDiscoverer" scope="singleton"
+		class="org.springframework.core.LocalVariableTableParameterNameDiscoverer">
+	</bean>
 
 </beans>

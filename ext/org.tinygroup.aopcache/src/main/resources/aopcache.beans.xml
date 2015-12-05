@@ -9,6 +9,7 @@
 	<bean id="aopCacheInterceptor" scope="singleton"
 		class="org.tinygroup.aopcache.interceptor.AopCacheInterceptor">
 		<property name="cache" ref="aopCache"></property>
+		<property name="parameterNameDiscoverer" ref="compositeParameterNameDiscoverer"></property>
 	</bean>
 	
 	<bean id="aopCacheGetProcessor" scope="singleton"

@@ -5,8 +5,8 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.core.ParameterNameDiscoverer;
 import org.tinygroup.commons.tools.StringUtil;
-import org.tinygroup.springutil.MethodNameAccessTool;
 import org.tinygroup.template.Template;
 import org.tinygroup.template.TemplateContext;
 import org.tinygroup.template.TemplateEngine;
@@ -27,17 +27,20 @@ public class TemplateRender {
 
 	private StringResourceLoader resourceLoader;
 
+	private ParameterNameDiscoverer parameterNameDiscoverer;
+	
 	private static TemplateRender templateRender;
 
-	private TemplateRender() {
+	private TemplateRender(ParameterNameDiscoverer parameterNameDiscoverer) {
 		templateEngine = new TemplateEngineDefault();
 		resourceLoader = new StringResourceLoader();
+		this.parameterNameDiscoverer=parameterNameDiscoverer;
 		templateEngine.addResourceLoader(resourceLoader);
 	}
 
-	public static TemplateRender newInstance() {
+	public static TemplateRender newInstance(ParameterNameDiscoverer parameterNameDiscoverer) {
 		if (templateRender == null) {
-			templateRender = new TemplateRender();
+			templateRender = new TemplateRender(parameterNameDiscoverer);
 		}
 		return templateRender;
 	}
@@ -65,8 +68,7 @@ public class TemplateRender {
 	public TemplateContext assemblyContext(MethodInvocation invocation) {
 		TemplateContext context = new TemplateContextDefault();
 		Method method = invocation.getMethod();
-		String[] paramNames = MethodNameAccessTool
-				.getMethodParameterName(method);
+		String[] paramNames = parameterNameDiscoverer.getParameterNames(method);
 		if (paramNames != null) {
 			for (int i = 0; i < paramNames.length; i++) {
 				context.put(paramNames[i], invocation.getArguments()[i]);

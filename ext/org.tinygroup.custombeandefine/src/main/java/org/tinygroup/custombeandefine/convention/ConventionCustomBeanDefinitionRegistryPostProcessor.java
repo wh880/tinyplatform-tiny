@@ -160,13 +160,4 @@ public class ConventionCustomBeanDefinitionRegistryPostProcessor extends
 		return getApplicationContext();
 	}
 
-	
-	public static void main(String[] args) {
-		
-		GenericBeanDefinition beanDefinition=new GenericBeanDefinition();
-		beanDefinition.setBeanClassName("org.springframework.aop.framework.ProxyFactoryBean");
-//		
-		
-		
-	}
 }

@@ -8,13 +8,16 @@ import java.util.Map;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.core.ParameterNameDiscoverer;
 import org.tinygroup.aopcache.AopCacheExecutionChain;
 import org.tinygroup.aopcache.AopCacheProcessor;
 import org.tinygroup.aopcache.CacheActionResolver;
 import org.tinygroup.aopcache.base.AopCacheHolder;
 import org.tinygroup.aopcache.base.CacheMetadata;
+import org.tinygroup.aopcache.base.TemplateRender;
 import org.tinygroup.aopcache.config.CacheAction;
 import org.tinygroup.aopcache.exception.AopCacheException;
+import org.tinygroup.aopcache.util.TemplateUtil;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.commons.tools.CollectionUtil;
 
@@ -31,6 +34,17 @@ public class AopCacheInterceptor implements MethodInterceptor {
 	private Map<Class<? extends AopCacheProcessor>, AopCacheProcessor> processorMap = new HashMap<Class<? extends AopCacheProcessor>, AopCacheProcessor>();
 
 	private Cache cache;
+	
+	private ParameterNameDiscoverer parameterNameDiscoverer;
+	
+	public ParameterNameDiscoverer getParameterNameDiscoverer() {
+		return parameterNameDiscoverer;
+	}
+
+	public void setParameterNameDiscoverer(
+			ParameterNameDiscoverer parameterNameDiscoverer) {
+		this.parameterNameDiscoverer = parameterNameDiscoverer;
+	}
 
 	public Cache getCache() {
 		return cache;
@@ -77,6 +91,7 @@ public class AopCacheInterceptor implements MethodInterceptor {
 		if (actions == null||actions.isEmpty()) {
 			return invocation.proceed();
 		}
+		TemplateUtil.createTemplateRender(parameterNameDiscoverer);
 		// 获取处理器类与处理器类需要的配置信息
 		AopCacheExecutionChain chain = createChain(actions);
 		AopCacheHolder[] cacheHolders = chain.getAopCacheProcessors();
