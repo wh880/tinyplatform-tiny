@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
 	<groupId>org.tinygroup</groupId>
-    <artifactId>tiny</artifactId>
+    <artifactId>studioext</artifactId>
     <version>2.0.29-SNAPSHOT</version>
   </parent>
   <artifactId>org.tinygroup.uimllayout</artifactId>
