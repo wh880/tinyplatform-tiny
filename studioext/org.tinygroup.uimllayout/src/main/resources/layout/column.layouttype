@@ -1,0 +1,4 @@
+<column-layout-type type="columnlayout" platform="pad" title="column布局">
+    <property-type name="align" title="对齐方式"  default-value="left" category="category1"></property-type>
+    <property-type name="align" title="对齐方式"  default-value="right" category="category2"></property-type>
+</column-layout-type>

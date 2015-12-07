@@ -1,0 +1,4 @@
+<grid-layout-type type="gridlayout" platform="pad" title="grid布局">
+    <property-type name="align" title="对齐方式"  default-value="left" category="category1"></property-type>
+    <property-type name="align" title="对齐方式"  default-value="right" category="category2"></property-type>
+</grid-layout-type>
