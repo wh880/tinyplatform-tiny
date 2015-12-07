@@ -8,13 +8,13 @@ import java.util.Map;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.tinygroup.aopcache.AopCacheExecutionChain;
 import org.tinygroup.aopcache.AopCacheProcessor;
 import org.tinygroup.aopcache.CacheActionResolver;
 import org.tinygroup.aopcache.base.AopCacheHolder;
 import org.tinygroup.aopcache.base.CacheMetadata;
-import org.tinygroup.aopcache.base.TemplateRender;
 import org.tinygroup.aopcache.config.CacheAction;
 import org.tinygroup.aopcache.exception.AopCacheException;
 import org.tinygroup.aopcache.util.TemplateUtil;
@@ -87,6 +87,15 @@ public class AopCacheInterceptor implements MethodInterceptor {
 
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 		Method method = invocation.getMethod();
+		Object target=invocation.getThis();
+		if (AopUtils.isToStringMethod(method)) {
+			// Allow for differentiating between the proxy and the raw Connection.
+			StringBuffer buf = new StringBuffer("proxy for cache");
+			if (target != null) {
+				buf.append("[").append(target.toString()).append("]");
+			}
+			return buf.toString();
+		}
 		List<CacheAction> actions = resolveMetadata(method);
 		if (actions == null||actions.isEmpty()) {
 			return invocation.proceed();

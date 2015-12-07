@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.commons.tools.Assert;
@@ -56,6 +57,16 @@ public class ServiceWrapperInterceptor implements MethodInterceptor {
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 		Object[] args = invocation.getArguments();
 		Method method = invocation.getMethod();
+		Object target=invocation.getThis();
+	    if (AopUtils.isToStringMethod(method)) {
+			// Allow for differentiating between the proxy and the raw Connection.
+			StringBuffer buf = new StringBuffer("proxy for service");
+			if (target != null) {
+				buf.append("[").append(target.toString()).append("]");
+			}
+			return buf.toString();
+		}
+		
 		String serviceId =serviceIdAnaly.analyMethod(method);
 		if(StringUtil.isBlank(serviceId)){
 			throw new RuntimeException(String.format("方法:%s,未发布成服务,不能进行访问", method));
