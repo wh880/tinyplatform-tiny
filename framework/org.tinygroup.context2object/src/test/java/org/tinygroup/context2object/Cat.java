@@ -16,7 +16,7 @@
 package org.tinygroup.context2object;
 
 public class Cat {
-	String nickName;
+	private String nickName;
 
 	public String getNickName() {
 		return nickName;
