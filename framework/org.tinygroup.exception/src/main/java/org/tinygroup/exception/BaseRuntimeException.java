@@ -46,11 +46,6 @@ public class BaseRuntimeException extends RuntimeException {
 		this(errorCode, "", LocaleUtil.getContext().getLocale(), params);
 	}
 
-	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
-			Object... params) {
-		this(errorCode, defaultErrorMsg, LocaleUtil.getContext().getLocale(),
-				params);
-	}
 
 	public BaseRuntimeException(String errorCode, String defaultErrorMsg,
 			Locale locale, Object... params) {

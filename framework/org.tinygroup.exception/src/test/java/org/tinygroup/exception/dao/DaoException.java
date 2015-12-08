@@ -55,11 +55,6 @@ public class DaoException extends TinyBizRuntimeException {
 	}
 
 	public DaoException(String errorCode, String defaultErrorMsg,
-			Object... params) {
-		super(errorCode, defaultErrorMsg, params);
-	}
-
-	public DaoException(String errorCode, String defaultErrorMsg,
 			Throwable throwable, Object... params) {
 		super(errorCode, defaultErrorMsg, throwable, params);
 	}

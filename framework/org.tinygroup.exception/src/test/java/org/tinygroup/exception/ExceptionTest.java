@@ -53,7 +53,7 @@ public class ExceptionTest extends TestCase {
 			biz.executeWithMsg();
 		}catch(BizRuntimeException e){
 			assertEquals(e.getErrorCode().toString(),"0TE111011028");
-			assertEquals(e.getMessage(),"[0TE111011028] :hello error");
+			assertEquals(e.getMessage(),"[0TE111011028] :");
 		}
 //		throw new BizRuntimeException("0TE111011027","haha");
 	}

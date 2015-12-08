@@ -57,11 +57,6 @@ public class TinySysRuntimeException extends BaseRuntimeException {
 		super(errorCode, defaultErrorMsg, locale, throwable, params);
 	}
 
-	public TinySysRuntimeException(String errorCode, String defaultErrorMsg,
-			Object... params) {
-		super(errorCode, defaultErrorMsg, params);
-	}
-	
 	public TinySysRuntimeException(String errorCode, Throwable throwable,
 			Object... params) {
 		super(errorCode, throwable, params);

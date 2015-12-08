@@ -39,11 +39,6 @@ public class AopCacheException extends BaseRuntimeException {
 	}
 
 	public AopCacheException(String errorCode, String defaultErrorMsg,
-			Object... params) {
-		super(errorCode, defaultErrorMsg, params);
-	}
-
-	public AopCacheException(String errorCode, String defaultErrorMsg,
 			Throwable throwable, Object... params) {
 		super(errorCode, defaultErrorMsg, throwable, params);
 	}

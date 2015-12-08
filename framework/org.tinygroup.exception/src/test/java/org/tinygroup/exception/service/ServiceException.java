@@ -55,11 +55,6 @@ public class ServiceException extends TinyBizRuntimeException {
 	}
 
 	public ServiceException(String errorCode, String defaultErrorMsg,
-			Object... params) {
-		super(errorCode, defaultErrorMsg, params);
-	}
-
-	public ServiceException(String errorCode, String defaultErrorMsg,
 			Throwable throwable, Object... params) {
 		super(errorCode, defaultErrorMsg, throwable, params);
 	}

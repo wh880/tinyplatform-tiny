@@ -54,11 +54,6 @@ public class DslRuntimeException extends BaseRuntimeException {
 	}
 
 	public DslRuntimeException(String errorCode, String defaultErrorMsg,
-			Object... params) {
-		super(errorCode, defaultErrorMsg, params);
-	}
-
-	public DslRuntimeException(String errorCode, String defaultErrorMsg,
 			Throwable throwable, Object... params) {
 		super(errorCode, defaultErrorMsg, throwable, params);
 	}
