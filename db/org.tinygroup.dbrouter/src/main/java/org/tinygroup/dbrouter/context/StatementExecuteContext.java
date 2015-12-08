@@ -40,7 +40,7 @@ public class StatementExecuteContext {
 			.getManager();
 	private Connection tinyConnection;
 	private Statement tinyStatement;
-	private String orignalSql;
+	private String originalSql;
 	private Router router;
 	private Partition partition;
 	private ParamObjectBuilder builder;
@@ -50,8 +50,8 @@ public class StatementExecuteContext {
 	private StatementProcessor statementProcessor;
 
 	private void readJudge() {
-		if (!StringUtil.isBlank(orignalSql)) {
-			if (DbRouterUtil.isQuerySql(orignalSql)) {
+		if (!StringUtil.isBlank(originalSql)) {
+			if (DbRouterUtil.isQuerySql(originalSql)) {
 				isRead = true;
 			}
 		}
@@ -90,12 +90,12 @@ public class StatementExecuteContext {
 		this.partition = partition;
 	}
 
-	public String getOrignalSql() {
-		return orignalSql;
+	public String getOriginalSql() {
+		return originalSql;
 	}
 
-	public void setOrignalSql(String orignalSql) {
-		this.orignalSql = orignalSql;
+	public void setOriginalSql(String originalSql) {
+		this.originalSql = originalSql;
 		readJudge();
 	}
 

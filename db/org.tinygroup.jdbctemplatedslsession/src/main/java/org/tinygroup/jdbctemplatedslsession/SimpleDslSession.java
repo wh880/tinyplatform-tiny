@@ -431,11 +431,11 @@ public class SimpleDslSession implements DslSession {
 			executeBatchProcess(batchSize, params, new BatchOperateCallback() {
 
 				public int[] callbackList(List<List<Object>> params) {
-					int[] affecctNums = jdbcTemplate.batchUpdate(sql,
+					int[] affectedNums = jdbcTemplate.batchUpdate(sql,
 							new BatchPreparedStatementSetterImpl(params, null));
 					Collections.addAll(records,
-							ArrayUtils.toObject(affecctNums));
-					return affecctNums;
+							ArrayUtils.toObject(affectedNums));
+					return affectedNums;
 				}
 
 				public int[] callback(List<Map<String, Object>> params) {
@@ -511,11 +511,11 @@ public class SimpleDslSession implements DslSession {
 				}
 
 				public int[] callback(Map<String, Object>[] params) {
-					int[] affecctNums = simpleJdbcTemplate.batchUpdate(sql,
+					int[] affectedNums = simpleJdbcTemplate.batchUpdate(sql,
 							params);
 					Collections.addAll(records,
-							ArrayUtils.toObject(affecctNums));
-					return affecctNums;
+							ArrayUtils.toObject(affectedNums));
+					return affectedNums;
 				}
 			});
 			return ArrayUtils.toPrimitive(records.toArray(new Integer[0]));

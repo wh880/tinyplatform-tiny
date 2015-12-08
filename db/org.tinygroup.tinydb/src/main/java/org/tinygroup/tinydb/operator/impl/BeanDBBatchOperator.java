@@ -154,7 +154,7 @@ public class BeanDBBatchOperator<K> extends BeanDBSingleOperator<K> implements
 				getSchema());
 		String sql = getDeleteSqlByKey(beanType);
 		for (K beanId : beanIds) {
-			SqlParameterValue value = createSqlParamter(beanId,
+			SqlParameterValue value = createSqlParameter(beanId,
 					table.getPrimaryKey());
 			SqlParameterValue[] values = new SqlParameterValue[1];
 			values[0] = value;

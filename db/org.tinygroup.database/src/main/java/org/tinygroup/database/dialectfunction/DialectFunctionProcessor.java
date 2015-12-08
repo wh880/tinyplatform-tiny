@@ -66,5 +66,14 @@ public interface DialectFunctionProcessor {
 	 * @param databaseType
 	 * @return
 	 */
+	@Deprecated
 	String getFuntionSql(String originalSql,String databaseType);
+
+	/**
+	 *
+	 * @param originalSql
+	 * @param databaseType
+	 * @return
+	 */
+	String getFunctionSql(String originalSql,String databaseType);
 }

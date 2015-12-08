@@ -223,7 +223,7 @@ public class BeanDBSqlOperator<K> extends BeanDBBatchOperator<K> implements
 	private String buildSqlFuction(String sql) {
 		Dialect dialect = getDialect();
 		if (dialect != null) {
-			return dialect.buildSqlFuction(sql);
+			return dialect.buildSqlFunction(sql);
 		}
 		return sql;
 	}

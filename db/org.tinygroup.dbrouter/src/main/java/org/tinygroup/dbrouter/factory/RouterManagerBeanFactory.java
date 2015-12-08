@@ -86,11 +86,11 @@ public final class RouterManagerBeanFactory {
 	public static RouterManager getManager(String region, Cache cache) {
 		if (manager == null) {
 			manager = factory.getBean(ROUTER_MANAGER);
-			Cache orignalCache = manager.getCache();
-			if (cache == null && orignalCache == null) {
+			Cache originalCache = manager.getCache();
+			if (cache == null && originalCache == null) {
 				cache = new JcsCache();
-			} else if (cache == null && orignalCache != null) {
-				cache = orignalCache;
+			} else if (cache == null && originalCache != null) {
+				cache = originalCache;
 			}
 			cache.init(region);
 			manager.setCache(cache);

@@ -17,7 +17,7 @@ package org.tinygroup.tinydb.dialect.impl;
 
 import org.tinygroup.database.util.DataBaseUtil;
 
-public class DB2Dialect extends AbstractSequenceDialcet {
+public class DB2Dialect extends AbstractSequenceDialect {
 
 
 	public boolean supportsLimit() {
@@ -96,8 +96,13 @@ public class DB2Dialect extends AbstractSequenceDialcet {
 		return "values current timestamp";
 	}
 
+	@Deprecated
 	public String buildSqlFuction(String sql) {
-		return functionProcessor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_DB2);
+		return buildSqlFunction(sql);
+	}
+
+	public String buildSqlFunction(String sql) {
+		return functionProcessor.getFunctionSql(sql, DataBaseUtil.DB_TYPE_DB2);
 	}
 	
 	protected String getSequenceQuery() {

@@ -27,19 +27,19 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 public class ValuePair {
 	@XStreamAsAttribute
 	@XStreamAlias("table-field-id")
-	private String tableFiledId;
+	private String tableFieldId;
 	@XStreamAsAttribute
 	private String value;
 
 	
 	
 
-	public String getTableFiledId() {
-		return tableFiledId;
+	public String getTableFieldId() {
+		return tableFieldId;
 	}
 
-	public void setTableFiledId(String tableFiledId) {
-		this.tableFiledId = tableFiledId;
+	public void setTableFieldId(String tableFieldId) {
+		this.tableFieldId = tableFieldId;
 	}
 
 	public String getValue() {

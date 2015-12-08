@@ -121,7 +121,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 					.dbFieldNameToPropertyName(columnsName);
 			Object value = bean.getProperty(propertyName);
 			if (!ObjectUtil.isEmptyObject(value)) {
-				params.add(createSqlParamter(value, column));
+				params.add(createSqlParameter(value, column));
 			}
 		}
 		return params.toArray(new SqlParameterValue[0]);
@@ -135,8 +135,14 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		return dataTypes;
 	}
 
+	@Deprecated
 	protected SqlParameterValue createSqlParamter(Object value,
 			ColumnConfiguration primaryColumn) {
+		return createSqlParameter(value,primaryColumn);
+	}
+
+	protected SqlParameterValue createSqlParameter(Object value,
+												  ColumnConfiguration primaryColumn) {
 		String columnsName = primaryColumn.getColumnName();
 		String propertyName = beanDbNameConverter
 				.dbFieldNameToPropertyName(columnsName);
@@ -150,8 +156,14 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		return new SqlParameterValue(sqlParameter, value);
 	}
 
+	@Deprecated
 	protected SqlParameterValue[] getSqlParamterValue(Bean bean,
 			List<String> conditionColumns) throws TinyDbException {
+		return getSqlParameterValue(bean,conditionColumns);
+	}
+
+	protected SqlParameterValue[] getSqlParameterValue(Bean bean,
+													  List<String> conditionColumns) throws TinyDbException {
 		List<SqlParameterValue> params = new ArrayList<SqlParameterValue>();
 		if (conditionColumns == null || conditionColumns.size() == 0) {
 			throw new TinyDbException("beanType为:" + bean.getType()
@@ -162,17 +174,17 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 		if (table != null) {
 			List<ColumnConfiguration> columns = table.getColumns();
 			// 设置更新字段参数
-			setUpdateParamter(bean, params, columns, conditionColumns);
+			setUpdateParameter(bean, params, columns, conditionColumns);
 			// 设置条件字段参数
-			setConditionParamter(bean, params, conditionColumns);
+			setConditionParameter(bean, params, conditionColumns);
 			return params.toArray(new SqlParameterValue[0]);
 		}
 		throw new TinyDbException("不存在beanType：" + bean.getType() + "的表格");
 
 	}
 
-	private void setUpdateParamter(Bean bean, List<SqlParameterValue> params,
-			List<ColumnConfiguration> columns, List<String> conditionColumns) {
+	private void setUpdateParameter(Bean bean, List<SqlParameterValue> params,
+									List<ColumnConfiguration> columns, List<String> conditionColumns) {
 		for (ColumnConfiguration column : columns) {
 			String columnName = column.getColumnName();
 			if (!column.isPrimaryKey()) {
@@ -182,7 +194,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 				if (!conditionColumns.contains(columnName)) {
 					if (bean.containsKey(propertyName)
 							&& bean.getMark(propertyName)) {
-						params.add(createSqlParamter(
+						params.add(createSqlParameter(
 								bean.getProperty(propertyName), column));
 					}
 				}
@@ -191,8 +203,8 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 
 	}
 
-	private void setConditionParamter(Bean bean,
-			List<SqlParameterValue> params, List<String> conditionColumns) {
+	private void setConditionParameter(Bean bean,
+									   List<SqlParameterValue> params, List<String> conditionColumns) {
 		for (String columnName : conditionColumns) {
 			String propertyName = beanDbNameConverter
 					.dbFieldNameToPropertyName(columnName);
@@ -200,7 +212,7 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 				TableConfiguration table = manager.getTableConfiguration(
 						bean.getType(), getSchema());
 				ColumnConfiguration column = table.getColumn(columnName);
-				params.add(createSqlParamter(bean.getProperty(propertyName),
+				params.add(createSqlParameter(bean.getProperty(propertyName),
 						column));
 			}
 		}
@@ -252,12 +264,12 @@ class BeanDBBaseOperator extends DBSpringBaseOperator implements DbBaseOperator 
 					if (column.isPrimaryKey()) {// 主键值自动生成
 						value = getPrimaryKeyValue(bean, isIncrease,
 								propertyName);
-						parameterValues.add(createSqlParamter(value, column));
+						parameterValues.add(createSqlParameter(value, column));
 					} else {
 						if (bean.containsKey(propertyName)) {
 							value = bean.getProperty(propertyName);
 							parameterValues
-									.add(createSqlParamter(value, column));
+									.add(createSqlParameter(value, column));
 						}
 					}
 				}

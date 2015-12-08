@@ -88,7 +88,12 @@ public class DialectFunctionProcessorImpl implements DialectFunctionProcessor {
 		return dialectMap.get(functionName);
 	}
 
+	@Deprecated
 	public String getFuntionSql(String originalSql, String databaseType) {
+		return getFunctionSql(originalSql, databaseType);
+	}
+
+	public String getFunctionSql(String originalSql, String databaseType) {
 		if(formatter ==null){
 			initFormater();
 		}
@@ -102,7 +107,6 @@ public class DialectFunctionProcessorImpl implements DialectFunctionProcessor {
 		}
 		return afterFormater;
 	}
-
 
 
 	public Dialect getDialectWithDatabaseType(String functionName,

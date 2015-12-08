@@ -237,7 +237,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 	public int deleteById(K beanId,String beanType) throws TinyDbException{
 		String sql = getDeleteSqlByKey(beanType);
 		TableConfiguration table = manager.getTableConfiguration(beanType, getSchema());
-		SqlParameterValue param = createSqlParamter(beanId,
+		SqlParameterValue param = createSqlParameter(beanId,
 				table.getPrimaryKey());
 		return executeBySqlParameterValue(sql, param);
 	}
@@ -269,7 +269,7 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 			if (subBean != null) {
 				subBean.setProperty(relation.getMainName(),
 						bean.getProperty(relation.getKeyName()));
-				moreToOnecallBack(subBean);
+				moreToOneCallBack(subBean);
 				processRelation(subBean, relation, this);
 			}
 
@@ -287,28 +287,42 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 				for (Bean subBean : beans) {
 					subBean.setProperty(relation.getMainName(),
 							bean.getProperty(relation.getKeyName()));
-					oneToMorecallBack(subBean);
+					oneToMoreCallBack(subBean);
 					processRelation(subBean, relation, this);
 				}
 			}
 		}
 
+		@Deprecated
 		abstract void moreToOnecallBack(Bean bean)throws TinyDbException;
 
+		@Deprecated
 		abstract void oneToMorecallBack(Bean bean)throws TinyDbException;
+
+		abstract void moreToOneCallBack(Bean bean)throws TinyDbException;
+
+		abstract void oneToMoreCallBack(Bean bean)throws TinyDbException;
 
 	}
 
 	class InsertRelationCallBack extends CrudRelationCallBack {
-		
+		@Deprecated
 		void moreToOnecallBack(Bean bean) throws TinyDbException {
+			moreToOneCallBack(bean);
+		}
+
+		@Deprecated
+		void oneToMorecallBack(Bean bean) throws TinyDbException {
+			oneToMoreCallBack(bean);
+		}
+
+		void moreToOneCallBack(Bean bean) throws TinyDbException {
 			if (beanNotExist(bean)) {
 				insertTopBean(bean);
 			}
 		}
 
-		
-		void oneToMorecallBack(Bean bean) throws TinyDbException {
+		void oneToMoreCallBack(Bean bean) throws TinyDbException {
 			if (beanNotExist(bean)) {
 				insertTopBean(bean);
 			}
@@ -316,42 +330,58 @@ public class BeanDBSingleOperator<K> extends BeanDBBaseOperator implements
 	}
 
 	class UpdateRelationCallBack extends CrudRelationCallBack {
-		
+
+		@Deprecated
 		void moreToOnecallBack(Bean bean) throws TinyDbException {
-			if (beanNotExist(bean)) {
-				insertTopBean(bean);
-			} else {
-				updateTopBean(bean);
-			}
+			moreToOneCallBack(bean);
 
 		}
 
-		
+		@Deprecated
 		void oneToMorecallBack(Bean bean) throws TinyDbException {
+			oneToMoreCallBack(bean);
+
+		}
+
+		void moreToOneCallBack(Bean bean) throws TinyDbException {
 			if (beanNotExist(bean)) {
 				insertTopBean(bean);
 			} else {
 				updateTopBean(bean);
 			}
+		}
 
+		void oneToMoreCallBack(Bean bean) throws TinyDbException {
+			if (beanNotExist(bean)) {
+				insertTopBean(bean);
+			} else {
+				updateTopBean(bean);
+			}
 		}
 	}
 
 	class DeleteRelationCallBack extends CrudRelationCallBack {
-		
-		void moreToOnecallBack(Bean bean) throws TinyDbException {
-			if (!beanNotExist(bean)) {
-				deleteTopBean(bean);
-			}
 
+		@Deprecated
+		void moreToOnecallBack(Bean bean) throws TinyDbException {
+			moreToOneCallBack(bean);
 		}
 
-		
+		@Deprecated
 		void oneToMorecallBack(Bean bean) throws TinyDbException {
+			oneToMoreCallBack(bean);
+		}
+
+		void moreToOneCallBack(Bean bean) throws TinyDbException {
 			if (!beanNotExist(bean)) {
 				deleteTopBean(bean);
 			}
+		}
 
+		void oneToMoreCallBack(Bean bean) throws TinyDbException {
+			if (!beanNotExist(bean)) {
+				deleteTopBean(bean);
+			}
 		}
 	}
 

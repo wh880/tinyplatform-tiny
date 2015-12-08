@@ -49,7 +49,12 @@ public class Conditions {
 		return append(")");
 	}
 
+	@Deprecated
 	public List<Object> getParamterList() {
+		return getParameterList();
+	}
+
+	public List<Object> getParameterList() {
 		List<Object> params = new ArrayList<Object>();
 		for (Condition condition : conditionList) {
 			Object value = condition.getValue();

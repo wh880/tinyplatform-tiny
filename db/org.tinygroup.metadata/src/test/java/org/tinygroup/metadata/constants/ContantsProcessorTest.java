@@ -58,7 +58,7 @@ public class ContantsProcessorTest extends TestCase {
 		assertEquals(12, contantsProcessor.getShortValue("a4"));
 	}
 
-	public void testGetbyteValueStringString() {
+	public void testGetByteValueStringString() {
 		assertEquals(65, contantsProcessor.getByteValue("a3"));
 	}
 

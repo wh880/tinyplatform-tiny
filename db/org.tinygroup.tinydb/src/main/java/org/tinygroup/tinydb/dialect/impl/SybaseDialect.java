@@ -90,8 +90,13 @@ public class SybaseDialect extends AbstractColumnDialcet {
 	public boolean supportsLimit() {
 		return false;
 	}
-	
+
+	@Deprecated
 	public String buildSqlFuction(String sql) {
-		return functionProcessor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_SYBASE);
+		return buildSqlFunction(sql);
+	}
+
+	public String buildSqlFunction(String sql) {
+		return functionProcessor.getFunctionSql(sql, DataBaseUtil.DB_TYPE_SYBASE);
 	}
 }

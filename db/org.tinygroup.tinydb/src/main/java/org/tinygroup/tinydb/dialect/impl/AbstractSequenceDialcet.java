@@ -25,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+@Deprecated
 public abstract class AbstractSequenceDialcet extends AbstractDialect {
 	/**
 	 * Executes the SQL as specified by {@link #getSequenceQuery()}.

@@ -124,11 +124,11 @@ public class ConfigurationBuilder {
 	}
 
 	private void parserBeanQueryConfig() {
-		XmlNode qeuryConfigsNode = xmlNode.getSubNode(QUERY_CONFIGS);
-		if (qeuryConfigsNode == null) {
+		XmlNode queryConfigsNode = xmlNode.getSubNode(QUERY_CONFIGS);
+		if (queryConfigsNode == null) {
 			return;
 		}
-		List<XmlNode> queryConfigNodes = qeuryConfigsNode
+		List<XmlNode> queryConfigNodes = queryConfigsNode
 				.getSubNodes(QUERY_CONFIG);
 		if (!CollectionUtil.isEmpty(queryConfigNodes)) {
 			for (XmlNode queryConfigNode : queryConfigNodes) {
