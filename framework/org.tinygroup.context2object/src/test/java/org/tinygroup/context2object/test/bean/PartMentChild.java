@@ -13,22 +13,34 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.context2object.test.testcase;
+package org.tinygroup.context2object.test.bean;
 
-import org.tinygroup.context.Context;
-import org.tinygroup.context.impl.ContextImpl;
-import org.tinygroup.context2object.test.bean.BeanField;
 
-public class TestBeanNoField extends BastTestCast {
+public class PartMentChild extends PartMentParent {
+	String name;
+	SmallCat cat;
+	Integer num;
 	
-	public void testRun() {
-		Context context = new ContextImpl();
-		context.put("name", "name1");
-		context.put("field.name", "name2");
-		BeanField bean = (BeanField) generator.getObject(null, null,
-				BeanField.class.getName(), this.getClass().getClassLoader(),
-				context);
-		assertEquals( "name1",bean.getName());
-		assertEquals( "name2",bean.getField().getName());
+	public SmallCat getCat() {
+		return cat;
 	}
+	public void setCat(SmallCat cat) {
+		this.cat = cat;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public Integer getNum() {
+		return num;
+	}
+	public void setNum(Integer num) {
+		this.num = num;
+	}
+	
+	
+	
 }

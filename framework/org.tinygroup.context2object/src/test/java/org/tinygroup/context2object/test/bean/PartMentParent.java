@@ -13,22 +13,30 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.context2object.test.testcase;
+package org.tinygroup.context2object.test.bean;
 
-import org.tinygroup.context.Context;
-import org.tinygroup.context.impl.ContextImpl;
-import org.tinygroup.context2object.test.bean.BeanField;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TestBeanNoField extends BastTestCast {
+public class PartMentParent implements PartInterface {
+	private List<SmallCat> cats;
+	private SmallCat[] catsArray;
 	
-	public void testRun() {
-		Context context = new ContextImpl();
-		context.put("name", "name1");
-		context.put("field.name", "name2");
-		BeanField bean = (BeanField) generator.getObject(null, null,
-				BeanField.class.getName(), this.getClass().getClassLoader(),
-				context);
-		assertEquals( "name1",bean.getName());
-		assertEquals( "name2",bean.getField().getName());
+	public List<SmallCat> getCats() {
+		if(cats==null)
+			cats = new ArrayList<SmallCat>();
+		return cats;
 	}
+	public void setCats(List<SmallCat> cats) {
+		this.cats = cats;
+	}
+	
+	public SmallCat[] getCatsArray() {
+		return catsArray;
+	}
+	public void setCatsArray(SmallCat[] catsArray) {
+		this.catsArray = catsArray;
+	}
+	
+	
 }

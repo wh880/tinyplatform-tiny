@@ -30,6 +30,7 @@ import org.tinygroup.logger.LoggerFactory;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -70,7 +71,9 @@ public class ClassNameObjectGenerator implements
 			throw new RuntimeException(e.getMessage());
 		}
 	}
-	public Collection<Object> getObjectCollection(String collectionClassName,ClassLoader loader){
+
+	public Collection<Object> getObjectCollection(String collectionClassName,
+			ClassLoader loader) {
 		Class<?> collectionClass = getClazz(collectionClassName, loader);
 		return (Collection<Object>) getObjectInstance(collectionClass);
 	}
@@ -149,7 +152,7 @@ public class ClassNameObjectGenerator implements
 			if (descriptor.getPropertyType().equals(Class.class)) {
 				continue;
 			}
-			
+
 			// 201402025修改此处代码，修改propertyName获取逻辑
 			// String propertyName = getPropertyName(clazz,
 			// descriptor.getName());
@@ -211,15 +214,24 @@ public class ClassNameObjectGenerator implements
 				try {
 					String newPreName = getReallyPropertyName(preName, objName,
 							propertyName);
-					Class<?> type = null;
-					try{
-						type = clazz
-								.getDeclaredField(descriptor.getName()).getType();
-					}catch (NoSuchFieldException e) {
-						LOGGER.logMessage(LogLevel.WARN,"{}不存在字段{}",clazz.getName(),propertyName);
+					// ===============begin======================
+					// 20151208修改逻辑为getDeclaredFieldWithParent获取type再获取属性，解决无法获取父类的属性的问题
+					// Class<?> type = null;
+					// try{
+					Field field = getDeclaredFieldWithParent(clazz,
+							propertyName);
+					// type =
+					// clazz.getDeclaredField(descriptor.getName()).getType();
+					// type = descriptor.getPropertyType();
+					// }catch (NoSuchFieldException e)
+
+					if (field == null) {
+						LOGGER.logMessage(LogLevel.WARN, "{}不存在字段{}",
+								clazz.getName(), propertyName);
 						continue;
 					}
-					
+					Class<?> type = field.getType();
+					// ===============end======================
 					if (type.isArray()) {// 如果是数组
 						Object value = getObject(null, null,
 								descriptor.getPropertyType(), context,
@@ -231,9 +243,21 @@ public class ClassNameObjectGenerator implements
 						}
 					} else if (implmentInterface(descriptor.getPropertyType(),
 							Collection.class)) {// 如果是集合
-						ParameterizedType pt = (ParameterizedType) clazz
-								.getDeclaredField(descriptor.getName())
+						// ===============begin======================
+						// 20151208修改逻辑为getDeclaredFieldWithParent获取type再获取属性，解决无法获取父类的属性的问题
+						Field propertyType = getDeclaredFieldWithParent(clazz,
+								propertyName);
+						if (propertyType == null) {
+							LOGGER.logMessage(LogLevel.WARN, "{}不存在字段{}",
+									clazz.getName(), propertyName);
+							continue;
+						}
+						// ParameterizedType pt = (ParameterizedType) clazz
+						// .getDeclaredField(descriptor.getName())
+						// .getGenericType();
+						ParameterizedType pt = (ParameterizedType) propertyType
 								.getGenericType();
+						// ===============end======================
 						Type[] actualTypeArguments = pt
 								.getActualTypeArguments();
 						Collection<Object> collection = (Collection<Object>) getObjectInstance(type);
@@ -265,6 +289,19 @@ public class ClassNameObjectGenerator implements
 			return null;
 		}
 		return object;
+	}
+
+	private Field getDeclaredFieldWithParent(Class<?> clazz, String name) {
+		try {
+			return clazz.getDeclaredField(name);
+		} catch (NoSuchFieldException e) {
+			if (clazz.getSuperclass() != null) {
+				return getDeclaredFieldWithParent(clazz.getSuperclass(), name);
+			}
+
+		}
+		return null;
+
 	}
 
 	private void buildCollection(String varName, Collection<Object> collection,
@@ -427,16 +464,16 @@ public class ClassNameObjectGenerator implements
 		}
 	}
 
-//	private TypeConverter<?, ?> getTypeConverter(Class<?> destType,
-//			Class<? extends Object> sourceType) {
-//		for (TypeConverter<?, ?> typeConverter : typeConverterList) {
-//			if (typeConverter.getSourceType().equals(sourceType)
-//					&& typeConverter.getDestinationType().equals(destType)) {
-//				return typeConverter;
-//			}
-//		}
-//		return null;
-//	}
+	// private TypeConverter<?, ?> getTypeConverter(Class<?> destType,
+	// Class<? extends Object> sourceType) {
+	// for (TypeConverter<?, ?> typeConverter : typeConverterList) {
+	// if (typeConverter.getSourceType().equals(sourceType)
+	// && typeConverter.getDestinationType().equals(destType)) {
+	// return typeConverter;
+	// }
+	// }
+	// return null;
+	// }
 
 	private TypeConverter<?, ?> getTypeConverter(Class<?> destType) {
 		for (TypeConverter<?, ?> typeConverter : typeConverterList) {

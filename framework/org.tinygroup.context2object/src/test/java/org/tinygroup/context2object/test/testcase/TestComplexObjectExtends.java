@@ -17,18 +17,14 @@ package org.tinygroup.context2object.test.testcase;
 
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
-import org.tinygroup.context2object.test.bean.BeanField;
+import org.tinygroup.context2object.test.bean.ComplexObjectChild;
 
-public class TestBeanNoField extends BastTestCast {
-	
-	public void testRun() {
+public class TestComplexObjectExtends extends BastTestCast{
+	public void testObjectArray() {
 		Context context = new ContextImpl();
-		context.put("name", "name1");
-		context.put("field.name", "name2");
-		BeanField bean = (BeanField) generator.getObject(null, null,
-				BeanField.class.getName(), this.getClass().getClassLoader(),
-				context);
-		assertEquals( "name1",bean.getName());
-		assertEquals( "name2",bean.getField().getName());
+		context.put("complexObjectChild.cat.name", "name1");
+		ComplexObjectChild c = (ComplexObjectChild) generator.getObject(null,null, ComplexObjectChild.class.getName(),this.getClass().getClassLoader(), context);
+		assertEquals(c.getCat().getName(), "name1");
+		System.out.println(c.getCat().getName());
 	}
 }
