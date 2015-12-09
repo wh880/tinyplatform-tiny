@@ -249,7 +249,7 @@ public class CEPCoreImpl implements CEPCore {
 		aopMananger.beforeHandle(event);
 		ServiceRequest request = event.getServiceRequest();
 		String eventNodeName = event.getServiceRequest().getNodeName();
-		LOGGER.logMessage(LogLevel.INFO, "请求指定的执行节点为:{0}", eventNodeName);
+		LOGGER.logMessage(LogLevel.DEBUG, "请求指定的执行节点为:{0}", eventNodeName);
 		
 		
 		EventProcessor eventProcessor = getEventProcessor(request,
@@ -286,6 +286,7 @@ public class CEPCoreImpl implements CEPCore {
 		aopMananger.afterHandle(event);
 	}
 	private void dealRemote(EventProcessor eventProcessor, Event event) {
+		LOGGER.logMessage(LogLevel.DEBUG, "请求指定的执行处理器为:{0}", eventProcessor.getId());
 		Context oldContext = event.getServiceRequest().getContext();
 		ServiceParamUtil.changeEventContext(event, this, Thread.currentThread()
 				.getContextClassLoader());
@@ -294,6 +295,7 @@ public class CEPCoreImpl implements CEPCore {
 	}
 
 	private void deal(EventProcessor eventProcessor, Event event) {
+		LOGGER.logMessage(LogLevel.DEBUG, "请求指定的执行处理器为:{0}", eventProcessor.getId());
 		Context oldContext = event.getServiceRequest().getContext();
 		ServiceParamUtil.changeEventContext(event, this, Thread.currentThread()
 				.getContextClassLoader());

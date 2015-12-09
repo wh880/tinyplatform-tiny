@@ -137,11 +137,14 @@ public class ServiceProxy implements Service {
 	}
 
 	public void execute(Context context) {
+		LOGGER.logMessage(LogLevel.DEBUG, "开始执行serviceProxy,对应方法名:{}",methodName);
 		if (method == null) {
 			method = findMethod();
 		}
 		// 获取所有参数的值
+		LOGGER.logMessage(LogLevel.DEBUG, "开始获取方法参数");
 		Object[] args = getArguments(context);
+		LOGGER.logMessage(LogLevel.DEBUG, "取得方法参数");
 		try {
 			// 20130109调整，添加无返回值的服务的处理
 			if (outputParameter != null
@@ -165,6 +168,7 @@ public class ServiceProxy implements Service {
 			// dealException(e);
 			throw new ServiceRunException(e);
 		}
+		LOGGER.logMessage(LogLevel.DEBUG, "执行serviceProxy完毕,对应方法名:{}",methodName);
 	}
 
 	// private void dealException(Exception e) {
