@@ -64,7 +64,7 @@ public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 			StringBuffer values = new StringBuffer();
 			for (ValuePair valuePair : valuePairs) {
 				StandardField standField = DataBaseUtil.getStandardField(
-						valuePair.getTableFiledId(), table, this.getClass()
+						valuePair.getTableFieldId(), table, this.getClass()
 								.getClassLoader());
 				String standFieldName = DataBaseUtil.getDataBaseName(standField
 						.getName());
@@ -121,7 +121,7 @@ public class InitDataSqlProcessorImpl implements InitDataSqlProcessor {
 		int times = 0;// 当单条数据的delete语句生成时,times的次数应该等于keys，即主键列表的长度
 		for (ValuePair valuePair : valuePairs) {
 			StandardField standField = DataBaseUtil
-					.getStandardField(valuePair.getTableFiledId(), table, this
+					.getStandardField(valuePair.getTableFieldId(), table, this
 							.getClass().getClassLoader());
 			String standFieldName = DataBaseUtil.getDataBaseName(standField
 					.getName());

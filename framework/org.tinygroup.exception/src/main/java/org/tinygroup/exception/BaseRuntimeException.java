@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import org.tinygroup.commons.i18n.LocaleUtil;
 import org.tinygroup.commons.tools.ExceptionUtil;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.exception.util.ErrorUtil;
 import org.tinygroup.i18n.I18nMessage;
@@ -51,8 +52,20 @@ public class BaseRuntimeException extends RuntimeException {
 			Locale locale, Object... params) {
 		String errorI18nMsg = i18nMessage.getMessage(errorCode, locale,
 				defaultErrorMsg, params);
-		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
+		initErrorCode(errorCode, errorI18nMsg);
 		this.errorMsg = errorI18nMsg;
+	}
+
+	private void initErrorCode(String errorCode, String errorI18nMsg) {
+		if(StringUtil.isBlank(errorI18nMsg)){
+			this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
+		}else{
+			try {
+				this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
+			} catch (Exception e) {
+				this.errorCode=null;
+			}
+		}
 	}
 
 	public BaseRuntimeException(String errorCode, Throwable throwable,
@@ -72,7 +85,7 @@ public class BaseRuntimeException extends RuntimeException {
 		super(throwable);
 		String errorI18nMsg = i18nMessage.getMessage(errorCode, locale,
 				defaultErrorMsg, params);
-		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
+		initErrorCode(errorCode, errorI18nMsg);
 		this.errorMsg = errorI18nMsg;
 	}
 
@@ -84,8 +97,8 @@ public class BaseRuntimeException extends RuntimeException {
 			Context context, Locale locale) {
 		String errorI18nMsg = i18nMessage.getMessage(errorCode, defaultErrorMsg,
 				context, locale);
+		initErrorCode(errorCode, errorI18nMsg);
 		this.errorMsg = errorI18nMsg;
-		this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
 	}
 
 	public BaseRuntimeException(String errorCode, Context context) {
@@ -96,11 +109,12 @@ public class BaseRuntimeException extends RuntimeException {
 		super();
 	}
 
+	@Deprecated
 	public BaseRuntimeException(String message, Throwable cause) {
 		super(message, cause);
 		this.errorMsg = message;
 	}
-
+	@Deprecated
 	public BaseRuntimeException(String message) {
 		super(message);
 		this.errorMsg = message;

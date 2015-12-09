@@ -45,10 +45,18 @@ public interface Dialect {
 
 	String getCurrentDate();
 	/**
-	 * 
+	 * 不推荐使用
 	 * 返回经过方言函数解析后的sql
 	 * @param sql
 	 * @return
 	 */
+	@Deprecated
 	 String buildSqlFuction(String sql);
+
+	/**
+	 * 返回经过方言函数解析后的sql
+	 * @param sql
+	 * @return
+	 */
+	String buildSqlFunction(String sql);
 }

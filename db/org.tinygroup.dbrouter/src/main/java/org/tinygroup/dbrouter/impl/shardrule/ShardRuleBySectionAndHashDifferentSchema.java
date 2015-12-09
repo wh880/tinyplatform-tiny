@@ -93,7 +93,7 @@ public class ShardRuleBySectionAndHashDifferentSchema implements ShardRule {
 	public boolean isMatch(Partition partition, Shard shard, String sql,
 			Object... preparedParams) {
 		sort(sections);
-		inittargetTable(shard);
+		initTargetTable(shard);
 		initHash();
 		Statement statement = RouterManagerBeanFactory.getManager()
 				.getSqlStatement(sql);
@@ -122,7 +122,7 @@ public class ShardRuleBySectionAndHashDifferentSchema implements ShardRule {
 		return shardRuleMatch(statement, partition, preparedParams);
 	}
 
-	private void inittargetTable(Shard shard) {
+	private void initTargetTable(Shard shard) {
 		Map<String, String> tableMapping = shard.getTableMappingMap();
 		if (null == targetTableName && null != tableMapping) {
 			targetTableName = tableMapping.get(tableName);

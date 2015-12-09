@@ -47,6 +47,9 @@ public class ErrorCodeFactory {
 	public static ErrorCode parseErrorCode(String errorCode, Throwable cause) {
 		Assert.assertNotNull(errorCode, "errorCode must not be null");
 		ErrorCodeParser parser = findParser(errorCode, cause);
+		if(parser==null){
+			return null;
+		}
 		return parser.parse(errorCode);
 	}
 

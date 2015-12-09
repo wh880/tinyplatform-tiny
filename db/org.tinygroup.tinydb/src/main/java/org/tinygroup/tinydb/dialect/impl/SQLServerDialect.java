@@ -136,8 +136,13 @@ public class SQLServerDialect extends AbstractColumnDialcet {
 		return "select current_timestamp";
 	}
 
+	@Deprecated
 	public String buildSqlFuction(String sql) {
-		return functionProcessor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_SQLSERVER);
+		return buildSqlFunction(sql);
+	}
+
+	public String buildSqlFunction(String sql) {
+		return functionProcessor.getFunctionSql(sql, DataBaseUtil.DB_TYPE_SQLSERVER);
 	}
 
 }

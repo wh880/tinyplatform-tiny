@@ -49,7 +49,7 @@ public class BeanDBSqlQueryOperator<K> extends  BeanDBSqlOperator<K> implements 
 	public void generateQuerySqlClause(Conditions conditions,
 			StringBuffer stringBuffer, List<Object> valueList) {
 		stringBuffer.append(conditions.getSegmentWithVariable());
-		valueList.addAll(conditions.getParamterList());
+		valueList.addAll(conditions.getParameterList());
 	}
 
 	/**

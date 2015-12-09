@@ -132,8 +132,12 @@ public class MySQLDialect extends AbstractColumnDialcet {
 		return "select now()";
 	}
 
-	
+	@Deprecated
 	public String buildSqlFuction(String sql) {
-		return functionProcessor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_MYSQL);
+		return buildSqlFunction(sql);
+	}
+
+	public String buildSqlFunction(String sql) {
+		return functionProcessor.getFunctionSql(sql, DataBaseUtil.DB_TYPE_MYSQL);
 	}
 }

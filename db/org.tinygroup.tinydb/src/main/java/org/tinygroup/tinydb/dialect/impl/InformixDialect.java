@@ -20,7 +20,7 @@ import org.tinygroup.database.util.DataBaseUtil;
 /**
  * The Class InformixDialect.
  */
-public class InformixDialect extends AbstractSequenceDialcet {
+public class InformixDialect extends AbstractSequenceDialect {
 	
 	/**
 	 * Instantiates a new informix dialect.
@@ -68,8 +68,13 @@ public class InformixDialect extends AbstractSequenceDialcet {
 		return "SELECT current FROM sysmaster:sysshmvals";
 	}
 
+	@Deprecated
 	public String buildSqlFuction(String sql) {
-		return functionProcessor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_INFORMIX);
+		return buildSqlFunction(sql);
+	}
+
+	public String buildSqlFunction(String sql) {
+		return functionProcessor.getFunctionSql(sql, DataBaseUtil.DB_TYPE_INFORMIX);
 	}
 	
 	protected String getSequenceQuery() {

@@ -17,7 +17,7 @@ package org.tinygroup.tinydb.dialect.impl;
 
 import org.tinygroup.database.util.DataBaseUtil;
 
-public class OracleDialect extends AbstractSequenceDialcet{
+public class OracleDialect extends AbstractSequenceDialect{
 	
 
 	public boolean supportsLimit() {
@@ -44,10 +44,15 @@ public class OracleDialect extends AbstractSequenceDialcet{
 		return "select  to_char(sysdate,'YYYY-MM-DD HH24:MI:SS') from dual";
 	}
 
+	@Deprecated
 	public String buildSqlFuction(String sql) {
-		return functionProcessor.getFuntionSql(sql, DataBaseUtil.DB_TYPE_ORACLE);
+		return buildSqlFunction(sql);
 	}
-	
+
+	public String buildSqlFunction(String sql) {
+		return functionProcessor.getFunctionSql(sql, DataBaseUtil.DB_TYPE_ORACLE);
+	}
+
 	protected String getSequenceQuery() {
 		return "select " + getIncrementerName() + ".nextval from dual";
 	}

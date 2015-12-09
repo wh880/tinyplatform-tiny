@@ -46,48 +46,48 @@ public class HibernateBaseDaoImpl extends HibernateBaseDao {
         return super.update(entity);
     }
 
-    public Object[] save(Object[] entitys) throws Exception {
-        for (Object entity : entitys) {
+    public Object[] save(Object[] entities) throws Exception {
+        for (Object entity : entities) {
             save(entity);
         }
-        return entitys;
+        return entities;
     }
 
-    public Object[] delete(Object[] entitys) throws Exception {
-        for (Object entity : entitys) {
+    public Object[] delete(Object[] entities) throws Exception {
+        for (Object entity : entities) {
             delete(entity);
         }
-        return entitys;
+        return entities;
     }
 
-    public Object[] update(Object[] entitys) throws Exception {
-        for (Object entity : entitys) {
+    public Object[] update(Object[] entities) throws Exception {
+        for (Object entity : entities) {
             update(entity);
         }
-        return entitys;
+        return entities;
     }
 
-    public Collection<Object> save(Collection<Object> entitys) throws Exception {
-        for (Object entity : entitys) {
+    public Collection<Object> save(Collection<Object> entities) throws Exception {
+        for (Object entity : entities) {
             save(entity);
         }
-        return entitys;
+        return entities;
     }
 
-    public Collection<Object> update(Collection<Object> entitys)
+    public Collection<Object> update(Collection<Object> entities)
             throws Exception {
-        for (Object entity : entitys) {
+        for (Object entity : entities) {
             update(entity);
         }
-        return entitys;
+        return entities;
     }
 
-    public Collection<Object> delete(Collection<Object> entitys)
+    public Collection<Object> delete(Collection<Object> entities)
             throws Exception {
-        for (Object entity : entitys) {
+        for (Object entity : entities) {
             delete(entity);
         }
-        return entitys;
+        return entities;
     }
 
     public Object deleteObject(Class clazz, Object id) throws Exception {
