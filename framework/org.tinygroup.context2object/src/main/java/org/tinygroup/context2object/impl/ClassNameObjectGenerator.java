@@ -310,9 +310,55 @@ public class ClassNameObjectGenerator implements
 			return;
 		} else if (isSimpleType(clazz)) {
 			buildCollectionSimple(varName, collection, clazz, context, preName);
+		} else if (clazz.isEnum()) {
+			buildCollectionEnum(varName, collection, clazz, context, preName);
 		} else {
 			buildCollectionObject(varName, collection, clazz, context, preName);
 		}
+	}
+	private void buildCollectionEnum(String varName,
+			Collection<Object> collection, Class<?> clazz, Context context,
+			String preName){
+		TypeConverter typeConverter = getTypeConverter(clazz);
+		if(typeConverter==null){
+			throw new RuntimeException("枚举类型"+clazz+"转换器不存在");
+		}
+		String reallyVarName = varName;
+		if (isNull(reallyVarName)) {
+			reallyVarName = preName;
+		}
+		if (isNull(reallyVarName)) {
+			throw new RuntimeException("枚举类型数组或集合,变量名不可为空");
+		}
+		Object propertyValue = getPerpertyValue(reallyVarName, context);
+		if (propertyValue != null) {
+			if (propertyValue.getClass().isArray()) {
+				// 如果是数组
+				Object[] objArray = (Object[]) propertyValue;
+				for (Object o : objArray) {
+					if(o==null){
+						collection.add(o);
+					}else{
+						collection.add(typeConverter.getObject(o));
+					}
+//						if (propertyValue != null) {
+//							try {
+//								BeanUtils.setProperty(object, descriptor.getName(),
+//										typeConverter.getObject(propertyValue));
+//								allPropertyNull = false;
+//							} catch (Exception e) {
+//								LOGGER.errorMessage("为属性{0}赋值时出现异常", e,
+//										descriptor.getName());
+//							}
+//						}
+				}
+			} else {
+				collection.add(typeConverter.getObject(propertyValue));
+			}
+		}
+		
+		
+		
 	}
 
 	private void buildCollectionSimple(String varName,

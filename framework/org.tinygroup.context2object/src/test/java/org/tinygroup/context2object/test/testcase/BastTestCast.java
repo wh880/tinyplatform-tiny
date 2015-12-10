@@ -16,11 +16,14 @@
 package org.tinygroup.context2object.test.testcase;
 
 import junit.framework.TestCase;
+
 import org.tinygroup.context2object.ObjectGenerator;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.context2object.impl.DateTypeConverter;
 import org.tinygroup.context2object.test.bean.PartInterface;
 import org.tinygroup.context2object.test.bean.PartMent;
+import org.tinygroup.context2object.test.convert.EnumConverter;
+import org.tinygroup.context2object.test.convert.EnumCreater;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class BastTestCast extends TestCase{
@@ -28,6 +31,8 @@ public class BastTestCast extends TestCase{
 	protected ObjectGenerator newgenerator = new ClassNameObjectGenerator();
 
 	protected void setUp() {
+		generator.addTypeConverter(new EnumConverter());
+		generator.addTypeCreator(new EnumCreater());
 		generator.addTypeCreator(new ListCreator());
 		generator.addTypeConverter(new DateTypeConverter());
 		AbstractTestUtil.init(null, true);

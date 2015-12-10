@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <generator-config>
 	<type-converters>
-		<generator-config-item bean-name="" class-name="org.tinygroup.context2object.impl.DateTypeConverter">
-		</generator-config-item>
+		<generator-config-item bean-name=""
+			class-name="org.tinygroup.context2object.impl.DateTypeConverter" />
+		<generator-config-item bean-name=""
+			class-name="org.tinygroup.context2object.test.convert.EnumConverter" />
 	</type-converters>
 	<type-creators>
-	<generator-config-item bean-name="" class-name="org.tinygroup.context2object.impl.ListTypeCreator">
-		</generator-config-item>
+		<generator-config-item bean-name=""
+			class-name="org.tinygroup.context2object.impl.ListTypeCreator" />
+		<generator-config-item bean-name=""
+			class-name="org.tinygroup.context2object.test.convert.EnumCreater" />
 	</type-creators>
 </generator-config>

@@ -37,7 +37,7 @@ public interface ObjectGenerator<ReturnType, ParaType> {
 	 *            用来获取对象的环境
 	 * @return 获取的对象
 	 */
-	ReturnType getObject(String varName, String bean, ParaType paraType,
+	ReturnType getObject(String varName, String bean, String className,
 			ClassLoader loader, Context context);
 
 	Collection<ReturnType> getObjectCollection(String varName,
