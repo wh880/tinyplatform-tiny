@@ -16,6 +16,7 @@
 package org.tinygroup.context2object;
 
 import java.util.Date;
+import java.util.List;
 
 public class User {
 	String name;
@@ -23,6 +24,15 @@ public class User {
 	int age;
 	Cat cat;
 	Cat[] cats;
+	List<Date> updateDay;
+
+	public List<Date> getUpdateDay() {
+		return updateDay;
+	}
+
+	public void setUpdateDay(List<Date> updateDay) {
+		this.updateDay = updateDay;
+	}
 
 	public Date getBirthday() {
 		return birthday;

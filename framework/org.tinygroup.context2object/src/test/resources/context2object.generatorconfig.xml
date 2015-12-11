@@ -5,6 +5,8 @@
 			class-name="org.tinygroup.context2object.impl.DateTypeConverter" />
 		<generator-config-item bean-name=""
 			class-name="org.tinygroup.context2object.test.convert.EnumConverter" />
+			<generator-config-item bean-name=""
+			class-name="org.tinygroup.context2object.test.convert.BigDecimalConverter" />
 	</type-converters>
 	<type-creators>
 		<generator-config-item bean-name=""
