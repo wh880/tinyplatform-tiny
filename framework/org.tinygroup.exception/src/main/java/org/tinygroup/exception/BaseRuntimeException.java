@@ -53,18 +53,18 @@ public class BaseRuntimeException extends RuntimeException {
 		String errorI18nMsg = i18nMessage.getMessage(errorCode, locale,
 				defaultErrorMsg, params);
 		initErrorCode(errorCode, errorI18nMsg);
-		this.errorMsg = errorI18nMsg;
 	}
 
 	private void initErrorCode(String errorCode, String errorI18nMsg) {
 		if(StringUtil.isBlank(errorI18nMsg)){
-			this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
+			this.errorMsg=errorCode;//errorCode获取不到国际化信息，认为传递的errorCode就是错误信息.
 		}else{
-			try {
-				this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
-			} catch (Exception e) {
-				this.errorCode=null;
-			}
+			this.errorMsg=errorI18nMsg;
+		}
+		try {
+			this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode,this);
+		} catch (Exception e) {//兼容以前错误码没有规范的处理,扑捉异常不外抛
+			this.errorCode=null;
 		}
 	}
 
@@ -86,7 +86,6 @@ public class BaseRuntimeException extends RuntimeException {
 		String errorI18nMsg = i18nMessage.getMessage(errorCode, locale,
 				defaultErrorMsg, params);
 		initErrorCode(errorCode, errorI18nMsg);
-		this.errorMsg = errorI18nMsg;
 	}
 
 	public BaseRuntimeException(String errorCode, Context context, Locale locale) {
@@ -98,7 +97,6 @@ public class BaseRuntimeException extends RuntimeException {
 		String errorI18nMsg = i18nMessage.getMessage(errorCode, defaultErrorMsg,
 				context, locale);
 		initErrorCode(errorCode, errorI18nMsg);
-		this.errorMsg = errorI18nMsg;
 	}
 
 	public BaseRuntimeException(String errorCode, Context context) {
@@ -107,17 +105,6 @@ public class BaseRuntimeException extends RuntimeException {
 
 	public BaseRuntimeException() {
 		super();
-	}
-
-	@Deprecated
-	public BaseRuntimeException(String message, Throwable cause) {
-		super(message, cause);
-		this.errorMsg = message;
-	}
-	@Deprecated
-	public BaseRuntimeException(String message) {
-		super(message);
-		this.errorMsg = message;
 	}
 
 	public BaseRuntimeException(Throwable cause) {
