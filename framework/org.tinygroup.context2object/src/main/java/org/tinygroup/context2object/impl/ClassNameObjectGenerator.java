@@ -31,6 +31,7 @@ import org.tinygroup.logger.LoggerFactory;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -461,15 +462,18 @@ public class ClassNameObjectGenerator implements
 			if (propertyValue == null) {
 				continue;
 			}
+			
+			
 			try {
 				if (size == 1) {
-					BeanUtils.setProperty(objecList.get(0),
-							descriptor.getName(), propertyValue);
+					setSimpleOrEnmuValue(objecList,0, descriptor, propertyValue);
+					
 				} else {
 					Object[] objArray = (Object[]) propertyValue;
 					for (int i = 0; i < size; i++) {
-						BeanUtils.setProperty(objecList.get(i),
-								descriptor.getName(), objArray[i]);
+//						BeanUtils.setProperty(objecList.get(i),
+//								descriptor.getName(), objArray[i]);
+						setSimpleOrEnmuValue(objecList,i, descriptor, objArray[i]);
 					}
 				}
 				continue;
@@ -484,6 +488,26 @@ public class ClassNameObjectGenerator implements
 		// return collection;
 	}
 
+	private void setSimpleOrEnmuValue(List<Object> objecList,int index,
+			PropertyDescriptor descriptor, Object propertyValue)
+			throws IllegalAccessException, InvocationTargetException {
+		if(descriptor.getPropertyType().isEnum()){
+			BeanUtils.setProperty(objecList.get(index),
+					descriptor.getName(), getEnmuObject(descriptor.getPropertyType(), propertyValue));
+		}else{
+			BeanUtils.setProperty(objecList.get(index),
+					descriptor.getName(), propertyValue);
+		}
+	}
+	
+	private Object getEnmuObject(Class<?> enmuClazz,Object value){
+		TypeConverter typeConverter = getTypeConverter(enmuClazz);
+		if(typeConverter==null){
+			throw new RuntimeException("枚举类型"+enmuClazz+"转换器不存在");
+		}
+		return typeConverter.getObject(value);
+	}
+	
 	private Object buildArrayObjectWithArray(String varName,
 			Class<?> arrayClass, Context context, String preName) {
 		return buildArrayObjectWithObject(varName,
