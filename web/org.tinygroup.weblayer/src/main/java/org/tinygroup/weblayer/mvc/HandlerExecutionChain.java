@@ -24,12 +24,14 @@ import java.util.Collection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.core.ParameterNameDiscoverer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.ReflectionUtils;
 import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.loader.LoaderManager;
+import org.tinygroup.springutil.AnnotationParameterNameDiscoverer;
 import org.tinygroup.springutil.MethodNameAccessTool;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.mvc.annotation.View;
@@ -50,6 +52,8 @@ public class HandlerExecutionChain {
 	private MappingMethodModel methodModel;
 
 	private WebContext context;
+	
+	private ParameterNameDiscoverer discoverer=new AnnotationParameterNameDiscoverer();
 
 	public HandlerExecutionChain(MappingClassModel model,
 			MappingMethodModel methodModel) {
@@ -86,7 +90,7 @@ public class HandlerExecutionChain {
 		Method method = methodModel.getMapMethod();
 		Class[] paramTypes = method.getParameterTypes();
 		Object[] args = new Object[paramTypes.length];
-		String[] parameterNames = MethodNameAccessTool.getMethodParameterName(method);
+		String[] parameterNames = discoverer.getParameterNames(method);
 		for (int i = 0; i < paramTypes.length; i++) {
 			args[i] = context.get(parameterNames[i]);
 			Class type = paramTypes[i];
