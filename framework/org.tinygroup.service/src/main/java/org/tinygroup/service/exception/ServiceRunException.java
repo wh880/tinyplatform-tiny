@@ -15,9 +15,9 @@
  */
 package org.tinygroup.service.exception;
 
-import org.tinygroup.exception.TinySysRuntimeException;
+import org.tinygroup.exception.BaseRuntimeException;
 
-public class ServiceRunException extends TinySysRuntimeException {
+public class ServiceRunException extends BaseRuntimeException {
 	/**
 	 * 
 	 */
