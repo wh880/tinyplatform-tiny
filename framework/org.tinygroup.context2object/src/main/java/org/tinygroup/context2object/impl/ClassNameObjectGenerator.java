@@ -532,7 +532,11 @@ public class ClassNameObjectGenerator implements
 
 			try {
 				if (size == 1) {
-					setSimpleValue(objecList, 0, descriptor, propertyValue);
+					Object realvalue = propertyValue;
+					if(propertyValue.getClass().isArray()){
+						realvalue = ((Object[]) propertyValue)[0];
+					}
+					setSimpleValue(objecList, 0, descriptor, realvalue);
 
 				} else {
 					Object[] objArray = (Object[]) propertyValue;
@@ -579,6 +583,7 @@ public class ClassNameObjectGenerator implements
 		}
 		TypeConverter typeConverter = getTypeConverter(descriptor
 				.getPropertyType());
+
 		if (typeConverter != null) {
 			if (propertyValue != null) {
 				try {
