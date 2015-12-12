@@ -49,6 +49,18 @@ public class testDetectDateTypeConverter extends TestCase {
         User user = (User) generator.getObject(null,null,User.class.getName(),this.getClass().getClassLoader(), context);
         assertEquals(user.getBirthday(),new SimpleDateFormat("yyyy-MM-dd").parse("1999-03-03"));
     }
+    
+    public void testGetObjectWithDateListCn() throws ParseException {
+        Context context = new ContextImpl();
+        String[] days = new String[]{"1999-03-03","1999-03-04"};
+        context.put("updateDay", days);
+        User user = (User) generator.getObject(null,null,User.class.getName(),this.getClass().getClassLoader(), context);
+//        assertEquals(user.getBirthday(),new SimpleDateFormat("yyyy-MM-dd").parse("1999-03-03"));
+        assertEquals(user.getUpdateDay().size(), 2);
+        assertEquals(user.getUpdateDay().get(0), new SimpleDateFormat("yyyy-MM-dd").parse("1999-03-03"));
+        assertEquals(user.getUpdateDay().get(1), new SimpleDateFormat("yyyy-MM-dd").parse("1999-03-04"));
+    }
+    
     public void testGetObjectWithDateZh() throws ParseException {
         Context context = new ContextImpl();
         context.put("birthday", "1999-03-03 12:06:52");

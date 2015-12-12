@@ -18,6 +18,7 @@ package org.tinygroup.context2object.test.testcase;
 import junit.framework.TestCase;
 
 import org.tinygroup.context2object.ObjectGenerator;
+import org.tinygroup.context2object.impl.BigDecimalConverter;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.context2object.impl.DateTypeConverter;
 import org.tinygroup.context2object.test.bean.PartInterface;
@@ -32,6 +33,7 @@ public class BastTestCast extends TestCase{
 
 	protected void setUp() {
 		generator.addTypeConverter(new EnumConverter());
+		generator.addTypeConverter(new BigDecimalConverter());
 		generator.addTypeCreator(new EnumCreater());
 		generator.addTypeCreator(new ListCreator());
 		generator.addTypeConverter(new DateTypeConverter());

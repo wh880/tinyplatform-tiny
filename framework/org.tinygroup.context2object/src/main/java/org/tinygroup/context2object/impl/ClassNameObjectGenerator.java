@@ -311,18 +311,20 @@ public class ClassNameObjectGenerator implements
 			return;
 		} else if (isSimpleType(clazz)) {
 			buildCollectionSimple(varName, collection, clazz, context, preName);
-		} else if (clazz.isEnum()) {
-			buildCollectionEnum(varName, collection, clazz, context, preName);
+			// } else if (clazz.isEnum()) {
+			// buildCollectionEnum(varName, collection, clazz, context,
+			// preName);
 		} else {
 			buildCollectionObject(varName, collection, clazz, context, preName);
 		}
 	}
+
 	private void buildCollectionEnum(String varName,
 			Collection<Object> collection, Class<?> clazz, Context context,
-			String preName){
+			String preName) {
 		TypeConverter typeConverter = getTypeConverter(clazz);
-		if(typeConverter==null){
-			throw new RuntimeException("枚举类型"+clazz+"转换器不存在");
+		if (typeConverter == null) {
+			throw new RuntimeException("枚举类型" + clazz + "转换器不存在");
 		}
 		String reallyVarName = varName;
 		if (isNull(reallyVarName)) {
@@ -337,29 +339,17 @@ public class ClassNameObjectGenerator implements
 				// 如果是数组
 				Object[] objArray = (Object[]) propertyValue;
 				for (Object o : objArray) {
-					if(o==null){
+					if (o == null) {
 						collection.add(o);
-					}else{
+					} else {
 						collection.add(typeConverter.getObject(o));
 					}
-//						if (propertyValue != null) {
-//							try {
-//								BeanUtils.setProperty(object, descriptor.getName(),
-//										typeConverter.getObject(propertyValue));
-//								allPropertyNull = false;
-//							} catch (Exception e) {
-//								LOGGER.errorMessage("为属性{0}赋值时出现异常", e,
-//										descriptor.getName());
-//							}
-//						}
 				}
 			} else {
 				collection.add(typeConverter.getObject(propertyValue));
 			}
 		}
-		
-		
-		
+
 	}
 
 	private void buildCollectionSimple(String varName,
@@ -391,12 +381,88 @@ public class ClassNameObjectGenerator implements
 		// return collection;
 	}
 
+	// 处理非复杂对象，如enmu等类型
+	// 此种方式判断依据是preName.varName存在一个数组值
+	// 因为如果是复杂对象，那么必然不存在preName.varName数组，而是存在preName.varName.propertyName数组
+	private boolean checkIfNotComplexObjectCollection(String varName,
+			Collection<Object> collection, Class<?> clazz, Context context,
+			String preName) {
+		String reallyName = preName;
+		if (StringUtil.isBlank(varName) && StringUtil.isBlank(preName)) {
+			return false;
+		} else if (StringUtil.isBlank(preName)) {
+			reallyName = varName;
+		} else if (StringUtil.isBlank(varName)) {
+			reallyName = preName;
+		} else {
+			reallyName = getReallyPropertyName(null, preName, varName);
+		}
+
+		Object value = getPerpertyValue(reallyName, context);
+		if (value == null) {
+			return false;
+		}
+		if (!value.getClass().isArray()) {
+			return false;
+		}
+		Object[] arrays = (Object[]) value;
+
+		for (int i = 0; i < arrays.length; i++) {
+			Object propertyValue = arrays[i];
+			if (clazz.equals( // 如果类型相同，或者值类型继承(实现)属性类型
+					propertyValue.getClass())
+					|| implmentInterface(propertyValue.getClass(), clazz)) {
+				collection.add(propertyValue);
+				continue;
+			}
+			TypeConverter typeConverter = getTypeConverter(clazz);
+			if (typeConverter != null) {
+				if (propertyValue != null) {
+					collection.add(typeConverter.getObject(propertyValue));
+				}
+			} else {
+				throw new RuntimeException("未找到对象" + clazz + "的转换器,源数据类型:"
+						+ propertyValue.getClass());
+				// throw new
+				// RuntimeException("无法处理对象"+objecList.get(index)+"的属性"+descriptor.getName()+"期望类型"+descriptor
+				// .getPropertyType()+"实际值:"+propertyValue);
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 处理非基本类型的集合
+	 * 
+	 * @param varName
+	 *            变量名
+	 * @param collection
+	 *            集合对象
+	 * @param clazz
+	 *            类型class
+	 * @param context
+	 *            上下文
+	 * @param preName
+	 *            前置变量名
+	 */
 	private void buildCollectionObject(String varName,
 			Collection<Object> collection, Class<?> clazz, Context context,
 			String preName) {
 		if (clazz == null) {
 			return;
 		}
+		// 如果是非复杂对象,比如Enmu\BigDecimal等单值对象
+		if (checkIfNotComplexObjectCollection(varName, collection, clazz,
+				context, preName)) {
+			return;
+		}
+		// 处理复杂对象
+		dealComplexObject(varName, collection, clazz, context, preName);
+	}
+
+	private void dealComplexObject(String varName,
+			Collection<Object> collection, Class<?> clazz, Context context,
+			String preName) {
 		Object object = getObjectInstance(clazz);
 		String objName = varName;
 		if (isNull(objName)) {
@@ -406,6 +472,7 @@ public class ClassNameObjectGenerator implements
 		Map<String, Object> valueMap = new HashMap<String, Object>();
 		Class<?> reallyType = object.getClass();
 		int size = -1;
+
 		// 先计算出collection的size
 		for (PropertyDescriptor descriptor : PropertyUtils
 				.getPropertyDescriptors(reallyType)) {
@@ -462,18 +529,21 @@ public class ClassNameObjectGenerator implements
 			if (propertyValue == null) {
 				continue;
 			}
-			
-			
+
 			try {
 				if (size == 1) {
-					setSimpleOrEnmuValue(objecList,0, descriptor, propertyValue);
-					
+					Object realvalue = propertyValue;
+					if(propertyValue.getClass().isArray()){
+						realvalue = ((Object[]) propertyValue)[0];
+					}
+					setSimpleValue(objecList, 0, descriptor, realvalue);
+
 				} else {
 					Object[] objArray = (Object[]) propertyValue;
 					for (int i = 0; i < size; i++) {
-//						BeanUtils.setProperty(objecList.get(i),
-//								descriptor.getName(), objArray[i]);
-						setSimpleOrEnmuValue(objecList,i, descriptor, objArray[i]);
+						// BeanUtils.setProperty(objecList.get(i),
+						// descriptor.getName(), objArray[i]);
+						setSimpleValue(objecList, i, descriptor, objArray[i]);
 					}
 				}
 				continue;
@@ -488,26 +558,67 @@ public class ClassNameObjectGenerator implements
 		// return collection;
 	}
 
-	private void setSimpleOrEnmuValue(List<Object> objecList,int index,
+	private void setSimpleValue(List<Object> objecList, int index,
 			PropertyDescriptor descriptor, Object propertyValue)
 			throws IllegalAccessException, InvocationTargetException {
-		if(descriptor.getPropertyType().isEnum()){
-			BeanUtils.setProperty(objecList.get(index),
-					descriptor.getName(), getEnmuObject(descriptor.getPropertyType(), propertyValue));
-		}else{
-			BeanUtils.setProperty(objecList.get(index),
-					descriptor.getName(), propertyValue);
+
+		if (descriptor.getPropertyType().equals( // 如果类型相同，或者值类型继承(实现)属性类型
+				propertyValue.getClass())
+				|| implmentInterface(propertyValue.getClass(),
+						descriptor.getPropertyType())) {
+			BeanUtils.setProperty(objecList.get(index), descriptor.getName(),
+					propertyValue);
+			return;
+		} else if (isSimpleType(descriptor.getPropertyType())) {// 若是简单类型
+			if (isSimpleType(propertyValue.getClass())) { // 若值也是简单类型则赋值，非简单类型，则不处理
+				BeanUtils.setProperty(objecList.get(index),
+						descriptor.getName(), propertyValue.toString());
+			} else {
+				LOGGER.logMessage(LogLevel.WARN,
+						"对象{0}属性{1}赋值失败,期望类型{3},实际类型{4}", objecList.get(index),
+						descriptor.getName(), descriptor.getPropertyType(),
+						propertyValue.getClass());
+			}
+			return;
 		}
+		TypeConverter typeConverter = getTypeConverter(descriptor
+				.getPropertyType());
+
+		if (typeConverter != null) {
+			if (propertyValue != null) {
+				try {
+					BeanUtils.setProperty(objecList.get(index),
+							descriptor.getName(),
+							typeConverter.getObject(propertyValue));
+				} catch (Exception e) {
+					LOGGER.errorMessage("为属性{0}赋值时出现异常", e,
+							descriptor.getName());
+				}
+			}
+		} else {
+			throw new RuntimeException("无法处理对象" + objecList.get(index) + "的属性"
+					+ descriptor.getName() + "期望类型"
+					+ descriptor.getPropertyType() + "实际值:" + propertyValue);
+		}
+
+		// if(descriptor.getPropertyType().isEnum()){
+		// BeanUtils.setProperty(objecList.get(index),
+		// descriptor.getName(), getEnmuObject(descriptor.getPropertyType(),
+		// propertyValue));
+		// }else{
+		// BeanUtils.setProperty(objecList.get(index),
+		// descriptor.getName(), propertyValue);
+		// }
 	}
-	
-	private Object getEnmuObject(Class<?> enmuClazz,Object value){
+
+	private Object getEnmuObject(Class<?> enmuClazz, Object value) {
 		TypeConverter typeConverter = getTypeConverter(enmuClazz);
-		if(typeConverter==null){
-			throw new RuntimeException("枚举类型"+enmuClazz+"转换器不存在");
+		if (typeConverter == null) {
+			throw new RuntimeException("枚举类型" + enmuClazz + "转换器不存在");
 		}
 		return typeConverter.getObject(value);
 	}
-	
+
 	private Object buildArrayObjectWithArray(String varName,
 			Class<?> arrayClass, Context context, String preName) {
 		return buildArrayObjectWithObject(varName,
