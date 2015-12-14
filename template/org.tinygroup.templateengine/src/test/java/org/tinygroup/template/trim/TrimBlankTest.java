@@ -28,6 +28,7 @@ public class TrimBlankTest extends TestCase {
     }
 
     public void testBlank() {
+
         fileObject.foreach(
                 new FileNameFileObjectFilter("allnewline\\.page", true), new FileObjectProcessor() {
                     public void process(FileObject fileObject) {
