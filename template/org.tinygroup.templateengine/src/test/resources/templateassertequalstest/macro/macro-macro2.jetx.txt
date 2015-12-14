@@ -2,15 +2,8 @@
 
 
 
-
 <div>
-    
-<b>
-    
-        
-    Information
-
-    
-</b>
-
+    <b>
+                Information
+    </b>
 </div>

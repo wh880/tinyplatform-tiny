@@ -1,7 +1,4 @@
-
-
 The clock is           BigBen.
-
 
 The clock is          Big Tall Ben.
 

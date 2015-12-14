@@ -1,0 +1,135 @@
+========
+if语句：#if(true)if#else else#end
+========
+#if(true)if#{else}else#end
+========
+#if(true)
+    if
+#else
+    else
+#end
+========
+#if(true)
+    #if(true)
+        if
+    #end
+#else
+    else
+#end
+========
+elseif语句: #if(false)if#else else#end
+========
+#if(false)if#{else}else#end
+========
+else语句:
+#if(false)
+    if
+#elseif(ture)
+    elseif
+#else
+    else
+#end
+========
+for语句：
+#for(i:[1..3])
+${i}
+#end
+========
+#foreach(i:[1..3])
+${i}
+#end
+========
+#set(a = 3)
+#while(a > 0)
+${a--}
+#end
+========
+复杂控制结构语句：
+#for(num:[1,2,3])
+    ${num}
+    #break(num==2)
+#end
+========
+#for(num:[1,2,3])
+    ${num}
+    #if(num==2)#break
+    #end
+#end
+========
+#for(num:[1,2,3])
+    #continue(num==2)
+    ${num}
+#end
+========
+#for(num:[1,2,3])
+    #if(num==2)
+        #continue
+    #end
+    ${num}
+#end
+========
+#for(i:[1..2])
+    ${i}
+    #for(j:[1..2])
+        ${i}*${j}=${i*j}
+    #end
+#end
+========
+带Set的复杂结构语句：
+#set(array=[1,2,3])
+#for ( x : array)
+    ${x}
+#end
+========
+#set ( items = ["a","b","c","d"])
+#for (x : items)
+    ${x}
+#end
+========
+注释模块：
+#-- comment --#
+#-- This is comment block --#
+first
+======
+#-- This is comment block --##if(true)true1#end
+======
+#-- This is comment block --##if(true)#if(true)true2#end#end
+======
+#-- This is comment block --# #if(true)true3#end
+======
+#-- This is comment block --#
+#if(true)true4#end
+======
+#-- This is comment block --#
+    #if(true)true5#end
+======
+#set ( items = ["a1","b1"])
+#for (x : items)#-- comment --#
+    ${x}
+#end
+======
+#set ( items = ["a2","b2"])
+#for (x : items)
+    #-- comment --#
+    ${x}
+#end
+======
+#set ( items = ["a3","b3"])
+#for (x : items)
+    #-- comment --# ${x}
+#end
+======
+#set ( items = ["a1","b1"])
+#for (x : items)#* comment *#
+    ${x}
+#end
+======
+#[#-- comment --#
+#-- comment --# #[[CDATA1]]#
+#-- comment --##[[CDATA2]]#
+aaa#-- comment --#bbb$\\ccc
+======
+#b
+blank1
+#{b}
+blank2

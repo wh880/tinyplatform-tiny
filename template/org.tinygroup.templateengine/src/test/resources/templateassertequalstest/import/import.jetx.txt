@@ -1,8 +1,2 @@
-  
-    
-	helloWorld!!! 
-
-   a=1
-   b=2
-   c=
-   d=      
+     	helloWorld!!! 
+   a=1   b=2   c=   d=

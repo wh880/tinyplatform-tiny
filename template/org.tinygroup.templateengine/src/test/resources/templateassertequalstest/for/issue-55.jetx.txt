@@ -1,22 +1,2 @@
-
-    1 - 4: a
-    true - false
- 	是否奇数：true
-	是否偶数：false
-
-    2 - 4: b
-    false - false
- 	是否奇数：false
-	是否偶数：true
-
-    3 - 4: c
-    false - false
- 	是否奇数：true
-	是否偶数：false
-
-    4 - 4: d
-    false - true
- 	是否奇数：false
-	是否偶数：true
-
+    1 - 4: a    true - false 	是否奇数：true	是否偶数：false    2 - 4: b    false - false 	是否奇数：false	是否偶数：true    3 - 4: c    false - false 	是否奇数：true	是否偶数：false    4 - 4: d    false - true 	是否奇数：false	是否偶数：true
 ********************************************

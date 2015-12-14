@@ -1,15 +1,7 @@
-first
-1
-2--#
-3
-4
-5cc--#
+first12--#
+345cc--#
 6#--bb
 
-Second
-1
-2 *#
-3
-4
-5cc*#
+Second12 *#
+345cc*#
 6#*bb

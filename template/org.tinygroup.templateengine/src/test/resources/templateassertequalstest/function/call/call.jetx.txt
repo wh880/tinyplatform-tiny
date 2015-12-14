@@ -1,71 +1,30 @@
 
-
 this a macro call
-         a=1
-         b=2
-         c=
-
-等价于
+         a=1         b=2         c=
+等价于this a macro call
+         a=1         b=2         c=
+等价于this a macro call
+         a=1         b=2         c=****************
 this a macro call
-         a=1
-         b=2
-         c=
-
-等价于
+         a=         b=         c=
 this a macro call
-         a=1
-         b=2
-         c=
-
+         a=         b=         c=
+this a macro call
+         a=1         b=2         c=
 ****************
-
 this a macro call
-         a=
-         b=
-         c=
-
-
+         a=         b=         c=
 this a macro call
-         a=
-         b=
-         c=
-
-
+         a=         b=         c=
 this a macro call
-         a=1
-         b=2
-         c=
-
-****************
-
-this a macro call
-         a=
-         b=
-         c=
-
-
-this a macro call
-         a=
-         b=
-         c=
-
-
-this a macro call
-         a=1
-         b=2
-         c=
-
+         a=1         b=2         c=
 
 ******************************************************
 
-
-    <div> 
-      hello world!
+    <div>       hello world!
  </div>
     <i><b>a=1,b=bbbb,c=</b></i>
 
-
-    <div> 
-      hello world!
+    <div>       hello world!
  </div>
     <i><b>a=1,b=bbbb,c=</b></i>
