@@ -23,6 +23,7 @@ import org.tinygroup.template.TemplateException;
 import org.tinygroup.template.impl.AbstractTemplate;
 import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.template.parser.grammer.TinyTemplateParser;
+import org.tinygroup.template.rumtime.TemplateUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,6 +39,7 @@ public class TemplateFromContext extends AbstractTemplate {
     Map<ParseTree, Object> objectMap = new ConcurrentHashMap<ParseTree, Object>();
     private String path;
     TinyTemplateParser.TemplateContext templateContext;
+    private static String[] stripWithSpaceChars = {" ","    "};// ç©ºæ ¼ \t
 
     public String getText(ParseTree parseTree) {
         String result = (String) objectMap.get(parseTree);
@@ -62,12 +64,12 @@ public class TemplateFromContext extends AbstractTemplate {
             try {
                 String text = terminalNode.getText();
 
-                // ½ô´ÕÄ£ĞÍ
+                // ç´§å‡‘æ¨¡å‹
                 if (getTemplateEngine().isCompactMode()) {
-                    // Trim ×¢ÊÍ¡¢SetÖ¸ÁîºÍÒÔÏÂÖ¸ÁîÖ®¼äµÄ¿Õ¸ñ ¼° »»ĞĞ
+                    // Trim æ³¨é‡Šã€SetæŒ‡ä»¤å’Œä»¥ä¸‹æŒ‡ä»¤ä¹‹é—´çš„ç©ºæ ¼ åŠ æ¢è¡Œ
                     text = trimCommentsDirectiveWhileSpaceNewLine(text, terminalNode, true);
                 } else {
-                    // Trim ×¢ÊÍ¡¢SetÖ¸ÁîºÍÒÔÏÂÖ¸ÁîÉú³ÉµÄ¶àÓà\r\n
+                    // Trim æ³¨é‡Šã€SetæŒ‡ä»¤å’Œä»¥ä¸‹æŒ‡ä»¤ç”Ÿæˆçš„å¤šä½™\r\n
                     text = trimCommentsDirectiveWhileSpaceNewLine(text, terminalNode, false);
                 }
 
@@ -81,10 +83,10 @@ public class TemplateFromContext extends AbstractTemplate {
     }
 
     /**
-     * Trim ×¢ÊÍ¡¢SetÖ¸ÁîºÍÒÔÏÂÖ¸ÁîÖ®¼äµÄ¿Õ¸ñ ¼° »»ĞĞ
-     * @param text ÎÄ±¾
-     * @param nowTerminalNode ÎÄ±¾ËùÔÚµÄ½Úµã
-     * @param trimWhileSpace ÊÇ·ñÒª´¦Àí¿Õ¸ñ
+     * Trim æ³¨é‡Šã€SetæŒ‡ä»¤å’Œä»¥ä¸‹æŒ‡ä»¤ä¹‹é—´çš„ç©ºæ ¼ åŠ æ¢è¡Œ
+     * @param text æ–‡æœ¬
+     * @param nowTerminalNode æ–‡æœ¬æ‰€åœ¨çš„èŠ‚ç‚¹
+     * @param trimWhileSpace æ˜¯å¦è¦å¤„ç†ç©ºæ ¼
      * @return
      */
     private String trimCommentsDirectiveWhileSpaceNewLine(String text, TerminalNode nowTerminalNode, boolean trimWhileSpace) {
@@ -93,24 +95,24 @@ public class TemplateFromContext extends AbstractTemplate {
         }
 
         if (nowTerminalNode.getParent() instanceof TinyTemplateParser.TextContext) {
-            // »ñÈ¡µ±Ç°TextContext½Úµã
+            // è·å–å½“å‰TextContextèŠ‚ç‚¹
             TinyTemplateParser.TextContext parseTree = (TinyTemplateParser.TextContext) nowTerminalNode.getParent();
-            // »ñÈ¡Text ContextËùÔÚµÄ¸¸Ç×£¨»ò¸¸Ç×µÄ¸¸Ç×£©½Úµã£¬ÇÒ·ÇBlock
+            // è·å–Text Contextæ‰€åœ¨çš„çˆ¶äº²ï¼ˆæˆ–çˆ¶äº²çš„çˆ¶äº²ï¼‰èŠ‚ç‚¹ï¼Œä¸”éBlock
             ParserRuleContext parentParserRuleContext = getParseTrreeParentButBlock(parseTree);
-            if (isDirectiveNeedTrim(parentParserRuleContext)) {// ´¦ÀíĞèÒªTrimÆä\r\nµÄÖ¸Áî½Úµã
+            if (isDirectiveNeedTrim(parentParserRuleContext)) {// å¤„ç†éœ€è¦Trimå…¶\r\nçš„æŒ‡ä»¤èŠ‚ç‚¹
                 text = trimTextLeft(text);
                 if (trimWhileSpace) {
-                    text = trimStartWhiteSpace(text);
-                    text = trimEndWhiteSpace(text);
+                    text = TemplateUtil.trimStart(text, stripWithSpaceChars);
+                    text = TemplateUtil.trimEnd(text, stripWithSpaceChars);
                 }
             } else if (parentParserRuleContext instanceof TinyTemplateParser.BlockContext) {
-                // »ñÈ¡Text ContextµÄBlockContextµÄ×Ó½ÚµãÏÂ±ê
+                // è·å–Text Contextçš„BlockContextçš„å­èŠ‚ç‚¹ä¸‹æ ‡
                 int parentChildrenIndex = getParentChildrenIndex(parseTree, parentParserRuleContext);
-                // ÅĞ¶Ï¸Ã½ÚµãÊÇ·ñÎªµÚÒ»¸ö½Úµã
+                // åˆ¤æ–­è¯¥èŠ‚ç‚¹æ˜¯å¦ä¸ºç¬¬ä¸€ä¸ªèŠ‚ç‚¹
                 if (parentChildrenIndex > 0) {
-                    // »ñÈ¡ÆäÉÏÒ»¸ö½Úµã
+                    // è·å–å…¶ä¸Šä¸€ä¸ªèŠ‚ç‚¹
                     ParseTree previousParseContext = parentParserRuleContext.getChild(parentChildrenIndex - 1);
-                    // Èç¹ûÊÇ×¢ÊÍ£¬³ıÈ¥ÆätextÇ°ÃæµÄ¿Õ¸ñ
+                    // å¦‚æœæ˜¯æ³¨é‡Šï¼Œé™¤å»å…¶textå‰é¢çš„ç©ºæ ¼
                     if ( previousParseContext instanceof TinyTemplateParser.CommentContext
                             ||(   previousParseContext instanceof TinyTemplateParser.DirectiveContext
                             && (    previousParseContext.getChild(0) instanceof TinyTemplateParser.Set_directiveContext
@@ -122,18 +124,18 @@ public class TemplateFromContext extends AbstractTemplate {
                     ))) {
                         text = trimTextLeft(text);
                         if (trimWhileSpace) {
-                            text = trimStartWhiteSpace(text);
+                            text = TemplateUtil.trimStart(text,stripWithSpaceChars);
                         }
                     }
 
                 }
 
                 if (trimWhileSpace) {
-                    // ÅĞ¶Ï¸Ã½ÚµãÊÇ·ñÎª·Ç×îºó½Úµã
+                    // åˆ¤æ–­è¯¥èŠ‚ç‚¹æ˜¯å¦ä¸ºéæœ€åèŠ‚ç‚¹
                     if (parentChildrenIndex < parentParserRuleContext.getChildCount()) {
-                        // »ñÈ¡ÆäÏÂÒ»¸ö½Úµã
+                        // è·å–å…¶ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
                         ParseTree previousParseContext = parentParserRuleContext.getChild(parentChildrenIndex + 1);
-                        // Èç¹ûÊÇ×¢ÊÍ£¬³ıÈ¥ÆätextºóÃæµÄ¿Õ¸ñ
+                        // å¦‚æœæ˜¯æ³¨é‡Šï¼Œé™¤å»å…¶textåé¢çš„ç©ºæ ¼
                         if (previousParseContext instanceof TinyTemplateParser.CommentContext
                                 || (previousParseContext instanceof TinyTemplateParser.DirectiveContext
                                 && (previousParseContext.getChild(0) instanceof TinyTemplateParser.Set_directiveContext
@@ -143,7 +145,7 @@ public class TemplateFromContext extends AbstractTemplate {
                                 || previousParseContext.getChild(0) instanceof TinyTemplateParser.Import_directiveContext
                                 || previousParseContext.getChild(0) instanceof TinyTemplateParser.If_directiveContext
                         ))) {
-                            text = trimEndWhiteSpace(text);
+                            text = TemplateUtil.trimEnd(text,stripWithSpaceChars);
                         }
                     }
                 }
@@ -154,47 +156,47 @@ public class TemplateFromContext extends AbstractTemplate {
     }
 
     /**
-     * Trim ÎÄ±¾Ç°×ºµÄ¿Õ¸ñ
-     * @param str ÎÄ±¾
+     * Trim æ–‡æœ¬å‰ç¼€çš„ç©ºæ ¼
+     * @param str æ–‡æœ¬
      * @return
-     */
-    private static String trimStartWhiteSpace(String str) {
-        int strLen;
-        if (str != null && (strLen = str.length()) != 0) {
-            int start = 0;
-            while (start < strLen
-                    && (      " ".indexOf(str.charAt(start)) != -1          // ' '
-                        || "    ".indexOf(str.charAt(start)) != -1)) {      // '\t'
-                ++start;
-            }
 
-            return str.substring(start);
-        }
-        return str;
+    private static String trimStartWhiteSpace(String str) {
+    int strLen;
+    if (str != null && (strLen = str.length()) != 0) {
+    int start = 0;
+    while (start < strLen
+    && (      " ".indexOf(str.charAt(start)) != -1          // ' '
+    || "    ".indexOf(str.charAt(start)) != -1)) {      // '\t'
+    ++start;
     }
+
+    return str.substring(start);
+    }
+    return str;
+    }*/
 
     /**
-     * Trim ÎÄ±¾ºó×ºµÄ¿Õ¸ñ
-     * @param str ÎÄ±¾
+     * Trim æ–‡æœ¬åç¼€çš„ç©ºæ ¼
+     * @param str æ–‡æœ¬
      * @return
-     */
-    private static String trimEndWhiteSpace(String str) {
-        int end;
-        if (str != null && (end = str.length()) != 0) {
-            while ( end != 0
-                    && (      " ".indexOf(str.charAt(end - 1)) != -1         // ' '
-                        || "    ".indexOf(str.charAt(end - 1)) != -1 )) {    // '\t'
-                --end;
-            }
 
-            return str.substring(0,end);
-        }
-        return str;
+    private static String trimEndWhiteSpace(String str) {
+    int end;
+    if (str != null && (end = str.length()) != 0) {
+    while ( end != 0
+    && (      " ".indexOf(str.charAt(end - 1)) != -1         // ' '
+    || "    ".indexOf(str.charAt(end - 1)) != -1 )) {    // '\t'
+    --end;
     }
 
-     /**
-     * Trim TextContext×ó±ß¶àÓàµÄ\r\n
-     * @param text ÎÄ±¾
+    return str.substring(0,end);
+    }
+    return str;
+    }*/
+
+    /**
+     * Trim TextContextå·¦è¾¹å¤šä½™çš„\r\n
+     * @param text æ–‡æœ¬
      * @return
      */
     private String trimTextLeft(String text) {
@@ -221,7 +223,7 @@ public class TemplateFromContext extends AbstractTemplate {
         }
 
         if (leftPos > 0) {
-            if (text.equals("\r\n")) { // ´¦ÀítextÎª'\r\n'
+            if (text.equals("\r\n")) { // å¤„ç†textä¸º'\r\n'
                 text = "";
             } else {
                 text = text.substring(leftPos, len);
@@ -231,7 +233,7 @@ public class TemplateFromContext extends AbstractTemplate {
     }
 
     /**
-     * »ñÈ¡µ±Ç°TextContextÆä¸¸Ç×½Úµã£¨¼°¸¸Ç×µÄ¸¸Ç×...£©µÄ·ÇBlockContext½Úµã
+     * è·å–å½“å‰TextContextå…¶çˆ¶äº²èŠ‚ç‚¹ï¼ˆåŠçˆ¶äº²çš„çˆ¶äº²...ï¼‰çš„éBlockContextèŠ‚ç‚¹
      * @param parseTree
      * @return
      */
@@ -251,9 +253,9 @@ public class TemplateFromContext extends AbstractTemplate {
     }
 
     /**
-     * »ñÈ¡µ±Ç°TextContext(»ñÈ¡TextContextËùÔÚµÄBlockContext½Úµã)½ÚµãÔÚ×ÜÊ÷µÄ×Ó½ÚµãÖĞ£¨List£©µÄ±êÊ¶Î»
-     * @param parseTree µ±Ç°½Úµã
-     * @param parserRuleContext ×ÜÊ÷
+     * è·å–å½“å‰TextContext(è·å–TextContextæ‰€åœ¨çš„BlockContextèŠ‚ç‚¹)èŠ‚ç‚¹åœ¨æ€»æ ‘çš„å­èŠ‚ç‚¹ä¸­ï¼ˆListï¼‰çš„æ ‡è¯†ä½
+     * @param parseTree å½“å‰èŠ‚ç‚¹
+     * @param parserRuleContext æ€»æ ‘
      * @return
      */
     private int getParentChildrenIndex(ParserRuleContext parseTree, ParserRuleContext parserRuleContext) {
@@ -269,12 +271,12 @@ public class TemplateFromContext extends AbstractTemplate {
     }
 
     /**
-     * ÊÇ·ñĞèÒªTrimÆä\r\nµÄÖ¸Áî½Úµã === SetÖ¸Áî³ıÍâ
+     * æ˜¯å¦éœ€è¦Trimå…¶\r\nçš„æŒ‡ä»¤èŠ‚ç‚¹ === SetæŒ‡ä»¤é™¤å¤–
      * #if #else #elseif #end #eol ${}
      * #for #foreach #while #break #continue
      * #macro
      * #@layout
-     * @param parseTree µ±Ç°½Úµã
+     * @param parseTree å½“å‰èŠ‚ç‚¹
      * @return
      */
     public boolean isDirectiveNeedTrim (ParseTree parseTree) {
@@ -323,5 +325,5 @@ public class TemplateFromContext extends AbstractTemplate {
     public String getPath() {
         return path;
     }
-}
 
+}

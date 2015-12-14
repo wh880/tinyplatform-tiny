@@ -42,7 +42,7 @@ public final class TemplateUtil {
     private static String[] tabCache = new String[31];
     private static boolean safeVariable = false;
     private static BeanContainer<?> container = BeanContainerFactory.getBeanContainer(TemplateUtil.class.getClassLoader());
-    
+
     static {
         tabCache[0] = "";
         for (int i = 1; i < tabCache.length; i++) {
@@ -180,11 +180,11 @@ public final class TemplateUtil {
                 return executeClassMethod(object, methodName, parameters);
             }
         } catch (Exception e) {
-        	//反射异常返回真实的目标异常
-        	if(e instanceof InvocationTargetException){
-        		InvocationTargetException e1 =(InvocationTargetException) e;
-        		throw new TemplateException(e1.getTargetException());
-        	}
+            //反射异常返回真实的目标异常
+            if(e instanceof InvocationTargetException){
+                InvocationTargetException e1 =(InvocationTargetException) e;
+                throw new TemplateException(e1.getTargetException());
+            }
             throw new TemplateException(e);
         }
     }
@@ -300,20 +300,20 @@ public final class TemplateUtil {
     public static Object getValueFromContext(Context context, Object key) {
         return context.get(key.toString());
     }
-    
+
     /**
      * 从Bean容器获得对应的值
      * @param key
      * @return
      */
     public static Object getValueFromBean(Object key){
-    	try{
-    		return container.getBean(key.toString());
-    	}catch(Exception e){
-    		return null;
-    	}
+        try{
+            return container.getBean(key.toString());
+        }catch(Exception e){
+            return null;
+        }
     }
-    
+
     /**
      * 获得标识变量的值
      * @param context
@@ -321,11 +321,11 @@ public final class TemplateUtil {
      * @return
      */
     public static Object getVariableValue(Context context, Object key){
-    	Object value = getValueFromContext(context,key);
-    	if(value==null){
-    	   value = getValueFromBean(key);
-    	}
-    	return value;
+        Object value = getValueFromContext(context,key);
+        if(value==null){
+            value = getValueFromBean(key);
+        }
+        return value;
     }
 
 
@@ -456,7 +456,7 @@ public final class TemplateUtil {
     public static Object getArrayValue(Object object, Object indexObject) throws TemplateException {
         int index;
         try{
-        	if (object instanceof Map) {
+            if (object instanceof Map) {
                 Map map = (Map) object;
                 return map.get(indexObject);
             }
@@ -494,9 +494,9 @@ public final class TemplateUtil {
                 return o.charAt(index);
             }
         }catch(Exception e){
-        	throw new IllegalArgumentException(String.format("%s通过下标%s取值发生异常：",object.getClass().getName(),indexObject.toString()),e);
+            throw new IllegalArgumentException(String.format("%s通过下标%s取值发生异常：",object.getClass().getName(),indexObject.toString()),e);
         }
-        
+
         //throw new TemplateException(object.getClass().getName() + "用下标方式取值失败。");
     }
 
@@ -507,12 +507,68 @@ public final class TemplateUtil {
      * @return
      */
     public static String getLocalePath(String path,Locale locale){
-    	if(locale!=null){
-    		int pos = path.lastIndexOf(".");
+        if(locale!=null){
+            int pos = path.lastIndexOf(".");
             String localePath = path.substring(0, pos) + "_" + locale.getLanguage() + "_" + locale.getCountry() + path.substring(pos);
             return localePath;
-    	}
-    	return path;
+        }
+        return path;
     }
-}
 
+    /**
+     * 除去字符串头部的指定字符
+     * @param str        要处理的字符串
+     * @param stripChars 要除去的字符数组，如果为<code>null</code>表示除去空白字符
+     * @return
+     */
+    public static String trimStart(String str,String[] stripChars) {
+        if (stripChars == null || stripChars.length == 0)
+            return str;
+
+        int strLen;
+        if (str != null && (strLen = str.length()) != 0) {
+            int start = 0;
+            while (start < strLen
+                    && isStripChar(str.charAt(start),stripChars)) {
+                ++start;
+            }
+
+            return str.substring(start);
+        }
+        return str;
+    }
+
+    /**
+     * 除去字符串尾部的指定字符
+     * @param str        要处理的字符串
+     * @param stripChars 要除去的字符数组，如果为<code>null</code>表示除去空白字符
+     * @return
+     */
+    public static String trimEnd(String str,String[] stripChars) {
+        int end;
+        if (str != null && (end = str.length()) != 0) {
+            while ( end != 0
+                    && isStripChar(str.charAt(end - 1),stripChars)) {
+                --end;
+            }
+
+            return str.substring(0,end);
+        }
+        return str;
+    }
+
+    /**
+     * 判断该字符是否为要除去的字符
+     * @param charStr    当前字符
+     * @param stripChars 要除去的字符数组
+     * @return
+     */
+    private static boolean isStripChar(char charStr,String[] stripChars) {
+        for (int i = 0; i < stripChars.length ; i++) {
+            if (stripChars[i].indexOf(charStr) != -1)
+                return true;
+        }
+        return false;
+    }
+
+}
