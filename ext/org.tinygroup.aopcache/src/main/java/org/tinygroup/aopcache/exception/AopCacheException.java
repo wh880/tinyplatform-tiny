@@ -48,14 +48,6 @@ public class AopCacheException extends BaseRuntimeException {
 		super(errorCode, throwable, params);
 	}
 
-	public AopCacheException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public AopCacheException(String message) {
-		super(message);
-	}
-
 	public AopCacheException(Throwable cause) {
 		super(cause);
 	}

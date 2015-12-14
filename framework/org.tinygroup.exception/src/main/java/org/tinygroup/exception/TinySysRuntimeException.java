@@ -71,14 +71,6 @@ public class TinySysRuntimeException extends BaseRuntimeException {
 		super();
 	}
 
-	public TinySysRuntimeException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public TinySysRuntimeException(String message) {
-		super(message);
-	}
-
 	public TinySysRuntimeException(Throwable cause) {
 		super(cause);
 	}

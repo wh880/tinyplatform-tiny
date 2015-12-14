@@ -61,14 +61,6 @@ public class TinyBizRuntimeException extends BaseRuntimeException {
 		super(errorCode, throwable, params);
 	}
 
-	public TinyBizRuntimeException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public TinyBizRuntimeException(String message) {
-		super(message);
-	}
-
 	public TinyBizRuntimeException(Throwable cause) {
 		super(cause);
 	}
