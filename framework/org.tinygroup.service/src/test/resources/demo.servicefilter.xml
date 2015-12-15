@@ -1,0 +1,8 @@
+<servicefilter>
+  <includes>
+    <item>a</item>
+    <item>b</item>
+    <item>c</item>
+    <item>d</item>
+  </includes>
+</servicefilter>

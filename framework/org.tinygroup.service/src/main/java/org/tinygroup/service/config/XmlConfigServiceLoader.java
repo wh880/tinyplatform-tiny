@@ -15,6 +15,13 @@
  */
 package org.tinygroup.service.config;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.event.Parameter;
@@ -26,15 +33,9 @@ import org.tinygroup.service.exception.ServiceLoadException;
 import org.tinygroup.service.loader.ServiceLoader;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
+import org.tinygroup.service.release.ServiceReleaseManager;
 import org.tinygroup.service.util.ServiceUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 		implements ServiceLoader, Configuration {
@@ -114,6 +115,10 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 			ServiceComponent serviceComponent, ServiceRegistry serviceRegistry,ClassLoader classLoader)
 			throws ClassNotFoundException, ServiceLoadException {
 		for (ServiceMethod serviceMethod : serviceComponent.getServiceMethods()) {
+			//增加过滤
+			if (!ServiceReleaseManager.isAccept(serviceMethod.getServiceId())) {
+				continue;
+			}
 			ServiceRegistryItem item = new ServiceRegistryItem();
 			item.setLocalName(serviceMethod.getLocalName());
 			item.setDescription(serviceMethod.getDescription());
