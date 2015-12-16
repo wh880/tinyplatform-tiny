@@ -89,4 +89,13 @@ public interface UIComponentManager {
 	 */
 	void removeUIComponents(UIComponents uiComponents);
 
+	/**
+	 * 计算组件的依赖关系
+	 */
+	void compute();
+	
+	/**
+	 * 重置组件的依赖关系
+	 */
+	void reset();
 }

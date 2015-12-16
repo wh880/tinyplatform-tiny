@@ -71,6 +71,8 @@ public class UIComponentFileProcessor extends AbstractFileProcessor {
 			LOGGER.logMessage(LogLevel.INFO, "加载uicomponent文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
+		manager.reset();
+		manager.compute();
 	}
 
 
