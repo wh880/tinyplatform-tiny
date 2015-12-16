@@ -84,4 +84,5 @@ Tiny的本意是微不足道的意思，Tiny的构建者认为：
 * jstl
 * log4j
 * jsqlparser
+* webx
 * mvel
