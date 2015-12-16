@@ -9,7 +9,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @author yanwj
  *
  */
-@XStreamAlias("servicefilter")
+@XStreamAlias("servicerelease")
 public class ServiceRelease {
 
 	/**

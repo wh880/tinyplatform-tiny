@@ -1,4 +1,4 @@
-<servicefilter>
+<servicerelease>
   <includes>
     <item>a</item>
     <item>b</item>
@@ -7,4 +7,4 @@
     <item>c</item>
     <item>d</item>
   </excludes>
-</servicefilter>
+</servicerelease>
