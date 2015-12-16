@@ -26,6 +26,7 @@ import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
+import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.service.ServiceProxy;
@@ -117,6 +118,7 @@ public abstract class XmlConfigServiceLoader extends AbstractFileProcessor
 		for (ServiceMethod serviceMethod : serviceComponent.getServiceMethods()) {
 			//增加过滤
 			if (!ServiceReleaseManager.isAccept(serviceMethod.getServiceId())) {
+				LOGGER.logMessage(LogLevel.INFO, "过滤服务：{0}",serviceMethod.getServiceId());
 				continue;
 			}
 			ServiceRegistryItem item = new ServiceRegistryItem();

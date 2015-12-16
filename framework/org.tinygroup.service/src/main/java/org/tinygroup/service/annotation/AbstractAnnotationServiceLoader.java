@@ -29,6 +29,7 @@ import org.tinygroup.service.exception.ServiceLoadException;
 import org.tinygroup.service.loader.AnnotationServiceLoader;
 import org.tinygroup.service.registry.ServiceRegistry;
 import org.tinygroup.service.registry.ServiceRegistryItem;
+import org.tinygroup.service.release.ServiceReleaseManager;
 import org.tinygroup.service.util.ServiceUtil;
 
 import java.lang.annotation.Annotation;
@@ -203,6 +204,11 @@ public abstract class AbstractAnnotationServiceLoader implements
 				if (StringUtil.isBlank(serviceId)) {
 					serviceId = StringUtil.toCamelCase(clazz.getSimpleName())
 							+ "." + StringUtil.toCamelCase(method.getName());
+				}
+				//增加服务过滤
+				if (!ServiceReleaseManager.isAccept(serviceId)) {
+					LOGGER.logMessage(LogLevel.INFO, "过滤服务：{0}",serviceId);
+					continue;
 				}
 				registryItem.setServiceId(serviceId);
 				serviceRegistry.registerService(registryItem);
