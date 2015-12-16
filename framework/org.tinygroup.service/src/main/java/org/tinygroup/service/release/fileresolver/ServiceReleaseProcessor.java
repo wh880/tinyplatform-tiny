@@ -22,7 +22,7 @@ import com.thoughtworks.xstream.XStream;
  */
 public class ServiceReleaseProcessor extends AbstractFileProcessor implements FileProcessor {
 
-	private static final String SERVICE_FILTER_EXTENSION = ".servicefilter.xml";
+	private static final String SERVICE_FILTER_EXTENSION = ".servicerelease.xml";
 	
 	public void process() {
 		ServiceReleaseManager.clear();
