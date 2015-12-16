@@ -11,6 +11,12 @@
 		class="org.tinygroup.flow.fileresolver.FlowFileProcessor">
 		<property name="flowExecutor" ref="flowExecutor"></property>
 	</bean>
+	<bean id="flowReleaseProcessor" name="flowReleaseProcessor" scope="singleton"
+		class="org.tinygroup.flow.release.fileresolver.FlowReleaseProcessor">
+	</bean>
+	<bean id="pageFlowReleaseProcessor" name="pageFlowReleaseProcessor" scope="singleton"
+		class="org.tinygroup.flow.release.fileresolver.PageFlowReleaseProcessor">
+	</bean>
 	<bean id="flowComponentProcessor" name="flowComponentProcessor"
 		scope="singleton"
 		class="org.tinygroup.flow.fileresolver.FlowComponentProcessor">

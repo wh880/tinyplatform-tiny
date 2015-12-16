@@ -15,17 +15,19 @@
  */
 package org.tinygroup.pageflow.fileresolver;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.InputStream;
+import java.util.List;
+
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.flow.config.Flow;
+import org.tinygroup.flow.release.PageFlowReleaseManager;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
-import java.io.InputStream;
-import java.util.List;
+import com.thoughtworks.xstream.XStream;
 
 public class PageFlowFileProcessor extends AbstractFileProcessor {
 
@@ -75,6 +77,10 @@ public class PageFlowFileProcessor extends AbstractFileProcessor {
 				inputStream.close();
 			} catch (Exception e) {
 				LOGGER.errorMessage("关闭文件流时出错,文件路径:{}",e, fileObject.getAbsolutePath());
+			}
+			if (!PageFlowReleaseManager.isAccept(flow.getId())) {
+				LOGGER.logMessage(LogLevel.INFO, "过滤pageflow: {0}" ,flow.getId());
+				continue;
 			}
 			flowExecutor.addFlow(flow);
 			caches.put(fileObject.getAbsolutePath(), flow);
