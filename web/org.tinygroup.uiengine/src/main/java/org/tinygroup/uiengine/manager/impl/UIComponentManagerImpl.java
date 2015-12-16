@@ -37,10 +37,7 @@ public class UIComponentManagerImpl implements UIComponentManager {
         return uiComponentList;
     }
 
-    public synchronized List<UIComponent> getHealthUiComponents() {
-        for (UIComponent component : uiComponentList) {
-            this.isHealth(component.getName());
-        }
+    public List<UIComponent> getHealthUiComponents() {
         return healthyComponentList;
     }
 
@@ -124,4 +121,14 @@ public class UIComponentManagerImpl implements UIComponentManager {
             healthyComponentList.remove(component);
         }
     }
+
+	public void compute() {
+		for (UIComponent component : uiComponentList) {
+            this.isHealth(component.getName());
+        }
+	}
+
+	public void reset() {
+		healthyComponentList.clear();
+	}
 }
