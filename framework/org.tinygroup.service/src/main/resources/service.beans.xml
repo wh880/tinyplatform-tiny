@@ -1,8 +1,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans.xsd"
-	   default-autowire="byName" default-lazy-init="true">
+	default-autowire="byName" default-lazy-init="true">
 	<bean id="serviceRegistry" name="serviceRegistry" scope="singleton"
 		class="org.tinygroup.service.registry.impl.ServiceRegistryImpl">
 	</bean>
@@ -28,12 +28,16 @@
 		<property name="reg" ref="serviceRegistry"></property>
 		<property name="provider" ref="service"></property>
 	</bean>
+	<bean id="serviceReleaseProcessor" name="serviceReleaseProcessor"
+		scope="singleton"
+		class="org.tinygroup.service.release.fileresolver.ServiceReleaseProcessor">
+	</bean>
 	<bean id="xmlServiceFileProcessor" name="xmlServiceFileProcessor"
 		scope="singleton" class="org.tinygroup.service.fileresolver.XmlServiceFileProcessor">
 		<property name="provider" ref="service"></property>
 	</bean>
-	<bean id="serviceParamValidate" name="serviceParamValidate"
-		scope="prototype" class="org.tinygroup.service.aop.impl.ServiceParamValidate">
+	<bean id="serviceParamValidate" name="serviceParamValidate" scope="prototype"
+		class="org.tinygroup.service.aop.impl.ServiceParamValidate">
 	</bean>
 	<bean id="serviceMappingManager" scope="singleton"
 		class="org.tinygroup.service.impl.ServiceMappingManagerImpl">
