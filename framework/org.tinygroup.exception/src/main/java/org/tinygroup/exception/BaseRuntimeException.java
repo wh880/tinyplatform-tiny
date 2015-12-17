@@ -36,7 +36,16 @@ public class BaseRuntimeException extends RuntimeException {
 
 	@Override
 	public String getMessage() {
-		return String.format("[%s] :", errorCode) + errorMsg;
+		StringBuffer msgBuffer = new StringBuffer();
+		if(errorCode==null){
+			if(StringUtil.isBlank(errorMsg))
+				return super.getMessage();
+			msgBuffer.append(errorMsg);
+		}else{
+			msgBuffer.append(String.format("[%s]", errorCode));
+			if(!StringUtil.isBlank(errorMsg))	msgBuffer.append(" : ").append(errorMsg);
+		}
+		return msgBuffer.toString();
 	}
 
 	public ErrorCode getErrorCode() {

@@ -45,15 +45,48 @@ public class ExceptionTest extends TestCase {
 		BizExecute biz = new BizExecute();
 		try{
 			biz.execute();
-		}catch(BizRuntimeException e){
+		}catch(BaseRuntimeException e){
 			assertEquals(e.getErrorCode().toString(), "0TE111011027");
-			assertEquals(e.getMessage(), "[0TE111011027] :error1");
+			assertEquals(e.getMessage(), "[0TE111011027] : error1");//没有默认msg但有对应msg
 		}
+
+		try{
+			biz.executeCodeWithMsg();
+		}catch (BaseRuntimeException e){
+			assertEquals(e.getMessage(),"[0TE111011027] : error1");//既有默认msg也有对应msg
+		}
+
+		try{
+			biz.executeNoCodeVal();
+		}catch(BaseRuntimeException e){
+			assertEquals(e.getErrorCode().toString(), "0TE111011028");
+			assertEquals(e.getMessage(), "[0TE111011028] : 0TE111011028");//找不到code对应msg,也没有默认值,错误信息就和code一致
+		}
+
+
 		try{
 			biz.executeWithMsg();
-		}catch(BizRuntimeException e){
+		}catch(BaseRuntimeException e){
 			assertEquals(e.getErrorCode().toString(),"0TE111011028");
-			assertEquals(e.getMessage(),"[0TE111011028] :0TE111011028");
+			assertEquals(e.getMessage(),"[0TE111011028] : default msg");//找不到code对应msg但有默认msg
+		}
+
+		try{
+			biz.executeNoParam();
+		}catch (BaseRuntimeException e){
+			assertNull(e.getMessage());//code为空,也没有默认msg
+		}
+
+		try{
+			biz.executeEmptyCodeWithMsg();
+		}catch (BaseRuntimeException e){
+			assertEquals(e.getMessage(),"default msg");//code为空,有默认msg
+		}
+
+		try{
+			biz.executeBaseException();
+		}catch(BaseRuntimeException e){
+			assertEquals("java.lang.Exception: aaaa",e.getMessage());//msg为空,从原生异常获取,原生异常message有值
 		}
 //		throw new BizRuntimeException("0TE111011027","haha");
 	}
