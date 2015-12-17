@@ -24,6 +24,7 @@ import org.tinygroup.context2object.ObjectAssembly;
 import org.tinygroup.context2object.ObjectGenerator;
 import org.tinygroup.context2object.TypeConverter;
 import org.tinygroup.context2object.TypeCreator;
+import org.tinygroup.context2object.config.BasicTypeConverter;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -171,7 +172,12 @@ public class ClassNameObjectGenerator implements
 						allPropertyNull = false;
 						continue;
 					} else if (isSimpleType(descriptor.getPropertyType())) {// 若是简单类型
-						if (isSimpleType(propertyValue.getClass())) { // 若值也是简单类型则赋值，非简单类型，则不处理
+						if (String.class==propertyValue.getClass()) { // 如果值是String类型
+							BeanUtils.setProperty(object, descriptor.getName(),
+									BasicTypeConverter.getValue(
+											propertyValue.toString(),
+											descriptor.getPropertyType().getName()));
+						} else if (isSimpleType(propertyValue.getClass())) { // 若值也是简单类型则赋值，非简单类型，则不处理
 							BeanUtils.setProperty(object, descriptor.getName(),
 									propertyValue.toString());
 							allPropertyNull = false;
@@ -533,7 +539,7 @@ public class ClassNameObjectGenerator implements
 			try {
 				if (size == 1) {
 					Object realvalue = propertyValue;
-					if(propertyValue.getClass().isArray()){
+					if (propertyValue.getClass().isArray()) {
 						realvalue = ((Object[]) propertyValue)[0];
 					}
 					setSimpleValue(objecList, 0, descriptor, realvalue);
@@ -645,17 +651,6 @@ public class ClassNameObjectGenerator implements
 		}
 	}
 
-	// private TypeConverter<?, ?> getTypeConverter(Class<?> destType,
-	// Class<? extends Object> sourceType) {
-	// for (TypeConverter<?, ?> typeConverter : typeConverterList) {
-	// if (typeConverter.getSourceType().equals(sourceType)
-	// && typeConverter.getDestinationType().equals(destType)) {
-	// return typeConverter;
-	// }
-	// }
-	// return null;
-	// }
-
 	private TypeConverter<?, ?> getTypeConverter(Class<?> destType) {
 		for (TypeConverter<?, ?> typeConverter : typeConverterList) {
 			if (typeConverter.getDestinationType().equals(destType)) {
@@ -690,27 +685,6 @@ public class ClassNameObjectGenerator implements
 		}
 		return false;
 	}
-
-	// 201402025注释此函数
-	// private String getPropertyName(Class<?> clazz, String name) {
-	// try {
-	// Field[] fileds = clazz.getDeclaredFields();
-	//
-	// Annotation parameterNameAnnotation = clazz.getDeclaredField(name)
-	// .getAnnotation(ParameterName.class);
-	// if (parameterNameAnnotation != null) {
-	// Object[] args = null;
-	// Class<?>[] argsType = null;
-	// return parameterNameAnnotation.annotationType()
-	// .getDeclaredMethod("name", argsType)
-	// .invoke(parameterNameAnnotation, args).toString();
-	// }
-	// } catch (Exception e) {
-	// logger.errorMessage("获取属性名重名名时失败", e);
-	// }
-	// return name;
-	// }
-
 	/**
 	 * 根据clazz获取对象 先从creator中获取，若找不到，则去springbean中获取
 	 * 
