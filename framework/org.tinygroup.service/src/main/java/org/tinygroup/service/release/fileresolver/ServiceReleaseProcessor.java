@@ -22,10 +22,10 @@ import com.thoughtworks.xstream.XStream;
  */
 public class ServiceReleaseProcessor extends AbstractFileProcessor implements FileProcessor {
 
-	private static final String SERVICE_FILTER_EXTENSION = ".servicerelease.xml";
-	
+	private static final String SERVICE_RELEASE_EXTENSION = ".servicerelease.xml";
+	//日志信息错误太多:servicefilter SysService，自己改好
 	public void process() {
-		ServiceReleaseManager.clear();
+//		ServiceReleaseManager.clear(); 这里不能清除
 		XStream stream = XStreamFactory
 				.getXStream(Service.SERVICE_XSTREAM_PACKAGENAME);
 		for (FileObject fileObject : changeList) {
@@ -61,5 +61,5 @@ public class ServiceReleaseProcessor extends AbstractFileProcessor implements Fi
 
 	@Override
 	protected boolean checkMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(SERVICE_FILTER_EXTENSION);
+		return fileObject.getFileName().endsWith(SERVICE_RELEASE_EXTENSION);
 	}}
