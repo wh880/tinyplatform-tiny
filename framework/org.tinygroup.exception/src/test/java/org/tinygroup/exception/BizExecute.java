@@ -36,7 +36,15 @@ public class BizExecute {
 	}
 
 	public void executeBaseException(){
-		throw new BaseRuntimeException(new Exception("aaaa"));
+		throw new BaseRuntimeException(new Exception("from throwable"));
+	}
+
+	public void executeCodeWithMsgWithThrowable(String errorCode,String errormsg,Throwable e,Object... params){
+		throw new BaseRuntimeException(errorCode, errormsg,locale, e,params);
+	}
+
+	public void executeCodeMsg(String errorCode, String defaultErrorMsg, Object... params){
+		throw new BaseRuntimeException(errorCode, defaultErrorMsg,locale, params);
 	}
 
 

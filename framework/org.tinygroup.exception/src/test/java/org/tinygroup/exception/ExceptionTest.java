@@ -39,8 +39,9 @@ public class ExceptionTest extends TestCase {
 	}
 
 
-
-
+	/**
+	 * 测试基本调用
+	 */
 	public void testException(){
 		BizExecute biz = new BizExecute();
 		try{
@@ -80,17 +81,100 @@ public class ExceptionTest extends TestCase {
 		try{
 			biz.executeEmptyCodeWithMsg();
 		}catch (BaseRuntimeException e){
-			assertEquals(e.getMessage(),"default msg");//code为空,有默认msg
+			assertEquals(e.getMessage(), "default msg");//code为空,有默认msg
 		}
 
-		try{
-			biz.executeBaseException();
-		}catch(BaseRuntimeException e){
-			assertEquals("java.lang.Exception: aaaa",e.getMessage());//msg为空,从原生异常获取,原生异常message有值
-		}
+
 //		throw new BizRuntimeException("0TE111011027","haha");
 	}
 
+
+	/**
+	 * 测试throwable
+	 */
+	public void testThrowable(){
+		BizExecute biz = new BizExecute();
+		try{
+			biz.executeBaseException();
+		}catch(BaseRuntimeException e){
+			assertEquals("java.lang.Exception: from throwable",e.getMessage());//从原生异常获取,原生异常message有值
+		}
+
+		try{
+			biz.executeCodeWithMsgWithThrowable("0TE111011027", "default msg", new Exception("from throwable"));
+		}catch(BaseRuntimeException e){
+			assertEquals("[0TE111011027] : error1",e.getMessage());//从code对应msg获取
+		}
+
+		try{
+			biz.executeCodeWithMsgWithThrowable("0TE111011028", "default msg", new Exception("from throwable"));
+		}catch(BaseRuntimeException e){
+			assertEquals("[0TE111011028] : default msg",e.getMessage());//从默认msg获取
+		}
+
+		try{
+			biz.executeCodeWithMsgWithThrowable("0TE111011028", "", new Exception("from throwable"));
+		}catch(BaseRuntimeException e){
+			assertEquals("[0TE111011028] : 0TE111011028",e.getMessage());//有code，即使没有默认值和对应msg也不会从原始异常获取
+		}
+
+		try{
+			biz.executeCodeWithMsgWithThrowable("", "default msg", new Exception("from throwable"));
+		}catch(BaseRuntimeException e){
+			assertEquals("default msg",e.getMessage());//无code,有默认msg,就从默认msg获取
+		}
+
+		try{
+			biz.executeCodeWithMsgWithThrowable("", "", new Exception("from throwable"));
+		}catch(BaseRuntimeException e){
+			assertEquals("java.lang.Exception: from throwable",e.getMessage());//无code,也没有默认msg,才从原始异常获取
+		}
+
+	}
+
+	/**
+	 * 测试异常msg参数
+	 */
+	public void testErrorMsgWithParam(){
+		BizExecute biz = new BizExecute();
+
+		try{
+			biz.executeCodeMsg("0TE111011037", "default msg","param 1","param2");
+		}catch(BaseRuntimeException e){
+			assertEquals("[0TE111011037] : param 1,param2",e.getMessage());//能从code获取msg,也能根据参数format
+		}
+
+		try{
+			biz.executeCodeMsg("0TE111011028", "default msg{}{}", "param 1", "param2");
+		}catch(BaseRuntimeException e){
+			assertEquals("[0TE111011028] : default msg{}{}",e.getMessage());//默认msg不会format参数(非bug型验证)
+		}
+
+		try{
+			biz.executeCodeMsg("", null,"param 1","param2");
+		}catch(BaseRuntimeException e){
+			assertNull(e.getMessage());//原生异常msg不会format参数(非bug型验证)
+		}
+
+
+		try{
+			biz.executeCodeWithMsgWithThrowable("0TE111011037", "default msg", new Exception("from throwable"),"param 1","param2");
+		}catch(BaseRuntimeException e){
+			assertEquals("[0TE111011037] : param 1,param2",e.getMessage());//能从code获取msg,也能根据参数format
+		}
+
+		try{
+			biz.executeCodeWithMsgWithThrowable("0TE111011028", "default msg{}{}", new Exception("from throwable"),"param 1","param2");
+		}catch(BaseRuntimeException e){
+			assertEquals("[0TE111011028] : default msg{}{}",e.getMessage());//默认msg不会format参数(非bug型验证)
+		}
+
+		try{
+			biz.executeCodeWithMsgWithThrowable("", null, new Exception("from throwable{}{}"),"param 1","param2");
+		}catch(BaseRuntimeException e){
+			assertEquals("java.lang.Exception: from throwable{}{}",e.getMessage());//原生异常msg不会format参数(非bug型验证)
+		}
+	}
 
 
 
