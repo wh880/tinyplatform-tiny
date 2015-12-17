@@ -1,10 +1,16 @@
 <servicerelease>
   <includes>
-    <item>a</item>
-    <item>b</item>
+    <id>exception1</id>
+    <id>exception2</id>
+    <id>exception3</id>
+    <id>annotationUserList</id>
+    <id>serviceUserObject</id>
+    <id>serviceAliasUserObject</id>
+    <id>serviceUserList</id>
+    <id>serviceUserArray</id>
   </includes>
   <excludes>
-    <item>c</item>
-    <item>d</item>
+  	<id>exception3</id>
+  	<id>serviceAliasUserObject</id>
   </excludes>
 </servicerelease>

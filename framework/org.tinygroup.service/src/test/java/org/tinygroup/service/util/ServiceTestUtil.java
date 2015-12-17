@@ -28,33 +28,6 @@ import org.tinygroup.tinytestutil.AbstractTestUtil;
 public class ServiceTestUtil {
 	private static boolean init = false;
 
-//	static ExceptionHandlerManager manager = null;
-
-//	public static void initManager() {
-//		if(manager!=null){
-//			return ;
-//		}
-//		manager = SpringUtil.getBean(ExceptionHandlerManager.MANAGER_BEAN);;
-//		addHandler(
-//				"org.tinygroup.service.test.exception.ExceptionA",
-//				new HandlerA());
-//		addHandler(
-//				"org.tinygroup.service.test.exception.ExceptionB",
-//				new HandlerB());
-//		addHandler(
-//				"org.tinygroup.service.test.exception.ExceptionC",
-//				new HandlerC());
-//	}
-//
-//	private static void addHandler(String excption, ExceptionHandler<?> handler) {
-//		try {
-//			manager.addHandler(excption, handler);
-//		} catch (ClassNotFoundException e) {
-//			System.out.println(String.format("添加Handler时出现异常,Exception:%s未找到",
-//					excption));
-//		}
-//	}
-
 	public static void init(){
 		if(!init){
 			AbstractTestUtil.init("application.xml", true);

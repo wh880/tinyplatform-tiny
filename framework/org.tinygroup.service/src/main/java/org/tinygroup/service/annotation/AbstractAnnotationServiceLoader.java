@@ -181,6 +181,18 @@ public abstract class AbstractAnnotationServiceLoader implements
 			if (annotation != null) {
 				LOGGER.logMessage(LogLevel.INFO, "开始加载方法{0}为服务",
 						method.getName());
+				String serviceId = getAnnotationStringValue(annotation,
+						ServiceMethod.class, "serviceId");
+				if (StringUtil.isBlank(serviceId)) {
+					serviceId = StringUtil.toCamelCase(clazz.getSimpleName())
+							+ "." + StringUtil.toCamelCase(method.getName());
+				}
+				//增加服务过滤
+				if (!ServiceReleaseManager.isAccept(serviceId)) {
+					LOGGER.logMessage(LogLevel.INFO, "过滤服务：{0}",serviceId);
+					continue;
+				}
+				
 				ServiceRegistryItem item = new ServiceRegistryItem();
 				// serviceId
 				// localName
@@ -199,17 +211,7 @@ public abstract class AbstractAnnotationServiceLoader implements
 				registerService(clazz, method, item);
 
 				ServiceRegistryItem registryItem =  ServiceUtil.copyServiceItem(item);
-				String serviceId = getAnnotationStringValue(annotation,
-						ServiceMethod.class, "serviceId");
-				if (StringUtil.isBlank(serviceId)) {
-					serviceId = StringUtil.toCamelCase(clazz.getSimpleName())
-							+ "." + StringUtil.toCamelCase(method.getName());
-				}
-				//增加服务过滤
-				if (!ServiceReleaseManager.isAccept(serviceId)) {
-					LOGGER.logMessage(LogLevel.INFO, "过滤服务：{0}",serviceId);
-					continue;
-				}
+				
 				registryItem.setServiceId(serviceId);
 				serviceRegistry.registerService(registryItem);
 				String alias = getAnnotationStringValue(annotation,
