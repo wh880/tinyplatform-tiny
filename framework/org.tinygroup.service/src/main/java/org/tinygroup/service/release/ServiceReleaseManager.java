@@ -37,14 +37,14 @@ public class ServiceReleaseManager {
 	 */
 	private static Set<String> includes = new HashSet<String>();
 	
-	public static void add(ServiceRelease filter){
-		if (filter.getExcludes() != null) {
-			for (String item : filter.getExcludes().getItems()) {
+	public static void add(ServiceRelease releaseInfo){
+		if (releaseInfo.getExcludes() != null) {
+			for (String item : releaseInfo.getExcludes().getItems()) {
 				excludes.add(item);
 			}
 		}
-		if (filter.getIncludes() != null) {
-			for (String item : filter.getIncludes().getItems()) {
+		if (releaseInfo.getIncludes() != null) {
+			for (String item : releaseInfo.getIncludes().getItems()) {
 				includes.add(item);
 			}
 		}
@@ -57,8 +57,8 @@ public class ServiceReleaseManager {
 	
 	public static void reload(List<ServiceRelease> list){
 		clear();
-		for (ServiceRelease filter : list) {
-			add(filter);
+		for (ServiceRelease releaseInfo : list) {
+			add(releaseInfo);
 		}
 	}
 	

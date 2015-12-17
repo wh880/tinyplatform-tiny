@@ -37,14 +37,14 @@ public class PageFlowReleaseManager {
 	 */
 	private static Set<String> includes = new HashSet<String>();
 	
-	public static void add(PageFlowRelease filter){
-		if (filter.getExcludes() != null) {
-			for (String item : filter.getExcludes().getItems()) {
+	public static void add(PageFlowRelease releaseInfo){
+		if (releaseInfo.getExcludes() != null) {
+			for (String item : releaseInfo.getExcludes().getItems()) {
 				excludes.add(item);
 			}
 		}
-		if (filter.getIncludes() != null) {
-			for (String item : filter.getIncludes().getItems()) {
+		if (releaseInfo.getIncludes() != null) {
+			for (String item : releaseInfo.getIncludes().getItems()) {
 				includes.add(item);
 			}
 		}
@@ -57,8 +57,8 @@ public class PageFlowReleaseManager {
 	
 	public static void reload(List<PageFlowRelease> list){
 		clear();
-		for (PageFlowRelease filter : list) {
-			add(filter);
+		for (PageFlowRelease releaseInfo : list) {
+			add(releaseInfo);
 		}
 	}
 	
