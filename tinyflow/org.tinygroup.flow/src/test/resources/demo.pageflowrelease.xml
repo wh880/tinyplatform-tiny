@@ -1,10 +1,10 @@
 <pageflowrelease>
   <includes>
-    <item>ExceptionFlow1</item>
-    <item>b</item>
+    <!-- <id>CustomBegin</id>
+    <id>b</id> -->
   </includes>
   <excludes>
-    <!-- <item>ExceptionFlow</item>
-    <item>fuck</item> -->
+    <!-- <id>ExceptionFlow</id>
+    <id>fuck</id> -->
   </excludes>
 </pageflowrelease>

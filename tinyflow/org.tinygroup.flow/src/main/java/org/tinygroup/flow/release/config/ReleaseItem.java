@@ -16,7 +16,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 @XStreamAlias("items")
 public class ReleaseItem {
 
-	@XStreamImplicit(itemFieldName = "item")
+	@XStreamImplicit(itemFieldName = "id")
 	List<String> items = new ArrayList<String>();
 
 	public List<String> getItems() {

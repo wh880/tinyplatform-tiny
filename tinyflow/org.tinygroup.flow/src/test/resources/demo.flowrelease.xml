@@ -1,10 +1,10 @@
 <flowrelease>
-  <includes>
-    <item>a</item>
-    <item>b</item>
-  </includes>
-  <excludes>
-    <item>c</item>
-    <item>d</item>
-  </excludes>
+  <!-- <includes>
+    <id>testDataDeal</id>
+    <id>b</id>
+  </includes> -->
+  <!-- <excludes>
+    <id>testDataDeal</id>
+    <id>d</id>
+  </excludes> -->
 </flowrelease>
