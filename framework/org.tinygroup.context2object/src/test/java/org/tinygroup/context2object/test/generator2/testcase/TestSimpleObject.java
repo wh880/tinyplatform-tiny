@@ -2,6 +2,7 @@ package org.tinygroup.context2object.test.generator2.testcase;
 
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
+import org.tinygroup.context2object.test.generator2.config.ChildObject;
 import org.tinygroup.context2object.test.generator2.config.ParentObject;
 import org.tinygroup.context2object.test.generator2.config.SimpleObject;
 
@@ -50,7 +51,7 @@ public class TestSimpleObject extends BaseTestCast2{
 		assertEquals( Boolean.TRUE,bean.getFlag());
 	}
 	
-	public void testParent1(){
+	public void testSubObj1(){
 		Context context = new ContextImpl();
 		context.put("simpleObject.name", "name");
 		context.put("simpleObject.length", "1");
@@ -65,7 +66,7 @@ public class TestSimpleObject extends BaseTestCast2{
 		assertEquals( Boolean.TRUE,parentObj.getSimpleObject().getFlag());
 	}
 	
-	public void testParent2(){
+	public void testSubObj2(){
 		Context context = new ContextImpl();
 		context.put("parentObject.simpleObject.name", "name");
 		context.put("parentObject.simpleObject.length", "1");
@@ -80,7 +81,7 @@ public class TestSimpleObject extends BaseTestCast2{
 		assertEquals( Boolean.TRUE,parentObj.getSimpleObject().getFlag());
 	}
 	
-	public void testParent3(){
+	public void testSubObj3(){
 		Context context = new ContextImpl();
 		context.put("abc.simpleObject.name", "name");
 		context.put("abc.simpleObject.length", "1");
@@ -91,6 +92,19 @@ public class TestSimpleObject extends BaseTestCast2{
 				context);
 		assertEquals("name",parentObj.getSimpleObject().getName());
 		assertEquals( 2,parentObj.getSimpleObject().getLength2());
+		assertEquals( Integer.valueOf(1),parentObj.getSimpleObject().getLength());
+		assertEquals( Boolean.TRUE,parentObj.getSimpleObject().getFlag());
+	}
+	
+	public void testClassExtends(){
+		Context context = new ContextImpl();
+		context.put("child", "name");
+		context.put("pro", "1");
+		ChildObject parentObj = (ChildObject) generator.getObject("abc", null,
+				ChildObject.class.getName(), this.getClass().getClassLoader(),
+				context);
+		assertEquals("name",parentObj.getChild());
+		assertEquals( "1",parentObj.getPro());
 		assertEquals( Integer.valueOf(1),parentObj.getSimpleObject().getLength());
 		assertEquals( Boolean.TRUE,parentObj.getSimpleObject().getFlag());
 	}
