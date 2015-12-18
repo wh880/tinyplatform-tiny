@@ -21,6 +21,8 @@ public class CustomBeanDefinitionScanner extends
 
 	private BeanDefineCreate beanDefineCreate;
 	
+	protected static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
+	
 	public BeanDefineCreate getBeanDefineCreate() {
 		return beanDefineCreate;
 	}
