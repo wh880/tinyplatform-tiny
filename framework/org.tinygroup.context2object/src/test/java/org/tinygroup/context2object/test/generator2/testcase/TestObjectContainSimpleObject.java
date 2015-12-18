@@ -4,7 +4,7 @@ import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.context2object.test.generator2.config.SimpleObject;
 
-public class TestObjectContainSimpleObject extends BastTestCast2{
+public class TestObjectContainSimpleObject extends BaseTestCast2{
 	public void testObjectContainSimple(){
 		Context context = new ContextImpl();
 		context.put("bean.name", "name");

@@ -2,9 +2,10 @@ package org.tinygroup.context2object.test.generator2.testcase;
 
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
+import org.tinygroup.context2object.test.generator2.config.ParentObject;
 import org.tinygroup.context2object.test.generator2.config.SimpleObject;
 
-public class TestSimpleObject extends BastTestCast2{
+public class TestSimpleObject extends BaseTestCast2{
 	public void testSimpleProperty(){
 		Context context = new ContextImpl();
 		context.put("bean.name", "name");
@@ -48,4 +49,50 @@ public class TestSimpleObject extends BastTestCast2{
 		assertEquals( Integer.valueOf(1),bean.getLength());
 		assertEquals( Boolean.TRUE,bean.getFlag());
 	}
+	
+	public void testParent1(){
+		Context context = new ContextImpl();
+		context.put("simpleObject.name", "name");
+		context.put("simpleObject.length", "1");
+		context.put("simpleObject.length2", "2");
+		context.put("simpleObject.flag", "true");
+		ParentObject parentObj = (ParentObject) generator.getObject(null, null,
+				ParentObject.class.getName(), this.getClass().getClassLoader(),
+				context);
+		assertEquals("name",parentObj.getSimpleObject().getName());
+		assertEquals( 2,parentObj.getSimpleObject().getLength2());
+		assertEquals( Integer.valueOf(1),parentObj.getSimpleObject().getLength());
+		assertEquals( Boolean.TRUE,parentObj.getSimpleObject().getFlag());
+	}
+	
+	public void testParent2(){
+		Context context = new ContextImpl();
+		context.put("parentObject.simpleObject.name", "name");
+		context.put("parentObject.simpleObject.length", "1");
+		context.put("parentObject.simpleObject.length2", "2");
+		context.put("parentObject.simpleObject.flag", "true");
+		ParentObject parentObj = (ParentObject) generator.getObject(null, null,
+				ParentObject.class.getName(), this.getClass().getClassLoader(),
+				context);
+		assertEquals("name",parentObj.getSimpleObject().getName());
+		assertEquals( 2,parentObj.getSimpleObject().getLength2());
+		assertEquals( Integer.valueOf(1),parentObj.getSimpleObject().getLength());
+		assertEquals( Boolean.TRUE,parentObj.getSimpleObject().getFlag());
+	}
+	
+	public void testParent3(){
+		Context context = new ContextImpl();
+		context.put("abc.simpleObject.name", "name");
+		context.put("abc.simpleObject.length", "1");
+		context.put("abc.simpleObject.length2", "2");
+		context.put("abc.simpleObject.flag", "true");
+		ParentObject parentObj = (ParentObject) generator.getObject("abc", null,
+				ParentObject.class.getName(), this.getClass().getClassLoader(),
+				context);
+		assertEquals("name",parentObj.getSimpleObject().getName());
+		assertEquals( 2,parentObj.getSimpleObject().getLength2());
+		assertEquals( Integer.valueOf(1),parentObj.getSimpleObject().getLength());
+		assertEquals( Boolean.TRUE,parentObj.getSimpleObject().getFlag());
+	}
+	
 }

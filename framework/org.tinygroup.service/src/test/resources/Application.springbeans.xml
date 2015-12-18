@@ -10,7 +10,6 @@
 			<list>
 				<ref bean="i18nFileProcessor" />
 				<ref bean="xStreamFileProcessor" />
-				<ref bean="serviceReleaseProcessor" />
 				<ref bean="xmlServiceFileProcessor" />
 				<ref bean="annotationFileProcessor" />
 				<ref bean="annotationClassFileProcessor" />
