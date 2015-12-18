@@ -22,6 +22,8 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
 
+import com.thoughtworks.xstream.XStream;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -121,5 +123,21 @@ public abstract class AbstractFileProcessor implements FileProcessor {
 
 	public int getOrder() {
 		return DEFAULT_PRECEDENCE;
+	}
+	
+	/**
+	 * 转换XML为Xstream对象
+	 * @param <T>
+	 * @param stream
+	 * @param fileObject
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	protected <T> T convertFromXml(XStream stream,FileObject fileObject){
+	    try{
+	    	return (T) stream.fromXML(fileObject.getInputStream());
+	    }catch(Exception e){
+	    	throw new RuntimeException("转换XML文件成Xstream对象发生异常,路径:"+fileObject.getAbsolutePath(),e);
+	    }
 	}
 }
