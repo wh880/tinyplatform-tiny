@@ -64,8 +64,7 @@ public class UIComponentFileProcessor extends AbstractFileProcessor {
 			if(oldUiComponents!=null){
 				manager.removeUIComponents(oldUiComponents);
 			}	
-			UIComponents uiComponents = (UIComponents) stream
-					.fromXML(fileObject.getInputStream());
+			UIComponents uiComponents = convertFromXml(stream,fileObject);
 			manager.addUIComponents(uiComponents);
 			caches.put(fileObject.getAbsolutePath(), uiComponents);
 			LOGGER.logMessage(LogLevel.INFO, "加载uicomponent文件[{0}]结束",

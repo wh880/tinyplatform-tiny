@@ -61,4 +61,13 @@ public interface UploadConfiguration {
      * 。然而有些不规范的应用，会取<code>fname=xxx.txt</code>。此变量为兼容这种情况而设。
      */
     String[] getFileNameKey();
+    /**
+     * 是否是临时目录，true：认为是临时文件，请求完毕会删除此临时文件。
+     * @return
+     */
+    boolean isTemporary();
+     //是否是文件介质存储,默认是
+    public boolean isDiskItemFactory() ;
+    //如果是其他存储介质，那么给定存储介质的beanname
+    public String getItemStorageBeanName() ;
 }

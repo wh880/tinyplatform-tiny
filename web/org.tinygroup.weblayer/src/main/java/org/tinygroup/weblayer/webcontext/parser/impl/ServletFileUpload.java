@@ -114,12 +114,21 @@ public class ServletFileUpload extends org.apache.commons.fileupload.servlet.Ser
                 Map<String, String> params = parser.parse(pContentDisposition, ';');
 
                 // 解决类似Flash上传更改了filename 为 fname 的多客户端支持
+                boolean isFileFiled=false;
                 for (String key : getFileNameKey()) {
+                	if (params.containsKey(key)) {
+                		isFileFiled=true;
+                	}
                     fileName = StringUtil.trimToNull(params.get(key));
 
                     if (fileName != null) {
                         break;
                     }
+                }
+                if(isFileFiled&&fileName==null){  
+                	// Even if there is no value, the parameter is present,
+                    // so we return an empty file name rather than no file
+                	fileName="";
                 }
             }
         }
