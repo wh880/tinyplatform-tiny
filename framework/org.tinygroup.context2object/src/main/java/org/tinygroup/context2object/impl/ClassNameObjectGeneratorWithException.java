@@ -3,7 +3,6 @@ package org.tinygroup.context2object.impl;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -27,12 +26,11 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
-public class ClassNameObjectGeneratorWithException implements ObjectGenerator<Object, String> {
+public class ClassNameObjectGeneratorWithException extends
+		BaseClassNameObjectGenerator implements ObjectGenerator<Object, String> {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ClassNameObjectGeneratorWithException.class);
-	private List<TypeCreator<?>> typeCreatorList = new ArrayList<TypeCreator<?>>();
 	private Map<Class, List<TypeConverter<?, ?>>> typeConverterMap = new HashMap<Class, List<TypeConverter<?, ?>>>();
-	private List<ObjectAssembly<?>> assemblies = new ArrayList<ObjectAssembly<?>>();
 
 	public Object getObject(String varName, String bean, String className,
 			ClassLoader loader, Context context) {
@@ -76,7 +74,9 @@ public class ClassNameObjectGeneratorWithException implements ObjectGenerator<Ob
 		// 没有找到合适的转换器类型，继续执行
 		// 处理基本类型
 		if (isSimpleType(clazz)) {
-			return getSimpleTypeValue(getReallyPropertyName(null, preName, varName), clazz, context);
+			return getSimpleTypeValue(
+					getReallyPropertyName(null, preName, varName), clazz,
+					context);
 		} else {
 			// 处理对象
 			Object o = getObjectInstance(clazz);
@@ -135,7 +135,8 @@ public class ClassNameObjectGeneratorWithException implements ObjectGenerator<Ob
 					allPropertyNull = false;
 				}
 			} else if (propertyType.isArray()) {
-				Object value = buildArrayObjectWithObject(preName, varName, propertyType.getComponentType(), context);
+				Object value = buildArrayObjectWithObject(preName, varName,
+						propertyType.getComponentType(), context);
 				if (value != null) {
 					try {
 						BeanUtils.setProperty(object, descriptor.getName(),
@@ -368,23 +369,15 @@ public class ClassNameObjectGeneratorWithException implements ObjectGenerator<Ob
 		return true;
 	}
 
-	private ObjectAssembly<?> getObjectAssembly(Class<?> type) {
-		for (ObjectAssembly<?> assembly : assemblies) {
-			if (assembly.isMatch(type)) {
-				return assembly;
-			}
-		}
-		return null;
-	}
-
 	private Object getSimpleTypeValue(String varName, Class<?> clazz,
 			Context context) {
 		Object value = getPerpertyValue(varName, context);
-		if(value==null){
+		if (value == null) {
 			return null;
 		}
-		if(String.class == value.getClass()){
-			return BasicTypeConverter.getValue((String)value, String.class.getName());
+		if (String.class == value.getClass()) {
+			return BasicTypeConverter.getValue((String) value,
+					String.class.getName());
 		}
 		return value;
 	}
@@ -409,11 +402,11 @@ public class ClassNameObjectGeneratorWithException implements ObjectGenerator<Ob
 		Class clazz = getClazz(className, loader);
 		return buildArrayObjectWithObject(null, varName, clazz, context);
 	}
-	
-	private Object buildArrayObjectWithObject(String preName,String varName,
+
+	private Object buildArrayObjectWithObject(String preName, String varName,
 			Class<?> objectClass, Context context) {
 		Collection<Object> collection = new ArrayList<Object>();
-		buildCollection(preName,varName, collection, objectClass, context );
+		buildCollection(preName, varName, collection, objectClass, context);
 		if (collection.isEmpty()) {
 			return null;
 		} else {
@@ -447,16 +440,6 @@ public class ClassNameObjectGeneratorWithException implements ObjectGenerator<Ob
 				typeConverterMap.remove(typeConverter);
 			}
 		}
-	}
-
-	public void addTypeCreator(TypeCreator<?> typeCreator) {
-		typeCreatorList.add(typeCreator);
-
-	}
-
-	public void removeTypeCreator(TypeCreator<?> typeCreator) {
-		typeCreatorList.remove(typeCreator);
-
 	}
 
 	/**
@@ -504,56 +487,8 @@ public class ClassNameObjectGeneratorWithException implements ObjectGenerator<Ob
 		}
 	}
 
-	/**
-	 * 根据clazz从creators中获取其实例
-	 * 
-	 * @param clazz
-	 * @return 若找到则返回对象实例，否则返回null
-	 */
-	private Object getIntanceByCreator(Class<?> clazz) {
-		for (TypeCreator<?> creator : typeCreatorList) {
-			if (clazz.equals(creator.getType())) { // clazz是否继承自getClass
-				return creator.getInstance();
-			}
-		}
-		return null;
-	}
 
-	/**
-	 * 判断clazz是否实现了interfaceClazz
-	 * 
-	 * @param clazz
-	 * @param interfaceClazz
-	 * @return
-	 */
-	private boolean implmentInterface(Class<?> clazz, Class<?> interfaceClazz) {
-		return interfaceClazz.isAssignableFrom(clazz);
-	}
-
-	private Class<?> getClazz(String className, ClassLoader loader) {
-		try {
-			return loader.loadClass(className);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e.getMessage());
-		}
-	}
-
-	boolean isSimpleType(Class<?> clazz) {
-		if (clazz.equals(int.class) || clazz.equals(char.class)
-				|| clazz.equals(byte.class) || clazz.equals(boolean.class)
-				|| clazz.equals(short.class) || clazz.equals(long.class)
-				|| clazz.equals(double.class) || clazz.equals(float.class)) {
-			return true;
-		}
-		if (clazz.equals(Integer.class) || clazz.equals(Character.class)
-				|| clazz.equals(Byte.class) || clazz.equals(Boolean.class)
-				|| clazz.equals(Short.class) || clazz.equals(Long.class)
-				|| clazz.equals(Double.class) || clazz.equals(Float.class)
-				|| clazz.equals(String.class)) {
-			return true;
-		}
-		return false;
-	}
+	
 
 	private List<TypeConverter<?, ?>> getTypeConverterList(Class<?> destType) {
 		return typeConverterMap.get(destType);
@@ -571,59 +506,4 @@ public class ClassNameObjectGeneratorWithException implements ObjectGenerator<Ob
 				+ destType);
 	}
 
-	private boolean isNull(String str) {
-		if (StringUtil.isBlank(str)) {
-			return true;
-		}
-		return false;
-	}
-
-	private String getObjName(Object object) {
-		String className = object.getClass().getSimpleName();
-		if (className.length() == 1)
-			return className.toLowerCase();
-		return className.substring(0, 1).toLowerCase() + className.substring(1);
-	}
-
-	private Object getPerpertyValue(String preName, String objName,
-			String propertyName, Context context) {
-		String reallyName = getReallyPropertyName(preName, objName,
-				propertyName);
-		return getPerpertyValue(reallyName, context);
-	}
-
-	public String getReallyPropertyName(String preName, String objName,
-			String propertyName) {
-		if (preName == null || "".equals(preName)) {
-			return String.format("%s.%s", objName, propertyName);
-		}
-		return String.format("%s.%s", preName, propertyName);
-	}
-
-	private Object getPerpertyValue(String reallyName, Context context) {
-		Object value = context.get(reallyName);
-		if (value == null) {
-			value = context.get(reallyName.replace(".", "_"));
-		}
-		if (value == null) {
-			int index = reallyName.indexOf('.') + 1;
-			if (index != 0) {
-				value = getPerpertyValue(reallyName.substring(index), context);
-			}
-		}
-		return value;
-	}
-
-	private Field getDeclaredFieldWithParent(Class<?> clazz, String name) {
-		try {
-			return clazz.getDeclaredField(name);
-		} catch (NoSuchFieldException e) {
-			if (clazz.getSuperclass() != null) {
-				return getDeclaredFieldWithParent(clazz.getSuperclass(), name);
-			}
-
-		}
-		return null;
-
-	}
 }
