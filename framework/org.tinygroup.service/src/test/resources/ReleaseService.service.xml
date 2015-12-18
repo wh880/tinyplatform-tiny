@@ -1,0 +1,12 @@
+<service-components>
+  <service-component type="org.tinygroup.service.release.ReleaseService">
+    <service-method local-name="release4Include" service-id="release4Include" method-name="release4Include" cacheable="false" category="org.tinygroup.service.release">
+      <service-parameters/>
+      <service-result name="release4IncludeResult" required="false" is-array="false" type="java.lang.String"/>
+    </service-method>
+    <service-method local-name="release4Exclude" service-id="release4Exclude" method-name="release4Exclude" cacheable="false" category="org.tinygroup.service.release">
+      <service-parameters/>
+      <service-result name="release4ExcludeResult" required="false" is-array="false" type="java.lang.String"/>
+    </service-method>
+  </service-component>
+</service-components>
