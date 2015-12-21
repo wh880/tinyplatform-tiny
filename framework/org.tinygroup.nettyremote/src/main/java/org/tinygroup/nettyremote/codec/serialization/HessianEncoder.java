@@ -41,9 +41,9 @@ public class HessianEncoder extends MessageToByteEncoder<Serializable> {
 //        oout.close();
         SerializerFactory serializerFactory = new SerializerFactory();
 		serializerFactory.addFactory(new BigDecimalSerializerFactory());
-        HessianOutput hout1 = new HessianOutput(bout);
-        hout1.setSerializerFactory(serializerFactory);
-        hout1.writeObject(msg);
+        HessianOutput hout = new HessianOutput(bout);
+        hout.setSerializerFactory(serializerFactory);
+        hout.writeObject(msg);
         int endIdx = out.writerIndex();
 
         out.setInt(startIdx, endIdx - startIdx - 4);

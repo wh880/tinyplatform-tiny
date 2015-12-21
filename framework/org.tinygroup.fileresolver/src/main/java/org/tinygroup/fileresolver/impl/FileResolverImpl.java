@@ -175,7 +175,7 @@ public class FileResolverImpl implements FileResolver {
 	private void resolveClassPaths(Set<FileObject> classPaths) {
 		List<FileObject> scanPathsList = new ArrayList<FileObject>();
 		scanPathsList.addAll(classPaths);
-		MultiThreadFileProcessor.mutiProcessor(fileProcessorThreadNum,
+		MultiThreadFileProcessor.multiProcessor(fileProcessorThreadNum,
 				"file-resolver-threads", scanPathsList,
 				new ProcessorCallBack() {
 					public void callBack(FileObject fileObject) {
@@ -403,8 +403,13 @@ public class FileResolverImpl implements FileResolver {
 		return includePathPatternMap;
 	}
 
-	public void addChangeLisenter(ChangeListener lisenter) {
-		changeListeners.add(lisenter);
+	@Deprecated
+	public void addChangeLisenter(ChangeListener listener) {
+		addChangeListener(listener);
+	}
+
+	public void addChangeListener(ChangeListener listener) {
+		changeListeners.add(listener);
 	}
 
 	public void change() {

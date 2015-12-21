@@ -42,7 +42,7 @@ public abstract class AbstractValidatorManger implements ValidatorManager {
 
 	private ValidatorManagerWrapper validatorManagerWrapper;
 
-	protected Map<String, FieldWapper> fieldWrapperMap = new HashMap<String, FieldWapper>();
+	protected Map<String, FieldWrapper> fieldWrapperMap = new HashMap<String, FieldWrapper>();
 
 	public void validate(String scene, Object object, ValidateResult result) {
 		if (object == null) {

@@ -23,22 +23,21 @@ import java.lang.reflect.Field;
  * @author renhui
  *
  */
-@Deprecated
-public class FieldWapper {
+public class FieldWrapper {
 
 	private Field field;
-	
+
 	//字段名称或者@Field中name属性值
 	private String fieldName;
-	
-	private String title;
-	
-	private String scene;
-	
-	
-	
 
-	public FieldWapper(Field field, String fieldName, String title) {
+	private String title;
+
+	private String scene;
+
+
+
+
+	public FieldWrapper(Field field, String fieldName, String title) {
 		super();
 		this.field = field;
 		this.fieldName = fieldName;

@@ -131,7 +131,7 @@ class Parser implements TagConstants {
 	    return new Node.Nodes(root);
 	}
 
-	// For the Top level page, add inlcude-prelude and include-coda
+	// For the Top level page, add include-prelude and include-coda
 	PageInfo pageInfo = pc.getCompiler().getPageInfo();
 	if (parent == null) {
 	    parser.addInclude(root, pageInfo.getIncludePrelude());

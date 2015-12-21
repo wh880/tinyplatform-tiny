@@ -29,7 +29,7 @@ public class ShardJedisSentinelManagerFactory {
 
 	static {
 		XStream stream = XStreamFactory
-				.getXStream(JedisShardSentinelConfigsFileProcessor.JEDIS_SHARD_SENTRINEL_XSTREAM_NAME);
+				.getXStream(JedisShardSentinelConfigsFileProcessor.JEDIS_SHARD_SENTINEL_XSTREAM_NAME);
 		ClassLoader loader = ShardJedisSentinelManagerFactory.class
 				.getClassLoader() == null ? ClassLoader.getSystemClassLoader()
 				: ShardJedisSentinelManagerFactory.class.getClassLoader();
@@ -85,7 +85,7 @@ public class ShardJedisSentinelManagerFactory {
 
 	public static void addResource(String filePath) {
 		XStream stream = XStreamFactory
-				.getXStream(JedisShardSentinelConfigsFileProcessor.JEDIS_SHARD_SENTRINEL_XSTREAM_NAME);
+				.getXStream(JedisShardSentinelConfigsFileProcessor.JEDIS_SHARD_SENTINEL_XSTREAM_NAME);
 		ShardJedisSentinelConfigs shardJedisSentinelConfigs = (ShardJedisSentinelConfigs) stream
 				.fromXML(ShardJedisSentinelManagerFactory.class
 						.getResourceAsStream(filePath));

@@ -49,7 +49,7 @@ public class ExceptionHandlerManagerImpl implements ExceptionHandlerManager {
 		}else{
 			for(int i=0;i<exceptionList.size();i++){
 				Class<?> clazz = exceptionList.get(i);
-				if( implmentInterface(exceptionClass, clazz) ){
+				if( implementInterface(exceptionClass, clazz) ){
 					handlerMap.get(clazz).handle(e,event);
 					return true;
 				}
@@ -63,14 +63,14 @@ public class ExceptionHandlerManagerImpl implements ExceptionHandlerManager {
 		boolean flag = false;
 		for(int i=0;i<exceptionList.size();i++){
 			Class<?> clazz = exceptionList.get(i);
-			if( implmentInterface(exceptionClass, clazz) ){
+			if( implementInterface(exceptionClass, clazz) ){
 				handlerMap.get(clazz).handle(e,event);
 				flag =true;
 			}
 		}
 		return flag;
 	}
-	private boolean implmentInterface(Class<?> clazz, Class<?> interfaceClazz) {
+	private boolean implementInterface(Class<?> clazz, Class<?> interfaceClazz) {
 		return interfaceClazz.isAssignableFrom(clazz);
 	}
 }

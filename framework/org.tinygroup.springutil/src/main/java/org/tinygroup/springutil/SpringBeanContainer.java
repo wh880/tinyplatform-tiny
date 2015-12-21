@@ -33,7 +33,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	private ApplicationContext applicationContext = null;
 	private List<String> configs = new ArrayList<String>();
 	private Map<ClassLoader, BeanContainer<?>> subs = new HashMap<ClassLoader, BeanContainer<?>>();
-	private boolean inited = false;
+	private boolean initialized = false;
 	private BeanContainer<?> parent;
 	private String noBeanCaseInfo;
 
@@ -52,9 +52,9 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	}
 
 	public SpringBeanContainer() {
-		if (inited == true)
+		if (initialized == true)
 			return;
-		inited = true;
+		initialized = true;
 		FileSystemXmlApplicationContext fileSystemXmlApplicationContext = new FileSystemXmlApplicationContext();
 		fileSystemXmlApplicationContext.setAllowBeanDefinitionOverriding(true);
 		fileSystemXmlApplicationContext.refresh();
@@ -63,9 +63,9 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	}
 
 	public SpringBeanContainer(SpringBeanContainer parent, ClassLoader loader) {
-		if (inited == true)
+		if (initialized == true)
 			return;
-		inited = true;
+		initialized = true;
 		FileSystemXmlApplicationContext fileSystemXmlApplicationContext = new FileSystemXmlApplicationContext(
 				parent.getBeanContainerPrototype());
 		fileSystemXmlApplicationContext.setAllowBeanDefinitionOverriding(true);
@@ -77,9 +77,9 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 
 	public SpringBeanContainer(SpringBeanContainer parent,
 			List<FileObject> files, ClassLoader loader) {
-		if (inited == true)
+		if (initialized == true)
 			return;
-		inited = true;
+		initialized = true;
 		List<String> configLocations = new ArrayList<String>();
 		for (FileObject fileObject : files) {
 			String urlString = fileObject.getURL().toString();

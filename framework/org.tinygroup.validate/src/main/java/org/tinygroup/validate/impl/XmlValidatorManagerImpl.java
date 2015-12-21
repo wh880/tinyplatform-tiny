@@ -79,24 +79,24 @@ public class XmlValidatorManagerImpl extends AbstractValidatorManger implements
 //							.getDeclaredField(propertyValidatorConfig
 //									.getPropertyName());
 					String wrapperKey = getWrapperKey(clazz, field);
-					FieldWapper fieldWapper = fieldWrapperMap.get(wrapperKey);
-					if (fieldWapper == null) {
-						fieldWapper = new FieldWapper(field,
+					FieldWrapper fieldWrapper = fieldWrapperMap.get(wrapperKey);
+					if (fieldWrapper == null) {
+						fieldWrapper = new FieldWrapper(field,
 								propertyValidatorConfig.getPropertyName(),
 								propertyValidatorConfig.getPropertyTitle());
-						fieldWrapperMap.put(wrapperKey, fieldWapper);
+						fieldWrapperMap.put(wrapperKey, fieldWrapper);
 					}
 					if (propertyValidatorConfig.getValidatorConfigList().size() == 0) {
 						// 20130605 如果是该配置项没有ValidatorConfig
 						// 则为其生成一个空的validator添加
 						// 主要是为了添加一个filedWapper去fieldValidatorMap中占位
 						// 用于对象嵌套时，被嵌套对象的验证占位
-						fieldValidatorMap.addValidator(fieldWapper, "", null);
+						fieldValidatorMap.addValidator(fieldWrapper, "", null);
 						continue;
 					}
 					for (ValidatorConfig validatorConfig : propertyValidatorConfig
 							.getValidatorConfigList()) {
-						fieldValidatorMap.addValidator(fieldWapper,
+						fieldValidatorMap.addValidator(fieldWrapper,
 								validatorConfig.getScene(),
 								getValidator(validatorConfig));
 					}

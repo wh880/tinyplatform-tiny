@@ -2,8 +2,6 @@ package org.tinygroup.jedis.fileresolver;
 
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.jedis.ShardJedisSentinelManager;
-import org.tinygroup.jedis.config.ShardJedisSentinelConfigs;
-import org.tinygroup.logger.LogLevel;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
 
@@ -17,9 +15,9 @@ import com.thoughtworks.xstream.XStream;
  */
 public class JedisShardSentinelConfigsFileProcessor extends AbstractFileProcessor {
 
-	private static final String JEDIS_SHARD_SENTRINEL_CONFIG_EXT_NAME = ".jedisshardsentrinelconfig.xml";
+	private static final String JEDIS_SHARD_SENTINEL_CONFIG_EXT_NAME = ".jedisshardsentrinelconfig.xml";
 
-	public static final String JEDIS_SHARD_SENTRINEL_XSTREAM_NAME = "jedis";
+	public static final String JEDIS_SHARD_SENTINEL_XSTREAM_NAME = "jedis";
 
 	private ShardJedisSentinelManager shardJedisSentinelManager;
 
@@ -34,13 +32,13 @@ public class JedisShardSentinelConfigsFileProcessor extends AbstractFileProcesso
 	}
 
 	public void process() {
-		XStream stream = XStreamFactory.getXStream(JEDIS_SHARD_SENTRINEL_XSTREAM_NAME);
+		XStream stream = XStreamFactory.getXStream(JEDIS_SHARD_SENTINEL_XSTREAM_NAME);
 		
 	}
 
 	@Override
 	protected boolean checkMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(JEDIS_SHARD_SENTRINEL_CONFIG_EXT_NAME);
+		return fileObject.getFileName().endsWith(JEDIS_SHARD_SENTINEL_CONFIG_EXT_NAME);
 	}
 
 }

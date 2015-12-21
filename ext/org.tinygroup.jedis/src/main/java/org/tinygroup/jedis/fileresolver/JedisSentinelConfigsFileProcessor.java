@@ -17,9 +17,9 @@ import com.thoughtworks.xstream.XStream;
  */
 public class JedisSentinelConfigsFileProcessor extends AbstractFileProcessor {
 
-	private static final String JEDIS_SENTRINEL_CONFIG_EXT_NAME = ".jedissentrinelconfig.xml";
+	private static final String JEDIS_SENTINEL_CONFIG_EXT_NAME = ".jedissentrinelconfig.xml";
 
-	private static final String JEDIS_SENTRINEL_XSTREAM_NAME = "jedis";
+	private static final String JEDIS_SENTINEL_XSTREAM_NAME = "jedis";
 
 	private JedisSentinelManager jedisSentinelManager;
 
@@ -34,7 +34,7 @@ public class JedisSentinelConfigsFileProcessor extends AbstractFileProcessor {
 	}
 
 	public void process() {
-		XStream stream = XStreamFactory.getXStream(JEDIS_SENTRINEL_XSTREAM_NAME);
+		XStream stream = XStreamFactory.getXStream(JEDIS_SENTINEL_XSTREAM_NAME);
 		for (FileObject fileObject : deleteList) {
 			LOGGER.logMessage(LogLevel.INFO, "正在移除Redis主从集群配置文件[{0}]",
 					fileObject.getAbsolutePath());
@@ -66,7 +66,7 @@ public class JedisSentinelConfigsFileProcessor extends AbstractFileProcessor {
 
 	@Override
 	protected boolean checkMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(JEDIS_SENTRINEL_CONFIG_EXT_NAME);
+		return fileObject.getFileName().endsWith(JEDIS_SENTINEL_CONFIG_EXT_NAME);
 	}
 
 }

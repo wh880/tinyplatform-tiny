@@ -124,24 +124,24 @@ public class CEPCoreImpl implements CEPCore {
 		processorMap.put(eventProcessor.getId(), eventProcessor);
 		eventProcessor.setCepCore(this);
 
-		List<ServiceInfo> servicelist = eventProcessor.getServiceInfos();
-		eventProcessorServices.put(eventProcessor.getId(), servicelist);
-		if (servicelist != null && !servicelist.isEmpty()) {
+		List<ServiceInfo> serviceList = eventProcessor.getServiceInfos();
+		eventProcessorServices.put(eventProcessor.getId(), serviceList);
+		if (serviceList != null && !serviceList.isEmpty()) {
 			if (EventProcessor.TYPE_REMOTE != eventProcessor.getType()) {
-				addLocalServiceInfo(servicelist);
+				addLocalServiceInfo(serviceList);
 			} else {
-				for (ServiceInfo service : servicelist) {
+				for (ServiceInfo service : serviceList) {
 					remoteServiceMap.put(service.getServiceId(), service);
 				}
 			}
-			addServiceInfos(eventProcessor, servicelist);
+			addServiceInfos(eventProcessor, serviceList);
 		}
 
 		addRegex(eventProcessor);
 	}
 
-	private void addLocalServiceInfo(List<ServiceInfo> servicelist) {
-		for (ServiceInfo service : servicelist) {
+	private void addLocalServiceInfo(List<ServiceInfo> serviceList) {
+		for (ServiceInfo service : serviceList) {
 			if (!localServiceMap.containsKey(service.getServiceId())) {
 				localServiceMap.put(service.getServiceId(), service);
 				localServices.add(service);
@@ -150,8 +150,8 @@ public class CEPCoreImpl implements CEPCore {
 	}
 
 	private void addServiceInfos(EventProcessor eventProcessor,
-			List<ServiceInfo> servicelist) {
-		for (ServiceInfo service : servicelist) {
+			List<ServiceInfo> serviceList) {
+		for (ServiceInfo service : serviceList) {
 			String name = service.getServiceId();
 			if (serviceIdMap.containsKey(name)) {
 				List<EventProcessor> list = serviceIdMap.get(name);

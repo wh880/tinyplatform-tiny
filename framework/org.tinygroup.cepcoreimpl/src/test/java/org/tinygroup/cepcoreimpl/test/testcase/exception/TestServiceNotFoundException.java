@@ -14,7 +14,7 @@ public class TestServiceNotFoundException extends CEPCoreBaseTestCase {
 			getCore().getServiceInfo("aaaaa");
 		} catch (BaseRuntimeException e) {
 			assertEquals(e.getErrorCode().toString(),
-					CEPCoreExceptionCode.SERVICE_NOT_FOUND_EXCETPION_CODE);
+					CEPCoreExceptionCode.SERVICE_NOT_FOUND_EXCEPTION_CODE);
 		}
 
 	}
