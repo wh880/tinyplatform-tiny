@@ -25,8 +25,8 @@ public class I18nMessagesTest extends TestCase {
 		assertEquals("罗果", i18.getMessage("name", new ContextImpl()));
 		assertEquals("罗果", i18.getMessage("name", new ContextImpl(), LocaleUtil.getContext().getLocale()));
 		assertEquals("罗果", i18.getMessage("name", "default", new ContextImpl()));
-		assertEquals("罗果", i18.getMessage("name", "", new Object()));
-		assertEquals("罗果", i18.getMessage("name", LocaleUtil.getContext().getLocale(), "",new Object()));
+		assertEquals("罗果", i18.getMessage("name", ""));
+		assertEquals("罗果", i18.getMessage("name", LocaleUtil.getContext().getLocale()));
 		assertEquals("罗果", i18.getMessage("name", "", new ContextImpl(), LocaleUtil.getContext().getLocale()));
 		
 		//测试defaultValue
