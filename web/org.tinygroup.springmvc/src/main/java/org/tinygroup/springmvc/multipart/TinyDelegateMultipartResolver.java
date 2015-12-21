@@ -1,6 +1,5 @@
 package org.tinygroup.springmvc.multipart;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,11 +29,12 @@ import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
  *
  */
 public class TinyDelegateMultipartResolver extends CommonsMultipartResolver {
+	
 
 	@Override
 	public MultipartHttpServletRequest resolveMultipart(
 			final HttpServletRequest request) throws MultipartException {
-		ParserWebContext parserWebContext = WebContextUtil.findWebContext(
+		final ParserWebContext parserWebContext = WebContextUtil.findWebContext(
 				request, ParserWebContext.class);
 		final UploadService uploadService = parserWebContext.getUploadService();
 		if (parserWebContext != null && uploadService != null
@@ -43,7 +43,7 @@ public class TinyDelegateMultipartResolver extends CommonsMultipartResolver {
 				@Override
 				protected void initializeMultipart() {
 					MultipartParsingResult parsingResult = parseRequest(
-							request, uploadService);
+							request, uploadService,parserWebContext);
 					setMultipartFiles(parsingResult.getMultipartFiles());
 					setMultipartParameters(parsingResult
 							.getMultipartParameters());
@@ -54,51 +54,29 @@ public class TinyDelegateMultipartResolver extends CommonsMultipartResolver {
 	}
 
 	protected MultipartParsingResult parseRequest(HttpServletRequest request,
-			UploadService uploadService) throws MultipartException {
+			UploadService uploadService, ParserWebContext parserWebContext) throws MultipartException {
 		String encoding = determineEncoding(request);
 		List<FileItem> fileItems = Arrays.asList(uploadService.getFileItems());
-		return parseFileItems(fileItems, encoding);
+		return parseFileItems(fileItems, encoding,parserWebContext);
 	}
 
 	protected MultipartParsingResult parseFileItems(List<FileItem> fileItems,
-			String encoding) {
+			String encoding, ParserWebContext parserWebContext) {
 		MultiValueMap<String, MultipartFile> multipartFiles = new LinkedMultiValueMap<String, MultipartFile>();
 		Map<String, String[]> multipartParameters = new HashMap<String, String[]>();
 
 		// Extract multipart files and multipart parameters.
 		for (FileItem fileItem : fileItems) {
 			if (fileItem.isFormField()) {
-				String value;
-				String partEncoding = determineEncoding(
-						fileItem.getContentType(), encoding);
-				if (partEncoding != null) {
-					try {
-						value = fileItem.getString(partEncoding);
-					} catch (UnsupportedEncodingException ex) {
-						if (logger.isWarnEnabled()) {
-							logger.warn("Could not decode multipart item '"
-									+ fileItem.getFieldName()
-									+ "' with encoding '" + partEncoding
-									+ "': using platform default");
-						}
-						value = fileItem.getString();
+				if(!multipartParameters.containsKey(fileItem.getFieldName())){
+					Object value=parserWebContext.get(fileItem.getFieldName());
+					if(value==null||value instanceof String){
+						multipartParameters.put(fileItem.getFieldName(), new String[]{(String)value});
+					}else if(value instanceof String[]){
+						multipartParameters.put(fileItem.getFieldName(), (String[])value);
 					}
-				} else {
-					value = fileItem.getString();
 				}
-				String[] curParam = multipartParameters.get(fileItem
-						.getFieldName());
-				if (curParam == null) {
-					// simple form field
-					multipartParameters.put(fileItem.getFieldName(),
-							new String[] { value });
-				} else {
-					// array of simple form fields
-					String[] newParam = StringUtils.addStringToArray(curParam,
-							value);
-					multipartParameters.put(fileItem.getFieldName(), newParam);
-				}
-			} else {
+			} else {//暂时不支持filter文件过滤功能
 				// multipart file field
 				DefaultTinyMultipartFile file = new DefaultTinyMultipartFile(
 						fileItem);
@@ -136,4 +114,5 @@ public class TinyDelegateMultipartResolver extends CommonsMultipartResolver {
 			super.cleanupMultipart(request);
 		}
 	}
+	
 }
