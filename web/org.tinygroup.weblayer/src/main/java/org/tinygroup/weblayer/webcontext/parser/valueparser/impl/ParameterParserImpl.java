@@ -222,69 +222,87 @@ public class ParameterParserImpl extends AbstractValueParser implements
 	private Object[] processValues(String key, boolean isHtmlField,
 			boolean[] filtering) {
 		Object[] values = getObjects(key);
-		List<Object> tempFiles = new ArrayList<Object>();
+		List<Object> paramValues = new ArrayList<Object>();
 		for (int i = 0; i < values.length; i++) {
 			Object value = values[i];
-
-			if (value instanceof String) {
-				// 将非HTML字段的&#12345;转换成unicode。
-				if (!isHtmlField && webContext.isUnescapeParameters()) {
-					value = StringEscapeUtil.unescapeEntities(null,
-							(String) value);
-				}
-
-				// 过滤字符串值
-				if (filtering != null) {
-					for (int j = 0; j < filters.length; j++) {
-						ParameterParserFilter filter = filters[j];
-
-						if (filter instanceof ParameterValueFilter
-								&& filtering[j]) {
-							value = ((ParameterValueFilter) filter).filter(key,
-									(String) value, isHtmlField);
-						}
-						if (filter instanceof ParamValueFilter && filtering[j]
-								&& ((ParamValueFilter) filter).isFilter(key)) {
-							value = ((ParamValueFilter) filter).valueFilter(
-									(String) value, webContext);
-						}
-					}
-				}
-			} else if (value instanceof ItemFileObject) {
+			if(value instanceof ItemFileObject){
 				FileItem fileItem = ((ItemFileObject) value).getFileItem();
-				// 过滤上传文件
-				if (filtering != null) {
-					for (int j = 0; j < filters.length; j++) {
-						ParameterParserFilter filter = filters[j];
-
-						if (filter instanceof UploadedFileFilter
-								&& filtering[j]) {
-							value = ((UploadedFileFilter) filter).filter(key,
-									fileItem);
-						}
-					}
+				if(fileItem.isFormField()){//如果是普通的表单字段，先转换成String类型
+					value=fileItem.toString();
 				}
-				if (!fileItem.isFormField()
-						&& fileItem.getContentType() != null) {
-					tempFiles.add(value);
-				} else {
-					if (!StringUtil.isBlank(fileItem.toString())) {
-						tempFiles.add(fileItem.toString());
-					}
-				}
-
+			}
+			//进行参数值过滤，普通参数过滤与文件过滤
+			if (value instanceof String) {
+				stringValueFilter(key, isHtmlField, filtering, value,paramValues);
+			} else if (value instanceof ItemFileObject) {
+				fileItemFilter(key, filtering, value,paramValues); 
 			}
 
-			values[i] = value;
 		}
-		if (tempFiles.size() > 0) {// 表单是文件上传
-			if (tempFiles.size() == 1) {
-				webContext.put(key, tempFiles.get(0));
+		if (paramValues.size() > 0) {
+			if (paramValues.size() == 1) {
+				webContext.put(key, paramValues.get(0));
 			} else {
-				webContext.put(key, tempFiles.toArray());
+				webContext.put(key, paramValues.toArray());
 			}
 		}
-		return values;
+		return paramValues.toArray();
+	}
+
+	private void fileItemFilter(String key, boolean[] filtering, Object value,List<Object> paramValues) {
+		FileItem fileItem = ((ItemFileObject) value).getFileItem();
+		FileItem processFileItem=fileItem;
+		// 过滤上传文件
+		if (filtering != null) {
+			for (int j = 0; j < filters.length; j++) {
+				ParameterParserFilter filter = filters[j];
+
+				if (filter instanceof UploadedFileFilter
+						&& filtering[j]) {
+					processFileItem = ((UploadedFileFilter) filter).filter(key,
+							processFileItem);
+				}
+			}
+		}
+		if(processFileItem==null){
+			fileItem.delete();//过滤操作返回的fileitem为空则删除原有文件
+			
+		}else{
+			fileItem=processFileItem;
+			if (!fileItem.isFormField()
+					&& fileItem.getContentType() != null) {//文件类型
+				paramValues.add(value);
+			}
+		}
+	}
+
+	private void stringValueFilter(String key, boolean isHtmlField,
+			boolean[] filtering, Object value,List<Object> paramValues) {
+		Object processValue=value;
+		// 将非HTML字段的&#12345;转换成unicode。
+		if (!isHtmlField && webContext.isUnescapeParameters()) {
+			processValue = StringEscapeUtil.unescapeEntities(null,
+					(String) value);
+		}
+
+		// 过滤字符串值
+		if (filtering != null) {
+			for (int j = 0; j < filters.length; j++) {
+				ParameterParserFilter filter = filters[j];
+
+				if (filter instanceof ParameterValueFilter
+						&& filtering[j]) {
+					processValue = ((ParameterValueFilter) filter).filter(key,
+							(String) processValue, isHtmlField);
+				}
+				if (filter instanceof ParamValueFilter && filtering[j]
+						&& ((ParamValueFilter) filter).isFilter(key)) {
+					processValue = ((ParamValueFilter) filter).valueFilter(
+							(String) processValue, webContext);
+				}
+			}
+		}
+		paramValues.add(processValue);
 	}
 
 	/**
