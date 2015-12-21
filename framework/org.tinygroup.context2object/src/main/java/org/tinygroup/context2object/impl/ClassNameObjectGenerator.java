@@ -231,9 +231,9 @@ public class ClassNameObjectGenerator extends BaseClassNameObjectGenerator imple
 					Class<?> type = field.getType();
 					// ===============end======================
 					if (type.isArray()) {// 如果是数组
-						Object value = getObject(null, null,
+						Object value = getObject(newPreName, null,
 								descriptor.getPropertyType(), context,
-								newPreName);
+								null);
 						if (value != null) {
 							BeanUtils.setProperty(object, descriptor.getName(),
 									value);
@@ -259,18 +259,18 @@ public class ClassNameObjectGenerator extends BaseClassNameObjectGenerator imple
 						Type[] actualTypeArguments = pt
 								.getActualTypeArguments();
 						Collection<Object> collection = (Collection<Object>) getObjectInstance(type);
-						buildCollection(null, collection,
+						buildCollection(newPreName, collection,
 								(Class) actualTypeArguments[0], context,
-								newPreName);
+								null);
 						if (!collection.isEmpty()) {
 							BeanUtils.setProperty(object, descriptor.getName(),
 									collection);
 							allPropertyNull = false;
 						}
 					} else {// 如果是其他类型
-						Object value = getObject(null, null,
+						Object value = getObject(newPreName, null,
 								descriptor.getPropertyType(), context,
-								newPreName);
+								null);
 						if (value != null) {
 							BeanUtils.setProperty(object, descriptor.getName(),
 									value);

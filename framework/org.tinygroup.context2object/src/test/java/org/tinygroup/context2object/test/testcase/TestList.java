@@ -85,6 +85,21 @@ public class TestList extends BastTestCast{
 		assertEquals(true, strings.contains("tomcat")&&strings.contains("name1")&&strings.contains("name2"));
 	}
 	
+	public void testListBoolean() {
+		Context context = new ContextImpl();
+		String[] names = { "true", "true", "true" };
+		context.put("a", names);
+		Collection<Boolean> parts = generator.getObjectCollection("a",List.class.getName(), Boolean.class.getName(),this.getClass().getClassLoader(), context);
+		assertEquals(3, parts.size());
+		Iterator<Boolean> iterator = parts.iterator();
+		String strings = "";
+		while(iterator.hasNext()){
+			Boolean s = (Boolean) iterator.next();
+			assertEquals(Boolean.TRUE, s);
+					}
+		
+	}
+	
 	public void testListStringProperty() {
 		Context context = new ContextImpl();
 		String[] names = { "tomcat", "name1", "name2" };

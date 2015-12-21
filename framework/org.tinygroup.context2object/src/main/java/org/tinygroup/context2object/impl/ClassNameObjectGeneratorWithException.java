@@ -123,7 +123,7 @@ public class ClassNameObjectGeneratorWithException extends
 						.getGenericType();
 				Type[] actualTypeArguments = pt.getActualTypeArguments();
 				Collection<Object> collection = (Collection<Object>) getObjectInstance(type);
-				buildCollection(newPreName, null, collection,
+				buildCollection(null, newPreName, collection,
 						(Class) actualTypeArguments[0], context);
 				if (!collection.isEmpty()) {
 					try {
@@ -135,7 +135,8 @@ public class ClassNameObjectGeneratorWithException extends
 					allPropertyNull = false;
 				}
 			} else if (propertyType.isArray()) {
-				Object value = buildArrayObjectWithObject(getPreName(preName, objName), propertyName,
+				Object value = buildArrayObjectWithObject(
+						getPreName(preName, objName), propertyName,
 						propertyType.getComponentType(), context);
 				if (value != null) {
 					try {
@@ -147,8 +148,8 @@ public class ClassNameObjectGeneratorWithException extends
 					allPropertyNull = false;
 				}
 			} else {
-				Object o = getObject(getPreName(preName, objName), propertyName, propertyType,
-						loader, context);
+				Object o = getObject(getPreName(preName, objName),
+						propertyName, propertyType, loader, context);
 				if (o != null) {
 					allPropertyNull = false;
 					try {
@@ -173,34 +174,43 @@ public class ClassNameObjectGeneratorWithException extends
 			throw new RuntimeException("组装集合时，传入的集合内对象类型不可为");
 		}
 		if (isSimpleType(clazz)) {
-			String reallyVarName = varName;
-			if (isNull(reallyVarName)) {
-				reallyVarName = preName;
-			}
+			String reallyVarName = getPreName(preName, varName);
 			if (isNull(reallyVarName)) {
 				throw new RuntimeException("简单类型数组或集合,变量名不可为空");
 			}
 			Object propertyValue = getPerpertyValue(reallyVarName, context);
-			if (propertyValue != null) { // 如果值不为空
+			if (propertyValue == null) {
+				return;
+			} else { // 如果值不为空
 				if (propertyValue.getClass().isArray()) { // 值为数组
 					// 如果是数组
 					Object[] objArray = (Object[]) propertyValue;
-					for (Object o : objArray) {
-						collection.add(o);
+					if (objArray.getClass().getComponentType() == String.class) {
+						for (Object o : objArray) {
+							collection.add(BasicTypeConverter.getValue(
+									(String) o, clazz.getName()));
+						}
+					} else {
+						for (Object o : objArray) {
+							collection.add(o);
+						}
 					}
 				} else {
-					// 值不是数组
-					collection.add(propertyValue);
+					if (propertyValue.getClass() == String.class) {
+						collection.add(BasicTypeConverter.getValue(
+								(String) propertyValue, clazz.getName()));
+					} else {
+						collection.add(propertyValue);
+					}
 				}
 			}
-		}else if (checkIfNotComplexObjectCollection(varName, collection, clazz,
-				context, preName)) {
+		} else if (checkIfNotComplexObjectCollection(varName, collection,
+				clazz, context, preName)) {
 			// 单值类型
 			return;
-		}else{
+		} else {
 			dealComplexObject(varName, collection, clazz, context, preName);
 		}
-		
 
 	}
 
@@ -300,7 +310,8 @@ public class ClassNameObjectGeneratorWithException extends
 									descriptor.getName(), objArray[i]);
 						}
 
-					} else if (isSimpleType(propertyValue.getClass())) { // 若值也是简单类型则赋值，非简单类型，则不处理
+					} else if (isSimpleType(objArray.getClass()
+							.getComponentType())) { // 若值也是简单类型则赋值，非简单类型，则不处理
 						for (int i = 0; i < size; i++) {
 							BeanUtils.setProperty(objecList.get(i),
 									descriptor.getName(), objArray[i]);
@@ -329,6 +340,7 @@ public class ClassNameObjectGeneratorWithException extends
 		// return collection;
 	}
 
+	
 	// 处理非复杂对象，如enmu等类型
 	// 此种方式判断依据是preName.varName存在一个数组值
 	// 因为如果是复杂对象，那么必然不存在preName.varName数组，而是存在preName.varName.propertyName数组
@@ -442,9 +454,6 @@ public class ClassNameObjectGeneratorWithException extends
 			}
 		}
 	}
-
-
-	
 
 	private List<TypeConverter<?, ?>> getTypeConverterList(Class<?> destType) {
 		return typeConverterMap.get(destType);

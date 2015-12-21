@@ -73,7 +73,11 @@ public abstract class BaseClassNameObjectGenerator {
 	}
 	
 	protected String getPreName(String preName,String varName) {
-		if(StringUtil.isBlank(preName)){
+		if(StringUtil.isBlank(preName)&&StringUtil.isBlank(varName)){
+			return null;
+		}else if(StringUtil.isBlank(varName)){
+			return preName;
+		}else if(StringUtil.isBlank(preName)){
 			return varName;
 		}
 		return String.format("%s.%s", preName, varName);
@@ -115,10 +119,11 @@ public abstract class BaseClassNameObjectGenerator {
 
 	protected String getReallyPropertyName(String preName, String objName,
 			String propertyName) {
-		if (preName == null || "".equals(preName)) {
+		if (StringUtil.isBlank(preName)) {
 			return String.format("%s.%s", objName, propertyName);
 		}
-		return String.format("%s.%s", preName, propertyName);
+		
+		return String.format("%s.%s.%s", preName, objName,propertyName);
 	}
 
 	protected boolean isSimpleType(Class<?> clazz) {

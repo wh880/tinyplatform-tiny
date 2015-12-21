@@ -15,10 +15,7 @@ public class TestSimpleObject extends BaseTestCast2 {
 		SimpleObject bean = (SimpleObject) generator.getObject("bean", null,
 				SimpleObject.class.getName(), this.getClass().getClassLoader(),
 				context);
-		assertEquals("name", bean.getName());
-		assertEquals(2, bean.getLength2());
-		assertEquals(Integer.valueOf(1), bean.getLength());
-		assertEquals(Boolean.TRUE, bean.getFlag());
+		assertMethod(bean);
 	}
 
 	public void testSimpleProperty2() {
@@ -30,10 +27,7 @@ public class TestSimpleObject extends BaseTestCast2 {
 		SimpleObject bean = (SimpleObject) generator.getObject(null, null,
 				SimpleObject.class.getName(), this.getClass().getClassLoader(),
 				context);
-		assertEquals("name", bean.getName());
-		assertEquals(2, bean.getLength2());
-		assertEquals(Integer.valueOf(1), bean.getLength());
-		assertEquals(Boolean.TRUE, bean.getFlag());
+		assertMethod(bean);
 	}
 
 	public void testSimpleProperty3() {
@@ -45,6 +39,10 @@ public class TestSimpleObject extends BaseTestCast2 {
 		SimpleObject bean = (SimpleObject) generator.getObject(null, null,
 				SimpleObject.class.getName(), this.getClass().getClassLoader(),
 				context);
+		assertMethod(bean);
+	}
+
+	private void assertMethod(SimpleObject bean) {
 		assertEquals("name", bean.getName());
 		assertEquals(2, bean.getLength2());
 		assertEquals(Integer.valueOf(1), bean.getLength());
