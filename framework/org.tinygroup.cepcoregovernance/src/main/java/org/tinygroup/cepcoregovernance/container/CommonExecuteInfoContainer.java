@@ -18,7 +18,7 @@ public class CommonExecuteInfoContainer {
 	/**
 	 * serviceId,成功次数
 	 */
-	private Map<String, Long> serviceSucessTimeMap = new HashMap<String, Long>();
+	private Map<String, Long> serviceSuccessTimeMap = new HashMap<String, Long>();
 
 	/**
 	 * eventId,serviceId
@@ -40,8 +40,22 @@ public class CommonExecuteInfoContainer {
 		return getTotalValue(serviceTimeMap);
 	}
 
+	/**
+	 * 过期方法
+	 * 请使用getSuccessTimes
+	 * @return
+	 */
+	@Deprecated
 	public Long getSucessTimes() {
-		return getTotalValue(serviceSucessTimeMap);
+		return getSuccessTimes();
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public Long getSuccessTimes() {
+		return getTotalValue(serviceSuccessTimeMap);
 	}
 
 	public Long getExceptionTimes() {
@@ -79,7 +93,7 @@ public class CommonExecuteInfoContainer {
 		String serviceId = getServiceId(e);
 		serviceInfo.remove(e.getEventId());
 		updateTimeInfo(serviceId,e.getEventId());
-		addExecute(serviceId, serviceSucessTimeMap);
+		addExecute(serviceId, serviceSuccessTimeMap);
 	}
 
 	private void updateTimeInfo(String serviceId,String eventId) {
@@ -113,7 +127,7 @@ public class CommonExecuteInfoContainer {
 	public void reset() {
 		serviceInfo.clear();
 		serviceTimeMap.clear();
-		serviceSucessTimeMap.clear();
+		serviceSuccessTimeMap.clear();
 		serviceExceptionTimeMap.clear();
 	}
 	

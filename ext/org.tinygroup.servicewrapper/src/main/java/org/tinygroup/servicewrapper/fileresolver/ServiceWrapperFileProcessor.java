@@ -39,15 +39,15 @@ public class ServiceWrapperFileProcessor extends AbstractFileProcessor {
 		for (FileObject fileObject : changeList) {
 			LOGGER.logMessage(LogLevel.INFO, "正在加载aop服务包装配置文件[{0}]",
 					fileObject.getAbsolutePath());
-			MethodConfigs oldMatchers = (MethodConfigs) caches.get(fileObject
+			MethodConfigs oldConfigs = (MethodConfigs) caches.get(fileObject
 					.getAbsolutePath());
-			if (oldMatchers != null) {
-				manager.removeServiceWrappers(oldMatchers);
+			if (oldConfigs != null) {
+				manager.removeServiceWrappers(oldConfigs);
 			}
 			InputStream inputStream = fileObject.getInputStream();
-			MethodConfigs matchers = (MethodConfigs) stream.fromXML(inputStream);
-			manager.addServiceWrappers(matchers);
-			caches.put(fileObject.getAbsolutePath(), matchers);
+			MethodConfigs configs = (MethodConfigs) stream.fromXML(inputStream);
+			manager.addServiceWrappers(configs);
+			caches.put(fileObject.getAbsolutePath(), configs);
 			LOGGER.logMessage(LogLevel.INFO, "加载aop服务包装配置文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}

@@ -81,11 +81,11 @@ public class WorkExecutor extends AbstractProcessor {
     private void redoWork(List<Worker> workersActived) throws RemoteException {
         LOGGER.logMessage(LogLevel.DEBUG, "开始重新查找worker");
         Worker redoWorker = null;
-        for (Worker wker : workers) {
-            if (wker.acceptWork(work)) {
-                LOGGER.logMessage(LogLevel.DEBUG, "查找到worker:{0}", wker.getId());
-                redoWorker = wker;
-                workersActived.add(wker);
+        for (Worker worker : workers) {
+            if (worker.acceptWork(work)) {
+                LOGGER.logMessage(LogLevel.DEBUG, "查找到worker:{0}", worker.getId());
+                redoWorker = worker;
+                workersActived.add(worker);
             }
         }
         if (redoWorker == null) {

@@ -80,7 +80,7 @@ public class ClassNameObjectGeneratorWithException extends
 		} else {
 			// 处理对象
 			Object o = getObjectInstance(clazz);
-			Object result = buildObject(null, varName, o, loader, context);
+			Object result = buildObject(preName, varName, o, loader, context);
 			return result;
 		}
 	}
@@ -135,7 +135,7 @@ public class ClassNameObjectGeneratorWithException extends
 					allPropertyNull = false;
 				}
 			} else if (propertyType.isArray()) {
-				Object value = buildArrayObjectWithObject(preName, varName,
+				Object value = buildArrayObjectWithObject(getPreName(preName, objName), propertyName,
 						propertyType.getComponentType(), context);
 				if (value != null) {
 					try {
@@ -147,7 +147,7 @@ public class ClassNameObjectGeneratorWithException extends
 					allPropertyNull = false;
 				}
 			} else {
-				Object o = getObject(objName, propertyName, propertyType,
+				Object o = getObject(getPreName(preName, objName), propertyName, propertyType,
 						loader, context);
 				if (o != null) {
 					allPropertyNull = false;
@@ -193,13 +193,14 @@ public class ClassNameObjectGeneratorWithException extends
 					collection.add(propertyValue);
 				}
 			}
-		}
-		// 单值类型
-		if (checkIfNotComplexObjectCollection(varName, collection, clazz,
+		}else if (checkIfNotComplexObjectCollection(varName, collection, clazz,
 				context, preName)) {
+			// 单值类型
 			return;
+		}else{
+			dealComplexObject(varName, collection, clazz, context, preName);
 		}
-		dealComplexObject(varName, collection, clazz, context, preName);
+		
 
 	}
 
@@ -438,51 +439,6 @@ public class ClassNameObjectGeneratorWithException extends
 			list.remove(typeConverter);
 			if (list.size() == 0) {
 				typeConverterMap.remove(typeConverter);
-			}
-		}
-	}
-
-	/**
-	 * 根据clazz获取对象 先从creator中获取，若找不到，则去springbean中获取
-	 * 
-	 * @param clazz
-	 * @return
-	 */
-	private Object getObjectInstance(Class<?> clazz) {
-		Object o = getIntanceByCreator(clazz);
-		if (o != null) {
-			return o;
-		}
-		return getInstanceBySpringBean(clazz);
-	}
-
-	private Object getInstanceBySpringBean(String bean) {
-		if (bean == null || "".equals(bean)) {
-			return null;
-		}
-		try {
-			return BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(bean);
-		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.WARN, e.getMessage());
-			return null;
-		}
-
-	}
-
-	private Object getInstanceBySpringBean(Class<?> clazz) {
-		if (clazz == null) {
-			return null;
-		}
-		try {
-			return BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(clazz);
-		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.WARN, e.getMessage());
-			try {
-				return clazz.newInstance();
-			} catch (Exception e1) {
-				throw new RuntimeException(e1);
 			}
 		}
 	}

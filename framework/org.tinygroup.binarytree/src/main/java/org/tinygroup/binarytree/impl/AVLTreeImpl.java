@@ -270,7 +270,7 @@ public class AVLTreeImpl<T extends Comparable<T>> implements AVLTree<T> {
 			 * ，树的高度不会发生变化，所以不需要旋转，我们要作的就是调整从根节点到插入节点的路径上的所有节点的平衡因子罢了
 			 */
 			// 根节点的平衡因子我们单独拿出来调整，因为adjustPath的参数好比是一个开区间，它不包括两头参数
-			// 本身，而是从nserted.paraent开始到to的子节点为止，所以需单独调整，其他分支也一样
+			// 本身，而是从inserted.parent开始到to的子节点为止，所以需单独调整，其他分支也一样
 			if (elem.compareTo(root.elem) < 0) {
 				root.balanceFactor = 'L';
 			} else {
@@ -367,17 +367,30 @@ public class AVLTreeImpl<T extends Comparable<T>> implements AVLTree<T> {
 	}
 
 	/**
+	 * 已过期
+	 * 推荐使用adjustLeftRight
 	 * 进行 左-右旋转 后平衡因子调整 分三种情况
 	 * 
 	 * @param ancestor
 	 * @param inserted
 	 */
+	@Deprecated
 	protected void adjustLeftRigth(Entry<T> ancestor, Entry<T> inserted) {
+		adjustLeftRight(ancestor,inserted);
+	}
+
+	/**
+	 * 进行 左-右旋转 后平衡因子调整 分三种情况
+	 *
+	 * @param ancestor
+	 * @param inserted
+	 */
+	protected void adjustLeftRight(Entry<T> ancestor, Entry<T> inserted) {
 		T elem = inserted.elem;
 		if (ancestor.parent == inserted) {
 			/*
 			 * 第1种，新增的节点在旋转完成后为ancestor父节点情况：
-			 * 
+			 *
 			 * 注，这里的 左-右旋 是在fixAfterInsertion方法中的第5种情况中完成的，在这里只是平衡因子的
 			 * 调整，图是为了好说明问题而放在这个方法中的，下面的两个分支也是一样
 			 */
@@ -385,7 +398,7 @@ public class AVLTreeImpl<T extends Comparable<T>> implements AVLTree<T> {
 		} else if (elem.compareTo(ancestor.parent.elem) < 0) {
 			/*
 			 * 第2种，新增的节点在旋转完成后为不为ancestor父节点，且新增节点比旋转后ancestor的父节点要小 的情况
-			 * 
+			 *
 			 * 由于插入元素(35)比旋转后ancestor(50)的父节点(40)要小， 所以新增节点会在其左子树中
 			 */
 			ancestor.balanceFactor = 'R';
@@ -405,14 +418,29 @@ public class AVLTreeImpl<T extends Comparable<T>> implements AVLTree<T> {
 	}
 
 	/**
+	 * 已过期
+	 * 推荐使用adjustRightLeft
 	 * 进行 右-左旋转 后平衡因子调整
 	 * <p/>
-	 * 与adjustLeftRigth方法一样，也有三种情况，这两个方法是对称的
+	 * 与adjustLeftRight方法一样，也有三种情况，这两个方法是对称的
 	 * 
 	 * @param ancestor
 	 * @param inserted
 	 */
 	protected void adjustRigthLeft(Entry<T> ancestor, Entry<T> inserted) {
+		adjustRightLeft(ancestor,inserted);
+	}
+
+	/**
+	 *
+	 * 进行 右-左旋转 后平衡因子调整
+	 * <p/>
+	 * 与adjustLeftRight方法一样，也有三种情况，这两个方法是对称的
+	 *
+	 * @param ancestor
+	 * @param inserted
+	 */
+	protected void adjustRightLeft(Entry<T> ancestor, Entry<T> inserted) {
 		T elem = inserted.elem;
 		if (ancestor.parent == inserted) {
 			/*
@@ -424,7 +452,7 @@ public class AVLTreeImpl<T extends Comparable<T>> implements AVLTree<T> {
 		} else if (elem.compareTo(ancestor.parent.elem) > 0) {
 			/*
 			 * 第2种，新增的节点在旋转完成后为不为ancestor父节点，且新增节点比旋转后 ancestor的父节点要大的情况
-			 * 
+			 *
 			 * 由于插入元素(73)比旋转后ancestor(50)的父节点(70)要大， 所以新增节点会 在其右子树中
 			 */
 			ancestor.balanceFactor = 'L';

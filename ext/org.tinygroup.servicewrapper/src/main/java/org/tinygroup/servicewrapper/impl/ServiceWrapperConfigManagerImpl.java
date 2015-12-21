@@ -16,17 +16,17 @@ public class ServiceWrapperConfigManagerImpl implements
 	private Map<MethodDescription, String> methodActionMap = new HashMap<MethodDescription, String>();
 
 	public void addServiceWrappers(MethodConfigs serviceWrappers) {
-		List<MethodConfig> methogConfiglist = serviceWrappers
+		List<MethodConfig> methodConfigList = serviceWrappers
 				.getMethodConfigs();
-		for (MethodConfig methodConfig : methogConfiglist) {
+		for (MethodConfig methodConfig : methodConfigList) {
 			putServiceWrapper(methodConfig);
 		}
 	}
 
 	public void removeServiceWrappers(MethodConfigs serviceWrappers) {
-		List<MethodConfig> methogConfiglist = serviceWrappers
+		List<MethodConfig> methodConfigList = serviceWrappers
 				.getMethodConfigs();
-		for (MethodConfig methodConfig : methogConfiglist) {
+		for (MethodConfig methodConfig : methodConfigList) {
 			MethodDescription description = new MethodDescription();
 			description.setClassName(methodConfig.getType());
 			description.setMethodName(methodConfig.getMethodName());

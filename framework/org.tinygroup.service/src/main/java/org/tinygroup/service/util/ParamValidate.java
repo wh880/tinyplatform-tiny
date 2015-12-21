@@ -32,18 +32,18 @@ public class ParamValidate {
 		for (int i = 0; i < inputParameters.size(); i++) {
 			Parameter p = inputParameters.get(i);
 			Object value = args[i];
-			String sence = p.getValidatorSence();
-			if (sence != null && !"".equals(sence)) {
+			String scenes = p.getValidatorSence();
+			if (scenes != null && !"".equals(scenes)) {
 				ValidatorManager xmlValidatorManager = BeanContainerFactory.getBeanContainer(ParamValidate.class.getClassLoader())
 						.getBean(XmlValidatorManager.class);
 				if (p.isArray()) {//如果是数组
 					Object[] array = (Object[]) value;
-					validateArray(sence, array, result, xmlValidatorManager);
+					validateArray(scenes, array, result, xmlValidatorManager);
 				} else if (value instanceof List) { //如果是List
-					validateList(sence, (List) value, result,
+					validateList(scenes, (List) value, result,
 							xmlValidatorManager);
 				} else {
-					validateObject(sence, value, result, xmlValidatorManager);
+					validateObject(scenes, value, result, xmlValidatorManager);
 				}
 			}
 		}
@@ -52,23 +52,23 @@ public class ParamValidate {
 		}
 	}
 
-	private static void validateList(String sence, List value,
+	private static void validateList(String scene, List value,
 			ValidateResult result, ValidatorManager xmlValidatorManager) {
 		Object[] array = value.toArray();
 		for (Object o : array) {
-			validateObject(sence, o, result, xmlValidatorManager);
+			validateObject(scene, o, result, xmlValidatorManager);
 		}
 	}
 
-	private static void validateArray(String sence, Object[] value,
+	private static void validateArray(String scene, Object[] value,
 			ValidateResult result, ValidatorManager xmlValidatorManager) {
 		for (Object o : value) {
-			validateObject(sence, o, result, xmlValidatorManager);
+			validateObject(scene, o, result, xmlValidatorManager);
 		}
 	}
 
-	private static void validateObject(String sence, Object value,
+	private static void validateObject(String scene, Object value,
 			ValidateResult result, ValidatorManager xmlValidatorManager) {
-		xmlValidatorManager.validate(sence, value, result);
+		xmlValidatorManager.validate(scene, value, result);
 	}
 }

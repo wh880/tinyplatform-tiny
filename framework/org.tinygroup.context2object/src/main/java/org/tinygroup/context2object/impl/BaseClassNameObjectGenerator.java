@@ -4,15 +4,21 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.ObjectAssembly;
 import org.tinygroup.context2object.TypeCreator;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
-public class BaseClassNameObjectGenerator {
-
+public abstract class BaseClassNameObjectGenerator {
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(BaseClassNameObjectGenerator.class);
 	private List<ObjectAssembly<?>> assemblies = new ArrayList<ObjectAssembly<?>>();
 	private List<TypeCreator<?>> typeCreatorList = new ArrayList<TypeCreator<?>>();
+	
 	public void addTypeCreator(TypeCreator<?> typeCreator) {
 		typeCreatorList.add(typeCreator);
 
@@ -61,6 +67,21 @@ public class BaseClassNameObjectGenerator {
 
 	protected String getObjName(Object object) {
 		String className = object.getClass().getSimpleName();
+		if (className.length() == 1)
+			return className.toLowerCase();
+		return className.substring(0, 1).toLowerCase() + className.substring(1);
+	}
+	
+	protected String getPreName(String preName,String varName) {
+		if(StringUtil.isBlank(preName)){
+			return varName;
+		}
+		return String.format("%s.%s", preName, varName);
+	}
+	
+	
+	protected String getObjName(Class clazz) {
+		String className = clazz.getSimpleName();
 		if (className.length() == 1)
 			return className.toLowerCase();
 		return className.substring(0, 1).toLowerCase() + className.substring(1);
@@ -140,5 +161,50 @@ public class BaseClassNameObjectGenerator {
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * 根据clazz获取对象 先从creator中获取，若找不到，则去springbean中获取
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	protected Object getObjectInstance(Class<?> clazz) {
+		Object o = getIntanceByCreator(clazz);
+		if (o != null) {
+			return o;
+		}
+		return getInstanceBySpringBean(clazz);
+	}
+	
+
+	protected Object getInstanceBySpringBean(String bean) {
+		if (bean == null || "".equals(bean)) {
+			return null;
+		}
+		try {
+			return BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(bean);
+		} catch (Exception e) {
+			LOGGER.logMessage(LogLevel.WARN, e.getMessage());
+			return null;
+		}
+
+	}
+	
+	private Object getInstanceBySpringBean(Class<?> clazz) {
+		if (clazz == null) {
+			return null;
+		}
+		try {
+			return BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(clazz);
+		} catch (Exception e) {
+			LOGGER.logMessage(LogLevel.WARN, e.getMessage());
+			try {
+				return clazz.newInstance();
+			} catch (Exception e1) {
+				throw new RuntimeException(e1);
+			}
+		}
 	}
 }

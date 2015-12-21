@@ -51,8 +51,17 @@ public class CommonServiceExecuteContainer {
 	 * 返回本地服务调用成功次数(发生业务异常也算调用失败)
 	 * @return
 	 */
+	@Deprecated
 	public static Long getLocalSucessTimes(){
-		return localContainer.getSucessTimes();
+		return getLocalSuccessTimes();
+	}
+
+	/**
+	 * 返回本地服务调用成功次数(发生业务异常也算调用失败)
+	 * @return
+	 */
+	public static Long getLocalSuccessTimes(){
+		return localContainer.getSuccessTimes();
 	}
 	/**
 	 * 返回本地服务调用发生异常次数(发生业务异常也算调用失败)

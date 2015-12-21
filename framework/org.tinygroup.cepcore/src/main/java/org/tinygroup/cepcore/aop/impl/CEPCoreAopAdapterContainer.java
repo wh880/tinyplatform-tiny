@@ -26,9 +26,9 @@ public class CEPCoreAopAdapterContainer {
 	private Pattern servicePattern = null;
 
 	public CEPCoreAopAdapterContainer(CEPCoreAopAdapter adapter,
-			Pattern serviceIdpattern) {
+			Pattern serviceIdPattern) {
 		this.adapter = adapter;
-		this.servicePattern = serviceIdpattern;
+		this.servicePattern = serviceIdPattern;
 	}
 
 	public void handle(Event e) {

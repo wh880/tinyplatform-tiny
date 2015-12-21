@@ -74,9 +74,9 @@ public class ServiceWrapperInterceptor implements MethodInterceptor {
 		Context context = new ContextImpl();
 		String[] paramNames=parameterNameDiscoverer.getParameterNames(method);
 		int size = paramNames != null ? paramNames.length : 0;
-		int argsize = args != null ? args.length : 0;
+		int argSize = args != null ? args.length : 0;
 		if (paramNames != null && args != null) {
-			Assert.assertTrue(size == argsize, "服务配置描述的参数个数与实际方法的参数个数不一致");// 参数个数必须一致
+			Assert.assertTrue(size == argSize, "服务配置描述的参数个数与实际方法的参数个数不一致");// 参数个数必须一致
 		}
 		for (int i = 0; i < size; i++) {
 			context.put(paramNames[i], args[i]);
