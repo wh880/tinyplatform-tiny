@@ -371,7 +371,7 @@ public class SimpleFactory implements Factory {
 			removeBean(bean);
 		}
 
-		// 从benasList中删除
+		// 从beansList中删除
 		if (beans.getPackageName() != null) {
 			for (Beans b : beansList) {
 				if (b.getPackageName() != null

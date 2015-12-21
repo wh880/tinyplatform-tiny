@@ -35,8 +35,8 @@ public abstract class DbfWriter implements Writer {
     	this.filename = filename;
     }
     
-    public void setFields(List<Field> filelds) {
-    	this.fields = filelds;
+    public void setFields(List<Field> fields) {
+    	this.fields = fields;
     }
     
     public String getEncode() {

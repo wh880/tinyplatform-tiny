@@ -58,24 +58,24 @@ public class HumanReadableSize {
      * <li>支持小数点，例如：<code>1.5K</code>。</li>
      * </ul>
      */
-    public static long parse(String humanReadbleSize) {
-        return parse(humanReadbleSize, (String[]) null);
+    public static long parse(String humanReadableSize) {
+        return parse(humanReadableSize, (String[]) null);
     }
 
-    private static long parse(String humanReadbleSize, String... nas) {
-        humanReadbleSize = assertNotNull(trimToNull(humanReadbleSize), "human readble size");
+    private static long parse(String humanReadableSize, String... nas) {
+        humanReadableSize = assertNotNull(trimToNull(humanReadableSize), "human readble size");
 
         if (nas != null) {
             for (String na : nas) {
-                if (na != null && na.equalsIgnoreCase(humanReadbleSize)) {
+                if (na != null && na.equalsIgnoreCase(humanReadableSize)) {
                     return -1;
                 }
             }
         }
 
-        Matcher matcher = REGEXP.matcher(humanReadbleSize);
+        Matcher matcher = REGEXP.matcher(humanReadableSize);
 
-        assertTrue(matcher.matches(), "wrong format: %s", humanReadbleSize);
+        assertTrue(matcher.matches(), "wrong format: %s", humanReadableSize);
 
         double size = Double.parseDouble(matcher.group(1));
         String unit = trimToNull(matcher.group(3));

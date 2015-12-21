@@ -30,7 +30,7 @@ public class LocalServiceTestCase extends TestCase {
 		}
 		assertEquals(2000,CommonServiceExecuteContainer.getLocalTotalTimes().longValue());
 		assertEquals(1000,CommonServiceExecuteContainer.getLocalExceptionTimes().longValue());
-		assertEquals(1000,CommonServiceExecuteContainer.getLocalSucessTimes().longValue());
+		assertEquals(1000,CommonServiceExecuteContainer.getLocalSuccessTimes().longValue());
 		ExecuteTimeInfo info = CommonServiceExecuteContainer.getLocalServiceExecuteTimeInfo("localService");
 		System.out.println("maxTime:"+info.getMaxTime());
 		System.out.println("minTime:"+info.getMinTime());

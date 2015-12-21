@@ -46,9 +46,9 @@ public class FieldValidatorMap {
 				ValidatorManagerWrapper.class);
 	}
 
-	private Map<FieldWapper, Map<String, List<Validator>>> fieldSceneValidatorsMap = new HashMap<FieldWapper, Map<String, List<Validator>>>();
+	private Map<FieldWrapper, Map<String, List<Validator>>> fieldSceneValidatorsMap = new HashMap<FieldWrapper, Map<String, List<Validator>>>();
 
-	void addValidator(FieldWapper field, String scene, Validator validator) {
+	void addValidator(FieldWrapper field, String scene, Validator validator) {
 		if (scene == null || "".equals(scene)) {
 			scene = TINY_DEFAULT_SCENE;
 		}
@@ -73,14 +73,14 @@ public class FieldValidatorMap {
 			ValidateResult result, List<Object> validatedObjects)
 			throws IllegalArgumentException, IllegalAccessException {
 
-		for (Entry<FieldWapper, Map<String, List<Validator>>> entry : fieldSceneValidatorsMap
+		for (Entry<FieldWrapper, Map<String, List<Validator>>> entry : fieldSceneValidatorsMap
 				.entrySet()) {
-			FieldWapper wapper = entry.getKey();
-			Field field = wapper.getField();
+			FieldWrapper wrapper = entry.getKey();
+			Field field = wrapper.getField();
 			field.setAccessible(true);
-			String displayName = className + "." + wapper.getFieldName();
+			String displayName = className + "." + wrapper.getFieldName();
 			String title = i18nMessages.getMessage(
-					ValidatorManager.FIELD_TITLE_KEY, wapper.getTitle());
+					ValidatorManager.FIELD_TITLE_KEY, wrapper.getTitle());
 			Object object = field.get(value);
 			if (!ClassUtil.isBasicClass((Class<?>) field.getType())) {
 				if (validatedObjects.contains(object)) {

@@ -102,11 +102,14 @@ public interface FileResolver extends Configuration {
 	 */
 	void setFileProcessorThreadNumber(int threadNum);
 
-	void addChangeLisenter(ChangeListener lisenter);
+	@Deprecated
+	void addChangeLisenter(ChangeListener listener);
+
+	void addChangeListener(ChangeListener listener);
 
 	List<ChangeListener> getChangeListeners();
 	/**
-	 * 触发 ChangeLisenters
+	 * 触发 ChangeListeners
 	 * 
 	 */
 	void change();

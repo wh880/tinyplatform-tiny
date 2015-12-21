@@ -19,15 +19,20 @@ public class SpecialExecuteInfoContainer {
 	/**
 	 * serviceId,成功次数
 	 */
-	private Map<String, AtomicLong> serviceSucessTimeMap = new HashMap<String, AtomicLong>();
+	private Map<String, AtomicLong> serviceSuccessTimeMap = new HashMap<String, AtomicLong>();
 	private Map<String, String> serviceInfo = new HashMap<String, String>();
 
 	//TODO:单个服务越界怎么办，所有服务之和越界怎么办
 	public Long getTotalTimes(){
 		return getTotalValue(serviceTimeMap);
 	}
+	@Deprecated
 	public Long getSucessTimes(){
-		return getTotalValue(serviceSucessTimeMap);
+		return getSuccessTimes();
+	}
+
+	public Long getSuccessTimes(){
+		return getTotalValue(serviceSuccessTimeMap);
 	}
 	public Long getExceptionTimes(){
 		return getTotalValue(serviceExceptionTimeMap);
@@ -58,7 +63,7 @@ public class SpecialExecuteInfoContainer {
 	public void addExecuteAfter(Event e) {
 		String serviceId = getServiceId(e);
 		serviceInfo.remove(e.getEventId());
-		addExecute(serviceId, serviceSucessTimeMap);
+		addExecute(serviceId, serviceSuccessTimeMap);
 	}
 
 	public void addExecuteException(Event e,Exception t) {
@@ -88,7 +93,7 @@ public class SpecialExecuteInfoContainer {
 		synchronized (this) {
 			serviceInfo.clear();
 			serviceTimeMap.clear();
-			serviceSucessTimeMap.clear();
+			serviceSuccessTimeMap.clear();
 			serviceExceptionTimeMap.clear();
 		}
 	}

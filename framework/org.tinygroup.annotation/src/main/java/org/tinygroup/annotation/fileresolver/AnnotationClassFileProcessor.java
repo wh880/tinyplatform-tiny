@@ -49,8 +49,8 @@ public class AnnotationClassFileProcessor extends AbstractFileProcessor {
 	}
 
 	public void process() {
-		MultiThreadFileProcessor.mutiProcessor(getFileResolver()
-				.getFileProcessorThreadNumber(), "annotation-muti", fileObjects,
+		MultiThreadFileProcessor.multiProcessor(getFileResolver()
+						.getFileProcessorThreadNumber(), "annotation-muti", fileObjects,
 				new ProcessorCallBack() {
 					public void callBack(FileObject fileObject) {
 						manager.processClassFileObject(fileObject);

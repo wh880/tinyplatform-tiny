@@ -21,6 +21,7 @@ import org.tinygroup.context2object.test.bean.CatInterface;
 import org.tinygroup.context2object.test.bean.People2;
 import org.tinygroup.context2object.test.bean.SmallCat;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +52,7 @@ public class TestList extends BastTestCast{
 
 	public void testListInterface() {
 		Context context = new ContextImpl();
-		String[] names = { "tomcat", "name1", "name2" };
+		String[] names = { "tomcat", "name1", "name2" ,"name3"};
 		String[] colors = { "red", "coller", "coller2" };
 		context.put("smallCat.name", names);
 		context.put("smallCat.coller", colors);

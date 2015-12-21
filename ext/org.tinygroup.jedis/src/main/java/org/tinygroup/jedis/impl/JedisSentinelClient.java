@@ -25,12 +25,12 @@ public class JedisSentinelClient {
 	private Map<String, JedisPool> jedisPoolsMap = new HashMap<String, JedisPool>();
 	Map<String, HostAndPort> jedisPoolsHostAndPortMap = new HashMap<String, HostAndPort>();
 	private JedisSentinelPool jedisSentinelPool;
-	private String masterNamel;
+	private String masterName;
 	private static final Logger logger = LoggerFactory
 			.getLogger(JedisSentinelClient2.class);
 
 	public JedisSentinelClient(JedisSentinelConfig config) {
-		masterNamel = config.getMasterName();
+		masterName = config.getMasterName();
 		initJedisSentinelPool(config);
 		initJedisPools(config);
 	}
@@ -60,27 +60,27 @@ public class JedisSentinelClient {
 			throw new RuntimeException("JedisSentinelPool配置的masterName不可为空."
 					+ config.toString());
 		}
-		String sentinesls = config.getSentinels();
-		if (StringUtil.isBlank(sentinesls)) {
-			throw new RuntimeException("JedisSentinelPool配置的sentinesls不可为空."
+		String sentinels = config.getSentinels();
+		if (StringUtil.isBlank(sentinels)) {
+			throw new RuntimeException("JedisSentinelPool配置的sentinels不可为空."
 					+ config.toString());
 		}
-		Set<String> sentineslSet = getSentineslSet(sentinesls);
+		Set<String> sentinelSet = getSentinelSet(sentinels);
 		int database = config.getDatabase();
 		int timeout = config.getTimeout();
 		String password = config.getPassword();
 		String poolConfig = config.getPoolConfig();
-		JedisPoolConfig jedisPoolCondig = JedisUtil.getJedisPoolConfig(
+		JedisPoolConfig jedisPoolConfig = JedisUtil.getJedisPoolConfig(
 				poolConfig, this.getClass().getClassLoader());
-		jedisSentinelPool = new JedisSentinelPool(masterName, sentineslSet,
-				jedisPoolCondig, timeout, password, database);
+		jedisSentinelPool = new JedisSentinelPool(masterName, sentinelSet,
+				jedisPoolConfig, timeout, password, database);
 	}
 
-	private Set<String> getSentineslSet(String sentinesls) {
-		String[] sentineslArray = sentinesls.split(",");
+	private Set<String> getSentinelSet(String sentinels) {
+		String[] sentinelArray = sentinels.split(",");
 		Map<String, String> map = new HashMap<String, String>();
-		for (String sentinesl : sentineslArray) {
-			map.put(sentinesl, sentinesl);
+		for (String sentinel : sentinelArray) {
+			map.put(sentinel, sentinel);
 		}
 		return map.keySet();
 	}
@@ -97,7 +97,7 @@ public class JedisSentinelClient {
 		try {
 			pool.destroy();
 		} catch (Exception e) {
-			logger.errorMessage("销毁{}的连接池{}时出错", e, masterNamel,
+			logger.errorMessage("销毁{}的连接池{}时出错", e, masterName,
 					pool.toString());
 		}
 

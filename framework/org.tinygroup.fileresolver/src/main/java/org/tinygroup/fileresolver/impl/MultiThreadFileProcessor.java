@@ -38,7 +38,7 @@ public class MultiThreadFileProcessor {
 		
 	}
 
-	public static void mutiProcessor(int threadNum,String mutiThreadName, List<FileObject> fileObjects,ProcessorCallBack callBack) {
+	public static void multiProcessor(int threadNum, String mutiThreadName, List<FileObject> fileObjects, ProcessorCallBack callBack) {
 
 		MultiThreadProcessor processors = new MultiThreadProcessor(mutiThreadName);
 		int fileNums = fileObjects.size();

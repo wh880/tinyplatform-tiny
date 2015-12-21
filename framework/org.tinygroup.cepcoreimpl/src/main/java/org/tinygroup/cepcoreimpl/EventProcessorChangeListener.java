@@ -19,7 +19,7 @@ import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.fileresolver.ChangeListener;
 import org.tinygroup.fileresolver.FileResolver;
 
-public class EventProcessorChangeLisenter implements ChangeListener {
+public class EventProcessorChangeListener implements ChangeListener {
 
 	CEPCore cepcore;
 	
