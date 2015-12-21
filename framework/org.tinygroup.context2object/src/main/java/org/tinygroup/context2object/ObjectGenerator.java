@@ -40,10 +40,27 @@ public interface ObjectGenerator<ReturnType, ParaType> {
 	ReturnType getObject(String varName, String bean, String className,
 			ClassLoader loader, Context context);
 
+	/**
+	 * 
+	 * @param varName 变量名
+	 * @param collectionName 集合名
+	 * @param className 需要构建的类名
+	 * @param loader 类加载器
+	 * @param context tiny上下文
+	 * @return
+	 */
 	Collection<ReturnType> getObjectCollection(String varName,
 			String collectionName, String className, ClassLoader loader,
 			Context context);
 
+	/**
+	 * 
+	 * @param varName 变量名
+	 * @param className 需要构建的类名
+	 * @param loader 类加载器
+	 * @param context tiny上下文
+	 * @return
+	 */
 	Object getObjectArray(String varName, String className, ClassLoader loader,
 			Context context);
 
