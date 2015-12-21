@@ -11,10 +11,7 @@ import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.context2object.test.generator2.config.ObjectContainSimpleObjectList;
 import org.tinygroup.context2object.test.generator2.config.SimpleObject;
 
-/**
- * @author Administrator
- *
- */
+
 public class TestCollectionObject extends BaseTestCast2{
 
 //	public void testCollection1(){

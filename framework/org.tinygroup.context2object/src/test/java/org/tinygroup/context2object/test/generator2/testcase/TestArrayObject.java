@@ -8,10 +8,7 @@ import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.context2object.test.generator2.config.ObjectContainSimpleObjectArray;
 import org.tinygroup.context2object.test.generator2.config.SimpleObject;
 
-/**
- * @author Administrator
- *
- */
+
 public class TestArrayObject extends BaseTestCast2{
 
 //	public void testCollection1(){

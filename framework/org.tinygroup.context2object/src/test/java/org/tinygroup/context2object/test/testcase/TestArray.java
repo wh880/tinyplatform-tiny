@@ -100,5 +100,38 @@ public class TestArray extends BastTestCast{
 		assertEquals(1, s.length);
 		assertEquals("tomcat", s[0]);
 	}
-
+	
+	
+	public void testIntegerArray1() {
+		Context context = new ContextImpl();
+		context.put("a", "1");
+		Integer[] s = (Integer[]) generator.getObjectArray("a",Integer.class.getName(),this.getClass().getClassLoader(), context);
+		assertEquals(1, s.length);
+		assertEquals(Integer.valueOf(1), s[0]);
+	}
+	public void testIntegerArray2() {
+		Context context = new ContextImpl();
+		context.put("a", new String[]{"1","2"});
+		Integer[] s = (Integer[]) generator.getObjectArray("a",Integer.class.getName(),this.getClass().getClassLoader(), context);
+		assertEquals(2, s.length);
+		assertEquals(Integer.valueOf(1), s[0]);
+		assertEquals(Integer.valueOf(2), s[1]);
+	}
+	
+	public void testBooleanArray1() {
+		Context context = new ContextImpl();
+		context.put("a", "true");
+		Boolean[] s = (Boolean[]) generator.getObjectArray("a",Boolean.class.getName(),this.getClass().getClassLoader(), context);
+		assertEquals(1, s.length);
+		assertEquals(Boolean.TRUE, s[0]);
+	}
+	public void testBooleanArray2() {
+		Context context = new ContextImpl();
+		context.put("a", new String[]{"true","false"});
+		Boolean[] s = (Boolean[]) generator.getObjectArray("a",Boolean.class.getName(),this.getClass().getClassLoader(), context);
+		assertEquals(2, s.length);
+		assertEquals(Boolean.TRUE, s[0]);
+		assertEquals(Boolean.FALSE, s[1]);
+	}
+	
 }

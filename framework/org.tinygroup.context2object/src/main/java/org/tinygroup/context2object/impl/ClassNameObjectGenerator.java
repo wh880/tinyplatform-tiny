@@ -41,6 +41,8 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
+import com.google.common.collect.ObjectArrays;
+
 public class ClassNameObjectGenerator extends BaseClassNameObjectGenerator implements
 		ObjectGenerator<Object, String> {
 	private static final Logger LOGGER = LoggerFactory
@@ -323,11 +325,22 @@ public class ClassNameObjectGenerator extends BaseClassNameObjectGenerator imple
 			if (propertyValue.getClass().isArray()) {
 				// 如果是数组
 				Object[] objArray = (Object[]) propertyValue;
-				for (Object o : objArray) {
-					collection.add(o);
+				if(objArray.getClass().getComponentType()==String.class){
+					for (Object o : objArray) {
+						collection.add(BasicTypeConverter.getValue((String)o, clazz.getName()));
+					}
+				}else{
+					for (Object o : objArray) {
+						collection.add(o);
+					}
 				}
 			} else {
-				collection.add(propertyValue);
+				if(propertyValue.getClass()==String.class){
+					collection.add(BasicTypeConverter.getValue((String)propertyValue, clazz.getName()));
+				}else{
+					collection.add(propertyValue);
+				}
+				
 			}
 		}
 		// return collection;
@@ -599,50 +612,10 @@ public class ClassNameObjectGenerator extends BaseClassNameObjectGenerator imple
 		return null;
 	}
 
-	/**
-	 * 根据clazz获取对象 先从creator中获取，若找不到，则去springbean中获取
-	 * 
-	 * @param clazz
-	 * @return
-	 */
-	private Object getObjectInstance(Class<?> clazz) {
-		Object o = getIntanceByCreator(clazz);
-		if (o != null) {
-			return o;
-		}
-		return getInstanceBySpringBean(clazz);
-	}
+	
 
-	private Object getInstanceBySpringBean(String bean) {
-		if (bean == null || "".equals(bean)) {
-			return null;
-		}
-		try {
-			return BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(bean);
-		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.WARN, e.getMessage());
-			return null;
-		}
 
-	}
-
-	private Object getInstanceBySpringBean(Class<?> clazz) {
-		if (clazz == null) {
-			return null;
-		}
-		try {
-			return BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(clazz);
-		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.WARN, e.getMessage());
-			try {
-				return clazz.newInstance();
-			} catch (Exception e1) {
-				throw new RuntimeException(e1);
-			}
-		}
-	}
+	
 
 	
 
