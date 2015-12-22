@@ -59,7 +59,4 @@ public interface UploadService extends UploadConfiguration {
      */
     FileItem[] parseRequest(HttpServletRequest request, UploadParameters params);
     
-    
-    public FileItem[] getFileItems();
-    
 }

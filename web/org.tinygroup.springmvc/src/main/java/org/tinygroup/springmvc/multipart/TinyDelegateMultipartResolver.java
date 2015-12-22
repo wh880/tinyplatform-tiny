@@ -56,7 +56,7 @@ public class TinyDelegateMultipartResolver extends CommonsMultipartResolver {
 	protected MultipartParsingResult parseRequest(HttpServletRequest request,
 			UploadService uploadService, ParserWebContext parserWebContext) throws MultipartException {
 		String encoding = determineEncoding(request);
-		List<FileItem> fileItems = Arrays.asList(uploadService.getFileItems());
+		List<FileItem> fileItems = Arrays.asList(parserWebContext.getParameters().getFileItems());
 		return parseFileItems(fileItems, encoding,parserWebContext);
 	}
 

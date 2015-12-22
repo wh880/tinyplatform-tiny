@@ -634,6 +634,17 @@ public abstract class AbstractValueParser implements ValueParser {
     public void add(String key, Object value) {
         getValueList(key, true).addValue(value);
     }
+    
+    /**
+     * 添加参数名/参数值。
+     *
+     * @param key   参数名
+     * @param value 参数值
+     */
+    public void remove(String key, Object value) {
+        getValueList(key, true).removeValue(value);
+    }
+
 
     /**
      * 设置参数值。和<code>add</code>方法不同，此方法将覆盖原有的值。

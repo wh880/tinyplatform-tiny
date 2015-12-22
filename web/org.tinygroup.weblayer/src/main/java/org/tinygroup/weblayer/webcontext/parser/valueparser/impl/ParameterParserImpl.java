@@ -55,6 +55,8 @@ public class ParameterParserImpl extends AbstractValueParser implements
 	private boolean uploadProcessed;
 	private final ParameterParserFilter[] filters;
 	private final String htmlFieldSuffix;
+	private List<FileItem> fileItems=new ArrayList<FileItem>();
+	
 
 	/** 从request中创建新的parameters，如果是multipart-form，则自动解析之。 */
 	public ParameterParserImpl(ParserWebContext webContext,
@@ -265,8 +267,9 @@ public class ParameterParserImpl extends AbstractValueParser implements
 			}
 		}
 		if(processFileItem==null){
-			fileItem.delete();//过滤操作返回的fileitem为空则删除原有文件
-			
+			remove(key, value);//过滤操作返回的fileitem为空则删除原有文件
+			fileItems.remove(fileItem);
+			fileItem.delete();
 		}else{
 			fileItem=processFileItem;
 			if (!fileItem.isFormField()
@@ -422,6 +425,7 @@ public class ParameterParserImpl extends AbstractValueParser implements
 				fileObject = new TinyItemFileObject((TinyFileItem) item);
 			}
 			add(item.getFieldName(), fileObject);
+			fileItems.add(item);
 		}
 
 		uploadProcessed = true;
@@ -470,5 +474,12 @@ public class ParameterParserImpl extends AbstractValueParser implements
 		}
 
 		return parser.toQueryString();
+	}
+
+	public FileItem[] getFileItems() {
+		if(fileItems.isEmpty()){
+			return new FileItem[0];
+		}
+		return fileItems.toArray(new FileItem[0]);
 	}
 }

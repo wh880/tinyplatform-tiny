@@ -354,6 +354,13 @@ public interface ValueList {
      * @param value 参数值
      */
     void addValue(Object value);
+    
+    /**
+     * 添加参数名/参数值。
+     *
+     * @param value 参数值
+     */
+    void removeValue(Object value);
 
     /**
      * 设置参数值。和<code>add</code>方法不同，此方法将覆盖原有的值。
