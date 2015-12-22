@@ -14,5 +14,6 @@
     <module>org.tinygroup.templatespringext</module>
     <module>org.tinygroup.templateservletext</module>
     <module>org.tinygroup.templatei18n</module>
+    <module>org.tinygroup.templateuiengine</module>
   </modules>
 </project>
