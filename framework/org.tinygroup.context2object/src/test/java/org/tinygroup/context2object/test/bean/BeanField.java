@@ -40,7 +40,7 @@ public class BeanField {
 		return field;
 	}
 	public void setFieldNoExist(BeanNoField field) {
-		this.field = field;
+		
 	}
 	
 }

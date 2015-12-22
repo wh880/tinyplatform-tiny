@@ -46,7 +46,17 @@ public class ProcessorManagerImpl implements ProcessorManager {
 	private Map<String, Map<String, Object>> processorsMap = new HashMap<String, Map<String, Object>>();
 	private static ProcessorManager processorManager = new ProcessorManagerImpl();
 
+	@Deprecated
 	public void addPocessors(Processors processors) {
+		addProcessors(processors);
+	}
+
+	@Deprecated
+	public void removePocessors(Processors processors) {
+		removeProcessors(processors);
+	}
+
+	public void addProcessors(Processors processors) {
 		String language = processors.getLanguage();
 
 		if (!processorsMap.containsKey(language)) {
@@ -62,7 +72,7 @@ public class ProcessorManagerImpl implements ProcessorManager {
 		}
 	}
 
-	public void removePocessors(Processors processors) {
+	public void removeProcessors(Processors processors) {
 		String language = processors.getLanguage();
 		Map<String, Object> map = processorsMap.get(language);
 		if (!CollectionUtil.isEmpty(map)) {

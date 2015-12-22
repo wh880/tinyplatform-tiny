@@ -2,6 +2,7 @@ package org.tinygroup.context2object.test.generator2.config;
 
 public class NoFieldObject {
 	String name;
+	Integer value;
 	
 	public String getName() {
 		return name;
@@ -10,9 +11,10 @@ public class NoFieldObject {
 		this.name = name;
 	}
 	public Integer getAge() {
-		return 1;
+		return value;
 	}
 	public void setAge(Integer age) {
+		value = age;
 	}
 	
 }

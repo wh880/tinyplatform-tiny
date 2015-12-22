@@ -6,6 +6,30 @@ import org.tinygroup.context2object.test.generator2.config.SimpleObject;
 
 public class TestSimpleObject extends BaseTestCast2 {
 
+	public void testSimplePropertyNumberFormatException() {
+		Context context = new ContextImpl();
+		context.put("bean.length", "11111111111111111111");
+		context.put("bean.length2", "22222222222222222");
+		try {
+			SimpleObject bean = (SimpleObject) generator.getObject("bean",
+					null, SimpleObject.class.getName(), this.getClass()
+							.getClassLoader(), context);
+			assertTrue(false);
+		} catch (NumberFormatException e) {
+			assertTrue(true);
+		}
+	}
+
+	public void testSimplePropertyBooleanException() {
+		Context context = new ContextImpl();
+		context.put("bean.flag", "true1");
+		SimpleObject bean = (SimpleObject) generator.getObject("bean", null,
+				SimpleObject.class.getName(), this.getClass().getClassLoader(),
+				context);
+		assertEquals(Boolean.FALSE, bean.getFlag());
+
+	}
+
 	public void testSimpleProperty() {
 		Context context = new ContextImpl();
 		context.put("bean.name", "name");
