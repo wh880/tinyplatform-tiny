@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 根据文件名后缀过滤上传文件。
  *
- * @author Michael Zhou
  */
 public class UploadedFileExtensionWhitelist extends BeanSupport implements UploadedFileFilter {
     

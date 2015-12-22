@@ -9,8 +9,6 @@
 			<list>
 				<ref bean="i18nFileProcessor" />
 				<ref bean="xStreamFileProcessor" />
-				<ref bean="flowReleaseProcessor" />
-				<ref bean="pageFlowReleaseProcessor" />
 				<ref bean="annotationFileProcessor" />
 				<ref bean="annotationClassFileProcessor" />
 				<ref bean="flowComponentProcessor" />

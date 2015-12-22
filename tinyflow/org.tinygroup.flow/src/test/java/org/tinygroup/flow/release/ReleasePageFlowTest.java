@@ -13,24 +13,42 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.flow;
+package org.tinygroup.flow.release;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.flow.component.AbstractFlowComponent;
+import org.tinygroup.flow.release.config.PageFlowRelease;
+import org.tinygroup.flow.release.config.ReleaseItem;
 
-public class CustomBeginTest extends AbstractFlowComponent {
+public class ReleasePageFlowTest extends AbstractFlowComponent {
 
 
 	protected void setUp() throws Exception {
+		PageFlowReleaseManager.clear();
+		PageFlowRelease flowRelease = new PageFlowRelease();
+		ReleaseItem item = new ReleaseItem();
+		List<String> flowNames = new ArrayList<String>();
+		flowNames.add("pageflowrelease1");
+		item.setItems(flowNames);
+		flowRelease.setIncludes(item);
+		PageFlowReleaseManager.add(flowRelease);
 		super.setUp();
 	}
 
-	public void testExecuteStringStringContext() {
-		
+	public void testInclude1() {
 		Context context = new ContextImpl();
-		flowExecutor.execute("CustomBegin", "begin", context);
-		assertEquals("Hello, luoguo", context.get("helloInfo"));
+		try {
+			pageFlowExecutor.execute("pageflowrelease1", "begin", context);
+			assertEquals("Hello, luoguo", context.get("helloInfo"));
+		} catch (Exception e) {
+			assertTrue(false);
+		}
+		
+		
 	}
 
 }

@@ -46,7 +46,6 @@ public class UploadServiceImpl extends BeanSupport implements UploadService {
 			.getLogger(UploadServiceImpl.class);
 	private final UploadParameters params = new UploadParameters();
 	private ServletFileUpload fileUpload;
-	private FileItem[] items;
 	/**
 	 * 上传文件重命名接口
 	 */
@@ -219,8 +218,7 @@ public class UploadServiceImpl extends BeanSupport implements UploadService {
 			throw new UploadException(e);
 		}
 
-		items=fileItems.toArray(new FileItem[fileItems.size()]);
-		return items;
+		return fileItems.toArray(new FileItem[fileItems.size()]);
 	}
 
 	/** 根据参数创建<code>FileUpload</code>对象。 */
@@ -240,10 +238,6 @@ public class UploadServiceImpl extends BeanSupport implements UploadService {
 		fileUpload.setFileNameKey(params.getFileNameKey());
 
 		return fileUpload;
-	}
-
-	public FileItem[] getFileItems() {
-		return items;
 	}
 
 }
