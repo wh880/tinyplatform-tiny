@@ -14,18 +14,27 @@ import org.tinygroup.context2object.test.generator2.config.EnumSimpleObjectList;
  */
 public class TestEnumSimpleObjectList extends BaseTestCast2 {
 
-//	public void testList(){
-//		Context context = new ContextImpl();
-//		EnumObject[] enums = new EnumObject[]{EnumObject.MON ,EnumObject.FRI};
-//		context.put("enumObjectList", enums);
-//		context.put("name", "a");
-//		
-//		EnumSimpleObjectList obj = (EnumSimpleObjectList) generator.getObject(null, null, EnumSimpleObjectList.class.getName(), this.getClass().getClassLoader(), context);
-//		
-//		assertTrue(2 == obj.getEnumObjectList().size());
-//		assertEquals(EnumObject.MON, obj.getEnumObjectList().get(0));
-//		assertEquals(EnumObject.FRI, obj.getEnumObjectList().get(1));
-//		assertEquals("a", obj.getName());
-//	}
+	public void testList(){
+		Context context = new ContextImpl();
+		EnumObject[] enums = new EnumObject[]{EnumObject.MON ,EnumObject.FRI};
+		context.put("enumObjectList", enums);
+		context.put("name", "a");
+		EnumSimpleObjectList obj = (EnumSimpleObjectList) generator.getObject(null, null, EnumSimpleObjectList.class.getName(), this.getClass().getClassLoader(), context);
+		assertTrue(2 == obj.getEnumObjectList().size());
+		assertEquals(EnumObject.MON, obj.getEnumObjectList().get(0));
+		assertEquals(EnumObject.FRI, obj.getEnumObjectList().get(1));
+		assertEquals("a", obj.getName());
+	}
+	
+	public void testList2(){
+		Context context = new ContextImpl();
+		context.put("enumObjectList", new String[]{"MON","OTH"});
+		context.put("name", "a");
+		EnumSimpleObjectList obj = (EnumSimpleObjectList) generator.getObject(null, null, EnumSimpleObjectList.class.getName(), this.getClass().getClassLoader(), context);
+		assertTrue(2 == obj.getEnumObjectList().size());
+		assertEquals(EnumObject.MON, obj.getEnumObjectList().get(0));
+		assertEquals(EnumObject.FRI, obj.getEnumObjectList().get(1));
+		assertEquals("a", obj.getName());
+	}
 	
 }

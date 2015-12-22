@@ -3,6 +3,7 @@ package org.tinygroup.context2object.impl;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -14,13 +15,11 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.ObjectAssembly;
 import org.tinygroup.context2object.ObjectGenerator;
 import org.tinygroup.context2object.TypeConverter;
-import org.tinygroup.context2object.TypeCreator;
 import org.tinygroup.context2object.config.BasicTypeConverter;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -53,11 +52,23 @@ public class ClassNameObjectGeneratorWithException extends
 		return parseResult;
 	}
 
+	private Object checkIsSameType(String preName, String varName,
+			String propertyName, Class<?> clazz, Context context) {
+		Object value = getPerpertyValue( preName, varName,propertyName, context);
+		if (value != null && value.getClass() == clazz) {
+			return value;
+		}
+		return null;
+	}
+
 	private Object getObject(String preName, String varName, Class<?> clazz,
 			ClassLoader loader, Context context) {
+		Object value = checkIsSameType(null, preName, varName, clazz, context);
+		if(value!=null){
+			return value;
+		}
 		List<TypeConverter<?, ?>> typeConverterList = getTypeConverterList(clazz);
 		if (typeConverterList != null) {// 如果存在typeConverter
-			Object value = context.get(varName);
 			if (value == null) {
 				LOGGER.logMessage(LogLevel.WARN, "类型:{0}在上下文中的变量名:{1}值为null",
 						clazz, varName);
@@ -108,6 +119,19 @@ public class ClassNameObjectGeneratorWithException extends
 			if (propertyType.equals(Class.class)) {
 				continue;
 			}
+			Object propertyValue = checkIsSameType(preName, varName,
+					propertyName, propertyType, context);
+			if (propertyValue != null) {
+				try {
+					BeanUtils.setProperty(object, descriptor.getName(),
+							propertyValue);
+					allPropertyNull = false;
+					continue;
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+
 			if (implmentInterface(propertyType, Collection.class)) {
 				// 如果是集合类型
 				Field field = getDeclaredFieldWithParent(clazz, propertyName);
@@ -173,6 +197,12 @@ public class ClassNameObjectGeneratorWithException extends
 		if (clazz == null) {
 			throw new RuntimeException("组装集合时，传入的集合内对象类型不可为");
 		}
+		Object checkValue = checkIsSameType(null,preName, varName, collection.getClass(), context);
+		if(checkValue!=null){
+			collection = (Collection<Object>) checkValue;
+			return ;
+		}
+		
 		if (isSimpleType(clazz)) {
 			String reallyVarName = getPreName(preName, varName);
 			if (isNull(reallyVarName)) {
@@ -340,7 +370,6 @@ public class ClassNameObjectGeneratorWithException extends
 		// return collection;
 	}
 
-	
 	// 处理非复杂对象，如enmu等类型
 	// 此种方式判断依据是preName.varName存在一个数组值
 	// 因为如果是复杂对象，那么必然不存在preName.varName数组，而是存在preName.varName.propertyName数组
@@ -372,6 +401,7 @@ public class ClassNameObjectGeneratorWithException extends
 			for (int i = 0; i < arrays.length; i++) {
 				collection.add(arrays[i]);
 			}
+			return true;
 		}
 		// 还不行就去找转换器
 		TypeConverter currentTypeConverter = getTypeConverter(clazz,
@@ -401,9 +431,13 @@ public class ClassNameObjectGeneratorWithException extends
 		if (StringUtil.isBlank(className)) {
 			throw new RuntimeException("传入的className不可为空");
 		}
-		Class clazz = getClazz(className, loader);
-		Collection<Object> collection = (Collection<Object>) getObjectInstance(clazz);
+		Class<?> collectionClass = getClazz(collectionName, loader);
+		Class<?> clazz = getClazz(className, loader);
+		Collection<Object> collection = (Collection<Object>) getObjectInstance(collectionClass);
 		buildCollection(null, varName, collection, clazz, context);
+		if (collection.isEmpty()) {
+			return null;
+		}
 		return collection;
 	}
 

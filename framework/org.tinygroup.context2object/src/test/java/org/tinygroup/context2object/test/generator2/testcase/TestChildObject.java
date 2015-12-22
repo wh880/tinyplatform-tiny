@@ -3,15 +3,8 @@
  */
 package org.tinygroup.context2object.test.generator2.testcase;
 
-import org.tinygroup.context.Context;
-import org.tinygroup.context.impl.ContextImpl;
-import org.tinygroup.context2object.test.convert.EnumObject;
-import org.tinygroup.context2object.test.generator2.config.ChildObject;
 
-/**
- * @author Administrator
- *
- */
+
 public class TestChildObject extends BaseTestCast2 {
 
 //	public void testSimpleField(){
