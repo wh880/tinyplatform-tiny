@@ -90,7 +90,7 @@ public class DatabaseInstallerStart {
 		installer = initInstaller();
 		installer.setDbLanguage(resolverLanguageType());
 		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
-		DataSourceHolder.setDataSource(createDatasSource());// 绑定数据源
+		DataSourceHolder.setDataSource(createDataSource());// 绑定数据源
 		initFileResolver();
 	}
 
@@ -312,7 +312,7 @@ public class DatabaseInstallerStart {
 		return parser.parse(applicationConfig).getRoot();
 	}
 
-	private DataSource createDatasSource() {
+	private DataSource createDataSource() {
 		PathFilter<XmlNode> filter = new PathFilter<XmlNode>(applicationNode);
 		XmlNode xmlNode = filter.findNode("/application/datasource");
 		if (xmlNode != null) {
