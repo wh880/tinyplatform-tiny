@@ -1293,4 +1293,24 @@ public class ClassUtil {
 		int lastDotIndex = className.lastIndexOf(PACKAGE_SEPARATOR);
 		return className.substring(lastDotIndex + 1) + CLASS_FILE_SUFFIX;
 	}
+	
+	/**
+	 * 判断该类型是不是包装类型
+	 * @param clazz
+	 * @return
+	 */
+	public static boolean isBasicClass(Class<?> clazz) {
+		boolean isPrimitive = false;
+		try {
+			if (clazz.isPrimitive() || clazz.isAssignableFrom(String.class)) {
+				isPrimitive = true;
+			} else {
+				isPrimitive = ((Class<?>) clazz.getField("TYPE").get(null))
+						.isPrimitive();
+			}
+		} catch (Exception e) {
+			isPrimitive = false;
+		}
+		return isPrimitive;
+	}
 }
