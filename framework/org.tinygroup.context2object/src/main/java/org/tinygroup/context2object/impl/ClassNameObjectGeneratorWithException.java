@@ -420,7 +420,7 @@ public class ClassNameObjectGeneratorWithException extends
 		}
 		if (String.class == value.getClass()) {
 			return BasicTypeConverter.getValue((String) value,
-					String.class.getName());
+					clazz.getName());
 		}
 		return value;
 	}
