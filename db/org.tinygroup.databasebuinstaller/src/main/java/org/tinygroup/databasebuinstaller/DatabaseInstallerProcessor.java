@@ -15,20 +15,24 @@
  */
 package org.tinygroup.databasebuinstaller;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.database.util.DataSourceInfo;
 import org.tinygroup.exception.BaseRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.*;
 
 /**
  * 
@@ -43,12 +47,17 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 	public static final String DATABASE_INSTALLER_BEAN_NAME = "databaseInstaller";
 	private Logger logger = LoggerFactory
 			.getLogger(DatabaseInstallerProcessor.class);
-	private String defaultLanuage = "oracle";
+	private static final String defaultLanguage = "oracle";
 	private String dbLanguage = "";
 	private List<InstallProcessor> installProcessors = new ArrayList<InstallProcessor>();
 	private XmlNode componentConfig;
 	private XmlNode applicationConfig;
+	private DataSource dataSource;
 
+	
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource=dataSource;
+	}
 
 	public String getDbLanguage() {
 		return dbLanguage;
@@ -72,7 +81,7 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 
 	public String getLanguage() {
 		if ("".equals(dbLanguage))
-			return defaultLanuage;
+			return defaultLanguage;
 		return dbLanguage;
 	}
 
@@ -164,12 +173,12 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 		this.applicationConfig = applicationConfig;
 		this.componentConfig = componentConfig;
 		if (applicationConfig == null) {
-			dbLanguage = defaultLanuage;
+			dbLanguage = defaultLanguage;
 		} else {
 			XmlNode node = applicationConfig.getSubNode("database");
 			dbLanguage = node.getAttribute("type");
 			if (dbLanguage == null || "".equals(dbLanguage))
-				dbLanguage = defaultLanuage;
+				dbLanguage = defaultLanguage;
 		}
 
 		logger.logMessage(LogLevel.INFO, "当前数据库语言为:{dbLanguage}", dbLanguage);
@@ -200,7 +209,8 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 	}
 
 	public void init() {
-		// TODO Auto-generated method stub
-
+		if(dataSource!=null){
+			DataSourceHolder.setDataSource(dataSource);
+		}
 	}
 }
