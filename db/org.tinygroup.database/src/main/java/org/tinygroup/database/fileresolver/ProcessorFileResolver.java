@@ -46,7 +46,7 @@ public class ProcessorFileResolver extends AbstractFileProcessor {
 					fileObject.getAbsolutePath());
 			Processors processors = (Processors)caches.get(fileObject.getAbsolutePath());
 			if(processors!=null){
-				processorManager.removePocessors(processors);
+				processorManager.removeProcessors(processors);
 				caches.remove(fileObject.getAbsolutePath());
 			}
 			LOGGER.logMessage(LogLevel.INFO, "移除database.processor文件{0}完毕",
@@ -57,11 +57,11 @@ public class ProcessorFileResolver extends AbstractFileProcessor {
 					fileObject.getAbsolutePath());
 			Processors oldProcessors = (Processors)caches.get(fileObject.getAbsolutePath());
 			if(oldProcessors!=null){
-				processorManager.removePocessors(oldProcessors);
+				processorManager.removeProcessors(oldProcessors);
 			}	
 			Processors processors = (Processors) stream.fromXML(fileObject
 					.getInputStream());
-			processorManager.addPocessors(processors);
+			processorManager.addProcessors(processors);
 			caches.put(fileObject.getAbsolutePath(), processors);
 			LOGGER.logMessage(LogLevel.INFO, "读取database.processor文件{0}完毕",
 					fileObject.getAbsolutePath());

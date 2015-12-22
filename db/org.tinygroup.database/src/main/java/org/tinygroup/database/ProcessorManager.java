@@ -20,8 +20,14 @@ import org.tinygroup.database.config.processor.Processors;
 public interface ProcessorManager {
 	
 	Object getProcessor(String language,String name);
-	
+
+	@Deprecated
 	void addPocessors(Processors processors);
-	
+
+	@Deprecated
 	void removePocessors(Processors processors);
+
+	void addProcessors(Processors processors);
+
+	void removeProcessors(Processors processors);
 }
