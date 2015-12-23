@@ -15,28 +15,102 @@
  */
 package org.tinygroup.jsqlparser.util;
 
-import org.tinygroup.jsqlparser.expression.*;
-import org.tinygroup.jsqlparser.expression.operators.arithmetic.*;
-import org.tinygroup.jsqlparser.expression.operators.conditional.AndExpression;
-import org.tinygroup.jsqlparser.expression.operators.conditional.OrExpression;
-import org.tinygroup.jsqlparser.expression.operators.relational.*;
-import org.tinygroup.jsqlparser.schema.Column;
-import org.tinygroup.jsqlparser.schema.Table;
-import org.tinygroup.jsqlparser.statement.delete.Delete;
-import org.tinygroup.jsqlparser.statement.insert.Insert;
-import org.tinygroup.jsqlparser.statement.replace.Replace;
-import org.tinygroup.jsqlparser.statement.select.*;
-import org.tinygroup.jsqlparser.statement.update.Update;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.jsqlparser.expression.AllComparisonExpression;
+import org.tinygroup.jsqlparser.expression.AnalyticExpression;
+import org.tinygroup.jsqlparser.expression.AnyComparisonExpression;
+import org.tinygroup.jsqlparser.expression.BinaryExpression;
+import org.tinygroup.jsqlparser.expression.CaseExpression;
+import org.tinygroup.jsqlparser.expression.CastExpression;
+import org.tinygroup.jsqlparser.expression.DateValue;
+import org.tinygroup.jsqlparser.expression.DoubleValue;
+import org.tinygroup.jsqlparser.expression.Expression;
+import org.tinygroup.jsqlparser.expression.ExpressionVisitor;
+import org.tinygroup.jsqlparser.expression.ExtractExpression;
+import org.tinygroup.jsqlparser.expression.Function;
+import org.tinygroup.jsqlparser.expression.IntervalExpression;
+import org.tinygroup.jsqlparser.expression.JdbcNamedParameter;
+import org.tinygroup.jsqlparser.expression.JdbcParameter;
+import org.tinygroup.jsqlparser.expression.JsonExpression;
+import org.tinygroup.jsqlparser.expression.LongValue;
+import org.tinygroup.jsqlparser.expression.NullValue;
+import org.tinygroup.jsqlparser.expression.OracleHierarchicalExpression;
+import org.tinygroup.jsqlparser.expression.Parenthesis;
+import org.tinygroup.jsqlparser.expression.SignedExpression;
+import org.tinygroup.jsqlparser.expression.StringValue;
+import org.tinygroup.jsqlparser.expression.TimeValue;
+import org.tinygroup.jsqlparser.expression.TimestampValue;
+import org.tinygroup.jsqlparser.expression.WhenClause;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Addition;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.BitwiseAnd;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.BitwiseOr;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.BitwiseXor;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Concat;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Division;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Modulo;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Multiplication;
+import org.tinygroup.jsqlparser.expression.operators.arithmetic.Subtraction;
+import org.tinygroup.jsqlparser.expression.operators.conditional.AndExpression;
+import org.tinygroup.jsqlparser.expression.operators.conditional.OrExpression;
+import org.tinygroup.jsqlparser.expression.operators.relational.Between;
+import org.tinygroup.jsqlparser.expression.operators.relational.EqualsTo;
+import org.tinygroup.jsqlparser.expression.operators.relational.ExistsExpression;
+import org.tinygroup.jsqlparser.expression.operators.relational.ExpressionList;
+import org.tinygroup.jsqlparser.expression.operators.relational.GreaterThan;
+import org.tinygroup.jsqlparser.expression.operators.relational.GreaterThanEquals;
+import org.tinygroup.jsqlparser.expression.operators.relational.InExpression;
+import org.tinygroup.jsqlparser.expression.operators.relational.IsNullExpression;
+import org.tinygroup.jsqlparser.expression.operators.relational.ItemsListVisitor;
+import org.tinygroup.jsqlparser.expression.operators.relational.LikeExpression;
+import org.tinygroup.jsqlparser.expression.operators.relational.Matches;
+import org.tinygroup.jsqlparser.expression.operators.relational.MinorThan;
+import org.tinygroup.jsqlparser.expression.operators.relational.MinorThanEquals;
+import org.tinygroup.jsqlparser.expression.operators.relational.MultiExpressionList;
+import org.tinygroup.jsqlparser.expression.operators.relational.NotEqualsTo;
+import org.tinygroup.jsqlparser.expression.operators.relational.RegExpMatchOperator;
+import org.tinygroup.jsqlparser.expression.operators.relational.RegExpMySQLOperator;
+import org.tinygroup.jsqlparser.schema.Column;
+import org.tinygroup.jsqlparser.schema.Table;
+import org.tinygroup.jsqlparser.statement.Statement;
+import org.tinygroup.jsqlparser.statement.StatementVisitor;
+import org.tinygroup.jsqlparser.statement.Statements;
+import org.tinygroup.jsqlparser.statement.alter.Alter;
+import org.tinygroup.jsqlparser.statement.create.index.CreateIndex;
+import org.tinygroup.jsqlparser.statement.create.table.CreateTable;
+import org.tinygroup.jsqlparser.statement.create.view.CreateView;
+import org.tinygroup.jsqlparser.statement.delete.Delete;
+import org.tinygroup.jsqlparser.statement.drop.Drop;
+import org.tinygroup.jsqlparser.statement.execute.Execute;
+import org.tinygroup.jsqlparser.statement.insert.Insert;
+import org.tinygroup.jsqlparser.statement.replace.Replace;
+import org.tinygroup.jsqlparser.statement.select.AllColumns;
+import org.tinygroup.jsqlparser.statement.select.AllTableColumns;
+import org.tinygroup.jsqlparser.statement.select.FromItemVisitor;
+import org.tinygroup.jsqlparser.statement.select.Join;
+import org.tinygroup.jsqlparser.statement.select.LateralSubSelect;
+import org.tinygroup.jsqlparser.statement.select.PlainSelect;
+import org.tinygroup.jsqlparser.statement.select.Select;
+import org.tinygroup.jsqlparser.statement.select.SelectExpressionItem;
+import org.tinygroup.jsqlparser.statement.select.SelectItem;
+import org.tinygroup.jsqlparser.statement.select.SelectItemVisitor;
+import org.tinygroup.jsqlparser.statement.select.SelectVisitor;
+import org.tinygroup.jsqlparser.statement.select.SetOperationList;
+import org.tinygroup.jsqlparser.statement.select.SubJoin;
+import org.tinygroup.jsqlparser.statement.select.SubSelect;
+import org.tinygroup.jsqlparser.statement.select.ValuesList;
+import org.tinygroup.jsqlparser.statement.select.WithItem;
+import org.tinygroup.jsqlparser.statement.truncate.Truncate;
+import org.tinygroup.jsqlparser.statement.update.Update;
 
 /**
  * Find all used tables within an select statement.
  */
-public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, ExpressionVisitor, ItemsListVisitor, SelectItemVisitor {
+public class TablesNamesFinder implements StatementVisitor,SelectVisitor, FromItemVisitor, ExpressionVisitor, ItemsListVisitor, SelectItemVisitor {
 
-    private List<String> tables;
+    private static final String TABLE_TYPE = "table";
+	private List<String> tables;
     /**
      * There are special names, that are not table names but are parsed as
      * tables. These names are collected here and are not included in the tables
@@ -492,4 +566,91 @@ public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, Expres
     public void visit(SelectExpressionItem item) {
         item.getExpression().accept(this);
     }
+
+	public void visit(Select select) {
+         getTableList(select);		
+	}
+
+	public void visit(Delete delete) {
+		getTableList(delete);
+	}
+
+	public void visit(Update update) {
+		getTableList(update);
+	}
+
+	public void visit(Insert insert) {
+		getTableList(insert);
+	}
+
+	public void visit(Replace replace) {
+		getTableList(replace);
+	}
+
+	public void visit(Drop drop) {
+		  init();	
+		  String type=drop.getType();
+		  if(TABLE_TYPE.equalsIgnoreCase(type)){
+			  tables.add(drop.getName());
+		  }
+	}
+
+	public void visit(Truncate truncate) {
+	     init();	
+	     tables.add(truncate.getTable().getName());
+	}
+
+	public void visit(CreateIndex createIndex) {
+		 init();	
+		 tables.add(createIndex.getTable().getName());
+	}
+
+	public void visit(CreateTable createTable) {
+		init();
+		tables.add(createTable.getTable().getName());
+		if(createTable.getSelect()!=null){
+			createTable.getSelect().accept(this);
+		}
+	}
+
+	public void visit(CreateView createView) {
+		init();
+		tables.add(createView.getView().getName());
+		if(createView.getSelectBody()!=null){
+			createView.getSelectBody().accept(this);
+		}
+		
+	}
+
+	public void visit(Alter alter) {
+		init();
+		tables.add(alter.getTable().getName());
+	}
+
+	public void visit(Statements stmts) {
+		init();
+		List<Statement> statements=stmts.getStatements();
+		for (Statement statement : statements) {
+		       statement.accept(this);	
+		}
+	}
+
+	public void visit(Execute execute) {
+		init();
+		ExpressionList exprList=execute.getExprList();
+		for (Expression expression : exprList.getExpressions()) {
+			expression.accept(this);
+		}
+	}
+	
+	public boolean existTable(String tableName){
+		if(tables!=null&&tables.size()>0){
+			for (String table : tables) {
+				if(table.equalsIgnoreCase(tableName)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

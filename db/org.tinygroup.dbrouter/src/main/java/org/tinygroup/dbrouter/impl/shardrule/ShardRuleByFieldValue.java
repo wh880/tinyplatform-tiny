@@ -16,6 +16,7 @@
 package org.tinygroup.dbrouter.impl.shardrule;
 
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.dbrouter.ShardRule;
@@ -82,7 +83,7 @@ public class ShardRuleByFieldValue implements ShardRule {
 
 	}
 
-	public String getReplacedSql(Partition partition, Shard shard, String sql) {
+	public String getReplacedSql(Partition partition, Shard shard, String sql, Object... arguments) {
 		return sql;
 	}
 

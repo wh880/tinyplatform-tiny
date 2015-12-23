@@ -97,5 +97,11 @@ public final class RouterManagerBeanFactory {
 		}
 		return manager;
 	}
+	
+	public static void setManager(RouterManager routerManager){
+		  if(routerManager!=null){
+			  manager=routerManager;
+		  }
+	}
 
 }

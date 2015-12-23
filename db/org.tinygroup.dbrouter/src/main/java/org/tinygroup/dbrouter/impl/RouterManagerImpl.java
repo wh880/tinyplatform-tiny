@@ -245,7 +245,7 @@ public class RouterManagerImpl implements RouterManager {
 		for (ShardRule rule : rules) {
 			if (rule.isMatch(partition, shard, sql, preparedParams)) {
 				// 如果有匹配的，则返回匹配的规则处理过的SQL
-				return rule.getReplacedSql(partition, shard, sql);
+				return rule.getReplacedSql(partition, shard, sql, preparedParams);
 			}
 		}
 		if (!CollectionUtil.isEmpty(shard.getTableMappings())) {

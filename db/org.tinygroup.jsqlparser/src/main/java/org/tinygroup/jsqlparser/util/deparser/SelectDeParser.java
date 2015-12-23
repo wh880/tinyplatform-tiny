@@ -31,8 +31,8 @@ import java.util.List;
  */
 public class SelectDeParser implements SelectVisitor, OrderByVisitor, SelectItemVisitor, FromItemVisitor, PivotVisitor {
 
-    private StringBuilder buffer;
-    private ExpressionVisitor expressionVisitor;
+    protected StringBuilder buffer;
+    protected ExpressionVisitor expressionVisitor;
 
     public SelectDeParser() {
     }

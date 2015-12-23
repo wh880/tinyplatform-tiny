@@ -35,9 +35,15 @@ import java.util.Iterator;
 
 public class StatementDeParser implements StatementVisitor {
 
-    private StringBuilder buffer;
+    protected StringBuilder buffer;
+    
 
-    public StatementDeParser(StringBuilder buffer) {
+    public StatementDeParser() {
+		super();
+	}
+
+
+	public StatementDeParser(StringBuilder buffer) {
         this.buffer = buffer;
     }
 

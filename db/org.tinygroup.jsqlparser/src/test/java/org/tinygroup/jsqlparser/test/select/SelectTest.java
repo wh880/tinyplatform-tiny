@@ -16,6 +16,7 @@
 package org.tinygroup.jsqlparser.test.select;
 
 import junit.framework.TestCase;
+
 import org.apache.commons.io.IOUtils;
 import org.tinygroup.jsqlparser.JSQLParserException;
 import org.tinygroup.jsqlparser.expression.*;
@@ -502,6 +503,9 @@ public class SelectTest extends TestCase {
         assertEquals("mycol",
                 ((Column) ((SelectExpressionItem) plainSelect.getSelectItems().get(1)).getExpression()).getColumnName());
         assertStatementCanBeDeparsedAs(select, statement);
+        String sql="select DISTINCT(CONCAT(aaa,'sds'))  from ddltest;";
+        select=(Select) parserManager.parse(new StringReader(sql));
+        plainSelect = (PlainSelect) select.getSelectBody();
     }
 
     public void testDistinctTop() throws JSQLParserException {
@@ -1652,5 +1656,11 @@ public class SelectTest extends TestCase {
     public void testSelectJoin2() throws JSQLParserException {
         assertSqlCanBeParsedAndDeparsed("SELECT * FROM pg_constraint WHERE pg_attribute.attnum = ANY(pg_constraint.conkey)");
     }
-
+    
+    public void testOraclePageSql()throws JSQLParserException{
+    	String statement="SELECT * FROM (SELECT ROWNUM AS rowno, t.*FROM emp t WHERE hire_date BETWEEN TO_DATE ('20060501', 'yyyymmdd') AND TO_DATE ('20060731', 'yyyymmdd') AND ROWNUM <= 20) table_alias WHERE table_alias.rowno >= 10";
+    	final Select select = (Select) parserManager.parse(new StringReader(statement));
+    	System.out.println(select.toString());
+    	
+    }
 }

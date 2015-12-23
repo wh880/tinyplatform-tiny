@@ -24,8 +24,12 @@ import org.tinygroup.jsqlparser.statement.delete.Delete;
  */
 public class DeleteDeParser {
 
-	private StringBuilder buffer;
-    private ExpressionVisitor expressionVisitor;
+	protected StringBuilder buffer;
+	protected ExpressionVisitor expressionVisitor;
+    
+    public DeleteDeParser(){
+    	
+    }
 
 	/**
 	 * @param expressionVisitor a {@link ExpressionVisitor} to de-parse

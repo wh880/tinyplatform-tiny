@@ -21,8 +21,8 @@ import org.tinygroup.jsqlparser.statement.select.PlainSelect;
 
 public class ExecuteDeParser {
 
-	private StringBuilder buffer;
-	private ExpressionVisitor expressionVisitor;
+	protected StringBuilder buffer;
+	protected ExpressionVisitor expressionVisitor;
 
 	/**
 	 * @param expressionVisitor a {@link ExpressionVisitor} to de-parse

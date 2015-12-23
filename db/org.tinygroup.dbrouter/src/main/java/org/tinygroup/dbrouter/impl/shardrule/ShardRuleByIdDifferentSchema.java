@@ -36,7 +36,7 @@ public class ShardRuleByIdDifferentSchema extends ShardRuleByIdAbstract {
 	
 	
 
-	public String getReplacedSql(Partition partition, Shard shard, String sql) {
+	public String getReplacedSql(Partition partition, Shard shard, String sql, Object... arguments) {
 		return sql;
 	}
 }

@@ -24,7 +24,7 @@ import org.tinygroup.jsqlparser.statement.select.PlainSelect;
  */
 public class CreateViewDeParser {
 
-	private StringBuilder buffer;
+	protected StringBuilder buffer;
 
 	/**
 	 * @param buffer the buffer that will be filled with the select
