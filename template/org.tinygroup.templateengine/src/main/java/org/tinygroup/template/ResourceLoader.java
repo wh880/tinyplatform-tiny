@@ -94,7 +94,7 @@ public interface ResourceLoader<T> {
     Template createTemplate(T templateMaterial) throws TemplateException;
 
     /**
-     * 返回注入模板引擎
+     * 注入模板引擎
      *
      * @param templateEngine
      */
@@ -115,7 +115,7 @@ public interface ResourceLoader<T> {
     void setClassLoader(ClassLoader classLoader);
 
     /**
-     * 获取流程引擎
+     * 获取模板引擎
      *
      * @return
      */
@@ -123,7 +123,7 @@ public interface ResourceLoader<T> {
 
 
     /**
-     * 返回模板文件的扩展
+     * 返回模板文件的扩展名
      *
      * @return
      */
