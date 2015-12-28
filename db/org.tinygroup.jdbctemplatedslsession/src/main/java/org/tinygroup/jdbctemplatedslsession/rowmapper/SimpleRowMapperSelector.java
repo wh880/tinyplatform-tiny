@@ -32,6 +32,7 @@ public class SimpleRowMapperSelector implements RowMapperSelector {
 	private List<RowMapperHolder> holders=new ArrayList<RowMapperHolder>();
 	
 	public SimpleRowMapperSelector(){
+		holders.add(new ColumnMapRowMapperHolder());
 		holders.add(new SingleColumnRowMapperHolder());
 		holders.add(new BeanPropertyRowMapperHolder());
 	}
