@@ -15,8 +15,6 @@
  */
 package org.tinygroup.jdbctemplatedslsession.rowmapper;
 
-import org.springframework.beans.BeanInstantiationException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.tinygroup.jdbctemplatedslsession.RowMapperHolder;
@@ -24,8 +22,8 @@ import org.tinygroup.jdbctemplatedslsession.RowMapperHolder;
 import java.util.Map;
 
 /**
- * BeanPropertyRowMapper的选择器
- * @author renhui
+ * ColumnMapRowMapperHolder的选择器
+ * @author wangwy11342
  *
  */
 public class ColumnMapRowMapperHolder implements RowMapperHolder {
