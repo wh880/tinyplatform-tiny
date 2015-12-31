@@ -52,7 +52,7 @@ public final class Context2ObjectUtil {
 			return generator.getObjectArray(paramName, paramType, loader,context);
 		}
 		// 否则就是对象
-		if(isSimpleType(paramType)&&context.exist(paramName)){
+		if(isSimpleType(paramType)&&!context.exist(paramName)){
 			return null;
 		}
 		return generator.getObject(paramName, paramName, paramType,loader, context);
