@@ -16,6 +16,7 @@
 package org.tinygroup.dbrouter;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Shard;
 
@@ -43,9 +44,9 @@ public interface ShardRule {
      * @param partition TODO
      * @param shard TODO
      * @param sql
-     *
+     * @param arguments TODO
      * @return
      */
-    String getReplacedSql(Partition partition, Shard shard, String sql);
+    String getReplacedSql(Partition partition, Shard shard, String sql, Object... arguments);
 
 }

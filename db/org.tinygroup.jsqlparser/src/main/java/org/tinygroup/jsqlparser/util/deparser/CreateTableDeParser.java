@@ -27,7 +27,7 @@ import java.util.Iterator;
  */
 public class CreateTableDeParser {
 
-    private StringBuilder buffer;
+    protected StringBuilder buffer;
 
     /**
      * @param buffer the buffer that will be filled with the select

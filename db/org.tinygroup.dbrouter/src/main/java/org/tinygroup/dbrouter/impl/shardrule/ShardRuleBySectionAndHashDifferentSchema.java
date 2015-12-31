@@ -17,6 +17,7 @@ package org.tinygroup.dbrouter.impl.shardrule;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 import org.tinygroup.cache.Cache;
 import org.tinygroup.dbrouter.ShardRule;
 import org.tinygroup.dbrouter.cache.CacheKey;
@@ -183,7 +184,7 @@ public class ShardRuleBySectionAndHashDifferentSchema implements ShardRule {
 		}
 	}
 
-	public String getReplacedSql(Partition partition, Shard shard, String sql) {
+	public String getReplacedSql(Partition partition, Shard shard, String sql, Object... arguments) {
 		if (null != shard.getTableMappingMap()) {
 			return DbRouterUtil.transformSqlWithTableName(sql,
 					shard.getTableMappingMap());

@@ -21,7 +21,9 @@ import org.tinygroup.jdbctemplatedslsession.SimpleDslSession;
 import org.tinygroup.tinysqldsl.*;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.tinygroup.jdbctemplatedslsession.CustomTable.CUSTOM;
 import static org.tinygroup.jdbctemplatedslsession.ScoreTable.TSCORE;
@@ -60,6 +62,12 @@ public class DslSqlTest extends BaseTest {
 		Custom custom = session.fetchOneResult(select, Custom.class);
 		assertEquals("悠悠然然", custom.getName());
 
+		select = selectFrom(CUSTOM).where(CUSTOM.ID.gt(0));
+		List<Map> maplist = session.fetchList(select, Map.class);
+		assertEquals(maplist.size(),1);
+		assertEquals(maplist.get(0).get("name"), "悠悠然然");
+		assertEquals(maplist.get(0).get("NAME"), "悠悠然然");
+
 		select = select(CUSTOM.NAME, CUSTOM.AGE, TSCORE.SCORE, TSCORE.COURSE)
 				.from(CUSTOM).join(
 						leftJoin(TSCORE, CUSTOM.NAME.eq(TSCORE.NAME)));
@@ -69,7 +77,15 @@ public class DslSqlTest extends BaseTest {
 		assertEquals(98, customScore.getScore());
 		assertEquals(22, customScore.getAge());
 		assertEquals("shuxue", customScore.getCourse());
-		
+
+		//返回map类型
+		Map<String,Object> customMap = session.fetchOneResult(select,
+				Map.class);
+		assertEquals("悠悠然然",customMap.get("NAME"));
+		assertEquals(22,customMap.get("AGE"));
+		assertEquals(98,customMap.get("SCORE"));
+		assertEquals("shuxue",customMap.get("COURSE"));
+
 		select = select(CUSTOM.NAME, CUSTOM.AGE, TSCORE.SCORE, TSCORE.COURSE)
 				.from(CUSTOM).where(CUSTOM.NAME.eq("悠悠然然")).join(
 						leftJoin(TSCORE, CUSTOM.NAME.eq(TSCORE.NAME)));
@@ -82,7 +98,10 @@ public class DslSqlTest extends BaseTest {
 		
 		select=select(CUSTOM.AGE.max()).from(CUSTOM);
         int max =session.fetchOneResult(select, Integer.class);
-        assertEquals(22, max);
+
+		select=select(CUSTOM.AGE.max()).from(CUSTOM);
+		Map map =session.fetchOneResult(select, Map.class);
+        assertEquals(22, map.get("1"));
         
         select=selectFrom(CUSTOM).where(CUSTOM.AGE.in(1,5,10,22,25));
         custom=session.fetchOneResult(select,Custom.class);

@@ -30,11 +30,15 @@ import org.tinygroup.jsqlparser.statement.update.Update;
  */
 public class UpdateDeParser {
 
-    private StringBuilder buffer;
-    private ExpressionVisitor expressionVisitor;
-    private SelectVisitor selectVisitor;
+    protected StringBuilder buffer;
+    protected ExpressionVisitor expressionVisitor;
+    protected SelectVisitor selectVisitor;
+    
+    public UpdateDeParser() {
+		super();
+	}
 
-    /**
+	/**
      * @param expressionVisitor a {@link ExpressionVisitor} to de-parse
      * expressions. It has to share the same<br>
      * StringBuilder (buffer parameter) as this object in order to work

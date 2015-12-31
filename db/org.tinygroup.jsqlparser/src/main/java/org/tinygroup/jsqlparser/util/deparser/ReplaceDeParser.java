@@ -33,9 +33,9 @@ import java.util.Iterator;
  */
 public class ReplaceDeParser implements ItemsListVisitor {
 
-	private StringBuilder buffer;
-    private ExpressionVisitor expressionVisitor;
-    private SelectVisitor selectVisitor;
+	protected StringBuilder buffer;
+	protected ExpressionVisitor expressionVisitor;
+	protected SelectVisitor selectVisitor;
 
 	public ReplaceDeParser() {
 	}

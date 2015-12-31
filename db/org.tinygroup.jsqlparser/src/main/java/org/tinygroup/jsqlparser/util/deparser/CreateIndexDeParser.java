@@ -28,7 +28,7 @@ import java.util.Iterator;
  */
 public class CreateIndexDeParser {
 
-    private StringBuilder buffer;
+    protected StringBuilder buffer;
 
 	/**
 	 * @param buffer the buffer that will be filled with the create

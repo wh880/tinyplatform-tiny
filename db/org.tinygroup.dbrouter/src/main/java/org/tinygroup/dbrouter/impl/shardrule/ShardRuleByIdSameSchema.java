@@ -37,7 +37,7 @@ public class ShardRuleByIdSameSchema extends ShardRuleByIdAbstract {
 	}
 
 
-	public String getReplacedSql(Partition partition, Shard shard, String sql) {
+	public String getReplacedSql(Partition partition, Shard shard, String sql, Object... arguments) {
 		Map<String, String> tableMapping = new HashMap<String, String>();
 		tableMapping.put(getTableName(), getTableName() + getRemainder());
 		return DbRouterUtil.transformSqlWithTableName(sql, tableMapping);

@@ -13,30 +13,28 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.dbrouter.impl.shardrule;
+package org.tinygroup.jdbctemplatedslsession.rowmapper;
 
-import org.tinygroup.dbrouter.config.Partition;
-import org.tinygroup.dbrouter.config.Shard;
+import org.springframework.jdbc.core.ColumnMapRowMapper;
+import org.springframework.jdbc.core.RowMapper;
+import org.tinygroup.jdbctemplatedslsession.RowMapperHolder;
 
+import java.util.Map;
 
 /**
- * 通过ID进行分片 Created by luoguo on 13-12-15.
+ * ColumnMapRowMapperHolder的选择器
+ * @author wangwy11342
+ *
  */
-public class ShardRuleByIdDifferentSchema extends ShardRuleByIdAbstract {
+public class ColumnMapRowMapperHolder implements RowMapperHolder {
 
-	public ShardRuleByIdDifferentSchema() {
+	public boolean isMatch(Class requiredType) {
 
+		return Map.class.isAssignableFrom(requiredType);
 	}
 
-	public ShardRuleByIdDifferentSchema(String tableName,
-			String primaryKeyFieldName, int remainder) {
-		super(tableName, primaryKeyFieldName, remainder);
+	public RowMapper getRowMapper(Class requiredType) {
+		return new ColumnMapRowMapper();
 	}
 
-	
-	
-
-	public String getReplacedSql(Partition partition, Shard shard, String sql, Object... arguments) {
-		return sql;
-	}
 }

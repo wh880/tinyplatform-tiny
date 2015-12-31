@@ -33,9 +33,9 @@ import java.util.Iterator;
  */
 public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
 
-    private StringBuilder buffer;
-    private SelectVisitor selectVisitor;
-    private boolean useBracketsInExprList = true;
+    protected StringBuilder buffer;
+    protected SelectVisitor selectVisitor;
+    protected boolean useBracketsInExprList = true;
 
     public ExpressionDeParser() {
     }

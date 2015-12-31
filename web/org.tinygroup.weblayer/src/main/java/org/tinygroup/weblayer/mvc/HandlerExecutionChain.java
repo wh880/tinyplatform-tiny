@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.core.ParameterNameDiscoverer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.commons.tools.ClassUtil;
 import org.tinygroup.commons.tools.ReflectionUtils;
 import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
@@ -123,8 +124,10 @@ public class HandlerExecutionChain {
 					}
 				}
 			} else {
-				args[i] = ValueUtil
-						.getValue(args[i].toString(), type.getName());
+				if(ClassUtil.isBasicClass(args[i].getClass())){
+					args[i] = ValueUtil
+							.getValue(args[i].toString(), type.getName());
+				}
 			}
 			context.put(parameterNames[i], args[i]);
 
@@ -177,5 +180,5 @@ public class HandlerExecutionChain {
 			}
 		}
 	}
-
+	
 }
