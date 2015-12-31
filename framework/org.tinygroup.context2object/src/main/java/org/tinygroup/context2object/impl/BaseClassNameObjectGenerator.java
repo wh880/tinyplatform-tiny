@@ -9,6 +9,7 @@ import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context2object.ObjectAssembly;
 import org.tinygroup.context2object.TypeCreator;
+import org.tinygroup.context2object.util.Context2ObjectUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -127,20 +128,7 @@ public abstract class BaseClassNameObjectGenerator {
 	}
 
 	protected boolean isSimpleType(Class<?> clazz) {
-		if (clazz.equals(int.class) || clazz.equals(char.class)
-				|| clazz.equals(byte.class) || clazz.equals(boolean.class)
-				|| clazz.equals(short.class) || clazz.equals(long.class)
-				|| clazz.equals(double.class) || clazz.equals(float.class)) {
-			return true;
-		}
-		if (clazz.equals(Integer.class) || clazz.equals(Character.class)
-				|| clazz.equals(Byte.class) || clazz.equals(Boolean.class)
-				|| clazz.equals(Short.class) || clazz.equals(Long.class)
-				|| clazz.equals(Double.class) || clazz.equals(Float.class)
-				|| clazz.equals(String.class)) {
-			return true;
-		}
-		return false;
+		return Context2ObjectUtil.isSimpleType(clazz);
 	}
 
 	protected Object getPerpertyValue(String preName, String objName,

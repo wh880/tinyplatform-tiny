@@ -33,10 +33,6 @@ public final class Context2ObjectUtil {
 			ClassLoader loader) {
 		if (context.exist(p.getName()))
 			return context.get(p.getName());
-		// Object o = context.get(p.getName());
-		// if (o != null) {
-		// return o;
-		// }
 		return getObjectByGenerator(p, context, loader);
 	}
 
@@ -56,6 +52,9 @@ public final class Context2ObjectUtil {
 			return generator.getObjectArray(paramName, paramType, loader,context);
 		}
 		// 否则就是对象
+		if(isSimpleType(paramType)&&context.exist(paramName)){
+			return null;
+		}
 		return generator.getObject(paramName, paramName, paramType,loader, context);
 	}
 
@@ -66,5 +65,38 @@ public final class Context2ObjectUtil {
 		return generator.getObjectCollection(collectionClass,loader);
 	}
 
-
+	public static boolean isSimpleType(Class<?> clazz) {
+		if (clazz.equals(int.class) || clazz.equals(char.class)
+				|| clazz.equals(byte.class) || clazz.equals(boolean.class)
+				|| clazz.equals(short.class) || clazz.equals(long.class)
+				|| clazz.equals(double.class) || clazz.equals(float.class)) {
+			return true;
+		}
+		if (clazz.equals(Integer.class) || clazz.equals(Character.class)
+				|| clazz.equals(Byte.class) || clazz.equals(Boolean.class)
+				|| clazz.equals(Short.class) || clazz.equals(Long.class)
+				|| clazz.equals(Double.class) || clazz.equals(Float.class)
+				|| clazz.equals(String.class)) {
+			return true;
+		}
+		return false;
+	}
+	
+	
+	public static boolean isSimpleType(String clazz) {
+		if (clazz.equals("int") || clazz.equals("char")
+				|| clazz.equals("byte") || clazz.equals("boolean")
+				|| clazz.equals("short") || clazz.equals("long")
+				|| clazz.equals("double") || clazz.equals("float")) {
+			return true;
+		}
+		if (clazz.equals("java.lang.Integer") || clazz.equals("java.lang.Character")
+				|| clazz.equals("java.lang.Byte") || clazz.equals("java.lang.Boolean")
+				|| clazz.equals("java.lang.Short") || clazz.equals("java.lang.Long")
+				|| clazz.equals("java.lang.Double") || clazz.equals("java.lang.Float")
+				|| clazz.equals("java.lang.String")) {
+			return true;
+		}
+		return false;
+	}
 }
