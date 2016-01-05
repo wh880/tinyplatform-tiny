@@ -16,5 +16,6 @@
     <module>org.tinygroup.uiengine</module>
     <module>org.tinygroup.springmvc</module>
     <module>org.tinygroup.sessionstore</module>
+    <module>org.tinygroup.urlrestful</module>
   </modules>
 </project>
