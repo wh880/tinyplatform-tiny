@@ -18,8 +18,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 public class DefaultParserResultShardRule extends AbstractParserResultShardRule {
 	
-	@XStreamAlias("column-name")
-	private String columnName;
+	@XStreamAlias("expression")
+	private String expression;
+	
 
 	@Override
 	protected boolean internalMatch(Partition partition, Shard shard,
@@ -31,14 +32,22 @@ public class DefaultParserResultShardRule extends AbstractParserResultShardRule 
         if(CollectionUtil.isEmpty(conditions)){//没有参数信息的sql，也认为匹配此分片
         	return true;
         }
+        //TODO 组装参数map,作为groovy函数的参数，根据expression创建groovy编写的class代码
 		for (Condition condition : conditions) {
 			ColumnInfo columnInfo=condition.getColumn();
-			if(columnInfo.getName().equalsIgnoreCase(columnName)){
-				
-			}
-			
 		}
 		return false;
 	}
+
+
+	public String getExpression() {
+		return expression;
+	}
+
+
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+	
 
 }
