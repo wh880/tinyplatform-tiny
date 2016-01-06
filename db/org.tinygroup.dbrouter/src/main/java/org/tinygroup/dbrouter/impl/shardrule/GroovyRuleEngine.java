@@ -51,7 +51,7 @@ public class GroovyRuleEngine {
             m_routingRuleMap.setAccessible(true);
             return (Boolean)m_routingRuleMap.invoke(ruleObj,map);
         } catch (Throwable t) {
-            throw new DbrouterRuntimeException(new IllegalArgumentException("实例化规则对象失败", t));
+            throw new DbrouterRuntimeException(new IllegalArgumentException("执行表达式失败", t));
         }
     }
 
@@ -78,14 +78,15 @@ public class GroovyRuleEngine {
             // 替换成(map.get("key"));
             sb.append(realParam);
             sb.append("\"))");
-            LOGGER.logMessage(DEBUG, sb.toString());
             start = matcher.end();
         }
         sb.append(expression.substring(start));
         sb.append(";");
         sb.append("}");
         sb.append("}");
-        return sb.toString();
+        String fullGroovyStr = sb.toString();
+        LOGGER.logMessage(DEBUG, "规则代码:{1}",fullGroovyStr);
+        return fullGroovyStr;
     }
 
 

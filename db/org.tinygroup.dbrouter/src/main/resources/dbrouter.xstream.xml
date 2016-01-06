@@ -19,5 +19,7 @@
 			class-name="org.tinygroup.dbrouter.impl.shardrule.ShardRuleBySectionDifferentSchema" />
 		<xstream-annotation-class
 			class-name="org.tinygroup.dbrouter.impl.shardrule.ShardRuleBySectionAndHashDifferentSchema" />
+		<xstream-annotation-class
+			class-name="org.tinygroup.dbrouter.impl.shardrule.DefaultParserResultShardRule"/>
 	</xstream-annotation-classes>
 </xstream-configuration>

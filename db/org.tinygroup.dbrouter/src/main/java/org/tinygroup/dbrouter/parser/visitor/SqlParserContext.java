@@ -34,7 +34,7 @@ public class SqlParserContext {
 	private final List<GroupByColumn> groupByColumns = new ArrayList<GroupByColumn>();
 	private final StringBuilder buffer = new StringBuilder(); //重新生成的sql
 	// 逻辑表名
-	private String logicTabelName;
+	private String logicTableName;
 		// 要进行替换的表名
 	private String targetTableName;
 	private long skip;
@@ -99,11 +99,11 @@ public class SqlParserContext {
 	public List<GroupByColumn> getGroupByColumns() {
 		return groupByColumns;
 	}
-	public String getLogicTabelName() {
-		return logicTabelName;
+	public String getLogicTableName() {
+		return logicTableName;
 	}
-	public void setLogicTabelName(String logicTabelName) {
-		this.logicTabelName = logicTabelName;
+	public void setLogicTableName(String logicTableName) {
+		this.logicTableName = logicTableName;
 	}
 	public String getTargetTableName() {
 		return targetTableName;
@@ -175,7 +175,7 @@ public class SqlParserContext {
 
 	
 	public boolean canReplaceTableName(String tableName) {
-		return tableName.equalsIgnoreCase(logicTabelName)
+		return tableName.equalsIgnoreCase(logicTableName)
 				&& !StringUtil.isBlank(targetTableName);
 	}
 	
