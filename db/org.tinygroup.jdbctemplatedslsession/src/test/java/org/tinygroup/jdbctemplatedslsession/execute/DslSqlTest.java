@@ -114,7 +114,7 @@ public class DslSqlTest extends BaseTest {
 		
 		update=update(CUSTOM).set(CUSTOM.NAME.value(null),
 				CUSTOM.ID.value(223),CUSTOM.AGE.value(null)).where(CUSTOM.NAME.eq("flank"));
-		affect = session.execute(update,true);
+		affect = session.execute(update);
 		assertEquals(1, affect);
 		
 		select = selectFrom(CUSTOM).where(CUSTOM.NAME.eq("flank"));
@@ -124,7 +124,7 @@ public class DslSqlTest extends BaseTest {
         
         update=update(CUSTOM).set(CUSTOM.NAME.value(null),
 				CUSTOM.AGE.value(30)).where(CUSTOM.NAME.eq("flank"));
-        affect = session.execute(update);
+        affect = session.execute(update,false);
 		assertEquals(1, affect);
 		select=select(CUSTOM.AGE.count()).from(CUSTOM).where(CUSTOM.NAME.eq("flank"));
 		int count=session.count(select);
