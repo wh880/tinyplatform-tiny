@@ -76,14 +76,6 @@ public class ServiceReleaseManager {
 	 * @return
 	 */
 	public static boolean isAccept(String serviceId){
-		LOGGER.logMessage(LogLevel.INFO, String.format("验证服务是[%s]", serviceId));
-		for (String str : excludes) {
-			LOGGER.logMessage(LogLevel.INFO, String.format("黑名单列表[%s]", str));
-		}
-		LOGGER.logMessage(LogLevel.INFO, "=====================");
-		for (String str : includes) {
-			LOGGER.logMessage(LogLevel.INFO, String.format("白名单列表[%s]", str));
-		}
 		//没有名单，则一直为可用
 		if (excludes.size() == 0 && includes.size() == 0) {
 			return true;
