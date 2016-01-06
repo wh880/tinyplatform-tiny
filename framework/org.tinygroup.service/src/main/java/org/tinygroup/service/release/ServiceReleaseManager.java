@@ -7,6 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.service.release.config.ServiceRelease;
 
 /**
@@ -26,7 +30,10 @@ import org.tinygroup.service.release.config.ServiceRelease;
  *
  */
 public class ServiceReleaseManager {
-
+	
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(AbstractFileProcessor.class);
+	
 	/**
 	 * 黑名单
 	 */
@@ -69,6 +76,14 @@ public class ServiceReleaseManager {
 	 * @return
 	 */
 	public static boolean isAccept(String serviceId){
+		LOGGER.logMessage(LogLevel.INFO, String.format("验证服务是[%s]", serviceId));
+		for (String str : excludes) {
+			LOGGER.logMessage(LogLevel.INFO, String.format("黑名单列表[%s]", str));
+		}
+		LOGGER.logMessage(LogLevel.INFO, "=====================");
+		for (String str : includes) {
+			LOGGER.logMessage(LogLevel.INFO, String.format("白名单列表[%s]", str));
+		}
 		//没有名单，则一直为可用
 		if (excludes.size() == 0 && includes.size() == 0) {
 			return true;
