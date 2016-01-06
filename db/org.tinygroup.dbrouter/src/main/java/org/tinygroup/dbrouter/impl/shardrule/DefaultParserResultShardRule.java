@@ -44,7 +44,7 @@ public class DefaultParserResultShardRule extends AbstractParserResultShardRule 
 		for (Condition condition : conditions) {
 			ColumnInfo columnInfo=condition.getColumn();
 			List<Object> values = condition.getValues();
-			Object value =  (values!=null && values.size()==0)?values.get(0):values;
+			Object value =  (values!=null && values.size()==1)?values.get(0):values;
 			conditionmap.put(columnInfo.getName(),value);
 		}
 		try {

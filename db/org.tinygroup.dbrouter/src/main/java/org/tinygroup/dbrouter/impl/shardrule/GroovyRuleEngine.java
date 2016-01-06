@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class GroovyRuleEngine {
     private static final Pattern RETURN_WHOLE_WORD_PATTERN = Pattern.compile("\\breturn\\b",
             Pattern.CASE_INSENSITIVE); // 全字匹配
-    private static final Pattern DOLLER_PATTERN            = Pattern.compile("#.*?#");
+    private static final Pattern DOLLER_PATTERN = Pattern.compile("#.*?#");
     private static Logger LOGGER = LoggerFactory.getLogger(GroovyRuleEngine.class);
 
     public static boolean eval(String expression,Map map){
@@ -66,7 +66,7 @@ public class GroovyRuleEngine {
 
         Matcher returnMarcher = RETURN_WHOLE_WORD_PATTERN.matcher(expression);
         if (!returnMarcher.find()) {
-            sb.append("return");
+            sb.append("return false");
         }
 
         while (matcher.find(start)) {
