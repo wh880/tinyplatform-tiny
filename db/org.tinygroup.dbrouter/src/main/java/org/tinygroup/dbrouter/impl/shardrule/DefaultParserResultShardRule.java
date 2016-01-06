@@ -25,9 +25,6 @@ public class DefaultParserResultShardRule extends AbstractParserResultShardRule 
 	@XStreamAlias("expression")
 	private String expression;
 
-	@XStreamAlias("rule-engine-class")
-	private String ruleEngineClass;
-	
 
 	@Override
 	protected boolean internalMatch(Partition partition, Shard shard,
@@ -40,16 +37,17 @@ public class DefaultParserResultShardRule extends AbstractParserResultShardRule 
         	return true;
         }
         //TODO 组装参数map,作为groovy函数的参数，根据expression创建groovy编写的class代码
-		if(!StringUtil.isBlank(expression) && !StringUtil.isBlank(ruleEngineClass)) return false;
+		if(!StringUtil.isBlank(expression)) return false;//表达式为空直接返回false
 		Map conditionmap = new HashMap();
 		for (Condition condition : conditions) {
 			ColumnInfo columnInfo=condition.getColumn();
-			conditionmap.put(columnInfo.getName(), condition.getValues());
+			List<Object> values = condition.getValues();
+			Object value =  (values!=null && values.size()==0)?values.get(0):values;
+			conditionmap.put(columnInfo.getName(),value);
 		}
 		GroovyRuleEngine ruleEngine = null;
 		try {
-			ruleEngine = (GroovyRuleEngine) Class.forName(ruleEngineClass).newInstance();
-			return ruleEngine.eval(expression,conditionmap);
+			return GroovyRuleEngine.eval(expression,conditionmap);
 		} catch (Exception e) {
 			throw new BaseRuntimeException(e);
 		}
