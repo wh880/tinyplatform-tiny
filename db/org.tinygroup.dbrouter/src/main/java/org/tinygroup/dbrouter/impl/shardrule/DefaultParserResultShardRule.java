@@ -40,7 +40,7 @@ public class DefaultParserResultShardRule extends AbstractParserResultShardRule 
         	return true;
         }
         //TODO 组装参数map,作为groovy函数的参数，根据expression创建groovy编写的class代码
-		if(StringUtil.isBlank(ruleEngineClass)) return false;
+		if(!StringUtil.isBlank(expression) && !StringUtil.isBlank(ruleEngineClass)) return false;
 		Map conditionmap = new HashMap();
 		for (Condition condition : conditions) {
 			ColumnInfo columnInfo=condition.getColumn();
