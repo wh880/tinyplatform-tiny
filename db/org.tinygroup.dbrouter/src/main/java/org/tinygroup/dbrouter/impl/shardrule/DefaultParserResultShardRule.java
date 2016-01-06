@@ -1,8 +1,11 @@
 package org.tinygroup.dbrouter.impl.shardrule;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.tinygroup.commons.tools.CollectionUtil;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.dbrouter.config.Partition;
 import org.tinygroup.dbrouter.config.Shard;
 import org.tinygroup.dbrouter.parser.SqlParserResult;
@@ -10,6 +13,7 @@ import org.tinygroup.dbrouter.parser.base.ColumnInfo;
 import org.tinygroup.dbrouter.parser.base.Condition;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.tinygroup.exception.BaseRuntimeException;
 
 /**
  * 具有sql解析结果对象的分片规则
@@ -20,6 +24,9 @@ public class DefaultParserResultShardRule extends AbstractParserResultShardRule 
 	
 	@XStreamAlias("expression")
 	private String expression;
+
+	@XStreamAlias("rule-engine-class")
+	private String ruleEngineClass;
 	
 
 	@Override
@@ -33,10 +40,19 @@ public class DefaultParserResultShardRule extends AbstractParserResultShardRule 
         	return true;
         }
         //TODO 组装参数map,作为groovy函数的参数，根据expression创建groovy编写的class代码
+		if(StringUtil.isBlank(ruleEngineClass)) return false;
+		Map conditionmap = new HashMap();
 		for (Condition condition : conditions) {
 			ColumnInfo columnInfo=condition.getColumn();
+			conditionmap.put(columnInfo.getName(), condition.getValues());
 		}
-		return false;
+		GroovyRuleEngine ruleEngine = null;
+		try {
+			ruleEngine = (GroovyRuleEngine) Class.forName(ruleEngineClass).newInstance();
+			return ruleEngine.eval(expression,conditionmap);
+		} catch (Exception e) {
+			throw new BaseRuntimeException(e);
+		}
 	}
 
 
