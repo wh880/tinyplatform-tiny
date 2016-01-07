@@ -66,7 +66,7 @@ public class GroovyRuleEngine {
 
         Matcher returnMarcher = RETURN_WHOLE_WORD_PATTERN.matcher(expression);
         if (!returnMarcher.find()) {
-            sb.append("return false");
+            sb.append("return ");
         }
 
         while (matcher.find(start)) {
