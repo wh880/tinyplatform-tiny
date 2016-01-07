@@ -26,7 +26,7 @@ import org.tinygroup.service.ServiceProviderInterface;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class ServiceTestUtil {
-	private static boolean init = false;
+	public static boolean init = false;
 
 	public static void init(){
 		if(!init){

@@ -42,7 +42,7 @@ public abstract class AbstractTestUtil {
 	// private static VelocityHelperImpl helper;
 	// private static final String DEFAULT_FILERESOLVER_BEAN_XML =
 	// "/Application.preloadbeans.xml";
-	private static boolean init = false;
+	public static boolean init = false;
 	private static Application application;
 	private static String DEFAULT_CONFIG = "application.xml";
 	private static final Logger LOGGER = LoggerFactory
