@@ -23,13 +23,12 @@ import com.thoughtworks.xstream.XStream;
 public class ServiceReleaseProcessor extends AbstractFileProcessor implements FileProcessor {
 
 	private static final String SERVICE_RELEASE_EXTENSION = ".servicerelease.xml";
-	//日志信息错误太多:servicefilter SysService，自己改好
+	
 	public void process() {
-//		ServiceReleaseManager.clear(); 这里不能清除
 		XStream stream = XStreamFactory
 				.getXStream(Service.SERVICE_XSTREAM_PACKAGENAME);
 		for (FileObject fileObject : changeList) {
-			LOGGER.logMessage(LogLevel.INFO, "正在读取servicefilter文件[{0}]",
+			LOGGER.logMessage(LogLevel.INFO, "正在读取servicerelease文件[{0}]",
 					fileObject.getAbsolutePath());
 			try {
 				InputStream inputStream = fileObject.getInputStream();
@@ -42,19 +41,19 @@ public class ServiceReleaseProcessor extends AbstractFileProcessor implements Fi
 							fileObject.getAbsolutePath());
 				}
 				try {
-					LOGGER.logMessage(LogLevel.INFO, "正在加载servicefilter");
+					LOGGER.logMessage(LogLevel.INFO, "正在加载servicerelease");
 					ServiceReleaseManager.add(filter);
-					LOGGER.logMessage(LogLevel.INFO, "加载servicefilter结束");
+					LOGGER.logMessage(LogLevel.INFO, "加载servicerelease结束");
 				} catch (Exception e) {
-					LOGGER.errorMessage("加载servicefilter时出现异常", e);
+					LOGGER.errorMessage("加载servicerelease时出现异常", e);
 				}
 				
 			} catch (Exception e) {
-				LOGGER.errorMessage("加载SysService文件[{0}]出现异常", e,
+				LOGGER.errorMessage("加载servicerelease文件[{0}]出现异常", e,
 						fileObject.getAbsolutePath());
 			}
 
-			LOGGER.logMessage(LogLevel.INFO, "读取servicefilter文件[{0}]结束",
+			LOGGER.logMessage(LogLevel.INFO, "读取servicerelease文件[{0}]结束",
 					fileObject.getAbsolutePath());
 		}
 	}
