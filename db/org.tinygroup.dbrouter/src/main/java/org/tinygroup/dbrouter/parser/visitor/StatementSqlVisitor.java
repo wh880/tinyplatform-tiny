@@ -38,6 +38,7 @@ public class StatementSqlVisitor extends StatementDeParser {
 	public void visit(CreateIndex createIndex) {
 		CreateIndexSqlVisitor createIndexSqlVisitor = new CreateIndexSqlVisitor(
 				sqlParserContext);
+		sqlParserContext.setDDL(true);
 		createIndexSqlVisitor.deParse(createIndex);
 	}
 
@@ -45,6 +46,7 @@ public class StatementSqlVisitor extends StatementDeParser {
 	public void visit(CreateTable createTable) {
 		CreateTableSqlVisitor createTableSqlVisitor = new CreateTableSqlVisitor(
 				sqlParserContext);
+		sqlParserContext.setDDL(true);
 		createTableSqlVisitor.deParse(createTable);
 	}
 
@@ -53,6 +55,7 @@ public class StatementSqlVisitor extends StatementDeParser {
 		SelectDeParser selectDeParser = new SelectSqlVisitor(sqlParserContext);
 		CreateViewSqlVisitor createViewSqlVisitor = new CreateViewSqlVisitor(
 				sqlParserContext, selectDeParser);
+		sqlParserContext.setDDL(true);
 		createViewSqlVisitor.deParse(createView);
 	}
 
@@ -65,12 +68,14 @@ public class StatementSqlVisitor extends StatementDeParser {
 		selectDeParser.setExpressionVisitor(expressionDeParser);
 		DeleteDeParser deleteDeParser = new DeleteSqlVistor(expressionDeParser,
 				sqlParserContext);
+		sqlParserContext.setDML(true);
 		deleteDeParser.deParse(delete);
 	}
 
 	@Override
 	public void visit(Drop drop) {
 		DropSqlVisitor dropSqlVisitor = new DropSqlVisitor(sqlParserContext);
+		sqlParserContext.setDDL(true);
 		dropSqlVisitor.deParser(drop);
 	}
 
@@ -83,6 +88,7 @@ public class StatementSqlVisitor extends StatementDeParser {
 		selectDeParser.setExpressionVisitor(expressionDeParser);
 		InsertDeParser insertDeParser = new InsertSqlVisitor(
 				expressionDeParser, selectDeParser, sqlParserContext);
+		sqlParserContext.setDML(true);
 		insertDeParser.deParse(insert);
 	}
 
@@ -94,6 +100,7 @@ public class StatementSqlVisitor extends StatementDeParser {
 		selectVisitor.setExpressionVisitor(expressionVisitor);
 		ReplaceSqlVisitor replaceSqlVisitor = new ReplaceSqlVisitor(
 				expressionVisitor, selectVisitor, sqlParserContext);
+		sqlParserContext.setDDL(true);
 		replaceSqlVisitor.deParse(replace);
 	}
 
@@ -102,6 +109,7 @@ public class StatementSqlVisitor extends StatementDeParser {
 		SelectSqlVisitor selectDeParser = new SelectSqlVisitor(sqlParserContext);
 		ExpressionSqlVisitor expressionDeParser = new ExpressionSqlVisitor(
 				selectDeParser, sqlParserContext);
+		sqlParserContext.setDML(true);
 		selectDeParser.setExpressionVisitor(expressionDeParser);
 		if (select.getWithItemsList() != null
 				&& !select.getWithItemsList().isEmpty()) {
@@ -123,6 +131,7 @@ public class StatementSqlVisitor extends StatementDeParser {
 	public void visit(Truncate truncate) {
 		TruncateSqlVisitor truncateSqlVisitor = new TruncateSqlVisitor(
 				sqlParserContext);
+		sqlParserContext.setDDL(true);
 		truncateSqlVisitor.deParser(truncate);
 	}
 
@@ -135,18 +144,21 @@ public class StatementSqlVisitor extends StatementDeParser {
 		selectDeParser.setExpressionVisitor(expressionDeParser);
 		UpdateSqlVisitor updateDeParser = new UpdateSqlVisitor(
 				expressionDeParser, selectDeParser, sqlParserContext);
+		sqlParserContext.setDML(true);
 		updateDeParser.deParse(update);
 	}
 
 	@Override
 	public void visit(Alter alter) {
 		AlterSqlVisitor alterSqlVisitor = new AlterSqlVisitor(sqlParserContext);
+		sqlParserContext.setDDL(true);
 		alterSqlVisitor.deParser(alter);
 	}
 
 	@Override
 	public void visit(Execute execute) {
 		ExecuteSqlVisitor executeSqlVisitor=new ExecuteSqlVisitor(sqlParserContext);
+		sqlParserContext.setDDL(true);
 		executeSqlVisitor.deParse(execute);
 	}
 
