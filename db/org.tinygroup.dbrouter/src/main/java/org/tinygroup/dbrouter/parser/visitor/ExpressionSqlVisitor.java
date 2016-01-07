@@ -68,7 +68,7 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	public void visit(DoubleValue doubleValue) {
 		Condition condition = getCurrentCondition();
 		if(condition!=null){
-			condition.getValues().add(doubleValue);
+			condition.getValues().add(doubleValue.getValue());
 		}
 		super.visit(doubleValue);
 	}
@@ -104,7 +104,7 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	public void visit(LongValue longValue) {
 		Condition condition = getCurrentCondition();
 		if(condition!=null){
-			condition.getValues().add(longValue);
+			condition.getValues().add(longValue.getValue());
 		}
 		super.visit(longValue);
 	}
@@ -127,7 +127,7 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	public void visit(StringValue stringValue) {
 		Condition condition = getCurrentCondition();
 		if(condition!=null){
-			condition.getValues().add(stringValue);
+			condition.getValues().add(stringValue.getValue());
 		}
 		super.visit(stringValue);
 	}
@@ -153,7 +153,7 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	public void visit(DateValue dateValue) {
 		Condition condition = getCurrentCondition();
 		if(condition!=null){
-			condition.getValues().add(dateValue);
+			condition.getValues().add(dateValue.getValue());
 		}
 		super.visit(dateValue);
 	}
@@ -162,7 +162,7 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	public void visit(TimestampValue timestampValue) {
 		Condition condition = getCurrentCondition();
 		if(condition!=null){
-			condition.getValues().add(timestampValue);
+			condition.getValues().add(timestampValue.getValue());
 		}
 		super.visit(timestampValue);
 	}
@@ -171,7 +171,7 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	public void visit(TimeValue timeValue) {
 		Condition condition = getCurrentCondition();
 		if(condition!=null){
-			condition.getValues().add(timeValue);
+			condition.getValues().add(timeValue.getValue());
 		}
 		super.visit(timeValue);
 	}

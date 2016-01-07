@@ -44,15 +44,14 @@ public class ServiceReleaseTest extends TestCase {
 		Context context = new ContextImpl();
 		try {
 			ServiceTestUtil.execute("release4Exclude", context);
-			assertFalse(true);
+			fail();
 		} catch (Exception e) {
-			assertFalse(false);
 		}
 		try {
 			ServiceTestUtil.execute("release4Include", context);
-			assertFalse(false);
 		} catch (Exception e) {
-			assertFalse(true);
+			e.printStackTrace();
+			fail();
 		}
 	}
 	
@@ -72,15 +71,14 @@ public class ServiceReleaseTest extends TestCase {
 		Context context = new ContextImpl();
 		try {
 			ServiceTestUtil.execute("release4Include", context);
-			assertFalse(false);
 		} catch (Exception e) {
-			assertFalse(true);
+			e.printStackTrace();
+			fail();
 		}
 		try {
 			ServiceTestUtil.execute("release4Exclude", context);
-			assertFalse(true);
+			fail();
 		} catch (Exception e) {
-			assertFalse(false);
 		}
 	}
 	
@@ -105,15 +103,14 @@ public class ServiceReleaseTest extends TestCase {
 		Context context = new ContextImpl();
 		try {
 			ServiceTestUtil.execute("release4Exclude", context);
-			assertFalse(true);
+			fail();
 		} catch (Exception e) {
-			assertFalse(false);
 		}
 		try {
 			ServiceTestUtil.execute("release4Include", context);
-			assertFalse(false);
 		} catch (Exception e) {
-			assertFalse(true);
+			e.printStackTrace();
+			fail();
 		}
 	}
 	

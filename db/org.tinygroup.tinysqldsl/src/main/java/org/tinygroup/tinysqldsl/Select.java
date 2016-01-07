@@ -134,7 +134,7 @@ public class Select<T extends Select<T>> extends StatementSqlBuilder implements
 	
 	public Select copy(){
 		Select select=newSelect();
-		select.plainSelect=this.plainSelect;
+		select.plainSelect=PlainSelect.copy(this.plainSelect);
 		return select;
 	}
 	

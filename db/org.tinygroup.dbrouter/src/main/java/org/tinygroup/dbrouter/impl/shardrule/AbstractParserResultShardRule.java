@@ -32,7 +32,7 @@ public abstract class AbstractParserResultShardRule implements ShardRule {
 	
 	@XStreamAlias("logic-table-name")
 	@XStreamAsAttribute
-	private String logicTabelName;
+	private String logicTableName;
 	
 	public String getTargetTableName() {
 		return targetTableName;
@@ -42,12 +42,12 @@ public abstract class AbstractParserResultShardRule implements ShardRule {
 		this.targetTableName = targetTableName;
 	}
 
-	public String getLogicTabelName() {
-		return logicTabelName;
+	public String getLogicTableName() {
+		return logicTableName;
 	}
 
-	public void setLogicTabelName(String logicTabelName) {
-		this.logicTabelName = logicTabelName;
+	public void setLogicTableName(String logicTableName) {
+		this.logicTableName = logicTableName;
 	}
 
 	public boolean isMatch(Partition partition, Shard shard, String sql,
@@ -68,10 +68,10 @@ public abstract class AbstractParserResultShardRule implements ShardRule {
 		SqlParserContext sqlParserContext=new SqlParserContext();
 		sqlParserContext.setOriginalSql(sql);
 		sqlParserContext.setArguments(arguments);
-		Assert.assertTrue(!StringUtil.isBlank(logicTabelName),"logicTabelName属性值不能为空");
-		sqlParserContext.setLogicTabelName(logicTabelName);
+		Assert.assertTrue(!StringUtil.isBlank(logicTableName),"logicTableName属性值不能为空");
+		sqlParserContext.setLogicTableName(logicTableName);
 		if(StringUtil.isBlank(targetTableName)){
-			targetTableName=logicTabelName;
+			targetTableName= logicTableName;
 		}
 		sqlParserContext.setTargetTableName(targetTableName);
 		return sqlParserContext;

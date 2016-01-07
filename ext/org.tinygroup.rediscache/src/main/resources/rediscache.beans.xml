@@ -4,12 +4,13 @@
     http://www.springframework.org/schema/beans/spring-beans.xsd"
 	   default-autowire="byName" default-lazy-init="true">
 	
+	<bean name="redisCache" class="org.tinygroup.cache.redis.RedisCache" scope="singleton">
+		<property name="cacheManager" ref="redisCacheManager"></property>
+	</bean>
 	
 	<bean id="redisCacheManager" name="redisCacheManager" scope="singleton"
 		class="org.tinygroup.cache.redis.RedisCacheManager">
 		<property name="jedisManager" ref="jedisManager"></property>
 	</bean>
-	
-	
 	
 </beans>

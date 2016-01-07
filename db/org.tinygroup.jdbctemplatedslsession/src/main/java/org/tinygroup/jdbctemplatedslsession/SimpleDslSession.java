@@ -159,7 +159,7 @@ public class SimpleDslSession implements DslSession {
 	}
 
 	public int execute(Update update) {
-		return execute(update, false);
+		return execute(update, true);
 	}
 
 	public int execute(Update update, boolean ignoreNull) {
