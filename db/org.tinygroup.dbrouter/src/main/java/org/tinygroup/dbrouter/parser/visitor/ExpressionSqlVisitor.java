@@ -20,6 +20,7 @@ import org.tinygroup.jsqlparser.util.deparser.ExpressionDeParser;
 
 /**
  * 表达式的访问者
+ * 
  * @author renhui
  *
  */
@@ -30,29 +31,40 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	public static final String NOTIN_OPERATOR = "not in";
 	public static final String EQUALS_OPERATOR = "=";
 	private SqlParserContext sqlParserContext;
-	
+
 	public ExpressionSqlVisitor(SelectVisitor selectVisitor,
 			SqlParserContext sqlParserContext) {
 		super(selectVisitor, sqlParserContext.getBuffer());
-		this.sqlParserContext=sqlParserContext;
+		this.sqlParserContext = sqlParserContext;
 	}
 
 	@Override
 	public void visit(EqualsTo equalsTo) {
 		Expression leftExpression = equalsTo.getLeftExpression();
+		Expression rightExpression = equalsTo.getRightExpression();
+
 		if (leftExpression instanceof Column) {
 			Column column = (Column) leftExpression;
-			if (equalsTo.isNot()) {
-				addCondition(column, NEQ_OPERATOR);
-			} else {
-				addCondition(column, EQUALS_OPERATOR);
+			if (rightExpression instanceof DoubleValue
+					|| rightExpression instanceof JdbcParameter
+					|| rightExpression instanceof LongValue
+					|| rightExpression instanceof StringValue
+					|| rightExpression instanceof DateValue
+					|| rightExpression instanceof TimeValue
+					|| rightExpression instanceof TimestampValue) {
+				if (equalsTo.isNot()) {
+					addCondition(column, NEQ_OPERATOR);
+				} else {
+					addCondition(column, EQUALS_OPERATOR);
+				}
+				
 			}
 		}
 		super.visit(equalsTo);
 	}
-	
+
 	protected void addCondition(Column column, String operator) {
-		int columnIndex=sqlParserContext.getColumnIndex();
+		int columnIndex = sqlParserContext.getColumnIndex();
 		columnIndex++;
 		ColumnInfo columnInfo = new ColumnInfo(column);
 		Condition condition = new Condition();
@@ -63,18 +75,18 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 		sqlParserContext.setColumnIndex(columnIndex);
 	}
 
-
 	@Override
 	public void visit(DoubleValue doubleValue) {
 		Condition condition = getCurrentCondition();
-		if(condition!=null){
+		if (condition != null) {
 			condition.getValues().add(doubleValue.getValue());
 		}
 		super.visit(doubleValue);
 	}
 
 	private Condition getCurrentCondition() {
-		return sqlParserContext.getConditionMap().get(sqlParserContext.getColumnIndex());
+		return sqlParserContext.getConditionMap().get(
+				sqlParserContext.getColumnIndex());
 	}
 
 	@Override
@@ -94,7 +106,7 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	@Override
 	public void visit(JdbcParameter jdbcParameter) {
 		Condition condition = getCurrentCondition();
-		if(condition!=null){
+		if (condition != null) {
 			condition.getValues().add(sqlParserContext.getParamValue());
 		}
 		super.visit(jdbcParameter);
@@ -103,7 +115,7 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	@Override
 	public void visit(LongValue longValue) {
 		Condition condition = getCurrentCondition();
-		if(condition!=null){
+		if (condition != null) {
 			condition.getValues().add(longValue.getValue());
 		}
 		super.visit(longValue);
@@ -126,7 +138,7 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	@Override
 	public void visit(StringValue stringValue) {
 		Condition condition = getCurrentCondition();
-		if(condition!=null){
+		if (condition != null) {
 			condition.getValues().add(stringValue.getValue());
 		}
 		super.visit(stringValue);
@@ -152,7 +164,7 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	@Override
 	public void visit(DateValue dateValue) {
 		Condition condition = getCurrentCondition();
-		if(condition!=null){
+		if (condition != null) {
 			condition.getValues().add(dateValue.getValue());
 		}
 		super.visit(dateValue);
@@ -161,7 +173,7 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	@Override
 	public void visit(TimestampValue timestampValue) {
 		Condition condition = getCurrentCondition();
-		if(condition!=null){
+		if (condition != null) {
 			condition.getValues().add(timestampValue.getValue());
 		}
 		super.visit(timestampValue);
@@ -170,7 +182,7 @@ public class ExpressionSqlVisitor extends ExpressionDeParser {
 	@Override
 	public void visit(TimeValue timeValue) {
 		Condition condition = getCurrentCondition();
-		if(condition!=null){
+		if (condition != null) {
 			condition.getValues().add(timeValue.getValue());
 		}
 		super.visit(timeValue);
