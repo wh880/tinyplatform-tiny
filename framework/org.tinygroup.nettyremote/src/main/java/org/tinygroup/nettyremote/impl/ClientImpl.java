@@ -19,6 +19,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPromise;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -26,6 +27,12 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.tinygroup.event.Event;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -33,12 +40,9 @@ import org.tinygroup.nettyremote.Client;
 import org.tinygroup.nettyremote.DisconnectCallBack;
 import org.tinygroup.nettyremote.Exception.TinyRemoteConnectException;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 public class ClientImpl implements Client {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ClientImpl.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ClientImpl.class);
 	private ScheduledExecutorService executor = Executors
 			.newScheduledThreadPool(1);
 	private EventLoopGroup group = new NioEventLoopGroup();
@@ -68,11 +72,34 @@ public class ClientImpl implements Client {
 	}
 
 	public void write(Object o) {
-		future.channel().writeAndFlush(o);
+		if (o instanceof Event) {
+			Event event = (Event) o;
+			LOGGER.logMessage(LogLevel.DEBUG,
+					"写出消息为:eventId:{},serviceId:{}", event.getEventId(),
+					event.getServiceRequest().getServiceId());
+		}
+		ChannelFuture f = future.channel().writeAndFlush(o);
+		if (f instanceof ChannelPromise) {
+			ChannelPromise p = (ChannelPromise) f;
+			try {
+				p.await();
+			} catch (InterruptedException e) {
+				LOGGER.logMessage(LogLevel.WARN, "等待消息写出被中断");
+				;
+			}
+			if (p.isSuccess()) {
+				LOGGER.logMessage(LogLevel.DEBUG, "消息写出状态：{}", p.isSuccess());
+			} else {
+				LOGGER.logMessage(LogLevel.DEBUG, "消息写出状态：false");
+				throw new RuntimeException(p.cause());
+			}
+
+		}
+
 	}
 
 	private void reConnect() {
-		if(!executor.isShutdown()){
+		if (!executor.isShutdown()) {
 			// 所有资源释放完成之后，清空资源，再次发起重连操作
 			executor.execute(new Runnable() {
 				public void run() {
@@ -82,12 +109,12 @@ public class ClientImpl implements Client {
 								remoteHost, remotePort);
 						connect(remotePort, remoteHost);// 发起重连操作
 					} catch (InterruptedException e) {
-						//do nothing
+						// do nothing
 					}
 				}
 			});
 		}
-		
+
 	}
 
 	private void connect(int port, String host) {
@@ -106,11 +133,11 @@ public class ClientImpl implements Client {
 						+ remotePort + "发生异常", e);
 			}
 		} finally {
-			if (reConnect&&start) {
+			if (reConnect && start) {
 				reConnect();
 			}
 		}
-		if(callBack!=null){
+		if (callBack != null) {
 			callBack.call();
 		}
 	}
@@ -152,9 +179,9 @@ public class ClientImpl implements Client {
 		try {
 			group.shutdownGracefully();
 		} catch (Exception e) {
-			LOGGER.errorMessage("关闭Client时出错",e);
+			LOGGER.errorMessage("关闭Client时出错", e);
 		}
-		
+
 		setReady(false);
 	}
 
@@ -191,10 +218,8 @@ public class ClientImpl implements Client {
 		this.remoteHost = remoteHost;
 	}
 
-	
 	public void setCallBack(DisconnectCallBack callBack) {
 		this.callBack = callBack;
 	}
-	
-	
+
 }

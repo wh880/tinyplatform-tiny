@@ -20,7 +20,11 @@
 			<artifactId>org.tinygroup.logger</artifactId>
 			 <version>${project.version}</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.tinygroup</groupId>
+			<artifactId>org.tinygroup.event</artifactId>
+			 <version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.tinygroup</groupId>
 			<artifactId>org.tinygroup.threadgroup</artifactId>
