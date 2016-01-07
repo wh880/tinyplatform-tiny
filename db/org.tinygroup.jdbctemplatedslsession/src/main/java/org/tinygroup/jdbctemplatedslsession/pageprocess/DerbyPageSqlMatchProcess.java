@@ -16,26 +16,23 @@
 package org.tinygroup.jdbctemplatedslsession.pageprocess;
 
 import org.tinygroup.tinysqldsl.Select;
-import org.tinygroup.tinysqldsl.extend.MysqlSelect;
+import org.tinygroup.tinysqldsl.extend.DerbySelect;
+import org.tinygroup.tinysqldsl.select.Fetch;
+import org.tinygroup.tinysqldsl.select.Offset;
 
-/**
- * 
- * @author renhui
- *
- */
-public class MysqlPageSqlMatchProcess extends AbstractPageSqlMatchProcess{
-	
-	@Override
-	protected String internalSqlProcess(Select select,int start, int limit) {
-		MysqlSelect mysqlSelect=new MysqlSelect();
-		mysqlSelect.setPlainSelect(select.getPlainSelect());
-		mysqlSelect.limit(start, limit);
-		return mysqlSelect.parsedSql();
-	}
+public class DerbyPageSqlMatchProcess extends AbstractPageSqlMatchProcess {
 
 	@Override
 	protected String dbType() {
-		return "MySQL";
+		return "Derby";
+	}
+
+	@Override
+	protected String internalSqlProcess(Select select, int start, int limit) {
+		DerbySelect derbySelect=new DerbySelect();
+		derbySelect.setPlainSelect(select.getPlainSelect());
+		derbySelect.offset(Offset.offsetRow(start)).fetch(Fetch.fetchWithNextRow(limit));
+		return derbySelect.parsedSql();
 	}
 
 }

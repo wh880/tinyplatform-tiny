@@ -21,13 +21,9 @@ import org.tinygroup.tinysqldsl.extend.OracleSelect;
 public class OraclePageSqlMatchProcess extends AbstractPageSqlMatchProcess {
 	
 	@Override
-	protected Class selectType() {
-		return OracleSelect.class;
-	}
-
-	@Override
 	protected String internalSqlProcess(Select select, int start, int limit) {
-		OracleSelect oracleSelect=(OracleSelect)select;
+		OracleSelect oracleSelect=new OracleSelect();
+		oracleSelect.setPlainSelect(select.getPlainSelect());
 		oracleSelect.page(start, limit);
 		return oracleSelect.parsedSql();
 	}

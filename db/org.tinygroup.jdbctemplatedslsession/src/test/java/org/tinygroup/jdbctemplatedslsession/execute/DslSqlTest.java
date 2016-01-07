@@ -15,16 +15,6 @@
  */
 package org.tinygroup.jdbctemplatedslsession.execute;
 
-import org.tinygroup.jdbctemplatedslsession.Custom;
-import org.tinygroup.jdbctemplatedslsession.CustomScore;
-import org.tinygroup.jdbctemplatedslsession.SimpleDslSession;
-import org.tinygroup.tinysqldsl.*;
-
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static org.tinygroup.jdbctemplatedslsession.CustomTable.CUSTOM;
 import static org.tinygroup.jdbctemplatedslsession.ScoreTable.TSCORE;
 import static org.tinygroup.tinysqldsl.Delete.delete;
@@ -34,6 +24,20 @@ import static org.tinygroup.tinysqldsl.Select.selectFrom;
 import static org.tinygroup.tinysqldsl.Update.update;
 import static org.tinygroup.tinysqldsl.base.StatementSqlBuilder.and;
 import static org.tinygroup.tinysqldsl.select.Join.leftJoin;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import org.tinygroup.jdbctemplatedslsession.Custom;
+import org.tinygroup.jdbctemplatedslsession.CustomScore;
+import org.tinygroup.jdbctemplatedslsession.SimpleDslSession;
+import org.tinygroup.tinysqldsl.Delete;
+import org.tinygroup.tinysqldsl.DslSession;
+import org.tinygroup.tinysqldsl.Insert;
+import org.tinygroup.tinysqldsl.Pager;
+import org.tinygroup.tinysqldsl.Select;
+import org.tinygroup.tinysqldsl.Update;
 
 public class DslSqlTest extends BaseTest {
 
@@ -151,5 +155,44 @@ public class DslSqlTest extends BaseTest {
 		delete = delete(TSCORE).where(TSCORE.NAME.eq("悠悠然然"));
 		affect = session.execute(delete);
 	
+	}
+	
+	public void testPage(){
+		
+		Delete delete = delete(CUSTOM);
+		DslSession session = new SimpleDslSession(dataSource);
+		session.execute(delete);
+
+		for (int i = 0; i < 22; i++) {
+			Insert customInsert = insertInto(CUSTOM).values(
+					CUSTOM.ID.value("10001"+i), CUSTOM.NAME.value("悠悠然然"+i),
+					CUSTOM.AGE.value(22+i));
+			session.execute(customInsert);
+		}
+		
+		Select select=selectFrom(CUSTOM);
+		Pager<Custom> page=session.fetchPage(select, 0, 5, false, Custom.class);
+		assertEquals(5, page.getRecords().size());
+		assertEquals(22, page.getTotalCount());
+		assertEquals(1, page.getCurrentPage());
+		assertEquals(5, page.getTotalPages());
+		page=session.fetchPage(select, 5, 5, false, Custom.class);
+		assertEquals(5, page.getRecords().size());
+		assertEquals(22, page.getTotalCount());
+		assertEquals(2, page.getCurrentPage());
+		assertEquals(5, page.getTotalPages());
+		
+		page=session.fetchPage(select,15, 5, false, Custom.class);
+		assertEquals(5, page.getRecords().size());
+		assertEquals(22, page.getTotalCount());
+		assertEquals(4, page.getCurrentPage());
+		assertEquals(5, page.getTotalPages());
+		
+		page=session.fetchPage(select, 20, 5, false, Custom.class);
+		assertEquals(2, page.getRecords().size());
+		assertEquals(22, page.getTotalCount());
+		assertEquals(5, page.getCurrentPage());
+		assertEquals(5, page.getTotalPages());
+		
 	}
 }

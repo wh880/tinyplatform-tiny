@@ -16,26 +16,26 @@
 package org.tinygroup.jdbctemplatedslsession.pageprocess;
 
 import org.tinygroup.tinysqldsl.Select;
-import org.tinygroup.tinysqldsl.extend.MysqlSelect;
+import org.tinygroup.tinysqldsl.extend.DB2Select;
 
 /**
  * 
  * @author renhui
  *
  */
-public class MysqlPageSqlMatchProcess extends AbstractPageSqlMatchProcess{
+public class DB2PageSqlMatchProcess extends AbstractPageSqlMatchProcess {
 	
 	@Override
-	protected String internalSqlProcess(Select select,int start, int limit) {
-		MysqlSelect mysqlSelect=new MysqlSelect();
-		mysqlSelect.setPlainSelect(select.getPlainSelect());
-		mysqlSelect.limit(start, limit);
-		return mysqlSelect.parsedSql();
+	protected String internalSqlProcess(Select select, int start, int limit) {
+		DB2Select db2Select=new DB2Select();
+		db2Select.setPlainSelect(select.getPlainSelect());
+		db2Select.page(start, limit);
+		return db2Select.parsedSql();
 	}
 
 	@Override
 	protected String dbType() {
-		return "MySQL";
+		return "DB2";
 	}
 
 }

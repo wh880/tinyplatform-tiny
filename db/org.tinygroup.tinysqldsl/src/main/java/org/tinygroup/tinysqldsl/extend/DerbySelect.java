@@ -18,56 +18,54 @@ package org.tinygroup.tinysqldsl.extend;
 import org.tinygroup.tinysqldsl.Select;
 import org.tinygroup.tinysqldsl.base.Table;
 import org.tinygroup.tinysqldsl.formitem.FromItemList;
-import org.tinygroup.tinysqldsl.select.Limit;
+import org.tinygroup.tinysqldsl.select.Fetch;
+import org.tinygroup.tinysqldsl.select.Offset;
 import org.tinygroup.tinysqldsl.selectitem.AllColumns;
 import org.tinygroup.tinysqldsl.selectitem.SelectItem;
 
 /**
- * mysql数据库相关的查询
+ * 与sqlserver数据库相关的查询语句
  * 
  * @author renhui
  * 
  */
-public class MysqlSelect extends Select<MysqlSelect> {
-	
-	
-	public MysqlSelect() {
+public class DerbySelect extends Select<DerbySelect> {
+
+	public DerbySelect() {
 		super();
 	}
 
-	public static MysqlSelect select(SelectItem... selectItems) {
-		MysqlSelect select = new MysqlSelect();
+	public static DerbySelect select(SelectItem... selectItems) {
+		DerbySelect select = new DerbySelect();
 		select.getPlainSelect().addSelectItems(selectItems);
 		return select;
 	}
 
-	public static MysqlSelect selectFrom(Table... tables) {
-		MysqlSelect select = new MysqlSelect();
+	public static DerbySelect selectFrom(Table... tables) {
+		DerbySelect select = new DerbySelect();
 		select.getPlainSelect().addSelectItems(new AllColumns());
 		select.getPlainSelect().setFromItem(new FromItemList(tables));
 		return select;
 	}
 
-	public MysqlSelect limit(int start, int limit) {
-		plainSelect.setLimit(new Limit(start, limit, false, false));
+	public DerbySelect into(Table... tables) {
+		plainSelect.addIntoTables(tables);
 		return this;
 	}
 
-	/**
-	 * 生成的sql语句 start和limit用？代替
-	 * 
-	 * @param limit
-	 * @return
-	 */
-	public MysqlSelect limit(Limit limit) {
-		plainSelect.setLimit(limit);
+	public DerbySelect offset(Offset offset) {
+		plainSelect.setOffset(offset);
+		return this;
+	}
+
+	public DerbySelect fetch(Fetch fetch) {
+		plainSelect.setFetch(fetch);
 		return this;
 	}
 
 	@Override
 	protected Select newSelect() {
-		return new MysqlSelect();
+		return new DerbySelect();
 	}
-
 	
 }

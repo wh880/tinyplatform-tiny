@@ -52,7 +52,7 @@ public class Table implements FromItem, MultiPartName{
     }
 
     public <T extends Table> T as(String aliasName) {
-       return as(aliasName,false);
+       return (T)as(aliasName,false);
     }
 
     public <T extends Table> T as(String aliasName, boolean withAs){

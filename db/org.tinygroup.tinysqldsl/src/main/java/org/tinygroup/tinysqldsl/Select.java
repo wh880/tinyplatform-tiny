@@ -49,6 +49,10 @@ public class Select<T extends Select<T>> extends StatementSqlBuilder implements
 	public PlainSelect getPlainSelect() {
 		return plainSelect;
 	}
+	
+	public void setPlainSelect(PlainSelect plainSelect) {
+		this.plainSelect = plainSelect;
+	}
 
 	@SuppressWarnings("rawtypes")
 	public static Select select(SelectItem... selectItems) {
@@ -141,4 +145,5 @@ public class Select<T extends Select<T>> extends StatementSqlBuilder implements
 	protected Select newSelect(){
 		return new Select();
 	}
+	
 }

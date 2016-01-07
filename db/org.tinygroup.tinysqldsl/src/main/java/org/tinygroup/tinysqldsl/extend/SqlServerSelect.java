@@ -31,7 +31,7 @@ import org.tinygroup.tinysqldsl.selectitem.SelectItem;
  */
 public class SqlServerSelect extends Select<SqlServerSelect> {
 
-	private SqlServerSelect() {
+	public SqlServerSelect() {
 		super();
 	}
 

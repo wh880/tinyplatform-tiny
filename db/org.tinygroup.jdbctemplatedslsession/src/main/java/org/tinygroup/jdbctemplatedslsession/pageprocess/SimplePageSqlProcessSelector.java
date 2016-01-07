@@ -36,6 +36,8 @@ public class SimplePageSqlProcessSelector implements PageSqlProcessSelector {
 		processes.add(new MysqlPageSqlMatchProcess());
 		processes.add(new OraclePageSqlMatchProcess());
 		processes.add(new SqlServerPageSqlMatchProcess());
+		processes.add(new DerbyPageSqlMatchProcess());
+		processes.add(new DB2PageSqlMatchProcess());
 	}
 
 	public PageSqlMatchProcess pageSqlProcessSelect(String dbType) {
@@ -48,4 +50,12 @@ public class SimplePageSqlProcessSelector implements PageSqlProcessSelector {
 				"根据数据库类型:%s,获取不到相应的PageSqlMatchProcess分页处理器", dbType));
 	}
 
+	public List<PageSqlMatchProcess> getProcesses() {
+		return processes;
+	}
+
+	public void setProcesses(List<PageSqlMatchProcess> processes) {
+		this.processes = processes;
+	}
+	
 }

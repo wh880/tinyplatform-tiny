@@ -30,7 +30,7 @@ import org.tinygroup.tinysqldsl.selectitem.SelectItem;
  */
 public class OracleSelect extends Select<OracleSelect> {
 
-	private OracleSelect() {
+	public OracleSelect() {
 		super();
 	}
 

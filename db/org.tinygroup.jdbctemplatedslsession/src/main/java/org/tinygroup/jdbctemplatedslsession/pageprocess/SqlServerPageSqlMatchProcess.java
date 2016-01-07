@@ -28,13 +28,9 @@ public class SqlServerPageSqlMatchProcess extends AbstractPageSqlMatchProcess {
 	}
 
 	@Override
-	protected Class selectType() {
-		return SqlServerSelect.class;
-	}
-
-	@Override
 	protected String internalSqlProcess(Select select, int start, int limit) {
-		SqlServerSelect sqlServerSelect=(SqlServerSelect)select;
+		SqlServerSelect sqlServerSelect=new SqlServerSelect();
+		sqlServerSelect.setPlainSelect(select.getPlainSelect());
 		sqlServerSelect.offset(Offset.offsetRow(start)).fetch(Fetch.fetchWithNextRow(limit));
 		return sqlServerSelect.parsedSql();
 	}
