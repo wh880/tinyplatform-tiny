@@ -46,7 +46,6 @@ public class ServiceReleaseTest extends TestCase {
 			ServiceTestUtil.execute("release4Exclude", context);
 			fail();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		try {
 			ServiceTestUtil.execute("release4Include", context);
@@ -80,7 +79,6 @@ public class ServiceReleaseTest extends TestCase {
 			ServiceTestUtil.execute("release4Exclude", context);
 			fail();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	
@@ -107,7 +105,6 @@ public class ServiceReleaseTest extends TestCase {
 			ServiceTestUtil.execute("release4Exclude", context);
 			fail();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		try {
 			ServiceTestUtil.execute("release4Include", context);
