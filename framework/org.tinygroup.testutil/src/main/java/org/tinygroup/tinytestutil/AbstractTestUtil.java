@@ -37,6 +37,10 @@ import org.tinygroup.xmlparser.parser.XmlStringParser;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * 此类不推荐使用，建议用org.tinygroup.tinyrunner工程的Runner类取代
+ */
+@Deprecated
 public abstract class AbstractTestUtil {
 	// private static FullContextFileRepository repository;
 	// private static VelocityHelperImpl helper;
