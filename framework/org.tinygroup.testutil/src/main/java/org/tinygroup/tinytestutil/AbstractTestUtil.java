@@ -46,13 +46,17 @@ public abstract class AbstractTestUtil {
 	// private static VelocityHelperImpl helper;
 	// private static final String DEFAULT_FILERESOLVER_BEAN_XML =
 	// "/Application.preloadbeans.xml";
-	public static boolean init = false;
+	private static boolean init = false;
 	private static Application application;
 	private static String DEFAULT_CONFIG = "application.xml";
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AbstractTestUtil.class);
 	private static final String TINY_JAR_PATTERN = "org\\.tinygroup\\.(.)*\\.jar";
 
+	public static void setInit(boolean init) {
+		AbstractTestUtil.init = init;
+	}
+	
 	public static void init(String xmlFile, boolean classPathResolve) {
 		if (init) {
 			return;

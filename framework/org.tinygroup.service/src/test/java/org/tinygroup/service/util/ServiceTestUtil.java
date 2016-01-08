@@ -26,8 +26,12 @@ import org.tinygroup.service.ServiceProviderInterface;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class ServiceTestUtil {
-	public static boolean init = false;
+	private static boolean init = false;
 
+	public static void setInit(boolean init) {
+		ServiceTestUtil.init = init;
+	}
+	
 	public static void init(){
 		if(!init){
 			AbstractTestUtil.init("application.xml", true);

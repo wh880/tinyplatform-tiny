@@ -38,16 +38,16 @@ public class ServiceReleaseTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		ServiceReleaseManager.clear();
-		ServiceTestUtil.init = false;
-		AbstractTestUtil.init = false;
+		ServiceTestUtil.setInit(false);
+		AbstractTestUtil.setInit(false);
 		super.setUp();
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
 		ServiceReleaseManager.clear();
-		ServiceTestUtil.init = false;
-		AbstractTestUtil.init = false;
+		ServiceTestUtil.setInit(false);
+		AbstractTestUtil.setInit(false);
 		super.tearDown();
 	}
 	
