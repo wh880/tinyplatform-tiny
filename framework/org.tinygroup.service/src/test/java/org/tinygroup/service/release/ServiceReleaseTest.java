@@ -43,6 +43,14 @@ public class ServiceReleaseTest extends TestCase {
 		super.setUp();
 	}
 	
+	@Override
+	protected void tearDown() throws Exception {
+		ServiceReleaseManager.clear();
+		ServiceTestUtil.init = false;
+		AbstractTestUtil.init = false;
+		super.tearDown();
+	}
+	
 	/**
 	 * 黑名单
 	 */
