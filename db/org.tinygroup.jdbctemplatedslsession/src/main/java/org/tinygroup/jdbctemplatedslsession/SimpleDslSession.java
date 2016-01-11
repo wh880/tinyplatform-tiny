@@ -145,7 +145,7 @@ public class SimpleDslSession implements DslSession {
 		}
 		InsertContext context = insert.getContext();
 		TableMetaData metaData = provider.generatedKeyNamesWithMetaData(
-				jdbcTemplate.getDataSource(), context.getSchema(), null,
+				jdbcTemplate.getDataSource(), null,context.getSchema(),
 				context.getTableName());
 		ObjectMapper mapper = new ObjectMapper(clazz);
 		mapper.setDslSession(this);
