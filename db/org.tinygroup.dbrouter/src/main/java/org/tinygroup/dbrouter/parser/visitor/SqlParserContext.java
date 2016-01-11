@@ -166,7 +166,7 @@ public class SqlParserContext {
 		return conditionMap;
 	}
 	protected Object getParamValue(){
-		int index=jdbcParameterIndex++;
+		int index=++jdbcParameterIndex;
 		if(index>=arguments.size()){
 			throw  new DbrouterRuntimeException(String.format("SQL的参数列表长度存在问题,expect:%d,actual:%d",index,arguments.size()));
 		}
