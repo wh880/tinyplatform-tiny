@@ -26,6 +26,7 @@ public class ReplaceSqlVisitor extends ReplaceDeParser {
 		}else{
 			buffer.append(table.getName());
 		}
+		sqlParserContext.getTableNames().add(table.getName());
 		if (replace.getItemsList() != null) {
 			if (replace.getColumns() != null) {
 				buffer.append(" (");

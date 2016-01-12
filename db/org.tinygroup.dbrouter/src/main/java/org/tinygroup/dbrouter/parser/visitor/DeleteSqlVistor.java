@@ -34,6 +34,7 @@ public class DeleteSqlVistor extends DeleteDeParser {
 		} else {
 			buffer.append(tableName.getName());
 		}
+		sqlParserContext.getTableNames().add(tableName.getName());
 		if (delete.getWhere() != null) {
 			buffer.append(" WHERE ");
 			delete.getWhere().accept(expressionVisitor);

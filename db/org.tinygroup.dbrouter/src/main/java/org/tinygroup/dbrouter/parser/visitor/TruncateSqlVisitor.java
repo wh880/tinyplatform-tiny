@@ -21,6 +21,7 @@ public class TruncateSqlVisitor {
 		}else{
 			buffer.append(truncate.getTable().getName());
 		}
+		sqlParserContext.getTableNames().add(truncate.getTable().getName());
 	}
 	
 

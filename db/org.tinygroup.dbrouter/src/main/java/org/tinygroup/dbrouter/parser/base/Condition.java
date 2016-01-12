@@ -75,6 +75,6 @@ public class Condition {
 	}
 
 	public String toString() {
-		return this.column.toString() + " " + this.operator;
+		return this.column.toString() + " " + this.operator+values.toString();
 	}
 }

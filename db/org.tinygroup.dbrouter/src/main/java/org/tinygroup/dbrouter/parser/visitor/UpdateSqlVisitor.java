@@ -37,6 +37,7 @@ public class UpdateSqlVisitor extends UpdateDeParser {
         	}else{
         		buffer.append(table.getName());
         	}
+   		    sqlParserContext.getTableNames().add(table.getName());
             if(i<tables.size()-1){
             	buffer.append(",");
             }
