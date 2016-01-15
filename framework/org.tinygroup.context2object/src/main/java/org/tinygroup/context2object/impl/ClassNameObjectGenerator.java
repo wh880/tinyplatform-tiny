@@ -168,6 +168,7 @@ public class ClassNameObjectGenerator extends BaseClassNameObjectGenerator imple
 									BasicTypeConverter.getValue(
 											propertyValue.toString(),
 											descriptor.getPropertyType().getName()));
+							allPropertyNull = false;
 						} else if (isSimpleType(propertyValue.getClass())) { // 若值也是简单类型则赋值，非简单类型，则不处理
 							BeanUtils.setProperty(object, descriptor.getName(),
 									propertyValue.toString());
