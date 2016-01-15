@@ -146,10 +146,7 @@ public class TemplateInterpreter {
     	if(me.getContext()!=null){
     	   return false;
     	}
-    	if(tree.getClass()==TinyTemplateParser.Call_macro_block_directiveContext.class || tree.getClass()==TinyTemplateParser.BlockContext.class){
-    	   return true;
-    	}
-    	return false;
+        return tree.getClass() == TinyTemplateParser.Call_macro_block_directiveContext.class || tree.getClass() == TinyTemplateParser.BlockContext.class;
     }
 
 }

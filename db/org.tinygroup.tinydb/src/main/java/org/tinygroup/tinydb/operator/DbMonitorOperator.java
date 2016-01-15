@@ -30,6 +30,6 @@ public interface DbMonitorOperator {
 	 * 获取当前正在使用的连接信息
 	 * @return
 	 */
-	public Collection<ConnectionTrace> queryAllActiveConnection();
+	Collection<ConnectionTrace> queryAllActiveConnection();
 
 }

@@ -33,10 +33,7 @@ public class JdbcParameterExpressionTransform implements ExpressionTransform {
     }
 
     public boolean isParameterExpression(Expression expression) {
-        if (expression instanceof JdbcParameter) {
-            return true;
-        }
-        return false;
+        return expression instanceof JdbcParameter;
     }
 
 }

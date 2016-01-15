@@ -81,7 +81,7 @@ public abstract class AbstractDialect implements Dialect {
 	}
 	
 	public int nextIntValue() throws DataAccessException {
-		return (int) getNextKey();
+		return getNextKey();
 	}
 
 	public long nextLongValue() throws DataAccessException {

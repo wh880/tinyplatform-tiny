@@ -630,9 +630,8 @@ public final class EmbeddedServletOptions implements Options {
                         "jsp.warning.initialcapacity");
                     msg = MessageFormat.format(
                         msg,
-                        new Object[] {
                             capacity,
-                            Integer.valueOf(Constants.DEFAULT_INITIAL_CAPACITY)});
+                            Integer.valueOf(Constants.DEFAULT_INITIAL_CAPACITY));
                     log.warn(msg);
                 }
             }
@@ -652,8 +651,7 @@ public final class EmbeddedServletOptions implements Options {
                     String msg = Localizer.getMessage(
                         "jsp.warning.unsupportedJavaCompiler");
                     msg = MessageFormat.format(msg,
-                                               new Object[]
-                                                   { jspCompilerPlugin });
+                            jspCompilerPlugin);
                     log.warn(msg);
                 }
             }

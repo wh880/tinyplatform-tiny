@@ -55,10 +55,7 @@ public class Section {
             return false;
         }
         Section other = (Section) obj;
-        if (end == other.end && start == other.start) {
-            return true;
-        }
-        return false;
+        return end == other.end && start == other.start;
     }
 
     public String toString() {

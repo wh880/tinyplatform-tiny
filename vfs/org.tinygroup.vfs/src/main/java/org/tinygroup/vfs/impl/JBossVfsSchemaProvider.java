@@ -33,10 +33,7 @@ public class JBossVfsSchemaProvider implements SchemaProvider {
     }
 
     public boolean isMatch(String resource) {
-        if (resource.toLowerCase().startsWith(JBOSS_VFS)) {
-            return true;
-        }
-        return false;
+        return resource.toLowerCase().startsWith(JBOSS_VFS);
     }
 
     public String getSchema() {

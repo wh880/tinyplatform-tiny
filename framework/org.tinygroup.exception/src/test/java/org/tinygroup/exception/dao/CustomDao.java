@@ -21,14 +21,14 @@ import java.util.List;
 
 public interface CustomDao {
 
-	public Custom insertCustom(Custom custom);
+	Custom insertCustom(Custom custom);
 
-	public int updateCustom(Custom custom);
+	int updateCustom(Custom custom);
 
-	public int deleteCustom(String id);
+	int deleteCustom(String id);
 
-	public Custom getCustomById(String id);
+	Custom getCustomById(String id);
 
-	public List<Custom> queryCustom(Custom custom);
+	List<Custom> queryCustom(Custom custom);
 
 }

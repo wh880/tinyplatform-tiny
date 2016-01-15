@@ -25,7 +25,7 @@ public enum LogLevel {
 	DEBUG("DEBUG"), INFO("INFO"), WARN("WARN"), TRACE("TRACE"), ERROR("ERROR");
 	private String info;
 
-	private LogLevel(String info) {
+	LogLevel(String info) {
 		this.info = info;
 	}
 

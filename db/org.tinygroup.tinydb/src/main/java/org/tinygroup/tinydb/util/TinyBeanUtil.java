@@ -103,7 +103,7 @@ public final class TinyBeanUtil {
 				readMethod.setAccessible(true);
 			}
 			try {
-				return readMethod.invoke(obejct, new Object[0]);
+				return readMethod.invoke(obejct);
 			} catch (Exception e) {
 				throw new TinySysRuntimeException(e);
 			}

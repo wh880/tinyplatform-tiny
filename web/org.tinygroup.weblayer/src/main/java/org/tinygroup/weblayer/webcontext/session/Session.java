@@ -47,7 +47,7 @@ public interface Session extends Serializable {
     /**
      * session失效
      */
-    public void invalidate();
+    void invalidate();
 	
 
 }

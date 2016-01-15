@@ -90,10 +90,7 @@ public class XmlNodeStaticClassOperator extends AbstractStaticClassOperator{
 	private boolean isMatch(Object[] args,Class[] parameterTypes){
 		//存在参数为空的场景
 		if(args==null || parameterTypes==null){
-		   if(args==null && parameterTypes==null){
-			  return true;
-		   }
-		   return false;
+			return args == null && parameterTypes == null;
 		}
 		//两者长度不一致
 		if(args.length!=parameterTypes.length){

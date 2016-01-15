@@ -32,6 +32,6 @@ public interface SelectItemBuildProcessor {
 	 * 
 	 * @param builder
 	 */
-	public void builderSelectItem(StatementSqlBuilder builder);
+	void builderSelectItem(StatementSqlBuilder builder);
 
 }

@@ -20,13 +20,13 @@ import org.tinygroup.tinydb.exception.TinyDbException;
 
 public interface StatementTransform {
 	
-	public SqlAndValues toSelect(Bean bean)throws TinyDbException;
+	SqlAndValues toSelect(Bean bean)throws TinyDbException;
 	
-	public String toInsert(Bean bean) throws TinyDbException;
+	String toInsert(Bean bean) throws TinyDbException;
 
-	public String toDelete(Bean bean) throws TinyDbException ;
+	String toDelete(Bean bean) throws TinyDbException ;
 
-	public String toUpdate(Bean bean) throws TinyDbException;
+	String toUpdate(Bean bean) throws TinyDbException;
 
 	
 }

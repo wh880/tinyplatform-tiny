@@ -9,6 +9,6 @@ import java.lang.reflect.Method;
  */
 public interface ServiceIdAnaly {
 	
-	public String analyMethod(Method method);
+	String analyMethod(Method method);
 
 }

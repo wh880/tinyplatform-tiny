@@ -1128,7 +1128,7 @@ class Generator {
                         throw new Exception("Invalid bean class modifier");
                     }
                     // Check that there is a 0 arg constructor
-                    bean.getConstructor(new Class[] {});
+                    bean.getConstructor();
                     // At compile time, we have determined that the bean class
                     // exists, with a public zero constructor, new() can be
                     // used for bean instantiation.
@@ -3166,7 +3166,7 @@ class Generator {
                                 + varName
                                 + " = "
                                 + quote(
-                                     ((Node.TemplateText)bodyElement).getText())
+                                     bodyElement.getText())
                                 + ";");
                     }
                 }

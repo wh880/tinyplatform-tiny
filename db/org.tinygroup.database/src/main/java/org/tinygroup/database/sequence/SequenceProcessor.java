@@ -31,25 +31,25 @@ import java.util.List;
  */
 public interface SequenceProcessor {
 
-	public void addSequences(Sequences sequences);
+	void addSequences(Sequences sequences);
 	
-	public void removeSequences(Sequences sequences);
+	void removeSequences(Sequences sequences);
 	
-	public Sequence getSequence(String sequenceName);
+	Sequence getSequence(String sequenceName);
 	
-	public String getCreateSql(String sequenceName,String language);
+	String getCreateSql(String sequenceName, String language);
 	
-	public String getDropSql(String sequenceName,String language);
+	String getDropSql(String sequenceName, String language);
 	
-	public List<String> getCreateSql(String language);
+	List<String> getCreateSql(String language);
 	
-	public List<String> getDropSql(String language);
+	List<String> getDropSql(String language);
 	
-	public List<Sequence> getSequences(String language);
+	List<Sequence> getSequences(String language);
 	
-	public  boolean checkSequenceExist(String language,Sequence sequence,Connection connection)throws SQLException;
+	boolean checkSequenceExist(String language, Sequence sequence, Connection connection)throws SQLException;
 
-	public ProcessorManager getProcessorManager();
+	ProcessorManager getProcessorManager();
 	
-	public void setProcessorManager(ProcessorManager processorManager) ;
+	void setProcessorManager(ProcessorManager processorManager) ;
 }

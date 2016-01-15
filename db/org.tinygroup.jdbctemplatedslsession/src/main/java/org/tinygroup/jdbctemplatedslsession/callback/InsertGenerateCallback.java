@@ -15,6 +15,6 @@ public interface InsertGenerateCallback<T> {
 	 * @param t
 	 * @return
 	 */
-	public Insert generate(T t);
+	Insert generate(T t);
 	
 }

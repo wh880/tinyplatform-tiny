@@ -30,7 +30,7 @@ public interface TinyProcessorConfig  extends BasicTinyConfig{
 	 * @param url
 	 * @return
 	 */
-	public boolean isMatch(String url);
+	boolean isMatch(String url);
 	
    	
 }

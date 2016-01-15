@@ -104,7 +104,7 @@ public class SetLocaleWebContextImpl extends AbstractWebContextWrapper
 	 * @return content type，包括charset的定义
 	 */
 	public String getResponseContentType() {
-		return ((ResponseWrapper) getResponse()).getContentType();
+		return getResponse().getContentType();
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class SetLocaleWebContextImpl extends AbstractWebContextWrapper
 	 *            输出字符集，如果charset为<code>null</code> ，则从contentType中删除charset标记
 	 */
 	public void setResponseCharacterEncoding(String charset) {
-		((ResponseWrapper) getResponse()).setCharacterEncoding(charset);
+		getResponse().setCharacterEncoding(charset);
 	}
 
 	/** 设置locale、输入charset、输出charset。 */

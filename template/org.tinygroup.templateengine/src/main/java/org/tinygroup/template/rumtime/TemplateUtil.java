@@ -189,7 +189,7 @@ public final class TemplateUtil {
         }
     }
 
-    public static Object executeClassMethod(Object object, String methodName, Object[] parameters) throws TemplateException,Exception {
+    public static Object executeClassMethod(Object object, String methodName, Object[] parameters) throws Exception {
         Method method = getMethodByName(object, methodName, parameters);
         //如果有缓冲，则用缓冲方式调用
         if (method != null) {

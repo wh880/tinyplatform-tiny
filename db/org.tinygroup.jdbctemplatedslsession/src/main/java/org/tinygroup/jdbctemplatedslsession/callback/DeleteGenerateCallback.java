@@ -4,6 +4,6 @@ import org.tinygroup.tinysqldsl.Delete;
 
 public interface DeleteGenerateCallback<T> {
 	
-	public Delete generate(T t);
+	Delete generate(T t);
 
 }

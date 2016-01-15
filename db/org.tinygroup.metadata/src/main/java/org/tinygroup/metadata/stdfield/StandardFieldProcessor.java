@@ -28,9 +28,9 @@ public interface StandardFieldProcessor {
 
 	StandardField getStandardField(String id);
 
-	public BusinessTypeProcessor getBusinessTypeProcessor();
+	BusinessTypeProcessor getBusinessTypeProcessor();
 
-	public void setBusinessTypeProcessor(
+	void setBusinessTypeProcessor(
 			BusinessTypeProcessor businessTypeProcessor);
 
 }

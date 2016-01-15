@@ -189,11 +189,8 @@ public class UploadParameters implements UploadConfiguration {
             return false;
         }
 
-        if (!Arrays.equals(fileNameKey, other.fileNameKey)) {
-            return false;
-        }
+        return Arrays.equals(fileNameKey, other.fileNameKey);
 
-        return true;
     }
 
 

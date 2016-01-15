@@ -36,9 +36,9 @@ public class TableTest {
 		tables.setName("aa");
 		tables.setTitle("AA");
 		tables.setPackageName("aa.bb");
-		List<Table> tableList=new ArrayList<Table>();;
+		List<Table> tableList=new ArrayList<Table>();
 		tables.setTableList(tableList);
-		Table table=new Table();;
+		Table table=new Table();
 		tableList.add(table);
 		table.setName("aa");
 		table.setTitle("AA");

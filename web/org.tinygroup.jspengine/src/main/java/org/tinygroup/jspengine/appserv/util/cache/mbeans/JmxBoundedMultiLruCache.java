@@ -59,7 +59,7 @@ public class JmxBoundedMultiLruCache extends JmxMultiLruCache
          * To take care of this case, the if/else is added below
          */
         if (object instanceof String &&
-            ((String) object).equals(Constants.STAT_DEFAULT)) {
+            object.equals(Constants.STAT_DEFAULT)) {
             return Long.valueOf(Constants.DEFAULT_MAX_CACHE_SIZE);
         }
         else {

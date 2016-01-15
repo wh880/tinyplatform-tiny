@@ -64,8 +64,8 @@ public class FullContextUrlRedirect implements ComponentInterface {
 		
 	}
 
-	public void doExecute(Context context) throws FileNotFoundException,
-			IOException, Exception {
+	public void doExecute(Context context) throws
+			Exception {
 
 		boolean isPagelet = false;
 		if (path.endsWith(template)) {

@@ -41,9 +41,9 @@ public class UpdateTest {
 		Update update = (Update) parserManager.parse(new StringReader(statement));
 		assertEquals("mytable", update.getTables().get(0).getName());
 		assertEquals(3, update.getColumns().size());
-		assertEquals("col1", ((Column) update.getColumns().get(0)).getColumnName());
-		assertEquals("col2", ((Column) update.getColumns().get(1)).getColumnName());
-		assertEquals("col3", ((Column) update.getColumns().get(2)).getColumnName());
+		assertEquals("col1", update.getColumns().get(0).getColumnName());
+		assertEquals("col2", update.getColumns().get(1).getColumnName());
+		assertEquals("col3", update.getColumns().get(2).getColumnName());
 		assertEquals("as", ((StringValue) update.getExpressions().get(0)).getValue());
 		assertTrue(update.getExpressions().get(1) instanceof JdbcParameter);
 		assertEquals(565, ((LongValue) update.getExpressions().get(2)).getValue());

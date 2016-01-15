@@ -32,10 +32,7 @@ public class FtpFileFilterByName implements FTPFileFilter {
 	}
 
 	public boolean accept(FTPFile ftpFile) {
-		if (fileName.equals(ftpFile.getName())) {
-			return true;
-		}
-		return false;
+		return fileName.equals(ftpFile.getName());
 	}
 
 }

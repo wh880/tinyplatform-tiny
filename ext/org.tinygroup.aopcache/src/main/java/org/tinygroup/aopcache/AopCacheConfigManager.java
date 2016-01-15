@@ -15,16 +15,16 @@ public interface AopCacheConfigManager {
 
 	String XSTEAM_PACKAGE_NAME = "aopcache";
 
-	public void addAopCaches(AopCaches aopCaches);
+	void addAopCaches(AopCaches aopCaches);
 	
-	public void removeAopCaches(AopCaches aopCaches);
+	void removeAopCaches(AopCaches aopCaches);
 	
 	/**
 	 * 根据方法获取其关联的缓存aop操作配置
 	 * @param method
 	 * @return
 	 */
-	public List<CacheAction> getActionsWithMethod(Method method);
+	List<CacheAction> getActionsWithMethod(Method method);
 	
 	
 }

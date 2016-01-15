@@ -71,11 +71,7 @@ public class FullContextFileFinder extends AbstractFileProcessor implements
 		}
 		//反之，使用白名单
 		if (extFileContentTypeMap.size() > 0) {
-			if (extFileContentTypeMap.containsKey(fileObject.getExtName())) {
-				return true;
-			}else {
-				return false;
-			}
+			return extFileContentTypeMap.containsKey(fileObject.getExtName());
 		}
 		return true;
 	}

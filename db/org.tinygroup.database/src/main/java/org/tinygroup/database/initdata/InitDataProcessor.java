@@ -135,7 +135,7 @@ public interface InitDataProcessor {
 	 */
 	List<InitData> getInitDatas();
 	
-	public ProcessorManager getProcessorManager() ;
+	ProcessorManager getProcessorManager() ;
 
-	public void setProcessorManager(ProcessorManager processorManager) ;
+	void setProcessorManager(ProcessorManager processorManager) ;
 }

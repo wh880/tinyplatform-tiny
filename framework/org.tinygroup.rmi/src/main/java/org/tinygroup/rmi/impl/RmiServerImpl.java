@@ -250,10 +250,7 @@ public final class RmiServerImpl extends UnicastRemoteObject implements
 	private boolean checkRemoteHasThis() {
 		try {
 			Object o = remoteServer.getObject(getKeyName(hostName, port + ""));
-			if (o != null) {
-				return true;
-			}
-			return false;
+			return o != null;
 		} catch (Exception e) {
 			return false;
 		}

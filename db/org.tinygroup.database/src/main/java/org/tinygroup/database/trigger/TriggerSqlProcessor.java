@@ -22,6 +22,6 @@ import java.sql.SQLException;
 
 public interface TriggerSqlProcessor {
 	
-	public boolean  checkSequenceExist(Trigger trigger,Connection connection)throws SQLException;
+	boolean  checkSequenceExist(Trigger trigger, Connection connection)throws SQLException;
 
 }

@@ -13,24 +13,24 @@ import java.util.Map;
  */
 public interface FileScanner {
 
-    public void addFile(FileObject file);
+    void addFile(FileObject file);
 
-    public void resolverFile(FileObject file,CallBackFunction callBackFunction);
+    void resolverFile(FileObject file, CallBackFunction callBackFunction);
 
-    public void resolverFloder(FileObject file,CallBackFunction callBackFunction);
+    void resolverFloder(FileObject file, CallBackFunction callBackFunction);
 
-    public void scanFile();
+    void scanFile();
 
-    public boolean isMatch(String fileName);
+    boolean isMatch(String fileName);
 
-    public void fileProcess();
+    void fileProcess();
 
-    public void setClassPathList(List<String> classPathList);
+    void setClassPathList(List<String> classPathList);
 
-    public void setEngine(TemplateEngine engine);
+    void setEngine(TemplateEngine engine);
 
-    public void init();
+    void init();
 
-    public void classPathProcess();
+    void classPathProcess();
 
 }

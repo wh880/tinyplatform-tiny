@@ -32,8 +32,8 @@ public interface BytecodePreprocessor {
      * once before any calls to preprocess.
      * @param parameters Initialization parameters.
      * @return true if initialization succeeded.
-     */    
-    public boolean initialize(Hashtable parameters);
+     */
+    boolean initialize(Hashtable parameters);
     
     /** This function profiler-enables the given class.  This method should not 
      * be called until the initialization method has completed.  It is thread-
@@ -42,7 +42,7 @@ public interface BytecodePreprocessor {
      * filtering.
      * @param classBytes Actual contents of class to process
      * @return The instrumented class bytes.
-     */    
-    public byte[] preprocess(String classname, byte[] classBytes);
+     */
+    byte[] preprocess(String classname, byte[] classBytes);
     
 }

@@ -188,7 +188,7 @@ public final class MethodExpressionImpl extends MethodExpression implements
      * @see javax.el.MethodExpression#getMethodInfo(javax.el.ELContext)
      */
     public MethodInfo getMethodInfo(ELContext context)
-            throws PropertyNotFoundException, MethodNotFoundException,
+            throws
             ELException {
         Node n = this.getNode();
         EvaluationContext ctx = new EvaluationContext(context, this.fnMapper,
@@ -259,7 +259,7 @@ public final class MethodExpressionImpl extends MethodExpression implements
      *      java.lang.Object[])
      */
     public Object invoke(ELContext context, Object[] params)
-            throws PropertyNotFoundException, MethodNotFoundException,
+            throws
             ELException {
         EvaluationContext ctx = new EvaluationContext(context, this.fnMapper,
                 this.varMapper);

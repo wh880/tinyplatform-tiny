@@ -27,19 +27,19 @@ import java.util.List;
  */
 public interface CodeGenerator {
 
-	public static final String JAVA_ROOT="JAVA_ROOT";
-	public static final String JAVA_TEST_ROOT="JAVA_TEST_ROOT";
-	public static final String JAVA_RES_ROOT="JAVA_RES_ROOT";
-	public static final String JAVA_TEST_RES_ROOT="JAVA_TEST_RES_ROOT";
-	public static final String CODE_META_DATA="CODE_META_DATA";
-	public static final String TEMPLATE_FILE="TEMPLATE_FILE";
-	public static final String XSTEAM_PACKAGE_NAME="codegen";
-	public static final String ABSOLUTE_PATH="ABSOLUTE_PATH";
+	String JAVA_ROOT="JAVA_ROOT";
+	String JAVA_TEST_ROOT="JAVA_TEST_ROOT";
+	String JAVA_RES_ROOT="JAVA_RES_ROOT";
+	String JAVA_TEST_RES_ROOT="JAVA_TEST_RES_ROOT";
+	String CODE_META_DATA="CODE_META_DATA";
+	String TEMPLATE_FILE="TEMPLATE_FILE";
+	String XSTEAM_PACKAGE_NAME="codegen";
+	String ABSOLUTE_PATH="ABSOLUTE_PATH";
 	
 	/**
 	 * 代码生成处理方法
 	 * @param context 上下文
 	 * @throws IOException 
 	 */
-	public  List<String> generate(Context context) throws IOException;
+	List<String> generate(Context context) throws IOException;
 }

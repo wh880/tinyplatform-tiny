@@ -242,7 +242,7 @@ public class SmapUtil {
             return bytes;
         }
 
-        void addSDE() throws UnsupportedEncodingException, IOException {
+        void addSDE() throws IOException {
             int i;
             copy(4 + 2 + 2); // magic min/maj version
             int constantPoolCountPos = genPos;
@@ -370,7 +370,7 @@ public class SmapUtil {
         }
 
         int copyConstantPool(int constantPoolCount)
-            throws UnsupportedEncodingException, IOException {
+            throws IOException {
             int sdeIndex = -1;
             // copy const pool index zero not in class file
             for (int i = 1; i < constantPoolCount; ++i) {

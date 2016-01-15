@@ -28,37 +28,37 @@ public interface TransactionOperator {
 	/**
 	 * 开始事务
 	 */
-	public void beginTransaction();
+	void beginTransaction();
 	
 	/**
 	 * 提交事务
 	 */
-	public  void commitTransaction();
+	void commitTransaction();
 	
 	/**
 	 * 回滚事务
 	 */
-	public void rollbackTransaction();
+	void rollbackTransaction();
 	
 	/**
 	 * 以事务方式执行回调处理
 	 * @param callback
 	 * @return
 	 */
-	public Object execute(TransactionCallBack callback);
+	Object execute(TransactionCallBack callback);
 	
 	/**
 	 * 设置事务管理对象
 	 * @param transactionManager
 	 */
-	public void setTransactionManager(
+	void setTransactionManager(
 			PlatformTransactionManager transactionManager) ;
 	
 	/**
 	 * 设置事务定义，默认为PROPAGATION_REQUIRED,ISOLATION_DEFAULT
 	 * @param transactionDefinition
 	 */
-	public void setTransactionDefinition(
+	void setTransactionDefinition(
 			TransactionDefinition transactionDefinition);
 	
 	

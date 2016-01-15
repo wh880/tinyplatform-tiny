@@ -42,7 +42,7 @@ public final class Profiler {
      * 结束并完成根entry计时
      */
     public static void end() {
-        Entry entry = (Entry) entryStack.get();
+        Entry entry = entryStack.get();
         if (entry != null) {
             entry.release();
         }
@@ -307,7 +307,7 @@ public final class Profiler {
                 return duration;
             } else {
                 for (int i = 0; i < subEntries.size(); i++) {
-                    Entry subEntry = (Entry) subEntries.get(i);
+                    Entry subEntry = subEntries.get(i);
 
                     duration -= subEntry.getDuration();
                 }
@@ -406,7 +406,7 @@ public final class Profiler {
             Entry subEntry = null;
 
             if (!subEntries.isEmpty()) {
-                subEntry = (Entry) subEntries.get(subEntries.size() - 1);
+                subEntry = subEntries.get(subEntries.size() - 1);
 
                 if (subEntry.isReleased()) {
                     subEntry = null;
@@ -500,7 +500,7 @@ public final class Profiler {
             buffer.append(MessageFormat.format(pattern.toString(), params));
 
             for (int i = 0; i < subEntries.size(); i++) {
-                Entry subEntry = (Entry) subEntries.get(i);
+                Entry subEntry = subEntries.get(i);
 
                 buffer.append('\n');
 

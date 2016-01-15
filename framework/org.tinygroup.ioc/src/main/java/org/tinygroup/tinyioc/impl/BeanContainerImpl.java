@@ -103,11 +103,11 @@ public class BeanContainerImpl implements BeanContainer {
 
         if (scope != null) {
             if (("singleton").equalsIgnoreCase(scope)) {
-                object = (T) getSingletonObject(clazz);
+                object = getSingletonObject(clazz);
             } else if (("prototype").equalsIgnoreCase(scope)) {
-                object = (T) getPrototypeObject(clazz);
+                object = getPrototypeObject(clazz);
             } else if (("request").equalsIgnoreCase(scope)) {
-                object = (T) getThreadObject(clazz);
+                object = getThreadObject(clazz);
             }
         } else {
             //如果是子孙类或实现了接口
@@ -243,7 +243,7 @@ public class BeanContainerImpl implements BeanContainer {
         try {
             T object = null;
             if (!isInterceptorClass(clazz) && proxy.isMatchClassName(clazz.getName())) {
-                object = (T) proxy.getProxyObject(clazz);
+                object = proxy.getProxyObject(clazz);
             } else {
                 object = clazz.newInstance();
             }
@@ -261,10 +261,7 @@ public class BeanContainerImpl implements BeanContainer {
         if (isSubClass(clz, InterceptorBefore.class)) {
             return true;
         }
-        if (isSubClass(clz, InterceptorException.class)) {
-            return true;
-        }
-        return false;
+        return isSubClass(clz, InterceptorException.class);
     }
 
     private <T> T getSingletonObject(Class<T> clazz) {

@@ -23,7 +23,6 @@ import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.format.exception.FormatException;
 import org.tinygroup.format.impl.DefaultPatternDefine;
 
-;
 public class FormatProviderTest extends TestCase {
 	ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
 			"springbeans.xml");

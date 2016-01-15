@@ -152,7 +152,7 @@ public class ContextImpl extends BaseContextImpl implements Context,
 		if (!contextNode.getSubContextMap().isEmpty()) {
 			for (Context context : contextNode.getSubContextMap().values()) {
 				if (nodeMap.get(context) == null) {
-					T subResult = (T) findNodeMap(name, context, nodeMap);
+					T subResult = findNodeMap(name, context, nodeMap);
 					if (subResult != null) {
 						return subResult;
 					}

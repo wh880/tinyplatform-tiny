@@ -28,13 +28,13 @@ public interface RowMapperHolder {
 	 * @param requiredType
 	 * @return
 	 */
-	public boolean isMatch(Class requiredType);
+	boolean isMatch(Class requiredType);
 	
 	/**
 	 * 返回该选择器对应的RowMapper
 	 * @param requiredType
 	 * @return
 	 */
-	public RowMapper getRowMapper(Class requiredType);
+	RowMapper getRowMapper(Class requiredType);
 
 }

@@ -32,7 +32,7 @@ import java.util.List;
 public class StatementTransformAdapter implements StatementTransform {
 	protected Configuration configuration;
 
-	protected BeanDbNameConverter beanDbNameConverter = new DefaultNameConverter();;
+	protected BeanDbNameConverter beanDbNameConverter = new DefaultNameConverter();
 
 	protected String schema;
 

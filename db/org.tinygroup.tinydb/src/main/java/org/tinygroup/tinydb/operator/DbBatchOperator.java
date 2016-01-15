@@ -101,15 +101,15 @@ public interface DbBatchOperator<K> {
 	 * @return
 	 * @throws TinyDbException
 	 */
-	public int[] executeBatch(List<String> sqls) throws TinyDbException;
+	int[] executeBatch(List<String> sqls) throws TinyDbException;
 
-	public int[] executeBatchByList(String sql, List<List<Object>> parameters)
+	int[] executeBatchByList(String sql, List<List<Object>> parameters)
 			throws TinyDbException;
 	
-	public int[] executeBatchByList(String sql, List<List<Object>> parameters,int[] columnTypes)
+	int[] executeBatchByList(String sql, List<List<Object>> parameters, int[] columnTypes)
 	        throws TinyDbException;
 
-	public int[] executeBatchByMap(String sql,
-			List<Map<String, Object>> parameters) throws TinyDbException;
+	int[] executeBatchByMap(String sql,
+							List<Map<String, Object>> parameters) throws TinyDbException;
 	
 }

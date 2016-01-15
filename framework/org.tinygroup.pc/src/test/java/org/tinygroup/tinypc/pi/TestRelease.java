@@ -34,7 +34,7 @@ public class TestRelease extends UnicastRemoteObject {
 			t = new TestRelease();
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
-		};
+		}
 		try {
 			t.init();
 			Thread.sleep(5000);

@@ -32,6 +32,6 @@ public interface StatementBuildProcessor {
 	 * 
 	 * @param builder
 	 */
-	public void builderStatement(StatementSqlBuilder builder);
+	void builderStatement(StatementSqlBuilder builder);
 
 }

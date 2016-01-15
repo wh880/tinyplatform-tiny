@@ -59,7 +59,7 @@ public abstract class BaseTest extends TestCase {
 
 	}
 
-	private void initTable() throws IOException, Exception {
+	private void initTable() throws Exception {
 		Connection conn = null;
 		try {
 			DataSource dataSource = BeanContainerFactory.getBeanContainer(

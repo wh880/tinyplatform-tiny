@@ -33,8 +33,8 @@ public interface Cache {
      * @param props opaque list of properties for a given cache implementation
      * @throws a generic Exception if the initialization failed
      */
-    public void init(int maxEntries, 
-                         float loadFactor, Properties props) throws Exception;
+    void init(int maxEntries,
+              float loadFactor, Properties props) throws Exception;
 
     /**
      * initialize the cache with the default load factor (0.75)
@@ -42,20 +42,20 @@ public interface Cache {
      * @param props opaque list of properties for a given cache implementation
      * @throws a generic Exception if the initialization failed
      */
-    public void init(int maxEntries, Properties props) throws Exception;
+    void init(int maxEntries, Properties props) throws Exception;
 
     /**
      * add the cache module listener
      * @param listener <code>CacheListener</code> implementation
      */
-    public void addCacheListener(CacheListener listener);
+    void addCacheListener(CacheListener listener);
 
     /** 
      * get the index of the item given a key
      * @param key of the entry
      * @return the index to be used in the cache
      */
-    public int getIndex(Object key);
+    int getIndex(Object key);
 
     /**
      * get the item stored at the key.
@@ -64,40 +64,40 @@ public interface Cache {
      *
      * This function returns first value, for a multi-valued key.
      */
-    public Object get(Object key);
+    Object get(Object key);
 
     /**
      * get all the items with the given key.
      * @param key lookup key
      * @returns an Iterator over the items with the given key
      */
-    public Iterator getAll(Object key);
+    Iterator getAll(Object key);
 
     /**
      * check if the cache contains the item at the key
      * @param key lookup key
      * @returns true if there is an item stored at the key; false if not.
      */
-    public boolean contains(Object key);
+    boolean contains(Object key);
     
     /**
      * get an Iterator for the keys stored in the cache
      * @returns an Iterator
      */
-    public Iterator keys();
+    Iterator keys();
 
     /**
      * get an Enumeration for the keys stored in the cache
      * @returns an Enumeration
      * XXX: should use Iterator which is based on Collections
      */
-    public Enumeration elements();
+    Enumeration elements();
 
     /**
      * get an Iterator for the values stored in the cache
      * @returns an Iterator
      */
-    public Iterator values();
+    Iterator values();
 
     /**
      * cache the given value at the specified key and return previous value
@@ -107,7 +107,7 @@ public interface Cache {
      *
      * This function replaces first value, for a multi-valued key.
      */
-    public Object put(Object key, Object value);
+    Object put(Object key, Object value);
 
     /**
      * cache the given value at the specified key and return previous value
@@ -118,7 +118,7 @@ public interface Cache {
      *
      * This function replaces first value, for a multi-valued key.
      */
-    public Object put(Object key, Object value, int size);
+    Object put(Object key, Object value, int size);
 
     /**
      * add the given value to the cache at the specified key
@@ -127,7 +127,7 @@ public interface Cache {
      *
      * This function is suitable for multi-valued keys.
      */
-    public void add(Object key, Object value);
+    void add(Object key, Object value);
 
     /**
      * add the given value with specified size to the cache at specified key
@@ -137,7 +137,7 @@ public interface Cache {
      *
      * This function is suitable for multi-valued keys.
      */
-    public void add(Object key, Object value, int size);
+    void add(Object key, Object value, int size);
 
     /**
      * remove the item with the given key.
@@ -146,7 +146,7 @@ public interface Cache {
      *
      * This function removes first value, for a multi-valued key.
      */
-    public Object remove(Object key);
+    Object remove(Object key);
 
     /**
      * remove the given value stored at the key.
@@ -154,13 +154,13 @@ public interface Cache {
      * @param value to match (for multi-valued keys)
      * @returns the item stored at the key; null if not found.
      */
-    public Object remove(Object key, Object value);
+    Object remove(Object key, Object value);
 
     /**
      * remove all the item with the given key.
      * @param key lookup key
      */
-    public void removeAll(Object key);
+    void removeAll(Object key);
 
     /**
      * wait for a refresh on the object associated with the key
@@ -169,32 +169,32 @@ public interface Cache {
      * @returns <code>true</code> on successful notification, or 
      * <code>false</code> if there is no thread refreshing this entry.
      */
-    public boolean waitRefresh(int index);
+    boolean waitRefresh(int index);
 
     /**
      * notify threads waiting for a refresh on the object associated with the key
      * @param index index of the entry. The index must be obtained via 
      * one of the <code>getIndex()</code> methods.
      */
-    public void notifyRefresh(int index);
+    void notifyRefresh(int index);
 
     /**
      * clear all the entries from the cache.
      * @returns the number of entries cleared from the cache
      */
-    public int clear();
+    int clear();
 
     /**
      * is this cache empty?
      * @returns true if the cache is empty; false otherwise.
      */
-    public boolean isEmpty();
+    boolean isEmpty();
 
     /**
      * get the number of entries in the cache
      * @return the number of entries the cache currently holds
      */
-    public int getEntryCount();
+    int getEntryCount();
 
     /**
      * get the stats map
@@ -205,19 +205,19 @@ public interface Cache {
      * @return an Object corresponding to the stat
      * See also: Constant.java for the key
      */
-    public Object getStatByName(String key);
+    Object getStatByName(String key);
 
     /**
      * get the stats snapshot
      * @return a Map of stats
      * See also: Constant.java for the keys
      */
-    public Map getStats();
+    Map getStats();
 
     /**
      * clear all stats
      */
-    public void clearStats();
+    void clearStats();
 
     /**
      * trim the expired entries from the cache.
@@ -226,10 +226,10 @@ public interface Cache {
      *
      * This call is to be scheduled by a thread managed by the container.
      */
-    public void trimExpiredEntries(int maxCount);
+    void trimExpiredEntries(int maxCount);
 
     /**
      * Destroys this cache. This method should perform final clean ups.
      */
-    public void destroy();
+    void destroy();
 }

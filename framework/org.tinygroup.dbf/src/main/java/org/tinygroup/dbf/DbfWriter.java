@@ -66,7 +66,7 @@ public abstract class DbfWriter implements Writer {
     
     public abstract void writeFields(List<Field> f) throws IOException;
     
-    public abstract void writeRecord(String...args) throws UnsupportedEncodingException, IOException,NullPointerException;
+    public abstract void writeRecord(String...args) throws IOException,NullPointerException;
     
     protected abstract void writeHeaders() throws IOException;
     

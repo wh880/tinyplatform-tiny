@@ -19,28 +19,28 @@ public interface JedisManager {
 	 * 
 	 * @param configs
 	 */
-	public void addJedisConfigs(JedisConfigs configs);
+	void addJedisConfigs(JedisConfigs configs);
 
 	/**
 	 * 添加jedis配置
 	 * 
 	 * @param config
 	 */
-	public void addJedisConfig(JedisConfig config);
+	void addJedisConfig(JedisConfig config);
 
 	/**
 	 * 移除jedis配置
 	 * 
 	 * @param configs
 	 */
-	public void removeJedisConfigs(JedisConfigs configs);
+	void removeJedisConfigs(JedisConfigs configs);
 
 	/**
 	 * 移除jedis配置,并移除相关的连接池
 	 * 
 	 * @param config
 	 */
-	public void removeJedisConfig(JedisConfig config);
+	void removeJedisConfig(JedisConfig config);
 
 	/**
 	 * 获取jedis配置
@@ -49,7 +49,7 @@ public interface JedisManager {
 	 *            jedis配置id
 	 * @return
 	 */
-	public JedisConfig getJedisConfig(String jedisId);
+	JedisConfig getJedisConfig(String jedisId);
 
 	/**
 	 * 获取jedis连接池配置
@@ -58,7 +58,7 @@ public interface JedisManager {
 	 *            jedis配置id
 	 * @return
 	 */
-	public JedisPoolConfig getJedisPoolConfig(String jedisId);
+	JedisPoolConfig getJedisPoolConfig(String jedisId);
 
 	/**
 	 * 获取jedis连接池配置
@@ -67,7 +67,7 @@ public interface JedisManager {
 	 *            jedis配置id
 	 * @return
 	 */
-	public JedisPool getJedisPool(String jedisId);
+	JedisPool getJedisPool(String jedisId);
 
 	/**
 	 * 移除jedis连接池

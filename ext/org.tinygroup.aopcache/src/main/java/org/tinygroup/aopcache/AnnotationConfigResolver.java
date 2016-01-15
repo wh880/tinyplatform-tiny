@@ -12,13 +12,13 @@ public interface AnnotationConfigResolver {
 	 * @param annotation
 	 * @return
 	 */
-	public boolean annotationMatch(Annotation annotation);
+	boolean annotationMatch(Annotation annotation);
 	
 	/**
 	 * 解析匹配注解的内容，组装成CacheAction实例返回
 	 * @param method
 	 * @return
 	 */
-	public CacheAction resolve(Method method);
+	CacheAction resolve(Method method);
 
 }

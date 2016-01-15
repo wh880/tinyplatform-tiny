@@ -150,10 +150,7 @@ public abstract class BaseClassNameObjectGenerator {
 	}
 
 	protected boolean isNull(String str) {
-		if (StringUtil.isBlank(str)) {
-			return true;
-		}
-		return false;
+		return StringUtil.isBlank(str);
 	}
 	/**
 	 * 根据clazz获取对象 先从creator中获取，若找不到，则去springbean中获取

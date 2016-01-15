@@ -81,7 +81,7 @@ public class Section {
         if (valuePairList != null) {
             for (ValuePair valuePair : valuePairList) {
                 if (valuePair.getKey().equals(key)) {
-                    return (T) valuePair.getValue(tClass);
+                    return valuePair.getValue(tClass);
                 }
             }
         }

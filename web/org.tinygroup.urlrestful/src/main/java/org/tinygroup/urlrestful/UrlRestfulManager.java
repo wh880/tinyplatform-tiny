@@ -30,12 +30,12 @@ public interface UrlRestfulManager {
 	 * 增加restful配置信息
 	 * @param Rules
 	 */
-	public void addRules(Rules Rules);
+	void addRules(Rules Rules);
 	/**
 	 * 移除restful配置信息
 	 * @param Rules
 	 */
-	public void removeRules(Rules Rules);
+	void removeRules(Rules Rules);
 	
 	/**
 	 * 根据请求路径、请求的方法以及请求头的accept 组装此次请求的上下文对象
@@ -44,7 +44,7 @@ public interface UrlRestfulManager {
 	 * @param accept
 	 * @return
 	 */
-	public Context getContext(String requestPath, String httpMethod, String accept);
+	Context getContext(String requestPath, String httpMethod, String accept);
 	
 
 }

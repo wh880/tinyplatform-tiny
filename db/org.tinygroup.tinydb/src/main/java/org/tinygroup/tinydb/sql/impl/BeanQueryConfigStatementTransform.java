@@ -192,10 +192,7 @@ public class BeanQueryConfigStatementTransform extends
 	}
 
 	private boolean isEmptyCondition(String propertyName, String emptyFields) {
-		if (emptyFields != null && emptyFields.indexOf(propertyName) != -1) {
-			return true;
-		}
-		return false;
+		return emptyFields != null && emptyFields.indexOf(propertyName) != -1;
 	}
 
 	private void repalceConfig(String[] conditionFields, String[] conditionModes) {

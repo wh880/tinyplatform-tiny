@@ -57,7 +57,7 @@ public class TestObjectXmlWithXstream extends AbstractConvertTestCase {
 				"</students>";
 		XmlToObject<Student> xmlToObject = new XmlToObject<Student>(
 				Student.class, "students");
-		List<Student> students = (List<Student>) xmlToObject.convert(xml);
+		List<Student> students = xmlToObject.convert(xml);
 		Student student = students.get(0);
 		assertEquals(2, students.size());
 		assertEquals("haha", student.getName());

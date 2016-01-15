@@ -54,7 +54,7 @@ public interface ParameterParser extends ValueParser {
      * 获取所有文件上传内容
      * @return
      */
-    public FileItem[] getFileItems();
+    FileItem[] getFileItems();
 
     /**
      * 解析符合<a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>标准的

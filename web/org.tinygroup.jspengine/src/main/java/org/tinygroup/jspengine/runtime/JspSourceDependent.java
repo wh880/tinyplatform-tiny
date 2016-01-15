@@ -36,6 +36,6 @@ public interface JspSourceDependent {
     // START GlassFish Issue 812
     // FIXME: Use java.lang.Object instead of java.util.List as return type
     // due to weird behavior with Eclipse JDT 3.1 in Java 5 mode
-    public Object getDependants();
+   Object getDependants();
     // END GlassFish Issue 812
 }

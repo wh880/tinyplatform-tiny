@@ -30,7 +30,7 @@ public interface TemplateEngine extends TemplateContextOperator {
 	/**
 	 * 默认的bean配置名称
 	 */
-	public static final String DEFAULT_BEAN_NAME="templateEngine";
+    String DEFAULT_BEAN_NAME="templateEngine";
 	
     /**
      * 设置模板加载器列表

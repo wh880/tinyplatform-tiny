@@ -116,7 +116,7 @@ public class HibernateBaseDaoImpl extends HibernateBaseDao {
     public <T> Collection<T> getObjects(Class clazz, Collection ids) {
         List<T> list = new ArrayList<T>();
         for (Object id : ids) {
-            T o = (T) super.getObject(clazz, id);
+            T o = super.getObject(clazz, id);
             if (o != null)
                 list.add(o);
         }

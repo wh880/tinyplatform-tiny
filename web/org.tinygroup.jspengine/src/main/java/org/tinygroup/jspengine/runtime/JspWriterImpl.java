@@ -669,11 +669,8 @@ public class JspWriterImpl extends JspWriter {
 
     // START PWC 6512276
     public boolean hasData() {
-        if (bufferSize != 0 && nextChar != 0) {
-            return true;
-        }
+        return bufferSize != 0 && nextChar != 0;
 
-        return false;
     }
     // END PWC 6512276
 }

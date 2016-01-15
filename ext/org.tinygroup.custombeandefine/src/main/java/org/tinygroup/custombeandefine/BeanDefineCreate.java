@@ -15,6 +15,6 @@ public interface BeanDefineCreate {
 	 * @param metadataReader 
 	 * @return
 	 */
-	public BeanDefinition createBeanDefinition(MetadataReader metadataReader);
+	BeanDefinition createBeanDefinition(MetadataReader metadataReader);
 	
 }

@@ -8,12 +8,12 @@ package org.tinygroup.weblayer.webcontext.session;
  */
 public interface SessionManager {
 	
-	public void addSession(Session session);
+	void addSession(Session session);
 	
-	public void expireSession(Session session);
+	void expireSession(Session session);
 	
-	public Session[] queryAllSessions();
+	Session[] queryAllSessions();
 	
-	public Session querySessionById(String sessionId);
+	Session querySessionById(String sessionId);
 
 }

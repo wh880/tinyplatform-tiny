@@ -38,8 +38,8 @@ public class TypeConverterUtil {
 			.getLogger(TypeConverterUtil.class);
 
 	static {
-		Collection<PropertyEditorRegistrar> editorRegistrars = ((SpringBeanContainer) (BeanContainerFactory
-				.getBeanContainer(TypeConverterUtil.class.getClassLoader())))
+		Collection<PropertyEditorRegistrar> editorRegistrars = BeanContainerFactory
+				.getBeanContainer(TypeConverterUtil.class.getClassLoader())
 				.getBeans(PropertyEditorRegistrar.class);
 		for (PropertyEditorRegistrar registrar : editorRegistrars) {
 			registrar.registerCustomEditors(converter);

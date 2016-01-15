@@ -16,5 +16,5 @@
 package org.tinygroup.context2object.test.bean;
 
 public interface CatInterface {
-	public String getName() ;
+	String getName() ;
 }

@@ -29,7 +29,6 @@ public class TestRequest {
         for (int i = 0; i < 2; i++) {
             NewThread thread = new NewThread(i);
             thread.start();
-            ;
         }
         Thread.sleep(100);
         System.out.println(Pet2s[0] == Pet2s[1]);

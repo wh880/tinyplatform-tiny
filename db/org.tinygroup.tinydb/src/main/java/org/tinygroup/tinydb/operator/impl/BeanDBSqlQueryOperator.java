@@ -157,7 +157,7 @@ public class BeanDBSqlQueryOperator<K> extends  BeanDBSqlOperator<K> implements 
 
 	public Bean getSingleValue(String beanType,Conditions conditions) throws TinyDbException {
 		SelectBean[] selectBeans = new SelectBean[0];
-		return (Bean) getSingleValue(selectBeans,beanType, conditions);
+		return getSingleValue(selectBeans,beanType, conditions);
 	}
 
 	public Bean getSingleValue(SelectBean[] selectBeans, String beanType,Conditions conditions) throws TinyDbException {

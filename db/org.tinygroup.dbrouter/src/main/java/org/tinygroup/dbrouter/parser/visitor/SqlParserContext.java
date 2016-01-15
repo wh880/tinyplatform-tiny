@@ -184,14 +184,11 @@ public class SqlParserContext {
 		if (StringUtil.isBlank(functionName)) {
 			return false;
 		}
-		if (functionName.equalsIgnoreCase(AVG)
+		return functionName.equalsIgnoreCase(AVG)
 				|| functionName.equalsIgnoreCase(COUNT)
 				|| functionName.equalsIgnoreCase(MAX)
 				|| functionName.equalsIgnoreCase(MIN)
-				|| functionName.equalsIgnoreCase(SUM)) {
-			return true;
-		}
-		return false;
+				|| functionName.equalsIgnoreCase(SUM);
 	}
 	
 	protected void setColumnIndex(Integer index){

@@ -29,7 +29,7 @@ public interface ObjectAssembly<T> {
 	 * @param type
 	 * @return
 	 */
-	public boolean isMatch(Class<?> type);
+	boolean isMatch(Class<?> type);
 
 	/**
 	 * 根据上下文参数信息进行对象组装
@@ -37,6 +37,6 @@ public interface ObjectAssembly<T> {
 	 * @param object
 	 * @param context
 	 */
-	public void assemble(String varName,T object,Context context);
+	void assemble(String varName, T object, Context context);
 	
 }

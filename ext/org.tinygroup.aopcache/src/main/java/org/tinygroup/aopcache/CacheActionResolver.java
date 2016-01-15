@@ -16,6 +16,6 @@ public interface CacheActionResolver extends Ordered {
      * @param method
      * @return
      */
-	public List<CacheAction> resolve(Method method);
+    List<CacheAction> resolve(Method method);
 	
 }

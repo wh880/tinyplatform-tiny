@@ -33,10 +33,7 @@ public final class SecurityUtil{
      * package protection mechanism is enabled.
      */
     public static boolean isPackageProtectionEnabled(){
-        if (packageDefinitionEnabled && Constants.IS_SECURITY_ENABLED){
-            return true;
-        }
-        return false;
+        return packageDefinitionEnabled && Constants.IS_SECURITY_ENABLED;
     }
     
     

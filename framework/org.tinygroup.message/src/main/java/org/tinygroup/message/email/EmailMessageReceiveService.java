@@ -114,7 +114,7 @@ public class EmailMessageReceiveService implements MessageReceiveService<EmailMe
     private EmailMessage getEmailMessage(Message message) throws MessagingException, IOException, MessageException {
         EmailMessage emailMessage = new EmailMessage();
         emailMessage.setSubject(message.getSubject());
-        getContent(emailMessage, (Part) message);
+        getContent(emailMessage, message);
         return emailMessage;
     }
 

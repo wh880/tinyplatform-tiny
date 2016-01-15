@@ -271,7 +271,7 @@ public class Compiler {
      * Compile the servlet from .java file to .class file
      */
     private void generateClass()
-        throws FileNotFoundException, JasperException, Exception {
+        throws Exception {
 
         long t1 = 0;
         if (log.isDebugEnabled()) {
@@ -377,7 +377,7 @@ public class Compiler {
      *                     If false, generate only .java file
      */
     public void compile(boolean compileClass)
-        throws FileNotFoundException, JasperException, Exception
+        throws Exception
     {
         try {
             // Create the output directory for the generated files

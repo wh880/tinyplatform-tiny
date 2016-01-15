@@ -29,8 +29,8 @@ public interface BusinessTypeProcessor {
 
 	void removeBusinessTypes(BusinessTypes businessTypes);
 
-	public StandardTypeProcessor getStandardTypeProcessor();
+	StandardTypeProcessor getStandardTypeProcessor();
 
-	public void setStandardTypeProcessor(
+	void setStandardTypeProcessor(
 			StandardTypeProcessor standardDataTypeProcessor);
 }

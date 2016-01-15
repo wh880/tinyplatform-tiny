@@ -110,7 +110,7 @@ class TagFileProcessor {
         // The tag file's JSP version
         private Double jspVersionDouble;
 
-        private static enum Name {
+        private enum Name {
             ATTR_NAME("name", "attribute"),
             VAR_NAME_GIVEN("name-given", "variable"),
             VAR_NAME_FROM("name-from-attribute", "variable"),
@@ -587,7 +587,7 @@ class TagFileProcessor {
         JspCompilationContext ctxt = compiler.getCompilationContext();
         JspRuntimeContext rctxt = ctxt.getRuntimeContext();
         JspServletWrapper wrapper =
-                (JspServletWrapper) rctxt.getWrapper(tagFilePath);
+                rctxt.getWrapper(tagFilePath);
 
         synchronized(rctxt) {
             if (wrapper == null) {
@@ -596,7 +596,7 @@ class TagFileProcessor {
                                                 tagFilePath,
                                                 tagInfo,
                                                 ctxt.getRuntimeContext(),
-                                                (URL) ctxt.getTagFileJarUrls().get(tagFilePath));
+                        ctxt.getTagFileJarUrls().get(tagFilePath));
                     rctxt.addWrapper(tagFilePath,wrapper);
 
 		// Use same classloader and classpath for compiling tag files
@@ -627,7 +627,7 @@ class TagFileProcessor {
                                                 tagFilePath,
                                                 tagInfo,
                                                 ctxt.getRuntimeContext(),
-                                                (URL) ctxt.getTagFileJarUrls().get(tagFilePath));
+                            ctxt.getTagFileJarUrls().get(tagFilePath));
                     tagClazz = tempWrapper.loadTagFilePrototype();
                     tempVector.add(
                                tempWrapper.getJspEngineContext().getCompiler());

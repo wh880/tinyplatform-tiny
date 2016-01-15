@@ -4,6 +4,6 @@ import org.tinygroup.tinysqldsl.Select;
 
 public interface SelectGenerateCallback<T> {
 
-	public Select generate(T t);
+	Select generate(T t);
 	
 }

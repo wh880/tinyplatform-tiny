@@ -42,11 +42,11 @@ public interface FileUploadReName {
 	 * 设置文件上传的临时目录
 	 * @param repository
 	 */
-	public void setRepository(File repository);
+	void setRepository(File repository);
 	/**
 	 * 获取文件上传的临时目录
 	 * @return
 	 */
-	public File getRepository();
+	File getRepository();
 	
 }

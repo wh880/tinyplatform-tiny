@@ -61,7 +61,7 @@ public interface DbBaseOperator extends DbRelationOperator {
     
     UUID getUniqueCode();
     
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate);
+    void setJdbcTemplate(JdbcTemplate jdbcTemplate);
 
-    public void setConfiguration(Configuration configuration);
+    void setConfiguration(Configuration configuration);
 }

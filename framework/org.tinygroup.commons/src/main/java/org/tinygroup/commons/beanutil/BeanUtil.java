@@ -103,10 +103,7 @@ public class BeanUtil {
 		if (ClassUtil.getPrimitiveType(value.getClass()) != null) {
 			return false;
 		}
-		if (value instanceof String) {
-			return false;
-		}
-		return true;
+		return !(value instanceof String);
 	}
 
 	public static Collection createApproximateCollection(Object collection) {

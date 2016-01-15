@@ -199,7 +199,7 @@ public class ReflectionUtil {
      * @throws PropertyNotFoundException
      */
     public static PropertyDescriptor getPropertyDescriptor(Object base,
-            Object property) throws ELException, PropertyNotFoundException {
+            Object property) throws ELException {
         String name = ELSupport.coerceToString(property);
         PropertyDescriptor p = null;
         try {

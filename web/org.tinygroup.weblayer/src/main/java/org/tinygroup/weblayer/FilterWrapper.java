@@ -33,6 +33,6 @@ public interface FilterWrapper {
 	 
 	 void init()throws ServletException;
 	 
-	 public void destroy();
+	 void destroy();
 	 
 }

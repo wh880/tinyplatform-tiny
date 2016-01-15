@@ -74,7 +74,7 @@ public class ValueListSupport implements ValueList {
      * @return 参数值
      */
     public boolean getBooleanValue(Boolean defaultValue) {
-        return getValueOfType(Boolean.class, true, (MethodParameter) null, new Object[] { defaultValue });
+        return getValueOfType(Boolean.class, true, null, new Object[] { defaultValue });
     }
 
     /**
@@ -93,7 +93,7 @@ public class ValueListSupport implements ValueList {
      * @return 参数值
      */
     public byte getByteValue(Byte defaultValue) {
-        return getValueOfType(Byte.class, true, (MethodParameter) null, new Object[] { defaultValue });
+        return getValueOfType(Byte.class, true, null, new Object[] { defaultValue });
     }
 
     /**
@@ -124,7 +124,7 @@ public class ValueListSupport implements ValueList {
      * @return 参数值
      */
     public char getCharacterValue(Character defaultValue) {
-        return getValueOfType(Character.class, true, (MethodParameter) null, new Object[] { defaultValue });
+        return getValueOfType(Character.class, true, null, new Object[] { defaultValue });
     }
 
     /**
@@ -143,7 +143,7 @@ public class ValueListSupport implements ValueList {
      * @return 参数值
      */
     public double getDoubleValue(Double defaultValue) {
-        return getValueOfType(Double.class, true, (MethodParameter) null, new Object[] { defaultValue });
+        return getValueOfType(Double.class, true, null, new Object[] { defaultValue });
     }
 
     /**
@@ -162,7 +162,7 @@ public class ValueListSupport implements ValueList {
      * @return 参数值
      */
     public float getFloatValue(Float defaultValue) {
-        return getValueOfType(Float.class, true, (MethodParameter) null, new Object[] { defaultValue });
+        return getValueOfType(Float.class, true, null, new Object[] { defaultValue });
     }
 
     /**
@@ -181,7 +181,7 @@ public class ValueListSupport implements ValueList {
      * @return 参数值
      */
     public int getIntegerValue(Integer defaultValue) {
-        return getValueOfType(Integer.class, true, (MethodParameter) null, new Object[] { defaultValue });
+        return getValueOfType(Integer.class, true, null, new Object[] { defaultValue });
     }
 
     /**
@@ -219,7 +219,7 @@ public class ValueListSupport implements ValueList {
      * @return 参数值
      */
     public long getLongValue(Long defaultValue) {
-        return getValueOfType(Long.class, true, (MethodParameter) null, new Object[] { defaultValue });
+        return getValueOfType(Long.class, true, null, new Object[] { defaultValue });
     }
 
     /**
@@ -257,7 +257,7 @@ public class ValueListSupport implements ValueList {
      * @return 参数值
      */
     public short getShortValue(Short defaultValue) {
-        return getValueOfType(Short.class, true, (MethodParameter) null, new Object[] { defaultValue });
+        return getValueOfType(Short.class, true, null, new Object[] { defaultValue });
     }
 
     /**

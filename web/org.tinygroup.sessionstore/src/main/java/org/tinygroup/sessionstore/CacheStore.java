@@ -9,5 +9,5 @@ import org.tinygroup.weblayer.webcontext.session.SessionStore;
  *
  */
 public interface CacheStore extends SessionStore {
-       public void setCache(Cache cache);	
+       void setCache(Cache cache);
 }

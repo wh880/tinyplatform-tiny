@@ -26,6 +26,6 @@ import org.tinygroup.tinydb.exception.TinyDbException;
  */
 public interface TransactionCallBack {
 
-	public Object callBack(TransactionStatus status)throws TinyDbException;
+	Object callBack(TransactionStatus status)throws TinyDbException;
 	
 }

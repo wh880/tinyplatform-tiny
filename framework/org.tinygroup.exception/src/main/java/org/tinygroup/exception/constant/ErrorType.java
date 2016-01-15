@@ -87,7 +87,7 @@ public enum ErrorType {
 
 	private int type;
 
-	private ErrorType(int type) {
+	ErrorType(int type) {
 		this.type = type;
 	}
 

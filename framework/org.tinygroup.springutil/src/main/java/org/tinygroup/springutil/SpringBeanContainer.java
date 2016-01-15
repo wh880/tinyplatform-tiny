@@ -113,7 +113,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 
 	private static String[] listToArray(List<String> list) {
 		String[] a = new String[0];
-		return (String[]) list.toArray(a);
+		return list.toArray(a);
 	}
 
 	public Map<ClassLoader, BeanContainer<?>> getSubBeanContainers() {
@@ -168,7 +168,7 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 			String message = e.getMessage();
 			if (message.equals(noBeanCaseInfo.replace(hashCode() + "", name))) {
 				if (parent != null) {
-					return (T) parent.getBean(name,clazz);
+					return parent.getBean(name,clazz);
 				}
 			}
 			throw e;

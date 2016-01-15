@@ -241,7 +241,6 @@ public class AntJavaCompiler implements JavaCompiler {
                 try {
                     javacObj.wait();
                 } catch (InterruptedException e) {
-                    ;
                 }
             }
             be = javacObj.getException();

@@ -126,9 +126,7 @@ public class Context2Object implements ComponentInterface {
 	}
 
 	private boolean isNull(String str) {
-		if (StringUtil.isBlank(str))
-			return true;
-		return false;
+		return StringUtil.isBlank(str);
 	}
 
 }

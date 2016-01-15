@@ -41,7 +41,7 @@ public final class XJCFacade {
             Class driver = cl
                     .loadClass("org.tinygroup.convert.xsdjava.DriverWrapper");
             Method mainMethod = driver.getDeclaredMethod("main",
-                    new Class[]{String[].class});
+                    String[].class);
             mainMethod.invoke(null, new Object[]{args});
         } catch (Exception e) {
             throw new ConvertException(e);

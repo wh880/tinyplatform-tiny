@@ -24,8 +24,8 @@ import org.tinygroup.tinysqldsl.Select;
  */
 public interface PageSqlMatchProcess {
 	
-	public boolean isMatch(String dbType);
+	boolean isMatch(String dbType);
 	
-	public String sqlProcess(Select select,int start,int limit);
+	String sqlProcess(Select select, int start, int limit);
 	
 }

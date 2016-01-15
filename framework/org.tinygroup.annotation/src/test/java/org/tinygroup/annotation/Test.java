@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.TYPE, ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Test {
-	public int id();
+	int id();
 
-	public String description() default "no description";
+	String description() default "no description";
 }

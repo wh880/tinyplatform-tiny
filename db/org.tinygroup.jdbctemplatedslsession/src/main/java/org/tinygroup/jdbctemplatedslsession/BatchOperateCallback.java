@@ -31,14 +31,14 @@ public interface BatchOperateCallback {
      * @param params
      * @return
      */
-	public int[] callback(List<Map<String, Object>> params);
+	int[] callback(List<Map<String, Object>> params);
 	
 	/**
      * 批量处理回调方法	  
      * @param params
      * @return
      */
-	public int[] callback(Map<String, Object>[] params);
+	int[] callback(Map<String, Object>[] params);
 	
 	
 	  /**
@@ -46,7 +46,7 @@ public interface BatchOperateCallback {
      * @param params
      * @return
      */
-	public int[] callbackList(List<List<Object>> params);
+	  int[] callbackList(List<List<Object>> params);
 	
 	
 }

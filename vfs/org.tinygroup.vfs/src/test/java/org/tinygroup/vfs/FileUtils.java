@@ -66,7 +66,7 @@ public class FileUtils {
 		JarFile jarFile = new JarFile(jarPath);
 		Enumeration<JarEntry> e = jarFile.entries();
 		while (e.hasMoreElements()) {
-			JarEntry entry = (JarEntry) e.nextElement();
+			JarEntry entry = e.nextElement();
 			String name = entry.getName();
 			if (name.endsWith("jquery-1.2.6.min.js")) {
 				readEntry(jarFile, entry);

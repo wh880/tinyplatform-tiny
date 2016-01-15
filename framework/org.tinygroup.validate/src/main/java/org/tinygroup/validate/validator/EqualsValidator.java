@@ -56,7 +56,7 @@ public class EqualsValidator extends AbstractValidator {
 				}
 			}
 			if(value instanceof Number){
-				String stringValue=((Number)value).toString();
+				String stringValue= value.toString();
 				if(this.value!=null&&!this.value.equals(stringValue)){
 					validateResult.addError(name, i18nMessages.getMessage(EQUALS_VALIDATOR_MESSAGE_KEY,DEFAULT_MESSAGE,name, title,value,this.value));
 				}
