@@ -19,13 +19,16 @@ import org.tinygroup.jsqlparser.statement.Statement;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
 /*
  * 通用的shardrule可以支持ddl语句
  * 
  */
 public abstract class AbstractParserResultShardRule implements ShardRule {
-	
+	protected static Logger LOGGER = LoggerFactory.getLogger(AbstractParserResultShardRule.class);
+
 	@XStreamAlias("target-table-name")
 	@XStreamAsAttribute
 	private String targetTableName;

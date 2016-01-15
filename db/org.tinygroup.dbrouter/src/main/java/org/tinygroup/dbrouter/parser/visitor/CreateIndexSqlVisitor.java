@@ -36,6 +36,7 @@ public class CreateIndexSqlVisitor extends CreateIndexDeParser {
 		} else {
 			buffer.append(table.getName());
 		}
+		sqlParserContext.getTableNames().add(table.getName());
 		if (index.getColumnsNames() != null) {
 			buffer.append(" (");
 			for (Iterator iter = index.getColumnsNames().iterator(); iter

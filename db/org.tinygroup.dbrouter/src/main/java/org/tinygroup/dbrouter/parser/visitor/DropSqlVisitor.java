@@ -20,11 +20,11 @@ public class DropSqlVisitor {
 		buffer.append("DROP ");
 		if(drop.getType().equalsIgnoreCase("table")){
 			 if(sqlParserContext.canReplaceTableName(drop.getName())){
-				 buffer.append(sqlParserContext.getTargetTableName());
+				 buffer.append(drop.getType()).append(" ").append(sqlParserContext.getTargetTableName());
 			 }else{
-				 buffer.append(drop.getName());
+				 buffer.append(drop.getType()).append(" ").append(drop.getName());
 			 }
-			
+			 sqlParserContext.getTableNames().add(drop.getName());
 		}else{
 		    buffer.append(drop.getType()).append(" ").append(drop.getName());	
 		}

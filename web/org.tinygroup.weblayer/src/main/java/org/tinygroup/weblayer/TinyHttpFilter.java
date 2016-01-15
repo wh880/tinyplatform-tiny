@@ -172,6 +172,9 @@ public class TinyHttpFilter implements Filter {
 		if (StringUtil.isBlank(servletPath)) {
 			servletPath = request.getPathInfo();
 		}
+		if(StringUtil.isBlank(servletPath)){//兼容tomcat8的处理情况，如果servletPath为空，设置为"/"
+			servletPath="/";
+		}
 		return servletPath;
 	}
 

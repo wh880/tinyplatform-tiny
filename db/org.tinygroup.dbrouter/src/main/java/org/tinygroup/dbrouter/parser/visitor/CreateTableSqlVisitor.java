@@ -30,6 +30,7 @@ public class CreateTableSqlVisitor extends CreateTableDeParser {
 		}else{
 			buffer.append(table.getName());
 		}
+		sqlParserContext.getTableNames().add(table.getName());
 		if (createTable.getSelect() != null) {
 			buffer.append(" AS ").append(createTable.getSelect().toString());
 		} else {

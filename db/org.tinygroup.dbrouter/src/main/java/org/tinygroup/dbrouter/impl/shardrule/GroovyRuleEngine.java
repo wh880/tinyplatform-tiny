@@ -1,6 +1,7 @@
 package org.tinygroup.dbrouter.impl.shardrule;
 
 import groovy.lang.GroovyClassLoader;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
 import static org.tinygroup.logger.LogLevel.DEBUG;
 import org.tinygroup.logger.Logger;
@@ -19,7 +20,8 @@ import java.util.regex.Pattern;
 public class GroovyRuleEngine {
     private static final Pattern RETURN_WHOLE_WORD_PATTERN = Pattern.compile("\\breturn\\b",
             Pattern.CASE_INSENSITIVE); // 全字匹配
-    private static final Pattern DOLLER_PATTERN = Pattern.compile("#.*?#");
+    private static final Pattern EXPRESSION_PATTERN = Pattern.compile("#.*?#");
+    private static final String IMPORT_STATIC_METHOD = "import java.lang.util.*;";
     private static Logger LOGGER = LoggerFactory.getLogger(GroovyRuleEngine.class);
 
     public static boolean eval(String expression,Map map){
@@ -36,7 +38,7 @@ public class GroovyRuleEngine {
                         return new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
                     }
                 });
-        String groovyRule = getGroovyRule(expression);
+        String groovyRule = getGroovyRule(StringUtil.trim(expression));
         Class<?> c_groovy = loader.parseClass(groovyRule);
 
         try {
@@ -51,15 +53,15 @@ public class GroovyRuleEngine {
             m_routingRuleMap.setAccessible(true);
             return (Boolean)m_routingRuleMap.invoke(ruleObj,map);
         } catch (Throwable t) {
-            throw new DbrouterRuntimeException(new IllegalArgumentException("执行表达式失败", t));
+            throw new DbrouterRuntimeException("执行表达式失败,执行的class为:"+groovyRule,new IllegalArgumentException("执行表达式失败", t));
         }
     }
 
     // Integer.valueOf(#userIdStr#.substring(0,1),16).intdiv(8)
     private static String getGroovyRule(String expression) {
         StringBuffer sb = new StringBuffer();
-//        sb.append(IMPORT_STATIC_METHOD);
-        Matcher matcher = DOLLER_PATTERN.matcher(expression);
+        sb.append(IMPORT_STATIC_METHOD);
+        Matcher matcher = EXPRESSION_PATTERN.matcher(expression);
         sb.append("public class GroovyRule ").append("{");
         sb.append("public boolean eval(Map map){");
         int start = 0;
@@ -74,10 +76,10 @@ public class GroovyRuleEngine {
             realParam = realParam.substring(1, realParam.length() - 1);
 
             sb.append(expression.substring(start, matcher.start()));
-            sb.append("(map.get(\"");
+            sb.append("map.get(\"");
             // 替换成(map.get("key"));
             sb.append(realParam);
-            sb.append("\"))");
+            sb.append("\")");
             start = matcher.end();
         }
         sb.append(expression.substring(start));

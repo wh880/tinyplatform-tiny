@@ -37,6 +37,7 @@ public class InsertSqlVisitor extends InsertDeParser {
 		} else {
 			buffer.append(tableName.getName());
 		}
+		sqlParserContext.getTableNames().add(tableName.getName());
 		if (insert.getColumns() != null) {
 			buffer.append(" (");
 			int columnIndex = Integer.MIN_VALUE;
