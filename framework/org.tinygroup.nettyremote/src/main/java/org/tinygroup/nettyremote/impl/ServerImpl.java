@@ -16,6 +16,7 @@
 package org.tinygroup.nettyremote.impl;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -25,6 +26,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
+
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -41,7 +43,7 @@ public class ServerImpl implements Server {
 	private EventLoopGroup bossGroup = new NioEventLoopGroup();
 	private EventLoopGroup workerGroup = new NioEventLoopGroup();
 	private int localPort;
-
+	private ChannelFuture f;
 	public ServerImpl(int localPort,boolean startFailStop) {
 		this.localPort = localPort;
 		this.startFailStop = startFailStop;
@@ -49,9 +51,10 @@ public class ServerImpl implements Server {
 	}
 
 	public void start() {
-		LOGGER.logMessage(LogLevel.INFO, "启动服务端线程,端口:{1}", localPort);
+		LOGGER.logMessage(LogLevel.INFO, "启动服务端,端口:{1}", localPort);
 		setStart(false);
 		startRun();
+		LOGGER.logMessage(LogLevel.INFO, "启动服务端完成,端口:{1}", localPort);
 	}
 
 	protected void init(ServerBootstrap b) {
@@ -75,11 +78,16 @@ public class ServerImpl implements Server {
 		b.group(bossGroup, workerGroup);
 		init(b);
 		// 绑定端口，同步等待成功
-		b.bind(localPort).sync();
+		f = b.bind(localPort).sync();
+		
 	}
 
 	public void stop() {
 		LOGGER.logMessage(LogLevel.INFO, "关闭服务端");
+		if(f!=null){
+				f.channel().closeFuture();
+			
+		}
 		setStart(false);
 		try {
 			bossGroup.shutdownGracefully();
