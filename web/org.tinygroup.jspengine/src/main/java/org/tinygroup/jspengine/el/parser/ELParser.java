@@ -44,8 +44,7 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
         case LITERAL_EXPRESSION:
         case START_DYNAMIC_EXPRESSION:
         case START_DEFERRED_EXPRESSION:
-          ;
-          break;
+            break;
         default:
           jj_la1[0] = jj_gen;
           break label_1;
@@ -199,8 +198,7 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case QUESTIONMARK:
-        ;
-        break;
+          break;
       default:
         jj_la1[2] = jj_gen;
         break label_2;
@@ -246,8 +244,7 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case OR0:
       case OR1:
-        ;
-        break;
+          break;
       default:
         jj_la1[3] = jj_gen;
         break label_3;
@@ -302,8 +299,7 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case AND0:
       case AND1:
-        ;
-        break;
+          break;
       default:
         jj_la1[5] = jj_gen;
         break label_4;
@@ -360,8 +356,7 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
       case EQ1:
       case NE0:
       case NE1:
-        ;
-        break;
+          break;
       default:
         jj_la1[7] = jj_gen;
         break label_5;
@@ -470,8 +465,7 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
       case GE1:
       case LE0:
       case LE1:
-        ;
-        break;
+          break;
       default:
         jj_la1[11] = jj_gen;
         break label_6;
@@ -652,8 +646,7 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case PLUS:
       case MINUS:
-        ;
-        break;
+          break;
       default:
         jj_la1[17] = jj_gen;
         break label_7;
@@ -735,8 +728,7 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
       case DIV1:
       case MOD0:
       case MOD1:
-        ;
-        break;
+          break;
       default:
         jj_la1[19] = jj_gen;
         break label_8;
@@ -986,8 +978,7 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case DOT:
         case LBRACK:
-          ;
-          break;
+            break;
         default:
           jj_la1[25] = jj_gen;
           break label_9;
@@ -1183,7 +1174,6 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
         break;
       default:
         jj_la1[30] = jj_gen;
-        ;
       }
                 if (t1 != null) {
                         jjtn000.setPrefix(t0.image);
@@ -1210,8 +1200,7 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case COMMA:
-            ;
-            break;
+              break;
           default:
             jj_la1[31] = jj_gen;
             break label_10;
@@ -1222,7 +1211,6 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
         break;
       default:
         jj_la1[32] = jj_gen;
-        ;
       }
       jj_consume_token(RPAREN);
     } catch (Throwable jjte000) {
@@ -1401,8 +1389,7 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
   }
 
   final private boolean jj_3_1() {
-    if (jj_3R_11()) return true;
-    return false;
+      return jj_3R_11();
   }
 
   final private boolean jj_3R_11() {
@@ -1410,8 +1397,7 @@ public class ELParser/*@bgen(jjtree)*/implements ELParserTreeConstants, ELParser
     Token xsp;
     xsp = jj_scanpos;
     if (jj_scan_token(54)) jj_scanpos = xsp;
-    if (jj_scan_token(LPAREN)) return true;
-    return false;
+      return jj_scan_token(LPAREN);
   }
 
   public ELParserTokenManager token_source;

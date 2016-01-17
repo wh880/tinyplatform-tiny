@@ -67,7 +67,7 @@ public interface UploadConfiguration {
      */
     boolean isTemporary();
      //是否是文件介质存储,默认是
-    public boolean isDiskItemFactory() ;
+     boolean isDiskItemFactory() ;
     //如果是其他存储介质，那么给定存储介质的beanname
-    public String getItemStorageBeanName() ;
+    String getItemStorageBeanName() ;
 }

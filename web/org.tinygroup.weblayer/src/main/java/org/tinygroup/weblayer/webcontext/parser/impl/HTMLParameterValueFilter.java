@@ -15,16 +15,17 @@
  */
 package org.tinygroup.weblayer.webcontext.parser.impl;
 
-import org.tinygroup.support.BeanSupport;
-import org.tinygroup.weblayer.webcontext.parser.upload.ParameterValueFilter;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-import java.util.Set;
-
 import static org.tinygroup.commons.tools.BasicConstant.EMPTY_STRING_ARRAY;
 import static org.tinygroup.commons.tools.CollectionUtil.createHashMap;
 import static org.tinygroup.commons.tools.ObjectUtil.defaultIfNull;
+
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.tinygroup.support.BeanSupport;
+import org.tinygroup.weblayer.webcontext.parser.upload.ParameterValueFilter;
 
 /**
  * 过滤参数。
@@ -44,7 +45,9 @@ public class HTMLParameterValueFilter extends BeanSupport implements ParameterVa
 
     
     protected void init() {
-        allowed = createHashMap(); // allowed tags and attrs
+        if(allowed==null){
+        	allowed=createHashMap();
+        }
         deniedTags = defaultIfNull(deniedTags, EMPTY_STRING_ARRAY);
         selfClosingTags = defaultIfNull(selfClosingTags, EMPTY_STRING_ARRAY);
         needClosingTags = defaultIfNull(needClosingTags, EMPTY_STRING_ARRAY);
@@ -70,4 +73,77 @@ public class HTMLParameterValueFilter extends BeanSupport implements ParameterVa
 
         return filter.filter(value, isHtml);
     }
+
+	public HTMLInputFilter getFilter() {
+		return filter;
+	}
+
+	public void setFilter(HTMLInputFilter filter) {
+		this.filter = filter;
+	}
+
+	public Map<String, Set<String>> getAllowed() {
+		return allowed;
+	}
+
+	public void setAllowed(Map<String, Set<String>> allowed) {
+		this.allowed = allowed;
+	}
+
+	public String[] getDeniedTags() {
+		return deniedTags;
+	}
+
+	public void setDeniedTags(String[] deniedTags) {
+		this.deniedTags = deniedTags;
+	}
+
+	public String[] getSelfClosingTags() {
+		return selfClosingTags;
+	}
+
+	public void setSelfClosingTags(String[] selfClosingTags) {
+		this.selfClosingTags = selfClosingTags;
+	}
+
+	public String[] getNeedClosingTags() {
+		return needClosingTags;
+	}
+
+	public void setNeedClosingTags(String[] needClosingTags) {
+		this.needClosingTags = needClosingTags;
+	}
+
+	public String[] getAllowedProtocols() {
+		return allowedProtocols;
+	}
+
+	public void setAllowedProtocols(String[] allowedProtocols) {
+		this.allowedProtocols = allowedProtocols;
+	}
+
+	public String[] getProtocolAtts() {
+		return protocolAtts;
+	}
+
+	public void setProtocolAtts(String[] protocolAtts) {
+		this.protocolAtts = protocolAtts;
+	}
+
+	public String[] getRemoveBlanks() {
+		return removeBlanks;
+	}
+
+	public void setRemoveBlanks(String[] removeBlanks) {
+		this.removeBlanks = removeBlanks;
+	}
+
+	public String[] getAllowedEntities() {
+		return allowedEntities;
+	}
+
+	public void setAllowedEntities(String[] allowedEntities) {
+		this.allowedEntities = allowedEntities;
+	}
+    
 }

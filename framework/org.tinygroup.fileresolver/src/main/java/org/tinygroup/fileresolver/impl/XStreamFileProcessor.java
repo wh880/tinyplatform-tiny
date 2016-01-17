@@ -48,10 +48,7 @@ public class XStreamFileProcessor extends AbstractFileProcessor {
 	}
 
 	protected boolean checkMatch(FileObject fileObject) {
-		if (fileObject.getFileName().endsWith(XSTREAM_FILE_EXTENSION)) {
-			return true;
-		}
-		return false;
+		return fileObject.getFileName().endsWith(XSTREAM_FILE_EXTENSION);
 	}
 
 	private void process(FileObject fileObject) {

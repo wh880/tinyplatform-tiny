@@ -196,12 +196,12 @@ public interface Logger {
      * @param key
      * @param value
      */
-    public void putToMDC(String key, Object value);
+    void putToMDC(String key, Object value);
     /**
      * 移除MDC中变量值
      * @param key
      */
-    public void removeFromMDC(String key);
+    void removeFromMDC(String key);
     
     /**
 	 * 返回缓存限制记录条数 <br>
@@ -212,7 +212,7 @@ public interface Logger {
 	 * 
 	 * @return 返回限制记录数
 	 */
-	public int getMaxBufferRecords();
+    int getMaxBufferRecords();
 
 	/**
 	 * 设置缓存限制记录条数 <br>
@@ -223,6 +223,6 @@ public interface Logger {
 	 * @param bufferRecords
 	 *            设置限制记录数
 	 */
-	public void setMaxBufferRecords(int bufferRecords);
+    void setMaxBufferRecords(int bufferRecords);
 
 }

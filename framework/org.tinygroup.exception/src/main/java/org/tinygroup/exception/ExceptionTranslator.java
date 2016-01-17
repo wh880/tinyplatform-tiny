@@ -28,6 +28,6 @@ public interface ExceptionTranslator {
      * @param exception
      * @return
      */
-	public String translateException(BaseRuntimeException exception);
+    String translateException(BaseRuntimeException exception);
 	
 }

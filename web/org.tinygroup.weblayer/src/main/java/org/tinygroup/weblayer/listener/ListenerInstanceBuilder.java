@@ -36,11 +36,11 @@ public interface ListenerInstanceBuilder<INSTANCE>{
     /**
      * 构建实例
      */
-    public void buildInstances(INSTANCE object);
+	void buildInstances(INSTANCE object);
     /**
      * 获取监听器实例列表
      * @return
      */
-    public List<INSTANCE> getInstances();
+	List<INSTANCE> getInstances();
 	
 }

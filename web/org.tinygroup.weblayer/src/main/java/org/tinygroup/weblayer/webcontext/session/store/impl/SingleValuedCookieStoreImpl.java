@@ -172,8 +172,8 @@ public class SingleValuedCookieStoreImpl extends AbstractCookieStore implements 
             if (getName().equals(cookieName)) {
                 cookieValue = cookie.getValue();
 
-                    log.logMessage(LogLevel.DEBUG, "[{}] Loading cookie: {}[length={}]={}", new Object[] { getStoreName(), getName(),
-                                                                                      cookie.getValue().length(), cookie.getValue() });
+                    log.logMessage(LogLevel.DEBUG, "[{}] Loading cookie: {}[length={}]={}", getStoreName(), getName(),
+                            cookie.getValue().length(), cookie.getValue());
 
                 break;
             }

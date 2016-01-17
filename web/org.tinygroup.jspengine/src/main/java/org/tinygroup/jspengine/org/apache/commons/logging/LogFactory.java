@@ -52,7 +52,7 @@ public class LogFactory
     {
         try
         {
-            _ctor = _clazz.getDeclaredConstructor(new Class[]{String.class});
+            _ctor = _clazz.getDeclaredConstructor(String.class);
         }
         catch (Exception e)
         {
@@ -72,7 +72,7 @@ public class LogFactory
         {
             _clazzName=className;
             _clazz = Thread.currentThread().getContextClassLoader().loadClass(_clazzName);
-            _ctor = _clazz.getDeclaredConstructor(new Class[]{String.class});
+            _ctor = _clazz.getDeclaredConstructor(String.class);
         }
         catch (ClassNotFoundException e)
         {
@@ -124,7 +124,7 @@ public class LogFactory
         Log log = null;
         try
         {
-            log =  (Log)_ctor.newInstance(new Object[]{name});       
+            log =  (Log)_ctor.newInstance(name);
         }
         catch (Exception e)
         {

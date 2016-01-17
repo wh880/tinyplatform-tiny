@@ -48,7 +48,7 @@ public class TemplateContextDefault extends ContextImpl implements TemplateConte
     }
 
     public <T> T get(String name) {
-        T result = (T) super.get(name);
+        T result = super.get(name);
         if (result != null) {
             return result;
         }

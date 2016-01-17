@@ -39,10 +39,7 @@ public class ServiceUtil {
 			return true;
 		}
 		boolean seriaType=Serializable.class.isAssignableFrom(clazz);
-		if(seriaType){
-			return true;
-		}
-		return false;
+		return seriaType;
 	}
 	
 	public static ServiceRegistryItem copyServiceItem(ServiceRegistryItem serviceiItem) {

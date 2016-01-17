@@ -87,7 +87,6 @@ public class SetLocaleTinyFilter extends AbstractTinyFilter {
 		if (outputCharsetPattern == null) {
 			String outputCharsetParam = defaultIfEmpty(
 					get(OUTPUT_CHARSET_PARAM), OUTPUT_CHARSET_PARAM_DEFAULT);
-			;
 			setOutputCharsetPattern(Pattern.compile("(" + outputCharsetParam
 					+ ")=([\\w-]+)"));
 		}

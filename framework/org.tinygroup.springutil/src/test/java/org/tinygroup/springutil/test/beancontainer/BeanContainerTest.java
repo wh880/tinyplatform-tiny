@@ -32,7 +32,7 @@ public class BeanContainerTest extends TestCase {
 		fl.add(f);
 		sbc.regSpringConfigXml(fl);
 		sbc.refresh();
-		ContainerBean bean = (ContainerBean) sbc.getBean("containerbean");
+		ContainerBean bean = sbc.getBean("containerbean");
 		assertNotNull(bean);
 	}
 

@@ -85,7 +85,6 @@ public class ClientImpl implements Client {
 				p.await();
 			} catch (InterruptedException e) {
 				LOGGER.logMessage(LogLevel.WARN, "等待消息写出被中断");
-				;
 			}
 			if (p.isSuccess()) {
 				LOGGER.logMessage(LogLevel.DEBUG, "消息写出状态：{}", p.isSuccess());

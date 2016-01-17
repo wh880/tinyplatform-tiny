@@ -26,12 +26,12 @@ public interface ErrorCodeTranslator {
      * 异常号翻译方法
      * @return
      */
-	public String translate(Error error);
+	String translate(Error error);
 	
 	/**
 	 * 显示要进行翻译的异常号
 	 * @return
 	 */
-	public String getErrorCode(Error error);
+	String getErrorCode(Error error);
 	
 }

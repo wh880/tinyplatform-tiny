@@ -149,10 +149,7 @@ public abstract class AbstractConventionHandlerMethodResolver implements
         }, new MethodFilter() {
             // ==剔除object.class方法
             public boolean matches(Method method) {
-                if (method.getDeclaringClass() == Object.class) {
-                    return false;
-                }
-                return true;
+                return method.getDeclaringClass() != Object.class;
             }
 
         });
@@ -180,9 +177,6 @@ public abstract class AbstractConventionHandlerMethodResolver implements
             return true;
         }
         boolean endsWithSlash = pattern.endsWith("/");
-        if (!endsWithSlash && getPathMatcher().match(pattern + "/", lookupPath)) {
-            return true;
-        }
-        return false;
+        return !endsWithSlash && getPathMatcher().match(pattern + "/", lookupPath);
     }
 }

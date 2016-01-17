@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class QueueTest extends TestCase {
 	static volatile boolean stopIt = false;
-	static volatile long times = 0;;
+	static volatile long times = 0;
 
 	Queue<Integer> queue = null;
 

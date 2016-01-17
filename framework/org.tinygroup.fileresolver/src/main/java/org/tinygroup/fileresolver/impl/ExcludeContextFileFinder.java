@@ -46,10 +46,7 @@ public class ExcludeContextFileFinder implements
 	private Map<String, String> excludeFileExtensionMap = new HashMap<String, String>();
 
 	public boolean checkMatch(FileObject fileObject) {
-		if (fileObject != null && excludeFileExtensionMap.containsKey(fileObject.getExtName())) {
-			return false;
-		}
-		return true;
+		return !(fileObject != null && excludeFileExtensionMap.containsKey(fileObject.getExtName()));
 	}
 
 	

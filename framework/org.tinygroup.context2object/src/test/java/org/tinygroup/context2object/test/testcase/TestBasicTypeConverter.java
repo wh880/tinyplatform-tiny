@@ -29,7 +29,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 		assertFalse( oarray instanceof String[] );
 	}
 	public void testCharArray() {
-		char[] result = basicConverter.convertToChar(array);
+		char[] result = BasicTypeConverter.convertToChar(array);
 		assertEquals(result[0], '1');
 		assertEquals(result[1], 0);
 		assertEquals(result[2], 0);
@@ -37,7 +37,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testCharacterArray() {
-		Character[] result = basicConverter.convertToCharacter(array);
+		Character[] result = BasicTypeConverter.convertToCharacter(array);
 		assertEquals(result[0], Character.valueOf('1'));
 		assertEquals(result[1], null);
 		assertEquals(result[2], null);
@@ -45,7 +45,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testCharacterCollection() {
-		List<Character> result = (List<Character>) basicConverter
+		List<Character> result = (List<Character>) BasicTypeConverter
 				.convertBasicTypeCollection(array, "java.util.List",
 						"Character",
 						TestBasicTypeConverter.class.getClassLoader());
@@ -56,7 +56,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testIntArray() {
-		int[] result = basicConverter.convertToInt(array);
+		int[] result = BasicTypeConverter.convertToInt(array);
 		assertEquals(result[0], 1);
 		assertEquals(result[1], 0);
 		assertEquals(result[2], 0);
@@ -64,7 +64,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testIntegerArray() {
-		Integer[] result = basicConverter.convertToInteger(array);
+		Integer[] result = BasicTypeConverter.convertToInteger(array);
 		assertEquals(result[0], Integer.valueOf("1"));
 		assertEquals(result[1], null);
 		assertEquals(result[2], null);
@@ -72,7 +72,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testIntegerCollection() {
-		List<Integer> result = (List<Integer>) basicConverter
+		List<Integer> result = (List<Integer>) BasicTypeConverter
 				.convertBasicTypeCollection(array, "java.util.List", "Integer",
 						TestBasicTypeConverter.class.getClassLoader());
 		assertEquals(result.get(0), Integer.valueOf("1"));
@@ -82,7 +82,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testLongArray() {
-		long[] result = basicConverter.convertToLong(array);
+		long[] result = BasicTypeConverter.convertToLong(array);
 		assertEquals(result[0], 1);
 		assertEquals(result[1], 0);
 		assertEquals(result[2], 0);
@@ -90,7 +90,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testLongObjectArray() {
-		Long[] result = basicConverter.convertToLongObject(array);
+		Long[] result = BasicTypeConverter.convertToLongObject(array);
 		assertEquals(result[0], Long.valueOf("1"));
 		assertEquals(result[1], null);
 		assertEquals(result[2], null);
@@ -98,7 +98,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testLongCollection() {
-		List<Long> result = (List<Long>) basicConverter
+		List<Long> result = (List<Long>) BasicTypeConverter
 				.convertBasicTypeCollection(array, "java.util.List", "Long",
 						TestBasicTypeConverter.class.getClassLoader());
 		assertEquals(result.get(0), Long.valueOf("1"));
@@ -108,7 +108,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testShortArray() {
-		short[] result = basicConverter.convertToShort(array);
+		short[] result = BasicTypeConverter.convertToShort(array);
 		assertEquals(result[0], 1);
 		assertEquals(result[1], 0);
 		assertEquals(result[2], 0);
@@ -116,7 +116,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testShortObjectArray() {
-		Short[] result = basicConverter.convertToShortObject(array);
+		Short[] result = BasicTypeConverter.convertToShortObject(array);
 		assertEquals(result[0], Short.valueOf("1"));
 		assertEquals(result[1], null);
 		assertEquals(result[2], null);
@@ -124,7 +124,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testShortCollection() {
-		List<Long> result = (List<Long>) basicConverter
+		List<Long> result = (List<Long>) BasicTypeConverter
 				.convertBasicTypeCollection(array, "java.util.List", "Short",
 						TestBasicTypeConverter.class.getClassLoader());
 		assertEquals(result.get(0), Short.valueOf("1"));
@@ -134,7 +134,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testDoubleArray() {
-		double[] result = basicConverter.convertToDouble(array);
+		double[] result = BasicTypeConverter.convertToDouble(array);
 		assertEquals(result[0], Double.parseDouble("1"));
 		assertEquals(result[1], Double.parseDouble("0"));
 		assertEquals(result[2], Double.parseDouble("0"));
@@ -142,7 +142,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testDoubleObjectArray() {
-		Double[] result = basicConverter.convertToDoubleObject(array);
+		Double[] result = BasicTypeConverter.convertToDoubleObject(array);
 		assertEquals(result[0], Double.valueOf("1"));
 		assertEquals(result[1], null);
 		assertEquals(result[2], null);
@@ -150,7 +150,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testDoubleCollection() {
-		List<Double> result = (List<Double>) basicConverter
+		List<Double> result = (List<Double>) BasicTypeConverter
 				.convertBasicTypeCollection(array, "java.util.List", "Double",
 						TestBasicTypeConverter.class.getClassLoader());
 		assertEquals(result.get(0), Double.valueOf("1"));
@@ -160,7 +160,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testFloatArray() {
-		float[] result = basicConverter.convertToFloat(array);
+		float[] result = BasicTypeConverter.convertToFloat(array);
 		assertEquals(result[0], Float.parseFloat("1"));
 		assertEquals(result[1], Float.parseFloat("0"));
 		assertEquals(result[2], Float.parseFloat("0"));
@@ -168,7 +168,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testFloatObjectArray() {
-		Float[] result = basicConverter.convertToFloatObject(array);
+		Float[] result = BasicTypeConverter.convertToFloatObject(array);
 		assertEquals(result[0], Float.valueOf("1"));
 		assertEquals(result[1], null);
 		assertEquals(result[2], null);
@@ -176,7 +176,7 @@ public class TestBasicTypeConverter extends BastTestCast {
 	}
 
 	public void testFloatCollection() {
-		List<Float> result = (List<Float>) basicConverter
+		List<Float> result = (List<Float>) BasicTypeConverter
 				.convertBasicTypeCollection(array, "java.util.List", "Float",
 						TestBasicTypeConverter.class.getClassLoader());
 		assertEquals(result.get(0), Float.valueOf("1"));

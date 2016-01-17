@@ -42,10 +42,7 @@ public class DefaultAnnotationMethodHandlerAdapter extends
 			return true;
 		}
 		//
-		if (isConventionHandler(handler)) {
-			return true;
-		}
-		return false;
+		return isConventionHandler(handler);
 	}
 
 }

@@ -22,5 +22,5 @@ package org.tinygroup.weblayer;
  */
 public interface BasicTinyConfigAware {
 
-	public void setBasicConfig(BasicTinyConfig basicTinyConfig);
+	void setBasicConfig(BasicTinyConfig basicTinyConfig);
 }

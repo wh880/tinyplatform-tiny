@@ -99,7 +99,7 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements
 	 * 改写get方法，使得可以从父环境中查找，同时，也可以从子环境中查找 先找自己，再找子，再找父
 	 */
 	public <T> T get(String name) {
-		T result = (T) getFromWrapperContext(name, this);
+		T result = getFromWrapperContext(name, this);
 		if (result!=null) {
 			return result;
 		}
@@ -115,11 +115,11 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements
 	}
 
 	protected <T> T getFromWrapperContext(String name, WebContext webContext) {
-		T result = (T) getFromSubContext(name, webContext);
+		T result = getFromSubContext(name, webContext);
 		if (result!=null)
 			return result;
 		if (webContext.getWrappedWebContext() != null) {
-			result = (T) getFromWrapperContext(name,
+			result = getFromWrapperContext(name,
 					webContext.getWrappedWebContext());
 			if (result!=null) {
 				return result;

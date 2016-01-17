@@ -155,7 +155,7 @@ public class ExtendsSpringBeanContainer extends SpringBeanContainer {
 
 	private static String[] listToArray(List<String> list) {
 		String[] a = new String[0];
-		return (String[]) list.toArray(a);
+		return list.toArray(a);
 	}
 
 	public Map<ClassLoader, BeanContainer<?>> getSubBeanContainers() {
@@ -207,7 +207,7 @@ public class ExtendsSpringBeanContainer extends SpringBeanContainer {
 			// if (message.equals(noBeanCaseInfo.replace(hashCode() + "",
 			// name))) {
 			if (parent != null) {
-				return (T) parent.getBean(name, clazz);
+				return parent.getBean(name, clazz);
 			}
 			// }
 			throw e;

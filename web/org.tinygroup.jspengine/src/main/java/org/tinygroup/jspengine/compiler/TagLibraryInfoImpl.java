@@ -321,8 +321,7 @@ public class TagLibraryInfoImpl extends TagLibraryInfo implements TagConstants {
                      "small-icon".equals(tname) ||
                      "large-icon".equals(tname) ||
                      "listener".equals(tname)) {
-                ;
-	    } else if ("taglib-extension".equals(tname)) {
+            } else if ("taglib-extension".equals(tname)) {
 		// Recognized but ignored
             } else {
                 err.jspError("jsp.error.unknown.element.in.taglib", tname);
@@ -775,7 +774,7 @@ public class TagLibraryInfoImpl extends TagLibraryInfo implements TagConstants {
             } else if ("param-value".equals(tname)) {
                 initParam[1] = element.getBody();
             } else if ("description".equals(tname)) {
-                ; // Do nothing
+                // Do nothing
             } else {
                 err.jspError("jsp.error.unknown.element.in.initParam",
                              tname);

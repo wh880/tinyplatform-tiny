@@ -31,10 +31,7 @@ public class FileSchemaProvider implements SchemaProvider {
     }
 
     public boolean isMatch(String resource) {
-        if (resource.toLowerCase().startsWith(FILE_PROTOCOL)) {
-            return true;
-        }
-        return false;
+        return resource.toLowerCase().startsWith(FILE_PROTOCOL);
     }
 
     public String getSchema() {

@@ -171,9 +171,9 @@ public class JarFileObject extends AbstractFileObject {
 	
 	private void createJarEntry(){
 		children = new ArrayList<FileObject>();
-		Enumeration<JarEntry> e = (Enumeration<JarEntry>) jarFile.entries();
+		Enumeration<JarEntry> e = jarFile.entries();
 		while (e.hasMoreElements()) {
-			JarEntry entry = (JarEntry) e.nextElement();
+			JarEntry entry = e.nextElement();
 			if (getParent() == null) {
 				String[] names = entry.getName().split("/");
 				// 如果当前是jar文件，如果

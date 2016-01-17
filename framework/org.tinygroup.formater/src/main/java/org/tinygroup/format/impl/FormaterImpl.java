@@ -82,12 +82,12 @@ public class FormaterImpl implements Formater {
 			throws FormatException {
 		String s[] = string.split(patternDefine.getSplitChar() + "");
 		if (s.length >= 2) {
-			FormatProvider o = (FormatProvider) formatProviders.get(s[0]);
+			FormatProvider o = formatProviders.get(s[0]);
 			if (o != null) {
 				return o.format(context, s[1]);
 			}
 		} else {
-			FormatProvider o = (FormatProvider) formatProviders.get("");
+			FormatProvider o = formatProviders.get("");
 			if (o != null) {
 				return o.format(context, string);
 			}

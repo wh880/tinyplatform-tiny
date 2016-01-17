@@ -77,10 +77,7 @@ public class UIComponentFileProcessor extends AbstractFileProcessor {
 
 	@Override
 	protected boolean checkMatch(FileObject fileObject) {
-		if (fileObject.getFileName().endsWith(".ui.xml")) {
-			return true;
-		}
-		return false;
+		return fileObject.getFileName().endsWith(".ui.xml");
 	}
 
 }

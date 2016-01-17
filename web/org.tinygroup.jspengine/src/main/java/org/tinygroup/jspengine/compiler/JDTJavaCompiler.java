@@ -464,7 +464,7 @@ public class JDTJavaCompiler implements JavaCompiler {
         try {
             if (GET_PROBLEM_METH == null) {
                 GET_PROBLEM_METH = result.getClass()
-                        .getDeclaredMethod("getProblems", new Class[] {});
+                        .getDeclaredMethod("getProblems");
             }
             //an array of a particular type can be casted into an array of a super type.
             return (IProblem[]) GET_PROBLEM_METH.invoke(result, null);

@@ -111,8 +111,8 @@ public class PreprocessorUtil {
                     _preprocessor[i] = (BytecodePreprocessor)
                                                         ppClass.newInstance();
                     if (_preprocessor[i] instanceof BytecodePreprocessor){
-                        _preprocessor[i] = 
-                            (BytecodePreprocessor)_preprocessor[i];
+                        _preprocessor[i] =
+                                _preprocessor[i];
                         _preprocessorEnabled = true;
                     } else {                    
                         _logger.log(Level.SEVERE, 

@@ -594,9 +594,6 @@ public final class DbRouterUtil {
 	}
 
 	public static boolean isSelect(Statement statement) {
-		if (statement instanceof Select) {
-			return true;
-		}
-		return false;
+		return statement instanceof Select;
 	}
 }

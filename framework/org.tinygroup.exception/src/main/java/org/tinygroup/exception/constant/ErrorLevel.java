@@ -42,7 +42,7 @@ public enum ErrorLevel {
 	
 	private int level;
 	
-    private ErrorLevel(int level) {
+    ErrorLevel(int level) {
 		this.level = level;
 	}
 

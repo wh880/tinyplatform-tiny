@@ -51,7 +51,7 @@ public class FlowEventProcessor extends AbstractEventProcessor {
 		}
 		flow = executor.getFlow(flowId);
 		if (flow != null) {
-			executor.execute(flowId, nodeId, (Context) event
+			executor.execute(flowId, nodeId, event
 					.getServiceRequest().getContext());
 		} else {
 			LOGGER.logMessage(LogLevel.ERROR, "[Flow:{0}]不存在或无合适的Flow流程执行器",

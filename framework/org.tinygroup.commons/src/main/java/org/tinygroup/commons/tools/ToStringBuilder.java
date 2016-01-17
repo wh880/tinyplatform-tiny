@@ -382,7 +382,7 @@ public class ToStringBuilder {
      *
      * @author Michael Zhou
      */
-    public static interface StructureBuilder {
+    public interface StructureBuilder {
         ToStringBuilder appendTo(ToStringBuilder toStringBuilder);
     }
 

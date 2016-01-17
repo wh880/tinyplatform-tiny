@@ -183,7 +183,7 @@ public final class ExpressionBuilder implements NodeVisitor {
                         "" + pcnt, "" + node.jjtGetNumChildren()));
             }
         } else if (node instanceof AstIdentifier && this.varMapper != null) {
-            String variable = ((AstIdentifier) node).getImage();
+            String variable = node.getImage();
 
             // simply capture it
             this.varMapper.resolveVariable(variable);

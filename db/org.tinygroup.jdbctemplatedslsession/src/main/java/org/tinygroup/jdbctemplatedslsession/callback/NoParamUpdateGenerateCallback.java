@@ -14,6 +14,6 @@ public interface NoParamUpdateGenerateCallback{
 	 * 根据参数对象生成Update对象
 	 * @return
 	 */
-	public Update generate();
+	Update generate();
 	
 }

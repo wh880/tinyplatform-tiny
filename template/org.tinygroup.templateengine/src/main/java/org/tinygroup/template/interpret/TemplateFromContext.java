@@ -280,23 +280,21 @@ public class TemplateFromContext extends AbstractTemplate {
      * @return
      */
     public boolean isDirectiveNeedTrim (ParseTree parseTree) {
-        if (        parseTree instanceof TinyTemplateParser.ValueContext
-                ||  parseTree instanceof TinyTemplateParser.If_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.For_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.Else_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.Call_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.While_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.Break_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.Elseif_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.Return_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.Continue_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.Endofline_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.Call_macro_block_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.Macro_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.Call_block_directiveContext
-                ||  parseTree instanceof TinyTemplateParser.Layout_impl_directiveContext)
-            return true;
-        return false;
+        return parseTree instanceof TinyTemplateParser.ValueContext
+                || parseTree instanceof TinyTemplateParser.If_directiveContext
+                || parseTree instanceof TinyTemplateParser.For_directiveContext
+                || parseTree instanceof TinyTemplateParser.Else_directiveContext
+                || parseTree instanceof TinyTemplateParser.Call_directiveContext
+                || parseTree instanceof TinyTemplateParser.While_directiveContext
+                || parseTree instanceof TinyTemplateParser.Break_directiveContext
+                || parseTree instanceof TinyTemplateParser.Elseif_directiveContext
+                || parseTree instanceof TinyTemplateParser.Return_directiveContext
+                || parseTree instanceof TinyTemplateParser.Continue_directiveContext
+                || parseTree instanceof TinyTemplateParser.Endofline_directiveContext
+                || parseTree instanceof TinyTemplateParser.Call_macro_block_directiveContext
+                || parseTree instanceof TinyTemplateParser.Macro_directiveContext
+                || parseTree instanceof TinyTemplateParser.Call_block_directiveContext
+                || parseTree instanceof TinyTemplateParser.Layout_impl_directiveContext;
     }
 
     public TemplateFromContext(String path, TinyTemplateParser.TemplateContext templateContext) {
@@ -308,7 +306,7 @@ public class TemplateFromContext extends AbstractTemplate {
     protected void renderContent(TemplateContext context, OutputStream outputStream) throws IOException, TemplateException {
         try {
             TemplateEngineDefault templateEngine = (TemplateEngineDefault) getTemplateEngine();
-            templateEngine.interpreter.interpret(templateEngine, this, templateContext, context, context, outputStream, path);
+            TemplateEngineDefault.interpreter.interpret(templateEngine, this, templateContext, context, context, outputStream, path);
         } catch (StopException e) {
             //Do Nothing
         } catch (ReturnException e) {

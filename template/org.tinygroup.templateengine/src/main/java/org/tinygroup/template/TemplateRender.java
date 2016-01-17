@@ -12,7 +12,7 @@ public interface TemplateRender {
 	/**
 	 * 默认的bean配置名称
 	 */
-	public static final String DEFAULT_BEAN_NAME="templateRender";
+    String DEFAULT_BEAN_NAME="templateRender";
 	
 	void setTemplateEngine(TemplateEngine engine);
 	

@@ -398,11 +398,11 @@ public class JspServlet extends HttpServlet {
 			HttpServletResponse response, String jspUri, Throwable exception,
 			boolean precompile) throws ServletException, IOException {
 
-		JspServletWrapper wrapper = (JspServletWrapper) rctxt
+		JspServletWrapper wrapper = rctxt
 				.getWrapper(jspUri);
 		if (wrapper == null) {
 			synchronized (this) {
-				wrapper = (JspServletWrapper) rctxt.getWrapper(jspUri);
+				wrapper = rctxt.getWrapper(jspUri);
 				if (wrapper == null) {
 					// Check if the requested JSP page exists, to avoid
 					// creating unnecessary directories and files.

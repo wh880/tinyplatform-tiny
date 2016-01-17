@@ -22,7 +22,7 @@ import java.util.List;
  * Created by wcg on 2014/7/7.
  */
 public interface Writer {
-	public void writeFields(List<Field> fieldlist) throws IOException;
-	public void writeRecord(String... args) throws UnsupportedEncodingException, IOException,NullPointerException;
-	public void save() throws IOException;
+	void writeFields(List<Field> fieldlist) throws IOException;
+	void writeRecord(String... args) throws IOException,NullPointerException;
+	void save() throws IOException;
 }

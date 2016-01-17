@@ -85,7 +85,7 @@ public class TinyFilterConfigManager implements Configuration {
 			filterConfigMap.remove(name);
 			if (configInfo instanceof TinyWrapperFilterConfigInfo) {
 				wrapperFilterConfigs
-						.remove((TinyWrapperFilterConfigInfo) configInfo);
+						.remove(configInfo);
 			} else {
 				filterConfigs.remove(configInfo);
 			}

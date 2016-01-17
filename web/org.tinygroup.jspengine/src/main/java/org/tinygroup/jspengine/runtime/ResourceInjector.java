@@ -31,7 +31,7 @@ public interface ResourceInjector {
      *
      * @param servletContext The servlet context 
      */
-    public void setContext(ServletContext servletContext);
+    void setContext(ServletContext servletContext);
 
 
     /**
@@ -46,7 +46,7 @@ public interface ResourceInjector {
      *
      * @throws Exception if an error occurs during injection
      */
-    public void inject(JspTag handler) throws Exception;
+    void inject(JspTag handler) throws Exception;
 
 
     /**
@@ -56,6 +56,6 @@ public interface ResourceInjector {
      * @param handler The tag handler instance whose @PreDestroy methods
      * to call
      */
-    public void preDestroy(JspTag handler);
+    void preDestroy(JspTag handler);
 
 }

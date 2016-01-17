@@ -14,17 +14,17 @@ public interface ServiceWrapperConfigManager {
 
 	String XSTEAM_PACKAGE_NAME = "servicewrapper";
 
-	public void addServiceWrappers(MethodConfigs serviceWrappers);
+	void addServiceWrappers(MethodConfigs serviceWrappers);
 	
-	public void removeServiceWrappers(MethodConfigs serviceWrappers);
+	void removeServiceWrappers(MethodConfigs serviceWrappers);
 		
 	/**
 	 * 根据方法获取对应的serviceId
 	 * @param method
 	 * @return
 	 */
-	public String getServiceIdWithMethod(Method method);
+	String getServiceIdWithMethod(Method method);
 	
 	
-	public void putServiceWrapper(MethodConfig serviceWrapper);
+	void putServiceWrapper(MethodConfig serviceWrapper);
 }

@@ -27,10 +27,7 @@ public class FtpSchemaProvider implements SchemaProvider {
     }
 
     public boolean isMatch(String resource) {
-        if (resource.toLowerCase().startsWith(FTP_PROTOCAL)) {
-            return true;
-        }
-        return false;
+        return resource.toLowerCase().startsWith(FTP_PROTOCAL);
     }
 
     public String getSchema() {

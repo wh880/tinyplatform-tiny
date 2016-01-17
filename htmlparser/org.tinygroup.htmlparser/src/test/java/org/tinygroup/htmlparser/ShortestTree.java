@@ -140,5 +140,5 @@ class Link {
 	}
 
 	int length;
-	Node targetNode;;
+	Node targetNode;
 }

@@ -82,7 +82,7 @@ public class FieldValidatorMap {
 			String title = i18nMessages.getMessage(
 					ValidatorManager.FIELD_TITLE_KEY, wrapper.getTitle());
 			Object object = field.get(value);
-			if (!ClassUtil.isBasicClass((Class<?>) field.getType())) {
+			if (!ClassUtil.isBasicClass(field.getType())) {
 				if (validatedObjects.contains(object)) {
 					continue;
 				} else {
@@ -104,7 +104,7 @@ public class FieldValidatorMap {
 			}
 			// 如果这个字段是非基本类型，那么从列表中获取该类的验证校验器进行校验
 			if (validatorManagerWrapper != null && object != null
-					&& !ClassUtil.isBasicClass((Class<?>) field.getType())) {
+					&& !ClassUtil.isBasicClass(field.getType())) {
 				// 如果是数组类型且数组元素是对象类型
 				if (ClassUtil.arrayElementIsObjectType(object.getClass())) {
 					validateArray(result, displayName, scene, object,

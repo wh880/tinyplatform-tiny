@@ -68,8 +68,8 @@ public interface TableProcessor {
 
 	boolean checkTableExist(Table table,String language,Connection connection)throws SQLException;
 	
-	public ProcessorManager getProcessorManager() ;
+	ProcessorManager getProcessorManager() ;
 
-	public void setProcessorManager(ProcessorManager processorManager) ;
+	void setProcessorManager(ProcessorManager processorManager) ;
 
 }

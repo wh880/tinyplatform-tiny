@@ -100,10 +100,7 @@ public class WebMacroFileProcessor extends AbstractFileProcessor {
 
 	@Override
 	protected boolean checkMatch(FileObject fileObject) {
-		if (fileObject.getFileName().endsWith(COMPONENT_FILE_NAME)) {
-			return true;
-		}
-		return false;
+		return fileObject.getFileName().endsWith(COMPONENT_FILE_NAME);
 	}
 
 }

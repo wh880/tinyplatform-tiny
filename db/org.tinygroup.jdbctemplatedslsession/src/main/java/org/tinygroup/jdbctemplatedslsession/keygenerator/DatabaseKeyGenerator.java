@@ -73,7 +73,7 @@ public class DatabaseKeyGenerator implements KeyGenerator {
 			throw new InvalidDataAccessApiUsageException(
 					"The method should only be used when a single key is returned");
 		}
-		Iterator keyIter = ((Map) keyMap).values().iterator();
+		Iterator keyIter = keyMap.values().iterator();
 		if (keyIter.hasNext()) {
 			return (T) keyIter.next();
 		} else {

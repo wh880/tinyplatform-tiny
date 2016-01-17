@@ -44,9 +44,9 @@ public class InsertTest {
 		Insert insert = (Insert) parserManager.parse(new StringReader(statement));
 		assertEquals("mytable", insert.getTable().getName());
 		assertEquals(3, insert.getColumns().size());
-		assertEquals("col1", ((Column) insert.getColumns().get(0)).getColumnName());
-		assertEquals("col2", ((Column) insert.getColumns().get(1)).getColumnName());
-		assertEquals("col3", ((Column) insert.getColumns().get(2)).getColumnName());
+		assertEquals("col1", insert.getColumns().get(0).getColumnName());
+		assertEquals("col2", insert.getColumns().get(1).getColumnName());
+		assertEquals("col3", insert.getColumns().get(2).getColumnName());
 		assertEquals(3, ((ExpressionList) insert.getItemsList()).getExpressions().size());
 		assertTrue(((ExpressionList) insert.getItemsList()).getExpressions().get(0) instanceof JdbcParameter);
 		assertEquals("sadfsd",
@@ -71,7 +71,7 @@ public class InsertTest {
 		Insert insert = (Insert) parserManager.parse(new StringReader(statement));
 		assertEquals("mytable", insert.getTable().getName());
 		assertEquals(1, insert.getColumns().size());
-		assertEquals("col1", ((Column) insert.getColumns().get(0)).getColumnName());
+		assertEquals("col1", insert.getColumns().get(0).getColumnName());
 		assertEquals("val1",
 				((StringValue) ((ExpressionList) insert.getItemsList()).getExpressions().get(0)).getValue());
 		assertEquals("INSERT INTO mytable (col1) VALUES ('val1')", insert.toString());
@@ -83,9 +83,9 @@ public class InsertTest {
 		Insert insert = (Insert) parserManager.parse(new StringReader(statement));
 		assertEquals("mytable", insert.getTable().getName());
 		assertEquals(3, insert.getColumns().size());
-		assertEquals("col1", ((Column) insert.getColumns().get(0)).getColumnName());
-		assertEquals("col2", ((Column) insert.getColumns().get(1)).getColumnName());
-		assertEquals("col3", ((Column) insert.getColumns().get(2)).getColumnName());
+		assertEquals("col1", insert.getColumns().get(0).getColumnName());
+		assertEquals("col2", insert.getColumns().get(1).getColumnName());
+		assertEquals("col3", insert.getColumns().get(2).getColumnName());
 		assertNull(insert.getItemsList());
         assertNotNull(insert.getSelect());
 		assertEquals("mytable2",

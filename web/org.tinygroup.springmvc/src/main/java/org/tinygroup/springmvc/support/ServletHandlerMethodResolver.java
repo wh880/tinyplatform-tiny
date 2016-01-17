@@ -285,10 +285,7 @@ public class ServletHandlerMethodResolver extends HandlerMethodResolver {
 			return true;
 		}
 		boolean endsWithSlash = pattern.endsWith("/");
-		if (!endsWithSlash && pathMatcher.match(pattern + "/", lookupPath)) {
-			return true;
-		}
-		return false;
+		return !endsWithSlash && pathMatcher.match(pattern + "/", lookupPath);
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -48,10 +48,7 @@ public class ClassUtil {
 	 */
 	public static <T> boolean isCollectTypes(T object) {
 
-		if (object instanceof Collection) {
-			return true;
-		}
-		return false;
+		return object instanceof Collection;
 
 	}
 
@@ -63,10 +60,7 @@ public class ClassUtil {
 	 */
 	public static <T> boolean isMapTypes(T object) {
 
-		if (object instanceof Map) {
-			return true;
-		}
-		return false;
+		return object instanceof Map;
 
 	}
 

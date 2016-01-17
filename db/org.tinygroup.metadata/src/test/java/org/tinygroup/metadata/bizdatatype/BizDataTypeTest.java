@@ -41,7 +41,7 @@ public class BizDataTypeTest {
 		businessTypes.setPackageName("aa.bb");
 		List<BusinessType> businessTypeList=new ArrayList<BusinessType>();
 		businessTypes.setBusinessTypeList(businessTypeList);
-		BusinessType businessType=new BusinessType();;
+		BusinessType businessType=new BusinessType();
 		businessTypeList.add(businessType);
 		
 		businessType.setName("aa");

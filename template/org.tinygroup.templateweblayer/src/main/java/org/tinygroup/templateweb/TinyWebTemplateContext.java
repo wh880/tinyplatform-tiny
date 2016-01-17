@@ -36,7 +36,7 @@ public class TinyWebTemplateContext extends ContextImpl implements
 
 	@SuppressWarnings("unchecked")
 	public <T> T get(String name) {
-		T value=(T)super.get(name);
+		T value= super.get(name);
 		if(value!=null){
 			return value;
 		}

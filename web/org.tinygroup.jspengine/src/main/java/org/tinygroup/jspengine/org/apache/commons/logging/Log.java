@@ -32,48 +32,48 @@ package org.tinygroup.jspengine.org.apache.commons.logging;
 
 public interface Log 
 {
-    public  void fatal (Object message);
+    void fatal(Object message);
     
     
-    public  void fatal (Object message, Throwable t);
+    void fatal(Object message, Throwable t);
    
     
-    public  void debug(Object message);
+    void debug(Object message);
    
     
-    public  void debug (Object message, Throwable t);
+    void debug(Object message, Throwable t);
    
     
-    public  void trace (Object message);
+    void trace(Object message);
    
     
   
-    public  void info(Object message);
+    void info(Object message);
    
 
-    public  void error(Object message);
+    void error(Object message);
    
     
-    public  void error(Object message, Throwable cause);
+    void error(Object message, Throwable cause);
    
 
-    public  void warn(Object message);
+    void warn(Object message);
   
     
-    public  boolean isDebugEnabled ();
+    boolean isDebugEnabled();
     
     
-    public  boolean isWarnEnabled ();
+    boolean isWarnEnabled();
     
     
-    public  boolean isInfoEnabled ();
+    boolean isInfoEnabled();
     
     
     
-    public  boolean isErrorEnabled ();
+    boolean isErrorEnabled();
    
     
   
-    public  boolean isTraceEnabled ();
+    boolean isTraceEnabled();
    
 }

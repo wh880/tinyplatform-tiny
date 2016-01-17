@@ -531,9 +531,9 @@ class Validator {
 				      n.getAttributeValue("page"), 
                                       n, false, null));
 	    visitBody(n);
-        };
+        }
 
-	public void visit(Node.ForwardAction n) throws JasperException {
+		public void visit(Node.ForwardAction n) throws JasperException {
             JspUtil.checkAttributes("Forward", n,
                                     forwardActionAttrs, err);
 	    n.setPage(getJspAttribute("page", null, null,

@@ -38,10 +38,7 @@ public class MacroException extends TemplateException {
 	 }
 	 
 	 private boolean checkCause(){
-		 if(getCause()!=null && getCause() instanceof MacroException){
-			return false;
-		 }
-		 return true;
+		 return !(getCause() != null && getCause() instanceof MacroException);
 	 }
 	/**
 	 * 得到宏

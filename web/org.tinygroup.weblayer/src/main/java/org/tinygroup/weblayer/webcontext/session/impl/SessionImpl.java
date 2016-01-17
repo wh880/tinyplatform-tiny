@@ -152,13 +152,12 @@ public class SessionImpl implements HttpSession,Serializable,Session {
 							LogLevel.DEBUG,
 							"Session has expired: sessionID={}, created at {}, last accessed at {}, "
 									+ "maxInactiveInterval={}, forceExpirationPeriod={}",
-							new Object[] {
-									modelSessionID,
-									new Date(model.getCreationTime()),
-									new Date(model.getLastAccessedTime()),
-									model.getMaxInactiveInterval(),
-									getSessionWebContext().getSessionConfig()
-											.getForceExpirationPeriod() });
+							modelSessionID,
+							new Date(model.getCreationTime()),
+							new Date(model.getLastAccessedTime()),
+							model.getMaxInactiveInterval(),
+							getSessionWebContext().getSessionConfig()
+                                    .getForceExpirationPeriod());
 
 					isNew = true;
 					sessionInternal.invalidate();
@@ -169,9 +168,9 @@ public class SessionImpl implements HttpSession,Serializable,Session {
 					log.logMessage(
 							LogLevel.TRACE,
 							"Activate session: sessionID={}, last accessed at {}, maxInactiveInterval={}",
-							new Object[] { modelSessionID,
-									new Date(model.getLastAccessedTime()),
-									model.getMaxInactiveInterval() });
+							modelSessionID,
+							new Date(model.getLastAccessedTime()),
+							model.getMaxInactiveInterval());
 					model.touch();
 				}
 			}
@@ -652,8 +651,8 @@ public class SessionImpl implements HttpSession,Serializable,Session {
 				log.logMessage(
 						LogLevel.WARN,
 						"The following attributes may not be saved in {}[id={}], because the response has already been committed: {}",
-						new Object[] { store.getClass().getSimpleName(),
-								storeName, attrNames });
+						store.getClass().getSimpleName(),
+						storeName, attrNames);
 			}
 		}
 

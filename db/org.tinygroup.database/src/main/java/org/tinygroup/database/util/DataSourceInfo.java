@@ -39,6 +39,6 @@ public final class DataSourceInfo {
 	}
 
 	public static String getDataSource() {
-		return (String) local.get();
+		return local.get();
 	}
 }

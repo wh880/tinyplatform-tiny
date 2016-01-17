@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-;
 /**
  * 利用Buffer构建的字符串,Buffer一定不能被清掉的
  * 

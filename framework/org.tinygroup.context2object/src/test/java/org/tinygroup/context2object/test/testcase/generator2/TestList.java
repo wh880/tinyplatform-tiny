@@ -94,7 +94,7 @@ public class TestList extends BaseTestCast2{
 		Iterator<Boolean> iterator = parts.iterator();
 		String strings = "";
 		while(iterator.hasNext()){
-			Boolean s = (Boolean) iterator.next();
+			Boolean s = iterator.next();
 			assertEquals(Boolean.TRUE, s);
 					}
 		

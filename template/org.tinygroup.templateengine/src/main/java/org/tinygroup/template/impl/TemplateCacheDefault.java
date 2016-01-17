@@ -28,7 +28,7 @@ public class TemplateCacheDefault<K,T> implements TemplateCache<K,T> {
 
 
     public  T get(K key) {
-        return (T) cache.get(key);
+        return cache.get(key);
     }
 
 

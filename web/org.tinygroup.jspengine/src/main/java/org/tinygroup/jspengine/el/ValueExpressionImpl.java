@@ -158,7 +158,7 @@ public final class ValueExpressionImpl extends ValueExpression implements
      * 
      * @see javax.el.ValueExpression#getType(javax.el.ELContext)
      */
-    public Class getType(ELContext context) throws PropertyNotFoundException,
+    public Class getType(ELContext context) throws
             ELException {
         EvaluationContext ctx = new EvaluationContext(context, this.fnMapper,
                 this.varMapper);
@@ -170,7 +170,7 @@ public final class ValueExpressionImpl extends ValueExpression implements
      * 
      * @see javax.el.ValueExpression#getValue(javax.el.ELContext)
      */
-    public Object getValue(ELContext context) throws PropertyNotFoundException,
+    public Object getValue(ELContext context) throws
             ELException {
         EvaluationContext ctx = new EvaluationContext(context, this.fnMapper,
                 this.varMapper);
@@ -213,7 +213,7 @@ public final class ValueExpressionImpl extends ValueExpression implements
      * @see javax.el.ValueExpression#isReadOnly(javax.el.ELContext)
      */
     public boolean isReadOnly(ELContext context)
-            throws PropertyNotFoundException, ELException {
+            throws ELException {
         EvaluationContext ctx = new EvaluationContext(context, this.fnMapper,
                 this.varMapper);
         return this.getNode().isReadOnly(ctx);
@@ -237,7 +237,7 @@ public final class ValueExpressionImpl extends ValueExpression implements
      *      java.lang.Object)
      */
     public void setValue(ELContext context, Object value)
-            throws PropertyNotFoundException, PropertyNotWritableException,
+            throws
             ELException {
         EvaluationContext ctx = new EvaluationContext(context, this.fnMapper,
                 this.varMapper);

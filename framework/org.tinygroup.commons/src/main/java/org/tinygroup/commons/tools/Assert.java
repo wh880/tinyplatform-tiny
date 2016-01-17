@@ -293,7 +293,7 @@ public final class Assert {
     }
 
     /** Assertion错误类型。 */
-    public static enum ExceptionType {
+    public enum ExceptionType {
         ILLEGAL_ARGUMENT {
             
             RuntimeException newInstance(String message) {

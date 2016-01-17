@@ -94,13 +94,13 @@ public interface DocumentGenerater<T> {
 	 * 获得模板引擎执行器
 	 * @return
 	 */
-	public T getTemplateGenerater();
+	T getTemplateGenerater();
 	
 	/**
 	 * 设置模板引擎执行器
 	 * @param generater
 	 */
-	public void setTemplateGenerater(T generater);
+	void setTemplateGenerater(T generater);
 	
 	/**
 	 * 转化输入的字符串

@@ -1294,7 +1294,7 @@ public class JspC implements Options {
                 purgeJspFragmentErrors();
             }
             if (getFailOnError() && !jspErrors.isEmpty()) {
-                throw (JasperException) jspErrors.values().iterator().next();
+                throw jspErrors.values().iterator().next();
             }
             // END SJJAS 6393940
 

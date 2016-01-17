@@ -15,6 +15,6 @@ public interface UpdateGenerateCallback<T> {
 	 * @param t
 	 * @return
 	 */
-	public Update generate(T t);
+	Update generate(T t);
 	
 }

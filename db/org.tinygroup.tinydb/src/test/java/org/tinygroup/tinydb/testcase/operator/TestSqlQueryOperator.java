@@ -99,7 +99,7 @@ public class TestSqlQueryOperator extends BaseTest {
 		selectBeans[0]=new SelectBeanDefault("id");
 		selectBeans[1]=new SelectBeanDefault("name");
 		Conditions conditions=new Conditions();
-		conditions.condition("name", "=", "bean5");;
+		conditions.condition("name", "=", "bean5");
 		Bean bean =getOperator().getSingleValue(selectBeans, ANIMAL,conditions);
 		assertEquals("bean5", bean.get("name"));
 		getOperator().batchDelete(insertBeans);

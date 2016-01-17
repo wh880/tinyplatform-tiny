@@ -148,7 +148,7 @@ public class TablesNamesFinderTest extends TestCase {
 		TablesNamesFinder tablesNamesFinder = new TablesNamesFinder();
 		List<String> tableList = tablesNamesFinder.getTableList(selectStatement);
 		assertEquals(1, tableList.size());
-		assertEquals("MY_TABLE1", (String) tableList.get(0));
+		assertEquals("MY_TABLE1", tableList.get(0));
 	}
 
 	public void testGetTableListWithStmt() throws Exception {
@@ -159,7 +159,7 @@ public class TablesNamesFinderTest extends TestCase {
 		TablesNamesFinder tablesNamesFinder = new TablesNamesFinder();
 		List<String> tableList = tablesNamesFinder.getTableList(selectStatement);
 		assertEquals(1, tableList.size());
-		assertEquals("MY_TABLE1", (String) tableList.get(0));
+		assertEquals("MY_TABLE1", tableList.get(0));
 	}
 
 	public void testGetTableListWithLateral() throws Exception {

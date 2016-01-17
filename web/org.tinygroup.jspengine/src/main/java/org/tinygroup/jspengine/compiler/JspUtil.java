@@ -134,11 +134,7 @@ public class JspUtil {
 	    openExpr = OPEN_EXPR;
 	    closeExpr = CLOSE_EXPR;
 	}
-	if (token.startsWith(openExpr) && token.endsWith(closeExpr)) {
-	    return true;
-	} else {
-	    return false;
-	}
+		return token.startsWith(openExpr) && token.endsWith(closeExpr);
     }
 
     /**

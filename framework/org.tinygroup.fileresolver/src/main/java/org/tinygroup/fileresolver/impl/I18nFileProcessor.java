@@ -47,14 +47,11 @@ public class I18nFileProcessor extends AbstractFileProcessor {
 	}
 
 	protected boolean checkMatch(FileObject fileObject){
-		if ((fileObject.getFileName()
-				.endsWith(PROPERTIES_FILE_EXTENSION)||fileObject.getFileName()
+		return (fileObject.getFileName()
+				.endsWith(PROPERTIES_FILE_EXTENSION) || fileObject.getFileName()
 				.endsWith(CUSTOMIZE_PROPERTIES_FILE_EXTENSION))
 				&& fileObject.getParent().getFileName()
-						.equals(I18N_FOLDER_NAME)) {
-			return true;
-		}
-		return false;
+				.equals(I18N_FOLDER_NAME);
 	}
 
 	private void process(FileObject fileObject) {

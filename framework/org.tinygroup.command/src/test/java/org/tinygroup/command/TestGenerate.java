@@ -44,7 +44,6 @@ public class TestGenerate {
 		List<CommandGoal> commandGoals = new ArrayList<CommandGoal>();
 		command.setCommandGoals(commandGoals);
 		CommandGoal commandGoal = new CommandGoal();
-		;
 		commandGoals.add(commandGoal);
 		commandGoal.setName("aa");
 		commandGoal.setDefaultParameter("bb");

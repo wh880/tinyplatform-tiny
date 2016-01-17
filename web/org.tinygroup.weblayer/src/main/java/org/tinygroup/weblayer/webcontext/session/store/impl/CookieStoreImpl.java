@@ -176,7 +176,7 @@ public class CookieStoreImpl extends AbstractCookieStore {
         if (cookieState.length() > maxLength * maxCount) {
             log.logMessage(LogLevel.WARN, "Cookie store full! length {} exceeds the max length: {} * {}.\n"
                      + " All session attributes will be LOST!",
-                     new Object[] { cookieState.length(), maxLength, maxCount });
+                    cookieState.length(), maxLength, maxCount);
         } else {
             StringBuilder checksumBuf = null;
 
@@ -339,9 +339,8 @@ public class CookieStoreImpl extends AbstractCookieStore {
             if (index < checksumListSize) {
                 if (!cookieInfo.value.startsWith(checksumList[index])) {
                     log.logMessage(LogLevel.WARN, "{} does not match the checksum.  "
-                             + "Expected prefix: {}[length={}], actually: {}[length={}]", new Object[] {
-                            cookieInfo.name, checksumList[index], checksumList[index].length(), cookieInfo.value,
-                            cookieInfo.value.length() });
+                             + "Expected prefix: {}[length={}], actually: {}[length={}]", cookieInfo.name, checksumList[index], checksumList[index].length(), cookieInfo.value,
+                            cookieInfo.value.length());
 
                     return false;
                 }
@@ -352,7 +351,7 @@ public class CookieStoreImpl extends AbstractCookieStore {
 
         if (checksumList != null && index != checksumListSize) {
             log.logMessage(LogLevel.WARN, "Number of cookies {}* does not match checksum.  Expected cookies: {}" + ", actually: {}",
-                     new Object[] { getName(), checksumListSize, index });
+                    getName(), checksumListSize, index);
 
             return false;
         }

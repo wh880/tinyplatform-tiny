@@ -67,7 +67,7 @@ public interface TableSqlProcessor {
 	
 	boolean checkTableExist(Table table,Connection connection)throws SQLException;
 	
-	public TableProcessor getTableProcessor() ;
+	TableProcessor getTableProcessor() ;
 
-	public void setTableProcessor(TableProcessor tableProcessor);
+	void setTableProcessor(TableProcessor tableProcessor);
 }

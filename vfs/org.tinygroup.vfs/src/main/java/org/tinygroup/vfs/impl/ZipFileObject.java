@@ -181,10 +181,7 @@ public class ZipFileObject extends AbstractFileObject {
         if (zipEntry != null) {
             return zipEntry.isDirectory();
         }
-        if (file.exists()) {
-            return true;
-        }
-        return false;
+        return file.exists();
     }
 
 
@@ -197,7 +194,7 @@ public class ZipFileObject extends AbstractFileObject {
             children = new ArrayList<FileObject>();
             Enumeration<ZipEntry> e = (Enumeration<ZipEntry>) zipFile.entries();
             while (e.hasMoreElements()) {
-                ZipEntry entry = (ZipEntry) e.nextElement();
+                ZipEntry entry = e.nextElement();
                 if (getParent() == null) {
                     String[] names = entry.getName().split("/");
                     // 如果当前是jar文件，如果

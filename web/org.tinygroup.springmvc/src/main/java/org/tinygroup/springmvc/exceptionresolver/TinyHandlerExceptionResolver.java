@@ -59,7 +59,7 @@ public class TinyHandlerExceptionResolver implements HandlerExceptionResolver,
 			HandlerExceptionResolver resolver = null;
 			for (Iterator<HandlerExceptionResolver> it = handlerExceptionResolvers
 					.iterator(); exMv == null && it.hasNext();) {
-				resolver = (HandlerExceptionResolver) it.next();
+				resolver = it.next();
 				exMv = resolver
 						.resolveException(request, response, handler, ex);
 			}

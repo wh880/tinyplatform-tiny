@@ -61,10 +61,7 @@ public class TinyMacroFileProcessor extends AbstractFileProcessor {
     }
 
    	public boolean checkMatch(FileObject fileObject) {
-        if (!fileObject.isFolder() && fileObject.getFileName().endsWith(COMPONENT_FILE_NAME)) {
-            return true;
-        }
-        return false;
+        return !fileObject.isFolder() && fileObject.getFileName().endsWith(COMPONENT_FILE_NAME);
     }
 
     public void process() {

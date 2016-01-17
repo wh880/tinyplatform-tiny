@@ -30,6 +30,6 @@ public interface ProcedureProcessor {
 	List<String> getDropSql(String language);
 	void addProcedures(Procedures procedures);
 	void removeProcedures(Procedures procedures);
-	public ProcessorManager getProcessorManager();
-	public void setProcessorManager(ProcessorManager processorManager) ;
+	ProcessorManager getProcessorManager();
+	void setProcessorManager(ProcessorManager processorManager) ;
 }

@@ -128,8 +128,8 @@ public class ResponseHeaderSecurityFilter implements
 				log.logMessage(
 						LogLevel.ERROR,
 						"Cookie size exceeds the max value: {} + {} > maxSize {}.  Cookie is ignored: {}",
-						new Object[] { length, value.length(),
-								getMaxCookieSize(), value });
+						length, value.length(),
+						getMaxCookieSize(), value);
 
 				return EMPTY_STRING;
 			} else {

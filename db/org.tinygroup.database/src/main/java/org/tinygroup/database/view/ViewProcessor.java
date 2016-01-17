@@ -53,7 +53,7 @@ public interface ViewProcessor {
      */
 	boolean checkViewExists(View view,Connection conn,String language) throws SQLException;
 	
-	public ProcessorManager getProcessorManager();
+	ProcessorManager getProcessorManager();
 
-	public void setProcessorManager(ProcessorManager processorManager) ;
+	void setProcessorManager(ProcessorManager processorManager) ;
 }

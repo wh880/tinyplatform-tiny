@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface CacheProcessResolver {
 
-    public List<AopCacheProcessor> resolve(Method method);
+    List<AopCacheProcessor> resolve(Method method);
 	
 }

@@ -72,14 +72,11 @@ public final class Context2ObjectUtil {
 				|| clazz.equals(double.class) || clazz.equals(float.class)) {
 			return true;
 		}
-		if (clazz.equals(Integer.class) || clazz.equals(Character.class)
+		return clazz.equals(Integer.class) || clazz.equals(Character.class)
 				|| clazz.equals(Byte.class) || clazz.equals(Boolean.class)
 				|| clazz.equals(Short.class) || clazz.equals(Long.class)
 				|| clazz.equals(Double.class) || clazz.equals(Float.class)
-				|| clazz.equals(String.class)) {
-			return true;
-		}
-		return false;
+				|| clazz.equals(String.class);
 	}
 	
 	
@@ -90,13 +87,10 @@ public final class Context2ObjectUtil {
 				|| clazz.equals("double") || clazz.equals("float")) {
 			return true;
 		}
-		if (clazz.equals("java.lang.Integer") || clazz.equals("java.lang.Character")
+		return clazz.equals("java.lang.Integer") || clazz.equals("java.lang.Character")
 				|| clazz.equals("java.lang.Byte") || clazz.equals("java.lang.Boolean")
 				|| clazz.equals("java.lang.Short") || clazz.equals("java.lang.Long")
 				|| clazz.equals("java.lang.Double") || clazz.equals("java.lang.Float")
-				|| clazz.equals("java.lang.String")) {
-			return true;
-		}
-		return false;
+				|| clazz.equals("java.lang.String");
 	}
 }

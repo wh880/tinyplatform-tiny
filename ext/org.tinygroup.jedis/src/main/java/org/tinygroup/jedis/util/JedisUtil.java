@@ -57,7 +57,7 @@ public class JedisUtil {
 		}
 		BeanContainer<?> container = BeanContainerFactory
 				.getBeanContainer(loader);
-		JedisPoolConfig jedisPoolConfig = (JedisPoolConfig) container
+		JedisPoolConfig jedisPoolConfig = container
 				.getBean(poolConfig);
 		return jedisPoolConfig;
 	}

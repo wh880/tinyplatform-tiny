@@ -35,8 +35,8 @@ public class SpecialServiceExecuteContainer {
 		executor.execute(new SynchronousEventDeal(e, EventType.EXCEPTION));
 	}
 
-	static enum EventType {
-		LOCALBEFORE, LOCALAFTER, REMOTEBEFORE, REMOTEAFTER, EXCEPTION;
+	enum EventType {
+		LOCALBEFORE, LOCALAFTER, REMOTEBEFORE, REMOTEAFTER, EXCEPTION
 	}
 
 	static class SynchronousEventDeal implements Runnable {

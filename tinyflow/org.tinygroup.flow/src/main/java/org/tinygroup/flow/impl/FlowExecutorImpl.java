@@ -160,7 +160,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 		Class<?> exceptionType = exceptionMap.get(name);
 		if (exceptionType == null) {
 			try {
-				exceptionType = (Class<?>) Class.forName(name);// TODO:通过Loader进行获取
+				exceptionType = Class.forName(name);// TODO:通过Loader进行获取
 				exceptionMap.put(name, exceptionType);
 			} catch (ClassNotFoundException e) {
 				throw new FlowRuntimeException(e);

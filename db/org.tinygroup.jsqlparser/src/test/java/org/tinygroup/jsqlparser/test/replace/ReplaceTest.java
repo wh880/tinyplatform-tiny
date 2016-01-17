@@ -41,9 +41,9 @@ public class ReplaceTest extends TestCase {
 		Replace replace = (Replace) parserManager.parse(new StringReader(statement));
 		assertEquals("mytable", replace.getTable().getName());
 		assertEquals(3, replace.getColumns().size());
-		assertEquals("col1", ((Column) replace.getColumns().get(0)).getColumnName());
-		assertEquals("col2", ((Column) replace.getColumns().get(1)).getColumnName());
-		assertEquals("col3", ((Column) replace.getColumns().get(2)).getColumnName());
+		assertEquals("col1", replace.getColumns().get(0).getColumnName());
+		assertEquals("col2", replace.getColumns().get(1).getColumnName());
+		assertEquals("col3", replace.getColumns().get(2).getColumnName());
 		assertEquals("as", ((StringValue) replace.getExpressions().get(0)).getValue());
 		assertTrue(replace.getExpressions().get(1) instanceof JdbcParameter);
 		assertEquals(565, ((LongValue) replace.getExpressions().get(2)).getValue());
@@ -56,9 +56,9 @@ public class ReplaceTest extends TestCase {
 		Replace replace = (Replace) parserManager.parse(new StringReader(statement));
 		assertEquals("mytable", replace.getTable().getName());
 		assertEquals(3, replace.getColumns().size());
-		assertEquals("col1", ((Column) replace.getColumns().get(0)).getColumnName());
-		assertEquals("col2", ((Column) replace.getColumns().get(1)).getColumnName());
-		assertEquals("col3", ((Column) replace.getColumns().get(2)).getColumnName());
+		assertEquals("col1", replace.getColumns().get(0).getColumnName());
+		assertEquals("col2", replace.getColumns().get(1).getColumnName());
+		assertEquals("col3", replace.getColumns().get(2).getColumnName());
 		assertEquals("as", ((StringValue) ((ExpressionList) replace.getItemsList()).getExpressions().get(0)).getValue());
 		assertTrue(((ExpressionList) replace.getItemsList()).getExpressions().get(1) instanceof JdbcParameter);
 		assertEquals(565, ((LongValue) ((ExpressionList) replace.getItemsList()).getExpressions().get(2)).getValue());
@@ -70,9 +70,9 @@ public class ReplaceTest extends TestCase {
 		Replace replace = (Replace) parserManager.parse(new StringReader(statement));
 		assertEquals("mytable", replace.getTable().getName());
 		assertEquals(3, replace.getColumns().size());
-		assertEquals("col1", ((Column) replace.getColumns().get(0)).getColumnName());
-		assertEquals("col2", ((Column) replace.getColumns().get(1)).getColumnName());
-		assertEquals("col3", ((Column) replace.getColumns().get(2)).getColumnName());
+		assertEquals("col1", replace.getColumns().get(0).getColumnName());
+		assertEquals("col2", replace.getColumns().get(1).getColumnName());
+		assertEquals("col3", replace.getColumns().get(2).getColumnName());
 		assertTrue(replace.getItemsList() instanceof SubSelect);
 		// TODO:
 		// assertEquals(statement, ""+replace);

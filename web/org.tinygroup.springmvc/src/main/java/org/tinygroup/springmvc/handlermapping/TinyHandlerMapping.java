@@ -54,7 +54,7 @@ public class TinyHandlerMapping implements HandlerMapping {
 					.getMappingInstance().getHandlerMappings();
 			Iterator<HandlerMapping> it = handlerMappings.iterator();
 			while (it.hasNext()) {
-				HandlerMapping hm = (HandlerMapping) it.next();
+				HandlerMapping hm = it.next();
 				logger.logMessage(LogLevel.DEBUG,
 						"Testing handler map [{0}] in SpringMvcTinyProcessor", hm);
 				handler = hm.getHandler(request);

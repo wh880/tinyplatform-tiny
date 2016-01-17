@@ -52,10 +52,10 @@ class RangeValidator<T extends Comparable<T>> extends AbstractValidator {
 			ValidateResult validateResult) {
 		if (value != null) {
 			Comparable<T> _value = (Comparable<T>) value;
-			if (min != null && _value.compareTo((T) min) < 0) {
+			if (min != null && _value.compareTo(min) < 0) {
 				validateResult.addError(name, i18nMessages.getMessage(MIN_RANGE_VALIDATOR_MESSAGE_KEY,MIN_DEFAULT_MESSAGE,name, title,value,min));
 			}
-			if (max != null && _value.compareTo((T) max) > 0) {
+			if (max != null && _value.compareTo(max) > 0) {
 				validateResult.addError(name, i18nMessages.getMessage(MAX_RANGE_VALIDATOR_MESSAGE_KEY,MAX_DEFAULT_MESSAGE,name, title,value,max));
 			}
 		}

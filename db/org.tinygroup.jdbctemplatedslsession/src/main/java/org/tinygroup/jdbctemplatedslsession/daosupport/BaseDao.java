@@ -14,24 +14,24 @@ import java.util.List;
  */
 public interface BaseDao <T,KeyType extends Serializable>{
 
-	public T add(T t);
+	T add(T t);
 
-	public int edit(T t);
+	int edit(T t);
 
-	public int deleteByKey(KeyType pk);
+	int deleteByKey(KeyType pk);
 
-	public T getByKey(KeyType pk);
+	T getByKey(KeyType pk);
 
-	public int deleteByKeys(KeyType... pks);
+	int deleteByKeys(KeyType... pks);
 
-	public List<T> query(T t, OrderBy... orderArgs);
+	List<T> query(T t, OrderBy... orderArgs);
 
-	public Pager<T> queryPager(int start, int limit, T t, OrderBy... orderArgs);
+	Pager<T> queryPager(int start, int limit, T t, OrderBy... orderArgs);
 
-	public int[] batchInsert(List<T> objects);
+	int[] batchInsert(List<T> objects);
 
-	public int[] batchUpdate(List<T> objects);
+	int[] batchUpdate(List<T> objects);
 
-	public int[] batchDelete(List<T> objects);
+	int[] batchDelete(List<T> objects);
 
 }

@@ -65,7 +65,7 @@ public abstract class AbstractValidatorManger implements ValidatorManager {
 	}
 
 	private String obtainNameFromClass(Class<?> clazz) {
-		Validation validation = (Validation) clazz
+		Validation validation = clazz
 				.getAnnotation(Validation.class);
 		String className = null;
 		if (validation != null) {

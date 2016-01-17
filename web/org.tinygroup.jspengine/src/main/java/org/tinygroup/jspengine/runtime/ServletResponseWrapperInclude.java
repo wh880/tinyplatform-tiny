@@ -118,11 +118,8 @@ public class ServletResponseWrapperInclude extends HttpServletResponseWrapper {
      * Are there any data to be flushed ?
      */
     public boolean hasData() {
-        if (!canFlushWriter || ((JspWriterImpl)jspWriter).hasData()) {
-            return true;
-        }
+        return !canFlushWriter || ((JspWriterImpl) jspWriter).hasData();
 
-        return false;
     }
     // END PWC 6512276
 

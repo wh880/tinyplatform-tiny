@@ -62,7 +62,7 @@ public class JspFactoryImpl extends JspFactory {
 
 	if (Constants.IS_SECURITY_ENABLED) {
 	    PrivilegedGetPageContext dp = new PrivilegedGetPageContext(
-		(JspFactoryImpl)this, servlet, request, response, errorPageURL,
+				this, servlet, request, response, errorPageURL,
                 needsSession, bufferSize, autoflush);
 	    return (PageContext)AccessController.doPrivileged(dp);
 	} else {
@@ -77,7 +77,7 @@ public class JspFactoryImpl extends JspFactory {
 	    return;
         if (Constants.IS_SECURITY_ENABLED) {
             PrivilegedReleasePageContext dp = new PrivilegedReleasePageContext(
-                (JspFactoryImpl)this,pc);
+					this,pc);
             AccessController.doPrivileged(dp);
         } else {
             internalReleasePageContext(pc);

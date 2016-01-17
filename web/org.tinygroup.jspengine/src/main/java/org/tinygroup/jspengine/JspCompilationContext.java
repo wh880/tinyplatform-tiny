@@ -546,10 +546,7 @@ public class JspCompilationContext {
     }
 
     public boolean isRemoved() {
-        if (removed > 1 ) {
-            return true;
-        }
-        return false;
+        return removed > 1;
     }
 
     // ==================== Compile and reload ====================

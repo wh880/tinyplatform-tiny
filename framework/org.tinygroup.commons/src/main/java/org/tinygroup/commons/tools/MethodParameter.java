@@ -449,12 +449,7 @@ public class MethodParameter {
 			if (this.parameterIndex != other.parameterIndex) {
 				return false;
 			}
-			else if (this.getMember().equals(other.getMember())) {
-				return true;
-			}
-			else {
-				return false;
-			}
+			else return this.getMember().equals(other.getMember());
 		}
 		return false;
 	}

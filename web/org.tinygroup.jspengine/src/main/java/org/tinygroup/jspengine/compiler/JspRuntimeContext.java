@@ -471,7 +471,7 @@ public final class JspRuntimeContext implements Runnable {
 				// protocol URL's to the classpath.
 
 				if (urls[i].getProtocol().equals("file")) {
-					cpath.append((String) urls[i].getFile() + sep);
+					cpath.append(urls[i].getFile() + sep);
 				}
 			}
 
@@ -624,7 +624,6 @@ public final class JspRuntimeContext implements Runnable {
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
-			;
 		}
 
 		thread = null;
@@ -640,7 +639,6 @@ public final class JspRuntimeContext implements Runnable {
 		try {
 			Thread.sleep(options.getCheckInterval() * 1000L);
 		} catch (InterruptedException e) {
-			;
 		}
 
 	}

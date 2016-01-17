@@ -45,7 +45,7 @@ public class Select implements Statement {
 		if (withItemsList != null && !withItemsList.isEmpty()) {
 			retval.append("WITH ");
 			for (Iterator<WithItem> iter = withItemsList.iterator(); iter.hasNext();) {
-				WithItem withItem = (WithItem) iter.next();
+				WithItem withItem = iter.next();
 				retval.append(withItem);
 				if (iter.hasNext()) {
 					retval.append(",");

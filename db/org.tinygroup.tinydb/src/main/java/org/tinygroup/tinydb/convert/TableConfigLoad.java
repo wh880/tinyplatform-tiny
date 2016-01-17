@@ -29,6 +29,6 @@ public interface TableConfigLoad {
      * 表配置信息转换接口  
      * @param configuration 
      */
-	public void loadTable(Configuration configuration)throws TinyDbException;
+    void loadTable(Configuration configuration)throws TinyDbException;
 	
 }

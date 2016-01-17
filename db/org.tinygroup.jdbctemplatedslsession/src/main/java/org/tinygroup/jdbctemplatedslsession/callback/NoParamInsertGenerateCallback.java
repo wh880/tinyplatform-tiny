@@ -14,6 +14,6 @@ public interface NoParamInsertGenerateCallback {
 	 * 根据参数对象生成insert对象
 	 * @return
 	 */
-	public Insert generate();
+	Insert generate();
 	
 }

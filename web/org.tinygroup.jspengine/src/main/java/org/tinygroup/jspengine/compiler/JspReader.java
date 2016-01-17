@@ -73,7 +73,7 @@ class JspReader {
 		     String encoding,
 		     JarFile jarFile,
 		     ErrorDispatcher err)
-	    throws JasperException, FileNotFoundException, IOException {
+	    throws JasperException, IOException {
 
 	this(ctxt, fname, encoding,
 	     JspUtil.getReader(fname, encoding, jarFile, ctxt, err),

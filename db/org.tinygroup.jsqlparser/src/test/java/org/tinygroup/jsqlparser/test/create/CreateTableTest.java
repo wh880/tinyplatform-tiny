@@ -57,10 +57,10 @@ public class CreateTableTest extends TestCase {
 				+ "PRIMARY KEY (mycol2, mycol)) type = myisam";
 		CreateTable createTable = (CreateTable) parserManager.parse(new StringReader(statement));
 		assertEquals(2, createTable.getColumnDefinitions().size());
-		assertEquals("mycol", ((ColumnDefinition) createTable.getColumnDefinitions().get(0)).getColumnName());
-		assertEquals("mycol2", ((ColumnDefinition) createTable.getColumnDefinitions().get(1)).getColumnName());
-		assertEquals("PRIMARY KEY", ((Index) createTable.getIndexes().get(0)).getType());
-		assertEquals("mycol", ((Index) createTable.getIndexes().get(0)).getColumnsNames().get(1));
+		assertEquals("mycol", createTable.getColumnDefinitions().get(0).getColumnName());
+		assertEquals("mycol2", createTable.getColumnDefinitions().get(1).getColumnName());
+		assertEquals("PRIMARY KEY", createTable.getIndexes().get(0).getType());
+		assertEquals("mycol", createTable.getIndexes().get(0).getColumnsNames().get(1));
 		assertEquals(statement, "" + createTable);
 	}
 	

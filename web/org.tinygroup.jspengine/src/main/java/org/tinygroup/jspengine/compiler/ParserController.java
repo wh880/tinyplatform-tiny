@@ -91,7 +91,7 @@ class ParserController implements TagConstants {
      * @param inFileName The path to the JSP page or tag file to be parsed.
      */
     public Node.Nodes parse(String inFileName)
-	        throws FileNotFoundException, JasperException, IOException {
+	        throws JasperException, IOException {
 	// If we're parsing a packaged tag file or a resource included by it
 	// (using an include directive), ctxt.getTagFileJar() returns the 
 	// JAR file from which to read the tag file or included resource,
@@ -111,7 +111,7 @@ class ParserController implements TagConstants {
      */
     public Node.Nodes parse(String inFileName, Node parent,
 			    URL jarFileUrl)
-	        throws FileNotFoundException, JasperException, IOException {
+	        throws JasperException, IOException {
         // For files that are statically included, isTagfile and directiveOnly
         // remain unchanged.
         return doParse(inFileName, parent, jarFileUrl);
@@ -126,13 +126,13 @@ class ParserController implements TagConstants {
      * @param inFileName The name of the tag file to be parsed.
      */
     public Node.Nodes parseTagFileDirectives(String inFileName)
-	        throws FileNotFoundException, JasperException, IOException {
+	        throws JasperException, IOException {
         boolean isTagFileSave = isTagFile;
         boolean directiveOnlySave = directiveOnly;
         isTagFile = true;
         directiveOnly = true;
         Node.Nodes page = doParse(inFileName, null,
-                             (URL) ctxt.getTagFileJarUrls().get(inFileName));
+				ctxt.getTagFileJarUrls().get(inFileName));
         directiveOnly = directiveOnlySave;
         isTagFile = isTagFileSave;
         return page;
@@ -155,7 +155,7 @@ class ParserController implements TagConstants {
     private Node.Nodes doParse(String inFileName,
                                Node parent,
                                URL jarFileUrl)
-	        throws FileNotFoundException, JasperException, IOException {
+	        throws JasperException, IOException {
 
 	Node.Nodes parsedPage = null;
 	isEncodingSpecifiedInProlog = false;
@@ -533,7 +533,7 @@ class ParserController implements TagConstants {
         String fileName = inFileName.replace('\\', '/');
         boolean isAbsolute = fileName.startsWith("/");
 	fileName = isAbsolute ? fileName 
-            : (String) baseDirStack.peek() + fileName;
+            : baseDirStack.peek() + fileName;
 	String baseDir = 
 	    fileName.substring(0, fileName.lastIndexOf("/") + 1);
 	baseDirStack.push(baseDir);

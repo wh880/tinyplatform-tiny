@@ -644,13 +644,11 @@ public class JspRuntimeLibrary {
     {
         try {
             Method method = getWriteMethod(bean.getClass(), prop);
-            method.invoke(bean, new Object[] {
-                PageContextImpl.evaluateExpression(
-                    expression,
-                    method.getParameterTypes()[0],
-                    pageContext,
-                    functionMapper)
-            });
+            method.invoke(bean, PageContextImpl.evaluateExpression(
+                expression,
+                method.getParameterTypes()[0],
+                pageContext,
+                functionMapper));
         } catch (Exception ex) {
             throw new JasperException(ex);
         }
@@ -662,7 +660,7 @@ public class JspRuntimeLibrary {
     {
 	try {
             Method method = getWriteMethod(bean.getClass(), prop);
-	    method.invoke(bean, new Object[] { value });
+	    method.invoke(bean, value);
 	} catch (Exception ex) {
 	    throw new JasperException(ex);
 	}
@@ -674,7 +672,7 @@ public class JspRuntimeLibrary {
     {
 	try {
             Method method = getWriteMethod(bean.getClass(), prop);
-	    method.invoke(bean, new Object[] { Integer.valueOf(value) });
+	    method.invoke(bean, Integer.valueOf(value));
 	} catch (Exception ex) {
 	    throw new JasperException(ex);
 	}	
@@ -686,7 +684,7 @@ public class JspRuntimeLibrary {
     {
 	try {
             Method method = getWriteMethod(bean.getClass(), prop);
-	    method.invoke(bean, new Object[] { Short.valueOf(value) });
+	    method.invoke(bean, Short.valueOf(value));
 	} catch (Exception ex) {
 	    throw new JasperException(ex);
 	}	
@@ -698,7 +696,7 @@ public class JspRuntimeLibrary {
     {
 	try {
             Method method = getWriteMethod(bean.getClass(), prop);
-	    method.invoke(bean, new Object[] { Long.valueOf(value) });
+	    method.invoke(bean, Long.valueOf(value));
 	} catch (Exception ex) {
 	    throw new JasperException(ex);
 	}	
@@ -710,7 +708,7 @@ public class JspRuntimeLibrary {
     {
 	try {
             Method method = getWriteMethod(bean.getClass(), prop);
-	    method.invoke(bean, new Object[] { Double.valueOf(value) });
+	    method.invoke(bean, Double.valueOf(value));
 	} catch (Exception ex) {
 	    throw new JasperException(ex);
 	}	
@@ -722,7 +720,7 @@ public class JspRuntimeLibrary {
     {
 	try {
             Method method = getWriteMethod(bean.getClass(), prop);
-	    method.invoke(bean, new Object[] { Float.valueOf(value) });
+	    method.invoke(bean, Float.valueOf(value));
 	} catch (Exception ex) {
 	    throw new JasperException(ex);
 	}	
@@ -734,7 +732,7 @@ public class JspRuntimeLibrary {
     {
 	try {
             Method method = getWriteMethod(bean.getClass(), prop);
-	    method.invoke(bean, new Object[] { Character.valueOf(value) });
+	    method.invoke(bean, Character.valueOf(value));
 	} catch (Exception ex) {
 	    throw new JasperException(ex);
 	}	
@@ -746,7 +744,7 @@ public class JspRuntimeLibrary {
     {
 	try {
             Method method = getWriteMethod(bean.getClass(), prop);
-	    method.invoke(bean, new Object[] { Byte.valueOf(value) });
+	    method.invoke(bean, Byte.valueOf(value));
 	} catch (Exception ex) {
 	    throw new JasperException(ex);
 	}	
@@ -758,7 +756,7 @@ public class JspRuntimeLibrary {
     {
 	try {
             Method method = getWriteMethod(bean.getClass(), prop);
-	    method.invoke(bean, new Object[] { Boolean.valueOf(value) });
+	    method.invoke(bean, Boolean.valueOf(value));
 	} catch (Exception ex) {
 	    throw new JasperException(ex);
 	}	
@@ -1046,11 +1044,8 @@ public class JspRuntimeLibrary {
 	if (c >= '0' && c <= '9') {
 	    return true;
 	}
-	if (c == '-' || c == '_' || c == '.' || c == '!' ||
-	    c == '~' || c == '*' || c == '\'' || c == '(' || c == ')') {
-	    return true;
+		return c == '-' || c == '_' || c == '.' || c == '!' ||
+				c == '~' || c == '*' || c == '\'' || c == '(' || c == ')';
 	}
-	return false;
-    }
 
 }
