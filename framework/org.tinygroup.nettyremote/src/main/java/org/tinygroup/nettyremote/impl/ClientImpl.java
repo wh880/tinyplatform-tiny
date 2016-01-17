@@ -173,7 +173,8 @@ public class ClientImpl implements Client {
 	public void stop() {
 		LOGGER.logMessage(LogLevel.INFO, "关闭客户端");
 		if (reConnect == true) {
-			executor.shutdown();
+			reConnect = false;
+			executor.shutdownNow();
 		}
 		start = false;
 		try {

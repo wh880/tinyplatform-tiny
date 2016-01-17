@@ -91,6 +91,7 @@ public class ServerImpl implements Server {
 		} catch (Exception e) {
 			LOGGER.errorMessage("关闭服务端时发生异常", e);
 		}
+		LOGGER.logMessage(LogLevel.INFO, "关闭服务端完成");
 	}
 
 	public void startRun() {
