@@ -26,25 +26,27 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
+import io.netty.util.concurrent.Future;
+
+import java.io.IOException;
 
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.nettyremote.Server;
 
-import java.io.IOException;
-
 public class ServerImpl implements Server {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ServerImpl.class);
-//	private ServerThread serverThread = new ServerThread();
+	// private ServerThread serverThread = new ServerThread();
 	private boolean start = false;
 	private boolean startFailStop = false;
 	private EventLoopGroup bossGroup = new NioEventLoopGroup();
 	private EventLoopGroup workerGroup = new NioEventLoopGroup();
 	private int localPort;
 	private ChannelFuture f;
-	public ServerImpl(int localPort,boolean startFailStop) {
+
+	public ServerImpl(int localPort, boolean startFailStop) {
 		this.localPort = localPort;
 		this.startFailStop = startFailStop;
 
@@ -79,25 +81,32 @@ public class ServerImpl implements Server {
 		init(b);
 		// 绑定端口，同步等待成功
 		f = b.bind(localPort).sync();
-		
+
 	}
 
 	public void stop() {
 		LOGGER.logMessage(LogLevel.INFO, "关闭服务端");
-		if(f!=null){
-				f.channel().closeFuture();
-			
+		if (f != null) {
+			f.channel().closeFuture();
 		}
 		setStart(false);
+		Future bg = null;
 		try {
-			bossGroup.shutdownGracefully();
+			bg = bossGroup.shutdownGracefully();
+		} catch (Exception e) {
+			LOGGER.errorMessage("关闭服务端时发生异常", e);
+		}
+		Future wg = null;
+		try {
+			wg = workerGroup.shutdownGracefully();
 		} catch (Exception e) {
 			LOGGER.errorMessage("关闭服务端时发生异常", e);
 		}
 		try {
-			workerGroup.shutdownGracefully();
-		} catch (Exception e) {
-			LOGGER.errorMessage("关闭服务端时发生异常", e);
+			bg.await();
+			wg.await();
+		} catch (InterruptedException ignore) {
+			LOGGER.logMessage(LogLevel.INFO, "等待EventLoopGroup shutdownGracefully中断");
 		}
 		LOGGER.logMessage(LogLevel.INFO, "关闭服务端完成");
 	}
@@ -110,7 +119,7 @@ public class ServerImpl implements Server {
 			} catch (Exception e) {
 				LOGGER.errorMessage("服务端启动失败", e);
 				stop();
-				if(startFailStop){
+				if (startFailStop) {
 					throw new RuntimeException("服务端启动失败", e);
 				}
 			}

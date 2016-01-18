@@ -27,6 +27,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
+import io.netty.util.concurrent.Future;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -74,9 +75,9 @@ public class ClientImpl implements Client {
 	public void write(Object o) {
 		if (o instanceof Event) {
 			Event event = (Event) o;
-			LOGGER.logMessage(LogLevel.DEBUG,
-					"写出消息为:eventId:{},serviceId:{}", event.getEventId(),
-					event.getServiceRequest().getServiceId());
+			LOGGER.logMessage(LogLevel.DEBUG, "写出消息为:eventId:{},serviceId:{}",
+					event.getEventId(), event.getServiceRequest()
+							.getServiceId());
 		}
 		ChannelFuture f = future.channel().writeAndFlush(o);
 		if (f instanceof ChannelPromise) {
@@ -176,10 +177,17 @@ public class ClientImpl implements Client {
 			executor.shutdownNow();
 		}
 		start = false;
+		Future wg = null;
 		try {
-			group.shutdownGracefully();
+			wg = group.shutdownGracefully();
 		} catch (Exception e) {
 			LOGGER.errorMessage("关闭Client时出错", e);
+		}
+
+		try {
+			wg.await();
+		} catch (InterruptedException e) {
+			LOGGER.logMessage(LogLevel.INFO, "等待EventLoopGroup shutdownGracefully中断");
 		}
 
 		setReady(false);
