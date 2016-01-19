@@ -79,6 +79,9 @@ public class ClientImpl implements Client {
 					event.getEventId(), event.getServiceRequest()
 							.getServiceId());
 		}
+		if(future==null||future.channel()==null){
+			throw new RuntimeException("连接尚未就绪");
+		}
 		ChannelFuture f = future.channel().writeAndFlush(o);
 		if (f instanceof ChannelPromise) {
 			ChannelPromise p = (ChannelPromise) f;
