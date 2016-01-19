@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.tinygroup</groupId>
     <artifactId>framework</artifactId>
-    <version>2.0.32-SNAPSHOT</version>
+    <version>2.0.32</version>
   </parent>
   <artifactId>org.tinygroup.cepcoreexceptioncode</artifactId>
   <name>org.tinygroup.cepcoreexceptioncode</name>
