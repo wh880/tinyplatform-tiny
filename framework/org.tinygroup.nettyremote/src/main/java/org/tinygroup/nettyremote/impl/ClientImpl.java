@@ -90,7 +90,7 @@ public class ClientImpl implements Client {
 			if (p.isSuccess()) {
 				LOGGER.logMessage(LogLevel.DEBUG, "消息写出状态：{}", p.isSuccess());
 			} else {
-				LOGGER.logMessage(LogLevel.DEBUG, "消息写出状态：false");
+				LOGGER.logMessage(LogLevel.WARN, "消息写出状态：false");
 				throw new RuntimeException(p.cause());
 			}
 
