@@ -1,7 +1,5 @@
 package org.tinygroup.redis.test;
 
-import org.tinygroup.jedis.shard.TinyShardJedis;
-
 import redis.clients.jedis.Jedis;
 
 public class ConnectTest {
