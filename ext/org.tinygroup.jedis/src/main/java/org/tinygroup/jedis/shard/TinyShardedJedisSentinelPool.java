@@ -317,7 +317,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 				}
 				return true;
 			} catch (Exception ex) {
-				LOGGER2.errorMessage("shard.ping()发生异常",ex);
+				LOGGER2.errorMessage("ShardedJedisFactory.validateObject发生异常",ex);
 				return false;
 			}
 		}
