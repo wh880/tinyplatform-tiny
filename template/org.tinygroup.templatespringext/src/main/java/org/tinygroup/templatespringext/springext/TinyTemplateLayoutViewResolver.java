@@ -21,12 +21,7 @@ import org.springframework.web.servlet.view.AbstractUrlBasedView;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateFunction;
-import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.templatespringext.FileScanner;
-import org.tinygroup.templatespringext.impl.FileScannerImpl;
-import org.tinygroup.templatespringext.processor.TinyJarFileProcessor;
-import org.tinygroup.templatespringext.processor.TinyMacroProcessor;
-import org.tinygroup.vfs.VFS;
 
 import java.util.ArrayList;
 import java.util.List;

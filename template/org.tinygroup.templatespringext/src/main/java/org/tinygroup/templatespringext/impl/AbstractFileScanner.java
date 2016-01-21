@@ -37,10 +37,6 @@ public abstract class AbstractFileScanner implements FileScanner {
         return classPathList;
     }
 
-    public void addFile(FileObject file) {
-
-    }
-
     public void resolverFolder(FileObject file) {
         if(file.isFolder()){
             for(FileProcessor fileProcessor:fileProcessors){

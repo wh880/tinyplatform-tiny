@@ -13,8 +13,6 @@ import java.util.Map;
  */
 public interface FileScanner {
 
-    void addFile(FileObject file);
-
     void resolverFolder(FileObject file);
 
     void scanFile();

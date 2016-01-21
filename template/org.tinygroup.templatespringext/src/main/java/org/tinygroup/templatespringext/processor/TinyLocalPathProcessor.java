@@ -6,8 +6,6 @@ import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.templatespringext.impl.AbstractFileProcessor;
 import org.tinygroup.vfs.FileObject;
 
-import java.util.List;
-
 /**
  * Created by wangll13383 on 2015/9/12.
  */
