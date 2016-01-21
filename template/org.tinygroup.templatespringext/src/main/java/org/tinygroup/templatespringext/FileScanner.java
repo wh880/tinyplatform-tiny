@@ -15,13 +15,9 @@ public interface FileScanner {
 
     void addFile(FileObject file);
 
-    void resolverFile(FileObject file, CallBackFunction callBackFunction);
-
-    void resolverFloder(FileObject file, CallBackFunction callBackFunction);
+    void resolverFolder(FileObject file);
 
     void scanFile();
-
-    boolean isMatch(String fileName);
 
     void fileProcess();
 
