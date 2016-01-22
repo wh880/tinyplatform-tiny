@@ -27,6 +27,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.AbstractRefreshableConfigApplicationContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.tinygroup.application.Application;
@@ -65,6 +67,11 @@ public class ApplicationStartupListener implements ServletContextListener {
 		// SpringBeanContainer.destory();// 关闭spring容器
 		logger.logMessage(LogLevel.INFO, "WEB 应用停止完成。");
 		destroyContextListener(servletContextEvent);
+		ExtendsSpringBeanContainer container=(ExtendsSpringBeanContainer) BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
+		ApplicationContext application=container.getBeanContainerPrototype();
+		if(application instanceof ConfigurableApplicationContext){
+			((ConfigurableApplicationContext) application).close();
+		}
 	}
 
 	@SuppressWarnings("unchecked")

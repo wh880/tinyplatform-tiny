@@ -15,11 +15,26 @@
  */
 package org.tinygroup.springmvc.tinyprocessor;
 
+import java.io.IOException;
+import java.security.Principal;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.SourceFilteringListener;
 import org.springframework.context.i18n.LocaleContext;
@@ -37,7 +52,13 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.servlet.*;
+import org.springframework.web.servlet.HandlerAdapter;
+import org.springframework.web.servlet.HandlerExecutionChain;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndViewDefiningException;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.util.NestedServletException;
 import org.springframework.web.util.UrlPathHelper;
 import org.springframework.web.util.WebUtils;
@@ -53,15 +74,6 @@ import org.tinygroup.springmvc.util.WebUtil;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.listener.ServletContextHolder;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.security.Principal;
-import java.util.*;
 
 /**
  * tiny框架方式的springmvc
@@ -829,7 +841,7 @@ public class SpringMvcTinyProcessor extends AbstractTinyProcessor implements
 					.setAttribute(
 							WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE,
 							wac);
-			logger.logMessage(LogLevel.DEBUG,
+			logger.logMessage(LogLevel.INFO,
 					"Published WebApplicationContext of tinyprocessor '"
 							+ getProcessorName()
 							+ "' as ServletContext attribute with name ["
@@ -859,7 +871,7 @@ public class SpringMvcTinyProcessor extends AbstractTinyProcessor implements
 			ApplicationContext parent) {
 		Class contextClass = XmlWebApplicationContext.class;
 		logger.logMessage(
-				LogLevel.DEBUG,
+				LogLevel.INFO,
 				"Servlet with name '"
 						+ getProcessorName()
 						+ "' will try to create custom WebApplicationContext context of class '"
@@ -931,6 +943,15 @@ public class SpringMvcTinyProcessor extends AbstractTinyProcessor implements
 
 		public void onApplicationEvent(ContextRefreshedEvent event) {
 			SpringMvcTinyProcessor.this.onApplicationEvent(event);
+		}
+	}
+	
+	@Override
+	public void destroy() {
+		logger.logMessage(
+				LogLevel.INFO,"Destroying Spring SpringMvcTinyProcessor '" + getProcessorName() + "'");
+		if(applicationContext instanceof ConfigurableApplicationContext){
+			((ConfigurableApplicationContext) applicationContext).close();
 		}
 	}
 
