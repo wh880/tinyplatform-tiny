@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ *  Copyright (c) 1997-2013, www.tinygroup.org (tinygroup@126.com).
  *
  *  Licensed under the GPL, Version 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,15 @@
  */
 package org.tinygroup.dbrouter.impl.shardrule;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.tinygroup.dbrouter.config.Partition;
+import org.tinygroup.jsqlparser.expression.BinaryExpression;
 import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.expression.JdbcParameter;
 import org.tinygroup.jsqlparser.expression.LongValue;
-import org.tinygroup.jsqlparser.expression.operators.relational.EqualsTo;
 import org.tinygroup.jsqlparser.expression.operators.relational.ExpressionList;
 import org.tinygroup.jsqlparser.expression.operators.relational.ItemsList;
 import org.tinygroup.jsqlparser.schema.Column;
@@ -33,16 +37,15 @@ import org.tinygroup.jsqlparser.statement.select.Select;
 import org.tinygroup.jsqlparser.statement.select.SelectBody;
 import org.tinygroup.jsqlparser.statement.update.Update;
 
-import java.util.List;
-
 
 public class ShardRuleMatchWithSections {
 
-    private List<Section> sections;
-    private String tableName;
-    private String fieldName;
-    private Partition partition;
-    private Object[] preparedParams;
+    private static final String PARAMETER_SHIFT = "parameter_shift";
+	protected List<Section> sections;
+    protected String tableName;
+    protected String fieldName;
+    protected Partition partition;
+    protected Object[] preparedParams;
 
     public ShardRuleMatchWithSections(List<Section> sections, String tableName,
                                       String fieldName, Partition partition, Object[] preparedParams) {
@@ -69,12 +72,11 @@ public class ShardRuleMatchWithSections {
                             fieldName)) {
                         if (expression instanceof LongValue) {
                             LongValue longValue = (LongValue) expression;
-                            if (isInScope(sections, longValue.getValue())) {
+                            if (valueMatch(longValue.getStringValue())) {
                                 return true;
                             }
                         } else if (expression instanceof JdbcParameter) {
-                            Long value = (Long) preparedParams[paramIndex];
-                            if (isInScope(sections, value)) {
+                            if (valueMatch(preparedParams[paramIndex].toString())) {
                                 return true;
                             }
                         }
@@ -91,21 +93,31 @@ public class ShardRuleMatchWithSections {
     public boolean updateMatch(Statement statement) {
         Update update = (Update) statement;
         List<Expression> expressions = update.getExpressions();
-        int paramIndex = 0;
+        Map<String, Integer> shiftMap=new HashMap<String, Integer>();
+        shiftMap.put(PARAMETER_SHIFT, 0);
         for (Expression expression : expressions) {
-            if (expression instanceof JdbcParameter) {
-                paramIndex++;
-            }
+            shiftParameter(expression, shiftMap);
         }
         List<Table> tables = update.getTables();
         if (tables != null) {
             for (Table table : tables) {
                 if (tableName.equalsIgnoreCase(table.getName())) {
-                    return getWhereExpression(paramIndex, update.getWhere(), partition, preparedParams);
+                    return getWhereExpression(shiftMap.get(PARAMETER_SHIFT), update.getWhere(), partition, preparedParams);
                 }
             }
         }
         return false;
+    }
+    
+    private void shiftParameter(Expression expression,Map<String, Integer> shiftMap){
+    	if(expression instanceof JdbcParameter){
+    		int paramIndex=shiftMap.get(PARAMETER_SHIFT);
+    		shiftMap.put(PARAMETER_SHIFT, ++paramIndex);
+    	}else if(expression instanceof BinaryExpression){
+    		BinaryExpression binaryExpression=(BinaryExpression)expression;
+        	Expression rightExpression=binaryExpression.getRightExpression();
+        	shiftParameter(rightExpression, shiftMap);
+    	}
     }
 
     public boolean deleteMatch(Statement statement) {
@@ -134,40 +146,16 @@ public class ShardRuleMatchWithSections {
     }
 
     private boolean getWhereExpression(int paramIndex, Expression where, Partition partition, Object... preparedParams) {
-        if (where == null) {
-            return true;
-        }
-        return getEqualsToExpression(paramIndex, where, partition, preparedParams);
-
+    	ConditionMatch conditionMatch = new ConditionMatch(paramIndex,
+				fieldName, this, preparedParams);
+		return conditionMatch.match(where);
     }
 
-    private boolean getEqualsToExpression(int paramIndex, Expression where, Partition partition, Object... preparedParams) {
-        if (where instanceof EqualsTo) {
-            EqualsTo equalsTo = (EqualsTo) where;
-            Expression leftExpression = equalsTo.getLeftExpression();
-            Expression rightExpression = equalsTo.getRightExpression();
-            if (leftExpression instanceof Column) {
-                Column column = (Column) leftExpression;
-                if (column.getColumnName().equalsIgnoreCase(fieldName)) {
-                    if (rightExpression instanceof LongValue) {
-                        LongValue longValue = (LongValue) rightExpression;
-                        if (isInScope(sections, longValue.getValue())) {
-                            return true;
-                        }
-                    } else if (rightExpression instanceof JdbcParameter) {
-                        Long value = (Long) preparedParams[paramIndex];
-                        if (isInScope(sections, value)) {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-        }
-        return false;
-    }
-
-    private boolean isInScope(List<Section> sections, long value) {
+    protected boolean valueMatch(String paramValue) {
+	    return isInScope(sections, Long.parseLong(paramValue));
+	}
+    
+    protected boolean isInScope(List<Section> sections, long value) {
         for (Section section : sections) {
             if (section.getStart() > value) {
                 return false;
