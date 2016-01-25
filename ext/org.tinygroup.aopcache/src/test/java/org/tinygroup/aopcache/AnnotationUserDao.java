@@ -77,7 +77,7 @@ public class AnnotationUserDao {
 	}
 
 	//可配置多个key,用逗号分隔.第一次get时这些key会依次放入缓存,对应同一个value.当然也支持单个key
-	@CacheGet(key = "${user.name},${user.id}", group = "singleGroup")
+	@CacheGet(key = "${user?.name},${user?.id}", group = "singleGroup")
 	public User getUser(User user) {
 		System.out.println("get user by user");
 		return container.get(user.id);
