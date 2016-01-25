@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.tinygroup.jedis.ShardJedisSentinelManager;
 import org.tinygroup.jedis.impl.ShardJedisSentinelManagerFactory;
 import org.tinygroup.jedis.shard.TinyShardJedis;
+import org.tinygroup.redis.test.IJedisConstant;
 import org.tinygroup.tinyrunner.Runner;
 
 import redis.clients.jedis.Jedis;
@@ -85,6 +86,7 @@ public class ShardedTimeTest {
 		System.out.println("get begin");
 		long time1 = System.currentTimeMillis();
 		Jedis jedis = new Jedis("192.168.51.29", 11111);
+		jedis.auth(IJedisConstant.PASSWOPD);
 		for (int i = 0; i < 2000; i++) {
 			jedis.get("aaa" + 1);
 		}

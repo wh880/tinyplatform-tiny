@@ -1,12 +1,11 @@
 package org.tinygroup.redis.test;
 
-import org.tinygroup.jedis.shard.TinyShardJedis;
-
 import redis.clients.jedis.Jedis;
 
 public class ConnectTest {
 	public static void main(String[] args) {
 		Jedis j = new Jedis("192.168.51.29", 11112);
+		j.auth(IJedisConstant.PASSWOPD);
 		int times = 1000;
 		for (int i = 0; i < times; i++) {
 			try {

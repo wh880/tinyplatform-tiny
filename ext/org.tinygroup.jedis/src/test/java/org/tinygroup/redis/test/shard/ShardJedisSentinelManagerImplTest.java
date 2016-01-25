@@ -50,6 +50,9 @@ public class ShardJedisSentinelManagerImplTest {
 
 	private static void testReadMethod(TinyShardJedis jedis){
 		jedis.del("a1");
+		jedis.del("a2");
+		jedis.del("a3");
+		jedis.hset("a2", "111","222");
 		jedis.hdel("a2", "111","222");
 		jedis.hdel("a3", "111","222");
 		jedis.del("alist");
@@ -70,6 +73,7 @@ public class ShardJedisSentinelManagerImplTest {
 		jedis.zadd("z1", 3, "Z2");
 		jedis.zadd("z1", 5, "Z1");
 		
+		jedis.del("a999");
 		jedis.resetWriteState();
 		
 		testget(jedis);

@@ -2,11 +2,9 @@ package org.tinygroup.templatespringext.impl;
 
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
-import org.tinygroup.templatespringext.CallBackFunction;
 import org.tinygroup.templatespringext.processor.TinyJarFileProcessor;
 import org.tinygroup.templatespringext.processor.TinyLocalPathProcessor;
 import org.tinygroup.templatespringext.processor.TinyMacroProcessor;
-import org.tinygroup.vfs.FileObject;
 import org.tinygroup.vfs.VFS;
 
 /**
@@ -38,55 +36,24 @@ public class FileScannerImpl extends AbstractFileScanner{
         jarFileProcessor = jarFileProcessor == null?new TinyJarFileProcessor():jarFileProcessor;
         macroFileProcessor = new TinyMacroProcessor();
         localPathProcessor = new TinyLocalPathProcessor();
+
+        this.getFileProcessors().add(jarFileProcessor);
+        this.getFileProcessors().add(macroFileProcessor);
+        this.getFileProcessors().add(localPathProcessor);
+
         jarFileProcessor.setEngine(engine);
         macroFileProcessor.setEngine(engine);
         localPathProcessor.setEngine(engine);
     }
 
     public void scanFile() {
-        resolverFloder(VFS.resolveFile("./"), new CallBackFunction() {
-            public void process(FileObject fileObject) {
-                if(jarFileProcessor.isMatch(fileObject.getFileName())){
-                    jarFileProcessor.addFile(fileObject);
-                }
-                if(localPathProcessor.isMatch(fileObject.getFileName())){
-                    localPathProcessor.addFile(fileObject);
-                }
-            }
-        });
+        resolverFolder(VFS.resolveFile("./"));
     }
 
     public void fileProcess() {
         localPathProcessor.process();
         classPathProcess();
         jarFileProcessor.process();
-        for (FileObject file:jarFileProcessor.getFileObjectList()){
-            resolverFile(file, new CallBackFunction() {
-                public void process(FileObject fileObject) {
-                    if(macroFileProcessor.isMatch(fileObject.getFileName())){
-                        macroFileProcessor.addFile(fileObject);
-                    }
-                }
-            });
-        }
-        for(String classPath:getClassPathList()){
-            resolverFile(VFS.resolveFile(classPath), new CallBackFunction() {
-                public void process(FileObject fileObject) {
-                    if(macroFileProcessor.isMatch(fileObject.getFileName())){
-                        macroFileProcessor.addFile(fileObject);
-                    }
-                }
-            });
-        }
-        for (FileObject file:localPathProcessor.getFileObjectList()){
-            resolverFile(file, new CallBackFunction() {
-                public void process(FileObject fileObject) {
-                    if(macroFileProcessor.isMatch(fileObject.getFileName())){
-                        macroFileProcessor.addFile(fileObject);
-                    }
-                }
-            });
-        }
         macroFileProcessor.process();
     }
 

@@ -79,7 +79,7 @@ public class InsertBatchOperate {
 			String[] keyNames = metaData.getKeyNames();
 			Set<String> columns = new HashSet<String>();
 			List<String> allColumns = insertContext.getColumnNames();
-			for (String columnName : insertContext.getColumnNames()) {
+			for (String columnName : allColumns) {
 				columns.add(columnName.toUpperCase());
 			}
 			for (String key : keyNames) {

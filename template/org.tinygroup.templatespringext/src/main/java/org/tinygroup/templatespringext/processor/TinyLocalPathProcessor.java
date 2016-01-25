@@ -6,8 +6,6 @@ import org.tinygroup.template.loader.FileObjectResourceLoader;
 import org.tinygroup.templatespringext.impl.AbstractFileProcessor;
 import org.tinygroup.vfs.FileObject;
 
-import java.util.List;
-
 /**
  * Created by wangll13383 on 2015/9/12.
  */
@@ -16,7 +14,7 @@ public class TinyLocalPathProcessor extends AbstractFileProcessor {
 
     private  final  static  String RESOURCE_FILE_EXT = "resources";
 
-    private  final  static  String WEBAPP_FILE_EXT = "webapp";
+    private  final  static  String WEB_INF_FILE_EXT = "WEB-INF";
 
     private TemplateEngine engine;
 
@@ -29,7 +27,7 @@ public class TinyLocalPathProcessor extends AbstractFileProcessor {
     }
 
     public boolean isMatch(String fileName) {
-        return fileName.equals(CLASSES_FILE_EXT)||fileName.equals(RESOURCE_FILE_EXT)||fileName.equals(WEBAPP_FILE_EXT);    }
+        return fileName.equals(CLASSES_FILE_EXT)||fileName.equals(RESOURCE_FILE_EXT)||fileName.equals(WEB_INF_FILE_EXT);    }
 
     public void process() {
         if(fileList.size()>0){

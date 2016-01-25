@@ -15,101 +15,115 @@
  */
 package org.tinygroup.tinysqldsl.base;
 
-import org.apache.commons.collections.map.CaseInsensitiveMap;
-import org.tinygroup.tinysqldsl.expression.Expression;
-import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
-import org.tinygroup.tinysqldsl.insert.InsertBody;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.map.CaseInsensitiveMap;
+import org.tinygroup.commons.tools.ArrayUtil;
+import org.tinygroup.tinysqldsl.expression.Expression;
+import org.tinygroup.tinysqldsl.expression.relational.ExpressionList;
+import org.tinygroup.tinysqldsl.insert.InsertBody;
+
 /**
  * 插入操作的上下文
+ * 
  * @author renhui
  *
  */
 public class InsertContext {
 
-	private Map<String, Object> params=new CaseInsensitiveMap();
-	
-	private List<Object> paramValues=new ArrayList<Object>();
-	
-	private List<String> columnNames=new ArrayList<String>();
-	
-	private List<Column> columns=new ArrayList<Column>();
-	
+	private Map<String, Object> params = new CaseInsensitiveMap();
+
+	private List<Object> paramValues = new ArrayList<Object>();
+
+	private List<String> allColumnNames = new ArrayList<String>();
+
+	private List<Column> noNullColumns = new ArrayList<Column>();
+
 	private ExpressionList itemsList = new ExpressionList();
-	
+
 	private SelectBody selectBody;
-	
+
 	private Table table;
-	
+
 	private String schema;
-	
+
 	private String tableName;
-	
+
 	private boolean useValues = true;
-	
-	private List<Value> values=new ArrayList<Value>();
-	
+
+	private List<Value> values = new ArrayList<Value>();
+
 	public InsertContext() {
 		super();
 	}
-	
-	public void setTable(Table table){
-	   this.table=table;
+
+	public void setTable(Table table) {
+		this.table = table;
 	}
-	
+
 	public Table getTable() {
 		return table;
 	}
 
-	public void addValues(Value... values){
+	public void addValues(Value... values) {
 		for (Value value : values) {
-			Object paramValue=value.getValue();
-			Expression expression=value.getExpression();
-			if(expression instanceof NamedCondition){
-				 paramValue=((NamedCondition)expression).getValue();
+			Column column = value.getColumn();
+			addColumnName(column.getColumnName());// 所有新增字段都加到列表中
+			Object paramValue = value.getValue();
+			Expression expression = value.getExpression();
+			if (paramValue == null) {
+				if (expression instanceof NamedCondition) {
+					paramValue = ((NamedCondition) expression).getValue();
+				} else if (expression instanceof Condition) {
+					Condition condition = (Condition) expression;
+					Object[] valueArray = condition.getValues();
+					if (ArrayUtil.isEmptyArray(valueArray)) {
+						paramValue = null;
+					} else if (valueArray.length == 1) {
+						paramValue = valueArray[0];
+					} else {
+						paramValue = valueArray;
+					}
+				}
 			}
-			if(paramValue!=null){
-				Column column = value.getColumn();
-				columns.add(column);
-				addColumnName(column.getColumnName());
+			if (paramValue != null) {
+				noNullColumns.add(column);
 				putParam(column.getColumnName(), paramValue);
 				itemsList.addExpression(expression);
 				this.values.add(value);
 			}
 		}
 	}
-	
-	public Object[] getParamValues(){
+
+	public Object[] getParamValues() {
 		return paramValues.toArray();
 	}
-	
+
 	public Map<String, Object> getParams() {
 		return params;
 	}
-	
+
 	public void setUseValues(boolean useValues) {
 		this.useValues = useValues;
 	}
 
-	private void putParam(String columnName,Object value){
+	private void putParam(String columnName, Object value) {
 		params.put(columnName, value);
 		paramValues.add(value);
 	}
 
 	public List<String> getColumnNames() {
-		return columnNames;
-	}
-	
-	public String[] getColumnNameArray() {
-		return columnNames.toArray(new String[0]);
+		return allColumnNames;
 	}
 
-	private void addColumnName(String columnName){
-		columnNames.add(columnName);
+	public String[] getColumnNameArray() {
+		return allColumnNames.toArray(new String[0]);
+	}
+
+	private void addColumnName(String columnName) {
+		allColumnNames.add(columnName);
 	}
 
 	public String getSchema() {
@@ -127,21 +141,21 @@ public class InsertContext {
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
 	}
-	
+
 	public void setSelectBody(SelectBody selectBody) {
 		this.selectBody = selectBody;
 	}
-	
-	public boolean existParam(String columnName){
+
+	public boolean existParam(String columnName) {
 		return params.containsKey(columnName);
 	}
-	
-	public Object getParamValue(String columnName){
+
+	public Object getParamValue(String columnName) {
 		return params.get(columnName);
 	}
-	
-	public InsertContext copyContext(){
-		InsertContext context=new InsertContext();
+
+	public InsertContext copyContext() {
+		InsertContext context = new InsertContext();
 		context.setSchema(schema);
 		context.setTable(table);
 		context.setTableName(tableName);
@@ -149,25 +163,24 @@ public class InsertContext {
 		context.addValues(values.toArray(new Value[0]));
 		return context;
 	}
-	
 
-	public InsertBody createInsert(){
-		InsertBody insertBody=new InsertBody();
+	public InsertBody createInsert() {
+		InsertBody insertBody = new InsertBody();
 		insertBody.setTable(table);
-		insertBody.setColumns(columns);
-		if(useValues){
+		insertBody.setColumns(noNullColumns);
+		if (useValues) {
 			insertBody.setItemsList(itemsList);
-		}else{
+		} else {
 			insertBody.setSelectBody(selectBody);
 		}
 		return insertBody;
 	}
 
 	public void setColumns(List<Column> columns) {
-		this.columns=columns;
+		this.noNullColumns = columns;
 	}
 
 	public void setItemsList(ExpressionList itemsList) {
-		this.itemsList=itemsList;
+		this.itemsList = itemsList;
 	}
 }

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.apache.commons.pool2.PooledObject;
@@ -19,6 +18,9 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.jedis.config.JedisConfig;
 import org.tinygroup.jedis.config.ShardSentinelConfig;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
@@ -32,7 +34,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 
 	public static final int MAX_RETRY_SENTINEL = 10;
 
-	protected final Logger log = Logger.getLogger(getClass().getName());
+	protected final Logger LOGGER = LoggerFactory.getLogger(TinyShardedJedisSentinelPool.class);
 
 	protected GenericObjectPoolConfig poolConfig;
 
@@ -103,7 +105,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 				sb.append(master.toString());
 				sb.append(" ");
 			}
-			log.info("Created ShardedJedisPool to master at [" + sb.toString()
+			LOGGER.logMessage(LogLevel.INFO, "Created ShardedJedisPool to master at [" + sb.toString()
 					+ "]");
 			List<JedisShardInfo> shardMasters = makeShardInfoList(masters);
 			initPool(poolConfig, new ShardedJedisFactory(shardMasters,
@@ -166,7 +168,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 		Map<String, HostAndPort> masterMap = new HashMap<String, HostAndPort>();
 		List<HostAndPort> shardMasters = new ArrayList<HostAndPort>();
 
-		log.info("Trying to find all master from available Sentinels...");
+		LOGGER.logMessage(LogLevel.INFO,"Trying to find all master from available Sentinels...");
 
 		for (String masterName : masters) {
 			HostAndPort master = null;
@@ -177,7 +179,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 					final HostAndPort hap = toHostAndPort(Arrays
 							.asList(sentinel.split(":")));
 
-					log.fine("Connecting to Sentinel " + hap);
+					LOGGER.logMessage(LogLevel.INFO,"Connecting to Sentinel " + hap);
 
 					try {
 						//此处连接哨兵服务器
@@ -188,7 +190,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 									.sentinelGetMasterAddrByName(masterName);
 							if (hostAndPort != null && hostAndPort.size() > 0) {
 								master = toHostAndPort(hostAndPort);
-								log.fine("Found Redis master at " + master);
+								LOGGER.logMessage(LogLevel.INFO,"Found Redis master at " + master);
 								shardMasters.add(master);
 								masterMap.put(masterName, master);
 								masterInfoMap
@@ -199,14 +201,14 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 							}
 						}
 					} catch (JedisConnectionException e) {
-						log.warning("Cannot connect to sentinel running @ "
+						LOGGER.logMessage(LogLevel.WARN,"Cannot connect to sentinel running @ "
 								+ hap + ". Trying next one.");
 					}
 				}
 
 				if (null == master) {
 					try {
-						log.severe("All sentinels down, cannot determine where is "
+						LOGGER.logMessage(LogLevel.WARN,"All sentinels down, cannot determine where is "
 								+ masterName
 								+ " master is running... sleeping 1000ms, Will try again.");
 						Thread.sleep(1000);
@@ -220,7 +222,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 
 			// Try MAX_RETRY_SENTINEL times.
 			if (!fetched && sentinelRetry >= MAX_RETRY_SENTINEL) {
-				log.severe("All sentinels down and try " + MAX_RETRY_SENTINEL
+				LOGGER.logMessage(LogLevel.WARN,"All sentinels down and try " + MAX_RETRY_SENTINEL
 						+ " times, Abort.");
 				throw new JedisConnectionException(
 						"Cannot connect all sentinels, Abort.");
@@ -230,7 +232,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 		// All shards master must been accessed.
 		if (masters.size() != 0 && masters.size() == shardMasters.size()) {
 
-			log.info("Starting Sentinel listeners...");
+			LOGGER.logMessage(LogLevel.INFO,"Starting Sentinel listeners...");
 			for (String sentinel : sentinels) {
 				final HostAndPort hap = toHostAndPort(Arrays.asList(sentinel
 						.split(":")));
@@ -259,7 +261,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 		private List<JedisShardInfo> shards;
 		private Hashing algo;
 		private Pattern keyTagPattern;
-
+		protected final Logger LOGGER2 = LoggerFactory.getLogger(ShardedJedisFactory.class);
 		public ShardedJedisFactory(List<JedisShardInfo> shards, Hashing algo,
 				Pattern keyTagPattern) {
 			this.shards = shards;
@@ -315,6 +317,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 				}
 				return true;
 			} catch (Exception ex) {
+				LOGGER2.errorMessage("ShardedJedisFactory.validateObject发生异常",ex);
 				return false;
 			}
 		}
@@ -392,7 +395,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 					jedis.subscribe(new JedisPubSubAdapter() {
 						@Override
 						public void onMessage(String channel, String message) {
-							log.fine("Sentinel " + host + ":" + port
+							LOGGER.logMessage(LogLevel.INFO,"Sentinel " + host + ":" + port
 									+ " published: " + message + ".");
 
 							String[] switchMasterMsg = message.split(" ");
@@ -436,14 +439,14 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 										sb.append(masterName);
 										sb.append(",");
 									}
-									log.fine("Ignoring message on +switch-master for master name "
+									LOGGER.logMessage(LogLevel.INFO,"Ignoring message on +switch-master for master name "
 											+ switchMasterMsg[0]
 											+ ", our monitor master name are ["
 											+ sb + "]");
 								}
 
 							} else {
-								log.severe("Invalid message received on Sentinel "
+								LOGGER.logMessage(LogLevel.INFO,"Invalid message received on Sentinel "
 										+ host
 										+ ":"
 										+ port
@@ -456,7 +459,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 				} catch (JedisConnectionException e) {
 
 					if (running.get()) {
-						log.severe("Lost connection to Sentinel at " + host
+						LOGGER.logMessage(LogLevel.WARN,"Lost connection to Sentinel at " + host
 								+ ":" + port
 								+ ". Sleeping 5000ms and retrying.");
 						try {
@@ -465,7 +468,7 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 							e1.printStackTrace();
 						}
 					} else {
-						log.fine("Unsubscribing from Sentinel at " + host + ":"
+						LOGGER.logMessage(LogLevel.WARN,"Unsubscribing from Sentinel at " + host + ":"
 								+ port);
 					}
 				}
@@ -474,12 +477,12 @@ public class TinyShardedJedisSentinelPool extends Pool<TinyShardJedis> {
 
 		public void shutdown() {
 			try {
-				log.fine("Shutting down listener on " + host + ":" + port);
+				LOGGER.logMessage(LogLevel.INFO,"Shutting down listener on " + host + ":" + port);
 				running.set(false);
 				// This isn't good, the Jedis object is not thread safe
 				jedis.disconnect();
 			} catch (Exception e) {
-				log.severe("Caught exception while shutting down: "
+				LOGGER.logMessage(LogLevel.INFO,"Caught exception while shutting down: "
 						+ e.getMessage());
 			}
 		}
