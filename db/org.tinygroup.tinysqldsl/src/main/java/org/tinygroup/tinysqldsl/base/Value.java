@@ -17,7 +17,6 @@ package org.tinygroup.tinysqldsl.base;
 
 import org.tinygroup.tinysqldsl.expression.Expression;
 import org.tinygroup.tinysqldsl.expression.JdbcParameter;
-import org.tinygroup.tinysqldsl.expression.NullValue;
 
 /**
  * 插入、更新时的值对象
