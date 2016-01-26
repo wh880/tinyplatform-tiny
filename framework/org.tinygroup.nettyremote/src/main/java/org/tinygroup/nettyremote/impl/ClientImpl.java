@@ -194,6 +194,7 @@ public class ClientImpl implements Client {
 		}
 
 		setReady(false);
+		LOGGER.logMessage(LogLevel.INFO, "关闭客户端完成");
 	}
 
 	public void doReady() {
