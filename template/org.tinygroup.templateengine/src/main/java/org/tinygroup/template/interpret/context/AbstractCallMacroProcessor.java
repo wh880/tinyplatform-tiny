@@ -16,6 +16,8 @@
 package org.tinygroup.template.interpret.context;
 
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -45,18 +47,24 @@ public abstract class AbstractCallMacroProcessor<T extends ParserRuleContext> im
     	        newContext.setParent(context);
     	        if (paraList != null) {
     	            int i = 0;
+    	            List<Object> parameterList = new ArrayList<Object>(); //宏内置的参数遍历列表
     	            for (TinyTemplateParser.Para_expressionContext para : paraList.para_expression()) {
     	                if (para.getChildCount() == 3) {
     	                    //如果是带参数的
-    	                    newContext.put(para.IDENTIFIER().getSymbol().getText(), TemplateEngineDefault.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, outputStream,templateFromContext.getPath()));
+    	                	Object value = TemplateEngineDefault.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, outputStream,templateFromContext.getPath());
+    	                    newContext.put(para.IDENTIFIER().getSymbol().getText(),value);
+    	                    parameterList.add(value);
     	                } else {
     	                    if(i>=macro.getParameterNames().size()){
     	                        throw new TemplateException("参数数量超过宏<"+macro.getName()+">允许接受的数量",paraList,templateFromContext.getPath());
     	                    }
-    	                    newContext.put(macro.getParameterName(i), TemplateEngineDefault.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, outputStream,templateFromContext.getPath()));
+    	                    Object value = TemplateEngineDefault.interpreter.interpretTree(engine, templateFromContext, para.expression(), pageContext, context, outputStream,templateFromContext.getPath());
+    	                    newContext.put(macro.getParameterName(i),value);
+    	                    parameterList.add(value);
     	                }
     	                i++;
     	            }
+    	            newContext.put(name + "ParameterList", parameterList); //增加内置对象
     	        }
 
     	        Stack<TinyTemplateParser.BlockContext> stack = context.get("$bodyContent");
