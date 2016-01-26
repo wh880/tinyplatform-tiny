@@ -3,13 +3,16 @@ package org.tinygroup.dbrouter.impl.shardrule;
 import groovy.lang.GroovyClassLoader;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.dbrouter.exception.DbrouterRuntimeException;
+
 import static org.tinygroup.logger.LogLevel.DEBUG;
+
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,8 +26,9 @@ public class GroovyRuleEngine {
     private static final Pattern EXPRESSION_PATTERN = Pattern.compile("#.*?#");
     private static final String IMPORT_STATIC_METHOD = "import java.lang.util.*;";
     private static Logger LOGGER = LoggerFactory.getLogger(GroovyRuleEngine.class);
+    private static Map<String, Object> ruleObjCache = new HashMap<String, Object>();
 
-    public static boolean eval(String expression,Map map){
+    public static boolean eval(String expression, Map map) {
         if (expression == null) {
             throw new DbrouterRuntimeException(new IllegalArgumentException("未指定 expression"));
         }
@@ -32,6 +36,27 @@ public class GroovyRuleEngine {
     }
 
     private static boolean check(String expression, Map map) {
+
+        Object ruleObj = getGroovyRuleInstance(expression);
+        try {
+            // 获取方法
+            Method m_routingRuleMap = getMethod(ruleObj.getClass(), "eval", Map.class);
+            if (m_routingRuleMap == null) {
+                throw new DbrouterRuntimeException(new IllegalArgumentException("规则方法没找到"));
+            }
+            m_routingRuleMap.setAccessible(true);
+            return (Boolean) m_routingRuleMap.invoke(ruleObj, map);
+        } catch (Throwable t) {
+            throw new DbrouterRuntimeException(new IllegalArgumentException("执行表达式失败", t));
+        }
+    }
+
+    private static Object getGroovyRuleInstance(String expression) {
+        //先从缓存获取对象
+        Object ruleObj = ruleObjCache.get(expression);
+        if (ruleObj != null) {
+            return ruleObj;
+        }
         GroovyClassLoader loader = AccessController
                 .doPrivileged(new PrivilegedAction<GroovyClassLoader>() {
                     public GroovyClassLoader run() {
@@ -39,21 +64,14 @@ public class GroovyRuleEngine {
                     }
                 });
         String groovyRule = getGroovyRule(StringUtil.trim(expression));
-        Class<?> c_groovy = loader.parseClass(groovyRule);
-
         try {
             // 新建类实例
-            Object ruleObj = c_groovy.newInstance();
-
-            // 获取方法
-            Method m_routingRuleMap = getMethod(c_groovy, "eval", Map.class);
-            if (m_routingRuleMap == null) {
-                throw new DbrouterRuntimeException(new IllegalArgumentException("规则方法没找到"));
-            }
-            m_routingRuleMap.setAccessible(true);
-            return (Boolean)m_routingRuleMap.invoke(ruleObj,map);
+            Class<?> c_groovy = loader.parseClass(groovyRule);
+            ruleObj = c_groovy.newInstance();
+            ruleObjCache.put(expression,ruleObj);//放入缓存
+            return ruleObj;
         } catch (Throwable t) {
-            throw new DbrouterRuntimeException("执行表达式失败,执行的class为:"+groovyRule,new IllegalArgumentException("执行表达式失败", t));
+            throw new DbrouterRuntimeException("groovy对象获取失败,执行的class为:" + groovyRule, new IllegalArgumentException("代码解析或实例化失败", t));
         }
     }
 
@@ -87,7 +105,7 @@ public class GroovyRuleEngine {
         sb.append("}");
         sb.append("}");
         String fullGroovyStr = sb.toString();
-        LOGGER.logMessage(DEBUG, "规则代码:{1}",fullGroovyStr);
+        LOGGER.logMessage(DEBUG, "规则代码:{1}", fullGroovyStr);
         return fullGroovyStr;
     }
 
