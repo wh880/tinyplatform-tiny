@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +44,7 @@ import org.tinygroup.event.central.Node;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * 当服务执行远程调用时 如果有多个远程处理器可用，则根据配置的EventProcessorChoose choose进行调用
@@ -56,9 +56,12 @@ import org.tinygroup.logger.LoggerFactory;
 public class CEPCoreImpl implements CEPCore {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CEPCoreImpl.class);
+
+	private static final String ASYN_TAG = "asyn-thread-pool-config";
+	private static final String ASYN_POOL_ATTRIBUTE = "bean";
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
 	// 服务版本，每次注册注销都会使其+1;
-	ExecutorService executor = Executors.newCachedThreadPool();
+	ExecutorService executor = null;
 	private static int serviceVersion = 0;
 	/**
 	 * 存放所有的EventProcessor
@@ -250,8 +253,7 @@ public class CEPCoreImpl implements CEPCore {
 		ServiceRequest request = event.getServiceRequest();
 		String eventNodeName = event.getServiceRequest().getNodeName();
 		LOGGER.logMessage(LogLevel.DEBUG, "请求指定的执行节点为:{0}", eventNodeName);
-		
-		
+
 		EventProcessor eventProcessor = getEventProcessor(request,
 				eventNodeName);
 		if (EventProcessor.TYPE_LOCAL == eventProcessor.getType()) {
@@ -285,8 +287,10 @@ public class CEPCoreImpl implements CEPCore {
 		// 后置Aop
 		aopMananger.afterHandle(event);
 	}
+
 	private void dealRemote(EventProcessor eventProcessor, Event event) {
-		LOGGER.logMessage(LogLevel.DEBUG, "请求指定的执行处理器为:{0}", eventProcessor.getId());
+		LOGGER.logMessage(LogLevel.DEBUG, "请求指定的执行处理器为:{0}",
+				eventProcessor.getId());
 		Context oldContext = event.getServiceRequest().getContext();
 		ServiceParamUtil.changeEventContext(event, this, Thread.currentThread()
 				.getContextClassLoader());
@@ -295,22 +299,24 @@ public class CEPCoreImpl implements CEPCore {
 	}
 
 	private void deal(EventProcessor eventProcessor, Event event) {
-		LOGGER.logMessage(LogLevel.DEBUG, "请求指定的执行处理器为:{0}", eventProcessor.getId());
+		LOGGER.logMessage(LogLevel.DEBUG, "请求指定的执行处理器为:{0}",
+				eventProcessor.getId());
 		Context oldContext = event.getServiceRequest().getContext();
 		ServiceParamUtil.changeEventContext(event, this, Thread.currentThread()
 				.getContextClassLoader());
 		if (event.getMode() == Event.EVENT_MODE_ASYNCHRONOUS) {
-			LOGGER.logMessage(LogLevel.INFO, "请求{}为异步请求",event.getEventId());
+			LOGGER.logMessage(LogLevel.INFO, "请求{}为异步请求", event.getEventId());
 			Event e = getEventClone(event);
 			event.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
 			event.setType(Event.EVENT_TYPE_RESPONSE);
 			// q调整为线程池
 			SynchronousDeal thread = new SynchronousDeal(eventProcessor, e);
 			// thread.start();
-			if(!executor.isShutdown()){
-				executor.execute(thread);
-				LOGGER.logMessage(LogLevel.INFO, "已开启异步请求{}执行线程",event.getEventId());
-			}else{
+			if (!getExecutorService().isShutdown()) {
+				getExecutorService().execute(thread);
+				LOGGER.logMessage(LogLevel.INFO, "已开启异步请求{}执行线程",
+						event.getEventId());
+			} else {
 				LOGGER.logMessage(LogLevel.INFO, "异步请求{}线程池已关闭，直接返回");
 				return;
 			}
@@ -367,77 +373,79 @@ public class CEPCoreImpl implements CEPCore {
 
 	private EventProcessor getEventProcessor(ServiceRequest serviceRequest,
 			String eventNodeName) {
-		//查找出所有包含该服务的EventProcessor
+		// 查找出所有包含该服务的EventProcessor
 		List<EventProcessor> list = serviceIdMap.get(serviceRequest
 				.getServiceId());
-		//如果指定了执行节点名，则根据执行节点查找处理器
-		if(!StringUtil.isBlank(eventNodeName)){
-			if(list ==null){ //如果为空，则将其设置为空列表，便于后续处理
+		// 如果指定了执行节点名，则根据执行节点查找处理器
+		if (!StringUtil.isBlank(eventNodeName)) {
+			if (list == null) { // 如果为空，则将其设置为空列表，便于后续处理
 				list = new ArrayList<EventProcessor>();
 			}
-			return findEventProcessor(serviceRequest,eventNodeName,list);
+			return findEventProcessor(serviceRequest, eventNodeName, list);
 		}
-		
+
 		if (list == null || list.isEmpty()) {
 			return getEventProcessorByRegex(serviceRequest);
 		}
 		return getEventProcessor(serviceRequest, list);
 	}
+
 	private EventProcessor findEventProcessor(ServiceRequest serviceRequest,
-			String eventNodeName,List<EventProcessor> list){
+			String eventNodeName, List<EventProcessor> list) {
 		boolean isCurrentNode = false;
-		//如果指定了执行节点，则判断执行节点是否是当前节点
-		if(!StringUtil.isBlank(eventNodeName)&&!StringUtil.isBlank(nodeName)){
-			LOGGER.logMessage(LogLevel.INFO, "当前节点NodeName:{}",nodeName);
-			if(Node.checkEquals(eventNodeName, nodeName)){
+		// 如果指定了执行节点，则判断执行节点是否是当前节点
+		if (!StringUtil.isBlank(eventNodeName) && !StringUtil.isBlank(nodeName)) {
+			LOGGER.logMessage(LogLevel.INFO, "当前节点NodeName:{}", nodeName);
+			if (Node.checkEquals(eventNodeName, nodeName)) {
 				isCurrentNode = true;
 				LOGGER.logMessage(LogLevel.INFO, "请求指定的执行节点即当前节点");
 			}
 		}
 		String serviceId = serviceRequest.getServiceId();
-		if(!isCurrentNode){
+		if (!isCurrentNode) {
 			return notCurrentNode(eventNodeName, list, serviceId);
 		}
-		return isCurrentNode(eventNodeName, list,serviceId);
+		return isCurrentNode(eventNodeName, list, serviceId);
 	}
 
 	private EventProcessor isCurrentNode(String eventNodeName,
-			List<EventProcessor> list,String serviceId) {
-		//如果是当前节点，则判断查找出来的EventProcessor是否是本地处理器，如果是，则返回
-		for(EventProcessor e:list){
-			if(EventProcessor.TYPE_LOCAL==e.getType()){
+			List<EventProcessor> list, String serviceId) {
+		// 如果是当前节点，则判断查找出来的EventProcessor是否是本地处理器，如果是，则返回
+		for (EventProcessor e : list) {
+			if (EventProcessor.TYPE_LOCAL == e.getType()) {
 				return e;
 			}
 		}
-		throw new RuntimeException("当前服务器上不存在请求"+serviceId+"对应的事件处理器");
+		throw new RuntimeException("当前服务器上不存在请求" + serviceId + "对应的事件处理器");
 	}
 
 	private EventProcessor notCurrentNode(String eventNodeName,
 			List<EventProcessor> list, String serviceId) {
-		//如果不是当前节点，则根据节点名查找到指定节点
-		//首先判断该节点是否是存在于已查找到的包含该服务的list之中，如果包含则返回
-		//如果不包含，则读取该节点的正则表达式信息，如果匹配则返回
-		for(String key:processorMap.keySet()){
-			if(Node.checkEquals(key, eventNodeName)){
+		// 如果不是当前节点，则根据节点名查找到指定节点
+		// 首先判断该节点是否是存在于已查找到的包含该服务的list之中，如果包含则返回
+		// 如果不包含，则读取该节点的正则表达式信息，如果匹配则返回
+		for (String key : processorMap.keySet()) {
+			if (Node.checkEquals(key, eventNodeName)) {
 				EventProcessor e = processorMap.get(key);
-				//如果包含该服务的EventProcessor列表中存在该处理器，则返回
-				if(list.contains(e)){
+				// 如果包含该服务的EventProcessor列表中存在该处理器，则返回
+				if (list.contains(e)) {
 					return e;
 				}
-				if(processorList.contains(e)){
+				if (processorList.contains(e)) {
 					List<String> regex = regexMap.get(e);
 					if (checkRegex(regex, serviceId)) {
 						return e;
 					}
 				}
-				throw new RuntimeException("节点"+eventNodeName+"对应的事件处理器上不存在服务:"+serviceId);
+				throw new RuntimeException("节点" + eventNodeName
+						+ "对应的事件处理器上不存在服务:" + serviceId);
 			}
 		}
-		throw new RuntimeException("当前服务器上不存在节点:"+eventNodeName+"对应的事件处理器");
+		throw new RuntimeException("当前服务器上不存在节点:" + eventNodeName + "对应的事件处理器");
 	}
 
 	private EventProcessor getEventProcessor(ServiceRequest serviceRequest,
-			 List<EventProcessor> list) {
+			List<EventProcessor> list) {
 		if (list.size() == 1) {
 			return list.get(0);
 		}
@@ -451,8 +459,7 @@ public class CEPCoreImpl implements CEPCore {
 		// 如果全是远程EventProcessor,那么需要根据负载均衡机制计算
 		return getEventProcessorChoose().choose(list);
 	}
-	
-	
+
 	public void start() {
 		if (operator != null) {
 			operator.startCEPCore(this);
@@ -464,11 +471,11 @@ public class CEPCoreImpl implements CEPCore {
 			operator.stopCEPCore(this);
 		}
 		try {
-			executor.shutdown();
+			getExecutorService().shutdown();
 		} catch (Exception e) {
-			LOGGER.errorMessage("关闭CEPCore异步线程池时发生异常",e);
+			LOGGER.errorMessage("关闭CEPCore异步线程池时发生异常", e);
 		}
-		
+
 	}
 
 	public List<ServiceInfo> getServiceInfos() {
@@ -566,5 +573,40 @@ public class CEPCoreImpl implements CEPCore {
 
 	public int getServiceInfosVersion() {
 		return serviceVersion;
+	}
+
+	public void setConfig(XmlNode config) {
+		parseAsynPool(config);
+	}
+
+	private void parseAsynPool(XmlNode appConfig) {
+		String configBean = ThreadPoolConfig.DEFAULT_THREADPOOL;
+		if(appConfig==null){
+			LOGGER.logMessage(LogLevel.WARN, "未配置异步服务线程池config bean,使用默认配置bean:{}",ThreadPoolConfig.DEFAULT_THREADPOOL);
+		}else if (appConfig.getSubNode(ASYN_TAG) == null) {
+			LOGGER.logMessage(LogLevel.WARN, "未配置异步服务线程池节点：{}" , ASYN_TAG);
+		}else{
+			configBean = appConfig.getSubNode(ASYN_TAG)
+					.getAttribute(ASYN_POOL_ATTRIBUTE);
+		}
+		if (StringUtil.isBlank(configBean)) {
+			configBean = ThreadPoolConfig.DEFAULT_THREADPOOL;
+			LOGGER.logMessage(LogLevel.WARN, "未配置异步服务线程池config bean,使用默认配置bean:{}",ThreadPoolConfig.DEFAULT_THREADPOOL);
+		}
+		initThreadPool(configBean);
+	}
+
+	private void initThreadPool(String configBean) {
+		ThreadPoolConfig poolConfig = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(configBean);
+		executor = ThreadPoolFactory.getThreadPoolExecutor(poolConfig);
+	}
+	
+	private ExecutorService getExecutorService(){
+		if(executor==null){
+			LOGGER.logMessage(LogLevel.WARN, "未配置异步服务线程池config bean,使用默认配置bean:{}",ThreadPoolConfig.DEFAULT_THREADPOOL);
+			initThreadPool(ThreadPoolConfig.DEFAULT_THREADPOOL);
+		}
+		return executor;
 	}
 }

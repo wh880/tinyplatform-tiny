@@ -81,10 +81,13 @@ public class CepCoreProcessor implements ApplicationProcessor {
 			logger.logMessage(LogLevel.INFO, "配置为空，启动CEPCoreProcessor完毕");
 			return;
 		}
+		cepcore.setConfig(appConfig);
 		parseChooser();
 		parseNode();
 		logger.logMessage(LogLevel.INFO, "启动CEPCoreProcessor完毕");
 	}
+	
+	
 
 	private void parseNode() {
 		if(appConfig.getSubNode(OPERATOR_TAG)==null){

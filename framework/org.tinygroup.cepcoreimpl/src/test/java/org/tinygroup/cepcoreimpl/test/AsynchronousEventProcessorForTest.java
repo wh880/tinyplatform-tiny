@@ -23,12 +23,17 @@ import org.tinygroup.event.ServiceInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventProcessorForTest  implements EventProcessor{
+public class AsynchronousEventProcessorForTest  implements EventProcessor{
 	List<ServiceInfo> list = new ArrayList<ServiceInfo>();
 	
 	public void process(Event event) {
-		String serviceId = event.getServiceRequest().getServiceId();
-		EventExecutor.execute(serviceId);
+		System.out.println("执行服务");
+		try {
+			Thread.sleep(60000);
+		} catch (InterruptedException e) {
+			
+			e.printStackTrace();
+		}
 	}
 
 	public void setCepCore(CEPCore cepCore) {
@@ -40,7 +45,7 @@ public class EventProcessorForTest  implements EventProcessor{
 	}
 
 	public String getId() {
-		return EventProcessorForTest.class.getName();
+		return AsynchronousEventProcessorForTest.class.getName();
 	}
 
 	public int getType() {

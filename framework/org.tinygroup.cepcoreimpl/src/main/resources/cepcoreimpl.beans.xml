@@ -15,4 +15,9 @@
 		class="org.tinygroup.cepcoreimpl.EventProcessorChangeListener">
 		<property name="cepcore" ref="cepcore"></property>
 	</bean>
+	
+	<bean id="default_tiny_service_threadpool"
+		class="org.tinygroup.cepcoreimpl.DefaultThreadPoolConfig">
+	</bean>
+	
 </beans>

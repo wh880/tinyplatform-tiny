@@ -19,7 +19,7 @@ import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcoreimpl.test.EventProcessorForTest;
 import org.tinygroup.event.Event;
 
-public class CepCoreProcessTestCast extends CEPCoreBaseTestCase {
+public class CepCoreProcessTestCase extends CEPCoreBaseTestCase {
 
 	public void setUp() {	
 		super.setUp();

@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 public interface CEPCore  {
 	String CEP_CORE_BEAN = "cepcore";
@@ -85,5 +86,7 @@ public interface CEPCore  {
 	void addEventProcessorRegisterTrigger(EventProcessorRegisterTrigger trigger);
 
 	void refreshEventProcessors();
+	
+	void setConfig(XmlNode config);
 
 }
