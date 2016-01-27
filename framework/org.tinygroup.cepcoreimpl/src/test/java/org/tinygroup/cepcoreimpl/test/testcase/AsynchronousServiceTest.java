@@ -8,12 +8,15 @@ import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcoreimpl.test.AsynchronousEventProcessorForTest;
 import org.tinygroup.event.Event;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
 
+/**
+ * 采用的是默认的线程池，默认线程池是最大50，队列100，所以应该只会执行150个
+ * @author chenjiao
+ *
+ */
 public class AsynchronousServiceTest extends CEPCoreBaseTestCase {
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AsynchronousServiceTest.class);
+//	private static final Logger LOGGER = LoggerFactory
+//			.getLogger(AsynchronousServiceTest.class);
 	private final int LENGTH = 1;
 	private final int THREAD = 200;
 	private long start = 0;
@@ -59,6 +62,8 @@ public class AsynchronousServiceTest extends CEPCoreBaseTestCase {
 			print("fail", fail);
 			print("sucess", sucess);
 			System.out.println("sucess:"+sucess.size());
+			assertEquals(150, sucess.size());
+			assertEquals(50, fail.size());
 			System.out.println("fail:"+fail.size());
 			System.out.println(System.currentTimeMillis()-start);
 			getCore().stop();
@@ -82,7 +87,6 @@ public class AsynchronousServiceTest extends CEPCoreBaseTestCase {
 			addSuccess(System.currentTimeMillis());
 		} catch (Exception e2) {
 			addException(System.currentTimeMillis());
-//			LOGGER.errorMessage("服务异常 {}", e2, System.currentTimeMillis());
 		}
 	}
 
