@@ -8,6 +8,14 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class DefaultThreadPoolConfig implements ThreadPoolConfig{
+	public int getWorkQueueLength() {
+		return workQueueLength;
+	}
+
+	public void setWorkQueueLength(int workQueueLength) {
+		this.workQueueLength = workQueueLength;
+	}
+
 	private int corePoolSize = 10;
 	private int maximumPoolSize = 50;
 	private long keepAliveTime = 0;
