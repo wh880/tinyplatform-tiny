@@ -97,7 +97,7 @@ public class CEPCoreImpl implements CEPCore {
 	private CEPCoreOperator operator;
 	private EventProcessorChoose chooser;
 	private List<EventProcessorRegisterTrigger> triggers = new ArrayList<EventProcessorRegisterTrigger>();
-
+//	private byte[]  lock = new byte[0];
 	public CEPCoreOperator getOperator() {
 		return operator;
 	}
@@ -596,16 +596,21 @@ public class CEPCoreImpl implements CEPCore {
 		initThreadPool(configBean);
 	}
 
-	private void initThreadPool(String configBean) {
-		ThreadPoolConfig poolConfig = BeanContainerFactory.getBeanContainer(
-				this.getClass().getClassLoader()).getBean(configBean);
-		executor = ThreadPoolFactory.getThreadPoolExecutor(poolConfig);
+	private  synchronized void initThreadPool(String configBean) {
+		
+			if(executor!=null){
+				return;
+			}
+			ThreadPoolConfig poolConfig = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(configBean);
+			executor = ThreadPoolFactory.getThreadPoolExecutor(poolConfig);
 	}
 	
 	private ExecutorService getExecutorService(){
 		if(executor==null){
 			LOGGER.logMessage(LogLevel.WARN, "未配置异步服务线程池config bean,使用默认配置bean:{}",ThreadPoolConfig.DEFAULT_THREADPOOL);
 			initThreadPool(ThreadPoolConfig.DEFAULT_THREADPOOL);
+			
 		}
 		return executor;
 	}
