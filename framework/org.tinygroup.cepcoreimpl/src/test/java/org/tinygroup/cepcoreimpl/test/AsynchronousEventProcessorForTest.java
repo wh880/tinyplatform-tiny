@@ -29,11 +29,12 @@ public class AsynchronousEventProcessorForTest  implements EventProcessor{
 	public void process(Event event) {
 		System.out.println("执行服务");
 		try {
-			Thread.sleep(60000);
+			Thread.sleep(6000);
 		} catch (InterruptedException e) {
 			
 			e.printStackTrace();
 		}
+		System.out.println("执行服务完成");
 	}
 
 	public void setCepCore(CEPCore cepCore) {

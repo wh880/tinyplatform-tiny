@@ -18,6 +18,7 @@ package org.tinygroup.channel;
 import org.tinygroup.cepcore.*;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +107,11 @@ public class CEPCoreForTest implements CEPCore{
 	}
 
 	public void refreshEventProcessors() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setConfig(XmlNode config) {
 		// TODO Auto-generated method stub
 		
 	}
