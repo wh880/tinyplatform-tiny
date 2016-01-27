@@ -37,7 +37,7 @@ public class AsynchronousServiceTest extends CEPCoreBaseTestCase {
 			t.start();
 		}
 		try {
-			Thread.sleep(1000000);
+			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 
 		}
@@ -61,7 +61,9 @@ public class AsynchronousServiceTest extends CEPCoreBaseTestCase {
 			System.out.println("sucess:"+sucess.size());
 			System.out.println("fail:"+fail.size());
 			System.out.println(System.currentTimeMillis()-start);
+			getCore().stop();
 		}
+		
 	}
 	private void print(String s,List<Long> list){
 		for(Long time:list){
