@@ -3,42 +3,40 @@ package org.tinygroup.aopcache.base;
 import org.tinygroup.aopcache.AopCacheProcessor;
 
 /**
- * 
  * @author renhui
- *
  */
 public class AopCacheHolder {
 
-	private AopCacheProcessor processor;
-	
-    private CacheMetadata metadata;	
+    private AopCacheProcessor processor;
 
-    
-	public AopCacheHolder() {
-		super();
-	}
+    private CacheMetadata metadata;
 
-	public AopCacheHolder(AopCacheProcessor processor, CacheMetadata metadata) {
-		super();
-		this.processor = processor;
-		this.metadata = metadata;
-	}
 
-	public CacheMetadata getMetadata() {
-		return metadata;
-	}
+    public AopCacheHolder() {
+        super();
+    }
 
-	public void setMetadata(CacheMetadata metadata) {
-		this.metadata = metadata;
-	}
+    public AopCacheHolder(AopCacheProcessor processor, CacheMetadata metadata) {
+        super();
+        this.processor = processor;
+        this.metadata = metadata;
+    }
 
-	public AopCacheProcessor getProcessor() {
-		return processor;
-	}
+    public CacheMetadata getMetadata() {
+        return metadata;
+    }
 
-	public void setProcessor(AopCacheProcessor processor) {
-		this.processor = processor;
-	}
+    public void setMetadata(CacheMetadata metadata) {
+        this.metadata = metadata;
+    }
+
+    public AopCacheProcessor getProcessor() {
+        return processor;
+    }
+
+    public void setProcessor(AopCacheProcessor processor) {
+        this.processor = processor;
+    }
 
 
 }

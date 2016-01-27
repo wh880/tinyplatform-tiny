@@ -23,6 +23,7 @@ import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileResolver;
+import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
@@ -135,7 +136,7 @@ public class Runner {
 
 		private static void initSpring(String applicationConfig,List<String> includePathPatterns) {
 			BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
-			FileResolver fileResolver = new FileResolverImpl();
+			FileResolver fileResolver = FileResolverFactory.getFileResolver();
 
 			FileResolverUtil.addClassPathPattern(fileResolver);
 			fileResolver
