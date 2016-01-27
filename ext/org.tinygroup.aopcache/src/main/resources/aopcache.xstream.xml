@@ -1,9 +1,9 @@
 <xstream-configuration package-name="aopcache">
-	<xstream-annotation-classes>
-		<xstream-annotation-class class-name="org.tinygroup.aopcache.config.AopCaches" />
-		<xstream-annotation-class class-name="org.tinygroup.aopcache.config.CacheAction" />
-		<xstream-annotation-class class-name="org.tinygroup.aopcache.config.CacheGet" />
-		<xstream-annotation-class class-name="org.tinygroup.aopcache.config.CachePut" />
-		<xstream-annotation-class class-name="org.tinygroup.aopcache.config.CacheRemove" />
-	</xstream-annotation-classes>
+    <xstream-annotation-classes>
+        <xstream-annotation-class class-name="org.tinygroup.aopcache.config.AopCaches"/>
+        <xstream-annotation-class class-name="org.tinygroup.aopcache.config.CacheAction"/>
+        <xstream-annotation-class class-name="org.tinygroup.aopcache.config.CacheGet"/>
+        <xstream-annotation-class class-name="org.tinygroup.aopcache.config.CachePut"/>
+        <xstream-annotation-class class-name="org.tinygroup.aopcache.config.CacheRemove"/>
+    </xstream-annotation-classes>
 </xstream-configuration>

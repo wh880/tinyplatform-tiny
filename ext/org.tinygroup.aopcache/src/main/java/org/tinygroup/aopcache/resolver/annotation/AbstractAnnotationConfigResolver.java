@@ -6,19 +6,19 @@ import org.tinygroup.aopcache.resolver.AnnotationCacheActionResolver;
 import org.tinygroup.commons.tools.Assert;
 
 public abstract class AbstractAnnotationConfigResolver implements
-		AnnotationConfigResolver, InitializingBean {
-	protected static final String SPLIT_KEY = ",";
+        AnnotationConfigResolver, InitializingBean {
+    protected static final String SPLIT_KEY = ",";
 
-	private AnnotationCacheActionResolver actionResolver;
+    private AnnotationCacheActionResolver actionResolver;
 
-	public void setActionResolver(AnnotationCacheActionResolver actionResolver) {
-		this.actionResolver = actionResolver;
-	}
+    public void setActionResolver(AnnotationCacheActionResolver actionResolver) {
+        this.actionResolver = actionResolver;
+    }
 
-	public void afterPropertiesSet() throws Exception {
-		Assert.assertNotNull(actionResolver,
-				"AnnotationCacheActionResolver must be not null");
-		actionResolver.addConfigResolver(this);
-	}
+    public void afterPropertiesSet() throws Exception {
+        Assert.assertNotNull(actionResolver,
+                "AnnotationCacheActionResolver must be not null");
+        actionResolver.addConfigResolver(this);
+    }
 
 }

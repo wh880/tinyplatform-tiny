@@ -5,11 +5,11 @@ import java.util.List;
 
 /**
  * 缓存处理解析器
- * @author renhui
  *
+ * @author renhui
  */
 public interface CacheProcessResolver {
 
     List<AopCacheProcessor> resolve(Method method);
-	
+
 }

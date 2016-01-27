@@ -7,15 +7,15 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 @XStreamAlias("parameter-type")
 public class ParameterType {
 
-	@XStreamAsAttribute
-	private String type;
+    @XStreamAsAttribute
+    private String type;
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
-     
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }

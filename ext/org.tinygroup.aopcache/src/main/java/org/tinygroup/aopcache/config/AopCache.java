@@ -10,30 +10,30 @@ import java.util.List;
 @XStreamAlias("aop-cache")
 public class AopCache {
 
-	@XStreamAlias("class-name")
-	@XStreamAsAttribute
-	private String className;
-	
-	@XStreamImplicit
-	private List<MethodConfig> methodConfigs;
+    @XStreamAlias("class-name")
+    @XStreamAsAttribute
+    private String className;
 
-	public String getClassName() {
-		return className;
-	}
+    @XStreamImplicit
+    private List<MethodConfig> methodConfigs;
 
-	public void setClassName(String className) {
-		this.className = className;
-	}
+    public String getClassName() {
+        return className;
+    }
 
-	public List<MethodConfig> getMethodConfigs() {
-		if(methodConfigs==null){
-			methodConfigs=new ArrayList<MethodConfig>();
-		}
-		return methodConfigs;
-	}
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
-	public void setMethodConfigs(List<MethodConfig> methodConfigs) {
-		this.methodConfigs = methodConfigs;
-	}
-	
+    public List<MethodConfig> getMethodConfigs() {
+        if (methodConfigs == null) {
+            methodConfigs = new ArrayList<MethodConfig>();
+        }
+        return methodConfigs;
+    }
+
+    public void setMethodConfigs(List<MethodConfig> methodConfigs) {
+        this.methodConfigs = methodConfigs;
+    }
+
 }

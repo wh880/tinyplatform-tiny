@@ -2,69 +2,69 @@ package org.tinygroup.aopcache.base;
 
 /**
  * 缓存配置信息关联的元数据
- * @author renhui
  *
+ * @author renhui
  */
 public class CacheMetadata {
 
-	private String keys;
-	
-	private String removeKeys;
-	
-	private String removeGroups;
-	
-	private long expire=Long.MAX_VALUE;//暂时无用
-	
-	private String parameterNames;
-	
-	private String group;
+    private String keys;
 
-	public String getKeys() {
-		return keys;
-	}
+    private String removeKeys;
 
-	public void setKeys(String keys) {
-		this.keys = keys;
-	}
+    private String removeGroups;
 
-	public String getRemoveKeys() {
-		return removeKeys;
-	}
+    private long expire = Long.MAX_VALUE;//暂时无用
 
-	public void setRemoveKeys(String removeKeys) {
-		this.removeKeys = removeKeys;
-	}
+    private String parameterNames;
 
-	public long getExpire() {
-		return expire;
-	}
+    private String group;
 
-	public void setExpire(long expire) {
-		this.expire = expire;
-	}
+    public String getKeys() {
+        return keys;
+    }
 
-	public String getGroup() {
-		return group;
-	}
+    public void setKeys(String keys) {
+        this.keys = keys;
+    }
 
-	public void setGroup(String group) {
-		this.group = group;
-	}
+    public String getRemoveKeys() {
+        return removeKeys;
+    }
 
-	public String getParameterNames() {
-		return parameterNames;
-	}
+    public void setRemoveKeys(String removeKeys) {
+        this.removeKeys = removeKeys;
+    }
 
-	public void setParameterNames(String parameterNames) {
-		this.parameterNames = parameterNames;
-	}
+    public long getExpire() {
+        return expire;
+    }
 
-	public String getRemoveGroups() {
-		return removeGroups;
-	}
+    public void setExpire(long expire) {
+        this.expire = expire;
+    }
 
-	public void setRemoveGroups(String removeGroups) {
-		this.removeGroups = removeGroups;
-	}
-	
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public String getParameterNames() {
+        return parameterNames;
+    }
+
+    public void setParameterNames(String parameterNames) {
+        this.parameterNames = parameterNames;
+    }
+
+    public String getRemoveGroups() {
+        return removeGroups;
+    }
+
+    public void setRemoveGroups(String removeGroups) {
+        this.removeGroups = removeGroups;
+    }
+
 }

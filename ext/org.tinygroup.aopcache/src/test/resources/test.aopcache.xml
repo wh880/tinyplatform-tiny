@@ -1,52 +1,52 @@
 <aop-caches>
-	<aop-cache class-name="org.tinygroup.aopcache.XmlUserDao">
-		<method-config method-name="updateUser">
-			<parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
-			<cache-actions>
-				<cache-put keys="${user.id}" parameter-names="user"
-					group="singleGroup" remove-keys="users" remove-groups="multiGroup">
-				</cache-put>
-			</cache-actions>
-		</method-config>
-		<method-config method-name="insertUser">
-			<parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
-			<cache-actions>
-				<cache-put keys="${user.id}" parameter-names="user" group="singleGroup"
-					remove-keys="users" remove-groups="multiGroup"></cache-put>
-			</cache-actions>
-		</method-config>
-		<method-config method-name="insertUserNoParam">
-			<parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
-			<cache-actions>
-				<cache-put keys="${user.id}" parameter-names="" group="singleGroup"
-						   remove-keys="users" remove-groups="multiGroup"></cache-put>
-			</cache-actions>
-		</method-config>
-		<method-config method-name="deleteUser">
-			<parameter-type type="int"></parameter-type>
-			<cache-actions>
-				<cache-remove
-				 group = "singleGroup" remove-keys = "${userId},users"  remove-groups="multiGroup">
-				</cache-remove>
-			</cache-actions>
-		</method-config>
-		<method-config method-name="getUser">
-			<parameter-type type="int"></parameter-type>
-			<cache-actions>
-				<cache-get key = "${userId}" group = "singleGroup"></cache-get>
-			</cache-actions>
-		</method-config>
-		<method-config method-name="getUser">
-			<parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
-			<cache-actions>
-				<!--可配置多个key,用逗号分隔.第一次get时这些key会依次放入缓存,对应同一个value.当然也支持单个key-->
-				<cache-get key = "${user.id},${user.name}" group = "singleGroup"></cache-get>
-			</cache-actions>
-		</method-config>
-		<method-config method-name="getUsers">
-			<cache-actions>
-				<cache-get key = "users"  group = "multiGroup"></cache-get>
-			</cache-actions>
-		</method-config>
-	</aop-cache>
+    <aop-cache class-name="org.tinygroup.aopcache.XmlUserDao">
+        <method-config method-name="updateUser">
+            <parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
+            <cache-actions>
+                <cache-put keys="${user.id}" parameter-names="user"
+                           group="singleGroup" remove-keys="users" remove-groups="multiGroup">
+                </cache-put>
+            </cache-actions>
+        </method-config>
+        <method-config method-name="insertUser">
+            <parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
+            <cache-actions>
+                <cache-put keys="${user.id}" parameter-names="user" group="singleGroup"
+                           remove-keys="users" remove-groups="multiGroup"></cache-put>
+            </cache-actions>
+        </method-config>
+        <method-config method-name="insertUserNoParam">
+            <parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
+            <cache-actions>
+                <cache-put keys="${user.id}" parameter-names="" group="singleGroup"
+                           remove-keys="users" remove-groups="multiGroup"></cache-put>
+            </cache-actions>
+        </method-config>
+        <method-config method-name="deleteUser">
+            <parameter-type type="int"></parameter-type>
+            <cache-actions>
+                <cache-remove
+                        group="singleGroup" remove-keys="${userId},users" remove-groups="multiGroup">
+                </cache-remove>
+            </cache-actions>
+        </method-config>
+        <method-config method-name="getUser">
+            <parameter-type type="int"></parameter-type>
+            <cache-actions>
+                <cache-get key="${userId}" group="singleGroup"></cache-get>
+            </cache-actions>
+        </method-config>
+        <method-config method-name="getUser">
+            <parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
+            <cache-actions>
+                <!--可配置多个key,用逗号分隔.第一次get时这些key会依次放入缓存,对应同一个value.当然也支持单个key-->
+                <cache-get key="${user.id},${user.name}" group="singleGroup"></cache-get>
+            </cache-actions>
+        </method-config>
+        <method-config method-name="getUsers">
+            <cache-actions>
+                <cache-get key="users" group="multiGroup"></cache-get>
+            </cache-actions>
+        </method-config>
+    </aop-cache>
 </aop-caches>
