@@ -14,15 +14,39 @@
  *  limitations under the License.
  */
 package org.tinygroup.beancontainer;
+
+import javax.management.RuntimeErrorException;
+
 import org.tinygroup.exception.TinyBizRuntimeException;
 import org.tinygroup.exception.errorcode.ErrorCodeDefault;
 
 public class BeanContainerFactory {
 	private static BeanContainer<?> container;
 
+	/**
+	 * 请使用initBeanContainer方法
+	 * @param beanClassName
+	 */
+	@Deprecated
 	public static void setBeanContainer(String beanClassName) {
-		if(container!=null&&container.getClass().getName().equals(beanClassName)){
+		if (container != null
+				&& container.getClass().getName().equals(beanClassName)) {
 			return;
+		}
+		try {
+			container = (BeanContainer) Class.forName(beanClassName)
+					.newInstance();
+		} catch (Exception e) {
+			throw new TinyBizRuntimeException(ErrorCodeDefault.UNKNOWN_ERROR,
+					e, beanClassName);
+		}
+	}
+
+	public static void initBeanContainer(String beanClassName) {
+		if (container != null
+				&& !container.getClass().getName().equals(beanClassName)) {
+			throw new RuntimeException("container已存在,且类型与" + beanClassName
+					+ "不匹配,请勿重复执行初始化");
 		}
 		try {
 			container = (BeanContainer) Class.forName(beanClassName)
