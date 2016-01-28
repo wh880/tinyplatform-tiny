@@ -21,6 +21,9 @@ public class BeanContainerFactory {
 	private static BeanContainer<?> container;
 
 	public static void setBeanContainer(String beanClassName) {
+		if(container!=null&&container.getClass().getName().equals(beanClassName)){
+			return;
+		}
 		try {
 			container = (BeanContainer) Class.forName(beanClassName)
 					.newInstance();
