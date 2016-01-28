@@ -15,9 +15,6 @@
  */
 package org.tinygroup.tinytestutil;
 
-import java.io.InputStream;
-import java.util.List;
-
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.application.impl.ApplicationDefault;
@@ -29,6 +26,7 @@ import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
+import org.tinygroup.fileresolver.impl.FileResolverImpl;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.PathFilter;
@@ -36,6 +34,9 @@ import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
+
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * 此类不推荐使用，建议用org.tinygroup.tinyrunner工程的Runner类取代
@@ -152,7 +153,7 @@ public abstract class AbstractTestUtil {
 	}
 
 	private static void initSpring(String applicationConfig) {
-		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class
+		BeanContainerFactory.initBeanContainer(SpringBeanContainer.class
 				.getName());
 		FileResolver fileResolver = FileResolverFactory.getFileResolver();
 

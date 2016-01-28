@@ -29,7 +29,7 @@ import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 public class CacheTest extends TestCase {
 	Cache cache;
 	static {
-		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
+		BeanContainerFactory.initBeanContainer(SpringBeanContainer.class.getName());
 		FileResolver fileResolver = FileResolverFactory.getFileResolver();
 		FileResolverUtil.addClassPathPattern(fileResolver);
 		fileResolver

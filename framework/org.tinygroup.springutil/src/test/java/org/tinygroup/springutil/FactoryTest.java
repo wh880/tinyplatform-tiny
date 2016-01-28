@@ -27,7 +27,7 @@ public class FactoryTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class
+		BeanContainerFactory.initBeanContainer(SpringBeanContainer.class
 				.getName());
 		((SpringBeanContainer) (BeanContainerFactory
 				.getBeanContainer(FactoryTest.class.getClassLoader())))

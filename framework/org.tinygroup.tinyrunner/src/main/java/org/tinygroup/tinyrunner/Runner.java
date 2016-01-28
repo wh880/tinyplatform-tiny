@@ -134,7 +134,7 @@ public class Runner {
 		}
 
 		private static void initSpring(String applicationConfig,List<String> includePathPatterns) {
-			BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
+			BeanContainerFactory.initBeanContainer(SpringBeanContainer.class.getName());
 			FileResolver fileResolver = FileResolverFactory.getFileResolver();
 
 			FileResolverUtil.addClassPathPattern(fileResolver);

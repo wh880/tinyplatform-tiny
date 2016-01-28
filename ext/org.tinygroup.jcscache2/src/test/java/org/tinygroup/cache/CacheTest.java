@@ -29,7 +29,7 @@ import junit.framework.TestCase;
 public class CacheTest extends TestCase {
 	Cache cache;
 	static {
-		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class
+		BeanContainerFactory.initBeanContainer(SpringBeanContainer.class
 				.getName());
 		FileResolverFactory.getFileResolver().addFileProcessor(
 				new XStreamFileProcessor());

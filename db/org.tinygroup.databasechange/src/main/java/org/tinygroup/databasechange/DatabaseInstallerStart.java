@@ -89,7 +89,7 @@ public class DatabaseInstallerStart {
 		applicationNode = getRootNode();
 		installer = initInstaller();
 		installer.setDbLanguage(resolverLanguageType());
-		BeanContainerFactory.setBeanContainer(SpringBeanContainer.class.getName());
+		BeanContainerFactory.initBeanContainer(SpringBeanContainer.class.getName());
 		DataSourceHolder.setDataSource(createDataSource());// 绑定数据源
 		initFileResolver();
 	}

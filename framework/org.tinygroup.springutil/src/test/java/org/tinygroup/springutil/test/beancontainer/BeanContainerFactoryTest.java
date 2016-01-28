@@ -29,7 +29,7 @@ import java.util.List;
 public class BeanContainerFactoryTest extends TestCase {
 	public void testFactory() {
 		BeanContainerFactory
-				.setBeanContainer("org.tinygroup.springutil.SpringBeanContainer");
+				.initBeanContainer("org.tinygroup.springutil.SpringBeanContainer");
 		BeanContainer<ApplicationContext> container = (BeanContainer<ApplicationContext>) BeanContainerFactory
 				.getBeanContainer(this.getClass().getClassLoader());
 		assertNotNull(container);
@@ -46,7 +46,7 @@ public class BeanContainerFactoryTest extends TestCase {
 	
 	public void testFactoryGetContainer() {
 		BeanContainerFactory
-				.setBeanContainer("org.tinygroup.springutil.SpringBeanContainer");
+				.initBeanContainer("org.tinygroup.springutil.SpringBeanContainer");
 		BeanContainer<ApplicationContext> container = (BeanContainer<ApplicationContext>) BeanContainerFactory
 				.getBeanContainer(this.getClass().getClassLoader());
 		assertNotNull(container);

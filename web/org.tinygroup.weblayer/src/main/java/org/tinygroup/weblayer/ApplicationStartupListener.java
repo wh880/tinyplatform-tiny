@@ -215,7 +215,7 @@ public class ApplicationStartupListener implements ServletContextListener {
 
 	private void loadSpringBeans(String applicationConfig) {
 		logger.logMessage(LogLevel.INFO, "加载Spring Bean文件开始...");
-		BeanContainerFactory.setBeanContainer(ExtendsSpringBeanContainer.class
+		BeanContainerFactory.initBeanContainer(ExtendsSpringBeanContainer.class
 				.getName());
 		ExtendsSpringBeanContainer beanContainer = (ExtendsSpringBeanContainer) BeanContainerFactory
 				.getBeanContainer(getClass().getClassLoader());
