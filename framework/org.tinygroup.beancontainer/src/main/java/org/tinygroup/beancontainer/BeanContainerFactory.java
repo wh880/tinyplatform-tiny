@@ -48,6 +48,9 @@ public class BeanContainerFactory {
 			throw new RuntimeException("container已存在,且类型与" + beanClassName
 					+ "不匹配,请勿重复执行初始化");
 		}
+		if(container!=null){
+			return;
+		}
 		try {
 			container = (BeanContainer) Class.forName(beanClassName)
 					.newInstance();
