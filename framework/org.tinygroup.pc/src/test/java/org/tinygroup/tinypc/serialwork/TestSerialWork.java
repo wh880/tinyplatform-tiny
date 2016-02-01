@@ -43,7 +43,7 @@ public class TestSerialWork {
         work.setNextWork(new WorkDefault("hello")).setNextWork(new WorkDefault("hello"));
 
         Warehouse warehouse = jobCenter.doWork(work);
-        System.out.println(warehouse.get("name"));
+        System.out.println(warehouse.get("name").toString());
         jobCenter.stop();
     }
 }

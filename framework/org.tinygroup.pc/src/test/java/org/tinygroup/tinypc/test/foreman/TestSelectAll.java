@@ -29,7 +29,7 @@ public class TestSelectAll {
 		try {
 			JobCenter jobCenter = new JobCenterRemote(TestUtil.CIP,TestUtil.CP,TestUtil.SIP,TestUtil.SP);
 			Work work  = new WorkTask("a","aaa","");
-			System.out.println(jobCenter.getRmiServer().getObject("Worker|a|8d4c1d5a4d2a49659631d8c07e0eb191"));
+			System.out.println(jobCenter.getRmiServer().getObject("Worker|a|8d4c1d5a4d2a49659631d8c07e0eb191").toString());
 			Foreman f = new ForemanSelectAllWorker("a");
 			jobCenter.registerForeman(f);
 			jobCenter.doWork(work);

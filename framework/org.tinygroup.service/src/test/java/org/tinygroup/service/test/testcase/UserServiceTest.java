@@ -72,7 +72,7 @@ public class UserServiceTest extends TestCase {
 		context.put("name", "testuser");
 		context.put("age", "1");
 		ServiceTestUtil.execute("serviceSetServiceUserAge", context);
-		assertEquals(1, context.get("i"));
+		assertEquals(1, (int)context.get("i"));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class UserServiceTest extends TestCase {
 		context.put("names", new String[5]);
 		context.put("ages", new int[5]);
 		ServiceTestUtil.execute("serviceSetServiceUserAgeArray", context);
-		assertEquals(5, context.get("length"));
+		assertEquals(5, (int)context.get("length"));
 	}
 
 }

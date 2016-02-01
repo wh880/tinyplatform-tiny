@@ -69,7 +69,8 @@ public class TestSingleOperator extends BaseTest {
 		Bean bean = getBean();
 		getOperator().delete(bean);
 		getOperator().insert(bean);
-		Bean b = getOperator().getBean(String.valueOf(bean.getProperty("id")),
+		Integer id=bean.getProperty("id");
+		Bean b = getOperator().getBean(String.valueOf(id),
 				ANIMAL);
 		getOperator().delete(b);
 	}

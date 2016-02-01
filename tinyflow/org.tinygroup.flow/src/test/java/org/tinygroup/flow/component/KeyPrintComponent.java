@@ -33,7 +33,7 @@ public class KeyPrintComponent implements ComponentInterface {
 
 
 	public void execute(Context context) {
-		System.out.println(context.get(key));
+		System.out.println(context.get(key).toString());
 	}
 
 }
