@@ -76,7 +76,7 @@ private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorDefaul
 		   if (!StringUtils.startsWith(macroPath, "/")) {
 			   macroPath = "/"+macroPath;
 		   }
-		   FileObject fileObject=VFS.resolveFile(context.get(ABSOLUTE_PATH));
+		   FileObject fileObject=VFS.resolveFile((String)context.get(ABSOLUTE_PATH));
 		   generater.addMacroFile(fileObject.getFileObject(macroPath));
 		   LOGGER.logMessage(LogLevel.INFO, "宏文件路径：{0}，加载完毕",macroDefine.getMacroPath());
 		}
@@ -89,7 +89,7 @@ private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorDefaul
 //			if(templatePath.startsWith("/")){
 //				templatePath=CodeGenerator.class.getResource(templatePath).getPath();
 //			}
-			FileObject templateDirObject=VFS.resolveFile(context.get(ABSOLUTE_PATH));
+			FileObject templateDirObject=VFS.resolveFile((String)context.get(ABSOLUTE_PATH));
 			LOGGER.logMessage(LogLevel.INFO, "模板文件路径：{0}，加载完毕",templatePath);
 //			String filePath = templatePath;
 //			if (!StringUtils.startsWith(templatePath, "/")) {
