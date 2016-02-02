@@ -21,6 +21,9 @@ import junit.framework.TestCase;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
+import org.tinygroup.cepcore.EventProcessor;
+import org.tinygroup.cepcoreimpl.test.AsynchronousEventProcessorForTest;
+import org.tinygroup.cepcoreimpl.test.EventProcessorForTest;
 import org.tinygroup.cepcoreimpl.test.ServiceInfoForTest;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
@@ -28,6 +31,7 @@ import org.tinygroup.event.Event;
 import org.tinygroup.tinyrunner.Runner;
 
 public abstract class CEPCoreBaseTestCase extends TestCase {
+	protected static final String SERVICE_ID = "asynchronousService";
 	private CEPCore core;
 	
 
@@ -52,6 +56,15 @@ public abstract class CEPCoreBaseTestCase extends TestCase {
 		core = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader())
 				.getBean(CEPCore.CEP_CORE_BEAN);
+		EventProcessor eventProcessor = new AsynchronousEventProcessorForTest();
+		eventProcessor.getServiceInfos().add(initServiceInfo(SERVICE_ID));
+		getCore().registerEventProcessor(eventProcessor);
+		
+		EventProcessor eventProcessor2 = new EventProcessorForTest();
+		eventProcessor2.getServiceInfos().add(initServiceInfo("a"));
+		eventProcessor2.getServiceInfos().add(initServiceInfo("b"));
+		eventProcessor2.getServiceInfos().add(initServiceInfo("exception"));
+		getCore().registerEventProcessor(eventProcessor2);
 	}
 	
 	

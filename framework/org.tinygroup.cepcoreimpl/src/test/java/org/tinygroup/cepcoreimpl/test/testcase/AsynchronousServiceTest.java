@@ -5,33 +5,24 @@ import java.util.Date;
 import java.util.List;
 
 import org.tinygroup.cepcore.CEPCore;
-import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcoreimpl.test.AsynchronousEventProcessorForTest;
 import org.tinygroup.event.Event;
 
 /**
  * 采用的是默认的线程池，默认线程池是最大50，队列100，所以应该只会执行150个
+ * 
  * @author chenjiao
- *
+ * 
  */
 public class AsynchronousServiceTest extends CEPCoreBaseTestCase {
-private static final String SERVICE_ID = "aaaaa";
-	//	private static final Logger LOGGER = LoggerFactory
-//			.getLogger(AsynchronousServiceTest.class);
+
 	private final int LENGTH = 1;
 	private final int THREAD = 200;
 	private long start = 0;
 	private List<Long> sucess = new ArrayList<Long>();
-	private List<Long> fail  = new ArrayList<Long>();
+	private List<Long> fail = new ArrayList<Long>();
+
 	public void setUp() {
 		super.setUp();
-		init();
-	}
-
-	private void init() {
-		EventProcessor eventProcessor = new AsynchronousEventProcessorForTest();
-		eventProcessor.getServiceInfos().add(initServiceInfo(SERVICE_ID));
-		getCore().registerEventProcessor(eventProcessor);
 	}
 
 	public void testService() {
@@ -56,27 +47,28 @@ private static final String SERVICE_ID = "aaaaa";
 		fail.add(time);
 		stop();
 	}
-	
-	private void stop(){
-		int total = sucess.size()+fail.size();
-		if(total == LENGTH*THREAD){
+
+	private void stop() {
+		int total = sucess.size() + fail.size();
+		if (total == LENGTH * THREAD) {
 			print("fail", fail);
 			print("sucess", sucess);
-			System.out.println("sucess:"+sucess.size());
+			System.out.println("sucess:" + sucess.size());
 			assertEquals(150, sucess.size());
 			assertEquals(50, fail.size());
-			System.out.println("fail:"+fail.size());
-			System.out.println(System.currentTimeMillis()-start);
+			System.out.println("fail:" + fail.size());
+			System.out.println(System.currentTimeMillis() - start);
 			getCore().stop();
 		}
-		
+
 	}
-	private void print(String s,List<Long> list){
-		for(Long time:list){
+
+	private void print(String s, List<Long> list) {
+		for (Long time : list) {
 			Date d = new Date(time);
-			System.out.println(s+":"+d.toGMTString());
+			System.out.println(s + ":" + d.toGMTString());
 		}
-		
+
 	}
 
 	public void sendService() {
@@ -84,7 +76,6 @@ private static final String SERVICE_ID = "aaaaa";
 		e.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
 		try {
 			getCore().process(e);
-			assertTrue(true);
 			addSuccess(System.currentTimeMillis());
 		} catch (Exception e2) {
 			addException(System.currentTimeMillis());

@@ -15,8 +15,6 @@
  */
 package org.tinygroup.cepcoreimpl.test.testcase;
 
-import org.tinygroup.cepcore.EventProcessor;
-import org.tinygroup.cepcoreimpl.test.EventProcessorForTest;
 import org.tinygroup.event.Event;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -26,16 +24,8 @@ public class CepCoreProcessTestCase extends CEPCoreBaseTestCase {
 			.getLogger(CepCoreProcessTestCase.class);
 	public void setUp() {
 		super.setUp();
-		init();
 	}
 
-	private void init() {
-		EventProcessor eventProcessor = new EventProcessorForTest();
-		eventProcessor.getServiceInfos().add(initServiceInfo("a"));
-		eventProcessor.getServiceInfos().add(initServiceInfo("b"));
-		eventProcessor.getServiceInfos().add(initServiceInfo("exception"));
-		getCore().registerEventProcessor(eventProcessor);
-	}
 
 	public void testAy() {
 		Event e = getEvent("a");
