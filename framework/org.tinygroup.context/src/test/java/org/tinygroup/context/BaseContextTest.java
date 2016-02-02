@@ -28,12 +28,14 @@ public class BaseContextTest extends TestCase {
 
 	public void testPut() {
 		context.put("aa", 3);
-		assertEquals(3, (int)context.get("aa"));
+		int aa=context.get("aa");
+		assertEquals(3,aa );
 	}
 
 	public void testRemove() {
 		context.put("aa", 3);
-		assertEquals(3, (int)context.remove("aa"));
+		int aa=context.remove("aa");
+		assertEquals(3, aa);
 		if (context.exist("aa")) {
 			fail("应该不存在");
 		}
@@ -41,7 +43,8 @@ public class BaseContextTest extends TestCase {
 
 	public void testGetString() {
 		context.put("aa", 3);
-		assertEquals(3, (int)context.get("aa"));
+		int aa=context.get("aa");
+		assertEquals(3, aa);
 	}
 
 	public void testGetStringT() {
