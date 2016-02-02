@@ -45,9 +45,11 @@ public class RelationTest extends BaseTest {
 		DBOperator<String> operator2=(DBOperator<String>) factory.getDBOperator();
 		List<Bean> beans=bean.getProperty("relationIdList");
 		Bean bean2=beans.get(0);
-		Bean queryBean2= operator2.getBean(String.valueOf(bean2.getProperty("id")),ONE_TO_MORE2);//ONE_TO_MORE2的记录值
+		Integer id=bean2.getProperty("id");
+		Bean queryBean2= operator2.getBean(String.valueOf(id),ONE_TO_MORE2);//ONE_TO_MORE2的记录值
 		assertEquals(bean2.getProperty("name"), queryBean2.getProperty("name"));
-		Bean queryBean=operator.getBean(String.valueOf(bean.getProperty("id")),ONE_TO_MORE1);
+		Integer id2=bean.getProperty("id");
+		Bean queryBean=operator.getBean(String.valueOf(id2),ONE_TO_MORE1);
 		Bean bean3=((List<Bean>)queryBean.getProperty("relationIdList")).get(0);
 		assertEquals(bean3.getProperty("name"), queryBean2.getProperty("name"));
 		operator.delete(bean);
@@ -62,18 +64,20 @@ public class RelationTest extends BaseTest {
 		DBOperator<String> operator2=(DBOperator<String>)factory.getDBOperator();
 		String relationId1=bean.getProperty("relationId1");
 		Bean bean2=bean.getProperty("moreToOne2");
-		assertEquals(relationId1, bean2.getProperty("relationId"));
-		Bean queryBean=operator2.getBean(String.valueOf(bean2.getProperty("id")),MORE_TO_ONE2);
+		assertEquals(relationId1, bean2.getProperty("relationId").toString());
+		Integer id=bean2.getProperty("id");
+		Bean queryBean=operator2.getBean(String.valueOf(id),MORE_TO_ONE2);
 		assertEquals(queryBean.getProperty("name"), bean2.getProperty("name"));
 		
 		DBOperator<String> operator4=(DBOperator<String>)factory.getDBOperator();
 		List<Bean> beans= bean2.getProperty("relationIdList");
 		Bean bean4=beans.get(0);
-		Bean queryBean4=operator4.getBean(String.valueOf(bean4.getProperty("id")),MORE_TO_ONE4);
+		Integer id2=bean4.getProperty("id");
+		Bean queryBean4=operator4.getBean(String.valueOf(id2),MORE_TO_ONE4);
 		assertEquals(bean4.getProperty("name"), queryBean4.getProperty("name"));
 		
-		
-		Bean bean1=operator.getBean(String.valueOf(bean.getProperty("id")),MORE_TO_ONE1);
+		Integer id3=bean.getProperty("id");
+		Bean bean1=operator.getBean(String.valueOf(id3),MORE_TO_ONE1);
 		bean2= bean1.getProperty("moreToOne2");
 		assertEquals(bean2.getProperty("name"), "name2");
 		

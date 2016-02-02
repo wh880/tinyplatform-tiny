@@ -38,6 +38,6 @@ public class TestHello {
 		Context Context = new ContextImpl();
 		Context.put("name", "abc");
 		serviceProvider.execute("hello", Context);
-		System.out.println(Context.get("helloResult"));
+		System.out.println(Context.get("helloResult").toString());
 	}
 }

@@ -45,7 +45,7 @@ public class Test {
         Work work = new WorkDefault("sum", inputWarehouse);
 
         Warehouse outputWarehouse = center.doWork(work);
-        System.out.println(outputWarehouse.get("sum"));
+        System.out.println(outputWarehouse.get("sum").toString());
         jobCenter.stop();
         center.stop();
     }
