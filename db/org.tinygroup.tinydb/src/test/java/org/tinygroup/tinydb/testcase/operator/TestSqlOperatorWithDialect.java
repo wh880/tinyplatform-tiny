@@ -36,7 +36,8 @@ public class TestSqlOperatorWithDialect  extends BaseTest{
 		getOperator().batchInsert(insertBeans);
 		String sql = "select #{count(*)} as acount from ANIMAL";
 		Bean value =getOperator().getSingleValue(sql);
-		assertEquals(25, (int)value.getProperty("acount"));
+		int acount=value.getProperty("acount");
+		assertEquals(25, acount);
 		
 		sql="select #{concat(name,'con')} as con from ANIMAL";
 		Bean[] beans= getOperator().getBeans(sql);

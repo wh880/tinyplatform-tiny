@@ -33,7 +33,8 @@ public class TestNextNodeByElInPageFlow extends AbstractFlowComponent{
 		c.put("a", 5);
 		c.put("b", 15);
 		pageFlowExecutor.execute("NextNodeByEl", c);
-		assertEquals(45, (int)c.get("c"));
+		int result=c.get("c");
+		assertEquals(45,result);
 	}
 	
 	public void testNextNodeByE12(){
@@ -41,7 +42,8 @@ public class TestNextNodeByElInPageFlow extends AbstractFlowComponent{
 		c.put("a", 6);
 		c.put("b", 15);
 		pageFlowExecutor.execute("NextNodeByEl", c);
-		assertEquals(48, (int)c.get("c"));
+		int result=c.get("c");
+		assertEquals(48, result);
 	}
 	
 	public void testFlowPropertyWithEl(){
@@ -52,7 +54,8 @@ public class TestNextNodeByElInPageFlow extends AbstractFlowComponent{
 		c.put("a", 5);
 		c.put("b", 15);
 		pageFlowExecutor.execute("NextNodeByEl", c);
-		assertEquals(45, (int)c.get("c"));
+		int result=c.get("c");
+		assertEquals(45, result);
 	}
 	
 	public void testFlowPropertyWithEl2(){
@@ -63,7 +66,8 @@ public class TestNextNodeByElInPageFlow extends AbstractFlowComponent{
 		c.put("a", 6);
 		c.put("b", 15);
 		pageFlowExecutor.execute("NextNodeByEl", c);
-		assertEquals(48, (int)c.get("c"));
+		int result=c.get("c");
+		assertEquals(48, result);
 	}
 	
 	//a+b = c 
@@ -73,7 +77,8 @@ public class TestNextNodeByElInPageFlow extends AbstractFlowComponent{
 		c.put("a", 5);
 		c.put("b", 15);
 		pageFlowExecutor.execute("NextNodeByNullEl", c);
-		assertEquals(35, (int)c.get("c"));
+		int result=c.get("c");
+		assertEquals(35, result);
 	}
 	
 	public void testNextNodeByNullE12(){
@@ -81,6 +86,7 @@ public class TestNextNodeByElInPageFlow extends AbstractFlowComponent{
 		c.put("a", 6);
 		c.put("b", 15);
 		pageFlowExecutor.execute("NextNodeByNullEl", c);
-		assertEquals(36, (int)c.get("c"));
+		int result=c.get("c");
+		assertEquals(36, result);
 	}
 }
