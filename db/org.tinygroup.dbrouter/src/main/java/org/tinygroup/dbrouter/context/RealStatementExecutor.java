@@ -88,23 +88,21 @@ public class RealStatementExecutor {
 	}
 
 	public ResultSet executeQuery() throws SQLException {
-		logger.logMessage(LogLevel.DEBUG, "分片:{0},原生sql:{1}", shard.getId(), originalSql);
+		logger.logMessage(LogLevel.DEBUG, "分片:{0},原生sql:{1},真实执行的sql:{2}", shard.getId(), originalSql,executeSql);
 		if (realStatement instanceof PreparedStatement) {
 			PreparedStatement prepared = (PreparedStatement) realStatement;
 			return prepared.executeQuery();
 		}
-		logger.logMessage(LogLevel.DEBUG, "分片:{0},真实执行的sql:{1}", shard.getId(), executeSql);
 		return realStatement.executeQuery(executeSql);
 
 	}
 
 	public int executeUpdate() throws SQLException {
-		logger.logMessage(LogLevel.DEBUG, "分片:{0},原生sql:{1}", shard.getId(), originalSql);
+		logger.logMessage(LogLevel.DEBUG, "分片:{0},原生sql:{1},真实执行的sql:{2}", shard.getId(), originalSql,executeSql);
 		if (realStatement instanceof PreparedStatement) {
 			PreparedStatement prepared = (PreparedStatement) realStatement;
 			return prepared.executeUpdate();
 		}
-		logger.logMessage(LogLevel.DEBUG, "分片:{0},真实执行的sql:{1}", shard.getId(), executeSql);
 		return realStatement.executeUpdate(executeSql);
 	}
 }

@@ -1,0 +1,38 @@
+package org.tinygroup.jdbctemplatedslsession.util;
+
+import org.tinygroup.jdbctemplatedslsession.daosupport.OrderBy;
+import org.tinygroup.tinysqldsl.Select;
+import org.tinygroup.tinysqldsl.select.OrderByElement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * DSL工具类
+ * Created by Hulk on 2016/2/2.
+ */
+public class TinyDSLUtil {
+    /**
+     * 添加排序字段工具方法
+     *
+     * @param select
+     * @param orderByArray
+     * @return
+     */
+    public static Select addOrderByElements(Select select, OrderBy... orderByArray) {
+        if (orderByArray == null || select == null) {
+            return select;
+        }
+        List<OrderByElement> orderByElements = new ArrayList<OrderByElement>();
+        for (int i = 0; orderByArray[i] != null && i < orderByArray.length; i++) {
+            OrderByElement tempElement = orderByArray[i].getOrderByElement();
+            if (tempElement != null) {
+                orderByElements.add(tempElement);
+            }
+        }
+        if (orderByElements.size() > 0) {
+            select.orderBy(orderByElements.toArray(new OrderByElement[0]));
+        }
+        return select;
+    }
+}

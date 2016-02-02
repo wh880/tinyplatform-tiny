@@ -44,7 +44,7 @@ public class Test {
         inputWarehouse.put("name", "world");
         Work work = new WorkDefault("hello", inputWarehouse);
         Warehouse outputWarehouse = jobCenter.doWork(work);
-        System.out.println(outputWarehouse.get("helloInfo"));
+        System.out.println(outputWarehouse.get("helloInfo").toString());
         jobCenter.stop();
     }
 }

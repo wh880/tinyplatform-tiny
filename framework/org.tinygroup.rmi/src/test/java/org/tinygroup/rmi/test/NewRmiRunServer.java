@@ -59,7 +59,7 @@ public class NewRmiRunServer {
 			while (!end) {
 				try {
 					sleep(1000);
-					System.out.println(localServer.getObject("hello1"));
+					System.out.println(localServer.getObject("hello1").toString());
 					if(localServer.getObject("hello1")!=null){
 						MyHello hello = localServer.getObject("hello1");
 						String info = hello.sayHello("abc111111");

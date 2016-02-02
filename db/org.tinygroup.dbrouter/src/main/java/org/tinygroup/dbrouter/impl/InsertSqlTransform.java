@@ -45,13 +45,13 @@ public class InsertSqlTransform {
 		try {
 			rs = metaData.getPrimaryKeys(null, null, tableName);
 			if (rs.next()) {
-				columnInfo=getPrimaryKeys(rs,table,queryTableName);
+				columnInfo=getPrimaryKeys(rs,queryTableName);
 			} else {
 				rs.close();// 先关闭上次查询的resultset
 				queryTableName = tableName.toUpperCase();
 				rs = metaData.getPrimaryKeys(null, null, queryTableName);
 				if (rs.next()) {
-					columnInfo=getPrimaryKeys(rs,table,queryTableName);
+					columnInfo=getPrimaryKeys(rs,queryTableName);
 				}
 			}
 		} finally {
@@ -62,12 +62,12 @@ public class InsertSqlTransform {
 		return columnInfo;
 	}
 	
-	private  ColumnInfo getPrimaryKeys(ResultSet rs,Table table,String realTableName) throws SQLException {
+	private  ColumnInfo getPrimaryKeys(ResultSet rs,String realTableName) throws SQLException {
 		String primaryKey = rs.getString("COLUMN_NAME");
 		ResultSet typeRs = metaData.getColumns(null, null, realTableName,
 				primaryKey);
 		ColumnInfo columnInfo=new ColumnInfo();
-		columnInfo.setColumn(new Column(table, primaryKey));
+		columnInfo.setColumn(new Column(primaryKey));
 		try {
 			if (typeRs.next()) {
 				 int dataType = typeRs.getInt("DATA_TYPE");

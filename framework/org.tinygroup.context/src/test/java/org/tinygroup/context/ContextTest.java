@@ -31,12 +31,14 @@ public class ContextTest extends TestCase {
 
 	public void testPut() {
 		Context.put("aa", 3);
-		assertEquals(3, Context.get("aa"));
+		int aa=Context.get("aa");
+		assertEquals(3, aa);
 	}
 
 	public void testRemove() {
 		Context.put("aa", 3);
-		assertEquals(3, Context.remove("aa"));
+		int aa=Context.remove("aa");
+		assertEquals(3, aa);
 		if (Context.exist("aa")) {
 			fail("应该不存在");
 		}
@@ -44,10 +46,12 @@ public class ContextTest extends TestCase {
 
 	public void testGetString() {
 		Context.put("aa", 3);
-		assertEquals(3, Context.get("aa"));
+		int aa=Context.get("aa");
+		assertEquals(3, aa);
 		Context testContext = new ContextImpl();
 		Context.putSubContext("test", testContext);
-		assertEquals(3, testContext.get("aa"));
+		aa=testContext.get("aa");
+		assertEquals(3, aa);
 	}
 
 	public void testGetStringT() {
@@ -89,19 +93,22 @@ public class ContextTest extends TestCase {
 	public void testRemoveStringString() {
 		Context.createSubContext("aa");
 		Context.put("aa", "a", 1);
-		assertEquals(1, Context.getInSubContext("aa", "a"));
+		int aa=Context.getInSubContext("aa", "a");
+		assertEquals(1, aa);
 	}
 
 	public void testGetStringString() {
 		Context.createSubContext("aa");
 		Context.put("aa", "a", 1);
-		assertEquals(1, Context.getInSubContext("aa", "a"));
+		int aa=Context.getInSubContext("aa", "a");
+		assertEquals(1, aa);
 	}
 
 	public void testPutStringStringT() {
 		Context.createSubContext("aa");
 		Context.put("aa", "a", 1);
-		assertEquals(1, Context.getInSubContext("aa", "a"));
+		int aa=Context.getInSubContext("aa", "a");
+		assertEquals(1, aa);
 	}
 
 	public void testAddSubContext() {

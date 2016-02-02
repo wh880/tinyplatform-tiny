@@ -29,15 +29,19 @@ public class TestBatchOperator extends BaseTest {
 
 	private String[] getBeanIds(Bean[] beans){
 		String[] ids = new String[2];
-		ids[0]=String.valueOf(beans[0].getProperty("id"));
-		ids[1]=String.valueOf(beans[1].getProperty("id"));
+		Integer id1=beans[0].getProperty("id");
+		Integer id2=beans[1].getProperty("id");
+		ids[0]=String.valueOf(id1);
+		ids[1]=String.valueOf(id2);
 		return ids;
 	}
 	
 	private List<String> getBeanIdList(Bean[] beans){
 		List<String> ids = new ArrayList<String>();
-		ids.add(String.valueOf(beans[0].getProperty("id")));
-		ids.add(String.valueOf(beans[1].getProperty("id")));
+		Integer id1=beans[0].getProperty("id");
+		Integer id2=beans[1].getProperty("id");
+		ids.add(String.valueOf(id1));
+		ids.add(String.valueOf(id2));
 		return ids;
 	}
 	
