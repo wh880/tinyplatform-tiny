@@ -18,12 +18,15 @@ package org.tinygroup.cepcoreimpl.test.testcase;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcoreimpl.test.EventProcessorForTest;
 import org.tinygroup.event.Event;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
 public class CepCoreProcessTestCase extends CEPCoreBaseTestCase {
-
-	public void setUp() {	
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(CepCoreProcessTestCase.class);
+	public void setUp() {
 		super.setUp();
-		init() ;
+		init();
 	}
 
 	private void init() {
@@ -39,9 +42,8 @@ public class CepCoreProcessTestCase extends CEPCoreBaseTestCase {
 		e.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
 		try {
 			getCore().process(e);
-			assertTrue(true);
 		} catch (Exception e2) {
-			assertTrue(false);
+			fail();
 		}
 	}
 
@@ -50,21 +52,21 @@ public class CepCoreProcessTestCase extends CEPCoreBaseTestCase {
 		e.setMode(Event.EVENT_MODE_SYNCHRONOUS);
 		try {
 			getCore().process(e);
-			assertTrue(true);
 		} catch (Exception e2) {
-			assertTrue(false);
+			fail();
 		}
 	}
-	
+
 	public void testException() {
 		Event e = getEvent("exception");
 		e.setMode(Event.EVENT_MODE_SYNCHRONOUS);
 		try {
 			getCore().process(e);
 		} catch (Exception e2) {
+			LOGGER.errorMessage("异常",e2);
 			assertEquals(e2.getMessage(), "testExceptionhandler");
 		}
-		
+
 	}
 
 }

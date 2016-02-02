@@ -17,11 +17,16 @@ package org.tinygroup.cepcoreimpl.test;
 
 import org.tinygroup.event.Event;
 import org.tinygroup.exceptionhandler.ExceptionHandler;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
-public class NullPointHandler implements ExceptionHandler<NullPointerException>{
+public class NullPointHandler implements ExceptionHandler<NullPointerException> {
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(NullPointerException.class);
 
 	public void handle(NullPointerException t, Event event) {
-		System.out.println("NullPointerException");
+		LOGGER.logMessage(LogLevel.INFO, "NullPointerException");
 		throw new NullPointerException("testExceptionhandler");
 	}
 

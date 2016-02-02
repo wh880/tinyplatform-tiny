@@ -15,17 +15,17 @@
  */
 package org.tinygroup.cepcoreimpl.test;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 public class EventProcessorForTest implements EventProcessor {
-	private final String PROCESSOR_ID = EventProcessorForTest.class.getName() + UUID.randomUUID();
+	private String PROCESSOR_ID;
 	List<ServiceInfo> list = new ArrayList<ServiceInfo>();
 
 	public void process(Event event) {
@@ -42,6 +42,9 @@ public class EventProcessorForTest implements EventProcessor {
 	}
 
 	public String getId() {
+		if(PROCESSOR_ID==null){
+			PROCESSOR_ID = EventProcessorForTest.class.getName() + UUID.randomUUID();
+		}
 		return PROCESSOR_ID;
 	}
 
