@@ -22,17 +22,19 @@ import org.tinygroup.event.ServiceInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public class EventProcessorForTest  implements EventProcessor{
+public class EventProcessorForTest implements EventProcessor {
+	private final String PROCESSOR_ID = EventProcessorForTest.class.getName() + UUID.randomUUID();
 	List<ServiceInfo> list = new ArrayList<ServiceInfo>();
-	
+
 	public void process(Event event) {
 		String serviceId = event.getServiceRequest().getServiceId();
 		EventExecutor.execute(serviceId);
 	}
 
 	public void setCepCore(CEPCore cepCore) {
-		
+
 	}
 
 	public List<ServiceInfo> getServiceInfos() {
@@ -40,7 +42,7 @@ public class EventProcessorForTest  implements EventProcessor{
 	}
 
 	public String getId() {
-		return EventProcessorForTest.class.getName();
+		return PROCESSOR_ID;
 	}
 
 	public int getType() {
@@ -60,7 +62,7 @@ public class EventProcessorForTest  implements EventProcessor{
 	}
 
 	public void setRead(boolean read) {
-		
+
 	}
 
 }
