@@ -15,7 +15,8 @@ import org.tinygroup.event.Event;
  *
  */
 public class AsynchronousServiceTest extends CEPCoreBaseTestCase {
-//	private static final Logger LOGGER = LoggerFactory
+private static final String SERVICE_ID = "aaaaa";
+	//	private static final Logger LOGGER = LoggerFactory
 //			.getLogger(AsynchronousServiceTest.class);
 	private final int LENGTH = 1;
 	private final int THREAD = 200;
@@ -29,7 +30,7 @@ public class AsynchronousServiceTest extends CEPCoreBaseTestCase {
 
 	private void init() {
 		EventProcessor eventProcessor = new AsynchronousEventProcessorForTest();
-		eventProcessor.getServiceInfos().add(initServiceInfo("a"));
+		eventProcessor.getServiceInfos().add(initServiceInfo(SERVICE_ID));
 		getCore().registerEventProcessor(eventProcessor);
 	}
 
@@ -79,7 +80,7 @@ public class AsynchronousServiceTest extends CEPCoreBaseTestCase {
 	}
 
 	public void sendService() {
-		Event e = getEvent("a");
+		Event e = getEvent(SERVICE_ID);
 		e.setMode(Event.EVENT_MODE_ASYNCHRONOUS);
 		try {
 			getCore().process(e);
