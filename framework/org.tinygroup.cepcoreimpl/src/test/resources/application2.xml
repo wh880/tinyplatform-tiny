@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application>
 	<application-processors>
+		<application-processor bean="fileResolverProcessor"/>
 		<application-processor bean="cepCoreProcessor"/>
 	</application-processors>
 	<cep-configuration node-name="">
