@@ -282,12 +282,15 @@ public abstract class SimpleBinaryOperator implements BinaryOperator,
 		if(!ObjectUtil.isEmptyObject(values)){
 			List<Object> params=new ArrayList<Object>();
 			ExpressionList rightItemsList=new ExpressionList();
+			boolean isAllNull = true;
 			for (int i = 0; i < values.length; i++) {
 				if(values[i]!=null){
+					isAllNull = false;
 					rightItemsList.addExpression(new JdbcParameter());
 					params.add(values[i]);
 				}
 			}
+			if(isAllNull) return null;
 			InExpression inExpression=new InExpression(this, rightItemsList);
 			return new Condition(inExpression, params.toArray());
 		}
@@ -298,12 +301,15 @@ public abstract class SimpleBinaryOperator implements BinaryOperator,
 		if(!ObjectUtil.isEmptyObject(values)){
 			List<Object> params=new ArrayList<Object>();
 			ExpressionList rightItemsList=new ExpressionList();
+			boolean isAllNull = true;
 			for (int i = 0; i < values.length; i++) {
 				if(values[i]!=null){
+					isAllNull = false;
 					rightItemsList.addExpression(new JdbcParameter());
 					params.add(values[i]);
 				}
 			}
+			if(isAllNull) return null;
 			InExpression inExpression=new InExpression(this, rightItemsList,true);
 			return new Condition(inExpression, params.toArray());
 		}
