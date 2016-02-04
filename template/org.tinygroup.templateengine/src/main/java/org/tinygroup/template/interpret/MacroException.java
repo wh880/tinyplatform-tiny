@@ -36,10 +36,7 @@ public class MacroException extends TemplateException {
 		 }
 		 return sb.toString();
 	 }
-	 
-	 private boolean checkCause(){
-		 return !(getCause() != null && getCause() instanceof MacroException);
-	 }
+	
 	/**
 	 * 得到宏
 	 * @return
