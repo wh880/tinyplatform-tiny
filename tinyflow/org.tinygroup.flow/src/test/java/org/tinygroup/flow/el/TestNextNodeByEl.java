@@ -33,7 +33,7 @@ public class TestNextNodeByEl extends AbstractFlowComponent{
 		c.put("a", 5);
 		c.put("b", 15);
 		flowExecutor.execute("NextNodeByEl", c);
-		int result=c.get("c");
+		int result=(Integer) c.get("c");
 		assertEquals(45, result);
 	}
 	
@@ -42,7 +42,7 @@ public class TestNextNodeByEl extends AbstractFlowComponent{
 		c.put("a", 6);
 		c.put("b", 15);
 		flowExecutor.execute("NextNodeByEl", c);
-		int result=c.get("c");
+		int result=(Integer)c.get("c");
 		assertEquals(48, result);
 	}
 	
@@ -54,7 +54,7 @@ public class TestNextNodeByEl extends AbstractFlowComponent{
 		c.put("a", 5);
 		c.put("b", 15);
 		flowExecutor.execute("NextNodeByEl", c);
-		int result=c.get("c");
+		int result=(Integer)c.get("c");
 		assertEquals(45, result);
 	}
 	
@@ -66,7 +66,7 @@ public class TestNextNodeByEl extends AbstractFlowComponent{
 		c.put("a", 6);
 		c.put("b", 15);
 		flowExecutor.execute("NextNodeByEl", c);
-		int result=c.get("c");
+		int result=(Integer)c.get("c");
 		assertEquals(48, result);
 	}
 	
@@ -77,7 +77,7 @@ public class TestNextNodeByEl extends AbstractFlowComponent{
 		c.put("a", 5);
 		c.put("b", 15);
 		flowExecutor.execute("NextNodeByNullEl", c);
-		int result=c.get("c");
+		int result=(Integer)c.get("c");
 		assertEquals(35, result);
 	}
 	
@@ -86,7 +86,7 @@ public class TestNextNodeByEl extends AbstractFlowComponent{
 		c.put("a", 6);
 		c.put("b", 15);
 		flowExecutor.execute("NextNodeByNullEl", c);
-		int result=c.get("c");
+		int result=(Integer)c.get("c");
 		assertEquals(36, result);
 	}
 }

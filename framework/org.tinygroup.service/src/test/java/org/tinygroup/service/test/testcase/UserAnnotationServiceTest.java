@@ -115,7 +115,7 @@ public class UserAnnotationServiceTest extends TestCase {
 		context.put("name", "testuser");
 		context.put("age", "1");
 		ServiceTestUtil.execute("serviceSetServiceUserAgeAnnotation", context);
-		int i=context.get("i");
+		int i=(Integer)context.get("i");
 		assertEquals(1, i);
 	}
 
@@ -138,7 +138,7 @@ public class UserAnnotationServiceTest extends TestCase {
 		context.put("names", new String[5]);
 		context.put("ages", new int[5]);
 		ServiceTestUtil.execute("serviceSetServiceUserAgeArrayAnnotation", context);
-		int length=context.get("length");
+		int length=(Integer)context.get("length");
 		assertEquals(5,length);
 	}
 

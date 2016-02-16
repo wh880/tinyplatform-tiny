@@ -32,11 +32,11 @@ public class TestSumFlow extends AbstractFlowComponent {
 		//sum = a + b
 		//sum = a + sum
 		flowExecutor.execute("testSumFlow", "begin", context);
-		int sum=context.get("sum");
+		int sum=(Integer) context.get("sum");
 		assertEquals(4,sum );
 		context.put("sum", 5);
 		flowExecutor.execute("testSumFlow", "sumComponent_1", context);
-		sum=context.get("sum");
+		sum=(Integer)context.get("sum");
 		assertEquals(6,sum);
 
 	}
@@ -47,7 +47,7 @@ public class TestSumFlow extends AbstractFlowComponent {
 		context.put("b", 1);
 		context.put("sum", 5);
 		flowExecutor.execute("testSumFlow", "sumComponent_1", context);
-		int sum=context.get("sum");
+		int sum=(Integer)context.get("sum");
 		assertEquals(6, sum);
 
 	}
@@ -58,7 +58,7 @@ public class TestSumFlow extends AbstractFlowComponent {
 		context.put("b", 2);
 		context.put("c", 5);
 		flowExecutor.execute("testSumFlow2",  context);
-		int sum=context.get("sum");
+		int sum=(Integer)context.get("sum");
 		assertEquals(8, sum);
 
 	}
@@ -70,11 +70,11 @@ public class TestSumFlow extends AbstractFlowComponent {
 		//sum = a + b
 		//sum = a + sum
 		flowExecutor.execute("testSumFlowChild", "begin", context);
-		int sum=context.get("sum");
+		int sum=(Integer)context.get("sum");
 		assertEquals(4, sum);
 		context.put("sum", 5);
 		flowExecutor.execute("testSumFlowChild", "sumComponent_1", context);
-		sum=context.get("sum");
+		sum=(Integer)context.get("sum");
 		assertEquals(6, sum);
 
 	}
@@ -86,10 +86,10 @@ public class TestSumFlow extends AbstractFlowComponent {
 		//sum = a + b
 		//sum = b + sum
 		flowExecutor.execute("testSumFlowChild2", "begin", context);
-		int sum=context.get("sum");
+		int sum=(Integer)context.get("sum");
 		assertEquals(5, sum);
 		flowExecutor.execute("testSumFlowChild2", "sumComponent_1", context);
-		sum=context.get("sum");
+		sum=(Integer)context.get("sum");
 		assertEquals(7, sum);
 
 	}
@@ -102,7 +102,7 @@ public class TestSumFlow extends AbstractFlowComponent {
 		//sum = b + sum
 		//sum = sum + sum
 		flowExecutor.execute("testSumFlowChild3", "begin", context);
-		int sum=context.get("sum");
+		int sum=(Integer)context.get("sum");
 		assertEquals(10, sum);
 
 	}
@@ -112,7 +112,7 @@ public class TestSumFlow extends AbstractFlowComponent {
 		context.put("a", 1);
 		context.put("b", 2);
 		flowExecutor.execute("testSumFlowGrandson", "begin", context);
-		int sum=context.get("sum");
+		int sum=(Integer)context.get("sum");
 		assertEquals(105, sum);
 
 	}
@@ -123,7 +123,7 @@ public class TestSumFlow extends AbstractFlowComponent {
 		context.put("a", 11);
 		context.put("b", 2);
 		flowExecutor.execute("testSumFlowEl", "begin", context);
-		int sum=context.get("sum");
+		int sum=(Integer)context.get("sum");
 		assertEquals(24, sum);
 
 	}
@@ -133,7 +133,7 @@ public class TestSumFlow extends AbstractFlowComponent {
 		context.put("a", 2);
 		context.put("b", 12);
 		flowExecutor.execute("testSumFlowEl", "begin", context);
-		int sum=context.get("sum");
+		int sum=(Integer)context.get("sum");
 		assertEquals(26, sum);
 
 	}

@@ -27,7 +27,7 @@ public class PageFlowTest extends TestCase{
 		c.put("i", 1);
 		c.put("j", 2);
 		FlowTestUtil.execute("callComputePlus", c);
-		int result=c.get("plusResult");
+		int result=(Integer) c.get("plusResult");
 		assertEquals( 3,result);
 	}
 	public void testCallBeanMethod(){
@@ -40,7 +40,7 @@ public class PageFlowTest extends TestCase{
 		Context c = new ContextImpl();
 		c.put("age", 12);
 		FlowTestUtil.execute("callEl", c);
-		int result=c.get("elResult");
+		int result=(Integer) c.get("elResult");
 		assertEquals( 13,result);
 	}
 	public void testContextToObject(){
