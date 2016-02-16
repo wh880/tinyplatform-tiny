@@ -31,6 +31,7 @@ import java.util.Map;
 
 import org.tinygroup.jdbctemplatedslsession.Custom;
 import org.tinygroup.jdbctemplatedslsession.CustomScore;
+import org.tinygroup.jdbctemplatedslsession.Score;
 import org.tinygroup.jdbctemplatedslsession.SimpleDslSession;
 import org.tinygroup.tinysqldsl.Delete;
 import org.tinygroup.tinysqldsl.DslSession;
@@ -194,5 +195,17 @@ public class DslSqlTest extends BaseTest {
 		assertEquals(5, page.getCurrentPage());
 		assertEquals(5, page.getTotalPages());
 		
+	}
+	
+	public void testConfiguration(){
+		
+		Delete delete = delete(TSCORE);
+		DslSession session = new SimpleDslSession(dataSource);
+		session.execute(delete);
+		Insert scoreInsert = insertInto(TSCORE).values(TSCORE.NAME.value("悠悠然然"),
+				TSCORE.SCORE.value(98), TSCORE.COURSE.value("shuxue"));
+		Score score=session.executeAndReturnObject(scoreInsert,Score.class);
+		System.out.println(score.getId());
+		assertNotNull(score.getId());
 	}
 }
