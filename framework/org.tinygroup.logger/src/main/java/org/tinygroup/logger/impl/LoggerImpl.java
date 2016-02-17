@@ -45,7 +45,7 @@ public class LoggerImpl implements Logger {
 	private org.slf4j.Logger logger;
 	// MDC适配器
 	protected MDCAdapter mdc = MDC.getMDCAdapter();
-	private boolean supportTransaction = true;
+	private boolean supportTransaction = false;
 	private ThreadLocal<LogBuffer> threadLocal = new ThreadLocal<LogBuffer>();
 	private Map<String, Object> mdcMap = new HashMap<String, Object>();
 	private static I18nMessage i18nMessage = I18nMessageFactory
@@ -157,7 +157,6 @@ public class LoggerImpl implements Logger {
 			}
 		}
 		logBuffer.getLogMessages().clear();
-		removeLogBuffer();
 		bufferRecords = 0;
 	}
 
