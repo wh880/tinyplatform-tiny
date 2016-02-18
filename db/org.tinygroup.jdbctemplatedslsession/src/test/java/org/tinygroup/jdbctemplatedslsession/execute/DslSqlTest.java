@@ -28,11 +28,9 @@ import static org.tinygroup.tinysqldsl.select.Join.leftJoin;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.tinygroup.jdbctemplatedslsession.Custom;
 import org.tinygroup.jdbctemplatedslsession.CustomScore;
-import org.tinygroup.jdbctemplatedslsession.Score;
 import org.tinygroup.jdbctemplatedslsession.SimpleDslSession;
 import org.tinygroup.tinysqldsl.Delete;
 import org.tinygroup.tinysqldsl.DslSession;
