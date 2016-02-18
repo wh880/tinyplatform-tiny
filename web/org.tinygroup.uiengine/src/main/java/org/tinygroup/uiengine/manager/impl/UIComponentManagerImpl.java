@@ -30,7 +30,10 @@ import java.util.Map;
 public class UIComponentManagerImpl implements UIComponentManager {
     static Logger logger = LoggerFactory.getLogger(UIComponentManagerImpl.class);
     private List<UIComponent> uiComponentList = new ArrayList<UIComponent>();
-    List<UIComponent> healthyComponentList = new ArrayList<UIComponent>();
+    List<UIComponent> healthyComponentList = new ArrayList<UIComponent>();  //健康组件
+    List<UIComponent> oldHealthyComponentList = new ArrayList<UIComponent>(); //临时保存的健康组件
+    private volatile boolean  calculating; //是否计算中
+    private volatile boolean  modified ; //组件是否被修改
     private Map<String, UIComponent> uiMap = new HashMap<String, UIComponent>();
 
     public List<UIComponent> getUiComponents() {
@@ -38,7 +41,7 @@ public class UIComponentManagerImpl implements UIComponentManager {
     }
 
     public List<UIComponent> getHealthUiComponents() {
-        return healthyComponentList;
+        return calculating?oldHealthyComponentList:healthyComponentList;
     }
 
     public void addUIComponents(UIComponents uiComponents) {
@@ -51,6 +54,7 @@ public class UIComponentManagerImpl implements UIComponentManager {
         if (uiMap.get(component.getName()) == null) {
             uiComponentList.add(component);
             uiMap.put(component.getName(), component);
+            modified = true;
         }
     }
 
@@ -60,13 +64,18 @@ public class UIComponentManagerImpl implements UIComponentManager {
             throw new RuntimeException("找不到UI组件包：" + name);
         }
         if (component.isComputed()) {// 如果已经计算好，则直接返回
+        	if(!healthyComponentList.contains(component)){
+        		healthyComponentList.add(component);
+        	}
             return component.isHealth();
         } else {
             // 如果不依赖，则健康
             if (component.getDependencies() == null || component.getDependencies().trim().length() == 0) {
                 component.setComputed(true);
                 component.setHealth(true);
-                healthyComponentList.add(component);
+                if(!healthyComponentList.contains(component)){
+            		healthyComponentList.add(component);
+            	}
                 return true;
             } else {
                 String[] dependencies = component.getDependencies().split(",");
@@ -80,7 +89,9 @@ public class UIComponentManagerImpl implements UIComponentManager {
                 }
                 component.setComputed(true);
                 component.setHealth(true);
-                healthyComponentList.add(component);
+                if(!healthyComponentList.contains(component)){
+            		healthyComponentList.add(component);
+            	}
                 return true;
             }
         }
@@ -119,13 +130,32 @@ public class UIComponentManagerImpl implements UIComponentManager {
         for (UIComponent component : uiComponents.getComponents()) {
             uiMap.remove(component.getName());
             healthyComponentList.remove(component);
+            modified = true;
         }
     }
 
 	public void compute() {
-		for (UIComponent component : uiComponentList) {
-            this.isHealth(component.getName());
-        }
+		//只有组件被修改，同时计算已经完成
+		if(modified  && !calculating){
+			realCompute();
+		}
+	}
+	
+	private void realCompute(){
+		calculating = true;
+		//计算期间，访问旧的计算结果。
+		oldHealthyComponentList = healthyComponentList;
+		healthyComponentList = new ArrayList<UIComponent>();
+		try{
+			for (UIComponent component : uiComponentList) {
+				this.isHealth(component.getName());		            
+	        }
+		}finally{
+			//计算结束，重置计算状态
+			calculating = false;
+			modified = false;
+			oldHealthyComponentList.clear();
+		}
 	}
 
 	public void reset() {

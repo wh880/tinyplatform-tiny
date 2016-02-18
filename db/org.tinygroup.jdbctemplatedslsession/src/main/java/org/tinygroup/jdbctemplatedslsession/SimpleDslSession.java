@@ -317,10 +317,10 @@ public class SimpleDslSession implements DslSession {
 		if (params.size() > batchSize) {
 			batchProcess(batchSize, params, new BatchOperateCallback() {
 				public int[] callback(List<Map<String, Object>> params) {
-					int[] affecctNums = insertBatchOperate.batchProcess(params);
+					int[] affectNums = insertBatchOperate.batchProcess(params);
 					Collections.addAll(records,
-							ArrayUtils.toObject(affecctNums));
-					return affecctNums;
+							ArrayUtils.toObject(affectNums));
+					return affectNums;
 				}
 
 				public int[] callbackList(List<List<Object>> params) {

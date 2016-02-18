@@ -28,6 +28,7 @@ import static org.tinygroup.tinysqldsl.select.Join.leftJoin;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.tinygroup.jdbctemplatedslsession.Custom;
 import org.tinygroup.jdbctemplatedslsession.CustomScore;
@@ -197,15 +198,4 @@ public class DslSqlTest extends BaseTest {
 		
 	}
 	
-	public void testConfiguration(){
-		
-		Delete delete = delete(TSCORE);
-		DslSession session = new SimpleDslSession(dataSource);
-		session.execute(delete);
-		Insert scoreInsert = insertInto(TSCORE).values(TSCORE.NAME.value("悠悠然然"),
-				TSCORE.SCORE.value(98), TSCORE.COURSE.value("shuxue"));
-		Score score=session.executeAndReturnObject(scoreInsert,Score.class);
-		System.out.println(score.getId());
-		assertNotNull(score.getId());
-	}
 }
