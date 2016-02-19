@@ -352,7 +352,7 @@ public class CEPCoreImpl implements CEPCore {
 		String serviceId = serviceRequest.getServiceId();
 		for (EventProcessor p : processorList) {
 			List<String> regex = regexMap.get(p);
-			if (checkRegex(regex, serviceId)) {
+			if (p.isEnable()&&checkRegex(regex, serviceId)) {
 				return p;
 			}
 		}
@@ -374,17 +374,25 @@ public class CEPCoreImpl implements CEPCore {
 	private EventProcessor getEventProcessor(ServiceRequest serviceRequest,
 			String eventNodeName) {
 		// 查找出所有包含该服务的EventProcessor
-		List<EventProcessor> list = serviceIdMap.get(serviceRequest
+		List<EventProcessor> allList = serviceIdMap.get(serviceRequest
 				.getServiceId());
+		if(allList==null){ //如果取出来是空，先初始化便于处理
+			allList = new ArrayList<EventProcessor>();
+		}
+		List<EventProcessor> list = new ArrayList<EventProcessor>();
+		for(EventProcessor e:allList){
+			if(e.isEnable()){
+				list.add(e);
+			}else{
+				LOGGER.logMessage(LogLevel.WARN, "EventProcessor:{} enable为false",e.getId());
+			}
+		}
 		// 如果指定了执行节点名，则根据执行节点查找处理器
 		if (!StringUtil.isBlank(eventNodeName)) {
-			if (list == null) { // 如果为空，则将其设置为空列表，便于后续处理
-				list = new ArrayList<EventProcessor>();
-			}
 			return findEventProcessor(serviceRequest, eventNodeName, list);
 		}
 
-		if (list == null || list.isEmpty()) {
+		if (list.isEmpty()) {
 			return getEventProcessorByRegex(serviceRequest);
 		}
 		return getEventProcessor(serviceRequest, list);
@@ -427,6 +435,10 @@ public class CEPCoreImpl implements CEPCore {
 		for (String key : processorMap.keySet()) {
 			if (Node.checkEquals(key, eventNodeName)) {
 				EventProcessor e = processorMap.get(key);
+				if(!e.isEnable()){
+					LOGGER.logMessage(LogLevel.WARN, "EventProcessor:{} enable为false",e.getId());
+					continue;
+				}
 				// 如果包含该服务的EventProcessor列表中存在该处理器，则返回
 				if (list.contains(e)) {
 					return e;
