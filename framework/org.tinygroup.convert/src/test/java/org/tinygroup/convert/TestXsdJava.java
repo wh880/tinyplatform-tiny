@@ -34,17 +34,23 @@ public class TestXsdJava extends TestCase {
 		list.add(Birthday.class);
 
 		File src = new File("test");
+		if(!src.exists()){
+			src.mkdir();
+		}
 		ClassToSchema classToSchema = new ClassToSchema(src);
 		List<File> files = classToSchema.convert(list);
 		assertTrue(files.size() > 0);
 		for (File file : files) {
 			System.out.println(file.getAbsolutePath());
 		}
-//		src.delete();
+		src.delete();
 	}
 
 	public void testSchema2Class() throws ConvertException {
-
+		File srcTest = new File("test");
+		if(!srcTest.exists()){
+			srcTest.mkdir();
+		}
 		SchemaToClass schemaToClass = new SchemaToClass(
 				"test",
 				"src/test/resources/xjb",
@@ -63,12 +69,14 @@ public class TestXsdJava extends TestCase {
 		}
 
 		schemaToClass.convert(xsdFiles);
-		File src = new File("test");
-		src.delete();
+		srcTest.delete();
 	}
 
 	public void testSchema2ClassMuti() throws ConvertException {
-
+		File srcTest = new File("test");
+		if(!srcTest.exists()){
+			srcTest.mkdir();
+		}
 		try {
 			File src = new File(getClass().getResource("/xsd").toURI());
 			File[] subFiles = src.listFiles();
@@ -87,8 +95,8 @@ public class TestXsdJava extends TestCase {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
-		File src = new File("test");
-		System.out.println(src.getAbsolutePath());
-		src.deleteOnExit();
+		srcTest = new File("test");
+		System.out.println(srcTest.getAbsolutePath());
+		srcTest.deleteOnExit();
 	}
 }
