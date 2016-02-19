@@ -11,7 +11,8 @@
         <tiny_version>2.0.34-SNAPSHOT</tiny_version>
         <tiny_ui_version>2.0.31-SNAPSHOT</tiny_ui_version>
     </properties>
-    <modules> 	
+    <modules>
+		<module>org.tinygroup.remoteconfig</module>
 		<module>org.tinygroup.remoteconfig.zk</module>
         <module>web-remoteconfig</module>
     </modules>
