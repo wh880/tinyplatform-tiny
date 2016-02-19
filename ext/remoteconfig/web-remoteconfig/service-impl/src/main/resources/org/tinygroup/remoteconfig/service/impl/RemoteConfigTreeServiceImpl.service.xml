@@ -1,0 +1,47 @@
+<service-components>
+  <service-component type="org.tinygroup.remoteconfig.service.impl.RemoteConfigTreeServiceImpl" bean="remoteConfigTreeServiceImpl">
+    <service-method local-name="add" service-id="add_2" method-name="add" cacheable="false" category="org.tinygroup.remoteconfig.service.impl">
+      <service-parameters>
+        <service-parameter name="item" type="org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem" required="false" is-array="false"/>
+      </service-parameters>
+      <service-result name="addResult" required="false" is-array="false" type="void"/>
+    </service-method>
+    <service-method local-name="delete" service-id="delete_2" method-name="delete" cacheable="false" category="org.tinygroup.remoteconfig.service.impl">
+      <service-parameters>
+        <service-parameter name="item" type="org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem" required="false" is-array="false"/>
+      </service-parameters>
+      <service-result name="deleteResult" required="false" is-array="false" type="void"/>
+    </service-method>
+    <service-method local-name="deletes" service-id="deletes_2" method-name="deletes" cacheable="false" category="org.tinygroup.remoteconfig.service.impl">
+      <service-parameters>
+        <service-parameter name="items" type="org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem" collection-type="java.util.List" required="false" is-array="false"/>
+      </service-parameters>
+      <service-result name="deletesResult" required="false" is-array="false" type="void"/>
+    </service-method>
+    <service-method local-name="set" service-id="set_2" method-name="set" cacheable="false" category="org.tinygroup.remoteconfig.service.impl">
+      <service-parameters>
+        <service-parameter name="oldId" type="java.lang.String" required="false" is-array="false"/>
+        <service-parameter name="item" type="org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem" required="false" is-array="false"/>
+      </service-parameters>
+      <service-result name="setResult" required="false" is-array="false" type="void"/>
+    </service-method>
+    <service-method local-name="get" service-id="get_2" method-name="get" cacheable="false" category="org.tinygroup.remoteconfig.service.impl">
+      <service-parameters>
+        <service-parameter name="item" type="org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem" required="false" is-array="false"/>
+      </service-parameters>
+      <service-result name="getResult" required="false" is-array="false" type="java.lang.String"/>
+    </service-method>
+    <service-method local-name="getAll" service-id="getAll_2" method-name="getAll" cacheable="false" category="org.tinygroup.remoteconfig.service.impl">
+      <service-parameters>
+        <service-parameter name="item" type="org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem" required="false" is-array="false"/>
+      </service-parameters>
+      <service-result name="getAllResult" required="false" is-array="false" type="java.util.Map"/>
+    </service-method>
+    <service-method local-name="isExit" service-id="isExit_2" method-name="isExit" cacheable="false" category="org.tinygroup.remoteconfig.service.impl">
+      <service-parameters>
+        <service-parameter name="item" type="org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem" required="false" is-array="false"/>
+      </service-parameters>
+      <service-result name="isExitResult" required="false" is-array="false" type="boolean"/>
+    </service-method>
+  </service-component>
+</service-components>

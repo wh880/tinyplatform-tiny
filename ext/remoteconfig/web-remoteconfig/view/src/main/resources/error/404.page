@@ -1,0 +1,27 @@
+<div class="row padding-10">
+    <div class="text-center error-box">
+        <h1 class="error-text-2 bounceInDown animated"> Error 404 <span class="particle particle--c"></span><span
+                class="particle particle--a"></span><span class="particle particle--b"></span></h1>
+        <h2 class="font-xl"><strong><i class="fa fa-fw fa-warning fa-lg text-warning"></i>你要找的页面不存在.</strong></h2>
+        <br/>
+        <p class="lead">
+            抱歉，您要找的页面不存在。 点击<b><a id="errorBack" href="javascript:void(0);">回退</a></b> 按钮，退回到之前的页面。
+        </p>
+        <script>
+            $(function(){
+                $("#errorBack").on("click",function(){
+                    window.location.href = document.referrer;
+                })
+            })
+        </script>
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="list-inline">
+                    <li>
+                        &nbsp;<a href="${TINY_CONTEXT_PATH+adminPath}/home">我的地盘</a>&nbsp;
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

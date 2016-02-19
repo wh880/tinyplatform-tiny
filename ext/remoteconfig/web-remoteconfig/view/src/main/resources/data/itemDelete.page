@@ -1,0 +1,11 @@
+#@tForm("thisform" call("link","/remoteconfig/node/deleteNode") "post" {"class":""})
+	
+	是否确定删除？
+	
+	#@elementItem()
+		#@div(divClass="col-10 col-offset-2 form-inline")
+			#tSubmitInput("submitbtn" " 确定 " {"class":"btn btn-primary"})
+			<input type="button" name="" class="form-control #getMapVal("class",mapInfo)" onclick="javascript:history.go(-1);"/>
+		#end
+	#end
+#end

@@ -1,0 +1,39 @@
+#@tForm("thisform" call("link","/remoteconfig/node/editItem?id="+id) "post" {"class":""})
+	 #@elementItem("key：")
+	 #if(isEdit)
+	 	#tInput("key" item.key {"placeholder":"key","datatype":"*1-16","nullmsg":"key不能为空！","id":"key","ajaxurl":call("link","/remoteconfig/node/checkEditNode?id="+id)})
+	 #else
+        #tInput("key" item.key {"readonly":"true" ,"placeholder":"key","datatype":"*1-16","nullmsg":"key不能为空！","id":"key","ajaxurl":call("link","/remoteconfig/node/checkEditNode?id="+id)})
+	 #end
+    #end
+
+    #@elementItem("value：")
+        #tInput("value" item.value {"placeholder":"value","datatype":"*1-16","nullmsg":"value不能为空！"})
+    #end
+	
+#end
+<script>
+ $(function(){
+        $("form[name=thisform]").Validform({
+            beforeSubmit: function (curform) {
+                $(curform).ajaxSubmit({
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.status == "y" || data.status == "success") {
+                            layer.msg(data.info, {icon:1}, function () {
+                                $(curform).closest(".modal").trigger("close");
+                            	$("#show-content").load('#link("/remoteconfig/node/getAllItemBySubId?id="+id)');
+                            });
+                        } else {
+                            layer.msg(data.info ,{icon:2});
+                        }
+                    },
+                    error: function () {
+                        layer.msg("error",{icon:2});
+                    }
+                });
+                return false;
+            }
+        });
+    });
+</script>

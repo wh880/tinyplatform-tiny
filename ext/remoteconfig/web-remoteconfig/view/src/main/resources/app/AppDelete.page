@@ -1,0 +1,10 @@
+#@tForm("thisform" call("link","/remoteconfig/app/deleteApp") "post" {"class":""})
+    #@elementItem("")
+        #@tCheckboxes("myCheckBox" {"id":"myCheckBox"})
+       		#foreach(item : items)
+            	#@tCheckbox(item.key) ${item.value} #end
+			#end
+        #end
+    #end
+
+#end

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	   default-autowire="byName" default-lazy-init="true">
+	
+	<bean id="zkRemoteConfigWebClient" name="zkRemoteConfigWebClient" scope="singleton"
+		class="org.tinygroup.remoteconfig.service.impl.ZKRemoteConfigWebClient">
+		<property name="remoteConfigManageClient" ref="remoteConfigServer"></property>
+	</bean>
+	
+	<bean id="remoteConfigServiceImpl" name="remoteConfigServiceImpl"
+		class="org.tinygroup.remoteconfig.service.impl.RemoteConfigServiceImpl">
+		<property name="client" ref="remoteConfigServer"></property>
+	</bean>
+	
+	<bean id="remoteConfigNodeServiceImpl" name="remoteConfigNodeServiceImpl"
+		class="org.tinygroup.remoteconfig.service.impl.RemoteConfigNodeServiceImpl">
+		<property name="client" ref="remoteConfigServer"></property>
+	</bean>
+	
+	<bean id="remoteConfigTreeServiceImpl" name="remoteConfigTreeServiceImpl"
+		class="org.tinygroup.remoteconfig.service.impl.RemoteConfigTreeServiceImpl">
+		<property name="client" ref="remoteConfigServer"></property>
+	</bean>
+	
+</beans>

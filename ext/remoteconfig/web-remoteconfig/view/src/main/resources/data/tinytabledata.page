@@ -1,0 +1,110 @@
+#set(tableId='data-list',currentUrl=TINY_REQUEST_URI+'?'+tinyRequestQueryString)
+
+<style>
+.bg-danger>td{background:#f2dede !important}
+</style>
+			
+
+<div class="tinyheaderTools form-inline">
+	#if(isDelete)
+		<a href="javascript:;" class="btn btn-danger " id="delall">批量删除</a>
+	#end
+	#if(id && isAdd)
+    	#@aModal("#myModal" "增加" "" "" "btn btn-primary add-btn" "/remoteconfig/node/addItemPage?id="+id)增加#end
+	#end
+</div>
+<ul class="breadcrumb" style="padding:5px;margin-bottom:10px">
+	<li class="text-light-gray">所在位置： </li>				
+	<li>${node}</li>				
+</ul>
+#@dataTable({"id":tableId,"data-url":TINY_REQUEST_URI+'?'+tinyRequestQueryString})
+<thead>
+    <tr>
+        <th class="unsortable"><input type="checkbox" name="allck" value="">#</th>
+        <th>key</th>
+        <th>value</th>
+        <th class="unsortable">操作</th>
+    </tr>
+</thead>
+<tbody>
+#foreach(item : items)
+<tr${!item.rewrite?:" class='bg-danger'"}>
+	<td><input type="checkbox" value="${item.id}" name="idCheck"></td>
+	<td>${item.key}</td>
+	<td>${item.value}</td>
+	<td>
+		#if(isEdit)
+	        #@aModal("#myModal" "编辑" "" "" "" "/remoteconfig/node/editItemPage?id="+item.id)#faIcon("edit f-18")#end
+		#end
+		#if(isDelete)
+        	<a href="#link("/remoteconfig/node/deleteNode?id="+item.id)" class="btn-remove">#faIcon("remove f-18")</a>
+    	#end
+    </td>
+</td></tr>
+#end
+
+</tbody>
+#end
+
+<script type="text/javascript">
+ $(function(){
+ $("input[name=allck]").on("click",function(){
+ 		var thischeck=this.checked;
+ 	 	$("#${tableId}>tbody>tr>td input[name=idCheck]").each(function(){
+ 	 		this.checked=thischeck;
+ 	 	})
+ });
+ 	$("#delall").on("click",function() {
+		var checklist = [];
+		 $("#${tableId}>tbody>tr>td input[type=checkbox]:checked").each(function (e) {
+			  checklist.push($(this).val());
+		 });
+		if(checklist.length==0){
+			layer.msg("请选择记录")
+			 return false;
+		 }
+		layer.confirm("是否确认?",function() {
+			 $.ajax({
+				  url: "#link("/remoteconfig/node/deleteNodes")",
+				  data: {ids: checklist.join(","), itemId: checklist},
+				  dataType: "json",
+				  success: function (data) {
+						if (data.status=="success"||data.status=="y") {							 
+							layer.msg(data.info,{icon:1});	
+							$("#show-content").load('${currentUrl}');							 
+						}else{
+							 layer.msg(data.info,{icon:2});
+						}
+				  },
+				  traditional:true,
+				  error:function(){
+					  layer.msg("系统出错，请确认你的请求地址");
+				  }
+			 })
+		});
+		return false;
+  });
+  $("#${tableId}").on("click","a.btn-remove",function() {	
+  		var that=this;	
+		layer.confirm("是否确认?",function() {
+			 $.ajax({
+				  url: $(that).attr("href"),				
+				  dataType: "json",
+				  success: function (data) {
+						if (data.status=="success"||data.status=="y") {												 
+							layer.msg(data.info,{icon:1});
+							$("#show-content").load('${currentUrl}');								 
+						}else{
+							 layer.msg(data.info,{icon:2});
+						}
+				  },
+				  traditional:true,
+				  error:function(){
+					  layer.msg("系统出错，请确认你的请求地址");
+				  }
+			 })
+		});
+		return false;
+  }); 
+ });
+</script>

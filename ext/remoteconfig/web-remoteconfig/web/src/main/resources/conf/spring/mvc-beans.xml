@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+       default-autowire="byName">
+    <description>Spring MVC Configuration</description>
+
+    <!-- 加载配置属性文件 -->
+    <!-- <context:property-placeholder ignore-unresolvable="true" location="classpath:sdpm.properties"/> -->
+    <!-- 使用Annotation自动注册Bean,只扫描@Controller -->
+    <context:component-scan base-package="org.tinygroup.remoteconfig.web.action"
+                            use-default-filters="false"><!-- base-package 如果多个，用“,”分隔 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!-- 定义无Controller的path<->view直接映射 -->
+    <!-- <mvc:view-controller path="/" view-name="redirect:${adminPath}/home"/> -->
+
+
+    <!-- 支持Shiro对Controller的方法级AOP安全控制 begin-->
+    <!--<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"-->
+          <!--depends-on="lifecycleBeanPostProcessor">-->
+        <!--<property name="proxyTargetClass" value="true"/>-->
+    <!--</bean>-->
+
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.apache.shiro.authz.UnauthorizedException">error/403.page</prop>
+                <prop key="java.lang.Throwable">error/50x.page</prop>
+            </props>
+        </property>
+        <property name="warnLogCategory" value="exception"/>
+    </bean>
+    <!-- 支持Shiro对Controller的方法级AOP安全控制 end -->
+
+    <context:annotation-config/>
+
+    <!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给default servlet handler处理 -->
+    <mvc:default-servlet-handler/>
+
+    <!-- 启动aop的注解解析器-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+</beans>
