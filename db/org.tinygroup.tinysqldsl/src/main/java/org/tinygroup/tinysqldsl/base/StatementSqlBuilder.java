@@ -156,7 +156,6 @@ public abstract class StatementSqlBuilder {
 
 	private static Condition conditional(String comma, Condition... conditions) {
 		Assert.assertNotNull(conditions, "conditions must not null");
-		Assert.assertTrue(conditions.length >= 2, "conditions 长度必须大于等于2");
 		ConditionExpressionList expressionList = new ConditionExpressionList();
 		expressionList.setComma(comma);
 		expressionList.setUseBrackets(true);

@@ -208,7 +208,11 @@ public class ObjectMapper {
 					dslSession.getJdbcTemplate(), insert, tableMetaData);
 		} else {
 			keyGenerator = context.getTable().getGeneratorMap().get(keyName);
-			if (keyGenerator == null) {
+			if (keyGenerator == null) {//没有重写table对象的getGeneratorMap方法，那么从配置中加载
+				keyGenerator = dslSession.getConfiguration().getKeyGenerator(
+						context.getTableName(), keyName);
+			}
+			if (keyGenerator == null) {//如果没有配置默认的keygenerator，则使用AppKeyGenerator
 				keyGenerator = new AppKeyGenerator(dslSession.getIncrementer());
 			}
 		}
