@@ -39,6 +39,7 @@ public class LoggerTest extends TestCase {
 
 	public void testStartBusinessLog() {
 		System.out.println("------------1中文----------");
+		logger.setSupportTransaction(true);
 		logger.startTransaction();
 		System.out.println("------------2----------");
 		logger.logMessage(INFO, "start");
@@ -55,6 +56,7 @@ public class LoggerTest extends TestCase {
 
 	public void testStartBusinessLogANotSupport() {
 		System.out.println("------------1----------");
+		logger.setSupportTransaction(true);
 		logger.startTransaction();
 		System.out.println("------------2----------");
 		logger.logMessage(INFO, "start");
@@ -63,7 +65,9 @@ public class LoggerTest extends TestCase {
 		HelloA.logger.setSupportTransaction(false);
 		helloA.sayHello();
 		System.out.println("------------4----------");
-		new HelloB().sayHello();
+		HelloB helloB=new HelloB();
+		HelloB.logger.setSupportTransaction(true);
+		helloB.sayHello();
 		System.out.println("------------5----------");
 		logger.logMessage(INFO, "end");
 		System.out.println("------------6----------");
@@ -129,6 +133,7 @@ public class LoggerTest extends TestCase {
 	
 	public void testLogMaxSize(){
 		Logger logger1=LoggerFactory.getLogger("name1");
+		logger1.setSupportTransaction(true);
 		logger1.startTransaction();
 		logger1.setMaxBufferRecords(10);
 		logger1.logMessage(LogLevel.INFO, "打印日志信息：{1}",1);
@@ -155,6 +160,7 @@ public class LoggerTest extends TestCase {
 			public void run() {
 				Logger logger1=LoggerFactory.getLogger("name1");
 				LoggerFactory.setThreadLogLevel(LogLevel.INFO);
+				logger1.setSupportTransaction(true);
 				logger1.startTransaction();
 				logger1.logMessage(LogLevel.DEBUG, "打印事务日志信息：{1}",1);
 				for (int i = 1; i <= 10; i++) {

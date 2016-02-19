@@ -183,7 +183,9 @@ public class SimpleWebContext extends CommitMonitor implements WebContext {
 		public RequestDispatcher getRequestDispatcher(String path) {
 			RewriteWebContext webContext = WebContextUtil.findWebContext(
 					(HttpServletRequest) getRequest(), RewriteWebContext.class);
-			webContext.setPath(StringUtil.substringBefore(path, "?"));//去除带？后面的字符串
+			if(webContext!=null){
+				webContext.setPath(StringUtil.substringBefore(path, "?"));//去除带？后面的字符串
+			}
 			return super.getRequestDispatcher(path);
 		}
 

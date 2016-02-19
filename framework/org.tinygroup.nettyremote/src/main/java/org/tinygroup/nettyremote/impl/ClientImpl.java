@@ -188,7 +188,9 @@ public class ClientImpl implements Client {
 		}
 
 		try {
-			wg.await();
+			if(wg!=null){
+				wg.await();
+			}
 		} catch (InterruptedException e) {
 			LOGGER.logMessage(LogLevel.INFO, "等待EventLoopGroup shutdownGracefully中断");
 		}

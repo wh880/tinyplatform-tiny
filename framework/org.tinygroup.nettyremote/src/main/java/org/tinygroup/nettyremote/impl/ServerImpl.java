@@ -102,12 +102,24 @@ public class ServerImpl implements Server {
 		} catch (Exception e) {
 			LOGGER.errorMessage("关闭服务端时发生异常", e);
 		}
-		try {
-			bg.await();
-			wg.await();
-		} catch (InterruptedException ignore) {
-			LOGGER.logMessage(LogLevel.INFO, "等待EventLoopGroup shutdownGracefully中断");
+		if (bg != null) {
+			try {
+				bg.await();
+			} catch (InterruptedException ignore) {
+				LOGGER.logMessage(LogLevel.INFO,
+						"等待EventLoopGroup shutdownGracefully中断");
+			}
 		}
+
+		if (wg != null) {
+			try {
+				wg.await();
+			} catch (InterruptedException ignore) {
+				LOGGER.logMessage(LogLevel.INFO,
+						"等待EventLoopGroup shutdownGracefully中断");
+			}
+		}
+
 		LOGGER.logMessage(LogLevel.INFO, "关闭服务端完成");
 	}
 

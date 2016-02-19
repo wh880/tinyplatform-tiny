@@ -69,4 +69,13 @@ public class AsynchronousEventProcessorForTest  implements EventProcessor{
 		
 	}
 
+	public boolean isEnable() {
+		return true;
+	}
+
+	public void setEnable(boolean enable) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -1,0 +1,7 @@
+#macro hello(number,name,tag1,tag2)
+   ParameterList:${helloParameterList.size()}
+   #for(para:helloParameterList)
+     para:${para}
+   #end
+#end
+#call("hello",1,"yc",true,false)

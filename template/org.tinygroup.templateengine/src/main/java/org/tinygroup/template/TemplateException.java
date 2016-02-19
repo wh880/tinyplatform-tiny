@@ -15,6 +15,9 @@
  */
 package org.tinygroup.template;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tinygroup.template.listener.Point;
 
@@ -26,6 +29,7 @@ public class TemplateException extends Exception {
     private String fileName;
     private String originalMsg;
     private boolean showUpperMessage = true;
+    private List<Macro> macroList; //关联的宏列表信息
     /**
      * 异常语法块起点
      */
@@ -129,6 +133,18 @@ public class TemplateException extends Exception {
     	if(showUpperMessage){
     	   message = super.getMessage();
     	}
+    	//关联的宏信息
+    	if(macroList!=null){
+    	   StringBuffer sb = new StringBuffer();
+    	   for(Macro macro:macroList){
+    		   sb.append("宏文件路径:").append(macro.getMacroPath()).append(",宏名称:").append(macro.getName()).append("\n");
+    	   }
+    	   if(message!=null){
+    		   message = message+sb.toString();
+    	   }else{
+    		   message = sb.toString();
+    	   }
+    	}
         String pathInfo = fileName==null?"":"\n路径:" + fileName;
         
         if (context != null) {
@@ -159,6 +175,15 @@ public class TemplateException extends Exception {
 
 	public void setShowUpperMessage(boolean showUpperMessage) {
 		this.showUpperMessage = showUpperMessage;
+	}
+	
+	public void addMacro(Macro macro){
+		if(macroList == null){
+		   macroList = new ArrayList<Macro>();	
+		}
+		if(!macroList.contains(macro)){
+		   macroList.add(macro);
+		}
 	}
     
 }

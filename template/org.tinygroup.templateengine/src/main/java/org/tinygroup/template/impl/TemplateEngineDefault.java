@@ -15,10 +15,14 @@
  */
 package org.tinygroup.template.impl;
 
-import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.commons.tools.ExceptionUtil;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.template.*;
 import org.tinygroup.template.application.*;
 import org.tinygroup.template.function.*;
+import org.tinygroup.template.interpret.MacroException;
 import org.tinygroup.template.interpret.TemplateInterpreter;
 import org.tinygroup.template.interpret.context.*;
 import org.tinygroup.template.interpret.terminal.*;
@@ -52,7 +56,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     private TemplateCache<String,Object> localeSearchResults = new TemplateCacheDefault<String,Object>();
     private boolean checkModified = false;
     private boolean localeTemplateEnable = false;
-
+   
     public boolean isLocaleTemplateEnable() {
 		return localeTemplateEnable;
 	}
@@ -503,7 +507,10 @@ public class TemplateEngineDefault implements TemplateEngine {
             }
         } catch (IOException e) {
             throw new TemplateException(e);
-        }
+        } catch(TemplateException e){
+        	TemplateException te = processTemplateException(e);
+        	throw te;
+   	    }
     }
 
     public void renderTemplateWithOutLayout(String path, TemplateContext context, OutputStream outputStream) throws TemplateException {
@@ -579,7 +586,12 @@ public class TemplateEngineDefault implements TemplateEngine {
 
 
     public void renderTemplate(Template template, TemplateContext context, OutputStream outputStream) throws TemplateException {
-        template.render(context, outputStream);
+    	try{
+    		 template.render(context, outputStream);
+    	}catch(TemplateException e){
+    		TemplateException te = processTemplateException(e);
+        	throw te;
+    	}
     }
 
     public Macro findMacro(Object macroNameObject, Template template, TemplateContext context) throws TemplateException {
@@ -675,6 +687,34 @@ public class TemplateEngineDefault implements TemplateEngine {
     public StaticClassOperator getStaticClassOperator(String name)
             throws TemplateException {
         return staticClassOperatorMap.get(name);
+    }
+    
+    /**
+     * 对模板引擎的异常进行处理
+     * @param e
+     * @return
+     */
+    private TemplateException processTemplateException(TemplateException e){
+    	List<Throwable> list  = ExceptionUtil.getCauses(e,true);
+    	if(list!=null){
+    		TemplateException te=null;
+    		for(Throwable throwable:list){
+    		   if(throwable instanceof TemplateException){
+    			  if(te==null){
+    				 //异常链原始的TemplateException保留
+    				 te = (TemplateException) throwable;  
+    			  }else{
+    				 //异常链上的TemplateException，提取关键信息后抛弃
+    				 if(throwable instanceof MacroException){
+    					 MacroException me = (MacroException) throwable;
+    					 te.addMacro(me.getMacro());
+    				 }
+    			  }
+    		   }
+    		}
+    		return te;
+    	}
+    	return e;
     }
 
 }

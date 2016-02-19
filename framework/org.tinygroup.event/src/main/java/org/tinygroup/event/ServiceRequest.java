@@ -36,7 +36,7 @@ public final class ServiceRequest implements Serializable {
     
     private String nodeName;
     /**
-     * 组织标识
+     * 请求服务标识
      */
     private String serviceId;
     /**

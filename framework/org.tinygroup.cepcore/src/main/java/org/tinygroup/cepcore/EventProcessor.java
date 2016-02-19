@@ -92,4 +92,17 @@ public interface EventProcessor {
 	 * @param read
 	 */
 	void setRead(boolean read);
+	
+	
+	/**
+	 * 获取是否是enable，如果为false，则不接收任何服务处理
+	 * @return
+	 */
+	boolean isEnable();
+	
+	/**
+	 * 设置enable
+	 * @param enable
+	 */
+	void setEnable(boolean enable);
 }

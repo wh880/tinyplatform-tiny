@@ -24,6 +24,7 @@ import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.cepcoreimpl.test.AsynchronousEventProcessorForTest;
 import org.tinygroup.cepcoreimpl.test.EventProcessorForTest;
+import org.tinygroup.cepcoreimpl.test.EventProcessorForTestEnable;
 import org.tinygroup.cepcoreimpl.test.ServiceInfoForTest;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
@@ -65,6 +66,7 @@ public abstract class CEPCoreBaseTestCase extends TestCase {
 		eventProcessor2.getServiceInfos().add(initServiceInfo("b"));
 		eventProcessor2.getServiceInfos().add(initServiceInfo("exception"));
 		getCore().registerEventProcessor(eventProcessor2);
+		
 	}
 	
 	

@@ -59,5 +59,12 @@ public class ChannelSample extends AbstractChannel {
 		
 	}
 
+	public boolean isEnable() {
+		return true;
+	}
+
+	public void setEnable(boolean enable) {
+	}
+
 
 }

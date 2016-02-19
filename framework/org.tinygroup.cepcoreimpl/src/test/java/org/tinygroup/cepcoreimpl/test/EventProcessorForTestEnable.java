@@ -13,50 +13,59 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.simplechannel;
+package org.tinygroup.cepcoreimpl.test;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.tinygroup.channel.impl.AbstractChannel;
+import org.tinygroup.cepcore.CEPCore;
+import org.tinygroup.cepcore.EventProcessor;
 import org.tinygroup.event.Event;
 import org.tinygroup.event.ServiceInfo;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 
-public class SimpleChannel extends AbstractChannel {
-	private boolean enable= true;
-	private boolean read= true;
-	public String getId() {
-		return this.getClass().getSimpleName();
+public class EventProcessorForTestEnable implements EventProcessor {
+	List<ServiceInfo> list = new ArrayList<ServiceInfo>();
+	private static Logger LOGGER = LoggerFactory
+			.getLogger(EventProcessorForTestEnable.class);
+	private boolean enable = true;
+	public void process(Event event) {
+		String serviceId = event.getServiceRequest().getServiceId();
+		LOGGER.logMessage(LogLevel.INFO, "执行服务:{}", serviceId);
 	}
 
-	protected void receive(Event event) {
-		sendEvent(event);
+	public void setCepCore(CEPCore cepCore) {
 
 	}
 
 	public List<ServiceInfo> getServiceInfos() {
-		return null;
+		return list;
+	}
+
+	public String getId() {
+		return EventProcessorForTestEnable.class.getSimpleName();
 	}
 
 	public int getType() {
-		return TYPE_REMOTE;
+		return 2;
 	}
 
 	public int getWeight() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public List<String> getRegex() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public boolean isRead() {
-		return read;
+		return false;
 	}
 
 	public void setRead(boolean read) {
-		this.read = read;
+
 	}
 
 	public boolean isEnable() {
