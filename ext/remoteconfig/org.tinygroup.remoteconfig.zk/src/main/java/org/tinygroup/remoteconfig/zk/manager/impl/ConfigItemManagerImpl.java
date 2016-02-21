@@ -9,7 +9,7 @@ import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.manager.ConfigItemManager;
 
 /**
- * @author Administrator
+ * @author yanwj06282
  *
  */
 public class ConfigItemManagerImpl extends BaseManager implements ConfigItemManager {

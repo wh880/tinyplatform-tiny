@@ -10,7 +10,7 @@ import org.tinygroup.remoteconfig.manager.ProductManager;
 import org.tinygroup.remoteconfig.manager.VersionManager;
 
 /**
- * @author Administrator
+ * @author yanwj06282
  *
  */
 public class ProductManagerImpl extends BaseManager implements ProductManager {
@@ -36,16 +36,15 @@ public class ProductManagerImpl extends BaseManager implements ProductManager {
 		Product product = new Product();
 		product.setName(productId);
 		product.setTitle(value);
+		product.setVersions(versionManager.query(productId));
 		return product;
 	}
 
 	public List<Product> query(Product product) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public List<Product> query(Product product, int start, int limit) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
