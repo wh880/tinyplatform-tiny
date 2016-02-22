@@ -18,10 +18,8 @@ import org.tinygroup.remoteconfig.IRemoteConfigConstant;
 import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.service.NodeCache;
 import org.tinygroup.remoteconfig.service.inter.RemoteConfigItemService;
-import org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem;
 import org.tinygroup.remoteconfig.service.utils.EnvironmentHelper;
 import org.tinygroup.remoteconfig.service.utils.PathHelper;
-import org.tinygroup.remoteconfig.service.utils.WebUtils;
 import org.tinygroup.remoteconfig.web.action.pojo.ConfigViewItem;
 import org.tinygroup.remoteconfig.web.utils.AddBlankListUtils;
 
@@ -243,7 +241,8 @@ public class RemoteConfigItemAction extends BaseAction{
 		model.addAttribute("id", id);
 		if (StringUtils.isNotBlank(parentNode)) {
 			try {
-				remoteConfigNodeServiceImplWrapper.add(WebUtils.createConfigPath(PathHelper.getConfigPath(parentNode ,item.getKey()), item.getValue()));
+				ConfigPath configPath = PathHelper.createConfigPath(PathHelper.getConfigPath(parentNode ,""));
+				remoteConfigItemService.add(item.getKey() ,item.getValue() ,configPath);
 				return response(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -263,8 +262,11 @@ public class RemoteConfigItemAction extends BaseAction{
 	@RequestMapping("/deleteNode")
 	public Map<String ,String> delete(String id ,Model model){
 		String node = NodeCache.getNodeById(id);
+		if (StringUtils.isBlank(node)) {
+			return response(false);
+		}
 		try {
-			remoteConfigNodeServiceImplWrapper.delete(WebUtils.createConfigPath(node, ""));
+			remoteConfigItemService.delete("" ,PathHelper.createConfigPath(node));
 			return response(true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -281,16 +283,11 @@ public class RemoteConfigItemAction extends BaseAction{
 	@ResponseBody()
 	@RequestMapping("/deleteNodes")
 	public Map<String ,String> deletes(String ids ,Model model){
-		List<ConfigServiceItem> nodes = new ArrayList<ConfigServiceItem>();
 		String[] itemIdss = StringUtils.split(ids, ",");
-		for (String id : itemIdss) {
-			String node = NodeCache.getNodeById(id);
-			if (StringUtils.isNotBlank(node)) {
-				nodes.add(WebUtils.createConfigPath(node ,""));
-			}
-		}
 		try {
-			remoteConfigNodeServiceImplWrapper.deletes(nodes);
+			for (String id : itemIdss) {
+				delete(id, model);
+			}
 			return response(true);
 		} catch (Exception e) {
 			e.printStackTrace();
