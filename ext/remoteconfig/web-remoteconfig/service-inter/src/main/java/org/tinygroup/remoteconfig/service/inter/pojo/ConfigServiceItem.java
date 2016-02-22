@@ -17,21 +17,21 @@ public class ConfigServiceItem implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 8853330158938582679L;
-	String node;
+	String key;
 	String value;
 	ConfigPath configPath;
 	
-	public ConfigServiceItem(String node, String value ,ConfigPath configPath) {
-		this.node = node;
+	public ConfigServiceItem(String key, String value ,ConfigPath configPath) {
+		this.key = key;
 		this.value = value;
 		this.configPath = configPath;
 	}
 	
-	public String getNode() {
-		return node;
+	public String getKey() {
+		return key;
 	}
-	public void setNode(String node) {
-		this.node = node;
+	public void setKey(String key) {
+		this.key = key;
 	}
 	public String getValue() {
 		return value;

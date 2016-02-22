@@ -17,6 +17,10 @@ public class ProductManagerImpl extends BaseManager implements ProductManager {
 	
 	VersionManager versionManager;
 	
+	public void setVersionManager(VersionManager versionManager) {
+		this.versionManager = versionManager;
+	}
+	
 	public Product add(Product product) {
 		configItemManager.set(product.getName(), product.getTitle(), null);
 		return product;

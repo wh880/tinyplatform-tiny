@@ -1,4 +1,4 @@
-package org.tinygroup.remoteconfig.utils;
+package org.tinygroup.remoteconfig.service.utils;
 
 import org.apache.commons.lang.StringUtils;
 import org.tinygroup.remoteconfig.IRemoteConfigConstant;

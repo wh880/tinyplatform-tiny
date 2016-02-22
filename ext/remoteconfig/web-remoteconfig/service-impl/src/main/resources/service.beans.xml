@@ -9,7 +9,7 @@
 		<property name="remoteConfigManageClient" ref="remoteConfigServer"></property>
 	</bean>
 	
-	<bean id="remoteConfigServiceImpl" name="remoteConfigServiceImpl"
+	<!-- <bean id="remoteConfigServiceImpl" name="remoteConfigServiceImpl"
 		class="org.tinygroup.remoteconfig.service.impl.RemoteConfigServiceImpl">
 		<property name="client" ref="remoteConfigServer"></property>
 	</bean>
@@ -22,6 +22,34 @@
 	<bean id="remoteConfigTreeServiceImpl" name="remoteConfigTreeServiceImpl"
 		class="org.tinygroup.remoteconfig.service.impl.RemoteConfigTreeServiceImpl">
 		<property name="client" ref="remoteConfigServer"></property>
+	</bean> -->
+	
+	<bean id="remoteConfigEnvironmentService" name="remoteConfigEnvironmentService"
+		class="org.tinygroup.remoteconfig.service.impl.RemoteConfigEnvironmentServiceImpl">
+		<property name="environmentManager" ref="environmentManager"></property>
+	</bean>
+	
+	<bean id="remoteConfigModuleService" name="remoteConfigModuleService"
+		class="org.tinygroup.remoteconfig.service.impl.RemoteConfigModuleServiceImpl">
+		<property name="moduleManager" ref="moduleManager"></property>
+		<property name="configItemManager" ref="remoteConfigServer"></property>
+	</bean>
+	
+	<bean id="remoteConfigProductService" name="remoteConfigProductService"
+		class="org.tinygroup.remoteconfig.service.impl.RemoteConfigProductServiceImpl">
+		<property name="productManager" ref="productManager"></property>
+	</bean>
+	
+	<bean id="remoteConfigVersionService" name="remoteConfigVersionService"
+		class="org.tinygroup.remoteconfig.service.impl.RemoteConfigVersionServiceImpl">
+		<property name="versionManager" ref="versionManager"></property>
+		<property name="remoteConfigEnvService" ref="remoteConfigEnvironmentService"></property>
+	</bean>
+	
+	<bean id="remoteConfigItemService" name="remoteConfigItemService"
+		class="org.tinygroup.remoteconfig.service.impl.RemoteConfigItemServiceImpl">
+		<property name="versionManager" ref="versionManager"></property>
+		<property name="remoteConfigEnvService" ref="remoteConfigServer"></property>
 	</bean>
 	
 </beans>

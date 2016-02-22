@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Module;
 import org.tinygroup.remoteconfig.manager.ModuleManager;
-import org.tinygroup.remoteconfig.utils.PathHelper;
+import org.tinygroup.remoteconfig.zk.utils.PathHelper;
 
 public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 

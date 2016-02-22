@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.tinygroup.remoteconfig.service.impl;
+package org.tinygroup.remoteconfig.service.bank;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.remoteconfig.IRemoteConfigConstant;
 import org.tinygroup.remoteconfig.manager.ConfigItemManager;
-import org.tinygroup.remoteconfig.service.Environment;
 import org.tinygroup.remoteconfig.service.NodeCache;
 import org.tinygroup.remoteconfig.service.inter.RemoteConfigService;
 import org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem;
@@ -38,10 +37,10 @@ public class RemoteConfigServiceImpl implements RemoteConfigService{
 
 	public void add(ConfigServiceItem item) {
 		try {
-			client.set(item.getNode(), item.getValue() ,item.getConfigPath());
-			NodeCache.createNodeId(WebUtils.createPath(item.getNode(), item.getConfigPath()), null);
+			client.set(item.getKey(), item.getValue() ,item.getConfigPath());
+			NodeCache.createNodeId(WebUtils.createPath(item.getKey(), item.getConfigPath()), null);
 		} catch (BaseRuntimeException e) {
-			LOGGER.errorMessage(String.format("增加操作失败[%s=%s]", item.getNode(), item.getValue()) ,e);
+			LOGGER.errorMessage(String.format("增加操作失败[%s=%s]", item.getKey(), item.getValue()) ,e);
 		}
 	}
 
@@ -50,7 +49,7 @@ public class RemoteConfigServiceImpl implements RemoteConfigService{
 	 */
 	public void set(String oldId ,ConfigServiceItem item) {
 		try {
-			String newPath = WebUtils.createPath(item.getNode(), item.getConfigPath());
+			String newPath = WebUtils.createPath(item.getKey(), item.getConfigPath());
 			String oldNode = NodeCache.getNodeById(oldId);
 			//先判断是不是处理模块，如果是模块，则不允许修改key
 			Map<String, String> itemMap = getAll(item);
@@ -62,19 +61,19 @@ public class RemoteConfigServiceImpl implements RemoteConfigService{
 					delete(WebUtils.createConfigPath(oldNode, ""));
 					return;
 				}
-				LOGGER.errorMessage(String.format("模块无法修改key[%s=%s]", item.getNode(), item.getValue()));
+				LOGGER.errorMessage(String.format("模块无法修改key[%s=%s]", item.getKey(), item.getValue()));
 			}else {
 				//普通修改，key未变化
-				client.set(item.getNode(), item.getValue() ,item.getConfigPath());
+				client.set(item.getKey(), item.getValue() ,item.getConfigPath());
 			}
 		} catch (BaseRuntimeException e) {
-			LOGGER.errorMessage(String.format("设值操作失败[%s=%s]", item.getNode(), item.getValue()) ,e);
+			LOGGER.errorMessage(String.format("设值操作失败[%s=%s]", item.getKey(), item.getValue()) ,e);
 		}
 	}
 
 	public String get(ConfigServiceItem item) {
-		NodeCache.createNodeId(WebUtils.createPath(item.getNode(), item.getConfigPath()), null);
-		return client.get(item.getNode(), item.getConfigPath());
+		NodeCache.createNodeId(WebUtils.createPath(item.getKey(), item.getConfigPath()), null);
+		return client.get(item.getKey(), item.getConfigPath());
 	}
 
 	public Map<String ,String> getAll(ConfigServiceItem item) {
@@ -92,9 +91,9 @@ public class RemoteConfigServiceImpl implements RemoteConfigService{
 	}
 
 	public void delete(ConfigServiceItem item) {
-		client.delete(item.getNode(), item.getConfigPath());
+		client.delete(item.getKey(), item.getConfigPath());
 		//删除缓存
-		String node = WebUtils.createPath(item.getNode(), item.getConfigPath());
+		String node = WebUtils.createPath(item.getKey(), item.getConfigPath());
 		NodeCache.deleteNodeByNode(node);
 		List<String> subNodes = new ArrayList<String>();
 		for (Iterator<String> iterator = NodeCache.getNodeCache().keySet().iterator(); iterator.hasNext();) {
@@ -115,7 +114,7 @@ public class RemoteConfigServiceImpl implements RemoteConfigService{
 	}
 
 	public boolean isExit(ConfigServiceItem item){
-		return client.exists(item.getNode(), item.getConfigPath());
+		return client.exists(item.getKey(), item.getConfigPath());
 	}
 	
 }

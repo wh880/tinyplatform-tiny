@@ -4,7 +4,6 @@
 package org.tinygroup.remoteconfig.web.action;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.remoteconfig.IRemoteConfigConstant;
-import org.tinygroup.remoteconfig.config.ConfigPath;
+import org.tinygroup.remoteconfig.config.Product;
 import org.tinygroup.remoteconfig.service.NodeCache;
-import org.tinygroup.remoteconfig.service.inter.RemoteConfigService;
-import org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem;
-import org.tinygroup.remoteconfig.utils.PathHelper;
+import org.tinygroup.remoteconfig.service.inter.RemoteConfigProductService;
 import org.tinygroup.remoteconfig.web.action.pojo.ConfigViewItem;
 
 
@@ -37,7 +33,7 @@ public class RemoteConfigAppAction extends BaseAction{
 			.getLogger(RemoteConfigAppAction.class);
 	
 	@Autowired
-	protected RemoteConfigService remoteConfigServiceImplWrapper;
+	protected RemoteConfigProductService remoteConfigProductService;
 	
 	/**
 	 * 获取指定项目的配置项
@@ -63,7 +59,7 @@ public class RemoteConfigAppAction extends BaseAction{
 	public String getAllApp(Model model){
 		List<ConfigViewItem> items = getAllApp();
 		for (ConfigViewItem item : items) {
-			item.setId(NodeCache.getIdByNode(item.getKey()));
+			item.setId(NodeCache.createNodeId(item.getKey() ,null));
 		}
 		model.addAttribute("items", items);
 		if (items.size() > 0) {
@@ -76,11 +72,9 @@ public class RemoteConfigAppAction extends BaseAction{
 	 * 增加App
 	 */
 	@RequestMapping("/addApp")
-	public String addApp(ConfigViewItem item ,Model model){
-		item.setValue(item.getKey());
-		ConfigServiceItem serviceItem = tranPojo(item ,new ConfigPath());
-		remoteConfigServiceImplWrapper.add(serviceItem);
-		setDefaultModelFalg(serviceItem);
+	public String addApp(Product product ,Model model){
+		product.setTitle(product.getName());
+		remoteConfigProductService.add(product);
 		return "redirect:/remoteconfig/app/getAllApp";
 	}
 	
@@ -101,7 +95,9 @@ public class RemoteConfigAppAction extends BaseAction{
 		String[] appIds = StringUtils.split(myCheckBox, ",");
 		if (appIds != null && appIds.length > 0) {
 			for (String node : appIds) {
-				remoteConfigServiceImplWrapper.delete(new ConfigServiceItem(node, "", null));
+				Product product = new Product();
+				product.setName(node);
+				remoteConfigProductService.delete(product);
 			}
 		}
 		return "redirect:/remoteconfig/app/getAllApp";
@@ -110,27 +106,14 @@ public class RemoteConfigAppAction extends BaseAction{
 	private List<ConfigViewItem> getAllApp(){
 		List<ConfigViewItem> items = new ArrayList<ConfigViewItem>();
 		try {
-			Map<String ,String> itemMap = remoteConfigServiceImplWrapper.getAll(new ConfigServiceItem("" ,"" ,null));
-			for (Iterator<String> iterator = itemMap.keySet().iterator(); iterator.hasNext();) {
-				String key = iterator.next();
-				String value = itemMap.get(key);
-				items.add(new ConfigViewItem(key, value));
+			List<Product> products = remoteConfigProductService.query(new Product());
+			for (Product product : products) {
+				items.add(new ConfigViewItem(product.getName(), product.getTitle()));
 			}
 		} catch (Exception e) {
 			LOGGER.error(e);
 		}
 		return items;
-	}
-	
-	/**
-	 * 设置默认模块表示，用以区分模块和非模块
-	 * 
-	 * @param serviceItem
-	 */
-	protected void setDefaultModelFalg(ConfigServiceItem serviceItem){
-		serviceItem.setNode(PathHelper.getConfigPath(serviceItem.getNode() ,IRemoteConfigConstant.MODULE_FLAG));
-		serviceItem.setValue(IRemoteConfigConstant.MODULE_FLAG);
-		remoteConfigServiceImplWrapper.add(serviceItem);
 	}
 	
 }

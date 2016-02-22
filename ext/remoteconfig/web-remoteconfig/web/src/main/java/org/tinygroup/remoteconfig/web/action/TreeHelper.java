@@ -10,13 +10,16 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.tinygroup.remoteconfig.IRemoteConfigConstant;
-import org.tinygroup.remoteconfig.service.Environment;
+import org.tinygroup.remoteconfig.config.ConfigPath;
+import org.tinygroup.remoteconfig.config.Environment;
+import org.tinygroup.remoteconfig.config.Module;
+import org.tinygroup.remoteconfig.config.Product;
+import org.tinygroup.remoteconfig.config.Version;
+import org.tinygroup.remoteconfig.service.DefaultEnvironment;
 import org.tinygroup.remoteconfig.service.NodeCache;
-import org.tinygroup.remoteconfig.service.inter.RemoteConfigService;
-import org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem;
-import org.tinygroup.remoteconfig.service.utils.WebUtils;
-import org.tinygroup.remoteconfig.utils.PathHelper;
-import org.tinygroup.remoteconfig.web.utils.TreeBlankListUtils;
+import org.tinygroup.remoteconfig.service.inter.RemoteConfigItemService;
+import org.tinygroup.remoteconfig.service.inter.RemoteConfigProductService;
+import org.tinygroup.remoteconfig.service.utils.PathHelper;
 
 /**
  * @author yanwj
@@ -24,26 +27,29 @@ import org.tinygroup.remoteconfig.web.utils.TreeBlankListUtils;
  */
 public class TreeHelper {
 
-	protected static RemoteConfigService remoteConfigService;
+	protected static RemoteConfigProductService produceService;
+	
+	protected static RemoteConfigItemService remoteConfigItemService;
 	
 	/**
 	 * APP树
 	 * 
-	 * @param appNode
+	 * @param appName
 	 * @param treeLists
 	 */
-	public static void getAppTree(String appNode ,List<Map<String ,String>> treeLists){
-		Map<String , String> nodeMap = remoteConfigService.getAll(WebUtils.createConfigPath(appNode, ""));
-		String pid = NodeCache.getIdByNode(appNode);
-		treeLists.add(createTree(pid, appNode, "0", "true", "" ,true));
-		for (Iterator<String> iterator = nodeMap.keySet().iterator(); iterator.hasNext();) {
-			String key = iterator.next();
-			String value = nodeMap.get(key);
-			if (TreeBlankListUtils.isAccept(key)) {
-				String versionNode = PathHelper.getConfigPath(appNode ,key);
+	public static void getAppTree(String appName ,List<Map<String ,String>> treeLists){
+		Product product = new Product();
+		product.setName(appName);
+		product = produceService.get(product);
+		
+		if (product != null) {
+			String productId = NodeCache.createNodeId(appName, null);
+			treeLists.add(createTree(productId, appName, "0", true, false ,true));
+			for (Version version : product.getVersions()) {
+				String versionNode = PathHelper.getConfigPath(appName ,version.getName());
 				String versionId = NodeCache.createNodeId(versionNode, null);
-				treeLists.add(createTree(versionId, value, pid, "true", "true" ,true));
-				getVersionTree(versionNode, versionId, treeLists);
+				treeLists.add(createTree(versionId, version.getVersion(), productId, true, true ,true));
+				getVersionTree(version, versionId, treeLists);
 			}
 		}
 	}
@@ -55,23 +61,26 @@ public class TreeHelper {
 	 * @param pid
 	 * @param treeLists
 	 */
-	private static void getVersionTree(String versionNode ,String pid ,List<Map<String ,String>> treeLists){
-		Map<String , String> nodeMap = remoteConfigService.getAll(WebUtils.createConfigPath(versionNode, ""));
-		for (Iterator<String> iterator = nodeMap.keySet().iterator(); iterator.hasNext();) {
-			String key = iterator.next();
-			String value = nodeMap.get(key);
-			if (TreeBlankListUtils.isAccept(key)) {
-				String envNode = PathHelper.getConfigPath(versionNode ,key);
-				String nodeId = NodeCache.getIdByNode(envNode);
-				String isAdd = "";
-				String isEdit = "true";
-				if (StringUtils.equals(key, IRemoteConfigConstant.DEFAULT_ENV)) {
-					isAdd = "true";
-					getDefaultModuleTree(envNode,nodeId, treeLists);
-				}else {
-					getModuleTree(envNode,nodeId, treeLists);
+	private static void getVersionTree(Version version ,String pid ,List<Map<String ,String>> treeLists){
+		Environment defaultEnv = null;
+		//先处理初始环境
+		for (Environment environment : version.getEnvironment()) {
+			if (StringUtils.equals(environment.getName(), IRemoteConfigConstant.DEFAULT_ENV)) {
+				defaultEnv = environment;
+				String nodeId = NodeCache.createNodeId(environment.getName() ,pid);
+				treeLists.add(createTree(nodeId, environment.getEnvironment(), pid, true, true ,false));
+				getDefaultModuleTree(environment,nodeId, treeLists);
+				break;
+			}
+		}
+		//其次处理其他环境
+		if (defaultEnv != null) {
+			for (Environment environment : version.getEnvironment()) {
+				String nodeId = NodeCache.createNodeId(environment.getName() ,pid);
+				treeLists.add(createTree(nodeId, environment.getEnvironment(), pid, false, false ,false));
+				if (!StringUtils.equals(environment.getName(), IRemoteConfigConstant.DEFAULT_ENV)) {
+					getModuleTree(environment,defaultEnv ,nodeId, treeLists);
 				}
-				treeLists.add(createTree(nodeId, value, pid, isAdd, isEdit ,false));
 			}
 		}
 	}
@@ -84,29 +93,35 @@ public class TreeHelper {
 	 * @param pid
 	 * @param treeLists
 	 */
-	private static void getDefaultModuleTree(String moduleNode ,String pid ,List<Map<String ,String>> treeLists){
-		Map<String , String> nodeMap = remoteConfigService.getAll(WebUtils.createConfigPath(moduleNode, ""));
-		//首先判断是否是模块,不是模块直接跳出
-		if (nodeMap.get(IRemoteConfigConstant.MODULE_FLAG) != null) {
-			for (Iterator<String> iterator = nodeMap.keySet().iterator(); iterator.hasNext();) {
-				String key = iterator.next();
-				String value = nodeMap.get(key);
-				if (TreeBlankListUtils.isAccept(key)) {
-					String subModuleNode = PathHelper.getConfigPath(moduleNode ,key);
-					String nodeId = NodeCache.createNodeId(subModuleNode, null);
-					String isAdd = "";
-					String isEdit = "true";
-					Map<String , String> tempNodeMap = remoteConfigService.getAll(WebUtils.createConfigPath(subModuleNode, ""));
-					if (tempNodeMap.get(IRemoteConfigConstant.MODULE_FLAG) != null) {
-						isAdd = isAdd(tempNodeMap, subModuleNode);
-					}else {
-						continue;
-					}
-					treeLists.add(createTree(nodeId, value, pid, isAdd, isEdit ,false));
-					//递归
-					getDefaultModuleTree(subModuleNode,nodeId, treeLists);
-				}
+	private static void getDefaultModuleTree(Environment environment ,String pid ,List<Map<String ,String>> treeLists){
+		for (Module module : environment.getModules()) {
+			String moduleId = NodeCache.createNodeId(module.getName(), pid);
+			getDefaultModuleTree(module, moduleId, true, treeLists);
+		}
+	}
+	
+	private static void getDefaultModuleTree(Module module ,String pid , boolean isEdit ,List<Map<String ,String>> treeLists){
+		List<Module> subModules = module.getSubModules();
+		for (Module subModule : subModules) {
+			String nodeId = NodeCache.createNodeId(subModule.getName(), pid);
+			boolean isAdd = false;
+			Map<String , String> tempNodeMap = remoteConfigItemService.getAll(PathHelper.createConfigPath(NodeCache.getNodeById(nodeId)));
+			if (tempNodeMap.get(IRemoteConfigConstant.MODULE_FLAG) != null) {
+				isAdd = isAdd(tempNodeMap, NodeCache.getNodeById(pid));
+			}else {
+				continue;
 			}
+			treeLists.add(createTree(nodeId, module.getModuleName(), pid, isAdd, true ,false));
+			getDefaultModuleTree(subModule, nodeId, isEdit, treeLists);
+		}
+	}
+	
+	private static void getModuleTree(Module module ,String pid , boolean isEdit ,List<Map<String ,String>> treeLists){
+		List<Module> subModules = module.getSubModules();
+		for (Module subModule : subModules) {
+			String nodeId = NodeCache.createNodeId(subModule.getName(), pid);
+			treeLists.add(createTree(nodeId, module.getModuleName(), pid, false, false ,false));
+			getModuleTree(subModule, nodeId, isEdit, treeLists);
 		}
 	}
 	
@@ -118,39 +133,10 @@ public class TreeHelper {
 	 * @param pid
 	 * @param treeLists
 	 */
-	private static void getModuleTree(String moduleNode ,String pid ,List<Map<String ,String>> treeLists){
-		//自身模块，包括重写公共模块的属性
-		ConfigServiceItem serviceItem = WebUtils.createConfigPath(moduleNode, "");
-		//公共模块
-		ConfigServiceItem defaultServiceItem = getDefaultEnvServiceItem(moduleNode);
-		Map<String , String> nodeMap = remoteConfigService.getAll(serviceItem);
-		if (defaultServiceItem == null) {
-			return;
-		}
-		Map<String , String> defaultNodeMap = remoteConfigService.getAll(defaultServiceItem);
-		//覆盖
-		defaultNodeMap.putAll(nodeMap);
-		//首先判断是否是模块,不是模块直接跳出
-		if (defaultNodeMap.get(IRemoteConfigConstant.MODULE_FLAG) != null) {
-			for (Iterator<String> iterator = defaultNodeMap.keySet().iterator(); iterator.hasNext();) {
-				String key = iterator.next();
-				String value = defaultNodeMap.get(key);
-				if (TreeBlankListUtils.isAccept(key)) {
-					String subModuleNode = PathHelper.getConfigPath(moduleNode ,key);
-					String nodeId = NodeCache.createNodeId(subModuleNode ,null);
- 					ConfigServiceItem tempDefaultServiceItem = getDefaultEnvServiceItem(subModuleNode);
-					Map<String , String> tempNodeMap = remoteConfigService.getAll(tempDefaultServiceItem);
-					if (tempNodeMap.get(IRemoteConfigConstant.MODULE_FLAG) == null) {
-						continue;
-					}
-					if (StringUtils.isBlank(value)) {
-						value = remoteConfigService.get(tempDefaultServiceItem);
-					}
-					treeLists.add(createTree(nodeId, value, pid, "", "" ,false));
-					//递归
-					getModuleTree(subModuleNode,nodeId, treeLists);
-				}
-			}
+	private static void getModuleTree(Environment environment ,Environment defaultEnv ,String pid ,List<Map<String ,String>> treeLists){
+		for (Module module : defaultEnv.getModules()) {
+			String moduleId = NodeCache.createNodeId(module.getName(), pid);
+			getModuleTree(module, moduleId, false, treeLists);
 		}
 	}
 	
@@ -160,14 +146,14 @@ public class TreeHelper {
 	 * @param modulePath
 	 * @return
 	 */
-	public static ConfigServiceItem getDefaultEnvServiceItem(String moduleNode){
-		ConfigServiceItem defaultServiceItem = WebUtils.createConfigPath(moduleNode, "");
-		if (defaultServiceItem.getConfigPath() != null && StringUtils.isNotBlank(defaultServiceItem.getConfigPath().getEnvironmentName())) {
-			defaultServiceItem.getConfigPath().setEnvironmentName(Environment.DEFAULT.getName());
+	public static ConfigPath getDefaultEnvServiceItem(String moduleNode){
+		ConfigPath configPath = PathHelper.createConfigPath(moduleNode);
+		if (StringUtils.isNotBlank(configPath.getEnvironmentName())) {
+			configPath.setEnvironmentName(DefaultEnvironment.DEFAULT.getName());
 		}else {
 			return null;
 		}
-		return defaultServiceItem;
+		return configPath;
 	}
 	
 	/**
@@ -177,24 +163,26 @@ public class TreeHelper {
 	 * @param parentNode
 	 * @return
 	 */
-	public static String isAdd(Map<String , String> nodeMap ,String parentNode){
+	public static boolean isAdd(Map<String , String> nodeMap ,String parentNode){
+		//TODO:长度判断不规范，后续修改
 		if (StringUtils.split(parentNode ,"/").length <= 3) {
-			return "true";
+			return true;
 		}
 		if (StringUtils.indexOf(parentNode, IRemoteConfigConstant.DEFAULT_ENV) == -1) {
-			return "";
+			return false;
 		}
 		for (Iterator<String> iterator = nodeMap.keySet().iterator(); iterator.hasNext();) {
 			String key = iterator.next();
 			if (StringUtils.equals(key, IRemoteConfigConstant.MODULE_FLAG)) {
 				continue;
 			}
-			Map<String , String> tempNodeMap = remoteConfigService.getAll(WebUtils.createConfigPath(PathHelper.getConfigPath(parentNode ,key), ""));
+			
+			Map<String , String> tempNodeMap = remoteConfigItemService.getAll(PathHelper.createConfigPath(PathHelper.getConfigPath(parentNode ,key)));
 			if (!isModule(tempNodeMap)) {
-				return "";
+				return false;
 			}
 		}
-		return "true";
+		return true;
 	}
 	
 	/**
@@ -208,13 +196,13 @@ public class TreeHelper {
 	 * @param isOpen 是否打开
 	 * @return
 	 */
-	private static Map<String ,String> createTree(String id,String value , String parentId ,String isAdd ,String isEdit ,boolean isOpen){
+	private static Map<String ,String> createTree(String id,String value , String parentId ,boolean isAdd ,boolean isEdit ,boolean isOpen){
 		Map<String ,String> itemMap = new HashMap<String, String>();
 		itemMap.put("id", id);
 		itemMap.put("name", value);
-		itemMap.put("add", String.valueOf(isAdd));
-		itemMap.put("edit", String.valueOf(isEdit));
-		itemMap.put("open", String.valueOf(isOpen));
+		itemMap.put("add", isAdd?"true":"");
+		itemMap.put("edit", isEdit?"true":"");
+		itemMap.put("open", isOpen?"true":"");
 		if (NodeCache.isExitById(parentId)) {
 			itemMap.put("pId", parentId);
 		}

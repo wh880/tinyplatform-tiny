@@ -22,6 +22,10 @@ public class EnvironmentManagerImpl extends BaseManager implements EnvironmentMa
 
 	ModuleManager moduleManager;
 	
+	public void setModuleManager(ModuleManager moduleManager) {
+		this.moduleManager = moduleManager;
+	}
+	
 	public Environment add(Environment env, String versionId, String productId) {
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);

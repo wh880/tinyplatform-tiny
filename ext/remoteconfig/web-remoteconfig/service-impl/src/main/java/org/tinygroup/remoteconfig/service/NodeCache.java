@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.tinygroup.remoteconfig.utils.PathHelper;
+import org.tinygroup.remoteconfig.service.utils.PathHelper;
 
 /**
  * 因为没有数据库，而前端树组件需要ID进行组装，所以这个类负责节点的缓存id组装

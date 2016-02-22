@@ -19,7 +19,7 @@ import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.manager.ConfigItemReader;
 import org.tinygroup.remoteconfig.model.RemoteConfig;
 import org.tinygroup.remoteconfig.model.RemoteEnvironment;
-import org.tinygroup.remoteconfig.utils.PathHelper;
+import org.tinygroup.remoteconfig.zk.utils.PathHelper;
 
 
 public class ZKConfigClientImpl implements ConfigItemReader ,RemoteConfigReadClient{

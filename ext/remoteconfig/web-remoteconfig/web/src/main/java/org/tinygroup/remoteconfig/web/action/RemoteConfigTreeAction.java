@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.tinygroup.remoteconfig.service.NodeCache;
+import org.tinygroup.remoteconfig.service.inter.RemoteConfigEnvService;
+import org.tinygroup.remoteconfig.service.inter.RemoteConfigModuleService;
 import org.tinygroup.remoteconfig.service.inter.RemoteConfigService;
 import org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem;
 import org.tinygroup.remoteconfig.service.utils.WebUtils;
@@ -50,8 +52,11 @@ import org.tinygroup.remoteconfig.web.utils.AddBlankListUtils;
 public class RemoteConfigTreeAction extends BaseAction{
 
 	@Autowired
-	protected RemoteConfigService remoteConfigTreeServiceImplWrapper;
-	
+	protected RemoteConfigService remoteConfigVersionService;
+	@Autowired
+	RemoteConfigModuleService remoteConfigModuleService;
+	@Autowired
+	RemoteConfigEnvService remoteConfigEnvironmentService;
 	/**
 	 * 
 	 * 

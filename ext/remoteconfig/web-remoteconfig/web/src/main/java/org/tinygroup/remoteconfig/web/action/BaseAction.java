@@ -54,11 +54,11 @@ public class BaseAction {
 			return null;
 		}
 		ConfigViewItem viewItem = new ConfigViewItem();
-		viewItem.setId(NodeCache.getIdByNode(item.getNode()));
+		viewItem.setId(NodeCache.getIdByNode(item.getKey()));
 		if (NodeCache.isExitById(parentId)) {
 			viewItem.setParentId(parentId);
 		}
-		viewItem.setKey(item.getNode());
+		viewItem.setKey(item.getKey());
 		viewItem.setValue(item.getValue());
 		return viewItem;
 	}

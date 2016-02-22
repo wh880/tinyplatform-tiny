@@ -16,13 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.tinygroup.remoteconfig.IRemoteConfigConstant;
 import org.tinygroup.remoteconfig.config.ConfigPath;
-import org.tinygroup.remoteconfig.service.Environment;
 import org.tinygroup.remoteconfig.service.NodeCache;
-import org.tinygroup.remoteconfig.service.inter.RemoteConfigService;
+import org.tinygroup.remoteconfig.service.inter.RemoteConfigItemService;
 import org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem;
 import org.tinygroup.remoteconfig.service.utils.EnvironmentHelper;
+import org.tinygroup.remoteconfig.service.utils.PathHelper;
 import org.tinygroup.remoteconfig.service.utils.WebUtils;
-import org.tinygroup.remoteconfig.utils.PathHelper;
 import org.tinygroup.remoteconfig.web.action.pojo.ConfigViewItem;
 import org.tinygroup.remoteconfig.web.utils.AddBlankListUtils;
 
@@ -32,10 +31,10 @@ import org.tinygroup.remoteconfig.web.utils.AddBlankListUtils;
  */
 @Controller
 @RequestMapping("/remoteconfig/node")
-public class RemoteConfigNodeAction extends BaseAction{
+public class RemoteConfigItemAction extends BaseAction{
 
 	@Autowired
-	protected RemoteConfigService remoteConfigNodeServiceImplWrapper;
+	protected RemoteConfigItemService remoteConfigItemService;
 	
 	/**
 	 * 获取所有的配置项
@@ -50,8 +49,8 @@ public class RemoteConfigNodeAction extends BaseAction{
 			items = new ArrayList<ConfigViewItem>();
 		}else {
 			try {
-				Map<String ,String> nodeMap = remoteConfigNodeServiceImplWrapper.getAll(WebUtils.createConfigPath(node, ""));
-				Map<String ,String> defaultNodeMap = remoteConfigNodeServiceImplWrapper.getAll(TreeHelper.getDefaultEnvServiceItem(node));
+				Map<String ,String> nodeMap = remoteConfigItemService.getAll(PathHelper.createConfigPath(node));
+				Map<String ,String> defaultNodeMap = remoteConfigItemService.getAll(TreeHelper.getDefaultEnvServiceItem(node));
 				items = tranPojos(nodeMap , defaultNodeMap ,id);
 				defaultNodeMap.putAll(nodeMap);
 				boolean isAdd = isAdd(defaultNodeMap, node);
@@ -78,7 +77,7 @@ public class RemoteConfigNodeAction extends BaseAction{
 		for (Iterator<String> iterator = nodeMap.keySet().iterator(); iterator.hasNext();) {
 			String key = iterator.next();
 			String path = PathHelper.getConfigPath(parentNode ,key);
-			Map<String ,String> tempNodeMap = remoteConfigNodeServiceImplWrapper.getAll(TreeHelper.getDefaultEnvServiceItem(path));
+			Map<String ,String> tempNodeMap = remoteConfigItemService.getAll(TreeHelper.getDefaultEnvServiceItem(path));
 			if (isModule(tempNodeMap)) {
 				return false;
 			}
@@ -100,8 +99,8 @@ public class RemoteConfigNodeAction extends BaseAction{
 		}else {
 			String parentNode = StringUtils.substringBeforeLast(node, "/");
 			try {
-				Map<String ,String>  serviceItemMap = remoteConfigNodeServiceImplWrapper.getAll(WebUtils.createConfigPath(parentNode, ""));
-				Map<String ,String>  defaultServiceItemMap = remoteConfigNodeServiceImplWrapper.getAll(TreeHelper.getDefaultEnvServiceItem(parentNode));
+				Map<String ,String>  serviceItemMap = remoteConfigItemService.getAll(PathHelper.createConfigPath(parentNode));
+				Map<String ,String>  defaultServiceItemMap = remoteConfigItemService.getAll(TreeHelper.getDefaultEnvServiceItem(parentNode));
 				items = tranPojos(serviceItemMap ,defaultServiceItemMap ,NodeCache.getIdByNode(parentNode));
 				model.addAttribute("id", NodeCache.getIdByNode(parentNode));
 				defaultServiceItemMap.putAll(serviceItemMap);
@@ -170,7 +169,7 @@ public class RemoteConfigNodeAction extends BaseAction{
 	@RequestMapping("/getItem")
 	public String getItem(String id ,Model model){
 		String node = NodeCache.getNodeById(id);
-		ConfigViewItem item = new ConfigViewItem(node, remoteConfigNodeServiceImplWrapper.get(WebUtils.createConfigPath(node, "")));
+		ConfigViewItem item = new ConfigViewItem(node, remoteConfigItemService.get("" ,PathHelper.createConfigPath(node)));
 		model.addAttribute("id", id);
 		model.addAttribute("item", item);
 		return "/data/itemEdit.pagelet";
@@ -181,12 +180,10 @@ public class RemoteConfigNodeAction extends BaseAction{
 		String node = NodeCache.getNodeById(id);
 		model.addAttribute("id", id);
 		ConfigPath configPath = PathHelper.createConfigPath(node);
-		ConfigServiceItem serviceItem = new ConfigServiceItem("", "", configPath);
-		String value = remoteConfigNodeServiceImplWrapper.get(serviceItem);
-		Map<String, String> itemMap = remoteConfigNodeServiceImplWrapper.getAll(serviceItem);
+		String value = remoteConfigItemService.get("" ,configPath);
+		Map<String, String> itemMap = remoteConfigItemService.getAll(configPath);
 		if (StringUtils.isBlank(value) && StringUtils.isNotBlank(configPath.getEnvironmentName())) {
-			ConfigServiceItem defaultServiceItem = new ConfigServiceItem("", "", EnvironmentHelper.getDefaultEnvPath(configPath));
-			value = remoteConfigNodeServiceImplWrapper.get(defaultServiceItem);
+			value = remoteConfigItemService.get("" ,EnvironmentHelper.getDefaultEnvPath(configPath));
 		}
 		ConfigViewItem item = new ConfigViewItem(StringUtils.substringAfterLast(node, "/") ,value);
 		model.addAttribute("item", item);
@@ -215,11 +212,12 @@ public class RemoteConfigNodeAction extends BaseAction{
 		try {
 			if (StringUtils.endsWith(node, "/"+item.getKey())) {
 				//key未变化
-				remoteConfigNodeServiceImplWrapper.set(id ,WebUtils.createConfigPath(node, item.getValue()));
+				remoteConfigItemService.set(item.getKey() ,item.getValue() ,PathHelper.createConfigPath(node));
 			}else {
 				//key变化
 				String parentNode = StringUtils.substringBeforeLast(node, "/");
-				remoteConfigNodeServiceImplWrapper.set(id , WebUtils.createConfigPath(PathHelper.getConfigPath(parentNode ,item.getKey()), item.getValue()));
+				
+				remoteConfigItemService.set(item.getKey() ,item.getValue() , PathHelper.createConfigPath(PathHelper.getConfigPath(parentNode ,item.getKey())));
 			}
 			return response(true);
 		} catch (Exception e) {

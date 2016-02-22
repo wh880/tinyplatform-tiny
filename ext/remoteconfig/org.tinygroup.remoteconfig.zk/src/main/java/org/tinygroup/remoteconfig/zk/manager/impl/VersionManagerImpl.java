@@ -22,6 +22,10 @@ public class VersionManagerImpl extends BaseManager implements VersionManager {
 
 	EnvironmentManager environmentManager;
 	
+	public void setEnvironmentManager(EnvironmentManager environmentManager) {
+		this.environmentManager = environmentManager;
+	}
+	
 	public Version add(Version version, String productId) {
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);

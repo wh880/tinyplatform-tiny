@@ -11,7 +11,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.manager.ConfigItemManager;
-import org.tinygroup.remoteconfig.service.Environment;
+import org.tinygroup.remoteconfig.service.DefaultEnvironment;
 
 /**
  * @author yanwj
@@ -34,7 +34,7 @@ public class EnvironmentHelper {
 		Map<String ,String> envMap = client.getALL(tempConfigPath);
 		for (Iterator<String> iterator = envMap.keySet().iterator(); iterator.hasNext();) {
 			String key = iterator.next();
-			if ( StringUtils.equals(Environment.DEFAULT.getName(), key)) {
+			if ( StringUtils.equals(DefaultEnvironment.DEFAULT.getName(), key)) {
 				continue;
 			}
 			ConfigPath configPath = new ConfigPath();
@@ -51,7 +51,7 @@ public class EnvironmentHelper {
 		ConfigPath tempConfigPath = new ConfigPath();
 		tempConfigPath.setVersionName(configPath.getVersionName());
 		tempConfigPath.setProductName(configPath.getProductName());
-		tempConfigPath.setEnvironmentName(Environment.DEFAULT.getName());
+		tempConfigPath.setEnvironmentName(DefaultEnvironment.DEFAULT.getName());
 		tempConfigPath.setModulePath(configPath.getModulePath());
 		return tempConfigPath;
 	}

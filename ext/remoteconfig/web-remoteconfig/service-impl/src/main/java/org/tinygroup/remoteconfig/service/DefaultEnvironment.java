@@ -12,7 +12,7 @@ import org.tinygroup.remoteconfig.IRemoteConfigConstant;
  * @author yanwj
  * 
  */
-public enum Environment {
+public enum DefaultEnvironment {
 
 	//初始环境，提供配置项的公共库
 	DEFAULT( IRemoteConfigConstant.DEFAULT_ENV, "default(初始环境)"),
@@ -25,7 +25,7 @@ public enum Environment {
 	String name;
 	String desc;
 
-	Environment( String name, String desc) {
+	DefaultEnvironment( String name, String desc) {
 		this.name = name;
 		this.desc = desc;
 	}
@@ -46,7 +46,7 @@ public enum Environment {
 		this.desc = desc;
 	}
 
-	public static Environment[] getAllEnv() {
+	public static DefaultEnvironment[] getAllEnv() {
 		return values();
 	}
 
@@ -56,8 +56,8 @@ public enum Environment {
 	 * @param type
 	 * @return
 	 */
-	public Environment isAcceptType(String type){
-		for (Environment env : values()) {
+	public DefaultEnvironment isAcceptType(String type){
+		for (DefaultEnvironment env : values()) {
 			if (StringUtils.equals(env.getName(), type)) {
 				return env;
 			}

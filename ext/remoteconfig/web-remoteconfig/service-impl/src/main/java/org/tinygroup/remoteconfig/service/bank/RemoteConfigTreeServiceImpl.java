@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.tinygroup.remoteconfig.service.impl;
+package org.tinygroup.remoteconfig.service.bank;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,12 +13,12 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.remoteconfig.IRemoteConfigConstant;
 import org.tinygroup.remoteconfig.config.ConfigPath;
-import org.tinygroup.remoteconfig.service.Environment;
+import org.tinygroup.remoteconfig.service.DefaultEnvironment;
 import org.tinygroup.remoteconfig.service.NodeCache;
 import org.tinygroup.remoteconfig.service.inter.pojo.ConfigServiceItem;
 import org.tinygroup.remoteconfig.service.utils.EnvironmentHelper;
+import org.tinygroup.remoteconfig.service.utils.PathHelper;
 import org.tinygroup.remoteconfig.service.utils.WebUtils;
-import org.tinygroup.remoteconfig.utils.PathHelper;
 
 /**
  * 
@@ -36,7 +36,7 @@ public class RemoteConfigTreeServiceImpl extends RemoteConfigServiceImpl{
 	public void add(ConfigServiceItem item) {
 		super.add(item);
 		//设置模块标志位
-		String nodeName = WebUtils.createPath(item.getNode(), item.getConfigPath());
+		String nodeName = WebUtils.createPath(item.getKey(), item.getConfigPath());
 		//初始化环境
 		if (StringUtils.split(nodeName, "/").length == 2) {
 			initEnv(nodeName);
@@ -51,13 +51,13 @@ public class RemoteConfigTreeServiceImpl extends RemoteConfigServiceImpl{
 	public void delete(ConfigServiceItem item) {
 		//必须是初始环境
 		if (item != null && item.getConfigPath() != null) {
-			if (StringUtils.equals(org.tinygroup.remoteconfig.service.Environment.DEFAULT.getName(), item.getConfigPath().getEnvironmentName())) {
+			if (StringUtils.equals(DefaultEnvironment.DEFAULT.getName(), item.getConfigPath().getEnvironmentName())) {
 				List<String> subNodes = new ArrayList<String>();
 				deleteNode(item ,subNodes);
 				//操作其他环境
 				List<ConfigPath> otherConfigPath = EnvironmentHelper.getOtherEnvPath(client, item.getConfigPath());
 				for (ConfigPath configPath : otherConfigPath) {
-					ConfigServiceItem tempServiceItem = new ConfigServiceItem(item.getNode(), "", configPath);
+					ConfigServiceItem tempServiceItem = new ConfigServiceItem(item.getKey(), "", configPath);
 					deleteNode(tempServiceItem ,subNodes);
 				}
 				for (String node : subNodes) {
@@ -76,9 +76,9 @@ public class RemoteConfigTreeServiceImpl extends RemoteConfigServiceImpl{
 	}
 
 	private void deleteNode(ConfigServiceItem item ,List<String> subNodes){
-		client.delete(item.getNode(), item.getConfigPath());
+		client.delete(item.getKey(), item.getConfigPath());
 		//删除缓存
-		String node = WebUtils.createPath(item.getNode(), item.getConfigPath());
+		String node = WebUtils.createPath(item.getKey(), item.getConfigPath());
 		NodeCache.deleteNodeByNode(node);
 		for (Iterator<Entry<String,String>> iterator = NodeCache.getNodeCache().entrySet().iterator(); iterator.hasNext();) {
 			Entry<String,String> entry = iterator.next();
@@ -95,7 +95,7 @@ public class RemoteConfigTreeServiceImpl extends RemoteConfigServiceImpl{
 	 * @param serviceItem
 	 */
 	protected void setDefaultModelFalg(ConfigServiceItem serviceItem){
-		serviceItem.setNode(PathHelper.getConfigPath(serviceItem.getNode() ,IRemoteConfigConstant.MODULE_FLAG));
+		serviceItem.setKey(PathHelper.getConfigPath(serviceItem.getKey() ,IRemoteConfigConstant.MODULE_FLAG));
 		serviceItem.setValue(IRemoteConfigConstant.MODULE_FLAG);
 		super.add(serviceItem);
 	}
@@ -107,7 +107,7 @@ public class RemoteConfigTreeServiceImpl extends RemoteConfigServiceImpl{
 	 * 
 	 */
 	private void initEnv(String parentNode) {
-		for (Environment env : Environment.getAllEnv()) {
+		for (DefaultEnvironment env : DefaultEnvironment.getAllEnv()) {
 			String node = PathHelper.getConfigPath(parentNode ,env.getName());
 			ConfigServiceItem envItem = new ConfigServiceItem("" ,env.getDesc() ,PathHelper.createConfigPath(node));
 			super.add(envItem);

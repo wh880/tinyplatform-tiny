@@ -20,7 +20,7 @@ import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.manager.ConfigItemManager;
 import org.tinygroup.remoteconfig.model.RemoteConfig;
 import org.tinygroup.remoteconfig.model.RemoteEnvironment;
-import org.tinygroup.remoteconfig.utils.PathHelper;
+import org.tinygroup.remoteconfig.zk.utils.PathHelper;
 
 
 public class ZKConfigServiceImpl implements RemoteConfigManageClient ,ConfigItemManager{

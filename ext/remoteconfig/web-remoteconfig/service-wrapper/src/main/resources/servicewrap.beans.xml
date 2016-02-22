@@ -4,16 +4,4 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	   default-autowire="byName" default-lazy-init="true">
 	
-	<bean id="remoteConfigServiceImplWrapper" name="remoteConfigServiceImplWrapper"
-		class="org.tinygroup.remoteconfig.service.wrapper.RemoteConfigServiceImplWrapper">
-		<property name="core" ref="cepcore"></property>
-	</bean>
-	<bean id="remoteConfigNodeServiceImplWrapper" name="remoteConfigNodeServiceImplWrapper"
-		class="org.tinygroup.remoteconfig.service.wrapper.RemoteConfigNodeServiceImplWrapper">
-		<property name="core" ref="cepcore"></property>
-	</bean>
-	<bean id="remoteConfigTreeServiceImplWrapper" name="remoteConfigTreeServiceImplWrapper"
-		class="org.tinygroup.remoteconfig.service.wrapper.RemoteConfigTreeServiceImplWrapper">
-		<property name="core" ref="cepcore"></property>
-	</bean>
 </beans>
