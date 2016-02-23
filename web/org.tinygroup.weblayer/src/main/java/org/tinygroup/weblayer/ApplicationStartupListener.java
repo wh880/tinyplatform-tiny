@@ -26,11 +26,15 @@ import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.AbstractRefreshableConfigApplicationContext;
-import org.springframework.web.context.support.XmlWebApplicationContext;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.application.impl.ApplicationDefault;
@@ -47,6 +51,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.PathFilter;
+import org.tinygroup.springmerge.beanfactory.SpringMergeApplicationContext;
 import org.tinygroup.springutil.ExtendsSpringBeanContainer;
 import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 import org.tinygroup.weblayer.configmanager.TinyListenerConfigManager;
@@ -239,11 +244,27 @@ public class ApplicationStartupListener implements ServletContextListener {
 	}
 
 	protected AbstractRefreshableConfigApplicationContext createWebApplicationContext() {
-		XmlWebApplicationContext wac = (XmlWebApplicationContext) BeanUtils
-				.instantiateClass(XmlWebApplicationContext.class);
+		BeanDefinitionRegistry mergedBeanDefinitionRegistry=loadMergeBeanDefinition();
+		SpringMergeApplicationContext wac = new SpringMergeApplicationContext(mergedBeanDefinitionRegistry);
 		// Assign the best possible id value.
 		wac.setServletContext(ServletContextHolder.getServletContext());
 		return wac;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	private BeanDefinitionRegistry loadMergeBeanDefinition() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		Resource resource = resourceLoader.getResource("MERGE-INFO/merge.xml");
+		BeanDefinitionRegistry registry=null;
+		if(resource.exists()){
+			registry=new XmlBeanFactory(resource);
+		}else{
+			registry=new DefaultListableBeanFactory();
+		}
+		return registry;
 	}
 
 	private void loadFileResolverConfig(FileResolver fileResolver,
