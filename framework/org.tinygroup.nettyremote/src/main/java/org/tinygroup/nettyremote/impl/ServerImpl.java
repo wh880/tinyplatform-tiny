@@ -87,7 +87,12 @@ public class ServerImpl implements Server {
 	public void stop() {
 		LOGGER.logMessage(LogLevel.INFO, "关闭服务端");
 		if (f != null) {
-			f.channel().closeFuture();
+			try {
+				f.channel().closeFuture();
+			} catch (Exception e) {
+				LOGGER.errorMessage("关闭服务端Channnel时发生异常", e);
+			}
+			
 		}
 		setStart(false);
 		Future bg = null;

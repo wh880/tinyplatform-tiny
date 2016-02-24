@@ -177,7 +177,12 @@ public class ClientImpl implements Client {
 		LOGGER.logMessage(LogLevel.INFO, "关闭客户端");
 		if (reConnect == true) {
 			reConnect = false;
-			executor.shutdownNow();
+			try {
+				executor.shutdownNow();
+			} catch (Exception e) {
+				LOGGER.errorMessage("关闭重连线程池时出错", e);
+			}
+			
 		}
 		start = false;
 		Future wg = null;
