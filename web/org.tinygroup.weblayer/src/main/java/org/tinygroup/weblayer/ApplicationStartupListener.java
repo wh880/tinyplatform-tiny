@@ -42,11 +42,15 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
+import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
+import org.tinygroup.fileresolver.impl.LocalPropertiesFileProcessor;
+import org.tinygroup.fileresolver.impl.MergePropertiesFileProcessor;
+import org.tinygroup.fileresolver.impl.RemoteConfigFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -138,7 +142,6 @@ public class ApplicationStartupListener implements ServletContextListener {
 					XmlNode applicationXml = ConfigurationUtil
 							.loadApplicationConfig(applicationConfig);
 					c.setApplicationConfiguration(applicationXml);
-
 				}
 
 				loadSpringBeans(applicationConfig);
@@ -238,6 +241,15 @@ public class ApplicationStartupListener implements ServletContextListener {
 			logger.errorMessage("为文件扫描器添加webLibJars时出现异常", e);
 		}
 		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
+		
+		fileResolver.addFileProcessor(new LocalPropertiesFileProcessor(applicationConfig));
+		
+		FileProcessor remoteConfig = new RemoteConfigFileProcessor();
+		remoteConfig.config(loadRemoteConfig(applicationConfig), null);
+		fileResolver.addFileProcessor(remoteConfig);
+		
+		fileResolver.addFileProcessor(new MergePropertiesFileProcessor());
+		
 		fileResolver.addFileProcessor(new ConfigurationFileProcessor());
 		fileResolver.resolve();
 		logger.logMessage(LogLevel.INFO, "加载Spring Bean文件结束。");
@@ -277,4 +289,13 @@ public class ApplicationStartupListener implements ServletContextListener {
 		fileResolver.config(appConfig, null);
 	}
 
+	private XmlNode loadRemoteConfig(String applicationConfig) {
+		XmlStringParser parser = new XmlStringParser();
+		XmlNode root = parser.parse(applicationConfig).getRoot();
+		PathFilter<XmlNode> filter = new PathFilter<XmlNode>(root);
+		XmlNode appConfig = filter
+				.findNode(RemoteConfigFileProcessor.REMOTE_CONFIG_PATH);
+		return appConfig; 
+	}
+	
 }

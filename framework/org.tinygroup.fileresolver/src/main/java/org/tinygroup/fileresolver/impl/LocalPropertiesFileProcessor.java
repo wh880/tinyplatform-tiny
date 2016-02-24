@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.tinygroup.weblayer.tinyprocessor;
+package org.tinygroup.fileresolver.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.tinygroup.config.util.ConfigurationUtil;
-import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.ini.IniOperator;
 import org.tinygroup.ini.Section;
 import org.tinygroup.ini.ValuePair;

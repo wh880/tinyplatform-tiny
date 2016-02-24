@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.tinygroup.weblayer.tinyprocessor;
+package org.tinygroup.fileresolver.impl;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.tinygroup.config.util.ConfigurationUtil;
-import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.vfs.FileObject;
 
 

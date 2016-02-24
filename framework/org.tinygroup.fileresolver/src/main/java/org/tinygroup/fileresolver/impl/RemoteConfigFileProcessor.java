@@ -1,13 +1,10 @@
 /**
  * 
  */
-package org.tinygroup.remoteconfig.processor;
-
-import java.util.HashMap;
-import java.util.Map;
+package org.tinygroup.fileresolver.impl;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
+import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -30,14 +27,6 @@ public class RemoteConfigFileProcessor extends AbstractFileProcessor{
 
 	public static final String REMOTE_CONFIG_PATH = "/application/application-properties/remoteconfig";
 	
-	String applicationConfig;
-	
-	Map<String ,String> remoteProperties = new HashMap<String ,String>();
-	
-	public RemoteConfigFileProcessor(String applicationXML) {
-		this.applicationConfig = applicationConfig;
-	}
-	
 	public String getApplicationNodePath() {
 		return REMOTE_CONFIG_PATH;
 	}
@@ -55,7 +44,7 @@ public class RemoteConfigFileProcessor extends AbstractFileProcessor{
 		configItemReader.setConfigPath(getConfigPath());
 		remoteConfigReadClient.start();
 		LOGGER.logMessage(LogLevel.INFO, "远程配置载入Tiny...");
-		remoteProperties = configItemReader.getALL();
+		ConfigurationUtil.getConfigurationManager().getConfiguration().putAll(configItemReader.getALL());
 	}
 
 	@Override
@@ -78,8 +67,4 @@ public class RemoteConfigFileProcessor extends AbstractFileProcessor{
 		return HIGHEST_PRECEDENCE;
 	}
 
-	public Map<String, String> getRemoteProperties() {
-		return remoteProperties;
-	}
-	
 }

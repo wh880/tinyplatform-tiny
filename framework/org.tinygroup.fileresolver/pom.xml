@@ -38,5 +38,11 @@
       <artifactId>org.tinygroup.threadgroup</artifactId>
       <version>${project.version}</version>
     </dependency>
+        <!-- 配置中心  -->
+    <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.remoteconfig</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>
