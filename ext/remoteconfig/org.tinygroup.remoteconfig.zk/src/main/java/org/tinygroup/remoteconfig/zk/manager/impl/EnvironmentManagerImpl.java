@@ -36,7 +36,6 @@ public class EnvironmentManagerImpl extends BaseManager implements EnvironmentMa
 
 	public void update(Environment env, String versionId, String productId) {
 		add(env, versionId, productId);
-
 	}
 
 	public void delete(String envId, String versionId, String productId) {
@@ -58,6 +57,7 @@ public class EnvironmentManagerImpl extends BaseManager implements EnvironmentMa
 		Environment environment = new Environment();
 		environment.setName(envId);
 		environment.setEnvironment(value);
+		configPath.setEnvironmentName(envId);
 		environment.setModules(moduleManager.querySubModules(configPath));
 		return environment;
 	}

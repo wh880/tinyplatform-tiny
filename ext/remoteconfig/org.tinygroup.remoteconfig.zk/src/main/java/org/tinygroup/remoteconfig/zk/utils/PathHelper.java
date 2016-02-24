@@ -32,13 +32,13 @@ public class PathHelper {
 	public static String createURL(RemoteConfig config) {
 		String url = IRemoteConfigConstant.REMOTE_BASE_DIR;
 		if (StringUtils.isNotBlank(config.getApp())) {
-			url = url.concat("/").concat(config.getApp());
+			url = url.concat(appendSplit(config.getApp()));
 		}
 		if (StringUtils.isNotBlank(config.getEnv())) {
-			url = url.concat("/").concat(config.getEnv());
+			url = url.concat(appendSplit(config.getEnv()));
 		}
 		if (StringUtils.isNotBlank(config.getVersion())) {
-			url = url.concat("/").concat(config.getVersion());
+			url = url.concat(appendSplit(config.getVersion()));
 		}
 		return url;
 	}
@@ -53,19 +53,16 @@ public class PathHelper {
 		String url = "";
 		if (configPath != null) {
 			if (StringUtils.isNotBlank(configPath.getProductName())) {
-				url = url.concat("/").concat(configPath.getProductName());
+				url = url.concat(appendSplit(configPath.getProductName()));
 			}
 			if (StringUtils.isNotBlank(configPath.getVersionName())) {
-				url = url.concat("/").concat(configPath.getVersionName());
+				url = url.concat(appendSplit(configPath.getVersionName()));
 			}
 			if (StringUtils.isNotBlank(configPath.getEnvironmentName())) {
-				url = url.concat("/").concat(configPath.getEnvironmentName());
+				url = url.concat(appendSplit(configPath.getEnvironmentName()));
 			}
 			if (StringUtils.isNotBlank(configPath.getModulePath())) {
-				if (!StringUtils.startsWith(configPath.getModulePath(), "/")) {
-					url = url.concat("/");
-				}
-				url = url.concat(configPath.getModulePath());
+				url = url.concat(appendSplit(configPath.getModulePath()));
 			}
 			return url;
 		}
@@ -82,10 +79,10 @@ public class PathHelper {
 		String url = IRemoteConfigConstant.REMOTE_BASE_DIR;
 		if (configPath != null) {
 			if (StringUtils.isNotBlank(configPath.getProductName())) {
-				url = url.concat("/").concat(configPath.getProductName());
+				url = url.concat(appendSplit(configPath.getProductName()));
 			}
 			if (StringUtils.isNotBlank(configPath.getVersionName())) {
-				url = url.concat("/").concat(configPath.getVersionName());
+				url = url.concat(appendSplit(configPath.getVersionName()));
 			}
 		}
 		return url;
@@ -145,12 +142,19 @@ public class PathHelper {
 	
 	public static String createPath(String node ,ConfigPath configPath){
 		String baseDir = IRemoteConfigConstant.REMOTE_BASE_DIR + PathHelper.createPath(configPath);
-		if (StringUtils.isNotBlank(node)) {
-			node = "/".concat(node);
+		if (StringUtils.isNotBlank(node) ) {
+			node = appendSplit(node);
 		}else {
 			return baseDir;
 		}
 		return baseDir.concat(node);
+	}
+	
+	private static String appendSplit(String node){
+		if (!StringUtils.startsWith(node, "/")) {
+			node = "/".concat(node);
+		}
+		return node;
 	}
 	
 }

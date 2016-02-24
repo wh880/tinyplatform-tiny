@@ -39,9 +39,20 @@ public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 	}
 
 	public List<Module> querySubModules(ConfigPath entity) {
-		Module parentModule = get(entity);
-		getSubModule(parentModule, entity);
-		return parentModule.getSubModules();
+		List<Module> modules = new ArrayList<Module>();
+		Map<String, String> moduleMap = configItemManager.getALL(entity);
+		for (Iterator<String> iterator = moduleMap.keySet().iterator(); iterator.hasNext();) {
+			String type = iterator.next();
+			entity.setModulePath(type);
+			Module parentModule = get(entity);
+			modules.add(parentModule);
+			try {
+				getSubModule(parentModule, entity);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return modules;
 	}
 
 	private void getSubModule(Module parentModule ,ConfigPath entity){
@@ -61,8 +72,8 @@ public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 			tempConfigPath.setEnvironmentName(entity.getEnvironmentName());
 			tempConfigPath.setProductName(entity.getProductName());
 			tempConfigPath.setVersionName(entity.getVersionName());
-			tempConfigPath.setModulePath(PathHelper.getConfigPath(entity.getModulePath() ,parentModule.getName()));
-			getSubModule(get(tempConfigPath), tempConfigPath);
+			tempConfigPath.setModulePath(PathHelper.getConfigPath(entity.getModulePath() ,type));
+			getSubModule(module, tempConfigPath);
 		}
 	}
 	
