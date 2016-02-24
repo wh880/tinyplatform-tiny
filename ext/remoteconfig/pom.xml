@@ -3,17 +3,12 @@
     <parent>
         <groupId>org.tinygroup</groupId>
         <artifactId>ext</artifactId>
-        <version>2.0.34-SNAPSHOT</version>
+        <version>2.1.1-SNAPSHOT</version>
     </parent>
     <artifactId>remoteconfig</artifactId>
     <packaging>pom</packaging>
-	<properties>
-        <tiny_version>2.0.34-SNAPSHOT</tiny_version>
-        <tiny_ui_version>2.0.34-SNAPSHOT</tiny_ui_version>
-    </properties>
     <modules>
 		<module>org.tinygroup.remoteconfig</module>
 		<module>org.tinygroup.remoteconfig.zk</module>
-        <module>web-remoteconfig</module>
     </modules>
 </project>

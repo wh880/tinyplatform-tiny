@@ -1,6 +1,0 @@
-#@tForm("thisform" call("link","/remoteconfig/app/addApp") "post" {"class":""})
-	 #@elementItem("key：")
-        #tInput("name" "" {"placeholder":"name","datatype":"*1-16","nullmsg":"key不能为空！","id":"name","ajaxurl":call("link","/remoteconfig/app/checkApp")})
-    #end
-
-#end

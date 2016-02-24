@@ -1,0 +1,21 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName" default-lazy-init="true">
+
+	<bean id="stringMerge" class="org.tinygroup.springmerge.MergeObject">
+		<property name="suffix" value="jpg,docx,png"></property>
+	</bean>
+
+	<bean id="mapMerge" class="org.tinygroup.springmerge.MergeObject">
+		<property name="paramsMap">
+			<map merge="true">
+				<entry key="key1" value="value11"></entry>
+				<entry key="key4" value="value4"></entry>
+				<entry key="key5" value="value5"></entry>
+			</map>
+		</property>
+	</bean>
+
+</beans>
