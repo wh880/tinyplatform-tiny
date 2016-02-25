@@ -15,22 +15,42 @@ import org.tinygroup.exception.BaseRuntimeException;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.remoteconfig.RemoteConfigManageClient;
 import org.tinygroup.remoteconfig.config.ConfigPath;
-import org.tinygroup.remoteconfig.manager.ConfigItemManager;
-import org.tinygroup.remoteconfig.model.RemoteConfig;
-import org.tinygroup.remoteconfig.model.RemoteEnvironment;
+import org.tinygroup.remoteconfig.zk.config.RemoteConfig;
+import org.tinygroup.remoteconfig.zk.config.RemoteEnvironment;
 import org.tinygroup.remoteconfig.zk.utils.PathHelper;
 
-
-public class ZKConfigServiceImpl implements RemoteConfigManageClient ,ConfigItemManager{
+public class ZKManager{
 
 	protected static final Logger LOGGER = LoggerFactory
 			.getLogger(ZKConfigClientImpl.class);
 	
-	private ZooKeeper zooKeeper;
+	private static ZooKeeper zooKeeper;
 	
-	public boolean exists(String key ,ConfigPath configPath){
+	private static RemoteConfig config;
+	
+	public static RemoteConfig getConfig() {
+		return config;
+	}
+	
+	static {
+		if (zooKeeper == null) {
+			LOGGER.logMessage(LogLevel.INFO, "开始客户端远程配置初始化...");
+			config = RemoteEnvironment.getConfig();
+			try {
+				LOGGER.logMessage(LogLevel.INFO, "创建远程链接...");
+				zooKeeper = new ZooKeeper(config.getUrls(), 2000 ,null);
+				LOGGER.logMessage(LogLevel.INFO, "远程链接成功...");
+				//创建项目基础节点,不用监听
+				LOGGER.logMessage(LogLevel.INFO, "初始化ZK根节点");
+				LOGGER.logMessage(LogLevel.INFO, "客户端远程配置初始化完成");
+			} catch (IOException e) {
+				throw new BaseRuntimeException("0TE120119001" ,e ,config.toString());
+			}
+		}
+	}
+	
+	public static boolean exists(String key ,ConfigPath configPath){
 		try {
 			key = PathHelper.createPath(key ,configPath);
 			LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，判断节点是否存在[%s]" ,key));
@@ -47,7 +67,7 @@ public class ZKConfigServiceImpl implements RemoteConfigManageClient ,ConfigItem
 		}
 	}
 
-	public String get(String key ,ConfigPath configPath){
+	public static String get(String key ,ConfigPath configPath){
 		try {
 			key = PathHelper.createPath(key ,configPath);
 			LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，获取节点[%s]" ,key));
@@ -59,12 +79,12 @@ public class ZKConfigServiceImpl implements RemoteConfigManageClient ,ConfigItem
 		}
 	}
 
-	public Map<String, String> getALL(ConfigPath configPath) {
+	public static Map<String, String> getALL(ConfigPath configPath) {
 		Map<String, String> dataMap = new HashMap<String, String>();
 		String node = PathHelper.createPath("" ,configPath);
 		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，批量获取节点[%s]" ,node));
 		try {
-			List<String> subNodes = this.zooKeeper.getChildren(node, false);
+			List<String> subNodes = zooKeeper.getChildren(node, false);
 			if (subNodes != null && !subNodes.isEmpty()) {
 				for (String subNode : subNodes) {
 					String znodeValue = getSimple(node.concat("/").concat(subNode));
@@ -79,25 +99,7 @@ public class ZKConfigServiceImpl implements RemoteConfigManageClient ,ConfigItem
 		return dataMap;
 	}
 
-	public void start() {
-		if (zooKeeper != null) {
-			return;
-		}
-		LOGGER.logMessage(LogLevel.INFO, "开始客户端远程配置初始化...");
-		RemoteConfig config = RemoteEnvironment.getConfig();
-		try {
-			LOGGER.logMessage(LogLevel.INFO, "创建远程链接...");
-			zooKeeper = new ZooKeeper(config.getUrls(), 2000 ,null);
-			LOGGER.logMessage(LogLevel.INFO, "远程链接成功...");
-			//创建项目基础节点,不用监听
-			LOGGER.logMessage(LogLevel.INFO, "初始化ZK根节点");
-			LOGGER.logMessage(LogLevel.INFO, "客户端远程配置初始化完成");
-		} catch (IOException e) {
-			throw new BaseRuntimeException("0TE120119001" ,e ,config.toString());
-		}
-	}
-
-	public void stop() {
+	public static void stop() {
 		if (zooKeeper != null) {
 			try {
 				zooKeeper.close();
@@ -107,7 +109,7 @@ public class ZKConfigServiceImpl implements RemoteConfigManageClient ,ConfigItem
 		}
 	}
 
-	public void set(String key, String value, ConfigPath configPath) {
+	public static void set(String key, String value, ConfigPath configPath) {
 		key = PathHelper.createPath(key ,configPath);
 		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，节点设值[%s=%s]" ,key ,value));
 		try {
@@ -123,14 +125,14 @@ public class ZKConfigServiceImpl implements RemoteConfigManageClient ,ConfigItem
 		}
 	}
 
-	private Stat addSimple(String node, String value) throws BaseRuntimeException{
+	private static Stat addSimple(String node, String value) throws BaseRuntimeException{
 		try {
-			Stat stat = this.zooKeeper.exists(node, false);
+			Stat stat = zooKeeper.exists(node, false);
 			if (stat == null) {
 				//  create parent znodePath
 				String parentPath = PathHelper.generateParentPath(node);
 				if (StringUtils.isNotBlank(parentPath)) {
-					Stat parentStat = this.zooKeeper.exists(parentPath, false);
+					Stat parentStat = zooKeeper.exists(parentPath, false);
 					if (parentStat == null) {
 						addSimple(parentPath ,"");
 					}
@@ -139,7 +141,7 @@ public class ZKConfigServiceImpl implements RemoteConfigManageClient ,ConfigItem
 			}else {
 				LOGGER.logMessage(LogLevel.DEBUG, String.format("节点[%s]已经存在" ,node));
 			}
-			return this.zooKeeper.exists(node, true);
+			return zooKeeper.exists(node, true);
 		} catch (KeeperException e) {
 			throw new BaseRuntimeException("0TE120119011", e ,node ,value);
 		} catch (InterruptedException e) {
@@ -147,17 +149,17 @@ public class ZKConfigServiceImpl implements RemoteConfigManageClient ,ConfigItem
 		}
 	}
 
-	public void delete(String key, ConfigPath configPath) {
+	public static void delete(String key, ConfigPath configPath) {
 		key = PathHelper.createPath(key ,configPath);
 		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，删除单节点[%s]" ,key));
 		clearSimple(key);
 	}
 
-	private void deleteSimple(String node){
+	private static void deleteSimple(String node){
 		try {
 			Stat stat = zooKeeper.exists(node, false);
 			if (stat != null) {
-				this.zooKeeper.delete(node, stat.getVersion());
+				zooKeeper.delete(node, stat.getVersion());
 			}else {
 				LOGGER.logMessage(LogLevel.DEBUG, String.format("节点[%s]不存在" ,node));
 			}
@@ -168,7 +170,7 @@ public class ZKConfigServiceImpl implements RemoteConfigManageClient ,ConfigItem
 		}
 	}
 	
-	private void clearSimple(String node){
+	private static void clearSimple(String node){
 		try {
 			Stat stat = zooKeeper.exists(node, false);
 			if (stat != null) {
@@ -184,10 +186,10 @@ public class ZKConfigServiceImpl implements RemoteConfigManageClient ,ConfigItem
 		}
 	}
 	
-	private String getSimple(String key) throws KeeperException, InterruptedException{
-		Stat stat = this.zooKeeper.exists(key, false);
+	private static String getSimple(String key) throws KeeperException, InterruptedException{
+		Stat stat = zooKeeper.exists(key, false);
 		if (stat != null) {
-			byte[] resultData = this.zooKeeper.getData(key, false, stat);
+			byte[] resultData = zooKeeper.getData(key, false, stat);
 			if (resultData != null) {
 				String value = new String(resultData);
 				return value;

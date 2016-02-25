@@ -8,6 +8,7 @@ public class IRemoteConfigConstant {
 	public static final String REMOTE_APP = "app";
 	public static final String REMOTE_ENV = "env";
 	public static final String REMOTE_VERSION = "version";
+	public static final String REMOTE_MODULE = "module";
 	
 	/**
 	 * 初始环境

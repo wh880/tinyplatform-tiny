@@ -11,7 +11,7 @@ import java.util.Properties;
 import org.junit.Assert;
 import org.tinygroup.i18n.I18nMessageFactory;
 import org.tinygroup.remoteconfig.config.ConfigPath;
-import org.tinygroup.remoteconfig.zk.client.ZKConfigServiceImpl;
+import org.tinygroup.remoteconfig.zk.client.ZKManager;
 
 /**
  * @author Administrator
@@ -25,35 +25,32 @@ public class ClientTest {
 	 */
 	public static void main(String[] args) throws IOException {
 		init();
-		ZKConfigServiceImpl handle = new ZKConfigServiceImpl();
-		handle.start();
-		
 		
 		try {
 			//清理
-			handle.delete("", null);
-			handle.getALL(new ConfigPath());
-			handle.delete("", null);
+			ZKManager.delete("", null);
+			ZKManager.getALL(new ConfigPath());
+			ZKManager.delete("", null);
 			
 			//单条查询
-			Assert.assertNull(handle.get("O2O" ,null));
+			Assert.assertNull(ZKManager.get("O2O" ,null));
 			//校验是否存在
-			Assert.assertFalse(handle.exists("jjj" ,null));
+			Assert.assertFalse(ZKManager.exists("jjj" ,null));
 			//增加
-			handle.set("a/b/c", "123123123" ,null);
-			handle.set("jjj", "9999" ,null);
+			ZKManager.set("a/b/c", "123123123" ,null);
+			ZKManager.set("jjj", "9999" ,null);
 		} catch (Exception e) {
-			handle.delete("O2O", null);
+			ZKManager.delete("O2O", null);
 			Assert.fail();
 		}
 		
 		//单条查询
-		Assert.assertNotNull(handle.get("jjj" ,null));
+		Assert.assertNotNull(ZKManager.get("jjj" ,null));
 		//校验是否存在
-		Assert.assertNotNull(handle.exists("jjj",null));
+		Assert.assertNotNull(ZKManager.exists("jjj",null));
 		
 		//批量查询
-		Assert.assertTrue(handle.getALL(null).size() == 2);
+		Assert.assertTrue(ZKManager.getALL(null).size() == 2);
 	}
 	
 	private static void init() throws IOException {

@@ -9,21 +9,22 @@ import org.apache.commons.lang.StringUtils;
 import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Module;
 import org.tinygroup.remoteconfig.manager.ModuleManager;
+import org.tinygroup.remoteconfig.zk.client.ZKManager;
 import org.tinygroup.remoteconfig.zk.utils.PathHelper;
 
 public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 
 	public Module add(Module module, ConfigPath entity) {
-		configItemManager.set(module.getName(), module.getModuleName(), entity);
+		ZKManager.set(module.getName(), module.getModuleName(), entity);
 		return module;
 	}
 
 	public void update(Module module, ConfigPath entity) {
-		configItemManager.set(module.getName(), module.getModuleName(), entity);
+		ZKManager.set(module.getName(), module.getModuleName(), entity);
 	}
 
 	public void delete(ConfigPath entity) {
-		configItemManager.delete("", entity);
+		ZKManager.delete("", entity);
 
 	}
 
@@ -34,13 +35,13 @@ public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 		}else {
 			module.setName(entity.getModulePath());
 		}
-		module.setModuleName(configItemManager.get("", entity));
+		module.setModuleName(ZKManager.get("", entity));
 		return module;
 	}
 
 	public List<Module> querySubModules(ConfigPath entity) {
 		List<Module> modules = new ArrayList<Module>();
-		Map<String, String> moduleMap = configItemManager.getALL(entity);
+		Map<String, String> moduleMap = ZKManager.getALL(entity);
 		for (Iterator<String> iterator = moduleMap.keySet().iterator(); iterator.hasNext();) {
 			String type = iterator.next();
 			entity.setModulePath(type);
@@ -61,7 +62,7 @@ public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 		}
 		List<Module> modules = new ArrayList<Module>();
 		parentModule.setSubModules(modules);
-		Map<String ,String> sunModuleMap = configItemManager.getALL(entity);
+		Map<String ,String> sunModuleMap = ZKManager.getALL(entity);
 		for (Iterator<String> iterator = sunModuleMap.keySet().iterator(); iterator.hasNext();) {
 			String type = iterator.next();
 			Module module = new Module();

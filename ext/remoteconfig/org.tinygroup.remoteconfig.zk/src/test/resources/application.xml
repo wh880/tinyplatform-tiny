@@ -2,6 +2,7 @@
 <!-- 测试 -->
 <application>
 	<application-properties>
+		<remoteconfig/>
 		<property name="BASE_PACKAGE" value="org.tinygroup" />
 		<property name="DEBUG_MODE" value="false" />
 		<property name="TINY_THEME" value="default" />

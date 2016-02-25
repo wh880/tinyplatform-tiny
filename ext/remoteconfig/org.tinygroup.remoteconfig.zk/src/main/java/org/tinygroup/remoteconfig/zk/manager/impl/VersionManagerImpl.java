@@ -13,6 +13,7 @@ import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Version;
 import org.tinygroup.remoteconfig.manager.EnvironmentManager;
 import org.tinygroup.remoteconfig.manager.VersionManager;
+import org.tinygroup.remoteconfig.zk.client.ZKManager;
 
 /**
  * @author yanwj06282
@@ -29,7 +30,7 @@ public class VersionManagerImpl extends BaseManager implements VersionManager {
 	public Version add(Version version, String productId) {
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
-		configItemManager.set(version.getName(), version.getVersion(), configPath);
+		ZKManager.set(version.getName(), version.getVersion(), configPath);
 		return version;
 	}
 
@@ -40,13 +41,13 @@ public class VersionManagerImpl extends BaseManager implements VersionManager {
 	public void delete(String versionId, String productId) {
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
-		configItemManager.delete(versionId, configPath);
+		ZKManager.delete(versionId, configPath);
 	}
 
 	public Version get(String versionId, String productId) {
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
-		String value = configItemManager.get(versionId, configPath);
+		String value = ZKManager.get(versionId, configPath);
 		if (StringUtils.isBlank(value)) {
 			return null;
 		}
@@ -60,7 +61,7 @@ public class VersionManagerImpl extends BaseManager implements VersionManager {
 	public List<Version> query(String productId) {
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
-		Map<String ,String> sunModuleMap = configItemManager.getALL(configPath);
+		Map<String ,String> sunModuleMap = ZKManager.getALL(configPath);
 		List<Version> versions = new ArrayList<Version>();
 		for (Iterator<String> iterator = sunModuleMap.keySet().iterator(); iterator.hasNext();) {
 			String versionId = iterator.next();

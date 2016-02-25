@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.tinygroup.remoteconfig.model;
+package org.tinygroup.remoteconfig.zk.config;
 
 import java.io.IOException;
 import java.net.URL;
@@ -54,8 +54,9 @@ public class RemoteEnvironment {
 		String app = pro.get(IRemoteConfigConstant.REMOTE_APP) == null ? "":pro.get(IRemoteConfigConstant.REMOTE_APP).toString();
 		String env = pro.get(IRemoteConfigConstant.REMOTE_ENV) == null ? "":pro.get(IRemoteConfigConstant.REMOTE_ENV).toString();
 		String version = pro.get(IRemoteConfigConstant.REMOTE_VERSION) == null ? "":pro.get(IRemoteConfigConstant.REMOTE_VERSION).toString();
+		String module = pro.get(IRemoteConfigConstant.REMOTE_MODULE) == null ? "":pro.get(IRemoteConfigConstant.REMOTE_MODULE).toString();
 		
-		config = new RemoteConfig(urlStr, app, env, version);
+		config = new RemoteConfig(urlStr, app, env, version ,module);
 	}
 	
 }

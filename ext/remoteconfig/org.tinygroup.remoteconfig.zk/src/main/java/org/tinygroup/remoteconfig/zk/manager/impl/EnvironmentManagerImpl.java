@@ -13,6 +13,7 @@ import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Environment;
 import org.tinygroup.remoteconfig.manager.EnvironmentManager;
 import org.tinygroup.remoteconfig.manager.ModuleManager;
+import org.tinygroup.remoteconfig.zk.client.ZKManager;
 
 /**
  * @author yanwj06282
@@ -30,7 +31,7 @@ public class EnvironmentManagerImpl extends BaseManager implements EnvironmentMa
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		configPath.setVersionName(versionId);
-		configItemManager.set(env.getName(), env.getEnvironment(), configPath);
+		ZKManager.set(env.getName(), env.getEnvironment(), configPath);
 		return env;
 	}
 
@@ -42,7 +43,7 @@ public class EnvironmentManagerImpl extends BaseManager implements EnvironmentMa
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		configPath.setVersionName(versionId);
-		configItemManager.delete(envId, configPath);
+		ZKManager.delete(envId, configPath);
 
 	}
 
@@ -50,7 +51,7 @@ public class EnvironmentManagerImpl extends BaseManager implements EnvironmentMa
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		configPath.setVersionName(versionId);
-		String value = configItemManager.get(envId, configPath);
+		String value = ZKManager.get(envId, configPath);
 		if (StringUtils.isBlank(value)) {
 			return null;
 		}
@@ -66,7 +67,7 @@ public class EnvironmentManagerImpl extends BaseManager implements EnvironmentMa
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		configPath.setVersionName(versionId);
-		Map<String ,String> sunModuleMap = configItemManager.getALL(configPath);
+		Map<String ,String> sunModuleMap = ZKManager.getALL(configPath);
 		List<Environment> envs = new ArrayList<Environment>();
 		for (Iterator<String> iterator = sunModuleMap.keySet().iterator(); iterator.hasNext();) {
 			String envId = iterator.next();

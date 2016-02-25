@@ -3,7 +3,7 @@ package org.tinygroup.remoteconfig.zk.utils;
 import org.apache.commons.lang.StringUtils;
 import org.tinygroup.remoteconfig.IRemoteConfigConstant;
 import org.tinygroup.remoteconfig.config.ConfigPath;
-import org.tinygroup.remoteconfig.model.RemoteConfig;
+import org.tinygroup.remoteconfig.zk.config.RemoteConfig;
 
 public class PathHelper {
 
