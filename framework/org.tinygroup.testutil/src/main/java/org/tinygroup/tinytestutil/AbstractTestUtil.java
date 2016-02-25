@@ -15,6 +15,9 @@
  */
 package org.tinygroup.tinytestutil;
 
+import java.io.InputStream;
+import java.util.List;
+
 import org.tinygroup.application.Application;
 import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.application.impl.ApplicationDefault;
@@ -22,11 +25,15 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
+import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
+import org.tinygroup.fileresolver.RemoteConfigUtil;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
-import org.tinygroup.fileresolver.impl.FileResolverImpl;
+import org.tinygroup.fileresolver.impl.LocalPropertiesFileProcessor;
+import org.tinygroup.fileresolver.impl.MergePropertiesFileProcessor;
+import org.tinygroup.fileresolver.impl.RemoteConfigFileProcessor;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.PathFilter;
@@ -34,9 +41,6 @@ import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlStringParser;
-
-import java.io.InputStream;
-import java.util.List;
 
 /**
  * 此类不推荐使用，建议用org.tinygroup.tinyrunner工程的Runner类取代
@@ -170,6 +174,14 @@ public abstract class AbstractTestUtil {
 		fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
 		loadFileResolverConfig(fileResolver, applicationConfig);
 		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
+		
+		fileResolver.addFileProcessor(new LocalPropertiesFileProcessor(applicationConfig));
+		
+		FileProcessor remoteConfig = new RemoteConfigFileProcessor(RemoteConfigUtil.loadRemoteConfig(applicationConfig));
+		fileResolver.addFileProcessor(remoteConfig);
+		
+		fileResolver.addFileProcessor(new MergePropertiesFileProcessor());
+		
 		fileResolver.addFileProcessor(new ConfigurationFileProcessor());
 		// SpringUtil.regSpringConfigXml(xmlFile);
 		fileResolver.resolve();

@@ -47,6 +47,7 @@ import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
+import org.tinygroup.fileresolver.RemoteConfigUtil;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
 import org.tinygroup.fileresolver.impl.LocalPropertiesFileProcessor;
 import org.tinygroup.fileresolver.impl.MergePropertiesFileProcessor;
@@ -244,8 +245,7 @@ public class ApplicationStartupListener implements ServletContextListener {
 		
 		fileResolver.addFileProcessor(new LocalPropertiesFileProcessor(applicationConfig));
 		
-		FileProcessor remoteConfig = new RemoteConfigFileProcessor();
-		remoteConfig.config(loadRemoteConfig(applicationConfig), null);
+		FileProcessor remoteConfig = new RemoteConfigFileProcessor(RemoteConfigUtil.loadRemoteConfig(applicationConfig));
 		fileResolver.addFileProcessor(remoteConfig);
 		
 		fileResolver.addFileProcessor(new MergePropertiesFileProcessor());
@@ -289,13 +289,4 @@ public class ApplicationStartupListener implements ServletContextListener {
 		fileResolver.config(appConfig, null);
 	}
 
-	private XmlNode loadRemoteConfig(String applicationConfig) {
-		XmlStringParser parser = new XmlStringParser();
-		XmlNode root = parser.parse(applicationConfig).getRoot();
-		PathFilter<XmlNode> filter = new PathFilter<XmlNode>(root);
-		XmlNode appConfig = filter
-				.findNode(RemoteConfigFileProcessor.REMOTE_CONFIG_PATH);
-		return appConfig; 
-	}
-	
 }

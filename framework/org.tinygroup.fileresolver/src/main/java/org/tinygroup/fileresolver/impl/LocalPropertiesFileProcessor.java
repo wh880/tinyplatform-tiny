@@ -114,4 +114,8 @@ public class LocalPropertiesFileProcessor extends AbstractFileProcessor {
 		}
 	}
 	
+	public int getOrder() {
+		return HIGHEST_PRECEDENCE;
+	}
+	
 }

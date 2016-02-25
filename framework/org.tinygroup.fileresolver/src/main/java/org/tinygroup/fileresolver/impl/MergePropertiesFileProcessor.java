@@ -54,7 +54,6 @@ public class MergePropertiesFileProcessor extends AbstractFileProcessor {
 			buf.append(value.substring(curpos, matcher.start()));
 			curpos = matcher.end();
 			String var = value.substring(matcher.start(), curpos);
-			System.out.println(var);
 			buf.append(proMap.get(StringUtils.substring(var, 1, var.length()-1)));
 			continue;
 		}
@@ -62,4 +61,8 @@ public class MergePropertiesFileProcessor extends AbstractFileProcessor {
 		return buf.toString();
 	}
 
+	public int getOrder() {
+		return HIGHEST_PRECEDENCE;
+	}
+	
 }

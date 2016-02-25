@@ -3,48 +3,56 @@
  */
 package org.tinygroup.fileresolver.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.remoteconfig.RemoteConfigReadClient;
-import org.tinygroup.remoteconfig.config.ConfigPath;
-import org.tinygroup.remoteconfig.manager.ConfigItemReader;
-import org.tinygroup.remoteconfig.model.RemoteConfig;
-import org.tinygroup.remoteconfig.model.RemoteEnvironment;
 import org.tinygroup.vfs.FileObject;
+import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * @author yanwj
  *
  */
 public class RemoteConfigFileProcessor extends AbstractFileProcessor{
-	ConfigItemReader configItemReader;
 	RemoteConfigReadClient remoteConfigReadClient;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RemoteConfigFileProcessor.class);
 
 	public static final String REMOTE_CONFIG_PATH = "/application/application-properties/remoteconfig";
 	
+	public static final String REMOTE_CONFIG_PATH_ATTRIBUTE = "enable";
+	
+	XmlNode remoteConfigNode;
+	
+	public RemoteConfigFileProcessor(XmlNode remoteConfigNode) {
+		this.remoteConfigNode = remoteConfigNode;
+	}
+	
 	public String getApplicationNodePath() {
 		return REMOTE_CONFIG_PATH;
 	}
 
 	public void process() {
-		if (applicationConfig == null) {
+		if (remoteConfigNode == null) {
 			return;
+		}else {
+			String enable = remoteConfigNode.getAttribute(REMOTE_CONFIG_PATH_ATTRIBUTE);
+			if (!StringUtils.equalsIgnoreCase(enable, "true")) {
+				return;
+			}
 		}
 		LOGGER.logMessage(LogLevel.INFO, "远程配置处理器启动");
-		configItemReader = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean(ConfigItemReader.class);
 		remoteConfigReadClient = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean(RemoteConfigReadClient.class);
-		if (configItemReader == null || remoteConfigReadClient == null) {
+		if (remoteConfigReadClient == null) {
 			throw new RuntimeException("远程配置，未找到服务实现");
 		}
-		configItemReader.setConfigPath(getConfigPath());
 		remoteConfigReadClient.start();
 		LOGGER.logMessage(LogLevel.INFO, "远程配置载入Tiny...");
-		ConfigurationUtil.getConfigurationManager().getConfiguration().putAll(configItemReader.getALL());
+		ConfigurationUtil.getConfigurationManager().getConfiguration().putAll(remoteConfigReadClient.getALL());
 	}
 
 	@Override
@@ -52,17 +60,6 @@ public class RemoteConfigFileProcessor extends AbstractFileProcessor{
 		return false;
 	}
 
-	public ConfigPath getConfigPath(){
-		RemoteConfig config = RemoteEnvironment.getConfig();
-		ConfigPath configPath  = new ConfigPath();
-		if (config != null) {
-			configPath.setProductName(config.getApp());
-			configPath.setVersionName(config.getVersion());
-			configPath.setEnvironmentName(config.getEnv());
-		}
-		return configPath;
-	}
-	
 	public int getOrder() {
 		return HIGHEST_PRECEDENCE;
 	}

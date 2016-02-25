@@ -25,10 +25,15 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
+import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
+import org.tinygroup.fileresolver.RemoteConfigUtil;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
+import org.tinygroup.fileresolver.impl.LocalPropertiesFileProcessor;
+import org.tinygroup.fileresolver.impl.MergePropertiesFileProcessor;
+import org.tinygroup.fileresolver.impl.RemoteConfigFileProcessor;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.PathFilter;
@@ -151,6 +156,14 @@ public class Runner {
 			addIncludePathPatterns(fileResolver,includePathPatterns);
 			loadFileResolverConfig(fileResolver, applicationConfig);
 			fileResolver.addFileProcessor(new SpringBeansFileProcessor());
+			
+			fileResolver.addFileProcessor(new LocalPropertiesFileProcessor(applicationConfig));
+			
+			FileProcessor remoteConfig = new RemoteConfigFileProcessor(RemoteConfigUtil.loadRemoteConfig(applicationConfig));
+			fileResolver.addFileProcessor(remoteConfig);
+			
+			fileResolver.addFileProcessor(new MergePropertiesFileProcessor());
+			
 			fileResolver.addFileProcessor(new ConfigurationFileProcessor());
 			// SpringUtil.regSpringConfigXml(xmlFile);
 			fileResolver.resolve();
