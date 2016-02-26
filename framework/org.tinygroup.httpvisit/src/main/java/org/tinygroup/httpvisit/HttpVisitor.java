@@ -27,6 +27,7 @@ import java.util.Map;
  *
  * @author luoguo
  */
+@Deprecated
 public interface HttpVisitor {
     /**
      * 初始化，在访问url之前，必须调用init方法

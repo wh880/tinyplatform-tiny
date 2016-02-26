@@ -15,6 +15,7 @@ import org.tinygroup.ini.IniOperator;
 import org.tinygroup.ini.Section;
 import org.tinygroup.ini.ValuePair;
 import org.tinygroup.ini.impl.IniOperatorDefault;
+import org.tinygroup.logger.LogLevel;
 import org.tinygroup.parser.filter.PathFilter;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
@@ -37,11 +38,13 @@ public class LocalPropertiesFileProcessor extends AbstractFileProcessor {
 	}
 	
 	public void process() {
+		LOGGER.logMessage(LogLevel.INFO, "开始读取本地Application变量配置信息");
 		XmlNode xmlNode = new XmlStringParser().parse(applicationConfig).getRoot();
 		//加载application property节点
 		loadApplicationProperties(xmlNode);
 		//加载外部配置文件信息
 		loadApplicationPropertyFiles(xmlNode);
+		LOGGER.logMessage(LogLevel.INFO, "读取本地Application变量配置信息完成");
 	}
 
 	@Override

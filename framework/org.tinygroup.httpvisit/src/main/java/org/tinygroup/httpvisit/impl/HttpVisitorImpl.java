@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
+@Deprecated
 public class HttpVisitorImpl implements HttpVisitor {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpVisitorImpl.class);
     private HttpClient client;
