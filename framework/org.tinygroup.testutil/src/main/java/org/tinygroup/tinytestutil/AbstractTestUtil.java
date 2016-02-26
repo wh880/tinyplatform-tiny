@@ -29,7 +29,6 @@ import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
-import org.tinygroup.fileresolver.RemoteConfigUtil;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
 import org.tinygroup.fileresolver.impl.LocalPropertiesFileProcessor;
 import org.tinygroup.fileresolver.impl.MergePropertiesFileProcessor;
@@ -177,7 +176,7 @@ public abstract class AbstractTestUtil {
 		
 		fileResolver.addFileProcessor(new LocalPropertiesFileProcessor(applicationConfig));
 		
-		FileProcessor remoteConfig = new RemoteConfigFileProcessor(RemoteConfigUtil.loadRemoteConfig(applicationConfig));
+		FileProcessor remoteConfig = new RemoteConfigFileProcessor(applicationConfig);
 		fileResolver.addFileProcessor(remoteConfig);
 		
 		fileResolver.addFileProcessor(new MergePropertiesFileProcessor());

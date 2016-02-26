@@ -9,9 +9,11 @@ import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.parser.filter.PathFilter;
 import org.tinygroup.remoteconfig.RemoteConfigReadClient;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xmlparser.node.XmlNode;
+import org.tinygroup.xmlparser.parser.XmlStringParser;
 
 /**
  * @author yanwj
@@ -26,10 +28,10 @@ public class RemoteConfigFileProcessor extends AbstractFileProcessor{
 	
 	public static final String REMOTE_CONFIG_PATH_ATTRIBUTE = "enable";
 	
-	XmlNode remoteConfigNode;
+	String applicationXML;
 	
-	public RemoteConfigFileProcessor(XmlNode remoteConfigNode) {
-		this.remoteConfigNode = remoteConfigNode;
+	public RemoteConfigFileProcessor(String applicationXML) {
+		this.applicationXML = applicationXML;
 	}
 	
 	public String getApplicationNodePath() {
@@ -37,10 +39,9 @@ public class RemoteConfigFileProcessor extends AbstractFileProcessor{
 	}
 
 	public void process() {
-		if (remoteConfigNode == null) {
-			return;
-		}else {
-			String enable = remoteConfigNode.getAttribute(REMOTE_CONFIG_PATH_ATTRIBUTE);
+		if (StringUtils.isNotBlank(applicationXML)) {
+			XmlNode xmlNode = loadRemoteConfig(applicationXML);
+			String enable = xmlNode.getAttribute(REMOTE_CONFIG_PATH_ATTRIBUTE);
 			if (!StringUtils.equalsIgnoreCase(enable, "true")) {
 				return;
 			}
@@ -64,4 +65,13 @@ public class RemoteConfigFileProcessor extends AbstractFileProcessor{
 		return HIGHEST_PRECEDENCE;
 	}
 
+	private XmlNode loadRemoteConfig(String applicationConfig) {
+		XmlStringParser parser = new XmlStringParser();
+		XmlNode root = parser.parse(applicationConfig).getRoot();
+		PathFilter<XmlNode> filter = new PathFilter<XmlNode>(root);
+		XmlNode appConfig = filter
+				.findNode(RemoteConfigFileProcessor.REMOTE_CONFIG_PATH);
+		return appConfig; 
+	}
+	
 }
