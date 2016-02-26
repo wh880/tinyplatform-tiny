@@ -1,6 +1,7 @@
 package org.tinygroup.remoteconfig.zk.client;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.exception.BaseRuntimeException;
@@ -9,9 +10,12 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.remoteconfig.IRemoteConfigConstant;
 import org.tinygroup.remoteconfig.RemoteConfigReadClient;
 import org.tinygroup.remoteconfig.config.ConfigPath;
+import org.tinygroup.remoteconfig.config.Environment;
+import org.tinygroup.remoteconfig.config.Module;
 import org.tinygroup.remoteconfig.manager.EnvironmentManager;
 import org.tinygroup.remoteconfig.zk.config.RemoteConfig;
 import org.tinygroup.remoteconfig.zk.config.RemoteEnvironment;
+import org.tinygroup.remoteconfig.zk.utils.PathHelper;
 
 
 public class ZKConfigClientImpl implements RemoteConfigReadClient{
@@ -37,22 +41,25 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 
 
 	public Map<String, String> getAll() throws BaseRuntimeException {
-		Map<String,String> itemMap = null;
-		Map<String,String> parentItemMap = null;
-		try {
-			itemMap = ZKManager.getALL(configPath);
-		} catch (Exception e) {
-		}
-		try {
-			parentItemMap = ZKManager.getALL(getDefaultEnvPath(configPath));
-			parentItemMap.putAll(itemMap);
-			parentItemMap.remove(IRemoteConfigZKConstant.MODULE_FLAG);
-		} catch (Exception e) {
-			return new HashMap<String, String>();
+		Map<String,String> itemMap = new HashMap<String, String>();
+		Map<String,String> parentItemMap = new HashMap<String, String>();
+		Environment defaultEnvironment = environmentManager.get(IRemoteConfigConstant.DEFAULT_ENV, configPath.getVersionName(), configPath.getProductName());
+		Environment environment = environmentManager.get(configPath.getEnvironmentName(), configPath.getVersionName(), configPath.getProductName());
+		if (environment != null && defaultEnvironment != null) {
+			//取默认环境
+			getConfig(defaultEnvironment, parentItemMap);
+			
+			//取指定模块
+			getConfig(environment, itemMap);
+			for (String key : itemMap.keySet()) {
+				if (parentItemMap.get(key) != null) {
+					parentItemMap.put(key, itemMap.get(key));
+				}
+			}
+			parentItemMap.remove(IRemoteConfigZKConstant.MODULE_FLAG);	
 		}
 		return parentItemMap;
 	}
-
 
 	public void start() {
 		ZKManager.exists(null, null);
@@ -79,13 +86,39 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 		return configPath;
 	}
 	
-	public static ConfigPath getDefaultEnvPath(ConfigPath configPath){
-		ConfigPath tempConfigPath = new ConfigPath();
-		tempConfigPath.setVersionName(configPath.getVersionName());
-		tempConfigPath.setProductName(configPath.getProductName());
-		tempConfigPath.setEnvironmentName(IRemoteConfigConstant.DEFAULT_ENV);
-		tempConfigPath.setModulePath(configPath.getModulePath());
-		return tempConfigPath;
+	private void getConfig(Environment environment ,Map<String,String> itemMap){
+		List<Module> modules = environment.getModules();
+		for (Module subModule : modules) {
+			ConfigPath tempConfigPath = new ConfigPath();
+			tempConfigPath.setProductName(configPath.getProductName());
+			tempConfigPath.setVersionName(configPath.getVersionName());
+			tempConfigPath.setEnvironmentName(environment.getName());
+			recursionModule(subModule, tempConfigPath, itemMap);
+		}
+	}
+	
+	private void recursionModule(Module parentModule ,ConfigPath configPath ,Map<String,String> itemMap){
+		if (configPath == null) {
+			return;
+		}
+		configPath.setModulePath(PathHelper.getConfigPath(configPath.getModulePath() ,parentModule.getName()));
+		Map<String, String> subItemMap = ZKManager.getAll(configPath);
+		for (String key : subItemMap.keySet()) {
+			ConfigPath tempConfigPath = new ConfigPath();
+			tempConfigPath.setProductName(configPath.getProductName());
+			tempConfigPath.setVersionName(configPath.getVersionName());
+			tempConfigPath.setEnvironmentName(configPath.getEnvironmentName());
+			tempConfigPath.setModulePath(PathHelper.getConfigPath(configPath.getModulePath() ,key));
+			Map<String ,String> moduleItemMap = ZKManager.getAll(tempConfigPath);
+			if (moduleItemMap.get(IRemoteConfigZKConstant.MODULE_FLAG) != null) {
+				continue;
+			}else {
+				itemMap.put(key, subItemMap.get(key));
+			}
+		}
+		for (Module subModule : parentModule.getSubModules()) {
+			recursionModule(subModule, configPath, itemMap);
+		}
 	}
 	
 }

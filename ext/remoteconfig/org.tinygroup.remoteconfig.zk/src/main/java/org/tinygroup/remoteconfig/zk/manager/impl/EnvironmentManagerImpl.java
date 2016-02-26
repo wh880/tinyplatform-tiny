@@ -67,7 +67,7 @@ public class EnvironmentManagerImpl extends BaseManager implements EnvironmentMa
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		configPath.setVersionName(versionId);
-		Map<String ,String> sunModuleMap = ZKManager.getALL(configPath);
+		Map<String ,String> sunModuleMap = ZKManager.getAll(configPath);
 		List<Environment> envs = new ArrayList<Environment>();
 		for (Iterator<String> iterator = sunModuleMap.keySet().iterator(); iterator.hasNext();) {
 			String envId = iterator.next();

@@ -61,7 +61,7 @@ public class VersionManagerImpl extends BaseManager implements VersionManager {
 	public List<Version> query(String productId) {
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
-		Map<String ,String> sunModuleMap = ZKManager.getALL(configPath);
+		Map<String ,String> sunModuleMap = ZKManager.getAll(configPath);
 		List<Version> versions = new ArrayList<Version>();
 		for (Iterator<String> iterator = sunModuleMap.keySet().iterator(); iterator.hasNext();) {
 			String versionId = iterator.next();

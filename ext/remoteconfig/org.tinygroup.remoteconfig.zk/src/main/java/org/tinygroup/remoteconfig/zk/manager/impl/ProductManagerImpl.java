@@ -56,7 +56,7 @@ public class ProductManagerImpl extends BaseManager implements ProductManager {
 	 */
 	public List<Product> query(Product product) {
 		List<Product> products = new ArrayList<Product>();
-		Map<String, String> configPathMap = ZKManager.getALL(new ConfigPath());
+		Map<String, String> configPathMap = ZKManager.getAll(new ConfigPath());
 		String productName = product.getName();
 		for (Iterator<String> iterator = configPathMap.keySet().iterator(); iterator.hasNext();) {
 			String type = iterator.next();

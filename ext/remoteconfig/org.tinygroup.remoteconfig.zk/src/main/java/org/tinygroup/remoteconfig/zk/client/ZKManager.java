@@ -79,7 +79,7 @@ public class ZKManager{
 		}
 	}
 
-	public static Map<String, String> getALL(ConfigPath configPath) {
+	public static Map<String, String> getAll(ConfigPath configPath) {
 		Map<String, String> dataMap = new HashMap<String, String>();
 		String node = PathHelper.createPath("" ,configPath);
 		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，批量获取节点[%s]" ,node));
@@ -92,7 +92,7 @@ public class ZKManager{
 				}
 			}
 		} catch (KeeperException e) {
-			throw new BaseRuntimeException("0TE120119005", e ,node);
+			//当没有找到子项时，会抛出此异常，我们不做任何处理
 		} catch (InterruptedException e) {
 			throw new BaseRuntimeException("0TE120119006", e ,node);
 		}

@@ -29,7 +29,7 @@ public class ClientTest {
 		try {
 			//清理
 			ZKManager.delete("", null);
-			ZKManager.getALL(new ConfigPath());
+			ZKManager.getAll(new ConfigPath());
 			ZKManager.delete("", null);
 			
 			//单条查询
@@ -50,7 +50,7 @@ public class ClientTest {
 		Assert.assertNotNull(ZKManager.exists("jjj",null));
 		
 		//批量查询
-		Assert.assertTrue(ZKManager.getALL(null).size() == 2);
+		Assert.assertTrue(ZKManager.getAll(null).size() == 2);
 	}
 	
 	private static void init() throws IOException {

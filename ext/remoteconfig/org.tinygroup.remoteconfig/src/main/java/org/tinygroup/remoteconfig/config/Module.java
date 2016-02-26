@@ -14,7 +14,6 @@ public class Module {
 	
 	private List<Module> subModules;
 	
-	
 	public String getName() {
 		return name;
 	}
@@ -33,7 +32,5 @@ public class Module {
 	public void setSubModules(List<Module> subModules) {
 		this.subModules = subModules;
 	}
-	
-	
 	
 }

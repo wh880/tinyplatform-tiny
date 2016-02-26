@@ -23,7 +23,7 @@ public class ConfigItemManagerImpl implements ConfigItemManager ,RemoteConfigMan
 	}
 
 	public Map<String, String> getALL(ConfigPath configPath) {
-		return ZKManager.getALL(configPath);
+		return ZKManager.getAll(configPath);
 	}
 
 	public void start() {

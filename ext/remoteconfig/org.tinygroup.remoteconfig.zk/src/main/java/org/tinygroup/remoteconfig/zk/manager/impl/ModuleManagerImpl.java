@@ -42,7 +42,7 @@ public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 
 	public List<Module> querySubModules(ConfigPath entity) {
 		List<Module> modules = new ArrayList<Module>();
-		Map<String, String> moduleMap = ZKManager.getALL(entity);
+		Map<String, String> moduleMap = ZKManager.getAll(entity);
 		for (Iterator<String> iterator = moduleMap.keySet().iterator(); iterator.hasNext();) {
 			String type = iterator.next();
 			entity.setModulePath(type);
@@ -63,7 +63,7 @@ public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 		}
 		List<Module> modules = new ArrayList<Module>();
 		parentModule.setSubModules(modules);
-		Map<String ,String> sunModuleMap = ZKManager.getALL(entity);
+		Map<String ,String> sunModuleMap = ZKManager.getAll(entity);
 		for (Iterator<String> iterator = sunModuleMap.keySet().iterator(); iterator.hasNext();) {
 			String type = iterator.next();
 			Module module = new Module();
