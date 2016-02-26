@@ -19,20 +19,17 @@ public class RemoteConfig {
 	String env;
 	// 版本
 	String version;
-	//版本
-	String module;
 	// 账户
 	String[] usernames;
 	// 密码
 	String[] passwords;
 
-	public RemoteConfig(String urls, String app, String env, String version, String module) {
+	public RemoteConfig(String urls, String app, String env, String version) {
 		super();
 		this.urls = urls;
 		this.app = app;
 		this.env = env;
 		this.version = version;
-		this.module = module;
 	}
 
 	public String getUrls() {
@@ -83,14 +80,6 @@ public class RemoteConfig {
 		this.passwords = passwords;
 	}
 
-	public String getModule() {
-		return module;
-	}
-
-	public void setModule(String module) {
-		this.module = module;
-	}
-
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
@@ -98,7 +87,6 @@ public class RemoteConfig {
 		sb.append(String.format("app=%s \r\n", app));
 		sb.append(String.format("env=%s \r\n", env));
 		sb.append(String.format("version=%s \r\n", version));
-		sb.append(String.format("module=%s \r\n", module));
 		sb.append(String.format("usernames=%s \r\n", Arrays.toString(usernames)));
 		sb.append(String.format("passwords=%s \r\n", Arrays.toString(passwords)));
 		return sb.toString();

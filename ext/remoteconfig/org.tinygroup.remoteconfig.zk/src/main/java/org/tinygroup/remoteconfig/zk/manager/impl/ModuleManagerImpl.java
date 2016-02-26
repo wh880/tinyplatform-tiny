@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.tinygroup.remoteconfig.IRemoteConfigConstant;
 import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Module;
 import org.tinygroup.remoteconfig.manager.ModuleManager;
+import org.tinygroup.remoteconfig.zk.client.IRemoteConfigZKConstant;
 import org.tinygroup.remoteconfig.zk.client.ZKManager;
 import org.tinygroup.remoteconfig.zk.utils.PathHelper;
 
@@ -17,7 +17,7 @@ public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 
 	public Module add(Module module, ConfigPath entity) {
 		ZKManager.set(module.getName(), module.getModuleName(), entity);
-		ZKManager.set(PathHelper.getConfigPath(module.getName() ,IRemoteConfigConstant.MODULE_FLAG), IRemoteConfigConstant.MODULE_FLAG, entity);
+		ZKManager.set(PathHelper.getConfigPath(module.getName() ,IRemoteConfigZKConstant.MODULE_FLAG), IRemoteConfigZKConstant.MODULE_FLAG, entity);
 		return module;
 	}
 

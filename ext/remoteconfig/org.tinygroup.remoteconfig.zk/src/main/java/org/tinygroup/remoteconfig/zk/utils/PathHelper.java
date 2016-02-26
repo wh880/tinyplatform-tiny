@@ -1,8 +1,8 @@
 package org.tinygroup.remoteconfig.zk.utils;
 
 import org.apache.commons.lang.StringUtils;
-import org.tinygroup.remoteconfig.IRemoteConfigConstant;
 import org.tinygroup.remoteconfig.config.ConfigPath;
+import org.tinygroup.remoteconfig.zk.client.IRemoteConfigZKConstant;
 import org.tinygroup.remoteconfig.zk.config.RemoteConfig;
 
 public class PathHelper {
@@ -30,7 +30,7 @@ public class PathHelper {
 	 * @return
 	 */
 	public static String createURL(RemoteConfig config) {
-		String url = IRemoteConfigConstant.REMOTE_BASE_DIR;
+		String url = IRemoteConfigZKConstant.REMOTE_BASE_DIR;
 		if (StringUtils.isNotBlank(config.getApp())) {
 			url = url.concat(appendSplit(config.getApp()));
 		}
@@ -76,7 +76,7 @@ public class PathHelper {
 	 * @return
 	 */
 	public static String createAppPath(ConfigPath configPath) {
-		String url = IRemoteConfigConstant.REMOTE_BASE_DIR;
+		String url = IRemoteConfigZKConstant.REMOTE_BASE_DIR;
 		if (configPath != null) {
 			if (StringUtils.isNotBlank(configPath.getProductName())) {
 				url = url.concat(appendSplit(configPath.getProductName()));
@@ -141,7 +141,7 @@ public class PathHelper {
 	}
 	
 	public static String createPath(String node ,ConfigPath configPath){
-		String baseDir = IRemoteConfigConstant.REMOTE_BASE_DIR + PathHelper.createPath(configPath);
+		String baseDir = IRemoteConfigZKConstant.REMOTE_BASE_DIR + PathHelper.createPath(configPath);
 		if (StringUtils.isNotBlank(node) ) {
 			node = appendSplit(node);
 		}else {

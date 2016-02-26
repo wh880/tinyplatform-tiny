@@ -36,7 +36,7 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 	}
 
 
-	public Map<String, String> getALL() throws BaseRuntimeException {
+	public Map<String, String> getAll() throws BaseRuntimeException {
 		Map<String,String> itemMap = null;
 		Map<String,String> parentItemMap = null;
 		try {
@@ -46,7 +46,7 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 		try {
 			parentItemMap = ZKManager.getALL(getDefaultEnvPath(configPath));
 			parentItemMap.putAll(itemMap);
-			parentItemMap.remove(IRemoteConfigConstant.MODULE_FLAG);
+			parentItemMap.remove(IRemoteConfigZKConstant.MODULE_FLAG);
 		} catch (Exception e) {
 			return new HashMap<String, String>();
 		}
@@ -75,7 +75,6 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 			configPath.setProductName(config.getApp());
 			configPath.setVersionName(config.getVersion());
 			configPath.setEnvironmentName(config.getEnv());
-			configPath.setModulePath(config.getModule());
 		}
 		return configPath;
 	}

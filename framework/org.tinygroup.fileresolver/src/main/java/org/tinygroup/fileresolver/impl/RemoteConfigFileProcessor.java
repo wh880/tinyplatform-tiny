@@ -53,7 +53,7 @@ public class RemoteConfigFileProcessor extends AbstractFileProcessor{
 		}
 		remoteConfigReadClient.start();
 		LOGGER.logMessage(LogLevel.INFO, "远程配置载入Tiny...");
-		ConfigurationUtil.getConfigurationManager().getConfiguration().putAll(remoteConfigReadClient.getALL());
+		ConfigurationUtil.getConfigurationManager().getConfiguration().putAll(remoteConfigReadClient.getAll());
 	}
 
 	@Override

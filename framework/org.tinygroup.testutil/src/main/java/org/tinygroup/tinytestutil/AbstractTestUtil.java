@@ -23,7 +23,6 @@ import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.application.impl.ApplicationDefault;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.io.StreamUtil;
-import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
@@ -91,14 +90,6 @@ public abstract class AbstractTestUtil {
 			try {
 				applicationConfig = StreamUtil.readText(inputStream, "UTF-8",
 						false);
-				if (applicationConfig != null) {
-					ConfigurationManager c = ConfigurationUtil
-							.getConfigurationManager();
-					XmlNode applicationXml = ConfigurationUtil
-							.loadApplicationConfig(applicationConfig);
-					c.setApplicationConfiguration(applicationXml);
-
-				}
 				application = new ApplicationDefault();
 				initSpring(applicationConfig);
 
