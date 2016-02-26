@@ -68,15 +68,12 @@ public class TinyTemplateConfigProcessor extends AbstractApplicationProcessor{
 	private void configEngineProperties(XmlNode totalConfig){
 		 
 		 //根据DEBUG_MODE设置checkModified，但是如果用户设置checkModified属性会被覆盖
-		 XmlNode applicationXmlNode = ConfigurationUtil.getConfigurationManager().getApplicationConfiguration();
-	     List<XmlNode> applicationProperties = applicationXmlNode.getSubNode("application-properties").getSubNodes("property");
-	     for(XmlNode node:applicationProperties){
-	         if(node.getAttribute("name").equals("DEBUG_MODE")){
-	           templateEngine.setCheckModified(Boolean.parseBoolean(StringUtil.defaultIfBlank(node.getAttribute("value"), "false")));
-	           LOGGER.logMessage(LogLevel.INFO, "根据DEBUG_MODE设置模板引擎参数checkModified={0}",templateEngine.isCheckModified());
-	           break;
-	         }
+	     String debug_mode = ConfigurationUtil.getConfigurationManager().getConfiguration("DEBUG_MODE");
+	     if(!StringUtil.isBlank(debug_mode)){
+	    	 templateEngine.setCheckModified(Boolean.parseBoolean(debug_mode));
+	    	 LOGGER.logMessage(LogLevel.INFO, "根据DEBUG_MODE设置模板引擎参数checkModified={0}",templateEngine.isCheckModified());
 	     }
+	     
 	        
     	List<XmlNode> list = totalConfig.getSubNodes(INIT_PARAM_NAME);
     	if(list!=null){
