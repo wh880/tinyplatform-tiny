@@ -46,14 +46,16 @@ public class RemoteConfigFileProcessor extends AbstractFileProcessor{
 				return;
 			}
 		}
-		LOGGER.logMessage(LogLevel.INFO, "远程配置处理器启动");
+		LOGGER.logMessage(LogLevel.INFO, "开始启动远程配置处理器");
 		remoteConfigReadClient = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean(RemoteConfigReadClient.class);
 		if (remoteConfigReadClient == null) {
-			throw new RuntimeException("远程配置，未找到服务实现");
+			throw new RuntimeException("未找到远程配置实现bean");
 		}
 		remoteConfigReadClient.start();
-		LOGGER.logMessage(LogLevel.INFO, "远程配置载入Tiny...");
+		LOGGER.logMessage(LogLevel.INFO, "远程配置处理器启动完成");
+		LOGGER.logMessage(LogLevel.INFO, "开始载入远程配置信息");
 		ConfigurationUtil.getConfigurationManager().getConfiguration().putAll(remoteConfigReadClient.getALL());
+		LOGGER.logMessage(LogLevel.INFO, "载入远程配置信息完成");
 	}
 
 	@Override
