@@ -15,18 +15,20 @@
  */
 package org.tinygroup.config.impl;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.tinygroup.commons.tools.ValueUtil;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.config.ConfigurationLoader;
+import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.PathFilter;
 import org.tinygroup.xmlparser.node.XmlNode;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import org.tinygroup.xmlparser.parser.XmlStringParser;
 
 /**
  * Created by luoguo on 2014/5/14.
@@ -113,5 +115,12 @@ public class ConfigurationManagerImpl implements org.tinygroup.config.Configurat
 
 	public String getConfiguration(String key) {
 		return configuration.get(key);
+	}
+
+	public void replace() {
+		String applicationInfo = getApplicationConfiguration().toString();
+		String newInfo = ConfigurationUtil.replace(applicationInfo, getConfiguration());
+		XmlNode newXml = new XmlStringParser().parse(newInfo).getRoot();
+		setApplicationConfiguration(newXml);
 	}
 }

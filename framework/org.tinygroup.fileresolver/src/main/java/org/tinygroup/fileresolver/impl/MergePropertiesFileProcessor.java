@@ -6,10 +6,7 @@ package org.tinygroup.fileresolver.impl;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.vfs.FileObject;
 
@@ -26,11 +23,13 @@ public class MergePropertiesFileProcessor extends AbstractFileProcessor {
 		for (Iterator<String> iterator = proMap.keySet().iterator(); iterator.hasNext();) {
 			String key = iterator.next();
 			String value = proMap.get(key);
-			value = replace(value, proMap);
+			value = ConfigurationUtil.replace(value, proMap);
 			tempMap.put(key, value);
 		}
 		ConfigurationUtil.getConfigurationManager().getConfiguration().clear();
 		ConfigurationUtil.getConfigurationManager().getConfiguration().putAll(tempMap);
+		ConfigurationUtil.getConfigurationManager().replace();
+		
 	}
 
 	@Override
@@ -38,28 +37,7 @@ public class MergePropertiesFileProcessor extends AbstractFileProcessor {
 		return false;
 	}
 
-	/**
-	 * 变量替换
-	 * 
-	 * @param value
-	 * @param proMap
-	 * @return
-	 */
-	private String replace(String value ,Map<String ,String> proMap) {
-		Pattern pattern = Pattern.compile("(\\{[^\\}]*\\})");
-		Matcher matcher = pattern.matcher(value);
-		int curpos = 0;
-		StringBuilder buf = new StringBuilder();
-		while (matcher.find()) {
-			buf.append(value.substring(curpos, matcher.start()));
-			curpos = matcher.end();
-			String var = value.substring(matcher.start(), curpos);
-			buf.append(proMap.get(StringUtils.substring(var, 1, var.length()-1)));
-			continue;
-		}
-		buf.append(value.substring(curpos));
-		return buf.toString();
-	}
+	
 
 	public int getOrder() {
 		return HIGHEST_PRECEDENCE;
