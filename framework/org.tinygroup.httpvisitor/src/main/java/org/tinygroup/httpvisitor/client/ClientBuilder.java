@@ -1,7 +1,5 @@
 package org.tinygroup.httpvisitor.client;
 
-import java.util.List;
-
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.context.Context;
@@ -12,7 +10,6 @@ import org.tinygroup.httpvisitor.factory.ClientConstants;
 import org.tinygroup.httpvisitor.struct.KeyCert;
 import org.tinygroup.httpvisitor.struct.PasswordCert;
 import org.tinygroup.httpvisitor.struct.Proxy;
-import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
  * 抽象通讯客户端构造
@@ -71,18 +68,7 @@ public abstract class ClientBuilder<Builder extends ClientBuilder<Builder>>
 	 * @return
 	 */
 	private String getClientBeanName() {
-		String beanName = null;
-		List<XmlNode> nodes = ConfigurationUtil.getConfigurationManager()
-				.getApplicationConfiguration()
-				.getSubNode("application-properties").getSubNodes("property");
-		if (nodes != null) {
-           for(XmlNode node:nodes){
-        	   if(node.getAttribute("name").equals(NODE_NAME)){
-        		  beanName = node.getAttribute("value");
-        	   }
-           }
-		}
-		return beanName;
+		return ConfigurationUtil.getConfigurationManager().getConfiguration(NODE_NAME);
 	}
 
 	protected Context getContext() {
