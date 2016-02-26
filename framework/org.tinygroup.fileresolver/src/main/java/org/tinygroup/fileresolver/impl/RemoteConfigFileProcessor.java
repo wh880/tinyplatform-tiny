@@ -41,6 +41,9 @@ public class RemoteConfigFileProcessor extends AbstractFileProcessor{
 	public void process() {
 		if (StringUtils.isNotBlank(applicationXML)) {
 			XmlNode xmlNode = loadRemoteConfig(applicationXML);
+			if(xmlNode==null){
+				return;
+			}
 			String enable = xmlNode.getAttribute(REMOTE_CONFIG_PATH_ATTRIBUTE);
 			if (!StringUtils.equalsIgnoreCase(enable, "true")) {
 				return;

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+	<application-properties>
+        <file path="/ip.properties"></file>
+        <property name="ipVar" value="{ip}"></property>
+    </application-properties>
+    <value1 value="{ipVar}"></value1>
+    <value2 value="{ip}"></value2>
+</application>

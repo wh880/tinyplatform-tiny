@@ -52,6 +52,7 @@ public interface ConfigurationManager {
      */
     void distributeConfiguration();
 
+    void replace();
 
     void setConfigurationList(Collection<Configuration> configurationList);
     /**

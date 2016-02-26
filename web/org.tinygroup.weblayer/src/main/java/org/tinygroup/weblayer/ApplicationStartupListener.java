@@ -40,6 +40,7 @@ import org.tinygroup.application.ApplicationProcessor;
 import org.tinygroup.application.impl.ApplicationDefault;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.io.StreamUtil;
+import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
@@ -135,6 +136,13 @@ public class ApplicationStartupListener implements ServletContextListener {
 				application = new ApplicationDefault();
 				applicationConfig = StreamUtil.readText(inputStream, "UTF-8",
 						true);
+				if (applicationConfig != null) {
+					ConfigurationManager c = ConfigurationUtil
+							.getConfigurationManager();
+					XmlNode applicationXml = new XmlStringParser().parse(applicationConfig).getRoot();;
+					c.setApplicationConfiguration(applicationXml);
+
+				}
 				loadSpringBeans(applicationConfig);
 
 				XmlNode applicationXml = ConfigurationUtil

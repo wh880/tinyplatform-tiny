@@ -248,13 +248,7 @@ public class BeanDefinitionProxy extends GenericBeanDefinition implements BeanDe
                 }
                 currentPV.removeAttribute(mergedName);
                 currentMpv.removePropertyValue(mergedName);
-                if (mergedValue instanceof RuntimeBeanReference) {
-                    currentMpv.addPropertyValue(mergedName, mergedValue);
-                    if (logger.isInfoEnabled()) {
-                        logger.info("将原属性值(PropertyValues)(" + mergedName + ")value:" + currentValue
-                                 + "替换为" + mergedValue);
-                    }
-                } else if (mergedValue instanceof BeanDefinitionHolder) {
+                if (mergedValue instanceof RuntimeBeanReference||mergedValue instanceof BeanDefinitionHolder) {
                     currentMpv.addPropertyValue(mergedName, mergedValue);
                     if (logger.isInfoEnabled()) {
                         logger.info("将原属性值(PropertyValues)(" + mergedName + ")value:" + currentValue
