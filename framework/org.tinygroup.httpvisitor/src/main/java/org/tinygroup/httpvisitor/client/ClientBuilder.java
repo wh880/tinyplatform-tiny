@@ -57,10 +57,15 @@ public abstract class ClientBuilder<Builder extends ClientBuilder<Builder>>
 		if(beanName==null){
 		   throw new HttpVisitorException("查找HTTP客户端实例Bean名称失败，请检查应用全局配置文件是否配置"+NODE_NAME+"节点");
 		}
-		ClientInterface clientInterface = BeanContainerFactory
-				.getBeanContainer(getClass().getClassLoader()).getBean(beanName);
-		clientInterface.init(getContext());
-		return clientInterface;
+		try{
+			ClientInterface clientInterface = BeanContainerFactory
+					.getBeanContainer(getClass().getClassLoader()).getBean(beanName);
+			clientInterface.init(getContext());
+			return clientInterface;
+		}catch(Exception e){
+			throw new HttpVisitorException("创建"+beanName+"的客户端实例失败",e);
+		}
+		
 	}
 
 	/**
