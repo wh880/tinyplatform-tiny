@@ -76,7 +76,7 @@
 	</bean>
 
 	<bean id="classMerge"
-		  class="org.tinygroup.springmerge.MergeObject2" scope="prototype">
+		  class="org.tinygroup.springmerge.MergeObjectB" scope="prototype">
 		<property name="suffix" value="jpg2,pdf2"></property>
 		<property name="paramsMap">
 			<map>

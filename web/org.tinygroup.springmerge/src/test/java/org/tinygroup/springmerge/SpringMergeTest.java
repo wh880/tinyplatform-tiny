@@ -99,9 +99,9 @@ public class SpringMergeTest extends TestCase {
 
 		Properties properties = mergeObject.getProperties();
 		assertEquals(5,properties.size());
-		Properties expctedProp = new Properties();
-		for(Object key:expctedProp.keySet()){
-			assertEquals(expctedProp.get(key),properties.get(key));
+		Properties expectedProp = new Properties();
+		for(Object key: expectedProp.keySet()){
+			assertEquals(expectedProp.get(key),properties.get(key));
 		}
 
 	}
@@ -154,10 +154,10 @@ public class SpringMergeTest extends TestCase {
 
 
 	public void testClassMerge(){
-		assertTrue(applicationContext.getBean("classMerge") instanceof MergeObject2);
-		MergeObject2 mergeObject = (MergeObject2) applicationContext.getBean("classMerge");
-		MergeObject2 mergeObject2 = (MergeObject2) applicationContext.getBean("classMerge");
-		assertNotSame(mergeObject,mergeObject2);//测试scope,属性合并后按照merge.xml配置
+		assertTrue(applicationContext.getBean("classMerge") instanceof MergeObjectB);
+		MergeObjectB mergeObject = (MergeObjectB) applicationContext.getBean("classMerge");
+		MergeObjectB mergeObjectB = (MergeObjectB) applicationContext.getBean("classMerge");
+		assertNotSame(mergeObject,mergeObjectB);//测试scope,属性合并后按照merge.xml配置
 
 		assertEquals(mergeObject.getSuffix(), "jpg2,pdf2");
 		Map<String,String> map = mergeObject.getParamsMap();

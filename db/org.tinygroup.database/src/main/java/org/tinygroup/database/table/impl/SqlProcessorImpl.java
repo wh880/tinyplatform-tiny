@@ -234,10 +234,10 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 
 	protected List<String> dealDropFields(List<String> dropFields, Table table) {
 		List<String> droplist = new ArrayList<String>();
-		for (String colum : dropFields) {
+		for (String column : dropFields) {
 			StringBuffer ddlBuffer = new StringBuffer();
 			ddlBuffer.append(String.format("ALTER TABLE %s DROP COLUMN %s",
-					table.getName(), colum));
+					table.getName(), column));
 			droplist.add(ddlBuffer.toString());
 
 		}
