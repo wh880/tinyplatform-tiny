@@ -8,6 +8,11 @@
 		class="org.tinygroup.springmerge.MergeObject">
 		<property name="suffix" value="jpg,pdf"></property>
 	</bean>
+
+	<bean id="stringOverride"
+		  class="org.tinygroup.springmerge.MergeObject">
+		<property name="suffix" value="jpg,pdf"></property>
+	</bean>
 	
 	<bean id="mapMerge"
 		class="org.tinygroup.springmerge.MergeObject">
@@ -18,6 +23,63 @@
 		        <entry key="key3" value="value3"></entry>
 		   </map>
 		</property>
+		<property name="paramSet">
+			<set>
+				<value>svalue1</value>
+				<value>svalue2</value>
+				<value>svalue3</value>
+			</set>
+		</property>
+		<property name="paramList">
+			<list>
+				<value>lvalue1</value>
+				<value>lvalue2</value>
+				<value>lvalue3</value>
+			</list>
+		</property>
 	</bean>
-	
+
+	<bean id="mapOverride"
+		  class="org.tinygroup.springmerge.MergeObject">
+		<property name="paramsMap">
+			<map>
+				<entry key="key1" value="value1"></entry>
+				<entry key="key2" value="value2"></entry>
+				<entry key="key3" value="value3"></entry>
+			</map>
+		</property>
+		<property name="paramSet">
+			<set>
+				<value>svalue1</value>
+				<value>svalue2</value>
+				<value>svalue3</value>
+			</set>
+		</property>
+		<property name="paramList">
+			<list>
+				<value>lvalue1</value>
+				<value>lvalue2</value>
+				<value>lvalue3</value>
+			</list>
+		</property>
+		<property name="properties">
+			<props>
+				<prop key="pkey1">pvalue1</prop>
+				<prop key="pkey2">pvalue2</prop>
+				<prop key="pkey3">pvalue3</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="classMerge"
+		  class="org.tinygroup.springmerge.MergeObject">
+		<property name="suffix" value="jpg,pdf"></property>
+		<property name="paramsMap">
+			<map>
+				<entry key="key1" value="value1"></entry>
+				<entry key="key2" value="value2"></entry>
+				<entry key="key3" value="value3"></entry>
+			</map>
+		</property>
+	</bean>
 </beans>

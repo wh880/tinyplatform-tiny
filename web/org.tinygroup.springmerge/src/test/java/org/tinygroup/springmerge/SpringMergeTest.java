@@ -1,6 +1,6 @@
 package org.tinygroup.springmerge;
 
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -47,13 +47,111 @@ public class SpringMergeTest extends TestCase {
 		assertEquals("jpg,docx,png", mergeObject.getSuffix());
 	}
 
-	public void testMapMerge() {
+	public void testStringOverride(){
+		MergeObject mergeObject = (MergeObject) applicationContext
+				.getBean("stringOverride");
+		assertEquals("jpg,docx,png", mergeObject.getSuffix());
+	}
+
+	/**
+	 * 测试集合的合并，包括map/set/list/property
+	 */
+	public void testCollectionMerge() {
 		MergeObject mergeObject = (MergeObject) applicationContext
 				.getBean("mapMerge");
 		Map<String, String> map = mergeObject.getParamsMap();
 		assertEquals(5, map.size());
 		assertEquals("value11", map.get("key1"));
 		assertEquals("value5", map.get("key5"));
+
+		Set<String> set = mergeObject.getParamSet();
+		assertEquals(5, set.size());//按set规则合并
+		Set<String> expectedset = new HashSet<String>();
+		expectedset.add("svalue1");
+		expectedset.add("svalue2");
+		expectedset.add("svalue3");
+		expectedset.add("svalue4");
+		expectedset.add("svalue5");
+		Iterator expectedsetiter = expectedset.iterator();
+		while(expectedsetiter.hasNext()){
+			assertTrue(set.contains(expectedsetiter.next()));
+		}
+
+		List<String> list = mergeObject.getParamList();
+		for (String l:list){
+			System.out.println(l);
+		}
+		assertEquals(6, list.size());//按set规则合并
+		List<String> expectedlist = new ArrayList<String>();
+		expectedlist.add("lvalue1");
+		expectedlist.add("lvalue2");
+		expectedlist.add("lvalue3");
+		expectedlist.add("lvalue11");
+		expectedlist.add("lvalue4");
+		expectedlist.add("lvalue5");
+		for(int i=0;i<expectedlist.size();i++){
+			assertEquals(list.get(i),expectedlist.get(i));
+		}
+
+	}
+
+	/**
+	 * 测试集合的覆盖，包括map/set/list/property
+	 */
+	public void testCollectionOverride(){
+		MergeObject mergeObject = (MergeObject) applicationContext
+				.getBean("mapOverride");
+		Map<String, String> map = mergeObject.getParamsMap();
+		assertEquals(map.size(),3);
+		assertEquals("value11",map.get("key1"));
+		assertEquals("value4",map.get("key4"));
+		assertEquals("value5",map.get("key5"));
+		assertNull(map.get("key2"));
+		assertNull(map.get("key3"));
+
+		Set<String> set = mergeObject.getParamSet();
+		assertEquals(3, set.size());//按set规则合并
+		Set<String> expectedset = new HashSet<String>();
+		expectedset.add("svalue11");
+		expectedset.add("svalue4");
+		expectedset.add("svalue5");
+		Iterator expectedsetiter = expectedset.iterator();
+		while(expectedsetiter.hasNext()){
+			assertTrue(set.contains(expectedsetiter.next()));
+		}
+
+		List<String> list = mergeObject.getParamList();
+		assertEquals(3, list.size());//按set规则合并
+		List<String> expectedlist = new ArrayList<String>();
+		expectedlist.add("lvalue11");
+		expectedlist.add("lvalue4");
+		expectedlist.add("lvalue5");
+		for(int i=0;i<expectedlist.size();i++){
+			assertEquals(list.get(i),expectedlist.get(i));
+		}
+
+		Properties properties = mergeObject.getProperties();
+		assertEquals(3,properties.size());
+		Properties expctedProp = new Properties();
+		expctedProp.put("pkey1","pvalue11");
+		expctedProp.put("pkey4","pvalue4");
+		expctedProp.put("pkey5","pvalue5");
+
+		for(Object key:expctedProp.keySet()){
+			assertEquals(expctedProp.get(key),properties.get(key));
+		}
+	}
+
+
+	public void testClassMerge(){
+		assertTrue(applicationContext.getBean("classMerge") instanceof MergeObject2);
+		MergeObject2 mergeObject = (MergeObject2) applicationContext.getBean("classMerge");
+		assertEquals(mergeObject.getSuffix(), "jpg2,pdf2");
+		Map<String,String> map = mergeObject.getParamsMap();
+		assertEquals(map.size(),3);
+		assertEquals("value11",map.get("key1"));
+		assertEquals("value4",map.get("key4"));
+		assertEquals("value5",map.get("key5"));
 	}
 
 }

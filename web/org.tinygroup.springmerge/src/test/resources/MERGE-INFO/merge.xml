@@ -16,6 +16,62 @@
 				<entry key="key5" value="value5"></entry>
 			</map>
 		</property>
+		<property name="paramSet">
+			<set merge="true">
+				<value>svalue1</value>
+				<value>svalue4</value>
+				<value>svalue5</value>
+			</set>
+		</property>
+		<property name="paramList">
+			<list merge="true">
+				<value>lvalue11</value>
+				<value>lvalue4</value>
+				<value>lvalue5</value>
+			</list>
+		</property>
+	</bean>
+<!--测试覆盖-->
+	<bean id="mapOverride" class="org.tinygroup.springmerge.MergeObject">
+		<property name="paramsMap">
+			<map merge="false">
+				<entry key="key1" value="value11"></entry>
+				<entry key="key4" value="value4"></entry>
+				<entry key="key5" value="value5"></entry>
+			</map>
+		</property>
+		<property name="paramSet">
+			<set merge="false">
+				<value>svalue11</value>
+				<value>svalue4</value>
+				<value>svalue5</value>
+			</set>
+		</property>
+		<property name="paramList">
+			<list>
+				<value>lvalue11</value>
+				<value>lvalue4</value>
+				<value>lvalue5</value>
+			</list>
+		</property>
+		<property name="properties">
+			<props merge="false">
+				<prop key="pkey1">pvalue11</prop>
+				<prop key="pkey4">pvalue4</prop>
+				<prop key="pkey5">pvalue5</prop>
+			</props>
+		</property>
 	</bean>
 
+	<bean id="classMerge"
+		  class="org.tinygroup.springmerge.MergeObject2">
+		<property name="suffix" value="jpg2,pdf2"></property>
+		<property name="paramsMap">
+			<map>
+				<entry key="key1" value="value11"></entry>
+				<entry key="key4" value="value4"></entry>
+				<entry key="key5" value="value5"></entry>
+			</map>
+		</property>
+	</bean>
 </beans>

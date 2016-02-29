@@ -96,7 +96,7 @@ public class ConventionCustomBeanDefinitionRegistryPostProcessor extends
 		// 扫描，排重，加入约定扫入的beanDefinition
 		String[] patternArray = new String[patterns.size()];
 		long start = System.currentTimeMillis();
-		int count = this.createScanner(registry).scan(
+			int count = this.createScanner(registry).scan(
 				patterns.toArray(patternArray));
 		LOGGER.logMessage(
 				LogLevel.INFO,
