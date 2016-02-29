@@ -260,7 +260,7 @@ public class BeanDefinitionProxy extends GenericBeanDefinition implements BeanDe
                     ManagedSet mergedManagedSet = (ManagedSet) mergedValue;
                     ManagedSet tempManagedSet = (ManagedSet) currentManagedSet.clone();
                     if (mergedManagedSet.isMergeEnabled()) {
-                        currentManagedSet.addAll((ManagedSet) mergedValue);
+                        currentManagedSet.addAll(mergedManagedSet);
                         if (logger.isInfoEnabled()) {
                             logger.info("将需要merged属性值(PropertyValues)(" + mergedName + ")value:"
                                      + mergedValue + "和现属性value" + tempManagedSet + "合并为"
@@ -279,7 +279,7 @@ public class BeanDefinitionProxy extends GenericBeanDefinition implements BeanDe
                     ManagedList managedListed = (ManagedList) currentManagedList.clone();
                     ManagedList mergeManagedList = (ManagedList) mergedValue;
                     if (mergeManagedList.isMergeEnabled()) {
-                        currentManagedList.addAll((ManagedList) mergedValue);
+                        currentManagedList.addAll(mergeManagedList);
                         if (logger.isInfoEnabled()) {
                             logger.info("将需要merged属性值(PropertyValues)(" + mergedName + ")value:"
                                      + mergedValue + "和现属性value" + managedListed + "合并为"
@@ -289,7 +289,7 @@ public class BeanDefinitionProxy extends GenericBeanDefinition implements BeanDe
                         currentManagedList = mergeManagedList;
                         if (logger.isInfoEnabled()) {
                             logger.info("属性值(PropertyValues)(" + mergedName + ")由现属性value"
-                                     + currentManagedList + "直接替换为" + mergedValue);
+                                     + managedListed + "直接替换为" + mergedValue);
                         }
                     }
                     currentMpv.addPropertyValue(mergedName, currentManagedList);
@@ -299,7 +299,7 @@ public class BeanDefinitionProxy extends GenericBeanDefinition implements BeanDe
                     ManagedMap managedMap = (ManagedMap) currentManagedMap.clone();
                     ManagedMap mergeManagedMap = (ManagedMap) mergedValue;
                     if (mergeManagedMap.isMergeEnabled()) {
-                        currentManagedMap.putAll((ManagedMap) mergedValue);
+                        currentManagedMap.putAll(mergeManagedMap);
                         if (logger.isInfoEnabled()) {
                             logger.info("将需要merged属性值(PropertyValues)(" + mergedName + ")value:"
                                      + mergedValue + "和现属性value" + managedMap + "合并为"
@@ -310,7 +310,7 @@ public class BeanDefinitionProxy extends GenericBeanDefinition implements BeanDe
                         currentManagedMap = mergeManagedMap;
                         if (logger.isInfoEnabled()) {
                             logger.info("属性值(PropertyValues)(" + mergedName + ")由现属性value"
-                                     + currentManagedMap + "直接替换为" + mergedValue);
+                                     + managedMap + "直接替换为" + mergedValue);
                         }
                     }
                     currentMpv.addPropertyValue(mergedName, currentManagedMap);
@@ -320,7 +320,7 @@ public class BeanDefinitionProxy extends GenericBeanDefinition implements BeanDe
                         .clone();
                     ManagedProperties mergedManageProperties = (ManagedProperties) mergedValue;
                     if (mergedManageProperties.isMergeEnabled()) {
-                        currentManageProperties.merge(mergedValue);
+                        currentManageProperties.putAll(mergedManageProperties);
                         if (logger.isInfoEnabled()) {
                             logger.info("将需要merged属性值(PropertyValues)(" + mergedName + ")value:"
                                      + mergedValue + "和现属性value" + manageProperties + "合并为"
@@ -331,7 +331,7 @@ public class BeanDefinitionProxy extends GenericBeanDefinition implements BeanDe
                         currentManageProperties = mergedManageProperties;
                         if (logger.isInfoEnabled()) {
                             logger.info("属性值(PropertyValues)(" + mergedName + ")由现属性value"
-                                     + currentManageProperties + "直接替换为" + mergedValue);
+                                     + manageProperties + "直接替换为" + mergedValue);
                         }
 
                     }
