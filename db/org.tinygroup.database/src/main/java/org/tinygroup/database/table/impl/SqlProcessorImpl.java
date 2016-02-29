@@ -92,7 +92,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 	}
 
 	public List<String> getIndexCreateSql(Table table, String packageName) {
-		return appendIndexs(table);
+		return appendIndexes(table);
 	}
 
 	public List<String> getUpdateSql(Table table, String packageName,
@@ -375,7 +375,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		return "";
 	}
 
-	private List<String> appendIndexs(Table table) {
+	private List<String> appendIndexes(Table table) {
 		List<String> indexSqlList = new ArrayList<String>();
 		List<Index> list = table.getIndexList();
 		if (list != null) {
