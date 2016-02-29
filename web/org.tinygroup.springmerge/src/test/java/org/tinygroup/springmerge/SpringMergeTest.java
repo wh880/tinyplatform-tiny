@@ -47,10 +47,14 @@ public class SpringMergeTest extends TestCase {
 		assertEquals("jpg,docx,png", mergeObject.getSuffix());
 	}
 
-	public void testStringOverride(){
+	/**
+	 * 测试Ref
+	 */
+	public void testRefMerge(){
 		MergeObject mergeObject = (MergeObject) applicationContext
-				.getBean("stringOverride");
-		assertEquals("jpg,docx,png", mergeObject.getSuffix());
+				.getBean("mergeObject");
+		RefObject refObject = mergeObject.getRefObject();
+		assertEquals(refObject.getName(),"2");
 	}
 
 	/**
@@ -58,7 +62,7 @@ public class SpringMergeTest extends TestCase {
 	 */
 	public void testCollectionMerge() {
 		MergeObject mergeObject = (MergeObject) applicationContext
-				.getBean("mapMerge");
+				.getBean("mergeObject");
 		Map<String, String> map = mergeObject.getParamsMap();
 		assertEquals(5, map.size());
 		assertEquals("value11", map.get("key1"));
@@ -93,6 +97,13 @@ public class SpringMergeTest extends TestCase {
 			assertEquals(list.get(i),expectedlist.get(i));
 		}
 
+		Properties properties = mergeObject.getProperties();
+		assertEquals(5,properties.size());
+		Properties expctedProp = new Properties();
+		for(Object key:expctedProp.keySet()){
+			assertEquals(expctedProp.get(key),properties.get(key));
+		}
+
 	}
 
 	/**
@@ -100,7 +111,7 @@ public class SpringMergeTest extends TestCase {
 	 */
 	public void testCollectionOverride(){
 		MergeObject mergeObject = (MergeObject) applicationContext
-				.getBean("mapOverride");
+				.getBean("mergeObjectOverride");
 		Map<String, String> map = mergeObject.getParamsMap();
 		assertEquals(map.size(),3);
 		assertEquals("value11",map.get("key1"));
@@ -136,7 +147,6 @@ public class SpringMergeTest extends TestCase {
 		expctedProp.put("pkey1","pvalue11");
 		expctedProp.put("pkey4","pvalue4");
 		expctedProp.put("pkey5","pvalue5");
-
 		for(Object key:expctedProp.keySet()){
 			assertEquals(expctedProp.get(key),properties.get(key));
 		}
@@ -146,6 +156,9 @@ public class SpringMergeTest extends TestCase {
 	public void testClassMerge(){
 		assertTrue(applicationContext.getBean("classMerge") instanceof MergeObject2);
 		MergeObject2 mergeObject = (MergeObject2) applicationContext.getBean("classMerge");
+		MergeObject2 mergeObject2 = (MergeObject2) applicationContext.getBean("classMerge");
+		assertNotSame(mergeObject,mergeObject2);//测试scope,属性合并后按照merge.xml配置
+
 		assertEquals(mergeObject.getSuffix(), "jpg2,pdf2");
 		Map<String,String> map = mergeObject.getParamsMap();
 		assertEquals(map.size(),3);
@@ -153,5 +166,4 @@ public class SpringMergeTest extends TestCase {
 		assertEquals("value4",map.get("key4"));
 		assertEquals("value5",map.get("key5"));
 	}
-
 }

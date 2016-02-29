@@ -17,6 +17,8 @@ public class MergeObject {
 
 	private Properties properties;
 
+	private RefObject refObject;
+
 	public String getSuffix() {
 		return suffix;
 	}
@@ -56,5 +58,13 @@ public class MergeObject {
 
 	public Properties getProperties() {
 		return properties;
+	}
+
+	public void setRefObject(RefObject refObject) {
+		this.refObject = refObject;
+	}
+
+	public RefObject getRefObject() {
+		return refObject;
 	}
 }
