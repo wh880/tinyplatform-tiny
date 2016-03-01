@@ -107,5 +107,19 @@ public interface Context extends BaseContext {
 	 * @return 子环境MAP
 	 */
 	Map<String, Context> getSubContextMap();
+	
+	/**
+	 * 返回当前环境(不包含子环境)中所有内容
+	 * 
+	 * @return
+	 */
+	Map<String, Object> getItemMap();
+	
+	/**
+	 * 返回环境(包含子环境)中所有内容
+	 * 
+	 * @return
+	 */
+	Map<String, Object> getTotalItemMap();
 
 }

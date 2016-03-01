@@ -278,5 +278,17 @@ public class ContextImpl extends BaseContextImpl implements Context,
 		return containNodeMap(name, this, nodeMap);
 
 	}
+	public  Map<String, Object> getItemMap() {
+		return super.getItemMap();
+	}
+
+	public Map<String, Object> getTotalItemMap() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		for(Context subContext:subContextMap.values()){
+			map.putAll(subContext.getItemMap());
+		}
+		map.putAll(getItemMap());
+		return map;
+	}
 
 }
