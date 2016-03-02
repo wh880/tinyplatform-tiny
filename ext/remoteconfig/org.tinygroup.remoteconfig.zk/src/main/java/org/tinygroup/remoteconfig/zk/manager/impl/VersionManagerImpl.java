@@ -8,12 +8,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Version;
 import org.tinygroup.remoteconfig.manager.EnvironmentManager;
 import org.tinygroup.remoteconfig.manager.VersionManager;
-import org.tinygroup.remoteconfig.zk.client.ZKManager;
+import org.tinygroup.remoteconfig.zk.client.ZKVersionManager;
 
 /**
  * @author yanwj06282
@@ -30,7 +29,7 @@ public class VersionManagerImpl extends BaseManager implements VersionManager {
 	public Version add(Version version, String productId) {
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
-		ZKManager.set(version.getName(), version.getVersion(), configPath);
+		ZKVersionManager.set(version.getName(), version, configPath);
 		return version;
 	}
 
@@ -41,19 +40,16 @@ public class VersionManagerImpl extends BaseManager implements VersionManager {
 	public void delete(String versionId, String productId) {
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
-		ZKManager.delete(versionId, configPath);
+		ZKVersionManager.delete(versionId, configPath);
 	}
 
 	public Version get(String versionId, String productId) {
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
-		String value = ZKManager.get(versionId, configPath);
-		if (StringUtils.isBlank(value)) {
+		Version version = ZKVersionManager.get(versionId, configPath);
+		if (version == null) {
 			return null;
 		}
-		Version version = new Version();
-		version.setName(versionId);
-		version.setVersion(value);
 		version.setEnvironment(environmentManager.query(versionId, productId));
 		return version;
 	}
@@ -61,7 +57,7 @@ public class VersionManagerImpl extends BaseManager implements VersionManager {
 	public List<Version> query(String productId) {
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
-		Map<String ,String> sunModuleMap = ZKManager.getAll(configPath);
+		Map<String ,Version> sunModuleMap = ZKVersionManager.getAll(configPath);
 		List<Version> versions = new ArrayList<Version>();
 		for (Iterator<String> iterator = sunModuleMap.keySet().iterator(); iterator.hasNext();) {
 			String versionId = iterator.next();

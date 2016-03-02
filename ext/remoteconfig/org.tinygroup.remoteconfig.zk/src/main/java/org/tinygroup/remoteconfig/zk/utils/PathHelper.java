@@ -150,7 +150,7 @@ public class PathHelper {
 		return baseDir.concat(node);
 	}
 	
-	private static String appendSplit(String node){
+	public static String appendSplit(String node){
 		if (!StringUtils.startsWith(node, "/")) {
 			node = "/".concat(node);
 		}

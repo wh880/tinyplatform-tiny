@@ -5,51 +5,59 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Module;
 import org.tinygroup.remoteconfig.manager.ModuleManager;
-import org.tinygroup.remoteconfig.zk.client.IRemoteConfigZKConstant;
-import org.tinygroup.remoteconfig.zk.client.ZKManager;
+import org.tinygroup.remoteconfig.zk.client.ZKModuleManager;
 import org.tinygroup.remoteconfig.zk.utils.PathHelper;
 
 public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 
 	public Module add(Module module, ConfigPath entity) {
-		ZKManager.set(module.getName(), module.getModuleName(), entity);
-		ZKManager.set(PathHelper.getConfigPath(module.getName() ,IRemoteConfigZKConstant.MODULE_FLAG), IRemoteConfigZKConstant.MODULE_FLAG, entity);
+		ZKModuleManager.set(module.getName(), module, entity);
 		return module;
 	}
 
 	public void update(Module module, ConfigPath entity) {
-		ZKManager.set(module.getName(), module.getModuleName(), entity);
+		ZKModuleManager.set(module.getName(), module, entity);
 	}
 
 	public void delete(ConfigPath entity) {
-		ZKManager.delete("", entity);
+		ZKModuleManager.delete("", entity);
 	}
 
+	private ConfigPath copyConfigPath(ConfigPath src){
+		ConfigPath cy = new ConfigPath();
+		cy.setProductName(src.getProductName());
+		cy.setVersionName(src.getVersionName());
+		cy.setEnvironmentName(src.getEnvironmentName());
+		cy.setModulePath(src.getModulePath());
+		return cy;
+	}
+	
 	public Module get(ConfigPath entity) {
-		Module module = new Module();
-		if (StringUtils.indexOf(entity.getModulePath(), "/") > 0) {
-			module.setName(StringUtils.substringAfterLast(entity.getModulePath(), "/"));
-		}else {
-			module.setName(entity.getModulePath());
+		ConfigPath tempPath = copyConfigPath(entity);
+		Module module = ZKModuleManager.get("", tempPath);
+		if (module != null) {
+			module.setSubModules(querySubModules(tempPath));
 		}
-		module.setModuleName(ZKManager.get("", entity));
 		return module;
 	}
 
 	public List<Module> querySubModules(ConfigPath entity) {
 		List<Module> modules = new ArrayList<Module>();
-		Map<String, String> moduleMap = ZKManager.getAll(entity);
+		Map<String, Module> moduleMap = ZKModuleManager.getAll(entity);
+		if (moduleMap == null) {
+			return modules;
+		}
 		for (Iterator<String> iterator = moduleMap.keySet().iterator(); iterator.hasNext();) {
 			String type = iterator.next();
-			entity.setModulePath(type);
-			Module parentModule = get(entity);
+			ConfigPath tempPath = copyConfigPath(entity);
+			tempPath.setModulePath(PathHelper.getConfigPath(entity.getModulePath() ,type));
+			Module parentModule = get(tempPath);
 			modules.add(parentModule);
 			try {
-				getSubModule(parentModule, entity);
+				getSubModule(parentModule, tempPath);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -63,17 +71,15 @@ public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 		}
 		List<Module> modules = new ArrayList<Module>();
 		parentModule.setSubModules(modules);
-		Map<String ,String> sunModuleMap = ZKManager.getAll(entity);
+		Map<String ,Module> sunModuleMap = ZKModuleManager.getAll(entity);
+		if (sunModuleMap == null) {
+			return ;
+		}
 		for (Iterator<String> iterator = sunModuleMap.keySet().iterator(); iterator.hasNext();) {
 			String type = iterator.next();
-			Module module = new Module();
-			module.setName(type);
-			module.setModuleName(sunModuleMap.get(type));
+			Module module = sunModuleMap.get(type);
 			modules.add(module);
-			ConfigPath tempConfigPath = new ConfigPath();
-			tempConfigPath.setEnvironmentName(entity.getEnvironmentName());
-			tempConfigPath.setProductName(entity.getProductName());
-			tempConfigPath.setVersionName(entity.getVersionName());
+			ConfigPath tempConfigPath = copyConfigPath(entity);
 			tempConfigPath.setModulePath(PathHelper.getConfigPath(entity.getModulePath() ,type));
 			getSubModule(module, tempConfigPath);
 		}

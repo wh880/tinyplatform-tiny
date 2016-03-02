@@ -13,7 +13,7 @@ import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Product;
 import org.tinygroup.remoteconfig.manager.ProductManager;
 import org.tinygroup.remoteconfig.manager.VersionManager;
-import org.tinygroup.remoteconfig.zk.client.ZKManager;
+import org.tinygroup.remoteconfig.zk.client.ZKProductManager;
 
 /**
  * @author yanwj06282
@@ -28,24 +28,20 @@ public class ProductManagerImpl extends BaseManager implements ProductManager {
 	}
 	
 	public Product add(Product product) {
-		ZKManager.set(product.getName(), product.getTitle(), null);
+		ZKProductManager.set(product.getName(), product, null);
 		return product;
 	}
 
 	public void update(Product product) {
-		ZKManager.set(product.getName(), product.getTitle(), null);
+		ZKProductManager.set(product.getName(), product, null);
 	}
 
 	public void delete(String productId) {
-		ZKManager.delete(productId, null);
-
+		ZKProductManager.delete(productId, null);
 	}
 
 	public Product get(String productId) {
-		String value = ZKManager.get(productId, null);
-		Product product = new Product();
-		product.setName(productId);
-		product.setTitle(value);
+		Product product = ZKProductManager.get(productId, null);
 		product.setVersions(versionManager.query(productId));
 		return product;
 	}
@@ -56,7 +52,7 @@ public class ProductManagerImpl extends BaseManager implements ProductManager {
 	 */
 	public List<Product> query(Product product) {
 		List<Product> products = new ArrayList<Product>();
-		Map<String, String> configPathMap = ZKManager.getAll(new ConfigPath());
+		Map<String, Product> configPathMap = ZKProductManager.getAll(new ConfigPath());
 		String productName = product.getName();
 		for (Iterator<String> iterator = configPathMap.keySet().iterator(); iterator.hasNext();) {
 			String type = iterator.next();

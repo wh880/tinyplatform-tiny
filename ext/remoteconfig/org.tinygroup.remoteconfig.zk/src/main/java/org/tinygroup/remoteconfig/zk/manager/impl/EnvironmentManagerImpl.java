@@ -13,7 +13,8 @@ import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Environment;
 import org.tinygroup.remoteconfig.manager.EnvironmentManager;
 import org.tinygroup.remoteconfig.manager.ModuleManager;
-import org.tinygroup.remoteconfig.zk.client.ZKManager;
+import org.tinygroup.remoteconfig.zk.client.ZKDefaultEnvManager;
+import org.tinygroup.remoteconfig.zk.client.ZKEnvManager;
 
 /**
  * @author yanwj06282
@@ -31,7 +32,7 @@ public class EnvironmentManagerImpl extends BaseManager implements EnvironmentMa
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		configPath.setVersionName(versionId);
-		ZKManager.set(env.getName(), env.getEnvironment(), configPath);
+		ZKEnvManager.set(env.getName(), env, configPath);
 		return env;
 	}
 
@@ -43,7 +44,7 @@ public class EnvironmentManagerImpl extends BaseManager implements EnvironmentMa
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		configPath.setVersionName(versionId);
-		ZKManager.delete(envId, configPath);
+		ZKEnvManager.delete(envId, configPath);
 
 	}
 
@@ -51,23 +52,23 @@ public class EnvironmentManagerImpl extends BaseManager implements EnvironmentMa
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		configPath.setVersionName(versionId);
-		String value = ZKManager.get(envId, configPath);
-		if (StringUtils.isBlank(value)) {
+		Environment environment = ZKEnvManager.get(envId, configPath);
+		if (environment == null) {
 			return null;
 		}
-		Environment environment = new Environment();
-		environment.setName(envId);
-		environment.setEnvironment(value);
 		configPath.setEnvironmentName(envId);
 		environment.setModules(moduleManager.querySubModules(configPath));
 		return environment;
 	}
 
 	public List<Environment> query(String versionId, String productId) {
+		if (StringUtils.isBlank(versionId) || StringUtils.isBlank(productId) ) {
+			return new ArrayList<Environment>(ZKDefaultEnvManager.getAll().values());
+		}
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		configPath.setVersionName(versionId);
-		Map<String ,String> sunModuleMap = ZKManager.getAll(configPath);
+		Map<String ,Environment> sunModuleMap = ZKEnvManager.getAll(configPath);
 		List<Environment> envs = new ArrayList<Environment>();
 		for (Iterator<String> iterator = sunModuleMap.keySet().iterator(); iterator.hasNext();) {
 			String envId = iterator.next();
@@ -77,6 +78,28 @@ public class EnvironmentManagerImpl extends BaseManager implements EnvironmentMa
 			}
 		}
 		return envs;
+	}
+
+	public Environment add(Environment env) {
+		ZKDefaultEnvManager.set(env.getName(), env);
+		return env;
+	}
+
+	public void update(Environment env) {
+		ZKDefaultEnvManager.set(env.getName(), env);
+	}
+
+	public void delete(String envId) {
+		ZKDefaultEnvManager.delete(envId);
+	}
+
+	public Environment get(String envId) {
+		return ZKDefaultEnvManager.get(envId);
+	}
+
+	public void add(String envId, String versionId, String productId) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,5 +1,6 @@
 package org.tinygroup.remoteconfig.zk.client;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import org.tinygroup.logger.Logger;
@@ -23,6 +24,11 @@ public class ConfigItemManagerImpl implements ConfigItemManager ,RemoteConfigMan
 	}
 
 	public Map<String, String> getALL(ConfigPath configPath) {
+		Map<String ,String> itemMap = ZKManager.getAll(configPath);
+		for (Iterator<String> iterator = itemMap.keySet().iterator(); iterator.hasNext();) {
+			String type = iterator.next();
+			itemMap.get(type);
+		}
 		return ZKManager.getAll(configPath);
 	}
 

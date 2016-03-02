@@ -50,7 +50,13 @@ public interface EnvironmentManager {
 	 */
 	void delete(String envId, String versionId, String productId);
 	
-	
+	/**
+	 * 批量查询，如果项目ID或者版本为空的情况下，返回默认环境
+	 * 
+	 * @param versionId
+	 * @param productId
+	 * @return
+	 */
 	List<Environment> query(String versionId, String productId);
 	
 	

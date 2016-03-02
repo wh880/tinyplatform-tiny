@@ -1,8 +1,14 @@
 package org.tinygroup.remoteconfig.config;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Version {
+public class Version implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1108803685220424646L;
 	/**
 	 * 唯一标识
 	 */
@@ -12,7 +18,7 @@ public class Version {
 	 */
 	private String version;
 	
-	private List<Environment> environment;
+	private List<Environment> environment = new ArrayList<Environment>();
 
 	
 	public String getName() {

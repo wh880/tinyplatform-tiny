@@ -1,8 +1,14 @@
 package org.tinygroup.remoteconfig.config;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Product {
+public class Product implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1465851920257829710L;
 	/**
 	 * 英文名
 	 */
@@ -14,7 +20,7 @@ public class Product {
 	
 	String description;
 	
-	List<Version> versions;
+	List<Version> versions = new ArrayList<Version>();
 
 	public String getTitle() {
 		return title;

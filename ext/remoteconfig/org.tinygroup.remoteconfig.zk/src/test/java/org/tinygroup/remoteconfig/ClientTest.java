@@ -28,6 +28,7 @@ public class ClientTest {
 		
 		try {
 			//清理
+			ZKManager.getAll(new ConfigPath());
 			ZKManager.delete("", null);
 			ZKManager.getAll(new ConfigPath());
 			ZKManager.delete("", null);

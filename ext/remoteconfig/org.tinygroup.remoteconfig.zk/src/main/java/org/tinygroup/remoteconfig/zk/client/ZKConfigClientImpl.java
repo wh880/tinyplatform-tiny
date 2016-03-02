@@ -56,7 +56,6 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 					parentItemMap.put(key, itemMap.get(key));
 				}
 			}
-			parentItemMap.remove(IRemoteConfigZKConstant.MODULE_FLAG);	
 		}
 		return parentItemMap;
 	}
@@ -103,18 +102,9 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 		}
 		configPath.setModulePath(PathHelper.getConfigPath(configPath.getModulePath() ,parentModule.getName()));
 		Map<String, String> subItemMap = ZKManager.getAll(configPath);
+		itemMap.putAll(subItemMap);
 		for (String key : subItemMap.keySet()) {
-			ConfigPath tempConfigPath = new ConfigPath();
-			tempConfigPath.setProductName(configPath.getProductName());
-			tempConfigPath.setVersionName(configPath.getVersionName());
-			tempConfigPath.setEnvironmentName(configPath.getEnvironmentName());
-			tempConfigPath.setModulePath(PathHelper.getConfigPath(configPath.getModulePath() ,key));
-			Map<String ,String> moduleItemMap = ZKManager.getAll(tempConfigPath);
-			if (moduleItemMap.get(IRemoteConfigZKConstant.MODULE_FLAG) != null) {
-				continue;
-			}else {
-				itemMap.put(key, subItemMap.get(key));
-			}
+			itemMap.put(key, subItemMap.get(key));
 		}
 		for (Module subModule : parentModule.getSubModules()) {
 			recursionModule(subModule, configPath, itemMap);
