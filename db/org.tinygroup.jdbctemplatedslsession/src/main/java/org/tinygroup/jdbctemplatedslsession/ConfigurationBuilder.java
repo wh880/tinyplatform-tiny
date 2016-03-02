@@ -6,9 +6,6 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.commons.tools.CollectionUtil;
@@ -52,17 +49,6 @@ public class ConfigurationBuilder {
 	private final Configuration configuration;
 	private Logger logger = LoggerFactory.getLogger(ConfigurationBuilder.class);
 
-	public ConfigurationBuilder(String configUrl) {
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		Resource resource = resourceLoader.getResource(configUrl);
-		try {
-			parseFromStream(resource.getInputStream());
-		} catch (IOException e) {
-			logger.errorMessage("载入数据库配置信息时出现异常，错误原因：{}！", e, e.getMessage());
-			throw new DslRuntimeException(e);
-		}
-		configuration = new Configuration();
-	}
 
 	public ConfigurationBuilder(InputStream inputStream) {
 		try {
@@ -117,8 +103,10 @@ public class ConfigurationBuilder {
 				.getBeanContainer(this.getClass().getClassLoader()).getBean(
 						defaultGeneratorBean, KeyGenerator.class);
 		configuration.setDefaultKeyGenerator(defaultKeyGenerator);
-		String defaultAutoKeyGenerator=tableConfigsNode.getAttribute(DEFAULT_AUTO_GENERATOR_KEY);
-		configuration.setDefaultAutoKeyGenerator(Boolean.parseBoolean(defaultAutoKeyGenerator));
+		String defaultAutoKeyGenerator = tableConfigsNode
+				.getAttribute(DEFAULT_AUTO_GENERATOR_KEY);
+		configuration.setDefaultAutoKeyGenerator(Boolean
+				.parseBoolean(defaultAutoKeyGenerator));
 		List<XmlNode> tableConfigNodes = tableConfigsNode
 				.getSubNodes(TABLE_CONFIG);
 		if (!CollectionUtil.isEmpty(tableConfigNodes)) {
