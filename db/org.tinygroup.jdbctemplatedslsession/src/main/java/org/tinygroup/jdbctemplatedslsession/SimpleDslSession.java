@@ -16,6 +16,7 @@
 package org.tinygroup.jdbctemplatedslsession;
 
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -26,6 +27,9 @@ import javax.sql.DataSource;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
@@ -84,8 +88,21 @@ public class SimpleDslSession implements DslSession {
 		simpleJdbcTemplate = new SimpleJdbcTemplate(jdbcTemplate);
 		provider = new DefaultTableMetaDataProvider();
 		dbType = provider.getDbType(dataSource);
-		ConfigurationBuilder builder = new ConfigurationBuilder("tinydsl.xml");
-		configuration = builder.parse();
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		Resource resource = resourceLoader.getResource("tinydsl.xml");
+		if (resource.exists()) {
+			try {
+				ConfigurationBuilder builder = new ConfigurationBuilder(
+						resource.getInputStream());
+				configuration = builder.parse();
+			} catch (IOException e) {
+				LOGGER.errorMessage("载入框架配置信息时出现异常，错误原因：{}！", e,
+						e.getMessage());
+				throw new DslRuntimeException(e);
+			}
+		} else {
+			configuration = new Configuration();
+		}
 	}
 
 	public SimpleDslSession(DataSource dataSource,
@@ -105,7 +122,7 @@ public class SimpleDslSession implements DslSession {
 	public void setIncrementer(DataFieldMaxValueIncrementer incrementer) {
 		this.incrementer = incrementer;
 	}
-	
+
 	public Configuration getConfiguration() {
 		return configuration;
 	}
@@ -318,8 +335,7 @@ public class SimpleDslSession implements DslSession {
 			batchProcess(batchSize, params, new BatchOperateCallback() {
 				public int[] callback(List<Map<String, Object>> params) {
 					int[] affectNums = insertBatchOperate.batchProcess(params);
-					Collections.addAll(records,
-							ArrayUtils.toObject(affectNums));
+					Collections.addAll(records, ArrayUtils.toObject(affectNums));
 					return affectNums;
 				}
 

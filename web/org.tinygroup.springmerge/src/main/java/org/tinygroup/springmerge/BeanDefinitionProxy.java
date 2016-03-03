@@ -485,7 +485,6 @@ public class BeanDefinitionProxy extends GenericBeanDefinition implements BeanDe
      * @see
      * org.springframework.beans.factory.config.BeanDefinition#isSingleton()
      * 注：由于默认是single。如果当前值非single而需要merge的是single。这是仍以当前的scope为主。 to do
-     * 需要严格测试和讨论，scope合并侧略
      */
     public boolean isSingleton() {
 
