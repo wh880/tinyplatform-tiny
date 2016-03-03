@@ -23,7 +23,7 @@ public class ConfigItemManagerImpl implements ConfigItemManager ,RemoteConfigMan
 		return ZKManager.get(key, configPath);
 	}
 
-	public Map<String, String> getALL(ConfigPath configPath) {
+	public Map<String, String> getAll(ConfigPath configPath) {
 		Map<String ,String> itemMap = ZKManager.getAll(configPath);
 		for (Iterator<String> iterator = itemMap.keySet().iterator(); iterator.hasNext();) {
 			String type = iterator.next();
@@ -33,7 +33,6 @@ public class ConfigItemManagerImpl implements ConfigItemManager ,RemoteConfigMan
 	}
 
 	public void start() {
-		ZKManager.exists(null, null);
 	}
 
 	public void stop() {

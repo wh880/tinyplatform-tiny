@@ -1,7 +1,6 @@
 package org.tinygroup.remoteconfig.zk.manager.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +24,7 @@ public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 	public void delete(ConfigPath entity) {
 		ZKModuleManager.delete("", entity);
 	}
-
+ 
 	private ConfigPath copyConfigPath(ConfigPath src){
 		ConfigPath cy = new ConfigPath();
 		cy.setProductName(src.getProductName());
@@ -50,10 +49,9 @@ public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 		if (moduleMap == null) {
 			return modules;
 		}
-		for (Iterator<String> iterator = moduleMap.keySet().iterator(); iterator.hasNext();) {
-			String type = iterator.next();
+		for (String moduleKey : moduleMap.keySet()) {
 			ConfigPath tempPath = copyConfigPath(entity);
-			tempPath.setModulePath(PathHelper.getConfigPath(entity.getModulePath() ,type));
+			tempPath.setModulePath(PathHelper.getConfigPath(entity.getModulePath() ,moduleKey));
 			Module parentModule = get(tempPath);
 			modules.add(parentModule);
 			try {
@@ -75,12 +73,11 @@ public class ModuleManagerImpl extends BaseManager implements ModuleManager {
 		if (sunModuleMap == null) {
 			return ;
 		}
-		for (Iterator<String> iterator = sunModuleMap.keySet().iterator(); iterator.hasNext();) {
-			String type = iterator.next();
-			Module module = sunModuleMap.get(type);
+		for (String subModuleKey : sunModuleMap.keySet()) {
+			Module module = sunModuleMap.get(subModuleKey);
 			modules.add(module);
 			ConfigPath tempConfigPath = copyConfigPath(entity);
-			tempConfigPath.setModulePath(PathHelper.getConfigPath(entity.getModulePath() ,type));
+			tempConfigPath.setModulePath(PathHelper.getConfigPath(entity.getModulePath() ,subModuleKey));
 			getSubModule(module, tempConfigPath);
 		}
 	}

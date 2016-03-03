@@ -61,7 +61,6 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 	}
 
 	public void start() {
-		ZKManager.exists(null, null);
 		setConfigPath(getConfigPath());
 	}
 

@@ -20,6 +20,6 @@ public interface ConfigItemManager {
 
 	boolean exists(String key, ConfigPath configPath);
 
-	Map<String, String> getALL(ConfigPath configPath);
+	Map<String, String> getAll(ConfigPath configPath);
 
 }

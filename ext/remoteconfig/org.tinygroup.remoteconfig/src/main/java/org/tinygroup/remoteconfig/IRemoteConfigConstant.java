@@ -8,4 +8,8 @@ public class IRemoteConfigConstant {
 	 */
 	public static final String DEFAULT_ENV = "default_env";
 	
+	public static final String DEFAULT_ENV_VALUE = "default(初始环境)";
+	
+	
+	
 }

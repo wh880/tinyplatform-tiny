@@ -3,7 +3,6 @@ package org.tinygroup.remoteconfig.zk.utils;
 import org.apache.commons.lang.StringUtils;
 import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.zk.client.IRemoteConfigZKConstant;
-import org.tinygroup.remoteconfig.zk.config.RemoteConfig;
 
 public class PathHelper {
 
@@ -24,27 +23,7 @@ public class PathHelper {
 	}
 
 	/**
-	 * 获取系统根路径
-	 * 
-	 * @param config
-	 * @return
-	 */
-	public static String createURL(RemoteConfig config) {
-		String url = IRemoteConfigZKConstant.REMOTE_BASE_DIR;
-		if (StringUtils.isNotBlank(config.getApp())) {
-			url = url.concat(appendSplit(config.getApp()));
-		}
-		if (StringUtils.isNotBlank(config.getEnv())) {
-			url = url.concat(appendSplit(config.getEnv()));
-		}
-		if (StringUtils.isNotBlank(config.getVersion())) {
-			url = url.concat(appendSplit(config.getVersion()));
-		}
-		return url;
-	}
-
-	/**
-	 * 获取系统根路径
+	 * 获取全路径
 	 * 
 	 * @param config
 	 * @return
@@ -70,25 +49,6 @@ public class PathHelper {
 	}
 	
 	/**
-	 * 获取项目下所有的环境
-	 * 
-	 * @param config
-	 * @return
-	 */
-	public static String createAppPath(ConfigPath configPath) {
-		String url = IRemoteConfigZKConstant.REMOTE_BASE_DIR;
-		if (configPath != null) {
-			if (StringUtils.isNotBlank(configPath.getProductName())) {
-				url = url.concat(appendSplit(configPath.getProductName()));
-			}
-			if (StringUtils.isNotBlank(configPath.getVersionName())) {
-				url = url.concat(appendSplit(configPath.getVersionName()));
-			}
-		}
-		return url;
-	}
-	
-	/**
 	 * 获取系统根路径
 	 * 
 	 * @param config
@@ -102,42 +62,6 @@ public class PathHelper {
 			}
 		}
 		return p.substring(1, p.length());
-	}
-	
-	public static ConfigPath createConfigPath(String path){
-		String[] paths = StringUtils.split(path , "/");
-		ConfigPath configPath = new ConfigPath();
-		if (paths != null && paths.length > 0) {
-			if (paths.length > 0) {
-				configPath.setProductName(paths[0]);
-			}
-			if (paths.length > 1) {
-				configPath.setVersionName(paths[1]);
-			}
-			if (paths.length > 2) {
-				configPath.setEnvironmentName(paths[2]);
-			}
-			if (paths.length > 3) {
-				StringBuffer modulePath = new StringBuffer();
-				for (int i = 3; i < paths.length; i++) {
-					if (i != 0) {
-						modulePath.append("/");
-					}
-					modulePath.append(paths[i]);
-				}
-				configPath.setModulePath(modulePath.toString());
-			}
-		}
-		return configPath;
-	}
-	
-	public static ConfigPath createConfigPath(String app ,String version , String env ,String modulePath){
-		ConfigPath configPath = new ConfigPath();
-		configPath.setProductName(app);
-		configPath.setVersionName(version);
-		configPath.setEnvironmentName(env);
-		configPath.setModulePath(modulePath);
-		return configPath;
 	}
 	
 	public static String createPath(String node ,ConfigPath configPath){
