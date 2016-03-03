@@ -24,7 +24,7 @@ import org.tinygroup.remoteconfig.zk.utils.PathHelper;
 public class BaseManager {
 
 	protected static final Logger LOGGER = LoggerFactory
-			.getLogger(ZKEnvManager.class);
+			.getLogger(BaseManager.class);
 	
 	protected static ZooKeeper zooKeeper;
 	

@@ -10,7 +10,7 @@ import org.tinygroup.remoteconfig.manager.ModuleManager;
 import org.tinygroup.remoteconfig.zk.client.ZKModuleManager;
 import org.tinygroup.remoteconfig.zk.utils.PathHelper;
 
-public class ModuleManagerImpl extends BaseManager implements ModuleManager {
+public class ModuleManagerImpl implements ModuleManager {
 
 	public Module add(Module module, ConfigPath entity) {
 		ZKModuleManager.set(module.getName(), module, entity);

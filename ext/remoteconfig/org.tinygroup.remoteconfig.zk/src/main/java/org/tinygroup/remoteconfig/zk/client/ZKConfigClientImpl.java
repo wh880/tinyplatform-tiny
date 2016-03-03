@@ -42,22 +42,22 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 
 	public Map<String, String> getAll() throws BaseRuntimeException {
 		Map<String,String> itemMap = new HashMap<String, String>();
-		Map<String,String> parentItemMap = new HashMap<String, String>();
-		Environment defaultEnvironment = environmentManager.get(IRemoteConfigConstant.DEFAULT_ENV, configPath.getVersionName(), configPath.getProductName());
+		Map<String,String> defaultItemMap = new HashMap<String, String>();
+		Environment defaultEnvironment = environmentManager.get(IRemoteConfigConstant.DEFAULT_ENV_NAME, configPath.getVersionName(), configPath.getProductName());
 		Environment environment = environmentManager.get(configPath.getEnvironmentName(), configPath.getVersionName(), configPath.getProductName());
 		if (environment != null && defaultEnvironment != null) {
 			//取默认环境
-			getConfig(defaultEnvironment, parentItemMap);
+			getConfig(defaultEnvironment, defaultItemMap);
 			
 			//取指定模块
 			getConfig(environment, itemMap);
 			for (String key : itemMap.keySet()) {
-				if (parentItemMap.get(key) != null) {
-					parentItemMap.put(key, itemMap.get(key));
+				if (defaultItemMap.get(key) != null) {
+					defaultItemMap.put(key, itemMap.get(key));
 				}
 			}
 		}
-		return parentItemMap;
+		return defaultItemMap;
 	}
 
 	public void start() {
@@ -95,6 +95,13 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 		}
 	}
 	
+	/**
+	 * 递归遍历模块
+	 * 
+	 * @param parentModule
+	 * @param configPath
+	 * @param itemMap
+	 */
 	private void recursionModule(Module parentModule ,ConfigPath configPath ,Map<String,String> itemMap){
 		if (configPath == null) {
 			return;

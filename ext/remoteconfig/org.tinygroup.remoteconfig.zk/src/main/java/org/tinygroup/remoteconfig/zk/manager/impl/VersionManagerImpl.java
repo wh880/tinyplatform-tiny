@@ -18,7 +18,7 @@ import org.tinygroup.remoteconfig.zk.client.ZKVersionManager;
  * @author yanwj06282
  *
  */
-public class VersionManagerImpl extends BaseManager implements VersionManager {
+public class VersionManagerImpl implements VersionManager {
 
 	EnvironmentManager environmentManager;
 	
@@ -57,9 +57,9 @@ public class VersionManagerImpl extends BaseManager implements VersionManager {
 	public List<Version> query(String productId) {
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
-		Map<String ,Version> sunModuleMap = ZKVersionManager.getAll(configPath);
+		Map<String ,Version> versionMap = ZKVersionManager.getAll(configPath);
 		List<Version> versions = new ArrayList<Version>();
-		for (Iterator<String> iterator = sunModuleMap.keySet().iterator(); iterator.hasNext();) {
+		for (Iterator<String> iterator = versionMap.keySet().iterator(); iterator.hasNext();) {
 			String versionId = iterator.next();
 			Version version = get(versionId, productId);
 			if (version != null) {

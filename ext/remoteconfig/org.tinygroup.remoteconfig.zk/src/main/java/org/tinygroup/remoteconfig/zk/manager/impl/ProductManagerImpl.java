@@ -19,7 +19,7 @@ import org.tinygroup.remoteconfig.zk.client.ZKProductManager;
  * @author yanwj06282
  *
  */
-public class ProductManagerImpl extends BaseManager implements ProductManager {
+public class ProductManagerImpl implements ProductManager {
 	
 	VersionManager versionManager;
 	

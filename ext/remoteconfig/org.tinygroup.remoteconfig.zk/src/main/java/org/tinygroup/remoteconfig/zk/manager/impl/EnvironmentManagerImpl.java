@@ -20,7 +20,7 @@ import org.tinygroup.remoteconfig.zk.client.ZKEnvManager;
  * @author yanwj06282
  *
  */
-public class EnvironmentManagerImpl extends BaseManager implements EnvironmentManager {
+public class EnvironmentManagerImpl implements EnvironmentManager {
 
 	ModuleManager moduleManager;
 	

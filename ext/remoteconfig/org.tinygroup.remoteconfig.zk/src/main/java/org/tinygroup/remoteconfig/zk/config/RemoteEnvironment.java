@@ -43,6 +43,7 @@ public class RemoteEnvironment {
 				LOGGER.logMessage(LogLevel.INFO, config.toString());
 				LOGGER.logMessage(LogLevel.INFO, "====================================");
 				LOGGER.logMessage(LogLevel.INFO, String.format("解析完成[%s]" ,IRemoteConfigZKConstant.REMOTE_CONFIG_NAME));
+				LOGGER.logMessage(LogLevel.INFO, "本地配置信息读取完毕");
 			} catch (IOException e) {
 				throw new RuntimeException("ZK配置初始化失败。。。", e);
 			}
