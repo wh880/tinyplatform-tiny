@@ -43,8 +43,10 @@ public class TinyTemplateProcessor extends AbstractTinyProcessor {
 	private static final String PAGE_EXT_FILE_NAME = ".page";
 	private static final String TEMPLATE_EXT_FILE_NAME = "templateExtFileName";
 	private static final String TEMPLATE_WITH_LAYOUT_EXT_FILE_NAME = "templateWithLayoutExtFileName";
+	private static final String RESPONSE_CONTENT_TYPE_NAME = "responseContentType";
 	private String templateWithLayout = PAGE_EXT_FILE_NAME;
 	private String template = PAGELET_EXT_FILE_NAME;
+	private String responseContentType=null;
 
 	public TemplateEngine getEngine() {
 		return engine;
@@ -59,6 +61,10 @@ public class TinyTemplateProcessor extends AbstractTinyProcessor {
 		HttpServletResponse response = context.getResponse();
 		try {
 			long startTime = System.currentTimeMillis();
+			//设置响应头
+			if(responseContentType!=null){
+			   response.setContentType(responseContentType);
+			}
 			TemplateContext templateContext = new TinyWebTemplateContext(
 					context);
 			boolean isPagelet = false;
@@ -104,6 +110,9 @@ public class TinyTemplateProcessor extends AbstractTinyProcessor {
 		template = StringUtil.defaultIfBlank(
 				getInitParamMap().get(TEMPLATE_EXT_FILE_NAME),
 				PAGELET_EXT_FILE_NAME);
+		responseContentType = StringUtil.defaultIfBlank(
+				getInitParamMap().get(RESPONSE_CONTENT_TYPE_NAME),
+				null);
 	}
 
 }
