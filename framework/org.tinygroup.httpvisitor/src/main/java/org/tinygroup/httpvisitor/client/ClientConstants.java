@@ -1,4 +1,4 @@
-package org.tinygroup.httpvisitor.factory;
+package org.tinygroup.httpvisitor.client;
 
 /**
  * 客户端辅助类

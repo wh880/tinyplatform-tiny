@@ -4,10 +4,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.tinygroup.httpvisitor.Cookie;
-import org.tinygroup.httpvisitor.Header;
-import org.tinygroup.httpvisitor.Response;
-import org.tinygroup.httpvisitor.factory.HttpFactory;
+import org.tinygroup.httpvisitor.builder.HttpFactory;
 import org.tinygroup.vfs.VFS;
 
 public class NewTest {
@@ -48,7 +45,6 @@ public class NewTest {
 		headMaps.put("h1", "v1");
 		headMaps.put("h2", "v2");
 		r2 = HttpFactory.post(url).header("h0", "100").headers(headMaps).execute();
-		
 		//cookie操作
 		Map<String, Cookie> cookieMaps = new HashMap<String, Cookie>();
 		r1 = HttpFactory.get(url).cookie("/", "c1", "1000").cookies(cookieMaps).execute();

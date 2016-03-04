@@ -2,8 +2,8 @@ package org.tinygroup.httpvisitor.request;
 
 import java.io.InputStream;
 
+import org.tinygroup.httpvisitor.MethodMode;
 import org.tinygroup.httpvisitor.Request;
-import org.tinygroup.httpvisitor.factory.MethodMode;
 import org.tinygroup.vfs.FileObject;
 
 public  class PostRequestBuilder extends HttpRequestBuilder<PostRequestBuilder> implements PostRequestBuilderInterface<PostRequestBuilder>{

@@ -1,8 +1,8 @@
 package org.tinygroup.httpvisitor.builder;
 
+import org.tinygroup.httpvisitor.MethodMode;
 import org.tinygroup.httpvisitor.client.ClientBuilder;
 import org.tinygroup.httpvisitor.client.SingleClientBuilder;
-import org.tinygroup.httpvisitor.factory.MethodMode;
 import org.tinygroup.httpvisitor.request.HeadRequestBuilder;
 import org.tinygroup.httpvisitor.request.HttpRequestBuilder;
 
@@ -11,7 +11,12 @@ public class HeadRequestClientBuilder extends RequestClientBuilder<HeadRequestCl
     private SingleClientBuilder singleClientBuilder;
     private HeadRequestBuilder requestBuilder;
     
-    public HeadRequestClientBuilder(MethodMode methodMode, String url){
+    /**
+     * 通过工厂构造
+     * @param methodMode
+     * @param url
+     */
+    HeadRequestClientBuilder(MethodMode methodMode, String url){
     	requestBuilder = new HeadRequestBuilder(methodMode,url);
     	singleClientBuilder = new SingleClientBuilder();
     }

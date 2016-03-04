@@ -1,8 +1,6 @@
-package org.tinygroup.httpvisitor.factory;
+package org.tinygroup.httpvisitor.builder;
 
-import org.tinygroup.httpvisitor.builder.BodyRequestClientBuilder;
-import org.tinygroup.httpvisitor.builder.HeadRequestClientBuilder;
-import org.tinygroup.httpvisitor.builder.PostRequestClientBuilder;
+import org.tinygroup.httpvisitor.MethodMode;
 
 /**
  * HTTP工厂类

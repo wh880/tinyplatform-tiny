@@ -2,8 +2,8 @@ package org.tinygroup.httpvisitor.request;
 
 import java.io.InputStream;
 
+import org.tinygroup.httpvisitor.MethodMode;
 import org.tinygroup.httpvisitor.Request;
-import org.tinygroup.httpvisitor.factory.MethodMode;
 
 /**
  * 支持Head、Body的请求构建

@@ -6,7 +6,6 @@ import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.httpvisitor.Certifiable;
 import org.tinygroup.httpvisitor.execption.HttpVisitorException;
-import org.tinygroup.httpvisitor.factory.ClientConstants;
 import org.tinygroup.httpvisitor.struct.KeyCert;
 import org.tinygroup.httpvisitor.struct.PasswordCert;
 import org.tinygroup.httpvisitor.struct.Proxy;

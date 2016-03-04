@@ -2,9 +2,9 @@ package org.tinygroup.httpvisitor.builder;
 
 import java.io.InputStream;
 
+import org.tinygroup.httpvisitor.MethodMode;
 import org.tinygroup.httpvisitor.client.ClientBuilder;
 import org.tinygroup.httpvisitor.client.SingleClientBuilder;
-import org.tinygroup.httpvisitor.factory.MethodMode;
 import org.tinygroup.httpvisitor.request.BodyRequestBuilder;
 import org.tinygroup.httpvisitor.request.BodyRequestBuilderInterface;
 import org.tinygroup.httpvisitor.request.HttpRequestBuilder;
@@ -14,7 +14,12 @@ public class BodyRequestClientBuilder extends RequestClientBuilder<BodyRequestCl
 	private SingleClientBuilder singleClientBuilder;
     private BodyRequestBuilder requestBuilder;
     
-    public BodyRequestClientBuilder(MethodMode methodMode, String url){
+    /**
+     * 通过工厂构造
+     * @param methodMode
+     * @param url
+     */
+    BodyRequestClientBuilder(MethodMode methodMode, String url){
     	requestBuilder = new BodyRequestBuilder(methodMode,url);
     	singleClientBuilder = new SingleClientBuilder();
     } 

@@ -3,7 +3,6 @@ package org.tinygroup.httpvisitor;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import org.tinygroup.httpvisitor.factory.MethodMode;
 import org.tinygroup.httpvisitor.struct.BodyElement;
 import org.tinygroup.httpvisitor.struct.Parameter;
 

@@ -2,9 +2,9 @@ package org.tinygroup.httpvisitor.builder;
 
 import java.io.InputStream;
 
+import org.tinygroup.httpvisitor.MethodMode;
 import org.tinygroup.httpvisitor.client.ClientBuilder;
 import org.tinygroup.httpvisitor.client.SingleClientBuilder;
-import org.tinygroup.httpvisitor.factory.MethodMode;
 import org.tinygroup.httpvisitor.request.HttpRequestBuilder;
 import org.tinygroup.httpvisitor.request.PostRequestBuilder;
 import org.tinygroup.httpvisitor.request.PostRequestBuilderInterface;
@@ -15,7 +15,12 @@ public class PostRequestClientBuilder extends RequestClientBuilder<PostRequestCl
 	private SingleClientBuilder singleClientBuilder;
     private PostRequestBuilder requestBuilder;
     
-    public PostRequestClientBuilder(MethodMode methodMode, String url){
+    /**
+     * 通过工厂创建
+     * @param methodMode
+     * @param url
+     */
+    PostRequestClientBuilder(MethodMode methodMode, String url){
     	requestBuilder = new PostRequestBuilder(methodMode,url);
     	singleClientBuilder = new SingleClientBuilder();
     } 

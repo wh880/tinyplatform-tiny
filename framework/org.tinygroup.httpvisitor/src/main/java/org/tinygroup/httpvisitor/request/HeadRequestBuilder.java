@@ -1,7 +1,7 @@
 package org.tinygroup.httpvisitor.request;
 
+import org.tinygroup.httpvisitor.MethodMode;
 import org.tinygroup.httpvisitor.Request;
-import org.tinygroup.httpvisitor.factory.MethodMode;
 
 
 /**
