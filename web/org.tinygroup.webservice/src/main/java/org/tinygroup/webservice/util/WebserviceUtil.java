@@ -46,15 +46,17 @@ import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 public class WebserviceUtil {
-	private static Logger logger = LoggerFactory.getLogger(WebserviceUtil.class);
+	private static Logger logger = LoggerFactory
+			.getLogger(WebserviceUtil.class);
+
 	/**
 	 * 以wsdl形式表示serviceInfo对应的webservice服务，并返回该wsdl字符串
 	 * 
 	 * @param serviceInfo
 	 * @return
 	 */
-	public static void genWSDL(ServiceInfo serviceInfo) {
-		loadServiceClass(serviceInfo);// 加载webservice服务
+	public static void genWSDL(ServiceInfo serviceInfo, String packageName) {
+		loadServiceClass(serviceInfo, packageName);// 加载webservice服务
 	}
 
 	/**
@@ -64,32 +66,34 @@ public class WebserviceUtil {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	private static Class loadServiceClass(ServiceInfo serviceInfo) {
+	private static Class loadServiceClass(ServiceInfo serviceInfo,
+			String packageName) {
 		String serviceInfoId = serviceInfo.getServiceId();
 		String className = serviceInfoId.substring(0, 1).toUpperCase()
 				+ serviceInfoId.substring(1);
-		className = PACKAGE_NAME + "." + className;
+		className = packageName + "." + className;
 
 		// 判断类是否已经加载
-//		Class c = classLoaded(className);
-//		if (c != null) {
-//			return c;
-//		}
+		// Class c = classLoaded(className);
+		// if (c != null) {
+		// return c;
+		// }
 
 		// 新建类CtClass对象
 		ClassPool pool = ClassPool.getDefault();
-		pool.importPackage(PACKAGE_NAME);
+		pool.importPackage(packageName);
 		CtClass cc = pool.makeClass(className);
 		cc.stopPruning(true);
 
 		// 类添加javax.jws.WebService注解
 		ClassFile cf = cc.getClassFile();
-		AnnotationsAttribute attribute = new AnnotationsAttribute(cf.getConstPool(),
-				AnnotationsAttribute.visibleTag);
+		AnnotationsAttribute attribute = new AnnotationsAttribute(
+				cf.getConstPool(), AnnotationsAttribute.visibleTag);
 		java.util.Map<String, String> params = new HashMap<String, String>();
-		params.put("targetNamespace", PACKAGE_NAME);
-		addAnnotation(cf, "javax.jws.WebService", attribute,params);
-		addTinyWebserviceAnnotation(cf, "org.tinygroup.webservice.annotation.TinyWebService",attribute);
+		params.put("targetNamespace", packageName);
+		addAnnotation(cf, "javax.jws.WebService", attribute, params);
+		addTinyWebserviceAnnotation(cf,
+				"org.tinygroup.webservice.annotation.TinyWebService", attribute);
 		cf.addAttribute(attribute);
 		cf.setVersionToJava5();
 		// 类添加方法
@@ -97,9 +101,9 @@ public class WebserviceUtil {
 			CtMethod cm = getCtMethod(cc, serviceInfo);
 			cc.addMethod(cm);
 		} catch (CannotCompileException e1) {
-			logger.errorMessage(e1.getMessage(),e1);
+			logger.errorMessage(e1.getMessage(), e1);
 		} catch (Exception e1) {
-			logger.errorMessage(e1.getMessage(),e1);
+			logger.errorMessage(e1.getMessage(), e1);
 		}
 
 		// 写入字节码
@@ -108,11 +112,11 @@ public class WebserviceUtil {
 			cc.defrost();
 			return cc.toClass();
 		} catch (NotFoundException e) {
-			logger.errorMessage("class:{className} 文件未找到",e,className);
+			logger.errorMessage("class:{className} 文件未找到", e, className);
 		} catch (CannotCompileException e) {
-			logger.errorMessage(e.getMessage(),e);
+			logger.errorMessage(e.getMessage(), e);
 		} catch (IOException e) {
-			logger.errorMessage(e.getMessage(),e);
+			logger.errorMessage(e.getMessage(), e);
 		}
 		return null;
 	}
@@ -122,7 +126,8 @@ public class WebserviceUtil {
 	 * 
 	 * @param serviceInfo
 	 */
-	public static InputStream getXmlInputStream(ServiceInfo serviceInfo) {
+	public static InputStream getXmlInputStream(ServiceInfo serviceInfo,
+			String packageName) {
 		XmlNode root = new XmlNode("endpoints");
 		root.setAttribute("xmlns",
 				"http://java.sun.com/xml/ns/jax-ws/ri/runtime");
@@ -131,7 +136,7 @@ public class WebserviceUtil {
 		String urlPattern = "/services/" + serviceId;
 		String className = serviceId.substring(0, 1).toUpperCase()
 				+ serviceId.substring(1);
-		className = PACKAGE_NAME + "." + className;
+		className = packageName + "." + className;
 		List<XmlNode> endpoints = root.getSubNodes(serviceId);
 		if (endpoints != null) {
 			for (XmlNode xmlNode : endpoints) {
@@ -149,14 +154,13 @@ public class WebserviceUtil {
 			InputStream is = new ByteArrayInputStream(xml.getBytes("utf-8"));
 			return is;
 		} catch (UnsupportedEncodingException e) {
-			logger.errorMessage(e.getMessage(),e);
+			logger.errorMessage(e.getMessage(), e);
 		}
 		return null;
 	}
 
-
-	private static void addAnnotation(ClassFile cf, String name,AnnotationsAttribute attribute,
-			java.util.Map<String, String> params) {
+	private static void addAnnotation(ClassFile cf, String name,
+			AnnotationsAttribute attribute, java.util.Map<String, String> params) {
 		ConstPool cp = cf.getConstPool();
 		Annotation annotation = new Annotation(name, cp);
 		Iterator<java.util.Map.Entry<String, String>> iterator = params
@@ -165,22 +169,21 @@ public class WebserviceUtil {
 			java.util.Map.Entry<String, String> entry = iterator.next();
 			annotation.addMemberValue(entry.getKey(), new StringMemberValue(
 					entry.getValue(), cp));
-			
+
 		}
 		attribute.addAnnotation(annotation);
 	}
-	
-	
+
 	private static void addTinyWebserviceAnnotation(ClassFile cf, String name,
-	       AnnotationsAttribute attribute) {
+			AnnotationsAttribute attribute) {
 		ConstPool cp = cf.getConstPool();
 		Annotation annotation = new Annotation(name, cp);
 		attribute.addAnnotation(annotation);
 	}
-	
 
 	private static CtMethod getCtMethod(CtClass cc, ServiceInfo serviceInfo)
-			throws NotFoundException, CannotCompileException {
+			throws NotFoundException, CannotCompileException,
+			ClassNotFoundException {
 		// 获取javassist方法参数列表params
 		List<Parameter> parameters = serviceInfo.getParameters();
 		CtClass[] params = new CtClass[parameters.size()];
@@ -193,8 +196,7 @@ public class WebserviceUtil {
 
 		// 创建新CtMethod对象
 		String methodName = serviceInfo.getServiceId();
-		String _sReturnType = getResultType(serviceInfo.getResults());
-		CtClass returnType = ClassPool.getDefault().get(_sReturnType);
+		CtClass returnType = getCtClass(getResultType(serviceInfo.getResults()));
 		CtMethod cm = new CtMethod(returnType, methodName, params, cc);
 		cm.setModifiers(Modifier.PUBLIC);
 		String body = getMethodBody(serviceInfo.getResults());
@@ -225,91 +227,32 @@ public class WebserviceUtil {
 						resultName, cp));
 				attr.addAnnotation(webResult);
 				minfo.addAttribute(attr);
-				
-				
+
 			}
 		}
 
 		return cm;
 	}
 
-	private static CtClass getCtMethodParam(Parameter parameter) {
-//		String name = parameter.getName();
-		CtClass cc = null;
+	private static CtClass getCtClass(Class<?> type) throws NotFoundException {
 		try {
-			Class<?> type = getJavassistParamType(parameter);
+			CtClass ctClass = ClassPool.getDefault().get(type.getName());
+			return ctClass;
+		} catch (NotFoundException e) {
 			ClassClassPath classPath = new ClassClassPath(type);
 			ClassPool.getDefault().insertClassPath(classPath);
-			cc = ClassPool.getDefault().get(type.getName());
-		} catch (Exception e) {
-			logger.errorMessage(e.getMessage(),e);
+			return ClassPool.getDefault().get(type.getName());
 		}
-//		// 类添加javax.jws.WebParam注解
-//		ClassFile cf = cc.getClassFile();
-//		java.util.Map<String, String> params = new HashMap<String, String>();
-//		params.put("name", parameter.getName());
-//		addAnnotation(cf, "javax.jws.WebParam", params);
-//		ConstPool cp = cf.getConstPool();
-//		AnnotationsAttribute attribute = new AnnotationsAttribute(cp,
-//				AnnotationsAttribute.visibleTag);
-//		Annotation annotation = new Annotation("javax.xml.bind.annotation.XmlAccessorType", cp);
-//		annotation.addMemberValue("value", new ClassMemberValue("javax.xml.bind.annotation.XmlAccessType.FIELD", cp));
-//		Iterator<java.util.Map.Entry<String, String>> iterator = params
-//				.entrySet().iterator();
-//		while (iterator.hasNext()) {
-//			java.util.Map.Entry<String, String> entry = iterator.next();
-//			annotation.addMemberValue(entry.getKey(), new StringMemberValue(
-//					entry.getValue(), cp));
-//		}
-//		attribute.addAnnotation(annotation);
-//		cf.addAttribute(attribute);
-//		cf.setVersionToJava5();
-		return cc;
 	}
 
-	private static Class<?> classLoaded(String className) {
-		Class<?> c = null;
-		try {
-			c = Class.forName(className);
-			return c;
-		} catch (ClassNotFoundException e) {
-		}
-		return null;
+	private static CtClass getCtMethodParam(Parameter parameter)
+			throws ClassNotFoundException, NotFoundException {
+		Class<?> type = getJavassistParamType(parameter);
+		return getCtClass(type);
 	}
 
-	/**
-	 * 将parameter对象包含的信息翻译为Javassist能够加载的方法参数类型
-	 * 
-	 * @param parameter
-	 * @return
-	 */
-//	private static String getJavassistParamType(Parameter parameter) {
-//		if (parameter == null) {
-//			return null;
-//		}
-//		String type = parameter.getType();
-//		if (type == null || type.trim().length() == 0) {
-//			return null;
-//		} else if ("char".equals(type)) {
-//			return "java.lang.Character";
-//		} else if ("byte".equals(type)) {
-//			return "java.lang.Byte";
-//		} else if ("short".equals(type)) {
-//			return "java.lang.Short";
-//		} else if ("int".equals(type)) {
-//			return "java.lang.Integer";
-//		} else if ("long".equals(type)) {
-//			return "java.lang.Long";
-//		} else if ("float".equals(type)) {
-//			return "java.lang.Float";
-//		} else if ("double".equals(type)) {
-//			return "java.lang.Double";
-//		} else if ("boolean".equals(type)) {
-//			return "java.lang.Boolean";
-//		}
-//		return type;
-//	}
-	private static Class<?> getJavassistParamType(Parameter parameter) throws ClassNotFoundException {
+	private static Class<?> getJavassistParamType(Parameter parameter)
+			throws ClassNotFoundException {
 		if (parameter == null) {
 			return null;
 		}
@@ -318,7 +261,7 @@ public class WebserviceUtil {
 			return LoaderManager.getClass(parameter.getCollectionType());
 		}
 		String type = parameter.getType();
-		if(parameter.isArray()){
+		if (parameter.isArray()) {
 			return getJavassistParamArray(type);
 		}
 		if ("char".equals(type)) {
@@ -338,11 +281,12 @@ public class WebserviceUtil {
 		} else if ("boolean".equals(type)) {
 			return boolean.class;
 		}
-		
+
 		return LoaderManager.getClass(type);
 	}
-	
-	private static Class<?> getJavassistParamArray(String type) throws ClassNotFoundException {
+
+	private static Class<?> getJavassistParamArray(String type)
+			throws ClassNotFoundException {
 		if ("char".equals(type)) {
 			return char[].class;
 		} else if ("byte".equals(type)) {
@@ -360,87 +304,42 @@ public class WebserviceUtil {
 		} else if ("boolean".equals(type)) {
 			return boolean[].class;
 		}
-		return Array.newInstance(LoaderManager.getClass(type),1).getClass();
+		return Array.newInstance(LoaderManager.getClass(type), 1).getClass();
 	}
-
-//	private static String getParameterType(Parameter parameter) {
-//		if (parameter.getCollectionType() != null
-//				&& parameter.getCollectionType().trim().length() > 0) {
-//			return parameter.getCollectionType();
-//		}
-//
-//		String paramType = parameter.getType();
-//		if ("int".equals(paramType) || "char".equals(paramType)
-//				|| "byte".equals(paramType) || "short".equals(paramType)
-//				|| "long".equals(paramType) || "double".equals(paramType)
-//				|| "float".equals(paramType) || "boolean".equals(paramType)
-//				|| paramType.startsWith("java.")) {
-//			return paramType;
-//		}
-//
-//		return paramType;
-//	}
 
 	/**
 	 * 解析方法返回类型
 	 * 
 	 * @param results
 	 * @return
+	 * @throws ClassNotFoundException
 	 */
-	private static String getResultType(List<Parameter> results) {
+	private static Class<?> getResultType(List<Parameter> results)
+			throws ClassNotFoundException {
 		if (results == null || results.size() == 0) {
-			return "void";
+			return Void.TYPE;
 		}
 		return getResultType(results.get(0));
 	}
 
-	private static String getResultType(Parameter parameter) {
+	private static Class<?> getResultType(Parameter parameter)
+			throws ClassNotFoundException {
 		if (parameter == null) {
-			return "void";
+			return Void.TYPE;
 		}
 		if (parameter.getCollectionType() != null
 				&& parameter.getCollectionType().trim().length() > 0) {
-			return parameter.getCollectionType();
+			return LoaderManager.getClass(parameter.getCollectionType());
 		}
 		String type = parameter.getType();
 		if (type == null || type.trim().length() == 0 || "void".equals(type)) {
-			return "void";
-		} 
-		if(parameter.isArray()){
-			return type+"[]";
+			return Void.TYPE;
 		}
-		return type;
+		if (parameter.isArray()) {
+			return getJavassistParamArray(type);
+		}
+		return LoaderManager.getClass(type);
 	}
-
-	/**
-	 * 根据函数返回类型，生成空的函数方法体
-	 * 
-	 * @param returnType
-	 * @return
-	 */
-//	private static String getMethodBody(String returnType) {
-//		if ("void".equals(returnType)) {
-//			return "{}";
-//		} else if ("char".equals(returnType)) {
-//			return "{return ' ';}";
-//		} else if ("byte".equals(returnType)) {
-//			return "{return 0;}";
-//		} else if ("short".equals(returnType)) {
-//			return "{return 0;}";
-//		} else if ("int".equals(returnType)) {
-//			return "{return 0;}";
-//		} else if ("long".equals(returnType)) {
-//			return "{return 0L;}";
-//		} else if ("float".equals(returnType)) {
-//			return "{return 0;}";
-//		} else if ("double".equals(returnType)) {
-//			return "{return 0.0;}";
-//		} else if ("boolean".equals(returnType)) {
-//			return "{return true;}";
-//		} else {
-//			return "{return null;}";
-//		}
-//	}
 
 	/**
 	 * 根据函数返回类型，生成空的函数方法体
@@ -452,7 +351,7 @@ public class WebserviceUtil {
 		if (returnType == null) {
 			return null;
 		}
-		if(returnType.isArray()){
+		if (returnType.isArray()) {
 			return "return null;";
 		}
 		if (returnType.getCollectionType() != null
@@ -496,8 +395,6 @@ public class WebserviceUtil {
 		return getMethodBody(returns.get(0));
 	}
 
-	
-
 	/**************************************************************************/
 	// private static Logger log = Logger.getLogger(WebserviceUtil.class);
 
@@ -505,53 +402,5 @@ public class WebserviceUtil {
 	 * 动态加载类的包名
 	 */
 	public static final String PACKAGE_NAME = "org.tinygroup.webservice.server.impl";
-
-	/**************************************************************************/
-
-//	private static String getMethodDes(ServiceInfo serviceInfo) {
-//		String methodName = serviceInfo.getServiceId();
-//		if (methodName == null || methodName.trim().length() == 0) {
-//		}
-//
-//		// 定义方法key字符串，用于唯一查找方法的标示符
-//		StringBuilder methodKey = new StringBuilder(methodName);
-//		// 方法返回值类型描述字符串
-//		String returnType = getResultType(serviceInfo.getResults());
-//		// 方法体描述字符串
-//		String bodyDes = getMethodBody(returnType);
-//
-//		// 参数内容描述字符�?
-//		StringBuilder paramsDes = new StringBuilder("(");
-//		List<Parameter> parameters = serviceInfo.getParameters();
-//		Parameter parameter = null;
-//		String paramType = null;
-//		if (parameters == null) {
-//			parameters = new ArrayList<Parameter>();
-//		}
-//		String[] methodNames = new String[parameters.size()];
-//		for (int i = 0; i < parameters.size(); i++) {
-//			parameter = parameters.get(i);
-//			if (i != 0) {
-//				paramsDes.append(",");
-//			}
-//			paramType = getParameterType(parameter);
-//
-//			paramsDes.append(paramType);
-//			paramsDes.append(" ").append(parameter.getName());
-//
-//			methodKey.append("_").append(paramType);
-//			methodNames[i] = parameter.getName();
-//		}
-//		paramsDes.append(")");
-//
-//		StringBuilder des = new StringBuilder("public ");
-//		des.append(returnType);
-//		des.append(" ");
-//		des.append(methodName);
-//		des.append(paramsDes);
-//		des.append(bodyDes);
-//
-//		return des.toString();
-//	}
 
 }

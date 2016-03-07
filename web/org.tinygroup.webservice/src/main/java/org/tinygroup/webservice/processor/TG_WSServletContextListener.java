@@ -34,6 +34,7 @@ import javax.xml.ws.WebServiceException;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -183,12 +184,14 @@ public class TG_WSServletContextListener implements
 		if (classLoader == null) {
 			classLoader = getClass().getClassLoader();
 		}
+		String contextPath = StringUtil.substringAfter(context.getContextPath(), "/");
+		String packageName=WebserviceUtil.PACKAGE_NAME+"."+contextPath.toLowerCase();
 		List<ServiceInfo> serviceInfos = getPublishService(linsenterConfig);
 		for (ServiceInfo serviceInfo : serviceInfos) {
 			try {
 				logger.logMessage(LogLevel.INFO,
 						"开始发布服务" + serviceInfo.getServiceId());
-				createService(serviceInfo, classLoader, context);
+				createService(packageName,serviceInfo, classLoader, context);
 				logger.logMessage(LogLevel.INFO,
 						"发布服务" + serviceInfo.getServiceId() + "成功");
 			} catch (Throwable e) {
@@ -207,9 +210,9 @@ public class TG_WSServletContextListener implements
 		context.setAttribute(WSServlet.JAXWS_RI_RUNTIME_INFO, delegate);
 	}
 
-	private void createService(ServiceInfo serviceInfo,
+	private void createService(String packageName,ServiceInfo serviceInfo,
 			ClassLoader classLoader, ServletContext context) throws IOException {
-		WebserviceUtil.genWSDL(serviceInfo);
+		WebserviceUtil.genWSDL(serviceInfo,packageName);
 		// Parse the descriptor file and build endpoint infos
 		DeploymentDescriptorParser<ServletAdapter> parser = new DeploymentDescriptorParser<ServletAdapter>(
 				classLoader, new ServletResourceLoader(context),
@@ -223,7 +226,7 @@ public class TG_WSServletContextListener implements
 		if (sunJaxWsXml == null)
 			throw new WebServiceException(
 					WsservletMessages.NO_SUNJAXWS_XML(JAXWS_RI_RUNTIME));
-		InputStream is = WebserviceUtil.getXmlInputStream(serviceInfo);
+		InputStream is = WebserviceUtil.getXmlInputStream(serviceInfo,packageName);
 		if (adapters == null) {
 			adapters = parser.parse(sunJaxWsXml.toExternalForm(), is);
 		} else {
