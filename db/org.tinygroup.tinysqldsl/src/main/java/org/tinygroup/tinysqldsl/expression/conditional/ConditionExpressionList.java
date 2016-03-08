@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- * <p/>
+ * <p>
  * Licensed under the GPL, Version 3.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
+ * <p>
  * http://www.gnu.org/licenses/gpl.html
- * <p/>
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -57,8 +57,33 @@ public class ConditionExpressionList implements Expression {
         this.expressions = expressions;
     }
 
+    public static ExpressionList expressionList(Expression expr) {
+        return new ExpressionList(Collections.singletonList(expr));
+    }
+
+    public static ConditionExpressionList expressionList(String comma, Expression... expr) {
+        ConditionExpressionList conditionExpressionList = new ConditionExpressionList();
+        List<Expression> expressions = new ArrayList<Expression>();
+        Collections.addAll(expressions, expr);
+        conditionExpressionList.setExpressions(expressions);
+        conditionExpressionList.setComma(comma);
+        return conditionExpressionList;
+    }
+
+    public static ConditionExpressionList orExpression(Expression... expr) {
+        return expressionList(" OR ", expr);
+    }
+
+    public static ConditionExpressionList andExpression(Expression... expr) {
+        return expressionList(" AND ", expr);
+    }
+
     public List<Expression> getExpressions() {
         return expressions;
+    }
+
+    public void setExpressions(List<Expression> list) {
+        expressions = list;
     }
 
     public String getComma() {
@@ -85,10 +110,6 @@ public class ConditionExpressionList implements Expression {
         this.useComma = useComma;
     }
 
-    public void setExpressions(List<Expression> list) {
-        expressions = list;
-    }
-
     public void addExpression(Expression expression) {
         if (expressions == null) {
             expressions = new ArrayList<Expression>();
@@ -96,29 +117,8 @@ public class ConditionExpressionList implements Expression {
         expressions.add(expression);
     }
 
-    public static ExpressionList expressionList(Expression expr) {
-        return new ExpressionList(Collections.singletonList(expr));
-    }
-
     public String toString() {
         return DslUtil.getStringList(expressions, useComma, useBrackets, comma);
-    }
-
-    public static ConditionExpressionList expressionList(String comma,Expression... expr){
-        ConditionExpressionList conditionExpressionList = new ConditionExpressionList();
-        List<Expression> expressions = new ArrayList<Expression>();
-        Collections.addAll(expressions, expr);
-        conditionExpressionList.setExpressions(expressions);
-        conditionExpressionList.setComma(comma);
-        return conditionExpressionList;
-    }
-
-    public static ConditionExpressionList orExpression(Expression... expr){
-        return expressionList(" OR ",expr);
-    }
-
-    public static ConditionExpressionList andExpression(Expression... expr){
-        return expressionList(" AND ",expr);
     }
 
     public void builderExpression(StatementSqlBuilder builder) {

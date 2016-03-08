@@ -1,17 +1,17 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.tinysqldsl.expression.relational;
 
@@ -29,85 +29,85 @@ import java.util.List;
  */
 public class ExpressionList implements ItemsList {
 
-	private List<Expression> expressions;
+    private List<Expression> expressions;
 
-	private String comma = ",";
+    private String comma = ",";
 
-	private boolean useBrackets = true;
+    private boolean useBrackets = true;
 
-	private boolean useComma = true;
+    private boolean useComma = true;
 
-	public ExpressionList() {
-		expressions = new ArrayList<Expression>();
-	}
+    public ExpressionList() {
+        expressions = new ArrayList<Expression>();
+    }
 
-	public ExpressionList(List<Expression> expressions) {
-		this.expressions = expressions;
-	}
+    public ExpressionList(List<Expression> expressions) {
+        this.expressions = expressions;
+    }
 
-	public List<Expression> getExpressions() {
-		return expressions;
-	}
+    public static ExpressionList expressionList(Expression expr) {
+        return new ExpressionList(Collections.singletonList(expr));
+    }
 
-	public String getComma() {
-		return comma;
-	}
+    public List<Expression> getExpressions() {
+        return expressions;
+    }
 
-	public void setComma(String comma) {
-		this.comma = comma;
-	}
+    public void setExpressions(List<Expression> list) {
+        expressions = list;
+    }
 
-	public boolean isUseBrackets() {
-		return useBrackets;
-	}
+    public String getComma() {
+        return comma;
+    }
 
-	public void setUseBrackets(boolean useBrackets) {
-		this.useBrackets = useBrackets;
-	}
+    public void setComma(String comma) {
+        this.comma = comma;
+    }
 
-	public boolean isUseComma() {
-		return useComma;
-	}
+    public boolean isUseBrackets() {
+        return useBrackets;
+    }
 
-	public void setUseComma(boolean useComma) {
-		this.useComma = useComma;
-	}
+    public void setUseBrackets(boolean useBrackets) {
+        this.useBrackets = useBrackets;
+    }
 
-	public void setExpressions(List<Expression> list) {
-		expressions = list;
-	}
+    public boolean isUseComma() {
+        return useComma;
+    }
 
-	public void addExpression(Expression expression) {
-		if (expressions == null) {
-			expressions = new ArrayList<Expression>();
-		}
-		expressions.add(expression);
-	}
+    public void setUseComma(boolean useComma) {
+        this.useComma = useComma;
+    }
 
-	public static ExpressionList expressionList(Expression expr) {
-		return new ExpressionList(Collections.singletonList(expr));
-	}
+    public void addExpression(Expression expression) {
+        if (expressions == null) {
+            expressions = new ArrayList<Expression>();
+        }
+        expressions.add(expression);
+    }
 
-	public String toString() {
-		return DslUtil.getStringList(expressions, useComma, useBrackets, comma);
-	}
+    public String toString() {
+        return DslUtil.getStringList(expressions, useComma, useBrackets, comma);
+    }
 
-	public void builderItemList(StatementSqlBuilder builder) {
-		boolean useBracketsInExprList = builder.isUseBracketsInExprList();
-		StringBuilder buffer = builder.getStringBuilder();
-		if (useBracketsInExprList) {
-			buffer.append("(");
-		}
-		for (Iterator<Expression> iter = getExpressions()
-				.iterator(); iter.hasNext();) {
-			Expression expression = iter.next();
-			expression.builderExpression(builder);
-			if (iter.hasNext()) {
-				buffer.append(", ");
-			}
-		}
-		if (useBracketsInExprList) {
-			buffer.append(")");
-		}
-	}
+    public void builderItemList(StatementSqlBuilder builder) {
+        boolean useBracketsInExprList = builder.isUseBracketsInExprList();
+        StringBuilder buffer = builder.getStringBuilder();
+        if (useBracketsInExprList) {
+            buffer.append("(");
+        }
+        for (Iterator<Expression> iter = getExpressions()
+                .iterator(); iter.hasNext(); ) {
+            Expression expression = iter.next();
+            expression.builderExpression(builder);
+            if (iter.hasNext()) {
+                buffer.append(", ");
+            }
+        }
+        if (useBracketsInExprList) {
+            buffer.append(")");
+        }
+    }
 }

@@ -1,17 +1,17 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.tinysqldsl.extend;
 
@@ -24,50 +24,50 @@ import org.tinygroup.tinysqldsl.selectitem.SelectItem;
 
 /**
  * mysql数据库相关的查询
- * 
+ *
  * @author renhui
- * 
+ *
  */
 public class MysqlSelect extends Select<MysqlSelect> {
-	
-	
-	public MysqlSelect() {
-		super();
-	}
 
-	public static MysqlSelect select(SelectItem... selectItems) {
-		MysqlSelect select = new MysqlSelect();
-		select.getPlainSelect().addSelectItems(selectItems);
-		return select;
-	}
 
-	public static MysqlSelect selectFrom(Table... tables) {
-		MysqlSelect select = new MysqlSelect();
-		select.getPlainSelect().addSelectItems(new AllColumns());
-		select.getPlainSelect().setFromItem(new FromItemList(tables));
-		return select;
-	}
+    public MysqlSelect() {
+        super();
+    }
 
-	public MysqlSelect limit(int start, int limit) {
-		plainSelect.setLimit(new Limit(start, limit, false, false));
-		return this;
-	}
+    public static MysqlSelect select(SelectItem... selectItems) {
+        MysqlSelect select = new MysqlSelect();
+        select.getPlainSelect().addSelectItems(selectItems);
+        return select;
+    }
 
-	/**
-	 * 生成的sql语句 start和limit用？代替
-	 * 
-	 * @param limit
-	 * @return
-	 */
-	public MysqlSelect limit(Limit limit) {
-		plainSelect.setLimit(limit);
-		return this;
-	}
+    public static MysqlSelect selectFrom(Table... tables) {
+        MysqlSelect select = new MysqlSelect();
+        select.getPlainSelect().addSelectItems(new AllColumns());
+        select.getPlainSelect().setFromItem(new FromItemList(tables));
+        return select;
+    }
 
-	@Override
-	protected Select newSelect() {
-		return new MysqlSelect();
-	}
+    public MysqlSelect limit(int start, int limit) {
+        plainSelect.setLimit(new Limit(start, limit, false, false));
+        return this;
+    }
 
-	
+    /**
+     * 生成的sql语句 start和limit用？代替
+     *
+     * @param limit
+     * @return
+     */
+    public MysqlSelect limit(Limit limit) {
+        plainSelect.setLimit(limit);
+        return this;
+    }
+
+    @Override
+    protected Select newSelect() {
+        return new MysqlSelect();
+    }
+
+
 }

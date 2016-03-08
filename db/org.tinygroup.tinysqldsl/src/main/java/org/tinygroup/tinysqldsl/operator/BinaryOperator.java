@@ -1,17 +1,17 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.tinysqldsl.operator;
 
@@ -48,7 +48,7 @@ public interface BinaryOperator {
      * @return
      */
     Condition between(Object start, Object end);
-    
+
     /**
      * 介于两个值中间
      *
@@ -152,7 +152,7 @@ public interface BinaryOperator {
      * @return
      */
     Condition isNotNull();
-    
+
     /**
      * 是否为空字符串
      *
@@ -196,15 +196,16 @@ public interface BinaryOperator {
     Condition notLeftLike(String value);
 
     Condition notRightLike(String value);
+
     /**
      * 支持in表达式
      * @param values
      * @return
      */
-    Condition in(Object...values);
-    
-    Condition notIn(Object...values);
-    
+    Condition in(Object... values);
+
+    Condition notIn(Object... values);
+
     /**
      * 创建基于子查询的in条件
      * @param itemsList
@@ -213,5 +214,5 @@ public interface BinaryOperator {
     Condition inExpression(ItemsList itemsList);
 
     Condition notInExpression(ItemsList itemsList);
-    
+
 }

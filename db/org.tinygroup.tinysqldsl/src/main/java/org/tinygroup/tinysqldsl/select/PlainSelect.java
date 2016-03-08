@@ -1,17 +1,17 @@
 /**
- *  Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
- *
- *  Licensed under the GPL, Version 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.gnu.org/licenses/gpl.html
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 1997-2013, www.tinygroup.org (luo_guo@icloud.com).
+ * <p>
+ * Licensed under the GPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.gnu.org/licenses/gpl.html
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tinygroup.tinysqldsl.select;
 
@@ -33,349 +33,347 @@ import static org.tinygroup.tinysqldsl.util.DslUtil.*;
 
 /**
  * 普通的select对象
- * 
+ *
  * @author renhui
- * 
+ *
  */
 public class PlainSelect implements SelectBody {
-	private List<SelectItem> selectItems = new ArrayList<SelectItem>();
-	private List<Table> intoTables = new ArrayList<Table>();
-	private FromItem fromItem;
-	private List<Join> joins;
-	private Expression where;
-	private List<Expression> groupByColumnReferences;
-	private List<OrderByElement> orderByElements;
-	private Expression having;
-	private Limit limit;
-	private Offset offset;
-	private Fetch fetch;
-	private OracleHierarchicalExpression oracleHierarchical = null;
-	private boolean oracleSiblings = false;
-	private boolean forUpdate = false;
+    private List<SelectItem> selectItems = new ArrayList<SelectItem>();
+    private List<Table> intoTables = new ArrayList<Table>();
+    private FromItem fromItem;
+    private List<Join> joins;
+    private Expression where;
+    private List<Expression> groupByColumnReferences;
+    private List<OrderByElement> orderByElements;
+    private Expression having;
+    private Limit limit;
+    private Offset offset;
+    private Fetch fetch;
+    private OracleHierarchicalExpression oracleHierarchical = null;
+    private boolean oracleSiblings = false;
+    private boolean forUpdate = false;
 
-	/**
-	 * The {@link FromItem} in this query
-	 * 
-	 * @return the {@link FromItem}
-	 */
-	public FromItem getFromItem() {
-		return fromItem;
-	}
+    public static PlainSelect copy(PlainSelect plainSelect) {
+        PlainSelect newSelect = new PlainSelect();
+        newSelect.setFetch(plainSelect.getFetch());
+        newSelect.setForUpdate(plainSelect.isForUpdate());
+        newSelect.setFromItem(plainSelect.getFromItem());
+        newSelect.setGroupByColumnReferences(plainSelect.getGroupByColumnReferences());
+        newSelect.setHaving(plainSelect.getHaving());
+        newSelect.setIntoTables(plainSelect.getIntoTables());
+        newSelect.setLimit(plainSelect.getLimit());
+        newSelect.setJoins(plainSelect.getJoins());
+        newSelect.setOffset(plainSelect.getOffset());
+        newSelect.setOracleHierarchical(plainSelect.getOracleHierarchical());
+        newSelect.setOracleSiblings(plainSelect.isOracleSiblings());
+        newSelect.setOrderByElements(plainSelect.getOrderByElements());
+        newSelect.setSelectItems(plainSelect.getSelectItems());
+        newSelect.setWhere(plainSelect.getWhere());
+        return newSelect;
+    }
 
-	public List<Table> getIntoTables() {
-		return intoTables;
-	}
+    /**
+     * The {@link FromItem} in this query
+     *
+     * @return the {@link FromItem}
+     */
+    public FromItem getFromItem() {
+        return fromItem;
+    }
 
-	/**
-	 * The {@link SelectItem}s in this query (for example the A,B,C in "SELECT
-	 * A,B,C")
-	 * 
-	 * @return a list of {@link SelectItem}s
-	 */
-	public List<SelectItem> getSelectItems() {
-		return selectItems;
-	}
+    public void setFromItem(FromItem item) {
+        fromItem = item;
+    }
 
-	public Expression getWhere() {
-		return where;
-	}
+    public List<Table> getIntoTables() {
+        return intoTables;
+    }
 
-	public void setFromItem(FromItem item) {
-		fromItem = item;
-	}
+    public void setIntoTables(List<Table> intoTables) {
+        this.intoTables = intoTables;
+    }
 
-	public void setIntoTables(List<Table> intoTables) {
-		this.intoTables = intoTables;
-	}
+    /**
+     * The {@link SelectItem}s in this query (for example the A,B,C in "SELECT
+     * A,B,C")
+     *
+     * @return a list of {@link SelectItem}s
+     */
+    public List<SelectItem> getSelectItems() {
+        return selectItems;
+    }
 
-	public void setSelectItems(List<SelectItem> list) {
-		selectItems = list;
-	}
+    public void setSelectItems(List<SelectItem> list) {
+        selectItems = list;
+    }
 
-	public void addSelectItems(SelectItem... items) {
-		if (selectItems == null) {
-			selectItems = new ArrayList<SelectItem>();
-		}
-		Collections.addAll(selectItems, items);
-	}
+    public Expression getWhere() {
+        return where;
+    }
 
-	public void addIntoTables(Table... tables) {
-		if (intoTables == null) {
-			intoTables = new ArrayList<Table>();
-		}
-		Collections.addAll(intoTables, tables);
-	}
+    public void setWhere(Expression where) {
+        this.where = where;
+    }
 
-	public void setWhere(Expression where) {
-		this.where = where;
-	}
+    public void addSelectItems(SelectItem... items) {
+        if (selectItems == null) {
+            selectItems = new ArrayList<SelectItem>();
+        }
+        Collections.addAll(selectItems, items);
+    }
 
-	/**
-	 * The list of {@link Join}s
-	 * 
-	 * @return the list of {@link Join}s
-	 */
-	public List<Join> getJoins() {
-		return joins;
-	}
+    public void addIntoTables(Table... tables) {
+        if (intoTables == null) {
+            intoTables = new ArrayList<Table>();
+        }
+        Collections.addAll(intoTables, tables);
+    }
 
-	public void setJoins(List<Join> list) {
-		joins = list;
-	}
+    /**
+     * The list of {@link Join}s
+     *
+     * @return the list of {@link Join}s
+     */
+    public List<Join> getJoins() {
+        return joins;
+    }
 
-	public void addJoins(Join... joinArray) {
-		if (joins == null) {
-			joins = new ArrayList<Join>();
-		}
-		Collections.addAll(joins, joinArray);
-	}
+    public void setJoins(List<Join> list) {
+        joins = list;
+    }
 
-	public List<OrderByElement> getOrderByElements() {
-		return orderByElements;
-	}
+    public void addJoins(Join... joinArray) {
+        if (joins == null) {
+            joins = new ArrayList<Join>();
+        }
+        Collections.addAll(joins, joinArray);
+    }
 
-	public void setOrderByElements(List<OrderByElement> orderByElements) {
-		this.orderByElements = orderByElements;
-	}
+    public List<OrderByElement> getOrderByElements() {
+        return orderByElements;
+    }
 
-	public void addOrderByElements(OrderByElement... orderBys) {
-		if (orderByElements == null) {
-			orderByElements = new ArrayList<OrderByElement>();
-		}
-		Collections.addAll(orderByElements, orderBys);
-	}
+    public void setOrderByElements(List<OrderByElement> orderByElements) {
+        this.orderByElements = orderByElements;
+    }
 
-	public Limit getLimit() {
-		return limit;
-	}
+    public void addOrderByElements(OrderByElement... orderBys) {
+        if (orderByElements == null) {
+            orderByElements = new ArrayList<OrderByElement>();
+        }
+        Collections.addAll(orderByElements, orderBys);
+    }
 
-	public void setLimit(Limit limit) {
-		this.limit = limit;
-	}
+    public Limit getLimit() {
+        return limit;
+    }
 
-	public Offset getOffset() {
-		return offset;
-	}
+    public void setLimit(Limit limit) {
+        this.limit = limit;
+    }
 
-	public void setOffset(Offset offset) {
-		this.offset = offset;
-	}
+    public Offset getOffset() {
+        return offset;
+    }
 
-	public Fetch getFetch() {
-		return fetch;
-	}
+    public void setOffset(Offset offset) {
+        this.offset = offset;
+    }
 
-	public void setFetch(Fetch fetch) {
-		this.fetch = fetch;
-	}
+    public Fetch getFetch() {
+        return fetch;
+    }
 
-	public Expression getHaving() {
-		return having;
-	}
+    public void setFetch(Fetch fetch) {
+        this.fetch = fetch;
+    }
 
-	public void setHaving(Expression expression) {
-		having = expression;
-	}
+    public Expression getHaving() {
+        return having;
+    }
 
-	/**
-	 * A list of {@link Expression}s of the GROUP BY clause. It is null in case
-	 * there is no GROUP BY clause
-	 * 
-	 * @return a list of {@link Expression}s
-	 */
-	public List<Expression> getGroupByColumnReferences() {
-		return groupByColumnReferences;
-	}
+    public void setHaving(Expression expression) {
+        having = expression;
+    }
 
-	public void setGroupByColumnReferences(List<Expression> list) {
-		groupByColumnReferences = list;
-	}
+    /**
+     * A list of {@link Expression}s of the GROUP BY clause. It is null in case
+     * there is no GROUP BY clause
+     *
+     * @return a list of {@link Expression}s
+     */
+    public List<Expression> getGroupByColumnReferences() {
+        return groupByColumnReferences;
+    }
 
-	public void addGroupByExpressions(Expression... expressions) {
-		if (groupByColumnReferences == null) {
-			groupByColumnReferences = new ArrayList<Expression>();
-		}
-		Collections.addAll(groupByColumnReferences, expressions);
-	}
+    public void setGroupByColumnReferences(List<Expression> list) {
+        groupByColumnReferences = list;
+    }
 
-	public OracleHierarchicalExpression getOracleHierarchical() {
-		return oracleHierarchical;
-	}
+    public void addGroupByExpressions(Expression... expressions) {
+        if (groupByColumnReferences == null) {
+            groupByColumnReferences = new ArrayList<Expression>();
+        }
+        Collections.addAll(groupByColumnReferences, expressions);
+    }
 
-	public void setOracleHierarchical(
-			OracleHierarchicalExpression oracleHierarchical) {
-		this.oracleHierarchical = oracleHierarchical;
-	}
+    public OracleHierarchicalExpression getOracleHierarchical() {
+        return oracleHierarchical;
+    }
 
-	public boolean isOracleSiblings() {
-		return oracleSiblings;
-	}
+    public void setOracleHierarchical(
+            OracleHierarchicalExpression oracleHierarchical) {
+        this.oracleHierarchical = oracleHierarchical;
+    }
 
-	public void setOracleSiblings(boolean oracleSiblings) {
-		this.oracleSiblings = oracleSiblings;
-	}
+    public boolean isOracleSiblings() {
+        return oracleSiblings;
+    }
 
-	public boolean isForUpdate() {
-		return forUpdate;
-	}
+    public void setOracleSiblings(boolean oracleSiblings) {
+        this.oracleSiblings = oracleSiblings;
+    }
 
-	public void setForUpdate(boolean forUpdate) {
-		this.forUpdate = forUpdate;
-	}
+    public boolean isForUpdate() {
+        return forUpdate;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sql = new StringBuilder("SELECT ");
-		sql.append(getStringList(selectItems));
-		if (!CollectionUtil.isEmpty(intoTables)) {
-			sql.append(" INTO ");
-			for (Iterator<Table> iter = intoTables.iterator(); iter.hasNext();) {
-				sql.append(iter.next().toString());
-				if (iter.hasNext()) {
-					sql.append(", ");
-				}
-			}
-		}
+    public void setForUpdate(boolean forUpdate) {
+        this.forUpdate = forUpdate;
+    }
 
-		if (fromItem != null) {
-			sql.append(" FROM ").append(fromItem);
-			if (joins != null) {
-				Iterator<Join> it = joins.iterator();
-				while (it.hasNext()) {
-					Join join = it.next();
-					if (join.isSimple()) {
-						sql.append(", ").append(join);
-					} else {
-						sql.append(" ").append(join);
-					}
-				}
-			}
-			// sql += getFormatedList(joins, "", false, false);
-			if (where != null) {
-				sql.append(" WHERE ").append(where);
-			}
-			if (oracleHierarchical != null) {
-				sql.append(oracleHierarchical.toString());
-			}
-			sql.append(getFormattedList(groupByColumnReferences, "GROUP BY"));
-			if (having != null) {
-				sql.append(" HAVING ").append(having);
-			}
-			sql.append(orderByToString(oracleSiblings, orderByElements));
-			if (limit != null) {
-				sql.append(limit);
-			}
-			if (offset != null) {
-				sql.append(offset);
-			}
-			if (fetch != null) {
-				sql.append(fetch);
-			}
-			if (isForUpdate()) {
-				sql.append(" FOR UPDATE");
-			}
-		}
-		return sql.toString();
-	}
-	
-	
-	public static PlainSelect copy(PlainSelect plainSelect){
-		PlainSelect newSelect=new PlainSelect();
-		newSelect.setFetch(plainSelect.getFetch());
-		newSelect.setForUpdate(plainSelect.isForUpdate());
-		newSelect.setFromItem(plainSelect.getFromItem());
-		newSelect.setGroupByColumnReferences(plainSelect.getGroupByColumnReferences());
-		newSelect.setHaving(plainSelect.getHaving());
-		newSelect.setIntoTables(plainSelect.getIntoTables());
-		newSelect.setLimit(plainSelect.getLimit());
-		newSelect.setJoins(plainSelect.getJoins());
-		newSelect.setOffset(plainSelect.getOffset());
-		newSelect.setOracleHierarchical(plainSelect.getOracleHierarchical());
-		newSelect.setOracleSiblings(plainSelect.isOracleSiblings());
-		newSelect.setOrderByElements(plainSelect.getOrderByElements());
-		newSelect.setSelectItems(plainSelect.getSelectItems());
-		newSelect.setWhere(plainSelect.getWhere());
-		return newSelect;
-	}
-	
+    @Override
+    public String toString() {
+        StringBuilder sql = new StringBuilder("SELECT ");
+        sql.append(getStringList(selectItems));
+        if (!CollectionUtil.isEmpty(intoTables)) {
+            sql.append(" INTO ");
+            for (Iterator<Table> iter = intoTables.iterator(); iter.hasNext(); ) {
+                sql.append(iter.next().toString());
+                if (iter.hasNext()) {
+                    sql.append(", ");
+                }
+            }
+        }
 
-	public void builderStatement(StatementSqlBuilder builder) {
-		StringBuilder buffer = builder.getStringBuilder();
-		buffer.append("SELECT ");
-		for (Iterator<SelectItem> iter = getSelectItems().iterator(); iter
-				.hasNext();) {
-			SelectItem selectItem = iter.next();
-			selectItem.builderSelectItem(builder);
-			if (iter.hasNext()) {
-				buffer.append(",");
-			}
-		}
+        if (fromItem != null) {
+            sql.append(" FROM ").append(fromItem);
+            if (joins != null) {
+                Iterator<Join> it = joins.iterator();
+                while (it.hasNext()) {
+                    Join join = it.next();
+                    if (join.isSimple()) {
+                        sql.append(", ").append(join);
+                    } else {
+                        sql.append(" ").append(join);
+                    }
+                }
+            }
+            // sql += getFormatedList(joins, "", false, false);
+            if (where != null) {
+                sql.append(" WHERE ").append(where);
+            }
+            if (oracleHierarchical != null) {
+                sql.append(oracleHierarchical.toString());
+            }
+            sql.append(getFormattedList(groupByColumnReferences, "GROUP BY"));
+            if (having != null) {
+                sql.append(" HAVING ").append(having);
+            }
+            sql.append(orderByToString(oracleSiblings, orderByElements));
+            if (limit != null) {
+                sql.append(limit);
+            }
+            if (offset != null) {
+                sql.append(offset);
+            }
+            if (fetch != null) {
+                sql.append(fetch);
+            }
+            if (isForUpdate()) {
+                sql.append(" FOR UPDATE");
+            }
+        }
+        return sql.toString();
+    }
 
-		if (!CollectionUtil.isEmpty(getIntoTables())) {
-			buffer.append(" INTO ");
-			for (Iterator<Table> iter = getIntoTables().iterator(); iter
-					.hasNext();) {
-				iter.next().builderFromItem(builder);
-				if (iter.hasNext()) {
-					buffer.append(",");
-				}
-			}
-		}
+    public void builderStatement(StatementSqlBuilder builder) {
+        StringBuilder buffer = builder.getStringBuilder();
+        buffer.append("SELECT ");
+        for (Iterator<SelectItem> iter = getSelectItems().iterator(); iter
+                .hasNext(); ) {
+            SelectItem selectItem = iter.next();
+            selectItem.builderSelectItem(builder);
+            if (iter.hasNext()) {
+                buffer.append(",");
+            }
+        }
 
-		if (getFromItem() != null) {
-			buffer.append(" FROM ");
-			getFromItem().builderFromItem(builder);
-		}
+        if (!CollectionUtil.isEmpty(getIntoTables())) {
+            buffer.append(" INTO ");
+            for (Iterator<Table> iter = getIntoTables().iterator(); iter
+                    .hasNext(); ) {
+                iter.next().builderFromItem(builder);
+                if (iter.hasNext()) {
+                    buffer.append(",");
+                }
+            }
+        }
 
-		if (getJoins() != null) {
-			for (Join join : getJoins()) {
-				builder.deparseJoin(join);
-			}
-		}
+        if (getFromItem() != null) {
+            buffer.append(" FROM ");
+            getFromItem().builderFromItem(builder);
+        }
 
-		if (getWhere() != null) {
-			buffer.append(" WHERE ");
-			getWhere().builderExpression(builder);
-		}
+        if (getJoins() != null) {
+            for (Join join : getJoins()) {
+                builder.deparseJoin(join);
+            }
+        }
 
-		if (getOracleHierarchical() != null) {
-			getOracleHierarchical().builderExpression(builder);
-		}
+        if (getWhere() != null) {
+            buffer.append(" WHERE ");
+            getWhere().builderExpression(builder);
+        }
 
-		if (getGroupByColumnReferences() != null) {
-			buffer.append(" GROUP BY ");
-			for (Iterator<Expression> iter = getGroupByColumnReferences()
-					.iterator(); iter.hasNext();) {
-				Expression columnReference = iter.next();
-				columnReference.builderExpression(builder);
-				if (iter.hasNext()) {
-					buffer.append(",");
-				}
-			}
-		}
+        if (getOracleHierarchical() != null) {
+            getOracleHierarchical().builderExpression(builder);
+        }
 
-		if (getHaving() != null) {
-			buffer.append(" HAVING ");
-			getHaving().builderExpression(builder);
-		}
+        if (getGroupByColumnReferences() != null) {
+            buffer.append(" GROUP BY ");
+            for (Iterator<Expression> iter = getGroupByColumnReferences()
+                    .iterator(); iter.hasNext(); ) {
+                Expression columnReference = iter.next();
+                columnReference.builderExpression(builder);
+                if (iter.hasNext()) {
+                    buffer.append(",");
+                }
+            }
+        }
 
-		if (getOrderByElements() != null) {
-			builder.deparseOrderBy(isOracleSiblings(), getOrderByElements());
-		}
+        if (getHaving() != null) {
+            buffer.append(" HAVING ");
+            getHaving().builderExpression(builder);
+        }
 
-		if (getLimit() != null) {
-			builder.deparseLimit(getLimit());
-		}
-		if (getOffset() != null) {
-			builder.deparseOffset(getOffset());
-		}
-		if (getFetch() != null) {
-			builder.deparseFetch(getFetch());
-		}
-		if (isForUpdate()) {
-			buffer.append(" FOR UPDATE");
-		}
+        if (getOrderByElements() != null) {
+            builder.deparseOrderBy(isOracleSiblings(), getOrderByElements());
+        }
 
-	}
+        if (getLimit() != null) {
+            builder.deparseLimit(getLimit());
+        }
+        if (getOffset() != null) {
+            builder.deparseOffset(getOffset());
+        }
+        if (getFetch() != null) {
+            builder.deparseFetch(getFetch());
+        }
+        if (isForUpdate()) {
+            buffer.append(" FOR UPDATE");
+        }
+
+    }
 
 }
