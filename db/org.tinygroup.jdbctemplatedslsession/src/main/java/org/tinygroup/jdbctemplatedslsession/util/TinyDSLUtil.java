@@ -1,12 +1,12 @@
 package org.tinygroup.jdbctemplatedslsession.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tinygroup.commons.tools.ArrayUtil;
 import org.tinygroup.jdbctemplatedslsession.daosupport.OrderBy;
 import org.tinygroup.tinysqldsl.Select;
 import org.tinygroup.tinysqldsl.select.OrderByElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DSL工具类
@@ -25,7 +25,7 @@ public class TinyDSLUtil {
             return select;
         }
         List<OrderByElement> orderByElements = new ArrayList<OrderByElement>();
-        for (int i = 0; orderByArray[i] != null && i < orderByArray.length; i++) {
+        for (int i = 0, len = orderByArray.length; i < len && orderByArray[i] != null; i++) {
             OrderByElement tempElement = orderByArray[i].getOrderByElement();
             if (tempElement != null) {
                 orderByElements.add(tempElement);
@@ -36,5 +36,5 @@ public class TinyDSLUtil {
         }
         return select;
     }
-    
+
 }
