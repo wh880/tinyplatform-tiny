@@ -18,9 +18,6 @@ package org.tinygroup.commons.tools;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,7 +28,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author renhui
  */
 public final class CollectionUtil {
-    private static final Logger logger = LoggerFactory.getLogger(CollectionUtil.class);
 
     /** 创建一个<code>ArrayList</code>。 */
     public static <T> ArrayList<T> createArrayList() {
@@ -327,7 +323,7 @@ public final class CollectionUtil {
                         PropertyUtils.getProperty(obj, valuePropertyName));
             }
         } catch (Exception e) {
-            logger.logMessage(LogLevel.ERROR, "转换失败", e);
+//            logger.logMessage(LogLevel.ERROR, "转换失败", e);
         }
         return map;
     }
@@ -345,7 +341,7 @@ public final class CollectionUtil {
                 list.add(PropertyUtils.getProperty(obj, propertyName));
             }
         } catch (Exception e) {
-            logger.logMessage(LogLevel.ERROR, "转换失败", e);
+//            logger.logMessage(LogLevel.ERROR, "转换失败", e);
         }
 
         return list;
