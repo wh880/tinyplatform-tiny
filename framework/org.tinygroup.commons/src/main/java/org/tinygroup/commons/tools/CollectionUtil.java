@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -315,15 +316,11 @@ public final class CollectionUtil {
      * @param valuePropertyName 要提取为Map中的Value值的属性名.
      */
     public static Map extractToMap(final Collection collection, final String keyPropertyName,
-                                   final String valuePropertyName) {
+                                   final String valuePropertyName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Map map = new HashMap(collection.size());
-        try {
-            for (Object obj : collection) {
-                map.put(PropertyUtils.getProperty(obj, keyPropertyName),
-                        PropertyUtils.getProperty(obj, valuePropertyName));
-            }
-        } catch (Exception e) {
-//            logger.logMessage(LogLevel.ERROR, "转换失败", e);
+        for (Object obj : collection) {
+            map.put(PropertyUtils.getProperty(obj, keyPropertyName),
+                    PropertyUtils.getProperty(obj, valuePropertyName));
         }
         return map;
     }
@@ -334,14 +331,10 @@ public final class CollectionUtil {
      * @param collection   来源集合.
      * @param propertyName 要提取的属性名.
      */
-    public static List extractToList(final Collection collection, final String propertyName) {
+    public static List extractToList(final Collection collection, final String propertyName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         List list = new ArrayList(collection.size());
-        try {
-            for (Object obj : collection) {
-                list.add(PropertyUtils.getProperty(obj, propertyName));
-            }
-        } catch (Exception e) {
-//            logger.logMessage(LogLevel.ERROR, "转换失败", e);
+        for (Object obj : collection) {
+            list.add(PropertyUtils.getProperty(obj, propertyName));
         }
 
         return list;
@@ -354,7 +347,7 @@ public final class CollectionUtil {
      * @param propertyName 要提取的属性名.
      * @param separator    分隔符.
      */
-    public static String extractToString(final Collection collection, final String propertyName, final String separator) {
+    public static String extractToString(final Collection collection, final String propertyName, final String separator) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         List list = extractToList(collection, propertyName);
         return StringUtils.join(list, separator);
     }
