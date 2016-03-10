@@ -53,6 +53,9 @@ public class ModuleManagerImpl implements ModuleManager {
 			ConfigPath tempPath = copyConfigPath(entity);
 			tempPath.setModulePath(PathHelper.getConfigPath(entity.getModulePath() ,moduleKey));
 			Module parentModule = get(tempPath);
+			if (parentModule == null) {
+				continue;
+			}
 			modules.add(parentModule);
 			try {
 				getSubModule(parentModule, tempPath);
