@@ -23,7 +23,8 @@ public abstract class AbstractResponse implements Response{
 	}
 	
 	public String text(){
-		return new String(bytes(),charset);
+		byte[] b = bytes();
+		return b==null?null:new String(b,charset);
 	}
 	
 	protected abstract Response self();

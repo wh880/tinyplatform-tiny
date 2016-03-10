@@ -1,7 +1,7 @@
 package org.tinygroup.httpvisitor.request;
 
 import java.nio.charset.Charset;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -28,10 +28,10 @@ public abstract class HttpRequestBuilder<T extends HttpRequestBuilder<T>>
 	protected final MethodMode methodMode;
 	protected final String url;
 	
-    protected List<Header> headers;
-    protected List<Cookie> cookies;
-    protected List<Parameter> parameters;
-    protected List<BodyElement> bodyElements;
+    protected Map<String,Header> headers= new HashMap<String,Header>();
+    protected Map<String,Cookie> cookies= new HashMap<String,Cookie>();
+    protected Map<String,Parameter> parameters = new HashMap<String,Parameter>();
+    protected Map<String,BodyElement> bodyElements = new HashMap<String,BodyElement>();
     protected Charset charset;
 	
 	public HttpRequestBuilder(MethodMode methodMode,String url){
@@ -50,44 +50,56 @@ public abstract class HttpRequestBuilder<T extends HttpRequestBuilder<T>>
 	}
 
 	public T param(String name, Object value) {
-		this.parameters.add(new Parameter(name,value));
+		addParam(new Parameter(name,value));
 		return self();
 	}
 
 	public T params(Map<String, Object> maps) {
 		for(Entry<String,Object> entry:maps.entrySet()){
-			this.parameters.add(new Parameter(entry.getKey(),entry.getValue()));
+			addParam(new Parameter(entry.getKey(),entry.getValue()));
 		}
 		return self();
 	}
+	
+	private void addParam(Parameter p){
+		this.parameters.put(p.getName(), p);
+	}
 
 	public T header(String name, String value) {
-		this.headers.add(new SimpleHeader(name,value));
+		addHeader(new SimpleHeader(name,value));
 		return self();
 	}
 
 	public T headers(Map<String, String> maps) {
 		for(Entry<String,String> entry:maps.entrySet()){
-		   this.headers.add(new SimpleHeader(entry.getKey(),entry.getValue()));
+			addHeader(new SimpleHeader(entry.getKey(),entry.getValue()));
 		}
 		return self();
 	}
+	
+	private void addHeader(Header header){
+		this.headers.put(header.getName(), header);
+	}
 
 	public T cookie(String domain, String name, String value) {
-		this.cookies.add(new SimpleCookie(name,value,null,null,domain,false));
+		addCookie(new SimpleCookie(name,value,null,null,domain,false));
 		return self();
 	}
 
 	public T cookie(Cookie cookie) {
-		this.cookies.add(cookie);
+		addCookie(cookie);
 		return self();
 	}
 
 	public T cookies(Map<String, Cookie> cookies) {
 		for(Entry<String,Cookie> entry:cookies.entrySet()){
-			this.cookies.add(entry.getValue());
+			addCookie(entry.getValue());
 		}
 		return self();
+	}
+	
+	private void addCookie(Cookie cookie){
+		this.cookies.put(cookie.getName(), cookie);
 	}
 
 	protected abstract T self();
