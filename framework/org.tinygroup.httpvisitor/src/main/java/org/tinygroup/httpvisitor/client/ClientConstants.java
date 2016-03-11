@@ -7,7 +7,7 @@ package org.tinygroup.httpvisitor.client;
  */
 public final class ClientConstants {
 
-	public static final String CLIENT_USER_AGENT = "user-agent";
+	public static final String CLIENT_USER_AGENT = "User-Agent";
 	
 	public static final String CLIENT_CONNECT_TIME = "connect-time";
 	

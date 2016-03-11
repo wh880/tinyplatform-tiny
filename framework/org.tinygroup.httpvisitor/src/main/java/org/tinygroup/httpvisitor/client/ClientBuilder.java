@@ -20,7 +20,7 @@ import org.tinygroup.httpvisitor.struct.Proxy;
 public abstract class ClientBuilder<Builder extends ClientBuilder<Builder>>
 		implements ClientBuilderInterface<Builder> {
 
-	final static String defaultUserAgent = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)";
+	final static String defaultUserAgent = "HttpVisitor";
 	final static String NODE_NAME = "HTTPVISITOR_BEAN_NAME";
 	final static int defaultTimeout = 10000;
 
