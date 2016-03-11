@@ -10,7 +10,6 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.data.Stat;
 import org.tinygroup.exception.BaseRuntimeException;
-import org.tinygroup.logger.LogLevel;
 import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Product;
 import org.tinygroup.remoteconfig.zk.utils.PathHelper;
@@ -21,7 +20,6 @@ public class ZKProductManager extends BaseManager{
 	public static Product get(String key ,ConfigPath configPath){
 		try {
 			key = PathHelper.createPath(key ,configPath);
-			LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，获取节点[%s]" ,key));
 			return getSimple(key);
 		} catch (KeeperException e) {
 			throw new BaseRuntimeException("0TE120119003", e ,key);
@@ -33,7 +31,6 @@ public class ZKProductManager extends BaseManager{
 	public static Map<String, Product> getAll(ConfigPath configPath) {
 		Map<String, Product> dataMap = new HashMap<String, Product>();
 		String node = PathHelper.createPath("" ,configPath);
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，批量获取节点[%s]" ,node));
 		try {
 			List<String> subNodes = zooKeeper.getChildren(node, false);
 			if (subNodes != null && !subNodes.isEmpty()) {
@@ -54,11 +51,9 @@ public class ZKProductManager extends BaseManager{
 
 	public static void set(String key, Product product, ConfigPath configPath) {
 		key = PathHelper.createPath(key ,configPath);
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，节点设值[%s=%s]" ,key ,product));
 		try {
 			Stat stat = zooKeeper.exists(key, false);
 			if (stat == null) {
-				LOGGER.logMessage(LogLevel.DEBUG, String.format("节点设值[%s=%s]，节点不存在，自动创建" ,key ,product));
 				addSimple(key ,product);
 				return;
 			}
@@ -72,17 +67,14 @@ public class ZKProductManager extends BaseManager{
 		try {
 			Stat stat = zooKeeper.exists(node, false);
 			if (stat == null) {
-				//  create parent znodePath
 				String parentPath = PathHelper.generateParentPath(node);
 				if (StringUtils.isNotBlank(parentPath)) {
 					Stat parentStat = zooKeeper.exists(parentPath, false);
 					if (parentStat == null) {
-						addSimple(parentPath ,new Product());
+						throw new BaseRuntimeException("0TE120119013" ,node);
 					}
 				}
 				zooKeeper.create(node, SerializeUtil.serialize(value), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-			}else {
-				LOGGER.logMessage(LogLevel.DEBUG, String.format("节点[%s]已经存在" ,node));
 			}
 			return zooKeeper.exists(node, true);
 		} catch (KeeperException e) {

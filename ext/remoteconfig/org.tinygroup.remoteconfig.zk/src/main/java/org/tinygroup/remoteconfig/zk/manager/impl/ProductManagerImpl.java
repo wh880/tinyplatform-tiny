@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.tinygroup.logger.LogLevel;
+import org.tinygroup.logger.Logger;
+import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Product;
 import org.tinygroup.remoteconfig.manager.ProductManager;
@@ -21,6 +24,9 @@ import org.tinygroup.remoteconfig.zk.client.ZKProductManager;
  */
 public class ProductManagerImpl implements ProductManager {
 	
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ProductManagerImpl.class);
+	
 	VersionManager versionManager;
 	
 	public void setVersionManager(VersionManager versionManager) {
@@ -28,22 +34,43 @@ public class ProductManagerImpl implements ProductManager {
 	}
 	
 	public Product add(Product product) {
-		ZKProductManager.set(product.getName(), product, null);
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，增加项目[%s]" ,product.getName());
+		try {
+			ZKProductManager.set(product.getName(), product, null);
+		} catch (Exception e) {
+			LOGGER.logMessage(LogLevel.ERROR, "远程配置，增加项目失败[%s]" ,e ,product.getName());
+		}
 		return product;
 	}
 
 	public void update(Product product) {
-		ZKProductManager.set(product.getName(), product, null);
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，更新项目[%s]" ,product.getName());
+		try {
+			ZKProductManager.set(product.getName(), product, null);
+		} catch (Exception e) {
+			LOGGER.logMessage(LogLevel.ERROR, "远程配置，更新项目失败[%s]" ,e ,product.getName());
+		}
 	}
 
 	public void delete(String productId) {
-		ZKProductManager.delete(productId, null);
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，删除项目[%s]" ,productId);
+		try {
+			ZKProductManager.delete(productId, null);
+		} catch (Exception e) {
+			LOGGER.logMessage(LogLevel.ERROR, "远程配置，删除项目失败[%s]" ,e ,productId);
+		}
 	}
 
 	public Product get(String productId) {
-		Product product = ZKProductManager.get(productId, null);
-		product.setVersions(versionManager.query(productId));
-		return product;
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，获取项目[%s]" ,productId);
+		try {
+			Product product = ZKProductManager.get(productId, null);
+			product.setVersions(versionManager.query(productId));
+			return product;
+		} catch (Exception e) {
+			LOGGER.logMessage(LogLevel.ERROR, "远程配置，获取项目失败[%s]" ,e ,productId);
+		}
+		return null;
 	}
 
 	/**
@@ -51,14 +78,19 @@ public class ProductManagerImpl implements ProductManager {
 	 * 
 	 */
 	public List<Product> query(Product product) {
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，批量获取项目[%s]" ,product.getName());
 		List<Product> products = new ArrayList<Product>();
-		Map<String, Product> configPathMap = ZKProductManager.getAll(new ConfigPath());
-		String productName = product.getName();
-		for (Iterator<String> iterator = configPathMap.keySet().iterator(); iterator.hasNext();) {
-			String type = iterator.next();
-			if (StringUtils.isBlank(productName) || StringUtils.indexOf(type, productName) > -1) {
-				products.add(get(type));
+		try {
+			Map<String, Product> configPathMap = ZKProductManager.getAll(new ConfigPath());
+			String productName = product.getName();
+			for (Iterator<String> iterator = configPathMap.keySet().iterator(); iterator.hasNext();) {
+				String type = iterator.next();
+				if (StringUtils.isBlank(productName) || StringUtils.indexOf(type, productName) > -1) {
+					products.add(get(type));
+				}
 			}
+		} catch (Exception e) {
+			LOGGER.logMessage(LogLevel.ERROR, "远程配置，批量获取项目失败[%s]" ,e ,product.getName());
 		}
 		return products;
 	}

@@ -23,7 +23,7 @@ import org.tinygroup.remoteconfig.zk.client.ZKVersionManager;
  */
 public class VersionManagerImpl implements VersionManager {
 
-	protected static final Logger LOGGER = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(VersionManagerImpl.class);
 	
 	EnvironmentManager environmentManager;
@@ -33,37 +33,42 @@ public class VersionManagerImpl implements VersionManager {
 	}
 	
 	public Version add(Version version, String productId) {
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，增加版本[项目=%s ,版本=%s]" ,productId ,version));
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，增加版本[项目=%s ,版本=%s]" ,productId ,version.getVersion());
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		try {
 			ZKVersionManager.set(version.getName(), version, configPath);
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR,"远程配置，增加版本失败[项目=%s ,版本=%s]" ,e ,productId ,version);
+			LOGGER.logMessage(LogLevel.ERROR,"远程配置，增加版本失败[项目=%s ,版本=%s]" ,e ,productId ,version.getName());
 			return null;
 		}
 		return version;
 	}
 
 	public void update(Version version, String productId) {
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，更新版本[项目=%s ,版本=%s]" ,productId ,version));
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，更新版本[项目=%s ,版本=%s]" ,productId ,version.getName());
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		try {
 			ZKVersionManager.set(version.getName(), version, configPath);
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR,"远程配置，更新版本失败[项目=%s ,版本=%s]" ,e ,productId ,version);
+			LOGGER.logMessage(LogLevel.ERROR,"远程配置，更新版本失败[项目=%s ,版本=%s]" ,e ,productId ,version.getName());
 		}
 	}
 
 	public void delete(String versionId, String productId) {
+		LOGGER.logMessage(LogLevel.ERROR,"远程配置，删除版本[项目=%s ,版本=%s]" ,productId ,versionId);
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
-		ZKVersionManager.delete(versionId, configPath);
+		try {
+			ZKVersionManager.delete(versionId, configPath);
+		} catch (Exception e) {
+			LOGGER.logMessage(LogLevel.ERROR,"远程配置，删除版本失败[项目=%s ,版本=%s]" ,e ,productId ,versionId);
+		}
 	}
 
 	public Version get(String versionId, String productId) {
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，获取版本[项目=%s ,版本=%s]", productId ,versionId));
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，获取版本[项目=%s ,版本=%s]", productId ,versionId);
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		try {
@@ -80,7 +85,7 @@ public class VersionManagerImpl implements VersionManager {
 	}
 
 	public List<Version> query(String productId) {
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，批量获取版本[项目=%s]" ,productId));
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，批量获取版本[项目=%s]" ,productId);
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		List<Version> versions = new ArrayList<Version>();
