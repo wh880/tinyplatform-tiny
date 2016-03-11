@@ -144,7 +144,7 @@ KEYWORD_FALSE           : 'false'                          ;
 KEYWORD_NULL            : 'null'                           ;
 
 
-IDENTIFIER              : [_a-zA-Z][_a-zA-Z0-9]*         ;
+IDENTIFIER              : [_a-zA-Z\u4E00-\u9FA5][_a-zA-Z0-9\u4E00-\u9FA5]*         ;
 
 INTEGER                 : INT [lLfFdD]?                    ;
 INTEGER_HEX             : '0x' HEX+ [lL]?                  ;
