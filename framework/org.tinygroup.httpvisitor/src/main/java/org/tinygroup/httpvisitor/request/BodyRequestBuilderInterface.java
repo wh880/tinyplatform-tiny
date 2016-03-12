@@ -1,6 +1,9 @@
 package org.tinygroup.httpvisitor.request;
 
+import java.io.File;
 import java.io.InputStream;
+
+import org.tinygroup.httpvisitor.BodyElement;
 
 
 /**
@@ -28,4 +31,14 @@ public interface BodyRequestBuilderInterface<T> extends HttpRequestBuilderInterf
      * The text string will be encoded, default using utf-8, set charset with charset(Charset charset) method
      */
     T data(String body);
+    
+    /**
+     * Set http data from file for Post/Put request
+     */
+    T data(File file);
+    
+    /**
+     * Set http data from warpper object for Post/Put request
+     */
+    T data(BodyElement element);
 }

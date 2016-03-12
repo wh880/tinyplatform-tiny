@@ -50,7 +50,7 @@ public class NewTest {
 		r1 = HttpFactory.get(url).cookie("/", "c1", "1000").cookies(cookieMaps).execute();
 		
 		//多段上传
-		r1 = HttpFactory.post(url).multipart("context", "goodbye").multipart("file1", VFS.resolveFile("/abc.jpg")).execute();
+		//r1 = HttpFactory.post(url).multipart("context", "goodbye").multipart("file1", VFS.resolveFile("/abc.jpg")).execute();
 		
 		//设置agent
 		r1 = HttpFactory.get(url).userAgent("Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)").execute();

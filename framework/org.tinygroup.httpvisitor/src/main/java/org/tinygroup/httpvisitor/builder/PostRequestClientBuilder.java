@@ -1,7 +1,9 @@
 package org.tinygroup.httpvisitor.builder;
 
+import java.io.File;
 import java.io.InputStream;
 
+import org.tinygroup.httpvisitor.BodyElement;
 import org.tinygroup.httpvisitor.MethodMode;
 import org.tinygroup.httpvisitor.client.ClientBuilder;
 import org.tinygroup.httpvisitor.client.SingleClientBuilder;
@@ -40,13 +42,19 @@ public class PostRequestClientBuilder extends RequestClientBuilder<PostRequestCl
 		return self();
 	}
 
-	public PostRequestClientBuilder multipart(String name, String content) {
-		requestBuilder.multipart(name, content);
+	public PostRequestClientBuilder data(File file) {
+		requestBuilder.data(file);
 		return self();
 	}
 
-	public PostRequestClientBuilder multipart(String name, FileObject file) {
-		requestBuilder.multipart(name, file);
+	public PostRequestClientBuilder data(BodyElement element) {
+		requestBuilder.data(element);
+		return self();
+	}
+	
+
+	public PostRequestClientBuilder multipart(BodyElement... elements) {
+		requestBuilder.multipart(elements);
 		return self();
 	}
 
@@ -61,5 +69,6 @@ public class PostRequestClientBuilder extends RequestClientBuilder<PostRequestCl
 	protected HttpRequestBuilder<PostRequestBuilder> findRequsetBuilder() {
 		return requestBuilder;
 	}
+
 
 }

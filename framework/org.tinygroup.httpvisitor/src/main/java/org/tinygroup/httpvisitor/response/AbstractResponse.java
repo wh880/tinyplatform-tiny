@@ -22,10 +22,5 @@ public abstract class AbstractResponse implements Response{
 		return self();
 	}
 	
-	public String text(){
-		byte[] b = bytes();
-		return b==null?null:new String(b,charset);
-	}
-	
 	protected abstract Response self();
 }

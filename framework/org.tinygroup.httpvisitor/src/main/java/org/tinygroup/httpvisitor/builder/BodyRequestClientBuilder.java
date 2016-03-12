@@ -1,7 +1,9 @@
 package org.tinygroup.httpvisitor.builder;
 
+import java.io.File;
 import java.io.InputStream;
 
+import org.tinygroup.httpvisitor.BodyElement;
 import org.tinygroup.httpvisitor.MethodMode;
 import org.tinygroup.httpvisitor.client.ClientBuilder;
 import org.tinygroup.httpvisitor.client.SingleClientBuilder;
@@ -48,6 +50,16 @@ public class BodyRequestClientBuilder extends RequestClientBuilder<BodyRequestCl
 
 	public BodyRequestClientBuilder data(String body) {
 		requestBuilder.data(body);
+		return self();
+	}
+
+	public BodyRequestClientBuilder data(File file) {
+		requestBuilder.data(file);
+		return self();
+	}
+
+	public BodyRequestClientBuilder data(BodyElement element) {
+		requestBuilder.data(element);
 		return self();
 	}
 

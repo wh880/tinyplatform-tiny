@@ -4,7 +4,6 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 import org.tinygroup.httpvisitor.Cookie;
-import org.tinygroup.httpvisitor.Response;
 
 /**
  * HTTP链式构造器接口

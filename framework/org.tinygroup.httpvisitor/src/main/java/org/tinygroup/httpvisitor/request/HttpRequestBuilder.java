@@ -1,16 +1,18 @@
 package org.tinygroup.httpvisitor.request;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.tinygroup.httpvisitor.BodyElement;
 import org.tinygroup.httpvisitor.Cookie;
 import org.tinygroup.httpvisitor.Executable;
 import org.tinygroup.httpvisitor.Header;
 import org.tinygroup.httpvisitor.MethodMode;
 import org.tinygroup.httpvisitor.Request;
-import org.tinygroup.httpvisitor.struct.BodyElement;
 import org.tinygroup.httpvisitor.struct.Parameter;
 import org.tinygroup.httpvisitor.struct.SimpleCookie;
 import org.tinygroup.httpvisitor.struct.SimpleHeader;
@@ -31,7 +33,7 @@ public abstract class HttpRequestBuilder<T extends HttpRequestBuilder<T>>
     protected Map<String,Header> headers= new HashMap<String,Header>();
     protected Map<String,Cookie> cookies= new HashMap<String,Cookie>();
     protected Map<String,Parameter> parameters = new HashMap<String,Parameter>();
-    protected Map<String,BodyElement> bodyElements = new HashMap<String,BodyElement>();
+    protected List<BodyElement> bodyElements = new ArrayList<BodyElement>();
     protected Charset charset;
 	
 	public HttpRequestBuilder(MethodMode methodMode,String url){

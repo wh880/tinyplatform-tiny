@@ -1,6 +1,6 @@
 package org.tinygroup.httpvisitor.request;
 
-import org.tinygroup.vfs.FileObject;
+import org.tinygroup.httpvisitor.BodyElement;
 
 /**
  * POST独有的HTTP链式构造器接口
@@ -10,8 +10,11 @@ import org.tinygroup.vfs.FileObject;
  */
 public interface PostRequestBuilderInterface<T>  extends BodyRequestBuilderInterface<T>{
 	
-	T multipart(String name,String content);
+	/**
+	 * 多段提交
+	 * @param elements
+	 * @return
+	 */
+	T multipart(BodyElement... elements);
 	
-	
-	T multipart(String name,FileObject file);
 }
