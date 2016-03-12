@@ -21,7 +21,6 @@ public class ZKManager extends BaseManager{
 	public static String get(String key ,ConfigPath configPath){
 		try {
 			key = PathHelper.createPath(key ,configPath);
-			LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，获取节点[%s]" ,key));
 			return getSimple(key);
 		} catch (KeeperException e) {
 			throw new BaseRuntimeException("0TE120119003", e ,key);
@@ -33,7 +32,6 @@ public class ZKManager extends BaseManager{
 	public static Map<String, String> getAll(ConfigPath configPath) {
 		Map<String, String> dataMap = new HashMap<String, String>();
 		String node = PathHelper.createPath("" ,configPath);
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，批量获取节点[%s]" ,node));
 		try {
 			List<String> subNodes = zooKeeper.getChildren(node, false);
 			if (subNodes != null && !subNodes.isEmpty()) {
@@ -54,7 +52,6 @@ public class ZKManager extends BaseManager{
 
 	public static void set(String key, String value, ConfigPath configPath) {
 		key = PathHelper.createPath(key ,configPath);
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，节点设值[%s=%s]" ,key ,value));
 		try {
 			Stat stat = zooKeeper.exists(key, false);
 			if (stat == null) {

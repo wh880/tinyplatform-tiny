@@ -1,10 +1,11 @@
-package org.tinygroup.remoteconfig.zk.client;
+package org.tinygroup.remoteconfig.zk.manager.impl;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.tinygroup.exception.BaseRuntimeException;
+import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.remoteconfig.IRemoteConfigConstant;
@@ -13,6 +14,7 @@ import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Environment;
 import org.tinygroup.remoteconfig.config.Module;
 import org.tinygroup.remoteconfig.manager.EnvironmentManager;
+import org.tinygroup.remoteconfig.zk.client.ZKManager;
 import org.tinygroup.remoteconfig.zk.config.RemoteConfig;
 import org.tinygroup.remoteconfig.zk.config.RemoteEnvironment;
 import org.tinygroup.remoteconfig.zk.utils.PathHelper;
@@ -32,17 +34,33 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 	}
 	
 	public boolean exists(String key) throws BaseRuntimeException{
-		return ZKManager.exists(key, configPath);
+		String path = PathHelper.createPath(configPath);
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，判断节点是否存在[key=%s ,path=%s]" ,key ,path);
+		try {
+			return ZKManager.exists(key, configPath);
+		} catch (Exception e) {
+			LOGGER.logMessage(LogLevel.ERROR, "远程配置，判断节点是否存在[key=%s ,path=%s]",e ,key ,path);
+		}
+		return false;
 	}
 
 	public String get(String key) throws BaseRuntimeException {
-		return ZKManager.get(key, configPath);
+		String path = PathHelper.createPath(configPath);
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，获取节点[key=%s ,path=%s]" ,key ,path);
+		try {
+			return ZKManager.get(key, configPath);
+		} catch (Exception e) {
+			LOGGER.logMessage(LogLevel.ERROR, "远程配置，获取节点失败[key=%s ,path=%s]",e ,key ,path);
+		}
+		return null;
 	}
 
 
 	public Map<String, String> getAll() throws BaseRuntimeException {
 		Map<String,String> itemMap = new HashMap<String, String>();
 		Map<String,String> defaultItemMap = new HashMap<String, String>();
+		String path = PathHelper.createPath(configPath);
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，批量获取节点[path=%s]" ,path);
 		Environment defaultEnvironment = environmentManager.get(IRemoteConfigConstant.DEFAULT_ENV_NAME, configPath.getVersionName(), configPath.getProductName());
 		Environment environment = environmentManager.get(configPath.getEnvironmentName(), configPath.getVersionName(), configPath.getProductName());
 		if (environment != null && defaultEnvironment != null) {
@@ -107,7 +125,12 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 			return;
 		}
 		configPath.setModulePath(PathHelper.getConfigPath(configPath.getModulePath() ,parentModule.getName()));
-		Map<String, String> subItemMap = ZKManager.getAll(configPath);
+		Map<String, String> subItemMap = null;
+		try {
+			subItemMap = ZKManager.getAll(configPath);
+		} catch (Exception e) {
+			return;
+		}
 		itemMap.putAll(subItemMap);
 		for (String key : subItemMap.keySet()) {
 			itemMap.put(key, subItemMap.get(key));

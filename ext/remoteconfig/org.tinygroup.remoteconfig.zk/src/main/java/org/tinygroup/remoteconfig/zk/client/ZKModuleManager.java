@@ -10,7 +10,6 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.data.Stat;
 import org.tinygroup.exception.BaseRuntimeException;
-import org.tinygroup.logger.LogLevel;
 import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Module;
 import org.tinygroup.remoteconfig.zk.utils.PathHelper;
@@ -21,7 +20,6 @@ public class ZKModuleManager extends BaseManager{
 	public static Module get(String key ,ConfigPath configPath){
 		try {
 			key = PathHelper.createPath(key ,configPath);
-			LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，获取节点[%s]" ,key));
 			return getSimple(key);
 		} catch (KeeperException e) {
 			throw new BaseRuntimeException("0TE120119003", e ,key);
@@ -33,7 +31,6 @@ public class ZKModuleManager extends BaseManager{
 	public static Map<String, Module> getAll(ConfigPath configPath) {
 		Map<String, Module> dataMap = new HashMap<String, Module>();
 		String node = PathHelper.createPath("" ,configPath);
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，批量获取节点[%s]" ,node));
 		try {
 			List<String> subNodes = zooKeeper.getChildren(node, false);
 			if (subNodes != null && !subNodes.isEmpty()) {
@@ -54,11 +51,9 @@ public class ZKModuleManager extends BaseManager{
 
 	public static void set(String key, Module module, ConfigPath configPath) {
 		key = PathHelper.createPath(key ,configPath);
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，节点设值[%s=%s]" ,key ,module));
 		try {
 			Stat stat = zooKeeper.exists(key, false);
 			if (stat == null) {
-				LOGGER.logMessage(LogLevel.DEBUG, String.format("节点设值[%s=%s]，节点不存在，自动创建" ,key ,module));
 				addSimple(key ,module);
 				return;
 			}
@@ -81,8 +76,6 @@ public class ZKModuleManager extends BaseManager{
 					}
 				}
 				zooKeeper.create(node, SerializeUtil.serialize(module), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-			}else {
-				LOGGER.logMessage(LogLevel.DEBUG, String.format("节点[%s]已经存在" ,node));
 			}
 			return zooKeeper.exists(node, true);
 		} catch (KeeperException e) {

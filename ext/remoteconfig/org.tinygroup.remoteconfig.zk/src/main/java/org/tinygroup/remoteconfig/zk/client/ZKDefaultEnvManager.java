@@ -21,7 +21,6 @@ public class ZKDefaultEnvManager extends BaseManager{
 	public static Environment get(String key){
 		try {
 			key = EnvPathHelper.createPath(key);
-			LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，获取环境[%s]" ,key));
 			return getSimple(key);
 		} catch (KeeperException e) {
 			throw new BaseRuntimeException("0TE120119003", e ,key);
@@ -54,11 +53,9 @@ public class ZKDefaultEnvManager extends BaseManager{
 
 	public static void set(String key, Environment environment) {
 		key = EnvPathHelper.createPath(key);
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，环境设值[%s=%s]" ,key ,environment));
 		try {
 			Stat stat = zooKeeper.exists(key, false);
 			if (stat == null) {
-				LOGGER.logMessage(LogLevel.DEBUG, String.format("环境设值[%s=%s]，环境不存在，自动创建" ,key ,environment));
 				addSimple(key ,environment);
 				return;
 			}
@@ -77,12 +74,10 @@ public class ZKDefaultEnvManager extends BaseManager{
 				if (StringUtils.isNotBlank(parentPath)) {
 					Stat parentStat = zooKeeper.exists(parentPath, false);
 					if (parentStat == null) {
-						addSimple(parentPath ,new Environment());
+						throw new BaseRuntimeException("0TE120119013" ,node);
 					}
 				}
 				zooKeeper.create(node, SerializeUtil.serialize(environment), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-			}else {
-				LOGGER.logMessage(LogLevel.DEBUG, String.format("环境[%s]已经存在" ,node));
 			}
 			return zooKeeper.exists(node, true);
 		} catch (KeeperException e) {
@@ -105,13 +100,10 @@ public class ZKDefaultEnvManager extends BaseManager{
 	
 	public static void delete(String key) {
 		key = EnvPathHelper.createPath(key);
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，删除环境[%s]" ,key));
 		try {
 			Stat stat = zooKeeper.exists(key, false);
 			if (stat != null) {
 				zooKeeper.delete(key, stat.getVersion());
-			}else {
-				LOGGER.logMessage(LogLevel.DEBUG, String.format("环境[%s]不存在" ,key));
 			}
 		} catch (KeeperException e) {
 			throw new BaseRuntimeException("0TE120119007", e ,key);

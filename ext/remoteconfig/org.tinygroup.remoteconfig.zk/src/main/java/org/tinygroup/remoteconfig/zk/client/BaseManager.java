@@ -13,6 +13,7 @@ import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.remoteconfig.config.ConfigPath;
+import org.tinygroup.remoteconfig.config.Environment;
 import org.tinygroup.remoteconfig.zk.config.RemoteConfig;
 import org.tinygroup.remoteconfig.zk.config.RemoteEnvironment;
 import org.tinygroup.remoteconfig.zk.utils.PathHelper;
@@ -44,6 +45,11 @@ public class BaseManager {
 				LOGGER.logMessage(LogLevel.INFO, "远程链接成功...");
 				//创建项目基础节点,不用监听
 				LOGGER.logMessage(LogLevel.INFO, "初始化ZK根节点");
+				ZKManager.set("", IRemoteConfigZKConstant.REMOTE_ENVIRONMENT_BASE_DIR, null);
+				Environment env = new Environment();
+				env.setEnvironment(IRemoteConfigZKConstant.REMOTE_ENVIRONMENT_BASE_DIR);
+				ZKDefaultEnvManager.set("", env);
+				LOGGER.logMessage(LogLevel.INFO, "根节点创建完毕");
 				LOGGER.logMessage(LogLevel.INFO, "客户端远程配置初始化完成");
 			} catch (IOException e) {
 				throw new BaseRuntimeException("0TE120119001" ,e ,config.toString());
@@ -63,7 +69,6 @@ public class BaseManager {
 	
 	public static void delete(String key, ConfigPath configPath) {
 		key = PathHelper.createPath(key ,configPath);
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，删除节点[%s]" ,key));
 		clearSimple(key);
 	}
 
@@ -101,7 +106,6 @@ public class BaseManager {
 	public static boolean exists(String key ,ConfigPath configPath){
 		try {
 			key = PathHelper.createPath(key ,configPath);
-			LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，判断节点是否存在[%s]" ,key));
 			Stat stat = zooKeeper.exists(key, false);
 			if (stat == null) {
 				return false;

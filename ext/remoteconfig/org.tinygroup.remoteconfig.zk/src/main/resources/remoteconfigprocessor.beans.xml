@@ -5,11 +5,11 @@
 	   default-autowire="byName" default-lazy-init="true">
 	
 	<bean id="remoteConfigClient" name="remoteConfigClient" scope="singleton"
-		class="org.tinygroup.remoteconfig.zk.client.ZKConfigClientImpl">
+		class="org.tinygroup.remoteconfig.zk.manager.impl.ZKConfigClientImpl">
 	</bean>
 	
 	<bean id="remoteConfigServer" name="remoteConfigServer" scope="singleton"
-		class="org.tinygroup.remoteconfig.zk.client.ConfigItemManagerImpl">
+		class="org.tinygroup.remoteconfig.zk.manager.impl.ConfigItemManagerImpl">
 	</bean>
 	
 	<bean id="environmentManager" name="environmentManager" scope="singleton"
