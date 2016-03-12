@@ -24,4 +24,6 @@ public final class ClientConstants {
 	public static final String CLIENT_ALLOW_REDIRECT = "allow-redirect";
 	
 	public static final String CLIENT_KEEP_TIME = "keep-time";
+	
+	public static final String CLIENT_CONTENT_TYPE = "Content-Type";
 }

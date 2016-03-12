@@ -6,12 +6,16 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import org.tinygroup.httpvisitor.BodyElement;
+import org.tinygroup.httpvisitor.Certifiable;
 import org.tinygroup.httpvisitor.Cookie;
 import org.tinygroup.httpvisitor.Header;
 import org.tinygroup.httpvisitor.Request;
 import org.tinygroup.httpvisitor.Response;
 import org.tinygroup.httpvisitor.execption.HttpVisitorException;
+import org.tinygroup.httpvisitor.struct.KeyCert;
 import org.tinygroup.httpvisitor.struct.Parameter;
+import org.tinygroup.httpvisitor.struct.PasswordCert;
+import org.tinygroup.httpvisitor.struct.Proxy;
 
 /**
  * 抽象的HTTP客户端基类
@@ -31,7 +35,40 @@ public abstract class AbstractClient implements ClientInterface{
 		return executeMethod();
 	}
 	
-
+	/**
+	 * 处理代理
+	 * @param proxy
+	 */
+    protected abstract void initProxy(Proxy proxy);
+    
+    /**
+     * 初始化认证
+     * @param cert
+     */
+    protected void initCert(Certifiable cert){
+    	if(cert!=null){
+    	   if(cert instanceof KeyCert){
+    		   initKeyCert((KeyCert)cert);
+    	   }else if(cert instanceof PasswordCert){
+    		   initPasswordCert((PasswordCert)cert);
+    	   }else{
+    		   throw new HttpVisitorException("未知的认证类型:"+cert.getClass());
+    	   }
+    	}
+    }
+    
+    /**
+     * 初始化秘钥认证
+     * @param cert
+     */
+    protected abstract void initKeyCert(KeyCert cert);
+	
+    /**
+     * 初始化口令认证
+     * @param cert
+     */
+    protected abstract void initPasswordCert(PasswordCert cert);
+    
 	/**
 	 * 处理HTTP协议
 	 * @param request
