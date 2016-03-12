@@ -20,5 +20,6 @@
 	<module>org.tinygroup.servicewrapper</module>
 	<module>org.tinygroup.custombeandefine</module>
 	<module>remoteconfig</module>
+	<module>org.tinygroup.httpclient31</module>
   </modules>
 </project>
