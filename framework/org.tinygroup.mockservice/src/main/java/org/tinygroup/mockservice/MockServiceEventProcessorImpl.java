@@ -4,17 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
-import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.cepcore.impl.AbstractEventProcessor;
-import org.tinygroup.commons.file.IOUtils;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.Configuration;
 import org.tinygroup.event.Event;
@@ -26,8 +23,6 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.xmlparser.node.XmlNode;
 
-import com.alibaba.fastjson.JSON;
-
 @SuppressWarnings("deprecation")
 public class MockServiceEventProcessorImpl extends AbstractEventProcessor
 		implements Configuration {
@@ -38,7 +33,6 @@ public class MockServiceEventProcessorImpl extends AbstractEventProcessor
 	private String serverPath;
 	HttpVisitor visitor;
 	private MockServiceManager manager;
-	private String responseCharset = "UTF-8";
 
 	public void process(Event event) {
 		if (serverPath == null) {
