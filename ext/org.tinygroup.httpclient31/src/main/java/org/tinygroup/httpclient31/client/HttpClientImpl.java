@@ -69,6 +69,8 @@ public class HttpClientImpl extends AbstractClient implements ClientInterface {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(HttpClientImpl.class);
+	
+	private static final String DEFAULT_USER_AGENT = "HttpClient3.1";
 
 	private HttpClient httpClient;
 
@@ -76,7 +78,7 @@ public class HttpClientImpl extends AbstractClient implements ClientInterface {
 
 	private boolean followRedirects = true;
 
-	private String userAgent = "HttpClient3.1";
+	private String userAgent = DEFAULT_USER_AGENT;
 	
 	private String requestCharset;
 
@@ -97,6 +99,9 @@ public class HttpClientImpl extends AbstractClient implements ClientInterface {
 
 		followRedirects = context.get(ClientConstants.CLIENT_ALLOW_REDIRECT);
 		userAgent = context.get(ClientConstants.CLIENT_USER_AGENT);
+		if(userAgent==null){
+		   userAgent = DEFAULT_USER_AGENT;	
+		}
 
 		Proxy proxy = context.get(ClientConstants.CLIENT_PROXY); // 设置代理
 		initProxy(proxy);

@@ -79,7 +79,7 @@ public class HttpGetTest extends ServerTestCase {
 
 		// 设置User-Agent
 		response = HttpFactory.get("http://127.0.0.1:8080/agent.do").execute();
-		assertEquals("HttpVisitor", response.text()); // 默认的User-Agent
+		assertEquals("HttpClient3.1", response.text()); // 默认的User-Agent
 		response.close();
 
 		response = HttpFactory.get("http://127.0.0.1:8080/agent.do")
