@@ -132,6 +132,10 @@ public class MockServiceEventProcessorImpl extends AbstractEventProcessor
 		return visitor;
 	}
 
+	public void setVisitor(HttpVisitor visitor) {
+		this.visitor = visitor;
+	}
+
 	public String getApplicationNodePath() {
 		return SERVER_PATH_CONFIG;
 	}
