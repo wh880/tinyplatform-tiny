@@ -1,0 +1,32 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd"
+	   default-autowire="byType" default-lazy-init="true">
+
+	<bean id="mockServiceManager" scope="singleton"
+		class="org.tinygroup.mockservice.MockServiceManager">
+	</bean>
+	
+	<bean id="mockServiceLoader" scope="singleton"
+		class="org.tinygroup.mockservice.MockServiceLoader">
+		<property name="manager" ref="mockServiceManager"></property>
+	</bean>
+	
+	<bean id="mockServiceFileProcessor" scope="singleton"
+		class="org.tinygroup.mockservice.fileprocessor.MockServiceFileProcessor">
+		<property name="loader" ref="mockServiceLoader"></property>
+	</bean>
+	
+	<bean id="mockServiceApplicationProcessorImpl" scope="singleton"
+		class="org.tinygroup.mockservice.MockServiceApplicationProcessorImpl">
+		<property name="processor" ref="mockServiceEventProcessorImpl"></property>
+		<property name="cepcore" ref="cepcore"></property>
+	</bean>
+	
+	<bean id="mockServiceEventProcessorImpl" scope="singleton"
+		class="org.tinygroup.mockservice.MockServiceEventProcessorImpl">
+		<property name="manager" ref="mockServiceManager"></property>
+	</bean>
+	
+</beans>

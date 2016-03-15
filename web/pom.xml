@@ -18,5 +18,6 @@
     <module>org.tinygroup.sessionstore</module>
     <module>org.tinygroup.urlrestful</module>
     <module>org.tinygroup.springmerge</module>
+	<module>org.tinygroup.mockserviceweb</module>
   </modules>
 </project>

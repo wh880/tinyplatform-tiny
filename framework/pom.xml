@@ -62,5 +62,6 @@
         <module>org.tinygroup.loader</module>
 		<module>org.tinygroup.tinyrunner</module>
 		<module>org.tinygroup.httpvisitor</module>
+		<module>org.tinygroup.mockservice</module>
     </modules>
 </project>
