@@ -20,7 +20,6 @@ import org.tinygroup.httpvisitor.struct.Proxy;
 public abstract class ClientBuilder<Builder extends ClientBuilder<Builder>>
 		implements ClientBuilderInterface<Builder> {
 
-	final static String defaultUserAgent = "HttpVisitor";
 	final static String NODE_NAME = "HTTPVISITOR_BEAN_NAME";
 	final static int defaultTimeout = 10000;
 
@@ -35,7 +34,7 @@ public abstract class ClientBuilder<Builder extends ClientBuilder<Builder>>
 	// if enable compress response
 	private boolean compress = true;
 	private boolean allowRedirects = true;
-	private String userAgent = defaultUserAgent;
+	private String userAgent = null;
 
 	private int connectTimeout = defaultTimeout;
 	private int socketTimeout = defaultTimeout;
