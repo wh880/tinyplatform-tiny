@@ -93,17 +93,17 @@ public class HttpClientImpl extends AbstractClient implements ClientInterface {
 
 		httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
 
-		Integer connectTime = context.get(ClientConstants.CLIENT_CONNECT_TIME);
-		Integer socketTime = context.get(ClientConstants.CLIENT_SOCKET_TIME);
+		Integer connectTime = (Integer)context.get(ClientConstants.CLIENT_CONNECT_TIME);
+		Integer socketTime = (Integer) context.get(ClientConstants.CLIENT_SOCKET_TIME);
 		initTimeOut(connectTime, socketTime);
 
 		followRedirects = (Boolean)context.get(ClientConstants.CLIENT_ALLOW_REDIRECT);
 		userAgent = (String)context.get(ClientConstants.CLIENT_USER_AGENT,DEFAULT_USER_AGENT);
 
-		Proxy proxy = context.get(ClientConstants.CLIENT_PROXY); // 设置代理
+		Proxy proxy = (Proxy) context.get(ClientConstants.CLIENT_PROXY); // 设置代理
 		initProxy(proxy);
 		
-		Certifiable cert = context.get(ClientConstants.CLIENT_CERT); // 设置认证
+		Certifiable cert = (Certifiable) context.get(ClientConstants.CLIENT_CERT); // 设置认证
 		initCert(cert);
 
 		LOGGER.logMessage(LogLevel.DEBUG, "初始化HTTP通讯客户端完成!");
