@@ -1,4 +1,4 @@
-package org.tinygroup.mockservice.test;
+package org.tinygroup.servicehttpchannel.test;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.tinygroup.mockservice.test;
+package org.tinygroup.servicehttpchannel.test;
 
 import java.util.HashMap;
 import java.util.Map;

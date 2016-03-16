@@ -19,5 +19,6 @@
     <module>org.tinygroup.urlrestful</module>
     <module>org.tinygroup.springmerge</module>
 	<module>org.tinygroup.mockserviceweb</module>
+	<module>org.tinygroup.servicehttpchannelweb</module>
   </modules>
 </project>
