@@ -80,7 +80,7 @@ public class HttpClientImpl extends AbstractClient implements ClientInterface {
 
 	private String userAgent = DEFAULT_USER_AGENT;
 	
-	private String requestCharset;
+	private String requestCharset = DEFAULT_REQUEST_CHARSET.name();
 
 	public void close() throws IOException {
 		if (method != null) {
@@ -97,11 +97,8 @@ public class HttpClientImpl extends AbstractClient implements ClientInterface {
 		Integer socketTime = context.get(ClientConstants.CLIENT_SOCKET_TIME);
 		initTimeOut(connectTime, socketTime);
 
-		followRedirects = context.get(ClientConstants.CLIENT_ALLOW_REDIRECT);
-		userAgent = context.get(ClientConstants.CLIENT_USER_AGENT);
-		if(userAgent==null){
-		   userAgent = DEFAULT_USER_AGENT;	
-		}
+		followRedirects = (Boolean)context.get(ClientConstants.CLIENT_ALLOW_REDIRECT);
+		userAgent = (String)context.get(ClientConstants.CLIENT_USER_AGENT,DEFAULT_USER_AGENT);
 
 		Proxy proxy = context.get(ClientConstants.CLIENT_PROXY); // 设置代理
 		initProxy(proxy);
