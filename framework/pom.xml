@@ -63,5 +63,6 @@
 		<module>org.tinygroup.tinyrunner</module>
 		<module>org.tinygroup.httpvisitor</module>
 		<module>org.tinygroup.mockservice</module>
+		<module>org.tinygroup.servicehttpchannel</module>
     </modules>
 </project>

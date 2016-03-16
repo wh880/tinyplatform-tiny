@@ -1,4 +1,4 @@
-package org.tinygroup.mockservice.test;
+package org.tinygroup.servicehttpchannel.test;
 
 public class Obj2 {
 	int length;

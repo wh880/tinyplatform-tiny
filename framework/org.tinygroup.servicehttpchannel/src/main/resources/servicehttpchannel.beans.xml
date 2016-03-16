@@ -1,0 +1,32 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd"
+	   default-autowire="byType" default-lazy-init="true">
+
+	<bean id="serviceHttpChannelManager" scope="singleton"
+		class="org.tinygroup.servicehttpchannel.ServiceHttpChannelManager">
+	</bean>
+	
+	<bean id="serviceHttpChannelLoader" scope="singleton"
+		class="org.tinygroup.servicehttpchannel.ServiceHttpChannelLoader">
+		<property name="manager" ref="serviceHttpChannelManager"></property>
+	</bean>
+	
+	<bean id="serviceHttpChannelFileProcessor" scope="singleton"
+		class="org.tinygroup.servicehttpchannel.fileprocessor.ServiceHttpChannelFileProcessor">
+		<property name="loader" ref="serviceHttpChannelLoader"></property>
+	</bean>
+	
+	<bean id="serviceHttpChannelApplicationProcessorImpl" scope="singleton"
+		class="org.tinygroup.servicehttpchannel.ServiceHttpChannelApplicationProcessorImpl">
+		<property name="processor" ref="serviceHttpChannelEventProcessorImpl"></property>
+		<property name="cepcore" ref="cepcore"></property>
+	</bean>
+	
+	<bean id="serviceHttpChannelEventProcessorImpl" scope="singleton"
+		class="org.tinygroup.servicehttpchannel.serviceHttpChannelEventProcessorImpl">
+		<property name="manager" ref="serviceHttpChannelManager"></property>
+	</bean>
+	
+</beans>
