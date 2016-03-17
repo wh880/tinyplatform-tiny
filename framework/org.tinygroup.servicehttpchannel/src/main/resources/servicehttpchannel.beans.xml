@@ -25,7 +25,7 @@
 	</bean>
 	
 	<bean id="serviceHttpChannelEventProcessorImpl" scope="singleton"
-		class="org.tinygroup.servicehttpchannel.serviceHttpChannelEventProcessorImpl">
+		class="org.tinygroup.servicehttpchannel.ServiceHttpChannelEventProcessorImpl">
 		<property name="manager" ref="serviceHttpChannelManager"></property>
 	</bean>
 	
