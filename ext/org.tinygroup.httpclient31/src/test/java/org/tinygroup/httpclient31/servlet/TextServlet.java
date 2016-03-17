@@ -24,6 +24,7 @@ public class TextServlet extends AbstractMockServlet{
 //				String name = names.nextElement();
 //				System.out.println(name+" "+request.getHeader(name));
 //			}
+			//需要注意文件编码和传输编码的区别
 			String text = IOUtils.readFromInputStream(request.getInputStream(), "ISO-8859-1");
 			PrintWriter out = null;
 			// 默认处理
