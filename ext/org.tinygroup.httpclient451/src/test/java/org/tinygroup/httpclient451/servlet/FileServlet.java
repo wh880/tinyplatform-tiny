@@ -1,4 +1,4 @@
-package org.tinygroup.httpclient31.servlet;
+package org.tinygroup.httpclient451.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,22 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.tinygroup.commons.file.IOUtils;
 
-public class TextServlet extends AbstractMockServlet{
+public class FileServlet extends AbstractMockServlet{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5863574058246844016L;
+	private static final long serialVersionUID = 8591474351338440258L;
 
 	protected void dealService(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
-			
-//			for (Enumeration<String> names = request.getHeaderNames(); names.hasMoreElements();){
-//				String name = names.nextElement();
-//				System.out.println(name+" "+request.getHeader(name));
-//			}
-			//需要注意文件编码和传输编码的区别
 			String text = IOUtils.readFromInputStream(request.getInputStream(), "ISO-8859-1");
 			PrintWriter out = null;
 			// 默认处理
@@ -35,5 +29,4 @@ public class TextServlet extends AbstractMockServlet{
 		}
 	}
 
-	
 }

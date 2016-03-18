@@ -15,7 +15,10 @@
  */
 package org.tinygroup.database.table.impl;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.table.TableSqlProcessor;
+
+import java.util.List;
 
 public class H2SqlProcessorImpl extends SqlProcessorImpl {
 	
@@ -46,6 +49,16 @@ public class H2SqlProcessorImpl extends SqlProcessorImpl {
 			String tableDataType) {
 		return String.format("ALTER TABLE %s ALTER COLUMN %s SET DATA TYPE %s",
 				tableName, fieldName, tableDataType);
+	}
+
+	/**
+	 * h2语法为 COMMENT ON COLUMN aaa.name IS '名字'
+	 * @param comment
+	 * @param ddlBuffer
+	 * @param list
+     */
+	protected void appendComment(String comment, StringBuffer ddlBuffer,List<String> list) {
+		//do nothing
 	}
 
 }

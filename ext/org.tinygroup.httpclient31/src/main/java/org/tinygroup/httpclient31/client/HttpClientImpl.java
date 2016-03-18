@@ -3,6 +3,7 @@ package org.tinygroup.httpclient31.client;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.security.KeyStore;
 import java.util.List;
 
@@ -80,7 +81,7 @@ public class HttpClientImpl extends AbstractClient implements ClientInterface {
 
 	private String userAgent = DEFAULT_USER_AGENT;
 	
-	private String requestCharset = DEFAULT_REQUEST_CHARSET.name();
+	private Charset requestCharset = DEFAULT_REQUEST_CHARSET;
 
 	public void close() throws IOException {
 		if (method != null) {
@@ -225,7 +226,7 @@ public class HttpClientImpl extends AbstractClient implements ClientInterface {
 								.setRequestEntity(new StringRequestEntity(
 										(String) element.getElement(), element
 												.getContentType(), element
-												.getCharset()==null?requestCharset:element.getCharset()));
+												.getCharset()==null?requestCharset.name():element.getCharset()));
 						break;
 					}
 					case BYTEARRAY: {
@@ -259,7 +260,7 @@ public class HttpClientImpl extends AbstractClient implements ClientInterface {
 							parts[i] = new StringPart(element.getName(),
 									(String) element.getElement(),
 									element
-									.getCharset()==null?requestCharset:element.getCharset());
+									.getCharset()==null?requestCharset.name():element.getCharset());
 							break;
 						}
 						case BYTEARRAY: {
@@ -300,7 +301,7 @@ public class HttpClientImpl extends AbstractClient implements ClientInterface {
 	}
 
 	protected void dealHttpMethod(Request request) {
-		requestCharset = getCharset(request).name();
+		requestCharset = getCharset(request);
 		switch (request.getMethod()) {
 		case GET: {
 			method = new GetMethod(getUrl(request));
