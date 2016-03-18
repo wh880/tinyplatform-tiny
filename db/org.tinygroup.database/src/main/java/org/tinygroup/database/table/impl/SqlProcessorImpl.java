@@ -353,7 +353,10 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		}
 
 		// 设置字段备注信息
-		appendComment(standardField.getDescription(), ddlBuffer,list);
+		String title = standardField.getTitle();
+		String description = standardField.getDescription();
+		String comment = StringUtil.isBlank(title)?description:(StringUtil.isBlank(description)?title:(title+"\n"+description));
+		appendComment(comment, ddlBuffer,list);
 	}
 
 	protected void appendComment(String comment, StringBuffer ddlBuffer,List<String> list) {

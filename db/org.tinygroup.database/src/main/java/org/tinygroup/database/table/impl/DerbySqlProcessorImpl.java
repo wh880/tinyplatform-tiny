@@ -17,6 +17,8 @@ package org.tinygroup.database.table.impl;
 
 import org.tinygroup.database.table.TableSqlProcessor;
 
+import java.util.List;
+
 
 public class DerbySqlProcessorImpl extends SqlProcessorImpl {
 	
@@ -51,5 +53,8 @@ public class DerbySqlProcessorImpl extends SqlProcessorImpl {
 			String tableDataType) {
 		return String.format("ALTER TABLE %s ALTER %s SET DATA TYPE %s", tableName,fieldName,tableDataType);
 	}
-	
+
+	protected void appendComment(String comment, StringBuffer ddlBuffer,List<String> list) {
+		//do nothing
+	}
 }
