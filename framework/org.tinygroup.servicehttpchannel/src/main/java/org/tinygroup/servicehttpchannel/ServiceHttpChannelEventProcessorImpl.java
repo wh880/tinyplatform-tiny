@@ -2,7 +2,6 @@ package org.tinygroup.servicehttpchannel;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.List;
 
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
@@ -92,14 +91,6 @@ public class ServiceHttpChannelEventProcessorImpl extends AbstractEventProcessor
 			method.releaseConnection();
 		}
 
-	}
-
-	private Type getResultType(String serviceId) {
-		return manager.getService(serviceId).getResultType();
-	}
-
-	private String getResultName(String serviceId) {
-		return manager.getService(serviceId).getResultName();
 	}
 
 	private HttpVisitor getHttpVisitor() {
