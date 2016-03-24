@@ -42,7 +42,7 @@ public class ServiceHttpChannelEventProcessorImpl extends AbstractEventProcessor
 		Event result  = execute(event, url);
 		Throwable throwable = result.getThrowable();
 		if (throwable != null) {// 如果有异常发生，则抛出异常
-			LOGGER.errorMessage("Http请求发生异常,serviceId:{},eventId:{}", throwable,
+			LOGGER.errorMessage("服务执行发生异常,serviceId:{},eventId:{}", throwable,
 					result.getServiceRequest().getServiceId(),
 					result.getEventId());
 			if (throwable instanceof RuntimeException) {

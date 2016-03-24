@@ -2,7 +2,6 @@ package org.tinygroup.mockservice;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.List;
 
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
@@ -40,21 +39,27 @@ public class MockServiceEventProcessorImpl extends AbstractEventProcessor
 		}
 		String serviceId = event.getServiceRequest().getServiceId();
 		String url = serverPath + serviceId + ".mockservice";
-		Object result  = execute(event, url);
-//		System.out.println(resultString);
-		Type resultType = getResultType(serviceId);
-		if (!"void".equals(resultType.toString())) {
-			// 目前.servicejson序列化方式使用fastJson
-			// 如果.servicejson的处理器ServiceTinyProcessor中对应的ObjectToJson方式变化，此处需要同步调整
-//			Object result = JSON.parseObject(resultString, resultType);
-			event.getServiceRequest().getContext()
-					.put(getResultName(serviceId), result);
+		Event result  = execute(event, url);
+		Throwable throwable = result.getThrowable();
+		if (throwable != null) {// 如果有异常发生，则抛出异常
+			LOGGER.errorMessage("服务执行发生异常,serviceId:{},eventId:{}", throwable,
+					result.getServiceRequest().getServiceId(),
+					result.getEventId());
+			if (throwable instanceof RuntimeException) {
+				throw (RuntimeException) throwable;
+			} else {
+				throw new RuntimeException(throwable);// 此处的RuntimeException类型需要调整
+			}
 		}
-		event.setType(Event.EVENT_TYPE_RESPONSE);
+		event.getServiceRequest()
+		.getContext()
+		.putSubContext(result.getEventId(),
+				result.getServiceRequest().getContext());
+		
 
 	}
 
-	private Object execute(Event event, String url) {
+	private Event execute(Event event, String url) {
 		byte[] data;
 		try {
 			data = Hession.serialize(event);
@@ -72,33 +77,12 @@ public class MockServiceEventProcessorImpl extends AbstractEventProcessor
 		try {
 			int iGetResultCode = client.executeMethod(method);
 			if (iGetResultCode == HttpStatus.SC_OK) {
-				LOGGER.logMessage(LogLevel.DEBUG, "结果成功返回。");
-//				Header responseHeader = method
-//						.getResponseHeader("Content-Encoding");
-//				if (responseHeader != null) {
-//					String acceptEncoding = responseHeader.getValue();
-//					if (acceptEncoding != null
-//							&& ("gzip").equals(acceptEncoding)) {
-//						// 如果是gzip压缩方式
-//						ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-//								method.getResponseBody());
-//						GZIPInputStream gzipInputStream = new GZIPInputStream(
-//								byteArrayInputStream);
-//						return IOUtils.readFromInputStream(gzipInputStream,
-//								responseCharset);
-//					}
-//				}
 				String serviceId = event.getServiceRequest().getServiceId();
-				Type resultType = getResultType(serviceId);
-				if (!"void".equals(resultType.toString())) {
-					return Hession.deserialize(method.getResponseBody());
-				}else{
-					return null;
-				}
-				
-//				return new String(method.getResponseBody(), responseCharset);
+				String eventId = event.getEventId();
+				LOGGER.logMessage(LogLevel.DEBUG, "请求:eventId:{},serviceId:{} 成功返回。",eventId,serviceId);
+				return (Event)Hession.deserialize(method.getResponseBody());
 			}
-			LOGGER.logMessage(LogLevel.ERROR, "结果返回失败，原因：{}", method
+			LOGGER.logMessage(LogLevel.ERROR, "请求:eventId:{},serviceId:{},返回失败，原因：{}", method
 					.getStatusLine().toString());
 			throw new RuntimeException(method.getStatusLine().toString());
 		} catch (Exception e) {
@@ -107,14 +91,6 @@ public class MockServiceEventProcessorImpl extends AbstractEventProcessor
 			method.releaseConnection();
 		}
 
-	}
-
-	private Type getResultType(String serviceId) {
-		return manager.getMockService(serviceId).getResultType();
-	}
-
-	private String getResultName(String serviceId) {
-		return manager.getMockService(serviceId).getResultName();
 	}
 
 	private HttpVisitor getHttpVisitor() {
