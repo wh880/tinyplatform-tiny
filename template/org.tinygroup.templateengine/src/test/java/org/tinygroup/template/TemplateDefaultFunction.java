@@ -80,6 +80,14 @@ public class TemplateDefaultFunction {
         template =resourceLoader.createTemplate("${instance(10,\"java.lang.Integer\")}");
         engine.renderTemplate(template, context, System.out);
         System.out.println();
+        
+        template =resourceLoader.createTemplate("#set(m0={'name':'LeiLei','id':'4201'},m1={'sex':'male','id':'4444'})#set(m2=m0.extend(m1))${m2}");
+        engine.renderTemplate(template, context, System.out);
+        System.out.println();
+        
+        template =resourceLoader.createTemplate("#set(m0={'name':'LeiLei','id':'4201'},m1={'sex':'male','id':'4444'})#set(m2=m0.extend(m1,true))${m2}");
+        engine.renderTemplate(template, context, System.out);
+        System.out.println();
 	}
 	
 }
