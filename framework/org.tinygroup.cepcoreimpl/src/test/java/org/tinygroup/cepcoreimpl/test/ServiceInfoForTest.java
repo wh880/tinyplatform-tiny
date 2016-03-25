@@ -15,13 +15,14 @@
  */
 package org.tinygroup.cepcoreimpl.test;
 
+import org.tinygroup.event.AbstractServiceInfo;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceInfoForTest implements ServiceInfo{
+public class ServiceInfoForTest extends AbstractServiceInfo{
 	
 	/**
 	 * 
@@ -31,9 +32,6 @@ public class ServiceInfoForTest implements ServiceInfo{
 	private List<Parameter> in =new ArrayList<Parameter>(); 
 	private List<Parameter> out =new ArrayList<Parameter>(); 
 	
-	public int compareTo(ServiceInfo o) {
-		return 0;
-	}
 
 	public String getServiceId() {
 		return serviceId;

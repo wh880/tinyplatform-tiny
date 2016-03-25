@@ -15,16 +15,16 @@
  */
 package org.tinygroup.flowprocessor;
 
-import org.tinygroup.event.Parameter;
-import org.tinygroup.event.ServiceInfo;
-import org.tinygroup.flow.config.Flow;
-
 import java.util.List;
+
+import org.tinygroup.event.AbstractServiceInfo;
+import org.tinygroup.event.Parameter;
+import org.tinygroup.flow.config.Flow;
 
 /**
  * Created by luoguo on 14-4-9.
  */
-public class FlowServiceInfo implements ServiceInfo {
+public class FlowServiceInfo extends AbstractServiceInfo  {
 	private static final long serialVersionUID = -7451038800051026910L;
 	private String serviceId;
 	private List<Parameter> parameters;
@@ -48,10 +48,6 @@ public class FlowServiceInfo implements ServiceInfo {
 
 	public List<Parameter> getResults() {
 		return results;
-	}
-
-	public int compareTo(ServiceInfo o) {
-		return o.getServiceId().compareTo(serviceId);
 	}
 
 	public String getCategory() {

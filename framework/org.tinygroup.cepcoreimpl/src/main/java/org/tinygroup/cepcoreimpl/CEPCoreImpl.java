@@ -97,7 +97,8 @@ public class CEPCoreImpl implements CEPCore {
 	private CEPCoreOperator operator;
 	private EventProcessorChoose chooser;
 	private List<EventProcessorRegisterTrigger> triggers = new ArrayList<EventProcessorRegisterTrigger>();
-//	private byte[]  lock = new byte[0];
+
+	// private byte[] lock = new byte[0];
 	public CEPCoreOperator getOperator() {
 		return operator;
 	}
@@ -131,11 +132,9 @@ public class CEPCoreImpl implements CEPCore {
 		eventProcessorServices.put(eventProcessor.getId(), serviceList);
 		if (serviceList != null && !serviceList.isEmpty()) {
 			if (EventProcessor.TYPE_REMOTE != eventProcessor.getType()) {
-				addLocalServiceInfo(serviceList);
+				addLocalServiceInfo(serviceList, eventProcessor);
 			} else {
-				for (ServiceInfo service : serviceList) {
-					remoteServiceMap.put(service.getServiceId(), service);
-				}
+				addRemoteServiceInfo(serviceList, eventProcessor);
 			}
 			addServiceInfos(eventProcessor, serviceList);
 		}
@@ -143,10 +142,44 @@ public class CEPCoreImpl implements CEPCore {
 		addRegex(eventProcessor);
 	}
 
-	private void addLocalServiceInfo(List<ServiceInfo> serviceList) {
+	private void addRemoteServiceInfo(List<ServiceInfo> serviceList,
+			EventProcessor eventProcessor) {
 		for (ServiceInfo service : serviceList) {
-			if (!localServiceMap.containsKey(service.getServiceId())) {
-				localServiceMap.put(service.getServiceId(), service);
+			String serviceId = service.getServiceId();
+			if (remoteServiceMap.containsKey(serviceId)) {
+				ServiceInfo oldService = localServiceMap.get(serviceId);
+				if (oldService.compareTo(service) != 0) {
+					LOGGER.logMessage(LogLevel.ERROR, "RemoteService发生id重复");
+					logConflictServiceInfo(serviceId, eventProcessor);
+				}
+			} else {
+				remoteServiceMap.put(serviceId, service);
+			}
+
+		}
+	}
+
+	private void logConflictServiceInfo(String serviceId,EventProcessor eventProcessor){
+		LOGGER.logMessage(LogLevel.ERROR,"冲突serviceId:{},当前来源:{}" ,serviceId,eventProcessor.getId());
+		List<EventProcessor> list = serviceIdMap.get(serviceId);
+		if(list==null){return;}
+		for(EventProcessor e:list){
+			LOGGER.logMessage(LogLevel.ERROR,"已有来源:{}" ,e.getId());
+		}
+	}
+
+	private void addLocalServiceInfo(List<ServiceInfo> serviceList,
+			EventProcessor eventProcessor) {
+		for (ServiceInfo service : serviceList) {
+			String serviceId = service.getServiceId();
+			if (localServiceMap.containsKey(serviceId)) {
+				ServiceInfo oldService = localServiceMap.get(serviceId);
+				if (oldService.compareTo(service) != 0) {
+					LOGGER.logMessage(LogLevel.ERROR, "LocalService发生id重复");
+					logConflictServiceInfo(serviceId, eventProcessor);
+				}
+			} else {
+				localServiceMap.put(serviceId, service);
 				localServices.add(service);
 			}
 		}
@@ -352,7 +385,7 @@ public class CEPCoreImpl implements CEPCore {
 		String serviceId = serviceRequest.getServiceId();
 		for (EventProcessor p : processorList) {
 			List<String> regex = regexMap.get(p);
-			if (p.isEnable()&&checkRegex(regex, serviceId)) {
+			if (p.isEnable() && checkRegex(regex, serviceId)) {
 				return p;
 			}
 		}
@@ -376,15 +409,16 @@ public class CEPCoreImpl implements CEPCore {
 		// 查找出所有包含该服务的EventProcessor
 		List<EventProcessor> allList = serviceIdMap.get(serviceRequest
 				.getServiceId());
-		if(allList==null){ //如果取出来是空，先初始化便于处理
+		if (allList == null) { // 如果取出来是空，先初始化便于处理
 			allList = new ArrayList<EventProcessor>();
 		}
 		List<EventProcessor> list = new ArrayList<EventProcessor>();
-		for(EventProcessor e:allList){
-			if(e.isEnable()){
+		for (EventProcessor e : allList) {
+			if (e.isEnable()) {
 				list.add(e);
-			}else{
-				LOGGER.logMessage(LogLevel.WARN, "EventProcessor:{} enable为false",e.getId());
+			} else {
+				LOGGER.logMessage(LogLevel.WARN,
+						"EventProcessor:{} enable为false", e.getId());
 			}
 		}
 		// 如果指定了执行节点名，则根据执行节点查找处理器
@@ -435,8 +469,9 @@ public class CEPCoreImpl implements CEPCore {
 		for (String key : processorMap.keySet()) {
 			if (Node.checkEquals(key, eventNodeName)) {
 				EventProcessor e = processorMap.get(key);
-				if(!e.isEnable()){
-					LOGGER.logMessage(LogLevel.WARN, "EventProcessor:{} enable为false",e.getId());
+				if (!e.isEnable()) {
+					LOGGER.logMessage(LogLevel.WARN,
+							"EventProcessor:{} enable为false", e.getId());
 					continue;
 				}
 				// 如果包含该服务的EventProcessor列表中存在该处理器，则返回
@@ -593,36 +628,42 @@ public class CEPCoreImpl implements CEPCore {
 
 	private void parseAsynPool(XmlNode appConfig) {
 		String configBean = ThreadPoolConfig.DEFAULT_THREADPOOL;
-		if(appConfig==null){
-			LOGGER.logMessage(LogLevel.WARN, "未配置异步服务线程池config bean,使用默认配置bean:{}",ThreadPoolConfig.DEFAULT_THREADPOOL);
-		}else if (appConfig.getSubNode(ASYN_TAG) == null) {
-			LOGGER.logMessage(LogLevel.WARN, "未配置异步服务线程池节点：{}" , ASYN_TAG);
-		}else{
-			configBean = appConfig.getSubNode(ASYN_TAG)
-					.getAttribute(ASYN_POOL_ATTRIBUTE);
+		if (appConfig == null) {
+			LOGGER.logMessage(LogLevel.WARN,
+					"未配置异步服务线程池config bean,使用默认配置bean:{}",
+					ThreadPoolConfig.DEFAULT_THREADPOOL);
+		} else if (appConfig.getSubNode(ASYN_TAG) == null) {
+			LOGGER.logMessage(LogLevel.WARN, "未配置异步服务线程池节点：{}", ASYN_TAG);
+		} else {
+			configBean = appConfig.getSubNode(ASYN_TAG).getAttribute(
+					ASYN_POOL_ATTRIBUTE);
 		}
 		if (StringUtil.isBlank(configBean)) {
 			configBean = ThreadPoolConfig.DEFAULT_THREADPOOL;
-			LOGGER.logMessage(LogLevel.WARN, "未配置异步服务线程池config bean,使用默认配置bean:{}",ThreadPoolConfig.DEFAULT_THREADPOOL);
+			LOGGER.logMessage(LogLevel.WARN,
+					"未配置异步服务线程池config bean,使用默认配置bean:{}",
+					ThreadPoolConfig.DEFAULT_THREADPOOL);
 		}
 		initThreadPool(configBean);
 	}
 
-	private  synchronized void initThreadPool(String configBean) {
-		
-			if(executor!=null){
-				return;
-			}
-			ThreadPoolConfig poolConfig = BeanContainerFactory.getBeanContainer(
-					this.getClass().getClassLoader()).getBean(configBean);
-			executor = ThreadPoolFactory.getThreadPoolExecutor(poolConfig);
+	private synchronized void initThreadPool(String configBean) {
+
+		if (executor != null) {
+			return;
+		}
+		ThreadPoolConfig poolConfig = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(configBean);
+		executor = ThreadPoolFactory.getThreadPoolExecutor(poolConfig);
 	}
-	
-	private ExecutorService getExecutorService(){
-		if(executor==null){
-			LOGGER.logMessage(LogLevel.WARN, "未配置异步服务线程池config bean,使用默认配置bean:{}",ThreadPoolConfig.DEFAULT_THREADPOOL);
+
+	private ExecutorService getExecutorService() {
+		if (executor == null) {
+			LOGGER.logMessage(LogLevel.WARN,
+					"未配置异步服务线程池config bean,使用默认配置bean:{}",
+					ThreadPoolConfig.DEFAULT_THREADPOOL);
 			initThreadPool(ThreadPoolConfig.DEFAULT_THREADPOOL);
-			
+
 		}
 		return executor;
 	}

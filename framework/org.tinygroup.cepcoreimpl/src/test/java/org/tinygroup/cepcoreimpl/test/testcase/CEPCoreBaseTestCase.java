@@ -29,6 +29,7 @@ import org.tinygroup.cepcoreimpl.test.ServiceInfoForTest;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.event.Event;
+import org.tinygroup.event.Parameter;
 import org.tinygroup.tinyrunner.Runner;
 
 public abstract class CEPCoreBaseTestCase extends TestCase {
@@ -51,6 +52,12 @@ public abstract class CEPCoreBaseTestCase extends TestCase {
 		sifft.setServiceId(serviceId);
 		return sifft;
 	}
+	protected ServiceInfoForTest initServiceInfo2(String serviceId) {
+		ServiceInfoForTest sifft = new ServiceInfoForTest();
+		sifft.setServiceId(serviceId);
+		sifft.getParameters().add(new Parameter());
+		return sifft;
+	}
 
 	public void setUp() {
 		Runner.init("application.xml", new ArrayList<String>());
@@ -59,12 +66,14 @@ public abstract class CEPCoreBaseTestCase extends TestCase {
 				.getBean(CEPCore.CEP_CORE_BEAN);
 		EventProcessor eventProcessor = new AsynchronousEventProcessorForTest();
 		eventProcessor.getServiceInfos().add(initServiceInfo(SERVICE_ID));
+		eventProcessor.getServiceInfos().add(initServiceInfo2("conflictService"));
 		getCore().registerEventProcessor(eventProcessor);
 		
 		EventProcessor eventProcessor2 = new EventProcessorForTest();
 		eventProcessor2.getServiceInfos().add(initServiceInfo("a"));
 		eventProcessor2.getServiceInfos().add(initServiceInfo("b"));
 		eventProcessor2.getServiceInfos().add(initServiceInfo("exception"));
+		eventProcessor2.getServiceInfos().add(initServiceInfo("conflictService"));
 		getCore().registerEventProcessor(eventProcessor2);
 		
 	}

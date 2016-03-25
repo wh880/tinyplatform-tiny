@@ -15,8 +15,8 @@
  */
 package org.tinygroup.service.registry;
 
+import org.tinygroup.event.AbstractServiceInfo;
 import org.tinygroup.event.Parameter;
-import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.service.Service;
 
 import java.util.ArrayList;
@@ -28,8 +28,8 @@ import java.util.List;
  * @author luoguo
  * 
  */
-public class ServiceRegistryItem implements ServiceInfo {
-	
+public class ServiceRegistryItem extends AbstractServiceInfo {
+
 	private static final long serialVersionUID = -6526088933543577083L;
 	/**
 	 * 服务本地名称，仅用于显示
@@ -57,8 +57,7 @@ public class ServiceRegistryItem implements ServiceInfo {
 	private List<Parameter> results;
 
 	private String category;
-	
-	
+
 	public void setCategory(String category) {
 		this.category = category;
 	}
@@ -72,7 +71,7 @@ public class ServiceRegistryItem implements ServiceInfo {
 	}
 
 	public List<Parameter> getParameters() {
-		if(parameters==null){
+		if (parameters == null) {
 			parameters = new ArrayList<Parameter>();
 		}
 		return parameters;
@@ -83,7 +82,7 @@ public class ServiceRegistryItem implements ServiceInfo {
 	}
 
 	public List<Parameter> getResults() {
-		if(results==null){
+		if (results == null) {
 			results = new ArrayList<Parameter>();
 		}
 		return results;
@@ -93,8 +92,6 @@ public class ServiceRegistryItem implements ServiceInfo {
 		this.results = results;
 	}
 
-
-
 	public String getServiceId() {
 		return serviceId;
 	}
@@ -102,7 +99,6 @@ public class ServiceRegistryItem implements ServiceInfo {
 	public void setServiceId(String serviceId) {
 		this.serviceId = serviceId;
 	}
-
 
 	public String getDescription() {
 		return description;
@@ -120,13 +116,10 @@ public class ServiceRegistryItem implements ServiceInfo {
 		this.service = service;
 	}
 
-	public int compareTo(ServiceInfo o) {
-		return o.getServiceId().compareTo(serviceId);
-	}
+	
 
 	public String getCategory() {
 		return category;
 	}
 
-	
 }
