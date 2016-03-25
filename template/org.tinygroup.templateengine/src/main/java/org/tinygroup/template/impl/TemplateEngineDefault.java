@@ -248,6 +248,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         addTemplateFunction(new TodayFunction());
         addTemplateFunction(new ParseTemplateFunction());
         addTemplateFunction(new I18nFunction());
+        addTemplateFunction(new ExtendMapFunction());
     }
 
     public TemplateContext getTemplateContext() {
