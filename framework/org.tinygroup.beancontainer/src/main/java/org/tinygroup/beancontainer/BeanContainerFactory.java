@@ -15,8 +15,6 @@
  */
 package org.tinygroup.beancontainer;
 
-import javax.management.RuntimeErrorException;
-
 import org.tinygroup.exception.TinyBizRuntimeException;
 import org.tinygroup.exception.errorcode.ErrorCodeDefault;
 
@@ -72,5 +70,9 @@ public class BeanContainerFactory {
 	public static void removeBeanContainer(ClassLoader loader) {
 		container.removeSubBeanContainer(loader);
 
+	}
+
+	public static void destroy(){
+		container = null;
 	}
 }
