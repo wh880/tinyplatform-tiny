@@ -76,11 +76,16 @@ public class ApplicationStartupListener implements ServletContextListener {
 		// SpringBeanContainer.destory();// 关闭spring容器
 		logger.logMessage(LogLevel.INFO, "WEB 应用停止完成。");
 		destroyContextListener(servletContextEvent);
+		logger.logMessage(LogLevel.INFO, "关闭spring容器开始");
 		ExtendsSpringBeanContainer container=(ExtendsSpringBeanContainer) BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
 		ApplicationContext application=container.getBeanContainerPrototype();
 		if(application instanceof ConfigurableApplicationContext){
 			((ConfigurableApplicationContext) application).close();
 		}
+		logger.logMessage(LogLevel.INFO, "关闭spring容器结束");
+		FileResolverFactory.destroyFileResolver();//关闭容器的时候设置扫描spring配置文件的扫码器实例为null
+		BeanContainerFactory.destroy();
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -230,8 +235,6 @@ public class ApplicationStartupListener implements ServletContextListener {
 		FileResolver fileResolver = FileResolverFactory.getFileResolver();
 		FileResolverUtil.addClassPathPattern(fileResolver);
 		loadFileResolverConfig(fileResolver, applicationConfig);
-		fileResolver
-				.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
 		fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
 		try {
 			fileResolver.addResolvePath(FileResolverUtil

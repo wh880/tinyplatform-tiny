@@ -18,13 +18,20 @@ package org.tinygroup.fileresolver;
 import org.tinygroup.fileresolver.impl.FileResolverImpl;
 
 public final class FileResolverFactory {
-	private static FileResolver fileResolver = new FileResolverImpl();
+	private static FileResolver fileResolver;
 
 	private FileResolverFactory() {
 	}
 
 	public static FileResolver getFileResolver() {
+		if(fileResolver==null){
+			fileResolver=new FileResolverImpl();
+		}
 		return fileResolver;
+	}
+	
+	public static void destroyFileResolver(){
+		fileResolver=null;
 	}
 
 }
