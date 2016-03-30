@@ -16,6 +16,7 @@
 package org.tinygroup.fileresolver.impl;
 
 import org.tinygroup.commons.order.OrderUtil;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.*;
@@ -348,6 +349,13 @@ public class FileResolverImpl implements FileResolver {
 	}
 
 	private void initConfig() {
+		
+		String resolveClassPath = ConfigurationUtil.getPropertyName(
+				applicationConfig, componentConfig, "resolve-classpath");
+		if(StringUtil.isBlank(resolveClassPath)||"true".equals(resolveClassPath)){
+			addResolvePath(FileResolverUtil.getClassPath(this));
+		}
+		
 		String threadCount = ConfigurationUtil.getPropertyName(
 				applicationConfig, componentConfig, "thread-count");
 		this.setFileProcessorThreadNumber(getThreadNumber(threadCount));

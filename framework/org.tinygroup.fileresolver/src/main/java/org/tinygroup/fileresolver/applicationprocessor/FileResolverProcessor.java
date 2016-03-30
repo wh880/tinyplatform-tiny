@@ -59,7 +59,6 @@ public class FileResolverProcessor implements ApplicationProcessor {
 	}
 
 	public void start() {
-		fileResolver.addResolvePath(FileResolverUtil.getClassPath(fileResolver));
 		fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
 		try {
 			fileResolver.addResolvePath(FileResolverUtil.getWebLibJars(fileResolver));
