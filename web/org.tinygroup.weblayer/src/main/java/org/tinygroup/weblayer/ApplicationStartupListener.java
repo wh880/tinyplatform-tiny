@@ -74,7 +74,6 @@ public class ApplicationStartupListener implements ServletContextListener {
 		logger.logMessage(LogLevel.INFO, "WEB 应用停止中...");
 		application.stop();
 		// SpringBeanContainer.destory();// 关闭spring容器
-		logger.logMessage(LogLevel.INFO, "WEB 应用停止完成。");
 		destroyContextListener(servletContextEvent);
 		logger.logMessage(LogLevel.INFO, "关闭spring容器开始");
 		ExtendsSpringBeanContainer container=(ExtendsSpringBeanContainer) BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader());
@@ -85,6 +84,7 @@ public class ApplicationStartupListener implements ServletContextListener {
 		logger.logMessage(LogLevel.INFO, "关闭spring容器结束");
 		FileResolverFactory.destroyFileResolver();//关闭容器的时候设置扫描spring配置文件的扫码器实例为null
 		BeanContainerFactory.destroy();
+		logger.logMessage(LogLevel.INFO, "WEB 应用停止完成。");
 		
 	}
 
@@ -236,9 +236,11 @@ public class ApplicationStartupListener implements ServletContextListener {
 		FileResolverUtil.addClassPathPattern(fileResolver);
 		loadFileResolverConfig(fileResolver, applicationConfig);
 		fileResolver.addResolvePath(FileResolverUtil.getWebClasses());
+		logger.logMessage(LogLevel.INFO,"getWebClasses"+FileResolverUtil.getWebClasses());
 		try {
 			fileResolver.addResolvePath(FileResolverUtil
 					.getWebLibJars(fileResolver));
+			logger.logMessage(LogLevel.INFO,"getWebLibJars"+FileResolverUtil.getWebLibJars(fileResolver));
 		} catch (Exception e) {
 			logger.errorMessage("为文件扫描器添加webLibJars时出现异常", e);
 		}
