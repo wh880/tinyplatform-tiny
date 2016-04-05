@@ -24,5 +24,9 @@
 	<bean id="localVariableTableParameterNameDiscoverer" scope="singleton"
 		class="org.springframework.core.LocalVariableTableParameterNameDiscoverer">
 	</bean>
+	
+	<bean id="annotationParameterNameDiscoverer" scope="singleton"
+		class="org.tinygroup.springutil.AnnotationParameterNameDiscoverer">
+	</bean>
 
 </beans>
