@@ -1,13 +1,11 @@
 package org.tinygroup.aopcache.testcase;
 
 import junit.framework.TestCase;
-import org.tinygroup.aopcache.AnnotationUserDao;
 import org.tinygroup.aopcache.User;
 import org.tinygroup.aopcache.XmlUserDao;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.tinyrunner.Runner;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
