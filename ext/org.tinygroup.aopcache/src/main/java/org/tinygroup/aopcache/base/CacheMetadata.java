@@ -19,6 +19,8 @@ public class CacheMetadata {
 
     private String group;
 
+    private boolean merge;
+
     public String getKeys() {
         return keys;
     }
@@ -67,4 +69,11 @@ public class CacheMetadata {
         this.removeGroups = removeGroups;
     }
 
+    public void setMerge(boolean merge) {
+        this.merge = merge;
+    }
+
+    public boolean isMerge() {
+        return merge;
+    }
 }

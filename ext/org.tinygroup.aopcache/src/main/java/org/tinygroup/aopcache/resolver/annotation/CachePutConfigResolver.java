@@ -26,6 +26,7 @@ public class CachePutConfigResolver extends AbstractAnnotationConfigResolver {
         cachePutAction.setKeys(StringUtil.join(cachePut.keys(), SPLIT_KEY));
         cachePutAction.setGroup(cachePut.group());
         cachePutAction.setExpire(cachePut.expire());
+        cachePutAction.setMerge(cachePut.merge());
         cachePutAction.setParameterNames(StringUtil.join(cachePut.parameterNames(), SPLIT_KEY));
         cachePutAction.setRemoveKeys(StringUtil.join(cachePut.removeKeys(), SPLIT_KEY));
         cachePutAction.setRemoveGroups(StringUtil.join(cachePut.removeGroups(), SPLIT_KEY));

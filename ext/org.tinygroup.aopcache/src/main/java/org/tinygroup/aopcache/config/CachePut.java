@@ -22,6 +22,8 @@ public class CachePut extends CacheAction {
     private String removeKeys;
     @XStreamAsAttribute
     private long expire;
+    @XStreamAsAttribute
+    private boolean merge=false;
 
     @XStreamAlias("remove-groups")
     @XStreamAsAttribute
@@ -40,6 +42,7 @@ public class CachePut extends CacheAction {
         metadata.setRemoveKeys(removeKeys);
         metadata.setRemoveGroups(removeGroups);
         metadata.setExpire(expire);
+        metadata.setMerge(merge);
         return metadata;
     }
 
@@ -83,5 +86,11 @@ public class CachePut extends CacheAction {
         this.removeGroups = removeGroups;
     }
 
+    public void setMerge(boolean merge) {
+        this.merge = merge;
+    }
 
+    public boolean isMerge() {
+        return merge;
+    }
 }

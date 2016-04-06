@@ -1,13 +1,17 @@
 package org.tinygroup.aopcache.processor;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.beans.BeanWrapper;
 import org.tinygroup.aopcache.base.CacheMetadata;
 import org.tinygroup.aopcache.base.TemplateRender;
 import org.tinygroup.aopcache.exception.AopCacheException;
 import org.tinygroup.aopcache.util.TemplateUtil;
+import org.tinygroup.beanwrapper.BeanWrapperHolder;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.template.TemplateContext;
+
+import java.beans.PropertyDescriptor;
 
 /**
  * aop缓存存放操作
@@ -57,7 +61,27 @@ public class AopCachePutProcessor extends AbstractAopCacheProcessor {
                     //从上下文迭代取出参数对应参数值作为value
                     Object value = templateRender.getParamValue(templateContext, namesArray[i]);
                     if (value != null) {
-                        getAopCache().put(group, keyArray[i], value);
+                        //标记为合并
+                        if(metadata.isMerge()){
+                            Object cacheValue = getAopCache().get(group,keyArray[i]);
+                            BeanWrapper valueWrapper = BeanWrapperHolder.getInstance()
+                                    .getBeanWrapper(value);
+                            BeanWrapper cacheValueWrapper = BeanWrapperHolder.getInstance()
+                                    .getBeanWrapper(cacheValue);
+                            PropertyDescriptor[] cachePropertyDescriptors = cacheValueWrapper.getPropertyDescriptors();
+                            for(PropertyDescriptor cachepd : cachePropertyDescriptors){
+                                if(cacheValueWrapper.isWritableProperty(cachepd.getName())){
+                                    Object updateobj = valueWrapper
+                                            .getPropertyValue(cachepd.getName());
+                                    if(updateobj!=null){
+                                        cacheValueWrapper.setPropertyValue(cachepd.getName(),updateobj);
+                                    }
+                                }
+                            }
+                            getAopCache().put(group, keyArray[i], cacheValue);//放入合并后的值
+                        }else {
+                            getAopCache().put(group, keyArray[i], value);
+                        }
                     }
                 }
             }

@@ -7,15 +7,16 @@ import org.tinygroup.aopcache.XmlUserDao;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.tinyrunner.Runner;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class AopCacheTest extends TestCase {
-
+/**
+ * Created by wangwy11342 on 2016/4/5.
+ */
+public class AnnotationAopCacheTest  extends TestCase {
     private static final String FIRST_GROUP = "singleGroup";
     private static final String SECOND_GROUP = "multiGroup";
     private static boolean initialized;//是否已初始化
@@ -32,10 +33,10 @@ public class AopCacheTest extends TestCase {
         cache.clear();
     }
 
-    public void testAopCacheWithXml() {
-        long startTime = System.currentTimeMillis();
-        XmlUserDao userDao = BeanContainerFactory.getBeanContainer(
-                getClass().getClassLoader()).getBean("xmlUserDao");
+    public void testAopCacheWithAnnotation() {
+        long startTime = System.currentTimeMillis(); //获取开始时间
+        AnnotationUserDao userDao = BeanContainerFactory.getBeanContainer(
+                getClass().getClassLoader()).getBean("annotationUserDao");
         //获取cache用于测试
         Cache cache = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean("aopCache");
         cache.clear();
@@ -54,8 +55,9 @@ public class AopCacheTest extends TestCase {
 
         userDao.insertUser(user1);
         assertEquals(cache.get(FIRST_GROUP, "1"), user1);
-        userDao.insertUser(user2);
+        userDao.insertUserTwoCache(user2);
         assertEquals(cache.get(FIRST_GROUP, "2"), user2);
+        assertEquals(cache.get(FIRST_GROUP, "xuanxuan"), user2);
         userDao.insertUser(user3);
         assertEquals(cache.get(FIRST_GROUP, "3"), user3);
         userDao.insertUserNoParam(user4);
@@ -116,11 +118,11 @@ public class AopCacheTest extends TestCase {
 
         userDao.insertUser(cuser1);
         assertEquals(cache.get(FIRST_GROUP, "10"), cuser1);
-        /*cusers.add(cuser1);
-		User cuser = userDao.getUser(cusers);
-		assertEquals(20, cuser.getAge());//从数据库获取
-		cuser = userDao.getUser(cusers);
-		assertEquals(20, cuser.getAge());*/
+        cusers.add(cuser1);
+        User cuser = userDao.getUser(cusers);
+        assertEquals(20, cuser.getAge());//从数据库获取
+        cuser = userDao.getUser(cusers);
+        assertEquals(20, cuser.getAge());
 
         long endTime = System.currentTimeMillis(); //获取结束时间
         System.out.println("run time： " + (endTime - startTime) + "ms");
@@ -131,8 +133,8 @@ public class AopCacheTest extends TestCase {
      */
     public void testUpdateMerge(){
         long startTime = System.currentTimeMillis();
-        XmlUserDao userDao = BeanContainerFactory.getBeanContainer(
-                getClass().getClassLoader()).getBean("xmlUserDao");
+        AnnotationUserDao userDao = BeanContainerFactory.getBeanContainer(
+                getClass().getClassLoader()).getBean("annotationUserDao");
         //获取cache用于测试
         Cache cache = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean("aopCache");
         //清空缓存
@@ -160,8 +162,8 @@ public class AopCacheTest extends TestCase {
      */
     public void testUpdate(){
         long startTime = System.currentTimeMillis();
-        XmlUserDao userDao = BeanContainerFactory.getBeanContainer(
-                getClass().getClassLoader()).getBean("xmlUserDao");
+        AnnotationUserDao userDao = BeanContainerFactory.getBeanContainer(
+                getClass().getClassLoader()).getBean("annotationUserDao");
         //获取cache用于测试
         Cache cache = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean("aopCache");
         //清空缓存

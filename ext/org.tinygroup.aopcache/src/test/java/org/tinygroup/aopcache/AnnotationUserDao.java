@@ -38,6 +38,11 @@ public class AnnotationUserDao {
         System.out.println("update user");
     }
 
+    @CachePut(keys = "${user.id}",merge=true, parameterNames = "user", group = "singleGroup", removeKeys = "users", removeGroups = "multiGroup")
+    public void updateUserMerge(User user) {
+		System.out.println("update user merge");
+    }
+
     @CachePut(keys = "${user.id}", parameterNames = "user", group = "singleGroup", removeKeys = "users", removeGroups = "multiGroup")
     public void insertUser(User user) {
         System.out.println("insert user");

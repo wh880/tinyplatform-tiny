@@ -36,6 +36,11 @@ public class XmlUserDao {
         testDbOperatorLog += "update user;";
     }
 
+    public void updateUserMerge(User user) {
+//		System.out.println("update user merge");
+        testDbOperatorLog += "update user;";
+    }
+
     public void insertUser(User user) {
 //		System.out.println("insert user");
         testDbOperatorLog += "insert user;";

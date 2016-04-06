@@ -22,6 +22,20 @@
                            remove-keys="users" remove-groups="multiGroup"></cache-put>
             </cache-actions>
         </method-config>
+        <method-config method-name="updateUser">
+            <parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
+            <cache-actions>
+                <cache-put keys="${user.id}" parameter-names="user" group="singleGroup"
+                           remove-keys="users" remove-groups="multiGroup"></cache-put>
+            </cache-actions>
+        </method-config>
+        <method-config method-name="updateUserMerge">
+            <parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
+            <cache-actions>
+                <cache-put keys="${user.id}" parameter-names="user" merge="true" group="singleGroup"
+                           remove-keys="users" remove-groups="multiGroup"></cache-put>
+            </cache-actions>
+        </method-config>
         <method-config method-name="deleteUser">
             <parameter-type type="int"></parameter-type>
             <cache-actions>
