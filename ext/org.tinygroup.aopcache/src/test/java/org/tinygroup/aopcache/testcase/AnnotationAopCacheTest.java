@@ -42,7 +42,6 @@ public class AnnotationAopCacheTest  extends TestCase {
         long startTime = System.currentTimeMillis(); //获取开始时间
 
         User user = userDao.getUser(1);
-        System.out.println("userid=========="+user.getId());
         assertNull(user);
         User user1 = new User(1, "flank", 10, null);
         User user2 = new User(2, "xuanxuan", 11, null);
