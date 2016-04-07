@@ -40,6 +40,7 @@ public class AnnotationAopCacheTest  extends TestCase {
 
     public void testAopCacheWithAnnotation() {
         long startTime = System.currentTimeMillis(); //获取开始时间
+        userDao.container.clear();
 
         User user = userDao.getUser(1);
         assertNull(user);
@@ -134,7 +135,8 @@ public class AnnotationAopCacheTest  extends TestCase {
      */
     public void testUpdateMerge(){
         long startTime = System.currentTimeMillis();
-
+        userDao.container.clear();
+        
         Date date = new Date();
         User user = new User(1, "zhangch", 18, date);
         userDao.insertUser(user);
