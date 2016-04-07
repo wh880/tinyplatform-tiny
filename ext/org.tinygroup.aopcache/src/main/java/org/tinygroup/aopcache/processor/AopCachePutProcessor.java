@@ -61,20 +61,26 @@ public class AopCachePutProcessor extends AbstractAopCacheProcessor {
                     //从上下文迭代取出参数对应参数值作为value
                     Object value = templateRender.getParamValue(templateContext, namesArray[i]);
                     if (value != null) {
-                        //标记为合并
-                        if(metadata.isMerge()){
-                            Object cacheValue = getAopCache().get(group,keyArray[i]);
+                        //原缓存数据
+                        Object cacheValue = getAopCache().get(group,keyArray[i]);
+                        //标记为合并且原有缓存和当前缓存同一类型
+                        if(metadata.isMerge()
+                                && cacheValue != null
+                                && cacheValue.getClass()==value.getClass()){
+
+                            //当前value的beanWrapper
                             BeanWrapper valueWrapper = BeanWrapperHolder.getInstance()
                                     .getBeanWrapper(value);
+                            //原缓存的beanWrapper
                             BeanWrapper cacheValueWrapper = BeanWrapperHolder.getInstance()
                                     .getBeanWrapper(cacheValue);
                             PropertyDescriptor[] cachePropertyDescriptors = cacheValueWrapper.getPropertyDescriptors();
                             for(PropertyDescriptor cachepd : cachePropertyDescriptors){
+                                //可以写入的属性
                                 if(cacheValueWrapper.isWritableProperty(cachepd.getName())){
-                                    Object updateobj = valueWrapper
-                                            .getPropertyValue(cachepd.getName());
-                                    if(updateobj!=null){
-                                        cacheValueWrapper.setPropertyValue(cachepd.getName(),updateobj);
+                                    Object currentObj = valueWrapper.getPropertyValue(cachepd.getName());
+                                    if(currentObj!=null){
+                                        cacheValueWrapper.setPropertyValue(cachepd.getName(),currentObj);
                                     }
                                 }
                             }

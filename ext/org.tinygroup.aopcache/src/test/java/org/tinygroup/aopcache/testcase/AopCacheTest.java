@@ -1,6 +1,7 @@
 package org.tinygroup.aopcache.testcase;
 
 import junit.framework.TestCase;
+import org.tinygroup.aopcache.CounterfeitUser;
 import org.tinygroup.aopcache.User;
 import org.tinygroup.aopcache.XmlUserDao;
 import org.tinygroup.beancontainer.BeanContainerFactory;
@@ -166,5 +167,33 @@ public class AopCacheTest extends TestCase {
         assertEquals(cacheUser.getBirth(),null);
         assertEquals(cacheUser.getAge(),0);
         assertEquals(cacheUser.getId(),1);
+    }
+
+    /**
+     * 测试不同对象情况下不进行合并
+     */
+    public void testDifferentUpdateMerge(){
+        //插入user，第一次放入缓存User类型
+        Date date = new Date();
+        User user = new User(1, "zhangch", 18, date);
+        userDao.insertUser(user);
+
+        //第二次，同key放入CounterfeitUser对象
+        CounterfeitUser user2 = new CounterfeitUser();
+        user2.setId(1);
+        user2.setName("zhangch2");
+        cache.put(FIRST_GROUP,"1",user2);
+
+        //第三次更新user对象,类型不一致会完全覆盖原有对象
+        User user3 = new User(1, "zhangch3", 20, date);
+        userDao.updateUserMerge(user3);
+
+        User cacheUser = (User) cache.get(FIRST_GROUP, String.valueOf(user2.getId()));
+
+        assertEquals(cacheUser,user3);
+        assertEquals(cacheUser.getId(),1);
+        assertEquals(cacheUser.getName(),"zhangch3");
+        assertEquals(cacheUser.getAge(),20);
+        assertEquals(cacheUser.getBirth(),date);
     }
 }
