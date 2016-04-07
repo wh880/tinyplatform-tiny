@@ -30,7 +30,7 @@ import java.util.Map;
  *
  */
 public class AnnotationUserDao {
-    Map<Integer, User> container = new HashMap<Integer, User>();
+    public Map<Integer, User> container = new HashMap<Integer, User>();
 
 
     @CachePut(keys = "${user.id}", parameterNames = "user", group = "singleGroup", removeKeys = "users", removeGroups = "multiGroup")
@@ -77,6 +77,7 @@ public class AnnotationUserDao {
     @CacheGet(key = "${userId}", group = "singleGroup")
     public User getUser(int userId) {
         System.out.println("get user");
+        System.out.println("================================="+container.get(userId));
         return container.get(userId);
     }
 

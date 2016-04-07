@@ -19,6 +19,8 @@ public class AnnotationAopCacheTest  extends TestCase {
     private static final String FIRST_GROUP = "singleGroup";
     private static final String SECOND_GROUP = "multiGroup";
     private static boolean initialized;//是否已初始化
+    private Cache cache = null;
+    private AnnotationUserDao userDao =null;
 
     @Override
     protected void setUp() throws Exception {
@@ -26,20 +28,21 @@ public class AnnotationAopCacheTest  extends TestCase {
         if (!initialized) {
             Runner.init("application.xml",new ArrayList<String>());
             initialized = true;
+
         }
-        Cache cache = BeanContainerFactory.getBeanContainer(
+        cache = BeanContainerFactory.getBeanContainer(
                 getClass().getClassLoader()).getBean("aopCache");
         cache.clear();
+        userDao = BeanContainerFactory.getBeanContainer(
+                getClass().getClassLoader()).getBean("annotationUserDao");
+        if(userDao.container!=null) userDao.container.clear();
     }
 
     public void testAopCacheWithAnnotation() {
         long startTime = System.currentTimeMillis(); //获取开始时间
-        AnnotationUserDao userDao = BeanContainerFactory.getBeanContainer(
-                getClass().getClassLoader()).getBean("annotationUserDao");
-        //获取cache用于测试
-        Cache cache = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean("aopCache");
-        cache.clear();
+
         User user = userDao.getUser(1);
+        System.out.println("userid=========="+user.getId());
         assertNull(user);
         User user1 = new User(1, "flank", 10, null);
         User user2 = new User(2, "xuanxuan", 11, null);
@@ -132,12 +135,6 @@ public class AnnotationAopCacheTest  extends TestCase {
      */
     public void testUpdateMerge(){
         long startTime = System.currentTimeMillis();
-        AnnotationUserDao userDao = BeanContainerFactory.getBeanContainer(
-                getClass().getClassLoader()).getBean("annotationUserDao");
-        //获取cache用于测试
-        Cache cache = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean("aopCache");
-        //清空缓存
-        cache.clear();
 
         Date date = new Date();
         User user = new User(1, "zhangch", 18, date);
@@ -156,17 +153,13 @@ public class AnnotationAopCacheTest  extends TestCase {
         assertEquals(cacheUser.getId(),1);
     }
 
-    /**
+    /*
      * 测试merge为false时是否覆盖
      */
     public void testUpdate(){
         long startTime = System.currentTimeMillis();
         AnnotationUserDao userDao = BeanContainerFactory.getBeanContainer(
                 getClass().getClassLoader()).getBean("annotationUserDao");
-        //获取cache用于测试
-        Cache cache = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean("aopCache");
-        //清空缓存
-        cache.clear();
 
         Date date = new Date();
         User user = new User(1, "zhangch", 18, date);

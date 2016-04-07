@@ -17,26 +17,28 @@ public class AopCacheTest extends TestCase {
     private static final String FIRST_GROUP = "singleGroup";
     private static final String SECOND_GROUP = "multiGroup";
     private static boolean initialized;//是否已初始化
+    private Cache cache = null;
+    private XmlUserDao userDao = null;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         if (!initialized) {
             Runner.init("application.xml",new ArrayList<String>());
+
             initialized = true;
         }
-        Cache cache = BeanContainerFactory.getBeanContainer(
+        cache = BeanContainerFactory.getBeanContainer(
                 getClass().getClassLoader()).getBean("aopCache");
         cache.clear();
+        userDao = BeanContainerFactory.getBeanContainer(
+                getClass().getClassLoader()).getBean("xmlUserDao");
+        if(userDao.container!=null) userDao.container.clear();
     }
 
     public void testAopCacheWithXml() {
         long startTime = System.currentTimeMillis();
-        XmlUserDao userDao = BeanContainerFactory.getBeanContainer(
-                getClass().getClassLoader()).getBean("xmlUserDao");
-        //获取cache用于测试
-        Cache cache = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean("aopCache");
-        cache.clear();
+
         User user = userDao.getUser(1);
         assertNull(user);
         User user1 = new User(1, "flank", 10, null);
@@ -129,12 +131,6 @@ public class AopCacheTest extends TestCase {
      */
     public void testUpdateMerge(){
         long startTime = System.currentTimeMillis();
-        XmlUserDao userDao = BeanContainerFactory.getBeanContainer(
-                getClass().getClassLoader()).getBean("xmlUserDao");
-        //获取cache用于测试
-        Cache cache = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean("aopCache");
-        //清空缓存
-        cache.clear();
 
         Date date = new Date();
         User user = new User(1, "zhangch", 18, date);
@@ -153,17 +149,11 @@ public class AopCacheTest extends TestCase {
         assertEquals(cacheUser.getId(),1);
     }
 
-    /**
+    /*
      * 测试merge为false时是否覆盖
      */
     public void testUpdate(){
         long startTime = System.currentTimeMillis();
-        XmlUserDao userDao = BeanContainerFactory.getBeanContainer(
-                getClass().getClassLoader()).getBean("xmlUserDao");
-        //获取cache用于测试
-        Cache cache = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean("aopCache");
-        //清空缓存
-        cache.clear();
 
         Date date = new Date();
         User user = new User(1, "zhangch", 18, date);
