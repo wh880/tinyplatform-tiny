@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class XmlUserDao {
 
-    public Map<Integer, User> container = new HashMap<Integer, User>();
+    private Map<Integer, User> container = new HashMap<Integer, User>();
 
     private String testDbOperatorLog = "";//仅用于测试日志，记录从数据库获取的测试结果
 
@@ -87,6 +87,10 @@ public class XmlUserDao {
 
     public String getTestDbOperatorLog() {
         return testDbOperatorLog;
+    }
+
+    public void clearContainer(){
+        container.clear();
     }
 
 

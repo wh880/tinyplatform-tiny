@@ -7,10 +7,7 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.tinyrunner.Runner;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class AopCacheTest extends TestCase {
 
@@ -33,12 +30,11 @@ public class AopCacheTest extends TestCase {
         cache.clear();
         userDao = BeanContainerFactory.getBeanContainer(
                 getClass().getClassLoader()).getBean("xmlUserDao");
-        if(userDao.container!=null) userDao.container.clear();
+        userDao.clearContainer();
     }
 
     public void testAopCacheWithXml() {
         long startTime = System.currentTimeMillis();
-        userDao.container.clear();
         User user = userDao.getUser(1);
         assertNull(user);
         User user1 = new User(1, "flank", 10, null);
@@ -131,7 +127,6 @@ public class AopCacheTest extends TestCase {
      */
     public void testUpdateMerge(){
         long startTime = System.currentTimeMillis();
-        userDao.container.clear();
 
         Date date = new Date();
         User user = new User(1, "zhangch", 18, date);
@@ -155,7 +150,6 @@ public class AopCacheTest extends TestCase {
      */
     public void testUpdate(){
         long startTime = System.currentTimeMillis();
-        userDao.container.clear();
 
         Date date = new Date();
         User user = new User(1, "zhangch", 18, date);

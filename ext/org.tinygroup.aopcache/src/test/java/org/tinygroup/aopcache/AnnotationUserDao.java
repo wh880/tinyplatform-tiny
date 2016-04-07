@@ -107,4 +107,8 @@ public class AnnotationUserDao {
         return container.get(users.get(0).getId());
     }
 
+    public void clearContainer(){
+        container.clear();
+    }
+
 }

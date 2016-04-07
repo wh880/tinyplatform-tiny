@@ -7,10 +7,7 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.tinyrunner.Runner;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by wangwy11342 on 2016/4/5.
@@ -35,12 +32,11 @@ public class AnnotationAopCacheTest  extends TestCase {
         cache.clear();
         userDao = BeanContainerFactory.getBeanContainer(
                 getClass().getClassLoader()).getBean("annotationUserDao");
-        if(userDao.container!=null) userDao.container.clear();
+        userDao.clearContainer();
     }
 
     public void testAopCacheWithAnnotation() {
         long startTime = System.currentTimeMillis(); //获取开始时间
-        userDao.container.clear();
 
         User user = userDao.getUser(1);
         assertNull(user);
@@ -135,8 +131,7 @@ public class AnnotationAopCacheTest  extends TestCase {
      */
     public void testUpdateMerge(){
         long startTime = System.currentTimeMillis();
-        userDao.container.clear();
-        
+
         Date date = new Date();
         User user = new User(1, "zhangch", 18, date);
         userDao.insertUser(user);
@@ -178,4 +173,5 @@ public class AnnotationAopCacheTest  extends TestCase {
         assertEquals(cacheUser.getAge(),0);
         assertEquals(cacheUser.getId(),1);
     }
+
 }
