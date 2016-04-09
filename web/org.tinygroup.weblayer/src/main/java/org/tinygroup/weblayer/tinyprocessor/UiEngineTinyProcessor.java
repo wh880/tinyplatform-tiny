@@ -203,8 +203,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
 		private File storeFile;
 		
 		public TempFileStorage(String fileName){
-			String folder=System.getProperty("java.io.tmpdir");
-			storeFile = new File(folder+fileName);
+			storeFile = new File(fileName);
 		}
 
 		public synchronized boolean exist() {
