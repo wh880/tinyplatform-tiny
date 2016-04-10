@@ -56,7 +56,7 @@ import org.tinygroup.xmlparser.node.XmlNode;
 public class CEPCoreImpl implements CEPCore {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CEPCoreImpl.class);
-
+	
 	private static final String ASYN_TAG = "asyn-thread-pool-config";
 	private static final String ASYN_POOL_ATTRIBUTE = "bean";
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
@@ -407,14 +407,17 @@ public class CEPCoreImpl implements CEPCore {
 	private EventProcessor getEventProcessor(ServiceRequest serviceRequest,
 			String eventNodeName) {
 		// 查找出所有包含该服务的EventProcessor
-		List<EventProcessor> allList = serviceIdMap.get(serviceRequest
-				.getServiceId());
+		String serviceId = serviceRequest
+						.getServiceId();
+		List<EventProcessor> allList = serviceIdMap.get(serviceId);
 		if (allList == null) { // 如果取出来是空，先初始化便于处理
 			allList = new ArrayList<EventProcessor>();
 		}
 		List<EventProcessor> list = new ArrayList<EventProcessor>();
 		for (EventProcessor e : allList) {
-			if (e.isEnable()) {
+			if(CEPCoreUtil.isTinySysService(serviceId)){
+				list.add(e);
+			}else if (e.isEnable()) {
 				list.add(e);
 			} else {
 				LOGGER.logMessage(LogLevel.WARN,
@@ -469,7 +472,7 @@ public class CEPCoreImpl implements CEPCore {
 		for (String key : processorMap.keySet()) {
 			if (Node.checkEquals(key, eventNodeName)) {
 				EventProcessor e = processorMap.get(key);
-				if (!e.isEnable()) {
+				if (!e.isEnable()&&!CEPCoreUtil.isTinySysService(serviceId)) {
 					LOGGER.logMessage(LogLevel.WARN,
 							"EventProcessor:{} enable为false", e.getId());
 					continue;
