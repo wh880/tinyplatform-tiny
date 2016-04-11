@@ -31,7 +31,7 @@ public class IniOperatorDefault implements IniOperator {
     private Sections sections = null;
     private String commentChar = ";";
     private static final Pattern SECTION_PATTERN = Pattern.compile("([\\[])(.*)([\\]])");
-    private static final Pattern VALUE_PAIR_PATTERN = Pattern.compile("(.*)=((([^\\\\;](\\\\;)?)*))");
+    private static final Pattern VALUE_PAIR_PATTERN = Pattern.compile("(.*)=(.*)");
 
     public IniOperatorDefault() {
     }

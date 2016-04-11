@@ -65,4 +65,26 @@ public class IniOperatorDefaultFileTest extends TestCase {
 		String name2 = operator2.get("Section1", "name");
 		assertEquals("b", name2);
 	}
+
+	public void test3(){
+		String dir = System.getProperty("user.dir");
+		String file = dir + File.separator + "src" + File.separator + "test"
+				+ File.separator + "resources" + File.separator + "test3.ini";
+		IniOperator operator = new IniOperatorDefault();
+
+		try {
+			operator.read(new FileInputStream(new File(file)), "UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+			assertTrue(false);
+		}
+		String url = operator.get("Section2", "url");
+		assertEquals("http://192.168.253.130:8080/ICSU/;://192.168.253.130:8080/ICSU/;", url);
+		String url1 = operator.get("Section2", "url1");
+		assertEquals("http://192.168.253.130:8080/ICSU/;://192.168.253.130:8080/ICSU/;", url1);
+		String test = operator.get("Section2", "test");
+		assertEquals("aaa\\\"bbb", test);
+		String test1 = operator.get("Section2", "test");
+		assertEquals("aaa\\\"bbb", test1);
+	}
 }
