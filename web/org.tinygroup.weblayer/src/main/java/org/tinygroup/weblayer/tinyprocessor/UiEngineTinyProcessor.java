@@ -29,9 +29,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.cache.Cache;
-import org.tinygroup.cache.CacheManager;
 import org.tinygroup.commons.file.FileDealUtil;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.commons.tools.FileUtil;
@@ -58,8 +55,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
     private static final String CACHE_CONTROL = "max-age=315360000";
     private FullContextFileRepository fullContextFileRepository;
     
-    public static final String UI_RESOURCE_REGION= "uiRegion";
-    public static final String UI_RESOURCE_CACHE_MANAGER= "uiCacheManager";
+    public static final String UI_STORAGE_TYPE = "storageType";
     
     private JsResourceOperator jsResourceOperator;
     private CssResourceOperator cssResourceOperator;
@@ -150,22 +146,25 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
 
 	protected void customInit() throws ServletException {
 		
-		//初始化Cache
-		String regionParam = get(UI_RESOURCE_REGION);
-		String managerParam = get(UI_RESOURCE_CACHE_MANAGER);
+		//初始化存储类型
+		String storageType = get(UI_STORAGE_TYPE);
 		
 		jsResourceOperator = new JsResourceOperator();
 		cssResourceOperator = new CssResourceOperator();
 		
-		//如果两者任意为空
-		if(StringUtil.isEmpty(regionParam) || StringUtil.isEmpty(managerParam)){
+		if(StringUtil.isEmpty(storageType)){
 			jsResourceOperator.storage = new TempFileStorage("uiengine.uijs");
 			cssResourceOperator.storage =  new TempFileStorage("uiengine.uicss");
 		}else{
-			CacheManager cacheManager = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean(managerParam);
-			Cache cache = cacheManager.createCache(regionParam);
-			jsResourceOperator.storage = new CacheStorage(cache,"ui_js");
-			cssResourceOperator.storage =  new CacheStorage(cache,"ui_css");
+			if("file".equals(storageType)){
+				jsResourceOperator.storage = new TempFileStorage("uiengine.uijs");
+				cssResourceOperator.storage =  new TempFileStorage("uiengine.uicss");
+			}else if("memory".equals(storageType)){
+				jsResourceOperator.storage = new MemoryStorage();
+				cssResourceOperator.storage =  new MemoryStorage();
+			}else{
+				throw new RuntimeException(String.format("UiEngineTinyProcessor初始化失败:未知的存储类型[%s]，请检查配置文件", storageType));
+			}
 		}
 		
 	}
@@ -229,29 +228,24 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
 	}
 	
 	/**
-	 * 通过缓存存储，用户需要配置
+	 * 内存方式存储
 	 * @author yancheng11334
 	 *
 	 */
-	class CacheStorage implements ResourceStorage{
-        private Cache storeCache;
-        private String storeName;
-        
-        public CacheStorage(Cache cache,String name){
-        	this.storeCache = cache;
-        	this.storeName = name;
-        }
-        
+	class MemoryStorage implements ResourceStorage{
+
+		private String result=null;
+		
 		public boolean exist() {
-			return storeCache.get(storeName)==null;
+			return result!=null;
 		}
 
 		public String read() {
-			return (String) storeCache.get(storeName);
+			return result;
 		}
 
 		public void store(String resource) {
-			storeCache.put(storeName, resource);
+            result = resource;			
 		}
 		
 	}
