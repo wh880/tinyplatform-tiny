@@ -27,7 +27,7 @@ import org.tinygroup.event.central.Node;
 import org.tinygroup.exceptionhandler.ExceptionHandlerManager;
 
 public final class CEPCoreUtil {
-
+	private static final String TINY_SYS_SERVICE="tiny_sys_service_"; 
 	private CEPCoreUtil() {
 	}
 
@@ -36,10 +36,14 @@ public final class CEPCoreUtil {
 				.getBean(ExceptionHandlerManager.MANAGER_BEAN);
 		return manager.handle(e, event);
 	}
+	public static boolean isTinySysService(String serviceId){
+		return serviceId.startsWith(TINY_SYS_SERVICE);
+	}
+	public static boolean isTinySysService(Event event){
+		String serviceId = event.getServiceRequest().getServiceId();
+		return isTinySysService(serviceId);
+	}
 
-//	public static boolean isNull(String s) {
-//		return s == null || "".equals(s);
-//	}
 
 	public static String getNodeKey(Node node) {
 		String nodeName = node.getNodeName();
