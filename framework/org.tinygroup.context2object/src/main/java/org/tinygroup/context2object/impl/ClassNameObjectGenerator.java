@@ -445,9 +445,10 @@ public class ClassNameObjectGenerator extends BaseClassNameObjectGenerator imple
 			if (descriptor.getPropertyType().equals(Class.class)) {
 				continue;
 			}
-			if (size != -1) {
-				break;
-			}
+			//20160412注释此处代码，参见下面的注释
+//			if (size != -1) {
+//				break;
+//			}
 			// 201402025修改此处代码，修改propertyName获取逻辑
 			// String propertyName = getPropertyName(reallyType,
 			// descriptor.getName());
@@ -459,8 +460,12 @@ public class ClassNameObjectGenerator extends BaseClassNameObjectGenerator imple
 				valueMap.put(propertyName, propertyValue);
 				if (propertyValue.getClass().isArray()) {
 					// 如果是数组
+					//20160412修改此处代码
+					//如果 数组长度小于之前算到的长度，而且之前的长度不是-1，则设置小长度为新长度
+					//如果数组长度大于之前的长度，切之前长度为-1，则设置大长度为新长度
+					//用于应对，一个对象数组List<User>，User.name={长度为3},user.age={长度为4}，则认为user长度为3
 					Object[] objArray = (Object[]) propertyValue;
-					if (objArray.length > size) {
+					if ( (objArray.length < size && size!=-1 ) || (objArray.length > size && size==-1 )) {
 						size = objArray.length;
 					}
 				} else if (size == -1) {

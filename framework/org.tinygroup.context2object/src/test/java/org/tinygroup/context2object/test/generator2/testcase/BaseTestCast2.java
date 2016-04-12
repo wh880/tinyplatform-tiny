@@ -27,6 +27,7 @@ import org.tinygroup.context2object.test.bean.PartMent;
 import org.tinygroup.context2object.test.convert.EnumConverter;
 import org.tinygroup.context2object.test.convert.EnumCreater;
 import org.tinygroup.context2object.test.testcase.ListCreator;
+import org.tinygroup.tinyrunner.Runner;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public class BaseTestCast2 extends TestCase{
@@ -39,7 +40,7 @@ public class BaseTestCast2 extends TestCase{
 		generator.addTypeCreator(new EnumCreater());
 		generator.addTypeCreator(new ListCreator());
 		generator.addTypeConverter(new DateTypeConverter());
-		AbstractTestUtil.init(null, true);
+		Runner.init(null, null);
 	}
 	public void testOther() {
 		assertEquals(true, PartMent.class.isAssignableFrom(PartMent.class));
