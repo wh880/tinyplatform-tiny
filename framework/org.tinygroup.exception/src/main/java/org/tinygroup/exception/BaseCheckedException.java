@@ -26,7 +26,7 @@ import org.tinygroup.i18n.I18nMessageFactory;
 import java.util.List;
 import java.util.Locale;
 
-public class BaseCheckedException extends RuntimeException {
+public class BaseCheckedException extends Exception {
     private static final long serialVersionUID = -1141168272047460629L;
     private static final I18nMessage i18nMessage = I18nMessageFactory
             .getI18nMessages();// 需要在启动的时候注入进来
