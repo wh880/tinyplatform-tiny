@@ -1,6 +1,5 @@
 package org.tinygroup.cache.redis;
 
-import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.jedis.config.JedisConfig;
 
 import redis.clients.jedis.JedisPool;
@@ -16,12 +15,15 @@ public class JedisClient {
 
 	public JedisClient(String region, RedisCacheManager redisCacheManager) {
 		this.region = region;
-		this.redisCacheManager = redisCacheManager;
-		jedisConfig = redisCacheManager.getJedisManager()
-				.getJedisConfig(region);
+		this.redisCacheManager = redisCacheManager;	
 	}
-
-	public JedisConfig getJedisConfig() {
+    
+	public synchronized JedisConfig getJedisConfig() {
+		//为了解决aopcache初始化优先于框架加载配置的顺序问题，将真正的初始化放到调用时触发
+		if(jedisConfig==null){
+		   jedisConfig = redisCacheManager.getJedisManager()
+					.getJedisConfig(region);
+		}
 		return jedisConfig;
 	}
 
@@ -42,40 +44,8 @@ public class JedisClient {
 				jedisConfig.getId());
 	}
 
-	private boolean getSafeBooleanValue(String value, boolean defaultValue) {
-		if (StringUtil.isBlank(value)) {
-			return defaultValue;
-		} else {
-			return Boolean.parseBoolean(value);
-		}
-	}
-
-	private String getSafeStringValue(String value, String defaultValue) {
-		if (StringUtil.isBlank(value)) {
-			return defaultValue;
-		} else {
-			return value;
-		}
-	}
-
-	private int getSafeIntValue(String value, int defaultValue) {
-		if (StringUtil.isBlank(value)) {
-			return defaultValue;
-		} else {
-			return Integer.parseInt(value);
-		}
-	}
-
-	private long getSafeLongValue(String value, long defaultValue) {
-		if (StringUtil.isBlank(value)) {
-			return defaultValue;
-		} else {
-			return Long.parseLong(value);
-		}
-	}
-
 	public String getCharset() {
-		return jedisConfig.getCharset() == null ? "utf-8" : jedisConfig
+		return getJedisConfig().getCharset() == null ? "utf-8" : getJedisConfig()
 				.getCharset();
 	}
 

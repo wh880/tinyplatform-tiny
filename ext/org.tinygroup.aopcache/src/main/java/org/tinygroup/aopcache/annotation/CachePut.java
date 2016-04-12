@@ -46,4 +46,12 @@ public @interface CachePut {
      */
     long expire() default Long.MAX_VALUE;
 
+    /**
+     * 更新的时候时候合并缓存数据
+     * 如果为true，合并
+     * 如果为false，后置覆盖前者
+     * @return
+     */
+    boolean merge() default false;
+
 }

@@ -1,41 +1,43 @@
 package org.tinygroup.aopcache.testcase;
 
 import junit.framework.TestCase;
-import org.tinygroup.aopcache.CounterfeitUser;
+import org.tinygroup.aopcache.AnnotationUserDao;
 import org.tinygroup.aopcache.User;
-import org.tinygroup.aopcache.XmlUserDao;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cache.Cache;
 import org.tinygroup.tinyrunner.Runner;
 
 import java.util.*;
 
-public class AopCacheTest extends TestCase {
-
+/**
+ * Created by wangwy11342 on 2016/4/5.
+ */
+public class AnnotationAopCacheTest  extends TestCase {
     private static final String FIRST_GROUP = "singleGroup";
     private static final String SECOND_GROUP = "multiGroup";
     private static boolean initialized;//是否已初始化
     private Cache cache = null;
-    private XmlUserDao userDao = null;
+    private AnnotationUserDao userDao =null;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         if (!initialized) {
             Runner.init("application.xml",new ArrayList<String>());
-
             initialized = true;
+
         }
         cache = BeanContainerFactory.getBeanContainer(
                 getClass().getClassLoader()).getBean("aopCache");
         cache.clear();
         userDao = BeanContainerFactory.getBeanContainer(
-                getClass().getClassLoader()).getBean("xmlUserDao");
+                getClass().getClassLoader()).getBean("annotationUserDao");
         userDao.clearContainer();
     }
 
-    public void testAopCacheWithXml() {
-        long startTime = System.currentTimeMillis();
+    public void testAopCacheWithAnnotation() {
+        long startTime = System.currentTimeMillis(); //获取开始时间
+
         User user = userDao.getUser(1);
         assertNull(user);
         User user1 = new User(1, "flank", 10, null);
@@ -51,8 +53,9 @@ public class AopCacheTest extends TestCase {
 
         userDao.insertUser(user1);
         assertEquals(cache.get(FIRST_GROUP, "1"), user1);
-        userDao.insertUser(user2);
+        userDao.insertUserTwoCache(user2);
         assertEquals(cache.get(FIRST_GROUP, "2"), user2);
+        assertEquals(cache.get(FIRST_GROUP, "xuanxuan"), user2);
         userDao.insertUser(user3);
         assertEquals(cache.get(FIRST_GROUP, "3"), user3);
         userDao.insertUserNoParam(user4);
@@ -113,11 +116,11 @@ public class AopCacheTest extends TestCase {
 
         userDao.insertUser(cuser1);
         assertEquals(cache.get(FIRST_GROUP, "10"), cuser1);
-        /*cusers.add(cuser1);
-		User cuser = userDao.getUser(cusers);
-		assertEquals(20, cuser.getAge());//从数据库获取
-		cuser = userDao.getUser(cusers);
-		assertEquals(20, cuser.getAge());*/
+        cusers.add(cuser1);
+        User cuser = userDao.getUser(cusers);
+        assertEquals(20, cuser.getAge());//从数据库获取
+        cuser = userDao.getUser(cusers);
+        assertEquals(20, cuser.getAge());
 
         long endTime = System.currentTimeMillis(); //获取结束时间
         System.out.println("run time： " + (endTime - startTime) + "ms");
@@ -151,6 +154,8 @@ public class AopCacheTest extends TestCase {
      */
     public void testUpdate(){
         long startTime = System.currentTimeMillis();
+        AnnotationUserDao userDao = BeanContainerFactory.getBeanContainer(
+                getClass().getClassLoader()).getBean("annotationUserDao");
 
         Date date = new Date();
         User user = new User(1, "zhangch", 18, date);
@@ -169,31 +174,4 @@ public class AopCacheTest extends TestCase {
         assertEquals(cacheUser.getId(),1);
     }
 
-    /**
-     * 测试不同对象情况下不进行合并
-     */
-    public void testDifferentUpdateMerge(){
-        //插入user，第一次放入缓存User类型
-        Date date = new Date();
-        User user = new User(1, "zhangch", 18, date);
-        userDao.insertUser(user);
-
-        //第二次，同key放入CounterfeitUser对象
-        CounterfeitUser user2 = new CounterfeitUser();
-        user2.setId(1);
-        user2.setName("zhangch2");
-        cache.put(FIRST_GROUP,"1",user2);
-
-        //第三次更新user对象,类型不一致会完全覆盖原有对象
-        User user3 = new User(1, "zhangch3", 20, date);
-        userDao.updateUserMerge(user3);
-
-        User cacheUser = (User) cache.get(FIRST_GROUP, String.valueOf(user2.getId()));
-
-        assertEquals(cacheUser,user3);
-        assertEquals(cacheUser.getId(),1);
-        assertEquals(cacheUser.getName(),"zhangch3");
-        assertEquals(cacheUser.getAge(),20);
-        assertEquals(cacheUser.getBirth(),date);
-    }
 }

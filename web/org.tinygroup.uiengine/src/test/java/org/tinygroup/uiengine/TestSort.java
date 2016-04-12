@@ -68,22 +68,22 @@ public class TestSort extends TestCase {
 		manager.addUIComponents(createUIComponent(u1,u2,u3,u4,u5,u6));
 		manager.compute();
 		
-		assertEquals(u2, manager.getHealthUiComponents().get(0));
-		assertEquals(u4, manager.getHealthUiComponents().get(1));
-		assertEquals(u3, manager.getHealthUiComponents().get(2));
-		assertEquals(u1, manager.getHealthUiComponents().get(3));
-		assertEquals(u6, manager.getHealthUiComponents().get(4));
-		assertEquals(u5, manager.getHealthUiComponents().get(5));
+		assertEquals(u2.getName(), manager.getHealthUiComponents().get(0).getName());
+		assertEquals(u4.getName(), manager.getHealthUiComponents().get(1).getName());
+		assertEquals(u3.getName(), manager.getHealthUiComponents().get(2).getName());
+		assertEquals(u1.getName(), manager.getHealthUiComponents().get(3).getName());
+		assertEquals(u6.getName(), manager.getHealthUiComponents().get(4).getName());
+		assertEquals(u5.getName(), manager.getHealthUiComponents().get(5).getName());
 		
 		manager = new UIComponentManagerImpl();
 		manager.addUIComponents(createUIComponent(u6,u5,u4,u3,u2,u1));
 		manager.compute();
 		
-		assertEquals(u2, manager.getHealthUiComponents().get(0));
-		assertEquals(u4, manager.getHealthUiComponents().get(1));
-		assertEquals(u3, manager.getHealthUiComponents().get(2));
-		assertEquals(u1, manager.getHealthUiComponents().get(3));
-		assertEquals(u6, manager.getHealthUiComponents().get(4));
-		assertEquals(u5, manager.getHealthUiComponents().get(5));
+		assertEquals(u2.getName(), manager.getHealthUiComponents().get(0).getName());
+		assertEquals(u4.getName(), manager.getHealthUiComponents().get(1).getName());
+		assertEquals(u3.getName(), manager.getHealthUiComponents().get(2).getName());
+		assertEquals(u1.getName(), manager.getHealthUiComponents().get(3).getName());
+		assertEquals(u6.getName(), manager.getHealthUiComponents().get(4).getName());
+		assertEquals(u5.getName(), manager.getHealthUiComponents().get(5).getName());
 	}
 }

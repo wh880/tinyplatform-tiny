@@ -1,13 +1,17 @@
 package org.tinygroup.aopcache.processor;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.beans.BeanWrapper;
 import org.tinygroup.aopcache.base.CacheMetadata;
 import org.tinygroup.aopcache.base.TemplateRender;
 import org.tinygroup.aopcache.exception.AopCacheException;
 import org.tinygroup.aopcache.util.TemplateUtil;
+import org.tinygroup.beanwrapper.BeanWrapperHolder;
 import org.tinygroup.commons.tools.Assert;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.template.TemplateContext;
+
+import java.beans.PropertyDescriptor;
 
 /**
  * aop缓存存放操作
@@ -57,7 +61,33 @@ public class AopCachePutProcessor extends AbstractAopCacheProcessor {
                     //从上下文迭代取出参数对应参数值作为value
                     Object value = templateRender.getParamValue(templateContext, namesArray[i]);
                     if (value != null) {
-                        getAopCache().put(group, keyArray[i], value);
+                        //原缓存数据
+                        Object cacheValue = getAopCache().get(group,keyArray[i]);
+                        //标记为合并且原有缓存和当前缓存同一类型
+                        if(metadata.isMerge()
+                                && cacheValue != null
+                                && cacheValue.getClass()==value.getClass()){
+
+                            //当前value的beanWrapper
+                            BeanWrapper valueWrapper = BeanWrapperHolder.getInstance()
+                                    .getBeanWrapper(value);
+                            //原缓存的beanWrapper
+                            BeanWrapper cacheValueWrapper = BeanWrapperHolder.getInstance()
+                                    .getBeanWrapper(cacheValue);
+                            PropertyDescriptor[] cachePropertyDescriptors = cacheValueWrapper.getPropertyDescriptors();
+                            for(PropertyDescriptor cachepd : cachePropertyDescriptors){
+                                //可以写入的属性
+                                if(cacheValueWrapper.isWritableProperty(cachepd.getName())){
+                                    Object currentObj = valueWrapper.getPropertyValue(cachepd.getName());
+                                    if(currentObj!=null){
+                                        cacheValueWrapper.setPropertyValue(cachepd.getName(),currentObj);
+                                    }
+                                }
+                            }
+                            getAopCache().put(group, keyArray[i], cacheValue);//放入合并后的值
+                        }else {
+                            getAopCache().put(group, keyArray[i], value);
+                        }
                     }
                 }
             }

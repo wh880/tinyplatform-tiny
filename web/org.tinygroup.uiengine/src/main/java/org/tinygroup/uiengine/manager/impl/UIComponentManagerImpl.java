@@ -19,12 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
-import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -153,11 +150,17 @@ public class UIComponentManagerImpl implements UIComponentManager {
 		oldHealthyComponentList = healthyComponentList;
 		healthyComponentList = new ArrayList<UIComponent>();
 		try{
+			//重置计算标志位
+			for (UIComponent component : uiComponentList) {
+				component.setComputed(false);
+			}
+			
+			Collections.sort(uiComponentList,comparator);
+			
 			for (UIComponent component : uiComponentList) {
 				this.isHealth(component.getName());		            
 	        }
-			//排序，固定渲染顺序
-			Collections.sort(healthyComponentList,comparator);
+			
 		}finally{
 			//计算结束，重置计算状态
 			calculating = false;
@@ -181,13 +184,7 @@ public class UIComponentManagerImpl implements UIComponentManager {
 		 * UI组件关系为：前者依赖后者;后者依赖前者;两者无关系
 		 */
 		public int compare(UIComponent o1, UIComponent o2) {
-			if(isDependent(o1,o2)){
-			   return 1;
-			}else if(isDependent(o2,o1)){
-			   return -1;
-			}else{
-			   return compareByName(o1,o2);
-			}
+			 return compareByName(o1,o2);
 		}
 		
 		/**
@@ -211,94 +208,6 @@ public class UIComponentManagerImpl implements UIComponentManager {
 		private int getNameProtity(String name){
 			//简单采用hashcode做优先级
 			return name.hashCode();
-		}
-		
-		/**
-		 * 前者是否继承依赖后者
-		 * @param o1
-		 * @param o2
-		 * @return
-		 */
-		private boolean isDependent(UIComponent o1, UIComponent o2) {
-			//前者没有依赖关系,直接判断false
-			if(StringUtil.isEmpty(o1.getDependencies())){
-				return false;
-			}else{
-				 Queue<String> queue = new LinkedList<String>();
-				 QueryResult result = new QueryResult(o2.getName());
-				 String[] dependencies = o1.getDependencies().split(",");
-				 for(String dependency:dependencies){
-					 //执行依赖关系搜索
-					 query(queue,dependency,result);
-				 }
-				 return result.isFind();
-			}
-		}
-		
-		/**
-		 * 查询依赖关系
-		 * @param queue
-		 * @param name
-		 * @param result
-		 */
-		private void query(Queue<String> queue,String name,QueryResult result){
-			//已经匹配，直接返回
-			if(result.isFind()){
-			   return ;
-			}else{
-				//入队操作
-				if(name!=null){
-					//如果找到目标，直接返回
-					if(result.getTarget().equals(name)){
-						result.setFind(true);
-				    	return ;
-					}else{
-						 //往队列添加不重复的元素
-						 if(!queue.contains(name)){
-				    	     queue.add(name);
-				    	 }
-					}
-				}
-				
-				//队列为空，终止查询并返回
-				if(queue.isEmpty()){
-				   return ;
-				}
-				
-				//出队操作
-				String element = queue.poll();
-				UIComponent component = uiMap.get(element);
-				if(!StringUtil.isEmpty(component.getDependencies())){
-				    String[] dependencies = component.getDependencies().split(",");
-				    for(String dependency:dependencies){
-				    	//递归调用
-				    	query(queue,dependency,result);
-				    }
-				}
-			}
-		}
-		
-	}
-	
-	/**
-	 * 查询结果
-	 * @author yancheng11334
-	 *
-	 */
-	class QueryResult {
-		private String target; //目标依赖
-		private boolean find;  //是否找到
-		public QueryResult(String target){
-			this.target = target;
-		}
-		public String getTarget() {
-			return target;
-		}
-		public boolean isFind() {
-			return find;
-		}
-		public void setFind(boolean find) {
-			this.find = find;
 		}
 		
 	}

@@ -30,12 +30,17 @@ import java.util.Map;
  *
  */
 public class AnnotationUserDao {
-    Map<Integer, User> container = new HashMap<Integer, User>();
+    public Map<Integer, User> container = new HashMap<Integer, User>();
 
 
     @CachePut(keys = "${user.id}", parameterNames = "user", group = "singleGroup", removeKeys = "users", removeGroups = "multiGroup")
     public void updateUser(User user) {
         System.out.println("update user");
+    }
+
+    @CachePut(keys = "${user.id}",merge=true, parameterNames = "user", group = "singleGroup", removeKeys = "users", removeGroups = "multiGroup")
+    public void updateUserMerge(User user) {
+		System.out.println("update user merge");
     }
 
     @CachePut(keys = "${user.id}", parameterNames = "user", group = "singleGroup", removeKeys = "users", removeGroups = "multiGroup")
@@ -99,6 +104,10 @@ public class AnnotationUserDao {
             throw new RuntimeException(e);
         }
         return container.get(users.get(0).getId());
+    }
+
+    public void clearContainer(){
+        container.clear();
     }
 
 }

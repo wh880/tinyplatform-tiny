@@ -15,6 +15,7 @@
  */
 package org.tinygroup.flowprocessor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.tinygroup.event.AbstractServiceInfo;
@@ -43,10 +44,16 @@ public class FlowServiceInfo extends AbstractServiceInfo  {
 	}
 
 	public List<Parameter> getParameters() {
+		if(parameters==null){
+			parameters = new ArrayList<Parameter>();
+		}
 		return parameters;
 	}
 
 	public List<Parameter> getResults() {
+		if(results==null){
+			results = new ArrayList<Parameter>();
+		}
 		return results;
 	}
 
