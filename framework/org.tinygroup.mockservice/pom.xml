@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.tinygroup</groupId>
     <artifactId>framework</artifactId>
-    <version>2.1.1-SNAPSHOT</version>
+    <version>2.1.1</version>
   </parent>
   <artifactId>org.tinygroup.mockservice</artifactId>
   <name>org.tinygroup.mockservice</name>

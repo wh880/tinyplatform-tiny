@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.tinygroup</groupId>
 		<artifactId>remoteconfig</artifactId>
-		<version>2.1.1-SNAPSHOT</version>
+		<version>2.1.1</version>
 	</parent>
 	<dependencies>
 		<dependency>
