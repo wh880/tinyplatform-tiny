@@ -84,7 +84,12 @@ public class IniOperatorDefaultFileTest extends TestCase {
 		assertEquals("http://192.168.253.130:8080/ICSU/;://192.168.253.130:8080/ICSU/;", url1);
 		String test = operator.get("Section2", "test");
 		assertEquals("aaa\\\"bbb", test);
+		System.out.println(test);
 		String test1 = operator.get("Section2", "test");
 		assertEquals("aaa\\\"bbb", test1);
+		System.out.println(test1);
+		String test2 = operator.get("Section2", "test");
+		assertEquals("aaa\\\"bbb", test2);
+		System.out.println(test2);
 	}
 }
