@@ -39,4 +39,11 @@ public class FlowElUtil {
 			return null;
 		}
 	}
+	
+	public static Object executeNotCatchException(String expression, Context context,ClassLoader loader) {
+		
+			EL el = BeanContainerFactory.getBeanContainer(loader).getBean(EL.EL_BEAN);
+			return el.execute(expression, context);
+		
+	}
 }

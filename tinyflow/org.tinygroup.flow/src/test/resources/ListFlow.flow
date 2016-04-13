@@ -1,0 +1,22 @@
+<flow id="ListFlow" enable="true" private-context="false">
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="listComponent"/>
+      </next-nodes>
+    </node>
+    <node id="listComponent" name="listComponent" title="List组件">
+      <component name="listComponent" title="List组件">
+        <description>求a+b的和</description>
+        <properties>
+          <flow-property name="list" value="list" required="true" type="el"/>
+          <flow-property name="str" value="${str}" required="true" />
+          <flow-property name="ii" value="${ii}" required="true" />
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

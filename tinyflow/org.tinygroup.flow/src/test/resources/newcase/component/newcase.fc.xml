@@ -1,5 +1,12 @@
 <components>
-
+	<component name="listComponent" bean="listComponent"
+		title="List组件"  icon="">
+		<short-description>求a+b的和</short-description>
+		<long-description>求a+b的和，返回值为sum</long-description>
+		<parameter name="list" title="" type="java.lang.String" collection-type="java.util.List"></parameter>
+		<parameter name="str" title="" type="java.lang.String"></parameter>
+		<parameter name="ii" title="" type="int"></parameter>
+	</component>
 	<component name="sumComponent" bean="sumComponent"
 		title="求和组件"  icon="">
 		<short-description>求a+b的和</short-description>
