@@ -26,7 +26,7 @@ import org.tinygroup.i18n.I18nMessageFactory;
 import java.util.List;
 import java.util.Locale;
 
-public class BaseRuntimeException extends RuntimeException {
+public class BaseCheckedException extends Exception {
     private static final long serialVersionUID = -1141168272047460629L;
     private static final I18nMessage i18nMessage = I18nMessageFactory
             .getI18nMessages();// 需要在启动的时候注入进来
@@ -34,31 +34,31 @@ public class BaseRuntimeException extends RuntimeException {
 
     private ErrorCode errorCode;
 
-    public BaseRuntimeException(String errorCode, Object... params) {
+    public BaseCheckedException(String errorCode, Object... params) {
         this(errorCode, "", LocaleUtil.getContext().getLocale(), params);
     }
 
-    public BaseRuntimeException(String errorCode, String defaultErrorMsg,
+    public BaseCheckedException(String errorCode, String defaultErrorMsg,
                                 Locale locale, Object... params) {
         String errorI18nMsg = i18nMessage.getMessage(errorCode, locale,
                 defaultErrorMsg, params);
         initErrorCode(errorCode, errorI18nMsg);
     }
 
-    public BaseRuntimeException(String errorCode, Throwable throwable,
+    public BaseCheckedException(String errorCode, Throwable throwable,
                                 Object... params) {
         this(errorCode, "", LocaleUtil.getContext().getLocale(), throwable,
                 params);
     }
 
 
-    public BaseRuntimeException(String errorCode, String defaultErrorMsg,
+    public BaseCheckedException(String errorCode, String defaultErrorMsg,
                                 Throwable throwable, Object... params) {
         this(errorCode, defaultErrorMsg, LocaleUtil.getContext().getLocale(),
                 throwable, params);
     }
 
-    public BaseRuntimeException(String errorCode, String defaultErrorMsg,
+    public BaseCheckedException(String errorCode, String defaultErrorMsg,
                                 Locale locale, Throwable throwable, Object... params) {
         super(throwable);
         String errorI18nMsg = i18nMessage.getMessage(errorCode, locale,
@@ -66,26 +66,26 @@ public class BaseRuntimeException extends RuntimeException {
         initErrorCode(errorCode, errorI18nMsg);
     }
 
-    public BaseRuntimeException(String errorCode, Context context, Locale locale) {
+    public BaseCheckedException(String errorCode, Context context, Locale locale) {
         this(errorCode, "", context, locale);
     }
 
-    public BaseRuntimeException(String errorCode, String defaultErrorMsg,
+    public BaseCheckedException(String errorCode, String defaultErrorMsg,
                                 Context context, Locale locale) {
         String errorI18nMsg = i18nMessage.getMessage(errorCode, defaultErrorMsg,
                 context, locale);
         initErrorCode(errorCode, errorI18nMsg);
     }
 
-    public BaseRuntimeException(String errorCode, Context context) {
+    public BaseCheckedException(String errorCode, Context context) {
         this(errorCode, "", context, LocaleUtil.getContext().getLocale());
     }
 
-    public BaseRuntimeException() {
+    public BaseCheckedException() {
         super();
     }
 
-    public BaseRuntimeException(Throwable cause) {
+    public BaseCheckedException(Throwable cause) {
         super(cause);
     }
 
@@ -93,8 +93,8 @@ public class BaseRuntimeException extends RuntimeException {
         ErrorContext errorContext = new ErrorContext();
         List<Throwable> causes = ExceptionUtil.getCauses(throwable, true);
         for (Throwable cause : causes) {
-            if (cause instanceof BaseRuntimeException) {
-                BaseRuntimeException exception = (BaseRuntimeException) cause;
+            if (cause instanceof BaseCheckedException) {
+                BaseCheckedException exception = (BaseCheckedException) cause;
                 ErrorUtil.makeAndAddError(errorContext,
                         exception.getErrorCode(), exception.getMessage());
             }
@@ -152,8 +152,8 @@ public class BaseRuntimeException extends RuntimeException {
         if (cause == this) {
             return false;
         }
-        if (cause instanceof BaseRuntimeException) {
-            return ((BaseRuntimeException) cause).contains(exType);
+        if (cause instanceof BaseCheckedException) {
+            return ((BaseCheckedException) cause).contains(exType);
         } else {
             while (cause != null) {
                 if (exType.isInstance(cause)) {
