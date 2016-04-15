@@ -613,8 +613,10 @@ public class SessionConfiguration extends AbstractConfiguration {
 			}
 
 			// 初始化所有stores
-			for (Map.Entry<String, SessionStore> entry : stores.entrySet()) {
-				entry.getValue().init(entry.getKey(), sessionConfig);
+			if(!CollectionUtil.isEmpty(stores)){
+				for (Map.Entry<String, SessionStore> entry : stores.entrySet()) {
+					entry.getValue().init(entry.getKey(), sessionConfig);
+				}
 			}
 		}
 
