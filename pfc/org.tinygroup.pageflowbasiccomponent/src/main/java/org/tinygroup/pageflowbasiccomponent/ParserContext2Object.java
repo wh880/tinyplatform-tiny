@@ -75,6 +75,8 @@ public class ParserContext2Object implements ComponentInterface {
 		if(StringUtil.isEmpty(beanName)){
 			if(clazz!=null){
 				object=container.getBean(clazz);
+			}else{
+				throw new RuntimeException("beanName为空 且解析出来的className为空");
 			}
 		}else{
 			if(clazz==null){
