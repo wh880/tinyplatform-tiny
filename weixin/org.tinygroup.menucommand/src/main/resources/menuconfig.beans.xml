@@ -1,0 +1,48 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName" default-lazy-init="false">
+		
+		<bean id="menuConfigManager" scope="singleton"
+			class="org.tinygroup.menucommand.impl.MenuConfigManagerDefault">
+		</bean>
+		
+		<bean id="menuConfigFileProcessor" scope="singleton"
+			class="org.tinygroup.menucommand.fileresolver.MenuConfigFileProcessor">
+			<property name="menuConfigManager">
+			   <ref bean="menuConfigManager"/>
+			</property>
+		</bean>
+		
+		<bean id="backCommandHandler" scope="singleton"
+			class="org.tinygroup.menucommand.handler.BackCommandHandler">
+		</bean>
+		
+		<bean id="exitCommandHandler" scope="singleton"
+			class="org.tinygroup.menucommand.handler.ExitCommandHandler">
+		</bean>
+		
+		<bean id="homeCommandHandler" scope="singleton"
+			class="org.tinygroup.menucommand.handler.HomeCommandHandler">
+		</bean>
+		
+		<bean id="helpCommandHandler" scope="singleton"
+			class="org.tinygroup.menucommand.handler.HelpCommandHandler">
+		</bean>
+		
+		<bean id="queryCommandHandler" scope="singleton"
+			class="org.tinygroup.menucommand.handler.QueryCommandHandler">
+		</bean>
+		
+		<bean id="queryTemplateFunction" scope="singleton"
+			class="org.tinygroup.menucommand.function.QueryTemplateFunction">
+		</bean>
+		
+		<bean id="fillTemplateFunction" scope="singleton"
+			class="org.tinygroup.menucommand.function.FillTemplateFunction">
+		</bean>
+	
+	</beans>

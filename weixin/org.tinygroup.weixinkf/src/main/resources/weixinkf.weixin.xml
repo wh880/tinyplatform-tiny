@@ -1,0 +1,20 @@
+<url-configs>
+   <url-config key="sendKf"  method="post" >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+   <url-config key="uploadHeadIcon"  method="post" >
+     <url><![CDATA[http://api.weixin.qq.com/customservice/kfaccount/uploadheadimg?access_token=${ACCESS_TOKEN}&kf_account=${uploadHeadIcon.accountId}]]></url>
+   </url-config>
+   <url-config key="addKf"  method="post" >
+     <url><![CDATA[https://api.weixin.qq.com/customservice/kfaccount/add?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+   <url-config key="editKf"  method="post" >
+     <url><![CDATA[https://api.weixin.qq.com/customservice/kfaccount/update?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+   <url-config key="delKf"  method="get" >
+     <url><![CDATA[https://api.weixin.qq.com/customservice/kfaccount/del?access_token=${ACCESS_TOKEN}&kf_account=${delKf.accountId}]]></url>
+   </url-config>
+   <url-config key="getKfList"  method="get" >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+</url-configs>

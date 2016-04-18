@@ -1,0 +1,50 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName" default-lazy-init="true">
+	<bean id="fileResolver" scope="singleton"
+		class="org.tinygroup.fileresolver.impl.FileResolverImpl">
+		<property name="fileProcessorList">
+			<list>
+				<ref bean="i18nFileProcessor" />
+				<ref bean="xStreamFileProcessor" />
+				<ref bean="urlConfigFileProcessor" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="fileResolverProcessor" scope="singleton"
+		class="org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor">
+		<property name="fileResolver" ref="fileResolver"></property>
+	</bean>
+	
+	<bean id="weiXinConnector" scope="singleton"
+		class="org.tinygroup.weixin.impl.WeiXinConnectorDefault">
+		<property name="weiXinSender" ref="weiXinSender"></property>
+		<property name="weiXinReceiver" ref="weiXinReceiver"></property>
+		<property name="client" ref="weiXinClient"></property>
+	</bean>
+	
+	<bean id="weiXinReceiver" scope="singleton"
+			class="org.tinygroup.weixin.impl.WeiXinReceiverDefault">
+	</bean>
+	
+	<bean id="weiXinSender" scope="singleton"
+			class="org.tinygroup.weixin.impl.WeiXinSenderDefault">
+			<property name="sendHandlerList">
+			<list>
+				<ref bean="sendOutputParseHandler" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="weiXinClient" scope="singleton"
+		class="org.tinygroup.weixin.common.Client">
+		<property name="appId" value="wx325952ab42939270" ></property>
+		<property name="secret" value="3f5024f5bed3a5aa0eae14f9820d5cfb" ></property>
+	</bean>
+	
+</beans>

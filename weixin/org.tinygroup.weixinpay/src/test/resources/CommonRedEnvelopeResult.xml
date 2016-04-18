@@ -1,0 +1,12 @@
+<xml>
+<return_code><![CDATA[SUCCESS]]></return_code>
+<return_msg><![CDATA[发放成功]]></return_msg>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<mch_billno><![CDATA[1415659990]]></mch_billno>
+<mch_id>1244859502</mch_id>
+<wxappid><![CDATA[wx325952ab42939270]]></wxappid>
+<re_openid><![CDATA[oH7YcuDMbvNuwRMpWRu5BNOS21vU]]></re_openid>
+<total_amount>100</total_amount>
+<send_listid><![CDATA[0010244084201601150422687235]]></send_listid>
+<send_time><![CDATA[20160115102020]]></send_time>
+</xml>

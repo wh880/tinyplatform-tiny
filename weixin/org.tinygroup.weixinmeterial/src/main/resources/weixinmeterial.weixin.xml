@@ -1,0 +1,46 @@
+<url-configs>
+   <url-config key="uploadTempImage"  method="post"  >
+     <url><![CDATA[https://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=${ACCESS_TOKEN}&type=image]]></url>
+   </url-config>
+   <url-config key="uploadTempVideo"  method="post"  >
+     <url><![CDATA[https://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=${ACCESS_TOKEN}&type=video]]></url>
+   </url-config>
+   <url-config key="uploadTempVoice"  method="post"  >
+     <url><![CDATA[https://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=${ACCESS_TOKEN}&type=voice]]></url>
+   </url-config>
+   <url-config key="uploadTempThumb"  method="post" >
+     <url><![CDATA[https://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=${ACCESS_TOKEN}&type=thumb]]></url>
+   </url-config>
+   <url-config key="uploadPermanentImage"  method="post"  >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=${ACCESS_TOKEN}&type=image]]></url>
+   </url-config>
+   <url-config key="uploadPermanentVideo"  method="post"  >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=${ACCESS_TOKEN}&type=video]]></url>
+   </url-config>
+   <url-config key="uploadPermanentVoice"  method="post"  >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=${ACCESS_TOKEN}&type=voice]]></url>
+   </url-config>
+   <url-config key="uploadPermanentThumb"  method="post"  >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=${ACCESS_TOKEN}&type=thumb]]></url>
+   </url-config>
+   <url-config key="addPermanentNews"  method="post"  >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/material/add_news?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+   <url-config key="editPermanentNews"  method="post"  >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/material/update_news?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+   <url-config key="delMaterial"  method="post"  >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/material/del_material?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+   <url-config key="getMaterialNums"  method="get"  >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/material/get_materialcount?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+   <url-config key="getOtherList"  method="post"  >
+     <result-types><![CDATA[org.tinygroup.weixin.result.ErrorResult,org.tinygroup.weixinmeterial.result.OtherListResult]]></result-types>
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+   <url-config key="getNewsList"  method="post"  >
+     <result-types><![CDATA[org.tinygroup.weixin.result.ErrorResult,org.tinygroup.weixinmeterial.result.NewsListResult]]></result-types>
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+</url-configs>

@@ -1,0 +1,1 @@
+#if(menuConfig)位置:${menuConfig.getMenuConfigPath()}#eol#eol#if(menuConfig?.menuConfigList)#for(subMenu:menuConfig?.menuConfigList)${subMenu?.name.fill(6)}${subMenu?.title}#eol#end#end#if(menuConfig?.menuCommandList)#for(menuCommand:menuConfig?.menuCommandList)${menuCommand?.name.fill(6)}${menuCommand?.title}#eol#end#end#end

@@ -1,0 +1,11 @@
+<url-configs>
+   <url-config key="createMenu"  method="post"  >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/menu/create?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+   <url-config key="getMenu"  method="get"  >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/menu/get?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+   <url-config key="deleteMenu"  method="get"  >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+</url-configs>
