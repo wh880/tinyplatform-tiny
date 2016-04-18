@@ -31,10 +31,12 @@ import org.tinygroup.weblayer.configmanager.TinyFilterConfigManager;
 
 import javax.servlet.Filter;
 import javax.servlet.ServletException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * tiny-filter的管理类
@@ -49,7 +51,7 @@ public class TinyFilterManagerImpl implements TinyFilterManager {
 	private static Logger logger = LoggerFactory
 			.getLogger(TinyFilterManagerImpl.class);
 
-	private List<TinyFilter> tinyFilters = new ArrayList<TinyFilter>();
+	private List<TinyFilter> tinyFilters = new CopyOnWriteArrayList<TinyFilter>();
 
 	private Map<String, TinyFilterConfig> filterConfigMap = new HashMap<String, TinyFilterConfig>();
 
