@@ -1,0 +1,13 @@
+<xml><ToUserName><![CDATA[gh_1cb492569c55]]></ToUserName>
+<FromUserName><![CDATA[oH7YcuDMbvNuwRMpWRu5BNOS21vU]]></FromUserName>
+<CreateTime>1445520239</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[location_select]]></Event>
+<EventKey><![CDATA[rselfmenu_2_0]]></EventKey>
+<SendLocationInfo><Location_X><![CDATA[30.289776]]></Location_X>
+<Location_Y><![CDATA[120.122917]]></Location_Y>
+<Scale><![CDATA[17]]></Scale>
+<Label><![CDATA[浙江省杭州市西湖区翠苑]]></Label>
+<Poiname><![CDATA[翠苑]]></Poiname>
+</SendLocationInfo>
+</xml>

@@ -1,0 +1,5 @@
+<url-configs>
+   <url-config key="shorturl"  method="post" >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/shorturl?access_token=${ACCESS_TOKEN}]]></url>
+   </url-config>
+</url-configs>

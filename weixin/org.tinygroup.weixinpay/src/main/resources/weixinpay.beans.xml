@@ -1,0 +1,63 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName" default-lazy-init="false">
+		
+		<!--动态注册WeiXinConvert--> 
+		<bean id="communicationResultConvert" scope="singleton"
+			class="org.tinygroup.weixinpay.convert.xml.CommunicationResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="businessResultConvert" scope="singleton"
+			class="org.tinygroup.weixinpay.convert.xml.BusinessResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="unityCreateOrderResultConvert" scope="singleton"
+			class="org.tinygroup.weixinpay.convert.xml.UnityCreateOrderResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="queryOrderResultConvert" scope="singleton"
+			class="org.tinygroup.weixinpay.convert.xml.QueryOrderResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="refundResultConvert" scope="singleton"
+			class="org.tinygroup.weixinpay.convert.xml.RefundResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="payResultMessageConvert" scope="singleton"
+			class="org.tinygroup.weixinpay.convert.xml.PayResultMessageConvert" init-method="init">
+		</bean>
+		
+		<bean id="closeOrderResultConvert" scope="singleton"
+			class="org.tinygroup.weixinpay.convert.xml.CloseOrderResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="queryRefundResultConvert" scope="singleton"
+			class="org.tinygroup.weixinpay.convert.xml.QueryRefundResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="downloadBillResultConvert" scope="singleton"
+			class="org.tinygroup.weixinpay.convert.text.DownloadBillResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="commonRedEnvelopeResultConvert" scope="singleton"
+			class="org.tinygroup.weixinpay.convert.xml.CommonRedEnvelopeResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="groupRedEnvelopeResultConvert" scope="singleton"
+			class="org.tinygroup.weixinpay.convert.xml.GroupRedEnvelopeResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="queryRedEnvelopeResultConvert" scope="singleton"
+			class="org.tinygroup.weixinpay.convert.xml.QueryRedEnvelopeResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="unityCreateOrderResultHandler" scope="singleton"
+			class="org.tinygroup.weixinpay.handler.UnityCreateOrderResultHandler">
+		</bean>
+		
+	
+	</beans>

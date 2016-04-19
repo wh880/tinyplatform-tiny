@@ -17,9 +17,12 @@ package org.tinygroup.docgen.util;
 
 import com.thoughtworks.xstream.core.util.Base64Encoder;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+
+import org.tinygroup.commons.io.StreamUtil;
 
 public class ImageUtil {
 	
@@ -28,10 +31,9 @@ public class ImageUtil {
 
 	public static String streamToBase64(InputStream inputStream)
 			throws Exception {
-		byte[] buffer = new byte[inputStream.available()];
-		inputStream.read(buffer);
-		inputStream.close();
-		return new Base64Encoder().encode(buffer);
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+	    StreamUtil.io(inputStream, byteArrayOutputStream, true, false);
+		return new Base64Encoder().encode(byteArrayOutputStream.toByteArray());
 	}
 
 	public static String fileToBase64(String fileName) throws Exception {

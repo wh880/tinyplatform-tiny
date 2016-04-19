@@ -1,0 +1,8 @@
+<url-configs>
+   <url-config key="getUserInfo"  method="get" >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/user/info?access_token=${ACCESS_TOKEN}&openid=${getUserInfo.openId}&lang=${getUserInfo.lang}]]></url>
+   </url-config>
+   <url-config key="getUserList"  method="get" >
+     <url><![CDATA[https://api.weixin.qq.com/cgi-bin/user/get?access_token=${ACCESS_TOKEN}&next_openid=${getUserList.nextOpenId}]]></url>
+   </url-config>
+</url-configs>

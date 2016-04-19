@@ -295,8 +295,6 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
 		                    FileObject fileObject = fullContextFileRepository.getFileObject(path);
 		                    InputStream stream = new BufferedInputStream(fileObject.getInputStream());
 		                    StreamUtil.io(stream, outputStream, true, false);
-		                    stream.close();
-		                    outputStream.flush();
 		                    outputStream.write("\n;}catch(e){}\n".getBytes());
 		                    logger.logMessage(LogLevel.INFO, "js文件:<{}>处理完毕", path);
 		                }
@@ -365,10 +363,9 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
                             logger.logMessage(LogLevel.INFO, "正在处理css文件:<{}>", path);
                             FileObject fileObject = fullContextFileRepository.getFileObject(path);
                             InputStream stream = new BufferedInputStream(fileObject.getInputStream());
-                            byte[] buffer = new byte[stream.available()];
-                            stream.read(buffer);
-                            stream.close();
-                            writeCss(outputStream, contextPath, new String(buffer, "UTF-8"), fileObject.getPath());
+                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                            StreamUtil.io(stream, byteArrayOutputStream, true, false);
+                            writeCss(outputStream, contextPath, new String(byteArrayOutputStream.toByteArray(), "UTF-8"), fileObject.getPath());
                             outputStream.write('\n');
                             logger.logMessage(LogLevel.INFO, "css文件:<{}>处理完毕", path);
                         }

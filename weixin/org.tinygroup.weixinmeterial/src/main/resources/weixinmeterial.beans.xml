@@ -1,0 +1,50 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName" default-lazy-init="false">
+		
+		<!--动态注册WeiXinConvert 
+		<bean id="scanEventConvert" scope="singleton"
+			class="org.tinygroup.weixin.convert.xml.ScanEventConvert" init-method="init">
+		</bean>-->
+		
+		<bean id="tempImageResultConvert" scope="singleton"
+			class="org.tinygroup.weixinmeterial.convert.json.TempImageResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="tempThumbResultConvert" scope="singleton"
+			class="org.tinygroup.weixinmeterial.convert.json.TempThumbResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="tempVideoResultConvert" scope="singleton"
+			class="org.tinygroup.weixinmeterial.convert.json.TempVideoResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="tempVoiceResultConvert" scope="singleton"
+			class="org.tinygroup.weixinmeterial.convert.json.TempVoiceResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="permanentMediaIdResultConvert" scope="singleton"
+			class="org.tinygroup.weixinmeterial.convert.json.PermanentMediaIdResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="permanentUrlResultConvert" scope="singleton"
+			class="org.tinygroup.weixinmeterial.convert.json.PermanentUrlResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="materialNumsResultConvert" scope="singleton"
+			class="org.tinygroup.weixinmeterial.convert.json.MaterialNumsResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="newsListResultConvert" scope="singleton"
+			class="org.tinygroup.weixinmeterial.convert.json.NewsListResultConvert" init-method="init">
+		</bean>
+		
+		<bean id="otherListResultConvert" scope="singleton"
+			class="org.tinygroup.weixinmeterial.convert.json.OtherListResultConvert" init-method="init">
+		</bean>
+	
+	</beans>
