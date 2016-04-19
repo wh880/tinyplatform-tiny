@@ -38,6 +38,7 @@ public class FlowComponentRemoveProcessor extends AbstractFileProcessor {
 	 * 扫描的文件后缀
 	 */
 	private static final String FLOW_COMPONENT_EXT_FILENAME = ".fc.xml";
+	private static final String FLOW_COMPONENT_EXT_FILENAME2 = ".fc";
 	private FlowExecutor flowExecutor;
 	
 	public FlowExecutor getFlowExecutor() {
@@ -49,7 +50,7 @@ public class FlowComponentRemoveProcessor extends AbstractFileProcessor {
 	}
 
 	protected boolean checkMatch(FileObject fileObject) {
-		return fileObject.getFileName().endsWith(FLOW_COMPONENT_EXT_FILENAME);
+		return fileObject.getFileName().endsWith(FLOW_COMPONENT_EXT_FILENAME)||fileObject.getFileName().endsWith(FLOW_COMPONENT_EXT_FILENAME2);
 	}
 
 	public void process() {
