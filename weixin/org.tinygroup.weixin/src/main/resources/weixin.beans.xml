@@ -1,0 +1,60 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName" default-lazy-init="false">
+		
+		<bean id="weiXinManager" scope="singleton"
+			class="org.tinygroup.weixin.impl.WeiXinManagerDefault">
+		</bean>
+		
+		<bean id="urlConfigFileProcessor" scope="singleton"
+			class="org.tinygroup.weixin.fileresolver.UrlConfigFileProcessor">
+			<property name="weiXinManager">
+			   <ref bean="weiXinManager"/>
+			</property>
+		</bean>
+		
+		<!--动态注册WeiXinConvert 
+		<bean id="scanEventConvert" scope="singleton"
+			class="org.tinygroup.weixin.convert.xml.ScanEventConvert" init-method="init">
+		</bean>-->
+		
+		<bean id="receiveParseHandler" scope="singleton"
+			class="org.tinygroup.weixin.handler.ReceiveParseHandler">
+		</bean>
+		
+		<bean id="createSignatureHandler" scope="singleton"
+			class="org.tinygroup.weixin.handler.CreateSignatureHandler">
+		</bean>
+		
+		<bean id="textMenuConfigHandler" scope="singleton"
+			class="org.tinygroup.weixin.handler.TextMenuConfigHandler">
+			<property name="menuConfigManager" ref="menuConfigManager"></property>
+		</bean>
+		
+		<bean id="voiceMenuConfigHandler" scope="singleton"
+			class="org.tinygroup.weixin.handler.VoiceMenuConfigHandler">
+			<property name="menuConfigManager" ref="menuConfigManager"></property>
+		</bean>
+		
+		<bean id="clickMenuConfigHandler" scope="singleton"
+			class="org.tinygroup.weixin.handler.ClickMenuConfigHandler">
+			<property name="menuConfigManager" ref="menuConfigManager"></property>
+		</bean>
+		
+		<bean id="sendOutputParseHandler" scope="singleton"
+			class="org.tinygroup.weixin.handler.SendOutputParseHandler">
+		</bean>
+		
+		<bean id="errorResultHandler" scope="singleton"
+			class="org.tinygroup.weixin.handler.ErrorResultHandler">
+		</bean>
+		
+		<bean id="voiceConvertHandler" scope="singleton"
+			class="org.tinygroup.weixin.handler.VoiceConvertHandler">
+		</bean>
+	
+	</beans>

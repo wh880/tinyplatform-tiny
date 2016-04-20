@@ -1,0 +1,33 @@
+<xml>
+<return_code><![CDATA[SUCCESS]]></return_code>
+<return_msg><![CDATA[获取成功]]></return_msg>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<mch_id>1244859502</mch_id>
+<appid><![CDATA[wx325952ab42939270]]></appid>
+<openid><![CDATA[oH7YcuDMbvNuwRMpWRu5BNOS21vU]]></openid>
+<detail_id><![CDATA[0010244084201601160427757215]]></detail_id>
+<mch_billno><![CDATA[100493101201512182159997298]]></mch_billno>
+<status><![CDATA[RECEIVED]]></status>
+<send_type><![CDATA[API]]></send_type>
+<hb_type><![CDATA[GROUP]]></hb_type>
+<total_num>3</total_num>
+<total_amount>300</total_amount>
+<send_time><![CDATA[2016-01-16 18:54:55]]></send_time>
+<wishing><![CDATA[收人钱财，与人消灾]]></wishing>
+<remark><![CDATA[优惠99折]]></remark>
+<act_name><![CDATA[优惠折扣]]></act_name>
+<hblist>
+<hbinfo>
+<openid><![CDATA[oH7YcuPKOKNgYo_1wUglhVkErukU]]></openid>
+<status><![CDATA[RECEIVED]]></status>
+<amount>100</amount>
+<rcv_time><![CDATA[2016-01-16 19:10:04]]></rcv_time>
+</hbinfo>
+<hbinfo>
+<openid><![CDATA[oH7YcuDMbvNuwRMpWRu5BNOS21vU]]></openid>
+<status><![CDATA[RECEIVED]]></status>
+<amount>100</amount>
+<rcv_time><![CDATA[2016-01-16 18:56:11]]></rcv_time>
+</hbinfo>
+</hblist>
+</xml>

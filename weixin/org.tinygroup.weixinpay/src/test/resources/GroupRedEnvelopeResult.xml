@@ -1,0 +1,15 @@
+<xml>
+<return_code><![CDATA[SUCCESS]]></return_code>
+<return_msg><![CDATA[发放成功]]></return_msg>
+<sign><![CDATA[AFDB68CBDCFEC6C72882003A37C608DD]]></sign>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<mch_billno><![CDATA[100493101201512182159997298]]></mch_billno>
+<mch_id>1244859502</mch_id>
+<wxappid><![CDATA[wx325952ab42939270]]></wxappid>
+<re_openid><![CDATA[oH7YcuDMbvNuwRMpWRu5BNOS21vU]]></re_openid>
+<total_amount>300</total_amount>
+<send_listid><![CDATA[0010244084201601160427757215]]></send_listid>
+<send_time><![CDATA[20160116185455]]></send_time>
+<nonce_str><![CDATA[5K8264ILTKCH16CQ2502SI8ZNMTM67VS]]></nonce_str>
+<total_num>3</total_num>
+</xml>

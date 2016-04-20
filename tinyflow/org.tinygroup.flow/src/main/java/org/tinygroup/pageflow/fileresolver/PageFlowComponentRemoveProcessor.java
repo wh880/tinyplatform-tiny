@@ -38,6 +38,7 @@ public class PageFlowComponentRemoveProcessor extends AbstractFileProcessor {
 	 * 扫描的文件后缀
 	 */
 	private static final String PAGE_FLOW_COMPONENT_EXT_FILENAME = ".pagefc.xml";
+	private static final String PAGE_FLOW_COMPONENT_EXT_FILENAME2 = ".pagefc";
 	private FlowExecutor flowExecutor;
 	
 	
@@ -51,7 +52,8 @@ public class PageFlowComponentRemoveProcessor extends AbstractFileProcessor {
 
 	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(
-				PAGE_FLOW_COMPONENT_EXT_FILENAME);
+				PAGE_FLOW_COMPONENT_EXT_FILENAME)||fileObject.getFileName().endsWith(
+						PAGE_FLOW_COMPONENT_EXT_FILENAME2);
 	}
 
 	public void process() {

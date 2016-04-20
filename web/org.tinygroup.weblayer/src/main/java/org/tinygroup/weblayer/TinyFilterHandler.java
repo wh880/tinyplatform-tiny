@@ -272,8 +272,8 @@ public class TinyFilterHandler {
 				if (wrapContext.isRequestFinished()) {
 					return true;
 				}
+				wrapContext = wrapContext.getWrappedWebContext();
 			}
-			wrapContext = wrapContext.getWrappedWebContext();
 		}
 		return false;
 	}

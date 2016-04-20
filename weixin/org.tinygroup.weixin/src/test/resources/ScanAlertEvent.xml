@@ -1,0 +1,10 @@
+<xml><ToUserName><![CDATA[gh_1cb492569c55]]></ToUserName>
+<FromUserName><![CDATA[oH7YcuDMbvNuwRMpWRu5BNOS21vU]]></FromUserName>
+<CreateTime>1445518806</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[scancode_waitmsg]]></Event>
+<EventKey><![CDATA[rselfmenu_0_0]]></EventKey>
+<ScanCodeInfo><ScanType><![CDATA[qrcode]]></ScanType>
+<ScanResult><![CDATA[http://weixin.qq.com/r/yUNqcsbEM5tMrYIR9xbb]]></ScanResult>
+</ScanCodeInfo>
+</xml>

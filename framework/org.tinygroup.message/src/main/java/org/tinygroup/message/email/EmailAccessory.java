@@ -15,9 +15,12 @@
  */
 package org.tinygroup.message.email;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
+import org.tinygroup.commons.io.StreamUtil;
 
 /**
  * 邮件的附件
@@ -34,9 +37,9 @@ public class EmailAccessory {
     public EmailAccessory(File file) throws IOException {
         this.fileName = file.getName();
         FileInputStream inputStream = new FileInputStream(file);
-        content = new byte[(int) file.length()];
-        inputStream.read(content);
-        inputStream.close();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        StreamUtil.io(inputStream, byteArrayOutputStream, true, false);
+        content = byteArrayOutputStream.toByteArray();
     }
 
     public EmailAccessory(String fileName, byte[] content) {

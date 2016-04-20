@@ -1,0 +1,10 @@
+package org.tinygroup.weixin.common;
+
+/**
+ * 微信服务器推送的消息
+ * @author yancheng11334
+ *
+ */
+public interface FromServerMessage {
+
+}

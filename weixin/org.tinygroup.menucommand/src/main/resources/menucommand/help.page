@@ -1,0 +1,1 @@
+#if(helpConfig)位置:${helpConfig.getMenuConfigPath()}#eol类型:菜单#eol名称:${helpConfig?.name}#eol说明:${helpConfig?.description}#eol#elseif(helpCommand)#set(helpConfig=helpCommand.getMenuConfig())位置:${helpConfig.getMenuConfigPath()}#eol类型:命令#eol名称:${helpCommand?.name}#eol说明:${helpCommand?.description}#eol#end

@@ -94,6 +94,9 @@ public class JavaPathManage {
                 }
             }
         }
+        if(className==null){
+        	throw new RuntimeException("未找到对应的className,文件名:"+fileName);
+        }
         return className.replace(SLASH_MARK, POINT);
 
     }

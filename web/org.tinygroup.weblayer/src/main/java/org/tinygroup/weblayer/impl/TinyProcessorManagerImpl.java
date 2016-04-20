@@ -15,6 +15,15 @@
  */
 package org.tinygroup.weblayer.impl;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.servlet.ServletException;
+
 import org.springframework.web.util.NestedServletException;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.order.OrderUtil;
@@ -28,13 +37,6 @@ import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.weblayer.config.TinyProcessorConfigInfo;
 import org.tinygroup.weblayer.configmanager.TinyProcessorConfigManager;
 
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * tiny servlet处理器管理接口的默认实现
  * 
@@ -43,7 +45,7 @@ import java.util.Map;
  */
 public class TinyProcessorManagerImpl implements TinyProcessorManager {
 
-	private List<TinyProcessor> tinyProcessorList = new ArrayList<TinyProcessor>();
+	private List<TinyProcessor> tinyProcessorList = new CopyOnWriteArrayList<TinyProcessor>();
 
 	private Map<String, TinyProcessorConfig> processorMap = new HashMap<String, TinyProcessorConfig>();
 

@@ -1,0 +1,5 @@
+<xstream-configuration package-name="menuconfig">
+	<xstream-annotation-classes>
+		<xstream-annotation-class class-name="org.tinygroup.menucommand.config.MenuConfigs" />
+	</xstream-annotation-classes>
+</xstream-configuration>

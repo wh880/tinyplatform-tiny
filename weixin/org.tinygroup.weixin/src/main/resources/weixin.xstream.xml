@@ -1,0 +1,5 @@
+<xstream-configuration package-name="weixin">
+	<xstream-annotation-classes>
+		<xstream-annotation-class class-name="org.tinygroup.weixin.common.UrlConfigs" />
+	</xstream-annotation-classes>
+</xstream-configuration>

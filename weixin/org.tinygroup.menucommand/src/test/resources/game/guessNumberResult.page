@@ -1,0 +1,1 @@
+#if(gamestatus=="error")请输入1~100之间的整数#elseif(gamestatus=="large")您猜的数字偏大#elseif(gamestatus=="small")您猜的数字偏小#elseif(gamestatus=="right")恭喜您猜对了，总共猜了${gamenumber}次#end

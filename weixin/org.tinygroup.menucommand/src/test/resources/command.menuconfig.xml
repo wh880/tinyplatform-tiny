@@ -1,0 +1,112 @@
+<!-- 菜单命令节点支持多个菜单配置节点和系统命令节点 -->
+<menu-configs>
+	<!-- 菜单配置节点可以嵌套，支持定义子菜单和菜单命令节点 -->
+	<menu-config id="m001" name="服务菜单"  title="服务菜单">
+		<regex><![CDATA[m|menu|菜单]]></regex>
+		<description><![CDATA[微信服务菜单列表]]></description>
+		<menu-config id="m012" name="游戏"  title="游戏">
+			<regex><![CDATA[g|game]]></regex>
+			<description><![CDATA[模拟游戏测试,输入g或者game]]></description>
+			<menu-config id="g001" name="猜数字" title="猜数字" path="/game/guessNumber.page">
+				<regex><![CDATA[guess]]></regex>
+				<description><![CDATA[猜数字小游戏,输入guess]]></description>
+				<menu-command name="新建游戏"
+					class-name="org.tinygroup.menucommand.handler.NewGuessGameHandler">
+					<regex><![CDATA[new|重置]]></regex>
+					<description><![CDATA[输入"新建"或者"new",重新开始猜数字]]></description>
+				</menu-command>
+				<menu-command name="输入数值"
+					class-name="org.tinygroup.menucommand.handler.GuessNumberHandler"
+					path="/game/guessNumberResult.page">
+					<regex><![CDATA[^[1-9]\d*$]]></regex>
+					<description><![CDATA[请输入1-100之间的整数]]></description>
+				</menu-command>
+				<menu-command name="清理用户数据"
+					class-name="org.tinygroup.menucommand.handler.DelGuessNumberSessionHandler"
+					path="/menucommand/showMenuConfig.page">
+					<regex><![CDATA[del|delete]]></regex>
+					<description><![CDATA[输入del或者delete]]></description>
+				</menu-command>
+			</menu-config>
+			<menu-config id="g002" name="低价竞猜">
+				<regex><![CDATA[buy]]></regex>
+				<description><![CDATA[暂未实现]]></description>
+			</menu-config>
+			<menu-config id="g003" name="时间转换">
+				<menu-command name="显示中式时间"
+					class-name="org.tinygroup.menucommand.handler.TimeHandler" path="/game/chineseTime.page">
+					<regex><![CDATA[1]]></regex>
+					<description><![CDATA[输入1]]></description>
+				</menu-command>
+				<menu-command name="显示英式时间"
+					class-name="org.tinygroup.menucommand.handler.TimeHandler" path="/game/englishTime.page">
+					<regex><![CDATA[2]]></regex>
+					<description><![CDATA[输入2]]></description>
+				</menu-command>
+				<regex><![CDATA[time]]></regex>
+				<description><![CDATA[输入time]]></description>
+			</menu-config>
+		</menu-config>
+		<menu-config id="m013" name="省市表">
+			<regex><![CDATA[area]]></regex>
+			<description><![CDATA[地区表，输入area]]></description>
+			<menu-config id="m023" name="北京市">
+				<regex><![CDATA[bj]]></regex>
+				<description><![CDATA[中国的首都，输入bj]]></description>
+				<menu-config id="m033" name="海淀区">
+					<regex><![CDATA[hd]]></regex>
+					<description><![CDATA[输入hd]]></description>
+				</menu-config>
+				<menu-config id="m034" name="昌平区">
+					<regex><![CDATA[cp]]></regex>
+					<description><![CDATA[输入cp]]></description>
+				</menu-config>
+				<menu-config id="m035" name="朝阳区">
+					<regex><![CDATA[cy]]></regex>
+					<description><![CDATA[输入cy]]></description>
+				</menu-config>
+				<menu-config id="m036" name="宣武区">
+					<regex><![CDATA[xw]]></regex>
+					<description><![CDATA[输入xw]]></description>
+				</menu-config>
+			</menu-config>
+			<menu-config id="m024" name="浙江省">
+				<regex><![CDATA[zj]]></regex>
+				<description><![CDATA[输入zj]]></description>
+				<menu-config id="m043" name="杭州市">
+					<regex><![CDATA[hz]]></regex>
+					<description><![CDATA[输入hz]]></description>
+				</menu-config>
+				<menu-config id="m044" name="湖州市">
+					<regex><![CDATA[hz2]]></regex>
+					<description><![CDATA[输入hz2]]></description>
+				</menu-config>
+			</menu-config>
+
+		</menu-config>
+	</menu-config>
+	<!-- 系统命令节点 -->
+	<system-command name="首页" bean-name="homeCommandHandler"
+		path="/menucommand/showMenuConfig.page">
+		<regex><![CDATA[home]]></regex>
+		<description>输入home</description>
+	</system-command>
+	<system-command name="返回上一级" bean-name="backCommandHandler"
+		path="/menucommand/showMenuConfig.page">
+		<regex><![CDATA[back]]></regex>
+		<description>输入back</description>
+	</system-command>
+	<system-command name="查询" bean-name="queryCommandHandler"
+		path="/menucommand/query.page">
+		<regex><![CDATA[query|query\s+[\u4e00-\u9fa5_a-zA-Z0-9]+$]]></regex>
+		<description>输入“query 关键字”，列出符合条件的菜单或命令；如果不输入关键字匹配全部</description>
+	</system-command>
+	<system-command name="退出" bean-name="exitCommandHandler"
+		path="/menucommand/exit.page">
+		<regex><![CDATA[exit]]></regex>
+		<description>输入exit</description>
+	</system-command>
+</menu-configs>
+
+
+

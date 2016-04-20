@@ -355,6 +355,7 @@
         <module>codegen</module>
         <module>sample</module>
         <module>studioext</module>
+        <module>weixin</module>
     </modules>
     <dependencyManagement>
         <dependencies>
