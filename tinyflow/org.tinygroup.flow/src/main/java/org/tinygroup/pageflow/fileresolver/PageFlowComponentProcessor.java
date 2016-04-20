@@ -52,7 +52,7 @@ public class PageFlowComponentProcessor extends AbstractFileProcessor {
 
 	protected boolean checkMatch(FileObject fileObject) {
 		return fileObject.getFileName().endsWith(
-				PAGE_FLOW_COMPONENT_EXT_FILENAME)&&fileObject.getFileName().endsWith(
+				PAGE_FLOW_COMPONENT_EXT_FILENAME)||fileObject.getFileName().endsWith(
 						PAGE_FLOW_COMPONENT_EXT_FILENAME2);
 	}
 
