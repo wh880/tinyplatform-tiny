@@ -21,5 +21,6 @@
 	<module>org.tinygroup.custombeandefine</module>
 	<module>remoteconfig</module>
 	<module>org.tinygroup.httpclient31</module>
+	<module>org.tinygroup.beancontext</module>
   </modules>
 </project>
