@@ -15,8 +15,6 @@
  */
 package org.tinygroup.beancontainer.exception;
 
-import org.tinygroup.beancontainer.exception.code.BeanContainerFactoryErrorCode;
-import org.tinygroup.exception.BaseRuntimeException;
 
 /**
  * 
@@ -24,13 +22,12 @@ import org.tinygroup.exception.BaseRuntimeException;
  * @author: qiuqn
  * @version: 2016年4月22日 下午4:52:41
  */
-public class BeanContainerFactoryInitException extends BaseRuntimeException {
+public class BeanContainerFactoryInitException extends RuntimeException {
 
 	private static final long serialVersionUID = 1694628104824119327L;
 
-	public BeanContainerFactoryInitException(Throwable throwable,
-			Object... params) {
-		super(BeanContainerFactoryErrorCode.BEANCONTAINER_INIT_FAILED, throwable, params);
+	public BeanContainerFactoryInitException(String beanClassName) {
+		 super("初始化beancontainer:"+beanClassName+"失败");
 	}
 
 }

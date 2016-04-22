@@ -34,7 +34,7 @@ public class BeanContainerFactory {
 			container = (BeanContainer) Class.forName(beanClassName)
 					.newInstance();
 		} catch (Exception e) {
-			throw new BeanContainerFactoryInitException(e, beanClassName);
+			throw new BeanContainerFactoryInitException(beanClassName);
 		}
 	}
 
@@ -51,7 +51,7 @@ public class BeanContainerFactory {
 			container = (BeanContainer) Class.forName(beanClassName)
 					.newInstance();
 		} catch (Exception e) {
-			throw new BeanContainerFactoryInitException(e, beanClassName);
+			throw new BeanContainerFactoryInitException(beanClassName);
 		}
 	}
 
