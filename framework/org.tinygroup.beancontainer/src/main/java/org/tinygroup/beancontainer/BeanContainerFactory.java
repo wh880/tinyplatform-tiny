@@ -15,7 +15,6 @@
  */
 package org.tinygroup.beancontainer;
 
-import org.tinygroup.beancontainer.exception.BeanContainerFactoryInitException;
 
 public class BeanContainerFactory {
 	private static BeanContainer<?> container;
@@ -34,7 +33,7 @@ public class BeanContainerFactory {
 			container = (BeanContainer) Class.forName(beanClassName)
 					.newInstance();
 		} catch (Exception e) {
-			throw new BeanContainerFactoryInitException(beanClassName);
+			throw new RuntimeException("初始化beancontainer:"+beanClassName+"失败");
 		}
 	}
 
@@ -51,7 +50,7 @@ public class BeanContainerFactory {
 			container = (BeanContainer) Class.forName(beanClassName)
 					.newInstance();
 		} catch (Exception e) {
-			throw new BeanContainerFactoryInitException(beanClassName);
+			throw new RuntimeException("初始化beancontainer:"+beanClassName+"失败");
 		}
 	}
 
