@@ -389,7 +389,7 @@ public class CEPCoreImpl implements CEPCore {
 				return p;
 			}
 		}
-		throw new RuntimeException("没有找到合适的服务处理器");
+		throw new RuntimeException("没有找到合适的服务处理器,服务id:"+serviceId);
 	}
 
 	private boolean checkRegex(List<String> regex, String serviceId) {

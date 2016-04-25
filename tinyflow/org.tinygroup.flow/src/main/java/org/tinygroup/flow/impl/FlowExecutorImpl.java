@@ -140,13 +140,13 @@ public class FlowExecutorImpl implements FlowExecutor {
 	}
 
 	private void logSubContext(Map<String, Context> subContextMap) {
-		LOGGER.logMessage(LogLevel.DEBUG, "子环境[{0}]的内容开始：");
+		LOGGER.logMessage(LogLevel.DEBUG, "子环境的内容开始：");
 		if (subContextMap != null) {
 			for (String key : subContextMap.keySet()) {
 				logContext(subContextMap.get(key));
 			}
 		}
-		LOGGER.logMessage(LogLevel.DEBUG, "子环境[{0}]的内容结束：");
+		LOGGER.logMessage(LogLevel.DEBUG, "子环境的内容结束：");
 	}
 
 	private void logItemMap(Map<String, Object> itemMap) {

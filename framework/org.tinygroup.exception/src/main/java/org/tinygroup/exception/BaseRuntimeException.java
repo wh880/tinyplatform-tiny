@@ -25,12 +25,15 @@ import org.tinygroup.i18n.I18nMessageFactory;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BaseRuntimeException extends RuntimeException {
     private static final long serialVersionUID = -1141168272047460629L;
     private static final I18nMessage i18nMessage = I18nMessageFactory
             .getI18nMessages();// 需要在启动的时候注入进来
     private String errorMsg;
+	private static Pattern pattern = Pattern.compile("[{](.)*?[}]");
 
     private ErrorCode errorCode;
 
@@ -42,6 +45,11 @@ public class BaseRuntimeException extends RuntimeException {
                                 Locale locale, Object... params) {
         String errorI18nMsg = i18nMessage.getMessage(errorCode, locale,
                 defaultErrorMsg, params);
+        if(StringUtil.isBlank(errorI18nMsg)){
+        	this.errorMsg=format(errorCode, params);
+        }else{
+        	this.errorMsg=errorI18nMsg;
+        }
         initErrorCode(errorCode, errorI18nMsg);
     }
 
@@ -63,6 +71,11 @@ public class BaseRuntimeException extends RuntimeException {
         super(throwable);
         String errorI18nMsg = i18nMessage.getMessage(errorCode, locale,
                 defaultErrorMsg, params);
+        if(StringUtil.isBlank(errorI18nMsg)){
+        	this.errorMsg=format(errorCode, params);
+        }else{
+        	this.errorMsg=errorI18nMsg;
+        }
         initErrorCode(errorCode, errorI18nMsg);
     }
 
@@ -74,6 +87,11 @@ public class BaseRuntimeException extends RuntimeException {
                                 Context context, Locale locale) {
         String errorI18nMsg = i18nMessage.getMessage(errorCode, defaultErrorMsg,
                 context, locale);
+        if(StringUtil.isBlank(errorI18nMsg)){
+        	this.errorMsg=i18nMessage.format(errorCode, context);
+        }else{
+        	this.errorMsg=errorI18nMsg;
+        }
         initErrorCode(errorCode, errorI18nMsg);
     }
 
@@ -121,11 +139,6 @@ public class BaseRuntimeException extends RuntimeException {
     }
 
     private void initErrorCode(String errorCode, String errorI18nMsg) {
-        if (StringUtil.isBlank(errorI18nMsg)) {
-            this.errorMsg = errorCode;//errorCode获取不到国际化信息，认为传递的errorCode就是错误信息.
-        } else {
-            this.errorMsg = errorI18nMsg;
-        }
         try {
             this.errorCode = ErrorCodeFactory.parseErrorCode(errorCode, this);
         } catch (Exception e) {//兼容以前错误码没有规范的处理,扑捉异常不外抛
@@ -167,5 +180,19 @@ public class BaseRuntimeException extends RuntimeException {
             return false;
         }
     }
+    
+    private String format(String message, Object... args) {
+		Matcher matcher = pattern.matcher(message);
+		StringBuilder stringBuffer = new StringBuilder();
+		int start = 0;
+		int count = 0;
+		while (matcher.find(start)) {
+			stringBuffer.append(message.substring(start, matcher.start()));
+			stringBuffer.append(args[count++]);
+			start = matcher.end();
+		}
+		stringBuffer.append(message.substring(start, message.length()));
+		return stringBuffer.toString();
+	}
 
 }

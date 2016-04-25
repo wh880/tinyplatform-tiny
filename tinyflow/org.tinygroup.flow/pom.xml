@@ -44,6 +44,11 @@
       <artifactId>org.tinygroup.elmvel</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.beancontext</artifactId>
+      <version>${project.version}</version>
+    </dependency>
      <dependency>
       <groupId>org.tinygroup</groupId>
       <artifactId>org.tinygroup.annotation</artifactId>

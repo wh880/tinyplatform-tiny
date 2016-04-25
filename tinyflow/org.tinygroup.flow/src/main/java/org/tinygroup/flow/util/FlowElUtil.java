@@ -16,34 +16,58 @@
 package org.tinygroup.flow.util;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.beancontext.BeanContextImpl;
 import org.tinygroup.context.Context;
 import org.tinygroup.el.EL;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 
 public class FlowElUtil {
-	private static final Logger LOGGER = LoggerFactory.getLogger(FlowElUtil.class);
-	
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(FlowElUtil.class);
 
-	public static boolean executeCondition(String condition, Context context,ClassLoader loader) {
-		EL el = BeanContainerFactory.getBeanContainer(loader).getBean(EL.EL_BEAN);
-		return (Boolean) el.execute(condition, context);
+	public static boolean executeCondition(String condition, Context context,
+			ClassLoader loader) {
+		EL el = BeanContainerFactory.getBeanContainer(loader).getBean(
+				EL.EL_BEAN);
+		BeanContextImpl beanContext = null;
+		if (context instanceof BeanContextImpl) {
+			beanContext = (BeanContextImpl) context;
+		} else {
+			beanContext = new BeanContextImpl(context);
+		}
+		return (Boolean) el.execute(condition, beanContext);
 	}
 
-	public static Object execute(String expression, Context context,ClassLoader loader) {
+	public static Object execute(String expression, Context context,
+			ClassLoader loader) {
+		BeanContextImpl beanContext = null;
+		if (context instanceof BeanContextImpl) {
+			beanContext = (BeanContextImpl) context;
+		} else {
+			beanContext = new BeanContextImpl(context);
+		}
 		try {
-			EL el = BeanContainerFactory.getBeanContainer(loader).getBean(EL.EL_BEAN);
-			return el.execute(expression, context);
+			EL el = BeanContainerFactory.getBeanContainer(loader).getBean(
+					EL.EL_BEAN);
+			return el.execute(expression, beanContext);
 		} catch (Exception e) {
-			LOGGER.errorMessage("执行el表达式时出错", e,expression);
+			LOGGER.errorMessage("执行el表达式时出错", e, expression);
 			return null;
 		}
 	}
-	
-	public static Object executeNotCatchException(String expression, Context context,ClassLoader loader) {
-		
-			EL el = BeanContainerFactory.getBeanContainer(loader).getBean(EL.EL_BEAN);
-			return el.execute(expression, context);
-		
+
+	public static Object executeNotCatchException(String expression,
+			Context context, ClassLoader loader) {
+		BeanContextImpl beanContext = null;
+		if (context instanceof BeanContextImpl) {
+			beanContext = (BeanContextImpl) context;
+		} else {
+			beanContext = new BeanContextImpl(context);
+		}
+		EL el = BeanContainerFactory.getBeanContainer(loader).getBean(
+				EL.EL_BEAN);
+		return el.execute(expression, beanContext);
+
 	}
 }
