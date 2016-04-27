@@ -2,7 +2,7 @@ package org.tinygroup.flow.test.newtestcase.params;
 
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
-import org.tinygroup.flow.test.newtestcase.AbstractFlowTestcase;
+import org.tinygroup.flow.component.AbstractFlowComponent;
  
 /**
  * 
@@ -10,7 +10,7 @@ import org.tinygroup.flow.test.newtestcase.AbstractFlowTestcase;
  * @author: qiuqn
  * @version: 2016年4月15日 上午10:40:02
  */
-public class FlowParamComponentTest extends AbstractFlowTestcase {
+public class FlowParamComponentTest extends AbstractFlowComponent {
 
 	/**
 	 * 
