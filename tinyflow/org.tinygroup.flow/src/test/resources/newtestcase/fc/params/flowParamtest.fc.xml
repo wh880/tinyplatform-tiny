@@ -1,0 +1,29 @@
+<components>
+	<component name="flowParamElComponent" bean="flowParamElComponent"
+		title="el参数测试组件"  icon="">
+		<short-description>流程参数传递测试组件</short-description>
+		<long-description>流程参数传递测试组件，用于测试流程参数的传芳方式</long-description>
+		<parameter name="el" title="el表达式" type="java.lang.String"></parameter>
+		<parameter name="str" title="普通类型" type="java.lang.String"></parameter>
+	</component>
+	<component name="flowParamComponent" bean="flowParamComponent"
+		title="普通类型参数测试组件"  icon="">
+		<short-description>流程参数传递测试组件</short-description>
+		<long-description>流程参数传递测试组件，用于测试流程参数的传芳方式</long-description>
+		<parameter name="obool" title="普通类型" type="java.lang.Boolean"></parameter>
+		<parameter name="sbool" title="普通类型" type="boolean"></parameter>
+		<parameter name="ochar" title="普通类型" type="java.lang.Character"></parameter>
+		<parameter name="schar" title="普通类型" type="char"></parameter>
+		<parameter name="sint" title="普通类型" type="int"></parameter>
+		<parameter name="oint" title="普通类型" type="java.lang.Integer"></parameter>
+		<parameter name="odouble" title="普通类型" type="java.lang.Double"></parameter>
+		<parameter name="sdouble" title="普通类型" type="double"></parameter>
+		<parameter name="oshort" title="普通类型" type="java.lang.Short"></parameter>
+		<parameter name="sshort" title="普通类型" type="short"></parameter>
+		<parameter name="olong" title="普通类型" type="java.lang.Long"></parameter>
+		<parameter name="slong" title="普通类型" type="long"></parameter>
+		<parameter name="ofloat" title="普通类型" type="java.lang.Float"></parameter>
+		<parameter name="sfloat" title="普通类型" type="float"></parameter>
+	</component>
+</components>
+
