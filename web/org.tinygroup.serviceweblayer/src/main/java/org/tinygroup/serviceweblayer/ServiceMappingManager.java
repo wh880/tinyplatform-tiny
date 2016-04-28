@@ -13,24 +13,24 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.helloworld.action;
+package org.tinygroup.serviceweblayer;
 
-import org.tinygroup.tinymvc.annotation.Controller;
-import org.tinygroup.tinymvc.annotation.RequestMapping;
-import org.tinygroup.tinymvc.annotation.ResultKey;
-import org.tinygroup.tinymvc.annotation.View;
 
-@Controller()
-public class HelloAction{
-	
-	@RequestMapping(value={"/helloByMvc.do"})
-	@View(value="/helloworld/helloresult.page")
-	@ResultKey(value="result")
-	public String sayHelloMethod(String name) {
-		if (name == null) {
-			name = "world";
-		}
-		return  String.format("Hello, %s", name);
-	}
+import org.tinygroup.serviceweblayer.config.ServiceViewMapping;
+import org.tinygroup.serviceweblayer.config.ServiceViewMappings;
 
+public interface ServiceMappingManager {
+    String MANAGER_BEAN = "serviceMappingManager";
+    String XSTREAM_PACKAGE_NAME = "service";
+
+    void addServiceMappings(ServiceViewMappings mappings);
+
+    void removeServiceMappings(ServiceViewMappings mappings);
+
+    void addServiceMapping(ServiceViewMapping mapping);
+
+    String getUrl(String serviceId);
+    
+    ServiceViewMapping getServiceViewMapping(String serviceId);
+    
 }

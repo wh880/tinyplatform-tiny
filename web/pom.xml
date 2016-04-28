@@ -20,5 +20,7 @@
     <module>org.tinygroup.springmerge</module>
 	<module>org.tinygroup.mockserviceweb</module>
 	<module>org.tinygroup.servicehttpchannelweb</module>
+    <module>org.tinygroup.serviceweblayer</module>
+    <module>org.tinygroup.tinymvc</module>
   </modules>
 </project>

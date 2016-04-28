@@ -39,11 +39,4 @@
 	<bean id="serviceParamValidate" name="serviceParamValidate" scope="prototype"
 		class="org.tinygroup.service.aop.impl.ServiceParamValidate">
 	</bean>
-	<bean id="serviceMappingManager" scope="singleton"
-		class="org.tinygroup.service.impl.ServiceMappingManagerImpl">
-	</bean>
-	<bean id="serviceMappingFileProcessor" scope="singleton"
-		class="org.tinygroup.service.fileresolver.ServiceMappingFileProcessor">
-		<property name="manager" ref="serviceMappingManager"></property>
-	</bean>
 </beans>

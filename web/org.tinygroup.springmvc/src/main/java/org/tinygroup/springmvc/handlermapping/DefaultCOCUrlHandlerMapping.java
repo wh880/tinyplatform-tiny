@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMa
 import org.tinygroup.springmvc.coc.ConventionHelper;
 import org.tinygroup.springmvc.util.WebUtil;
 import org.tinygroup.weblayer.WebContext;
-import org.tinygroup.weblayer.mvc.WebContextAware;
+import org.tinygroup.weblayer.WebContextAware;
 import org.tinygroup.weblayer.webcontext.util.WebContextUtil;
 
 import javax.servlet.http.HttpServletRequest;

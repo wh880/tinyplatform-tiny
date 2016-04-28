@@ -13,24 +13,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.helloworld.action;
+package org.tinygroup.tinymvc.annotation;
 
-import org.tinygroup.tinymvc.annotation.Controller;
-import org.tinygroup.tinymvc.annotation.RequestMapping;
-import org.tinygroup.tinymvc.annotation.ResultKey;
-import org.tinygroup.tinymvc.annotation.View;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Controller()
-public class HelloAction{
-	
-	@RequestMapping(value={"/helloByMvc.do"})
-	@View(value="/helloworld/helloresult.page")
-	@ResultKey(value="result")
-	public String sayHelloMethod(String name) {
-		if (name == null) {
-			name = "world";
-		}
-		return  String.format("Hello, %s", name);
-	}
-
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Controller {
 }

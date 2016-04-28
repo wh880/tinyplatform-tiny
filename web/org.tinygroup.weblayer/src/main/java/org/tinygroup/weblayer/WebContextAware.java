@@ -13,24 +13,19 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.helloworld.action;
+package org.tinygroup.weblayer;
 
-import org.tinygroup.tinymvc.annotation.Controller;
-import org.tinygroup.tinymvc.annotation.RequestMapping;
-import org.tinygroup.tinymvc.annotation.ResultKey;
-import org.tinygroup.tinymvc.annotation.View;
 
-@Controller()
-public class HelloAction{
+/**
+ * 
+ * 功能说明:webcontext的适配接口 
+
+ * 开发人员: renhui <br>
+ * 开发时间: 2013-4-24 <br>
+ * <br>
+ */
+public interface WebContextAware {
 	
-	@RequestMapping(value={"/helloByMvc.do"})
-	@View(value="/helloworld/helloresult.page")
-	@ResultKey(value="result")
-	public String sayHelloMethod(String name) {
-		if (name == null) {
-			name = "world";
-		}
-		return  String.format("Hello, %s", name);
-	}
+	void setContext(WebContext webContext);
 
 }
