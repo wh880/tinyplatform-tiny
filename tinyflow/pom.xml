@@ -10,5 +10,6 @@
   <modules>
     <module>org.tinygroup.flow</module>
 	  <module>org.tinygroup.flowprocessor</module>
+    <module>org.tinygroup.flowweblayer</module>
   </modules>
 </project>
