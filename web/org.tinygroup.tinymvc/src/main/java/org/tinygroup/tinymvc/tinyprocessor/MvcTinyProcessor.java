@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.weblayer.tinyprocessor;
+package org.tinygroup.tinymvc.tinyprocessor;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.logger.LogLevel;
@@ -21,9 +21,9 @@ import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
-import org.tinygroup.weblayer.mvc.HandlerExecutionChain;
-import org.tinygroup.weblayer.mvc.HandlerMapping;
-import org.tinygroup.weblayer.mvc.MappingModelExecute;
+import org.tinygroup.tinymvc.HandlerExecutionChain;
+import org.tinygroup.tinymvc.HandlerMapping;
+import org.tinygroup.tinymvc.MappingModelExecute;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

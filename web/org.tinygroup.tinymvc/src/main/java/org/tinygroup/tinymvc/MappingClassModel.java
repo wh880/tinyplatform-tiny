@@ -13,12 +13,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.weblayer.mvc;
+package org.tinygroup.tinymvc;
 
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.weblayer.mvc.annotation.RequestMapping;
+import org.tinygroup.tinymvc.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Map;

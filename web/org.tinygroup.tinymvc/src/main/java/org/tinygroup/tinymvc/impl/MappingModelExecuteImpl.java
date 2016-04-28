@@ -13,23 +13,33 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.weblayer.mvc;
+package org.tinygroup.tinymvc.impl;
 
+import org.tinygroup.tinymvc.HandlerExecutionChain;
+import org.tinygroup.tinymvc.MappingModelExecute;
+import org.tinygroup.weblayer.WebContext;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
- * 请求与处理对象之间的映射接口
- * 功能说明: 
+ * 
+ * 功能说明: 请求映射的执行接口的默认实现
 
  * 开发人员: renhui <br>
- * 开发时间: 2013-4-22 <br>
+ * 开发时间: 2013-4-24 <br>
  * <br>
  */
-public interface HandlerMapping {
-	/**
-	 * 
-	 * 初始化操作
-	 */
-	void init();
+public class MappingModelExecuteImpl implements MappingModelExecute {
 
-	HandlerExecutionChain getHandler(String requestUrl);
+	
+	public void execute(HandlerExecutionChain chain, WebContext context) throws ServletException, IOException {
+		chain.setContext(context);
+		try {
+			chain.execute();
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 }

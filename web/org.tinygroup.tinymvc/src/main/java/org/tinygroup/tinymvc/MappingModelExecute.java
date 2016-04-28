@@ -13,14 +13,30 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.weblayer.mvc.annotation;
+package org.tinygroup.tinymvc;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.tinygroup.weblayer.WebContext;
 
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Controller {
+import javax.servlet.ServletException;
+import java.io.IOException;
+
+
+/**
+ * 
+ * 功能说明: 请求映射的执行接口
+
+ * 开发人员: renhui <br>
+ * 开发时间: 2013-4-23 <br>
+ * <br>
+ */
+public interface MappingModelExecute {
+
+	/**
+	 * 
+	 *执行方法
+	 * @param chain
+	 * @param context
+	 */
+	void execute(HandlerExecutionChain chain, WebContext context)throws ServletException, IOException;
+	
 }

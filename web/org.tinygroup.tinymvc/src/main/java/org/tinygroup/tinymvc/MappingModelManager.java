@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.weblayer.mvc;
+package org.tinygroup.tinymvc;
 
 import java.util.Set;
 
@@ -33,7 +33,7 @@ public interface MappingModelManager {
 	 * @param clazz 具有@Contoller注解的类
 	 * @param model 请求映射信息
 	 */
-	 void putMappingModel(Class clazz,MappingClassModel model);
+	 void putMappingModel(Class clazz, MappingClassModel model);
 	
 	/**
 	 * 
@@ -52,7 +52,7 @@ public interface MappingModelManager {
 	 */
 	 HandlerExecutionChain getMappingModelWithUrl(String url);
 	 
-	void putUrlMappings(Set<String> urlPatterns,MappingClassModel model);
+	void putUrlMappings(Set<String> urlPatterns, MappingClassModel model);
 	void putUrlMapping(String combinedPattern, MappingClassModel model); 
 	
 }

@@ -13,16 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.weblayer.mvc;
-
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Collection;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
+package org.tinygroup.tinymvc;
 
 import org.springframework.core.ParameterNameDiscoverer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
@@ -33,9 +24,17 @@ import org.tinygroup.context2object.fileresolver.GeneratorFileProcessor;
 import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.loader.LoaderManager;
 import org.tinygroup.springutil.AnnotationParameterNameDiscoverer;
-import org.tinygroup.springutil.MethodNameAccessTool;
 import org.tinygroup.weblayer.WebContext;
-import org.tinygroup.weblayer.mvc.annotation.View;
+import org.tinygroup.tinymvc.annotation.View;
+import org.tinygroup.weblayer.WebContextAware;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Collection;
 
 /**
  * 
