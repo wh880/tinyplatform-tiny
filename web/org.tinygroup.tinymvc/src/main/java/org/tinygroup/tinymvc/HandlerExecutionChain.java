@@ -26,7 +26,7 @@ import org.tinygroup.loader.LoaderManager;
 import org.tinygroup.springutil.AnnotationParameterNameDiscoverer;
 import org.tinygroup.weblayer.WebContext;
 import org.tinygroup.tinymvc.annotation.View;
-import org.tinygroup.weblayer.WebContextAware;
+import org.tinygroup.weblayer.mvc.WebContextAware;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
