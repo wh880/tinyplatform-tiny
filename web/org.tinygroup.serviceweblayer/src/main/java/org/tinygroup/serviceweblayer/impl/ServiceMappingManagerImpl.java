@@ -13,11 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.service.impl;
+package org.tinygroup.serviceweblayer.impl;
 
-import org.tinygroup.service.ServiceMappingManager;
-import org.tinygroup.service.config.ServiceViewMapping;
-import org.tinygroup.service.config.ServiceViewMappings;
+import org.tinygroup.serviceweblayer.ServiceMappingManager;
+import org.tinygroup.serviceweblayer.config.ServiceViewMapping;
+import org.tinygroup.serviceweblayer.config.ServiceViewMappings;
 
 import java.util.HashMap;
 import java.util.Map;

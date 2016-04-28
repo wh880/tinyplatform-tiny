@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.weblayer.tinyprocessor;
+package org.tinygroup.serviceweblayer.processor;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.tinygroup.cepcore.CEPCore;
@@ -24,8 +24,8 @@ import org.tinygroup.event.Event;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.event.ServiceRequest;
-import org.tinygroup.service.ServiceMappingManager;
-import org.tinygroup.service.config.ServiceViewMapping;
+import org.tinygroup.serviceweblayer.ServiceMappingManager;
+import org.tinygroup.serviceweblayer.config.ServiceViewMapping;
 import org.tinygroup.weblayer.AbstractTinyProcessor;
 import org.tinygroup.weblayer.WebContext;
 

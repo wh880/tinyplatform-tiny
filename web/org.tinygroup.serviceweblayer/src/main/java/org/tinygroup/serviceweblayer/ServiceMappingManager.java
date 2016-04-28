@@ -13,10 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.service;
+package org.tinygroup.serviceweblayer;
 
-import org.tinygroup.service.config.ServiceViewMapping;
-import org.tinygroup.service.config.ServiceViewMappings;
+
+import org.tinygroup.serviceweblayer.config.ServiceViewMapping;
+import org.tinygroup.serviceweblayer.config.ServiceViewMappings;
 
 public interface ServiceMappingManager {
     String MANAGER_BEAN = "serviceMappingManager";

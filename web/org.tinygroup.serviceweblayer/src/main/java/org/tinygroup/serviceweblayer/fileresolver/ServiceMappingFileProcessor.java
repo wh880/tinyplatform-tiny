@@ -13,17 +13,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.service.fileresolver;
-
-import java.io.InputStream;
+package org.tinygroup.serviceweblayer.fileresolver;
 
 import com.thoughtworks.xstream.XStream;
 import org.tinygroup.fileresolver.impl.AbstractFileProcessor;
 import org.tinygroup.logger.LogLevel;
-import org.tinygroup.service.ServiceMappingManager;
-import org.tinygroup.service.config.ServiceViewMappings;
+import org.tinygroup.serviceweblayer.ServiceMappingManager;
+import org.tinygroup.serviceweblayer.config.ServiceViewMappings;
 import org.tinygroup.vfs.FileObject;
 import org.tinygroup.xstream.XStreamFactory;
+
+import java.io.InputStream;
 
 public class ServiceMappingFileProcessor extends AbstractFileProcessor {
 
