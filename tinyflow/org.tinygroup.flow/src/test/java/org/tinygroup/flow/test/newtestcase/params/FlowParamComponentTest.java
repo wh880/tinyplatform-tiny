@@ -157,5 +157,26 @@ public class FlowParamComponentTest extends AbstractFlowComponent {
 		assertEquals((long)1, Long.valueOf(context.get("slong").toString()).longValue());
 		assertEquals(new Float(1), Float.valueOf(context.get("ofloat").toString()));
 		assertEquals((float)1, Float.valueOf(context.get("sfloat").toString()).floatValue());
+		
+		Context context2 = new ContextImpl();
+		context2.put("str", 1);
+		context2.put("str2", false);
+		context2.put("str3", 'A');
+		Event e = Event.createEvent("flowParamTest7", context2);
+		cepcore.process(e);
+		assertEquals(new Boolean(false), Boolean.valueOf(e.getServiceRequest().getContext().get("obool").toString()));
+		assertEquals(false, Boolean.valueOf(e.getServiceRequest().getContext().get("sbool").toString()).booleanValue());
+		assertEquals(new Character('A'), e.getServiceRequest().getContext().get("ochar"));
+		assertEquals('A', Character.valueOf(e.getServiceRequest().getContext().get("schar").toString().toCharArray()[0]).charValue());
+		assertEquals(1, Integer.valueOf(e.getServiceRequest().getContext().get("sint").toString()).intValue());
+		assertEquals(new Integer(1), Integer.valueOf(e.getServiceRequest().getContext().get("oint").toString()));
+		assertEquals(new Double(1), Double.valueOf(e.getServiceRequest().getContext().get("odouble").toString()));
+		assertEquals((double)1, Double.valueOf(e.getServiceRequest().getContext().get("sdouble").toString()).doubleValue());
+		assertEquals(new Short("1"), Short.valueOf(e.getServiceRequest().getContext().get("oshort").toString()));
+		assertEquals((short) 1, Short.valueOf(e.getServiceRequest().getContext().get("sshort").toString()).shortValue());
+		assertEquals(new Long(1), Long.valueOf(e.getServiceRequest().getContext().get("olong").toString()));
+		assertEquals((long)1, Long.valueOf(e.getServiceRequest().getContext().get("slong").toString()).longValue());
+		assertEquals(new Float(1), Float.valueOf(e.getServiceRequest().getContext().get("ofloat").toString()));
+		assertEquals((float)1, Float.valueOf(e.getServiceRequest().getContext().get("sfloat").toString()).floatValue());
 	}
 }

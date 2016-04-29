@@ -3,6 +3,21 @@
     <parameter array="false" required="false" name="str" type="java.lang.String" scope="in"/>
     <parameter array="false" required="false" name="str2" type="java.lang.Boolean" scope="in"/>
     <parameter array="false" required="false" name="str3" type="java.lang.String" scope="in"/>
+    
+    <parameter name="obool" array="false" required="false" type="java.lang.Boolean" scope="out"/>
+	  <parameter name="sbool" array="false" required="false" type="boolean" scope="out"/>
+	  <parameter name="ochar" required="false" type="java.lang.Character" scope="out"/>
+	  <parameter name="schar" array="false" required="false" type="char" scope="out"/>
+	  <parameter name="sint" array="false" required="false" type="int" scope="out"/>
+	  <parameter name="oint" array="false" required="false" type="java.lang.Integer" scope="out"/>
+	  <parameter name="odouble" array="false" required="false" type="java.lang.Double" scope="out"/>
+	  <parameter name="sdouble" array="false" required="false" type="double" scope="out"/>
+	  <parameter name="oshort" array="false" required="false" type="java.lang.Short" scope="out"/>
+	  <parameter name="sshort" array="false" required="false" type="short" scope="out"/>
+	  <parameter name="olong" array="false" required="false" type="java.lang.Long" scope="out"/>
+	  <parameter name="slong" array="false" required="false" type="long" scope="out"/>
+	  <parameter name="ofloat" required="false" type="java.lang.Float" scope="out"/>
+	  <parameter name="sfloat" required="false" type="float" scope="out"/>
   </parameters>
   <nodes>
     <node id="begin" name="begin" title="开始">
