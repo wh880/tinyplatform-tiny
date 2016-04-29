@@ -1,0 +1,9 @@
+<components>
+	<component name="flowInheritComponent" bean="flowInheritComponent"
+		title="流程继承组件" category="测试" icon="">
+		<short-description></short-description>
+		<long-description></long-description>
+		<parameter name="appendStr" title="附加字符串" type="java.lang.String"></parameter>
+	</component>
+</components>
+

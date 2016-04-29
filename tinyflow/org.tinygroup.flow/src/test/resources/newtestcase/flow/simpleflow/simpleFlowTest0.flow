@@ -1,0 +1,26 @@
+<flow id="simpleFlowTest0" enable="false" private-context="false">
+  <description>简单流程的是否有效标识为否</description>
+  <parameters>
+    <parameter array="false" required="false" name="elflow" type="java.lang.String" scope="in"/>
+    <parameter array="false" required="false" name="strflow" type="java.lang.String" scope="in"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="simpleFlowComponent"/>
+      </next-nodes>
+    </node>
+    <node id="simpleFlowComponent" name="simpleFlowComponent" title="简单流程组件">
+      <component name="simpleFlowComponent" title="简单流程组件">
+        <description></description>
+        <properties>
+          <flow-property name="age" value="22" required="true" type="java.lang.Integer"/>
+          <flow-property name="name" value="马云" required="true" type="java.lang.String"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

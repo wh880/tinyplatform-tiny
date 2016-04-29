@@ -15,10 +15,11 @@
  */
 package org.tinygroup.flow.component;
 
-import junit.framework.TestCase;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.tinytestutil.AbstractTestUtil;
+
+import junit.framework.TestCase;
 
 public abstract class AbstractFlowComponent extends TestCase {
 
@@ -38,8 +39,4 @@ public abstract class AbstractFlowComponent extends TestCase {
 				this.getClass().getClassLoader()).getBean(
 				FlowExecutor.PAGE_FLOW_BEAN);
 	}
-
-	public void testDemo() {
-	}
-
 }

@@ -1,0 +1,16 @@
+<components>
+	<component name="simpleFlowComponent" bean="simpleFlowComponent"
+		title="简单流程组件" category="测试" icon="">
+		<short-description></short-description>
+		<long-description></long-description>
+		<parameter name="age" title="年龄" type="java.lang.Integer"></parameter>
+		<parameter name="name" title="姓名" type="java.lang.String"></parameter>
+	</component>
+	
+	<component name="simpleFlowForeachComponent" bean="simpleFlowForeachComponent"
+		title="简单流程遍历测试组件" category="测试" icon="">
+		<short-description></short-description>
+		<long-description></long-description>
+	</component>
+</components>
+

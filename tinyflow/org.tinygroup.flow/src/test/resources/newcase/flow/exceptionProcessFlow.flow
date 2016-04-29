@@ -1,6 +1,9 @@
 <flow id="exceptionProcessFlow" enable="true" private-context="false">
   <nodes>
     <node id="start" name="start" title="开始">
+      <component>
+        <properties/>
+      </component>
       <next-nodes>
         <next-node next-node-id="exception"/>
       </next-nodes>
@@ -12,6 +15,7 @@
       </component>
       <next-nodes>
         <next-node exception-type="org.tinygroup.flow.test.Exception.ExceptionNew4InOtherFlow" next-node-id="plusComponent"/>
+        <next-node exception-type="org.tinygroup.flow.test.newtestcase.exception.component.ComponentException4" next-node-id="exceptionUtilComponent"/>
       </next-nodes>
     </node>
     <node id="plusComponent" name="plusComponent" title="+4 exception4">
@@ -25,8 +29,16 @@
         <next-node next-node-id="end"/>
       </next-nodes>
     </node>
-    <node id="end" name="end" title="结束">
-      <next-nodes/>
+    <node id="exceptionUtilComponent" name="exceptionUtilComponent" title="测试流程异常4">
+      <component name="exceptionUtilComponent" title="辅助测试流程异常">
+        <description></description>
+        <properties>
+          <flow-property name="no" value="4" required="true" type="java.lang.Integer"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
     </node>
   </nodes>
 </flow>
