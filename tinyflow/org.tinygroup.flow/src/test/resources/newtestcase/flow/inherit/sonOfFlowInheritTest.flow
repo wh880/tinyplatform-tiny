@@ -1,0 +1,4 @@
+<flow id="sonOfFlowInheritTest" extend-flow-id="flowInheritTest" enable="true" private-context="false">
+  <description>子流程纯继承不做任何覆盖</description>
+  <nodes/>
+</flow>
