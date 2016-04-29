@@ -22,6 +22,11 @@
             <artifactId>org.tinygroup.cepcore</artifactId>
             <version>${project.version}</version>
         </dependency>
+		<dependency>
+            <groupId>org.tinygroup</groupId>
+            <artifactId>org.tinygroup.service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.tinygroup</groupId>
             <artifactId>org.tinygroup.weblayer</artifactId>

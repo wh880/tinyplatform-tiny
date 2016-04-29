@@ -2,6 +2,7 @@ package org.tinygroup.flow.test.newtestcase.exception;
 
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
+import org.tinygroup.event.Event;
 import org.tinygroup.flow.component.AbstractFlowComponent;
 import org.tinygroup.flow.test.newtestcase.exception.component.ComponentException5;
  
@@ -24,6 +25,13 @@ public class FlowExceptionTest extends AbstractFlowComponent {
 		context.put("exceptionNo", 1);
 		flowExecutor.execute("flowExceptionTest", "begin", context);
 		assertEquals(1, Integer.valueOf(context.get("result").toString()).intValue());
+		
+		
+		Context context2 = new ContextImpl();
+		context2.put("exceptionNo", 1);
+		Event e = Event.createEvent("flowExceptionTest", context2);
+		cepcore.process(e);
+		assertEquals(1, Integer.valueOf(e.getServiceRequest().getContext().get("result").toString()).intValue());
 	}
 	
 	/**

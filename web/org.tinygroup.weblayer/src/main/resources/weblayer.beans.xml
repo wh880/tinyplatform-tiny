@@ -7,15 +7,7 @@
 	<bean id="gZIPFilter" scope="singleton"
 		class="org.tinygroup.weblayer.filter.gzip.GZIPFilter">
 	</bean>
-	<bean id="uiEngineTinyProcessor" scope="singleton"
-		class="org.tinygroup.weblayer.tinyprocessor.UiEngineTinyProcessor">
-		<property name="uiComponentManager">
-			<ref bean="uiComponentManager" />
-		</property>
-		<property name="fullContextFileRepository">
-			<ref bean="fullContextFileRepository" />
-		</property>
-	</bean>
+	
 	<bean id="tinyProcessorFileProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.fileresolver.TinyProcessorFileProcessor">
 		<property name="configManager" ref="tinyProcessorConfigManager"></property>
