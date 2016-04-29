@@ -22,5 +22,6 @@
 	<module>org.tinygroup.servicehttpchannelweb</module>
     <module>org.tinygroup.serviceweblayer</module>
     <module>org.tinygroup.tinymvc</module>
+    <module>org.tinygroup.uiengineweblayer</module>
   </modules>
 </project>
