@@ -15,17 +15,20 @@
  */
 package org.tinygroup.flow.component;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.flow.FlowExecutor;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
-
 import junit.framework.TestCase;
+
+import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.cepcore.CEPCore;
+import org.tinygroup.flow.FlowExecutor;
+import org.tinygroup.flow.test.testcase.FlowEventProcessorForTest;
+import org.tinygroup.tinytestutil.AbstractTestUtil;
 
 public abstract class AbstractFlowComponent extends TestCase {
 
 	protected FlowExecutor flowExecutor;
 	protected FlowExecutor pageFlowExecutor;
-
+	protected CEPCore cepcore;
+	protected FlowEventProcessorForTest eventProcessorForTest;
 	void init() {
 		AbstractTestUtil.init("application.xml", true);
 	}
@@ -38,5 +41,12 @@ public abstract class AbstractFlowComponent extends TestCase {
 		pageFlowExecutor = BeanContainerFactory.getBeanContainer(
 				this.getClass().getClassLoader()).getBean(
 				FlowExecutor.PAGE_FLOW_BEAN);
+		cepcore = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				CEPCore.CEP_CORE_BEAN);
+		eventProcessorForTest = BeanContainerFactory.getBeanContainer(
+				this.getClass().getClassLoader()).getBean(
+				"flowEventProcessorForTest");
+		cepcore.registerEventProcessor(eventProcessorForTest);
 	}
 }
