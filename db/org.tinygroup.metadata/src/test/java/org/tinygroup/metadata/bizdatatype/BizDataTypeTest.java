@@ -49,10 +49,10 @@ public class BizDataTypeTest {
 		businessType.setTypeId("hsvarcharid");
 		List<PlaceholderValue> placeholderValueList=new ArrayList<PlaceholderValue>();
 		businessType.setPlaceholderValueList(placeholderValueList);
-		PlaceholderValue placeholderVaue=new PlaceholderValue();
-		placeholderValueList.add(placeholderVaue);
-		placeholderVaue.setName("l");
-		placeholderVaue.setValue("112");
+		PlaceholderValue placeholderValue =new PlaceholderValue();
+		placeholderValueList.add(placeholderValue);
+		placeholderValue.setName("l");
+		placeholderValue.setValue("112");
 		
 		System.out.println(stream.toXML(businessTypes));
 

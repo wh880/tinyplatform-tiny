@@ -485,6 +485,11 @@ public class FlowExecutorImpl implements FlowExecutor {
 
 	public void assemble() {
 		for (Flow flow : flowIdMap.values()) {
+			try {
+				flow.validate();
+			} catch (Exception e) {
+				// TODO: 测试完成之后去掉此处的try
+			}
 			flow.assemble();
 		}
 	}

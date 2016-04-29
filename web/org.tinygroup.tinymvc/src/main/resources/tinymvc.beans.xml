@@ -1,0 +1,37 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd"
+	   default-autowire="byName" default-lazy-init="true">
+	<bean id="mappingModelManager" scope="singleton"
+		class="org.tinygroup.tinymvc.impl.MappingModelManagerImpl">
+	</bean>
+
+	<bean id="annotationHandlerMapping" scope="singleton"
+		class="org.tinygroup.tinymvc.handlermapping.AnnotationHandlerMapping">
+		<property name="manager">
+			<ref bean="mappingModelManager" />
+		</property>
+	</bean>
+
+	<bean id="mappingModelExecute" scope="singleton"
+		class="org.tinygroup.tinymvc.impl.MappingModelExecuteImpl">
+	</bean>
+
+	<bean id="mvcTinyProcessor" scope="singleton"
+		class="org.tinygroup.tinymvc.tinyprocessor.MvcTinyProcessor">
+		<property name="handler">
+			<ref bean="annotationHandlerMapping" />
+		</property>
+		<property name="execute">
+			<ref bean="mappingModelExecute" />
+		</property>
+	</bean>
+	<bean id="controllerAnnotationAction" name="controllerAnnotationAction"
+		scope="singleton"
+		class="org.tinygroup.tinymvc.annotationaction.ControllerAnnotationAction">
+		<property name="manager">
+			<ref bean="mappingModelManager" />
+		</property>
+	</bean>
+</beans>

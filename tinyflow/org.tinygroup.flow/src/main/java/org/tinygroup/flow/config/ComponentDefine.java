@@ -15,14 +15,15 @@
  */
 package org.tinygroup.flow.config;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import org.tinygroup.event.Parameter;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.tinygroup.event.Parameter;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 /**
  * 组件定义节点
@@ -54,17 +55,14 @@ public class ComponentDefine implements Serializable{
 	private String longDescription;
 
 	@XStreamImplicit
-	private List<Parameter> parameters;
+	private List<Parameter> parameters = new ArrayList<Parameter>();
 	@XStreamImplicit
-	private List<Result> results;
-	
-	public ComponentDefine(){
-		parameters=new ArrayList<Parameter>();
-		results=new ArrayList<Result>();
-	}
-
+	private List<Result> results = new ArrayList<Result>();
 	
 	public List<Parameter> getParameters() {
+		if(parameters == null){
+			parameters = new ArrayList<Parameter>();
+		}
 		return parameters;
 	}
 
@@ -81,6 +79,9 @@ public class ComponentDefine implements Serializable{
 	}
 
 	public List<Result> getResults() {
+		if(results == null){
+			results = new ArrayList<Result>();
+		}
 		return results;
 	}
 

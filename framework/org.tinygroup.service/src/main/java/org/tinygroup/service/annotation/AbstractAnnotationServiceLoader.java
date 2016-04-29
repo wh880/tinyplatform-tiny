@@ -23,7 +23,6 @@ import org.tinygroup.event.Parameter;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.service.ServiceMappingManager;
 import org.tinygroup.service.ServiceProxy;
 import org.tinygroup.service.exception.ServiceLoadException;
 import org.tinygroup.service.loader.AnnotationServiceLoader;
@@ -45,17 +44,6 @@ public abstract class AbstractAnnotationServiceLoader implements
 		AnnotationServiceLoader {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AbstractAnnotationServiceLoader.class);
-
-	private ServiceMappingManager serviceMappingManager;
-
-	public ServiceMappingManager getServiceMappingManager() {
-		return serviceMappingManager;
-	}
-
-	public void setServiceMappingManager(
-			ServiceMappingManager serviceMappingManager) {
-		this.serviceMappingManager = serviceMappingManager;
-	}
 
 	/**
 	 * 载入服务

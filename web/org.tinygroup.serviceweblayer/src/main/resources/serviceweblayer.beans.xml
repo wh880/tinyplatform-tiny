@@ -1,0 +1,24 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd"
+	   default-autowire="byName" default-lazy-init="true">
+	<bean id="serviceTinyProcessor" scope="singleton"
+		class="org.tinygroup.serviceweblayer.processor.ServiceTinyProcessor">
+		<property name="manager">
+			<ref bean="serviceMappingManager" />
+		</property>
+		<property name="core" ref="cepcore"></property>
+	</bean>
+	<bean id="serviceOutPutTinyProcessor" scope="singleton"
+		  class="org.tinygroup.serviceweblayer.processor.ServiceOutPutTinyProcessor">
+		<property name="core" ref="cepcore"></property>
+	</bean>
+	<bean id="serviceMappingManager" scope="singleton"
+		  class="org.tinygroup.serviceweblayer.impl.ServiceMappingManagerImpl">
+	</bean>
+	<bean id="serviceMappingFileProcessor" scope="singleton"
+		  class="org.tinygroup.serviceweblayer.fileresolver.ServiceMappingFileProcessor">
+		<property name="manager" ref="serviceMappingManager"></property>
+	</bean>
+</beans>
