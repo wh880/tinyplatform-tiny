@@ -1,5 +1,8 @@
 <flow id="flowExceptionTest" enable="true" private-context="false">
-  <parameters/>
+  <parameters>
+    <parameter array="false" required="true" name="exceptionNo" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="true" name="result" type="java.lang.Integer" scope="out"/>
+  </parameters>
   <nodes>
     <node id="begin" name="begin" title="开始">
       <next-nodes>
@@ -10,7 +13,7 @@
       <component name="exceptionSwitchComponent" title="异常生成switch">
         <description></description>
         <properties>
-          <flow-property name="exceptionNo" value="${exceptionNo}" required="true" type="int"/>
+          <flow-property name="exceptionNo" value="${exceptionNo}" required="false" type="int"/>
         </properties>
       </component>
       <next-nodes>
@@ -22,7 +25,7 @@
       <component name="exceptionUtilComponent" title="辅助测试流程异常">
         <description></description>
         <properties>
-          <flow-property name="no" value="1" required="true" type="java.lang.Integer"/>
+          <flow-property name="no" value="1" required="false" type="java.lang.Integer"/>
         </properties>
       </component>
       <next-nodes>
@@ -33,7 +36,7 @@
       <component name="exceptionUtilComponent" title="辅助测试流程异常">
         <description></description>
         <properties>
-          <flow-property name="no" value="2" required="true" type="java.lang.Integer"/>
+          <flow-property name="no" value="2" required="false" type="java.lang.Integer"/>
         </properties>
       </component>
       <next-nodes>
@@ -44,7 +47,7 @@
       <component name="exceptionSwitchComponent" title="异常生成switch">
         <description></description>
         <properties>
-          <flow-property name="exceptionNo" required="true" type="java.lang.String"/>
+          <flow-property name="exceptionNo" required="false" type="java.lang.String"/>
         </properties>
       </component>
       <next-nodes>
@@ -55,7 +58,7 @@
       <component name="exceptionUtilComponent" title="辅助测试流程异常">
         <description></description>
         <properties>
-          <flow-property name="no" value="3" required="true" type="java.lang.Integer"/>
+          <flow-property name="no" value="3" required="false" type="java.lang.Integer"/>
         </properties>
       </component>
       <next-nodes>
