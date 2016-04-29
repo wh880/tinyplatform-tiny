@@ -21,6 +21,8 @@ import org.tinygroup.context.Context;
 import org.tinygroup.dict.Dict;
 import org.tinygroup.dict.DictLoader;
 import org.tinygroup.dict.DictManager;
+import org.tinygroup.dict.exception.DictRuntimeException;
+import org.tinygroup.dict.exception.errorcode.DictExceptionErrorCode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +65,8 @@ public class DictManagerImpl implements DictManager {
 	
 	public Dict getDict(String lang,String dictTypeName, Context context) {
 		if(!dictLoaderMap.containsKey(lang)){
-			throw new RuntimeException("Locale:{}" + lang + "不存在对应的DictLoader");
+			throw new DictRuntimeException(DictExceptionErrorCode.DICT_LOADER_NOT_FOUND, lang);
+//			throw new RuntimeException("Locale:{}" + lang + "不存在对应的DictLoader");
 		}
 		for (DictLoader dictLoader : dictLoaderMap.get(lang)) {
 			Dict dict = dictLoader.getDict(dictTypeName, this, context);
@@ -71,7 +74,8 @@ public class DictManagerImpl implements DictManager {
 				return dict;
 			}
 		}
-		throw new RuntimeException("没有找到<" + dictTypeName + ">的字典类型");
+		throw new DictRuntimeException(DictExceptionErrorCode.DICT_TYPE_NAME_NOT_FOUND, dictTypeName);
+//		throw new RuntimeException("没有找到<" + dictTypeName + ">的字典类型");
 	}
 
 
