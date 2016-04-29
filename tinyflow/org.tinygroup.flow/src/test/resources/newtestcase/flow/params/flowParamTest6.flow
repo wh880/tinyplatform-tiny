@@ -1,20 +1,19 @@
 <flow id="flowParamTest6" enable="true" private-context="false">
   <parameters>
-    <parameter array="false" required="false" name="elflow" type="java.lang.String" scope="in"/>
-    <parameter array="false" required="false" name="strflow" type="java.lang.String" scope="in"/>
+    <parameter array="false" required="true" name="strIn" type="java.lang.String" scope="in"/>
+    <parameter array="false" required="true" name="result" type="java.lang.String" scope="out"/>
   </parameters>
   <nodes>
     <node id="begin" name="begin" title="开始">
       <next-nodes>
-        <next-node next-node-id="flowParamElComponent"/>
+        <next-node next-node-id="flowParamStringComponent"/>
       </next-nodes>
     </node>
-    <node id="flowParamElComponent" name="flowParamElComponent" title="流程参数传递测试组件">
-      <component name="flowParamElComponent" title="流程参数传递测试组件">
-        <description>流程参数传递测试组件</description>
+    <node id="flowParamStringComponent" name="flowParamStringComponent" title="String类型测试组件">
+      <component name="flowParamStringComponent" title="String类型测试组件">
+        <description>String类型测试组件</description>
         <properties>
-          <flow-property name="el" value="" required="true" type="el"/>
-          <flow-property name="str" value="${strflow}" required="true" type="java.lang.String"/>
+          <flow-property name="str" value="${strIn}" required="false" type="java.lang.String"/>
         </properties>
       </component>
       <next-nodes>

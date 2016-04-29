@@ -2,6 +2,7 @@ package org.tinygroup.flow.test.newtestcase.params;
 
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
+import org.tinygroup.event.Event;
 import org.tinygroup.flow.component.AbstractFlowComponent;
  
 /**
@@ -15,16 +16,21 @@ public class FlowParamComponentTest extends AbstractFlowComponent {
 	/**
 	 * 
 	 * @description：
-	 * 	参数el传递的类型为el表达式，参数值为 elflow,此时组件中参数el实际值为上下文中的key为elflow的值,如果上下文中不存在这个key，则值为null
+	 * 	参数el传递的类型为el表达式，参数值为 el,此时组件中参数el实际值为上下文中的key为el的值,如果上下文中不存在这个key，则值为null
 	 * @author: qiuqn
 	 * @version: 2016年4月13日上午9:55:51
 	 */
 	public void testflowParam1(){
 		Context context = new ContextImpl();
-		context.put("elflow", "a=1");
-		context.put("a", "李白");
-		flowExecutor.execute("flowParamTest1", "begin", context);
+		context.put("el", "a=1");
+		flowExecutor.execute("flowParamTest1", context);
 		assertEquals(1, Integer.valueOf(context.get("a").toString()).intValue());
+		
+		Context context2 = new ContextImpl();
+		context2.put("el", "a=1");
+		Event e = Event.createEvent("flowParamTest1", context2);
+		cepcore.process(e);
+		assertEquals(1, Integer.valueOf(e.getServiceRequest().getContext().get("a").toString()).intValue());
 	}
 	
 	/**
@@ -34,14 +40,18 @@ public class FlowParamComponentTest extends AbstractFlowComponent {
 	 * @author: qiuqn
 	 * @version: 2016年4月13日上午9:55:51
 	 */
-	public void testflowParam2(){
-		Context context = new ContextImpl();
-		context.put("elflow", "a=2");
-		context.put("a", "李白");
-		context.put("el", "");
-		flowExecutor.execute("flowParamTest2", "begin", context);
-		assertEquals(null, context.get("el"));
-	}
+//	public void testflowParam2(){
+//		Context context = new ContextImpl();
+//		context.put("elIn", "test");
+//		flowExecutor.execute("flowParamTest2",context);
+//		assertEquals(null, context.get("el"));
+		
+//		Context context2 = new ContextImpl();
+//		context2.put("elIn", "test");
+//		Event e = Event.createEvent("flowParamTest2", context2);
+//		cepcore.process(e);
+//		assertEquals(null, Integer.valueOf(e.getServiceRequest().getContext().get("el").toString()).intValue());
+//	}
 
 	/**
 	 * 
@@ -52,9 +62,13 @@ public class FlowParamComponentTest extends AbstractFlowComponent {
 	 */
 	public void testflowParam3(){
 		Context context = new ContextImpl();
-		context.put("a", "李白");
-		flowExecutor.execute("flowParamTest3", "begin", context);
+		flowExecutor.execute("flowParamTest3", context);
 		assertEquals(3, Integer.valueOf(context.get("a").toString()).intValue());
+		
+		Context context2 = new ContextImpl();
+		Event e = Event.createEvent("flowParamTest3", context2);
+		cepcore.process(e);
+		assertEquals(3, Integer.valueOf(e.getServiceRequest().getContext().get("a").toString()).intValue());
 	}
 	
 	/**
@@ -67,13 +81,15 @@ public class FlowParamComponentTest extends AbstractFlowComponent {
 	 */
 	public void testflowParam4(){
 		Context context = new ContextImpl();
-		context.put("b", "张三");
-		context.put("a", "李白");
-		context.put("el", "");
-		flowExecutor.execute("flowParamTest4", "begin", context);
+		flowExecutor.execute("flowParamTest4", context);
 		assertEquals("a=4", context.get("b").toString());
-		assertEquals("a=4", context.get("el").toString());
 		assertEquals(4, Integer.valueOf(context.get("a").toString()).intValue());
+		
+		Context context2 = new ContextImpl();
+		Event e = Event.createEvent("flowParamTest4", context2);
+		cepcore.process(e);
+		assertEquals("a=4", e.getServiceRequest().getContext().get("b").toString());
+		assertEquals(4, Integer.valueOf(e.getServiceRequest().getContext().get("a").toString()).intValue());
 	}
 	
 	/**
@@ -86,10 +102,13 @@ public class FlowParamComponentTest extends AbstractFlowComponent {
 	 */
 	public void testflowParam5(){
 		Context context = new ContextImpl();
-		context.put("strflow", "testStr");
-		context.put("str", "");
-		flowExecutor.execute("flowParamTest5", "begin", context);
-		assertEquals("b='testStr'", context.get("str").toString());
+		flowExecutor.execute("flowParamTest5", context);
+		assertEquals("b='testStr'", context.get("result").toString());
+		
+		Context context2 = new ContextImpl();
+		Event e = Event.createEvent("flowParamTest5", context2);
+		cepcore.process(e);
+		assertEquals("b='testStr'", e.getServiceRequest().getContext().get("result").toString());
 	}
 	
 	/**
@@ -101,10 +120,15 @@ public class FlowParamComponentTest extends AbstractFlowComponent {
 	 */
 	public void testflowParam6(){
 		Context context = new ContextImpl();
-		context.put("strflow", "杜甫");
-		context.put("str", "");
-		flowExecutor.execute("flowParamTest6", "begin", context);
-		assertEquals("杜甫", context.get("str").toString());
+		context.put("strIn", "李白");
+		flowExecutor.execute("flowParamTest6", context);
+		assertEquals("李白", context.get("result").toString());
+		
+		Context context2 = new ContextImpl();
+		context2.put("strIn", "李白");
+		Event e = Event.createEvent("flowParamTest6", context2);
+		cepcore.process(e);
+		assertEquals("李白", e.getServiceRequest().getContext().get("result").toString());
 	}
 	
 	/**
@@ -118,7 +142,7 @@ public class FlowParamComponentTest extends AbstractFlowComponent {
 		context.put("str", 1);
 		context.put("str2", false);
 		context.put("str3", 'A');
-		flowExecutor.execute("flowParamTest7", "begin", context);
+		flowExecutor.execute("flowParamTest7", context);
 		assertEquals(new Boolean(false), Boolean.valueOf(context.get("obool").toString()));
 		assertEquals(false, Boolean.valueOf(context.get("sbool").toString()).booleanValue());
 		assertEquals(new Character('A'), context.get("ochar"));

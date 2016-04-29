@@ -8,4 +8,6 @@
 	</bean>
 	<bean id="flowParamElComponent" class="org.tinygroup.flow.test.newtestcase.params.component.FlowParamElComponent">
 	</bean>
+	<bean id="flowParamStringComponent" class="org.tinygroup.flow.test.newtestcase.params.component.FlowParamStringComponent">
+	</bean>
 </beans>

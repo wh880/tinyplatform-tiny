@@ -11,16 +11,11 @@ public class FlowParamElComponent implements ComponentInterface {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(FlowParamElComponent.class);
 	private String el;
-	private String str;
 	
 	public void execute(Context context) {
-		LOGGER.logMessage(LogLevel.DEBUG, "流程参数传递测试");
-//		System.out.println("参数el的值为：      " + el);
-//		System.out.println("参数str的值为：      " + str);
+		LOGGER.logMessage(LogLevel.DEBUG, "流程参数el表达式传递测试");
 		FlowElUtil.execute(el, context, this.getClass().getClassLoader());
-		context.put("str", str);
-		context.put("el", el);
-		LOGGER.logMessage(LogLevel.DEBUG, "流程参数传递测试");
+		LOGGER.logMessage(LogLevel.DEBUG, "流程参数表达式传递测试");
 	}
 
 	public String getEl() {
@@ -29,14 +24,6 @@ public class FlowParamElComponent implements ComponentInterface {
 
 	public void setEl(String el) {
 		this.el = el;
-	}
-
-	public String getStr() {
-		return str;
-	}
-
-	public void setStr(String str) {
-		this.str = str;
 	}
 
 }

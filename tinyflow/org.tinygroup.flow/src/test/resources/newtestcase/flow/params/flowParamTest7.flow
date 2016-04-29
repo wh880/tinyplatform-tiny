@@ -14,20 +14,20 @@
       <component name="flowParamComponent" title="流程参数传递测试组件">
         <description>流程参数传递测试组件</description>
         <properties>
-          <flow-property name="obool" value="${str2}" required="true" type="java.lang.Boolean"/>
-          <flow-property name="sbool" value="${str2}" required="true" type="boolean"/>
-          <flow-property name="ochar" value="${str3}" required="true" type="java.lang.Character"/>
-          <flow-property name="schar" value="${str3}" required="true" type="char"/>
-          <flow-property name="sint" value="${str}" required="true" type="int"/>
-          <flow-property name="oint" value="${str}" required="true" type="java.lang.Integer"/>
-          <flow-property name="odouble" value="${str}" required="true" type="java.lang.Double"/>
-          <flow-property name="sdouble" value="${str}" required="true" type="double"/>
-          <flow-property name="oshort" value="${str}" required="true" type="java.lang.Short"/>
-          <flow-property name="sshort" value="${str}" required="true" type="short"/>
-          <flow-property name="olong" value="${str}" required="true" type="java.lang.Long"/>
-          <flow-property name="slong" value="${str}" required="true" type="long"/>
-          <flow-property name="ofloat" value="${str}" required="true" type="java.lang.Float"/>
-          <flow-property name="sfloat" value="${str}" required="true" type="float"/>
+          <flow-property name="obool" value="${str2}" required="false" type="java.lang.Boolean"/>
+          <flow-property name="sbool" value="${str2}" required="false" type="boolean"/>
+          <flow-property name="ochar" value="${str3}" required="false" type="java.lang.Character"/>
+          <flow-property name="schar" value="${str3}" required="false" type="char"/>
+          <flow-property name="sint" value="${str}" required="false" type="int"/>
+          <flow-property name="oint" value="${str}" required="false" type="java.lang.Integer"/>
+          <flow-property name="odouble" value="${str}" required="false" type="java.lang.Double"/>
+          <flow-property name="sdouble" value="${str}" required="false" type="double"/>
+          <flow-property name="oshort" value="${str}" required="false" type="java.lang.Short"/>
+          <flow-property name="sshort" value="${str}" required="false" type="short"/>
+          <flow-property name="olong" value="${str}" required="false" type="java.lang.Long"/>
+          <flow-property name="slong" value="${str}" required="false" type="long"/>
+          <flow-property name="ofloat" value="${str}" required="false" type="java.lang.Float"/>
+          <flow-property name="sfloat" value="${str}" required="false" type="float"/>
         </properties>
       </component>
       <next-nodes>
