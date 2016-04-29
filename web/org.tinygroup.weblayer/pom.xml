@@ -56,12 +56,6 @@
       <artifactId>org.tinygroup.cache</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
-    <dependency>
-      <groupId>org.tinygroup</groupId>
-      <artifactId>org.tinygroup.uiengine</artifactId>
-      <version>${project.version}</version>
-    </dependency>
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>

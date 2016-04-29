@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.weblayer.tinyprocessor;
+package org.tinygroup.uiengineweblayer.tinyprocessor;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
