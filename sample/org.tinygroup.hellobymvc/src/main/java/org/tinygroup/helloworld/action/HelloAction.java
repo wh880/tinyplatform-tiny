@@ -27,10 +27,8 @@ public class HelloAction{
 	@View(value="/helloworld/helloresult.page")
 	@ResultKey(value="result")
 	public String sayHelloMethod(String name) {
-		if (name == null) {
-			name = "world";
-		}
-		return  String.format("Hello, %s", name);
+		String newName = name == null?"world":name;
+		return  String.format("Hello, %s", newName);
 	}
 
 }

@@ -25,9 +25,7 @@ public class HelloWorldAnnotationService{
 	@ServiceMethod(serviceId = "helloByAnnotation")
 	@ServiceResult(name = "result")
 	public String sayHello(@ServiceParameter String name) {
-		if (name == null) {
-			name = "world";
-		}
-		return "hello," + name;
+		String newName = name == null?"world":name;
+		return "hello," + newName;
 	}
 }
