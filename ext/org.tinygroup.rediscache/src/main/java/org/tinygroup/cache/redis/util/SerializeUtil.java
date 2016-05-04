@@ -40,7 +40,7 @@ public class SerializeUtil {
 				try {
 					oos.close();
 				} catch (IOException e) {
-					//ignore
+					throw new RuntimeException(e);
 				}
 			}
 			
@@ -48,7 +48,7 @@ public class SerializeUtil {
 				try {
 					baos.close();
 				} catch (IOException e) {
-					//ignore
+					throw new RuntimeException(e);
 				}
 			}
 		}
@@ -70,7 +70,7 @@ public class SerializeUtil {
 				try {
 					ois.close();
 				} catch (IOException e) {
-					//ignore
+					throw new RuntimeException(e);
 				}
 			}
 			
@@ -78,7 +78,7 @@ public class SerializeUtil {
 				try {
 					bais.close();
 				} catch (IOException e) {
-					//ignore
+					throw new RuntimeException(e);
 				}
 			}
 		}
