@@ -13,17 +13,23 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinymvc.annotation;
+package org.tinygroup.weblayer.mvc;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface View {
+/**
+ * 请求与处理对象之间的映射接口
+ * 功能说明: 
 
-	String value() default "";
+ * 开发人员: renhui <br>
+ * 开发时间: 2013-4-22 <br>
+ * <br>
+ */
+public interface HandlerMapping {
+	/**
+	 * 
+	 * 初始化操作
+	 */
+	void init();
 
+	HandlerExecutionChain getHandler(String requestUrl);
 }

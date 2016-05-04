@@ -13,15 +13,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinymvc.annotationaction;
+package org.tinygroup.weblayer.mvc.annotationaction;
 
 import org.tinygroup.annotation.AnnotationClassAction;
 import org.tinygroup.annotation.AnnotationMethodAction;
 import org.tinygroup.commons.tools.AnnotationUtils;
-import org.tinygroup.tinymvc.MappingClassModel;
-import org.tinygroup.tinymvc.MappingMethodModel;
-import org.tinygroup.tinymvc.MappingModelManager;
-import org.tinygroup.tinymvc.annotation.RequestMapping;
+import org.tinygroup.weblayer.mvc.MappingClassModel;
+import org.tinygroup.weblayer.mvc.MappingMethodModel;
+import org.tinygroup.weblayer.mvc.MappingModelManager;
+import org.tinygroup.weblayer.mvc.annotation.RequestMapping;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

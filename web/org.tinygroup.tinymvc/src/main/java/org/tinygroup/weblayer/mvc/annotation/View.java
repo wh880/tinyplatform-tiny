@@ -13,25 +13,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinymvc.annotation;
+package org.tinygroup.weblayer.mvc.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * 
- * 功能说明: 
-
- * 开发人员: renhui <br>
- * 开发时间: 2013-4-22 <br>
- * <br>
- */
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RequestMapping {
+public @interface View {
 
-	String[] value() default {};
+	String value() default "";
 
 }

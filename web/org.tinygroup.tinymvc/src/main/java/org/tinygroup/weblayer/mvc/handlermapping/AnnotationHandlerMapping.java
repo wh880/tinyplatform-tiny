@@ -13,19 +13,19 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinymvc.handlermapping;
+package org.tinygroup.weblayer.mvc.handlermapping;
 
 import org.tinygroup.commons.tools.AnnotationUtils;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
-import org.tinygroup.tinymvc.HandlerExecutionChain;
-import org.tinygroup.tinymvc.MappingClassModel;
-import org.tinygroup.tinymvc.MappingMethodModel;
-import org.tinygroup.tinymvc.annotation.RequestMapping;
-import org.tinygroup.tinymvc.annotation.ResultKey;
-import org.tinygroup.tinymvc.annotation.View;
+import org.tinygroup.weblayer.mvc.HandlerExecutionChain;
+import org.tinygroup.weblayer.mvc.MappingClassModel;
+import org.tinygroup.weblayer.mvc.MappingMethodModel;
+import org.tinygroup.weblayer.mvc.annotation.RequestMapping;
+import org.tinygroup.weblayer.mvc.annotation.ResultKey;
+import org.tinygroup.weblayer.mvc.annotation.View;
 import org.tinygroup.weblayer.util.TinyPathMatcher;
 
 import java.lang.reflect.Method;

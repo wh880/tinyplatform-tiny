@@ -13,15 +13,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinymvc.impl;
+package org.tinygroup.weblayer.mvc.impl;
 
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.tinygroup.commons.tools.CollectionUtil;
-import org.tinygroup.tinymvc.HandlerExecutionChain;
-import org.tinygroup.tinymvc.MappingClassModel;
-import org.tinygroup.tinymvc.MappingMethodModel;
-import org.tinygroup.tinymvc.MappingModelManager;
+import org.tinygroup.weblayer.mvc.HandlerExecutionChain;
+import org.tinygroup.weblayer.mvc.MappingClassModel;
+import org.tinygroup.weblayer.mvc.MappingMethodModel;
+import org.tinygroup.weblayer.mvc.MappingModelManager;
 
 import java.util.Map;
 import java.util.Set;

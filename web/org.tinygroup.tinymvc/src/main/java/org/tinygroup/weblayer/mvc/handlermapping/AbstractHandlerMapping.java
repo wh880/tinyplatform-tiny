@@ -13,23 +13,38 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinymvc;
+package org.tinygroup.weblayer.mvc.handlermapping;
 
+import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.weblayer.mvc.HandlerMapping;
+import org.tinygroup.weblayer.mvc.MappingModelManager;
 
 /**
- * 请求与处理对象之间的映射接口
- * 功能说明: 
-
+ * 
+ * 功能说明: 抽象的handlermapping
+ * 
  * 开发人员: renhui <br>
  * 开发时间: 2013-4-22 <br>
  * <br>
  */
-public interface HandlerMapping {
-	/**
-	 * 
-	 * 初始化操作
-	 */
-	void init();
+public abstract class AbstractHandlerMapping implements HandlerMapping {
 
-	HandlerExecutionChain getHandler(String requestUrl);
+	private MappingModelManager manager;
+
+	public MappingModelManager getManager() {
+		return manager;
+	}
+
+	public void setManager(MappingModelManager manager) {
+		this.manager = manager;
+	}
+
+	public void init() {
+		if (manager == null) {
+			manager = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(
+					"mappingModelManager");
+		}
+	}
+
 }

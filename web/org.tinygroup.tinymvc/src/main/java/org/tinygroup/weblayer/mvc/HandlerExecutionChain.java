@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinymvc;
+package org.tinygroup.weblayer.mvc;
 
 import org.springframework.core.ParameterNameDiscoverer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
@@ -25,8 +25,7 @@ import org.tinygroup.context2object.impl.ClassNameObjectGenerator;
 import org.tinygroup.loader.LoaderManager;
 import org.tinygroup.springutil.AnnotationParameterNameDiscoverer;
 import org.tinygroup.weblayer.WebContext;
-import org.tinygroup.tinymvc.annotation.View;
-import org.tinygroup.weblayer.mvc.WebContextAware;
+import org.tinygroup.weblayer.mvc.annotation.View;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

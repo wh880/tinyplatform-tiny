@@ -4,22 +4,22 @@
                     http://www.springframework.org/schema/beans/spring-beans.xsd"
 	   default-autowire="byName" default-lazy-init="true">
 	<bean id="mappingModelManager" scope="singleton"
-		class="org.tinygroup.tinymvc.impl.MappingModelManagerImpl">
+		class="org.tinygroup.weblayer.mvc.impl.MappingModelManagerImpl">
 	</bean>
 
 	<bean id="annotationHandlerMapping" scope="singleton"
-		class="org.tinygroup.tinymvc.handlermapping.AnnotationHandlerMapping">
+		class="org.tinygroup.weblayer.mvc.handlermapping.AnnotationHandlerMapping">
 		<property name="manager">
 			<ref bean="mappingModelManager" />
 		</property>
 	</bean>
 
 	<bean id="mappingModelExecute" scope="singleton"
-		class="org.tinygroup.tinymvc.impl.MappingModelExecuteImpl">
+		class="org.tinygroup.weblayer.mvc.impl.MappingModelExecuteImpl">
 	</bean>
 
 	<bean id="mvcTinyProcessor" scope="singleton"
-		class="org.tinygroup.tinymvc.tinyprocessor.MvcTinyProcessor">
+		class="org.tinygroup.weblayer.tinyprocessor.MvcTinyProcessor">
 		<property name="handler">
 			<ref bean="annotationHandlerMapping" />
 		</property>
@@ -29,7 +29,7 @@
 	</bean>
 	<bean id="controllerAnnotationAction" name="controllerAnnotationAction"
 		scope="singleton"
-		class="org.tinygroup.tinymvc.annotationaction.ControllerAnnotationAction">
+		class="org.tinygroup.weblayer.mvc.annotationaction.ControllerAnnotationAction">
 		<property name="manager">
 			<ref bean="mappingModelManager" />
 		</property>

@@ -13,11 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinymvc;
+package org.tinygroup.weblayer.mvc;
 
-import org.tinygroup.tinymvc.annotation.RequestMapping;
-import org.tinygroup.tinymvc.annotation.ResultKey;
-import org.tinygroup.tinymvc.annotation.View;
+import org.tinygroup.weblayer.mvc.annotation.RequestMapping;
+import org.tinygroup.weblayer.mvc.annotation.ResultKey;
+import org.tinygroup.weblayer.mvc.annotation.View;
 
 import java.lang.reflect.Method;
 import java.util.Set;

@@ -13,33 +13,25 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.tinymvc.impl;
+package org.tinygroup.weblayer.mvc.annotation;
 
-import org.tinygroup.tinymvc.HandlerExecutionChain;
-import org.tinygroup.tinymvc.MappingModelExecute;
-import org.tinygroup.weblayer.WebContext;
-
-import javax.servlet.ServletException;
-import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * 
- * 功能说明: 请求映射的执行接口的默认实现
+ * 功能说明: 
 
  * 开发人员: renhui <br>
- * 开发时间: 2013-4-24 <br>
+ * 开发时间: 2013-4-22 <br>
  * <br>
  */
-public class MappingModelExecuteImpl implements MappingModelExecute {
+@Target({ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequestMapping {
 
-	
-	public void execute(HandlerExecutionChain chain, WebContext context) throws ServletException, IOException {
-		chain.setContext(context);
-		try {
-			chain.execute();
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-	}
+	String[] value() default {};
 
 }
