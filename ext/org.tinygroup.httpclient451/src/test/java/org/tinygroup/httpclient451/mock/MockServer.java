@@ -6,6 +6,7 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.tinygroup.httpclient451.MockUtil;
 import org.tinygroup.httpclient451.servlet.CookieServlet;
 import org.tinygroup.httpclient451.servlet.FileServlet;
 import org.tinygroup.httpclient451.servlet.GBKServlet;
@@ -43,11 +44,11 @@ public class MockServer {
     	
     	//参考jetty.xml配置
     	SelectChannelConnector http = new SelectChannelConnector();
-        http.setPort(8080);
+        http.setPort(MockUtil.HTTP_PORT);
         http.setMaxIdleTime(300000);
         http.setAcceptors(2);
         http.setStatsOn(false);
-        http.setConfidentialPort(8443);
+        http.setConfidentialPort(MockUtil.HTTPS_PORT);
         http.setLowResourcesConnections(20000);
         http.setLowResourcesMaxIdleTime(5000);
         
@@ -64,7 +65,7 @@ public class MockServer {
         //System.setProperty("javax.net.ssl.keyStore",path);
         //System.setProperty("javax.net.ssl.keyStorePassword", "123456");
         SslSelectChannelConnector https = new SslSelectChannelConnector(sslContextFactory);
-        https.setPort(8443);
+        https.setPort(MockUtil.HTTPS_PORT);
         https.setMaxIdleTime(400000);
         
     	server.setConnectors(new Connector[]{http,https});
