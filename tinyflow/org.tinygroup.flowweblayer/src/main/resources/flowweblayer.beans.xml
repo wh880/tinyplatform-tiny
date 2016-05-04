@@ -4,7 +4,7 @@
                     http://www.springframework.org/schema/beans/spring-beans.xsd"
        default-autowire="byName" default-lazy-init="true">
     <bean id="pageFlowTinyProcessor" scope="singleton"
-          class="org.tinygroup.flowweblayer.processor.PageFlowTinyProcessor">
+          class="org.tinygroup.flowweblayer.tinyprocessor.PageFlowTinyProcessor">
         <property name="executor" ref="pageFlowExecutor"></property>
     </bean>
 </beans>
