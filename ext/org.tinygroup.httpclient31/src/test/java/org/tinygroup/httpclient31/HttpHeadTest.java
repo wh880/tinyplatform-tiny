@@ -8,7 +8,7 @@ import org.tinygroup.httpvisitor.builder.HttpFactory;
 public class HttpHeadTest extends ServerTestCase {
 
 	public void testHead() throws IOException {
-		Response response = HttpFactory.head("http://127.0.0.1:8080").execute();
+		Response response = HttpFactory.head("http://127.0.0.1:"+MockUtil.HTTP_PORT).execute();
 		assertEquals(200, response.getStatusLine().getStatusCode());
 		assertEquals(null, response.text());
 		response.close();

@@ -16,13 +16,13 @@ public class HttpGetTest extends ServerTestCase {
 
 		// GBK编码
 		Response response = HttpFactory
-				.get("http://127.0.0.1:8080/charset1.do").execute();
+				.get("http://127.0.0.1:"+MockUtil.HTTP_PORT+"/charset1.do").execute();
 		assertEquals(200, response.getStatusLine().getStatusCode());
 		assertEquals("中文,GBK", response.charset("GBK").text());
 		response.close();
 
 		// 默认编码
-		response = HttpFactory.get("http://127.0.0.1:8080/charset2.do")
+		response = HttpFactory.get("http://127.0.0.1:"+MockUtil.HTTP_PORT+"/charset2.do")
 				.execute();
 		assertEquals(200, response.getStatusLine().getStatusCode());
 		assertEquals("中文,utf-8", response.text());
@@ -32,7 +32,7 @@ public class HttpGetTest extends ServerTestCase {
 		Map<String, Object> maps = new HashMap<String, Object>();
 		maps.put("p2", "56");
 		maps.put("p3", 789);
-		response = HttpFactory.get("http://127.0.0.1:8080/param.do?p0=123")
+		response = HttpFactory.get("http://127.0.0.1:"+MockUtil.HTTP_PORT+"/param.do?p0=123")
 				.param("p1", 4).params(maps).execute();
 		assertEquals("123456789", response.text());
 		response.close();
@@ -45,7 +45,7 @@ public class HttpGetTest extends ServerTestCase {
 		headMaps.put("User-Agent",
 				"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)");
 
-		response = HttpFactory.get("http://127.0.0.1:8080/header.do")
+		response = HttpFactory.get("http://127.0.0.1:"+MockUtil.HTTP_PORT+"/header.do")
 				.header("Host", "download.google.com").headers(headMaps)
 				.execute();
 		assertEquals(headMaps.get("User-Agent"), response.text());
@@ -59,7 +59,7 @@ public class HttpGetTest extends ServerTestCase {
 		Map<String, Cookie> cookieMaps = new HashMap<String, Cookie>();
 		cookieMaps.put("tinyage", new SimpleCookie("tinyage", "2014", new Date(
 				System.currentTimeMillis() + 1000000L), null, null, false));
-		response = HttpFactory.get("http://127.0.0.1:8080/cookie.do")
+		response = HttpFactory.get("http://127.0.0.1:"+MockUtil.HTTP_PORT+"/cookie.do")
 				.cookie(null, "tiny_version", "2.1.1").cookies(cookieMaps)
 				.execute();
 		assertEquals(cookieMaps.get("tinyage").getValue(), response.text());
@@ -68,26 +68,26 @@ public class HttpGetTest extends ServerTestCase {
 		response.close();
 
 		// 重定向
-		response = HttpFactory.get("http://127.0.0.1:8080/redirect.do")
+		response = HttpFactory.get("http://127.0.0.1:"+MockUtil.HTTP_PORT+"/redirect.do")
 				.execute();
 		assertEquals("hello world", response.text()); // 默认支持跳转，转到默认的hello world
 		response.close();
-		response = HttpFactory.get("http://127.0.0.1:8080/redirect.do")
+		response = HttpFactory.get("http://127.0.0.1:"+MockUtil.HTTP_PORT+"/redirect.do")
 				.allowRedirects(false).execute();
 		assertEquals("", response.text()); // 禁止重定向，停留当前页
 		response.close();
 
 		// 设置User-Agent
-		response = HttpFactory.get("http://127.0.0.1:8080/agent.do").execute();
+		response = HttpFactory.get("http://127.0.0.1:"+MockUtil.HTTP_PORT+"/agent.do").execute();
 		assertEquals("HttpClient3.1", response.text()); // 默认的User-Agent
 		response.close();
 
-		response = HttpFactory.get("http://127.0.0.1:8080/agent.do")
+		response = HttpFactory.get("http://127.0.0.1:"+MockUtil.HTTP_PORT+"/agent.do")
 				.userAgent("IE10.0").execute();
 		assertEquals("IE10.0", response.text()); // 通过接口设置
 		response.close();
 
-		response = HttpFactory.get("http://127.0.0.1:8080/agent.do")
+		response = HttpFactory.get("http://127.0.0.1:"+MockUtil.HTTP_PORT+"/agent.do")
 				.header("User-Agent", "Chrome45.0").execute();
 		assertEquals("Chrome45.0", response.text()); // 通过Header设置
 		response.close();
