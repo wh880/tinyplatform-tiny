@@ -15,10 +15,10 @@
  */
 package org.tinygroup.helloworld.action;
 
-import org.tinygroup.tinymvc.annotation.Controller;
-import org.tinygroup.tinymvc.annotation.RequestMapping;
-import org.tinygroup.tinymvc.annotation.ResultKey;
-import org.tinygroup.tinymvc.annotation.View;
+import org.tinygroup.weblayer.mvc.annotation.Controller;
+import org.tinygroup.weblayer.mvc.annotation.RequestMapping;
+import org.tinygroup.weblayer.mvc.annotation.ResultKey;
+import org.tinygroup.weblayer.mvc.annotation.View;
 
 @Controller()
 public class HelloAction{
