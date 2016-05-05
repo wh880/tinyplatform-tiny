@@ -33,6 +33,7 @@ import org.tinygroup.commons.file.FileDealUtil;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.commons.tools.FileUtil;
 import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -153,20 +154,35 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
 		cssResourceOperator = new CssResourceOperator();
 		
 		if(StringUtil.isEmpty(storageType)){
-			jsResourceOperator.storage = new TempFileStorage("uiengine.uijs");
-			cssResourceOperator.storage =  new TempFileStorage("uiengine.uicss");
+			initTempFileStorage();
 		}else{
 			if("file".equals(storageType)){
-				jsResourceOperator.storage = new TempFileStorage("uiengine.uijs");
-				cssResourceOperator.storage =  new TempFileStorage("uiengine.uicss");
+				initTempFileStorage();
 			}else if("memory".equals(storageType)){
-				jsResourceOperator.storage = new MemoryStorage();
-				cssResourceOperator.storage =  new MemoryStorage();
+				initMemoryStorage();
 			}else{
 				throw new RuntimeException(String.format("UiEngineTinyProcessor初始化失败:未知的存储类型[%s]，请检查配置文件", storageType));
 			}
 		}
 		
+	}
+	
+	private void initTempFileStorage(){
+		String tiny_webroot = ConfigurationUtil.getConfigurationManager().getConfiguration("TINY_WEBROOT");
+		if(StringUtil.isEmpty(tiny_webroot)){
+			tiny_webroot = "";
+			logger.logMessage(LogLevel.WARN, "没有找到TINY_WEBROOT环境参数，请检查Web容器配置");
+		}else if(!tiny_webroot.endsWith(File.separator)){
+			tiny_webroot = tiny_webroot+File.separator;
+		}
+		
+		jsResourceOperator.storage = new TempFileStorage(tiny_webroot+"uiengine.uijs");
+		cssResourceOperator.storage =  new TempFileStorage(tiny_webroot+"uiengine.uicss");
+	}
+	
+	private void initMemoryStorage(){
+		jsResourceOperator.storage = new MemoryStorage();
+		cssResourceOperator.storage =  new MemoryStorage();
 	}
 	
 	/**
