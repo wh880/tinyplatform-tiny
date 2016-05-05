@@ -62,6 +62,13 @@ public class FullContextUrlRedirectTinyProcessor extends AbstractTinyProcessor {
 		
 	}
 
+	@Override
+	public boolean isMatch(String urlString) {
+		FileObject fileObject = fullContextFileRepository
+				.getFileObject(urlString);
+		//匹配且资源存在
+		return super.isMatch(urlString) && fileObject!=null && fileObject.isExist();
+	}
 
 	public void reallyProcess(String servletPath, WebContext context) throws ServletException, IOException{
 		logger.logMessage(LogLevel.DEBUG, "{}开始处理...", servletPath);
