@@ -7,10 +7,14 @@
 			unique="false" not-null="true" id="name" />
 		<table-field standard-field-id="age" primary="false"
 			unique="false" not-null="false" id="age" />
+		<table-field standard-field-id="parent_id" primary="false"
+					 unique="false" not-null="false" id="parent_id" >
+		</table-field>
+		<foreign-reference foreign-field="parent_id" main-table="t_user" reference-field="id" />
 	</table>
 	<table id="incrementer" name="incrementer" title="主键自增长表">
 		<table-field standard-field-id="sequence_id" primary="true"
 			unique="true" not-null="true" auto-increase="true" id="sequence_id" />
-		<table-field standard-field-id="dummy" primary="false" id="dummy" />	
+		<table-field standard-field-id="dummy" primary="false" id="dummy" />
 	</table>
 </tables>
