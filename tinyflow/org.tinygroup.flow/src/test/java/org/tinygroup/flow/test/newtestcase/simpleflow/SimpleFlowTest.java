@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
+import org.tinygroup.event.Event;
 import org.tinygroup.flow.component.AbstractFlowComponent;
 
 import com.google.common.collect.Lists;
@@ -31,6 +32,11 @@ public class SimpleFlowTest extends AbstractFlowComponent {
 		Context context = new ContextImpl();
 		flowExecutor.execute("simpleFlowTest1", "begin", context);
 		assertEquals("马云22岁", context.get("simpleflowresult").toString());
+		
+		Context context2 = new ContextImpl();
+		Event e = Event.createEvent("simpleFlowTest1", context2);
+		cepcore.process(e);
+		assertEquals("马云22岁", e.getServiceRequest().getContext().get("simpleflowresult").toString());
 	}
 	
 	/**
@@ -42,6 +48,13 @@ public class SimpleFlowTest extends AbstractFlowComponent {
 		context.put("name", "马化腾");
 		flowExecutor.execute("simpleFlowTest2", "begin", context);
 		assertEquals("马化腾33岁", context.get("simpleflowresult").toString());
+		
+		Context context2 = new ContextImpl();
+		context2.put("age", 33);
+		context2.put("name", "马化腾");
+		Event e = Event.createEvent("simpleFlowTest2", context2);
+		cepcore.process(e);
+		assertEquals("马化腾33岁", e.getServiceRequest().getContext().get("simpleflowresult").toString());
 	}
 	
 	/**
@@ -52,6 +65,12 @@ public class SimpleFlowTest extends AbstractFlowComponent {
 		context.put("a", 6);
 		flowExecutor.execute("simpleFlowTest3", "begin", context);
 		assertEquals("马云6岁", context.get("simpleflowresult").toString());
+		
+		Context context2 = new ContextImpl();
+		context2.put("a", 6);
+		Event e = Event.createEvent("simpleFlowTest3", context2);
+		cepcore.process(e);
+		assertEquals("马云6岁", e.getServiceRequest().getContext().get("simpleflowresult").toString());
 	}
 	
 	/**
@@ -62,6 +81,12 @@ public class SimpleFlowTest extends AbstractFlowComponent {
 		context.put("a", 16);
 		flowExecutor.execute("simpleFlowTest3", "begin", context);
 		assertEquals("马云16岁", context.get("simpleflowresult").toString());
+		
+		Context context2 = new ContextImpl();
+		context2.put("a", 16);
+		Event e = Event.createEvent("simpleFlowTest3", context2);
+		cepcore.process(e);
+		assertEquals("马云16岁", e.getServiceRequest().getContext().get("simpleflowresult").toString());
 	}
 	
 	/**
@@ -74,6 +99,14 @@ public class SimpleFlowTest extends AbstractFlowComponent {
 		context.put("name", "马化腾");
 		flowExecutor.execute("simpleFlowTest3", "begin", context);
 		assertEquals("马化腾116岁", context.get("simpleflowresult").toString());
+		
+		Context context2 = new ContextImpl();
+		context2.put("a", 56);
+		context2.put("age", 116);
+		context2.put("name", "马化腾");
+		Event e = Event.createEvent("simpleFlowTest3", context2);
+		cepcore.process(e);
+		assertEquals("马化腾116岁", e.getServiceRequest().getContext().get("simpleflowresult").toString());
 	}
 	
 	/**
@@ -83,9 +116,15 @@ public class SimpleFlowTest extends AbstractFlowComponent {
 		Context context = new ContextImpl();
 		context.put("count", 0);
 		context.put("sum", 1);
-		
 		flowExecutor.execute("simpleFlowCirculation", "begin", context);
 		assertEquals(4, Integer.valueOf(context.get("sum").toString()).intValue());
+		
+		Context context2 = new ContextImpl();
+		context2.put("count", 0);
+		context2.put("sum", 1);
+		Event e = Event.createEvent("simpleFlowCirculation", context2);
+		cepcore.process(e);
+		assertEquals(4, Integer.valueOf(e.getServiceRequest().getContext().get("sum").toString()).intValue());
 	}
 	
 	/**
@@ -99,9 +138,15 @@ public class SimpleFlowTest extends AbstractFlowComponent {
 		Context context = new ContextImpl();
 		context.put("lists", lists);
 		context.put("listscount", 0);
-		
 		flowExecutor.execute("simpleFlowCirculation2", "begin", context);
 		assertEquals(6, Integer.valueOf(context.get("listsum").toString()).intValue());
+		
+		Context context2 = new ContextImpl();
+		context2.put("lists", lists);
+		context2.put("listscount", 0);
+		Event e = Event.createEvent("simpleFlowCirculation2", context2);
+		cepcore.process(e);
+		assertEquals(6, Integer.valueOf(e.getServiceRequest().getContext().get("listsum").toString()).intValue());
 	}
 
 }

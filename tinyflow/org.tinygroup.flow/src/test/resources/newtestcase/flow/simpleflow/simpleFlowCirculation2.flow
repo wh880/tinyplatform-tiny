@@ -1,4 +1,9 @@
 <flow id="simpleFlowCirculation2" enable="true" private-context="false">
+  <parameters>
+    <parameter array="false" required="true" name="listscount" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="true" name="listsum" type="java.lang.Integer" scope="out"/>
+    <parameter collection-type="java.util.List" array="false" required="true" name="lists" type="java.lang.Integer" scope="in"/>
+  </parameters>
   <nodes>
     <node id="begin" name="begin" title="开始">
       <next-nodes>

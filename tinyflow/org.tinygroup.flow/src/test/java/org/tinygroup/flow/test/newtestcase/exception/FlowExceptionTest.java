@@ -44,6 +44,12 @@ public class FlowExceptionTest extends AbstractFlowComponent {
 		context.put("exceptionNo", 2);
 		flowExecutor.execute("flowExceptionTest", "begin", context);
 		assertEquals(2, Integer.valueOf(context.get("result").toString()).intValue());
+		
+		Context context2 = new ContextImpl();
+		context2.put("exceptionNo", 2);
+		Event e = Event.createEvent("flowExceptionTest", context2);
+		cepcore.process(e);
+		assertEquals(2, Integer.valueOf(e.getServiceRequest().getContext().get("result").toString()).intValue());
 	}
 	
 	/**
@@ -56,6 +62,12 @@ public class FlowExceptionTest extends AbstractFlowComponent {
 		context.put("exceptionNo", 3);
 		flowExecutor.execute("flowExceptionTest", "begin", context);
 		assertEquals(3, Integer.valueOf(context.get("result").toString()).intValue());
+		
+		Context context2 = new ContextImpl();
+		context2.put("exceptionNo", 3);
+		Event e = Event.createEvent("flowExceptionTest", context2);
+		cepcore.process(e);
+		assertEquals(3, Integer.valueOf(e.getServiceRequest().getContext().get("result").toString()).intValue());
 	}
 	
 	/**
@@ -68,6 +80,12 @@ public class FlowExceptionTest extends AbstractFlowComponent {
 		context.put("exceptionNo", 4);
 		flowExecutor.execute("flowExceptionTest", "begin", context);
 		assertEquals(4, Integer.valueOf(context.get("result").toString()).intValue());
+		
+		Context context2 = new ContextImpl();
+		context2.put("exceptionNo", 4);
+		Event e = Event.createEvent("flowExceptionTest", context2);
+		cepcore.process(e);
+		assertEquals(4, Integer.valueOf(e.getServiceRequest().getContext().get("result").toString()).intValue());
 	}
 	
 	/**
@@ -80,6 +98,15 @@ public class FlowExceptionTest extends AbstractFlowComponent {
 		context.put("exceptionNo", 5);
 		try {
 			flowExecutor.execute("flowExceptionTest", "begin", context);
+		} catch (ComponentException5 e) {
+			assertTrue(true);
+		}
+		
+		Context context2 = new ContextImpl();
+		context2.put("exceptionNo", 5);
+		try {
+			Event e = Event.createEvent("flowExceptionTest", context2);
+		    cepcore.process(e);
 		} catch (ComponentException5 e) {
 			assertTrue(true);
 		}

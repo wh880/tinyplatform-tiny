@@ -1,8 +1,10 @@
 <flow id="simpleFlowTest3" enable="true" private-context="false">
   <description>流程分支测试</description>
   <parameters>
-    <parameter array="false" required="false" name="elflow" type="java.lang.String" scope="in"/>
-    <parameter array="false" required="false" name="strflow" type="java.lang.String" scope="in"/>
+    <parameter array="false" required="false" name="a" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="true" name="simpleflowresult" type="java.lang.String" scope="out"/>
+    <parameter array="false" required="false" name="age" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="false" name="name" type="java.lang.String" scope="in"/>
   </parameters>
   <nodes>
     <node id="begin" name="begin" title="开始">

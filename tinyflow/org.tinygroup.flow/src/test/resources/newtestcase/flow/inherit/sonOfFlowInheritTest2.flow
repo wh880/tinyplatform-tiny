@@ -1,5 +1,8 @@
 <flow id="sonOfFlowInheritTest2" extend-flow-id="flowInheritTest" enable="true" private-context="false">
   <description>覆盖了父流程的节点</description>
+  <parameters>
+    <parameter array="false" required="true" name="resultStr" type="java.lang.String" scope="both"/>
+  </parameters>
   <nodes>
     <node id="flowInheritComponent" name="flowInheritComponent" title="流程继承组件1">
       <component name="flowInheritComponent" title="流程继承组件">

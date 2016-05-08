@@ -1,4 +1,8 @@
 <flow id="simpleFlowCirculation" enable="true" private-context="false">
+  <parameters>
+    <parameter array="false" required="true" name="count" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="true" name="sum" type="java.lang.Integer" scope="both"/>
+  </parameters>
   <nodes>
     <node id="begin" name="begin" title="开始">
       <next-nodes>

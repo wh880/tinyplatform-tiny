@@ -1,8 +1,7 @@
 <flow id="simpleFlowTest1" enable="true" private-context="false">
   <description>简单流程组件的参数直接赋值</description>
   <parameters>
-    <parameter array="false" required="false" name="elflow" type="java.lang.String" scope="in"/>
-    <parameter array="false" required="false" name="strflow" type="java.lang.String" scope="in"/>
+    <parameter array="false" required="true" name="simpleflowresult" type="java.lang.String" scope="out"/>
   </parameters>
   <nodes>
     <node id="begin" name="begin" title="开始">
