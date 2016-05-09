@@ -154,7 +154,7 @@ public class UiEngineTinyProcessor extends AbstractTinyProcessor {
 		cssResourceOperator = new CssResourceOperator();
 		
 		if(StringUtil.isEmpty(storageType)){
-			initTempFileStorage();
+			initMemoryStorage();
 		}else{
 			if("file".equals(storageType)){
 				initTempFileStorage();
