@@ -60,40 +60,50 @@ public class AopCachePutProcessor extends AbstractAopCacheProcessor {
                 for (int i = 0; i < keyArray.length; i++) {
                     //从上下文迭代取出参数对应参数值作为value
                     Object value = templateRender.getParamValue(templateContext, namesArray[i]);
-                    if (value != null) {
-                        //原缓存数据
-                        Object cacheValue = getAopCache().get(group,keyArray[i]);
-                        //标记为合并且原有缓存和当前缓存同一类型
-                        if(metadata.isMerge()
-                                && cacheValue != null
-                                && cacheValue.getClass()==value.getClass()){
-
-                            //当前value的beanWrapper
-                            BeanWrapper valueWrapper = BeanWrapperHolder.getInstance()
-                                    .getBeanWrapper(value);
-                            //原缓存的beanWrapper
-                            BeanWrapper cacheValueWrapper = BeanWrapperHolder.getInstance()
-                                    .getBeanWrapper(cacheValue);
-                            PropertyDescriptor[] cachePropertyDescriptors = cacheValueWrapper.getPropertyDescriptors();
-                            for(PropertyDescriptor cachepd : cachePropertyDescriptors){
-                                //可以写入的属性
-                                if(cacheValueWrapper.isWritableProperty(cachepd.getName())){
-                                    Object currentObj = valueWrapper.getPropertyValue(cachepd.getName());
-                                    if(currentObj!=null){
-                                        cacheValueWrapper.setPropertyValue(cachepd.getName(),currentObj);
-                                    }
-                                }
-                            }
-                            getAopCache().put(group, keyArray[i], cacheValue);//放入合并后的值
-                        }else {
-                            getAopCache().put(group, keyArray[i], value);
-                        }
+                    if (value == null) {
+                        continue;
+                    }
+                    //原缓存数据
+                    Object cacheValue = getAopCache().get(group, keyArray[i]);
+                    //标记为合并且原有缓存和当前缓存同一类型
+                    if (metadata.isMerge()
+                            && cacheValue != null
+                            && cacheValue.getClass() == value.getClass()) {
+                        updateCacheValue(cacheValue,value);//将value合并到cacheValue
+                        getAopCache().put(group, keyArray[i], cacheValue);//放入合并后的值
+                    } else {
+                        getAopCache().put(group, keyArray[i], value);
                     }
                 }
             }
 
         } catch (Throwable e) {
             throw new AopCacheException(e);
+        }
+    }
+
+    /**
+     * 将需要更新的字段(newValue)同步到缓存对象(cacheValue)中
+     * @param cacheValue 缓存中的值
+     * @param newValue 与cacheValue类型相同，包含更新字段
+     */
+    private void updateCacheValue(Object cacheValue, Object newValue) {
+        //当前value的beanWrapper
+        BeanWrapper valueWrapper = BeanWrapperHolder.getInstance()
+                .getBeanWrapper(newValue);
+        //缓存的beanWrapper
+        BeanWrapper cacheValueWrapper = BeanWrapperHolder.getInstance()
+                .getBeanWrapper(cacheValue);
+        PropertyDescriptor[] cachePropertyDescriptors = cacheValueWrapper.getPropertyDescriptors();
+        for (PropertyDescriptor cachepd : cachePropertyDescriptors) {
+            //不可写跳过
+            if (!cacheValueWrapper.isWritableProperty(cachepd.getName())) {
+                continue;
+            }
+            Object currentObj = valueWrapper.getPropertyValue(cachepd.getName());
+            if (currentObj != null) {
+                cacheValueWrapper.setPropertyValue(cachepd.getName(), currentObj);
+            }
         }
     }
 
