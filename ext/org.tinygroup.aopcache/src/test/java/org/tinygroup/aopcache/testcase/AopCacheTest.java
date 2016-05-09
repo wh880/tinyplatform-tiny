@@ -139,7 +139,7 @@ public class AopCacheTest extends TestCase {
         userDao.updateUserMerge(user2);
         User cacheUser = (User) cache.get(FIRST_GROUP, String.valueOf(user2.getId()));
 
-
+        //因为cache-put中配置了merge=true,所以name属性被更新，其他属性不变
         assertEquals(cacheUser.getName(),"zhangch2");
         assertEquals(cacheUser.getBirth(),date);
         assertEquals(cacheUser.getAge(),0);
