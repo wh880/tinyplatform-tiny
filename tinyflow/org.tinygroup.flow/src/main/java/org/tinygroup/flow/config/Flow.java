@@ -15,17 +15,20 @@
  */
 package org.tinygroup.flow.config;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import org.tinygroup.event.Parameter;
-import org.tinygroup.flow.FlowExecutor;
-import org.tinygroup.flow.exception.FlowRuntimeException;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.tinygroup.event.Parameter;
+import org.tinygroup.flow.FlowExecutor;
+import org.tinygroup.flow.exception.FlowRuntimeException;
+import org.tinygroup.flow.exception.errorcode.FlowExceptionErrorCode;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * 流程，如果节点的名称叫eAxception，则表示是整个流程的异常处理节点，里面只能添加异常类的nextNode
@@ -123,7 +126,48 @@ public class Flow implements Serializable{
         this.privateContext = privateContext;
     }
 
-    public void assemble() {
+	public void validate(){
+		for(Node node : nodes){
+			//节点名称非空校验
+			validateNode(node);
+			//流程节点有挂组件，则校验组件必传的参数是否有赋值
+			if(node.getComponent()!=null){
+				validateParameter(node);
+			}
+		}
+    }
+    
+    private void validateNode(Node node) {
+		if(StringUtils.isBlank(node.getName())){
+			throw new FlowRuntimeException(FlowExceptionErrorCode.FLOW_NODE_NAME_VALIDATE_EXCEPTION,id,node.getId());
+		}
+	}
+
+	private void validateParameter(Node node) {
+		List<Parameter> componentParameters = flowExecutor.getComponentDefine(node.getComponent().getName()).getParameters();
+		for(Parameter p : componentParameters){
+			if(p.isRequired()){
+				List<FlowProperty> flowProperties = node.getComponent().getProperties();
+				if(flowProperties.isEmpty()){
+					throw new FlowRuntimeException(FlowExceptionErrorCode.FLOW_PROPERTY_VALIDATE_EXCEPTION,id,node.getId(),name);
+				}else{
+					compareParameter(flowProperties,p.getName(),node.getId());
+				}
+			}
+		}
+	}
+
+	private void compareParameter(List<FlowProperty> flowProperties, String name,String nodeId) {
+		for(FlowProperty fp : flowProperties){
+			if(name.equals(fp.getName())){
+				if(fp.getValue().isEmpty()){
+					throw new FlowRuntimeException(FlowExceptionErrorCode.FLOW_PROPERTY_VALIDATE_EXCEPTION,id,nodeId,name);
+				}
+			}
+		}
+	}
+
+	public void assemble() {
         if (assembled) {
             return;
         }

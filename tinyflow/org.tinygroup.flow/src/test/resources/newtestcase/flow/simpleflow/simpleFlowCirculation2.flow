@@ -1,0 +1,29 @@
+<flow id="simpleFlowCirculation2" enable="true" private-context="false">
+  <parameters>
+    <parameter array="false" required="true" name="listscount" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="true" name="listsum" type="java.lang.Integer" scope="out"/>
+    <parameter collection-type="java.util.List" array="false" required="true" name="lists" type="java.lang.Integer" scope="in"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="simpleFlowForeachComponent">
+          <el></el>
+        </next-node>
+      </next-nodes>
+    </node>
+    <node id="simpleFlowForeachComponent" name="simpleFlowForeachComponent" title="循环体">
+      <component name="simpleFlowForeachComponent" title="简单流程组件">
+        <description></description>
+        <properties>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="simpleFlowForeachComponent">
+          <el>listscount&lt;lists.size()</el>
+        </next-node>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

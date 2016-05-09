@@ -1,0 +1,16 @@
+<components>
+	<component name="exceptionSwitchComponent" bean="exceptionSwitchComponent"
+		title="异常生成switch" category="测试" icon="">
+		<short-description></short-description>
+		<long-description></long-description>
+		<parameter name="exceptionNo" title="异常号" type="int"></parameter>
+	</component>
+	
+	<component name="exceptionUtilComponent" bean="exceptionUtilComponent"
+		title="辅助测试流程异常" category="测试" icon="">
+		<short-description></short-description>
+		<long-description></long-description>
+		<parameter name="no" title="异常号" type="int"></parameter>
+	</component>
+</components>
+

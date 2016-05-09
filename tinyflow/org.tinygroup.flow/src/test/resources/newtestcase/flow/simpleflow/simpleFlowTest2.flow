@@ -1,0 +1,27 @@
+<flow id="simpleFlowTest2" enable="true" private-context="false">
+  <description>组件节点参数采用${变量名}或者el取值</description>
+  <parameters>
+    <parameter array="false" required="false" name="age" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="false" name="name" type="java.lang.String" scope="in"/>
+    <parameter array="false" required="true" name="simpleflowresult" type="java.lang.String" scope="out"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="simpleFlowComponent"/>
+      </next-nodes>
+    </node>
+    <node id="simpleFlowComponent" name="simpleFlowComponent" title="简单流程组件">
+      <component name="simpleFlowComponent" title="简单流程组件">
+        <description></description>
+        <properties>
+          <flow-property name="age" value="${age}" required="true" type="java.lang.Integer"/>
+          <flow-property name="name" value="name" required="true" type="el"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

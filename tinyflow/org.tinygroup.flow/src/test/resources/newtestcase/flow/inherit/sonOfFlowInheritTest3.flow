@@ -1,0 +1,30 @@
+<flow id="sonOfFlowInheritTest3" extend-flow-id="flowInheritTest" enable="true" private-context="false">
+  <description>覆盖了父流程的分支</description>
+  <parameters>
+    <parameter array="false" required="true" name="resultStr" type="java.lang.String" scope="both"/>
+  </parameters>
+  <nodes>
+    <node id="flowInheritComponent" name="flowInheritComponent" title="流程继承组件1">
+      <component name="flowInheritComponent" title="流程继承组件">
+        <description></description>
+        <properties>
+          <flow-property name="appendStr" value="ccc" required="true" type="java.lang.String"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="flowInheritComponent_3"/>
+      </next-nodes>
+    </node>
+    <node id="flowInheritComponent_3" name="flowInheritComponent" title="流程继承组件3">
+      <component name="flowInheritComponent" title="流程继承组件">
+        <description></description>
+        <properties>
+          <flow-property name="appendStr" value="fff" required="true" type="java.lang.String"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="flowInheritComponent_1"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

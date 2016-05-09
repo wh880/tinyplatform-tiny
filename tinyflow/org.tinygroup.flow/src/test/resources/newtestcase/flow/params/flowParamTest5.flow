@@ -1,0 +1,23 @@
+<flow id="flowParamTest5" enable="true" private-context="false">
+  <parameters>
+    <parameter array="false" required="true" name="result" type="java.lang.String" scope="out"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="flowParamStringComponent"/>
+      </next-nodes>
+    </node>
+    <node id="flowParamStringComponent" name="flowParamStringComponent" title="String类型测试组件">
+      <component name="flowParamStringComponent" title="String类型测试组件">
+        <description>String类型测试组件</description>
+        <properties>
+          <flow-property name="str" value="b=&apos;testStr&apos;" required="false" type="java.lang.String"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

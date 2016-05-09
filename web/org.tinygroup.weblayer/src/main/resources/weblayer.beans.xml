@@ -7,22 +7,7 @@
 	<bean id="gZIPFilter" scope="singleton"
 		class="org.tinygroup.weblayer.filter.gzip.GZIPFilter">
 	</bean>
-	<bean id="serviceTinyProcessor" scope="singleton"
-		class="org.tinygroup.weblayer.tinyprocessor.ServiceTinyProcessor">
-		<property name="manager">
-			<ref bean="serviceMappingManager" />
-		</property>
-		<property name="core" ref="cepcore"></property>
-	</bean>
-	<bean id="uiEngineTinyProcessor" scope="singleton"
-		class="org.tinygroup.weblayer.tinyprocessor.UiEngineTinyProcessor">
-		<property name="uiComponentManager">
-			<ref bean="uiComponentManager" />
-		</property>
-		<property name="fullContextFileRepository">
-			<ref bean="fullContextFileRepository" />
-		</property>
-	</bean>
+	
 	<bean id="tinyProcessorFileProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.fileresolver.TinyProcessorFileProcessor">
 		<property name="configManager" ref="tinyProcessorConfigManager"></property>
@@ -39,38 +24,11 @@
 		<property name="fullContextFileRepository" ref="fullContextFileRepository"></property>
 	</bean>
 
-	<bean id="mappingModelManager" scope="singleton"
-		class="org.tinygroup.weblayer.mvc.impl.MappingModelManagerImpl">
-	</bean>
-
-	<bean id="annotationHandlerMapping" scope="singleton"
-		class="org.tinygroup.weblayer.mvc.handlermapping.AnnotationHandlerMapping">
-		<property name="manager">
-			<ref bean="mappingModelManager" />
-		</property>
-	</bean>
-
-	<bean id="mappingModelExecute" scope="singleton"
-		class="org.tinygroup.weblayer.mvc.impl.MappingModelExecuteImpl">
-	</bean>
 	<!--tiny processor -->
 	<bean id="tinyProcessorWapper" scope="prototype"
 		class="org.tinygroup.weblayer.tinyprocessor.TinyProcessorWapper">
 	</bean>
 
-	<bean id="mvcTinyProcessor" scope="singleton"
-		class="org.tinygroup.weblayer.tinyprocessor.MvcTinyProcessor">
-		<property name="handler">
-			<ref bean="annotationHandlerMapping" />
-		</property>
-		<property name="execute">
-			<ref bean="mappingModelExecute" />
-		</property>
-	</bean>
-	<bean id="pageFlowTinyProcessor" scope="singleton"
-		class="org.tinygroup.weblayer.tinyprocessor.PageFlowTinyProcessor">
-		<property name="executor" ref="pageFlowExecutor"></property>
-	</bean>
 	<bean id="fullContextProcessor" scope="singleton"
 		class="org.tinygroup.weblayer.tinyprocessor.FullContextUrlRedirectTinyProcessor">
 		<property name="fullContextFileRepository" ref="fullContextFileRepository"></property>
@@ -144,13 +102,6 @@
 		</property>
 	</bean>
 
-	<bean id="controllerAnnotationAction" name="controllerAnnotationAction"
-		scope="singleton"
-		class="org.tinygroup.weblayer.mvc.annotationaction.ControllerAnnotationAction">
-		<property name="manager">
-			<ref bean="mappingModelManager" />
-		</property>
-	</bean>
 	<bean id="urlNormalizer"
 		class="org.tinygroup.weblayer.webcontext.rewrite.impl.UrlNormalizer"
 		scope="singleton">

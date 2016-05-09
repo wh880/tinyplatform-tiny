@@ -16,7 +16,7 @@
 package org.tinygroup.flow.util;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
-import org.tinygroup.beancontext.BeanContextImpl;
+import org.tinygroup.beancontext.BeanExceptionCatchedContextImpl;
 import org.tinygroup.context.Context;
 import org.tinygroup.el.EL;
 import org.tinygroup.logger.Logger;
@@ -30,22 +30,22 @@ public class FlowElUtil {
 			ClassLoader loader) {
 		EL el = BeanContainerFactory.getBeanContainer(loader).getBean(
 				EL.EL_BEAN);
-		BeanContextImpl beanContext = null;
-		if (context instanceof BeanContextImpl) {
-			beanContext = (BeanContextImpl) context;
+		BeanExceptionCatchedContextImpl beanContext = null;
+		if (context instanceof BeanExceptionCatchedContextImpl) {
+			beanContext = (BeanExceptionCatchedContextImpl) context;
 		} else {
-			beanContext = new BeanContextImpl(context);
+			beanContext = new BeanExceptionCatchedContextImpl(context);
 		}
 		return (Boolean) el.execute(condition, beanContext);
 	}
 
 	public static Object execute(String expression, Context context,
 			ClassLoader loader) {
-		BeanContextImpl beanContext = null;
-		if (context instanceof BeanContextImpl) {
-			beanContext = (BeanContextImpl) context;
+		BeanExceptionCatchedContextImpl beanContext = null;
+		if (context instanceof BeanExceptionCatchedContextImpl) {
+			beanContext = (BeanExceptionCatchedContextImpl) context;
 		} else {
-			beanContext = new BeanContextImpl(context);
+			beanContext = new BeanExceptionCatchedContextImpl(context);
 		}
 		try {
 			EL el = BeanContainerFactory.getBeanContainer(loader).getBean(
@@ -59,11 +59,11 @@ public class FlowElUtil {
 
 	public static Object executeNotCatchException(String expression,
 			Context context, ClassLoader loader) {
-		BeanContextImpl beanContext = null;
-		if (context instanceof BeanContextImpl) {
-			beanContext = (BeanContextImpl) context;
+		BeanExceptionCatchedContextImpl beanContext = null;
+		if (context instanceof BeanExceptionCatchedContextImpl) {
+			beanContext = (BeanExceptionCatchedContextImpl) context;
 		} else {
-			beanContext = new BeanContextImpl(context);
+			beanContext = new BeanExceptionCatchedContextImpl(context);
 		}
 		EL el = BeanContainerFactory.getBeanContainer(loader).getBean(
 				EL.EL_BEAN);

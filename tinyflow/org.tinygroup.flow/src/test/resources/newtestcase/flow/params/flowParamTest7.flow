@@ -1,0 +1,53 @@
+<flow id="flowParamTest7" enable="true" private-context="false">
+  <parameters>
+    <parameter array="false" required="false" name="str" type="java.lang.String" scope="in"/>
+    <parameter array="false" required="false" name="str2" type="java.lang.Boolean" scope="in"/>
+    <parameter array="false" required="false" name="str3" type="java.lang.String" scope="in"/>
+    
+    <parameter name="obool" array="false" required="false" type="java.lang.Boolean" scope="out"/>
+	  <parameter name="sbool" array="false" required="false" type="boolean" scope="out"/>
+	  <parameter name="ochar" required="false" type="java.lang.Character" scope="out"/>
+	  <parameter name="schar" array="false" required="false" type="char" scope="out"/>
+	  <parameter name="sint" array="false" required="false" type="int" scope="out"/>
+	  <parameter name="oint" array="false" required="false" type="java.lang.Integer" scope="out"/>
+	  <parameter name="odouble" array="false" required="false" type="java.lang.Double" scope="out"/>
+	  <parameter name="sdouble" array="false" required="false" type="double" scope="out"/>
+	  <parameter name="oshort" array="false" required="false" type="java.lang.Short" scope="out"/>
+	  <parameter name="sshort" array="false" required="false" type="short" scope="out"/>
+	  <parameter name="olong" array="false" required="false" type="java.lang.Long" scope="out"/>
+	  <parameter name="slong" array="false" required="false" type="long" scope="out"/>
+	  <parameter name="ofloat" required="false" type="java.lang.Float" scope="out"/>
+	  <parameter name="sfloat" required="false" type="float" scope="out"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="flowParamComponent"/>
+      </next-nodes>
+    </node>
+    <node id="flowParamComponent" name="flowParamComponent" title="流程参数传递测试组件">
+      <component name="flowParamComponent" title="流程参数传递测试组件">
+        <description>流程参数传递测试组件</description>
+        <properties>
+          <flow-property name="obool" value="${str2}" required="false" type="java.lang.Boolean"/>
+          <flow-property name="sbool" value="${str2}" required="false" type="boolean"/>
+          <flow-property name="ochar" value="${str3}" required="false" type="java.lang.Character"/>
+          <flow-property name="schar" value="${str3}" required="false" type="char"/>
+          <flow-property name="sint" value="${str}" required="false" type="int"/>
+          <flow-property name="oint" value="${str}" required="false" type="java.lang.Integer"/>
+          <flow-property name="odouble" value="${str}" required="false" type="java.lang.Double"/>
+          <flow-property name="sdouble" value="${str}" required="false" type="double"/>
+          <flow-property name="oshort" value="${str}" required="false" type="java.lang.Short"/>
+          <flow-property name="sshort" value="${str}" required="false" type="short"/>
+          <flow-property name="olong" value="${str}" required="false" type="java.lang.Long"/>
+          <flow-property name="slong" value="${str}" required="false" type="long"/>
+          <flow-property name="ofloat" value="${str}" required="false" type="java.lang.Float"/>
+          <flow-property name="sfloat" value="${str}" required="false" type="float"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

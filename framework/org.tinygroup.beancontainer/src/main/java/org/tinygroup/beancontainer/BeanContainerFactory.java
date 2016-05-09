@@ -15,8 +15,6 @@
  */
 package org.tinygroup.beancontainer;
 
-import org.tinygroup.exception.TinyBizRuntimeException;
-import org.tinygroup.exception.errorcode.ErrorCodeDefault;
 
 public class BeanContainerFactory {
 	private static BeanContainer<?> container;
@@ -35,8 +33,7 @@ public class BeanContainerFactory {
 			container = (BeanContainer) Class.forName(beanClassName)
 					.newInstance();
 		} catch (Exception e) {
-			throw new TinyBizRuntimeException(ErrorCodeDefault.UNKNOWN_ERROR,
-					e, beanClassName);
+			throw new RuntimeException("初始化beancontainer:"+beanClassName+"失败");
 		}
 	}
 
@@ -53,8 +50,7 @@ public class BeanContainerFactory {
 			container = (BeanContainer) Class.forName(beanClassName)
 					.newInstance();
 		} catch (Exception e) {
-			throw new TinyBizRuntimeException(ErrorCodeDefault.UNKNOWN_ERROR,
-					e, beanClassName);
+			throw new RuntimeException("初始化beancontainer:"+beanClassName+"失败");
 		}
 	}
 
@@ -71,7 +67,7 @@ public class BeanContainerFactory {
 		container.removeSubBeanContainer(loader);
 
 	}
-
+	
 	public static void destroy(){
 		container = null;
 	}

@@ -1,0 +1,34 @@
+<flow id="flowInheritTest" enable="true" private-context="false">
+  <parameters>
+    <parameter array="false" required="true" name="resultStr" type="java.lang.String" scope="both"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="flowInheritComponent"/>
+      </next-nodes>
+    </node>
+    <node id="flowInheritComponent" name="flowInheritComponent" title="流程继承组件1">
+      <component name="flowInheritComponent" title="流程继承组件">
+        <description></description>
+        <properties>
+          <flow-property name="appendStr" value="aaa" required="true" type="java.lang.String"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="flowInheritComponent_1"/>
+      </next-nodes>
+    </node>
+    <node id="flowInheritComponent_1" name="flowInheritComponent" title="流程继承组件2">
+      <component name="flowInheritComponent" title="流程继承组件">
+        <description></description>
+        <properties>
+          <flow-property name="appendStr" value="bbb" required="true" type="java.lang.String"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

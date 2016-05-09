@@ -1,0 +1,25 @@
+<flow id="simpleFlowTest1" enable="true" private-context="false">
+  <description>简单流程组件的参数直接赋值</description>
+  <parameters>
+    <parameter array="false" required="true" name="simpleflowresult" type="java.lang.String" scope="out"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="simpleFlowComponent"/>
+      </next-nodes>
+    </node>
+    <node id="simpleFlowComponent" name="simpleFlowComponent" title="简单流程组件">
+      <component name="simpleFlowComponent" title="简单流程组件">
+        <description></description>
+        <properties>
+          <flow-property name="age" value="22" required="true" type="java.lang.Integer"/>
+          <flow-property name="name" value="马云" required="true" type="java.lang.String"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

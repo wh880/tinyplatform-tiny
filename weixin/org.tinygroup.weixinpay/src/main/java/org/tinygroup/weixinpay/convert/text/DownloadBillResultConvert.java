@@ -61,8 +61,8 @@ public class DownloadBillResultConvert extends AbstractTextConvert{
 	}
 	
 	private String[] getValues(String line){
-		line = line.substring(1, line.length());
-		return line.split("`");
+		String newLine = line.substring(1, line.length());
+		return newLine.split("`");
 	}
 
 }

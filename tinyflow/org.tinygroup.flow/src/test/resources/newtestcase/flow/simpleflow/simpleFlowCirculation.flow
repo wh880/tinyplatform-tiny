@@ -1,0 +1,30 @@
+<flow id="simpleFlowCirculation" enable="true" private-context="false">
+  <parameters>
+    <parameter array="false" required="true" name="count" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="true" name="sum" type="java.lang.Integer" scope="both"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="simpleFlowComponent">
+          <el></el>
+        </next-node>
+      </next-nodes>
+    </node>
+    <node id="simpleFlowComponent" name="simpleFlowComponent" title="循环体">
+      <component name="simpleFlowComponent" title="简单流程组件">
+        <description></description>
+        <properties>
+          <flow-property name="age" value="0" required="true" type="java.lang.Integer"/>
+          <flow-property name="name" value="" required="true" type="java.lang.String"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="simpleFlowComponent">
+          <el>count&lt;3</el>
+        </next-node>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

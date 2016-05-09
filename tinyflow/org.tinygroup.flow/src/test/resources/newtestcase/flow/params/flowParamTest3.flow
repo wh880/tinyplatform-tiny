@@ -1,0 +1,23 @@
+<flow id="flowParamTest3" enable="true" private-context="false">
+  <parameters>
+    <parameter array="false" required="true" name="a" type="java.lang.Integer" scope="out"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="flowParamElComponent"/>
+      </next-nodes>
+    </node>
+    <node id="flowParamElComponent" name="flowParamElComponent" title="el表达式测试组件">
+      <component name="flowParamElComponent" title="el表达式测试组件">
+        <description>el表达式测试组件</description>
+        <properties>
+          <flow-property name="el" value="&apos;a=3&apos;" required="false" type="el"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

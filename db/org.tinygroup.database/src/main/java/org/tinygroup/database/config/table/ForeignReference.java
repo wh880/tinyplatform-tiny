@@ -16,6 +16,7 @@
 package org.tinygroup.database.config.table;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import org.tinygroup.commons.tools.EqualsUtil;
 import org.tinygroup.commons.tools.HashCodeUtil;
 import org.tinygroup.metadata.config.BaseObject;
@@ -31,16 +32,19 @@ public class ForeignReference extends BaseObject{
 	/**
 	 * 外键引用的主表
 	 */
+	@XStreamAsAttribute
 	@XStreamAlias("main-table")
 	private String mainTable;
 	/**
 	 * 外键引用的主表字段
 	 */
+	@XStreamAsAttribute
 	@XStreamAlias("reference-field")
 	private String referenceField;
 	/**
 	 * 外键字段
 	 */
+	@XStreamAsAttribute
 	@XStreamAlias("foreign-field")
 	private String foreignField;
 	

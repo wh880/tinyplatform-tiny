@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.tinygroup</groupId>
     <artifactId>tiny</artifactId>
-    <version>2.1.2-SNAPSHOT</version>
+    <version>2.2.1-SNAPSHOT</version>
   </parent>
   <artifactId>web</artifactId>
   <packaging>pom</packaging>
@@ -20,5 +20,8 @@
     <module>org.tinygroup.springmerge</module>
 	<module>org.tinygroup.mockserviceweb</module>
 	<module>org.tinygroup.servicehttpchannelweb</module>
+    <module>org.tinygroup.serviceweblayer</module>
+    <module>org.tinygroup.tinymvc</module>
+    <module>org.tinygroup.uiengineweblayer</module>
   </modules>
 </project>

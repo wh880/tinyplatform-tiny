@@ -157,6 +157,7 @@ public class TableProcessorImpl implements TableProcessor {
 		List<ForeignReference> references = table.getForeignReferences();
 		for (ForeignReference foreignReference : references) {
 			Table foreignTable = idMap.get(foreignReference.getMainTable());
+			if(foreignTable.equals(table)) continue;
 			addOrderTable(foreignTable);
 		}
 		Boolean inited = tableInited.get(table.getId());

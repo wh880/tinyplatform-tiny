@@ -6,13 +6,12 @@ import org.tinygroup.beancontainer.BeanContainer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.context.BaseContext;
 import org.tinygroup.context.Context;
-import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.context.util.ContextFactory;
 
 public class BeanContextImpl implements Context{
 
-	private Context context;
-	private BeanContainer<?> beanContainer;
+	protected Context context;
+	protected BeanContainer<?> beanContainer;
 
 	public BeanContainer<?> getBeanContainer() {
 		return beanContainer;

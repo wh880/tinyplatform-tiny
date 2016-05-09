@@ -8,7 +8,7 @@ import org.tinygroup.httpvisitor.builder.HttpFactory;
 public class HttpOptionsTest extends ServerTestCase {
 	
 	public void testOptions() throws IOException{
-		Response response = HttpFactory.options("http://127.0.0.1:8080").execute();
+		Response response = HttpFactory.options("http://127.0.0.1:"+MockUtil.HTTP_PORT).execute();
 		assertEquals(200, response.getStatusLine().getStatusCode());
 		assertEquals("hello world", response.text());
 		response.close();

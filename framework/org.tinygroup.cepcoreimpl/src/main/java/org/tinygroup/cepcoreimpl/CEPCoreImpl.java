@@ -35,6 +35,7 @@ import org.tinygroup.cepcore.aop.CEPCoreAopManager;
 import org.tinygroup.cepcore.exception.ServiceNotFoundException;
 import org.tinygroup.cepcore.impl.WeightChooser;
 import org.tinygroup.cepcore.util.CEPCoreUtil;
+import org.tinygroup.cepcore.util.ThreadContextUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.event.Event;
@@ -346,6 +347,8 @@ public class CEPCoreImpl implements CEPCore {
 			SynchronousDeal thread = new SynchronousDeal(eventProcessor, e);
 			// thread.start();
 			if (!getExecutorService().isShutdown()) {
+				//将线程上下文放入请求上下文
+				ThreadContextUtil.putCurrentThreadContextIntoContext(e.getServiceRequest().getContext());
 				getExecutorService().execute(thread);
 				LOGGER.logMessage(LogLevel.INFO, "已开启异步请求{}执行线程",
 						event.getEventId());
@@ -573,6 +576,8 @@ public class CEPCoreImpl implements CEPCore {
 		}
 
 		public void run() {
+			//从请求上下文中解析线程上下文
+			ThreadContextUtil.parseCurrentThreadContext(e.getServiceRequest().getContext());
 			eventProcessor.process(e);
 		}
 	}

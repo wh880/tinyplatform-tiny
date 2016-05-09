@@ -27,10 +27,6 @@ public class JedisClient {
 		return jedisConfig;
 	}
 
-	public void setJedisConfig(JedisConfig jedisConfig) {
-		this.jedisConfig = jedisConfig;
-	}
-
 	public RedisCacheManager getRedisCacheManager() {
 		return redisCacheManager;
 	}

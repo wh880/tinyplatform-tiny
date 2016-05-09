@@ -1,0 +1,60 @@
+<flow id="simpleFlowTest3" enable="true" private-context="false">
+  <description>流程分支测试</description>
+  <parameters>
+    <parameter array="false" required="false" name="a" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="true" name="simpleflowresult" type="java.lang.String" scope="out"/>
+    <parameter array="false" required="false" name="age" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="false" name="name" type="java.lang.String" scope="in"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="simpleFlowComponent">
+          <el>a==6</el>
+        </next-node>
+        <next-node next-node-id="simpleFlowComponent_1">
+          <el>a==16</el>
+        </next-node>
+        <next-node next-node-id="simpleFlowComponent_2">
+          <el>a!=6&amp;&amp;a!=16</el>
+        </next-node>
+      </next-nodes>
+    </node>
+    <node id="simpleFlowComponent" name="simpleFlowComponent" title="马云6岁">
+      <component name="simpleFlowComponent" title="简单流程组件">
+        <description></description>
+        <properties>
+          <flow-property name="age" value="6" required="true" type="java.lang.Integer"/>
+          <flow-property name="name" value="&apos;马云&apos;" required="true" type="el"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+    <node id="simpleFlowComponent_1" name="simpleFlowComponent" title="马云16岁">
+      <component name="simpleFlowComponent" title="简单流程组件">
+        <description></description>
+        <properties>
+          <flow-property name="age" value="16" required="true" type="java.lang.Integer"/>
+          <flow-property name="name" value="马云" required="true" type="java.lang.String"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+    <node id="simpleFlowComponent_2" name="simpleFlowComponent" title="任意一个人的岁数">
+      <component name="simpleFlowComponent" title="简单流程组件">
+        <description></description>
+        <properties>
+          <flow-property name="age" value="${age}" required="true" type="java.lang.Integer"/>
+          <flow-property name="name" value="${name}" required="true" type="java.lang.String"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>
