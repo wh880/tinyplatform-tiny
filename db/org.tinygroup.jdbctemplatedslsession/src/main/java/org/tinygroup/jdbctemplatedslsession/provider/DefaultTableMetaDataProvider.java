@@ -150,8 +150,9 @@ public class DefaultTableMetaDataProvider implements TableMetaDataProvider {
 							+ se.getMessage());
 		} finally {
 			try {
-				if (tableColumns != null)
+				if (tableColumns != null) {
 					tableColumns.close();
+				}
 			} catch (SQLException se) {
 				LOGGER.logMessage(LogLevel.WARN,
 						"Problem closing resultset for procedure column metadata "
@@ -220,14 +221,15 @@ public class DefaultTableMetaDataProvider implements TableMetaDataProvider {
 
 	private String nameToUse(String name, boolean storesUpperCaseIdentifiers,
 			boolean storesLowerCaseIdentifiers) {
-		if (name == null)
+		if (name == null) {
 			return null;
-		else if (storesUpperCaseIdentifiers)
+		}else if (storesUpperCaseIdentifiers) {
 			return name.toUpperCase();
-		else if (storesLowerCaseIdentifiers)
+		}else if (storesLowerCaseIdentifiers) {
 			return name.toLowerCase();
-		else
+		}else {
 			return name;
+		}
 	}
 
 	public String getDbType(DataSource dataSource) {

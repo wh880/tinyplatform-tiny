@@ -85,9 +85,10 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 
 	/**
 	 * 添加oracle的字段备注信息
+	 * @param comment
 	 * @param ddlBuffer
-	 * @param table
-	 */
+	 * @param list
+     */
 	protected void appendComment(String comment, StringBuffer ddlBuffer,List<String> list){
 		//do nothing
 	}
@@ -101,7 +102,7 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 
 			StandardField standardField = MetadataUtil.getStandardField(field
 					.getStandardFieldId(), this.getClass().getClassLoader());
-			if (standardField.getDescription() == null)	continue;
+			if (standardField.getDescription() == null){	continue;}
 			String columnName = null;
 			if (StringUtil.isBlank(table.getSchema())) {
 				columnName = String.format("%s.%s", table.getName(),
