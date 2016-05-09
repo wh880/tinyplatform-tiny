@@ -84,7 +84,7 @@ public class Runner {
 					if (applicationConfig != null) {
 						ConfigurationManager c = ConfigurationUtil
 								.getConfigurationManager();
-						XmlNode applicationXml = new XmlStringParser().parse(applicationConfig).getRoot();;
+						XmlNode applicationXml = new XmlStringParser().parse(applicationConfig).getRoot();
 						c.setApplicationConfiguration(applicationXml);
 
 					}
