@@ -15,6 +15,7 @@
  */
 package org.tinygroup.weblayer.tinyprocessor;
 
+import org.tinygroup.commons.tools.ObjectUtil;
 import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -41,6 +42,18 @@ public class FullContextUrlRedirectTinyProcessor extends AbstractTinyProcessor {
 
 	private static final String CACHE_CONTROL = "max-age=315360000";
 
+	/**
+	 * 是否需要检查文件存在
+	 */
+	private static final String CHECK_FILE_EXISTS = "checkFileExists";
+
+	/**
+	 * CHECK_FILE_EXISTS的默认值
+	 */
+	private static final boolean CHECK_FILE_EXISTS_DEFAULT = false;
+
+	private Boolean checkFileExists;
+
 	private FullContextFileRepository fullContextFileRepository;
 
 	private static final Logger logger = LoggerFactory
@@ -59,15 +72,19 @@ public class FullContextUrlRedirectTinyProcessor extends AbstractTinyProcessor {
 
 	@Override
 	protected void customInit() throws ServletException {
-		
+		if(checkFileExists == null) {
+			checkFileExists = ObjectUtil
+					.defaultIfNull(Boolean.parseBoolean(get(CHECK_FILE_EXISTS)), CHECK_FILE_EXISTS_DEFAULT);
+		}
 	}
 
 	@Override
 	public boolean isMatch(String urlString) {
 		FileObject fileObject = fullContextFileRepository
 				.getFileObject(urlString);
-		//匹配且资源存在
-		return super.isMatch(urlString) && fileObject!=null && fileObject.isExist();
+		if(!super.isMatch(urlString)) return false;
+		//是否检查资源文件
+		return checkFileExists?(fileObject!=null && fileObject.isExist()):true;
 	}
 
 	public void reallyProcess(String servletPath, WebContext context) throws ServletException, IOException{

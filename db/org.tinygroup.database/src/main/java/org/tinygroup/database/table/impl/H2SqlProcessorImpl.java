@@ -15,7 +15,7 @@
  */
 package org.tinygroup.database.table.impl;
 
-import org.tinygroup.commons.tools.StringUtil;
+import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.table.TableSqlProcessor;
 
 import java.util.List;
@@ -51,12 +51,6 @@ public class H2SqlProcessorImpl extends SqlProcessorImpl {
 				tableName, fieldName, tableDataType);
 	}
 
-	/**
-	 * h2语法为 COMMENT ON COLUMN aaa.name IS '名字'
-	 * @param comment
-	 * @param ddlBuffer
-	 * @param list
-     */
 	protected void appendComment(String comment, StringBuffer ddlBuffer,List<String> list) {
 		//do nothing
 	}
@@ -68,6 +62,16 @@ public class H2SqlProcessorImpl extends SqlProcessorImpl {
      */
 	protected String appendIncrease() {
 		return " auto_increment ";
+	}
+
+	/**
+	 * @param ddlBuffer
+	 * @param table
+	 * @param list
+     */
+	protected void appendFooter(StringBuffer ddlBuffer, Table table, List<String> list) {
+		super.appendFooter(ddlBuffer, table,list);
+		appendFooterComment(ddlBuffer, table,list);
 	}
 
 }

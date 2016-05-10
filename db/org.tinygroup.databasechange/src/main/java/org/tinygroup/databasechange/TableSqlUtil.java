@@ -21,19 +21,19 @@ import java.util.Map;
 
 
 public class TableSqlUtil {
-	private static final String lINE_SEPATATOR = System.getProperty("line.separator");
+	private static final String lINE_SEPARATOR = System.getProperty("line.separator");
 	
 	public static void appendSqlText(StringBuilder builder,Map<Class, List<String>> processSqls) throws IOException{
 		for (Class clazz : processSqls.keySet()) {
 			builder.append("/*-----").append(clazz.getSimpleName())
-					.append("--end-----*/").append(lINE_SEPATATOR);
+					.append("--end-----*/").append(lINE_SEPARATOR);
 			List<String> sqls = processSqls.get(clazz);
 			for (String sql : sqls) {
-				builder.append(sql).append(";").append(lINE_SEPATATOR);
+				builder.append(sql).append(";").append(lINE_SEPARATOR);
 			}
 			builder.append("/*-----").append(clazz.getSimpleName())
-					.append("--end-----*/").append(lINE_SEPATATOR);
-			builder.append(lINE_SEPATATOR);
+					.append("--end-----*/").append(lINE_SEPARATOR);
+			builder.append(lINE_SEPARATOR);
 		}
 	}
 }

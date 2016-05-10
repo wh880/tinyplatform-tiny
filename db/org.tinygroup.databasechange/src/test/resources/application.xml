@@ -48,9 +48,9 @@
 
 	<datasource id="test" type="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="org.h2.Driver" />
-		<property name="url" value="jdbc:h2:h2/TESTDB;mode=MYSQL;DB_CLOSE_ON_EXIT=FALSE" />
-		<property name="username" value="" />
-		<property name="password" value="" />
+		<property name="url" value="jdbc:h2:h2/TEST;mode=MYSQL;DB_CLOSE_ON_EXIT=FALSE" />
+		<property name="username" value="sa" />
+		<property name="password" value="123456" />
 	</datasource>
 
 	<!--<datasource id="test2" type="org.apache.commons.dbcp.BasicDataSource">
